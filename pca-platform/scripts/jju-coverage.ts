@@ -27,7 +27,7 @@ const u = jjuUniversity();
 if (!u) throw new Error("V3_CAMPUS_FIXTURE 가 없다(전주대는 시연 fixture 로만 선다)");
 const prog = officialProgram(u);
 const courseTopics = new Set(prog?.courses.flatMap((c) => c.topics) ?? []);
-const tracks = tracksOf(u).filter((t) => t.cohort.code === "JJU_BC1");
+const tracks = tracksOf(u).filter((t) => t.cohort.code === "JJU_2026");
 const cores = new Map<string, { core: Core; items: ReturnType<typeof items>; tax: ReturnType<typeof taxOf> }>();
 for (const t of tracks) if (t.core_code && !cores.has(t.core_code)) {
   const core = reg.cores.find((c) => c.code === t.core_code)!;
@@ -90,8 +90,9 @@ const verdict = (code: string, need: string[]) => {
   return { v: m.length === need.length ? "적합" : m.length ? "부분 적합" : "부적합", miss };
 };
 const NEED: Record<string, string[]> = {
-  JJU1_AI: ["DATA", "STAT", "ML", "DL"], JJU1_LLM: ["LLM", "MLOPS"], JJU1_AIOT: ["SENSOR", "EDGE", "ML"],
-  JJU1_PHYAI: ["SENSOR", "ROBOT", "CV", "ML"], JJU1_SF: ["DATA", "ML", "SENSOR"],
+  JJU26_AI: ["DATA", "STAT", "ML", "DL"],
+  /* 공지에 적힌 과정 주제 그대로(F5) */
+  JJU26_BC_BASIC: ["PY", "DATA", "VIS", "STAT", "DL"],
 };
 for (const t of tracks) {
   const need = NEED[t.code] ?? [];

@@ -4,7 +4,7 @@
  * **이름을 전부 `jju-` 로 시작한다.** 이 저장소에서 class 이름이 겹쳐 난
  * 탈이 열 번이 넘는다(`.btn` · `.lg` · `empty` · `qs-scene` …). 학교 화면의
  * 생김새는 `campus.css` 와 `surface.css` 를 그대로 쓰고, 여기 두는 것은
- * 시연 표시 · 트랙 상태 · 사업단 표처럼 이 화면에만 있는 자리다.
+ * 시연 표시 · 학과·과정 상태 · 사업단 표처럼 이 화면에만 있는 자리다.
  *
  * 색은 토큰만 읽는다. 학교 쪽은 `--pcu-*`, 담당자 쪽은 `--ui-*` 다.
  */
@@ -86,7 +86,7 @@
   .jju-flow li { grid-template-columns: 1fr; gap: 2px; }
 }
 
-/* 공식 출처가 붙은 사업 사실. 시연 트랙 목록(.cm-cmp-row)과 모양을 가른다 */
+/* 공식 출처가 붙은 사업 사실. 학과·과정 목록(.cm-cmp-row)과 모양을 가른다 */
 .jju-official { display: grid; gap: 14px; }
 .jju-facts { margin: 0; padding: 0; list-style: none; display: grid; gap: 0; border-top: 1px solid var(--ui-line, #dde3ec); }
 .jju-facts li { display: grid; gap: 4px; padding: 12px 0; border-bottom: 1px solid var(--ui-line, #dde3ec); }
@@ -111,3 +111,21 @@
 .jju-me-k { margin: 0; display: flex; gap: 8px; align-items: center; font-size: 14px; color: var(--ui-text-2, #3d4d66); }
 .jju-me-n { margin: 0 0 12px; font-size: 14.5px; color: var(--ui-text-2, #3d4d66); }
 .jju-me-acts { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* 과정 주제 × 검사. 상태는 글자가 먼저고 색은 거든다 */
+.jju-cov td:first-child { font-weight: 600; white-space: nowrap; }
+.jju-cv { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 12.5px; font-weight: 700; border: 1px solid; white-space: nowrap; }
+.jju-cv.is-MEASURED { background: #e8f6ee; color: #12623a; border-color: #bfe6cf; }
+.jju-cv.is-SELF_REPORT { background: #eef3fb; color: #24467a; border-color: #cfdcf0; }
+.jju-cv.is-CURRICULUM { background: #fff3df; color: #7a4b00; border-color: #f2d39a; }
+.jju-cv.is-NOT_MEASURED { background: #eef1f6; color: #4a5568; border-color: #dde3ec; }
+
+/* 누가 쓰나: 학과 학생과 과정 참여자. 같은 크기의 두 칸 */
+.jju-who { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.jju-who a { display: grid; gap: 8px; padding: 18px 20px; border-radius: var(--pcu-r, 14px); background: var(--pcu-surface, #fff); border: 1px solid var(--pcu-line, #e1e7f0); color: inherit; text-decoration: none; }
+.jju-who a:hover { border-color: var(--pcu-blue, #1f5fbf); }
+.jju-who-k { font-size: 13px; color: var(--pcu-ink-3, #5f6e86); }
+.jju-who strong { font-size: 18px; }
+.jju-who-d { font-size: 14.5px; line-height: 1.55; color: var(--pcu-ink-2, #3d4d66); }
+.jju-who-f { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 13.5px; color: var(--pcu-ink-3, #5f6e86); }
+@media (max-width: 640px) { .jju-who { grid-template-columns: 1fr; } }

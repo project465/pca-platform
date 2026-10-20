@@ -5,14 +5,14 @@
    "university_code": "JJU",
    "university_name": "전주대학교",
    "market_code": "KR",
-   "entry_note": "AI 분야 첨단산업 인재양성 부트캠프(2026~2030). 아래 트랙·기수는 공식 과정이 아니라 시연용 분류다",
+   "entry_note": "전주대학교 소프트웨어융합대학 인공지능학과와 AI 분야 첨단산업 인재양성 부트캠프(2026~2030) 참여자가 쓰는 진로 진단. 학과는 공개된 학과 페이지로, 과정은 사업 공지로 적었다",
    "brand_asset": null,
    "brand_asset_note": "학교 로고 사용 승인과 정식 asset 을 받지 못했다. 학교 상표를 다시 그리지 않는다",
    "open_questions": [
-    "사업단이 운영하는 공식 트랙(또는 마이크로디그리) 구성과 이름 — 지금 화면의 5개 트랙은 시연용 분류다",
-    "후속 ND1~ND6 과정의 이름·내용·순서·대상",
-    "참여자 신분(재학생 · 졸업생 · 재직자)과 학업 단계 매핑",
-    "과정마다 어느 전공 검사(Major Core)로 잴지에 대한 사업단 확인",
+    "인공지능학과 학생과 부트캠프 참여자가 겹칠 때 한 학생을 어느 자리로 적을지 — 지금 등록부는 한 학생에 자리 하나다(학과와 과정을 함께 적으려면 공통 계약 변경 필요)",
+    "후속 ND1~ND6 과정의 이름·내용·순서·대상 — 확인 전이라 검사를 잇지 않았다",
+    "부트캠프 참여 대상(재학생 · 졸업생 · 재직자)과 학업 단계 매핑",
+    "인공지능학과·부트캠프를 컴퓨터·소프트웨어 검사의 인공지능·데이터 갈래로 재는 것에 대한 학과·사업단 확인",
     "학교 로고·상표 사용 승인"
    ],
    "region_hint": "KR-HONAM",
@@ -23,147 +23,79 @@
    "region_note": "지역 기관 자료는 아직 0줄이다. 전북권 기업 자료는 출처와 사용 권리를 확인한 뒤에 넣는다",
    "catalogs": [
     {
-     "catalog_code": "JJU_BC1",
+     "catalog_code": "JJU_2026",
      "catalog_year": 2026,
-     "label": "[시연] 부트캠프 1기",
+     "label": "2026 · 인공지능학과 × AI 부트캠프",
      "status": "ACTIVE",
-     "effective_from": "2026-09-01",
+     "effective_from": "2026-03-01",
      "effective_to": null,
-     "effective_note": "기수 시작일은 시연용 가정이다",
+     "effective_note": "학과는 2026 학년도 재학생, 과정은 2026 사업 공지 기준이다",
      "default_for_unknown": true,
-     "source_url": null,
-     "source_name": "CareerMatri 시연용 분류(공식 교육과정 아님)",
+     "source_url": "https://www.jj.ac.kr/jj/colleges/software03-02.do",
+     "source_name": "전주대학교 소프트웨어융합대학 인공지능학과 교수소개 · 사업 공지(S1 · S2)",
      "verified_at": null,
-     "verification": "DEMO_CLASSIFICATION",
-     "verification_note": "사업 선정과 운영 방식은 official_program 의 F1~F6 이 공식 출처를 든다. 이 기수·트랙 묶음은 그 사실에서 만든 것이 아니라 CareerMatri 검사를 잇기 위한 시연용 분류이고, 사업단의 공식 트랙과 같다고 적지 않는다",
-     "colleges": [
+     "verification": "OFFICIAL_PAGE_UNREACHABLE",
+     "verification_note": "인공지능학과와 소속 단과대학은 학교 공개 페이지(software03-02)의 검색엔진 사본으로 확인했다. 이 작업 환경에서는 jj.ac.kr 에 닿지 못해(프록시 403) 원문을 직접 열지 못했다. 과정 두 줄은 사업주가 공식 공지에서 옮겨 준 사실(F5 · F6)이다",
+     "sources": [
       {
-       "code": "JJU_AISW",
-       "name": "AI·소프트웨어 분야",
-       "units": [
-        {
-         "code": "JJU1_AI",
-         "name": "[시연] AI·데이터 트랙",
-         "kind": "department",
-         "core_code": "CS_CORE_V1",
-         "specialization": "SPEC_CS_AI",
-         "note": "컴퓨터·소프트웨어 검사의 인공지능·데이터 갈래로 잰다. 그 검사는 도메인 검수 전이라 학생에게 닫혀 있다"
-        },
-        {
-         "code": "JJU1_LLM",
-         "name": "[시연] LLM 응용 트랙",
-         "kind": "department",
-         "core_code": "CS_CORE_V1",
-         "specialization": "SPEC_CS_SOFTWARE",
-         "note": "LLM 을 쓰는 서비스를 만드는 일을 소프트웨어학 갈래로 잰다는 가안이다"
-        }
-       ]
+       "name": "전주대 인공지능학과 교수소개(소프트웨어융합대학)",
+       "url": "https://www.jj.ac.kr/jj/colleges/software03-02.do",
+       "note": "검색엔진 사본 · 원문 직접 대조 전"
       },
       {
-       "code": "JJU_ADV",
-       "name": "첨단제조·로봇 분야",
-       "units": [
-        {
-         "code": "JJU1_AIOT",
-         "name": "[시연] AIoT 트랙",
-         "kind": "department",
-         "core_code": "EE_CORE_V1",
-         "specialization": "SPEC_EE_COMM",
-         "note": "센서·통신·임베디드를 전기전자 검사의 정보통신 갈래로 잰다는 가안이다"
-        },
-        {
-         "code": "JJU1_PHYAI",
-         "name": "[시연] 피지컬 AI 트랙",
-         "kind": "department",
-         "core_code": "EE_CORE_V1",
-         "specialization": "SPEC_EE_ROBOT",
-         "note": "로봇·드론의 구동·센서·제어를 전기전자 검사의 드론·로봇 갈래로 잰다는 가안이다"
-        },
-        {
-         "code": "JJU1_SF",
-         "name": "[시연] 스마트팩토리 트랙",
-         "kind": "department",
-         "core_code": "ME_CORE_V3",
-         "specialization": null,
-         "note": "기계공학 검사로 잰다. 지금 학생에게 열린 유일한 이공계 검사다"
-        }
-       ]
+       "name": "전주대학교 뉴스 articleNo=504039 (사업 선정)",
+       "url": "https://www.jj.ac.kr/jj/introduction/jjnews.do?articleNo=504039&mode=view",
+       "note": "사업주 확인"
+      },
+      {
+       "name": "전주대학교 공지 articleNo=521499 (2026 AI 기초 과정)",
+       "url": "https://www.jj.ac.kr/jj/community/notice01.do?articleNo=521499&mode=view",
+       "note": "사업주 확인"
       }
-     ]
-    },
-    {
-     "catalog_code": "JJU_BC2",
-     "catalog_year": 2027,
-     "label": "[시연] 부트캠프 2기",
-     "status": "FUTURE",
-     "effective_from": "2027-03-01",
-     "effective_to": null,
-     "effective_note": "기수 시작일은 시연용 가정이다",
-     "source_url": null,
-     "source_name": "CareerMatri 시연용 분류(공식 교육과정 아님)",
-     "verified_at": null,
-     "verification": "DEMO_CLASSIFICATION",
-     "verification_note": "사업 선정과 운영 방식은 official_program 의 F1~F6 이 공식 출처를 든다. 이 기수·트랙 묶음은 그 사실에서 만든 것이 아니라 CareerMatri 검사를 잇기 위한 시연용 분류이고, 사업단의 공식 트랙과 같다고 적지 않는다",
+     ],
      "colleges": [
       {
-       "code": "JJU_AISW",
-       "name": "AI·소프트웨어 분야",
+       "code": "JJU_SWC",
+       "name": "소프트웨어융합대학",
+       "note": "같은 단과대학의 데이터사이언스학과 · 스마트미디어학과 · 컴퓨터공학과는 이번 범위 밖이라 싣지 않았다",
        "units": [
         {
-         "code": "JJU2_AI",
-         "name": "[시연] AI·데이터 트랙",
+         "code": "JJU26_AI",
+         "name": "인공지능학과",
          "kind": "department",
          "core_code": "CS_CORE_V1",
          "specialization": "SPEC_CS_AI",
-         "replaces": [
-          "JJU1_AI"
-         ]
-        },
-        {
-         "code": "JJU2_LLM",
-         "name": "[시연] LLM 응용 트랙",
-         "kind": "department",
-         "core_code": "CS_CORE_V1",
-         "specialization": "SPEC_CS_SOFTWARE",
-         "replaces": [
-          "JJU1_LLM"
+         "note": "컴퓨터·소프트웨어 검사의 인공지능·데이터 갈래로 잰다(배재대 인공지능전공과 같은 갈래). 학과 페이지에 적힌 영역(파이썬 · 딥러닝 · IoT)이 그 갈래의 기계학습·데이터 분석 · 데이터 저장·질의 영역에 닿는다",
+         "region_tags": [
+          "AI·데이터"
          ]
         }
        ]
       },
       {
-       "code": "JJU_ADV",
-       "name": "첨단제조·로봇 분야",
+       "code": "JJU_BOOTCAMP",
+       "name": "AI 분야 첨단산업 인재양성 부트캠프",
+       "note": "사업단이 운영하는 교육 과정이다. 학과가 아니다",
        "units": [
         {
-         "code": "JJU2_AIOT",
-         "name": "[시연] AIoT 트랙",
-         "kind": "department",
-         "core_code": "EE_CORE_V1",
-         "specialization": "SPEC_EE_COMM",
-         "replaces": [
-          "JJU1_AIOT"
+         "code": "JJU26_BC_BASIC",
+         "name": "2026 AI 기초 과정",
+         "kind": "track",
+         "core_code": "CS_CORE_V1",
+         "specialization": "SPEC_CS_AI",
+         "note": "공지 S2 의 공식 과정. 다루는 주제(파이썬 · 데이터 처리 · 시각화 · 통계 · 딥러닝 기초)를 같은 인공지능·데이터 갈래로 잰다. 과정 이수 자체를 역량 확인으로 세지 않는다",
+         "region_tags": [
+          "AI·데이터",
+          "피지컬 AI"
          ]
         },
         {
-         "code": "JJU2_PHYAI",
-         "name": "[시연] 피지컬 AI 트랙",
-         "kind": "department",
-         "core_code": "EE_CORE_V1",
-         "specialization": "SPEC_EE_ROBOT",
-         "replaces": [
-          "JJU1_PHYAI"
-         ]
-        },
-        {
-         "code": "JJU2_SF",
-         "name": "[시연] 스마트팩토리 트랙",
-         "kind": "department",
-         "core_code": "ME_CORE_V3",
-         "specialization": null,
-         "replaces": [
-          "JJU1_SF"
-         ]
+         "code": "JJU26_BC_ND",
+         "name": "후속 ND1~ND6 과정",
+         "kind": "track",
+         "core_code": null,
+         "note": "과정이 있다는 것만 확인했다(F6). 이름과 내용을 모르면 어느 검사로 잴지 정하지 않는다",
+         "region_tags": []
         }
        ]
       }
@@ -360,6 +292,46 @@
       "checked_on": "2026-10-20"
      }
     ]
+   },
+   "retired_codes": [
+    {
+     "code": "JJU1_AI",
+     "was": "[시연] AI·데이터 트랙",
+     "was_year": 2026,
+     "why": "시연용 트랙 분류를 실제 학과(인공지능학과)와 공식 과정(AI 기초 과정)으로 바꾸면서 내렸다. 이 코드로 적힌 QA 줄은 `지난 등록부 자리` 로 읽힌다"
+    },
+    {
+     "code": "JJU1_LLM",
+     "was": "[시연] LLM 응용 트랙",
+     "was_year": 2026,
+     "why": "시연용 트랙 분류를 실제 학과(인공지능학과)와 공식 과정(AI 기초 과정)으로 바꾸면서 내렸다. 이 코드로 적힌 QA 줄은 `지난 등록부 자리` 로 읽힌다"
+    },
+    {
+     "code": "JJU1_AIOT",
+     "was": "[시연] AIoT 트랙",
+     "was_year": 2026,
+     "why": "시연용 트랙 분류를 실제 학과(인공지능학과)와 공식 과정(AI 기초 과정)으로 바꾸면서 내렸다. 이 코드로 적힌 QA 줄은 `지난 등록부 자리` 로 읽힌다"
+    },
+    {
+     "code": "JJU1_PHYAI",
+     "was": "[시연] 피지컬 AI 트랙",
+     "was_year": 2026,
+     "why": "시연용 트랙 분류를 실제 학과(인공지능학과)와 공식 과정(AI 기초 과정)으로 바꾸면서 내렸다. 이 코드로 적힌 QA 줄은 `지난 등록부 자리` 로 읽힌다"
+    },
+    {
+     "code": "JJU1_SF",
+     "was": "[시연] 스마트팩토리 트랙",
+     "was_year": 2026,
+     "why": "시연용 트랙 분류를 실제 학과(인공지능학과)와 공식 과정(AI 기초 과정)으로 바꾸면서 내렸다. 이 코드로 적힌 QA 줄은 `지난 등록부 자리` 로 읽힌다"
+    }
+   ],
+   "student_open": {
+    "mode": "LEAF",
+    "leaves": [
+     "JJU26_AI",
+     "JJU26_BC_BASIC"
+    ],
+    "note": "컴퓨터·소프트웨어 검사가 학생에게 열리는 날 이 두 자리만 연다. 지금은 그 검사가 전공자 검토 전이라 닫혀 있고, 미리보기 서버에서만 열린다"
    }
   }
  ]

@@ -94,8 +94,8 @@ export function goldHtml(g: GoldDoc, w: Workbook): string {
 <div class="cv-top"><p class="cv-k">JEONJU UNIVERSITY × CareerMatri</p><p class="cv-p">${esc(g.program)}</p></div>
 <div class="cv-mid"><p class="cv-badge">${esc(g.badge)}</p><h1>${esc(g.title)}</h1>${g.lead ? `<p class="cv-lead">${esc(g.lead)}</p>` : ""}</div>
 <div class="cv-num">${g.numbers.map((n) => `<div><b>${esc(n.v)}</b><span>${esc(n.k)}</span><small>${esc(n.sub)}</small></div>`).join("")}</div>
-<dl class="cv-meta"><div><dt>학생 식별</dt><dd>${esc(g.id)}</dd></div><div><dt>트랙</dt><dd>${esc(g.student.track)}</dd></div><div><dt>전공 검사</dt><dd>${esc(g.student.field)}${g.student.spec ? ` · ${esc(g.student.spec)}` : ""}</dd></div><div><dt>기수</dt><dd>${esc(g.student.cohort)}</dd></div><div><dt>응답일</dt><dd>${esc(g.submitted)}</dd></div><div><dt>문서</dt><dd>${esc(g.version)}</dd></div></dl>
-${g.demo ? `<p class="cv-demo">시연 자료 · 합성 학생 · 트랙은 시연용 분류이며 검사는 전공자 검수 전입니다. 학생 진단이나 사업 성과로 쓰지 않습니다.</p>` : ""}
+<dl class="cv-meta"><div><dt>학생 식별</dt><dd>${esc(g.id)}</dd></div><div><dt>학과·과정</dt><dd>${esc(g.student.track)}</dd></div><div><dt>전공 검사</dt><dd>${esc(g.student.field)}${g.student.spec ? ` · ${esc(g.student.spec)}` : ""}</dd></div><div><dt>소속·운영</dt><dd>${esc(g.student.cohort)}</dd></div><div><dt>응답일</dt><dd>${esc(g.submitted)}</dd></div><div><dt>문서</dt><dd>${esc(g.version)}</dd></div></dl>
+${g.demo ? `<p class="cv-demo">시연 자료 · 합성 학생 · 컴퓨터·소프트웨어 검사는 전공자 검수 전입니다. 학생 진단이나 사업 성과로 쓰지 않습니다.</p>` : ""}
 </section>`);
 
   /* ── 01 요약 ── */
@@ -131,7 +131,7 @@ ${g.tools.length ? `<p class="tools"><b>그 영역에서 흔히 쓰는 도구</b
 <p class="cond">${tag("READ")} ${esc(r.condition)}</p></article>`).join("")}</div>
 ${g.industries.length ? `<h3>산업 — 중심 영역과 이 학생</h3><table class="tb"><thead><tr><th>산업</th><th>어디서</th><th>그 산업의 중심 영역</th><th>이 학생</th></tr></thead><tbody>${g.industries.map((i) => `<tr><td><b>${esc(i.name)}</b></td><td>${tag(i.from)}</td><td>${esc(i.centers)}</td><td>${esc(i.status)}</td></tr>`).join("")}</tbody></table>` : ""}
 <div class="keep"><h3>지역과 전국</h3>
-${g.region.length ? `<ul class="region">${g.region.slice(0, 3).map((r) => `<li>${tag("SOURCE")} <b>${esc(r.label)}</b> ${esc(r.claim)} <small>[${esc(r.id)}]</small></li>`).join("")}</ul>` : `<p class="none">이 트랙에 걸리는 출처 확인된 지역 사실이 없습니다.</p>`}
+${g.region.length ? `<ul class="region">${g.region.slice(0, 3).map((r) => `<li>${tag("SOURCE")} <b>${esc(r.label)}</b> ${esc(r.claim)} <small>[${esc(r.id)}]</small></li>`).join("")}</ul>` : `<p class="none">이 학과·과정에 걸리는 출처 확인된 지역 사실이 없습니다.</p>`}
 <p class="fine">전국 비교: 채용 공고·기업 자료를 아직 받지 않아 비교하지 않습니다. 기업 이름을 추천하지 않습니다.</p></div></section>`);
 
   /* ── 05 적합·준비·빈자리 ── */

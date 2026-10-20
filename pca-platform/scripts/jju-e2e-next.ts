@@ -37,7 +37,7 @@ import { walk, enterAssessment } from "./_v3-walk";
 const OUT = process.env.OUT ?? "var/jju-ci/e2e";
 const SHOTS = `${OUT}/shots`;
 const PDFS = `${OUT}/pdf`;
-const TRACK = process.env.TRACK ?? "JJU1_AI";
+const TRACK = process.env.TRACK ?? "JJU26_AI";
 const DESK = { width: 1440, height: 900 };
 const MOB = { width: 390, height: 844 };
 

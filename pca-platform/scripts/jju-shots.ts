@@ -28,8 +28,8 @@ import { enterAssessment, walk } from "./_v3-walk";
 import { jjuUniversity, tracksOf } from "../src/lib/jju/program";
 
 const OUT = process.env.OUT ?? "docs/jju/shots";
-const LIVE = process.env.LIVE_TRACK ?? "JJU1_SF";
-const DEMO = process.env.DEMO_TRACK ?? "JJU1_AI";
+const LIVE = process.env.LIVE_TRACK ?? "JJU26_BC_BASIC";
+const DEMO = process.env.DEMO_TRACK ?? "JJU26_AI";
 
 let pass = 0; const bad: string[] = [];
 const ok = (w: string, c: boolean, saw = "") => {

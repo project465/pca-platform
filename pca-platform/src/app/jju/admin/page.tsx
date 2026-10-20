@@ -17,14 +17,14 @@ import { DemoRibbon, ModeChip, OfficialFacts } from "../parts";
 export const metadata = { title: `사업단 현황 · ${BRAND.campus}` };
 
 /**
- * 전주대학교 부트캠프 사업단 현황.
+ * 전주대학교 인공지능학과 × AI 부트캠프 사업단 현황.
  *
  * **새 집계를 만들지 않는다.** 여기 서는 수는 전부 학교 담당자 화면이 이미
- * 세는 함수(`campusV3` · `studentCounts`)에서 오고, 이 쪽은 그것을 기수와
- * 트랙으로 다시 묶을 뿐이다. 기수는 등록부의 Catalog 이고 트랙은 그 안의
- * 자리라서 **DB 에 칸을 더하지 않았다.**
+ * 세는 함수(`campusV3` · `studentCounts`)에서 오고, 이 쪽은 그것을 학과와
+ * 과정으로 다시 묶을 뿐이다. 학과와 과정은 등록부의 자리라서 **DB 에 칸을
+ * 더하지 않았다.**
  *
- * **5명 규칙을 그대로 지난다.** 트랙마다의 시작 수는 `by_department` 칸을
+ * **5명 규칙을 그대로 지난다.** 자리마다의 시작 수는 `by_department` 칸을
  * 쓰고, 그 칸은 다섯이 안 되면 값이 아예 없다.
  *
  * **범위를 이 화면이 정하지 않는다**(설계 원칙 10). 기관과 학교는
@@ -73,9 +73,9 @@ export default async function JjuAdmin({
     <>
       {demoServer() ? <div className="jju-admin-ribbon"><DemoRibbon /></div> : null}
       <PageHead
-        eyebrow={`전주대학교 ${program?.name ?? "AI 부트캠프"}`}
-        title="사업단 현황"
-        sub={"기수·트랙별 학생과 검사 현황입니다. "
+        eyebrow={`전주대학교 인공지능학과 × ${program?.name ?? "AI 부트캠프"}`}
+        title="학과·사업단 현황"
+        sub={"인공지능학과와 부트캠프 과정별 학생과 검사 현황입니다. "
           + `응시 집계는 ${MIN_CELL}명이 안 되는 칸에 숫자를 내지 않습니다.`}
         actions={
           <div className="jju-links">
@@ -98,13 +98,13 @@ export default async function JjuAdmin({
           note="바닥은 명단과 학교 진입을 합친 대상자입니다" />
       </div>
 
-      <Section title="기수 × 트랙 현황 (시연용 분류)"
-        note="기수·트랙은 사업단 공식 트랙이 아닌 시연용 분류입니다. 발급·진행·완료는 명단 화면과 같은 수이고, 시작은 응시 집계 칸입니다">
+      <Section title="학과 · 과정별 현황"
+        note="한 학생은 한 자리(학과 또는 과정)로 적힙니다. 발급·진행·완료는 명단 화면과 같은 수이고, 시작은 응시 집계 칸입니다">
         <div className="jju-scroll">
           <table className="jju-matrix">
             <thead>
               <tr>
-                <th>기수</th><th>트랙</th><th>재는 검사</th><th>열림</th>
+                <th>구분</th><th>학과·과정</th><th>재는 검사</th><th>열림</th>
                 <th>발급</th><th>미응시</th><th>진행 중</th><th>완료</th><th>응시 시작</th>
               </tr>
             </thead>
@@ -114,9 +114,9 @@ export default async function JjuAdmin({
                 const s = started.get(t.code);
                 return (
                   <tr key={t.code}>
-                    <td>{t.cohort.label}</td>
+                    <td>{t.kind === "DEPARTMENT" ? `학과 · ${t.field.name}` : "부트캠프 과정"}</td>
                     <td>{t.short}</td>
-                    <td>{t.core_name ?? "—"}{t.spec_name ? ` · ${t.spec_name}` : ""}</td>
+                    <td>{t.core_name ?? "검사 미정"}{t.spec_name ? ` · ${t.spec_name}` : ""}</td>
                     <td><ModeChip mode={t.mode} /></td>
                     <td className="is-num">{c.all}</td>
                     <td className="is-num">{c.none}</td>
@@ -124,7 +124,7 @@ export default async function JjuAdmin({
                     <td className="is-num">{c.scored}</td>
                     <td className="is-num">
                       {/* 칸이 없는 것은 0 이 아니다: 집계가 다섯이 안 되는 칸을 아예 만들지
-                          않으므로, 이 트랙에 진행·완료가 있는데 0 을 적으면 바로 옆 칸과
+                          않으므로, 이 자리에 진행·완료가 있는데 0 을 적으면 바로 옆 칸과
                           서로 어긋난 말을 한다(R5 실제 화면에서 `완료 4 · 응시 시작 0`) */}
                       {typeof s === "number" ? s
                         : <span className="jju-hidden">{s === null || c.in_progress + c.scored > 0 ? `${MIN_CELL}명 미만` : "0"}</span>}
@@ -144,15 +144,13 @@ export default async function JjuAdmin({
         </Section>
       ) : null}
 
-      <Section title="시연용 기수 분류">
+      <Section title="등록 근거">
         <ul className="jju-flow">
           {cohorts.map((c) => (
             <li key={c.catalog_code}>
               <strong>{c.label}</strong>
-              <span>{c.effective_from} 시작 가정</span>
-              <span>{c.verification === "VERIFIED"
-                ? "공식 교육과정과 맞춰 봤습니다."
-                : c.verification_note ?? "시연용 분류입니다."}</span>
+              <span>{c.verification === "VERIFIED" ? "원문 대조" : "원문 대조 전"}</span>
+              <span>{c.verification_note ?? ""}</span>
             </li>
           ))}
         </ul>
@@ -168,10 +166,12 @@ export default async function JjuAdmin({
             <span>웹 결과를 그 자리에서 PDF 로 뽑습니다. 미리 만들어 두지 않습니다.</span></li>
           <li><strong>경험·프로젝트 기록</strong><span className="jju-ok">실제 동작</span>
             <span>적은 경험이 현재 상태에 더해지고, 검사 당시 결과는 바뀌지 않습니다.</span></li>
-          <li><strong>{MODE_KO.DEMO} 트랙의 결과</strong><span className="jju-demo">시연</span>
-            <span>전공자 검수 전 검사입니다. 결과를 학생 진단이나 사업 성과로 쓰지 않습니다.</span></li>
-          <li><strong>트랙·기수 구성</strong><span className="jju-demo">시연</span>
-            <span>공식 과정을 검사에 잇기 위한 시연용 분류입니다. 사업단 공식 트랙과 같다고 적지 않습니다.</span></li>
+          <li><strong>{MODE_KO.DEMO} 자리의 결과</strong><span className="jju-demo">시연</span>
+            <span>컴퓨터·소프트웨어 검사는 전공자 검토 전입니다. 결과를 학생 진단이나 사업 성과로 쓰지 않습니다.</span></li>
+          <li><strong>학과·과정 등록</strong><span className="jju-demo">원문 대조 전</span>
+            <span>인공지능학과는 학교 공개 페이지의 검색 사본, 과정은 사업 공지(사업주 확인)로 올렸습니다.</span></li>
+          <li><strong>학과 학생 × 과정 참여 겹침</strong><span className="jju-no">한 자리만</span>
+            <span>한 학생을 학과와 과정에 함께 적는 칸이 없습니다. 공통 계약 변경 요청(C20) 전까지 한 자리로 적습니다.</span></li>
           <li><strong>사업 선정·기간·운영 방식</strong><span className="jju-ok">공식 출처</span>
             <span>공식 페이지 두 곳을 출처로 적었습니다. 원문 직접 대조는 남아 있습니다.</span></li>
           <li><strong>개인 결과·PDF 담당자 열람</strong><span className="jju-no">막혀 있음</span>

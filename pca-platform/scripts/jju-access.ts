@@ -87,7 +87,7 @@ async function main() {
   const before = await queryOne<{ university_code: string; college_code: string; department_code: string; specialization: string | null }>(
     `SELECT university_code, college_code, department_code, specialization FROM campus_students WHERE user_id=$1::bigint`, [P]);
   const pcuLogin = (await queryOne<{ l: string }>(`SELECT login_id l FROM users WHERE id=$1::bigint`, [P]))!.l;
-  const s6 = await addStudentAccount("JJU", jjuOrg, { student_id: "QAX3", name: "학번 겹침", login_id: pcuLogin, department_code: "JJU1_AI" }, actor);
+  const s6 = await addStudentAccount("JJU", jjuOrg, { student_id: "QAX3", name: "학번 겹침", login_id: pcuLogin, department_code: "JJU26_AI" }, actor);
   const after = await queryOne<NonNullable<typeof before>>(
     `SELECT university_code, college_code, department_code, specialization FROM campus_students WHERE user_id=$1::bigint`, [P]);
   const changed = JSON.stringify(before) !== JSON.stringify(after);
@@ -102,7 +102,7 @@ async function main() {
   }
   /* rotate 경로(운영 스크립트 pcu-students · staging-bootstrap 가 쓴다). C16 수정 뒤에는 실제로 돌려 본다:
      거절되면 아무 줄도 바뀌지 않는다. 바뀌면(수정이 빠지면) QA 학생의 열쇠가 바뀌므로 jju-verify 를 다시 돌린다 */
-  const c = checkStudent("JJU", { student_id: "QAX4", name: "x", login_id: pcuLogin, department_code: "JJU1_AI" });
+  const c = checkStudent("JJU", { student_id: "QAX4", name: "x", login_id: pcuLogin, department_code: "JJU26_AI" });
   const hashBefore = (await queryOne<{ h: string }>(`SELECT password_hash h FROM users WHERE id=$1::bigint`, [P]))?.h;
   let rot = "";
   if (c.ok) { try { await provisionStudent(jjuOrg, c.value, { rotate: true }); } catch (e) { rot = (e as Error).message; } }
@@ -131,7 +131,7 @@ async function main() {
   say("\n── 6. 학생 홈 상태 (jjuStudentStatus)");
   const stA = await jjuStudentStatus(A);
   ok("결과를 받은 학생: 결과 보기 + 전주대 리포트 링크", stA?.state === "result" && !!stA.more.find((l) => l.href === `/jju/report/${att}`), stA?.headline ?? "null");
-  const fresh = checkStudent("JJU", { student_id: "QAS1", name: "QA 새 학생", login_id: "qa-jju-qas1", department_code: "JJU1_SF" });
+  const fresh = checkStudent("JJU", { student_id: "QAS1", name: "QA 새 학생", login_id: "qa-jju-qas1", department_code: "JJU26_BC_BASIC" });
   const fs = fresh.ok ? await provisionStudent(jjuOrg, fresh.value, { rotate: true }) : null;
   await query(`DELETE FROM v3_snapshots WHERE attempt_id IN (SELECT id FROM v3_attempts WHERE user_id=$1::bigint)`, [fs?.userId]);
   await query(`DELETE FROM v3_attempts WHERE user_id=$1::bigint`, [fs?.userId]);

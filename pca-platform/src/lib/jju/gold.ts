@@ -236,7 +236,7 @@ export function buildGold(x: JjuReportInput & { attemptId: string; submitted: st
     basis: "문항 커버리지(문항 번호 대조)", status: `${measuredN}가지 · 나머지는 미측정 또는 판정 밖` });
   /* 바깥 사실은 장부에서 한 줄로 세고 본문(4장)과 부록에 출처를 둔다: 긴 사실 문장이 장부를 밀어 쪽을 하나 더 연다 */
   const rg = x.region ?? [];
-  if (rg.length) ledger.push({ text: `이 트랙에 걸리는 지역·산업 사실 ${rg.length}건`, layer: "SOURCE",
+  if (rg.length) ledger.push({ text: `이 학과·과정에 걸리는 지역·산업 사실 ${rg.length}건`, layer: "SOURCE",
     basis: rg.map((r) => r.id).join(" · "), status: rg.every((r) => r.how === "FETCHED_PAGE") ? "원문 확인" : "검색 결과만 · 원문 확인 전" });
   if (topAct) ledger.push({ text: "다음 행동", layer: "ADVICE", basis: "결과 모델의 할 일(그 영역의 업무 흐름 재료)", status: "본문 01 · 08에 전문" });
 
@@ -273,7 +273,7 @@ export function buildGold(x: JjuReportInput & { attemptId: string; submitted: st
       "적합도 · 합격 가능성 · 순위 · 백분위를 만들지 않습니다. 규준이 없는 검사입니다.",
       "관심만으로 직무를 잇지 않습니다. 직무는 학생이 고른 것과 판정에서 관계표로 이은 것만 적습니다.",
       "기업을 추천하지 않습니다. 지역 기업·채용 자료는 아직 받지 않았습니다.",
-      ...(x.mode !== "LIVE" ? ["이 트랙의 검사는 전공자 검수 전 시연 전용입니다. 이 종이를 학생 진단이나 사업 성과로 쓰지 않습니다."] : []),
+      ...(x.mode !== "LIVE" ? ["이 검사는 전공자 검수 전이라 시연 서버에서만 열었습니다. 이 종이를 학생 진단이나 사업 성과로 쓰지 않습니다."] : []),
     ],
     quality: RQ_KO[m.response_quality.flag] ?? "다시 볼 것이 있음",
     sources: [...(x.program?.sources ?? []).map((s) => ({ id: s.id, label: s.id, url: s.url })),

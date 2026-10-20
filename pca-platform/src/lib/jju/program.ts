@@ -1,14 +1,18 @@
 /**
- * 전주대학교 AI·첨단산업 부트캠프 화면이 읽는 **유일한 자리.**
+ * 전주대학교 인공지능학과 × AI 부트캠프 화면이 읽는 **유일한 자리.**
  *
- * **새 검사를 만들지 않는다.** 전주대 트랙은 학교 등록부의 자리 하나씩이고,
- * 재는 자는 공통 Major Core 다(컴퓨터·소프트웨어 · 전기전자 · 기계공학).
- * 여기서 하는 일은 등록부가 이미 들고 있는 값을 사업단이 읽는 모양으로
- * 다시 묶는 것뿐이다: 기수 → 분야 → 트랙 → 어느 검사로 재는가.
+ * **새 검사를 만들지 않는다.** 학과와 과정은 학교 등록부의 자리 하나씩이고,
+ * 재는 자는 공통 Major Core 다(컴퓨터·소프트웨어 검사의 인공지능·데이터 갈래).
+ * 여기서 하는 일은 등록부가 이미 들고 있는 값을 학생과 사업단이 읽는 모양으로
+ * 다시 묶는 것뿐이다: 학과 또는 과정 → 어느 검사로 재는가.
  *
- * **상태를 적어 두지 않고 끌어온다.** 트랙이 지금 실제로 열리는지는
+ * **학과와 과정을 한 목록에 섞지 않는다.** 인공지능학과는 학생의 소속이고
+ * 부트캠프 과정은 사업단이 운영하는 교육이다. 등록부에서 둘 다 `자리` 이지만
+ * 화면은 `kind` 로 갈라 세운다.
+ *
+ * **상태를 적어 두지 않고 끌어온다.** 학과·과정이 지금 실제로 열리는지는
  * `statusOf` 가 정한다. 여기서 따로 적으면 Core 가 열린 날 이 파일이 옛
- * 상태를 들고 있고, 두 자리가 갈리면 `실제 운영` 이라고 적힌 트랙에서 빈
+ * 상태를 들고 있고, 두 자리가 갈리면 `실제 운영` 이라고 적힌 자리에서 빈
  * 검사가 열린다.
  *
  * **시연과 실제를 한 칸에 섞지 않는다.** 세 갈래로 나눈다.
@@ -18,16 +22,17 @@
  *              (`previewOpenCores()` 가 운영에서 거절한다)
  * `PREPARING`  열리지 않는다
  *
- * **공식 사실과 시연 분류를 두 층으로 둔다.** `officialProgram()` 은 출처와
+ * **사업 사실과 검사 자리를 두 층으로 둔다.** `officialProgram()` 은 출처와
  * 확인 날짜와 상태가 붙은 사업 사실(선정 · 기간 · 사업비 · 운영 방식 · 실제
- * 과정)이고, `tracksOf()` 는 CareerMatri 가 검사를 잇기 위해 만든 시연용
- * 분류다. 화면은 둘을 한 목록에 섞지 않는다: 섞으면 시연 트랙이 사업단의
- * 공식 트랙으로 읽힌다.
+ * 과정)이고, `tracksOf()` 는 등록부의 자리(인공지능학과 · 부트캠프 과정)를
+ * 어느 검사로 재는가다. 이름은 옛 시연 트랙 시절의 것을 그대로 둔다(부르는
+ * 곳이 많다). 화면은 둘을 한 목록에 섞지 않는다.
  *
  * **이 학교는 등록부에 없으면 없다.** 지금 전주대는 시연 fixture 로만
  * 서므로 운영에서는 `jjuUniversity()` 가 `null` 이고 화면이 404 를 낸다.
  */
 import { appEnv } from "@/lib/env";
+import { coverageOf, type CapStatus } from "@/lib/jju/coverage";
 import { core as coreEntry } from "@/lib/me-v3/core-registry";
 import {
   allLeaves, catalogsOf, provenanceOf, specializationName, statusOf, university,
@@ -97,6 +102,10 @@ export type JjuTrack = {
   note: string | null;
   /** 공식 교육과정을 확인했는가. **지금은 전부 아니다** */
   official: boolean;
+  /** 학과(학생의 소속)인가, 사업단 과정인가 */
+  kind: "DEPARTMENT" | "COURSE";
+  /** 이 자리에 거는 지역·산업 사실의 낱말. fixture 만 든다(정본 등록부에는 없는 칸) */
+  region_tags: string[];
 };
 
 export function modeOf(u: CampusUniversity, row: CampusLeaf): TrackMode {
@@ -130,6 +139,8 @@ export function tracksOf(u: CampusUniversity): JjuTrack[] {
       mode: modeOf(u, row),
       note: row.leaf.note ?? null,
       official: prov.verification === "VERIFIED",
+      kind: row.leaf.kind === "track" ? "COURSE" : "DEPARTMENT",
+      region_tags: (row.leaf as { region_tags?: string[] }).region_tags ?? [],
     };
   });
 }
@@ -138,7 +149,7 @@ export function cohortsOf(u: CampusUniversity): CampusCatalog[] {
   return [...catalogsOf(u)].sort((a, b) => a.catalog_year - b.catalog_year);
 }
 
-/** 첫 기수의 트랙. 소개 화면은 같은 트랙을 기수마다 되풀이하지 않는다 */
+/** 첫 학년도의 자리. 소개 화면은 같은 자리를 학년도마다 되풀이하지 않는다 */
 export function firstCohortTracks(u: CampusUniversity): JjuTrack[] {
   const first = cohortsOf(u)[0];
   return tracksOf(u).filter((t) => t.cohort.code === first?.catalog_code);
@@ -151,12 +162,44 @@ export function demoServer(): boolean {
 
 export const MODE_KO: Record<TrackMode, string> = {
   LIVE: "실제 응시 가능",
-  DEMO: "시연 전용",
+  DEMO: "시연 서버 전용",
   PREPARING: "준비 중",
 };
 
 export const MODE_NOTE: Record<TrackMode, string> = {
-  LIVE: "검사·결과·PDF 가 실제 엔진으로 돕니다. 트랙 자체는 CareerMatri 시연용 분류이고 사업단의 공식 트랙이 아닙니다.",
+  LIVE: "검사·결과·PDF 가 실제 엔진으로 돕니다.",
   DEMO: "이 검사는 전공자 검수 전이라 학생에게 닫혀 있고, 이 서버에서만 미리보기로 엽니다. 결과를 실제 진단으로 쓰지 않습니다.",
-  PREPARING: "이 서버에서는 열리지 않습니다.",
+  PREPARING: "아직 열리지 않습니다. 어느 검사로 잴지 정해지지 않았거나 그 검사가 닫혀 있습니다.",
 };
+
+/**
+ * 부트캠프 과정 주제마다 **그 과정을 재는 검사가 실제로 묻는가.**
+ *
+ * 과정을 재는 검사는 등록부의 과정 자리가 든 Core 이고, 셈은 `coverageOf()`
+ * 가 문항 번호로 한다(리포트와 같은 함수 · 설계 원칙 10). 여기서는 과정이
+ * 다루는 주제로 좁혀 사람이 읽는 말만 붙인다. 주제가 확인되지 않은 과정은
+ * 줄을 만들지 않는다(지어내지 않는다).
+ */
+export function courseCoverage(u: CampusUniversity): {
+  course: string; core_name: string | null; spec_name: string | null;
+  rows: { topic: string; status: CapStatus; how: string }[];
+}[] {
+  const p = officialProgram(u);
+  if (!p) return [];
+  const leaves = tracksOf(u).filter((t) => t.kind === "COURSE" && t.core_code);
+  return p.courses.filter((c) => c.topics.length).flatMap((c) => {
+    const leaf = leaves.find((t) => t.name.includes(c.name) || c.name.includes(t.name));
+    if (!leaf?.core_code) return [];
+    const cells = coverageOf(leaf.core_code, c.topics);
+    const rows = c.topics.map((topic) => {
+      const cell = cells.find((x) => x.cap.course === topic);
+      const status: CapStatus = cell?.status ?? "NOT_MEASURED";
+      const how = status === "MEASURED" ? `판정 문항 ${cell!.core.length + cell!.pack.length}개가 직접 묻는다`
+        : status === "SELF_REPORT" ? "판정 문항은 없고, 스스로 답하는 격자·체크리스트 문구에만 나온다"
+        : status === "CURRICULUM" ? "과정이 다루지만 어느 문항도 묻지 않는다. 이수만으로 역량을 확인했다고 적지 않는다"
+        : "검사가 묻지 않는다";
+      return { topic, status, how };
+    });
+    return [{ course: c.name, core_name: leaf.core_name, spec_name: leaf.spec_name, rows }];
+  });
+}

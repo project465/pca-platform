@@ -7,7 +7,7 @@
  * 읽기(`latestResult`) → 담당자 집계(`campusV3` · `listStudents`)와 기관
  * 사이 격리(`canInOrg` · `canReadParticipantReport`).
  *
- * **채점을 거치지 않은 값을 쓰지 않는다.** 세 학생은 같은 트랙(JJU1_AI ·
+ * **채점을 거치지 않은 값을 쓰지 않는다.** 세 학생은 같은 트랙(JJU26_AI ·
  * 컴퓨터·소프트웨어 검사의 인공지능·데이터 갈래)에서 **답만 다르게** 하고,
  * 결과는 공통 엔진이 낸 굳은 결과를 그대로 읽는다. 결과를 하드코딩하지
  * 않는다.
@@ -44,7 +44,7 @@ import { actionKo, gapKo, headlineKo, headlineBadgeKo } from "../src/lib/me-v3/r
 import { JJU_CODE, jjuUniversity, tracksOf } from "../src/lib/jju/program";
 
 const OUT = process.env.OUT ?? "docs/jju/qa";
-const TRACK = "JJU1_AI";
+const TRACK = "JJU26_AI";
 
 let pass = 0; const bad: string[] = []; const log: string[] = [];
 const say = (s: string) => { console.log(s); log.push(s); };
@@ -238,8 +238,8 @@ async function main() {
 
   say("── 1. 트랙과 검사 연결");
   const t = tracksOf(u).find((x) => x.code === TRACK)!;
-  ok("JJU1_AI 가 컴퓨터·소프트웨어 검사로 이어진다", t.core_code === "CS_CORE_V1", `${t.core_code} · ${t.spec_name} · ${t.mode}`);
-  ok("JJU1_AI 는 운영에서 열리지 않는다(시연 전용)", t.mode === "DEMO", t.mode);
+  ok("JJU26_AI 가 컴퓨터·소프트웨어 검사로 이어진다", t.core_code === "CS_CORE_V1", `${t.core_code} · ${t.spec_name} · ${t.mode}`);
+  ok("JJU26_AI 는 운영에서 열리지 않는다(시연 전용)", t.mode === "DEMO", t.mode);
 
   say("\n── 2. 기관·담당자·학생 (합성)");
   const jjuOrg = await org(JJU_CODE, "전주대학교 (QA)");
@@ -317,7 +317,7 @@ async function main() {
   const jl = await listStudents({ universityCode: JJU_CODE, withDemo: true, limit: 500 });
   ok("JJU 명단에 PCU 학생이 없다", jl.rows.every((r) => r.department_code.startsWith("JJU")) && !jl.rows.some((r) => r.login_id === "qa-pcu-qap1"), `${jl.total}명`);
   const jc = await studentCounts({ universityCode: JJU_CODE, withDemo: true, department: TRACK });
-  ok("JJU1_AI 트랙 상태 수가 맞다", jc.all >= 3 && jc.scored >= 3, JSON.stringify(jc));
+  ok("JJU26_AI 트랙 상태 수가 맞다", jc.all >= 3 && jc.scored >= 3, JSON.stringify(jc));
   const actor = { userId: Number(jjuAdmin), role: "org_admin" as const, orgIds: [Number(jjuOrg)] };
   ok("JJU 담당자는 PCU 기관 자료를 만질 수 없다", !canInOrg(actor, "org.analytics.read", Number(pcuOrg)));
   ok("JJU 담당자는 자기 기관 자료는 만질 수 있다", canInOrg(actor, "org.analytics.read", Number(jjuOrg)));

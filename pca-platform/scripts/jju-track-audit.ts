@@ -42,7 +42,7 @@ function bank(core: (typeof reg.cores)[number]) {
 
 const u = jjuUniversity();
 if (!u) throw new Error("V3_CAMPUS_FIXTURE 가 없다(전주대는 시연 fixture 로만 선다)");
-const tracks = tracksOf(u).filter((t) => t.cohort.code === "JJU_BC1");
+const tracks = tracksOf(u).filter((t) => t.cohort.code === "JJU_2026");
 const out: string[] = [];
 const P = (s = "") => out.push(s);
 P("# 전주대 트랙 × Major Core 감사");

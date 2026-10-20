@@ -41,11 +41,13 @@ export async function jjuReportFor(
     model: m, core: a.core_code, program, mode: t?.mode ?? "PREPARING",
     coverage: coverageOf(a.core_code, program?.courses.flatMap((c) => c.topics) ?? []),
     answered: Object.keys(await answersOf(attemptId)),
-    /* 그 트랙 이름에 걸리는 지역 사실만. 트랙 이름 낱말(예: `피지컬 AI`)로 고른다 */
-    region: regionFacts(u).filter((r) => r.tracks.some((k) => (t?.short ?? "").includes(k))).slice(0, 4),
+    /* 그 학과·과정에 거는 지역 사실만(`region_tags`). 이름 글자로 고르지 않는다:
+       `인공지능학과` 라는 이름은 어느 사실의 낱말과도 겹치지 않는다 */
+    region: regionFacts(u).filter((r) => r.tracks.some((k) => (t?.region_tags ?? []).includes(k))).slice(0, 4),
     student: {
       name: who?.name ?? "학생", track: t?.short ?? a.department_code ?? "",
-      cohort: t?.cohort.label ?? "", field: t?.field.name ?? "", spec: t?.spec_name ?? null,
+      /* 소속(단과대학) 또는 운영(사업단). 전공 검사 칸에는 검사 이름을 적는다 */
+      cohort: t?.field.name ?? "", field: t?.core_name ?? "", spec: t?.spec_name ?? null,
     },
   };
   /* 열 절 데이터 층(`buildJjuReport`)은 그대로 둔다: 회귀 검사가 그 값을 읽는다.

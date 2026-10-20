@@ -78,11 +78,11 @@ async function main() {
     say("── 1. 단건 추가 (addStudentAccount · 담당자 화면 `학생 추가`)");
     await student("PCU", pcuOrg, "qa-c16-p1", "PCU26_BIZ");
     let b = await snap("qa-c16-p1");
-    let r = await addStudentAccount("JJU", jjuOrg, { student_id: "C16A", name: "교차", login_id: "qa-c16-p1", department_code: "JJU1_AI" }, jActor);
+    let r = await addStudentAccount("JJU", jjuOrg, { student_id: "C16A", name: "교차", login_id: "qa-c16-p1", department_code: "JJU26_AI" }, jActor);
     let a = await snap("qa-c16-p1");
     ok("JJU → PCU 학생 아이디: 거절되고 줄이 그대로다", !r.ok && same(b, a), `${r.ok ? "성공 응답" : "거절"} · ${diff(b, a)}`);
 
-    await student("JJU", jjuOrg, "qa-c16-j1", "JJU1_AI");
+    await student("JJU", jjuOrg, "qa-c16-j1", "JJU26_AI");
     b = await snap("qa-c16-j1");
     r = await addStudentAccount("PCU", pcuOrg, { student_id: "C16B", name: "교차", login_id: "qa-c16-j1", department_code: "PCU26_BIZ" }, pActor);
     a = await snap("qa-c16-j1");
@@ -90,20 +90,20 @@ async function main() {
 
     await plainUser("qa-c16-staff", pcuOrg);
     b = await snap("qa-c16-staff");
-    r = await addStudentAccount("JJU", jjuOrg, { student_id: "C16C", name: "교차", login_id: "qa-c16-staff", department_code: "JJU1_AI" }, jActor);
+    r = await addStudentAccount("JJU", jjuOrg, { student_id: "C16C", name: "교차", login_id: "qa-c16-staff", department_code: "JJU26_AI" }, jActor);
     a = await snap("qa-c16-staff");
     ok("JJU → 다른 기관 담당자 아이디: 거절되고 줄이 그대로다", !r.ok && same(b, a), `${r.ok ? "성공 응답" : "거절"} · ${diff(b, a)}`);
 
     await plainUser("qa-c16-b2c", null);
     b = await snap("qa-c16-b2c");
-    r = await addStudentAccount("JJU", jjuOrg, { student_id: "C16D", name: "교차", login_id: "qa-c16-b2c", department_code: "JJU1_AI" }, jActor);
+    r = await addStudentAccount("JJU", jjuOrg, { student_id: "C16D", name: "교차", login_id: "qa-c16-b2c", department_code: "JJU26_AI" }, jActor);
     a = await snap("qa-c16-b2c");
     ok("JJU → 개인 회원(B2C) 아이디: 거절되고 줄이 그대로다", !r.ok && same(b, a), `${r.ok ? "성공 응답" : "거절"} · ${diff(b, a)}`);
 
     say("\n── 2. CSV 일괄 등록 (applyImport)");
     await student("PCU", pcuOrg, "qa-c16-p2", "PCU26_BIZ");
     b = await snap("qa-c16-p2");
-    const imp = await applyImport("JJU", jjuOrg, "student_id,name,department_code,login_id\nC16E,교차,JJU1_AI,qa-c16-p2\n", jActor);
+    const imp = await applyImport("JJU", jjuOrg, "student_id,name,department_code,login_id\nC16E,교차,JJU26_AI,qa-c16-p2\n", jActor);
     a = await snap("qa-c16-p2");
     ok("CSV 에 PCU 학생 아이디: 그 줄이 거절되고 피해자 줄이 그대로다", imp.rejected.length === 1 && same(b, a),
       `만듦 ${imp.created.length} · 고침 ${imp.updated} · 거절 ${imp.rejected.length} · ${diff(b, a)}`);
@@ -111,7 +111,7 @@ async function main() {
     say("\n── 3. rotate 경로 (pcu-students · staging-bootstrap 가 쓰는 provisionStudent(..., {rotate:true}))");
     await student("PCU", pcuOrg, "qa-c16-p3", "PCU26_BIZ");
     b = await snap("qa-c16-p3");
-    const c = checkStudent("JJU", { student_id: "C16F", name: "교차", login_id: "qa-c16-p3", department_code: "JJU1_AI" });
+    const c = checkStudent("JJU", { student_id: "C16F", name: "교차", login_id: "qa-c16-p3", department_code: "JJU26_AI" });
     let threw = "";
     if (c.ok) { try { await provisionStudent(jjuOrg, c.value, { rotate: true }); } catch (e) { threw = (e as Error).message; } }
     a = await snap("qa-c16-p3");
@@ -124,7 +124,7 @@ async function main() {
     ok("JJU 담당자가 PCU 학생 비밀번호 재발급: 거절되고 해시가 그대로다", !rp.ok && same(b, a), `${rp.ok ? "성공" : rp.why} · ${diff(b, a)}`);
 
     say("\n── 5. 같은 새 아이디를 두 학교가 같은 순간에 만든다 (경쟁)");
-    const cj = checkStudent("JJU", { student_id: "C16G", name: "경쟁", login_id: "qa-c16-race", department_code: "JJU1_AI" });
+    const cj = checkStudent("JJU", { student_id: "C16G", name: "경쟁", login_id: "qa-c16-race", department_code: "JJU26_AI" });
     const cp = checkStudent("PCU", { student_id: "C16G", name: "경쟁", login_id: "qa-c16-race", department_code: "PCU26_BIZ" });
     made.push("qa-c16-race");
     if (!cj.ok || !cp.ok) throw new Error("경쟁 입력이 등록부에 맞지 않는다");
