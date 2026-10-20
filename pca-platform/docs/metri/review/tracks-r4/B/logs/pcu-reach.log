@@ -1,0 +1,4 @@
+# 2026-10-20T11:40:49Z · HEAD feb3ea13 · 한 번만 · 우회 시도 없음
+$ curl -sS -o /dev/null -w '%{http_code}' --max-time 10 https://www.pcu.ac.kr
+curl: (56) CONNECT tunnel failed, response 403
+000 (exit=56)

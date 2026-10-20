@@ -1,0 +1,15 @@
+PASS 기업 목록에서 이름·식별자 96개를 읽었다
+PASS RICH 두 번 그린 HTML 이 같다 (32f8c2dabb089750)
+PASS RICH 기업 이름·식별자 0 
+PASS RICH 자유입력 칸 없음
+PASS RICH 줄여 맞추는 규칙 없음
+PASS POOR 두 번 그린 HTML 이 같다 (785fb8351e115e5b)
+PASS POOR 기업 이름·식별자 0 
+PASS POOR 자유입력 칸 없음
+PASS POOR 줄여 맞추는 규칙 없음
+PASS CONTRA 두 번 그린 HTML 이 같다 (edd66957ded82909)
+PASS CONTRA 기업 이름·식별자 0 
+PASS CONTRA 자유입력 칸 없음
+PASS CONTRA 줄여 맞추는 규칙 없음
+
+통과 13 · 걸림 0

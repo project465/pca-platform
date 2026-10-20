@@ -1,0 +1,18 @@
+# HEAD feb3ea13 · 시작 2026-10-20T11:41:21Z · 207초 · 실행기 run-realpg(node-postgres 8.16.3) · node v22.22.0
+# env: PGPORT=5433 DATABASE_URL=postgres:///cm_iso_c V3_PREVIEW_OPEN=* V3_CAMPUS_FIXTURE= ROUNDS=10 CLASS=40 TAG=r4 WORKERS= OUT=docs/metri/review/tracks-r4/C
+# run-realpg scripts/lab/trackC-race.ts
+# exit=0
+드라이버 실제 node-postgres 8.16.3 · BIZ_CORE_V1 · 10판
+  1판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":1,"picks":0,"note":0,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  2판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":9,"picks":1,"note":0,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  3판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":10,"picks":1,"note":0,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  4판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":6,"picks":0,"note":0,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  5판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":3,"picks":0,"note":0,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  6판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":10,"picks":1,"note":1,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  7판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":11,"picks":3,"note":3,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  8판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":9,"picks":4,"note":2,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  9판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":6,"picks":0,"note":0,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  10판 결과 1줄 · 다시 채점 같다 · 받아들인 {"answer":5,"picks":0,"note":0,"profile":0,"industry":0,"cursor":0} · 뒤에 보낸 것 DB 그대로 · ok 거짓 없음
+  반 40명 동시 제출: 성공 40/40 · 다시 채점 같음 40/40 · 3443ms
+
+R1 true · R2 true · R3 true · R4 true · R5 true

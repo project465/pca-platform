@@ -1,0 +1,26 @@
+# HEAD feb3ea13 · 시작 2026-10-20T11:36:52Z · 155초 · 실행기 run-realpg(node-postgres 8.16.3) · node v22.22.0
+# env: PGPORT=5433 DATABASE_URL=postgres:///cm_iso_c V3_PREVIEW_OPEN=* V3_CAMPUS_FIXTURE= ROUNDS= CLASS= TAG= WORKERS= OUT=docs/metri/review/tracks-r4/B
+# run-realpg scripts/lab/trackB-content.ts
+# exit=0
+자리 115 · Core 19
+  대표 입력 AGRI_CORE_V1
+  대표 입력 ARCH_CORE_V1
+  대표 입력 BIZ_CORE_V1
+  대표 입력 BT_CORE_V1
+  대표 입력 CIV_CORE_V1
+  대표 입력 CS_CORE_V1
+  대표 입력 EDU_CORE_V1
+  대표 입력 EE_CORE_V1
+  대표 입력 FOOD_CORE_V1
+  대표 입력 HEALTH_CORE_V1
+  대표 입력 LANG_CORE_V1
+  대표 입력 LAW_CORE_V1
+  대표 입력 MEDIA_CORE_V1
+  대표 입력 NURSING_CORE_V1
+  대표 입력 PSY_CORE_V1
+  대표 입력 PUBADM_CORE_V1
+  대표 입력 SPORTS_CORE_V1
+  대표 입력 STYLE_CORE_V1
+  대표 입력 VISUAL_CORE_V1
+
+짝 176 · GENERIC 0 · Gap 갈림 19/19 · 사람 갈림 19/19

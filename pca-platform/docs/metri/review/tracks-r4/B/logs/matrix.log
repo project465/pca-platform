@@ -1,0 +1,8 @@
+# HEAD feb3ea13 · 시작 2026-10-20T11:40:54Z · 9초 · 실행기 run(대체 드라이버) · node v22.22.0
+# env: PGPORT= DATABASE_URL= V3_PREVIEW_OPEN= V3_CAMPUS_FIXTURE= ROUNDS= CLASS= TAG= WORKERS= OUT=docs/metri/review/tracks-r4/B
+# run docs/metri/review/tracks-r4/B/matrix.ts
+# exit=0
+학과 층 파일 docs/metri/review/tracks-r4/B/dept-content.json · 카드 115
+PCU_CUR {"leaves":57,"offered":57,"routing":1,"exact":56,"READY":1,"RESULT_READY":1,"ASSESSMENT_READY":55,"CORE_LINKED":0,"CATALOG_ONLY":1,"withContent":56,"hidden":0}
+PCU_2027 {"leaves":60,"offered":60,"routing":1,"exact":59,"READY":0,"RESULT_READY":0,"ASSESSMENT_READY":59,"CORE_LINKED":0,"CATALOG_ONLY":1,"withContent":59,"hidden":0}
+행 117 → docs/metri/review/tracks-r4/B/SUPPORT_MATRIX.md
