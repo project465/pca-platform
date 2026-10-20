@@ -28,6 +28,9 @@ const D = {
   region: JSON.parse(rd("src/sejong/content/region.sejong.json")),
 };
 let css = rd("src/app/sejong/sejong.css");
+/* 미리보기는 서버가 없어 글꼴을 data: 로 싣는다 (OFL, 같은 파일) */
+const font = readFileSync(R + "public/sejong/fonts/PretendardVariable.woff2").toString("base64");
+css = css.replaceAll("/sejong/fonts/PretendardVariable.woff2", `data:font/woff2;base64,${font}`);
 css = css.replace(".sj-main { max-width: 1120px; margin: 0 auto; padding: 28px 16px 64px; }",
   ".sj-main { max-width: 1120px; margin: 0 auto; padding-block: 28px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }");
 const extra = `

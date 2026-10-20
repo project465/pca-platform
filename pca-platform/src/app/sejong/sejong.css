@@ -1,3 +1,10 @@
+/* 글꼴은 직접 싣는다(Pretendard 1.3.9 가변, SIL OFL 1.1 · `public/sejong/fonts/Pretendard-OFL.txt`).
+ * 깔린 글꼴에 맡기면 서버마다 굵은 판이 없어 제목이 가늘게 찍힌다(이 컨테이너가 그랬다). */
+@font-face {
+  font-family: "Pretendard";
+  src: url("/sejong/fonts/PretendardVariable.woff2") format("woff2-variations"), url("/sejong/fonts/PretendardVariable.woff2") format("woff2");
+  font-weight: 45 920; font-style: normal; font-display: swap;
+}
 /*
  * 세종일자리경제진흥원 시연 화면. **`.sj` 아래에만 건다.**
  * CareerMatri 의 `globals.css` · `surface.css` 를 고치지 않고, 이 구역에서만
@@ -232,7 +239,7 @@
 .sj-rp .rp-page { padding: 34px 40px 40px; }
 .sj-rp h2.rp-h {
   break-after: avoid;
-  display: flex; align-items: baseline; gap: 10px; color: var(--rp-navy);
+  display: flex; align-items: baseline; gap: 10px; color: var(--rp-navy); font-weight: 800;
   border-bottom: 2px solid var(--rp-blue); padding-bottom: 6px; margin: 26px 0 12px; font-size: 18px;
 }
 .sj-rp h2.rp-h i { font-style: normal; color: var(--rp-gold); font-size: 14px; font-weight: 800; }
@@ -241,7 +248,7 @@
   border-top: 6px solid var(--rp-blue); background: linear-gradient(90deg, var(--rp-soft), #fff 70%);
 }
 .sj-rp .rp-band span { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--rp-gold); font-weight: 700; }
-.sj-rp .rp-band h2 { margin: 0; font-size: 21px; color: var(--rp-navy); border: 0; padding: 0; }
+.sj-rp .rp-band h2 { margin: 0; font-weight: 800; font-size: 21px; color: var(--rp-navy); border: 0; padding: 0; }
 
 /* 표지: 흰 종이 · 자홍→남보라 테를 두른 제목 판 · 오른쪽 아래 대각 띠 둘 */
 .sj-rp .rp-cover {
@@ -254,12 +261,12 @@
 .sj-rp .rp-cover > :not(svg) { position: relative; z-index: 1; }
 .sj-rp .rp-cover-top { display: flex; justify-content: space-between; gap: 10px; align-items: center; flex-wrap: wrap;
   border-bottom: 1px solid var(--rp-line); padding-bottom: 12px; }
-.sj-rp .rp-kicker { font-size: 12px; letter-spacing: .14em; font-weight: 700; color: var(--rp-navy); }
+.sj-rp .rp-kicker { font-size: 12px; letter-spacing: .14em; font-weight: 800; color: var(--rp-navy); }
 .sj-rp .rp-cover-title {
   align-self: center; text-align: center; padding: 30px 24px; border: 6px solid transparent;
   background: linear-gradient(#fff, #fff) padding-box, linear-gradient(90deg, var(--rp-gold), var(--rp-navy) 70%) border-box;
 }
-.sj-rp .rp-cover-title h1 { color: var(--rp-navy); font-size: 38px; line-height: 1.25; letter-spacing: -0.03em; margin: 0 0 10px; }
+.sj-rp .rp-cover-title h1 { color: var(--rp-navy); font-weight: 800; font-size: 38px; line-height: 1.25; letter-spacing: -0.03em; margin: 0 0 10px; }
 .sj-rp .rp-cover-title p { color: var(--rp-gold); font-weight: 700; font-size: 17px; margin: 0; }
 .sj-rp .rp-cover-meta {
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 20px; margin: 0;
@@ -275,18 +282,18 @@
 .sj-rp .rp-divider { aspect-ratio: 182 / 265; overflow: hidden; display: grid; grid-template-rows: 45% 55%; padding: 0; }
 .sj-rp .rp-div-top { display: flex; align-items: flex-end; justify-content: flex-end; gap: 10px; padding: 0 44px 22px; }
 .sj-rp .rp-div-top span { font-size: 16px; color: var(--rp-gold); font-weight: 700; margin-bottom: 18px; }
-.sj-rp .rp-div-top b { font-size: 120px; line-height: .9; color: var(--rp-blue); letter-spacing: -0.04em; }
+.sj-rp .rp-div-top b { font-weight: 900; font-size: 120px; line-height: .9; color: var(--rp-blue); letter-spacing: -0.04em; }
 .sj-rp .rp-div-bottom { position: relative; overflow: hidden; color: #fff; padding: 34px 44px; background: linear-gradient(160deg, var(--rp-blue), var(--rp-navy)); border-top: 8px solid var(--rp-gold); }
 .sj-rp .rp-div-bottom .rp-art.small { position: absolute; right: -170px; top: -60px; width: 520px; max-width: none; opacity: .9; }
 .sj-rp .rp-div-bottom > *:not(svg) { position: relative; }
-.sj-rp .rp-div-bottom h2 { color: #fff; font-size: 34px; margin: 0 0 12px; border: 0; padding: 0; }
+.sj-rp .rp-div-bottom h2 { color: #fff; font-weight: 800; font-size: 34px; margin: 0 0 12px; border: 0; padding: 0; }
 .sj-rp .rp-div-msg { color: #ffc6de; font-weight: 700; font-size: 16px; max-width: 26em; }
 .sj-rp .rp-div-bottom ul { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 6px; font-size: 14px; color: #dbe6ff; }
 
 /* 차례 */
 .sj-rp .rp-toc { display: grid; gap: 14px; }
 .sj-rp .rp-toc-part { display: grid; grid-template-columns: 64px 1fr; gap: 14px; border-bottom: 1px solid var(--rp-line); padding-bottom: 12px; }
-.sj-rp .rp-toc-part > b { font-size: 26px; color: var(--rp-blue); line-height: 1.1; }
+.sj-rp .rp-toc-part > b { font-weight: 900; font-size: 26px; color: var(--rp-blue); line-height: 1.1; }
 .sj-rp .rp-toc-part h3 { color: var(--rp-navy); margin: 2px 0 4px; }
 .sj-rp .rp-toc-part ul { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 13px; color: var(--sj-ink-2); }
 .sj-rp .rp-legend td:first-child { width: 150px; }
@@ -296,7 +303,7 @@
 .sj-rp .rp-kpis > div { border: 1px solid var(--rp-line); border-top: 4px solid var(--rp-line); border-radius: 6px; padding: 10px 12px; display: grid; gap: 2px; }
 .sj-rp .rp-kpis > div.ok { border-top-color: var(--sj-ok); }
 .sj-rp .rp-kpis > div.brand { border-top-color: var(--rp-blue); }
-.sj-rp .rp-kpis b { font-size: 26px; color: var(--rp-navy); font-variant-numeric: tabular-nums; }
+.sj-rp .rp-kpis b { font-weight: 800; font-size: 26px; color: var(--rp-navy); font-variant-numeric: tabular-nums; }
 .sj-rp .rp-kpis small { font-size: 13px; color: var(--sj-ink-3); font-weight: 600; }
 .sj-rp .rp-kpis span { font-size: 12px; color: var(--sj-ink-3); }
 .sj-rp .rp-kv th { width: 130px; background: var(--rp-soft); color: var(--rp-navy); }
