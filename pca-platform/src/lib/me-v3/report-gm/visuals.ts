@@ -102,7 +102,7 @@ export function interestPlot(cells: { name: string; interest: string | null; dep
     }).join("");
   }).join("");
   return `<svg viewBox="0 0 ${W0} ${H0}" class="plot" role="img" aria-label="열두 영역의 관심과 해 본 단계">${grid}${labels}${chips}
-  <text x="${L}" y="${H0 - 6}" font-size="9" fill="${G}" font-family="Pretendard">파란 칸: 지원서에서 꺼내 쓸 경험 · 노란 칸: 관심은 높고 먼저 해 볼 영역 · 회색 줄: 판단 문항을 묻지 않아 단계를 알 수 없음</text></svg>`;
+  <text x="${L}" y="${H0 - 6}" font-size="9" fill="${G}" font-family="Pretendard">파란 칸: 지원서에서 꺼내 쓸 경험 · 노란 칸: 관심은 높고 먼저 해 볼 영역 · 회색 줄: 판단을 자세히 묻지 않아 단계를 알 수 없음</text></svg>`;
 }
 
 /** 실행 계획 타임라인: 다섯 시점에 할 일 수 */

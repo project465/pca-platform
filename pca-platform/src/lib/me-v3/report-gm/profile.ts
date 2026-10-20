@@ -162,7 +162,7 @@ export function reading(m: ResultModel, exps: Experience[]): Reading {
   const P: string[] = [];
   if (strong.length) {
     const s = strong.slice(0, 2);
-    P.push(`가장 높게 나온 판단은 ${s.map((x) => `‘${x.label}’(${x.where.join(" · ")})`).join("과 ")}입니다. 이 단계는 ‘${s[0].scene}’ 같은 일을 직접 기준을 정해 했다고 답하고, 그 판단을 받치는 근거를 둘 이상 고른 경우에만 섭니다.`);
+    P.push(`가장 높게 나온 판단은 ${s.map((x) => `‘${x.label}’(${x.where.join(" · ")})`).join("과 ")}입니다. 이 단계는 ‘${s[0].scene}’ 같은 일을 직접 기준을 정해 했다고 답하고, 같은 장면을 체크리스트에서도 둘 이상 고른 경우에만 섭니다.`);
   } else if (hi) {
     P.push("‘직접 기준을 정함’ 단계까지 올라간 판단은 아직 없습니다. 직접 해 본 판단은 있으므로, 다음 과제에서는 그 가운데 하나를 골라 기준을 내가 정하고 그 근거를 남기는 쪽이 한 단계를 올리는 가장 짧은 길입니다.");
   }

@@ -12599,3 +12599,29 @@ v2 가 상품 품질 미승인으로 반려된 뒤 13~14장 · RICH 50 / POOR 47
 **장 끝에 몇 줄만 넘어가 거의 빈 쪽이 생기면** 그 묶음만 따로 인쇄해 쪽 수를 세고 글자를 줄여(최대 14%) 맞춘다. 화면 배치로 재면
 인쇄의 틈(`break-inside: avoid`)을 못 봐서 틀린다. 그리고 **tsx 는 이름 붙은 화살표 함수에 `__name` 을 끼워 넣어
 `page.evaluate` 로 넘긴 함수가 브라우저에서 깨진다**: 글로 넘긴다.
+
+**BIZ PDF GOLD MASTER v4 — 실행 전략 사슬 · 학생 문장 · 대표 5쪽 (Human Review 대기).** (2026-10-20)
+
+v3 승인 보류 지시(`docs/metri/review/pdf-gm/HANDOFF_GM4.md`)의 4절을 끝까지 했다. 50쪽 전체는 다시 뽑지 않고 **대표 5쪽만** 새 편집으로
+뽑았다(`docs/metri/review/pdf-gm/v4-sample/`). 운영 PDF 와 Production 은 그대로고 다른 학과로 넓히지 않았다.
+
+**실행 과제는 목표 직무에서 거꾸로 세운다**(`strategy3()`). 빈자리 순위는 영역 안에서 무엇이 비었는지만 말하고 학생의 목표를 모른다.
+목표 직무의 업무 영역·핵심 판단에 걸리는 빈자리만 과제가 되고, 과제 문장·산출물·확인 질문은 목표 직무의 말(`practice`)이나 그 영역의
+말(`lens`)로 쓴다. **중심 영역이 아닌 업무 영역의 과제에 직무 과제의 산출물을 붙이지 않는다**(재무 영역 ‘추정 가정’에 ‘배분안’이
+붙었다): `lens.out` 이나 판단 기준의 산출물을 쓴다. 종합 의견 · 계획 30·60일 · 마지막 할 일 · 면접 질문 · 90일 프로젝트 · 기업 심층
+직무 차례가 모두 이 행에서 온다. `scripts/lab/gm-linkage.ts` 가 세 사례의 사슬과, 렌더한 글자 전체의 쓰지 않기로 한 말을 센다.
+
+**문장은 문자열이 아니라 만드는 자리를 고친다**: 산업 판단 이름은 `askNoun`(‘…두는지’) 대신 `dimWork`(‘…정해 두는 일’), 측정 쪽 말
+(`판단 문항` · `근거 항목` · `받치는` · `단계로 답`)은 학생의 행동으로 다시 썼다. 기업 심층에서 판단마다 **그 판단의 체크리스트에서 고른
+문장만** 인용한다(전에는 두 판단에 같은 첫 문장이 붙었다).
+
+**이 컨테이너는 npm 레지스트리와 GitHub 내려받기가 막혀 있었다.** 저장소 밖에 임시 실행기(전역 TypeScript 로 `.ts` 실행 · `pg` 는
+PyPI psycopg 로 붙는 대체)를 두고 저장소 코드를 그대로 돌렸고, 글꼴은 Pretendard 대신 NanumGothic 으로 뽑았다
+(`var/pdf-gm/fonts/pretendard/` 가 있으면 그것을 먼저 쓴다). 정식 `npm run typecheck` 는 의존성이 있는 곳에서 다시 돌린다.
+측정 동결은 기록을 다시 적지 않은 채로 통과한다.
+
+```bash
+V3_PREVIEW_OPEN='*' npx tsx scripts/lab/gm-cases2.ts            # 검토 응시 셋(빈 DB 에서 다시 굳힌다)
+CASES=RICH:1,POOR:2,CONTRA:3 npx tsx scripts/lab/gm-linkage.ts   # 사슬 · 문장 → v4-sample/LINKAGE_AUDIT.md
+CASE=RICH:1 npx tsx scripts/lab/gm-sample4.ts                   # 대표 5쪽 → v4-sample/BIZ-GM4-SAMPLE.pdf (넘치면 1)
+```

@@ -200,7 +200,7 @@ function qa(m: ResultModel, e: Explore): CompanyQA {
     /* 고른 근거 항목이 없어도 응답으로 확인된 판단은 있다. 둘을 섞지 않고, 없을 때는
        응답 쪽을 그 이름으로 적는다(왼쪽 상자와 같은 사실을 다른 말로 적지 않는다) */
     current: current.length ? current
-      : e.have.length ? e.have.map((h) => `응답으로 확인: ${h} (고른 근거 항목은 없음)`)
+      : e.have.length ? e.have.map((h) => `응답으로 확인: ${h} (체크리스트에서 고른 항목은 없음)`)
       : ["이 직무와 이어지는 영역에서 확인된 판단이 아직 없습니다"],
     needs: e.lack.length ? e.lack : [`이 직무가 요구하는 판단은 응답에서 확인됐습니다. 남은 것은 그 판단을 ${e.org.industry_line} 쪽 사례 하나에 대어 설명하는 일입니다`],
     campus: campusFor(pack?.code ?? ""),

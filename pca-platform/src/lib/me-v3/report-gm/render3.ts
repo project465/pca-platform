@@ -78,7 +78,7 @@ function cover(r: Report3, chs: Chapter[], pages: Record<string, number>): strin
   <ol class="toc">${chs.map((c) => `<li><span class="t-no">${c.no}</span><span class="t-t">${esc(c.title)}</span><span class="t-k">${{ A: "분석", B: "실행", C: "직무·기업", D: "정리" }[c.type]}</span><span class="t-p">${pages[c.no] ?? ""}</span></li>`).join("")}</ol>
   <h2 class="toc-h">이 보고서를 읽는 법</h2>
   <div class="howto">
-    <div><h4>무엇으로 만들었나</h4><p>CareerMatri 검사에서 답한 내용, 체크리스트에서 직접 고른 근거 항목, 내 CareerMatri에 적어 둔 경험 기록을 정해 둔 규칙으로 읽었습니다. 상담자가 직접 만나 확인한 내용은 없습니다.</p></div>
+    <div><h4>무엇으로 만들었나</h4><p>CareerMatri 검사에서 답한 내용, 체크리스트에서 직접 고른 항목, 내 CareerMatri에 적어 둔 경험 기록을 정해 둔 규칙으로 읽었습니다. 상담자가 직접 만나 확인한 내용은 없습니다.</p></div>
     <div><h4>무엇을 하지 않나</h4><p>점수·순위·직무 적합도·합격 가능성을 계산하지 않습니다. 성과 수치와 기간은 만들지 않고, 학생이 직접 적는 칸으로 남깁니다. 기업 정보는 직업정보 제공이며 취업 알선이 아닙니다.</p></div>
     <div><h4>글자 표시</h4><p>${tag("확인된 사실", "fact")} 응답·기록·출처에 있는 내용 ${tag("분석적 해석", "read")} 이 보고서가 덧붙인 해석 ${tag("추가 확인 필요", "need")} 아직 확인하지 않은 내용</p></div>
   </div>
@@ -91,7 +91,7 @@ function cover(r: Report3, chs: Chapter[], pages: Record<string, number>): strin
   </tbody></table>
   <div class="gl2">
     <div><h4>판단마다 네 단계</h4><ol class="steps">${([0, 1, 2, 3] as Level[]).map((l) => `<li><b>${esc(STEP[l].tag)}</b> — ${esc(STEP[l].said)}</li>`).join("")}</ol>
-    <p class="small">‘기준까지 직접 결정’은 응답만으로 서지 않습니다. 그 판단을 받치는 체크리스트 근거 항목을 둘 이상 골랐을 때만 그 단계로 적습니다.</p></div>
+    <p class="small">‘기준까지 직접 결정’은 응답만으로 적지 않습니다. 같은 장면을 체크리스트에서도 둘 이상 골랐을 때만 그 단계로 적습니다.</p></div>
     <div><h4>영역의 상태</h4><ul class="ul tight">${Object.values(ZONE_SAID).map((z) => `<li><b>${esc(z.tag)}</b> — ${esc(z.said)}</li>`).join("")}</ul></div>
   </div>
 </section>`;
@@ -112,7 +112,7 @@ function c01(r: Report3, c: Chapter): string {
   <h2>핵심 분석 ${r.summary.points.length}가지</h2>
   ${pts}
   <div class="two bridge">
-    <div><h2>앞으로 12개월 한눈에</h2><ol class="mini">${r.plan.map((x) => `<li><b>${esc(x.period)}</b><span>${esc(x.what)}</span></li>`).join("")}</ol></div>
+    <div><h2>앞으로 12개월 한눈에</h2><ol class="mini">${r.plan.map((x) => `<li><b>${esc(x.period)}</b><span>${esc(x.label)}</span></li>`).join("")}</ol></div>
     <div><h2>깊게 본 진로 탐색 기업</h2><ul class="mini">${r.companies.map((x) => `<li><b>${esc(x.name)}</b><span>${esc(x.headline)} — ${esc(x.jobs.map((jb) => jb.name).join(" · "))}</span></li>`).join("")}</ul>${r.companies.length ? "" : p("이어지는 지역 기업이 없습니다.", "small")}</div>
   </div>
 `);
@@ -164,7 +164,7 @@ function c02(r: Report3, c: Chapter): string {
   <h2>관심과 해 본 경험 — 열두 영역</h2>
   ${interestPlot(r.map.map((x) => ({ name: x.name, interest: x.interest, depth: x.depth })))}
   <h2>여덟 가지 판단 한눈에 보기</h2>
-  <table class="tb jt"><thead><tr><th>판단</th><th>가장 깊게 답한 단계</th><th>그 단계로 답한 영역</th><th>뜻</th></tr></thead><tbody>${rows}</tbody></table>`);
+  <table class="tb jt"><thead><tr><th>판단</th><th>가장 깊게 답한 단계</th><th>그 단계가 나온 영역</th><th>뜻</th></tr></thead><tbody>${rows}</tbody></table>`);
 }
 
 /* ── 03 영역 ──────────────────────────────────────────────────── */
@@ -176,7 +176,7 @@ function dm(d: DomainRead, first: boolean): string {
   const hasPicks = four.some(([, xs]) => xs.length);
   return `<article class="dm${first ? " first" : ""}">
   <header class="dm-h"><h2>${esc(d.name)}</h2><span class="zt zt-${d.zone.slice(0, 2)}">${esc(d.zoneTag)}</span>
-    <span class="dm-meta">관심 ${d.interest === "HIGH" ? "높음" : d.interest === "LOW" ? "낮음" : d.interest === "MID" ? "보통" : "—"} · 경험 ${d.experience === "SEVERAL" ? "여러 번" : d.experience === "ONCE_OR_TWICE" ? "한두 번" : d.experience === "NONE" ? "없음" : "—"} · ${d.askedHow === "DEEP" ? "여덟 판단 모두 질문" : d.askedHow === "PROBE" ? "핵심 판단 넷만 질문" : "판단 문항 묻지 않음"}</span></header>
+    <span class="dm-meta">관심 ${d.interest === "HIGH" ? "높음" : d.interest === "LOW" ? "낮음" : d.interest === "MID" ? "보통" : "—"} · 경험 ${d.experience === "SEVERAL" ? "여러 번" : d.experience === "ONCE_OR_TWICE" ? "한두 번" : d.experience === "NONE" ? "없음" : "—"} · ${d.askedHow === "DEEP" ? "여덟 판단 모두 질문" : d.askedHow === "PROBE" ? "핵심 판단 넷만 질문" : "판단은 자세히 묻지 않음"}</span></header>
   <p class="dm-key">${esc(d.headline)}</p>
   ${d.askedHow !== "NONE" ? `<h4 class="sub">이 영역의 일의 흐름과 응답 범위</h4>
   <table class="tb fl"><thead><tr><th>단계</th><th>이 영역에서 하는 일</th><th>응답</th></tr></thead><tbody>${d.flow.map((f) => `<tr><td><b>${f.step}</b> ${esc(f.name)}</td><td>${esc(f.detail)}</td><td class="fc fc-${f.cover}">${esc(COVER_KO[f.cover] ?? "")}</td></tr>`).join("")}</tbody></table>` : ""}
@@ -187,13 +187,13 @@ function dm(d: DomainRead, first: boolean): string {
   </div>
   ${d.jobs.length ? `<h4 class="sub">이 영역과 이어지는 직무(직무 일반)</h4><ul class="ul tight">${d.jobs.map((jb) => `<li><b>${esc(jb.name)}</b> — ${esc(jb.work)}</li>`).join("")}</ul>` : ""}
   ${(() => { const g = d.jobs.map((x) => roleGuide(x.code)).find(Boolean); return g && d.askedHow !== "NONE" ? `<h4 class="sub">이 영역의 경험으로 받을 수 있는 면접 질문 ${tag("직무 일반", "read")}</h4><dl class="kv">${g.interview.slice(0, 2).map((x) => `<div><dt>“${esc(x.q)}”</dt><dd>${esc(x.why)}</dd></div>`).join("")}</dl>` : ""; })()}
-  ${d.develop.length ? `<h4 class="sub">이 영역에서 다음에 할 일</h4><table class="tb dv"><thead><tr><th>채울 판단</th><th>방법</th><th>남길 것</th></tr></thead><tbody>${d.develop.map((x) => `<tr><td><b>${esc(x.what)}</b></td><td>${esc(x.how)}</td><td>${esc(x.output)}</td></tr>`).join("")}</tbody></table>` : ""}
+  ${d.develop.length ? `<h4 class="sub">이 영역에서 다음에 할 일</h4><table class="tb dv"><thead><tr><th>채울 판단</th><th>방법</th><th>남길 것</th></tr></thead><tbody>${d.develop.map((x) => `<tr><td><b>${esc(x.what)}</b></td><td>${esc(x.how)}</td><td>${esc(x.output)}</td></tr>`).join("")}</tbody></table>${d.developNote ? p(d.developNote, "small muted") : ""}` : ""}
 </article>`;
 }
 function c03(r: Report3, c: Chapter): string {
   const asked = r.domains.filter((d) => d.askedHow !== "NONE");
   const later = r.domains.filter((d) => d.askedHow === "NONE");
-  const key = asked.length ? `이번 검사에서 판단 문항을 물은 영역은 ${asked.map((d) => d.name).join(", ")}입니다. 영역마다 무엇을 골랐고, 그것이 무슨 뜻이며, 어디까지 말할 수 있는지를 적었습니다.` : "이번 검사에서는 판단 문항을 물은 영역이 없습니다.";
+  const key = asked.length ? `이번 검사에서 판단을 자세히 물은 영역은 ${asked.map((d) => d.name).join(", ")}입니다. 영역마다 무엇을 골랐고, 그것이 무슨 뜻이며, 어디까지 말할 수 있는지를 적었습니다.` : "이번 검사에서는 판단을 자세히 물은 영역이 없습니다.";
   return chapter(c, key, asked.map((d, i) => dm(d, i === 0)).join("")
     + (later.length ? `<div class="later"><h2>관심은 높게 답했지만 이번에 자세히 묻지 않은 영역</h2>${later.map((d) => `<div class="lt"><b>${esc(d.name)}</b><p>${esc(d.meaning[0] ?? "")}</p>${d.records.length ? `<p class="small">경험 기록: ${esc(d.records.join(" · "))}</p>` : ""}</div>`).join("")}</div>` : ""));
 }
@@ -227,7 +227,7 @@ function c04(r: Report3, c: Chapter): string {
     <table class="tb"><thead><tr><th>영역</th><th>응답</th><th>근거</th><th>확인 과제</th></tr></thead><tbody>${r.verify.items.map((x) => `<tr><td><b>${esc(x.domain)}</b></td><td class="small">${esc(x.said)}</td><td class="small">${esc(x.picked)}</td><td>${esc(x.task)}</td></tr>`).join("")}</tbody></table>
     <h4 class="sub">확인 순서</h4><ol class="steps">${r.verify.steps.map((s) => `<li>${esc(s)}</li>`).join("")}</ol></div>` : "";
   const key = r.verify
-    ? "판단 문항의 응답과 체크리스트 근거가 서로 다른 방향을 가리키는 영역이 있습니다. 이 장은 어느 쪽이 틀렸다고 정하지 않고, 학생 스스로 확인하는 방법을 적었습니다."
+    ? "판단을 묻는 질문의 응답과 체크리스트에서 고른 항목이 서로 다른 방향을 가리키는 영역이 있습니다. 이 장은 어느 쪽이 틀렸다고 정하지 않고, 학생 스스로 확인하는 방법을 적었습니다."
     : r.records.length ? `적어 둔 경험 기록 ${r.records.length}건을 하나씩 나눠 읽고, 검사 응답과 같은 쪽을 가리키는지 견줬습니다.` : "적어 둔 경험 기록이 없어, 검사 응답만으로 영역을 읽었습니다.";
   return chapter(c, key, (r.verify ? vt : "") + (recs || `<div class="box-need">${p("경험 기록이 없습니다. 내 CareerMatri의 ‘경험 추가’에서 최근 과제 하나를 남기면 다음 보고서부터 이 장에 경험별 해설이 들어갑니다.")}</div>`) + tb);
 }
@@ -265,13 +265,29 @@ function c05g(g: Growth, c: Chapter): string {
 /* ── 06 우선순위 ─────────────────────────────────────────────── */
 
 function c06(r: Report3, c: Chapter): string {
-  return chapter(c, r.priorities[0] ? `가장 먼저 채울 판단은 ${r.priorities[0].domain}의 ‘${r.priorities[0].what}’입니다. 차례는 목표 직무 · 목표 산업 · 영역에서 빠질 수 없는 판단 순서로 세웠습니다.` : "지금 응답에서 먼저 채울 판단이 잡히지 않았습니다.",
-    r.priorities.map((x) => `<article class="pr">
+  const role = r.strategy.roleName;
+  const key = r.priorities[0]
+    ? `${role}을 목표로 고른 응답에서 거꾸로 세운 실행 전략입니다. 과제는 모두 ${role}의 업무 영역이나 핵심 판단에서 골랐고, 먼저 할 일은 ${r.priorities[0].domain}의 ‘${r.priorities[0].title}’입니다.`
+    : "지금 응답에서 먼저 채울 판단이 잡히지 않았습니다.";
+  // 사슬 한 줄: 목표 → 지금 응답 → 직무 요구 → 과제 → 산출물. 행마다 같은 다섯 칸이라 읽는 사람이 연결을 직접 따라간다
+  const chainRow = (x: Report3["priorities"][number]) => `<ol class="chain">
+    <li><span>지금 응답</span>${esc(x.chain.result.replace(`${x.domain} · `, ""))}</li>
+    <li><span>${esc(role)}에서 필요한 것</span>${esc(x.chain.requirement.replace(new RegExp(`^${role}(에서 꼭 필요한 판단 |의 업무 영역 )`), ""))}</li>
+    <li><span>할 일</span>${esc(x.todo)}</li>
+    <li><span>남길 것</span>${esc(x.output)}</li></ol>`;
+  const rows = r.priorities.map((x) => `<article class="pr">
     <div class="pr-n">${x.order}</div>
-    <div class="pr-b"><h3>${esc(x.domain)} · ${esc(x.what)}</h3><p class="small muted">${esc(x.plain)}</p>
-      <div class="pr-g"><div><h5>왜 먼저인가</h5>${ul(x.why, "ul tight")}</div>
-      <div><h5>어떻게</h5>${p(x.how)}<h5>남길 것</h5>${p(x.output)}</div>
-      <div><h5>언제</h5>${p(x.when)}<h5>확인</h5>${p(x.check, "small")}${x.jobs.length ? `<h5>이어지는 직무</h5>${p(x.jobs.join(" · "), "small")}` : ""}</div></div></div></article>`).join(""));
+    <div class="pr-b"><div class="pr-hd"><span class="rel rel-${x.relation}">${esc(x.relationTag)}</span><span class="small muted">${esc(x.domain)} · 판단: ${esc(x.what)}</span></div>
+      <h3>${esc(x.title)}</h3>
+      <p class="pr-link">${esc(x.link)}</p>
+      ${chainRow(x)}
+      <div class="pr-g"><div><h5>왜 이 직무에 필요한가</h5>${ul(x.why.slice(1), "ul tight") || p("—", "small")}</div>
+      <div><h5>어디서 · 언제</h5>${p(`${x.where} · ${x.when}`)}<h5>확인</h5>${p(x.check, "small")}</div>
+      <div>${x.ask ? `<h5>${esc(role)} 면접에서 받을 질문</h5>${p(`“${x.ask}”`, "small q")}` : ""}${x.jobs.length > 1 ? `<h5>같은 영역을 쓰는 직무</h5>${p(x.jobs.join(" · "), "small")}` : ""}</div></div></div></article>`).join("");
+  const out = r.strategy.outside.length ? `<div class="outside"><h4 class="sub">이번 실행 전략에 넣지 않은 판단 ${tag("참고", "read")}</h4>
+    <p class="small muted">아래는 아직 응답에서 확인되지 않았지만 ${esc(role)}의 업무 영역이 아니어서 과제로 세우지 않은 판단입니다. 이 영역을 쓰는 직무를 함께 볼 때 참고하세요.</p>
+    <table class="tb os"><thead><tr><th>영역</th><th>비어 있는 판단</th><th>이 영역을 쓰는 직무</th></tr></thead><tbody>${r.strategy.outside.map((o) => `<tr><td>${esc(o.domain)}</td><td>${esc(o.what)}</td><td>${esc(o.jobs.join(" · ") || "—")}</td></tr>`).join("")}</tbody></table></div>` : "";
+  return chapter(c, key, rows + out);
 }
 
 /* ── 07 직무 ─────────────────────────────────────────────────── */
@@ -289,7 +305,7 @@ function jb(d: Direction3, first: boolean): string {
   </div>
   <div class="two hv">
     <div><h5>${tag("확인된 사실", "fact")} 지금 갖춘 관련 근거</h5>${d.have.length ? ul(d.have.map((h) => `${h.domain} — ${h.text}`), "ul tight") : p("이 직무와 이어지는 영역에서 아직 확인된 판단이 없습니다.", "small")}</div>
-    <div><h5>${tag("추가 확인 필요", "need")} 아직 확인되지 않은 요구</h5>${d.need.length ? ul(d.need.map((x) => `${x.name} — ${x.why}`), "ul tight") : p("이 직무가 반드시 보는 판단은 모두 응답에서 확인됐습니다.", "small")}</div>
+    <div><h5>${tag("추가 확인 필요", "need")} 아직 확인되지 않은 요구</h5>${d.need.length ? ul(d.need.map((x) => `${x.name} — ${x.why}`), "ul tight") : p("이 직무의 핵심 판단은 모두 응답에서 확인됐습니다.", "small")}</div>
   </div>
   <p>${esc(d.summary)}${d.environment ? ` ${esc(d.environment)}` : ""}</p>
   ${g ? `<div class="two jb-more">
@@ -302,7 +318,7 @@ function jb(d: Direction3, first: boolean): string {
 </article>`;
 }
 function c07(r: Report3, c: Chapter): string {
-  const cmp = `<h2>세 직무를 나란히 보면</h2><table class="tb"><thead><tr><th>직무</th><th>이 직무가 정하는 것</th><th>반드시 보는 판단</th><th>지금 상태</th><th>대표 결과물</th></tr></thead><tbody>
+  const cmp = `<h2>세 직무를 나란히 보면</h2><table class="tb"><thead><tr><th>직무</th><th>이 직무가 정하는 것</th><th>핵심 판단</th><th>지금 상태</th><th>대표 결과물</th></tr></thead><tbody>
   ${r.directions.map((d) => `<tr><td><b>${esc(d.name)}</b></td><td class="small">${esc(d.decides.join(" · "))}</td><td class="small">${esc(d.need.length ? d.need.map((x) => x.name).join(" · ") + " 미확인" : "모두 확인")}</td><td>${esc(d.readiness)}</td><td class="small">${esc(d.material.slice(0, 2).join(" · "))}</td></tr>`).join("")}
   </tbody></table>`;
   return chapter(c, `탐색할 직무 셋을 ${r.directions.map((d) => d.name).join(", ")}로 골랐습니다. 목표로 고른 직무와, 확인된 경험이 가장 많이 이어지는 직무를 함께 봤습니다. 직무 적합도나 합격 가능성을 계산한 것은 아닙니다.`,
@@ -413,7 +429,7 @@ function c12(r: Report3, c: Chapter): string {
 function c13(r: Report3, c: Chapter): string {
   const ver = Object.entries(r.versions).filter(([, v]) => v != null && v !== "").map(([k, v]) => `${k} ${v}`).join(" · ");
   return chapter(c, "이 보고서가 무엇을 근거로 했고, 무엇을 확인하지 못했는지 적었습니다.", `
-  <div class="two"><div><h2>이 보고서가 근거로 쓴 것</h2>${ul(["검사 문항에 답한 내용(관심·경험·여덟 가지 판단의 단계)", "체크리스트에서 직접 고른 근거 항목(한 일·정한 것·결과물·비교 대상)", "내 CareerMatri에 적어 둔 경험 기록", "경영 직무 일반 안내(CareerMatri가 정리한 자료)", "기업 자료 — 제3자 기업정보(KODATA)와 검색 결과"])}</div>
+  <div class="two"><div><h2>이 보고서가 근거로 쓴 것</h2>${ul(["검사 문항에 답한 내용(관심·경험·여덟 가지 판단의 단계)", "체크리스트에서 직접 고른 항목(한 일·정한 것·결과물·비교 대상)", "내 CareerMatri에 적어 둔 경험 기록", "경영 직무 일반 안내(CareerMatri가 정리한 자료)", "기업 자료 — 제3자 기업정보(KODATA)와 검색 결과"])}</div>
   <div><h2>확인하지 않은 것</h2>${ul(["결과물의 완성도와 실제 성과 수치", "기업의 채용 여부·채용 인원·근무 조건", "기업 공식 홈페이지·공시·채용 공고의 원문(직접 열람하지 못함)", "직무 적합도·합격 가능성(계산하지 않음)"])}</div></div>
   <h2>기업 자료 검증 상태</h2>
   <table class="tb vtb"><thead><tr><th>기업</th><th>사업자등록번호</th><th>지역</th><th>검증 상태</th><th>쓰인 곳</th><th>확인일</th></tr></thead><tbody>
@@ -546,6 +562,12 @@ p{margin:0 0 6pt}
 .pr{display:grid;grid-template-columns:30pt 1fr;gap:10pt;padding:10pt 0;border-bottom:.6pt solid var(--line);break-inside:avoid}
 .pr-n{font-size:20pt;font-weight:700;color:var(--blue);line-height:1}
 .pr-g{display:grid;grid-template-columns:1.1fr 1.2fr 1fr;gap:12pt}
+.pr-hd{display:flex;gap:8pt;align-items:baseline;margin-bottom:2pt}.pr-link{color:var(--navy);margin:2pt 0 6pt}
+.rel{font-size:8.4pt;font-weight:700;padding:1pt 6pt;border-radius:3pt;background:var(--sky);color:var(--navy)}.rel-DIRECT{background:var(--navy);color:#fff}.rel-SHARED{background:var(--amber-p);color:#7a5418}
+.chain{list-style:none;margin:0 0 6pt;padding:0;display:grid;grid-template-columns:1fr 1fr 1.4fr .9fr;gap:0;border:.6pt solid var(--line);border-radius:4pt;overflow:hidden}
+.chain li{padding:5pt 8pt;font-size:9pt;line-height:1.5;border-right:.6pt solid var(--line);background:#fafbfd}.chain li:last-child{border-right:0;background:var(--pale)}
+.chain li span{display:block;font-size:8pt;font-weight:700;color:var(--blue);margin-bottom:1pt}
+.outside{margin-top:14pt;break-inside:avoid}.os td{font-size:9pt}
 /* 07 */
 .jb{padding-top:2pt}.jb:not(.first){break-before:page}
 .jb-h{display:flex;justify-content:space-between;align-items:baseline}.jb-h h2{margin:0;font-size:15pt}

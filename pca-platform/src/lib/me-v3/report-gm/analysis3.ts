@@ -36,7 +36,7 @@ const j = withJosa;
 const join = (xs: string[], sep = " · ") => xs.filter(Boolean).join(sep);
 /** ‘A과 B’ 를 받침 보고 잇는다: 이름 뒤에 ‘과’ 를 글자로 박으면 ‘보고과’ 가 나간다 */
 export const andJoin = (xs: string[]) => { const ys = xs.filter(Boolean); return ys.map((x, i) => (i < ys.length - 1 ? withJosa(x, "과와") : x)).join(" "); };
-/** 산업팩의 판단 이름(‘민원 처리 기준을 두는가’)은 묻는 꼴이다: 문장 안에서는 ‘~는지’로 받는다 */
+/** 산업팩의 판단 이름(‘민원 처리 기준을 두는가’)을 ‘~는지’로 받는다. 학생 문장에는 쓰지 않는다(‘기준을 두는지’): `dimWork` 를 쓴다 */
 export const askNoun = (x: string) => x.replace(/는가$/, "는지").replace(/인가$/, "인지").replace(/한가$/, "한지");
 /** `~했다` 로 끝나는 체크리스트 문장을 문장 안에 넣기 좋게 */
 const quoted = (s: string) => `‘${s}’`;
@@ -72,6 +72,8 @@ export type DomainRead = {
   headline: string; meaning: string[]; limits: string[];
   jobs: { code: string; name: string; work: string }[];
   develop: { what: string; how: string; output: string; axis: Axis | null }[];
+  /** 목표 직무의 업무 영역이 아닌 곳의 ‘다음에 할 일’: 그 영역 안의 일이며 실행 전략에는 넣지 않았다는 한 줄 */
+  developNote: string | null;
   records: string[];
 };
 const STEP_AXIS: Axis[] = ["J1", "J2", "J3", "J4", "J4", "J5", "J6", "J7"];
@@ -90,7 +92,7 @@ export function domainRead(m: ResultModel, d: ResultDomain, exps: Experience[]):
   const strongN = flow.filter((f) => f.cover === "strong").length;
   const gapStep = askedSteps.find((f) => f.cover !== "strong");
   const stepsSaid = askedSteps.length
-    ? `이 영역의 일 ${askedSteps.length}단계 가운데 ${strongN}단계를 스스로 맡아 해 봤다고 답했습니다.${gapStep ? ` 아직 스스로 해 본 단계로 확인되지 않은 일은 ‘${gapStep.detail}’입니다.` : ""}`
+    ? `이 영역의 일 ${askedSteps.length}단계 가운데 ${strongN}단계를 스스로 맡아 해 봤다고 답했습니다.${gapStep ? ` 아직 스스로 해 봤다고 답하지 않은 일은 ‘${gapStep.detail}’입니다.` : ""}`
     : "";
   const ownedNames = d.owned.map((a) => JUDGE[a].name);
   const lowNames = levels.filter((x) => x.level !== null && x.level <= 1).map((x) => x.name);
@@ -108,7 +110,7 @@ export function domainRead(m: ResultModel, d: ResultDomain, exps: Experience[]):
         ? `${name}에서는 ${quoted(ev.decisions[0])}처럼 스스로 정한 판단과, 그 판단을 담은 결과물(${join(ev.artifacts) || "결과물"})이 함께 확인됩니다.`
         : `${name}에서는 스스로 맡아 한 일과 남긴 결과물(${join(ev.artifacts)})이 함께 확인됩니다.`;
       meaning.push(`이 영역의 일은 ‘${def?.workflow[2]?.detail ?? "무엇을 먼저 할지 정하는 일"}’에서 시작해 ${def?.workflow[5]?.detail ?? "결과물"} 같은 결과물로 끝납니다. ${stepsSaid}`);
-      if (ownedNames.length) meaning.push(`그중 ${j(andJoin(ownedNames), "은는")} 기준을 직접 정했다고 답했고, 그 판단을 받치는 체크리스트 항목도 함께 골랐습니다. 지원서에서 ‘내가 정한 것’으로 내세울 수 있는 부분이 바로 여기입니다.`);
+      if (ownedNames.length) meaning.push(`그중 ${j(andJoin(ownedNames), "은는")} 기준을 직접 정했다고 답했고, 체크리스트에서도 그 장면을 함께 골랐습니다. 지원서에서 ‘내가 정한 것’으로 내세울 수 있는 부분이 바로 여기입니다.`);
       break;
     case "Z2_EVIDENCE_INCOMPLETE": {
       const miss = [!ev.artifacts.length && "남긴 결과물", !ev.comparisons.length && "결과를 무엇과 비교했는지", !d.owned.length && "기준을 직접 정한 장면"].filter(Boolean) as string[];
@@ -131,11 +133,11 @@ export function domainRead(m: ResultModel, d: ResultDomain, exps: Experience[]):
       break;
     default:
       headline = `${j(name, "은는")} 이번 검사에서 자세히 묻지 않은 영역입니다.`;
-      meaning.push(`${interest ? `관심은 ${interest} 답했고 ` : ""}${freq ? `경험은 ${freq} 답했습니다. ` : ""}판단 문항을 묻지 않았기 때문에, 아래 그림에서 이 영역이 비어 있는 것은 경험이 없어서가 아니라 질문하지 않았기 때문입니다.`);
+      meaning.push(`${interest ? `관심은 ${interest} 답했고 ` : ""}${freq ? `경험은 ${freq} 답했습니다. ` : ""}이 영역의 판단은 자세히 묻지 않았기 때문에, 아래 그림에서 이 영역이 비어 있는 것은 경험이 없어서가 아니라 질문하지 않았기 때문입니다.`);
   }
   if (d.zone !== "NOT_EXPLORED") {
     limits.push("이 해설은 학생이 고른 응답과 체크리스트 항목으로 만든 것입니다. 결과물의 완성도나 실제 성과(수치·기간)는 확인하지 않았습니다.");
-    if (lowNames.length && d.zone !== "Z4_INSUFFICIENT_EVIDENCE") limits.push(`${j(join(lowNames, ", "), "은는")} 아직 응답에서 스스로 해 본 단계로 확인되지 않았습니다. 해 보지 않았다는 뜻일 수도 있고, 그 경험을 이번에 떠올리지 못했다는 뜻일 수도 있습니다.`);
+    if (lowNames.length && d.zone !== "Z4_INSUFFICIENT_EVIDENCE") limits.push(`${j(join(lowNames, ", "), "은는")} 아직 응답에서 스스로 해 봤다고 확인되지 않았습니다. 해 보지 않았다는 뜻일 수도 있고, 그 경험을 이번에 떠올리지 못했다는 뜻일 수도 있습니다.`);
     if (ev.comparisons.length === 1) limits.push(`결과를 비교한 대상은 ${quoted(ev.comparisons[0])} 하나만 골랐습니다. 성과를 말할 때 비교 근거가 한 가지뿐이라는 점을 기억해 두세요.`);
     if (askedHow === "PROBE") limits.push("이 영역은 핵심 판단 넷만 물었습니다. 나머지 판단은 비어 있는 것이 아니라 묻지 않은 것입니다.");
   }
@@ -146,9 +148,13 @@ export function domainRead(m: ResultModel, d: ResultDomain, exps: Experience[]):
 
   const develop = m.gaps.filter((g) => g.domain === d.code).slice(0, 3).map((g) => devOf(core, d, g, def));
   if (!develop.length && d.zone === "Z4_INSUFFICIENT_EVIDENCE" && def) develop.push({ what: "첫 경험", how: `${j(def.workflow[2]?.detail, "을를")} 직접 맡는 짧은 과제 하나`, output: def.artifacts[0], axis: null });
+  const goal = rolePacks(core).find((r) => r.code === m.targets.goal.role);
+  const developNote = develop.length && goal && !(goal.core_ref?.td ?? []).includes(d.code)
+    ? `${j(name, "은는")} 목표 직무 ${goal.name_ko}의 업무 영역이 아니어서, 위 과제는 이 영역 안에서 할 일로만 적었고 실행 전략(‘역량 개발 우선순위’ 장)에는 넣지 않았습니다.`
+    : null;
   return {
     code: d.code, name, zone: d.zone, zoneTag: ZONE_SAID[d.zone]?.tag ?? "", interest: d.interest, experience: d.experience, askedHow,
-    levels, ...ev, flow, headline, meaning, limits, jobs, develop, records: recs,
+    levels, ...ev, flow, headline, meaning, limits, jobs, develop, developNote, records: recs,
   };
 }
 
@@ -210,7 +216,7 @@ export function recordRead(m: ResultModel, e: Experience): RecordRead {
         : `이번 검사에서 이 영역의 판단은 자세히 묻지 않았습니다. 기록에 적은 내용이 지금으로서는 이 영역의 유일한 근거입니다.` };
     }
     if (d.confirmed.length) return { domain: n, text: `검사에서도 이 영역의 판단 ${d.confirmed.length}가지를 스스로 해 봤다고 답해, 기록과 응답이 같은 쪽을 가리킵니다.` };
-    return { domain: n, text: "검사에서는 이 영역의 판단을 스스로 해 본 단계로 답하지 않았습니다. 기록의 내용을 응답보다 앞세우지 않는 것이 정확합니다." };
+    return { domain: n, text: "검사에서는 이 영역의 판단을 스스로 해 봤다고 답하지 않았습니다. 기록의 내용을 응답보다 앞세우지 않는 것이 정확합니다." };
   });
   const jobs = rolePacks(core).filter((r) => (r.core_ref?.td ?? []).some((td) => e.td_codes.includes(td)))
     .slice(0, 3).map((r) => ({ name: r.name_ko, why: `${j(r.name_ko, "은는")} ${j(ownsAsWork(r.owns), "을를")} 맡습니다(직무 일반). 이 기록의 ${j(e.decisions[0] ? quoted(e.decisions[0]) : "활동", "이가")} 그 일과 가깝습니다.` }));
@@ -240,7 +246,7 @@ export const CROSS_TAG: Record<CrossKind, string> = {
   TEST_ONLY: "응답에만 있음",
   RECORD_ONLY: "기록에만 있음",
   DIFFERENT: "응답과 기록이 다름",
-  UNBACKED: "응답은 높고 근거 항목이 없음",
+  UNBACKED: "응답은 높고 고른 근거가 없음",
 };
 export type CrossRow = { code: string; name: string; kind: CrossKind; test: string; record: string; reading: string; verify: string };
 export function crossRows(m: ResultModel, exps: Experience[]): CrossRow[] {
@@ -260,8 +266,8 @@ export function crossRows(m: ResultModel, exps: Experience[]): CrossRow[] {
         reading: `검사 응답과 경험 기록이 같은 영역을 가리킵니다. 면접에서 ‘언제, 어떤 과제에서’라는 질문을 받으면 ${j(quoted(rec[0].title), "을를")} 그 장면으로 쓸 수 있습니다.`,
         verify: rec[0].artifacts.length ? "기록의 결과물과 검사에서 고른 항목이 같은 것을 가리키는지 한 번 맞춰 보세요." : "기록에 결과물을 한 가지 더 적으면 응답과 기록이 같은 이야기를 하게 됩니다." });
     } else if (rec.length && d.confirmed.length) {
-      rows.push({ code: d.code, name, kind: "UNBACKED", test: `${testText} · 근거 항목은 고르지 않음`, record: recText,
-        reading: "판단 문항에서는 높게 답했지만, 그 판단을 받치는 체크리스트 항목은 고르지 않았습니다. 경험 기록은 이 영역을 가리키고 있어, 기록 안의 장면이 응답을 받쳐 줄 수 있는지 확인할 차례입니다.",
+      rows.push({ code: d.code, name, kind: "UNBACKED", test: `${testText} · 체크리스트에서 고른 항목 없음`, record: recText,
+        reading: "판단을 묻는 질문에는 높게 답했지만, 그 장면을 체크리스트에서는 고르지 않았습니다. 경험 기록은 이 영역을 가리키고 있으니, 기록 안의 장면이 응답을 뒷받침하는지 확인할 차례입니다.",
         verify: `${quoted(rec[0].title)}에서 직접 정한 것과 남은 결과물을 각각 한 줄로 적어 보세요. 적을 수 있다면 응답이 맞고, 떠오르지 않는다면 다음 검사에서 한 단계 낮춰 답하는 편이 정확합니다.` });
     } else if (rec.length && !asked(d)) {
       const none = d.experience === "NONE";
@@ -274,9 +280,9 @@ export function crossRows(m: ResultModel, exps: Experience[]): CrossRow[] {
           : "다음 검사에서 이 영역이 자세히 질문되면 기록의 내용이 응답으로 다시 확인됩니다. 그 전까지는 기록에 적은 ‘직접 정한 것’이 근거입니다." });
     } else if (d.confirmed.length && !rec.length) {
       const unb = mismatch && picks === 0;
-      rows.push({ code: d.code, name, kind: unb ? "UNBACKED" : "TEST_ONLY", test: unb ? `${testText} · 근거 항목은 고르지 않음` : testText, record: recText,
+      rows.push({ code: d.code, name, kind: unb ? "UNBACKED" : "TEST_ONLY", test: unb ? `${testText} · 체크리스트에서 고른 항목 없음` : testText, record: recText,
         reading: unb
-          ? "판단 문항에서는 스스로 해 봤다고 답했지만 근거 항목을 고르지 않았고, 경험 기록도 없습니다. 지금은 이 영역의 경험을 뒷받침할 자료가 응답 하나뿐입니다."
+          ? "판단을 묻는 질문에는 스스로 해 봤다고 답했지만 체크리스트에서 고른 항목이 없고, 경험 기록도 없습니다. 지금은 이 영역의 경험을 뒷받침할 자료가 응답 하나뿐입니다."
           : `검사 응답으로는 이 영역의 판단이 확인되지만, 어느 과제에서 한 일인지는 기록에 없습니다.`,
         verify: unb
           ? "이 영역에서 해 본 과제를 하나 골라, 그때 정한 것과 남은 것을 적어 보세요. 적을 장면이 있다면 경험 기록으로 남기고, 없다면 응답을 다시 살펴볼 차례입니다."
@@ -308,7 +314,7 @@ export function strengths3(m: ResultModel): Strength3[] {
     const has = ev.decisions.length || ev.acts.length;
     const story = has
       ? `${name}에서는 ${j(list3(ev.decisions.length ? ev.decisions : ev.acts), "을를")} 골랐습니다.${ev.artifacts.length ? ` 그 결과로 ${j(andJoin(ev.artifacts), "을를")} 남겼다고 답했습니다.` : ""}`
-      : `${name}의 판단 ${d.confirmed.length}가지를 스스로 해 봤다고 답했지만, 그 장면을 받치는 체크리스트 항목은 고르지 않았습니다.`;
+      : `${name}의 판단 ${d.confirmed.length}가지를 스스로 해 봤다고 답했지만, 그 장면을 체크리스트에서는 고르지 않았습니다.`;
     const show = ev.artifacts.length
       ? `${j(ev.artifacts[0], "을를")} 결과물로 보여 주고${ev.comparisons.length ? `, 그 결과를 ${j(ev.comparisons[0], "과와")} 비교한 내용을 근거로 붙이세요.` : ", 결과를 무엇과 비교했는지는 아직 비어 있으니 면접 전에 채워 두세요."}`
       : `아직 보여 줄 결과물을 고르지 않았습니다. ${def?.artifacts[0] ?? "결과물"} 같은 형태로 한 장을 남기면 서류에서 보여 줄 것이 생깁니다.`;
@@ -324,7 +330,7 @@ export function strengths3(m: ResultModel): Strength3[] {
     return {
       code: d.code, name, zone: d.zone, ...ev,
       jobs: roles.filter((r) => (r.core_ref?.td ?? []).includes(d.code)).map((r) => r.name_ko),
-      industryLines: goalInd?.judgement_dimensions.filter((x) => x.domain === d.code).map((x) => askNoun(x.name)) ?? [],
+      industryLines: goalInd?.judgement_dimensions.filter((x) => x.domain === d.code).map((x) => dimWork(x.name)) ?? [],
       story, show, next, question,
     };
   });
@@ -351,6 +357,12 @@ export const RELATION_TAG: Record<Relation, string> = {
 export type Chain = { goal: string; result: string; evidence: string; requirement: string; task: string; output: string };
 export type Priority3 = {
   order: number; domain: string; code: string; axis: Axis | null; what: string; plain: string;
+  /** 행의 제목: 영역 말로 쓴 과제면 그 영역의 일(‘추정에 쓸 가정을 정해 적어 두기’), 직무 말이면 판단 이름 */
+  title: string;
+  /** 지금 응답이 이 자리에서 말하는 것(종합 의견의 ‘확인된 사실’) */
+  fact: string;
+  /** 목표 직무가 같은 판단을 묻는 질문(역할팩 문항). 면접 준비 질문으로 쓴다 */
+  ask: string | null;
   relation: Relation; relationTag: string; link: string;
   why: string[]; where: string; task: string; how: string; todo: string; output: string; when: string; check: string; jobs: string[];
   chain: Chain;
@@ -380,6 +392,12 @@ const L2_TO: [RegExp, string][] = [
   [/옮겼다$/, "옮기는 일"], [/적었다$/, "적는 일"], [/썼다$/, "쓰는 일"], [/받았다$/, "받는 일"], [/정했다$/, "정하는 일"], [/했다$/, "하는 일"],
 ];
 export function l2Work(s: string): string { for (const [re, to] of L2_TO) if (re.test(s)) return s.replace(re, to); return s; }
+/** 같은 문장을 행 제목으로: ‘~를 정했다’ → ‘~를 정하기’ */
+const L2_TITLE: [RegExp, string][] = [
+  [/적어 두었다$/, "적어 두기"], [/견주었다$/, "견주기"], [/좁혔다$/, "좁히기"], [/남겼다$/, "남기기"],
+  [/옮겼다$/, "옮기기"], [/적었다$/, "적기"], [/썼다$/, "쓰기"], [/받았다$/, "받기"], [/정했다$/, "정하기"], [/했다$/, "하기"],
+];
+export function l2Title(s: string): string { for (const [re, to] of L2_TITLE) if (re.test(s)) return s.replace(re, to); return s; }
 /** 산업팩의 판단 이름(‘~를 두는가’)은 묻는 꼴이다: 문장 안에서는 ‘~하는 일’ 로 받는다 */
 export function dimWork(name: string): string {
   return name.replace(/(을|를) 두는가$/, "$1 정해 두는 일").replace(/는가$/, "는 일").replace(/인가$/, "인 일");
@@ -387,7 +405,8 @@ export function dimWork(name: string): string {
 /** 과제 끝에 붙는 한 마디: 무엇을 남겨야 다음 사람이(또 면접관이) 그 판단을 볼 수 있는가 */
 const FINISH: Record<Axis, string> = {
   J1: "다루지 않기로 한 것과 그 까닭도 함께 적어 둡니다",
-  J2: "지표마다 재는 방법을 함께 적어 둡니다",
+  // 경영기획의 지표에도 인사의 직무 요건에도 맞게: ‘재는 방법’ 은 요건 문장에 붙지 않는다
+  J2: "옮긴 조건마다 무엇으로 확인할지 함께 적어 둡니다",
   J3: "고른 까닭과 고르지 않은 안을 한 줄씩 남깁니다",
   J4: "고른 방법의 한계도 한 줄 적어 둡니다",
   J5: "다른 사람이 그것만 보고 이어서 할 수 있게 정리합니다",
@@ -395,7 +414,22 @@ const FINISH: Record<Axis, string> = {
   J7: "바꾼 뒤에 같은 문제가 줄었는지 다시 확인합니다",
   J8: "누가 어떤 결정에 썼는지 한 줄로 남깁니다",
 };
+/**
+ * 중심 영역이 아닌 업무 영역의 과제는 영역 문장으로 쓰므로, 직무 과제의 산출물·확인 질문을 그대로 붙이면 어긋난다
+ * (경영기획의 재무 영역 ‘추정 가정 정하기’ 에 ‘배분안’ 이 붙었다). 그 자리에는 판단 기준의 말을 쓴다.
+ */
+const OUT_AX: Record<Axis, string> = {
+  J1: "다룰 범위 메모", J2: "조건·지표 정의표", J3: "판단 기준과 근거 메모", J4: "방법 비교 메모",
+  J5: "결과 문서", J6: "같은 기준의 비교표", J7: "원인과 수정 기록", J8: "활용 기록",
+};
+const CHECK_AX: Record<Axis, string> = {
+  J1: "다루지 않기로 한 것과 그 까닭이 적혀 있는가", J2: "옮긴 조건마다 확인할 방법이 적혀 있는가",
+  J3: "고르지 않은 안과 그 까닭을 설명할 수 있는가", J4: "고른 방법의 한계를 한 줄로 적었는가",
+  J5: "읽은 사람이 그것만 보고 이어서 할 수 있는가", J6: "같은 기준·기간으로 놓고 비교했는가",
+  J7: "까닭을 하나로 좁힌 근거가 있는가", J8: "누가 어떤 결정에 썼는지 적혀 있는가",
+};
 const LV_SAID: Record<number, string> = { 0: "해 본 적이 없다고 답했습니다", 1: "다른 사람이 정한 조건 안에서 해 봤다고 답했습니다", 2: "스스로 맡아 해 봤다고 답했지만 기준을 정한 장면은 아직입니다" };
+const WHEN = ["1~30일", "31~60일", "61~90일"];
 const AX_PREF: Axis[] = ["J2", "J3", "J5", "J1", "J6", "J4", "J7", "J8"];
 
 export function strategy3(m: ResultModel): Strategy {
@@ -428,7 +462,7 @@ export function strategy3(m: ResultModel): Strategy {
     if (!d || !asked(d)) return "이번에 묻지 않음";
     const ev = evidenceOf(d);
     const xs = [...ev.decisions, ...ev.acts].slice(0, 2).map(quoted);
-    return xs.length ? `고른 근거 ${xs.join(", ")}${ev.artifacts.length ? ` · 결과물 ${join(ev.artifacts)}` : ""}` : "고른 근거 항목 없음";
+    return xs.length ? `고른 근거 ${xs.join(", ")}${ev.artifacts.length ? ` · 결과물 ${join(ev.artifacts)}` : ""}` : "체크리스트에서 고른 항목 없음";
   };
   type Cand = Priority3 & { w: number; key: string; mode: "domain" | "role" };
   const cands: Cand[] = [];
@@ -437,28 +471,37 @@ export function strategy3(m: ResultModel): Strategy {
     const def = domainDef(core, td);
     const pr = g?.practice[ax];
     const mode: "domain" | "role" = relation === "SHARED" ? "role" : lens?.mode ?? "role";
-    let where: string, task: string, output: string;
+    let where: string, task: string, output: string, title: string, check: string;
     if (mode === "domain" && def?.axes?.[ax]?.l2) {
+      // 중심 영역은 직무 과제와 영역 문장이 같은 일을 가리킨다: 직무의 산출물을 쓴다. 다른 업무 영역은 그 영역의 말로만
+      const center = td === tds[0];
       where = lens?.ctx ?? g?.practiceWhere ?? "";
       task = `${j(l2Work(def.axes[ax].l2), "을를")} 직접 맡아 보고, ${FINISH[ax]}.`;
-      output = ax === "J5" ? (def.artifacts[0] ?? pr?.output ?? "결과 문서") : (pr?.output ?? "결과 기록");
+      title = l2Title(def.axes[ax].l2);
+      output = lens?.out?.[ax] ?? (ax === "J5" ? (def.artifacts[0] ?? pr?.output ?? OUT_AX.J5) : center ? (pr?.output ?? OUT_AX[ax]) : OUT_AX[ax]);
+      check = center ? (pr?.check ?? CHECK_AX[ax]) : CHECK_AX[ax];
     } else if (pr) {
       where = relation === "SHARED" ? (g?.practiceWhere ?? "") : (lens?.ctx ?? g?.practiceWhere ?? "");
       task = pr.task.endsWith(".") ? pr.task : pr.task + ".";
+      title = JUDGE[ax].name;
       output = pr.output;
+      check = pr.check;
     } else return null;
     const comma = /(때|로)$/.test(where) ? "," : "";
     const how = `${where}${comma} ${task}`.trim();
     const dn = domainName(core, td);
     const lv = lvIn(td, ax);
-    const result = lv === null ? `${dn} · 이번 검사에서 자세히 묻지 않았습니다` : `${dn} · ‘${JUDGE[ax].name}’: ${LV_SAID[Math.min(lv, 2)] ?? "기준까지 직접 정했다고 답했습니다"}`;
+    const result = lv === null ? `${dn} · 이번 검사에서 자세히 묻지 않았습니다` : `${dn} · ‘${JUDGE[ax].name}’: ${LV_SAID[lv] ?? "기준까지 직접 정했다고 답했습니다"}`;
+    const fact = lv === null
+      ? `${j(dn, "은는")} ${role.name_ko}의 업무 영역인데, 이번 검사에서는 이 영역의 판단을 자세히 묻지 않았습니다.`
+      : `${dn}에서 ‘${JUDGE[ax].name}’는 ${LV_SAID[lv] ?? "기준까지 직접 정했다고 답했습니다"}.`;
     const requirement = relation === "DIRECT"
       ? `${role.name_ko}에서 꼭 필요한 판단 ‘${JUDGE[ax].name}’`
       : relation === "SHARED" ? `${role.name_ko}에서 꼭 필요한 판단 ‘${JUDGE[ax].name}’(다른 영역의 경험을 옮겨 씀)`
         : `${role.name_ko}의 업무 영역 ${dn}: ${lens?.why.replace(/\.$/, "") ?? ""}`;
     const link = relation === "DIRECT"
       ? `‘${JUDGE[ax].name}’는 ${role.name_ko}에서 꼭 필요한 판단인데, 이 직무의 업무 영역인 ${dn}에서 아직 확인되지 않았습니다.`
-      : relation === "SHARED" ? (transfer(ax) || `‘${JUDGE[ax].name}’는 ${role.name_ko}에서 꼭 필요한 판단인데, 지금 응답 어디에서도 스스로 해 본 단계로 확인되지 않았습니다.`)
+      : relation === "SHARED" ? (transfer(ax) || `‘${JUDGE[ax].name}’는 ${role.name_ko}에서 꼭 필요한 판단인데, 지금 응답 어디에서도 스스로 해 봤다고 확인되지 않았습니다.`)
         : `${j(dn, "은는")} ${lens?.why ?? `${role.name_ko}와 이어지는 영역입니다.`}`;
     const why = [link, ...extraWhy].filter(Boolean);
     const tr = relation !== "SHARED" && req.includes(ax) && !covered(ax) ? transfer(ax) : "";
@@ -468,9 +511,11 @@ export function strategy3(m: ResultModel): Strategy {
     if (gapKind === "OUTPUT" || gapKind === "OUTPUT_EVIDENCE") why.push("남긴 결과물이 없어, 지금은 이 경험을 서류로 보여 주기 어렵습니다.");
     if (gapKind === "PARTIAL_EVIDENCE") why.push("해 본 경험은 있지만, 기준을 직접 정한 장면까지는 아직 응답에서 보이지 않습니다.");
     return {
-      order: 0, domain: dn, code: td, axis: ax, what: JUDGE[ax].name, plain: JUDGE[ax].plain,
-      relation, relationTag: RELATION_TAG[relation], link, why, where, task, how, todo: asTodo(task), output, when,
-      check: pr?.check ?? "남긴 결과물만 보고 내가 무엇을 판단했는지 알 수 있는가",
+      order: 0, domain: dn, code: td, axis: ax, what: JUDGE[ax].name, plain: JUDGE[ax].plain, title, fact,
+      // 영역이 맞는 문항을 먼저: 중심 밖 영역의 과제에 중심 영역 질문(‘예산이나 인원 배분…’)을 붙이지 않는다
+      ask: ((role.items ?? []).find((x) => x.axis === ax && x.domain === td)
+        ?? (mode === "role" || td === tds[0] ? (role.items ?? []).find((x) => x.axis === ax) : undefined))?.ask ?? null,
+      relation, relationTag: RELATION_TAG[relation], link, why, where, task, how, todo: asTodo(task), output, when, check,
       jobs: [role.name_ko, ...roles.filter((r) => r.code !== role.code && (r.core_ref?.td ?? []).includes(td)).map((r) => r.name_ko)],
       chain: { goal: `${role.name_ko}${goalInd ? ` · ${goalInd.name_ko}` : ""}`, result, evidence: relation === "SHARED" ? "다른 영역의 응답" : evidenceIn(td), requirement, task: asTodo(task), output },
       w, key: mode === "role" ? `role:${ax}` : `dom:${td}:${ax}`, mode,
@@ -500,7 +545,9 @@ export function strategy3(m: ResultModel): Strategy {
   tds.forEach((td, idx) => {
     const d = byCode.get(td);
     if (!d || asked(d)) return;
-    const prefer = [...req, ...AX_PREF.filter((x) => !req.includes(x))];
+    // 직무 안내가 이 영역에서 먼저 볼 판단을 정해 두었으면 그것부터(인사의 운영·프로세스는 처리 시간 지표가 아니라 역할 배분)
+    const first = g?.lens[td]?.axes ?? req;
+    const prefer = [...first, ...AX_PREF.filter((x) => !first.includes(x))];
     const n = idx === 0 ? 2 : 1;
     let k = 0;
     for (const ax of prefer) {
@@ -532,7 +579,8 @@ export function strategy3(m: ResultModel): Strategy {
   picked.sort((a, b) => tier(a) - tier(b) || AXES.indexOf(a.axis!) - AXES.indexOf(b.axis!));
   return {
     roleCode: role.code, roleName: role.name_ko,
-    rows: picked.map(({ w: _w, key: _k, mode: _m, ...r }, i) => ({ ...r, order: i + 1 })),
+    // 시기는 읽는 차례를 따른다: 실행 계획이 첫 줄을 30일, 둘째 줄을 60일에 놓으므로 표와 계획이 같은 말을 한다
+    rows: picked.map(({ w: _w, key: _k, mode: _m, ...r }, i) => ({ ...r, order: i + 1, when: WHEN[Math.min(i, 2)] })),
     outside,
   };
 }
@@ -586,7 +634,7 @@ function dirOf(m: ResultModel, r: RolePack, byCode: Map<string, ResultDomain>, o
   });
   const need: Direction3["need"] = req.filter((ax) => best(ax) < 2).map((ax) => {
     const lv = best(ax);
-    return { kind: "judge", name: JUDGE[ax].name, why: lv === -1 ? `이 직무와 이어지는 영역에서 이번에 묻지 않은 판단입니다. ${j(JUDGE[ax].plain, "을를")} 해 본 장면이 있는지 먼저 떠올려 보세요.` : `이 직무가 반드시 보는 판단인데, 지금은 ‘${STEP[lv as Level].tag}’ 단계로 답했습니다.` };
+    return { kind: "judge", name: JUDGE[ax].name, why: lv === -1 ? `이 직무와 이어지는 영역에서 이번에 묻지 않은 판단입니다. ${j(JUDGE[ax].plain, "을를")} 해 본 장면이 있는지 먼저 떠올려 보세요.` : `이 직무의 핵심 판단인데, 지금 응답은 ‘${STEP[lv as Level].tag}’ 단계입니다.` };
   });
   if (!need.length) {
     for (const td of tds) { const d = byCode.get(td); if (!d || !asked(d)) need.push({ kind: "domain", name: domainName(core, td), why: "이 직무와 함께 이어지는 영역인데 이번 검사에서 자세히 묻지 않았습니다" }); }
@@ -599,11 +647,11 @@ function dirOf(m: ResultModel, r: RolePack, byCode: Map<string, ResultDomain>, o
   const reqNames = andJoin(req.map((a) => `‘${JUDGE[a].name}’`));
   const okWhere = tds.filter((td) => { const d = byCode.get(td); return d && req.every((ax) => (axisLevel(d, ax) ?? -1) >= 2); }).map((td) => domainName(core, td));
   const summary = readiness === "준비 근거 있음"
-    ? `이 직무가 반드시 보는 ${j(reqNames, "을를")} ${okWhere.length ? `${join(okWhere)} 영역에서 ` : ""}모두 스스로 해 봤다고 답했습니다. 지금 단계에서 할 일은 그 경험을 이 직무의 말로 정리하는 것입니다.`
+    ? `이 직무의 핵심 판단인 ${j(reqNames, "을를")} ${okWhere.length ? `${join(okWhere)} 영역에서 ` : ""}모두 스스로 해 봤다고 답했습니다. 지금 단계에서 할 일은 그 경험을 이 직무의 말로 정리하는 것입니다.`
     : readiness === "일부 있음"
       ? full
-        ? `이 직무가 반드시 보는 ${j(reqNames, "을를")} 응답에서는 모두 스스로 해 봤다고 답했지만, 그 장면을 받치는 근거 항목과 결과물은 아직 고르지 않았습니다. 지금은 그 장면을 경험 기록으로 남기는 단계입니다.`
-        : `이 직무가 반드시 보는 판단 ${req.length}가지 가운데 ${ok}가지가 응답에서 확인됩니다. 나머지는 수업 과제 한두 번으로 채워 볼 수 있는 크기입니다.`
+        ? `이 직무의 핵심 판단인 ${j(reqNames, "을를")} 모두 스스로 해 봤다고 답했지만, 그 장면을 보여 줄 체크리스트 항목과 결과물은 아직 고르지 않았습니다. 지금은 그 장면을 경험 기록으로 남기는 단계입니다.`
+        : `이 직무의 핵심 판단 ${req.length}가지 가운데 ${ok}가지가 응답에서 확인됩니다. 나머지는 수업 과제 한두 번으로 채워 볼 수 있는 크기입니다.`
       : `이 직무와 이어지는 영역에서 아직 스스로 해 본 판단이 확인되지 않습니다. 짧은 과제로 먼저 겪어 보고 맞는지 확인하는 단계입니다.`;
   const env = domainDef(core, tds[0] ?? "")?.org_outcomes?.[org];
   return {
@@ -618,7 +666,7 @@ function dirOf(m: ResultModel, r: RolePack, byCode: Map<string, ResultDomain>, o
 
 /* ── 프로파일 해석 (02장) ─────────────────────────────────────── */
 
-export type ProfileRead = { lead: string; paragraphs: string[]; caution: string | null; evidenceLine: string };
+export type ProfileRead = { lead: string; paragraphs: string[]; caution: string | null; evidenceLine: string; picks: number; artifacts: number };
 export function profileRead(m: ResultModel, exps: Experience[]): ProfileRead {
   const core = coreOf(m);
   const nm = (td: string) => domainName(core, td);
@@ -636,25 +684,25 @@ export function profileRead(m: ResultModel, exps: Experience[]): ProfileRead {
   else if (z4.length) lead = `${join(z4, ", ")}에 관심이 분명하게 나왔고, 이 영역들의 일은 이제 처음 해 보는 단계입니다.`;
   else lead = "이번 응답으로는 영역 사이의 뚜렷한 차이를 읽기 어렵습니다.";
   const P: string[] = [];
-  if (owned.size) P.push(`여덟 가지 판단 가운데 ${j(join([...owned].map((a) => JUDGE[a].name), ", "), "은는")} 기준까지 직접 정했다고 답했습니다. 이 판단들은 체크리스트 근거도 함께 골라, 이번 결과에서 가장 단단하게 확인된 부분입니다.`);
+  if (owned.size) P.push(`여덟 가지 판단 가운데 ${j(join([...owned].map((a) => JUDGE[a].name), ", "), "은는")} 기준까지 직접 정했다고 답했습니다. 체크리스트에서도 그 장면을 함께 골라, 이번 결과에서 가장 분명하게 확인되는 판단입니다.`);
   const confOnly = [...confirmed].filter((a) => !owned.has(a));
-  if (confOnly.length) P.push(`${j(join(confOnly.map((a) => JUDGE[a].name), ", "), "은는")} 스스로 맡아 해 봤지만 기준을 정한 장면까지는 응답에서 보이지 않습니다. 다음 과제에서 이 가운데 하나를 골라 ‘내가 정한 것’으로 만들어 보면 좋습니다.`);
+  if (confOnly.length) P.push(`${j(join(confOnly.map((a) => JUDGE[a].name), ", "), "은는")} 스스로 맡아 해 봤지만 기준을 정한 장면까지는 응답에서 보이지 않습니다. 다음 과제에서 이 가운데 하나를 골라 기준까지 직접 정해 보면, 지원서에서 ‘내가 정한 일’로 말할 수 있게 됩니다.`);
   const never = AXES.filter((a) => !confirmed.has(a) && askedD.some((d) => axisLevel(d, a) !== null));
-  if (never.length) P.push(`${j(join(never.map((a) => JUDGE[a].name), ", "), "은는")} 물어본 영역에서 아직 스스로 해 본 단계로 답하지 않았습니다. 능력이 없다는 뜻이 아니라, 그런 장면을 맡아 본 경험이 아직 적다는 뜻입니다.`);
-  if (highInt.length) P.push(`관심은 ${join(highInt, ", ")}에서 높게 나왔습니다.${notAsked.length ? ` 그중 ${j(join(notAsked, ", "), "은는")} 이번 검사에서 판단 문항을 묻지 않아, 관심이 있다는 것까지만 알 수 있습니다.` : ""}`);
+  if (never.length) P.push(`${j(join(never.map((a) => JUDGE[a].name), ", "), "은는")} 물어본 영역에서 아직 스스로 해 봤다고 답하지 않았습니다. 능력이 없다는 뜻이 아니라, 그런 장면을 맡아 본 경험이 아직 적다는 뜻입니다.`);
+  if (highInt.length) P.push(`관심은 ${join(highInt, ", ")}에서 높게 나왔습니다.${notAsked.length ? ` 그중 ${j(join(notAsked, ", "), "은는")} 이번 검사에서 판단을 자세히 묻지 않아, 관심이 있다는 것까지만 알 수 있습니다.` : ""}`);
   if (z3.length) P.push(`${j(join(z3, ", "), "은는")} 해 본 경험은 있지만 관심은 낮게 나왔습니다. 진로를 이쪽으로 정할 필요는 없지만, 다른 직무에 지원할 때 기본기로 쓸 수 있는 경험입니다.`);
   const picks = m.domains.reduce((n, d) => n + d.did.length, 0);
   const arts = m.domains.reduce((n, d) => n + d.artifacts.length, 0);
   const evidenceLine = picks === 0 && !exps.length
-    ? "체크리스트에서 고른 근거 항목과 경험 기록이 모두 없어, 아래 해석은 판단 문항의 응답만으로 만들었습니다."
-    : `체크리스트 근거 항목 ${picks}개(그중 결과물 ${arts}개)와 경험 기록 ${exps.length}건을 함께 읽었습니다.`;
+    ? "체크리스트에서 고른 항목과 경험 기록이 모두 없어, 아래 해석은 판단을 묻는 질문에 답한 내용만으로 만들었습니다."
+    : `체크리스트에서 고른 항목 ${picks}개(그중 결과물 ${arts}개)와 경험 기록 ${exps.length}건을 함께 읽었습니다.`;
   const q = m.response_quality;
   const caution = q.reasons.includes("CHECKLIST_MISMATCH_HIGH")
-    ? "판단 문항에서는 ‘기준을 직접 정했고 결과가 쓰였다’에 가깝게 답한 곳이 많지만, 그 판단을 받치는 체크리스트 항목은 고르지 않았습니다. 그래서 이 보고서는 그 판단들을 ‘직접 수행’ 단계까지만 반영했습니다. 응답이 틀렸다는 뜻은 아닙니다. 해 본 장면을 구체적으로 떠올려 보면 어느 쪽이 맞는지 확인할 수 있습니다."
+    ? "판단을 묻는 질문에는 ‘기준을 직접 정했고 결과가 쓰였다’에 가깝게 답한 곳이 많지만, 그 장면을 체크리스트에서는 고르지 않았습니다. 그래서 이 보고서는 그 판단들을 ‘직접 수행’ 단계까지만 반영했습니다. 응답이 틀렸다는 뜻은 아닙니다. 해 본 장면을 구체적으로 떠올려 보면 어느 쪽이 맞는지 확인할 수 있습니다."
     : q.reasons.includes("LOW_VARIANCE_GRID")
       ? "열두 영역에 거의 같은 값으로 답해, 관심만으로는 영역 사이의 차이를 읽기 어렵습니다."
       : null;
-  return { lead, paragraphs: P, caution, evidenceLine };
+  return { lead, paragraphs: P, caution, evidenceLine, picks, artifacts: arts };
 }
 
 /* ── 성장 설계 (경험이 적은 학생) ──────────────────────────────── */
@@ -707,12 +755,12 @@ export function verifyTasks(m: ResultModel, exps: Experience[]): Verify | null {
     return {
       domain: domainName(core, d.code),
       said: `판단 ${d.confirmed.length}가지를 ‘기준까지 정했다’에 가깝게 답함`,
-      picked: rec ? `근거 항목 없음 · 경험 기록 ${quoted(rec.title)}` : "근거 항목 없음 · 경험 기록 없음",
+      picked: rec ? `고른 항목 없음 · 경험 기록 ${quoted(rec.title)}` : "고른 항목 없음 · 경험 기록 없음",
       task: `${j(def?.workflow[2]?.detail ?? "기준을 정하는 일", "을를")} 해 본 과제 하나를 떠올려, 그때 정한 것과 남은 결과물(${def?.artifacts[0] ?? "문서"} 등)을 각각 한 줄로 적어 보기`,
     };
   });
   return {
-    lead: "이 결과에서 판단 문항의 응답과 체크리스트 근거가 서로 다른 방향을 가리키는 영역이 있습니다. 어느 쪽이 맞는지 이 보고서가 정할 수는 없습니다. 아래 과제로 학생 스스로 확인해 볼 수 있습니다.",
+    lead: "이 결과에서 판단을 묻는 질문의 응답과 체크리스트에서 고른 항목이 서로 다른 방향을 가리키는 영역이 있습니다. 어느 쪽이 맞는지 이 보고서가 정할 수는 없습니다. 아래 과제로 학생 스스로 확인해 볼 수 있습니다.",
     items,
     steps: [
       "영역마다 ‘그 일을 한 과제 이름’을 하나씩 적습니다. 떠오르지 않는 영역은 표시해 둡니다.",

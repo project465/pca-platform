@@ -6,12 +6,16 @@
  */
 import { readFileSync } from "node:fs";
 import path from "node:path";
+import type { Axis } from "../scoring/types";
 import type { VerifyLevel } from "./words";
 
 /** 목표 직무 기준으로 쓴 실행 과제. 다른 직무의 영역 문장을 끌어오지 않으려고 직무마다 따로 적는다 */
 export type Practice = { task: string; output: string; check: string };
-/** 그 직무에게 이 영역이 무엇인지(연결 이유) · 과제 문장을 영역 말로 쓸지 직무 말로 쓸지 · 과제 앞머리 */
-export type Lens = { why: string; mode: "domain" | "role"; ctx: string };
+/**
+ * 그 직무에게 이 영역이 무엇인지(연결 이유) · 과제 문장을 영역 말로 쓸지 직무 말로 쓸지 · 과제 앞머리.
+ * `axes` 는 이 영역에서 먼저 볼 판단(없으면 직무의 핵심 판단), `out` 은 영역 문장으로 쓴 과제의 산출물 이름
+ */
+export type Lens = { why: string; mode: "domain" | "role"; ctx: string; axes?: Axis[]; out?: Partial<Record<Axis, string>> };
 export type RoleGuide = {
   summary: string; practiceWhere: string; practice: Record<string, Practice>; lens: Record<string, Lens>;
   responsibilities: string[];
