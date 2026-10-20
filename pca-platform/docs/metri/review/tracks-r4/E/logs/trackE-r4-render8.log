@@ -1,0 +1,22 @@
+PASS 기업 목록에서 이름·식별자 96개를 읽었다
+PASS 글꼴 파일과 라이선스가 있다 
+PASS RICH 두 번 그린 HTML 이 같다 (506c9f0343f8d8ef)
+PASS RICH 기업 이름·식별자 0 
+PASS RICH 자유입력 칸 없음
+PASS RICH 줄여 맞추는 규칙 없음
+PASS RICH 12쪽 시안 열쇠가 전체 19쪽 안에 있다 
+PASS RICH 시안 12쪽의 HTML 이 전체 결과지 안에 그대로 있다(쪽 번호 칸만 다름)
+PASS POOR 두 번 그린 HTML 이 같다 (9bb41cecb6853734)
+PASS POOR 기업 이름·식별자 0 
+PASS POOR 자유입력 칸 없음
+PASS POOR 줄여 맞추는 규칙 없음
+PASS POOR 12쪽 시안 열쇠가 전체 18쪽 안에 있다 
+PASS POOR 시안 12쪽의 HTML 이 전체 결과지 안에 그대로 있다(쪽 번호 칸만 다름)
+PASS CONTRA 두 번 그린 HTML 이 같다 (a8f630aba37cad36)
+PASS CONTRA 기업 이름·식별자 0 
+PASS CONTRA 자유입력 칸 없음
+PASS CONTRA 줄여 맞추는 규칙 없음
+PASS CONTRA 12쪽 시안 열쇠가 전체 17쪽 안에 있다 
+PASS CONTRA 시안 12쪽의 HTML 이 전체 결과지 안에 그대로 있다(쪽 번호 칸만 다름)
+
+통과 20 · 걸림 0
