@@ -60,7 +60,10 @@ RUN npx esbuild scripts/make-admin.ts \
       --external:pg --outfile=ops-build/staging-bootstrap.cjs \
  && npx esbuild scripts/staging-check.ts \
       --bundle --platform=node --format=cjs --target=node22 \
-      --external:pg --outfile=ops-build/staging-check.cjs
+      --external:pg --outfile=ops-build/staging-check.cjs \
+ && npx esbuild scripts/staging-reset-student.ts \
+      --bundle --platform=node --format=cjs --target=node22 \
+      --external:pg --outfile=ops-build/staging-reset-student.cjs
 
 FROM node:22-alpine AS run
 WORKDIR /app
