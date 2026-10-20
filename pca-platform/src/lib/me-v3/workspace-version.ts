@@ -373,7 +373,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V49";
  * Track B (2026-10-20). 학생 사전이 스무 Core 를 덮는다: 홈 영역 칸의 남는
  * 것 이름과 경험 추가의 예시·흐름 말이 나머지 열넷에서도 그 전공의 말로 선다.
  */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.32";
+/** 화면 시안(2026-10-20): 첫 화면 제목을 인사로 바꿨다 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.33";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**
