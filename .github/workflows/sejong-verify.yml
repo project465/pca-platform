@@ -1,40 +1,42 @@
-# 세종 가지 전용 검증. **이 가지에 푸시될 때만** 돈다(다른 가지·운영과 무관).
+# 세종 가지 전용 검증. 세종 세션은 npm 레지스트리가 막혀 `npm ci` · `next build` ·
+# 브라우저 E2E 를 직접 못 돌린다. 같은 일을 GitHub 러너에서 한다.
 #
-# 세종 세션의 작업 환경은 npm 레지스트리가 막혀 있어 `npm ci` · `next build` ·
-# 브라우저 E2E 를 직접 돌릴 수 없다. 그래서 같은 일을 GitHub 러너에서 한다:
-#   npm ci → 전체 TypeScript 검사 → Next.js 실제 빌드
-#   → 기존 측정·채점 회귀 (기준 0bff307c 와 HEAD 를 같은 환경에서 나란히)
-#   → 세종 분석 23 → DB 스키마·접근 경계 → standalone 서버 → 브라우저 E2E · PDF
-#   → 결과와 캡처를 이 가지의 docs/sejong/ 에 커밋해 돌려준다.
+# 보안 (2026-10-20 지시)
+# - GITHUB_TOKEN 은 `contents: read` 만. 저장소에 아무것도 커밋·푸시하지 않는다.
+# - 테스트 자료는 러너 안의 일회용 PostgreSQL 과 합성 DEMO 시드뿐이다. 운영·Staging
+#   DB·Railway·실제 개인정보·기업 비공개 자료·저장소 비밀번호를 쓰지 않는다.
+# - 시연 계정 비밀번호는 실행마다 무작위로 만들고 로그에서 가린다.
+# - 공개 저장소의 Actions artifact 는 로그인한 누구나 받을 수 있다. 그래서 **글로 된
+#   결과만** 올리고, 화면 캡처·PDF 는 `SEJONG_ARTIFACT_KEY` 비밀값이 있을 때만
+#   AES-256 으로 잠근 파일로 올린다(보관 3일). 비밀값이 없으면 올리지 않는다.
 #
-# 쓰는 것: 러너 안의 PostgreSQL 16(일회용) · 가상 참여자 시드 · CI 전용 AUTH_SECRET.
-# 쓰지 않는 것: 운영·Staging DB, Railway, 실제 개인정보, 저장소 비밀값.
+# 언제 도는가: 손으로 (workflow_dispatch), 또는 커밋 메시지에 `[sejong-verify]` 가
+# 있는 푸시만. 그 밖의 푸시는 일을 하지 않고, 돌고 있는 검증을 취소하지도 않는다.
 name: sejong-verify
 
 on:
+  workflow_dispatch:
   push:
     branches: [claude/epic-galileo-lrvgxr]
-    paths-ignore:
-      - "pca-platform/docs/sejong/ci/**"
-      - "pca-platform/docs/sejong/shots/**"
-  workflow_dispatch:
 
 permissions:
-  contents: write
-
-concurrency:
-  group: sejong-verify
-  cancel-in-progress: true
+  contents: read
 
 env:
   BASE_SHA: 0bff307c41aac286549a9a85503e4a9af162ca9e
-  OUT: docs/sejong/ci
-  SHOTS: docs/sejong/shots
+  OUT: var/sejong-ci
+  SHOTS: var/sejong-ci/shots
 
 jobs:
   verify:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[sejong-verify]')
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    permissions:
+      contents: read
+    concurrency:
+      group: sejong-verify
+      cancel-in-progress: false
     services:
       postgres:
         image: postgres:16
@@ -54,6 +56,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - uses: actions/setup-node@v4
         with:
@@ -61,11 +64,14 @@ jobs:
           cache: npm
           cache-dependency-path: pca-platform/package-lock.json
 
-      - name: 도구 (psql · pdftoppm · 한글 글꼴)
+      - name: 도구 · 실행마다 새로 만드는 시연 비밀번호
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq postgresql-client poppler-utils fonts-noto-cjk >/dev/null
-          mkdir -p "$OUT" "$SHOTS"
+          mkdir -p "$OUT/logs" "$SHOTS"
+          for k in SJ_PW_ADMIN SJ_PW_COUNSEL SJ_PW_SEEKER SJ_PW_VIRTUAL AUTH_SECRET; do
+            v="$(openssl rand -base64 24 | tr -d '/+=')"; echo "::add-mask::$v"; echo "$k=$v" >> "$GITHUB_ENV"
+          done
           printf 'sha\t%s\nbase\t%s\nrun_id\t%s\nrun_url\t%s\nat\t%s\nnode\t%s\n' \
             "$GITHUB_SHA" "$BASE_SHA" "$GITHUB_RUN_ID" \
             "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
@@ -77,25 +83,34 @@ jobs:
           npm ci --no-audit --no-fund; rc=$?
           printf 'npm ci\t%s\n' $rc >> "$OUT/steps.tsv"; exit $rc
 
+      - name: 전체 TypeScript 검사
+        run: |
+          npm run -s typecheck > "$OUT/logs/typecheck.log" 2>&1; rc=$?
+          tail -30 "$OUT/logs/typecheck.log"
+          printf 'typecheck (tsc --noEmit)\t%s\n' $rc >> "$OUT/steps.tsv"
+
       - name: Next.js 실제 빌드
         env:
           NODE_OPTIONS: --max-old-space-size=6144
           NEXT_TELEMETRY_DISABLED: "1"
         run: |
-          npm run build > "$OUT/build.log" 2>&1; rc=$?
-          tail -40 "$OUT/build.log"
+          npm run build > "$OUT/logs/build.log" 2>&1; rc=$?
+          tail -40 "$OUT/logs/build.log"
           printf 'next build\t%s\n' $rc >> "$OUT/steps.tsv"; exit $rc
 
       - name: DB 두 벌 (HEAD · 기준) — 공통 체인
         env:
           PGPASSWORD: cm-ci-only
         run: |
-          psql -h 127.0.0.1 -U cm -d cm_head -c "CREATE DATABASE cm_base" >/dev/null
+          psql -h 127.0.0.1 -U cm -d cm_head -qc "CREATE DATABASE cm_base"
+          rc=0
           for db in cm_head cm_base; do
-            node -e 'const c=require("./deploy/db-chain.json");for(const f of [...c.base,...c.upgrade])console.log(f)' \
-              | while read f; do psql "postgres://cm:cm-ci-only@127.0.0.1:5432/$db" -q -v ON_ERROR_STOP=1 --single-transaction -f "$f"; done
+            for f in $(node -e 'const c=require("./deploy/db-chain.json");for(const f of [...c.base,...c.upgrade])console.log(f)'); do
+              psql "postgres://cm:cm-ci-only@127.0.0.1:5432/$db" -q -v ON_ERROR_STOP=1 --single-transaction -f "$f" \
+                >> "$OUT/logs/db-chain.log" 2>&1 || { echo "실패: $db $f"; rc=1; }
+            done
           done
-          printf 'db chain\t0\n' >> "$OUT/steps.tsv"
+          printf 'db chain (HEAD·기준)\t%s\n' $rc >> "$OUT/steps.tsv"; exit $rc
 
       - name: 회귀 — 세종 HEAD
         env:
@@ -112,18 +127,21 @@ jobs:
 
       - name: 세종 분석 23
         run: |
-          node --experimental-strip-types --no-warnings scripts/sejong/analysis-check.mjs | tee "$OUT/analysis.log"
-          printf 'sejong analysis 23\t%s\n' ${PIPESTATUS[0]} >> "$OUT/steps.tsv"
+          node --experimental-strip-types --no-warnings scripts/sejong/analysis-check.mjs > "$OUT/logs/analysis.log" 2>&1
+          rc=$?; tail -5 "$OUT/logs/analysis.log"
+          printf 'sejong analysis 23\t%s\n' $rc >> "$OUT/steps.tsv"
 
-      - name: 세종 DB 층 · 시드 · 접근 경계
+      - name: 세종 DB 층 · 합성 시드 · 접근 경계
         env:
           DATABASE_URL: postgres://cm:cm-ci-only@127.0.0.1:5432/cm_head
         run: |
           psql "$DATABASE_URL" -q -v ON_ERROR_STOP=1 -f db/sejong/schema_sejong_demo.sql
-          node --experimental-strip-types --no-warnings scripts/sejong/seed-demo.mjs > /tmp/sj-seed.sql
-          psql "$DATABASE_URL" -q -v ON_ERROR_STOP=1 --single-transaction -f /tmp/sj-seed.sql
-          node scripts/sejong/db-check.mjs | tee "$OUT/db-check.log"
-          printf 'sejong db-check\t%s\n' ${PIPESTATUS[0]} >> "$OUT/steps.tsv"
+          S="$RUNNER_TEMP/sj-seed.sql"
+          node --experimental-strip-types --no-warnings scripts/sejong/seed-demo.mjs > "$S" 2>/dev/null
+          psql "$DATABASE_URL" -q -v ON_ERROR_STOP=1 --single-transaction -f "$S"; rm -f "$S"
+          node scripts/sejong/db-check.mjs > "$OUT/logs/db-check.log" 2>&1; rc=$?
+          cat "$OUT/logs/db-check.log"
+          printf 'sejong db·권한 검사\t%s\n' $rc >> "$OUT/steps.tsv"
 
       - name: 공통 파일 무변경 확인
         run: |
@@ -139,46 +157,59 @@ jobs:
         env:
           DATABASE_URL: postgres://cm:cm-ci-only@127.0.0.1:5432/cm_head
         run: |
-          export AUTH_SECRET="$(openssl rand -base64 32)"
           export APP_ENV=staging PORT=3100 HOSTNAME=127.0.0.1
           export PLATFORM_URL=http://127.0.0.1:3100 PDF_BASE=http://127.0.0.1:3100
-          export REPORT_PDF_DIR="$PWD/var/reports"; mkdir -p "$REPORT_PDF_DIR"
+          export REPORT_PDF_DIR="$RUNNER_TEMP/reports"; mkdir -p "$REPORT_PDF_DIR"
           rm -rf .next/standalone/.next/static .next/standalone/public
           cp -r .next/static .next/standalone/.next/static
           [ -d public ] && cp -r public .next/standalone/public
-          (cd .next/standalone && node server.js > "$GITHUB_WORKSPACE/pca-platform/$OUT/server.log" 2>&1 &)
+          (cd .next/standalone && node server.js > "$GITHUB_WORKSPACE/pca-platform/$OUT/logs/server.log" 2>&1 &)
           for i in $(seq 1 60); do curl -sf http://127.0.0.1:3100/api/health >/dev/null && break; sleep 1; done
           curl -s -o /dev/null -w 'health %{http_code}\n' http://127.0.0.1:3100/api/health
-          BASE=http://127.0.0.1:3100 OUT="$SHOTS" node scripts/sejong/e2e-shots.mjs 2>&1 | tee "$OUT/e2e.log"
-          printf 'browser e2e\t%s\n' ${PIPESTATUS[0]} >> "$OUT/steps.tsv"
-          grep -n "sejong-pdf\|Error" "$OUT/server.log" | head -40 || true
+          BASE=http://127.0.0.1:3100 OUT="$SHOTS" node scripts/sejong/e2e-shots.mjs > "$OUT/e2e.log" 2>&1
+          rc=$?; cat "$OUT/e2e.log"
+          printf 'browser e2e (구직자·상담사·관리자·PDF)\t%s\n' $rc >> "$OUT/steps.tsv"
+          grep -n "sejong-pdf" "$OUT/logs/server.log" | head -20 || true
+          ls -la "$SHOTS" | head -40
 
       - name: 결과 한 장
         if: always()
         run: |
           node scripts/sejong/ci-summary.mjs "$OUT" > /dev/null || true
-          cat "$OUT/RESULT.md" >> "$GITHUB_STEP_SUMMARY" || true
+          cat "$OUT/RESULT.md" >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
 
-      - name: 산출물 올리기
+      - name: 글로 된 결과만 올린다 (캡처·PDF 제외)
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: sejong-verify
+          name: sejong-verify-text
           path: |
-            pca-platform/docs/sejong/ci
-            pca-platform/docs/sejong/shots
-          retention-days: 30
+            pca-platform/var/sejong-ci/*.md
+            pca-platform/var/sejong-ci/*.tsv
+            pca-platform/var/sejong-ci/*.log
+            pca-platform/var/sejong-ci/*.txt
+            pca-platform/var/sejong-ci/logs/
+          retention-days: 7
 
-      - name: 결과를 이 가지에 돌려주기
+      - name: 캡처·PDF 는 잠가서만 (비밀값이 있을 때)
         if: always()
+        env:
+          KEY: ${{ secrets.SEJONG_ARTIFACT_KEY }}
         run: |
-          git config user.name "sejong-verify[bot]"
-          git config user.email "sejong-verify@users.noreply.github.com"
-          git add -f "$OUT" "$SHOTS"
-          git diff --cached --quiet && exit 0
-          git commit -q -m "세종 CI 검증 결과 · 캡처 (${GITHUB_SHA::8}) [skip ci]"
-          for i in 1 2 3; do git pull -q --rebase origin "$GITHUB_REF_NAME" && git push -q origin "HEAD:$GITHUB_REF_NAME" && exit 0; sleep $((i*4)); done
-          exit 1
+          if [ -z "$KEY" ]; then echo "SEJONG_ARTIFACT_KEY 없음 → 캡처·PDF 를 올리지 않는다"; exit 0; fi
+          tar -C "$SHOTS" -czf "$RUNNER_TEMP/shots.tgz" .
+          openssl enc -aes-256-cbc -pbkdf2 -iter 200000 -salt -pass env:KEY \
+            -in "$RUNNER_TEMP/shots.tgz" -out "$RUNNER_TEMP/sejong-shots.tgz.enc"
+          rm -f "$RUNNER_TEMP/shots.tgz"
+          echo "ENC=1" >> "$GITHUB_ENV"
+
+      - name: 잠근 파일 올리기
+        if: always() && env.ENC == '1'
+        uses: actions/upload-artifact@v4
+        with:
+          name: sejong-shots-encrypted
+          path: ${{ runner.temp }}/sejong-shots.tgz.enc
+          retention-days: 3
 
       - name: 판정 (한 단계라도 걸리면 빨강)
         if: always()

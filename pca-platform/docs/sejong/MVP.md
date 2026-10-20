@@ -65,7 +65,7 @@ node -e 'const c=require("./deploy/db-chain.json");for(const f of [...c.base,...
   | while read f; do psql "$DATABASE_URL" -v ON_ERROR_STOP=1 --single-transaction -f "$f"; done
 # 세종 층 + 시연 자료
 psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f db/sejong/schema_sejong_demo.sql
-node --experimental-strip-types scripts/sejong/seed-demo.mjs > /tmp/sj-seed.sql
+SJ_PW_OUT=$HOME/.sj-demo-pw node --experimental-strip-types scripts/sejong/seed-demo.mjs > /tmp/sj-seed.sql
 psql "$DATABASE_URL" -v ON_ERROR_STOP=1 --single-transaction -f /tmp/sj-seed.sql
 npm run dev                              # http://localhost:3000/sejong
 # 검증
@@ -73,13 +73,10 @@ node --experimental-strip-types scripts/sejong/analysis-check.mjs
 BASE=http://127.0.0.1:3000 OUT=docs/sejong/shots node scripts/sejong/e2e-shots.mjs
 ```
 
-시연 계정 (로컬·시연 DB 전용)
-
-| 역할 | 아이디 | 비밀번호 |
-|---|---|---|
-| 구직자 | `sj-demo01` | `sejong-seeker-demo-2026` |
-| 기관 관리자 | `sj-admin` | `sejong-admin-demo-2026` |
-| 상담사 | `sj-counsel1` | `sejong-counsel-demo-2026` |
+시연 계정 (로컬·시연 DB 전용): `sj-demo01`(구직자) · `sj-admin`(기관 관리자) ·
+`sj-counsel1`(상담사). **비밀번호는 저장소에 적지 않는다.** 시드를 돌릴 때
+`SJ_PW_ADMIN` · `SJ_PW_COUNSEL` · `SJ_PW_SEEKER` · `SJ_PW_VIRTUAL` 로 주거나, 주지
+않으면 시드가 무작위로 만들어 표준 오류에 한 번만 찍는다. E2E 는 같은 환경변수를 읽는다.
 
 ## 4. DEMO 로 남는 것
 

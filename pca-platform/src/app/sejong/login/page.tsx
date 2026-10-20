@@ -18,15 +18,10 @@ export default async function SejongLoginPage({
       </div>
       <div className="sj-card">
         <h2>시연 계정</h2>
-        <p className="small muted">로컬 시연 DB 에만 있는 계정입니다. 운영에는 없습니다.</p>
-        <table className="sj-table">
-          <thead><tr><th>역할</th><th>아이디</th><th>비밀번호</th></tr></thead>
-          <tbody>
-            <tr><td>구직자 (직접 진단)</td><td>sj-demo01</td><td>sejong-seeker-demo-2026</td></tr>
-            <tr><td>기관 관리자</td><td>sj-admin</td><td>sejong-admin-demo-2026</td></tr>
-            <tr><td>상담사</td><td>sj-counsel1</td><td>sejong-counsel-demo-2026</td></tr>
-          </tbody>
-        </table>
+        <p className="small muted">
+          시연 계정과 비밀번호는 진흥원 시연 담당자에게 따로 받습니다. 화면과 저장소에는
+          적지 않습니다. 시연 DB 에는 가상 참여자와 합성 자료만 들어 있습니다.
+        </p>
       </div>
     </div>
   );

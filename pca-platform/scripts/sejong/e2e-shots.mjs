@@ -26,6 +26,8 @@ try { pw = require("playwright"); } catch { pw = require("/opt/node-tools/node_m
 const BASE = (process.env.BASE ?? "http://127.0.0.1:3000").replace(/\/$/, "");
 const OUT = process.env.OUT ?? "docs/sejong/shots";
 const DB = process.env.DATABASE_URL ?? "";
+/* 비밀번호는 시드에 준 것과 같은 환경변수로 받는다. 저장소에 적지 않는다 */
+const need = (k) => { const v = process.env[k]; if (!v) { console.error(`${k} 가 필요합니다 (seed-demo 에 준 값)`); process.exit(2); } return v; };
 mkdirSync(OUT, { recursive: true });
 
 let pass = 0;
@@ -80,7 +82,7 @@ console.log(`\n세종 MVP 브라우저 시연 — ${BASE}\n`);
 /* 2. 구직자 */
 const seeker = await browser.newContext({ viewport: { width: 1366, height: 900 } });
 {
-  const page = await login(seeker, "sj-demo01", "sejong-seeker-demo-2026");
+  const page = await login(seeker, "sj-demo01", need("SJ_PW_SEEKER"));
   ok("구직자 로그인 → 대시보드", page.url().endsWith("/sejong/me"), page.url());
   await shot(page, "03-me-before");
 
@@ -168,7 +170,7 @@ const seeker = await browser.newContext({ viewport: { width: 1366, height: 900 }
 /* 3. 상담사 */
 {
   const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
-  const page = await login(ctx, "sj-counsel1", "sejong-counsel-demo-2026");
+  const page = await login(ctx, "sj-counsel1", need("SJ_PW_COUNSEL"));
   ok("상담사 로그인 → 상담사 화면", page.url().endsWith("/sejong/counselor"), page.url());
   await shot(page, "13-counselor-list");
   const demoId = sql("SELECT id FROM users WHERE login_id='sj-demo01'");
@@ -196,7 +198,7 @@ const seeker = await browser.newContext({ viewport: { width: 1366, height: 900 }
 /* 4. 관리자 */
 {
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
-  const page = await login(ctx, "sj-admin", "sejong-admin-demo-2026");
+  const page = await login(ctx, "sj-admin", need("SJ_PW_ADMIN"));
   ok("관리자 로그인 → 대시보드", page.url().endsWith("/sejong/admin"), page.url());
   const t = await page.textContent("body");
   ok("대시보드에 5명 미만 가림", t.includes("5명 미만"));

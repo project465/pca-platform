@@ -14,9 +14,17 @@
  *   것만 센다
  *
  * 비밀번호 해시는 PostgreSQL `pgcrypto` 의 bcrypt 로 만든다(`$2a$`, bcryptjs 가
- * 읽는다). 비밀번호는 시연용이고 운영에 쓰지 않는다.
+ * 읽는다).
+ *
+ * **비밀번호를 저장소에 적지 않는다.** 공개 저장소에 적힌 비밀번호는 그 시드를
+ * 넣은 모든 DB 의 열쇠가 된다. 환경변수(`SJ_PW_ADMIN` · `SJ_PW_COUNSEL` ·
+ * `SJ_PW_SEEKER` · `SJ_PW_VIRTUAL`)로 받고, 없으면 그 자리에서 무작위로 만든다.
+ * 만든 값은 표준 오류에 한 번만 찍고, `SJ_PW_OUT` 을 주면 그 파일(권한 600)에도
+ * 적는다 — 저장소 밖 경로로 준다. **뽑은 SQL 에는 `crypt('…')` 안에 평문이 들어
+ * 있다**(해시는 DB 가 만든다). 그래서 SQL 파일도 저장소 밖에 두고 넣은 뒤 지운다.
  */
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
+import { randomBytes } from "node:crypto";
 import { analyze } from "../../src/sejong/lib/analysis.ts";
 
 const url = process.env.DATABASE_URL ?? "";
@@ -39,12 +47,21 @@ let seed = 20261020;
 const rnd = () => ((seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648);
 const pick = (a) => a[Math.floor(rnd() * a.length)];
 
+const gen = () => randomBytes(12).toString("base64url");
 const PW = {
-  admin: "sejong-admin-demo-2026",
-  counsel: "sejong-counsel-demo-2026",
-  seeker: "sejong-seeker-demo-2026",
-  virtual: "sejong-virtual-demo-2026",
+  admin: process.env.SJ_PW_ADMIN || gen(),
+  counsel: process.env.SJ_PW_COUNSEL || gen(),
+  seeker: process.env.SJ_PW_SEEKER || gen(),
+  virtual: process.env.SJ_PW_VIRTUAL || gen(),
 };
+{
+  const lines = [
+    `sj-admin\t${PW.admin}`, `sj-counsel1\t${PW.counsel}`, `sj-counsel2\t${PW.counsel}`,
+    `sj-demo01\t${PW.seeker}`, `sj-v01..sj-v20\t${PW.virtual}`,
+  ];
+  console.error(`시연 계정 비밀번호 (이번 한 번만 보입니다)\n${lines.join("\n")}`);
+  if (process.env.SJ_PW_OUT) writeFileSync(process.env.SJ_PW_OUT, lines.join("\n") + "\n", { mode: 0o600 });
+}
 
 const out = [];
 const sql = (s) => out.push(s.trim() + ";");

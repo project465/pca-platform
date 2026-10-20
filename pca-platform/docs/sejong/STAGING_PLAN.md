@@ -1,13 +1,17 @@
 # 세종 MVP 독립 Staging — 안전한 배포 계획 (승인 전, 실행하지 않음)
 
-## 0-1. 이 세션이 대신 한 것
+## 0-1. 이 세션이 대신 한 것 (Staging URL 이 아니다)
 
 npm 레지스트리가 막혀 이 세션에서는 설치·빌드·브라우저 확인을 못 한다. 그래서
-`.github/workflows/sejong-verify.yml` 이 **이 가지에 푸시될 때만** GitHub 러너에서
-`npm ci` → 전체 TypeScript → `next build` → 회귀(기준 대조) → DB 경계 → 브라우저
-E2E·PDF 를 돌리고 결과를 `docs/sejong/ci/RESULT.md` · `docs/sejong/shots/` 로 돌려준다.
-**이것은 Staging URL 이 아니다.** 바깥에서 열 수 있는 주소는 아래 Railway 프로젝트가
-서야 생긴다.
+`.github/workflows/sejong-verify.yml` 이 GitHub 러너에서 `npm ci` → 전체 TypeScript →
+`next build` → 회귀(기준 대조) → DB·권한 → 브라우저 E2E·PDF 를 돌린다.
+
+- 토큰은 `contents: read` 만. **저장소에 아무것도 커밋하지 않는다.**
+- 손으로 돌리거나(workflow_dispatch) 커밋 메시지에 `[sejong-verify]` 가 있을 때만 돈다.
+- DB 는 러너 안의 일회용 PostgreSQL, 자료는 합성 DEMO 시드, 시연 비밀번호는 실행마다 무작위.
+- 공개 저장소의 artifact 는 로그인한 누구나 받을 수 있으므로 **글로 된 결과만** 올린다.
+  캡처·PDF 는 `SEJONG_ARTIFACT_KEY` 비밀값이 있을 때만 AES-256 으로 잠가 3일 보관한다.
+- **CI PASS 는 실제 서비스 접속이 아니다.** 바깥에서 열 주소는 아래 Railway 프로젝트가 서야 생긴다.
 
 ## 0. 지금 사실
 
