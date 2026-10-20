@@ -19,9 +19,10 @@ import { query } from "../../src/lib/db";
 import { build3 } from "../../src/lib/me-v3/report-gm/report3";
 import { full6 } from "../../src/lib/me-v3/report-gm/render6";
 import type { Lib } from "../../src/lib/me-v3/report-gm/render5";
-import { canDownloadGm, frozenInput, GM_INPUT_VERSION, type GmRequester } from "../../src/lib/me-v3/report-gm/inputs";
+import { canDownloadGm, frozenInput, gmOutDir, GM_INPUT_VERSION, type GmRequester } from "../../src/lib/me-v3/report-gm/inputs";
 
-const OUT_ROOT = process.env.GM_OUT ?? path.resolve("var/gm-out");
+/* 자리는 입력 모듈 하나가 든다: 파기가 같은 자리를 지워야 한다 */
+const OUT_ROOT = gmOutDir();
 const J = (p: string) => JSON.parse(readFileSync(p, "utf8"));
 const sha = (b: string | Buffer) => createHash("sha256").update(b).digest("hex");
 
