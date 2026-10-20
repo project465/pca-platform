@@ -2,7 +2,7 @@
  "schema_version": "me-v3-result-lock.1",
  "note": "결과지 화면 1차 동결. 문장만 고치면 `RESULT_COPY_VERSION` 만 올리고, 칸이나 절이 바뀌면 `RESULT_MODEL_VERSION`, 화면 구조가 바뀌면 `RESULT_UI_VERSION` 을 올린다. 채점 판본은 이 가운데 무엇으로도 올리지 않는다",
  "versions": {
-  "result_ui_version": "ME_V3_RESULT_UI_V77",
+  "result_ui_version": "ME_V3_RESULT_UI_V78",
   "result_copy_version": "me-v3-result-copy.66",
   "result_model_version": "me-v3-result-model.6",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.5",
@@ -20,8 +20,8 @@
   "종이에 빈 쪽과 범위 밖 쪽수가 없다": "v3:result:pdf"
  },
  "files": {
-  "src/app/v3/result.css": "9b37c888d0640a341190c1d0a33ab7c88ce933e92c86711c13f7f9b371cfbde9",
-  "src/app/surface.css": "b1875a36649fc8eee9c76575f66d0d9c49b5e6892e611965ba5e895b825c5fbe",
+  "src/app/v3/result.css": "cc3534c87bbb852c2e4dc56daec946360bd8f94ad16e65ba6b8d7d8e6d10ddce",
+  "src/app/surface.css": "03ebfbed94b46928225df3843c206121a2cf48802c7700bcf9225171545980a6",
   "src/app/v3/[attemptId]/result/page.tsx": "0efef2876d22e0bb49d415d68d80749b665a2233752165445c01243a72a834d5",
   "src/app/v3/[attemptId]/result/fold.tsx": "da6c8b16f124941d283dc9ae4ad0f41b2271fd8d8233028bfdc3d4c500d4fbb4",
   "src/app/v3/[attemptId]/result/disclose.tsx": "04e8a84916ec0fcd642e9287377e370b8bff250ac496ed66cfdf3d9f2e640f5a",
@@ -31,7 +31,7 @@
   "src/lib/me-v3/result/text.ko.ts": "9eaabe56937c86777258f1e02702ecf3b8e9504d071ccdbb0995f21a1543abcd",
   "src/lib/me-v3/result/say.ts": "1ca895cbeb84b08c5579fc3fcaaf4f8c89b766e131f277bcd92bba74abcebc95",
   "src/lib/me-v3/result/josa.ts": "152cd30c2af136172618c14fa6fb4175b97cf16350db631e3e2e6c72fd7dd4af",
-  "src/lib/me-v3/result/version.ts": "8178a5c6c6230efd04fae21a264e213695dca5ecbe125c7d5f1b83315dce43cc",
+  "src/lib/me-v3/result/version.ts": "7d50f86cfbe6814b226a15652f2c905003adc5bbb9aeadcd468efccd9049dc84",
   "src/lib/me-v3/result/tile-sub.ts": "8e51d0087d789341b20679e15503c7d31d62b36c943998cea70d992539c2d785",
   "src/lib/me-v3/student/copy.ts": "e7bd695e60650226df869f1c776f303cae65f63f4161e0c7bfff017081409a50",
   "src/lib/me-v3/student/icon.ts": "65836ae7a141a7dcdf844e5d5b4bcdbcc558dad0a3890a4a67384a3b17c7aea2",

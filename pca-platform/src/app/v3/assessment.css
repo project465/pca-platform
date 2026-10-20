@@ -1532,3 +1532,113 @@
 .qs-review-ok {
   margin: var(--q-s5) 0 0; font-size: var(--q-t-gloss); color: var(--q-ink-2);
 }
+
+/* ── 화면 시안 스킨 (2026-10-20) ─────────────────────────────────────
+   `mockups/01_test_screen.html` 과 같은 모양으로 맞춘다.
+   질문은 흰 카드 한 장 위에 서고, 보기는 번호를 단 칸으로 하나씩 선다.
+   오른쪽에는 지금 묶음의 답안 현황이 붙는다. 값은 `--ui-*` 를 읽는다 */
+
+/* 머리띠: 막대를 굵게, 저장 상태를 초록 알약으로 */
+.qs-head { background: var(--q-paper); }
+.qs-bar { height: 6px; margin: 0 0 10px; border-radius: 999px; background: #e1e7f1; }
+.qs-bar span { border-radius: 999px; background: linear-gradient(90deg, #4d86ff, var(--q-accent)); }
+.qs-save {
+  color: #0b7a5e; background: #e6f6f1; font-weight: var(--ui-w-sb);
+  border-radius: 999px; padding: 3px 11px;
+}
+.qs-save.is-bad { color: #c0392b; background: #fdecec; border: 0; }
+.qs-tier b { color: var(--q-accent); }
+
+/* 질문 카드 */
+.qs-plain {
+  background: var(--q-paper);
+  border-radius: var(--q-r-lg);
+  box-shadow: var(--sh-1);
+  padding: 32px 36px 30px;
+}
+.qs-brief { border-radius: var(--q-r-lg); box-shadow: var(--sh-1); border-color: transparent; }
+
+/* 보기: 판 하나 대신 칸으로 하나씩.
+   **번호 원은 고르는 목록에만 단다.** 척도(`.qs-own.qs-scale-*`)는 칸마다
+   값 번호(`.qs-sn`)를 이미 적고, 소유 넷(`.qs-own`)은 점수처럼 읽히지 않게
+   눈금을 걷어 낸 자리라(위 `보기 넷은 단계다`) 번호를 두지 않는다 */
+.qs-list {
+  background: transparent; border: 0; border-radius: 0; overflow: visible;
+  gap: 10px; counter-reset: qopt;
+}
+.qs-list > .qs-opt {
+  background: var(--q-paper);
+  border: 1.5px solid var(--q-line); border-radius: var(--q-r);
+}
+.qs-list > .qs-opt:first-child,
+.qs-list > .qs-opt.is-on + .qs-opt { border-top: 1.5px solid var(--q-line); }
+.qs-list > .qs-opt:hover { background: #fafbff; border-color: #b9c8e6; }
+.qs-list > .qs-opt.is-on {
+  background: var(--q-accent-soft);
+  border-color: var(--q-accent);
+  box-shadow: none;
+}
+.qs-list > .qs-opt.is-on .qs-label { color: var(--q-accent-ink); font-weight: var(--ui-w-bd); }
+
+.qs-list:not(.qs-own) > .qs-opt { counter-increment: qopt; align-items: center; }
+.qs-list:not(.qs-own) > .qs-opt:not(.is-box) .qs-mark {
+  width: 30px; height: 30px; margin-top: 0;
+  display: grid; place-items: center;
+  border: 1.5px solid #c5cfe0; color: var(--q-ink-2);
+  font-size: 14px; font-weight: var(--ui-w-bd); font-style: normal;
+}
+.qs-list:not(.qs-own) > .qs-opt:not(.is-box) .qs-mark::before { content: counter(qopt); }
+.qs-list:not(.qs-own) > .qs-opt.is-on:not(.is-box) .qs-mark {
+  background: var(--q-accent); border-color: var(--q-accent); color: #fff;
+  box-shadow: none;
+}
+
+/* 아래 단추 */
+.qs-btn { border-radius: var(--q-r); }
+.qs-btn-main { background: var(--q-accent); border-color: var(--q-accent); color: #fff; }
+.qs-btn-main:hover { background: var(--q-accent-ink); border-color: var(--q-accent-ink); }
+
+/* 답안 현황. 넓은 화면에서는 질문 카드 오른쪽에 붙고, 좁으면 아래로 내려온다 */
+.qs-omr {
+  margin-top: 20px;
+  background: var(--q-paper); border-radius: var(--q-r-lg);
+  box-shadow: var(--sh-1); padding: 20px 22px;
+}
+.qs-omr-h { margin: 0; font-size: 16px; font-weight: var(--ui-w-bd); color: var(--q-ink); }
+.qs-omr-sum { margin: 2px 0 12px; font-size: 13px; color: var(--q-ink-2); }
+.qs-omr-sum b { color: var(--q-accent); font-weight: var(--ui-w-bd); margin-right: 4px; }
+.qs-omr-grid {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 7px;
+}
+.qs-omr-grid li {
+  aspect-ratio: 1; display: grid; place-items: center;
+  border: 1.5px solid var(--q-line); border-radius: 9px;
+  font-size: 13px; font-weight: var(--ui-w-bd); color: var(--q-ink-3);
+  font-variant-numeric: tabular-nums;
+}
+.qs-omr-grid li.is-done { background: var(--q-accent); border-color: var(--q-accent); color: #fff; }
+.qs-omr-grid li.is-now {
+  border-color: var(--q-accent); color: var(--q-accent);
+  box-shadow: 0 0 0 3px rgba(47, 107, 255, .25);
+}
+.qs-omr-note {
+  margin: 14px 0 0; padding: 11px 12px; border-radius: var(--q-r-sm);
+  background: var(--q-sunk); font-size: 12.5px; line-height: 1.55; color: var(--q-ink-2);
+}
+@media (min-width: 1100px) {
+  .qs-main:has(> .qs-omr) {
+    max-width: calc(var(--q-col) + 300px);
+    display: grid; grid-template-columns: minmax(0, 1fr) 280px;
+    column-gap: 20px; align-items: start;
+  }
+  .qs-main:has(> .qs-omr) > :not(.qs-omr) { grid-column: 1; }
+  .qs-main:has(> .qs-omr) > .qs-omr {
+    grid-column: 2; grid-row: 1 / span 20; margin-top: 0;
+    position: sticky; top: calc(var(--q-head-h) + 20px);
+  }
+}
+@media (max-width: 640px) {
+  .qs-plain { padding: 24px 18px 22px; }
+  .qs-omr-grid { grid-template-columns: repeat(8, 1fr); }
+}

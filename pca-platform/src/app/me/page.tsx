@@ -203,10 +203,12 @@ export default async function Home() {
         ? <Link className="cm-btn" href="/me/experience/new">+ 경험 추가</Link>
         : null}>
       <CmHead
-        /* **이름을 제목으로 쓰지 않는다.** 로그인한 사람은 자기 이름을
-           이미 알고, 쪽 제목 자리는 `이 쪽이 무엇인가` 를 말하는 자리다.
-           이름이 제목이면 쪽마다 같은 글자가 가장 크게 선다 */
-        title={HEAD[st.stage]}
+        /* **첫 화면은 인사로 연다**(화면 시안 2026-10-20). 학교 포털의
+           첫 화면처럼 `○○ 학생, 안녕하세요` 가 제목이고, 이 쪽이 지금
+           어느 단계인지는 제목 위 한 줄로 옮겼다. 다른 쪽은 그대로 쪽
+           이름이 제목이다 */
+        kicker={HEAD[st.stage]}
+        title={`${user.name} 학생, 안녕하세요`}
         /* 제목 아래 한 줄(규격 §4) */
         meta={`${major ?? "전공 진단"}${st.result_at ? ` · 최근 업데이트 ${st.result_at}` : ""}`}
         /* **결과가 있는 사람에게는 설명 문단을 두지 않는다**(규격 §9).
