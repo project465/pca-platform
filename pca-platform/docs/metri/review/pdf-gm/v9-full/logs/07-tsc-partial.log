@@ -1,0 +1,16 @@
+$ tsc --noEmit -p tsconfig.json   # 전역 tsc(/opt/node22/bin/tsc) · node_modules 일부만 있음(npm 레지스트리 막힘)
+# 전체 오류 줄 수: 12395 — 대부분 의존성·node 타입이 없어서 나는 TS2591/TS2307/TS7016 과 그 연쇄(TS7006)
+# 이 회차가 고친 파일만 거른 결과(의존성 없음 오류 TS2591·TS2307·TS7016 제외):
+  src/lib/me-v3/report-gm/render4.ts — 0
+  src/lib/me-v3/report-gm/render5.ts — 0
+  src/lib/me-v3/report-gm/render6.ts — 0
+  src/lib/me-v3/report-gm/report3.ts — 0
+  src/lib/me-v3/report-gm/analysis3.ts — 0
+  src/lib/me-v3/report-gm/companies.ts — 0
+  src/lib/me-v3/report-gm/words.ts — 0
+  scripts/lab/gm-full6.ts — 1
+      scripts/lab/gm-full6.ts(22,79): error TS7006: Parameter 'x' implicitly has an 'any' type.
+  scripts/lab/gm-a-interview.ts — 1
+      scripts/lab/gm-a-interview.ts(18,79): error TS7006: Parameter 'x' implicitly has an 'any' type.
+  scripts/lab/gm-a-source.ts — 0
+# 판정: 정식 npm run typecheck 는 NOT VERIFIED(의존성 설치 불가).

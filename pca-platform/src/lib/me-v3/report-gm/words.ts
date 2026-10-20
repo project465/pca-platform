@@ -26,7 +26,7 @@ export const JUDGE: Record<Axis, { name: string; plain: string; scene: string }>
 
 /** 단계 넷: 이름표(짧게) · 문장 안에서 쓰는 말 */
 export const STEP: Record<Level, { tag: string; said: string }> = {
-  0: { tag: "응답 없음", said: "해 본 적이 없다고 답했습니다" },
+  0: { tag: "해 본 적 없음", said: "그 판단을 해 본 장면이 없다고 답했습니다(답은 했고, 답의 내용이 ‘없음’ 입니다)" },
   1: { tag: "지시받아 수행", said: "다른 사람이 정한 조건 안에서 해 봤다고 답했습니다" },
   2: { tag: "직접 수행", said: "스스로 맡아 해 봤다고 답했습니다" },
   3: { tag: "기준까지 직접 결정", said: "기준을 직접 정했다고 답했고, 체크리스트에서도 그 장면을 골랐습니다" },

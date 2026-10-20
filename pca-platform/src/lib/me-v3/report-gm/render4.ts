@@ -108,7 +108,7 @@ function p1(r: Report3): string {
 
 const SER = ["#2A5CAA", "#B9822F", "#2F7F74", "#7A4FA0"];
 function radar(r: Report3): string {
-  const W = 360, H = 330, cx = 180, cy = 168, R = 112;
+  const W = 360, H = 330, cx = 180, cy = 168, R = 100; // v9: 이름표를 11px(종이 위 8.6pt)로 키우고 둘레를 줄여 이름표가 그림 밖으로 나가지 않게
   const n = r.radar.axes.length;
   const ang = (i: number) => -Math.PI / 2 + (2 * Math.PI * i) / n;
   const rad = (lv: Level) => (lv === 0 ? 0.08 : lv / 3) * R;
@@ -121,9 +121,9 @@ function radar(r: Report3): string {
     const [x, y] = pt(i, R + 14);
     const anchor = Math.abs(x - cx) < 8 ? "middle" : x > cx ? "start" : "end";
     const t = JUDGE[a.axis].name, w = t.split(" ");
-    const lines = t.length > 7 && w.length > 1 ? [w.slice(0, Math.ceil(w.length / 2)).join(" "), w.slice(Math.ceil(w.length / 2)).join(" ")] : [t];
-    const y0 = y + 3.5 - (lines.length - 1) * 5.5 + (Math.abs(x - cx) < 8 && y < cy ? -5 : 0);
-    return `<text x="${x.toFixed(1)}" y="${y0.toFixed(1)}" text-anchor="${anchor}" class="rd-l">${lines.map((l, k) => `<tspan x="${x.toFixed(1)}" dy="${k ? 11 : 0}">${esc(l)}</tspan>`).join("")}</text>`;
+    const lines = t.length > 5 && w.length > 1 ? [w.slice(0, Math.ceil(w.length / 2)).join(" "), w.slice(Math.ceil(w.length / 2)).join(" ")] : [t];
+    const y0 = y + 3.5 - (lines.length - 1) * 6.5 + (Math.abs(x - cx) < 8 && y < cy ? -5 : 0);
+    return `<text x="${x.toFixed(1)}" y="${y0.toFixed(1)}" text-anchor="${anchor}" class="rd-l">${lines.map((l, k) => `<tspan x="${x.toFixed(1)}" dy="${k ? 13 : 0}">${esc(l)}</tspan>`).join("")}</text>`;
   }).join("");
   const series = r.radar.series.map((s, k) => {
     const pts = s.levels.map((v, i) => (v === null ? null : pt(i, rad(v))));
@@ -284,12 +284,12 @@ ul,ol{margin:0;padding:0;list-style:none}
 .rh{position:absolute;top:9mm;left:17mm;right:17mm;display:flex;justify-content:space-between;font-size:7.8pt;color:var(--muted);border-bottom:.5pt solid var(--rule);padding-bottom:2mm}
 .rf{position:absolute;bottom:9mm;left:17mm;right:17mm;display:flex;justify-content:space-between;font-size:7.8pt;color:var(--muted)}
 .rf b{color:var(--navy);font-weight:700}.rv{color:#9A6A22}
-.bd{position:absolute;top:19mm;bottom:17mm;left:17mm;right:17mm}
-.op{border-bottom:1.6pt solid var(--navy);padding-bottom:4mm;margin-bottom:5mm}
+.bd{position:absolute;top:18mm;bottom:15mm;left:17mm;right:17mm}
+.op{border-bottom:1.6pt solid var(--navy);padding-bottom:3mm;margin-bottom:4mm}
 .kick{display:flex;gap:8pt;align-items:baseline;font-size:8.4pt;letter-spacing:.6pt;color:var(--blue);font-weight:700}
 .kick .no{color:var(--navy);border:1pt solid var(--navy);border-radius:2pt;padding:0 4pt;letter-spacing:0}
-.op h1{font-size:23pt;line-height:1.25;margin:2.5mm 0 2mm;font-weight:800;letter-spacing:-.3pt}
-.dek{font-size:12pt;line-height:1.6;color:var(--navy);max-width:172mm;margin:0}
+.op h1{font-size:23pt;line-height:1.25;margin:2mm 0 1.5mm;font-weight:800;letter-spacing:-.3pt}
+.dek{font-size:11.2pt;line-height:1.55;color:var(--navy);max-width:172mm;margin:0}
 .eyebrow{font-size:9pt;font-weight:700;color:var(--navy);letter-spacing:.2pt;margin:0 0 2.5mm;padding-top:1mm;border-top:.6pt solid var(--navy);display:flex;justify-content:space-between;gap:8pt}
 .eyebrow span{font-weight:400;color:var(--muted);font-size:8pt;letter-spacing:0}
 .src{font-size:8pt;color:var(--muted);line-height:1.5;margin-top:3mm}
@@ -308,7 +308,7 @@ ul,ol{margin:0;padding:0;list-style:none}
 .cv-goal div{padding:2.6mm 0;border-bottom:.6pt solid rgba(255,255,255,.2)}
 .cv-goal dt{font-size:8pt;color:#BFD0EA;letter-spacing:.4pt}.cv-goal dd{margin:0;font-size:12.5pt;font-weight:700;color:#fff}
 .cv-sig{margin:0}.sig{width:86mm;height:auto;display:block}
-.sg-l{font-size:8.2px;fill:#fff;fill-opacity:.85}.sg-l.off{fill-opacity:.45}
+.sg-l{font-size:9.2px;fill:#fff;fill-opacity:.85}.sg-l.off{fill-opacity:.45}
 .cv-sig figcaption{font-size:7.8pt;color:#BFD0EA;line-height:1.5;margin-top:1mm}
 .cv-low{padding:9mm 17mm 0}
 .cv-lead{font-size:14pt;line-height:1.62;color:var(--navy);font-weight:400;border-left:3pt solid var(--amber);padding-left:5mm;margin:0 0 7mm}
@@ -323,7 +323,7 @@ ul,ol{margin:0;padding:0;list-style:none}
 /* ② 역량 */
 .p2-g{display:grid;grid-template-columns:100mm 1fr;gap:7mm}
 .p2-fig{margin:0}.rd{width:100mm;height:auto;display:block}
-.rd-l{font-size:9.6px;fill:var(--navy);font-weight:700}
+.rd-l{font-size:11px;fill:var(--navy);font-weight:700}
 .rd-scale{display:flex;gap:3mm;font-size:8pt;color:var(--muted);margin:1mm 0 1.5mm;flex-wrap:wrap}.rd-scale li{display:flex;align-items:center;gap:1.4mm}
 .rd-scale i{width:5mm;height:0;border-top:1pt dashed #AEB7C6;display:inline-block}.rd-scale i.rs3{border-top:1.2pt solid #AEB7C6}
 .lg{display:flex;flex-wrap:wrap;gap:3pt 10pt;font-size:8.6pt;margin-top:1mm}
@@ -354,7 +354,7 @@ ul,ol{margin:0;padding:0;list-style:none}
 .ledger{display:grid;grid-template-columns:1.25fr 1.25fr .8fr .7fr;gap:0;border-top:1.4pt solid var(--navy);border-bottom:.6pt solid var(--rule);margin-bottom:3.4mm}
 .ledger>div{padding:2.4mm 3mm 3mm 0;margin-right:3mm;border-right:.6pt solid var(--rule)}.ledger>div:last-child{border-right:0;margin-right:0}
 .lg-n{font-size:22pt;font-weight:800;color:var(--navy);line-height:1.1}.ledger h4{font-size:9.6pt}.lg-s{font-size:7.8pt;color:var(--muted);margin:0 0 1.5mm}
-.ledger li{font-size:8.8pt;line-height:1.46;padding:.9mm 0;border-top:.5pt dotted var(--rule)}.none{font-size:8.6pt;color:#9AA2B0}
+.ledger li{font-size:8.8pt;line-height:1.46;padding:.9mm 0;border-top:.5pt dotted var(--rule)}.none{font-size:8.6pt;color:#5B6577}
 .p3-g{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5mm}.p3-g p{font-size:9.6pt}
 .rec{background:var(--tint);border-radius:2pt;padding:2.4mm 3.2mm;margin-bottom:3mm}.rec h4{font-size:8pt;color:var(--blue);letter-spacing:.3pt}.rec b{display:block;font-size:9.6pt;color:var(--navy);line-height:1.4;margin-top:.6mm}
 .rec>span{font-size:8pt;color:var(--muted)}.rec dl{margin:1.5mm 0 0}.rec dl div{display:grid;grid-template-columns:20mm 1fr;font-size:8.6pt;padding:.8mm 0;border-top:.5pt dotted #C9D2E0}.rec dt{color:var(--muted)}.rec dd{margin:0}

@@ -13,6 +13,7 @@ import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { load3 } from "./gm-report3";
 import { content } from "../../src/lib/me-v3/runtime/session";
+import { stepForAxis } from "../../src/lib/me-v3/report-gm/report3";
 
 const CASES = (process.env.CASES ?? "RICH:1,POOR:2,CONTRA:3").split(",").map((x) => x.split(":") as [string, string]);
 const WORK = path.resolve("var/pdf-gm");
@@ -55,7 +56,27 @@ async function main(): Promise<void> {
       console.log(`  그린 글(70쪽) 칸 ${dds.length}개 · 데이터와 다른 칸 ${rmis}`);
     } else console.log("  그린 글: HTML 없음(gm-full6 을 먼저 돌린다)");
     console.log(`  같은 판단 ${ok} · 직접 기입 ${slot} · 어긋남 ${mis}`);
-    bad += mis + rmis;
+    /* v9: 기업 심층 쪽의 ‘기록·응답 문장 ↔ 회사 직무 단계’ 짝. 짝을 지었으면 그 단계가 문장과 같은 판단의 동사를 써야 한다
+       (`stepForAxis` 가 고른 단계를 다시 대어 본다). 짝을 짓지 않은 자리는 어긋남이 아니고, 그 사실이 글에 적혀 있어야 한다 */
+    let pmis = 0, pon = 0, poff = 0;
+    for (const c of r.companies) for (const jb of c.jobs) {
+      const pr = jb.pair;
+      if (!pr) { console.log(`  [기업] ${c.name} · ${jb.name}: 짝 대상 없음 — ${jb.develop.slice(0, 60)}…`); continue; }
+      const again = stepForAxis(pr.axis, jb.flow);
+      if (pr.step) {
+        pon++;
+        const okStep = again === pr.step && jb.develop.includes(pr.step);
+        if (!okStep) pmis++;
+        console.log(`  [기업] ${c.name} · ${jb.name}: [${pr.axis} ${AXIS_NAME[pr.axis ?? ""] ?? ""}] ‘${pr.from}’ ↔ ‘${pr.step}’ → ${okStep ? "같은 판단" : "어긋남"}`);
+      } else {
+        poff++;
+        const said = /짝을 짓지 않았습니다/.test(jb.develop);
+        if (!said || again) pmis++;
+        console.log(`  [기업] ${c.name} · ${jb.name}: [${pr.axis} ${AXIS_NAME[pr.axis ?? ""] ?? ""}] ‘${pr.from}’ ↔ (맞는 단계 없음) → ${said && !again ? "짝 안 지음(글에 적음)" : "어긋남"}`);
+      }
+    }
+    console.log(`  기업 짝: 지음 ${pon} · 안 지음 ${poff} · 어긋남 ${pmis}`);
+    bad += mis + rmis + pmis;
   }
   console.log(`\n어긋남 합계 ${bad}`);
   process.exit(bad ? 1 : 0);

@@ -25,6 +25,8 @@ const OUT = process.env.OUT ?? "docs/metri/review/pdf-gm/v6-full";
 const J = (p: string) => JSON.parse(readFileSync(p, "utf8"));
 
 /* 쪽마다 넘친 높이를 재고, 넘치면 .bd 의 자식만 줄인다(.bd 상자는 그대로라 머리·꼬리와 겹치지 않는다) */
+/* v9: 줄이는 하한. v8 은 0.83 까지 줄여 8pt 글자가 6.6pt 로 찍혔다. 글자 바닥(8.9pt)과 짝을 맞춰 0.96 까지만 줄인다 */
+const MIN_ZOOM = Number(process.env.GM_MIN_ZOOM ?? "0.96");
 const FIT_JS = `(() => {
   const over = (pg) => { const box = pg.querySelector(".bd").getBoundingClientRect(); let max = 0;
     for (const e of pg.querySelectorAll(".bd *")) { const b = e.getBoundingClientRect(); if (b.height) max = Math.max(max, b.bottom); }
@@ -32,9 +34,34 @@ const FIT_JS = `(() => {
   return [...document.querySelectorAll(".pg")].map((pg, i) => {
     const bd = pg.querySelector(".bd"); if (!bd) return { i: i + 1, n: Number(pg.dataset.page), over: 0, zoom: 1 };
     let o = over(pg), z = 1;
-    while (o > 0 && z > 0.83) { z = Math.round((z - 0.01) * 100) / 100; for (const c of bd.children) c.style.zoom = String(z); o = over(pg); }
+    while (o > 0 && z > __MINZ__) { z = Math.round((z - 0.01) * 100) / 100; for (const c of bd.children) c.style.zoom = String(z); o = over(pg); }
     return { i: i + 1, n: Number(pg.dataset.page), over: o, zoom: z };
   });
+})()`;
+
+/* v9: 쪽마다 실제로 찍히는 글자 크기를 잰다. 줄여 맞춘 쪽은 .bd 자식에 zoom 이 걸려 있으니 조상의 zoom 을 곱한 값이 종이 위 크기다.
+   글자가 직접 들어 있는 요소만 센다(빈 상자는 뺀다). 결과는 pt 로 적는다(1px = 0.75pt). */
+const FONT_JS = `(() => {
+  const out = [];
+  document.querySelectorAll(".pg").forEach((pg, i) => {
+    const seen = new Map();
+    for (const el of pg.querySelectorAll("*")) {
+      const own = [...el.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent).join("").replace(/\\s+/g, " ").trim();
+      if (!own) continue;
+      const r = el.getBoundingClientRect(); if (!r.width || !r.height) continue;
+      let z = 1; for (let a = el; a && a !== document.documentElement; a = a.parentElement) { const v = parseFloat(getComputedStyle(a).zoom); if (v && v !== 1) z *= v; }
+      let raw = parseFloat(getComputedStyle(el).fontSize) * 0.75;
+      if (el instanceof SVGElement && el.getScreenCTM) { const m = el.getScreenCTM(); if (m) raw = raw * Math.sqrt(m.a * m.a + m.b * m.b); }
+      const eff = Math.round(raw * z * 100) / 100;
+      const where = el.closest(".rh,.rf") ? "머리·꼬리" : "본문";
+      const cls = (el.className && typeof el.className === "string" ? el.className.split(" ")[0] : "") || el.tagName.toLowerCase();
+      const k = where + "|" + el.tagName.toLowerCase() + "." + cls + "|" + eff;
+      if (!seen.has(k)) seen.set(k, { page: i + 1, n: Number(pg.dataset.page), where, sel: el.tagName.toLowerCase() + "." + cls, raw: Math.round(raw * 100) / 100, zoom: z, eff, text: own.slice(0, 48), count: 0 });
+      seen.get(k).count++;
+    }
+    out.push(...seen.values());
+  });
+  return out;
 })()`;
 
 function fonts(): Fonts {
@@ -58,9 +85,10 @@ async function one(TAG: string, ID: string, b: Awaited<ReturnType<typeof chromiu
   await p.goto("file://" + html, { waitUntil: "load" });
   await p.evaluate("document.fonts.ready");
   await p.emulateMedia({ media: "print" });
-  const fit = await p.evaluate(FIT_JS) as { i: number; n: number; over: number; zoom: number }[];
+  const fit = await p.evaluate(FIT_JS.replace("__MINZ__", String(MIN_ZOOM))) as { i: number; n: number; over: number; zoom: number }[];
   mkdirSync(OUT, { recursive: true });
   const pdf = path.join(OUT, `BIZ-PRO-${TAG}.pdf`);
+  const sizes = await p.evaluate(FONT_JS) as { page: number; n: number; where: string; sel: string; raw: number; zoom: number; eff: number; text: string; count: number }[];
   await p.pdf({ path: pdf, format: "A4", printBackground: true, preferCSSPageSize: true });
   await p.close();
   const pages = Number(/Pages:\s+(\d+)/.exec(execFileSync("pdfinfo", [pdf]).toString())![1]);
@@ -78,6 +106,17 @@ async function one(TAG: string, ID: string, b: Awaited<ReturnType<typeof chromiu
     "## 뺀 쪽과 까닭", "", "| 설계 | 제목 | 까닭 |", "|---|---|---|", ...out.skipped.map((x) => `| ${x.n} | ${x.title} | ${x.why} |`), "",
   ].join("\n");
   writeFileSync(path.join(OUT, `BUILD_${TAG}.md`), md);
+  /* 글자 크기 감사: 8.5pt 아래로 찍힌 글자(본문)를 쪽·선택자·글 첫머리와 함께 적는다 */
+  const MIN = 8.5;
+  const small = sizes.filter((x) => x.eff < MIN - 0.01);
+  const body = small.filter((x) => x.where === "본문");
+  writeFileSync(path.join(OUT, `FONTS_${TAG}.md`), [
+    `# 글자 크기 감사 · ${TAG} (기준 ${MIN}pt · 줄여 맞춘 쪽의 zoom 을 곱한 종이 위 크기)`, "",
+    `- 본문에서 ${MIN}pt 아래: **${body.reduce((a, x) => a + x.count, 0)}개 요소 · ${new Set(body.map((x) => x.page)).size}쪽** · 가장 작은 값 ${body.length ? Math.min(...body.map((x) => x.eff)) : "—"}pt`,
+    `- 머리·꼬리(쪽 번호·학교 이름)에서 ${MIN}pt 아래: ${small.filter((x) => x.where !== "본문").reduce((a, x) => a + x.count, 0)}개 요소`, "",
+    "| 쪽 | 설계 | 선택자 | 지정 크기 | zoom | 종이 위 | 개수 | 글 첫머리 |", "|---|---|---|---|---|---|---|---|",
+    ...body.sort((a, b) => a.page - b.page || a.eff - b.eff).map((x) => `| ${x.page} | ${x.n} | ${x.sel} | ${x.raw}pt | ${x.zoom} | **${x.eff}pt** | ${x.count} | ${x.text.replace(/\|/g, "/")} |`), "",
+  ].join("\n"));
   console.log(`${TAG} ${ID} → ${pdf} · ${pages}쪽 · 뺀 쪽 ${out.skipped.length} · 넘침 ${bad.length} · 줄인 쪽 ${fit.filter((x) => x.zoom < 1).length}`);
   return pages === out.pages.length && !bad.length;
 }

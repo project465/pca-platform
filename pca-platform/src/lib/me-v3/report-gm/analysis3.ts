@@ -259,7 +259,7 @@ export function crossRows(m: ResultModel, exps: Experience[]): CrossRow[] {
     const recText = rec.length ? rec.map((e) => e.title).join(" / ") : "기록 없음";
     const testText = !asked(d)
       ? (d.experience ? `자세히 묻지 않음 · 경험은 ${EXP_SAID[d.experience]} 답함` : "자세히 묻지 않음")
-      : d.confirmed.length ? `판단 ${d.confirmed.length}가지를 스스로 해 봤다고 답함${d.owned.length ? ` · 그중 ${d.owned.length}가지는 기준까지 직접 정함` : ""}` : "스스로 해 본 판단은 아직 없다고 답함";
+      : d.confirmed.length ? `판단 ${d.confirmed.length}가지를 스스로 해 봤다고 답함${d.owned.length ? ` · 그중 ${d.owned.length}가지는 기준까지 직접 정함` : ""}` : "물어본 판단을 모두 ‘해 본 적 없음’ 이나 ‘지시받아 수행’ 으로 답함";
     const picks = d.did.length;
     if (rec.length && d.confirmed.length && !(mismatch && picks === 0)) {
       rows.push({ code: d.code, name, kind: "BOTH", test: testText, record: recText,
@@ -642,7 +642,9 @@ function dirOf(m: ResultModel, r: RolePack, byCode: Map<string, ResultDomain>, o
   });
   const need: Direction3["need"] = req.filter((ax) => best(ax) < 2).map((ax) => {
     const lv = best(ax);
-    return { kind: "judge", name: JUDGE[ax].name, why: lv === -1 ? `이 직무와 이어지는 영역에서 이번에 묻지 않은 판단입니다. ${j(JUDGE[ax].plain, "을를")} 해 본 장면이 있는지 먼저 떠올려 보세요.` : `이 직무의 핵심 판단인데, 지금 응답은 ‘${STEP[lv as Level].tag}’ 단계입니다.` };
+    return { kind: "judge", name: JUDGE[ax].name, why: lv === -1 ? `이 직무와 이어지는 영역에서 이번에 묻지 않은 판단입니다. ${j(JUDGE[ax].plain, "을를")} 해 본 장면이 있는지 먼저 떠올려 보세요.`
+      : lv === 0 ? `이 직무의 핵심 판단인데, 해 본 적이 없다고 답했습니다. ‘${JUDGE[ax].scene}’ 같은 장면을 수업 과제 하나에서 직접 맡아 보면 첫 근거가 됩니다.`
+      : `이 직무의 핵심 판단인데, 다른 사람이 정한 조건 안에서만 해 봤다고 답했습니다. 다음 과제에서 그 기준을 내가 정하고 까닭을 남기면 서류에 쓸 장면이 됩니다.` };
   });
   if (!need.length) {
     for (const td of tds) { const d = byCode.get(td); if (!d || !asked(d)) need.push({ kind: "domain", name: domainName(core, td), why: "이 직무와 함께 이어지는 영역인데 이번 검사에서 자세히 묻지 않았습니다" }); }

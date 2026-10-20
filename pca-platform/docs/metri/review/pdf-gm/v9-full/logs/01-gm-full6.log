@@ -1,0 +1,6 @@
+$ DATABASE_URL=postgres:///cm_dev V3_PREVIEW_OPEN='*' CASES=RICH:1,POOR:2,CONTRA:3 OUT=docs/metri/review/pdf-gm/v9-full <rt>/run scripts/lab/gm-full6.ts   # GM_MIN_ZOOM 기본 0.96
+# <rt> = 저장소 밖 임시 실행기(npm 레지스트리 막힘) · git HEAD c5f22344 + 작업 트리 변경(커밋 전) · 2026-10-20T10:21:32Z
+RICH 1 → docs/metri/review/pdf-gm/v9-full/BIZ-PRO-RICH.pdf · 73쪽 · 뺀 쪽 7 · 넘침 0 · 줄인 쪽 6
+POOR 2 → docs/metri/review/pdf-gm/v9-full/BIZ-PRO-POOR.pdf · 59쪽 · 뺀 쪽 21 · 넘침 0 · 줄인 쪽 10
+CONTRA 3 → docs/metri/review/pdf-gm/v9-full/BIZ-PRO-CONTRA.pdf · 66쪽 · 뺀 쪽 14 · 넘침 0 · 줄인 쪽 7
+exit 0

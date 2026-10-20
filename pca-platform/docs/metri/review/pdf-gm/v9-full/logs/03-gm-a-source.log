@@ -1,0 +1,10 @@
+$ CASES=RICH,POOR,CONTRA <rt>/run scripts/lab/gm-a-source.ts   # var/pdf-gm/BIZ-PRO-<TAG>.html (01 에서 그린 것)
+
+## RICH · 기업 숫자 46개 · 칸에 출처 46 · 쪽 출처 줄만 0 · 출처 없음 0 · 등급 표시 없음 0
+
+## POOR · 기업 숫자 35개 · 칸에 출처 35 · 쪽 출처 줄만 0 · 출처 없음 0 · 등급 표시 없음 0
+
+## CONTRA · 기업 숫자 36개 · 칸에 출처 36 · 쪽 출처 줄만 0 · 출처 없음 0 · 등급 표시 없음 0
+
+출처 없음 합계 0
+exit 0

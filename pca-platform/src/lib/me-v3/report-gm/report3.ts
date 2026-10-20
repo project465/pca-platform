@@ -37,6 +37,8 @@ export type CompanyJob = {
   have: string[]; need: string[];
   learn: string[]; project: { title: string; steps: string[]; output: string };
   portfolio: string; develop: string; selfIntro: string; interview: string[]; posting: string[];
+  /** develop 문장이 기록·응답의 문장과 이 회사 직무의 한 단계를 짝지었는가 — 짝은 같은 판단(축)일 때만 짓는다 */
+  pair: { axis: string | null; from: string; step: string | null } | null;
 };
 export type CompanyDeep = {
   id: string; name: string; region: Region; regionBasis: string; verify: VerifyLevel;
@@ -113,7 +115,7 @@ export function build3(m: ResultModel, meta: Meta, exps: Experience[], set: OrgS
       ? `${s0.name}의 일을 스스로 맡아 해 봤고, 그 결과를 ${s0.artifacts[0]} 같은 결과물로 남겼다는 점이 이 결과에서 가장 분명하게 확인됩니다.`
       : s0.decisions.length || s0.acts.length
         ? `${s0.name}에서 스스로 해 본 일은 체크리스트 항목으로도 확인됩니다. 다만 그 일을 보여 줄 결과물은 아직 고르지 않았습니다.`
-        : `${withJosa(s0.name, "은는")} 이 결과에서 가장 많은 판단을 스스로 해 봤다고 답한 영역입니다. 그 장면을 보여 줄 체크리스트 항목과 결과물은 아직 없어, 응답으로만 확인된 상태입니다.`;
+        : `${withJosa(s0.name, "은는")} 이 결과에서 가장 많은 판단을 스스로 해 봤다고 답한 영역입니다. 다만 그 장면을 보여 줄 체크리스트 항목과 결과물은 고르지 않아, 지금은 응답으로만 확인된 상태입니다. 그 영역의 수업 과제 하나를 골라 내가 정한 것과 남은 결과물을 경험 기록에 적으면 서류에 쓸 근거가 됩니다.`;
     points.push({ label: s0.artifacts.length || s0.decisions.length ? "가장 분명한 강점" : "가장 많이 해 봤다고 답한 영역", fact: s0.story, meaning: meaning0,
       limit: st[0].comparisons.length ? "결과물의 완성도와 실제 성과 수치는 이 검사로 확인하지 않았습니다." : "결과를 무엇과 비교했는지는 아직 응답에 없습니다.",
       action: st[0].show });
@@ -144,9 +146,12 @@ export function build3(m: ResultModel, meta: Meta, exps: Experience[], set: OrgS
     : kind === "MIXED"
       ? `${z2.map((d) => nm(d.code)).join(", ")}에서 해 본 일은 응답으로 확인되지만, 그 경험을 보여 줄 근거가 아직 부족합니다. 해 본 일을 확인 가능한 기록으로 바꾸는 것이 첫 과제입니다.`
       : `${gr?.domains.join(", ") ?? "몇몇 영역"}에 관심이 분명하게 나왔습니다. 이 보고서는 그 관심을 첫 경험과 첫 포트폴리오로 바꾸는 순서를 담았습니다.`;
+  /* 빈 칸은 무엇이 비었고 무엇을 하면 채워지는지를 적는다: ‘아직 없음’ 만 적으면 다음 줄을 읽어야 뜻이 선다 */
+  const mapRows = interestEvidenceMap(m);
+  const told = mapRows.filter((x) => x.depth === 1).map((x) => x.name);
   const glance = [
-    { label: "직접 판단한 경험이 확인된 영역", value: z1.map((d) => nm(d.code)).join(" · ") || "아직 없음" },
-    { label: "해 본 일은 있고 근거가 더 필요한 영역", value: z2.map((d) => nm(d.code)).join(" · ") || "없음" },
+    { label: "직접 판단한 경험이 확인된 영역", value: z1.map((d) => nm(d.code)).join(" · ") || (pr[0] ? "없음 — 첫 근거는 실행 과제 1번에서" : "없음 — 직접 판단했다고 답한 영역 없음") },
+    { label: "해 본 일은 있고 근거가 더 필요한 영역", value: z2.map((d) => nm(d.code)).join(" · ") || (told.length ? `없음 — ${told.length > 2 ? `${told.slice(0, 2).join(" · ")} 등 ${told.length}곳은` : withJosa(told.join(" · "), "은는")} 지시받아 해 본 단계` : "없음 — 스스로 해 봤다고 답한 영역 없음") },
     { label: "관심은 높고 경험이 적은 영역", value: m.domains.filter((d) => d.zone === "Z4_INSUFFICIENT_EVIDENCE").map((d) => nm(d.code)).join(" · ") || "없음" },
     { label: "목표 직무 · 준비 상태", value: goalDir ? `${goalDir.name} · ${goalDir.readiness}` : "—" },
     { label: "먼저 할 일", value: pr[0] ? `${pr[0].domain} · ${pr[0].title}` : "—" },
@@ -174,9 +179,9 @@ export function build3(m: ResultModel, meta: Meta, exps: Experience[], set: OrgS
     stories.push({ from: `${r.title} — 경험 기록`, fits: r.jobs.map((x) => x.name),
       parts: [
         { label: "상황과 내 역할", text: `${r.kind} · ${r.period}${r.usedWhere.length ? ` · ${r.usedWhere.join(", ")}` : ""} — 맡은 역할은 직접 기입`, filled: true },
-        { label: "내가 정한 것", text: r.decisions[0] ?? "직접 기입", filled: !!r.decisions[0] },
-        { label: "그 결과 남긴 것", text: r.artifacts.join(" · ") || "직접 기입", filled: !!r.artifacts.length },
-        { label: "무엇과 비교했고 무엇이 달라졌나", text: r.comparisons[0] ?? "직접 기입 — 기록에 비교 대상이 아직 없습니다", filled: !!r.comparisons[0] },
+        { label: "내가 정한 것", text: r.decisions[0] ?? "직접 기입 — 기록의 ‘직접 정한 것’ 칸이 비어 있습니다. 그 활동에서 내가 고른 것 하나를 적습니다", filled: !!r.decisions[0] },
+        { label: "그 결과 남긴 것", text: r.artifacts.join(" · ") || "직접 기입 — 기록에 남은 결과물이 없습니다. 과제 파일·발표 자료의 이름을 적습니다", filled: !!r.artifacts.length },
+        { label: "무엇과 비교했고 무엇이 달라졌나", text: r.comparisons[0] ?? "직접 기입 — 기록의 ‘견준 대상’ 칸이 비어 있습니다. 목표·지난 결과·다른 안 가운데 무엇과 견줬는지 적습니다", filled: !!r.comparisons[0] },
       ],
       add: r.check.slice(0, 2).join(", ") + "을 먼저 채워 두세요." });
   }
@@ -199,7 +204,7 @@ export function build3(m: ResultModel, meta: Meta, exps: Experience[], set: OrgS
   for (const s of st.slice(0, 2)) {
     const pick = s.decisions[0] ?? s.acts[0];
     if (pick) usedPick.add(`${s.code}|${pick}`);
-    interview.push({ q: s.question, why: pick ? `${s.name}에서 고르신 판단을 면접관이 되짚는 질문입니다` : `${s.name}에서 스스로 해 봤다고 답한 장면을 되짚는 질문입니다 — 고른 문장은 아직 없습니다`, material: [s.decisions[0], s.artifacts[0], s.comparisons[0]].filter(Boolean).join(" · ") || "직접 기입",
+    interview.push({ q: s.question, why: pick ? `${s.name}에서 고르신 판단을 면접관이 되짚는 질문입니다` : `${s.name}에서 스스로 해 봤다고 답한 장면을 되짚는 질문입니다 — 체크리스트에서 고른 문장이 없어, 답의 장면은 직접 적습니다`, material: [s.decisions[0], s.artifacts[0], s.comparisons[0]].filter(Boolean).join(" · ") || "직접 기입",
       // 고른 문장이 없으면 질문이 ‘결과가 기대와 달랐던 적’(실패·수정)을 묻는다
       axis: pick ? axisOfPick(s.code, pick) : "J7", domain: s.code, pick });
   }
@@ -222,7 +227,7 @@ export function build3(m: ResultModel, meta: Meta, exps: Experience[], set: OrgS
     if (hit) usedPick.add(`${hit.td}|${hit.text}`);
     guideN++;
     interview.push({ q: `“${q.q}”`, why: q.why,
-      material: hit ? `${hit.name}의 ${hit.text}` : "직접 기입 — 이 질문이 묻는 판단에서 고른 문장이 아직 없습니다",
+      material: hit ? `${hit.name}의 ${hit.text}` : `직접 기입 — 이 질문이 묻는 판단${q.axis && JUDGE[q.axis as keyof typeof JUDGE] ? `(${JUDGE[q.axis as keyof typeof JUDGE].name})` : ""}에서 고른 문장이 없습니다. 해 본 장면이 없으면 실행 과제의 결과물로 답합니다`,
       axis: q.axis, domain: hit?.td, pick: hit?.text });
   }
 
@@ -252,7 +257,7 @@ export function build3(m: ResultModel, meta: Meta, exps: Experience[], set: OrgS
   const owned = portfolio.filter((p) => p.status === "보유").length;
   const made = proj ? `90일 프로젝트 ${qt(proj.title)}의 결과물` : "90일 안에 만든 결과물";
   plan.push(owned === 0
-    ? { label: "첫 결과물 한 건으로 포트폴리오 시작하기", period: "6개월", what: `${made}을 포트폴리오 첫 장으로 정리하기(지금 고른 결과물은 아직 없습니다)`, why: "결과물이 한 건이라도 있어야 서류에서 보여 줄 것이 생깁니다", how: "결과물 한 장에 ‘내가 정한 것’ 한 줄과 ‘무엇과 견줬나’ 한 줄 붙이기", output: "포트폴리오 첫 장", check: "그 한 장만 보고 내가 무엇을 판단했는지 알 수 있는가" }
+    ? { label: "첫 결과물 한 건으로 포트폴리오 시작하기", period: "6개월", what: `${made}을 포트폴리오 첫 장으로 정리하기(지금은 고른 결과물이 0건이라 이것이 첫 장입니다)`, why: "결과물이 한 건이라도 있어야 서류에서 보여 줄 것이 생깁니다", how: "결과물 한 장에 ‘내가 정한 것’ 한 줄과 ‘무엇과 견줬나’ 한 줄 붙이기", output: "포트폴리오 첫 장", check: "그 한 장만 보고 내가 무엇을 판단했는지 알 수 있는가" }
     : owned < 3
       ? { label: `가진 결과물 ${owned}건에 새 결과물 하나를 더해 묶기`, period: "6개월", what: `고른 결과물 ${owned}건과 ${made}을 한 묶음의 포트폴리오로 정리`, why: "흩어진 결과물은 지원 시점에 다시 찾기 어렵습니다", how: "결과물마다 ‘내가 정한 것·비교한 대상’ 한 줄 붙이기", output: `포트폴리오 묶음(${owned + 1}건)`, check: "결과물마다 내 역할이 한 줄로 적혀 있는가" }
       : { label: `결과물 ${owned}건을 포트폴리오로 묶기`, period: "6개월", what: `고른 결과물 ${owned}건을 한 묶음의 포트폴리오로 정리`, why: "흩어진 결과물은 지원 시점에 다시 찾기 어렵습니다", how: "결과물마다 ‘내가 정한 것·비교한 대상’ 한 줄 붙이기", output: "포트폴리오 묶음", check: "결과물마다 내 역할이 한 줄로 적혀 있는가" });
@@ -303,6 +308,34 @@ export function build3(m: ResultModel, meta: Meta, exps: Experience[], set: OrgS
   };
 }
 
+/* ── v9: 기록의 판단 ↔ 회사 직무 단계 짝짓기 ─────────────────────────────
+ * v8 은 기록의 첫 ‘직접 정한 것’ 을 회사 직무 차례의 둘째 단계(`flow[1]`)에 무조건 붙였다.
+ * 그래서 ‘여러 안 가운데 하나를 근거를 들어 골랐다’(기준과 배분) 가 ‘개발 단계와 다음 마일스톤을
+ * 정리한다’(문서 정리) 와 ‘가까운 장면’ 으로 섰다. 짝은 **같은 판단(축)을 쓰는 단계**에만 짓는다:
+ * 문장의 축은 체크리스트에서 그 문장이 서 있는 자리로 정하고, 단계의 축은 그 단계가 쓰는 동사로 본다.
+ * 맞는 단계가 없으면 짝을 짓지 않고 그 사실을 적는다. */
+const STEP_CUE: Record<string, string[]> = {
+  J1: ["나눈다", "범위", "구성", "요구 사항"],
+  J2: ["목표", "지표", "수치", "조건으로", "사양"],
+  J3: ["고른", "고르", "정한다", "정하고", "선정", "배분", "가격안", "기준을 적용", "결정", "우선"],
+  J4: ["검토", "조사", "분석", "시장 규모", "살핀다", "파악", "데이터"],
+  J5: ["만든다", "쓴다", "작성", "보고서", "제안서", "자료를", "카탈로그", "서류", "기획한다"],
+  J6: ["견준다", "비교", "대조", "본다", "확인", "추적"],
+  J7: ["원인", "좁혀", "조정", "대체", "지연", "바꾼"],
+  J8: ["보고", "잇는다", "연결", "넘긴다", "계약을 맺는다", "반영"],
+};
+export function stepForAxis(axis: string | null | undefined, flow: string[]): string | null {
+  if (!axis || !STEP_CUE[axis]) return null;
+  let best: string | null = null, bestN = 0;
+  for (const st of flow) { const n = STEP_CUE[axis].filter((k) => st.includes(k)).length; if (n > bestN) { best = st; bestN = n; } }
+  return best;
+}
+export function axisOfText(core: string, tds: string[], text: string): string | null {
+  const ck = content(core).checklists.domains;
+  for (const td of tds) { const hit = Object.entries(ck[td] ?? {}).find(([, list]) => list.some((x) => x.text === text)); if (hit) return hit[0]; }
+  return null;
+}
+
 function companyDeep(m: ResultModel, e: Explore, dirs: Direction3[], exps: Experience[]): CompanyDeep {
   const core = coreOf(m);
   const o: Org2 = e.org;
@@ -341,11 +374,29 @@ function companyDeep(m: ResultModel, e: Explore, dirs: Direction3[], exps: Exper
     const rec = exps.find((x) => x.td_codes.some((td) => tds.includes(td)));
     const strongD = tds.map((td) => byCode.get(td)).find((d) => d && d.zone === "Z1_EVIDENCE_ESTABLISHED") ?? tds.map((td) => byCode.get(td)).find((d) => d && d.confirmed.length);
     const sev = strongD ? evidenceOf(strongD) : null;
-    const develop = rec
-      ? `경험 기록 ${withJosa(`‘${rec.title}’`, "을를")} 이 회사의 ${rp?.name_ko ?? ""} 일에 대어 다시 정리할 수 있습니다. ${rec.decisions[0] ? `기록의 ${withJosa(`‘${rec.decisions[0]}’`, "이가")} 이 직무의 ${withJosa(`‘${cg?.flow[1] ?? rg?.process[2]?.what ?? "판단"}’`, "과와")} 가까운 장면입니다.` : "기록에 직접 정한 것을 먼저 채워 두세요."}`
-      : sev && (sev.decisions[0] ?? sev.acts[0])
-        ? `${domainName(core, strongD!.code)}에서 고른 ${withJosa(`‘${sev.decisions[0] ?? sev.acts[0]}’`, "을를")} 이 회사의 ${cg?.flow[1] ? `‘${cg.flow[1]}’` : "일"}에 견주어 설명해 보세요. 같은 판단을 이 산업의 장면으로 옮기는 연습이 됩니다.`
-        : `아직 이 직무와 이어지는 경험 기록이 없습니다. 아래 프로젝트가 이 회사·직무를 겨냥한 첫 경험이 됩니다.`;
+    const flowAll = cg?.flow ?? (rg?.process.map((p) => p.what) ?? []);
+    const roleKo = rp?.name_ko ?? jb.name;
+    let pair: CompanyJob["pair"] = null;
+    let develop: string;
+    if (rec && rec.decisions[0]) {
+      const ax = axisOfText(core, rec.td_codes, rec.decisions[0]) ?? "J3";
+      const st = stepForAxis(ax, flowAll);
+      pair = { axis: ax, from: rec.decisions[0], step: st };
+      develop = st
+        ? `경험 기록 ‘${rec.title}’의 ${withJosa(`‘${rec.decisions[0]}’`, "은는")} ${JUDGE[ax as keyof typeof JUDGE].name}의 장면입니다. 이 회사 ${roleKo} 일에서 같은 판단을 쓰는 단계는 ‘${st}’ 입니다. 면접에서는 이 둘을 나란히 놓고 말할 수 있습니다.`
+        : `경험 기록 ‘${rec.title}’의 ${withJosa(`‘${rec.decisions[0]}’`, "은는")} ${JUDGE[ax as keyof typeof JUDGE].name}의 장면인데, 이 회사 ${roleKo} 일의 차례(${flowAll.length}단계)에는 같은 판단을 쓰는 단계가 적혀 있지 않아 짝을 짓지 않았습니다. 면접에서는 기록의 장면 그대로 설명하고, 이 회사 일과의 연결은 공고를 확인한 뒤 직접 적습니다.`;
+    } else if (rec) {
+      const shared = rec.td_codes.find((td) => tds.includes(td));
+      develop = `경험 기록 ${withJosa(`‘${rec.title}’`, "은는")} 이 직무가 쓰는 ${shared ? domainName(core, shared) : "같은"} 영역의 기록이지만 ‘직접 정한 것’ 칸이 비어 있어, 아직 이 회사 ${roleKo} 일에 대어 말할 장면이 없습니다. 그 활동에서 내가 고른 것 하나(대상·기준·방법 가운데)를 기록에 먼저 적습니다.`;
+    } else if (sev && (sev.decisions[0] ?? sev.acts[0])) {
+      const from = sev.decisions[0] ?? sev.acts[0];
+      const ax = axisOfText(core, [strongD!.code], from);
+      const st = stepForAxis(ax, flowAll);
+      pair = { axis: ax, from, step: st };
+      develop = st
+        ? `${domainName(core, strongD!.code)}에서 고른 ${withJosa(`‘${from}’`, "을를")} 이 회사의 ${withJosa(`‘${st}’`, "과와")} 같은 판단(${JUDGE[ax as keyof typeof JUDGE].name})으로 견주어 설명해 보세요. 같은 판단을 이 산업의 장면으로 옮기는 연습이 됩니다.`
+        : `${domainName(core, strongD!.code)}에서 고른 ${withJosa(`‘${from}’`, "은는")} 이 회사 ${roleKo} 일의 차례에 같은 판단을 쓰는 단계가 적혀 있지 않아 짝을 짓지 않았습니다. 고른 장면 그대로 설명합니다.`;
+    } else develop = `이 직무와 이어지는 경험 기록도, 체크리스트에서 고른 근거도 없습니다. 아래 프로젝트의 결과물이 이 회사·직무를 겨냥한 첫 경험이 됩니다.`;
     const selfIntro = sev && sev.artifacts[0]
       ? `자기소개서에서는 ${(sev.decisions[0] ?? sev.acts[0]) ? `${withJosa(`‘${sev.decisions[0] ?? sev.acts[0]}’`, "을를")} 중심 장면으로, ` : ""}${withJosa(sev.artifacts[0], "을를")} 결과로 두고, 이 회사의 ${o.industry_line} 맥락에서 그 판단이 왜 필요한지 한 문장을 덧붙이는 구성이 맞습니다.`
       : `지금은 자기소개서에 쓸 직접 경험이 부족합니다. 아래 프로젝트의 결과물(${cg?.project.output ?? rg?.firstProject.output ?? "결과물"})이 그 자리를 채웁니다.`;
@@ -356,7 +407,7 @@ function companyDeep(m: ResultModel, e: Explore, dirs: Direction3[], exps: Exper
       have, need,
       learn: cg?.learn ?? rg?.knowledge ?? [],
       project: cg?.project ?? { title: rg?.firstProject.title ?? "", steps: rg?.firstProject.steps ?? [], output: rg?.firstProject.output ?? "" },
-      portfolio: cg?.portfolio ?? rg?.portfolio[0] ?? "", develop, selfIntro,
+      portfolio: cg?.portfolio ?? rg?.portfolio[0] ?? "", develop, selfIntro, pair,
       interview: [...(cg?.interview ?? []), ...(rg?.interview.slice(0, 1).map((x) => x.q) ?? [])].slice(0, 3),
       posting: [...(cg?.posting ?? []), ...(rg?.postingCheck.slice(0, 1) ?? [])].slice(0, 4),
     };

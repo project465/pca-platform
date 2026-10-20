@@ -67,6 +67,28 @@ export function gaps(lib: Lib, n: number): string {
   if (!p.missing.length) return "";
   return `<p class="gap">부족한 조사 자료 — ${p.missing.map((k) => `<b>${esc(k)}</b> ${esc(lib.toc.missing[k]?.what ?? "")}`).join(" · ")}</p>`;
 }
+/* ── v9: 공시 사실과 해석을 한 문장에 섞지 않는다 ─────────────────────
+ * 공시 쪽 문장은 둘로 가른다: **공시 확인**(OpenDART 값 그대로 · 접수번호) 한 줄과 **해석**(이 리포트가
+ * 덧붙이는 읽는 법·가능성) 한 줄. 한 문장 안에 ‘매출 1,415억 원’ 과 ‘연구비를 미리 쓰는 해일 수 있다’ 가
+ * 함께 서면 읽는 사람이 둘째 말까지 공시에서 확인한 사실로 읽는다. */
+/** 공시 숫자의 출처 한 줄: 그 숫자가 나온 사업보고서 이름과 접수번호 */
+export function finSrc(d: DartOrg | undefined, what: "fin" | "staff" = "fin"): string {
+  const y = what === "fin" ? d?.financials?.year : d?.staff?.year;
+  const ar = (y ? d?.annual_reports?.find((a) => a.report.includes(`(${y}.`)) : undefined) ?? d?.annual_reports?.[0];
+  return ar ? `${ar.report} · 접수번호 ${ar.rcept_no}` : `OpenDART ${what === "fin" ? "주요 계정" : "직원 현황"}(${d?.checked_on ?? "확인일 미상"})`;
+}
+/** 공시 확인 한 줄 + 해석 한 줄. 해석이 없으면 공시 줄만 */
+export const FR = (fact: string, read?: string, src?: string) =>
+  `<p class="fr">${tag("OFFICIAL_DIRECT", "공시 확인")} ${esc(fact)}${src ? `<span class="fr-s">${esc(src)}</span>` : ""}</p>${read ? `<p class="fr">${tag("READ", "해석")} ${esc(read)}</p>` : ""}`;
+/** 손익 부호: 공시로 확인한 사실과, 그 부호가 묻게 하는 질문(해석)을 갈라 돌려준다 */
+export function signs(op: number | undefined, ni: number | undefined): { fact: string; read: string } {
+  if (op === undefined || ni === undefined) return { fact: "공시 계정이 비어 있습니다.", read: "읽는 법을 적지 않았습니다." };
+  const v = `영업이익 ${eok(op)}억 원 · 당기순이익 ${eok(ni)}억 원`;
+  if (op < 0 && ni >= 0) return { fact: `${v} — 영업이익은 마이너스, 당기순이익은 플러스입니다.`, read: "본업 밖(금융 수익 등)에서 이익이 났을 수 있습니다. 손익계산서 주석에서 확인합니다." };
+  if (op < 0 && ni < 0) return { fact: `${v} — 둘 다 마이너스입니다.`, read: "연구개발비처럼 미리 쓰는 비용이 매출보다 큰 해일 수 있습니다. 보고서의 비용 구성에서 확인합니다." };
+  if (op >= 0 && ni < 0) return { fact: `${v} — 영업이익은 플러스, 당기순이익은 마이너스입니다.`, read: "본업 밖의 비용이나 손실이 있었을 수 있습니다. 영업외손익 주석에서 확인합니다." };
+  return { fact: `${v} — 둘 다 플러스입니다.`, read: "지난해와 견주어 늘었는지 줄었는지는 같은 보고서의 비교 칸에서 봅니다." };
+}
 export const focusCompany = (r: Report3): CompanyDeep => r.companies.find((x) => x.jobs[0]?.role === r.strategy.roleCode) ?? r.companies[0];
 export const dartOf = (lib: Lib, id: string) => lib.dart.orgs.find((x) => x.id === id);
 
@@ -110,24 +132,31 @@ export function d28(r: Report3, lib: Lib): string {
   const first = r.priorities[0];
   // 목표 직무는 학생마다 다르다: 경영기획으로 못 박지 않는다
   const role = r.strategy.roleName || "경영 직무";
-  const quote = (ov.excerpt ?? "").slice(0, 470).replace(/\s+\S*$/, "") + " …";
-  const steps: [string, string, string][] = [
-    ["무엇을 팔아 돈을 버나", "사업 부문과 수익이 들어오는 길을 한 줄로 적습니다. 제품을 파는지, 기술이나 권리를 계약으로 파는지가 첫 갈림길입니다.", "‘사업의 개요’ · ‘주요 제품’"],
-    ["숫자로 맞춰 보나", `같은 보고서의 재무 쪽에서 매출과 영업이익을 찾아 위의 한 줄과 맞는지 봅니다.${fin ? ` 이 회사의 ${dart!.financials!.year}년 ${fin.kind} 매출은 ${eok(fin.v["매출액"])}억 원, 영업이익은 ${eok(fin.v["영업이익"])}억 원입니다.` : ""}`, "‘재무에 관한 사항’"],
-    ["사람은 어디에 있나", `직원 현황을 사업부문별로 봅니다.${seg.length ? ` ${seg.map((s) => `${s.segment} ${s.count}명`).join(" · ")}.` : ""} 인원이 많은 부문이 회사가 돈과 시간을 쓰는 곳입니다.`, "‘직원 등의 현황’"],
-    [`${withJosa(role, "은는")} 무엇으로 재나`, `위 셋을 읽고 나면 ${role}의 일에서 이 회사를 볼 지표를 두세 개 적어 봅니다. 정답이 있는 문제가 아니라, 적은 지표마다 그 까닭을 한 줄씩 남기는 연습입니다.`, "학생이 적는 칸"],
+  /* 위 원문 인용과 같은 사업보고서에서 온 숫자면 출처를 다시 풀어 적지 않고 그렇다고 적는다 */
+  const sameRep = (d: DartOrg | undefined, what: "fin" | "staff" = "fin") => finSrc(d, what).includes(ov.rcept_no);
+  const quote = (ov.excerpt ?? "").slice(0, 250).replace(/\s+\S*$/, "") + " …"; // v9: 원문 인용을 쪽 너비로 펴고 단계 넷을 두 단으로 — 글자 바닥(8.9pt)에서도 한 쪽에 들게
+  // v9: 단계마다 ‘읽는 법’(가이드) · ‘공시 확인’(값 그대로) · ‘해석’ 을 다른 줄로 둔다
+  /* ‘직접 해 볼 것’ 은 넷째 단계(이 직무는 무엇으로 재나) 안에 둔다: 따로 상자를 세우면 글자 바닥(8.9pt)에서 쪽이 넘친다 */
+  const ws4 = `<dl class="ws4"><div><dt>이번 과제</dt><dd>${esc(first ? first.title : "목표를 숫자로 재는 지표로 옮겨 적기")} <span>실행 전략 첫 과제</span></dd></div>
+    <div><dt>남길 것</dt><dd>${esc(first ? first.output : "목표·지표 정의표")} — 위 회사 하나로 지표 세 개와 각각을 고른 까닭 한 줄</dd></div>
+    <div><dt>확인 질문</dt><dd>지표마다 재는 방법과 기간이 적혀 있는가, 공시 숫자와 같은 단위로 놓였는가</dd></div></dl>`;
+  const steps: { h: string; t: string; fact?: string; src?: string; read?: string; w: string }[] = [
+    { h: "무엇을 팔아 돈을 버나", t: "사업 부문과 수익이 들어오는 길을 한 줄로 적습니다. 제품을 파는지, 기술이나 권리를 계약으로 파는지가 첫 갈림길입니다.", w: "‘사업의 개요’ · ‘주요 제품’" },
+    { h: "숫자로 맞춰 보나", t: "같은 보고서의 재무 쪽에서 매출과 영업이익을 찾아 위의 한 줄과 맞는지 봅니다.",
+      fact: fin ? `${dart!.financials!.year}년 ${fin.kind} 매출 ${eok(fin.v["매출액"])}억 원 · 영업이익 ${eok(fin.v["영업이익"])}억 원${sameRep(dart) ? " (위 원문과 같은 보고서)" : ` (${finSrc(dart)})`}` : undefined, w: "‘재무에 관한 사항’" },
+    { h: "사람은 어디에 있나", t: "직원 현황을 사업부문별로 봅니다.",
+      fact: seg.length ? `${seg.map((s) => `${s.segment} ${s.count}명`).join(" · ")}${sameRep(dart, "staff") ? " (같은 보고서)" : ` (${finSrc(dart, "staff")})`}` : undefined,
+      read: seg.length ? "인원이 많은 부문이 회사가 돈과 시간을 많이 쓰는 곳일 가능성이 큽니다." : undefined, w: "‘직원 등의 현황’" },
+    { h: `${withJosa(role, "은는")} 무엇으로 재나`, t: `위 셋을 읽고 나면 ${role}의 일에서 이 회사를 볼 지표를 두세 개 적어 봅니다. 정답이 있는 문제가 아니라, 적은 지표마다 그 까닭을 한 줄씩 남기는 연습입니다.`, w: "학생이 적는 칸" },
   ];
   return frame(r, lib, 28, `
   ${opener("04", "목표 직무 실무 가이드 ②", "사업보고서로 산업과 회사를 읽는 법", `${withJosa(role, "은는")} 회사가 스스로 공시한 문서에서 사업 구조를 읽는 데서 출발합니다. 아래 원문은 ${withJosa(name, "이가")} 금융감독원 전자공시에 낸 사업보고서의 첫 대목입니다.`)}
   <div class="g28">
     <figure class="quote"><span class="q-k">원문 인용</span><blockquote>${esc(quote)}</blockquote>
       <figcaption>${esc(name)} · ${esc(ov.report)} · 접수번호 ${esc(ov.rcept_no)} · ${esc(ov.section)}<br>${tag("OFFICIAL_DIRECT")} OpenDART 원문(${esc(lib.overview.checked_on)}) · 앞부분을 그대로 옮겼고 바꿔 쓰지 않았습니다.</figcaption></figure>
-    <ol class="read">${steps.map(([h, t, w], i) => `<li><span class="rn">${i + 1}</span><div><b>${esc(h)}</b><p>${esc(t)}</p><em>보는 곳 — ${esc(w)}</em></div></li>`).join("")}</ol>
+    <ol class="read">${steps.map((x, i) => `<li><span class="rn">${i + 1}</span><div><b>${esc(x.h)}</b><p>${tag("GENERAL", "읽는 법")} ${esc(x.t)}</p>${x.fact ? FR(x.fact, x.read, x.src) : ""}<em>보는 곳 — ${esc(x.w)}</em>${i === steps.length - 1 ? ws4 : ""}</div></li>`).join("")}</ol>
   </div>
-  <div class="ws"><h3 class="eyebrow">직접 해 볼 것 <span>실행 전략 첫 과제와 이어집니다</span></h3>
-    <div class="ws-g"><div><b>이번 과제</b><p>${esc(first ? first.title : "목표를 숫자로 재는 지표로 옮겨 적기")}</p></div>
-    <div><b>남길 것</b><p>${esc(first ? first.output : "목표·지표 정의표")} — 위 회사 하나로 지표 세 개와 각각을 고른 까닭 한 줄</p></div>
-    <div><b>확인 질문</b><p>지표마다 재는 방법과 기간이 적혀 있는가, 공시 숫자와 같은 단위로 놓였는가</p></div></div></div>
+
   <p class="src">${tag("GENERAL", "가이드 본문 · 검토 전")} 읽는 순서와 설명은 이 리포트의 안내 초안입니다(현직자·교수 검토 전). 공시 숫자는 OpenDART 가 돌려준 원 단위 값을 억 원으로 나눠 적었습니다.</p>
   ${gaps(lib, 28)}`);
 }
@@ -175,14 +204,14 @@ export function d37(r: Report3, lib: Lib): string {
   ${opener("05", "지역 산업", "공시로 본 대전·충청권 기업", "금융감독원 전자공시(OpenDART)에서 이 리포트가 살펴본 기업의 개황과 최근 사업보고서를 받아 한 표에 놓았습니다. 숫자는 공시값 그대로이고, 회사가 공시하지 않은 칸은 비워 두었습니다.")}
   <h3 class="eyebrow">상장사 — 최근 사업보고서 <span>금액 억 원(원 단위 공시값 ÷ 1억, 소수 첫째 자리)</span></h3>
   <table class="dt"><thead><tr><th>기업 · 시장</th><th>본점(공시)</th><th>설립</th><th class="nm">매출</th><th class="nm">영업이익</th><th>사업부문별 직원</th></tr></thead><tbody>
-  ${listed.map((o) => { const f = pick(o.financials ?? null); const v = v2.get(o.id); return `<tr><td><b>${esc(o.name)}</b><span class="small">${esc(o.dart!.corp_cls)} · ${esc(v?.industry_line ?? "")}</span></td><td>${hq(o)}</td><td>${esc(ymd(o.dart!.est_dt).slice(0, 4))}</td><td class="nm">${eok(f?.v["매출액"])}<em>${esc(f ? `${o.financials!.year} ${f.kind}` : "")}</em></td><td class="nm${(f?.v["영업이익"] ?? 0) < 0 ? " neg" : ""}">${eok(f?.v["영업이익"])}</td><td>${(o.staff?.by_segment ?? []).map((s) => `<div class="sg"><span>${esc(s.segment)}</span><i style="width:${Math.max(2, Math.round(26 * s.count / maxSeg))}mm"></i><b>${s.count.toLocaleString("ko-KR")}</b></div>`).join("") || "—"}</td></tr>`; }).join("")}
+  ${listed.map((o) => { const f = pick(o.financials ?? null); const v = v2.get(o.id); return `<tr><td><b>${esc(o.name)}</b><span class="small">${esc(o.dart!.corp_cls)} · ${esc(v?.industry_line ?? "")}</span><span class="small rc">접수번호 ${esc(finSrc(o).split("접수번호 ")[1] ?? "—")}</span></td><td>${hq(o)}</td><td>${esc(ymd(o.dart!.est_dt).slice(0, 4))}</td><td class="nm">${eok(f?.v["매출액"])}<em>${esc(f ? `${o.financials!.year} ${f.kind}` : "")}</em></td><td class="nm${(f?.v["영업이익"] ?? 0) < 0 ? " neg" : ""}">${eok(f?.v["영업이익"])}</td><td>${(o.staff?.by_segment ?? []).map((s) => `<div class="sg"><span>${esc(s.segment)}</span><i style="width:${Math.max(2, Math.round(26 * s.count / maxSeg))}mm"></i><b>${s.count.toLocaleString("ko-KR")}</b></div>`).join("") || "—"}</td></tr>`; }).join("")}
   </tbody></table>
   <h3 class="eyebrow">비상장·공공 — 기업개황만 <span>재무는 이 표에 적지 않음(공시 의무와 범위가 다름)</span></h3>
   <table class="dt dt2"><thead><tr><th>기업</th><th>공시 등록명</th><th>본점(공시)</th><th>설립</th><th>v2 자료와 대조</th></tr></thead><tbody>
   ${other.map((o) => `<tr><td><b>${esc(o.name.replace(/\s—.*$/, ""))}</b></td><td>${esc(o.dart!.corp_name)}</td><td>${hq(o)}</td><td>${esc(ymd(o.dart!.est_dt).slice(0, 4))}</td><td>${o.compare?.bizno === "SAME" ? "사업자·법인번호 일치" : "번호 대조 안 함"}${o.compare?.hq_region === "DIFFERENT_SIDO" ? ` · ${tag(v2.get(o.id)?.verify === "CONFLICTING" ? "CONFLICTING" : "READ", v2.get(o.id)?.verify === "CONFLICTING" ? "본점 상충" : "본점은 다른 시도 · 사업장 기준")}` : ""}</td></tr>`).join("")}
   </tbody></table>
   <p class="small none">공시 목록에 없음: ${esc(none.map((o) => o.name).join(" · "))} — 공공기관은 ALIO(R5), 비상장사는 제3자 자료만 있습니다.</p>
-  <p class="src">${tag("OFFICIAL_DIRECT")} OpenDART 기업개황 · 공시검색 · 주요계정 · 직원현황(${esc(lib.dart.checked_on)}). 붉은 글씨 본점은 리포트 자료(v2)가 적은 지역과 시도가 다른 곳입니다. 직원 수는 회사가 나눈 사업부문 이름 그대로입니다.</p>
+  <p class="src">${tag("OFFICIAL_DIRECT")} OpenDART 기업개황 · 공시검색 · 주요계정 · 직원현황(${esc(lib.dart.checked_on)}). 상장사 줄의 접수번호는 그 줄의 매출·영업이익·직원 수가 나온 최근 사업보고서(정정 공시 포함)입니다. 붉은 글씨 본점은 리포트 자료(v2)가 적은 지역과 시도가 다른 곳입니다. 직원 수는 회사가 나눈 사업부문 이름 그대로입니다.</p>
   ${gaps(lib, 37)}`);
 }
 
@@ -221,10 +250,10 @@ export function d43(r: Report3, lib: Lib, c: CompanyDeep = focusCompany(r), n = 
       <p class="interp">${esc(c.interpret[0] ?? "")} ${tag("READ")}</p></div>
     <div><h3 class="eyebrow">숫자로 본 회사 <span>${esc(f ? `${d!.financials!.year} 사업보고서 · ${f.kind}` : "공시 재무 없음")}</span></h3>
       ${f ? `${bar("매출액", rev)}${bar("영업이익", op)}${bar("당기순이익", ni)}
-      <div class="calc"><span>공시로 계산한 영업이익률</span><b>${rev && op !== undefined ? ((100 * op) / rev).toFixed(1) : "—"}%</b><em>영업이익 ÷ 매출액 × 100 · 리포트가 계산</em></div>
-      <p class="small">${esc(readSigns(op, ni))}</p>` : `<p class="slot1">비상장 · 공시 재무 없음</p>`}
+      <div class="calc"><span>공시로 계산한 영업이익률</span><b>${rev && op !== undefined ? ((100 * op) / rev).toFixed(1) : "—"}%</b><em>${tag("OFFICIAL_DIRECT", "공시 두 값")} 영업이익 ÷ 매출액 × 100 · 리포트가 계산</em></div>
+      ${(() => { const sg = signs(op, ni); return FR(sg.fact, sg.read, finSrc(d)); })()}` : `<p class="slot1">비상장 · 공시 재무 없음</p>`}
       <h3 class="eyebrow">경영 쪽에서 볼 자리 <span>리포트 해석</span></h3>
-      <p>${esc(c.interpret[1] ?? c.why)}</p></div>
+      <p class="interp">${esc(c.interpret[1] ?? c.why)} ${tag("READ")}</p></div>
   </div>
   <p class="src">${tag("OFFICIAL_DIRECT")} 개황·원문·재무는 OpenDART · ${tag("THIRD_PARTY")}·${tag("SEARCH_ONLY")} 제품과 해석은 리포트 자료(v2)에서 왔고 줄마다 출처가 있습니다 · 채용 여부는 확인하지 않았습니다.</p>
   ${gaps(lib, n)}`);
@@ -244,7 +273,7 @@ export function d44(r: Report3, lib: Lib, c: CompanyDeep = focusCompany(r), n = 
     <div><h3 class="eyebrow">③ 사람은 어디에 있나 <span>${esc(d?.staff ? `${d.staff.year} 사업보고서 직원 현황` : "공시 없음")}</span></h3>
       ${seg.length ? `<div class="stk">${seg.map((s, i) => `<div class="stk-s sg${i}" style="flex:${s.count}"><b>${s.count}</b></div>`).join("")}</div>
       <ul class="stk-l">${seg.map((s, i) => `<li><i class="sg${i}"></i>${esc(s.segment)} ${s.count}명 (${((100 * s.count) / tot).toFixed(0)}%)</li>`).join("")}</ul>
-      <p class="small">${tag("OFFICIAL_DIRECT")} 회사가 공시에 나눈 부문 이름 그대로입니다. 경영지원 인원이 따로 나뉘어 있지 않으면 경영 직무 인원은 공시로 알 수 없습니다.</p>` : `<p class="slot1">공시 직원 현황 없음 — 확인 필요</p>`}
+      ${FR(`부문 이름과 인원은 공시 그대로입니다(합계 ${tot.toLocaleString("ko-KR")}명).`, seg.some((s) => /관리|경영|지원/.test(s.segment)) ? "경영·관리 쪽 부문이 따로 있어, 그 부문이 경영 직무가 모인 곳일 가능성이 큽니다. 직무 이름은 공고로 확인합니다." : "경영지원 인원이 따로 나뉘어 있지 않아, 경영 직무 인원은 공시로 알 수 없습니다.", finSrc(d, "staff"))}` : `<p class="slot1">공시 직원 현황 없음 — 확인 필요</p>`}
       <h3 class="eyebrow">④ 이 회사에서 본 경영 직무 <span>공고·기관 소개</span></h3>
       <table class="jt"><tbody>${c.jobs.slice(0, 4).map((j) => `<tr class="${j.role === r.strategy.roleCode ? "gl" : ""}"><th>${esc(j.name)}</th><td>${esc(j.tasks)}<span class="small">${tag((ST[j.status] ?? "SEARCH_ONLY") as "SEARCH_ONLY", j.status)}</span></td></tr>`).join("")}</tbody></table></div>
     <div><h3 class="eyebrow">⑤ 실제 업무 — 본 것과 일반을 가름 <span>${esc(goal.name)}</span></h3>
@@ -327,6 +356,7 @@ export function design5(r: Report3, lib: Lib, f: Fonts): string {
 }
 
 export const CSS5 = `
+.fr{font-size:9pt;line-height:1.5;margin:1mm 0;color:var(--ink)}.ws4{margin:1.4mm 0 0;border-top:.6pt dashed #C9A264;padding-top:1mm}.ws4 div{display:grid;grid-template-columns:15mm 1fr;font-size:9pt;line-height:1.45;padding:.4mm 0}.ws4 dt{color:#7A5418;font-weight:700}.ws4 dd{margin:0}.ws4 dd span{color:var(--muted)}.fr .vt{margin-right:4pt}.fr-s{display:block;color:var(--muted);font-size:8.9pt}.rc{color:var(--muted)}
 .vt-GENERAL{background:#EFEAF8;color:#4B3A78}.vt-READ{background:#F7EEDF;color:#7A5418}
 .gap{font-size:7.8pt;color:#7A5418;background:var(--amber-t);padding:1.4mm 2.4mm;margin-top:2mm;line-height:1.5}
 .gap b{color:#5E3E0F}
@@ -352,7 +382,7 @@ export const CSS5 = `
 .jm-sum div{border-top:.5pt solid var(--rule);padding-top:1.2mm}.jm-sum div.gl{border-top:1.4pt solid var(--navy)}
 .jm-sum b{font-size:8.8pt;color:var(--navy)}.jm-sum p{font-size:8.4pt;line-height:1.45;margin:.4mm 0 0}
 /* 28 사업보고서 */
-.g28{display:grid;grid-template-columns:1.05fr 1fr;gap:6mm;margin-bottom:4mm}
+.g28{display:block;margin-bottom:3mm}.g28 .quote{margin-bottom:2mm}.g28 .read{display:grid;grid-template-columns:1fr 1fr;column-gap:6mm}
 .quote{margin:0;background:var(--tint);padding:4mm 4.5mm;border-left:2.4pt solid var(--navy)}
 .q-k{font-size:7.6pt;font-weight:700;color:var(--blue);letter-spacing:.4pt}
 .quote blockquote{margin:1.5mm 0 3mm;font-size:9.3pt;line-height:1.72;color:var(--ink)}
@@ -363,13 +393,13 @@ export const CSS5 = `
 .ws-g{display:grid;grid-template-columns:1fr 1.3fr 1.2fr;gap:4mm}
 .ws-g div{border:.8pt dashed #B9C3D3;padding:2.4mm 3mm;min-height:20mm}.ws-g b{font-size:8pt;color:var(--blue)}.ws-g p{font-size:9pt;line-height:1.5;margin:.6mm 0 0}
 /* 36 구조도 */
-.top36{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:3.5mm;margin-bottom:4mm}
+.top36{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:3.5mm;margin-bottom:3mm}
 .top36>div{padding:2.6mm 3mm}.sb{background:var(--navy);color:#fff}.sb p{font-size:10.4pt;font-weight:700;margin:1mm 0 1.4mm;line-height:1.45}
 .sb .small{color:rgba(255,255,255,.75);font-size:7.6pt}.sb-k{font-size:7.6pt;letter-spacing:.3pt;font-weight:700}.sb .sb-k{color:#C9D6EC}
 .slot p{font-size:9pt;margin:1mm 0;color:var(--ink)}.slot .sb-k{color:var(--muted)}.slot .small{font-size:7.6pt;color:#9A6A22}
 .sh,.sr{display:grid;grid-template-columns:32mm 6mm 1fr 6mm 52mm;align-items:center}
 .sh{font-size:7.8pt;color:var(--muted);font-weight:700;border-bottom:1.2pt solid var(--navy);padding-bottom:1mm;margin-bottom:.6mm}
-.sr{padding:1.5mm 0;border-bottom:.5pt solid var(--rule)}
+.sr{padding:1mm 0;border-bottom:.5pt solid var(--rule)}
 .s1{font-size:9pt;font-weight:700;color:var(--navy)}
 .arr{height:0;border-top:1pt solid #9DB0CF;position:relative;margin:0 1mm}.arr:after{content:"";position:absolute;right:-1pt;top:-2.6pt;border:2.4pt solid transparent;border-left:3.4pt solid #9DB0CF}
 .s2,.s3{display:flex;flex-wrap:wrap;gap:1mm}
