@@ -1,0 +1,25 @@
+
+> pca-platform@0.1.0 build
+> next build
+
+⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+   ▲ Next.js 15.5.25
+   - Experiments (use with caution):
+     · serverActions
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 25.3s
+   Linting and checking validity of types ...
+Failed to compile.
+
+./scripts/jju-e2e-next.ts:160:61
+Type error: ')' expected.
+
+[0m [90m 158 |[39m       [36mfor[39m ([36mconst[39m [path[33m,[39m n[33m,[39m what] [36mof[39m [[[32m"/jju"[39m[33m,[39m [32m"01-home-guest"[39m[33m,[39m [32m"전주대 첫 화면(로그인 전)"[39m][33m,[39m [[32m"/jju/fields"[39m[33m,[39m [32m"01-fields"[39m[33m,[39m [32m"학과와 과정"[39m][33m,[39m
+ [90m 159 |[39m         [[32m"/campus/pcu"[39m[33m,[39m [32m"00-pcu-entry"[39m[33m,[39m [32m"배재대 학교 진입(공통 화면)"[39m][33m,[39m [[32m"/campus/pcu/majors"[39m[33m,[39m [32m"00-pcu-majors"[39m[33m,[39m [32m"배재대 학과 고르기(공통 화면)"[39m][33m,[39m
+[31m[1m>[22m[39m[90m 160 |[39m         [[32m"/campus/jju"[39m[33m,[39m [32m"00-jju-entry"[39m[33m,[39m [32m"전주대 학교 진입(공통 화면)"[39m]]] [36mas[39m [36mconst[39m) {
+ [90m     |[39m                                                             [31m[1m^[22m[39m
+ [90m 161 |[39m         [90m/* `/cores` 는 로그인 전에는 로그인 화면으로 돌려보낸다. 그대로 찍으면[39m
+ [90m 162 |[39m [90m           로그인 그림이 두 이름으로 저장된다. 로그인 뒤 `/me` 캡처가 그 자리다 */[39m
+ [90m 163 |[39m         [36mconst[39m r [33m=[39m [36mawait[39m q[33m.[39mgoto([32m`${BASE}${path}`[39m[33m,[39m { waitUntil[33m:[39m [32m"networkidle"[39m })[33m;[39m[0m
+Next.js build worker exited with code: 1 and signal: null

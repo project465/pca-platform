@@ -1,0 +1,6 @@
+scripts/jju-e2e-next.ts(160,61): error TS1005: ')' expected.
+scripts/jju-e2e-next.ts(160,63): error TS1434: Unexpected keyword or identifier.
+scripts/jju-e2e-next.ts(160,71): error TS1134: Variable declaration expected.
+scripts/jju-e2e-next.ts(163,15): error TS1005: ':' expected.
+scripts/jju-e2e-next.ts(163,79): error TS1005: ',' expected.
+scripts/jju-e2e-next.ts(421,1): error TS1128: Declaration or statement expected.
