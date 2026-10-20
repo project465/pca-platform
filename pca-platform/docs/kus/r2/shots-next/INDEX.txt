@@ -17,6 +17,8 @@ pdf/kus-report-POOR.next.pdf
 pdf/kus-report-CONTRA.next.pdf
 08-admin-pc.next.jpg
 01-login-mobile.next.jpg
+02-home-START-mobile.next.jpg
+03-assess-first-mobile.next.jpg
 02-home-PROGRESS-mobile.next.jpg
 03-assess-mid-mobile.next.jpg
 02-home-RICH-mobile.next.jpg
