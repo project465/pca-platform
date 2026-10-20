@@ -40,8 +40,9 @@ export async function answerAction(
 ): Promise<{ ok: boolean }> {
   const at = await mine(attemptId);
   if (!at) return { ok: false };
-  await saveAnswer(attemptId, itemId, a);
-  return { ok: true };
+  /* `mine()` 을 지난 뒤에 제출이 끼면 저장이 물러난다(`writable()`). 그때는
+     거짓을 돌려준다: 화면이 `저장 실패` 를 적고, 굳은 판정과 어긋난 답이 남지 않는다 */
+  return { ok: await saveAnswer(attemptId, itemId, a) };
 }
 
 export async function noteAction(
@@ -79,8 +80,7 @@ export async function picksAction(
 ): Promise<{ ok: boolean }> {
   const at = await mine(attemptId);
   if (!at) return { ok: false };
-  await savePicks(attemptId, domain, slot, items);
-  return { ok: true };
+  return { ok: await savePicks(attemptId, domain, slot, items) };
 }
 
 /**

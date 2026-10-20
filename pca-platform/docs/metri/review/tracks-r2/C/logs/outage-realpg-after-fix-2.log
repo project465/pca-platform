@@ -1,0 +1,30 @@
+드라이버: 실제 node-postgres 8.16.3
+
+── O1 DB 가 멈춘 동안 저장
+  통과  저장이 실패로 끝난다(성공으로 꾸미지 않는다) — connect ENOENT /var/run/postgresql/.s.PGSQL.5433
+  통과  실패까지 걸린 시간이 정해진 한도 안이다(15초) — 305ms
+  통과  프로세스가 살아 있다 — pid 9421
+
+── O2 DB 가 돌아오면 다시 붙는다
+  통과  프로세스를 다시 띄우지 않고 저장이 붙는다 — {"ok":true}
+  통과  멈추기 전에 저장한 답 셋이 그대로다
+  통과  멈춘 동안 실패한 저장이 반쯤 남지 않았다(다시 저장한 한 줄뿐)
+
+── O3 쉬는 연결이 재시작으로 끊겨도 죽지 않는다
+[db] 쉬고 있던 연결이 끊겼습니다: terminating connection due to administrator command
+[db] 쉬고 있던 연결이 끊겼습니다: terminating connection due to administrator command
+[db] 쉬고 있던 연결이 끊겼습니다: terminating connection due to administrator command
+[db] 쉬고 있던 연결이 끊겼습니다: terminating connection due to administrator command
+[db] 쉬고 있던 연결이 끊겼습니다: terminating connection due to administrator command
+[db] 쉬고 있던 연결이 끊겼습니다: terminating connection due to administrator command
+  통과  재시작 뒤 첫 질의가 붙는다
+  통과  끊긴 쉬는 연결은 풀 오류로 받아 넘겼다(프로세스 생존) — 풀 오류 6줄
+
+── O4 두 탭이 같은 문항을 동시에 고친다
+  통과  동시 저장 열 번 → 줄 하나
+
+── O5 저장이 날아가는 중에 제출
+  통과  제출된 판정이 지금 저장된 응답으로 다시 채점한 것과 같다(뒤늦은 저장이 끼어들지 않았다) — 받아들인 저장 28/30
+  통과  결과는 한 벌이다
+
+확인 11가지 — 통과 11 · 걸림 0

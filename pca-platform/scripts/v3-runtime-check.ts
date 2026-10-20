@@ -281,13 +281,16 @@ async function main(): Promise<void> {
 
   /* 8. 팩을 바꿔도 Core 판정이 같다 */
   const coreBefore = stable(coreOnly(proSnap));
-  await choosePack(CORE, up.id, "industry", "INDUSTRY_DEFENSE_V2");
-  await choosePack(CORE, up.id, "role", "ROLE_PM_V2");
-  /* **끝난 응시를 다시 제출해 재지 않는다.** R33 부터 `submit()` 은 굳은
-     응시에 한 줄도 더 쓰지 않고 이미 굳은 결과를 돌려준다(중복 제출 차단).
-     그 결과로 견주면 같은 줄을 두 번 읽은 것이라 이 줄이 아무것도 재지
-     않는다. 팩을 바꾼 응답 묶음을 엔진에 바로 넣어 잰다 */
-  const swapped = score(await submissionOf((await attemptOf(up.id, userId)) as V3Attempt), load(CORE));
+  /* **끝난 응시의 팩은 이제 바뀌지 않는다**(Track C 2차: 쓰기가 전부 응시 상태를
+     잠금과 함께 본다). 그래서 굳은 응시를 고치지 않고, 같은 응답 묶음에 팩만
+     바꿔 엔진에 넣어 잰다 */
+  const subNow = await submissionOf((await attemptOf(up.id, userId)) as V3Attempt);
+  const swapped = score({
+    ...subNow, industry_pack: "INDUSTRY_DEFENSE_V2", role_pack: "ROLE_PM_V2",
+    industry_interest: ["INDUSTRY_DEFENSE_V2"], role_interest: ["ROLE_PM_V2"],
+  }, load(CORE));
+  ok("끝난 응시의 팩은 바꿔 적히지 않는다",
+     (await choosePack(CORE, up.id, "industry", "INDUSTRY_DEFENSE_V2").then(() => attemptOf(up.id, userId)))?.industry_pack === "INDUSTRY_MOBILITY_V2");
   ok("팩을 바꾼 채점이 실제로 바뀐 팩을 읽는다",
      swapped.context.industry?.code === "INDUSTRY_DEFENSE_V2", swapped.context.industry?.code ?? "없음");
   ok("산업과 역할을 바꿔도 Core 판정이 같다",

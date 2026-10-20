@@ -174,7 +174,7 @@ async function main(): Promise<void> {
   const sess = readFileSync("src/lib/me-v3/runtime/session.ts", "utf8");
   const SIX = ["core_code", "specialization", "item_bank_version",
     "scoring_version", "result_model_version", "assessment_ui_version"];
-  const vblock = /const versions = \{([\s\S]*?)\n  \};/.exec(sess)?.[1] ?? "";
+  const vblock = /const versions = \{([\s\S]*?)\n\s*\};/.exec(sess)?.[1] ?? "";
   const missing = SIX.filter((k) =>
     k === "item_bank_version" || k === "scoring_version"
       ? !/\.\.\.snapshot\.module_versions/.test(vblock)
