@@ -281,7 +281,7 @@ export function buildGold(x: JjuReportInput & { attemptId: string; submitted: st
     checkedOn: x.program?.checked_on ?? "", verificationNote: x.program?.verification_note ?? "",
     versions: [
       { k: "검사", v: `${core} · 문항 ${m.provenance.module_versions.item_bank_version ?? "?"} · 채점 ${m.provenance.module_versions.scoring_version ?? "?"}` },
-      { k: "결과 모델", v: String(m.provenance.module_versions.result_model_version ?? "?") },
+      { k: "결과 모델", v: String(m.provenance.result_model_version ?? "?") },
       { k: "리포트", v: GOLD_VERSION },
     ],
   };
