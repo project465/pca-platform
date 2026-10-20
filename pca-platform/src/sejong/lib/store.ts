@@ -21,14 +21,20 @@ export type AttemptRow = {
   scored_at: string | null;
 };
 
+/* 시각 칸은 글자로 받는다. `pg` 는 timestamptz 를 Date 로 돌려주는데 화면은 글자로
+ *다룬다(`scoredAt.slice(0, 10)`). Date 가 그대로 오면 결과지가 그리는 순간 터진다
+ * — CI 브라우저 E2E 가 `/sejong/report` 에서 그렇게 멈췄다. */
+const ATT = `id, user_id, org_id, program_code, instrument_version, profile, status, result,
+  analysis_version, started_at::text AS started_at, scored_at::text AS scored_at`;
+
 export async function latestAttempt(userId: number): Promise<AttemptRow | null> {
   return queryOne<AttemptRow>(
-    `SELECT * FROM sj_attempts WHERE user_id = $1 ORDER BY started_at DESC LIMIT 1`, [userId]);
+    `SELECT ${ATT} FROM sj_attempts WHERE user_id = $1 ORDER BY started_at DESC LIMIT 1`, [userId]);
 }
 
 export async function latestScored(userId: number): Promise<AttemptRow | null> {
   return queryOne<AttemptRow>(
-    `SELECT * FROM sj_attempts WHERE user_id = $1 AND status = 'scored'
+    `SELECT ${ATT} FROM sj_attempts WHERE user_id = $1 AND status = 'scored'
       ORDER BY scored_at DESC LIMIT 1`, [userId]);
 }
 
@@ -36,7 +42,7 @@ export async function latestScored(userId: number): Promise<AttemptRow | null> {
 export async function attemptOf(attemptId: string, userId: number): Promise<AttemptRow | null> {
   if (!/^\d+$/.test(attemptId)) return null;
   return queryOne<AttemptRow>(
-    `SELECT * FROM sj_attempts WHERE id = $1 AND user_id = $2`, [attemptId, userId]);
+    `SELECT ${ATT} FROM sj_attempts WHERE id = $1 AND user_id = $2`, [attemptId, userId]);
 }
 
 export async function startAttempt(opts: {

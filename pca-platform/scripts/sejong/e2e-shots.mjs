@@ -36,6 +36,15 @@ const ok = (what, cond, saw = "") => {
   if (cond) { pass++; console.log(`  통과  ${what}`); }
   else { bad.push(what); console.log(`  걸림  ${what} ${saw}`); }
 };
+/* 요소가 없으면 스크립트를 멈추지 않고 그 줄만 걸린다. 무엇이 떴는지 앞부분을 남긴다 */
+const txt = async (page, sel, ms = 15000) => {
+  try { return (await page.locator(sel).first().textContent({ timeout: ms })) ?? ""; }
+  catch {
+    const body = ((await page.textContent("body").catch(() => "")) ?? "").replace(/\s+/g, " ").slice(0, 240);
+    console.log(`    (${sel} 없음 · ${page.url()} · ${body})`);
+    return "";
+  }
+};
 const sql = (q) => (DB ? execFileSync("psql", [DB, "-tAc", q], { encoding: "utf8" }).trim() : "");
 
 const browser = await pw.chromium.launch({ args: ["--no-sandbox"] });
@@ -99,14 +108,17 @@ const seeker = await browser.newContext({ viewport: { width: 1366, height: 900 }
   const items = await page.locator("[data-item]").all();
   ok("문항 24개", items.length === 24, String(items.length));
   /* 앞 12문항: 판단마다 다르게. 저장됨이 뜰 때까지 기다린다 */
-  const pattern = [2, 2, 1, 1, 2, 1, 3, 2, 2, 2, 1, 1, 1, 0, 1, 1, 0, 1, 2, 2, 2, 2, 1, 1, 2, 3, 2, 2, 2, 1, 2, 2, 1];
+  /* 문항 차례는 J1×3 … J8×3. J6(15~17)은 2·2·1 로 답한다: 단계 2 이상이어야 경험 근거 둘이
+   * '경험으로 확인됨' 으로 선다. 앞서는 1·0·1 이라 단계 1('들어 봄')에 머물렀고, 그것은 분석이 맞게
+   * 돈 것이었다 (CI 에서 이 줄이 걸려 드러났다) */
+  const pattern = [2, 2, 1, 1, 2, 1, 3, 2, 2, 2, 1, 1, 2, 1, 2, 2, 2, 1, 2, 2, 2, 2, 1, 1];
   for (let i = 0; i < 12; i++) {
     await items[i].locator(".sj-scale button").nth(pattern[i]).click();
     await items[i].locator(".sj-saved", { hasText: "저장됨" }).waitFor({ timeout: 10000 });
   }
   await shot(page, "05-diagnosis-half", false);
   await page.reload();
-  const prog = await page.textContent("[data-testid=progress]");
+  const prog = await txt(page, "[data-testid=progress]");
   ok("새로고침 뒤에도 12/24 (문항마다 저장 · 이어하기)", prog?.trim() === "12 / 24", prog ?? "");
 
   /* 경험 둘. 검증 근거 둘이면 J6 이 '경험으로 확인됨' 이 된다 */
@@ -144,7 +156,7 @@ const seeker = await browser.newContext({ viewport: { width: 1366, height: 900 }
   await shot(page, "09-plan");
 
   await page.goto(`${BASE}/sejong/report`);
-  ok("결과지 미리보기에 '채용' 은 미확인으로만", (await page.textContent("#sj-report")).includes("미확인"));
+  ok("결과지 미리보기에 '채용' 은 미확인으로만", (await txt(page, "#sj-report")).includes("미확인"));
   await shot(page, "10-report-preview");
 
   const res = await page.request.get(`${BASE}/sejong/report/pdf`, { timeout: 120000 });
@@ -175,7 +187,7 @@ const seeker = await browser.newContext({ viewport: { width: 1366, height: 900 }
   await shot(page, "13-counselor-list");
   const demoId = sql("SELECT id FROM users WHERE login_id='sj-demo01'");
   await page.goto(`${BASE}/sejong/counselor/${demoId}`);
-  ok("동의한 배정 참여자 → 결과지 열림", await page.locator("#sj-report").count() === 1);
+  ok("동의한 배정 참여자 → 결과지 열림", (await txt(page, "#sj-report")).length > 0);
   await shot(page, "14-counselor-view");
   /* 배정됐지만 동의 없는 사람 */
   const noConsent = sql(`SELECT p.user_id FROM sj_participants p JOIN sj_counselor_assignments ca
@@ -204,7 +216,8 @@ const seeker = await browser.newContext({ viewport: { width: 1366, height: 900 }
   ok("대시보드에 5명 미만 가림", t.includes("5명 미만"));
   await shot(page, "16-admin-dashboard");
   await page.goto(`${BASE}/sejong/admin/participants`);
-  ok("참여자 표에 결과 내용이 없다", !(await page.textContent("[data-testid=participants]")).includes("경험으로 확인됨"));
+  const ptab = await txt(page, "[data-testid=participants]");
+  ok("참여자 표가 선다 · 결과 내용이 없다", ptab.length > 0 && !ptab.includes("경험으로 확인됨"));
   await page.fill("#name", "시연 신규 참여자");
   await page.fill("#participant_no", `SJ-A-${String(Date.now()).slice(-4)}`);
   await page.click("form:has(#participant_no) button[type=submit]");
