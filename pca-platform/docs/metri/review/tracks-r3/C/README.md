@@ -8,7 +8,7 @@
 | 커밋 | 무엇 | 계약 |
 |---|---|---|
 | A `93ba9265` | `submit()` 이 잠금을 쥔 연결로 응답·근거·응시 줄을 읽는다(`attemptOf` · `answersOf` · `picksOf` · `submissionOf` 가 연결을 받는다) | 변경 없음 |
-| B (다음 커밋) | `saveNote` 가 `writable()` 을 지난다 · `setProfile` · `savePicks3` · `moveTo` 가 끝난 응시에서 `false` · 서버 동작 넷이 그 값을 돌려준다 · 화면 `push()` 가 `{ok:false}` 를 실패로 센다(`ME_V3_2_ASSESSMENT_UI_V45`) | **변경 — PM 승인 전 운영 병합 금지** |
+| B `c5f22344` | `saveNote` 가 `writable()` 을 지난다 · `setProfile` · `savePicks3` · `moveTo` 가 끝난 응시에서 `false` · 서버 동작 넷이 그 값을 돌려준다 · 화면 `push()` 가 `{ok:false}` 를 실패로 센다(`ME_V3_2_ASSESSMENT_UI_V45`) | **변경 — PM 승인 전 운영 병합 금지** |
 
 **새로 찾은 P0**: 제출이 잠금을 쥔 채 풀에서 연결을 하나 더 기다렸다. BEFORE 에서 **반 14명 동시
 제출 가운데 7명이 `timeout exceeded when trying to connect` 로 떨어졌다.** 수업 끝에 한 반이
