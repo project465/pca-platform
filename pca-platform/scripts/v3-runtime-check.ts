@@ -20,13 +20,13 @@ for (const line of (() => {
 }
 
 import { query, queryOne } from "../src/lib/db";
-import { coreOnly } from "../src/lib/me-v3/scoring/engine";
+import { coreOnly, load, score } from "../src/lib/me-v3/scoring/engine";
 import { stable } from "../src/lib/me-v3/scoring/fixtures";
 import type { Answer, Tier } from "../src/lib/me-v3/scoring/types";
 import {
   answersOf, attemptOf, checklistFor, choosePack, content, currentAttempt,
   domainName, latestSnapshot, moveTo, newScreensAfterUpgrade, openAttempt,
-  picksOf, planFor, saveAnswer, savePicks, submit, upgradeTier, viewOf,
+  picksOf, planFor, saveAnswer, savePicks, submissionOf, submit, upgradeTier, viewOf,
   type V3Attempt,
 } from "../src/lib/me-v3/runtime/session";
 import { pickDomains } from "../src/lib/me-v3/runtime/routing";
@@ -283,14 +283,25 @@ async function main(): Promise<void> {
   const coreBefore = stable(coreOnly(proSnap));
   await choosePack(CORE, up.id, "industry", "INDUSTRY_DEFENSE_V2");
   await choosePack(CORE, up.id, "role", "ROLE_PM_V2");
-  const swapped = (await submit((await attemptOf(up.id, userId)) as V3Attempt)).snapshot;
+  /* **끝난 응시를 다시 제출해 재지 않는다.** R33 부터 `submit()` 은 굳은
+     응시에 한 줄도 더 쓰지 않고 이미 굳은 결과를 돌려준다(중복 제출 차단).
+     그 결과로 견주면 같은 줄을 두 번 읽은 것이라 이 줄이 아무것도 재지
+     않는다. 팩을 바꾼 응답 묶음을 엔진에 바로 넣어 잰다 */
+  const swapped = score(await submissionOf((await attemptOf(up.id, userId)) as V3Attempt), load(CORE));
+  ok("팩을 바꾼 채점이 실제로 바뀐 팩을 읽는다",
+     swapped.context.industry?.code === "INDUSTRY_DEFENSE_V2", swapped.context.industry?.code ?? "없음");
   ok("산업과 역할을 바꿔도 Core 판정이 같다",
      stable(coreOnly(swapped)) === coreBefore, "읽는 순서만 갈린다");
   ok("기술영역이 팩 선택에 따라 바뀌지 않는다",
      swapped.domains.map((d) => d.zone).join(",") === proSnap.domains.map((d) => d.zone).join(","));
   const snaps = await query<{ n: string }>(
     `SELECT count(*)::text AS n FROM v3_snapshots WHERE attempt_id=$1`, [up.id]);
-  ok("판정은 줄이 쌓이고 덮지 않는다", Number(snaps[0].n) >= 3, `${snaps[0].n}줄`);
+  /* STANDARD 에서 한 줄, PRO 로 올려 다시 연 응시에서 한 줄. 끝난 응시를
+     다시 제출하면 줄이 늘지 않는 것이 맞다(중복 제출 차단) */
+  const first = await queryOne<{ z: unknown }>(
+    `SELECT payload->'zones' AS z FROM v3_snapshots WHERE attempt_id=$1 ORDER BY id LIMIT 1`, [up.id]);
+  ok("판정은 줄이 쌓이고 덮지 않는다",
+     Number(snaps[0].n) === 2 && stable(first?.z) === stable(stdSnap.zones), `${snaps[0].n}줄 · 첫 줄 그대로`);
 
   /* 9. 넷째 영역이 열리면 화면이 늘어난다 */
   const four = await freshAttempt(userId, "STANDARD", "phd", "STEM");
