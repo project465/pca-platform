@@ -43,7 +43,10 @@ export default async function StartPage({
 
          옛 검사의 무료 구간(`/free`)은 그대로 열려 있다. 길을 없애지
          않았고, 첫 문패가 가리키는 곳만 바뀌었다. */
-      href: "/pricing",
+      /* 지금 판본의 유료 등급은 판매를 열지 않아 가격표가 비어 있다. 거기로
+         보내면 처음 온 사람이 빈 화면과 `상품 소개` 사이를 돈다. 가입하고
+         전공을 고르면 무료 BASIC 으로 바로 시작하므로 그 길로 보낸다 */
+      href: "/signup?next=%2Fcores",
       title: START.individual[L],
       note: START.individualNote[L],
       primary: true,

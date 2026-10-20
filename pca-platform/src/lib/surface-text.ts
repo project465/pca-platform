@@ -285,6 +285,7 @@ export const TX = {
     "지금 판본의 판매를 아직 열지 않았습니다. 앞 판본으로 응시하신 분의 결과지와 이어하기는 그대로 열려 있습니다.",
     "Sales for the current edition are not open yet. If you took the previous edition, your report and your unfinished attempt are still where they were.",
   ),
+  pxStartFree: p("무료 BASIC 검사 시작하기", "Start the free BASIC assessment"),
   /* 옛 판본의 남은 이용권. **지금 사는 것과 섞어 보이지 않게 적는다** */
   pxHaveGrant: p("앞 판본으로 사신 검사가 남아 있습니다", "You have an unused assessment from the previous edition"),
   pxGoAssessment: p("검사로 가기", "Go to the assessment"),

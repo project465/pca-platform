@@ -36,6 +36,20 @@ export const ANON_COOKIE = "cm_a";
  * `/api/health` 는 뺀다: 앞단이 살아 있는지 물어보는 자리라 열쇠를
  * 들고 다니지 않는다.
  */
+/**
+ * **글자를 끝까지 견준다.** `===` 는 첫 다른 글자에서 멈춰서 걸린 시간으로
+ * 몇 글자까지 맞았는지가 새어 나간다. 미들웨어는 Edge 에서 돌아
+ * `crypto.timingSafeEqual` 이 없으므로 같은 일을 손으로 한다.
+ */
+function sameText(a: string, b: string): boolean {
+  let diff = a.length ^ b.length;
+  const n = Math.max(a.length, b.length);
+  for (let i = 0; i < n; i += 1) {
+    diff |= (a.charCodeAt(i) || 0) ^ (b.charCodeAt(i) || 0);
+  }
+  return diff === 0;
+}
+
 function gateFails(req: NextRequest): NextResponse | null {
   /* **`APP_ENV` 를 여기서 직접 읽지 않는다**(설계 원칙 10). 전에는 이
      줄이 `"staging"` 과 글자로 비교했는데, `appEnv()` 는 `stage` 도
@@ -51,7 +65,7 @@ function gateFails(req: NextRequest): NextResponse | null {
   if (sent.startsWith("Basic ")) {
     let decoded = "";
     try { decoded = atob(sent.slice(6)); } catch { decoded = ""; }
-    if (decoded === raw) return null;
+    if (sameText(decoded, raw)) return null;
   }
   return new NextResponse("공개 전입니다.", {
     status: 401,
@@ -67,6 +81,11 @@ function gateFails(req: NextRequest): NextResponse | null {
 export function middleware(req: NextRequest) {
   const blocked = gateFails(req);
   if (blocked) return blocked;
+  /* **인증 자리는 자물쇠만 지나고 나머지는 건드리지 않는다.** 전에는
+     matcher 가 `/api/auth` 를 통째로 빼서, 공개 전 배포본에서도 로그인
+     API 가 자물쇠 밖에 있었다. 소셜 로그인 콜백은 브라우저가 이동하며
+     들어오므로 같은 주소에 넣어 둔 Basic 열쇠를 그대로 들고 온다 */
+  if (req.nextUrl.pathname.startsWith("/api/auth")) return NextResponse.next();
 
   const lang = req.nextUrl.searchParams.get("lang");
   const market = req.nextUrl.searchParams.get("market");
@@ -110,6 +129,6 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  // 정적 파일과 인증 콜백은 건드리지 않는다.
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|api/auth).*)"],
+  // 정적 파일은 건드리지 않는다. 인증 자리는 자물쇠만 지난다(위 middleware).
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };

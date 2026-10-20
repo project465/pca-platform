@@ -13,6 +13,7 @@ import { record as consentRecord } from "@/lib/consent";
 import { sendVerification } from "@/lib/verify-email";
 import { publicBase } from "@/lib/urls";
 import { headers } from "next/headers";
+import { safeNext } from "@/lib/safe-next";
 
 export type SignupState = { errors?: FieldErrors; message?: string };
 
@@ -106,5 +107,5 @@ export async function signupAction(_prev: SignupState, form: FormData): Promise<
   }
 
   const next = String(form.get("next") ?? "");
-  redirect(next.startsWith("/") && !next.startsWith("//") ? next : "/me");
+  redirect(safeNext(next, "/me"));
 }

@@ -20,5 +20,15 @@ export function safeNext(raw: string | null | undefined, fallback = "/"): string
   if (!s.startsWith("/")) return fallback;
   if (s.startsWith("//")) return fallback;
   if (s.includes("\\")) return fallback;
+  /* **제어문자를 받지 않는다.** URL 파서는 탭과 줄바꿈을 지우고 읽으므로
+     `/<탭>/evil.com` 이 위의 세 줄을 지나 `//evil.com` 이 된다 */
+  if (/[\u0000-\u001f\u007f]/.test(s)) return fallback;
+  /* 마지막으로 파서에게 묻는다: 우리 쪽 바탕에 붙였을 때 바깥으로 나가면 버린다 */
+  try {
+    const base = "http://same.invalid";
+    if (new URL(s, base).origin !== base) return fallback;
+  } catch {
+    return fallback;
+  }
   return s;
 }

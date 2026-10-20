@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { inactiveReason, signIn } from "@/lib/auth";
 import { clientIpFrom, loginGate } from "@/lib/login-throttle";
+import { safeNext } from "@/lib/safe-next";
 
 export type LoginState = { error?: string };
 
@@ -82,5 +83,5 @@ export async function loginAction(
 
   // 원래 가려던 곳이 있으면 그리로. 없으면 "/" 가 역할을 보고 정한다.
   const next = String(formData.get("next") ?? "");
-  redirect(next.startsWith("/") && !next.startsWith("//") ? next : "/");
+  redirect(safeNext(next, "/"));
 }

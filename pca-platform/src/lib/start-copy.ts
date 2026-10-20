@@ -29,14 +29,17 @@ export const START = {
     "CareerMatri 를 어떻게 쓰실 건가요?",
     "How will you be using CareerMatri?",
   ),
+  /* **하지 않는 일을 적지 않는다.** 전에는 `계정 없이 바로` 와 `세 등급
+     가운데 고르시면` 이었는데, 검사는 로그인이 있어야 열리고 지금 판본의
+     유료 등급은 판매를 열지 않았다 */
   sub: p(
-    "개인은 계정 없이 바로 시작하실 수 있고, 대학·기관은 계약한 곳에 계정을 발급합니다.",
-    "You can start on your own without an account. Universities and institutions receive accounts under contract.",
+    "개인은 가입하고 바로 무료 검사를 시작하실 수 있고, 대학·기관은 계약한 곳에 계정을 발급합니다.",
+    "Individuals can sign up and start the free assessment right away. Universities and institutions receive accounts under contract.",
   ),
   individual: p("개인으로 시작하기", "Start as an individual"),
   individualNote: p(
-    "세 등급 가운데 고르시면 바로 응시로 들어갑니다. 학교나 회사에 소속되지 않아도 됩니다.",
-    "Pick one of the three plans and go straight into the assessment. You do not need to belong to a school or a company.",
+    "가입하고 전공을 고르시면 무료 BASIC 검사로 바로 들어갑니다. 학교나 회사에 소속되지 않아도 됩니다.",
+    "Sign up, pick your major and go straight into the free BASIC assessment. You do not need to belong to a school or a company.",
   ),
   campus: p("대학 · 기관 (CareerMatri Campus)", "Universities and institutions (CareerMatri Campus)"),
   campusNote: p(

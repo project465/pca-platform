@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
-import { coresForMarket } from "@/lib/me-v3/core-registry";
+import { coresForMarket, sellableCores } from "@/lib/me-v3/core-registry";
 import { currentAttempt, v3Grants } from "@/lib/me-v3/runtime/session";
 import { campusAttemptState } from "@/lib/campus/attempt-state";
 import { campusStudentContext } from "@/lib/campus/students";
@@ -36,8 +36,19 @@ export default async function Cores() {
   const open = await currentAttempt(user.id);
   const grants = await v3Grants(user.id);
   const cores = coresForMarket("KR");
-  const live = cores.filter((c) => c.status === "building" || c.status === "live");
-  const planned = cores.filter((c) => c.status === "planned");
+  /**
+   * **`지금 검사 가능` 은 응시를 실제로 열 수 있는 Core 만이다.**
+   *
+   * 전에는 `status` 만 보고 골라서, 짓고 있지만 학생에게 닫혀 있는
+   * Core(`open_to_students: false`)까지 `지금 검사 가능` 카드로 섰다.
+   * 누르면 `/v3/start` 가 그 값을 버리고 **기본 전공으로 조용히 열었다**:
+   * 경영학을 고른 사람이 기계공학 검사에 앉는 자리다. 여는 판단은
+   * `sellableCores()` 하나이고(설계 원칙 10) 이 화면은 그것을 읽는다.
+   * 닫힌 Core 는 `준비 중` 묶음으로 간다.
+   */
+  const live = sellableCores("KR");
+  const liveCodes = new Set(live.map((c) => c.code));
+  const planned = cores.filter((c) => !liveCodes.has(c.code));
   /**
    * **학교가 발급한 계정은 학교 쪽 문으로 보낸다.**
    *
@@ -123,7 +134,7 @@ export default async function Cores() {
             lead={"해 본 일과 직접 판단한 경험을 읽어 관심 분야와 "
               + "아직 준비할 것을 정리합니다."}
             meta={`관심 산업과 직무, 일하고 싶은 지역까지 이어서 볼 수 있습니다${
-              grants.length === 0 ? " · 이용권이 없으면 선별 등급으로 시작합니다" : ""}`}
+              grants.length === 0 ? " · 이용권이 없으면 무료 BASIC 으로 시작합니다" : ""}`}
             cta={open ? "이어하기" : "검사 시작하기"}
             strong
           />

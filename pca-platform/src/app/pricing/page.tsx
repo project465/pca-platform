@@ -176,7 +176,14 @@ export default async function PricingPage({
           </div>
         ) : (
           <div className="sf-section">
-            <Empty icon="box" title={T("pxEmpty")} body={T("pxEmptyBody")} />
+            {/* **빈 가격표를 막다른 길로 두지 않는다.** 응시할 수 있는 전공이
+                있으면 무료 BASIC 으로 가는 길 하나를 세운다. 그 길은 실제로
+                돈다: 이용권이 없으면 `/v3/start` 가 BASIC 으로 연다 */}
+            <Empty icon="box" title={T("pxEmpty")} body={T("pxEmptyBody")}
+              cta={open.length ? {
+                href: user ? "/cores" : "/signup?next=%2Fcores",
+                label: T("pxStartFree"),
+              } : undefined} />
           </div>
         )}
 

@@ -1,3 +1,4 @@
+import { safeNext } from "@/lib/safe-next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/session";
@@ -22,8 +23,10 @@ export default async function SignupPage({
   const user = await currentUser();
   const { next, product: code, lang: q } = await searchParams;
   const lang = await resolveLang(q);
-  const safeNext = next && next.startsWith("/") && !next.startsWith("//") ? next : "/me";
-  if (user) redirect(safeNext);
+  /* 열린 리다이렉트를 막는 자리는 `safeNext()` 하나다. 여기서 두 줄을 따로
+     들고 있으면 `/\\evil.com` 이 지나간다 */
+  const nextPath = safeNext(next, "/me");
+  if (user) redirect(nextPath);
 
   // 결제하러 왔다면 값을 먼저 보여 준다. 가입부터 시키고 나중에 값을
   // 들이밀면 그때 되돌아 나간다.
@@ -66,11 +69,11 @@ export default async function SignupPage({
               })
             : t("suLead", lang)}
         </p>
-        <SignupForm next={safeNext} lang={lang}
+        <SignupForm next={nextPath} lang={lang}
           consent={items} consentLabels={labels} />
         <p className="panel-foot">
           {t("suHaveAccount", lang)}{" "}
-          <Link href={`/login?next=${encodeURIComponent(safeNext)}`}>{t("signIn", lang)}</Link>
+          <Link href={`/login?next=${encodeURIComponent(nextPath)}`}>{t("signIn", lang)}</Link>
         </p>
         <p className="panel-foot">{t("suFromSchool", lang)}</p>
         </div>

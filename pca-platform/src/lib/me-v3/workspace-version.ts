@@ -326,7 +326,11 @@
  * R35 출시 차단 해소 · 전공 목록의 학교 카드가 응시 상태대로 선다(이어하기 ·
  * 결과 보기 · 다시 시작). 결과를 받은 학생에게 `시작하기` 를 세우지 않는다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V48";
+/**
+ * V49. `/cores` 의 `지금 검사 가능` 이 `sellableCores()` 를 읽는다. 닫힌
+ * Core 는 `준비 중` 묶음으로 간다(누르면 기본 전공으로 열리던 자리).
+ */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V49";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -359,7 +363,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V48";
  * R30. `기술 판단` 과 `기술영역` 이 그 Core 의 말로 선다(`experienceFlow`).
  * 홈 Hero 머리가 영역 이름을 들고, 현재 상태 머리 한 줄이 묶음대로 적힌다.
  */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.31";
+/** `.32` 에서 `선별 등급으로 시작합니다` 가 `무료 BASIC 으로 시작합니다` 가 됐다 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.32";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**
