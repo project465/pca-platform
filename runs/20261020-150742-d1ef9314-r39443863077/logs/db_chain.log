@@ -1,0 +1,10 @@
+  통과  네 runner 가 deploy/db-chain.json 만 읽는다 — 파일 4벌
+  통과  db 의 SQL 이 전부 목록에 있거나 까닭이 적혀 있다 — 20벌
+  통과  목록의 파일이 전부 있다 — 19벌
+  통과  arch 가 platform 과 지역 시드보다 먼저다 — arch 7 · platform 8 · 시드 10
+  통과  db:verify 가 세는 다섯 표가 목록 안에서 만들어진다 — career_profiles v3_experiences v3_actions v3_job_postings v3_track_interest
+  통과  컨테이너 안내문이 없는 스크립트를 가리키지 않는다 — 스크립트 14개
+  통과  career_profiles 에 /me 가 읽는 칸이 전부 적혀 있다 — 칸 14개 — db-verify.sh 에서 읽었다
+  통과  목록이 운영 이미지가 들고 있어야 하는 자리에 적혀 있다 — runtime-needs.json 에 deploy/db-chain.json
+
+확인 8가지 — 통과 8 · 걸림 0

@@ -1,0 +1,155 @@
+
+> pca-platform@0.1.0 build
+> next build
+
+⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+   ▲ Next.js 15.5.25
+   - Experiments (use with caution):
+     · serverActions
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 23.8s
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/76) ...
+   Generating static pages (19/76) 
+   Generating static pages (38/76) 
+   Generating static pages (57/76) 
+ ✓ Generating static pages (76/76)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                     Size  First Load JS
+┌ ƒ /                                          193 B         103 kB
+├ ○ /_not-found                                193 B         103 kB
+├ ƒ /admin                                     245 B         132 kB
+├ ƒ /admin/assessments                         245 B         132 kB
+├ ƒ /admin/audit                               245 B         132 kB
+├ ƒ /admin/business                            199 B         106 kB
+├ ƒ /admin/contracts                           245 B         132 kB
+├ ƒ /admin/contracts/new                     1.16 kB         107 kB
+├ ƒ /admin/countries                           245 B         132 kB
+├ ƒ /admin/funnel                              199 B         106 kB
+├ ƒ /admin/incidents                           199 B         106 kB
+├ ƒ /admin/launch                              199 B         106 kB
+├ ƒ /admin/localization                        199 B         106 kB
+├ ƒ /admin/ops                                 199 B         106 kB
+├ ƒ /admin/orders                              245 B         132 kB
+├ ƒ /admin/organizations                       245 B         132 kB
+├ ƒ /admin/organizations/[id]                1.97 kB         108 kB
+├ ƒ /admin/organizations/new                 1.76 kB         108 kB
+├ ƒ /admin/products                            245 B         132 kB
+├ ƒ /admin/readiness                           199 B         106 kB
+├ ƒ /admin/refunds                             199 B         106 kB
+├ ƒ /admin/reports                             245 B         132 kB
+├ ƒ /admin/sites                               245 B         132 kB
+├ ƒ /admin/users                               245 B         132 kB
+├ ƒ /admin/v3-pilot                          1.51 kB         108 kB
+├ ƒ /admin/v3-pilot/[attemptId]                199 B         106 kB
+├ ƒ /api/auth/[...nextauth]                    193 B         103 kB
+├ ƒ /api/health                                193 B         103 kB
+├ ƒ /api/ops/tick                              193 B         103 kB
+├ ƒ /api/payments/webhook                      193 B         103 kB
+├ ƒ /api/v3/pilot/track                        193 B         103 kB
+├ ƒ /assessment/[attemptId]                  2.07 kB         105 kB
+├ ƒ /assessment/[attemptId]/done               178 B         106 kB
+├ ƒ /assessment/[attemptId]/evidence         1.15 kB         107 kB
+├ ƒ /assessment/[attemptId]/report           1.15 kB         133 kB
+├ ƒ /assessment/[attemptId]/report/data        193 B         103 kB
+├ ƒ /assessment/[attemptId]/report/pdf         193 B         103 kB
+├ ƒ /assessment/start                          178 B         106 kB
+├ ƒ /campus/[universityCode]                   202 B         106 kB
+├ ƒ /campus/[universityCode]/d/[department]    202 B         106 kB
+├ ƒ /campus/[universityCode]/login             932 B         107 kB
+├ ƒ /campus/[universityCode]/majors            202 B         106 kB
+├ ƒ /campus/[universityCode]/start             202 B         106 kB
+├ ƒ /checkout                                2.16 kB         121 kB
+├ ƒ /checkout/complete                         178 B         106 kB
+├ ƒ /cores                                   2.24 kB         108 kB
+├ ƒ /evidence                                3.15 kB         125 kB
+├ ƒ /free                                      895 B         120 kB
+├ ƒ /free-start                                193 B         103 kB
+├ ƒ /jju                                       192 B         106 kB
+├ ƒ /jju/admin                                 192 B         106 kB
+├ ƒ /jju/fields                                192 B         106 kB
+├ ƒ /jju/report/[attemptId]                    193 B         103 kB
+├ ƒ /jju/report/[attemptId]/pdf                193 B         103 kB
+├ ƒ /legal/[kind]                              199 B         106 kB
+├ ƒ /login                                   1.86 kB         108 kB
+├ ƒ /login/link                                199 B         106 kB
+├ ƒ /me                                      2.26 kB         108 kB
+├ ƒ /me/apply                                2.26 kB         108 kB
+├ ƒ /me/experience                           2.26 kB         108 kB
+├ ƒ /me/experience/[id]/edit                   128 B         111 kB
+├ ƒ /me/experience/new                         128 B         111 kB
+├ ƒ /me/explore                              2.26 kB         108 kB
+├ ○ /me/gap                                    193 B         103 kB
+├ ƒ /me/jobs                                 2.26 kB         108 kB
+├ ƒ /me/next                                 2.26 kB         108 kB
+├ ƒ /me/recompute                             2.4 kB         108 kB
+├ ƒ /me/region                               2.26 kB         108 kB
+├ ƒ /me/results                              2.26 kB         108 kB
+├ ƒ /me/state                                2.26 kB         108 kB
+├ ƒ /me/track                                2.26 kB         108 kB
+├ ƒ /my                                      2.23 kB         134 kB
+├ ƒ /my/account                              2.77 kB         125 kB
+├ ƒ /my/applications                         2.22 kB         108 kB
+├ ƒ /my/assessments                          2.26 kB         108 kB
+├ ƒ /my/evidence                             2.26 kB         108 kB
+├ ƒ /my/results                              2.26 kB         108 kB
+├ ƒ /org                                       245 B         132 kB
+├ ƒ /org/cohorts                               245 B         132 kB
+├ ƒ /org/contract                              245 B         132 kB
+├ ƒ /org/evidence-insights                     245 B         132 kB
+├ ƒ /org/insights                              245 B         132 kB
+├ ƒ /org/licenses                              245 B         132 kB
+├ ƒ /org/participants                          245 B         132 kB
+├ ƒ /org/reports                               245 B         132 kB
+├ ƒ /org/sessions/[id]                        2.1 kB         108 kB
+├ ƒ /org/sessions/[id]/report                  178 B         106 kB
+├ ƒ /org/sessions/new                        1.31 kB         107 kB
+├ ƒ /org/settings                              245 B         132 kB
+├ ƒ /org/v3                                    245 B         132 kB
+├ ƒ /org/v3/export/departments.csv             193 B         103 kB
+├ ƒ /org/v3/export/students.csv                193 B         103 kB
+├ ƒ /org/v3/report                             183 B         106 kB
+├ ƒ /org/v3/report.pdf                         193 B         103 kB
+├ ƒ /org/v3/students                         2.14 kB         134 kB
+├ ƒ /org/v3/students/import                  2.05 kB         134 kB
+├ ƒ /password/change                           898 B         104 kB
+├ ○ /password/forgot                         1.25 kB         107 kB
+├ ƒ /password/reset/[token]                    856 B         107 kB
+├ ƒ /pca/[...path]                             193 B         103 kB
+├ ƒ /pilot/[attemptId]                         916 B         133 kB
+├ ƒ /pricing                                   245 B         132 kB
+├ ƒ /product                                   245 B         132 kB
+├ ƒ /redeem                                  1.14 kB         123 kB
+├ ƒ /report/[attemptId]                        518 B         123 kB
+├ ƒ /sample                                    622 B         132 kB
+├ ƒ /signup                                   1.6 kB         124 kB
+├ ƒ /signup/social                           1.09 kB         107 kB
+├ ƒ /start                                     516 B         123 kB
+├ ƒ /support                                 1.05 kB         133 kB
+├ ƒ /survey/[attemptId]                      1.29 kB         104 kB
+├ ƒ /test                                      518 B         123 kB
+├ ƒ /test/[attemptId]                        1.88 kB         121 kB
+├ ƒ /v3/[attemptId]                          7.73 kB         110 kB
+├ ƒ /v3/[attemptId]/done                       193 B         103 kB
+├ ƒ /v3/[attemptId]/feedback                   197 B         106 kB
+├ ƒ /v3/[attemptId]/intro                      193 B         103 kB
+├ ƒ /v3/[attemptId]/result                   1.89 kB         108 kB
+├ ƒ /v3/[attemptId]/result/pdf                 193 B         103 kB
+├ ƒ /v3/pilot                                  184 B         106 kB
+├ ƒ /v3/start                                1.49 kB         104 kB
+└ ƒ /verify/[token]                            193 B         103 kB
++ First Load JS shared by all                 103 kB
+  ├ chunks/1255-7316b50163a428e6.js          46.4 kB
+  ├ chunks/4bd1b696-f785427dddbba9fb.js      54.2 kB
+  └ other shared chunks (total)              2.03 kB
+
+
+ƒ Middleware                                 49.7 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
