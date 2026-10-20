@@ -1,0 +1,20 @@
+{
+ "A": {
+  "attempt": "6",
+  "sha256": "26c1237377e3d293957c4920b98852b319ba46d676f95319fbb732b2622cd6a8",
+  "bytes": 1064474,
+  "text_chars": 20162
+ },
+ "B": {
+  "attempt": "7",
+  "sha256": "2eb69330009182c049f798dc4254d49bc817c5a722659acfc7529622de34fda3",
+  "bytes": 1108074,
+  "text_chars": 22472
+ },
+ "C": {
+  "attempt": "8",
+  "sha256": "2ba77c74cc48ec18c27d9cf3cb927e63926b668b75b8f985d7af115e2632f503",
+  "bytes": 1099938,
+  "text_chars": 21838
+ }
+}
