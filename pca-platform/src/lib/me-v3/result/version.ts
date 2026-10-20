@@ -453,7 +453,11 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.66";
  * 타일로, 영역 묶음을 옅은 판으로 세운다. 종이의 쪽 문법과 결과 모델과
  * 글자는 그대로다.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V78";
+/**
+ * 색 타일 안 그림 동그라미를 흰 판으로 바꾸고 그림을 타일 색으로 칠한다.
+ * 흰 그림 위에 흰 안쪽 획이 겹쳐 첫 타일 그림이 흰 네모로만 보였다.
+ */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V79";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

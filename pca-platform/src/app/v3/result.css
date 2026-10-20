@@ -2745,7 +2745,11 @@
   .rs .rs-tile a:hover { filter: brightness(1.05); }
   .rs .rs-tile a :is(b, small, span, em, strong) { color: #fff; }
   .rs .rs-tile a small { opacity: .85; }
-  .rs .rs-tile i { background: rgba(255, 255, 255, .18) !important; color: #fff; }
+  /* 그림 안쪽의 흰 획이 보이도록 동그라미는 흰 판, 그림은 타일 색으로 칠한다 */
+  .rs .rs-tile i { background: rgba(255, 255, 255, .94) !important; }
+  .rs .rs-tile > li:nth-child(3n+1) i { color: #1f55e0; }
+  .rs .rs-tile > li:nth-child(3n+2) i { color: #0b7f66; }
+  .rs .rs-tile > li:nth-child(3n+3) i { color: #6544de; }
   .rs .rs-tile i svg { opacity: .95; }
 
   /* 부록이 시작하는 자리는 카드가 아니라 가르는 금이다 */
