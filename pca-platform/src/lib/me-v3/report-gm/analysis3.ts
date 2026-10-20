@@ -451,8 +451,16 @@ export function strategy3(m: ResultModel): Strategy {
     return dim ? `${goalInd!.name_ko} 산업에서는 ${j(dimWork(dim.name), "이가")} 특히 중요합니다(${dim.why}).` : "";
   };
   /** 같은 판단을 목표 직무 밖의 영역에서 해 봤다면 그 경험을 옮겨 쓸 수 있다: 그 연결 이유를 적는다 */
+  /**
+   * 응답만으로는 옮겨 쓴다고 적지 않는다: 그 영역에서 이 판단의 체크리스트 항목을 실제로 고른 경우에만 연결 이유를 쓴다.
+   * (근거를 하나도 고르지 않은 학생에게 ‘마케팅에서 해 본 경험을 인사 장면으로 옮길 수 있다’ 가 섰다)
+   */
+  const pickedIn = (d: ResultDomain, ax: Axis) => {
+    const list = content(core).checklists.domains[d.code]?.[ax] ?? [];
+    return d.did.some((t) => list.some((x) => x.text === t));
+  };
   const transfer = (ax: Axis) => {
-    const src = m.domains.find((d) => !tds.includes(d.code) && asked(d) && (axisLevel(d, ax) ?? -1) >= 2);
+    const src = m.domains.find((d) => !tds.includes(d.code) && asked(d) && (axisLevel(d, ax) ?? -1) >= 2 && pickedIn(d, ax));
     if (!src) return "";
     const own = src.owned.includes(ax);
     return `‘${JUDGE[ax].name}’는 ${domainName(core, src.code)}에서 ${own ? "기준까지 직접 정했다고" : "스스로 맡아 해 봤다고"} 답했습니다. ${role.name_ko}에서는 같은 판단이 ${andJoin((role.decides ?? []).slice(0, 2))}을 정할 때 쓰이므로, 그 경험을 이 직무의 장면으로 옮겨 설명할 수 있습니다.`;
