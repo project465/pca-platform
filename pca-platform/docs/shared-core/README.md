@@ -24,6 +24,7 @@
 | [R38_TRACKS.md](R38_TRACKS.md) | R38 Track 상태 |
 | [R38_OUTPUT_CONTENT_QA.md](R38_OUTPUT_CONTENT_QA.md) | 결과 본문 QA (합성 · 전/후 · 근거 ID · 9축) |
 | `handoffs/R38_*.md` | 배재 · 본체 · 전주 · 세종 회신 초안 (**미발송**) |
+| [handoffs/R39_PCU_r3-approval-review.md](handoffs/R39_PCU_r3-approval-review.md) | **R39** 배재 3차 승인 요청 검토 의견 — CI · Staging · API · GM 패치 · 파기 (**미발송 · 승인 아님**) |
 
 ## 기준 커밋에서 돌린 불변 묶음 (2026-10-20)
 
