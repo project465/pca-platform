@@ -2748,6 +2748,12 @@
   .rs .rs-tile i { background: rgba(255, 255, 255, .18) !important; color: #fff; }
   .rs .rs-tile i svg { opacity: .95; }
 
+  /* 부록이 시작하는 자리는 카드가 아니라 가르는 금이다 */
+  .rs .rs-sect.rs-appx-head {
+    background: none; box-shadow: none; border-radius: 0;
+    padding: var(--r-s5) 0 0; border-top: 2px solid var(--r-accent);
+  }
+
   /* 영역 묶음은 옅은 판 */
   .rs .rs-pack {
     background: var(--r-sunk); border-left: 3px solid var(--r-accent);

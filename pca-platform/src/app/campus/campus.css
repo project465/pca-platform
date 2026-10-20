@@ -501,3 +501,54 @@ a.cm-cmp-row:focus-visible { outline: 2px solid var(--pcu-blue); outline-offset:
   .cm-cmp-row { padding: 12px 14px; gap: 10px; }
   .cm-cmp-auth { padding: 24px 18px 20px; margin-top: 12px; }
 }
+
+/* ── 화면 시안 스킨 (2026-10-20) ─────────────────────────────────────
+   `mockups` 의 로그인 왼쪽 판과 같은 모양이다. 파란 기울기 판 위에 흰
+   글자가 서고, 절차 세 걸음은 번호 원을 단 반투명 칸이다 */
+.cm-cmp-hero {
+  background: linear-gradient(150deg, #2f6bff 0%, #1f4fd1 55%, #1e2a3e 100%);
+  border-radius: 24px;
+  box-shadow: 0 1px 2px rgba(17, 30, 60, .05), 0 12px 32px rgba(31, 79, 209, .18);
+}
+.cm-cmp-eyebrow { color: #fff; opacity: .85; }
+.cm-cmp-lead { color: rgba(255, 255, 255, .82); }
+.cm-cmp-flow {
+  border-left: 0; padding: 0;
+  display: flex; flex-direction: column; gap: 10px;
+  counter-reset: pcuflow;
+}
+.cm-cmp-flow li {
+  counter-increment: pcuflow;
+  position: relative;
+  padding: 13px 14px 13px 48px;
+  border-radius: 12px; background: rgba(255, 255, 255, .10);
+}
+.cm-cmp-flow li::before {
+  content: counter(pcuflow);
+  position: absolute; left: 14px; top: 14px;
+  width: 24px; height: 24px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: #fff; color: #1f4fd1;
+  font-size: 12.5px; font-weight: 800;
+}
+/* `STEP 1` 글자는 번호 원이 대신한다. 화면에서만 감추고 읽기 도구에는 남긴다 */
+.cm-cmp-flow b {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+.cm-cmp-flow strong { margin-top: 0; }
+.cm-cmp-flow span { color: rgba(255, 255, 255, .78); }
+.cm-cmp-cta { color: #1f4fd1; border-radius: 12px; }
+.cm-cmp-cta-2 { border-radius: 12px; }
+
+.cm-cmp-auth {
+  max-width: 440px;
+  border: 0; border-radius: 24px; padding: 40px 36px 32px;
+  box-shadow: 0 1px 2px rgba(17, 30, 60, .04), 0 10px 32px rgba(17, 30, 60, .10);
+}
+.cm-cmp-auth h1 { font-size: 24px; font-weight: 800; letter-spacing: -.03em; }
+.cm-cmp-auth .field input { border-radius: 12px; border-color: var(--pcu-line); }
+.cm-cmp-auth .field input:focus-visible {
+  outline: 3px solid rgba(47, 107, 255, .18); outline-offset: 0;
+}
+.cm-cmp-auth button[type="submit"] { border-radius: 12px; }

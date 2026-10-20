@@ -1558,36 +1558,40 @@
 }
 .qs-brief { border-radius: var(--q-r-lg); box-shadow: var(--sh-1); border-color: transparent; }
 
-/* 보기: 판 하나 대신 번호를 단 칸으로 하나씩 */
+/* 보기: 판 하나 대신 칸으로 하나씩.
+   **번호 원은 고르는 목록에만 단다.** 척도(`.qs-own.qs-scale-*`)는 칸마다
+   값 번호(`.qs-sn`)를 이미 적고, 소유 넷(`.qs-own`)은 점수처럼 읽히지 않게
+   눈금을 걷어 낸 자리라(위 `보기 넷은 단계다`) 번호를 두지 않는다 */
 .qs-list {
   background: transparent; border: 0; border-radius: 0; overflow: visible;
   gap: 10px; counter-reset: qopt;
 }
-.qs-opt {
-  counter-increment: qopt;
-  align-items: center;
+.qs-list > .qs-opt {
   background: var(--q-paper);
   border: 1.5px solid var(--q-line); border-radius: var(--q-r);
 }
-.qs-opt:first-child, .qs-opt.is-on + .qs-opt { border-top: 1.5px solid var(--q-line); }
-.qs-opt:hover { background: #fafbff; border-color: #b9c8e6; }
-.qs-opt:not(.is-box) .qs-mark {
+.qs-list > .qs-opt:first-child,
+.qs-list > .qs-opt.is-on + .qs-opt { border-top: 1.5px solid var(--q-line); }
+.qs-list > .qs-opt:hover { background: #fafbff; border-color: #b9c8e6; }
+.qs-list > .qs-opt.is-on {
+  background: var(--q-accent-soft);
+  border-color: var(--q-accent);
+  box-shadow: none;
+}
+.qs-list > .qs-opt.is-on .qs-label { color: var(--q-accent-ink); font-weight: var(--ui-w-bd); }
+
+.qs-list:not(.qs-own) > .qs-opt { counter-increment: qopt; align-items: center; }
+.qs-list:not(.qs-own) > .qs-opt:not(.is-box) .qs-mark {
   width: 30px; height: 30px; margin-top: 0;
   display: grid; place-items: center;
   border: 1.5px solid #c5cfe0; color: var(--q-ink-2);
   font-size: 14px; font-weight: var(--ui-w-bd); font-style: normal;
 }
-.qs-opt:not(.is-box) .qs-mark::before { content: counter(qopt); }
-.qs-opt.is-on {
-  background: var(--q-accent-soft);
-  border-color: var(--q-accent); border-radius: var(--q-r);
-  box-shadow: none;
-}
-.qs-opt.is-on:not(.is-box) .qs-mark {
+.qs-list:not(.qs-own) > .qs-opt:not(.is-box) .qs-mark::before { content: counter(qopt); }
+.qs-list:not(.qs-own) > .qs-opt.is-on:not(.is-box) .qs-mark {
   background: var(--q-accent); border-color: var(--q-accent); color: #fff;
   box-shadow: none;
 }
-.qs-opt.is-on .qs-label { color: var(--q-accent-ink); font-weight: var(--ui-w-bd); }
 
 /* 아래 단추 */
 .qs-btn { border-radius: var(--q-r); }
