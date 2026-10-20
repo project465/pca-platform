@@ -60,27 +60,9 @@ const ICON: Record<string, string> = {
 const icon = (k: string) => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICON[k] ?? ""}</svg>`;
 
 /**
- * 표지 위아래의 삼각 무늬 띠. 붉은 계열 면 몇 장이고 값을 담지 않는다.
+ * 표지는 흰 면 위 글자와 가는 줄뿐이다. 무늬 띠는 걷었다.
  * **학교 로고를 그려 넣지 않는다**: 정식 asset 과 사용 권한을 확인하지 못했다. 학교 이름은 글자로만 선다.
  */
-const TRI = ["#a6192e", "#e7a0a9", "#c9394b", "#f4cfd3", "#8b1426", "#eeb6bd", "#d9606e", "#f8e1e3"];
-function triBand(flip: boolean): string {
-  const W = 24, H = 22, out: string[] = [];
-  for (let i = -1; i < 10; i++) {
-    const x = i * W;
-    const up = `M${x} ${H}L${x + W / 2} 0L${x + W} ${H}Z`;
-    const dn = `M${x + W / 2} 0L${x + W} ${H}L${x + W * 1.5} 0Z`;
-    out.push(`<path d="${up}" fill="${TRI[(i + 8) % TRI.length]}"/>`, `<path d="${dn}" fill="${TRI[(i * 3 + 13) % TRI.length]}" opacity=".85"/>`);
-  }
-  return `<svg class="tri ${flip ? "bottom" : "top"}" viewBox="0 0 210 ${H}" preserveAspectRatio="none" aria-hidden="true"${flip ? ' style="transform:scaleY(-1)"' : ""}>${out.join("")}</svg>`;
-}
-const TRI_TOP = triBand(false);
-const TRI_BOTTOM = triBand(true);
-/** 표지 가운데 옅은 큰 삼각형 몇 장 */
-const COVER_ART = `<svg class="cv-art" viewBox="0 0 210 297" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-<path d="M-10 70L30 140L-50 140Z" fill="#f6dadd" opacity=".55"/><path d="M220 150L180 220L260 220Z" fill="#f6dadd" opacity=".55"/>
-<path d="M150 250L190 180L230 250Z" fill="#fbecee" opacity=".7"/><path d="M-20 190L20 260L60 190Z" fill="#fbecee" opacity=".7"/>
-</svg>`;
 
 const ZONE_CLASS: Record<string, string> = {
   Z1_EVIDENCE_ESTABLISHED: "z1", Z2_EVIDENCE_INCOMPLETE: "z2",
@@ -103,9 +85,9 @@ export function kusReportHtml(a: KusAnalysis, meta: KusReportMeta): string {
   const r = a.reliability;
 
   const year = (meta.resultAt ?? meta.generatedAt).slice(0, 4);
-  const cover = `<section class="cover">${COVER_ART}${TRI_TOP}
+  const cover = `<section class="cover">
+  <div class="cv-head"><p class="brand">CareerMatri</p></div>
   <div class="cv-main">
-    <p class="brand">CareerMatri</p>
     <p class="school">${esc(s.university)}</p>
     <h1><span class="yr">${esc(year)}</span>진로 분석 리포트</h1>
     <hr />
@@ -117,7 +99,6 @@ export function kusReportHtml(a: KusAnalysis, meta: KusReportMeta): string {
     </dl>
   </div>
   <p class="cv-foot">리포트 생성 ${esc(meta.generatedAt)} · 응시 번호 ${esc(meta.attemptId)}</p>
-  ${TRI_BOTTOM}
 </section>`;
 
   /* 1 */
@@ -280,12 +261,11 @@ html,body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 body{margin:0;background:#fff;color:var(--ink);font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","WenQuanYi Zen Hei",system-ui,sans-serif;font-size:9.6pt;line-height:1.6;word-break:keep-all;overflow-wrap:anywhere}
 .testbar{background:#fff5e1;color:#8a5300;font-size:8pt;text-align:center;padding:2px}
 @media print{.testbar{display:none}}
-/* 표지: 흰 바탕 · 위아래 붉은 삼각 띠 · 학교 이름은 글자로 · ▶ 항목 */
+/* 표지: 흰 바탕 · 맨 위 가는 붉은 줄(레터헤드) · 학교 이름은 글자로 · ▶ 항목 */
 .cover{position:relative;height:297mm;padding:0;display:flex;flex-direction:column;break-after:page;overflow:hidden;background:#fff}
-.cv-art{position:absolute;inset:0;width:100%;height:100%}
-.tri{position:absolute;left:0;width:100%;height:24mm;z-index:1}.tri.top{top:0}.tri.bottom{bottom:14mm;height:18mm}
-.cv-main{position:relative;z-index:1;margin-top:52mm;padding:0 30mm}
-.cv-main .brand{margin:0 0 3mm;font-size:9pt;font-weight:700;letter-spacing:.2em;color:var(--blue);text-transform:uppercase}
+.cv-head{margin:20mm 30mm 0;padding-bottom:2.5mm;border-bottom:1px solid var(--blue)}
+.cv-head .brand{margin:0;font-size:9pt;font-weight:700;letter-spacing:.2em;color:var(--blue);text-transform:uppercase}
+.cv-main{position:relative;z-index:1;margin-top:58mm;padding:0 30mm}
 .cv-main .school{margin:0;font-size:14pt;font-weight:700;color:var(--navy);letter-spacing:.04em}
 .cover h1{margin:5mm 0 0;font-size:30pt;font-weight:800;color:var(--ink);line-height:1.2;letter-spacing:-.01em}
 .cover h1 .yr{display:block;font-size:13pt;font-weight:700;color:var(--blue);letter-spacing:.06em;margin-bottom:1mm}
@@ -294,7 +274,7 @@ body{margin:0;background:#fff;color:var(--ink);font-family:"Pretendard","Noto Sa
 .cv-list dt:before{content:"";position:absolute;left:0;top:1.3mm;border-left:2.6mm solid var(--blue);border-top:1.6mm solid transparent;border-bottom:1.6mm solid transparent}
 .cv-list dd{margin:0;padding-left:5mm;font-size:10.5pt;color:var(--ink2);line-height:1.6}
 .cv-list .badge{display:inline-block;font-size:8.5pt;font-weight:700;color:#fff;background:var(--blue);border-radius:3px;padding:0 6px;margin-right:2px}
-.cv-foot{position:relative;z-index:1;margin:auto 0 0;padding:0 30mm 38mm;color:var(--mute);font-size:7.8pt}
+.cv-foot{position:relative;z-index:1;margin:auto 0 0;padding:0 30mm 26mm;color:var(--mute);font-size:7.8pt}
 /* 장 머리: 붉은 네모 안 로마 숫자 · 제목 · 붉은 줄 */
 /* 장마다 새 쪽을 열지 않는다: 열면 앞 장의 꼬리 몇 줄만 든 빈 쪽이 생긴다. 머리만 쪽 경계에서 쪼개지지 않게 둔다 */
 .ch{break-before:auto;margin-top:10mm}.cover+.ch,.testbar+.cover+.ch{margin-top:0}
@@ -369,5 +349,5 @@ table.kv2 td:first-child{width:32mm;color:var(--ink2);font-weight:600}
 .pcol li small{display:block;color:var(--ink2);font-size:8pt;margin-top:2px}.pcol li small b{color:var(--green)}
 .src{display:inline-block;font-size:7pt;color:var(--mute);border:1px solid var(--line);border-radius:4px;padding:0 3px;margin-right:4px}
 @media screen{body{background:#eef1f5;padding:24px 12px}.cover,.ch{max-width:820px;margin:0 auto 18px;background:#fff;border-radius:12px;padding:26px 28px}.cover{padding:0;height:auto;min-height:1080px;background:#fff}.ch.flow{margin-top:0}.testbar{position:sticky;top:0;z-index:9}}
-@media screen and (max-width:640px){body{padding:12px 0}.cover,.ch{border-radius:0;padding:20px 16px}.cover{padding:0;min-height:900px}.cv-main{margin-top:130px;padding:0 22px}.cv-foot{padding:0 22px 110px}.stats{grid-template-columns:repeat(2,1fr)}.two,.plan,.ovd{grid-template-columns:1fr}.plan:before{display:none}table{display:block;overflow-x:auto}}
+@media screen and (max-width:640px){body{padding:12px 0}.cover,.ch{border-radius:0;padding:20px 16px}.cover{padding:0;min-height:900px}.cv-head{margin:28px 22px 0}.cv-main{margin-top:110px;padding:0 22px}.cv-foot{padding:0 22px 110px}.stats{grid-template-columns:repeat(2,1fr)}.two,.plan,.ovd{grid-template-columns:1fr}.plan:before{display:none}table{display:block;overflow-x:auto}}
 `;
