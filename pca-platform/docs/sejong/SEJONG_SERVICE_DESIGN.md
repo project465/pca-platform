@@ -178,7 +178,11 @@
 
 ## 4. 개인별 취업 전략 PDF
 
-`[제안]` Gold Master 13장 구조(`render3.ts` `chaptersOf`)를 기관용으로 고른다. 장마다 데이터 원천을 함께 적는다.
+> **2026-10-20 정정 — 이 절의 장 구성은 기준이 아니다.** 최종 PDF 기준은 `TRACKS.md` Track D 절을 따른다.
+> ChatGPT 로 만든 `CareerMatri_SEJONG_GoldMaster_93p.pdf` 는 품질 승인 전이라 기준으로 쓰지 않는다.
+> 아래 표는 저장소 엔진의 경영(BIZ) 보고서 구조(`report-gm`, 이것도 Human Review 대기)를 옮긴 초기 제안으로만 남긴다.
+
+`[제안 · 폐기 아님 · 기준 아님]` Gold Master 13장 구조(`render3.ts` `chaptersOf`)를 기관용으로 고른다. 장마다 데이터 원천을 함께 적는다.
 
 | # | 장 | 원천 | 비고 |
 |---|---|---|---|
