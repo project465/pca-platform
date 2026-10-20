@@ -1,0 +1,47 @@
+TAP version 13
+# \# shared-core 7 벌 · 그 밖의 src 405 벌
+# Subtest: B0 shared-core 파일이 있다
+ok 1 - B0 shared-core 파일이 있다
+  ---
+  duration_ms: 1.584628
+  type: 'test'
+  ...
+# Subtest: B1 shared-core 는 node: 내장과 shared-core 안만 들여온다
+ok 2 - B1 shared-core 는 node: 내장과 shared-core 안만 들여온다
+  ---
+  duration_ms: 2.26711
+  type: 'test'
+  ...
+# Subtest: B2 shared-core 밖에서 shared-core 를 들여오는 src 파일이 0 이다
+ok 3 - B2 shared-core 밖에서 shared-core 를 들여오는 src 파일이 0 이다
+  ---
+  duration_ms: 31.354922
+  type: 'test'
+  ...
+# Subtest: B3 쓰는 fs API 가 0 이다
+ok 4 - B3 쓰는 fs API 가 0 이다
+  ---
+  duration_ms: 1.209539
+  type: 'test'
+  ...
+# Subtest: B4 읽는 환경변수는 CONTENT_DIR 하나다
+ok 5 - B4 읽는 환경변수는 CONTENT_DIR 하나다
+  ---
+  duration_ms: 0.826914
+  type: 'test'
+  ...
+# Subtest: B5 DB · 네트워크 · 자식 프로세스에 닿지 않는다
+ok 6 - B5 DB · 네트워크 · 자식 프로세스에 닿지 않는다
+  ---
+  duration_ms: 0.471407
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 350.908367

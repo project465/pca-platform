@@ -1,0 +1,15 @@
+== current (/home/user/pca-platform/pca-platform)
+current sc1-profile rc=0 pass=27 fail=0 todo=0 skip=0
+current sc1-boundary rc=0 pass=6 fail=0 todo=0 skip=0
+current l2-identity rc=0 pass=10 fail=0 todo=12 skip=0
+current l1-erasure rc=0 pass=7 fail=0 todo=4 skip=0
+current l3-forgot rc=0 pass=2 fail=0 todo=1 skip=0
+current protect 11/11
+== landed (/tmp/sc-gate-landed.dY01V4 · 적용:L1,L2,L2b,L3)
+landed sc1-profile rc=0 pass=27 fail=0 todo=0 skip=0
+landed sc1-boundary rc=0 pass=6 fail=0 todo=0 skip=0
+landed l2-identity rc=0 pass=15 fail=0 todo=1 skip=6
+landed l1-erasure rc=0 pass=7 fail=0 todo=3 skip=1
+landed l3-forgot rc=0 pass=2 fail=0 todo=0 skip=1
+landed protect 11/11
+== 판정 READY_WHEN_LANDED (current 재현 10 · landed 걸림 0 · landed 보호 rc 0)

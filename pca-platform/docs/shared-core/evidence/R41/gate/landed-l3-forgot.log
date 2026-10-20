@@ -1,0 +1,28 @@
+TAP version 13
+# Subtest: L3-0 로그인은 아이디가 같은 쪽(A)을 고른다 — 비교의 기준
+ok 1 - L3-0 로그인은 아이디가 같은 쪽(A)을 고른다 — 비교의 기준
+  ---
+  duration_ms: 544.250949
+  type: 'test'
+  ...
+# Subtest: L3-REPRO-1 지금 코드: 쌓인 차례에 따라 찾기가 로그인과 다른 계정을 고른다
+ok 2 - L3-REPRO-1 지금 코드: 쌓인 차례에 따라 찾기가 로그인과 다른 계정을 고른다 # SKIP 수정 사본 — REPRO 건너뜀
+  ---
+  duration_ms: 0.296732
+  type: 'test'
+  ...
+# Subtest: L3-FIX-1 어느 차례로 쌓여도 찾기가 로그인과 같은 계정을 고른다
+ok 3 - L3-FIX-1 어느 차례로 쌓여도 찾기가 로그인과 같은 계정을 고른다
+  ---
+  duration_ms: 511.563264
+  type: 'test'
+  ...
+1..3
+# tests 3
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 1
+# todo 0
+# duration_ms 1352.643242

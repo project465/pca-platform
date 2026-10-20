@@ -1,0 +1,18 @@
+
+  ME_V2_DECISION_2026 — 92문항 · 보존 판본. 새 응시는 ME_V3 로 간다
+    그대로 sites/pca-platform/assessment/ME_V2/decision-rules.json
+    그대로 sites/pca-platform/assessment/ME_V2/family-names.json
+    그대로 sites/pca-platform/assessment/ME_V2/items-core.json
+    그대로 sites/pca-platform/assessment/ME_V2/items-pro.json
+    그대로 sites/pca-platform/assessment/ME_V2/items-standard.json
+    그대로 sites/pca-platform/assessment/ME_V2/mode-fit.json
+    그대로 sites/pca-platform/assessment/ME_V2/response-scales.json
+    그대로 sites/pca-platform/assessment/ME_V2/stage-variants.json
+
+  PCA_ME_V1 — 253문항 · 학과 계약 판본. 신규 진입은 막고 읽기와 재현만 남긴다
+    그대로 data/metri/items_pca_me_v1.json
+    그대로 data/metri/major_ME.json
+    그대로 data/metri/major_EE.json
+    그대로 data/metri/major_CE.json
+
+잠근 파일 12개 — 어긋난 자리 0곳
