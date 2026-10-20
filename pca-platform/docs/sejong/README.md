@@ -38,11 +38,16 @@
   - 세종 쪽에 필요한 공통 변경은 배재대 Gold Master 동결 뒤로 요청한다.
   - 공용 Staging 은 쓰지 않는다.
 
-## 문서
+## 문서와 코드
 
 | 파일 | 내용 |
 |---|---|
+| `MVP.md` | **MVP 화면 목록 · 띄우는 법 · 어디까지 확인했는가** |
+| `STAGING_PLAN.md` | 독립 Staging 안전 배포 계획 (승인 전, 실행하지 않음) |
 | `COMMON_CORE_CHANGE_REQUEST.md` | 본체에 넘길 공통 엔진 변경 제안 여섯(CR-1~6) |
-| `SEJONG_SERVICE_DESIGN.md` | 세종 전용 서비스 설계: 대상·화면·콘텐츠·PDF·관리자·흐름·파일 구조·계획 |
+| `SEJONG_SERVICE_DESIGN.md` | 세종 전용 서비스 설계 |
 | `data/README.md` | 세종 기업·기관 자료의 조사 방법과 검증 상태 |
-| `data/sejong-orgs.preview.json` | 1차 자료. PREVIEW_ONLY, 채용 여부 미확인 |
+| `../../src/sejong/content/orgs.preview.json` | 1차 자료 35곳. PREVIEW_ONLY · 채용 여부 미확인 (앱이 묶어 읽는다) |
+| `../../src/app/sejong/` · `../../src/sejong/` | 화면과 세종 전용 로직 (새 파일만) |
+| `../../db/sejong/` | `sj_` 표. 공통 DB 체인 밖 |
+| `../../scripts/sejong/` | 분석 검사 · 시드 · 브라우저 E2E |

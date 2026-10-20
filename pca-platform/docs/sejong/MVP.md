@@ -1,0 +1,93 @@
+# 세종 MVP — 무엇이 있고, 어떻게 띄우고, 어디까지 확인했는가
+
+## 1. 확인 상태 (2026-10-20)
+
+| 구분 | 상태 |
+|---|---|
+| 분석 규칙 (`src/sejong/lib/analysis.ts`) | **실행 확인.** `node --experimental-strip-types scripts/sejong/analysis-check.mjs` 23/23 |
+| DB 층 (`db/sejong/schema_sejong_demo.sql`) | **실행 확인.** 로컬 PostgreSQL 16 에 공통 스키마 체인(19개 파일) 다음으로 두 번 적용해 멱등 확인 |
+| 시연 자료 (`scripts/sejong/seed-demo.mjs`) | **실행 확인.** 참여자 21 · 완료 10 · 진행 중 4 · 응답 290 · 경험 20 · 동의 12 |
+| 관리자 집계 SQL (`src/sejong/lib/metrics.ts`) | **실행 확인.** 질의 7개를 시연 DB 에서 psql 로 돌려 사업별 깔때기 · 관심 분야 · 상태 표가 나온다 |
+| 화면 코드 (`src/app/sejong/**`, `src/sejong/**`) | **타입만 확인.** 외부 패키지를 대역으로 두고 TypeScript 6 으로 검사해 0 오류. **Next.js 빌드와 실제 브라우저 확인은 아직이다** |
+| 브라우저 E2E · 화면 캡처 (`scripts/sejong/e2e-shots.mjs`) | **아직 못 돌렸다.** 이 환경의 네트워크 정책이 `registry.npmjs.org` 를 막아 `npm ci` 가 안 된다(next·react·pg·next-auth 가 없다) |
+
+**막힌 것 하나:** npm 레지스트리 접근. 환경 설정 → Network access 에서
+`registry.npmjs.org` 를 허용하면 아래 3절을 그대로 돌린다.
+
+## 2. 무엇이 있는가
+
+### 구직자
+| 주소 | 화면 |
+|---|---|
+| `/sejong` | 전용 홈. 시연판 띠, 진행 순서, 세종 산업 묶음 |
+| `/sejong/login` | 로그인. 인증은 공통 Auth.js 그대로. 세종 자리가 없는 계정은 세션을 남기지 않는다 |
+| `/sejong/password` | 첫 로그인 비밀번호 변경. 바꾼 뒤 세종 화면으로 돌아온다 |
+| `/sejong/me` | 대시보드. 여섯 단계, 상담사 열람 동의/철회 |
+| `/sejong/diagnosis` | 시작 정보: 희망 직무(1~3) · 지역 범위 · 대상 구분(선택) · 보유 기술. **판정에 안 들어간다** |
+| `/sejong/diagnosis/[id]` | 24문항. 고르는 즉시 저장, 실패하면 고른 칸을 되돌린다. 이어하기 |
+| `/sejong/experience` | 경험 기록(경력·아르바이트·인턴·프로젝트·훈련·자격·봉사), 근거 다섯 칸 |
+| `/sejong/result` | 결과: 희망 직무별 핵심 판단 상태 · 판단 여덟 갈래 · 근거 경험. 총점·순위 없음 |
+| `/sejong/explore` | 세종 사업장 기업·기관 35곳. 본사/사업장 구분 · 주소 · 업종 · 확인 상태 · 출처 · **채용 여부 미확인** |
+| `/sejong/plan` | 30·60·90일 실행 계획. 했어요/되돌리기 |
+| `/sejong/report` · `/sejong/report/pdf` | 개인별 취업 전략 결과지. PDF 는 공통 엔진 `drawPagePdf` 로 이 쪽을 인쇄 |
+
+### 기관
+| 주소 | 화면 |
+|---|---|
+| `/sejong/admin` | 사업별 깔때기(발급→로그인→시작→완료→PDF→동의) · 관심 직무 · 지역 범위 · 판단별 확인 인원 · 열람 기록. n<5 가림 |
+| `/sejong/admin/participants` | 참여자 표(결과 내용 없음) · 계정 발급(임시 비밀번호 한 번 표시) · 중지/다시 열기 |
+| `/sejong/admin/counselors` | 상담사 · 배정 · 동의 현황 |
+| `/sejong/counselor` · `/sejong/counselor/[id]` | 상담사: 배정 + 본인 동의 + 기관 허용일 때만 결과지 열람. 열람·거절 모두 기록 |
+
+### 공통 엔진에서 그대로 쓰는 것 (고치지 않았다)
+`users` · `organizations` · `memberships` · `consents` 표, Auth.js 로그인과 시도 제한,
+`@/lib/db`, `@/lib/password`, `@/lib/validation`, PDF 인쇄 `drawPagePdf`,
+ME_V3 taxonomy 의 판단 축 이름(J1~J8)과 단계(L0~L3), 경험 근거 다섯 칸의 축 연결.
+
+### 세종 전용으로 더한 것 (전부 새 파일)
+- `db/sejong/` — `sj_` 표 10개. `deploy/db-chain.json` 에 넣지 않았다
+- `src/sejong/` — 콘텐츠(JSON) · 분석 · 저장 · 권한 · 집계 · 화면 조각
+- `src/app/sejong/` — 화면
+- `scripts/sejong/` — 분석 검사 · 시드 · 브라우저 E2E
+
+**고친 공통 파일: 0개.** `git diff --stat 0bff307c -- . ':!docs/sejong' ':!db/sejong' ':!src/sejong' ':!src/app/sejong' ':!scripts/sejong'` 가 비어 있어야 한다.
+
+## 3. 로컬에서 띄우기
+
+```bash
+cd pca-platform
+npm ci                                   # registry.npmjs.org 접근 필요
+createdb cm_sejong_dev
+export DATABASE_URL=postgres://.../cm_sejong_dev
+export AUTH_SECRET=$(openssl rand -base64 32)
+# 공통 스키마 체인 (기존 그대로)
+node -e 'const c=require("./deploy/db-chain.json");for(const f of [...c.base,...c.upgrade])console.log(f)' \
+  | while read f; do psql "$DATABASE_URL" -v ON_ERROR_STOP=1 --single-transaction -f "$f"; done
+# 세종 층 + 시연 자료
+psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f db/sejong/schema_sejong_demo.sql
+node --experimental-strip-types scripts/sejong/seed-demo.mjs > /tmp/sj-seed.sql
+psql "$DATABASE_URL" -v ON_ERROR_STOP=1 --single-transaction -f /tmp/sj-seed.sql
+npm run dev                              # http://localhost:3000/sejong
+# 검증
+node --experimental-strip-types scripts/sejong/analysis-check.mjs
+BASE=http://127.0.0.1:3000 OUT=docs/sejong/shots node scripts/sejong/e2e-shots.mjs
+```
+
+시연 계정 (로컬·시연 DB 전용)
+
+| 역할 | 아이디 | 비밀번호 |
+|---|---|---|
+| 구직자 | `sj-demo01` | `sejong-seeker-demo-2026` |
+| 기관 관리자 | `sj-admin` | `sejong-admin-demo-2026` |
+| 상담사 | `sj-counsel1` | `sejong-counsel-demo-2026` |
+
+## 4. DEMO 로 남는 것
+
+- 진단 `SJ_JOBSEEKER_DEMO_V0` · 분석 `sj-demo-analysis.0` — 인지 인터뷰·예비 검사 전.
+  화면·결과지·띠에 DEMO 로 적었다
+- 대상 구분(청년·일반 구직자·경력 전환·신중년)은 **고르지 않아도 되는 선택값**이다.
+  사업 대상이 확정되지 않아 판정에 넣지 않았다
+- 기업 자료는 공식 출처의 검색 발췌로 확인했고 원문 재확인 전(`display_ready: false`)
+- 직무 영역 ↔ 기업 연결은 시연용 해석이다(기업이 밝힌 채용 직무가 아니다)
+- 사업 두 개와 참여자 20명은 가상이다
+- 진흥원 지원사업 안내 장은 비워 두었다

@@ -1,0 +1,82 @@
+# 세종 MVP 독립 Staging — 안전한 배포 계획 (승인 전, 실행하지 않음)
+
+## 0. 지금 사실
+
+2026-10-20 GitHub deployments API 로 확인한 것이다.
+
+| 항목 | 값 |
+|---|---|
+| 운영 | Railway `feisty-generosity` / `production` ← `claude/amazing-thompson-w3f2o2` @ `02b6c610` |
+| 공용 Staging | 같은 프로젝트 `staging` 환경, `https://charming-reverence-staging.up.railway.app` ← `claude/careermatri-screen-review-p0c8kb`. 커밋마다 자동 배포. **배재대 작업이 쓰는 환경이다** |
+| 세종 가지 | `claude/epic-galileo-lrvgxr`. 어느 Railway 서비스에도 연결돼 있지 않다 (푸시해도 배포되지 않는다) |
+| 이 세션의 권한 | Railway 토큰·CLI 없음. `*.railway.app` 접속은 프록시가 막는다. **만들 수도, 바꿀 수도 없다** |
+
+**공용 Staging 에 세종을 올리지 않는다.** 배재대가 쓰는 DB 에 `sj_` 표와 가상 참여자가
+섞이고, 그 환경의 배포 가지를 바꾸면 배재대 검수가 끊긴다.
+
+## 1. 권하는 방식: 별도 Railway 프로젝트
+
+| 비교 | A. 별도 프로젝트 (권장) | B. 같은 프로젝트의 새 환경 |
+|---|---|---|
+| 운영 변수 오염 | 없음. 다른 프로젝트라 `${{Postgres.DATABASE_URL}}` 참조가 운영으로 닿을 수 없다 | `Duplicate` 를 고르면 운영 `DATABASE_URL` 이 따라온다(R33 문서 경고) |
+| 비용 구분 | 청구가 따로 보인다 | 운영과 섞인다 |
+| 권한 | 진흥원 시연에 필요한 사람만 초대 | 운영 프로젝트 접근이 같이 열린다 |
+| 손이 더 가는 것 | 변수 일곱을 새로 넣는다 | 적다 |
+
+## 2. 차례 (사람이 Railway 에서, 승인 뒤)
+
+1. 새 프로젝트 `careermatri-sejong-demo` → **Empty**.
+2. **PostgreSQL** 추가(이 프로젝트 전용).
+3. **GitHub Repo** 서비스 추가 → `project465/pca-platform` · 가지 **`claude/epic-galileo-lrvgxr`**.
+   - Root Directory 는 지금 공용 Staging 서비스의 값을 그대로 확인해서 맞춘다.
+     **추측해서 적지 않는다.** 저장소에서 `Dockerfile` 은 `pca-platform/` 아래에 있다.
+   - 자동 배포는 켜 두되, 이 가지에는 세종 작업만 올라간다.
+4. 변수 (값은 Railway 에서 새로 만든다. 운영 값을 복사하지 않는다)
+
+   | 변수 | 값 |
+   |---|---|
+   | `DATABASE_URL` | `${{Postgres.DATABASE_URL}}` (참조) |
+   | `AUTH_SECRET` | 새로 생성 (`openssl rand -base64 32`) |
+   | `APP_ENV` | `staging` |
+   | `STAGING_BASIC_AUTH` | `아이디:비밀번호` (공유는 따로) |
+   | `PLATFORM_URL` | Railway 가 준 `*.up.railway.app` 주소 |
+   | `PDF_BASE` | 같은 주소 |
+   | `REPORT_PDF_DIR` | 볼륨을 붙일 경우만. 세종 PDF 는 디스크에 쓰지 않는다 |
+
+   결제(`PORTONE_*`)·메일(`MAIL_*`)·소셜 로그인 변수는 **넣지 않는다**.
+5. **도메인 생성** → `*.up.railway.app`.
+6. DB 세우기. 저장소를 받은 컴퓨터에서 그 DB 를 대상으로 돌린다.
+   ```bash
+   node -e 'const c=require("./deploy/db-chain.json");for(const f of [...c.base,...c.upgrade])console.log(f)' \
+     | while read f; do psql "$DATABASE_URL" -v ON_ERROR_STOP=1 --single-transaction -f "$f"; done
+   psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f db/sejong/schema_sejong_demo.sql
+   node --experimental-strip-types scripts/sejong/seed-demo.mjs > sj-seed.sql   # 주소에 railway 가 있으면 멈춘다
+   ```
+   마지막 줄은 일부러 원격에서 멈추게 해 두었다. **원격 시드는 별도 승인 뒤**
+   `seed-demo.mjs` 의 막는 줄을 그 한 번만 풀거나, 시연 계정만 손으로 만든다.
+7. 확인: `/api/health` 200 → `/sejong` 에 Basic 인증 창 → 시연 계정 로그인 →
+   `scripts/sejong/e2e-shots.mjs` 를 `BASE=<주소>` 로 돌린다.
+
+## 3. 보안
+
+- Basic 인증(`STAGING_BASIC_AUTH`)과 `X-Robots-Tag: noindex` 는 공통 미들웨어가 이미 건다.
+  세종 레이아웃도 `robots: noindex` 다.
+- 실제 개인정보를 넣지 않는다. 시드 참여자는 전부 `가상 참여자 NN` 이다.
+- 진흥원 담당자에게 보여 줄 때는 시연 계정만 쓴다. 비밀번호는 시연 뒤 바꾼다.
+- 운영 DB·운영 변수·운영 도메인과 연결하는 줄이 없어야 한다. 배포 뒤 변수 화면에서
+  `DATABASE_URL` 이 이 프로젝트의 Postgres 를 가리키는지 확인한다.
+
+## 4. 비용
+
+앱 서비스 1 + Postgres 1 이 상시 떠 있다. Railway 사용량 과금이므로 시연 기간이 끝나면
+서비스를 멈추거나 프로젝트를 지운다. 금액은 Railway 요금표와 실제 사용량으로 확인한다.
+여기 적지 않는다.
+
+## 5. 승인받을 것
+
+1. 별도 프로젝트로 할지(A), 같은 프로젝트의 새 환경으로 할지(B)
+2. 연결할 가지 `claude/epic-galileo-lrvgxr` 를 자동 배포 대상으로 둘지
+3. 비용 부담과 시연 기간
+4. 시연 DB 에 가상 자료를 넣는 것
+
+**Production 과 운영 DB 는 어느 단계에서도 건드리지 않는다.**

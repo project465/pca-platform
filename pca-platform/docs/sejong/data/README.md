@@ -1,6 +1,6 @@
 # 세종 사업장 기업·기관 1차 자료
 
-파일: `sejong-orgs.preview.json` (`sejong-orgs.0`, **PREVIEW_ONLY**, 조사일 2026-10-20)
+파일: `src/sejong/content/orgs.preview.json` (`sejong-orgs.0`, **PREVIEW_ONLY**, 조사일 2026-10-20). 앱이 이 파일을 묶어 읽으므로 여기로 옮겼다
 
 ## 먼저 알아 둘 한계
 
