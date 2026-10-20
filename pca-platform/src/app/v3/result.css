@@ -2764,3 +2764,132 @@
     border-radius: 0 14px 14px 0; padding: 16px 20px;
   }
 }
+
+/* ── 종이 겉모양(화면 시안 2026-10-20 · `mockups/05_student_report_print.html`) ──
+ *
+ * 화면과 같은 갈래로 종이를 입힌다: 표지는 초록→파랑→남색 기울기 판이고,
+ * 첫 장에 현재 상태 색 타일 셋과 `지금 할 일` 기울기 판이 선다. 절 제목은
+ * 파란 막대를 달고, 묶음은 옅은 판, 부록 머리는 남색 띠다. 검은 굵은 금은
+ * 옅은 파랑으로 바꾼다. 담긴 글과 쪽 차례는 그대로다. 상태 타일은 같은
+ * 사실을 한 번 더 적지만 한 줄 높이로 접어 쪽수를 늘리지 않는다(CS PRO 열 쪽).
+ */
+@media print {
+  .rs { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  /* 표지 */
+  .rs .rs-cover {
+    position: relative; overflow: hidden;
+    padding: 14mm 13mm 11mm; border-radius: 6mm;
+    background:
+      radial-gradient(120mm 90mm at 92% 8%, rgba(255,255,255,.16), transparent 60%),
+      linear-gradient(155deg, #0f8f7a 0%, #1679b8 42%, #2f6bff 72%, #1e2a3e 100%);
+    color: #fff;
+  }
+  .rs .rs-cover * { color: #fff; }
+  .rs .rs-cover-top { border-bottom: 1px solid rgba(255,255,255,.35); }
+  .rs .rs-cover-top b { color: #fff; }
+  .rs .rs-cover-top span { color: #fff; opacity: .9; }
+  .rs .rs-cover-mid h2 { color: #fff; }
+  .rs .rs-cover-who, .rs .rs-cover-day { color: rgba(255,255,255,.88); }
+  .rs .rs-cover-art { opacity: .9; filter: brightness(0) invert(1); }
+  .rs .rs-cover-asks li {
+    background: rgba(255,255,255,.12); border: 0; border-radius: 3mm;
+    padding: 2.6mm 4mm; margin-bottom: 2mm;
+  }
+  .rs .rs-cover-asks li::before { color: #fff; background: rgba(255,255,255,.22); }
+  .rs .rs-cover-toc, .rs .rs-cover-toc.is-appx { border-color: rgba(255,255,255,.3); }
+  .rs .rs-cover-appx { color: rgba(255,255,255,.8); border-color: rgba(255,255,255,.3); }
+  .rs .rs-cover-foot { color: rgba(255,255,255,.75); border-color: rgba(255,255,255,.3); }
+
+  /* 첫 장: 판정 한 줄 */
+  .rs .rs-quote {
+    background: #eaf0ff; box-shadow: inset 3pt 0 0 #2f6bff; border-radius: 0 3mm 3mm 0;
+    color: #1f4fd1;
+  }
+  .rs .rs-verdict { color: #1a2233; }
+  .rs .rs-verdict::after {
+    content: ""; display: block; width: 18mm; height: 1.2mm; margin-top: 3mm;
+    border-radius: 1mm; background: linear-gradient(90deg, #2f6bff, #17a884);
+  }
+
+  /* 지금 할 일 */
+  .rs .rs-do1 {
+    border-top: 0; margin-top: 4mm; padding: 4mm 5mm; border-radius: 4mm;
+    background: linear-gradient(135deg, #0f8f7a 0%, #1679b8 60%, #2f6bff 100%);
+  }
+  .rs .rs-do1 * { color: #fff !important; }
+  .rs .rs-do1-l { opacity: .85; }
+
+  .rs .rs-link {
+    border-top: 0; padding: 3mm 4mm; border-radius: 3mm; background: #f3f6fb;
+  }
+  .rs .rs-link a { color: #1f4fd1; }
+
+  /* 절 제목: 파란 막대 */
+  .rs .rs-sect > h2, .rs .rs-sect > .rs-sh > h2 { color: #1a2233; display: block; }
+  .rs .rs-sect > h2::before, .rs .rs-sect > .rs-sh > h2::before {
+    content: "" !important; display: inline-block !important; position: static !important;
+    width: 1.3mm !important; height: .95em !important; margin: 0 2.6mm 0 0 !important;
+    vertical-align: -.12em !important; border-radius: 1mm; background: #2f6bff !important;
+  }
+  .rs .rs-appx-head > h2 { display: inline; }
+  .rs .rs-sect > .rs-q { color: #2f6bff; font-weight: 700; }
+
+  /* 묶음 판 */
+  .rs .rs-pack {
+    background: #f3f6fb; border: 0; border-radius: 3.5mm; padding: 3.5mm 4.5mm;
+  }
+  .rs .rs-pack h3, .rs .rs-pack > b { color: #1f4fd1; }
+
+  /* 표 */
+  .rs table { border-collapse: separate; border-spacing: 0; }
+  .rs thead th {
+    background: #eaf0ff; color: #1f4fd1; border-bottom: 0;
+  }
+  .rs thead th:first-child { border-radius: 2mm 0 0 2mm; }
+  .rs thead th:last-child { border-radius: 0 2mm 2mm 0; }
+
+  /* 목록 */
+  .rs .rs-first li { border-color: #e3e8f0; }
+  .rs .rs-first li::marker { color: #2f6bff; }
+
+  /* 절 사이 금: 검은 굵은 금 → 옅은 파랑 */
+  .rs.is-report #evidence > h2, .rs.is-report #gaps > h2,
+  .rs.is-report #industry > h2, .rs.is-report #plan > h2,
+  .is-report #evidence > h2, .is-report #gaps > h2,
+  .is-report #industry > h2, .is-report #plan > h2 { border-top: 1pt solid #c9d6ff; }
+  .rs .rs-sect > h2, .rs .rs-sect > .rs-sh > h2 { border-top-color: #e3e8f0; }
+
+  /* 부록 머리: 띠 */
+  .rs .rs-appx-head, .rs .rs-sect.rs-appx-head {
+    border-top: 0; margin-top: 4mm; padding: 2.6mm 4.5mm; border-radius: 3mm;
+    background: linear-gradient(90deg, #1e2a3e, #2f4a7a); color: #fff;
+  }
+  .rs .rs-appx-head > h2 { color: #fff; }
+  .rs .rs-appx-head > h2::before { display: none; }
+  .rs .rs-appx-head > .rs-note { color: rgba(255,255,255,.82); }
+
+  /* 현재 상태 색 타일: 종이에도 세운다 */
+  .rs .rs-st { display: block; margin: 4mm 0 0; break-inside: avoid; }
+  .rs .rs-st .rs-sh, .rs .rs-st .rs-sh-s { display: none; }
+  .rs .rs-st .rs-tile { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; margin: 0; padding: 0; list-style: none; }
+  .rs .rs-st .rs-tile a {
+    display: grid; grid-template-columns: 9mm 1fr; gap: .6mm 3mm; align-items: center;
+    min-height: 0; padding: 3mm 3.5mm; border: 0; border-radius: 3.5mm; box-shadow: none;
+    text-decoration: none;
+  }
+  .rs .rs-st .rs-tile > li:nth-child(3n+1) a { background: linear-gradient(160deg, #3d7bff, #1f55e0); }
+  .rs .rs-st .rs-tile > li:nth-child(3n+2) a { background: linear-gradient(160deg, #17a884, #0b7f66); }
+  .rs .rs-st .rs-tile > li:nth-child(3n+3) a { background: linear-gradient(160deg, #8c6cf5, #6544de); }
+  .rs .rs-st .rs-tile i {
+    grid-row: 1 / span 2; width: 9mm; height: 9mm; border-radius: 2.5mm;
+    background: rgba(255,255,255,.94) !important; display: grid; place-items: center;
+  }
+  .rs .rs-st .rs-tile > li:nth-child(3n+1) i { color: #1f55e0; }
+  .rs .rs-st .rs-tile > li:nth-child(3n+2) i { color: #0b7f66; }
+  .rs .rs-st .rs-tile > li:nth-child(3n+3) i { color: #6544de; }
+  .rs .rs-st .rs-tile i svg { width: 60%; height: 60%; opacity: 1; }
+  .rs .rs-st .rs-tile b { color: #fff; font-size: var(--pt-body); line-height: 1.25; }
+  .rs .rs-st .rs-tile small { color: rgba(255,255,255,.88); font-size: var(--pt-cap); white-space: normal; }
+  .rs .rs-st .rs-tile em { display: none; }
+}
