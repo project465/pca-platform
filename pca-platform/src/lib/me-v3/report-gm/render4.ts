@@ -12,6 +12,7 @@
  * - **그림의 값은 전부 결과 모델과 경험 기록과 안내 자료에서 온다.** 근거 없는 지표·점수·비율을 만들지 않는다.
  * - 본문 10pt · 줄 1.62 이상, 캡션 8pt 이상. 표는 줄 사이를 넓히고 칸을 줄인다. 색은 남색 하나와 강조색 하나.
  */
+import { withJosa } from "../result/josa";
 import type { Report3, CompanyDeep } from "./report3";
 import type { DomainRead } from "./analysis3";
 import { chaptersOf } from "./render3";
@@ -245,7 +246,7 @@ export function p5(r: Report3): string {
     return `<div class="cd${pr ? " mine" : ""}">${pr ? `<span class="cd-n">${pr.order}</span>` : ""}<b>${esc(p.label)}</b><span>${esc(p.output)}</span></div>`;
   };
   return frame(r, 5, "11 단계별 실행 계획", `
-  ${opener("11", "개인별 취업 실행 로드맵", `${role}을 향한 실행 로드맵`, `과제는 모두 ${role}의 업무 영역과 핵심 판단에서 골랐습니다. 첫 과제는 30일, 둘째는 60일에 놓이고 90일에는 ${role}의 일을 겨냥한 프로젝트를 끝냅니다.`)}
+  ${opener("11", "개인별 취업 실행 로드맵", `${withJosa(role, "을를")} 향한 실행 로드맵`, `과제는 모두 ${role}의 업무 영역과 핵심 판단에서 골랐습니다. 첫 과제는 30일, 둘째는 60일에 놓이고 90일에는 ${role}의 일을 겨냥한 프로젝트를 끝냅니다.`)}
   <div class="chainv">
     <div class="goalc"><span>목표</span><b>${esc(r.priorities[0]?.chain.goal ?? role)}</b>${goalDir ? `<em>준비 상태 · ${esc(goalDir.readiness)}</em>` : ""}</div>
     <ol>${r.priorities.slice(0, 3).map((x) => `<li><span class="rel">${esc(x.relationTag)}</span><b>${x.order}. ${esc(x.title)}</b><p>${esc(x.link)}</p><em>${esc(x.when)} · 남길 것 ${esc(x.output)}</em></li>`).join("")}</ol>
