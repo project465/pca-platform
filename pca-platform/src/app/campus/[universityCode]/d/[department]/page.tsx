@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import "../../../../surface.css";
 import "../../../campus.css";
 import {
-  coreOf, findLeaf, pickRequired, specializationName, statusOf, university,
+  campusSay, coreOf, findLeaf, pickRequired, specializationName, statusOf, university,
 } from "@/lib/campus/registry";
 import { currentUser } from "@/lib/session";
 import { campusStudentOf } from "@/lib/campus/students";
@@ -40,6 +40,7 @@ export default async function CampusDepartment({ params }: Params) {
   const { universityCode, department } = await params;
   const u = university(universityCode);
   if (!u) notFound();
+  const t = campusSay(u);
   const found = findLeaf(u, department);
   if (!found) notFound();
   const { leaf } = found;
@@ -85,7 +86,7 @@ export default async function CampusDepartment({ params }: Params) {
         <p className="cm-cmp-eyebrow">{u.university_name} · {where}</p>
         <h1 className="cm-cmp-title">{leaf.name}</h1>
         <p className="cm-cmp-lead">
-          {other
+          {t(other
             ? `학교에 등록된 학과는 ${other.department_name}입니다. 검사는`
               + " 등록된 학과 기준으로 열립니다."
             : ready
@@ -94,14 +95,14 @@ export default async function CampusDepartment({ params }: Params) {
             : routing
               ? "전공을 고른 뒤에 그 전공으로 시작합니다. 지금 가장 관심 있는"
                 + " 전공을 고르시면 됩니다. 나중에 다시 고를 수 있습니다."
-              : "이 학과는 지금 응시할 수 없습니다."}
+              : "이 학과는 지금 응시할 수 없습니다.")}
         </p>
         {other ? (
           <div className="cm-cmp-cta-row">
             <Link className="cm-cmp-cta" href={`/campus/${code}/start`}>
-              등록된 학과로 가기<span aria-hidden="true">→</span>
+              {t("등록된 학과로 가기")}<span aria-hidden="true">→</span>
             </Link>
-            <Link className="cm-cmp-cta-2" href={back}>다른 학과 보기</Link>
+            <Link className="cm-cmp-cta-2" href={back}>{t("다른 학과 보기")}</Link>
           </div>
         ) : st && (st.kind === "resume" || st.kind === "result") ? (
           <div className="cm-cmp-cta-row">
@@ -109,7 +110,7 @@ export default async function CampusDepartment({ params }: Params) {
               ? `/v3/${st.attemptId}` : `/v3/${st.attemptId}/result`}>
               {CAMPUS_CTA_KO[st.kind].label}<span aria-hidden="true">→</span>
             </Link>
-            <Link className="cm-cmp-cta-2" href={back}>다른 학과 보기</Link>
+            <Link className="cm-cmp-cta-2" href={back}>{t("다른 학과 보기")}</Link>
           </div>
         ) : ready ? (
           /* **주소로 전공을 바꿀 수 없다.** 폼이 보내는 것은 학교와 학과
@@ -123,12 +124,12 @@ export default async function CampusDepartment({ params }: Params) {
             </button>
             {st?.kind === "retake"
               ? <Link className="cm-cmp-cta-2" href={`/v3/${st.attemptId}/result`}>지난 결과 보기</Link>
-              : <Link className="cm-cmp-cta-2" href={back}>다른 학과 선택</Link>}
+              : <Link className="cm-cmp-cta-2" href={back}>{t("다른 학과 선택")}</Link>}
           </form>
         ) : (
           <div className="cm-cmp-cta-row">
             <Link className="cm-cmp-cta" href={routing ? `${back}&pick=1` : back}>
-              {routing ? "전공 고르기" : "다른 학과 선택"}
+              {routing ? "전공 고르기" : t("다른 학과 선택")}
               <span aria-hidden="true">→</span>
             </Link>
           </div>
@@ -149,12 +150,12 @@ export default async function CampusDepartment({ params }: Params) {
         ) : null
       ) : (
         <p className="cm-cmp-note">
-          {routing
+          {t(routing
             ? "어느 전공으로 재는지는 고르신 전공이 정합니다. 학부 이름만"
               + " 보고 특정 전공으로 판단하지 않습니다."
             : leaf.core_code
               ? "이 학과의 문항과 산업 자료를 그 전공을 아는 분이 써야 열립니다."
-              : "어느 전공 검사로 이을지 학교와 확인하고 있습니다."}
+              : "어느 전공 검사로 이을지 학교와 확인하고 있습니다.")}
         </p>
       )}
     </CampusShell>

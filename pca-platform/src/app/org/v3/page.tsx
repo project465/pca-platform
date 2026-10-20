@@ -4,6 +4,8 @@ import { resolveLang } from "@/lib/locale-server";
 import { MIN_CELL } from "@/lib/org";
 import { campusV3, type Cell } from "@/lib/me-v3/campus";
 import { core as coreEntry, registry } from "@/lib/me-v3/core-registry";
+import { campusSay, university } from "@/lib/campus/registry";
+import { sayTree } from "@/lib/campus/say-tree";
 import { industryChoices, roleChoices } from "@/lib/me-v3/runtime/session";
 import { campusNames, collegeChoices, leafChoices } from "@/lib/campus/labels";
 import {
@@ -163,6 +165,10 @@ export default async function CampusV3({
     : null;
 
   const nav = await campusNav(user.id);
+  /* 기관(진흥원 등)이면 화면 글자를 기관 낱말로 바꾼다(`sayTree`) */
+  const reg = uni ? university(uni) : null;
+  const say = campusSay(reg);
+  const agency = reg?.org_kind === "agency";
   const shell = (children: React.ReactNode) => (
     <Shell
       surface="campus" lang={L} nav={nav} active="/org/v3"
@@ -170,7 +176,7 @@ export default async function CampusV3({
       topTitle={org ? org.name : BRAND.campus}
       topRight={<LangSelect current={L} />}
     >
-      {children}
+      {sayTree(children, say, agency)}
     </Shell>
   );
 

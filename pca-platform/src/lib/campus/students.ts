@@ -94,8 +94,33 @@ export function checkStudent(
       why: `어느 전공 검사로 이을지 아직 정해지지 않은 자리입니다: ${found.leaf.name}`,
     };
   }
-  const loginId = (row.login_id ?? "").trim() || sid;
+  const loginId = (row.login_id ?? "").trim() || `${loginPrefixOf(u)}${sid}`;
   return { ok: true, value: { input: { ...row, student_id: sid }, loginId, ctx } };
+}
+
+/**
+ * 학번 앞에 붙는 아이디 머리(`ku-` · `jju-`).
+ *
+ * **아이디는 전체에서 하나다**(`users.login_id`). 두 학교에 같은 학번
+ * `20250001` 이 있으면, 학번을 그대로 아이디로 쓰는 순간 둘째 학교 학생이
+ * 첫째 학교 학생의 계정을 받는다. 그래서 학교마다 머리를 붙인다. 등록부가
+ * `login_prefix` 를 적으면 그것을 쓰고(배재대는 머리 없이 발급해 왔으므로
+ * 빈 글자다), 없으면 학교 코드를 소문자로 쓴다.
+ */
+export function loginPrefixOf(u: { university_code: string; login_prefix?: string | null }): string {
+  if (typeof u.login_prefix === "string") return u.login_prefix;
+  return `${u.university_code.toLowerCase()}-`;
+}
+
+/**
+ * 이미 있는 아이디가 **다른 학교 학생이거나 학교 발급 학생이 아닐 때.**
+ * 그 계정을 이 학교 명단으로 덮지 않는다: 덮으면 남의 학생 소속이 조용히
+ * 바뀌거나, 개인 가입자가 학교 학생이 된다. 부른 쪽이 그 줄을 거절한다.
+ */
+export class StudentLoginTaken extends Error {
+  constructor(loginId: string, owner: string) {
+    super(`아이디 ${loginId} 는 이미 ${owner} 계정입니다. 다른 아이디(login_id)를 적어 주세요`);
+  }
 }
 
 /** 사람이 옮겨 적을 수 있는 글자만. 헷갈리는 0·O·1·l 을 뺀다 */
@@ -121,8 +146,14 @@ export async function provisionStudent(
   opts: { rotate?: boolean } = {},
 ): Promise<{ created: boolean; password: string | null; userId: string }> {
   const { input, loginId, ctx } = checked;
-  const had = await queryOne<{ id: string }>(
-    `SELECT id::text FROM users WHERE login_id = $1`, [loginId]);
+  const had = await queryOne<{ id: string; uni: string | null }>(
+    `SELECT u.id::text, cs.university_code AS uni
+       FROM users u LEFT JOIN campus_students cs ON cs.user_id = u.id
+      WHERE u.login_id = $1`, [loginId]);
+  if (had && had.uni !== ctx.university_code) {
+    throw new StudentLoginTaken(loginId,
+      had.uni ? `다른 기관(${had.uni}) 학생` : "학교 발급이 아닌");
+  }
   if (had && !opts.rotate) {
     /* 학과가 바뀌었을 수 있으므로 그 줄은 맞춰 둔다. 열쇠만 그대로다 */
     await query(

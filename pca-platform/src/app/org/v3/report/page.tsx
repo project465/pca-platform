@@ -12,6 +12,8 @@
  * 모른다(설계 원칙 10).
  */
 import Link from "next/link";
+import { campusSay, university } from "@/lib/campus/registry";
+import { sayTree } from "@/lib/campus/say-tree";
 import { MIN_CELL } from "@/lib/org";
 import { campusV3 } from "@/lib/me-v3/campus";
 import { studentCounts } from "@/lib/campus/manage";
@@ -54,8 +56,10 @@ export default async function OrgReport({
     })
     : null;
   const now = new Date().toISOString().slice(0, 10);
+  /* 기관(진흥원 등)이면 종이 글자를 기관 낱말로 바꾼다(`sayTree`) */
+  const reg = uni ? university(uni) : null;
 
-  return (
+  return sayTree(
     <main className="og">
       {/* **표지가 혼자 말해야 한다**(규격 §19). 담당자는 이 종이를 회의
           자료에 붙이고, 한 장만 떨어져 나와도 그 장이 어느 학교의 어느
@@ -223,6 +227,7 @@ export default async function OrgReport({
         </a>{" · "}
         <Link href="/org/v3">집계 화면으로</Link>
       </p>
-    </main>
+    </main>,
+    campusSay(reg), reg?.org_kind === "agency",
   );
 }

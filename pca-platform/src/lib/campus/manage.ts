@@ -17,7 +17,7 @@ import { query, queryOne } from "@/lib/db";
 import { audit } from "@/lib/audit";
 import { hashPassword } from "@/lib/password";
 import {
-  checkStudent, initialPassword, provisionStudent,
+  checkStudent, initialPassword, provisionStudent, StudentLoginTaken,
   type CampusStudentInput,
 } from "@/lib/campus/students";
 import { ASSESSMENT_VERSION } from "@/lib/me-v3/runtime/session";
@@ -239,7 +239,13 @@ export async function addStudentAccount(
 ): Promise<{ ok: boolean; why?: string; password?: string | null; login_id?: string }> {
   const checked = checkStudent(universityCode, row);
   if (!checked.ok) return { ok: false, why: checked.why };
-  const made = await provisionStudent(orgId, checked.value);
+  let made;
+  try {
+    made = await provisionStudent(orgId, checked.value);
+  } catch (e) {
+    if (e instanceof StudentLoginTaken) return { ok: false, why: e.message };
+    throw e;
+  }
   await audit({
     actorId: Number(actor.userId), actorRole: actor.role,
     action: made.created ? "campus.student.create" : "campus.student.update",
@@ -361,7 +367,13 @@ export async function applyImport(
     if (!r.ok) { rejected.push(r); continue; }
     const c = checkStudent(universityCode, r.input);
     if (!c.ok) { rejected.push({ ...r, ok: false, why: c.why }); continue; }
-    const made = await provisionStudent(orgId, c.value);
+    let made;
+    try {
+      made = await provisionStudent(orgId, c.value);
+    } catch (e) {
+      if (e instanceof StudentLoginTaken) { rejected.push({ ...r, ok: false, why: e.message }); continue; }
+      throw e;
+    }
     if (made.created && made.password) {
       created.push({ login_id: c.value.loginId, password: made.password });
     } else updated += 1;
