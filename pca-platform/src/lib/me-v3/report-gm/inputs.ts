@@ -23,7 +23,7 @@
  * 고르는 규칙 하나만 있다.
  */
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { query, queryOne } from "@/lib/db";
 import { coreOf, type ResultModel } from "@/lib/me-v3/result/model";
@@ -31,7 +31,15 @@ import { resultMeta } from "@/lib/me-v3/result/meta";
 import type { Experience } from "@/lib/me-v3/platform";
 import { canReadParticipantReport, type Actor } from "@/lib/rbac";
 
-export const GM_INPUT_VERSION = "gm-input.1";
+/**
+ * 판본. **`gm-input.2`**: 경험 기록의 한 줄 설명(`note_text`)을 담지 않는다.
+ *
+ * 그 칸은 결과를 쓸 때만 읽고 1년이 지나면 DB 에서 지우는 자유입력인데
+ * (`v3_experiences.purge_after`), 굳힌 파일에 들어가면 **DB 가 지운 뒤에도
+ * 파일에 남는다.** Gold Master 렌더는 그 칸을 읽지 않으므로 받을 까닭이
+ * 없다. 판본을 올려 그 칸을 든 옛 파일을 다시 쓰지 않게 한다.
+ */
+export const GM_INPUT_VERSION = "gm-input.2";
 
 export type GmInput = {
   version: typeof GM_INPUT_VERSION;
@@ -53,6 +61,9 @@ export type GmInput = {
 };
 
 const DIR = process.env.GM_INPUT_DIR ?? path.resolve("var/gm-inputs");
+/** 뽑은 PDF 와 기록이 서는 자리. **운영 PDF 폴더(`var/reports`)와 다른 자리다** */
+const OUT = process.env.GM_OUT ?? path.resolve("var/gm-out");
+export function gmOutDir(): string { return OUT; }
 
 /** jsonb 와 객체의 열쇠 차례가 달라도 같은 값이면 같은 글이 되게 */
 function canon(v: unknown): unknown {
@@ -83,7 +94,7 @@ export async function collectInput(attemptId: string): Promise<GmInput> {
   const all = await query<Experience & { created: string; updated: string | null }>(
     `SELECT id::text, kind, title, started_on::text, ended_on::text,
             td_codes, axis_codes, problems, decisions, artifacts, verifications,
-            used_where, note_text, status, created_at::text,
+            used_where, status, created_at::text,
             to_char(created_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS created,
             to_char(updated_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS updated
        FROM v3_experiences
@@ -169,4 +180,39 @@ export async function canDownloadGm(
     participantConsented: false,
   });
   return { ok: r.ok, who: "org", reason: r.reason };
+}
+
+/* ── 파기 ─────────────────────────────────────────────────────────── */
+
+/**
+ * **그 응시의 Gold Master 파일을 지운다**(입력 고정 파일 · 뽑은 PDF 와 기록).
+ *
+ * 입력 고정 파일에는 경험 기록의 제목과 고른 항목이 들어 있어 개인정보다.
+ * 탈퇴(`erasure.ts`)가 DB 줄을 떼어 내도 이 파일이 남으면 파기가 반쪽이 된다.
+ * **공통 파기 코드를 여기서 고치지 않는다**: 이 함수를 두고, 파기가 이것을
+ * 부르게 하는 일은 Core 요청으로 올린다(`tracks-r2/E/PM_CHANGE_REQUEST.md`).
+ *
+ * 응시 번호 꼴이 아니면 지우지 않는다(`inputFile` 이 막는다): 바깥에서 온 값으로
+ * 지우는 자리를 만들면 그 값이 `../` 를 들고 오는 날 다른 폴더가 지워진다.
+ */
+export function purgeGm(attemptId: string): { input: boolean; output: boolean } {
+  const f = inputFile(attemptId);
+  const d = path.join(OUT, attemptId);
+  const input = existsSync(f);
+  const output = existsSync(d);
+  if (input) rmSync(f, { force: true });
+  if (output) rmSync(d, { recursive: true, force: true });
+  return { input, output };
+}
+
+/** 한 사람의 응시 전부. 탈퇴 · 동의 철회 자리에서 부른다 */
+export async function purgeGmForUser(userId: string): Promise<{ attempts: number; input: number; output: number }> {
+  const rows = await query<{ id: string }>(`SELECT id::text FROM v3_attempts WHERE user_id = $1`, [userId]);
+  let input = 0; let output = 0;
+  for (const r of rows) {
+    const p = purgeGm(r.id);
+    if (p.input) input++;
+    if (p.output) output++;
+  }
+  return { attempts: rows.length, input, output };
 }
