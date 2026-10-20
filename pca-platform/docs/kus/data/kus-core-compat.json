@@ -1,0 +1,730 @@
+{
+ "version": "kus-core-compat.1",
+ "method": "과목 이름을 그 Core 의 기술영역(taxonomy) 하나에 KUS 쪽 사람이 대어 본 판단이다. 학과 이름으로 잇지 않는다. 판단은 전공자 검수 전이다.",
+ "source": "docs/kus/data/kus-curricula.search-excerpt.json",
+ "departments": [
+  {
+   "leaf": "KUS26_CBIZ_GM",
+   "name": "융합경영학부 글로벌경영전공",
+   "candidate_core": "BIZ_CORE_V1",
+   "evidence": {
+    "type": "SEARCH_EXCERPT_OF_OFFICIAL_URL",
+    "url": "https://ba.korea.ac.kr/ba/4142/subview.do",
+    "year": "2025 (교수요목 2025학년도; 교육과정표 2025)",
+    "note": "교수요목 page (ba/4142) excerpts gave code+name pairs; 기본전공 필수 set = 조직행동론, IFRS중급회계Ⅰ, 재무관리, 마케팅, 생산운영관리, (기업과정보), 국제경영론 (21학점). Not a complete list; 2026 curriculum page kucec/3808 exists but excerpt only showed 교양 rows. Excerpts came via search-engine summaries, not opened pages."
+   },
+   "courses": [
+    {
+     "name": "기업과경영",
+     "code": "GLOB161",
+     "required": "unknown",
+     "td": "TD01"
+    },
+    {
+     "name": "기업경제학",
+     "code": "GLOB162",
+     "required": "unknown",
+     "td": null,
+     "why_none": "경제학 기초 과목. BIZ Core 영역에 경제 이론 판단이 없다"
+    },
+    {
+     "name": "경영통계",
+     "code": "GLOB163",
+     "required": "unknown",
+     "td": "TD08"
+    },
+    {
+     "name": "회계정보의이해",
+     "code": "GLOB164",
+     "required": "unknown",
+     "td": "TD05"
+    },
+    {
+     "name": "조직행동론",
+     "code": "GLOB201",
+     "required": "전공필수",
+     "td": "TD06"
+    },
+    {
+     "name": "인적자원관리",
+     "code": "GLOB202",
+     "required": "unknown",
+     "td": "TD06"
+    },
+    {
+     "name": "IFRS중급회계Ⅰ",
+     "code": "GLOB211",
+     "required": "전공필수",
+     "td": "TD05"
+    },
+    {
+     "name": "마케팅",
+     "code": "GLOB231",
+     "required": "전공필수",
+     "td": "TD02"
+    },
+    {
+     "name": "경영수학",
+     "code": "GLOB241",
+     "required": "unknown",
+     "td": null,
+     "why_none": "수학 기초"
+    },
+    {
+     "name": "국제경영론",
+     "code": "GLOB251",
+     "required": "전공필수",
+     "td": "TD11"
+    },
+    {
+     "name": "재무관리",
+     "code": null,
+     "required": "전공필수",
+     "td": "TD04"
+    },
+    {
+     "name": "생산운영관리",
+     "code": null,
+     "required": "전공필수",
+     "td": "TD07"
+    },
+    {
+     "name": "기업과정보",
+     "code": null,
+     "required": "전공필수",
+     "td": "TD12"
+    },
+    {
+     "name": "인간관계와소통",
+     "code": "GLOB301",
+     "required": "unknown",
+     "td": "TD06"
+    },
+    {
+     "name": "글로벌경영과리더십",
+     "code": "GLOB303",
+     "required": "unknown",
+     "td": "TD11"
+    },
+    {
+     "name": "IFRS중급회계Ⅱ",
+     "code": "GLOB311",
+     "required": "unknown",
+     "td": "TD05"
+    },
+    {
+     "name": "기업재무",
+     "code": "GLOB321",
+     "required": "unknown",
+     "td": "TD04"
+    },
+    {
+     "name": "소비자행동의이해",
+     "code": "GLOB331",
+     "required": "unknown",
+     "td": "TD02"
+    },
+    {
+     "name": "경영계량분석",
+     "code": "GLOB341",
+     "required": "unknown",
+     "td": "TD08"
+    },
+    {
+     "name": "비즈니스인텔리전스",
+     "code": "GLOB361",
+     "required": "unknown",
+     "td": "TD08"
+    },
+    {
+     "name": "기업법",
+     "code": "GLOB371",
+     "required": "unknown",
+     "td": null,
+     "why_none": "법 과목. BIZ 영역 밖(LAW Core 쪽)"
+    },
+    {
+     "name": "경영전략론",
+     "code": "GLOB451",
+     "required": "unknown",
+     "td": "TD01"
+    },
+    {
+     "name": "글로벌비즈니스캡스톤디자인",
+     "code": "GLOB479",
+     "required": "unknown",
+     "td": null,
+     "why_none": "통합 과제라 한 영역에 붙이지 않는다"
+    }
+   ]
+  },
+  {
+   "leaf": "KUS26_CBIZ_DM",
+   "name": "융합경영학부 디지털경영전공",
+   "candidate_core": "BIZ_CORE_V1",
+   "evidence": {
+    "type": "SEARCH_EXCERPT_OF_OFFICIAL_URL",
+    "url": "https://digb.korea.ac.kr/digb/4247/subview.do",
+    "year": "2024~25 (전공필수 6과목 per digb/4242); 전공과목목록표 year not visible",
+    "note": "2024~25 page lists 전공필수 6과목: 디지털경영수학, 디지털마케팅, 응용경영통계, 경영계량분석, 머신러닝, 파이썬 기반 비즈니스 데이터 분석. 2026 학사구조 개편 changed codes/names; 2026 menu exists on site but not seen."
+   },
+   "courses": [
+    {
+     "name": "비즈니스프로그래밍",
+     "code": "DICB164 (as shown in excerpt; likely DIGB164)",
+     "required": "unknown",
+     "td": null,
+     "why_none": "프로그래밍 구현은 BIZ Core 가 재지 않는다(CS Core 쪽)"
+    },
+    {
+     "name": "디지털경영수학",
+     "code": "DIGB174",
+     "required": "전공필수",
+     "td": null,
+     "why_none": "수학 기초"
+    },
+    {
+     "name": "응용경영통계:R을활용한다변량분석",
+     "code": "DIGB217",
+     "required": "전공필수",
+     "td": "TD08"
+    },
+    {
+     "name": "머신러닝",
+     "code": "DIGB225",
+     "required": "전공필수",
+     "td": "TD08"
+    },
+    {
+     "name": "디지털마케팅",
+     "code": "DIGB241",
+     "required": "전공필수",
+     "td": "TD02"
+    },
+    {
+     "name": "파이썬을활용한BusinessDataAnalytics",
+     "code": "DIGB251",
+     "required": "전공필수",
+     "td": "TD08"
+    },
+    {
+     "name": "경영계량분석",
+     "code": "DIGB337",
+     "required": "전공필수",
+     "td": "TD08"
+    },
+    {
+     "name": "시스템분석및설계",
+     "code": "DIGB231",
+     "required": "전공선택",
+     "td": "TD12"
+    },
+    {
+     "name": "데이터베이스설계",
+     "code": "DIGB249",
+     "required": "전공선택",
+     "td": "TD12"
+    },
+    {
+     "name": "마케터를위한데이터분석",
+     "code": "DIGB344",
+     "required": "unknown",
+     "td": "TD08"
+    },
+    {
+     "name": "알고리즘투자전략",
+     "code": "DIGB441",
+     "required": "unknown",
+     "td": "TD04"
+    }
+   ]
+  },
+  {
+   "leaf": "KUS26_CSW",
+   "name": "컴퓨터소프트웨어학과",
+   "candidate_core": "CS_CORE_V1",
+   "evidence": {
+    "type": "SEARCH_EXCERPT_OF_OFFICIAL_URL",
+    "url": "https://registrar.korea.ac.kr/_res/eduinfo/etc/info_caution_sejong_science.pdf",
+    "year": "2026 ([붙임1] 교육과정표 2026학년도 입학생 기준, PDF last updated 2026-07)",
+    "note": "학과 연혁: 2026.03 학부/대학원 컴퓨터소프트웨어학과 명칭 변경. Table maps old DCCS codes to new DCSS codes. Some names appeared only in English in excerpt; Korean names not invented."
+   },
+   "courses": [
+    {
+     "name": "컴퓨터언어I",
+     "code": "DCCS101 -> DCSS101",
+     "required": "unknown",
+     "td": "TD01"
+    },
+    {
+     "name": "Computer Language II",
+     "code": "DCCS102 -> DCSS102",
+     "required": "unknown",
+     "td": "TD01"
+    },
+    {
+     "name": "자료구조",
+     "code": "DCCS201",
+     "required": "전공필수",
+     "td": "TD02"
+    },
+    {
+     "name": "Digital System",
+     "code": "DCCS203 -> DCSS203",
+     "required": "전공선택",
+     "td": null,
+     "why_none": "디지털 논리는 EE Core TD02 쪽이다"
+    },
+    {
+     "name": "Programming Language",
+     "code": "DCCS204",
+     "required": "unknown",
+     "td": "TD01"
+    },
+    {
+     "name": "System Software",
+     "code": "DCCS205 -> DCSS205",
+     "required": "전공선택",
+     "td": "TD06"
+    },
+    {
+     "name": "Information Communication",
+     "code": "DCCS206",
+     "required": "unknown",
+     "td": "TD07"
+    },
+    {
+     "name": "컴퓨팅사고",
+     "code": "DCCS207 -> DCSS207",
+     "required": "전공선택",
+     "td": null,
+     "why_none": "기초 사고 과목"
+    },
+    {
+     "name": "Introduction to Bigdata",
+     "code": "DCCS208",
+     "required": "unknown",
+     "td": "TD09"
+    },
+    {
+     "name": "Linux Practise",
+     "code": "DCCS209",
+     "required": "unknown",
+     "td": "TD06"
+    },
+    {
+     "name": "컴퓨터구조",
+     "code": "DCCS210 -> DCSS210",
+     "required": "전공선택",
+     "td": "TD06"
+    },
+    {
+     "name": "Introduction to IoT",
+     "code": "DCCS211",
+     "required": "unknown",
+     "td": "TD07"
+    },
+    {
+     "name": "운영체제",
+     "code": "DCCS301",
+     "required": "전공필수",
+     "td": "TD06"
+    },
+    {
+     "name": "컴파일러",
+     "code": "DCCS303 -> DCSS303",
+     "required": "전공선택",
+     "td": "TD06"
+    },
+    {
+     "name": "데이터베이스",
+     "code": "DCCS304",
+     "required": "전공선택",
+     "td": "TD04"
+    },
+    {
+     "name": "수치해석",
+     "code": "DCCS305 -> DCSS305",
+     "required": "전공선택",
+     "td": null,
+     "why_none": "수학 쪽"
+    },
+    {
+     "name": "컴퓨터네트워크",
+     "code": "DCCS307",
+     "required": "전공필수",
+     "td": "TD07"
+    },
+    {
+     "name": "알고리즘",
+     "code": "DCCS309",
+     "required": "전공필수",
+     "td": "TD02"
+    },
+    {
+     "name": "IoT인공지능",
+     "code": "DCSS312",
+     "required": "전공선택",
+     "td": "TD09"
+    },
+    {
+     "name": "캡스톤디자인Ⅰ / 캡스톤디자인Ⅱ",
+     "code": null,
+     "required": "unknown",
+     "td": null,
+     "why_none": "통합 과제"
+    }
+   ]
+  },
+  {
+   "leaf": "KUS26_EIE",
+   "name": "전자및정보공학과",
+   "candidate_core": "EE_CORE_V1",
+   "evidence": {
+    "type": "SEARCH_EXCERPT_OF_OFFICIAL_URL",
+    "url": "https://sejong.korea.ac.kr/kueie/2905/subview.do",
+    "year": "2026 (교과과정 page updated 2026-07-30)",
+    "note": "Partial list from excerpts of the 교과과정 table; 교수요목 page (2906) uses older code format."
+   },
+   "courses": [
+    {
+     "name": "전기회로Ⅰ",
+     "code": "EIEN207",
+     "required": "unknown",
+     "td": "TD01"
+    },
+    {
+     "name": "공업수학Ⅰ",
+     "code": "EIEN209",
+     "required": "unknown",
+     "td": null,
+     "why_none": "수학 기초"
+    },
+    {
+     "name": "전기회로Ⅱ",
+     "code": "EIEN212",
+     "required": "전공필수",
+     "td": "TD01"
+    },
+    {
+     "name": "전자기학Ⅰ",
+     "code": "EIEN217",
+     "required": "전공필수",
+     "td": "TD06"
+    },
+    {
+     "name": "신호및시스템Ⅰ",
+     "code": "EIEN224",
+     "required": "unknown",
+     "td": "TD04"
+    },
+    {
+     "name": "전기회로실험",
+     "code": "EIEN232",
+     "required": "unknown",
+     "td": "TD12"
+    },
+    {
+     "name": "전자회로Ⅰ",
+     "code": "EIEN305",
+     "required": "unknown",
+     "td": "TD01"
+    },
+    {
+     "name": "전자회로Ⅱ",
+     "code": "EIEN308",
+     "required": "unknown",
+     "td": "TD01"
+    },
+    {
+     "name": "전자회로실험Ⅰ",
+     "code": "EIEN311",
+     "required": "unknown",
+     "td": "TD12"
+    },
+    {
+     "name": "데이터통신",
+     "code": "EIEN368",
+     "required": "unknown",
+     "td": "TD05"
+    },
+    {
+     "name": "레이더",
+     "code": null,
+     "required": "전공선택",
+     "td": "TD06"
+    },
+    {
+     "name": "디지털통신",
+     "code": "EIEN461",
+     "required": "전공선택",
+     "td": "TD05"
+    },
+    {
+     "name": "무선통신",
+     "code": "EIEN466",
+     "required": "전공선택",
+     "td": "TD05"
+    },
+    {
+     "name": "정보이론",
+     "code": "EIEN468",
+     "required": "전공선택",
+     "td": "TD05"
+    },
+    {
+     "name": "제어및로봇시스템",
+     "code": "EIEN496",
+     "required": "전공선택",
+     "td": "TD11"
+    },
+    {
+     "name": "현장실습Ⅰ~Ⅲ",
+     "code": "EIEN486-488",
+     "required": "전공선택",
+     "td": null,
+     "why_none": "현장실습은 영역이 아니다"
+    }
+   ]
+  },
+  {
+   "leaf": "KUS26_GOVADM",
+   "name": "정부행정학부",
+   "candidate_core": "PUBADM_CORE_V1",
+   "evidence": {
+    "type": "SEARCH_EXCERPT_OF_OFFICIAL_URL",
+    "url": "https://registrar.korea.ac.kr/_res/eduinfo/etc/info_caution_sejong_public_2024.pdf",
+    "year": null,
+    "note": "WEAK. No current major course table surfaced. Site has 교수요목 menus (2025, 2021~2024, ...) and 2025~2026학년도 교육과정 page (spa/12239) but excerpts gave no course rows. oku admissions page only says 행정법·행정학 are core subjects (generic, not course titles). majormap.net (SECONDARY) lists 행정학원론, 정책학, 지방행정, 인사행"
+   },
+   "courses": [
+    {
+     "name": "행정학의이해",
+     "code": "DPAD161",
+     "required": "unknown",
+     "td": "TD01"
+    },
+    {
+     "name": "행정조직론",
+     "code": null,
+     "required": "unknown",
+     "td": "TD05"
+    },
+    {
+     "name": "재무행정론",
+     "code": null,
+     "required": "unknown",
+     "td": "TD03"
+    },
+    {
+     "name": "인사행정론",
+     "code": null,
+     "required": "unknown",
+     "td": "TD05"
+    }
+   ]
+  },
+  {
+   "leaf": "KUS26_AICS",
+   "name": "인공지능사이버보안학과",
+   "candidate_core": "CS_CORE_V1",
+   "evidence": {
+    "type": "SEARCH_EXCERPT_OF_OFFICIAL_URL",
+    "url": "https://aisecu.korea.ac.kr/courses/",
+    "year": "unknown (program page references 2023학년도 신입생 기준)",
+    "note": "편성교과목 table excerpt cut off around AICS305. A 사이버해킹 실습 course exists at 2nd year but exact name/code not shown, so omitted. 네트워크보안 appears but category/code truncated. Graduation: 130학점, capstone required."
+   },
+   "courses": [
+    {
+     "name": "암호수학",
+     "code": "AICS101",
+     "required": "unknown",
+     "td": "TD08"
+    },
+    {
+     "name": "정보보호개론",
+     "code": "AICS102",
+     "required": "unknown",
+     "td": "TD08"
+    },
+    {
+     "name": "자료구조론",
+     "code": "AICS201",
+     "required": "전공필수",
+     "td": "TD02"
+    },
+    {
+     "name": "인공지능개론",
+     "code": "AICS223",
+     "required": "전공필수",
+     "td": "TD09"
+    },
+    {
+     "name": "현대암호",
+     "code": "AICS224",
+     "required": "전공선택",
+     "td": "TD08"
+    },
+    {
+     "name": "인공지능최적화기초",
+     "code": "AICS304",
+     "required": "unknown",
+     "td": "TD09"
+    },
+    {
+     "name": "기계학습개론",
+     "code": "AICS305",
+     "required": "unknown",
+     "td": "TD09"
+    },
+    {
+     "name": "시스템보안",
+     "code": "AICS306",
+     "required": "전공필수",
+     "td": "TD08"
+    },
+    {
+     "name": "양자계산과보안",
+     "code": "AICS433",
+     "required": "unknown",
+     "td": "TD08"
+    }
+   ]
+  },
+  {
+   "leaf": "KUS26_FOODBIO",
+   "name": "식품생명공학과",
+   "candidate_core": "FOOD_CORE_V1",
+   "evidence": {
+    "type": "SEARCH_EXCERPT_OF_OFFICIAL_URL",
+    "url": "https://sejongold.korea.ac.kr/mbs/kr/subview.jsp?id=kr_040205010000",
+    "year": null,
+    "note": "WEAK/OUTDATED: names come from the legacy (sejongold) department intro page, not a curriculum table; no codes or 이수구분. The kfbt site has 교육과정표 menus (2023, 2021~2022, 2020) but rows not surfaced. adiga.kr (SECONDARY) lists many food courses but campus attribution unclear; not recorded."
+   },
+   "courses": [
+    {
+     "name": "식품화학",
+     "code": null,
+     "required": "unknown",
+     "td": "TD05"
+    },
+    {
+     "name": "식품미생물학",
+     "code": null,
+     "required": "unknown",
+     "td": "TD05"
+    },
+    {
+     "name": "식품가공학",
+     "code": null,
+     "required": "unknown",
+     "td": "TD02"
+    },
+    {
+     "name": "식품저장학",
+     "code": null,
+     "required": "unknown",
+     "td": "TD06"
+    },
+    {
+     "name": "식품소재학",
+     "code": null,
+     "required": "unknown",
+     "td": "TD01"
+    },
+    {
+     "name": "영양생화학",
+     "code": null,
+     "required": "unknown",
+     "td": "TD07"
+    },
+    {
+     "name": "효소학",
+     "code": null,
+     "required": "unknown",
+     "td": null,
+     "why_none": "효소 공학은 BT Core TD04 쪽이고 FOOD 영역에는 없다"
+    }
+   ]
+  },
+  {
+   "leaf": "KUS26_BIGDATA",
+   "name": "빅데이터사이언스학부",
+   "candidate_core": "CS_CORE_V1",
+   "evidence": {
+    "type": "SEARCH_EXCERPT_OF_OFFICIAL_URL",
+    "url": "https://nipa.korea.ac.kr/bbs/bigdatascience/488/108621/download.do",
+    "year": "2021 (교육과정편람)",
+    "note": "Only 전공필수 from 2021 편람 excerpt; college attribution not verified. 이중/복수전공 전공필수 6학점 = 수리통계학, 데이터분석소프트웨어초급."
+   },
+   "courses": [
+    {
+     "name": "데이터사이언스를위한수학",
+     "code": "BDSC155",
+     "required": "전공필수",
+     "td": null,
+     "why_none": "수학 기초"
+    },
+    {
+     "name": "데이터사이언스를위한행렬이론",
+     "code": "BDSC156",
+     "required": "전공필수",
+     "td": null,
+     "why_none": "수학 기초"
+    },
+    {
+     "name": "수리통계학",
+     "code": "BDSC201",
+     "required": "전공필수",
+     "td": "TD09"
+    },
+    {
+     "name": "데이터분석소프트웨어초급",
+     "code": "BDSC205",
+     "required": "전공필수",
+     "td": "TD09"
+    }
+   ]
+  },
+  {
+   "leaf": "KUS26_CCRE_MEDIA",
+   "name": "문화창의학부 미디어문예창작전공",
+   "candidate_core": "LANG_CORE_V1",
+   "evidence": {
+    "type": "SEARCH_EXCERPT_OF_OFFICIAL_URL",
+    "url": "https://nipa.korea.ac.kr/pdfView/cwms/26/38/fileDownload.do",
+    "year": "2023 (전공역량 교육과정 설계 문서 2023.12)",
+    "note": "Names from a competency-mapping document whose text extraction was partly garbled; source URL attribution between nipa.korea.ac.kr/pdfView/cwms/26/38 and caas.korea.ac.kr/pdfView/cwms/24/36 is uncertain."
+   },
+   "courses": [
+    {
+     "name": "시나리오기법",
+     "code": null,
+     "required": "unknown",
+     "td": "TD09"
+    },
+    {
+     "name": "드라마의이론및연습",
+     "code": null,
+     "required": "unknown",
+     "td": "TD09"
+    },
+    {
+     "name": "비평론",
+     "code": null,
+     "required": "unknown",
+     "td": "TD02"
+    },
+    {
+     "name": "게임기획및시나리오",
+     "code": null,
+     "required": "unknown",
+     "td": "TD09"
+    }
+   ]
+  }
+ ],
+ "not_offered": {
+  "KUS26_PHARM": "6년제 약사 면허 전공이다. 등록부의 20 Core 가운데 약학 직무 판단(조제·복약지도·약사법)을 재는 Core 가 없고, 간호·보건 Core 로 대신 재면 남의 전공 기준이 된다"
+ }
+}

@@ -180,7 +180,10 @@ async function main() {
   ok("KUS 등록부가 fixture 로 선다", depts.length > 0, `자리 ${depts.length}`);
   ok("운영 규칙으로 열린 자리는 융합경영 두 전공뿐", JSON.stringify(live) === JSON.stringify(["KUS26_CBIZ_GM", "KUS26_CBIZ_DM"]), live.join(","));
   ok("CS·EE 는 미리보기로만 열린다(시연 표시)", process.env.V3_PREVIEW_OPEN ? demo.includes("KUS26_CSW") && demo.includes("KUS26_EIE") : demo.length === 0, demo.join(",") || "(미리보기 없음)");
-  ok("매핑 판단 전인 자리는 준비 중", deptMode("KUS26_EMC") === "PREPARING" && deptMode("KUS26_AICS") === "PREPARING");
+  ok("Core 가 없는 자리(교육과정 미확인)는 준비 중", deptMode("KUS26_EMC") === "PREPARING", deptMode("KUS26_EMC"));
+  /* B 등급(근거가 얇아 보완 후 사용)은 Core 를 잇되 운영 규칙으로 열지 않는다. 미리보기 문이 열린 Core 면 시연 전용으로만 선다 */
+  ok("B 등급 자리는 운영 규칙으로 열리지 않는다", ["KUS26_AICS", "KUS26_FOODBIO", "KUS26_CCRE_MEDIA", "KUS26_GOVADM"].every((c) => !live.includes(c)),
+    ["KUS26_AICS", "KUS26_FOODBIO", "KUS26_CCRE_MEDIA"].map((c) => `${c}=${deptMode(c)}`).join(" "));
   ok("자유전공학부는 Core 를 들지 않는다", depts.filter((d) => d.code.startsWith("KUS26_FREE")).every((d) => d.mode === "PREPARING" && !d.core_code));
 
   say("\n── 2. 기관 · 담당자 · 학생 (테스트)");

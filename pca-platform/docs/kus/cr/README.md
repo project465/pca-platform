@@ -9,13 +9,13 @@
 | 파일 | 요청 | 대상 공통 파일 | 줄 수 |
 |---|---|---|---|
 | `CR-03-unsupported-accounts.patch` | KUS-CR-03 Core 없는 학과 학생의 계정 발급 | `src/lib/campus/registry.ts` · `src/lib/campus/students.ts` · `src/app/v3/start/actions.ts` · `src/lib/me-v3/runtime/session.ts` | +71 −6 |
-| `CR-01-02-registry-and-chain.patch` | KUS-CR-01 운영 등록부에 KUS 블록 · KUS-CR-02 DB 체인에 `db/kus/schema_kus.sql` | `sites/pca-platform/content/campus-universities.json` · `deploy/db-chain.json` | +457 −2 |
+| `CR-01-02-registry-and-chain.patch` | KUS-CR-01 운영 등록부에 KUS 블록 · KUS-CR-02 DB 체인에 `db/kus/schema_kus.sql` | `sites/pca-platform/content/campus-universities.json` · `deploy/db-chain.json` | +491 −2 |
 
 ## KUS-CR-03 — 계정 발급과 검사 가능 여부를 가른다
 
 **지금.** `checkStudent` 는 Core 매핑이 없는 자리를 거절한다. KUS 34자리 가운데
-Core 가 붙은 자리는 5, 전공을 고르는 자리(자유전공)가 4이고 **나머지 25자리의
-학생은 로그인 계정을 받지 못한다.** 기업탐방은 검사와 무관한 일인데 그 학생들은
+Core 가 붙은 자리는 8(R2 교육과정 대조 뒤 · `docs/kus/CORE_COMPAT.md`), 전공을 고르는 자리(자유전공)가 4이고
+**나머지 22자리의 학생은 로그인 계정을 받지 못한다.** 기업탐방은 검사와 무관한 일인데 그 학생들은
 탐방 기록도 남길 수 없다.
 
 **바꾸는 것(네 자리).**
@@ -41,7 +41,7 @@ Core 가 붙은 자리는 5, 전공을 고르는 자리(자유전공)가 4이고
 | 확인 | 1 / 1 PASS | 19 / 19 PASS |
 | PCU 117자리 판정 | 발급 117 | 발급 117 (**바뀐 줄 0**) |
 | JJU 10자리 판정 | 발급 10 | 발급 10 (**바뀐 줄 0**) |
-| KUS 34자리 판정 | 발급 9 · 거절 25 | 발급 34 (바뀐 줄 25 — 전부 Core 없는 자리) |
+| KUS 34자리 판정 | 발급 12 · 거절 22 | 발급 34 (바뀐 줄 22 — 전부 Core 없는 자리) |
 | 미지원 학생 응시 | — | `openAttempt` 가 던짐 · 응시 줄 0 |
 | 기관 격리 | — | KUS 명단에만 잡힘 · PCU 명단 0 · 진흥원 대역 사용자 학교 맥락 없음 |
 
@@ -74,7 +74,7 @@ patch 가 들어가면 그 학생의 홈 · 검사 안내가 `검사 이용 불�
 patch 를 얹은 나무에서 `campus:check` 86 / 86 · `db:chain` 8 / 8 이고, 운영 조건
 (`APP_ENV=production`, fixture 없음)에서 등록부가 KUS 34자리를 읽는다.
 
-**이 patch 를 만들다가 찾은 KUS 쪽 결함 하나.** 운영 등록부에 올려 `campus:check`
+**이 patch 를 만들다가 찾은 KUS 쪽 결함 둘.** (둘째는 R2 교육과정 대조에서: KUS 글로벌경영전공이 배재대 유학생용 갈래 `SPEC_BIZ_GLOBAL_MGMT` 를 들고 있었다. 이름으로 붙인 자리였고 과목 근거로는 `경영 일반` 이다. 고쳤다.) 첫째: 운영 등록부에 올려 `campus:check`
 를 돌리니 `계층이 넷을 넘지 않는다` 가 자유전공 4자리에서 걸렸다. 단과대학 바로 아래
 자리의 `kind` 가 `track` 이었는데 그 자리는 `department` 여야 한다. fixture 는
 `campus:check` 가 보지 않는 파일이라(그 검사는 fixture 문을 닫고 돈다) R1 에서

@@ -1,0 +1,899 @@
+{
+ "accessed_at": "2026-10-20",
+ "official_reachable": false,
+ "method_note": "No official page could be opened. All course data come from WebSearch result summaries quoting excerpts of official korea.ac.kr URLs (many mirror vhosts of the same CMS, e.g. ba./kucec./bkculture./sejong.korea.ac.kr). Excerpts are search-engine-synthesized, so attribution to a specific URL and the 이수구분 should be verified before production use. No course names were invented; lists are partial.",
+ "departments": [
+  {
+   "name": "융합경영학부 글로벌경영전공",
+   "college": "글로벌비즈니스대학",
+   "official_name_confirmed": true,
+   "name_source_url": "https://ba.korea.ac.kr/ba/4131/subview.do",
+   "courses": [
+    {
+     "name": "기업과경영",
+     "code": "GLOB161",
+     "year_level": "1",
+     "required": "unknown",
+     "note": "학문의기초 (글로벌경영전공 필수이수, 2025 교육과정표)"
+    },
+    {
+     "name": "기업경제학",
+     "code": "GLOB162",
+     "year_level": "1",
+     "required": "unknown",
+     "note": "학문의기초 (필수이수, 2025 교육과정표)"
+    },
+    {
+     "name": "경영통계",
+     "code": "GLOB163",
+     "year_level": "1",
+     "required": "unknown",
+     "note": "학문의기초 (택 과목, 2025 교육과정표)"
+    },
+    {
+     "name": "회계정보의이해",
+     "code": "GLOB164",
+     "year_level": "1",
+     "required": "unknown",
+     "note": "학문의기초; 2022 수강유의사항(caution_course22.pdf)에는 GLOB180으로 표기; IFRS중급회계Ⅰ의 선수과목"
+    },
+    {
+     "name": "조직행동론",
+     "code": "GLOB201",
+     "year_level": null,
+     "required": "전공필수",
+     "note": "2025 교육과정표 기본전공 필수(21학점) 목록"
+    },
+    {
+     "name": "인적자원관리",
+     "code": "GLOB202",
+     "year_level": null,
+     "required": "unknown"
+    },
+    {
+     "name": "IFRS중급회계Ⅰ",
+     "code": "GLOB211",
+     "year_level": null,
+     "required": "전공필수"
+    },
+    {
+     "name": "마케팅",
+     "code": "GLOB231",
+     "year_level": null,
+     "required": "전공필수"
+    },
+    {
+     "name": "경영수학",
+     "code": "GLOB241",
+     "year_level": null,
+     "required": "unknown"
+    },
+    {
+     "name": "국제경영론",
+     "code": "GLOB251",
+     "year_level": null,
+     "required": "전공필수"
+    },
+    {
+     "name": "재무관리",
+     "code": null,
+     "year_level": null,
+     "required": "전공필수",
+     "note": "code not shown in excerpt"
+    },
+    {
+     "name": "생산운영관리",
+     "code": null,
+     "year_level": null,
+     "required": "전공필수",
+     "note": "code not shown in excerpt"
+    },
+    {
+     "name": "기업과정보",
+     "code": null,
+     "year_level": null,
+     "required": "전공필수",
+     "note": "listed in 기본전공 필수 in ba.korea.ac.kr 2025 편입생 학점인정 안내 excerpt; code not shown"
+    },
+    {
+     "name": "인간관계와소통",
+     "code": "GLOB301",
+     "year_level": null,
+     "required": "unknown",
+     "note": "영어강의"
+    },
+    {
+     "name": "글로벌경영과리더십",
+     "code": "GLOB303",
+     "year_level": null,
+     "required": "unknown"
+    },
+    {
+     "name": "IFRS중급회계Ⅱ",
+     "code": "GLOB311",
+     "year_level": null,
+     "required": "unknown"
+    },
+    {
+     "name": "기업재무",
+     "code": "GLOB321",
+     "year_level": null,
+     "required": "unknown"
+    },
+    {
+     "name": "소비자행동의이해",
+     "code": "GLOB331",
+     "year_level": null,
+     "required": "unknown"
+    },
+    {
+     "name": "경영계량분석",
+     "code": "GLOB341",
+     "year_level": null,
+     "required": "unknown"
+    },
+    {
+     "name": "비즈니스인텔리전스",
+     "code": "GLOB361",
+     "year_level": null,
+     "required": "unknown"
+    },
+    {
+     "name": "기업법",
+     "code": "GLOB371",
+     "year_level": null,
+     "required": "unknown"
+    },
+    {
+     "name": "경영전략론",
+     "code": "GLOB451",
+     "year_level": null,
+     "required": "unknown"
+    },
+    {
+     "name": "글로벌비즈니스캡스톤디자인",
+     "code": "GLOB479",
+     "year_level": null,
+     "required": "unknown",
+     "note": "from caution_course22.pdf (2018 신설); current status unverified"
+    }
+   ],
+   "courses_source_type": "SEARCH_EXCERPT_OF_OFFICIAL_URL",
+   "courses_source_url": "https://ba.korea.ac.kr/ba/4142/subview.do",
+   "additional_source_urls": [
+    "https://ba.korea.ac.kr/bbs/ba/140/165646/download.do",
+    "https://registrar.korea.ac.kr/_res/registrar/etc/caution_course22.pdf",
+    "https://kucec.korea.ac.kr/kucec/3808/subview.do"
+   ],
+   "curriculum_year": "2025 (교수요목 2025학년도; 교육과정표 2025)",
+   "notes": "교수요목 page (ba/4142) excerpts gave code+name pairs; 기본전공 필수 set = 조직행동론, IFRS중급회계Ⅰ, 재무관리, 마케팅, 생산운영관리, (기업과정보), 국제경영론 (21학점). Not a complete list; 2026 curriculum page kucec/3808 exists but excerpt only showed 교양 rows. Excerpts came via search-engine summaries, not opened pages."
+  },
+  {
+   "name": "융합경영학부 디지털경영전공",
+   "college": "글로벌비즈니스대학",
+   "official_name_confirmed": true,
+   "name_source_url": "https://sejong.korea.ac.kr/sites/digb/index.do",
+   "courses": [
+    {
+     "name": "비즈니스프로그래밍",
+     "code": "DICB164 (as shown in excerpt; likely DIGB164)",
+     "year_level": "1",
+     "required": "unknown",
+     "note": "학문의기초 필수 for 디지털경영전공 (replaces 디지털리터러시입문)"
+    },
+    {
+     "name": "디지털경영수학",
+     "code": "DIGB174",
+     "year_level": null,
+     "required": "전공필수"
+    },
+    {
+     "name": "응용경영통계:R을활용한다변량분석",
+     "code": "DIGB217",
+     "year_level": null,
+     "required": "전공필수",
+     "note": "another excerpt shows 응용경영통계 as DIGB222 전공선택 (year unclear)"
+    },
+    {
+     "name": "머신러닝",
+     "code": "DIGB225",
+     "year_level": null,
+     "required": "전공필수"
+    },
+    {
+     "name": "디지털마케팅",
+     "code": "DIGB241",
+     "year_level": null,
+     "required": "전공필수"
+    },
+    {
+     "name": "파이썬을활용한BusinessDataAnalytics",
+     "code": "DIGB251",
+     "year_level": null,
+     "required": "전공필수"
+    },
+    {
+     "name": "경영계량분석",
+     "code": "DIGB337",
+     "year_level": null,
+     "required": "전공필수"
+    },
+    {
+     "name": "시스템분석및설계",
+     "code": "DIGB231",
+     "year_level": null,
+     "required": "전공선택"
+    },
+    {
+     "name": "데이터베이스설계",
+     "code": "DIGB249",
+     "year_level": null,
+     "required": "전공선택"
+    },
+    {
+     "name": "마케터를위한데이터분석",
+     "code": "DIGB344",
+     "year_level": null,
+     "required": "unknown",
+     "note": "listed as 다전공자 이수 교과목 in info_caution_sejong_global_2024.pdf"
+    },
+    {
+     "name": "알고리즘투자전략",
+     "code": "DIGB441",
+     "year_level": null,
+     "required": "unknown",
+     "note": "listed as 다전공자 이수 교과목 in info_caution_sejong_global_2024.pdf"
+    }
+   ],
+   "courses_source_type": "SEARCH_EXCERPT_OF_OFFICIAL_URL",
+   "courses_source_url": "https://digb.korea.ac.kr/digb/4247/subview.do",
+   "additional_source_urls": [
+    "https://digb.korea.ac.kr/digb/4242/subview.do",
+    "https://registrar.korea.ac.kr/_res/eduinfo/etc/info_caution_sejong_global_2024.pdf"
+   ],
+   "curriculum_year": "2024~25 (전공필수 6과목 per digb/4242); 전공과목목록표 year not visible",
+   "notes": "2024~25 page lists 전공필수 6과목: 디지털경영수학, 디지털마케팅, 응용경영통계, 경영계량분석, 머신러닝, 파이썬 기반 비즈니스 데이터 분석. 2026 학사구조 개편 changed codes/names; 2026 menu exists on site but not seen."
+  },
+  {
+   "name": "컴퓨터소프트웨어학과",
+   "former_name": "컴퓨터융합소프트웨어학과",
+   "college": "과학기술대학",
+   "official_name_confirmed": true,
+   "name_source_url": "https://software.korea.ac.kr/software/2733/subview.do",
+   "courses": [
+    {
+     "name": "컴퓨터언어I",
+     "code": "DCCS101 -> DCSS101",
+     "year_level": null,
+     "required": "unknown"
+    },
+    {
+     "name": "Computer Language II",
+     "code": "DCCS102 -> DCSS102",
+     "year_level": null,
+     "required": "unknown",
+     "note": "English name as shown in excerpt"
+    },
+    {
+     "name": "자료구조",
+     "code": "DCCS201",
+     "year_level": null,
+     "required": "전공필수"
+    },
+    {
+     "name": "Digital System",
+     "code": "DCCS203 -> DCSS203",
+     "year_level": null,
+     "required": "전공선택",
+     "note": "English name as shown"
+    },
+    {
+     "name": "Programming Language",
+     "code": "DCCS204",
+     "year_level": null,
+     "required": "unknown",
+     "note": "English name as shown"
+    },
+    {
+     "name": "System Software",
+     "code": "DCCS205 -> DCSS205",
+     "year_level": null,
+     "required": "전공선택",
+     "note": "English name as shown"
+    },
+    {
+     "name": "Information Communication",
+     "code": "DCCS206",
+     "year_level": null,
+     "required": "unknown",
+     "note": "English name as shown"
+    },
+    {
+     "name": "컴퓨팅사고",
+     "code": "DCCS207 -> DCSS207",
+     "year_level": null,
+     "required": "전공선택"
+    },
+    {
+     "name": "Introduction to Bigdata",
+     "code": "DCCS208",
+     "year_level": null,
+     "required": "unknown",
+     "note": "English name as shown"
+    },
+    {
+     "name": "Linux Practise",
+     "code": "DCCS209",
+     "year_level": null,
+     "required": "unknown",
+     "note": "English name as shown"
+    },
+    {
+     "name": "컴퓨터구조",
+     "code": "DCCS210 -> DCSS210",
+     "year_level": null,
+     "required": "전공선택"
+    },
+    {
+     "name": "Introduction to IoT",
+     "code": "DCCS211",
+     "year_level": null,
+     "required": "unknown",
+     "note": "English name as shown"
+    },
+    {
+     "name": "운영체제",
+     "code": "DCCS301",
+     "year_level": null,
+     "required": "전공필수"
+    },
+    {
+     "name": "컴파일러",
+     "code": "DCCS303 -> DCSS303",
+     "year_level": null,
+     "required": "전공선택"
+    },
+    {
+     "name": "데이터베이스",
+     "code": "DCCS304",
+     "year_level": null,
+     "required": "전공선택"
+    },
+    {
+     "name": "수치해석",
+     "code": "DCCS305 -> DCSS305",
+     "year_level": null,
+     "required": "전공선택"
+    },
+    {
+     "name": "컴퓨터네트워크",
+     "code": "DCCS307",
+     "year_level": null,
+     "required": "전공필수"
+    },
+    {
+     "name": "알고리즘",
+     "code": "DCCS309",
+     "year_level": null,
+     "required": "전공필수"
+    },
+    {
+     "name": "IoT인공지능",
+     "code": "DCSS312",
+     "year_level": null,
+     "required": "전공선택",
+     "note": "from 교수요목 page software/2743"
+    },
+    {
+     "name": "캡스톤디자인Ⅰ / 캡스톤디자인Ⅱ",
+     "code": null,
+     "year_level": "4",
+     "required": "unknown",
+     "note": "from 2021 학과공지; code not shown"
+    }
+   ],
+   "courses_source_type": "SEARCH_EXCERPT_OF_OFFICIAL_URL",
+   "courses_source_url": "https://registrar.korea.ac.kr/_res/eduinfo/etc/info_caution_sejong_science.pdf",
+   "additional_source_urls": [
+    "https://software.korea.ac.kr/software/2743/subview.do",
+    "https://sejong.korea.ac.kr/user/boardList.do?command=view&page=1&boardId=116936&boardSeq=140852&id=software_080100000000"
+   ],
+   "curriculum_year": "2026 ([붙임1] 교육과정표 2026학년도 입학생 기준, PDF last updated 2026-07)",
+   "notes": "학과 연혁: 2026.03 학부/대학원 컴퓨터소프트웨어학과 명칭 변경. Table maps old DCCS codes to new DCSS codes. Some names appeared only in English in excerpt; Korean names not invented."
+  },
+  {
+   "name": "전자및정보공학과",
+   "college": "과학기술대학",
+   "official_name_confirmed": true,
+   "name_source_url": "https://csg.korea.ac.kr/sites/kueie/index.do",
+   "courses": [
+    {
+     "name": "전기회로Ⅰ",
+     "code": "EIEN207",
+     "year_level": null,
+     "required": "unknown",
+     "note": "표기 '전공선택(필수)'"
+    },
+    {
+     "name": "공업수학Ⅰ",
+     "code": "EIEN209",
+     "year_level": null,
+     "required": "unknown",
+     "note": "표기 '전공선택(필수)'"
+    },
+    {
+     "name": "전기회로Ⅱ",
+     "code": "EIEN212",
+     "year_level": null,
+     "required": "전공필수"
+    },
+    {
+     "name": "전자기학Ⅰ",
+     "code": "EIEN217",
+     "year_level": null,
+     "required": "전공필수"
+    },
+    {
+     "name": "신호및시스템Ⅰ",
+     "code": "EIEN224",
+     "year_level": null,
+     "required": "unknown",
+     "note": "same page also shows EIEN226; conflict"
+    },
+    {
+     "name": "전기회로실험",
+     "code": "EIEN232",
+     "year_level": null,
+     "required": "unknown"
+    },
+    {
+     "name": "전자회로Ⅰ",
+     "code": "EIEN305",
+     "year_level": null,
+     "required": "unknown"
+    },
+    {
+     "name": "전자회로Ⅱ",
+     "code": "EIEN308",
+     "year_level": null,
+     "required": "unknown"
+    },
+    {
+     "name": "전자회로실험Ⅰ",
+     "code": "EIEN311",
+     "year_level": null,
+     "required": "unknown"
+    },
+    {
+     "name": "데이터통신",
+     "code": "EIEN368",
+     "year_level": null,
+     "required": "unknown",
+     "note": "appears 전공필수 but excerpt ambiguous"
+    },
+    {
+     "name": "레이더",
+     "code": null,
+     "year_level": null,
+     "required": "전공선택"
+    },
+    {
+     "name": "디지털통신",
+     "code": "EIEN461",
+     "year_level": null,
+     "required": "전공선택"
+    },
+    {
+     "name": "무선통신",
+     "code": "EIEN466",
+     "year_level": null,
+     "required": "전공선택"
+    },
+    {
+     "name": "정보이론",
+     "code": "EIEN468",
+     "year_level": null,
+     "required": "전공선택"
+    },
+    {
+     "name": "제어및로봇시스템",
+     "code": "EIEN496",
+     "year_level": null,
+     "required": "전공선택"
+    },
+    {
+     "name": "현장실습Ⅰ~Ⅲ",
+     "code": "EIEN486-488",
+     "year_level": null,
+     "required": "전공선택"
+    }
+   ],
+   "courses_source_type": "SEARCH_EXCERPT_OF_OFFICIAL_URL",
+   "courses_source_url": "https://sejong.korea.ac.kr/kueie/2905/subview.do",
+   "additional_source_urls": [
+    "https://sejonghome.korea.ac.kr/kueie/2906/subview.do"
+   ],
+   "curriculum_year": "2026 (교과과정 page updated 2026-07-30)",
+   "notes": "Partial list from excerpts of the 교과과정 table; 교수요목 page (2906) uses older code format."
+  },
+  {
+   "name": "정부행정학부",
+   "college": "공공정책대학",
+   "official_name_confirmed": true,
+   "name_source_url": "https://cpp.korea.ac.kr/spa/index.do",
+   "courses": [
+    {
+     "name": "행정학의이해",
+     "code": "DPAD161",
+     "year_level": "1",
+     "required": "unknown",
+     "note": "info_caution_sejong_public_2024.pdf shows it as 공공정책대학 선택교양 (changed from DPAD150 in 2021); not confirmed as a 정부행정학부 major course"
+    },
+    {
+     "name": "행정조직론",
+     "code": null,
+     "year_level": null,
+     "required": "unknown",
+     "note": "legacy 공공행정학부 page (sejongold) only; outdated"
+    },
+    {
+     "name": "재무행정론",
+     "code": null,
+     "year_level": null,
+     "required": "unknown",
+     "note": "legacy 공공행정학부 page only; outdated"
+    },
+    {
+     "name": "인사행정론",
+     "code": null,
+     "year_level": null,
+     "required": "unknown",
+     "note": "legacy 공공행정학부 page only; outdated"
+    }
+   ],
+   "courses_source_type": "SEARCH_EXCERPT_OF_OFFICIAL_URL",
+   "courses_source_url": "https://registrar.korea.ac.kr/_res/eduinfo/etc/info_caution_sejong_public_2024.pdf",
+   "additional_source_urls": [
+    "https://sejongold.korea.ac.kr/mbs/kr/subview.jsp?id=kr_040401000000",
+    "https://cpp.korea.ac.kr/spa/12239/subview.do",
+    "https://oku.korea.ac.kr/sejong/cms/FR_CON/index.do?MENU_ID=890&CONTENTS_NO=5"
+   ],
+   "curriculum_year": null,
+   "notes": "WEAK. No current major course table surfaced. Site has 교수요목 menus (2025, 2021~2024, ...) and 2025~2026학년도 교육과정 page (spa/12239) but excerpts gave no course rows. oku admissions page only says 행정법·행정학 are core subjects (generic, not course titles). majormap.net (SECONDARY) lists 행정학원론, 정책학, 지방행정, 인사행정 — not recorded as official. Internal tracks per older pages: 국정관리전공 / 정책과법전공."
+  },
+  {
+   "name": "인공지능사이버보안학과",
+   "college": "과학기술대학",
+   "official_name_confirmed": true,
+   "name_source_url": "https://secu.korea.ac.kr/secu/5411/subview.do",
+   "courses": [
+    {
+     "name": "암호수학",
+     "code": "AICS101",
+     "year_level": "1",
+     "required": "unknown",
+     "note": "학문의기초"
+    },
+    {
+     "name": "정보보호개론",
+     "code": "AICS102",
+     "year_level": "1",
+     "required": "unknown"
+    },
+    {
+     "name": "자료구조론",
+     "code": "AICS201",
+     "year_level": "2",
+     "required": "전공필수"
+    },
+    {
+     "name": "인공지능개론",
+     "code": "AICS223",
+     "year_level": "2",
+     "required": "전공필수"
+    },
+    {
+     "name": "현대암호",
+     "code": "AICS224",
+     "year_level": null,
+     "required": "전공선택"
+    },
+    {
+     "name": "인공지능최적화기초",
+     "code": "AICS304",
+     "year_level": "3",
+     "required": "unknown"
+    },
+    {
+     "name": "기계학습개론",
+     "code": "AICS305",
+     "year_level": "3",
+     "required": "unknown"
+    },
+    {
+     "name": "시스템보안",
+     "code": "AICS306",
+     "year_level": "3",
+     "required": "전공필수",
+     "note": "권장학기 3학년1학기, 3(4)"
+    },
+    {
+     "name": "양자계산과보안",
+     "code": "AICS433",
+     "year_level": "4",
+     "required": "unknown"
+    }
+   ],
+   "courses_source_type": "SEARCH_EXCERPT_OF_OFFICIAL_URL",
+   "courses_source_url": "https://aisecu.korea.ac.kr/courses/",
+   "additional_source_urls": [
+    "https://secu.korea.ac.kr/secu/5382/subview.do",
+    "https://aisecu.korea.ac.kr/program/",
+    "https://aisecu.korea.ac.kr/requirements/"
+   ],
+   "curriculum_year": "unknown (program page references 2023학년도 신입생 기준)",
+   "notes": "편성교과목 table excerpt cut off around AICS305. A 사이버해킹 실습 course exists at 2nd year but exact name/code not shown, so omitted. 네트워크보안 appears but category/code truncated. Graduation: 130학점, capstone required."
+  },
+  {
+   "name": "전자·기계융합공학과",
+   "college": "과학기술대학",
+   "official_name_confirmed": true,
+   "name_source_url": "https://emse.korea.ac.kr/emse/3227/subview.do",
+   "courses": [],
+   "courses_source_type": null,
+   "courses_source_url": null,
+   "curriculum_year": null,
+   "notes": "NO course list obtained. Registrar PDF mentions 2026학년도 교육과정 개편 (폐지/신설/변경 교과목 lists) and 현장실습Ⅰ~Ⅲ, but no course rows surfaced. Scribd copy of 2021 전공안내서 exists (SECONDARY, not extracted). Admissions page describes 전기전자·기계·컴퓨터 융합, 센서/로봇/메카트로닉스, 4학년 캡스톤디자인."
+  },
+  {
+   "name": "식품생명공학과",
+   "college": "과학기술대학",
+   "official_name_confirmed": true,
+   "name_source_url": "https://st.korea.ac.kr/sites/kfbt/index.do",
+   "courses": [
+    {
+     "name": "식품화학",
+     "code": null,
+     "year_level": null,
+     "required": "unknown"
+    },
+    {
+     "name": "식품미생물학",
+     "code": null,
+     "year_level": null,
+     "required": "unknown"
+    },
+    {
+     "name": "식품가공학",
+     "code": null,
+     "year_level": null,
+     "required": "unknown",
+     "note": "excerpt text showed '품가공학' (truncated)"
+    },
+    {
+     "name": "식품저장학",
+     "code": null,
+     "year_level": null,
+     "required": "unknown"
+    },
+    {
+     "name": "식품소재학",
+     "code": null,
+     "year_level": null,
+     "required": "unknown"
+    },
+    {
+     "name": "영양생화학",
+     "code": null,
+     "year_level": null,
+     "required": "unknown"
+    },
+    {
+     "name": "효소학",
+     "code": null,
+     "year_level": null,
+     "required": "unknown"
+    }
+   ],
+   "courses_source_type": "SEARCH_EXCERPT_OF_OFFICIAL_URL",
+   "courses_source_url": "https://sejongold.korea.ac.kr/mbs/kr/subview.jsp?id=kr_040205010000",
+   "additional_source_urls": [
+    "https://sejong.korea.ac.kr/mbshome/mbs/kfbt/subview.do?id=kfbt_040210000000"
+   ],
+   "curriculum_year": null,
+   "notes": "WEAK/OUTDATED: names come from the legacy (sejongold) department intro page, not a curriculum table; no codes or 이수구분. The kfbt site has 교육과정표 menus (2023, 2021~2022, 2020) but rows not surfaced. adiga.kr (SECONDARY) lists many food courses but campus attribution unclear; not recorded."
+  },
+  {
+   "name": "생명정보공학과",
+   "college": "과학기술대학",
+   "official_name_confirmed": true,
+   "name_source_url": "https://biotechnology.korea.ac.kr/biotechnology/2993/subview.do",
+   "courses": [],
+   "courses_source_type": null,
+   "courses_source_url": null,
+   "curriculum_year": null,
+   "notes": "Site has 교육과정/전공체계도/교수요목 menus; no course rows surfaced."
+  },
+  {
+   "name": "빅데이터사이언스학부",
+   "college": "공공정책대학",
+   "official_name_confirmed": false,
+   "name_source_url": "https://nipa.korea.ac.kr/bbs/bigdatascience/488/108621/download.do",
+   "courses": [
+    {
+     "name": "데이터사이언스를위한수학",
+     "code": "BDSC155",
+     "year_level": null,
+     "required": "전공필수"
+    },
+    {
+     "name": "데이터사이언스를위한행렬이론",
+     "code": "BDSC156",
+     "year_level": null,
+     "required": "전공필수"
+    },
+    {
+     "name": "수리통계학",
+     "code": "BDSC201",
+     "year_level": null,
+     "required": "전공필수"
+    },
+    {
+     "name": "데이터분석소프트웨어초급",
+     "code": "BDSC205",
+     "year_level": null,
+     "required": "전공필수"
+    }
+   ],
+   "courses_source_type": "SEARCH_EXCERPT_OF_OFFICIAL_URL",
+   "courses_source_url": "https://nipa.korea.ac.kr/bbs/bigdatascience/488/108621/download.do",
+   "curriculum_year": "2021 (교육과정편람)",
+   "notes": "Only 전공필수 from 2021 편람 excerpt; college attribution not verified. 이중/복수전공 전공필수 6학점 = 수리통계학, 데이터분석소프트웨어초급."
+  },
+  {
+   "name": "국제스포츠학부 스포츠비즈니스전공",
+   "official_name_confirmed": true,
+   "name_source_url": "https://cn.korea.ac.kr/_res/eduinfo/etc/info_caution_sejong_sport.pdf",
+   "courses": [],
+   "courses_source_type": null,
+   "courses_source_url": null,
+   "curriculum_year": null,
+   "notes": "Registrar PDF names 국제스포츠학부(스포츠과학전공, 스포츠비즈니스전공); excerpt only showed 교양 rows."
+  },
+  {
+   "name": "문화창의학부 미디어문예창작전공",
+   "official_name_confirmed": true,
+   "name_source_url": "https://cn.korea.ac.kr/_res/eduinfo/etc/info_caution_sejong_cultural.pdf",
+   "courses": [
+    {
+     "name": "시나리오기법",
+     "code": null,
+     "year_level": null,
+     "required": "unknown"
+    },
+    {
+     "name": "드라마의이론및연습",
+     "code": null,
+     "year_level": null,
+     "required": "unknown"
+    },
+    {
+     "name": "비평론",
+     "code": null,
+     "year_level": null,
+     "required": "unknown"
+    },
+    {
+     "name": "게임기획및시나리오",
+     "code": null,
+     "year_level": null,
+     "required": "unknown"
+    }
+   ],
+   "courses_source_type": "SEARCH_EXCERPT_OF_OFFICIAL_URL",
+   "courses_source_url": "https://nipa.korea.ac.kr/pdfView/cwms/26/38/fileDownload.do",
+   "curriculum_year": "2023 (전공역량 교육과정 설계 문서 2023.12)",
+   "notes": "Names from a competency-mapping document whose text extraction was partly garbled; source URL attribution between nipa.korea.ac.kr/pdfView/cwms/26/38 and caas.korea.ac.kr/pdfView/cwms/24/36 is uncertain."
+  },
+  {
+   "name": "문화창의학부 문화콘텐츠전공",
+   "official_name_confirmed": true,
+   "name_source_url": "https://cn.korea.ac.kr/_res/eduinfo/etc/info_caution_sejong_cultural.pdf",
+   "courses": [],
+   "courses_source_type": null,
+   "courses_source_url": null,
+   "curriculum_year": null,
+   "notes": "Only 학과 사무실 번호 surfaced."
+  },
+  {
+   "name": "글로벌학부 영미학전공 / 한국학전공",
+   "official_name_confirmed": true,
+   "name_source_url": "https://sejong.korea.ac.kr/sites/ell/index.do",
+   "courses": [],
+   "courses_source_type": null,
+   "courses_source_url": null,
+   "curriculum_year": null,
+   "notes": "Site titles confirmed: '고려대학교 세종캠퍼스 글로벌학부 영미학전공' and '...글로벌학부 한국학전공' (kucec.korea.ac.kr/koreanstudies/index.do). 중국학전공 not checked. No courses searched."
+  },
+  {
+   "name": "공공사회·통일외교학부 (공공사회학전공, 통일외교안보전공)",
+   "official_name_confirmed": true,
+   "name_source_url": "https://gpa.korea.ac.kr/pubs/12621/subview.do",
+   "courses": [],
+   "courses_source_type": null,
+   "courses_source_url": null,
+   "curriculum_year": null,
+   "notes": "2025학년도 curriculum page exists; it lists DPAD161 행정학의이해 in a 1차년도 택3 group (교양/기초, not major)."
+  },
+  {
+   "name": "반도체물리학부",
+   "official_name_confirmed": false,
+   "name_source_url": "https://registrar.korea.ac.kr/_res/eduinfo/etc/info_caution_sejong_science.pdf",
+   "courses": [],
+   "courses_source_type": null,
+   "courses_source_url": null,
+   "curriculum_year": null,
+   "notes": "2026 registrar PDF referenced 반도체물리학부; older notice used 디스플레이·반도체물리학부. Excerpt mentions 전자기학Ⅰ code change DSSP222->SPHY222 (2017); no current course table."
+  },
+  {
+   "name": "응용수리과학부 데이터계산과학전공",
+   "official_name_confirmed": false,
+   "name_source_url": "https://registrar.korea.ac.kr/_res/eduinfo/etc/info_caution_sejong_science.pdf",
+   "courses": [],
+   "courses_source_type": null,
+   "courses_source_url": null,
+   "curriculum_year": null,
+   "notes": "Code prefix DCSC (changed from IMSC in 2017). DCSC321 Data Science is mandatory for DS/AI 교양 area (not a major course list)."
+  }
+ ],
+ "unreachable": [
+  {
+   "department": "경제통계학부",
+   "reason": "no undergraduate course excerpt found"
+  },
+  {
+   "department": "스마트도시학부",
+   "reason": "not searched (time)"
+  },
+  {
+   "department": "미래모빌리티학과",
+   "reason": "not searched (time)"
+  },
+  {
+   "department": "지능형반도체공학과",
+   "reason": "not searched; one excerpt referenced a 2025 편람 page for it showing only SPHY161-164 일반물리 (교양)"
+  },
+  {
+   "department": "환경시스템공학과",
+   "reason": "not searched (time)"
+  },
+  {
+   "department": "신소재화학과",
+   "reason": "not searched (time)"
+  },
+  {
+   "department": "디지털헬스케어공학과",
+   "reason": "not searched (time)"
+  },
+  {
+   "department": "글로벌학부 중국학전공",
+   "reason": "not searched"
+  },
+  {
+   "department": "약학과",
+   "reason": "not searched (time)"
+  },
+  {
+   "department": "문화유산융합학부",
+   "reason": "not searched (time)"
+  },
+  {
+   "host": "all *.korea.ac.kr hosts via WebFetch",
+   "reason": "getaddrinfo ENOTFOUND (tested sejong.korea.ac.kr, aisecu.korea.ac.kr)"
+  },
+  {
+   "host": "registrar.korea.ac.kr via curl",
+   "reason": "proxy CONNECT 403 (policy denial)"
+  }
+ ]
+}
