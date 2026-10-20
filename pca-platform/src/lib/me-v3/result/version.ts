@@ -431,7 +431,12 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.61";
  * 색 타일 안 그림 동그라미를 흰 판으로 바꾸고 그림을 타일 색으로 칠한다.
  * 흰 그림 위에 흰 안쪽 획이 겹쳐 첫 타일 그림이 흰 네모로만 보였다.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V72_2";
+/**
+ * 종이(PDF)도 화면 시안(`mockups/05`)으로 입힌다: 기울기 판 표지, 첫 장의 색
+ * 타일과 `지금 할 일` 판, 파란 막대 절 제목, 옅은 묶음 판, 남색 부록 띠, 쪽머리
+ * 파란 M 상표. 담긴 글과 결과 모델은 그대로다.
+ */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V72_3";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

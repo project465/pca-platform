@@ -110,6 +110,24 @@ function cookiesFor(header: string, url: string) {
 }
 
 /** 쪽머리에 넣기 전에 꺾쇠를 막는다. 학교 이름에 `&` 가 들어갈 수 있다 */
+/* 쪽머리와 쪽번호(화면 시안 2026-10-20). 쪽머리 앞에 파란 M 상표를 두고
+   지금 쪽 번호를 파랑으로 적는다. 상표 그림은
+   `public/brand/careermatri/mark.svg` 와 같은 모양이다 */
+const MARK_SVG = '<svg width="10" height="10" viewBox="0 0 120 120">'
+  + '<rect width="120" height="120" rx="34" fill="#2F6BFF"/>'
+  + '<path transform="translate(60 60) scale(2.9) translate(-12 -12)" d="M5 19V5l7 8 7-8v14"'
+  + ' fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"'
+  + ' stroke-linejoin="round"/></svg>';
+function headerTemplate(header: string | undefined): string {
+  return '<div style="font-size:7pt;color:#5f6e86;width:100%;padding:0 14mm;'
+    + 'font-family:sans-serif;display:flex;align-items:center;gap:5px">'
+    + MARK_SVG + '<span>' + escapeHtml(header ?? "CareerMatri") + '</span></div>';
+}
+const FOOTER_TEMPLATE = '<div style="font-size:7pt;color:#5f6e86;width:100%;'
+  + 'padding:0 14mm;text-align:right;font-family:sans-serif">'
+  + '<span class="pageNumber" style="color:#2f6bff;font-weight:700"></span>'
+  + ' / <span class="totalPages"></span></div>';
+
 function escapeHtml(t: string): string {
   return t.replace(/[&<>"]/g, (c) =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c] ?? c));
@@ -208,12 +226,8 @@ export async function drawResultPdf(opts: DrawOpts): Promise<Buffer> {
          둔다: 줄을 더 길게 하면 종이에서 읽는 속도가 떨어진다 */
       margin: { top: "14mm", bottom: "14mm", left: "14mm", right: "14mm" },
       displayHeaderFooter: true,
-      headerTemplate: '<div style="font-size:7pt;color:#5f6e86;width:100%;'
-        + 'padding:0 14mm;font-family:sans-serif">'
-        + escapeHtml(opts.header ?? "CareerMatri") + '</div>',
-      footerTemplate: '<div style="font-size:7pt;color:#5f6e86;width:100%;'
-        + 'padding:0 14mm;text-align:right;font-family:sans-serif">'
-        + '<span class="pageNumber"></span> / <span class="totalPages"></span></div>',
+      headerTemplate: headerTemplate(opts.header),
+      footerTemplate: FOOTER_TEMPLATE,
     });
     return pdf;
   } catch (e) {
@@ -322,12 +336,8 @@ export async function drawPagePdf(opts: PageDrawOpts): Promise<Buffer> {
       format: "A4", printBackground: true, landscape: Boolean(opts.landscape),
       margin: { top: "14mm", bottom: "14mm", left: "14mm", right: "14mm" },
       displayHeaderFooter: true,
-      headerTemplate: '<div style="font-size:7pt;color:#5f6e86;width:100%;'
-        + 'padding:0 14mm;font-family:sans-serif">'
-        + escapeHtml(opts.header ?? "CareerMatri") + '</div>',
-      footerTemplate: '<div style="font-size:7pt;color:#5f6e86;width:100%;'
-        + 'padding:0 14mm;text-align:right;font-family:sans-serif">'
-        + '<span class="pageNumber"></span> / <span class="totalPages"></span></div>',
+      headerTemplate: headerTemplate(opts.header),
+      footerTemplate: FOOTER_TEMPLATE,
     });
     return pdf;
   } catch (e) {
