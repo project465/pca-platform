@@ -1,0 +1,12 @@
+v3-measurement-freeze	0	  ME_V3_MEASUREMENT_FREEZE_1 — 측정체계가 동결 기록과 같다.
+v3-freeze-check	0	검사 화면 동결 OK — ME_V3_2_ASSESSMENT_UI_V45 · me-v3-2-assessment-copy.25 · 파일 21벌 그대로.
+v3-result-freeze	0	결과지 동결 OK — ME_V3_RESULT_UI_V77 · me-v3-result-copy.66 · me-v3-result-model.6 · 파일 25벌 그대로.
+v3-workspace-freeze	0	작업공간 동결 OK — CAREERMATRI_WORKSPACE_UI_V48 · careermatri-workspace-copy.32 · 파일 53벌 그대로 · �
+v3-core-ui-freeze	0	  측정 동결과 별개다. 파일이 바뀌었는지는 세 동결이 센다.
+v3-scoring-check	0	확인 31가지 — 통과 31 · 걸림 0
+v3-runtime-check	0	확인 30가지 — 통과 30 · 걸림 0
+v3-result-check	0	확인 25가지 — 통과 25 · 걸림 0
+v3-provenance-check	0	확인 18가지 — 통과 18 · 걸림 0
+v3-ui-check	0	  통과 29 · 걸림 0
+v3-recompute-check	0	확인 19가지 — 통과 19 · 걸림 0
+v3-student-check	0	학생 언어 OK

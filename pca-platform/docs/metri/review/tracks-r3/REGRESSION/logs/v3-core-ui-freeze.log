@@ -1,0 +1,11 @@
+  통과  세 동결 기록이 전부 있다 — 3벌
+  통과  Core 화면 열넷이 동결 안에 있다 — 14자리
+  통과  세 동결 명령이 사슬에 남아 있다 — v3:freeze · v3:result:freeze · v3:workspace
+  통과  세 동결 기록이 묶음 기록과 같다 — 3벌
+  통과  판본 여섯이 묶음 기록과 같다 — ME_V3_2_ASSESSMENT_UI_V45 · me-v3-2-assessment-copy.25 · ME_V3_RESULT_UI_V77 · me-v3-result-copy.66 · CAREERMATRI_WORKSPACE_UI_V48 · careermatri-workspace-copy.32
+  통과  Core 화면 열넷의 지문이 묶음 기록과 같다 — 14자리
+
+  확인 6가지 — 통과 6 · 걸림 0
+
+  CAREERMATRI_CORE_UI_FREEZE_1 — Core 화면 열넷이 묶음 기록과 같다.
+  측정 동결과 별개다. 파일이 바뀌었는지는 세 동결이 센다.
