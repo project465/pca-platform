@@ -188,9 +188,11 @@ export default async function CampusV3({
 
   return shell(
     <>
+      {/* **첫 화면은 인사로 연다**(화면 시안 2026-10-20). 이 쪽이 무엇인지는
+          제목 위 한 줄(`전공 진단 집계`)이 든다 */}
       <PageHead
-        eyebrow={BRAND.campus}
-        title="전공 진단 집계"
+        eyebrow={`${BRAND.campus} · 전공 진단 집계`}
+        title={`${user.name} ${user.role === "instructor" ? "교수님" : "담당자님"}, 안녕하세요`}
         sub={"지금 쓰는 검사를 친 학생의 집계입니다. "
           + `사람이 ${MIN_CELL}명이 안 되는 칸은 숫자를 내지 않습니다.`}
       />

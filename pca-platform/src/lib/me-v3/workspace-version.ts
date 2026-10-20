@@ -309,8 +309,9 @@
  * 운영 갈래(2026-10-20). `happy-faraday` 에서 V49 로 올린 화면 시안 변경
  * (`mockups/01~05`, 파란 M 상표, Pretendard, 주색 #2f6bff, 둥글기 10/14/18,
  * 남색 띠, 색 타일, 검사 답안 현황, 결과지 흰 카드)만 운영에 먼저 옮겼다.
- * 그 사이 판본(V44~)은 다른 변경이라 번호를 갈래로 단다. 문항·채점·결과
- * 모델·문면은 그대로다.
+ * 그 사이 판본(V44~)은 다른 변경이라 번호를 갈래로 단다. 첫 화면 제목을
+ * `○○ 학생, 안녕하세요` 로, 학과 집계 첫 화면을 `○○ 담당자님, 안녕하세요`
+ * 로 연다(단계 이름은 제목 위 한 줄). 판정과 현재 상태 계산은 그대로다.
  */
 export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V43_1";
 
@@ -341,7 +342,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V43_1";
  * 경험을 확인할 수 있습니다.`). 걷은 까닭으로 적어 둔 `목표 화면에
  * 없다` 가 틀린 판정이었다.
  */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.27";
+/** 운영 갈래(2026-10-20): 첫 화면 제목을 인사로 바꿨다 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.27_1";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**
