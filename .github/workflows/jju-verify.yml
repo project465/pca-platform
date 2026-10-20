@@ -1,0 +1,199 @@
+# JJU(전주대학교) 가지 전용 검증. 이 세션은 npm 레지스트리가 막혀 `npm ci` ·
+# `next build` · 실제 Next 서버 · 실제 Auth.js 로그인 · 브라우저 E2E 를 직접 못 돌린다.
+# 같은 일을 GitHub 러너에서 하고, 캡처 · PDF · 로그를 증거 가지로 커밋한다.
+#
+# 승인 범위(사용자 승인 · R5)
+# - feature/jju-campus 가지에만 이 파일 하나. main · 다른 기관 가지 변경 없음.
+# - 러너 안 일회용 PostgreSQL 과 합성 QA 계정뿐이다. 운영·Staging DB · Railway ·
+#   저장소 비밀값을 쓰지 않는다. 비밀번호는 실행마다 무작위로 만들고 가린다.
+# - 결과(캡처 · PDF · 로그)는 `jju-ci-evidence` 가지 하나에만 커밋한다. 그래서
+#   `contents: write` 가 필요하다. 공개 저장소라 합성 자료만 올린다.
+#
+# 언제 도는가: 손으로(workflow_dispatch), 또는 커밋 메시지에 `[jju-verify]` 가 있는
+# 이 가지의 푸시만.
+name: jju-verify
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [feature/jju-campus]
+
+permissions:
+  contents: read
+
+env:
+  # R4 커밋. R5 가 공통 파일을 바꾸지 않았는지를 이 커밋과 견준다
+  BASE_SHA: f144368fedac92643a3d403de0601deb8c37f5ec
+  OUT: var/jju-ci
+
+jobs:
+  verify:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[jju-verify]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    permissions:
+      contents: write
+    concurrency:
+      group: jju-verify
+      cancel-in-progress: false
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: cm
+          POSTGRES_PASSWORD: cm-ci-only
+          POSTGRES_DB: cm_jju
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U cm" --health-interval 5s
+          --health-timeout 5s --health-retries 20
+    defaults:
+      run:
+        working-directory: pca-platform
+        shell: bash --noprofile --norc {0}
+    env:
+      DATABASE_URL: postgres://cm:cm-ci-only@127.0.0.1:5432/cm_jju
+      APP_ENV: staging
+      V3_CAMPUS_FIXTURE: scripts/fixtures/campus-jju.json
+      V3_PREVIEW_OPEN: CS_CORE_V1,EE_CORE_V1,BIZ_CORE_V1
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: pca-platform/package-lock.json
+
+      - name: 도구 · 실행마다 새 비밀값
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq postgresql-client poppler-utils fonts-noto-cjk >/dev/null
+          mkdir -p "$OUT/logs"
+          v="$(openssl rand -base64 32 | tr -d '/+=')"; echo "::add-mask::$v"; echo "AUTH_SECRET=$v" >> "$GITHUB_ENV"
+          : > "$OUT/steps.tsv"
+          { echo "sha=$GITHUB_SHA"; echo "run=$GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT"; echo "ref=$GITHUB_REF_NAME";
+            node --version; psql --version; date -u +%FT%TZ; } > "$OUT/env.txt"
+
+      - name: npm ci
+        run: |
+          npm ci --no-audit --no-fund > "$OUT/logs/npm-ci.log" 2>&1; rc=$?
+          tail -15 "$OUT/logs/npm-ci.log"
+          npm ls next next-auth bcryptjs playwright pg 2>/dev/null >> "$OUT/env.txt"
+          printf 'npm ci\t%s\n' $rc >> "$OUT/steps.tsv"; exit $rc
+
+      - name: TypeScript 전체 검사
+        run: |
+          npm run -s typecheck > "$OUT/logs/typecheck.log" 2>&1; rc=$?
+          grep -n "jju" "$OUT/logs/typecheck.log" | head -60
+          tail -20 "$OUT/logs/typecheck.log"
+          printf 'typecheck\t%s\n' $rc >> "$OUT/steps.tsv"
+
+      - name: Next.js 빌드
+        env:
+          NODE_OPTIONS: --max-old-space-size=6144
+          NEXT_TELEMETRY_DISABLED: "1"
+        run: |
+          npm run build > "$OUT/logs/build.log" 2>&1; rc=$?
+          grep -n "jju" "$OUT/logs/build.log" | head -40
+          tail -40 "$OUT/logs/build.log"
+          printf 'next build\t%s\n' $rc >> "$OUT/steps.tsv"; exit $rc
+
+      - name: DB — 공통 체인
+        run: |
+          rc=0
+          for f in $(node -e 'const c=require("./deploy/db-chain.json");for(const f of [...c.base,...c.upgrade])console.log(f)'); do
+            psql "$DATABASE_URL" -q -v ON_ERROR_STOP=1 --single-transaction -f "$f" >> "$OUT/logs/db.log" 2>&1 || { echo "실패: $f"; rc=1; }
+          done
+          printf 'db chain\t%s\n' $rc >> "$OUT/steps.tsv"; exit $rc
+
+      # 공통 회귀는 운영과 같은 조건(미리보기 · fixture 닫음)으로 돈다
+      - name: 공통 회귀(측정 동결 · 등록부 · 체인)
+        run: |
+          for s in v3:freeze:measure campus:check db:chain; do
+            f="$OUT/logs/$(echo "$s" | tr ':' '_').log"
+            env -u V3_PREVIEW_OPEN -u V3_CAMPUS_FIXTURE npm run -s "$s" > "$f" 2>&1; rc=$?
+            tail -4 "$f"
+            printf '%s\t%s\n' "$s" $rc >> "$OUT/steps.tsv"
+          done
+
+      - name: 브라우저
+        run: npx playwright install --with-deps chromium > /dev/null
+
+      - name: JJU 서버 쪽 검사(실제 bcrypt · 실제 PostgreSQL)
+        env:
+          APP_ENV: dev
+          APPLY: "yes"
+        run: |
+          run() { n="$1"; shift; "$@" > "$OUT/logs/$n.log" 2>&1; rc=$?; tail -6 "$OUT/logs/$n.log"; printf '%s\t%s\n' "$n" $rc >> "$OUT/steps.tsv"; }
+          run jju-verify-1 env OUT="$OUT/qa" npx tsx scripts/jju-verify.ts
+          run jju-c16      env OUT="$OUT/c16" npx tsx scripts/jju-c16.ts
+          run jju-access   env OUT="$OUT/access" npx tsx scripts/jju-access.ts
+          # 접근 검사가 남긴 것을 치우고 A/B/C 를 새로 세운다(E2E 가 읽는다)
+          run jju-verify-2 env OUT="$OUT/qa" npx tsx scripts/jju-verify.ts
+          run jju-report   env OUT="$OUT/report" npx tsx scripts/jju-report.ts
+          psql "$DATABASE_URL" -At -f docs/jju/r3/security/C16/c16_readonly_audit.sql > "$OUT/c16/c16_readonly_audit.ci.txt" 2>&1 || true
+
+      - name: 실제 Next 서버 → 실제 Auth.js → 브라우저 E2E
+        run: |
+          (bash scripts/stage-serve.sh 3100 > "$GITHUB_WORKSPACE/pca-platform/$OUT/logs/server.log" 2>&1 &)
+          for i in $(seq 1 90); do curl -sf http://127.0.0.1:3100/api/health >/dev/null && break; sleep 1; done
+          curl -s -o /dev/null -w 'health %{http_code}\n' http://127.0.0.1:3100/api/health | tee "$OUT/health.txt"
+          UI_BASE=http://127.0.0.1:3100 APP_ENV=dev OUT="$OUT/e2e" npx tsx scripts/jju-e2e-next.ts > "$OUT/logs/jju-e2e-next.log" 2>&1; rc=$?
+          cat "$OUT/logs/jju-e2e-next.log"
+          grep -n "jju-pdf\|v3-pdf\|Error" "$OUT/logs/server.log" | head -30 || true
+          for f in "$OUT"/e2e/pdf/*.pdf; do echo "$f $(pdfinfo "$f" 2>/dev/null | grep -E 'Pages|Producer' | tr '\n' ' ')"; done | tee "$OUT/pdfinfo.txt"
+          printf 'jju next browser e2e\t%s\n' $rc >> "$OUT/steps.tsv"
+
+      - name: 공통 파일 무변경 확인(R4 이후)
+        run: |
+          git diff --name-only "$BASE_SHA" HEAD -- . \
+            ':!docs/jju' ':!src/lib/jju' ':!src/app/jju' ':!scripts/jju-*' ':!scripts/fixtures/campus-jju.json' \
+            ':!scripts/lab/offline' > "$OUT/shared-diff.txt"
+          git diff --name-only "$BASE_SHA" HEAD -- ../.github >> "$OUT/shared-diff.txt"
+          cat "$OUT/shared-diff.txt"
+          n=$(grep -vc '^\.github/workflows/jju-verify.yml$' "$OUT/shared-diff.txt" || true)
+          printf 'shared files changed (jju-verify.yml 제외) = %s\t%s\n' "$n" $([ "$n" = 0 ] && echo 0 || echo 1) >> "$OUT/steps.tsv"
+
+      - name: 결과 한 장
+        if: always()
+        run: |
+          { echo "## JJU verify"; echo; echo "commit \`$GITHUB_SHA\` · run $GITHUB_RUN_ID"; echo;
+            echo '| 단계 | 종료코드 |'; echo '|---|---|';
+            awk -F'\t' '{print "| " $1 " | " $2 " |"}' "$OUT/steps.tsv"; echo;
+            grep -hE "(PASS|통과) [0-9]+ · (FAIL|걸림)" "$OUT"/logs/*.log || true; } | tee "$OUT/RESULT.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 증거 가지에 커밋(jju-ci-evidence)
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -u
+          dst="runs/$(date -u +%Y%m%d-%H%M%S)-${GITHUB_SHA:0:8}-r$GITHUB_RUN_ID"
+          remote="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          ev=/tmp/evidence
+          if git ls-remote --exit-code --heads "$remote" jju-ci-evidence >/dev/null 2>&1; then
+            git clone -q --depth 1 --branch jju-ci-evidence "$remote" "$ev"
+          else
+            mkdir -p "$ev" && git -C "$ev" init -q -b jju-ci-evidence && git -C "$ev" remote add origin "$remote"
+            printf '# jju-ci-evidence\n\nfeature/jju-campus 의 jju-verify 워크플로가 남긴 증거(합성 자료). 코드 없음.\n' > "$ev/README.md"
+          fi
+          mkdir -p "$ev/$dst"
+          # 비밀값은 어디에도 적지 않았다. 혹시 몰라 한 번 더 거른다
+          rm -f "$OUT"/logs/npm-ci.log
+          cp -r "$OUT"/. "$ev/$dst/"
+          if grep -rIl "$AUTH_SECRET" "$ev/$dst" >/dev/null 2>&1; then echo "비밀값이 섞였다. 올리지 않는다"; exit 1; fi
+          git -C "$ev" add -A
+          git -C "$ev" -c user.name="jju-verify[bot]" -c user.email="jju-verify@users.noreply.github.com" \
+            commit -q -m "jju-verify evidence ${GITHUB_SHA:0:8} run $GITHUB_RUN_ID" || true
+          git -C "$ev" push -q origin jju-ci-evidence
+          echo "evidence → jju-ci-evidence/$dst" | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: 판정
+        if: always()
+        run: |
+          cat "$OUT/steps.tsv"
+          ! awk -F'\t' '$2 != "0"' "$OUT/steps.tsv" | grep -q .
