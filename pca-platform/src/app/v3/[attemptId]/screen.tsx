@@ -778,6 +778,29 @@ export default function Screen({
             ) : null}
           </>
         ) : null}
+        {/* **답안 현황**(화면 시안 2026-10-20). 지금 묶음의 칸을 번호로
+            늘어놓고 지난 칸은 채우고 지금 칸은 테를 두른다. 묶음 안에서만
+            세는 까닭은 `progress.ts` 와 같다: 전체 분모는 routing 으로
+            늘어날 수 있어서 거꾸로 가는 것처럼 읽힌다 */}
+        {!mid && prog.inStage.total > 1 ? (
+          <aside className="qs-omr" aria-label="이번 묶음 답안 현황">
+            <p className="qs-omr-h">답안 현황</p>
+            <p className="qs-omr-sum">
+              <b>{prog.now}</b> {prog.inStage.index} / {prog.inStage.total}
+            </p>
+            <ol className="qs-omr-grid">
+              {Array.from({ length: prog.inStage.total }, (_, i) => (
+                <li key={i}
+                  className={i + 1 < prog.inStage.index ? "is-done"
+                    : i + 1 === prog.inStage.index ? "is-now" : undefined}
+                  aria-current={i + 1 === prog.inStage.index ? "step" : undefined}>
+                  {i + 1}
+                </li>
+              ))}
+            </ol>
+            <p className="qs-omr-note">답은 고를 때마다 저장됩니다. 창을 닫아도 이어서 풀 수 있습니다.</p>
+          </aside>
+        ) : null}
       </main>
 
       <nav className="qs-nav" aria-label="화면 이동">

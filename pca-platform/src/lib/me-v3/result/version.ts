@@ -420,7 +420,14 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.61";
  * **판정도 문장도 바뀌지 않았다.** 그래서 `RESULT_COPY_VERSION` 과
  * `RESULT_MODEL_VERSION` 은 그대로다.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V72";
+/**
+ * 운영 갈래(2026-10-20). `happy-faraday` 에서 V78 로 올린 화면 시안 변경
+ * (`mockups/01~05`, 파란 M 상표, Pretendard, 주색 #2f6bff, 둥글기 10/14/18,
+ * 남색 띠, 색 타일, 검사 답안 현황, 결과지 흰 카드)만 운영에 먼저 옮겼다.
+ * 그 사이 판본(V73~)은 다른 변경이라 번호를 갈래로 단다. 문항·채점·결과
+ * 모델·문면은 그대로다.
+ */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V72_1";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

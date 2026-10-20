@@ -95,33 +95,33 @@
   --ui-5: 24px; --ui-6: 32px; --ui-7: 48px; --ui-8: 64px;
 
   /* ── 둥글기 셋 ── 작은 것(칩·칸) · 카드 · 큰 묶음 */
-  --ui-r-sm: 8px;
-  --ui-r: 12px;
-  --ui-r-lg: 16px;
+  --ui-r-sm: 10px;
+  --ui-r: 14px;
+  --ui-r-lg: 18px;
 
   /* ── 바탕과 글 ──
      중성 회색 대신 **남색 쪽으로 아주 조금 기운 회색**을 쓴다. 순회색은
      고른 티가 안 나고, 강조색이 파랑일 때 바탕과 따로 논다 */
-  --ui-bg: #f7f8fb;          /* 쪽 바탕 */
+  --ui-bg: #f3f6fb;          /* 쪽 바탕 */
   --ui-surface: #ffffff;     /* 글이 올라앉는 면 */
-  --ui-surface-2: #f4f6fa;   /* 한 단 꺼진 면. 표 머리 · 묶음 바탕 */
-  --ui-text: #0a1a30;        /* 머리글과 숫자. 검정을 쓰지 않는다 */
-  --ui-text-2: #3d4d66;      /* 본문 */
+  --ui-surface-2: #f6f8fc;   /* 한 단 꺼진 면. 표 머리 · 묶음 바탕 */
+  --ui-text: #1a2233;        /* 머리글과 숫자. 검정을 쓰지 않는다 */
+  --ui-text-2: #4a5568;      /* 본문 */
   --ui-text-3: #5f6e86;      /* 메타 전용. 흰 5.2:1 (규격 §44) */
 
   /* ── 선 셋 ── 기본 · 고른 자리 · 가르는 선.
      **점선을 쓰지 않는다**: 점선은 '아직 안 만든 자리' 로 읽힌다 */
-  --ui-border: #e4e8ef;
-  --ui-border-sel: #1c5fb0;
-  --ui-divider: #eef1f6;
+  --ui-border: #e3e8f0;
+  --ui-border-sel: #2f6bff;
+  --ui-divider: #eef2f8;
 
   /* ── 강조 ──
      파랑은 **고르는 자리와 지금 자리**에만 쓴다. 고른 상태는 전부 이 두
      이름이고, 쪽마다 다른 파랑을 적지 않는다 */
-  --ui-accent: #1c5fb0;
-  --ui-accent-ink: #164c8e;
-  --ui-accent-soft: #eaf1fb;   /* 고른 자리의 바탕 */
-  --ui-accent-line: #c9dbf2;
+  --ui-accent: #2f6bff;
+  --ui-accent-ink: #1f4fd1;
+  --ui-accent-soft: #eaf0ff;   /* 고른 자리의 바탕 */
+  --ui-accent-line: #c9d6ff;
 
   /* ── 뜻이 있는 색. **좋고 나쁨을 칠하지 않는다**(규격 §39) ── */
   --ui-ok: #10664f;
@@ -190,13 +190,13 @@
   /* ── 높이 ──
      **모든 카드에 같은 그림자를 찍지 않는다.** 신뢰는 테두리와 여백과
      활자가 만들고, 그림자는 떠 있어야 하는 것에만 준다 (규격 §32) */
-  --sh-1: 0 1px 2px rgba(10, 26, 48, .04);
-  --sh-2: 0 1px 2px rgba(10, 26, 48, .04), 0 6px 16px rgba(10, 26, 48, .05);
-  --sh-3: 0 2px 6px rgba(10, 26, 48, .05), 0 16px 40px rgba(10, 26, 48, .09);
+  --sh-1: 0 1px 2px rgba(17, 30, 60, .04), 0 6px 20px rgba(17, 30, 60, .06);
+  --sh-2: 0 1px 2px rgba(17, 30, 60, .05), 0 10px 28px rgba(17, 30, 60, .08);
+  --sh-3: 0 2px 6px rgba(17, 30, 60, .06), 0 18px 44px rgba(17, 30, 60, .12);
   --sf-shadow: var(--sh-1);
 
   /* 눌린 자리를 보이게 하는 테. **색만으로 말하지 않는다**(규격 §44) */
-  --ring: 0 0 0 3px rgba(28, 95, 176, .2);
+  --ring: 0 0 0 3px rgba(47, 107, 255, .25);
   --ui-ring: var(--ring);
   --ui-radius: var(--ui-r-sm);
 }
@@ -218,15 +218,20 @@
   color: var(--sf-ink-2);
   font-size: 15px;
   line-height: 1.6;
-  letter-spacing: -.004em;
+  letter-spacing: -.01em;
 }
 
 /* 왼쪽 띠. **위쪽의 작은 글자 메뉴를 쓰지 않는다** */
+/* **남색 판 하나가 바탕 위에 떠 있다**(화면 시안 2026-10-20). 띠를 화면
+   끝에 붙이지 않고 16px 띄워 둥글게 깎는다: 본문 카드와 같은 문법이라
+   띠도 제품의 한 조각으로 읽힌다 */
 .sf-side {
-  position: sticky; top: 0; align-self: start;
-  height: calc(100vh - var(--stg-h)); display: flex; flex-direction: column;
-  background: var(--sf-surface);
-  border-right: 1px solid var(--sf-line);
+  position: sticky; top: 16px; align-self: start;
+  height: calc(100vh - var(--stg-h) - 32px); display: flex; flex-direction: column;
+  margin: 16px 0 16px 16px;
+  background: #1e2a3e; color: #c5cedd;
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-2);
 }
 .sf-brand {
   display: flex; align-items: center; gap: 10px;
@@ -253,22 +258,22 @@
 }
 .sf-nav a {
   display: flex; align-items: center; gap: 10px;
-  padding: 9px 12px; border-radius: var(--sf-radius-sm);
-  font-size: 14px; font-weight: var(--ui-w-sb); color: var(--sf-ink-2);
+  padding: 10px 12px; border-radius: var(--sf-radius-sm);
+  font-size: 14px; font-weight: var(--ui-w-sb); color: #c5cedd;
   text-decoration: none;
 }
-.sf-nav a:hover { background: var(--sf-surface-2); color: var(--sf-ink); }
-.sf-nav a[aria-current="page"] { background: var(--sf-accent-soft); color: var(--sf-accent-ink); }
+.sf-nav a:hover { background: rgba(255, 255, 255, .06); color: #fff; }
+.sf-nav a[aria-current="page"] { background: var(--sf-accent); color: #fff; font-weight: var(--ui-w-bd); }
 .sf-nav a .sf-ic { flex: 0 0 16px; opacity: .85; }
 .sf-nav a[aria-current="page"] .sf-ic { opacity: 1; }
-.sf-nav a.is-soon { color: var(--sf-ink-3); font-weight: var(--ui-w-md); }
+.sf-nav a.is-soon { color: #7d8aa1; font-weight: var(--ui-w-md); }
 .sf-nav a.is-soon::after {
   content: ''; margin-left: auto; width: 5px; height: 5px; border-radius: 50%;
-  background: var(--sf-line); flex: 0 0 5px;
+  background: #44526b; flex: 0 0 5px;
 }
 
 /* 아래쪽에 사람. **계정은 왼쪽 띠 아래나 오른쪽 위에 둔다** */
-.sf-side-foot { margin-top: auto; padding: 12px; border-top: 1px solid var(--sf-line-2); }
+.sf-side-foot { margin-top: auto; padding: 12px; border-top: 1px solid rgba(255, 255, 255, .08); }
 .sf-who {
   display: flex; align-items: center; gap: 10px;
   padding: 8px 10px; border-radius: var(--sf-radius-sm);
@@ -361,11 +366,12 @@
  *   is-accent  파란 테. 지금 눈이 가야 하는 자리
  */
 .sf-card {
-  background: var(--sf-surface); border: 1px solid var(--sf-line);
+  background: var(--sf-surface); border: 1px solid transparent;
   border-radius: var(--r-lg); padding: var(--sp-4);
+  box-shadow: var(--sh-1);
   min-width: 0;
 }
-.sf-card.is-lift { box-shadow: var(--sh-2); border-color: #dfe4ec; }
+.sf-card.is-lift { box-shadow: var(--sh-2); border-color: transparent; }
 .sf-card.is-quiet { background: var(--sf-surface-2); border-color: var(--sf-line-2); }
 .sf-card.is-accent { border-color: var(--sf-accent-line); background: var(--sf-accent-soft); }
 .sf-card-q { padding: 0; overflow: hidden; }       /* 표를 담는 카드 */
@@ -390,7 +396,7 @@
    비율인지까지 한 칸에 들어간다. 그리고 **숫자를 크게 쓴다**: 이 칸을
    보는 이유가 그 숫자다. */
 .sf-kpi {
-  background: var(--sf-surface); border: 1px solid var(--sf-line);
+  background: var(--sf-surface); border: 1.5px solid var(--sf-line);
   border-radius: var(--r-md);
   padding: 16px 18px 15px; display: flex; flex-direction: column; gap: 7px;
   min-width: 0;
@@ -515,12 +521,12 @@
   font: inherit; font-size: var(--t-sm); font-weight: var(--ui-w-sb); cursor: pointer;
   padding: 0 18px; height: 40px; border-radius: var(--r-sm);
   text-decoration: none; white-space: nowrap;
-  border: 1px solid var(--sf-ink); background: var(--sf-ink); color: #fff;
-  box-shadow: var(--sh-1);
+  border: 1px solid var(--sf-accent); background: var(--sf-accent); color: #fff;
+  box-shadow: 0 2px 8px rgba(47, 107, 255, .22);
   transition: background 120ms ease, border-color 120ms ease,
               box-shadow 120ms ease, transform 120ms ease;
 }
-.sf-btn:hover { background: #16294a; border-color: #16294a; }
+.sf-btn:hover { background: var(--sf-accent-ink); border-color: var(--sf-accent-ink); }
 .sf-btn:active { transform: translateY(1px); }
 .sf-btn.ghost {
   background: var(--sf-surface); color: var(--sf-ink); border-color: var(--sf-line);
@@ -1945,3 +1951,31 @@ body:has(.stgmark) .cm-tabs { bottom: var(--stg-h) }
   .sf-filters .sf-field { flex: 1 1 100%; }
   .sf-issued li span { min-width: 0; }
 }
+
+/* ── 화면 시안 스킨 (2026-10-20) ─────────────────────────────────────
+   `mockups/01~05` 와 같은 모양으로 맞춘다. 남색 띠 위의 글자, 흰 단추의
+   그림자, 숫자 칸의 색 돌림이다. 값은 위의 `--ui-*` 를 그대로 읽는다 */
+.sf-side .sf-brand-name { color: #fff; }
+.sf-side .sf-brand-sub { color: #9fb4d8; }
+.sf-side .sf-nav-group { color: #7d8aa1; }
+.sf-side .sf-who-n { color: #fff; }
+.sf-side .sf-who-r { color: #9fb4d8; }
+.sf-side .sf-who-av { background: rgba(255, 255, 255, .12); color: #fff; }
+.sf-side a.sf-who:hover, .sf-side .sf-who:hover { background: rgba(255, 255, 255, .06); }
+.sf-side :focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+.sf-btn.ghost, .sf-btn.quiet { box-shadow: none; }
+
+/* 숫자 칸 넷이 한 줄로 서면 파랑 · 초록 · 보라 · 주황 순서로 색을 입힌다
+   (시안의 권역 카드). 숫자 글자도 그 색이다 */
+.sf-grid > .sf-kpi:nth-child(4n+1) { border-color: #2f6bff; background: #eaf0ff; }
+.sf-grid > .sf-kpi:nth-child(4n+2) { border-color: #12a27e; background: #e6f6f1; }
+.sf-grid > .sf-kpi:nth-child(4n+3) { border-color: #7b5cf0; background: #f0ecfe; }
+.sf-grid > .sf-kpi:nth-child(4n+4) { border-color: #f59e0b; background: #fef4e2; }
+.sf-grid > .sf-kpi:nth-child(4n+1) .sf-kpi-v { color: #1f4fd1; }
+.sf-grid > .sf-kpi:nth-child(4n+2) .sf-kpi-v { color: #0b7a5e; }
+.sf-grid > .sf-kpi:nth-child(4n+3) .sf-kpi-v { color: #5b3fd0; }
+.sf-grid > .sf-kpi:nth-child(4n+4) .sf-kpi-v { color: #b86a00; }
+.sf-grid > .sf-kpi .sf-kpi-l { color: var(--sf-ink-2); }
+
+.sf-top { background: rgba(243, 246, 251, .9); border-bottom-color: transparent; }

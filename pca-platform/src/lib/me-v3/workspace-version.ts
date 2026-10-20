@@ -305,7 +305,14 @@
  * Hero 높이 −21). 화면에 서는 글자가 한 줄도 바뀌지 않아 문장 판본은
  * 그대로다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V43";
+/**
+ * 운영 갈래(2026-10-20). `happy-faraday` 에서 V49 로 올린 화면 시안 변경
+ * (`mockups/01~05`, 파란 M 상표, Pretendard, 주색 #2f6bff, 둥글기 10/14/18,
+ * 남색 띠, 색 타일, 검사 답안 현황, 결과지 흰 카드)만 운영에 먼저 옮겼다.
+ * 그 사이 판본(V44~)은 다른 변경이라 번호를 갈래로 단다. 문항·채점·결과
+ * 모델·문면은 그대로다.
+ */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V43_1";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.

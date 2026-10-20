@@ -11,6 +11,20 @@
    그것을 가리키는 별명이다. 그래서 색을 고치는 자리가 하나다. 사용자 정의
    속성은 쓰는 순간에 풀리므로, 가리키는 쪽이 먼저 실려도 상관없다.
    ============================================================ */
+/* **Pretendard 를 내려보낸다**(화면 시안 2026-10-20). 전에는 이름만 적고
+   파일을 보내지 않아서, 그 글꼴이 깔리지 않은 기기(대부분의 윈도와
+   안드로이드)에서는 맑은 고딕이나 시스템 글꼴로 섰고 시안과 다른 제품으로
+   읽혔다. 가변 글꼴 한 벌(굵기 45~920)을 저장소 안에서 내려보낸다.
+   외부 CDN 을 쓰지 않는다. 라이선스는 같은 폴더의 `LICENSE.txt`(SIL OFL 1.1) */
+@font-face {
+  font-family: "Pretendard";
+  src: url("/fonts/pretendard/PretendardVariable.woff2") format("woff2-variations"),
+       url("/fonts/pretendard/PretendardVariable.woff2") format("woff2");
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --field: var(--sf-bg);        /* 페이지 바탕 */
   --paper: var(--sf-surface);   /* 카드·시트 */
@@ -59,7 +73,7 @@ body {
                "Noto Sans KR", system-ui, -apple-system, sans-serif;
   font-size: var(--t-body);
   line-height: 1.6;
-  letter-spacing: -.004em;
+  letter-spacing: -.01em;
   font-variant-numeric: tabular-nums;
   min-height: 100vh;
   /* **한국어는 낱말 가운데서 끊지 않는다.** 기본값으로 두면 '커리 / 어
