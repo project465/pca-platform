@@ -45,7 +45,7 @@ const H_DAYS: Record<string, [string, string, string]> = {
   NEXT: ["90일", "31 ~ 90일", "6~10주 · 다음 과제나 팀 프로젝트"],
   LATER: ["180일", "91 ~ 180일", "한 학기 · 캡스톤이나 현장실습"],
 };
-const LEVEL = { NONE: "입문 — 해 본 적 없음에서 시작", ONCE_OR_TWICE: "기초 — 1~2회 해 본 것을 끝까지", SEVERAL: "심화 — 여러 번 해 본 것을 남길 결과물로" } as const;
+const LEVEL = { NONE: "입문 · 해 본 적 없음에서 시작", ONCE_OR_TWICE: "기초 · 1~2회 해 본 것을 끝까지", SEVERAL: "심화 · 여러 번 해 본 것을 남길 결과물로" } as const;
 
 export function buildWorkbook(
   m: ResultModel, core: string, opts: { roles: string[]; course: { name: string; topics: string[] } | null },
@@ -64,8 +64,8 @@ export function buildWorkbook(
     const [, , length] = H_DAYS[a.horizon] ?? H_DAYS.NEXT;
     return {
       domain: nm(a.domain), horizon: (H_DAYS[a.horizon] ?? H_DAYS.NEXT)[0],
-      title: `${nm(a.domain)} — ${w?.decide ? `${withJosa(w.decide, "을를")} 직접 정하는 과제` : "작은 과제 하나를 끝까지"}`,
-      length, level: d?.experience ? LEVEL[d.experience] : "수준 답 없음 — 짧은 과제부터",
+      title: `${nm(a.domain)}: ${w?.decide ? `${withJosa(w.decide, "을를")} 직접 정하는 과제` : "작은 과제 하나를 끝까지"}`,
+      length, level: d?.experience ? LEVEL[d.experience] : "수준 답 없음 · 짧은 과제부터",
       decide: w?.decide ?? "", method: w?.method ?? "", outputs: a.material.artifacts.slice(0, 3),
       verify: a.material.verify_targets.slice(0, 3), onFail: w?.on_fail ?? "",
       why: t.do,
@@ -98,11 +98,11 @@ export function buildWorkbook(
     return {
       domain: nm(d.code),
       evidence: pick ? `“${pick}”` : "(고른 근거 문구 없음)",
-      competence: `${nm(d.code)} 과제에서 ${conf.slice(0, 2).map((a) => `${AXIS_DID_KO[a]} 경험`).join("과 ")}이 있습니다.`,
+      competence: `${nm(d.code)} 과제에서 ${conf.slice(0, 2).map((a) => `${AXIS_DID_KO[a]} 경험`).join("과 ")}이 있어요.`,
       forRole: role0
-        ? `${role0}에 지원한다면: “[${nm(d.code)} 과제 이름]에서 ${withJosa(conf.map((a) => AXIS_KO[a]).slice(0, 2).join("과 "), "을를")} 맡아 [결과물]을 만들었고, [무엇]과 견주어 [수치·결과]를 확인했습니다.”`
-        : `“[${nm(d.code)} 과제 이름]에서 ${withJosa(conf.map((a) => AXIS_KO[a]).slice(0, 2).join("과 "), "을를")} 맡아 [결과물]을 만들었습니다.”`,
-      ask: st.interview, answerShape: ["상황 — 어떤 과제였나", "판단 — 무엇을 직접 정했나", "근거 — 무엇과 견줬나", "결과 — 무엇이 남았나(수치는 본인이)"],
+        ? `${role0}에 지원한다면: “[${nm(d.code)} 과제 이름]에서 ${withJosa(conf.map((a) => AXIS_KO[a]).slice(0, 2).join("과 "), "을를")} 맡아 [결과물]을 만들었고, [무엇]과 견주어 [수치·결과]를 확인했어요.”`
+        : `“[${nm(d.code)} 과제 이름]에서 ${withJosa(conf.map((a) => AXIS_KO[a]).slice(0, 2).join("과 "), "을를")} 맡아 [결과물]을 만들었어요.”`,
+      ask: st.interview, answerShape: ["상황: 어떤 과제였나", "판단: 무엇을 직접 정했나", "근거: 무엇과 견줬나", "결과: 무엇이 남았나(수치는 본인이)"],
       more: d.verifications.length ? "결과 수치와 날짜를 직접 적어 두기" : "무엇과 견줘 확인했는지 하나 확보하기",
     };
   });
@@ -113,7 +113,7 @@ export function buildWorkbook(
     questions.push({ q: `${nm(d.code)} 과제에서 ${askOf(a)}?`, from: "확인된 판단", need: "이미 고른 근거로 답할 수 있음" });
   }
   for (const g of m.gaps.slice(0, 4)) if (g.axis) {
-    questions.push({ q: `${nm(g.domain)}에서 ${askOf(g.axis)}?`, from: "빈자리", need: `아직 답할 근거 없음 — ${AXIS_KO[g.axis]} 경험 하나 확보` });
+    questions.push({ q: `${nm(g.domain)}에서 ${askOf(g.axis)}?`, from: "빈자리", need: `아직 답할 근거 없음 · ${AXIS_KO[g.axis]} 경험 하나 확보` });
   }
 
   /* 30/90/180 */

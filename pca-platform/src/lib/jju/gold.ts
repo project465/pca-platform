@@ -164,10 +164,10 @@ export function buildGold(x: JjuReportInput & { attemptId: string; submitted: st
       code, name: roleName(core, code), from: m.targets.roles.includes(code) ? "SELF" : "READ",
       centers: cs.map((c) => ({ name: nm(c.td), hit: confirmedTds.includes(c.td), state: ZONE_KO[byCode.get(c.td)?.zone ?? "NOT_EXPLORED"] ?? "" })),
       work, watched: watchedAxes.map((a) => ({ axis: a, hit: hitAxis(a) })),
-      condition: !cs.length ? "그 Core 관계표에 이 직무의 중심 영역이 없습니다."
-        : hits.length === 0 ? `중심 영역 ${cs.length}곳에 확인된 판단이 아직 없습니다. 관심만으로 이 직무를 잇지 않습니다 — 먼저 ${nm(cs[0].td)}에서 경험 하나가 필요합니다.`
-        : miss.length ? `중심 영역 ${cs.length}곳 가운데 ${hits.length}곳에 확인된 판단이 있습니다. 이 자리가 보는 판단 가운데 ${withJosa(miss.slice(0, 2).map((a) => AXIS_KO[a]).join(" · "), "이가")} 아직 비어 있어 그것을 채우는 조건으로 봅니다.`
-        : `중심 영역 ${hits.length}/${cs.length}곳에 확인된 판단이 있고 이 자리가 보는 판단이 모두 한 번 이상 확인됐습니다. 지원 가능성이나 합격을 뜻하지 않습니다.`,
+      condition: !cs.length ? "그 Core 관계표에 이 직무의 중심 영역이 없어요."
+        : hits.length === 0 ? `중심 영역 ${cs.length}곳에 확인된 판단이 아직 없어요. 관심만으로 이 직무를 잇지 않아요 — 먼저 ${nm(cs[0].td)}에서 경험 하나가 필요합니다.`
+        : miss.length ? `중심 영역 ${cs.length}곳 가운데 ${hits.length}곳에 확인된 판단이 있어요. 이 자리가 보는 판단 가운데 ${withJosa(miss.slice(0, 2).map((a) => AXIS_KO[a]).join(" · "), "이가")} 아직 비어 있어 그것을 채우는 조건으로 봅니다.`
+        : `중심 영역 ${hits.length}/${cs.length}곳에 확인된 판단이 있고 이 자리가 보는 판단이 모두 한 번 이상 확인됐어요. 지원 가능성이나 합격을 뜻하지 않아요.`,
     };
   });
   const indCodes = [...new Set([...m.targets.industries,
@@ -200,14 +200,14 @@ export function buildGold(x: JjuReportInput & { attemptId: string; submitted: st
   const tried = m.domains.filter((d) => d.experience && d.experience !== "NONE");
   const role0 = roles.find((r) => r.centers.some((c) => c.hit)) ?? roles[0];
   const brief: GoldDoc["brief"] = [
-    { k: "지금 상태", v: `${headlineBadgeKo(m)} — ${h.lead || h.title}`, layer: "JUDGED" },
+    { k: "지금 상태", v: `${headlineBadgeKo(m)}. ${h.lead || h.title}`, layer: "JUDGED" },
     evidenced.length
-      ? { k: "강점", v: `${strengthKo(evidenced.slice(0, 2).map((d) => ({ name: nm(d.code), did: [...d.owned, ...d.confirmed].filter((a, i, s) => s.indexOf(a) === i).slice(0, 2).map((a) => AXIS_DID_KO[a]) })))}이 판정으로 확인됐습니다.`, layer: "JUDGED" }
-      : { k: "강점", v: tried.length ? `판정으로 확인된 강점은 아직 없습니다. ${withJosa(tried.slice(0, 3).map((d) => nm(d.code)).join(" · "), "을를")} 해 본 적이 있다고 답했습니다.` : "판정으로 확인된 강점도, 해 본 적이 있다고 답한 영역도 아직 없습니다.", layer: tried.length ? "SELF" : "JUDGED" },
-    { k: "가장 중요한 빈자리", v: top ? `${nm(top.domain)} — ${gapLine(gapKo(top, "").title.replace(/^\s*·\s*/, ""), gapKo(top, "").why)}` : "결과 모델이 적은 빈자리가 없습니다.", layer: "JUDGED" },
-    { k: "먼저 볼 직무", v: role0 ? `${role0.name} — ${role0.condition}` : "고른 직무도, 판정에서 이어진 직무도 아직 없습니다.", layer: "READ",
+      ? { k: "강점", v: `${strengthKo(evidenced.slice(0, 2).map((d) => ({ name: nm(d.code), did: [...d.owned, ...d.confirmed].filter((a, i, s) => s.indexOf(a) === i).slice(0, 2).map((a) => AXIS_DID_KO[a]) })))}이 판정으로 확인됐어요.`, layer: "JUDGED" }
+      : { k: "강점", v: tried.length ? `판정으로 확인된 강점은 아직 없어요. ${withJosa(tried.slice(0, 3).map((d) => nm(d.code)).join(" · "), "을를")} 해 본 적이 있다고 답했어요.` : "판정으로 확인된 강점도, 해 본 적이 있다고 답한 영역도 아직 없어요.", layer: tried.length ? "SELF" : "JUDGED" },
+    { k: "가장 중요한 빈자리", v: top ? `${nm(top.domain)}: ${gapLine(gapKo(top, "").title.replace(/^\s*·\s*/, ""), gapKo(top, "").why)}` : "결과 모델이 적은 빈자리가 없어요.", layer: "JUDGED" },
+    { k: "먼저 볼 직무", v: role0 ? `${role0.name}: ${role0.condition}` : "고른 직무도, 판정에서 이어진 직무도 아직 없어요.", layer: "READ",
       note: role0?.from === "SELF" ? "직무는 학생이 고른 것(자기보고) · 문장은 관계표를 대 본 해석" : "확인된 판단에서 관계표로 이은 해석" },
-    { k: "다음 행동", v: topAct ? actionKo(topAct, topAct.domain ? nm(topAct.domain) : "", m.stage).do : "결과 모델이 낸 할 일이 없습니다.", layer: "ADVICE" },
+    { k: "다음 행동", v: topAct ? actionKo(topAct, topAct.domain ? nm(topAct.domain) : "", m.stage).do : "결과 모델이 낸 할 일이 없어요.", layer: "ADVICE" },
   ];
   void strongest;
 
@@ -270,10 +270,10 @@ export function buildGold(x: JjuReportInput & { attemptId: string; submitted: st
     ai, notMeasured, roles, industries, region,
     gaps: [...gb.values()].slice(0, 5).map((g) => ({ ...g, layer: "JUDGED" as Layer })),
     constraints: [
-      "적합도 · 합격 가능성 · 순위 · 백분위를 만들지 않습니다. 규준이 없는 검사입니다.",
-      "관심만으로 직무를 잇지 않습니다. 직무는 학생이 고른 것과 판정에서 관계표로 이은 것만 적습니다.",
-      "기업을 추천하지 않습니다. 지역 기업·채용 자료는 아직 받지 않았습니다.",
-      ...(x.mode !== "LIVE" ? ["이 검사는 전공자 검수 전이라 시연 서버에서만 열었습니다. 이 종이를 학생 진단이나 사업 성과로 쓰지 않습니다."] : []),
+      "적합도 · 합격 가능성 · 순위 · 백분위를 만들지 않아요. 규준이 없는 검사예요.",
+      "관심만으로 직무를 잇지 않아요. 직무는 학생이 고른 것과 판정에서 관계표로 이은 것만 적어요.",
+      "기업을 추천하지 않아요. 지역 기업·채용 자료는 아직 받지 않았어요.",
+      ...(x.mode !== "LIVE" ? ["이 검사는 전공자 검수 전이라 시연 서버에서만 열었어요. 이 종이를 학생 진단이나 사업 성과로 쓰지 않아요."] : []),
     ],
     quality: RQ_KO[m.response_quality.flag] ?? "다시 볼 것이 있음",
     sources: [...(x.program?.sources ?? []).map((s) => ({ id: s.id, label: s.id, url: s.url })),

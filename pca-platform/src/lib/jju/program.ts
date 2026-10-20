@@ -53,7 +53,13 @@ export type OfficialProgram = {
   verification: string;
   verification_note: string;
   sources: { id: string; kind: string; title: string; url: string }[];
-  facts: { id: string; text: string; source: string; status: FactStatus; caution?: string }[];
+  facts: {
+    id: string; text: string; source: string; status: FactStatus; caution?: string;
+    /** 학생 화면에 서는 말(해요체). 없으면 `text` */
+    say?: string;
+    /** 학생 화면에 바로 붙는 한 줄. 검수 기록(`caution`)과 다르다 */
+    note?: string;
+  }[];
   courses: { code: string; name: string; topics: string[]; source: string; status: FactStatus }[];
 };
 

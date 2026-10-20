@@ -10,9 +10,9 @@ import { BRAND } from "@/lib/surface-text";
 import { Shell, PageHead, Section } from "@/components/sf/shell";
 import { Empty, Kpi } from "@/components/sf/parts";
 import {
-  cohortsOf, demoServer, JJU_CODE, jjuUniversity, MODE_KO, officialProgram, tracksOf,
+  cohortsOf, demoServer, FACT_STATUS_KO, JJU_CODE, jjuUniversity, MODE_KO, officialProgram, tracksOf,
 } from "@/lib/jju/program";
-import { DemoRibbon, ModeChip, OfficialFacts } from "../parts";
+import { DemoRibbon, OfficialFacts } from "../parts";
 
 export const metadata = { title: `사업단 현황 · ${BRAND.campus}` };
 
@@ -53,8 +53,8 @@ export default async function JjuAdmin({
   if (!u || uni !== JJU_CODE) {
     return shell(
       <Section>
-        <Empty icon="group" title="전주대학교 사업단 계정이 아닙니다"
-          body="이 화면은 전주대학교 기관에 연결된 담당자만 봅니다." />
+        <Empty icon="group" title="전주대학교 사업단 계정이 아니에요"
+          body="이 화면은 전주대학교 담당자 계정으로만 볼 수 있어요." />
       </Section>,
     );
   }
@@ -70,13 +70,11 @@ export default async function JjuAdmin({
   const demoQs = withDemo ? "?demo=1" : "";
 
   return shell(
-    <>
+    <div className="jju-adm">
       {demoServer() ? <div className="jju-admin-ribbon"><DemoRibbon /></div> : null}
       <PageHead
-        eyebrow={`전주대학교 인공지능학과 × ${program?.name ?? "AI 부트캠프"}`}
-        title="학과·사업단 현황"
-        sub={"인공지능학과와 부트캠프 과정별 학생과 검사 현황입니다. "
-          + `응시 집계는 ${MIN_CELL}명이 안 되는 칸에 숫자를 내지 않습니다.`}
+        title="과정별 현황"
+        sub="인공지능학과와 부트캠프 과정에서 몇 명이 검사했는지 볼 수 있어요."
         actions={
           <div className="jju-links">
             <Link className="sf-btn" href={`/org/v3/students${demoQs}`}>학생 명단·계정 발급</Link>
@@ -85,27 +83,26 @@ export default async function JjuAdmin({
         }
       />
       {withDemo ? (
-        <p className="sf-meta">시연·검사 계정을 섞어 보고 있습니다. 실제 운영 수가 아닙니다.</p>
+        <p className="sf-meta">시연·검사 계정까지 함께 보고 있어요. 실제 운영 숫자가 아니에요.</p>
       ) : null}
 
       <div className="sf-grid sf-g4">
-        <Kpi label="발급한 학생" value={all.all} unit="명" icon="users" />
-        <Kpi label="응시 시작" value={v3.started} unit="명" />
+        <Kpi label="계정 받은 학생" value={all.all} unit="명" icon="users" />
+        <Kpi label="검사 시작" value={v3.started} unit="명" />
         <Kpi label="결과 받음" value={v3.scored} unit="명"
-          note={v3.completion === null ? "아직 시작한 학생이 없습니다" : undefined} />
+          note={v3.completion === null ? "아직 시작한 학생이 없어요" : undefined} />
         <Kpi label="완료율" value={v3.completion === null ? "—" : `${Math.round(v3.completion)}`}
-          unit={v3.completion === null ? undefined : "%"} accent
-          note="바닥은 명단과 학교 진입을 합친 대상자입니다" />
+          unit={v3.completion === null ? undefined : "%"} accent />
       </div>
 
-      <Section title="학과 · 과정별 현황"
-        note="한 학생은 한 자리(학과 또는 과정)로 적힙니다. 발급·진행·완료는 명단 화면과 같은 수이고, 시작은 응시 집계 칸입니다">
+      <Section title="학과·과정별">
         <div className="jju-scroll">
           <table className="jju-matrix">
             <thead>
               <tr>
-                <th>구분</th><th>학과·과정</th><th>재는 검사</th><th>열림</th>
-                <th>발급</th><th>미응시</th><th>진행 중</th><th>완료</th><th>응시 시작</th>
+                <th>학과·과정</th>
+                <th className="is-num">계정</th><th className="is-num">아직 안 함</th>
+                <th className="is-num">하는 중</th><th className="is-num">완료</th><th className="is-num">검사 시작</th>
               </tr>
             </thead>
             <tbody>
@@ -114,18 +111,18 @@ export default async function JjuAdmin({
                 const s = started.get(t.code);
                 return (
                   <tr key={t.code}>
-                    <td>{t.kind === "DEPARTMENT" ? `학과 · ${t.field.name}` : "부트캠프 과정"}</td>
-                    <td>{t.short}</td>
-                    <td>{t.core_name ?? "검사 미정"}{t.spec_name ? ` · ${t.spec_name}` : ""}</td>
-                    <td><ModeChip mode={t.mode} /></td>
+                    <td>
+                      <strong>{t.short}</strong>
+                      <small>{t.kind === "DEPARTMENT" ? t.field.name : "부트캠프 과정"}
+                        {t.mode === "PREPARING" ? " · 준비 중" : ""}</small>
+                    </td>
                     <td className="is-num">{c.all}</td>
                     <td className="is-num">{c.none}</td>
                     <td className="is-num">{c.in_progress}</td>
                     <td className="is-num">{c.scored}</td>
                     <td className="is-num">
                       {/* 칸이 없는 것은 0 이 아니다: 집계가 다섯이 안 되는 칸을 아예 만들지
-                          않으므로, 이 자리에 진행·완료가 있는데 0 을 적으면 바로 옆 칸과
-                          서로 어긋난 말을 한다(R5 실제 화면에서 `완료 4 · 응시 시작 0`) */}
+                          않으므로, 진행·완료가 있는데 0 을 적으면 바로 옆 칸과 어긋난다 */}
                       {typeof s === "number" ? s
                         : <span className="jju-hidden">{s === null || c.in_progress + c.scored > 0 ? `${MIN_CELL}명 미만` : "0"}</span>}
                     </td>
@@ -135,53 +132,52 @@ export default async function JjuAdmin({
             </tbody>
           </table>
         </div>
+        <p className="jju-note">
+          {MIN_CELL}명이 안 되는 칸은 숫자를 가려요. 한 학생은 학과나 과정 가운데 한 곳으로만 세요.
+          학생 한 명 한 명의 답과 결과는 이 화면에서 볼 수 없어요.
+        </p>
       </Section>
 
       {program ? (
-        <Section title="사업 개요 · 공식 교육과정"
-          note="출처가 붙은 사실만 적습니다. 사업비는 사업단 전체 금액이며 CareerMatri 계약 예산이 아닙니다">
+        <Section title="부트캠프 소개">
           <OfficialFacts p={program} />
         </Section>
       ) : null}
 
-      <Section title="등록 근거">
-        <ul className="jju-flow">
+      <details className="jju-more">
+        <summary>자료 출처와 확인 상태</summary>
+        <ul className="jju-kv">
           {cohorts.map((c) => (
             <li key={c.catalog_code}>
-              <strong>{c.label}</strong>
-              <span>{c.verification === "VERIFIED" ? "원문 대조" : "원문 대조 전"}</span>
-              <span>{c.verification_note ?? ""}</span>
+              <span>{c.label}</span>
+              <span>{c.verification === "VERIFIED" ? "학교 원문과 대조했어요" : "학교 원문과 대조하기 전이에요"}</span>
+            </li>
+          ))}
+          {program?.facts.map((f) => (
+            <li key={f.id}>
+              <span>{f.say ?? f.text}</span>
+              <span>{FACT_STATUS_KO[f.status]}</span>
             </li>
           ))}
         </ul>
-      </Section>
+        <p className="jju-note">
+          사업 내용은 사업단에서 전해 준 학교 뉴스·공지를 옮겼어요. 원문을 직접 대조하면 표시를 바꿔요.
+        </p>
+      </details>
 
-      <Section title="기능 상태: 실제 동작과 시연 구분">
-        <ul className="jju-flow">
-          <li><strong>검사 응시·저장·이어하기</strong><span className="jju-ok">실제 동작</span>
-            <span>공통 검사 엔진 그대로입니다. 문항과 채점을 바꾸지 않았습니다.</span></li>
-          <li><strong>결과 화면</strong><span className="jju-ok">실제 동작</span>
-            <span>제출 때 굳힌 결과를 그대로 읽습니다.</span></li>
-          <li><strong>개인 PDF</strong><span className="jju-ok">실제 동작</span>
-            <span>웹 결과를 그 자리에서 PDF 로 뽑습니다. 미리 만들어 두지 않습니다.</span></li>
-          <li><strong>경험·프로젝트 기록</strong><span className="jju-ok">실제 동작</span>
-            <span>적은 경험이 현재 상태에 더해지고, 검사 당시 결과는 바뀌지 않습니다.</span></li>
-          <li><strong>{MODE_KO.DEMO} 자리의 결과</strong><span className="jju-demo">시연</span>
-            <span>컴퓨터·소프트웨어 검사는 전공자 검토 전입니다. 결과를 학생 진단이나 사업 성과로 쓰지 않습니다.</span></li>
-          <li><strong>학과·과정 등록</strong><span className="jju-demo">원문 대조 전</span>
-            <span>인공지능학과는 학교 공개 페이지의 검색 사본, 과정은 사업 공지(사업주 확인)로 올렸습니다.</span></li>
-          <li><strong>학과 학생 × 과정 참여 겹침</strong><span className="jju-no">한 자리만</span>
-            <span>한 학생을 학과와 과정에 함께 적는 칸이 없습니다. 공통 계약 변경 요청(C20) 전까지 한 자리로 적습니다.</span></li>
-          <li><strong>사업 선정·기간·운영 방식</strong><span className="jju-ok">공식 출처</span>
-            <span>공식 페이지 두 곳을 출처로 적었습니다. 원문 직접 대조는 남아 있습니다.</span></li>
-          <li><strong>개인 결과·PDF 담당자 열람</strong><span className="jju-no">막혀 있음</span>
-            <span>계약 조항과 본인 동의가 모두 있을 때만 열리는 공통 규칙입니다. 지금은 열리지 않습니다.</span></li>
-          <li><strong>교육 전후 역량 변화</strong><span className="jju-no">표시하지 않음</span>
-            <span>비교할 수 있는 평가 체계가 검증되기 전이라 교육 효과로 보여 주지 않습니다.</span></li>
-          <li><strong>전북권 기업·기관 연계</strong><span className="jju-no">자료 없음</span>
-            <span>출처와 사용 권리를 확인한 자료가 아직 없습니다.</span></li>
+      <details className="jju-more">
+        <summary>지금 되는 것과 아직 안 되는 것</summary>
+        <ul className="jju-kv">
+          <li><span>검사 응시, 저장, 이어하기</span><span className="is-ok">돼요</span></li>
+          <li><span>결과 화면과 개인 PDF</span><span className="is-ok">돼요</span></li>
+          <li><span>경험·프로젝트 기록</span><span className="is-ok">돼요</span></li>
+          <li><span>{MODE_KO.DEMO} 검사의 결과</span><span>전공자 검토 전이라 학생 진단이나 사업 성과로 쓰지 않아요</span></li>
+          <li><span>학과와 과정을 한 학생에게 함께 기록</span><span>아직 한 곳만 기록해요</span></li>
+          <li><span>담당자의 개인 결과 열람</span><span>계약과 본인 동의가 있어야 열려요</span></li>
+          <li><span>교육 전후 역량 변화</span><span>비교할 평가 기준이 검증되기 전이라 보여 주지 않아요</span></li>
+          <li><span>전북 지역 기업·기관 연계</span><span>쓸 수 있는 자료를 아직 받지 못했어요</span></li>
         </ul>
-      </Section>
-    </>,
+      </details>
+    </div>,
   );
 }

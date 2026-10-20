@@ -149,6 +149,24 @@ async function main(): Promise<void> {
     }
     await d.close(); await m.close();
   }
+  /* 로그인 전 첫 화면과 학과·과정 소개. 학생이 처음 보는 두 쪽이다 */
+  {
+    const g = await ctxOf(browser, DESK);
+    const gm = await mobileOf(browser, g);
+    for (const [cx, tag] of [[g, "desktop"], [gm, "mobile"]] as const) {
+      const q = await cx.newPage();
+      for (const [path, n, what] of [["/jju", "01-home-guest", "전주대 첫 화면(로그인 전)"], ["/jju/fields", "01-fields", "학과와 과정"]] as const) {
+        const r = await q.goto(`${BASE}${path}`, { waitUntil: "networkidle" });
+        ok(`${path} 가 로그인 없이 열린다 (${tag})`, (r?.status() ?? 0) === 200, String(r?.status()));
+        const body = await q.locator("body").innerText();
+        ok(`${path} 에 검수용 내부 기록이 서지 않는다 (${tag})`, !/fact-register|R3 검색|checked_on|verification/.test(body));
+        await shoot(q, `${n}.${tag}`, what);
+      }
+      await q.close();
+    }
+    await gm.close(); await g.close();
+  }
+
   let desk = await ctxOf(browser, DESK);
   let p = await login(desk, LOGIN, pwD);
   ok("학생 D 가 실제 Auth.js 로 로그인한다", !new URL(p.url()).pathname.startsWith("/login"), new URL(p.url()).pathname);
@@ -297,7 +315,8 @@ async function main(): Promise<void> {
     /* 다섯이 안 되는 칸을 0 으로 적으면 옆의 완료 수와 어긋난다 */
     const rows = await q.goto(`${BASE}/jju/admin`, { waitUntil: "networkidle" }).then(() =>
       q.locator(".jju-matrix tbody tr").evaluateAll((trs) => trs.map((tr) => [...tr.querySelectorAll("td")].map((td) => (td.textContent ?? "").trim()))));
-    const odd = rows.filter((r) => r.length >= 9 && Number(r[7]) > 0 && r[8] === "0");
+    /* 끝 두 칸이 완료 · 검사 시작이다(칸 수가 바뀌어도 자리는 끝에서 센다) */
+    const odd = rows.filter((r) => r.length >= 6 && Number(r.at(-2)) > 0 && r.at(-1) === "0");
     ok("사업단 표에서 완료가 있는 트랙의 응시 시작이 0 으로 서지 않는다", rows.length > 0 && odd.length === 0, `${rows.length}줄 · 어긋남 ${odd.length}`);
     const mob = await mobileOf(browser, a); const mq = await mob.newPage();
     await mq.goto(`${BASE}/jju/admin`, { waitUntil: "networkidle" });

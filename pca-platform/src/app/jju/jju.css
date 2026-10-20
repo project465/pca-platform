@@ -1,131 +1,164 @@
 /*
- * 전주대학교 부트캠프 화면만 쓰는 이름.
+ * 전주대학교 화면만 쓰는 이름. 전부 `jju-` 로 시작한다(이 저장소에서 class
+ * 이름이 겹쳐 난 탈이 열 번이 넘는다).
  *
- * **이름을 전부 `jju-` 로 시작한다.** 이 저장소에서 class 이름이 겹쳐 난
- * 탈이 열 번이 넘는다(`.btn` · `.lg` · `empty` · `qs-scene` …). 학교 화면의
- * 생김새는 `campus.css` 와 `surface.css` 를 그대로 쓰고, 여기 두는 것은
- * 시연 표시 · 학과·과정 상태 · 사업단 표처럼 이 화면에만 있는 자리다.
+ * **생김새는 토스·카카오 쪽이다.** 옅은 회색 바탕 위에 테 없는 흰 카드,
+ * 한 화면에 큰 글 하나, 파랑 하나, 나머지는 회색 글과 줄이다. 단계 카드 ·
+ * 색이 번지는 띠 · 상태 알약을 두지 않는다. 그 셋이 겹치면 화면이 할 일보다
+ * 만든 티를 먼저 낸다.
  *
- * 색은 토큰만 읽는다. 학교 쪽은 `--pcu-*`, 담당자 쪽은 `--ui-*` 다.
+ * 색은 아래 토큰만 읽는다. 사업단 화면(`/jju/admin`)은 공통 `sf` 틀 안에 서므로
+ * 표와 펼침에만 이 토큰을 쓴다.
  */
 
+.jju-app, .jju-adm {
+  --j-bg: #f2f4f6;
+  --j-card: #ffffff;
+  --j-ink: #191f28;
+  --j-ink-2: #4e5968;
+  --j-ink-3: #8b95a1;
+  --j-line: #e5e8eb;
+  --j-blue: #3182f6;
+  --j-blue-d: #1b64da;
+  --j-blue-s: #e8f3ff;
+  --j-r: 20px;
+}
+
+.jju-app {
+  min-height: 100vh; background: var(--j-bg); color: var(--j-ink);
+  font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+    "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased; word-break: keep-all;
+}
+.jju-app a { color: inherit; text-decoration: none; }
+
+/* ── 머리 ─────────────────────────────────────────────── */
+.jju-top { position: sticky; top: 0; z-index: 10; background: rgba(255, 255, 255, .96); border-bottom: 1px solid var(--j-line); }
+.jju-top-in { max-width: 720px; margin: 0 auto; padding: 0 20px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+.jju-top-id { display: inline-flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 700; letter-spacing: -.01em; }
+.jju-top-r a { font-size: 15px; font-weight: 600; color: var(--j-ink-2); padding: 8px 4px; }
+
+.jju-main { max-width: 720px; margin: 0 auto; padding: 20px 20px 40px; }
+.jju-foot { max-width: 720px; margin: 0 auto; padding: 8px 20px 40px; font-size: 13px; color: var(--j-ink-3); }
+
 .jju-ribbon {
-  margin: 0 0 16px; padding: 10px 14px;
-  border: 1px solid #f2d39a; border-radius: 10px;
-  background: #fff8ea; color: #5b4310;
-  font-size: 14px; line-height: 1.55;
-}
-.jju-ribbon b { margin-right: 8px; font-weight: 700; }
-
-.jju-mode {
-  flex: none; display: inline-flex; align-items: center;
-  padding: 3px 9px; border-radius: 999px;
-  font-size: 12.5px; font-weight: 700; white-space: nowrap;
-  border: 1px solid transparent;
-}
-.jju-mode.is-live { background: #e8f6ee; color: #12623a; border-color: #bfe6cf; }
-.jju-mode.is-demo { background: #fff3df; color: #7a4b00; border-color: #f2d39a; }
-.jju-mode.is-preparing { background: #eef1f6; color: #4a5568; border-color: #dde3ec; }
-
-.jju-staff {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px;
-  padding: 18px 20px; border-radius: var(--pcu-r, 14px);
-  background: var(--pcu-surface, #fff); border: 1px solid var(--pcu-line, #e1e7f0);
-}
-.jju-staff p { flex: 1 1 320px; margin: 0; color: var(--pcu-ink-2, #3d4d66); line-height: 1.6; }
-
-/* ── 교육 분야 ─────────────────────────────────────────────── */
-
-.jju-field { margin-top: 30px; }
-.jju-field h2 { margin: 0 0 12px; font-size: var(--pcu-t-sect, 19px); }
-.jju-track {
-  scroll-margin-top: 80px;
-  padding: 18px 20px; margin-bottom: 12px;
-  border-radius: var(--pcu-r, 14px);
-  background: var(--pcu-surface, #fff); border: 1px solid var(--pcu-line, #e1e7f0);
-}
-.jju-track-h { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
-.jju-track-h h3 { margin: 0; font-size: 17px; }
-.jju-track dl { margin: 12px 0 0; display: grid; grid-template-columns: 8.5em 1fr; gap: 6px 14px; }
-.jju-track dt { color: var(--pcu-ink-3, #5f6e86); font-size: 14px; }
-.jju-track dd { margin: 0; color: var(--pcu-ink, #0a1a30); font-size: 14.5px; line-height: 1.55; }
-.jju-track .jju-mode-note { margin: 10px 0 0; color: var(--pcu-ink-3, #5f6e86); font-size: 13.5px; }
-.jju-domains { display: flex; flex-wrap: wrap; gap: 6px; }
-.jju-domains span {
-  padding: 2px 9px; border-radius: 999px; font-size: 13px;
-  background: var(--pcu-surface-2, #f6f8fc); border: 1px solid var(--pcu-line-2, #eef2f8);
+  margin: 0 0 16px; padding: 12px 16px; border-radius: 14px;
+  background: #fff6e5; color: #8a5a00; font-size: 14px; line-height: 1.5;
 }
 
-/* ── 사업단 현황 ────────────────────────────────────────────── */
+/* ── 카드와 단추 ─────────────────────────────────────────── */
+.jju-card { background: var(--j-card); border-radius: var(--j-r); }
+.jju-btn {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 56px; padding: 0 24px; border-radius: 16px;
+  background: var(--j-blue); color: #fff !important;
+  font-size: 17px; font-weight: 700; letter-spacing: -.01em;
+}
+.jju-btn:hover { background: var(--j-blue-d); }
+.jju-btn.is-sub { background: var(--j-blue-s); color: var(--j-blue-d) !important; }
+.jju-btn.is-sub:hover { background: #d6e8ff; }
 
+/* ── 첫 덩이 ────────────────────────────────────────────── */
+.jju-hero { padding: 28px 4px 8px; }
+.jju-hero.is-page { padding-top: 12px; }
+.jju-hero-k { margin: 0 0 10px; font-size: 15px; font-weight: 600; color: var(--j-blue); }
+.jju-hero h1 { margin: 0; font-size: 28px; line-height: 1.38; font-weight: 700; letter-spacing: -.02em; }
+.jju-hero-p { margin: 14px 0 0; font-size: 17px; line-height: 1.6; color: var(--j-ink-2); }
+.jju-hero-acts { display: grid; gap: 10px; margin-top: 28px; }
+.jju-hero-acts.is-end { margin-top: 24px; }
+@media (min-width: 720px) {
+  .jju-hero h1 { font-size: 32px; }
+  .jju-hero-acts { grid-template-columns: max-content max-content; }
+  .jju-hero-acts .jju-btn { min-width: 200px; }
+}
+
+/* ── 내 진행 상태 ───────────────────────────────────────── */
+.jju-me { padding: 24px 24px 12px; margin: 0 0 12px; }
+.jju-me-k { margin: 0; font-size: 14px; font-weight: 600; color: var(--j-ink-3); }
+.jju-me h2 { margin: 6px 0 0; font-size: 22px; line-height: 1.4; font-weight: 700; letter-spacing: -.02em; }
+.jju-me-n { margin: 8px 0 18px; font-size: 15px; line-height: 1.55; color: var(--j-ink-2); }
+.jju-me .jju-btn { margin-bottom: 12px; }
+
+/* ── 절 ─────────────────────────────────────────────────── */
+.jju-sect { margin-top: 36px; }
+.jju-sect h2 { margin: 0 4px 12px; font-size: 20px; line-height: 1.4; font-weight: 700; letter-spacing: -.02em; }
+.jju-note { margin: 12px 4px 0; font-size: 14px; line-height: 1.6; color: var(--j-ink-3); }
+
+/* ── 줄 목록 ────────────────────────────────────────────── */
+.jju-rows { margin: 0; padding: 6px 0; list-style: none; }
+.jju-rows.is-flat { padding: 0; border-top: 1px solid var(--j-line); }
+.jju-rows li > a, .jju-rows li.is-off {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  min-height: 56px; padding: 12px 24px;
+}
+.jju-rows.is-flat li > a { padding: 14px 0; font-size: 16px; font-weight: 500; }
+.jju-rows li > a:hover { background: #f9fafb; }
+.jju-rows.is-flat li > a:hover { background: transparent; color: var(--j-blue-d); }
+.jju-row-t { display: grid; gap: 2px; }
+.jju-row-t strong { font-size: 17px; font-weight: 600; letter-spacing: -.01em; }
+.jju-row-t small { font-size: 14px; color: var(--j-ink-3); }
+.jju-rows li.is-off strong { color: var(--j-ink-3); }
+.jju-chev { flex: none; color: #b0b8c1; }
+
+/* ── 과정 주제 × 검사 ───────────────────────────────────── */
+.jju-cov { margin: 0; padding: 8px 24px; list-style: none; }
+.jju-cov li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 0; font-size: 16px; }
+.jju-cov li + li { border-top: 1px solid #f2f4f6; }
+.jju-cv { font-size: 14px; color: var(--j-ink-3); text-align: right; }
+.jju-cv.is-MEASURED { color: var(--j-blue-d); font-weight: 600; }
+
+/* ── 사업 사실 ─────────────────────────────────────────── */
+.jju-facts { margin: 0; padding: 8px 24px; list-style: none; }
+.jju-facts li { display: grid; gap: 4px; padding: 14px 0; }
+.jju-facts li + li { border-top: 1px solid #f2f4f6; }
+.jju-fact-t { font-size: 16px; line-height: 1.55; }
+.jju-fact-n { font-size: 14px; line-height: 1.5; color: var(--j-ink-3); }
+.jju-src { margin: 0; padding: 0 24px 20px; font-size: 13px; color: var(--j-ink-3); }
+.jju-src a { text-decoration: underline; text-underline-offset: 2px; }
+
+/* ── 학과와 과정 ───────────────────────────────────────── */
+.jju-track { scroll-margin-top: 72px; margin-top: 12px; padding: 24px; }
+.jju-track-k { margin: 0; font-size: 14px; font-weight: 600; color: var(--j-ink-3); }
+.jju-track h2 { margin: 4px 0 0; font-size: 22px; font-weight: 700; letter-spacing: -.02em; }
+.jju-track dl { margin: 18px 0 0; display: grid; grid-template-columns: 5.5em 1fr; gap: 10px 12px; }
+.jju-track dt { font-size: 15px; color: var(--j-ink-3); }
+.jju-track dd { margin: 0; font-size: 15px; line-height: 1.55; color: var(--j-ink); }
+.jju-track-cov { margin-top: 20px; border-top: 1px solid var(--j-line); padding-top: 16px; }
+.jju-track-cov h3 { margin: 0; font-size: 15px; font-weight: 600; color: var(--j-ink-2); }
+.jju-track-cov .jju-cov { padding: 4px 0 0; }
+.jju-track-off { margin: 12px 0 0; font-size: 15px; line-height: 1.55; color: var(--j-ink-3); }
+
+/* ── 사업단 현황 (공통 sf 틀 안) ───────────────────────────── */
 .jju-admin-ribbon { margin-bottom: 18px; }
-.jju-matrix { width: 100%; border-collapse: collapse; font-size: 14px; }
-.jju-matrix th, .jju-matrix td {
-  padding: 10px 12px; text-align: left; vertical-align: top;
-  border-bottom: 1px solid var(--ui-divider, #eef2f8);
-}
-.jju-matrix thead th { color: var(--ui-text-3, #5f6e86); font-weight: 600; font-size: 13px; }
-.jju-matrix td.is-num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.jju-matrix .jju-hidden { color: var(--ui-text-3, #5f6e86); }
+.jju-links { display: flex; flex-wrap: wrap; gap: 8px; }
 .jju-scroll { overflow-x: auto; }
-.jju-flow { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
-.jju-flow li {
-  display: grid; grid-template-columns: 10em 7.5em 1fr; gap: 10px; align-items: baseline;
-  padding: 10px 12px; border-radius: 10px; background: var(--ui-surface-2, #f6f8fc);
-}
-.jju-flow strong { font-size: 14.5px; }
-.jju-flow span { color: var(--ui-text-2, #3d4d66); font-size: 14px; line-height: 1.5; }
-.jju-flow .jju-ok { color: #12623a; font-weight: 700; font-size: 13px; }
-.jju-flow .jju-demo { color: #7a4b00; font-weight: 700; font-size: 13px; }
-.jju-flow .jju-no { color: #4a5568; font-weight: 700; font-size: 13px; }
-.jju-links { display: flex; flex-wrap: wrap; gap: 10px; }
+.jju-matrix { width: 100%; border-collapse: collapse; font-size: 15px; }
+.jju-matrix th, .jju-matrix td { padding: 14px 12px; text-align: left; vertical-align: middle; border-bottom: 1px solid var(--j-line); }
+.jju-matrix thead th { font-size: 13px; font-weight: 600; color: var(--j-ink-3); white-space: nowrap; }
+.jju-matrix td strong { display: block; font-weight: 600; }
+.jju-matrix td small { display: block; margin-top: 2px; font-size: 13px; color: var(--j-ink-3); }
+.jju-matrix .is-num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.jju-matrix .jju-hidden { color: var(--j-ink-3); font-size: 13px; }
+.jju-adm .jju-note { margin: 12px 0 0; }
+.jju-adm .jju-card { border: 1px solid var(--j-line); }
+
+.jju-more { margin-top: 20px; border-top: 1px solid var(--j-line); }
+.jju-more summary { cursor: pointer; padding: 16px 0; font-size: 16px; font-weight: 600; color: var(--j-ink-2); list-style: none; }
+.jju-more summary::-webkit-details-marker { display: none; }
+.jju-more summary::after { content: ""; display: inline-block; width: 7px; height: 7px; margin-left: 10px; border-right: 1.8px solid currentColor; border-bottom: 1.8px solid currentColor; transform: translateY(-3px) rotate(45deg); }
+.jju-more[open] summary::after { transform: translateY(1px) rotate(-135deg); }
+.jju-kv { margin: 0 0 8px; padding: 0; list-style: none; }
+.jju-kv li { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; padding: 12px 0; border-bottom: 1px solid #f2f4f6; font-size: 15px; line-height: 1.5; }
+.jju-kv li span:last-child { color: var(--j-ink-2); }
+.jju-kv .is-ok { color: var(--j-blue-d) !important; font-weight: 600; }
+
+.jju-mode { font-size: 13px; font-weight: 600; color: var(--j-ink-3); white-space: nowrap; }
 
 @media (max-width: 640px) {
   .jju-track dl { grid-template-columns: 1fr; gap: 2px; }
-  .jju-track dd { margin-bottom: 8px; }
-  .jju-flow li { grid-template-columns: 1fr; gap: 2px; }
+  .jju-track dd { margin-bottom: 10px; }
+  .jju-kv li { grid-template-columns: 1fr; gap: 2px; }
+  .jju-rows li > a, .jju-rows li.is-off { padding: 12px 20px; }
+  .jju-cov, .jju-facts { padding-left: 20px; padding-right: 20px; }
+  .jju-src { padding: 0 20px 18px; }
 }
-
-/* 공식 출처가 붙은 사업 사실. 학과·과정 목록(.cm-cmp-row)과 모양을 가른다 */
-.jju-official { display: grid; gap: 14px; }
-.jju-facts { margin: 0; padding: 0; list-style: none; display: grid; gap: 0; border-top: 1px solid var(--ui-line, #dde3ec); }
-.jju-facts li { display: grid; gap: 4px; padding: 12px 0; border-bottom: 1px solid var(--ui-line, #dde3ec); }
-.jju-fact-t { font-size: 15.5px; line-height: 1.5; color: var(--ui-ink, #0f1b2d); }
-.jju-fact-c { font-size: 13.5px; line-height: 1.5; color: #7a4b00; }
-.jju-fact-m { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; font-size: 13px; }
-.jju-fact-m a, .jju-src a { color: var(--ui-text-2, #3d4d66); text-decoration: underline; }
-.jju-fs { padding: 2px 8px; border-radius: 999px; border: 1px solid; font-size: 12.5px; }
-.jju-fs.is-ok { background: #e8f6ee; color: #12623a; border-color: #bfe6cf; }
-.jju-fs.is-partial { background: #fff3df; color: #7a4b00; border-color: #f2d39a; }
-.jju-courses h3 { margin: 0 0 6px; font-size: 15px; }
-.jju-courses p { margin: 0 0 6px; display: grid; gap: 2px; font-size: 14.5px; }
-.jju-courses p span { color: var(--ui-text-2, #3d4d66); }
-.jju-src { margin: 0; font-size: 12.5px; line-height: 1.6; color: var(--ui-text-2, #3d4d66); }
-.jju-src a { margin-right: 10px; }
-.jju-demo-h { display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 999px; background: #fff3df; color: #7a4b00; border: 1px solid #f2d39a; font-size: 12.5px; font-weight: 600; vertical-align: middle; }
-.jju-split { margin: 28px 0 6px; font-size: 20px; }
-
-/* 로그인한 학생의 지금 상태. 홈 맨 위 한 덩이 */
-.jju-me { margin: 0 0 18px; padding: 18px 20px; border: 1px solid var(--ui-line, #dde3ec); border-left: 4px solid #0f2a4a; border-radius: 10px; background: #fff; }
-.jju-me h2 { margin: 6px 0 4px; font-size: 20px; }
-.jju-me-k { margin: 0; display: flex; gap: 8px; align-items: center; font-size: 14px; color: var(--ui-text-2, #3d4d66); }
-.jju-me-n { margin: 0 0 12px; font-size: 14.5px; color: var(--ui-text-2, #3d4d66); }
-.jju-me-acts { display: flex; flex-wrap: wrap; gap: 8px; }
-
-/* 과정 주제 × 검사. 상태는 글자가 먼저고 색은 거든다 */
-.jju-cov td:first-child { font-weight: 600; white-space: nowrap; }
-.jju-cv { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 12.5px; font-weight: 700; border: 1px solid; white-space: nowrap; }
-.jju-cv.is-MEASURED { background: #e8f6ee; color: #12623a; border-color: #bfe6cf; }
-.jju-cv.is-SELF_REPORT { background: #eef3fb; color: #24467a; border-color: #cfdcf0; }
-.jju-cv.is-CURRICULUM { background: #fff3df; color: #7a4b00; border-color: #f2d39a; }
-.jju-cv.is-NOT_MEASURED { background: #eef1f6; color: #4a5568; border-color: #dde3ec; }
-
-/* 누가 쓰나: 학과 학생과 과정 참여자. 같은 크기의 두 칸 */
-.jju-who { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-.jju-who a { display: grid; gap: 8px; padding: 18px 20px; border-radius: var(--pcu-r, 14px); background: var(--pcu-surface, #fff); border: 1px solid var(--pcu-line, #e1e7f0); color: inherit; text-decoration: none; }
-.jju-who a:hover { border-color: var(--pcu-blue, #1f5fbf); }
-.jju-who-k { font-size: 13px; color: var(--pcu-ink-3, #5f6e86); }
-.jju-who strong { font-size: 18px; }
-.jju-who-d { font-size: 14.5px; line-height: 1.55; color: var(--pcu-ink-2, #3d4d66); }
-.jju-who-f { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 13.5px; color: var(--pcu-ink-3, #5f6e86); }
-@media (max-width: 640px) { .jju-who { grid-template-columns: 1fr; } }

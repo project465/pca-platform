@@ -23,8 +23,50 @@ const esc = (s: string) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, 
 const tag = (l: Layer) => `<span class="tg tg-${l}">${LAYER_KO[l]}</span>`;
 const pad2 = (n: number) => String(n).padStart(2, "0");
 
-function opener(no: number, kicker: string, title: string, thesis: string): string {
-  return `<header class="op"><p class="op-k"><b>${pad2(no)}</b><span>${esc(kicker)}</span></p><h2>${esc(title)}</h2>${thesis ? `<p class="op-t">${esc(thesis)}</p>` : ""}</header>`;
+/** 장 머리. 영어 소제목을 두지 않는다: 번호 동그라미 · 제목 · 한 줄 */
+function opener(no: number, _kicker: string, title: string, thesis: string): string {
+  return `<header class="op op-c${no % 4}"><p class="op-n">${pad2(no)}</p><div><h2>${esc(title)}</h2>${thesis ? `<p class="op-t">${esc(thesis)}</p>` : ""}</div></header>`;
+}
+
+/** 표지의 물결. 값을 담지 않는 장식이고, 위·아래 두 벌이 같은 모양을 뒤집어 쓴다 */
+const WAVES = `<path d="M0 0H210C190 8 168 3 150 14C128 27 104 20 84 33C60 48 30 50 0 72Z" fill="#e6f0ff"/>
+<path d="M0 0H160C142 14 120 8 100 22C80 36 52 30 30 44C18 52 8 54 0 56Z" fill="#b7d3fb"/>
+<path d="M0 0H118C104 12 86 10 70 22C52 35 30 30 0 44Z" fill="#6ea4f2"/>
+<path d="M0 0H74C62 10 48 9 36 18C24 27 12 26 0 31Z" fill="#2f6fd6"/>`;
+
+/** 한눈에 보기 칸의 표시. 흰 선 하나로 그린다 */
+const TILE_IC = [
+  `<path d="M5 12.5l4.5 4.5L19 7.5"/>`,
+  `<path d="M6 21V4h11l-2.5 4L17 12H6"/>`,
+  `<path d="M7 3h7l4 4v14H7zM14 3v4h4M10 12h5M10 16h5"/>`,
+  `<path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/>`,
+];
+
+const DONUT_C: Record<string, string> = { OWNED: "#1b64da", CONFIRMED: "#5ea0ff", PARTICIPATED: "#b8d4ff", NOT_OBSERVED: "#e5e8eb" };
+
+/**
+ * 한눈에 보기 — 숫자 칸 넷 · 영역 막대 · 판단 도넛. **값을 새로 만들지 않는다**:
+ * 칸은 `g.numbers`, 막대는 깊게 물은 영역의 확인된 축 수(0~8), 도넛은 그 영역들의
+ * 축 판정 상태를 센 것이다. 깊게 묻지 않은 영역은 막대를 그리지 않는다(0 으로
+ * 읽힌다).
+ */
+function glance(g: GoldDoc): string {
+  const tiles = `<div class="tiles">${g.numbers.map((n, i) => `<div class="tile t${i % 4}"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true">${TILE_IC[i % 4]}</svg></span><b>${esc(n.v)}</b><p>${esc(n.k)}</p><small>${esc(n.sub)}</small></div>`).join("")}</div>`;
+  const rows = g.domains.filter((d) => d.explored).sort((a, b) => b.confirmed - a.confirmed);
+  const bars = rows.length ? `<div class="bars">${rows.map((d) => `<div class="br"><span class="bl">${esc(d.name)}</span><span class="bt"><i style="width:${Math.round((d.confirmed / 8) * 100)}%"></i></span><b>${d.confirmed}<small>/8</small></b></div>`).join("")}</div>`
+    : `<p class="none">이번에는 깊게 물은 영역이 없어 막대를 그리지 않았어요.</p>`;
+  const order = ["OWNED", "CONFIRMED", "PARTICIPATED", "NOT_OBSERVED"];
+  const cnt = order.map((k) => rows.reduce((a, d) => a + d.axes.filter((x) => x.state === k).length, 0));
+  const total = cnt.reduce((a, b) => a + b, 0);
+  let off = 0;
+  const segs = total ? order.map((k, i) => {
+    const len = (cnt[i] / total) * 100; const seg = `<circle r="15.915" cx="21" cy="21" fill="none" stroke="${DONUT_C[k]}" stroke-width="6" stroke-dasharray="${len.toFixed(2)} ${(100 - len).toFixed(2)}" stroke-dashoffset="${(25 - off).toFixed(2)}"/>`;
+    off += len; return seg;
+  }).join("") : "";
+  const donut = total ? `<div class="donut"><svg viewBox="0 0 42 42" aria-hidden="true"><circle r="15.915" cx="21" cy="21" fill="none" stroke="#f2f4f6" stroke-width="6"/>${segs}<text x="21" y="20.5" text-anchor="middle" class="dn">${total}</text><text x="21" y="26" text-anchor="middle" class="dk">칸</text></svg>
+<ul>${order.map((k, i) => `<li><i style="background:${DONUT_C[k]}"></i>${esc(STATE_KO[k])}<b>${cnt[i]}</b></li>`).join("")}</ul></div>`
+    : `<p class="none">깊게 물은 영역이 없어 도넛을 그리지 않았어요.</p>`;
+  return `${tiles}<div class="two vis"><div><h3>영역별로 확인된 판단 <small>여덟 축 가운데</small></h3>${bars}</div><div><h3>판단을 어디까지 했나 <small>깊게 물은 영역의 축</small></h3>${donut}</div></div>`;
 }
 
 const STATE_CLS: Record<string, string> = { OWNED: "s3", CONFIRMED: "s2", PARTICIPATED: "s1", NOT_OBSERVED: "s0" };
@@ -32,7 +74,7 @@ const STATE_KO: Record<string, string> = { OWNED: "직접 결정", CONFIRMED: "�
 
 function heatmap(g: GoldDoc): string {
   const rows = g.domains.filter((d) => d.explored);
-  if (!rows.length) return `<p class="none">이번 검사에서 깊게 물은 영역이 없어 판정 지도를 그리지 않습니다.</p>`;
+  if (!rows.length) return `<p class="none">이번 검사에서 깊게 물은 영역이 없어 판정 지도를 그리지 않아요.</p>`;
   return `<table class="hm"><thead><tr><th class="hm-d">영역</th>${AXES.map((a) => `<th><span>${esc(AXIS_KO[a])}</span></th>`).join("")}<th class="hm-n">확인</th></tr></thead><tbody>${rows.map((d) =>
     `<tr><td class="hm-d"><b>${esc(d.name)}</b><small>${esc(d.zoneKo)}</small></td>${d.axes.map((x) => `<td class="hc ${STATE_CLS[x.state] ?? "s0"}" title="${esc(STATE_KO[x.state] ?? "")}"><i></i></td>`).join("")}<td class="hm-n"><b>${d.confirmed}</b>/8</td></tr>`).join("")}</tbody></table>
   <p class="lg"><span><i class="hc s3"></i>직접 결정</span><span><i class="hc s2"></i>직접 수행</span><span><i class="hc s1"></i>받아서 수행</span><span><i class="hc s0"></i>아직 없음</span><em>${tag("JUDGED")} 칸 하나 = 축 하나의 판정. 점수가 아닙니다.</em></p>`;
@@ -75,12 +117,12 @@ function fitChart(g: GoldDoc): string {
   const off = bands.map((b) => [b, g.domains.filter((d) => !d.explored && d.interest === b).map((d) => d.name)] as const).filter(([, n]) => n.length);
   return `<svg class="fit" viewBox="0 0 ${W} ${H}" role="img" aria-label="관심과 확인된 판단">${bg.join("")}${xt}${parts.join("")}
 <text x="${xOf(4)}" y="${H - 6}" class="ax" text-anchor="middle">확인된 판단 · 여덟 축 가운데 몇 칸 →</text></svg>
-${off.length ? `<p class="offx"><b>깊게 묻지 않은 영역</b> — 판정이 없어 점을 찍지 않았습니다. 관심만 답했습니다. ${off.map(([b, n]) => `<span>관심 ${b}: ${esc(n.join(" · "))}</span>`).join("")}</p>` : ""}`;
+${off.length ? `<p class="offx"><b>깊게 묻지 않은 영역</b> 판정이 없어 점을 찍지 않았어요. 관심만 답했어요. ${off.map(([b, n]) => `<span>관심 ${b}: ${esc(n.join(" · "))}</span>`).join("")}</p>` : ""}`;
 }
 
 /** 빈자리를 영역마다 한 번만 이름을 적고 그 아래에 묶는다 */
 function gapList(g: GoldDoc): string {
-  if (!g.gaps.length) return `<p class="none">결과 모델이 적은 빈자리가 없습니다.</p>`;
+  if (!g.gaps.length) return `<p class="none">결과 모델이 적은 빈자리가 없어요.</p>`;
   const by = new Map<string, { title: string; why: string }[]>();
   for (const x of g.gaps) { const k = x.domains.join(" · "); by.set(k, [...(by.get(k) ?? []), { title: x.title, why: x.why }]); }
   return `<div class="gaps">${[...by.entries()].map(([d, xs]) => `<div class="gd"><b>${esc(d)}</b><ol>${xs.map((x) => `<li><span>${esc(x.title)}</span><small>${esc(x.why)}</small></li>`).join("")}</ol></div>`).join("")}</div>`;
@@ -89,95 +131,96 @@ function gapList(g: GoldDoc): string {
 export function goldHtml(g: GoldDoc, w: Workbook): string {
   const P: string[] = [];
 
-  /* ── 표지 ── */
+  /* ── 표지 ── 흰 바탕 · 위아래 물결 · 큰 해와 제목. 숫자 칸을 두지 않는다 */
   P.push(`<section class="cover">
-<div class="cv-top"><p class="cv-k">JEONJU UNIVERSITY × CareerMatri</p><p class="cv-p">${esc(g.program)}</p></div>
-<div class="cv-mid"><p class="cv-badge">${esc(g.badge)}</p><h1>${esc(g.title)}</h1>${g.lead ? `<p class="cv-lead">${esc(g.lead)}</p>` : ""}</div>
-<div class="cv-num">${g.numbers.map((n) => `<div><b>${esc(n.v)}</b><span>${esc(n.k)}</span><small>${esc(n.sub)}</small></div>`).join("")}</div>
-<dl class="cv-meta"><div><dt>학생 식별</dt><dd>${esc(g.id)}</dd></div><div><dt>학과·과정</dt><dd>${esc(g.student.track)}</dd></div><div><dt>전공 검사</dt><dd>${esc(g.student.field)}${g.student.spec ? ` · ${esc(g.student.spec)}` : ""}</dd></div><div><dt>소속·운영</dt><dd>${esc(g.student.cohort)}</dd></div><div><dt>응답일</dt><dd>${esc(g.submitted)}</dd></div><div><dt>문서</dt><dd>${esc(g.version)}</dd></div></dl>
-${g.demo ? `<p class="cv-demo">시연 자료 · 합성 학생 · 컴퓨터·소프트웨어 검사는 전공자 검수 전입니다. 학생 진단이나 사업 성과로 쓰지 않습니다.</p>` : ""}
+<svg class="wv wv-t" viewBox="0 0 210 90" preserveAspectRatio="none" aria-hidden="true">${WAVES}</svg>
+<svg class="wv wv-b" viewBox="0 0 210 90" preserveAspectRatio="none" aria-hidden="true">${WAVES}</svg>
+<div class="cv-top"><p class="cv-k"><b>전주대학교</b> × CareerMatri</p><p class="cv-r"><span>AI 부트캠프</span>${esc(g.student.track)}</p></div>
+<div class="cv-mid"><p class="cv-y">${esc(g.submitted.slice(0, 4))}</p><p class="cv-t1">커리어 분석</p><p class="cv-t2">리포트</p><i class="cv-rule"></i>
+<p class="cv-lead">${esc(g.title)}</p>${g.lead ? `<p class="cv-sub">${esc(g.lead)}</p>` : ""}</div>
+<div class="cv-bot"><p>${esc(g.id)} · ${esc(g.student.track)} · ${esc(g.student.field)}${g.student.spec ? ` · ${esc(g.student.spec)}` : ""} · ${esc(g.submitted)}</p>
+${g.demo ? `<p class="cv-demo">시연 자료예요. 합성 학생이고, 컴퓨터·소프트웨어 검사는 전공자 검토 전이라 학생 진단이나 사업 성과로 쓰지 않아요.</p>` : ""}</div>
 </section>`);
 
-  /* ── 01 요약 ── */
-  P.push(`<section class="ch pg">${opener(1, "Executive Brief", "지금 어디에 있고, 다음에 무엇을 할까", "다섯 줄로 읽는 이 학생의 현재. 줄마다 그 말이 검사 판정인지, 스스로 답한 것인지, 해석이나 권고인지 딱지를 붙였습니다.")}
+  /* ── 01 한눈에 보기 ── */
+  P.push(`<section class="ch pg">${opener(1, "", "한눈에 보기", "숫자는 이번 응답에서 센 거예요. 점수나 순위가 아니에요.")}
+${glance(g)}
+<h3>다섯 줄 요약</h3>
 <ol class="brief">${g.brief.map((b, i) => `<li><span class="bn">${i + 1}</span><div><p class="bk">${esc(b.k)} ${tag(b.layer)}</p><p class="bv">${esc(b.v)}</p>${b.note ? `<p class="bnote">${esc(b.note)}</p>` : ""}</div></li>`).join("")}</ol>
-<aside class="legend"><p><b>이 리포트를 읽는 법</b></p><ul>
-<li>${tag("JUDGED")} 문항 응답을 공통 검사 엔진이 판정한 것</li><li>${tag("SELF")} 학생이 스스로 고르거나 답한 것 — 판정이 아님</li>
-<li>${tag("READ")} 판정을 관계표로 직무·산업에 이은 것</li><li>${tag("ADVICE")} 결과에서 나온 할 일</li><li>${tag("SOURCE")} 바깥 출처 — 검증 상태를 함께 적음</li></ul>
-<p class="fine">적합도 · 합격 가능성 · 순위 · 백분위를 만들지 않습니다.</p></aside></section>`);
-
-  /* ── 02 근거 장부 ── */
-  P.push(`<section class="ch">${opener(2, "Evidence Ledger", "이 리포트가 하는 주장과 그 근거", `주장 ${g.ledger.length}개. 근거가 판정인지 자기보고인지, 출처는 원문을 확인했는지를 줄마다 적었습니다. 문항 번호와 판정 경로는 별도 대조표에 둡니다. 응답 품질: ${g.quality}.`)}
-<table class="tb ledger"><thead><tr><th>주장</th><th>층</th><th>근거</th><th>상태</th></tr></thead><tbody>${g.ledger.map((c) => `<tr><td>${esc(c.text)}</td><td>${tag(c.layer)}</td><td>${esc(c.basis)}</td><td>${esc(c.status)}</td></tr>`).join("")}</tbody></table>
-</section>`);
+<p class="fine">${tag("JUDGED")} 검사가 판정한 것 · ${tag("SELF")} 스스로 답한 것 · ${tag("READ")} 직무·산업에 이어 읽은 것 · ${tag("ADVICE")} 결과에서 나온 할 일 · ${tag("SOURCE")} 바깥 출처</p></section>`);
 
   /* ── 03 전공·기술 프로필 ── */
   const tried = g.domains.filter((d) => d.experience !== "해 본 적 없음" && d.experience !== "답 없음").length;
-  P.push(`<section class="ch">${opener(3, "Major & Technical Profile", `${g.student.field} — 무엇을 판단해 봤나`, `${g.domains.length}개 영역 가운데 ${g.domains.filter((d) => d.explored).length}곳을 깊게 물었고, ${tried}곳을 해 본 적이 있다고 답했습니다.`)}
-<h3>판정 지도 <small>깊게 물은 영역 × 여덟 판단 축</small></h3>${heatmap(g)}
+  P.push(`<section class="ch">${opener(2, "", `${g.student.field}에서 해 본 판단`, `${g.domains.length}개 영역 가운데 ${g.domains.filter((d) => d.explored).length}곳을 깊게 물었고, ${tried}곳은 해 본 적이 있다고 답했어요.`)}
+<h3>판정 지도 <small>깊게 물은 영역 × 여덟 축</small></h3>${heatmap(g)}
 <h3>스스로 답한 관심·경험·학습 의향 ${tag("SELF")} <small>판정이 아닙니다 · 점 셋 = 높음 / 여러 번</small></h3>
 <table class="tb self"><thead><tr><th>영역</th><th>관심</th><th>경험</th><th>배울 뜻</th></tr></thead><tbody>${g.domains.map((d) => `<tr><td>${esc(d.name)}${d.explored ? "" : ` <span class="nx">깊게 묻지 않음</span>`}</td><td>${dots(d.interest, "band")}</td><td>${dots(d.experience, "exp")}</td><td>${dots(d.learning, "band")}</td></tr>`).join("")}</tbody></table>
-<h3>AI 역량 — 무엇을 재고 무엇을 재지 않나</h3>
+<h3>AI 역량, 검사가 묻는 것과 묻지 않는 것</h3>
 <table class="tb aiT"><thead><tr><th>역량</th><th>이 검사</th><th>이 학생</th></tr></thead><tbody>${g.ai.map((a) => `<tr><td>${esc(a.name)}</td><td class="st st-${esc(a.status)}">${esc(a.status)}</td><td>${esc(a.how)}</td></tr>`).join("")}</tbody></table>
-<p class="fine">미측정 역량에 점수를 매기지 않습니다. 공식 과정이 다루더라도 문항이 없으면 확인된 역량으로 세지 않습니다.</p>
-${g.tools.length ? `<p class="tools"><b>그 영역에서 흔히 쓰는 도구</b> ${g.tools.map((t) => `${esc(t.domain)}: ${esc(t.tools.join(" · ") || "—")}`).join(" / ")}<br><small>전공 사전의 목록입니다. 이 학생이 다룬다는 뜻이 아닙니다.</small></p>` : ""}</section>`);
+<p class="fine">미측정 역량에 점수를 매기지 않아요. 공식 과정이 다루더라도 문항이 없으면 확인된 역량으로 세지 않아요.</p>
+${g.tools.length ? `<p class="tools"><b>그 영역에서 흔히 쓰는 도구</b> ${g.tools.map((t) => `${esc(t.domain)}: ${esc(t.tools.join(" · ") || "—")}`).join(" / ")}<br><small>전공 사전의 목록이에요. 이 학생이 다룬다는 뜻이 아닙니다.</small></p>` : ""}</section>`);
 
   /* ── 04 산업·직무 ── */
-  P.push(`<section class="ch">${opener(4, "Industry & Role Intelligence", "그 일은 무엇을 하고, 무엇을 보는가", g.roles.length ? "직무는 학생이 고른 것과 판정에서 관계표로 이은 것만 적습니다. 그 일이 실제로 하는 차례와 그 자리가 보는 판단을 이 학생의 판정과 나란히 놓습니다." : "고른 직무도, 판정에서 이어진 직무도 아직 없습니다.")}
+  P.push(`<section class="ch">${opener(3, "", "그 일은 무엇을 하고, 무엇을 볼까요", g.roles.length ? "고른 직무와 결과에서 이어진 직무만 적었어요. 그 일의 차례와 그 자리가 보는 판단을 내 결과와 나란히 놓았어요." : "고른 직무도, 결과에서 이어진 직무도 아직 없어요.")}
 <div class="roles">${g.roles.slice(0, 2).map((r) => `<article class="role"><p class="rk">${tag(r.from)} ${r.from === "SELF" ? "학생이 고른 직무" : "판정에서 이은 직무"}</p><h3>${esc(r.name)}</h3>
-<p class="rl">그 일이 하는 차례</p><ol class="work">${r.work.map((s) => `<li><b>${esc(s.name)}</b><span>${esc(s.detail)}</span></li>`).join("") || "<li>그 Core 사전에 업무 흐름이 없습니다</li>"}</ol>
+<p class="rl">그 일이 하는 차례</p><ol class="work">${r.work.map((s) => `<li><b>${esc(s.name)}</b><span>${esc(s.detail)}</span></li>`).join("") || "<li>그 Core 사전에 업무 흐름이 없어요</li>"}</ol>
 <p class="rl">그 자리가 보는 판단 · 이 학생</p><p class="watch">${r.watched.map((x) => `<span class="${x.hit ? "hit" : "miss"}">${x.hit ? "●" : "○"} ${esc(AXIS_KO[x.axis])}</span>`).join("")}</p>
 <p class="rl">중심 영역</p><p class="ctr">${r.centers.map((c) => `<span class="${c.hit ? "hit" : "miss"}">${esc(c.name)}</span>`).join("")}</p>
 <p class="cond">${tag("READ")} ${esc(r.condition)}</p></article>`).join("")}</div>
-${g.industries.length ? `<h3>산업 — 중심 영역과 이 학생</h3><table class="tb"><thead><tr><th>산업</th><th>어디서</th><th>그 산업의 중심 영역</th><th>이 학생</th></tr></thead><tbody>${g.industries.map((i) => `<tr><td><b>${esc(i.name)}</b></td><td>${tag(i.from)}</td><td>${esc(i.centers)}</td><td>${esc(i.status)}</td></tr>`).join("")}</tbody></table>` : ""}
+${g.industries.length ? `<h3>산업별 중심 영역과 내 결과</h3><table class="tb"><thead><tr><th>산업</th><th>어디서</th><th>그 산업의 중심 영역</th><th>이 학생</th></tr></thead><tbody>${g.industries.map((i) => `<tr><td><b>${esc(i.name)}</b></td><td>${tag(i.from)}</td><td>${esc(i.centers)}</td><td>${esc(i.status)}</td></tr>`).join("")}</tbody></table>` : ""}
 <div class="keep"><h3>지역과 전국</h3>
-${g.region.length ? `<ul class="region">${g.region.slice(0, 3).map((r) => `<li>${tag("SOURCE")} <b>${esc(r.label)}</b> ${esc(r.claim)} <small>[${esc(r.id)}]</small></li>`).join("")}</ul>` : `<p class="none">이 학과·과정에 걸리는 출처 확인된 지역 사실이 없습니다.</p>`}
-<p class="fine">전국 비교: 채용 공고·기업 자료를 아직 받지 않아 비교하지 않습니다. 기업 이름을 추천하지 않습니다.</p></div></section>`);
+${g.region.length ? `<ul class="region">${g.region.slice(0, 3).map((r) => `<li>${tag("SOURCE")} <b>${esc(r.label)}</b> ${esc(r.claim)} <small>[${esc(r.id)}]</small></li>`).join("")}</ul>` : `<p class="none">이 학과·과정에 걸리는 출처 확인된 지역 사실이 없어요.</p>`}
+<p class="fine">전국 비교: 채용 공고·기업 자료를 아직 받지 않아 비교하지 않아요. 기업 이름을 추천하지 않아요.</p></div></section>`);
 
   /* ── 05 적합·준비·빈자리 ── */
-  P.push(`<section class="ch pg">${opener(5, "Fit · Readiness · Gap", "끌리는 것과 준비된 것은 다르다", "세로는 스스로 답한 관심, 가로는 판정으로 확인된 축의 수입니다. 둘을 더해 한 점수로 만들지 않습니다.")}
+  P.push(`<section class="ch pg">${opener(4, "", "끌리는 것과 준비된 것", "세로는 스스로 답한 관심, 가로는 확인된 판단의 수예요. 둘을 더해 점수로 만들지 않아요.")}
 ${fitChart(g)}
 <p class="lg"><span><i class="pt p-on"></i>확인된 판단 있음</span><span><i class="pt p-zero"></i>깊게 물었으나 확인 0</span><em>${tag("JUDGED")} 가로 ${tag("SELF")} 세로</em></p>
 <div class="two"><div><h3>가장 먼저 채울 빈자리 ${tag("JUDGED")}</h3>${gapList(g)}</div>
 <div><h3>이 권고의 제약</h3><ul class="cons">${g.constraints.map((c) => `<li>${esc(c)}</li>`).join("")}</ul></div></div></section>`);
 
   /* ── 06 포트폴리오·프로젝트 ── */
-  P.push(`<section class="ch">${opener(6, "Portfolio & Project Strategy", "검증할 수 있는 결과물을 남기는 다음 과제", w.projects.length ? `결과에서 나온 할 일 ${w.projects.length}개를 과제로 풀었습니다. 기간·난이도는 학생이 답한 경험 수준에서 왔고, 결과물과 검증 대상은 그 영역의 업무 흐름에서 왔습니다.` : "결과에서 나온 과제가 없습니다.")}
+  P.push(`<section class="ch">${opener(5, "", "다음에 남길 결과물", w.projects.length ? `할 일 ${w.projects.length}개를 과제로 풀었어요. 기간과 난이도는 답한 경험 수준에서 정했어요.` : "결과에서 나온 과제가 없어요.")}
 <div class="proj">${w.projects.map((p, i) => `<article><p class="pj-k">${tag("ADVICE")} 과제 ${i + 1} · ${esc(p.horizon)} 안에 · ${esc(p.length)}</p><h3>${esc(p.title)}</h3>
 <dl><dt>난이도</dt><dd>${esc(p.level)}</dd><dt>직접 정할 것</dt><dd>${esc(p.decide || "—")}</dd><dt>방법</dt><dd>${esc(p.method || "—")}</dd><dt>남길 결과물</dt><dd>${esc(p.outputs.join(" · ") || "—")}</dd><dt>무엇과 견주나</dt><dd>${esc(p.verify.join(" · ") || "—")}</dd><dt>막히면</dt><dd>${esc(p.onFail || "—")}</dd></dl></article>`).join("")}</div>
-<h3>포트폴리오 정리표 <small>이미 고른 결과물은 채워 두었고, 빈칸은 직접 적습니다</small></h3>
+<h3>포트폴리오 정리표 <small>이미 고른 결과물은 채워 두었고, 빈칸은 직접 적어요</small></h3>
 <table class="tb pf"><thead><tr><th>산출물</th><th>영역·내 역할</th><th>내가 정한 것</th><th>무엇과 견줬나</th><th>결과(수치)</th><th>남은 검증</th></tr></thead><tbody>${w.portfolio.map((r) => `<tr class="${r.filled ? "" : "blank"}"><td>${esc(r.item)}</td><td>${esc(r.role)}</td><td>${esc(r.decided)}</td><td>${esc(r.verified)}</td><td>${esc(r.result)}</td><td>${esc(r.next)}</td></tr>`).join("")}</tbody></table></section>`);
 
   /* ── 07 자소서·면접 스튜디오 ── */
-  P.push(`<section class="ch">${opener(7, "Resume · Statement · Interview Studio", "근거 → 역량 문장 → 직무 맞춤 표현", w.studio.length ? "판정으로 확인된 영역에서만 문장을 만듭니다. 대괄호는 본인이 사실대로 채울 자리입니다. 수치와 결과를 대신 적지 않습니다." : "판정으로 확인된 영역이 아직 없어 문장을 만들지 않습니다. 아래 질문과 기입란으로 근거부터 모읍니다.")}
+  P.push(`<section class="ch">${opener(6, "", "지원서와 면접으로 옮기기", w.studio.length ? "확인된 영역에서만 문장을 만들었어요. 대괄호는 직접 채울 자리이고, 수치와 결과는 대신 적지 않아요." : "확인된 영역이 아직 없어 문장은 만들지 않았어요. 아래 질문으로 근거부터 모아 봐요.")}
 ${w.studio.map((s) => `<div class="studio"><p class="sd">${esc(s.domain)}</p><div class="conv"><div><p class="cl">근거 ${tag("SELF")}</p><p>${esc(s.evidence)}</p></div><div class="ar">→</div><div><p class="cl">역량 문장 ${tag("JUDGED")}</p><p>${esc(s.competence)}</p></div><div class="ar">→</div><div><p class="cl">직무 맞춤 표현</p><p>${esc(s.forRole)}</p></div></div>
 <p class="q">예상 질문: ${esc(s.ask)}</p><p class="shape">${s.answerShape.map((x) => `<span>${esc(x)}</span>`).join("")}</p><p class="fine">더 확보할 것: ${esc(s.more)}</p></div>`).join("")}
-<h3>예상 면접 질문과 준비 상태</h3><table class="tb qs"><thead><tr><th>질문</th><th>어디서</th><th>지금 답할 수 있나</th></tr></thead><tbody>${w.questions.map((q) => `<tr><td>${esc(q.q)}</td><td>${esc(q.from)}</td><td>${esc(q.need)}</td></tr>`).join("") || `<tr><td colspan="3">질문을 만들 판정·빈자리가 없습니다</td></tr>`}</tbody></table></section>`);
+<h3>예상 면접 질문과 준비 상태</h3><table class="tb qs"><thead><tr><th>질문</th><th>어디서</th><th>지금 답할 수 있나</th></tr></thead><tbody>${w.questions.map((q) => `<tr><td>${esc(q.q)}</td><td>${esc(q.from)}</td><td>${esc(q.need)}</td></tr>`).join("") || `<tr><td colspan="3">질문을 만들 판정·빈자리가 없어요</td></tr>`}</tbody></table></section>`);
 
   /* ── 08 30/90/180 ── */
-  P.push(`<section class="ch">${opener(8, "30 · 90 · 180 Day Action Plan", "언제, 무엇을 남기고, 어떻게 확인하나", "결과 모델의 때(지금 · 다음 · 나중)를 30·90·180일로 옮겼습니다. 날짜는 엔진이 정한 것이 아니라 읽기 쉽게 옮긴 것입니다.")}
-<div class="plan">${w.plan.map((c) => `<div class="col"><p class="ph"><b>${esc(c.label)}</b><span>${esc(c.days)}</span></p>${c.items.length ? c.items.map((it) => `<div class="it"><p class="iw"><span class="box"></span>${esc(it.what)}</p><p><small>남길 것</small>${esc(it.output)}</p><p><small>확인 기준</small>${esc(it.check)}</p></div>`).join("") : `<p class="none">이 때에 낸 할 일이 없습니다</p>`}</div>`).join("")}</div>
-${w.course ? `<p class="course">${tag("SOURCE")} 지금 열린 공식 과정: ${esc(w.course)} — 과제 하나를 끝까지 하고 무엇을 정하고 무엇과 견줬는지 적으면 위 계획의 근거가 됩니다. 과정 이수 자체를 역량 확인으로 세지 않습니다.</p>` : ""}
-<div class="write"><p class="cl">30일 안에 남길 경험 한 문단 — 상황 · 내가 정한 것 · 견준 것 · 남은 결과(수치는 본인이)</p>${"<i></i>".repeat(5)}</div></section>`);
+  P.push(`<section class="ch">${opener(7, "", "30일 · 90일 · 180일 계획", "결과의 지금 · 다음 · 나중을 날짜로 옮겼어요. 읽기 쉽게 옮긴 거예요.")}
+<div class="plan">${w.plan.map((c) => `<div class="col"><p class="ph"><b>${esc(c.label)}</b><span>${esc(c.days)}</span></p>${c.items.length ? c.items.map((it) => `<div class="it"><p class="iw"><span class="box"></span>${esc(it.what)}</p><p><small>남길 것</small>${esc(it.output)}</p><p><small>확인 기준</small>${esc(it.check)}</p></div>`).join("") : `<p class="none">이 때에 낸 할 일이 없어요</p>`}</div>`).join("")}</div>
+${w.course ? `<p class="course">${tag("SOURCE")} 지금 열린 공식 과정: ${esc(w.course)}. 과제 하나를 끝까지 하고 무엇을 정하고 무엇과 견줬는지 적으면 위 계획의 근거가 됩니다. 과정 이수 자체를 역량 확인으로 세지 않아요.</p>` : ""}
+<div class="write"><p class="cl">30일 안에 남길 경험 한 문단: 상황 · 내가 정한 것 · 견준 것 · 남은 결과(수치는 본인이)</p>${"<i></i>".repeat(5)}</div></section>`);
+
+  /* ── 08 근거 장부 ── 부록 앞으로 옮겼다: 본문이 검수 문서로 읽히지 않게 */
+  P.push(`<section class="ch">${opener(8, "", "이 리포트가 하는 말과 근거", `${g.ledger.length}가지를 근거와 함께 적었어요. 응답 품질: ${g.quality}.`)}
+<table class="tb ledger"><thead><tr><th>주장</th><th>층</th><th>근거</th><th>상태</th></tr></thead><tbody>${g.ledger.map((c) => `<tr><td>${esc(c.text)}</td><td>${tag(c.layer)}</td><td>${esc(c.basis)}</td><td>${esc(c.status)}</td></tr>`).join("")}</tbody></table>
+</section>`);
 
   /* ── 09 부록 ── */
-  P.push(`<section class="ch app">${opener(9, "Appendix & Sources", "측정의 경계와 출처", "")}
+  P.push(`<section class="ch app">${opener(9, "", "측정 범위와 출처", "")}
 <div class="two"><div><h3>여덟 판단 축</h3><dl class="gl2">${AXES.map((a) => `<dt>${esc(AXIS_KO[a])}</dt><dd>${esc(({ J1: "무엇을 풀 문제로 잡았는가", J2: "받은 요구를 어떻게 읽었는가", J3: "직접 정한 조건과 기준", J4: "어떤 방법과 도구로 했는가", J5: "무엇이 결과물로 남았는가", J6: "무엇과 비교해 확인했는가", J7: "안 됐을 때 무엇을 고쳤는가", J8: "그 결과가 어디에 쓰였는가" } as Record<string, string>)[a])}</dd>`).join("")}</dl>
 <h3>재지 않는 것</h3><p>${esc(g.notMeasured.join(" · ") || "—")}</p>
 <h3>문서 정보</h3><dl class="gl2">${g.versions.map((v) => `<dt>${esc(v.k)}</dt><dd>${esc(v.v)}</dd>`).join("")}<dt>응답 품질</dt><dd>${esc(g.quality)}</dd></dl></div>
-<div><h3>사업 사실과 검증 상태</h3><ul class="facts">${g.facts.map((f) => `<li><b>${esc(f.id)}</b> ${esc(f.text)} <small>${esc(f.status)} · [${esc(f.source)}]${f.caution ? ` · ${esc(f.caution)}` : ""}</small></li>`).join("")}</ul>
+<div><h3>사업 사실과 검증 상태</h3><ul class="facts">${g.facts.map((f) => `<li><b>${esc(f.id)}</b> ${esc(f.text)} <small>${esc(f.status)} · [${esc(f.source)}]</small></li>`).join("")}</ul>
 <h3>출처</h3><ul class="src">${g.sources.map((s) => `<li><b>${esc(s.label)}</b> <span>${esc(s.url)}</span></li>`).join("")}</ul>
-<p class="fine">확인한 날 ${esc(g.checkedOn)}. ${esc(g.verificationNote)}</p></div></div>
-<p class="legal">CareerMatri 는 직업정보 제공까지 합니다. 채용 알선 · 추천서 발급을 하지 않고 기업을 추천하지 않습니다. 이 검사는 규준과 인지 면접 전이라 검증된 검사가 아닙니다.</p></section>`);
+<p class="fine">확인한 날 ${esc(g.checkedOn)}. 사업 내용은 사업단이 전해 준 전주대학교 뉴스·공지를 옮긴 거예요. 원문을 직접 대조하면 표시를 바꿔요.</p></div></div>
+<p class="legal">CareerMatri 는 직업정보 제공까지 합니다. 채용 알선 · 추천서 발급을 하지 않고 기업을 추천하지 않아요. 이 검사는 규준과 인지 면접 전이라 검증된 검사가 아닙니다.</p></section>`);
 
   return `<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
-<title>전주대학교 · ${esc(g.id)} · CareerMatri 개인 리포트</title><style>${CSS}</style></head><body>${P.join("\n")}</body></html>`;
+<title>전주대학교 · ${esc(g.id)} · CareerMatri 커리어 분석 리포트</title><style>${CSS}</style></head><body>${P.join("\n")}</body></html>`;
 }
 
 const CSS = `
-@page{size:A4;margin:14mm 17mm 15mm;@top-left{content:"전주대학교 × CareerMatri · 학생 개인 리포트";font-family:sans-serif;font-size:7.5pt;color:#8a94a6}@top-right{content:"비공개 · 본인 열람용";font-family:sans-serif;font-size:7.5pt;color:#8a94a6}@bottom-left{content:"점수 · 적합도 · 합격 가능성을 만들지 않습니다";font-family:sans-serif;font-size:7.5pt;color:#8a94a6}@bottom-right{content:counter(page) " / " counter(pages);font-family:sans-serif;font-size:7.5pt;color:#8a94a6}}
+@page{size:A4;margin:14mm 17mm 15mm;@top-left{content:"전주대학교 × CareerMatri · 커리어 분석 리포트";font-family:sans-serif;font-size:7.5pt;color:#8a94a6}@top-right{content:"본인만 보는 문서";font-family:sans-serif;font-size:7.5pt;color:#8a94a6}@bottom-left{content:"점수나 순위를 만들지 않는 리포트예요";font-family:sans-serif;font-size:7.5pt;color:#8a94a6}@bottom-right{content:counter(page) " / " counter(pages);font-family:sans-serif;font-size:7.5pt;color:#8a94a6}}
 @page:first{margin:0;@top-left{content:none}@top-right{content:none}@bottom-left{content:none}@bottom-right{content:none}}
-:root{--ink:#111a2b;--ink2:#3f4a5e;--mute:#667085;--line:#d8dde6;--line2:#eceff4;--tint:#f4f6f9;--navy:#132a4d;--blue:#2457c5;--gap:#b4431b;--amber:#a15c07}
+:root{--royal:#1d3fa8;--blue2:#2f7de1;--ink:#111a2b;--ink2:#3f4a5e;--mute:#667085;--line:#d8dde6;--line2:#eceff4;--tint:#f4f6f9;--navy:#132a4d;--blue:#2457c5;--gap:#b4431b;--amber:#a15c07}
 *{box-sizing:border-box}
 html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 body{margin:0;font-family:"Noto Sans CJK KR","Noto Sans KR","Apple SD Gothic Neo","WenQuanYi Zen Hei",sans-serif;color:var(--ink);font-size:10.5pt;line-height:1.62;word-break:keep-all;overflow-wrap:anywhere;background:#fff}
@@ -185,7 +228,7 @@ section{padding:0}
 h1,h2,h3,p{margin:0}
 .ch{padding-top:2mm;margin-top:11mm}.ch.pg{break-before:page;margin-top:0}
 .op{break-inside:avoid;break-after:avoid}
-h3{font-size:11.5pt;margin:7mm 0 2.5mm;font-weight:700;color:var(--navy)}
+h3{font-size:11.5pt;margin:7mm 0 2.5mm;font-weight:700;color:var(--royal);padding-left:3mm;border-left:1.2mm solid var(--royal);line-height:1.3}
 h3{break-after:avoid}.keep{break-inside:avoid}
 h3 small{font-weight:400;color:var(--mute);font-size:8.8pt;margin-left:6px}
 .fine{font-size:8.7pt;color:var(--mute);margin-top:2.5mm}
@@ -195,30 +238,48 @@ h3 small{font-weight:400;color:var(--mute);font-size:8.8pt;margin-left:6px}
 .tg{display:inline-block;font-size:7.6pt;font-weight:700;letter-spacing:.02em;padding:0 5px;border-radius:3px;line-height:15px;vertical-align:1px;white-space:nowrap}
 .tg-JUDGED{background:var(--navy);color:#fff}.tg-SELF{border:1px solid var(--navy);color:var(--navy);line-height:13px}
 .tg-READ{background:#e4e8ef;color:var(--ink2)}.tg-ADVICE{border:1px solid var(--blue);color:var(--blue);line-height:13px}.tg-SOURCE{border:1px solid var(--amber);color:var(--amber);line-height:13px}
-/* 표지 */
-.cover{height:297mm;margin:0;padding:26mm 17mm 22mm;background:var(--navy);color:#fff;display:flex;flex-direction:column;break-after:page;position:relative;overflow:hidden}
-.cover::after{content:"";position:absolute;right:-40mm;top:-40mm;width:150mm;height:150mm;border-radius:50%;background:radial-gradient(circle,rgba(66,120,230,.35),rgba(19,42,77,0) 70%)}
-.cv-k{font-size:9pt;letter-spacing:.18em;font-weight:700;opacity:.8}.cv-p{font-size:10.5pt;margin-top:2mm;opacity:.92}
-.cv-mid{margin-top:auto;position:relative;z-index:1}
-.cv-badge{display:inline-block;border:1px solid rgba(255,255,255,.5);border-radius:3px;padding:1px 8px;font-size:9pt;margin-bottom:5mm}
-.cover h1{font-size:27pt;line-height:1.28;font-weight:700;letter-spacing:-.01em;max-width:160mm}
-.cv-lead{font-size:11.5pt;line-height:1.6;margin-top:5mm;max-width:150mm;opacity:.9}
-.cv-num{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:12mm;border-top:1px solid rgba(255,255,255,.35);position:relative;z-index:1}
-.cv-num div{padding:4mm 4mm 0 0;border-right:1px solid rgba(255,255,255,.18);margin-right:4mm}.cv-num div:last-child{border-right:0}
-.cv-num b{display:block;font-size:34pt;line-height:1;font-weight:700}.cv-num span{display:block;font-size:10pt;margin-top:2mm;font-weight:700}.cv-num small{display:block;font-size:8.2pt;opacity:.75;line-height:1.4;margin-top:1mm}
-.cv-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:3mm 6mm;margin:10mm 0 0;font-size:9pt;position:relative;z-index:1}
-.cv-meta dt{opacity:.65;font-size:8pt}.cv-meta dd{margin:0;font-weight:700}
-.cv-demo{margin-top:6mm;font-size:8.6pt;background:rgba(255,196,87,.16);border-left:3px solid #ffc457;padding:2mm 3mm;position:relative;z-index:1}
-/* 장 머리 */
-.op{border-top:3px solid var(--navy);padding-top:4mm;margin-bottom:6mm}
-.op-k{display:flex;align-items:baseline;gap:4mm;color:var(--blue);font-weight:700;font-size:9pt;letter-spacing:.12em;text-transform:uppercase}
-.op-k b{font-size:30pt;line-height:1;letter-spacing:0;color:var(--navy)}
-.op h2{font-size:20pt;line-height:1.3;margin-top:2mm;letter-spacing:-.01em}
-.op-t{font-size:11pt;color:var(--ink2);margin-top:2.5mm;max-width:160mm}
+/* 표지 — 흰 바탕 · 위아래 물결 · 큰 해와 제목 */
+.cover{height:297mm;margin:0;padding:22mm 20mm 20mm;background:#fff;color:var(--ink);display:flex;flex-direction:column;break-after:page;position:relative;overflow:hidden}
+.wv{position:absolute;left:0;width:210mm;height:90mm;z-index:0}.wv-t{top:0}.wv-b{bottom:0;transform:rotate(180deg)}
+.cv-top{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:flex-start}
+.cv-k{font-size:10.5pt;color:#fff;margin-top:2mm}.cv-k b{font-weight:700}
+.cv-r{text-align:right;font-size:12pt;color:#6e8fbf;line-height:1.35}.cv-r span{display:block;font-size:9pt;font-weight:700;color:var(--royal);letter-spacing:.04em}
+.cv-mid{position:relative;z-index:1;margin-top:62mm}
+.cv-y{font-size:46pt;line-height:1;font-weight:800;color:var(--blue2)}
+.cv-t1{font-size:36pt;line-height:1.15;font-weight:300;color:#3a4a66;margin-top:2mm}
+.cv-t2{font-size:38pt;line-height:1.1;font-weight:800;color:var(--royal)}
+.cv-rule{display:block;width:44mm;height:1.2mm;background:var(--royal);margin:7mm 0 6mm}
+.cv-lead{font-size:13pt;line-height:1.5;font-weight:700;max-width:120mm;color:var(--ink)}
+.cv-sub{font-size:10pt;line-height:1.6;color:var(--mute);max-width:115mm;margin-top:2mm}
+.cv-bot{position:relative;z-index:1;margin-top:auto;max-width:120mm}
+.cv-bot p{font-size:8.6pt;color:var(--ink2)}.cv-demo{margin-top:2mm;color:var(--mute) !important}
+/* 장 머리 — 파란 띠 하나 · 큰 번호 · 제목 · 한 줄 */
+.op{display:grid;grid-template-columns:20mm 1fr;gap:5mm;align-items:center;background:var(--royal);color:#fff;border-radius:2.5mm;padding:5mm 7mm;margin-bottom:6mm;position:relative;overflow:hidden}
+.op::after{content:"";position:absolute;right:-14mm;top:-18mm;width:52mm;height:52mm;border-radius:50%;border:7mm solid rgba(255,255,255,.08)}
+.op-n{font-size:30pt;line-height:1;font-weight:800;color:#9cc3ff}
+.op h2{font-size:17pt;line-height:1.3;letter-spacing:-.01em;color:#fff}
+.op-t{font-size:9.8pt;color:#dbe7ff;margin-top:1.5mm;line-height:1.5}
+/* 한눈에 보기 */
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:4mm;break-inside:avoid}
+.tile{border-radius:3mm;background:var(--tint);padding:4mm 4mm 3.5mm}
+.tile .ic{display:inline-flex;width:9mm;height:9mm;border-radius:50%;align-items:center;justify-content:center;background:var(--royal)}
+.tile .ic svg{width:5mm;height:5mm;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.tile.t1 .ic{background:#12a39a}.tile.t2 .ic{background:#f0a400}.tile.t3 .ic{background:#e2567d}
+.tile b{display:block;font-size:26pt;line-height:1;font-weight:800;margin-top:3mm;color:var(--ink)}
+.tile p{font-size:10pt;font-weight:700;margin-top:1.5mm}.tile small{display:block;font-size:8pt;color:var(--mute);line-height:1.4;margin-top:.8mm}
+.vis{margin-top:2mm;break-inside:avoid}
+.bars{display:grid;gap:2.4mm}
+.br{display:grid;grid-template-columns:30mm 1fr 11mm;gap:3mm;align-items:center;font-size:9.4pt}
+.bl{line-height:1.3}.bt{height:4.2mm;border-radius:2.1mm;background:#edf1f7;overflow:hidden}.bt i{display:block;height:100%;border-radius:2.1mm;background:linear-gradient(90deg,var(--royal),var(--blue2))}
+.br b{text-align:right;font-size:11pt}.br b small{font-size:8pt;color:var(--mute);font-weight:400}
+.donut{display:grid;grid-template-columns:34mm 1fr;gap:5mm;align-items:center}
+.donut svg{width:34mm;height:34mm}.donut .dn{font-size:8px;font-weight:800;fill:#111a2b}.donut .dk{font-size:3.6px;fill:#667085}
+.donut ul{margin:0;padding:0;list-style:none;font-size:9.4pt}.donut li{display:flex;align-items:center;gap:2mm;padding:1.2mm 0;border-bottom:1px solid var(--line2)}
+.donut li i{width:3mm;height:3mm;border-radius:50%;display:inline-block}.donut li b{margin-left:auto}
 /* 요약 */
 .brief{list-style:none;padding:0;margin:0}
 .brief li{display:grid;grid-template-columns:14mm 1fr;gap:3mm;padding:4.2mm 0;border-bottom:1px solid var(--line);break-inside:avoid}
-.bn{font-size:22pt;font-weight:700;color:var(--blue);line-height:1}
+.bn{display:inline-flex;align-items:center;justify-content:center;width:8mm;height:8mm;border-radius:50%;background:var(--royal);color:#fff;font-size:11pt;font-weight:700;line-height:1}
 .bk{font-size:9.4pt;font-weight:700;color:var(--mute);letter-spacing:.02em}.bv{font-size:12pt;line-height:1.55;margin-top:1mm}.bnote{font-size:8.7pt;color:var(--mute);margin-top:1mm}
 .legend{margin-top:7mm;background:var(--tint);padding:4mm 5mm;border-radius:2px;font-size:9.6pt;break-inside:avoid}
 .legend ul{margin:2mm 0 0;padding:0;list-style:none;columns:2;column-gap:8mm}.legend li{margin:0 0 1.5mm;break-inside:avoid}
@@ -292,6 +353,6 @@ svg.fit{width:100%;height:auto;margin-top:2mm}
 .facts,.src{margin:0;padding:0;list-style:none;font-size:9.2pt}.facts li,.src li{padding:1mm 0;border-bottom:1px solid var(--line2);break-inside:avoid}
 .facts small{display:block;color:var(--mute);font-size:8.4pt}.src span{display:block;color:var(--mute);font-size:8.3pt;word-break:break-all}
 .legal{margin-top:6mm;font-size:8.8pt;color:var(--mute);border-top:1px solid var(--line);padding-top:2.5mm}
-@media screen{body{background:#e9ecf1;padding:24px 0}section{background:#fff;max-width:210mm;margin:0 auto 18px;padding:14mm 17mm;box-shadow:0 1px 3px rgba(17,26,43,.12)}.cover{height:auto;min-height:250mm;padding:16mm 17mm}}
-@media screen and (max-width:720px){section{padding:20px 16px !important}.two,.roles,.plan,.conv{grid-template-columns:1fr}.ar{transform:rotate(90deg)}.proj article{grid-template-columns:1fr}.cv-num{grid-template-columns:1fr 1fr}.cv-meta{grid-template-columns:1fr 1fr}.cover h1{font-size:20pt}.tb{display:block;overflow-x:auto}.hm{font-size:8pt}}
+@media screen{body{background:#e9ecf1;padding:24px 0}section{background:#fff;max-width:210mm;margin:0 auto 18px;padding:14mm 17mm;box-shadow:0 1px 3px rgba(17,26,43,.12)}.cover{height:297mm;padding:22mm 20mm}}
+@media screen and (max-width:720px){section{padding:20px 16px !important}.two,.roles,.plan,.conv{grid-template-columns:1fr}.ar{transform:rotate(90deg)}.proj article{grid-template-columns:1fr}.tiles{grid-template-columns:1fr 1fr}.cover{height:auto;min-height:200mm}.cv-mid{margin-top:40mm}.cv-y{font-size:34pt}.cv-t1{font-size:26pt}.cv-t2{font-size:28pt}.tb{display:block;overflow-x:auto}.hm{font-size:8pt}}
 `;

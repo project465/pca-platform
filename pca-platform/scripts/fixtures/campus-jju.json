@@ -124,6 +124,7 @@
     "facts": [
      {
       "id": "F1",
+      "say": "2026년 AI 분야 첨단산업 인재양성 부트캠프 사업에 선정됐어요",
       "text": "2026년 AI 분야 첨단산업 인재양성 부트캠프 사업에 선정됐다",
       "source": "S1",
       "status": "CONFIRMED_BY_OWNER",
@@ -131,6 +132,8 @@
      },
      {
       "id": "F2",
+      "say": "2026~2030년, 총 80억 원 규모로 운영해요",
+      "note": "사업단 전체 사업비예요. CareerMatri 이용 비용이 아니에요.",
       "text": "사업 기간은 2026~2030년이고 총 사업비는 80억 원 규모다",
       "source": "S1",
       "status": "CONFIRMED_BY_OWNER",
@@ -138,6 +141,7 @@
      },
      {
       "id": "F3",
+      "say": "전북 전략산업의 AI 전환(AX)과 실무형 피지컬 AI 인재를 기르는 게 목표예요",
       "text": "전북 전략산업의 AX(인공지능 전환)와 실무형 피지컬 AI 인재 양성을 목표로 한다",
       "source": "S1",
       "status": "CONFIRMED_BY_OWNER",
@@ -145,6 +149,7 @@
      },
      {
       "id": "F4",
+      "say": "AI 융합 교과목, PBL, 현장실습, 마이크로디그리로 운영해요",
       "text": "AI 융합 교과목, PBL, 현장실습, 마이크로디그리로 운영한다",
       "source": "S1",
       "status": "CONFIRMED_BY_OWNER",
@@ -152,6 +157,7 @@
      },
      {
       "id": "F5",
+      "say": "2026 AI 기초 과정에서 파이썬, 데이터 처리, 시각화, 통계, 딥러닝 기초를 배워요",
       "text": "2026 AI 기초 과정을 공지했고 파이썬·데이터 처리·시각화·통계·딥러닝 기초를 다룬다",
       "source": "S2",
       "status": "CONFIRMED_BY_OWNER",
@@ -159,6 +165,8 @@
      },
      {
       "id": "F6",
+      "say": "AI 기초 과정 다음에 후속 ND1~ND6 과정이 있어요",
+      "note": "과정별 내용은 아직 확인 중이에요.",
       "text": "AI 기초 과정 뒤에 후속 ND1~ND6 과정이 있다",
       "source": "S2",
       "status": "EXISTS_DETAIL_UNVERIFIED",

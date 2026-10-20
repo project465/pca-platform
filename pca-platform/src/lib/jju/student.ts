@@ -23,6 +23,14 @@ export type JjuStudentStatus = {
   answered: number | null;
 };
 
+/** 전주대 홈의 말투(해요체). 단추 글자는 공통 사전을 그대로 쓴다 */
+const NOTE = {
+  start: "답할 때마다 저장돼서, 창을 닫아도 보던 데서 이어서 할 수 있어요.",
+  resume: "마지막으로 답한 데서 이어서 하면 돼요. 앞에 답한 건 그대로 있어요.",
+  result: "검사는 한 번만 봐요. 다시 봐야 할 사정이 있으면 학과 담당자에게 말해 주세요.",
+  retake: "지난 결과는 그대로 남고, 새로 본 결과가 하나 더 쌓여요.",
+} as const;
+
 export async function jjuStudentStatus(userId: string): Promise<JjuStudentStatus | null> {
   const u = jjuUniversity();
   if (!u) return null;
@@ -33,31 +41,31 @@ export async function jjuStudentStatus(userId: string): Promise<JjuStudentStatus
   const track = t?.short ?? mine.department_name;
   const st = await campusAttemptState(userId);
   if (st.kind === "start" && mode === "PREPARING") {
-    return { track, mode, state: "closed", headline: `${track} 검사는 아직 열리지 않았습니다`,
-      note: `${MODE_KO.PREPARING} 상태입니다. 열리면 이 자리에 시작 단추가 섭니다.`, primary: null, more: [], answered: null };
+    return { track, mode, state: "closed", headline: `${track} 검사는 아직 열리지 않았어요`,
+      note: `${MODE_KO.PREPARING} 이에요. 열리면 여기서 바로 시작할 수 있어요.`, primary: null, more: [], answered: null };
   }
   if (st.kind === "start") {
-    return { track, mode, state: "start", headline: "아직 검사를 시작하지 않았습니다",
-      note: CAMPUS_CTA_KO.start.note,
+    return { track, mode, state: "start", headline: "아직 검사를 시작하지 않았어요",
+      note: NOTE.start,
       primary: { label: CAMPUS_CTA_KO.start.label, href: `/campus/${JJU_CODE.toLowerCase()}/start` }, more: [], answered: 0 };
   }
   if (st.kind === "resume") {
     const n = await queryOne<{ n: string }>(
       `SELECT count(*)::text n FROM v3_responses WHERE attempt_id = $1::bigint`, [st.attemptId]);
-    return { track, mode, state: "resume", headline: `검사를 하는 중입니다 · 답 ${n?.n ?? 0}개 저장됨`,
-      note: CAMPUS_CTA_KO.resume.note,
+    return { track, mode, state: "resume", headline: `검사하는 중이에요 · 답 ${n?.n ?? 0}개 저장됐어요`,
+      note: NOTE.resume,
       primary: { label: CAMPUS_CTA_KO.resume.label, href: `/v3/${st.attemptId}` }, more: [], answered: Number(n?.n ?? 0) };
   }
   const id = st.attemptId;
   return {
-    track, mode, state: st.kind, headline: "결과가 나왔습니다",
-    note: st.kind === "retake" ? CAMPUS_CTA_KO.retake.note : CAMPUS_CTA_KO.result.note,
+    track, mode, state: st.kind, headline: "결과가 나왔어요",
+    note: st.kind === "retake" ? NOTE.retake : NOTE.result,
     primary: { label: CAMPUS_CTA_KO.result.label, href: `/v3/${id}/result` },
     more: [
-      { label: "전주대 리포트", href: `/jju/report/${id}` },
-      { label: "전주대 리포트 PDF", href: `/jju/report/${id}/pdf` },
-      { label: "결과지 PDF", href: `/v3/${id}/result/pdf` },
-      { label: "경험 추가", href: "/me/experience/new" },
+      { label: "전주대 리포트 보기", href: `/jju/report/${id}` },
+      { label: "리포트 PDF 받기", href: `/jju/report/${id}/pdf` },
+      { label: "결과지 PDF 받기", href: `/v3/${id}/result/pdf` },
+      { label: "경험 추가하기", href: "/me/experience/new" },
     ],
     answered: null,
   };
