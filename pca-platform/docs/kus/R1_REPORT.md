@@ -14,7 +14,7 @@ GitHub Actions(`kus-verify`)로 넘겼다 — 그 결과는 §6 에 따로 적�
 | 서버 함수 E2E (실제 PostgreSQL 16 · 실제 채점 엔진) | **PASS 79 / FAIL 0** | `r1/qa/verify.log` |
 | 하네스 브라우저 E2E (실제 Chromium · 실제 DB · KUS 화면 TSX 를 하네스가 그림) | **PASS 53 / FAIL 0** | `r1/shots/shots.log` · 그림 33장 |
 | 개인 PDF (RICH · POOR · CONTRA) | **10쪽 × 3 · 서로 다름** | `r1/qa/pdf/*.pdf` · `r1/shots/*.download.pdf` |
-| `tsc` · `next build` · 실제 Next 브라우저 E2E (GitHub Actions) | **tsc 0 · build 0 · E2E 27/27** | `r1/ci/CI_RESULT.md` |
+| `tsc` · `next build` · 공통 회귀 · 실제 Next 브라우저 E2E (GitHub Actions Run 2) | **전 단계 0 · E2E 27/27** | `r1/ci/CI_RESULT.md` |
 
 ## 1. 코드 기준선
 
@@ -110,7 +110,7 @@ KUS 표 → 공통 회귀(`v3:freeze:measure` · `campus:check` · `db:chain`) �
 `scripts/kus/e2e-next.ts`(실제 로그인 · 실제 검사 화면을 끝까지 · 서버 액션 · PDF · 격리) → 공통 파일 무변경 확인.
 결과: `r1/ci/CI_RESULT.md`. Run 1 에서 `tsc` 0 · `next build` 0 · KUS 서버 E2E **79/79** · **실제 Next 브라우저 E2E 27/27**
 (공통 검사 UI 61화면 완주 · 서버 액션 저장 · PDF 내려받기 · 격리) · 공통 파일 변경 0. `campus:check` 의 1 은 CI 가 미리보기
-변수를 켠 채 돌린 설정 결함이었고(이 세션에서 HEAD 80/80) 고쳐서 다시 돌린다.
+변수를 켠 채 돌린 설정 결함이었고(이 세션에서 HEAD 80/80) 고쳤다. **Run 2(39408882460)는 열 단계 전부 0 이다.**
 
 ## 7. 남은 결함과 NOT VERIFIED
 
@@ -130,7 +130,6 @@ KUS 표 → 공통 회귀(`v3:freeze:measure` · `campus:check` · `db:chain`) �
 
 ## 8. 다음 단계
 
-1. CI(`kus-verify`) 결과 확인 · 실패하면 고친다.
 2. KUS-CR-03 승인(Core 없는 학과 계정 발급) — 학생 명단 수령 전에.
 3. 참여 학생 20명 전공 수령 → `student_open.leaves` 순서 조정 · 필요한 Core 매핑 검수 요청.
 4. 탐방 기업 확정 → 담당자 화면으로 등록(확인 근거 함께).

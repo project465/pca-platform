@@ -33,3 +33,21 @@ https://github.com/project465/pca-platform/actions/runs/39407357360
 `campus:check` 는 `열지 않은 Core 의 자리가 검사 가능으로 서지 않는다` 를 재는데, 미리보기 문이 열려 있으면 배재
 CS·EE 자리가 검사 가능으로 서서 바르게 걸린다. 같은 HEAD 를 이 세션에서 미리보기 없이 돌리면 **80/80**,
 미리보기를 켜면 79/80(같은 한 줄). 코드 결함이 아니라 CI 설정 결함이고, 회귀 단계에서 두 변수를 빼도록 고쳤다.
+
+## Run 2 — 39408882460 · 커밋 5c5a638d · 2026-10-20 · **전 단계 통과**
+
+https://github.com/project465/pca-platform/actions/runs/39408882460
+
+| 단계 | 종료코드 |
+|---|---|
+| npm ci | 0 |
+| typecheck | 0 |
+| next build | 0 |
+| db chain + kus schema | 0 |
+| v3:freeze:measure | 0 |
+| campus:check (운영 조건 · 미리보기 끔) | 0 |
+| db:chain | 0 |
+| kus server e2e | 0 — PASS 79 · FAIL 0 · PDF 10쪽 × 3 |
+| kus next browser e2e | 0 — PASS 27 · FAIL 0 · PDF 602,742바이트 · `[kus-pdf] done attempt=6 … 919ms` |
+| shared files changed | 0 |
+| 글로 된 결과 올리기 | 성공(artifact 12258342691 · 글만) |
