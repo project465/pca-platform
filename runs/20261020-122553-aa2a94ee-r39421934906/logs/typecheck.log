@@ -1,0 +1,1 @@
+src/lib/jju/gold.ts(284,60): error TS2339: Property 'result_model_version' does not exist on type 'ModuleVersions'.

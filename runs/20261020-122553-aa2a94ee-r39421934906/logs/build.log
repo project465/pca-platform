@@ -1,0 +1,25 @@
+
+> pca-platform@0.1.0 build
+> next build
+
+⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+   ▲ Next.js 15.5.25
+   - Experiments (use with caution):
+     · serverActions
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 17.4s
+   Linting and checking validity of types ...
+Failed to compile.
+
+./src/lib/jju/gold.ts:284:60
+Type error: Property 'result_model_version' does not exist on type 'ModuleVersions'.
+
+[0m [90m 282 |[39m     versions[33m:[39m [
+ [90m 283 |[39m       { k[33m:[39m [32m"검사"[39m[33m,[39m v[33m:[39m [32m`${core} · 문항 ${m.provenance.module_versions.item_bank_version ?? "?"} · 채점 ${m.provenance.module_versions.scoring_version ?? "?"}`[39m }[33m,[39m
+[31m[1m>[22m[39m[90m 284 |[39m       { k[33m:[39m [32m"결과 모델"[39m[33m,[39m v[33m:[39m [33mString[39m(m[33m.[39mprovenance[33m.[39mmodule_versions[33m.[39mresult_model_version [33m?[39m[33m?[39m [32m"?"[39m) }[33m,[39m
+ [90m     |[39m                                                            [31m[1m^[22m[39m
+ [90m 285 |[39m       { k[33m:[39m [32m"리포트"[39m[33m,[39m v[33m:[39m [33mGOLD_VERSION[39m }[33m,[39m
+ [90m 286 |[39m     ][33m,[39m
+ [90m 287 |[39m   }[33m;[39m[0m
+Next.js build worker exited with code: 1 and signal: null
