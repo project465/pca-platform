@@ -1,0 +1,13 @@
+diff --git a/pca-platform/src/lib/me-v3/report-gm/snapshot-inputs.ts b/pca-platform/src/lib/me-v3/report-gm/snapshot-inputs.ts
+index 3b474a4d..e2311ed1 100644
+--- a/pca-platform/src/lib/me-v3/report-gm/snapshot-inputs.ts
++++ b/pca-platform/src/lib/me-v3/report-gm/snapshot-inputs.ts
+@@ -39,7 +39,7 @@ export const gmEligible = (core: string, tier: string): boolean =>
+ export const GM_EXPERIENCE_COLUMNS = [
+   "id::text AS id", "kind", "title", "started_on::text AS started_on", "ended_on::text AS ended_on",
+   "td_codes", "axis_codes", "problems", "decisions", "artifacts", "verifications",
+-  "used_where", "status", "created_at::text AS created_at",
++  "used_where", "status", "created_at::text AS created_at", "note_text",
+ ] as const;
+ 
+ export type GmSnapshotInputs = {

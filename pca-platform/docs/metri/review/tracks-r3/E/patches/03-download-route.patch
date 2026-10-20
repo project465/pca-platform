@@ -1,0 +1,302 @@
+diff --git a/db/schema_phase2_2.sql b/db/schema_phase2_2.sql
+index 29c37657..a19d9e9f 100644
+--- a/db/schema_phase2_2.sql
++++ b/db/schema_phase2_2.sql
+@@ -145,13 +145,17 @@ DO $$ BEGIN
+   ALTER TABLE job_failures DROP CONSTRAINT IF EXISTS job_failures_kind_chk;
+ EXCEPTION WHEN undefined_object THEN NULL; END $$;
+ 
++-- `gm_pdf_fail`: Gold Master PDF 입구(`/v3/{id}/report/gm`)가 못 만든 날(Track E 요청 1).
++-- **값을 더하는 자리는 이 파일 하나다.** 다른 파일에서 이 제약을 다시 걸면,
++-- 배포마다 차례대로 붓는 이 파일이 앞에서 제약을 지우고 값이 빠진 목록으로
++-- 다시 거는데, 그때 이미 쌓인 `gm_pdf_fail` 줄이 걸려 `db:upgrade` 가 멈춘다.
+ DO $$ BEGIN
+   ALTER TABLE job_failures ADD CONSTRAINT job_failures_kind_chk
+-    CHECK (kind IN ('result', 'pdf', 'mail', 'payment', 'entitlement', 'webhook'));
++    CHECK (kind IN ('result', 'pdf', 'mail', 'payment', 'entitlement', 'webhook', 'gm_pdf_fail'));
+ EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+ 
+ COMMENT ON COLUMN job_failures.kind IS
+-  'result · pdf · mail · payment · entitlement · webhook.
++  'result · pdf · mail · payment · entitlement · webhook · gm_pdf_fail.
+    **로그에만 두지 않는다** — 운영 화면이 이 표를 읽는다';
+ 
+ 
+diff --git a/src/app/v3/[attemptId]/report/gm/route.ts b/src/app/v3/[attemptId]/report/gm/route.ts
+new file mode 100644
+index 00000000..3c6a5099
+--- /dev/null
++++ b/src/app/v3/[attemptId]/report/gm/route.ts
+@@ -0,0 +1,93 @@
++/**
++ * **Gold Master PDF(BIZ PRO)를 본인에게 내려 준다**(Track E 요청 1).
++ *
++ * 운영 결과지 PDF(`/v3/{id}/result/pdf`)와 **다른 입구다.** 그쪽은 고치지 않는다.
++ *
++ * - 플래그(`FEATURE_GM_REPORT=yes`)가 꺼져 있으면 로그인보다 먼저 404 다: 입구가
++ *   있다는 것도 알리지 않는다
++ * - 권한은 `canDownloadGm` 하나가 정한다: 본인만 · BIZ_CORE_V1 PRO · 학생 배포
++ *   플래그. **기관 담당자는 기본 거절**(계약 · 동의 · 열람 기록 정책 전). 거절은
++ *   전부 404 이고 까닭 코드는 서버 로그에만 남긴다
++ * - 만든 PDF 는 `attachment` · `no-store` 로 내보낸다(중간 캐시에 남기지 않는다)
++ * - 못 만들면 걸음과 까닭을 서버 로그와 `job_failures`(`gm_pdf_fail`)에 남기고
++ *   웹 결과지로 가는 쪽을 준다. **덜 만든 PDF 는 남지 않는다**(`generateGm`)
++ */
++import { requireUser } from "@/lib/session";
++import { query } from "@/lib/db";
++import { canDownloadGm } from "@/lib/me-v3/report-gm/access";
++import { generateGm } from "@/lib/me-v3/report-gm/generate";
++
++export const dynamic = "force-dynamic";
++export const maxDuration = 120;
++
++const NOT_FOUND = () => new Response("not found", {
++  status: 404, headers: { "cache-control": "no-store" },
++});
++
++function sorryPage(attemptId: string): Response {
++  const id = encodeURIComponent(attemptId);
++  const html = `<!doctype html><html lang="ko"><head><meta charset="utf-8">
++<meta name="viewport" content="width=device-width,initial-scale=1">
++<title>Gold Master PDF · CareerMatri</title>
++<style>
++ :root { color-scheme: light }
++ body { margin:0; background:#f6f7f9; color:#1e2838;
++        font:15px/1.7 "Pretendard","Noto Sans KR",system-ui,sans-serif;
++        display:flex; min-height:100vh; align-items:center; justify-content:center; padding:24px }
++ main { max-width:520px; background:#fff; border:1px solid #e3e7ee; border-radius:16px; padding:28px }
++ h1 { margin:0 0 12px; font-size:20px; letter-spacing:-.02em }
++ p { margin:0 0 14px; color:#475569 }
++ a { display:inline-flex; align-items:center; min-height:44px; padding:0 16px; margin:6px 10px 0 0;
++     border-radius:10px; text-decoration:none; font-weight:600; font-size:14px;
++     border:1px solid #e3e7ee; color:#1e2838 }
++</style></head><body><main>
++ <h1>PDF를 만들지 못했습니다</h1>
++ <p>웹 결과는 그대로 볼 수 있습니다. 저희 쪽 기록에 남아 있어 바로 확인할 수 있습니다.</p>
++ <a href="/v3/${id}/result">웹 결과 보기</a><a href="/support">고객지원</a>
++</main></body></html>`;
++  return new Response(html, {
++    status: 503, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" },
++  });
++}
++
++export async function GET(
++  _req: Request,
++  ctx: { params: Promise<{ attemptId: string }> },
++) {
++  const { attemptId } = await ctx.params;
++  if (process.env.FEATURE_GM_REPORT !== "yes") return NOT_FOUND();
++  const user = await requireUser();
++  const may = await canDownloadGm(user, attemptId);
++  if (!may.ok) {
++    /* 응시 번호와 까닭 코드만 적는다. 이름 · 이메일은 적지 않는다 */
++    console.log(`[gm-pdf] deny attempt=${attemptId.slice(0, 20)} viewer=${user.id} code=${may.code}`);
++    return NOT_FOUND();
++  }
++  const t0 = Date.now();
++  console.log(`[gm-pdf] start attempt=${attemptId} viewer=${user.id}`);
++  const r = await generateGm(attemptId, { allowFile: false }).catch((e) =>
++    ({ ok: false as const, step: "render" as const, reason: String((e as Error)?.message ?? e) }));
++  if (r.ok) {
++    console.log(`[gm-pdf] done attempt=${attemptId} ${r.pdf.length}바이트 ${Date.now() - t0}ms`);
++    return new Response(new Uint8Array(r.pdf), {
++      headers: {
++        "content-type": "application/pdf",
++        "content-disposition": `attachment; filename="careermatri-gm-BIZ-PRO-${attemptId}.pdf"`,
++        "cache-control": "private, no-store",
++      },
++    });
++  }
++  /**
++   * **왜 못 만들었는지를 버리지 않는다**(운영 결과지 PDF 경로와 같은 규칙).
++   * `attempt_id` 칸은 옛 응시 표를 가리키는 외래키라 V3 번호를 넣지 않고
++   * `trace_id` 가 든다. 적는 자리가 막힌 것도 서버 로그에 남긴다.
++   */
++  const line = `[gm-pdf] attempt=${attemptId} step=${r.step} ${Date.now() - t0}ms :: `
++    + r.reason.split("\n")[0].slice(0, 300);
++  console.error(line);
++  await query(
++    `INSERT INTO job_failures (kind, trace_id, message) VALUES ('gm_pdf_fail', $1, $2)`,
++    [`gm-pdf-${r.step}-${attemptId}`, line.slice(0, 400)],
++  ).catch((err) => console.error(`[gm-pdf] 운영 표에 못 적었습니다: ${String(err).slice(0, 200)}`));
++  return sorryPage(attemptId);
++}
+diff --git a/src/lib/incidents.ts b/src/lib/incidents.ts
+index 5d04c09a..9b830fee 100644
+--- a/src/lib/incidents.ts
++++ b/src/lib/incidents.ts
+@@ -10,7 +10,7 @@
+  */
+ import { query, queryOne } from "./db";
+ 
+-export const KINDS = ["payment", "entitlement", "webhook", "result", "pdf", "mail"] as const;
++export const KINDS = ["payment", "entitlement", "webhook", "result", "pdf", "mail", "gm_pdf_fail"] as const;
+ export type Kind = (typeof KINDS)[number];
+ 
+ export const KIND_LABEL: Record<Kind, string> = {
+@@ -20,6 +20,7 @@ export const KIND_LABEL: Record<Kind, string> = {
+   result: "결과지 생성",
+   pdf: "PDF 생성",
+   mail: "메일 발송",
++  gm_pdf_fail: "GM PDF 생성",
+ };
+ 
+ export type IncidentRow = {
+diff --git a/src/lib/me-v3/report-gm/generate.ts b/src/lib/me-v3/report-gm/generate.ts
+new file mode 100644
+index 00000000..38c56c45
+--- /dev/null
++++ b/src/lib/me-v3/report-gm/generate.ts
+@@ -0,0 +1,152 @@
++/**
++ * **운영 입구가 Gold Master PDF 한 부를 만든다**(Track E 요청 1).
++ *
++ * 실험 경로(`scripts/lab/gm-student.ts`)와 같은 차례를 밟되 운영에 맞춰 셋을 다르게 한다.
++ *
++ *   1. **입력 파일을 만들지 않는다.** 제출 때 굳힌 줄(`v3_snapshots.gm_inputs`)만
++ *      읽는다(`allowFile: false`). 그 칸이 서기 전에 굳은 응시는 `input` 에서 멈춘다
++ *   2. **그리는 HTML 을 남기지 않는다.** 실험 경로는 `var/pdf-gm/` 에 응시마다 HTML 을
++ *      두고 지우지 않았다(경험 기록 제목이 든 글이 파기 대상 밖에 남는다). 여기서는
++ *      응시 폴더 안(`gmOutDir()/{id}/`)에 두고 성공 · 실패 어느 쪽이든 지운다.
++ *      프로세스가 그 사이에 죽어도 그 폴더는 `purgeGm` 이 지우는 자리다
++ *   3. **글꼴이 없으면 만들지 않는다.** 다른 글꼴로 찍으면 쪽 넘침이 달라져 다른
++ *      종이가 된다. Pretendard 다섯 벌이 없으면 `fonts` 에서 멈춘다
++ *
++ * **덜 만든 PDF 를 남기지 않는다**(1차 E4): `.part` 로 찍고 넘친 쪽이 없을 때만
++ * 이름을 바꾼다. 실패는 걸음과 까닭을 `FAIL.json` 에 남긴다(개인정보를 담지 않는다).
++ * `MANIFEST.json` 은 재현 대조용 해시와 개수만 담는다: 빠진 기록의 제목을 적지 않는다.
++ */
++import { createHash, randomBytes } from "node:crypto";
++import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
++import path from "node:path";
++import { pathToFileURL } from "node:url";
++import { build3 } from "./report3";
++import { full6 } from "./render6";
++import type { Lib } from "./render5";
++import { frozenInput, gmOutDir, inputFile } from "./inputs";
++import { resolveChromium } from "@/lib/me-v3/result/pdf";
++
++export type GmStep = "input" | "fonts" | "render" | "browser" | "print" | "layout";
++export type GmBuilt =
++  | { ok: true; pdf: Buffer; file: string; manifest: Record<string, unknown> }
++  | { ok: false; step: GmStep; reason: string };
++
++/** HTML 파일 하나를 PDF 로 찍고 쪽마다 넘친 높이를 돌려준다. 검사가 바꿔 끼운다 */
++export type GmPrinter = (htmlFile: string, pdfOut: string) => Promise<number[]>;
++
++export class GmPrintFailed extends Error {
++  constructor(readonly step: "browser" | "print", message: string) { super(message); }
++}
++
++const WEIGHTS = ["Regular", "Medium", "SemiBold", "Bold", "ExtraBold"];
++const sha = (b: string | Buffer) => createHash("sha256").update(b).digest("hex");
++const J = (p: string) => JSON.parse(readFileSync(p, "utf8"));
++
++/** 글꼴 자리. 운영 이미지에서는 `GM_FONT_DIR` 이 가리킨다(요청 4 · 글꼴 결정) */
++export function gmFontDir(): string {
++  return process.env.GM_FONT_DIR ?? path.resolve("var/pdf-gm/fonts/pretendard");
++}
++
++/** 넘치면 그 쪽의 글만 줄인다(gm-student · gm-full6 과 같은 규칙 · 최대 17%) */
++const FIT_JS = `(() => {
++  const over = (pg) => { const box = pg.querySelector(".bd").getBoundingClientRect(); let max = 0;
++    for (const e of pg.querySelectorAll(".bd *")) { const b = e.getBoundingClientRect(); if (b.height) max = Math.max(max, b.bottom); }
++    return Math.round(max - box.bottom); };
++  return [...document.querySelectorAll(".pg")].map((pg) => {
++    const bd = pg.querySelector(".bd"); if (!bd) return 0;
++    let o = over(pg), z = 1;
++    while (o > 0 && z > 0.83) { z = Math.round((z - 0.01) * 100) / 100; for (const c of bd.children) c.style.zoom = String(z); o = over(pg); }
++    return o;
++  });
++})()`;
++
++/** 운영 PDF 와 같은 브라우저 자리(`resolveChromium`)를 쓴다 */
++export const chromiumPrinter: GmPrinter = async (htmlFile, pdfOut) => {
++  const { chromium } = await import("playwright");
++  const { bin, tried } = resolveChromium();
++  let b;
++  try {
++    b = await chromium.launch({
++      args: ["--no-sandbox", "--disable-dev-shm-usage"], ...(bin ? { executablePath: bin } : {}),
++    });
++  } catch (e) {
++    throw new GmPrintFailed("browser", `${String((e as Error).message).split("\n")[0]} / 찾아본 자리: ${tried.join(" ")}`);
++  }
++  try {
++    const p = await b.newPage();
++    await p.goto(pathToFileURL(htmlFile).href, { waitUntil: "load" });
++    await p.evaluate("document.fonts.ready");
++    await p.emulateMedia({ media: "print" });
++    const over = await p.evaluate(FIT_JS) as number[];
++    await p.pdf({ path: pdfOut, format: "A4", printBackground: true, preferCSSPageSize: true });
++    return over;
++  } catch (e) {
++    throw new GmPrintFailed("print", String((e as Error).message).split("\n")[0]);
++  } finally { await b.close(); }
++};
++
++export async function generateGm(
++  attemptId: string, opts: { allowFile?: boolean; print?: GmPrinter } = {},
++): Promise<GmBuilt> {
++  inputFile(attemptId); // 번호 꼴이 아니면 여기서 던진다(폴더 이름이 된다)
++  const dir = path.join(gmOutDir(), attemptId);
++  /* 같은 응시를 두 탭이 같은 순간에 눌러도 서로의 반쪽 파일을 덮지 않게 이름을 가른다 */
++  const tag = randomBytes(6).toString("hex");
++  const tmpPdf = path.join(dir, `.BIZ-PRO-${tag}.pdf.part`);
++  const tmpHtml = path.join(dir, `.render-${tag}.html`);
++  const clean = () => { rmSync(tmpPdf, { force: true }); rmSync(tmpHtml, { force: true }); };
++  const fail = (step: GmStep, reason: string): GmBuilt => {
++    clean();
++    mkdirSync(dir, { recursive: true });
++    writeFileSync(path.join(dir, "FAIL.json"), JSON.stringify(
++      { attempt_id: attemptId, step, reason: reason.slice(0, 300), at: new Date().toISOString() }, null, 1));
++    return { ok: false, step, reason };
++  };
++  /* 1 입력 — 굳은 줄만(운영은 파일을 만들지 않는다) */
++  let input;
++  try { ({ input } = await frozenInput(attemptId, { allowFile: opts.allowFile ?? false })); }
++  catch (e) { return fail("input", String((e as Error).message ?? e)); }
++  /* 2 글꼴 */
++  const fontDir = gmFontDir();
++  const missing = WEIGHTS.filter((w) => !existsSync(path.join(fontDir, `Pretendard-${w}.woff2`))
++    && !existsSync(path.join(fontDir, `Pretendard-${w}.otf`)));
++  if (missing.length) return fail("fonts", `Pretendard ${missing.join(" · ")} 없음 (${fontDir})`);
++  /* 3 렌더 */
++  let html: string; let pages: number; let skipped: number; let versions: unknown;
++  try {
++    const r = build3(input.result_model, { ...input.meta, tier: input.tier }, input.experiences);
++    const lib: Lib = {
++      toc: J("data/report-gm/biz-pro-toc.v1.json"), dart: J("data/region/dart-checks.v1.json"),
++      overview: J("data/region/dart-overview.v1.json"), roles: J("data/report-gm/biz-role-guide.json"),
++      orgs: J("data/region/kr-chungcheong-orgs.v2.json"),
++      domains: r.map.map((m) => ({ code: m.code, name: m.name })), versions: r.versions,
++    };
++    /* 글꼴은 절대 주소로 건다: HTML 을 응시 폴더에 두어도 글꼴을 찾는다 */
++    const out = full6(r, lib, { href: pathToFileURL(fontDir).href, family: "Pretendard" });
++    html = out.html; pages = out.pages.length; skipped = out.skipped.length; versions = r.versions;
++  } catch (e) { return fail("render", String((e as Error).message ?? e)); }
++  /* 4 인쇄 — HTML 은 응시 폴더 안에만 두고 어느 쪽이든 지운다 */
++  mkdirSync(dir, { recursive: true });
++  let over: number[];
++  try {
++    writeFileSync(tmpHtml, html);
++    over = await (opts.print ?? chromiumPrinter)(tmpHtml, tmpPdf);
++  } catch (e) {
++    return fail(e instanceof GmPrintFailed ? e.step : "print", String((e as Error).message ?? e));
++  } finally { rmSync(tmpHtml, { force: true }); }
++  if (over.some((o) => o > 0)) return fail("layout", `넘친 쪽 ${over.filter((o) => o > 0).length}`);
++  if (!existsSync(tmpPdf)) return fail("print", "PDF 가 만들어지지 않았다");
++  const file = path.join(dir, "BIZ-PRO.pdf");
++  renameSync(tmpPdf, file);
++  rmSync(path.join(dir, "FAIL.json"), { force: true });
++  const pdf = readFileSync(file);
++  const manifest = {
++    attempt_id: attemptId, input_source: input.source ?? "file", input_version: input.version,
++    input_sha256: input.sha256, frozen_at: input.frozen_at,
++    experiences_used: input.experiences.length, experiences_excluded: input.excluded.length,
++    pages, skipped, html_sha256: sha(html), pdf_sha256: sha(pdf), versions,
++    made_at: new Date().toISOString(),
++  };
++  writeFileSync(path.join(dir, "MANIFEST.json"), JSON.stringify(manifest, null, 1));
++  return { ok: true, pdf, file, manifest };
++}

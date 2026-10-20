@@ -1,0 +1,17 @@
+
+── 준비
+  통과  응시가 굳었다 — 응시 22
+
+── P1 제출 시점과 입력 고정 기준 시각
+  통과  스냅샷이 한 줄이다
+  통과  제출 시각 = 스냅샷 시각 = GM 기준 시각 — 2026-10-20T10:32:54.072672Z · 2026-10-20T10:32:54.072672Z
+  통과  제출 뒤에 더한 기록은 굳힌 입력에 들어가지 않는다
+Error: ENOENT: no such file or directory, open 'var/gm-r2/inputs/22.json'
+    at readFileSync (node:fs:440:20)
+    at main (/tmp/claude-0/-home-user-pca-platform/60258a39-9b3e-5f5e-94a9-4ef6e785adfd/scratchpad/wt-gm/pca-platform/scripts/lab/trackE-r2.e3.ts:120:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'var/gm-r2/inputs/22.json'
+}

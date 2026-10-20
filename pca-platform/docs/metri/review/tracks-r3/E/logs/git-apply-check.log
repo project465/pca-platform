@@ -1,0 +1,30 @@
+# 새 작업 트리 55b20bfb · 앱 폴더에서 git apply --directory=pca-platform
+# (git 은 하위 폴더에서 돌면 저장소 뿌리 기준 경로로 읽으므로 --directory 가 필요하다. 'patch -p1' 도 된다)
+## 차례대로: 01-privacy-erasure-and-snapshot-inputs
+check OK
+applied
+## 차례대로: 02-access-check
+check OK
+applied
+## 차례대로: 03-download-route
+check OK
+applied
+## 차례대로: 04-runtime-packaging
+check OK
+applied
+## 적용 결과와 검사한 작업 트리 비교
+같은 파일 16 / 16
+16
+## 따로: 04 만 기준 커밋에
+OK
+## 따로: 01 만 기준 커밋에
+OK
+## 따로: 02 만 기준 커밋에(새 파일 하나 · 적용은 되나 01 의 snapshot-inputs.ts 를 import 하므로 01 없이는 돌지 않는다)
+OK(적용만)
+## 따로: 03 만 기준 커밋에(01 의 db-chain 손질에 기대지 않음 — 적용만 확인)
+OK(적용만)
+## patch -p1 로도(01~04 차례대로, --dry-run)
+01-privacy-erasure-and-snapshot-inputs dry-run OK
+02-access-check dry-run OK
+03-download-route dry-run OK
+04-runtime-packaging dry-run OK

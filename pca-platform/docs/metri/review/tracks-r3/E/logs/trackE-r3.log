@@ -1,0 +1,102 @@
+
+── S1 제출 = 같은 트랜잭션의 GM 입력 · note_text 재유입 회귀
+  통과  BIZ PRO 제출이 굳은 줄에 gm_inputs 를 적는다 — gm-snap.1
+  통과  스냅샷 created_at = gm_inputs.frozen_at = submitted_at — 2026-10-20T10:34:52.626238Z · 2026-10-20T10:34:52.626238Z · 2026-10-20T10:34:52.626238Z
+  통과  스냅샷 줄과 응시 줄을 같은 트랜잭션이 썼다(xmin 같음) — true
+  통과  (전제) DB 경험 기록에는 note_text 가 적혀 있다 — 자유입력 한 줄 — 굳은 줄에 남으면 안 된다 R3
+  통과  gm_inputs 어디에도 note_text 열쇠가 없다(재유입 회귀) — 없음
+  통과  gm_inputs 글 어디에도 그 자유입력 값이 없다
+  통과  gm_inputs 에 purge_after · user_id 가 없다
+  통과  경험 한 줄의 칸 = 허용 목록(GM_EXPERIENCE_COLUMNS)과 정확히 같다 — artifacts,axis_codes,created_at,decisions,ended_on,id,kind,problems,started_on,status,td_codes,title,used_where,verifications
+  통과  허용 목록 자체에 note_text 가 없다 — id::text AS id kind title started_on::text AS started_on ended_on::text AS ended_on td_codes axis_codes problems decisions artifacts verifications used_where status created_at::text AS created_at
+  통과  제출 뒤에 더하고 고쳐도 굳은 줄은 그대로다 — 굳은 줄 경험 21 · 뒤에 더한 22
+  통과  GM 을 못 받는 응시(BIZ BASIC)에는 적지 않는다(NULL · 최소화)
+  통과  GM 입력 적기가 실패하면 스냅샷 0줄 · 응시는 in_progress 그대로(되돌림) — in_progress · 0줄
+  통과  다시 제출하면 스냅샷과 gm_inputs 가 함께 선다
+
+── S2 굳은 줄이 먼저 · 파일을 만들지 않는다
+  통과  collectInput 이 굳은 줄을 읽는다(source=snapshot) — snapshot
+  통과  그 경험 목록 = gm_inputs 경험 목록
+  통과  파일이 있어도 굳은 줄을 쓴다(미끼 파일 무시) — 1건
+  통과  굳은 줄이 있으면 입력 파일을 만들지 않는다 — 0개
+  통과  DB 에서 기록을 지운 뒤에도 같은 입력(재현)
+  통과  옛 응시 + allowFile:false 는 던지고 파일을 만들지 않는다
+  통과  옛 응시 기본값은 예전처럼 파일로 굳힌다(실험 경로 호환) · note_text 없음
+
+── S4 권한 표 (canDownloadGm)
+  통과  플래그 꺼짐 · 본인 → flag_off — flag_off
+  통과  플래그 켜짐 · 본인(시험 계정) · 학생 배포 꺼짐 → ok — ok
+  통과  플래그 켜짐 · 본인(실제 학생) · 학생 배포 꺼짐 → distribution_off — distribution_off
+  통과  플래그 켜짐 · 본인(실제 학생) · 학생 배포 켜짐 → ok — ok
+  통과  다른 학생 → not_owner — not_owner
+  통과  학과 담당자(org_admin) · 같은 학교 → org_default_deny — org_default_deny
+  통과  교수(instructor) → org_default_deny — org_default_deny
+  통과  운영사(superadmin) → org_default_deny — org_default_deny
+  통과  BIZ 아닌 Core(ME_CORE_V3 PRO) → not_biz_pro — not_biz_pro
+  통과  PRO 아닌 등급(BIZ BASIC) → not_biz_pro — not_biz_pro
+  통과  굳은 결과 없음(BIZ PRO 진행 중) → no_result — no_result
+  통과  번호 꼴 아님(../1) → bad_id — bad_id
+  통과  없는 응시 → no_attempt — no_attempt
+
+── S5 입구 GET · 실패에서 남는 것
+  통과  플래그 꺼짐 → 404 · 로그인도 묻지 않는다 — 404 · requireUser 0회
+[gm-pdf] deny attempt=65 viewer=72 code=not_owner
+  통과  다른 학생 → 404 — 404
+[gm-pdf] deny attempt=65 viewer=72 code=org_default_deny
+  통과  학과 담당자 → 404 — 404
+[gm-pdf] deny attempt=69 viewer=71 code=distribution_off
+  통과  실제 학생 본인 · 학생 배포 꺼짐 → 404 — 404
+[gm-pdf] start attempt=65 viewer=67
+[gm-pdf] done attempt=65 1188527바이트 3440ms
+  통과  본인(시험 계정) → 200 PDF — 200 · 1188527B · 3448ms
+  통과  attachment · no-store — attachment; filename="careermatri-gm-BIZ-PRO-65.pdf" · private, no-store
+  통과  응시 폴더에는 PDF 와 MANIFEST 만 남는다(.part · 그리던 HTML 없음) — ./BIZ-PRO.pdf,./MANIFEST.json
+  통과  MANIFEST 에 경험 제목 · user_id · note_text 가 없다
+  통과  실험 작업 폴더(var/pdf-gm)에 그리던 HTML 을 더하지 않는다
+  통과  운영 입구는 입력 파일을 만들지 않는다
+[gm-pdf] deny attempt=69 viewer=71 code=distribution_off
+[gm-pdf] start attempt=69 viewer=71
+[gm-pdf] attempt=69 step=browser 330ms :: browserType.launch: Failed to launch: Error: spawn /etc/hostname EACCES / 찾아본 자리: /etc/hostname
+  통과  브라우저 실패 → 503 안내 쪽(웹 결과 링크) — 404 → 503
+  통과  job_failures 에 gm_pdf_fail 한 줄(걸음 browser) — gm-pdf-browser-69
+  통과  실패 뒤 남는 것은 FAIL.json 하나(PDF · .part · HTML 없음) — ./FAIL.json
+  통과  FAIL.json · 운영 표 줄에 경험 제목이나 note_text 가 없다
+  통과  인쇄 중 끊김 → 실패 · .part 와 HTML 이 지워진다 — ./BIZ-PRO.pdf,./FAIL.json,./MANIFEST.json
+  통과  앞서 완성된 PDF 는 반쪽으로 덮이지 않는다
+  통과  쪽이 넘치면 PDF 를 남기지 않는다 — ./FAIL.json
+  통과  글꼴이 없으면 찍지 않는다(fonts) — Pretendard Regular · Medium · SemiBold · Bold · ExtraBold 없음 (var/tmp/gm-r3/out/
+[gm-pdf] start attempt=68 viewer=70
+[gm-pdf] attempt=68 step=input 20ms :: 68: 제출 때 굳힌 GM 입력이 없다(이 칸이 서기 전에 굳은 응시)
+  통과  옛 응시(gm_inputs NULL) → 503 · 입력 파일을 만들지 않는다
+  통과  job_failures 가 모르는 kind 는 막는다
+  통과  gm_pdf_fail 줄이 있는 채로 schema_phase2_2.sql 을 다시 부어도 멈추지 않는다
+  통과  (음성 대조) 옛 목록으로 다시 걸면 기존 gm_pdf_fail 줄 때문에 멈춘다 → 값은 phase2_2 한 자리에서만 더한다 — ERROR:  check constraint "job_failures_kind_chk" of relation "job_failures" is violated by some row
+
+── S3 탈퇴 파기(erasure.ts → purgeGmForUser · gm_inputs NULL)
+  통과  (전제) X 의 GM PDF · 옛 입력 파일 · Y 의 파일이 실제로 있다 — ["./BIZ-PRO.pdf","./MANIFEST.json",true]
+  통과  X 의 GM 폴더와 입력 파일이 사라진다 — {"v3_snapshots.gm_inputs":1,"gm_files":2}
+  통과  X 의 굳은 줄 gm_inputs 가 NULL 이 된다 · 결과 모델은 남는다(KEEP) — gm_inputs 0 · result_model 1
+  통과  파기 기록에 gm 두 갈래가 적힌다 — {"v3_snapshots.gm_inputs":1,"gm_files":2}
+  통과  Y 의 파일과 굳은 줄은 그대로다
+  통과  운영 PDF 폴더(REPORT_PDF_DIR)는 그대로다 — ./v3/sentinel-999.pdf
+  통과  두 번 불러도 탈이 없고 지울 것이 없다 — {}
+  통과  이미 익명화된 계정이어도 남은 GM 파일을 지운다(끊긴 파기 회복) — {"gm_files":1}
+  관찰  탈퇴 뒤에도 v3_experiences 줄이 남는다(이 패치 범위 밖 · 기존 erasure REMOVE 목록에 없음) — 1줄 · note_text 1줄
+
+── S6 패키징 · DB 차례 (정적)
+  통과  운영 이미지 마지막 단계가 data/report-gm 를 담는다
+  통과  운영 이미지 마지막 단계가 data/region 를 담는다
+  통과  GM 볼륨 자리 /app/var/gm/out 를 미리 만들고 환경값이 가리킨다
+  통과  GM 볼륨은 운영 PDF 볼륨과 다른 자리다
+  관찰  글꼴(Pretendard)은 이미지에 담지 않았다 — 결정 대기(BLOCKED) · 없으면 입구가 fonts 걸음에서 멈춘다(S5 실패 4) — 안 담김 · GM_FONT_DIR=/app/fonts/pretendard 만 적음
+  통과  runtime-needs 에 GM 자료 여섯이 있고 저장소에 다 있다 — data/report-gm/biz-pro-toc.v1.json · data/report-gm/biz-role-guide.json · data/report-gm/biz-company-guide.json · data/region/dart-checks.v1.json · data/region/dart-overview.v1.json · data/region/kr-chungcheong-orgs.v2.json
+  통과  image:check 가 통과한다 — 이미지 구성 OK.
+  통과  .dockerignore 가 var/ 를 빌드 컨텍스트에서 뺀다(개인정보 파일)
+  통과  운영 compose 에 gm 볼륨이 붙고 백업 대상이 아니다
+  통과  entrypoint 가 GM 볼륨 주인을 고친다(못 써도 멈추지 않는다)
+  통과  db-chain: schema_v3_gm.sql 이 schema_v3_runtime.sql 뒤에 있다
+  통과  job_failures_kind_chk 를 거는 파일은 schema_phase2_2.sql 하나다 — db/schema_phase2_2.sql
+  통과  화면 · 라우트 가운데 GM 을 읽는 것은 새 입구 하나다 — src/app/v3/[attemptId]/report/gm/route.ts
+  통과  운영 결과 PDF 경로는 GM 을 부르지 않는다
+
+확인 76가지 — 통과 76 · 걸림 0 · 관찰 2

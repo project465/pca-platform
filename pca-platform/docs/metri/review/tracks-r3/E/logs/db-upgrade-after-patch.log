@@ -1,0 +1,32 @@
+── db/schema_phase2.sql
+rc=0
+── db/schema_phase2_1.sql
+rc=0
+── db/schema_phase2_2.sql
+rc=0
+── db/schema_phase2_3.sql
+rc=0
+── db/schema_phase2_4.sql
+rc=0
+── db/schema_pilot.sql
+rc=0
+── db/schema_v3_runtime.sql
+rc=0
+── db/schema_v3_arch.sql
+rc=0
+── db/schema_v3_platform.sql
+rc=0
+── db/schema_v3_pilot.sql
+rc=0
+── db/seed/v3_regions.sql
+rc=0
+── db/schema_v3_orgs.sql
+rc=0
+── db/schema_auth_oauth.sql
+rc=0
+── db/schema_campus_entry.sql
+rc=0
+── db/schema_campus_students.sql
+rc=0
+── db/schema_v3_gm.sql
+rc=0

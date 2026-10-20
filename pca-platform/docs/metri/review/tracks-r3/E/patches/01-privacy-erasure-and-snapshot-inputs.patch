@@ -1,0 +1,354 @@
+diff --git a/db/schema_v3_gm.sql b/db/schema_v3_gm.sql
+new file mode 100644
+index 00000000..c9489fdc
+--- /dev/null
++++ b/db/schema_v3_gm.sql
+@@ -0,0 +1,27 @@
++-- ============================================================
++--  Gold Master PDF 의 입력을 제출 순간에 굳힌다 (Track E 요청 2)
++--
++--  **칸 하나만 더한다.** 전에는 GM 이 처음 뽑히는 날 경험 기록을 모아
++--  파일(`var/gm-inputs/`)로 굳혔고, 그 사이에 고친 기록은 되살릴 수 없어
++--  빼야 했다. 제출 트랜잭션이 스냅샷 줄과 **같은 `now()`** 로 이 칸을 적으면
++--  기준 시각이 하나가 되고 파일이 필요 없다(`runtime/session.ts` · `submit()`).
++--
++--  **NULL 을 허용한다.** 이 칸이 서기 전에 굳은 줄과 GM 을 받을 수 없는 응시
++--  (BIZ_CORE_V1 · PRO 가 아닌 것)는 NULL 이다. 옛 코드는 이 칸을 모르므로
++--  앱보다 먼저 부어도 된다: **먼저 붓고 앱을 올린다**(앱이 먼저 오르면 제출이
++--  없는 칸에 쓰다 멈춘다).
++--
++--  **담지 않는 것.** 한 줄 메모(`note_text`)는 DB 가 1년 뒤 지우는 자유입력이라
++--  여기 들어오면 지운 뒤에도 남는다. 담는 칸은 코드 한 자리
++--  (`report-gm/snapshot-inputs.ts` 의 `GM_EXPERIENCE_COLUMNS`)가 정한다.
++--  탈퇴하면 `erasure.ts` 가 이 칸을 NULL 로 비운다.
++--
++--  되돌리기: `ALTER TABLE v3_snapshots DROP COLUMN IF EXISTS gm_inputs;`
++--  적용: 차례는 `deploy/db-chain.json` 하나가 들고 있다
++-- ============================================================
++
++ALTER TABLE v3_snapshots ADD COLUMN IF NOT EXISTS gm_inputs JSONB;
++
++COMMENT ON COLUMN v3_snapshots.gm_inputs IS
++  'GM PDF 입력(경험 기록 고른 칸 · 기준 시각). 제출 트랜잭션이 같은 now() 로 적는다.
++   note_text 를 담지 않는다. 탈퇴하면 NULL 로 비운다(erasure.ts)';
+diff --git a/deploy/db-chain.json b/deploy/db-chain.json
+index 5b176a1a..b91ef007 100644
+--- a/deploy/db-chain.json
++++ b/deploy/db-chain.json
+@@ -22,9 +22,10 @@
+     "db/schema_v3_orgs.sql",
+     "db/schema_auth_oauth.sql",
+     "db/schema_campus_entry.sql",
+-    "db/schema_campus_students.sql"
++    "db/schema_campus_students.sql",
++    "db/schema_v3_gm.sql"
+   ],
+-  "order": "차례가 곧 조건이다. `schema_v3_arch.sql` 의 `regions` 와 `career_profiles` 가 `schema_v3_platform.sql` 보다 먼저 서야 하고, `seed/v3_regions.sql` 은 `regions` 가 선 다음이다. `schema_auth_oauth.sql` 은 `users` 가 선 다음이면 어디든 되고, 맨 뒤에 둔다. `schema_v3_orgs.sql` 은 `regions` 가 선 다음이라 지역 시드 뒤에 둔다. `schema_campus_entry.sql` 은 `v3_attempts` 가 선 다음이므로 `schema_v3_runtime.sql` 뒤면 어디든 되고, 맨 뒤에 둔다. `schema_campus_students.sql` 은 `users` 가 선 다음이면 어디든 되고, 맨 뒤에 둔다.",
++  "order": "차례가 곧 조건이다. `schema_v3_arch.sql` 의 `regions` 와 `career_profiles` 가 `schema_v3_platform.sql` 보다 먼저 서야 하고, `seed/v3_regions.sql` 은 `regions` 가 선 다음이다. `schema_auth_oauth.sql` 은 `users` 가 선 다음이면 어디든 되고, 맨 뒤에 둔다. `schema_v3_orgs.sql` 은 `regions` 가 선 다음이라 지역 시드 뒤에 둔다. `schema_campus_entry.sql` 은 `v3_attempts` 가 선 다음이므로 `schema_v3_runtime.sql` 뒤면 어디든 되고, 맨 뒤에 둔다. `schema_campus_students.sql` 은 `users` 가 선 다음이면 어디든 되고, 맨 뒤에 둔다. `schema_v3_gm.sql` 은 `v3_snapshots` 가 선 다음(`schema_v3_runtime.sql` 뒤)이면 되고, 맨 뒤에 둔다.",
+   "not_in_chain": {
+     "db/seed/platform_demo.sql": "눌러 볼 가상 자료. 운영 DB 에 넣지 않는다 (npm run db:demo)",
+     "db/seed/platform_demo_people.sql": "같음"
+diff --git a/src/lib/erasure.ts b/src/lib/erasure.ts
+index ffb70bdc..f378d76d 100644
+--- a/src/lib/erasure.ts
++++ b/src/lib/erasure.ts
+@@ -16,6 +16,7 @@
+  */
+ import { randomBytes } from "node:crypto";
+ import { queryOne, tx } from "./db";
++import { purgeGmForUser } from "./me-v3/report-gm/inputs";
+ 
+ /** 전자상거래법 시행령 제6조: 대금결제·재화공급 기록 5년 */
+ export const ORDER_RETENTION_YEARS = 5;
+@@ -79,6 +80,26 @@ export async function isErased(userId: string): Promise<boolean> {
+ export async function anonymizeUser(
+   userId: string,
+   opts: { requestedBy: "self" | "admin"; reason?: string } = { requestedBy: "self" },
++): Promise<ErasureResult> {
++  const res = await anonymizeInDb(userId, opts);
++  /**
++   * **Gold Master 파일도 지운다**(Track E 요청 3). 입력 고정 파일과 뽑은 PDF 에는
++   * 경험 기록의 제목과 고른 항목이 들어 있다. DB 줄만 떼어 내고 파일을 남기면
++   * 파기가 반쪽이다.
++   *
++   * 파일은 트랜잭션에 들지 않으므로 **DB 가 확정된 뒤에** 지운다. 이미
++   * 익명화된 계정이어도 다시 부른다: 앞선 파기가 DB 를 확정하고 파일을 지우기
++   * 전에 끊겼다면, 다시 누른 파기가 남은 파일을 지운다(두 번 돌려도 탈이 없다).
++   * 못 지우면 던진다: 조용히 넘기면 아무도 남은 파일을 모른다.
++   */
++  const gm = await purgeGmForUser(userId);
++  if (gm.input || gm.output) res.removed["gm_files"] = gm.input + gm.output;
++  return res;
++}
++
++async function anonymizeInDb(
++  userId: string,
++  opts: { requestedBy: "self" | "admin"; reason?: string },
+ ): Promise<ErasureResult> {
+   return tx(async (c) => {
+     const who = await c.query<{ id: string; erased_at: string | null }>(
+@@ -97,6 +118,13 @@ export async function anonymizeUser(
+       const res = await c.query(`DELETE FROM ${table} WHERE user_id = $1`, [userId]);
+       if (res.rowCount) removed[table] = res.rowCount;
+     }
++    /* **굳은 줄의 GM 입력을 비운다.** 그 칸은 경험 기록의 제목과 고른 항목을
++       들고 있다(요청 2). 응답 · 점수 · 결과 모델은 위의 `KEEP` 대로 남긴다 */
++    const gm = await c.query(
++      `UPDATE v3_snapshots SET gm_inputs = NULL
++        WHERE gm_inputs IS NOT NULL
++          AND attempt_id IN (SELECT id FROM v3_attempts WHERE user_id = $1)`, [userId]);
++    if (gm.rowCount) removed["v3_snapshots.gm_inputs"] = gm.rowCount;
+ 
+     const dead = randomBytes(32).toString("base64");
+     await c.query(
+diff --git a/src/lib/me-v3/report-gm/inputs.ts b/src/lib/me-v3/report-gm/inputs.ts
+index ef77bedb..425723ec 100644
+--- a/src/lib/me-v3/report-gm/inputs.ts
++++ b/src/lib/me-v3/report-gm/inputs.ts
+@@ -19,6 +19,10 @@
+  *    (`var/gm-inputs/`, gitignore)이고 **운영 PDF 폴더(`var/reports`)를 쓰지
+  *    않는다.**
+  *
++ * **제출 때 굳힌 줄이 있으면 그것이 먼저다**(요청 2 · `v3_snapshots.gm_inputs`).
++ * 그 줄은 제출 트랜잭션이 같은 기준 시각 규칙으로 적은 것이라 파일을 만들지
++ * 않는다. 위의 두 규칙은 그 칸이 서기 전에 굳은 응시(NULL)에만 쓴다.
++ *
+  * **이 파일은 판정을 하지 않는다.** 결과 모델은 굳은 줄 그대로이고 경험 기록을
+  * 고르는 규칙 하나만 있다.
+  */
+@@ -30,6 +34,7 @@ import { coreOf, type ResultModel } from "@/lib/me-v3/result/model";
+ import { resultMeta } from "@/lib/me-v3/result/meta";
+ import type { Experience } from "@/lib/me-v3/platform";
+ import { canReadParticipantReport, type Actor } from "@/lib/rbac";
++import { GM_EXPERIENCE_COLUMNS, type GmSnapshotInputs } from "./snapshot-inputs";
+ 
+ /**
+  * 판본. **`gm-input.2`**: 경험 기록의 한 줄 설명(`note_text`)을 담지 않는다.
+@@ -54,8 +59,10 @@ export type GmInput = {
+   result_model: ResultModel;
+   meta: Awaited<ReturnType<typeof resultMeta>>;
+   experiences: Experience[];
+-  /** 기준 시각 뒤에 만들었거나 고쳐서 넣지 않은 기록. 제목과 까닭만 */
+-  excluded: { id: string; title: string; why: "created_after" | "edited_after" }[];
++  /** 기준 시각 뒤에 만들었거나 고쳐서 넣지 않은 기록. 제목과 까닭만(굳은 줄에서 온 것은 제목이 없다) */
++  excluded: { id: string; title?: string; why: "created_after" | "edited_after" }[];
++  /** 어디서 왔는가: 제출 때 굳힌 줄(`snapshot`) · 이 모듈이 모은 것(`file`) */
++  source?: "snapshot" | "file";
+   /** 위 칸(이 칸 제외)을 정렬한 JSON 의 sha256 */
+   sha256: string;
+ };
+@@ -78,12 +85,19 @@ export function shaOf(v: unknown): string {
+   return createHash("sha256").update(JSON.stringify(canon(v))).digest("hex");
+ }
+ 
+-/** DB 에서 입력을 새로 모은다. **파일을 쓰지 않는다** */
++/**
++ * DB 에서 입력을 새로 모은다. **파일을 쓰지 않는다.**
++ *
++ * 가장 최근 굳은 줄에 `gm_inputs` 가 있으면 그 경험 기록을 그대로 쓴다(지금
++ * 표를 다시 읽지 않는다). 없으면(그 칸이 서기 전에 굳은 응시) 기준 시각 규칙으로
++ * 지금 표에서 고른다.
++ */
+ export async function collectInput(attemptId: string): Promise<GmInput> {
+   const row = await queryOne<{
+     result_model: ResultModel; tier: string; user_id: string; frozen: string;
++    gm_inputs: GmSnapshotInputs | null;
+   }>(
+-    `SELECT s.result_model, a.tier, a.user_id::text,
++    `SELECT s.result_model, a.tier, a.user_id::text, s.gm_inputs,
+             to_char(s.created_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS frozen
+        FROM v3_snapshots s JOIN v3_attempts a ON a.id = s.attempt_id
+       WHERE s.attempt_id = $1 AND s.result_model IS NOT NULL
+@@ -91,10 +105,23 @@ export async function collectInput(attemptId: string): Promise<GmInput> {
+   if (!row) throw new Error(`${attemptId}: 굳은 결과가 없다`);
+   const core = coreOf(row.result_model);
+   const meta = await resultMeta(attemptId, core);
++  const body0 = {
++    version: GM_INPUT_VERSION, attempt_id: attemptId, user_id: row.user_id, core,
++    tier: row.tier, frozen_at: row.frozen, made_at: new Date().toISOString(),
++    result_model: row.result_model, meta,
++  };
++  if (row.gm_inputs) {
++    /* 제출 때 굳힌 줄. 기준 시각은 같은 트랜잭션의 now() 라 row.frozen 과 같다 */
++    const body = {
++      ...body0, frozen_at: row.gm_inputs.frozen_at,
++      experiences: row.gm_inputs.experiences as unknown as Experience[],
++      excluded: row.gm_inputs.excluded, source: "snapshot" as const,
++    };
++    const { made_at: _m, ...hashed } = body;
++    return { ...body, sha256: shaOf(hashed) } as GmInput;
++  }
+   const all = await query<Experience & { created: string; updated: string | null }>(
+-    `SELECT id::text, kind, title, started_on::text, ended_on::text,
+-            td_codes, axis_codes, problems, decisions, artifacts, verifications,
+-            used_where, status, created_at::text,
++    `SELECT ${GM_EXPERIENCE_COLUMNS.join(", ")},
+             to_char(created_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS created,
+             to_char(updated_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS updated
+        FROM v3_experiences
+@@ -108,11 +135,7 @@ export async function collectInput(attemptId: string): Promise<GmInput> {
+     else if (updated && updated > row.frozen) excluded.push({ id: e.id, title: e.title, why: "edited_after" });
+     else experiences.push(rest as Experience);
+   }
+-  const body = {
+-    version: GM_INPUT_VERSION, attempt_id: attemptId, user_id: row.user_id, core,
+-    tier: row.tier, frozen_at: row.frozen, made_at: new Date().toISOString(),
+-    result_model: row.result_model, meta, experiences, excluded,
+-  };
++  const body = { ...body0, experiences, excluded, source: "file" as const };
+   const { made_at: _m, ...hashed } = body;
+   return { ...body, sha256: shaOf(hashed) } as GmInput;
+ }
+@@ -127,10 +150,20 @@ export function inputFile(attemptId: string): string {
+  *
+  * **굳혀 둔 파일이 굳은 결과와 어긋나면 쓰지 않는다**: 등급을 올려 응시가
+  * 다시 굳으면 결과 줄이 새로 생기고, 그때는 그 결과를 기준으로 다시 모은다.
++ *
++ * **굳은 줄에 입력이 있으면 파일을 읽지도 쓰지도 않는다**(`reused: true`).
++ * `allowFile: false` 면 굳은 줄이 없을 때 파일을 만들지 않고 던진다: 운영
++ * 입구(`/v3/{id}/report/gm`)는 개인정보 파일을 새로 만들지 않는다.
+  */
+-export async function frozenInput(attemptId: string): Promise<{ input: GmInput; reused: boolean }> {
++export async function frozenInput(
++  attemptId: string, opts: { allowFile?: boolean } = {},
++): Promise<{ input: GmInput; reused: boolean }> {
+   const file = inputFile(attemptId);
+   const fresh = await collectInput(attemptId);
++  if (fresh.source === "snapshot") return { input: fresh, reused: true };
++  if (opts.allowFile === false) {
++    throw new Error(`${attemptId}: 제출 때 굳힌 GM 입력이 없다(이 칸이 서기 전에 굳은 응시)`);
++  }
+   if (existsSync(file)) {
+     const kept = JSON.parse(readFileSync(file, "utf8")) as GmInput;
+     const { made_at: _m, sha256, ...hashed } = kept;
+diff --git a/src/lib/me-v3/report-gm/snapshot-inputs.ts b/src/lib/me-v3/report-gm/snapshot-inputs.ts
+new file mode 100644
+index 00000000..3b474a4d
+--- /dev/null
++++ b/src/lib/me-v3/report-gm/snapshot-inputs.ts
+@@ -0,0 +1,87 @@
++/**
++ * **제출하는 순간 Gold Master 입력(경험 기록)을 스냅샷과 같은 줄에 적는다**
++ * (Track E 요청 2 · Core 요청 1 의 바른 해법).
++ *
++ * 전에는 GM 이 처음 뽑히는 날 경험 기록을 모아 파일(`var/gm-inputs/`)로 굳혔다.
++ * 그 사이에 고친 기록은 되살릴 수 없어 빼야 했고(`edited_after`), 파일은
++ * 볼륨 · 재배포 · 파기를 따로 챙겨야 했다. 제출 트랜잭션 안에서 적으면 기준
++ * 시각이 **스냅샷의 `created_at` 과 같은 `now()`** 가 되고 파일이 필요 없다.
++ *
++ * **담는 칸은 아래 목록뿐이다.** `SELECT *` · `row_to_json(e)` 를 쓰지 않는다:
++ * 표에 칸이 늘면 그 칸이 말없이 굳은 줄로 들어온다. 특히 한 줄 메모
++ * (`note_text`)는 DB 가 1년 뒤 지우는 자유입력이라(`purge_after`) 굳은 줄에
++ * 들어가면 지운 뒤에도 남는다. GM 렌더는 그 칸을 읽지 않는다.
++ * `scripts/lab/trackE-r3.ts` S1 이 그 칸이 다시 들어오면 걸리는지 센다.
++ *
++ * 이 파일은 `pg` 의 형만 쓴다: 제출 경로(`runtime/session.ts`)가 GM 렌더 쪽
++ * 모듈을 끌어오지 않게 한다.
++ */
++import type { PoolClient } from "pg";
++
++/** 굳은 줄의 판본. 칸을 더하거나 빼면 올린다 */
++export const GM_SNAPSHOT_VERSION = "gm-snap.1";
++
++/**
++ * **GM 을 받을 수 있는 응시에만 적는다.** 모든 제출에 경험 기록 사본을 남기면
++ * GM 과 상관없는 사람의 글까지 한 벌 더 생긴다(개인정보 최소화). 등급을 올려
++ * 다시 제출하면 새 줄이 생기므로 그때 적힌다. 접근 판정(`access.ts`)도 이것을 읽는다.
++ */
++export const GM_CORES: readonly string[] = ["BIZ_CORE_V1"];
++export const GM_TIERS: readonly string[] = ["PRO"];
++export const gmEligible = (core: string, tier: string): boolean =>
++  GM_CORES.includes(core) && GM_TIERS.includes(tier);
++
++/**
++ * 경험 기록에서 GM 이 읽는 칸. **여기 없는 칸은 굳은 줄에 들어가지 않는다.**
++ * 빼는 칸: `note_text`(자유입력 · 1년 파기) · `purge_after` · `user_id`(줄이
++ * 이미 응시에 붙어 있다) · `core_code`(같은 값) · `updated_at`.
++ */
++export const GM_EXPERIENCE_COLUMNS = [
++  "id::text AS id", "kind", "title", "started_on::text AS started_on", "ended_on::text AS ended_on",
++  "td_codes", "axis_codes", "problems", "decisions", "artifacts", "verifications",
++  "used_where", "status", "created_at::text AS created_at",
++] as const;
++
++export type GmSnapshotInputs = {
++  version: typeof GM_SNAPSHOT_VERSION;
++  /** 스냅샷의 `created_at` 과 같은 값(같은 트랜잭션의 `now()`) */
++  frozen_at: string;
++  core: string;
++  experiences: Record<string, unknown>[];
++  /** 기준 시각 뒤에 만들어졌거나 고쳐진 기록. **제목을 담지 않는다**: 번호와 까닭만 */
++  excluded: { id: string; why: "created_after" | "edited_after" }[];
++};
++
++const ISO = `'YYYY-MM-DD"T"HH24:MI:SS.US"Z"'`;
++
++/**
++ * 제출 트랜잭션 안에서 부른다. `now()` 는 트랜잭션 하나에 한 값이라 여기서
++ * 읽은 시각이 곧 스냅샷 줄의 `created_at` 이다.
++ *
++ * 읽기 격리가 READ COMMITTED 라 이 문장 직전에 다른 트랜잭션이 넣은 기록이
++ * 보일 수 있다. 그 기록의 `created_at` 은 이 트랜잭션의 `now()` 보다 늦으므로
++ * 기준 시각 규칙(`<=`)으로 거른다.
++ */
++export async function gmInputsInTx(
++  c: PoolClient, userId: string, core: string,
++): Promise<GmSnapshotInputs> {
++  const at = await c.query<{ frozen: string }>(
++    `SELECT to_char(now() AT TIME ZONE 'UTC', ${ISO}) AS frozen`);
++  const frozen = at.rows[0].frozen;
++  const rows = await c.query<Record<string, unknown> & { _created: string; _updated: string | null }>(
++    `SELECT ${GM_EXPERIENCE_COLUMNS.join(", ")},
++            to_char(created_at AT TIME ZONE 'UTC', ${ISO}) AS _created,
++            to_char(updated_at AT TIME ZONE 'UTC', ${ISO}) AS _updated
++       FROM v3_experiences
++      WHERE user_id = $1 AND core_code = $2
++      ORDER BY created_at DESC, id DESC`, [userId, core]);
++  const experiences: Record<string, unknown>[] = [];
++  const excluded: GmSnapshotInputs["excluded"] = [];
++  for (const r of rows.rows) {
++    const { _created, _updated, ...rest } = r;
++    if (_created > frozen) excluded.push({ id: String(r.id), why: "created_after" });
++    else if (_updated && _updated > frozen) excluded.push({ id: String(r.id), why: "edited_after" });
++    else experiences.push(rest);
++  }
++  return { version: GM_SNAPSHOT_VERSION, frozen_at: frozen, core, experiences, excluded };
++}
+diff --git a/src/lib/me-v3/runtime/session.ts b/src/lib/me-v3/runtime/session.ts
+index 9a8d682c..065da6fe 100644
+--- a/src/lib/me-v3/runtime/session.ts
++++ b/src/lib/me-v3/runtime/session.ts
+@@ -40,6 +40,7 @@ import { buildResult } from "../result/build";
+ import type { ResultModel } from "../result/model";
+ import { RESULT_COPY_VERSION, RESULT_MODEL_VERSION, RESULT_UI_VERSION } from "../result/version";
+ import { WORKSPACE_UI_VERSION } from "../workspace-version";
++import { gmEligible, gmInputsInTx } from "../report-gm/snapshot-inputs";
+ 
+ /**
+  * **core 를 글자로 박지 않는다.** 어느 Major Core 를 읽을지는 응시와
+@@ -1165,14 +1166,22 @@ export async function submit(a: V3Attempt): Promise<{ snapshot: Snapshot; id: st
+      * 쪽은 **이미 굳은 줄**을 돌려받고 아무것도 더 쓰지 않는다.
+      */
+ 
++    /**
++     * **Gold Master 입력을 같은 줄에 굳힌다**(Track E 요청 2). 같은 트랜잭션의
++     * `now()` 라 기준 시각이 이 줄의 `created_at` 과 같다. 담는 칸은
++     * `GM_EXPERIENCE_COLUMNS` 뿐이고 한 줄 메모(`note_text`)는 넣지 않는다.
++     * GM 을 받을 수 없는 응시에는 적지 않는다(NULL).
++     */
++    const gm = gmEligible(a.core_code, a.tier) ? await gmInputsInTx(c, a.user_id, a.core_code) : null;
+     const ins = await c.query<{ id: string }>(
+       `INSERT INTO v3_snapshots
+          (attempt_id, module_versions, response_quality, payload,
+-          result_model, result_model_version, result_copy_version)
+-       VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING id::text`,
++          result_model, result_model_version, result_copy_version, gm_inputs)
++       VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING id::text`,
+       [a.id, JSON.stringify(versions),
+        snapshot.response_quality.flag, JSON.stringify(snapshot),
+-       JSON.stringify(result), RESULT_MODEL_VERSION, RESULT_COPY_VERSION],
++       JSON.stringify(result), RESULT_MODEL_VERSION, RESULT_COPY_VERSION,
++       gm ? JSON.stringify(gm) : null],
+     );
+     await c.query(
+       `UPDATE v3_attempts SET status='scored', submitted_at=now(), current_screen='done'

@@ -1,0 +1,13 @@
+
+── S1 제출 = 같은 트랜잭션의 GM 입력 · note_text 재유입 회귀
+  통과  BIZ PRO 제출이 굳은 줄에 gm_inputs 를 적는다 — gm-snap.1
+  통과  스냅샷 created_at = gm_inputs.frozen_at = submitted_at — 2026-10-20T10:32:33.162981Z · 2026-10-20T10:32:33.162981Z · 2026-10-20T10:32:33.162981Z
+  통과  스냅샷 줄과 응시 줄을 같은 트랜잭션이 썼다(xmin 같음) — true
+  통과  (전제) DB 경험 기록에는 note_text 가 적혀 있다 — 자유입력 한 줄 — 굳은 줄에 남으면 안 된다 R3
+  걸림  gm_inputs 어디에도 note_text 열쇠가 없다(재유입 회귀) — note_text
+  걸림  gm_inputs 글 어디에도 그 자유입력 값이 없다
+  통과  gm_inputs 에 purge_after · user_id 가 없다
+  통과  경험 한 줄의 칸 = 허용 목록(GM_EXPERIENCE_COLUMNS)과 정확히 같다 — artifacts,axis_codes,created_at,decisions,ended_on,id,kind,note_text,problems,started_on,status,td_codes,title,used_where,verifications
+  걸림  허용 목록 자체에 note_text 가 없다 — id::text AS id kind title started_on::text AS started_on ended_on::text AS ended_on td_codes axis_codes problems decisions artifacts verifications used_where status created_at::text AS created_at note_text
+
+확인 9가지 — 통과 6 · 걸림 3 · 관찰 0

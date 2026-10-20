@@ -1,0 +1,67 @@
+── 옮기는 줄의 원본이 실제로 있는가 ──────────────
+  OK   /app/.next/standalone  (빌드가 만든다)
+  OK   /app/.next/static  (빌드가 만든다)
+  OK   /app/public
+  OK   /app/db
+  OK   /app/ops-build  (빌드가 만든다)
+  OK   /app/data/metri/items_pca_me_v1.json
+  OK   deploy/ops/db-init.sh
+  OK   deploy/ops/db-upgrade.sh
+  OK   deploy/ops/db-verify.sh
+  OK   deploy/runtime-needs.json
+  OK   deploy/db-chain.json
+  OK   deploy/ops/package.json
+  OK   /app/sites/pca-platform
+  OK   /app/sites/careermetri/legal
+  OK   /app/data/report-gm
+  OK   /app/data/region
+  OK   deploy/fonts-ko.conf
+  OK   deploy/entrypoint.sh
+
+── 돌리는 데 필요한 자리가 이미지에 들어오는가 ────
+  OK   server.js  ← /app/.next/standalone
+  OK   .next/static  ← /app/.next/static
+  OK   public  ← /app/public
+  OK   db  ← /app/db
+  OK   ops/make-admin.cjs  ← /app/ops-build
+  OK   ops/seed-instrument.cjs  ← /app/ops-build
+  OK   ops/db-init.sh  ← deploy/ops/db-init.sh
+  OK   ops/db-upgrade.sh  ← deploy/ops/db-upgrade.sh
+  OK   ops/db-verify.sh  ← deploy/ops/db-verify.sh
+  OK   deploy/db-chain.json  ← deploy/db-chain.json
+  OK   data/metri/items_pca_me_v1.json  ← /app/data/metri/items_pca_me_v1.json
+  OK   sites/pca-platform/v2.html  ← /app/sites/pca-platform
+  OK   sites/pca-platform/assets  ← /app/sites/pca-platform
+  OK   sites/pca-platform/data  ← /app/sites/pca-platform
+  OK   sites/careermetri/legal/01-terms.md  ← /app/sites/careermetri/legal
+  OK   sites/careermetri/legal/02-privacy.md  ← /app/sites/careermetri/legal
+  OK   sites/careermetri/legal/03-refund.md  ← /app/sites/careermetri/legal
+  OK   ops/pg-smoke.cjs  ← /app/ops-build
+  OK   ops/pg-confirm.cjs  ← /app/ops-build
+  OK   ops/pilot-check.cjs  ← /app/ops-build
+  OK   ops/pcu-org.cjs  ← /app/ops-build
+  OK   ops/pcu-open.cjs  ← /app/ops-build
+  OK   ops/pcu-students.cjs  ← /app/ops-build
+  OK   ops/pcu-diag.cjs  ← /app/ops-build
+  OK   ops/staging-bootstrap.cjs  ← /app/ops-build
+  OK   ops/staging-check.cjs  ← /app/ops-build
+  OK   data/report-gm/biz-pro-toc.v1.json  ← /app/data/report-gm
+  OK   data/report-gm/biz-role-guide.json  ← /app/data/report-gm
+  OK   data/report-gm/biz-company-guide.json  ← /app/data/report-gm
+  OK   data/region/dart-checks.v1.json  ← /app/data/region
+  OK   data/region/dart-overview.v1.json  ← /app/data/region
+  OK   data/region/kr-chungcheong-orgs.v2.json  ← /app/data/region
+
+── 이미지가 들고 있어야 하는 환경값 ──────────────
+  OK   REPORT_PDF_DIR=/app/var/reports
+  OK   CHROMIUM_PATH=/usr/bin/chromium-browser
+  OK   HOSTNAME=0.0.0.0
+  OK   패키지 chromium
+  OK   패키지 font-noto-cjk
+  OK   패키지 postgresql-client
+  OK   패키지 bash
+  OK   fonts-ko.conf
+  OK   PDF 폴더를 미리 만든다
+  OK   PORT 를 밖에서 받는다
+
+이미지 구성 OK.

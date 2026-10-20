@@ -1,0 +1,6 @@
+31,32c31,32
+< if (process.env.PGPORT !== "5433" || !/^postgres(ql)?:\/\/\/cm_iso_c\b/.test(URL_)) {
+<   console.error(`격리 클러스터(5433 · cm_iso_c)가 아니다: ${URL_}`); process.exit(2);
+---
+> if (process.env.PGPORT !== "5433" || !/^postgres(ql)?:\/\/\/cm_iso_e3\b/.test(URL_)) {
+>   console.error(`격리 클러스터(5433 · cm_iso_e3)가 아니다: ${URL_}`); process.exit(2);

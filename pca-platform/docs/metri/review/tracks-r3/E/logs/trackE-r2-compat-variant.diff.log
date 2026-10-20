@@ -1,0 +1,11 @@
+31,32c31,32
+< if (process.env.PGPORT !== "5433" || !/^postgres(ql)?:\/\/\/cm_iso_c\b/.test(URL_)) {
+<   console.error(`격리 클러스터(5433 · cm_iso_c)가 아니다: ${URL_}`); process.exit(2);
+---
+> if (process.env.PGPORT !== "5433" || !/^postgres(ql)?:\/\/\/cm_iso_e3\b/.test(URL_)) {
+>   console.error(`격리 클러스터(5433 · cm_iso_e3)가 아니다: ${URL_}`); process.exit(2);
+72c72,73
+<   const raw = readFileSync(inputFile(a.id), "utf8");
+---
+>   /* r3 호환: 굳은 줄이 있으면 파일이 없다 — 그때는 굳은 줄의 글을 본다 */
+>   const raw = existsSync(inputFile(a.id)) ? readFileSync(inputFile(a.id), "utf8") : JSON.stringify((await queryOne<{ g: unknown }>(`SELECT gm_inputs g FROM v3_snapshots WHERE attempt_id=$1 ORDER BY created_at DESC LIMIT 1`, [a.id]))?.g);
