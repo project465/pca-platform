@@ -47,6 +47,10 @@ async function shot(p: Page, name: string, view: View) {
   /* 그림 하나가 실제 Next 응답인지: 하네스 표지가 없고, Next 가 내주는 번들이 붙어 있어야 한다 */
   const html = await p.content();
   ok(`${name}(${view}) 는 Next 가 그린 쪽이다`, html.includes("/_next/static/") && !html.includes("harness"), path(p));
+  /* 학생 · 담당자 화면에 우리 쪽 코드(Core 코드 · 학과 코드 · 요청서 번호 · 문서 경로 · 상태 영문값)가 서지 않는다 */
+  const body = await p.locator("body").innerText();
+  const leak = body.match(/\b[A-Z]+_CORE_V\d|\bKUS26_[A-Z_]+|\bKUS-CR-\d+|docs\/kus\/|\b(?:PLANNED|CONFIRMED|CANCELLED|SELF_REPORT_ONLY|LOW_VARIANCE)\b/);
+  ok(`${name}(${view}) 에 내부 코드가 없다`, !leak, leak?.[0] ?? "");
   const over = await p.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   ok(`${name}(${view}) 가로로 넘치지 않는다`, over <= 1, `${over}px`);
   await p.screenshot({ path: file, fullPage: true, type: "jpeg", quality: 72 });

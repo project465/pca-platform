@@ -16,7 +16,7 @@
 import {
   allLeaves, leafOpen, statusOf, university, type CampusLeaf, type CampusUniversity,
 } from "@/lib/campus/registry";
-import { previewOpen, sellableCores } from "@/lib/me-v3/core-registry";
+import { core, previewOpen, sellableCores } from "@/lib/me-v3/core-registry";
 
 export const KUS_CODE = "KUS";
 /** KUS 기관 줄의 `organizations.code`. 담당자 소속이 여기에 묶인다 */
@@ -46,7 +46,26 @@ export function modeOf(u: CampusUniversity, row: CampusLeaf): KusMode {
 export type KusDept = {
   code: string; name: string; college: string; unit: string | null;
   core_code: string | null; mode: KusMode; note: string | null;
+  /** 교육과정 대조 등급(A·B·C·D·R). 화면에는 `COMPAT_KO` 로만 선다 */
+  compat: string | null;
+  /** 그 자리가 가리키는 전공 검사의 이름. 담당자 표에 Core 코드를 적지 않으려고 둔다 */
+  core_name: string | null;
 };
+
+/** 교육과정 대조 등급의 사람 말. 리포트와 담당자 표가 같은 표를 읽는다 */
+export const COMPAT_KO: Record<string, string> = {
+  A: "A · 교육과정 대조로 Core 를 바로 쓰는 학과",
+  B: "B · Core 를 잇되 근거 보완이 남은 학과",
+  C: "C · 전공 데이터가 더 필요한 학과",
+  D: "D · 지금은 검사를 제공하지 않는 학과",
+  R: "R · 전공을 고르는 모집단위",
+};
+
+function coreName(code: string | null | undefined): string | null {
+  if (!code) return null;
+  /* 등록부에 없는 코드면 이름을 지어내지 않고 비운다(표는 `연결한 검사 없음` 으로 선다) */
+  try { return core(code).name_ko; } catch { return null; }
+}
 
 /** 학과 목록. 화면과 담당자 표가 같은 줄을 읽는다 */
 export function kusDepartments(u = kusUniversity()): KusDept[] {
@@ -61,6 +80,8 @@ export function kusDepartments(u = kusUniversity()): KusDept[] {
       core_code: r.leaf.core_code ?? null,
       mode: modeOf(u, r),
       note: r.leaf.note ?? null,
+      compat: (r.leaf as { compat?: string }).compat ?? null,
+      core_name: coreName(r.leaf.core_code),
     }));
 }
 

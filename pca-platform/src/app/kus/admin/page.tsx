@@ -3,12 +3,23 @@ import { appEnv } from "@/lib/env";
 import { campusV3 } from "@/lib/me-v3/campus";
 import { campusStudentCount } from "@/lib/campus/students";
 import { requireKusAdmin } from "@/lib/kus/access";
-import { KUS_CODE, MODE_KO, kusDepartments } from "@/lib/kus/program";
+import { COMPAT_KO, KUS_CODE, MODE_KO, kusDepartments } from "@/lib/kus/program";
 import { visitCounts, visitPrograms } from "@/lib/kus/visits";
 import { KusHead, KusNote } from "../shell";
 import { registerProgram } from "./actions";
 
 export const dynamic = "force-dynamic";
+
+const VISIT_STATUS_KO: Record<string, string> = { PLANNED: "예정", CONFIRMED: "확정", DONE: "완료", CANCELLED: "취소" };
+
+/**
+ * 담당자 표의 메모. 등록부의 `note` 는 우리 쪽 작업 기록(Core 코드 · 문서 경로)이라 담당자에게
+ * 그대로 세우지 않는다. 적는 것은 어느 전공 검사로 재는가와 교육과정 대조 등급뿐이다.
+ */
+function memoOf(d: { core_name: string | null; compat: string | null }): string {
+  const what = d.core_name ? `${d.core_name} 검사로 잽니다` : "연결한 전공 검사가 아직 없습니다";
+  return d.compat && COMPAT_KO[d.compat] ? `${what} · ${COMPAT_KO[d.compat]}` : what;
+}
 
 /**
  * KUS 담당자 화면. **집계와 탐방 등록뿐이다.**
@@ -49,15 +60,20 @@ export default async function KusAdmin({ searchParams }: { searchParams: Promise
           <tbody>{depts.map((d) => (
             <tr key={d.code}><td>{d.college}</td><td><b>{d.name}</b>{d.unit ? <><br /><small>{d.unit}</small></> : null}</td>
               <td><span className={`kus-pill ${d.mode === "LIVE" ? "is-ok" : d.mode === "DEMO" ? "is-warn" : ""}`}>{MODE_KO[d.mode]}</span></td>
-              <td><small>{d.note ?? ""}</small></td></tr>))}</tbody>
+              <td><small>{memoOf(d)}</small></td></tr>))}</tbody>
         </table></div>
-        <p className="cm-shsub">학과 목록은 공식 주소를 출처로 든 검색 요지에서 옮겼고 원문 대조 전입니다. 참여 학생 전공이 확인되면 여는 순서를 바꿉니다.</p>
+        <p className="cm-shsub">학과 목록은 공식 주소를 출처로 든 검색 요지에서 옮겼고 원문 대조 전입니다. 등급은 학과 교육과정과 검사 영역을 대조한 것이고 측정 타당도 검증이 아닙니다. 참여 학생 전공이 확인되면 여는 순서를 바꿉니다.</p>
       </section>
 
       <section className="kus-panel">
         <SectionHeader icon="layers" title="학과별 완료(5명 이상인 칸만)" />
         {agg.by_department.length ? (
-          <ul>{agg.by_department.map((c) => <li key={c.key}>{c.label}: {c.n ?? "5명 미만"}</li>)}</ul>
+          <div className="kus-scroll"><table className="kus-table">
+            <thead><tr><th>학과·전공</th><th>완료</th></tr></thead>
+            <tbody>{agg.by_department.map((c) => (
+              <tr key={c.key}><td><b>{depts.find((d) => d.code === c.key)?.name ?? c.label}</b></td>
+                <td>{c.n === null ? "5명 미만이라 수를 적지 않습니다" : `${c.n}명`}</td></tr>))}</tbody>
+          </table></div>
         ) : <p className="cm-shsub">5명이 넘는 학과가 아직 없어 칸을 세우지 않았습니다.</p>}
       </section>
 
@@ -68,7 +84,7 @@ export default async function KusAdmin({ searchParams }: { searchParams: Promise
             <thead><tr><th>기업</th><th>날짜</th><th>상태</th><th>확인 근거</th></tr></thead>
             <tbody>{programs.map((p) => (
               <tr key={p.id}><td><b>{p.company_name}</b>{p.is_test ? <> <span className="kus-pill is-test">테스트</span></> : null}</td>
-                <td>{p.visit_date ?? "미정"}</td><td>{p.status}</td><td>{p.source_note ?? "확인 전"}</td></tr>))}</tbody>
+                <td>{p.visit_date ?? "미정"}</td><td>{VISIT_STATUS_KO[p.status] ?? p.status}</td><td>{p.source_note ?? "확인 전"}</td></tr>))}</tbody>
           </table></div>
         ) : <p className="cm-shsub">등록된 탐방 기업이 없습니다.</p>}
         <form action={registerProgram} className="kus-form" style={{ marginTop: 16 }}>

@@ -25,6 +25,7 @@
  */
 import type { KusAnalysis, PlanItem } from "./analysis";
 import { MODE_NOTE } from "./analysis";
+import { COMPAT_KO } from "./program";
 
 export const KUS_REPORT_VERSION = "kus-report.2";
 
@@ -52,13 +53,6 @@ const ZONE_CLASS: Record<string, string> = {
 };
 const STATE_CLASS: Record<string, string> = { OWNED: "s3", CONFIRMED: "s2", PARTICIPATED: "s1", NOT_OBSERVED: "s0" };
 const BASIS_CLASS: Record<string, string> = { SELF_REPORT_ONLY: "b0", PARTLY_BACKED: "b1", BACKED: "b2" };
-const COMPAT_KO: Record<string, string> = {
-  A: "A · 교육과정 대조로 Core 를 바로 쓰는 학과",
-  B: "B · Core 를 잇되 근거 보완이 남은 학과",
-  C: "C · 전공 데이터가 더 필요한 학과",
-  D: "D · 지금은 검사를 제공하지 않는 학과",
-  R: "R · 전공을 고르는 모집단위",
-};
 
 export type KusReportMeta = {
   attemptId: string; resultAt: string | null; generatedAt: string;
