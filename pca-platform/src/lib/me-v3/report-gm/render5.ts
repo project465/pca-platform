@@ -13,6 +13,7 @@
  * - **리포트 해석**은 해석이라고 적는다. 채용 여부는 어디에서도 단정하지 않는다.
  * - 공식 통계가 없는 자리는 숫자를 지어내지 않고 **빈 칸에 ‘확인 필요’ 와 부족 자료 번호**를 세운다.
  */
+import { withJosa } from "../result/josa";
 import type { Report3, CompanyDeep } from "./report3";
 import { esc, opener, CSS, faces, type Fonts } from "./render4";
 
@@ -107,15 +108,17 @@ export function d28(r: Report3, lib: Lib): string {
   const fin = pick(dart?.financials ?? null);
   const seg = dart?.staff?.by_segment ?? [];
   const first = r.priorities[0];
+  // 목표 직무는 학생마다 다르다: 경영기획으로 못 박지 않는다
+  const role = r.strategy.roleName || "경영 직무";
   const quote = (ov.excerpt ?? "").slice(0, 560).replace(/\s+\S*$/, "") + " …";
   const steps: [string, string, string][] = [
     ["무엇을 팔아 돈을 버나", "사업 부문과 수익이 들어오는 길을 한 줄로 적습니다. 제품을 파는지, 기술이나 권리를 계약으로 파는지가 첫 갈림길입니다.", "‘사업의 개요’ · ‘주요 제품’"],
     ["숫자로 맞춰 보나", `같은 보고서의 재무 쪽에서 매출과 영업이익을 찾아 위의 한 줄과 맞는지 봅니다.${fin ? ` 이 회사의 ${dart!.financials!.year}년 ${fin.kind} 매출은 ${eok(fin.v["매출액"])}억 원, 영업이익은 ${eok(fin.v["영업이익"])}억 원입니다.` : ""}`, "‘재무에 관한 사항’"],
     ["사람은 어디에 있나", `직원 현황을 사업부문별로 봅니다.${seg.length ? ` ${seg.map((s) => `${s.segment} ${s.count}명`).join(" · ")}.` : ""} 인원이 많은 부문이 회사가 돈과 시간을 쓰는 곳입니다.`, "‘직원 등의 현황’"],
-    ["경영기획은 무엇으로 재나", "위 셋을 읽고 나면 이 회사의 목표를 무엇으로 잴지 두세 개 적어 봅니다. 정답이 있는 문제가 아니라, 적은 지표마다 그 까닭을 한 줄씩 남기는 연습입니다.", "학생이 적는 칸"],
+    [`${withJosa(role, "은는")} 무엇으로 재나`, `위 셋을 읽고 나면 ${role}의 일에서 이 회사를 볼 지표를 두세 개 적어 봅니다. 정답이 있는 문제가 아니라, 적은 지표마다 그 까닭을 한 줄씩 남기는 연습입니다.`, "학생이 적는 칸"],
   ];
   return frame(r, lib, 28, `
-  ${opener("04", "목표 직무 실무 가이드 ②", "사업보고서로 산업과 회사를 읽는 법", `경영기획은 회사가 스스로 공시한 문서에서 사업 구조를 읽고 목표와 지표로 옮기는 일부터 합니다. 아래 원문은 ${name}가 금융감독원 전자공시에 낸 사업보고서의 첫 대목입니다.`)}
+  ${opener("04", "목표 직무 실무 가이드 ②", "사업보고서로 산업과 회사를 읽는 법", `${withJosa(role, "은는")} 회사가 스스로 공시한 문서에서 사업 구조를 읽는 데서 출발합니다. 아래 원문은 ${withJosa(name, "이가")} 금융감독원 전자공시에 낸 사업보고서의 첫 대목입니다.`)}
   <div class="g28">
     <figure class="quote"><span class="q-k">원문 인용</span><blockquote>${esc(quote)}</blockquote>
       <figcaption>${esc(name)} · ${esc(ov.report)} · 접수번호 ${esc(ov.rcept_no)} · ${esc(ov.section)}<br>${tag("OFFICIAL_DIRECT")} OpenDART 원문(${esc(lib.overview.checked_on)}) · 앞부분을 그대로 옮겼고 바꿔 쓰지 않았습니다.</figcaption></figure>

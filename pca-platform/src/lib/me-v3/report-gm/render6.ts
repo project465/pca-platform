@@ -18,6 +18,7 @@ import { roleGuide } from "./guide";
 import { JUDGE, STEP, VERIFY5, ZONE_SAID } from "./words";
 import { REGION_KO } from "./companies";
 import type { Level } from "./profile";
+import { withJosa } from "../result/josa";
 import { esc, opener, CSS, faces, signature, p2, p3, p5, type Fonts } from "./render4";
 import {
   CSS5, d25, d28, d36, d37, d43, d44, d56, d79, tag, eok, pick, dartOf, readSigns, ROLE_SHORT, ROLE_ORDER,
@@ -59,6 +60,86 @@ const roleName = (code: string) => ({
 
 /** 자기소개서 재료 가운데 이 회사 직무에 맞는 것을 고른다. 없으면 차례대로 돌려 쓰지 않고 첫 재료를 쓴다 */
 const storyFor = (r: Report3, c: CompanyDeep) => r.application.stories.find((s) => s.fits.some((f) => c.jobs.some((j) => j.name === f))) ?? r.application.stories[0];
+
+/* ── v7: 학생의 근거·빈자리·실행 과제를 기업·면접·자기소개서 쪽에 잇는 조각 ───────────────────
+ * 이 조각들은 모두 이미 굳은 값(`Report3`)을 다시 읽기만 한다. 새 판단·수치·채용 정보를 만들지 않고,
+ * 학생이 채워야 하는 자리는 ‘직접 기입’ 칸으로 남긴다. */
+
+/** 직무 줄의 판단 이름(“문서와 결과물 만들기 — …” 의 앞 토막) */
+const head = (s: string) => s.split(" — ")[0].trim();
+/** 응답에서 확인된 판단 줄을 “판단 — ‘고른 문장’” 으로 줄인다 */
+const shortHave = (s: string) => { const q = /(‘[^’]+’)/.exec(s)?.[1]; return q ? `${head(s)} — ${q}` : /고른 항목 없음/.test(s) ? `${head(s)} (응답만 · 고른 항목 없음)` : head(s); };
+/** 이 직무의 아직 확인되지 않은 판단과 같은 판단을 다루는 실행 과제 */
+const priorityFor = (r: Report3, needs: string[]) => r.priorities.find((p) => needs.some((n) => head(n) === p.what || n.includes(p.what)));
+const SLOT = (t: string) => `<span class="x-slot">${E(t)}</span>`;
+
+/** 기업 전략 쪽(설계 56·58·60·62)의 아래 칸: 이 회사에 먼저 꺼낼 내 근거 · 지원 전에 메울 빈자리 · 직접 기입할 것 */
+function coLink(r: Report3, c: CompanyDeep): string {
+  const j = c.jobs[0];
+  if (!j) return "";
+  const p = priorityFor(r, j.need);
+  const have = j.have.slice(0, 2).map(shortHave);
+  return `<div class="x-link">${H(`${c.name}에 쓰는 내 근거와 빈자리`, `${j.name} · 응답 그대로`)}<div class="x-g3">
+    <div><b>먼저 꺼낼 내 근거</b>${UL(have, "x-ul x-have", `이 직무에 걸리는 근거가 아직 없습니다 — 위 프로젝트가 첫 근거입니다`)}</div>
+    <div><b>지원 전에 메울 빈자리</b>${UL(j.need.slice(0, 2).map(head), "x-ul x-need", j.have.length && j.have.every((h) => /고른 항목 없음/.test(h)) ? "핵심 판단은 응답에서 확인됐지만 고른 근거 항목이 없음 — 장면 하나를 골라 근거로 남기는 일이 먼저" : "이 직무의 핵심 판단은 응답에서 모두 확인됨 — 남은 일은 결과 수치를 직접 채우는 것")}${p ? `<p class="x-sm">실행 과제 ${p.order}번 ${E(withJosa(`‘${p.title}’`, "과와"))} 같은 판단 — 남길 것 ${E(p.output)}</p>` : ""}</div>
+    <div><b>직접 기입할 것</b><ul class="x-fill"><li>과목·학기·팀 인원 ${SLOT("직접 기입")}</li><li>내가 맡은 몫 ${SLOT("직접 기입")}</li><li>결과 수치·기간 ${SLOT("직접 기입")}</li></ul></div>
+  </div></div>`;
+}
+
+/** 면접 질문 ① 의 답 재료: 질문마다 같은 영역이라도 다른 고른 문장을 쓴다(같은 줄을 되풀이하지 않게) */
+function kitConfirmed(r: Report3) {
+  const used = new Map<string, number>();
+  return (x: { q: string; why: string; material: string }) => {
+    const d = r.domains.find((d) => x.why.startsWith(d.name) || x.material.startsWith(d.name)) ?? r.domains.find((d) => d.decisions.length + d.acts.length);
+    if (!d) return "";
+    const k = used.get(d.code) ?? 0; used.set(d.code, k + 1);
+    const at = (xs: string[]) => xs[k] ?? xs[xs.length - 1];
+    const dec = at(d.decisions) ?? at(d.acts), art = at(d.artifacts), cmp = at(d.comparisons);
+    return `<dl class="x-kit"><div><dt>장면</dt><dd>${E(d.name)} · ${SLOT("과목·학기·팀 인원 직접 기입")}</dd></div>
+      <div><dt>내가 정한 것</dt><dd>${dec ? E(dec) : SLOT("직접 기입")}</dd></div>
+      <div><dt>남긴 것</dt><dd>${art ? E(art) : SLOT("결과물 이름 직접 기입")}</dd></div>
+      <div><dt>비교와 결과</dt><dd>${cmp ? `${E(cmp)} · ${SLOT("수치 직접 기입")}` : SLOT("무엇과 견줬고 얼마나 달라졌나 직접 기입")}</dd></div></dl>`;
+  };
+}
+/** 면접 질문 ② 의 답 재료: 아직 확인되지 않은 판단이라 지금 할 말과 면접 전에 만들 것을 가른다 */
+/** 빈자리 질문: 결과 모델이 고른 둘에 더해, 실행 과제의 나머지 판단도 같은 꼴로 묻는다(목표 직무 역할팩 문항이 있으면 그 말로) */
+function gapQs(r: Report3): QA[] {
+  const xs = r.application.interview.filter((x) => /^준비 —/.test(x.material));
+  for (const p of r.priorities) {
+    if (xs.length >= 4) break;
+    if (xs.some((x) => x.material.includes(p.todo) || x.why.includes(p.title))) continue;
+    xs.push({ q: p.ask ? `“${p.ask}”` : `“${p.domain} 과제에서 ${withJosa(p.what, "을를")} 직접 맡아 본 적이 있나요?”`, why: `${r.strategy.roleName}에서 ‘${p.title}’ 장면을 묻는 질문입니다. 아직 응답에서 확인되지 않아 미리 준비합니다`, material: `준비 — ${p.todo} → ${p.output}` });
+  }
+  return xs;
+}
+function kitGap(r: Report3) {
+  return (x: { q: string; why: string; material: string }) => {
+    const p = r.priorities.find((p) => x.material.includes(p.todo) || x.why.includes(p.title));
+    if (!p) return "";
+    return `<dl class="x-kit"><div><dt>지금 답할 것</dt><dd>${E(`아직 맡아 본 적은 없다고 먼저 말하고, ${withJosa(p.what, "이가")} 왜 필요한지를 이해한 만큼 한 문장으로`)}</dd></div>
+      <div><dt>면접 전에 만들 것</dt><dd>${E(`실행 과제 ${p.order}번 ‘${p.title}’ — ${p.output}`)}</dd></div>
+      <div><dt>언제 · 어디서</dt><dd>${E(`${p.when} · ${p.where || "수업·팀 과제"}`)}</dd></div>
+      <div><dt>만든 날</dt><dd>${SLOT("결과물 이름과 날짜 직접 기입")}</dd></div></dl>`;
+  };
+}
+/** 면접 질문 ③ 의 답 재료: 그 회사에서 확인된 사실 한 줄 + 내 근거 가운데 가장 가까운 것 */
+function kitCompany(r: Report3) {
+  const seen = new Map<string, number>();
+  const usedHave = new Set<string>();
+  return (x: { q: string; why: string; material: string }) => {
+    const c = r.companies.find((c) => x.why.startsWith(c.name));
+    if (!c) return "";
+    const k = seen.get(c.id) ?? 0; seen.set(c.id, k + 1);
+    const j = c.jobs[0];
+    const f = c.facts.find((f) => f.level === "OFFICIAL_DIRECT") ?? c.facts[0];
+    // 같은 근거를 회사마다 되풀이하지 않는다: 앞 질문에서 아직 쓰지 않은 근거를 고르고, 다 썼으면 그 회사의 결과물로 잇는다
+    const have = j?.have.find((h) => !usedHave.has(shortHave(h))) ?? null;
+    if (have) usedHave.add(shortHave(have));
+    // 같은 회사의 둘째 질문부터는 회사 사실을 다시 적지 않고, 다른 근거나 만들 결과물로 잇는다
+    return `<dl class="x-kit">${k === 0 ? `<div><dt>회사 사실 한 줄</dt><dd>${f ? `${E(f.text)} ${tag(f.level as "OFFICIAL_DIRECT")}` : SLOT("공식 원문에서 확인해 직접 기입")}</dd></div>` : ""}
+      <div><dt>${have ? "잇는 내 근거" : "만들 결과물"}</dt><dd>${have ? E(shortHave(have)) : E(`${j?.project.title ?? "첫 프로젝트"} — ${j?.project.output ?? ""}`)}</dd></div></dl>`;
+  };
+}
 
 /* ── 1부 표지·진단·요약 ─────────────────────────────────────────── */
 
@@ -156,7 +237,19 @@ function g7(r: Report3): string {
   <table class="x-map"><thead><tr><th></th>${COLS.map(([, t]) => `<th>${E(t)}</th>`).join("")}</tr></thead><tbody>
   ${ROWS.map(([b, t]) => `<tr><th>${E(t)}</th>${COLS.map(([lv]) => `<td>${cell(b, lv)}</td>`).join("")}</tr>`).join("")}</tbody></table>
   ${H("영역의 상태별 개수")}<ul class="x-zc">${Object.entries(ZONE_SAID).map(([k, z]) => `<li class="z-${k.slice(0, 2)}"><span>${cnt(k)}</span><b>${E(z.tag)}</b><em>${E(z.said)}</em></li>`).join("")}</ul>
+  ${H("이 지도에서 읽는 것", "이 학생의 칸 그대로")}${UL(mapRead(r), "x-ul")}
   <p class="src">${tag("GENERAL", "검사 응답")} 이 그림은 응답의 위치일 뿐 다른 학생과 견준 값이 아닙니다. 자세히 묻지 않은 영역은 경험이 없다는 뜻이 아닙니다.</p>`);
+}
+/** 열두 영역 지도를 칸 그대로 읽는 세 줄: 해 본 곳 · 관심은 높은데 아직인 곳 · 관심은 높은데 묻지 않은 곳 */
+function mapRead(r: Report3): string[] {
+  const nm = (xs: typeof r.map) => xs.map((m) => m.name).slice(0, 3).join(" · ");
+  const did = r.map.filter((m) => (m.depth ?? -1) >= 2), hiLow = r.map.filter((m) => m.interest === "HIGH" && (m.depth === 0 || m.depth === 1)), hiUn = r.map.filter((m) => m.interest === "HIGH" && m.depth === null);
+  const out: string[] = [];
+  const noPick = did.filter((m) => { const d = r.domains.find((x) => x.code === m.code); return d && !(d.decisions.length + d.acts.length + d.artifacts.length + d.comparisons.length); });
+  out.push(did.length ? `직접 해 봤다고 답한 영역은 ${nm(did)}입니다. 서류의 첫 근거는 이 칸에서 고릅니다.${noPick.length ? ` 다만 ${withJosa(nm(noPick), "은는")} 체크리스트에서 고른 근거 항목이 없어, 응답만으로는 서류에 쓸 장면이 아직 없습니다. 장면 하나를 골라 근거로 남기는 일이 먼저입니다.` : ""}` : "직접 해 봤다고 답한 영역은 아직 없습니다. 첫 근거는 실행 과제 1번에서 만듭니다.");
+  if (hiLow.length) out.push(`${withJosa(nm(hiLow), "은는")} 관심은 높지만 해 본 일이 적다고 답했습니다. 짧은 과제 하나로 실제로 맞는 일인지 먼저 확인합니다.`);
+  if (hiUn.length) out.push(`${withJosa(nm(hiUn), "은는")} 관심이 높은데 이번 검사에서 자세히 묻지 않았습니다. 해 본 장면이 있다면 경험 기록에 먼저 적어 두면 다음 검사에서 판단 질문을 받습니다.`);
+  return out;
 }
 
 function g8(r: Report3): string {
@@ -166,8 +259,10 @@ function g8(r: Report3): string {
   return pg(r, 8, `${opener("02", "개인 역량", "영역마다 본 여덟 판단", "자세히 물은 영역마다 여덟 가지 판단을 어디까지 해 봤다고 답했는지 적었습니다. 줄표는 그 영역에서 묻지 않은 판단입니다.")}
   <table class="mx"><thead><tr><th></th>${axes.map((a) => `<th>${E(JUDGE[a].name)}</th>`).join("")}</tr></thead>
   <tbody>${ds.map((d) => `<tr><th>${E(d.name)}<span class="x-sub">${E(d.zoneTag)}</span></th>${d.levels.map((l) => `<td>${pip(l.level)}</td>`).join("")}</tr>`).join("")}</tbody></table>
-  ${H("여덟 판단이 뜻하는 것", "경영 업무의 장면으로")}
-  <ol class="x-ax">${axes.map((a) => `<li><b>${E(JUDGE[a].name)}</b><p>${E(JUDGE[a].plain)}</p><em>예 — ${E(JUDGE[a].scene)}</em></li>`).join("")}</ol>
+  ${H("여덟 판단과 내 응답", "판단마다 직접 해 본 영역 · 아직인 영역")}
+  <ol class="x-ax">${axes.map((a) => { const lv = (d: DomainRead) => d.levels.find((l) => l.axis === a)?.level ?? null; const ok = ds.filter((d) => (lv(d) ?? -1) >= 2).map((d) => d.name); const part = ds.filter((d) => lv(d) === 1).map((d) => d.name); const none = ds.filter((d) => lv(d) === 0).map((d) => d.name); const few = (xs: string[]) => xs.length > 3 ? `${xs.slice(0, 3).join(" · ")} 외 ${xs.length - 3}곳` : xs.join(" · ");
+    const segs = [ok.length ? `직접 해 봄 — ${few(ok)}` : "", part.length ? `지시받아 해 봄 — ${few(part)}` : "", none.length ? `해 본 적 없음 — ${few(none)}` : ""].filter(Boolean);
+    return `<li><b>${E(JUDGE[a].name)}</b><p>${E(JUDGE[a].plain)}</p><em class="${ok.length ? "x-ok" : "x-no"}">${E(segs.join(" · ") || "이 판단은 자세히 묻지 않음")}</em></li>`; }).join("")}</ol>
   <p class="src">눈금 하나 ${E(STEP[1].tag)} · 둘 ${E(STEP[2].tag)} · 셋 ${E(STEP[3].tag)}. ‘기준까지 직접 결정’ 은 응답과 체크리스트 근거가 함께 있을 때만 셉니다.</p>`);
 }
 
@@ -227,7 +322,7 @@ function g15(r: Report3): Built {
   const pr = r.priorities.slice(0, 4);
   if (!pr.length) return skip(15, "목표 직무 기준으로 먼저 채울 판단이 응답에서 잡히지 않음");
   const role = r.strategy.roleName;
-  return { n: 15, html: pg(r, 15, `${opener("02", "역량 개발 우선순위", `${role}을 향한 실행 과제`, `목표로 고른 ${role}에서 거꾸로 세운 과제입니다. 모두 ${role}의 업무 영역이나 핵심 판단에서 골랐습니다.`)}
+  return { n: 15, html: pg(r, 15, `${opener("02", "역량 개발 우선순위", `${withJosa(role, "을를")} 향한 실행 과제`, `목표로 고른 ${role}에서 거꾸로 세운 과제입니다. 모두 ${role}의 업무 영역이나 핵심 판단에서 골랐습니다.`)}
   ${pr.map((x) => `<article class="x-pr"><div class="x-prn">${x.order}</div><div>
     <div class="x-prh"><span class="rel">${E(x.relationTag)}</span><span class="meta">${E(x.domain)} · 판단: ${E(x.what)}</span></div>
     <h2>${E(x.title)}</h2><p>${E(x.link)}</p>
@@ -354,9 +449,16 @@ function guidePages(r: Report3, lib: Lib, n: number, code: string | undefined, l
   <ol class="pj-s">${g.firstProject.steps.map((s) => `<li>${E(s)}</li>`).join("")}</ol><p class="x-sm">남길 것 — ${E(g.firstProject.output)} · 확인 — ${E(g.firstProject.check)}</p></article>
   <div class="x-g2"><div>${H("배우는 차례")}<ol class="x-ol">${g.learnOrder.slice(0, 4).map((l) => `<li><b>${E(l.step)}</b> — ${E(l.why)}</li>`).join("")}</ol></div>
   <div>${H("경험을 만드는 자리")}${UL(g.entry.slice(0, 4))}${H("면접에서 묻는 것")}<ul class="qs x-ul">${g.interview.slice(0, 2).map((q) => `<li>“${E(q.q)}”</li>`).join("")}</ul></div></div>
+  ${dir ? `${H(`이 과제와 내 응답`, `${name} · ${dir.readiness}`)}<div class="x-g2"><div><b>가져올 내 근거</b>${UL(dir.have.slice(0, 2).map((h) => `${h.domain} — ${h.text}`), "x-ul x-have", "아직 확인된 판단이 없어 이 과제가 첫 근거가 됩니다")}</div><div><b>이 과제로 채울 판단</b>${UL(dir.need.slice(0, 2).map((x) => x.name), "x-ul x-need", "없음")}</div></div>` : ""}
   <p class="src">${tag("GENERAL")} 직무 일반 안내(검토 전)입니다. 특정 기업의 요건이 아닙니다.</p>${gapsOf(lib, n)}`) };
 }
 
+/** 사업보고서 읽기 쪽 아래: 이 학생이 깊게 본 기업마다 읽을 원문이 있는지(공시 접수번호 · 공시 개황만 · 공시 없음) */
+function mine28(r: Report3, lib: Lib): string {
+  const rows = r.companies.map((c) => { const d = dartOf(lib, c.id); const rep = d?.annual_reports?.[0];
+    return [`<b>${E(c.name)}</b>`, rep ? `${E(rep.report)}<span class="x-sub">접수번호 ${E(rep.rcept_no)}</span>` : E(d?.dart ? "공시 개황만 있음 — 사업보고서 의무 없음" : "공시 없음 — 회사 소개·보도로 대신"), rep ? tag("OFFICIAL_DIRECT") : tag(d?.dart ? "OFFICIAL_DIRECT" : "UNVERIFIED", d?.dart ? "개황" : undefined)]; });
+  return `${H("내가 깊게 본 기업에서 읽을 원문", `${rows.length}곳 · 같은 네 단계로`)}${TB(["기업", "읽을 원문", "확인 수준"], rows)}`;
+}
 function g30(r: Report3, lib: Lib): Built {
   const code = r.strategy.roleCode ?? r.directions[0]?.code;
   const g = code ? roleGuide(code) : null;
@@ -385,7 +487,10 @@ function g29(r: Report3, lib: Lib): Built {
   return { n: 29, html: pg(r, 29, `${opener("04", "목표 직무 실무 가이드 ③", "재무제표와 지표 읽기", "공시 숫자 셋으로 비율 둘을 직접 계산하고, 손익의 부호가 무엇을 묻게 하는지 두 회사로 견주었습니다.")}
   <div class="x-g2">${ex}</div>
   ${H("계산하는 법", "리포트가 계산 · 공시 두 값으로만")}<ol class="x-ol"><li><b>영업이익률</b> — 영업이익 ÷ 매출액 × 100. 본업으로 남긴 몫입니다.</li><li><b>순이익률</b> — 당기순이익 ÷ 매출액 × 100. 본업 밖 손익까지 더한 몫입니다.</li><li><b>둘이 다를 때</b> — 차이는 영업외손익·법인세에서 납니다. 같은 보고서의 주석에서 확인합니다.</li></ol>
-  ${H("직접 해 볼 것")}<p>깊게 본 기업 가운데 상장사 하나를 골라 같은 두 비율을 계산하고, 지난해 값과 견준 한 줄을 남깁니다. 지난해 값은 같은 사업보고서의 비교 칸에 있습니다.</p>
+  ${(() => { const myL = r.companies.filter((c) => listed.some((o) => o.id === c.id)); const myU = r.companies.filter((c) => !listed.some((o) => o.id === c.id));
+    const rows = ["TD04", "TD05", "TD08"].map((code) => r.map.find((m) => m.code === code)).filter((m): m is NonNullable<typeof m> => !!m);
+    return `${H("내 응답에서 이 숫자가 걸리는 자리", `${r.strategy.roleName} 기준`)}<ul class="x-ul">${rows.map((m) => `<li><b>${E(m.name)}</b> — ${E(m.depth === null ? `이번에 자세히 묻지 않음${m.interest === "HIGH" ? " · 관심은 높음" : ""}` : `${lvWord(m.depth)} · ${ZONE_SAID[m.zone as keyof typeof ZONE_SAID]?.tag ?? ""}`)}</li>`).join("")}</ul>
+    ${H("직접 해 볼 것")}<p>${E(myL.length ? `깊게 본 기업 가운데 상장사인 ${myL.map((c) => c.name).join(" · ")}에서 같은 두 비율을 계산하고, 지난해 값과 견준 한 줄을 남깁니다. 지난해 값은 같은 사업보고서의 비교 칸에 있습니다.` : `깊게 본 기업에 공시 재무가 있는 상장사가 없습니다. 위 두 회사로 계산을 연습하고, ${withJosa(myU.map((c) => c.name).slice(0, 2).join(" · ") || "비상장 후보", "은는")} 공시 개황과 회사 소개까지만 확인합니다.`)}${myU.length && myL.length ? ` ${E(`${withJosa(myU.map((c) => c.name).slice(0, 2).join(" · "), "은는")} 공시 재무가 없어 이 계산을 할 수 없습니다.`)}` : ""}</p>`; })()}
   <p class="src">${tag("OFFICIAL_DIRECT")} 숫자는 OpenDART 주요 계정(${E(lib.dart.checked_on)}) · ${tag("GENERAL", "읽는 법")} 설명은 리포트 안내 초안(검토 전)입니다. 투자 판단이 아닙니다.</p>${gapsOf(lib, 29)}`) };
 }
 
@@ -402,6 +507,12 @@ function g33(r: Report3, n: number, part: 1 | 2, lib: Lib): Built {
 }
 
 /* ── 5부 지역 산업 ─────────────────────────────────────────────── */
+
+/** 산업 구조도 아래 한 줄: 이 학생의 목표 직무와 깊게 본 기업이 구조도의 어느 줄에 있는가 */
+function mine36(r: Report3, lib: Lib): string {
+  const cs = r.companies.map((c) => { const o = lib.orgs.orgs.find((x) => x.id === c.id); return `${c.name.replace(/\s—.*$/, "")} — ${(o?.industry_line ?? c.headline).split(/[·,(]/)[0].trim()}`; });
+  return `<div class="x-mine"><b>내 자리</b><span>목표 직무 <em>${E(r.strategy.roleName)}</em></span><span>깊게 본 기업 ${cs.length}곳 — ${E(cs.join(" / ") || "없음")}</span></div>`;
+}
 
 function g35(r: Report3, lib: Lib): string {
   const facts = lib.orgs.region_facts;
@@ -456,7 +567,7 @@ function coPage3(r: Report3, lib: Lib, c: CompanyDeep, n: number, no: string): s
   return pg(r, n, `${opener("06", `기업 ${no} 준비 상태와 확인할 것`, c.name, `${c.name}에서 본 ${jobs.map((j) => j.name).join(" · ")} 직무의 핵심 판단에 지금 응답을 대어 보고, 지원 전에 공식 원문으로 확인할 것 ${c.toCheck.length}가지를 적었습니다.`)}
   ${jobs.map((j) => `<article class="x-dm"><div class="x-dmh"><h2>${E(j.name)}</h2><span class="js">${E(j.status)}</span>${j.extra ? '<span class="meta">이 회사 안내가 함께 다루는 직무</span>' : ""}</div>
     <div class="x-g2"><div><b>응답에서 확인된 판단</b>${UL(j.have, "x-ul x-have", "아직 없음")}</div><div><b>아직 확인되지 않은 판단</b>${UL(j.need, "x-ul x-need", "없음")}</div></div>
-    <p class="interp">${E(j.develop)} ${tag("READ")}</p><p class="x-sm">먼저 익힐 것 — ${E(j.learn.slice(0, 3).join(" · ") || "—")}</p></article>`).join("")}
+    <p class="interp">${E(j.develop)} ${tag("READ")}</p>${(() => { const p = priorityFor(r, j.need); return p ? `<p class="x-tie">실행 과제 ${p.order}번 ${E(withJosa(`‘${p.title}’`, "이가"))} 이 자리의 ${E(withJosa(`‘${p.what}’`, "을를"))} 채웁니다 — 이 회사 준비와 목표 직무 준비가 같은 과제입니다.</p>` : ""; })()}<p class="x-sm">먼저 익힐 것 — ${E(j.learn.slice(0, 3).join(" · ") || "—")}</p></article>`).join("")}
   <div class="x-g2"><div>${H("공식 원문으로 확인할 것")}${UL(c.toCheck.slice(0, 5), "x-ul", "—")}<p class="x-sm">${E(c.hiring)}</p></div>
   <div>${H("이 쪽들의 출처", `${c.sources.length}건`)}<ul class="x-ul x-src">${c.sources.slice(0, 6).map((s) => `<li>${E(s.title)} <em>${E(s.kind)} · ${E(s.checked_on)}</em></li>`).join("")}</ul></div></div>
   <p class="src">${tag((c.verify as "THIRD_PARTY") ?? "UNVERIFIED")} 직무와 판단은 검사 응답과 직무 안내에서, 회사 정보는 리포트 자료에서 왔습니다 · 채용 여부는 확인하지 않았습니다.</p>${gapsOf(lib, n)}`);
@@ -524,7 +635,8 @@ function storyPage(r: Report3, n: number, s: Story | undefined, label: string): 
   <dl class="sty x-sty">${s.parts.map((p) => `<div class="${p.filled ? "" : "empty"}"><dt>${E(p.label)}</dt><dd>${E(p.text)}</dd></div>`).join("")}</dl>
   <p class="interp">${E(s.add)} ${tag("READ")}</p>
   ${H("이 재료가 쓰이는 직무")}${UL(s.fits.slice(0, 4))}
-  ${H("문단으로 옮겨 적는 칸", "학생이 직접 씀")}<div class="x-lines">${Array.from({ length: 7 }, () => "<i></i>").join("")}</div>
+  ${(() => { const cs = r.companies.filter((c) => c.jobs.some((j) => s.fits.includes(j.name))); return cs.length ? `${H("이 재료를 쓸 회사", "회사마다 바꿔 끼울 한 줄")}${TB(["회사", "겨냥할 직무", "바꿔 끼울 장면"], cs.slice(0, 3).map((c) => [`<b>${E(c.name)}</b>`, E(c.jobs.find((j) => s.fits.includes(j.name))!.name), E(c.headline)]))}` : ""; })()}
+  ${H("문단으로 옮겨 적는 칸", "학생이 직접 씀")}<div class="x-lines">${Array.from({ length: 5 }, () => "<i></i>").join("")}</div>
   <p class="src">${tag("GENERAL", "검사 응답 · 학생 기록")} 문장을 대신 써 주지 않습니다. 고른 문장을 학생의 말로 옮겨 적는 칸입니다.</p>`) };
 }
 function g68(r: Report3): string {
@@ -546,16 +658,17 @@ function g69(r: Report3): Built {
   ${H("만드는 차례")}<ol class="pj-s">${p.steps.map((s) => `<li>${E(s)}</li>`).join("")}</ol>
   <p class="src">${tag("GENERAL")} 직무 일반 안내(검토 전)의 첫 프로젝트입니다. 특정 기업의 과제가 아닙니다.</p>`) };
 }
-function qPage(r: Report3, n: number, label: string, xs: { q: string; why: string; material: string }[], dek: string, how: [string, string]): Built {
+type QA = { q: string; why: string; material: string };
+function qPage(r: Report3, n: number, label: string, xs: QA[], dek: string, how: [string, string], kit?: (x: QA) => string): Built {
   if (!xs.length) return skip(n, "준비할 질문이 없음");
   return { n, html: pg(r, n, `${opener("08", label, "면접 질문", dek)}
-  <ol class="x-qa">${xs.map((x, i) => `<li><span>${i + 1}</span><div><b>${E(x.q.replace(/^“|”$/g, ""))}</b><p>${E(x.why)}</p><em>준비 재료 — ${E(x.material)}</em></div></li>`).join("")}</ol>
+  <ol class="x-qa">${xs.map((x, i) => { const k = kit?.(x) ?? ""; return `<li><span>${i + 1}</span><div><b>${E(x.q.replace(/^“|”$/g, ""))}</b><p>${E(x.why)}</p>${k || `<em>준비 재료 — ${E(x.material)}</em>`}</div></li>`; }).join("")}</ol>
   ${H(how[0])}<p>${E(how[1])}</p>
   <p class="src">${tag("GENERAL", "검사 응답 + 직무 일반")} 질문은 실제 면접 문항이 아니라 준비용 예시입니다.</p>`) };
 }
 function g72(r: Report3): Built {
   const xs = r.companies.flatMap((c) => c.jobs.slice(0, 1).flatMap((j) => j.interview.slice(0, 2).map((q) => ({ q, why: `${c.name} · ${j.name} 장면의 질문입니다`, material: j.project.output }))));
-  return qPage(r, 72, "면접 질문 ③ 직무·기업 장면에서", xs.slice(0, 7), "깊게 본 기업의 직무 장면에서 나올 수 있는 질문입니다. 회사 안내(검토 전)에서 골랐습니다.", ["회사 장면 질문을 준비하는 법", "그 회사의 사업 한 줄(공시나 회사 소개에서 확인한 것)을 먼저 말하고, 내 결과물 가운데 그 장면에 가장 가까운 것 하나를 잇습니다. 회사 사정을 짐작으로 말하지 않고, 확인한 출처가 있는 것만 말합니다."]);
+  return qPage(r, 72, "면접 질문 ③ 직무·기업 장면에서", xs.slice(0, 7), "깊게 본 기업의 직무 장면에서 나올 수 있는 질문입니다. 회사 안내(검토 전)에서 골랐습니다.", ["회사 장면 질문을 준비하는 법", "그 회사의 사업 한 줄(공시나 회사 소개에서 확인한 것)을 먼저 말하고, 내 결과물 가운데 그 장면에 가장 가까운 것 하나를 잇습니다. 확인한 출처가 없는 회사 사정이나 채용 계획은 짐작으로 말하지 않습니다."], kitCompany(r));
 }
 function g73(r: Report3): string {
   const code = r.strategy.roleCode ?? r.directions[0]?.code;
@@ -574,12 +687,24 @@ function g73(r: Report3): string {
 
 /* ── 9부 계획·워크시트·출처 ─────────────────────────────────────── */
 
+/** 재검사 때 견줄 기준을 지금 응답에서 고른다: 단계 · 결과물 수 · 묻지 않은 관심 영역 · 1번 과제 */
+function recheck(r: Report3): string[] {
+  const d2 = r.map.filter((m) => m.depth === 2).map((m) => m.name);
+  const un = r.map.filter((m) => m.depth === null && m.interest === "HIGH").map((m) => m.name);
+  const p = r.priorities[0];
+  return [
+    d2.length ? `지금 ‘직접 수행’ 인 ${d2.slice(0, 3).join(" · ")}에서 기준까지 직접 정한 장면이 생겼는가` : "‘해 본 적 없음’ 이던 영역 가운데 한 곳이라도 ‘직접 수행’ 으로 올라왔는가",
+    `고른 결과물이 지금 ${r.profile.artifacts}개에서 늘었는가 — 늘었다면 그 이름을 경험 기록에 적었는가`,
+    un.length ? `이번에 자세히 묻지 않은 관심 영역(${un.slice(0, 2).join(" · ")})에서 새로 해 본 일이 생겼는가` : "이번에 자세히 묻지 않은 영역 가운데 새로 해 본 영역이 생겼는가",
+    p ? `실행 과제 1번 ‘${p.title}’ 의 결과물(${p.output})을 경험 기록에 올렸는가` : "첫 프로젝트의 결과물을 경험 기록에 올렸는가",
+  ];
+}
 function g75(r: Report3): string {
   const rows = r.plan.filter((p) => p.period === "6개월" || p.period === "12개월");
   return pg(r, 75, `${opener("09", "계획", "6 · 12개월 계획과 다시 검사할 때", "90일 뒤의 계획입니다. 6개월에는 학교 밖 경험과 포트폴리오, 12개월에는 지원 방향과 재검사를 둡니다.")}
   ${rows.map((p) => `<article class="x-pr"><div class="x-prn x-per">${E(p.period)}</div><div><h2>${E(p.label)}</h2><p>${E(p.what)}</p>
     <ol class="x-chain"><li><span>왜</span>${E(p.why)}</li><li><span>어떻게</span>${E(p.how)}</li><li><span>남길 것</span>${E(p.output)}</li><li><span>확인</span>${E(p.check)}</li></ol></div></article>`).join("")}
-  ${H("다시 검사할 때 볼 것")}<ul class="lim"><li>${E("‘직접 수행’ 이던 판단이 ‘기준까지 직접 결정’ 으로 바뀌었는가")}</li><li>${E("고른 결과물과 비교 대상이 늘었는가")}</li><li>${E("이번에 자세히 묻지 않은 영역 가운데 새로 해 본 영역이 생겼는가")}</li></ul>
+  ${H("다시 검사할 때 볼 것", "지금 응답에서 고른 기준")}<ul class="lim">${recheck(r).map((t) => `<li>${E(t)}</li>`).join("")}</ul>
   <p class="src">${tag("GENERAL", "검사 응답")} 재검사는 담당자에게 요청합니다. 이번 결과는 굳어 남고, 두 결과를 같은 기준으로 견줍니다.</p>`);
 }
 function g76(r: Report3): string {
@@ -637,17 +762,17 @@ export function full6(r: Report3, lib: Lib, f: Fonts): Full6 {
     22: () => { const b = g22(r); const os = r.strategy.outside; if ("html" in b && os.length && os.length <= 3) b.html = b.html.replace(/(<p class="src">[^<]*<span class="vt[^"]*">검사 응답 \+ 직무 일반<\/span>)/, `${H("이번 전략에서 뺀 판단", "목표 직무의 업무 영역 밖")}${TB(["영역", "비어 있는 판단", "이 영역을 쓰는 직무"], os.map((o) => [`<b>${E(o.domain)}</b>`, E(o.what), E(o.jobs.join(" · ") || "—")]))}$1`); return b; },
     23: () => r.strategy.outside.length && r.strategy.outside.length <= 3 ? skip(23, "뺀 판단이 세 줄 이하라 앞 쪽(설계 22)에 합침") : g23(r), 24: () => ws(24, g24(r)),
     25: () => ws(25, d25(r, lib)), 26: () => ws(26, g26(r)), 27: () => guidePages(r, lib, 27, goalCode, "목표 직무 실무 가이드 ①", true),
-    28: () => r.companies.length ? ws(28, d28(r, lib)) : skip(28, "깊게 본 기업이 없음"), 29: () => g29(r, lib), 30: () => g30(r, lib),
+    28: () => r.companies.length ? ws(28, d28(r, lib).replace('<p class="src">', () => mine28(r, lib) + '<p class="src">')) : skip(28, "깊게 본 기업이 없음"), 29: () => g29(r, lib), 30: () => g30(r, lib),
     31: () => guidePages(r, lib, 31, second, "둘째로 볼 직무 ①", true), 32: () => guidePages(r, lib, 32, second, "둘째로 볼 직무 ②", false),
     33: () => g33(r, 33, 1, lib), 34: () => g33(r, 34, 2, lib),
-    35: () => ws(35, g35(r, lib)), 36: () => ws(36, d36(r, lib)), 37: () => ws(37, d37(r, lib)),
+    35: () => ws(35, g35(r, lib)), 36: () => ws(36, d36(r, lib).replace('<p class="src">', () => mine36(r, lib) + '<p class="src">')), 37: () => ws(37, d37(r, lib)),
     38: () => skip(38, RESEARCH_SKIP[38]), 39: () => g39(r, lib), 40: () => skip(40, RESEARCH_SKIP[40]),
     41: () => ws(41, g41(r)), 42: () => g42(r, lib),
     55: () => g55(r), 64: () => g64(r),
     65: () => ws(65, g65(r)), 66: () => storyPage(r, 66, r.application.stories[0], "자기소개서 문단 재료 ①"), 67: () => storyPage(r, 67, r.application.stories[1], "자기소개서 문단 재료 ②"),
     68: () => ws(68, g68(r)), 69: () => g69(r),
-    70: () => qPage(r, 70, "면접 질문 ① 확인된 경험에서", r.application.interview.filter((x) => !/^준비 —/.test(x.material)).slice(0, 5), "이미 응답에서 확인된 경험을 면접관이 되짚는 질문입니다.", ["답의 뼈대", "장면(언제·무엇) → 내가 정한 것과 그 기준 → 결과와 비교 → 다음에 다르게 할 것. 한 답은 1분 안팎으로 준비합니다."]),
-    71: () => qPage(r, 71, "면접 질문 ② 빈자리에서", r.application.interview.filter((x) => /^준비 —/.test(x.material)).slice(0, 5), "아직 응답에서 확인되지 않은 판단을 묻는 질문입니다. 지금 답할 재료가 없으면 실행 과제로 먼저 만듭니다.", ["아직 재료가 없을 때", "해 보지 않은 일을 해 본 것처럼 답하지 않습니다. 그 판단을 이해하고 있다는 것과, 언제 어떤 과제로 해 볼 계획인지(실행 로드맵의 과제)를 말합니다. 면접 전에 그 과제를 끝내면 첫째 쪽의 질문으로 옮겨 갑니다."]),
+    70: () => qPage(r, 70, "면접 질문 ① 확인된 경험에서", r.application.interview.filter((x) => !/^준비 —/.test(x.material)).slice(0, 5), "이미 응답에서 확인된 경험을 면접관이 되짚는 질문입니다.", ["답의 뼈대", "장면(언제·무엇) → 내가 정한 것과 그 기준 → 결과와 비교 → 다음에 다르게 할 것. 질문마다 붙은 네 칸이 이 학생이 고른 문장이고, 비어 있는 칸은 면접 전에 직접 채웁니다. 한 답은 1분 안팎으로 준비합니다."], kitConfirmed(r)),
+    71: () => qPage(r, 71, "면접 질문 ② 빈자리에서", gapQs(r), "아직 응답에서 확인되지 않은 판단을 묻는 질문입니다. 지금 답할 재료가 없으면 실행 과제로 먼저 만듭니다.", ["아직 재료가 없을 때", "해 보지 않은 일을 해 본 것처럼 답하지 않습니다. 그 판단을 이해하고 있다는 것과, 언제 어떤 과제로 해 볼 계획인지(실행 로드맵의 과제)를 말합니다. 면접 전에 그 과제를 끝내면 첫째 쪽의 질문으로 옮겨 갑니다."], kitGap(r)),
     72: () => g72(r), 73: () => ws(73, g73(r)),
     74: () => ws(74, p5(r)), 75: () => ws(75, g75(r)), 76: () => ws(76, g76(r)), 77: () => g77(r, lib), 78: () => ws(78, g78(r)),
   };
@@ -658,7 +783,7 @@ export function full6(r: Report3, lib: Lib, f: Fonts): Full6 {
     build[b + 2] = () => co(k, b + 2, (c) => coPage3(r, lib, c, b + 2, NO[k]));
     const s = 56 + 2 * k;
     // 서류·면접 쪽과 3~12개월 쪽은 따로 세우면 둘 다 반 쪽이 빈다: 한 쪽에 모으고 뒤 쪽은 합쳤다고 적는다
-    build[s] = () => co(k, s, (c) => d56(r, lib, c, s, NO[k], storyFor(r, c), false).replace(/(<p class="gap">|<\/div>\s*<footer)/, (m) => plan12(r, lib, c, s + 1, NO[k], true) + m));
+    build[s] = () => co(k, s, (c) => d56(r, lib, c, s, NO[k], storyFor(r, c), false).replace(/(<p class="gap">|<\/div>\s*<footer)/, (m) => plan12(r, lib, c, s + 1, NO[k], true) + coLink(r, c) + m));
     build[s + 1] = () => r.companies[k] ? skip(s + 1, `한 쪽 분량이 되지 않아 앞 쪽(설계 ${s}, 서류와 면접)에 합침`) : skip(s + 1, `깊게 본 기업이 ${r.companies.length}곳이라 ${NO[k]} 자리가 없음`);
   }
   const toc = lib.toc.pages;
@@ -673,7 +798,22 @@ export function full6(r: Report3, lib: Lib, f: Fonts): Full6 {
   htmlBy.set(79, d79(r, lib, order));
   htmlBy.set(80, g80(r, skipped));
   const total = order.length;
-  const pages = order.map((n) => reframe(htmlBy.get(n)!, n, idx.get(n)!, total, lib));
+  // 같은 ‘부족한 조사 자료’ 줄이 쪽마다 되풀이되면 읽는 사람이 그 줄을 건너뛴다: 처음 한 번만 풀어 적고 그 뒤는 번호만
+  const seenGap = new Map<string, number>();
+  const dedupGap = (h: string, i: number) => h.replace(/<p class="gap">[\s\S]*?<\/p>/g, (m) => {
+    const first = seenGap.get(m);
+    if (first === undefined) { seenGap.set(m, i); return m; }
+    const codes = [...m.matchAll(/<b>(R\d+)<\/b>/g)].map((x) => x[1]);
+    return `<p class="gap">부족한 조사 자료 ${codes.join(" · ")} — ${first}쪽에 적은 것과 같음</p>`;
+  });
+  // 같은 실행 과제를 잇는 줄도 처음 한 번만 풀어 적는다
+  const seenTie = new Map<string, number>();
+  const dedupTie = (h: string, i: number) => h.replace(/<p class="x-tie">실행 과제 (\d+)번[\s\S]*?<\/p>/g, (m, no) => {
+    const first = seenTie.get(m);
+    if (first === undefined) { seenTie.set(m, i); return m; }
+    return `<p class="x-tie">→ 실행 과제 ${no}번 (${first}쪽)</p>`;
+  });
+  const pages = order.map((n) => dedupTie(dedupGap(reframe(htmlBy.get(n)!, n, idx.get(n)!, total, lib), idx.get(n)!), idx.get(n)!));
   const html = `<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>CareerMatri PRO · ${esc(r.meta.department ?? "")} 진로·취업 전략 보고서</title>
 <style>${faces(f)}${CSS.replace(/__FONT__/g, f.family)}${CSS5}${CSS6}</style></head><body>${pages.join("\n")}</body></html>`;
   return { html, pages: order.map((n) => ({ n, i: idx.get(n)!, title: toc.find((p) => p.n === n)!.title })), skipped };
@@ -747,4 +887,10 @@ export const CSS6 = `
 .x-ws{border-top:1.4pt solid var(--navy);padding-top:2.4mm;margin-bottom:5mm}.x-ws h2{font-size:12pt;margin-bottom:1.4mm}.x-ws dl{margin:0}.x-ws dl div{display:grid;grid-template-columns:36mm 1fr;padding:1.4mm 0;border-top:.5pt dotted #C9D2E0}.x-ws dt{font-size:8.4pt;color:var(--muted)}.x-ws dd{margin:0;font-size:9pt}
 .x-wsb td:nth-child(n+4){min-width:22mm}.x-wsb td{height:12mm}
 .x-src em{font-style:normal;color:var(--muted);font-size:7.6pt}
+.x-slot{display:inline-block;min-width:22mm;border-bottom:.8pt solid #9AA8BF;color:#7A869A;font-size:7.8pt;padding:0 1mm;line-height:1.3}
+.x-link{border-top:1.4pt solid var(--navy);padding-top:2mm;margin-top:3mm}.x-fill li{font-size:8.6pt;padding:1.2mm 0;border-top:.5pt dotted #C9D2E0}
+.x-kit{display:grid;grid-template-columns:repeat(2,1fr);gap:.6mm 4mm;margin:1.2mm 0 0;background:var(--tint);padding:1.6mm 2.4mm}.x-kit div{display:grid;grid-template-columns:19mm 1fr;font-size:8.3pt;line-height:1.42}.x-kit dt{color:var(--blue);font-weight:700;font-size:7.6pt}.x-kit dd{margin:0}
+.x-tie{font-size:8.6pt;color:var(--navy);border-left:2pt solid var(--teal);padding-left:2mm;margin:1.2mm 0}
+.x-ax em.x-ok{color:var(--teal)}.x-ax em.x-no{color:#9A6A22}
+.x-mine{display:flex;flex-wrap:wrap;gap:1mm 5mm;align-items:baseline;border-top:1.4pt solid var(--navy);border-bottom:.6pt solid var(--rule);padding:1.8mm 0;margin:2mm 0;font-size:8.6pt}.x-mine b{color:var(--navy)}.x-mine em{font-style:normal;font-weight:700;color:var(--blue)}
 `;
