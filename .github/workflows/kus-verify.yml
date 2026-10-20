@@ -5,8 +5,12 @@
 # - GITHUB_TOKEN 은 `contents: read` 만. 저장소에 아무것도 커밋·푸시하지 않는다.
 # - 러너 안 일회용 PostgreSQL 과 `[테스트]` 시드뿐이다. 운영·Staging DB · Railway ·
 #   실제 개인정보 · 저장소 비밀값을 쓰지 않는다. 비밀번호는 실행마다 무작위로 만들고 가린다.
-# - 공개 저장소의 artifact 는 누구나 받을 수 있다. **글로 된 결과만** 올리고 화면 캡처 ·
-#   PDF 는 올리지 않는다.
+# - 공개 저장소의 artifact 는 누구나 받을 수 있다. 글로 된 결과는 그대로 올리고, R2 의
+#   **실제 Next 캡처와 리포트 PDF 는 `[테스트]` 학생 · `[테스트]` 탐방만** 담는다(비밀번호는
+#   그림에 나오지 않는다). 그 묶음은 이틀만 두고, 아래 `publish-shots` 잡이 작업 가지의
+#   `docs/kus/r2/shots-next/` 로 커밋한다(이 세션은 artifact 저장소에 닿지 못한다).
+# - **쓰기 권한은 `publish-shots` 잡 하나에만** 있다. 그 잡은 npm 을 돌리지 않고 내려받은
+#   그림을 복사해 커밋만 한다. 빌드 · 테스트 잡은 계속 `contents: read` 다.
 #
 # 언제 도는가: 손으로(workflow_dispatch), 또는 커밋 메시지에 `[kus-verify]` 가 있는 이
 # 가지의 푸시만.
@@ -142,6 +146,23 @@ jobs:
           grep -n "kus-pdf\|Error" "$OUT/logs/server.log" | head -30 || true
           printf 'kus next browser e2e\t%s\n' $rc >> "$OUT/steps.tsv"
 
+      - name: 실제 Next 화면 캡처 (1440 · 390) · 리포트 PDF
+        run: |
+          curl -sf http://127.0.0.1:3100/api/health >/dev/null || { (bash scripts/stage-serve.sh 3100 >> "$GITHUB_WORKSPACE/pca-platform/$OUT/logs/server.log" 2>&1 &); for i in $(seq 1 60); do curl -sf http://127.0.0.1:3100/api/health >/dev/null && break; sleep 1; done; }
+          BASE=http://127.0.0.1:3100 OUT="$OUT/shots-next" APP_ENV=dev npx tsx scripts/kus/next-shots.ts > "$OUT/logs/kus-next-shots.log" 2>&1; rc=$?
+          cat "$OUT/logs/kus-next-shots.log"
+          for f in "$OUT"/shots-next/pdf/*.pdf; do echo "$f $(pdfinfo "$f" | grep Pages)"; done
+          printf 'kus next shots\t%s\n' $rc >> "$OUT/steps.tsv"
+
+      - name: 캡처 묶음(테스트 데이터만 · 이틀)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kus-shots-next
+          path: pca-platform/var/kus-ci/shots-next/
+          retention-days: 2
+          if-no-files-found: ignore
+
       - name: 공통 파일 무변경 확인
         run: |
           git diff --name-only "$BASE_SHA" HEAD -- . \
@@ -175,3 +196,34 @@ jobs:
         run: |
           cat "$OUT/steps.tsv"
           ! awk -F'\t' '$2 != "0"' "$OUT/steps.tsv" | grep -q .
+
+  # 캡처를 작업 가지에 커밋한다. **npm 을 돌리지 않는다**: 내려받은 그림을 복사해 커밋만 한다.
+  # 커밋 메시지에 `[kus-verify]` 가 없으므로 이 커밋이 다시 검증을 부르지 않는다.
+  publish-shots:
+    needs: verify
+    if: always() && needs.verify.result != 'skipped' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 1
+      - uses: actions/download-artifact@v4
+        with:
+          name: kus-shots-next
+          path: shots
+        continue-on-error: true
+      - name: 커밋
+        run: |
+          if [ ! -d shots ] || [ -z "$(ls -A shots 2>/dev/null)" ]; then echo "캡처 없음"; exit 0; fi
+          D="pca-platform/docs/kus/r2/shots-next"
+          rm -rf "$D"; mkdir -p "$D"; cp -r shots/. "$D/"
+          printf 'run %s · sha %s · %s\n' "${{ github.run_id }}" "${{ github.sha }}" "$(date -u +%FT%TZ)" > "$D/RUN.txt"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$D"
+          git commit -q -m "KUS R2: 실제 Next 캡처 (run ${{ github.run_id }} · ${GITHUB_SHA::8})" || { echo "바뀐 것 없음"; exit 0; }
+          for i in 1 2 3; do git pull -q --rebase origin "${{ github.ref_name }}" && git push -q origin "HEAD:${{ github.ref_name }}" && break; sleep 5; done

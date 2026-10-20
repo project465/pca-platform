@@ -11,12 +11,18 @@ const ZC: Record<string, string> = {
   Z1_EVIDENCE_ESTABLISHED: "z1", Z2_EVIDENCE_INCOMPLETE: "z2",
   Z3_EVIDENCE_LOW_INTEREST: "z3", Z4_INSUFFICIENT_EVIDENCE: "z4",
 };
+const BASIS: Record<string, string> = { SELF_REPORT_ONLY: "is-b0", PARTLY_BACKED: "is-b1", BACKED: "is-b2" };
 
 /**
- * 개인별 결과. **공통 결과지를 대신하지 않는다**: 같은 굳은 결과를 KUS
- * 프로그램의 차례(현재 상태 → 전공 역량 → Evidence → 관심 산업·직무 →
- * 직무 요구와 연결 → 준비할 영역 → 다음 행동)로 다시 묶고, 탐방 기록을
- * 판정 밖의 관찰로 옆에 놓는다. 전체 결과지는 링크 하나로 간다.
+ * 개인별 결과. **공통 결과지를 대신하지 않는다**: 같은 굳은 결과를 KUS 의 차례로 다시 묶는다.
+ *
+ * **R2 에서 차례를 바꿨다.** R1 화면은 통계 카드 넷 → 표 → 절 여섯이 같은 무게로 늘어서
+ * 손전화에서 7,600px 를 넘었고, 다음 행동이 쪽 아래쪽에 있었다. 지금은
+ *   1. 머리: 그 사람의 상태 한 줄과 **다음 한 가지** (3~5초 안에 읽히는 자리)
+ *   2. 이 결과가 무엇에 기대는가(응답 · 근거 · 응답 품질) — CONTRA 가 여기서 갈린다
+ *   3. 영역마다 지금 상태(카드). 근거 사슬은 접어 둔다
+ *   4. 준비할 것 · 관심 산업과 직무 · 직무 연결 · 탐방은 그 아래
+ * 표는 손전화에서 카드로 바뀐다(`kus-rows`): 칸이 잘려 뜻이 사라지는 일이 없다.
  *
  * 검사가 재지 않은 축이나 점수를 만들지 않는다. 값은 전부 `kusAnalysis`.
  */
@@ -35,65 +41,69 @@ export default async function KusResult() {
       </KusShell>
     );
   }
-  const c = a.status.counts;
+  const r = a.reliability;
+  const a0 = a.actions[0];
+  const chainOf = a.deep.filter((d) => d.chain.did.length || d.chain.decided.length || d.chain.artifacts.length || d.chain.verifications.length);
   return (
     <KusShell active="/kus/result" who={w.name} dept={`${w.college} · ${w.dept}`} test={w.test}>
-      <KusHead kicker={`나의 분석 결과 · ${a.student.coreName} 검사(${a.tier}) · 결과 확정 ${w.bundle.resultAt ?? ""}`}
-        title={a.status.title} lead={a.status.lead}
-        actions={<>
-          <a className="cm-btn is-primary" href={`/kus/report/${w.bundle.attemptId}/pdf`}>PDF 보고서</a>
-          <Link className="cm-btn" href={`/v3/${w.bundle.attemptId}/result`}>공통 결과지 전체</Link>
-        </>} />
+      <KusHead kicker={`나의 분석 결과 · ${a.student.coreName} 검사 · 결과 확정 ${w.bundle.resultAt ?? ""}`}
+        title={a.status.title} lead={a.status.lead} />
       {note ? <KusNote>{note}</KusNote> : null}
-      {a.status.quality.flag !== "OK" ? <KusNote tone="info">응답 품질: {a.status.quality.text}</KusNote> : null}
 
-      <div className="kus-stats">
-        <div className="kus-stat"><span className="kus-stat-k">지금 상태</span><span className="kus-stat-v">{a.status.badge}</span></div>
-        <div className="kus-stat"><span className="kus-stat-k">확인된 판단</span><span className="kus-stat-v">{c.confirmed}칸</span><span className="kus-stat-s">직접 정한 판단 {c.owned}칸</span></div>
-        <div className="kus-stat"><span className="kus-stat-k">근거</span><span className="kus-stat-v">{c.evidence}개</span><span className="kus-stat-s">근거가 선 영역 {c.ready_domains}개</span></div>
-        <div className="kus-stat"><span className="kus-stat-k">기업탐방</span><span className="kus-stat-v">{a.visits.length}건</span><span className="kus-stat-s">판정에 들어가지 않는 관찰 기록</span></div>
-      </div>
-      <p className="cm-shsub">점수가 아니라 센 수입니다. 백분위 · 적합도 · 합격 가능성을 만들지 않습니다.</p>
+      <section className="kus-r-next" aria-label="다음 한 가지">
+        <p className="kus-r-badge"><span className="kus-pill is-go">{a.status.badge}</span></p>
+        {a0 ? (
+          <>
+            <p className="kus-r-k">다음 한 가지{a0.domain ? ` · ${a0.domain}` : ""}</p>
+            <p className="kus-r-do">{a0.do}</p>
+          </>
+        ) : <p className="kus-r-do">결과 모델이 낸 할 일이 없습니다. 탐방 기록부터 남겨 둘 수 있습니다.</p>}
+        <div className="kus-actions">
+          <Link className="cm-btn is-primary" href="/kus/plan">30·60·90일 계획</Link>
+          <a className="cm-btn" href={`/kus/report/${w.bundle.attemptId}/pdf`}>PDF 보고서</a>
+          <Link className="kus-r-link" href={`/v3/${w.bundle.attemptId}/result`}>공통 결과지 전체</Link>
+        </div>
+      </section>
+
+      <section className={`kus-rel ${BASIS[r.basis] ?? ""}`} aria-label="이 결과가 기대고 있는 것">
+        <p className="kus-rel-h">이 결과가 기대고 있는 것 · <b>{r.label}</b></p>
+        <dl className="kus-rel-g">{r.lines.map((l) => <div key={l.k}><dt>{l.k}</dt><dd>{l.v}</dd></div>)}</dl>
+        {r.caution ? <p className="kus-rel-c">{r.caution}</p> : null}
+        <p className="kus-rel-n">점수가 아니라 센 수입니다. 백분위 · 적합도 · 합격 가능성을 만들지 않습니다.</p>
+      </section>
 
       <section className="kus-panel">
-        <SectionHeader icon="layers" title="전공 관련 역량" sub={`${a.student.coreName} 검사가 연 ${c.opened}개 영역`} />
-        <div className="kus-scroll"><table className="kus-table">
-          <thead><tr><th>영역</th><th>상태</th><th>확인 칸</th><th>응답에서 확인된 예</th></tr></thead>
-          <tbody>{a.major.rows.map((r) => (
-            <tr key={r.code}><td><b>{r.name}</b></td><td><span className={`kus-zone ${ZC[r.zone] ?? ""}`}>{r.zoneKo}</span></td>
-              <td>{r.axes}{r.owned ? ` (직접 ${r.owned})` : ""}</td><td>{r.example ?? "—"}</td></tr>))}</tbody>
-        </table></div>
+        <SectionHeader icon="layers" title="영역마다 지금 상태" sub={`${a.student.coreName} 검사가 연 ${a.status.counts.opened}개 영역`} />
+        <ul className="kus-dom">{a.deep.map((d) => {
+          const shown = d.axes.filter((x) => x.state !== "NOT_OBSERVED");
+          return (
+            <li key={d.code}>
+              <p className="kus-dom-h"><b>{d.name}</b><span className={`kus-zone ${ZC[d.zone] ?? ""}`}>{d.zoneKo}</span></p>
+              <p className="kus-dom-s">응답에서 확인된 판단 {shown.length}/8{d.interest ? ` · ${d.interest}` : ""}{d.experience ? ` · ${d.experience}` : ""}</p>
+              {d.missingRequired.length
+                ? <p className="kus-dom-m">꼭 볼 판단 가운데 비어 있음: {d.missingRequired.join(" · ")}</p>
+                : <p className="kus-dom-ok">꼭 볼 판단이 다 확인됨</p>}
+              {d.roles.length ? <p className="kus-dom-r">이 영역이 중심인 직무: {d.roles.join(" · ")}</p> : null}
+            </li>
+          );
+        })}</ul>
         {a.major.notAsked.length ? <p className="cm-shsub">이번 검사에서 묻지 않은 영역: {a.major.notAsked.join(" · ")}</p> : null}
       </section>
 
-      <div className="kus-cols">
-        <section className="kus-panel">
-          <SectionHeader icon="check" title="경험 및 Evidence" />
-          <h3 className="kus-h3">근거가 선 것</h3>
-          {a.evidence.ready.length ? <ul>{a.evidence.ready.map((g) => <li key={g.domain}><b>{g.domain}</b> — {g.picks.join(" / ")}</li>)}</ul> : <p className="cm-shsub">아직 없습니다.</p>}
-          <h3 className="kus-h3">해 봤고 정리가 남은 것</h3>
-          {a.evidence.partial.length ? <ul>{a.evidence.partial.map((g) => <li key={g.domain}><b>{g.domain}</b>{g.picks.length ? ` — ${g.picks.join(" / ")}` : " (고른 근거 아직 없음)"}</li>)}</ul> : <p className="cm-shsub">아직 없습니다.</p>}
-          <p className="cm-shsub">공통 경험 입력 {a.evidence.experiences.length}건 · 탐방 기록 {a.evidence.visitsObserved}건(경험으로 옮김 {a.evidence.visitsLinked}건)</p>
-        </section>
-        <section className="kus-panel">
-          <SectionHeader icon="compass" title="관심 산업·직무" />
-          <h3 className="kus-h3">산업</h3>
-          {a.interests.industries.length ? <ul className="kus-chips">{a.interests.industries.map((i) => <li key={i.name} className={i.from === "PICKED" ? "is-pick" : ""}>{i.name}<small>{i.from === "PICKED" ? "고름" : "판단에서 이어짐"}</small></li>)}</ul> : <p className="cm-shsub">없음</p>}
-          <h3 className="kus-h3">직무</h3>
-          {a.interests.roles.length ? <ul className="kus-chips">{a.interests.roles.map((r) => <li key={r.code} className={r.from === "PICKED" ? "is-pick" : ""}>{r.name}<small>{r.from === "PICKED" ? "고름" : "판단에서 이어짐"}</small></li>)}</ul> : <p className="cm-shsub">없음</p>}
-          <p className="cm-shsub">관심만으로 직무를 잇지 않고, 특정 기업을 추천하지 않습니다.</p>
-        </section>
-      </div>
-
       <section className="kus-panel">
-        <SectionHeader icon="ladder" title="역량과 직무 요구사항의 연결" sub={a.link.role ? `${a.link.role} 직무가 직접 정하는 영역` : "이어 볼 직무가 아직 없습니다"} />
-        {a.link.rows.length ? (
-          <div className="kus-scroll"><table className="kus-table">
-            <thead><tr><th>영역</th><th>그 직무가 보는 판단</th><th>지금 상태</th><th>다음 할 일</th></tr></thead>
-            <tbody>{a.link.rows.map((r) => (
-              <tr key={r.domain}><td><b>{r.domain}</b></td><td>{r.needs}</td><td>{r.state}{r.all ? ` · ${r.hit}/${r.all}` : ""}</td><td>{r.next}</td></tr>))}</tbody>
-          </table></div>
-        ) : null}
+        <SectionHeader icon="check" title="근거 사슬" sub="한 일 → 직접 정한 것 → 남긴 것 → 무엇과 견줬나. 칸의 글은 응답에서 고른 항목 그대로입니다." />
+        {chainOf.length ? chainOf.map((d, i) => (
+          <details key={d.code} className="kus-chain" open={i === 0}>
+            <summary><b>{d.name}</b><span className={`kus-zone ${ZC[d.zone] ?? ""}`}>{d.zoneKo}</span></summary>
+            <dl className="kus-chain-g">
+              <div><dt>한 일</dt><dd>{d.chain.did.join(" / ") || "고른 항목 없음"}</dd></div>
+              <div><dt>직접 정한 것</dt><dd>{d.chain.decided.join(" / ") || "고른 항목 없음"}</dd></div>
+              <div><dt>남긴 것</dt><dd>{d.chain.artifacts.join(" / ") || "고른 항목 없음"}</dd></div>
+              <div><dt>무엇과 견줬나</dt><dd>{d.chain.verifications.join(" / ") || "고른 항목 없음"}</dd></div>
+            </dl>
+          </details>
+        )) : <p className="cm-shsub">응답에서 고른 근거 항목이 없습니다. 해 본 과제 하나를 골라 무엇을 정했고 무엇이 남았는지 근거로 고르면 이 자리가 섭니다.</p>}
+        <p className="cm-shsub">공통 경험 입력 {a.evidence.experiences.length}건 · 탐방 기록 {a.evidence.visitsObserved}건(경험으로 옮김 {a.evidence.visitsLinked}건). 탐방 기록은 판정에 들어가지 않습니다.</p>
       </section>
 
       <div className="kus-cols">
@@ -102,10 +112,32 @@ export default async function KusResult() {
           {a.gaps.length ? <ol className="kus-todo">{a.gaps.map((g) => <li key={g.domains + g.title}><div><b>{g.domains}</b><small>{g.title} — {g.why}</small></div></li>)}</ol> : <p className="cm-shsub">결과가 적은 빈자리가 없습니다.</p>}
         </section>
         <section className="kus-panel">
-          <SectionHeader icon="bolt" title="다음 행동 제안" moreHref="/kus/plan" moreLabel="실행 계획" />
-          {a.actions.length ? <ol className="kus-todo">{a.actions.slice(0, 4).map((x) => <li key={x.do}><div><b>{x.domain ?? "전체"}</b><small>{x.do}</small></div></li>)}</ol> : <p className="cm-shsub">결과 모델이 낸 할 일이 없습니다.</p>}
+          <SectionHeader icon="compass" title="관심 산업·직무" />
+          <h3 className="kus-h3">산업</h3>
+          {a.interests.industries.length ? <ul className="kus-chips">{a.interests.industries.map((i) => <li key={i.name} className={i.from === "PICKED" ? "is-pick" : ""}>{i.name}<small>{i.from === "PICKED" ? "고름" : "확인된 영역에서 이어짐"}</small></li>)}</ul> : <p className="cm-shsub">없음</p>}
+          <h3 className="kus-h3">직무</h3>
+          {a.interests.roles.length ? <ul className="kus-chips">{a.interests.roles.map((x) => <li key={x.code} className={x.from === "PICKED" ? "is-pick" : ""}>{x.name}<small>{x.from === "PICKED" ? "고름" : "확인된 영역에서 이어짐"}</small></li>)}</ul> : <p className="cm-shsub">없음</p>}
+          <p className="cm-shsub">관심만으로 직무를 잇지 않고, 특정 기업을 추천하지 않습니다.</p>
         </section>
       </div>
+
+      <section className="kus-panel">
+        <SectionHeader icon="ladder" title="직무 요구사항과의 연결" sub={a.link.role ? `${a.link.role} 직무의 중심 영역` : "이어 볼 직무가 아직 없습니다"} />
+        {a.link.rows.length ? (
+          <ul className="kus-rows">{a.link.rows.map((x) => (
+            <li key={x.domain}>
+              <details>
+                <summary><span className="kus-rows-h"><b>{x.domain}</b>{x.all ? <span className="kus-rows-n">확인 {x.hit}/{x.all}</span> : null}</span>
+                  <span className="kus-rows-next">{x.next}</span></summary>
+                <dl>
+                  <div><dt>그 직무가 보는 판단</dt><dd>{x.needs}</dd></div>
+                  <div><dt>지금 상태</dt><dd>{x.state}</dd></div>
+                </dl>
+              </details>
+            </li>))}</ul>
+        ) : null}
+        <p className="cm-shsub">중심 영역은 그 Core 의 관계표에서 왔고 기업 채용 자료가 아닙니다.</p>
+      </section>
 
       <section className="kus-panel">
         <SectionHeader icon="building" title="탐방 경험과 직무 연결" moreHref="/kus/visits" moreLabel="기록 전체" />
@@ -114,12 +146,13 @@ export default async function KusResult() {
             <p className="kus-visit-h"><b>{v.company}</b>
               {v.test ? <span className="kus-pill is-test">테스트</span> : null}
               {!v.confirmed ? <span className="kus-pill is-warn">기업 확인 전</span> : null}
-              <span className={`kus-pill ${v.did.length ? "is-ok" : ""}`}>{v.did.length ? "직접 해 봄" : "관찰"}</span>
+              <span className={`kus-pill ${v.did.length ? "is-ok" : ""}`}>{v.did.length ? "직접 해 봄" : "관찰만"}</span>
               {v.linked ? <span className="kus-pill is-go">경험으로 옮김</span> : null}
               <time>{v.on ?? ""}</time></p>
-            <dl className="kus-kv">
-              <dt>관찰한 직무</dt><dd>{v.roles.join(", ") || "—"}</dd>
-              <dt>이은 전공 영역</dt><dd>{v.domains.length ? v.domains.map((d) => `${d.name}(검사: ${d.zoneKo})`).join(" · ") : "—"}</dd>
+            <dl className="kus-chain-g">
+              <div><dt>본 것</dt><dd>{v.observed.join(" / ") || "—"}</dd></div>
+              <div><dt>직접 해 본 것</dt><dd>{v.did.join(" / ") || "없음 · 관찰만 했습니다"}</dd></div>
+              <div><dt>확인할 것</dt><dd>{v.verify.length ? v.verify.join(" ") : "이은 전공 영역이 없어 검사 상태와 견줄 수 없습니다."}</dd></div>
             </dl>
           </div>
         )) : <p className="cm-shsub">아직 탐방 기록이 없습니다.</p>}
