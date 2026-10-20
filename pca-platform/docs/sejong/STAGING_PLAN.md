@@ -1,5 +1,14 @@
 # 세종 MVP 독립 Staging — 안전한 배포 계획 (승인 전, 실행하지 않음)
 
+## 0-1. 이 세션이 대신 한 것
+
+npm 레지스트리가 막혀 이 세션에서는 설치·빌드·브라우저 확인을 못 한다. 그래서
+`.github/workflows/sejong-verify.yml` 이 **이 가지에 푸시될 때만** GitHub 러너에서
+`npm ci` → 전체 TypeScript → `next build` → 회귀(기준 대조) → DB 경계 → 브라우저
+E2E·PDF 를 돌리고 결과를 `docs/sejong/ci/RESULT.md` · `docs/sejong/shots/` 로 돌려준다.
+**이것은 Staging URL 이 아니다.** 바깥에서 열 수 있는 주소는 아래 Railway 프로젝트가
+서야 생긴다.
+
 ## 0. 지금 사실
 
 2026-10-20 GitHub deployments API 로 확인한 것이다.
@@ -25,7 +34,7 @@
 
 ## 2. 차례 (사람이 Railway 에서, 승인 뒤)
 
-1. 새 프로젝트 `careermatri-sejong-demo` → **Empty**.
+1. 새 프로젝트 `careermatri-sejong-staging` → **Empty**.
 2. **PostgreSQL** 추가(이 프로젝트 전용).
 3. **GitHub Repo** 서비스 추가 → `project465/pca-platform` · 가지 **`claude/epic-galileo-lrvgxr`**.
    - Root Directory 는 지금 공용 Staging 서비스의 값을 그대로 확인해서 맞춘다.
@@ -66,11 +75,20 @@
 - 운영 DB·운영 변수·운영 도메인과 연결하는 줄이 없어야 한다. 배포 뒤 변수 화면에서
   `DATABASE_URL` 이 이 프로젝트의 Postgres 를 가리키는지 확인한다.
 
-## 4. 비용
+## 4. 비용 (추정, 승인 전 확인)
 
-앱 서비스 1 + Postgres 1 이 상시 떠 있다. Railway 사용량 과금이므로 시연 기간이 끝나면
-서비스를 멈추거나 프로젝트를 지운다. 금액은 Railway 요금표와 실제 사용량으로 확인한다.
-여기 적지 않는다.
+Railway 는 사용량 과금이다(2026-10 공개 요금: RAM $10/GB·월, vCPU $20/vCPU·월,
+분 단위, 송신 $0.05/GB. Hobby 는 월 $5 에 사용량 $5 포함).
+
+| 자원 | 상시 크기(가정) | 월 추정 |
+|---|---|---|
+| 앱 서비스 1 (Next.js standalone + PDF 때만 Chromium) | RAM 0.4~0.8GB, 평소 CPU 거의 0 | $5~10 |
+| PostgreSQL 1 (시연 자료 21명) | RAM 0.1~0.25GB + 디스크 1GB 안팎 | $1~3 |
+| **합계** | | **월 $6~13 안팎** |
+
+- 숫자는 가정한 크기로 계산한 **추정**이다. 실제는 Railway 사용량 화면으로 확인한다.
+- 같은 워크스페이스의 기존 플랜(운영 프로젝트가 쓰는 것) 안에서 청구가 프로젝트별로 갈린다.
+- 시연 기간이 끝나면 서비스를 멈추거나 프로젝트를 지운다. 멈추면 과금이 멈춘다.
 
 ## 5. 승인받을 것
 
