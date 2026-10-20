@@ -1,0 +1,15 @@
+npm ci	0
+typecheck	0
+next build	0
+db chain	0
+v3:freeze:measure	0
+campus:check	0
+db:chain	0
+jju-verify-1	0
+jju-c16	0
+jju-access	0
+jju-verify-2	0
+jju-report	0
+jju-gold	0
+jju next browser e2e	1
+shared files changed (jju-verify.yml 제외) = 0	0
