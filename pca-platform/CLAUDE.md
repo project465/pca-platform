@@ -92,6 +92,7 @@ organizations, courses, course_competency_map, translations
 10. 로그인
 11. 검사 응시 → `mockups/01_test_screen.html`
 12. 결과지 → `mockups/02_student_report.html`
+    인쇄본(20쪽 구성, 대표 13쪽 시안) → `mockups/05_student_report_print.html`
 
 소개 사이트는 만든다. (2026-09-04 결정 변경. 그전에는 MVP에서 뺐었다.)
 영업은 여전히 대면으로 하되, 나라별 도메인에 소개 사이트를 두고 문의를 받는다.
