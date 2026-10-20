@@ -19,10 +19,16 @@ export type Todo = { title: string; why: string; href: string; cta: string };
 
 export function kusTodos(x: {
   mode: KusMode; st: AttemptState; analysis: KusAnalysis | null;
-  visits: Visit[]; programs: VisitProgram[];
+  visits: Visit[]; programs: VisitProgram[]; unsupported?: boolean;
 }): Todo[] {
   const t: Todo[] = [];
-  if (x.mode === "PREPARING") {
+  if (x.unsupported) {
+    t.push({
+      title: "기업탐방 기록부터 남기기",
+      why: "이 학과는 전공 기준이 아직 없어 검사를 내지 않습니다. 다른 전공 검사로 대신 재지 않습니다. 탐방에서 본 직무와 해 본 활동은 지금 남겨 둘 수 있습니다.",
+      href: "/kus/visits/new", cta: "기록하기",
+    });
+  } else if (x.mode === "PREPARING") {
     t.push({
       title: "학과 검사가 열리기를 기다리기",
       why: "이 학과는 아직 검사가 준비 중입니다. 열리면 이 자리에 시작 단추가 섭니다. 그동안 탐방 기록은 남길 수 있습니다.",
@@ -45,7 +51,7 @@ export function kusTodos(x: {
       href: `/kus/visits/${unlinked[0].id}`, cta: "잇기",
     });
   }
-  if (!x.visits.length) {
+  if (!x.visits.length && !x.unsupported) {
     const next = x.programs.find((p) => p.status !== "DONE");
     t.push({
       title: "기업탐방 기록 남기기",

@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { requireKusStudent } from "@/lib/kus/access";
+import { examUnavailable, requireKusStudent } from "@/lib/kus/access";
+import { UNSUPPORTED_NOTE } from "@/lib/kus/analysis";
 import { kusWorkspace } from "@/lib/kus/workspace";
 import { ACTIVITIES } from "@/lib/kus/visits";
 import { content, roleChoices } from "@/lib/me-v3/runtime/session";
@@ -22,7 +23,8 @@ export default async function NewVisit({ searchParams }: { searchParams: Promise
   const core = me.ctx.core_code;
   const sp = await searchParams;
   /* 자유전공학부처럼 전공을 아직 고르지 않은 학생은 직무·영역 보기를 읽을 사전이 없다 */
-  if (!core) {
+  const bare = !core && examUnavailable(me);
+  if (!core && !bare) {
     return (
       <KusShell active="/kus/visits" who={w.name} dept={`${w.college} · ${w.dept}`} test={w.test}>
         <KusHead kicker="기업탐방 기록" title="새 탐방 기록" />
@@ -31,13 +33,15 @@ export default async function NewVisit({ searchParams }: { searchParams: Promise
       </KusShell>
     );
   }
-  const roles = roleChoices(core);
-  const tds = content(core).domains.domains;
+  /* 학과 Core 가 없는 학생은 고를 사전이 없다: 직무는 적는 칸 하나, 전공 영역 잇기는 세우지 않는다 */
+  const roles = bare ? [] : roleChoices(core);
+  const tds = bare ? [] : content(core).domains.domains;
   const progs = w.programs.filter((p) => p.status !== "CANCELLED");
   return (
     <KusShell active="/kus/visits" who={w.name} dept={`${w.college} · ${w.dept}`} test={w.test}>
       <KusHead kicker="기업탐방 기록" title="새 탐방 기록" lead="본 것과 직접 해 본 것을 갈라 적습니다. 적은 말은 초안의 재료가 되고, 판정에는 들어가지 않습니다." />
       {sp.e ? <KusNote>{sp.e}</KusNote> : null}
+      {bare ? <KusNote tone="info">{UNSUPPORTED_NOTE} 직무는 보기 대신 직접 적고, 전공 영역 잇기는 검사가 열린 뒤에 합니다.</KusNote> : null}
       <form action={saveVisit} className="kus-form kus-panel">
         <div className="kus-field">
           <label htmlFor="program_id">방문 기업</label>
@@ -54,11 +58,15 @@ export default async function NewVisit({ searchParams }: { searchParams: Promise
         </div>
         <fieldset className="kus-field">
           <legend>관찰한 직무</legend>
-          <small>{w.dept} 검사 사전의 직무입니다. 없으면 아래에 적습니다.</small>
-          <div className="kus-checks">
-            {roles.map((r) => <label key={r.code}><input type="checkbox" name="role_codes" value={r.code} /><span>{r.name}<small>{r.first}</small></span></label>)}
-          </div>
-          <input className="kus-input" style={{ marginTop: 8 }} name="role_text" placeholder="보기에 없는 직무 (예: 해외영업)" maxLength={120} />
+          {roles.length ? (
+            <>
+              <small>{w.dept} 검사 사전의 직무입니다. 없으면 아래에 적습니다.</small>
+              <div className="kus-checks">
+                {roles.map((r) => <label key={r.code}><input type="checkbox" name="role_codes" value={r.code} /><span>{r.name}<small>{r.first}</small></span></label>)}
+              </div>
+            </>
+          ) : <small>본 직무를 한 줄로 적습니다.</small>}
+          <input className="kus-input" style={{ marginTop: 8 }} name="role_text" placeholder={roles.length ? "보기에 없는 직무 (예: 해외영업)" : "본 직무 (예: 공정기술 엔지니어)"} maxLength={120} />
         </fieldset>
         <div className="kus-field">
           <label htmlFor="understood">이해한 기술·제품·사업</label>
@@ -76,13 +84,13 @@ export default async function NewVisit({ searchParams }: { searchParams: Promise
           <label htmlFor="learned">새롭게 알게 된 것</label>
           <textarea id="learned" name="learned" maxLength={600} />
         </div>
-        <fieldset className="kus-field">
+        {tds.length ? <fieldset className="kus-field">
           <legend>내 전공과 잇기</legend>
           <small>탐방에서 본 일이 전공의 어느 영역과 이어지는지 고릅니다(최대 4개).</small>
           <div className="kus-checks">
             {tds.map((d) => <label key={d.code}><input type="checkbox" name="td_codes" value={d.code} /><span>{d.name}</span></label>)}
           </div>
-        </fieldset>
+        </fieldset> : null}
         <div className="kus-actions">
           <button type="submit" className="cm-btn is-primary">기록 저장</button>
           <Link className="cm-btn" href="/kus/visits">취소</Link>

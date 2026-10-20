@@ -4,7 +4,7 @@ import { PrimaryActionHero, SectionHeader } from "@/app/me/ui";
 import { requireKusStudent } from "@/lib/kus/access";
 import { kusWorkspace } from "@/lib/kus/workspace";
 import { kusTodos } from "@/lib/kus/home";
-import { MODE_NOTE } from "@/lib/kus/analysis";
+import { MODE_NOTE, UNSUPPORTED_NOTE } from "@/lib/kus/analysis";
 import { MODE_KO } from "@/lib/kus/program";
 import { KusHead, KusNote, KusShell } from "./shell";
 
@@ -24,8 +24,8 @@ export default async function KusHome() {
   const { user, me } = await requireKusStudent();
   const w = await kusWorkspace(user, me);
   const a = w.bundle?.analysis ?? null;
-  const todos = kusTodos({ mode: w.mode, st: w.st, analysis: a, visits: w.visits, programs: w.programs });
-  const note = MODE_NOTE[w.mode];
+  const todos = kusTodos({ mode: w.mode, st: w.st, analysis: a, visits: w.visits, programs: w.programs, unsupported: w.unsupported });
+  const note = w.unsupported ? UNSUPPORTED_NOTE : MODE_NOTE[w.mode];
   const open = w.mode !== "PREPARING";
 
   const hero = w.st.kind === "resume"
@@ -33,6 +33,10 @@ export default async function KusHome() {
         href: `/v3/${w.st.attemptId}`, cta: "이어서 답하기" }
     : a
       ? { tag: a.status.badge, title: a.status.title, why: a.status.lead, href: "/kus/result", cta: "나의 분석 결과 보기" }
+      : w.unsupported
+        ? { tag: "검사 이용 불가", title: `${w.dept} 검사는 아직 열리지 않았어요`,
+            why: "학과 전공 기준이 아직 없어 결과를 내지 않습니다. 다른 전공 검사로 대신 재지 않습니다. 계정과 기업탐방 기록은 지금 쓸 수 있습니다.",
+            href: "/kus/visits/new", cta: "기업탐방 기록하기" }
       : open
         ? { tag: "검사 전", title: `${w.dept} 기준 전공 검사를 아직 시작하지 않았어요`, why: "검사를 끝내면 개인별 분석 · 실행 계획 · 보고서가 이 자리에 섭니다.",
             href: "/campus/kus/start", cta: "검사 시작하기" }
@@ -40,6 +44,7 @@ export default async function KusHome() {
             href: "/kus/visits", cta: "기업탐방 기록 보기" };
 
   const progress = w.st.kind === "resume" ? { v: "진행 중", s: `${w.st.answered}문항 답함 · 이어하기`, pill: "is-go" }
+    : w.unsupported ? { v: "검사 이용 불가", s: "학과 전공 기준 준비 전", pill: "" }
     : w.st.kind === "start" ? { v: open ? "시작 전" : MODE_KO.PREPARING, s: open ? "학교 진입 검사는 PRO 로 엽니다" : "학과 검사 준비 중", pill: "" }
       : { v: "제출 완료", s: w.bundle ? `${w.bundle.answered}문항 · 결과 확정 ${w.bundle.resultAt ?? ""}` : "결과를 확인하세요", pill: "is-ok" };
   const did = w.visits.filter((v) => v.activities.some((x) => ["HANDS_ON", "TASK", "PRESENT"].includes(x))).length;

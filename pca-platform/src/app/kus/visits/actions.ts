@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { requireKusStudent } from "@/lib/kus/access";
+import { examUnavailable, requireKusStudent } from "@/lib/kus/access";
 import { content, roleChoices } from "@/lib/me-v3/runtime/session";
 import {
   addVisit, checkVisit, linkExperience, removeVisit, visitPrograms,
@@ -17,7 +17,9 @@ import {
 export async function saveVisit(form: FormData): Promise<void> {
   const { user, me } = await requireKusStudent();
   const core = me.ctx.core_code;
-  if (!core) redirect(`/kus/visits/new?e=${encodeURIComponent("전공을 고른 뒤에 기록할 수 있습니다")}`);
+  /* 학과 Core 가 없는 학생(CR-03)은 사전이 없으므로 직무·영역 코드를 하나도 받지 않고 적은 말만 남긴다 */
+  const bare = !core && examUnavailable(me);
+  if (!core && !bare) redirect(`/kus/visits/new?e=${encodeURIComponent("전공을 고른 뒤에 기록할 수 있습니다")}`);
   const programs = await visitPrograms();
   const c = checkVisit({
     program_id: form.get("program_id"), company_name: form.get("company_name"),
@@ -26,12 +28,12 @@ export async function saveVisit(form: FormData): Promise<void> {
     activities: form.getAll("activities"), activity_text: form.get("activity_text"),
     learned: form.get("learned"), td_codes: form.getAll("td_codes"),
   }, {
-    roles: roleChoices(core).map((r) => r.code),
-    tds: content(core).domains.domains.map((d) => d.code),
+    roles: bare ? [] : roleChoices(core).map((r) => r.code),
+    tds: bare ? [] : content(core).domains.domains.map((d) => d.code),
     programs,
   });
   if (!c.ok) redirect(`/kus/visits/new?e=${encodeURIComponent(c.why)}`);
-  const id = await addVisit(user.id, core, c.value);
+  const id = await addVisit(user.id, bare ? null : core, c.value);
   redirect(`/kus/visits/${id}?saved=1`);
 }
 

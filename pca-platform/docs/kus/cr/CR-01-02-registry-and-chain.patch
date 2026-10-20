@@ -1,0 +1,482 @@
+diff --git a/pca-platform/deploy/db-chain.json b/pca-platform/deploy/db-chain.json
+index 5b176a1a..900fc392 100644
+--- a/pca-platform/deploy/db-chain.json
++++ b/pca-platform/deploy/db-chain.json
+@@ -22,9 +22,10 @@
+     "db/schema_v3_orgs.sql",
+     "db/schema_auth_oauth.sql",
+     "db/schema_campus_entry.sql",
+-    "db/schema_campus_students.sql"
++    "db/schema_campus_students.sql",
++    "db/kus/schema_kus.sql"
+   ],
+-  "order": "차례가 곧 조건이다. `schema_v3_arch.sql` 의 `regions` 와 `career_profiles` 가 `schema_v3_platform.sql` 보다 먼저 서야 하고, `seed/v3_regions.sql` 은 `regions` 가 선 다음이다. `schema_auth_oauth.sql` 은 `users` 가 선 다음이면 어디든 되고, 맨 뒤에 둔다. `schema_v3_orgs.sql` 은 `regions` 가 선 다음이라 지역 시드 뒤에 둔다. `schema_campus_entry.sql` 은 `v3_attempts` 가 선 다음이므로 `schema_v3_runtime.sql` 뒤면 어디든 되고, 맨 뒤에 둔다. `schema_campus_students.sql` 은 `users` 가 선 다음이면 어디든 되고, 맨 뒤에 둔다.",
++  "order": "차례가 곧 조건이다. `schema_v3_arch.sql` 의 `regions` 와 `career_profiles` 가 `schema_v3_platform.sql` 보다 먼저 서야 하고, `seed/v3_regions.sql` 은 `regions` 가 선 다음이다. `schema_auth_oauth.sql` 은 `users` 가 선 다음이면 어디든 되고, 맨 뒤에 둔다. `schema_v3_orgs.sql` 은 `regions` 가 선 다음이라 지역 시드 뒤에 둔다. `schema_campus_entry.sql` 은 `v3_attempts` 가 선 다음이므로 `schema_v3_runtime.sql` 뒤면 어디든 되고, 맨 뒤에 둔다. `schema_campus_students.sql` 은 `users` 가 선 다음이면 어디든 되고, 맨 뒤에 둔다. `db/kus/schema_kus.sql` 은 `users` 와 `v3_experiences` 가 선 다음이라 맨 뒤에 둔다(KUS 기업탐방 표 둘, CHECK university_code = KUS).",
+   "not_in_chain": {
+     "db/seed/platform_demo.sql": "눌러 볼 가상 자료. 운영 DB 에 넣지 않는다 (npm run db:demo)",
+     "db/seed/platform_demo_people.sql": "같음"
+diff --git a/pca-platform/sites/pca-platform/content/campus-universities.json b/pca-platform/sites/pca-platform/content/campus-universities.json
+index fe24b04e..367e2bd4 100644
+--- a/pca-platform/sites/pca-platform/content/campus-universities.json
++++ b/pca-platform/sites/pca-platform/content/campus-universities.json
+@@ -1453,6 +1453,460 @@
+      ]
+     }
+    ]
++  },
++  {
++   "university_code": "KUS",
++   "university_name": "고려대학교 세종캠퍼스",
++   "market_code": "KR",
++   "entry_note": "CareerMatri · 고려대학교 세종캠퍼스 학생 진입 (R1 · 계약 전 · 시연 등록부)",
++   "brand_asset": null,
++   "brand_asset_note": "학교 로고·교표 asset 이 없고 사용 권한도 확인하지 않았다. **그려 넣지 않는다**",
++   "open_questions": [
++    "공식 도입 계약과 학교 이름·로고 사용 범위",
++    "기업탐방 참여 학생 20명의 실제 전공 목록(받으면 student_open 의 자리와 우선순위를 바꾼다)",
++    "학과·전공 목록의 공식 대조(이 세션은 sejong.korea.ac.kr · oku.korea.ac.kr 에 닿지 못했다)",
++    "담당자에게 개인별 상세 결과를 열지 여부(계약·동의 전에는 닫는다)"
++   ],
++   "region_hint": "KR-SEJONG",
++   "region_cities": [
++    "세종",
++    "대전",
++    "청주"
++   ],
++   "region_note": "먼저 보여 주는 자리일 뿐이다. **사용자가 고른 지역을 바꾸지 않는다**",
++   "allow_unsupported_accounts": true,
++   "student_open": {
++    "mode": "LEAF",
++    "leaves": [
++     "KUS26_CBIZ_GM",
++     "KUS26_CBIZ_DM"
++    ],
++    "note": "지금 학생에게 팔 수 있는 Core(경영 · 기계) 가운데 KUS 에서 이름이 같은 자리는 융합경영학부 두 전공뿐이다. 나머지는 Core 가 닫혀 있거나 매핑 판단 전이라 준비 중이다. 참여 학생 전공이 확인되면 이 목록을 그 순서로 넓힌다"
++   },
++   "wave1": [
++    "BIZ_CORE_V1",
++    "CS_CORE_V1",
++    "EE_CORE_V1"
++   ],
++   "wave1_note": "KUS 에서 이름이 같은 자리가 있는 Core 차례. CS·EE 는 전공 검수가 끝나야 학생에게 열린다",
++   "excluded_units": [
++    {
++     "name": "독일학전공",
++     "where": "글로벌학부",
++     "why": "2026 모집단위에서 확인되지 않음(2024 자료에만 있음)"
++    },
++    {
++     "name": "스포츠과학전공",
++     "where": "국제스포츠학부",
++     "why": "검색 요지 한 곳에만 보임"
++    }
++   ],
++   "retired_codes": [],
++   "lineage_candidates": [
++    "컴퓨터융합소프트웨어학과 → 컴퓨터소프트웨어학과 (2026 명칭변경, 검색 요지)"
++   ],
++   "catalogs": [
++    {
++     "catalog_code": "KUS_2026",
++     "catalog_year": 2026,
++     "label": "현재 재학생",
++     "status": "ACTIVE",
++     "default_for_unknown": true,
++     "effective_from": "2026-03-01",
++     "effective_to": null,
++     "effective_note": "학년도 시작일(3월 1일)로 적는다. 공식 쪽이 적어 준 날짜가 아니고 학사 일정의 관례다",
++     "source_url": "https://oku.korea.ac.kr/attach/202509/1756872350076_0.pdf",
++     "source_name": "고려대학교 세종캠퍼스 2026학년도 수시모집요강 · 학과 안내 (검색 요지)",
++     "sources": [
++      {
++       "name": "2026 수시모집요강",
++       "url": "https://oku.korea.ac.kr/attach/202509/1756872350076_0.pdf"
++      },
++      {
++       "name": "2025 정시모집요강",
++       "url": "https://oku.korea.ac.kr/attach/202410/1729055554339_0.pdf"
++      },
++      {
++       "name": "학과 안내(공공정책)",
++       "url": "https://oku.korea.ac.kr/sejong/cms/FR_CON/index.do?MENU_ID=890&CONTENTS_NO=5"
++      },
++      {
++       "name": "학과 안내(글로벌·문화스포츠)",
++       "url": "https://oku.korea.ac.kr/sejong/cms/FR_CON/index.do?MENU_ID=930"
++      },
++      {
++       "name": "과학기술대학",
++       "url": "https://sejong.korea.ac.kr/koreaSejong/7849/subview.do"
++      },
++      {
++       "name": "약학대학",
++       "url": "https://sejong.korea.ac.kr/koreaSejong/7850/subview.do"
++      }
++     ],
++     "verified_at": null,
++     "verification": "OFFICIAL_PAGE_UNREACHABLE",
++     "verification_note": "이 작업 환경은 sejong.korea.ac.kr · oku.korea.ac.kr 에 닿지 못했다(DNS 실패 · CONNECT 403). 학과 이름은 **공식 주소를 출처로 든 검색 결과 요지**에서 옮겼고 원문을 직접 열어 보지 않았다. 그래서 verified_at 이 비어 있다. 교육과정 연도는 읽지 못했다",
++     "evidence_file": "docs/kus/data/kus-departments.secondary.json",
++     "colleges": [
++      {
++       "code": "SCITECH",
++       "name": "과학기술대학",
++       "units": [
++        {
++         "code": "KUS26_AMS",
++         "name": "응용수리과학부",
++         "kind": "faculty",
++         "majors": [
++          {
++           "code": "KUS26_AMS_DCS",
++           "name": "데이터계산과학전공",
++           "kind": "major",
++           "core_code": null,
++           "specialization": null,
++           "note": "Core 를 들지 않는다(준비 중). 후보: MATH_CORE_V1(계획 단계)"
++          }
++         ]
++        },
++        {
++         "code": "KUS26_SEMIPHYS",
++         "name": "반도체물리학부",
++         "kind": "faculty",
++         "core_code": null,
++         "specialization": null,
++         "note": "Core 를 들지 않는다(준비 중). 후보: PHYS_CORE_V1 · SEMI_CORE_V1(둘 다 계획 단계). 2025 부터 디스플레이융합·반도체물리 전공이 학부로 합쳐졌다(편입학 요강 검색 요지)"
++        },
++        {
++         "code": "KUS26_MATCHEM",
++         "name": "신소재화학과",
++         "kind": "department",
++         "core_code": null,
++         "specialization": null,
++         "note": "Core 를 들지 않는다(준비 중). 후보: MSE_CORE_V1 · CHEM_CORE_V1(계획 단계)"
++        },
++        {
++         "code": "KUS26_CSW",
++         "name": "컴퓨터소프트웨어학과",
++         "kind": "department",
++         "core_code": "CS_CORE_V1",
++         "specialization": "SPEC_CS_SOFTWARE",
++         "note": "2026 명칭변경(옛 컴퓨터융합소프트웨어학과). 컴퓨터·소프트웨어 Core 의 소프트웨어학 갈래. Core 가 전공 검수 전이라 학생에게 닫혀 있다"
++        },
++        {
++         "code": "KUS26_EIE",
++         "name": "전자및정보공학과",
++         "kind": "department",
++         "core_code": "EE_CORE_V1",
++         "specialization": null,
++         "note": "전기전자 Core. 갈래(전자·회로 / 정보통신)는 전공 검수자가 정한다. Core 가 전공 검수 전이라 학생에게 닫혀 있다"
++        },
++        {
++         "code": "KUS26_BIOINFO",
++         "name": "생명정보공학과",
++         "kind": "department",
++         "core_code": null,
++         "specialization": null,
++         "note": "Core 를 들지 않는다(준비 중). 후보: BT_CORE_V1 · BIO_CORE_V1. 생명정보(바이오인포매틱스)를 어느 사전으로 읽을지 판단 전"
++        },
++        {
++         "code": "KUS26_FOODBIO",
++         "name": "식품생명공학과",
++         "kind": "department",
++         "core_code": null,
++         "specialization": null,
++         "note": "Core 를 들지 않는다(준비 중). 후보: FOOD_CORE_V1(푸드테크 갈래) · BT_CORE_V1. 판단 전"
++        },
++        {
++         "code": "KUS26_EMC",
++         "name": "전자·기계융합공학과",
++         "kind": "department",
++         "core_code": null,
++         "specialization": null,
++         "note": "Core 를 들지 않는다(준비 중). 후보: EE_CORE_V1 · ME_CORE_V3. 융합 학과라 한쪽 사전만 붙이지 않는다"
++        },
++        {
++         "code": "KUS26_ENVSYS",
++         "name": "환경시스템공학과",
++         "kind": "department",
++         "core_code": null,
++         "specialization": null,
++         "note": "Core 를 들지 않는다(준비 중). 후보: ENV_CORE_V1(계획 단계)"
++        },
++        {
++         "code": "KUS26_MOBILITY",
++         "name": "미래모빌리티학과",
++         "kind": "department",
++         "core_code": null,
++         "specialization": null,
++         "note": "Core 를 들지 않는다(준비 중). 후보: AUTO_CORE_V1(계획 단계)"
++        },
++        {
++         "code": "KUS26_ISEMI",
++         "name": "지능형반도체공학과",
++         "kind": "department",
++         "core_code": null,
++         "specialization": null,
++         "note": "Core 를 들지 않는다(준비 중). 후보: SEMI_CORE_V1(계획 단계)"
++        },
++        {
++         "code": "KUS26_AICS",
++         "name": "인공지능사이버보안학과",
++         "kind": "department",
++         "core_code": null,
++         "specialization": null,
++         "note": "Core 를 들지 않는다(준비 중). 후보: CS_CORE_V1 의 인공지능·데이터 / 정보보안 갈래. 두 갈래 가운데 하나로 정하지 않았다"
++        },
++        {
++         "code": "KUS26_DHC",
++         "name": "디지털헬스케어공학과",
++         "kind": "department",
++         "core_code": null,
++         "specialization": null,
++         "note": "Core 를 들지 않는다(준비 중). 후보: 없음. 단과대학 배정도 검색 요지로만 짐작했다"
++        },
++        {
++         "code": "KUS26_SMARTCITY",
++         "name": "스마트도시학부",
++         "kind": "faculty",
++         "core_code": null,
++         "specialization": null,
++         "note": "Core 를 들지 않는다(준비 중). 후보: CIV_CORE_V1 · ARCH_CORE_V1 · CS_CORE_V1. 판단 전"
++        }
++       ]
++      },
++      {
++       "code": "GLOBALBIZ",
++       "name": "글로벌비즈니스대학",
++       "units": [
++        {
++         "code": "KUS26_GLOBAL",
++         "name": "글로벌학부",
++         "kind": "faculty",
++         "majors": [
++          {
++           "code": "KUS26_GLOBAL_KOR",
++           "name": "한국학전공",
++           "kind": "major",
++           "core_code": null,
++           "specialization": null,
++           "note": "Core 를 들지 않는다(준비 중). 후보: LANG_CORE_V1. 판단 전"
++          },
++          {
++           "code": "KUS26_GLOBAL_CHN",
++           "name": "중국학전공",
++           "kind": "major",
++           "core_code": null,
++           "specialization": null,
++           "note": "Core 를 들지 않는다(준비 중). 후보: LANG_CORE_V1 · TRADE_CORE_V1. 판단 전"
++          },
++          {
++           "code": "KUS26_GLOBAL_ENG",
++           "name": "영미학전공",
++           "kind": "major",
++           "core_code": null,
++           "specialization": null,
++           "note": "Core 를 들지 않는다(준비 중). 후보: LANG_CORE_V1. 판단 전"
++          }
++         ],
++         "note": "독일학전공은 2024 수강신청 유의사항에만 보이고 2026 모집단위에서 확인되지 않아 싣지 않았다"
++        },
++        {
++         "code": "KUS26_CBIZ",
++         "name": "융합경영학부",
++         "kind": "faculty",
++         "majors": [
++          {
++           "code": "KUS26_CBIZ_GM",
++           "name": "글로벌경영전공",
++           "kind": "major",
++           "core_code": "BIZ_CORE_V1",
++           "specialization": "SPEC_BIZ_GLOBAL_MGMT",
++           "note": "경영 Core 의 글로벌경영 갈래(이름이 같다)"
++          },
++          {
++           "code": "KUS26_CBIZ_DM",
++           "name": "디지털경영전공",
++           "kind": "major",
++           "core_code": "BIZ_CORE_V1",
++           "specialization": "SPEC_BIZ_GENERAL",
++           "note": "경영 Core 의 경영 일반 갈래로 잇는다. IT경영정보 갈래(SPEC_BIZ_MIS)가 더 맞는지는 전공 검수자가 정한다"
++          }
++         ]
++        }
++       ]
++      },
++      {
++       "code": "PUBPOL",
++       "name": "공공정책대학",
++       "note": "단과대학 이름이 이 네 학부 위에 붙은 것을 검색 요지에서 직접 보지 못했다(자유전공학부(공공정책) · 학과 안내 쪽 묶음으로 짐작)",
++       "units": [
++        {
++         "code": "KUS26_GOVADM",
++         "name": "정부행정학부",
++         "kind": "faculty",
++         "core_code": "PUBADM_CORE_V1",
++         "specialization": "SPEC_PUBADM_GENERAL",
++         "note": "행정 Core 의 일반행정 갈래. Core 가 아직 학생에게 닫혀 있다"
++        },
++        {
++         "code": "KUS26_PSUD",
++         "name": "공공사회·통일외교학부",
++         "kind": "faculty",
++         "majors": [
++          {
++           "code": "KUS26_PSUD_SOC",
++           "name": "공공사회학전공",
++           "kind": "major",
++           "core_code": null,
++           "specialization": null,
++           "note": "Core 를 들지 않는다(준비 중). 후보: SOC_CORE_V1(계획 단계)"
++          },
++          {
++           "code": "KUS26_PSUD_UFS",
++           "name": "통일외교안보전공",
++           "kind": "major",
++           "core_code": null,
++           "specialization": null,
++           "note": "Core 를 들지 않는다(준비 중). 후보: POL_CORE_V1(계획 단계)"
++          }
++         ]
++        },
++        {
++         "code": "KUS26_ECONSTAT",
++         "name": "경제통계학부",
++         "kind": "faculty",
++         "core_code": null,
++         "specialization": null,
++         "note": "Core 를 들지 않는다(준비 중). 후보: ECON_CORE_V1 · MATH_CORE_V1(계획 단계). 지금 전공 구성은 확인하지 못했다",
++         "unverified_majors": true
++        },
++        {
++         "code": "KUS26_BIGDATA",
++         "name": "빅데이터사이언스학부",
++         "kind": "faculty",
++         "core_code": null,
++         "specialization": null,
++         "note": "Core 를 들지 않는다(준비 중). 후보: MATH_CORE_V1 · CS_CORE_V1(인공지능·데이터). 판단 전"
++        }
++       ]
++      },
++      {
++       "code": "CULSPORT",
++       "name": "문화스포츠대학",
++       "units": [
++        {
++         "code": "KUS26_ISPORT",
++         "name": "국제스포츠학부",
++         "kind": "faculty",
++         "majors": [
++          {
++           "code": "KUS26_ISPORT_BIZ",
++           "name": "스포츠비즈니스전공",
++           "kind": "major",
++           "core_code": null,
++           "specialization": null,
++           "note": "Core 를 들지 않는다(준비 중). 후보: BIZ_CORE_V1 의 스포츠마케팅 갈래 · SPORTS_CORE_V1. 판단 전"
++          }
++         ],
++         "note": "스포츠과학전공은 검색 요지 한 곳에만 보여 싣지 않았다"
++        },
++        {
++         "code": "KUS26_HERITAGE",
++         "name": "문화유산융합학부",
++         "kind": "faculty",
++         "core_code": null,
++         "specialization": null,
++         "note": "Core 를 들지 않는다(준비 중). 후보: 없음. 2026 전공 구성 확인 전",
++         "unverified_majors": true
++        },
++        {
++         "code": "KUS26_CCRE",
++         "name": "문화창의학부",
++         "kind": "faculty",
++         "majors": [
++          {
++           "code": "KUS26_CCRE_MEDIA",
++           "name": "미디어문예창작전공",
++           "kind": "major",
++           "core_code": null,
++           "specialization": null,
++           "note": "Core 를 들지 않는다(준비 중). 후보: LANG_CORE_V1(문예창작) · MEDIA_CORE_V1. 판단 전"
++          },
++          {
++           "code": "KUS26_CCRE_CONT",
++           "name": "문화콘텐츠전공",
++           "kind": "major",
++           "core_code": null,
++           "specialization": null,
++           "note": "Core 를 들지 않는다(준비 중). 후보: MEDIA_CORE_V1(콘텐츠) · BIZ_CORE_V1(문화·콘텐츠 비즈니스). 판단 전"
++          }
++         ]
++        }
++       ]
++      },
++      {
++       "code": "PHARM",
++       "name": "약학대학",
++       "units": [
++        {
++         "code": "KUS26_PHARM",
++         "name": "약학과",
++         "kind": "department",
++         "core_code": null,
++         "specialization": null,
++         "note": "Core 를 들지 않는다(준비 중). 후보: 없음(약학 Core 가 등록부에 없다)"
++        },
++        {
++         "code": "KUS26_ADDRUG",
++         "name": "첨단융합신약학과",
++         "kind": "department",
++         "core_code": null,
++         "specialization": null,
++         "note": "Core 를 들지 않는다(준비 중). 후보: 없음. 2025 신설(정시 요강 검색 요지)"
++        }
++       ]
++      },
++      {
++       "code": "FREEMAJOR",
++       "name": "자유전공학부",
++       "note": "단과대학이 아니고 2026 신설 전공자율선택 모집단위다. 전공을 고르는 자리라 Core 를 만들지 않는다",
++       "units": [
++        {
++         "code": "KUS26_FREE_ST",
++         "name": "자유전공학부(과학기술)",
++         "kind": "department",
++         "core_code": null,
++         "specialization": null,
++         "routing_only": true
++        },
++        {
++         "code": "KUS26_FREE_GB",
++         "name": "자유전공학부(글로벌비즈니스)",
++         "kind": "department",
++         "core_code": null,
++         "specialization": null,
++         "routing_only": true
++        },
++        {
++         "code": "KUS26_FREE_PP",
++         "name": "자유전공학부(공공정책)",
++         "kind": "department",
++         "core_code": null,
++         "specialization": null,
++         "routing_only": true
++        },
++        {
++         "code": "KUS26_FREE_CS",
++         "name": "자유전공학부(문화스포츠)",
++         "kind": "department",
++         "core_code": null,
++         "specialization": null,
++         "routing_only": true
++        }
++       ]
++      }
++     ]
++    }
++   ]
+   }
+  ]
+ }

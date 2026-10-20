@@ -21,6 +21,7 @@
     "청주"
    ],
    "region_note": "먼저 보여 주는 자리일 뿐이다. **사용자가 고른 지역을 바꾸지 않는다**",
+   "allow_unsupported_accounts": true,
    "student_open": {
     "mode": "LEAF",
     "leaves": [
@@ -419,7 +420,7 @@
         {
          "code": "KUS26_FREE_ST",
          "name": "자유전공학부(과학기술)",
-         "kind": "track",
+         "kind": "department",
          "core_code": null,
          "specialization": null,
          "routing_only": true
@@ -427,7 +428,7 @@
         {
          "code": "KUS26_FREE_GB",
          "name": "자유전공학부(글로벌비즈니스)",
-         "kind": "track",
+         "kind": "department",
          "core_code": null,
          "specialization": null,
          "routing_only": true
@@ -435,7 +436,7 @@
         {
          "code": "KUS26_FREE_PP",
          "name": "자유전공학부(공공정책)",
-         "kind": "track",
+         "kind": "department",
          "core_code": null,
          "specialization": null,
          "routing_only": true
@@ -443,7 +444,7 @@
         {
          "code": "KUS26_FREE_CS",
          "name": "자유전공학부(문화스포츠)",
-         "kind": "track",
+         "kind": "department",
          "core_code": null,
          "specialization": null,
          "routing_only": true

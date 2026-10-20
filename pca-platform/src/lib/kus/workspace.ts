@@ -6,7 +6,7 @@ import { queryOne } from "@/lib/db";
 import { campusAttemptState } from "@/lib/campus/attempt-state";
 import { answersOf } from "@/lib/me-v3/runtime/session";
 import type { SessionUser } from "@/lib/session";
-import type { KusStudent } from "./access";
+import { examUnavailable, type KusStudent } from "./access";
 import { kusBundle, latestScoredKus, type KusBundle } from "./load";
 import { findLeaf } from "@/lib/campus/registry";
 import { deptMode, kusUniversity, type KusMode } from "./program";
@@ -15,6 +15,8 @@ import type { AttemptState } from "./home";
 
 export type KusWorkspace = {
   name: string; dept: string; college: string; mode: KusMode; test: boolean;
+  /** 학과 Core 가 없어 검사를 내지 않는 학생(CR-03). 계정 · 탐방 기록은 그대로 쓴다 */
+  unsupported: boolean;
   st: AttemptState; bundle: KusBundle | null; visits: Visit[]; programs: VisitProgram[];
 };
 
@@ -33,6 +35,7 @@ export async function kusWorkspace(user: SessionUser, me: KusStudent): Promise<K
     name: who?.name ?? user.name, dept: me.department_name,
     college: collegeName(me),
     mode: deptMode(me.row.department_code), test: who?.test === true,
+    unsupported: examUnavailable(me),
     st, bundle: b && b.ok ? b.value : null, visits, programs,
   };
 }

@@ -278,3 +278,7 @@ export const MODE_NOTE: Record<KusMode, string | null> = {
   DEMO: `${MODE_KO.DEMO}: 이 학과의 검사는 전공자 검수 전입니다. 결과를 학생 진단으로 쓰지 않습니다.`,
   PREPARING: `${MODE_KO.PREPARING}: 이 학과는 아직 검사가 열리지 않았습니다.`,
 };
+
+/** 학과 Core 가 없는 학생에게 거는 한 줄. 다른 전공 검사로 대신 재지 않는다는 것을 함께 적는다 */
+export const UNSUPPORTED_NOTE =
+  "검사 이용 불가: 이 학과의 전공 기준이 아직 없어 검사 결과를 내지 않습니다. 다른 전공 검사로 대신 재지 않습니다. 계정과 기업탐방 기록은 그대로 쓸 수 있습니다.";

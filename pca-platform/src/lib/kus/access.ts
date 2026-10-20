@@ -43,6 +43,17 @@ export async function requireKusStudent(): Promise<{ user: SessionUser; me: KusS
   return { user, me };
 }
 
+/**
+ * 그 학생의 학과에 검사가 열리지 않은 자리인가(KUS-CR-03 이 받아들여진 뒤의 상태).
+ *
+ * 공통 맥락에 `unsupported` 칸이 아직 없으므로(변경 요청 승인 전) 느슨하게 읽는다:
+ * 그 칸이 없으면 늘 `false` 이고 지금 화면은 전과 같다. **다른 Core 로 대신 재지 않는다**:
+ * 이 학생에게 전공 고르기를 띄우지 않는 까닭이 그것이다.
+ */
+export function examUnavailable(me: KusStudent): boolean {
+  return me.ctx.core_code === "" && (me.ctx as { unsupported?: boolean }).unsupported === true;
+}
+
 /** KUS 기관 줄의 번호. 없으면 `null`(시연 DB 를 아직 세우지 않았다) */
 export async function kusOrgId(): Promise<string | null> {
   const r = await queryOne<{ id: string }>(

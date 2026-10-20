@@ -144,7 +144,7 @@ export async function visitOf(userId: string, id: string): Promise<Visit | null>
  * `core` 는 그 학생의 학교 맥락이 든 Core 다(`campus_students` → 등록부).
  * 응시에서 끌어오지 않는다: 검사 전에 탐방을 다녀온 학생에게는 응시가 없다.
  */
-export async function addVisit(userId: string, core: string, v: VisitInput): Promise<string> {
+export async function addVisit(userId: string, core: string | null, v: VisitInput): Promise<string> {
   const free = [v.role_text, v.understood, v.activity_text, v.learned].some(Boolean);
   const r = await queryOne<{ id: string }>(
     `INSERT INTO kus_company_visits
@@ -153,7 +153,7 @@ export async function addVisit(userId: string, core: string, v: VisitInput): Pro
      VALUES ($1::bigint, $2::bigint, $3, $4::date, $5, $6, $7, $8, $9, $10, $11, $12,
              CASE WHEN $13::boolean THEN current_date + 365 ELSE NULL END)
      RETURNING id::text`,
-    [userId, v.program_id, v.company_name, v.visited_on, core, v.role_codes, v.role_text,
+    [userId, v.program_id, v.company_name, v.visited_on, core || null, v.role_codes, v.role_text,
       v.understood, v.activities, v.activity_text, v.learned, v.td_codes, free]);
   return r?.id ?? "";
 }

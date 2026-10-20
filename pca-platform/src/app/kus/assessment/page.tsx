@@ -3,7 +3,7 @@ import { SectionHeader } from "@/app/me/ui";
 import { requireKusStudent } from "@/lib/kus/access";
 import { kusWorkspace } from "@/lib/kus/workspace";
 import { kusAttempts } from "@/lib/kus/load";
-import { MODE_NOTE } from "@/lib/kus/analysis";
+import { MODE_NOTE, UNSUPPORTED_NOTE } from "@/lib/kus/analysis";
 import { KusHead, KusNote, KusShell } from "../shell";
 
 export const dynamic = "force-dynamic";
@@ -19,7 +19,7 @@ export const dynamic = "force-dynamic";
 export default async function KusAssessment() {
   const { user, me } = await requireKusStudent();
   const [w, rows] = await Promise.all([kusWorkspace(user, me), kusAttempts(user.id)]);
-  const note = MODE_NOTE[w.mode];
+  const note = w.unsupported ? UNSUPPORTED_NOTE : MODE_NOTE[w.mode];
   const open = w.mode !== "PREPARING";
   return (
     <KusShell active="/kus/assessment" who={w.name} dept={`${w.college} · ${w.dept}`} test={w.test}>
@@ -36,7 +36,7 @@ export default async function KusAssessment() {
         </dl>
         <div className="kus-actions" style={{ marginTop: 14 }}>
           {w.st.kind === "resume" ? <Link className="cm-btn is-primary" href={`/v3/${w.st.attemptId}`}>이어서 답하기</Link>
-            : w.st.kind === "start" ? (open ? <Link className="cm-btn is-primary" href="/campus/kus/start">검사 시작하기</Link> : <span className="cm-btn is-off">준비 중</span>)
+            : w.st.kind === "start" ? (open ? <Link className="cm-btn is-primary" href="/campus/kus/start">검사 시작하기</Link> : <span className="cm-btn is-off">{w.unsupported ? "검사 이용 불가" : "준비 중"}</span>)
               : <Link className="cm-btn is-primary" href="/kus/result">나의 분석 결과</Link>}
           {w.st.kind !== "start" && w.st.kind !== "resume" ? <Link className="cm-btn" href={`/v3/${w.st.attemptId}/result`}>공통 결과지 전체</Link> : null}
         </div>

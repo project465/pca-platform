@@ -1,0 +1,157 @@
+diff --git a/pca-platform/src/app/v3/start/actions.ts b/pca-platform/src/app/v3/start/actions.ts
+index 25665865..34925e14 100644
+--- a/pca-platform/src/app/v3/start/actions.ts
++++ b/pca-platform/src/app/v3/start/actions.ts
+@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
+ import { requireUser } from "@/lib/session";
+ import { retakeState } from "@/lib/me-v3/retake";
+ import { clearCampusEntry } from "@/lib/campus/entry";
+-import { pickRequired } from "@/lib/campus/registry";
++import { examBlocked, pickRequired } from "@/lib/campus/registry";
+ import { startGate } from "@/lib/campus/start-gate";
+ import {
+   currentAttempt, openAttempt, setProfile,
+@@ -120,6 +120,12 @@ export async function startV3(form: FormData): Promise<void> {
+    * 둘뿐이다. 학과와 단과대학은 늘 등록된 줄이 정한다.
+    */
+   let campus = mine ? mine.ctx : null;
++  /* **검사가 열리지 않는 자리의 학생에게 응시를 열지 않는다**(KUS-CR-03).
++     학교 진입 쪽이 이미 막지만, 여기까지 오면 `openAttempt()` 가 비어 있는
++     Core 를 버리고 기본 전공으로 열어 버린다 */
++  if (campus && examBlocked(campus)) {
++    redirect(`/campus/${mine!.row.university_code.toLowerCase()}/start`);
++  }
+   if (campus && pickRequired(campus)) {
+     if (!entry || !entry.core_code) {
+       redirect(`/campus/${
+diff --git a/pca-platform/src/lib/campus/registry.ts b/pca-platform/src/lib/campus/registry.ts
+index e5399af7..32c63098 100644
+--- a/pca-platform/src/lib/campus/registry.ts
++++ b/pca-platform/src/lib/campus/registry.ts
+@@ -167,6 +167,13 @@ export type CampusUniversity = {
+    * (`previewOpenCores()`), 자리 목록까지 요구하면 눌러 보는 검사가 밟을
+    * 자리가 없어진다.
+    */
++  /**
++   * Core 가 없는 자리의 학생에게도 계정을 발급하는가(KUS-CR-03).
++   *
++   * **켜지 않은 학교는 전과 같다**: 그 자리의 명단 줄을 거절한다. 켜면
++   * 계정과 소속은 서고 검사는 열리지 않는다(`unsupportedContextOf`).
++   */
++  allow_unsupported_accounts?: boolean;
+   student_open?: {
+     mode: "LEAF" | "CORE";
+     leaves?: string[];
+@@ -563,6 +570,15 @@ export type CampusContext = {
+   department_code: string;
+   core_code: string;
+   specialization: string | null;
++  /**
++   * 계정은 있되 **검사가 열리지 않는 자리**인가(KUS-CR-03).
++   *
++   * 그 학과를 맡을 Core 가 아직 없다. `core_code` 가 빈 것은 자율전공과
++   * 같지만 뜻이 다르다: 자율전공은 학생이 전공을 고르는 자리이고, 여기는
++   * **고를 수 없는** 자리다. 다른 전공의 자로 재면 그 학생이 남의 영역
++   * 사전을 읽게 되므로 고르는 길을 열지 않는다(`pickRequired` 가 거짓).
++   */
++  unsupported?: true;
+ };
+ 
+ export function contextOf(u: CampusUniversity, found: CampusLeaf): CampusContext | null {
+@@ -601,9 +617,43 @@ export function routingContextOf(
+   };
+ }
+ 
+-/** 학생이 전공을 고른 뒤에 Core 가 정해지는 자리인가 */
++/**
++ * Core 가 없는 자리의 맥락(KUS-CR-03). **학교가 켠 때만** 돌려준다.
++ *
++ * 계정 발급과 검사 가능 여부를 가르는 자리다. 소속은 등록부에 적힌 그대로
++ * 적고 Core 는 비운다. 끝난 구조의 자리 · 감춘 자리 · 전공을 고르는
++ * 자리는 여기서 받지 않는다(앞의 둘은 고를 사람이 없고, 마지막은
++ * `routingContextOf` 의 일이다).
++ */
++export function unsupportedContextOf(
++  u: CampusUniversity, found: CampusLeaf,
++): CampusContext | null {
++  if (!u.allow_unsupported_accounts) return null;
++  if (found.leaf.core_code || found.leaf.routing_only) return null;
++  if (!offered(found)) return null;
++  return {
++    university_code: u.university_code,
++    college_code: found.college.code,
++    department_code: found.leaf.code,
++    core_code: "",
++    specialization: null,
++    unsupported: true,
++  };
++}
++
++/**
++ * 학생이 전공을 고른 뒤에 Core 가 정해지는 자리인가.
++ *
++ * **검사가 열리지 않는 자리는 고르는 자리가 아니다**(KUS-CR-03). 그 학생에게
++ * 다른 전공을 고르게 두면 남의 Core 가 그 학생의 결과를 정한다.
++ */
+ export function pickRequired(ctx: CampusContext): boolean {
+-  return ctx.core_code === "";
++  return ctx.core_code === "" && !ctx.unsupported;
++}
++
++/** 계정은 있되 검사를 열 수 없는 학생인가(KUS-CR-03) */
++export function examBlocked(ctx: CampusContext): boolean {
++  return ctx.unsupported === true;
+ }
+ 
+ /**
+diff --git a/pca-platform/src/lib/campus/students.ts b/pca-platform/src/lib/campus/students.ts
+index d3cd1757..9c8c5fd7 100644
+--- a/pca-platform/src/lib/campus/students.ts
++++ b/pca-platform/src/lib/campus/students.ts
+@@ -20,7 +20,8 @@ import { randomBytes } from "node:crypto";
+ import { query, queryOne } from "@/lib/db";
+ import { hashPassword } from "@/lib/password";
+ import {
+-  contextOf, findLeaf, routingContextOf, university, type CampusContext,
++  contextOf, findLeaf, routingContextOf, unsupportedContextOf, university,
++  type CampusContext,
+ } from "./registry";
+ 
+ export type CampusStudentRow = {
+@@ -87,7 +88,8 @@ export function checkStudent(
+    * 그래서 소속은 등록부에 적힌 그대로 적고 **Core 는 비워 둔다**: 학생이
+    * 전공을 고를 때 채워진다(`routingContextOf`).
+    */
+-  const ctx = contextOf(u, found) ?? routingContextOf(u, found);
++  const ctx = contextOf(u, found) ?? routingContextOf(u, found)
++    ?? unsupportedContextOf(u, found);
+   if (!ctx) {
+     return {
+       ok: false,
+@@ -200,7 +202,8 @@ export async function campusStudentContext(
+   if (!found) return null;
+   if (found.college.code !== row.college_code) return null;
+   /* 전공을 고르는 자리의 학생은 Core 가 비어 있는 맥락을 든다(규격 §32) */
+-  const ctx = contextOf(u, found) ?? routingContextOf(u, found);
++  const ctx = contextOf(u, found) ?? routingContextOf(u, found)
++    ?? unsupportedContextOf(u, found);
+   if (!ctx) return null;
+   return {
+     ctx, row,
+diff --git a/pca-platform/src/lib/me-v3/runtime/session.ts b/pca-platform/src/lib/me-v3/runtime/session.ts
+index 53f0da3f..e7909b28 100644
+--- a/pca-platform/src/lib/me-v3/runtime/session.ts
++++ b/pca-platform/src/lib/me-v3/runtime/session.ts
+@@ -498,6 +498,12 @@ export async function openAttempt(args: {
+    * 다만 Core 는 그대로 믿지 않는다: 그 시장에서 지금 응시할 수 있는
+    * Core 가 아니면 맥락을 통째로 버린다.
+    */
++  /* **검사가 열리지 않는 자리의 학생에게 응시를 열지 않는다**(KUS-CR-03).
++     여기서 맥락을 버리면 아래가 기본 전공으로 열어 그 학생이 남의 자로
++     재어진다. 부르는 쪽(`/v3/start`)이 먼저 막고, 여기는 마지막 문이다 */
++  if (args.campus?.unsupported) {
++    throw new Error("검사가 열리지 않은 학과의 학생입니다(Core 없음)");
++  }
+   const campus = args.campus && sellableCores(market)
+     .some((c) => c.code === args.campus?.core_code) ? args.campus : null;
+   /**
