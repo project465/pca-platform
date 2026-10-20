@@ -44,7 +44,7 @@ export async function kusReportPdf(html: string): Promise<Buffer> {
     const pdf = await page.pdf({
       format: "A4", printBackground: true, displayHeaderFooter: true,
       headerTemplate: "<span></span>",
-      footerTemplate: `<div style="width:100%;font-size:7px;color:#8a96a8;padding:0 14mm;display:flex;justify-content:space-between;font-family:sans-serif"><span>CareerMatri · 고려대학교 세종캠퍼스 개인 리포트</span>${test}<span><span class="pageNumber"></span> / <span class="totalPages"></span></span></div>`,
+      footerTemplate: `<div style="width:100%;font-size:7px;color:#8d7478;padding:0 14mm;display:flex;justify-content:space-between;font-family:sans-serif"><span>CareerMatri · 고려대학교 세종캠퍼스 개인 리포트</span>${test}<span><span class="pageNumber"></span> / <span class="totalPages"></span></span></div>`,
     });
     return Buffer.from(pdf);
   } finally {

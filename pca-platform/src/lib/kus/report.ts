@@ -41,10 +41,11 @@ function table(head: string[], rows: string[][], cls = ""): string {
     + `<tbody>${rows.map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
 }
 
+const ROMAN = ["Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ"];
+
 function chapter(no: number, title: string, lead: string, body: string, opts: { foot?: string; flow?: boolean } = {}): string {
-  const n = String(no).padStart(2, "0");
   return `<section class="ch${opts.flow ? " flow" : ""}">`
-    + `<header class="ch-h">${BAND_ART}<p class="kick">PART ${n}</p><h2>${esc(title)}</h2><b class="no" aria-hidden="true">${n}</b></header>`
+    + `<header class="ch-h"><span class="no">${ROMAN[no - 1] ?? no}.</span><h2>${esc(title)}</h2></header>`
     + `${lead ? `<p class="lead">${esc(lead)}</p>` : ""}${body}${opts.foot ? `<p class="foot">${esc(opts.foot)}</p>` : ""}</section>`;
 }
 
@@ -59,30 +60,26 @@ const ICON: Record<string, string> = {
 const icon = (k: string) => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICON[k] ?? ""}</svg>`;
 
 /**
- * 표지와 장 머리의 그림. 짙은 파란 바탕 위 둥근 면과 호(弧) 몇 줄이고 값을 담지 않는다.
- * 점수처럼 읽힐 눈금 · 축 · 숫자를 그리지 않는다.
+ * 표지 위아래의 삼각 무늬 띠. 붉은 계열 면 몇 장이고 값을 담지 않는다.
+ * **학교 로고를 그려 넣지 않는다**: 정식 asset 과 사용 권한을 확인하지 못했다. 학교 이름은 글자로만 선다.
  */
+const TRI = ["#a6192e", "#e7a0a9", "#c9394b", "#f4cfd3", "#8b1426", "#eeb6bd", "#d9606e", "#f8e1e3"];
+function triBand(flip: boolean): string {
+  const W = 24, H = 22, out: string[] = [];
+  for (let i = -1; i < 10; i++) {
+    const x = i * W;
+    const up = `M${x} ${H}L${x + W / 2} 0L${x + W} ${H}Z`;
+    const dn = `M${x + W / 2} 0L${x + W} ${H}L${x + W * 1.5} 0Z`;
+    out.push(`<path d="${up}" fill="${TRI[(i + 8) % TRI.length]}"/>`, `<path d="${dn}" fill="${TRI[(i * 3 + 13) % TRI.length]}" opacity=".85"/>`);
+  }
+  return `<svg class="tri ${flip ? "bottom" : "top"}" viewBox="0 0 210 ${H}" preserveAspectRatio="none" aria-hidden="true"${flip ? ' style="transform:scaleY(-1)"' : ""}>${out.join("")}</svg>`;
+}
+const TRI_TOP = triBand(false);
+const TRI_BOTTOM = triBand(true);
+/** 표지 가운데 옅은 큰 삼각형 몇 장 */
 const COVER_ART = `<svg class="cv-art" viewBox="0 0 210 297" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-<defs>
-<radialGradient id="cvGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#6cc3ff" stop-opacity=".75"/><stop offset="1" stop-color="#2a49d0" stop-opacity="0"/></radialGradient>
-<linearGradient id="cvBall" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7fd0ff"/><stop offset=".55" stop-color="#3c74ec"/><stop offset="1" stop-color="#2440c4"/></linearGradient>
-<pattern id="cvDots" width="5" height="5" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".55" fill="#fff" fill-opacity=".38"/></pattern>
-</defs>
-<circle cx="24" cy="282" r="46" fill="#2a45c2" opacity=".55"/>
-<circle cx="158" cy="236" r="78" fill="url(#cvGlow)"/>
-<circle cx="158" cy="236" r="31" fill="url(#cvBall)"/>
-<path d="M104 236A54 54 0 0 1 158 182" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width=".7"/>
-<path d="M158 290A54 54 0 0 1 112 264" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width=".7"/>
-<path d="M190 194A50 50 0 0 1 207 228" fill="none" stroke="#f3c14b" stroke-width="1.8" stroke-linecap="round"/>
-<path d="M14 64A34 34 0 0 1 40 36" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width=".7"/>
-<rect x="150" y="22" width="44" height="26" fill="url(#cvDots)"/>
-<rect x="16" y="226" width="30" height="16" fill="url(#cvDots)"/>
-</svg>`;
-const BAND_ART = `<svg class="band-art" viewBox="0 0 160 40" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
-<defs><linearGradient id="bdBall" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7fd0ff" stop-opacity=".95"/><stop offset="1" stop-color="#2f56dc" stop-opacity=".2"/></linearGradient></defs>
-<circle cx="140" cy="40" r="26" fill="url(#bdBall)"/>
-<path d="M104 40A36 36 0 0 1 140 4" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width=".6"/>
-<path d="M150 9A32 32 0 0 1 160 16" fill="none" stroke="#f3c14b" stroke-width="1.3" stroke-linecap="round"/>
+<path d="M-10 70L30 140L-50 140Z" fill="#f6dadd" opacity=".55"/><path d="M220 150L180 220L260 220Z" fill="#f6dadd" opacity=".55"/>
+<path d="M150 250L190 180L230 250Z" fill="#fbecee" opacity=".7"/><path d="M-20 190L20 260L60 190Z" fill="#fbecee" opacity=".7"/>
 </svg>`;
 
 const ZONE_CLASS: Record<string, string> = {
@@ -106,16 +103,21 @@ export function kusReportHtml(a: KusAnalysis, meta: KusReportMeta): string {
   const r = a.reliability;
 
   const year = (meta.resultAt ?? meta.generatedAt).slice(0, 4);
-  const cover = `<section class="cover">${COVER_ART}
-  <div class="cv-top"><p class="brand">CareerMatri</p><p class="school">${esc(s.university)}</p></div>
+  const cover = `<section class="cover">${COVER_ART}${TRI_TOP}
   <div class="cv-main">
-    <p class="cv-year">${esc(year)}</p>
-    <h1><span class="thin">진로 분석</span><span class="bold">리포트</span></h1>
+    <p class="brand">CareerMatri</p>
+    <p class="school">${esc(s.university)}</p>
+    <h1><span class="yr">${esc(year)}</span>진로 분석 리포트</h1>
     <hr />
-    <p class="cv-who"><b>${esc(s.name)}</b><br />${esc(s.college)} · ${esc(s.department)}<br />${esc(s.coreName)} 검사 · 결과 확정 ${esc(meta.resultAt ?? "—")}</p>
-    <div class="cv-state"><span class="badge">${esc(a.status.badge)}</span><p>${esc(a.status.title)}</p></div>
+    <dl class="cv-list">
+      <dt>이름</dt><dd>${esc(s.name)}</dd>
+      <dt>단과대학 및 학과</dt><dd>${esc(s.college)} · ${esc(s.department)}</dd>
+      <dt>검사</dt><dd>${esc(s.coreName)} 검사 · 결과 확정 ${esc(meta.resultAt ?? "—")}</dd>
+      <dt>지금 상태</dt><dd><span class="badge">${esc(a.status.badge)}</span> ${esc(a.status.title)}</dd>
+    </dl>
   </div>
   <p class="cv-foot">리포트 생성 ${esc(meta.generatedAt)} · 응시 번호 ${esc(meta.attemptId)}</p>
+  ${TRI_BOTTOM}
 </section>`;
 
   /* 1 */
@@ -248,7 +250,7 @@ ${table(["면접 질문", "답의 뼈대"], vd.interview.map((q) => [esc(q.q), e
     `<div class="plan">${col("30일", a.plan.d30)}${col("60일", a.plan.d60)}${col("90일", a.plan.d90)}</div>
 ${a.actions.some((x) => x.note) ? `<p class="muted">${esc([...new Set(a.actions.map((x) => x.note).filter(Boolean))].slice(0, 3).join(" "))}</p>` : ""}`);
 
-  const limits = `<section class="ch lim flow"><header class="ch-h is-sub"><p class="kick">APPENDIX</p><h2>근거와 한계</h2></header>
+  const limits = `<section class="ch lim flow"><header class="ch-h is-sub"><span class="no">부록</span><h2>근거와 한계</h2></header>
 ${table(["무엇", "출처 · 상태"], [
     ["검사", `${esc(s.coreName)} 검사(판본 ${esc(s.core)}) · 문항 ${esc(meta.modules.item_bank_version ?? "?")} · 채점 ${esc(meta.modules.scoring_version ?? "?")} · 결과 모델 ${esc(meta.modules.result_model_version ?? "?")}. 규준과 인지면접 전이라 <b>검증된 검사가 아닙니다</b>.`],
     ["판정", "공통 엔진이 응답에서 냈습니다. KUS 리포트는 판정을 바꾸지 않고, 근거가 받치는 정도를 함께 적습니다(1장)."],
@@ -272,45 +274,40 @@ ${cover}${ch1}${ch2}${ch3}${ch4}${ch5}${ch6}${ch7}${ch8}${limits}
 const CSS = `
 @page{size:A4;margin:13mm 13mm 15mm}
 @page:first{margin:0}
-:root{--navy:#1b2c8f;--deep:#13206b;--blue:#2f5fe0;--sky:#8fc0f6;--pale:#eaf0fd;--teal:#1fa99e;--yellow:#f3c14b;--ink:#1b2430;--ink2:#4a5566;--mute:#7a8696;--line:#e1e6f0;--soft:#f5f7fb;--green:#118a6a;--amber:#a86200;--red:#c4323a}
+:root{--navy:#7a1426;--deep:#5c0f1d;--blue:#a6192e;--sky:#e7a0a9;--pale:#fbecee;--slate:#55657f;--teal:#1f9a8f;--yellow:#d9a03a;--ink:#1f2328;--ink2:#4c5158;--mute:#80858d;--line:#ece4e5;--soft:#f8f5f5;--green:#118a6a;--amber:#a86200;--red:#a6192e}
 *{box-sizing:border-box}
 html,body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 body{margin:0;background:#fff;color:var(--ink);font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","WenQuanYi Zen Hei",system-ui,sans-serif;font-size:9.6pt;line-height:1.6;word-break:keep-all;overflow-wrap:anywhere}
 .testbar{background:#fff5e1;color:#8a5300;font-size:8pt;text-align:center;padding:2px}
 @media print{.testbar{display:none}}
-/* 표지: 짙은 파란 면 한 장 · 둥근 면과 호 · 노란 선 하나 */
-.cover{position:relative;height:297mm;padding:0;display:flex;flex-direction:column;break-after:page;overflow:hidden;background:linear-gradient(160deg,#2238b4 0%,#1b2c8f 55%,#13206b 100%);color:#fff}
+/* 표지: 흰 바탕 · 위아래 붉은 삼각 띠 · 학교 이름은 글자로 · ▶ 항목 */
+.cover{position:relative;height:297mm;padding:0;display:flex;flex-direction:column;break-after:page;overflow:hidden;background:#fff}
 .cv-art{position:absolute;inset:0;width:100%;height:100%}
-.cv-top{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:flex-start;padding:18mm 18mm 0}
-.cv-top .brand{margin:0;font-weight:700;letter-spacing:.14em;font-size:10pt;text-transform:uppercase}
-.cv-top .school{margin:0;color:#cfdafc;font-size:10pt;font-weight:600;text-align:right}
-.cv-main{position:relative;z-index:1;margin-top:62mm;padding:0 18mm}
-.cv-year{margin:0;font-size:44pt;font-weight:800;color:#8fc0f6;line-height:1;letter-spacing:-.01em}
-.cover h1{margin:3mm 0 0;line-height:1.08}.cover h1 .thin{display:block;font-size:32pt;font-weight:300;letter-spacing:-.01em}
-.cover h1 .bold{display:block;font-size:40pt;font-weight:800;letter-spacing:.02em}
-.cover hr{width:44mm;border:0;border-top:2.5px solid var(--yellow);margin:7mm 0 6mm}
-.cv-who{margin:0;color:#d4defc;font-size:10.5pt;line-height:1.75}.cv-who b{color:#fff;font-size:13.5pt}
-.cv-state{margin-top:9mm;max-width:96mm;border-left:3px solid var(--yellow);padding:2mm 0 2mm 5mm}
-.cv-state .badge{display:inline-block;font-size:8.5pt;font-weight:700;color:var(--deep);background:var(--yellow);border-radius:4px;padding:1px 7px;margin-bottom:4px}
-.cv-state p{margin:0;font-size:11pt;font-weight:600;color:#fff;line-height:1.5}
-.cv-foot{position:relative;z-index:1;margin:auto 0 0;padding:0 18mm 16mm;color:#a9b8ef;font-size:7.8pt}
-/* 장 머리: 파란 띠 · PART 번호 · 큰 번호 · 둥근 면 */
-/* 장마다 새 쪽을 열지 않는다: 열면 앞 장의 꼬리 몇 줄만 든 빈 쪽이 생긴다. 띠만 쪽 경계에서 쪼개지지 않게 둔다 */
-.ch{break-before:auto;margin-top:9mm}.cover+.ch,.testbar+.cover+.ch{margin-top:0}
-.ch-h{position:relative;overflow:hidden;break-inside:avoid;break-after:avoid;margin:0 0 5mm;padding:5mm 6mm 5mm;border-radius:3mm;background:linear-gradient(120deg,#1b2c8f,#2541c4);color:#fff;min-height:24mm}
-.ch-h .band-art{position:absolute;right:0;top:0;height:100%;width:62%}
-.ch-h .kick{position:relative;margin:0 0 1.5mm;font-size:8pt;letter-spacing:.18em;color:#b9cdfb;font-weight:700}
-.ch-h .kick:after{content:"";display:inline-block;width:8mm;height:1.6px;background:var(--yellow);vertical-align:middle;margin-left:3mm}
-.ch-h h2{position:relative;margin:0;font-size:17pt;letter-spacing:-.02em;color:#fff;font-weight:800;max-width:70%}
-.ch-h .no{position:absolute;right:7mm;top:50%;transform:translateY(-50%);font-size:34pt;font-weight:800;color:#fff;opacity:.9;line-height:1}
-.ch-h.is-sub{background:none;color:var(--navy);padding:0 0 2mm;min-height:0;border-radius:0;border-bottom:2px solid var(--navy)}
-.ch-h.is-sub .kick{color:var(--blue)}.ch-h.is-sub h2{color:var(--navy);font-size:14pt}
+.tri{position:absolute;left:0;width:100%;height:24mm;z-index:1}.tri.top{top:0}.tri.bottom{bottom:14mm;height:18mm}
+.cv-main{position:relative;z-index:1;margin-top:52mm;padding:0 30mm}
+.cv-main .brand{margin:0 0 3mm;font-size:9pt;font-weight:700;letter-spacing:.2em;color:var(--blue);text-transform:uppercase}
+.cv-main .school{margin:0;font-size:14pt;font-weight:700;color:var(--navy);letter-spacing:.04em}
+.cover h1{margin:5mm 0 0;font-size:30pt;font-weight:800;color:var(--ink);line-height:1.2;letter-spacing:-.01em}
+.cover h1 .yr{display:block;font-size:13pt;font-weight:700;color:var(--blue);letter-spacing:.06em;margin-bottom:1mm}
+.cover hr{width:100%;border:0;border-top:1.5px solid var(--blue);margin:8mm 0 7mm}
+.cv-list{margin:0}.cv-list dt{position:relative;margin:4.5mm 0 1mm;padding-left:5mm;font-size:10pt;font-weight:700;color:var(--blue)}
+.cv-list dt:before{content:"";position:absolute;left:0;top:1.3mm;border-left:2.6mm solid var(--blue);border-top:1.6mm solid transparent;border-bottom:1.6mm solid transparent}
+.cv-list dd{margin:0;padding-left:5mm;font-size:10.5pt;color:var(--ink2);line-height:1.6}
+.cv-list .badge{display:inline-block;font-size:8.5pt;font-weight:700;color:#fff;background:var(--blue);border-radius:3px;padding:0 6px;margin-right:2px}
+.cv-foot{position:relative;z-index:1;margin:auto 0 0;padding:0 30mm 38mm;color:var(--mute);font-size:7.8pt}
+/* 장 머리: 붉은 네모 안 로마 숫자 · 제목 · 붉은 줄 */
+/* 장마다 새 쪽을 열지 않는다: 열면 앞 장의 꼬리 몇 줄만 든 빈 쪽이 생긴다. 머리만 쪽 경계에서 쪼개지지 않게 둔다 */
+.ch{break-before:auto;margin-top:10mm}.cover+.ch,.testbar+.cover+.ch{margin-top:0}
+.ch-h{display:flex;align-items:stretch;gap:3.5mm;break-inside:avoid;break-after:avoid;margin:0 0 5mm;padding-bottom:2mm;border-bottom:1.5px solid var(--blue)}
+.ch-h .no{display:grid;place-items:center;min-width:12mm;padding:1.5mm 2.5mm;background:var(--blue);color:#fff;font-size:13pt;font-weight:800;line-height:1}
+.ch-h h2{margin:0;align-self:center;font-size:16pt;letter-spacing:-.02em;color:var(--ink);font-weight:800}
+.ch-h.is-sub .no{background:var(--navy);font-size:10pt}.ch-h.is-sub h2{font-size:13pt}.ch-h .kick{display:none}
 .lead{font-size:10.5pt;margin:0 0 4mm;color:var(--ink2)}
-h3{display:flex;align-items:center;gap:2.5mm;font-size:10.5pt;margin:5mm 0 2.5mm;color:var(--navy);font-weight:700}h3:before{content:"";flex:none;width:2.4mm;height:2.4mm;border-radius:.6mm;background:var(--blue)}h3:after{content:"";flex:1;height:1px;background:#cdd8f4}
+h3{display:flex;align-items:center;gap:2.5mm;font-size:10.5pt;margin:5mm 0 2.5mm;color:var(--navy);font-weight:700}h3:before{content:"";flex:none;border-left:2.4mm solid var(--blue);border-top:1.5mm solid transparent;border-bottom:1.5mm solid transparent}h3:after{content:"";flex:1;height:1px;background:#f0d3d7}
 p{margin:0 0 7px}
 /* 인포그래픽 */
-.hero{background:var(--pale);border-radius:10px;padding:5mm 6mm;margin-bottom:5mm}.hero.b0{background:#fff1f1}
-.hero .hb{display:inline-block;margin:0 0 2mm;font-size:8.5pt;font-weight:700;color:#fff;background:var(--blue);border-radius:4px;padding:1px 8px}.hero.b0 .hb{background:var(--red)}
+.hero{background:var(--pale);border-radius:10px;padding:5mm 6mm;margin-bottom:5mm}.hero.b0{background:#fff6e6}
+.hero .hb{display:inline-block;margin:0 0 2mm;font-size:8.5pt;font-weight:700;color:#fff;background:var(--blue);border-radius:4px;padding:1px 8px}.hero.b0 .hb{background:var(--amber)}
 .hero .ht{margin:0;font-size:13pt;font-weight:700;color:var(--navy);line-height:1.45}.hero .hl{margin:2mm 0 0;color:var(--ink2)}
 .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:3mm;margin:0 0 2mm}
 .stat{border:1px solid var(--line);border-radius:10px;padding:4mm 3mm;text-align:center}
@@ -322,7 +319,7 @@ p{margin:0 0 7px}
 .bars{display:grid;gap:2.2mm}.bar{display:grid;grid-template-columns:30mm 1fr 10mm;gap:2mm;align-items:center;font-size:8.6pt}
 .bn{color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.bt{height:3.2mm;background:var(--soft);border-radius:2mm;overflow:hidden}.bt i{display:block;height:100%;border-radius:2mm;background:var(--sky)}
 .bv{text-align:right;font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums}
-.bt i.z1,.mix i.z1,.legend i.z1{background:var(--teal)}.bt i.z2,.mix i.z2,.legend i.z2{background:var(--blue)}.bt i.z3,.mix i.z3,.legend i.z3{background:var(--sky)}.bt i.z4,.mix i.z4,.legend i.z4{background:var(--yellow)}
+.bt i.z1,.mix i.z1,.legend i.z1{background:var(--teal)}.bt i.z2,.mix i.z2,.legend i.z2{background:var(--slate)}.bt i.z3,.mix i.z3,.legend i.z3{background:var(--sky)}.bt i.z4,.mix i.z4,.legend i.z4{background:var(--yellow)}
 .mix{display:flex;height:5mm;border-radius:3mm;overflow:hidden;gap:2px;margin-bottom:2mm}.mix i{display:block}
 .legend{list-style:none;margin:0 0 3mm;padding:0;display:flex;flex-wrap:wrap;gap:1mm 4mm;font-size:8.4pt;color:var(--ink2)}.legend i{display:inline-block;width:2.6mm;height:2.6mm;border-radius:1mm;margin-right:1.5mm;vertical-align:-1px}
 .panel table.kv{margin:0}.panel table.kv thead{display:none}.panel table.kv td{padding:2px 0;border-bottom:1px dotted var(--line);font-size:8.5pt}.panel table.kv td:first-child{color:var(--ink2)}.panel table.kv td:last-child{text-align:right}
@@ -331,12 +328,12 @@ p{margin:0 0 7px}
 .flowline span:first-child{clip-path:polygon(0 0,calc(100% - 3mm) 0,100% 50%,calc(100% - 3mm) 100%,0 100%);padding-left:3mm}
 .flowline span:nth-child(2){background:#d6e8fc}.flowline span:nth-child(3){background:#c2dcfa}.flowline span:nth-child(4){background:#d5f1ee}
 /* 본문 공통 */
-.caution{margin:4mm 0 0;padding:3mm 4mm;border-radius:8px;background:#fff1f1;color:#8e2228;font-size:9pt}
+.caution{margin:4mm 0 0;padding:3mm 4mm;border-radius:8px;background:#fff6e6;color:#7a4700;font-size:9pt}
 .warn{background:#fff5e1;border-radius:8px;padding:3mm 4mm;color:#7a4700;font-size:9pt;margin-top:3mm}
 table{width:100%;border-collapse:collapse;margin:4px 0 7px;font-size:8.8pt}th{text-align:left;color:#fff;background:var(--navy);font-weight:700;padding:5px 6px}th:first-child{border-radius:2mm 0 0 0}th:last-child{border-radius:0 2mm 0 0}
 td{border-bottom:1px solid var(--line);padding:5px 6px;vertical-align:top}tr{break-inside:avoid}
 .zone{display:inline-block;padding:1px 7px;border-radius:4px;font-size:8pt;font-weight:700;white-space:nowrap;background:var(--soft);color:var(--ink2)}
-.zone.z1{background:#ddf4f1;color:#0f7d73}.zone.z2{background:var(--pale);color:var(--blue)}.zone.z3{background:#eef2f7;color:var(--ink2)}.zone.z4{background:#fff1d6;color:var(--amber)}
+.zone.z1{background:#ddf4f1;color:#0f7d73}.zone.z2{background:#e9edf3;color:var(--slate)}.zone.z3{background:#eef2f7;color:var(--ink2)}.zone.z4{background:#fff1d6;color:var(--amber)}
 .dom{border:1px solid var(--line);border-radius:10px;padding:3.5mm 4.5mm 2mm;margin:0 0 4mm}.dh,.ch-h,.lead,h3{break-after:avoid}
 .dh{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 2mm}.dh b{font-size:11pt;color:var(--navy)}.dh small{color:var(--mute);font-size:8.2pt}
 table.axes td:first-child{width:27mm;white-space:nowrap}table.axes td:nth-child(3){width:21mm}
@@ -365,12 +362,12 @@ table.kv2 td:first-child{width:32mm;color:var(--ink2);font-weight:600}
 /* 계획: 점과 선으로 잇는 세 칸 */
 .plan{display:grid;grid-template-columns:repeat(3,1fr);gap:4mm;position:relative;padding-top:2mm}
 .plan:before{content:"";position:absolute;left:4mm;right:4mm;top:6.2mm;height:2px;background:linear-gradient(90deg,var(--blue),var(--teal),var(--yellow))}
-.pcol{break-inside:avoid}.pcol .ph{position:relative;margin:0 0 3mm;font-size:13pt;font-weight:800;color:var(--navy);padding-top:7mm}
+.pcol{break-inside:auto}.pcol li{break-inside:avoid}.pcol .ph{position:relative;margin:0 0 3mm;font-size:13pt;font-weight:800;color:var(--navy);padding-top:7mm}
 .pcol .ph .dot{position:absolute;top:0;left:0;width:5mm;height:5mm;border-radius:50%;background:#fff;border:3px solid var(--blue)}
 .pcol:nth-child(2) .ph .dot{border-color:var(--teal)}.pcol:nth-child(3) .ph .dot{border-color:var(--yellow)}
 .pcol ol{margin:0;padding-left:16px}.pcol li{margin:0 0 3mm;font-size:8.9pt}
 .pcol li small{display:block;color:var(--ink2);font-size:8pt;margin-top:2px}.pcol li small b{color:var(--green)}
 .src{display:inline-block;font-size:7pt;color:var(--mute);border:1px solid var(--line);border-radius:4px;padding:0 3px;margin-right:4px}
-@media screen{body{background:#eef1f5;padding:24px 12px}.cover,.ch{max-width:820px;margin:0 auto 18px;background:#fff;border-radius:12px;padding:26px 28px}.cover{padding:0;height:auto;min-height:1080px;background:linear-gradient(160deg,#2238b4 0%,#1b2c8f 55%,#13206b 100%)}.ch.flow{margin-top:0}.testbar{position:sticky;top:0;z-index:9}}
-@media screen and (max-width:640px){body{padding:12px 0}.cover,.ch{border-radius:0;padding:20px 16px}.cover{padding:0;min-height:900px}.cv-main{margin-top:150px}.ch-h .no{font-size:24pt}.stats{grid-template-columns:repeat(2,1fr)}.two,.plan,.ovd{grid-template-columns:1fr}.plan:before{display:none}table{display:block;overflow-x:auto}}
+@media screen{body{background:#eef1f5;padding:24px 12px}.cover,.ch{max-width:820px;margin:0 auto 18px;background:#fff;border-radius:12px;padding:26px 28px}.cover{padding:0;height:auto;min-height:1080px;background:#fff}.ch.flow{margin-top:0}.testbar{position:sticky;top:0;z-index:9}}
+@media screen and (max-width:640px){body{padding:12px 0}.cover,.ch{border-radius:0;padding:20px 16px}.cover{padding:0;min-height:900px}.cv-main{margin-top:130px;padding:0 22px}.cv-foot{padding:0 22px 110px}.stats{grid-template-columns:repeat(2,1fr)}.two,.plan,.ovd{grid-template-columns:1fr}.plan:before{display:none}table{display:block;overflow-x:auto}}
 `;
