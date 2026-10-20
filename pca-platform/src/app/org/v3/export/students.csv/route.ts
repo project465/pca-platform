@@ -12,6 +12,7 @@
 import { campusNames } from "@/lib/campus/labels";
 import { campusViewer, campusQuery, campusQueryKo } from "@/lib/campus/viewer";
 import { csvResponse, studentStatusCsv } from "@/lib/campus/export";
+import { auditExport } from "@/lib/campus/export-audit";
 import type { StudentState } from "@/lib/campus/manage";
 
 const STATES: StudentState[] = ["all", "none", "in_progress", "scored", "disabled"];
@@ -42,6 +43,8 @@ export async function GET(req: Request): Promise<Response> {
     name.dept,
     campusQueryKo(q, name),
   );
+  /* 기록이 안 되면 내보내지 않는다: 접근 기록 없는 명단 반출을 남기지 않는다 */
+  await auditExport(v, "campus.export.students", q, { state, demo: sp.demo === "1" });
   return csvResponse(`careermatri-students-${state}-${today()}.csv`, body);
 }
 

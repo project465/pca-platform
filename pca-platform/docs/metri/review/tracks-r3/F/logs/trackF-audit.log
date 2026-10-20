@@ -1,0 +1,21 @@
+
+F1 명단 CSV 가 기록을 남긴다
+  통과  CSV 가 나간다 — 200 · 11줄
+  통과  기록이 한 줄 늘었다
+  통과  누가 · 어느 학교인지 적혔다 — org_admin · PCU · org 8
+  통과  받아 간 범위가 적혔다 — {"to":null,"demo":false,"from":null,"state":"none","college":null,"department":"PCU26_BIZ","university":"PCU"}
+  통과  기록에 이름 · 메일이 없다
+
+F2 학과 집계 CSV · 조회 담당자 · 다른 학교
+  통과  조회 담당자도 집계 CSV 를 받는다 — 200
+  통과  그 사람 이름으로 기록이 남는다
+  통과  다른 학교 담당자는 자기 학교로 기록된다 — ZZTEST
+
+F3 기록이 안 되면 파일이 나가지 않는다
+  통과  기록 실패 때 CSV 응답을 만들지 않는다 — 던짐: relation "audit_logs" does not exist
+
+F4 운영 요약 PDF (코드 자리)
+  통과  뽑은 뒤 · 건네기 전에 기록한다(못 뽑은 날은 적지 않는다)
+  NOT VERIFIED  PDF 를 실제로 뽑아 기록이 남는지(그리는 브라우저 · 서버가 필요하다)
+
+확인 10가지 — 통과 10 · 걸림 0

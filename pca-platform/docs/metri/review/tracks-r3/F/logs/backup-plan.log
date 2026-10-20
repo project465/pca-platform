@@ -1,0 +1,23 @@
+복구 시험 계획 — **아무것도 실행하지 않았다**
+
+  받을 곳      운영 DB (읽기만)
+  부을 곳      운영과 같은 서버 · 임시 DB cm_restore_test_8426
+  작업 폴더    /tmp/cm-restore-test
+
+  1  pg_dump --dbname=<운영> --format=custom --no-owner --no-privileges --file=/tmp/cm-restore-test/probe.dump
+  2  pg_restore --list /tmp/cm-restore-test/probe.dump | grep -c 'TABLE DATA'
+  3  psql <운영과 같은 서버/postgres> -c "CREATE DATABASE cm_restore_test_8426"
+  4  pg_restore --dbname=<cm_restore_test_8426> --no-owner --no-privileges /tmp/cm-restore-test/probe.dump
+  5  표 열넷의 줄 수를 운영과 맞춘다
+     users · orders · payments · entitlements · products
+     attempts · v2_responses · report_snapshots · evidence_profiles
+     v3_attempts · v3_responses · v3_snapshots · v3_experiences
+     career_profiles
+  6  제약 열 가지와 외래키 개수가 같은지 본다
+  7  굳은 결과가 살아 있는지 본다
+     report_snapshots.payload 의 result · v3_snapshots 의 result_model 과 판본
+  8  site_settings 두 칸에 날짜와 대상을 적는다
+  9  psql <운영과 같은 서버/postgres> -c "DROP DATABASE cm_restore_test_8426"
+
+운영 DB 에 쓰는 것은 8번 한 줄뿐이다(READ_ONLY=1 로 끌 수 있다).
+손님 자료가 든 표는 한 줄도 건드리지 않는다. KEEP=1 이면 9번을 건너뛴다.

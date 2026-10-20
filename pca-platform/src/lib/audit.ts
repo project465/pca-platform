@@ -23,6 +23,9 @@ export const AUDITED = [
   "campus.student.password.rotate",
   "campus.student.import",
   "campus.student.retake.allow",
+  /* 학교 밖으로 들고 나가는 일(3차 Track F). 계정을 고친 일만 남고 받아 간
+     일은 남지 않았다: 사고가 난 날 누가 어느 범위를 받아 갔는지 되짚는다 */
+  "campus.export.students", "campus.export.departments", "campus.export.report",
 ] as const;
 export type AuditAction = (typeof AUDITED)[number];
 

@@ -16,6 +16,7 @@ import {
   campusQuery, campusQueryKo, campusQueryString, campusViewer,
 } from "@/lib/campus/viewer";
 import { drawPagePdf, PdfFailed, resolveChromium } from "@/lib/me-v3/result/pdf";
+import { auditExport } from "@/lib/campus/export-audit";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 120;
@@ -105,6 +106,8 @@ export async function GET(req: Request): Promise<Response> {
     });
     console.log(`[org-pdf] done uni=${view.uni} ${pdf.length}바이트 `
       + `${Date.now() - t0}ms`);
+    /* 종이를 건네기 직전에 적는다. 못 뽑은 날은 받아 간 것이 없으니 적지 않는다 */
+    await auditExport(view, "campus.export.report", q, { demo: withDemo });
     return new Response(new Uint8Array(pdf), {
       headers: {
         "content-type": "application/pdf",

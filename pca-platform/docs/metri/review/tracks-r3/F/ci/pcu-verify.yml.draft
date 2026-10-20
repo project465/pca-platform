@@ -1,0 +1,163 @@
+# **초안 · 승인 전에는 `.github/workflows/` 에 두지 않는다.**
+#
+# PCU 가지 전용 검증. 이 세션은 npm 레지스트리가 막혀 `npm ci` · `next build` ·
+# 브라우저 E2E 를 직접 못 돌린다. 같은 일을 GitHub 러너에서 한다. 틀은 이미
+# 성공한 `origin/claude/epic-galileo-lrvgxr:.github/workflows/sejong-verify.yml`
+# (run 39393453011 · E2E 33/33 · rehearsal 6/6) 을 그대로 따른다.
+#
+# 보안
+# - GITHUB_TOKEN 은 `contents: read` 만. 저장소에 아무것도 커밋 · 푸시하지 않는다.
+# - 테스트 자료는 러너 안의 일회용 PostgreSQL 과 합성 시험 계정뿐이다. 운영 · Staging
+#   DB · Railway · 실제 개인정보 · KODATA 원본 · 저장소 비밀값을 쓰지 않는다.
+# - 시험 계정 비밀번호는 실행마다 무작위로 만들고 로그에서 가린다.
+# - 공개 저장소의 artifact 는 로그인한 누구나 받을 수 있다. 그래서 **글로 된 결과만**
+#   올린다. 화면 캡처 · PDF 는 `PCU_ARTIFACT_KEY` 비밀값이 있을 때만 AES-256 으로
+#   잠가 올린다(보관 3일). 없으면 올리지 않는다.
+#
+# 언제 도는가: 손으로(workflow_dispatch), 또는 커밋 메시지에 `[pcu-verify]` 가 있는
+# 이 가지의 푸시만. 다른 가지 · 다른 푸시에서는 일을 하지 않는다.
+name: pcu-verify
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/happy-faraday-q85c13]
+
+permissions:
+  contents: read
+
+env:
+  OUT: var/pcu-ci
+
+jobs:
+  verify:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[pcu-verify]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    permissions:
+      contents: read
+    concurrency:
+      group: pcu-verify
+      cancel-in-progress: false
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: cm
+          POSTGRES_PASSWORD: cm-ci-only
+          POSTGRES_DB: cm_pcu_ci
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U cm" --health-interval 5s
+          --health-timeout 5s --health-retries 20
+    defaults:
+      run:
+        working-directory: pca-platform
+        shell: bash --noprofile --norc {0}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: pca-platform/package-lock.json
+
+      - name: 도구 · 실행마다 새 비밀값
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq postgresql-client poppler-utils fonts-noto-cjk >/dev/null
+          mkdir -p "$OUT/logs"
+          for k in AUTH_SECRET PCU_ADMIN_PW PCU_STUDENT_PW; do
+            v="$(openssl rand -base64 24 | tr -d '/+=')"; echo "::add-mask::$v"; echo "$k=$v" >> "$GITHUB_ENV"
+          done
+          printf 'sha\t%s\nrun_url\t%s\nat\t%s\nnode\t%s\n' "$GITHUB_SHA" \
+            "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            "$(date -u +%FT%TZ)" "$(node -v)" > "$OUT/meta.tsv"
+          : > "$OUT/steps.tsv"
+
+      - name: npm ci
+        run: |
+          npm ci --no-audit --no-fund; rc=$?
+          printf 'npm ci\t%s\n' $rc >> "$OUT/steps.tsv"; exit $rc
+
+      - name: 전체 TypeScript 검사
+        run: |
+          npm run -s typecheck > "$OUT/logs/typecheck.log" 2>&1; rc=$?
+          tail -30 "$OUT/logs/typecheck.log"
+          printf 'typecheck\t%s\n' $rc >> "$OUT/steps.tsv"; exit $rc
+
+      - name: Next.js production 빌드
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+        run: |
+          npm run build > "$OUT/logs/build.log" 2>&1; rc=$?
+          tail -25 "$OUT/logs/build.log"
+          printf 'next build\t%s\n' $rc >> "$OUT/steps.tsv"; exit $rc
+
+      - name: DB 한 벌 — 공통 체인 (db-chain.json)
+        env:
+          DATABASE_URL: postgres://cm:cm-ci-only@127.0.0.1:5432/cm_pcu_ci
+        run: |
+          bash scripts/db-init.sh > "$OUT/logs/db-init.log" 2>&1; rc=$?
+          npm run -s db:verify > "$OUT/logs/db-verify.log" 2>&1 || rc=1
+          printf 'db chain\t%s\n' $rc >> "$OUT/steps.tsv"; exit $rc
+
+      - name: 측정 동결 · 서버 회귀 (DB)
+        env:
+          DATABASE_URL: postgres://cm:cm-ci-only@127.0.0.1:5432/cm_pcu_ci
+          V3_PREVIEW_OPEN: "*"
+        run: |
+          rc=0
+          for s in v3:freeze:measure v3:freeze v3:result:freeze v3:workspace v3:freeze:core \
+                   campus:check v3:majors v3:student; do
+            npm run -s "$s" > "$OUT/logs/$s.log" 2>&1; r=$?; [ $r -eq 0 ] || rc=1
+            printf '%s\t%s\n' "$s" $r >> "$OUT/steps.tsv"
+          done
+          RACE_ALLOW_DB=cm_pcu_ci ROUNDS=15 CLASS=40 OUT="$OUT" \
+            npx tsx scripts/lab/trackC-race.ts > "$OUT/logs/trackC-race.log" 2>&1 || rc=1
+          printf 'trackC-race (pg 풀 10)\t%s\n' $? >> "$OUT/steps.tsv"
+          exit $rc
+
+      - name: 브라우저 (빌드에 쓰인 playwright 와 같은 판)
+        run: npx playwright install --with-deps chromium > /dev/null
+
+      - name: standalone 서버 → 브라우저 E2E · PDF (학생 · 담당자)
+        env:
+          DATABASE_URL: postgres://cm:cm-ci-only@127.0.0.1:5432/cm_pcu_ci
+          APP_ENV: dev
+          V3_PREVIEW_OPEN: BIZ_CORE_V1
+          V3_CAMPUS_FIXTURE: scripts/fixtures/campus-zztest.json
+          UI_BASE: http://127.0.0.1:3100
+        run: |
+          bash scripts/stage-serve.sh 3100 > "$OUT/logs/server.log" 2>&1 &
+          for i in $(seq 1 60); do curl -sf -o /dev/null http://127.0.0.1:3100/api/health && break; sleep 2; done
+          rc=0
+          FAULTS=0 CORE=BIZ_CORE_V1 LEAF=PCU26_BIZ OUT="$OUT/e2e" \
+            npx tsx scripts/lab/r33-e2e.ts > "$OUT/logs/r33-e2e.log" 2>&1 || rc=1
+          npm run -s pcu:campus > "$OUT/logs/pcu-campus.log" 2>&1 || rc=1
+          npm run -s pcu:ops > "$OUT/logs/pcu-ops.log" 2>&1 || rc=1
+          npx tsx scripts/v3-pdf-audit.ts > "$OUT/logs/pdf-audit.log" 2>&1 || rc=1
+          printf 'browser e2e\t%s\n' $rc >> "$OUT/steps.tsv"; exit $rc
+
+      - name: 결과 한 장
+        if: always()
+        run: cat "$OUT/steps.tsv" | tee "$OUT/SUMMARY.tsv"
+
+      - name: 글로 된 결과만 올린다 (캡처 · PDF 제외)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pcu-verify-text
+          path: |
+            pca-platform/var/pcu-ci/*.tsv
+            pca-platform/var/pcu-ci/logs/*.log
+          retention-days: 7
+
+      - name: 판정 (한 단계라도 걸리면 빨강)
+        if: always()
+        run: |
+          awk -F'\t' '$2 != 0 { bad=1; print "걸림 " $1 } END { exit bad }' "$OUT/steps.tsv"

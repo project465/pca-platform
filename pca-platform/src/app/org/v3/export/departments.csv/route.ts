@@ -9,6 +9,7 @@
 import { campusNames } from "@/lib/campus/labels";
 import { campusViewer, campusQuery, campusQueryKo } from "@/lib/campus/viewer";
 import { csvResponse, departmentCsv } from "@/lib/campus/export";
+import { auditExport } from "@/lib/campus/export-audit";
 
 export async function GET(req: Request): Promise<Response> {
   const v = await campusViewer();
@@ -30,6 +31,7 @@ export async function GET(req: Request): Promise<Response> {
     name.dept, name.college,
     campusQueryKo(q, name),
   );
+  await auditExport(v, "campus.export.departments", q, { demo: sp.demo === "1" });
   return csvResponse(
     `careermatri-departments-${new Date().toISOString().slice(0, 10)}.csv`, body);
 }
