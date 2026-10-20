@@ -116,10 +116,12 @@ function strengthKo(xs: { name: string; did: string[] }[]): string {
 }
 
 /** 빈자리의 까닭에서 제목을 되풀이하는 문장은 뺀다 */
-function gapLine(title: string, why: string): string {
+function whyRest(title: string, why: string): string {
   const t = title.replace(/\s/g, "");
-  const rest = why.split(/(?<=[.다])\s+/).filter((x) => !t.includes(x.replace(/\s/g, "").slice(0, 5)));
-  return [title.replace(/[.\s]+$/, "") + ".", ...rest].join(" ").replace(/([^.?!])$/, "$1.");
+  return why.split(/(?<=[.다])\s+/).filter((x) => !t.includes(x.replace(/\s/g, "").slice(0, 5))).join(" ");
+}
+function gapLine(title: string, why: string): string {
+  return [title.replace(/[.\s]+$/, "") + ".", whyRest(title, why)].filter(Boolean).join(" ").replace(/([^.?!])$/, "$1.");
 }
 
 export function buildGold(x: JjuReportInput & { attemptId: string; submitted: string }): GoldDoc {
@@ -243,7 +245,7 @@ export function buildGold(x: JjuReportInput & { attemptId: string; submitted: st
   for (const g of m.gaps) {
     const t = gapKo(g, "");
     const k = `${t.title}|${t.why}`;
-    const e = gb.get(k) ?? { domains: [], title: t.title.replace(/^\s*·\s*/, ""), why: t.why };
+    const e = gb.get(k) ?? { domains: [], title: t.title.replace(/^\s*·\s*/, ""), why: whyRest(t.title, t.why) };
     if (!e.domains.includes(nm(g.domain))) e.domains.push(nm(g.domain));
     gb.set(k, e);
   }

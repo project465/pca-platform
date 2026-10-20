@@ -59,7 +59,7 @@ function fitChart(g: GoldDoc): string {
   const bandH = rowsOf.map((n) => n * RH + 18);
   const H = T + bandH.reduce((a, b) => a + b, 0) + B;
   const xOf = (n: number) => L + 22 + (n / 8) * (W - L - R - 40);
-  let y0 = T; const parts: string[] = []; const bg: string[] = [];
+  let y0 = T; const parts: string[] = []; const bg: string[] = []; const spans: [number, number][] = [];
   bands.forEach((b, bi) => {
     const h = bandH[bi];
     bg.push(`<rect x="${L}" y="${y0}" width="${W - L - R}" height="${h}" class="${bi % 2 ? "bb" : "ba"}"/>`); parts.push(`<text x="${L - 10}" y="${y0 + h / 2 + 4}" class="ax" text-anchor="end">관심 ${b}</text>`);
@@ -67,10 +67,11 @@ function fitChart(g: GoldDoc): string {
       const x = xOf(d.confirmed), y = y0 + 12 + i * RH + RH / 2;
       parts.push(`<line x1="${xOf(0)}" x2="${x}" y1="${y}" y2="${y}" class="lead"/><circle cx="${x}" cy="${y}" r="6" class="${d.confirmed ? "p-on" : "p-zero"}"/><text x="${d.confirmed >= 5 ? x - 11 : x + 11}" y="${y + 4}" class="pl"${d.confirmed >= 5 ? ' text-anchor="end"' : ""}>${esc(d.name)} · ${d.confirmed}</text>`);
     });
+    if (per[bi].length) spans.push([y0, y0 + h]);
     if (!per[bi].length) parts.push(`<text x="${xOf(0)}" y="${y0 + h / 2 + 4}" class="ax halo">이 단계에 깊게 물은 영역 없음</text>`);
     y0 += h;
   });
-  const xt = [0, 2, 4, 6, 8].map((n) => `<line x1="${xOf(n)}" x2="${xOf(n)}" y1="${T}" y2="${y0}" class="gl"/><text x="${xOf(n)}" y="${y0 + 15}" class="ax" text-anchor="middle">${n}</text>`).join("");
+  const xt = [0, 2, 4, 6, 8].map((n) => `${spans.map(([a, b]) => `<line x1="${xOf(n)}" x2="${xOf(n)}" y1="${a}" y2="${b}" class="gl"/>`).join("")}<text x="${xOf(n)}" y="${y0 + 15}" class="ax" text-anchor="middle">${n}</text>`).join("");
   const off = bands.map((b) => [b, g.domains.filter((d) => !d.explored && d.interest === b).map((d) => d.name)] as const).filter(([, n]) => n.length);
   return `<svg class="fit" viewBox="0 0 ${W} ${H}" role="img" aria-label="관심과 확인된 판단">${bg.join("")}${xt}${parts.join("")}
 <text x="${xOf(4)}" y="${H - 6}" class="ax" text-anchor="middle">확인된 판단 · 여덟 축 가운데 몇 칸 →</text></svg>
