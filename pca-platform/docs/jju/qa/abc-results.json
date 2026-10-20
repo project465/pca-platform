@@ -1,0 +1,442 @@
+{
+ "track": "JJU1_AI",
+ "dump": {
+  "A": {
+   "label": "AI 기초는 강하고 실무 경험이 적은 학생",
+   "attempt": "5",
+   "versions": {
+    "core_version": "CS_CORE_V1",
+    "scoring_version": "me-v3-scoring.5",
+    "item_bank_version": "CS_V1_ITEM_BANK_V1.3",
+    "role_pack_version": "ROLE_DEV_V1.v1",
+    "region_layer_version": null,
+    "industry_pack_version": "INDUSTRY_PLATFORM_V1.v1"
+   },
+   "read": {
+    "badge": "정리만 하면 돼요",
+    "headline": "기계학습·데이터 분석 과제는 해 봤고, 정리만 남았어요",
+    "lead": "뭘 골랐는지만 덧붙이면 돼요.",
+    "focus": [
+     "기계학습·데이터 분석"
+    ],
+    "zones": {
+     "자료구조·알고리즘": "Z4_INSUFFICIENT_EVIDENCE",
+     "데이터 저장·질의 설계": "Z4_INSUFFICIENT_EVIDENCE",
+     "기계학습·데이터 분석": "Z2_EVIDENCE_INCOMPLETE"
+    },
+    "counts": {
+     "domains": 11,
+     "owned_axes": 0,
+     "confirmed_axes": 2,
+     "evidence_items": 16
+    },
+    "evidence_ready": [],
+    "evidence_partial": [
+     "기계학습·데이터 분석"
+    ],
+    "gaps": [
+     "기계학습·데이터 분석 · 무엇과 비교해 봤는지가 아직 없어요",
+     "기계학습·데이터 분석 · 과제에서 손에 남은 것이 아직 없어요",
+     "기계학습·데이터 분석 · 그 결과가 어디에 쓰였는지가 아직 없습니다",
+     "기계학습·데이터 분석 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다"
+    ],
+    "actions": [
+     {
+      "do": "자료구조·알고리즘을 다룰 짧은 과제나 스터디 하나를 정해 보세요. 한 일과 직접 정한 것을 다섯 줄로 적어 두세요.",
+      "note": "수업 프로젝트나 교내 과제 하나면 충분합니다."
+     },
+     {
+      "do": "데이터 저장·질의 설계를 다룰 짧은 과제나 스터디 하나를 정해 보세요. 한 일과 직접 정한 것을 다섯 줄로 적어 두세요.",
+      "note": "수업 프로젝트나 교내 과제 하나면 충분합니다."
+     },
+     {
+      "do": "최근 기계학습·데이터 분석 과제 하나. 자료 정리, 자료 나누기 같은 것 가운데 왜 그 방법을 골랐는지 다른 선택과 나란히 분석 코드에 적습니다.",
+      "note": "수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+     }
+    ],
+    "roles": [
+     "탐색·연구 ← 기계학습·데이터 분석"
+    ],
+    "industries": [
+     "의료·보건 정보",
+     "금융·결제",
+     "게임·실시간 콘텐츠"
+    ],
+    "quality": "REVIEW"
+   },
+   "screens": [
+    "profile",
+    "pick-industry",
+    "sweep",
+    "sweep",
+    "sweep",
+    "sweep",
+    "sweep",
+    "sweep",
+    "profile",
+    "pick-industry",
+    "scene",
+    "sweep",
+    "sweep",
+    "sweep",
+    "sweep",
+    "sweep",
+    "sweep",
+    "sweep",
+    "pair",
+    "pair",
+    "pair",
+    "pair",
+    "pair",
+    "pair",
+    "pair:TD09",
+    "pair:TD09",
+    "pair:TD09",
+    "pair:TD09",
+    "pair:TD02",
+    "pair:TD02",
+    "pair:TD02",
+    "pair:TD02",
+    "pair:TD04",
+    "pair:TD04",
+    "pair:TD04",
+    "pair:TD04",
+    "pair:TD09",
+    "pair:TD09",
+    "pair:TD02",
+    "pair:TD02",
+    "pair:TD04",
+    "pair:TD04",
+    "checklist:TD09",
+    "checklist:TD02",
+    "checklist:TD04",
+    "pair",
+    "pick-role",
+    "pick-org",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "transition",
+    "group",
+    "group",
+    "group",
+    "group",
+    "group",
+    "done"
+   ]
+  },
+  "B": {
+   "label": "프로그래밍·프로젝트 경험은 많고 직무 이해가 약한 학생",
+   "attempt": "6",
+   "versions": {
+    "core_version": "CS_CORE_V1",
+    "scoring_version": "me-v3-scoring.5",
+    "item_bank_version": "CS_V1_ITEM_BANK_V1.3",
+    "role_pack_version": "ROLE_DEV_V1.v1",
+    "region_layer_version": null,
+    "industry_pack_version": "INDUSTRY_PLATFORM_V1.v1"
+   },
+   "read": {
+    "badge": "지원서에 쓸 경험이 있어요",
+    "headline": "소프트웨어 설계·구조 과제에서 방향을 직접 정해 본 일이 있어요",
+    "lead": "확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+    "focus": [
+     "소프트웨어 설계·구조",
+     "서버·API 구현",
+     "사용자 인터페이스 구현",
+     "테스트·품질·배포 운영"
+    ],
+    "zones": {
+     "소프트웨어 설계·구조": "Z1_EVIDENCE_ESTABLISHED",
+     "서버·API 구현": "Z1_EVIDENCE_ESTABLISHED",
+     "사용자 인터페이스 구현": "Z1_EVIDENCE_ESTABLISHED",
+     "테스트·품질·배포 운영": "Z1_EVIDENCE_ESTABLISHED"
+    },
+    "counts": {
+     "domains": 11,
+     "owned_axes": 8,
+     "confirmed_axes": 32,
+     "evidence_items": 76
+    },
+    "evidence_ready": [
+     "소프트웨어 설계·구조",
+     "서버·API 구현",
+     "사용자 인터페이스 구현",
+     "테스트·품질·배포 운영"
+    ],
+    "evidence_partial": [
+     "소프트웨어 설계·구조",
+     "서버·API 구현",
+     "사용자 인터페이스 구현",
+     "테스트·품질·배포 운영"
+    ],
+    "gaps": [
+     "소프트웨어 설계·구조 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+     "서버·API 구현 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+     "사용자 인터페이스 구현 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+     "테스트·품질·배포 운영 · 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다"
+    ],
+    "actions": [
+     {
+      "do": "최근 소프트웨어 설계·구조 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 모듈 구조도에 그대로 옮깁니다.",
+      "note": "수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+     },
+     {
+      "do": "최근 서버·API 구현 과제 하나. 그때 무엇을 문제로 잡았는지 세 줄로 써서 서버 코드 맨 앞에 붙입니다.",
+      "note": "수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+     },
+     {
+      "do": "최근 사용자 인터페이스 구현 과제 하나. 그때 무엇을 문제로 잡았는지 세 줄로 써서 화면 코드 맨 앞에 붙입니다.",
+      "note": "수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+     }
+    ],
+    "roles": [
+     "설계·개발 ← 소프트웨어 설계·구조·서버·API 구현·사용자 인터페이스 구현",
+     "시험·검증 ← 서버·API 구현·사용자 인터페이스 구현·테스트·품질·배포 운영",
+     "통합·조정 ← 소프트웨어 설계·구조·테스트·품질·배포 운영"
+    ],
+    "industries": [
+     "기업용 소프트웨어·수탁 개발",
+     "공공·국방 정보화",
+     "금융·결제"
+    ],
+    "quality": "OK"
+   },
+   "screens": [
+    "profile",
+    "pick-industry",
+    "sweep",
+    "sweep",
+    "sweep",
+    "sweep",
+    "sweep",
+    "sweep",
+    "single",
+    "single",
+    "sweep",
+    "pair",
+    "pair",
+    "pair",
+    "pair",
+    "pair",
+    "pair",
+    "pair:TD01",
+    "pair:TD01",
+    "pair:TD01",
+    "pair:TD01",
+    "pair:TD03",
+    "pair:TD03",
+    "pair:TD03",
+    "pair:TD03",
+    "pair:TD05",
+    "pair:TD05",
+    "pair:TD05",
+    "pair:TD05",
+    "pair:TD10",
+    "pair:TD10",
+    "pair:TD10",
+    "pair:TD10",
+    "pair:TD01",
+    "pair:TD01",
+    "pair:TD03",
+    "pair:TD03",
+    "pair:TD05",
+    "pair:TD05",
+    "pair:TD10",
+    "pair:TD10",
+    "checklist:TD01",
+    "checklist:TD03",
+    "checklist:TD05",
+    "checklist:TD10",
+    "pair",
+    "pick-role",
+    "pick-org",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "transition",
+    "group",
+    "group",
+    "group",
+    "group",
+    "group",
+    "done"
+   ]
+  },
+  "C": {
+   "label": "전공 기초는 있고 AI 지식·근거가 부족한 학생",
+   "attempt": "7",
+   "versions": {
+    "core_version": "CS_CORE_V1",
+    "scoring_version": "me-v3-scoring.5",
+    "item_bank_version": "CS_V1_ITEM_BANK_V1.3",
+    "role_pack_version": "ROLE_DEV_V1.v1",
+    "region_layer_version": null,
+    "industry_pack_version": "INDUSTRY_PLATFORM_V1.v1"
+   },
+   "read": {
+    "badge": "정리만 하면 돼요",
+    "headline": "자료구조·알고리즘 과제는 해 봤고, 정리만 남았어요",
+    "lead": "뭘 골랐는지만 덧붙이면 돼요.",
+    "focus": [
+     "자료구조·알고리즘",
+     "시스템·동시성 프로그래밍",
+     "네트워크·분산 시스템"
+    ],
+    "zones": {
+     "자료구조·알고리즘": "Z2_EVIDENCE_INCOMPLETE",
+     "시스템·동시성 프로그래밍": "Z2_EVIDENCE_INCOMPLETE",
+     "네트워크·분산 시스템": "Z2_EVIDENCE_INCOMPLETE"
+    },
+    "counts": {
+     "domains": 11,
+     "owned_axes": 0,
+     "confirmed_axes": 3,
+     "evidence_items": 24
+    },
+    "evidence_ready": [],
+    "evidence_partial": [
+     "자료구조·알고리즘",
+     "시스템·동시성 프로그래밍",
+     "네트워크·분산 시스템"
+    ],
+    "gaps": [
+     "자료구조·알고리즘 · 직접 정한 조건이나 기준이 아직 안 보여요",
+     "시스템·동시성 프로그래밍 · 직접 정한 조건이나 기준이 아직 안 보여요",
+     "네트워크·분산 시스템 · 안 됐을 때 무엇을 고쳤는지가 아직 없어요",
+     "시스템·동시성 프로그래밍 · 안 됐을 때 무엇을 고쳤는지가 아직 없어요"
+    ],
+    "actions": [
+     {
+      "do": "최근 자료구조·알고리즘 과제 하나. 이론 복잡도나 실측 시간 가운데 무엇과 견줬는지 적고, 그 차이를 복잡도 근거 메모에 남깁니다.",
+      "note": "수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+     },
+     {
+      "do": "최근 시스템·동시성 프로그래밍 과제 하나. 자원 사용 측정이나 메모리 검사 결과 가운데 무엇과 견줬는지 적고, 그 차이를 자원 사용 측정에 남깁니다.",
+      "note": "수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+     },
+     {
+      "do": "최근 네트워크·분산 시스템 과제 하나. 지연 측정값이나 실패 주입 결과 가운데 무엇과 견줬는지 적고, 그 차이를 지연 측정 기록에 남깁니다.",
+      "note": "수업 프로젝트나 캡스톤, 짧은 스터디 가운데 하나면 됩니다."
+     }
+    ],
+    "roles": [
+     "빌드·배포 자동화 ← 시스템·동시성 프로그래밍·네트워크·분산 시스템",
+     "해석·예측 ← 자료구조·알고리즘·네트워크·분산 시스템",
+     "품질·신뢰성 ← 시스템·동시성 프로그래밍"
+    ],
+    "industries": [
+     "자동차·모빌리티 소프트웨어",
+     "게임·실시간 콘텐츠",
+     "플랫폼·온라인 서비스"
+    ],
+    "quality": "LOW_VARIANCE"
+   },
+   "screens": [
+    "profile",
+    "pick-industry",
+    "sweep",
+    "sweep",
+    "sweep",
+    "sweep",
+    "sweep",
+    "sweep",
+    "single",
+    "single",
+    "sweep",
+    "pair",
+    "pair",
+    "pair",
+    "pair",
+    "pair",
+    "pair",
+    "pair:TD02",
+    "pair:TD02",
+    "pair:TD02",
+    "pair:TD02",
+    "pair:TD06",
+    "pair:TD06",
+    "pair:TD06",
+    "pair:TD06",
+    "pair:TD07",
+    "pair:TD07",
+    "pair:TD07",
+    "pair:TD07",
+    "pair:TD02",
+    "pair:TD02",
+    "pair:TD06",
+    "pair:TD06",
+    "pair:TD07",
+    "pair:TD07",
+    "checklist:TD02",
+    "checklist:TD06",
+    "checklist:TD07",
+    "pair",
+    "pick-role",
+    "pick-org",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "single",
+    "transition",
+    "group",
+    "group",
+    "group",
+    "group",
+    "group",
+    "done"
+   ]
+  }
+ },
+ "isolation": {
+  "jju": {
+   "started": 3,
+   "scored": 3,
+   "roster": 3
+  },
+  "pcu": {
+   "started": 1
+  }
+ }
+}

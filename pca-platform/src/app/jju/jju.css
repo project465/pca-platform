@@ -85,3 +85,22 @@
   .jju-track dd { margin-bottom: 8px; }
   .jju-flow li { grid-template-columns: 1fr; gap: 2px; }
 }
+
+/* 공식 출처가 붙은 사업 사실. 시연 트랙 목록(.cm-cmp-row)과 모양을 가른다 */
+.jju-official { display: grid; gap: 14px; }
+.jju-facts { margin: 0; padding: 0; list-style: none; display: grid; gap: 0; border-top: 1px solid var(--ui-line, #dde3ec); }
+.jju-facts li { display: grid; gap: 4px; padding: 12px 0; border-bottom: 1px solid var(--ui-line, #dde3ec); }
+.jju-fact-t { font-size: 15.5px; line-height: 1.5; color: var(--ui-ink, #0f1b2d); }
+.jju-fact-c { font-size: 13.5px; line-height: 1.5; color: #7a4b00; }
+.jju-fact-m { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; font-size: 13px; }
+.jju-fact-m a, .jju-src a { color: var(--ui-text-2, #3d4d66); text-decoration: underline; }
+.jju-fs { padding: 2px 8px; border-radius: 999px; border: 1px solid; font-size: 12.5px; }
+.jju-fs.is-ok { background: #e8f6ee; color: #12623a; border-color: #bfe6cf; }
+.jju-fs.is-partial { background: #fff3df; color: #7a4b00; border-color: #f2d39a; }
+.jju-courses h3 { margin: 0 0 6px; font-size: 15px; }
+.jju-courses p { margin: 0 0 6px; display: grid; gap: 2px; font-size: 14.5px; }
+.jju-courses p span { color: var(--ui-text-2, #3d4d66); }
+.jju-src { margin: 0; font-size: 12.5px; line-height: 1.6; color: var(--ui-text-2, #3d4d66); }
+.jju-src a { margin-right: 10px; }
+.jju-demo-h { display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 999px; background: #fff3df; color: #7a4b00; border: 1px solid #f2d39a; font-size: 12.5px; font-weight: 600; vertical-align: middle; }
+.jju-split { margin: 28px 0 6px; font-size: 20px; }

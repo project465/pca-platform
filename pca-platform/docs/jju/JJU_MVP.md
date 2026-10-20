@@ -4,6 +4,8 @@
 
 ## 판정
 
+> **R1 에서 갱신됐다.** 서버 쪽 E2E·A·B·C·격리·리포트 구조·트랙 감사의 실행 증거와 최신 판정은 `R1_REPORT.md` 다. 아래는 1차 기록이다.
+
 `CODE WRITTEN / NOT RUN / SCREENSHOTS NOT TAKEN / PRODUCTION UNTOUCHED`
 
 이 세션의 네트워크 정책이 npm 레지스트리(`registry.npmjs.org`)를 막았다.

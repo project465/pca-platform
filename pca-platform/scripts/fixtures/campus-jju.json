@@ -1,19 +1,19 @@
 {
- "note": "전주대학교 AI·첨단산업 부트캠프 시연용 등록. **운영 등록부가 아니다**: `V3_CAMPUS_FIXTURE` 를 들고 띄운 서버만 읽고 `campus-universities.json` 은 한 바이트도 바뀌지 않는다. 운영에서는 어떤 값으로도 붙지 않는다(`campusFixturePath()`). 트랙 이름과 기수는 전주대학교 공식 자료에서 확인하지 못한 **가안**이라 이름 앞에 `[시연]` 을 붙였다: 결과지와 PDF 머리말이 학과 이름을 그대로 적으므로, 이 표시가 학생 화면 끝까지 따라간다.",
+ "note": "전주대학교 AI 분야 첨단산업 인재양성 부트캠프 **시연용** 등록. **운영 등록부가 아니다**: `V3_CAMPUS_FIXTURE` 를 들고 띄운 서버만 읽고 `campus-universities.json` 은 한 바이트도 바뀌지 않는다. 운영에서는 어떤 값으로도 붙지 않는다(`campusFixturePath()`). **두 층을 섞지 않는다**: `official_program` 은 공식 출처가 붙은 사업 사실이고, `catalogs` 의 기수·트랙은 CareerMatri 가 검사를 잇기 위해 만든 **시연용 분류**다(공식 교육과정이 아니다). 그래서 트랙 이름 앞에 `[시연]` 을 붙여 결과지와 PDF 머리말까지 따라가게 했다.",
  "universities": [
   {
    "university_code": "JJU",
    "university_name": "전주대학교",
    "market_code": "KR",
-   "entry_note": "AI·첨단산업 부트캠프 시연. 트랙·기수는 공식 교육과정 확인 전 가안이다",
+   "entry_note": "AI 분야 첨단산업 인재양성 부트캠프(2026~2030). 아래 트랙·기수는 공식 과정이 아니라 시연용 분류다",
    "brand_asset": null,
    "brand_asset_note": "학교 로고 사용 승인과 정식 asset 을 받지 못했다. 학교 상표를 다시 그리지 않는다",
    "open_questions": [
-    "전주대학교가 2026년 첨단산업 인재양성 부트캠프 사업에 선정됐는지와 사업단 정식 명칭(공개 검색으로 확인하지 못했다)",
-    "실제 운영 트랙 구성과 이름(AI · AIoT · 스마트팩토리 · 피지컬 AI · LLM 응용 가운데 무엇이 공식 과정인가)",
-    "기수 구성과 기수별 시작일",
+    "사업단이 운영하는 공식 트랙(또는 마이크로디그리) 구성과 이름 — 지금 화면의 5개 트랙은 시연용 분류다",
+    "후속 ND1~ND6 과정의 이름·내용·순서·대상",
     "참여자 신분(재학생 · 졸업생 · 재직자)과 학업 단계 매핑",
-    "트랙마다 어느 전공 검사(Major Core)로 잴지에 대한 사업단 확인"
+    "과정마다 어느 전공 검사(Major Core)로 잴지에 대한 사업단 확인",
+    "학교 로고·상표 사용 승인"
    ],
    "region_hint": "KR-HONAM",
    "region_cities": [
@@ -32,10 +32,10 @@
      "effective_note": "기수 시작일은 시연용 가정이다",
      "default_for_unknown": true,
      "source_url": null,
-     "source_name": "공식 교육과정 미확인(시연용 가안)",
+     "source_name": "CareerMatri 시연용 분류(공식 교육과정 아님)",
      "verified_at": null,
-     "verification": "OFFICIAL_PAGE_UNREACHABLE",
-     "verification_note": "전주대학교 부트캠프 사업단의 공식 교육과정과 선정 여부를 공개 검색으로 확인하지 못했다. 트랙은 전부 시연용 가안이다",
+     "verification": "DEMO_CLASSIFICATION",
+     "verification_note": "사업 선정과 운영 방식은 official_program 의 F1~F6 이 공식 출처를 든다. 이 기수·트랙 묶음은 그 사실에서 만든 것이 아니라 CareerMatri 검사를 잇기 위한 시연용 분류이고, 사업단의 공식 트랙과 같다고 적지 않는다",
      "colleges": [
       {
        "code": "JJU_AISW",
@@ -100,10 +100,10 @@
      "effective_to": null,
      "effective_note": "기수 시작일은 시연용 가정이다",
      "source_url": null,
-     "source_name": "공식 교육과정 미확인(시연용 가안)",
+     "source_name": "CareerMatri 시연용 분류(공식 교육과정 아님)",
      "verified_at": null,
-     "verification": "OFFICIAL_PAGE_UNREACHABLE",
-     "verification_note": "1기와 같은 트랙을 가정했다. 기수마다 트랙이 바뀌면 이 Catalog 만 고친다",
+     "verification": "DEMO_CLASSIFICATION",
+     "verification_note": "사업 선정과 운영 방식은 official_program 의 F1~F6 이 공식 출처를 든다. 이 기수·트랙 묶음은 그 사실에서 만든 것이 아니라 CareerMatri 검사를 잇기 위한 시연용 분류이고, 사업단의 공식 트랙과 같다고 적지 않는다",
      "colleges": [
       {
        "code": "JJU_AISW",
@@ -115,7 +115,9 @@
          "kind": "department",
          "core_code": "CS_CORE_V1",
          "specialization": "SPEC_CS_AI",
-         "replaces": ["JJU1_AI"]
+         "replaces": [
+          "JJU1_AI"
+         ]
         },
         {
          "code": "JJU2_LLM",
@@ -123,7 +125,9 @@
          "kind": "department",
          "core_code": "CS_CORE_V1",
          "specialization": "SPEC_CS_SOFTWARE",
-         "replaces": ["JJU1_LLM"]
+         "replaces": [
+          "JJU1_LLM"
+         ]
         }
        ]
       },
@@ -137,7 +141,9 @@
          "kind": "department",
          "core_code": "EE_CORE_V1",
          "specialization": "SPEC_EE_COMM",
-         "replaces": ["JJU1_AIOT"]
+         "replaces": [
+          "JJU1_AIOT"
+         ]
         },
         {
          "code": "JJU2_PHYAI",
@@ -145,7 +151,9 @@
          "kind": "department",
          "core_code": "EE_CORE_V1",
          "specialization": "SPEC_EE_ROBOT",
-         "replaces": ["JJU1_PHYAI"]
+         "replaces": [
+          "JJU1_PHYAI"
+         ]
         },
         {
          "code": "JJU2_SF",
@@ -153,13 +161,97 @@
          "kind": "department",
          "core_code": "ME_CORE_V3",
          "specialization": null,
-         "replaces": ["JJU1_SF"]
+         "replaces": [
+          "JJU1_SF"
+         ]
         }
        ]
       }
      ]
     }
-   ]
+   ],
+   "official_program": {
+    "name": "AI 분야 첨단산업 인재양성 부트캠프",
+    "checked_on": "2026-10-20",
+    "verification": "OWNER_PROVIDED_OFFICIAL_SOURCE",
+    "verification_note": "이 사업 사실은 사업주가 전주대학교 공식 페이지(두 URL)에서 옮겨 준 것이다. 이 작업 환경에서는 www.jj.ac.kr 에 닿지 못해(DNS·프록시 차단) 원문 문면을 직접 대조하지 못했다. 원문을 직접 확인하면 checked_on 과 verification 을 바꾼다",
+    "sources": [
+     {
+      "id": "S1",
+      "kind": "official_news",
+      "title": "전주대학교 뉴스 (articleNo=504039)",
+      "url": "https://www.jj.ac.kr/jj/introduction/jjnews.do?articleNo=504039&mode=view"
+     },
+     {
+      "id": "S2",
+      "kind": "official_notice",
+      "title": "전주대학교 공지 (articleNo=521499) · 2026 AI 기초 과정",
+      "url": "https://www.jj.ac.kr/jj/community/notice01.do?articleNo=521499&mode=view"
+     }
+    ],
+    "facts": [
+     {
+      "id": "F1",
+      "text": "2026년 AI 분야 첨단산업 인재양성 부트캠프 사업에 선정됐다",
+      "source": "S1",
+      "status": "CONFIRMED_BY_OWNER"
+     },
+     {
+      "id": "F2",
+      "text": "사업 기간은 2026~2030년이고 총 사업비는 80억 원 규모다",
+      "source": "S1",
+      "status": "CONFIRMED_BY_OWNER",
+      "caution": "사업단 전체 사업비다. CareerMatri 계약 예산이나 도입 예산으로 읽거나 적지 않는다"
+     },
+     {
+      "id": "F3",
+      "text": "전북 전략산업의 AX(인공지능 전환)와 실무형 피지컬 AI 인재 양성을 목표로 한다",
+      "source": "S1",
+      "status": "CONFIRMED_BY_OWNER"
+     },
+     {
+      "id": "F4",
+      "text": "AI 융합 교과목, PBL, 현장실습, 마이크로디그리로 운영한다",
+      "source": "S1",
+      "status": "CONFIRMED_BY_OWNER"
+     },
+     {
+      "id": "F5",
+      "text": "2026 AI 기초 과정을 공지했고 파이썬·데이터 처리·시각화·통계·딥러닝 기초를 다룬다",
+      "source": "S2",
+      "status": "CONFIRMED_BY_OWNER"
+     },
+     {
+      "id": "F6",
+      "text": "AI 기초 과정 뒤에 후속 ND1~ND6 과정이 있다",
+      "source": "S2",
+      "status": "EXISTS_DETAIL_UNVERIFIED",
+      "caution": "과정 이름·내용·순서·대상은 확인하지 못했다. 화면에 내용을 지어 적지 않는다"
+     }
+    ],
+    "courses": [
+     {
+      "code": "JJU_AI_BASIC_2026",
+      "name": "2026 AI 기초 과정",
+      "topics": [
+       "파이썬",
+       "데이터 처리",
+       "시각화",
+       "통계",
+       "딥러닝 기초"
+      ],
+      "source": "S2",
+      "status": "CONFIRMED_BY_OWNER"
+     },
+     {
+      "code": "JJU_ND1_ND6",
+      "name": "후속 ND1~ND6 과정",
+      "topics": [],
+      "source": "S2",
+      "status": "EXISTS_DETAIL_UNVERIFIED"
+     }
+    ]
+   }
   }
  ]
 }

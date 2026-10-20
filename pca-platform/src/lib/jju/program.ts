@@ -18,6 +18,12 @@
  *              (`previewOpenCores()` 가 운영에서 거절한다)
  * `PREPARING`  열리지 않는다
  *
+ * **공식 사실과 시연 분류를 두 층으로 둔다.** `officialProgram()` 은 출처와
+ * 확인 날짜와 상태가 붙은 사업 사실(선정 · 기간 · 사업비 · 운영 방식 · 실제
+ * 과정)이고, `tracksOf()` 는 CareerMatri 가 검사를 잇기 위해 만든 시연용
+ * 분류다. 화면은 둘을 한 목록에 섞지 않는다: 섞으면 시연 트랙이 사업단의
+ * 공식 트랙으로 읽힌다.
+ *
  * **이 학교는 등록부에 없으면 없다.** 지금 전주대는 시연 fixture 로만
  * 서므로 운영에서는 `jjuUniversity()` 가 `null` 이고 화면이 404 를 낸다.
  */
@@ -33,6 +39,33 @@ export const JJU_CODE = "JJU";
 export function jjuUniversity(): CampusUniversity | null {
   return university(JJU_CODE);
 }
+
+export type FactStatus = "CONFIRMED_BY_OWNER" | "EXISTS_DETAIL_UNVERIFIED" | "VERIFIED";
+
+export type OfficialProgram = {
+  name: string;
+  checked_on: string;
+  verification: string;
+  verification_note: string;
+  sources: { id: string; kind: string; title: string; url: string }[];
+  facts: { id: string; text: string; source: string; status: FactStatus; caution?: string }[];
+  courses: { code: string; name: string; topics: string[]; source: string; status: FactStatus }[];
+};
+
+/**
+ * 공식 출처가 붙은 사업 사실. **등록부 정본에는 없는 칸이라 fixture 만 든다.**
+ * 칸이 없으면 `null` 이고 화면은 그 절을 세우지 않는다(지어내지 않는다).
+ */
+export function officialProgram(u: CampusUniversity): OfficialProgram | null {
+  const p = (u as unknown as { official_program?: OfficialProgram }).official_program;
+  return p && Array.isArray(p.facts) ? p : null;
+}
+
+export const FACT_STATUS_KO: Record<FactStatus, string> = {
+  VERIFIED: "원문 대조",
+  CONFIRMED_BY_OWNER: "공식 출처 · 사업주 확인",
+  EXISTS_DETAIL_UNVERIFIED: "있음 · 세부 미확인",
+};
 
 export type TrackMode = "LIVE" | "DEMO" | "PREPARING";
 
@@ -110,7 +143,7 @@ export const MODE_KO: Record<TrackMode, string> = {
 };
 
 export const MODE_NOTE: Record<TrackMode, string> = {
-  LIVE: "검사·결과·PDF 가 실제 엔진으로 돕니다. 트랙 자체는 공식 교육과정 확인 전입니다.",
+  LIVE: "검사·결과·PDF 가 실제 엔진으로 돕니다. 트랙 자체는 CareerMatri 시연용 분류이고 사업단의 공식 트랙이 아닙니다.",
   DEMO: "이 검사는 전공자 검수 전이라 학생에게 닫혀 있고, 이 서버에서만 미리보기로 엽니다. 결과를 실제 진단으로 쓰지 않습니다.",
   PREPARING: "이 서버에서는 열리지 않습니다.",
 };

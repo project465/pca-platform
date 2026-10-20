@@ -59,8 +59,7 @@ async function main(): Promise<void> {
   }
   const u = jjuUniversity();
   if (!u) {
-    console.error("등록부에 JJU 가 없습니다. V3_CAMPUS_FIXTURE=scripts/fixtures/campus-jju.json 을 주십시오.");
-    process.exit(2);
+    throw new Error("등록부에 JJU 가 없습니다. V3_CAMPUS_FIXTURE=scripts/fixtures/campus-jju.json 을 주십시오.");
   }
   const apply = (process.env.APPLY ?? "").toLowerCase() === "yes";
   const tracks = tracksOf(u);

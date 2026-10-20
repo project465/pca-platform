@@ -6,11 +6,11 @@ import "../jju.css";
 import { CampusShell } from "../../campus/shell";
 import { domainNames } from "../../campus/domains";
 import {
-  cohortsOf, demoServer, firstCohortTracks, jjuUniversity, MODE_NOTE,
+  cohortsOf, demoServer, firstCohortTracks, jjuUniversity, MODE_NOTE, officialProgram,
 } from "@/lib/jju/program";
-import { DemoRibbon, ModeChip } from "../parts";
+import { DemoRibbon, ModeChip, OfficialFacts } from "../parts";
 
-export const metadata = { title: "교육 분야와 트랙 · 전주대학교 CareerMatri" };
+export const metadata = { title: "교육과정과 트랙 · 전주대학교 CareerMatri" };
 
 /**
  * AI·첨단산업 교육 분야 소개.
@@ -25,6 +25,7 @@ export default async function JjuFields() {
   if (!u) notFound();
   const tracks = firstCohortTracks(u);
   const cohorts = cohortsOf(u);
+  const program = officialProgram(u);
   const fields = [...new Map(tracks.map((t) => [t.field.code, t.field])).values()];
   const code = u.university_code.toLowerCase();
 
@@ -34,16 +35,25 @@ export default async function JjuFields() {
         {demoServer() ? <DemoRibbon /> : null}
         <div className="cm-cmp-sect-h">
           <h1 className="cm-cmp-title" style={{ color: "var(--pcu-ink)" }}>
-            AI·첨단산업 교육 분야
+            교육과정과 검사 연결
           </h1>
           <p>
             {cohorts.map((c) => c.label).join(" · ")} 같은 트랙 가정
           </p>
         </div>
+        {program ? (
+          <section className="jju-field">
+            <h2>공식 교육과정</h2>
+            <OfficialFacts p={program} />
+          </section>
+        ) : null}
+
+        <h2 className="jju-split">검사 연결 트랙<span className="jju-demo-h">시연용 분류</span></h2>
         <p className="cm-cmp-note">
-          트랙마다 새 검사를 만들지 않습니다. 트랙은 공통 전공 검사로 이어지고,
-          그 검사가 묻는 영역이 아래에 적힌 것입니다. 트랙 구성과 이름은 공식
-          교육과정 확인 전 가안입니다.
+          아래 트랙은 사업단의 공식 트랙이 아니라, 공식 과정을 CareerMatri 전공
+          검사에 잇기 위해 만든 시연용 분류입니다. 트랙마다 새 검사를 만들지
+          않고 공통 전공 검사로 잇습니다. 적힌 영역은 그 검사가 실제로 묻는
+          영역입니다.
         </p>
 
         {fields.map((f) => (
@@ -71,8 +81,8 @@ export default async function JjuFields() {
                         </span>
                       ) : "자료 없음"}
                     </dd>
-                    <dt>공식 과정</dt>
-                    <dd>{t.official ? "확인됨" : "확인 전(가안)"}</dd>
+                    <dt>구분</dt>
+                    <dd>{t.official ? "공식 과정" : "시연용 분류 · 공식 트랙 아님"}</dd>
                     {t.note ? (<><dt>매핑 근거</dt><dd>{t.note}</dd></>) : null}
                   </dl>
                   <p className="jju-mode-note">{MODE_NOTE[t.mode]}</p>

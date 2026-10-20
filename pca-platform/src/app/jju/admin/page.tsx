@@ -10,9 +10,9 @@ import { BRAND } from "@/lib/surface-text";
 import { Shell, PageHead, Section } from "@/components/sf/shell";
 import { Empty, Kpi } from "@/components/sf/parts";
 import {
-  cohortsOf, demoServer, JJU_CODE, jjuUniversity, MODE_KO, tracksOf,
+  cohortsOf, demoServer, JJU_CODE, jjuUniversity, MODE_KO, officialProgram, tracksOf,
 } from "@/lib/jju/program";
-import { DemoRibbon, ModeChip } from "../parts";
+import { DemoRibbon, ModeChip, OfficialFacts } from "../parts";
 
 export const metadata = { title: `사업단 현황 · ${BRAND.campus}` };
 
@@ -66,13 +66,14 @@ export default async function JjuAdmin({
   const perTrack = await Promise.all(tracks.map((t) =>
     studentCounts({ universityCode: JJU_CODE, withDemo, department: t.code })));
   const cohorts = cohortsOf(u);
+  const program = officialProgram(u);
   const demoQs = withDemo ? "?demo=1" : "";
 
   return shell(
     <>
       {demoServer() ? <div className="jju-admin-ribbon"><DemoRibbon /></div> : null}
       <PageHead
-        eyebrow="전주대학교 AI·첨단산업 부트캠프"
+        eyebrow={`전주대학교 ${program?.name ?? "AI 부트캠프"}`}
         title="사업단 현황"
         sub={"기수·트랙별 학생과 검사 현황입니다. "
           + `응시 집계는 ${MIN_CELL}명이 안 되는 칸에 숫자를 내지 않습니다.`}
@@ -97,8 +98,8 @@ export default async function JjuAdmin({
           note="바닥은 명단과 학교 진입을 합친 대상자입니다" />
       </div>
 
-      <Section title="기수 × 트랙 현황"
-        note="발급·진행·완료는 명단 화면과 같은 수입니다. 시작은 응시 집계 칸입니다">
+      <Section title="기수 × 트랙 현황 (시연용 분류)"
+        note="기수·트랙은 사업단 공식 트랙이 아닌 시연용 분류입니다. 발급·진행·완료는 명단 화면과 같은 수이고, 시작은 응시 집계 칸입니다">
         <div className="jju-scroll">
           <table className="jju-matrix">
             <thead>
@@ -133,7 +134,14 @@ export default async function JjuAdmin({
         </div>
       </Section>
 
-      <Section title="교육과정 등록 상태">
+      {program ? (
+        <Section title="사업 개요 · 공식 교육과정"
+          note="출처가 붙은 사실만 적습니다. 사업비는 사업단 전체 금액이며 CareerMatri 계약 예산이 아닙니다">
+          <OfficialFacts p={program} />
+        </Section>
+      ) : null}
+
+      <Section title="시연용 기수 분류">
         <ul className="jju-flow">
           {cohorts.map((c) => (
             <li key={c.catalog_code}>
@@ -141,7 +149,7 @@ export default async function JjuAdmin({
               <span>{c.effective_from} 시작 가정</span>
               <span>{c.verification === "VERIFIED"
                 ? "공식 교육과정과 맞춰 봤습니다."
-                : `공식 교육과정 확인 전입니다. ${c.verification_note ?? ""}`}</span>
+                : c.verification_note ?? "시연용 분류입니다."}</span>
             </li>
           ))}
         </ul>
@@ -160,7 +168,11 @@ export default async function JjuAdmin({
           <li><strong>{MODE_KO.DEMO} 트랙의 결과</strong><span className="jju-demo">시연</span>
             <span>전공자 검수 전 검사입니다. 결과를 학생 진단이나 사업 성과로 쓰지 않습니다.</span></li>
           <li><strong>트랙·기수 구성</strong><span className="jju-demo">시연</span>
-            <span>공식 교육과정 확인 전 가안입니다.</span></li>
+            <span>공식 과정을 검사에 잇기 위한 시연용 분류입니다. 사업단 공식 트랙과 같다고 적지 않습니다.</span></li>
+          <li><strong>사업 선정·기간·운영 방식</strong><span className="jju-ok">공식 출처</span>
+            <span>공식 페이지 두 곳을 출처로 적었습니다. 원문 직접 대조는 남아 있습니다.</span></li>
+          <li><strong>개인 결과·PDF 담당자 열람</strong><span className="jju-no">막혀 있음</span>
+            <span>계약 조항과 본인 동의가 모두 있을 때만 열리는 공통 규칙입니다. 지금은 열리지 않습니다.</span></li>
           <li><strong>교육 전후 역량 변화</strong><span className="jju-no">표시하지 않음</span>
             <span>비교할 수 있는 평가 체계가 검증되기 전이라 교육 효과로 보여 주지 않습니다.</span></li>
           <li><strong>전북권 기업·기관 연계</strong><span className="jju-no">자료 없음</span>

@@ -5,11 +5,11 @@ import "../campus/campus.css";
 import "./jju.css";
 import { CampusShell } from "../campus/shell";
 import {
-  demoServer, firstCohortTracks, jjuUniversity, MODE_KO,
+  demoServer, firstCohortTracks, jjuUniversity, MODE_KO, officialProgram,
 } from "@/lib/jju/program";
-import { DemoRibbon, ModeChip } from "./parts";
+import { DemoRibbon, ModeChip, OfficialFacts } from "./parts";
 
-export const metadata = { title: "전주대학교 AI·첨단산업 부트캠프 · CareerMatri" };
+export const metadata = { title: "전주대학교 AI 부트캠프 · CareerMatri" };
 
 /**
  * 전주대학교 AI·첨단산업 부트캠프의 첫 화면.
@@ -19,8 +19,10 @@ export const metadata = { title: "전주대학교 AI·첨단산업 부트캠프 
  * 검사를 시작하는 단추는 저쪽으로 보낸다: 시작하는 길이 둘이면 어느 날
  * 한쪽만 고쳐진다.
  *
- * **확인하지 못한 것을 공식으로 적지 않는다.** 사업단 이름 · 트랙 · 기수는
- * 전부 가안이고, 이 화면이 그 사실을 트랙마다 적는다.
+ * **공식 사실과 시연 분류를 두 절로 가른다.** 사업 선정·기간·운영 방식·실제
+ * 과정은 출처가 붙은 절에 서고, 트랙·기수는 CareerMatri 가 검사를 잇기 위해
+ * 만든 시연용 분류라 따로 선다. 사업비는 사업단 전체 금액이고 CareerMatri
+ * 계약 예산으로 적지 않는다.
  */
 const STEPS = [
   { t: "트랙 선택과 검사", d: "트랙에 맞는 전공 검사로 해 본 일과 직접 정한 것을 묻습니다." },
@@ -33,6 +35,7 @@ export default async function JjuHome() {
   const u = jjuUniversity();
   if (!u) notFound();
   const tracks = firstCohortTracks(u);
+  const program = officialProgram(u);
   const code = u.university_code.toLowerCase();
 
   return (
@@ -42,7 +45,7 @@ export default async function JjuHome() {
 
         <section className="cm-cmp-hero has-flow">
           <div>
-            <p className="cm-cmp-eyebrow">{u.university_name} AI·첨단산업 부트캠프</p>
+            <p className="cm-cmp-eyebrow">{u.university_name} {program?.name ?? "AI 부트캠프"}</p>
             <h1 className="cm-cmp-title">부트캠프에서 한 일을 설명할 수 있는 경험으로</h1>
             <p className="cm-cmp-lead">
               트랙에 맞는 전공 검사로 지금 가진 근거를 확인하고, 프로젝트를
@@ -68,10 +71,20 @@ export default async function JjuHome() {
           </ol>
         </section>
 
+        {program ? (
+          <section className="cm-cmp-sect">
+            <div className="cm-cmp-sect-h">
+              <h2>사업 개요</h2>
+              <p>공식 출처가 있는 사실만 적습니다</p>
+            </div>
+            <OfficialFacts p={program} />
+          </section>
+        ) : null}
+
         <section className="cm-cmp-sect">
           <div className="cm-cmp-sect-h">
-            <h2>교육 분야와 트랙</h2>
-            <p>공식 교육과정 확인 전 가안</p>
+            <h2>검사 연결 트랙<span className="jju-demo-h">시연용 분류</span></h2>
+            <p>사업단 공식 트랙이 아닙니다</p>
           </div>
           <nav className="cm-cmp-list">
             {tracks.map((t) => (
@@ -89,7 +102,8 @@ export default async function JjuHome() {
             ))}
           </nav>
           <p className="cm-cmp-note">
-            {MODE_KO.DEMO} 표시가 붙은 트랙은 전공자 검수가 끝나지 않은 검사를
+            이 트랙들은 공식 과정을 CareerMatri 전공 검사에 잇기 위해 만든 시연용
+            분류입니다. {MODE_KO.DEMO} 표시가 붙은 트랙은 전공자 검수가 끝나지 않은 검사를
             시연 서버에서만 연 것입니다. 그 결과를 실제 진단으로 쓰지 않습니다.
           </p>
           <div className="cm-cmp-acts">

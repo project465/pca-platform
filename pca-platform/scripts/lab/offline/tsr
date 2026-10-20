@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# 검증 전용 실행기. npm 패키지가 없는 세션에서 TypeScript 서버 코드를 Node 로 돌린다.
+# pg · bcryptjs · next/* · nodemailer 는 shims/ 의 대역이 받는다. **제품에 들어가지 않는다.**
+#   DATABASE_URL=postgres://postgres@127.0.0.1:5432/<db> scripts/lab/offline/tsr scripts/jju-verify.ts
+HERE="$(cd "$(dirname "$0")" && pwd)"
+TS_SRC_ROOT="${TS_SRC_ROOT:-$PWD/src}" exec node --no-warnings --experimental-strip-types --import "$HERE/register.mjs" "$@"
