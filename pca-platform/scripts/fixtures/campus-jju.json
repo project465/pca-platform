@@ -1,0 +1,165 @@
+{
+ "note": "전주대학교 AI·첨단산업 부트캠프 시연용 등록. **운영 등록부가 아니다**: `V3_CAMPUS_FIXTURE` 를 들고 띄운 서버만 읽고 `campus-universities.json` 은 한 바이트도 바뀌지 않는다. 운영에서는 어떤 값으로도 붙지 않는다(`campusFixturePath()`). 트랙 이름과 기수는 전주대학교 공식 자료에서 확인하지 못한 **가안**이라 이름 앞에 `[시연]` 을 붙였다: 결과지와 PDF 머리말이 학과 이름을 그대로 적으므로, 이 표시가 학생 화면 끝까지 따라간다.",
+ "universities": [
+  {
+   "university_code": "JJU",
+   "university_name": "전주대학교",
+   "market_code": "KR",
+   "entry_note": "AI·첨단산업 부트캠프 시연. 트랙·기수는 공식 교육과정 확인 전 가안이다",
+   "brand_asset": null,
+   "brand_asset_note": "학교 로고 사용 승인과 정식 asset 을 받지 못했다. 학교 상표를 다시 그리지 않는다",
+   "open_questions": [
+    "전주대학교가 2026년 첨단산업 인재양성 부트캠프 사업에 선정됐는지와 사업단 정식 명칭(공개 검색으로 확인하지 못했다)",
+    "실제 운영 트랙 구성과 이름(AI · AIoT · 스마트팩토리 · 피지컬 AI · LLM 응용 가운데 무엇이 공식 과정인가)",
+    "기수 구성과 기수별 시작일",
+    "참여자 신분(재학생 · 졸업생 · 재직자)과 학업 단계 매핑",
+    "트랙마다 어느 전공 검사(Major Core)로 잴지에 대한 사업단 확인"
+   ],
+   "region_hint": "KR-HONAM",
+   "region_cities": [
+    "전주",
+    "전북"
+   ],
+   "region_note": "지역 기관 자료는 아직 0줄이다. 전북권 기업 자료는 출처와 사용 권리를 확인한 뒤에 넣는다",
+   "catalogs": [
+    {
+     "catalog_code": "JJU_BC1",
+     "catalog_year": 2026,
+     "label": "[시연] 부트캠프 1기",
+     "status": "ACTIVE",
+     "effective_from": "2026-09-01",
+     "effective_to": null,
+     "effective_note": "기수 시작일은 시연용 가정이다",
+     "default_for_unknown": true,
+     "source_url": null,
+     "source_name": "공식 교육과정 미확인(시연용 가안)",
+     "verified_at": null,
+     "verification": "OFFICIAL_PAGE_UNREACHABLE",
+     "verification_note": "전주대학교 부트캠프 사업단의 공식 교육과정과 선정 여부를 공개 검색으로 확인하지 못했다. 트랙은 전부 시연용 가안이다",
+     "colleges": [
+      {
+       "code": "JJU_AISW",
+       "name": "AI·소프트웨어 분야",
+       "units": [
+        {
+         "code": "JJU1_AI",
+         "name": "[시연] AI·데이터 트랙",
+         "kind": "department",
+         "core_code": "CS_CORE_V1",
+         "specialization": "SPEC_CS_AI",
+         "note": "컴퓨터·소프트웨어 검사의 인공지능·데이터 갈래로 잰다. 그 검사는 도메인 검수 전이라 학생에게 닫혀 있다"
+        },
+        {
+         "code": "JJU1_LLM",
+         "name": "[시연] LLM 응용 트랙",
+         "kind": "department",
+         "core_code": "CS_CORE_V1",
+         "specialization": "SPEC_CS_SOFTWARE",
+         "note": "LLM 을 쓰는 서비스를 만드는 일을 소프트웨어학 갈래로 잰다는 가안이다"
+        }
+       ]
+      },
+      {
+       "code": "JJU_ADV",
+       "name": "첨단제조·로봇 분야",
+       "units": [
+        {
+         "code": "JJU1_AIOT",
+         "name": "[시연] AIoT 트랙",
+         "kind": "department",
+         "core_code": "EE_CORE_V1",
+         "specialization": "SPEC_EE_COMM",
+         "note": "센서·통신·임베디드를 전기전자 검사의 정보통신 갈래로 잰다는 가안이다"
+        },
+        {
+         "code": "JJU1_PHYAI",
+         "name": "[시연] 피지컬 AI 트랙",
+         "kind": "department",
+         "core_code": "EE_CORE_V1",
+         "specialization": "SPEC_EE_ROBOT",
+         "note": "로봇·드론의 구동·센서·제어를 전기전자 검사의 드론·로봇 갈래로 잰다는 가안이다"
+        },
+        {
+         "code": "JJU1_SF",
+         "name": "[시연] 스마트팩토리 트랙",
+         "kind": "department",
+         "core_code": "ME_CORE_V3",
+         "specialization": null,
+         "note": "기계공학 검사로 잰다. 지금 학생에게 열린 유일한 이공계 검사다"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "catalog_code": "JJU_BC2",
+     "catalog_year": 2027,
+     "label": "[시연] 부트캠프 2기",
+     "status": "FUTURE",
+     "effective_from": "2027-03-01",
+     "effective_to": null,
+     "effective_note": "기수 시작일은 시연용 가정이다",
+     "source_url": null,
+     "source_name": "공식 교육과정 미확인(시연용 가안)",
+     "verified_at": null,
+     "verification": "OFFICIAL_PAGE_UNREACHABLE",
+     "verification_note": "1기와 같은 트랙을 가정했다. 기수마다 트랙이 바뀌면 이 Catalog 만 고친다",
+     "colleges": [
+      {
+       "code": "JJU_AISW",
+       "name": "AI·소프트웨어 분야",
+       "units": [
+        {
+         "code": "JJU2_AI",
+         "name": "[시연] AI·데이터 트랙",
+         "kind": "department",
+         "core_code": "CS_CORE_V1",
+         "specialization": "SPEC_CS_AI",
+         "replaces": ["JJU1_AI"]
+        },
+        {
+         "code": "JJU2_LLM",
+         "name": "[시연] LLM 응용 트랙",
+         "kind": "department",
+         "core_code": "CS_CORE_V1",
+         "specialization": "SPEC_CS_SOFTWARE",
+         "replaces": ["JJU1_LLM"]
+        }
+       ]
+      },
+      {
+       "code": "JJU_ADV",
+       "name": "첨단제조·로봇 분야",
+       "units": [
+        {
+         "code": "JJU2_AIOT",
+         "name": "[시연] AIoT 트랙",
+         "kind": "department",
+         "core_code": "EE_CORE_V1",
+         "specialization": "SPEC_EE_COMM",
+         "replaces": ["JJU1_AIOT"]
+        },
+        {
+         "code": "JJU2_PHYAI",
+         "name": "[시연] 피지컬 AI 트랙",
+         "kind": "department",
+         "core_code": "EE_CORE_V1",
+         "specialization": "SPEC_EE_ROBOT",
+         "replaces": ["JJU1_PHYAI"]
+        },
+        {
+         "code": "JJU2_SF",
+         "name": "[시연] 스마트팩토리 트랙",
+         "kind": "department",
+         "core_code": "ME_CORE_V3",
+         "specialization": null,
+         "replaces": ["JJU1_SF"]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
