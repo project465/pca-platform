@@ -72,6 +72,8 @@
   background: var(--sj-surface); border: 1px solid var(--sj-line); border-radius: 14px; padding: 20px;
 }
 .sj-card + .sj-card { margin-top: 16px; }
+/* 격자 안에서는 gap 이 사이를 준다. 여백이 겹치면 카드가 계단처럼 어긋난다 */
+.sj-grid > .sj-card + .sj-card { margin-top: 0; }
 .sj-grid { display: grid; gap: 16px; }
 .sj-grid.c2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .sj-grid.c3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
