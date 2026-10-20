@@ -1,0 +1,26 @@
+
+> pca-platform@0.1.0 build
+> next build
+
+⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+   ▲ Next.js 15.5.25
+   - Experiments (use with caution):
+     · serverActions
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 24.2s
+   Linting and checking validity of types ...
+Failed to compile.
+
+./scripts/jju-access.ts:91:32
+Type error: Type '{ university_code: string; college_code: string; department_code: string; specialization: string | null; } | null' does not satisfy the constraint 'QueryResultRow'.
+  Type 'null' is not assignable to type 'QueryResultRow'.
+
+[0m [90m 89 |[39m   [36mconst[39m pcuLogin [33m=[39m ([36mawait[39m queryOne[33m<[39m{ l[33m:[39m string }[33m>[39m([32m`SELECT login_id l FROM users WHERE id=$1::bigint`[39m[33m,[39m [[33mP[39m]))[33m![39m[33m.[39ml[33m;[39m
+ [90m 90 |[39m   [36mconst[39m s6 [33m=[39m [36mawait[39m addStudentAccount([32m"JJU"[39m[33m,[39m jjuOrg[33m,[39m { student_id[33m:[39m [32m"QAX3"[39m[33m,[39m name[33m:[39m [32m"학번 겹침"[39m[33m,[39m login_id[33m:[39m pcuLogin[33m,[39m department_code[33m:[39m [32m"JJU1_AI"[39m }[33m,[39m actor)[33m;[39m
+[31m[1m>[22m[39m[90m 91 |[39m   [36mconst[39m after [33m=[39m [36mawait[39m queryOne[33m<[39m[36mtypeof[39m before[33m>[39m(
+ [90m    |[39m                                [31m[1m^[22m[39m
+ [90m 92 |[39m     [32m`SELECT university_code, college_code, department_code, specialization FROM campus_students WHERE user_id=$1::bigint`[39m[33m,[39m [[33mP[39m])[33m;[39m
+ [90m 93 |[39m   [36mconst[39m changed [33m=[39m [33mJSON[39m[33m.[39mstringify(before) [33m!==[39m [33mJSON[39m[33m.[39mstringify(after)[33m;[39m
+ [90m 94 |[39m   ok([32m"전주대 담당자가 배재대 학생과 같은 아이디로 추가해도 배재대 학생 줄이 바뀌지 않는다"[39m[33m,[39m[0m
+Next.js build worker exited with code: 1 and signal: null

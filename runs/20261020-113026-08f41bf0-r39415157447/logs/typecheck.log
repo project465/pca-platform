@@ -1,0 +1,2 @@
+scripts/jju-access.ts(91,32): error TS2344: Type '{ university_code: string; college_code: string; department_code: string; specialization: string | null; } | null' does not satisfy the constraint 'QueryResultRow'.
+  Type 'null' is not assignable to type 'QueryResultRow'.
