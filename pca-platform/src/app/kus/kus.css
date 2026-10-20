@@ -101,6 +101,8 @@ a.kus-stat:hover { border-color: var(--sf-accent-line, #bcd6f2); }
 .kus-plan h3 { margin: 0 0 8px; font-size: 18px; color: var(--sf-ink); }
 .kus-plan ol { margin: 0; padding-left: 18px; font-size: 13.5px; line-height: 1.6; }
 .kus-plan li { margin-bottom: 8px; }
+.kus-done { display: block; margin-top: 3px; color: var(--sf-ink-3, #5b6b80); font-size: 12.5px; line-height: 1.5; }
+.kus-done b { color: var(--sf-ink-2, #33445c); font-weight: 600; margin-right: 4px; }
 
 .kus-visit { border: 1px solid var(--sf-line); border-radius: 12px; padding: 14px 16px; margin: 0 0 12px; background: var(--sf-surface, #fff); }
 .kus-visit-h { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0 0 8px; }

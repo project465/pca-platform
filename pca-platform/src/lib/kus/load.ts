@@ -76,6 +76,7 @@ export async function kusBundle(
       college: found?.college.name ?? "", department: found?.leaf.name ?? a.department_code ?? "",
       core: a.core_code, coreName: majorNameOf(a.core_code) ?? a.core_code,
       mode: deptMode(a.department_code),
+      compat: (found?.leaf as { compat?: string } | undefined)?.compat,
     },
   });
   return {

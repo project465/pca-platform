@@ -18,6 +18,7 @@
  */
 import { query, queryOne } from "@/lib/db";
 import { domainName, roleName } from "@/lib/me-v3/runtime/session";
+import { withJosa } from "@/lib/me-v3/result/josa";
 
 /** 탐방에서 한 일. `OBSERVE` 는 보고 들은 것, `DO` 는 직접 해 본 것 */
 export const ACTIVITIES = [
@@ -248,19 +249,21 @@ export function visitDraft(core: string, v: Visit): VisitDraft {
   const seen = v.activities.filter((a) => ACT.get(a)?.level === "OBSERVE").map(activityLabel);
   const role0 = roles[0] ?? BLANK;
   const dom = doms.length ? doms.join("·") : BLANK;
-  const verb = observeOnly ? "현장에서 직접 보며" : "현장에서 직접 해 보며";
+  /* 문장 틀은 넷이고 칸은 학생이 적은 말뿐이다. **다짐 문장을 붙이지 않는다**:
+     `준비하겠습니다` 는 어느 학생의 초안에나 붙어 그 문단을 남의 글로 만든다.
+     관찰만 한 기록에는 `해 보았다` 를 쓰지 않는다 */
   const letter = [
-    `${v.company_name} 기업탐방에서 ${role0} 직무의 일을 ${verb} ${v.understood ?? BLANK}을(를) 이해했습니다.`,
-    did.length ? `그 자리에서 ${did.join(", ").replace(/다$/, "")}고, ${v.activity_text ?? BLANK}.` : "",
-    `특히 ${v.learned ?? BLANK}을(를) 새로 알게 되었고, 전공에서 배운 ${dom}이(가) 이 일에서 어떻게 쓰이는지 확인했습니다.`,
-    `앞으로 ${dom} 쪽에서 제가 직접 정하고 남긴 경험을 하나 더 쌓아, 이 직무에 필요한 판단을 설명할 수 있게 준비하겠습니다.`,
+    `${v.company_name} 탐방에서 ${withJosa(`${role0} 직무가 하는 일`, "을를")} ${observeOnly ? "현장에서 보았습니다" : "현장에서 직접 해 보았습니다"}.`,
+    `제가 이해한 것은 ${v.understood ?? BLANK}입니다.`,
+    did.length ? `직접 해 본 것은 ${v.activity_text ?? did.join(", ")}입니다.` : "",
+    `새로 알게 된 것은 ${v.learned ?? BLANK}이고, 이 일은 제 전공의 ${dom} 영역과 이어집니다.`,
   ].filter(Boolean).join(" ");
   const interview = [
     { q: `${v.company_name} 탐방에서 본 ${role0} 직무는 어떤 일을 했나요?`,
       frame: `본 장면 하나(${seen[0] ?? BLANK}) → 그 직무가 정하던 것 → 내가 이해한 이유(${v.understood ?? BLANK})` },
     { q: "탐방 전과 후에 직무에 대한 생각이 어떻게 달라졌나요?",
       frame: `전에 알던 것 → 새로 알게 된 것(${v.learned ?? BLANK}) → 그래서 지금 준비하는 것` },
-    ...(doms.length ? [{ q: `전공에서 배운 ${doms[0]}이(가) 그 일과 어떻게 이어지나요?`,
+    ...(doms.length ? [{ q: `전공에서 배운 ${withJosa(doms[0], "이가")} 그 일과 어떻게 이어지나요?`,
       frame: `수업·과제에서 내가 정한 것 → 현장에서 본 같은 판단 → 아직 비어 있는 것과 채울 계획` }] : []),
   ];
   const portfolio = [

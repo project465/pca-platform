@@ -136,7 +136,7 @@ export default async function KusHome() {
         <section className="kus-panel">
           <SectionHeader icon="target" title="개인별 실행 계획" moreHref="/kus/plan" moreLabel="30·60·90일 전체" />
           {a ? (
-            <ol className="kus-todo">{a.plan.d30.slice(0, 3).map((x) => <li key={x}><div><b>30일 안에</b><small>{x}</small></div></li>)}</ol>
+            <ol className="kus-todo">{a.plan.d30.slice(0, 3).map((x) => <li key={x.do}><div><b>30일 안에</b><small>{x.do}</small></div></li>)}</ol>
           ) : <p className="cm-shsub">검사 결과가 나오면 결과 모델이 정한 때에 맞춰 섭니다.</p>}
         </section>
         <section className="kus-panel">

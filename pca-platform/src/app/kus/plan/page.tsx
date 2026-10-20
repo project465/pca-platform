@@ -2,6 +2,7 @@ import Link from "next/link";
 import { SectionHeader } from "@/app/me/ui";
 import { requireKusStudent } from "@/lib/kus/access";
 import { kusWorkspace } from "@/lib/kus/workspace";
+import type { PlanItem } from "@/lib/kus/analysis";
 import { KusHead, KusShell } from "../shell";
 
 export const dynamic = "force-dynamic";
@@ -15,8 +16,10 @@ export default async function KusPlan() {
   const { user, me } = await requireKusStudent();
   const w = await kusWorkspace(user, me);
   const a = w.bundle?.analysis ?? null;
-  const col = (t: string, xs: string[]) => (
-    <div><h3>{t}</h3>{xs.length ? <ol>{xs.map((x) => <li key={x}>{x}</li>)}</ol> : <p className="cm-shsub">이 때에 낸 할 일이 없습니다.</p>}</div>
+  const col = (t: string, xs: PlanItem[]) => (
+    <div><h3>{t}</h3>{xs.length ? <ol>{xs.map((x) => (
+      <li key={x.do}><span>{x.do}</span><small className="kus-done"><b>끝난 기준</b> {x.done}</small></li>))}</ol>
+      : <p className="cm-shsub">이 때에 낸 할 일이 없습니다.</p>}</div>
   );
   return (
     <KusShell active="/kus/plan" who={w.name} dept={`${w.college} · ${w.dept}`} test={w.test}>

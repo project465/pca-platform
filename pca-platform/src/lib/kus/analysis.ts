@@ -19,18 +19,23 @@ import {
 } from "@/lib/me-v3/runtime/session";
 import type { ResultModel } from "@/lib/me-v3/result/model";
 import {
-  actionKo, draftFrameKo, evidenceStoryKo, gapKo, headlineBadgeKo, headlineKo, needKo,
+  AXIS_KO, AXIS_STATE_SHORT_KO, AXIS_WHAT_KO, actionKo, axisStateKo, draftFrameKo, evidenceStoryKo,
+  gapKo, headlineBadgeKo, headlineKo, needKo,
 } from "@/lib/me-v3/result/text.ko";
+import { REASON_KO } from "@/lib/me-v3/scoring/text.ko";
 import { coreFile } from "@/lib/me-v3/core-registry";
+import { withJosa } from "@/lib/me-v3/result/josa";
 import type { Axis } from "@/lib/me-v3/scoring/types";
 import { MODE_KO, type KusMode } from "./program";
 import { activityLabel, didSomething, visitDraft, type Visit, type VisitDraft } from "./visits";
 
-export const KUS_ANALYSIS_VERSION = "kus-analysis.1";
+export const KUS_ANALYSIS_VERSION = "kus-analysis.2";
 
 export type KusStudentInfo = {
   name: string; university: string; college: string; department: string;
   core: string; coreName: string; mode: KusMode;
+  /** 그 학과 자리의 Core 호환 등급(`docs/kus/CORE_COMPAT.md`). 등록부에 없으면 비어 있다 */
+  compat?: string;
 };
 
 export type KusInput = {
@@ -56,6 +61,9 @@ export const RQ_KO: Record<string, string> = {
   INCONSISTENT: "앞뒤가 맞지 않는 응답이 있음 · 결과를 읽을 때 함께 봄",
 };
 
+/** 할 일 하나. `done` 은 그 일이 끝났다고 볼 기준이고, 검사 쪽은 그 영역 자료의 결과물 이름에서 온다 */
+export type PlanItem = { do: string; done: string; from: "검사" | "탐방" };
+
 type Dom = { code: string; tools: string[]; artifacts: string[] };
 type Rel = { td: string; strength: string; axes_watched?: Axis[] };
 
@@ -69,6 +77,22 @@ export type KusAnalysis = {
     counts: { confirmed: number; owned: number; evidence: number; ready_domains: number; opened: number };
     quality: { flag: string; text: string };
     demo: boolean;
+    /** 공통 결과지가 적는 상태 이름 그대로. `badge` 를 KUS 쪽에서 낮춰 적었을 때도 감추지 않는다 */
+    coreBadge: string;
+  };
+  /**
+   * 1-1. 이 결과가 무엇에 기대고 있는가(KUS 화면 층 · 판정은 그대로).
+   *
+   * 판정은 응답에서 나온다. 그런데 응답으로 `확인` 이 선 칸과 근거 항목이 받친 칸은 다르다.
+   * CONTRA 처럼 모든 영역에서 `직접 정했다` 를 고르고 근거를 하나도 고르지 않은 응답은
+   * 공통 판정으로 확인 32칸 · `정리만 하면 돼요` 를 받는다. 그 판정을 바꾸지 않고(KUS-CR-04),
+   * 그 결과가 **응답에만** 기대고 있다는 것을 같은 무게로 적는다.
+   */
+  reliability: {
+    basis: "SELF_REPORT_ONLY" | "PARTLY_BACKED" | "BACKED";
+    label: string;
+    lines: { k: string; v: string }[];
+    caution: string | null;
   };
   /** 2. 전공·역량 */
   major: {
@@ -76,6 +100,21 @@ export type KusAnalysis = {
     notAsked: string[];
     tools: { domain: string; tools: string[] }[];
   };
+  /**
+   * 2-1. 영역마다 깊이 읽기(리포트 2장). 축 여덟의 상태 · 고른 항목 · 필수 축 가운데 빈 것 ·
+   * 그 영역이 사전에 든 도구·결과물 · 그 영역이 중심인 직무. **값은 결과 모델 그대로다.**
+   * 사전의 도구·결과물은 `이 학생이 다룬다` 가 아니라 `그 영역이 다루는 것` 으로 적는다.
+   */
+  deep: {
+    code: string; name: string; zone: string; zoneKo: string;
+    interest: string | null; experience: string | null;
+    axes: { axis: string; name: string; what: string; state: string; stateKo: string; sentence: string; picks: string[]; required: boolean }[];
+    chain: { did: string[]; decided: string[]; artifacts: string[]; verifications: string[] };
+    missingRequired: string[];
+    why: string[];
+    dict: { tools: string[]; artifacts: string[] };
+    roles: string[];
+  }[];
   /** 3. 경험·Evidence */
   evidence: {
     ready: { domain: string; picks: string[] }[];
@@ -101,6 +140,8 @@ export type KusAnalysis = {
     id: string; company: string; on: string | null; confirmed: boolean; test: boolean;
     roles: string[]; domains: { name: string; zoneKo: string }[];
     did: string[]; observed: string[]; linked: boolean; understood: string | null; learned: string | null;
+    /** 본 것을 내 경험으로 확인하려면 무엇을 해야 하는가. 학생이 이은 영역의 검사 상태에서 나온다 */
+    verify: string[];
     draft: VisitDraft;
   }[];
   /** 7. 자기소개서·면접 활용 */
@@ -108,12 +149,32 @@ export type KusAnalysis = {
     story: { domain: string; action: string; outputs: string[]; application: string; interview: string } | null;
     frame: { label: string; items: string[] }[];
   };
-  /** 8. 30·60·90일 */
-  plan: { d30: string[]; d60: string[]; d90: string[] };
+  /** 8. 30·60·90일. 할 일마다 `끝났다고 볼 기준` 을 함께 든다 */
+  plan: { d30: PlanItem[]; d60: PlanItem[]; d90: PlanItem[] };
 };
 
 const axesOf = (d: { confirmed: string[]; owned: string[] }) =>
   new Set([...d.confirmed, ...d.owned]).size;
+
+/** 응답 · 근거 · 응답 품질 셋을 나란히 적는다. 점수로 합치지 않는다 */
+export function reliabilityOf(st: KusAnalysis["status"]): KusAnalysis["reliability"] {
+  const c = st.counts;
+  const basis = c.evidence === 0 ? "SELF_REPORT_ONLY" : c.ready_domains === 0 || c.owned === 0 ? "PARTLY_BACKED" : "BACKED";
+  const label = c.confirmed === 0 ? "아직 확인된 판단이 없는 결과" : basis === "SELF_REPORT_ONLY" ? "응답만으로 선 결과"
+    : basis === "PARTLY_BACKED" ? "응답에 근거 항목이 일부 붙은 결과" : "응답과 근거 항목이 함께 받치는 결과";
+  const lines = [
+    { k: "응답으로 확인된 판단", v: `${c.confirmed}칸` },
+    { k: "직접 정했고 근거 둘이 받친 판단", v: `${c.owned}칸` },
+    { k: "고른 근거 항목", v: `${c.evidence}개` },
+    { k: "근거가 선 영역", v: `${c.ready_domains}개` },
+    { k: "응답 품질", v: st.quality.text },
+    ...(st.badge !== st.coreBadge || basis === "SELF_REPORT_ONLY" ? [{ k: "공통 결과지의 상태 이름", v: st.coreBadge }] : []),
+  ];
+  const caution = basis === "SELF_REPORT_ONLY" && c.confirmed > 0
+    ? "확인된 칸은 `해 봤다` 는 응답에서 나왔고 근거 항목이 하나도 붙지 않았습니다. 지원서·면접에서 이 결과를 그대로 성과로 쓰지 않습니다. 이 판정 방식은 측정 담당 검토를 요청해 두었습니다(KUS-CR-04)."
+    : st.quality.flag !== "OK" ? `응답 품질 표시가 있습니다(${st.quality.text}). 결과를 읽을 때 함께 봅니다.` : null;
+  return { basis, label, lines, caution };
+}
 
 export function kusAnalysis(x: KusInput): KusAnalysis {
   const { model: m, student } = x;
@@ -144,7 +205,16 @@ export function kusAnalysis(x: KusInput): KusAnalysis {
     },
     quality: { flag: m.response_quality.flag, text: RQ_KO[m.response_quality.flag] ?? RQ_KO.REVIEW },
     demo: student.mode !== "LIVE",
+    coreBadge: headlineBadgeKo(m),
   };
+  const reliability = reliabilityOf(status);
+  /* 근거 항목이 하나도 없는데 확인된 칸이 많으면, 머리에 공통 판정의 상태 이름을 그대로 세우지 않는다.
+     **판정을 바꾸는 것이 아니다**: 공통 이름은 `coreBadge` 로 남고 신뢰도 상자가 그것을 적는다 */
+  if (reliability.basis === "SELF_REPORT_ONLY" && status.counts.confirmed > 0) {
+    status.badge = "근거 확인 전";
+    status.title = `응답으로는 ${status.counts.confirmed}칸에서 해 봤다고 답했고, 받쳐 줄 근거 항목은 아직 고르지 않았어요`;
+    status.lead = "이 결과는 응답만으로 선 것입니다. 해 본 과제 하나를 골라 무엇을 직접 정했고 무엇이 남았는지 근거로 고르면, 같은 판정을 근거와 함께 설명할 수 있습니다.";
+  }
 
   /* 2 */
   const major: KusAnalysis["major"] = {
@@ -157,6 +227,29 @@ export function kusAnalysis(x: KusInput): KusAnalysis {
       .map((td) => ({ domain: nm(td), tools: (dict.get(td)?.tools ?? []).slice(0, 4) }))
       .filter((t) => t.tools.length),
   };
+
+  /* 2-1 */
+  const BAND_KO: Record<string, string> = { HIGH: "관심 높음", MID: "관심 보통", LOW: "관심 낮음" };
+  const EXP_KO: Record<string, string> = { NONE: "해 본 적 없음", ONCE_OR_TWICE: "한두 번 해 봄", SEVERAL: "여러 번 해 봄" };
+  const deepOrder = [...opened].sort((a, b) => (a.zone > b.zone ? 1 : a.zone < b.zone ? -1 : 0));
+  const deep: KusAnalysis["deep"] = deepOrder.slice(0, 4).map((d) => ({
+    code: d.code, name: nm(d.code), zone: d.zone, zoneKo: ZONE_KO[d.zone] ?? d.zone,
+    interest: d.interest ? BAND_KO[d.interest] ?? null : null,
+    experience: d.experience ? EXP_KO[d.experience] ?? null : null,
+    axes: d.axes.map((ax) => ({
+      axis: ax.axis, name: AXIS_KO[ax.axis], what: AXIS_WHAT_KO[ax.axis], state: ax.state,
+      stateKo: AXIS_STATE_SHORT_KO[ax.state], sentence: axisStateKo(ax.axis, ax.state),
+      picks: ax.picks.slice(0, 2), required: d.required.includes(ax.axis),
+    })),
+    chain: {
+      did: d.did.slice(0, 3), decided: d.decided.slice(0, 3),
+      artifacts: d.artifacts.slice(0, 3), verifications: d.verifications.slice(0, 3),
+    },
+    missingRequired: d.required.filter((ax) => !d.confirmed.includes(ax) && !d.owned.includes(ax)).map(needKo),
+    why: [...new Set(d.reasons.map((r) => REASON_KO[r]).filter(Boolean))].slice(0, 2),
+    dict: { tools: (dict.get(d.code)?.tools ?? []).slice(0, 4), artifacts: (dict.get(d.code)?.artifacts ?? []).slice(0, 3) },
+    roles: [...new Set(rel.td_role.filter((r) => r.td === d.code && r.strength === "중심").map((r) => roleName(core, r.role)))].slice(0, 3),
+  }));
 
   /* 3 */
   const group = (gs: { domain: string; picks: string[] }[]) => {
@@ -238,6 +331,14 @@ export function kusAnalysis(x: KusInput): KusAnalysis {
     did: v.activities.filter((a) => ["HANDS_ON", "TASK", "PRESENT"].includes(a)).map(activityLabel),
     observed: v.activities.filter((a) => !["HANDS_ON", "TASK", "PRESENT"].includes(a)).map(activityLabel),
     linked: Boolean(v.experience_id), understood: v.understood, learned: v.learned,
+    verify: v.td_codes.map((td) => {
+      const d = byCode.get(td);
+      if (!d || d.zone === "NOT_EXPLORED") return `${nm(td)}: 이번 검사에서 묻지 않은 영역이라 탐방만으로는 확인되지 않습니다. 직접 해 본 과제가 생기면 다음 검사에서 답합니다`;
+      const miss = d.required.filter((ax) => !d.confirmed.includes(ax) && !d.owned.includes(ax));
+      return miss.length
+        ? `${nm(td)}: 검사에서 ${withJosa(needKo(miss[0]), "이가")} 아직 비어 있습니다. 탐방에서 본 그 판단을 과제 하나에서 직접 해 보고 근거로 고릅니다`
+        : `${nm(td)}: 검사에서 이미 근거가 선 영역입니다. 탐방에서 본 장면을 그 근거 옆에 한 줄로 덧붙입니다`;
+    }),
     draft: visitDraft(core, v),
   }));
 
@@ -253,22 +354,31 @@ export function kusAnalysis(x: KusInput): KusAnalysis {
 
   /* 8. 때는 결과 모델이 정한 것(NOW · NEXT · LATER)을 30 · 60 · 90 일로 옮긴다.
         탐방 쪽 할 일은 기록의 상태에서만 나온다 */
-  const by = (hz: string) => actions.filter((a) => a.horizon === hz)
-    .map((a) => `${a.domain ? `${a.domain} — ` : ""}${a.do}`).slice(0, 3);
+  const doneOf = (a: ResultModel["actions"][number]): string => {
+    const art = a.material?.artifacts?.[0];
+    return art
+      ? `${withJosa(art, "이가")} 한 벌 남고, 다음 검사에서 그것을 근거로 고를 수 있으면`
+      : "적은 기록이 남고, 다음 검사에서 그것을 근거로 고를 수 있으면";
+  };
+  const by = (hz: string): PlanItem[] => m.actions.slice(0, 9).filter((a) => a.horizon === hz).slice(0, 3).map((a) => {
+    const t = actionKo(a, a.domain ? nm(a.domain) : "", m.stage);
+    return { do: `${a.domain ? `${nm(a.domain)} — ` : ""}${t.do}`, done: doneOf(a), from: "검사" as const };
+  });
   const d30 = by("NOW");
   const d60 = by("NEXT");
   const d90 = by("LATER");
   const unlinked = x.visits.filter((v) => didSomething(v) && !v.experience_id);
-  if (!x.visits.length) d30.push("기업탐방을 다녀오면 그날 안에 탐방 기록을 남기기(관찰한 직무 · 이해한 것 · 직접 한 활동)");
-  for (const v of unlinked.slice(0, 2)) d30.push(`${v.company_name} 탐방에서 직접 해 본 활동을 경험으로 옮겨 판정 받기`);
+  const tv = (t: string, done: string): PlanItem => ({ do: t, done, from: "탐방" });
+  if (!x.visits.length) d30.push(tv("기업탐방을 다녀오면 그날 안에 탐방 기록을 남기기(관찰한 직무 · 이해한 것 · 직접 한 활동)", "탐방 기록 1건이 저장되면"));
+  for (const v of unlinked.slice(0, 2)) d30.push(tv(`${v.company_name} 탐방에서 직접 해 본 활동을 공통 경험 입력으로 옮기기`, "그 경험이 탐방 기록과 이어지고 다음 반영에서 판정에 들어가면"));
   const obsOnly = x.visits.filter((v) => !didSomething(v));
-  if (obsOnly.length) d60.push(`${obsOnly[0].company_name} 탐방에서 본 판단 하나를 수업·프로젝트에서 직접 해 보고 경험으로 기록하기`);
-  if (x.visits.length) d90.push("탐방 기록과 경험을 묶어 자기소개서 한 문단 · 면접 답 하나 · 포트폴리오 한 쪽으로 정리하기");
-  if (!d90.length) d90.push("다시 검사해 지금 상태가 어떻게 달라졌는지 보기");
+  if (obsOnly.length) d60.push(tv(`${obsOnly[0].company_name} 탐방에서 본 판단 하나를 수업·프로젝트에서 직접 해 보기`, "그 과제에서 직접 정한 것 하나와 남은 결과물 하나를 경험으로 적으면"));
+  if (x.visits.length) d90.push(tv("탐방 기록과 경험을 묶어 자기소개서 한 문단 · 면접 답 하나 · 포트폴리오 한 쪽으로 정리하기", "세 벌이 다 있고, 수치·기간·결과를 직접 채웠으면"));
+  if (!d90.length) d90.push(tv("다시 검사해 지금 상태가 어떻게 달라졌는지 보기", "새 결과에서 근거가 선 영역이 지금과 견줄 수 있게 남으면"));
 
   return {
     version: KUS_ANALYSIS_VERSION, student, tier: m.tier,
-    status, major, evidence, interests, link, gaps, actions, visits, application,
+    status, reliability, major, deep, evidence, interests, link, gaps, actions, visits, application,
     plan: { d30, d60, d90 },
   };
 }

@@ -313,7 +313,8 @@ async function main() {
     const A = b.value.analysis;
     read[p.id] = {
       label: p.label, attempt: att[p.id], answered: counts[p.id], tier: A.tier,
-      badge: A.status.badge, title: A.status.title, quality: A.status.quality,
+      badge: A.status.badge, coreBadge: A.status.coreBadge, title: A.status.title, quality: A.status.quality,
+      reliability: A.reliability,
       counts: A.status.counts,
       zones: A.major.rows.map((r) => `${r.name}:${r.zoneKo}`),
       evidence_ready: A.evidence.ready.map((g) => g.domain), evidence_partial: A.evidence.partial.map((g) => g.domain),
@@ -340,11 +341,16 @@ async function main() {
   }
   const strip = (h: string) => h.replace(/\[테스트\] KUS (RICH|POOR|CONTRA)/g, "NAME").replace(/응시 \d+/g, "").replace(/\d{4}-\d{2}-\d{2}/g, "");
   ok("이름을 지우고 견줘도 세 리포트가 서로 다르다", new Set(Object.values(html).map(strip)).size === 3);
-  const R = read as Record<string, { badge: string; counts: { confirmed: number; evidence: number; ready_domains: number }; quality: { flag: string }; evidence_ready: string[]; gaps: string[] }>;
+  const R = read as Record<string, { badge: string; coreBadge: string; reliability: { basis: string; caution: string | null }; counts: { confirmed: number; evidence: number; ready_domains: number }; quality: { flag: string }; evidence_ready: string[]; gaps: string[] }>;
   ok("RICH 는 POOR 보다 확인된 판단이 많다", R.RICH.counts.confirmed > R.POOR.counts.confirmed, `${R.RICH.counts.confirmed} > ${R.POOR.counts.confirmed}`);
   ok("RICH 는 근거가 선 영역이 있고 POOR 는 없다", R.RICH.counts.ready_domains > 0 && R.POOR.counts.ready_domains === 0, `${R.RICH.counts.ready_domains} · ${R.POOR.counts.ready_domains}`);
   ok("CONTRA 는 근거 없이 높게 답해도 근거가 서지 않는다", R.CONTRA.counts.ready_domains === 0 && R.CONTRA.counts.evidence === 0, JSON.stringify(R.CONTRA.counts));
   ok("CONTRA 는 응답 품질에 표시가 선다", R.CONTRA.quality.flag !== "OK", R.CONTRA.quality.flag);
+  ok("CONTRA 는 `응답만으로 선 결과` 로 읽히고 머리 상태를 낮춰 적는다(판정은 그대로)",
+    R.CONTRA.reliability.basis === "SELF_REPORT_ONLY" && R.CONTRA.badge === "근거 확인 전" && Boolean(R.CONTRA.reliability.caution),
+    `${R.CONTRA.reliability.basis} · ${R.CONTRA.badge}`);
+  ok("CONTRA 의 공통 상태 이름을 감추지 않는다", R.CONTRA.coreBadge.length > 0 && R.CONTRA.coreBadge !== R.CONTRA.badge, R.CONTRA.coreBadge);
+  ok("RICH 는 근거가 받치는 결과다", R.RICH.reliability.basis !== "SELF_REPORT_ONLY" && R.RICH.badge === R.RICH.coreBadge, R.RICH.reliability.basis);
   ok("세 학생의 머리 상태가 모두 같지는 않다", new Set(PERSONAS.map((p) => R[p.id].badge)).size > 1, PERSONAS.map((p) => R[p.id].badge).join(" | "));
   writeFileSync(`${OUT}/rich-poor-contra.json`, JSON.stringify(read, null, 1));
 
