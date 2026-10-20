@@ -86,6 +86,7 @@ organizations, courses, course_competency_map, translations
 7. 명단 업로드 및 계정 일괄 발급
 8. 응시 진행 현황
 9. 단체 리포트 → `mockups/03_group_report.html`
+   인쇄본(70쪽 구성, 대표 10쪽 시안) → `mockups/04_group_report_print.html`
 
 **학생**
 10. 로그인
