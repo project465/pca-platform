@@ -130,3 +130,16 @@ html a.cm-nav:hover { background: #f2f4f6; color: #191f28; }
 html a.cm-nav.is-on { background: #e8f3ff; color: #1957c2; }
 html a.cm-nav.is-on small { color: #1957c2; opacity: .8; }
 html a.cm-nav:focus-visible { outline-color: #1b64da; }
+
+/* ── 학교 진입 첫 면: 흰 면 ─────────────────────────────────────
+   어두운 기울기 면은 화면에서 가장 무거운 덩이가 되고, 어디서나 보는
+   랜딩 템플릿으로 읽힌다. 흰 면에 글이 먼저 서고 학교 색은 단추 하나에만 */
+html .cm-cmp-hero {
+  --pcu-on-navy: #191f28; --pcu-on-navy-2: #4e5968;
+  --pcu-navy-line: #e5e8eb; --pcu-navy-soft: #f2f4f6;
+  --pcu-blue-lit: var(--ui-accent);
+  background: #ffffff;
+}
+html .cm-cmp-cta { background: var(--ui-accent); color: #ffffff; box-shadow: none; }
+html .cm-cmp-cta:hover { background: var(--ui-accent-ink); }
+html .cm-cmp-cta-2:hover { background: #e8ebee; }

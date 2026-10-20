@@ -157,7 +157,9 @@ async function main(): Promise<void> {
       const q = await cx.newPage();
       for (const [path, n, what] of [["/jju", "01-home-guest", "전주대 첫 화면(로그인 전)"], ["/jju/fields", "01-fields", "학과와 과정"],
         ["/campus/pcu", "00-pcu-entry", "배재대 학교 진입(공통 화면)"], ["/campus/pcu/majors", "00-pcu-majors", "배재대 학과 고르기(공통 화면)"],
-        ["/campus/jju", "00-jju-entry", "전주대 학교 진입(공통 화면)"], ["/cores", "00-cores", "CareerMatri 전공 고르기(본체)"]] as const) {
+        ["/campus/jju", "00-jju-entry", "전주대 학교 진입(공통 화면)"]]] as const) {
+        /* `/cores` 는 로그인 전에는 로그인 화면으로 돌려보낸다. 그대로 찍으면
+           로그인 그림이 두 이름으로 저장된다. 로그인 뒤 `/me` 캡처가 그 자리다 */
         const r = await q.goto(`${BASE}${path}`, { waitUntil: "networkidle" });
         ok(`${path} 가 로그인 없이 열린다 (${tag})`, (r?.status() ?? 0) === 200, String(r?.status()));
         const body = await q.locator("body").innerText();

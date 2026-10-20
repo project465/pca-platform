@@ -504,3 +504,5 @@ a.cm-cmp-row:focus-visible { outline: 2px solid var(--pcu-blue); outline-offset:
 
 /* 학교 표시 자리. 등록부에 로고 파일이 있는 학교만 그림이 선다(그리지 않는다) */
 .cm-school-logo { display: block; height: 30px; width: auto; }
+/* 전주대 로고는 두 줄로 쌓인 꼴이라 같은 높이면 글자가 읽히지 않는다 */
+[data-school="jju"] .cm-school-logo { height: 40px; }
