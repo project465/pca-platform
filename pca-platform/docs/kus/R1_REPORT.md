@@ -14,7 +14,7 @@ GitHub Actions(`kus-verify`)로 넘겼다 — 그 결과는 §6 에 따로 적�
 | 서버 함수 E2E (실제 PostgreSQL 16 · 실제 채점 엔진) | **PASS 79 / FAIL 0** | `r1/qa/verify.log` |
 | 하네스 브라우저 E2E (실제 Chromium · 실제 DB · KUS 화면 TSX 를 하네스가 그림) | **PASS 53 / FAIL 0** | `r1/shots/shots.log` · 그림 33장 |
 | 개인 PDF (RICH · POOR · CONTRA) | **10쪽 × 3 · 서로 다름** | `r1/qa/pdf/*.pdf` · `r1/shots/*.download.pdf` |
-| `tsc` · `next build` · 실제 Next 브라우저 E2E | §6 참조 (CI) | `kus-verify` 워크플로 |
+| `tsc` · `next build` · 실제 Next 브라우저 E2E (GitHub Actions) | **tsc 0 · build 0 · E2E 27/27** | `r1/ci/CI_RESULT.md` |
 
 ## 1. 코드 기준선
 
@@ -108,13 +108,15 @@ GitHub Actions(`kus-verify`)로 넘겼다 — 그 결과는 §6 에 따로 적�
 `.github/workflows/kus-verify.yml` 이 GitHub 러너에서 `npm ci` → `tsc --noEmit` → `next build` → DB 체인 +
 KUS 표 → 공통 회귀(`v3:freeze:measure` · `campus:check` · `db:chain`) → KUS 서버 E2E → standalone 서버 +
 `scripts/kus/e2e-next.ts`(실제 로그인 · 실제 검사 화면을 끝까지 · 서버 액션 · PDF · 격리) → 공통 파일 무변경 확인.
-**결과는 이 문서 아래 `CI 결과` 절에 덧붙인다. 덧붙이기 전까지는 NOT VERIFIED 다.**
+결과: `r1/ci/CI_RESULT.md`. Run 1 에서 `tsc` 0 · `next build` 0 · KUS 서버 E2E **79/79** · **실제 Next 브라우저 E2E 27/27**
+(공통 검사 UI 61화면 완주 · 서버 액션 저장 · PDF 내려받기 · 격리) · 공통 파일 변경 0. `campus:check` 의 1 은 CI 가 미리보기
+변수를 켠 채 돌린 설정 결함이었고(이 세션에서 HEAD 80/80) 고쳐서 다시 돌린다.
 
 ## 7. 남은 결함과 NOT VERIFIED
 
 | 항목 | 상태 |
 |---|---|
-| 실제 Next 런타임의 화면 · 로그인 쿠키 · 서버 액션 · 공통 검사 UI | **NOT VERIFIED (이 세션)** → CI 결과로 판정 |
+| 실제 Next 런타임의 로그인 쿠키 · 서버 액션 · 공통 검사 UI | CI 에서 확인(27/27). **그 화면의 그림은 없다**(공개 artifact 에 올리지 않는 규칙) |
 | PC · 모바일 그림 | **harness render** 다(파일 이름 `.harness.jpg`, 그림 오른쪽 아래 표시). Next 런타임 그림이 아니다. 글꼴은 이 기계에 Pretendard 가 없어 WenQuanYi 로 찍혔다 |
 | iPhone Safari · 실기기 | NOT VERIFIED |
 | 학과 목록 공식 대조 | NOT VERIFIED — 공식 쪽에 닿지 못했다(`OFFICIAL_PAGE_UNREACHABLE`). 검색 요지만. 교육과정 연도 미확인 |
