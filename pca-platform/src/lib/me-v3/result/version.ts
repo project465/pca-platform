@@ -163,7 +163,12 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
  * 판단 → 결과 네 칸(`draftFrameKo`). 근거 절 머리에 네 층을 가르는 한 줄.
  * 고르신 목표를 종이에서 두 칸으로. 결과 모델과 판정은 그대로다.
  */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.65";
+/**
+ * Track B (2026-10-20). 학생 사전(`student/copy.ts`)이 여섯 Core 에서 스무 Core 로
+ * 넓어졌다. 결과지 현재 상태 카드의 활동 구와 표시 갈래가 나머지 열넷에서도
+ * 사전으로 선다(전에는 `domainSub` 토막). 판정과 결과 모델은 그대로다.
+ */
+export const RESULT_COPY_VERSION = "me-v3-result-copy.66";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**

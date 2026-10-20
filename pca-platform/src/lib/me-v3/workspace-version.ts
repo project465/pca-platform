@@ -359,7 +359,11 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V48";
  * R30. `기술 판단` 과 `기술영역` 이 그 Core 의 말로 선다(`experienceFlow`).
  * 홈 Hero 머리가 영역 이름을 들고, 현재 상태 머리 한 줄이 묶음대로 적힌다.
  */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.31";
+/**
+ * Track B (2026-10-20). 학생 사전이 스무 Core 를 덮는다: 홈 영역 칸의 남는
+ * 것 이름과 경험 추가의 예시·흐름 말이 나머지 열넷에서도 그 전공의 말로 선다.
+ */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.32";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**
