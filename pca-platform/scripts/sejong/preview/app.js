@@ -410,12 +410,12 @@
   function coverArt(small) {
     var g = small ? "rpg2" : "rpg1", d = small ? "rpd2" : "rpd1";
     return '<svg class="rp-art' + (small ? " small" : "") + '" viewBox="0 0 600 600" aria-hidden="true"><defs><radialGradient id="' + g + '" cx="35%" cy="35%" r="70%">' +
-      '<stop offset="0" stop-color="#6aa6ff" stop-opacity="0.95"/><stop offset="1" stop-color="#1d4fd8" stop-opacity="0"/></radialGradient>' +
+      '<stop offset="0" stop-color="#8a7fe0" stop-opacity="0.95"/><stop offset="1" stop-color="#2f2b86" stop-opacity="0"/></radialGradient>' +
       '<pattern id="' + d + '" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.6" fill="#ffffff" fill-opacity="0.35"/></pattern></defs>' +
       '<circle cx="380" cy="300" r="190" fill="url(#' + g + ')"/><circle cx="380" cy="300" r="240" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>' +
-      '<path d="M150 420 C 230 330, 330 300, 450 330" fill="none" stroke="#e3a73b" stroke-width="10" stroke-linecap="round"/>' +
+      '<path d="M150 420 C 230 330, 330 300, 450 330" fill="none" stroke="#d81b72" stroke-width="10" stroke-linecap="round"/>' +
       '<path d="M420 150 C 470 175, 505 215, 520 265" fill="none" stroke="#ffffff" stroke-opacity="0.85" stroke-width="9" stroke-linecap="round"/>' +
-      '<path d="M110 200 C 140 160, 180 140, 225 135" fill="none" stroke="#e3a73b" stroke-width="7" stroke-linecap="round"/>' +
+      '<path d="M110 200 C 140 160, 180 140, 225 135" fill="none" stroke="#d81b72" stroke-width="7" stroke-linecap="round"/>' +
       '<rect x="40" y="440" width="160" height="112" fill="url(#' + d + ')"/></svg>';
   }
   function band(part, title) { return '<header class="rp-band"><span>' + esc(part) + "</span><h2>" + esc(title) + "</h2></header>"; }
@@ -447,7 +447,7 @@
     var areas = r.profile.job_areas.map(areaName).join(" · ");
 
     var h = '<article class="sj-paper sj-rp" id="sj-report">';
-    h += '<section class="rp-cover">' + coverArt(false) + '<div class="rp-cover-top"><span class="rp-kicker">SEJONG · CAREER STRATEGY REPORT</span>' + badge("demo", "시연판 · DEMO 진단 결과지") + "</div>" +
+    h += '<section class="rp-cover"><div class="rp-cover-top"><span class="rp-kicker">SEJONG · CAREER STRATEGY REPORT</span>' + badge("demo", "시연판 · DEMO 진단 결과지") + "</div>" +
       '<div class="rp-cover-title"><h1>개인별 취업 전략 결과지</h1><p>해 온 일로 다음 일을 찾습니다</p></div>' +
       '<dl class="rp-cover-meta"><div><dt>이름</dt><dd>' + esc(p.name) + "</dd></div><div><dt>참여번호</dt><dd>" + esc(p.no) + "</dd></div><div><dt>참여 사업</dt><dd>" + esc(prog.name) +
       "</dd></div><div><dt>진단 제출</dt><dd>" + day(att.scoredAt) + '</dd></div><div class="wide"><dt>희망 직무</dt><dd>' + esc(areas) + "</dd></div></dl>" +

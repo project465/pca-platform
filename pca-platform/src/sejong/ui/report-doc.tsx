@@ -14,8 +14,9 @@ const KIND: Record<string, string> = { evidence: "근거 남기기", growth: "�
  * PDF 는 이 쪽을 Chromium 으로 인쇄한 것이라 둘이 갈리지 않는다.
  * 읽는 값은 제출 때 굳힌 결과(`sj_attempts.result`) 하나다.
  *
- * **편집 짜임**(2026-10-20 사용자 제공 참고 보고서): 짙은 파랑 표지 · 장마다 아래를 파랑으로
- * 채운 구분 쪽 · 흰 본문 쪽의 파란 머리띠와 번호 붙은 절. 참고 문서의 내용·로고는 쓰지 않는다.
+ * **편집 짜임**(2026-10-20 사용자 제공 참고 보고서 두 갈래): 장마다 아래를 채운 구분 쪽 ·
+ * 머리띠와 번호 붙은 절(라이브러리 보고서), 색과 표지 판(자홍→남보라 테 · 오른쪽 아래 대각 띠)은
+ * 세종 지역 보고서들. **그 문서들의 내용·로고·구호는 쓰지 않는다**(공식 파일을 받지 않았다).
  * 구분 쪽에도 **그 사람의 값**이 한 줄 선다: 쪽 수를 채우는 빈 쪽을 두지 않는다.
  *
  * 종이 여백은 공통 엔진(`drawPagePdf`, 14mm · 머리말·꼬리말)이 정한다. 고치지 않았고,
@@ -50,7 +51,6 @@ export function ReportDoc({
     <article className="sj-paper sj-rp" id="sj-report">
       {/* ── 표지 ── */}
       <section className="rp-cover">
-        <CoverArt />
         <div className="rp-cover-top">
           <span className="rp-kicker">SEJONG · CAREER STRATEGY REPORT</span>
           <span className="sj-badge demo">시연판 · DEMO 진단 결과지</span>
@@ -339,8 +339,8 @@ function CoverArt({ small = false }: { small?: boolean }) {
     <svg className={small ? "rp-art small" : "rp-art"} viewBox="0 0 600 600" aria-hidden>
       <defs>
         <radialGradient id={small ? "rpg2" : "rpg1"} cx="35%" cy="35%" r="70%">
-          <stop offset="0" stopColor="#6aa6ff" stopOpacity="0.95" />
-          <stop offset="1" stopColor="#1d4fd8" stopOpacity="0" />
+          <stop offset="0" stopColor="#8a7fe0" stopOpacity="0.95" />
+          <stop offset="1" stopColor="#2f2b86" stopOpacity="0" />
         </radialGradient>
         <pattern id={small ? "rpd2" : "rpd1"} width="16" height="16" patternUnits="userSpaceOnUse">
           <circle cx="2" cy="2" r="1.6" fill="#ffffff" fillOpacity="0.35" />
@@ -348,9 +348,9 @@ function CoverArt({ small = false }: { small?: boolean }) {
       </defs>
       <circle cx="380" cy="300" r="190" fill={`url(#${small ? "rpg2" : "rpg1"})`} />
       <circle cx="380" cy="300" r="240" fill="none" stroke="#ffffff" strokeOpacity="0.18" strokeWidth="2" />
-      <path d="M150 420 C 230 330, 330 300, 450 330" fill="none" stroke="#e3a73b" strokeWidth="10" strokeLinecap="round" />
+      <path d="M150 420 C 230 330, 330 300, 450 330" fill="none" stroke="#d81b72" strokeWidth="10" strokeLinecap="round" />
       <path d="M420 150 C 470 175, 505 215, 520 265" fill="none" stroke="#ffffff" strokeOpacity="0.85" strokeWidth="9" strokeLinecap="round" />
-      <path d="M110 200 C 140 160, 180 140, 225 135" fill="none" stroke="#e3a73b" strokeWidth="7" strokeLinecap="round" />
+      <path d="M110 200 C 140 160, 180 140, 225 135" fill="none" stroke="#d81b72" strokeWidth="7" strokeLinecap="round" />
       <rect x="40" y="440" width="160" height="112" fill={`url(#${small ? "rpd2" : "rpd1"})`} />
     </svg>
   );
