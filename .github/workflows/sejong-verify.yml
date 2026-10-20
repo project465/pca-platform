@@ -146,7 +146,7 @@ jobs:
       - name: 공통 파일 무변경 확인
         run: |
           git diff --name-only "$BASE_SHA" HEAD -- . \
-            ':!docs/sejong' ':!db/sejong' ':!src/sejong' ':!src/app/sejong' ':!scripts/sejong' > "$OUT/shared-diff.txt"
+            ':!docs/sejong' ':!db/sejong' ':!src/sejong' ':!src/app/sejong' ':!scripts/sejong' ':!public/sejong' > "$OUT/shared-diff.txt"
           n=$(wc -l < "$OUT/shared-diff.txt"); cat "$OUT/shared-diff.txt"
           printf 'shared files changed = %s\t%s\n' "$n" $([ "$n" = 0 ] && echo 0 || echo 1) >> "$OUT/steps.tsv"
 

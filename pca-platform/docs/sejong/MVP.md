@@ -58,7 +58,7 @@ ME_V3 taxonomy 의 판단 축 이름(J1~J8)과 단계(L0~L3), 경험 근거 다�
 - `src/app/sejong/` — 화면
 - `scripts/sejong/` — 분석 검사 · 시드 · 브라우저 E2E
 
-**고친 공통 파일: 0개.** `git diff --stat 0bff307c -- . ':!docs/sejong' ':!db/sejong' ':!src/sejong' ':!src/app/sejong' ':!scripts/sejong'` 가 비어 있어야 한다.
+**고친 공통 파일: 0개.** `git diff --stat 0bff307c -- . ':!docs/sejong' ':!db/sejong' ':!src/sejong' ':!src/app/sejong' ':!scripts/sejong' ':!public/sejong'` 가 비어 있어야 한다. `public/sejong` 은 세종 전용 글꼴(Pretendard, OFL)만 든다.
 
 ## 3. 로컬에서 띄우기
 
