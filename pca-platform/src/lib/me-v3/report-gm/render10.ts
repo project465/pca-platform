@@ -155,7 +155,7 @@ export function r5Doc(e: Ed8, r: Report3, plan: LongPage[], f: Fonts9): string {
  */
 export function v9Doc(e: Ed8, plan: LongPage[], v9css: string, f: { href: string }): string {
   const who = `${e.who.school} ${e.who.department}`;
-  const kick = (p: LongPage, x: string) => x.replace(/<div class="kick">[\s\S]*?<\/div>/, `<div class="kick"><span>${p.chap} ${h(chapTitle(p.chap))}</span></div>`);
+  const kick = (p: LongPage, x: string) => x.replace(/<div class="kick">[\s\S]*?<\/div>/, `<div class="kick"><span><b class="qb">${p.chap}</b>${h(chapTitle(p.chap))}</span></div>`);
   const retitle = (n9: number, x: string) => RETITLE9[n9] ? x.replace(/(<div class="op">[\s\S]*?<h1>)[\s\S]*?(<\/h1>)/, `$1${h(RETITLE9[n9])}$2`) : x;
   const inner = (x: string) => /<div class="bd">([\s\S]*)<\/div>\s*<footer class="rf">/.exec(x)?.[1] ?? "";
   const ps = plan.filter((p) => p.src === "v9").map((p) => {

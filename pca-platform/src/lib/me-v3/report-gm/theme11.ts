@@ -11,7 +11,13 @@ import { STEP } from "./words";
 
 const h = (s: unknown) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-export const BLUE = { deep: "#141f73", royal: "#2433b8", mid: "#3a5bdc", light: "#5f9bf5", sky: "#d9e4fb", ice: "#eef3fd", cyan: "#3fc3e6", line: "#f2c230" };
+/* 학교 자료(배재대 교내 간행물 · 총장 초빙 공고 · 교표)의 파랑 한 벌 + 교표의 붉은 고리를 가는 선으로만.
+   교표 그림은 그려 넣지 않는다: 학교가 준 정식 파일이 있을 때만 `setSchoolMark` 로 싣는다. */
+export const BLUE = { deep: "#0e2a63", royal: "#1c56ad", mid: "#2f6fc6", light: "#6ea4e6", sky: "#dbe7f7", ice: "#eef4fc", cyan: "#8cc3f2", line: "#d42a32" };
+const EN: Record<string, string> = { "배재대학교": "PAI CHAI UNIVERSITY" };
+let MARK = "";
+/** 학교가 준 정식 교표 파일(data URI). 없으면 교표 자리를 비우고 글자 이름만 쓴다. */
+export function setSchoolMark(uri: string) { MARK = uri; }
 
 /* ── 아이콘(선 그림 · currentColor) ───────────────────────────── */
 const I = (d: string) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
@@ -43,47 +49,56 @@ export const CHAP_INFO: Record<string, ChapInfo> = {
 /* ── 표지 ─────────────────────────────────────────────────────── */
 export function coverB(e: Ed8): string {
   const year = (e.who.answeredOn || "").slice(0, 4) || "2026";
-  const dots = Array.from({ length: 6 }, (_, r) => Array.from({ length: 9 }, (_, c) => `<circle cx="${c * 9 + 4}" cy="${r * 9 + 4}" r="1.3"/>`).join("")).join("");
-  return `<div class="cvb">
-  <svg class="cvb-art" viewBox="0 0 210 297" preserveAspectRatio="none" aria-hidden="true">
-    <defs><radialGradient id="g1" cx="35%" cy="35%" r="70%"><stop offset="0" stop-color="${BLUE.cyan}"/><stop offset=".55" stop-color="${BLUE.light}"/><stop offset="1" stop-color="${BLUE.mid}" stop-opacity="0"/></radialGradient>
-      <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".22"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient></defs>
-    <circle cx="168" cy="196" r="62" fill="url(#g1)"/>
-    <circle cx="168" cy="196" r="86" fill="none" stroke="#fff" stroke-opacity=".18" stroke-width=".5"/>
-    <path d="M118 150 A70 70 0 0 1 222 120" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.6" stroke-linecap="round"/>
-    <path d="M128 262 A54 54 0 0 0 198 238" fill="none" stroke="${BLUE.line}" stroke-width="1.4" stroke-linecap="round"/>
-    <circle cx="40" cy="250" r="34" fill="url(#g2)"/>
-    <g fill="#fff" fill-opacity=".35" transform="translate(150 22)">${dots}</g>
-  </svg>
-  <div class="cvb-top"><span>CAREERMATRI</span><span>${h(e.who.school)}</span></div>
-  <div class="cvb-title">
-    <div class="y">${h(year)}</div>
-    <div class="t1">진로 · 직무</div>
-    <div class="t2">리포트</div>
+  const en = EN[e.who.school] ?? "";
+  const row = (k: string, v: string) => `<div class="cv-r"><b>+ ${h(k)}</b><span>${v}</span></div>`;
+  return `<div class="cv2">
+  <div class="cv2-l">
+    <svg class="cv2-art" viewBox="0 0 92 297" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 214 L58 188 L92 204 L92 297 L0 297 Z" fill="#fff" fill-opacity=".07"/>
+      <path d="M0 236 L36 220 L92 246 L92 297 L0 297 Z" fill="#fff" fill-opacity=".08"/>
+      <path d="M14 297 L14 230 L58 210 L58 297" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width=".5"/>
+      <path d="M58 210 L92 226" fill="none" stroke="${BLUE.cyan}" stroke-opacity=".7" stroke-width=".6"/>
+    </svg>
+    <div class="cv2-mk">${MARK ? `<img src="${MARK}" alt="">` : ""}<span>${h(e.who.school)}${en ? `<em>${h(en)}</em>` : ""}</span></div>
+    <div class="cv2-y">${h(year)}</div>
+    <h1 class="cv2-t"><span>${h(e.who.school)}</span>진로 · 직무<br>리포트</h1>
     <i class="ln"></i>
-    <div class="who">${h(e.who.department)}${e.who.specialization ? ` · ${h(e.who.specialization)}` : ""}</div>
-    <p class="sum">학생이 고른 응답과 직접 적은 기록으로 만든 리포트입니다. 점수와 순위를 만들지 않았고, 채용 결과를 예측하지 않습니다.</p>
+    <p class="cv2-q">학생이 고른 응답과 직접 적은 기록으로 만든 리포트입니다.</p>
+    <div class="cv2-f">CareerMatri</div>
   </div>
-  <div class="cvb-foot"><span>${h(e.who.answeredOn)} 응답</span><span>목표 직무 ${h(e.goal.role)}</span></div>
+  <div class="cv2-rt">
+    <div class="cv2-h">이 리포트에 담긴 것</div>
+    ${row("학과", `${h(e.who.department)}${e.who.specialization ? ` · ${h(e.who.specialization)}` : ""}`)}
+    ${row("응답일", h(e.who.answeredOn))}
+    ${row("목표 직무", h(e.goal.role))}
+    ${row("구성", "요약 · 진단과 개인 역량 · 근거 · 직무 · 지원서와 면접 · 실행 계획 · 출처와 한계")}
+    ${row("만들지 않은 것", "점수 · 순위 · 다른 학생과의 비교 · 채용 결과 예측")}
+    ${row("넣지 않은 것", "회사별 자료(학생 배포 권리와 원문 확인 전)")}
+    ${row("읽는 법", "● 응답 · ○ 학생이 적은 기록 · ◇ 직무 일반 안내 · → 이 리포트의 제안")}
+  </div>
 </div>`;
 }
 
 /* ── 장 표지 ──────────────────────────────────────────────────── */
 export function divider(no: string, items: { i: number; title: string }[]): string {
   const c = CHAP_INFO[no];
-  return `<div class="dvb">
-  <svg class="dvb-art" viewBox="0 0 210 297" preserveAspectRatio="none" aria-hidden="true">
-    <defs><radialGradient id="d${no}" cx="40%" cy="40%" r="70%"><stop offset="0" stop-color="${BLUE.cyan}"/><stop offset=".6" stop-color="${BLUE.light}" stop-opacity=".9"/><stop offset="1" stop-color="${BLUE.mid}" stop-opacity="0"/></radialGradient></defs>
-    <circle cx="176" cy="230" r="48" fill="url(#d${no})"/>
-    <path d="M130 270 A58 58 0 0 1 200 176" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="1.4" stroke-linecap="round"/>
-  </svg>
-  <div class="dvb-k">Chapter</div>
-  <div class="dvb-n">${no}</div>
-  <div class="dvb-ic">${ICON[c.icon]}</div>
-  <h1 class="dvb-t">${h(c.title)}</h1>
-  <i class="ln"></i>
-  <p class="dvb-q">${h(c.ask)}</p>
-  <ol class="dvb-l">${items.map((x) => `<li><span>${x.i}</span>${h(x.title)}</li>`).join("")}</ol>
+  return `<div class="dv2">
+  <div class="dv2-l">
+    <svg class="cv2-art" viewBox="0 0 92 297" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 236 L46 214 L92 232 L92 297 L0 297 Z" fill="#fff" fill-opacity=".07"/>
+      <path d="M46 214 L92 232" fill="none" stroke="${BLUE.cyan}" stroke-opacity=".7" stroke-width=".6"/>
+    </svg>
+    <div class="dvb-k">Chapter</div>
+    <div class="dvb-n">${no}</div>
+    <div class="dvb-ic">${ICON[c.icon]}</div>
+    <h1 class="dvb-t">${h(c.title)}</h1>
+    <i class="ln"></i>
+  </div>
+  <div class="dv2-rt">
+    <div class="cv2-h">이 장이 답하는 것</div>
+    <p class="dvb-q">${h(c.ask)}</p>
+    <ol class="dvb-l">${items.map((x) => `<li><span>${x.i}</span>${h(x.title)}</li>`).join("")}</ol>
+  </div>
 </div>`;
 }
 
@@ -143,27 +158,34 @@ export const THEME_R5 = `
 .pg::before{content:"";position:absolute;left:0;right:0;top:0;height:2.2mm;background:linear-gradient(90deg,${BLUE.deep},${BLUE.royal} 55%,${BLUE.cyan})}
 .pg .hd b{color:${BLUE.deep}}
 .pg.full::before{display:none}
-.pg.full{padding:0;background:${BLUE.royal}}
-.cvb,.dvb{position:relative;width:210mm;height:297mm;overflow:hidden;color:#fff;background:linear-gradient(155deg,#2b3cc9 0%,${BLUE.royal} 45%,${BLUE.deep} 100%)}
-.cvb-art,.dvb-art{position:absolute;inset:0;width:100%;height:100%}
-.cvb-top{position:absolute;top:16mm;left:18mm;right:18mm;display:flex;justify-content:space-between;font-size:9pt;letter-spacing:.18em;font-weight:700;color:#dbe4ff}
-.cvb-title{position:absolute;left:18mm;top:92mm;width:120mm}
-.cvb-title .y{font-size:40pt;font-weight:800;color:${BLUE.cyan};line-height:1}
-.cvb-title .t1{font-size:30pt;font-weight:400;line-height:1.15;margin-top:3mm}
-.cvb-title .t2{font-size:34pt;font-weight:800;line-height:1.1;letter-spacing:.04em}
-.cvb-title .ln,.dvb .ln{display:block;width:34mm;height:1.2mm;background:${BLUE.line};margin:6mm 0 5mm}
-.cvb-title .who{font-size:12pt;font-weight:700}
-.cvb-title .sum{font-size:9.2pt;line-height:1.65;color:#dbe4ff;margin:2mm 0 0}
-.cvb-foot{position:absolute;left:18mm;right:18mm;bottom:16mm;display:flex;gap:8mm;font-size:9pt;font-weight:600;color:#dbe4ff}
-.dvb-k{position:absolute;left:20mm;top:58mm;font-size:16pt;letter-spacing:.14em;color:#dbe4ff}
-.dvb-n{position:absolute;left:18mm;top:66mm;font-size:96pt;font-weight:800;line-height:1;color:#fff}
-.dvb-ic{position:absolute;left:20mm;top:112mm;width:15mm;height:15mm;color:${BLUE.cyan}}
-.dvb-t{position:absolute;left:20mm;top:132mm;font-size:30pt;font-weight:800;margin:0;max-width:150mm;line-height:1.2}
-.dvb .ln{position:absolute;left:20mm;top:152mm;margin:0}
-.dvb-q{position:absolute;left:20mm;top:158mm;width:120mm;font-size:12pt;line-height:1.6;color:#dbe4ff;margin:0}
-.dvb-l{position:absolute;left:20mm;top:186mm;width:110mm;list-style:none;margin:0;padding:0}
-.dvb-l li{display:flex;gap:4mm;font-size:10pt;line-height:1.5;padding:1.3mm 0;border-bottom:.5pt solid rgba(255,255,255,.22)}
-.dvb-l li span{width:8mm;color:${BLUE.cyan};font-weight:700}
+.pg.full{padding:0;background:#fff}
+.cv2,.dv2{position:relative;width:210mm;height:297mm;overflow:hidden;display:grid;grid-template-columns:92mm 1fr;background:#fff}
+.cv2-l,.dv2-l{position:relative;color:#fff;background:linear-gradient(180deg,${BLUE.royal} 0%,${BLUE.deep} 100%)}
+.cv2-art{position:absolute;inset:0;width:100%;height:100%}
+.cv2-mk{position:absolute;left:14mm;top:16mm;right:10mm;display:flex;gap:3mm;align-items:center}
+.cv2-mk img{width:16mm;height:16mm;object-fit:contain;background:#fff;border-radius:50%;padding:.6mm}
+.cv2-mk span{font-size:10.5pt;font-weight:800;letter-spacing:.02em}.cv2-mk em{display:block;font-style:normal;font-size:8.5pt;font-weight:600;letter-spacing:.12em;color:#cfe0f7;margin-top:.6mm}
+.cv2-y{position:absolute;left:14mm;top:62mm;font-size:13pt;font-weight:700;letter-spacing:.2em;color:${BLUE.cyan}}
+.cv2-t{position:absolute;left:14mm;top:72mm;right:8mm;margin:0;font-size:31pt;font-weight:800;line-height:1.16;color:#fff}
+.cv2-t span{display:block;font-size:17pt;font-weight:600;color:#cfe0f7;margin-bottom:2mm}
+.cv2-l .ln,.dv2-l .ln{position:absolute;left:14mm;display:block;width:22mm;height:.9mm;background:${BLUE.line};margin:0}
+.cv2-l .ln{top:124mm}
+.cv2-q{position:absolute;left:14mm;top:130mm;right:10mm;margin:0;font-size:10pt;line-height:1.65;color:#dbe7f7}
+.cv2-f{position:absolute;left:14mm;bottom:14mm;font-size:9pt;font-weight:700;letter-spacing:.18em;color:#cfe0f7}
+.cv2-rt,.dv2-rt{padding:58mm 16mm 16mm 13mm;display:flex;flex-direction:column}
+.cv2-rt{padding-top:30mm}
+.cv2-h{font-size:10pt;font-weight:700;letter-spacing:.06em;color:${BLUE.royal};padding-bottom:2.4mm;border-bottom:1.2pt solid ${BLUE.deep};margin-bottom:4mm}
+.cv-r{display:grid;grid-template-columns:31mm 1fr;gap:3mm;padding:6.4mm 0;border-bottom:.5pt solid #dfe6f1;font-size:11pt;line-height:1.6;color:#1d2433}
+.cv-r b{color:${BLUE.royal};font-weight:800;white-space:nowrap}
+.dvb-k{position:absolute;left:14mm;top:58mm;font-size:13pt;letter-spacing:.16em;color:#cfe0f7}
+.dvb-n{position:absolute;left:12mm;top:66mm;font-size:88pt;font-weight:800;line-height:1;color:#fff}
+.dvb-ic{position:absolute;left:14mm;top:108mm;width:13mm;height:13mm;color:${BLUE.cyan}}
+.dvb-t{position:absolute;left:14mm;top:126mm;right:8mm;font-size:23pt;font-weight:800;margin:0;line-height:1.25;word-break:keep-all}
+.dv2-l .ln{top:160mm}
+.dvb-q{font-size:12.5pt;font-weight:700;line-height:1.6;color:${BLUE.deep};margin:0 0 8mm}
+.dvb-l{list-style:none;margin:0;padding:0}
+.dvb-l li{display:flex;gap:4mm;font-size:10pt;line-height:1.5;padding:2mm 0;border-bottom:.5pt solid #dfe6f1;color:#1d2433}
+.dvb-l li span{flex:none;width:8mm;height:5.2mm;border-radius:1.2mm;background:${BLUE.royal};color:#fff;font-weight:700;font-size:8.6pt;display:flex;align-items:center;justify-content:center}
 .dsb .ey{font-size:var(--t-label);color:${BLUE.royal};font-weight:700;margin-bottom:2mm}
 .dband{display:flex;gap:7mm;align-items:center;background:${BLUE.deep};color:#fff;padding:4mm 6mm;border-radius:1.5mm}
 .dband span{display:block;font-size:8.6pt;color:#b9c5f0}.dband b{font-size:30pt;font-weight:800;line-height:1;color:${BLUE.cyan}}.dband small{font-size:12pt;color:#b9c5f0;margin-left:1mm}
@@ -202,6 +224,7 @@ export const THEME_V9 = `
 .pg::before{content:"";position:absolute;left:0;right:0;top:0;height:2.2mm;background:linear-gradient(90deg,${BLUE.deep},${BLUE.royal} 55%,${BLUE.cyan})}
 .rh b{color:${BLUE.deep}}
 .kick{color:${BLUE.royal}}
+.kick .qb{display:inline-flex;align-items:center;justify-content:center;min-width:7mm;height:5mm;padding:0 1.2mm;margin-right:2mm;border-radius:1.2mm;background:${BLUE.royal};color:#fff;font-weight:800;font-size:8.9pt}
 .op{border-bottom:.8pt solid ${BLUE.deep}}
 .op h1{color:${BLUE.deep}}
 .eyebrow{border-top-color:${BLUE.royal};color:${BLUE.deep}}

@@ -23,6 +23,12 @@ import { build3, type Report3 } from "../../src/lib/me-v3/report-gm/report3";
 import type { OrgSet2 } from "../../src/lib/me-v3/report-gm/companies";
 import { edit8 } from "../../src/lib/me-v3/report-gm/editorial8";
 import { pages9 } from "../../src/lib/me-v3/report-gm/render9";
+import { setSchoolMark } from "../../src/lib/me-v3/report-gm/theme11";
+
+/* 학교가 준 정식 교표 파일만 싣는다(저장소에 넣지 않는다). 없으면 표지에 학교 이름 글자만 선다. */
+for (const [f, mime] of [["var/pdf-gm/brand/pcu-emblem.svg", "image/svg+xml"], ["var/pdf-gm/brand/pcu-emblem.png", "image/png"]] as const) {
+  if (existsSync(f)) { setSchoolMark(`data:${mime};base64,${readFileSync(f).toString("base64")}`); break; }
+}
 import { full6 } from "../../src/lib/me-v3/report-gm/render6";
 import type { Lib } from "../../src/lib/me-v3/report-gm/render5";
 import { plan10, merge10, r5Doc, v9Doc, KEEP9, DROP9, type LongPage } from "../../src/lib/me-v3/report-gm/render10";
