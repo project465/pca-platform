@@ -112,16 +112,30 @@ export function kusReportHtml(a: KusAnalysis, meta: KusReportMeta): string {
     + `<span class="bt"><i class="${ZONE_CLASS[x.zone] ?? ""}" style="width:${Math.round((Math.min(x.axes, 8) / 8) * 100)}%"></i></span><span class="bv">${x.axes}/8</span></div>`).join("")}</div>` : "";
   const mix = zones.length ? `<div class="mix">${zones.map((x) => `<i class="${ZONE_CLASS[x.z] ?? ""}" style="flex:${x.n}"></i>`).join("")}</div>`
     + `<ul class="legend">${zones.map((x) => `<li><i class="${ZONE_CLASS[x.z] ?? ""}"></i>${esc(x.ko)} <b>${x.n}</b></li>`).join("")}</ul>` : "";
+  /* 한눈에 보기: 지붕(지금 상태) · 들보(먼저 할 일) · 기둥(영역) · 바닥(30·60·90일).
+     칸마다 결과에 이미 있는 값만 넣는다. 새 수를 만들지 않는다 */
+  const pillars = rows.slice(0, 4).map((x) => {
+    const d = a.deep.find((y) => y.code === x.code);
+    const need = d?.missingRequired.length ? `더 필요한 판단: ${d.missingRequired.join(", ")}` : "꼭 볼 판단은 응답에 있음";
+    return `<div class="pil"><p class="pt"><b>${esc(x.name)}</b><span class="zone ${ZONE_CLASS[x.zone] ?? ""}">${esc(x.zoneKo)}</span></p>`
+      + `<p class="pb">확인된 판단 <b>${x.axes}</b>/8</p><p class="pn">${esc(need)}</p></div>`;
+  }).join("");
+  const planCount = `30일 할 일 ${a.plan.d30.length}개 · 60일 ${a.plan.d60.length}개 · 90일 ${a.plan.d90.length}개`;
+  const house = `<div class="house">
+<div class="hr"><span class="hk">지금 상태</span><div class="roof ${BASIS_CLASS[r.basis]}"><p class="rb">${esc(a.status.badge)}</p><p class="rt">${esc(a.status.title)}</p></div></div>
+<div class="hr"><span class="hk">먼저 할 일</span><div class="beam">${a0 ? esc(a0.do) : "정해진 할 일이 없습니다. 기업탐방 기록부터 남겨 보세요."}</div></div>
+${pillars ? `<div class="hr"><span class="hk">영역</span><div class="pils">${pillars}</div></div>` : ""}
+<div class="hr"><span class="hk">실행 계획</span><div class="base">${esc(planCount)}</div></div>
+</div><p class="hlead">${esc(a.status.lead)}</p>`;
   const ch1 = chapter(1, "개인 현황", "", `
-<div class="hero ${BASIS_CLASS[r.basis]}"><p class="hb">${esc(a.status.badge)}</p><p class="ht">${esc(a.status.title)}</p><p class="hl">${esc(a.status.lead)}</p></div>
+${house}
 <div class="stats">${stat("grid", c.opened, "이번에 본 영역")}${stat("check", c.confirmed, "해 봤다고 답한 판단")}${stat("pen", c.owned, "직접 정했고 근거도 있는 판단")}${stat("doc", c.evidence, "고른 근거")}${stat("building", a.visits.length, "기업탐방 기록")}</div>
 <p class="note">숫자는 점수가 아니라 개수입니다. 백분위, 적합도, 합격 가능성은 계산하지 않습니다.</p>
 <div class="two"><div class="panel"><h3>영역별 확인된 판단</h3><p class="sub">영역마다 여덟 가지 판단 가운데 응답으로 확인된 개수</p>${bars || empty("이번 검사에서 본 영역이 없습니다.")}</div>
 <div class="panel"><h3>영역 상태 분포</h3><p class="sub">${esc(r.label)}</p>${mix}
 ${table(["", ""], r.lines.map((l) => [esc(l.k), `<b>${esc(l.v)}</b>`]), "kv")}</div></div>
 ${r.caution ? `<p class="caution">${esc(r.caution)}</p>` : ""}
-${note ? `<p class="warn">${esc(note)}</p>` : ""}
-<div class="nextbox"><p class="nk">먼저 할 한 가지${a0?.domain ? ` · ${esc(a0.domain)}` : ""}</p><p class="nd">${a0 ? esc(a0.do) : "정해진 할 일이 없습니다. 기업탐방 기록부터 남겨 보세요."}</p></div>`);
+${note ? `<p class="warn">${esc(note)}</p>` : ""}`);
 
   /* 2 */
   /* 영역마다 같은 까닭이면 한 번만 적는다. 고른 항목이 없는 판단은 줄을 세우지 않고 한 줄로 센다:
@@ -227,8 +241,17 @@ ${table(["면접 질문", "답의 뼈대"], vd.interview.map((q) => [esc(q.q), e
   const col = (t: string, xs: PlanItem[]) => `<div class="pcol"><p class="ph"><span class="dot"></span>${t}</p>${xs.length
     ? `<ol>${xs.map((x) => `<li><span class="src">${esc(x.from)}</span>${esc(x.do)}<small><b>다 했다고 볼 기준</b> ${esc(x.done)}</small></li>`).join("")}</ol>`
     : `<p class="empty">이 시기에 따로 할 일은 없습니다. 앞의 일을 마무리하는 시간입니다.</p>`}</div>`;
+  /* 비스듬히 오르는 붉은 면과 점 셋. 높이는 차례일 뿐 값이 아니다(할 일 개수는 글자로만 적는다) */
+  const rise = (pts: [string, number][]) => {
+    const xs = [40, 100, 160], y = (x: number) => 27 - 21 * (x / 180);
+    return `<svg class="rise" viewBox="0 -7 180 35" aria-hidden="true"><polygon points="0,27 180,6 180,28 0,28" fill="#a6192e"/>`
+      + pts.map(([k, n], i) => `<circle cx="${xs[i]}" cy="${y(xs[i]).toFixed(1)}" r="1.4" fill="#fff" stroke="#c9a3a9" stroke-width=".5"/>`
+        + `<text x="${xs[i] - 3}" y="${(y(xs[i]) - 5.4).toFixed(1)}" text-anchor="end" class="rk">${k}</text>`
+        + `<text x="${xs[i] - 3}" y="${(y(xs[i]) - 1.4).toFixed(1)}" text-anchor="end" class="rn">할 일 ${n}개</text>`).join("")
+      + `</svg>`;
+  };
   const ch8 = chapter(8, "30·60·90일 실행 계획", "검사 결과와 탐방 기록에서 나온 할 일과, 다 했다고 볼 기준입니다.",
-    `<div class="plan">${col("30일", a.plan.d30)}${col("60일", a.plan.d60)}${col("90일", a.plan.d90)}</div>
+    `${rise([["30일", a.plan.d30.length], ["60일", a.plan.d60.length], ["90일", a.plan.d90.length]])}<div class="plan">${col("30일", a.plan.d30)}${col("60일", a.plan.d60)}${col("90일", a.plan.d90)}</div>
 ${a.actions.some((x) => x.note) ? `<p class="muted">${esc([...new Set(a.actions.map((x) => x.note).filter(Boolean))].slice(0, 3).join(" "))}</p>` : ""}`);
 
   const limits = `<section class="ch lim flow"><header class="ch-h is-sub"><span class="no">부록</span><h2>근거와 한계</h2></header>
@@ -286,6 +309,22 @@ body{margin:0;background:#fff;color:var(--ink);font-family:"Pretendard","Noto Sa
 h3{display:flex;align-items:center;gap:2.5mm;font-size:10.5pt;margin:5mm 0 2.5mm;color:var(--navy);font-weight:700}h3:before{content:"";flex:none;border-left:2.4mm solid var(--blue);border-top:1.5mm solid transparent;border-bottom:1.5mm solid transparent}h3:after{content:"";flex:1;height:1px;background:#f0d3d7}
 p{margin:0 0 7px}
 /* 인포그래픽 */
+/* 한눈에 보기: 왼쪽 이름표 · 지붕 · 들보 · 기둥 · 바닥 */
+.house{display:grid;gap:2mm;margin:0 0 2mm}.hr{display:grid;grid-template-columns:20mm 1fr;gap:3mm;align-items:center}
+.hk{font-size:8.5pt;font-weight:800;color:var(--navy);border-bottom:1.5px solid var(--blue);padding-bottom:1mm}
+.roof{background:var(--blue);color:#fff;text-align:center;clip-path:polygon(50% 0,100% 100%,0 100%);padding:13mm 22mm 3.5mm}
+.roof.b0{background:#8a5a12}.roof .rb{margin:0 0 1mm;font-size:8pt;font-weight:700;color:#f6d6db}.roof.b0 .rb{color:#f4e2c4}.roof .rt{margin:0;font-size:11pt;font-weight:700;line-height:1.45}
+.beam{background:#6b6466;color:#fff;text-align:center;font-weight:700;font-size:9.6pt;padding:2.5mm 4mm;line-height:1.5}
+.pils{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:1.5mm}
+.pil{background:#f1eeee;border-top:3px solid var(--blue);padding:2.5mm 3mm;break-inside:avoid}
+.pt{display:flex;flex-wrap:wrap;gap:1mm 2mm;align-items:center;margin:0 0 1.5mm}.pt b{font-size:9.4pt;color:var(--ink)}
+.pb{margin:0;font-size:8.4pt;color:var(--ink2)}.pb b{font-size:13pt;color:var(--blue)}.pn{margin:1mm 0 0;font-size:7.8pt;color:var(--mute);line-height:1.45}
+.base{background:#8e8889;color:#fff;text-align:center;font-weight:700;font-size:9.4pt;padding:2.5mm 4mm}
+.hlead{margin:1mm 0 4mm 23mm;font-size:8.6pt;color:var(--ink2)}
+/* 실행 계획 위 오르는 면 */
+.rise{display:block;width:100%;height:auto;margin:0 0 2mm}.rise .rk{font-size:5.6px;font-weight:800;fill:#a6192e}.rise .rn{font-size:3.2px;fill:#6b6466}
+.plan:before{display:none}.pcol .ph{padding-top:0}.pcol .ph .dot{display:none}
+
 .hero{background:var(--pale);border-radius:10px;padding:5mm 6mm;margin-bottom:5mm}.hero.b0{background:#fff6e6}
 .hero .hb{display:inline-block;margin:0 0 2mm;font-size:8.5pt;font-weight:700;color:#fff;background:var(--blue);border-radius:4px;padding:1px 8px}.hero.b0 .hb{background:var(--amber)}
 .hero .ht{margin:0;font-size:13pt;font-weight:700;color:var(--navy);line-height:1.45}.hero .hl{margin:2mm 0 0;color:var(--ink2)}
@@ -349,5 +388,5 @@ table.kv2 td:first-child{width:32mm;color:var(--ink2);font-weight:600}
 .pcol li small{display:block;color:var(--ink2);font-size:8pt;margin-top:2px}.pcol li small b{color:var(--green)}
 .src{display:inline-block;font-size:7pt;color:var(--mute);border:1px solid var(--line);border-radius:4px;padding:0 3px;margin-right:4px}
 @media screen{body{background:#eef1f5;padding:24px 12px}.cover,.ch{max-width:820px;margin:0 auto 18px;background:#fff;border-radius:12px;padding:26px 28px}.cover{padding:0;height:auto;min-height:1080px;background:#fff}.ch.flow{margin-top:0}.testbar{position:sticky;top:0;z-index:9}}
-@media screen and (max-width:640px){body{padding:12px 0}.cover,.ch{border-radius:0;padding:20px 16px}.cover{padding:0;min-height:900px}.cv-head{margin:28px 22px 0}.cv-main{margin-top:110px;padding:0 22px}.cv-foot{padding:0 22px 110px}.stats{grid-template-columns:repeat(2,1fr)}.two,.plan,.ovd{grid-template-columns:1fr}.plan:before{display:none}table{display:block;overflow-x:auto}}
+@media screen and (max-width:640px){body{padding:12px 0}.cover,.ch{border-radius:0;padding:20px 16px}.cover{padding:0;min-height:900px}.cv-head{margin:28px 22px 0}.cv-main{margin-top:110px;padding:0 22px}.cv-foot{padding:0 22px 110px}.stats{grid-template-columns:repeat(2,1fr)}.two,.plan,.ovd{grid-template-columns:1fr}.plan:before{display:none}.pcol .ph{padding-top:0}.pcol .ph .dot{display:none}table{display:block;overflow-x:auto}}
 `;
