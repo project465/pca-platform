@@ -27,7 +27,7 @@ import type { KusAnalysis, PlanItem } from "./analysis";
 import { MODE_NOTE } from "./analysis";
 import { COMPAT_KO } from "./program";
 
-export const KUS_REPORT_VERSION = "kus-report.2";
+export const KUS_REPORT_VERSION = "kus-report.3";
 
 const esc = (s: unknown) => String(s ?? "")
   .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -42,10 +42,48 @@ function table(head: string[], rows: string[][], cls = ""): string {
 }
 
 function chapter(no: number, title: string, lead: string, body: string, opts: { foot?: string; flow?: boolean } = {}): string {
-  return `<section class="ch${opts.flow ? " flow" : ""}"><header class="ch-h"><span class="no">${String(no).padStart(2, "0")}</span>`
-    + `<div><p class="kick">CHAPTER ${no}</p><h2>${esc(title)}</h2></div></header>`
-    + `<p class="lead">${esc(lead)}</p>${body}${opts.foot ? `<p class="foot">${esc(opts.foot)}</p>` : ""}</section>`;
+  const n = String(no).padStart(2, "0");
+  return `<section class="ch${opts.flow ? " flow" : ""}">`
+    + `<header class="ch-h">${BAND_ART}<p class="kick">PART ${n}</p><h2>${esc(title)}</h2><b class="no" aria-hidden="true">${n}</b></header>`
+    + `${lead ? `<p class="lead">${esc(lead)}</p>` : ""}${body}${opts.foot ? `<p class="foot">${esc(opts.foot)}</p>` : ""}</section>`;
 }
+
+/** 인포그래픽 표시. 선 아이콘 다섯이고 값을 그리지 않는다 */
+const ICON: Record<string, string> = {
+  grid: '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+  check: '<circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.6 2.6L16.5 9"/>',
+  pen: '<path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/>',
+  doc: '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/>',
+  building: '<path d="M4 21V5l8-2v18M12 8h8v13M8 8h.01M8 12h.01M8 16h.01M16 12h.01M16 16h.01M3 21h18"/>',
+};
+const icon = (k: string) => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICON[k] ?? ""}</svg>`;
+
+/**
+ * 표지와 장 머리의 그림. 짙은 파란 바탕 위 둥근 면과 호(弧) 몇 줄이고 값을 담지 않는다.
+ * 점수처럼 읽힐 눈금 · 축 · 숫자를 그리지 않는다.
+ */
+const COVER_ART = `<svg class="cv-art" viewBox="0 0 210 297" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+<defs>
+<radialGradient id="cvGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#6cc3ff" stop-opacity=".75"/><stop offset="1" stop-color="#2a49d0" stop-opacity="0"/></radialGradient>
+<linearGradient id="cvBall" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7fd0ff"/><stop offset=".55" stop-color="#3c74ec"/><stop offset="1" stop-color="#2440c4"/></linearGradient>
+<pattern id="cvDots" width="5" height="5" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".55" fill="#fff" fill-opacity=".38"/></pattern>
+</defs>
+<circle cx="24" cy="282" r="46" fill="#2a45c2" opacity=".55"/>
+<circle cx="158" cy="236" r="78" fill="url(#cvGlow)"/>
+<circle cx="158" cy="236" r="31" fill="url(#cvBall)"/>
+<path d="M104 236A54 54 0 0 1 158 182" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width=".7"/>
+<path d="M158 290A54 54 0 0 1 112 264" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width=".7"/>
+<path d="M190 194A50 50 0 0 1 207 228" fill="none" stroke="#f3c14b" stroke-width="1.8" stroke-linecap="round"/>
+<path d="M14 64A34 34 0 0 1 40 36" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width=".7"/>
+<rect x="150" y="22" width="44" height="26" fill="url(#cvDots)"/>
+<rect x="16" y="226" width="30" height="16" fill="url(#cvDots)"/>
+</svg>`;
+const BAND_ART = `<svg class="band-art" viewBox="0 0 160 40" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
+<defs><linearGradient id="bdBall" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7fd0ff" stop-opacity=".95"/><stop offset="1" stop-color="#2f56dc" stop-opacity=".2"/></linearGradient></defs>
+<circle cx="140" cy="40" r="26" fill="url(#bdBall)"/>
+<path d="M104 40A36 36 0 0 1 140 4" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width=".6"/>
+<path d="M150 9A32 32 0 0 1 160 16" fill="none" stroke="#f3c14b" stroke-width="1.3" stroke-linecap="round"/>
+</svg>`;
 
 const ZONE_CLASS: Record<string, string> = {
   Z1_EVIDENCE_ESTABLISHED: "z1", Z2_EVIDENCE_INCOMPLETE: "z2",
@@ -67,41 +105,40 @@ export function kusReportHtml(a: KusAnalysis, meta: KusReportMeta): string {
   const note = MODE_NOTE[s.mode];
   const r = a.reliability;
 
-  const cover = `<section class="cover">
-  <p class="brand">CareerMatri · ${esc(s.university)}</p>
-  <h1>${esc(s.name)}<small>개인 진로 분석 리포트</small></h1>
-  <p class="who">${esc(s.college)} · ${esc(s.department)} · ${esc(s.coreName)} 검사(${esc(a.tier)})</p>
-  <div class="headline"><p class="badge">${esc(a.status.badge)}</p><p class="t">${esc(a.status.title)}</p><p class="l">${esc(a.status.lead)}</p>
-   <p class="basis ${BASIS_CLASS[r.basis]}">${esc(r.label)}</p></div>
-  <div class="kpis">
-    <div><b>${c.opened}</b><span>이번에 연 영역</span></div>
-    <div><b>${c.confirmed}</b><span>응답으로 확인된 판단(칸)</span></div>
-    <div><b>${c.owned}</b><span>근거가 받친 직접 판단(칸)</span></div>
-    <div><b>${c.evidence}</b><span>고른 근거 항목</span></div>
-    <div><b>${a.visits.length}</b><span>기업탐방 기록</span></div>
+  const year = (meta.resultAt ?? meta.generatedAt).slice(0, 4);
+  const cover = `<section class="cover">${COVER_ART}
+  <div class="cv-top"><p class="brand">CareerMatri</p><p class="school">${esc(s.university)}</p></div>
+  <div class="cv-main">
+    <p class="cv-year">${esc(year)}</p>
+    <h1><span class="thin">진로 분석</span><span class="bold">리포트</span></h1>
+    <hr />
+    <p class="cv-who"><b>${esc(s.name)}</b><br />${esc(s.college)} · ${esc(s.department)}<br />${esc(s.coreName)} 검사 · 결과 확정 ${esc(meta.resultAt ?? "—")}</p>
+    <div class="cv-state"><span class="badge">${esc(a.status.badge)}</span><p>${esc(a.status.title)}</p></div>
   </div>
-  <p class="kpinote">점수가 아니라 센 수입니다. 백분위 · 적합도 · 합격 가능성을 만들지 않습니다.</p>
-  <ol class="toc">${["개인 현황", "전공·역량 분석", "경험·Evidence", "관심 산업·직무", "직무 요구사항과 Gap",
-    "탐방 경험과 직무 연결", "자기소개서·면접 활용", "30·60·90일 실행 계획"].map((t, i) => `<li><span>${i + 1}</span>${t}</li>`).join("")}</ol>
-  <p class="meta">결과 확정 ${esc(meta.resultAt ?? "—")} · 리포트 생성 ${esc(meta.generatedAt)} · 응시 ${esc(meta.attemptId)}</p>
+  <p class="cv-foot">리포트 생성 ${esc(meta.generatedAt)} · 응시 번호 ${esc(meta.attemptId)}</p>
 </section>`;
 
   /* 1 */
-  const zoneList = a.deep.length
-    ? `<ul class="zl">${a.deep.map((d) => `<li><span class="zone ${ZONE_CLASS[d.zone] ?? ""}">${esc(d.zoneKo)}</span><b>${esc(d.name)}</b>${d.missingRequired.length ? `<small>비어 있는 꼭 볼 판단: ${esc(d.missingRequired.join(" · "))}</small>` : `<small>${r.basis === "SELF_REPORT_ONLY" ? "꼭 볼 판단이 응답으로만 확인됨(근거 항목 없음)" : "꼭 볼 판단이 다 확인됨"}</small>`}</li>`).join("")}</ul>`
-    : empty("이번 검사에서 연 영역이 없습니다.");
   const a0 = a.actions[0];
-  const ch1 = chapter(1, "개인 현황", a.status.title, `
-<div class="rel ${BASIS_CLASS[r.basis]}">
- <p class="rh">이 결과가 기대고 있는 것 · <b>${esc(r.label)}</b></p>
- ${table(["", ""], r.lines.map((l) => [esc(l.k), `<b>${esc(l.v)}</b>`]), "kv")}
- ${r.caution ? `<p class="caution">${esc(r.caution)}</p>` : ""}
-</div>
+  const stat = (ic: string, n: number | string, k: string) => `<div class="stat"><span class="si">${icon(ic)}</span><b>${esc(n)}</b><span>${esc(k)}</span></div>`;
+  const rows = a.major.rows;
+  const zoneCount = (z: string) => rows.filter((x) => x.zone === z).length;
+  const zones = ["Z1_EVIDENCE_ESTABLISHED", "Z2_EVIDENCE_INCOMPLETE", "Z3_EVIDENCE_LOW_INTEREST", "Z4_INSUFFICIENT_EVIDENCE"]
+    .map((z) => ({ z, n: zoneCount(z), ko: rows.find((x) => x.zone === z)?.zoneKo ?? "" })).filter((x) => x.n);
+  const bars = rows.length ? `<div class="bars">${rows.map((x) => `<div class="bar"><span class="bn">${esc(x.name)}</span>`
+    + `<span class="bt"><i class="${ZONE_CLASS[x.zone] ?? ""}" style="width:${Math.round((Math.min(x.axes, 8) / 8) * 100)}%"></i></span><span class="bv">${x.axes}/8</span></div>`).join("")}</div>` : "";
+  const mix = zones.length ? `<div class="mix">${zones.map((x) => `<i class="${ZONE_CLASS[x.z] ?? ""}" style="flex:${x.n}"></i>`).join("")}</div>`
+    + `<ul class="legend">${zones.map((x) => `<li><i class="${ZONE_CLASS[x.z] ?? ""}"></i>${esc(x.ko)} <b>${x.n}</b></li>`).join("")}</ul>` : "";
+  const ch1 = chapter(1, "개인 현황", "", `
+<div class="hero ${BASIS_CLASS[r.basis]}"><p class="hb">${esc(a.status.badge)}</p><p class="ht">${esc(a.status.title)}</p><p class="hl">${esc(a.status.lead)}</p></div>
+<div class="stats">${stat("grid", c.opened, "이번에 본 영역")}${stat("check", c.confirmed, "해 봤다고 답한 판단")}${stat("pen", c.owned, "직접 정했고 근거도 있는 판단")}${stat("doc", c.evidence, "고른 근거")}${stat("building", a.visits.length, "기업탐방 기록")}</div>
+<p class="note">숫자는 점수가 아니라 개수입니다. 백분위, 적합도, 합격 가능성은 계산하지 않습니다.</p>
+<div class="two"><div class="panel"><h3>영역별 확인된 판단</h3><p class="sub">영역마다 여덟 가지 판단 가운데 응답으로 확인된 개수</p>${bars || empty("이번 검사에서 본 영역이 없습니다.")}</div>
+<div class="panel"><h3>영역 상태 분포</h3><p class="sub">${esc(r.label)}</p>${mix}
+${table(["", ""], r.lines.map((l) => [esc(l.k), `<b>${esc(l.v)}</b>`]), "kv")}</div></div>
+${r.caution ? `<p class="caution">${esc(r.caution)}</p>` : ""}
 ${note ? `<p class="warn">${esc(note)}</p>` : ""}
-<h3>영역마다 지금 상태</h3>${zoneList}
-<h3>먼저 할 한 가지</h3>
-${a0 ? `<p class="next">${a0.domain && !a0.do.startsWith(a0.domain) ? `<b>${esc(a0.domain)}</b> ` : ""}${esc(a0.do)}</p>` : empty("결과 모델이 낸 할 일이 없습니다.")}`,
-  { foot: "판정은 공통 엔진이 응답에서 냈고, 이 장은 그 판정이 근거 항목으로 얼마나 받쳐지는지를 함께 적습니다. 검사가 묻지 않은 것은 적지 않습니다." });
+<div class="nextbox"><p class="nk">먼저 할 한 가지${a0?.domain ? ` · ${esc(a0.domain)}` : ""}</p><p class="nd">${a0 ? esc(a0.do) : "정해진 할 일이 없습니다. 기업탐방 기록부터 남겨 보세요."}</p></div>`);
 
   /* 2 */
   /* 영역마다 같은 까닭이면 한 번만 적는다. 고른 항목이 없는 판단은 줄을 세우지 않고 한 줄로 센다:
@@ -123,58 +160,59 @@ ${a0 ? `<p class="next">${a0.domain && !a0.do.startsWith(a0.domain) ? `<b>${esc(
  <p class="dict"><span>이 영역이 다루는 것(사전)</span>${esc([...d.dict.tools, ...d.dict.artifacts].join(" · ") || "사전에 적힌 것이 없음")}${d.roles.length ? ` <span>이 영역이 중심인 직무</span>${esc(d.roles.join(" · "))}` : ""}</p>
 </div>`;
   };
-  const ch2 = chapter(2, "전공·역량 분석", `${s.coreName} 검사가 연 ${c.opened}개 영역을 하나씩, 여덟 판단의 응답 상태와 고른 항목으로 읽습니다.`,
+  const ch2 = chapter(2, "전공 역량 분석", `${s.coreName} 검사에서 본 영역 ${c.opened}개를 하나씩 봅니다.`,
     (sameWhy ? `<p class="why">연 영역 모두: ${esc(sameWhy)}</p>` : "")
     + (a.deep.length ? a.deep.map(deepBlock).join("") : empty("이번 검사에서 연 영역이 없습니다."))
     + (a.major.notAsked.length ? `<p class="muted">이번 검사에서 묻지 않은 영역: ${esc(a.major.notAsked.join(" · "))}</p>` : ""),
-    { flow: true, foot: "응답 상태는 넷입니다: 아직 없음 · 받아서 수행 · 직접 수행 · 직접 결정. ‘직접 결정’은 그 판단에 근거 항목 둘이 받칠 때만 섭니다. 사전의 도구·결과물은 그 영역이 다루는 것이고, 이 학생이 다룬다는 뜻이 아닙니다." });
+    { flow: true, foot: "응답 상태: 아직 없음 · 받아서 수행 · 직접 수행 · 직접 결정. ‘직접 결정’은 근거 두 개가 있을 때만 표시합니다. 도구와 결과물은 그 영역에서 흔히 다루는 것이고, 학생이 다뤘다는 뜻은 아닙니다." });
 
   /* 3 (+4) */
   const chainRows = a.deep.filter((d) => d.chain.did.length || d.chain.decided.length || d.chain.artifacts.length || d.chain.verifications.length);
-  const ch3 = chapter(3, "경험·Evidence", a.evidence.ready.length
-      ? `지원서와 면접에서 설명할 근거가 ${a.evidence.ready.length}개 영역에 섰습니다. 근거는 한 일 → 직접 정한 것 → 남긴 것 → 견준 것 의 차례로 읽습니다.`
-      : "근거가 선 영역은 아직 없습니다. 근거는 한 일 → 직접 정한 것 → 남긴 것 → 견준 것 의 차례로 섭니다.",
-    `${chainRows.length ? table(["영역", "한 일", "직접 정한 것", "남긴 것", "무엇과 견줬나"], chainRows.map((d) => [
+  const ch3 = chapter(3, "경험과 근거", a.evidence.ready.length
+      ? `지원서와 면접에서 설명할 근거가 있는 영역: ${a.evidence.ready.length}개`
+      : "근거가 충분한 영역은 아직 없습니다.",
+    `<div class="flowline"><span>한 일</span><span>직접 정한 것</span><span>남긴 것</span><span>견줘 본 것</span></div>
+${chainRows.length ? table(["영역", "한 일", "직접 정한 것", "남긴 것", "무엇과 견줬나"], chainRows.map((d) => [
       `<b>${esc(d.name)}</b>`, list(d.chain.did, "고른 항목 없음"), list(d.chain.decided, "고른 항목 없음"),
       list(d.chain.artifacts, "고른 항목 없음"), list(d.chain.verifications, "고른 항목 없음")]), "chain")
       : empty("응답에서 고른 근거 항목이 없습니다. 해 본 과제 하나를 골라 무엇을 정했고 무엇이 남았는지 근거로 고르면 이 표가 섭니다.")}
-<p class="muted">칸의 글은 응답에서 고른 체크리스트 문장 그대로입니다. 근거가 선다는 것은 그 영역에서 꼭 보는 판단이 확인되고 남은 결과물이 있을 때입니다.</p>
+<p class="muted">칸의 글은 검사에서 고른 문장 그대로입니다.</p>
 <ul class="facts">
  <li>공통 경험 입력: ${a.evidence.experiences.length ? esc(a.evidence.experiences.map((e) => e.title).join(" / ")) : "아직 없음"}</li>
- <li>기업탐방 기록 ${a.evidence.visitsObserved}건 · 직접 해 본 활동이 있는 기록 ${a.evidence.visitsDid}건 · 경험으로 옮긴 기록 ${a.evidence.visitsLinked}건 (탐방 기록은 판정에 들어가지 않습니다)</li>
+ <li>기업탐방 기록 ${a.evidence.visitsObserved}건 · 직접 해 본 활동이 있는 기록 ${a.evidence.visitsDid}건 · 경험으로 옮긴 기록 ${a.evidence.visitsLinked}건 (탐방 기록은 결과에 바로 들어가지 않습니다)</li>
 </ul>`);
 
-  const ch4 = chapter(4, "관심 산업·직무", "학생이 고른 것과, 응답으로 확인된 영역에서 이어진 것을 갈라 적습니다.",
+  const ch4 = chapter(4, "관심 산업·직무", "진한 칸은 직접 고른 것, 옅은 칸은 확인된 영역에서 이어진 것입니다.",
     `<div class="two"><div><h3>산업</h3>${a.interests.industries.length ? `<ul class="tags">${a.interests.industries.map((i) =>
       `<li class="${i.from === "PICKED" ? "pick" : "der"}">${esc(i.name)}<small>${i.from === "PICKED" ? "고름" : "확인된 영역에서 이어짐"}</small></li>`).join("")}</ul>` : empty("고른 산업도 이어진 산업도 없습니다.")}</div>
 <div><h3>직무</h3>${a.interests.roles.length ? `<ul class="tags">${a.interests.roles.map((x) =>
       `<li class="${x.from === "PICKED" ? "pick" : "der"}">${esc(x.name)}<small>${x.from === "PICKED" ? "고름" : "확인된 영역에서 이어짐"}</small></li>`).join("")}</ul>` : empty("고른 직무도 이어진 직무도 없습니다.")}</div></div>
 ${a.interests.orgs.length ? `<p>관심 조직 유형: ${esc(a.interests.orgs.join(" · "))}</p>` : ""}`,
-    { flow: true, foot: "‘이어짐’은 그 Core 의 관계표에서 확인된 영역이 그 직무·산업의 중심 영역일 때입니다. 적합도나 합격 가능성이 아니고, 특정 기업을 추천하지 않습니다." });
+    { flow: true, foot: "‘이어짐’은 확인된 영역이 그 직무·산업의 중심 영역이라는 뜻입니다. 적합도나 합격 가능성이 아니며, 특정 기업을 추천하지 않습니다." });
 
   /* 5 */
-  const ch5 = chapter(5, "직무 요구사항과 Gap", a.link.role
-      ? `${a.link.role} 직무의 중심 영역마다, 그 자리가 보는 판단 가운데 응답으로 확인된 것과 비어 있는 것을 셉니다.`
-      : "이어 볼 직무가 아직 없습니다. 직무를 고르거나 확인된 판단이 생기면 이 표가 섭니다.",
+  const ch5 = chapter(5, "직무 요구와 부족한 점", a.link.role
+      ? `${a.link.role} 직무가 중요하게 보는 영역과 지금 상태입니다.`
+      : "맞춰 볼 직무가 아직 없습니다.",
     (a.link.rows.length ? table(["중심 영역", "그 직무가 보는 판단", "지금 상태", "확인/전체", "다음 할 일"],
       a.link.rows.map((x) => [`<b>${esc(x.domain)}</b>`, esc(x.needs), esc(x.state), x.all ? `<b>${x.hit}</b>/${x.all}` : "—", esc(x.next)]), "wide") : "")
-    + `<h3>준비가 필요한 영역</h3>${a.gaps.length ? `<ul class="gaps">${a.gaps.map((g) => `<li><b>${esc(g.domains)}</b>${esc(g.title)}<small>${esc(g.why)}</small></li>`).join("")}</ul>` : empty("결과 모델이 적은 빈자리가 없습니다.")}`,
-    { foot: "중심 영역과 그 직무가 보는 판단은 그 Core 의 관계표에서 왔고 기업 채용 자료가 아닙니다. 채용 공고 · 기업 요구 수준은 확인하지 않았습니다." });
+    + `<h3>더 준비할 것</h3>${a.gaps.length ? `<ul class="gaps">${a.gaps.map((g) => `<li><b>${esc(g.domains)}</b>${esc(g.title)}<small>${esc(g.why)}</small></li>`).join("")}</ul>` : empty("크게 비어 있는 곳은 없습니다.")}`,
+    { foot: "직무별 중심 영역은 검사 기준표에서 온 것이고, 기업 채용 자료가 아닙니다." });
 
   /* 6 */
   const visitBlock = (v: KusAnalysis["visits"][number]) => `<div class="visit">
  <p class="vh"><b>${esc(v.company)}</b>${v.test ? `<span class="tag t">테스트</span>` : ""}${v.confirmed ? "" : `<span class="tag u">기업 확인 전</span>`}<span class="tag ${v.did.length ? "d" : "o"}">${v.did.length ? "직접 해 봄" : "관찰만"}</span>${v.linked ? `<span class="tag l">경험으로 옮김</span>` : ""}<small>${esc(v.on ?? "날짜 미기록")} · 관찰한 직무 ${esc(v.roles.join(", ") || "—")}</small></p>
  <div class="ovd">
   <div><p class="ovh">본 것</p><p>${esc(v.observed.join(" / ") || "—")}</p><p class="muted">이해한 것: ${esc(v.understood ?? "적지 않음")}</p></div>
-  <div><p class="ovh">직접 해 본 것</p><p>${esc(v.did.join(" / ") || "없음 · 관찰만 했습니다")}</p><p class="muted">새로 안 것: ${esc(v.learned ?? "적지 않음")}</p></div>
-  <div><p class="ovh">확인할 것</p>${v.verify.length ? `<ul>${v.verify.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : `<p class="muted">이은 전공 영역이 없어 검사 상태와 견줄 수 없습니다.</p>`}</div>
+  <div><p class="ovh">직접 해 본 것</p><p>${esc(v.did.join(" / ") || "없음(보기만 함)")}</p><p class="muted">새로 안 것: ${esc(v.learned ?? "적지 않음")}</p></div>
+  <div><p class="ovh">확인할 것</p>${v.verify.length ? `<ul>${v.verify.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : `<p class="muted">이어 둔 전공 영역이 없습니다.</p>`}</div>
  </div>
 </div>`;
-  const ch6 = chapter(6, "탐방 경험과 직무 연결", a.visits.length
-      ? `기업탐방 ${a.visits.length}건을 본 것 · 직접 해 본 것 · 확인할 것으로 가릅니다. 확인할 것은 학생이 이은 전공 영역의 검사 상태에서 나옵니다.`
+  const ch6 = chapter(6, "기업탐방과 직무", a.visits.length
+      ? `기업탐방 기록 ${a.visits.length}건`
       : "아직 남긴 탐방 기록이 없습니다.",
-    a.visits.length ? a.visits.map(visitBlock).join("") : empty("탐방을 다녀오면 KUS 홈의 ‘기업탐방 기록’에서 남길 수 있습니다. 등록된 탐방 기업이 없으면 담당자가 등록한 뒤에 고를 수 있습니다."),
-    { flow: true, foot: "방문했다는 사실만으로 직무 역량을 판정하지 않습니다. 검사 상태는 탐방 기록으로 바뀌지 않고, 직접 해 본 활동을 경험으로 옮겨야 판정에 들어갑니다." });
+    a.visits.length ? a.visits.map(visitBlock).join("") : empty("탐방을 다녀오면 ‘탐방 기록’에서 남길 수 있습니다."),
+    { flow: true, foot: "다녀온 것만으로 역량을 판단하지 않습니다. 직접 해 본 활동은 경험으로 옮기면 다음 분석에 들어갑니다." });
 
   /* 7 */
   const st = a.application.story;
@@ -192,7 +230,7 @@ ${a.interests.orgs.length ? `<p>관심 조직 유형: ${esc(a.interests.orgs.joi
     lead.missingRequired.length ? `${lead.missingRequired[0]}에 대해 물으면 어떤 경험으로 답하겠나요? (응답에서 비어 있는 판단)` : null,
   ].filter((q): q is string => Boolean(q)) : [];
   const vd = a.visits[0]?.draft;
-  const ch7 = chapter(7, "자기소개서·면접 활용", "문장을 대신 써 주지 않습니다. 응답에서 고른 항목으로 문단의 뼈대를 세우고, 비어 있는 칸은 직접 채울 자리로 남깁니다.",
+  const ch7 = chapter(7, "자기소개서·면접 활용", "검사에서 고른 항목으로 문단의 뼈대를 잡았습니다. 회색 칸은 직접 채울 자리입니다.",
     `<h3>자기소개서 한 문단의 구조</h3>${structure.length ? table(["칸", "응답에서 온 것 · 채울 것"], structure, "kv2") : empty("검사에서 꺼낼 경험이 아직 확인되지 않았습니다.")}
 ${st ? `<p class="muted">공통 결과지의 활용 문장: ${esc(st.application)}</p>` : ""}
 <h3>면접에서 받을 질문</h3>${qs.length ? `<ol class="qs">${qs.map((q) => `<li>${esc(q)}</li>`).join("")}</ol>` : empty("꺼낼 경험이 생기면 질문이 섭니다.")}
@@ -200,17 +238,17 @@ ${a.application.frame.length ? `<h3>경험 번역 단계에서 고른 답</h3>${
 <h3>탐방 기록에서 꺼낼 초안</h3>${vd ? `<p class="draft">${esc(vd.letter)}</p>
 ${table(["면접 질문", "답의 뼈대"], vd.interview.map((q) => [esc(q.q), esc(q.frame)]))}
 <p class="muted">${esc(vd.cautions.join(" "))}</p>` : empty("탐방 기록이 생기면 이 자리에 초안이 섭니다.")}`,
-    { foot: "수치 · 기간 · 결과는 학생이 직접 적습니다. ‘(적을 칸)’과 회색 칸은 응답에 없어서 비워 둔 자리입니다." });
+    { foot: "숫자, 기간, 결과는 직접 채워 주세요." });
 
   /* 8 */
-  const col = (t: string, xs: PlanItem[]) => `<div class="pcol"><p class="ph">${t}</p>${xs.length
-    ? `<ol>${xs.map((x) => `<li><span class="src">${esc(x.from)}</span>${esc(x.do)}<small><b>끝난 기준</b> ${esc(x.done)}</small></li>`).join("")}</ol>`
-    : `<p class="empty">이 시기에 따로 잡힌 할 일은 없습니다. 앞 칸의 할 일을 마무리하는 데 씁니다.</p>`}</div>`;
-  const ch8 = chapter(8, "30·60·90일 실행 계획", "결과 모델이 정한 때(지금 · 다음 · 나중)를 30·60·90일로 옮기고, 탐방 기록의 상태에서 나온 할 일을 더했습니다. 할 일마다 끝났다고 볼 기준을 붙였습니다.",
+  const col = (t: string, xs: PlanItem[]) => `<div class="pcol"><p class="ph"><span class="dot"></span>${t}</p>${xs.length
+    ? `<ol>${xs.map((x) => `<li><span class="src">${esc(x.from)}</span>${esc(x.do)}<small><b>다 했다고 볼 기준</b> ${esc(x.done)}</small></li>`).join("")}</ol>`
+    : `<p class="empty">이 시기에 따로 할 일은 없습니다. 앞의 일을 마무리하는 시간입니다.</p>`}</div>`;
+  const ch8 = chapter(8, "30·60·90일 실행 계획", "검사 결과와 탐방 기록에서 나온 할 일과, 다 했다고 볼 기준입니다.",
     `<div class="plan">${col("30일", a.plan.d30)}${col("60일", a.plan.d60)}${col("90일", a.plan.d90)}</div>
 ${a.actions.some((x) => x.note) ? `<p class="muted">${esc([...new Set(a.actions.map((x) => x.note).filter(Boolean))].slice(0, 3).join(" "))}</p>` : ""}`);
 
-  const limits = `<section class="ch lim flow"><header class="ch-h"><span class="no">—</span><div><p class="kick">APPENDIX</p><h2>근거와 한계</h2></div></header>
+  const limits = `<section class="ch lim flow"><header class="ch-h is-sub"><p class="kick">APPENDIX</p><h2>근거와 한계</h2></header>
 ${table(["무엇", "출처 · 상태"], [
     ["검사", `${esc(s.coreName)} 검사(판본 ${esc(s.core)}) · 문항 ${esc(meta.modules.item_bank_version ?? "?")} · 채점 ${esc(meta.modules.scoring_version ?? "?")} · 결과 모델 ${esc(meta.modules.result_model_version ?? "?")}. 규준과 인지면접 전이라 <b>검증된 검사가 아닙니다</b>.`],
     ["판정", "공통 엔진이 응답에서 냈습니다. KUS 리포트는 판정을 바꾸지 않고, 근거가 받치는 정도를 함께 적습니다(1장)."],
@@ -225,7 +263,7 @@ ${table(["무엇", "출처 · 상태"], [
 </section>`;
 
   return `<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex"><title>${esc(s.university)} · ${esc(s.name)} · CareerMatri 리포트</title><style>${CSS}</style></head><body>
+<meta name="robots" content="noindex"><title>${esc(s.university)} · ${esc(s.name)} · CareerMatri 진로 분석 리포트</title><style>${CSS}</style></head><body>
 ${meta.test ? `<div class="testbar">테스트 데이터 · 실제 학생이 아닙니다</div>` : ""}
 ${cover}${ch1}${ch2}${ch3}${ch4}${ch5}${ch6}${ch7}${ch8}${limits}
 </body></html>`;
@@ -233,74 +271,106 @@ ${cover}${ch1}${ch2}${ch3}${ch4}${ch5}${ch6}${ch7}${ch8}${limits}
 
 const CSS = `
 @page{size:A4;margin:13mm 13mm 15mm}
-:root{--navy:#0d2240;--navy2:#16325c;--ink:#0f1b2d;--ink2:#41506a;--mute:#66748a;--line:#dfe5ee;--soft:#f4f7fb;--blue:#1c5fb0;--gold:#b88a2e;--green:#0f766e;--amber:#9a5b00;--red:#a12f2f}
+@page:first{margin:0}
+:root{--navy:#1b2c8f;--deep:#13206b;--blue:#2f5fe0;--sky:#8fc0f6;--pale:#eaf0fd;--teal:#1fa99e;--yellow:#f3c14b;--ink:#1b2430;--ink2:#4a5566;--mute:#7a8696;--line:#e1e6f0;--soft:#f5f7fb;--green:#118a6a;--amber:#a86200;--red:#c4323a}
 *{box-sizing:border-box}
-body{margin:0;background:#fff;color:var(--ink);font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","WenQuanYi Zen Hei",system-ui,sans-serif;font-size:9.6pt;line-height:1.55;word-break:keep-all;overflow-wrap:anywhere}
-.testbar{position:fixed;top:0;left:0;right:0;background:#fff3d6;color:#6b4300;font-size:8pt;text-align:center;padding:2px;z-index:9;border-bottom:1px solid #f1d9a0}
-.cover{min-height:265mm;background:linear-gradient(160deg,var(--navy),var(--navy2));color:#fff;border-radius:10px;padding:20mm 16mm 13mm;display:flex;flex-direction:column;break-after:page}
-.cover .brand{margin:0;font-size:9pt;letter-spacing:.08em;opacity:.8;text-transform:uppercase}
-.cover h1{margin:14mm 0 4mm;font-size:30pt;letter-spacing:-.02em;line-height:1.15}
-.cover h1 small{display:block;font-size:13pt;font-weight:500;opacity:.85;margin-top:6px;letter-spacing:0}
-.cover .who{margin:0 0 9mm;opacity:.88}
-.cover .headline{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:12px 14px}
-.cover .badge{display:inline-block;margin:0 0 6px;padding:1px 10px;border-radius:999px;background:var(--gold);color:#1b1300;font-size:8.5pt;font-weight:700}
-.cover .headline .t{margin:0;font-size:14pt;font-weight:700;line-height:1.4}.cover .headline .l{margin:6px 0 0;opacity:.85;font-size:9.5pt}
-.cover .basis{display:inline-block;margin:8px 0 0;padding:1px 9px;border-radius:999px;font-size:8.2pt;font-weight:700;background:rgba(255,255,255,.14)}
-.cover .basis.b0{background:#fde8e8;color:#7a1f1f}
-.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:8mm 0 3mm}
-.kpis div{background:rgba(255,255,255,.07);border-radius:8px;padding:8px 10px}.kpis b{display:block;font-size:20pt;line-height:1.1}.kpis span{font-size:7.8pt;opacity:.8}
-.kpinote{margin:0;font-size:8pt;opacity:.7}
-.toc{list-style:none;padding:0;margin:auto 0 8mm;columns:2;column-gap:12mm}.toc li{padding:5px 0;border-bottom:1px solid rgba(255,255,255,.14);font-size:10pt;break-inside:avoid}
-.toc span{display:inline-block;width:22px;color:var(--gold);font-weight:700}
-.cover .meta{margin:0;font-size:7.6pt;opacity:.6}
-.ch{break-before:page;padding-top:2mm}.ch.flow{break-before:auto;margin-top:9mm}
-.ch-h{display:flex;gap:12px;align-items:center;border-bottom:2px solid var(--navy);padding-bottom:7px;margin-bottom:9px}
-.ch-h .no{font-size:22pt;font-weight:800;color:var(--navy);line-height:1;min-width:40px}
-.ch-h .kick{margin:0;font-size:7.5pt;letter-spacing:.14em;color:var(--gold);font-weight:700}
-.ch-h h2{margin:0;font-size:16pt;letter-spacing:-.01em}
-.lead{font-size:10.8pt;font-weight:600;margin:0 0 9px;color:var(--navy)}
-h3{font-size:10.3pt;margin:12px 0 5px;color:var(--navy2)}
+html,body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{margin:0;background:#fff;color:var(--ink);font-family:"Pretendard","Noto Sans KR","Noto Sans CJK KR","WenQuanYi Zen Hei",system-ui,sans-serif;font-size:9.6pt;line-height:1.6;word-break:keep-all;overflow-wrap:anywhere}
+.testbar{background:#fff5e1;color:#8a5300;font-size:8pt;text-align:center;padding:2px}
+@media print{.testbar{display:none}}
+/* 표지: 짙은 파란 면 한 장 · 둥근 면과 호 · 노란 선 하나 */
+.cover{position:relative;height:297mm;padding:0;display:flex;flex-direction:column;break-after:page;overflow:hidden;background:linear-gradient(160deg,#2238b4 0%,#1b2c8f 55%,#13206b 100%);color:#fff}
+.cv-art{position:absolute;inset:0;width:100%;height:100%}
+.cv-top{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:flex-start;padding:18mm 18mm 0}
+.cv-top .brand{margin:0;font-weight:700;letter-spacing:.14em;font-size:10pt;text-transform:uppercase}
+.cv-top .school{margin:0;color:#cfdafc;font-size:10pt;font-weight:600;text-align:right}
+.cv-main{position:relative;z-index:1;margin-top:62mm;padding:0 18mm}
+.cv-year{margin:0;font-size:44pt;font-weight:800;color:#8fc0f6;line-height:1;letter-spacing:-.01em}
+.cover h1{margin:3mm 0 0;line-height:1.08}.cover h1 .thin{display:block;font-size:32pt;font-weight:300;letter-spacing:-.01em}
+.cover h1 .bold{display:block;font-size:40pt;font-weight:800;letter-spacing:.02em}
+.cover hr{width:44mm;border:0;border-top:2.5px solid var(--yellow);margin:7mm 0 6mm}
+.cv-who{margin:0;color:#d4defc;font-size:10.5pt;line-height:1.75}.cv-who b{color:#fff;font-size:13.5pt}
+.cv-state{margin-top:9mm;max-width:96mm;border-left:3px solid var(--yellow);padding:2mm 0 2mm 5mm}
+.cv-state .badge{display:inline-block;font-size:8.5pt;font-weight:700;color:var(--deep);background:var(--yellow);border-radius:4px;padding:1px 7px;margin-bottom:4px}
+.cv-state p{margin:0;font-size:11pt;font-weight:600;color:#fff;line-height:1.5}
+.cv-foot{position:relative;z-index:1;margin:auto 0 0;padding:0 18mm 16mm;color:#a9b8ef;font-size:7.8pt}
+/* 장 머리: 파란 띠 · PART 번호 · 큰 번호 · 둥근 면 */
+/* 장마다 새 쪽을 열지 않는다: 열면 앞 장의 꼬리 몇 줄만 든 빈 쪽이 생긴다. 띠만 쪽 경계에서 쪼개지지 않게 둔다 */
+.ch{break-before:auto;margin-top:9mm}.cover+.ch,.testbar+.cover+.ch{margin-top:0}
+.ch-h{position:relative;overflow:hidden;break-inside:avoid;break-after:avoid;margin:0 0 5mm;padding:5mm 6mm 5mm;border-radius:3mm;background:linear-gradient(120deg,#1b2c8f,#2541c4);color:#fff;min-height:24mm}
+.ch-h .band-art{position:absolute;right:0;top:0;height:100%;width:62%}
+.ch-h .kick{position:relative;margin:0 0 1.5mm;font-size:8pt;letter-spacing:.18em;color:#b9cdfb;font-weight:700}
+.ch-h .kick:after{content:"";display:inline-block;width:8mm;height:1.6px;background:var(--yellow);vertical-align:middle;margin-left:3mm}
+.ch-h h2{position:relative;margin:0;font-size:17pt;letter-spacing:-.02em;color:#fff;font-weight:800;max-width:70%}
+.ch-h .no{position:absolute;right:7mm;top:50%;transform:translateY(-50%);font-size:34pt;font-weight:800;color:#fff;opacity:.9;line-height:1}
+.ch-h.is-sub{background:none;color:var(--navy);padding:0 0 2mm;min-height:0;border-radius:0;border-bottom:2px solid var(--navy)}
+.ch-h.is-sub .kick{color:var(--blue)}.ch-h.is-sub h2{color:var(--navy);font-size:14pt}
+.lead{font-size:10.5pt;margin:0 0 4mm;color:var(--ink2)}
+h3{display:flex;align-items:center;gap:2.5mm;font-size:10.5pt;margin:5mm 0 2.5mm;color:var(--navy);font-weight:700}h3:before{content:"";flex:none;width:2.4mm;height:2.4mm;border-radius:.6mm;background:var(--blue)}h3:after{content:"";flex:1;height:1px;background:#cdd8f4}
 p{margin:0 0 7px}
-.rel{border:1px solid var(--line);border-radius:9px;padding:10px 12px;margin:0 0 8px;background:var(--soft)}.rel.b0{border-color:#efc4c4;background:#fff6f6}
-.rel .rh{margin:0 0 4px;font-size:9.4pt;color:var(--ink2)}.rel table.kv{margin:0}.rel table.kv td{padding:3px 6px;border-bottom:1px solid #e6ebf2}
-.rel table.kv thead{display:none}.rel table.kv td:first-child{width:52mm;color:var(--ink2)}
-.caution{margin:7px 0 0;padding:6px 9px;border-left:3px solid var(--red);background:#fff;color:#6e1e1e;font-size:9pt}
-.warn{background:#fff7ea;border-left:3px solid #d99a2b;padding:6px 10px;color:#6b4300;font-size:9pt}
-.next{background:#eef5ff;border-left:3px solid var(--blue);padding:8px 11px}
-.zl{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:5px 12px}.zl li{border-bottom:1px solid #edf1f6;padding:4px 0}.zl b{margin:0 6px}.zl small{display:block;color:var(--mute);font-size:8.3pt}
-table{width:100%;border-collapse:collapse;margin:4px 0 7px;font-size:8.8pt}th{text-align:left;color:var(--ink2);font-weight:600;border-bottom:1.5px solid var(--line);padding:4px 6px;background:var(--soft)}
-td{border-bottom:1px solid #edf1f6;padding:4px 6px;vertical-align:top}tr{break-inside:avoid}
-.zone{display:inline-block;padding:1px 8px;border-radius:999px;font-size:8pt;font-weight:700;white-space:nowrap;background:#eef1f5;color:var(--ink2)}
-.zone.z1{background:#e3f4f1;color:var(--green)}.zone.z2{background:#eaf2fd;color:var(--blue)}.zone.z3{background:#f3efe6;color:#6a5a2f}.zone.z4{background:#fbeeee;color:var(--red)}
-.dom{border:1px solid var(--line);border-radius:9px;padding:8px 11px 4px;margin:0 0 8px}.dh,.ch-h,.lead,h3{break-after:avoid}
-.dh{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 3px}.dh b{font-size:10.6pt}.dh small{color:var(--mute);font-size:8.2pt}
+/* 인포그래픽 */
+.hero{background:var(--pale);border-radius:10px;padding:5mm 6mm;margin-bottom:5mm}.hero.b0{background:#fff1f1}
+.hero .hb{display:inline-block;margin:0 0 2mm;font-size:8.5pt;font-weight:700;color:#fff;background:var(--blue);border-radius:4px;padding:1px 8px}.hero.b0 .hb{background:var(--red)}
+.hero .ht{margin:0;font-size:13pt;font-weight:700;color:var(--navy);line-height:1.45}.hero .hl{margin:2mm 0 0;color:var(--ink2)}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:3mm;margin:0 0 2mm}
+.stat{border:1px solid var(--line);border-radius:10px;padding:4mm 3mm;text-align:center}
+.stat .si{display:inline-grid;place-items:center;width:11mm;height:11mm;border-radius:50%;background:var(--pale);margin-bottom:2mm}
+.stat svg{width:6mm;height:6mm;fill:none;stroke:var(--blue);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.stat b{display:block;font-size:20pt;font-weight:800;color:var(--navy);line-height:1.1}.stat span{display:block;font-size:7.8pt;color:var(--mute);margin-top:1mm;line-height:1.4}
+.note{font-size:8pt;color:var(--mute);margin:0 0 4mm}
+.panel{border:1px solid var(--line);border-radius:10px;padding:4mm 5mm}.panel h3{margin:0 0 1mm}.panel .sub{font-size:8.2pt;color:var(--mute);margin:0 0 3mm}
+.bars{display:grid;gap:2.2mm}.bar{display:grid;grid-template-columns:30mm 1fr 10mm;gap:2mm;align-items:center;font-size:8.6pt}
+.bn{color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.bt{height:3.2mm;background:var(--soft);border-radius:2mm;overflow:hidden}.bt i{display:block;height:100%;border-radius:2mm;background:var(--sky)}
+.bv{text-align:right;font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums}
+.bt i.z1,.mix i.z1,.legend i.z1{background:var(--teal)}.bt i.z2,.mix i.z2,.legend i.z2{background:var(--blue)}.bt i.z3,.mix i.z3,.legend i.z3{background:var(--sky)}.bt i.z4,.mix i.z4,.legend i.z4{background:var(--yellow)}
+.mix{display:flex;height:5mm;border-radius:3mm;overflow:hidden;gap:2px;margin-bottom:2mm}.mix i{display:block}
+.legend{list-style:none;margin:0 0 3mm;padding:0;display:flex;flex-wrap:wrap;gap:1mm 4mm;font-size:8.4pt;color:var(--ink2)}.legend i{display:inline-block;width:2.6mm;height:2.6mm;border-radius:1mm;margin-right:1.5mm;vertical-align:-1px}
+.panel table.kv{margin:0}.panel table.kv thead{display:none}.panel table.kv td{padding:2px 0;border-bottom:1px dotted var(--line);font-size:8.5pt}.panel table.kv td:first-child{color:var(--ink2)}.panel table.kv td:last-child{text-align:right}
+.nextbox{margin-top:5mm;border-radius:10px;background:var(--navy);color:#fff;padding:5mm 6mm}.nextbox .nk{margin:0 0 1.5mm;font-size:8.5pt;color:#b9d3f5;font-weight:600}.nextbox .nd{margin:0;font-size:11pt;font-weight:600;line-height:1.55}
+.flowline{display:flex;margin:0 0 3mm}.flowline span{flex:1;position:relative;background:var(--pale);color:var(--navy);font-weight:700;font-size:8.6pt;text-align:center;padding:2mm 3mm 2mm 5mm;clip-path:polygon(0 0,calc(100% - 3mm) 0,100% 50%,calc(100% - 3mm) 100%,0 100%,3mm 50%)}
+.flowline span:first-child{clip-path:polygon(0 0,calc(100% - 3mm) 0,100% 50%,calc(100% - 3mm) 100%,0 100%);padding-left:3mm}
+.flowline span:nth-child(2){background:#d6e8fc}.flowline span:nth-child(3){background:#c2dcfa}.flowline span:nth-child(4){background:#d5f1ee}
+/* 본문 공통 */
+.caution{margin:4mm 0 0;padding:3mm 4mm;border-radius:8px;background:#fff1f1;color:#8e2228;font-size:9pt}
+.warn{background:#fff5e1;border-radius:8px;padding:3mm 4mm;color:#7a4700;font-size:9pt;margin-top:3mm}
+table{width:100%;border-collapse:collapse;margin:4px 0 7px;font-size:8.8pt}th{text-align:left;color:#fff;background:var(--navy);font-weight:700;padding:5px 6px}th:first-child{border-radius:2mm 0 0 0}th:last-child{border-radius:0 2mm 0 0}
+td{border-bottom:1px solid var(--line);padding:5px 6px;vertical-align:top}tr{break-inside:avoid}
+.zone{display:inline-block;padding:1px 7px;border-radius:4px;font-size:8pt;font-weight:700;white-space:nowrap;background:var(--soft);color:var(--ink2)}
+.zone.z1{background:#ddf4f1;color:#0f7d73}.zone.z2{background:var(--pale);color:var(--blue)}.zone.z3{background:#eef2f7;color:var(--ink2)}.zone.z4{background:#fff1d6;color:var(--amber)}
+.dom{border:1px solid var(--line);border-radius:10px;padding:3.5mm 4.5mm 2mm;margin:0 0 4mm}.dh,.ch-h,.lead,h3{break-after:avoid}
+.dh{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 2mm}.dh b{font-size:11pt;color:var(--navy)}.dh small{color:var(--mute);font-size:8.2pt}
 table.axes td:first-child{width:27mm;white-space:nowrap}table.axes td:nth-child(3){width:21mm}
-.req{margin-left:4px;font-size:7pt;color:var(--amber);border:1px solid #e8cf9f;border-radius:4px;padding:0 3px}
-.st{font-size:8pt;font-weight:700;white-space:nowrap}.st.s3{color:var(--green)}.st.s2{color:var(--blue)}.st.s1{color:var(--ink2)}.st.s0{color:#9aa5b5}
+.req{margin-left:4px;font-size:7pt;color:var(--amber);border:1px solid #f0d49c;border-radius:4px;padding:0 3px}
+.st{font-size:8pt;font-weight:700;white-space:nowrap}.st.s3{color:var(--green)}.st.s2{color:var(--blue)}.st.s1{color:var(--ink2)}.st.s0{color:#a3adba}
 .why{font-size:8.6pt;color:var(--amber);margin:0 0 4px}.rest{font-size:8.5pt;color:var(--ink2);margin:0 0 4px}
 .dict{font-size:8.3pt;color:var(--ink2);margin:0 0 5px}.dict span{display:inline-block;color:var(--mute);margin-right:5px;font-weight:600}
 table.chain td:first-child{width:24mm}
-.muted{color:var(--mute);font-size:8.4pt}.empty{color:var(--mute);background:var(--soft);border:1px dashed var(--line);border-radius:8px;padding:7px 10px;font-size:9pt}
-.foot{margin-top:10px;padding-top:6px;border-top:1px solid var(--line);color:var(--mute);font-size:8pt}
+.muted{color:var(--mute);font-size:8.4pt}.empty{color:var(--mute);background:var(--soft);border-radius:8px;padding:3mm 4mm;font-size:9pt}
+.foot{margin-top:5mm;padding-top:2mm;border-top:1px solid var(--line);color:var(--mute);font-size:8pt}
 .facts{margin:0;padding-left:18px}.facts li{margin:3px 0}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.tags{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:6px}.tags li{border:1px solid var(--line);border-radius:8px;padding:4px 9px;font-weight:600}
-.tags li small{display:block;font-weight:500;color:var(--mute);font-size:7.8pt}.tags li.pick{border-color:#bcd6f2;background:#f3f8ff}
-.gaps{list-style:none;padding:0;margin:0}.gaps li{border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:6px;padding:6px 10px;margin:0 0 5px;break-inside:avoid}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:4mm}
+.tags{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:6px}.tags li{border-radius:6px;padding:4px 9px;font-weight:600;background:var(--soft);color:var(--ink2)}
+.tags li small{display:block;font-weight:500;color:var(--mute);font-size:7.8pt}.tags li.pick{background:var(--blue);color:#fff}.tags li.pick small{color:#dbe9fd}
+.gaps{list-style:none;padding:0;margin:0;display:grid;gap:2.5mm}.gaps li{background:#fff8eb;border-radius:8px;padding:3mm 4mm;break-inside:avoid}
 .gaps b{display:block;color:var(--amber);font-size:8.5pt}.gaps small{display:block;color:var(--ink2);font-size:8.5pt;margin-top:2px}
-.visit{border:1px solid var(--line);border-radius:8px;padding:8px 11px;margin:0 0 8px;break-inside:avoid}
-.vh{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 6px}.vh b{font-size:10.6pt}.vh small{margin-left:auto;color:var(--mute)}
-.ovd{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:10px}.ovd>div{border-top:2px solid var(--line);padding-top:4px}.ovd>div:nth-child(2){border-color:#9fd3c9}.ovd>div:nth-child(3){border-color:#b9cff0}
-.ovh{margin:0 0 3px;font-weight:700;font-size:8.6pt;color:var(--ink2)}.ovd ul{margin:0;padding-left:15px}.ovd li{margin:0 0 3px;font-size:8.6pt}
-.tag{font-size:7.6pt;padding:1px 7px;border-radius:999px;font-weight:700}.tag.o{background:#eef1f5;color:var(--ink2)}.tag.d{background:#e3f4f1;color:var(--green)}.tag.l{background:#eaf2fd;color:var(--blue)}.tag.u{background:#fff3d6;color:#6b4300}.tag.t{background:#fde8e8;color:var(--red)}
+.visit{border:1px solid var(--line);border-radius:10px;padding:3.5mm 4.5mm;margin:0 0 4mm;break-inside:avoid}
+.vh{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 6px}.vh b{font-size:11pt;color:var(--navy)}.vh small{margin-left:auto;color:var(--mute)}
+.ovd{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:10px}.ovd>div{border-top:3px solid var(--sky);padding-top:4px}.ovd>div:nth-child(2){border-color:var(--teal)}.ovd>div:nth-child(3){border-color:var(--yellow)}
+.ovh{margin:0 0 3px;font-weight:700;font-size:8.6pt;color:var(--navy)}.ovd ul{margin:0;padding-left:15px}.ovd li{margin:0 0 3px;font-size:8.6pt}
+.tag{font-size:7.6pt;padding:1px 7px;border-radius:4px;font-weight:700}.tag.o{background:var(--soft);color:var(--ink2)}.tag.d{background:#ddf4f1;color:#0f7d73}.tag.l{background:var(--pale);color:var(--blue)}.tag.u{background:#fff1d6;color:var(--amber)}.tag.t{background:#ffe8e8;color:var(--red)}
 table.kv2 td:first-child{width:32mm;color:var(--ink2);font-weight:600}
 .slot{display:inline-block;color:#7a8698;background:#eef1f5;border-radius:4px;padding:0 5px;font-size:8.2pt}
 .qs{margin:0;padding-left:18px}.qs li{margin:0 0 4px}
-.draft{background:var(--soft);border-radius:8px;padding:9px 12px;line-height:1.7}
-.plan{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.pcol{border:1px solid var(--line);border-radius:8px;padding:9px 11px;break-inside:avoid}
-.pcol .ph{margin:0 0 6px;font-size:13pt;font-weight:800;color:var(--navy)}.pcol ol{margin:0;padding-left:16px}.pcol li{margin:0 0 8px;font-size:8.9pt}
+.draft{background:var(--soft);border-radius:8px;padding:3.5mm 4.5mm;line-height:1.75}
+/* 계획: 점과 선으로 잇는 세 칸 */
+.plan{display:grid;grid-template-columns:repeat(3,1fr);gap:4mm;position:relative;padding-top:2mm}
+.plan:before{content:"";position:absolute;left:4mm;right:4mm;top:6.2mm;height:2px;background:linear-gradient(90deg,var(--blue),var(--teal),var(--yellow))}
+.pcol{break-inside:avoid}.pcol .ph{position:relative;margin:0 0 3mm;font-size:13pt;font-weight:800;color:var(--navy);padding-top:7mm}
+.pcol .ph .dot{position:absolute;top:0;left:0;width:5mm;height:5mm;border-radius:50%;background:#fff;border:3px solid var(--blue)}
+.pcol:nth-child(2) .ph .dot{border-color:var(--teal)}.pcol:nth-child(3) .ph .dot{border-color:var(--yellow)}
+.pcol ol{margin:0;padding-left:16px}.pcol li{margin:0 0 3mm;font-size:8.9pt}
 .pcol li small{display:block;color:var(--ink2);font-size:8pt;margin-top:2px}.pcol li small b{color:var(--green)}
 .src{display:inline-block;font-size:7pt;color:var(--mute);border:1px solid var(--line);border-radius:4px;padding:0 3px;margin-right:4px}
-@media screen{body{background:#eef1f5;padding:24px 12px}.cover,.ch{max-width:820px;margin:0 auto 18px;background:#fff;border-radius:10px;padding:26px 28px}.cover{background:linear-gradient(160deg,var(--navy),var(--navy2));min-height:auto}.ch.flow{margin-top:0}.testbar{position:sticky}}
-@media screen and (max-width:640px){body{padding:12px 0}.cover,.ch{border-radius:0;padding:20px 16px}.cover h1{font-size:24pt}.kpis{grid-template-columns:repeat(2,1fr)}.two,.plan,.ovd,.zl{grid-template-columns:1fr}table{display:block;overflow-x:auto}.toc{columns:1}}
+@media screen{body{background:#eef1f5;padding:24px 12px}.cover,.ch{max-width:820px;margin:0 auto 18px;background:#fff;border-radius:12px;padding:26px 28px}.cover{padding:0;height:auto;min-height:1080px;background:linear-gradient(160deg,#2238b4 0%,#1b2c8f 55%,#13206b 100%)}.ch.flow{margin-top:0}.testbar{position:sticky;top:0;z-index:9}}
+@media screen and (max-width:640px){body{padding:12px 0}.cover,.ch{border-radius:0;padding:20px 16px}.cover{padding:0;min-height:900px}.cv-main{margin-top:150px}.ch-h .no{font-size:24pt}.stats{grid-template-columns:repeat(2,1fr)}.two,.plan,.ovd{grid-template-columns:1fr}.plan:before{display:none}table{display:block;overflow-x:auto}}
 `;

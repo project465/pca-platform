@@ -22,13 +22,13 @@ import { withJosa } from "@/lib/me-v3/result/josa";
 
 /** 탐방에서 한 일. `OBSERVE` 는 보고 들은 것, `DO` 는 직접 해 본 것 */
 export const ACTIVITIES = [
-  { code: "BRIEFING", label: "회사·사업 설명을 들었다", level: "OBSERVE" },
-  { code: "SITE_TOUR", label: "현장·설비·사무 공간을 둘러봤다", level: "OBSERVE" },
-  { code: "QNA", label: "직무자에게 질문하고 답을 들었다", level: "OBSERVE" },
-  { code: "MENTOR", label: "직무자와 따로 대화(멘토링)했다", level: "OBSERVE" },
-  { code: "HANDS_ON", label: "실습·체험을 직접 해 봤다", level: "DO" },
-  { code: "TASK", label: "주어진 과제·문제를 직접 풀어 봤다", level: "DO" },
-  { code: "PRESENT", label: "결과물을 만들어 발표·제출했다", level: "DO" },
+  { code: "BRIEFING", label: "회사 설명 듣기", level: "OBSERVE" },
+  { code: "SITE_TOUR", label: "현장 둘러보기", level: "OBSERVE" },
+  { code: "QNA", label: "직무자에게 질문하기", level: "OBSERVE" },
+  { code: "MENTOR", label: "직무자와 따로 대화하기", level: "OBSERVE" },
+  { code: "HANDS_ON", label: "실습·체험 해 보기", level: "DO" },
+  { code: "TASK", label: "과제 직접 풀어 보기", level: "DO" },
+  { code: "PRESENT", label: "결과물 만들어 발표하기", level: "DO" },
 ] as const;
 export type ActivityCode = typeof ACTIVITIES[number]["code"];
 const ACT = new Map<string, typeof ACTIVITIES[number]>(ACTIVITIES.map((a) => [a.code, a]));
@@ -73,7 +73,7 @@ export function checkVisit(raw: Record<string, unknown> & {
   const list = (v: unknown) => (Array.isArray(v) ? v : v == null ? [] : [v]).map(String);
   const pid = trim(raw.program_id, 20);
   const program = pid ? allowed.programs.find((p) => p.id === pid) ?? null : null;
-  if (pid && !program) return { ok: false, why: "등록되지 않은 탐방입니다" };
+  if (pid && !program) return { ok: false, why: "등록되지 않은 탐방이에요" };
   const company = program?.company_name ?? trim(raw.company_name, 80);
   if (!company) return { ok: false, why: "방문한 기업을 고르거나 적어 주세요" };
   const on = trim(raw.visited_on, 10);
@@ -272,14 +272,14 @@ export function visitDraft(core: string, v: Visit): VisitDraft {
     `이해한 기술·제품·사업: ${v.understood ?? BLANK}`,
     `직접 한 활동: ${did.join(" / ") || "없음(관찰만)"}${v.activity_text ? ` — ${v.activity_text}` : ""}`,
     `내가 이은 전공 영역: ${doms.join(", ") || BLANK}`,
-    "이후 행동: 탐방에서 본 판단 하나를 수업·프로젝트에서 직접 해 보고 경험으로 기록",
+    "다음에 할 일: 탐방에서 본 판단 하나를 수업이나 프로젝트에서 직접 해 보고 경험으로 남기기",
   ];
   const cautions = [
     observeOnly
-      ? "관찰만 한 기록입니다. 자기소개서·면접에서 ‘할 수 있다’가 아니라 ‘보았다·이해했다’로 씁니다."
-      : "직접 해 본 활동은 ‘경험으로 옮기기’로 공통 경험 입력에 넣어야 판정에 들어갑니다. 이 기록만으로는 역량이 확인되지 않습니다.",
-    ...(v.confirmed ? [] : ["등록된 탐방이 아니라 기업 이름이 확인 전입니다. 지원서에 쓰기 전에 공식 이름을 확인합니다."]),
-    "수치·기간·성과는 직접 적습니다. 이 초안은 문장을 대신 써 주지 않습니다.",
+      ? "보기만 한 기록이에요. 자기소개서에는 ‘할 수 있다’ 대신 ‘보았고 이해했다’로 써 주세요."
+      : "직접 해 본 활동은 경험으로 옮겨야 다음 분석에 들어가요.",
+    ...(v.confirmed ? [] : ["등록된 탐방이 아니에요. 지원서에 쓰기 전에 회사 이름을 한 번 더 확인해 주세요."]),
+    "숫자, 기간, 결과는 직접 채워 주세요.",
   ];
   return { links: roles.map((r) => ({ role: r, domains: doms })), letter, interview, portfolio, observeOnly, cautions };
 }

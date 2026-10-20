@@ -330,7 +330,7 @@ async function main() {
     html[p.id] = r.html;
     writeFileSync(`${OUT}/pdf/kus-report-${p.id}.html`, r.html);
     ok(`${p.id} 리포트에 테스트 띠가 선다`, r.html.includes("테스트 데이터"));
-    ok(`${p.id} 리포트에 여덟 장이 다 있다`, ["개인 현황", "전공·역량 분석", "경험·Evidence", "관심 산업·직무", "직무 요구사항과 Gap", "탐방 경험과 직무 연결", "자기소개서·면접 활용", "30·60·90일 실행 계획"].every((t) => r.html.includes(t)));
+    ok(`${p.id} 리포트에 여덟 장이 다 있다`, ["개인 현황", "전공 역량 분석", "경험과 근거", "관심 산업·직무", "직무 요구와 부족한 점", "기업탐방과 직무", "자기소개서·면접 활용", "30·60·90일 실행 계획"].every((t) => r.html.includes(t)));
     if (process.env.SKIP_PDF !== "1") {
       try {
         const pdf = await kusReportPdf(r.html);

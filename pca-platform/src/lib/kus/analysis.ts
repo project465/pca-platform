@@ -26,7 +26,7 @@ import { REASON_KO } from "@/lib/me-v3/scoring/text.ko";
 import { coreFile } from "@/lib/me-v3/core-registry";
 import { withJosa } from "@/lib/me-v3/result/josa";
 import type { Axis } from "@/lib/me-v3/scoring/types";
-import { MODE_KO, type KusMode } from "./program";
+import type { KusMode } from "./program";
 import { activityLabel, didSomething, visitDraft, type Visit, type VisitDraft } from "./visits";
 
 export const KUS_ANALYSIS_VERSION = "kus-analysis.2";
@@ -47,18 +47,18 @@ export type KusInput = {
 };
 
 export const ZONE_KO: Record<string, string> = {
-  Z1_EVIDENCE_ESTABLISHED: "설명할 근거가 있음",
-  Z2_EVIDENCE_INCOMPLETE: "해 봤고 정리가 남음",
-  Z3_EVIDENCE_LOW_INTEREST: "근거는 있고 관심이 낮음",
-  Z4_INSUFFICIENT_EVIDENCE: "아직 판단할 근거가 적음",
-  NOT_EXPLORED: "이번 검사에서 묻지 않음",
+  Z1_EVIDENCE_ESTABLISHED: "근거 있음",
+  Z2_EVIDENCE_INCOMPLETE: "정리 필요",
+  Z3_EVIDENCE_LOW_INTEREST: "관심 낮음",
+  Z4_INSUFFICIENT_EVIDENCE: "근거 부족",
+  NOT_EXPLORED: "이번엔 묻지 않음",
 };
 
 export const RQ_KO: Record<string, string> = {
-  OK: "특이 사항 없음",
-  REVIEW: "다시 볼 응답이 있음 · 결과를 읽을 때 함께 봄",
-  LOW_VARIANCE: "답이 한 값으로 고르게 모였음 · 결과를 읽을 때 함께 봄",
-  INCONSISTENT: "앞뒤가 맞지 않는 응답이 있음 · 결과를 읽을 때 함께 봄",
+  OK: "특이 사항 없어요",
+  REVIEW: "다시 볼 응답이 있어요",
+  LOW_VARIANCE: "답이 한쪽으로 몰려 있어요",
+  INCONSISTENT: "앞뒤가 다른 응답이 있어요",
 };
 
 /** 할 일 하나. `done` 은 그 일이 끝났다고 볼 기준이고, 검사 쪽은 그 영역 자료의 결과물 이름에서 온다 */
@@ -160,19 +160,19 @@ const axesOf = (d: { confirmed: string[]; owned: string[] }) =>
 export function reliabilityOf(st: KusAnalysis["status"]): KusAnalysis["reliability"] {
   const c = st.counts;
   const basis = c.evidence === 0 ? "SELF_REPORT_ONLY" : c.ready_domains === 0 || c.owned === 0 ? "PARTLY_BACKED" : "BACKED";
-  const label = c.confirmed === 0 ? "아직 확인된 판단이 없는 결과" : basis === "SELF_REPORT_ONLY" ? "응답만으로 선 결과"
-    : basis === "PARTLY_BACKED" ? "응답에 근거 항목이 일부 붙은 결과" : "응답과 근거 항목이 함께 받치는 결과";
+  const label = c.confirmed === 0 ? "아직 확인된 경험이 없어요" : basis === "SELF_REPORT_ONLY" ? "응답만 있고 근거는 아직 없어요"
+    : basis === "PARTLY_BACKED" ? "근거가 일부 있어요" : "응답과 근거가 함께 있어요";
   const lines = [
-    { k: "응답으로 확인된 판단", v: `${c.confirmed}칸` },
-    { k: "직접 정했고 근거 둘이 받친 판단", v: `${c.owned}칸` },
-    { k: "고른 근거 항목", v: `${c.evidence}개` },
-    { k: "근거가 선 영역", v: `${c.ready_domains}개` },
-    { k: "응답 품질", v: st.quality.text },
-    ...(st.badge !== st.coreBadge || basis === "SELF_REPORT_ONLY" ? [{ k: "공통 결과지의 상태 이름", v: st.coreBadge }] : []),
+    { k: "해 봤다고 답한 판단", v: `${c.confirmed}개` },
+    { k: "직접 정했고 근거도 있는 판단", v: `${c.owned}개` },
+    { k: "고른 근거", v: `${c.evidence}개` },
+    { k: "근거가 충분한 영역", v: `${c.ready_domains}개` },
+    { k: "응답 패턴", v: st.quality.text },
+    ...(st.badge !== st.coreBadge || basis === "SELF_REPORT_ONLY" ? [{ k: "공통 결과지 표기", v: st.coreBadge }] : []),
   ];
   const caution = basis === "SELF_REPORT_ONLY" && c.confirmed > 0
-    ? "확인된 칸은 ‘해 봤다’는 응답에서 나왔고 근거 항목이 하나도 붙지 않았습니다. 지원서·면접에서 이 결과를 그대로 성과로 쓰지 않습니다. 이 판정 방식은 측정 담당 검토를 요청해 두었습니다."
-    : st.quality.flag !== "OK" ? `응답 품질 표시가 있습니다(${st.quality.text}). 결과를 읽을 때 함께 봅니다.` : null;
+    ? "‘해 봤다’는 응답만 있고 근거는 아직 고르지 않았어요. 지원서에 성과로 쓰기 전에 근거부터 남겨 주세요."
+    : st.quality.flag !== "OK" ? `${st.quality.text}. 결과를 읽을 때 같이 봐 주세요.` : null;
   return { basis, label, lines, caution };
 }
 
@@ -212,8 +212,8 @@ export function kusAnalysis(x: KusInput): KusAnalysis {
      **판정을 바꾸는 것이 아니다**: 공통 이름은 `coreBadge` 로 남고 신뢰도 상자가 그것을 적는다 */
   if (reliability.basis === "SELF_REPORT_ONLY" && status.counts.confirmed > 0) {
     status.badge = "근거 확인 전";
-    status.title = `응답으로는 ${status.counts.confirmed}칸에서 해 봤다고 답했고, 받쳐 줄 근거 항목은 아직 고르지 않았어요`;
-    status.lead = "이 결과는 응답만으로 선 것입니다. 해 본 과제 하나를 골라 무엇을 직접 정했고 무엇이 남았는지 근거로 고르면, 같은 판정을 근거와 함께 설명할 수 있습니다.";
+    status.title = `해 봤다고 답한 판단은 ${status.counts.confirmed}개인데, 근거는 아직 없어요`;
+    status.lead = "해 본 과제 하나를 골라 직접 정한 것과 남은 결과를 근거로 고르면, 같은 결과를 근거와 함께 설명할 수 있어요.";
   }
 
   /* 2 */
@@ -387,10 +387,10 @@ export function kusAnalysis(x: KusInput): KusAnalysis {
 
 export const MODE_NOTE: Record<KusMode, string | null> = {
   LIVE: null,
-  DEMO: `${MODE_KO.DEMO}: 이 학과의 검사는 전공자 검수 전입니다. 결과를 학생 진단으로 쓰지 않습니다.`,
-  PREPARING: `${MODE_KO.PREPARING}: 이 학과는 아직 검사가 열리지 않았습니다.`,
+  DEMO: "시연용 화면이에요. 이 학과 검사는 아직 전공자 검토 전이라 진단 결과로 쓰지 않아요.",
+  PREPARING: "이 학과 검사는 아직 준비 중이에요.",
 };
 
 /** 학과 Core 가 없는 학생에게 거는 한 줄. 다른 전공 검사로 대신 재지 않는다는 것을 함께 적는다 */
 export const UNSUPPORTED_NOTE =
-  "검사 이용 불가: 이 학과의 전공 기준이 아직 없어 검사 결과를 내지 않습니다. 다른 전공 검사로 대신 재지 않습니다. 계정과 기업탐방 기록은 그대로 쓸 수 있습니다.";
+  "이 학과는 아직 검사를 열지 않았어요. 다른 전공 검사로 대신하지도 않아요. 기업탐방 기록은 지금 바로 쓸 수 있어요.";

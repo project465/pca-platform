@@ -1,11 +1,10 @@
-import { SectionHeader } from "@/app/me/ui";
 import { appEnv } from "@/lib/env";
 import { campusV3 } from "@/lib/me-v3/campus";
 import { campusStudentCount } from "@/lib/campus/students";
 import { requireKusAdmin } from "@/lib/kus/access";
 import { COMPAT_KO, KUS_CODE, MODE_KO, kusDepartments } from "@/lib/kus/program";
 import { visitCounts, visitPrograms } from "@/lib/kus/visits";
-import { KusHead, KusNote } from "../shell";
+import { KusCard, KusHead, KusNote } from "../shell";
 import { registerProgram } from "./actions";
 
 export const dynamic = "force-dynamic";
@@ -17,7 +16,7 @@ const VISIT_STATUS_KO: Record<string, string> = { PLANNED: "예정", CONFIRMED: 
  * 그대로 세우지 않는다. 적는 것은 어느 전공 검사로 재는가와 교육과정 대조 등급뿐이다.
  */
 function memoOf(d: { core_name: string | null; compat: string | null }): string {
-  const what = d.core_name ? `${d.core_name} 검사로 잽니다` : "연결한 전공 검사가 아직 없습니다";
+  const what = d.core_name ? `${d.core_name} 검사` : "연결한 검사 없음";
   return d.compat && COMPAT_KO[d.compat] ? `${what} · ${COMPAT_KO[d.compat]}` : what;
 }
 
@@ -39,65 +38,67 @@ export default async function KusAdmin({ searchParams }: { searchParams: Promise
   const depts = kusDepartments();
   const byMode = (m: string) => depts.filter((d) => d.mode === m).length;
   return (
-    <div className="cm kus"><div className="cm-wrap"><main className="cm-main"><div className="cm-canvas"><div className="cm-in">
+    <div className="kus-admin">
       <KusHead kicker="고려대학교 세종캠퍼스 · 담당자" title="프로그램 현황"
-        lead="집계와 탐방 등록만 다룹니다. 개인별 결과는 계약과 학생 동의 범위가 정해지기 전까지 이 화면에서 열리지 않습니다." />
-      {appEnv() !== "production" ? <KusNote>시연 환경입니다. 테스트 계정이 집계에 섞여 있습니다.</KusNote> : null}
-      {sp.added ? <KusNote tone="info">탐방을 등록했습니다.</KusNote> : null}
+        lead="참여 현황과 탐방 등록을 볼 수 있어요. 학생 개인 결과는 계약과 학생 동의 범위가 정해지기 전까지 열리지 않아요." />
+      {appEnv() !== "production" ? <KusNote>시연 환경이에요. 테스트 계정이 집계에 섞여 있어요.</KusNote> : null}
+      {sp.added ? <KusNote tone="info">탐방을 등록했어요.</KusNote> : null}
       {sp.e ? <KusNote>기업 이름을 적어 주세요.</KusNote> : null}
 
-      <div className="kus-stats">
-        <div className="kus-stat"><span className="kus-stat-k">발급 학생</span><span className="kus-stat-v">{roster}명</span><span className="kus-stat-s">대상자 {agg.target}명</span></div>
-        <div className="kus-stat"><span className="kus-stat-k">검사 시작</span><span className="kus-stat-v">{agg.started}명</span><span className="kus-stat-s">진행 중 {agg.in_progress}명</span></div>
-        <div className="kus-stat"><span className="kus-stat-k">검사 완료</span><span className="kus-stat-v">{agg.scored}명</span><span className="kus-stat-s">{agg.completion === null ? "완료율 계산 전" : `완료율 ${agg.completion}%`}</span></div>
-        <div className="kus-stat"><span className="kus-stat-k">탐방 기록</span><span className="kus-stat-v">{vc.visits}건</span><span className="kus-stat-s">기록한 학생 {vc.students}명 · 직접 해 본 활동 {vc.did}건</span></div>
-      </div>
+      <KusCard>
+        <div className="kus-nums">
+          <div className="kus-num"><b>{roster}명</b><span>계정을 받은 학생</span></div>
+          <div className="kus-num"><b>{agg.started}명</b><span>검사 시작 · 진행 중 {agg.in_progress}명</span></div>
+          <div className="kus-num"><b>{agg.scored}명</b><span>검사 완료 · {agg.completion === null ? "완료율 계산 전" : `완료율 ${agg.completion}%`}</span></div>
+          <div className="kus-num"><b>{vc.visits}건</b><span>탐방 기록 · 학생 {vc.students}명</span></div>
+        </div>
+      </KusCard>
 
-      <section className="kus-panel">
-        <SectionHeader icon="layers" title="학과별 검사 준비 상태" sub={`${MODE_KO.LIVE} ${byMode("LIVE")} · ${MODE_KO.DEMO} ${byMode("DEMO")} · ${MODE_KO.PREPARING} ${byMode("PREPARING")}`} />
+      <KusCard title="학과별 검사 상태" sub={`${MODE_KO.LIVE} ${byMode("LIVE")} · ${MODE_KO.DEMO} ${byMode("DEMO")} · ${MODE_KO.PREPARING} ${byMode("PREPARING")}`}>
         <div className="kus-scroll"><table className="kus-table">
-          <thead><tr><th>단과대학</th><th>학과·전공</th><th>상태</th><th>메모</th></tr></thead>
+          <thead><tr><th>단과대학</th><th>학과·전공</th><th>상태</th><th>검사 · 대조 등급</th></tr></thead>
           <tbody>{depts.map((d) => (
             <tr key={d.code}><td>{d.college}</td><td><b>{d.name}</b>{d.unit ? <><br /><small>{d.unit}</small></> : null}</td>
-              <td><span className={`kus-pill ${d.mode === "LIVE" ? "is-ok" : d.mode === "DEMO" ? "is-warn" : ""}`}>{MODE_KO[d.mode]}</span></td>
+              <td><span className={`kus-chip ${d.mode === "LIVE" ? "is-green" : d.mode === "DEMO" ? "is-amber" : ""}`}>{MODE_KO[d.mode]}</span></td>
               <td><small>{memoOf(d)}</small></td></tr>))}</tbody>
         </table></div>
-        <p className="cm-shsub">학과 목록은 공식 주소를 출처로 든 검색 요지에서 옮겼고 원문 대조 전입니다. 등급은 학과 교육과정과 검사 영역을 대조한 것이고 측정 타당도 검증이 아닙니다. 참여 학생 전공이 확인되면 여는 순서를 바꿉니다.</p>
-      </section>
+        <p className="kus-foot">학과 목록은 공식 홈페이지 검색 결과에서 옮겼고 원문 대조 전이에요. 대조 등급은 교육과정과 검사 영역을 맞춰 본 것이고, 측정 타당도 검증은 아니에요.</p>
+      </KusCard>
 
-      <section className="kus-panel">
-        <SectionHeader icon="layers" title="학과별 완료" sub="5명이 안 되는 학과는 수를 적지 않습니다(한 사람이 드러나지 않게)." />
+      <KusCard title="학과별 완료" sub="5명이 안 되는 학과는 한 사람이 드러나지 않게 숫자를 적지 않아요.">
         {agg.by_department.length ? (
           <div className="kus-scroll"><table className="kus-table">
             <thead><tr><th>학과·전공</th><th>완료</th></tr></thead>
             <tbody>{agg.by_department.map((c) => (
               <tr key={c.key}><td><b>{depts.find((d) => d.code === c.key)?.name ?? c.label}</b></td>
-                <td>{c.n === null ? "5명 미만이라 수를 적지 않습니다" : `${c.n}명`}</td></tr>))}</tbody>
+                <td>{c.n === null ? "5명 미만" : `${c.n}명`}</td></tr>))}</tbody>
           </table></div>
-        ) : <p className="cm-shsub">5명이 넘는 학과가 아직 없어 칸을 세우지 않았습니다.</p>}
-      </section>
+        ) : <p className="kus-muted">아직 완료한 학생이 없어요.</p>}
+      </KusCard>
 
-      <section className="kus-panel">
-        <SectionHeader icon="building" title="탐방 기업" />
+      <KusCard title="탐방 기업">
         {programs.length ? (
           <div className="kus-scroll"><table className="kus-table">
             <thead><tr><th>기업</th><th>날짜</th><th>상태</th><th>확인 근거</th></tr></thead>
             <tbody>{programs.map((p) => (
-              <tr key={p.id}><td><b>{p.company_name}</b>{p.is_test ? <> <span className="kus-pill is-test">테스트</span></> : null}</td>
+              <tr key={p.id}><td><b>{p.company_name}</b>{p.is_test ? <> <span className="kus-chip is-red">테스트</span></> : null}</td>
                 <td>{p.visit_date ?? "미정"}</td><td>{VISIT_STATUS_KO[p.status] ?? p.status}</td><td>{p.source_note ?? "확인 전"}</td></tr>))}</tbody>
           </table></div>
-        ) : <p className="cm-shsub">등록된 탐방 기업이 없습니다.</p>}
-        <form action={registerProgram} className="kus-form" style={{ marginTop: 16 }}>
+        ) : <p className="kus-muted">등록된 탐방 기업이 없어요.</p>}
+      </KusCard>
+
+      <KusCard title="탐방 등록">
+        <form action={registerProgram} className="kus-form" style={{ marginTop: 12 }}>
           <div className="kus-field"><label htmlFor="company_name">기업 이름</label><input className="kus-input" id="company_name" name="company_name" maxLength={80} required /></div>
-          <div className="kus-field"><label htmlFor="business_note">업종·사업 한 줄(확인한 것만)</label><input className="kus-input" id="business_note" name="business_note" maxLength={200} /></div>
+          <div className="kus-field"><label htmlFor="business_note">업종·사업 한 줄</label><input className="kus-input" id="business_note" name="business_note" maxLength={200} placeholder="확인한 내용만 적어 주세요" /></div>
           <div className="kus-field"><label htmlFor="visit_date">탐방 날짜</label><input className="kus-input" id="visit_date" name="visit_date" type="date" /></div>
           <div className="kus-field"><label htmlFor="status">상태</label>
             <select id="status" name="status" defaultValue="PLANNED"><option value="PLANNED">예정</option><option value="CONFIRMED">확정</option><option value="DONE">완료</option><option value="CANCELLED">취소</option></select></div>
-          <div className="kus-field"><label htmlFor="source_note">확인 근거(공문 · 협약 · 담당자 확인)</label><input className="kus-input" id="source_note" name="source_note" maxLength={200} /><small>비우면 학생 화면에 `확인 전` 이 섭니다.</small></div>
-          <label><input type="checkbox" name="is_test" /> 테스트 줄(학생 화면과 PDF 에 테스트 표시)</label>
-          <div className="kus-actions"><button type="submit" className="cm-btn is-primary">탐방 등록</button></div>
+          <div className="kus-field"><label htmlFor="source_note">확인 근거</label><span className="kus-help">공문, 협약, 담당자 확인 등. 비워 두면 학생 화면에 ‘확인 전’으로 보여요.</span><input className="kus-input" id="source_note" name="source_note" maxLength={200} /></div>
+          <div className="kus-checks"><label><input type="checkbox" name="is_test" /> 테스트 기록 (학생 화면과 PDF에 테스트로 표시)</label></div>
+          <div className="kus-actions"><button type="submit" className="kus-btn">탐방 등록</button></div>
         </form>
-      </section>
-    </div></div></main></div></div>
+      </KusCard>
+    </div>
   );
 }

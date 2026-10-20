@@ -86,7 +86,7 @@ async function main() {
   console.log("\n── 3. 결과 · 계획");
   await p.goto(`${BASE}/kus/result`, { waitUntil: "networkidle" });
   const res = await body(p);
-  ok("개인별 결과가 일곱 묶음을 든다(R2 차례)", ["이 결과가 기대고 있는 것", "영역마다 지금 상태", "근거 사슬", "준비가 필요한 영역", "관심 산업·직무", "직무 요구사항과의 연결", "탐방 경험과 직무 연결"].every((x) => res.includes(x)));
+  ok("개인별 결과가 일곱 묶음을 든다(R3 차례)", ["결과의 근거", "영역별 상태", "내가 남긴 근거", "더 준비할 것", "관심 산업·직무", "직무와 맞춰 보기", "기업탐방 기록"].every((x) => res.includes(x)));
   await p.goto(`${BASE}/kus/plan`, { waitUntil: "networkidle" });
   ok("30·60·90일 계획이 선다", (await body(p)).includes("30일"));
 

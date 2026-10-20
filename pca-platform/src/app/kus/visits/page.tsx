@@ -1,10 +1,9 @@
 import Link from "next/link";
-import { SectionHeader } from "@/app/me/ui";
 import { requireKusStudent } from "@/lib/kus/access";
 import { kusWorkspace } from "@/lib/kus/workspace";
 import { activityLabel, didSomething } from "@/lib/kus/visits";
-import { domainName, roleName } from "@/lib/me-v3/runtime/session";
-import { KusHead, KusNote, KusShell } from "../shell";
+import { roleName } from "@/lib/me-v3/runtime/session";
+import { KusCard, KusHead, KusNote, KusShell } from "../shell";
 
 export const dynamic = "force-dynamic";
 
@@ -15,35 +14,35 @@ export default async function KusVisits({ searchParams }: { searchParams: Promis
   const sp = await searchParams;
   return (
     <KusShell active="/kus/visits" who={w.name} dept={`${w.college} · ${w.dept}`} test={w.test}>
-      <KusHead kicker="기업탐방 프로그램" title="기업탐방 기록"
-        lead="방문한 기업 · 관찰한 직무 · 이해한 것 · 직접 해 본 활동 · 새로 알게 된 것을 남기고, 전공과 관심 직무에 잇습니다."
-        actions={<Link className="cm-btn is-primary" href="/kus/visits/new">새 탐방 기록</Link>} />
-      {sp.deleted ? <KusNote tone="info">기록을 지웠습니다.</KusNote> : null}
-      <KusNote tone="info">방문했다는 사실만으로 직무 역량을 판정하지 않습니다. 직접 해 본 활동은 공통 경험 입력으로 옮겨야 판정에 들어갑니다.</KusNote>
-      <section className="kus-panel">
-        <SectionHeader icon="building" title={`내 기록 ${w.visits.length}건`} />
-        {w.visits.length ? w.visits.map((v) => (
-          <Link key={v.id} href={`/kus/visits/${v.id}`} className="kus-visit" style={{ display: "block", textDecoration: "none", color: "inherit" }}>
-            <p className="kus-visit-h"><b>{v.company_name}</b>
-              {v.is_test ? <span className="kus-pill is-test">테스트</span> : null}
-              {!v.confirmed ? <span className="kus-pill is-warn">기업 확인 전</span> : null}
-              <span className={`kus-pill ${didSomething(v) ? "is-ok" : ""}`}>{didSomething(v) ? "직접 해 봄" : "관찰"}</span>
-              {v.experience_id ? <span className="kus-pill is-go">경험으로 옮김</span> : null}
-              <time>{v.visited_on ?? "날짜 미기록"}</time></p>
-            <dl className="kus-kv">
-              <dt>관찰한 직무</dt><dd>{[...v.role_codes.map((c) => roleName(v.core_code ?? "", c)), ...(v.role_text ? [v.role_text] : [])].join(", ") || "—"}</dd>
-              <dt>한 활동</dt><dd>{v.activities.map(activityLabel).join(" / ")}</dd>
-              <dt>이은 영역</dt><dd>{v.td_codes.map((t) => domainName(v.core_code ?? "", t)).join(" · ") || "—"}</dd>
-            </dl>
-          </Link>
-        )) : <p className="cm-shsub">아직 남긴 기록이 없습니다. 탐방을 다녀온 날 바로 적어 두면 자기소개서·면접 초안으로 쓸 수 있습니다.</p>}
-      </section>
-      <section className="kus-panel">
-        <SectionHeader icon="clock" title="등록된 탐방" />
+      <KusHead kicker="기업탐방" title="탐방 기록" lead="본 것과 직접 해 본 것을 남겨 두면 자기소개서와 면접 준비에 쓸 수 있어요."
+        actions={<Link className="kus-btn" href="/kus/visits/new">새 기록 쓰기</Link>} />
+      {sp.deleted ? <KusNote tone="info">기록을 지웠어요.</KusNote> : null}
+      <KusCard title={`내 기록 ${w.visits.length}건`}>
+        {w.visits.length ? (
+          <ul className="kus-rows">{w.visits.map((v) => {
+            const roles = [...v.role_codes.map((c) => roleName(v.core_code ?? "", c)), ...(v.role_text ? [v.role_text] : [])];
+            return (
+              <li key={v.id}><Link className="kus-row" href={`/kus/visits/${v.id}`}>
+                <span className="kus-row-main">
+                  <span className="kus-row-t">{v.company_name}{v.is_test ? <> <span className="kus-chip is-red">테스트</span></> : null}</span>
+                  <span className="kus-row-s">{v.visited_on ?? "날짜 미기록"}{roles.length ? ` · ${roles.join(", ")}` : ""}</span>
+                  <span className="kus-row-s">{v.activities.map(activityLabel).join(", ")}</span>
+                </span>
+                <span className="kus-row-v">{v.experience_id ? "경험으로 옮김" : didSomething(v) ? "직접 해 봄" : "관찰"}</span>
+              </Link></li>
+            );
+          })}</ul>
+        ) : <p className="kus-muted">아직 기록이 없어요. 탐방을 다녀온 날 바로 적어 두면 좋아요.</p>}
+      </KusCard>
+      <KusCard title="등록된 탐방">
         {w.programs.length ? (
-          <ul>{w.programs.map((p) => <li key={p.id}><b>{p.company_name}</b>{p.is_test ? " [테스트]" : ""} · {p.visit_date ?? "날짜 미정"}{p.source_note ? "" : " · 확인 전"}</li>)}</ul>
-        ) : <p className="cm-shsub">아직 등록된 탐방 기업이 없습니다. 담당자가 등록하면 기록할 때 고를 수 있습니다.</p>}
-      </section>
+          <ul className="kus-rows">{w.programs.map((p) => (
+            <li key={p.id}><div className="kus-row"><span className="kus-row-main">
+              <span className="kus-row-t">{p.company_name}{p.is_test ? <> <span className="kus-chip is-red">테스트</span></> : null}</span>
+              <span className="kus-row-s">{p.visit_date ?? "날짜 미정"}{p.source_note ? "" : " · 확인 전"}</span></span></div></li>))}</ul>
+        ) : <p className="kus-muted">아직 등록된 탐방이 없어요. 담당자가 등록하면 기록할 때 고를 수 있어요.</p>}
+      </KusCard>
+      <p className="kus-foot">탐방에 다녀온 것만으로 역량을 판단하지 않아요. 직접 해 본 활동은 경험으로 옮기면 다음 분석에 들어가요.</p>
     </KusShell>
   );
 }

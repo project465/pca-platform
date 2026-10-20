@@ -54,12 +54,18 @@ export type KusDept = {
 
 /** 교육과정 대조 등급의 사람 말. 리포트와 담당자 표가 같은 표를 읽는다 */
 export const COMPAT_KO: Record<string, string> = {
-  A: "A · 교육과정 대조로 Core 를 바로 쓰는 학과",
-  B: "B · Core 를 잇되 근거 보완이 남은 학과",
-  C: "C · 전공 데이터가 더 필요한 학과",
-  D: "D · 지금은 검사를 제공하지 않는 학과",
+  A: "A · 바로 쓸 수 있음",
+  B: "B · 보완하면 쓸 수 있음",
+  C: "C · 전공 자료가 더 필요함",
+  D: "D · 지금은 검사 없음",
   R: "R · 전공을 고르는 모집단위",
 };
+
+/** 학생 화면의 검사 이름. Core 코드와 등급을 적지 않는다. 등록부에 없으면 `전공 검사` */
+export function examNameOf(code: string | null | undefined): string {
+  const n = coreName(code);
+  return n ? `${n} 검사` : "전공 검사";
+}
 
 function coreName(code: string | null | undefined): string | null {
   if (!code) return null;

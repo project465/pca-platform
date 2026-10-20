@@ -120,8 +120,8 @@ async function main() {
       if (tag !== "POOR") await shot(p, `02-home-${tag}`, view);
       await p.goto(`${BASE}/kus/result`, { waitUntil: "networkidle" });
       const t = await p.locator("body").innerText();
-      ok(`${tag}(${view}) 결과가 신뢰도 상자와 다음 한 가지를 든다`, t.includes("이 결과가 기대고 있는 것") && t.includes("30·60·90일 계획"));
-      if (tag === "CONTRA") ok(`CONTRA(${view}) 결과 머리가 근거 확인 전이다`, t.includes("근거 확인 전") && t.includes("응답만으로 선 결과"));
+      ok(`${tag}(${view}) 결과가 근거 카드와 다음 할 일을 든다`, t.includes("결과의 근거") && t.includes("30·60·90일 계획"));
+      if (tag === "CONTRA") ok(`CONTRA(${view}) 결과 머리가 근거 확인 전이다`, t.includes("근거 확인 전") && t.includes("응답만 있고 근거는 아직 없어요"));
       await shot(p, `04-result-${tag}`, view);
       if (tag === "RICH") {
         await p.goto(`${BASE}/kus/plan`, { waitUntil: "networkidle" });

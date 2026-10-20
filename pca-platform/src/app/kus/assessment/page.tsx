@@ -1,12 +1,13 @@
 import Link from "next/link";
-import { SectionHeader } from "@/app/me/ui";
 import { requireKusStudent } from "@/lib/kus/access";
 import { kusWorkspace } from "@/lib/kus/workspace";
 import { kusAttempts } from "@/lib/kus/load";
 import { MODE_NOTE, UNSUPPORTED_NOTE } from "@/lib/kus/analysis";
-import { KusHead, KusNote, KusShell } from "../shell";
+import { examNameOf as examName } from "@/lib/kus/program";
+import { KusCard, KusHead, KusNote, KusShell } from "../shell";
 
 export const dynamic = "force-dynamic";
+
 
 /**
  * 검사 안내와 상태.
@@ -14,44 +15,39 @@ export const dynamic = "force-dynamic";
  * **검사를 새로 만들지 않는다.** 시작 단추는 공통 학교 진입(`/campus/kus/start`)
  * 으로 가고, 거기서 학과를 다시 맞춰 본 뒤 공통 검사(`/v3/...`)가 열린다.
  * 문항 · 채점 · 저장 · 이어하기 · 제출 · 중복 제출 막기는 전부 공통 엔진의
- * 것이다. 학교 진입은 등급을 고르지 않고 늘 PRO 로 연다(공통 규칙).
+ * 것이다. 학교 진입은 등급을 고르지 않는다(학생에게 등급을 적지 않는다).
  */
 export default async function KusAssessment() {
   const { user, me } = await requireKusStudent();
   const [w, rows] = await Promise.all([kusWorkspace(user, me), kusAttempts(user.id)]);
   const note = w.unsupported ? UNSUPPORTED_NOTE : MODE_NOTE[w.mode];
   const open = w.mode !== "PREPARING";
+  const state = w.st.kind === "resume" ? `${w.st.answered}문항까지 답했어요` : w.st.kind === "start" ? "아직 시작 전이에요" : "제출했어요";
   return (
     <KusShell active="/kus/assessment" who={w.name} dept={`${w.college} · ${w.dept}`} test={w.test}>
-      <KusHead kicker="검사" title={`${w.dept} 전공 검사`}
-        lead="학교에 등록된 학과 기준으로 공통 전공 검사를 봅니다. 답은 문항마다 저장되고, 나갔다가 다시 들어오면 멈춘 화면에서 이어집니다." />
+      <KusHead kicker="검사" title={`${w.dept} 전공 검사`} lead={state} />
       {note ? <KusNote>{note}</KusNote> : null}
-      <section className="kus-panel">
-        <SectionHeader icon="clipboard" title="지금 상태" />
-        <dl className="kus-kv">
-          <dt>검사</dt><dd>{w.st.kind === "resume" ? `진행 중 · ${w.st.answered}문항 답함` : w.st.kind === "start" ? "시작 전" : "제출 완료"}</dd>
-          <dt>등급</dt><dd>PRO (학교 진입 검사는 등급을 고르지 않습니다)</dd>
-          <dt>걸리는 시간</dt><dd>대략 25~35분. 한 번에 끝내지 않아도 됩니다.</dd>
-          <dt>저장</dt><dd>문항마다 서버에 저장 · 이어하기 · 제출은 한 번만 반영</dd>
+      <KusCard>
+        <dl className="kus-kv" style={{ marginTop: 0 }}>
+          <dt>걸리는 시간</dt><dd>30분쯤</dd>
+          <dt>저장</dt><dd>답할 때마다 저장돼요. 나갔다 와도 이어서 할 수 있어요.</dd>
         </dl>
-        <div className="kus-actions" style={{ marginTop: 14 }}>
-          {w.st.kind === "resume" ? <Link className="cm-btn is-primary" href={`/v3/${w.st.attemptId}`}>이어서 답하기</Link>
-            : w.st.kind === "start" ? (open ? <Link className="cm-btn is-primary" href="/campus/kus/start">검사 시작하기</Link> : <span className="cm-btn is-off">{w.unsupported ? "검사 이용 불가" : "준비 중"}</span>)
-              : <Link className="cm-btn is-primary" href="/kus/result">나의 분석 결과</Link>}
-          {w.st.kind !== "start" && w.st.kind !== "resume" ? <Link className="cm-btn" href={`/v3/${w.st.attemptId}/result`}>공통 결과지 전체</Link> : null}
+        <div className="kus-actions" style={{ marginTop: 20 }}>
+          {w.st.kind === "resume" ? <Link className="kus-btn" href={`/v3/${w.st.attemptId}`}>이어서 답하기</Link>
+            : w.st.kind === "start" ? (open ? <Link className="kus-btn" href="/campus/kus/start">검사 시작하기</Link> : <span className="kus-btn is-off">{w.unsupported ? "검사가 없어요" : "준비 중이에요"}</span>)
+              : <Link className="kus-btn" href="/kus/result">분석 결과 보기</Link>}
         </div>
-      </section>
-      <section className="kus-panel">
-        <SectionHeader icon="log" title="응시 기록" />
-        {rows.length ? (
-          <div className="kus-scroll"><table className="kus-table">
-            <thead><tr><th>응시</th><th>시작</th><th>제출</th><th>상태</th></tr></thead>
-            <tbody>{rows.map((r) => (
-              <tr key={r.id}><td>{r.tier} · {r.core_code}</td><td>{r.started_at}</td><td>{r.submitted_at ?? "—"}</td>
-                <td>{r.status === "in_progress" ? <Link href={`/v3/${r.id}`}>진행 중 · 이어하기</Link> : <Link href={`/v3/${r.id}/result`}>결과</Link>}</td></tr>))}
-            </tbody></table></div>
-        ) : <p className="cm-shsub">아직 응시 기록이 없습니다.</p>}
-      </section>
+      </KusCard>
+      {rows.length ? (
+        <KusCard title="검사 기록">
+          <ul className="kus-rows">{rows.map((r) => (
+            <li key={r.id}><Link className="kus-row" href={r.status === "in_progress" ? `/v3/${r.id}` : `/v3/${r.id}/result`}>
+              <span className="kus-row-main"><span className="kus-row-t">{examName(r.core_code)}</span>
+                <span className="kus-row-s">{r.started_at} 시작{r.submitted_at ? ` · ${r.submitted_at} 제출` : ""}</span></span>
+              <span className="kus-row-v">{r.status === "in_progress" ? "이어하기" : "공통 결과지"}</span>
+            </Link></li>))}</ul>
+        </KusCard>
+      ) : null}
     </KusShell>
   );
 }

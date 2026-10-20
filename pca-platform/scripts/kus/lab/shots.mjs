@@ -73,9 +73,9 @@ for (const [login, tag] of people.slice(2)) {
     for (const [path, nm] of [["/kus/result", "result"], ["/kus/plan", "plan"]]) {
       await page.goto(`${BASE}${path}`);
       const t = await text(page);
-      if (nm === "result" && tag === "CONTRA") ok(`CONTRA(${view}) 결과 머리가 근거 확인 전이고 공통 상태 이름을 함께 적는다`, t.includes("근거 확인 전") && t.includes("공통 결과지의 상태 이름") && t.includes("응답만으로 선 결과"));
-      if (nm === "result" && tag === "RICH") ok(`RICH(${view}) 결과가 근거가 받치는 결과로 읽힌다`, t.includes("응답과 근거 항목이 함께 받치는 결과"));
-      if (nm === "result") ok(`${tag}(${view}) 결과가 일곱 묶음을 든다(R2 차례)`, ["이 결과가 기대고 있는 것", "영역마다 지금 상태", "근거 사슬", "준비가 필요한 영역", "관심 산업·직무", "직무 요구사항과의 연결", "탐방 경험과 직무 연결"].every((x) => t.includes(x)));
+      if (nm === "result" && tag === "CONTRA") ok(`CONTRA(${view}) 결과 머리가 근거 확인 전이고 공통 상태 이름을 함께 적는다`, t.includes("근거 확인 전") && t.includes("공통 결과지 표기") && t.includes("응답만 있고 근거는 아직 없어요"));
+      if (nm === "result" && tag === "RICH") ok(`RICH(${view}) 결과가 근거가 받치는 결과로 읽힌다`, t.includes("응답과 근거가 함께 있어요"));
+      if (nm === "result") ok(`${tag}(${view}) 결과가 일곱 묶음을 든다(R3 차례)`, ["결과의 근거", "영역별 상태", "내가 남긴 근거", "더 준비할 것", "관심 산업·직무", "직무와 맞춰 보기", "기업탐방 기록"].every((x) => t.includes(x)));
       await shot(page, `03-${nm}-${tag}-${view}`);
     }
     await ctx.close();
