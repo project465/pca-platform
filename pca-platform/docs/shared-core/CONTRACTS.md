@@ -36,6 +36,7 @@
 | 공용 파일 | `package.json` 에 `shared-core:check` 한 줄(1단계) · `shared-core:isolation` 한 줄(5단계). `CLAUDE.md` 는 통합할 때 이 폴더를 가리키는 한 줄만 |
 | 기준 커밋 | 전주대 · 세종도 `4f02d79b` 에서 출발하기를 권한다 |
 | 승인 | 사업주 |
+| R39 개정 | 사업주 결정(2026-10-20): Core 가 공통 파일 일부에 **패치 + 실행 테스트까지 착지**한다 — 범위 [CORE_LANDING_AUTHORITY.md](CORE_LANDING_AUTHORITY.md) · **범위는 총괄 PM 확인 전 PROPOSED** |
 
 ## CC-001 Tenant Profile (SC-1)
 
