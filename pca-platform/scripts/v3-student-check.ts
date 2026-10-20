@@ -14,8 +14,8 @@ import { COMMON_BY_CORE, COMMON_ME, COMMON_NEUTRAL, commonItemKo } from "../src/
 import { FAMILY_FILL, FAMILY_LINE, FAMILY_MEANING }
   from "../src/lib/me-v3/student/icon";
 
-/** 이번 회차가 사전을 적어 둔 여섯. **한꺼번에 스물을 쓰지 않는다**(§2) */
-const GOLD = ["BIZ_CORE_V1", "NURSING_CORE_V1", "PUBADM_CORE_V1",
+/** R29 가 먼저 적은 여섯. 아래 세는 자리는 **콘텐츠가 선 Core 전부**를 본다 */
+const FIRST_SIX = ["BIZ_CORE_V1", "NURSING_CORE_V1", "PUBADM_CORE_V1",
   "CS_CORE_V1", "EE_CORE_V1", "MEDIA_CORE_V1"];
 
 /** **주석은 걷어 내고 본다.** 이 저장소는 `왜 지웠는가` 를 주석으로
@@ -36,6 +36,9 @@ const reg = JSON.parse(readFileSync(
   "sites/pca-platform/content/major-cores.json", "utf8")) as {
     cores: { code: string; files?: Record<string, string> }[];
   };
+/** 사전이 덮어야 하는 Core: 등록부에서 taxonomy 파일을 든 것 전부(Track B,
+ *  2026-10-20). 손으로 적지 않는다: Core 를 하나 더 지은 날 이 목록이 따라온다 */
+const GOLD = reg.cores.filter((c) => !!c.files?.taxonomy).map((c) => c.code);
 function taxonomyCodes(core: string): string[] {
   const e = reg.cores.find((x) => x.code === core);
   const f = e?.files?.taxonomy;
@@ -189,8 +192,9 @@ console.log("\n── 8. 표시 ──");
 console.log("\n── 9. 경험 추가의 예시 ──");
 {
   const vals = GOLD.map((c) => EXPERIENCE_EXAMPLE[c] ?? "");
-  ok("여섯 Core 에 예시가 있다", vals.every(Boolean));
-  ok("여섯이 서로 다르다", new Set(vals).size === vals.length);
+  ok(`${GOLD.length} Core 에 예시가 있다`, vals.every(Boolean));
+  ok(`${GOLD.length} 예시가 서로 다르다`, new Set(vals).size === vals.length);
+  ok("먼저 적은 여섯이 그 안에 있다", FIRST_SIX.every((c) => GOLD.includes(c)));
   ok("되돌아갈 자리가 전공을 가리키지 않는다",
     !/기계|경영|간호|회로|행정|영상/.test(EXAMPLE_FALLBACK), EXAMPLE_FALLBACK);
   const srcs = body("src/app/me/experience/compose.tsx");
