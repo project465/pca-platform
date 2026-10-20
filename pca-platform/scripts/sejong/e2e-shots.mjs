@@ -38,7 +38,7 @@ const sql = (q) => (DB ? execFileSync("psql", [DB, "-tAc", q], { encoding: "utf8
 
 const browser = await pw.chromium.launch({ args: ["--no-sandbox"] });
 const shot = async (page, name, full = true) => {
-  await page.screenshot({ path: path.join(OUT, `${name}.png`), fullPage: full });
+  await page.screenshot({ path: path.join(OUT, `${name}.jpg`), fullPage: full, type: "jpeg", quality: 78 });
 };
 
 async function login(ctx, id, pw_) {
@@ -117,7 +117,7 @@ const seeker = await browser.newContext({ viewport: { width: 1366, height: 900 }
     await page.fill("#title", e.title);
     await page.selectOption("#job_area", "JA04");
     for (const c of e.checks) await page.check(`input[name=checks][value=${c}]`);
-    await Promise.all([page.waitForURL(/saved=1/), page.click("form.sj-form button[type=submit]")]);
+    await Promise.all([page.waitForURL(/saved=1/), page.click("form:has(#title) button[type=submit]")]);
   }
   await shot(page, "06-experience");
 
@@ -152,7 +152,7 @@ const seeker = await browser.newContext({ viewport: { width: 1366, height: 900 }
     const f = path.join(OUT, "sejong-report-sample.pdf");
     writeFileSync(f, buf);
     try {
-      execFileSync("pdftoppm", ["-png", "-r", "60", "-f", "1", "-l", "4", f, path.join(OUT, "11-pdf-page")]);
+      execFileSync("pdftoppm", ["-jpeg", "-r", "60", "-f", "1", "-l", "4", f, path.join(OUT, "11-pdf-page")]);
       const pages = execFileSync("pdfinfo", [f], { encoding: "utf8" }).match(/Pages:\s+(\d+)/)?.[1];
       ok(`PDF 쪽 수 ${pages}`, Number(pages) >= 3, pages ?? "");
     } catch (e) { console.log(`  (pdftoppm 없음: ${String(e).slice(0, 80)})`); }
@@ -205,7 +205,7 @@ const seeker = await browser.newContext({ viewport: { width: 1366, height: 900 }
   ok("참여자 표에 결과 내용이 없다", !(await page.textContent("[data-testid=participants]")).includes("경험으로 확인됨"));
   await page.fill("#name", "시연 신규 참여자");
   await page.fill("#participant_no", `SJ-A-${String(Date.now()).slice(-4)}`);
-  await page.click("form.sj-form button[type=submit]");
+  await page.click("form:has(#participant_no) button[type=submit]");
   await page.locator("text=임시 비밀번호").waitFor({ timeout: 15000 });
   ok("참여자 계정 발급 → 임시 비밀번호 한 번 표시", true);
   await shot(page, "17-admin-participants");
