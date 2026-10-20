@@ -69,9 +69,32 @@
    "student_open": {
     "mode": "LEAF",
     "leaves": [
-     "PCU26_BIZ"
+     "PCU26_BIZ",
+     "PCU26_MIS",
+     "PCU26_GLOBALBIZ",
+     "PCU26_TOURISM",
+     "PCU26_HOTELAIR",
+     "PCU26_AIRSERVICE",
+     "PCU26_LEISURE_MKT",
+     "PCU26_LIFE_LOCALBIZ",
+     "PCU26_LIFE_REALESTATE",
+     "PCU26_GLOBAL_ARTCULTURE",
+     "PCU26_GLOBAL_MGMT",
+     "PCU26_GLOBAL_MEDTOUR",
+     "PCU27_BIZ",
+     "PCU27_MIS",
+     "PCU27_GLOBALBIZ",
+     "PCU27_TOURISM",
+     "PCU27_HOTELAIR",
+     "PCU27_AIRSERVICE",
+     "PCU27_LEISURE_MKT",
+     "PCU27_LIFE_AGRIBIZ",
+     "PCU27_LIFE_REALESTATE",
+     "PCU27_GLOBAL_KCULTURE",
+     "PCU27_GLOBAL_MGMT",
+     "PCU27_GLOBAL_MEDTOUR"
     ],
-    "note": "**Canary 한 자리.** Core 의 `open_to_students` 는 그 Core 를 팔 수 있는가를 정하고 이 칸은 이 학교의 어느 자리에서 그것을 열 것인가를 정한다. 둘을 한 칸으로 두면 경영 Core 하나를 여는 일이 그 Core 를 가리키는 배재대 자리 스물넷을 한꺼번에 여는 일이 된다. 운영 smoke 에는 그 범위가 너무 넓다. 지금 열린 자리는 `PCU26_BIZ`(현재 재학생 편제 · 경영대학 · 경영학과) 하나이고, 2027 편제의 경영학과(`PCU27_BIZ`)를 포함한 나머지 자리는 **계속 준비 중**이다. smoke 가 네 걸음 모두 통과하면 BIZ 를 가리키는 자리를 먼저 넓히고, 다시 확인한 뒤에 `mode` 를 `CORE` 로 돌려 전체를 연다. 한 걸음이라도 걸리면 이 목록에서 그 자리를 빼면 되고 **나머지 자리에는 닿지 않는다**"
+    "note": "**경영 Core 를 가리키는 자리를 전부 연다**(2026-10-20 사업주 지시). Canary 였던 `PCU26_BIZ` 는 스테이징에서 학생 계정으로 시작 → 응답 → 결과 → PDF 까지 밟았고, 나머지 경영 자리도 갈래(`specialization`)가 모두 적혀 있어 매핑이 EXACT 다. 두 Catalog(현재 재학생 · 2027)의 경영 자리 스물넷을 적는다. 다른 Core 를 가리키는 자리는 그 Core 가 전공자 검토를 마치고 열릴 때 이 목록에 더한다. 한 자리라도 운영에서 걸리면 그 자리만 이 목록에서 뺀다"
    },
    "wave1": [
     "EE_CORE_V1",
@@ -2101,6 +2124,372 @@
    ]
   },
   {
+   "university_code": "KUS",
+   "university_name": "고려대학교 세종캠퍼스",
+   "org_kind": "university",
+   "market_code": "KR",
+   "entry_note": "CareerMatri + 고려대학교 세종캠퍼스 전용 진입(학부). 서울캠퍼스(`KU`)와 담당자 · 명단 · 주소가 따로다",
+   "brand_asset": null,
+   "brand_asset_note": "학교 로고 asset 이 저장소에 없다. **그려 넣지 않는다**: 학교 상표를 우리가 다시 그리면 그 학교가 승인한 적 없는 상표가 학생 화면에 선다",
+   "region_hint": "KR-CHUNGCHEONG",
+   "region_cities": [
+    "세종",
+    "대전"
+   ],
+   "region_note": "먼저 보여 주는 자리일 뿐이다. **사용자가 고른 지역을 바꾸지 않는다**",
+   "student_open": {
+    "mode": "LEAF",
+    "leaves": [
+     "KUS26_ELECMECH",
+     "KUS26_GLOBAL_MGMT",
+     "KUS26_DIGITAL_MGMT",
+     "KUS26_SPORTSBIZ"
+    ],
+    "note": "**지금 팔 수 있는 Core 가 맡는 자리만 연다.** 경영(`BIZ_CORE_V1`)을 쓰는 융합경영학부 두 전공과 스포츠비즈니스전공, 기계공학(`ME_CORE_V3`)을 쓰는 전자·기계융합공학과다. 나머지 자리는 Core 가 열리고 학과 구조가 공식 안내와 대조된 뒤에 넓힌다"
+   },
+   "wave1": [
+    "BIZ_CORE_V1",
+    "ME_CORE_V3",
+    "CS_CORE_V1",
+    "EE_CORE_V1",
+    "PUBADM_CORE_V1"
+   ],
+   "wave1_note": "먼저 볼 **Core** 다. 학과 이름으로 적지 않는 까닭은 이름이 바뀌어도 같은 Core 를 다시 쓰기 때문이다",
+   "excluded_units": [
+    {
+     "name": "대학원",
+     "where": "학교 전체",
+     "why": "학부생 전용 진입이다. 대학원 과정은 고르는 자리에 넣지 않는다"
+    },
+    {
+     "name": "서울캠퍼스",
+     "where": "학교 전체",
+     "why": "서울캠퍼스는 `KU` 로 따로 싣는다. 담당자와 학생 명단이 캠퍼스마다 갈린다"
+    }
+   ],
+   "open_questions": [
+    "학과 구조를 공식 학과 안내와 대조하지 못했다(이 환경에서 `korea.ac.kr` 이 열리지 않는다). 단과대학 이름과 학부·전공 계층, 최근 개편(학과 신설 · 통폐합)을 담당자가 확인해야 한다",
+    "전자·기계융합공학과를 기계공학 Core 로 잴지 전기전자 Core 로 잴지 학과와 확인해야 한다(지금은 기계공학으로 열었다)",
+    "인공지능사이버보안학과를 `정보보안` 갈래로 둘지 `인공지능·데이터` 갈래로 둘지 학과와 확인해야 한다",
+    "자유전공 · 학부대학 같은 전공을 고르는 자리가 세종캠퍼스에 있는지 정하지 않았다",
+    "약학과와 스마트도시학부를 맡을 Core 는 아직 없다"
+   ],
+   "catalogs": [
+    {
+     "catalog_code": "KUS_CUR",
+     "catalog_year": 2026,
+     "label": "현재 재학생",
+     "status": "ACTIVE",
+     "default_for_unknown": true,
+     "effective_from": "2026-03-01",
+     "effective_to": null,
+     "effective_note": "학년도 시작일(3월 1일)로 적는다. 공식 쪽이 적어 준 날짜가 아니고 학사 일정의 관례다",
+     "source_url": "https://sejong.korea.ac.kr",
+     "source_name": "고려대학교 세종캠퍼스 대학·학과 안내",
+     "sources": [
+      {
+       "name": "고려대학교 세종캠퍼스 대학·학과 안내",
+       "url": "https://sejong.korea.ac.kr",
+       "note": "주소는 알려진 세종캠퍼스 공식 쪽이다. 이 환경에서 열어 보지 못해 그 쪽에 지금 이 목록이 있는지는 대조하지 못했다"
+      }
+     ],
+     "verified_at": null,
+     "verification": "OFFICIAL_PAGE_UNREACHABLE",
+     "verification_note": "이 작업 환경은 학교 공식 쪽을 열지 못한다(DNS 가 막혀 있다). 아래 구조는 **공개된 일반 정보로 초안을 세운 것**이고 공식 학과 안내와 한 줄씩 대조한 것이 아니다. 그래서 `verified_at` 은 비어 있다. 학생 계정을 내기 전에 담당자가 공식 학과 안내와 맞춰 보고, 틀린 자리는 새 코드로 고친다",
+     "colleges": [
+      {
+       "code": "SCITECH",
+       "name": "과학기술대학",
+       "units": [
+        {
+         "code": "KUS26_AICYBER",
+         "name": "인공지능사이버보안학과",
+         "kind": "department",
+         "core_code": "CS_CORE_V1",
+         "specialization": "SPEC_CS_SECURITY",
+         "note": "보안 쪽 판단(위협 분석 · 접근 통제 · 사고 대응)이 학과 이름 앞에 서 있어 `정보보안` 갈래로 잰다. 인공지능 쪽 경험은 같은 Core 의 영역들이 함께 묻는다"
+        },
+        {
+         "code": "KUS26_CSW",
+         "name": "컴퓨터융합소프트웨어학과",
+         "kind": "department",
+         "core_code": "CS_CORE_V1",
+         "specialization": "SPEC_CS_SOFTWARE"
+        },
+        {
+         "code": "KUS26_EIE",
+         "name": "전자및정보공학과",
+         "kind": "department",
+         "core_code": "EE_CORE_V1",
+         "specialization": "SPEC_EE_ELEC"
+        },
+        {
+         "code": "KUS26_ELECMECH",
+         "name": "전자·기계융합공학과",
+         "kind": "department",
+         "core_code": "ME_CORE_V3",
+         "specialization": null,
+         "note": "기계 설계 · 제작 · 시험이 이 학과 실습의 중심이라 기계공학 Core 로 잰다. 전자 쪽 경험은 기계공학 Core 의 제어 · 계측 영역이 함께 묻는다"
+        },
+        {
+         "code": "KUS26_ENVSYS",
+         "name": "환경시스템공학과",
+         "kind": "department",
+         "core_code": null,
+         "specialization": null,
+         "mapping_note": "환경공학 Core(`ENV_CORE_V1`)는 아직 계획 단계라 파일이 없다. 그 Core 가 서면 그때 잇는다"
+        },
+        {
+         "code": "KUS26_SEMIPHYS",
+         "name": "반도체물리학부",
+         "kind": "department",
+         "core_code": null,
+         "specialization": null,
+         "mapping_note": "물리학 Core 와 반도체공학 Core 가 아직 계획 단계다. 어느 쪽으로 잴지는 그 Core 가 서는 날 정한다"
+        },
+        {
+         "code": "KUS26_BIOINFO",
+         "name": "생명정보공학과",
+         "kind": "department",
+         "core_code": "BT_CORE_V1",
+         "specialization": null
+        },
+        {
+         "code": "KUS26_FOODBIO",
+         "name": "식품생명공학과",
+         "kind": "department",
+         "core_code": "FOOD_CORE_V1",
+         "specialization": "SPEC_FOOD_FOODTECH"
+        },
+        {
+         "code": "KUS26_DATACOMP",
+         "name": "데이터계산과학전공",
+         "kind": "department",
+         "core_code": null,
+         "specialization": null,
+         "mapping_note": "수학·통계 Core(`MATH_CORE_V1`)가 아직 계획 단계다. 그 Core 가 서면 그때 잇는다"
+        }
+       ]
+      },
+      {
+       "code": "GLOBALBIZ",
+       "name": "글로벌비즈니스대학",
+       "units": [
+        {
+         "code": "KUS26_CONVMGMT",
+         "name": "융합경영학부",
+         "kind": "faculty",
+         "core_code": null,
+         "specialization": null,
+         "majors": [
+          {
+           "code": "KUS26_GLOBAL_MGMT",
+           "name": "글로벌경영전공",
+           "kind": "major",
+           "core_code": "BIZ_CORE_V1",
+           "specialization": "SPEC_BIZ_GLOBAL_MGMT"
+          },
+          {
+           "code": "KUS26_DIGITAL_MGMT",
+           "name": "디지털경영전공",
+           "kind": "major",
+           "core_code": "BIZ_CORE_V1",
+           "specialization": "SPEC_BIZ_MIS",
+           "note": "경영 판단에 정보시스템과 데이터를 함께 쓰는 전공이라 `IT경영정보` 갈래로 잰다"
+          }
+         ]
+        },
+        {
+         "code": "KUS26_GLOBAL",
+         "name": "글로벌학부",
+         "kind": "faculty",
+         "core_code": null,
+         "specialization": null,
+         "majors": [
+          {
+           "code": "KUS26_KOREANST",
+           "name": "한국학전공",
+           "kind": "major",
+           "core_code": "LANG_CORE_V1",
+           "specialization": "SPEC_LANG_KOREAN"
+          },
+          {
+           "code": "KUS26_CHINAST",
+           "name": "중국학전공",
+           "kind": "major",
+           "core_code": null,
+           "specialization": null,
+           "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+          },
+          {
+           "code": "KUS26_ENGST",
+           "name": "영미학전공",
+           "kind": "major",
+           "core_code": null,
+           "specialization": null,
+           "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+          },
+          {
+           "code": "KUS26_GERMANST",
+           "name": "독일학전공",
+           "kind": "major",
+           "core_code": null,
+           "specialization": null,
+           "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "code": "PUBPOLICY",
+       "name": "공공정책대학",
+       "units": [
+        {
+         "code": "KUS26_GOVADM",
+         "name": "정부행정학부",
+         "kind": "department",
+         "core_code": "PUBADM_CORE_V1",
+         "specialization": "SPEC_PUBADM_GENERAL"
+        },
+        {
+         "code": "KUS26_PUBSOC",
+         "name": "공공사회·통일외교학부",
+         "kind": "faculty",
+         "core_code": null,
+         "specialization": null,
+         "majors": [
+          {
+           "code": "KUS26_PUBSOCIO",
+           "name": "공공사회학전공",
+           "kind": "major",
+           "core_code": null,
+           "specialization": null,
+           "mapping_note": "사회학 Core(`SOC_CORE_V1`)가 아직 계획 단계다. 그 Core 가 서면 그때 잇는다"
+          },
+          {
+           "code": "KUS26_UNIDIPLO",
+           "name": "통일외교안보전공",
+           "kind": "major",
+           "core_code": null,
+           "specialization": null,
+           "mapping_note": "정치외교·정책 Core(`POL_CORE_V1`)가 아직 계획 단계다. 그 Core 가 서면 그때 잇는다"
+          }
+         ]
+        },
+        {
+         "code": "KUS26_ECONSTAT",
+         "name": "경제통계학부",
+         "kind": "faculty",
+         "core_code": null,
+         "specialization": null,
+         "majors": [
+          {
+           "code": "KUS26_ECONPOL",
+           "name": "경제정책학전공",
+           "kind": "major",
+           "core_code": null,
+           "specialization": null,
+           "mapping_note": "경제학 Core(`ECON_CORE_V1`)가 아직 계획 단계다. 그 Core 가 서면 그때 잇는다"
+          },
+          {
+           "code": "KUS26_BIGDATA",
+           "name": "빅데이터사이언스전공",
+           "kind": "major",
+           "core_code": null,
+           "specialization": null,
+           "mapping_note": "수학·통계 Core(`MATH_CORE_V1`)가 아직 계획 단계다. 그 Core 가 서면 그때 잇는다"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "code": "CULTURESPORTS",
+       "name": "문화스포츠대학",
+       "units": [
+        {
+         "code": "KUS26_INTLSPORTS",
+         "name": "국제스포츠학부",
+         "kind": "faculty",
+         "core_code": null,
+         "specialization": null,
+         "majors": [
+          {
+           "code": "KUS26_SPORTSSCI",
+           "name": "스포츠과학전공",
+           "kind": "major",
+           "core_code": "SPORTS_CORE_V1",
+           "specialization": "SPORTS_COACHING"
+          },
+          {
+           "code": "KUS26_SPORTSBIZ",
+           "name": "스포츠비즈니스전공",
+           "kind": "major",
+           "core_code": "BIZ_CORE_V1",
+           "specialization": "SPEC_BIZ_SPORTS_MKT"
+          }
+         ]
+        },
+        {
+         "code": "KUS26_CULTCREATIVE",
+         "name": "문화창의학부",
+         "kind": "faculty",
+         "core_code": null,
+         "specialization": null,
+         "majors": [
+          {
+           "code": "KUS26_MEDIAWRITE",
+           "name": "미디어문예창작전공",
+           "kind": "major",
+           "core_code": "LANG_CORE_V1",
+           "specialization": "SPEC_LANG_CREATIVE",
+           "note": "글을 짓고 고치는 판단이 이 전공의 중심이라 `창작` 갈래로 잰다"
+          },
+          {
+           "code": "KUS26_CULTCONTENT",
+           "name": "문화콘텐츠전공",
+           "kind": "major",
+           "core_code": "MEDIA_CORE_V1",
+           "specialization": "SPEC_MEDIA_CONTENT"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "code": "PHARMACY",
+       "name": "약학대학",
+       "units": [
+        {
+         "code": "KUS26_PHARM",
+         "name": "약학과",
+         "kind": "department",
+         "core_code": null,
+         "specialization": null,
+         "mapping_note": "약학을 맡을 Major Core 가 없다. 면허 과정이라 그 전공을 아는 분이 따로 세워야 한다"
+        }
+       ]
+      },
+      {
+       "code": "SMARTCITY",
+       "name": "스마트도시학부",
+       "units": [
+        {
+         "code": "KUS26_SMARTCITY",
+         "name": "스마트도시학부",
+         "kind": "department",
+         "core_code": null,
+         "specialization": null,
+         "mapping_note": "도시 계획 · 데이터 · 인프라가 섞인 학부라 지금 있는 Core 하나로 잴 수 없다. 맡을 Core 를 정하면 그때 잇는다"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
    "university_code": "JJU",
    "university_name": "전주대학교",
    "org_kind": "university",
@@ -2149,7 +2538,9 @@
     "학과 구조를 공식 학과 안내와 대조하지 못했다(이 환경에서 `jj.ac.kr` 이 열리지 않는다). 2023 학사구조 개편 뒤의 단과대학 이름(인문콘텐츠대학 · 문화융합대학 · 의과학대학 · 미래융합대학)과 학과 이름을 담당자가 확인해야 한다",
     "회계세무학과 · 금융보험학과는 회계·금융 Core 가 서기 전이라 Core 를 두지 않았다",
     "미래융합대학(성인학습자)의 계약 범위와 학생 계정 대상이 정해지지 않았다. 공식 편제대로 싣고 `audience` 를 붙였다",
-    "물리치료 · 방사선 · 작업치료 같은 보건 면허 학과를 어느 Core 로 읽을지 정하지 않았다"
+    "물리치료 · 방사선 · 작업치료 같은 보건 면허 학과를 어느 Core 로 읽을지 정하지 않았다",
+    "`인공지능학부` 의 정확한 이름과 소속 단과대학(사업주가 이름만 불러 주었다)",
+    "첨단산업인재양성부트캠프사업단의 트랙 구성과 참여 학생 명단을 누가 발급하는가(사업단인가 소속 학과인가)"
    ],
    "catalogs": [
     {
@@ -2269,6 +2660,14 @@
          "kind": "department",
          "core_code": "CS_CORE_V1",
          "specialization": "SPEC_CS_COMPUTER"
+        },
+        {
+         "code": "JJU26_AI",
+         "name": "인공지능학부",
+         "kind": "department",
+         "core_code": "CS_CORE_V1",
+         "specialization": "SPEC_CS_AI",
+         "note": "사업주가 이름을 불러 준 자리다(2026-10-20). 컴퓨터·소프트웨어 Core 의 `인공지능·데이터` 갈래로 잰다. 정확한 이름과 소속 단과대학은 `open_questions` 에 적어 두었다"
         },
         {
          "code": "JJU26_ARCH",
@@ -2540,6 +2939,20 @@
          "specialization": null,
          "routing_only": true,
          "note": "전공을 고르는 자리다. **Core 를 만들지 않는다**: 고르면 전공 목록으로 돌려보낸다"
+        }
+       ]
+      },
+      {
+       "code": "BOOTCAMP",
+       "name": "첨단산업인재양성부트캠프사업단",
+       "units": [
+        {
+         "code": "JJU26_BOOTCAMP_AI",
+         "name": "AI 분야 부트캠프(피지컬 AI)",
+         "kind": "department",
+         "core_code": "CS_CORE_V1",
+         "specialization": "SPEC_CS_AI",
+         "note": "교육부·한국산업기술진흥원(KIAT) `2026 첨단산업 인재양성 부트캠프` 인공지능(AI) 분야 선정 사업단(보도 2026-02-26 · 5년 · 약 80억 원). 여러 학과 학생이 함께 듣는 과정이라 소속 학과와 따로 이 자리를 둔다. 참여 학생은 이 자리를 고르면 컴퓨터·소프트웨어 Core 의 `인공지능·데이터` 갈래로 잰다. 세부 트랙 구성은 `open_questions` 에 적어 두었다"
         }
        ]
       }
