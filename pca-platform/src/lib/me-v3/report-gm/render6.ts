@@ -89,14 +89,17 @@ function coLink(r: Report3, c: CompanyDeep): string {
 /** 면접 질문 ① 의 답 재료: 질문마다 같은 영역이라도 다른 고른 문장을 쓴다(같은 줄을 되풀이하지 않게) */
 function kitConfirmed(r: Report3) {
   const used = new Map<string, number>();
-  return (x: { q: string; why: string; material: string }) => {
-    const d = r.domains.find((d) => x.why.startsWith(d.name) || x.material.startsWith(d.name)) ?? r.domains.find((d) => d.decisions.length + d.acts.length);
-    if (!d) return "";
-    const k = used.get(d.code) ?? 0; used.set(d.code, k + 1);
+  return (x: QA) => {
+    // 질문이 묻는 판단(axis)이 정해져 있으면 그 판단에서 고른 문장(pick)만 쓴다. 고른 문장이 없으면 다른 판단의 문장으로 채우지 않고 직접 기입 칸을 둔다
+    const d = (x.domain ? r.domains.find((d) => d.code === x.domain) : undefined)
+      ?? (x.axis ? undefined : r.domains.find((d) => x.why.startsWith(d.name) || x.material.startsWith(d.name)) ?? r.domains.find((d) => d.decisions.length + d.acts.length));
+    if (!d && !x.axis) return "";
+    const k = d ? (used.get(d.code) ?? 0) : 0; if (d) used.set(d.code, k + 1);
     const at = (xs: string[]) => xs[k] ?? xs[xs.length - 1];
-    const dec = at(d.decisions) ?? at(d.acts), art = at(d.artifacts), cmp = at(d.comparisons);
-    return `<dl class="x-kit"><div><dt>장면</dt><dd>${E(d.name)} · ${SLOT("과목·학기·팀 인원 직접 기입")}</dd></div>
-      <div><dt>내가 정한 것</dt><dd>${dec ? E(dec) : SLOT("직접 기입")}</dd></div>
+    const dec = x.pick ?? (x.axis ? undefined : d ? at(d.decisions) ?? at(d.acts) : undefined);
+    const art = d ? at(d.artifacts) : undefined, cmp = d ? at(d.comparisons) : undefined;
+    return `<dl class="x-kit"><div><dt>장면</dt><dd>${d ? `${E(d.name)} · ` : ""}${SLOT("과목·학기·팀 인원 직접 기입")}</dd></div>
+      <div><dt>내가 정한 것</dt><dd>${dec ? E(dec) : SLOT("이 질문에 맞는 장면 직접 기입")}</dd></div>
       <div><dt>남긴 것</dt><dd>${art ? E(art) : SLOT("결과물 이름 직접 기입")}</dd></div>
       <div><dt>비교와 결과</dt><dd>${cmp ? `${E(cmp)} · ${SLOT("수치 직접 기입")}` : SLOT("무엇과 견줬고 얼마나 달라졌나 직접 기입")}</dd></div></dl>`;
   };
@@ -181,15 +184,15 @@ function guide2(r: Report3, lib: Lib, idx: Map<number, number>, skipped: { n: nu
     return `<tr><td><b>${k}</b></td><td><b>${E(v.title)}</b><span class="x-pg">${ps.length ? `${idx.get(ps[0].n)}~${idx.get(ps[ps.length - 1].n)}쪽` : "—"}</span></td><td class="x-sm">${E(names.join(" · "))}</td></tr>`;
   }).join("");
   const lv: [string, string][] = [
-    ["검사 응답", "이 학생이 답한 내용과 체크리스트에서 고른 문장. 응시한 날 굳어 바뀌지 않습니다."],
-    ["학생 기록", "내 CareerMatri에 학생이 직접 적은 경험 기록(자기보고)."],
-    ["직무 일반", "경영 직무에서 흔히 하는 일의 안내. 특정 기업의 요건이 아닙니다."],
-    ["리포트 해석", "위 자료를 읽고 이 보고서가 붙인 설명. 해석이라고 표시합니다."],
+    ["자기보고 · 검사 응답", "답한 내용과 고른 문장. 응시한 날 굳습니다."],
+    ["자기보고 · 학생 기록", "학생이 직접 적은 경험 기록."],
+    ["직무 일반 해석", "경영 직무 일반 안내. 특정 기업 요건이 아닙니다."],
+    ["추천 전략 · 해석", "이 보고서가 붙인 설명과 권하는 과제. 사실이 아닙니다."],
   ];
   return pg(r, 2, `${opener("01", "차례와 읽는 법", "이 보고서를 읽는 법", "장마다 무엇을 다루는지, 줄마다 붙은 표시가 무엇인지, 이 보고서에서 쓰는 말이 무엇을 뜻하는지 먼저 적었습니다.")}
   ${H("차례", `이 학생 판 ${idx.size}쪽`)}<table class="x-tb x-toc"><tbody>${rows}</tbody></table>
   <div class="x-g2">
-    <div>${H("줄마다 붙은 표시")}<ul class="x-kv">${lv.map(([a, b]) => `<li><b>${E(a)}</b>${E(b)}</li>`).join("")}${(["OFFICIAL_DIRECT", "THIRD_PARTY", "SEARCH_ONLY", "CONFLICTING", "UNVERIFIED"] as const).map((k) => `<li>${tag(k)}${E(VERIFY5[k].said)}</li>`).join("")}</ul></div>
+    <div>${H("줄마다 붙은 표시")}<ul class="x-kv">${lv.map(([a, b]) => `<li><b>${E(a)}</b>${E(b)}</li>`).join("")}${(["OFFICIAL_DIRECT", "THIRD_PARTY", "SEARCH_ONLY", "CONFLICTING", "UNVERIFIED"] as const).map((k) => `<li>${tag(k)}${k === "OFFICIAL_DIRECT" ? "공시 확인 — " : ""}${E(VERIFY5[k].said)}</li>`).join("")}</ul></div>
     <div>${H("이 보고서에서 쓰는 말", "판단의 네 단계")}<ul class="x-kv">${([0, 1, 2, 3] as Level[]).map((l) => `<li><b>${E(STEP[l].tag)}</b>${E(STEP[l].said)}</li>`).join("")}</ul>
       ${H("영역의 상태")}<ul class="x-kv">${Object.values(ZONE_SAID).map((z) => `<li><b>${E(z.tag)}</b>${E(z.said)}</li>`).join("")}</ul></div>
   </div>
@@ -285,10 +288,13 @@ function g12(r: Report3): Built {
   const ds = r.domains.filter((d) => d.interest === "HIGH" && (d.zone === "Z4_INSUFFICIENT_EVIDENCE" || !asked(d))).slice(0, 3);
   if (!ds.length) return skip(12, "관심은 높고 아직 해 보지 않은 영역이 응답에 없음");
   const g = r.growth;
+  // 영역마다 같은 해석 문장이면 한 번만 위에 적는다(같은 말을 세 번 되풀이하지 않는다)
+  const sameMeaning = ds.length > 1 && !!ds[0].meaning[0] && ds.every((d) => d.meaning[0] === ds[0].meaning[0]);
   return { n: 12, html: pg(r, 12, `${opener("02", "개인 역량", "관심은 있고 아직 해 보지 않은 영역", "관심이 높게 나왔지만 스스로 맡아 해 본 일은 아직 적다고 답한 영역입니다. 지금은 잘하는 일을 찾기보다 처음 해 볼 일을 고르는 단계입니다.")}
+  ${sameMeaning ? `<p class="interp">${E(ds[0].meaning[0])} ${tag("READ")}</p>` : ""}
   ${ds.map((d) => `<article class="x-dm"><div class="x-dmh"><h2>${E(d.name)}</h2><span class="zt">${E(d.zoneTag)}</span><span class="meta">${d.askedHow === "NONE" ? "이번에 자세히 묻지 않음" : "핵심 판단까지 물음"}</span></div>
-    <p class="x-hl">${E(d.headline)}</p>${d.meaning[0] ? `<p>${E(d.meaning[0])}</p>` : ""}
-    <div class="x-g2"><div><b>이 영역을 쓰는 직무</b>${UL(d.jobs.slice(0, 3).map((j) => `${j.name} — ${j.work}`))}</div><div><b>처음 해 볼 일</b>${d.develop[0] ? `<p>${E(d.develop[0].what)}</p><em>남길 것 — ${E(d.develop[0].output)}</em>` : `<p>${E(d.askedHow === "NONE" ? "이 영역의 판단은 이번에 묻지 않았습니다. 해 본 장면이 있다면 경험 기록에 먼저 적어 두고, 다음 검사에서 판단 질문을 받습니다." : "이 영역의 수업 과제 하나를 골라 그 안에서 무엇을 정해야 하는지 적어 봅니다.")}</p>`}</div></div></article>`).join("")}
+    <p class="x-hl">${E(d.headline)}</p>${d.meaning[0] && !sameMeaning ? `<p>${E(d.meaning[0])}</p>` : ""}
+    <div class="x-g2"><div><b>이 영역을 쓰는 직무</b>${UL(d.jobs.slice(0, 3).map((j) => `${j.name} — ${j.work}`))}</div><div><b>처음 해 볼 일</b>${d.develop[0] ? `<p><b>${E(d.develop[0].what)}</b> — ${E(d.develop[0].how)}</p><em>남길 것 — ${E(d.develop[0].output)} · 규모 — 수업 과제나 팀 과제 하나(2~4주)</em>` : `<p>${E(d.askedHow === "NONE" ? "이 영역의 판단은 이번에 묻지 않았습니다. 해 본 장면이 있다면 경험 기록에 먼저 적어 두고, 다음 검사에서 판단 질문을 받습니다." : "이 영역의 수업 과제 하나를 골라 그 안에서 무엇을 정해야 하는지 적어 봅니다.")}</p>`}</div></div></article>`).join("")}
   ${g ? `${H("첫 경험을 만드는 자리", `${g.role} 직무 일반`)}<div class="x-g2"><div>${UL(g.entry.slice(0, 4))}</div><div><ol class="x-ol">${g.learn.slice(0, 3).map((l) => `<li><b>${E(l.step)}</b> — ${E(l.why)}</li>`).join("")}</ol></div></div>` : ""}
   <p class="src">${tag("GENERAL")} 관심 응답은 그 일이 실제로 맞는지까지 말해 주지 않습니다. 직접 해 본 뒤에 다시 확인해야 합니다.</p>`) };
 }
@@ -325,10 +331,10 @@ function g15(r: Report3): Built {
   return { n: 15, html: pg(r, 15, `${opener("02", "역량 개발 우선순위", `${withJosa(role, "을를")} 향한 실행 과제`, `목표로 고른 ${role}에서 거꾸로 세운 과제입니다. 모두 ${role}의 업무 영역이나 핵심 판단에서 골랐습니다.`)}
   ${pr.map((x) => `<article class="x-pr"><div class="x-prn">${x.order}</div><div>
     <div class="x-prh"><span class="rel">${E(x.relationTag)}</span><span class="meta">${E(x.domain)} · 판단: ${E(x.what)}</span></div>
-    <h2>${E(x.title)}</h2><p>${E(x.link)}</p>
-    <ol class="x-chain"><li><span>지금 응답</span>${E(x.chain.result.replace(`${x.domain} · `, ""))}</li><li><span>할 일</span>${E(x.todo)}</li><li><span>남길 것</span>${E(x.output)}</li><li><span>확인</span>${E(x.check)}</li></ol>
-    <p class="x-sm">어디서 · 언제 — ${E(x.where || "수업·팀 과제")} · ${E(x.when)}${x.ask ? ` · 면접에서 받을 질문 “${E(x.ask)}”` : ""}</p></div></article>`).join("")}
-  <p class="src">${tag("GENERAL", "검사 응답 + 직무 일반")} 과제 문장은 ${E(role)} 직무 안내(검토 전)의 말로 적었습니다. 목표 직무 밖의 빈자리는 ‘이번 전략에서 뺀 것’ 쪽에 있습니다.</p>`) };
+    <h2>${E(x.title)}</h2><p>${E(x.link.replace(/([^.?!])$/, "$1."))} <span class="x-now">지금 응답 — ${E(x.chain.result.replace(`${x.domain} · `, ""))}</span></p>
+    <ol class="x-chain x-c3"><li><span>할 일</span>${E(x.todo)}</li><li><span>남길 것</span>${E(x.output)}</li><li><span>확인</span>${E(x.check)}</li></ol>
+    <p class="x-sm">어디서 · 언제 — ${E(x.where || "수업·팀 과제")} · ${E(x.when)}${x.ask ? " · 면접 질문은 ‘면접 질문 ② 빈자리에서’ 쪽에" : ""}</p></div></article>`).join("")}
+  <p class="src">${tag("READ", "추천 전략")} ${tag("GENERAL", "검사 응답 + 직무 일반")} 과제 문장은 ${E(role)} 직무 안내(검토 전)의 말로 적었습니다. 목표 직무 밖의 빈자리는 ‘이번 전략에서 뺀 것’ 쪽에 있습니다.</p>`) };
 }
 
 /* ── 3부 Evidence ──────────────────────────────────────────────── */
@@ -456,7 +462,7 @@ function guidePages(r: Report3, lib: Lib, n: number, code: string | undefined, l
 /** 사업보고서 읽기 쪽 아래: 이 학생이 깊게 본 기업마다 읽을 원문이 있는지(공시 접수번호 · 공시 개황만 · 공시 없음) */
 function mine28(r: Report3, lib: Lib): string {
   const rows = r.companies.map((c) => { const d = dartOf(lib, c.id); const rep = d?.annual_reports?.[0];
-    return [`<b>${E(c.name)}</b>`, rep ? `${E(rep.report)}<span class="x-sub">접수번호 ${E(rep.rcept_no)}</span>` : E(d?.dart ? "공시 개황만 있음 — 사업보고서 의무 없음" : "공시 없음 — 회사 소개·보도로 대신"), rep ? tag("OFFICIAL_DIRECT") : tag(d?.dart ? "OFFICIAL_DIRECT" : "UNVERIFIED", d?.dart ? "개황" : undefined)]; });
+    return [`<b>${E(c.name)}</b>`, rep ? `${E(rep.report)} <span class="meta">· 접수번호 ${E(rep.rcept_no)}</span>` : E(d?.dart ? "공시 개황만 있음 — 사업보고서 의무 없음" : "공시 없음 — 회사 소개·보도로 대신"), rep ? tag("OFFICIAL_DIRECT") : tag(d?.dart ? "OFFICIAL_DIRECT" : "UNVERIFIED", d?.dart ? "개황" : undefined)]; });
   return `${H("내가 깊게 본 기업에서 읽을 원문", `${rows.length}곳 · 같은 네 단계로`)}${TB(["기업", "읽을 원문", "확인 수준"], rows)}`;
 }
 function g30(r: Report3, lib: Lib): Built {
@@ -540,10 +546,24 @@ function g39(r: Report3, lib: Lib): Built {
 
 /* ── 6부 기업 분석 ─────────────────────────────────────────────── */
 
+/* 후보마다 같은 목표 산업·목표 직무 이름을 되풀이하지 않는다: 이름은 쪽 위에 한 번 적고, 줄에는 이어지는 갈래만 짧게 */
+const LINK_SHORT: Record<string, string> = { GOAL_INDUSTRY: "목표 산업", GOAL_ROLE: "목표 직무" };
+function short41(links: { kind: string; text: string }[]): string {
+  if (!links.length) return "—";
+  return links.map((l) => {
+    if (l.kind === "GOAL_ROLE") return `<i class="ck">${E(LINK_SHORT.GOAL_ROLE)}${/이 기업 자료에서 본 직무/.test(l.text) ? "·자료에서 봄" : ""}</i>`;
+    if (LINK_SHORT[l.kind]) return `<i class="ck">${E(LINK_SHORT[l.kind])}</i>`;
+    return `<i class="ck ck2">${E(l.text.replace(/^분석된 탐색 방향 /, "탐색 방향 ").replace(/^확인된 경험 /, "경험 "))}</i>`;
+  }).join(" ");
+}
 function g41(r: Report3): string {
   const gs = r.region.groups;
+  const all = gs.flatMap((g) => g.items.flatMap((e) => e.links));
+  const named = (k: string, pre: string) => all.find((l) => l.kind === k)?.text.replace(pre, "").replace(/\(이 기업 자료에서 본 직무\)/, "").trim();
+  const gInd = named("GOAL_INDUSTRY", "목표 산업 "), gRole = named("GOAL_ROLE", "목표 직무 ");
   return pg(r, 41, `${opener("06", "기업 분석", "기업 후보를 고른 까닭", "지역 기업 자료 가운데 이 학생의 목표 산업·관심 직무·확인된 경험과 이어지는 곳을 골랐습니다. 이어지는 까닭을 숫자로 바꾸지 않고 글로 적었습니다.")}
-  ${gs.map((g) => `${H(REGION_KO[g.region], `${g.items.length}곳`)}<ul class="x-cand">${g.items.map((e) => `<li class="${e.depth === "DEEP" ? "deep" : ""}"><b>${E(e.org.name)}</b>${e.depth === "DEEP" ? '<span class="js">깊게 봄</span>' : ""}<span>${E(e.org.industry_line)}</span><em>${E(e.links.map((l) => l.text).join(" · ") || "—")}</em></li>`).join("")}</ul>`).join("")}
+  ${gInd || gRole ? `<p class="x-legend">${gInd ? `<i class="ck">목표 산업</i> ${E(gInd)}` : ""}${gInd && gRole ? " · " : ""}${gRole ? `<i class="ck">목표 직무</i> ${E(gRole)}` : ""} · ‘자료에서 봄’ 은 그 기업 자료에 목표 직무가 적혀 있다는 뜻</p>` : ""}
+  ${gs.map((g) => `${H(REGION_KO[g.region], `${g.items.length}곳`)}<ul class="x-cand">${g.items.map((e) => `<li class="${e.depth === "DEEP" ? "deep" : ""}"><b>${E(e.org.name)}</b>${e.depth === "DEEP" ? '<span class="js">깊게 봄</span>' : ""}<span>${E(e.org.industry_line)}</span><em>${short41(e.links)}</em></li>`).join("")}</ul>`).join("")}
   <p class="interp">${E(r.region.note)}${r.region.few ? ` ${E(r.region.few)}` : ""} ${tag("READ")}</p>
   <p class="src">‘추천 기업’ 이 아니라 검토할 후보입니다. 채용 여부와 근무지는 확인하지 않았습니다.</p>`);
 }
@@ -658,7 +678,7 @@ function g69(r: Report3): Built {
   ${H("만드는 차례")}<ol class="pj-s">${p.steps.map((s) => `<li>${E(s)}</li>`).join("")}</ol>
   <p class="src">${tag("GENERAL")} 직무 일반 안내(검토 전)의 첫 프로젝트입니다. 특정 기업의 과제가 아닙니다.</p>`) };
 }
-type QA = { q: string; why: string; material: string };
+type QA = { q: string; why: string; material: string; axis?: string; domain?: string; pick?: string };
 function qPage(r: Report3, n: number, label: string, xs: QA[], dek: string, how: [string, string], kit?: (x: QA) => string): Built {
   if (!xs.length) return skip(n, "준비할 질문이 없음");
   return { n, html: pg(r, n, `${opener("08", label, "면접 질문", dek)}
@@ -705,7 +725,7 @@ function g75(r: Report3): string {
   ${rows.map((p) => `<article class="x-pr"><div class="x-prn x-per">${E(p.period)}</div><div><h2>${E(p.label)}</h2><p>${E(p.what)}</p>
     <ol class="x-chain"><li><span>왜</span>${E(p.why)}</li><li><span>어떻게</span>${E(p.how)}</li><li><span>남길 것</span>${E(p.output)}</li><li><span>확인</span>${E(p.check)}</li></ol></div></article>`).join("")}
   ${H("다시 검사할 때 볼 것", "지금 응답에서 고른 기준")}<ul class="lim">${recheck(r).map((t) => `<li>${E(t)}</li>`).join("")}</ul>
-  <p class="src">${tag("GENERAL", "검사 응답")} 재검사는 담당자에게 요청합니다. 이번 결과는 굳어 남고, 두 결과를 같은 기준으로 견줍니다.</p>`);
+  <p class="src">${tag("READ", "추천 전략")} 계획은 이 보고서가 권하는 것이고 사실이 아닙니다 · ${tag("GENERAL", "검사 응답")} 재검사는 담당자에게 요청합니다. 이번 결과는 굳어 남고, 두 결과를 같은 기준으로 견줍니다.</p>`);
 }
 function g76(r: Report3): string {
   const ws = r.worksheet;
@@ -729,10 +749,23 @@ function g78(r: Report3): string {
   ${H("결론마다 되짚은 자리", `${r.trace.length}줄`)}${TB(["장", "결론 수"], secs.map(([k, v]) => [E(k), String(v)]))}
   <p class="src">${tag("GENERAL", "검사 응답")} 결론 한 줄마다 결과 모델의 어느 칸과 어느 고른 문장에서 왔는지를 따로 기록해 두었습니다(검토용 추적표).</p>`);
 }
+/* 같은 까닭으로 뺀 쪽은 한 줄로 묶는다(쪽 번호와 제목은 그대로 다 적는다). 같은 제목이 겹치면 한 번만 */
+function groupSkips(xs: { n: number; title: string; why: string }[]) {
+  // 까닭 안의 ‘설계 N’ 만 다르면 같은 까닭이다: 번호를 모아 한 줄에 적는다
+  const m = new Map<string, { ns: number[]; titles: string[]; why: string; refs: string[] }>();
+  for (const x of xs) {
+    const key = x.why.replace(/설계 \d+/g, "설계 #");
+    const g = m.get(key) ?? { ns: [], titles: [], why: x.why, refs: [] };
+    g.ns.push(x.n); if (!g.titles.includes(x.title)) g.titles.push(x.title);
+    for (const r of x.why.match(/설계 (\d+)/g) ?? []) if (!g.refs.includes(r.slice(3))) g.refs.push(r.slice(3));
+    m.set(key, g);
+  }
+  return [...m.values()].map((g) => ({ ...g, why: g.refs.length > 1 ? g.why.replace(/설계 \d+/, `설계 ${g.refs.join("·")}`) : g.why }));
+}
 function g80(r: Report3, skipped: { n: number; title: string; why: string }[]): string {
   return pg(r, 80, `${opener("09", "안내", "이 리포트가 하지 않는 것", "이 보고서가 말하지 않는 것과, 이 학생 판에서 뺀 쪽을 적었습니다.")}
-  <ul class="lim">${["점수 · 순위 · 다른 학생과 견준 값을 내지 않습니다", "직무 적합도나 합격 가능성을 계산하지 않습니다", "특정 기업의 채용 여부·근무지를 확인하거나 단정하지 않습니다 — ‘추천 기업’ 이 아니라 검토할 후보입니다", "학생이 답하지 않은 경험이나 성과를 만들지 않습니다", "확인되지 않은 학과 교육과정·과목 이름을 만들지 않습니다", "공식 통계가 없는 자리에 숫자를 지어내지 않습니다"].map((t) => `<li>${E(t)}</li>`).join("")}</ul>
-  ${H("이 학생 판에서 뺀 쪽", `${skipped.length}쪽`)}${skipped.length ? TB(["설계 쪽", "제목", "뺀 까닭"], skipped.map((s) => [String(s.n), E(s.title), E(s.why)])) : `<p class="none">뺀 쪽 없음</p>`}
+  <ul class="lim lim2">${["점수 · 순위 · 다른 학생과 견준 값을 내지 않습니다", "직무 적합도나 합격 가능성을 계산하지 않습니다", "특정 기업의 채용 여부·근무지를 확인하거나 단정하지 않습니다 — ‘추천 기업’ 이 아니라 검토할 후보입니다", "학생이 답하지 않은 경험이나 성과를 만들지 않습니다", "확인되지 않은 학과 교육과정·과목 이름을 만들지 않습니다", "공식 통계가 없는 자리에 숫자를 지어내지 않습니다"].map((t) => `<li>${E(t)}</li>`).join("")}</ul>
+  ${H("이 학생 판에서 뺀 쪽", `${skipped.length}쪽`)}${skipped.length ? TB(["설계 쪽", "제목", "뺀 까닭"], groupSkips(skipped).map((g) => [g.ns.join(" · "), g.titles.map(E).join("<br>"), E(g.why)])) : `<p class="none">뺀 쪽 없음</p>`}
   <p class="src">뺀 쪽을 다른 쪽으로 채우지 않았습니다. 조건이 맞거나 조사 자료가 확보되면 같은 설계로 그 쪽이 다시 섭니다.</p>`);
 }
 
@@ -771,7 +804,11 @@ export function full6(r: Report3, lib: Lib, f: Fonts): Full6 {
     55: () => g55(r), 64: () => g64(r),
     65: () => ws(65, g65(r)), 66: () => storyPage(r, 66, r.application.stories[0], "자기소개서 문단 재료 ①"), 67: () => storyPage(r, 67, r.application.stories[1], "자기소개서 문단 재료 ②"),
     68: () => ws(68, g68(r)), 69: () => g69(r),
-    70: () => qPage(r, 70, "면접 질문 ① 확인된 경험에서", r.application.interview.filter((x) => !/^준비 —/.test(x.material)).slice(0, 5), "이미 응답에서 확인된 경험을 면접관이 되짚는 질문입니다.", ["답의 뼈대", "장면(언제·무엇) → 내가 정한 것과 그 기준 → 결과와 비교 → 다음에 다르게 할 것. 질문마다 붙은 네 칸이 이 학생이 고른 문장이고, 비어 있는 칸은 면접 전에 직접 채웁니다. 한 답은 1분 안팎으로 준비합니다."], kitConfirmed(r)),
+    70: () => { const xs = r.application.interview.filter((x) => !/^준비 —/.test(x.material)).slice(0, 5); const any = xs.some((x) => x.pick);
+      // 고른 장면이 하나도 없는 학생에게 ‘확인된 경험을 되짚는 질문’ 이라고 적지 않는다
+      return qPage(r, 70, any ? "면접 질문 ① 확인된 경험에서" : "면접 질문 ① 목표 직무에서 흔히 받는 질문", xs,
+        any ? "이미 응답에서 확인된 경험을 면접관이 되짚는 질문입니다. 질문이 묻는 판단과 같은 판단에서 고른 문장만 붙였습니다." : "아직 응답에서 고른 장면이 없어, 목표 직무에서 흔히 받는 질문에 직접 채울 칸을 붙였습니다.",
+        ["답의 뼈대", `장면(언제·무엇) → 내가 정한 것과 그 기준 → 결과와 비교 → 다음에 다르게 할 것. ${any ? "칸에 적힌 문장은 이 학생이 그 판단에서 고른 것이고, 비어 있는 칸은 면접 전에 직접 채웁니다." : "네 칸 모두 면접 전에 직접 채웁니다. 실행 과제를 끝낸 뒤 그 장면으로 채우면 됩니다."} 한 답은 1분 안팎으로 준비합니다.`], kitConfirmed(r)); },
     71: () => qPage(r, 71, "면접 질문 ② 빈자리에서", gapQs(r), "아직 응답에서 확인되지 않은 판단을 묻는 질문입니다. 지금 답할 재료가 없으면 실행 과제로 먼저 만듭니다.", ["아직 재료가 없을 때", "해 보지 않은 일을 해 본 것처럼 답하지 않습니다. 그 판단을 이해하고 있다는 것과, 언제 어떤 과제로 해 볼 계획인지(실행 로드맵의 과제)를 말합니다. 면접 전에 그 과제를 끝내면 첫째 쪽의 질문으로 옮겨 갑니다."], kitGap(r)),
     72: () => g72(r), 73: () => ws(73, g73(r)),
     74: () => ws(74, p5(r)), 75: () => ws(75, g75(r)), 76: () => ws(76, g76(r)), 77: () => g77(r, lib), 78: () => ws(78, g78(r)),
@@ -861,9 +898,9 @@ export const CSS6 = `
 .x-ax{display:grid;grid-template-columns:1fr 1fr;gap:1.5mm 6mm}.x-ax li{border-top:.5pt solid var(--rule);padding:1.4mm 0}.x-ax b{font-size:9pt;color:var(--navy)}.x-ax p{font-size:8.6pt;margin:.3mm 0}.x-ax em{font-style:normal;font-size:8pt;color:var(--muted)}
 .x-dm{border-top:1.4pt solid var(--navy);padding-top:2.4mm;margin-bottom:4.4mm}.x-dmh{display:flex;align-items:center;gap:6pt;flex-wrap:wrap;margin-bottom:1.2mm}.x-dmh h2{font-size:13pt}.x-dmh .st-n{font-size:16pt}
 .x-hl{font-size:10pt;color:var(--navy);font-weight:700;line-height:1.55}.x-q{color:var(--navy);font-weight:700}
-.x-pr{display:grid;grid-template-columns:10mm 1fr;gap:3mm;border-top:1.4pt solid var(--navy);padding-top:2.4mm;margin-bottom:4mm}.x-prn{font-size:22pt;font-weight:800;color:var(--navy);line-height:1}.x-prn.x-per{font-size:10pt;color:var(--blue)}
-.x-prh{display:flex;gap:6pt;align-items:baseline}.x-pr h2{font-size:12.5pt;margin:1mm 0}
-.x-chain{display:grid;grid-template-columns:repeat(4,1fr);gap:1.4mm;margin:2mm 0}.x-chain li{background:var(--tint);border-top:2pt solid var(--blue);padding:1.4mm 2mm;font-size:8.6pt;line-height:1.45}.x-chain li span{display:block;font-size:7.6pt;font-weight:700;color:var(--blue)}
+.x-pr{display:grid;grid-template-columns:10mm 1fr;gap:3mm;border-top:1.4pt solid var(--navy);padding-top:1.8mm;margin-bottom:2.8mm}.x-prn{font-size:22pt;font-weight:800;color:var(--navy);line-height:1}.x-prn.x-per{font-size:10pt;color:var(--blue)}
+.x-prh{display:flex;gap:6pt;align-items:baseline}.x-pr h2{font-size:12pt;margin:.8mm 0}.x-pr>div>p:not(.x-sm){font-size:8.9pt;line-height:1.5;margin:.6mm 0}
+.x-chain{display:grid;grid-template-columns:repeat(4,1fr);gap:1.4mm;margin:1.4mm 0}.x-chain.x-c3{grid-template-columns:1.5fr 1fr 1.2fr}.x-now{color:var(--muted);font-size:8.4pt}.x-chain li{background:var(--tint);border-top:2pt solid var(--blue);padding:1.4mm 2mm;font-size:8.6pt;line-height:1.45}.x-chain li span{display:block;font-size:7.6pt;font-weight:700;color:var(--blue)}
 .x-ledger td:first-child{width:34mm}
 .x-lad{display:grid;grid-template-columns:repeat(2,1fr);gap:3mm 6mm}.x-lad b{font-size:9pt;color:var(--navy)}.x-lad ol{display:grid;grid-template-columns:repeat(4,1fr);gap:1mm;margin-top:1mm}
 .x-lad li{font-size:7.8pt;text-align:center;background:#F0F2F6;color:#9AA2B0;border-radius:2pt;padding:1mm 0}.x-lad li.on{background:var(--sky);color:var(--navy)}.x-lad li span{display:block;font-size:12pt;font-weight:800}
@@ -873,8 +910,8 @@ export const CSS6 = `
 .x-pj{background:var(--tint);border-left:3pt solid var(--navy);padding:3mm 4mm;margin-bottom:4mm}.x-pj h2{font-size:13pt;margin:1.2mm 0}
 .x-fin{border-top:1.4pt solid var(--navy);padding-top:2.4mm}.x-fin h2{font-size:12pt}.x-fin dl{display:grid;grid-template-columns:repeat(5,1fr);gap:1mm;margin:2mm 0}.x-fin dl div{background:var(--tint);padding:1.4mm}.x-fin dt{font-size:7.4pt;color:var(--muted)}.x-fin dd{margin:0;font-size:10pt;font-weight:800;color:var(--navy)}
 .x-blank td{color:#9A6A22;font-size:8.2pt}
-.x-cand li{display:grid;grid-template-columns:44mm 1fr;gap:0 3mm;padding:1.4mm 0;border-top:.5pt solid var(--rule)}.x-cand li b{font-size:9pt;color:var(--navy)}.x-cand li .js{justify-self:start;margin-top:.5mm}
-.x-cand li span:not(.js){grid-column:2;grid-row:1;font-size:8.4pt}.x-cand li em{grid-column:2;font-style:normal;font-size:8pt;color:var(--muted)}.x-cand li.deep b{color:var(--blue)}
+.ck{font-style:normal;display:inline-block;font-size:7.6pt;padding:0 1.4mm;border-radius:1mm;background:var(--tint);color:var(--blue);margin:0 .6mm .4mm 0}.ck2{background:none;border:.5pt solid var(--rule);color:var(--ink)}.x-legend{font-size:8.4pt;margin:0 0 2mm}.lim2{columns:2;column-gap:6mm}.lim2 li{break-inside:avoid}.x-cand li{display:grid;grid-template-columns:40mm 50mm 1fr;gap:0 3mm;padding:1.1mm 0;border-top:.5pt solid var(--rule);align-items:start}.x-cand li b{font-size:9pt;color:var(--navy)}.x-cand li .js{grid-column:1;justify-self:start;margin-top:.5mm}
+.x-cand li span:not(.js){grid-column:2;grid-row:1 / span 2;font-size:8.2pt;line-height:1.4}.x-cand li em{grid-column:3;grid-row:1 / span 2;font-style:normal;font-size:8pt;color:var(--muted)}.x-cand li.deep b{color:var(--blue)}
 .x-cal{display:grid;grid-template-columns:repeat(5,1fr);gap:1.6mm;margin-bottom:5mm;border-top:1.4pt solid var(--navy)}
 .x-cal li{padding:2mm 2mm 2mm 0;border-right:.6pt solid var(--rule)}.x-cal li:last-child{border-right:0}.x-cal span{display:block;font-size:8pt;font-weight:800;color:var(--blue)}.x-cal b{display:block;font-size:8.8pt;line-height:1.45;color:var(--navy);margin:.8mm 0}.x-cal em{font-style:normal;font-size:7.8pt;color:var(--muted);line-height:1.4;display:block}
 .x-four{display:grid;grid-template-columns:repeat(4,1fr);gap:2mm;margin-bottom:4mm}.x-four li{border-top:2.4pt solid var(--navy);background:var(--tint);padding:2mm}
