@@ -70,6 +70,9 @@ async function main() {
   const { orgId } = await kusOrgSetup();
   await student("KUS", orgId, "QA26S01", "[테스트] KUS 캡처용", "KUS26_CBIZ_GM", PW);
   const fresh = "qa-kus-qa26s01";
+  /* 모바일의 '검사 전' 과 '검사 첫 화면' 은 따로 연 학생으로 찍는다. 응시는 한 사람에 하나라 PC 학생은 이미 시작했다 */
+  await student("KUS", orgId, "QA26S02", "[테스트] KUS 캡처용 2", "KUS26_CBIZ_GM", PW);
+  const fresh2 = "qa-kus-qa26s02";
   const browser = await chromium.launch();
 
   for (const view of ["pc", "mobile"] as View[]) {
@@ -102,6 +105,22 @@ async function main() {
       await shot(p, "02-home-PROGRESS", view);
       await p.context().close();
     } else {
+      {
+        const q = await as(browser, view, fresh2, PW);
+        await shot(q, "02-home-START", view);
+        await q.click('a:has-text("검사 시작하기")');
+        await q.waitForURL(/\/campus\/kus\/start/, { timeout: 30000 }).catch(() => undefined);
+        await q.locator('form button[type="submit"]').first().click();
+        await q.waitForURL(/\/v3\/start/, { timeout: 30000 }).catch(() => undefined);
+        await q.waitForLoadState("networkidle").catch(() => undefined);
+        await q.getByText("학부", { exact: true }).click().catch(() => undefined);
+        await q.getByRole("button", { name: "검사 시작" }).click();
+        await q.waitForURL(/\/v3\/\d+/, { timeout: 30000 }).catch(() => undefined);
+        ok("모바일 캡처용 응시가 열린다", /\/v3\/\d+/.test(q.url()), path(q));
+        await enterAssessment(q);
+        await shot(q, "03-assess-first", view);
+        await q.context().close();
+      }
       const p = await as(browser, view, fresh, PW);
       await shot(p, "02-home-PROGRESS", view);
       const go = p.locator('a:has-text("이어서 답하기")').first();
