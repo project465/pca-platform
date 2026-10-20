@@ -92,7 +92,7 @@ const words = (s: string) => s.replace(/[·,()‘’“”]/g, " ").split(/\s+|�
 const overlaps = (a: string, b: string) => words(a).some((w) => words(b).includes(w));
 
 /** 판단마다 면접관이 묻는 말과 보는 것(일반 직무 안내) */
-const ASKQ: Record<string, string> = {
+export const ASKQ: Record<string, string> = {
   J1: "그 과제에서 다루지 않기로 한 것은 무엇이었고, 왜 뺐나요?",
   J2: "그 목표를 숫자로 바꿀 때 목표값은 어떻게 정했나요?",
   J3: "다른 안은 왜 고르지 않았나요? 무엇을 기준으로 정했나요?",
@@ -103,7 +103,7 @@ const ASKQ: Record<string, string> = {
   J8: "그 결과가 실제 결정에 쓰였나요? 무엇이 바뀌었나요?",
 };
 /** 아직 장면이 없는 판단을 묻는 말(‘그 목표’처럼 경험을 전제하지 않는다) */
-const ASKQ0: Record<string, string> = {
+export const ASKQ0: Record<string, string> = {
   J1: "과제에서 다루지 않기로 한 것을 직접 정해 본 적이 있나요?",
   J2: "막연한 목표를 숫자로 바꿔 본 적이 있나요? 목표값은 어떻게 정했나요?",
   J3: "여러 안 가운데 하나를 고를 때 기준을 먼저 세워 본 적이 있나요?",
@@ -113,13 +113,13 @@ const ASKQ0: Record<string, string> = {
   J7: "기대와 다른 결과가 나왔을 때 까닭을 좁혀 계획을 바꿔 본 적이 있나요?",
   J8: "내가 만든 결과가 다음 결정에 쓰인 적이 있나요?",
 };
-const ASKWHY: Record<string, string> = {
+export const ASKWHY: Record<string, string> = {
   J1: "일의 범위를 스스로 자르는지 봅니다.", J2: "목표를 잴 수 있게 만드는지 봅니다.", J3: "기준을 먼저 세우고 고르는지 봅니다.",
   J4: "방법을 고른 까닭을 말할 수 있는지 봅니다.", J5: "다른 사람이 쓸 수 있게 남기는지 봅니다.", J6: "나아졌다는 말에 비교 대상이 있는지 봅니다.",
   J7: "틀렸을 때 까닭을 좁히는지 봅니다.", J8: "결과가 실제로 쓰였는지 봅니다.",
 };
 /** 고른 문장이 어느 판단에서 왔는지: 그 영역의 흐름 단계 이름과 문장 낱말로 가린다(축 정보가 문장에 없으므로 결정 문장→J3, 행동→흐름 순서) */
-function axisOfPick(d: Report3["domains"][number], pick: string): string {
+export function axisOfPick(d: Report3["domains"][number], pick: string): string {
   const has = (re: RegExp) => re.test(pick);
   if (has(/지표|숫자|건수|전환율|도달/)) return "J2";
   if (has(/골랐|나눴|배분|기준을 정|볼 기준/)) return "J3";
