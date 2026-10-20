@@ -1,4 +1,4 @@
-# 체육·운동재활 Core 영역별 검토표 (SPORTS_V1 · SPORTS_V1_ITEM_BANK_V1)
+# 체육·운동재활 Core 영역별 검토표 (SPORTS_V1 · SPORTS_V1_ITEM_BANK_V1.2)
 
 이 파일은 **생성물이다**. 고칠 곳은 `sports-v1-items.json` 와 `sports-v1-domains.json` 이고, 고친 뒤 `CORE=SPORTS_CORE_V1 npm run core:qa` 를 돌린다.
 

@@ -1,4 +1,4 @@
-# 미디어·광고홍보·공연 Core 영역별 검토표 (MEDIA_V1 · MEDIA_V1_ITEM_BANK_V1)
+# 미디어·광고홍보·공연 Core 영역별 검토표 (MEDIA_V1 · MEDIA_V1_ITEM_BANK_V1.3)
 
 이 파일은 **생성물이다**. 고칠 곳은 `media-v1-items.json` 와 `media-v1-domains.json` 이고, 고친 뒤 `CORE=MEDIA_CORE_V1 npm run core:qa` 를 돌린다.
 

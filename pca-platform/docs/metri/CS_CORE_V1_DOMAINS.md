@@ -1,4 +1,4 @@
-# 컴퓨터·소프트웨어 Core 영역별 검토표 (CS_V1 · CS_V1_ITEM_BANK_V1)
+# 컴퓨터·소프트웨어 Core 영역별 검토표 (CS_V1 · CS_V1_ITEM_BANK_V1.3)
 
 이 파일은 **생성물이다**. 고칠 곳은 `cs-v1-items.json` 와 `cs-v1-domains.json` 이고, 고친 뒤 `CORE=CS_CORE_V1 npm run core:qa` 를 돌린다.
 
