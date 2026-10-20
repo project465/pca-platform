@@ -349,7 +349,7 @@ async function main(): Promise<void> {
     const q = await login(c2, "qa-pcu-admin", pwP);
     await q.goto(`${BASE}/jju/admin`, { waitUntil: "networkidle" });
     const txt = await q.locator("body").innerText();
-    ok("배재대 담당자는 전주대 사업단 현황을 보지 못한다", txt.includes("전주대학교 사업단 계정이 아닙니다") && !txt.includes("QA 학생"), txt.slice(0, 80).replace(/\s+/g, " "));
+    ok("배재대 담당자는 전주대 사업단 현황을 보지 못한다", txt.includes("전주대학교 사업단 계정이 아니에요") && !txt.includes("QA 학생"), txt.slice(0, 80).replace(/\s+/g, " "));
     await shoot(q, "18-deny-pcu-admin", "배재대 담당자가 전주대 사업단 현황을 연 화면(거절)");
     const x = await pdfOf(q, att, "pcu");
     ok("배재대 담당자는 전주대 학생 PDF 를 받지 못한다(404)", x.status === 404, String(x.status));
