@@ -406,6 +406,28 @@
     return h;
   }
 
+  /* src/sejong/ui/report-doc.tsx 의 편집 짜임을 옮겨 적은 것. 거기를 고치면 여기도 고친다 */
+  function coverArt(small) {
+    var g = small ? "rpg2" : "rpg1", d = small ? "rpd2" : "rpd1";
+    return '<svg class="rp-art' + (small ? " small" : "") + '" viewBox="0 0 600 600" aria-hidden="true"><defs><radialGradient id="' + g + '" cx="35%" cy="35%" r="70%">' +
+      '<stop offset="0" stop-color="#6aa6ff" stop-opacity="0.95"/><stop offset="1" stop-color="#1d4fd8" stop-opacity="0"/></radialGradient>' +
+      '<pattern id="' + d + '" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.6" fill="#ffffff" fill-opacity="0.35"/></pattern></defs>' +
+      '<circle cx="380" cy="300" r="190" fill="url(#' + g + ')"/><circle cx="380" cy="300" r="240" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>' +
+      '<path d="M150 420 C 230 330, 330 300, 450 330" fill="none" stroke="#e3a73b" stroke-width="10" stroke-linecap="round"/>' +
+      '<path d="M420 150 C 470 175, 505 215, 520 265" fill="none" stroke="#ffffff" stroke-opacity="0.85" stroke-width="9" stroke-linecap="round"/>' +
+      '<path d="M110 200 C 140 160, 180 140, 225 135" fill="none" stroke="#e3a73b" stroke-width="7" stroke-linecap="round"/>' +
+      '<rect x="40" y="440" width="160" height="112" fill="url(#' + d + ')"/></svg>';
+  }
+  function band(part, title) { return '<header class="rp-band"><span>' + esc(part) + "</span><h2>" + esc(title) + "</h2></header>"; }
+  function tocPart(no, title, items) {
+    return '<div class="rp-toc-part"><b>' + esc(no) + "</b><div><h3>" + esc(title) + "</h3><ul>" + items.map(function (i) { return "<li>" + esc(i) + "</li>"; }).join("") + "</ul></div></div>";
+  }
+  function divider(no, title, msg, items) {
+    return '<section class="rp-divider"><div class="rp-div-top"><span>Part</span><b>' + no + '</b></div><div class="rp-div-bottom">' + coverArt(true) +
+      "<h2>" + esc(title) + '</h2><p class="rp-div-msg">' + esc(msg) + "</p><ul>" + items.map(function (i, k) { return "<li>" + no + "." + (k + 1) + " " + esc(i) + "</li>"; }).join("") + "</ul></div></section>";
+  }
+  function rh(no, t) { return '<h2 class="rp-h"><i>' + esc(no) + "</i>" + esc(t) + "</h2>"; }
+
   function reportDoc(p, att) {
     var r = att.result;
     var allowAux = auxAllowed(p.program, r.profile);
@@ -415,47 +437,114 @@
     var kindLabel = {}; instrument.experience_kinds.forEach(function (k) { kindLabel[k.code] = k.label; });
     var checkLabel = {}; instrument.experience_checks.forEach(function (c) { checkLabel[c.code] = c.label; });
     var prog = PROGRAMS.find(function (x) { return x.code === p.program; });
-    var strengths = r.axes.filter(function (a) { return r.strengths.indexOf(a.axis) >= 0; }).map(function (a) { return a.name; });
-    var gapNames = Array.from(new Set(r.gaps.map(function (g) { return g.axis; }))).map(function (x) { return (r.axes.find(function (a) { return a.axis === x; }) || {}).name; });
-    var h = '<article class="sj-paper" id="sj-report"><section class="cover">' + badge("demo", "시연판 · DEMO 진단 결과지") + "<h1>개인별 취업 전략 결과지</h1>" +
-      '<p class="lead">' + esc(p.name) + " · 참여번호 " + esc(p.no) + '</p><p class="small">' + esc(prog.name) + " · 진단 제출 " + day(att.scoredAt) + "</p>" +
-      '<p class="small muted">세종일자리경제진흥원 × CareerMatri · 진단 ' + esc(r.instrument_version) + " · 분석 " + esc(r.analysis_version) + "</p>" +
-      '<p class="small muted">이 문서는 검증 전 시연판 진단으로 만든 것입니다. 총점·순위·적합도 숫자를 담지 않으며 선발·평가에 쓰지 않습니다.</p></section>';
-    h += "<section><h2>1. 한눈에 보기</h2><ul><li>희망 직무: " + esc(r.profile.job_areas.map(areaName).join(", ")) + "</li><li>경험으로 받쳐진 판단: " + esc(strengths.length ? strengths.join(", ") : "아직 없음") +
-      "</li><li>희망 직무에서 채울 판단: " + esc(gapNames.join(", ") || "없음") + "</li><li>기록한 경험: " + p.exps.length + "건 (제출 당시 " + r.evidence_count + "건)</li></ul></section>";
-    h += "<section><h2>2. 역량 분석</h2>" + resultView(r) + "</section>";
-    h += '<section class="pb"><h2>3. 경험과 경력 근거</h2>' + (p.exps.length === 0 ? '<p class="muted">기록한 경험이 없습니다.</p>' :
-      '<div class="sj-scroll"><table class="sj-table"><thead><tr><th>종류</th><th>경험</th><th>말할 수 있는 것</th></tr></thead><tbody>' +
-      p.exps.map(function (e) {
-        return "<tr><td>" + esc(kindLabel[e.kind] || e.kind) + "</td><td><b>" + esc(e.title) + '</b><div class="small muted">' + esc([e.org_name, e.period_text].filter(Boolean).join(" · ")) + '</div></td><td class="small">' +
-          esc(e.checks.map(function (c) { return checkLabel[c] || c; }).join(" / ") || "-") + "</td></tr>";
-      }).join("") + "</tbody></table></div>") +
-      "<p class=\"small muted\">지원서·면접에서는 '경험으로 확인됨' 판단의 근거 경험부터 구체적인 숫자·기간·결과와 함께 말하세요. 숫자와 결과는 본인이 직접 적습니다.</p></section>";
-    h += '<section><h2>4. 세종 산업 환경</h2><ul class="small">' + links.clusters.map(function (c) { return "<li><b>" + esc(c.name) + "</b> — " + esc(c.where) + " (" + c.orgs.length + "곳 조사)</li>"; }).join("") +
-      '</ul><ul class="small">' + region.facts.map(function (f) { return "<li>" + esc(f.text) + " [" + esc(VERIFY_LABEL[f.verify]) + " · " + esc(f.sources.map(function (s) { return s.title; }).join(", ")) + "]</li>"; }).join("") + "</ul></section>";
-    h += '<section class="pb"><h2>5. 세종 사업장 기업·기관 탐색</h2><p class="small">' + esc(region.notices.info_only + " " + region.notices.hiring) + '</p><p class="small muted">공식 출처로 세종 사업장 소재를 확인한 곳만 싣습니다. ' + esc(orgsMeta.access_note) + "</p>" +
-      '<div class="sj-scroll"><table class="sj-table"><thead><tr><th>기업·기관</th><th>세종 사업장</th><th>업종·사업</th><th>확인 상태</th><th>채용</th></tr></thead><tbody>' +
+    var regionLabel = (instrument.region_ranges.options.find(function (o) { return o.code === r.profile.region_range; }) || {}).label || "-";
+    var audienceLabel = (instrument.audiences.options.find(function (o) { return o.code === r.profile.audience; }) || {}).label || "선택하지 않음";
+    var strong = r.axes.filter(function (a) { return a.state === "CONFIRMED" || a.state === "PARTIAL"; });
+    var claimed = r.axes.filter(function (a) { return a.state === "CLAIMED"; });
+    var toFill = r.axes.filter(function (a) { return a.state === "NONE" || a.state === "EXPOSED"; });
+    var gapAxes = Array.from(new Set(r.gaps.map(function (g) { return g.axis; }))).map(function (x) { return r.axes.find(function (a) { return a.axis === x; }); }).filter(Boolean);
+    function byH(h) { return r.actions.filter(function (x) { return x.horizon === h; }); }
+    var areas = r.profile.job_areas.map(areaName).join(" · ");
+
+    var h = '<article class="sj-paper sj-rp" id="sj-report">';
+    h += '<section class="rp-cover">' + coverArt(false) + '<div class="rp-cover-top"><span class="rp-kicker">SEJONG · CAREER STRATEGY REPORT</span>' + badge("demo", "시연판 · DEMO 진단 결과지") + "</div>" +
+      '<div class="rp-cover-title"><h1>개인별 취업 전략 결과지</h1><p>해 온 일로 다음 일을 찾습니다</p></div>' +
+      '<dl class="rp-cover-meta"><div><dt>이름</dt><dd>' + esc(p.name) + "</dd></div><div><dt>참여번호</dt><dd>" + esc(p.no) + "</dd></div><div><dt>참여 사업</dt><dd>" + esc(prog.name) +
+      "</dd></div><div><dt>진단 제출</dt><dd>" + day(att.scoredAt) + '</dd></div><div class="wide"><dt>희망 직무</dt><dd>' + esc(areas) + "</dd></div></dl>" +
+      '<div class="rp-cover-foot"><b>세종일자리경제진흥원 × CareerMatri</b><span>진단 ' + esc(r.instrument_version) + " · 분석 " + esc(r.analysis_version) +
+      "</span><span>검증 전 시연판 진단으로 만든 문서입니다. 총점·순위·적합도 숫자를 담지 않으며 선발·평가에 쓰지 않습니다.</span></div></section>";
+
+    h += '<section class="rp-page">' + band("CONTENTS", "차례와 읽는 법") + '<div class="rp-toc">' +
+      tocPart("01", "지금의 나", ["1.1 한눈에 보기", "1.2 희망 직무별 분석", "1.3 판단 여덟 갈래", "1.4 경험과 경력 근거"]) +
+      tocPart("02", "세종에서 찾기", ["2.1 세종 산업 환경", "2.2 이어 볼 사업장", "2.3 보조 권역"]) +
+      tocPart("03", "다음 90일", ["3.1 30·60·90일 실행 계획", "3.2 진흥원 지원사업 안내"]) +
+      tocPart("부록", "근거·출처·한계", ["진단과 분석 규칙", "자료의 확인 상태"]) + "</div>" + rh("i", "이 결과지를 읽는 법") +
+      '<p class="small">점수는 없습니다. 판단 여덟 갈래마다 <b>진단에서 고른 단계</b>와 <b>경험 기록이 받쳐 주는지</b>를 함께 보고 다섯 상태 가운데 하나를 적습니다.</p>' +
+      '<table class="sj-table rp-legend"><tbody>' +
+      "<tr><td>" + stateBadge("CONFIRMED") + "</td><td>두 문항 이상에서 ‘직접 해 봤다’ 이상을 골랐고, 그 판단을 받치는 경험 기록이 둘 이상입니다.</td></tr>" +
+      "<tr><td>" + stateBadge("PARTIAL") + "</td><td>같은 조건에서 경험 근거가 하나입니다. 다른 경험에서 하나 더 찾으면 ‘확인됨’이 됩니다.</td></tr>" +
+      "<tr><td>" + stateBadge("CLAIMED") + "</td><td>직접 해 봤다고 답했지만 아직 경험 기록이 없습니다.</td></tr>" +
+      "<tr><td>" + stateBadge("EXPOSED") + "</td><td>옆에서 보거나 정해진 대로 따라 해 본 단계입니다.</td></tr>" +
+      "<tr><td>" + stateBadge("NONE") + "</td><td>아직 해 보지 않았다고 답했습니다.</td></tr></tbody></table>" +
+      '<p class="small muted">단계 뜻 — L1 ' + esc(levels.L1) + " · L2 " + esc(levels.L2) + " · L3 " + esc(levels.L3) + "</p></section>";
+
+    h += divider("01", "지금의 나", "경험으로 받쳐진 판단 " + strong.length + "갈래 · 희망 직무에서 채울 판단 " + gapAxes.length + "갈래", ["한눈에 보기", "희망 직무별 분석", "판단 여덟 갈래", "경험과 경력 근거"]);
+
+    h += '<section class="rp-page">' + band("Part 01 · 지금의 나", "1.1 한눈에 보기") +
+      '<div class="rp-kpis"><div class="ok"><b>' + strong.length + '<small> / 8</small></b><span>경험으로 받쳐진 판단</span></div><div class="brand"><b>' + claimed.length +
+      '<small> / 8</small></b><span>응답으로만 확인</span></div><div><b>' + toFill.length + '<small> / 8</small></b><span>접해 봤거나 아직인 판단</span></div><div><b>' + p.exps.length +
+      "<small>건</small></b><span>기록한 경험 (제출 당시 " + r.evidence_count + "건)</span></div></div>" +
+      '<table class="sj-table rp-kv"><tbody><tr><th>희망 직무</th><td>' + esc(areas) + "</td></tr><tr><th>희망 지역 범위</th><td>" + esc(regionLabel) + "</td></tr><tr><th>해당 구분</th><td>" + esc(audienceLabel) +
+      "</td></tr><tr><th>보유 기술·도구</th><td>" + esc(r.profile.skills.length ? r.profile.skills.join(", ") : "-") + "</td></tr></tbody></table>" +
+      '<div class="rp-two"><div class="rp-box ok"><h3>지원서에 먼저 쓸 판단</h3>' +
+      (strong.length ? "<ul>" + strong.map(function (a) { return "<li><b>" + esc(a.name) + "</b> — 근거: " + esc(a.evidence.map(function (e) { return e.title; }).join(" · ")) + "</li>"; }).join("") + "</ul>"
+        : '<p class="small muted">아직 없습니다. 해 본 일을 경험 기록에 적으면 ‘응답만’ 판단이 확인으로 바뀔 수 있습니다.</p>') +
+      '</div><div class="rp-box"><h3>희망 직무에서 먼저 채울 판단</h3>' +
+      (gapAxes.length ? "<ul>" + gapAxes.map(function (a) { return "<li><b>" + esc(a.name) + "</b> — " + esc(a.question) + "</li>"; }).join("") + "</ul>"
+        : '<p class="small muted">고른 직무의 핵심 판단에 비어 있는 칸이 없습니다.</p>') + "</div></div>" +
+      rh("1.2", "희망 직무별 분석") + '<div class="rp-two">' +
+      r.areas.map(function (ar) {
+        return '<div class="rp-box"><h3>' + esc(ar.name) + '</h3><p class="small muted">' + esc(ar.one_line) + '</p><p class="small">' + badge("ok", "확인 " + ar.counts.confirmed) + " " +
+          badge("brand", "응답만 " + ar.counts.claimed) + " " + badge("", "채울 것 " + ar.counts.to_fill) + '</p><ul class="small">' +
+          ar.key.map(function (k) { return "<li>" + esc(k.name) + " — " + stateBadge(k.state) + "</li>"; }).join("") + "</ul></div>";
+      }).join("") + "</div></section>";
+
+    h += '<section class="rp-page">' + band("Part 01 · 지금의 나", "1.3 판단 여덟 갈래") +
+      '<p class="small muted">막대는 진단에서 고른 단계(두 문항 이상이 닿은 단계), 초록은 경험 기록이 받친 칸입니다.</p>' +
+      '<table class="sj-table rp-axes"><thead><tr><th>판단</th><th>고른 단계</th><th>상태</th><th>근거 경험</th></tr></thead><tbody>' +
+      r.axes.map(function (a) {
+        return "<tr><td><b>" + esc(a.name) + '</b><div class="small muted">' + esc(a.question) + "</div></td><td>" + steps(a.level, a.state === "CONFIRMED" || a.state === "PARTIAL") + "</td><td>" + stateBadge(a.state) +
+          '</td><td class="small">' + (a.evidence.length ? esc(a.evidence.map(function (e) { return e.title; }).join(" · ")) : a.evidence_possible ? "-" : '<span class="muted">경험 기록으로 확인하는 칸이 없는 판단</span>') + "</td></tr>";
+      }).join("") + "</tbody></table>" +
+      (r.quality.flat ? '<p class="sj-note warn">응답이 한 값에 몰려 있습니다. 결과를 해석하기 전에 상담사와 함께 다시 보기를 권합니다.</p>' : "") +
+      "</section>" + '<section class="rp-page">' + band("Part 01 · 지금의 나", "1.4 경험과 경력 근거") +
+      (p.exps.length === 0 ? '<p class="muted">기록한 경험이 없습니다.</p>' :
+        '<table class="sj-table"><thead><tr><th>종류</th><th>경험</th><th>말할 수 있는 것</th></tr></thead><tbody>' +
+        p.exps.map(function (e) {
+          return '<tr><td class="small">' + esc(kindLabel[e.kind] || e.kind) + "</td><td><b>" + esc(e.title) + '</b><div class="small muted">' + esc([e.org_name, e.period_text].filter(Boolean).join(" · ")) +
+            '</div></td><td class="small">' + esc(e.checks.map(function (c) { return checkLabel[c] || c; }).join(" / ") || "-") + "</td></tr>";
+        }).join("") + "</tbody></table>") +
+      '<div class="rp-box rp-tip"><h3>지원서·면접에서 이렇게 씁니다</h3>' +
+      (strong.length ? '<ol class="small">' + strong.map(function (a) {
+        return "<li><b>" + esc(a.name) + "</b>: ‘" + esc((a.evidence[0] || {}).title) + "’에서 “" + esc(a.question) + "”에 답하는 문장</li>";
+      }).join("") + '</ol><p class="small muted">문장에 들어갈 숫자·기간·결과는 본인이 직접 채웁니다. 이 문서는 문장을 대신 지어 주지 않습니다.</p>' : '<p class="small">‘응답만’ 판단부터 경험 하나씩 기록해 근거를 만듭니다. 이 문서는 문장을 대신 지어 주지 않습니다.</p>') + "</div></section>";
+
+    h += divider("02", "세종에서 찾기", "고른 직무와 이어지는 세종 사업장 " + sejong.length + "곳 (공식 출처로 소재 확인) · 채용 여부는 확인하지 않았습니다", ["세종 산업 환경", "이어 볼 사업장", "보조 권역"]);
+
+    h += '<section class="rp-page">' + band("Part 02 · 세종에서 찾기", "2.1 세종 산업 환경") + '<div class="rp-clusters">' +
+      links.clusters.map(function (c) { return "<div><b>" + esc(c.name) + "</b><span>" + esc(c.where) + "</span><em>" + c.orgs.length + "곳 조사</em></div>"; }).join("") +
+      '</div><ul class="small rp-facts">' + region.facts.map(function (f) {
+        return "<li>" + esc(f.text) + " " + badge("part", VERIFY_LABEL[f.verify]) + ' <span class="muted">' + esc(f.sources.map(function (s) { return s.title; }).join(", ")) + "</span></li>";
+      }).join("") + "</ul>" + rh("2.2", "이어 볼 사업장") +
+      '<p class="small">' + esc(region.notices.info_only + " " + region.notices.hiring) + '</p><p class="small muted">공식 출처로 세종 사업장 소재를 확인한 곳만 싣습니다. 순서는 자료 순서이고 점수로 줄 세우지 않았습니다.</p>' +
+      '<table class="sj-table rp-orgs"><thead><tr><th>기업·기관</th><th>세종 사업장</th><th>업종·사업</th><th>확인 상태</th><th>채용</th></tr></thead><tbody>' +
       sejong.map(function (o) {
         return "<tr><td><b>" + esc(o.name) + '</b><div class="small muted">' + esc(ORG_TYPE_LABEL[o.org_type] + " · " + LOCATION_LABEL[o.location_basis]) + '</div></td><td class="small">' + esc((o.sejong_sites[0] || {}).address) +
           '</td><td class="small">' + esc(o.industry_text) + '</td><td class="small">' + esc(VERIFY_LABEL[o.verify]) + '<div class="muted">' + esc((o.sources[0] || {}).checked_on) + '</div></td><td class="small">미확인</td></tr>';
-      }).join("") + "</tbody></table></div>" + (sejong.length === 0 ? '<p class="muted">고른 직무와 이어지는 확인된 곳이 아직 없습니다.</p>' : "") + "</section>";
-    h += "<section><h2>6. 보조 권역 (대전·충남·충북)</h2>" + (allowAux ? (aux.length ? '<p class="small">' + esc(aux.map(function (o) { return o.name; }).join(", ")) + "</p>" : '<p class="small muted">' + esc(region.aux_status) + "</p>")
-      : '<p class="small muted">희망 지역 범위 또는 참여 사업의 지역 조건에 따라 싣지 않습니다.</p>') + "</section>";
-    var HZ = { D30: "30일", D60: "60일", D90: "90일" };
-    h += '<section class="pb"><h2>7. 30·60·90일 실행 계획</h2><table class="sj-table"><thead><tr><th>기한</th><th>할 일</th></tr></thead><tbody>' +
-      r.actions.map(function (x) { return "<tr><td>" + HZ[x.horizon] + "</td><td>" + esc(x.text) + "</td></tr>"; }).join("") + "</tbody></table></section>";
-    h += '<section><h2>8. 진흥원 지원사업 안내</h2><p class="small muted">진흥원과 사업 목록이 확정되면 이 자리에 연결합니다. 시연판에서는 비워 둡니다.</p></section>';
-    h += '<section><h2>9. 근거·출처·한계</h2><ul class="small"><li>진단 ' + esc(r.instrument_version) + " 은 검증 전 시연판입니다. 문항 24개, 판단 여덟 갈래(CareerMatri ME_V3 의 판단 축 이름을 그대로 씀).</li>" +
-      "<li>상태 규칙(" + esc(r.analysis_version) + "): 두 문항 이상이 '직접 해 봤다' 이상이고 경험 근거가 둘이면 '" + STATE_LABEL.CONFIRMED + "', 하나면 '" + STATE_LABEL.PARTIAL + "', 없으면 '" + STATE_LABEL.CLAIMED + "'.</li>" +
-      "<li>기업·기관 자료는 공식 출처의 검색 발췌로 확인했고 원문 재확인 전입니다(확인일 " + esc(orgsMeta.checked_on) + "). 직무 연결은 시연용 해석입니다.</li><li>채용 여부, 취업 가능성, 지역 정주 결과를 이 문서가 산출하지 않습니다.</li></ul></section></article>";
-    return h;
+      }).join("") + "</tbody></table>" + (sejong.length === 0 ? '<p class="muted">고른 직무와 이어지는 확인된 곳이 아직 없습니다.</p>' : "") +
+      rh("2.3", "보조 권역 (대전·충남·충북)") +
+      (allowAux ? (aux.length ? '<p class="small">' + esc(aux.map(function (o) { return o.name; }).join(", ")) + "</p>" : '<p class="small muted">' + esc(region.aux_status) + "</p>")
+        : '<p class="small muted">희망 지역 범위 또는 참여 사업의 지역 조건에 따라 싣지 않습니다.</p>') + "</section>";
+
+    h += divider("03", "다음 90일", "할 일 " + r.actions.length + "가지 · 30일 " + byH("D30").length + " · 60일 " + byH("D60").length + " · 90일 " + byH("D90").length, ["30·60·90일 실행 계획", "진흥원 지원사업 안내"]);
+
+    h += '<section class="rp-page">' + band("Part 03 · 다음 90일", "3.1 30·60·90일 실행 계획") +
+      '<p class="small">먼저 이미 한 일을 근거로 남기고, 희망 직무에서 비어 있는 판단을 채우고, 원 공고에 직접 지원합니다. 플랫폼이 대신 지원하지 않습니다.</p><div class="rp-timeline">' +
+      ["D30", "D60", "D90"].map(function (hz) {
+        return "<div><h3>" + HORIZON[hz] + "</h3><ol>" + byH(hz).map(function (x) { return "<li>" + badge("", KIND[x.kind]) + " " + esc(x.text) + "</li>"; }).join("") + "</ol></div>";
+      }).join("") + "</div>" + rh("3.2", "진흥원 지원사업 안내") +
+      '<p class="small muted">진흥원과 사업 목록이 확정되면 이 자리에 연결합니다. 시연판에서는 비워 둡니다.</p>' + rh("부록", "근거·출처·한계") +
+      '<ul class="small"><li>진단 ' + esc(r.instrument_version) + " 은 검증 전 시연판입니다. 문항 24개, 판단 여덟 갈래(CareerMatri ME_V3 의 판단 축 이름을 그대로 씀).</li>" +
+      "<li>상태 규칙(" + esc(r.analysis_version) + "): 두 문항 이상이 ‘직접 해 봤다’ 이상이고 경험 근거가 둘이면 ‘" + STATE_LABEL.CONFIRMED + "’, 하나면 ‘" + STATE_LABEL.PARTIAL + "’, 없으면 ‘" + STATE_LABEL.CLAIMED + "’.</li>" +
+      "<li>기업·기관 자료는 공식 출처의 검색 발췌로 확인했고 원문 재확인 전입니다(확인일 " + esc(orgsMeta.checked_on) + "). 직무 연결은 시연용 해석입니다.</li><li>채용 여부, 취업 가능성, 지역 정주 결과를 이 문서가 산출하지 않습니다.</li></ul></section>";
+    return h + "</article>";
   }
 
   function pageReport() {
     var att = latestScored(me);
     if (!att) return '<div class="sj-card"><h1>결과지</h1><p>진단을 제출하면 결과지를 만들 수 있습니다.</p>' + A("diagnosis", "진단 시작", "sj-btn") + "</div>";
     logAccess("self", me.name, me, "report_web");
-    return '<div class="sj-actions" style="margin-bottom:16px"><button class="sj-btn" data-do="pdf">PDF 내려받기</button>' + A("plan", "실행 계획으로", "sj-btn ghost") + '</div><div id="pv-pdf"></div>' + reportDoc(me, att);
+    return '<div class="sj-actions sj-noprint" style="margin-bottom:16px"><button class="sj-btn" data-do="pdf">PDF 내려받기</button>' + A("plan", "실행 계획으로", "sj-btn ghost") + '</div><div id="pv-pdf"></div>' + reportDoc(me, att);
   }
 
   /* ── 관리자 ── */

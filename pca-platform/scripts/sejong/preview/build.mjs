@@ -27,7 +27,7 @@ const D = {
   links: JSON.parse(rd("src/sejong/content/org-links.demo.json")),
   region: JSON.parse(rd("src/sejong/content/region.sejong.json")),
 };
-let css = rd("src/app/sejong/sejong.css").replace(/@media print \{[\s\S]*?\n\}\n?/, "");
+let css = rd("src/app/sejong/sejong.css");
 css = css.replace(".sj-main { max-width: 1120px; margin: 0 auto; padding: 28px 16px 64px; }",
   ".sj-main { max-width: 1120px; margin: 0 auto; padding-block: 28px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }");
 const extra = `
@@ -50,6 +50,7 @@ body { background: #f4f6f8; margin: 0; }
 .pv-inline { background: #eef2f7; border: 1px dashed #9fb0c3; border-radius: 10px; padding: 10px 12px; font-size: 13px; color: #3c4b5c; margin-top: 14px; }
 .pv-link { font: inherit; background: none; border: 0; color: var(--sj-brand); text-decoration: underline; cursor: pointer; padding: 0; }
 .sj-table { min-width: 560px; }
+@media print { body { background: #fff; } .pv-bar, .pv-inline, #pv-pdf { display: none !important; } .sj-table { min-width: 0; } }
 `;
 const analysis = stripTypeScriptTypes(rd("src/sejong/lib/analysis.ts"), { mode: "strip" }).replace(/^export /gm, "");
 const app = readFileSync(path.join(HERE, "app.js"), "utf8");

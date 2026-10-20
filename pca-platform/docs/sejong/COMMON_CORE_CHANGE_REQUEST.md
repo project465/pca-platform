@@ -456,6 +456,16 @@ canReadAssignedReport({ actor, orgId, participantId }): { ok; reason }
 | D4 | CR-5 기본값을 `AUTO` 로 둘지 | 결과 공개 승인 |
 | D5 | 기업 이름이 든 테넌트 콘텐츠 층의 법률 확인 주체 | 기업 탐색 장 공개 |
 
+## CR-7. `drawPagePdf` 쪽 여백·머리말을 부르는 쪽이 고를 수 있게 (2026-10-20 추가)
+
+| 항목 | 내용 |
+|---|---|
+| 지금 | `src/lib/me-v3/result/pdf.ts` 의 `drawPagePdf` 가 A4 · 여백 14mm · 머리말·꼬리말을 늘 켠다 |
+| 세종에서 걸린 자리 | 결과지를 편집 디자인(짙은 파랑 표지 · 장 구분 쪽)으로 바꿨다. 표지를 종이 끝까지 채울 수 없어 14mm 안쪽에 파란 판을 세웠고, 표지에도 머리말 한 줄이 찍힌다 |
+| 제안 | `PageDrawOpts` 에 `margin?`(기본 14mm 그대로)과 `headerFooter?: "all" \| "none"` 을 더한다. 첫 쪽만 머리말을 빼는 것은 Chromium 템플릿으로 안 되므로, 쪽 안의 CSS 로 그리게 `none` 을 고를 수 있으면 된다 |
+| 기본값 | 지금과 바이트까지 같다. 배재대·전주대 PDF 는 바뀌지 않는다 |
+| 세종이 하는 것 | 결정 전까지 14mm 안쪽 표지로 둔다(`src/sejong/ui/report-doc.tsx`). 공통 파일은 고치지 않았다 |
+
 세종 세션은 결정이 오기 전까지 다음만 한다.
 - `docs/sejong/` 안의 설계
 - PREVIEW_ONLY 자료
