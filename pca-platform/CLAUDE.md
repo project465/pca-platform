@@ -12652,3 +12652,26 @@ PCA_DART_KEY=... NODE_USE_ENV_PROXY=1 node scripts/lab/dart-verify.mjs
 PCA_DART_KEY=... python3 -I scripts/lab/dart_overview.py
 CASE=RICH:1 npx tsx scripts/lab/gm-design5.ts    # 핵심 디자인 쪽 여덟
 ```
+
+**다섯 트랙을 병렬로 돌린다. 브라우저 검증과 서버 검증을 섞지 않는다.** (2026-10-20)
+
+A BIZ Gold Master · B 전체 학과 · C 플랫폼 안정성 · D 관리자 · E PDF 연동을 한 회차에 돌렸다. 트랙마다 바꾼 파일을 갈랐고
+커밋도 갈랐다. 통합 현황은 `docs/metri/review/tracks/README.md` 다. 측정 동결은 기록을 다시 적지 않은 채로 통과한다.
+
+**이 환경은 Next 를 빌드할 수 없다**(npm 레지스트리 막힘). 그래서 C · D 는 화면이 부르는 **서버 액션을 그대로 부르는**
+검사로 돌렸다: 로그인 세션 하나만 바꿔 끼우고(`@/lib/session` 을 `require.cache` 로), 주인 확인 · 상태 확인 · 잠금 · 역할 규칙은
+제품 코드가 그대로 돈다. 화면 · 쿠키 · 모바일은 NOT VERIFIED 로 적는다.
+
+```bash
+npx tsx scripts/lab/trackC-stability.ts   # 저장 · 이어하기 · 동시 제출 · 연결 끊김 · 사용자 격리 26가지
+npx tsx scripts/lab/trackD-admin.ts       # 두 학교 격리 · 역할 · 집계=SQL · 5명 규칙 · CSV 38가지 (V3_CAMPUS_FIXTURE)
+npx tsx scripts/lab/trackB-dept-e2e.ts    # 배재대 학과 자리 115 를 서버 레벨로 끝까지 + 학생별 갈림
+npx tsx scripts/lab/trackE-check.ts       # GM PDF 입력 고정 · 재현성 · 권한 · 실패 복구 18가지
+```
+
+**검사가 아무것도 재지 않던 자리가 또 하나 있었다.** `v3:runtime` 의 `팩을 바꿔도 Core 판정이 같다` 가 R33 뒤로 같은 굳은
+결과를 두 번 읽고 있었다(`submit()` 이 굳은 응시에 다시 쓰지 않으므로). 팩을 바꾼 응답 묶음을 엔진에 바로 넣어 잰다.
+
+**Gold Master 의 경험 기록은 응시 시점에 고정한다**(`src/lib/me-v3/report-gm/inputs.ts`). 공통 DB 를 바꾸지 않고, 굳은 결과보다
+먼저 만들어졌고 그 뒤로 고치지 않은 기록만 넣으며 첫 생성이 입력을 `var/gm-inputs/` 에 굳힌다. 바른 해법(제출 때 스냅숏에 함께
+적기)은 Core 요청 1 로 남아 있다. **기관 담당자는 개인 GM PDF 를 기본으로 받지 못한다**: 계약 · 동의 칸이 없다(`canReadParticipantReport`).
