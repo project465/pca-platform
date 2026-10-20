@@ -19,7 +19,8 @@ import { JUDGE, STEP, VERIFY5 } from "./words";
 import type { Level } from "./profile";
 import { REGION_KO } from "./companies";
 
-const esc = (s: unknown) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+/* 글에 섞인 ASCII 따옴표 쌍은 ‘ ’ 로 바꿔 쓴다(자료 원문은 그대로 두고 그리는 자리에서만) */
+const esc = (s: unknown) => String(s ?? "").replace(/'([^'\n]{1,60})'/g, "‘$1’").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const N = 5;
 
 export type Fonts = { href: string; family: "Pretendard" | "NanumGothic" };
@@ -113,8 +114,7 @@ function radar(r: Report3): string {
   const pt = (i: number, rr: number) => [cx + rr * Math.cos(ang(i)), cy + rr * Math.sin(ang(i))];
   const ring = (lv: Level) => r.radar.axes.map((_, i) => pt(i, rad(lv)).map((v) => v.toFixed(1)).join(",")).join(" ");
   const rings = ([1, 2, 3] as Level[]).map((lv) => `<polygon points="${ring(lv)}" fill="${lv === 3 ? "#F4F6FA" : "none"}" stroke="#D5DBE5" stroke-width="${lv === 3 ? 1 : 0.7}" ${lv < 3 ? 'stroke-dasharray="2 2.5"' : ""}/>`).join("");
-  // 고리 이름은 첫 두 축 사이(선이 없는 자리)에 둔다
-  const ringLab = ([1, 2, 3] as Level[]).map((lv) => { const a = ang(0) + Math.PI / n; return `<text x="${(cx + rad(lv) * Math.cos(a) + 2).toFixed(1)}" y="${(cy + rad(lv) * Math.sin(a) - 2).toFixed(1)}" class="rd-k">${esc(STEP[lv].tag)}</text>`; }).join("");
+  // 고리 이름을 그림 안에 두면 계열 선과 겹친다(v4 검토). 이름은 그림 아래 눈금 띠(`.rd-scale`)가 든다.
   const spokes = r.radar.axes.map((_, i) => { const [x, y] = pt(i, R); return `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="#E3E8F0"/>`; }).join("");
   const labels = r.radar.axes.map((a, i) => {
     const [x, y] = pt(i, R + 14);
@@ -130,7 +130,7 @@ function radar(r: Report3): string {
     return (full ? `<polygon points="${pts.map((q) => q!.map((v) => v.toFixed(1)).join(",")).join(" ")}" fill="${SER[k]}" fill-opacity=".10" stroke="${SER[k]}" stroke-width="1.7" stroke-linejoin="round"/>` : "")
       + pts.map((q) => (q ? `<circle cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="3.1" fill="${SER[k]}" stroke="#fff" stroke-width="1"/>` : "")).join("");
   }).join("");
-  return `<svg class="rd" viewBox="0 0 ${W} ${H}" role="img" aria-label="판단 단계 방사형 그래프">${rings}${spokes}${ringLab}${series}${labels}</svg>`;
+  return `<svg class="rd" viewBox="0 0 ${W} ${H}" role="img" aria-label="판단 단계 방사형 그래프">${rings}${spokes}${series}${labels}</svg>`;
 }
 /** 영역 × 판단: 칸마다 단계(눈금 셋). 묻지 않은 칸은 줄표 */
 function matrix(r: Report3): string {
@@ -147,6 +147,7 @@ function p2(r: Report3): string {
   ${opener("02", "개인 역량 분석", "개인별 역량 프로파일", r.profile.lead)}
   <div class="p2-g">
     <figure class="p2-fig">${radar(r)}
+      <ol class="rd-scale">${([1, 2, 3] as Level[]).map((lv) => `<li><i class="rs${lv}"></i>${lv === 1 ? "안쪽" : lv === 2 ? "가운데" : "바깥"} 고리 · ${esc(STEP[lv].tag)}</li>`).join("")}</ol>
       <div class="lg">${r.radar.series.map((s, k) => `<span><i class="sw" style="background:${SER[k]}"></i>${esc(s.name)}${s.deep ? "" : " · 핵심 판단만"}</span>`).join("")}</div>
       <figcaption>바깥 고리로 갈수록 그 판단을 더 깊이 해 봤다고 답한 것입니다. 점수가 아니며 다른 학생과 견준 값도 아닙니다.</figcaption></figure>
     <div class="p2-side">
@@ -321,7 +322,9 @@ ul,ol{margin:0;padding:0;list-style:none}
 /* ② 역량 */
 .p2-g{display:grid;grid-template-columns:100mm 1fr;gap:7mm}
 .p2-fig{margin:0}.rd{width:100mm;height:auto;display:block}
-.rd-l{font-size:9.6px;fill:var(--navy);font-weight:700}.rd-k{font-size:7px;fill:#8A93A3}
+.rd-l{font-size:9.6px;fill:var(--navy);font-weight:700}
+.rd-scale{display:flex;gap:3mm;font-size:8pt;color:var(--muted);margin:1mm 0 1.5mm;flex-wrap:wrap}.rd-scale li{display:flex;align-items:center;gap:1.4mm}
+.rd-scale i{width:5mm;height:0;border-top:1pt dashed #AEB7C6;display:inline-block}.rd-scale i.rs3{border-top:1.2pt solid #AEB7C6}
 .lg{display:flex;flex-wrap:wrap;gap:3pt 10pt;font-size:8.6pt;margin-top:1mm}
 .p2-fig figcaption{font-size:8pt;color:var(--muted);line-height:1.5;margin-top:1.5mm}
 .st{display:grid;grid-template-columns:15mm 1fr;align-items:start;padding:2.4mm 0;border-bottom:.6pt solid var(--rule)}
@@ -337,22 +340,22 @@ ul,ol{margin:0;padding:0;list-style:none}
 .pips{display:inline-flex;gap:2px}.pips i{width:9px;height:9px;border-radius:2px;background:#E6EAF1}.pips i.on{background:var(--blue)}.pips.l3 i.on{background:var(--navy)}
 .mx-na{color:#B0B7C3}
 /* ③ Evidence */
-.p3-hd{display:flex;gap:8pt;align-items:center;margin:-2mm 0 3mm}
+.p3-hd{display:flex;gap:8pt;align-items:center;margin:-2mm 0 2.4mm}
 .zt{font-size:8.4pt;font-weight:700;background:var(--navy);color:#fff;border-radius:10pt;padding:.5pt 7pt}.meta{font-size:8.8pt;color:var(--muted)}
 .pull{margin:0 0 5mm;font-size:13pt;line-height:1.6;color:var(--navy);font-weight:700;padding:0 0 0 5mm;border-left:3pt solid var(--amber)}
-.flow{display:grid;grid-template-columns:repeat(8,1fr);gap:1.2mm;margin-bottom:5mm}
-.flow li{border-top:2.4pt solid var(--blue);background:var(--tint);padding:1.6mm 1.6mm 1.8mm;position:relative}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:1.6mm;margin-bottom:3.4mm}
+.flow li{border-top:2.4pt solid var(--blue);background:var(--tint);padding:1.4mm 1.6mm 1.5mm;position:relative}
 .flow li.fc-partial{border-top-color:#9DB5DC;background:#fff;border:.6pt solid var(--rule);border-top:2.4pt solid #9DB5DC}
 .flow li.fc-none,.flow li.fc-unasked{border-top-color:#C9CFD9;background:#fff;border:.6pt dashed var(--rule);border-top:2.4pt solid #C9CFD9}
-.fl-n{font-size:8pt;font-weight:800;color:var(--blue)}.flow b{display:block;font-size:8.6pt;line-height:1.35;color:var(--navy);margin:.4mm 0 .8mm;min-height:11mm}
-.flow p{font-size:7.9pt;line-height:1.42;color:var(--ink);margin:0}.flow em{display:block;font-style:normal;font-size:7.6pt;font-weight:700;color:var(--blue);margin-bottom:.6mm;white-space:nowrap}
+.fl-n{font-size:8pt;font-weight:800;color:var(--blue)}.flow b{display:block;font-size:8.8pt;line-height:1.35;color:var(--navy);margin:.4mm 0 .8mm}
+.flow p{font-size:8.3pt;line-height:1.45;color:var(--ink);margin:0}.flow em{display:block;font-style:normal;font-size:7.6pt;font-weight:700;color:var(--blue);margin-bottom:.6mm;white-space:nowrap}
 .flow li.fc-partial em{color:#5D86C4}
-.ledger{display:grid;grid-template-columns:1.25fr 1.25fr .8fr .7fr;gap:0;border-top:1.4pt solid var(--navy);border-bottom:.6pt solid var(--rule);margin-bottom:5mm}
+.ledger{display:grid;grid-template-columns:1.25fr 1.25fr .8fr .7fr;gap:0;border-top:1.4pt solid var(--navy);border-bottom:.6pt solid var(--rule);margin-bottom:3.4mm}
 .ledger>div{padding:2.4mm 3mm 3mm 0;margin-right:3mm;border-right:.6pt solid var(--rule)}.ledger>div:last-child{border-right:0;margin-right:0}
 .lg-n{font-size:22pt;font-weight:800;color:var(--navy);line-height:1.1}.ledger h4{font-size:9.6pt}.lg-s{font-size:7.8pt;color:var(--muted);margin:0 0 1.5mm}
-.ledger li{font-size:8.8pt;line-height:1.48;padding:1.2mm 0;border-top:.5pt dotted var(--rule)}.none{font-size:8.6pt;color:#9AA2B0}
+.ledger li{font-size:8.8pt;line-height:1.46;padding:.9mm 0;border-top:.5pt dotted var(--rule)}.none{font-size:8.6pt;color:#9AA2B0}
 .p3-g{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5mm}.p3-g p{font-size:9.6pt}
-.rec{background:var(--tint);border-radius:2pt;padding:2.6mm 3.2mm;margin-bottom:3.5mm}.rec h4{font-size:8pt;color:var(--blue);letter-spacing:.3pt}.rec b{display:block;font-size:9.6pt;color:var(--navy);line-height:1.4;margin-top:.6mm}
+.rec{background:var(--tint);border-radius:2pt;padding:2.4mm 3.2mm;margin-bottom:3mm}.rec h4{font-size:8pt;color:var(--blue);letter-spacing:.3pt}.rec b{display:block;font-size:9.6pt;color:var(--navy);line-height:1.4;margin-top:.6mm}
 .rec>span{font-size:8pt;color:var(--muted)}.rec dl{margin:1.5mm 0 0}.rec dl div{display:grid;grid-template-columns:20mm 1fr;font-size:8.6pt;padding:.8mm 0;border-top:.5pt dotted #C9D2E0}.rec dt{color:var(--muted)}.rec dd{margin:0}
 .lim li{font-size:8.8pt;line-height:1.5;color:var(--ink);padding:1.4mm 0 1.4mm 3.2mm;border-top:.5pt solid var(--rule);position:relative}.lim li:before{content:"";position:absolute;left:0;top:3.2mm;width:1.4mm;height:1.4mm;background:var(--amber);border-radius:50%}
 /* ④ 기업 */
@@ -364,8 +367,8 @@ ul,ol{margin:0;padding:0;list-style:none}
 .prod{margin:2mm 0;display:flex;flex-wrap:wrap;gap:1.5mm;align-items:center}.prod span{font-size:8pt;color:var(--muted);width:100%}.prod b{font-size:8.6pt;background:var(--tint);border:.6pt solid var(--rule);border-radius:2pt;padding:.6mm 2mm;color:var(--navy)}
 .interp{font-size:9.4pt;line-height:1.6;border-left:2.4pt solid var(--blue);padding-left:3mm;color:var(--navy)}
 .job-h{display:flex;align-items:center;gap:6pt;flex-wrap:wrap}.job-h h2{font-size:15pt}.tagx{font-size:7.8pt;font-weight:700;background:var(--navy);color:#fff;border-radius:2pt;padding:0 4pt}.js{font-size:7.8pt;background:var(--sky);color:var(--navy);border-radius:2pt;padding:0 4pt;font-weight:700}
-.jflow{counter-reset:none;margin:2mm 0 3.5mm;display:grid;grid-template-columns:repeat(3,1fr);gap:1.6mm}
-.jflow li{background:var(--tint);border-top:2.4pt solid var(--blue);padding:1.8mm 2.2mm;font-size:8.6pt;line-height:1.45}.jflow li span{display:block;font-weight:800;color:var(--blue);font-size:8pt}
+.jflow{counter-reset:none;margin:2mm 0 3.5mm;display:grid;grid-template-columns:1fr;gap:1mm}
+.jflow li{display:grid;grid-template-columns:5mm 1fr;align-items:baseline;background:var(--tint);border-left:2.4pt solid var(--blue);padding:1.4mm 2.4mm;font-size:9pt;line-height:1.45}.jflow li span{font-weight:800;color:var(--blue);font-size:8.4pt}
 .fit{width:100%;border-collapse:collapse}.fit th{text-align:left;font-size:9pt;color:var(--navy);width:30mm;padding:2mm 2mm 2mm 0;vertical-align:top;border-top:.6pt solid var(--rule)}
 .fit td{font-size:8.8pt;line-height:1.5;padding:2mm 0;border-top:.6pt solid var(--rule)}.fit em{display:block;font-style:normal;font-weight:700;font-size:7.8pt;color:var(--blue)}.fit tr.need em{color:#9A6A22}
 .strat{display:grid;grid-template-columns:1.25fr 1fr;gap:7mm;margin-top:5mm;padding-top:3mm;border-top:1.4pt solid var(--navy)}
@@ -380,7 +383,7 @@ ul,ol{margin:0;padding:0;list-style:none}
 .chainv li{padding:2.4mm 3mm;border-right:.6pt solid var(--rule);border-bottom:.6pt solid var(--rule);position:relative}.chainv li:last-child{border-right:0}
 .chainv li:before{content:"";position:absolute;left:-1.6mm;top:5mm;border:1.6mm solid transparent;border-left-color:var(--navy);border-right:0}
 .chainv .goalc em{color:#E7B66B}.chainv .rel{font-size:7.6pt;font-weight:700;color:var(--blue)}.chainv b{display:block;font-size:9.6pt;line-height:1.4;color:var(--navy);margin:.6mm 0}
-.chainv p{font-size:8.4pt;line-height:1.45;color:var(--ink);margin:0 0 1mm}.chainv em{font-style:normal;font-size:7.8pt;color:var(--muted)}
+.chainv p{font-size:8.4pt;line-height:1.45;color:var(--ink);margin:0 0 1mm}.chainv em{display:block;font-style:normal;font-size:7.8pt;line-height:1.45;color:var(--muted)}
 .tl{border-top:1.4pt solid var(--navy);margin-bottom:5mm}
 .tl-h,.tl-r{display:grid;grid-template-columns:22mm repeat(5,1fr);gap:1.6mm}
 .tl-h b{font-size:9pt;color:var(--navy);padding:1.6mm 0;border-bottom:.6pt solid var(--rule)}

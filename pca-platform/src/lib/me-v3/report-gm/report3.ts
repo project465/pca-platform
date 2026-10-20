@@ -21,6 +21,8 @@ import { companyGuide, roleGuide, type GuideSource } from "./guide";
 import { JUDGE, VERIFY5, type VerifyLevel } from "./words";
 
 const j = withJosa;
+/* 제목에 이미 따옴표가 있으면 바깥 따옴표를 겹쳐 두지 않는다(‘…'…'…’). 안쪽 ASCII 따옴표는 ‘ ’ 로 바꾼다 */
+const qt = (s: string) => /['‘’]/.test(s) ? s.replace(/'([^']+)'/g, "‘$1’") : `‘${s}’`;
 export type Meta = {
   school: string | null; department: string | null; major: string | null;
   specialization: string | null; answeredOn: string | null; tier: string;
@@ -113,7 +115,7 @@ export function build3(m: ResultModel, meta: Meta, exps: Experience[], set: OrgS
     points.push({ label: "지금의 출발점", fact: `관심은 ${gr.domains.join(", ")}에서 높게 나왔고, 이 영역들의 일을 스스로 맡아 해 본 경험은 아직 적다고 답했습니다.`,
       meaning: "관심이 분명한 영역이 있다는 것은 방향을 정하기 좋은 출발점입니다. 지금은 잘하는 일을 찾기보다 처음 해 볼 일을 고르는 단계입니다.",
       limit: "관심 응답은 그 일이 실제로 맞는지까지 말해 주지 않습니다. 직접 해 본 뒤에 다시 확인해야 합니다.",
-      action: `첫 실무형 프로젝트로 ${withJosa(`‘${gr.project.title}’`, "을를")} 권합니다(‘성장 설계’ 장).` });
+      action: `첫 실무형 프로젝트로 ${withJosa(qt(gr.project.title), "을를")} 권합니다(‘성장 설계’ 장).` });
     trace.push({ section: "01 종합 의견", claim: "출발점", from: ["domains.interest=HIGH", "domains.zone=Z4"] });
   }
   if (prof.caution) points.push({ label: "응답을 읽을 때 주의할 점", fact: "판단을 묻는 질문에는 높게 답했지만, 그 장면을 체크리스트에서는 고르지 않은 영역이 있습니다.", meaning: "이 보고서는 그 판단들을 ‘직접 수행’ 단계까지만 반영했습니다.", limit: "응답이 틀렸다는 뜻이 아니라, 아직 확인할 자료가 없다는 뜻입니다.", action: "‘검사 응답과 경험 기록의 대조’ 장의 확인 과제로 어느 쪽이 맞는지 스스로 확인할 수 있습니다." });
@@ -203,7 +205,7 @@ export function build3(m: ResultModel, meta: Meta, exps: Experience[], set: OrgS
   /* 90일 프로젝트: 깊게 본 기업 가운데 목표 직무의 일을 먼저 고르고, 없으면 목표 직무 안내의 첫 프로젝트 */
   const proj = goalJob?.jb.project ?? (goalCode ? roleGuide(goalCode)?.firstProject : undefined) ?? gr?.project;
   const projFrom = goalJob ? `${goalJob.c.name} · ${goalJob.jb.name}` : `${strat.roleName || "목표 직무"} 직무 안내`;
-  if (proj) plan.push({ label: `‘${proj.title}’`, period: "90일", what: `실무형 프로젝트 ‘${proj.title}’ 완료(${projFrom})`, why: `${strat.roleName || "목표 직무"}의 일을 결과물로 남겨야 서류에서 쓰입니다`, how: (proj as { steps: string[] }).steps.slice(0, 2).join(" → ") + " …", output: proj.output, check: "다른 사람이 그 결과물만 보고 내가 무엇을 판단했는지 알 수 있는가" });
+  if (proj) plan.push({ label: qt(proj.title), period: "90일", what: `실무형 프로젝트 ${qt(proj.title)} 완료(${projFrom})`, why: `${strat.roleName || "목표 직무"}의 일을 결과물로 남겨야 서류에서 쓰입니다`, how: (proj as { steps: string[] }).steps.slice(0, 2).join(" → ") + " …", output: proj.output, check: "다른 사람이 그 결과물만 보고 내가 무엇을 판단했는지 알 수 있는가" });
   plan.push({ label: stories[0] ? `${stories[0].from.split(" — ")[0]} 경험을 자기소개서·면접 답변으로` : "새 경험을 자기소개서 문단으로", period: "90일", what: stories[0] ? `${stories[0].from.split(" — ")[0]} 경험을 자기소개서 문단 하나와 면접 답변 하나로 정리하기` : "새로 만든 경험을 문단 하나로 정리하기", why: "경험이 문장으로 옮겨지지 않으면 서류에서 쓰이지 않습니다", how: "‘자기소개서·포트폴리오·면접 전략’ 장의 네 칸 구조에 맞춰 쓰고 수치·기간을 직접 넣기", output: "자기소개서 문단 초안과 답변 메모", check: "문단에 ‘내가 정한 것’과 ‘비교한 결과’가 들어 있는가" });
   plan.push({ label: "학교 밖 과제 경험 하나 만들기", period: "6개월", what: "현장실습·공모전·학회 가운데 하나에 참여해 학교 밖 과제 경험 만들기", why: "학교 밖 과제의 결과물은 수업 과제보다 직무에 가깝게 읽힙니다", how: "교내 현장실습지원센터·취업지원 프로그램", output: "실전 과제 결과물", check: "결과물에 고객·의뢰 기관의 의견이 남았는가" });
   plan.push({ label: `결과물 ${Math.max(3, portfolio.filter((p) => p.status === "보유").length)}건을 포트폴리오로 묶기`, period: "6개월", what: `결과물 ${Math.max(3, portfolio.filter((p) => p.status === "보유").length)}건을 한 묶음의 포트폴리오로 정리`, why: "흩어진 결과물은 지원 시점에 다시 찾기 어렵습니다", how: "결과물마다 ‘내가 정한 것·비교한 대상’ 한 줄 붙이기", output: "포트폴리오 묶음", check: "결과물마다 내 역할이 한 줄로 적혀 있는가" });
@@ -215,7 +217,7 @@ export function build3(m: ResultModel, meta: Meta, exps: Experience[], set: OrgS
     !pr[0] && gr && { text: gr.entry[0], label: gr.entry[0], why: "첫 경험을 만드는 가장 가까운 활동입니다", when: "1~30일" },
     { text: records.length ? `경험 기록 ‘${records[0].title}’의 빈칸을 채운다` : "최근 과제 하나를 경험 기록으로 남긴다", label: records.length ? `경험 기록 ‘${records[0].title}’ 빈칸 채우기` : "최근 과제를 경험 기록으로 남기기", why: "검사 응답을 면접 장면으로 말할 재료입니다", when: "1~30일" },
     c0 && { text: `${c0.name}의 공식 자료를 직접 확인하고 확인 메모를 남긴다`, label: `${c0.name} 공식 자료 확인 메모`, why: "기업 정보는 공식 원문 확인 전입니다", when: "31~60일" },
-    proj && { text: `${withJosa(`‘${proj.title}’`, "을를")} 끝까지 만들어 결과물로 남긴다`, label: `‘${proj.title}’ 완성`, why: "기업·직무 탐색을 결과물로 바꾸는 일입니다", when: "61~90일" },
+    proj && { text: `${withJosa(qt(proj.title), "을를")} 끝까지 만들어 결과물로 남긴다`, label: `${qt(proj.title)} 완성`, why: "기업·직무 탐색을 결과물로 바꾸는 일입니다", when: "61~90일" },
   ].filter(Boolean).slice(0, 4) as Report3["final"];
 
   const worksheet = [
