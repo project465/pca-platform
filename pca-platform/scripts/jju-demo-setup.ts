@@ -107,6 +107,13 @@ async function main(): Promise<void> {
   const made: { login: string; pw: string; track: string; state: string }[] = [];
   let seq = 0;
   for (const t of tracks) {
+    /* 검사가 아직 이어지지 않은 과정(ND1~ND6)은 계정을 만들지 않는다.
+       `checkStudent` 가 그 자리를 거절하는 것이 맞고, 억지로 넣으면 그
+       학생은 들어와서 시작 단추 없는 화면만 본다 */
+    if (!t.core_code) {
+      made.push({ login: "-", pw: "-", track: `${t.cohort.label} ${t.short}`, state: "계정 없음 (검사 연결 전)" });
+      continue;
+    }
     const isFirst = t.cohort.code === first?.catalog_code;
     const n = isFirst ? 3 : 1;
     for (let i = 0; i < n; i += 1) {
