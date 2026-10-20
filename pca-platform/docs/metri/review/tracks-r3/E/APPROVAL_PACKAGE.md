@@ -125,6 +125,7 @@ npx tsx scripts/v3-measurement-freeze.ts      # 기대: 14/14 (측정 동결 그
 | `v3-copy-check.ts` | FAIL 1 `result/charts.tsx` — **기준 커밋에서도 같은 FAIL**(패치와 무관) | `logs/v3-copy-check.log` · `-BASE.log` |
 | `image-check` · `db:chain` · `errors:check` · `routes:check` | OK · 8/8 · 8/8 · 10/10 | `logs/*.log` |
 | `git apply --check` 새 작업 트리 | 01→04 차례 적용 OK · 결과 16파일이 검사한 트리와 같음 · 01 · 04 단독 OK | `logs/git-apply-check.log` |
+| `git apply --check` 지금 가지 끝(`dc9d08ff` · 기준 뒤 다른 트랙 커밋 6개) | 01~04 차례 적용 OK. **검사는 `55b20bfb` 위에서만 돌렸다**(그 위에서 다시 돌리지 않음) | `logs/git-apply-check-HEAD.log` |
 
 승인 뒤 `trackE-r2.ts` 의 P1 · P3 은 "굳은 줄이 있으면 파일이 없다"로 고쳐야 한다(이번에 저장소 검사를 고치지 않았다).
 

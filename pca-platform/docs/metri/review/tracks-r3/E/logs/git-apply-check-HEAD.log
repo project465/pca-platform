@@ -1,0 +1,11 @@
+## HEAD dc9d08ff (기준 커밋 뒤 다른 트랙 커밋: 6개)
+01-privacy-erasure-and-snapshot-inputs check OK
+02-access-check check OK
+03-download-route check OK
+04-runtime-packaging check OK
+dc9d08ff 3차 제출: 의사결정 요약 · Track A 요약 · 통합 회귀 원시 로그
+e02847f4 Track B · D 3차: 3차 변경 뒤 학과 115 자리 · 관리자 시드 회귀
+4177b4f1 Track A 3차: BIZ Gold Master v9 — POOR 문구 · 질문-근거 짝 · 공시 사실과 해석 · 작은 글씨 · 출처
+f9e7825c Track F 3차: 출시 검증 — 담당자 내려받기 접근 기록 · CI 승인 요청 · Staging 계획
+c5f22344 Track C 3차 (B): 끝난 응시에 쓰지 않는 저장 넷 · {ok:false} 를 화면이 실패로 센다
+93ba9265 Track C 3차 (A): 제출이 연결을 못 얻던 자리 — 읽기를 트랜잭션 연결로

@@ -19,6 +19,7 @@ PM 변경 요청 넷(`../../tracks-r2/E/PM_CHANGE_REQUEST.md`)을 **적용 가�
 - **note_text 재유입 음성 대조**: 허용 목록에 넣자 S1 3줄 FAIL → 되돌리고 9/9 PASS(`logs/trackE-r3-S1-*.log`)
 - 측정 동결 14/14 · `v3:provenance` 18/18 · `image:check` OK · `db:chain` 8/8 · `errors:check` 8/8 · `routes:check` 10/10
 - `git apply --check` 새 작업 트리에서 01→04 OK · 결과 16파일이 검사한 트리와 같음(`logs/git-apply-check.log`)
+- 지금 가지 끝 `dc9d08ff`(다른 트랙 커밋 6개 뒤)에도 01~04 가 그대로 적용된다(`logs/git-apply-check-HEAD.log`) — 단, 검사는 `55b20bfb` 위에서만 돌렸다
 - 예상된 걸림: 검사 화면 동결 `session.ts` 1(승인 때 판본 갱신) · `trackE-r2.ts` P1 에서 멈춤(입력 파일이 더는 생기지 않음 · 한 줄 호환 사본 20/23, 걸린 셋 모두 설계 변경) · `v3:copy` 1 은 기준 커밋에서도 같다
 
 ## 3. BLOCKED
