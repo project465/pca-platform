@@ -36,8 +36,10 @@
 
 /* ── 머리 ─────────────────────────────────────────────── */
 .jju-top { position: sticky; top: 0; z-index: 10; background: rgba(255, 255, 255, .96); border-bottom: 1px solid var(--j-line); }
-.jju-top-in { max-width: 720px; margin: 0 auto; padding: 0 20px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+.jju-top-in { max-width: 720px; margin: 0 auto; padding: 0 20px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
 .jju-top-id { display: inline-flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 700; letter-spacing: -.01em; }
+.jju-top-logo { display: block; height: 34px; width: auto; }
+.jju-top-cm { display: inline-flex; align-items: center; gap: 6px; padding-left: 12px; margin-left: 4px; border-left: 1px solid var(--j-line); font-size: 14px; font-weight: 600; color: var(--j-ink-3); }
 .jju-top-r a { font-size: 15px; font-weight: 600; color: var(--j-ink-2); padding: 8px 4px; }
 
 .jju-main { max-width: 720px; margin: 0 auto; padding: 20px 20px 40px; }

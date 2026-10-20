@@ -1,0 +1,135 @@
+/*
+ * CareerMatri 공통 화면의 테마 한 겹 (2026-10-20 · 공통 화면 변경 승인).
+ *
+ * **값만 다시 적는다. class 규칙을 새로 두지 않는다.** 검사 · 결과 · 내
+ * CareerMatri · 학교 진입 · 담당자 화면이 전부 토큰(`--ui-*` · `--r-*` ·
+ * `--cm-*` · `--pcu-*`)을 읽으므로, 여기서 값을 바꾸면 네 벌이 한꺼번에
+ * 같은 생김새가 된다. 쪽마다 고치면 어느 쪽 하나가 뒤처진다.
+ *
+ * 생김새는 토스·카카오 쪽이다: 옅은 회색 바탕 · 테가 거의 없는 흰 면 ·
+ * 넉넉한 둥글기 · 글자는 검정에 가까운 남색과 두 단의 회색 · 파랑 하나.
+ *
+ * **이기는 자리를 차례가 아니라 특정도로 정한다.** 이 파일은 루트 레이아웃이
+ * 싣지만, 쪽마다 싣는 CSS 가 그 뒤에 붙을 수 있다. 그래서 `html` 을 한 겹 더
+ * 얹어(`html:root` · `html .rs`) 싣는 차례와 상관없이 이 값이 선다.
+ *
+ * 학교 색은 `data-school` 이 고른다. 학교 진입 틀(`.cm-cmp`)과 응시 틀
+ * (`v3/[attemptId]/layout.tsx`)이 그 칸을 단다. 칸이 없으면 CareerMatri 색이다.
+ */
+
+/* ── 공통 (CareerMatri) ───────────────────────────────────────── */
+html:root {
+  --ui-bg: #f2f4f6;
+  --ui-surface: #ffffff;
+  --ui-surface-2: #f2f4f6;
+  --ui-text: #191f28;
+  --ui-text-2: #4e5968;
+  --ui-text-3: #6b7684;   /* 흰 바탕 4.7:1 */
+  --ui-border: #e5e8eb;
+  --ui-border-sel: #1b64da;
+  --ui-divider: #f2f4f6;
+  --ui-accent: #1b64da;   /* 흰 글자 5.1:1 */
+  --ui-accent-ink: #1957c2;
+  --ui-accent-soft: #e8f3ff;
+  --ui-accent-line: #c9e2ff;
+  --ui-r-sm: 12px;
+  --ui-r: 16px;
+  --ui-r-lg: 20px;
+}
+
+html .rs {
+  --r-paper: #ffffff;
+  --r-field: #f2f4f6;
+  --r-sunk: #f2f4f6;
+  --r-ink: #191f28;
+  --r-ink-2: #4e5968;
+  --r-ink-3: #6b7684;
+  --r-line: #e5e8eb;
+  --r-line-soft: #f2f4f6;
+  --r-line-3: #f2f4f6;
+  --r-line-sel: #1b64da;
+  --r-accent: #1b64da;
+  --r-accent-ink: #1957c2;
+  --r-accent-soft: #e8f3ff;
+  --r-accent-line: #c9e2ff;
+  --r-blue: #1b64da;
+  --r-blue-soft: #e8f3ff;
+}
+
+html .cm {
+  --cm-rail-bg: #ffffff;
+  --cm-rail-ink: #4e5968;
+  --cm-rail-ink-on: #191f28;
+  --cm-rail-line: #eef0f3;
+  --cm-rail-on: #f2f4f6;
+  --cm-canvas-bg: #f2f4f6;
+  --cm-card-sh: none;
+  --cm-hero-sh: none;
+}
+
+html .cm-cmp {
+  --pcu-bg: #f2f4f6;
+  --pcu-surface: #ffffff;
+  --pcu-surface-2: #f2f4f6;
+  --pcu-ink: #191f28;
+  --pcu-ink-2: #4e5968;
+  --pcu-ink-3: #6b7684;
+  --pcu-line: #e5e8eb;
+  --pcu-line-2: #f2f4f6;
+  --pcu-r-sm: 12px;
+  --pcu-r: 16px;
+  --pcu-r-lg: 20px;
+  --pcu-sh: none;
+}
+
+/* ── 학교 색 ──────────────────────────────────────────────────── */
+/* 전주대학교: 로고의 하늘 · 홍보물의 파랑과 남색 · 별 노랑 */
+html [data-school="jju"] {
+  --ui-accent: #1854a8;
+  --ui-accent-ink: #0c3c84;
+  --ui-accent-soft: #e8f1fa;
+  --ui-accent-line: #c4dcf0;
+  --ui-border-sel: #1854a8;
+}
+html [data-school="jju"] .rs {
+  --r-accent: #1854a8; --r-accent-ink: #0c3c84; --r-accent-soft: #e8f1fa; --r-accent-line: #c4dcf0;
+  --r-line-sel: #1854a8; --r-blue: #1854a8; --r-blue-soft: #e8f1fa;
+}
+html .cm-cmp[data-school="jju"] {
+  --pcu-navy: #0c3060; --pcu-navy-2: #123f7a; --pcu-navy-3: #1854a8;
+  --pcu-blue: #1854a8; --pcu-blue-ink: #0c3c84; --pcu-blue-lit: #7fc8ec;
+  --pcu-blue-soft: #e8f1fa; --pcu-blue-line: #c4dcf0;
+}
+
+/* 배재대학교: 지금까지 쓰던 남색과 파랑을 그대로 쓴다(바탕과 면만 공통을 따른다) */
+html [data-school="pcu"] {
+  --ui-accent: #1557c7;
+  --ui-accent-ink: #10459f;
+  --ui-accent-soft: #eaf1fd;
+  --ui-accent-line: #c7dafa;
+  --ui-border-sel: #1557c7;
+}
+html [data-school="pcu"] .rs {
+  --r-accent: #1557c7; --r-accent-ink: #10459f; --r-accent-soft: #eaf1fd; --r-accent-line: #c7dafa;
+  --r-line-sel: #1557c7; --r-blue: #1557c7; --r-blue-soft: #eaf1fd;
+}
+
+/* 학교 표시 자리. 로고 파일이 있는 학교만 그림이 선다 */
+.cm-school-logo { display: block; height: 30px; width: auto; }
+
+/* ── 학교 진입 띠: 흰 머리띠 ─────────────────────────────────────
+   어두운 띠는 그대로 두면 화면 맨 위가 가장 무거운 덩이가 된다. 흰 띠에
+   학교 이름(또는 로고)이 먼저 서고 CareerMatri 는 한 단 옅게 선다 */
+html .cm-cmp-band { background: #ffffff; border-bottom: 1px solid #e5e8eb; }
+html .cm-cmp-id { color: #191f28; display: inline-flex; align-items: center; }
+html .cm-cmp-sep { background: #e5e8eb; }
+html .cm-cmp-brand, html .cm-cmp-tag { color: #6b7684; }
+
+/* ── 내 CareerMatri 왼쪽 띠: 흰 띠 ───────────────────────────────
+   띠의 값은 토큰으로 바뀌지만, 어두운 띠를 전제로 적힌 줄 셋(올려 놓은
+   면 · 고른 줄 · 초점 테)은 값을 직접 적어 두어 여기서 함께 바꾼다 */
+html .cm-rail { border-right: 1px solid #eef0f3; }
+html a.cm-nav:hover { background: #f2f4f6; color: #191f28; }
+html a.cm-nav.is-on { background: #e8f3ff; color: #1957c2; }
+html a.cm-nav.is-on small { color: #1957c2; opacity: .8; }
+html a.cm-nav:focus-visible { outline-color: #1b64da; }

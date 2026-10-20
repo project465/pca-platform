@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { BrandMark } from "@/components/sf/brand-mark";
-import { MODE_KO, MODE_NOTE, type OfficialProgram, type TrackMode } from "@/lib/jju/program";
+import { jjuUniversity, MODE_KO, MODE_NOTE, type OfficialProgram, type TrackMode } from "@/lib/jju/program";
 
 /**
  * 전주대 화면의 틀. **학교 진입 화면의 남색 띠(`CampusShell`)를 쓰지 않는다.**
@@ -12,13 +12,16 @@ import { MODE_KO, MODE_NOTE, type OfficialProgram, type TrackMode } from "@/lib/
 export function JjuFrame({ right, children, narrow }: {
   right?: ReactNode; children: ReactNode; narrow?: boolean;
 }) {
+  const logo = jjuUniversity()?.brand_asset ?? null;
   return (
-    <div className="jju-app">
+    <div className="jju-app" data-school="jju">
       <header className="jju-top">
         <div className="jju-top-in">
           <Link className="jju-top-id" href="/jju">
-            <BrandMark size={22} />
-            <span>전주대학교</span>
+            {logo
+              ? <img className="jju-top-logo" src={logo} alt="전주대학교" />
+              : <span>전주대학교</span>}
+            <span className="jju-top-cm"><BrandMark size={18} />CareerMatri</span>
           </Link>
           {right ? <div className="jju-top-r">{right}</div> : null}
         </div>

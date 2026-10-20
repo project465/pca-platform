@@ -155,7 +155,9 @@ async function main(): Promise<void> {
     const gm = await mobileOf(browser, g);
     for (const [cx, tag] of [[g, "desktop"], [gm, "mobile"]] as const) {
       const q = await cx.newPage();
-      for (const [path, n, what] of [["/jju", "01-home-guest", "전주대 첫 화면(로그인 전)"], ["/jju/fields", "01-fields", "학과와 과정"]] as const) {
+      for (const [path, n, what] of [["/jju", "01-home-guest", "전주대 첫 화면(로그인 전)"], ["/jju/fields", "01-fields", "학과와 과정"],
+        ["/campus/pcu", "00-pcu-entry", "배재대 학교 진입(공통 화면)"], ["/campus/pcu/majors", "00-pcu-majors", "배재대 학과 고르기(공통 화면)"],
+        ["/campus/jju", "00-jju-entry", "전주대 학교 진입(공통 화면)"], ["/cores", "00-cores", "CareerMatri 전공 고르기(본체)"]] as const) {
         const r = await q.goto(`${BASE}${path}`, { waitUntil: "networkidle" });
         ok(`${path} 가 로그인 없이 열린다 (${tag})`, (r?.status() ?? 0) === 200, String(r?.status()));
         const body = await q.locator("body").innerText();
@@ -170,6 +172,11 @@ async function main(): Promise<void> {
   let desk = await ctxOf(browser, DESK);
   let p = await login(desk, LOGIN, pwD);
   ok("학생 D 가 실제 Auth.js 로 로그인한다", !new URL(p.url()).pathname.startsWith("/login"), new URL(p.url()).pathname);
+  {
+    const r = await p.goto(`${BASE}/me`, { waitUntil: "networkidle" });
+    ok("내 CareerMatri 가 열린다", (r?.status() ?? 0) === 200, String(r?.status()));
+    await shoot(p, "00-me.desktop", "내 CareerMatri(공통 화면)");
+  }
   say(`  적어둠  로그인 뒤 첫 자리 ${new URL(p.url()).pathname} (공통 homePathFor 가 정한다 · JJU 가 바꾸지 않는다)`);
   const sess = (await desk.cookies()).find((k) => /authjs\.session-token/.test(k.name));
   ok("세션 쿠키가 Auth.js 것이다(httpOnly)", !!sess && sess.httpOnly, sess?.name ?? "없음");

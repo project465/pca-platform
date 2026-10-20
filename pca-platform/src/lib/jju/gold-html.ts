@@ -18,6 +18,7 @@
 import type { GoldDoc, Layer } from "@/lib/jju/gold";
 import { AXES, AXIS_KO, LAYER_KO } from "@/lib/jju/gold";
 import type { Workbook } from "@/lib/jju/gold-workbook";
+import { JJU_LOGO_DATA_URI } from "@/lib/jju/logo";
 
 const esc = (s: string) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const tag = (l: Layer) => `<span class="tg tg-${l}">${LAYER_KO[l]}</span>`;
@@ -30,8 +31,7 @@ function opener(no: number, _kicker: string, title: string, thesis: string): str
 
 /**
  * 표지의 동심원. 전주대 옛 보고서 표지의 원 무늬를 학교 색으로 옮긴 장식이고
- * 값을 담지 않는다. **학교 상징(JJ 표시 · 별)은 그리지 않는다**: 쓰려면 학교
- * 승인이 먼저다(JJU_MVP 8절 5).
+ * 값을 담지 않는다. 학교 로고는 사업주가 준 그림을 그대로 싣는다(`logo.ts`).
  */
 const RINGS = [[24, 34, 16], [52, 18, 11], [14, 70, 9], [40, 96, 13], [18, 128, 7], [30, 160, 10], [196, 214, 13], [203, 246, 8], [188, 279, 6]]
   .map(([x, y, r]) => `<g transform="translate(${x} ${y})">${[1, .78, .56, .34].map((k, i) => `<circle r="${(r * k).toFixed(1)}" fill="none" stroke="${i % 2 ? "#9cc8e6" : "#c9e1f2"}" stroke-width="${i === 3 ? 1.6 : .7}"/>`).join("")}<circle r="${(r * .14).toFixed(1)}" fill="#0084c0" opacity=".55"/></g>`).join("");
@@ -138,7 +138,7 @@ export function goldHtml(g: GoldDoc, w: Workbook): string {
   /* ── 표지 ── 흰 바탕 · 동심원 · 오른쪽 위 학교 색 상자 · 큰 해와 제목 */
   P.push(`<section class="cover">
 <svg class="rings" viewBox="0 0 210 297" preserveAspectRatio="none" aria-hidden="true">${SWASH}${RINGS}</svg>
-<div class="cv-box"><b>전주대학교</b><span>JEONJU UNIVERSITY</span></div>
+<div class="cv-logo"><img src="${JJU_LOGO_DATA_URI}" alt="전주대학교"></div>
 <div class="cv-mid"><p class="cv-k">${esc(g.program)}</p><p class="cv-y">${esc(g.submitted.slice(0, 4))}</p><p class="cv-t1">커리어 분석</p><p class="cv-t2">리포트</p><i class="cv-rule"></i>
 <p class="cv-lead">${esc(g.title)}</p>${g.lead ? `<p class="cv-sub">${esc(g.lead)}</p>` : ""}</div>
 <div class="cv-bot"><p class="cv-who">${esc(g.student.track)} · ${esc(g.student.field)}${g.student.spec ? ` · ${esc(g.student.spec)}` : ""}</p><p>${esc(g.id)} · 응답일 ${esc(g.submitted)} · 전주대학교 × CareerMatri</p>
@@ -244,9 +244,7 @@ h3 small{font-weight:400;color:var(--mute);font-size:8.8pt;margin-left:6px}
 /* 표지 — 흰 바탕 · 동심원 · 학교 색 상자 */
 .cover{height:297mm;margin:0;padding:0 20mm 18mm;background:#fff;color:var(--ink);display:flex;flex-direction:column;break-after:page;position:relative;overflow:hidden}
 .rings{position:absolute;inset:0;width:210mm;height:297mm;z-index:0}
-.cv-box{position:absolute;right:20mm;top:0;z-index:1;width:40mm;height:44mm;background:var(--royal);color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:0 4mm 4mm}
-.cv-box::before{content:"";position:absolute;right:4mm;top:5mm;width:3.2mm;height:3.2mm;border-radius:50%;background:var(--star)}
-.cv-box b{font-size:14pt;font-weight:800;letter-spacing:-.01em}.cv-box span{font-size:6.6pt;letter-spacing:.06em;opacity:.8;margin-top:.8mm}
+.cv-logo{position:absolute;right:20mm;top:20mm;z-index:1}.cv-logo img{display:block;height:24mm;width:auto}
 .cv-mid{position:relative;z-index:1;margin-top:96mm;margin-left:42mm}
 .cv-k{font-size:10pt;font-weight:700;color:var(--sky);margin-bottom:4mm}
 .cv-y{font-size:50pt;line-height:1;font-weight:800;color:var(--sky)}

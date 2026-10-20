@@ -16,9 +16,10 @@ import type { CampusUniversity } from "@/lib/campus/registry";
  * 맞는가` 이기 때문이다. 띠는 쪽을 옮겨도 그대로 서서, 검사를 시작하기
  * 전까지 **어느 학교로 들어왔는지가 한 번도 끊기지 않는다.**
  *
- * **학교 로고를 그려 넣지 않는다**(규격 §4). 저장소에 정식 asset 이 없고,
- * 학교 상표를 우리가 다시 그리면 그 학교가 승인한 적 없는 상표가 학생
- * 화면에 선다. 서는 것은 학교 이름 글자와 공식 CareerMatri 상표 하나다.
+ * **학교 로고는 등록부의 `brand_asset` 이 있을 때만 선다.** 학교가 준 파일을
+ * 그대로 쓰고 우리가 다시 그리지 않는다. 파일이 없는 학교는 이름 글자가 선다.
+ *
+ * `data-school` 이 학교 색을 고른다(`theme.css`).
  */
 export function CampusShell({
   u, wide, children,
@@ -30,10 +31,14 @@ export function CampusShell({
 }) {
   const home = `/campus/${u.university_code.toLowerCase()}`;
   return (
-    <div className="cm cm-cmp">
+    <div className="cm cm-cmp" data-school={u.university_code.toLowerCase()}>
       <header className="cm-cmp-band">
         <div className="cm-cmp-band-in">
-          <Link className="cm-cmp-id" href={home}>{u.university_name}</Link>
+          <Link className="cm-cmp-id" href={home}>
+            {u.brand_asset
+              ? <img className="cm-school-logo" src={u.brand_asset} alt={u.university_name} />
+              : u.university_name}
+          </Link>
           <span className="cm-cmp-sep" aria-hidden="true" />
           {/* **상표는 파일 하나를 읽는다**(규격 §4). 임시 아이콘을 두면
               같은 제품의 상표가 두 벌이 되고 둘은 어느 날 갈린다 */}

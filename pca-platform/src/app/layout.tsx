@@ -4,6 +4,9 @@ import "./globals.css";
 /* CareerMatri 제품 화면의 디자인 시스템. `globals.css` 다음에 와야
    같은 이름이 겹칠 때 이쪽이 이긴다 */
 import "./surface.css";
+/* 공통 화면의 테마 한 겹. 값만 다시 적고, 이기는 자리는 특정도로 정한다
+   (`theme.css` 머리말) */
+import "./theme.css";
 
 export const metadata: Metadata = {
   title: "CareerMatri",

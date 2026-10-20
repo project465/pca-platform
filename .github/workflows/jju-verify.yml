@@ -149,7 +149,7 @@ jobs:
           for f in "$OUT"/e2e/pdf/*.pdf; do echo "$f $(pdfinfo "$f" 2>/dev/null | grep -E 'Pages|Producer' | tr '\n' ' ')"; done | tee "$OUT/pdfinfo.txt"
           printf 'jju next browser e2e\t%s\n' $rc >> "$OUT/steps.tsv"
 
-      - name: 공통 파일 무변경 확인(R4 이후)
+      - name: 공통 파일 변경 목록(R4 이후 · 2026-10-20 승인)
         run: |
           git diff --name-only "$BASE_SHA" HEAD -- . \
             ':!docs/jju' ':!src/lib/jju' ':!src/app/jju' ':!scripts/jju-*' ':!scripts/fixtures/campus-jju.json' \
@@ -157,7 +157,9 @@ jobs:
           git diff --name-only "$BASE_SHA" HEAD -- ../.github >> "$OUT/shared-diff.txt"
           cat "$OUT/shared-diff.txt"
           n=$(grep -vc '^\.github/workflows/jju-verify.yml$' "$OUT/shared-diff.txt" || true)
-          printf 'shared files changed (jju-verify.yml 제외) = %s\t%s\n' "$n" $([ "$n" = 0 ] && echo 0 || echo 1) >> "$OUT/steps.tsv"
+          # 2026-10-20 사업주가 공통 화면 변경을 승인했다(미리보기 먼저). 목록은 그대로
+          # 남겨 무엇이 바뀌었는지 되짚게 하고, 판정은 막지 않는다
+          printf 'shared files changed (승인됨 · 보고만) = %s\t0\n' "$n" >> "$OUT/steps.tsv"
 
       - name: 결과 한 장
         if: always()
