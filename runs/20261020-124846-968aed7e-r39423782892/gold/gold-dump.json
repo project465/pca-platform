@@ -1,0 +1,3479 @@
+{
+ "A": {
+  "attempt": "6",
+  "pages": 13,
+  "chars_per_page": [
+   294,
+   564,
+   651,
+   688,
+   434,
+   841,
+   536,
+   752,
+   940,
+   711,
+   767,
+   1096,
+   837
+  ],
+  "gold": {
+   "id": "J-0006",
+   "submitted": "2026-10-20",
+   "version": "jju-report.5-gold",
+   "demo": true,
+   "student": {
+    "name": "QA 학생 A",
+    "track": "AI·데이터 트랙",
+    "cohort": "[시연] 부트캠프 1기",
+    "field": "AI·소프트웨어 분야",
+    "spec": "인공지능·데이터"
+   },
+   "program": "AI 분야 첨단산업 인재양성 부트캠프",
+   "title": "기계학습·데이터 분석 과제는 해 봤고, 정리만 남았어요",
+   "lead": "뭘 골랐는지만 덧붙이면 돼요.",
+   "badge": "정리만 하면 돼요",
+   "numbers": [
+    {
+     "k": "확인된 판단",
+     "v": "2",
+     "sub": "깊게 물은 3개 영역 × 여덟 축 가운데",
+     "layer": "JUDGED"
+    },
+    {
+     "k": "직접 결정",
+     "v": "0",
+     "sub": "조건·기준까지 직접 정한 축",
+     "layer": "JUDGED"
+    },
+    {
+     "k": "고른 근거",
+     "v": "16",
+     "sub": "학생이 고른 근거 문구",
+     "layer": "SELF"
+    },
+    {
+     "k": "근거가 선 영역",
+     "v": "0",
+     "sub": "11개 영역 가운데",
+     "layer": "JUDGED"
+    }
+   ],
+   "brief": [
+    {
+     "k": "지금 상태",
+     "v": "정리만 하면 돼요 — 뭘 골랐는지만 덧붙이면 돼요.",
+     "layer": "JUDGED"
+    },
+    {
+     "k": "강점",
+     "v": "기계학습·데이터 분석에서 무엇을 풀지 직접 잡아본 경험과 방법을 골라 끝까지 해본 경험이 판정으로 확인됐습니다.",
+     "layer": "JUDGED"
+    },
+    {
+     "k": "가장 중요한 빈자리",
+     "v": "기계학습·데이터 분석 — 무엇과 비교해 봤는지가 아직 없어요. 이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다.",
+     "layer": "JUDGED"
+    },
+    {
+     "k": "먼저 볼 직무",
+     "v": "탐색·연구 — 중심 영역 3곳 가운데 1곳에 확인된 판단이 있습니다. 이 자리가 보는 판단 가운데 직접 판단 · 비교와 검증이 아직 비어 있어 그것을 채우는 조건으로 봅니다.",
+     "layer": "READ",
+     "note": "확인된 판단에서 관계표로 이은 해석"
+    },
+    {
+     "k": "다음 행동",
+     "v": "자료구조·알고리즘을 다룰 짧은 과제나 스터디 하나를 정해 보세요. 한 일과 직접 정한 것을 다섯 줄로 적어 두세요.",
+     "layer": "ADVICE"
+    }
+   ],
+   "ledger": [
+    {
+     "text": "자료구조·알고리즘: 판단할 근거가 아직 적음",
+     "layer": "JUDGED",
+     "basis": "판정 문항 12개 · 고른 근거 0개",
+     "status": "여덟 축 중 0칸 확인"
+    },
+    {
+     "text": "데이터 저장·질의 설계: 판단할 근거가 아직 적음",
+     "layer": "JUDGED",
+     "basis": "판정 문항 12개 · 고른 근거 0개",
+     "status": "여덟 축 중 0칸 확인"
+    },
+    {
+     "text": "기계학습·데이터 분석: 해 봤고 정리가 남음",
+     "layer": "JUDGED",
+     "basis": "판정 문항 12개 · 고른 근거 16개",
+     "status": "여덟 축 중 2칸 확인"
+    },
+    {
+     "text": "기계학습·데이터 분석 · 무엇을 풀지 직접 잡아본 경험",
+     "layer": "JUDGED",
+     "basis": "고른 문구 “답할 수 없는 부분을 갈라 적었다” 외 1",
+     "status": "직접 수행"
+    },
+    {
+     "text": "자료구조·알고리즘을 1~2회 해 봤다",
+     "layer": "SELF",
+     "basis": "영역 훑기 격자의 경험 칸",
+     "status": "판정으로는 아직 확인 전"
+    },
+    {
+     "text": "데이터 저장·질의 설계를 1~2회 해 봤다",
+     "layer": "SELF",
+     "basis": "영역 훑기 격자의 경험 칸",
+     "status": "판정으로는 아직 확인 전"
+    },
+    {
+     "text": "설계·개발 직무와 이어짐",
+     "layer": "SELF",
+     "basis": "학생이 고른 관심 직무",
+     "status": "0/3곳 판정 있음"
+    },
+    {
+     "text": "탐색·연구 직무와 이어짐",
+     "layer": "READ",
+     "basis": "관계표의 중심 영역 3곳",
+     "status": "1/3곳 판정 있음"
+    },
+    {
+     "text": "AI 역량 12가지 가운데 이 응시에서 문항으로 잰 것",
+     "layer": "JUDGED",
+     "basis": "문항 커버리지(문항 번호 대조)",
+     "status": "2가지 · 나머지는 미측정 또는 판정 밖"
+    },
+    {
+     "text": "이 트랙에 걸리는 지역·산업 사실 4건",
+     "layer": "SOURCE",
+     "basis": "B20 · B10 · B16 · B01",
+     "status": "검색 결과만 · 원문 확인 전"
+    },
+    {
+     "text": "다음 행동",
+     "layer": "ADVICE",
+     "basis": "결과 모델의 할 일(그 영역의 업무 흐름 재료)",
+     "status": "본문 01 · 08에 전문"
+    }
+   ],
+   "domains": [
+    {
+     "code": "TD01",
+     "name": "소프트웨어 설계·구조",
+     "zone": "NOT_EXPLORED",
+     "zoneKo": "이번 검사에서 깊게 묻지 않음",
+     "explored": false,
+     "interest": "보통",
+     "experience": "해 본 적 없음",
+     "learning": "답 없음",
+     "axes": [],
+     "confirmed": 0,
+     "owned": 0,
+     "picks": 0
+    },
+    {
+     "code": "TD02",
+     "name": "자료구조·알고리즘",
+     "zone": "Z4_INSUFFICIENT_EVIDENCE",
+     "zoneKo": "판단할 근거가 아직 적음",
+     "explored": true,
+     "interest": "높음",
+     "experience": "1~2회",
+     "learning": "높음",
+     "axes": [
+      {
+       "axis": "J1",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J2",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J3",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J4",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J5",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J6",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J7",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J8",
+       "state": "PARTICIPATED"
+      }
+     ],
+     "confirmed": 0,
+     "owned": 0,
+     "picks": 0
+    },
+    {
+     "code": "TD03",
+     "name": "서버·API 구현",
+     "zone": "NOT_EXPLORED",
+     "zoneKo": "이번 검사에서 깊게 묻지 않음",
+     "explored": false,
+     "interest": "보통",
+     "experience": "해 본 적 없음",
+     "learning": "답 없음",
+     "axes": [],
+     "confirmed": 0,
+     "owned": 0,
+     "picks": 0
+    },
+    {
+     "code": "TD04",
+     "name": "데이터 저장·질의 설계",
+     "zone": "Z4_INSUFFICIENT_EVIDENCE",
+     "zoneKo": "판단할 근거가 아직 적음",
+     "explored": true,
+     "interest": "높음",
+     "experience": "1~2회",
+     "learning": "높음",
+     "axes": [
+      {
+       "axis": "J1",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J2",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J3",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J4",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J5",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J6",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J7",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J8",
+       "state": "PARTICIPATED"
+      }
+     ],
+     "confirmed": 0,
+     "owned": 0,
+     "picks": 0
+    },
+    {
+     "code": "TD05",
+     "name": "사용자 인터페이스 구현",
+     "zone": "NOT_EXPLORED",
+     "zoneKo": "이번 검사에서 깊게 묻지 않음",
+     "explored": false,
+     "interest": "보통",
+     "experience": "해 본 적 없음",
+     "learning": "답 없음",
+     "axes": [],
+     "confirmed": 0,
+     "owned": 0,
+     "picks": 0
+    },
+    {
+     "code": "TD06",
+     "name": "시스템·동시성 프로그래밍",
+     "zone": "NOT_EXPLORED",
+     "zoneKo": "이번 검사에서 깊게 묻지 않음",
+     "explored": false,
+     "interest": "보통",
+     "experience": "해 본 적 없음",
+     "learning": "답 없음",
+     "axes": [],
+     "confirmed": 0,
+     "owned": 0,
+     "picks": 0
+    },
+    {
+     "code": "TD07",
+     "name": "네트워크·분산 시스템",
+     "zone": "NOT_EXPLORED",
+     "zoneKo": "이번 검사에서 깊게 묻지 않음",
+     "explored": false,
+     "interest": "보통",
+     "experience": "해 본 적 없음",
+     "learning": "답 없음",
+     "axes": [],
+     "confirmed": 0,
+     "owned": 0,
+     "picks": 0
+    },
+    {
+     "code": "TD08",
+     "name": "정보보안",
+     "zone": "NOT_EXPLORED",
+     "zoneKo": "이번 검사에서 깊게 묻지 않음",
+     "explored": false,
+     "interest": "보통",
+     "experience": "해 본 적 없음",
+     "learning": "답 없음",
+     "axes": [],
+     "confirmed": 0,
+     "owned": 0,
+     "picks": 0
+    },
+    {
+     "code": "TD09",
+     "name": "기계학습·데이터 분석",
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "zoneKo": "해 봤고 정리가 남음",
+     "explored": true,
+     "interest": "높음",
+     "experience": "1~2회",
+     "learning": "높음",
+     "axes": [
+      {
+       "axis": "J1",
+       "state": "CONFIRMED"
+      },
+      {
+       "axis": "J2",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J3",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J4",
+       "state": "CONFIRMED"
+      },
+      {
+       "axis": "J5",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J6",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J7",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J8",
+       "state": "PARTICIPATED"
+      }
+     ],
+     "confirmed": 2,
+     "owned": 0,
+     "picks": 16
+    },
+    {
+     "code": "TD10",
+     "name": "테스트·품질·배포 운영",
+     "zone": "NOT_EXPLORED",
+     "zoneKo": "이번 검사에서 깊게 묻지 않음",
+     "explored": false,
+     "interest": "보통",
+     "experience": "해 본 적 없음",
+     "learning": "답 없음",
+     "axes": [],
+     "confirmed": 0,
+     "owned": 0,
+     "picks": 0
+    },
+    {
+     "code": "TD11",
+     "name": "실시간 그래픽스·게임 구현",
+     "zone": "NOT_EXPLORED",
+     "zoneKo": "이번 검사에서 깊게 묻지 않음",
+     "explored": false,
+     "interest": "보통",
+     "experience": "해 본 적 없음",
+     "learning": "답 없음",
+     "axes": [],
+     "confirmed": 0,
+     "owned": 0,
+     "picks": 0
+    }
+   ],
+   "tools": [
+    {
+     "domain": "기계학습·데이터 분석",
+     "tools": [
+      "수치 계산 도구",
+      "실험 기록 도구",
+      "자료 정리 코드",
+      "시각화 도구",
+      "모형 라이브러리"
+     ]
+    }
+   ],
+   "ai": [
+    {
+     "name": "파이썬 프로그래밍",
+     "status": "교육과정만",
+     "how": "공식 과정이 다룸 · 문항 없음",
+     "measured": false
+    },
+    {
+     "name": "데이터 처리",
+     "status": "측정",
+     "how": "이 응시에서 판정 문항 2개에 답함",
+     "measured": true
+    },
+    {
+     "name": "시각화",
+     "status": "교육과정만",
+     "how": "공식 과정이 다룸 · 문항 없음",
+     "measured": false
+    },
+    {
+     "name": "통계(측정 분포 수준 포함)",
+     "status": "교육과정만",
+     "how": "공식 과정이 다룸 · 문항 없음",
+     "measured": false
+    },
+    {
+     "name": "기계학습 모형 평가·개선",
+     "status": "측정",
+     "how": "이 응시에서 판정 문항 13개에 답함",
+     "measured": true
+    },
+    {
+     "name": "딥러닝·신경망",
+     "status": "교육과정만",
+     "how": "공식 과정이 다룸 · 문항 없음",
+     "measured": false
+    },
+    {
+     "name": "LLM·생성형 AI 응용",
+     "status": "미측정",
+     "how": "검사·과정 어디에도 없음",
+     "measured": false
+    },
+    {
+     "name": "컴퓨터 비전",
+     "status": "미측정",
+     "how": "검사·과정 어디에도 없음",
+     "measured": false
+    },
+    {
+     "name": "모델 배포·운영(MLOps)",
+     "status": "미측정",
+     "how": "검사·과정 어디에도 없음",
+     "measured": false
+    },
+    {
+     "name": "엣지·온디바이스 AI",
+     "status": "미측정",
+     "how": "검사·과정 어디에도 없음",
+     "measured": false
+    },
+    {
+     "name": "로봇 인지·자율 동작",
+     "status": "미측정",
+     "how": "검사·과정 어디에도 없음",
+     "measured": false
+    },
+    {
+     "name": "센서 신호 수집·처리",
+     "status": "측정(팩만)",
+     "how": "그 산업·직무 팩을 고른 사람만 받음 · 이 응시는 받지 않음",
+     "measured": false
+    }
+   ],
+   "notMeasured": [
+    "파이썬 프로그래밍",
+    "시각화",
+    "통계(측정 분포 수준 포함)",
+    "딥러닝·신경망",
+    "LLM·생성형 AI 응용",
+    "컴퓨터 비전",
+    "모델 배포·운영(MLOps)",
+    "엣지·온디바이스 AI",
+    "로봇 인지·자율 동작"
+   ],
+   "roles": [
+    {
+     "code": "ROLE_DEV_V1",
+     "name": "설계·개발",
+     "from": "SELF",
+     "centers": [
+      {
+       "name": "소프트웨어 설계·구조",
+       "hit": false,
+       "state": "이번 검사에서 깊게 묻지 않음"
+      },
+      {
+       "name": "서버·API 구현",
+       "hit": false,
+       "state": "이번 검사에서 깊게 묻지 않음"
+      },
+      {
+       "name": "사용자 인터페이스 구현",
+       "hit": false,
+       "state": "이번 검사에서 깊게 묻지 않음"
+      }
+     ],
+     "work": [
+      {
+       "name": "문제가 들어오는 모양",
+       "detail": "하고 싶은 일이 말이나 화면 그림으로 들어온다"
+      },
+      {
+       "name": "받는 입력",
+       "detail": "이해관계자 요구, 기존 시스템 제약, 기한과 인원"
+      },
+      {
+       "name": "먼저 정하는 것",
+       "detail": "이번에 받지 않을 것과 모듈을 가르는 선"
+      },
+      {
+       "name": "쓰는 방법",
+       "detail": "사용 흐름 적기, 책임 나누기, 규약 쓰기, 변경 비용 견주기"
+      }
+     ],
+     "watched": [
+      {
+       "axis": "J2",
+       "hit": false
+      },
+      {
+       "axis": "J3",
+       "hit": false
+      },
+      {
+       "axis": "J5",
+       "hit": false
+      },
+      {
+       "axis": "J8",
+       "hit": false
+      },
+      {
+       "axis": "J7",
+       "hit": false
+      },
+      {
+       "axis": "J6",
+       "hit": false
+      }
+     ],
+     "condition": "중심 영역 3곳에 확인된 판단이 아직 없습니다. 관심만으로 이 직무를 잇지 않습니다 — 먼저 소프트웨어 설계·구조에서 경험 하나가 필요합니다."
+    },
+    {
+     "code": "ROLE_RESEARCH_V1",
+     "name": "탐색·연구",
+     "from": "READ",
+     "centers": [
+      {
+       "name": "자료구조·알고리즘",
+       "hit": false,
+       "state": "판단할 근거가 아직 적음"
+      },
+      {
+       "name": "기계학습·데이터 분석",
+       "hit": true,
+       "state": "해 봤고 정리가 남음"
+      },
+      {
+       "name": "실시간 그래픽스·게임 구현",
+       "hit": false,
+       "state": "이번 검사에서 깊게 묻지 않음"
+      }
+     ],
+     "work": [
+      {
+       "name": "문제가 들어오는 모양",
+       "detail": "답을 알고 싶은 질문과 가진 자료가 조건으로 들어온다"
+      },
+      {
+       "name": "받는 입력",
+       "detail": "자료 건수와 결측, 이름표 품질, 허용 오차, 계산 자원"
+      },
+      {
+       "name": "먼저 정하는 것",
+       "detail": "평가 조건과 쓸 방법, 어느 지표를 먼저 볼지"
+      },
+      {
+       "name": "쓰는 방법",
+       "detail": "자료 정리, 자료 나누기, 모형 학습, 지표 계산, 오류 사례 분석"
+      }
+     ],
+     "watched": [
+      {
+       "axis": "J3",
+       "hit": false
+      },
+      {
+       "axis": "J1",
+       "hit": true
+      },
+      {
+       "axis": "J4",
+       "hit": true
+      },
+      {
+       "axis": "J6",
+       "hit": false
+      },
+      {
+       "axis": "J7",
+       "hit": false
+      },
+      {
+       "axis": "J8",
+       "hit": false
+      },
+      {
+       "axis": "J5",
+       "hit": false
+      }
+     ],
+     "condition": "중심 영역 3곳 가운데 1곳에 확인된 판단이 있습니다. 이 자리가 보는 판단 가운데 직접 판단 · 비교와 검증이 아직 비어 있어 그것을 채우는 조건으로 봅니다."
+    }
+   ],
+   "industries": [
+    {
+     "name": "플랫폼·온라인 서비스",
+     "from": "SELF",
+     "centers": "중심 영역 없이 10개 영역에 고르게",
+     "status": "1/10곳에 확인된 판단"
+    },
+    {
+     "name": "의료·보건 정보",
+     "from": "READ",
+     "centers": "데이터 저장·질의 설계 · 정보보안 · 기계학습·데이터 분석",
+     "status": "1/3곳에 확인된 판단"
+    },
+    {
+     "name": "금융·결제",
+     "from": "READ",
+     "centers": "정보보안 · 테스트·품질·배포 운영",
+     "status": "그 영역들에 확인된 판단 아직 없음"
+    },
+    {
+     "name": "게임·실시간 콘텐츠",
+     "from": "READ",
+     "centers": "실시간 그래픽스·게임 구현",
+     "status": "그 영역들에 확인된 판단 아직 없음"
+    }
+   ],
+   "region": [
+    {
+     "id": "B20",
+     "claim": "서울신문(2026-09-28)은 전북 피지컬 AI 국책사업에서 전주가 핵심기술 개발·데이터·시험인증·인재양성을, 새만금이 로봇·핵심부품 제조·양산을 맡는 구조라고 보도함.",
+     "status": "FACT",
+     "url": "https://m.go.seoul.co.kr/news/2026/09/28/20260928022002",
+     "how": "SEARCH_RESULT_ONLY",
+     "tracks": [
+      "피지컬 AI",
+      "AI·데이터"
+     ],
+     "checked_on": "2026-10-20",
+     "verified": false,
+     "label": "보도·자료 요지 · 원문 확인 전"
+    },
+    {
+     "id": "B10",
+     "claim": "전북 RISE(지역혁신중심 대학지원체계)는 2025~2029년 5년간 추진되며, '생명·전환 산업 혁신' 프로젝트에서 전북 8대 전략산업(농생명, 의생명, 청정에너지, 첨단소재, 모빌리티, 디지털, 문화관광, 생명서비스·웰니스) 특화 인재 양성을 다룸.",
+     "status": "FACT",
+     "url": "https://www.jjan.kr/articleAmp/20250402580325",
+     "how": "SEARCH_RESULT_ONLY",
+     "tracks": [
+      "AI·데이터",
+      "LLM 응용",
+      "AIoT",
+      "피지컬 AI",
+      "스마트팩토리"
+     ],
+     "checked_on": "2026-10-20",
+     "verified": false,
+     "label": "보도·자료 요지 · 원문 확인 전"
+    },
+    {
+     "id": "B16",
+     "claim": "전북 김제 스마트팜 혁신밸리는 전국 4개 스마트팜 혁신밸리 중 가장 먼저 2021년 11월 29일 준공되었고, 약 21ha에 보육·임대·실증온실 등을 갖추며 청년 창업보육을 운영함.",
+     "status": "FACT",
+     "url": "https://smartcity.go.kr/2021/11/29/전북도-전북에-스마트팜-혁신밸리-전국최초-준공/",
+     "how": "SEARCH_RESULT_ONLY",
+     "tracks": [
+      "AIoT",
+      "AI·데이터"
+     ],
+     "checked_on": "2026-10-20",
+     "verified": false,
+     "label": "보도·자료 요지 · 원문 확인 전"
+    },
+    {
+     "id": "B01",
+     "claim": "새만금은 2023년 7월 20일 국가첨단전략산업 이차전지 특화단지로 지정됨(이차전지: 청주·포항·울산·새만금).",
+     "status": "FACT",
+     "url": "https://m.korea.kr/briefing/pressReleaseView.do?newsId=156607819",
+     "how": "SEARCH_RESULT_ONLY",
+     "tracks": [
+      "스마트팩토리",
+      "AI·데이터"
+     ],
+     "checked_on": "2026-10-20",
+     "verified": false,
+     "label": "보도·자료 요지 · 원문 확인 전"
+    }
+   ],
+   "gaps": [
+    {
+     "domains": [
+      "기계학습·데이터 분석"
+     ],
+     "title": "무엇과 비교해 봤는지가 아직 없어요",
+     "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+     "layer": "JUDGED"
+    },
+    {
+     "domains": [
+      "기계학습·데이터 분석"
+     ],
+     "title": "과제에서 손에 남은 것이 아직 없어요",
+     "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+     "layer": "JUDGED"
+    },
+    {
+     "domains": [
+      "기계학습·데이터 분석"
+     ],
+     "title": "그 결과가 어디에 쓰였는지가 아직 없습니다",
+     "why": "고르신 산업에서 특히 자주 묻는 부분입니다",
+     "layer": "JUDGED"
+    },
+    {
+     "domains": [
+      "기계학습·데이터 분석"
+     ],
+     "title": "직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+     "why": "지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+     "layer": "JUDGED"
+    }
+   ],
+   "constraints": [
+    "적합도 · 합격 가능성 · 순위 · 백분위를 만들지 않습니다. 규준이 없는 검사입니다.",
+    "관심만으로 직무를 잇지 않습니다. 직무는 학생이 고른 것과 판정에서 관계표로 이은 것만 적습니다.",
+    "기업을 추천하지 않습니다. 지역 기업·채용 자료는 아직 받지 않았습니다.",
+    "이 트랙의 검사는 전공자 검수 전 시연 전용입니다. 이 종이를 학생 진단이나 사업 성과로 쓰지 않습니다."
+   ],
+   "quality": "근거 문구와 응답 사이에 다시 볼 자리가 있음",
+   "sources": [
+    {
+     "id": "S1",
+     "label": "S1",
+     "url": "https://www.jj.ac.kr/jj/introduction/jjnews.do?articleNo=504039&mode=view"
+    },
+    {
+     "id": "S2",
+     "label": "S2",
+     "url": "https://www.jj.ac.kr/jj/community/notice01.do?articleNo=521499&mode=view"
+    },
+    {
+     "id": "B20",
+     "label": "B20 · 보도·자료 요지 · 원문 확인 전",
+     "url": "https://m.go.seoul.co.kr/news/2026/09/28/20260928022002"
+    },
+    {
+     "id": "B10",
+     "label": "B10 · 보도·자료 요지 · 원문 확인 전",
+     "url": "https://www.jjan.kr/articleAmp/20250402580325"
+    },
+    {
+     "id": "B16",
+     "label": "B16 · 보도·자료 요지 · 원문 확인 전",
+     "url": "https://smartcity.go.kr/2021/11/29/전북도-전북에-스마트팜-혁신밸리-전국최초-준공/"
+    },
+    {
+     "id": "B01",
+     "label": "B01 · 보도·자료 요지 · 원문 확인 전",
+     "url": "https://m.korea.kr/briefing/pressReleaseView.do?newsId=156607819"
+    }
+   ],
+   "facts": [
+    {
+     "id": "F1",
+     "text": "2026년 AI 분야 첨단산업 인재양성 부트캠프 사업에 선정됐다",
+     "source": "S1",
+     "caution": "R3 검색 결과(보도)와 내용이 맞는다 · 원문 페이지는 열지 못함(fact-register A03·A05·A06)",
+     "status": "공식 출처 · 사업주 확인 · 원문 미대조"
+    },
+    {
+     "id": "F2",
+     "text": "사업 기간은 2026~2030년이고 총 사업비는 80억 원 규모다",
+     "source": "S1",
+     "caution": "사업단 전체 사업비다. CareerMatri 계약 예산이나 도입 예산으로 읽거나 적지 않는다 · R3 검색에서는 '5년간'과 '총 80억 원(국비 71억 2,500만 원 포함)'까지만 보도로 확인됐고 '2026~2030' 의 끝 해는 확인하지 못했다(fact-register A04·A08)",
+     "status": "공식 출처 · 사업주 확인 · 원문 미대조"
+    },
+    {
+     "id": "F3",
+     "text": "전북 전략산업의 AX(인공지능 전환)와 실무형 피지컬 AI 인재 양성을 목표로 한다",
+     "source": "S1",
+     "caution": "R3 검색 결과(보도)와 내용이 맞는다 · 원문 페이지는 열지 못함(fact-register A03·A05·A06)",
+     "status": "공식 출처 · 사업주 확인 · 원문 미대조"
+    },
+    {
+     "id": "F4",
+     "text": "AI 융합 교과목, PBL, 현장실습, 마이크로디그리로 운영한다",
+     "source": "S1",
+     "caution": "R3 검색 결과(보도)와 내용이 맞는다 · 원문 페이지는 열지 못함(fact-register A03·A05·A06)",
+     "status": "공식 출처 · 사업주 확인 · 원문 미대조"
+    },
+    {
+     "id": "F5",
+     "text": "2026 AI 기초 과정을 공지했고 파이썬·데이터 처리·시각화·통계·딥러닝 기초를 다룬다",
+     "source": "S2",
+     "caution": "R3 에서 공개 출처로 다시 확인하지 못했다(fact-register A09·A10 · S2 열람 실패)",
+     "status": "공식 출처 · 사업주 확인 · 원문 미대조"
+    },
+    {
+     "id": "F6",
+     "text": "AI 기초 과정 뒤에 후속 ND1~ND6 과정이 있다",
+     "source": "S2",
+     "caution": "과정 이름·내용·순서·대상은 확인하지 못했다. 화면에 내용을 지어 적지 않는다 · R3 에서 공개 출처로 다시 확인하지 못했다(fact-register A09·A10 · S2 열람 실패)",
+     "status": "있음 · 세부 미확인"
+    }
+   ],
+   "checkedOn": "2026-10-20",
+   "verificationNote": "이 사업 사실은 사업주가 전주대학교 공식 페이지(두 URL)에서 옮겨 준 것이다. 이 작업 환경에서는 www.jj.ac.kr 에 닿지 못해(DNS·프록시 차단) 원문 문면을 직접 대조하지 못했다. 원문을 직접 확인하면 checked_on 과 verification 을 바꾼다",
+   "versions": [
+    {
+     "k": "검사",
+     "v": "CS_CORE_V1 · 문항 CS_V1_ITEM_BANK_V1.3 · 채점 me-v3-scoring.5"
+    },
+    {
+     "k": "결과 모델",
+     "v": "me-v3-result-model.6"
+    },
+    {
+     "k": "리포트",
+     "v": "jju-report.5-gold"
+    }
+   ]
+  },
+  "work": {
+   "projects": [
+    {
+     "domain": "자료구조·알고리즘",
+     "horizon": "30일",
+     "title": "자료구조·알고리즘 — 자료를 어떤 표현으로 담을지와 어느 연산을 빠르게 할지를 직접 정하는 과제",
+     "length": "2~4주 · 과제 하나",
+     "level": "기초 — 1~2회 해 본 것을 끝까지",
+     "decide": "자료를 어떤 표현으로 담을지와 어느 연산을 빠르게 할지",
+     "method": "복잡도 계산, 자료 표현 비교, 경계 입력 시험, 실측 비교",
+     "outputs": [
+      "구현 코드",
+      "복잡도 근거 메모",
+      "성능 측정 기록"
+     ],
+     "verify": [
+      "이론 복잡도",
+      "실측 시간",
+      "다른 자료 표현의 결과"
+     ],
+     "onFail": "느리면 원인을 자료 표현과 반복 횟수와 메모리 접근 가운데로 좁힌다",
+     "why": "자료구조·알고리즘을 다룰 짧은 과제나 스터디 하나를 정해 보세요. 한 일과 직접 정한 것을 다섯 줄로 적어 두세요."
+    },
+    {
+     "domain": "데이터 저장·질의 설계",
+     "horizon": "30일",
+     "title": "데이터 저장·질의 설계 — 표를 나누는 선과 열 종류, 어느 조건을 빠르게 찾을지를 직접 정하는 과제",
+     "length": "2~4주 · 과제 하나",
+     "level": "기초 — 1~2회 해 본 것을 끝까지",
+     "decide": "표를 나누는 선과 열 종류, 어느 조건을 빠르게 찾을지",
+     "method": "관계 정리, 색인 설계, 실행 계획 읽기, 자료 이관 절차 작성",
+     "outputs": [
+      "스키마 정의",
+      "색인 목록",
+      "질의 모음"
+     ],
+     "verify": [
+      "실행 계획",
+      "질의 걸린 시간",
+      "자료 건수 대조"
+     ],
+     "onFail": "질의가 느리면 원인을 색인과 조건 순서와 자료 분포 가운데로 좁힌다",
+     "why": "데이터 저장·질의 설계를 다룰 짧은 과제나 스터디 하나를 정해 보세요. 한 일과 직접 정한 것을 다섯 줄로 적어 두세요."
+    },
+    {
+     "domain": "기계학습·데이터 분석",
+     "horizon": "30일",
+     "title": "기계학습·데이터 분석 — 평가 조건과 쓸 방법, 어느 지표를 먼저 볼지를 직접 정하는 과제",
+     "length": "2~4주 · 과제 하나",
+     "level": "기초 — 1~2회 해 본 것을 끝까지",
+     "decide": "평가 조건과 쓸 방법, 어느 지표를 먼저 볼지",
+     "method": "자료 정리, 자료 나누기, 모형 학습, 지표 계산, 오류 사례 분석",
+     "outputs": [
+      "분석 코드",
+      "자료 준비 절차",
+      "평가 결과표"
+     ],
+     "verify": [
+      "기준 방법 성능",
+      "따로 둔 자료의 결과",
+      "사람 판단"
+     ],
+     "onFail": "성능이 안 나오면 원인을 자료와 이름표와 평가 조건 가운데로 좁힌다",
+     "why": "최근 기계학습·데이터 분석 과제 하나. 자료 정리, 자료 나누기 같은 것 가운데 왜 그 방법을 골랐는지 다른 선택과 나란히 분석 코드에 적습니다."
+    }
+   ],
+   "portfolio": [
+    {
+     "item": "(만들 것) 구현 코드",
+     "role": "자료구조·알고리즘",
+     "decided": "",
+     "verified": "",
+     "result": "",
+     "next": "이론 복잡도와 견주기",
+     "filled": false
+    },
+    {
+     "item": "(만들 것) 스키마 정의",
+     "role": "데이터 저장·질의 설계",
+     "decided": "",
+     "verified": "",
+     "result": "",
+     "next": "실행 계획과 견주기",
+     "filled": false
+    },
+    {
+     "item": "(만들 것) 분석 코드",
+     "role": "기계학습·데이터 분석",
+     "decided": "",
+     "verified": "",
+     "result": "",
+     "next": "기준 방법 성능과 견주기",
+     "filled": false
+    }
+   ],
+   "studio": [
+    {
+     "domain": "기계학습·데이터 분석",
+     "evidence": "“답할 수 없는 부분을 갈라 적었다”",
+     "competence": "기계학습·데이터 분석 과제에서 무엇을 풀지 직접 잡아본 경험과 방법을 골라 끝까지 해본 경험이 있습니다.",
+     "forRole": "설계·개발에 지원한다면: “[기계학습·데이터 분석 과제 이름]에서 문제 정의과 방법과 도구를 맡아 [결과물]을 만들었고, [무엇]과 견주어 [수치·결과]를 확인했습니다.”",
+     "ask": "그때 무엇을 보고 정했나요?",
+     "answerShape": [
+      "상황 — 어떤 과제였나",
+      "판단 — 무엇을 직접 정했나",
+      "근거 — 무엇과 견줬나",
+      "결과 — 무엇이 남았나(수치는 본인이)"
+     ],
+     "more": "무엇과 견줘 확인했는지 하나 확보하기"
+    }
+   ],
+   "questions": [
+    {
+     "q": "기계학습·데이터 분석 과제에서 무엇을 풀 문제로 잡았는가?",
+     "from": "확인된 판단",
+     "need": "이미 고른 근거로 답할 수 있음"
+    },
+    {
+     "q": "기계학습·데이터 분석 과제에서 어떤 방법과 도구로 했는가?",
+     "from": "확인된 판단",
+     "need": "이미 고른 근거로 답할 수 있음"
+    },
+    {
+     "q": "기계학습·데이터 분석에서 무엇과 비교해 확인했는가?",
+     "from": "빈자리",
+     "need": "아직 답할 근거 없음 — 비교와 검증 경험 하나 확보"
+    },
+    {
+     "q": "기계학습·데이터 분석에서 무엇이 결과물로 남았는가?",
+     "from": "빈자리",
+     "need": "아직 답할 근거 없음 — 산출물 경험 하나 확보"
+    },
+    {
+     "q": "기계학습·데이터 분석에서 그 결과가 어디에 쓰였는가?",
+     "from": "빈자리",
+     "need": "아직 답할 근거 없음 — 조직 활용 경험 하나 확보"
+    },
+    {
+     "q": "기계학습·데이터 분석에서 어떤 방법과 도구로 했는가?",
+     "from": "빈자리",
+     "need": "아직 답할 근거 없음 — 방법과 도구 경험 하나 확보"
+    }
+   ],
+   "plan": [
+    {
+     "label": "30일",
+     "days": "지금 ~ 30일",
+     "items": [
+      {
+       "what": "자료구조·알고리즘을 다룰 짧은 과제나 스터디 하나를 정해 보세요. 한 일과 직접 정한 것을 다섯 줄로 적어 두세요.",
+       "output": "구현 코드",
+       "check": "이론 복잡도와 견줘 차이를 적었다",
+       "domain": "자료구조·알고리즘"
+      },
+      {
+       "what": "데이터 저장·질의 설계를 다룰 짧은 과제나 스터디 하나를 정해 보세요. 한 일과 직접 정한 것을 다섯 줄로 적어 두세요.",
+       "output": "스키마 정의",
+       "check": "실행 계획과 견줘 차이를 적었다",
+       "domain": "데이터 저장·질의 설계"
+      },
+      {
+       "what": "최근 기계학습·데이터 분석 과제 하나. 자료 정리, 자료 나누기 같은 것 가운데 왜 그 방법을 골랐는지 다른 선택과 나란히 분석 코드에 적습니다.",
+       "output": "분석 코드",
+       "check": "기준 방법 성능과 견줘 차이를 적었다",
+       "domain": "기계학습·데이터 분석"
+      }
+     ]
+    },
+    {
+     "label": "90일",
+     "days": "31 ~ 90일",
+     "items": [
+      {
+       "what": "다음 기계학습·데이터 분석 과제 하나. 끝까지 가서 분석 코드나 자료 준비 절차 한 벌을 남겨 두세요.",
+       "output": "분석 코드",
+       "check": "기준 방법 성능과 견줘 차이를 적었다",
+       "domain": "기계학습·데이터 분석"
+      },
+      {
+       "what": "다음 기계학습·데이터 분석 과제 하나. 낸 결과를 기준 방법 성능이나 따로 둔 자료의 결과와 견주고, 두 값의 차이와 그 까닭을 표 한 장으로 남겨 두세요.",
+       "output": "분석 코드",
+       "check": "기준 방법 성능과 견줘 차이를 적었다",
+       "domain": "기계학습·데이터 분석"
+      },
+      {
+       "what": "다음 기계학습·데이터 분석 과제 하나. 낸 결과가 어디에 쓰이는지 따라가 보고, 쓰인 곳을 평가 결과표 끝에 적습니다.",
+       "output": "분석 코드",
+       "check": "기준 방법 성능과 견줘 차이를 적었다",
+       "domain": "기계학습·데이터 분석"
+      }
+     ]
+    },
+    {
+     "label": "180일",
+     "days": "91 ~ 180일",
+     "items": []
+    }
+   ],
+   "course": "2026 AI 기초 과정(파이썬 · 데이터 처리 · 시각화 · 통계 · 딥러닝 기초)"
+  }
+ },
+ "B": {
+  "attempt": "7",
+  "pages": 13,
+  "chars_per_page": [
+   315,
+   617,
+   883,
+   638,
+   603,
+   838,
+   542,
+   661,
+   961,
+   717,
+   637,
+   928,
+   1166
+  ],
+  "gold": {
+   "id": "J-0007",
+   "submitted": "2026-10-20",
+   "version": "jju-report.5-gold",
+   "demo": true,
+   "student": {
+    "name": "QA 학생 B",
+    "track": "AI·데이터 트랙",
+    "cohort": "[시연] 부트캠프 1기",
+    "field": "AI·소프트웨어 분야",
+    "spec": "인공지능·데이터"
+   },
+   "program": "AI 분야 첨단산업 인재양성 부트캠프",
+   "title": "소프트웨어 설계·구조 과제에서 방향을 직접 정해 본 일이 있어요",
+   "lead": "확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+   "badge": "지원서에 쓸 경험이 있어요",
+   "numbers": [
+    {
+     "k": "확인된 판단",
+     "v": "32",
+     "sub": "깊게 물은 4개 영역 × 여덟 축 가운데",
+     "layer": "JUDGED"
+    },
+    {
+     "k": "직접 결정",
+     "v": "8",
+     "sub": "조건·기준까지 직접 정한 축",
+     "layer": "JUDGED"
+    },
+    {
+     "k": "고른 근거",
+     "v": "76",
+     "sub": "학생이 고른 근거 문구",
+     "layer": "SELF"
+    },
+    {
+     "k": "근거가 선 영역",
+     "v": "4",
+     "sub": "11개 영역 가운데",
+     "layer": "JUDGED"
+    }
+   ],
+   "brief": [
+    {
+     "k": "지금 상태",
+     "v": "지원서에 쓸 경험이 있어요 — 확인된 내용은 지원서로 옮기고, 수치와 결과는 직접 적어요.",
+     "layer": "JUDGED"
+    },
+    {
+     "k": "강점",
+     "v": "소프트웨어 설계·구조와 서버·API 구현에서 기준을 직접 세워본 경험과 남길 결과물을 만들어본 경험이 판정으로 확인됐습니다.",
+     "layer": "JUDGED"
+    },
+    {
+     "k": "가장 중요한 빈자리",
+     "v": "소프트웨어 설계·구조 — 직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다. 지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+     "layer": "JUDGED"
+    },
+    {
+     "k": "먼저 볼 직무",
+     "v": "설계·개발 — 중심 영역 3/3곳에 확인된 판단이 있고 이 자리가 보는 판단이 모두 한 번 이상 확인됐습니다. 지원 가능성이나 합격을 뜻하지 않습니다.",
+     "layer": "READ",
+     "note": "직무는 학생이 고른 것(자기보고) · 문장은 관계표를 대 본 해석"
+    },
+    {
+     "k": "다음 행동",
+     "v": "최근 소프트웨어 설계·구조 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 모듈 구조도에 그대로 옮깁니다.",
+     "layer": "ADVICE"
+    }
+   ],
+   "ledger": [
+    {
+     "text": "소프트웨어 설계·구조: 설명할 근거가 있음",
+     "layer": "JUDGED",
+     "basis": "판정 문항 12개 · 고른 근거 19개",
+     "status": "여덟 축 중 8칸 확인 · 직접 결정 2"
+    },
+    {
+     "text": "소프트웨어 설계·구조 · 기준을 직접 세워본 경험",
+     "layer": "JUDGED",
+     "basis": "고른 문구 “모듈을 가르는 선을 정했다” 외 1",
+     "status": "직접 결정"
+    },
+    {
+     "text": "서버·API 구현: 설명할 근거가 있음",
+     "layer": "JUDGED",
+     "basis": "판정 문항 12개 · 고른 근거 19개",
+     "status": "여덟 축 중 8칸 확인 · 직접 결정 2"
+    },
+    {
+     "text": "서버·API 구현 · 기준을 직접 세워본 경험",
+     "layer": "JUDGED",
+     "basis": "고른 문구 “오류 코드 체계를 정했다” 외 1",
+     "status": "직접 결정"
+    },
+    {
+     "text": "사용자 인터페이스 구현: 설명할 근거가 있음",
+     "layer": "JUDGED",
+     "basis": "판정 문항 12개 · 고른 근거 19개",
+     "status": "여덟 축 중 8칸 확인 · 직접 결정 2"
+    },
+    {
+     "text": "사용자 인터페이스 구현 · 기준을 직접 세워본 경험",
+     "layer": "JUDGED",
+     "basis": "고른 문구 “다룰 경계 상황을 정했다” 외 1",
+     "status": "직접 결정"
+    },
+    {
+     "text": "테스트·품질·배포 운영: 설명할 근거가 있음",
+     "layer": "JUDGED",
+     "basis": "판정 문항 12개 · 고른 근거 19개",
+     "status": "여덟 축 중 8칸 확인 · 직접 결정 2"
+    },
+    {
+     "text": "테스트·품질·배포 운영 · 기준을 직접 세워본 경험",
+     "layer": "JUDGED",
+     "basis": "고른 문구 “자동화할 범위를 정했다” 외 1",
+     "status": "직접 결정"
+    },
+    {
+     "text": "자료구조·알고리즘을 1~2회 해 봤다",
+     "layer": "SELF",
+     "basis": "영역 훑기 격자의 경험 칸",
+     "status": "판정으로는 아직 확인 전"
+    },
+    {
+     "text": "데이터 저장·질의 설계를 1~2회 해 봤다",
+     "layer": "SELF",
+     "basis": "영역 훑기 격자의 경험 칸",
+     "status": "판정으로는 아직 확인 전"
+    },
+    {
+     "text": "시스템·동시성 프로그래밍을 1~2회 해 봤다",
+     "layer": "SELF",
+     "basis": "영역 훑기 격자의 경험 칸",
+     "status": "판정으로는 아직 확인 전"
+    },
+    {
+     "text": "설계·개발 직무와 이어짐",
+     "layer": "SELF",
+     "basis": "학생이 고른 관심 직무",
+     "status": "3/3곳 판정 있음"
+    },
+    {
+     "text": "시험·검증 직무와 이어짐",
+     "layer": "READ",
+     "basis": "관계표의 중심 영역 3곳",
+     "status": "3/3곳 판정 있음"
+    },
+    {
+     "text": "통합·조정 직무와 이어짐",
+     "layer": "READ",
+     "basis": "관계표의 중심 영역 3곳",
+     "status": "2/3곳 판정 있음"
+    },
+    {
+     "text": "AI 역량 12가지 가운데 이 응시에서 문항으로 잰 것",
+     "layer": "JUDGED",
+     "basis": "문항 커버리지(문항 번호 대조)",
+     "status": "1가지 · 나머지는 미측정 또는 판정 밖"
+    },
+    {
+     "text": "이 트랙에 걸리는 지역·산업 사실 4건",
+     "layer": "SOURCE",
+     "basis": "B20 · B10 · B16 · B01",
+     "status": "검색 결과만 · 원문 확인 전"
+    },
+    {
+     "text": "다음 행동",
+     "layer": "ADVICE",
+     "basis": "결과 모델의 할 일(그 영역의 업무 흐름 재료)",
+     "status": "본문 01 · 08에 전문"
+    }
+   ],
+   "domains": [
+    {
+     "code": "TD01",
+     "name": "소프트웨어 설계·구조",
+     "zone": "Z1_EVIDENCE_ESTABLISHED",
+     "zoneKo": "설명할 근거가 있음",
+     "explored": true,
+     "interest": "높음",
+     "experience": "여러 번",
+     "learning": "높음",
+     "axes": [
+      {
+       "axis": "J1",
+       "state": "CONFIRMED"
+      },
+      {
+       "axis": "J2",
+       "state": "CONFIRMED"
+      },
+      {
+       "axis": "J3",
+       "state": "OWNED"
+      },
+      {
+       "axis": "J4",
+       "state": "CONFIRMED"
+      },
+      {
+       "axis": "J5",
+       "state": "OWNED"
+      },
+      {
+       "axis": "J6",
+       "state": "CONFIRMED"
+      },
+      {
+       "axis": "J7",
+       "state": "CONFIRMED"
+      },
+      {
+       "axis": "J8",
+       "state": "CONFIRMED"
+      }
+     ],
+     "confirmed": 8,
+     "owned": 2,
+     "picks": 19
+    },
+    {
+     "code": "TD02",
+     "name": "자료구조·알고리즘",
+     "zone": "NOT_EXPLORED",
+     "zoneKo": "이번 검사에서 깊게 묻지 않음",
+     "explored": false,
+     "interest": "보통",
+     "experience": "1~2회",
+     "learning": "답 없음",
+     "axes": [],
+     "confirmed": 0,
+     "owned": 0,
+     "picks": 0
+    },
+    {
+     "code": "TD03",
+     "name": "서버·API 구현",
+     "zone": "Z1_EVIDENCE_ESTABLISHED",
+     "zoneKo": "설명할 근거가 있음",
+     "explored": true,
+     "interest": "높음",
+     "experience": "여러 번",
+     "learning": "높음",
+     "axes": [
+      {
+       "axis": "J1",
+       "state": "CONFIRMED"
+      },
+      {
+       "axis": "J2",
+       "state": "CONFIRMED"
+      },
+      {
+       "axis": "J3",
+       "state": "OWNED"
+      },
+      {
+       "axis": "J4",
+       "state": "CONFIRMED"
+      },
+      {
+       "axis": "J5",
+       "state": "OWNED"
+      },
+      {
+       "axis": "J6",
+       "state": "CONFIRMED"
+      },
+      {
+       "axis": "J7",
+       "state": "CONFIRMED"
+      },
+      {
+       "axis": "J8",
+       "state": "CONFIRMED"
+      }
+     ],
+     "confirmed": 8,
+     "owned": 2,
+     "picks": 19
+    },
+    {
+     "code": "TD04",
+     "name": "데이터 저장·질의 설계",
+     "zone": "NOT_EXPLORED",
+     "zoneKo": "이번 검사에서 깊게 묻지 않음",
+     "explored": false,
+     "interest": "보통",
+     "experience": "1~2회",
+     "learning": "답 없음",
+     "axes": [],
+     "confirmed": 0,
+     "owned": 0,
+     "picks": 0
+    },
+    {
+     "code": "TD05",
+     "name": "사용자 인터페이스 구현",
+     "zone": "Z1_EVIDENCE_ESTABLISHED",
+     "zoneKo": "설명할 근거가 있음",
+     "explored": true,
+     "interest": "높음",
+     "experience": "여러 번",
+     "learning": "높음",
+     "axes": [
+      {
+       "axis": "J1",
+       "state": "CONFIRMED"
+      },
+      {
+       "axis": "J2",
+       "state": "CONFIRMED"
+      },
+      {
+       "axis": "J3",
+       "state": "OWNED"
+      },
+      {
+       "axis": "J4",
+       "state": "CONFIRMED"
+      },
+      {
+       "axis": "J5",
+       "state": "OWNED"
+      },
+      {
+       "axis": "J6",
+       "state": "CONFIRMED"
+      },
+      {
+       "axis": "J7",
+       "state": "CONFIRMED"
+      },
+      {
+       "axis": "J8",
+       "state": "CONFIRMED"
+      }
+     ],
+     "confirmed": 8,
+     "owned": 2,
+     "picks": 19
+    },
+    {
+     "code": "TD06",
+     "name": "시스템·동시성 프로그래밍",
+     "zone": "NOT_EXPLORED",
+     "zoneKo": "이번 검사에서 깊게 묻지 않음",
+     "explored": false,
+     "interest": "보통",
+     "experience": "1~2회",
+     "learning": "답 없음",
+     "axes": [],
+     "confirmed": 0,
+     "owned": 0,
+     "picks": 0
+    },
+    {
+     "code": "TD07",
+     "name": "네트워크·분산 시스템",
+     "zone": "NOT_EXPLORED",
+     "zoneKo": "이번 검사에서 깊게 묻지 않음",
+     "explored": false,
+     "interest": "보통",
+     "experience": "1~2회",
+     "learning": "답 없음",
+     "axes": [],
+     "confirmed": 0,
+     "owned": 0,
+     "picks": 0
+    },
+    {
+     "code": "TD08",
+     "name": "정보보안",
+     "zone": "NOT_EXPLORED",
+     "zoneKo": "이번 검사에서 깊게 묻지 않음",
+     "explored": false,
+     "interest": "보통",
+     "experience": "1~2회",
+     "learning": "답 없음",
+     "axes": [],
+     "confirmed": 0,
+     "owned": 0,
+     "picks": 0
+    },
+    {
+     "code": "TD09",
+     "name": "기계학습·데이터 분석",
+     "zone": "NOT_EXPLORED",
+     "zoneKo": "이번 검사에서 깊게 묻지 않음",
+     "explored": false,
+     "interest": "보통",
+     "experience": "1~2회",
+     "learning": "답 없음",
+     "axes": [],
+     "confirmed": 0,
+     "owned": 0,
+     "picks": 0
+    },
+    {
+     "code": "TD10",
+     "name": "테스트·품질·배포 운영",
+     "zone": "Z1_EVIDENCE_ESTABLISHED",
+     "zoneKo": "설명할 근거가 있음",
+     "explored": true,
+     "interest": "높음",
+     "experience": "여러 번",
+     "learning": "높음",
+     "axes": [
+      {
+       "axis": "J1",
+       "state": "CONFIRMED"
+      },
+      {
+       "axis": "J2",
+       "state": "CONFIRMED"
+      },
+      {
+       "axis": "J3",
+       "state": "OWNED"
+      },
+      {
+       "axis": "J4",
+       "state": "CONFIRMED"
+      },
+      {
+       "axis": "J5",
+       "state": "OWNED"
+      },
+      {
+       "axis": "J6",
+       "state": "CONFIRMED"
+      },
+      {
+       "axis": "J7",
+       "state": "CONFIRMED"
+      },
+      {
+       "axis": "J8",
+       "state": "CONFIRMED"
+      }
+     ],
+     "confirmed": 8,
+     "owned": 2,
+     "picks": 19
+    },
+    {
+     "code": "TD11",
+     "name": "실시간 그래픽스·게임 구현",
+     "zone": "NOT_EXPLORED",
+     "zoneKo": "이번 검사에서 깊게 묻지 않음",
+     "explored": false,
+     "interest": "보통",
+     "experience": "1~2회",
+     "learning": "답 없음",
+     "axes": [],
+     "confirmed": 0,
+     "owned": 0,
+     "picks": 0
+    }
+   ],
+   "tools": [
+    {
+     "domain": "소프트웨어 설계·구조",
+     "tools": [
+      "구조도 도구",
+      "문서 저장소",
+      "의존성 분석기",
+      "결정 기록",
+      "사용 흐름 도표"
+     ]
+    },
+    {
+     "domain": "서버·API 구현",
+     "tools": [
+      "웹 프레임워크",
+      "요청 시험 도구",
+      "부하 시험 도구",
+      "기록 수집 도구",
+      "문서 생성기"
+     ]
+    },
+    {
+     "domain": "사용자 인터페이스 구현",
+     "tools": [
+      "화면 라이브러리",
+      "브라우저 검사 도구",
+      "접근성 검사기",
+      "상태 확인 도구",
+      "화면 캡처"
+     ]
+    }
+   ],
+   "ai": [
+    {
+     "name": "파이썬 프로그래밍",
+     "status": "교육과정만",
+     "how": "공식 과정이 다룸 · 문항 없음",
+     "measured": false
+    },
+    {
+     "name": "데이터 처리",
+     "status": "측정",
+     "how": "문항은 있으나 이 응시에서 받지 않음",
+     "measured": false
+    },
+    {
+     "name": "시각화",
+     "status": "교육과정만",
+     "how": "공식 과정이 다룸 · 문항 없음",
+     "measured": false
+    },
+    {
+     "name": "통계(측정 분포 수준 포함)",
+     "status": "교육과정만",
+     "how": "공식 과정이 다룸 · 문항 없음",
+     "measured": false
+    },
+    {
+     "name": "기계학습 모형 평가·개선",
+     "status": "측정",
+     "how": "이 응시에서 판정 문항 1개에 답함",
+     "measured": true
+    },
+    {
+     "name": "딥러닝·신경망",
+     "status": "교육과정만",
+     "how": "공식 과정이 다룸 · 문항 없음",
+     "measured": false
+    },
+    {
+     "name": "LLM·생성형 AI 응용",
+     "status": "미측정",
+     "how": "검사·과정 어디에도 없음",
+     "measured": false
+    },
+    {
+     "name": "컴퓨터 비전",
+     "status": "미측정",
+     "how": "검사·과정 어디에도 없음",
+     "measured": false
+    },
+    {
+     "name": "모델 배포·운영(MLOps)",
+     "status": "미측정",
+     "how": "검사·과정 어디에도 없음",
+     "measured": false
+    },
+    {
+     "name": "엣지·온디바이스 AI",
+     "status": "미측정",
+     "how": "검사·과정 어디에도 없음",
+     "measured": false
+    },
+    {
+     "name": "로봇 인지·자율 동작",
+     "status": "미측정",
+     "how": "검사·과정 어디에도 없음",
+     "measured": false
+    },
+    {
+     "name": "센서 신호 수집·처리",
+     "status": "측정(팩만)",
+     "how": "그 산업·직무 팩을 고른 사람만 받음 · 이 응시는 받지 않음",
+     "measured": false
+    }
+   ],
+   "notMeasured": [
+    "파이썬 프로그래밍",
+    "시각화",
+    "통계(측정 분포 수준 포함)",
+    "딥러닝·신경망",
+    "LLM·생성형 AI 응용",
+    "컴퓨터 비전",
+    "모델 배포·운영(MLOps)",
+    "엣지·온디바이스 AI",
+    "로봇 인지·자율 동작"
+   ],
+   "roles": [
+    {
+     "code": "ROLE_DEV_V1",
+     "name": "설계·개발",
+     "from": "SELF",
+     "centers": [
+      {
+       "name": "소프트웨어 설계·구조",
+       "hit": true,
+       "state": "설명할 근거가 있음"
+      },
+      {
+       "name": "서버·API 구현",
+       "hit": true,
+       "state": "설명할 근거가 있음"
+      },
+      {
+       "name": "사용자 인터페이스 구현",
+       "hit": true,
+       "state": "설명할 근거가 있음"
+      }
+     ],
+     "work": [
+      {
+       "name": "문제가 들어오는 모양",
+       "detail": "하고 싶은 일이 말이나 화면 그림으로 들어온다"
+      },
+      {
+       "name": "받는 입력",
+       "detail": "이해관계자 요구, 기존 시스템 제약, 기한과 인원"
+      },
+      {
+       "name": "먼저 정하는 것",
+       "detail": "이번에 받지 않을 것과 모듈을 가르는 선"
+      },
+      {
+       "name": "쓰는 방법",
+       "detail": "사용 흐름 적기, 책임 나누기, 규약 쓰기, 변경 비용 견주기"
+      }
+     ],
+     "watched": [
+      {
+       "axis": "J2",
+       "hit": true
+      },
+      {
+       "axis": "J3",
+       "hit": true
+      },
+      {
+       "axis": "J5",
+       "hit": true
+      },
+      {
+       "axis": "J8",
+       "hit": true
+      },
+      {
+       "axis": "J7",
+       "hit": true
+      },
+      {
+       "axis": "J6",
+       "hit": true
+      }
+     ],
+     "condition": "중심 영역 3/3곳에 확인된 판단이 있고 이 자리가 보는 판단이 모두 한 번 이상 확인됐습니다. 지원 가능성이나 합격을 뜻하지 않습니다."
+    },
+    {
+     "code": "ROLE_QA_V1",
+     "name": "시험·검증",
+     "from": "READ",
+     "centers": [
+      {
+       "name": "서버·API 구현",
+       "hit": true,
+       "state": "설명할 근거가 있음"
+      },
+      {
+       "name": "사용자 인터페이스 구현",
+       "hit": true,
+       "state": "설명할 근거가 있음"
+      },
+      {
+       "name": "테스트·품질·배포 운영",
+       "hit": true,
+       "state": "설명할 근거가 있음"
+      }
+     ],
+     "work": [
+      {
+       "name": "문제가 들어오는 모양",
+       "detail": "화면이나 다른 시스템이 요구하는 기능이 요청 목록으로 들어온다"
+      },
+      {
+       "name": "받는 입력",
+       "detail": "요청 종류와 호출 빈도, 응답 시간 약속, 보관해야 할 자료"
+      },
+      {
+       "name": "먼저 정하는 것",
+       "detail": "주소 체계와 응답 꼴과 오류 코드, 어디까지 한 번에 처리할지"
+      },
+      {
+       "name": "쓰는 방법",
+       "detail": "요청 처리 흐름 작성, 거래 범위 정하기, 재시도 안전 처리, 부하 시험"
+      }
+     ],
+     "watched": [
+      {
+       "axis": "J5",
+       "hit": true
+      },
+      {
+       "axis": "J3",
+       "hit": true
+      },
+      {
+       "axis": "J2",
+       "hit": true
+      },
+      {
+       "axis": "J6",
+       "hit": true
+      },
+      {
+       "axis": "J7",
+       "hit": true
+      },
+      {
+       "axis": "J8",
+       "hit": true
+      }
+     ],
+     "condition": "중심 영역 3/3곳에 확인된 판단이 있고 이 자리가 보는 판단이 모두 한 번 이상 확인됐습니다. 지원 가능성이나 합격을 뜻하지 않습니다."
+    },
+    {
+     "code": "ROLE_PM_V1",
+     "name": "통합·조정",
+     "from": "READ",
+     "centers": [
+      {
+       "name": "소프트웨어 설계·구조",
+       "hit": true,
+       "state": "설명할 근거가 있음"
+      },
+      {
+       "name": "데이터 저장·질의 설계",
+       "hit": false,
+       "state": "이번 검사에서 깊게 묻지 않음"
+      },
+      {
+       "name": "테스트·품질·배포 운영",
+       "hit": true,
+       "state": "설명할 근거가 있음"
+      }
+     ],
+     "work": [
+      {
+       "name": "문제가 들어오는 모양",
+       "detail": "하고 싶은 일이 말이나 화면 그림으로 들어온다"
+      },
+      {
+       "name": "받는 입력",
+       "detail": "이해관계자 요구, 기존 시스템 제약, 기한과 인원"
+      },
+      {
+       "name": "먼저 정하는 것",
+       "detail": "이번에 받지 않을 것과 모듈을 가르는 선"
+      },
+      {
+       "name": "쓰는 방법",
+       "detail": "사용 흐름 적기, 책임 나누기, 규약 쓰기, 변경 비용 견주기"
+      }
+     ],
+     "watched": [
+      {
+       "axis": "J2",
+       "hit": true
+      },
+      {
+       "axis": "J3",
+       "hit": true
+      },
+      {
+       "axis": "J4",
+       "hit": true
+      },
+      {
+       "axis": "J7",
+       "hit": true
+      },
+      {
+       "axis": "J8",
+       "hit": true
+      },
+      {
+       "axis": "J5",
+       "hit": true
+      },
+      {
+       "axis": "J6",
+       "hit": true
+      }
+     ],
+     "condition": "중심 영역 2/3곳에 확인된 판단이 있고 이 자리가 보는 판단이 모두 한 번 이상 확인됐습니다. 지원 가능성이나 합격을 뜻하지 않습니다."
+    }
+   ],
+   "industries": [
+    {
+     "name": "플랫폼·온라인 서비스",
+     "from": "SELF",
+     "centers": "중심 영역 없이 10개 영역에 고르게",
+     "status": "4/10곳에 확인된 판단"
+    },
+    {
+     "name": "기업용 소프트웨어·수탁 개발",
+     "from": "READ",
+     "centers": "소프트웨어 설계·구조 · 테스트·품질·배포 운영",
+     "status": "2/2곳에 확인된 판단"
+    },
+    {
+     "name": "공공·국방 정보화",
+     "from": "READ",
+     "centers": "소프트웨어 설계·구조 · 정보보안 · 테스트·품질·배포 운영",
+     "status": "2/3곳에 확인된 판단"
+    },
+    {
+     "name": "금융·결제",
+     "from": "READ",
+     "centers": "정보보안 · 테스트·품질·배포 운영",
+     "status": "1/2곳에 확인된 판단"
+    }
+   ],
+   "region": [
+    {
+     "id": "B20",
+     "claim": "서울신문(2026-09-28)은 전북 피지컬 AI 국책사업에서 전주가 핵심기술 개발·데이터·시험인증·인재양성을, 새만금이 로봇·핵심부품 제조·양산을 맡는 구조라고 보도함.",
+     "status": "FACT",
+     "url": "https://m.go.seoul.co.kr/news/2026/09/28/20260928022002",
+     "how": "SEARCH_RESULT_ONLY",
+     "tracks": [
+      "피지컬 AI",
+      "AI·데이터"
+     ],
+     "checked_on": "2026-10-20",
+     "verified": false,
+     "label": "보도·자료 요지 · 원문 확인 전"
+    },
+    {
+     "id": "B10",
+     "claim": "전북 RISE(지역혁신중심 대학지원체계)는 2025~2029년 5년간 추진되며, '생명·전환 산업 혁신' 프로젝트에서 전북 8대 전략산업(농생명, 의생명, 청정에너지, 첨단소재, 모빌리티, 디지털, 문화관광, 생명서비스·웰니스) 특화 인재 양성을 다룸.",
+     "status": "FACT",
+     "url": "https://www.jjan.kr/articleAmp/20250402580325",
+     "how": "SEARCH_RESULT_ONLY",
+     "tracks": [
+      "AI·데이터",
+      "LLM 응용",
+      "AIoT",
+      "피지컬 AI",
+      "스마트팩토리"
+     ],
+     "checked_on": "2026-10-20",
+     "verified": false,
+     "label": "보도·자료 요지 · 원문 확인 전"
+    },
+    {
+     "id": "B16",
+     "claim": "전북 김제 스마트팜 혁신밸리는 전국 4개 스마트팜 혁신밸리 중 가장 먼저 2021년 11월 29일 준공되었고, 약 21ha에 보육·임대·실증온실 등을 갖추며 청년 창업보육을 운영함.",
+     "status": "FACT",
+     "url": "https://smartcity.go.kr/2021/11/29/전북도-전북에-스마트팜-혁신밸리-전국최초-준공/",
+     "how": "SEARCH_RESULT_ONLY",
+     "tracks": [
+      "AIoT",
+      "AI·데이터"
+     ],
+     "checked_on": "2026-10-20",
+     "verified": false,
+     "label": "보도·자료 요지 · 원문 확인 전"
+    },
+    {
+     "id": "B01",
+     "claim": "새만금은 2023년 7월 20일 국가첨단전략산업 이차전지 특화단지로 지정됨(이차전지: 청주·포항·울산·새만금).",
+     "status": "FACT",
+     "url": "https://m.korea.kr/briefing/pressReleaseView.do?newsId=156607819",
+     "how": "SEARCH_RESULT_ONLY",
+     "tracks": [
+      "스마트팩토리",
+      "AI·데이터"
+     ],
+     "checked_on": "2026-10-20",
+     "verified": false,
+     "label": "보도·자료 요지 · 원문 확인 전"
+    }
+   ],
+   "gaps": [
+    {
+     "domains": [
+      "소프트웨어 설계·구조",
+      "서버·API 구현",
+      "사용자 인터페이스 구현",
+      "테스트·품질·배포 운영"
+     ],
+     "title": "직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+     "why": "지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+     "layer": "JUDGED"
+    }
+   ],
+   "constraints": [
+    "적합도 · 합격 가능성 · 순위 · 백분위를 만들지 않습니다. 규준이 없는 검사입니다.",
+    "관심만으로 직무를 잇지 않습니다. 직무는 학생이 고른 것과 판정에서 관계표로 이은 것만 적습니다.",
+    "기업을 추천하지 않습니다. 지역 기업·채용 자료는 아직 받지 않았습니다.",
+    "이 트랙의 검사는 전공자 검수 전 시연 전용입니다. 이 종이를 학생 진단이나 사업 성과로 쓰지 않습니다."
+   ],
+   "quality": "특이 사항 없음",
+   "sources": [
+    {
+     "id": "S1",
+     "label": "S1",
+     "url": "https://www.jj.ac.kr/jj/introduction/jjnews.do?articleNo=504039&mode=view"
+    },
+    {
+     "id": "S2",
+     "label": "S2",
+     "url": "https://www.jj.ac.kr/jj/community/notice01.do?articleNo=521499&mode=view"
+    },
+    {
+     "id": "B20",
+     "label": "B20 · 보도·자료 요지 · 원문 확인 전",
+     "url": "https://m.go.seoul.co.kr/news/2026/09/28/20260928022002"
+    },
+    {
+     "id": "B10",
+     "label": "B10 · 보도·자료 요지 · 원문 확인 전",
+     "url": "https://www.jjan.kr/articleAmp/20250402580325"
+    },
+    {
+     "id": "B16",
+     "label": "B16 · 보도·자료 요지 · 원문 확인 전",
+     "url": "https://smartcity.go.kr/2021/11/29/전북도-전북에-스마트팜-혁신밸리-전국최초-준공/"
+    },
+    {
+     "id": "B01",
+     "label": "B01 · 보도·자료 요지 · 원문 확인 전",
+     "url": "https://m.korea.kr/briefing/pressReleaseView.do?newsId=156607819"
+    }
+   ],
+   "facts": [
+    {
+     "id": "F1",
+     "text": "2026년 AI 분야 첨단산업 인재양성 부트캠프 사업에 선정됐다",
+     "source": "S1",
+     "caution": "R3 검색 결과(보도)와 내용이 맞는다 · 원문 페이지는 열지 못함(fact-register A03·A05·A06)",
+     "status": "공식 출처 · 사업주 확인 · 원문 미대조"
+    },
+    {
+     "id": "F2",
+     "text": "사업 기간은 2026~2030년이고 총 사업비는 80억 원 규모다",
+     "source": "S1",
+     "caution": "사업단 전체 사업비다. CareerMatri 계약 예산이나 도입 예산으로 읽거나 적지 않는다 · R3 검색에서는 '5년간'과 '총 80억 원(국비 71억 2,500만 원 포함)'까지만 보도로 확인됐고 '2026~2030' 의 끝 해는 확인하지 못했다(fact-register A04·A08)",
+     "status": "공식 출처 · 사업주 확인 · 원문 미대조"
+    },
+    {
+     "id": "F3",
+     "text": "전북 전략산업의 AX(인공지능 전환)와 실무형 피지컬 AI 인재 양성을 목표로 한다",
+     "source": "S1",
+     "caution": "R3 검색 결과(보도)와 내용이 맞는다 · 원문 페이지는 열지 못함(fact-register A03·A05·A06)",
+     "status": "공식 출처 · 사업주 확인 · 원문 미대조"
+    },
+    {
+     "id": "F4",
+     "text": "AI 융합 교과목, PBL, 현장실습, 마이크로디그리로 운영한다",
+     "source": "S1",
+     "caution": "R3 검색 결과(보도)와 내용이 맞는다 · 원문 페이지는 열지 못함(fact-register A03·A05·A06)",
+     "status": "공식 출처 · 사업주 확인 · 원문 미대조"
+    },
+    {
+     "id": "F5",
+     "text": "2026 AI 기초 과정을 공지했고 파이썬·데이터 처리·시각화·통계·딥러닝 기초를 다룬다",
+     "source": "S2",
+     "caution": "R3 에서 공개 출처로 다시 확인하지 못했다(fact-register A09·A10 · S2 열람 실패)",
+     "status": "공식 출처 · 사업주 확인 · 원문 미대조"
+    },
+    {
+     "id": "F6",
+     "text": "AI 기초 과정 뒤에 후속 ND1~ND6 과정이 있다",
+     "source": "S2",
+     "caution": "과정 이름·내용·순서·대상은 확인하지 못했다. 화면에 내용을 지어 적지 않는다 · R3 에서 공개 출처로 다시 확인하지 못했다(fact-register A09·A10 · S2 열람 실패)",
+     "status": "있음 · 세부 미확인"
+    }
+   ],
+   "checkedOn": "2026-10-20",
+   "verificationNote": "이 사업 사실은 사업주가 전주대학교 공식 페이지(두 URL)에서 옮겨 준 것이다. 이 작업 환경에서는 www.jj.ac.kr 에 닿지 못해(DNS·프록시 차단) 원문 문면을 직접 대조하지 못했다. 원문을 직접 확인하면 checked_on 과 verification 을 바꾼다",
+   "versions": [
+    {
+     "k": "검사",
+     "v": "CS_CORE_V1 · 문항 CS_V1_ITEM_BANK_V1.3 · 채점 me-v3-scoring.5"
+    },
+    {
+     "k": "결과 모델",
+     "v": "me-v3-result-model.6"
+    },
+    {
+     "k": "리포트",
+     "v": "jju-report.5-gold"
+    }
+   ]
+  },
+  "work": {
+   "projects": [
+    {
+     "domain": "소프트웨어 설계·구조",
+     "horizon": "30일",
+     "title": "소프트웨어 설계·구조 — 이번에 받지 않을 것과 모듈을 가르는 선을 직접 정하는 과제",
+     "length": "2~4주 · 과제 하나",
+     "level": "심화 — 여러 번 해 본 것을 남길 결과물로",
+     "decide": "이번에 받지 않을 것과 모듈을 가르는 선",
+     "method": "사용 흐름 적기, 책임 나누기, 규약 쓰기, 변경 비용 견주기",
+     "outputs": [
+      "요구 목록",
+      "모듈 구조도",
+      "인터페이스 규약"
+     ],
+     "verify": [
+      "요구 목록",
+      "기존 시스템 구조",
+      "구현 뒤 변경 횟수"
+     ],
+     "onFail": "한 곳을 고치는데 여러 모듈이 같이 바뀌면 경계를 다시 가른다",
+     "why": "최근 소프트웨어 설계·구조 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 모듈 구조도에 그대로 옮깁니다."
+    },
+    {
+     "domain": "서버·API 구현",
+     "horizon": "30일",
+     "title": "서버·API 구현 — 주소 체계와 응답 꼴과 오류 코드, 어디까지 한 번에 처리할지를 직접 정하는 과제",
+     "length": "2~4주 · 과제 하나",
+     "level": "심화 — 여러 번 해 본 것을 남길 결과물로",
+     "decide": "주소 체계와 응답 꼴과 오류 코드, 어디까지 한 번에 처리할지",
+     "method": "요청 처리 흐름 작성, 거래 범위 정하기, 재시도 안전 처리, 부하 시험",
+     "outputs": [
+      "서버 코드",
+      "응답 규약 문서",
+      "요청 시험 묶음"
+     ],
+     "verify": [
+      "응답 규약 문서",
+      "요청 시험 결과",
+      "응답 시간 약속"
+     ],
+     "onFail": "느리거나 틀린 응답이 나오면 원인을 질의와 외부 호출과 직렬화 가운데로 좁힌다",
+     "why": "최근 서버·API 구현 과제 하나. 그때 무엇을 문제로 잡았는지 세 줄로 써서 서버 코드 맨 앞에 붙입니다."
+    },
+    {
+     "domain": "사용자 인터페이스 구현",
+     "horizon": "30일",
+     "title": "사용자 인터페이스 구현 — 상태를 어디에 둘지와 어느 경계 상황을 다룰지를 직접 정하는 과제",
+     "length": "2~4주 · 과제 하나",
+     "level": "심화 — 여러 번 해 본 것을 남길 결과물로",
+     "decide": "상태를 어디에 둘지와 어느 경계 상황을 다룰지",
+     "method": "상태 구조 설계, 입력 검증 작성, 접근성 점검, 폭별 배치 확인",
+     "outputs": [
+      "화면 코드",
+      "상태 구조 메모",
+      "경계 상황 목록"
+     ],
+     "verify": [
+      "화면 그림",
+      "접근성 기준",
+      "폭별 실제 화면"
+     ],
+     "onFail": "화면이 어긋나면 원인을 상태 변화와 배치 규칙과 브라우저 차이로 좁힌다",
+     "why": "최근 사용자 인터페이스 구현 과제 하나. 그때 무엇을 문제로 잡았는지 세 줄로 써서 화면 코드 맨 앞에 붙입니다."
+    }
+   ],
+   "portfolio": [
+    {
+     "item": "모듈 구조도",
+     "role": "소프트웨어 설계·구조",
+     "decided": "모듈을 가르는 선을 정했다",
+     "verified": "요구 목록",
+     "result": "",
+     "next": "",
+     "filled": true
+    },
+    {
+     "item": "요구 목록",
+     "role": "소프트웨어 설계·구조",
+     "decided": "어느 기능을 어느 모듈이 맡을지 배정했다",
+     "verified": "",
+     "result": "",
+     "next": "무엇과 견줬는지",
+     "filled": true
+    },
+    {
+     "item": "서버 코드",
+     "role": "서버·API 구현",
+     "decided": "오류 코드 체계를 정했다",
+     "verified": "응답 규약 문서",
+     "result": "",
+     "next": "",
+     "filled": true
+    },
+    {
+     "item": "응답 규약 문서",
+     "role": "서버·API 구현",
+     "decided": "주소 체계와 응답 꼴을 정했다",
+     "verified": "",
+     "result": "",
+     "next": "무엇과 견줬는지",
+     "filled": true
+    }
+   ],
+   "studio": [
+    {
+     "domain": "소프트웨어 설계·구조",
+     "evidence": "“모듈을 가르는 선을 정했다”",
+     "competence": "소프트웨어 설계·구조 과제에서 기준을 직접 세워본 경험과 남길 결과물을 만들어본 경험이 있습니다.",
+     "forRole": "설계·개발에 지원한다면: “[소프트웨어 설계·구조 과제 이름]에서 직접 판단과 산출물을 맡아 [결과물]을 만들었고, [무엇]과 견주어 [수치·결과]를 확인했습니다.”",
+     "ask": "요구 목록과 어떻게 맞췄나요?",
+     "answerShape": [
+      "상황 — 어떤 과제였나",
+      "판단 — 무엇을 직접 정했나",
+      "근거 — 무엇과 견줬나",
+      "결과 — 무엇이 남았나(수치는 본인이)"
+     ],
+     "more": "결과 수치와 날짜를 직접 적어 두기"
+    },
+    {
+     "domain": "서버·API 구현",
+     "evidence": "“오류 코드 체계를 정했다”",
+     "competence": "서버·API 구현 과제에서 기준을 직접 세워본 경험과 남길 결과물을 만들어본 경험이 있습니다.",
+     "forRole": "설계·개발에 지원한다면: “[서버·API 구현 과제 이름]에서 직접 판단과 산출물을 맡아 [결과물]을 만들었고, [무엇]과 견주어 [수치·결과]를 확인했습니다.”",
+     "ask": "응답 규약 문서와 어떻게 맞췄나요?",
+     "answerShape": [
+      "상황 — 어떤 과제였나",
+      "판단 — 무엇을 직접 정했나",
+      "근거 — 무엇과 견줬나",
+      "결과 — 무엇이 남았나(수치는 본인이)"
+     ],
+     "more": "결과 수치와 날짜를 직접 적어 두기"
+    }
+   ],
+   "questions": [
+    {
+     "q": "소프트웨어 설계·구조 과제에서 직접 정한 조건과 기준이 무엇인가?",
+     "from": "확인된 판단",
+     "need": "이미 고른 근거로 답할 수 있음"
+    },
+    {
+     "q": "소프트웨어 설계·구조 과제에서 무엇이 결과물로 남았는가?",
+     "from": "확인된 판단",
+     "need": "이미 고른 근거로 답할 수 있음"
+    },
+    {
+     "q": "서버·API 구현 과제에서 직접 정한 조건과 기준이 무엇인가?",
+     "from": "확인된 판단",
+     "need": "이미 고른 근거로 답할 수 있음"
+    },
+    {
+     "q": "서버·API 구현 과제에서 무엇이 결과물로 남았는가?",
+     "from": "확인된 판단",
+     "need": "이미 고른 근거로 답할 수 있음"
+    },
+    {
+     "q": "소프트웨어 설계·구조에서 받은 요구를 어떻게 읽었는가?",
+     "from": "빈자리",
+     "need": "아직 답할 근거 없음 — 요구 해석 경험 하나 확보"
+    },
+    {
+     "q": "서버·API 구현에서 무엇을 풀 문제로 잡았는가?",
+     "from": "빈자리",
+     "need": "아직 답할 근거 없음 — 문제 정의 경험 하나 확보"
+    }
+   ],
+   "plan": [
+    {
+     "label": "30일",
+     "days": "지금 ~ 30일",
+     "items": [
+      {
+       "what": "최근 소프트웨어 설계·구조 과제 하나. 받은 요구가 어떤 조건이 됐는지 적어 모듈 구조도에 그대로 옮깁니다.",
+       "output": "요구 목록",
+       "check": "요구 목록과 견줘 차이를 적었다",
+       "domain": "소프트웨어 설계·구조"
+      },
+      {
+       "what": "최근 서버·API 구현 과제 하나. 그때 무엇을 문제로 잡았는지 세 줄로 써서 서버 코드 맨 앞에 붙입니다.",
+       "output": "서버 코드",
+       "check": "응답 규약 문서와 견줘 차이를 적었다",
+       "domain": "서버·API 구현"
+      },
+      {
+       "what": "최근 사용자 인터페이스 구현 과제 하나. 그때 무엇을 문제로 잡았는지 세 줄로 써서 화면 코드 맨 앞에 붙입니다.",
+       "output": "화면 코드",
+       "check": "화면 그림과 견줘 차이를 적었다",
+       "domain": "사용자 인터페이스 구현"
+      }
+     ]
+    },
+    {
+     "label": "90일",
+     "days": "31 ~ 90일",
+     "items": []
+    },
+    {
+     "label": "180일",
+     "days": "91 ~ 180일",
+     "items": []
+    }
+   ],
+   "course": "2026 AI 기초 과정(파이썬 · 데이터 처리 · 시각화 · 통계 · 딥러닝 기초)"
+  }
+ },
+ "C": {
+  "attempt": "8",
+  "pages": 13,
+  "chars_per_page": [
+   293,
+   572,
+   821,
+   678,
+   521,
+   856,
+   536,
+   801,
+   959,
+   802,
+   736,
+   791,
+   1324
+  ],
+  "gold": {
+   "id": "J-0008",
+   "submitted": "2026-10-20",
+   "version": "jju-report.5-gold",
+   "demo": true,
+   "student": {
+    "name": "QA 학생 C",
+    "track": "AI·데이터 트랙",
+    "cohort": "[시연] 부트캠프 1기",
+    "field": "AI·소프트웨어 분야",
+    "spec": "인공지능·데이터"
+   },
+   "program": "AI 분야 첨단산업 인재양성 부트캠프",
+   "title": "자료구조·알고리즘 과제는 해 봤고, 정리만 남았어요",
+   "lead": "뭘 골랐는지만 덧붙이면 돼요.",
+   "badge": "정리만 하면 돼요",
+   "numbers": [
+    {
+     "k": "확인된 판단",
+     "v": "3",
+     "sub": "깊게 물은 3개 영역 × 여덟 축 가운데",
+     "layer": "JUDGED"
+    },
+    {
+     "k": "직접 결정",
+     "v": "0",
+     "sub": "조건·기준까지 직접 정한 축",
+     "layer": "JUDGED"
+    },
+    {
+     "k": "고른 근거",
+     "v": "24",
+     "sub": "학생이 고른 근거 문구",
+     "layer": "SELF"
+    },
+    {
+     "k": "근거가 선 영역",
+     "v": "0",
+     "sub": "11개 영역 가운데",
+     "layer": "JUDGED"
+    }
+   ],
+   "brief": [
+    {
+     "k": "지금 상태",
+     "v": "정리만 하면 돼요 — 뭘 골랐는지만 덧붙이면 돼요.",
+     "layer": "JUDGED"
+    },
+    {
+     "k": "강점",
+     "v": "자료구조·알고리즘과 시스템·동시성 프로그래밍에서 여러 안을 견주어 골라본 경험이 판정으로 확인됐습니다.",
+     "layer": "JUDGED"
+    },
+    {
+     "k": "가장 중요한 빈자리",
+     "v": "자료구조·알고리즘 — 직접 정한 조건이나 기준이 아직 안 보여요. 이 영역에서 빠지면 경험을 설명하기 어려운 부분입니다.",
+     "layer": "JUDGED"
+    },
+    {
+     "k": "먼저 볼 직무",
+     "v": "빌드·배포 자동화 — 중심 영역 3곳 가운데 2곳에 확인된 판단이 있습니다. 이 자리가 보는 판단 가운데 직접 판단 · 실패와 수정이 아직 비어 있어 그것을 채우는 조건으로 봅니다.",
+     "layer": "READ",
+     "note": "확인된 판단에서 관계표로 이은 해석"
+    },
+    {
+     "k": "다음 행동",
+     "v": "최근 자료구조·알고리즘 과제 하나. 이론 복잡도나 실측 시간 가운데 무엇과 견줬는지 적고, 그 차이를 복잡도 근거 메모에 남깁니다.",
+     "layer": "ADVICE"
+    }
+   ],
+   "ledger": [
+    {
+     "text": "자료구조·알고리즘: 해 봤고 정리가 남음",
+     "layer": "JUDGED",
+     "basis": "판정 문항 12개 · 고른 근거 8개",
+     "status": "여덟 축 중 1칸 확인"
+    },
+    {
+     "text": "자료구조·알고리즘 · 여러 안을 견주어 골라본 경험",
+     "layer": "JUDGED",
+     "basis": "고른 문구 “이론값과 실측 시간을 대조했다”",
+     "status": "직접 수행"
+    },
+    {
+     "text": "시스템·동시성 프로그래밍: 해 봤고 정리가 남음",
+     "layer": "JUDGED",
+     "basis": "판정 문항 12개 · 고른 근거 8개",
+     "status": "여덟 축 중 1칸 확인"
+    },
+    {
+     "text": "시스템·동시성 프로그래밍 · 여러 안을 견주어 골라본 경험",
+     "layer": "JUDGED",
+     "basis": "고른 문구 “자원 사용을 측정해 정한 한계와 대조했다”",
+     "status": "직접 수행"
+    },
+    {
+     "text": "네트워크·분산 시스템: 해 봤고 정리가 남음",
+     "layer": "JUDGED",
+     "basis": "판정 문항 12개 · 고른 근거 8개",
+     "status": "여덟 축 중 1칸 확인"
+    },
+    {
+     "text": "네트워크·분산 시스템 · 여러 안을 견주어 골라본 경험",
+     "layer": "JUDGED",
+     "basis": "고른 문구 “실패 주입 결과를 설계와 대조했다”",
+     "status": "직접 수행"
+    },
+    {
+     "text": "소프트웨어 설계·구조를 1~2회 해 봤다",
+     "layer": "SELF",
+     "basis": "영역 훑기 격자의 경험 칸",
+     "status": "판정으로는 아직 확인 전"
+    },
+    {
+     "text": "서버·API 구현을 1~2회 해 봤다",
+     "layer": "SELF",
+     "basis": "영역 훑기 격자의 경험 칸",
+     "status": "판정으로는 아직 확인 전"
+    },
+    {
+     "text": "데이터 저장·질의 설계를 1~2회 해 봤다",
+     "layer": "SELF",
+     "basis": "영역 훑기 격자의 경험 칸",
+     "status": "판정으로는 아직 확인 전"
+    },
+    {
+     "text": "설계·개발 직무와 이어짐",
+     "layer": "SELF",
+     "basis": "학생이 고른 관심 직무",
+     "status": "0/3곳 판정 있음"
+    },
+    {
+     "text": "빌드·배포 자동화 직무와 이어짐",
+     "layer": "READ",
+     "basis": "관계표의 중심 영역 3곳",
+     "status": "2/3곳 판정 있음"
+    },
+    {
+     "text": "해석·예측 직무와 이어짐",
+     "layer": "READ",
+     "basis": "관계표의 중심 영역 3곳",
+     "status": "2/3곳 판정 있음"
+    },
+    {
+     "text": "AI 역량 12가지 가운데 이 응시에서 문항으로 잰 것",
+     "layer": "JUDGED",
+     "basis": "문항 커버리지(문항 번호 대조)",
+     "status": "1가지 · 나머지는 미측정 또는 판정 밖"
+    },
+    {
+     "text": "이 트랙에 걸리는 지역·산업 사실 4건",
+     "layer": "SOURCE",
+     "basis": "B20 · B10 · B16 · B01",
+     "status": "검색 결과만 · 원문 확인 전"
+    },
+    {
+     "text": "다음 행동",
+     "layer": "ADVICE",
+     "basis": "결과 모델의 할 일(그 영역의 업무 흐름 재료)",
+     "status": "본문 01 · 08에 전문"
+    }
+   ],
+   "domains": [
+    {
+     "code": "TD01",
+     "name": "소프트웨어 설계·구조",
+     "zone": "NOT_EXPLORED",
+     "zoneKo": "이번 검사에서 깊게 묻지 않음",
+     "explored": false,
+     "interest": "보통",
+     "experience": "1~2회",
+     "learning": "답 없음",
+     "axes": [],
+     "confirmed": 0,
+     "owned": 0,
+     "picks": 0
+    },
+    {
+     "code": "TD02",
+     "name": "자료구조·알고리즘",
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "zoneKo": "해 봤고 정리가 남음",
+     "explored": true,
+     "interest": "보통",
+     "experience": "여러 번",
+     "learning": "보통",
+     "axes": [
+      {
+       "axis": "J1",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J2",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J3",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J4",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J5",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J6",
+       "state": "CONFIRMED"
+      },
+      {
+       "axis": "J7",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J8",
+       "state": "PARTICIPATED"
+      }
+     ],
+     "confirmed": 1,
+     "owned": 0,
+     "picks": 8
+    },
+    {
+     "code": "TD03",
+     "name": "서버·API 구현",
+     "zone": "NOT_EXPLORED",
+     "zoneKo": "이번 검사에서 깊게 묻지 않음",
+     "explored": false,
+     "interest": "보통",
+     "experience": "1~2회",
+     "learning": "답 없음",
+     "axes": [],
+     "confirmed": 0,
+     "owned": 0,
+     "picks": 0
+    },
+    {
+     "code": "TD04",
+     "name": "데이터 저장·질의 설계",
+     "zone": "NOT_EXPLORED",
+     "zoneKo": "이번 검사에서 깊게 묻지 않음",
+     "explored": false,
+     "interest": "보통",
+     "experience": "1~2회",
+     "learning": "답 없음",
+     "axes": [],
+     "confirmed": 0,
+     "owned": 0,
+     "picks": 0
+    },
+    {
+     "code": "TD05",
+     "name": "사용자 인터페이스 구현",
+     "zone": "NOT_EXPLORED",
+     "zoneKo": "이번 검사에서 깊게 묻지 않음",
+     "explored": false,
+     "interest": "보통",
+     "experience": "1~2회",
+     "learning": "답 없음",
+     "axes": [],
+     "confirmed": 0,
+     "owned": 0,
+     "picks": 0
+    },
+    {
+     "code": "TD06",
+     "name": "시스템·동시성 프로그래밍",
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "zoneKo": "해 봤고 정리가 남음",
+     "explored": true,
+     "interest": "보통",
+     "experience": "여러 번",
+     "learning": "보통",
+     "axes": [
+      {
+       "axis": "J1",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J2",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J3",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J4",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J5",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J6",
+       "state": "CONFIRMED"
+      },
+      {
+       "axis": "J7",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J8",
+       "state": "PARTICIPATED"
+      }
+     ],
+     "confirmed": 1,
+     "owned": 0,
+     "picks": 8
+    },
+    {
+     "code": "TD07",
+     "name": "네트워크·분산 시스템",
+     "zone": "Z2_EVIDENCE_INCOMPLETE",
+     "zoneKo": "해 봤고 정리가 남음",
+     "explored": true,
+     "interest": "보통",
+     "experience": "여러 번",
+     "learning": "보통",
+     "axes": [
+      {
+       "axis": "J1",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J2",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J3",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J4",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J5",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J6",
+       "state": "CONFIRMED"
+      },
+      {
+       "axis": "J7",
+       "state": "PARTICIPATED"
+      },
+      {
+       "axis": "J8",
+       "state": "PARTICIPATED"
+      }
+     ],
+     "confirmed": 1,
+     "owned": 0,
+     "picks": 8
+    },
+    {
+     "code": "TD08",
+     "name": "정보보안",
+     "zone": "NOT_EXPLORED",
+     "zoneKo": "이번 검사에서 깊게 묻지 않음",
+     "explored": false,
+     "interest": "보통",
+     "experience": "1~2회",
+     "learning": "답 없음",
+     "axes": [],
+     "confirmed": 0,
+     "owned": 0,
+     "picks": 0
+    },
+    {
+     "code": "TD09",
+     "name": "기계학습·데이터 분석",
+     "zone": "NOT_EXPLORED",
+     "zoneKo": "이번 검사에서 깊게 묻지 않음",
+     "explored": false,
+     "interest": "보통",
+     "experience": "해 본 적 없음",
+     "learning": "답 없음",
+     "axes": [],
+     "confirmed": 0,
+     "owned": 0,
+     "picks": 0
+    },
+    {
+     "code": "TD10",
+     "name": "테스트·품질·배포 운영",
+     "zone": "NOT_EXPLORED",
+     "zoneKo": "이번 검사에서 깊게 묻지 않음",
+     "explored": false,
+     "interest": "보통",
+     "experience": "1~2회",
+     "learning": "답 없음",
+     "axes": [],
+     "confirmed": 0,
+     "owned": 0,
+     "picks": 0
+    },
+    {
+     "code": "TD11",
+     "name": "실시간 그래픽스·게임 구현",
+     "zone": "NOT_EXPLORED",
+     "zoneKo": "이번 검사에서 깊게 묻지 않음",
+     "explored": false,
+     "interest": "보통",
+     "experience": "1~2회",
+     "learning": "답 없음",
+     "axes": [],
+     "confirmed": 0,
+     "owned": 0,
+     "picks": 0
+    }
+   ],
+   "tools": [
+    {
+     "domain": "자료구조·알고리즘",
+     "tools": [
+      "성능 측정 도구",
+      "메모리 분석기",
+      "시험 입력 생성기",
+      "복잡도 분석 메모",
+      "시각화 도구"
+     ]
+    },
+    {
+     "domain": "시스템·동시성 프로그래밍",
+     "tools": [
+      "디버거",
+      "메모리 검사기",
+      "경쟁 상태 탐지기",
+      "자원 감시 도구",
+      "추적 기록"
+     ]
+    },
+    {
+     "domain": "네트워크·분산 시스템",
+     "tools": [
+      "패킷 분석기",
+      "지연 측정 도구",
+      "실패 주입 도구",
+      "부하 분산기",
+      "추적 수집 도구"
+     ]
+    }
+   ],
+   "ai": [
+    {
+     "name": "파이썬 프로그래밍",
+     "status": "교육과정만",
+     "how": "공식 과정이 다룸 · 문항 없음",
+     "measured": false
+    },
+    {
+     "name": "데이터 처리",
+     "status": "측정",
+     "how": "문항은 있으나 이 응시에서 받지 않음",
+     "measured": false
+    },
+    {
+     "name": "시각화",
+     "status": "교육과정만",
+     "how": "공식 과정이 다룸 · 문항 없음",
+     "measured": false
+    },
+    {
+     "name": "통계(측정 분포 수준 포함)",
+     "status": "교육과정만",
+     "how": "공식 과정이 다룸 · 문항 없음",
+     "measured": false
+    },
+    {
+     "name": "기계학습 모형 평가·개선",
+     "status": "측정",
+     "how": "이 응시에서 판정 문항 1개에 답함",
+     "measured": true
+    },
+    {
+     "name": "딥러닝·신경망",
+     "status": "교육과정만",
+     "how": "공식 과정이 다룸 · 문항 없음",
+     "measured": false
+    },
+    {
+     "name": "LLM·생성형 AI 응용",
+     "status": "미측정",
+     "how": "검사·과정 어디에도 없음",
+     "measured": false
+    },
+    {
+     "name": "컴퓨터 비전",
+     "status": "미측정",
+     "how": "검사·과정 어디에도 없음",
+     "measured": false
+    },
+    {
+     "name": "모델 배포·운영(MLOps)",
+     "status": "미측정",
+     "how": "검사·과정 어디에도 없음",
+     "measured": false
+    },
+    {
+     "name": "엣지·온디바이스 AI",
+     "status": "미측정",
+     "how": "검사·과정 어디에도 없음",
+     "measured": false
+    },
+    {
+     "name": "로봇 인지·자율 동작",
+     "status": "미측정",
+     "how": "검사·과정 어디에도 없음",
+     "measured": false
+    },
+    {
+     "name": "센서 신호 수집·처리",
+     "status": "측정(팩만)",
+     "how": "그 산업·직무 팩을 고른 사람만 받음 · 이 응시는 받지 않음",
+     "measured": false
+    }
+   ],
+   "notMeasured": [
+    "파이썬 프로그래밍",
+    "시각화",
+    "통계(측정 분포 수준 포함)",
+    "딥러닝·신경망",
+    "LLM·생성형 AI 응용",
+    "컴퓨터 비전",
+    "모델 배포·운영(MLOps)",
+    "엣지·온디바이스 AI",
+    "로봇 인지·자율 동작"
+   ],
+   "roles": [
+    {
+     "code": "ROLE_DEV_V1",
+     "name": "설계·개발",
+     "from": "SELF",
+     "centers": [
+      {
+       "name": "소프트웨어 설계·구조",
+       "hit": false,
+       "state": "이번 검사에서 깊게 묻지 않음"
+      },
+      {
+       "name": "서버·API 구현",
+       "hit": false,
+       "state": "이번 검사에서 깊게 묻지 않음"
+      },
+      {
+       "name": "사용자 인터페이스 구현",
+       "hit": false,
+       "state": "이번 검사에서 깊게 묻지 않음"
+      }
+     ],
+     "work": [
+      {
+       "name": "문제가 들어오는 모양",
+       "detail": "하고 싶은 일이 말이나 화면 그림으로 들어온다"
+      },
+      {
+       "name": "받는 입력",
+       "detail": "이해관계자 요구, 기존 시스템 제약, 기한과 인원"
+      },
+      {
+       "name": "먼저 정하는 것",
+       "detail": "이번에 받지 않을 것과 모듈을 가르는 선"
+      },
+      {
+       "name": "쓰는 방법",
+       "detail": "사용 흐름 적기, 책임 나누기, 규약 쓰기, 변경 비용 견주기"
+      }
+     ],
+     "watched": [
+      {
+       "axis": "J2",
+       "hit": false
+      },
+      {
+       "axis": "J3",
+       "hit": false
+      },
+      {
+       "axis": "J5",
+       "hit": false
+      },
+      {
+       "axis": "J8",
+       "hit": false
+      },
+      {
+       "axis": "J7",
+       "hit": false
+      },
+      {
+       "axis": "J6",
+       "hit": false
+      }
+     ],
+     "condition": "중심 영역 3곳에 확인된 판단이 아직 없습니다. 관심만으로 이 직무를 잇지 않습니다 — 먼저 소프트웨어 설계·구조에서 경험 하나가 필요합니다."
+    },
+    {
+     "code": "ROLE_DEPLOY_V1",
+     "name": "빌드·배포 자동화",
+     "from": "READ",
+     "centers": [
+      {
+       "name": "시스템·동시성 프로그래밍",
+       "hit": true,
+       "state": "해 봤고 정리가 남음"
+      },
+      {
+       "name": "네트워크·분산 시스템",
+       "hit": true,
+       "state": "해 봤고 정리가 남음"
+      },
+      {
+       "name": "테스트·품질·배포 운영",
+       "hit": false,
+       "state": "이번 검사에서 깊게 묻지 않음"
+      }
+     ],
+     "work": [
+      {
+       "name": "문제가 들어오는 모양",
+       "detail": "함께 돌아야 하는 일과 쓸 수 있는 자원이 조건으로 들어온다"
+      },
+      {
+       "name": "받는 입력",
+       "detail": "처리 주기와 동시 실행 수, 메모리 상한, 장치와 운영체제 종류"
+      },
+      {
+       "name": "먼저 정하는 것",
+       "detail": "자원을 누가 언제 쥐는지와 잠금 범위를 어디까지 둘지"
+      },
+      {
+       "name": "쓰는 방법",
+       "detail": "메모리 수명 설계, 잠금 범위 정하기, 경쟁 상태 시험, 자원 사용 측정"
+      }
+     ],
+     "watched": [
+      {
+       "axis": "J3",
+       "hit": false
+      },
+      {
+       "axis": "J7",
+       "hit": false
+      },
+      {
+       "axis": "J4",
+       "hit": false
+      },
+      {
+       "axis": "J5",
+       "hit": false
+      },
+      {
+       "axis": "J6",
+       "hit": true
+      },
+      {
+       "axis": "J8",
+       "hit": false
+      }
+     ],
+     "condition": "중심 영역 3곳 가운데 2곳에 확인된 판단이 있습니다. 이 자리가 보는 판단 가운데 직접 판단 · 실패와 수정이 아직 비어 있어 그것을 채우는 조건으로 봅니다."
+    },
+    {
+     "code": "ROLE_PERF_V1",
+     "name": "해석·예측",
+     "from": "READ",
+     "centers": [
+      {
+       "name": "자료구조·알고리즘",
+       "hit": true,
+       "state": "해 봤고 정리가 남음"
+      },
+      {
+       "name": "데이터 저장·질의 설계",
+       "hit": false,
+       "state": "이번 검사에서 깊게 묻지 않음"
+      },
+      {
+       "name": "네트워크·분산 시스템",
+       "hit": true,
+       "state": "해 봤고 정리가 남음"
+      }
+     ],
+     "work": [
+      {
+       "name": "문제가 들어오는 모양",
+       "detail": "처리할 자료의 크기와 걸려야 할 시간이 조건으로 들어온다"
+      },
+      {
+       "name": "받는 입력",
+       "detail": "입력 크기와 분포, 메모리 한계, 허용 응답 시간"
+      },
+      {
+       "name": "먼저 정하는 것",
+       "detail": "자료를 어떤 표현으로 담을지와 어느 연산을 빠르게 할지"
+      },
+      {
+       "name": "쓰는 방법",
+       "detail": "복잡도 계산, 자료 표현 비교, 경계 입력 시험, 실측 비교"
+      }
+     ],
+     "watched": [
+      {
+       "axis": "J4",
+       "hit": false
+      },
+      {
+       "axis": "J6",
+       "hit": true
+      },
+      {
+       "axis": "J8",
+       "hit": false
+      },
+      {
+       "axis": "J3",
+       "hit": false
+      },
+      {
+       "axis": "J2",
+       "hit": false
+      },
+      {
+       "axis": "J5",
+       "hit": false
+      }
+     ],
+     "condition": "중심 영역 3곳 가운데 2곳에 확인된 판단이 있습니다. 이 자리가 보는 판단 가운데 방법과 도구 · 조직 활용이 아직 비어 있어 그것을 채우는 조건으로 봅니다."
+    }
+   ],
+   "industries": [
+    {
+     "name": "플랫폼·온라인 서비스",
+     "from": "SELF",
+     "centers": "중심 영역 없이 10개 영역에 고르게",
+     "status": "3/10곳에 확인된 판단"
+    },
+    {
+     "name": "자동차·모빌리티 소프트웨어",
+     "from": "READ",
+     "centers": "시스템·동시성 프로그래밍 · 테스트·품질·배포 운영",
+     "status": "1/2곳에 확인된 판단"
+    },
+    {
+     "name": "게임·실시간 콘텐츠",
+     "from": "READ",
+     "centers": "실시간 그래픽스·게임 구현",
+     "status": "그 영역들에 확인된 판단 아직 없음"
+    },
+    {
+     "name": "금융·결제",
+     "from": "READ",
+     "centers": "정보보안 · 테스트·품질·배포 운영",
+     "status": "그 영역들에 확인된 판단 아직 없음"
+    }
+   ],
+   "region": [
+    {
+     "id": "B20",
+     "claim": "서울신문(2026-09-28)은 전북 피지컬 AI 국책사업에서 전주가 핵심기술 개발·데이터·시험인증·인재양성을, 새만금이 로봇·핵심부품 제조·양산을 맡는 구조라고 보도함.",
+     "status": "FACT",
+     "url": "https://m.go.seoul.co.kr/news/2026/09/28/20260928022002",
+     "how": "SEARCH_RESULT_ONLY",
+     "tracks": [
+      "피지컬 AI",
+      "AI·데이터"
+     ],
+     "checked_on": "2026-10-20",
+     "verified": false,
+     "label": "보도·자료 요지 · 원문 확인 전"
+    },
+    {
+     "id": "B10",
+     "claim": "전북 RISE(지역혁신중심 대학지원체계)는 2025~2029년 5년간 추진되며, '생명·전환 산업 혁신' 프로젝트에서 전북 8대 전략산업(농생명, 의생명, 청정에너지, 첨단소재, 모빌리티, 디지털, 문화관광, 생명서비스·웰니스) 특화 인재 양성을 다룸.",
+     "status": "FACT",
+     "url": "https://www.jjan.kr/articleAmp/20250402580325",
+     "how": "SEARCH_RESULT_ONLY",
+     "tracks": [
+      "AI·데이터",
+      "LLM 응용",
+      "AIoT",
+      "피지컬 AI",
+      "스마트팩토리"
+     ],
+     "checked_on": "2026-10-20",
+     "verified": false,
+     "label": "보도·자료 요지 · 원문 확인 전"
+    },
+    {
+     "id": "B16",
+     "claim": "전북 김제 스마트팜 혁신밸리는 전국 4개 스마트팜 혁신밸리 중 가장 먼저 2021년 11월 29일 준공되었고, 약 21ha에 보육·임대·실증온실 등을 갖추며 청년 창업보육을 운영함.",
+     "status": "FACT",
+     "url": "https://smartcity.go.kr/2021/11/29/전북도-전북에-스마트팜-혁신밸리-전국최초-준공/",
+     "how": "SEARCH_RESULT_ONLY",
+     "tracks": [
+      "AIoT",
+      "AI·데이터"
+     ],
+     "checked_on": "2026-10-20",
+     "verified": false,
+     "label": "보도·자료 요지 · 원문 확인 전"
+    },
+    {
+     "id": "B01",
+     "claim": "새만금은 2023년 7월 20일 국가첨단전략산업 이차전지 특화단지로 지정됨(이차전지: 청주·포항·울산·새만금).",
+     "status": "FACT",
+     "url": "https://m.korea.kr/briefing/pressReleaseView.do?newsId=156607819",
+     "how": "SEARCH_RESULT_ONLY",
+     "tracks": [
+      "스마트팩토리",
+      "AI·데이터"
+     ],
+     "checked_on": "2026-10-20",
+     "verified": false,
+     "label": "보도·자료 요지 · 원문 확인 전"
+    }
+   ],
+   "gaps": [
+    {
+     "domains": [
+      "자료구조·알고리즘",
+      "시스템·동시성 프로그래밍",
+      "네트워크·분산 시스템"
+     ],
+     "title": "직접 정한 조건이나 기준이 아직 안 보여요",
+     "why": "이 영역에서 빠지면 경험을 설명하기 어려운 부분입니다",
+     "layer": "JUDGED"
+    },
+    {
+     "domains": [
+      "네트워크·분산 시스템",
+      "시스템·동시성 프로그래밍"
+     ],
+     "title": "안 됐을 때 무엇을 고쳤는지가 아직 없어요",
+     "why": "이 영역에서 빠지면 경험을 설명하기 어려운 부분입니다",
+     "layer": "JUDGED"
+    },
+    {
+     "domains": [
+      "자료구조·알고리즘",
+      "시스템·동시성 프로그래밍",
+      "네트워크·분산 시스템"
+     ],
+     "title": "과제에서 손에 남은 것이 아직 없어요",
+     "why": "이것이 없으면 해 본 일을 다른 사람에게 보여줄 방법이 없습니다",
+     "layer": "JUDGED"
+    },
+    {
+     "domains": [
+      "자료구조·알고리즘",
+      "시스템·동시성 프로그래밍",
+      "네트워크·분산 시스템"
+     ],
+     "title": "직접 정한 것은 보이고, 그 기준을 어떤 근거로 어디까지 맡았는지는 아직입니다",
+     "why": "지원서와 면접에서는 그 기준을 어떤 근거로 정했고 어디까지 맡았는지까지 묻습니다.",
+     "layer": "JUDGED"
+    }
+   ],
+   "constraints": [
+    "적합도 · 합격 가능성 · 순위 · 백분위를 만들지 않습니다. 규준이 없는 검사입니다.",
+    "관심만으로 직무를 잇지 않습니다. 직무는 학생이 고른 것과 판정에서 관계표로 이은 것만 적습니다.",
+    "기업을 추천하지 않습니다. 지역 기업·채용 자료는 아직 받지 않았습니다.",
+    "이 트랙의 검사는 전공자 검수 전 시연 전용입니다. 이 종이를 학생 진단이나 사업 성과로 쓰지 않습니다."
+   ],
+   "quality": "답이 한 값으로 고르게 모였음",
+   "sources": [
+    {
+     "id": "S1",
+     "label": "S1",
+     "url": "https://www.jj.ac.kr/jj/introduction/jjnews.do?articleNo=504039&mode=view"
+    },
+    {
+     "id": "S2",
+     "label": "S2",
+     "url": "https://www.jj.ac.kr/jj/community/notice01.do?articleNo=521499&mode=view"
+    },
+    {
+     "id": "B20",
+     "label": "B20 · 보도·자료 요지 · 원문 확인 전",
+     "url": "https://m.go.seoul.co.kr/news/2026/09/28/20260928022002"
+    },
+    {
+     "id": "B10",
+     "label": "B10 · 보도·자료 요지 · 원문 확인 전",
+     "url": "https://www.jjan.kr/articleAmp/20250402580325"
+    },
+    {
+     "id": "B16",
+     "label": "B16 · 보도·자료 요지 · 원문 확인 전",
+     "url": "https://smartcity.go.kr/2021/11/29/전북도-전북에-스마트팜-혁신밸리-전국최초-준공/"
+    },
+    {
+     "id": "B01",
+     "label": "B01 · 보도·자료 요지 · 원문 확인 전",
+     "url": "https://m.korea.kr/briefing/pressReleaseView.do?newsId=156607819"
+    }
+   ],
+   "facts": [
+    {
+     "id": "F1",
+     "text": "2026년 AI 분야 첨단산업 인재양성 부트캠프 사업에 선정됐다",
+     "source": "S1",
+     "caution": "R3 검색 결과(보도)와 내용이 맞는다 · 원문 페이지는 열지 못함(fact-register A03·A05·A06)",
+     "status": "공식 출처 · 사업주 확인 · 원문 미대조"
+    },
+    {
+     "id": "F2",
+     "text": "사업 기간은 2026~2030년이고 총 사업비는 80억 원 규모다",
+     "source": "S1",
+     "caution": "사업단 전체 사업비다. CareerMatri 계약 예산이나 도입 예산으로 읽거나 적지 않는다 · R3 검색에서는 '5년간'과 '총 80억 원(국비 71억 2,500만 원 포함)'까지만 보도로 확인됐고 '2026~2030' 의 끝 해는 확인하지 못했다(fact-register A04·A08)",
+     "status": "공식 출처 · 사업주 확인 · 원문 미대조"
+    },
+    {
+     "id": "F3",
+     "text": "전북 전략산업의 AX(인공지능 전환)와 실무형 피지컬 AI 인재 양성을 목표로 한다",
+     "source": "S1",
+     "caution": "R3 검색 결과(보도)와 내용이 맞는다 · 원문 페이지는 열지 못함(fact-register A03·A05·A06)",
+     "status": "공식 출처 · 사업주 확인 · 원문 미대조"
+    },
+    {
+     "id": "F4",
+     "text": "AI 융합 교과목, PBL, 현장실습, 마이크로디그리로 운영한다",
+     "source": "S1",
+     "caution": "R3 검색 결과(보도)와 내용이 맞는다 · 원문 페이지는 열지 못함(fact-register A03·A05·A06)",
+     "status": "공식 출처 · 사업주 확인 · 원문 미대조"
+    },
+    {
+     "id": "F5",
+     "text": "2026 AI 기초 과정을 공지했고 파이썬·데이터 처리·시각화·통계·딥러닝 기초를 다룬다",
+     "source": "S2",
+     "caution": "R3 에서 공개 출처로 다시 확인하지 못했다(fact-register A09·A10 · S2 열람 실패)",
+     "status": "공식 출처 · 사업주 확인 · 원문 미대조"
+    },
+    {
+     "id": "F6",
+     "text": "AI 기초 과정 뒤에 후속 ND1~ND6 과정이 있다",
+     "source": "S2",
+     "caution": "과정 이름·내용·순서·대상은 확인하지 못했다. 화면에 내용을 지어 적지 않는다 · R3 에서 공개 출처로 다시 확인하지 못했다(fact-register A09·A10 · S2 열람 실패)",
+     "status": "있음 · 세부 미확인"
+    }
+   ],
+   "checkedOn": "2026-10-20",
+   "verificationNote": "이 사업 사실은 사업주가 전주대학교 공식 페이지(두 URL)에서 옮겨 준 것이다. 이 작업 환경에서는 www.jj.ac.kr 에 닿지 못해(DNS·프록시 차단) 원문 문면을 직접 대조하지 못했다. 원문을 직접 확인하면 checked_on 과 verification 을 바꾼다",
+   "versions": [
+    {
+     "k": "검사",
+     "v": "CS_CORE_V1 · 문항 CS_V1_ITEM_BANK_V1.3 · 채점 me-v3-scoring.5"
+    },
+    {
+     "k": "결과 모델",
+     "v": "me-v3-result-model.6"
+    },
+    {
+     "k": "리포트",
+     "v": "jju-report.5-gold"
+    }
+   ]
+  },
+  "work": {
+   "projects": [
+    {
+     "domain": "자료구조·알고리즘",
+     "horizon": "30일",
+     "title": "자료구조·알고리즘 — 자료를 어떤 표현으로 담을지와 어느 연산을 빠르게 할지를 직접 정하는 과제",
+     "length": "2~4주 · 과제 하나",
+     "level": "심화 — 여러 번 해 본 것을 남길 결과물로",
+     "decide": "자료를 어떤 표현으로 담을지와 어느 연산을 빠르게 할지",
+     "method": "복잡도 계산, 자료 표현 비교, 경계 입력 시험, 실측 비교",
+     "outputs": [
+      "구현 코드",
+      "복잡도 근거 메모",
+      "성능 측정 기록"
+     ],
+     "verify": [
+      "이론 복잡도",
+      "실측 시간",
+      "다른 자료 표현의 결과"
+     ],
+     "onFail": "느리면 원인을 자료 표현과 반복 횟수와 메모리 접근 가운데로 좁힌다",
+     "why": "최근 자료구조·알고리즘 과제 하나. 이론 복잡도나 실측 시간 가운데 무엇과 견줬는지 적고, 그 차이를 복잡도 근거 메모에 남깁니다."
+    },
+    {
+     "domain": "시스템·동시성 프로그래밍",
+     "horizon": "30일",
+     "title": "시스템·동시성 프로그래밍 — 자원을 누가 언제 쥐는지와 잠금 범위를 어디까지 둘지를 직접 정하는 과제",
+     "length": "2~4주 · 과제 하나",
+     "level": "심화 — 여러 번 해 본 것을 남길 결과물로",
+     "decide": "자원을 누가 언제 쥐는지와 잠금 범위를 어디까지 둘지",
+     "method": "메모리 수명 설계, 잠금 범위 정하기, 경쟁 상태 시험, 자원 사용 측정",
+     "outputs": [
+      "시스템 코드",
+      "자원 사용 측정",
+      "경쟁 상태 시험"
+     ],
+     "verify": [
+      "자원 사용 측정",
+      "메모리 검사 결과",
+      "되풀이 실행 결과"
+     ],
+     "onFail": "멈추면 원인을 잠금과 메모리 수명과 장치 응답 가운데로 좁힌다",
+     "why": "최근 시스템·동시성 프로그래밍 과제 하나. 자원 사용 측정이나 메모리 검사 결과 가운데 무엇과 견줬는지 적고, 그 차이를 자원 사용 측정에 남깁니다."
+    },
+    {
+     "domain": "네트워크·분산 시스템",
+     "horizon": "30일",
+     "title": "네트워크·분산 시스템 — 일관성 수준과 시간초과 값과 재시도 횟수를 직접 정하는 과제",
+     "length": "2~4주 · 과제 하나",
+     "level": "심화 — 여러 번 해 본 것을 남길 결과물로",
+     "decide": "일관성 수준과 시간초과 값과 재시도 횟수",
+     "method": "지연 측정, 실패 주입 시험, 부하 분산 설계, 순서 보장 검토",
+     "outputs": [
+      "통신 설정표",
+      "지연 측정 기록",
+      "실패 주입 결과"
+     ],
+     "verify": [
+      "지연 측정값",
+      "실패 주입 결과",
+      "일관성 요구"
+     ],
+     "onFail": "끊기거나 중복되면 원인을 구간과 시간초과와 재시도 가운데로 좁힌다",
+     "why": "최근 네트워크·분산 시스템 과제 하나. 지연 측정값이나 실패 주입 결과 가운데 무엇과 견줬는지 적고, 그 차이를 지연 측정 기록에 남깁니다."
+    }
+   ],
+   "portfolio": [
+    {
+     "item": "(만들 것) 구현 코드",
+     "role": "자료구조·알고리즘",
+     "decided": "",
+     "verified": "",
+     "result": "",
+     "next": "이론 복잡도와 견주기",
+     "filled": false
+    },
+    {
+     "item": "(만들 것) 시스템 코드",
+     "role": "시스템·동시성 프로그래밍",
+     "decided": "",
+     "verified": "",
+     "result": "",
+     "next": "자원 사용 측정과 견주기",
+     "filled": false
+    },
+    {
+     "item": "(만들 것) 통신 설정표",
+     "role": "네트워크·분산 시스템",
+     "decided": "",
+     "verified": "",
+     "result": "",
+     "next": "지연 측정값과 견주기",
+     "filled": false
+    }
+   ],
+   "studio": [
+    {
+     "domain": "자료구조·알고리즘",
+     "evidence": "“이론값과 실측 시간을 대조했다”",
+     "competence": "자료구조·알고리즘 과제에서 여러 안을 견주어 골라본 경험이 있습니다.",
+     "forRole": "설계·개발에 지원한다면: “[자료구조·알고리즘 과제 이름]에서 비교와 검증을 맡아 [결과물]을 만들었고, [무엇]과 견주어 [수치·결과]를 확인했습니다.”",
+     "ask": "그때 무엇을 보고 정했나요?",
+     "answerShape": [
+      "상황 — 어떤 과제였나",
+      "판단 — 무엇을 직접 정했나",
+      "근거 — 무엇과 견줬나",
+      "결과 — 무엇이 남았나(수치는 본인이)"
+     ],
+     "more": "무엇과 견줘 확인했는지 하나 확보하기"
+    },
+    {
+     "domain": "시스템·동시성 프로그래밍",
+     "evidence": "“자원 사용을 측정해 정한 한계와 대조했다”",
+     "competence": "시스템·동시성 프로그래밍 과제에서 여러 안을 견주어 골라본 경험이 있습니다.",
+     "forRole": "설계·개발에 지원한다면: “[시스템·동시성 프로그래밍 과제 이름]에서 비교와 검증을 맡아 [결과물]을 만들었고, [무엇]과 견주어 [수치·결과]를 확인했습니다.”",
+     "ask": "그때 무엇을 보고 정했나요?",
+     "answerShape": [
+      "상황 — 어떤 과제였나",
+      "판단 — 무엇을 직접 정했나",
+      "근거 — 무엇과 견줬나",
+      "결과 — 무엇이 남았나(수치는 본인이)"
+     ],
+     "more": "무엇과 견줘 확인했는지 하나 확보하기"
+    }
+   ],
+   "questions": [
+    {
+     "q": "자료구조·알고리즘 과제에서 무엇과 비교해 확인했는가?",
+     "from": "확인된 판단",
+     "need": "이미 고른 근거로 답할 수 있음"
+    },
+    {
+     "q": "시스템·동시성 프로그래밍 과제에서 무엇과 비교해 확인했는가?",
+     "from": "확인된 판단",
+     "need": "이미 고른 근거로 답할 수 있음"
+    },
+    {
+     "q": "자료구조·알고리즘에서 직접 정한 조건과 기준이 무엇인가?",
+     "from": "빈자리",
+     "need": "아직 답할 근거 없음 — 직접 판단 경험 하나 확보"
+    },
+    {
+     "q": "시스템·동시성 프로그래밍에서 직접 정한 조건과 기준이 무엇인가?",
+     "from": "빈자리",
+     "need": "아직 답할 근거 없음 — 직접 판단 경험 하나 확보"
+    },
+    {
+     "q": "네트워크·분산 시스템에서 안 됐을 때 무엇을 고쳤는가?",
+     "from": "빈자리",
+     "need": "아직 답할 근거 없음 — 실패와 수정 경험 하나 확보"
+    },
+    {
+     "q": "시스템·동시성 프로그래밍에서 안 됐을 때 무엇을 고쳤는가?",
+     "from": "빈자리",
+     "need": "아직 답할 근거 없음 — 실패와 수정 경험 하나 확보"
+    }
+   ],
+   "plan": [
+    {
+     "label": "30일",
+     "days": "지금 ~ 30일",
+     "items": [
+      {
+       "what": "최근 자료구조·알고리즘 과제 하나. 이론 복잡도나 실측 시간 가운데 무엇과 견줬는지 적고, 그 차이를 복잡도 근거 메모에 남깁니다.",
+       "output": "구현 코드",
+       "check": "이론 복잡도와 견줘 차이를 적었다",
+       "domain": "자료구조·알고리즘"
+      },
+      {
+       "what": "최근 시스템·동시성 프로그래밍 과제 하나. 자원 사용 측정이나 메모리 검사 결과 가운데 무엇과 견줬는지 적고, 그 차이를 자원 사용 측정에 남깁니다.",
+       "output": "시스템 코드",
+       "check": "자원 사용 측정과 견줘 차이를 적었다",
+       "domain": "시스템·동시성 프로그래밍"
+      },
+      {
+       "what": "최근 네트워크·분산 시스템 과제 하나. 지연 측정값이나 실패 주입 결과 가운데 무엇과 견줬는지 적고, 그 차이를 지연 측정 기록에 남깁니다.",
+       "output": "통신 설정표",
+       "check": "지연 측정값과 견줘 차이를 적었다",
+       "domain": "네트워크·분산 시스템"
+      }
+     ]
+    },
+    {
+     "label": "90일",
+     "days": "31 ~ 90일",
+     "items": [
+      {
+       "what": "다음 자료구조·알고리즘 과제 하나. 끝까지 가서 구현 코드나 복잡도 근거 메모 한 벌을 남겨 두세요.",
+       "output": "구현 코드",
+       "check": "이론 복잡도와 견줘 차이를 적었다",
+       "domain": "자료구조·알고리즘"
+      },
+      {
+       "what": "다음 시스템·동시성 프로그래밍 과제 하나. 끝까지 가서 시스템 코드나 자원 사용 측정 한 벌을 남겨 두세요.",
+       "output": "시스템 코드",
+       "check": "자원 사용 측정과 견줘 차이를 적었다",
+       "domain": "시스템·동시성 프로그래밍"
+      },
+      {
+       "what": "다음 네트워크·분산 시스템 과제 하나. 끝까지 가서 통신 설정표나 지연 측정 기록 한 벌을 남겨 두세요.",
+       "output": "통신 설정표",
+       "check": "지연 측정값과 견줘 차이를 적었다",
+       "domain": "네트워크·분산 시스템"
+      }
+     ]
+    },
+    {
+     "label": "180일",
+     "days": "91 ~ 180일",
+     "items": []
+    }
+   ],
+   "course": "2026 AI 기초 과정(파이썬 · 데이터 처리 · 시각화 · 통계 · 딥러닝 기초)"
+  }
+ }
+}
