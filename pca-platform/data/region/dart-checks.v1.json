@@ -1,0 +1,774 @@
+{
+ "schema": "careermatri-dart-checks.1",
+ "checked_on": "2026-10-20",
+ "source": "OpenDART 기업개황(company.json) · 공시검색(list.json) · 단일회사 주요계정(fnlttSinglAcnt.json) · 직원현황(empSttus.json)",
+ "scope": "기업개황 칸 · 정기보고서 접수번호 · 상장사의 가장 최근 사업보고서 주요 계정과 사업부문별 직원 수를 '공식 원문 직접 확인' 으로 본다(API 가 돌려준 값 그대로). 보고서 본문의 사업 설명·매출 구조는 여기서 확인하지 않았다. 채용 여부는 DART 로 확인할 수 없다.",
+ "orgs": [
+  {
+   "id": "KR-DJ-PLANI",
+   "name": "(주)플랜아이",
+   "matched_by": "이름 일치",
+   "dart": {
+    "corp_code": "01624649",
+    "corp_name": "(주)플랜아이",
+    "corp_cls": "기타(비상장)",
+    "stock_code": null,
+    "bizr_no": "3058172470",
+    "jurir_no": "1601110181927",
+    "adres": "대전광역시 유성구 문지로 282-10 (문지동)",
+    "induty_code": "62010",
+    "est_dt": "20041129",
+    "acc_mt": "12",
+    "hm_url": "www.plani.co.kr"
+   },
+   "compare": {
+    "bizno": "SAME",
+    "corpno": "SAME",
+    "hq_region": "SAME"
+   },
+   "annual_reports": [],
+   "financials": null,
+   "staff": null,
+   "checked_on": "2026-10-20"
+  },
+  {
+   "id": "KR-DJ-LAMILAB",
+   "name": "라미랩(주)",
+   "dart": null,
+   "note": "DART 고유번호 목록에 없습니다(비상장·공시 대상 아님일 수 있음)"
+  },
+  {
+   "id": "KR-DJ-LIGACHEM",
+   "name": "(주)리가켐바이오사이언스",
+   "matched_by": "이름 일치(상장)",
+   "dart": {
+    "corp_code": "00842619",
+    "corp_name": "(주)리가켐 바이오사이언스",
+    "corp_cls": "코스닥",
+    "stock_code": "141080",
+    "bizr_no": "3148182268",
+    "jurir_no": "1601110206866",
+    "adres": "대전광역시 유성구 국제과학10로 10 (주)레고켐 바이오사이언스",
+    "induty_code": "70113",
+    "est_dt": "20060502",
+    "acc_mt": "12",
+    "hm_url": "www.ligachembio.com"
+   },
+   "compare": {
+    "bizno": "SAME",
+    "corpno": "SAME",
+    "hq_region": "SAME"
+   },
+   "annual_reports": [
+    {
+     "report": "사업보고서 (2025.12)",
+     "rcept_no": "20260323001538",
+     "rcept_dt": "20260323",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260323001538"
+    },
+    {
+     "report": "사업보고서 (2024.12)",
+     "rcept_no": "20250321001484",
+     "rcept_dt": "20250321",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250321001484"
+    }
+   ],
+   "financials": {
+    "year": 2025,
+    "report": "사업보고서",
+    "unit": "원",
+    "consolidated": {
+     "매출액": 141553069341,
+     "영업이익": -106485862116,
+     "당기순이익": -91552141111
+    },
+    "separate": {
+     "매출액": 141553069341,
+     "영업이익": -83200376145,
+     "당기순이익": -63489194453
+    }
+   },
+   "staff": {
+    "year": 2025,
+    "report": "사업보고서 직원 현황",
+    "by_segment": [
+     {
+      "segment": "신약연구개발",
+      "count": 177
+     },
+     {
+      "segment": "의약사업부문",
+      "count": 3
+     }
+    ]
+   },
+   "checked_on": "2026-10-20"
+  },
+  {
+   "id": "KR-DJ-I3SYSTEM",
+   "name": "아이쓰리시스템(주)",
+   "matched_by": "이름 일치(상장)",
+   "dart": {
+    "corp_code": "00612489",
+    "corp_name": "아이쓰리시스템(주)",
+    "corp_cls": "코스닥",
+    "stock_code": "214430",
+    "bizr_no": "3148123158",
+    "jurir_no": "1601110072738",
+    "adres": "대전광역시 유성구 테크노5로 69",
+    "induty_code": "2629",
+    "est_dt": "19980711",
+    "acc_mt": "12",
+    "hm_url": "www.i3system.com"
+   },
+   "compare": {
+    "bizno": "SAME",
+    "corpno": "SAME",
+    "hq_region": "SAME"
+   },
+   "annual_reports": [
+    {
+     "report": "사업보고서 (2025.12)",
+     "rcept_no": "20260313000025",
+     "rcept_dt": "20260313",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260313000025"
+    },
+    {
+     "report": "사업보고서 (2024.12)",
+     "rcept_no": "20250314000666",
+     "rcept_dt": "20250314",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250314000666"
+    }
+   ],
+   "financials": {
+    "year": 2025,
+    "report": "사업보고서",
+    "unit": "원",
+    "consolidated": {},
+    "separate": {
+     "매출액": 124275749815,
+     "영업이익": 16458043794,
+     "당기순이익": 18783320910
+    }
+   },
+   "staff": {
+    "year": 2025,
+    "report": "사업보고서 직원 현황",
+    "by_segment": [
+     {
+      "segment": "영상센서",
+      "count": 507
+     }
+    ]
+   },
+   "checked_on": "2026-10-20"
+  },
+  {
+   "id": "KR-CN-MTG",
+   "name": "(주)엠티지",
+   "matched_by": "이름 일치",
+   "dart": {
+    "corp_code": "00969341",
+    "corp_name": "(주)엠티지",
+    "corp_cls": "기타(비상장)",
+    "stock_code": null,
+    "bizr_no": "3148146845",
+    "jurir_no": "1601110129422",
+    "adres": "충청남도 금산군 복수면 자라전길 62 (용진리, 주식회사엠티지)",
+    "induty_code": "27212",
+    "est_dt": "20011219",
+    "acc_mt": "12",
+    "hm_url": "www.mtginc.co.kr"
+   },
+   "compare": {
+    "bizno": "SAME",
+    "corpno": "SAME",
+    "hq_region": "SAME"
+   },
+   "annual_reports": [],
+   "financials": null,
+   "staff": null,
+   "checked_on": "2026-10-20"
+  },
+  {
+   "id": "KR-DJ-ILSHIN",
+   "name": "(주)일신오토클레이브",
+   "matched_by": "이름 일치",
+   "dart": {
+    "corp_code": "01022638",
+    "corp_name": "(주)일신오토클레이브",
+    "corp_cls": "기타(비상장)",
+    "stock_code": null,
+    "bizr_no": "3148143101",
+    "jurir_no": "1601110120579",
+    "adres": "대전광역시 유성구 테크노2로 255",
+    "induty_code": "291",
+    "est_dt": "20010709",
+    "acc_mt": "12",
+    "hm_url": "www.suflux.com"
+   },
+   "compare": {
+    "bizno": "SAME",
+    "corpno": "SAME",
+    "hq_region": "SAME"
+   },
+   "annual_reports": [],
+   "financials": null,
+   "staff": null,
+   "checked_on": "2026-10-20"
+  },
+  {
+   "id": "KR-DJ-JEIOTECH",
+   "name": "(주)제이오텍",
+   "matched_by": "이름 일치",
+   "dart": {
+    "corp_code": "00412287",
+    "corp_name": "(주)제이오텍",
+    "corp_cls": "기타(비상장)",
+    "stock_code": null,
+    "bizr_no": "1058146727",
+    "jurir_no": "1101110652647",
+    "adres": "경기도 김포시 대곶면 거물대리 272-1",
+    "induty_code": "2812",
+    "est_dt": "19891027",
+    "acc_mt": "12",
+    "hm_url": "www.jeiotech.com"
+   },
+   "compare": {
+    "bizno": "SAME",
+    "corpno": "SAME",
+    "hq_region": "DIFFERENT_SIDO"
+   },
+   "annual_reports": [],
+   "financials": null,
+   "staff": null,
+   "checked_on": "2026-10-20"
+  },
+  {
+   "id": "KR-NA-GEMVAX",
+   "name": "(주)젬백스앤카엘",
+   "matched_by": "이름 일치(상장)",
+   "dart": {
+    "corp_code": "00492894",
+    "corp_name": "(주)젬백스&카엘",
+    "corp_cls": "코스닥",
+    "stock_code": "082270",
+    "bizr_no": "3148121219",
+    "jurir_no": "1601110069636",
+    "adres": "경기도 성남시 분당구 운중로 117 포모나타워 5층",
+    "induty_code": "29271",
+    "est_dt": "19980310",
+    "acc_mt": "12",
+    "hm_url": "www.kael.co.kr"
+   },
+   "compare": {
+    "bizno": "SAME",
+    "corpno": "SAME",
+    "hq_region": "SAME"
+   },
+   "annual_reports": [
+    {
+     "report": "사업보고서 (2025.12)",
+     "rcept_no": "20260320001156",
+     "rcept_dt": "20260320",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260320001156"
+    },
+    {
+     "report": "사업보고서 (2024.12)",
+     "rcept_no": "20250321001464",
+     "rcept_dt": "20250321",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250321001464"
+    }
+   ],
+   "financials": {
+    "year": 2025,
+    "report": "사업보고서",
+    "unit": "원",
+    "consolidated": {
+     "매출액": 81530820294,
+     "영업이익": 3792531724,
+     "당기순이익": -11336638395
+    },
+    "separate": {
+     "매출액": 81530820294,
+     "영업이익": 5485570456,
+     "당기순이익": -17166967642
+    }
+   },
+   "staff": {
+    "year": 2025,
+    "report": "사업보고서 직원 현황",
+    "by_segment": [
+     {
+      "segment": "전체",
+      "count": 217
+     }
+    ]
+   },
+   "checked_on": "2026-10-20"
+  },
+  {
+   "id": "KR-DJ-CAVAC",
+   "name": "(주)중앙백신연구소",
+   "matched_by": "이름 일치(상장)",
+   "dart": {
+    "corp_code": "00415327",
+    "corp_name": "(주)중앙백신연구소",
+    "corp_cls": "코스닥",
+    "stock_code": "072020",
+    "bizr_no": "3058119849",
+    "jurir_no": "1601110042533",
+    "adres": "대전광역시 유성구 유성대로 1476-37 (주)중앙백신연구소",
+    "induty_code": "211",
+    "est_dt": "19941004",
+    "acc_mt": "12",
+    "hm_url": "www.cavac.co.kr"
+   },
+   "compare": {
+    "bizno": "SAME",
+    "corpno": "SAME",
+    "hq_region": "SAME"
+   },
+   "annual_reports": [
+    {
+     "report": "사업보고서 (2025.12)",
+     "rcept_no": "20260316001508",
+     "rcept_dt": "20260316",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260316001508"
+    },
+    {
+     "report": "사업보고서 (2024.12)",
+     "rcept_no": "20250317000811",
+     "rcept_dt": "20250317",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250317000811"
+    }
+   ],
+   "financials": {
+    "year": 2025,
+    "report": "사업보고서",
+    "unit": "원",
+    "consolidated": {},
+    "separate": {
+     "매출액": 49068711762,
+     "영업이익": 6478782030,
+     "당기순이익": 6156817310
+    }
+   },
+   "staff": {
+    "year": 2025,
+    "report": "사업보고서 직원 현황",
+    "by_segment": [
+     {
+      "segment": "동물약품",
+      "count": 194
+     }
+    ]
+   },
+   "checked_on": "2026-10-20"
+  },
+  {
+   "id": "KR-DJ-KORAIL",
+   "name": "한국철도공사(코레일)",
+   "matched_by": "이름 일치",
+   "dart": {
+    "corp_code": "00585918",
+    "corp_name": "한국철도공사",
+    "corp_cls": "기타(비상장)",
+    "stock_code": null,
+    "bizr_no": "3148210024",
+    "jurir_no": "1601710004321",
+    "adres": "대전광역시 동구 중앙로 240 한국철도공사",
+    "induty_code": "4910",
+    "est_dt": "20050101",
+    "acc_mt": "12",
+    "hm_url": "www.korail.com"
+   },
+   "compare": {
+    "bizno": "NOT_IN_V2",
+    "corpno": "NOT_IN_V2",
+    "hq_region": "SAME"
+   },
+   "annual_reports": [],
+   "financials": null,
+   "staff": null,
+   "checked_on": "2026-10-20"
+  },
+  {
+   "id": "KR-DJ-KRNA",
+   "name": "국가철도공단",
+   "dart": null,
+   "note": "DART 고유번호 목록에 없습니다(비상장·공시 대상 아님일 수 있음)"
+  },
+  {
+   "id": "KR-DJ-KWATER",
+   "name": "한국수자원공사(K-water)",
+   "matched_by": "이름 일치",
+   "dart": {
+    "corp_code": "00687003",
+    "corp_name": "한국수자원공사",
+    "corp_cls": "기타(비상장)",
+    "stock_code": null,
+    "bizr_no": "3068200471",
+    "jurir_no": "1641710000052",
+    "adres": "대전광역시 대덕구 신탄진로 200",
+    "induty_code": "3601",
+    "est_dt": "19671116",
+    "acc_mt": "12",
+    "hm_url": null
+   },
+   "compare": {
+    "bizno": "NOT_IN_V2",
+    "corpno": "NOT_IN_V2",
+    "hq_region": "SAME"
+   },
+   "annual_reports": [],
+   "financials": null,
+   "staff": null,
+   "checked_on": "2026-10-20"
+  },
+  {
+   "id": "KR-DJ-KOMSCO",
+   "name": "한국조폐공사",
+   "dart": null,
+   "note": "DART 고유번호 목록에 없습니다(비상장·공시 대상 아님일 수 있음)"
+  },
+  {
+   "id": "KR-DJ-ROSSO",
+   "name": "로쏘(주) — 성심당 운영사",
+   "matched_by": "이름 일치",
+   "dart": {
+    "corp_code": "01070750",
+    "corp_name": "로쏘주식회사",
+    "corp_cls": "기타(비상장)",
+    "stock_code": null,
+    "bizr_no": "3058148738",
+    "jurir_no": "1601110123408",
+    "adres": "대전광역시 중구 대종로480번길 15 (은행동)",
+    "induty_code": "10602",
+    "est_dt": "20010901",
+    "acc_mt": "12",
+    "hm_url": "www.sungsimdang.co.kr/"
+   },
+   "compare": {
+    "bizno": "NOT_IN_V2",
+    "corpno": "NOT_IN_V2",
+    "hq_region": "SAME"
+   },
+   "annual_reports": [],
+   "financials": null,
+   "staff": null,
+   "checked_on": "2026-10-20"
+  },
+  {
+   "id": "KR-DJ-GYERYONG",
+   "name": "계룡건설산업",
+   "matched_by": "이름 일치(상장)",
+   "dart": {
+    "corp_code": "00102432",
+    "corp_name": "계룡건설산업(주)",
+    "corp_cls": "유가증권시장",
+    "stock_code": "013580",
+    "bizr_no": "3148107954",
+    "jurir_no": "1601110003121",
+    "adres": "대전광역시 서구 문정로48번길 48 -",
+    "induty_code": "412",
+    "est_dt": "19781011",
+    "acc_mt": "12",
+    "hm_url": "www.krcon.co.kr"
+   },
+   "compare": {
+    "bizno": "NOT_IN_V2",
+    "corpno": "NOT_IN_V2",
+    "hq_region": "SAME"
+   },
+   "annual_reports": [
+    {
+     "report": "[기재정정]사업보고서 (2025.12)",
+     "rcept_no": "20260325001239",
+     "rcept_dt": "20260325",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260325001239"
+    },
+    {
+     "report": "사업보고서 (2025.12)",
+     "rcept_no": "20260318001298",
+     "rcept_dt": "20260318",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318001298"
+    }
+   ],
+   "financials": {
+    "year": 2025,
+    "report": "사업보고서",
+    "unit": "원",
+    "consolidated": {
+     "매출액": 2887440609690,
+     "영업이익": 166870229835,
+     "당기순이익": 97894344656
+    },
+    "separate": {
+     "매출액": 2023546462078,
+     "영업이익": 152502120467,
+     "당기순이익": 113215446128
+    }
+   },
+   "staff": {
+    "year": 2025,
+    "report": "사업보고서 직원 현황",
+    "by_segment": [
+     {
+      "segment": "건설",
+      "count": 1850
+     }
+    ]
+   },
+   "checked_on": "2026-10-20"
+  },
+  {
+   "id": "KR-DJ-DJTO",
+   "name": "대전관광공사",
+   "dart": null,
+   "note": "DART 고유번호 목록에 없습니다(비상장·공시 대상 아님일 수 있음)"
+  },
+  {
+   "id": "KR-DJ-GOLFZON",
+   "name": "골프존",
+   "matched_by": "이름 일치(상장)",
+   "dart": {
+    "corp_code": "01067516",
+    "corp_name": "(주)골프존",
+    "corp_cls": "코스닥",
+    "stock_code": "215000",
+    "bizr_no": "1228700053",
+    "jurir_no": "1601110393069",
+    "adres": "서울특별시 강남구 영동대로 735 -",
+    "induty_code": "58219",
+    "est_dt": "20150303",
+    "acc_mt": "12",
+    "hm_url": "www.golfzon.com"
+   },
+   "compare": {
+    "bizno": "NOT_IN_V2",
+    "corpno": "NOT_IN_V2",
+    "hq_region": "DIFFERENT_SIDO"
+   },
+   "annual_reports": [
+    {
+     "report": "사업보고서 (2025.12)",
+     "rcept_no": "20260319001346",
+     "rcept_dt": "20260319",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260319001346"
+    },
+    {
+     "report": "사업보고서 (2024.12)",
+     "rcept_no": "20250320001486",
+     "rcept_dt": "20250320",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250320001486"
+    }
+   ],
+   "financials": {
+    "year": 2025,
+    "report": "사업보고서",
+    "unit": "원",
+    "consolidated": {
+     "매출액": 483261063779,
+     "영업이익": 68070895156,
+     "당기순이익": 12862007732
+    },
+    "separate": {
+     "매출액": 409922658116,
+     "영업이익": 96484695664,
+     "당기순이익": 41450541247
+    }
+   },
+   "staff": {
+    "year": 2025,
+    "report": "사업보고서 직원 현황",
+    "by_segment": [
+     {
+      "segment": "스크린골프",
+      "count": 526
+     }
+    ]
+   },
+   "checked_on": "2026-10-20"
+  },
+  {
+   "id": "KR-CB-AEROK",
+   "name": "에어로케이항공",
+   "matched_by": "이름 일치",
+   "dart": {
+    "corp_code": "01298550",
+    "corp_name": "에어로케이항공 주식회사",
+    "corp_cls": "기타(비상장)",
+    "stock_code": null,
+    "bizr_no": "2748800540",
+    "jurir_no": "1501110219829",
+    "adres": "충청북도 청주시 흥덕구 오송읍 오송생명3로 183 (만수리) 201호",
+    "induty_code": "52999",
+    "est_dt": "20160520",
+    "acc_mt": "12",
+    "hm_url": null
+   },
+   "compare": {
+    "bizno": "NOT_IN_V2",
+    "corpno": "NOT_IN_V2",
+    "hq_region": "DIFFERENT_SIDO"
+   },
+   "annual_reports": [],
+   "financials": null,
+   "staff": null,
+   "checked_on": "2026-10-20"
+  },
+  {
+   "id": "KR-CN-SDC-ASAN",
+   "name": "삼성디스플레이 아산캠퍼스",
+   "matched_by": "이름 일치",
+   "dart": {
+    "corp_code": "00912006",
+    "corp_name": "삼성디스플레이 주식회사",
+    "corp_cls": "기타(비상장)",
+    "stock_code": null,
+    "bizr_no": "1428145237",
+    "jurir_no": "1345110187812",
+    "adres": "경기도 용인시 기흥구 삼성로 1",
+    "induty_code": "2621",
+    "est_dt": "20120403",
+    "acc_mt": "12",
+    "hm_url": "www.samsungdisplay.com"
+   },
+   "compare": {
+    "bizno": "NOT_IN_V2",
+    "corpno": "NOT_IN_V2",
+    "hq_region": "DIFFERENT_SIDO"
+   },
+   "annual_reports": [],
+   "financials": null,
+   "staff": null,
+   "checked_on": "2026-10-20"
+  },
+  {
+   "id": "KR-NA-KAL",
+   "name": "대한항공",
+   "matched_by": "이름 일치(상장)",
+   "dart": {
+    "corp_code": "00113526",
+    "corp_name": "(주)대한항공",
+    "corp_cls": "유가증권시장",
+    "stock_code": "003490",
+    "bizr_no": "1108114794",
+    "jurir_no": "1101110108484",
+    "adres": "서울특별시 강서구 하늘길 260",
+    "induty_code": "511",
+    "est_dt": "19620619",
+    "acc_mt": "12",
+    "hm_url": "www.koreanair.com"
+   },
+   "compare": {
+    "bizno": "NOT_IN_V2",
+    "corpno": "NOT_IN_V2",
+    "hq_region": "SAME"
+   },
+   "annual_reports": [
+    {
+     "report": "사업보고서 (2025.12)",
+     "rcept_no": "20260318001125",
+     "rcept_dt": "20260318",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318001125"
+    },
+    {
+     "report": "사업보고서 (2024.12)",
+     "rcept_no": "20250318001334",
+     "rcept_dt": "20250318",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250318001334"
+    }
+   ],
+   "financials": {
+    "year": 2025,
+    "report": "사업보고서",
+    "unit": "원",
+    "consolidated": {
+     "매출액": 25225542379502,
+     "영업이익": 1113589428051,
+     "당기순이익": 647272880287
+    },
+    "separate": {
+     "매출액": 16501851540439,
+     "영업이익": 1539252001960,
+     "당기순이익": 964930359134
+    }
+   },
+   "staff": {
+    "year": 2025,
+    "report": "사업보고서 직원 현황",
+    "by_segment": [
+     {
+      "segment": "항공운송사업",
+      "count": 14984
+     },
+     {
+      "segment": "항공우주사업",
+      "count": 1714
+     },
+     {
+      "segment": "기타",
+      "count": 1620
+     }
+    ]
+   },
+   "checked_on": "2026-10-20"
+  },
+  {
+   "id": "KR-NA-KAC",
+   "name": "한국공항공사",
+   "matched_by": "이름 일치",
+   "dart": {
+    "corp_code": "00443719",
+    "corp_name": "한국공항공사",
+    "corp_cls": "기타(비상장)",
+    "stock_code": null,
+    "bizr_no": "1098176596",
+    "jurir_no": "1149710004066",
+    "adres": "서울특별시 강서구 과해동 274 한국공항공사",
+    "induty_code": "52931",
+    "est_dt": "20020302",
+    "acc_mt": "12",
+    "hm_url": "http://www.airport.co.kr/"
+   },
+   "compare": {
+    "bizno": "NOT_IN_V2",
+    "corpno": "NOT_IN_V2",
+    "hq_region": "SAME"
+   },
+   "annual_reports": [],
+   "financials": null,
+   "staff": null,
+   "checked_on": "2026-10-20"
+  },
+  {
+   "id": "KR-NA-IIAC",
+   "name": "인천국제공항공사",
+   "matched_by": "이름 일치",
+   "dart": {
+    "corp_code": "00306782",
+    "corp_name": "인천국제공항공사",
+    "corp_cls": "기타(비상장)",
+    "stock_code": null,
+    "bizr_no": "1218129114",
+    "jurir_no": "1241710003103",
+    "adres": "인천광역시 중구 공항로424번길 47 (운서동, 인천국제공항공사)",
+    "induty_code": "52931",
+    "est_dt": "19990201",
+    "acc_mt": "12",
+    "hm_url": "www.airport.kr"
+   },
+   "compare": {
+    "bizno": "NOT_IN_V2",
+    "corpno": "NOT_IN_V2",
+    "hq_region": "SAME"
+   },
+   "annual_reports": [],
+   "financials": null,
+   "staff": null,
+   "checked_on": "2026-10-20"
+  }
+ ]
+}

@@ -69,3 +69,4 @@ var/r34-*
 var/r35/
 var/rb/
 var/pdf-gm/
+var/dart/

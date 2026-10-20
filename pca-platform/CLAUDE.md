@@ -12625,3 +12625,30 @@ V3_PREVIEW_OPEN='*' npx tsx scripts/lab/gm-cases2.ts            # 검토 응시 
 CASES=RICH:1,POOR:2,CONTRA:3 npx tsx scripts/lab/gm-linkage.ts   # 사슬 · 문장 → v4-sample/LINKAGE_AUDIT.md
 CASE=RICH:1 npx tsx scripts/lab/gm-sample4.ts                   # 대표 5쪽 → v4-sample/BIZ-GM4-SAMPLE.pdf (넘치면 1)
 ```
+
+**70~90쪽 PRO 보고서 설계와 공시 대조 (설계안 · 승인 대기).** (2026-10-20)
+
+80쪽을 다시 뽑지 않았고 운영 PDF·Production·다른 학과는 그대로다. 측정 동결이 기록을 다시 적지 않은 채로 통과한다.
+보고는 `docs/metri/review/pdf-gm/v5-plan/README.md`.
+
+**쪽은 데이터가 정한다.** 80쪽의 쪽마다 입력 · 검증 상태 · 작성 가능 여부 · 부족 자료 · 서는 조건을
+`data/report-gm/biz-pro-toc.v1.json` 하나에 적고 `TOC_80.md` 는 거기서 만든다(`scripts/lab/gm_toc5.py`). 조건이 맞지 않는
+쪽은 빼고 다른 쪽으로 채우지 않는다: 70쪽을 넘긴다는 것만으로 완성도를 주장하지 않는다.
+
+**OpenDART 가 이 환경에서 열린다**(`PCA_DART_KEY`, 나머지 공공·학교·기업 누리집은 막혀 있다). 지역 기업 22곳 가운데 18곳을
+기업개황에 대었고 KODATA 9곳의 사업자·법인등록번호가 전부 같았다. **(주)제이오텍은 본점이 KODATA 대전 · 공시 경기 김포로
+갈려** v2 자료를 `CONFLICTING` 으로 내렸다(대표 5쪽은 그대로). 상장사는 최근 사업보고서의 주요 계정 · 사업부문별 직원 ·
+‘사업의 개요’ 원문 발췌를 받았다. **사람이 쓰는 칸(v2)과 기계가 받는 칸(`dart-checks` · `dart-overview`)을 섞지 않는다.**
+Node 의 `fetch` 는 프록시 환경변수를 저절로 읽지 않아 `NODE_USE_ENV_PROXY=1` 을 준다. 열쇠는 어느 파일에도 적지 않는다.
+
+**이름이 겹치는 것이 또 버그였다.** 새 쪽 틀(`render5.ts`)이 v4 CSS 를 그대로 싣는데 `.st` 와 `.s1~.s3` 를 다시 지어 한
+쪽의 표가 다른 쪽의 색과 격자를 받았다. 찍어 놓고 읽어서 알았다.
+
+**값에 따라 문장을 고른다.** 손익 부호가 바뀌면 읽는 법도 바뀐다: 영업이익과 순이익이 모두 마이너스인 해에 ‘본업 밖에서
+이익이 났다’ 를 쓰지 않는다(`readSigns`).
+
+```bash
+PCA_DART_KEY=... NODE_USE_ENV_PROXY=1 node scripts/lab/dart-verify.mjs
+PCA_DART_KEY=... python3 -I scripts/lab/dart_overview.py
+CASE=RICH:1 npx tsx scripts/lab/gm-design5.ts    # 핵심 디자인 쪽 여덟
+```

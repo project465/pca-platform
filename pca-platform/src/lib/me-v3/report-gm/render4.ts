@@ -20,7 +20,7 @@ import type { Level } from "./profile";
 import { REGION_KO } from "./companies";
 
 /* 글에 섞인 ASCII 따옴표 쌍은 ‘ ’ 로 바꿔 쓴다(자료 원문은 그대로 두고 그리는 자리에서만) */
-const esc = (s: unknown) => String(s ?? "").replace(/'([^'\n]{1,60})'/g, "‘$1’").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+export const esc = (s: unknown) => String(s ?? "").replace(/'([^'\n]{1,60})'/g, "‘$1’").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const N = 5;
 
 export type Fonts = { href: string; family: "Pretendard" | "NanumGothic" };
@@ -40,7 +40,7 @@ function frame(r: Report3, i: number, section: string, body: string): string {
   <footer class="rf"><b>${esc(section)}</b><span class="rv">검토용 미리보기 · 배포 전</span><span>v4 대표 쪽 ${i} / ${N}</span></footer>
 </section>`;
 }
-const opener = (no: string, kicker: string, title: string, dek: string) => `<div class="op">
+export const opener = (no: string, kicker: string, title: string, dek: string) => `<div class="op">
   <div class="kick"><span class="no">${esc(no)}</span><span>${esc(kicker)}</span></div>
   <h1>${esc(title)}</h1>${dek ? `<p class="dek">${esc(dek)}</p>` : ""}</div>`;
 
@@ -264,14 +264,14 @@ export function sample4(r: Report3, f: Fonts): string {
   return `<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>CareerMatri PRO 리포트 · v4 대표 5쪽</title>
 <style>${faces(f)}${CSS.replace(/__FONT__/g, f.family)}</style></head><body>${[p1(r), p2(r), p3(r), p4(r), p5(r)].join("\n")}</body></html>`;
 }
-function faces(f: Fonts): string {
+export function faces(f: Fonts): string {
   if (f.family === "Pretendard") return [[400, "Regular"], [500, "Medium"], [600, "SemiBold"], [700, "Bold"], [800, "ExtraBold"]].map(([w, n]) =>
     `@font-face{font-family:"Pretendard";font-weight:${w};src:url("${f.href}/Pretendard-${n}.woff2") format("woff2"),url("${f.href}/Pretendard-${n}.otf") format("opentype")}`).join("");
   return [[300, "Light"], [400, ""], [500, ""], [600, "Bold"], [700, "Bold"], [800, "ExtraBold"]].map(([w, n]) =>
     `@font-face{font-family:"NanumGothic";font-weight:${w};src:url("${f.href}/NanumGothic${n}.ttf") format("truetype")}`).join("");
 }
 
-const CSS = `
+export const CSS = `
 :root{--navy:#13294B;--ink:#1E2430;--muted:#5E6675;--rule:#D5DBE5;--tint:#F4F6FA;--blue:#2A5CAA;--sky:#DCE6F5;--amber:#B9822F;--amber-t:#F7EEDF;--teal:#2F7F74}
 @page{size:A4;margin:0}
 *{box-sizing:border-box}

@@ -835,6 +835,7 @@
     "지역 영업 거점이 여럿이라 근무지가 대전 본사가 아닐 수 있습니다."
    ],
    "to_check": [
+    "본점 소재지: KODATA 는 대전 유성구, DART 기업개황(2026-10-20)은 경기도 김포시 — 지금 어느 쪽인지 공식 확인",
     "기술영업 신입 공고의 근무지",
     "대구·부산 거점의 현재 운영 여부"
    ],
@@ -868,9 +869,15 @@
      "title": "사람인 구매관리 공고 검색 결과",
      "url": "https://m.saramin.co.kr/jobs/theme/koreabio",
      "checked_on": "2026-10-20"
+    },
+    {
+     "kind": "DART",
+     "title": "OpenDART 기업개황 — 본점 경기도 김포시 대곶면 거물대리 272-1",
+     "url": "https://opendart.fss.or.kr",
+     "checked_on": "2026-10-20"
     }
    ],
-   "verify": "OFFICIAL_CROSSCHECKED",
+   "verify": "CONFLICTING",
    "origin": "KODATA_NEW",
    "hiring": {
     "status": "UNVERIFIED",
