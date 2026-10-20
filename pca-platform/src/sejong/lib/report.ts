@@ -3,11 +3,13 @@
  */
 import { queryOne } from "@/lib/db";
 import type { Result } from "./analysis";
-import { auxAllowed, experienceRows, latestScored, type ExperienceRow } from "./store";
+import { auxAllowed, experienceRows, latestScored, responsesOf, type ExperienceRow } from "./store";
 
 export type ReportProps = {
   attemptId: string;
   r: Result;
+  /** 제출 때의 응답. 결과지가 문항마다 고른 답을 그대로 옮긴다 */
+  responses: Record<string, number>;
   name: string;
   participantNo: string | null;
   programName: string;
@@ -28,6 +30,7 @@ export async function loadReport(userId: number): Promise<ReportProps | null> {
   return {
     attemptId: att.id,
     r: att.result,
+    responses: await responsesOf(att.id),
     name: who?.display_name ?? "-",
     participantNo: who?.participant_no ?? null,
     programName: who?.name ?? att.program_code,

@@ -55,7 +55,8 @@ body { background: #f4f6f8; margin: 0; }
 .sj-table { min-width: 560px; }
 @media print { body { background: #fff; } .pv-bar, .pv-inline, #pv-pdf { display: none !important; } .sj-table { min-width: 0; } }
 `;
-const analysis = stripTypeScriptTypes(rd("src/sejong/lib/analysis.ts"), { mode: "strip" }).replace(/^export /gm, "");
+const strip = (f) => stripTypeScriptTypes(rd(f), { mode: "strip" }).replace(/^import type .*$/gm, "").replace(/^export /gm, "");
+const analysis = strip("src/sejong/lib/analysis.ts") + "\n" + strip("src/sejong/lib/report-html.ts");
 const app = readFileSync(path.join(HERE, "app.js"), "utf8");
 const html = `<title>세종 시연 화면</title>
 <meta name="claude:viewport-fit-sides" content="cover">
