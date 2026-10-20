@@ -496,3 +496,16 @@ test("P0-COMPAT-1 배재 기존 계정의 아이디와 로그인은 학번 그�
   const w = await who(sid);
   assert.equal(w?.login_id, sid);
 });
+
+test("P0-FIX-11 만드는 자리가 한 거래 안에서 (학교·학번) · 손잡이 · 메일을 잠근 뒤 읽는다 (R41 · 전주 C16 에서 합침)", TODO, () => {
+  /* shim 은 문장마다 따로 커밋하므로 잠금의 **효과**는 여기서 잴 수 없다(NOT VERIFIED).
+     재는 것은 그 장치가 코드에 있는가: 없으면 같은 순간의 두 명단이 둘 다 `없다` 를 읽는다 */
+  const src = readFileSync("src/lib/campus/students.ts", "utf8");
+  const body = src.slice(src.indexOf("export async function provisionStudent("));
+  const fn = body.slice(0, body.indexOf("\n}\n"));
+  assert.match(fn, /tx\(async \(c\)/, "한 거래");
+  assert.match(fn, /pg_advisory_xact_lock/, "거래 범위 잠금");
+  assert.match(src, /`cs:\$\{uni\}:\$\{sid\}`/, "잠금 열쇠에 (학교, 학번)");
+  assert.match(fn, /ON CONFLICT \(login_id\) DO NOTHING/, "잠금 밖의 경합에서도 남의 손잡이를 덮지 않는다");
+  assert.doesNotMatch(fn, /ON CONFLICT \(login_id\) DO UPDATE/, "덮어쓰는 길이 없다");
+});

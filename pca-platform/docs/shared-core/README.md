@@ -25,8 +25,9 @@
 | [R38_OUTPUT_CONTENT_QA.md](R38_OUTPUT_CONTENT_QA.md) | 결과 본문 QA (합성 · 전/후 · 근거 ID · 9축) |
 | `handoffs/R38_*.md` | 배재 · 본체 · 전주 · 세종 회신 초안 (**미발송**) |
 | [CORE_ROADMAP.md](CORE_ROADMAP.md) | **R40** Core 로드맵 — 국내 다기관 → 해외 · 단계 0~2 |
+| [R41_REPORT.md](R41_REPORT.md) | **R41** L2 합친 패치 — SC-2 방식 + 전주 C16 거래·잠금 · 전주 c16 8/8 |
 | [R40_REPORT.md](R40_REPORT.md) | **R40** 단계 0 시작 — 공통 출시 관문 v1 · 착지 패치 L1 · L3 · L2 방식 갈림 |
-| `landing/L*.md` | 착지 요청서 (**미발송 · 승인 요청**) |
+| `landing/L*.md` | 착지 요청서 (**미발송 · 승인 요청**) · R41: L2 는 합친 패치 `proposed/sc2-merged.patch` |
 | [CORE_LANDING_AUTHORITY.md](CORE_LANDING_AUTHORITY.md) | **R39** Core 착지 권한 범위 — 세 구역 · 착지 차례 · 첫 목록 L1~L6 (PM 확인 전) |
 | [handoffs/R39_PCU_r3-approval-review.md](handoffs/R39_PCU_r3-approval-review.md) | **R39** 배재 3차 승인 요청 검토 의견 — CI · Staging · API · GM 패치 · 파기 (**미발송 · 승인 아님**) |
 

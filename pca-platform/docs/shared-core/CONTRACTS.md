@@ -9,7 +9,7 @@
 |---|---|---|
 | CC-000 | DRAFT | 없음 |
 | CC-001 | DRAFT (구현은 미연결) | 없음 |
-| CC-002 SC-2 | PROPOSED (패치 · 재현 21개) · **R40: 전주 C16 이 같은 P0 를 거절 방식으로 따로 고침 — 방식 결정 대기 (landing/L2)** | 없음 |
+| CC-002 SC-2 | PROPOSED (패치 · 재현 21개) · **R41: 사업주 결정 — Core 방식. 합친 패치 `sc2-merged.patch`(SC-2 + 전주 C16 거래·잠금) · 관문 READY_WHEN_LANDED · 전주 c16 8/8 · 승인 대기 (landing/L2)** | 없음 |
 | CC-002a ADJ-1 | PROPOSED (별도 SQL · 재현 6개) | 없음 |
 | CC-003 | DRAFT | 없음 |
 | CC-004 | DRAFT | 없음 |

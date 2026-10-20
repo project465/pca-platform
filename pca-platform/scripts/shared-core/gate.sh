@@ -26,7 +26,8 @@ OUT="${1:-$ROOT/docs/shared-core/evidence/R40/gate}"
 mkdir -p "$OUT"; OUT="$(cd "$OUT" && pwd)"
 PATCHES=(
   "L1:docs/shared-core/proposed/cc009-l1.patch"
-  "L2:docs/shared-core/proposed/sc2-p0.patch"
+  "L2:docs/shared-core/proposed/sc2-merged.patch"   # R41: SC-2 방식 + 전주 C16 의 거래 · 잠금
+  "L2b:docs/shared-core/proposed/sc2-merged-bootstrap.patch"   # staging-bootstrap 이 거절 줄을 받는다(그 파일이 있는 가지만)
   "L3:docs/shared-core/proposed/l3-forgot-order.patch"
 )
 SUM="$OUT/summary.tsv"
@@ -65,7 +66,7 @@ run_line() { # 줄 · 트리 · 기대(SC_EXPECT_FIX)
   local fx="${fix:+SC_EXPECT_FIX=$fix}"
   tst "$line" "$tree" sc1-profile  no  ""  scripts/shared-core/tenant-profile.test.ts
   tst "$line" "$tree" sc1-boundary no  ""  scripts/shared-core/tenant-boundary.test.ts
-  tst "$line" "$tree" l2-identity  yes "SC_SHIMS=1 $fx V3_CAMPUS_FIXTURE=$tree/scripts/fixtures/campus-zztest.json" \
+  tst "$line" "$tree" l2-identity  yes "SC_SHIMS=1 SC_SHIM_TX=autocommit $fx V3_CAMPUS_FIXTURE=$tree/scripts/fixtures/campus-zztest.json" \
       scripts/shared-core/p0-login-collision.test.ts
   tst "$line" "$tree" l1-erasure   yes "SC_SHIMS=1 SC_SHIM_TX=autocommit $fx" scripts/shared-core/p0-erasure.test.ts
   tst "$line" "$tree" l3-forgot    yes "SC_SHIMS=1 $fx" scripts/shared-core/p0-forgot-order.test.ts

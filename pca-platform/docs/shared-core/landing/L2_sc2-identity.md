@@ -1,4 +1,33 @@
-# 착지 요청 L2 · 학교 학생 신원 (CC-002 1단계) — **결정 요청** · 미발송
+# 착지 요청 L2 · 학교 학생 신원 (CC-002 1단계) — 승인 요청 · 미발송
+
+> **R41 갱신 · 사업주 결정(2026-10-20): Core 방식(학교별 계정)으로 간다.** 합친 패치
+> [`proposed/sc2-merged.patch`](../proposed/sc2-merged.patch) 가 이 요청의 대상이다. 아래 R40 본문은 결정 전 비교 기록으로 남긴다.
+
+## R41 · 합친 패치
+
+| | |
+|---|---|
+| 파일 | `sc2-merged.patch`: `campus/students.ts` · `campus/manage.ts` · `scripts/pcu-students.ts` · 짝 `sc2-merged-bootstrap.patch`: `scripts/staging-bootstrap.ts` (그 파일이 있는 가지만) · DB 변경 없음 |
+| 붙는 가지 | 본 패치: 운영(R30) · 배재 · 세종 둘 OK · **전주 NO**(C16) / 짝 패치: 배재 · 세종 둘 OK · 운영은 파일이 없어 해당 없음 |
+| Core SC-2 에서 | (학교, 학번)으로만 찾기 · 새 학교 손잡이 `<CODE>:<학번>` · 남의 손잡이 · 메일은 가져가지 않고 그 줄만 거절(`CampusProvisionRejected`) · 다른 학교 줄을 고쳐 쓰지 않음 · 미리 보기는 그 학교 안에서만 |
+| 전주 C16 에서 | **한 거래** · 거래 범위 advisory lock (열쇠: (학교, 학번) · 손잡이 · 메일 — 정렬해 교착 방지) · `ON CONFLICT (login_id) DO NOTHING` → 0줄이면 거절 · `LoginTaken` 이름을 하위 클래스로 남겨 전주 호출자가 그대로 받게 함 · `staging-bootstrap` 이 거절 줄을 받고 이어 감 |
+| 새로 | 비밀번호 해시를 잠금 **밖**에서 미리 만든다(명단 한 벌이 줄줄이 기다리지 않게) · 메일 유일 제약(23505)이 잠금 밖 경합에서 걸리면 거절로 돌림 |
+
+### 증거
+
+| 검사 | 결과 |
+|---|---|
+| 공통 관문 `gate.sh` (L1 · **L2 합친 패치** · L3 함께) | `READY_WHEN_LANDED` · landed l2 통과 15 · 걸림 0 · todo 1(2단계) · 보호 11/11 (`evidence/R41/gate/`) |
+| **전주 C16 자기 검사 `jju-c16.ts` 를 합친 사본에서** | **8 / 8 통과** — 남의 아이디 거절 넷 · CSV · rotate · 재발급 · 같은 순간 경쟁(한쪽만 성공) (`evidence/R41/jju-c16-on-merged.log`) |
+| 음성 대조 | 옛 `sc2-p0.patch` 사본에서는 새 항목 P0-FIX-11(거래 · 잠금 · 덮어쓰기 없음)이 걸린다 (`evidence/R41/neg-l2-old-sc2.log`) |
+
+**NOT VERIFIED**: 잠금의 **효과**. shim 은 문장마다 따로 커밋해 거래 범위 잠금이 바로 풀린다 — 경쟁 검사가 통과한 것은
+`ON CONFLICT DO NOTHING` 덕분일 수 있다. 실제 `pg` 풀 위의 동시 등록은 CI 나 Staging 에서 재야 한다.
+전주 가지에는 이 패치가 그대로 붙지 않는다: 전주 세션이 C16 을 이 패치로 바꾸는 차례가 필요하다(Core 는 그 가지에 쓰지 않는다).
+
+---
+
+## R40 비교 기록
 
 | | |
 |---|---|

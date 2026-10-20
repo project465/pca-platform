@@ -91,3 +91,4 @@
 | 회차 | 한 것 | 관문 판정 |
 |---|---|---|
 | R40 | 이 문서 · 단계 0 의 0-1 ~ 0-5 (L2 는 패치 기존 · 전주 C16 과 방식이 갈려 **결정 대기**) | `evidence/R40/gate/verdict.tsv` · [R40_REPORT.md](R40_REPORT.md) |
+| R41 | L2 방식 결정(학교별 계정) · 합친 패치 `sc2-merged.patch` · 관문의 L2 를 합친 패치로 · 전주 `jju-c16` 8/8 | `evidence/R41/gate/verdict.tsv` |

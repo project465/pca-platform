@@ -1,0 +1,29 @@
+diff --git a/pca-platform/scripts/staging-bootstrap.ts b/pca-platform/scripts/staging-bootstrap.ts
+index ddd64d44..343fef0c 100644
+--- a/pca-platform/scripts/staging-bootstrap.ts
++++ b/pca-platform/scripts/staging-bootstrap.ts
+@@ -30,7 +30,7 @@ import { randomBytes } from "node:crypto";
+ import { query, queryOne } from "../src/lib/db";
+ import { appEnv, stagingGate } from "../src/lib/env";
+ import { hashPassword } from "../src/lib/password";
+-import { checkStudent, provisionStudent } from "../src/lib/campus/students";
++import { CampusProvisionRejected, checkStudent, provisionStudent } from "../src/lib/campus/students";
+ import {
+   allLeaves, coreOf, statusOf, university,
+ } from "../src/lib/campus/registry";
+@@ -136,7 +136,14 @@ async function stepStudents(orgId: string, creds: Cred[]): Promise<void> {
+         college_code: seat.college.code, department_code: seat.leaf.code,
+       });
+       if (!checked.ok) { console.log(`  걸림   ${login} — ${checked.why}`); continue; }
+-      const made = await provisionStudent(orgId, checked.value, { rotate: ROTATE });
++      let made: Awaited<ReturnType<typeof provisionStudent>>;
++      try {
++        made = await provisionStudent(orgId, checked.value, { rotate: ROTATE });
++      } catch (e) {
++        /* 그 아이디를 다른 계정이 들고 있다. 덮지 않고 그 줄만 거절로 적고 이어 간다 */
++        if (e instanceof CampusProvisionRejected) { console.log(`  걸림   ${login} — ${e.message}`); continue; }
++        throw e;
++      }
+       creds.push({
+         role: "학생", login, pw: made.password,
+         where: `/campus/${UNI.toLowerCase()}/login`,
