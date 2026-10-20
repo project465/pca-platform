@@ -72,9 +72,12 @@ export default async function JjuHome() {
               <Link className="cm-cmp-cta" href={`/campus/${code}/majors`}>
                 내 트랙 고르기<span aria-hidden="true">→</span>
               </Link>
-              <Link className="cm-cmp-cta-2" href={`/campus/${code}/login`}>
-                학교 계정으로 로그인
-              </Link>
+              {/* 이미 들어와 있는 사람에게 로그인 단추를 세우지 않는다 */}
+              {user ? null : (
+                <Link className="cm-cmp-cta-2" href={`/campus/${code}/login`}>
+                  학교 계정으로 로그인
+                </Link>
+              )}
             </div>
           </div>
           <ol className="cm-cmp-flow">

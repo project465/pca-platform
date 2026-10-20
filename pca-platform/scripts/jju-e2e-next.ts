@@ -52,14 +52,17 @@ type Shot = { n: string; file: string; viewport: string; path: string; what: str
 const shots: Shot[] = [];
 
 /** 찍는다. **같은 그림이 두 이름으로 저장되면** 자리를 잘못 찾은 것이라 걸린다 */
-async function shoot(p: Page, n: string, what: string): Promise<void> {
+async function shoot(p: Page, n: string, what: string, sameAs?: string): Promise<void> {
   await p.waitForLoadState("networkidle").catch(() => undefined);
   const vp = p.viewportSize();
   const file = `${n}.png`;
   const buf = await p.screenshot({ path: `${SHOTS}/${file}`, fullPage: true });
   const sha = createHash("sha256").update(buf).digest("hex").slice(0, 16);
   const dup = shots.find((s) => s.sha === sha);
-  ok(`그림 ${n} 이 앞의 그림과 다르다`, !dup, dup ? `= ${dup.n}` : sha);
+  /* 로그인 없이 연 자리는 로그인 화면으로 보내는 것이 곧 거절이라 그 그림이
+     01 과 같은 것이 맞다. 그런 자리만 이름을 대고 같음을 요구한다 */
+  if (sameAs) ok(`그림 ${n} 이 ${sameAs} 와 같은 화면이다(의도)`, dup?.n === sameAs, dup ? `= ${dup.n}` : sha);
+  else ok(`그림 ${n} 이 앞의 그림과 다르다`, !dup, dup ? `= ${dup.n}` : sha);
   shots.push({ n, file, viewport: `${vp?.width}x${vp?.height}`, path: new URL(p.url()).pathname + new URL(p.url()).search, what, sha });
 }
 
@@ -149,6 +152,7 @@ async function main(): Promise<void> {
   let desk = await ctxOf(browser, DESK);
   let p = await login(desk, LOGIN, pwD);
   ok("학생 D 가 실제 Auth.js 로 로그인한다", !new URL(p.url()).pathname.startsWith("/login"), new URL(p.url()).pathname);
+  say(`  적어둠  로그인 뒤 첫 자리 ${new URL(p.url()).pathname} (공통 homePathFor 가 정한다 · JJU 가 바꾸지 않는다)`);
   const sess = (await desk.cookies()).find((k) => /authjs\.session-token/.test(k.name));
   ok("세션 쿠키가 Auth.js 것이다(httpOnly)", !!sess && sess.httpOnly, sess?.name ?? "없음");
   {
@@ -157,7 +161,10 @@ async function main(): Promise<void> {
       const q = await cx.newPage();
       const r = await q.goto(`${BASE}/jju`, { waitUntil: "networkidle" });
       ok(`전주대 홈이 열린다 (${tag})`, (r?.status() ?? 0) === 200, String(r?.status()));
-      await shoot(q, `02-home.${tag}`, "전주대 학생 홈");
+      const home = await q.locator("body").innerText();
+      ok(`로그인한 학생의 홈에 로그인 단추가 서지 않는다 (${tag})`, !home.includes("학교 계정으로 로그인"));
+      ok(`로그인한 학생의 홈 맨 위에 내 진행 상태가 선다 (${tag})`, await q.locator("section.jju-me").count() === 1);
+      await shoot(q, `02-home.${tag}`, "전주대 학생 홈(로그인 뒤)");
       await q.goto(`${BASE}/campus/jju/majors`, { waitUntil: "networkidle" });
       await shoot(q, `03-tracks.${tag}`, "트랙(전공) 고르기");
       await q.close();
@@ -287,8 +294,11 @@ async function main(): Promise<void> {
       ok(`${path} 가 담당자에게 열린다`, (r?.status() ?? 0) === 200, String(r?.status()));
       await shoot(q, n, what);
     }
-    const txt = await q.locator("body").innerText();
-    void txt;
+    /* 다섯이 안 되는 칸을 0 으로 적으면 옆의 완료 수와 어긋난다 */
+    const rows = await q.goto(`${BASE}/jju/admin`, { waitUntil: "networkidle" }).then(() =>
+      q.locator(".jju-matrix tbody tr").evaluateAll((trs) => trs.map((tr) => [...tr.querySelectorAll("td")].map((td) => (td.textContent ?? "").trim()))));
+    const odd = rows.filter((r) => r.length >= 9 && Number(r[7]) > 0 && r[8] === "0");
+    ok("사업단 표에서 완료가 있는 트랙의 응시 시작이 0 으로 서지 않는다", rows.length > 0 && odd.length === 0, `${rows.length}줄 · 어긋남 ${odd.length}`);
     const mob = await mobileOf(browser, a); const mq = await mob.newPage();
     await mq.goto(`${BASE}/jju/admin`, { waitUntil: "networkidle" });
     await shoot(mq, "14-admin.mobile", "사업단 현황(390)"); await mob.close();
@@ -306,6 +316,9 @@ async function main(): Promise<void> {
     const q = await login(b, "qa-jju-qab", pwB);
     const r = await q.goto(`${BASE}/jju/report/${att}`, { waitUntil: "networkidle" });
     ok("같은 학교 학생 B 가 D 의 리포트를 열면 404", r?.status() === 404, String(r?.status()));
+    const deny = await q.locator("body").innerText();
+    ok("거절 화면이 사람의 말로 선다(날글자 not found 가 아니다)", deny.includes("이 리포트를 열 수 없습니다") && !/^\s*not found\s*$/.test(deny));
+    ok("거절 화면이 누구의 응시인지 말하지 않는다", !deny.includes("QA 학생 D") && !deny.includes(LOGIN));
     await shoot(q, "17-deny-peer", "학생 B 가 학생 D 의 리포트를 연 화면(404)");
     const x = await pdfOf(q, att, "B");
     ok("학생 B 는 D 의 PDF 를 받지 못한다(404)", x.status === 404, String(x.status));
@@ -331,7 +344,7 @@ async function main(): Promise<void> {
     ok("로그인하지 않으면 PDF 대신 로그인으로 보낸다", [302, 303, 307].includes(r.status()) && loc.includes("/login"), `${r.status()} → ${loc}`);
     await q.goto(`${BASE}/jju/report/${att}`, { waitUntil: "networkidle" });
     ok("로그인 안 한 브라우저는 로그인 화면에 선다", new URL(q.url()).pathname.startsWith("/login"), new URL(q.url()).pathname);
-    await shoot(q, "19-deny-anon", "로그인 없이 리포트를 연 화면(로그인으로 보냄)");
+    await shoot(q, "19-deny-anon", "로그인 없이 리포트를 연 화면(로그인으로 보냄)", "01-login.desktop");
     await anon.close();
   }
 

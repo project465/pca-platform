@@ -123,8 +123,11 @@ export default async function JjuAdmin({
                     <td className="is-num">{c.in_progress}</td>
                     <td className="is-num">{c.scored}</td>
                     <td className="is-num">
+                      {/* 칸이 없는 것은 0 이 아니다: 집계가 다섯이 안 되는 칸을 아예 만들지
+                          않으므로, 이 트랙에 진행·완료가 있는데 0 을 적으면 바로 옆 칸과
+                          서로 어긋난 말을 한다(R5 실제 화면에서 `완료 4 · 응시 시작 0`) */}
                       {typeof s === "number" ? s
-                        : <span className="jju-hidden">{s === null ? `${MIN_CELL}명 미만` : "0"}</span>}
+                        : <span className="jju-hidden">{s === null || c.in_progress + c.scored > 0 ? `${MIN_CELL}명 미만` : "0"}</span>}
                     </td>
                   </tr>
                 );
