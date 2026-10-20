@@ -70,3 +70,7 @@ var/r35/
 var/rb/
 var/pdf-gm/
 var/dart/
+var/gm-inputs/
+var/gm-out/
+var/trackB-*/
+var/gm-a/
