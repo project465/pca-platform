@@ -44,6 +44,7 @@ const REMOVE: { table: string; why: string }[] = [
   { table: "match_feedback", why: "자유입력 의견" },
   { table: "jd_match_scores", why: "어떤 공고에 얼마나 맞았는지는 개인 이력이다" },
   { table: "memberships", why: "어느 학과 소속이었는지" },
+  { table: "v3_prep_answers", why: "본인이 적은 지원서·면접 답" },
 ];
 
 /** 남기는 것과 그 이유. 화면과 기록에 그대로 쓴다. */

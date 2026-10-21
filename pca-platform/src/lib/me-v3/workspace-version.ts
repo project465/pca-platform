@@ -356,7 +356,8 @@
  */
 /** AI 티 문장 정리 (견줍니다·섭니다·세웠습니다 등) */
 /** 공고 쪽이 공고 통계(이 전공의 공고가 묻는 영역)를 세운다 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V55";
+/** 지원서·면접 준비 쪽이 선다(문항 넷 · 예상 질문 · 직접 적는 답) */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V56";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -397,7 +398,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V55";
 /** Track 1단계: 기간권·구독 상태·잠긴 기능 안내 문장 */
 /** AI 티 문장 정리 (견줍니다·섭니다·세웠습니다 등) */
 /** 공고 통계 쪽의 글 */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.36";
+/** 지원서·면접 준비 쪽의 글 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.37";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

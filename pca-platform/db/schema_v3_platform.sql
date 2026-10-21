@@ -277,3 +277,25 @@ CREATE INDEX IF NOT EXISTS v3_job_postings_core_posted
   ON v3_job_postings (core_code, posted_on);
 COMMENT ON COLUMN v3_job_postings.core_code IS
   '공고를 단 전공. 규칙으로 갈리지 않으면 비운다';
+
+/*
+ * 지원서·면접 준비에서 본인이 적은 답.
+ *
+ * **글을 대신 쓰지 않으므로 여기 담기는 것은 전부 그 사람의 글이다.** 물음은
+ * 결과에서 만들고(`src/lib/me-v3/prep.ts`) 답만 이 표에 둔다. 물음의 글자를
+ * 함께 적는 까닭은 결과가 바뀌어 같은 물음이 다시 서지 않아도 그때 무엇에
+ * 답했는지 읽을 수 있어야 해서다. 탈퇴(익명화) 때 지운다(`erasure.ts`).
+ */
+CREATE TABLE IF NOT EXISTS v3_prep_answers (
+  id          BIGSERIAL PRIMARY KEY,
+  user_id     BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  core_code   TEXT NOT NULL,
+  kind        TEXT NOT NULL CHECK (kind IN ('essay','interview')),
+  prompt_key  TEXT NOT NULL,
+  prompt_text TEXT NOT NULL,
+  answer_text TEXT NOT NULL,
+  saves       INT NOT NULL DEFAULT 1,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (user_id, core_code, kind, prompt_key)
+);

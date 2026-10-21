@@ -88,6 +88,9 @@ const FILES = [
   "src/app/me/explore/page.tsx",
   "src/app/me/region/page.tsx",
   "src/app/me/region/actions.ts",
+  "src/app/me/prep/page.tsx",
+  "src/app/me/prep/actions.ts",
+  "src/lib/me-v3/prep.ts",
   "src/app/me/apply/page.tsx",
   "src/app/me/apply/actions.ts",
   /* 기타 */

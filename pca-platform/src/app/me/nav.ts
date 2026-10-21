@@ -86,6 +86,7 @@ export const CM_GROUPS: CmNavGroup[] = [
     items: [
       { href: "/me/explore", label: "산업·직무", icon: "compass" },
       { href: "/me/region", label: "지역·기관", icon: "globe" },
+      { href: "/me/prep", label: "지원서·면접", icon: "doc" },
       { href: "/me/apply", label: "지원 기록", icon: "send" },
     ],
   },
