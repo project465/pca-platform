@@ -92,3 +92,5 @@ var/r5long-try/
 
 # 모든 단추 눌러 보기 결과 (scripts/lab/click-all.ts)
 var/click-all/
+# 진흥원식 결과지 시연판 (scripts/lab/sjepa-report.ts 산출물)
+var/pdf-campus/
