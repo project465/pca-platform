@@ -100,6 +100,8 @@ export const NAV_ADMIN: NavItem[] = [
   { href: "/admin/refunds", label: "navRefunds", icon: "cart", group: "navGroupCustomers" },
   { href: "/admin/organizations", label: "navOrganizations", icon: "building", group: "navGroupCustomers" },
   { href: "/admin/contracts", label: "navContracts", icon: "contract", group: "navGroupCustomers" },
+  /* MAT 학교 단체 이용권. 계약으로 산 인원을 학교에 넣는 자리 */
+  { href: "/admin/campus-mat", label: "navCampusMat", icon: "contract", group: "navGroupCustomers" },
   { href: "/admin/users", label: "navUsers", icon: "users", soon: true, group: "navGroupCustomers" },
 
   { href: "/admin/products", label: "navProducts", icon: "box", soon: true, group: "navGroupCatalog" },

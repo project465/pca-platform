@@ -212,7 +212,9 @@
     "pcu:humanize": "tsx scripts/pcu-humanize-shots.ts",
     "pcu:spec": "tsx scripts/pcu-spec-review.ts",
     "pcu:spec:pack": "tsx scripts/pcu-spec-pack.ts",
-    "pcu:signoff": "tsx scripts/pcu-signoff-shots.ts"
+    "pcu:signoff": "tsx scripts/pcu-signoff-shots.ts",
+    "campus:mat": "tsx scripts/campus-mat-check.ts",
+    "db:campus:mat": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 --single-transaction -f db/schema_campus_mat.sql"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "0.131.0",

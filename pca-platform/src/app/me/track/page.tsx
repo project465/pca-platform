@@ -55,6 +55,9 @@ const NAME: Record<string, string> = {
   TRACK_30D: "30일권",
   TRACK_365D: "365일권",
   [TRACK_TRIAL]: "PRO 구매 첫 1개월",
+  /* 학교가 계약으로 산 이용권. 학생이 낸 돈이 없으므로 주문 칸은 비어 있다 */
+  CAMPUS_MAT_6M: "학교 제공 6개월",
+  CAMPUS_MAT_12M: "학교 제공 1년",
 };
 
 const FAIL: Record<string, string> = {

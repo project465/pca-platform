@@ -44,6 +44,8 @@ const NAMES: Record<string, string> = {
   REPORT_HS: "CareerMatri 진로 결과지 (고교)",
   TRACK_30D: "MAT 30일",
   TRACK_365D: "MAT 365일",
+  CAMPUS_MAT_6M: "MAT 6개월 (학교)",
+  CAMPUS_MAT_12M: "MAT 1년 (학교)",
 };
 
 export function orderName(code: string): string {

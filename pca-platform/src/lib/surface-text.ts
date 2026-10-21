@@ -599,6 +599,7 @@ export const TX = {
   navUsers: p("사용자", "Users"),
   navOrganizations: p("기관", "Organizations"),
   navContracts: p("계약", "Contracts"),
+  navCampusMat: p("MAT 학교 이용권", "MAT school passes"),
   navProducts: p("상품", "Products"),
   navOrders: p("주문", "Orders"),
   navCountries: p("국가", "Countries"),

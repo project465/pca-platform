@@ -3,7 +3,7 @@
 import { campusSay } from "@/lib/campus/words";
 import { useActionState } from "react";
 import {
-  retakeAction, rotateAction, setStatusAction, type ManageState,
+  matAction, retakeAction, rotateAction, setStatusAction, type ManageState,
 } from "./actions";
 import type { StudentRow } from "@/lib/campus/manage";
 
@@ -24,8 +24,16 @@ const ATTEMPT_KO: Record<StudentRow["attempt"], string> = {
  * 학생이 들고 있던 열쇠가 그 자리에서 죽는다.
  */
 export default function StudentRows(
-  { rows, deptNames, agency = false }: {
+  { rows, deptNames, agency = false, matUntil = {}, matPool = null }: {
     rows: StudentRow[];
+    /** 학생마다 MAT 이 열려 있는 마지막 날. 없으면 칸이 비어 있다 */
+    matUntil?: Record<string, string>;
+    /**
+     * 줄마다 붙는 `MAT 열기` 가 쓰는 이용권. 지금 열 수 있는 것 가운데
+     * 첫째다. 없으면 단추가 서지 않는다(여러 묶음 가운데 고르는 일은 위
+     * 판의 한꺼번에 열기가 한다)
+     */
+    matPool?: { id: string; name: string } | null;
     /** 기관(진흥원 등)이면 학생 · 학번 · 학과를 기관 낱말로 적는다 */
     agency?: boolean;
     /**
@@ -44,6 +52,7 @@ export default function StudentRows(
       const kind = String(form.get("kind") ?? "");
       if (kind === "rotate") return rotateAction(prev, form);
       if (kind === "retake") return retakeAction(prev, form);
+      if (kind === "mat") return matAction(prev, form);
       return setStatusAction(prev, form);
     }, EMPTY);
 
@@ -78,6 +87,7 @@ export default function StudentRows(
               <th scope="col">계정</th>
               <th scope="col">응시</th>
               <th scope="col">완료일</th>
+              <th scope="col">MAT</th>
               <th scope="col">할 일</th>
             </tr>
           </thead>
@@ -97,6 +107,7 @@ export default function StudentRows(
                   <span className={`sf-pill is-${r.attempt}`}>{ATTEMPT_KO[r.attempt]}</span>
                 </td>
                 <td>{r.completed_at ?? "—"}</td>
+                <td>{matUntil[r.user_id] ? `${matUntil[r.user_id]}까지` : "—"}</td>
                 <td className="sf-rowacts">
                   <form action={run}>
                     <input type="hidden" name="kind" value="rotate" />
@@ -117,6 +128,22 @@ export default function StudentRows(
                       {r.account === "active" ? "계정 멈추기" : "다시 열기"}
                     </button>
                   </form>
+                  {/* 이미 열린 학생에게는 다시 세우지 않는다. 누르면 `이미 열려
+                      있습니다` 만 돌아오는 단추는 고장으로 읽힌다 */}
+                  {matPool && r.account === "active" && !matUntil[r.user_id] ? (
+                    <form action={run}>
+                      <input type="hidden" name="kind" value="mat" />
+                      <input type="hidden" name="user_id" value={r.user_id} />
+                      <input type="hidden" name="pool_id" value={matPool.id} />
+                      <button type="submit" className="sf-mini" disabled={pending}
+                        onClick={(e) => {
+                          if (!confirm(
+                            `${r.name} ${t("학생")}에게 ${matPool.name} 을 엽니다.\n`
+                            + "학교가 산 인원에서 한 명이 줄고, 되돌릴 수 없습니다.",
+                          )) e.preventDefault();
+                        }}>MAT 열기</button>
+                    </form>
+                  ) : null}
                   {r.attempt === "scored" ? (
                     <form action={run}>
                       <input type="hidden" name="kind" value="retake" />
