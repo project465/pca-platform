@@ -41,7 +41,7 @@ const FIELD_AXIS: { field: keyof Experience & string; axis: Axis; what: string }
   { field: "problems", axis: "J1", what: "어떤 문제였나" },
   { field: "decisions", axis: "J3", what: "직접 정한 것" },
   { field: "artifacts", axis: "J5", what: "남긴 것" },
-  { field: "verifications", axis: "J6", what: "견주어 확인한 것" },
+  { field: "verifications", axis: "J6", what: "비교해 확인한 것" },
   { field: "used_where", axis: "J8", what: "쓰인 곳" },
 ];
 

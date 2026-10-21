@@ -1,7 +1,7 @@
 {
  "schema_version": "edu-v1-bank-lock.1",
  "core": "EDU_CORE_V1",
- "item_bank_version": "EDU_V1_ITEM_BANK_V1.2",
+ "item_bank_version": "EDU_V1_ITEM_BANK_V1.3",
  "note": "교육 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=EDU_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
   "edu-industry-packs.json": "c49554b7c5e04ce2a70e1b74ec7fd2e57ea85c819e64abae51760921c90445e0",
@@ -12,7 +12,7 @@
   "edu-v1-constructs.json": "9b3916b2a22d205449965fa9f5451980eb37774e07f12c4c82592255410ba3b6",
   "edu-v1-domains.json": "4d3060e4ab5866c3a32358c852f608785af9beb25b3c4281c50f0ba9db390ffc",
   "edu-v1-items-blueprint.json": "33e7d4057be8d765643659e771b1693e2fa321308f1f184f55313d208270cf35",
-  "edu-v1-items.json": "1f18ea20df7bfa2fb0ddb981d08d9431bcb4cb5ff0baeabad706f8e12809301f",
+  "edu-v1-items.json": "50583598b21d875da34edaa5cd6826362ac5bf2ffb77c29a7dad6eb181c05f75",
   "edu-v1-relations.json": "7a692b40eb638f2f2ee0923118b97d75f27524bbd4e67f0b056e8f5a004e9aec",
   "edu-v1-taxonomy.json": "c01c0a3ca068939b0ee2868d052820e0b5f50709d1fd0187ab9e8805f747efc0"
  },

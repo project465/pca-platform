@@ -57,7 +57,7 @@ export const STAGE_LEAD: Record<StageCode, string> = {
   FIELD: "관심이 가는 산업을 고르고, 그 산업에서 하는 일을 먼저 봅니다.",
   EXPLORE: "먼저 어떤 일을 해보고 싶은지, 해본 적은 있는지 가볍게 살펴봅니다.",
   JUDGE: "이제 실제로 해본 경험을 확인합니다.",
-  DEEP: "해보신 자리를 조금 더 자세히 묻습니다.",
+  DEEP: "해보신 일을 조금 더 자세히 묻습니다.",
   EVIDENCE: "마지막으로 그때 무엇을 남겼는지 고릅니다.",
   PACK: "고르신 산업과 직무에서 같은 판단을 한 번 더 봅니다.",
   TRANSLATE: "답하신 것을 지원서에 쓸 말로 옮깁니다.",
@@ -450,7 +450,7 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
         required: true, auto: true,
         eyebrow: c?.eyebrow ?? "한 가지만 더",
         question: wording(i.item_id, input.stage),
-        help: c?.help ?? "비슷하게 답하신 두 영역을 한 번만 더 가릅니다.",
+        help: c?.help ?? "비슷하게 답하신 두 영역을 한 번 더 나눠 묻습니다.",
         items: [i.item_id],
       });
     }
@@ -511,7 +511,7 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
         required: false, auto: false,
         eyebrow: "대학원 경험",
         question: "대학원 경험을 따로 확인합니다",
-        help: "이 전공을 받으실 수 있게 하려고 묻는 자리입니다.",
+        help: "이 전공을 받으실 수 있게 하려고 묻습니다.",
         chips: ["다룬 분야", "옮겨 쓸 수 있는 방법", `${majorName} 쪽 활동 시점`,
                 "학부에서 깊게 간 활동"],
         items: [],
@@ -581,7 +581,7 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
   /* ── 심화 네 축 ── 같은 까닭으로 전환 화면을 걷었다 */
   if (input.tier !== "BASIC" && input.deep.length) {
     let deepStrip: string | null =
-      `같은 영역을 조금 더 묻습니다. 남은 자리를 채우는 질문입니다`;
+      `같은 영역을 조금 더 묻습니다. 남은 칸을 채우는 질문입니다`;
     for (const td of input.deep) {
       const list = items.filter((x) => x.module === DEEP_BLOCK && x.technical_domain === td);
       /* 심화 네 축을 둘씩 세운다. 영역 이름을 네 번 다시 읽지 않는다 */
@@ -630,7 +630,7 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
         id: `consist-${axis}`, stage: "EVIDENCE", kind: "pair",
         required: false, auto: false,
         eyebrow: "경험 확인",
-        question: "두 자리에서 같은 일을 해 보셨는지 묻습니다",
+        question: "같은 일을 해 보셨는지 두 번 나눠 묻습니다",
         items: pair.map((i) => i.item_id),
       });
     }

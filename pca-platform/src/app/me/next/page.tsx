@@ -174,7 +174,7 @@ export default async function Next(
       <CmHead
         title={first ? "지금 할 한 가지" : "무엇부터 할지"}
         lead={st.model
-          ? "급한 차례가 아니라 할 수 있는 때로 묶었습니다. 하나를 끝내면 그다음이 섭니다."
+          ? "급한 순서보다 할 수 있는 때로 묶었습니다. 하나를 끝내면 그다음이 나옵니다."
           : "검사를 한 번 끝내면 결과가 낸 할 일을 여기에 담을 수 있습니다."}
         actions={st.model ? (
           /* **짙은 단추는 쪽에 하나다**(규격 §10). 담을 것이 이미 담겨
@@ -222,7 +222,7 @@ export default async function Next(
       <SectionHeader icon="compass" tone="c" title="다음에 할 수 있는 것" />
       <PickGrid cols={3}>
         <PickCard href="/me/experience/new" icon="layers" tone="b"
-          title="경험 추가" lead="새로 겪은 일을 적으면 현재 상태가 다시 섭니다." cta="적으러 가기" />
+          title="경험 추가" lead="새로 겪은 일을 적으면 현재 상태가 다시 계산됩니다." cta="적으러 가기" />
         <PickCard href="/me/state" icon="chart" tone="c"
           title="현재 상태 보기" lead="지금 설명할 수 있는 영역을 확인합니다." cta="보러 가기" />
         <PickCard href="/me/explore" icon="compass" tone="v"
@@ -242,7 +242,7 @@ export default async function Next(
       <SectionHeader icon="compass" tone="c" title="다음에 할 수 있는 것" />
       <PickGrid cols={3}>
         <PickCard href="/me/experience/new" icon="layers" tone="b"
-          title="경험 추가" lead="새로 겪은 일을 적으면 현재 상태가 다시 섭니다." cta="적으러 가기" />
+          title="경험 추가" lead="새로 겪은 일을 적으면 현재 상태가 다시 계산됩니다." cta="적으러 가기" />
         <PickCard href="/me/state" icon="chart" tone="c"
           title="현재 상태 보기" lead="지금 설명할 수 있는 영역을 확인합니다." cta="보러 가기" />
         <PickCard href="/me/explore" icon="compass" tone="v"

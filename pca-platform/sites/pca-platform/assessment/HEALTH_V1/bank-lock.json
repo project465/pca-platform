@@ -1,7 +1,7 @@
 {
  "schema_version": "health-v1-bank-lock.1",
  "core": "HEALTH_CORE_V1",
- "item_bank_version": "HEALTH_V1_ITEM_BANK_V1.3",
+ "item_bank_version": "HEALTH_V1_ITEM_BANK_V1.4",
  "note": "보건·의료복지 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=HEALTH_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
   "health-industry-packs.json": "d8ea899749d3c73f08b1fe719a575c45ab1617a574dd77d6766a21a8fce77250",
@@ -12,7 +12,7 @@
   "health-v1-constructs.json": "4e090a13d23603bc6e7ea500e8c33458b24f1751ce087d28685d8241ef3ee629",
   "health-v1-domains.json": "3ea78b56b04ae139e59b6dc3881436bbfc78cb34bbccb64175bd52e0cd31578a",
   "health-v1-items-blueprint.json": "7f62247ae466dd1db4f086243b2a86f5337ad1fa0e988fde2c155e58da68067a",
-  "health-v1-items.json": "cc04afb2a7bb1d02cb2df470609d536a5fa8dcc1e7c3482749fa6fbad886a954",
+  "health-v1-items.json": "7329a886a997cb31639120858a39fd503de5951fd6b6ac521f7a60ccba42156b",
   "health-v1-relations.json": "5d5c412ef3d55936c355e4adf4dbcb7cb75f22465a28e3f74e2fd751f4db4ec6",
   "health-v1-taxonomy.json": "d62c2f2d634e34ede9d21819a80e06e588efe695d6cd36db3f585ca644c6f368"
  },

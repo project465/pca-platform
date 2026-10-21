@@ -40,7 +40,7 @@ export const formal = (s: string) => s.replace(/다$/, "습니다");
 
 const TITLE: Record<string, string> = {
   J1: "일의 범위를 먼저 자릅니다", J2: "목표를 숫자로 바꿉니다", J3: "기준을 세우고 고릅니다", J4: "방법을 골라 분석합니다",
-  J5: "판단을 문서로 남깁니다", J6: "대안과 같은 조건으로 견줍니다", J7: "틀린 까닭을 좁힙니다", J8: "결과를 결정에 씁니다",
+  J5: "판단을 문서로 남깁니다", J6: "대안과 같은 조건으로 비교합니다", J7: "틀린 까닭을 좁힙니다", J8: "결과를 결정에 씁니다",
 };
 export const ANSWER: Record<string, string> = {
   J1: "뺀 것 하나와 뺀 까닭을 먼저 말하고, 그래서 남은 범위를 한 줄로 정리합니다.",
@@ -48,7 +48,7 @@ export const ANSWER: Record<string, string> = {
   J3: "비교한 기준 두세 개를 먼저 말하고, 버린 안의 까닭으로 끝냅니다.",
   J4: "다른 방법 대신 이 방법을 고른 까닭 하나와, 그 방법의 한계 하나를 말합니다.",
   J5: "결과물을 누가 받아서 무엇에 썼는지부터 말합니다.",
-  J6: "무엇과 견줬는지, 조건(기간·대상)을 어떻게 맞췄는지 말합니다.",
+  J6: "무엇과 비교했는지, 조건(기간·대상)을 어떻게 맞췄는지 말합니다.",
   J7: "까닭을 하나로 좁힌 근거와, 그래서 바꾼 것 하나를 말합니다.",
   J8: "그 결과로 바뀐 결정 하나를 말합니다.",
 };
@@ -99,7 +99,7 @@ export function edit8(r: Report3): Ed8 {
   }
   const label = r.kind === "EVIDENCE" ? { strengths: "지금 강한 쪽 세 가지", deck: "응답에서 기준까지 직접 정했다고 한 판단부터 차례로 골랐습니다." }
     : r.kind === "MIXED" ? { strengths: "이미 가진 것 세 가지", deck: "목표 직무와는 다른 곳에 있지만, 옮겨 쓸 수 있는 것부터 골랐습니다." }
-      : { strengths: "출발점 세 가지", deck: "아직 강점이라 부를 근거는 적습니다. 대신 시작할 자리를 골랐습니다." };
+      : { strengths: "출발점 세 가지", deck: "아직 강점이라 부를 근거는 적습니다. 대신 시작할 만한 영역을 골랐습니다." };
 
   /* ── 업무 스타일: 판단 여덟의 가장 높은 단계 ── */
   const style = Object.keys(JUDGE).map((a) => {
@@ -126,7 +126,7 @@ export function edit8(r: Report3): Ed8 {
   } else if (r.kind === "EARLY") {
     call = `먼저 볼 직무는 ${target.name}입니다. 다만 아직 어느 쪽도 근거가 적습니다.`;
     why.push(`검사에서 목표로 고른 직무입니다. 관심이 가장 높은 영역과도 맞닿아 있습니다.`);
-    why.push(`${b.name}과 가르는 것은 결과물 하나입니다. 첫 결과물을 만들고 나서 다시 견주면 됩니다.`);
+    why.push(`${b.name}과 차이를 만드는 것은 결과물 하나입니다. 첫 결과물을 만들고 나서 다시 비교하면 됩니다.`);
   } else {
     call = `목표는 ${target.name}이지만, 지금 근거가 더 많은 쪽은 ${b.name}입니다.`;
     why.push(`${target.name}의 중심 영역인 ${withJosa(target.tdName, "은는")} 이번 검사에서 묻지 않았습니다.`);
@@ -173,13 +173,13 @@ export function edit8(r: Report3): Ed8 {
   parts.push({ text: "그 기준은 ", blank: false }, { text: "[기준 두세 개]", blank: true }, { text: "였습니다. ", blank: false });
   parts.push(left ? { text: `그 결과 ${withJosa(left.split(" · ")[0], "을를")} 남겼고, `, blank: false } : { text: "그 결과 [결과물 이름]을 남겼고, ", blank: true });
   const cmpName = cmp ? cmp.split(/과 비교|와 비교/)[0] : null;
-  parts.push(cmpName ? { text: `${withJosa(cmpName, "과와")} 견주어 `, blank: false } : { text: "[비교 대상]과 견주어 ", blank: true });
+  parts.push(cmpName ? { text: `${withJosa(cmpName, "과와")} 비교해 `, blank: false } : { text: "[비교 대상]과 비교해", blank: true });
   parts.push({ text: "[수치·기간]", blank: true }, { text: " 달라졌습니다.", blank: false });
   const draft: Draft = {
     from: s0 ? s0.from.replace(/ — (검사 응답|경험 기록)$/, "") : "",
     parts,
     tips: [
-      "첫 문장은 한 일이 아니라 정한 것으로 시작합니다.",
+      "첫 문장은 한 일보다 정한 것으로 시작합니다.",
       "결과물은 파일 이름 그대로 적습니다. 면접관이 보여 달라고 할 수 있습니다.",
       "대괄호는 기록에 있는 것만 채웁니다. 없는 수치를 만들지 않습니다.",
     ],

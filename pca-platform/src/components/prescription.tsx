@@ -90,8 +90,8 @@ export default function PrescriptionView({ rx }: { rx: Prescription }) {
       {rx.tooMany && (
         <p className="notice warn">
           1군에 계열이 {rx.majors.length}개 있어 여기 담긴 것은 <b>그 전부에 공통으로
-          걸리는 과목</b>까지입니다. 한 계열만 요구하는 과목은 아래 “여기서 갈립니다”
-          로 내렸습니다. 지금 다 담으면 신청할 수 없는 목록이 됩니다.
+          걸리는 과목</b>까지입니다. 한 계열만 요구하는 과목은 아래 “계열마다 다른 과목”
+          으로 내렸습니다. 지금 다 담으면 신청할 수 없는 목록이 됩니다.
         </p>
       )}
 
@@ -112,7 +112,7 @@ export default function PrescriptionView({ rx }: { rx: Prescription }) {
       {rx.split.length > 0 && (
         <div className="rx-group">
           <div className="rx-gh">
-            <h3>여기서 갈립니다</h3>
+            <h3>계열마다 다른 과목</h3>
             <span>어느 쪽으로 기우는지에 따라 골라 듣습니다</span>
           </div>
           <ul className="rx-list">

@@ -145,7 +145,7 @@ export default async function V3Start({
           </li>
           <li>
             <b>무엇을 직접 판단했는지</b>
-            <span>같은 일이라도 주어진 조건대로 한 것과 직접 정한 것을 갈라 묻습니다</span>
+            <span>같은 일이라도 주어진 조건대로 한 것과 직접 정한 것을 나눠 묻습니다</span>
           </li>
           <li>
             <b>어떤 경험이 아직 부족한지</b>

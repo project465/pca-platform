@@ -239,7 +239,7 @@ export default async function Home() {
           <div className="cm-grid">
             {[
               ["무엇을 해 봤는지", "전체 기술영역에서 해 본 일을 하나씩 묻습니다"],
-              ["무엇을 직접 정했는지", "받아서 한 일과 직접 정한 일을 가릅니다"],
+              ["무엇을 직접 정했는지", "받아서 한 일과 직접 정한 일을 구분합니다"],
               ["다음에 무엇을 할지", "아직 부족한 부분과 그것을 메우는 일을 적습니다"],
             ].map(([t, b]) => (
               <div className="cm-card" key={t}>
@@ -290,8 +290,8 @@ export default async function Home() {
         <div className="cm-card is-wide">
           <h2>풀던 검사가 있습니다 <em>{st.open?.tier}</em></h2>
           <p>
-            마지막으로 답한 자리에서 이어집니다. 답한 것은 서버에 저장되어
-            있어 다른 기기에서도 그 자리로 돌아옵니다.
+            마지막으로 답한 문항에서 이어집니다. 답한 것은 서버에 저장되어
+            있어 다른 기기에서도 그 문항으로 돌아옵니다.
           </p>
           <div className="cm-acts">
             {/* **짙은 단추는 쪽에 하나다**(규격 §26). 쪽 머리의 단추가
@@ -434,7 +434,7 @@ export default async function Home() {
                 : `${major ?? "진로진단"} 결과 (${st.model.tier})`}
               note={meta?.school
                 ? `${major ?? "진로진단"} 진로 분석 리포트 · 고정됨`
-                : "고정됨 · 그날의 문항과 기준으로 굳어 있습니다"}
+                : "고정됨 · 그날의 문항과 기준 그대로입니다"}
               time={st.result_at ?? ""}
               actions={
                 <>
@@ -489,8 +489,8 @@ const HEAD: Record<string, string> = {
 
 const LEAD: Record<string, string> = {
   NO_ASSESSMENT: "검사를 한 번 끝내면 여기에 확인된 근거와 아직 부족한 부분과"
-    + " 다음 할 일이 섭니다.",
-  IN_PROGRESS: "답한 것은 문항마다 저장되어 있어, 마지막으로 멈춘 자리에서"
+    + " 다음 할 일이 나옵니다.",
+  IN_PROGRESS: "답한 것은 문항마다 저장되어 있어, 마지막으로 멈춘 곳에서"
     + " 그대로 이어집니다.",
   BASIC_DONE: "어느 영역부터 살펴볼지 정하는 데까지 확인했습니다."
     + " 경험을 자세히 묻는 질문은 아직 받지 않았습니다.",

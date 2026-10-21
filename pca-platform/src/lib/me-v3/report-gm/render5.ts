@@ -87,7 +87,7 @@ export function signs(op: number | undefined, ni: number | undefined): { fact: s
   if (op < 0 && ni >= 0) return { fact: `${v} — 영업이익은 마이너스, 당기순이익은 플러스입니다.`, read: "본업 밖(금융 수익 등)에서 이익이 났을 수 있습니다. 손익계산서 주석에서 확인합니다." };
   if (op < 0 && ni < 0) return { fact: `${v} — 둘 다 마이너스입니다.`, read: "연구개발비처럼 미리 쓰는 비용이 매출보다 큰 해일 수 있습니다. 보고서의 비용 구성에서 확인합니다." };
   if (op >= 0 && ni < 0) return { fact: `${v} — 영업이익은 플러스, 당기순이익은 마이너스입니다.`, read: "본업 밖의 비용이나 손실이 있었을 수 있습니다. 영업외손익 주석에서 확인합니다." };
-  return { fact: `${v} — 둘 다 플러스입니다.`, read: "지난해와 견주어 늘었는지 줄었는지는 같은 보고서의 비교 칸에서 봅니다." };
+  return { fact: `${v} — 둘 다 플러스입니다.`, read: "지난해와 비교해 늘었는지 줄었는지는 같은 보고서의 비교 칸에서 봅니다." };
 }
 export const focusCompany = (r: Report3): CompanyDeep => r.companies.find((x) => x.jobs[0]?.role === r.strategy.roleCode) ?? r.companies[0];
 export const dartOf = (lib: Lib, id: string) => lib.dart.orgs.find((x) => x.id === id);
@@ -184,10 +184,10 @@ export function d36(r: Report3, lib: Lib): string {
     <div class="slot"><span class="sb-k">산업별 사업체·종사자 수</span><p>공식 통계 미확보 — 숫자를 적지 않았습니다</p><span class="small">확인 필요 · R2 (KOSIS 전국사업체조사)</span></div>
     <div class="slot"><span class="sb-k">경제활동별 지역내총생산</span><p>공식 통계 미확보 — 보도 인용만 있습니다</p><span class="small">확인 필요 · R3 (KOSIS 지역계정)</span></div>
   </div>
-  <div class="sh"><span>산업 묶음</span><span></span><span>살펴본 기업</span><span></span><span>그 기업들에서 본 경영 직무</span></div>
+  <div class="sh"><span>산업 그룹</span><span></span><span>살펴본 기업</span><span></span><span>그 기업들에서 본 경영 직무</span></div>
   <div class="sm">${order.filter((k) => groups.has(k)).map((k) => row([k, groups.get(k)!])).join("")}</div>
   <div class="jm-key"><span><i class="k ko"></i>공시로 기업 확인(OpenDART)</span><span><i class="k ks"></i>검색 결과만 확인</span><span><i class="k kc"></i>출처끼리 다름</span><span><i class="k kg"></i>목표 직무</span></div>
-  <p class="src">${tag("READ")} 산업 묶음은 이 리포트가 기업 설명으로 나눈 것이고 공식 산업 분류가 아닙니다. 직무 칸은 공고·기관 소개에서 본 직무와 산업 일반 예시를 함께 적었습니다. 채용 여부는 확인하지 않았습니다.</p>
+  <p class="src">${tag("READ")} 산업 그룹은 이 리포트가 기업 설명으로 나눈 것이고 공식 산업 분류가 아닙니다. 직무 칸은 공고·기관 소개에서 본 직무와 산업 일반 예시를 함께 적었습니다. 채용 여부는 확인하지 않았습니다.</p>
   ${gaps(lib, 36)}`);
 }
 
@@ -223,7 +223,7 @@ export function readSigns(op: number | undefined, ni: number | undefined): strin
   if (op < 0 && ni >= 0) return "영업이익은 마이너스인데 당기순이익은 플러스입니다. 본업 밖(금융 수익 등)에서 이익이 났을 수 있으니 손익계산서 주석에서 확인합니다.";
   if (op < 0 && ni < 0) return "영업이익과 당기순이익이 모두 마이너스입니다. 연구개발비처럼 미리 쓰는 비용이 매출보다 큰 해인지, 보고서의 비용 구성에서 확인합니다.";
   if (op >= 0 && ni < 0) return "영업이익은 플러스인데 당기순이익은 마이너스입니다. 본업 밖의 비용이나 손실이 있었을 수 있으니 영업외손익 주석에서 확인합니다.";
-  return "영업이익과 당기순이익이 모두 플러스입니다. 지난해와 견주어 늘었는지 줄었는지를 같은 보고서의 비교 칸에서 봅니다.";
+  return "영업이익과 당기순이익이 모두 플러스입니다. 지난해와 비교해 늘었는지 줄었는지를 같은 보고서의 비교 칸에서 봅니다.";
 }
 
 export function d43(r: Report3, lib: Lib, c: CompanyDeep = focusCompany(r), n = 43, no = "①"): string {
@@ -252,7 +252,7 @@ export function d43(r: Report3, lib: Lib, c: CompanyDeep = focusCompany(r), n = 
       ${f ? `${bar("매출액", rev)}${bar("영업이익", op)}${bar("당기순이익", ni)}
       <div class="calc"><span>공시로 계산한 영업이익률</span><b>${rev && op !== undefined ? ((100 * op) / rev).toFixed(1) : "—"}%</b><em>${tag("OFFICIAL_DIRECT", "공시 두 값")} 영업이익 ÷ 매출액 × 100 · 리포트가 계산</em></div>
       ${(() => { const sg = signs(op, ni); return FR(sg.fact, sg.read, finSrc(d)); })()}` : `<p class="slot1">비상장 · 공시 재무 없음</p>`}
-      <h3 class="eyebrow">경영 쪽에서 볼 자리 <span>리포트 해석</span></h3>
+      <h3 class="eyebrow">경영 쪽에서 볼 곳 <span>리포트 해석</span></h3>
       <p class="interp">${esc(c.interpret[1] ?? c.why)} ${tag("READ")}</p></div>
   </div>
   <p class="src">${tag("OFFICIAL_DIRECT")} 개황·원문·재무는 OpenDART · ${tag("THIRD_PARTY")}·${tag("SEARCH_ONLY")} 제품과 해석은 리포트 자료(v2)에서 왔고 줄마다 출처가 있습니다 · 채용 여부는 확인하지 않았습니다.</p>
@@ -319,7 +319,7 @@ export function d79(r: Report3, lib: Lib, built?: number[]): string {
   const parts = Object.entries(lib.toc.parts);
   const cnt = (k: string) => lib.toc.pages.filter((p) => (!built || built.includes(p.n)) && p.verify.includes(k)).length;
   const libs: [string, string, string, string][] = [
-    ["검사 응답 · 결과 모델", "학생 응답 · 고른 근거", "판본 고정(굳은 결과)", Object.entries(r.versions).filter(([k]) => /bank|scor|result_model/i.test(k)).map(([, v]) => v).join(" · ") || "판본 표 참고"],
+    ["검사 응답 · 결과 모델", "학생 응답 · 고른 근거", "판본 고정(응시 당시 결과)", Object.entries(r.versions).filter(([k]) => /bank|scor|result_model/i.test(k)).map(([, v]) => v).join(" · ") || "판본 표 참고"],
     ["경험 기록", "학생이 적은 기록(자기보고)", "응시 뒤 갱신 가능", "기록마다 적은 날"],
     ["경영 직무 안내", "biz-role-guide.json", "직무 일반 · 검토 전", "PREVIEW"],
     ["기업별 직무 해석", "biz-company-guide.json", "리포트 해석", "PREVIEW"],
@@ -330,7 +330,7 @@ export function d79(r: Report3, lib: Lib, built?: number[]): string {
     ["학과 교육과정", "미확보(R1)", "—", "—"],
   ];
   return frame(r, lib, 79, `
-  ${opener("09", "근거와 출처 ②", "출처 · 확인 수준 · 판본", "이 보고서의 줄마다 어디서 왔는지와 언제 확인했는지를 적었습니다. 학생의 검사 결과는 응시한 날 굳어 바뀌지 않고, 기업·지역 자료는 판본과 확인일을 달고 따로 고칩니다.")}
+  ${opener("09", "근거와 출처 ②", "출처 · 확인 수준 · 판본", "이 보고서의 줄마다 어디서 왔는지와 언제 확인했는지를 적었습니다. 학생의 검사 결과는 응시한 날 고정되어 바뀌지 않고, 기업·지역 자료는 판본과 확인일을 달고 따로 고칩니다.")}
   <table class="lb"><thead><tr><th>자료</th><th>파일 · 출처</th><th>확인 수준</th><th>판본 · 확인일</th></tr></thead><tbody>
   ${libs.map(([a, b, c, d]) => `<tr class="${b.startsWith("미확보") ? "miss" : ""}"><td><b>${esc(a)}</b></td><td>${esc(b)}</td><td>${esc(c)}</td><td>${esc(d)}</td></tr>`).join("")}</tbody></table>
   <div class="g79">

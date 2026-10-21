@@ -105,7 +105,7 @@ export default async function CampusEvidenceInsights({
             )}
           </Card>
           <Card title={T("campusToolLinked")}
-            note="이름만 적은 것과 경험에 걸린 것을 가릅니다">
+            note="이름만 적은 것과 경험에 걸린 것을 구분합니다">
             {ev.tools_linked.length ? (
               <BarList rows={toBars(ev.tools_linked)} hiddenLabel={T("privacyHidden")} />
             ) : (

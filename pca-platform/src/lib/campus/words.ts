@@ -16,7 +16,7 @@ export function campusSay(
   if (u?.org_kind !== "agency") return (s) => s;
   const rules: [RegExp, string][] = [
     [/(?<![가-힣])학과 담당자/g, "기관 담당자"],
-    [/(?<![가-힣])단과대학/g, "계열 묶음"],
+    [/(?<![가-힣])단과대학/g, "계열 구분"],
     [/(?<![가-힣])학번/g, "참여 번호"],
     [/(?<![가-힣])학교(와)/g, "기관과"], [/(?<![가-힣])학교(가)/g, "기관이"],
     [/(?<![가-힣])학교(를)/g, "기관을"], [/(?<![가-힣])학교(는)/g, "기관은"],
@@ -37,7 +37,7 @@ export function campusWords(u: { org_kind?: "university" | "agency" } | null | u
   return {
     person: agency ? "참여자" : "학생",
     unit: agency ? "전공 계열" : "학과",
-    group: agency ? "계열 묶음" : "단과대학",
+    group: agency ? "계열 구분" : "단과대학",
     id: agency ? "참여 번호" : "학번",
     staff: agency ? "기관 담당자" : "학과 담당자",
     org: agency ? "기관" : "학교",

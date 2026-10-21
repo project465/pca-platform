@@ -54,7 +54,7 @@ export default async function AdminOverview({
         title={T("navOverview")}
         sub={demo
           ? "시드와 검사가 만든 줄까지 섞어서 봅니다. 이 숫자는 손님이 아닙니다."
-          : "개인 · 기관 · 제품 · 시장 네 묶음입니다. 시드와 검사가 만든 줄은 빠져 있습니다."}
+          : "개인 · 기관 · 제품 · 시장 네 그룹입니다. 시드와 검사가 만든 줄은 빠져 있습니다."}
         actions={
           <>
             <div className="sf-seg">

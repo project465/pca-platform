@@ -104,7 +104,7 @@ function summary(r: Report): string {
     <div><b>${s.counts.owned}</b><span>직접 정했다고 답한 판단</span></div>
     <div><b>${s.counts.artifacts}</b><span>남겼다고 고른 결과물</span></div>
   </div>
-  <p class="note">수는 응답과 고른 항목을 센 것입니다. 점수가 아니고, 더하거나 다른 학생과 견주지 않습니다.</p>
+  <p class="note">수는 응답과 고른 항목을 센 것입니다. 점수가 아니고, 더하거나 다른 학생과 비교하지 않습니다.</p>
   ${r.quality ? `<p class="warn">${esc(r.quality)}</p>` : ""}
   <div class="legend"><p class="legend-h">근거 표시 읽는 법</p>
     <p>${tag("RESPONSE")} 검사 문항에 스스로 답한 수준 · ${tag("PICK")} 체크리스트에서 직접 고른 항목 · ${tag("ARTIFACT")} 남겼다고 고른 결과물(파일을 확인한 것은 아님) · ${tag("ADVICE")} 이 리포트가 권하는 행동 · ${tag("SOURCE2")} 공식 확인 전의 외부 자료</p>
@@ -137,7 +137,7 @@ function experiences(r: Report): string {
       <div><p class="lbl">직접 정했다고 고른 것 ${tag("PICK")}</p>${list(e.decided)}</div>
       <div><p class="lbl">해 봤다고 고른 것 ${tag("PICK")}</p>${list(e.did)}</div>
       <div><p class="lbl">남겼다고 고른 결과물 ${tag("ARTIFACT")}</p>${list(e.artifacts)}</div>
-      <div><p class="lbl">견줬다고 고른 대상 ${tag("PICK")}</p>${list(e.verifications)}</div>
+      <div><p class="lbl">비교했다고 고른 대상 ${tag("PICK")}</p>${list(e.verifications)}</div>
     </div>
     <p class="xp-miss"><span class="lbl">응답에서 아직 확인되지 않은 판단</span>${esc(e.missing.join(" · ") || "없음")}
     ${e.partial.length ? `<br><span class="lbl">해 봤고, 어디까지 직접 정했는지는 아직인 판단</span>${esc(e.partial.join(" · "))}` : ""}</p>
@@ -148,7 +148,7 @@ function evidenceGap(r: Report): string {
   return chapter("04", "Evidence와 Gap 분석", "무엇이 비었는지 · 왜 필요한지 · 어떻게 채우는지 · 무엇을 남기면 되는지를 한 줄에 적었습니다.", `
   ${r.gaps.length ? `<table class="tb tb-gap"><thead><tr><th class="w-dom">영역</th><th class="w-what">비어 있는 판단</th><th>왜 필요한가</th><th>어떻게 채우나 ${tag("ADVICE")}</th><th class="w-keep">남길 것</th><th class="w-when">기간</th></tr></thead><tbody>
   ${r.gaps.map((g) => `<tr><td class="w-dom"><b>${esc(g.domain)}</b></td><td class="w-what">${esc(g.what)}</td><td>${esc(g.why)}</td><td>${esc(g.how)}</td><td class="w-keep">${esc(g.keep)}</td><td class="w-when">${esc(g.horizon)}</td></tr>`).join("")}
-  </tbody></table>` : `<p class="empty">응답에서 먼저 채울 빈자리가 잡히지 않았습니다.</p>`}
+  </tbody></table>` : `<p class="empty">응답에서 먼저 채울 빈칸이 잡히지 않았습니다.</p>`}
   <p class="note">비어 있다는 것은 이번 응답에서 확인되지 않았다는 뜻입니다. 할 수 없다는 판정이 아닙니다. 남길 것은 그 영역에서 흔히 쓰는 결과물 이름이고, 실제 이름은 과제에 맞게 바꿔 적습니다.</p>`, { page: false });
 }
 
@@ -211,7 +211,7 @@ function region(r: Report): string {
       <div><p class="lbl">지금 가진 것 ${tag("RESPONSE")}</p>${list(c.strengths)}
         <p class="lbl">아직 비어 있는 것</p>${list(c.lacks)}</div>
       <div><p class="lbl">준비할 결과물 ${tag("ADVICE")}</p>${list(c.prepare)}
-        <p class="lbl">지원·면접에서 짚을 것 (그 산업이 보는 것)</p>${list(c.points)}</div>
+        <p class="lbl">지원·면접에서 말할 것 (그 산업이 보는 것)</p>${list(c.points)}</div>
     </div>
     <p class="src">출처: ${o.sources.map((s) => `${esc(VER_KO[s.kind])} — ${esc(s.what)}`).join(" · ")} · 확인 ${esc(r.region.checkedOn)} · 채용 여부 미확인</p>
   </article>`;
@@ -250,7 +250,7 @@ function interviews(r: Report): string {
 }
 
 function plan(r: Report): string {
-  return chapter("09", "30·60·90일 실행 계획", "04장의 빈자리와 06장의 기업 확인을 기간으로 나눴습니다. 끝낸 것은 내 CareerMatri 경험 기록에 적으면 현재 상태에 반영됩니다.", `
+  return chapter("09", "30·60·90일 실행 계획", "04장의 빈칸과 06장의 기업 확인을 기간으로 나눴습니다. 끝낸 것은 내 CareerMatri 경험 기록에 적으면 현재 상태에 반영됩니다.", `
   <table class="tb tb-plan"><thead><tr><th class="w-when">기간</th><th>할 일 ${tag("ADVICE")}</th><th class="w-keep">남길 것</th><th class="w-chk">확인 기준</th></tr></thead><tbody>
   ${r.plan.map((p) => `<tr><td class="w-when"><b>${esc(p.when)}</b></td><td>${esc(p.what)}</td><td class="w-keep">${esc(p.keep)}</td><td class="w-chk">${esc(p.check)}</td></tr>`).join("")}
   </tbody></table>`, { page: false });
@@ -264,11 +264,11 @@ function appendix(r: Report): string {
     .map((k) => `${{ core_version: "전공 Core", item_bank_version: "문항", scoring_version: "판단 규칙", result_model: "결과 모델" }[k]} ${esc(a.versions[k])}`).join(" · ")} · 같은 응답이면 같은 결과가 나옵니다.</p>
   <h2>이 리포트가 재는 것과 재지 않는 것</h2>
   <div class="two">
-    <div><p class="lbl">재는 것</p>${list(["해 본 일에서 무엇을 직접 정했는지 (검사 응답)", "그 판단을 뒷받침하는 항목을 직접 골랐는지 (체크리스트)", "남겼다고 고른 결과물과 견준 대상"])}</div>
+    <div><p class="lbl">재는 것</p>${list(["해 본 일에서 무엇을 직접 정했는지 (검사 응답)", "그 판단을 뒷받침하는 항목을 직접 골랐는지 (체크리스트)", "남겼다고 고른 결과물과 비교 대상"])}</div>
     <div><p class="lbl">재지 않는 것</p>${list(["적성 · 성격 · 능력의 높낮이", "합격 가능성 · 연봉 · 순위", "결과물 파일의 실제 내용 (확인하지 않음)", "기업의 채용 여부 (확인하지 않음)"])}</div>
   </div>
   <h2>고르신 근거 원문 ${tag("PICK")}</h2>
-  ${a.picks.length ? `<table class="tb tb-raw"><colgroup><col style="width:22mm"><col style="width:30%"><col><col style="width:30mm"></colgroup><thead><tr><th>영역</th><th>직접 정함</th><th>해 봄</th><th>결과물 · 견준 대상</th></tr></thead><tbody>
+  ${a.picks.length ? `<table class="tb tb-raw"><colgroup><col style="width:22mm"><col style="width:30%"><col><col style="width:30mm"></colgroup><thead><tr><th>영역</th><th>직접 정함</th><th>해 봄</th><th>결과물 · 비교 대상</th></tr></thead><tbody>
   ${a.picks.map((p) => `<tr><td class="w-dom">${esc(p.domain)}</td><td>${esc(p.decided.join(" / ") || "—")}</td><td>${esc(p.did.slice(0, 8).join(" / ") || "—")}</td><td>${esc([...p.artifacts, ...p.verifications].join(" / ") || "—")}</td></tr>`).join("")}
   </tbody></table>` : `<p class="empty">고르신 근거 항목이 없습니다.</p>`}
   <h2>지역·기업 자료의 출처 (확인 ${esc(r.region.checkedOn)})</h2>

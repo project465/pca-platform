@@ -48,7 +48,7 @@ export default async function BusinessPage() {
       keys: ["name", "ceo", "reg", "mailorder"],
     },
     {
-      title: "손님이 연락하는 자리",
+      title: "손님이 연락하는 곳",
       why: "상품 쪽 푸터와 결제 화면에 그대로 나갑니다. 주소는 사업장 주소이고, 메일은 문의가 실제로 도착하는 주소여야 합니다.",
       keys: ["address", "phone", "email"],
       wide: ["address"],
@@ -85,7 +85,7 @@ export default async function BusinessPage() {
               </p>
             ) : (
               <p className="sf-meta" style={{ marginTop: 10 }}>
-                일곱 칸이 다 찼습니다. 이 묶음은 더 이상 런칭을 막지 않습니다.
+                일곱 칸이 다 찼습니다. 이 항목들은 더 이상 런칭을 막지 않습니다.
               </p>
             )}
           </div>

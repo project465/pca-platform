@@ -44,7 +44,7 @@ export default async function Results() {
       {!snaps.length ? (
         <EmptyState>
           <b>아직 완료한 검사가 없습니다.</b> 검사를 한 번 끝내면 그날의
-          결과가 날짜와 함께 줄로 섭니다.
+          결과가 날짜와 함께 한 줄씩 나옵니다.
           <p style={{ marginTop: 10 }}><Link href="/cores">검사 시작하기</Link></p>
         </EmptyState>
       ) : null}
@@ -115,7 +115,7 @@ export default async function Results() {
                     <span>
                       {r.domains !== null
                         ? `근거가 확인된 영역 ${r.domains}곳`
-                        : "그날의 응답으로 굳어 있습니다"}
+                        : "그날의 응답 그대로 고정되어 있습니다"}
                     </span>
                     <Link className="cm-btn" href={`/v3/${r.attempt_id}/result`}>
                       결과 보기

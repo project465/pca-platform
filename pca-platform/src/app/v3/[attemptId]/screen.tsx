@@ -744,9 +744,9 @@ export default function Screen({
                 답할 수 없는 문항 하나에 사람이 갇힌다 */}
             {!s.done && s.gaps?.length ? (
               <div className="qs-review">
-                <h2>아직 답하지 않은 자리가 {s.gaps.length}곳 있습니다</h2>
-                <p>눌러서 그 자리로 돌아가 고칠 수 있습니다. 비워 둔 채로
-                  제출해도 됩니다 — 답하지 않은 자리는 결과에서 그 사실을
+                <h2>아직 답하지 않은 문항이 {s.gaps.length}개 있습니다</h2>
+                <p>눌러서 그 문항으로 돌아가 고칠 수 있습니다. 비워 둔 채로
+                  제출해도 됩니다 — 답하지 않은 문항은 결과에서 그 사실을
                   그대로 적습니다.</p>
                 <ul>
                   {s.gaps.map((g) => (
@@ -760,12 +760,12 @@ export default function Screen({
             ) : null}
             {!s.done && s.gaps && !s.gaps.length ? (
               <p className="qs-review-ok" role="status">
-                답해야 하는 자리를 모두 채우셨습니다.
+                답해야 하는 문항을 모두 채우셨습니다.
               </p>
             ) : null}
             <p className="qs-help" style={{ marginTop: 24 }}>
               {s.done
-                ? "검사는 끝이 아니라 시작입니다. 경험이 늘면 근거와 부족한 부분을 다시 계산합니다."
+                ? "검사는 시작일 뿐입니다. 경험이 늘면 근거와 부족한 부분을 다시 계산합니다."
                 : "지금까지 답하신 것으로 결과를 정리합니다. 만든 뒤에도 이전으로 돌아가 고칠 수 있습니다."}
             </p>
             {/* **PDF 하나로 끝내지 않는다.** 결과를 받은 사람이 다음에 갈
@@ -796,7 +796,7 @@ export default function Screen({
             세는 까닭은 `progress.ts` 와 같다: 전체 분모는 routing 으로
             늘어날 수 있어서 거꾸로 가는 것처럼 읽힌다 */}
         {!mid && prog.inStage.total > 1 ? (
-          <aside className="qs-omr" aria-label="이번 묶음 답안 현황">
+          <aside className="qs-omr" aria-label="이번 문항 그룹 답안 현황">
             <p className="qs-omr-h">답안 현황</p>
             <p className="qs-omr-sum">
               <b>{prog.now}</b> {prog.inStage.index} / {prog.inStage.total}

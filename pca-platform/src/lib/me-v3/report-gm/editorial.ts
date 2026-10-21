@@ -109,7 +109,7 @@ export const ASKQ0: Record<string, string> = {
   J3: "여러 안 가운데 하나를 고를 때 기준을 먼저 세워 본 적이 있나요?",
   J4: "자료를 모으는 방법을 직접 골라 본 적이 있나요?",
   J5: "다른 사람이 이어 받아 쓴 결과물을 만든 적이 있나요?",
-  J6: "결과를 목표나 지난 결과와 같은 조건으로 견줘 본 적이 있나요?",
+  J6: "결과를 목표나 지난 결과와 같은 조건으로 비교해 본 적이 있나요?",
   J7: "기대와 다른 결과가 나왔을 때 까닭을 좁혀 계획을 바꿔 본 적이 있나요?",
   J8: "내가 만든 결과가 다음 결정에 쓰인 적이 있나요?",
 };
@@ -179,7 +179,7 @@ export function edit(r: Report3): Ed {
   const unknown: Line[] = [];
   if (unaskedHigh.length) unknown.push({ text: `${and(unaskedHigh.slice(0, 3))}: 관심은 높지만 판단을 묻지 않아 깊이를 모릅니다`, src: "응답 확인" });
   if (depthOf(roleTd) === null) unknown.push({ text: `목표 직무의 중심 영역 ${nameOf(roleTd)}: 이번 검사에서 묻지 않았습니다`, src: "응답 확인" });
-  if (r.records.some((x) => !x.comparisons.length)) unknown.push({ text: "경험 기록의 ‘견준 대상’이 비어 있어, 결과가 나아졌는지는 알 수 없습니다", src: "학생 자기기록" });
+  if (r.records.some((x) => !x.comparisons.length)) unknown.push({ text: "경험 기록의 ‘비교 대상’이 비어 있어, 결과가 나아졌는지는 알 수 없습니다", src: "학생 자기기록" });
   unknown.push({ text: "결과물의 완성도와 실제 수치는 이 검사로 확인하지 않았습니다", src: "분석 제안" });
 
   /* ── 12영역 지도에 붙이는 읽기 ── */
@@ -253,7 +253,7 @@ export function edit(r: Report3): Ed {
       { label: "다룬 문제", items: x.problems, empty: "어떤 문제를 풀었는지 한 줄로 적습니다." },
       { label: "직접 정한 것", items: x.decisions, empty: "그 활동에서 내가 정한 것 하나를 떠올려 적습니다." },
       { label: "남긴 결과물", items: x.artifacts, empty: "과제 파일·발표 자료의 이름을 적습니다." },
-      { label: "견준 대상", items: x.comparisons, empty: "목표·지난 결과·다른 안 가운데 무엇과 견줬는지 적습니다." },
+      { label: "비교 대상", items: x.comparisons, empty: "목표·지난 결과·다른 안 가운데 무엇과 비교했는지 적습니다." },
       { label: "쓰인 곳", items: x.usedWhere, empty: "결과가 어디에 쓰였는지(발표·제출·운영) 적습니다." },
     ],
     tests: x.testSays.map((t) => t.text.replace(/^검사에서도 /, `${t.domain}: 검사에서도 `)),
@@ -315,7 +315,7 @@ export function edit(r: Report3): Ed {
   const limits = [
     "이 결과는 학생이 고른 응답과 직접 적은 경험 기록으로 만들었습니다. 결과물의 완성도, 실제 성과 수치, 기간은 확인하지 않았습니다.",
     `판단을 묻지 않은 영역은 ‘${UNASKED}’으로 두었고, 0이나 ‘없음’으로 바꾸지 않았습니다.`,
-    "직무와 조직 설명은 특정 기업이 아니라 직무 일반 서술입니다. 실제 채용 공고와 일은 기업마다 다릅니다.",
+    "직무와 조직 설명은 직무 일반을 적은 것이고, 특정 기업의 설명은 아닙니다. 실제 채용 공고와 일은 기업마다 다릅니다.",
     "점수와 순위는 만들지 않았고, 채용 결과를 예측하지 않았습니다.",
     "검사 판본과 응답일은 내부 기록에 남겨, 같은 응답으로 같은 결과를 다시 만들 수 있게 했습니다.",
   ];

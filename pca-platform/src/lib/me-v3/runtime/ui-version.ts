@@ -153,7 +153,8 @@
  * 장 위에 서고, 보기는 번호를 단 칸으로 하나씩 서고, 오른쪽에 지금 묶음의
  * 답안 현황(`.qs-omr`)이 붙는다. 문항·보기·저장 값·문면·흐름은 그대로다.
  */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V46";
+/** AI 티 문장 정리 (견줍니다·섭니다·세웠습니다 등) */
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V47";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
 /* copy.15 — 받침 한 줄과 보기 넷의 예시가 화면에 서는 글자다 */
@@ -162,7 +163,8 @@ export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V46";
 /* copy.18 — 비어 있는 질문을 짚는 한 줄과 남은 수를 적는 줄이 새로 선다 */
 /* copy.19 — 산업 장면과 대학원 알약이 그 전공의 이름으로 선다(P0) */
 /** 화면 시안(2026-10-20): 답안 현황 칸의 머리와 안내 한 줄을 더했다 */
-export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.26";
+/** AI 티 문장 정리 (견줍니다·섭니다·세웠습니다 등) */
+export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.27";
 
 /*
  * `V19` · `copy.14` 로 올린 까닭. **경험 빈도의 화면 말을 공통으로

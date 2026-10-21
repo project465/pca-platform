@@ -1,7 +1,7 @@
 {
  "schema_version": "cm-bank-lock.1",
  "core": "CIV_CORE_V1",
- "item_bank_version": "CIV_V1_ITEM_BANK_V1.2",
+ "item_bank_version": "CIV_V1_ITEM_BANK_V1.3",
  "note": "문면을 고치면 이 지문이 어긋난다. 그때 판본을 올리고 BANK=update 로 다시 적는다",
  "files": {
   "civ-industry-packs.json": "b9905da40c9fbb43729baf01a1ab7e56cdcad23356d303674d34d3ca7e00c9bb",
@@ -12,7 +12,7 @@
   "civ-v1-constructs.json": "0101968a394890bb6bbe9bde025b278e8a9343755b0f2d64553f0149647a4890",
   "civ-v1-domains.json": "82686e220b0ad0f9b220865fe7dafaaeb1de2261cae80e84d8407066436d821d",
   "civ-v1-items-blueprint.json": "2f865fc0e05ffb0f21ccc2b4c97af0911de082dfe95d7753a740bbc3ab80ad7c",
-  "civ-v1-items.json": "5d3d87cc761e0a340922d7f67c1dfeb4aff94d9aeb1274f4024cb1db1af47577",
+  "civ-v1-items.json": "53574a29ab7404e67f51e4008cd58163b6cbbd87058e3886d4009444723ab18e",
   "civ-v1-relations.json": "8ed5d5014f1762e8d38a8609d1a4dde4eb47b798378bf576d3c829b00806fe23",
   "civ-v1-taxonomy.json": "cd0c16850ecad800e0208b36fcb8ff0f00a05d0b9d359e6761e3f5337bf564fd"
  },

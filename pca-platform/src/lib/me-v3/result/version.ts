@@ -168,7 +168,8 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
  * 넓어졌다. 결과지 현재 상태 카드의 활동 구와 표시 갈래가 나머지 열넷에서도
  * 사전으로 선다(전에는 `domainSub` 토막). 판정과 결과 모델은 그대로다.
  */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.66";
+/** AI 티 문장 정리 (견줍니다·섭니다·세웠습니다 등) */
+export const RESULT_COPY_VERSION = "me-v3-result-copy.67";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -462,7 +463,8 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.66";
  * 타일과 `지금 할 일` 판, 파란 막대 절 제목, 옅은 묶음 판, 남색 부록 띠, 쪽머리
  * 파란 M 상표. 담긴 글과 결과 모델은 그대로다.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V80";
+/** AI 티 문장 정리 (견줍니다·섭니다·세웠습니다 등) */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V81";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

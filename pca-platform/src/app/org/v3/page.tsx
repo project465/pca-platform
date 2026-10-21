@@ -184,7 +184,7 @@ export default async function CampusV3({
     return shell(
       <>
         <PageHead eyebrow={BRAND.campus} title="전공 진단 집계"
-          sub="기관이 연결되면 이 자리에 학생 집계가 섭니다." />
+          sub="기관이 연결되면 여기에 학생 집계가 나옵니다." />
         <Section>
           <Empty icon="group" title="연결된 기관이 없습니다"
             body="계약이 열리면 학생이 친 검사가 여기에 모입니다." />
@@ -326,7 +326,7 @@ export default async function CampusV3({
           **리마인드 대상 명단을 CSV 로 받기** */}
       {counts ? (
         <Section title="응시 상태별 학생"
-          note="명단에 올라온 학생을 상태로 가른 수입니다. 눌러서 그 목록으로 갑니다">
+          note="명단에 올라온 학생을 상태별로 나눈 수입니다. 눌러서 그 목록으로 갑니다">
           <ul className="sf-list">
             <li>
               <b>아직 시작하지 않은 학생 {counts.none}명</b>{" "}
@@ -519,7 +519,7 @@ export default async function CampusV3({
           </Section>
 
           <Section title="학위 단계"
-            note="묻는 장면이 단계마다 갈립니다">
+            note="묻는 장면이 단계마다 다릅니다">
             <BarList rows={bars(v3.by_stage)}
               hiddenLabel={`${MIN_CELL}명 미만`} emptyLabel="아직 없습니다" />
           </Section>
@@ -538,8 +538,8 @@ export default async function CampusV3({
 
           <Section
             title="기술영역이 지금 어디에 있는가"
-            note={"사람 수가 아니라 (학생 × 기술영역) 칸 수입니다. "
-              + "학생 한 명이 영역 열둘을 들고 있습니다"}
+            note={"(학생 × 기술영역) 칸 수이고, 사람 수는 아닙니다. "
+              + "학생 한 명에 영역이 열둘씩 있습니다"}
           >
             {/* 묶음 이름은 집계 쪽이 이미 사람의 말로 적어 준다
                 (`campus.ts` 의 `zoneKo`). 여기서 코드를 다시 적지 않는다 */}

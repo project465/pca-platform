@@ -115,7 +115,7 @@ const INSIDE: Partial<Record<Area, { href: string; label: string }>> = {
   LEGAL: { href: "/admin/business", label: "사업자 표시 넣기" },
   BUSINESS_INFO: { href: "/admin/business", label: "사업자 표시 넣기" },
   SUPPORT: { href: "/admin/business", label: "지원 메일 넣기" },
-  LOCALIZATION: { href: "/admin/localization", label: "덮인 자리 보기" },
+  LOCALIZATION: { href: "/admin/localization", label: "번역 현황 보기" },
   REPORT: { href: "/admin/incidents", label: "막힌 것 보기" },
   PDF: { href: "/admin/incidents", label: "막힌 것 보기" },
 };
@@ -197,8 +197,8 @@ function databaseRow(): LaunchRow {
   const local = /localhost|127\.0\.0\.1|host=\/|\/var\/run\/postgresql/.test(url);
   if (local) {
     return row("database", "DATABASE", "데이터베이스", "BLOCKED",
-      "이 DB 는 이 자리에서만 사는 것입니다. 세션이 끝나면 결제 기록까지 " +
-      "함께 사라지고, 전자상거래법이 요구하는 5년 보존이 그 자리에서 " +
+      "이 DB 는 지금 세션 안에만 있습니다. 세션이 끝나면 결제 기록까지 " +
+      "함께 사라지고, 전자상거래법이 요구하는 5년 보존이 바로 " +
       "깨집니다. 지속형 PostgreSQL 로 옮깁니다.", "운영 담당");
   }
   if ((process.env.DB_IS_PERSISTENT ?? "").trim() !== "yes") {
@@ -300,7 +300,7 @@ export async function launchReport(): Promise<LaunchReport> {
      */
     rows.push(!app.ok
       ? row("domain", "DOMAIN", "앱 도메인", "BLOCKED",
-        `${app.reason} 손님이 가입하고 결제하는 자리이고, 메일 링크와 결제 ` +
+        `${app.reason} 손님이 가입하고 결제하는 곳이고, 메일 링크와 결제 ` +
         `콜백도 이 주소로 돌아옵니다.`, "운영 담당")
       : appProbe.ok === true
         ? row("domain", "DOMAIN", "앱 도메인", "READY", appProbe.detail)
@@ -325,7 +325,7 @@ export async function launchReport(): Promise<LaunchReport> {
           `${site.domain} 의 소유가 확인됐습니다.`)
         : row("site", "DOMAIN", "소개 사이트 도메인", "WARNING",
           `${site.domain} 는 아직 우리 것이 아닙니다. 소개와 검색에 쓰는 ` +
-          `자리이고 앱은 ${app.ok ? app.url : "PLATFORM_URL"} 로 돕니다. ` +
+          `곳이고 앱은 ${app.ok ? app.url : "PLATFORM_URL"} 로 돕니다. ` +
           `판매를 막지 않습니다.`));
 
     rows.push(approved.length
@@ -377,7 +377,7 @@ export async function launchReport(): Promise<LaunchReport> {
             `않으면 Gmail·네이버가 스팸으로 떨어뜨립니다.`)
           : dns.spf === null || dns.dmarc === null
             ? row("email", "EMAIL", "거래 메일", "WARNING",
-              `${mailFrom} 로 나갑니다. ${dns.detail} — 이 자리에서 DNS 를 ` +
+              `${mailFrom} 로 나갑니다. ${dns.detail} — 이 환경에서 DNS 를 ` +
               `못 물어봤습니다.`)
             : row("email", "EMAIL", "거래 메일", "READY",
               `${mailFrom} 로 나갑니다. ${dns.detail}`));
@@ -420,7 +420,7 @@ export async function launchReport(): Promise<LaunchReport> {
           `사전 ${loc.dictEntries.toLocaleString()}가지 · 어휘 ` +
           `${loc.glossaryTerms.toLocaleString()}가지가 다 덮였습니다.`)
         : row("localization", "LOCALIZATION", "지역화", "BLOCKED",
-          "영어가 비어 있는 자리가 있습니다. `npm run i18n:coverage` 를 봅니다.",
+          "영어가 비어 있는 항목이 있습니다. `npm run i18n:coverage` 를 봅니다.",
           null));
 
     rows.push(databaseRow());
@@ -480,7 +480,7 @@ export async function launchReport(): Promise<LaunchReport> {
        써야 하고, 그것은 코드가 아니라 원고 일이다 */
     const d = tiersDistinct(locale === "en" ? "en" : "ko");
     rows.push(d.ok
-      ? row("tiers", "PRICE", "등급 구별", "READY", "세 등급이 받는 것으로 갈립니다.")
+      ? row("tiers", "PRICE", "등급 구별", "READY", "세 등급이 받는 것으로 나뉩니다.")
       : row("tiers", "PRICE", "등급 구별", "WARNING", d.why.join(" ")));
 
     return {

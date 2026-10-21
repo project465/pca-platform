@@ -1,7 +1,7 @@
 {
  "schema_version": "psy-v1-bank-lock.1",
  "core": "PSY_CORE_V1",
- "item_bank_version": "PSY_V1_ITEM_BANK_V1.3",
+ "item_bank_version": "PSY_V1_ITEM_BANK_V1.4",
  "note": "심리학 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=PSY_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
   "psy-industry-packs.json": "b40852095899853b51d8ec3d00775be308bb9d0dd482faa279b23cf7ae48fe61",
@@ -12,7 +12,7 @@
   "psy-v1-constructs.json": "2ea36e55fe847826ad57b5ed8fde4e0c46ce9ff33e48183dd7326d78ba2f4c0f",
   "psy-v1-domains.json": "6360624259e1695c6961d587cf216de22b793b1b43a12943c75094f7c448f6b0",
   "psy-v1-items-blueprint.json": "df56d33d4d1b4d6b4dc0451eca4dfa7502a9f863fa1c4e582cc7b8c0b1321aa7",
-  "psy-v1-items.json": "34a5a025812e67514d70ee76a2584cbf0d1bf71f34da5c2c4a2c38d7f9b36c06",
+  "psy-v1-items.json": "45b8c6f8ad852327a59d5cf8e4568f97ff60a2b165d6df582a70d6890ac7157f",
   "psy-v1-relations.json": "4b579d45139d2157f9da50840fc44ec62408fa522ee6ac2b7459da450c0216f3",
   "psy-v1-taxonomy.json": "a07f5d468f38de648058a5b074f1b9991857e5e2c1074690dda99f2c1c6c454c"
  },

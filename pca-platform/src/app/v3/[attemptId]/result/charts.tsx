@@ -132,7 +132,7 @@ export function Radar(
         ))}
       </ol>
       <p className="pv-sub">
-        이번 응시에서 판단을 물은 영역만 축으로 섭니다. 눈금 셋은 바깥으로
+        이번 응시에서 판단을 물은 영역만 축으로 나옵니다. 눈금 셋은 바깥으로
         갈수록 확인된 단계가 높다는 뜻이고, 묻지 않은 영역은 아래 표가
         글자로 적습니다.
       </p>
@@ -201,7 +201,7 @@ export function EvidenceMatrix(
             <th scope="col">확인된 판단</th>
             <th scope="col">직접 정한 판단</th>
             <th scope="col">남겼다고 고른 것</th>
-            <th scope="col">견줬다고 고른 것</th>
+            <th scope="col">비교했다고 고른 것</th>
             <th scope="col">단계</th>
           </tr>
         </thead>
@@ -226,9 +226,9 @@ export function EvidenceMatrix(
         </tbody>
       </table>
       <p className="pv-sub">
-        열두 영역이 모두 줄로 섭니다. 앞의 두 칸은 응답에서 확인된
+        열두 영역이 모두 한 줄씩 나옵니다. 앞의 두 칸은 응답에서 확인된
         판단축의 개수이고, 뒤의 두 칸은 응답에서 고른 항목의 개수입니다.
-        전부 스스로 답한 것이고 밖에서 확인한 기록이 아닙니다. 개수를
+        모두 스스로 답한 것이고, 밖에서 확인한 기록은 아닙니다. 개수를
         더하거나 점수로 바꾸지 않습니다. 이번 응시에서 판단을 묻지 않은
         영역은 그 사실을 그대로 적습니다.
       </p>

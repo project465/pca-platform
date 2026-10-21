@@ -42,7 +42,7 @@ export const PRODUCT = {
 
   /* 2. 지금 겪고 있는 것 */
   problem: {
-    title: p("이런 자리에 서 있다면", "If you are standing here"),
+    title: p("이런 상황이라면", "If you are standing here"),
     items: [
       p(
         "전공 수업은 들었고 캡스톤도 했는데, 그것이 어느 직무의 무엇과 이어지는지 " +
@@ -51,7 +51,7 @@ export const PRODUCT = {
           "that connects to a particular role.",
       ),
       p(
-        "채용공고를 열면 요구사항은 읽히는데, 내가 어디쯤인지는 읽히지 않습니다.",
+        "채용공고를 열면 요구사항은 보이는데, 내가 어디쯤인지는 보이지 않습니다.",
         "You can read the requirements in a posting and cannot read where you " +
           "yourself stand.",
       ),
@@ -89,7 +89,7 @@ export const PRODUCT = {
         "It reads twelve domains through interest, exposure and willingness to learn"),
       p("해 보신 일을 여덟 가지 판단으로 나눠 어디까지 섰는지 적습니다",
         "It splits what you did across eight kinds of judgement and says how far each stands"),
-      p("직접 정한 것과 받아서 한 것을 가릅니다",
+      p("직접 정한 것과 받아서 한 것을 구분합니다",
         "It separates what you decided from what was handed to you"),
       p("아직 비어 있는 판단을 이름으로 적습니다", "It names the judgements that are still empty"),
       p("고르신 산업과 직무에 연결하면 무엇이 모자라는지 적습니다",
@@ -105,7 +105,7 @@ export const PRODUCT = {
     items: [
       p("웹 결과지. 로그인하시면 언제든 다시 열립니다", "A web report you can reopen any time you sign in"),
       p("같은 내용의 A4 PDF", "The same report as an A4 PDF"),
-      p("열두 기술영역이 네 묶음으로 갈린 표", "Twelve domains sorted into four groups"),
+      p("열두 기술영역을 네 그룹으로 나눈 표", "Twelve domains sorted into four groups"),
       p("설명할 수 있는 경험과 아직 비어 있는 판단",
         "The experience you can explain, and the judgements still empty"),
       p("다음 한 걸음", "One next step"),
@@ -139,7 +139,7 @@ export const PRODUCT = {
        가르면 비싼 등급이 `문항이 더 많은 것` 으로 읽힌다. 시간만 남기고
        그 값은 화면이 `estimate()` 에서 세어 넣는다 */
     note: p(
-      "걸리는 시간은 등급에 따라 다릅니다. 중간에 닫으셔도 답한 자리에서 " +
+      "걸리는 시간은 등급에 따라 다릅니다. 중간에 닫으셔도 답한 곳에서 " +
         "이어집니다.",
       "How long it takes depends on the plan. You can close it and pick up where " +
         "you left off.",
@@ -179,7 +179,7 @@ export const PRODUCT = {
           "support that claim.",
       ),
       p(
-        "상위 몇 퍼센트에 든다고 적지 않습니다. 견줄 규준이 아직 만들어지지 않았습니다.",
+        "상위 몇 퍼센트에 든다고 적지 않습니다. 비교할 규준이 아직 만들어지지 않았습니다.",
         "We do not say you are in the top few percent. There is no norm group yet.",
       ),
       p(
@@ -190,7 +190,7 @@ export const PRODUCT = {
       ),
       p(
         "나라별 임금 · 비자 · 면허 자료를 내지 않습니다. 확인된 자료가 " +
-          "없는 자리는 비워 둡니다.",
+          "없는 항목은 비워 둡니다.",
         "We do not give country salary, visa or licence figures. Where we have no " +
           "confirmed data we leave the space empty.",
       ),
@@ -212,7 +212,7 @@ export const PRODUCT = {
     {
       q: p("중간에 닫아도 되나요?", "Can I close it partway?"),
       a: p(
-        "됩니다. 답은 서버에 저장되고, 다시 들어오시면 안 찬 묶음으로 갑니다.",
+        "됩니다. 답은 서버에 저장되고, 다시 들어오시면 아직 다 풀지 않은 곳으로 갑니다.",
         "Yes. Your answers are saved on the server and you come back to the section " +
           "you had not finished.",
       ),
@@ -229,14 +229,14 @@ export const PRODUCT = {
     {
       q: p("같은 문항을 또 풀 수 있나요?", "Can I retake the assessment?"),
       a: p(
-        "재응시 정책이 아직 정해지지 않았습니다. 정해지면 이 자리에 적습니다.",
+        "재응시 정책이 아직 정해지지 않았습니다. 정해지면 여기에 적습니다.",
         "The retake policy has not been decided yet. It will be written here once it is.",
       ),
     },
     {
       q: p("문항이 많은 등급이 더 좋은 것인가요?", "Is the plan with more items the better one?"),
       a: p(
-        "문항 수는 등급을 가르는 기준이 아닙니다. 등급마다 결과지에 붙는 절이 " +
+        "문항 수는 등급을 나누는 기준이 아닙니다. 등급마다 결과지에 붙는 절이 " +
           "다르고, 그 차이는 위의 비교 표에 적혀 있습니다.",
         "Item count is not what separates the plans. Each plan adds different sections " +
           "to the report, and the comparison above lists them.",
@@ -291,7 +291,7 @@ export const SUPPORT = {
      사람에게 계정을 먼저 요구하면 묻던 것을 못 묻고 돌아간다 */
   guestTitle: p("문의", "Contact us"),
   guestBody: p(
-    "주문·환불·막힌 것은 로그인하시면 이 자리에서 번호까지 함께 보입니다. " +
+    "주문·환불·막힌 것은 로그인하시면 이 화면에서 번호까지 함께 보입니다. " +
       "계정이 없으셔도 아래 주소로 물어보실 수 있습니다.",
     "Sign in and this page shows your orders, refunds and anything that stalled, " +
       "with the reference numbers. Without an account, the address below still reaches us.",
@@ -311,7 +311,7 @@ export const SUPPORT = {
     "Nothing is stalled.",
   ),
   refsBody: p(
-    "결과지나 PDF 를 만들다 막힌 일이 있으면 그 번호가 여기 섭니다. 다시 " +
+    "결과지나 PDF 를 만들다 막힌 일이 있으면 그 번호가 여기 나옵니다. 다시 " +
       "만들어 보시고, 또 막히면 번호와 함께 알려 주십시오.",
     "If generating a report or a PDF stalled, its reference shows up here. Try " +
       "again, and if it stalls once more, send us the reference.",
@@ -324,7 +324,7 @@ export const SUPPORT = {
   /* **빈 자리에 엉뚱한 설명을 넣지 않는다.** 주문 번호 이야기를 여기
      붙여 두었더니 주소가 없는 것과 상관없는 글이 떴다 */
   mailOffBody: p(
-    "주소를 지어내지 않았습니다. 정해지면 이 자리에 적습니다.",
+    "주소를 지어내지 않았습니다. 정해지면 여기에 적습니다.",
     "We have not invented an address. It will appear here once it is set.",
   ),
   verify: p("메일 주소 확인", "Email address"),

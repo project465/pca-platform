@@ -185,10 +185,10 @@ export default async function V3Intro({
           <summary>검사에 대해 더 알아보기</summary>
           {sv.scene.length ? (
             <section className="qs-major">
-              <h2>{coreName} 쪽에서 자주 서는 자리</h2>
+              <h2>{coreName} 쪽에서 자주 겪는 상황</h2>
               <p>
-                아래 같은 자리에서 무엇을 직접 정했는지를 묻습니다. 겪은 적이
-                없는 자리는 없다고 고르시면 됩니다.
+                아래 같은 상황에서 무엇을 직접 정했는지를 묻습니다. 겪은 적이
+                없는 상황은 없다고 고르시면 됩니다.
               </p>
               <ul>
                 {sv.scene.slice(0, 3).map((t) => <li key={t}>{t}</li>)}

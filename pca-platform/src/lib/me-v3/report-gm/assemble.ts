@@ -140,7 +140,7 @@ const GAP_STATE: Record<Gap["kind"], string> = {
   REQUIRED_AXIS: "이 영역에서 꼭 있어야 하는 판단인데 응답에서 확인되지 않았습니다.",
   OUTPUT: "해 본 일은 있고, 남은 결과물이 확인되지 않았습니다.",
   OUTPUT_EVIDENCE: "결과물이 있다고 답했고, 고른 결과물 항목이 없습니다.",
-  VERIFICATION: "결과를 무엇과 견줬는지가 확인되지 않았습니다.",
+  VERIFICATION: "결과를 무엇과 비교했는지가 확인되지 않았습니다.",
   AXIS: "응답에서 아직 확인되지 않은 판단입니다.",
   PARTIAL_EVIDENCE: "해 본 것은 확인됐고, 어디까지 직접 정했는지가 아직입니다.",
 };
@@ -164,7 +164,7 @@ function whyWords(core: string, w: Why, ind: (c: string) => string): string {
 /** 응답 품질은 **어떤 답이 어떻게 어긋났는지**까지 적는다(감사 4쪽: 어느 답인지 말하지 않았다) */
 const QUALITY_REASON: Record<string, string> = {
   CHECKLIST_MISMATCH_HIGH: "‘내가 정했고 그 결과가 쓰였다’고 답한 판단 가운데 체크리스트에서 그 근거를 고르지 않은 것이 많습니다. ‘직접 정함’은 고른 근거가 둘 이상일 때만 세므로, 그런 판단은 ‘해 봤다’까지로 적혀 있습니다.",
-  CHECKLIST_MISMATCH_LOW: "‘해 본 적 없다’고 답한 판단에 체크리스트 근거를 고른 자리가 있습니다. 응답 쪽을 따랐습니다.",
+  CHECKLIST_MISMATCH_LOW: "‘해 본 적 없다’고 답한 판단에 체크리스트 근거를 고른 경우가 있습니다. 응답 쪽을 따랐습니다.",
   LOW_VARIANCE_GRID: "열두 영역에 거의 같은 값으로 답하셔서 관심만으로는 영역 사이에 차이가 생기지 않았습니다.",
   CONSISTENCY_PAIR_GAP: "같은 경험을 묻는 두 문항의 답이 서로 다릅니다. 그 경험은 면접 전에 다시 정리해 두세요.",
   REVERSE_PAIR_AGREED: "같은 판단을 반대로 묻는 두 문항에 같은 쪽으로 답하셨습니다. 그 경험은 면접 전에 다시 정리해 두세요.",
@@ -272,10 +272,10 @@ export function assemble(m: ResultModel, meta: Meta, set: OrgSet = orgSet()): Re
     facts: set.region_facts, checkedOn: set.checked_on,
     desired: null as string | null,
     readings: [
-      { text: `대전 본사로 확인된 공공기관·공기업이 이 자료에 ${set.orgs.filter((o) => o.region === "DAEJEON" && (o.org_type === "PUBLIC_CORP" || o.org_type === "LOCAL_PUBLIC")).length}곳 있습니다. 경영기획 · 재무·회계 · 인사 같은 사무 직무를 지역 안에서 볼 수 있는 자리입니다.`, layer: "SOURCE2" as Layer },
-      { text: "대덕연구개발특구 입주 기관이 3천 곳을 넘습니다. 연구 기관과 기술 기업의 경영지원 · 기술사업화 · 마케팅 쪽 일은 경영학과가 볼 수 있는 자리이지만, 이 자료에는 그 기업들의 이름이 아직 없습니다.", layer: "SOURCE2" as Layer },
-      { text: "소비재·관광(제과 브랜드 · 컨벤션·관광 공기업) 쪽은 마케팅과 고객·서비스 운영 경험이 바로 이어지는 자리입니다.", layer: "ADVICE" as Layer },
-      { text: "충남 아산의 대형 생산 사업장은 운영·원가·구매 쪽 경영 직무가 있을 수 있는 자리입니다. 사업장 위치는 확인했고 경영 직무의 근무지인지는 확인하지 않았습니다.", layer: "ADVICE" as Layer },
+      { text: `대전 본사로 확인된 공공기관·공기업이 이 자료에 ${set.orgs.filter((o) => o.region === "DAEJEON" && (o.org_type === "PUBLIC_CORP" || o.org_type === "LOCAL_PUBLIC")).length}곳 있습니다. 경영기획 · 재무·회계 · 인사 같은 사무 직무를 지역 안에서 볼 수 있는 곳입니다.`, layer: "SOURCE2" as Layer },
+      { text: "대덕연구개발특구 입주 기관이 3천 곳을 넘습니다. 연구 기관과 기술 기업의 경영지원 · 기술사업화 · 마케팅 쪽 일은 경영학과가 볼 수 있는 분야이지만, 이 자료에는 그 기업들의 이름이 아직 없습니다.", layer: "SOURCE2" as Layer },
+      { text: "소비재·관광(제과 브랜드 · 컨벤션·관광 공기업) 쪽은 마케팅과 고객·서비스 운영 경험이 바로 이어지는 분야입니다.", layer: "ADVICE" as Layer },
+      { text: "충남 아산의 대형 생산 사업장은 운영·원가·구매 쪽 경영 직무가 있을 수 있는 곳입니다. 사업장 위치는 확인했고 경영 직무의 근무지인지는 확인하지 않았습니다.", layer: "ADVICE" as Layer },
     ],
   };
 
@@ -317,7 +317,7 @@ export function assemble(m: ResultModel, meta: Meta, set: OrgSet = orgSet()): Re
       { label: "첫 문장 — 직접 정한 것", text: e.decided[0] ?? e.did[0] ?? "직접 기입" },
       { label: "방법", text: e.did[0] ?? "직접 기입" },
       { label: "남긴 것", text: e.artifacts[0] ? `${e.artifacts[0]} (파일로 갖춰 둘 것)` : "직접 기입" },
-      { label: "무엇과 견줬나", text: e.verifications[0] ?? "직접 기입" },
+      { label: "무엇과 비교했나", text: e.verifications[0] ?? "직접 기입" },
       { label: "결과 · 수치 · 기간", text: "직접 기입 — 이 리포트는 성과와 수치를 만들지 않습니다" },
     ],
   }));
@@ -325,7 +325,7 @@ export function assemble(m: ResultModel, meta: Meta, set: OrgSet = orgSet()): Re
   const interviews: InterviewItem[] = experiences.map((e) => {
     const qs: { q: string; from: string }[] = [];
     if (e.decided[0]) qs.push({ q: `‘${e.decided[0]}’고 답하셨는데, 그 기준은 무엇을 보고 정했나요?`, from: "고른 판단" });
-    if (e.verifications[0]) qs.push({ q: `${withJosa(e.verifications[0], "과와")} 견줘 보니 무엇이 달랐나요?`, from: "고른 비교 대상" });
+    if (e.verifications[0]) qs.push({ q: `${withJosa(e.verifications[0], "과와")} 비교해 보니 무엇이 달랐나요?`, from: "고른 비교 대상" });
     const dim = ip?.judgement_dimensions.find((j) => j.domain === e.code);
     if (dim) qs.push({ q: `${ip!.name_ko} 쪽 질문: ${dim.name.replace(/가$/, "")}지, 이 경험에서 해당하는 장면은 무엇인가요?`, from: "목표 산업이 보는 판단" });
     if (e.missing[0]) qs.push({ q: `‘${e.missing[0]}’는 어떻게 하셨나요?`, from: "응답에서 아직 확인되지 않은 부분 — 미리 준비해 둘 질문" });
@@ -340,7 +340,7 @@ export function assemble(m: ResultModel, meta: Meta, set: OrgSet = orgSet()): Re
     when: horizonOf(a),
     what: actionKo(a, a.domain ? name(a.domain) : "", m.stage).do,
     keep: a.material.artifacts[0] ?? a.material.workflow?.output ?? "정리한 문서",
-    check: a.material.verify_targets[0] ? `${withJosa(a.material.verify_targets[0], "과와")} 견준 기록` : "검토한 사람의 의견",
+    check: a.material.verify_targets[0] ? `${withJosa(a.material.verify_targets[0], "과와")} 비교한 기록` : "검토한 사람의 의견",
     layer: "ADVICE",
   }));
   const top = [...cand.local].slice(0, 2).map((c) => c.org.name);
@@ -365,7 +365,7 @@ export function assemble(m: ResultModel, meta: Meta, set: OrgSet = orgSet()): Re
     ? `${z1.join(" · ")}에서 목표·기준을 직접 정한 경험이 응답과 고른 근거로 함께 확인됩니다.`
     : z2.length ? `${z2.join(" · ")}에서 해 본 일은 응답으로 확인되고, 고른 근거와 결과물이 아직 적습니다.`
       : "응답으로 확인된 판단이 아직 적습니다. 이 리포트의 대부분은 앞으로 채울 것을 적습니다.";
-  const gap = g0 ? `가장 먼저 채울 것은 ${g0.domain}의 ‘${g0.what}’입니다. ${g0.why}` : "응답에서 먼저 채울 빈자리가 잡히지 않았습니다.";
+  const gap = g0 ? `가장 먼저 채울 것은 ${g0.domain}의 ‘${g0.what}’입니다. ${g0.why}` : "응답에서 먼저 채울 빈칸이 잡히지 않았습니다.";
   
   const direction = industry
     ? `목표로 고른 ${industry.name} 쪽이 보는 판단 ${industry.dims.length}가지 가운데 ${dimsOk}가지는 이번 응답에서 확인되거나 해 본 것으로 답하셨습니다.${role ? ` 관심 직무는 ${role.name}입니다.` : ""}`

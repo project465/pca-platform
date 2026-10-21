@@ -2,8 +2,8 @@
  "schema_version": "me-v3-items.2",
  "core": "ME_CORE_V3",
  "assessment_version": "ME_V3_2",
- "item_bank_version": "ME_V3_ITEM_BANK_V2.5",
- "note": "문면을 손으로 썼다. V1 은 이 파일 옆의 `me-v3-items.json` 에 그대로 두고 동결한다: 같은 응답이 뒤에 다른 뜻이 되지 않게 하려면 옛 판본이 읽을 수 있는 자리에 남아 있어야 한다. 문항마다 `origin` 과 `old_item_id` 와 `change_reason` 을 적어 어느 문항이 어디서 왔는지 되짚을 수 있게 했다. 원본은 이 파일이다: 문면을 고칠 곳이 여기이고, 고친 뒤 `v3:wording` 과 `v3:migrate` 와 `v3:qa` 를 돌린다",
+ "item_bank_version": "ME_V3_ITEM_BANK_V2.6",
+ "note": "문면을 손으로 썼다. V1 은 이 파일 옆의 `me-v3-items.json` 에 그대로 두고 동결한다: 같은 응답이 뒤에 다른 뜻이 되지 않게 하려면 옛 판본이 읽을 수 있는 자리에 남아 있어야 한다. 문항마다 `origin` 과 `old_item_id` 와 `change_reason` 을 적어 어느 문항이 어디서 왔는지 되짚을 수 있게 했다. 원본은 이 파일이다: 문면을 고칠 곳이 여기이고, 고친 뒤 `v3:wording` 과 `v3:migrate` 와 `v3:qa` 를 돌린다 V2.6: 문면을 단체 PCA 문항 결로 다시 썼다. 학생이 실제로 겪는 장면(수업 과제·캡스톤·실험·현장실습)과 쉬운 말로 묻고, 전문 용어는 쉬운 말로 풀거나 괄호로 받쳤다. 한 문장에 한 행동만 묻고 그 축의 l2 행동을 묻는다. 끝맺음 꼴을 고르게 나눠 한 틀로 쏠리지 않게 했다. item_id·모듈·축·보기·값·routing·차례는 그대로다",
  "level_options": [
   "없다",
   "남이 한 것을 받아 썼다",
@@ -14,19 +14,19 @@
   "J1": {
    "bachelor": "수업 과제나 캡스톤에서",
    "master": "연구과제에서",
-   "phd": "연구 주제를 세울 때",
+   "phd": "연구 주제를 정할 때",
    "postdoc": "맡은 과제나 제안서에서"
   },
   "J2": {
    "bachelor": "과제 요구사항을 받고",
    "master": "과제 목표를 받고",
-   "phd": "연구 목표를 세우면서",
+   "phd": "연구 목표를 정하면서",
    "postdoc": "연구 공고나 과제 목표를 보고"
   },
   "J3": {
    "bachelor": "수업 과제나 캡스톤에서",
    "master": "연구나 과제 수행에서",
-   "phd": "방법을 세우면서",
+   "phd": "연구 방법을 정하면서",
    "postdoc": "맡은 범위 안에서"
   },
   "J4": {
@@ -71,7 +71,7 @@
    "education_routing": "all",
    "measurement_axis": "interest",
    "evidence_axis": null,
-   "wording": "요구를 보고 부품의 형상과 치수와 재질과 공차를 정하는 일, 해 보고 싶다",
+   "wording": "부품의 모양과 치수와 재료를 정해 도면으로 그리는 일, 해 보고 싶다",
    "stage_wording": null,
    "options": [
     "전혀 관심 없다",
@@ -81,7 +81,7 @@
     "매우 관심 있다",
     "잘 모르겠다"
    ],
-   "grid_row": "요구를 보고 부품의 형상과 치수와 재질과 공차를 정하는 일",
+   "grid_row": "부품의 모양과 치수와 재료를 정해 도면으로 그리는 일",
    "grid_stem": "해 보고 싶다",
    "option_values": [
     1,
@@ -110,14 +110,14 @@
    "education_routing": "all",
    "measurement_axis": "exposure",
    "evidence_axis": null,
-   "wording": "요구를 보고 부품의 형상과 치수와 재질과 공차를 정하는 일, 해 본 적이 있다",
+   "wording": "부품의 모양과 치수와 재료를 정해 도면으로 그리는 일, 해 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
     "한두 번",
     "여러 번"
    ],
-   "grid_row": "요구를 보고 부품의 형상과 치수와 재질과 공차를 정하는 일",
+   "grid_row": "부품의 모양과 치수와 재료를 정해 도면으로 그리는 일",
    "grid_stem": "해 본 적이 있다",
    "option_values": [
     0,
@@ -143,7 +143,7 @@
    "education_routing": "all",
    "measurement_axis": "learning_intent",
    "evidence_axis": null,
-   "wording": "요구를 보고 부품의 형상과 치수와 재질과 공차를 정하는 일, 지금 배우고 싶다",
+   "wording": "부품의 모양과 치수와 재료를 정해 도면으로 그리는 일, 지금 배우고 싶다",
    "stage_wording": null,
    "options": [
     "전혀 배우고 싶지 않다",
@@ -153,7 +153,7 @@
     "매우 배우고 싶다",
     "잘 모르겠다"
    ],
-   "grid_row": "요구를 보고 부품의 형상과 치수와 재질과 공차를 정하는 일",
+   "grid_row": "부품의 모양과 치수와 재료를 정해 도면으로 그리는 일",
    "grid_stem": "지금 배우고 싶다",
    "option_values": [
     1,
@@ -182,7 +182,7 @@
    "education_routing": "all",
    "measurement_axis": "interest",
    "evidence_axis": null,
-   "wording": "하중을 받는 구조가 깨지는지와 몇 번을 버티는지 계산으로 보는 일, 해 보고 싶다",
+   "wording": "부품이 힘을 받을 때 버티는지 계산과 해석으로 보는 일, 해 보고 싶다",
    "stage_wording": null,
    "options": [
     "전혀 관심 없다",
@@ -192,7 +192,7 @@
     "매우 관심 있다",
     "잘 모르겠다"
    ],
-   "grid_row": "하중을 받는 구조가 깨지는지와 몇 번을 버티는지 계산으로 보는 일",
+   "grid_row": "부품이 힘을 받을 때 버티는지 계산과 해석으로 보는 일",
    "grid_stem": "해 보고 싶다",
    "option_values": [
     1,
@@ -221,14 +221,14 @@
    "education_routing": "all",
    "measurement_axis": "exposure",
    "evidence_axis": null,
-   "wording": "하중을 받는 구조가 깨지는지와 몇 번을 버티는지 계산으로 보는 일, 해 본 적이 있다",
+   "wording": "부품이 힘을 받을 때 버티는지 계산과 해석으로 보는 일, 해 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
     "한두 번",
     "여러 번"
    ],
-   "grid_row": "하중을 받는 구조가 깨지는지와 몇 번을 버티는지 계산으로 보는 일",
+   "grid_row": "부품이 힘을 받을 때 버티는지 계산과 해석으로 보는 일",
    "grid_stem": "해 본 적이 있다",
    "option_values": [
     0,
@@ -254,7 +254,7 @@
    "education_routing": "all",
    "measurement_axis": "learning_intent",
    "evidence_axis": null,
-   "wording": "하중을 받는 구조가 깨지는지와 몇 번을 버티는지 계산으로 보는 일, 지금 배우고 싶다",
+   "wording": "부품이 힘을 받을 때 버티는지 계산과 해석으로 보는 일, 지금 배우고 싶다",
    "stage_wording": null,
    "options": [
     "전혀 배우고 싶지 않다",
@@ -264,7 +264,7 @@
     "매우 배우고 싶다",
     "잘 모르겠다"
    ],
-   "grid_row": "하중을 받는 구조가 깨지는지와 몇 번을 버티는지 계산으로 보는 일",
+   "grid_row": "부품이 힘을 받을 때 버티는지 계산과 해석으로 보는 일",
    "grid_stem": "지금 배우고 싶다",
    "option_values": [
     1,
@@ -293,7 +293,7 @@
    "education_routing": "all",
    "measurement_axis": "interest",
    "evidence_axis": null,
-   "wording": "열을 어디로 빼고 유량과 압력을 어떻게 맞출지 정하는 일, 해 보고 싶다",
+   "wording": "뜨거워지는 곳의 열을 빼고 공기나 물의 흐름을 맞추는 일, 해 보고 싶다",
    "stage_wording": null,
    "options": [
     "전혀 관심 없다",
@@ -303,7 +303,7 @@
     "매우 관심 있다",
     "잘 모르겠다"
    ],
-   "grid_row": "열을 어디로 빼고 유량과 압력을 어떻게 맞출지 정하는 일",
+   "grid_row": "뜨거워지는 곳의 열을 빼고 공기나 물의 흐름을 맞추는 일",
    "grid_stem": "해 보고 싶다",
    "option_values": [
     1,
@@ -332,14 +332,14 @@
    "education_routing": "all",
    "measurement_axis": "exposure",
    "evidence_axis": null,
-   "wording": "열을 어디로 빼고 유량과 압력을 어떻게 맞출지 정하는 일, 해 본 적이 있다",
+   "wording": "뜨거워지는 곳의 열을 빼고 공기나 물의 흐름을 맞추는 일, 해 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
     "한두 번",
     "여러 번"
    ],
-   "grid_row": "열을 어디로 빼고 유량과 압력을 어떻게 맞출지 정하는 일",
+   "grid_row": "뜨거워지는 곳의 열을 빼고 공기나 물의 흐름을 맞추는 일",
    "grid_stem": "해 본 적이 있다",
    "option_values": [
     0,
@@ -365,7 +365,7 @@
    "education_routing": "all",
    "measurement_axis": "learning_intent",
    "evidence_axis": null,
-   "wording": "열을 어디로 빼고 유량과 압력을 어떻게 맞출지 정하는 일, 지금 배우고 싶다",
+   "wording": "뜨거워지는 곳의 열을 빼고 공기나 물의 흐름을 맞추는 일, 지금 배우고 싶다",
    "stage_wording": null,
    "options": [
     "전혀 배우고 싶지 않다",
@@ -375,7 +375,7 @@
     "매우 배우고 싶다",
     "잘 모르겠다"
    ],
-   "grid_row": "열을 어디로 빼고 유량과 압력을 어떻게 맞출지 정하는 일",
+   "grid_row": "뜨거워지는 곳의 열을 빼고 공기나 물의 흐름을 맞추는 일",
    "grid_stem": "지금 배우고 싶다",
    "option_values": [
     1,
@@ -404,7 +404,7 @@
    "education_routing": "all",
    "measurement_axis": "interest",
    "evidence_axis": null,
-   "wording": "어느 주파수에서 흔들리고 소음이 어디로 전달되는지 보는 일, 해 보고 싶다",
+   "wording": "기계가 떨리거나 소리가 나는 까닭을 재서 줄이는 일, 해 보고 싶다",
    "stage_wording": null,
    "options": [
     "전혀 관심 없다",
@@ -414,7 +414,7 @@
     "매우 관심 있다",
     "잘 모르겠다"
    ],
-   "grid_row": "어느 주파수에서 흔들리고 소음이 어디로 전달되는지 보는 일",
+   "grid_row": "기계가 떨리거나 소리가 나는 까닭을 재서 줄이는 일",
    "grid_stem": "해 보고 싶다",
    "option_values": [
     1,
@@ -443,14 +443,14 @@
    "education_routing": "all",
    "measurement_axis": "exposure",
    "evidence_axis": null,
-   "wording": "어느 주파수에서 흔들리고 소음이 어디로 전달되는지 보는 일, 해 본 적이 있다",
+   "wording": "기계가 떨리거나 소리가 나는 까닭을 재서 줄이는 일, 해 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
     "한두 번",
     "여러 번"
    ],
-   "grid_row": "어느 주파수에서 흔들리고 소음이 어디로 전달되는지 보는 일",
+   "grid_row": "기계가 떨리거나 소리가 나는 까닭을 재서 줄이는 일",
    "grid_stem": "해 본 적이 있다",
    "option_values": [
     0,
@@ -476,7 +476,7 @@
    "education_routing": "all",
    "measurement_axis": "learning_intent",
    "evidence_axis": null,
-   "wording": "어느 주파수에서 흔들리고 소음이 어디로 전달되는지 보는 일, 지금 배우고 싶다",
+   "wording": "기계가 떨리거나 소리가 나는 까닭을 재서 줄이는 일, 지금 배우고 싶다",
    "stage_wording": null,
    "options": [
     "전혀 배우고 싶지 않다",
@@ -486,7 +486,7 @@
     "매우 배우고 싶다",
     "잘 모르겠다"
    ],
-   "grid_row": "어느 주파수에서 흔들리고 소음이 어디로 전달되는지 보는 일",
+   "grid_row": "기계가 떨리거나 소리가 나는 까닭을 재서 줄이는 일",
    "grid_stem": "지금 배우고 싶다",
    "option_values": [
     1,
@@ -515,7 +515,7 @@
    "education_routing": "all",
    "measurement_axis": "interest",
    "evidence_axis": null,
-   "wording": "움직일 것의 무게와 관성을 보고 구동과 전달계를 정하는 일, 해 보고 싶다",
+   "wording": "모터와 기어를 골라 기구가 원하는 대로 움직이게 하는 일, 해 보고 싶다",
    "stage_wording": null,
    "options": [
     "전혀 관심 없다",
@@ -525,7 +525,7 @@
     "매우 관심 있다",
     "잘 모르겠다"
    ],
-   "grid_row": "움직일 것의 무게와 관성을 보고 구동과 전달계를 정하는 일",
+   "grid_row": "모터와 기어를 골라 기구가 원하는 대로 움직이게 하는 일",
    "grid_stem": "해 보고 싶다",
    "option_values": [
     1,
@@ -554,14 +554,14 @@
    "education_routing": "all",
    "measurement_axis": "exposure",
    "evidence_axis": null,
-   "wording": "움직일 것의 무게와 관성을 보고 구동과 전달계를 정하는 일, 해 본 적이 있다",
+   "wording": "모터와 기어를 골라 기구가 원하는 대로 움직이게 하는 일, 해 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
     "한두 번",
     "여러 번"
    ],
-   "grid_row": "움직일 것의 무게와 관성을 보고 구동과 전달계를 정하는 일",
+   "grid_row": "모터와 기어를 골라 기구가 원하는 대로 움직이게 하는 일",
    "grid_stem": "해 본 적이 있다",
    "option_values": [
     0,
@@ -587,7 +587,7 @@
    "education_routing": "all",
    "measurement_axis": "learning_intent",
    "evidence_axis": null,
-   "wording": "움직일 것의 무게와 관성을 보고 구동과 전달계를 정하는 일, 지금 배우고 싶다",
+   "wording": "모터와 기어를 골라 기구가 원하는 대로 움직이게 하는 일, 지금 배우고 싶다",
    "stage_wording": null,
    "options": [
     "전혀 배우고 싶지 않다",
@@ -597,7 +597,7 @@
     "매우 배우고 싶다",
     "잘 모르겠다"
    ],
-   "grid_row": "움직일 것의 무게와 관성을 보고 구동과 전달계를 정하는 일",
+   "grid_row": "모터와 기어를 골라 기구가 원하는 대로 움직이게 하는 일",
    "grid_stem": "지금 배우고 싶다",
    "option_values": [
     1,
@@ -626,7 +626,7 @@
    "education_routing": "all",
    "measurement_axis": "interest",
    "evidence_axis": null,
-   "wording": "어떤 재질로 갈지 정하고 어느 강도에서 왜 깨졌는지 밝히는 일, 해 보고 싶다",
+   "wording": "알맞은 재료를 고르고 부품이 왜 깨졌는지 밝혀내는 일, 해 보고 싶다",
    "stage_wording": null,
    "options": [
     "전혀 관심 없다",
@@ -636,7 +636,7 @@
     "매우 관심 있다",
     "잘 모르겠다"
    ],
-   "grid_row": "어떤 재질로 갈지 정하고 어느 강도에서 왜 깨졌는지 밝히는 일",
+   "grid_row": "알맞은 재료를 고르고 부품이 왜 깨졌는지 밝혀내는 일",
    "grid_stem": "해 보고 싶다",
    "option_values": [
     1,
@@ -665,14 +665,14 @@
    "education_routing": "all",
    "measurement_axis": "exposure",
    "evidence_axis": null,
-   "wording": "어떤 재질로 갈지 정하고 어느 강도에서 왜 깨졌는지 밝히는 일, 해 본 적이 있다",
+   "wording": "알맞은 재료를 고르고 부품이 왜 깨졌는지 밝혀내는 일, 해 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
     "한두 번",
     "여러 번"
    ],
-   "grid_row": "어떤 재질로 갈지 정하고 어느 강도에서 왜 깨졌는지 밝히는 일",
+   "grid_row": "알맞은 재료를 고르고 부품이 왜 깨졌는지 밝혀내는 일",
    "grid_stem": "해 본 적이 있다",
    "option_values": [
     0,
@@ -698,7 +698,7 @@
    "education_routing": "all",
    "measurement_axis": "learning_intent",
    "evidence_axis": null,
-   "wording": "어떤 재질로 갈지 정하고 어느 강도에서 왜 깨졌는지 밝히는 일, 지금 배우고 싶다",
+   "wording": "알맞은 재료를 고르고 부품이 왜 깨졌는지 밝혀내는 일, 지금 배우고 싶다",
    "stage_wording": null,
    "options": [
     "전혀 배우고 싶지 않다",
@@ -708,7 +708,7 @@
     "매우 배우고 싶다",
     "잘 모르겠다"
    ],
-   "grid_row": "어떤 재질로 갈지 정하고 어느 강도에서 왜 깨졌는지 밝히는 일",
+   "grid_row": "알맞은 재료를 고르고 부품이 왜 깨졌는지 밝혀내는 일",
    "grid_stem": "지금 배우고 싶다",
    "option_values": [
     1,
@@ -737,7 +737,7 @@
    "education_routing": "all",
    "measurement_axis": "interest",
    "evidence_axis": null,
-   "wording": "무엇을 어떻게 재서 기준을 만족하는지 판정하는 일, 해 보고 싶다",
+   "wording": "무엇을 어떻게 잴지 정해 시험 결과를 확인하는 일, 해 보고 싶다",
    "stage_wording": null,
    "options": [
     "전혀 관심 없다",
@@ -747,7 +747,7 @@
     "매우 관심 있다",
     "잘 모르겠다"
    ],
-   "grid_row": "무엇을 어떻게 재서 기준을 만족하는지 판정하는 일",
+   "grid_row": "무엇을 어떻게 잴지 정해 시험 결과를 확인하는 일",
    "grid_stem": "해 보고 싶다",
    "option_values": [
     1,
@@ -776,14 +776,14 @@
    "education_routing": "all",
    "measurement_axis": "exposure",
    "evidence_axis": null,
-   "wording": "무엇을 어떻게 재서 기준을 만족하는지 판정하는 일, 해 본 적이 있다",
+   "wording": "무엇을 어떻게 잴지 정해 시험 결과를 확인하는 일, 해 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
     "한두 번",
     "여러 번"
    ],
-   "grid_row": "무엇을 어떻게 재서 기준을 만족하는지 판정하는 일",
+   "grid_row": "무엇을 어떻게 잴지 정해 시험 결과를 확인하는 일",
    "grid_stem": "해 본 적이 있다",
    "option_values": [
     0,
@@ -809,7 +809,7 @@
    "education_routing": "all",
    "measurement_axis": "learning_intent",
    "evidence_axis": null,
-   "wording": "무엇을 어떻게 재서 기준을 만족하는지 판정하는 일, 지금 배우고 싶다",
+   "wording": "무엇을 어떻게 잴지 정해 시험 결과를 확인하는 일, 지금 배우고 싶다",
    "stage_wording": null,
    "options": [
     "전혀 배우고 싶지 않다",
@@ -819,7 +819,7 @@
     "매우 배우고 싶다",
     "잘 모르겠다"
    ],
-   "grid_row": "무엇을 어떻게 재서 기준을 만족하는지 판정하는 일",
+   "grid_row": "무엇을 어떻게 잴지 정해 시험 결과를 확인하는 일",
    "grid_stem": "지금 배우고 싶다",
    "option_values": [
     1,
@@ -848,7 +848,7 @@
    "education_routing": "all",
    "measurement_axis": "interest",
    "evidence_axis": null,
-   "wording": "어떤 공법과 조건으로 반복 생산할지 정하는 일, 해 보고 싶다",
+   "wording": "같은 부품을 여러 개 만들 공법과 가공 조건을 정하는 일, 해 보고 싶다",
    "stage_wording": null,
    "options": [
     "전혀 관심 없다",
@@ -858,7 +858,7 @@
     "매우 관심 있다",
     "잘 모르겠다"
    ],
-   "grid_row": "어떤 공법과 조건으로 반복 생산할지 정하는 일",
+   "grid_row": "같은 부품을 여러 개 만들 공법과 가공 조건을 정하는 일",
    "grid_stem": "해 보고 싶다",
    "option_values": [
     1,
@@ -887,14 +887,14 @@
    "education_routing": "all",
    "measurement_axis": "exposure",
    "evidence_axis": null,
-   "wording": "어떤 공법과 조건으로 반복 생산할지 정하는 일, 해 본 적이 있다",
+   "wording": "같은 부품을 여러 개 만들 공법과 가공 조건을 정하는 일, 해 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
     "한두 번",
     "여러 번"
    ],
-   "grid_row": "어떤 공법과 조건으로 반복 생산할지 정하는 일",
+   "grid_row": "같은 부품을 여러 개 만들 공법과 가공 조건을 정하는 일",
    "grid_stem": "해 본 적이 있다",
    "option_values": [
     0,
@@ -920,7 +920,7 @@
    "education_routing": "all",
    "measurement_axis": "learning_intent",
    "evidence_axis": null,
-   "wording": "어떤 공법과 조건으로 반복 생산할지 정하는 일, 지금 배우고 싶다",
+   "wording": "같은 부품을 여러 개 만들 공법과 가공 조건을 정하는 일, 지금 배우고 싶다",
    "stage_wording": null,
    "options": [
     "전혀 배우고 싶지 않다",
@@ -930,7 +930,7 @@
     "매우 배우고 싶다",
     "잘 모르겠다"
    ],
-   "grid_row": "어떤 공법과 조건으로 반복 생산할지 정하는 일",
+   "grid_row": "같은 부품을 여러 개 만들 공법과 가공 조건을 정하는 일",
    "grid_stem": "지금 배우고 싶다",
    "option_values": [
     1,
@@ -959,7 +959,7 @@
    "education_routing": "all",
    "measurement_axis": "interest",
    "evidence_axis": null,
-   "wording": "쓰는 장비가 제 성능을 내게 하고 멈췄을 때 되살리는 일, 해 보고 싶다",
+   "wording": "장비가 제 성능을 내도록 점검하고 멈추면 되살리는 일, 해 보고 싶다",
    "stage_wording": null,
    "options": [
     "전혀 관심 없다",
@@ -969,7 +969,7 @@
     "매우 관심 있다",
     "잘 모르겠다"
    ],
-   "grid_row": "쓰는 장비가 제 성능을 내게 하고 멈췄을 때 되살리는 일",
+   "grid_row": "장비가 제 성능을 내도록 점검하고 멈추면 되살리는 일",
    "grid_stem": "해 보고 싶다",
    "option_values": [
     1,
@@ -998,14 +998,14 @@
    "education_routing": "all",
    "measurement_axis": "exposure",
    "evidence_axis": null,
-   "wording": "쓰는 장비가 제 성능을 내게 하고 멈췄을 때 되살리는 일, 해 본 적이 있다",
+   "wording": "장비가 제 성능을 내도록 점검하고 멈추면 되살리는 일, 해 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
     "한두 번",
     "여러 번"
    ],
-   "grid_row": "쓰는 장비가 제 성능을 내게 하고 멈췄을 때 되살리는 일",
+   "grid_row": "장비가 제 성능을 내도록 점검하고 멈추면 되살리는 일",
    "grid_stem": "해 본 적이 있다",
    "option_values": [
     0,
@@ -1031,7 +1031,7 @@
    "education_routing": "all",
    "measurement_axis": "learning_intent",
    "evidence_axis": null,
-   "wording": "쓰는 장비가 제 성능을 내게 하고 멈췄을 때 되살리는 일, 지금 배우고 싶다",
+   "wording": "장비가 제 성능을 내도록 점검하고 멈추면 되살리는 일, 지금 배우고 싶다",
    "stage_wording": null,
    "options": [
     "전혀 배우고 싶지 않다",
@@ -1041,7 +1041,7 @@
     "매우 배우고 싶다",
     "잘 모르겠다"
    ],
-   "grid_row": "쓰는 장비가 제 성능을 내게 하고 멈췄을 때 되살리는 일",
+   "grid_row": "장비가 제 성능을 내도록 점검하고 멈추면 되살리는 일",
    "grid_stem": "지금 배우고 싶다",
    "option_values": [
     1,
@@ -1070,7 +1070,7 @@
    "education_routing": "all",
    "measurement_axis": "interest",
    "evidence_axis": null,
-   "wording": "양산과 사용 기간 내내 요구가 지켜지는지 관리하는 일, 해 보고 싶다",
+   "wording": "만든 것이 기준에 맞는지 계속 살피고 불량을 줄여 가는 일, 해 보고 싶다",
    "stage_wording": null,
    "options": [
     "전혀 관심 없다",
@@ -1080,7 +1080,7 @@
     "매우 관심 있다",
     "잘 모르겠다"
    ],
-   "grid_row": "양산과 사용 기간 내내 요구가 지켜지는지 관리하는 일",
+   "grid_row": "만든 것이 기준에 맞는지 계속 살피고 불량을 줄여 가는 일",
    "grid_stem": "해 보고 싶다",
    "option_values": [
     1,
@@ -1109,14 +1109,14 @@
    "education_routing": "all",
    "measurement_axis": "exposure",
    "evidence_axis": null,
-   "wording": "양산과 사용 기간 내내 요구가 지켜지는지 관리하는 일, 해 본 적이 있다",
+   "wording": "만든 것이 기준에 맞는지 계속 살피고 불량을 줄여 가는 일, 해 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
     "한두 번",
     "여러 번"
    ],
-   "grid_row": "양산과 사용 기간 내내 요구가 지켜지는지 관리하는 일",
+   "grid_row": "만든 것이 기준에 맞는지 계속 살피고 불량을 줄여 가는 일",
    "grid_stem": "해 본 적이 있다",
    "option_values": [
     0,
@@ -1142,7 +1142,7 @@
    "education_routing": "all",
    "measurement_axis": "learning_intent",
    "evidence_axis": null,
-   "wording": "양산과 사용 기간 내내 요구가 지켜지는지 관리하는 일, 지금 배우고 싶다",
+   "wording": "만든 것이 기준에 맞는지 계속 살피고 불량을 줄여 가는 일, 지금 배우고 싶다",
    "stage_wording": null,
    "options": [
     "전혀 배우고 싶지 않다",
@@ -1152,7 +1152,7 @@
     "매우 배우고 싶다",
     "잘 모르겠다"
    ],
-   "grid_row": "양산과 사용 기간 내내 요구가 지켜지는지 관리하는 일",
+   "grid_row": "만든 것이 기준에 맞는지 계속 살피고 불량을 줄여 가는 일",
    "grid_stem": "지금 배우고 싶다",
    "option_values": [
     1,
@@ -1181,7 +1181,7 @@
    "education_routing": "all",
    "measurement_axis": "interest",
    "evidence_axis": null,
-   "wording": "요구조건과 제한조건을 쪼개 일정과 역할로 묶는 일, 해 보고 싶다",
+   "wording": "해 달라는 요구를 조건과 일정으로 나눠 팀 일을 맞추는 일, 해 보고 싶다",
    "stage_wording": null,
    "options": [
     "전혀 관심 없다",
@@ -1191,7 +1191,7 @@
     "매우 관심 있다",
     "잘 모르겠다"
    ],
-   "grid_row": "요구조건과 제한조건을 쪼개 일정과 역할로 묶는 일",
+   "grid_row": "해 달라는 요구를 조건과 일정으로 나눠 팀 일을 맞추는 일",
    "grid_stem": "해 보고 싶다",
    "option_values": [
     1,
@@ -1220,14 +1220,14 @@
    "education_routing": "all",
    "measurement_axis": "exposure",
    "evidence_axis": null,
-   "wording": "요구조건과 제한조건을 쪼개 일정과 역할로 묶는 일, 해 본 적이 있다",
+   "wording": "해 달라는 요구를 조건과 일정으로 나눠 팀 일을 맞추는 일, 해 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
     "한두 번",
     "여러 번"
    ],
-   "grid_row": "요구조건과 제한조건을 쪼개 일정과 역할로 묶는 일",
+   "grid_row": "해 달라는 요구를 조건과 일정으로 나눠 팀 일을 맞추는 일",
    "grid_stem": "해 본 적이 있다",
    "option_values": [
     0,
@@ -1253,7 +1253,7 @@
    "education_routing": "all",
    "measurement_axis": "learning_intent",
    "evidence_axis": null,
-   "wording": "요구조건과 제한조건을 쪼개 일정과 역할로 묶는 일, 지금 배우고 싶다",
+   "wording": "해 달라는 요구를 조건과 일정으로 나눠 팀 일을 맞추는 일, 지금 배우고 싶다",
    "stage_wording": null,
    "options": [
     "전혀 배우고 싶지 않다",
@@ -1263,7 +1263,7 @@
     "매우 배우고 싶다",
     "잘 모르겠다"
    ],
-   "grid_row": "요구조건과 제한조건을 쪼개 일정과 역할로 묶는 일",
+   "grid_row": "해 달라는 요구를 조건과 일정으로 나눠 팀 일을 맞추는 일",
    "grid_stem": "지금 배우고 싶다",
    "option_values": [
     1,
@@ -1292,7 +1292,7 @@
    "education_routing": "all",
    "measurement_axis": "interest",
    "evidence_axis": null,
-   "wording": "반복되는 계산과 정리를 남겨 다시 쓰게 만드는 일, 해 보고 싶다",
+   "wording": "되풀이되는 계산과 정리를 프로그램이 대신 하게 만드는 일, 해 보고 싶다",
    "stage_wording": null,
    "options": [
     "전혀 관심 없다",
@@ -1302,7 +1302,7 @@
     "매우 관심 있다",
     "잘 모르겠다"
    ],
-   "grid_row": "반복되는 계산과 정리를 남겨 다시 쓰게 만드는 일",
+   "grid_row": "되풀이되는 계산과 정리를 프로그램이 대신 하게 만드는 일",
    "grid_stem": "해 보고 싶다",
    "option_values": [
     1,
@@ -1331,14 +1331,14 @@
    "education_routing": "all",
    "measurement_axis": "exposure",
    "evidence_axis": null,
-   "wording": "반복되는 계산과 정리를 남겨 다시 쓰게 만드는 일, 해 본 적이 있다",
+   "wording": "되풀이되는 계산과 정리를 프로그램이 대신 하게 만드는 일, 해 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
     "한두 번",
     "여러 번"
    ],
-   "grid_row": "반복되는 계산과 정리를 남겨 다시 쓰게 만드는 일",
+   "grid_row": "되풀이되는 계산과 정리를 프로그램이 대신 하게 만드는 일",
    "grid_stem": "해 본 적이 있다",
    "option_values": [
     0,
@@ -1364,7 +1364,7 @@
    "education_routing": "all",
    "measurement_axis": "learning_intent",
    "evidence_axis": null,
-   "wording": "반복되는 계산과 정리를 남겨 다시 쓰게 만드는 일, 지금 배우고 싶다",
+   "wording": "되풀이되는 계산과 정리를 프로그램이 대신 하게 만드는 일, 지금 배우고 싶다",
    "stage_wording": null,
    "options": [
     "전혀 배우고 싶지 않다",
@@ -1374,7 +1374,7 @@
     "매우 배우고 싶다",
     "잘 모르겠다"
    ],
-   "grid_row": "반복되는 계산과 정리를 남겨 다시 쓰게 만드는 일",
+   "grid_row": "되풀이되는 계산과 정리를 프로그램이 대신 하게 만드는 일",
    "grid_stem": "지금 배우고 싶다",
    "option_values": [
     1,
@@ -1403,12 +1403,12 @@
    "education_routing": "all",
    "measurement_axis": "common_judgement",
    "evidence_axis": "J1",
-   "wording": "다룰 범위를 내가 좁혀 정하고 그 까닭을 적어 본 적이 있다",
+   "wording": "다룰 범위를 이유와 함께 내가 줄여 본 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 다룰 범위를 내가 좁혀 정하고 그 까닭을 적어 본 적이 있다",
-    "master": "연구과제에서 다룰 범위를 내가 좁혀 정하고 그 까닭을 적어 본 적이 있다",
-    "phd": "연구 주제를 세울 때 다룰 범위를 내가 좁혀 정하고 그 까닭을 적어 본 적이 있다",
-    "postdoc": "맡은 과제나 제안서에서 다룰 범위를 내가 좁혀 정하고 그 까닭을 적어 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 다룰 범위를 이유와 함께 내가 줄여 본 적이 있다",
+    "master": "연구과제에서 다룰 범위를 이유와 함께 내가 줄여 본 적이 있다",
+    "phd": "연구 주제를 정할 때 다룰 범위를 이유와 함께 내가 줄여 본 적이 있다",
+    "postdoc": "맡은 과제나 제안서에서 다룰 범위를 이유와 함께 내가 줄여 본 적이 있다"
    },
    "options": [
     "없다",
@@ -1442,7 +1442,7 @@
    "stage_wording": {
     "bachelor": "과제 요구사항을 받고 말로 받은 요구를 숫자로 바꿔 적어 본 적이 있다",
     "master": "과제 목표를 받고 말로 받은 요구를 숫자로 바꿔 적어 본 적이 있다",
-    "phd": "연구 목표를 세우면서 말로 받은 요구를 숫자로 바꿔 적어 본 적이 있다",
+    "phd": "연구 목표를 정하면서 말로 받은 요구를 숫자로 바꿔 적어 본 적이 있다",
     "postdoc": "연구 공고나 과제 목표를 보고 말로 받은 요구를 숫자로 바꿔 적어 본 적이 있다"
    },
    "options": [
@@ -1473,12 +1473,12 @@
    "education_routing": "all",
    "measurement_axis": "common_judgement",
    "evidence_axis": "J4",
-   "wording": "쓸 방법을 고르고 왜 그것인지 적어 본 적이 있다",
+   "wording": "여러 방법 가운데 쓸 방법을 이유를 들어 고른 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 쓸 방법을 고르고 왜 그것인지 적어 본 적이 있다",
-    "master": "연구 수행에서 쓸 방법을 고르고 왜 그것인지 적어 본 적이 있다",
-    "phd": "방법을 검토하면서 쓸 방법을 고르고 왜 그것인지 적어 본 적이 있다",
-    "postdoc": "과제 수행에서 쓸 방법을 고르고 왜 그것인지 적어 본 적이 있다"
+    "bachelor": "실험이나 과제에서 여러 방법 가운데 쓸 방법을 이유를 들어 고른 적이 있다",
+    "master": "연구 수행에서 여러 방법 가운데 쓸 방법을 이유를 들어 고른 적이 있다",
+    "phd": "방법을 검토하면서 여러 방법 가운데 쓸 방법을 이유를 들어 고른 적이 있다",
+    "postdoc": "과제 수행에서 여러 방법 가운데 쓸 방법을 이유를 들어 고른 적이 있다"
    },
    "options": [
     "없다",
@@ -1508,12 +1508,12 @@
    "education_routing": "all",
    "measurement_axis": "common_judgement",
    "evidence_axis": "J6",
-   "wording": "선택지를 둘 이상 놓고 같은 기준으로 견주어 하나를 골라 본 적이 있다",
+   "wording": "선택지 두 개 이상을 같은 기준으로 비교해 하나를 고른 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 선택지를 둘 이상 놓고 같은 기준으로 견주어 하나를 골라 본 적이 있다",
-    "master": "연구에서 선택지를 둘 이상 놓고 같은 기준으로 견주어 하나를 골라 본 적이 있다",
-    "phd": "결과의 타당성을 따질 때 선택지를 둘 이상 놓고 같은 기준으로 견주어 하나를 골라 본 적이 있다",
-    "postdoc": "과제 결과를 낼 때 선택지를 둘 이상 놓고 같은 기준으로 견주어 하나를 골라 본 적이 있다"
+    "bachelor": "실험이나 과제에서 선택지 두 개 이상을 같은 기준으로 비교해 하나를 고른 적이 있다",
+    "master": "연구에서 선택지 두 개 이상을 같은 기준으로 비교해 하나를 고른 적이 있다",
+    "phd": "결과의 타당성을 따질 때 선택지 두 개 이상을 같은 기준으로 비교해 하나를 고른 적이 있다",
+    "postdoc": "과제 결과를 낼 때 선택지 두 개 이상을 같은 기준으로 비교해 하나를 고른 적이 있다"
    },
    "options": [
     "없다",
@@ -1543,12 +1543,12 @@
    "education_routing": "all",
    "measurement_axis": "common_judgement",
    "evidence_axis": "J8",
-   "wording": "내가 낸 것을 다른 사람이 받아 쓴 적이 있다",
+   "wording": "내가 낸 결과물을 다른 사람이 받아 쓴 적이 있다",
    "stage_wording": {
-    "bachelor": "캡스톤이나 인턴에서 내가 낸 것을 다른 사람이 받아 쓴 적이 있다",
-    "master": "연구실이나 과제에서 내가 낸 것을 다른 사람이 받아 쓴 적이 있다",
-    "phd": "과제나 공동 연구에서 내가 낸 것을 다른 사람이 받아 쓴 적이 있다",
-    "postdoc": "맡은 과제나 협력 기관에서 내가 낸 것을 다른 사람이 받아 쓴 적이 있다"
+    "bachelor": "캡스톤이나 인턴에서 내가 낸 결과물을 다른 사람이 받아 쓴 적이 있다",
+    "master": "연구실이나 과제에서 내가 낸 결과물을 다른 사람이 받아 쓴 적이 있다",
+    "phd": "과제나 공동 연구에서 내가 낸 결과물을 다른 사람이 받아 쓴 적이 있다",
+    "postdoc": "맡은 과제나 협력 기관에서 내가 낸 결과물을 다른 사람이 받아 쓴 적이 있다"
    },
    "options": [
     "없다",
@@ -1582,7 +1582,7 @@
    "stage_wording": {
     "bachelor": "수업 과제나 캡스톤에서 이미 정해져 내려온 조건을 근거를 들어 바꿔 본 적이 있다",
     "master": "연구과제에서 이미 정해져 내려온 조건을 근거를 들어 바꿔 본 적이 있다",
-    "phd": "연구 주제를 세울 때 이미 정해져 내려온 조건을 근거를 들어 바꿔 본 적이 있다",
+    "phd": "연구 주제를 정할 때 이미 정해져 내려온 조건을 근거를 들어 바꿔 본 적이 있다",
     "postdoc": "맡은 과제나 제안서에서 이미 정해져 내려온 조건을 근거를 들어 바꿔 본 적이 있다"
    },
    "options": [
@@ -1613,7 +1613,7 @@
    "education_routing": "ug-core",
    "measurement_axis": "experience_translation",
    "evidence_axis": "J1",
-   "wording": "캡스톤이나 설계 과제에서 다룰 범위를 직접 좁혀 정해 본 적이 있다",
+   "wording": "캡스톤이나 설계 과제에서 이번에 할 범위를 직접 정해 둔 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -1643,7 +1643,7 @@
    "education_routing": "ug-core",
    "measurement_axis": "experience_translation",
    "evidence_axis": "J3",
-   "wording": "수업 과제에서 조건이나 치수를 내가 정해 결과에 넣어 본 적이 있다",
+   "wording": "수업 과제에서 치수나 조건을 내가 정해 계산에 넣은 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -1673,7 +1673,7 @@
    "education_routing": "ug-core",
    "measurement_axis": "experience_translation",
    "evidence_axis": "J5",
-   "wording": "과제 산출물을 다른 사람이 읽고 쓸 수 있게 정리해 본 적이 있다",
+   "wording": "과제 결과물을 다른 사람이 바로 볼 수 있게 정리해 둔 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -1703,7 +1703,7 @@
    "education_routing": "ug-core",
    "measurement_axis": "experience_translation",
    "evidence_axis": "J6",
-   "wording": "실험값과 계산값을 대조해 차이의 까닭을 적어 본 적이 있다",
+   "wording": "실험 수업에서 잰 값과 계산값의 차이를 적어 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -1733,7 +1733,7 @@
    "education_routing": "ug-core",
    "measurement_axis": "experience_translation",
    "evidence_axis": "J7",
-   "wording": "결과가 예상과 달라 원인을 좁혀 다시 해 본 적이 있다",
+   "wording": "실험 결과가 예상과 달라 원인을 찾아 다시 해 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -1793,7 +1793,7 @@
    "education_routing": "ms-core",
    "measurement_axis": "experience_translation",
    "evidence_axis": "J1",
-   "wording": "다룰 연구 문제를 지도교수가 아니라 내가 좁혀 정해 본 적이 있다",
+   "wording": "다룰 연구 문제를 지도교수 대신 내가 좁혀 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -1823,7 +1823,7 @@
    "education_routing": "ms-core",
    "measurement_axis": "experience_translation",
    "evidence_axis": "J2",
-   "wording": "과제 목표를 측정할 수 있는 조건으로 옮겨 적어 본 적이 있다",
+   "wording": "과제 목표를 잴 수 있는 조건으로 옮겨 적은 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -1853,7 +1853,7 @@
    "education_routing": "ms-core",
    "measurement_axis": "experience_translation",
    "evidence_axis": "J3",
-   "wording": "실험이나 해석의 조건을 내가 정해 그대로 돌려 본 적이 있다",
+   "wording": "실험이나 해석의 조건을 내가 정해 그대로 진행한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -1883,7 +1883,7 @@
    "education_routing": "ms-core",
    "measurement_axis": "experience_translation",
    "evidence_axis": "J5",
-   "wording": "남이 다시 할 수 있게 방법과 조건을 적어 남겨 본 적이 있다",
+   "wording": "다른 사람이 다시 해 볼 수 있게 방법과 조건을 남겨 둔 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -1913,7 +1913,7 @@
    "education_routing": "ms-core",
    "measurement_axis": "experience_translation",
    "evidence_axis": "J6",
-   "wording": "내 결과를 다른 방법으로 얻은 값과 대조해 본 적이 있다",
+   "wording": "내 연구 결과를 다른 방법으로 얻은 값과 비교해 본 일이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -1973,7 +1973,7 @@
    "education_routing": "phd-core",
    "measurement_axis": "experience_translation",
    "evidence_axis": "J1",
-   "wording": "풀 수 있는 크기로 문제를 다시 잘라 본 적이 있다",
+   "wording": "연구 문제를 풀 수 있는 크기로 다시 나눠 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -2003,7 +2003,7 @@
    "education_routing": "phd-core",
    "measurement_axis": "experience_translation",
    "evidence_axis": "J2",
-   "wording": "세운 가정이 깨지는 조건을 미리 적어 본 적이 있다",
+   "wording": "내 가정이 맞지 않게 되는 조건을 미리 적어 둔 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -2033,7 +2033,7 @@
    "education_routing": "phd-core",
    "measurement_axis": "experience_translation",
    "evidence_axis": "J3",
-   "wording": "쓸 수 있는 방법이 여럿일 때 하나를 고르고 그 까닭을 남겨 본 적이 있다",
+   "wording": "연구 방법 후보 가운데 내 연구에 맞는 하나를 직접 정한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -2063,7 +2063,7 @@
    "education_routing": "phd-core",
    "measurement_axis": "experience_translation",
    "evidence_axis": "J4",
-   "wording": "무엇을 고정하고 무엇을 바꿀지 직접 정해 본 적이 있다",
+   "wording": "실험에서 고정할 변수와 바꿀 변수를 직접 골라 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -2093,7 +2093,7 @@
    "education_routing": "phd-core",
    "measurement_axis": "experience_translation",
    "evidence_axis": "J6",
-   "wording": "결과에 남은 불확실성의 크기를 적어 본 적이 있다",
+   "wording": "결과가 얼마나 틀릴 수 있는지 그 범위를 적어 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -2123,7 +2123,7 @@
    "education_routing": "phd-core",
    "measurement_axis": "experience_translation",
    "evidence_axis": "J7",
-   "wording": "내 방법이 안 되는 범위를 찾아 적어 본 적이 있다",
+   "wording": "내 방법이 통하지 않는 범위를 찾아본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -2153,7 +2153,7 @@
    "education_routing": "postdoc-core",
    "measurement_axis": "experience_translation",
    "evidence_axis": "J1",
-   "wording": "내가 끝까지 책임지는 범위와 남에게 맡긴 범위를 갈라 본 적이 있다",
+   "wording": "내가 끝까지 맡을 범위와 남에게 맡길 범위를 나눠 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -2183,7 +2183,7 @@
    "education_routing": "postdoc-core",
    "measurement_axis": "experience_translation",
    "evidence_axis": "J2",
-   "wording": "과제 일정과 자원을 직접 나눠 본 적이 있다",
+   "wording": "과제 일정과 예산을 직접 배분해 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -2213,7 +2213,7 @@
    "education_routing": "postdoc-core",
    "measurement_axis": "experience_translation",
    "evidence_axis": "J3",
-   "wording": "지도 없이 내가 정하고 그대로 간 적이 있다",
+   "wording": "지도 없이 내가 연구 방향을 정해 진행한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -2243,7 +2243,7 @@
    "education_routing": "postdoc-core",
    "measurement_axis": "experience_translation",
    "evidence_axis": "J4",
-   "wording": "다른 사람이 낸 결과를 받아 내 작업에 이어 붙여 본 적이 있다",
+   "wording": "다른 연구자가 낸 결과를 내 작업에 이어 써 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -2273,7 +2273,7 @@
    "education_routing": "postdoc-core",
    "measurement_axis": "experience_translation",
    "evidence_axis": "J5",
-   "wording": "연구 결과를 과제 보고나 특허나 시작품으로 바꿔 본 적이 있다",
+   "wording": "연구 결과를 과제 보고나 특허나 시작품으로 바꿔 본 일이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -2457,12 +2457,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "하중과 재질을 근거로 두께나 단면 치수를 직접 정해 본 적이 있다",
+   "wording": "하중과 재질을 근거로 두께나 단면 치수를 직접 정한 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 하중과 재질을 근거로 두께나 단면 치수를 직접 정해 본 적이 있다",
-    "master": "연구나 과제 수행에서 하중과 재질을 근거로 두께나 단면 치수를 직접 정해 본 적이 있다",
-    "phd": "방법을 세우면서 하중과 재질을 근거로 두께나 단면 치수를 직접 정해 본 적이 있다",
-    "postdoc": "맡은 범위 안에서 하중과 재질을 근거로 두께나 단면 치수를 직접 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 하중과 재질을 근거로 두께나 단면 치수를 직접 정한 적이 있다",
+    "master": "연구나 과제 수행에서 하중과 재질을 근거로 두께나 단면 치수를 직접 정한 적이 있다",
+    "phd": "연구 방법을 정하면서 하중과 재질을 근거로 두께나 단면 치수를 직접 정한 적이 있다",
+    "postdoc": "맡은 범위 안에서 하중과 재질을 근거로 두께나 단면 치수를 직접 정한 적이 있다"
    },
    "options": [
     "없다",
@@ -2492,12 +2492,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "끼워 맞춤과 공차 등급을 직접 정해 본 적이 있다",
+   "wording": "부품끼리 끼워지는 정도와 허용 오차(공차)를 직접 골라 본 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 끼워 맞춤과 공차 등급을 직접 정해 본 적이 있다",
-    "master": "연구나 과제 수행에서 끼워 맞춤과 공차 등급을 직접 정해 본 적이 있다",
-    "phd": "방법을 세우면서 끼워 맞춤과 공차 등급을 직접 정해 본 적이 있다",
-    "postdoc": "맡은 범위 안에서 끼워 맞춤과 공차 등급을 직접 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 부품끼리 끼워지는 정도와 허용 오차(공차)를 직접 골라 본 적이 있다",
+    "master": "연구나 과제 수행에서 부품끼리 끼워지는 정도와 허용 오차(공차)를 직접 골라 본 적이 있다",
+    "phd": "연구 방법을 정하면서 부품끼리 끼워지는 정도와 허용 오차(공차)를 직접 골라 본 적이 있다",
+    "postdoc": "맡은 범위 안에서 부품끼리 끼워지는 정도와 허용 오차(공차)를 직접 골라 본 적이 있다"
    },
    "options": [
     "없다",
@@ -2527,12 +2527,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "제작에 쓸 도면이나 부품 사양을 직접 내 본 적이 있다",
+   "wording": "제작에 쓸 도면이나 부품 사양을 내가 그려 낸 적이 있다",
    "stage_wording": {
-    "bachelor": "과제나 캡스톤 결과로 제작에 쓸 도면이나 부품 사양을 직접 내 본 적이 있다",
-    "master": "연구 산출물로 제작에 쓸 도면이나 부품 사양을 직접 내 본 적이 있다",
-    "phd": "논문이나 보고로 제작에 쓸 도면이나 부품 사양을 직접 내 본 적이 있다",
-    "postdoc": "과제 산출물로 제작에 쓸 도면이나 부품 사양을 직접 내 본 적이 있다"
+    "bachelor": "과제나 캡스톤 결과로 제작에 쓸 도면이나 부품 사양을 내가 그려 낸 적이 있다",
+    "master": "연구 산출물로 제작에 쓸 도면이나 부품 사양을 내가 그려 낸 적이 있다",
+    "phd": "논문이나 보고로 제작에 쓸 도면이나 부품 사양을 내가 그려 낸 적이 있다",
+    "postdoc": "과제 산출물로 제작에 쓸 도면이나 부품 사양을 내가 그려 낸 적이 있다"
    },
    "options": [
     "없다",
@@ -2562,12 +2562,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "조립도와 부품표를 한 벌로 묶어 남겨 본 적이 있다",
+   "wording": "조립도와 부품표를 한 묶음으로 남겨 본 적이 있다",
    "stage_wording": {
-    "bachelor": "과제나 캡스톤 결과로 조립도와 부품표를 한 벌로 묶어 남겨 본 적이 있다",
-    "master": "연구 산출물로 조립도와 부품표를 한 벌로 묶어 남겨 본 적이 있다",
-    "phd": "논문이나 보고로 조립도와 부품표를 한 벌로 묶어 남겨 본 적이 있다",
-    "postdoc": "과제 산출물로 조립도와 부품표를 한 벌로 묶어 남겨 본 적이 있다"
+    "bachelor": "과제나 캡스톤 결과로 조립도와 부품표를 한 묶음으로 남겨 본 적이 있다",
+    "master": "연구 산출물로 조립도와 부품표를 한 묶음으로 남겨 본 적이 있다",
+    "phd": "논문이나 보고로 조립도와 부품표를 한 묶음으로 남겨 본 적이 있다",
+    "postdoc": "과제 산출물로 조립도와 부품표를 한 묶음으로 남겨 본 적이 있다"
    },
    "options": [
     "없다",
@@ -2597,12 +2597,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "공차가 쌓였을 때 조립이 되는지 계산해 확인해 본 적이 있다",
+   "wording": "부품 허용 오차가 쌓일 때 조립이 되는지 계산으로 따져 본 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 공차가 쌓였을 때 조립이 되는지 계산해 확인해 본 적이 있다",
-    "master": "연구에서 공차가 쌓였을 때 조립이 되는지 계산해 확인해 본 적이 있다",
-    "phd": "결과의 타당성을 따질 때 공차가 쌓였을 때 조립이 되는지 계산해 확인해 본 적이 있다",
-    "postdoc": "과제 결과를 낼 때 공차가 쌓였을 때 조립이 되는지 계산해 확인해 본 적이 있다"
+    "bachelor": "실험이나 과제에서 부품 허용 오차가 쌓일 때 조립이 되는지 계산으로 따져 본 적이 있다",
+    "master": "연구에서 부품 허용 오차가 쌓일 때 조립이 되는지 계산으로 따져 본 적이 있다",
+    "phd": "결과의 타당성을 따질 때 부품 허용 오차가 쌓일 때 조립이 되는지 계산으로 따져 본 적이 있다",
+    "postdoc": "과제 결과를 낼 때 부품 허용 오차가 쌓일 때 조립이 되는지 계산으로 따져 본 적이 있다"
    },
    "options": [
     "없다",
@@ -2632,12 +2632,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "시작품을 만들어 도면값과 실제 치수를 대조해 본 적이 있다",
+   "wording": "시작품을 만들어 도면 치수와 실제 치수가 맞는지 재 본 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 시작품을 만들어 도면값과 실제 치수를 대조해 본 적이 있다",
-    "master": "연구에서 시작품을 만들어 도면값과 실제 치수를 대조해 본 적이 있다",
-    "phd": "결과의 타당성을 따질 때 시작품을 만들어 도면값과 실제 치수를 대조해 본 적이 있다",
-    "postdoc": "과제 결과를 낼 때 시작품을 만들어 도면값과 실제 치수를 대조해 본 적이 있다"
+    "bachelor": "실험이나 과제에서 시작품을 만들어 도면 치수와 실제 치수가 맞는지 재 본 적이 있다",
+    "master": "연구에서 시작품을 만들어 도면 치수와 실제 치수가 맞는지 재 본 적이 있다",
+    "phd": "결과의 타당성을 따질 때 시작품을 만들어 도면 치수와 실제 치수가 맞는지 재 본 적이 있다",
+    "postdoc": "과제 결과를 낼 때 시작품을 만들어 도면 치수와 실제 치수가 맞는지 재 본 적이 있다"
    },
    "options": [
     "없다",
@@ -2667,12 +2667,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "조립해 보니 맞지 않아 치수를 고쳐 본 적이 있다",
+   "wording": "조립이 안 맞아 치수를 고쳐 본 적이 있다",
    "stage_wording": {
-    "bachelor": "결과가 예상과 달랐을 때 조립해 보니 맞지 않아 치수를 고쳐 본 적이 있다",
-    "master": "재현이 안 됐을 때 조립해 보니 맞지 않아 치수를 고쳐 본 적이 있다",
-    "phd": "결과가 가정과 어긋났을 때 조립해 보니 맞지 않아 치수를 고쳐 본 적이 있다",
-    "postdoc": "방법의 한계를 정리할 때 조립해 보니 맞지 않아 치수를 고쳐 본 적이 있다"
+    "bachelor": "결과가 예상과 달랐을 때 조립이 안 맞아 치수를 고쳐 본 적이 있다",
+    "master": "재현이 안 됐을 때 조립이 안 맞아 치수를 고쳐 본 적이 있다",
+    "phd": "결과가 가정과 어긋났을 때 조립이 안 맞아 치수를 고쳐 본 적이 있다",
+    "postdoc": "방법의 한계를 정리할 때 조립이 안 맞아 치수를 고쳐 본 적이 있다"
    },
    "options": [
     "없다",
@@ -2737,12 +2737,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "설계할 범위와 이번에 다루지 않을 부분을 적어 갈라 본 적이 있다",
+   "wording": "받은 사양을 보고 이번에 설계할 범위를 적어 본 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 설계할 범위와 이번에 다루지 않을 부분을 적어 갈라 본 적이 있다",
-    "master": "연구과제에서 설계할 범위와 이번에 다루지 않을 부분을 적어 갈라 본 적이 있다",
-    "phd": "연구 주제를 세울 때 설계할 범위와 이번에 다루지 않을 부분을 적어 갈라 본 적이 있다",
-    "postdoc": "맡은 과제나 제안서에서 설계할 범위와 이번에 다루지 않을 부분을 적어 갈라 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 받은 사양을 보고 이번에 설계할 범위를 적어 본 적이 있다",
+    "master": "연구과제에서 받은 사양을 보고 이번에 설계할 범위를 적어 본 적이 있다",
+    "phd": "연구 주제를 정할 때 받은 사양을 보고 이번에 설계할 범위를 적어 본 적이 있다",
+    "postdoc": "맡은 과제나 제안서에서 받은 사양을 보고 이번에 설계할 범위를 적어 본 적이 있다"
    },
    "options": [
     "없다",
@@ -2772,12 +2772,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "받은 요구를 치수와 하중과 환경 조건으로 옮겨 적어 본 적이 있다",
+   "wording": "받은 요구를 치수와 하중 같은 숫자 조건으로 옮겨 적은 적이 있다",
    "stage_wording": {
-    "bachelor": "과제 요구사항을 받고 받은 요구를 치수와 하중과 환경 조건으로 옮겨 적어 본 적이 있다",
-    "master": "과제 목표를 받고 받은 요구를 치수와 하중과 환경 조건으로 옮겨 적어 본 적이 있다",
-    "phd": "연구 목표를 세우면서 받은 요구를 치수와 하중과 환경 조건으로 옮겨 적어 본 적이 있다",
-    "postdoc": "연구 공고나 과제 목표를 보고 받은 요구를 치수와 하중과 환경 조건으로 옮겨 적어 본 적이 있다"
+    "bachelor": "과제 요구사항을 받고 받은 요구를 치수와 하중 같은 숫자 조건으로 옮겨 적은 적이 있다",
+    "master": "과제 목표를 받고 받은 요구를 치수와 하중 같은 숫자 조건으로 옮겨 적은 적이 있다",
+    "phd": "연구 목표를 정하면서 받은 요구를 치수와 하중 같은 숫자 조건으로 옮겨 적은 적이 있다",
+    "postdoc": "연구 공고나 과제 목표를 보고 받은 요구를 치수와 하중 같은 숫자 조건으로 옮겨 적은 적이 있다"
    },
    "options": [
     "없다",
@@ -2807,12 +2807,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "CAD 로 형상과 조립을 만들어 간섭을 확인해 본 적이 있다",
+   "wording": "3차원 설계 프로그램으로 부품 모양과 조립을 만들어 본 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 CAD 로 형상과 조립을 만들어 간섭을 확인해 본 적이 있다",
-    "master": "연구 수행에서 CAD 로 형상과 조립을 만들어 간섭을 확인해 본 적이 있다",
-    "phd": "방법을 검토하면서 CAD 로 형상과 조립을 만들어 간섭을 확인해 본 적이 있다",
-    "postdoc": "과제 수행에서 CAD 로 형상과 조립을 만들어 간섭을 확인해 본 적이 있다"
+    "bachelor": "실험이나 과제에서 3차원 설계 프로그램으로 부품 모양과 조립을 만들어 본 적이 있다",
+    "master": "연구 수행에서 3차원 설계 프로그램으로 부품 모양과 조립을 만들어 본 적이 있다",
+    "phd": "방법을 검토하면서 3차원 설계 프로그램으로 부품 모양과 조립을 만들어 본 적이 있다",
+    "postdoc": "과제 수행에서 3차원 설계 프로그램으로 부품 모양과 조립을 만들어 본 적이 있다"
    },
    "options": [
     "없다",
@@ -2842,12 +2842,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J8",
-   "wording": "내가 낸 도면으로 부품이 실제로 만들어진 적이 있다",
+   "wording": "내가 그린 설계안을 검토 회의에서 설명한 적이 있다",
    "stage_wording": {
-    "bachelor": "캡스톤이나 인턴에서 내가 낸 도면으로 부품이 실제로 만들어진 적이 있다",
-    "master": "연구실이나 과제에서 내가 낸 도면으로 부품이 실제로 만들어진 적이 있다",
-    "phd": "과제나 공동 연구에서 내가 낸 도면으로 부품이 실제로 만들어진 적이 있다",
-    "postdoc": "맡은 과제나 협력 기관에서 내가 낸 도면으로 부품이 실제로 만들어진 적이 있다"
+    "bachelor": "캡스톤이나 인턴에서 내가 그린 설계안을 검토 회의에서 설명한 적이 있다",
+    "master": "연구실이나 과제에서 내가 그린 설계안을 검토 회의에서 설명한 적이 있다",
+    "phd": "과제나 공동 연구에서 내가 그린 설계안을 검토 회의에서 설명한 적이 있다",
+    "postdoc": "맡은 과제나 협력 기관에서 내가 그린 설계안을 검토 회의에서 설명한 적이 있다"
    },
    "options": [
     "없다",
@@ -2877,12 +2877,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "해석에 쓸 구속 조건과 하중 작용점을 직접 정해 본 적이 있다",
+   "wording": "해석에 넣을 고정 위치와 힘이 걸리는 위치를 직접 정한 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 해석에 쓸 구속 조건과 하중 작용점을 직접 정해 본 적이 있다",
-    "master": "연구나 과제 수행에서 해석에 쓸 구속 조건과 하중 작용점을 직접 정해 본 적이 있다",
-    "phd": "방법을 세우면서 해석에 쓸 구속 조건과 하중 작용점을 직접 정해 본 적이 있다",
-    "postdoc": "맡은 범위 안에서 해석에 쓸 구속 조건과 하중 작용점을 직접 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 해석에 넣을 고정 위치와 힘이 걸리는 위치를 직접 정한 적이 있다",
+    "master": "연구나 과제 수행에서 해석에 넣을 고정 위치와 힘이 걸리는 위치를 직접 정한 적이 있다",
+    "phd": "연구 방법을 정하면서 해석에 넣을 고정 위치와 힘이 걸리는 위치를 직접 정한 적이 있다",
+    "postdoc": "맡은 범위 안에서 해석에 넣을 고정 위치와 힘이 걸리는 위치를 직접 정한 적이 있다"
    },
    "options": [
     "없다",
@@ -2912,12 +2912,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "쓸 재료 모델과 물성값을 어디서 가져올지 직접 정해 본 적이 있다",
+   "wording": "해석에 쓸 재료 물성값을 어디서 가져올지 직접 골라 본 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 쓸 재료 모델과 물성값을 어디서 가져올지 직접 정해 본 적이 있다",
-    "master": "연구나 과제 수행에서 쓸 재료 모델과 물성값을 어디서 가져올지 직접 정해 본 적이 있다",
-    "phd": "방법을 세우면서 쓸 재료 모델과 물성값을 어디서 가져올지 직접 정해 본 적이 있다",
-    "postdoc": "맡은 범위 안에서 쓸 재료 모델과 물성값을 어디서 가져올지 직접 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 해석에 쓸 재료 물성값을 어디서 가져올지 직접 골라 본 적이 있다",
+    "master": "연구나 과제 수행에서 해석에 쓸 재료 물성값을 어디서 가져올지 직접 골라 본 적이 있다",
+    "phd": "연구 방법을 정하면서 해석에 쓸 재료 물성값을 어디서 가져올지 직접 골라 본 적이 있다",
+    "postdoc": "맡은 범위 안에서 해석에 쓸 재료 물성값을 어디서 가져올지 직접 골라 본 적이 있다"
    },
    "options": [
     "없다",
@@ -2947,12 +2947,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "해석 보고서를 판정 결론까지 적어 내 본 적이 있다",
+   "wording": "해석 결과를 결론까지 보고서로 써 낸 적이 있다",
    "stage_wording": {
-    "bachelor": "과제나 캡스톤 결과로 해석 보고서를 판정 결론까지 적어 내 본 적이 있다",
-    "master": "연구 산출물로 해석 보고서를 판정 결론까지 적어 내 본 적이 있다",
-    "phd": "논문이나 보고로 해석 보고서를 판정 결론까지 적어 내 본 적이 있다",
-    "postdoc": "과제 산출물로 해석 보고서를 판정 결론까지 적어 내 본 적이 있다"
+    "bachelor": "과제나 캡스톤 결과로 해석 결과를 결론까지 보고서로 써 낸 적이 있다",
+    "master": "연구 산출물로 해석 결과를 결론까지 보고서로 써 낸 적이 있다",
+    "phd": "논문이나 보고로 해석 결과를 결론까지 보고서로 써 낸 적이 있다",
+    "postdoc": "과제 산출물로 해석 결과를 결론까지 보고서로 써 낸 적이 있다"
    },
    "options": [
     "없다",
@@ -2982,12 +2982,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "해석 조건과 가정을 따로 적어 남겨 본 적이 있다",
+   "wording": "해석에 넣은 조건과 가정을 따로 적어 둔 적이 있다",
    "stage_wording": {
-    "bachelor": "과제나 캡스톤 결과로 해석 조건과 가정을 따로 적어 남겨 본 적이 있다",
-    "master": "연구 산출물로 해석 조건과 가정을 따로 적어 남겨 본 적이 있다",
-    "phd": "논문이나 보고로 해석 조건과 가정을 따로 적어 남겨 본 적이 있다",
-    "postdoc": "과제 산출물로 해석 조건과 가정을 따로 적어 남겨 본 적이 있다"
+    "bachelor": "과제나 캡스톤 결과로 해석에 넣은 조건과 가정을 따로 적어 둔 적이 있다",
+    "master": "연구 산출물로 해석에 넣은 조건과 가정을 따로 적어 둔 적이 있다",
+    "phd": "논문이나 보고로 해석에 넣은 조건과 가정을 따로 적어 둔 적이 있다",
+    "postdoc": "과제 산출물로 해석에 넣은 조건과 가정을 따로 적어 둔 적이 있다"
    },
    "options": [
     "없다",
@@ -3017,12 +3017,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "해석으로 얻은 값을 시험으로 잰 값과 대조해 본 적이 있다",
+   "wording": "해석으로 얻은 값을 손계산 값과 비교한 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 해석으로 얻은 값을 시험으로 잰 값과 대조해 본 적이 있다",
-    "master": "연구에서 해석으로 얻은 값을 시험으로 잰 값과 대조해 본 적이 있다",
-    "phd": "결과의 타당성을 따질 때 해석으로 얻은 값을 시험으로 잰 값과 대조해 본 적이 있다",
-    "postdoc": "과제 결과를 낼 때 해석으로 얻은 값을 시험으로 잰 값과 대조해 본 적이 있다"
+    "bachelor": "실험이나 과제에서 해석으로 얻은 값을 손계산 값과 비교한 적이 있다",
+    "master": "연구에서 해석으로 얻은 값을 손계산 값과 비교한 적이 있다",
+    "phd": "결과의 타당성을 따질 때 해석으로 얻은 값을 손계산 값과 비교한 적이 있다",
+    "postdoc": "과제 결과를 낼 때 해석으로 얻은 값을 손계산 값과 비교한 적이 있다"
    },
    "options": [
     "없다",
@@ -3052,12 +3052,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "규격이 정한 허용값과 해석 결과를 견주어 본 적이 있다",
+   "wording": "규격이 정한 허용값 안에 해석 결과가 드는지 살펴본 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 규격이 정한 허용값과 해석 결과를 견주어 본 적이 있다",
-    "master": "연구에서 규격이 정한 허용값과 해석 결과를 견주어 본 적이 있다",
-    "phd": "결과의 타당성을 따질 때 규격이 정한 허용값과 해석 결과를 견주어 본 적이 있다",
-    "postdoc": "과제 결과를 낼 때 규격이 정한 허용값과 해석 결과를 견주어 본 적이 있다"
+    "bachelor": "실험이나 과제에서 규격이 정한 허용값 안에 해석 결과가 드는지 살펴본 적이 있다",
+    "master": "연구에서 규격이 정한 허용값 안에 해석 결과가 드는지 살펴본 적이 있다",
+    "phd": "결과의 타당성을 따질 때 규격이 정한 허용값 안에 해석 결과가 드는지 살펴본 적이 있다",
+    "postdoc": "과제 결과를 낼 때 규격이 정한 허용값 안에 해석 결과가 드는지 살펴본 적이 있다"
    },
    "options": [
     "없다",
@@ -3087,12 +3087,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "결과가 이상해서 조건이나 모델을 고쳐 다시 돌려 본 적이 있다",
+   "wording": "조건이나 모델을 고쳐 해석을 다시 돌려 본 적이 있다",
    "stage_wording": {
-    "bachelor": "결과가 예상과 달랐을 때 결과가 이상해서 조건이나 모델을 고쳐 다시 돌려 본 적이 있다",
-    "master": "재현이 안 됐을 때 결과가 이상해서 조건이나 모델을 고쳐 다시 돌려 본 적이 있다",
-    "phd": "결과가 가정과 어긋났을 때 결과가 이상해서 조건이나 모델을 고쳐 다시 돌려 본 적이 있다",
-    "postdoc": "방법의 한계를 정리할 때 결과가 이상해서 조건이나 모델을 고쳐 다시 돌려 본 적이 있다"
+    "bachelor": "결과가 예상과 달랐을 때 조건이나 모델을 고쳐 해석을 다시 돌려 본 적이 있다",
+    "master": "재현이 안 됐을 때 조건이나 모델을 고쳐 해석을 다시 돌려 본 적이 있다",
+    "phd": "결과가 가정과 어긋났을 때 조건이나 모델을 고쳐 해석을 다시 돌려 본 적이 있다",
+    "postdoc": "방법의 한계를 정리할 때 조건이나 모델을 고쳐 해석을 다시 돌려 본 적이 있다"
    },
    "options": [
     "없다",
@@ -3122,12 +3122,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "해석과 시험이 맞지 않아 차이의 까닭을 좁혀 본 적이 있다",
+   "wording": "해석값과 시험값이 다른 까닭을 하나씩 좁혀 본 적이 있다",
    "stage_wording": {
-    "bachelor": "결과가 예상과 달랐을 때 해석과 시험이 맞지 않아 차이의 까닭을 좁혀 본 적이 있다",
-    "master": "재현이 안 됐을 때 해석과 시험이 맞지 않아 차이의 까닭을 좁혀 본 적이 있다",
-    "phd": "결과가 가정과 어긋났을 때 해석과 시험이 맞지 않아 차이의 까닭을 좁혀 본 적이 있다",
-    "postdoc": "방법의 한계를 정리할 때 해석과 시험이 맞지 않아 차이의 까닭을 좁혀 본 적이 있다"
+    "bachelor": "결과가 예상과 달랐을 때 해석값과 시험값이 다른 까닭을 하나씩 좁혀 본 적이 있다",
+    "master": "재현이 안 됐을 때 해석값과 시험값이 다른 까닭을 하나씩 좁혀 본 적이 있다",
+    "phd": "결과가 가정과 어긋났을 때 해석값과 시험값이 다른 까닭을 하나씩 좁혀 본 적이 있다",
+    "postdoc": "방법의 한계를 정리할 때 해석값과 시험값이 다른 까닭을 하나씩 좁혀 본 적이 있다"
    },
    "options": [
     "없다",
@@ -3157,12 +3157,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "어떤 하중에서 무엇을 볼지 골라 해석 범위를 정해 본 적이 있다",
+   "wording": "어떤 하중 조건을 해석할지 내가 고른 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 어떤 하중에서 무엇을 볼지 골라 해석 범위를 정해 본 적이 있다",
-    "master": "연구과제에서 어떤 하중에서 무엇을 볼지 골라 해석 범위를 정해 본 적이 있다",
-    "phd": "연구 주제를 세울 때 어떤 하중에서 무엇을 볼지 골라 해석 범위를 정해 본 적이 있다",
-    "postdoc": "맡은 과제나 제안서에서 어떤 하중에서 무엇을 볼지 골라 해석 범위를 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 어떤 하중 조건을 해석할지 내가 고른 적이 있다",
+    "master": "연구과제에서 어떤 하중 조건을 해석할지 내가 고른 적이 있다",
+    "phd": "연구 주제를 정할 때 어떤 하중 조건을 해석할지 내가 고른 적이 있다",
+    "postdoc": "맡은 과제나 제안서에서 어떤 하중 조건을 해석할지 내가 고른 적이 있다"
    },
    "options": [
     "없다",
@@ -3192,12 +3192,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "요구 수명이나 안전계수를 해석 판정 기준으로 옮겨 본 적이 있다",
+   "wording": "요구 수명이나 버텨야 할 힘을 해석 조건으로 옮겨 본 적이 있다",
    "stage_wording": {
-    "bachelor": "과제 요구사항을 받고 요구 수명이나 안전계수를 해석 판정 기준으로 옮겨 본 적이 있다",
-    "master": "과제 목표를 받고 요구 수명이나 안전계수를 해석 판정 기준으로 옮겨 본 적이 있다",
-    "phd": "연구 목표를 세우면서 요구 수명이나 안전계수를 해석 판정 기준으로 옮겨 본 적이 있다",
-    "postdoc": "연구 공고나 과제 목표를 보고 요구 수명이나 안전계수를 해석 판정 기준으로 옮겨 본 적이 있다"
+    "bachelor": "과제 요구사항을 받고 요구 수명이나 버텨야 할 힘을 해석 조건으로 옮겨 본 적이 있다",
+    "master": "과제 목표를 받고 요구 수명이나 버텨야 할 힘을 해석 조건으로 옮겨 본 적이 있다",
+    "phd": "연구 목표를 정하면서 요구 수명이나 버텨야 할 힘을 해석 조건으로 옮겨 본 적이 있다",
+    "postdoc": "연구 공고나 과제 목표를 보고 요구 수명이나 버텨야 할 힘을 해석 조건으로 옮겨 본 적이 있다"
    },
    "options": [
     "없다",
@@ -3227,12 +3227,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "격자 크기를 바꿔 결과가 수렴하는지 확인해 본 적이 있다",
+   "wording": "해석 프로그램으로 모델을 만들어 계산을 돌려 본 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 격자 크기를 바꿔 결과가 수렴하는지 확인해 본 적이 있다",
-    "master": "연구 수행에서 격자 크기를 바꿔 결과가 수렴하는지 확인해 본 적이 있다",
-    "phd": "방법을 검토하면서 격자 크기를 바꿔 결과가 수렴하는지 확인해 본 적이 있다",
-    "postdoc": "과제 수행에서 격자 크기를 바꿔 결과가 수렴하는지 확인해 본 적이 있다"
+    "bachelor": "실험이나 과제에서 해석 프로그램으로 모델을 만들어 계산을 돌려 본 적이 있다",
+    "master": "연구 수행에서 해석 프로그램으로 모델을 만들어 계산을 돌려 본 적이 있다",
+    "phd": "방법을 검토하면서 해석 프로그램으로 모델을 만들어 계산을 돌려 본 적이 있다",
+    "postdoc": "과제 수행에서 해석 프로그램으로 모델을 만들어 계산을 돌려 본 적이 있다"
    },
    "options": [
     "없다",
@@ -3262,12 +3262,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J8",
-   "wording": "내 해석 결과가 설계 치수를 바꾸는 근거로 쓰인 적이 있다",
+   "wording": "해석 결과를 정리해 설계를 맡은 팀원에게 전한 적이 있다",
    "stage_wording": {
-    "bachelor": "캡스톤이나 인턴에서 내 해석 결과가 설계 치수를 바꾸는 근거로 쓰인 적이 있다",
-    "master": "연구실이나 과제에서 내 해석 결과가 설계 치수를 바꾸는 근거로 쓰인 적이 있다",
-    "phd": "과제나 공동 연구에서 내 해석 결과가 설계 치수를 바꾸는 근거로 쓰인 적이 있다",
-    "postdoc": "맡은 과제나 협력 기관에서 내 해석 결과가 설계 치수를 바꾸는 근거로 쓰인 적이 있다"
+    "bachelor": "캡스톤이나 인턴에서 해석 결과를 정리해 설계를 맡은 팀원에게 전한 적이 있다",
+    "master": "연구실이나 과제에서 해석 결과를 정리해 설계를 맡은 팀원에게 전한 적이 있다",
+    "phd": "과제나 공동 연구에서 해석 결과를 정리해 설계를 맡은 팀원에게 전한 적이 있다",
+    "postdoc": "맡은 과제나 협력 기관에서 해석 결과를 정리해 설계를 맡은 팀원에게 전한 적이 있다"
    },
    "options": [
     "없다",
@@ -3297,12 +3297,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "열을 어디로 뺄지 냉각 방식과 경로를 직접 정해 본 적이 있다",
+   "wording": "열을 어디로 뺄지 식히는 방식과 경로를 직접 정해 본 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 열을 어디로 뺄지 냉각 방식과 경로를 직접 정해 본 적이 있다",
-    "master": "연구나 과제 수행에서 열을 어디로 뺄지 냉각 방식과 경로를 직접 정해 본 적이 있다",
-    "phd": "방법을 세우면서 열을 어디로 뺄지 냉각 방식과 경로를 직접 정해 본 적이 있다",
-    "postdoc": "맡은 범위 안에서 열을 어디로 뺄지 냉각 방식과 경로를 직접 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 열을 어디로 뺄지 식히는 방식과 경로를 직접 정해 본 적이 있다",
+    "master": "연구나 과제 수행에서 열을 어디로 뺄지 식히는 방식과 경로를 직접 정해 본 적이 있다",
+    "phd": "연구 방법을 정하면서 열을 어디로 뺄지 식히는 방식과 경로를 직접 정해 본 적이 있다",
+    "postdoc": "맡은 범위 안에서 열을 어디로 뺄지 식히는 방식과 경로를 직접 정해 본 적이 있다"
    },
    "options": [
     "없다",
@@ -3332,12 +3332,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "유로 단면과 허용 압력손실을 직접 정해 본 적이 있다",
+   "wording": "공기나 물이 지나는 통로 굵기와 허용할 압력 손실을 직접 정한 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 유로 단면과 허용 압력손실을 직접 정해 본 적이 있다",
-    "master": "연구나 과제 수행에서 유로 단면과 허용 압력손실을 직접 정해 본 적이 있다",
-    "phd": "방법을 세우면서 유로 단면과 허용 압력손실을 직접 정해 본 적이 있다",
-    "postdoc": "맡은 범위 안에서 유로 단면과 허용 압력손실을 직접 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 공기나 물이 지나는 통로 굵기와 허용할 압력 손실을 직접 정한 적이 있다",
+    "master": "연구나 과제 수행에서 공기나 물이 지나는 통로 굵기와 허용할 압력 손실을 직접 정한 적이 있다",
+    "phd": "연구 방법을 정하면서 공기나 물이 지나는 통로 굵기와 허용할 압력 손실을 직접 정한 적이 있다",
+    "postdoc": "맡은 범위 안에서 공기나 물이 지나는 통로 굵기와 허용할 압력 손실을 직접 정한 적이 있다"
    },
    "options": [
     "없다",
@@ -3367,12 +3367,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "열설계 보고나 유로 사양을 내 본 적이 있다",
+   "wording": "열설계 보고나 통로 사양을 정리해 낸 적이 있다",
    "stage_wording": {
-    "bachelor": "과제나 캡스톤 결과로 열설계 보고나 유로 사양을 내 본 적이 있다",
-    "master": "연구 산출물로 열설계 보고나 유로 사양을 내 본 적이 있다",
-    "phd": "논문이나 보고로 열설계 보고나 유로 사양을 내 본 적이 있다",
-    "postdoc": "과제 산출물로 열설계 보고나 유로 사양을 내 본 적이 있다"
+    "bachelor": "과제나 캡스톤 결과로 열설계 보고나 통로 사양을 정리해 낸 적이 있다",
+    "master": "연구 산출물로 열설계 보고나 통로 사양을 정리해 낸 적이 있다",
+    "phd": "논문이나 보고로 열설계 보고나 통로 사양을 정리해 낸 적이 있다",
+    "postdoc": "과제 산출물로 열설계 보고나 통로 사양을 정리해 낸 적이 있다"
    },
    "options": [
     "없다",
@@ -3402,12 +3402,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "작동점과 여유율이 함께 적힌 자료를 남겨 본 적이 있다",
+   "wording": "작동 조건과 남는 여유를 함께 적은 자료를 남겨 본 적이 있다",
    "stage_wording": {
-    "bachelor": "과제나 캡스톤 결과로 작동점과 여유율이 함께 적힌 자료를 남겨 본 적이 있다",
-    "master": "연구 산출물로 작동점과 여유율이 함께 적힌 자료를 남겨 본 적이 있다",
-    "phd": "논문이나 보고로 작동점과 여유율이 함께 적힌 자료를 남겨 본 적이 있다",
-    "postdoc": "과제 산출물로 작동점과 여유율이 함께 적힌 자료를 남겨 본 적이 있다"
+    "bachelor": "과제나 캡스톤 결과로 작동 조건과 남는 여유를 함께 적은 자료를 남겨 본 적이 있다",
+    "master": "연구 산출물로 작동 조건과 남는 여유를 함께 적은 자료를 남겨 본 적이 있다",
+    "phd": "논문이나 보고로 작동 조건과 남는 여유를 함께 적은 자료를 남겨 본 적이 있다",
+    "postdoc": "과제 산출물로 작동 조건과 남는 여유를 함께 적은 자료를 남겨 본 적이 있다"
    },
    "options": [
     "없다",
@@ -3437,12 +3437,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "계산한 온도와 실제로 잰 온도를 대조해 본 적이 있다",
+   "wording": "계산한 온도를 문헌에 나온 값과 비교해 본 일이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 계산한 온도와 실제로 잰 온도를 대조해 본 적이 있다",
-    "master": "연구에서 계산한 온도와 실제로 잰 온도를 대조해 본 적이 있다",
-    "phd": "결과의 타당성을 따질 때 계산한 온도와 실제로 잰 온도를 대조해 본 적이 있다",
-    "postdoc": "과제 결과를 낼 때 계산한 온도와 실제로 잰 온도를 대조해 본 적이 있다"
+    "bachelor": "실험이나 과제에서 계산한 온도를 문헌에 나온 값과 비교해 본 일이 있다",
+    "master": "연구에서 계산한 온도를 문헌에 나온 값과 비교해 본 일이 있다",
+    "phd": "결과의 타당성을 따질 때 계산한 온도를 문헌에 나온 값과 비교해 본 일이 있다",
+    "postdoc": "과제 결과를 낼 때 계산한 온도를 문헌에 나온 값과 비교해 본 일이 있다"
    },
    "options": [
     "없다",
@@ -3472,12 +3472,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "요구 유량과 실제로 나온 유량을 견주어 본 적이 있다",
+   "wording": "요구 유량과 실제로 나온 유량을 재서 비교한 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 요구 유량과 실제로 나온 유량을 견주어 본 적이 있다",
-    "master": "연구에서 요구 유량과 실제로 나온 유량을 견주어 본 적이 있다",
-    "phd": "결과의 타당성을 따질 때 요구 유량과 실제로 나온 유량을 견주어 본 적이 있다",
-    "postdoc": "과제 결과를 낼 때 요구 유량과 실제로 나온 유량을 견주어 본 적이 있다"
+    "bachelor": "실험이나 과제에서 요구 유량과 실제로 나온 유량을 재서 비교한 적이 있다",
+    "master": "연구에서 요구 유량과 실제로 나온 유량을 재서 비교한 적이 있다",
+    "phd": "결과의 타당성을 따질 때 요구 유량과 실제로 나온 유량을 재서 비교한 적이 있다",
+    "postdoc": "과제 결과를 낼 때 요구 유량과 실제로 나온 유량을 재서 비교한 적이 있다"
    },
    "options": [
     "없다",
@@ -3507,12 +3507,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "온도가 떨어지지 않아 유로나 방열 면적을 고쳐 본 적이 있다",
+   "wording": "온도가 안 떨어져 통로나 방열 면적을 고친 적이 있다",
    "stage_wording": {
-    "bachelor": "결과가 예상과 달랐을 때 온도가 떨어지지 않아 유로나 방열 면적을 고쳐 본 적이 있다",
-    "master": "재현이 안 됐을 때 온도가 떨어지지 않아 유로나 방열 면적을 고쳐 본 적이 있다",
-    "phd": "결과가 가정과 어긋났을 때 온도가 떨어지지 않아 유로나 방열 면적을 고쳐 본 적이 있다",
-    "postdoc": "방법의 한계를 정리할 때 온도가 떨어지지 않아 유로나 방열 면적을 고쳐 본 적이 있다"
+    "bachelor": "결과가 예상과 달랐을 때 온도가 안 떨어져 통로나 방열 면적을 고친 적이 있다",
+    "master": "재현이 안 됐을 때 온도가 안 떨어져 통로나 방열 면적을 고친 적이 있다",
+    "phd": "결과가 가정과 어긋났을 때 온도가 안 떨어져 통로나 방열 면적을 고친 적이 있다",
+    "postdoc": "방법의 한계를 정리할 때 온도가 안 떨어져 통로나 방열 면적을 고친 적이 있다"
    },
    "options": [
     "없다",
@@ -3542,12 +3542,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "원인을 유량과 열저항과 접촉 가운데로 좁혀 본 적이 있다",
+   "wording": "온도가 높은 까닭을 유량과 접촉 상태 쪽으로 좁혀 본 적이 있다",
    "stage_wording": {
-    "bachelor": "결과가 예상과 달랐을 때 원인을 유량과 열저항과 접촉 가운데로 좁혀 본 적이 있다",
-    "master": "재현이 안 됐을 때 원인을 유량과 열저항과 접촉 가운데로 좁혀 본 적이 있다",
-    "phd": "결과가 가정과 어긋났을 때 원인을 유량과 열저항과 접촉 가운데로 좁혀 본 적이 있다",
-    "postdoc": "방법의 한계를 정리할 때 원인을 유량과 열저항과 접촉 가운데로 좁혀 본 적이 있다"
+    "bachelor": "결과가 예상과 달랐을 때 온도가 높은 까닭을 유량과 접촉 상태 쪽으로 좁혀 본 적이 있다",
+    "master": "재현이 안 됐을 때 온도가 높은 까닭을 유량과 접촉 상태 쪽으로 좁혀 본 적이 있다",
+    "phd": "결과가 가정과 어긋났을 때 온도가 높은 까닭을 유량과 접촉 상태 쪽으로 좁혀 본 적이 있다",
+    "postdoc": "방법의 한계를 정리할 때 온도가 높은 까닭을 유량과 접촉 상태 쪽으로 좁혀 본 적이 있다"
    },
    "options": [
     "없다",
@@ -3577,12 +3577,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "열과 유동 가운데 무엇이 문제인지 가려 범위를 정해 본 적이 있다",
+   "wording": "열이 많은 것과 흐름이 약한 것 가운데 무엇이 문제인지 가려낸 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 열과 유동 가운데 무엇이 문제인지 가려 범위를 정해 본 적이 있다",
-    "master": "연구과제에서 열과 유동 가운데 무엇이 문제인지 가려 범위를 정해 본 적이 있다",
-    "phd": "연구 주제를 세울 때 열과 유동 가운데 무엇이 문제인지 가려 범위를 정해 본 적이 있다",
-    "postdoc": "맡은 과제나 제안서에서 열과 유동 가운데 무엇이 문제인지 가려 범위를 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 열이 많은 것과 흐름이 약한 것 가운데 무엇이 문제인지 가려낸 적이 있다",
+    "master": "연구과제에서 열이 많은 것과 흐름이 약한 것 가운데 무엇이 문제인지 가려낸 적이 있다",
+    "phd": "연구 주제를 정할 때 열이 많은 것과 흐름이 약한 것 가운데 무엇이 문제인지 가려낸 적이 있다",
+    "postdoc": "맡은 과제나 제안서에서 열이 많은 것과 흐름이 약한 것 가운데 무엇이 문제인지 가려낸 적이 있다"
    },
    "options": [
     "없다",
@@ -3612,12 +3612,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "허용 온도와 요구 유량을 설계 조건으로 옮겨 적어 본 적이 있다",
+   "wording": "넘으면 안 되는 온도와 요구 유량을 설계 조건으로 옮겨 적어 본 적이 있다",
    "stage_wording": {
-    "bachelor": "과제 요구사항을 받고 허용 온도와 요구 유량을 설계 조건으로 옮겨 적어 본 적이 있다",
-    "master": "과제 목표를 받고 허용 온도와 요구 유량을 설계 조건으로 옮겨 적어 본 적이 있다",
-    "phd": "연구 목표를 세우면서 허용 온도와 요구 유량을 설계 조건으로 옮겨 적어 본 적이 있다",
-    "postdoc": "연구 공고나 과제 목표를 보고 허용 온도와 요구 유량을 설계 조건으로 옮겨 적어 본 적이 있다"
+    "bachelor": "과제 요구사항을 받고 넘으면 안 되는 온도와 요구 유량을 설계 조건으로 옮겨 적어 본 적이 있다",
+    "master": "과제 목표를 받고 넘으면 안 되는 온도와 요구 유량을 설계 조건으로 옮겨 적어 본 적이 있다",
+    "phd": "연구 목표를 정하면서 넘으면 안 되는 온도와 요구 유량을 설계 조건으로 옮겨 적어 본 적이 있다",
+    "postdoc": "연구 공고나 과제 목표를 보고 넘으면 안 되는 온도와 요구 유량을 설계 조건으로 옮겨 적어 본 적이 있다"
    },
    "options": [
     "없다",
@@ -3647,12 +3647,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "열저항을 쌓아 올려 손계산으로 온도를 가늠해 본 적이 있다",
+   "wording": "열 흐름 계산이나 유동 해석으로 온도 값을 내 본 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 열저항을 쌓아 올려 손계산으로 온도를 가늠해 본 적이 있다",
-    "master": "연구 수행에서 열저항을 쌓아 올려 손계산으로 온도를 가늠해 본 적이 있다",
-    "phd": "방법을 검토하면서 열저항을 쌓아 올려 손계산으로 온도를 가늠해 본 적이 있다",
-    "postdoc": "과제 수행에서 열저항을 쌓아 올려 손계산으로 온도를 가늠해 본 적이 있다"
+    "bachelor": "실험이나 과제에서 열 흐름 계산이나 유동 해석으로 온도 값을 내 본 적이 있다",
+    "master": "연구 수행에서 열 흐름 계산이나 유동 해석으로 온도 값을 내 본 적이 있다",
+    "phd": "방법을 검토하면서 열 흐름 계산이나 유동 해석으로 온도 값을 내 본 적이 있다",
+    "postdoc": "과제 수행에서 열 흐름 계산이나 유동 해석으로 온도 값을 내 본 적이 있다"
    },
    "options": [
     "없다",
@@ -3682,12 +3682,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J8",
-   "wording": "내가 정한 열설계가 그대로 제작에 쓰인 적이 있다",
+   "wording": "열설계 결과를 설계 검토 회의에 올려 본 적이 있다",
    "stage_wording": {
-    "bachelor": "캡스톤이나 인턴에서 내가 정한 열설계가 그대로 제작에 쓰인 적이 있다",
-    "master": "연구실이나 과제에서 내가 정한 열설계가 그대로 제작에 쓰인 적이 있다",
-    "phd": "과제나 공동 연구에서 내가 정한 열설계가 그대로 제작에 쓰인 적이 있다",
-    "postdoc": "맡은 과제나 협력 기관에서 내가 정한 열설계가 그대로 제작에 쓰인 적이 있다"
+    "bachelor": "캡스톤이나 인턴에서 열설계 결과를 설계 검토 회의에 올려 본 적이 있다",
+    "master": "연구실이나 과제에서 열설계 결과를 설계 검토 회의에 올려 본 적이 있다",
+    "phd": "과제나 공동 연구에서 열설계 결과를 설계 검토 회의에 올려 본 적이 있다",
+    "postdoc": "맡은 과제나 협력 기관에서 열설계 결과를 설계 검토 회의에 올려 본 적이 있다"
    },
    "options": [
     "없다",
@@ -3717,12 +3717,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "쓸 가진 조건과 볼 주파수 범위를 직접 정해 본 적이 있다",
+   "wording": "진동을 줄 방법과 살펴볼 주파수 범위를 직접 정해 둔 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 쓸 가진 조건과 볼 주파수 범위를 직접 정해 본 적이 있다",
-    "master": "연구나 과제 수행에서 쓸 가진 조건과 볼 주파수 범위를 직접 정해 본 적이 있다",
-    "phd": "방법을 세우면서 쓸 가진 조건과 볼 주파수 범위를 직접 정해 본 적이 있다",
-    "postdoc": "맡은 범위 안에서 쓸 가진 조건과 볼 주파수 범위를 직접 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 진동을 줄 방법과 살펴볼 주파수 범위를 직접 정해 둔 적이 있다",
+    "master": "연구나 과제 수행에서 진동을 줄 방법과 살펴볼 주파수 범위를 직접 정해 둔 적이 있다",
+    "phd": "연구 방법을 정하면서 진동을 줄 방법과 살펴볼 주파수 범위를 직접 정해 둔 적이 있다",
+    "postdoc": "맡은 범위 안에서 진동을 줄 방법과 살펴볼 주파수 범위를 직접 정해 둔 적이 있다"
    },
    "options": [
     "없다",
@@ -3752,12 +3752,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "떨림을 줄이려고 마운트나 감쇠 사양을 직접 정해 본 적이 있다",
+   "wording": "떨림을 줄이려고 고무 받침이나 감쇠 재료를 직접 골라 본 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 떨림을 줄이려고 마운트나 감쇠 사양을 직접 정해 본 적이 있다",
-    "master": "연구나 과제 수행에서 떨림을 줄이려고 마운트나 감쇠 사양을 직접 정해 본 적이 있다",
-    "phd": "방법을 세우면서 떨림을 줄이려고 마운트나 감쇠 사양을 직접 정해 본 적이 있다",
-    "postdoc": "맡은 범위 안에서 떨림을 줄이려고 마운트나 감쇠 사양을 직접 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 떨림을 줄이려고 고무 받침이나 감쇠 재료를 직접 골라 본 적이 있다",
+    "master": "연구나 과제 수행에서 떨림을 줄이려고 고무 받침이나 감쇠 재료를 직접 골라 본 적이 있다",
+    "phd": "연구 방법을 정하면서 떨림을 줄이려고 고무 받침이나 감쇠 재료를 직접 골라 본 적이 있다",
+    "postdoc": "맡은 범위 안에서 떨림을 줄이려고 고무 받침이나 감쇠 재료를 직접 골라 본 적이 있다"
    },
    "options": [
     "없다",
@@ -3787,12 +3787,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "진동 측정 결과를 전달 경로별로 정리해 내 본 적이 있다",
+   "wording": "진동을 잰 결과를 전달되는 길별로 정리해 낸 적이 있다",
    "stage_wording": {
-    "bachelor": "과제나 캡스톤 결과로 진동 측정 결과를 전달 경로별로 정리해 내 본 적이 있다",
-    "master": "연구 산출물로 진동 측정 결과를 전달 경로별로 정리해 내 본 적이 있다",
-    "phd": "논문이나 보고로 진동 측정 결과를 전달 경로별로 정리해 내 본 적이 있다",
-    "postdoc": "과제 산출물로 진동 측정 결과를 전달 경로별로 정리해 내 본 적이 있다"
+    "bachelor": "과제나 캡스톤 결과로 진동을 잰 결과를 전달되는 길별로 정리해 낸 적이 있다",
+    "master": "연구 산출물로 진동을 잰 결과를 전달되는 길별로 정리해 낸 적이 있다",
+    "phd": "논문이나 보고로 진동을 잰 결과를 전달되는 길별로 정리해 낸 적이 있다",
+    "postdoc": "과제 산출물로 진동을 잰 결과를 전달되는 길별로 정리해 낸 적이 있다"
    },
    "options": [
     "없다",
@@ -3822,12 +3822,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "대책 전후의 값이 함께 적힌 자료를 남겨 본 적이 있다",
+   "wording": "대책 전과 뒤의 진동 값을 한 자료에 담아 남긴 적이 있다",
    "stage_wording": {
-    "bachelor": "과제나 캡스톤 결과로 대책 전후의 값이 함께 적힌 자료를 남겨 본 적이 있다",
-    "master": "연구 산출물로 대책 전후의 값이 함께 적힌 자료를 남겨 본 적이 있다",
-    "phd": "논문이나 보고로 대책 전후의 값이 함께 적힌 자료를 남겨 본 적이 있다",
-    "postdoc": "과제 산출물로 대책 전후의 값이 함께 적힌 자료를 남겨 본 적이 있다"
+    "bachelor": "과제나 캡스톤 결과로 대책 전과 뒤의 진동 값을 한 자료에 담아 남긴 적이 있다",
+    "master": "연구 산출물로 대책 전과 뒤의 진동 값을 한 자료에 담아 남긴 적이 있다",
+    "phd": "논문이나 보고로 대책 전과 뒤의 진동 값을 한 자료에 담아 남긴 적이 있다",
+    "postdoc": "과제 산출물로 대책 전과 뒤의 진동 값을 한 자료에 담아 남긴 적이 있다"
    },
    "options": [
     "없다",
@@ -3857,12 +3857,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "해석으로 얻은 고유진동수를 측정값과 대조해 본 적이 있다",
+   "wording": "해석으로 구한 진동 모양이 측정 결과와 같은지 살펴본 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 해석으로 얻은 고유진동수를 측정값과 대조해 본 적이 있다",
-    "master": "연구에서 해석으로 얻은 고유진동수를 측정값과 대조해 본 적이 있다",
-    "phd": "결과의 타당성을 따질 때 해석으로 얻은 고유진동수를 측정값과 대조해 본 적이 있다",
-    "postdoc": "과제 결과를 낼 때 해석으로 얻은 고유진동수를 측정값과 대조해 본 적이 있다"
+    "bachelor": "실험이나 과제에서 해석으로 구한 진동 모양이 측정 결과와 같은지 살펴본 적이 있다",
+    "master": "연구에서 해석으로 구한 진동 모양이 측정 결과와 같은지 살펴본 적이 있다",
+    "phd": "결과의 타당성을 따질 때 해석으로 구한 진동 모양이 측정 결과와 같은지 살펴본 적이 있다",
+    "postdoc": "과제 결과를 낼 때 해석으로 구한 진동 모양이 측정 결과와 같은지 살펴본 적이 있다"
    },
    "options": [
     "없다",
@@ -3892,12 +3892,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "대책을 넣기 전과 뒤의 진동 수준을 견주어 본 적이 있다",
+   "wording": "대책을 넣기 전과 뒤의 진동 크기를 같은 조건으로 재 본 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 대책을 넣기 전과 뒤의 진동 수준을 견주어 본 적이 있다",
-    "master": "연구에서 대책을 넣기 전과 뒤의 진동 수준을 견주어 본 적이 있다",
-    "phd": "결과의 타당성을 따질 때 대책을 넣기 전과 뒤의 진동 수준을 견주어 본 적이 있다",
-    "postdoc": "과제 결과를 낼 때 대책을 넣기 전과 뒤의 진동 수준을 견주어 본 적이 있다"
+    "bachelor": "실험이나 과제에서 대책을 넣기 전과 뒤의 진동 크기를 같은 조건으로 재 본 적이 있다",
+    "master": "연구에서 대책을 넣기 전과 뒤의 진동 크기를 같은 조건으로 재 본 적이 있다",
+    "phd": "결과의 타당성을 따질 때 대책을 넣기 전과 뒤의 진동 크기를 같은 조건으로 재 본 적이 있다",
+    "postdoc": "과제 결과를 낼 때 대책을 넣기 전과 뒤의 진동 크기를 같은 조건으로 재 본 적이 있다"
    },
    "options": [
     "없다",
@@ -3927,12 +3927,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "떨림이 남아서 원인을 다시 찾아 고쳐 본 적이 있다",
+   "wording": "대책을 넣어도 떨림이 남아 원인을 다시 찾아본 적이 있다",
    "stage_wording": {
-    "bachelor": "결과가 예상과 달랐을 때 떨림이 남아서 원인을 다시 찾아 고쳐 본 적이 있다",
-    "master": "재현이 안 됐을 때 떨림이 남아서 원인을 다시 찾아 고쳐 본 적이 있다",
-    "phd": "결과가 가정과 어긋났을 때 떨림이 남아서 원인을 다시 찾아 고쳐 본 적이 있다",
-    "postdoc": "방법의 한계를 정리할 때 떨림이 남아서 원인을 다시 찾아 고쳐 본 적이 있다"
+    "bachelor": "결과가 예상과 달랐을 때 대책을 넣어도 떨림이 남아 원인을 다시 찾아본 적이 있다",
+    "master": "재현이 안 됐을 때 대책을 넣어도 떨림이 남아 원인을 다시 찾아본 적이 있다",
+    "phd": "결과가 가정과 어긋났을 때 대책을 넣어도 떨림이 남아 원인을 다시 찾아본 적이 있다",
+    "postdoc": "방법의 한계를 정리할 때 대책을 넣어도 떨림이 남아 원인을 다시 찾아본 적이 있다"
    },
    "options": [
     "없다",
@@ -3962,12 +3962,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "원인을 가진원과 전달 경로와 공진 가운데로 좁혀 본 적이 있다",
+   "wording": "떨림의 원인을 진동이 시작되는 곳과 전달되는 길로 나눠 본 적이 있다",
    "stage_wording": {
-    "bachelor": "결과가 예상과 달랐을 때 원인을 가진원과 전달 경로와 공진 가운데로 좁혀 본 적이 있다",
-    "master": "재현이 안 됐을 때 원인을 가진원과 전달 경로와 공진 가운데로 좁혀 본 적이 있다",
-    "phd": "결과가 가정과 어긋났을 때 원인을 가진원과 전달 경로와 공진 가운데로 좁혀 본 적이 있다",
-    "postdoc": "방법의 한계를 정리할 때 원인을 가진원과 전달 경로와 공진 가운데로 좁혀 본 적이 있다"
+    "bachelor": "결과가 예상과 달랐을 때 떨림의 원인을 진동이 시작되는 곳과 전달되는 길로 나눠 본 적이 있다",
+    "master": "재현이 안 됐을 때 떨림의 원인을 진동이 시작되는 곳과 전달되는 길로 나눠 본 적이 있다",
+    "phd": "결과가 가정과 어긋났을 때 떨림의 원인을 진동이 시작되는 곳과 전달되는 길로 나눠 본 적이 있다",
+    "postdoc": "방법의 한계를 정리할 때 떨림의 원인을 진동이 시작되는 곳과 전달되는 길로 나눠 본 적이 있다"
    },
    "options": [
     "없다",
@@ -3997,12 +3997,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "어느 진동이나 소음을 다룰지 골라 범위를 정해 본 적이 있다",
+   "wording": "문제가 되는 떨림이 어느 주파수 대역인지 찾아낸 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 어느 진동이나 소음을 다룰지 골라 범위를 정해 본 적이 있다",
-    "master": "연구과제에서 어느 진동이나 소음을 다룰지 골라 범위를 정해 본 적이 있다",
-    "phd": "연구 주제를 세울 때 어느 진동이나 소음을 다룰지 골라 범위를 정해 본 적이 있다",
-    "postdoc": "맡은 과제나 제안서에서 어느 진동이나 소음을 다룰지 골라 범위를 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 문제가 되는 떨림이 어느 주파수 대역인지 찾아낸 적이 있다",
+    "master": "연구과제에서 문제가 되는 떨림이 어느 주파수 대역인지 찾아낸 적이 있다",
+    "phd": "연구 주제를 정할 때 문제가 되는 떨림이 어느 주파수 대역인지 찾아낸 적이 있다",
+    "postdoc": "맡은 과제나 제안서에서 문제가 되는 떨림이 어느 주파수 대역인지 찾아낸 적이 있다"
    },
    "options": [
     "없다",
@@ -4032,12 +4032,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "요구 진동 수준이나 소음 기준을 설계 조건으로 옮겨 본 적이 있다",
+   "wording": "허용할 진동이나 소음 크기를 잴 위치와 운전 조건으로 옮겨 본 적이 있다",
    "stage_wording": {
-    "bachelor": "과제 요구사항을 받고 요구 진동 수준이나 소음 기준을 설계 조건으로 옮겨 본 적이 있다",
-    "master": "과제 목표를 받고 요구 진동 수준이나 소음 기준을 설계 조건으로 옮겨 본 적이 있다",
-    "phd": "연구 목표를 세우면서 요구 진동 수준이나 소음 기준을 설계 조건으로 옮겨 본 적이 있다",
-    "postdoc": "연구 공고나 과제 목표를 보고 요구 진동 수준이나 소음 기준을 설계 조건으로 옮겨 본 적이 있다"
+    "bachelor": "과제 요구사항을 받고 허용할 진동이나 소음 크기를 잴 위치와 운전 조건으로 옮겨 본 적이 있다",
+    "master": "과제 목표를 받고 허용할 진동이나 소음 크기를 잴 위치와 운전 조건으로 옮겨 본 적이 있다",
+    "phd": "연구 목표를 정하면서 허용할 진동이나 소음 크기를 잴 위치와 운전 조건으로 옮겨 본 적이 있다",
+    "postdoc": "연구 공고나 과제 목표를 보고 허용할 진동이나 소음 크기를 잴 위치와 운전 조건으로 옮겨 본 적이 있다"
    },
    "options": [
     "없다",
@@ -4067,12 +4067,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "측정한 응답을 주파수로 바꿔 어느 성분인지 가려 본 적이 있다",
+   "wording": "가속도 센서로 진동을 직접 재 본 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 측정한 응답을 주파수로 바꿔 어느 성분인지 가려 본 적이 있다",
-    "master": "연구 수행에서 측정한 응답을 주파수로 바꿔 어느 성분인지 가려 본 적이 있다",
-    "phd": "방법을 검토하면서 측정한 응답을 주파수로 바꿔 어느 성분인지 가려 본 적이 있다",
-    "postdoc": "과제 수행에서 측정한 응답을 주파수로 바꿔 어느 성분인지 가려 본 적이 있다"
+    "bachelor": "실험이나 과제에서 가속도 센서로 진동을 직접 재 본 적이 있다",
+    "master": "연구 수행에서 가속도 센서로 진동을 직접 재 본 적이 있다",
+    "phd": "방법을 검토하면서 가속도 센서로 진동을 직접 재 본 적이 있다",
+    "postdoc": "과제 수행에서 가속도 센서로 진동을 직접 재 본 적이 있다"
    },
    "options": [
     "없다",
@@ -4102,12 +4102,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J8",
-   "wording": "진동이나 소음 결과를 설계나 생산 쪽에 보고해 본 적이 있다",
+   "wording": "진동이나 소음 결과를 설계나 생산 쪽 사람에게 보고한 적이 있다",
    "stage_wording": {
-    "bachelor": "캡스톤이나 인턴에서 진동이나 소음 결과를 설계나 생산 쪽에 보고해 본 적이 있다",
-    "master": "연구실이나 과제에서 진동이나 소음 결과를 설계나 생산 쪽에 보고해 본 적이 있다",
-    "phd": "과제나 공동 연구에서 진동이나 소음 결과를 설계나 생산 쪽에 보고해 본 적이 있다",
-    "postdoc": "맡은 과제나 협력 기관에서 진동이나 소음 결과를 설계나 생산 쪽에 보고해 본 적이 있다"
+    "bachelor": "캡스톤이나 인턴에서 진동이나 소음 결과를 설계나 생산 쪽 사람에게 보고한 적이 있다",
+    "master": "연구실이나 과제에서 진동이나 소음 결과를 설계나 생산 쪽 사람에게 보고한 적이 있다",
+    "phd": "과제나 공동 연구에서 진동이나 소음 결과를 설계나 생산 쪽 사람에게 보고한 적이 있다",
+    "postdoc": "맡은 과제나 협력 기관에서 진동이나 소음 결과를 설계나 생산 쪽 사람에게 보고한 적이 있다"
    },
    "options": [
     "없다",
@@ -4137,12 +4137,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "부하와 관성과 마찰을 따져 모터 용량을 직접 정해 본 적이 있다",
+   "wording": "무게와 관성과 마찰을 따져 모터 크기를 직접 골랐던 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 부하와 관성과 마찰을 따져 모터 용량을 직접 정해 본 적이 있다",
-    "master": "연구나 과제 수행에서 부하와 관성과 마찰을 따져 모터 용량을 직접 정해 본 적이 있다",
-    "phd": "방법을 세우면서 부하와 관성과 마찰을 따져 모터 용량을 직접 정해 본 적이 있다",
-    "postdoc": "맡은 범위 안에서 부하와 관성과 마찰을 따져 모터 용량을 직접 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 무게와 관성과 마찰을 따져 모터 크기를 직접 골랐던 적이 있다",
+    "master": "연구나 과제 수행에서 무게와 관성과 마찰을 따져 모터 크기를 직접 골랐던 적이 있다",
+    "phd": "연구 방법을 정하면서 무게와 관성과 마찰을 따져 모터 크기를 직접 골랐던 적이 있다",
+    "postdoc": "맡은 범위 안에서 무게와 관성과 마찰을 따져 모터 크기를 직접 골랐던 적이 있다"
    },
    "options": [
     "없다",
@@ -4172,12 +4172,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "요구 정밀도에 맞춰 감속비와 전달 방식을 직접 정해 본 적이 있다",
+   "wording": "요구 정밀도에 맞춰 기어비와 동력 전달 방식을 직접 고른 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 요구 정밀도에 맞춰 감속비와 전달 방식을 직접 정해 본 적이 있다",
-    "master": "연구나 과제 수행에서 요구 정밀도에 맞춰 감속비와 전달 방식을 직접 정해 본 적이 있다",
-    "phd": "방법을 세우면서 요구 정밀도에 맞춰 감속비와 전달 방식을 직접 정해 본 적이 있다",
-    "postdoc": "맡은 범위 안에서 요구 정밀도에 맞춰 감속비와 전달 방식을 직접 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 요구 정밀도에 맞춰 기어비와 동력 전달 방식을 직접 고른 적이 있다",
+    "master": "연구나 과제 수행에서 요구 정밀도에 맞춰 기어비와 동력 전달 방식을 직접 고른 적이 있다",
+    "phd": "연구 방법을 정하면서 요구 정밀도에 맞춰 기어비와 동력 전달 방식을 직접 고른 적이 있다",
+    "postdoc": "맡은 범위 안에서 요구 정밀도에 맞춰 기어비와 동력 전달 방식을 직접 고른 적이 있다"
    },
    "options": [
     "없다",
@@ -4207,12 +4207,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "움직이는 기구나 장치를 만들어 내 본 적이 있다",
+   "wording": "움직이는 기구나 장치를 직접 만들어 본 적이 있다",
    "stage_wording": {
-    "bachelor": "과제나 캡스톤 결과로 움직이는 기구나 장치를 만들어 내 본 적이 있다",
-    "master": "연구 산출물로 움직이는 기구나 장치를 만들어 내 본 적이 있다",
-    "phd": "논문이나 보고로 움직이는 기구나 장치를 만들어 내 본 적이 있다",
-    "postdoc": "과제 산출물로 움직이는 기구나 장치를 만들어 내 본 적이 있다"
+    "bachelor": "과제나 캡스톤 결과로 움직이는 기구나 장치를 직접 만들어 본 적이 있다",
+    "master": "연구 산출물로 움직이는 기구나 장치를 직접 만들어 본 적이 있다",
+    "phd": "논문이나 보고로 움직이는 기구나 장치를 직접 만들어 본 적이 있다",
+    "postdoc": "과제 산출물로 움직이는 기구나 장치를 직접 만들어 본 적이 있다"
    },
    "options": [
     "없다",
@@ -4242,12 +4242,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "구동 선정 계산서를 근거까지 적어 남겨 본 적이 있다",
+   "wording": "모터를 고른 계산을 근거와 함께 문서로 남겨 본 적이 있다",
    "stage_wording": {
-    "bachelor": "과제나 캡스톤 결과로 구동 선정 계산서를 근거까지 적어 남겨 본 적이 있다",
-    "master": "연구 산출물로 구동 선정 계산서를 근거까지 적어 남겨 본 적이 있다",
-    "phd": "논문이나 보고로 구동 선정 계산서를 근거까지 적어 남겨 본 적이 있다",
-    "postdoc": "과제 산출물로 구동 선정 계산서를 근거까지 적어 남겨 본 적이 있다"
+    "bachelor": "과제나 캡스톤 결과로 모터를 고른 계산을 근거와 함께 문서로 남겨 본 적이 있다",
+    "master": "연구 산출물로 모터를 고른 계산을 근거와 함께 문서로 남겨 본 적이 있다",
+    "phd": "논문이나 보고로 모터를 고른 계산을 근거와 함께 문서로 남겨 본 적이 있다",
+    "postdoc": "과제 산출물로 모터를 고른 계산을 근거와 함께 문서로 남겨 본 적이 있다"
    },
    "options": [
     "없다",
@@ -4277,12 +4277,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "목표 사이클 시간과 실제 동작 시간을 견주어 본 적이 있다",
+   "wording": "목표로 한 동작 시간과 실제 걸린 시간을 비교한 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 목표 사이클 시간과 실제 동작 시간을 견주어 본 적이 있다",
-    "master": "연구에서 목표 사이클 시간과 실제 동작 시간을 견주어 본 적이 있다",
-    "phd": "결과의 타당성을 따질 때 목표 사이클 시간과 실제 동작 시간을 견주어 본 적이 있다",
-    "postdoc": "과제 결과를 낼 때 목표 사이클 시간과 실제 동작 시간을 견주어 본 적이 있다"
+    "bachelor": "실험이나 과제에서 목표로 한 동작 시간과 실제 걸린 시간을 비교한 적이 있다",
+    "master": "연구에서 목표로 한 동작 시간과 실제 걸린 시간을 비교한 적이 있다",
+    "phd": "결과의 타당성을 따질 때 목표로 한 동작 시간과 실제 걸린 시간을 비교한 적이 있다",
+    "postdoc": "과제 결과를 낼 때 목표로 한 동작 시간과 실제 걸린 시간을 비교한 적이 있다"
    },
    "options": [
     "없다",
@@ -4312,12 +4312,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "같은 자리에 몇 번 멈추는지 여러 번 재 본 적이 있다",
+   "wording": "같은 위치에 몇 번 정확히 멈추는지 여러 번 재 본 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 같은 자리에 몇 번 멈추는지 여러 번 재 본 적이 있다",
-    "master": "연구에서 같은 자리에 몇 번 멈추는지 여러 번 재 본 적이 있다",
-    "phd": "결과의 타당성을 따질 때 같은 자리에 몇 번 멈추는지 여러 번 재 본 적이 있다",
-    "postdoc": "과제 결과를 낼 때 같은 자리에 몇 번 멈추는지 여러 번 재 본 적이 있다"
+    "bachelor": "실험이나 과제에서 같은 위치에 몇 번 정확히 멈추는지 여러 번 재 본 적이 있다",
+    "master": "연구에서 같은 위치에 몇 번 정확히 멈추는지 여러 번 재 본 적이 있다",
+    "phd": "결과의 타당성을 따질 때 같은 위치에 몇 번 정확히 멈추는지 여러 번 재 본 적이 있다",
+    "postdoc": "과제 결과를 낼 때 같은 위치에 몇 번 정확히 멈추는지 여러 번 재 본 적이 있다"
    },
    "options": [
     "없다",
@@ -4347,12 +4347,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "떨리거나 멈춰서 원인을 찾아 고쳐 본 적이 있다",
+   "wording": "장치가 떨리거나 멈춰서 원인을 찾아 고친 적이 있다",
    "stage_wording": {
-    "bachelor": "결과가 예상과 달랐을 때 떨리거나 멈춰서 원인을 찾아 고쳐 본 적이 있다",
-    "master": "재현이 안 됐을 때 떨리거나 멈춰서 원인을 찾아 고쳐 본 적이 있다",
-    "phd": "결과가 가정과 어긋났을 때 떨리거나 멈춰서 원인을 찾아 고쳐 본 적이 있다",
-    "postdoc": "방법의 한계를 정리할 때 떨리거나 멈춰서 원인을 찾아 고쳐 본 적이 있다"
+    "bachelor": "결과가 예상과 달랐을 때 장치가 떨리거나 멈춰서 원인을 찾아 고친 적이 있다",
+    "master": "재현이 안 됐을 때 장치가 떨리거나 멈춰서 원인을 찾아 고친 적이 있다",
+    "phd": "결과가 가정과 어긋났을 때 장치가 떨리거나 멈춰서 원인을 찾아 고친 적이 있다",
+    "postdoc": "방법의 한계를 정리할 때 장치가 떨리거나 멈춰서 원인을 찾아 고친 적이 있다"
    },
    "options": [
     "없다",
@@ -4382,12 +4382,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "원인을 관성과 마찰과 강성 가운데로 좁혀 본 적이 있다",
+   "wording": "멈춘 까닭을 무게와 마찰과 단단함 쪽으로 좁혀 본 적이 있다",
    "stage_wording": {
-    "bachelor": "결과가 예상과 달랐을 때 원인을 관성과 마찰과 강성 가운데로 좁혀 본 적이 있다",
-    "master": "재현이 안 됐을 때 원인을 관성과 마찰과 강성 가운데로 좁혀 본 적이 있다",
-    "phd": "결과가 가정과 어긋났을 때 원인을 관성과 마찰과 강성 가운데로 좁혀 본 적이 있다",
-    "postdoc": "방법의 한계를 정리할 때 원인을 관성과 마찰과 강성 가운데로 좁혀 본 적이 있다"
+    "bachelor": "결과가 예상과 달랐을 때 멈춘 까닭을 무게와 마찰과 단단함 쪽으로 좁혀 본 적이 있다",
+    "master": "재현이 안 됐을 때 멈춘 까닭을 무게와 마찰과 단단함 쪽으로 좁혀 본 적이 있다",
+    "phd": "결과가 가정과 어긋났을 때 멈춘 까닭을 무게와 마찰과 단단함 쪽으로 좁혀 본 적이 있다",
+    "postdoc": "방법의 한계를 정리할 때 멈춘 까닭을 무게와 마찰과 단단함 쪽으로 좁혀 본 적이 있다"
    },
    "options": [
     "없다",
@@ -4417,12 +4417,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "움직일 것과 이번에 움직이지 않을 것을 갈라 적어 본 적이 있다",
+   "wording": "움직일 부분과 이번에 고정할 부분을 나눠 적어 본 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 움직일 것과 이번에 움직이지 않을 것을 갈라 적어 본 적이 있다",
-    "master": "연구과제에서 움직일 것과 이번에 움직이지 않을 것을 갈라 적어 본 적이 있다",
-    "phd": "연구 주제를 세울 때 움직일 것과 이번에 움직이지 않을 것을 갈라 적어 본 적이 있다",
-    "postdoc": "맡은 과제나 제안서에서 움직일 것과 이번에 움직이지 않을 것을 갈라 적어 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 움직일 부분과 이번에 고정할 부분을 나눠 적어 본 적이 있다",
+    "master": "연구과제에서 움직일 부분과 이번에 고정할 부분을 나눠 적어 본 적이 있다",
+    "phd": "연구 주제를 정할 때 움직일 부분과 이번에 고정할 부분을 나눠 적어 본 적이 있다",
+    "postdoc": "맡은 과제나 제안서에서 움직일 부분과 이번에 고정할 부분을 나눠 적어 본 적이 있다"
    },
    "options": [
     "없다",
@@ -4452,12 +4452,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "요구 속도와 정지 정확도를 수치 조건으로 옮겨 적어 본 적이 있다",
+   "wording": "요구 속도와 멈춤 정확도를 숫자 조건으로 바꿔 적은 적이 있다",
    "stage_wording": {
-    "bachelor": "과제 요구사항을 받고 요구 속도와 정지 정확도를 수치 조건으로 옮겨 적어 본 적이 있다",
-    "master": "과제 목표를 받고 요구 속도와 정지 정확도를 수치 조건으로 옮겨 적어 본 적이 있다",
-    "phd": "연구 목표를 세우면서 요구 속도와 정지 정확도를 수치 조건으로 옮겨 적어 본 적이 있다",
-    "postdoc": "연구 공고나 과제 목표를 보고 요구 속도와 정지 정확도를 수치 조건으로 옮겨 적어 본 적이 있다"
+    "bachelor": "과제 요구사항을 받고 요구 속도와 멈춤 정확도를 숫자 조건으로 바꿔 적은 적이 있다",
+    "master": "과제 목표를 받고 요구 속도와 멈춤 정확도를 숫자 조건으로 바꿔 적은 적이 있다",
+    "phd": "연구 목표를 정하면서 요구 속도와 멈춤 정확도를 숫자 조건으로 바꿔 적은 적이 있다",
+    "postdoc": "연구 공고나 과제 목표를 보고 요구 속도와 멈춤 정확도를 숫자 조건으로 바꿔 적은 적이 있다"
    },
    "options": [
     "없다",
@@ -4487,12 +4487,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "부하 토크와 관성을 환산해 선정값이 맞는지 확인해 본 적이 있다",
+   "wording": "모터에 걸리는 힘과 관성을 계산해 고른 모터가 맞는지 확인한 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 부하 토크와 관성을 환산해 선정값이 맞는지 확인해 본 적이 있다",
-    "master": "연구 수행에서 부하 토크와 관성을 환산해 선정값이 맞는지 확인해 본 적이 있다",
-    "phd": "방법을 검토하면서 부하 토크와 관성을 환산해 선정값이 맞는지 확인해 본 적이 있다",
-    "postdoc": "과제 수행에서 부하 토크와 관성을 환산해 선정값이 맞는지 확인해 본 적이 있다"
+    "bachelor": "실험이나 과제에서 모터에 걸리는 힘과 관성을 계산해 고른 모터가 맞는지 확인한 적이 있다",
+    "master": "연구 수행에서 모터에 걸리는 힘과 관성을 계산해 고른 모터가 맞는지 확인한 적이 있다",
+    "phd": "방법을 검토하면서 모터에 걸리는 힘과 관성을 계산해 고른 모터가 맞는지 확인한 적이 있다",
+    "postdoc": "과제 수행에서 모터에 걸리는 힘과 관성을 계산해 고른 모터가 맞는지 확인한 적이 있다"
    },
    "options": [
     "없다",
@@ -4522,12 +4522,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J8",
-   "wording": "만든 장치를 다른 사람이 쓰게 넘겨 본 적이 있다",
+   "wording": "만든 장치를 다른 사람이 쓸 수 있게 넘겨 본 적이 있다",
    "stage_wording": {
-    "bachelor": "캡스톤이나 인턴에서 만든 장치를 다른 사람이 쓰게 넘겨 본 적이 있다",
-    "master": "연구실이나 과제에서 만든 장치를 다른 사람이 쓰게 넘겨 본 적이 있다",
-    "phd": "과제나 공동 연구에서 만든 장치를 다른 사람이 쓰게 넘겨 본 적이 있다",
-    "postdoc": "맡은 과제나 협력 기관에서 만든 장치를 다른 사람이 쓰게 넘겨 본 적이 있다"
+    "bachelor": "캡스톤이나 인턴에서 만든 장치를 다른 사람이 쓸 수 있게 넘겨 본 적이 있다",
+    "master": "연구실이나 과제에서 만든 장치를 다른 사람이 쓸 수 있게 넘겨 본 적이 있다",
+    "phd": "과제나 공동 연구에서 만든 장치를 다른 사람이 쓸 수 있게 넘겨 본 적이 있다",
+    "postdoc": "맡은 과제나 협력 기관에서 만든 장치를 다른 사람이 쓸 수 있게 넘겨 본 적이 있다"
    },
    "options": [
     "없다",
@@ -4557,12 +4557,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "쓸 재질과 등급을 직접 정해 본 적이 있다",
+   "wording": "부품에 쓸 재료와 등급을 내가 고른 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 쓸 재질과 등급을 직접 정해 본 적이 있다",
-    "master": "연구나 과제 수행에서 쓸 재질과 등급을 직접 정해 본 적이 있다",
-    "phd": "방법을 세우면서 쓸 재질과 등급을 직접 정해 본 적이 있다",
-    "postdoc": "맡은 범위 안에서 쓸 재질과 등급을 직접 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 부품에 쓸 재료와 등급을 내가 고른 적이 있다",
+    "master": "연구나 과제 수행에서 부품에 쓸 재료와 등급을 내가 고른 적이 있다",
+    "phd": "연구 방법을 정하면서 부품에 쓸 재료와 등급을 내가 고른 적이 있다",
+    "postdoc": "맡은 범위 안에서 부품에 쓸 재료와 등급을 내가 고른 적이 있다"
    },
    "options": [
     "없다",
@@ -4592,12 +4592,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "안전계수나 허용응력을 얼마로 둘지 직접 정해 본 적이 있다",
+   "wording": "안전 여유(안전계수)나 허용 응력을 얼마로 둘지 직접 정한 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 안전계수나 허용응력을 얼마로 둘지 직접 정해 본 적이 있다",
-    "master": "연구나 과제 수행에서 안전계수나 허용응력을 얼마로 둘지 직접 정해 본 적이 있다",
-    "phd": "방법을 세우면서 안전계수나 허용응력을 얼마로 둘지 직접 정해 본 적이 있다",
-    "postdoc": "맡은 범위 안에서 안전계수나 허용응력을 얼마로 둘지 직접 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 안전 여유(안전계수)나 허용 응력을 얼마로 둘지 직접 정한 적이 있다",
+    "master": "연구나 과제 수행에서 안전 여유(안전계수)나 허용 응력을 얼마로 둘지 직접 정한 적이 있다",
+    "phd": "연구 방법을 정하면서 안전 여유(안전계수)나 허용 응력을 얼마로 둘지 직접 정한 적이 있다",
+    "postdoc": "맡은 범위 안에서 안전 여유(안전계수)나 허용 응력을 얼마로 둘지 직접 정한 적이 있다"
    },
    "options": [
     "없다",
@@ -4627,12 +4627,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "재질 사양이나 분석 보고를 내 본 적이 있다",
+   "wording": "재료 사양이나 분석 결과를 보고서로 내 본 적이 있다",
    "stage_wording": {
-    "bachelor": "과제나 캡스톤 결과로 재질 사양이나 분석 보고를 내 본 적이 있다",
-    "master": "연구 산출물로 재질 사양이나 분석 보고를 내 본 적이 있다",
-    "phd": "논문이나 보고로 재질 사양이나 분석 보고를 내 본 적이 있다",
-    "postdoc": "과제 산출물로 재질 사양이나 분석 보고를 내 본 적이 있다"
+    "bachelor": "과제나 캡스톤 결과로 재료 사양이나 분석 결과를 보고서로 내 본 적이 있다",
+    "master": "연구 산출물로 재료 사양이나 분석 결과를 보고서로 내 본 적이 있다",
+    "phd": "논문이나 보고로 재료 사양이나 분석 결과를 보고서로 내 본 적이 있다",
+    "postdoc": "과제 산출물로 재료 사양이나 분석 결과를 보고서로 내 본 적이 있다"
    },
    "options": [
     "없다",
@@ -4662,12 +4662,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "왜 그 재질인지 판단 근거를 적어 남겨 본 적이 있다",
+   "wording": "왜 그 재료를 골랐는지 근거를 적어 둔 적이 있다",
    "stage_wording": {
-    "bachelor": "과제나 캡스톤 결과로 왜 그 재질인지 판단 근거를 적어 남겨 본 적이 있다",
-    "master": "연구 산출물로 왜 그 재질인지 판단 근거를 적어 남겨 본 적이 있다",
-    "phd": "논문이나 보고로 왜 그 재질인지 판단 근거를 적어 남겨 본 적이 있다",
-    "postdoc": "과제 산출물로 왜 그 재질인지 판단 근거를 적어 남겨 본 적이 있다"
+    "bachelor": "과제나 캡스톤 결과로 왜 그 재료를 골랐는지 근거를 적어 둔 적이 있다",
+    "master": "연구 산출물로 왜 그 재료를 골랐는지 근거를 적어 둔 적이 있다",
+    "phd": "논문이나 보고로 왜 그 재료를 골랐는지 근거를 적어 둔 적이 있다",
+    "postdoc": "과제 산출물로 왜 그 재료를 골랐는지 근거를 적어 둔 적이 있다"
    },
    "options": [
     "없다",
@@ -4697,12 +4697,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "규격값이나 문헌값과 시험 결과를 대조해 본 적이 있다",
+   "wording": "시험 결과를 규격값이나 책에 나온 값과 비교해 본 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 규격값이나 문헌값과 시험 결과를 대조해 본 적이 있다",
-    "master": "연구에서 규격값이나 문헌값과 시험 결과를 대조해 본 적이 있다",
-    "phd": "결과의 타당성을 따질 때 규격값이나 문헌값과 시험 결과를 대조해 본 적이 있다",
-    "postdoc": "과제 결과를 낼 때 규격값이나 문헌값과 시험 결과를 대조해 본 적이 있다"
+    "bachelor": "실험이나 과제에서 시험 결과를 규격값이나 책에 나온 값과 비교해 본 적이 있다",
+    "master": "연구에서 시험 결과를 규격값이나 책에 나온 값과 비교해 본 적이 있다",
+    "phd": "결과의 타당성을 따질 때 시험 결과를 규격값이나 책에 나온 값과 비교해 본 적이 있다",
+    "postdoc": "과제 결과를 낼 때 시험 결과를 규격값이나 책에 나온 값과 비교해 본 적이 있다"
    },
    "options": [
     "없다",
@@ -4732,12 +4732,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "같은 조건에서 다른 재질과 비교 시험을 해 본 적이 있다",
+   "wording": "같은 조건으로 다른 재료와 비교 시험을 한 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 같은 조건에서 다른 재질과 비교 시험을 해 본 적이 있다",
-    "master": "연구에서 같은 조건에서 다른 재질과 비교 시험을 해 본 적이 있다",
-    "phd": "결과의 타당성을 따질 때 같은 조건에서 다른 재질과 비교 시험을 해 본 적이 있다",
-    "postdoc": "과제 결과를 낼 때 같은 조건에서 다른 재질과 비교 시험을 해 본 적이 있다"
+    "bachelor": "실험이나 과제에서 같은 조건으로 다른 재료와 비교 시험을 한 적이 있다",
+    "master": "연구에서 같은 조건으로 다른 재료와 비교 시험을 한 적이 있다",
+    "phd": "결과의 타당성을 따질 때 같은 조건으로 다른 재료와 비교 시험을 한 적이 있다",
+    "postdoc": "과제 결과를 낼 때 같은 조건으로 다른 재료와 비교 시험을 한 적이 있다"
    },
    "options": [
     "없다",
@@ -4767,12 +4767,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "같은 자리가 또 깨져서 재질이나 형상을 바꿔 본 적이 있다",
+   "wording": "같은 곳이 또 깨져 재료나 모양을 바꿔 본 적이 있다",
    "stage_wording": {
-    "bachelor": "결과가 예상과 달랐을 때 같은 자리가 또 깨져서 재질이나 형상을 바꿔 본 적이 있다",
-    "master": "재현이 안 됐을 때 같은 자리가 또 깨져서 재질이나 형상을 바꿔 본 적이 있다",
-    "phd": "결과가 가정과 어긋났을 때 같은 자리가 또 깨져서 재질이나 형상을 바꿔 본 적이 있다",
-    "postdoc": "방법의 한계를 정리할 때 같은 자리가 또 깨져서 재질이나 형상을 바꿔 본 적이 있다"
+    "bachelor": "결과가 예상과 달랐을 때 같은 곳이 또 깨져 재료나 모양을 바꿔 본 적이 있다",
+    "master": "재현이 안 됐을 때 같은 곳이 또 깨져 재료나 모양을 바꿔 본 적이 있다",
+    "phd": "결과가 가정과 어긋났을 때 같은 곳이 또 깨져 재료나 모양을 바꿔 본 적이 있다",
+    "postdoc": "방법의 한계를 정리할 때 같은 곳이 또 깨져 재료나 모양을 바꿔 본 적이 있다"
    },
    "options": [
     "없다",
@@ -4802,12 +4802,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "깨진 원인의 후보를 증거로 하나씩 지워 본 적이 있다",
+   "wording": "깨진 원인 후보를 증거를 보며 하나씩 지워 본 적이 있다",
    "stage_wording": {
-    "bachelor": "결과가 예상과 달랐을 때 깨진 원인의 후보를 증거로 하나씩 지워 본 적이 있다",
-    "master": "재현이 안 됐을 때 깨진 원인의 후보를 증거로 하나씩 지워 본 적이 있다",
-    "phd": "결과가 가정과 어긋났을 때 깨진 원인의 후보를 증거로 하나씩 지워 본 적이 있다",
-    "postdoc": "방법의 한계를 정리할 때 깨진 원인의 후보를 증거로 하나씩 지워 본 적이 있다"
+    "bachelor": "결과가 예상과 달랐을 때 깨진 원인 후보를 증거를 보며 하나씩 지워 본 적이 있다",
+    "master": "재현이 안 됐을 때 깨진 원인 후보를 증거를 보며 하나씩 지워 본 적이 있다",
+    "phd": "결과가 가정과 어긋났을 때 깨진 원인 후보를 증거를 보며 하나씩 지워 본 적이 있다",
+    "postdoc": "방법의 한계를 정리할 때 깨진 원인 후보를 증거를 보며 하나씩 지워 본 적이 있다"
    },
    "options": [
     "없다",
@@ -4837,12 +4837,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "손상을 무엇으로 볼지 후보를 세워 범위를 정해 본 적이 있다",
+   "wording": "부품이 상한 모습을 보고 어떤 손상으로 볼지 가린 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 손상을 무엇으로 볼지 후보를 세워 범위를 정해 본 적이 있다",
-    "master": "연구과제에서 손상을 무엇으로 볼지 후보를 세워 범위를 정해 본 적이 있다",
-    "phd": "연구 주제를 세울 때 손상을 무엇으로 볼지 후보를 세워 범위를 정해 본 적이 있다",
-    "postdoc": "맡은 과제나 제안서에서 손상을 무엇으로 볼지 후보를 세워 범위를 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 부품이 상한 모습을 보고 어떤 손상으로 볼지 가린 적이 있다",
+    "master": "연구과제에서 부품이 상한 모습을 보고 어떤 손상으로 볼지 가린 적이 있다",
+    "phd": "연구 주제를 정할 때 부품이 상한 모습을 보고 어떤 손상으로 볼지 가린 적이 있다",
+    "postdoc": "맡은 과제나 제안서에서 부품이 상한 모습을 보고 어떤 손상으로 볼지 가린 적이 있다"
    },
    "options": [
     "없다",
@@ -4872,12 +4872,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "쓰는 환경과 요구 수명을 재질 요구 조건으로 옮겨 본 적이 있다",
+   "wording": "쓰는 환경과 요구 수명을 재료 조건으로 옮겨 적은 적이 있다",
    "stage_wording": {
-    "bachelor": "과제 요구사항을 받고 쓰는 환경과 요구 수명을 재질 요구 조건으로 옮겨 본 적이 있다",
-    "master": "과제 목표를 받고 쓰는 환경과 요구 수명을 재질 요구 조건으로 옮겨 본 적이 있다",
-    "phd": "연구 목표를 세우면서 쓰는 환경과 요구 수명을 재질 요구 조건으로 옮겨 본 적이 있다",
-    "postdoc": "연구 공고나 과제 목표를 보고 쓰는 환경과 요구 수명을 재질 요구 조건으로 옮겨 본 적이 있다"
+    "bachelor": "과제 요구사항을 받고 쓰는 환경과 요구 수명을 재료 조건으로 옮겨 적은 적이 있다",
+    "master": "과제 목표를 받고 쓰는 환경과 요구 수명을 재료 조건으로 옮겨 적은 적이 있다",
+    "phd": "연구 목표를 정하면서 쓰는 환경과 요구 수명을 재료 조건으로 옮겨 적은 적이 있다",
+    "postdoc": "연구 공고나 과제 목표를 보고 쓰는 환경과 요구 수명을 재료 조건으로 옮겨 적은 적이 있다"
    },
    "options": [
     "없다",
@@ -4907,12 +4907,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "경도나 인장 시험으로 물성을 직접 확인해 본 적이 있다",
+   "wording": "재료 시험기로 강도를 직접 재 본 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 경도나 인장 시험으로 물성을 직접 확인해 본 적이 있다",
-    "master": "연구 수행에서 경도나 인장 시험으로 물성을 직접 확인해 본 적이 있다",
-    "phd": "방법을 검토하면서 경도나 인장 시험으로 물성을 직접 확인해 본 적이 있다",
-    "postdoc": "과제 수행에서 경도나 인장 시험으로 물성을 직접 확인해 본 적이 있다"
+    "bachelor": "실험이나 과제에서 재료 시험기로 강도를 직접 재 본 적이 있다",
+    "master": "연구 수행에서 재료 시험기로 강도를 직접 재 본 적이 있다",
+    "phd": "방법을 검토하면서 재료 시험기로 강도를 직접 재 본 적이 있다",
+    "postdoc": "과제 수행에서 재료 시험기로 강도를 직접 재 본 적이 있다"
    },
    "options": [
     "없다",
@@ -4942,12 +4942,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J8",
-   "wording": "분석 결과를 설계나 품질 쪽에 보고해 본 적이 있다",
+   "wording": "분석 결과를 설계나 품질 쪽 사람에게 알려 준 적이 있다",
    "stage_wording": {
-    "bachelor": "캡스톤이나 인턴에서 분석 결과를 설계나 품질 쪽에 보고해 본 적이 있다",
-    "master": "연구실이나 과제에서 분석 결과를 설계나 품질 쪽에 보고해 본 적이 있다",
-    "phd": "과제나 공동 연구에서 분석 결과를 설계나 품질 쪽에 보고해 본 적이 있다",
-    "postdoc": "맡은 과제나 협력 기관에서 분석 결과를 설계나 품질 쪽에 보고해 본 적이 있다"
+    "bachelor": "캡스톤이나 인턴에서 분석 결과를 설계나 품질 쪽 사람에게 알려 준 적이 있다",
+    "master": "연구실이나 과제에서 분석 결과를 설계나 품질 쪽 사람에게 알려 준 적이 있다",
+    "phd": "과제나 공동 연구에서 분석 결과를 설계나 품질 쪽 사람에게 알려 준 적이 있다",
+    "postdoc": "맡은 과제나 협력 기관에서 분석 결과를 설계나 품질 쪽 사람에게 알려 준 적이 있다"
    },
    "options": [
     "없다",
@@ -4981,7 +4981,7 @@
    "stage_wording": {
     "bachelor": "수업 과제나 캡스톤에서 무엇을 어떻게 잴지 측정 항목과 방법을 직접 정해 본 적이 있다",
     "master": "연구나 과제 수행에서 무엇을 어떻게 잴지 측정 항목과 방법을 직접 정해 본 적이 있다",
-    "phd": "방법을 세우면서 무엇을 어떻게 잴지 측정 항목과 방법을 직접 정해 본 적이 있다",
+    "phd": "연구 방법을 정하면서 무엇을 어떻게 잴지 측정 항목과 방법을 직접 정해 본 적이 있다",
     "postdoc": "맡은 범위 안에서 무엇을 어떻게 잴지 측정 항목과 방법을 직접 정해 본 적이 있다"
    },
    "options": [
@@ -5012,12 +5012,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "지그와 구속 방식을 직접 정해 본 적이 있다",
+   "wording": "시험할 때 시료를 붙잡는 틀(지그)과 고정 방식을 직접 정한 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 지그와 구속 방식을 직접 정해 본 적이 있다",
-    "master": "연구나 과제 수행에서 지그와 구속 방식을 직접 정해 본 적이 있다",
-    "phd": "방법을 세우면서 지그와 구속 방식을 직접 정해 본 적이 있다",
-    "postdoc": "맡은 범위 안에서 지그와 구속 방식을 직접 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 시험할 때 시료를 붙잡는 틀(지그)과 고정 방식을 직접 정한 적이 있다",
+    "master": "연구나 과제 수행에서 시험할 때 시료를 붙잡는 틀(지그)과 고정 방식을 직접 정한 적이 있다",
+    "phd": "연구 방법을 정하면서 시험할 때 시료를 붙잡는 틀(지그)과 고정 방식을 직접 정한 적이 있다",
+    "postdoc": "맡은 범위 안에서 시험할 때 시료를 붙잡는 틀(지그)과 고정 방식을 직접 정한 적이 있다"
    },
    "options": [
     "없다",
@@ -5047,12 +5047,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "시험 성적서를 판정까지 적어 내 본 적이 있다",
+   "wording": "시험 결과를 합격 여부까지 적은 성적서로 써 낸 적이 있다",
    "stage_wording": {
-    "bachelor": "과제나 캡스톤 결과로 시험 성적서를 판정까지 적어 내 본 적이 있다",
-    "master": "연구 산출물로 시험 성적서를 판정까지 적어 내 본 적이 있다",
-    "phd": "논문이나 보고로 시험 성적서를 판정까지 적어 내 본 적이 있다",
-    "postdoc": "과제 산출물로 시험 성적서를 판정까지 적어 내 본 적이 있다"
+    "bachelor": "과제나 캡스톤 결과로 시험 결과를 합격 여부까지 적은 성적서로 써 낸 적이 있다",
+    "master": "연구 산출물로 시험 결과를 합격 여부까지 적은 성적서로 써 낸 적이 있다",
+    "phd": "논문이나 보고로 시험 결과를 합격 여부까지 적은 성적서로 써 낸 적이 있다",
+    "postdoc": "과제 산출물로 시험 결과를 합격 여부까지 적은 성적서로 써 낸 적이 있다"
    },
    "options": [
     "없다",
@@ -5117,12 +5117,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "같은 조건에서 여러 번 재서 편차를 확인해 본 적이 있다",
+   "wording": "같은 조건으로 여러 번 재서 값이 얼마나 흩어지는지 본 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 같은 조건에서 여러 번 재서 편차를 확인해 본 적이 있다",
-    "master": "연구에서 같은 조건에서 여러 번 재서 편차를 확인해 본 적이 있다",
-    "phd": "결과의 타당성을 따질 때 같은 조건에서 여러 번 재서 편차를 확인해 본 적이 있다",
-    "postdoc": "과제 결과를 낼 때 같은 조건에서 여러 번 재서 편차를 확인해 본 적이 있다"
+    "bachelor": "실험이나 과제에서 같은 조건으로 여러 번 재서 값이 얼마나 흩어지는지 본 적이 있다",
+    "master": "연구에서 같은 조건으로 여러 번 재서 값이 얼마나 흩어지는지 본 적이 있다",
+    "phd": "결과의 타당성을 따질 때 같은 조건으로 여러 번 재서 값이 얼마나 흩어지는지 본 적이 있다",
+    "postdoc": "과제 결과를 낼 때 같은 조건으로 여러 번 재서 값이 얼마나 흩어지는지 본 적이 있다"
    },
    "options": [
     "없다",
@@ -5152,12 +5152,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "규격이 정한 기준값과 측정 결과를 대조해 본 적이 있다",
+   "wording": "규격이 정한 기준값과 측정 결과를 비교한 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 규격이 정한 기준값과 측정 결과를 대조해 본 적이 있다",
-    "master": "연구에서 규격이 정한 기준값과 측정 결과를 대조해 본 적이 있다",
-    "phd": "결과의 타당성을 따질 때 규격이 정한 기준값과 측정 결과를 대조해 본 적이 있다",
-    "postdoc": "과제 결과를 낼 때 규격이 정한 기준값과 측정 결과를 대조해 본 적이 있다"
+    "bachelor": "실험이나 과제에서 규격이 정한 기준값과 측정 결과를 비교한 적이 있다",
+    "master": "연구에서 규격이 정한 기준값과 측정 결과를 비교한 적이 있다",
+    "phd": "결과의 타당성을 따질 때 규격이 정한 기준값과 측정 결과를 비교한 적이 있다",
+    "postdoc": "과제 결과를 낼 때 규격이 정한 기준값과 측정 결과를 비교한 적이 있다"
    },
    "options": [
     "없다",
@@ -5187,12 +5187,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "값이 흔들려서 측정 방법이나 지그를 고쳐 본 적이 있다",
+   "wording": "값이 흔들려 재는 방법이나 고정 틀을 고쳐 본 적이 있다",
    "stage_wording": {
-    "bachelor": "결과가 예상과 달랐을 때 값이 흔들려서 측정 방법이나 지그를 고쳐 본 적이 있다",
-    "master": "재현이 안 됐을 때 값이 흔들려서 측정 방법이나 지그를 고쳐 본 적이 있다",
-    "phd": "결과가 가정과 어긋났을 때 값이 흔들려서 측정 방법이나 지그를 고쳐 본 적이 있다",
-    "postdoc": "방법의 한계를 정리할 때 값이 흔들려서 측정 방법이나 지그를 고쳐 본 적이 있다"
+    "bachelor": "결과가 예상과 달랐을 때 값이 흔들려 재는 방법이나 고정 틀을 고쳐 본 적이 있다",
+    "master": "재현이 안 됐을 때 값이 흔들려 재는 방법이나 고정 틀을 고쳐 본 적이 있다",
+    "phd": "결과가 가정과 어긋났을 때 값이 흔들려 재는 방법이나 고정 틀을 고쳐 본 적이 있다",
+    "postdoc": "방법의 한계를 정리할 때 값이 흔들려 재는 방법이나 고정 틀을 고쳐 본 적이 있다"
    },
    "options": [
     "없다",
@@ -5222,12 +5222,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "원인을 시료와 지그와 계측 가운데로 좁혀 본 적이 있다",
+   "wording": "값이 흔들린 까닭을 시료와 고정 틀과 계측기 쪽으로 좁혀 본 적이 있다",
    "stage_wording": {
-    "bachelor": "결과가 예상과 달랐을 때 원인을 시료와 지그와 계측 가운데로 좁혀 본 적이 있다",
-    "master": "재현이 안 됐을 때 원인을 시료와 지그와 계측 가운데로 좁혀 본 적이 있다",
-    "phd": "결과가 가정과 어긋났을 때 원인을 시료와 지그와 계측 가운데로 좁혀 본 적이 있다",
-    "postdoc": "방법의 한계를 정리할 때 원인을 시료와 지그와 계측 가운데로 좁혀 본 적이 있다"
+    "bachelor": "결과가 예상과 달랐을 때 값이 흔들린 까닭을 시료와 고정 틀과 계측기 쪽으로 좁혀 본 적이 있다",
+    "master": "재현이 안 됐을 때 값이 흔들린 까닭을 시료와 고정 틀과 계측기 쪽으로 좁혀 본 적이 있다",
+    "phd": "결과가 가정과 어긋났을 때 값이 흔들린 까닭을 시료와 고정 틀과 계측기 쪽으로 좁혀 본 적이 있다",
+    "postdoc": "방법의 한계를 정리할 때 값이 흔들린 까닭을 시료와 고정 틀과 계측기 쪽으로 좁혀 본 적이 있다"
    },
    "options": [
     "없다",
@@ -5257,12 +5257,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "무엇을 재서 판정할지 골라 시험 범위를 정해 본 적이 있다",
+   "wording": "이 시험으로 무엇을 확인할지 먼저 적어 둔 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 무엇을 재서 판정할지 골라 시험 범위를 정해 본 적이 있다",
-    "master": "연구과제에서 무엇을 재서 판정할지 골라 시험 범위를 정해 본 적이 있다",
-    "phd": "연구 주제를 세울 때 무엇을 재서 판정할지 골라 시험 범위를 정해 본 적이 있다",
-    "postdoc": "맡은 과제나 제안서에서 무엇을 재서 판정할지 골라 시험 범위를 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 이 시험으로 무엇을 확인할지 먼저 적어 둔 적이 있다",
+    "master": "연구과제에서 이 시험으로 무엇을 확인할지 먼저 적어 둔 적이 있다",
+    "phd": "연구 주제를 정할 때 이 시험으로 무엇을 확인할지 먼저 적어 둔 적이 있다",
+    "postdoc": "맡은 과제나 제안서에서 이 시험으로 무엇을 확인할지 먼저 적어 둔 적이 있다"
    },
    "options": [
     "없다",
@@ -5292,12 +5292,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "합격과 불합격을 가르는 기준을 미리 적어 본 적이 있다",
+   "wording": "규격의 합격 기준을 잴 값과 합격선으로 옮겨 본 적이 있다",
    "stage_wording": {
-    "bachelor": "과제 요구사항을 받고 합격과 불합격을 가르는 기준을 미리 적어 본 적이 있다",
-    "master": "과제 목표를 받고 합격과 불합격을 가르는 기준을 미리 적어 본 적이 있다",
-    "phd": "연구 목표를 세우면서 합격과 불합격을 가르는 기준을 미리 적어 본 적이 있다",
-    "postdoc": "연구 공고나 과제 목표를 보고 합격과 불합격을 가르는 기준을 미리 적어 본 적이 있다"
+    "bachelor": "과제 요구사항을 받고 규격의 합격 기준을 잴 값과 합격선으로 옮겨 본 적이 있다",
+    "master": "과제 목표를 받고 규격의 합격 기준을 잴 값과 합격선으로 옮겨 본 적이 있다",
+    "phd": "연구 목표를 정하면서 규격의 합격 기준을 잴 값과 합격선으로 옮겨 본 적이 있다",
+    "postdoc": "연구 공고나 과제 목표를 보고 규격의 합격 기준을 잴 값과 합격선으로 옮겨 본 적이 있다"
    },
    "options": [
     "없다",
@@ -5327,12 +5327,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "교정 기록이나 표준 시료로 계측이 맞는지 확인해 본 적이 있다",
+   "wording": "계측 장비를 연결해 측정 데이터를 받아 본 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 교정 기록이나 표준 시료로 계측이 맞는지 확인해 본 적이 있다",
-    "master": "연구 수행에서 교정 기록이나 표준 시료로 계측이 맞는지 확인해 본 적이 있다",
-    "phd": "방법을 검토하면서 교정 기록이나 표준 시료로 계측이 맞는지 확인해 본 적이 있다",
-    "postdoc": "과제 수행에서 교정 기록이나 표준 시료로 계측이 맞는지 확인해 본 적이 있다"
+    "bachelor": "실험이나 과제에서 계측 장비를 연결해 측정 데이터를 받아 본 적이 있다",
+    "master": "연구 수행에서 계측 장비를 연결해 측정 데이터를 받아 본 적이 있다",
+    "phd": "방법을 검토하면서 계측 장비를 연결해 측정 데이터를 받아 본 적이 있다",
+    "postdoc": "과제 수행에서 계측 장비를 연결해 측정 데이터를 받아 본 적이 있다"
    },
    "options": [
     "없다",
@@ -5362,12 +5362,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J8",
-   "wording": "시험 판정 결과를 쓰는 부서에 보고해 본 적이 있다",
+   "wording": "시험 결과를 그 결과가 필요한 사람에게 보고한 적이 있다",
    "stage_wording": {
-    "bachelor": "캡스톤이나 인턴에서 시험 판정 결과를 쓰는 부서에 보고해 본 적이 있다",
-    "master": "연구실이나 과제에서 시험 판정 결과를 쓰는 부서에 보고해 본 적이 있다",
-    "phd": "과제나 공동 연구에서 시험 판정 결과를 쓰는 부서에 보고해 본 적이 있다",
-    "postdoc": "맡은 과제나 협력 기관에서 시험 판정 결과를 쓰는 부서에 보고해 본 적이 있다"
+    "bachelor": "캡스톤이나 인턴에서 시험 결과를 그 결과가 필요한 사람에게 보고한 적이 있다",
+    "master": "연구실이나 과제에서 시험 결과를 그 결과가 필요한 사람에게 보고한 적이 있다",
+    "phd": "과제나 공동 연구에서 시험 결과를 그 결과가 필요한 사람에게 보고한 적이 있다",
+    "postdoc": "맡은 과제나 협력 기관에서 시험 결과를 그 결과가 필요한 사람에게 보고한 적이 있다"
    },
    "options": [
     "없다",
@@ -5397,12 +5397,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "쓸 공법과 가공 순서를 직접 정해 본 적이 있다",
+   "wording": "어떤 공법으로 어떤 순서로 가공할지 직접 정해 본 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 쓸 공법과 가공 순서를 직접 정해 본 적이 있다",
-    "master": "연구나 과제 수행에서 쓸 공법과 가공 순서를 직접 정해 본 적이 있다",
-    "phd": "방법을 세우면서 쓸 공법과 가공 순서를 직접 정해 본 적이 있다",
-    "postdoc": "맡은 범위 안에서 쓸 공법과 가공 순서를 직접 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 어떤 공법으로 어떤 순서로 가공할지 직접 정해 본 적이 있다",
+    "master": "연구나 과제 수행에서 어떤 공법으로 어떤 순서로 가공할지 직접 정해 본 적이 있다",
+    "phd": "연구 방법을 정하면서 어떤 공법으로 어떤 순서로 가공할지 직접 정해 본 적이 있다",
+    "postdoc": "맡은 범위 안에서 어떤 공법으로 어떤 순서로 가공할지 직접 정해 본 적이 있다"
    },
    "options": [
     "없다",
@@ -5432,12 +5432,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "가공이나 성형 조건의 범위를 직접 정해 본 적이 있다",
+   "wording": "가공이나 성형 조건을 어느 범위로 둘지 직접 정한 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 가공이나 성형 조건의 범위를 직접 정해 본 적이 있다",
-    "master": "연구나 과제 수행에서 가공이나 성형 조건의 범위를 직접 정해 본 적이 있다",
-    "phd": "방법을 세우면서 가공이나 성형 조건의 범위를 직접 정해 본 적이 있다",
-    "postdoc": "맡은 범위 안에서 가공이나 성형 조건의 범위를 직접 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 가공이나 성형 조건을 어느 범위로 둘지 직접 정한 적이 있다",
+    "master": "연구나 과제 수행에서 가공이나 성형 조건을 어느 범위로 둘지 직접 정한 적이 있다",
+    "phd": "연구 방법을 정하면서 가공이나 성형 조건을 어느 범위로 둘지 직접 정한 적이 있다",
+    "postdoc": "맡은 범위 안에서 가공이나 성형 조건을 어느 범위로 둘지 직접 정한 적이 있다"
    },
    "options": [
     "없다",
@@ -5467,12 +5467,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "작업 표준이나 공정도를 내 본 적이 있다",
+   "wording": "작업 순서를 적은 작업 표준이나 공정도를 만들어 낸 적이 있다",
    "stage_wording": {
-    "bachelor": "과제나 캡스톤 결과로 작업 표준이나 공정도를 내 본 적이 있다",
-    "master": "연구 산출물로 작업 표준이나 공정도를 내 본 적이 있다",
-    "phd": "논문이나 보고로 작업 표준이나 공정도를 내 본 적이 있다",
-    "postdoc": "과제 산출물로 작업 표준이나 공정도를 내 본 적이 있다"
+    "bachelor": "과제나 캡스톤 결과로 작업 순서를 적은 작업 표준이나 공정도를 만들어 낸 적이 있다",
+    "master": "연구 산출물로 작업 순서를 적은 작업 표준이나 공정도를 만들어 낸 적이 있다",
+    "phd": "논문이나 보고로 작업 순서를 적은 작업 표준이나 공정도를 만들어 낸 적이 있다",
+    "postdoc": "과제 산출물로 작업 순서를 적은 작업 표준이나 공정도를 만들어 낸 적이 있다"
    },
    "options": [
     "없다",
@@ -5502,12 +5502,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "조건 범위와 관리 항목이 함께 적힌 자료를 남겨 본 적이 있다",
+   "wording": "조건 범위와 관리할 항목을 함께 적은 자료를 남긴 적이 있다",
    "stage_wording": {
-    "bachelor": "과제나 캡스톤 결과로 조건 범위와 관리 항목이 함께 적힌 자료를 남겨 본 적이 있다",
-    "master": "연구 산출물로 조건 범위와 관리 항목이 함께 적힌 자료를 남겨 본 적이 있다",
-    "phd": "논문이나 보고로 조건 범위와 관리 항목이 함께 적힌 자료를 남겨 본 적이 있다",
-    "postdoc": "과제 산출물로 조건 범위와 관리 항목이 함께 적힌 자료를 남겨 본 적이 있다"
+    "bachelor": "과제나 캡스톤 결과로 조건 범위와 관리할 항목을 함께 적은 자료를 남긴 적이 있다",
+    "master": "연구 산출물로 조건 범위와 관리할 항목을 함께 적은 자료를 남긴 적이 있다",
+    "phd": "논문이나 보고로 조건 범위와 관리할 항목을 함께 적은 자료를 남긴 적이 있다",
+    "postdoc": "과제 산출물로 조건 범위와 관리할 항목을 함께 적은 자료를 남긴 적이 있다"
    },
    "options": [
     "없다",
@@ -5537,12 +5537,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "목표 수율과 실제로 나온 수율을 견주어 본 적이 있다",
+   "wording": "조건을 바꾸기 전과 뒤의 불량률을 비교해 본 일이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 목표 수율과 실제로 나온 수율을 견주어 본 적이 있다",
-    "master": "연구에서 목표 수율과 실제로 나온 수율을 견주어 본 적이 있다",
-    "phd": "결과의 타당성을 따질 때 목표 수율과 실제로 나온 수율을 견주어 본 적이 있다",
-    "postdoc": "과제 결과를 낼 때 목표 수율과 실제로 나온 수율을 견주어 본 적이 있다"
+    "bachelor": "실험이나 과제에서 조건을 바꾸기 전과 뒤의 불량률을 비교해 본 일이 있다",
+    "master": "연구에서 조건을 바꾸기 전과 뒤의 불량률을 비교해 본 일이 있다",
+    "phd": "결과의 타당성을 따질 때 조건을 바꾸기 전과 뒤의 불량률을 비교해 본 일이 있다",
+    "postdoc": "과제 결과를 낼 때 조건을 바꾸기 전과 뒤의 불량률을 비교해 본 일이 있다"
    },
    "options": [
     "없다",
@@ -5572,12 +5572,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "목표 공정 시간과 실제로 걸린 시간을 견주어 본 적이 있다",
+   "wording": "목표 공정 시간과 실제 걸린 시간을 재서 비교한 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 목표 공정 시간과 실제로 걸린 시간을 견주어 본 적이 있다",
-    "master": "연구에서 목표 공정 시간과 실제로 걸린 시간을 견주어 본 적이 있다",
-    "phd": "결과의 타당성을 따질 때 목표 공정 시간과 실제로 걸린 시간을 견주어 본 적이 있다",
-    "postdoc": "과제 결과를 낼 때 목표 공정 시간과 실제로 걸린 시간을 견주어 본 적이 있다"
+    "bachelor": "실험이나 과제에서 목표 공정 시간과 실제 걸린 시간을 재서 비교한 적이 있다",
+    "master": "연구에서 목표 공정 시간과 실제 걸린 시간을 재서 비교한 적이 있다",
+    "phd": "결과의 타당성을 따질 때 목표 공정 시간과 실제 걸린 시간을 재서 비교한 적이 있다",
+    "postdoc": "과제 결과를 낼 때 목표 공정 시간과 실제 걸린 시간을 재서 비교한 적이 있다"
    },
    "options": [
     "없다",
@@ -5607,12 +5607,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "불량이 나와서 조건이나 치공구를 고쳐 본 적이 있다",
+   "wording": "불량이 나와 조건이나 공구를 고쳐 본 적이 있다",
    "stage_wording": {
-    "bachelor": "결과가 예상과 달랐을 때 불량이 나와서 조건이나 치공구를 고쳐 본 적이 있다",
-    "master": "재현이 안 됐을 때 불량이 나와서 조건이나 치공구를 고쳐 본 적이 있다",
-    "phd": "결과가 가정과 어긋났을 때 불량이 나와서 조건이나 치공구를 고쳐 본 적이 있다",
-    "postdoc": "방법의 한계를 정리할 때 불량이 나와서 조건이나 치공구를 고쳐 본 적이 있다"
+    "bachelor": "결과가 예상과 달랐을 때 불량이 나와 조건이나 공구를 고쳐 본 적이 있다",
+    "master": "재현이 안 됐을 때 불량이 나와 조건이나 공구를 고쳐 본 적이 있다",
+    "phd": "결과가 가정과 어긋났을 때 불량이 나와 조건이나 공구를 고쳐 본 적이 있다",
+    "postdoc": "방법의 한계를 정리할 때 불량이 나와 조건이나 공구를 고쳐 본 적이 있다"
    },
    "options": [
     "없다",
@@ -5642,12 +5642,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "원인을 설비와 재료와 조건 가운데로 좁혀 본 적이 있다",
+   "wording": "불량의 원인을 설비와 재료와 조건 쪽으로 좁혀 본 적이 있다",
    "stage_wording": {
-    "bachelor": "결과가 예상과 달랐을 때 원인을 설비와 재료와 조건 가운데로 좁혀 본 적이 있다",
-    "master": "재현이 안 됐을 때 원인을 설비와 재료와 조건 가운데로 좁혀 본 적이 있다",
-    "phd": "결과가 가정과 어긋났을 때 원인을 설비와 재료와 조건 가운데로 좁혀 본 적이 있다",
-    "postdoc": "방법의 한계를 정리할 때 원인을 설비와 재료와 조건 가운데로 좁혀 본 적이 있다"
+    "bachelor": "결과가 예상과 달랐을 때 불량의 원인을 설비와 재료와 조건 쪽으로 좁혀 본 적이 있다",
+    "master": "재현이 안 됐을 때 불량의 원인을 설비와 재료와 조건 쪽으로 좁혀 본 적이 있다",
+    "phd": "결과가 가정과 어긋났을 때 불량의 원인을 설비와 재료와 조건 쪽으로 좁혀 본 적이 있다",
+    "postdoc": "방법의 한계를 정리할 때 불량의 원인을 설비와 재료와 조건 쪽으로 좁혀 본 적이 있다"
    },
    "options": [
     "없다",
@@ -5677,12 +5677,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "어느 공정의 무엇을 고칠지 골라 범위를 정해 본 적이 있다",
+   "wording": "여러 공정 가운데 어디의 무엇이 문제인지 찾아낸 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 어느 공정의 무엇을 고칠지 골라 범위를 정해 본 적이 있다",
-    "master": "연구과제에서 어느 공정의 무엇을 고칠지 골라 범위를 정해 본 적이 있다",
-    "phd": "연구 주제를 세울 때 어느 공정의 무엇을 고칠지 골라 범위를 정해 본 적이 있다",
-    "postdoc": "맡은 과제나 제안서에서 어느 공정의 무엇을 고칠지 골라 범위를 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 여러 공정 가운데 어디의 무엇이 문제인지 찾아낸 적이 있다",
+    "master": "연구과제에서 여러 공정 가운데 어디의 무엇이 문제인지 찾아낸 적이 있다",
+    "phd": "연구 주제를 정할 때 여러 공정 가운데 어디의 무엇이 문제인지 찾아낸 적이 있다",
+    "postdoc": "맡은 과제나 제안서에서 여러 공정 가운데 어디의 무엇이 문제인지 찾아낸 적이 있다"
    },
    "options": [
     "없다",
@@ -5712,12 +5712,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "요구 수량과 품질을 공정 조건으로 옮겨 적어 본 적이 있다",
+   "wording": "도면의 치수와 허용 오차를 공정에서 지킬 조건으로 옮겨 본 적이 있다",
    "stage_wording": {
-    "bachelor": "과제 요구사항을 받고 요구 수량과 품질을 공정 조건으로 옮겨 적어 본 적이 있다",
-    "master": "과제 목표를 받고 요구 수량과 품질을 공정 조건으로 옮겨 적어 본 적이 있다",
-    "phd": "연구 목표를 세우면서 요구 수량과 품질을 공정 조건으로 옮겨 적어 본 적이 있다",
-    "postdoc": "연구 공고나 과제 목표를 보고 요구 수량과 품질을 공정 조건으로 옮겨 적어 본 적이 있다"
+    "bachelor": "과제 요구사항을 받고 도면의 치수와 허용 오차를 공정에서 지킬 조건으로 옮겨 본 적이 있다",
+    "master": "과제 목표를 받고 도면의 치수와 허용 오차를 공정에서 지킬 조건으로 옮겨 본 적이 있다",
+    "phd": "연구 목표를 정하면서 도면의 치수와 허용 오차를 공정에서 지킬 조건으로 옮겨 본 적이 있다",
+    "postdoc": "연구 공고나 과제 목표를 보고 도면의 치수와 허용 오차를 공정에서 지킬 조건으로 옮겨 본 적이 있다"
    },
    "options": [
     "없다",
@@ -5747,12 +5747,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "시험 가공을 돌려 조건을 잡아 본 적이 있다",
+   "wording": "조건을 바꿔 가며 시험 삼아 만들어 본 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 시험 가공을 돌려 조건을 잡아 본 적이 있다",
-    "master": "연구 수행에서 시험 가공을 돌려 조건을 잡아 본 적이 있다",
-    "phd": "방법을 검토하면서 시험 가공을 돌려 조건을 잡아 본 적이 있다",
-    "postdoc": "과제 수행에서 시험 가공을 돌려 조건을 잡아 본 적이 있다"
+    "bachelor": "실험이나 과제에서 조건을 바꿔 가며 시험 삼아 만들어 본 적이 있다",
+    "master": "연구 수행에서 조건을 바꿔 가며 시험 삼아 만들어 본 적이 있다",
+    "phd": "방법을 검토하면서 조건을 바꿔 가며 시험 삼아 만들어 본 적이 있다",
+    "postdoc": "과제 수행에서 조건을 바꿔 가며 시험 삼아 만들어 본 적이 있다"
    },
    "options": [
     "없다",
@@ -5782,12 +5782,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J8",
-   "wording": "내가 정한 조건으로 실제 생산이 돌아간 적이 있다",
+   "wording": "정리한 조건을 실제 생산 라인에 넣어 본 적이 있다",
    "stage_wording": {
-    "bachelor": "캡스톤이나 인턴에서 내가 정한 조건으로 실제 생산이 돌아간 적이 있다",
-    "master": "연구실이나 과제에서 내가 정한 조건으로 실제 생산이 돌아간 적이 있다",
-    "phd": "과제나 공동 연구에서 내가 정한 조건으로 실제 생산이 돌아간 적이 있다",
-    "postdoc": "맡은 과제나 협력 기관에서 내가 정한 조건으로 실제 생산이 돌아간 적이 있다"
+    "bachelor": "캡스톤이나 인턴에서 정리한 조건을 실제 생산 라인에 넣어 본 적이 있다",
+    "master": "연구실이나 과제에서 정리한 조건을 실제 생산 라인에 넣어 본 적이 있다",
+    "phd": "과제나 공동 연구에서 정리한 조건을 실제 생산 라인에 넣어 본 적이 있다",
+    "postdoc": "맡은 과제나 협력 기관에서 정리한 조건을 실제 생산 라인에 넣어 본 적이 있다"
    },
    "options": [
     "없다",
@@ -5817,12 +5817,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "점검 항목과 주기를 직접 정해 본 적이 있다",
+   "wording": "장비 점검 항목과 점검 주기를 직접 정해 둔 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 점검 항목과 주기를 직접 정해 본 적이 있다",
-    "master": "연구나 과제 수행에서 점검 항목과 주기를 직접 정해 본 적이 있다",
-    "phd": "방법을 세우면서 점검 항목과 주기를 직접 정해 본 적이 있다",
-    "postdoc": "맡은 범위 안에서 점검 항목과 주기를 직접 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 장비 점검 항목과 점검 주기를 직접 정해 둔 적이 있다",
+    "master": "연구나 과제 수행에서 장비 점검 항목과 점검 주기를 직접 정해 둔 적이 있다",
+    "phd": "연구 방법을 정하면서 장비 점검 항목과 점검 주기를 직접 정해 둔 적이 있다",
+    "postdoc": "맡은 범위 안에서 장비 점검 항목과 점검 주기를 직접 정해 둔 적이 있다"
    },
    "options": [
     "없다",
@@ -5852,12 +5852,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "예비품이나 소모품을 얼마나 둘지 직접 정해 본 적이 있다",
+   "wording": "예비 부품이나 소모품을 얼마나 둘지 직접 정한 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 예비품이나 소모품을 얼마나 둘지 직접 정해 본 적이 있다",
-    "master": "연구나 과제 수행에서 예비품이나 소모품을 얼마나 둘지 직접 정해 본 적이 있다",
-    "phd": "방법을 세우면서 예비품이나 소모품을 얼마나 둘지 직접 정해 본 적이 있다",
-    "postdoc": "맡은 범위 안에서 예비품이나 소모품을 얼마나 둘지 직접 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 예비 부품이나 소모품을 얼마나 둘지 직접 정한 적이 있다",
+    "master": "연구나 과제 수행에서 예비 부품이나 소모품을 얼마나 둘지 직접 정한 적이 있다",
+    "phd": "연구 방법을 정하면서 예비 부품이나 소모품을 얼마나 둘지 직접 정한 적이 있다",
+    "postdoc": "맡은 범위 안에서 예비 부품이나 소모품을 얼마나 둘지 직접 정한 적이 있다"
    },
    "options": [
     "없다",
@@ -5887,12 +5887,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "점검표나 조치 기록을 내 본 적이 있다",
+   "wording": "점검표나 고친 내용을 적은 기록을 낸 적이 있다",
    "stage_wording": {
-    "bachelor": "과제나 캡스톤 결과로 점검표나 조치 기록을 내 본 적이 있다",
-    "master": "연구 산출물로 점검표나 조치 기록을 내 본 적이 있다",
-    "phd": "논문이나 보고로 점검표나 조치 기록을 내 본 적이 있다",
-    "postdoc": "과제 산출물로 점검표나 조치 기록을 내 본 적이 있다"
+    "bachelor": "과제나 캡스톤 결과로 점검표나 고친 내용을 적은 기록을 낸 적이 있다",
+    "master": "연구 산출물로 점검표나 고친 내용을 적은 기록을 낸 적이 있다",
+    "phd": "논문이나 보고로 점검표나 고친 내용을 적은 기록을 낸 적이 있다",
+    "postdoc": "과제 산출물로 점검표나 고친 내용을 적은 기록을 낸 적이 있다"
    },
    "options": [
     "없다",
@@ -5922,12 +5922,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "교정 기록이나 인수인계 문서를 남겨 본 적이 있다",
+   "wording": "교정 기록이나 다음 사람에게 넘길 문서를 남겨 본 적이 있다",
    "stage_wording": {
-    "bachelor": "과제나 캡스톤 결과로 교정 기록이나 인수인계 문서를 남겨 본 적이 있다",
-    "master": "연구 산출물로 교정 기록이나 인수인계 문서를 남겨 본 적이 있다",
-    "phd": "논문이나 보고로 교정 기록이나 인수인계 문서를 남겨 본 적이 있다",
-    "postdoc": "과제 산출물로 교정 기록이나 인수인계 문서를 남겨 본 적이 있다"
+    "bachelor": "과제나 캡스톤 결과로 교정 기록이나 다음 사람에게 넘길 문서를 남겨 본 적이 있다",
+    "master": "연구 산출물로 교정 기록이나 다음 사람에게 넘길 문서를 남겨 본 적이 있다",
+    "phd": "논문이나 보고로 교정 기록이나 다음 사람에게 넘길 문서를 남겨 본 적이 있다",
+    "postdoc": "과제 산출물로 교정 기록이나 다음 사람에게 넘길 문서를 남겨 본 적이 있다"
    },
    "options": [
     "없다",
@@ -5957,12 +5957,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "장비 사양값과 실제로 나온 성능을 견주어 본 적이 있다",
+   "wording": "장비 사양에 적힌 값과 실제 성능을 재서 비교한 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 장비 사양값과 실제로 나온 성능을 견주어 본 적이 있다",
-    "master": "연구에서 장비 사양값과 실제로 나온 성능을 견주어 본 적이 있다",
-    "phd": "결과의 타당성을 따질 때 장비 사양값과 실제로 나온 성능을 견주어 본 적이 있다",
-    "postdoc": "과제 결과를 낼 때 장비 사양값과 실제로 나온 성능을 견주어 본 적이 있다"
+    "bachelor": "실험이나 과제에서 장비 사양에 적힌 값과 실제 성능을 재서 비교한 적이 있다",
+    "master": "연구에서 장비 사양에 적힌 값과 실제 성능을 재서 비교한 적이 있다",
+    "phd": "결과의 타당성을 따질 때 장비 사양에 적힌 값과 실제 성능을 재서 비교한 적이 있다",
+    "postdoc": "과제 결과를 낼 때 장비 사양에 적힌 값과 실제 성능을 재서 비교한 적이 있다"
    },
    "options": [
     "없다",
@@ -5992,12 +5992,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "손보기 전과 뒤의 상태를 견주어 본 적이 있다",
+   "wording": "손보기 전과 뒤의 장비 상태를 재서 비교한 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 손보기 전과 뒤의 상태를 견주어 본 적이 있다",
-    "master": "연구에서 손보기 전과 뒤의 상태를 견주어 본 적이 있다",
-    "phd": "결과의 타당성을 따질 때 손보기 전과 뒤의 상태를 견주어 본 적이 있다",
-    "postdoc": "과제 결과를 낼 때 손보기 전과 뒤의 상태를 견주어 본 적이 있다"
+    "bachelor": "실험이나 과제에서 손보기 전과 뒤의 장비 상태를 재서 비교한 적이 있다",
+    "master": "연구에서 손보기 전과 뒤의 장비 상태를 재서 비교한 적이 있다",
+    "phd": "결과의 타당성을 따질 때 손보기 전과 뒤의 장비 상태를 재서 비교한 적이 있다",
+    "postdoc": "과제 결과를 낼 때 손보기 전과 뒤의 장비 상태를 재서 비교한 적이 있다"
    },
    "options": [
     "없다",
@@ -6027,12 +6027,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "같은 증상이 또 나와서 원인을 다시 좁혀 본 적이 있다",
+   "wording": "같은 고장이 또 나서 원인을 다시 찾아본 적이 있다",
    "stage_wording": {
-    "bachelor": "결과가 예상과 달랐을 때 같은 증상이 또 나와서 원인을 다시 좁혀 본 적이 있다",
-    "master": "재현이 안 됐을 때 같은 증상이 또 나와서 원인을 다시 좁혀 본 적이 있다",
-    "phd": "결과가 가정과 어긋났을 때 같은 증상이 또 나와서 원인을 다시 좁혀 본 적이 있다",
-    "postdoc": "방법의 한계를 정리할 때 같은 증상이 또 나와서 원인을 다시 좁혀 본 적이 있다"
+    "bachelor": "결과가 예상과 달랐을 때 같은 고장이 또 나서 원인을 다시 찾아본 적이 있다",
+    "master": "재현이 안 됐을 때 같은 고장이 또 나서 원인을 다시 찾아본 적이 있다",
+    "phd": "결과가 가정과 어긋났을 때 같은 고장이 또 나서 원인을 다시 찾아본 적이 있다",
+    "postdoc": "방법의 한계를 정리할 때 같은 고장이 또 나서 원인을 다시 찾아본 적이 있다"
    },
    "options": [
     "없다",
@@ -6062,12 +6062,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "원인을 장비와 조건과 쓰는 방법 가운데로 갈라 본 적이 있다",
+   "wording": "고장 원인을 장비와 조건과 쓰는 방법 쪽으로 나눠 본 적이 있다",
    "stage_wording": {
-    "bachelor": "결과가 예상과 달랐을 때 원인을 장비와 조건과 쓰는 방법 가운데로 갈라 본 적이 있다",
-    "master": "재현이 안 됐을 때 원인을 장비와 조건과 쓰는 방법 가운데로 갈라 본 적이 있다",
-    "phd": "결과가 가정과 어긋났을 때 원인을 장비와 조건과 쓰는 방법 가운데로 갈라 본 적이 있다",
-    "postdoc": "방법의 한계를 정리할 때 원인을 장비와 조건과 쓰는 방법 가운데로 갈라 본 적이 있다"
+    "bachelor": "결과가 예상과 달랐을 때 고장 원인을 장비와 조건과 쓰는 방법 쪽으로 나눠 본 적이 있다",
+    "master": "재현이 안 됐을 때 고장 원인을 장비와 조건과 쓰는 방법 쪽으로 나눠 본 적이 있다",
+    "phd": "결과가 가정과 어긋났을 때 고장 원인을 장비와 조건과 쓰는 방법 쪽으로 나눠 본 적이 있다",
+    "postdoc": "방법의 한계를 정리할 때 고장 원인을 장비와 조건과 쓰는 방법 쪽으로 나눠 본 적이 있다"
    },
    "options": [
     "없다",
@@ -6097,12 +6097,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "어느 장비의 무엇을 먼저 볼지 골라 범위를 정해 본 적이 있다",
+   "wording": "여러 장비 가운데 무엇을 먼저 살필지 골라 본 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 어느 장비의 무엇을 먼저 볼지 골라 범위를 정해 본 적이 있다",
-    "master": "연구과제에서 어느 장비의 무엇을 먼저 볼지 골라 범위를 정해 본 적이 있다",
-    "phd": "연구 주제를 세울 때 어느 장비의 무엇을 먼저 볼지 골라 범위를 정해 본 적이 있다",
-    "postdoc": "맡은 과제나 제안서에서 어느 장비의 무엇을 먼저 볼지 골라 범위를 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 여러 장비 가운데 무엇을 먼저 살필지 골라 본 적이 있다",
+    "master": "연구과제에서 여러 장비 가운데 무엇을 먼저 살필지 골라 본 적이 있다",
+    "phd": "연구 주제를 정할 때 여러 장비 가운데 무엇을 먼저 살필지 골라 본 적이 있다",
+    "postdoc": "맡은 과제나 제안서에서 여러 장비 가운데 무엇을 먼저 살필지 골라 본 적이 있다"
    },
    "options": [
     "없다",
@@ -6136,7 +6136,7 @@
    "stage_wording": {
     "bachelor": "과제 요구사항을 받고 요구 정밀도를 점검 항목과 허용 범위로 옮겨 본 적이 있다",
     "master": "과제 목표를 받고 요구 정밀도를 점검 항목과 허용 범위로 옮겨 본 적이 있다",
-    "phd": "연구 목표를 세우면서 요구 정밀도를 점검 항목과 허용 범위로 옮겨 본 적이 있다",
+    "phd": "연구 목표를 정하면서 요구 정밀도를 점검 항목과 허용 범위로 옮겨 본 적이 있다",
     "postdoc": "연구 공고나 과제 목표를 보고 요구 정밀도를 점검 항목과 허용 범위로 옮겨 본 적이 있다"
    },
    "options": [
@@ -6167,12 +6167,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "소리나 열이나 떨림으로 이상 징후를 판정해 본 적이 있다",
+   "wording": "측정기로 장비 상태가 기준 안에 드는지 확인한 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 소리나 열이나 떨림으로 이상 징후를 판정해 본 적이 있다",
-    "master": "연구 수행에서 소리나 열이나 떨림으로 이상 징후를 판정해 본 적이 있다",
-    "phd": "방법을 검토하면서 소리나 열이나 떨림으로 이상 징후를 판정해 본 적이 있다",
-    "postdoc": "과제 수행에서 소리나 열이나 떨림으로 이상 징후를 판정해 본 적이 있다"
+    "bachelor": "실험이나 과제에서 측정기로 장비 상태가 기준 안에 드는지 확인한 적이 있다",
+    "master": "연구 수행에서 측정기로 장비 상태가 기준 안에 드는지 확인한 적이 있다",
+    "phd": "방법을 검토하면서 측정기로 장비 상태가 기준 안에 드는지 확인한 적이 있다",
+    "postdoc": "과제 수행에서 측정기로 장비 상태가 기준 안에 드는지 확인한 적이 있다"
    },
    "options": [
     "없다",
@@ -6202,12 +6202,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J8",
-   "wording": "내가 정한 점검 기준이 다른 사람의 운용에 쓰인 적이 있다",
+   "wording": "장비 쓰는 법을 다른 사람에게 알려 준 적이 있다",
    "stage_wording": {
-    "bachelor": "캡스톤이나 인턴에서 내가 정한 점검 기준이 다른 사람의 운용에 쓰인 적이 있다",
-    "master": "연구실이나 과제에서 내가 정한 점검 기준이 다른 사람의 운용에 쓰인 적이 있다",
-    "phd": "과제나 공동 연구에서 내가 정한 점검 기준이 다른 사람의 운용에 쓰인 적이 있다",
-    "postdoc": "맡은 과제나 협력 기관에서 내가 정한 점검 기준이 다른 사람의 운용에 쓰인 적이 있다"
+    "bachelor": "캡스톤이나 인턴에서 장비 쓰는 법을 다른 사람에게 알려 준 적이 있다",
+    "master": "연구실이나 과제에서 장비 쓰는 법을 다른 사람에게 알려 준 적이 있다",
+    "phd": "과제나 공동 연구에서 장비 쓰는 법을 다른 사람에게 알려 준 적이 있다",
+    "postdoc": "맡은 과제나 협력 기관에서 장비 쓰는 법을 다른 사람에게 알려 준 적이 있다"
    },
    "options": [
     "없다",
@@ -6237,12 +6237,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "관리할 항목과 관리 범위를 직접 정해 본 적이 있다",
+   "wording": "관리할 품질 항목과 허용 범위를 내가 정해 둔 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 관리할 항목과 관리 범위를 직접 정해 본 적이 있다",
-    "master": "연구나 과제 수행에서 관리할 항목과 관리 범위를 직접 정해 본 적이 있다",
-    "phd": "방법을 세우면서 관리할 항목과 관리 범위를 직접 정해 본 적이 있다",
-    "postdoc": "맡은 범위 안에서 관리할 항목과 관리 범위를 직접 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 관리할 품질 항목과 허용 범위를 내가 정해 둔 적이 있다",
+    "master": "연구나 과제 수행에서 관리할 품질 항목과 허용 범위를 내가 정해 둔 적이 있다",
+    "phd": "연구 방법을 정하면서 관리할 품질 항목과 허용 범위를 내가 정해 둔 적이 있다",
+    "postdoc": "맡은 범위 안에서 관리할 품질 항목과 허용 범위를 내가 정해 둔 적이 있다"
    },
    "options": [
     "없다",
@@ -6272,12 +6272,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "표본 수와 검사 주기를 직접 정해 본 적이 있다",
+   "wording": "검사할 표본 수와 검사 주기를 직접 정한 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 표본 수와 검사 주기를 직접 정해 본 적이 있다",
-    "master": "연구나 과제 수행에서 표본 수와 검사 주기를 직접 정해 본 적이 있다",
-    "phd": "방법을 세우면서 표본 수와 검사 주기를 직접 정해 본 적이 있다",
-    "postdoc": "맡은 범위 안에서 표본 수와 검사 주기를 직접 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 검사할 표본 수와 검사 주기를 직접 정한 적이 있다",
+    "master": "연구나 과제 수행에서 검사할 표본 수와 검사 주기를 직접 정한 적이 있다",
+    "phd": "연구 방법을 정하면서 검사할 표본 수와 검사 주기를 직접 정한 적이 있다",
+    "postdoc": "맡은 범위 안에서 검사할 표본 수와 검사 주기를 직접 정한 적이 있다"
    },
    "options": [
     "없다",
@@ -6307,12 +6307,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "관리 계획이나 검사 기준을 내 본 적이 있다",
+   "wording": "검사 기준이나 품질 관리 계획을 문서로 낸 적이 있다",
    "stage_wording": {
-    "bachelor": "과제나 캡스톤 결과로 관리 계획이나 검사 기준을 내 본 적이 있다",
-    "master": "연구 산출물로 관리 계획이나 검사 기준을 내 본 적이 있다",
-    "phd": "논문이나 보고로 관리 계획이나 검사 기준을 내 본 적이 있다",
-    "postdoc": "과제 산출물로 관리 계획이나 검사 기준을 내 본 적이 있다"
+    "bachelor": "과제나 캡스톤 결과로 검사 기준이나 품질 관리 계획을 문서로 낸 적이 있다",
+    "master": "연구 산출물로 검사 기준이나 품질 관리 계획을 문서로 낸 적이 있다",
+    "phd": "논문이나 보고로 검사 기준이나 품질 관리 계획을 문서로 낸 적이 있다",
+    "postdoc": "과제 산출물로 검사 기준이나 품질 관리 계획을 문서로 낸 적이 있다"
    },
    "options": [
     "없다",
@@ -6342,12 +6342,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "시정조치 보고를 원인과 대책까지 적어 남겨 본 적이 있다",
+   "wording": "불량 원인과 대책을 적은 개선 보고를 남겨 본 적이 있다",
    "stage_wording": {
-    "bachelor": "과제나 캡스톤 결과로 시정조치 보고를 원인과 대책까지 적어 남겨 본 적이 있다",
-    "master": "연구 산출물로 시정조치 보고를 원인과 대책까지 적어 남겨 본 적이 있다",
-    "phd": "논문이나 보고로 시정조치 보고를 원인과 대책까지 적어 남겨 본 적이 있다",
-    "postdoc": "과제 산출물로 시정조치 보고를 원인과 대책까지 적어 남겨 본 적이 있다"
+    "bachelor": "과제나 캡스톤 결과로 불량 원인과 대책을 적은 개선 보고를 남겨 본 적이 있다",
+    "master": "연구 산출물로 불량 원인과 대책을 적은 개선 보고를 남겨 본 적이 있다",
+    "phd": "논문이나 보고로 불량 원인과 대책을 적은 개선 보고를 남겨 본 적이 있다",
+    "postdoc": "과제 산출물로 불량 원인과 대책을 적은 개선 보고를 남겨 본 적이 있다"
    },
    "options": [
     "없다",
@@ -6377,12 +6377,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "목표 불량률과 실제 불량률을 견주어 본 적이 있다",
+   "wording": "검사 결과를 규격과 비교해 합격 여부를 본 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 목표 불량률과 실제 불량률을 견주어 본 적이 있다",
-    "master": "연구에서 목표 불량률과 실제 불량률을 견주어 본 적이 있다",
-    "phd": "결과의 타당성을 따질 때 목표 불량률과 실제 불량률을 견주어 본 적이 있다",
-    "postdoc": "과제 결과를 낼 때 목표 불량률과 실제 불량률을 견주어 본 적이 있다"
+    "bachelor": "실험이나 과제에서 검사 결과를 규격과 비교해 합격 여부를 본 적이 있다",
+    "master": "연구에서 검사 결과를 규격과 비교해 합격 여부를 본 적이 있다",
+    "phd": "결과의 타당성을 따질 때 검사 결과를 규격과 비교해 합격 여부를 본 적이 있다",
+    "postdoc": "과제 결과를 낼 때 검사 결과를 규격과 비교해 합격 여부를 본 적이 있다"
    },
    "options": [
     "없다",
@@ -6412,12 +6412,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "가속 시험 결과와 실제로 쓰는 수명을 견주어 본 적이 있다",
+   "wording": "수명을 앞당겨 보는 시험 결과를 실제 사용 수명과 비교해 본 일이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 가속 시험 결과와 실제로 쓰는 수명을 견주어 본 적이 있다",
-    "master": "연구에서 가속 시험 결과와 실제로 쓰는 수명을 견주어 본 적이 있다",
-    "phd": "결과의 타당성을 따질 때 가속 시험 결과와 실제로 쓰는 수명을 견주어 본 적이 있다",
-    "postdoc": "과제 결과를 낼 때 가속 시험 결과와 실제로 쓰는 수명을 견주어 본 적이 있다"
+    "bachelor": "실험이나 과제에서 수명을 앞당겨 보는 시험 결과를 실제 사용 수명과 비교해 본 일이 있다",
+    "master": "연구에서 수명을 앞당겨 보는 시험 결과를 실제 사용 수명과 비교해 본 일이 있다",
+    "phd": "결과의 타당성을 따질 때 수명을 앞당겨 보는 시험 결과를 실제 사용 수명과 비교해 본 일이 있다",
+    "postdoc": "과제 결과를 낼 때 수명을 앞당겨 보는 시험 결과를 실제 사용 수명과 비교해 본 일이 있다"
    },
    "options": [
     "없다",
@@ -6447,12 +6447,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "같은 불량이 또 나와서 대책을 다시 세워 본 적이 있다",
+   "wording": "같은 불량이 또 나와 대책을 다시 짜 본 적이 있다",
    "stage_wording": {
-    "bachelor": "결과가 예상과 달랐을 때 같은 불량이 또 나와서 대책을 다시 세워 본 적이 있다",
-    "master": "재현이 안 됐을 때 같은 불량이 또 나와서 대책을 다시 세워 본 적이 있다",
-    "phd": "결과가 가정과 어긋났을 때 같은 불량이 또 나와서 대책을 다시 세워 본 적이 있다",
-    "postdoc": "방법의 한계를 정리할 때 같은 불량이 또 나와서 대책을 다시 세워 본 적이 있다"
+    "bachelor": "결과가 예상과 달랐을 때 같은 불량이 또 나와 대책을 다시 짜 본 적이 있다",
+    "master": "재현이 안 됐을 때 같은 불량이 또 나와 대책을 다시 짜 본 적이 있다",
+    "phd": "결과가 가정과 어긋났을 때 같은 불량이 또 나와 대책을 다시 짜 본 적이 있다",
+    "postdoc": "방법의 한계를 정리할 때 같은 불량이 또 나와 대책을 다시 짜 본 적이 있다"
    },
    "options": [
     "없다",
@@ -6482,12 +6482,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "불량이 생긴 쪽과 걸러내지 못한 쪽을 갈라 본 적이 있다",
+   "wording": "불량이 생긴 곳과 검사에서 못 걸러낸 곳을 나눠 본 적이 있다",
    "stage_wording": {
-    "bachelor": "결과가 예상과 달랐을 때 불량이 생긴 쪽과 걸러내지 못한 쪽을 갈라 본 적이 있다",
-    "master": "재현이 안 됐을 때 불량이 생긴 쪽과 걸러내지 못한 쪽을 갈라 본 적이 있다",
-    "phd": "결과가 가정과 어긋났을 때 불량이 생긴 쪽과 걸러내지 못한 쪽을 갈라 본 적이 있다",
-    "postdoc": "방법의 한계를 정리할 때 불량이 생긴 쪽과 걸러내지 못한 쪽을 갈라 본 적이 있다"
+    "bachelor": "결과가 예상과 달랐을 때 불량이 생긴 곳과 검사에서 못 걸러낸 곳을 나눠 본 적이 있다",
+    "master": "재현이 안 됐을 때 불량이 생긴 곳과 검사에서 못 걸러낸 곳을 나눠 본 적이 있다",
+    "phd": "결과가 가정과 어긋났을 때 불량이 생긴 곳과 검사에서 못 걸러낸 곳을 나눠 본 적이 있다",
+    "postdoc": "방법의 한계를 정리할 때 불량이 생긴 곳과 검사에서 못 걸러낸 곳을 나눠 본 적이 있다"
    },
    "options": [
     "없다",
@@ -6517,12 +6517,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "무엇이 치명적인지 따져 관리할 특성을 가려 본 적이 있다",
+   "wording": "어느 품질 특성을 관리할지 골라 본 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 무엇이 치명적인지 따져 관리할 특성을 가려 본 적이 있다",
-    "master": "연구과제에서 무엇이 치명적인지 따져 관리할 특성을 가려 본 적이 있다",
-    "phd": "연구 주제를 세울 때 무엇이 치명적인지 따져 관리할 특성을 가려 본 적이 있다",
-    "postdoc": "맡은 과제나 제안서에서 무엇이 치명적인지 따져 관리할 특성을 가려 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 어느 품질 특성을 관리할지 골라 본 적이 있다",
+    "master": "연구과제에서 어느 품질 특성을 관리할지 골라 본 적이 있다",
+    "phd": "연구 주제를 정할 때 어느 품질 특성을 관리할지 골라 본 적이 있다",
+    "postdoc": "맡은 과제나 제안서에서 어느 품질 특성을 관리할지 골라 본 적이 있다"
    },
    "options": [
     "없다",
@@ -6552,12 +6552,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "요구 품질을 관리 항목과 허용 범위로 옮겨 본 적이 있다",
+   "wording": "고객 요구와 규격을 관리 한계와 수명 목표로 옮긴 적이 있다",
    "stage_wording": {
-    "bachelor": "과제 요구사항을 받고 요구 품질을 관리 항목과 허용 범위로 옮겨 본 적이 있다",
-    "master": "과제 목표를 받고 요구 품질을 관리 항목과 허용 범위로 옮겨 본 적이 있다",
-    "phd": "연구 목표를 세우면서 요구 품질을 관리 항목과 허용 범위로 옮겨 본 적이 있다",
-    "postdoc": "연구 공고나 과제 목표를 보고 요구 품질을 관리 항목과 허용 범위로 옮겨 본 적이 있다"
+    "bachelor": "과제 요구사항을 받고 고객 요구와 규격을 관리 한계와 수명 목표로 옮긴 적이 있다",
+    "master": "과제 목표를 받고 고객 요구와 규격을 관리 한계와 수명 목표로 옮긴 적이 있다",
+    "phd": "연구 목표를 정하면서 고객 요구와 규격을 관리 한계와 수명 목표로 옮긴 적이 있다",
+    "postdoc": "연구 공고나 과제 목표를 보고 고객 요구와 규격을 관리 한계와 수명 목표로 옮긴 적이 있다"
    },
    "options": [
     "없다",
@@ -6587,12 +6587,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "공정 능력 지수를 계산해 관리 상태를 봐 본 적이 있다",
+   "wording": "시간에 따른 품질 값을 그래프(관리도)로 그려 본 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 공정 능력 지수를 계산해 관리 상태를 봐 본 적이 있다",
-    "master": "연구 수행에서 공정 능력 지수를 계산해 관리 상태를 봐 본 적이 있다",
-    "phd": "방법을 검토하면서 공정 능력 지수를 계산해 관리 상태를 봐 본 적이 있다",
-    "postdoc": "과제 수행에서 공정 능력 지수를 계산해 관리 상태를 봐 본 적이 있다"
+    "bachelor": "실험이나 과제에서 시간에 따른 품질 값을 그래프(관리도)로 그려 본 적이 있다",
+    "master": "연구 수행에서 시간에 따른 품질 값을 그래프(관리도)로 그려 본 적이 있다",
+    "phd": "방법을 검토하면서 시간에 따른 품질 값을 그래프(관리도)로 그려 본 적이 있다",
+    "postdoc": "과제 수행에서 시간에 따른 품질 값을 그래프(관리도)로 그려 본 적이 있다"
    },
    "options": [
     "없다",
@@ -6622,12 +6622,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J8",
-   "wording": "내가 세운 기준으로 공정이나 검사가 바뀐 적이 있다",
+   "wording": "품질 검사 결과를 정리해 팀에 보고한 적이 있다",
    "stage_wording": {
-    "bachelor": "캡스톤이나 인턴에서 내가 세운 기준으로 공정이나 검사가 바뀐 적이 있다",
-    "master": "연구실이나 과제에서 내가 세운 기준으로 공정이나 검사가 바뀐 적이 있다",
-    "phd": "과제나 공동 연구에서 내가 세운 기준으로 공정이나 검사가 바뀐 적이 있다",
-    "postdoc": "맡은 과제나 협력 기관에서 내가 세운 기준으로 공정이나 검사가 바뀐 적이 있다"
+    "bachelor": "캡스톤이나 인턴에서 품질 검사 결과를 정리해 팀에 보고한 적이 있다",
+    "master": "연구실이나 과제에서 품질 검사 결과를 정리해 팀에 보고한 적이 있다",
+    "phd": "과제나 공동 연구에서 품질 검사 결과를 정리해 팀에 보고한 적이 있다",
+    "postdoc": "맡은 과제나 협력 기관에서 품질 검사 결과를 정리해 팀에 보고한 적이 있다"
    },
    "options": [
     "없다",
@@ -6657,12 +6657,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "부품이나 팀 사이에 맞춰야 할 것을 직접 정해 본 적이 있다",
+   "wording": "부품이나 팀 사이에 맞춰야 할 것을 직접 정했던 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 부품이나 팀 사이에 맞춰야 할 것을 직접 정해 본 적이 있다",
-    "master": "연구나 과제 수행에서 부품이나 팀 사이에 맞춰야 할 것을 직접 정해 본 적이 있다",
-    "phd": "방법을 세우면서 부품이나 팀 사이에 맞춰야 할 것을 직접 정해 본 적이 있다",
-    "postdoc": "맡은 범위 안에서 부품이나 팀 사이에 맞춰야 할 것을 직접 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 부품이나 팀 사이에 맞춰야 할 것을 직접 정했던 적이 있다",
+    "master": "연구나 과제 수행에서 부품이나 팀 사이에 맞춰야 할 것을 직접 정했던 적이 있다",
+    "phd": "연구 방법을 정하면서 부품이나 팀 사이에 맞춰야 할 것을 직접 정했던 적이 있다",
+    "postdoc": "맡은 범위 안에서 부품이나 팀 사이에 맞춰야 할 것을 직접 정했던 적이 있다"
    },
    "options": [
     "없다",
@@ -6692,12 +6692,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "부딪히는 요구 가운데 무엇을 먼저 지킬지 직접 정해 본 적이 있다",
+   "wording": "서로 부딪치는 요구 가운데 무엇을 먼저 지킬지 직접 정한 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 부딪히는 요구 가운데 무엇을 먼저 지킬지 직접 정해 본 적이 있다",
-    "master": "연구나 과제 수행에서 부딪히는 요구 가운데 무엇을 먼저 지킬지 직접 정해 본 적이 있다",
-    "phd": "방법을 세우면서 부딪히는 요구 가운데 무엇을 먼저 지킬지 직접 정해 본 적이 있다",
-    "postdoc": "맡은 범위 안에서 부딪히는 요구 가운데 무엇을 먼저 지킬지 직접 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 서로 부딪치는 요구 가운데 무엇을 먼저 지킬지 직접 정한 적이 있다",
+    "master": "연구나 과제 수행에서 서로 부딪치는 요구 가운데 무엇을 먼저 지킬지 직접 정한 적이 있다",
+    "phd": "연구 방법을 정하면서 서로 부딪치는 요구 가운데 무엇을 먼저 지킬지 직접 정한 적이 있다",
+    "postdoc": "맡은 범위 안에서 서로 부딪치는 요구 가운데 무엇을 먼저 지킬지 직접 정한 적이 있다"
    },
    "options": [
     "없다",
@@ -6727,12 +6727,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "요구조건 표나 합격 기준을 내 본 적이 있다",
+   "wording": "요구조건 표나 합격 기준을 만들어 낸 적이 있다",
    "stage_wording": {
-    "bachelor": "과제나 캡스톤 결과로 요구조건 표나 합격 기준을 내 본 적이 있다",
-    "master": "연구 산출물로 요구조건 표나 합격 기준을 내 본 적이 있다",
-    "phd": "논문이나 보고로 요구조건 표나 합격 기준을 내 본 적이 있다",
-    "postdoc": "과제 산출물로 요구조건 표나 합격 기준을 내 본 적이 있다"
+    "bachelor": "과제나 캡스톤 결과로 요구조건 표나 합격 기준을 만들어 낸 적이 있다",
+    "master": "연구 산출물로 요구조건 표나 합격 기준을 만들어 낸 적이 있다",
+    "phd": "논문이나 보고로 요구조건 표나 합격 기준을 만들어 낸 적이 있다",
+    "postdoc": "과제 산출물로 요구조건 표나 합격 기준을 만들어 낸 적이 있다"
    },
    "options": [
     "없다",
@@ -6762,12 +6762,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "일정표와 바뀐 내용을 함께 남겨 본 적이 있다",
+   "wording": "일정표와 바뀐 내용을 함께 기록해 둔 적이 있다",
    "stage_wording": {
-    "bachelor": "과제나 캡스톤 결과로 일정표와 바뀐 내용을 함께 남겨 본 적이 있다",
-    "master": "연구 산출물로 일정표와 바뀐 내용을 함께 남겨 본 적이 있다",
-    "phd": "논문이나 보고로 일정표와 바뀐 내용을 함께 남겨 본 적이 있다",
-    "postdoc": "과제 산출물로 일정표와 바뀐 내용을 함께 남겨 본 적이 있다"
+    "bachelor": "과제나 캡스톤 결과로 일정표와 바뀐 내용을 함께 기록해 둔 적이 있다",
+    "master": "연구 산출물로 일정표와 바뀐 내용을 함께 기록해 둔 적이 있다",
+    "phd": "논문이나 보고로 일정표와 바뀐 내용을 함께 기록해 둔 적이 있다",
+    "postdoc": "과제 산출물로 일정표와 바뀐 내용을 함께 기록해 둔 적이 있다"
    },
    "options": [
     "없다",
@@ -6797,12 +6797,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "만든 것이 요구조건을 지켰는지 확인해 본 적이 있다",
+   "wording": "만든 것이 요구조건을 지켰는지 하나씩 확인한 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 만든 것이 요구조건을 지켰는지 확인해 본 적이 있다",
-    "master": "연구에서 만든 것이 요구조건을 지켰는지 확인해 본 적이 있다",
-    "phd": "결과의 타당성을 따질 때 만든 것이 요구조건을 지켰는지 확인해 본 적이 있다",
-    "postdoc": "과제 결과를 낼 때 만든 것이 요구조건을 지켰는지 확인해 본 적이 있다"
+    "bachelor": "실험이나 과제에서 만든 것이 요구조건을 지켰는지 하나씩 확인한 적이 있다",
+    "master": "연구에서 만든 것이 요구조건을 지켰는지 하나씩 확인한 적이 있다",
+    "phd": "결과의 타당성을 따질 때 만든 것이 요구조건을 지켰는지 하나씩 확인한 적이 있다",
+    "postdoc": "과제 결과를 낼 때 만든 것이 요구조건을 지켰는지 하나씩 확인한 적이 있다"
    },
    "options": [
     "없다",
@@ -6832,12 +6832,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "요구조건마다 됐는지 대조해 못 지킨 것을 적어 본 적이 있다",
+   "wording": "요구조건 표에서 못 지킨 항목을 찾아 적어 본 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 요구조건마다 됐는지 대조해 못 지킨 것을 적어 본 적이 있다",
-    "master": "연구에서 요구조건마다 됐는지 대조해 못 지킨 것을 적어 본 적이 있다",
-    "phd": "결과의 타당성을 따질 때 요구조건마다 됐는지 대조해 못 지킨 것을 적어 본 적이 있다",
-    "postdoc": "과제 결과를 낼 때 요구조건마다 됐는지 대조해 못 지킨 것을 적어 본 적이 있다"
+    "bachelor": "실험이나 과제에서 요구조건 표에서 못 지킨 항목을 찾아 적어 본 적이 있다",
+    "master": "연구에서 요구조건 표에서 못 지킨 항목을 찾아 적어 본 적이 있다",
+    "phd": "결과의 타당성을 따질 때 요구조건 표에서 못 지킨 항목을 찾아 적어 본 적이 있다",
+    "postdoc": "과제 결과를 낼 때 요구조건 표에서 못 지킨 항목을 찾아 적어 본 적이 있다"
    },
    "options": [
     "없다",
@@ -6902,12 +6902,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "일정이 밀린 원인을 작업별로 갈라 본 적이 있다",
+   "wording": "일정이 밀린 까닭을 작업마다 나눠 따져 본 적이 있다",
    "stage_wording": {
-    "bachelor": "결과가 예상과 달랐을 때 일정이 밀린 원인을 작업별로 갈라 본 적이 있다",
-    "master": "재현이 안 됐을 때 일정이 밀린 원인을 작업별로 갈라 본 적이 있다",
-    "phd": "결과가 가정과 어긋났을 때 일정이 밀린 원인을 작업별로 갈라 본 적이 있다",
-    "postdoc": "방법의 한계를 정리할 때 일정이 밀린 원인을 작업별로 갈라 본 적이 있다"
+    "bachelor": "결과가 예상과 달랐을 때 일정이 밀린 까닭을 작업마다 나눠 따져 본 적이 있다",
+    "master": "재현이 안 됐을 때 일정이 밀린 까닭을 작업마다 나눠 따져 본 적이 있다",
+    "phd": "결과가 가정과 어긋났을 때 일정이 밀린 까닭을 작업마다 나눠 따져 본 적이 있다",
+    "postdoc": "방법의 한계를 정리할 때 일정이 밀린 까닭을 작업마다 나눠 따져 본 적이 있다"
    },
    "options": [
     "없다",
@@ -6937,12 +6937,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "이번에 할 것과 하지 않을 것을 적어 갈라 본 적이 있다",
+   "wording": "이번에 할 일과 하지 않을 일을 나눠 적은 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 이번에 할 것과 하지 않을 것을 적어 갈라 본 적이 있다",
-    "master": "연구과제에서 이번에 할 것과 하지 않을 것을 적어 갈라 본 적이 있다",
-    "phd": "연구 주제를 세울 때 이번에 할 것과 하지 않을 것을 적어 갈라 본 적이 있다",
-    "postdoc": "맡은 과제나 제안서에서 이번에 할 것과 하지 않을 것을 적어 갈라 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 이번에 할 일과 하지 않을 일을 나눠 적은 적이 있다",
+    "master": "연구과제에서 이번에 할 일과 하지 않을 일을 나눠 적은 적이 있다",
+    "phd": "연구 주제를 정할 때 이번에 할 일과 하지 않을 일을 나눠 적은 적이 있다",
+    "postdoc": "맡은 과제나 제안서에서 이번에 할 일과 하지 않을 일을 나눠 적은 적이 있다"
    },
    "options": [
     "없다",
@@ -6972,12 +6972,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "해 달라는 말을 지킬 수 있는 수치 조건으로 쪼개 본 적이 있다",
+   "wording": "해 달라는 말을 지킬 수 있는 숫자 조건으로 쪼개 본 적이 있다",
    "stage_wording": {
-    "bachelor": "과제 요구사항을 받고 해 달라는 말을 지킬 수 있는 수치 조건으로 쪼개 본 적이 있다",
-    "master": "과제 목표를 받고 해 달라는 말을 지킬 수 있는 수치 조건으로 쪼개 본 적이 있다",
-    "phd": "연구 목표를 세우면서 해 달라는 말을 지킬 수 있는 수치 조건으로 쪼개 본 적이 있다",
-    "postdoc": "연구 공고나 과제 목표를 보고 해 달라는 말을 지킬 수 있는 수치 조건으로 쪼개 본 적이 있다"
+    "bachelor": "과제 요구사항을 받고 해 달라는 말을 지킬 수 있는 숫자 조건으로 쪼개 본 적이 있다",
+    "master": "과제 목표를 받고 해 달라는 말을 지킬 수 있는 숫자 조건으로 쪼개 본 적이 있다",
+    "phd": "연구 목표를 정하면서 해 달라는 말을 지킬 수 있는 숫자 조건으로 쪼개 본 적이 있다",
+    "postdoc": "연구 공고나 과제 목표를 보고 해 달라는 말을 지킬 수 있는 숫자 조건으로 쪼개 본 적이 있다"
    },
    "options": [
     "없다",
@@ -7007,12 +7007,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "요구조건 표를 써서 진행을 따라가 본 적이 있다",
+   "wording": "요구조건 표로 진행 상황을 매주 점검한 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 요구조건 표를 써서 진행을 따라가 본 적이 있다",
-    "master": "연구 수행에서 요구조건 표를 써서 진행을 따라가 본 적이 있다",
-    "phd": "방법을 검토하면서 요구조건 표를 써서 진행을 따라가 본 적이 있다",
-    "postdoc": "과제 수행에서 요구조건 표를 써서 진행을 따라가 본 적이 있다"
+    "bachelor": "실험이나 과제에서 요구조건 표로 진행 상황을 매주 점검한 적이 있다",
+    "master": "연구 수행에서 요구조건 표로 진행 상황을 매주 점검한 적이 있다",
+    "phd": "방법을 검토하면서 요구조건 표로 진행 상황을 매주 점검한 적이 있다",
+    "postdoc": "과제 수행에서 요구조건 표로 진행 상황을 매주 점검한 적이 있다"
    },
    "options": [
     "없다",
@@ -7042,12 +7042,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J8",
-   "wording": "정리한 요구조건을 팀에 돌려 본 적이 있다",
+   "wording": "정리한 요구조건을 팀원들에게 나눠 준 적이 있다",
    "stage_wording": {
-    "bachelor": "캡스톤이나 인턴에서 정리한 요구조건을 팀에 돌려 본 적이 있다",
-    "master": "연구실이나 과제에서 정리한 요구조건을 팀에 돌려 본 적이 있다",
-    "phd": "과제나 공동 연구에서 정리한 요구조건을 팀에 돌려 본 적이 있다",
-    "postdoc": "맡은 과제나 협력 기관에서 정리한 요구조건을 팀에 돌려 본 적이 있다"
+    "bachelor": "캡스톤이나 인턴에서 정리한 요구조건을 팀원들에게 나눠 준 적이 있다",
+    "master": "연구실이나 과제에서 정리한 요구조건을 팀원들에게 나눠 준 적이 있다",
+    "phd": "과제나 공동 연구에서 정리한 요구조건을 팀원들에게 나눠 준 적이 있다",
+    "postdoc": "맡은 과제나 협력 기관에서 정리한 요구조건을 팀원들에게 나눠 준 적이 있다"
    },
    "options": [
     "없다",
@@ -7077,12 +7077,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "처리 순서와 어디까지 자동으로 할지 직접 정해 본 적이 있다",
+   "wording": "처리 순서와 어디까지 자동으로 할지 내가 정했던 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 처리 순서와 어디까지 자동으로 할지 직접 정해 본 적이 있다",
-    "master": "연구나 과제 수행에서 처리 순서와 어디까지 자동으로 할지 직접 정해 본 적이 있다",
-    "phd": "방법을 세우면서 처리 순서와 어디까지 자동으로 할지 직접 정해 본 적이 있다",
-    "postdoc": "맡은 범위 안에서 처리 순서와 어디까지 자동으로 할지 직접 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 처리 순서와 어디까지 자동으로 할지 내가 정했던 적이 있다",
+    "master": "연구나 과제 수행에서 처리 순서와 어디까지 자동으로 할지 내가 정했던 적이 있다",
+    "phd": "연구 방법을 정하면서 처리 순서와 어디까지 자동으로 할지 내가 정했던 적이 있다",
+    "postdoc": "맡은 범위 안에서 처리 순서와 어디까지 자동으로 할지 내가 정했던 적이 있다"
    },
    "options": [
     "없다",
@@ -7112,12 +7112,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "틀렸을 때 걸러낼 규칙을 직접 정해 본 적이 있다",
+   "wording": "틀린 값을 걸러낼 규칙을 직접 만든 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 틀렸을 때 걸러낼 규칙을 직접 정해 본 적이 있다",
-    "master": "연구나 과제 수행에서 틀렸을 때 걸러낼 규칙을 직접 정해 본 적이 있다",
-    "phd": "방법을 세우면서 틀렸을 때 걸러낼 규칙을 직접 정해 본 적이 있다",
-    "postdoc": "맡은 범위 안에서 틀렸을 때 걸러낼 규칙을 직접 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 틀린 값을 걸러낼 규칙을 직접 만든 적이 있다",
+    "master": "연구나 과제 수행에서 틀린 값을 걸러낼 규칙을 직접 만든 적이 있다",
+    "phd": "연구 방법을 정하면서 틀린 값을 걸러낼 규칙을 직접 만든 적이 있다",
+    "postdoc": "맡은 범위 안에서 틀린 값을 걸러낼 규칙을 직접 만든 적이 있다"
    },
    "options": [
     "없다",
@@ -7147,12 +7147,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "돌아가는 절차나 정리된 데이터를 내 본 적이 있다",
+   "wording": "돌아가는 계산 절차나 정리된 데이터를 만들어 낸 적이 있다",
    "stage_wording": {
-    "bachelor": "과제나 캡스톤 결과로 돌아가는 절차나 정리된 데이터를 내 본 적이 있다",
-    "master": "연구 산출물로 돌아가는 절차나 정리된 데이터를 내 본 적이 있다",
-    "phd": "논문이나 보고로 돌아가는 절차나 정리된 데이터를 내 본 적이 있다",
-    "postdoc": "과제 산출물로 돌아가는 절차나 정리된 데이터를 내 본 적이 있다"
+    "bachelor": "과제나 캡스톤 결과로 돌아가는 계산 절차나 정리된 데이터를 만들어 낸 적이 있다",
+    "master": "연구 산출물로 돌아가는 계산 절차나 정리된 데이터를 만들어 낸 적이 있다",
+    "phd": "논문이나 보고로 돌아가는 계산 절차나 정리된 데이터를 만들어 낸 적이 있다",
+    "postdoc": "과제 산출물로 돌아가는 계산 절차나 정리된 데이터를 만들어 낸 적이 있다"
    },
    "options": [
     "없다",
@@ -7182,12 +7182,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "쓰는 법과 입력 규격을 적어 남겨 본 적이 있다",
+   "wording": "쓰는 법과 넣을 데이터 형식을 적어 둔 적이 있다",
    "stage_wording": {
-    "bachelor": "과제나 캡스톤 결과로 쓰는 법과 입력 규격을 적어 남겨 본 적이 있다",
-    "master": "연구 산출물로 쓰는 법과 입력 규격을 적어 남겨 본 적이 있다",
-    "phd": "논문이나 보고로 쓰는 법과 입력 규격을 적어 남겨 본 적이 있다",
-    "postdoc": "과제 산출물로 쓰는 법과 입력 규격을 적어 남겨 본 적이 있다"
+    "bachelor": "과제나 캡스톤 결과로 쓰는 법과 넣을 데이터 형식을 적어 둔 적이 있다",
+    "master": "연구 산출물로 쓰는 법과 넣을 데이터 형식을 적어 둔 적이 있다",
+    "phd": "논문이나 보고로 쓰는 법과 넣을 데이터 형식을 적어 둔 적이 있다",
+    "postdoc": "과제 산출물로 쓰는 법과 넣을 데이터 형식을 적어 둔 적이 있다"
    },
    "options": [
     "없다",
@@ -7217,12 +7217,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "자동으로 나온 값을 손으로 한 결과와 대조해 본 적이 있다",
+   "wording": "자동으로 나온 값을 손으로 계산한 값과 비교해 본 일이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 자동으로 나온 값을 손으로 한 결과와 대조해 본 적이 있다",
-    "master": "연구에서 자동으로 나온 값을 손으로 한 결과와 대조해 본 적이 있다",
-    "phd": "결과의 타당성을 따질 때 자동으로 나온 값을 손으로 한 결과와 대조해 본 적이 있다",
-    "postdoc": "과제 결과를 낼 때 자동으로 나온 값을 손으로 한 결과와 대조해 본 적이 있다"
+    "bachelor": "실험이나 과제에서 자동으로 나온 값을 손으로 계산한 값과 비교해 본 일이 있다",
+    "master": "연구에서 자동으로 나온 값을 손으로 계산한 값과 비교해 본 일이 있다",
+    "phd": "결과의 타당성을 따질 때 자동으로 나온 값을 손으로 계산한 값과 비교해 본 일이 있다",
+    "postdoc": "과제 결과를 낼 때 자동으로 나온 값을 손으로 계산한 값과 비교해 본 일이 있다"
    },
    "options": [
     "없다",
@@ -7252,12 +7252,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "여러 사례에 돌려 같은 값이 나오는지 확인해 본 적이 있다",
+   "wording": "여러 사례에 돌려 같은 값이 나오는지 확인한 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 여러 사례에 돌려 같은 값이 나오는지 확인해 본 적이 있다",
-    "master": "연구에서 여러 사례에 돌려 같은 값이 나오는지 확인해 본 적이 있다",
-    "phd": "결과의 타당성을 따질 때 여러 사례에 돌려 같은 값이 나오는지 확인해 본 적이 있다",
-    "postdoc": "과제 결과를 낼 때 여러 사례에 돌려 같은 값이 나오는지 확인해 본 적이 있다"
+    "bachelor": "실험이나 과제에서 여러 사례에 돌려 같은 값이 나오는지 확인한 적이 있다",
+    "master": "연구에서 여러 사례에 돌려 같은 값이 나오는지 확인한 적이 있다",
+    "phd": "결과의 타당성을 따질 때 여러 사례에 돌려 같은 값이 나오는지 확인한 적이 있다",
+    "postdoc": "과제 결과를 낼 때 여러 사례에 돌려 같은 값이 나오는지 확인한 적이 있다"
    },
    "options": [
     "없다",
@@ -7287,12 +7287,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "틀린 값이 나와서 어디가 문제인지 찾아 고쳐 본 적이 있다",
+   "wording": "틀린 값이 나와 어디가 문제인지 찾아 고친 적이 있다",
    "stage_wording": {
-    "bachelor": "결과가 예상과 달랐을 때 틀린 값이 나와서 어디가 문제인지 찾아 고쳐 본 적이 있다",
-    "master": "재현이 안 됐을 때 틀린 값이 나와서 어디가 문제인지 찾아 고쳐 본 적이 있다",
-    "phd": "결과가 가정과 어긋났을 때 틀린 값이 나와서 어디가 문제인지 찾아 고쳐 본 적이 있다",
-    "postdoc": "방법의 한계를 정리할 때 틀린 값이 나와서 어디가 문제인지 찾아 고쳐 본 적이 있다"
+    "bachelor": "결과가 예상과 달랐을 때 틀린 값이 나와 어디가 문제인지 찾아 고친 적이 있다",
+    "master": "재현이 안 됐을 때 틀린 값이 나와 어디가 문제인지 찾아 고친 적이 있다",
+    "phd": "결과가 가정과 어긋났을 때 틀린 값이 나와 어디가 문제인지 찾아 고친 적이 있다",
+    "postdoc": "방법의 한계를 정리할 때 틀린 값이 나와 어디가 문제인지 찾아 고친 적이 있다"
    },
    "options": [
     "없다",
@@ -7322,12 +7322,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "원인을 입력과 가정과 만든 것 가운데로 좁혀 본 적이 있다",
+   "wording": "틀린 까닭을 입력과 가정과 계산 방식 쪽으로 좁혀 본 적이 있다",
    "stage_wording": {
-    "bachelor": "결과가 예상과 달랐을 때 원인을 입력과 가정과 만든 것 가운데로 좁혀 본 적이 있다",
-    "master": "재현이 안 됐을 때 원인을 입력과 가정과 만든 것 가운데로 좁혀 본 적이 있다",
-    "phd": "결과가 가정과 어긋났을 때 원인을 입력과 가정과 만든 것 가운데로 좁혀 본 적이 있다",
-    "postdoc": "방법의 한계를 정리할 때 원인을 입력과 가정과 만든 것 가운데로 좁혀 본 적이 있다"
+    "bachelor": "결과가 예상과 달랐을 때 틀린 까닭을 입력과 가정과 계산 방식 쪽으로 좁혀 본 적이 있다",
+    "master": "재현이 안 됐을 때 틀린 까닭을 입력과 가정과 계산 방식 쪽으로 좁혀 본 적이 있다",
+    "phd": "결과가 가정과 어긋났을 때 틀린 까닭을 입력과 가정과 계산 방식 쪽으로 좁혀 본 적이 있다",
+    "postdoc": "방법의 한계를 정리할 때 틀린 까닭을 입력과 가정과 계산 방식 쪽으로 좁혀 본 적이 있다"
    },
    "options": [
     "없다",
@@ -7357,12 +7357,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "어느 반복 작업을 줄일지 골라 범위를 정해 본 적이 있다",
+   "wording": "어느 반복 작업을 줄일지 골라 본 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 어느 반복 작업을 줄일지 골라 범위를 정해 본 적이 있다",
-    "master": "연구과제에서 어느 반복 작업을 줄일지 골라 범위를 정해 본 적이 있다",
-    "phd": "연구 주제를 세울 때 어느 반복 작업을 줄일지 골라 범위를 정해 본 적이 있다",
-    "postdoc": "맡은 과제나 제안서에서 어느 반복 작업을 줄일지 골라 범위를 정해 본 적이 있다"
+    "bachelor": "수업 과제나 캡스톤에서 어느 반복 작업을 줄일지 골라 본 적이 있다",
+    "master": "연구과제에서 어느 반복 작업을 줄일지 골라 본 적이 있다",
+    "phd": "연구 주제를 정할 때 어느 반복 작업을 줄일지 골라 본 적이 있다",
+    "postdoc": "맡은 과제나 제안서에서 어느 반복 작업을 줄일지 골라 본 적이 있다"
    },
    "options": [
     "없다",
@@ -7392,12 +7392,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "들어오는 모양과 나와야 할 모양을 정리해 적어 본 적이 있다",
+   "wording": "들어올 데이터 모양과 나와야 할 결과 모양을 정리해 둔 적이 있다",
    "stage_wording": {
-    "bachelor": "과제 요구사항을 받고 들어오는 모양과 나와야 할 모양을 정리해 적어 본 적이 있다",
-    "master": "과제 목표를 받고 들어오는 모양과 나와야 할 모양을 정리해 적어 본 적이 있다",
-    "phd": "연구 목표를 세우면서 들어오는 모양과 나와야 할 모양을 정리해 적어 본 적이 있다",
-    "postdoc": "연구 공고나 과제 목표를 보고 들어오는 모양과 나와야 할 모양을 정리해 적어 본 적이 있다"
+    "bachelor": "과제 요구사항을 받고 들어올 데이터 모양과 나와야 할 결과 모양을 정리해 둔 적이 있다",
+    "master": "과제 목표를 받고 들어올 데이터 모양과 나와야 할 결과 모양을 정리해 둔 적이 있다",
+    "phd": "연구 목표를 정하면서 들어올 데이터 모양과 나와야 할 결과 모양을 정리해 둔 적이 있다",
+    "postdoc": "연구 공고나 과제 목표를 보고 들어올 데이터 모양과 나와야 할 결과 모양을 정리해 둔 적이 있다"
    },
    "options": [
     "없다",
@@ -7427,12 +7427,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "계측 데이터를 모아 쓸 수 있는 모양으로 정리해 본 적이 있다",
+   "wording": "반복되는 계산을 프로그램으로 자동으로 돌려 본 적이 있다",
    "stage_wording": {
-    "bachelor": "실험이나 과제에서 계측 데이터를 모아 쓸 수 있는 모양으로 정리해 본 적이 있다",
-    "master": "연구 수행에서 계측 데이터를 모아 쓸 수 있는 모양으로 정리해 본 적이 있다",
-    "phd": "방법을 검토하면서 계측 데이터를 모아 쓸 수 있는 모양으로 정리해 본 적이 있다",
-    "postdoc": "과제 수행에서 계측 데이터를 모아 쓸 수 있는 모양으로 정리해 본 적이 있다"
+    "bachelor": "실험이나 과제에서 반복되는 계산을 프로그램으로 자동으로 돌려 본 적이 있다",
+    "master": "연구 수행에서 반복되는 계산을 프로그램으로 자동으로 돌려 본 적이 있다",
+    "phd": "방법을 검토하면서 반복되는 계산을 프로그램으로 자동으로 돌려 본 적이 있다",
+    "postdoc": "과제 수행에서 반복되는 계산을 프로그램으로 자동으로 돌려 본 적이 있다"
    },
    "options": [
     "없다",
@@ -7462,12 +7462,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J8",
-   "wording": "내가 만든 것으로 다른 사람이 일한 적이 있다",
+   "wording": "만든 프로그램을 다른 사람이 쓰게 넘겨 준 적이 있다",
    "stage_wording": {
-    "bachelor": "캡스톤이나 인턴에서 내가 만든 것으로 다른 사람이 일한 적이 있다",
-    "master": "연구실이나 과제에서 내가 만든 것으로 다른 사람이 일한 적이 있다",
-    "phd": "과제나 공동 연구에서 내가 만든 것으로 다른 사람이 일한 적이 있다",
-    "postdoc": "맡은 과제나 협력 기관에서 내가 만든 것으로 다른 사람이 일한 적이 있다"
+    "bachelor": "캡스톤이나 인턴에서 만든 프로그램을 다른 사람이 쓰게 넘겨 준 적이 있다",
+    "master": "연구실이나 과제에서 만든 프로그램을 다른 사람이 쓰게 넘겨 준 적이 있다",
+    "phd": "과제나 공동 연구에서 만든 프로그램을 다른 사람이 쓰게 넘겨 준 적이 있다",
+    "postdoc": "맡은 과제나 협력 기관에서 만든 프로그램을 다른 사람이 쓰게 넘겨 준 적이 있다"
    },
    "options": [
     "없다",
@@ -7497,12 +7497,12 @@
    "education_routing": "all",
    "measurement_axis": "consistency",
    "evidence_axis": "J3",
-   "wording": "방금 고른 영역에서 학교 과제를 할 때 판단 기준을 내가 세워 본 적이 있다",
+   "wording": "방금 고른 영역의 학교 과제에서 판단 기준을 내가 정해 본 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 방금 고른 영역에서 학교 과제를 할 때 판단 기준을 내가 세워 본 적이 있다",
-    "master": "연구나 과제 수행에서 방금 고른 영역에서 학교 과제를 할 때 판단 기준을 내가 세워 본 적이 있다",
-    "phd": "방법을 세우면서 방금 고른 영역에서 학교 과제를 할 때 판단 기준을 내가 세워 본 적이 있다",
-    "postdoc": "맡은 범위 안에서 방금 고른 영역에서 학교 과제를 할 때 판단 기준을 내가 세워 본 적이 있다"
+    "bachelor": "방금 고른 영역의 학교 과제에서 판단 기준을 내가 정해 본 적이 있다",
+    "master": "방금 고른 영역의 연구실 과제에서 판단 기준을 내가 정해 본 적이 있다",
+    "phd": "방금 고른 영역의 연구실 과제에서 판단 기준을 내가 정해 본 적이 있다",
+    "postdoc": "방금 고른 영역의 연구 과제에서 판단 기준을 내가 정해 본 적이 있다"
    },
    "options": [
     "없다",
@@ -7532,12 +7532,12 @@
    "education_routing": "all",
    "measurement_axis": "consistency",
    "evidence_axis": "J3",
-   "wording": "방금 고른 영역에서 학교 밖 작업을 할 때 판단 기준을 내가 세워 본 적이 있다",
+   "wording": "방금 고른 영역에서 현장실습처럼 학교 밖 일을 할 때 판단 기준을 내가 정해 본 적이 있다",
    "stage_wording": {
-    "bachelor": "수업 과제나 캡스톤에서 방금 고른 영역에서 학교 밖 작업을 할 때 판단 기준을 내가 세워 본 적이 있다",
-    "master": "연구나 과제 수행에서 방금 고른 영역에서 학교 밖 작업을 할 때 판단 기준을 내가 세워 본 적이 있다",
-    "phd": "방법을 세우면서 방금 고른 영역에서 학교 밖 작업을 할 때 판단 기준을 내가 세워 본 적이 있다",
-    "postdoc": "맡은 범위 안에서 방금 고른 영역에서 학교 밖 작업을 할 때 판단 기준을 내가 세워 본 적이 있다"
+    "bachelor": "방금 고른 영역에서 현장실습처럼 학교 밖 일을 할 때 판단 기준을 내가 정해 본 적이 있다",
+    "master": "방금 고른 영역에서 산학 과제처럼 학교 밖 일을 할 때 판단 기준을 내가 정해 본 적이 있다",
+    "phd": "방금 고른 영역에서 산학 과제처럼 학교 밖 일을 할 때 판단 기준을 내가 정해 본 적이 있다",
+    "postdoc": "방금 고른 영역에서 기업 협력 과제처럼 학교 밖 일을 할 때 판단 기준을 내가 정해 본 적이 있다"
    },
    "options": [
     "없다",
@@ -7567,12 +7567,12 @@
    "education_routing": "all",
    "measurement_axis": "consistency",
    "evidence_axis": "J5",
-   "wording": "방금 고른 영역에서 결과물을 혼자 끝까지 만들어 낸 적이 있다",
+   "wording": "방금 고른 영역에서 결과물 하나를 혼자 끝까지 만들어 본 적이 있다",
    "stage_wording": {
-    "bachelor": "과제나 캡스톤 결과로 방금 고른 영역에서 결과물을 혼자 끝까지 만들어 낸 적이 있다",
-    "master": "연구 산출물로 방금 고른 영역에서 결과물을 혼자 끝까지 만들어 낸 적이 있다",
-    "phd": "논문이나 보고로 방금 고른 영역에서 결과물을 혼자 끝까지 만들어 낸 적이 있다",
-    "postdoc": "과제 산출물로 방금 고른 영역에서 결과물을 혼자 끝까지 만들어 낸 적이 있다"
+    "bachelor": "방금 고른 영역의 과제에서 결과물 하나를 혼자 끝까지 만들어 본 적이 있다",
+    "master": "방금 고른 영역의 연구에서 결과물 하나를 혼자 끝까지 만들어 본 적이 있다",
+    "phd": "방금 고른 영역의 연구에서 결과물 하나를 혼자 끝까지 만들어 본 적이 있다",
+    "postdoc": "방금 고른 영역의 과제에서 결과물 하나를 혼자 끝까지 만들어 본 적이 있다"
    },
    "options": [
     "없다",
@@ -7602,12 +7602,12 @@
    "education_routing": "all",
    "measurement_axis": "consistency",
    "evidence_axis": "J5",
-   "wording": "방금 고른 영역에서 내가 만든 결과물이 그대로 쓰인 적이 있다",
+   "wording": "방금 고른 영역에서 내가 만든 결과물을 다른 사람이 그대로 쓴 적이 있다",
    "stage_wording": {
-    "bachelor": "과제나 캡스톤 결과로 방금 고른 영역에서 내가 만든 결과물이 그대로 쓰인 적이 있다",
-    "master": "연구 산출물로 방금 고른 영역에서 내가 만든 결과물이 그대로 쓰인 적이 있다",
-    "phd": "논문이나 보고로 방금 고른 영역에서 내가 만든 결과물이 그대로 쓰인 적이 있다",
-    "postdoc": "과제 산출물로 방금 고른 영역에서 내가 만든 결과물이 그대로 쓰인 적이 있다"
+    "bachelor": "방금 고른 영역의 과제에서 내가 만든 결과물을 다른 사람이 그대로 쓴 적이 있다",
+    "master": "방금 고른 영역의 연구에서 내가 만든 결과물을 다른 사람이 그대로 쓴 적이 있다",
+    "phd": "방금 고른 영역의 연구에서 내가 만든 결과물을 다른 사람이 그대로 쓴 적이 있다",
+    "postdoc": "방금 고른 영역의 과제에서 내가 만든 결과물을 다른 사람이 그대로 쓴 적이 있다"
    },
    "options": [
     "없다",
@@ -7637,12 +7637,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J1",
-   "wording": "그 연구나 과제에서 다룬 문제를 한두 줄로 적어주세요",
+   "wording": "그 과제나 연구에서 다룬 문제를 한두 줄로 적어주세요",
    "stage_wording": {
-    "bachelor": "그 연구나 과제에서 다룬 문제를 한두 줄로 적어주세요",
-    "master": "그 연구나 과제에서 다룬 문제를 한두 줄로 적어주세요",
-    "phd": "그 연구나 과제에서 다룬 문제를 한두 줄로 적어주세요",
-    "postdoc": "그 연구나 과제에서 다룬 문제를 한두 줄로 적어주세요"
+    "bachelor": "그 과제에서 다룬 문제를 한두 줄로 적어주세요",
+    "master": "그 연구에서 다룬 문제를 한두 줄로 적어주세요",
+    "phd": "그 연구에서 다룬 문제를 한두 줄로 적어주세요",
+    "postdoc": "그 과제나 연구에서 다룬 문제를 한두 줄로 적어주세요"
    },
    "options": null,
    "grid_row": null,
@@ -7667,12 +7667,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J2",
-   "wording": "그것이 왜 문제였는지 가장 가까운 것을 고르고 한 줄을 적어주세요",
+   "wording": "왜 문제였는지 가장 가까운 것을 골라주세요. 덧붙일 말이 있으면 한 줄로 적어주세요",
    "stage_wording": {
-    "bachelor": "그것이 왜 문제였는지 가장 가까운 것을 고르고 한 줄을 적어주세요",
-    "master": "그것이 왜 문제였는지 가장 가까운 것을 고르고 한 줄을 적어주세요",
-    "phd": "그것이 왜 문제였는지 가장 가까운 것을 고르고 한 줄을 적어주세요",
-    "postdoc": "그것이 왜 문제였는지 가장 가까운 것을 고르고 한 줄을 적어주세요"
+    "bachelor": "왜 문제였는지 가장 가까운 것을 골라주세요. 덧붙일 말이 있으면 한 줄로 적어주세요",
+    "master": "왜 문제였는지 가장 가까운 것을 골라주세요. 덧붙일 말이 있으면 한 줄로 적어주세요",
+    "phd": "왜 문제였는지 가장 가까운 것을 골라주세요. 덧붙일 말이 있으면 한 줄로 적어주세요",
+    "postdoc": "왜 문제였는지 가장 가까운 것을 골라주세요. 덧붙일 말이 있으면 한 줄로 적어주세요"
    },
    "options": null,
    "grid_row": null,
@@ -7697,12 +7697,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J4",
-   "wording": "쓴 방법을 고르고, 함께 검토했다가 안 쓴 방법이 있으면 적어주세요",
+   "wording": "쓴 방법을 골라주세요. 검토만 하고 쓰지 않은 방법이 있으면 적어주세요",
    "stage_wording": {
-    "bachelor": "쓴 방법을 고르고, 함께 검토했다가 안 쓴 방법이 있으면 적어주세요",
-    "master": "쓴 방법을 고르고, 함께 검토했다가 안 쓴 방법이 있으면 적어주세요",
-    "phd": "쓴 방법을 고르고, 함께 검토했다가 안 쓴 방법이 있으면 적어주세요",
-    "postdoc": "쓴 방법을 고르고, 함께 검토했다가 안 쓴 방법이 있으면 적어주세요"
+    "bachelor": "쓴 방법을 골라주세요. 검토만 하고 쓰지 않은 방법이 있으면 적어주세요",
+    "master": "쓴 방법을 골라주세요. 검토만 하고 쓰지 않은 방법이 있으면 적어주세요",
+    "phd": "쓴 방법을 골라주세요. 검토만 하고 쓰지 않은 방법이 있으면 적어주세요",
+    "postdoc": "쓴 방법을 골라주세요. 검토만 하고 쓰지 않은 방법이 있으면 적어주세요"
    },
    "options": null,
    "grid_row": null,
@@ -7727,12 +7727,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J3",
-   "wording": "고정한 것과 바꾼 것을 골라주세요",
+   "wording": "그대로 둔 것과 바꾼 것을 골라주세요",
    "stage_wording": {
-    "bachelor": "고정한 것과 바꾼 것을 골라주세요",
-    "master": "고정한 것과 바꾼 것을 골라주세요",
-    "phd": "고정한 것과 바꾼 것을 골라주세요",
-    "postdoc": "고정한 것과 바꾼 것을 골라주세요"
+    "bachelor": "그대로 둔 것과 바꾼 것을 골라주세요",
+    "master": "그대로 둔 것과 바꾼 것을 골라주세요",
+    "phd": "그대로 둔 것과 바꾼 것을 골라주세요",
+    "postdoc": "그대로 둔 것과 바꾼 것을 골라주세요"
    },
    "options": null,
    "grid_row": null,
@@ -7757,12 +7757,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J4",
-   "wording": "실제로 한 일을 고르고 반복 횟수를 적어주세요",
+   "wording": "실제로 한 일을 골라주세요. 몇 번 되풀이했는지도 적어주세요",
    "stage_wording": {
-    "bachelor": "실제로 한 일을 고르고 반복 횟수를 적어주세요",
-    "master": "실제로 한 일을 고르고 반복 횟수를 적어주세요",
-    "phd": "실제로 한 일을 고르고 반복 횟수를 적어주세요",
-    "postdoc": "실제로 한 일을 고르고 반복 횟수를 적어주세요"
+    "bachelor": "실제로 한 일을 골라주세요. 몇 번 되풀이했는지도 적어주세요",
+    "master": "실제로 한 일을 골라주세요. 몇 번 되풀이했는지도 적어주세요",
+    "phd": "실제로 한 일을 골라주세요. 몇 번 되풀이했는지도 적어주세요",
+    "postdoc": "실제로 한 일을 골라주세요. 몇 번 되풀이했는지도 적어주세요"
    },
    "options": null,
    "grid_row": null,
@@ -7787,12 +7787,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J6",
-   "wording": "결과를 무엇과 견주었는지 골라주세요",
+   "wording": "결과를 무엇과 비교했는지 골라주세요",
    "stage_wording": {
-    "bachelor": "결과를 무엇과 견주었는지 골라주세요",
-    "master": "결과를 무엇과 견주었는지 골라주세요",
-    "phd": "결과를 무엇과 견주었는지 골라주세요",
-    "postdoc": "결과를 무엇과 견주었는지 골라주세요"
+    "bachelor": "결과를 무엇과 비교했는지 골라주세요",
+    "master": "결과를 무엇과 비교했는지 골라주세요",
+    "phd": "결과를 무엇과 비교했는지 골라주세요",
+    "postdoc": "결과를 무엇과 비교했는지 골라주세요"
    },
    "options": null,
    "grid_row": null,
@@ -7819,10 +7819,10 @@
    "evidence_axis": "J7",
    "wording": "결과가 예상과 달랐을 때 무엇을 했는지 골라주세요",
    "stage_wording": {
-    "bachelor": "산포나 한계를 어떻게 다뤘는지 골라주세요",
-    "master": "산포나 한계를 어떻게 다뤘는지 골라주세요",
-    "phd": "산포나 한계를 어떻게 다뤘는지 골라주세요",
-    "postdoc": "산포나 한계를 어떻게 다뤘는지 골라주세요"
+    "bachelor": "값이 흩어지는 정도나 방법의 한계를 어떻게 다뤘는지 골라주세요",
+    "master": "값이 흩어지는 정도나 방법의 한계를 어떻게 다뤘는지 골라주세요",
+    "phd": "값이 흩어지는 정도나 방법의 한계를 어떻게 다뤘는지 골라주세요",
+    "postdoc": "값이 흩어지는 정도나 방법의 한계를 어떻게 다뤘는지 골라주세요"
    },
    "options": null,
    "grid_row": null,
@@ -7877,12 +7877,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J5",
-   "wording": "남은 것을 골라주세요",
+   "wording": "이 일로 남은 결과물을 골라주세요",
    "stage_wording": {
-    "bachelor": "남은 것을 골라주세요",
-    "master": "남은 것을 골라주세요",
-    "phd": "남은 것을 골라주세요",
-    "postdoc": "남은 것을 골라주세요"
+    "bachelor": "이 일로 남은 결과물을 골라주세요",
+    "master": "이 일로 남은 결과물을 골라주세요",
+    "phd": "이 일로 남은 결과물을 골라주세요",
+    "postdoc": "이 일로 남은 결과물을 골라주세요"
    },
    "options": null,
    "grid_row": null,
@@ -7907,12 +7907,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J8",
-   "wording": "이 결과를 누가 어디에 쓸 수 있는지 고르고 한 줄을 적어주세요",
+   "wording": "이 결과를 누가 어디에 쓸 수 있는지 골라주세요. 덧붙일 말이 있으면 한 줄로 적어주세요",
    "stage_wording": {
-    "bachelor": "이 결과를 누가 어디에 쓸 수 있는지 고르고 한 줄을 적어주세요",
-    "master": "이 결과를 누가 어디에 쓸 수 있는지 고르고 한 줄을 적어주세요",
-    "phd": "이 결과를 누가 어디에 쓸 수 있는지 고르고 한 줄을 적어주세요",
-    "postdoc": "이 결과를 누가 어디에 쓸 수 있는지 고르고 한 줄을 적어주세요"
+    "bachelor": "이 결과를 누가 어디에 쓸 수 있는지 골라주세요. 덧붙일 말이 있으면 한 줄로 적어주세요",
+    "master": "이 결과를 누가 어디에 쓸 수 있는지 골라주세요. 덧붙일 말이 있으면 한 줄로 적어주세요",
+    "phd": "이 결과를 누가 어디에 쓸 수 있는지 골라주세요. 덧붙일 말이 있으면 한 줄로 적어주세요",
+    "postdoc": "이 결과를 누가 어디에 쓸 수 있는지 골라주세요. 덧붙일 말이 있으면 한 줄로 적어주세요"
    },
    "options": null,
    "grid_row": null,
@@ -7937,7 +7937,7 @@
    "education_routing": "all",
    "measurement_axis": "target_input",
    "evidence_axis": null,
-   "wording": "목표로 보고 있는 공고 직무명을 골라주세요",
+   "wording": "지원하고 싶은 직무를 골라주세요",
    "stage_wording": null,
    "options": null,
    "grid_row": null,
@@ -7962,7 +7962,7 @@
    "education_routing": "all",
    "measurement_axis": "target_input",
    "evidence_axis": null,
-   "wording": "목표로 보고 있는 산업을 골라주세요",
+   "wording": "가고 싶은 산업을 골라주세요",
    "stage_wording": null,
    "options": null,
    "grid_row": null,
@@ -8068,7 +8068,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "진공이나 고온 같은 특별한 환경을 조건으로 두고 형상과 재질을 정해 본 경험이 있다",
+   "wording": "진공이나 고온처럼 특별한 환경을 조건으로 두고 모양과 재료를 정한 경험이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8098,7 +8098,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "전체 정밀도를 맞추려고 부품마다 공차를 나눠 준 경험이 있다",
+   "wording": "장비 전체 정밀도를 맞추려고 부품마다 허용 오차를 나눠 준 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8128,7 +8128,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "온도차 때문에 생기는 변형을 미리 계산해 설계를 고쳐 본 경험이 있다",
+   "wording": "온도 차이로 생기는 변형을 미리 계산해 설계를 고친 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8158,7 +8158,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "오염이 들어오는 길이나 청정도를 설계 조건으로 다뤄 본 경험이 있다",
+   "wording": "먼지가 들어오는 길이나 깨끗한 정도를 설계 조건으로 다뤄 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8188,7 +8188,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "움직이는 축의 떨림이나 위치 오차를 측정으로 확인해 본 경험이 있다",
+   "wording": "움직이는 축의 떨림이나 위치 오차를 재서 확인한 경험이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8218,7 +8218,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "청정도나 진공도가 재는 자리마다 다른지 확인해 본 경험이 있다",
+   "wording": "깨끗한 정도나 진공 정도가 재는 위치마다 다른지 살펴본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8248,7 +8248,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "조건을 바꿔 가며 되는 범위를 찾아 본 경험이 있다",
+   "wording": "조건을 바꿔 가며 공정이 잘 되는 범위를 잡아 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8278,7 +8278,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J8",
-   "wording": "장비가 멈춘 시간을 줄이려고 고장 간격을 기록해 관리해 본 경험이 있다",
+   "wording": "장비가 멈춘 시간을 줄이려고 고장 간격을 기록해 관리한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8308,7 +8308,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "같은 이상이 반복돼 장비 쪽과 공정 쪽을 갈라 본 경험이 있다",
+   "wording": "같은 이상이 되풀이돼 장비 문제인지 공정 문제인지 나눠 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8338,7 +8338,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "반복되는 계산이나 판정을 남겨 다른 사람이 쓰게 해 본 경험이 있다",
+   "wording": "반복되는 계산을 다른 사람도 쓸 수 있게 정리해 남긴 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8368,7 +8368,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "문장으로 온 요구를 지킬 수 있는 수치 조건으로 쪼개 본 경험이 있다",
+   "wording": "규격서 문장으로 온 요구를 시험으로 확인할 숫자로 바꿔 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8398,7 +8398,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "규격이 요구하는 입증 방법을 시험과 해석 가운데 골라 본 경험이 있다",
+   "wording": "규격이 요구하는 증명 방법으로 시험과 해석 가운데 하나를 고른 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8428,7 +8428,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "안전계수를 깎으면서도 버틴다는 근거를 계산으로 세워 본 경험이 있다",
+   "wording": "안전 여유를 줄여도 버틴다는 근거를 계산으로 보여 준 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8458,7 +8458,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "쓸 값을 규격값과 시험값 사이에서 직접 골라 본 경험이 있다",
+   "wording": "쓸 재료 값을 규격값과 시험값 가운데서 직접 고른 경험이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8488,7 +8488,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "쓰는 온도 범위가 넓은 조건을 설계 조건으로 다뤄 본 경험이 있다",
+   "wording": "넓은 온도 범위에서 쓰는 조건을 설계 조건으로 다뤄 본 경험이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8518,7 +8518,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "충격이나 진동 시험을 예상해 설계를 미리 고쳐 본 경험이 있다",
+   "wording": "충격이나 진동 시험을 미리 생각해 설계를 고친 경험이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8548,7 +8548,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "고장 모드를 미리 뽑아 영향을 따져 본 경험이 있다",
+   "wording": "생길 수 있는 고장 종류를 미리 뽑아 영향을 따져 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8578,7 +8578,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "시험 결과를 받아 설계를 되돌려 고쳐 본 경험이 있다",
+   "wording": "시험 결과를 받아 설계를 다시 고친 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8608,7 +8608,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "형상이나 전기 연결이 맞물리는 자리를 미리 적어 둔 경험이 있다",
+   "wording": "모양이나 전기 연결이 맞물리는 곳을 미리 적어 둔 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8638,7 +8638,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "판단의 근거를 나중에 되짚을 수 있게 남겨 본 경험이 있다",
+   "wording": "판단 근거를 나중에 다시 볼 수 있게 남겨 둔 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8668,7 +8668,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "원가나 가공 공수를 보고 형상이나 재질을 고쳐 본 경험이 있다",
+   "wording": "원가나 가공 시간을 보고 모양이나 재료를 바꾼 경험이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8698,7 +8698,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "많이 만들 수 있는 범위를 설계 조건에 넣어 본 경험이 있다",
+   "wording": "많이 만들 수 있는지를 설계 조건에 넣어 본 일이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8728,7 +8728,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "원가를 올리지 않고 무게를 줄이는 안을 찾아 본 경험이 있다",
+   "wording": "원가를 올리지 않고 무게를 줄일 방안을 찾아본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8758,7 +8758,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "소리나 떨림이 어디로 전달되는지 갈라 본 경험이 있다",
+   "wording": "소리나 떨림이 어디로 전달되는지 재서 나눠 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8788,7 +8788,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "보증 기간을 뒷받침하려고 수명을 짧게 앞당겨 확인해 본 경험이 있다",
+   "wording": "보증 기간을 뒷받침하려고 수명을 짧은 시험으로 앞당겨 확인한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8818,7 +8818,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "열을 어디로 뺄지 경로를 정해 본 경험이 있다",
+   "wording": "좁은 차체 안에서 열이 빠져나갈 길을 정해 본 경험이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8848,7 +8848,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "많이 만들었을 때 생기는 치수 편차를 미리 계산해 본 경험이 있다",
+   "wording": "많이 만들 때 생기는 치수 차이를 미리 계산해 둔 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8878,7 +8878,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "쓰다가 생긴 불량의 원인을 재질과 조건 가운데로 좁혀 본 경험이 있다",
+   "wording": "고객이 쓰다가 생긴 고장이 재료 탓인지 쓰는 조건 탓인지 가려낸 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8908,7 +8908,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "관리할 특성을 가려 기준을 세워 본 경험이 있다",
+   "wording": "관리할 품질 특성과 기준을 정해 둔 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8938,7 +8938,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "해석 결과와 시험 결과를 맞춰 본 경험이 있다",
+   "wording": "해석 결과를 시험 결과에 맞춰 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8968,7 +8968,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "움직일 것의 무게와 관성을 따져 모터 용량을 정해 본 경험이 있다",
+   "wording": "로봇 팔이 들 물건 무게를 보고 관절 모터를 골라 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -8998,7 +8998,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "반복 정밀도와 속도가 맞서는 자리에서 어느 쪽을 지킬지 정해 본 경험이 있다",
+   "wording": "반복 정밀도와 속도가 서로 부딪칠 때 어느 쪽을 지킬지 정해 본 경험이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9028,7 +9028,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "움직일 때 나는 떨림이나 소리를 재서 목표 안에 드는지 확인해 본 경험이 있다",
+   "wording": "움직일 때 나는 떨림이나 소리를 재서 목표 안에 드는지 확인한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9059,7 +9059,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "정지 정확도가 쓰는 자세마다 달라지는지 갈라서 본 경험이 있다",
+   "wording": "멈춤 정확도가 자세마다 달라지는지 나눠서 재 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9089,7 +9089,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "떨림의 원인을 기계 강성과 제어 이득 가운데로 갈라 본 경험이 있다",
+   "wording": "떨림의 원인을 기계의 단단함과 제어 설정 쪽으로 나눠 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9119,7 +9119,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "사람과 같이 쓰는 장치의 안전 조건을 설계 조건으로 옮겨 본 경험이 있다",
+   "wording": "사람과 같이 쓰는 장치의 안전 조건을 설계 조건으로 옮긴 경험이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9149,7 +9149,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "사람이 할 동작과 장치가 할 동작을 갈라 적어 본 경험이 있다",
+   "wording": "사람이 할 동작과 장치가 할 동작을 나눠 적은 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9179,7 +9179,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "움직여 보고 측정한 응답으로 가감속을 고쳐 본 경험이 있다",
+   "wording": "움직여 보고 잰 응답으로 가속과 감속 설정을 고친 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9209,7 +9209,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J8",
-   "wording": "만든 장치를 쓰는 사람에게 조작법까지 넘겨 본 경험이 있다",
+   "wording": "만든 장치를 쓸 사람에게 조작법까지 알려 준 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9239,7 +9239,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "동작 순서표나 시운전 기록을 남겨 본 경험이 있다",
+   "wording": "동작 순서표나 시운전 기록을 남긴 경험이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9269,7 +9269,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "뜨거워지는 부분의 열을 어디로 뺄지 경로를 정해 본 경험이 있다",
+   "wording": "배터리 셀이 뜨거워질 때 열이 빠질 길을 정한 경험이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9329,7 +9329,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "조건을 바꿔 가며 되는 폭을 찾아 본 경험이 있다",
+   "wording": "공정 조건을 조금씩 바꿔 문제없이 되는 폭을 찾아본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9359,7 +9359,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "목표로 잡은 수율에 못 미쳐 어디서 빠지는지 찾아 본 경험이 있다",
+   "wording": "좋은 제품이 나오는 비율이 목표보다 낮아 어느 공정에서 줄어드는지 찾아본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9389,7 +9389,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "쓰는 환경과 닿는 재질의 궁합을 따져 본 경험이 있다",
+   "wording": "쓰는 환경과 닿는 재료가 서로 맞는지 따져 본 경험이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9419,7 +9419,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "안전 쪽 시험을 예상해 설계를 미리 고쳐 본 경험이 있다",
+   "wording": "불이 나거나 터지지 않는지 보는 안전 시험을 미리 생각해 설계를 바꾼 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9449,7 +9449,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "설비가 정한 조건을 지키는지 확인해 본 경험이 있다",
+   "wording": "설비가 설정한 조건대로 돌아가는지 확인한 경험이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9479,7 +9479,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "변수가 많아 관리할 항목을 골라 본 경험이 있다",
+   "wording": "따질 것이 많은 공정에서 관리할 항목을 골라 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9509,7 +9509,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "측정한 값이 다시 나오는지 반복해서 확인해 본 경험이 있다",
+   "wording": "측정한 값이 다시 나오는지 반복해서 확인해 본 일이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9569,7 +9569,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "선급 규칙이 요구하는 항목을 설계 조건으로 옮겨 본 경험이 있다",
+   "wording": "선급(배를 검사하는 기관) 규칙이 요구하는 항목을 설계 조건으로 옮긴 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9629,7 +9629,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "용접이나 가공으로 생기는 변형을 설계에 넣어 본 경험이 있다",
+   "wording": "용접이나 가공으로 생기는 변형을 설계에 미리 넣은 경험이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9659,7 +9659,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "부식이나 긴 수명을 전제로 재질을 고른 경험이 있다",
+   "wording": "바닷물에 녹슬지 않고 오래 쓸 재료를 고른 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9689,7 +9689,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "현장에서 만들 수 있는지를 보고 설계를 고친 경험이 있다",
+   "wording": "실제로 만들 수 있는지 보고 설계를 바꿔 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9749,7 +9749,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "진동이나 소음을 줄이려고 구조를 고쳐 본 경험이 있다",
+   "wording": "엔진 진동이나 소음을 줄이려고 구조를 고쳐 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9809,7 +9809,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "실제로 돌려 보고 성능을 확인해 본 경험이 있다",
+   "wording": "완성된 장치를 실제로 돌려 성능을 확인한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9839,7 +9839,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "도면이나 기술 자료를 인수에 쓸 수 있게 남겨 본 경험이 있다",
+   "wording": "도면이나 기술 자료를 넘겨줄 때 쓸 수 있게 정리해 둔 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9869,7 +9869,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "열이나 유량의 작동점을 잡아 본 경험이 있다",
+   "wording": "열이나 유량이 맞는 운전 조건(작동점)을 잡아 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9899,7 +9899,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "돌아가는 기계의 소리나 떨림으로 상태를 판정해 본 경험이 있다",
+   "wording": "돌아가는 기계의 소리나 떨림으로 상태를 알아본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9959,7 +9959,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "정기 점검과 상태 기반 점검 가운데 무엇으로 갈지 따져 본 경험이 있다",
+   "wording": "날짜마다 하는 점검과 상태를 보고 하는 점검 가운데 하나를 고른 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -9989,7 +9989,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "법이나 규정으로 정해진 점검을 요구에 넣어 본 경험이 있다",
+   "wording": "법이나 규정으로 정해진 점검을 요구 목록에 넣은 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10019,7 +10019,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J8",
-   "wording": "멈춘 시간이나 고장 간격을 숫자로 관리해 본 경험이 있다",
+   "wording": "설비가 멈춘 시간과 고장 간격을 숫자로 정리해 공유한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10049,7 +10049,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "정지 손실이 큰 설비에서 예방 교체 주기를 비용과 견주어 잡아 본 경험이 있다",
+   "wording": "멈추면 손해가 큰 설비의 부품 교체 주기를 비용과 비교해 정했던 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10079,7 +10079,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "계통 전체의 압력과 유량을 맞춰 본 경험이 있다",
+   "wording": "배관 계통 전체의 압력과 유량을 계산해 맞춰 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10109,7 +10109,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "떨림을 재서 고장을 미리 알아본 경험이 있다",
+   "wording": "떨림을 재서 고장 조짐을 미리 찾아낸 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10139,7 +10139,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "떨어지면 설비가 서는 부품을 골라 보유 기준을 정해 본 경험이 있다",
+   "wording": "없으면 설비가 멈추는 부품을 골라 미리 둘 수량을 결정한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10169,7 +10169,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "어디까지 자동으로 하고 어디서 사람이 할지 선을 그어 본 경험이 있다",
+   "wording": "어디까지 기계가 하고 어디부터 사람이 할지 나눠 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10199,7 +10199,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "기존 장비나 설비에 새 장치를 이어 붙여 본 경험이 있다",
+   "wording": "기존 장비나 설비에 새 장치를 이어 붙인 경험이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10229,7 +10229,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "한 공정만 빨라져 다른 데가 막히는 것을 보고 흐름을 맞춰 본 경험이 있다",
+   "wording": "한 공정만 빨라져 다음 공정이 밀리는 것을 보고 속도를 맞춘 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10259,7 +10259,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "측정과 기록으로 개선 전후를 숫자로 견주어 본 경험이 있다",
+   "wording": "개선 전과 뒤를 측정 기록으로 비교한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10319,7 +10319,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "현장에 맞는 움직이는 장치를 직접 만들어 본 경험이 있다",
+   "wording": "작업 현장에 맞춰 이송 장치를 직접 만든 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10349,7 +10349,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "사이클 시간을 재서 목표와 맞춰 본 경험이 있다",
+   "wording": "작업 한 번에 드는 시간을 재서 목표에 들었는지 본 경험이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10379,7 +10379,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "사람의 동선과 안전을 조건으로 두고 배치를 정해 본 경험이 있다",
+   "wording": "사람의 동선과 안전을 조건으로 두고 배치를 정한 일이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10409,7 +10409,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "반복되는 정리나 판정을 자동으로 돌려 본 경험이 있다",
+   "wording": "생산 기록 정리를 손 대신 프로그램이 하게 만든 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10439,7 +10439,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J8",
-   "wording": "만든 것을 쓰는 사람에게 넘겨 계속 쓰이게 해 본 경험이 있다",
+   "wording": "만든 도구를 현장 사람에게 넘겨 계속 쓰이게 한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10469,7 +10469,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "치수나 공차를 바꿀 권한을 가지고 직접 정해 본 경험이 있다",
+   "wording": "치수나 허용 오차를 바꿀지 내가 결정한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10499,7 +10499,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "제작에 나간 도면과 부품표를 낸 경험이 있다",
+   "wording": "제작에 쓰인 도면과 부품표를 내가 낸 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10529,7 +10529,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "요구가 서로 부딪힐 때 어느 쪽을 깎을지 내가 결론 내고 관계자에게 설명해 본 경험이 있다",
+   "wording": "요구가 서로 부딪칠 때 어느 쪽을 줄일지 내가 결론을 낸 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10559,7 +10559,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "공차 누적을 계산해 조립이 되는지 확인해 본 경험이 있다",
+   "wording": "설계를 넘기기 전에 조립 가능한지 내가 최종 확인을 맡은 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10589,7 +10589,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "조립이나 파손 문제를 겪고 치수를 고쳐 본 경험이 있다",
+   "wording": "조립 불량이 나왔을 때 도면 수정을 내가 맡아 끝낸 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10619,7 +10619,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "재질을 바꾸자고 제안해 단가나 납기까지 따져 승인을 받아 본 경험이 있다",
+   "wording": "재료를 바꾸자고 하면서 가격과 납기까지 따져 제안한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10649,7 +10649,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J8",
-   "wording": "설계 검토에서 내 안이 채택돼 그대로 제작된 경험이 있다",
+   "wording": "설계 검토 회의에서 내 안을 직접 발표한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10679,7 +10679,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "해석 조건을 내가 정하고 그 가정이 맞는지 설계자와 합의해 본 경험이 있다",
+   "wording": "해석 가정이 맞는지 설계하는 사람과 맞춰 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10709,7 +10709,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "어디까지 풀고 어디부터는 시험으로 넘길지 범위를 그어 본 경험이 있다",
+   "wording": "어디까지 해석으로 보고 어디부터 시험에 맡길지 나눠 둔 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10739,7 +10739,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "해석값과 시험값을 대조해 차이의 까닭을 적어 본 경험이 있다",
+   "wording": "해석값과 시험값의 차이를 보고서에 풀어 쓴 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10769,7 +10769,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "해석 조건과 가정을 문서로 남겨 본 경험이 있다",
+   "wording": "다른 사람이 같은 해석을 다시 돌릴 수 있게 입력 파일과 설명을 남긴 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10799,7 +10799,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "손계산으로 해석 결과의 크기를 가늠해 본 경험이 있다",
+   "wording": "해석 결과가 맞는 크기인지 손계산으로 어림해 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10829,7 +10829,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J8",
-   "wording": "내 해석으로 설계 변경이 승인된 경험이 있다",
+   "wording": "내 해석 결과를 근거로 설계를 바꾸자고 제안한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10859,7 +10859,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "해석을 다시 돌릴지 그대로 보고할지 내가 판단해 본 경험이 있다",
+   "wording": "해석을 다시 돌릴지 그대로 보고할지 내가 결정한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10889,7 +10889,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "쓸 방법이 없어서 방법을 새로 세워 본 경험이 있다",
+   "wording": "알맞은 시험 방법이 없어 방법을 새로 만들어 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10919,7 +10919,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "다룰 문제를 내가 좁혀 정해 본 경험이 있다",
+   "wording": "연구에서 다룰 문제를 내가 직접 좁힌 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10949,7 +10949,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "검증할 가정을 세우고 그것부터 확인해 본 경험이 있다",
+   "wording": "먼저 확인할 가정을 골라 그것부터 실험한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -10979,7 +10979,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "요구 가운데 포기할 것을 정해 범위를 좁혀 본 경험이 있다",
+   "wording": "요구 가운데 포기할 것을 정해 개발 범위를 줄인 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11009,7 +11009,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "안 되는 것을 확인하고 방향을 바꿔 본 경험이 있다",
+   "wording": "안 되는 방향임을 확인한 뒤 연구 방향을 바꾼 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11039,7 +11039,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "다른 사람이 같은 결과를 내도록 방법과 조건을 공개해 본 경험이 있다",
+   "wording": "다른 사람도 같은 결과를 얻도록 방법과 조건을 공개한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11069,7 +11069,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J8",
-   "wording": "내 결과가 다음 개발의 출발점이 된 경험이 있다",
+   "wording": "내 결과를 다음 개발을 맡은 사람에게 넘겨 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11099,7 +11099,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "무엇을 재고 무엇은 재지 않을지 내가 정해 시험 계획을 세워 본 경험이 있다",
+   "wording": "무엇을 재고 무엇은 재지 않을지 내가 시험 계획에 정한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11129,7 +11129,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "지그를 만들어 하중이나 구속을 실제처럼 걸어 본 경험이 있다",
+   "wording": "시료를 잡는 틀을 만들어 실제와 같은 힘을 걸어 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11159,7 +11159,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "합격인지 아닌지를 내 이름으로 판정해 본 경험이 있다",
+   "wording": "합격인지 아닌지를 내 이름으로 적어 낸 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11189,7 +11189,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "몇 번 재야 믿을 수 있는지 내가 정해 본 경험이 있다",
+   "wording": "몇 번 재야 믿을 만한지 측정 횟수를 내가 잡은 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11219,7 +11219,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "측정이 못 미더울 때 시험을 멈추자고 해 본 경험이 있다",
+   "wording": "측정값이 미덥지 않아 시험을 멈추자고 말한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11249,7 +11249,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "떨림이나 소리를 재서 어디서 오는지 갈라 본 경험이 있다",
+   "wording": "떨림이나 소리가 어디서 오는지 재서 찾아낸 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11279,7 +11279,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J8",
-   "wording": "내 판정으로 출하나 설계 변경이 결정된 경험이 있다",
+   "wording": "내 시험 결과를 출하나 설계 변경 회의에 올린 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11309,7 +11309,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "양산에 올릴 조건을 내가 확정해 넘겨 본 경험이 있다",
+   "wording": "대량 생산에 쓸 조건을 내가 확정해 넘겨 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11339,7 +11339,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "시험 가공으로 조건의 범위를 잡아 본 경험이 있다",
+   "wording": "시험 가공을 몇 차례 돌려 쓸 조건 범위를 잡은 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11369,7 +11369,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "작업자가 그대로 따라 할 수 있는 말로 기준을 적어 본 경험이 있다",
+   "wording": "작업하는 사람이 그대로 따라 할 수 있게 작업 기준을 적은 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11399,7 +11399,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "목표 수율이나 공정 시간과 실제를 견주어 본 경험이 있다",
+   "wording": "목표로 한 불량률과 실제 불량률을 매주 비교한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11429,7 +11429,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "라인을 세울지 그대로 갈지 내가 판단해 본 경험이 있다",
+   "wording": "불량이 나왔을 때 라인을 멈출지 계속 돌릴지 내가 결정한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11459,7 +11459,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "만들기 쉬운지를 보고 설계를 고치자고 해 본 경험이 있다",
+   "wording": "만들기 쉬운지 보고 설계를 고치자고 제안한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11489,7 +11489,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J8",
-   "wording": "내가 정한 조건으로 양산이 돌고 있는 경험이 있다",
+   "wording": "내가 정리한 조건을 생산 라인 사람에게 넘겨준 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11519,7 +11519,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "언제 세우고 언제까지 두고 볼지 기준을 내가 세워 본 경험이 있다",
+   "wording": "장비를 언제 멈추고 언제까지 지켜볼지 기준을 내가 정한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11549,7 +11549,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "지금 고칠지 다음 정지까지 미룰지 내가 판단해 본 경험이 있다",
+   "wording": "지금 고칠지 다음 점검 때로 미룰지 내가 결정한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11579,7 +11579,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "같은 고장이 또 나지 않게 기준 자체를 바꿔 본 경험이 있다",
+   "wording": "같은 고장이 또 나지 않게 점검 기준을 바꾼 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11609,7 +11609,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "교정 기준이나 표준 시료로 장비 상태를 확인해 본 경험이 있다",
+   "wording": "표준 시료를 재서 장비가 제대로 재는지 확인한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11639,7 +11639,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "점검표나 조치 기록을 다른 사람이 따라 할 수 있게 남겨 본 경험이 있다",
+   "wording": "고친 방법을 다른 사람이 따라 할 수 있게 정리해 둔 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11669,7 +11669,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "재고를 얼마나 둘지 비용과 정지 위험을 견주어 정해 본 경험이 있다",
+   "wording": "예비 부품 재고를 비용과 설비가 멈출 위험 사이에서 맞춰 본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11699,7 +11699,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J8",
-   "wording": "장비 쓰는 법을 가르쳐 넘겨 본 경험이 있다",
+   "wording": "새로 온 사람이 장비를 혼자 다룰 수 있을 때까지 도와준 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11729,7 +11729,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "고객이 쓰는 조건에서 무엇이 가장 위험한지 따져 관리 대상을 정해 본 경험이 있다",
+   "wording": "고객이 쓰는 환경에서 가장 위험한 특성을 골라 관리 대상으로 삼은 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11759,7 +11759,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "무엇을 관리하고 무엇은 보지 않을지 범위를 그어 본 경험이 있다",
+   "wording": "무엇을 관리하고 무엇은 보지 않을지 범위를 정해 둔 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11789,7 +11789,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "관리 범위를 벗어났을 때 출하를 막을 권한을 가지고 판단해 본 경험이 있다",
+   "wording": "관리 범위를 벗어난 제품의 출하를 막자고 말한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11819,7 +11819,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "가속 시험이나 반복 시험으로 수명을 확인해 본 경험이 있다",
+   "wording": "반복 시험으로 부품이 몇 번을 버티는지 확인한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11849,7 +11849,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "같은 불량이 또 나서 발생과 유출을 갈라 대책을 세워 본 경험이 있다",
+   "wording": "같은 불량이 또 나서 재발을 막을 대책을 내가 정리해 낸 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11879,7 +11879,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "원인과 대책과 확인 결과를 한 보고로 묶어 승인받아 본 경험이 있다",
+   "wording": "원인과 대책과 확인 결과를 한 보고서로 묶어 낸 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11909,7 +11909,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J8",
-   "wording": "내 판단으로 다른 팀의 일하는 방식이 바뀐 경험이 있다",
+   "wording": "다른 팀에 일하는 방식을 바꾸자고 품질 근거를 들어 제안한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11939,7 +11939,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "여러 사람이 말한 요구를 한 표로 모아 서로 부딪히는 자리를 찾아 본 경험이 있다",
+   "wording": "여러 사람이 말한 요구를 한 표에 모아 서로 부딪치는 것을 찾아본 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11969,7 +11969,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "무엇을 이번에 하고 무엇은 다음으로 미룰지 정해 본 경험이 있다",
+   "wording": "이번에 할 일과 다음으로 미룰 일을 팀 일정에 맞춰 나눈 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -11999,7 +11999,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "팀 사이에 책임이 비는 자리를 찾아 누가 맡을지 정해 본 경험이 있다",
+   "wording": "아무도 맡지 않은 일을 찾아 맡을 사람을 정했던 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -12029,7 +12029,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "바뀐 요구의 영향 범위를 짚어 일정을 다시 세워 본 경험이 있다",
+   "wording": "바뀐 요구가 어디까지 영향을 주는지 보고 일정을 다시 짠 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -12059,7 +12059,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "요구조건 표와 변경 이력을 남겨 본 경험이 있다",
+   "wording": "요구조건 표와 바뀐 이력을 한곳에 남겨 둔 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -12089,7 +12089,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "끝낼 때 요구조건 표를 열어 빠진 항목을 가려내 본 경험이 있다",
+   "wording": "과제를 마무리하며 빠진 요구가 없는지 하나씩 점검한 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",
@@ -12119,7 +12119,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J8",
-   "wording": "내가 세운 일정과 분담으로 팀이 움직인 경험이 있다",
+   "wording": "내가 짠 일정과 역할 분담을 팀에 나눠 준 적이 있다",
    "stage_wording": null,
    "options": [
     "없다",

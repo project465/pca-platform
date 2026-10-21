@@ -76,7 +76,7 @@ export default async function Cores() {
         <div className="cm-card is-wide" style={{ marginBottom: 18 }}>
           <h2>이어서 풀 응시가 있습니다 <em>{open.tier}</em></h2>
           <p>
-            마지막으로 답한 자리에서 이어집니다. 다시 시작하면 앞 응답이
+            마지막으로 답한 문항에서 이어집니다. 다시 시작하면 앞 응답이
             두 벌 쌓이므로 이어하기로만 들어갑니다.
           </p>
           <div className="cm-acts">
@@ -181,11 +181,11 @@ export default async function Cores() {
           </div>
           <div>
             <dt>등급 차이</dt>
-            <dd>문항 수가 아니라 판단의 종류가 다릅니다</dd>
+            <dd>문항 수보다 판단의 종류가 다릅니다</dd>
           </div>
           <div>
             <dt>중간에 멈춰도</dt>
-            <dd>답한 것은 문항마다 저장되어 멈춘 자리에서 이어집니다</dd>
+            <dd>답한 것은 문항마다 저장되어 멈춘 곳에서 이어집니다</dd>
           </div>
         </dl>
       </details>

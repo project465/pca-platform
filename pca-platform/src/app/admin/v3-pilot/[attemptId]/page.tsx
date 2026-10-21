@@ -98,9 +98,9 @@ export default async function V3PilotOne({
       <section className="panel">
         <h2>이 응시가 읽은 판본</h2>
         <p className="sub">
-          끝난 뒤에는 되물을 수 없어 제출하는 자리에서 적어 둡니다.
+          끝난 뒤에는 되물을 수 없어 제출할 때 적어 둡니다.
           결과에 닿는 것은 세 줄이고, 나머지는 어느 화면으로 어떤 문장을
-          읽고 답했는지를 되짚는 자리입니다.
+          읽고 답했는지를 다시 확인하는 기록입니다.
         </p>
         <div className="tablewrap">
         <table>
@@ -144,13 +144,13 @@ export default async function V3PilotOne({
       </section>
 
       <section className="panel">
-        <h2>묶음마다 걸린 시간</h2>
+        <h2>문항 그룹마다 걸린 시간</h2>
         <p className="sub">
           답이 찍힌 시각에서 읽습니다. 20분 넘는 틈은 빼고 셉니다.
         </p>
         <div className="tablewrap">
         <table>
-          <thead><tr><th>묶음</th><th>답한 문항</th><th>걸린 시간</th></tr></thead>
+          <thead><tr><th>문항 그룹</th><th>답한 문항</th><th>걸린 시간</th></tr></thead>
           <tbody>
             {blocks.map((b) => (
               <tr key={b.block}>
@@ -166,7 +166,7 @@ export default async function V3PilotOne({
       <section className="panel">
         <h2>지나간 화면</h2>
         <p className="sub">
-          되돌아간 자리를 보려고 둡니다. 화면 이름만 적고 문항 번호도 적은
+          되돌아간 곳을 보려고 둡니다. 화면 이름만 적고 문항 번호도 적은
           내용도 적지 않습니다.
         </p>
         {steps.length === 0 ? (
@@ -174,7 +174,7 @@ export default async function V3PilotOne({
         ) : (
           <p className="sub">
             {steps.length}걸음 · 마지막 {steps[steps.length - 1].at.slice(0, 16)}
-            {" · "}같은 화면을 두 번 이상 지난 자리{" "}
+            {" · "}같은 화면을 두 번 이상 지난 경우{" "}
             {steps.length - new Set(steps.map((s) => s.screen_id)).size}
           </p>
         )}
@@ -184,7 +184,7 @@ export default async function V3PilotOne({
         <h2>그 사람이 본 것</h2>
         <p className="sub">
           응시자가 보는 화면 그대로 엽니다. 운영자 전용 화면을 따로 그리지
-          않습니다. 따로 그리면 둘이 갈리고, 갈린 쪽을 보고 판단하게 됩니다.
+          않습니다. 따로 그리면 둘이 달라지고, 달라진 쪽을 보고 판단하게 됩니다.
           {a.quality ? ` 응답 품질 ${a.quality}.` : ""}
           {` 깊게 본 영역 ${a.opened_deep}개.`}
         </p>

@@ -1,7 +1,7 @@
 {
  "schema_version": "sports-v1-bank-lock.1",
  "core": "SPORTS_CORE_V1",
- "item_bank_version": "SPORTS_V1_ITEM_BANK_V1.2",
+ "item_bank_version": "SPORTS_V1_ITEM_BANK_V1.3",
  "note": "체육·운동재활 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=SPORTS_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
   "sports-industry-packs.json": "c8b49afe69c3bdaff4a8b61ffb4ee7964643d7929791487a7368b9d524055853",
@@ -12,7 +12,7 @@
   "sports-v1-constructs.json": "0e35539a0dcfb08ff99f37f308cb89ca38079f8326f5d8940e1eea7af5940b80",
   "sports-v1-domains.json": "090db40bdd488ec3247a665e587b00aa66198d51785949fc58c108c45b1650c7",
   "sports-v1-items-blueprint.json": "2fa0f53418dd07ef9ef1d022d2af59e102162cee0db3e198df00e2bd18fc6ee0",
-  "sports-v1-items.json": "144a74ee5c0440e3fb79806496d5958a0a508e5ab088748935ce1aeb31d2b34f",
+  "sports-v1-items.json": "8b7601cc57a25cafc31eec7aab360ce12d1cbdd5c0b5ef14274054679151674b",
   "sports-v1-relations.json": "c3869ba330effbe2b686b194f2f9f13b6a8c84224a827991beb6262e3efaa1b6",
   "sports-v1-taxonomy.json": "140f9ba42812c6bd0604ad3e738eedae9366e09493d1037dd802db2a6d509297"
  },

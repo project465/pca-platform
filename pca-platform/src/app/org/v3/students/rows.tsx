@@ -105,7 +105,7 @@ export default function StudentRows(
                       onClick={(e) => {
                         if (!confirm(
                           `${r.name} ${t("학생")}의 비밀번호를 다시 냅니다.\n`
-                          + "지금 들고 있는 비밀번호는 그 자리에서 쓸 수 없게 됩니다.",
+                          + "지금 쓰는 비밀번호는 바로 쓸 수 없게 됩니다.",
                         )) e.preventDefault();
                       }}>비밀번호 재발급</button>
                   </form>

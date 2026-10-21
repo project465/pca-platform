@@ -160,7 +160,7 @@ export const ROUTE_TABLE: RouteRow[] = [
   /* ── 작업공간 ──────────────────────────────────────────── */
   { route: "/me", newUser: "로그인 뒤 첫 화면", oldUser: "같음", cls: "CURRENT" },
   { route: "/me/results", newUser: "결과 이력", oldUser: "같음", cls: "CURRENT" },
-  { route: "/me/state", newUser: "지금 상태·비어 있는 자리", oldUser: "같음",
+  { route: "/me/state", newUser: "지금 상태·비어 있는 칸", oldUser: "같음",
     cls: "CURRENT" },
   { route: "/me/next", newUser: "다음 할 일", oldUser: "같음", cls: "CURRENT" },
   { route: "/me/experience", newUser: "경험 목록", oldUser: "같음", cls: "CURRENT" },
@@ -172,7 +172,7 @@ export const ROUTE_TABLE: RouteRow[] = [
   { route: "/me/explore", newUser: "산업·직무 탐색", oldUser: "같음", cls: "CURRENT" },
   { route: "/me/region", newUser: "지역과 기관", oldUser: "같음", cls: "CURRENT" },
   { route: "/me/track", newUser: "Track", oldUser: "같음", cls: "CURRENT" },
-  { route: "/me/jobs", newUser: "Track 안의 공고 자리", oldUser: "같음", cls: "CURRENT" },
+  { route: "/me/jobs", newUser: "Track 안의 공고 목록", oldUser: "같음", cls: "CURRENT" },
   { route: "/me/apply", newUser: "지원 준비", oldUser: "같음", cls: "CURRENT" },
 
   /* ── 계정 ──────────────────────────────────────────────── */

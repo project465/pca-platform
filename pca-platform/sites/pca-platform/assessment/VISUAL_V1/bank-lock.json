@@ -1,7 +1,7 @@
 {
  "schema_version": "cm-bank-lock.1",
  "core": "VISUAL_CORE_V1",
- "item_bank_version": "VISUAL_V1_ITEM_BANK_V1.3",
+ "item_bank_version": "VISUAL_V1_ITEM_BANK_V1.4",
  "note": "문면을 고치면 이 지문이 어긋난다. 그때 판본을 올리고 BANK=update 로 다시 적는다",
  "files": {
   "visual-industry-packs.json": "7f0ffe831dc2417531c3df709190d6f30093500c80d019d2832b395012872f49",
@@ -12,7 +12,7 @@
   "visual-v1-constructs.json": "6f07825bf180737597d0885f50c56cf58a1ffcba50eae4f64753c608c261a02e",
   "visual-v1-domains.json": "1d55be7c5133fc740d5d125d9fbc57bfbe9426b2f13ce102b10557097a4776b3",
   "visual-v1-items-blueprint.json": "ce081e11c62c7f066c36589069f05064843c3b13b631be1ff941198ce6a13b75",
-  "visual-v1-items.json": "6d68f85f28dbf59df601a03fe16b52cf3781306a46e6e17faeeef65f65510e0b",
+  "visual-v1-items.json": "a01d268ce13e81b418bb0e7a418040c95d9ac0bd5ecac9073e4731789f5ea77d",
   "visual-v1-relations.json": "0241850909b6c85e941db8e1fa2f880b43b5f8a7e1b25b5d85b930dc9d2a01a0",
   "visual-v1-taxonomy.json": "94b0c948c797ead5fcbc93ee96bf4d5d3b6ded022b71ccb656f197396ede6bd8"
  },

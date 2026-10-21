@@ -160,7 +160,7 @@ export default async function V3PilotPage({
       */}
       {mixed.length ? (
         <section className="panel">
-          <h2>이 묶음에 판본이 섞여 있습니다</h2>
+          <h2>이 그룹에 판본이 섞여 있습니다</h2>
           {mixedHard.length ? (
             <p className="warn">
               결과에 닿는 판본이 갈렸습니다. 앞사람과 뒷사람의 결과를 한 표에서
@@ -170,7 +170,7 @@ export default async function V3PilotPage({
           ) : (
             <p className="sub">
               결과에 닿는 판본은 한 벌입니다. 아래는 읽은 화면과 문장이
-              갈린 것이라 판정에는 들어가지 않습니다.
+              달라진 것이라 판정에는 들어가지 않습니다.
             </p>
           )}
           <ul>
@@ -189,7 +189,7 @@ export default async function V3PilotPage({
         <h2>초대</h2>
         <p className="sub">
           가명은 운영자가 보는 이름이고, 링크가 싣는 것은 한 번만 보여 주는
-          열쇠입니다. 다음 번호를 눌러 봐도 남의 자리에 들어갈 수 없습니다.
+          열쇠입니다. 다음 번호를 눌러 봐도 다른 사람의 링크로 들어갈 수 없습니다.
         </p>
         <InviteForm />
       </section>
@@ -233,7 +233,7 @@ export default async function V3PilotPage({
         <section className="panel">
           <h2>해당하는 줄이 없습니다</h2>
           <p className="sub">
-            참가자가 초대 링크로 등록하면 여기에 섭니다. 숫자를 지어내지 않습니다.
+            참가자가 초대 링크로 등록하면 여기에 나옵니다. 숫자를 지어내지 않습니다.
           </p>
         </section>
       ) : (
@@ -249,7 +249,7 @@ export default async function V3PilotPage({
                 <th>상태</th><th>시작</th><th>완료</th>
                 <th>손 움직인 시간</th><th>처음부터 끝까지</th>
                 <th>응답 품질</th><th>깊게 본 영역</th><th>답한 문항</th>
-                <th>결과 묶음</th><th>결과 열람</th><th>의견</th><th>손볼 일</th>
+                <th>결과 그룹</th><th>결과 열람</th><th>의견</th><th>손볼 일</th>
               </tr>
             </thead>
             <tbody>
@@ -319,7 +319,7 @@ export default async function V3PilotPage({
       </section>
 
       <section className="panel">
-        <h2>묶음마다 걸린 시간</h2>
+        <h2>문항 그룹마다 걸린 시간</h2>
         <p className="sub">
           답이 찍힌 시각에서 읽습니다. 답 사이가 20분을 넘으면 그 틈은 빼고
           셉니다. 창을 열어 둔 채 밥을 먹고 온 것을 어려웠다고 읽으면 안 됩니다.
@@ -330,7 +330,7 @@ export default async function V3PilotPage({
         ) : (
           <div className="tablewrap">
           <table>
-            <thead><tr><th>묶음</th><th>중앙값 · 사분위</th></tr></thead>
+            <thead><tr><th>문항 그룹</th><th>중앙값 · 사분위</th></tr></thead>
             <tbody>
               {blocks.map((b) => (
                 <tr key={b.block}><td>{b.label}</td><td>{dist(b)}</td></tr>
@@ -344,7 +344,7 @@ export default async function V3PilotPage({
       <section className="panel">
         <h2>보기 넷을 어떻게 골랐는가</h2>
         <p className="sub">
-          네 단계가 실제로 갈려 쓰이는지 봅니다. 한 칸에 쏠리면 보기가 갈리지
+          네 단계가 실제로 고르게 쓰이는지 봅니다. 한 칸에 쏠리면 보기가 구분되지
           않은 것입니다. 응답이 스무 개가 안 되면 비율을 내지 않습니다.
         </p>
         <div className="tablewrap">
@@ -366,7 +366,7 @@ export default async function V3PilotPage({
         <h2>오래 걸린 문항</h2>
         <p className="sub">
           앞 답과의 틈과 고쳐 누른 수로 봅니다. 문항 번호는 내부 이름이라
-          묶음 이름으로 적습니다. 키 입력이나 화면 녹화는 하지 않습니다.
+          문항 그룹 이름으로 적습니다. 키 입력이나 화면 녹화는 하지 않습니다.
         </p>
         {slow.length === 0 ? (
           <p className="sub">아직 응답이 없습니다.</p>
@@ -374,7 +374,7 @@ export default async function V3PilotPage({
           <div className="tablewrap">
           <table>
             <thead>
-              <tr><th>묶음</th><th>응답 수</th><th>중앙 초</th><th>고쳐 누른 수</th></tr>
+              <tr><th>문항 그룹</th><th>응답 수</th><th>중앙 초</th><th>고쳐 누른 수</th></tr>
             </thead>
             <tbody>
               {slow.map((s) => (

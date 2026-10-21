@@ -91,7 +91,7 @@ export function checkStudent(
   if (!ctx) {
     return {
       ok: false,
-      why: `어느 전공 검사로 이을지 아직 정해지지 않은 자리입니다: ${found.leaf.name}`,
+      why: `어느 전공 검사로 이을지 아직 정해지지 않은 전공입니다: ${found.leaf.name}`,
     };
   }
   const loginId = (row.login_id ?? "").trim() || `${loginPrefixOf(u)}${sid}`;

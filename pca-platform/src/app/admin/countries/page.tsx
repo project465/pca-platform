@@ -87,7 +87,7 @@ export default async function AdminCountries({
         <Empty
           icon="globe"
           title={T("adminNoCountryPacks")}
-          body={`${T("adminGlobalRefWhy")} 확인된 줄이 생기면 그 나라부터 결과지가 나라별로 갈립니다.`}
+          body={`${T("adminGlobalRefWhy")} 확인된 줄이 생기면 그 나라부터 결과지가 나라별로 나뉩니다.`}
         />
       )}
     </Shell>

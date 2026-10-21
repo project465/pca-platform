@@ -189,7 +189,7 @@ export async function setAccountStatus(
   const got = await ownedBySchool(universityCode, userId);
   if (!got) return { ok: false, why: "이 학교가 발급한 계정이 아닙니다" };
   if (got.status === "erased") {
-    return { ok: false, why: "파기된 계정은 이 자리에서 다시 열지 않습니다" };
+    return { ok: false, why: "파기된 계정은 이 화면에서 다시 열지 않습니다" };
   }
   await query(`UPDATE users SET status = $2 WHERE id = $1::bigint`,
     [userId, on ? "active" : "disabled"]);

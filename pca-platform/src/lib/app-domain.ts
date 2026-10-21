@@ -107,10 +107,10 @@ export async function probeAppDomain(timeoutMs = 5000): Promise<AppProbe> {
       && body.length < 200 && !r.headers.get("server");
     probe = blocked
       ? { url: d.url, ok: null, status: null,
-        detail: "이 자리에서 바깥으로 못 나갑니다(프록시). 밖에서 열어 확인하십시오." }
+        detail: "이 환경에서는 바깥으로 못 나갑니다(프록시). 밖에서 열어 확인하십시오." }
       : r.ok
         ? { url: d.url, ok: true, status: r.status,
-          detail: `${d.host} 가 ${ms}ms 만에 ${r.status} 를 냈습니다. DNS·HTTPS·인증서·앱·DB 가 한 줄로 섭니다.` }
+          detail: `${d.host} 가 ${ms}ms 만에 ${r.status} 를 냈습니다. DNS·HTTPS·인증서·앱·DB 가 모두 정상입니다.` }
         : { url: d.url, ok: false, status: r.status,
           detail: `${d.host}/api/health 가 ${r.status} 를 냈습니다.` };
   } catch (e) {

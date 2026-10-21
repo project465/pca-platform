@@ -145,7 +145,7 @@ export async function drawResultPdf(opts: DrawOpts): Promise<Buffer> {
     });
   } catch (e) {
     throw new PdfFailed("browser",
-      `${(e as Error).message.split("\n")[0]} / 찾아본 자리: ${tried.join(" ")}`);
+      `${(e as Error).message.split("\n")[0]} / 찾아본 경로: ${tried.join(" ")}`);
   }
   try {
     const gate = stagingGate();
@@ -317,7 +317,7 @@ export async function drawPagePdf(opts: PageDrawOpts): Promise<Buffer> {
     });
   } catch (e) {
     throw new PdfFailed("browser",
-      `${(e as Error).message.split("\n")[0]} / 찾아본 자리: ${tried.join(" ")}`);
+      `${(e as Error).message.split("\n")[0]} / 찾아본 경로: ${tried.join(" ")}`);
   }
   try {
     const gate = stagingGate();

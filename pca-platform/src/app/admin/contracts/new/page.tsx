@@ -24,7 +24,7 @@ export default async function NewContract({
       <div className="panel" style={{ maxWidth: 560 }}>
         <h1>계약 등록</h1>
         <p className="sub">
-          좌석은 계약에서 나옵니다. 저장하면 좌석 수만큼 응시권이 그 자리에서 만들어집니다.
+          좌석은 계약에서 나옵니다. 저장하면 좌석 수만큼 응시권이 바로 만들어집니다.
         </p>
         <ContractForm orgs={orgs} preset={org} />
       </div>

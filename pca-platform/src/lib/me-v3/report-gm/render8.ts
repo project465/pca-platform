@@ -228,7 +228,7 @@ function versus(e: Ed8): string {
 <dt>내 근거</dt><dd>${r.have.length ? r.have.map((x) => h(x.text)).join("<br>") : "아직 이 직무 쪽 응답이 없습니다"}</dd><dt>더 필요한 것</dt><dd>${r.need.length ? r.need.map(h).join(", ") : "—"}</dd><dt>중심 영역</dt><dd>${h(r.tdName)} · ${h(LV(r.tdDepth))}</dd></dl></div>`;
   return `<h2 class="hl">${h(v.call)}</h2><p class="dk">두 직무를 정하는 것, 남기는 것, 내 근거로 나란히 놓았습니다. 겹치는 칸이 많을수록 함께 준비하기 쉽습니다.</p>
 <div class="vs">${col(v.a, "목표로 고른 직무")}${col(v.b, e.kind === "MIXED" ? "근거가 더 많은 직무" : "함께 볼 직무")}</div>
-${e.confusion ? `<div class="push" style="margin-top:9mm"><p class="pq" style="font-size:14pt">${h(e.confusion.tell)}</p><p class="cap" style="margin:3mm 0 0 8mm">헷갈리기 쉬운 두 직무(${h(e.confusion.a)} · ${h(e.confusion.b)})를 가르는 한 줄 · 일반 직무 안내</p></div>` : ""}`;
+${e.confusion ? `<div class="push" style="margin-top:9mm"><p class="pq" style="font-size:14pt">${h(e.confusion.tell)}</p><p class="cap" style="margin:3mm 0 0 8mm">헷갈리기 쉬운 두 직무(${h(e.confusion.a)} · ${h(e.confusion.b)})를 구분하는 한 줄 · 일반 직무 안내</p></div>` : ""}`;
 }
 
 function mismatch(e: Ed8): string {
@@ -238,18 +238,18 @@ function mismatch(e: Ed8): string {
 <div class="g2" style="border-top:1pt solid var(--ink);padding-top:5mm"><div><p class="cap">해 본 일이 있는 영역</p><p style="font-family:S;font-weight:700;font-size:18pt;line-height:1.5">${m.did.map(h).join("<br>")}</p><p class="src">응답 확인</p></div>
 <div><p class="cap">${h(m.target)}의 중심 영역</p><p style="font-family:S;font-weight:700;font-size:18pt;line-height:1.5;color:var(--acc)">${h(m.targetTd)}</p><p class="sm">${UNASKED}. 해 본 적이 없다는 뜻이 아니라, 이번 응답으로는 모른다는 뜻입니다.</p></div></div>
 <div class="band" style="margin-top:9mm"><p class="lab">이미 있는 ${h(m.target)} 장면</p><p style="font-size:12pt;font-weight:600;margin:0">${m.overlap ? h(m.overlap) : "아직 기록에 없습니다."}</p>${m.overlap ? `<p class="src" style="margin:2mm 0 0">학생 자기기록 · 이 장면이 ${h(m.target)} 지원서의 첫 문단 재료입니다</p>` : ""}</div>
-<div class="g2 push" style="margin-top:9mm"><div><p class="lab">더 자연스러운 쪽</p><p class="sm"><b>${h(m.closer)}</b> — ${h(m.closerWhy)}</p></div><div><p class="lab">그래도 ${h(m.target)}로 간다면</p><p class="sm">${h(e.first.when)} 안에 ${withJosa(h(e.first.output), "을를")} 만들어 ${h(m.target)} 장면을 하나 확보합니다. 그다음 두 직무를 다시 견줍니다.</p><p class="src">분석 제안</p></div></div>`;
+<div class="g2 push" style="margin-top:9mm"><div><p class="lab">더 자연스러운 쪽</p><p class="sm"><b>${h(m.closer)}</b> — ${h(m.closerWhy)}</p></div><div><p class="lab">그래도 ${h(m.target)}로 간다면</p><p class="sm">${h(e.first.when)} 안에 ${withJosa(h(e.first.output), "을를")} 만들어 ${h(m.target)} 장면을 하나 확보합니다. 그다음 두 직무를 다시 비교합니다.</p><p class="src">분석 제안</p></div></div>`;
 }
 
 function evidence(e: Ed8): string {
   const z = e.dna.domains.filter((d) => d.tag === "근거 갖춤").length;
-  const headline = z ? `강한 근거는 ${z}개 영역에 모여 있습니다.` : e.kind === "EARLY" ? "아직 근거라 부를 것이 적습니다. 빈자리가 곧 할 일입니다." : "해 본 일은 넓게 있지만, 보여 줄 근거는 아직 얇습니다.";
+  const headline = z ? `강한 근거는 ${z}개 영역에 모여 있습니다.` : e.kind === "EARLY" ? "아직 근거라 부를 것이 적습니다. 빈칸이 곧 할 일입니다." : "해 본 일은 넓게 있지만, 보여 줄 근거는 아직 얇습니다.";
   const tgt = e.versus.a.tdName;
   const rows: [string, (d: number | null) => boolean][] = [["기준까지 직접 결정", (d) => d === 3], ["직접 수행", (d) => d === 2], ["지시받아 수행", (d) => d === 1], ["해 본 적 없음", (d) => d === 0], [UNASKED, (d) => d === null]];
   const cols: ["LOW" | "MID" | "HIGH", string][] = [["LOW", "관심 낮음"], ["MID", "관심 중간"], ["HIGH", "관심 높음"]];
   const weak = e.dna.weak.length ? [{ text: `아직 비어 있는 판단: ${e.dna.weak.join(", ")}`, src: "응답 확인" as const }] : [];
   return `<h2 class="hl">${h(headline)}</h2>
-<div class="g2"><div><p class="lab">지금 보여 줄 수 있는 근거</p>${lines(e.verdict.have)}</div><div><p class="lab">빈자리</p>${lines([...weak, ...e.verdict.unknown.slice(0, 3)])}</div></div>
+<div class="g2"><div><p class="lab">지금 보여 줄 수 있는 근거</p>${lines(e.verdict.have)}</div><div><p class="lab">빈칸</p>${lines([...weak, ...e.verdict.unknown.slice(0, 3)])}</div></div>
 <p class="lab push" style="margin-top:9mm">열두 영역 지도 — 관심과 해 본 깊이</p>
 <table class="mx"><thead><tr><th></th>${cols.map(([, l]) => `<th>${l}</th>`).join("")}</tr></thead><tbody>${rows.map(([l, pr], i) => `<tr><td class="rh">${l}</td>${cols.map(([c]) => `<td${i === 4 ? ' class="un"' : ""}>${e.map.rows.filter((m) => m.interest === c && pr(m.depth)).map((m) => `<span${m.name === tgt ? ' class="tg"' : ""}>${h(m.name)}${m.name === tgt ? " ◆" : ""}</span>`).join("<br>")}</td>`).join("")}</tr>`).join("")}</tbody></table>
 <p class="cap" style="margin-top:2mm">빗금 칸은 ‘없음’이 아니라 이번 검사에서 판단을 묻지 않은 영역입니다. ◆ 목표 직무의 중심 영역 · 응답 확인</p>`;
@@ -259,7 +259,7 @@ function deep(d: DnaDomain): string {
   const C: Record<string, string> = { strong: "해 봄", partial: "일부", none: "아직" };
   const col = (t: string, xs: string[]) => `<div><p class="lab">${t}</p>${xs.length ? xs.map((x) => `<p class="sm" style="margin:0 0 2mm">${h(x)}</p>`).join("") : `<p class="sm" style="color:var(--mute)">고른 문장이 없습니다.</p>`}</div>`;
   const opn = d.open.length ? `아직 지시받은 범위까지인 판단은 ${d.open.join(", ")}입니다.` : "여덟 판단 모두 스스로 맡아 해 봤다고 답했습니다.";
-  return `<h2 class="hl">${h(d.name)}의 일 여덟 단계 가운데, 맡아 본 곳과 비어 있는 곳</h2><p class="dk">${h(opn)}${d.compared.length ? ` 결과는 ${d.compared.map(h).join(", ")}과 견줬다고 골랐습니다.` : " 결과를 견준 대상은 아직 고르지 않았습니다."}</p>
+  return `<h2 class="hl">${h(d.name)}의 일 여덟 단계 가운데, 맡아 본 곳과 비어 있는 곳</h2><p class="dk">${h(opn)}${d.compared.length ? ` 결과는 ${d.compared.map(h).join(", ")}과 비교했다고 골랐습니다.` : " 결과를 비교한 대상은 아직 고르지 않았습니다."}</p>
 <div class="flow">${d.flow.map((f) => `<div><span class="n">${f.step}</span> <span class="c ${h(f.cover)}">${C[f.cover] ?? ""}</span><b>${h(f.name)}</b>${h(f.detail)}</div>`).join("")}</div>
 <div class="g3 push" style="margin-top:9mm">${col("직접 정했다고 고른 것", d.decided)}${col("해 봤다고 고른 것", d.did)}${col("남긴 결과물", d.left)}</div>
 <p class="src" style="margin-top:3mm">응답 확인 · 단계 표시는 그 단계 판단에 대한 응답에서 왔습니다</p>`;
@@ -267,7 +267,7 @@ function deep(d: DnaDomain): string {
 
 function scene1(e: Ed8): string {
   const r = e.versus.a;
-  return `<h2 class="hl">${h(r.name)}의 한 주기는 이렇게 돕니다.</h2><p class="dk">특정 회사가 아니라 이 직무에서 흔히 거치는 흐름입니다. 장면마다 정하는 것과 남기는 것을 보면, 지금 준비할 결과물이 보입니다.</p>
+  return `<h2 class="hl">${h(r.name)}의 한 주기는 이렇게 돕니다.</h2><p class="dk">이 직무에서 흔히 거치는 흐름이고, 특정 회사의 사례는 아닙니다. 장면마다 정하는 것과 남기는 것을 보면, 지금 준비할 결과물이 보입니다.</p>
 <div class="sc">${r.guide.cycle.map((c, i) => `<div class="row"><div class="num">${i + 1}</div><div><p class="ph">${h(c.phase)}</p><p class="scene">${h(c.scene)}</p></div><div class="cap"><b style="color:var(--ink2)">정하는 것</b><br>${h(c.decide)}<br><br><b style="color:var(--ink2)">남기는 것</b><br>${h(c.output)}</div></div>`).join("")}</div>
 <p class="src push" style="margin-top:3mm">일반 직무 안내</p>`;
 }
@@ -309,9 +309,9 @@ ${e.templates.map((t, i) => `<div class="pf"><div class="num">${i + 1}</div><div
 
 function letter(e: Ed8): string {
   const d = e.draft;
-  return `<h2 class="hl">자기소개서 한 문단은 이렇게 시작합니다.</h2><p class="dk">${d.from ? `‘${h(d.from)}’에서 고른 응답을 그대로 문장에 넣었습니다. ` : ""}파란 칸은 기록에서 직접 채울 자리입니다. 지어낸 내용은 없습니다.</p>
+  return `<h2 class="hl">자기소개서 한 문단은 이렇게 시작합니다.</h2><p class="dk">${d.from ? `‘${h(d.from)}’에서 고른 응답을 그대로 문장에 넣었습니다. ` : ""}파란 칸은 기록에서 직접 채울 칸입니다. 지어낸 내용은 없습니다.</p>
 <p class="draft" style="border-top:1pt solid var(--ink);padding-top:6mm">${d.parts.map((p) => (p.blank ? `<span class="b">${h(p.text.trim())}</span> ` : h(p.text))).join("")}</p>
-<p class="lab" style="margin-top:10mm">둘째 문단 연습 — 다른 경험 하나로 같은 순서를 써 봅니다</p><div class="ws">${["상황과 맡은 몫", "내가 정한 것과 기준", "남긴 결과물", "무엇과 견줘 무엇이 달라졌나"].map((f, i) => `<div class="row"><span class="n">${i + 1}</span><span class="f">${f}</span><span><div class="wl"></div></span></div>`).join("")}</div>
+<p class="lab" style="margin-top:10mm">둘째 문단 연습 — 다른 경험 하나로 같은 순서를 써 봅니다</p><div class="ws">${["상황과 맡은 몫", "내가 정한 것과 기준", "남긴 결과물", "무엇과 비교해 무엇이 달라졌나"].map((f, i) => `<div class="row"><span class="n">${i + 1}</span><span class="f">${f}</span><span><div class="wl"></div></span></div>`).join("")}</div>
 <div class="three push" style="margin-top:10mm">${d.tips.map((t, i) => `<div><div class="num" style="font-size:26pt">${i + 1}</div><p style="font-family:S;font-weight:600;font-size:12pt;line-height:1.55">${h(t)}</p></div>`).join("")}</div>
 <p class="src" style="margin-top:3mm">응답 확인 · 학생 자기기록 · 분석 제안</p>`;
 }
@@ -320,7 +320,7 @@ function interview(e: Ed8, rows = e.answers, part = 0): string {
   return `${part < 2 ? `<h2 class="hl">면접에서 받을 질문과 답의 방향</h2><p class="dk">질문은 판단 하나씩을 묻습니다. 재료가 있는 질문은 그대로 꺼내고, 없는 질문은 90일 안에 재료를 만듭니다.</p>` : `<h2 class="hl">재료가 아직 없는 질문</h2><p class="dk">아래 질문은 지금 답할 장면이 없습니다. 90일 계획의 결과물이 그 장면이 됩니다.</p>`}
 <div class="iv">${rows.map((a) => `<div class="row"><p class="q">“${h(a.q)}”</p><div><p class="cap" style="margin-bottom:1mm">꺼낼 재료</p><p class="sm" style="margin:0">${a.have ? h(a.have) : `<span class="gap">아직 장면 없음</span> — ${h(a.prep ?? "")}`}</p></div><div><p class="cap" style="margin-bottom:1mm">답의 방향 · ${h(JUDGE[a.axis as keyof typeof JUDGE]?.name ?? "")}</p><p class="sm" style="margin:0">${h(a.dir)}</p></div><div style="grid-column:1/-1"><p class="cap" style="margin:1mm 0 0">내 답의 첫 문장</p><div class="wl"></div></div></div>`).join("")}</div>
 ${part === 2 ? `${rows.length <= 2 ? `<p class="lab" style="margin-top:9mm">${h(e.versus.a.name)} 면접에서 자주 나오는 질문</p>${e.versus.a.guide.probes.map((x) => `<p style="font-family:S;font-weight:600;font-size:12pt;margin:3mm 0 1mm">“${h(x)}”</p><div class="wl"></div>`).join("")}` : ""}
-${rows.length >= 3 ? `<p class="sm" style="margin-top:4mm"><b>답하기 전 30초</b> 언제·어떤 과제였는지 → 내가 정한 것 하나 → 남은 것의 이름 → 무엇과 견줬는지.</p>` : `<div class="g2" style="margin-top:8mm"><div><p class="lab">답하기 전 30초</p><ul class="chk"><li>언제·어떤 과제였는지 한 줄</li><li>내가 정한 것 하나</li><li>그 결과 남은 것의 이름</li><li>무엇과 견줬는지</li></ul></div><div><p class="lab">말하지 않을 것</p><p class="sm">해 보지 않은 일, 기록에 없는 수치, 팀이 한 일을 내가 한 것처럼 말하기. 한 번 되물으면 무너집니다.</p></div></div>`}` : ""}
+${rows.length >= 3 ? `<p class="sm" style="margin-top:4mm"><b>답하기 전 30초</b> 언제·어떤 과제였는지 → 내가 정한 것 하나 → 남은 것의 이름 → 무엇과 비교했는지.</p>` : `<div class="g2" style="margin-top:8mm"><div><p class="lab">답하기 전 30초</p><ul class="chk"><li>언제·어떤 과제였는지 한 줄</li><li>내가 정한 것 하나</li><li>그 결과 남은 것의 이름</li><li>무엇과 비교했는지</li></ul></div><div><p class="lab">말하지 않을 것</p><p class="sm">해 보지 않은 일, 기록에 없는 수치, 팀이 한 일을 내가 한 것처럼 말하기. 한 번 되물으면 무너집니다.</p></div></div>`}` : ""}
 <p class="src push" style="margin-top:3mm">재료: 응답 확인 · 답의 방향과 자주 나오는 질문: 일반 직무 안내</p>`;
 }
 
@@ -329,7 +329,7 @@ function plan(e: Ed8): string {
   const n = e.plan.flatMap((c) => c.items).length;
   return `<h2 class="hl">다음 90일, 기간마다 결과물 하나.</h2>${n > 3 ? "" : `<p class="dk">결과물이 남으면 지원서와 면접에서 꺼낼 장면이 하나 생깁니다.</p>`}
 <div class="board${n > 3 ? " dense" : ""}">${e.plan.map((c, i) => `<div class="col${i === 0 ? " now" : ""}"><div class="num">${big[i]}</div><p class="wh">${h(c.when)}</p>${c.items.length ? c.items.map((it) => `<div class="it"><b>${h(it.title)}</b>${n > 3 ? "" : `<p class="sm" style="margin:0 0 1.6mm">${h(it.where)} ${h(it.task)}</p>`}<p class="cap"><b style="color:var(--ink2)">남길 것</b> ${h(it.output)}<br><b style="color:var(--ink2)">확인</b> ${h(it.check)}</p></div>`).join("") : `<p class="sm" style="color:var(--mute)">앞 기간의 결과물을 다듬어 포트폴리오에 넣습니다.</p>`}</div>`).join("")}</div>
-${n <= 3 ? `<div class="band push" style="margin-top:9mm"><p class="lab">90일 뒤</p><p class="sm" style="margin:0">결과물을 07장의 □ 질문으로 다시 검토하고, 08장 면접표의 ‘아직 장면 없음’과 자기소개서의 파란 칸을 채웁니다. 같은 검사를 다시 보면 이번에 비어 있던 판단이 어디까지 왔는지 견줄 수 있습니다.</p></div>` : `<p class="sm push" style="margin-top:6mm"><b>90일 뒤</b> 결과물을 07장 □ 질문으로 검토하고, 면접표와 자기소개서의 빈칸을 채웁니다.</p>`}
+${n <= 3 ? `<div class="band push" style="margin-top:9mm"><p class="lab">90일 뒤</p><p class="sm" style="margin:0">결과물을 07장의 □ 질문으로 다시 검토하고, 08장 면접표의 ‘아직 장면 없음’과 자기소개서의 파란 칸을 채웁니다. 같은 검사를 다시 보면 이번에 비어 있던 판단이 어디까지 왔는지 비교할 수 있습니다.</p></div>` : `<p class="sm push" style="margin-top:6mm"><b>90일 뒤</b> 결과물을 07장 □ 질문으로 검토하고, 면접표와 자기소개서의 빈칸을 채웁니다.</p>`}
 <p class="src" style="margin-top:3mm">분석 제안 · 비어 있는 판단 가운데 목표 직무에 걸리는 것부터 차례를 정했습니다</p>`;
 }
 
@@ -354,7 +354,7 @@ export function pages8(e: Ed8): Page8[] {
   add("style", "03", "강점과 일하는 방식", "업무 스타일", style(e));
   add("versus", "04", "두 직무 비교", "두 직무", versus(e));
   if (e.mismatch) add("mismatch", "04", "두 직무 비교", "어긋나는 곳", mismatch(e));
-  add("evidence", "05", "근거 지도", "강한 근거와 빈자리", evidence(e));
+  add("evidence", "05", "근거 지도", "강한 근거와 빈칸", evidence(e));
   if (e.kind === "EVIDENCE") e.dna.domains.filter((d) => d.tag === "근거 갖춤").slice(0, 2).forEach((d) => add(`deep-${d.code}`, "05", "근거 지도", d.name, deep(d)));
   add("scene-1", "06", "실제 업무 장면", "한 주기", scene1(e));
   add("scene-2", "06", "실제 업무 장면", "판단의 순간", scene2(e));
@@ -369,7 +369,7 @@ export function pages8(e: Ed8): Page8[] {
   /* 차례: 장마다 첫 쪽 번호 */
   const PROMISE: Record<string, string> = {
     "01": "결론과 가져갈 세 가지", "02": "지금 먼저 볼 직무와 첫 행동", "03": "강한 쪽과 일하는 방식", "04": "맞는 직무 둘을 나란히",
-    "05": "보여 줄 수 있는 근거와 빈자리", "06": "이 직무가 실제로 하는 일", "07": "바로 만들 결과물", "08": "문장과 답의 재료", "09": "기간마다 결과물 하나", "10": "다시 한 번, 짧게",
+    "05": "보여 줄 수 있는 근거와 빈칸", "06": "이 직무가 실제로 하는 일", "07": "바로 만들 결과물", "08": "문장과 답의 재료", "09": "기간마다 결과물 하나", "10": "다시 한 번, 짧게",
   };
   const toc: Toc = [];
   P.forEach((p, i) => { if (p.sec && !toc.find((t) => t.no === p.sec)) toc.push({ no: p.sec, name: p.secName, promise: PROMISE[p.sec] ?? "", page: i + 1 }); });

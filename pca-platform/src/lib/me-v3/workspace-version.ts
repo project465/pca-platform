@@ -354,7 +354,8 @@
  * 지원한 곳에 내 근거 나란히 보기, 계정에 Track 칸이 선다. 열려 있지 않으면
  * 폼을 흐리게 세우지 않고 한 줄과 길만 둔다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V53";
+/** AI 티 문장 정리 (견줍니다·섭니다·세웠습니다 등) */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V54";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -393,7 +394,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V53";
  */
 /** 화면 시안(2026-10-20): 첫 화면 제목을 인사로 바꿨다 */
 /** Track 1단계: 기간권·구독 상태·잠긴 기능 안내 문장 */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.34";
+/** AI 티 문장 정리 (견줍니다·섭니다·세웠습니다 등) */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.35";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

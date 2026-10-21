@@ -112,7 +112,7 @@ export default async function OrgDetail({ params }: { params: Promise<{ id: stri
       {contracts.length === 0 ? (
         <div className="empty">
           <b>계약이 없습니다</b>
-          좌석은 계약에서 나옵니다. 계약을 등록하면 좌석이 그 자리에서 만들어집니다.
+          좌석은 계약에서 나옵니다. 계약을 등록하면 좌석이 바로 만들어집니다.
           <Link className="act solid" href={`/admin/contracts/new?org=${org.id}`}>
             계약 등록
           </Link>

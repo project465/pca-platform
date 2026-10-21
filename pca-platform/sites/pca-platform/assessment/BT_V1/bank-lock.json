@@ -1,7 +1,7 @@
 {
  "schema_version": "bt-v1-bank-lock.1",
  "core": "BT_CORE_V1",
- "item_bank_version": "BT_V1_ITEM_BANK_V1.4",
+ "item_bank_version": "BT_V1_ITEM_BANK_V1.5",
  "note": "바이오·생명공학 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=BT_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
   "bt-industry-packs.json": "e6ca9b433fd3a0089506ae657bbfe538171eaba0f761d195c513f55435d98578",
@@ -12,7 +12,7 @@
   "bt-v1-constructs.json": "fdf6bbf4918b6dbdad11547c03ce74e5f30881376a0d6b9252646681bb424438",
   "bt-v1-domains.json": "683c3f624427e9ad5ca90733015092f1cfd6fafec0eb7e8c7953b3144b0aeff3",
   "bt-v1-items-blueprint.json": "a6764a7d40977e3ac424967cee4249cbac0dabbe96412623a419cde462820d9a",
-  "bt-v1-items.json": "1bdbba90f51def4e88a7156c76219896cc60d9583174a89a51fe793a694a7c5b",
+  "bt-v1-items.json": "11c555e0e6b28acc7faf01fdbb300e4700eae0084a5842c25e184c82c688412b",
   "bt-v1-relations.json": "3d23bb58b53016f1f837e6339e510d33f14b94b6d8c88ebb5966454c136d6ed6",
   "bt-v1-taxonomy.json": "66a2d219cb87843cda17ba133b8d629fd3eb2d3434980600a60fcbc388e7bc6f"
  },

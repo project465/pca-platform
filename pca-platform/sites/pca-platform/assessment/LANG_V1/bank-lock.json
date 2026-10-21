@@ -1,7 +1,7 @@
 {
  "schema_version": "lang-v1-bank-lock.1",
  "core": "LANG_CORE_V1",
- "item_bank_version": "LANG_V1_ITEM_BANK_V1.3",
+ "item_bank_version": "LANG_V1_ITEM_BANK_V1.4",
  "note": "국어·언어·문학 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=LANG_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
   "lang-industry-packs.json": "4b40abbb10b566750f5b89c3ad09b98a438248f7cabb12232378cafacba2c9d8",
@@ -12,7 +12,7 @@
   "lang-v1-constructs.json": "0dd132fa3335d7a948fb3785bf28c72d1875452774ef9bb39acb8dbde5ad7247",
   "lang-v1-domains.json": "7a15c2d9b0e706e157c1f31a47dc567057e012c2c81a729b44500cfe679c0292",
   "lang-v1-items-blueprint.json": "5f60a4243457150e6597b0a006a6261199c568391dcd3bee43caffa3ef47276e",
-  "lang-v1-items.json": "5a4bc20cfb6fdbc5755d07849f87d238c4f8e1760a572278d20f876213a99c73",
+  "lang-v1-items.json": "767a1c25ffb16fe773c5ccef39afe61b6540b778d06b69c768ce0cc7dbcb3e07",
   "lang-v1-relations.json": "aab85c34ccbc1b4f88f51d71e8b51a93ebfd367ec5c698644315c20811720261",
   "lang-v1-taxonomy.json": "d13c6fd86a60a25149c0729ac76d368a0b346a8392aaa844186b8116b620a114"
  },

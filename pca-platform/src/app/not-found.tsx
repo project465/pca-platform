@@ -13,7 +13,7 @@ export default function NotFound() {
     <main className="sf-fail">
       <h1>없는 쪽입니다</h1>
       <p>
-        주소가 바뀌었거나 지워진 쪽입니다. 아래에서 가시려던 자리를 찾으실 수
+        주소가 바뀌었거나 지워진 쪽입니다. 아래에서 가시려던 곳을 찾으실 수
         있습니다.
       </p>
       <div className="sf-fail-acts">

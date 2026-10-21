@@ -103,17 +103,17 @@ export function build(m: ResultModel, meta: Meta, exps: Experience[], set: OrgSe
         line("내가 정한 것", s.shown[0]),
         line("쓴 방법", d.did.find((t) => !s.shown.includes(t))),
         line("남긴 것", s.artifacts[0]),
-        line("무엇과 견줬나", s.verifications[0]),
+        line("무엇과 비교했나", s.verifications[0]),
         line("결과·수치·기간", undefined),
       ],
     };
   });
   const portfolio = m.domains.flatMap((d) => d.artifacts.map((a) => ({
     name: a, domain: nm(d.code),
-    note: d.verifications.length ? `${withJosa(d.verifications[0], "과와")} 견준 기록을 함께 둡니다` : "무엇과 견줬는지를 한 줄 붙여 둡니다",
+    note: d.verifications.length ? `${withJosa(d.verifications[0], "과와")} 비교한 기록을 함께 둡니다` : "무엇과 비교했는지를 한 줄 붙여 둡니다",
   }))).slice(0, 6);
   const interview: Report2["application"]["interview"] = [];
-  for (const s of st.slice(0, 2)) interview.push({ q: s.question, from: `${s.name} — 고른 판단`, prepare: s.verifications[0] ? `${withJosa(s.verifications[0], "과와")} 견준 결과를 수치로` : "다른 안을 버린 까닭과 결과를 수치로" });
+  for (const s of st.slice(0, 2)) interview.push({ q: s.question, from: `${s.name} — 고른 판단`, prepare: s.verifications[0] ? `${withJosa(s.verifications[0], "과와")} 비교한 결과를 수치로` : "다른 안을 버린 까닭과 결과를 수치로" });
   for (const p of pr.slice(0, 2)) interview.push({ q: `“${p.domain}에서 ${withJosa(p.what, "을를")} 해 본 적이 있나요?”`, from: "아직 확인되지 않은 판단 — 미리 준비할 질문", prepare: p.method.split(".")[0] });
   for (const d of dirs.slice(0, 1)) for (const a of d.asks.slice(0, 2)) interview.push({ q: `“${a}”`, from: `${d.name} 직무 질문`, prepare: "그 몫을 맡았던 장면 하나 · 맡지 않았다면 맡을 준비" });
 
@@ -129,10 +129,10 @@ export function build(m: ResultModel, meta: Meta, exps: Experience[], set: OrgSe
   plan.push({ period: "60일", what: cx.records.length ? `적어 둔 경험 ${cx.records.length}건의 빈칸(${cx.records[0].needs[0].split("(")[0]})을 채워 경험 기록을 고치기` : "가장 최근 과제 하나를 경험 기록으로 처음 남기기", why: "경험 기록이 있어야 검사 응답을 면접 장면으로 말할 수 있습니다", how: "내 CareerMatri의 경험 추가·고치기", due: "60일", output: "갱신된 경험 기록", link: "" });
   if (pr[2]) plan.push({ period: "90일", what: pr[2].method, why: pr[2].why.join(" · "), how: pr[2].learn || "과제 한 번 더", due: "90일", output: keepOf(2), link: pr[2].jobs.join(" · ") || pr[2].domain });
   plan.push({ period: "90일", what: st[0] ? `${st[0].name} 경험을 부록 워크시트에 옮겨 지원서 문단 하나와 면접 답변 하나로 정리` : "새로 해 본 경험을 워크시트에 옮겨 문단 하나로 정리", why: "경험이 문장으로 옮겨지지 않으면 서류에서 쓰이지 않습니다", how: "워크시트의 여섯 칸을 채우고 수치·기간을 직접 적기", due: "90일", output: "지원서 문단 초안 · 답변 메모", link: goalDir?.name ?? "" });
-  plan.push({ period: "6개월", what: deep0 ? deep0.roadmap[2].what : "현장실습·공모전·학회 가운데 하나에 참여", why: "학교 밖 과제에서 남긴 결과물은 수업 과제보다 직무에 가깝게 읽힙니다", how: "교내 현장실습지원센터·취업지원 프로그램 확인", due: "4~6개월 사이", output: "실전 과제 결과물 한 장", link: deep0?.jobs[0]?.name ?? goalDir?.name ?? "" });
-  plan.push({ period: "6개월", what: `결과물 ${Math.max(2, portfolio.length)}개를 골라 한 묶음의 포트폴리오로 정리`, why: "흩어진 결과물은 지원 시점에 다시 찾기 어렵습니다", how: "결과물마다 ‘내가 정한 것 · 견준 대상’ 한 줄을 붙이기", due: "6개월", output: "포트폴리오 묶음", link: goalDir?.name ?? "" });
-  plan.push({ period: "12개월", what: `${dirs.map((d) => d.name).slice(0, 2).join("과 ")} 가운데 어느 쪽으로 지원할지 정하고, 그 직무의 공고 세 건을 모아 요구 조건을 대조`, why: "1년이면 학년이 바뀌고 지원 시점이 가까워집니다", how: "공고의 담당 업무·우대 조건을 이 리포트의 ‘추가 확보가 필요한 역량’과 견주기", due: "12개월", output: "직무별 요구 조건 대조표", link: "" });
-  plan.push({ period: "12개월", what: "CareerMatri 검사를 다시 보고 이번 결과와 견주기", why: "근거가 늘었는지를 같은 자로 확인합니다", how: "담당자에게 재응시를 요청", due: "12개월", output: "두 결과의 비교", link: "" });
+  plan.push({ period: "6개월", what: deep0 ? deep0.roadmap[2].what : "현장실습·공모전·학회 가운데 하나에 참여", why: "학교 밖 과제에서 남긴 결과물은 수업 과제보다 직무에 가깝게 보입니다", how: "교내 현장실습지원센터·취업지원 프로그램 확인", due: "4~6개월 사이", output: "실전 과제 결과물 한 장", link: deep0?.jobs[0]?.name ?? goalDir?.name ?? "" });
+  plan.push({ period: "6개월", what: `결과물 ${Math.max(2, portfolio.length)}개를 골라 하나의 포트폴리오로 정리`, why: "흩어진 결과물은 지원 시점에 다시 찾기 어렵습니다", how: "결과물마다 ‘내가 정한 것 · 비교 대상’ 한 줄을 붙이기", due: "6개월", output: "포트폴리오", link: goalDir?.name ?? "" });
+  plan.push({ period: "12개월", what: `${dirs.map((d) => d.name).slice(0, 2).join("과 ")} 가운데 어느 쪽으로 지원할지 정하고, 그 직무의 공고 세 건을 모아 요구 조건을 대조`, why: "1년이면 학년이 바뀌고 지원 시점이 가까워집니다", how: "공고의 담당 업무·우대 조건을 이 리포트의 ‘추가 확보가 필요한 역량’과 비교하기", due: "12개월", output: "직무별 요구 조건 대조표", link: "" });
+  plan.push({ period: "12개월", what: "CareerMatri 검사를 다시 보고 이번 결과와 비교하기", why: "근거가 늘었는지를 같은 자로 확인합니다", how: "담당자에게 재응시를 요청", due: "12개월", output: "두 결과의 비교", link: "" });
 
   /* F 최종 행동 */
   const final = [

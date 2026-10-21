@@ -80,7 +80,7 @@ export default async function State(
       <CmShell active="/me/state" title="현재 상태" major={majorNameOf(st.core)}
       bar={<Link className="cm-btn" href="/me/experience/new">+ 경험 추가</Link>}>
         <CmHead title="아직 볼 것이 없습니다"
-          lead="검사를 한 번 끝내면 확인된 근거와 아직 부족한 부분이 여기에 섭니다." />
+          lead="검사를 한 번 끝내면 확인된 근거와 아직 부족한 부분이 여기에 나옵니다." />
         <div className="cm-soon">
           <b>완료한 검사가 없습니다.</b>
           <p style={{ marginTop: 10 }}>
@@ -188,7 +188,7 @@ export default async function State(
           ].filter(Boolean).join(" ")
           : realChange
             ? "변화는 생겼지만 아직 설명할 수 있는 기준까지는 올라오지 않았습니다. 무엇이 올라갔는지는 아래 `최근 달라진 것` 에 적혀 있습니다."
-            : "관심이 높은 영역에서 짧게 한 번 해 보고 그것을 경험으로 적으면 여기에 섭니다."}
+            : "관심이 높은 영역에서 짧게 한 번 해 보고 그것을 경험으로 적으면 여기에 나옵니다."}
         action={Object.keys(st.zoneOf).length > ready.length ? (
           <Link className="cm-btn" href="#domains">전체 기술영역 보기</Link>
         ) : undefined}
@@ -390,7 +390,7 @@ export default async function State(
         <div className="cm-pane">
           <h3>검사 당시 결과 <span className="cm-lockmark">고정됨</span></h3>
           <p>
-            {st.result_at} · {m.tier} · 그날의 문항과 기준으로 굳어 있습니다.
+            {st.result_at} · {m.tier} · 그날의 문항과 기준으로 고정되어 있습니다.
             경험을 더해도 이 줄은 한 글자도 달라지지 않습니다.
           </p>
           <div className="cm-acts">

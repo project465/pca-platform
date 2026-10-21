@@ -87,7 +87,7 @@ function radarSvg(r: Report2): string {
 function radarLegend(r: Report2): string {
   const S = ["s0", "s1", "s2", "s3"];
   return `<div class="lg">${r.radar.series.map((s, k) => `<span class="lg-i"><i class="sw ${S[k]}"></i>${esc(s.name)}${s.deep ? "" : " (판단 넷만 물음)"}</span>`).join("")}</div>
-  <p class="cap">반지름은 그 판단을 어디까지 했다고 답했는가입니다. 1 주어진 조건으로 해 봄 · 2 직접 해 봄 · 3 직접 기준을 정함(근거 둘 이상을 고른 경우). 중심 가까운 점은 ‘응답에서 확인되지 않음’, 빈 점은 그 영역에서 이번에 묻지 않은 판단입니다. 점수가 아니며 다른 학생과 견준 값도 아닙니다.</p>`;
+  <p class="cap">반지름은 그 판단을 어디까지 했다고 답했는가입니다. 1 주어진 조건으로 해 봄 · 2 직접 해 봄 · 3 직접 기준을 정함(근거 둘 이상을 고른 경우). 중심 가까운 점은 ‘응답에서 확인되지 않음’, 빈 점은 그 영역에서 이번에 묻지 않은 판단입니다. 점수가 아니며 다른 학생과 비교한 값도 아닙니다.</p>`;
 }
 
 /* ── 관심 × 근거 지도 ─────────────────────────────────────────── */
@@ -104,7 +104,7 @@ function mapGrid(cells: MapCell[]): string {
     return `<td class="${zone(lv, c)}">${here.map((x) => `<span class="chip">${esc(x.name)}</span>`).join("")}</td>`;
   }).join("")}</tr>`).join("");
   return `<table class="map"><thead><tr><th></th>${cols.map((c) => `<th>${colKo[c!]}</th>`).join("")}</tr></thead><tbody>${body}</tbody></table>
-  <p class="cap"><b>꺼내 쓸 강점</b>(관심 높음 · 직접 해 봄 이상) · <b>기본기로 쓸 경험</b>(관심 낮음 · 직접 해 봄 이상) · <b>먼저 겪어 볼 영역</b>(관심 높음 · 아직 근거 적음). 칸의 바탕이 이 셋을 가르고, 같은 칸 안의 차례에는 뜻이 없습니다.</p>`;
+  <p class="cap"><b>꺼내 쓸 강점</b>(관심 높음 · 직접 해 봄 이상) · <b>기본기로 쓸 경험</b>(관심 낮음 · 직접 해 봄 이상) · <b>먼저 겪어 볼 영역</b>(관심 높음 · 아직 근거 적음). 칸의 바탕색이 이 셋을 구분하고, 같은 칸 안의 차례에는 뜻이 없습니다.</p>`;
 }
 
 /* ── 장마다 ──────────────────────────────────────────────────── */
@@ -136,12 +136,12 @@ function s01(r: Report2): string {
   ${rest.map((t) => p(t)).join("")}
   <div class="three">
     <div><h3>지금 꺼내 쓸 것</h3>${p(r.strengths[0] ? `${r.strengths[0].name} — ${r.strengths[0].shown[0] ?? r.strengths[0].owned[0] ?? ""}` : "아직 강점으로 꺼낼 근거가 확인되지 않았습니다")}</div>
-    <div><h3>먼저 채울 것</h3>${p(r.priorities[0] ? `${r.priorities[0].domain} — ${r.priorities[0].what}` : "응답에서 먼저 채울 빈자리가 잡히지 않았습니다")}</div>
+    <div><h3>먼저 채울 것</h3>${p(r.priorities[0] ? `${r.priorities[0].domain} — ${r.priorities[0].what}` : "응답에서 먼저 채울 빈칸이 잡히지 않았습니다")}</div>
     <div><h3>첫 30일에 할 일</h3>${p(r.plan.find((x) => x.period === "30일")?.what ?? "")}</div>
   </div>
   ${p(tail, "note")}
   <h2>이 리포트를 읽는 법</h2>
-  <p>줄마다 근거의 층을 글자로 붙였습니다. ${mark("응답", "fact")}은 검사 문항에 답한 내용, ${mark("고른 근거", "fact")}는 체크리스트에서 직접 고른 항목, ${mark("경험 기록", "fact")}은 내 CareerMatri에 적어 둔 경험, ${mark("분석적 해석", "read")}은 이 리포트가 덧붙인 해석, ${mark("추가 확인 필요", "need")}는 아직 확인하지 않은 것입니다. 수치·기간·성과는 리포트가 만들지 않으며, 그 자리는 직접 적는 칸으로 남겼습니다.</p>`);
+  <p>줄마다 근거의 층을 글자로 붙였습니다. ${mark("응답", "fact")}은 검사 문항에 답한 내용, ${mark("고른 근거", "fact")}는 체크리스트에서 직접 고른 항목, ${mark("경험 기록", "fact")}은 내 CareerMatri에 적어 둔 경험, ${mark("분석적 해석", "read")}은 이 리포트가 덧붙인 해석, ${mark("추가 확인 필요", "need")}는 아직 확인하지 않은 것입니다. 수치·기간·성과는 리포트가 만들지 않으며, 그 부분은 직접 적는 칸으로 남겼습니다.</p>`);
 }
 
 function s02(r: Report2): string {
@@ -151,7 +151,7 @@ function s02(r: Report2): string {
   <div class="fig">
     <div class="fig-l">${radarSvg(r)}</div>
     <div class="fig-r">${radarLegend(r)}
-      <h3>그래프에서 읽히는 것</h3>${p(rd.balance)}${p(rd.evidence)}</div>
+      <h3>그래프에서 보이는 것</h3>${p(rd.balance)}${p(rd.evidence)}</div>
   </div>
   ${rd.paragraphs.map((t) => p(t)).join("")}
   ${rd.caution ? `<p class="caution">${mark("응답 확인 필요", "need")} ${esc(rd.caution)}</p>` : ""}
@@ -175,9 +175,9 @@ function s03(r: Report2): string {
       <div><dt>서류에서 쓰는 법</dt><dd>${esc(e.use)} ${mark("분석적 해석", "read")}</dd></div>
     </dl></div>`).join("");
   return sec("03", `
-  ${c.domains.length ? `<h2>영역별로 본 일치와 어긋남</h2>${rows}` : p("검사에서 근거가 확인된 영역도, 적어 둔 경험 기록도 아직 없어 견줄 자리가 없습니다.")}
+  ${c.domains.length ? `<h2>영역별로 본 일치와 어긋남</h2>${rows}` : p("검사에서 근거가 확인된 영역도, 적어 둔 경험 기록도 아직 없어 비교할 것이 없습니다.")}
   <h2>적어 둔 경험 기록 ${c.records.length}건</h2>
-  ${recs || p("적어 둔 경험 기록이 없습니다. 내 CareerMatri의 ‘경험 추가’에서 최근 과제 하나를 남기면 다음 리포트부터 이 자리가 채워집니다.", "muted")}`, { page: false, lead: "검사 응답이 가리키는 영역과 학생이 직접 적어 둔 경험 기록이 같은 곳을 가리키는지 견줬습니다." });
+  ${recs || p("적어 둔 경험 기록이 없습니다. 내 CareerMatri의 ‘경험 추가’에서 최근 과제 하나를 남기면 다음 리포트부터 이 칸이 채워집니다.", "muted")}`, { page: false, lead: "검사 응답이 가리키는 영역과 학생이 직접 적어 둔 경험 기록이 같은 곳을 가리키는지 비교했습니다." });
 }
 
 function s04(r: Report2): string {
@@ -205,8 +205,8 @@ function s05(r: Report2): string {
     <p><b>방법</b> ${esc(x.method)}</p>
     <div class="pr-meta"><span><b>관련 직무</b> ${esc(x.jobs.join(" · ") || "—")}</span><span><b>학습 형태</b> ${esc(x.learn || "—")}</span><span><b>확인 방법</b> ${esc(x.check)}</span><span><b>시기</b> ${esc(x.when || "—")}</span></div>
   </article>`).join("");
-  return sec("05", items || p("응답에서 먼저 채울 빈자리가 잡히지 않았습니다."), { page: false,
-    lead: "목표 직무의 필수 판단 → 목표 산업이 보는 판단 → 영역의 필수 판단 → 결과 모델이 고른 빈자리 차례로 줄을 세웠습니다. 숫자 점수로 매긴 순위가 아닙니다.",
+  return sec("05", items || p("응답에서 먼저 채울 빈칸이 잡히지 않았습니다."), { page: false,
+    lead: "목표 직무의 필수 판단 → 목표 산업이 보는 판단 → 영역의 필수 판단 → 결과 모델이 고른 빈칸 순서로 정리했습니다. 숫자 점수로 매긴 순위가 아닙니다.",
   });
 }
 
@@ -264,7 +264,7 @@ function deepCard(r: Report2, e: Explore): string {
   <ul class="ul">${o.facts.map((f) => `<li>${esc(f.text)}${cite(f.src)}</li>`).join("")}</ul>
   <h3>직무 이해</h3>
   <ul class="ul">${e.jobs.map((j) => `<li><b>${esc(j.name)}</b> ${mark(JOB_STATUS_KO[j.status], j.status === "INDUSTRY_EXAMPLE" ? "need" : "fact")} — ${esc(j.tasks)}${j.evidence ? ` <span class="small muted">(${esc(j.evidence)}${cite(j.src ?? [])})</span>` : ""}</li>`).join("")}</ul>
-  <h3>이 기업에서 읽히는 것 ${mark("분석적 해석", "read")}</h3>
+  <h3>이 기업에서 보이는 것 ${mark("분석적 해석", "read")}</h3>
   ${o.interpretation.map((t) => p(t)).join("")}
   <div class="two">
     <div><h4>이 산업에서 공통으로 보는 것</h4>${ul(e.industryGeneral, "ul tight")}</div>
@@ -336,7 +336,7 @@ function s11(r: Report2): string {
 }
 
 function s12(r: Report2): string {
-  const F = ["상황 — 어떤 수업·활동이었고 무엇이 문제였나", "내가 맡은 범위", "내가 직접 정한 기준이나 선택", "쓴 방법·도구", "남은 결과물", "결과를 무엇과 견줬나", "결과·수치·기간(직접 기입)", "다시 한다면 바꿀 것"];
+  const F = ["상황 — 어떤 수업·활동이었고 무엇이 문제였나", "내가 맡은 범위", "내가 직접 정한 기준이나 선택", "쓴 방법·도구", "남은 결과물", "결과를 무엇과 비교했나", "결과·수치·기간(직접 기입)", "다시 한다면 바꿀 것"];
   const key = ["", "", "decided", "", "artifact", "verify", "", ""];
   return sec("12", r.worksheet.map((w) => `<div class="ws"><h3>${esc(w.title)}</h3>
     <table class="tb ws-t"><tbody>${F.map((f, i) => `<tr><th>${esc(f)}</th><td>${w.prefill[key[i]] ? `<span class="pre">${esc(w.prefill[key[i]])}</span>` : ""}</td></tr>`).join("")}</tbody></table></div>`).join(""), {
@@ -349,11 +349,11 @@ function s13(r: Report2): string {
   const ver = Object.entries(r.versions).map(([k, v]) => `${k} ${v}`).join(" · ");
   return sec("13", `
   <h2>이 리포트가 재는 것과 재지 않는 것</h2>
-  <div class="two"><div><h4>재는 것</h4>${ul(["열두 영역의 관심·해 본 정도·배울 뜻", "물어본 영역에서 여덟 가지 판단을 어디까지 했다고 답했는지", "체크리스트에서 고른 근거·결과물·견준 대상", "내 CareerMatri에 적어 둔 경험 기록"], "ul tight")}</div>
+  <div class="two"><div><h4>재는 것</h4>${ul(["열두 영역의 관심·해 본 정도·배울 뜻", "물어본 영역에서 여덟 가지 판단을 어디까지 했다고 답했는지", "체크리스트에서 고른 근거·결과물·비교 대상", "내 CareerMatri에 적어 둔 경험 기록"], "ul tight")}</div>
   <div><h4>재지 않는 것</h4>${ul(["성격·적성·지능", "실제 업무 성과와 수치", "다른 학생과의 순위나 백분위", "기업의 채용 여부·합격 가능성"], "ul tight")}</div></div>
   <h2>기업 검증표</h2>
   <table class="tb vt"><thead><tr><th>기업</th><th>사업자등록번호</th><th>지역</th><th>자료</th><th>확인 상태</th><th>확인일</th></tr></thead><tbody>${vt}</tbody></table>
-  <p class="small muted">KODATA 기업종합보고서는 제3자 기업정보입니다. 이 리포트는 그 보고서의 재무표·신용등급·거래처 이름을 옮기지 않았고, 등록 사실(식별자·주소·업종·제품)과 고객 유형만 이 리포트의 말로 옮겼습니다. 공식 홈페이지·상장 정보·채용 공고는 검색 결과로 대조했고 원문을 직접 열람하지 못한 자리가 있습니다.</p>
+  <p class="small muted">KODATA 기업종합보고서는 제3자 기업정보입니다. 이 리포트는 그 보고서의 재무표·신용등급·거래처 이름을 옮기지 않았고, 등록 사실(식별자·주소·업종·제품)과 고객 유형만 이 리포트의 말로 옮겼습니다. 공식 홈페이지·상장 정보·채용 공고는 검색 결과로 대조했고 원문을 직접 열람하지 못한 곳이 있습니다.</p>
   <h2>지역 자료 출처</h2>
   <ol class="srcs">${r.regionFacts.map((f) => `<li>${esc(f.source.title)} — ${esc(SOURCE_KO[f.source.kind])} · 확인일 ${esc(f.source.checked_on)}</li>`).join("")}</ol>
   <p class="small muted">판본: ${esc(ver)}</p>`, { page: false });

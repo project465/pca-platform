@@ -328,7 +328,7 @@ export default async function Recompute(
               </div>
               <p className="cm-none" style={{ marginTop: 10 }}>
                 경험으로 올라갈 수 있는 가장 높은 단계는 직접 수행까지입니다.
-                직접 결정은 검사에서만 섭니다.
+                직접 결정은 검사에서만 확인됩니다.
               </p>
             </details>
           ) : null}

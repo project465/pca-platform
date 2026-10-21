@@ -159,12 +159,12 @@ export const INDUSTRY_HINT: Record<string, string> = {
 export const ROLE_HINT: Record<string, string> = {
   ROLE_DESIGN_V2: "형상과 치수와 공차를 확정합니다",
   ROLE_CAE_V2: "만들기 전에 예측하고 그 예측을 책임집니다",
-  ROLE_RND_V2: "쓸 방법이 없을 때 방법을 세웁니다",
+  ROLE_RND_V2: "쓸 방법이 없을 때 방법을 만듭니다",
   ROLE_TEST_V2: "재는 방법과 합격 기준을 정하고 판정합니다",
   ROLE_MFG_V2: "같은 것이 반복해서 나오는 조건을 잡습니다",
   ROLE_MAINT_V2: "장비가 제 성능을 내게 하고 멈추면 되살립니다",
   ROLE_QUALITY_V2: "양산과 수명 내내 요구가 지켜지는지 보증합니다",
-  ROLE_PM_V2: "요구와 일정과 역할을 묶어 순서를 세웁니다",
+  ROLE_PM_V2: "요구와 일정과 역할을 묶어 순서를 정합니다",
 };
 
 /**
