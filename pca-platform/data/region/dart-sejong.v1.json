@@ -1,0 +1,880 @@
+{
+ "schema": "dart-sejong.v1",
+ "checked_on": "2026-10-21",
+ "source": "OpenDART 기업개황(company.json) · 공시검색(list.json) · 단일회사 주요계정(fnlttSinglAcnt.json, 2025 사업보고서) · 직원현황(empSttus.json)",
+ "rule": "상장사(stock_code 있음) 가운데 기업개황 주소 앞부분에 '세종'이 들어간 회사 · 주소가 '세종특별자치시'로 시작하는 회사만",
+ "listed_checked": 4000,
+ "orgs": [
+  {
+   "corp_code": "00351418",
+   "corp_name": "코리아오토글라스(주)",
+   "corp_cls": "E",
+   "stock_code": "152330",
+   "adres": "세종특별자치시  전의면 산단길 134",
+   "induty_code": "2311",
+   "est_dt": "20000830",
+   "hm_url": "kac.kccworld.co.kr",
+   "ceo_nm": "우종철",
+   "acc_mt": "12",
+   "bizr_no": "3078115780",
+   "annual_reports": [],
+   "financials": null,
+   "staff": null
+  },
+  {
+   "corp_code": "01255652",
+   "corp_name": "(주)레이크머티리얼즈",
+   "corp_cls": "K",
+   "stock_code": "281740",
+   "adres": "세종특별자치시  전의면 산단길 22-144 -",
+   "induty_code": "204",
+   "est_dt": "20170922",
+   "hm_url": "www.lake-led.com ",
+   "ceo_nm": "김진동",
+   "acc_mt": "12",
+   "bizr_no": "8938600629",
+   "annual_reports": [
+    {
+     "report": "사업보고서 (2025.12)",
+     "rcept_no": "20260318001193",
+     "rcept_dt": "20260318",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318001193"
+    },
+    {
+     "report": "사업보고서 (2024.12)",
+     "rcept_no": "20250318000856",
+     "rcept_dt": "20250318",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250318000856"
+    }
+   ],
+   "financials": {
+    "year": 2025,
+    "report": "사업보고서",
+    "unit": "원",
+    "consolidated": {
+     "매출액": 141233860094,
+     "영업이익": 13271105491,
+     "당기순이익": 7803024872
+    },
+    "separate": {
+     "매출액": 141068662024,
+     "영업이익": 11412336457,
+     "당기순이익": 7619730372
+    }
+   },
+   "staff": {
+    "year": 2025,
+    "report": "사업보고서 직원 현황",
+    "total": 300,
+    "by_segment": [
+     {
+      "segment": "화학소재",
+      "count": 300
+     }
+    ]
+   }
+  },
+  {
+   "corp_code": "00939331",
+   "corp_name": "한국콜마(주)",
+   "corp_cls": "Y",
+   "stock_code": "161890",
+   "adres": "세종특별자치시  전의면 덕고개길 12-11",
+   "induty_code": "20423",
+   "est_dt": "20121002",
+   "hm_url": "https://www.kolmar.co.kr/",
+   "ceo_nm": "최현규",
+   "acc_mt": "12",
+   "bizr_no": "3078138444",
+   "annual_reports": [
+    {
+     "report": "사업보고서 (2025.12)",
+     "rcept_no": "20260318001196",
+     "rcept_dt": "20260318",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318001196"
+    },
+    {
+     "report": "사업보고서 (2024.12)",
+     "rcept_no": "20250318001173",
+     "rcept_dt": "20250318",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250318001173"
+    }
+   ],
+   "financials": {
+    "year": 2025,
+    "report": "사업보고서",
+    "unit": "원",
+    "consolidated": {
+     "매출액": 2722419169325,
+     "영업이익": 239594740448,
+     "당기순이익": 168220449431
+    },
+    "separate": {
+     "매출액": 1192752359723,
+     "영업이익": 149532754144,
+     "당기순이익": 114271379570
+    }
+   },
+   "staff": {
+    "year": 2025,
+    "report": "사업보고서 직원 현황",
+    "total": 1542,
+    "by_segment": [
+     {
+      "segment": "-",
+      "count": 1542
+     }
+    ]
+   }
+  },
+  {
+   "corp_code": "00439965",
+   "corp_name": "(주)나노신소재",
+   "corp_cls": "K",
+   "stock_code": "121600",
+   "adres": "세종특별자치시   부강면 금호안골길 78 부용지방산업단지내",
+   "induty_code": "2049",
+   "est_dt": "20000315",
+   "hm_url": "anapro.com",
+   "ceo_nm": "박장우",
+   "acc_mt": "12",
+   "bizr_no": "3058136339",
+   "annual_reports": [
+    {
+     "report": "[첨부정정]사업보고서 (2025.12)",
+     "rcept_no": "20260330001721",
+     "rcept_dt": "20260330",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260330001721"
+    },
+    {
+     "report": "사업보고서 (2025.12)",
+     "rcept_no": "20260320001026",
+     "rcept_dt": "20260320",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260320001026"
+    }
+   ],
+   "financials": {
+    "year": 2025,
+    "report": "사업보고서",
+    "unit": "원",
+    "consolidated": {
+     "매출액": 111745369751,
+     "영업이익": 4681087390,
+     "당기순이익": 1634979902
+    },
+    "separate": {
+     "매출액": 104974129698,
+     "영업이익": 12494150541,
+     "당기순이익": 9558621226
+    }
+   },
+   "staff": {
+    "year": 2025,
+    "report": "사업보고서 직원 현황",
+    "total": 350,
+    "by_segment": [
+     {
+      "segment": "화학소재",
+      "count": 350
+     }
+    ]
+   }
+  },
+  {
+   "corp_code": "00201742",
+   "corp_name": "(주)유라테크",
+   "corp_cls": "K",
+   "stock_code": "048430",
+   "adres": "세종특별자치시   전동면 아래깊은내길 25 주식회사 유라테크",
+   "induty_code": "281",
+   "est_dt": "19870507",
+   "hm_url": "www.yuratech.co.kr",
+   "ceo_nm": "엄대열",
+   "acc_mt": "12",
+   "bizr_no": "3078102043",
+   "annual_reports": [
+    {
+     "report": "사업보고서 (2025.12)",
+     "rcept_no": "20260317000545",
+     "rcept_dt": "20260317",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260317000545"
+    },
+    {
+     "report": "사업보고서 (2024.12)",
+     "rcept_no": "20250318000569",
+     "rcept_dt": "20250318",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250318000569"
+    }
+   ],
+   "financials": {
+    "year": 2025,
+    "report": "사업보고서",
+    "unit": "원",
+    "consolidated": {
+     "매출액": 197253919651,
+     "영업이익": 1814073099,
+     "당기순이익": 11035969535
+    },
+    "separate": {
+     "매출액": 185521301700,
+     "영업이익": 654738655,
+     "당기순이익": 8351381049
+    }
+   },
+   "staff": {
+    "year": 2025,
+    "report": "사업보고서 직원 현황",
+    "total": 257,
+    "by_segment": [
+     {
+      "segment": "자동차부품",
+      "count": 257
+     }
+    ]
+   }
+  },
+  {
+   "corp_code": "00356389",
+   "corp_name": "(주)프럼파스트",
+   "corp_cls": "K",
+   "stock_code": "035200",
+   "adres": "세종특별자치시  연동면 명학2길 30 아래 사무실",
+   "induty_code": "22211",
+   "est_dt": "19920624",
+   "hm_url": "www.plumbfast.co.kr",
+   "ceo_nm": "원재희",
+   "acc_mt": "12",
+   "bizr_no": "3058115765",
+   "annual_reports": [
+    {
+     "report": "[기재정정]사업보고서 (2025.12)",
+     "rcept_no": "20260814001540",
+     "rcept_dt": "20260814",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814001540"
+    },
+    {
+     "report": "사업보고서 (2025.12)",
+     "rcept_no": "20260311003965",
+     "rcept_dt": "20260311",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260311003965"
+    }
+   ],
+   "financials": {
+    "year": 2025,
+    "report": "사업보고서",
+    "unit": "원",
+    "consolidated": {
+     "매출액": 25230889434,
+     "영업이익": -443646135,
+     "당기순이익": 1021790720
+    },
+    "separate": {
+     "매출액": 21059984676,
+     "영업이익": -511971619,
+     "당기순이익": 934613234
+    }
+   },
+   "staff": {
+    "year": 2025,
+    "report": "사업보고서 직원 현황",
+    "total": 59,
+    "by_segment": [
+     {
+      "segment": "제조업",
+      "count": 59
+     }
+    ]
+   }
+  },
+  {
+   "corp_code": "00371485",
+   "corp_name": "(주)켐트로닉스",
+   "corp_cls": "K",
+   "stock_code": "089010",
+   "adres": "세종특별자치시   전동면 배일길 31",
+   "induty_code": "204",
+   "est_dt": "19970401",
+   "hm_url": "www.chemtronics.co.kr",
+   "ceo_nm": "김응수",
+   "acc_mt": "12",
+   "bizr_no": "1298121998",
+   "annual_reports": [
+    {
+     "report": "사업보고서 (2025.12)",
+     "rcept_no": "20260318000934",
+     "rcept_dt": "20260318",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318000934"
+    },
+    {
+     "report": "사업보고서 (2024.12)",
+     "rcept_no": "20250318001441",
+     "rcept_dt": "20250318",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250318001441"
+    }
+   ],
+   "financials": {
+    "year": 2025,
+    "report": "사업보고서",
+    "unit": "원",
+    "consolidated": {
+     "매출액": 637485933185,
+     "영업이익": 23201053154,
+     "당기순이익": 13464967234
+    },
+    "separate": {
+     "매출액": 356736942242,
+     "영업이익": 13539056604,
+     "당기순이익": 6070542785
+    }
+   },
+   "staff": {
+    "year": 2025,
+    "report": "사업보고서 직원 현황",
+    "total": 649,
+    "by_segment": [
+     {
+      "segment": "전사",
+      "count": 649
+     }
+    ]
+   }
+  },
+  {
+   "corp_code": "01700587",
+   "corp_name": "(주)이노스페이스",
+   "corp_cls": "K",
+   "stock_code": "462350",
+   "adres": "세종특별자치시  가름로 232 세종비지니스센터",
+   "induty_code": "31311",
+   "est_dt": "20170919",
+   "hm_url": "www.innospc.com/",
+   "ceo_nm": "김수종",
+   "acc_mt": "12",
+   "bizr_no": "6528700893",
+   "annual_reports": [
+    {
+     "report": "[기재정정]사업보고서 (2025.12)",
+     "rcept_no": "20260731000737",
+     "rcept_dt": "20260731",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260731000737"
+    },
+    {
+     "report": "[기재정정]사업보고서 (2024.12)",
+     "rcept_no": "20260731000726",
+     "rcept_dt": "20260731",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260731000726"
+    }
+   ],
+   "financials": {
+    "year": 2025,
+    "report": "사업보고서",
+    "unit": "원",
+    "consolidated": {
+     "매출액": 2746488690,
+     "영업이익": -72246459507,
+     "당기순이익": -75096673902
+    },
+    "separate": {
+     "매출액": 2746488690,
+     "영업이익": -72916332835,
+     "당기순이익": -75096673902
+    }
+   },
+   "staff": {
+    "year": 2025,
+    "report": "사업보고서 직원 현황",
+    "total": 253,
+    "by_segment": [
+     {
+      "segment": "전사",
+      "count": 253
+     }
+    ]
+   }
+  },
+  {
+   "corp_code": "00136448",
+   "corp_name": "신신제약(주)",
+   "corp_cls": "K",
+   "stock_code": "002800",
+   "adres": "세종특별자치시  소정면 소정산단동로 9 -",
+   "induty_code": "212",
+   "est_dt": "19590909",
+   "hm_url": "www.sinsin.com",
+   "ceo_nm": "이병기",
+   "acc_mt": "12",
+   "bizr_no": "1188104136",
+   "annual_reports": [
+    {
+     "report": "사업보고서 (2025.12)",
+     "rcept_no": "20260318001364",
+     "rcept_dt": "20260318",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318001364"
+    },
+    {
+     "report": "사업보고서 (2024.12)",
+     "rcept_no": "20250318000443",
+     "rcept_dt": "20250318",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250318000443"
+    }
+   ],
+   "financials": {
+    "year": 2025,
+    "report": "사업보고서",
+    "unit": "원",
+    "consolidated": {
+     "매출액": 113778253746,
+     "영업이익": 10790159371,
+     "당기순이익": 9282489579
+    },
+    "separate": {
+     "매출액": 113227227306,
+     "영업이익": 10410746739,
+     "당기순이익": 8952764422
+    }
+   },
+   "staff": {
+    "year": 2025,
+    "report": "사업보고서 직원 현황",
+    "total": 369,
+    "by_segment": [
+     {
+      "segment": "의약품",
+      "count": 369
+     }
+    ]
+   }
+  },
+  {
+   "corp_code": "00158963",
+   "corp_name": "한국유나이티드제약(주)",
+   "corp_cls": "Y",
+   "stock_code": "033270",
+   "adres": "세종특별자치시 전동면 노장리 404-10",
+   "induty_code": "212",
+   "est_dt": "19871203",
+   "hm_url": "www.kup.co.kr",
+   "ceo_nm": "강덕영",
+   "acc_mt": "12",
+   "bizr_no": "3078105244",
+   "annual_reports": [
+    {
+     "report": "[기재정정]사업보고서 (2025.12)",
+     "rcept_no": "20260319001196",
+     "rcept_dt": "20260319",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260319001196"
+    },
+    {
+     "report": "사업보고서 (2025.12)",
+     "rcept_no": "20260316001303",
+     "rcept_dt": "20260316",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260316001303"
+    }
+   ],
+   "financials": {
+    "year": 2025,
+    "report": "사업보고서",
+    "unit": "원",
+    "consolidated": {},
+    "separate": {
+     "매출액": 288764867640,
+     "영업이익": 49584726929,
+     "당기순이익": 38308011306
+    }
+   },
+   "staff": {
+    "year": 2025,
+    "report": "사업보고서 직원 현황",
+    "total": 902,
+    "by_segment": [
+     {
+      "segment": "제약",
+      "count": 902
+     }
+    ]
+   }
+  },
+  {
+   "corp_code": "00255275",
+   "corp_name": "(주)에이치비테크놀러지",
+   "corp_cls": "K",
+   "stock_code": "078150",
+   "adres": "세종특별자치시  소정면 소정산단6로 20 -",
+   "induty_code": "29272",
+   "est_dt": "19970902",
+   "hm_url": "www.ncbnet.co.kr",
+   "ceo_nm": "문성준",
+   "acc_mt": "12",
+   "bizr_no": "1298123356",
+   "annual_reports": [
+    {
+     "report": "사업보고서 (2025.12)",
+     "rcept_no": "20260316001660",
+     "rcept_dt": "20260316",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260316001660"
+    },
+    {
+     "report": "사업보고서 (2024.12)",
+     "rcept_no": "20250317000922",
+     "rcept_dt": "20250317",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250317000922"
+    }
+   ],
+   "financials": {
+    "year": 2025,
+    "report": "사업보고서",
+    "unit": "원",
+    "consolidated": {
+     "매출액": 160310839339,
+     "영업이익": 6240826214,
+     "당기순이익": 28402998846
+    },
+    "separate": {
+     "매출액": 160310839339,
+     "영업이익": 6730562027,
+     "당기순이익": 24980620830
+    }
+   },
+   "staff": {
+    "year": 2025,
+    "report": "사업보고서 직원 현황",
+    "total": 358,
+    "by_segment": [
+     {
+      "segment": "장비사업부",
+      "count": 252
+     },
+     {
+      "segment": "부품소재사업부",
+      "count": 106
+     }
+    ]
+   }
+  },
+  {
+   "corp_code": "00203290",
+   "corp_name": "콜마홀딩스(주)",
+   "corp_cls": "Y",
+   "stock_code": "024720",
+   "adres": "세종특별자치시  전의면 덕고개길 12-11",
+   "induty_code": "64992",
+   "est_dt": "19900515",
+   "hm_url": "www.kolmarholdings.co.kr",
+   "ceo_nm": "윤상현",
+   "acc_mt": "12",
+   "bizr_no": "3078102816",
+   "annual_reports": [
+    {
+     "report": "사업보고서 (2025.12)",
+     "rcept_no": "20260318001455",
+     "rcept_dt": "20260318",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318001455"
+    },
+    {
+     "report": "[기재정정]사업보고서 (2024.12)",
+     "rcept_no": "20250814004400",
+     "rcept_dt": "20250814",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250814004400"
+    }
+   ],
+   "financials": {
+    "year": 2025,
+    "report": "사업보고서",
+    "unit": "원",
+    "consolidated": {
+     "매출액": 630111809477,
+     "영업이익": 47742544330,
+     "당기순이익": 11144466434
+    },
+    "separate": {
+     "매출액": 46609518610,
+     "영업이익": 2573973093,
+     "당기순이익": 22150688573
+    }
+   },
+   "staff": {
+    "year": 2025,
+    "report": "사업보고서 직원 현황",
+    "total": 113,
+    "by_segment": [
+     {
+      "segment": "관리사무직",
+      "count": 113
+     }
+    ]
+   }
+  },
+  {
+   "corp_code": "00523936",
+   "corp_name": "에이치비솔루션(주)",
+   "corp_cls": "K",
+   "stock_code": "297890",
+   "adres": "세종특별자치시  소정면 소정산단6로 48 에이치비솔루션 주식회사",
+   "induty_code": "29272",
+   "est_dt": "20010906",
+   "hm_url": "www.hb-solution.co.kr",
+   "ceo_nm": "이재원",
+   "acc_mt": "12",
+   "bizr_no": "1298144690",
+   "annual_reports": [
+    {
+     "report": "사업보고서 (2025.12)",
+     "rcept_no": "20260318001457",
+     "rcept_dt": "20260318",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318001457"
+    },
+    {
+     "report": "[기재정정]사업보고서 (2024.12)",
+     "rcept_no": "20250814002911",
+     "rcept_dt": "20250814",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250814002911"
+    }
+   ],
+   "financials": {
+    "year": 2025,
+    "report": "사업보고서",
+    "unit": "원",
+    "consolidated": {
+     "매출액": 62848643582,
+     "영업이익": 4396138891,
+     "당기순이익": 26472222548
+    },
+    "separate": {
+     "매출액": 61627839070,
+     "영업이익": 4209731315,
+     "당기순이익": 25984841901
+    }
+   },
+   "staff": {
+    "year": 2025,
+    "report": "사업보고서 직원 현황",
+    "total": 238,
+    "by_segment": [
+     {
+      "segment": "관리,구매,영업",
+      "count": 51
+     },
+     {
+      "segment": "생산,기술",
+      "count": 187
+     }
+    ]
+   }
+  },
+  {
+   "corp_code": "01032404",
+   "corp_name": "콜마비앤에이치(주)",
+   "corp_cls": "K",
+   "stock_code": "200130",
+   "adres": "세종특별자치시 전의면 산단길 22-15 콜마비앤에이치(주)",
+   "induty_code": "211",
+   "est_dt": "20140422",
+   "hm_url": "www.kolmarbnh.co.kr",
+   "ceo_nm": "이승화",
+   "acc_mt": "12",
+   "bizr_no": "1048654817",
+   "annual_reports": [
+    {
+     "report": "사업보고서 (2025.12)",
+     "rcept_no": "20260317000761",
+     "rcept_dt": "20260317",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260317000761"
+    },
+    {
+     "report": "사업보고서 (2024.12)",
+     "rcept_no": "20250317000890",
+     "rcept_dt": "20250317",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250317000890"
+    }
+   ],
+   "financials": {
+    "year": 2025,
+    "report": "사업보고서",
+    "unit": "원",
+    "consolidated": {
+     "매출액": 574884892325,
+     "영업이익": 26645965589,
+     "당기순이익": -22639015475
+    },
+    "separate": {
+     "매출액": 439211246450,
+     "영업이익": 27307440406,
+     "당기순이익": -52535010367
+    }
+   },
+   "staff": {
+    "year": 2025,
+    "report": "사업보고서 직원 현황",
+    "total": 468,
+    "by_segment": [
+     {
+      "segment": "-",
+      "count": 468
+     }
+    ]
+   }
+  },
+  {
+   "corp_code": "00425254",
+   "corp_name": "(주)나우코스",
+   "corp_cls": "E",
+   "stock_code": "257990",
+   "adres": "세종특별자치시 전의면 산단길 220",
+   "induty_code": "20423",
+   "est_dt": "20000327",
+   "hm_url": "www.nowcos.com/",
+   "ceo_nm": "김태원 (단독대표이사)",
+   "acc_mt": "12",
+   "bizr_no": "1308169444",
+   "annual_reports": [
+    {
+     "report": "사업보고서 (2025.12)",
+     "rcept_no": "20260320001002",
+     "rcept_dt": "20260320",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260320001002"
+    },
+    {
+     "report": "사업보고서 (2024.12)",
+     "rcept_no": "20250318000176",
+     "rcept_dt": "20250318",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250318000176"
+    }
+   ],
+   "financials": {
+    "year": 2025,
+    "report": "사업보고서",
+    "unit": "원",
+    "consolidated": {
+     "매출액": 69544503906,
+     "영업이익": 3101716434,
+     "당기순이익": 3988624390
+    },
+    "separate": {
+     "매출액": 69264697397,
+     "영업이익": 3137147223,
+     "당기순이익": 4021461924
+    }
+   },
+   "staff": {
+    "year": 2025,
+    "report": "사업보고서 직원 현황",
+    "total": 213,
+    "by_segment": [
+     {
+      "segment": "화장품",
+      "count": 213
+     }
+    ]
+   }
+  },
+  {
+   "corp_code": "01261644",
+   "corp_name": "(주)레인보우로보틱스",
+   "corp_cls": "K",
+   "stock_code": "277810",
+   "adres": "세종특별자치시  집현중앙3로 8 세종특별자치시 집현중앙3로 8(집현동)",
+   "induty_code": "29280",
+   "est_dt": "20110210",
+   "hm_url": "www.rainbow-robotics.com",
+   "ceo_nm": "이정호",
+   "acc_mt": "12",
+   "bizr_no": "3148621854",
+   "annual_reports": [
+    {
+     "report": "사업보고서 (2025.12)",
+     "rcept_no": "20260320000803",
+     "rcept_dt": "20260320",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260320000803"
+    },
+    {
+     "report": "[기재정정]사업보고서 (2024.12)",
+     "rcept_no": "20250814002961",
+     "rcept_dt": "20250814",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250814002961"
+    }
+   ],
+   "financials": {
+    "year": 2025,
+    "report": "사업보고서",
+    "unit": "원",
+    "consolidated": {
+     "매출액": 34123110054,
+     "영업이익": -2480266118
+    },
+    "separate": {
+     "매출액": 34010897612,
+     "영업이익": -1911576570,
+     "당기순이익": 1033635903
+    }
+   },
+   "staff": {
+    "year": 2025,
+    "report": "사업보고서 직원 현황",
+    "total": 161,
+    "by_segment": [
+     {
+      "segment": "로봇사업부",
+      "count": 161
+     }
+    ]
+   }
+  },
+  {
+   "corp_code": "00199252",
+   "corp_name": "에이치엘비(주)",
+   "corp_cls": "K",
+   "stock_code": "028300",
+   "adres": "세종특별자치시  연동면 명학산단서로 10-5 -",
+   "induty_code": "213",
+   "est_dt": "19851018",
+   "hm_url": "hlbbio.co.kr",
+   "ceo_nm": "김홍철",
+   "acc_mt": "12",
+   "bizr_no": "5148113250",
+   "annual_reports": [
+    {
+     "report": "사업보고서 (2025.12)",
+     "rcept_no": "20260323001673",
+     "rcept_dt": "20260323",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260323001673"
+    },
+    {
+     "report": "사업보고서 (2024.12)",
+     "rcept_no": "20250321001860",
+     "rcept_dt": "20250321",
+     "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250321001860"
+    }
+   ],
+   "financials": {
+    "year": 2025,
+    "report": "사업보고서",
+    "unit": "원",
+    "consolidated": {
+     "매출액": 84172574224,
+     "영업이익": -104217336541,
+     "당기순이익": -235415156253
+    },
+    "separate": {
+     "매출액": 19679396354,
+     "영업이익": -19928656085,
+     "당기순이익": -154016177442
+    }
+   },
+   "staff": {
+    "year": 2025,
+    "report": "사업보고서 직원 현황",
+    "total": 151,
+    "by_segment": [
+     {
+      "segment": "본점",
+      "count": 62
+     },
+     {
+      "segment": "헬스케어",
+      "count": 89
+     }
+    ]
+   }
+  }
+ ]
+}
