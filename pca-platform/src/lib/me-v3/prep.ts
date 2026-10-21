@@ -224,7 +224,7 @@ export function buildPrep(
       key: `iv:ev:${d.code}`,
       q: `${name(d.code)} 과제에서 ${quoteKo(said)}, ${follow}`,
       why: `${withJosa(name(d.code), "은는")} 결과에서 지금 설명할 수 있는 경험으로 나온 분야라, `
-        + "면접관이 가장 먼저 파고들 자리입니다. 고르신 답을 그대로 되묻습니다.",
+        + "면접관이 가장 먼저 파고들 부분입니다. 고르신 답을 그대로 되묻습니다.",
       prepare: uniq([
         ...sentences(d.did).filter((x) => x !== said).slice(0, 1),
         ...uniq(d.artifacts).filter((x) => !/다$/.test(x)).slice(0, 2).map((x) => `남긴 것: ${x}`),
@@ -258,7 +258,7 @@ export function buildPrep(
       key: `iv:gap:${g.domain}:${ax}`,
       q: AXIS_ASK_KO[ax](name(g.domain)),
       why: `결과에서 ${name(g.domain)}의 ‘${needKo(ax)}’ 부분이 아직 비어 있습니다. `
-        + "이 질문이 나오면 답할 거리가 모자랄 수 있는 자리입니다.",
+        + "이 질문이 나오면 답할 거리가 모자랄 수 있는 부분입니다.",
       prepare: [`이 질문에 답할 만한 과제가 있었는지 떠올려 보고, 있으면 경험으로 적어 두세요`],
     });
   }

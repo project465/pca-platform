@@ -99,7 +99,7 @@ export default async function Prep({
 
       <section style={{ marginTop: 28 }}>
         <SectionHeader icon="users" title="예상 면접 질문"
-          sub="내 결과에서 면접관이 파고들 만한 자리를 골랐습니다. 소리 내어 답해 본 뒤 요점을 적어 두세요." />
+          sub="내 결과에서 면접관이 파고들 만한 부분을 골랐습니다. 소리 내어 답해 본 뒤 요점을 적어 두세요." />
         {prep.interviews.length ? (
           <ul className="cm-list">
             {prep.interviews.map((q) => (
