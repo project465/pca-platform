@@ -17,6 +17,7 @@ import { WorldMap } from "@/components/world";
 const STEP_ICON: IconName[] = ["clipboard", "doc", "layers"];
 const REPORT_ICON: IconName[] = ["target", "check", "pencil", "link", "calendar", "doc"];
 const CAMPUS_ICON: IconName[] = ["cap", "key", "chart", "download"];
+const TRUST_ICON: IconName[] = ["shield", "list", "building"];
 
 export default function Home() {
   const site = getSite();
@@ -211,6 +212,53 @@ export default function Home() {
                   </div>
                 </article>
               ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── 근거 ───────────────────────────────────────────── */}
+      {h.trust && (
+        <section className="section" id="trust">
+          <div className="wrap">
+            <SectionHead label={h.trust.label} title={h.trust.title} lead={h.trust.lead} />
+            <div className="trust-cards">
+              {h.trust.cards.map((c, i) => (
+                <article key={c.title} className="trust-card">
+                  <span className="feature-ico">
+                    <Icon name={TRUST_ICON[i] ?? "shield"} size={18} />
+                  </span>
+                  <h3>{c.title}</h3>
+                  <p>{c.body}</p>
+                  <ul>
+                    {c.items.map((it) => (
+                      <li key={it}>
+                        <Icon name="check" size={15} stroke={2.2} />
+                        {it}
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
+            <div className="verify">
+              <div className="verify-head">
+                <h3>{h.trust.verify.title}</h3>
+                <p>{h.trust.verify.lead}</p>
+              </div>
+              <ol className="verify-steps">
+                {h.trust.verify.steps.map((s) => (
+                  <li key={s.title} className={`is-${s.status}`}>
+                    <span className="verify-badge">{h.trust!.verify.statusLabel[s.status]}</span>
+                    <b>{s.title}</b>
+                    <p>{s.body}</p>
+                  </li>
+                ))}
+              </ol>
+              <p className="fine">
+                <Icon name="shield" size={16} />
+                {h.trust.note}
+              </p>
             </div>
           </div>
         </section>

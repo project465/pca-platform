@@ -177,6 +177,24 @@ export type SiteContent = {
         items: GlobalSample[];
       };
     };
+    /**
+     * 무엇을 근거로 만들었는가. **기록이 있는 것만 적는다**: 등록번호·신고번호는
+     * 그 문서의 번호 그대로, 검증은 끝낸 것과 아직인 것을 갈라 적는다. 끝나지
+     * 않은 통계 검증을 끝난 것처럼 적으면 그 한 줄이 나머지를 다 의심하게 한다
+     */
+    trust?: {
+      label: string;
+      title: string;
+      lead: string;
+      cards: { title: string; body: string; items: string[] }[];
+      verify: {
+        title: string;
+        lead: string;
+        statusLabel: { done: string; doing: string; next: string };
+        steps: { status: "done" | "doing" | "next"; title: string; body: string }[];
+      };
+      note: string;
+    };
     campus: {
       label: string;
       title: string;
