@@ -49,7 +49,7 @@ export const kr: SiteContent = {
     items: [
       { label: "서비스 소개", href: "/#how" },
       { label: "대학·기관", href: "/universities" },
-      { label: "MAT", href: "/assistant" },
+      { label: "AI 취업비서", href: "/assistant" },
       { label: "요금", href: "/pricing" },
       { label: "도입 문의", href: "/contact" },
     ],

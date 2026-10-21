@@ -404,7 +404,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V57";
 /** AI 취업비서의 이름을 '매트'로 바꿨다(화면 구조는 그대로) */
 /** 이름을 다시 바꿨다: 매트 → MAT. 설명 이름은 AI 취업비서로 둔다 */
 /** MAT 이용 기록에 학교가 연 이용권(학교 제공 6개월 · 1년)의 이름을 적는다 */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.40";
+/** 왼쪽 메뉴의 MAT 줄을 'AI 취업비서' 로 적는다(쪽 안의 제품 이름은 MAT 그대로) */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.41";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**
