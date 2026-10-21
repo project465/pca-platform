@@ -8,6 +8,7 @@ import { enqueue } from "@/lib/outbox";
 import { track } from "@/lib/funnel";
 
 import { ref, swallow } from "@/lib/oplog";
+import { grantProTrialTx, grantTrackTx } from "@/lib/track";
 export type Product = {
   code: string;
   kind: string;
@@ -24,6 +25,8 @@ export type Product = {
   market: string | null;
   /** 값이 승인됐는가. **금액만 보고 무료로 열지 않는다** */
   price_status: "approved" | "not_approved";
+  /** 기간권(Track · PASS)이 여는 날 수. 검사 이용권은 NULL */
+  duration_days: number | null;
 };
 
 export type Order = {
@@ -39,6 +42,8 @@ export type Order = {
 const NAMES: Record<string, string> = {
   REPORT_UNIV: "CareerMatri 진로 결과지 (대학)",
   REPORT_HS: "CareerMatri 진로 결과지 (고교)",
+  TRACK_30D: "CareerMatri Track 30일",
+  TRACK_365D: "CareerMatri Track 365일",
 };
 
 export function orderName(code: string): string {
@@ -48,7 +53,8 @@ export function orderName(code: string): string {
 export async function getProduct(code: string): Promise<Product | null> {
   return queryOne<Product>(
     `SELECT code, kind, amount, currency, seat_count, report_level,
-            assessment_version, tier, major_code, market, price_status
+            assessment_version, tier, major_code, market, price_status,
+            duration_days
        FROM products WHERE code = $1 AND active`,
     [code],
   );
@@ -162,6 +168,12 @@ export type SettleResult =
       assessmentVersion: string | null;
       /** 산 등급. 완료 화면이 적기만 한다 */
       tier: string | null;
+      /**
+       * 상품의 종류. Track 이면 완료 화면이 검사 대신 `내 구독` 으로
+       * 보낸다. **상품 코드를 보고 짐작하지 않는다**(위 `assessmentVersion`
+       * 과 같은 까닭이다)
+       */
+      kind: string | null;
     }
   | { ok: false; reason: string };
 
@@ -246,6 +258,7 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
         upgradedAttemptId: isUpgrade ? attemptId : null,
         assessmentVersion: product?.assessment_version ?? null,
         tier: product?.tier ?? null,
+        kind: product?.kind ?? null,
       };
     }
 
@@ -269,6 +282,20 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
          ON CONFLICT (attempt_id) DO NOTHING`,
         [attemptId, order.id],
       );
+    } else if (product?.kind === "track") {
+      /**
+       * Track 기간권. **좌석도 검사 이용권도 주지 않는다.**
+       *
+       * 이 분기가 좌석 쪽(맨 아래 else)으로 떨어지면 30일권을 산 사람에게
+       * 검사 좌석이 생기고, 같은 사람의 응답이 두 벌 쌓여 규준이
+       * 오염된다. `seat_count` 가 0 이라 지금은 좌석이 안 생기지만, 그 값
+       * 하나에 기대어 두지 않고 분기를 따로 둔다.
+       */
+      if (!product.duration_days) throw new Error("기간이 정해지지 않은 Track 상품입니다.");
+      await grantTrackTx(c, {
+        userId: order.user_id, orderId: order.id,
+        productCode: order.product_code, days: product.duration_days,
+      });
     } else if (product?.assessment_version === "ME_V2") {
       /**
        * ME_V2 는 좌석 대신 **이용권**이 문을 연다.
@@ -290,6 +317,10 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
         [order.user_id, order.id, order.product_code,
          product.tier ?? "BASIC", product.major_code ?? "ME"],
       );
+      /* **PRO 를 산 분께 Track 첫 한 달.** 같은 거래 안에서 붙인다: 결과지
+         이용권은 서고 이 줄만 빠지면 약속한 한 달이 조용히 사라진다.
+         사람마다 한 번이고 그 판단은 `grantProTrialTx` 가 한다 */
+      if (product.tier === "PRO" && order.amount > 0) await grantProTrialTx(c, order.user_id);
     } else {
       // 좌석 발급. 계약 없이 주문에 붙는다
       for (let i = 0; i < seatCount; i++) {
@@ -309,6 +340,7 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
       upgradedAttemptId: isUpgrade ? attemptId : null,
       assessmentVersion: product?.assessment_version ?? null,
       tier: product?.tier ?? null,
+      kind: product?.kind ?? null,
     };
   });
 

@@ -74,6 +74,35 @@ export default async function CompletePage({
    * 지원으로 보내는 쪽이 덜 틀린다. 그리고 공개 가격표가 이미 지금
    * 판본만 내놓으므로 이 자리에 옛 판본이 올 일은 없다.
    */
+  /**
+   * Track 기간권이면 **검사로 보내지 않는다.** 산 것은 응시가 아니라 기간이고,
+   * 검사 시작 단추를 세우면 이미 응시를 끝낸 사람이 같은 검사를 또 연다.
+   * 내 구독 화면으로 보낸다. 끝나는 날은 거기서 이용권을 읽어 적는다.
+   */
+  if (result.ok && result.kind === "track") {
+    const T = txer(toLang2(lang));
+    return (
+      <div className="pub">
+        <div className="pubwrap">
+          <div className="asdone">
+            <div className="sf-eyebrow">CareerMatri Track</div>
+            <h1 className="sf-h1" style={{ marginTop: 10 }}>{T("okTrackTitle")}</h1>
+            <p className="sf-sub">{T("okTrackBody")}</p>
+            <dl className="sf-defs" style={{ marginTop: 20 }}>
+              <div className="sf-def">
+                <dt>{T("okOrderNo")}</dt>
+                <dd>{result.orderNo}</dd>
+              </div>
+            </dl>
+            <Link href="/me/track" className="sf-btn accent" style={{ marginTop: 24 }}>
+              {T("okTrackGo")}
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const startAt = startPathFor(result.ok ? result.assessmentVersion : null);
   if (result.ok && startAt && !result.upgradedAttemptId) {
     const L = toLang2(lang);

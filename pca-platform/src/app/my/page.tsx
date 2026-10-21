@@ -13,6 +13,7 @@ import LogoutButton from "@/components/logout-button";
 import LoginMethods from "./login-methods";
 import { isProvider, PROVIDER_LABEL } from "@/lib/auth-accounts";
 import { queryOne } from "@/lib/db";
+import { activeTrack } from "@/lib/track";
 
 export const metadata = { title: `계정 · ${BRAND.root}` };
 
@@ -55,7 +56,7 @@ export default async function AccountHome({
    * 들어온 학생이 `계정` 을 누르는 순간 500 을 받았다. 모르면 묻지 않는다.
    */
   const core = await coreIfAny(user.id);
-  const [v3, v2, held] = await Promise.all([
+  const [v3, v2, held, track] = await Promise.all([
     core ? currentState(user.id) : Promise.resolve(null),
     v2State(user.id),
     /* **없는 기록으로 가는 길을 세우지 않는다.** 학교가 발급한 계정은 옛
@@ -67,6 +68,7 @@ export default async function AccountHome({
            OR EXISTS (SELECT 1 FROM evidence_profiles WHERE user_id = $1) AS old,
               EXISTS (SELECT 1 FROM orders WHERE user_id = $1) AS orders`,
       [user.id]).catch(() => ({ old: true, orders: true })),
+    activeTrack(user.id),
   ]);
   const hasOld = held?.old ?? true;
   const hasOrders = held?.orders ?? true;
@@ -97,6 +99,19 @@ export default async function AccountHome({
           </dl>
           <div className="cm-acts">
             <Link href="/my/account" className="cm-btn">계정 설정과 탈퇴</Link>
+          </div>
+        </section>
+
+        {/* ── Track 구독 ── 기간이 언제 끝나는지는 이 계정에서 찾는 사람이 많다 */}
+        <section className="cm-card">
+          <h2><Icon name="clock" size={17} />Track 구독</h2>
+          <p>
+            {track.on && track.until
+              ? `${new Intl.DateTimeFormat("ko-KR", { timeZone: "Asia/Seoul", year: "numeric", month: "long", day: "numeric" }).format(new Date(track.until))}까지 열려 있습니다. 자동으로 갱신되지 않습니다.`
+              : "열려 있지 않습니다. 30일권과 365일권이 있습니다."}
+          </p>
+          <div className="cm-acts">
+            <Link href="/me/track" className="cm-btn">{track.on ? "내 구독 보기" : "Track 보기"}</Link>
           </div>
         </section>
 

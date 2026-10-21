@@ -21,6 +21,7 @@ import LangSelect from "@/components/sf/lang-select";
 import NotOpen from "@/components/sf/not-open";
 import { publicCommerceGate } from "@/lib/public-gate";
 import CareerFlow from "@/components/sf/career-flow";
+import { trackOffers } from "@/lib/track";
 
 export const metadata = { title: `가격 · ${BRAND.root}` };
 
@@ -64,7 +65,9 @@ export default async function PricingPage({
   const gate = await publicCommerceGate();
   if (!gate.open) return <NotOpen lang={L} />;
   const mk = await resolveMarket(sp.market);
-  const list = await catalogFor(mk.market);
+  const [list, tracks] = await Promise.all([catalogFor(mk.market), trackOffers(mk.market)]);
+  const t30 = tracks.find((t) => t.days === 30);
+  const t365 = tracks.find((t) => t.days === 365);
   /* 걸리는 시간은 **실제 계획을 세워 센 값**이다. 시작 화면과 같은
      함수를 읽으므로 두 화면이 갈리지 않는다.
      **어느 전공으로 세는지를 글자로 박지 않는다**: 이 시장에서 지금
@@ -179,6 +182,45 @@ export default async function PricingPage({
             <Empty icon="box" title={T("pxEmpty")} body={T("pxEmptyBody")} />
           </div>
         )}
+
+        {/**
+         * CareerMatri Track. **검사 등급과 한 줄에 세우지 않는다.** 등급은
+         * 한 번 사는 결과지이고 Track 은 그 뒤에 쓰는 기간권이라, 같은 카드
+         * 꼴로 나란히 두면 넷째 등급으로 읽힌다. 아래에 따로 둔다.
+         *
+         * **값은 `products` 에서 읽는다.** 화면에 적힌 값과 결제되는 값이
+         * 갈리지 않게 한다. 한국 시장에서만 선다.
+         */}
+        {tracks.length ? (
+          <section className="pxband" id="track">
+            <h2>{T("pxTrackTitle")}</h2>
+            <p className="pxwhat">{T("pxTrackLead")}</p>
+            <div className="pxband-g">
+              {tracks.map((t) => (
+                <div key={t.code} className="pxband-i">
+                  <b>
+                    {t.days === 365 ? T("pxTrack365") : T("pxTrack30")}
+                    {" · "}{money(t.amount, t.currency, L)}
+                  </b>
+                  <span>
+                    {t.days === 365 && t30 && t365 && t30.amount * 12 > t365.amount
+                      ? T("pxTrackSave")
+                      : T("pxTrack30Why")}
+                  </span>
+                  <Link href={`/checkout?product=${encodeURIComponent(t.code)}`}
+                    className={t.days === 365 ? "sf-btn accent sm" : "sf-btn ghost sm"}
+                    style={{ marginTop: 10, alignSelf: "flex-start" }}>
+                    {T("pxTrackBuy")}
+                  </Link>
+                </div>
+              ))}
+              <div className="pxband-i">
+                <b>{T("pxTrackTrial")}</b>
+                <span>{T("pxTrackSoon")}</span>
+              </div>
+            </div>
+          </section>
+        ) : null}
 
         <section className="pxband">
           <h2>{T("pxCommon")}</h2>

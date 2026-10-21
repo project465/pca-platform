@@ -203,6 +203,43 @@ export const TX = {
     "Evidence architecture, research ownership, organization value, next evidence project, 30/90/365 plan",
   ),
   pxBuy: p("시작하기", "Get started"),
+  /* ── CareerMatri Track (기간권) ───────────────────────────────── */
+  pxTrackTitle: p("검사 뒤에도 계속 쓰는 Track", "Keep going after the assessment"),
+  pxTrackLead: p(
+    "관심 산업과 직무를 바꿔 다시 견주고, 지원한 곳과 내 근거를 나란히 봅니다. 자동으로 갱신되지 않고 기간이 끝나면 저절로 닫힙니다.",
+    "Switch industries and roles to compare again, and line up where you applied against your evidence. It does not renew on its own and simply closes when the period ends.",
+  ),
+  pxTrack30: p("30일권", "30 days"),
+  pxTrack365: p("365일권", "365 days"),
+  pxTrack30Why: p("한 달만 써 보고 정해도 됩니다.", "Try it for a month first."),
+  pxTrackSave: p("30일권을 열두 번 사는 것보다 적게 냅니다.", "Less than buying 30 days twelve times."),
+  pxTrackTrial: p(
+    "PRO 결과지를 사시면 Track 첫 1개월이 함께 열립니다.",
+    "Buying the PRO report opens your first month of Track.",
+  ),
+  pxTrackSoon: p(
+    "월간 변화 리포트와 다른 전공 기준 보기는 준비 중입니다.",
+    "A monthly change report and a view from another major are on the way.",
+  ),
+  pxTrackBuy: p("Track 시작하기", "Start Track"),
+  payTrackNote1: p(
+    "결제하면 바로 Track 이 열립니다. 검사 응시권은 생기지 않습니다.",
+    "Track opens as soon as you pay. It does not add an assessment credit.",
+  ),
+  payTrackNote2: p(
+    "자동으로 갱신되지 않습니다. 기간이 끝나면 저절로 닫힙니다.",
+    "It does not renew. It closes on its own when the period ends.",
+  ),
+  payTrackNote3: p(
+    "남은 기간은 일할로 환불을 요청할 수 있습니다.",
+    "You can ask for a pro-rated refund of the days left.",
+  ),
+  okTrackTitle: p("Track 이 열렸습니다.", "Track is on."),
+  okTrackBody: p(
+    "기간이 끝나면 저절로 닫히고 다시 결제되지 않습니다.",
+    "It closes on its own when the period ends and is not charged again.",
+  ),
+  okTrackGo: p("내 구독 보기", "View my Track"),
 
   /* ── 동의 ───────────────────────────────────────────────────────
      **`locale.ts` 에 넣지 않는다.** 저쪽은 세 언어를 한 줄에 쓰게 묶여

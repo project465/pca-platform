@@ -10,6 +10,8 @@ import { regionLayer } from "@/lib/me-v3/region";
 import { CmShell, CmHead } from "../shell";
 import { Icon } from "@/components/sf/icon";
 import { PickCard, PickGrid, SectionHeader } from "../ui";
+import { activeTrack } from "@/lib/track";
+import { changeTargets } from "./actions";
 
 export const metadata = { title: "탐색 · 내 CareerMatri" };
 
@@ -31,13 +33,18 @@ export const metadata = { title: "탐색 · 내 CareerMatri" };
  * 적혀 있는 관계와 굳은 결과의 확인된 영역이 겹치는지일 뿐이고, 적합도도
  * 순위도 만들지 않는다. 차례는 두 묶음으로만 갈린다.
  */
-export default async function Explore() {
+export default async function Explore({
+  searchParams,
+}: {
+  searchParams: Promise<{ targets?: string }>;
+}) {
+  const sp = await searchParams;
   const user = await requireUser();
   const major = await activeMajorName(user.id);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
   const core = await activeCoreOrPick(user.id);
-  const [profile, st] = await Promise.all([
-    profileOf(user.id), currentState(user.id),
+  const [profile, st, track] = await Promise.all([
+    profileOf(user.id), currentState(user.id), activeTrack(user.id),
   ]);
   const mine = new Set(profile?.target_industry ?? []);
   const myRoles = new Set(profile?.target_role ?? []);
@@ -186,6 +193,63 @@ export default async function Explore() {
         title="산업과 직무"
         lead="내가 해 본 영역과 이어지는 쪽이 먼저 섭니다."
       />
+
+      {/**
+       * 관심 산업·직무 다시 고르기. **Track 이 여는 자리다.**
+       *
+       * 검사에서 고른 산업과 직무가 이 쪽의 차례를 정한다. 그 값을 바꾸면
+       * 위에 서는 카드가 바뀌어 다른 쪽과 다시 견줄 수 있다. 굳은 결과는
+       * 고치지 않는다.
+       *
+       * **닫혀 있을 때 폼을 흐리게 세우지 않는다.** 누를 수 없는 칸을
+       * 깔아 두면 고장 난 폼으로 읽힌다. 무엇이 열리는지 한 줄과 Track
+       * 으로 가는 길만 둔다.
+       */}
+      {track.on ? (
+        <details className="cm-fold">
+          <summary>관심 산업·직무 다시 고르기</summary>
+          <form action={changeTargets} className="cm-formcard">
+            <p className="cm-none">
+              산업과 직무를 둘씩까지 고르면 그쪽이 맨 위에 서서 다시 견줄 수
+              있습니다. 검사 당시 결과는 그대로 남습니다.
+            </p>
+            <p className="cm-listhead">산업</p>
+            <div className="cm-pickset">
+              {industryChoices(core).map((x) => (
+                <label className="cm-pick" key={x.code}>
+                  <input type="checkbox" name="industry" value={x.code}
+                    defaultChecked={mine.has(x.code)} />
+                  {x.name}
+                </label>
+              ))}
+            </div>
+            <p className="cm-listhead">직무</p>
+            <div className="cm-pickset">
+              {roleChoices(core).map((x) => (
+                <label className="cm-pick" key={x.code}>
+                  <input type="checkbox" name="role" value={x.code}
+                    defaultChecked={myRoles.has(x.code)} />
+                  {x.name}
+                </label>
+              ))}
+            </div>
+            <div className="cm-acts" style={{ marginTop: 16 }}>
+              <button className="cm-btn is-primary" type="submit">이대로 다시 비교하기</button>
+            </div>
+          </form>
+        </details>
+      ) : (
+        <p className="cm-soon" style={{ marginBottom: 18 }}>
+          <b>관심 산업·직무를 바꿔 다시 비교하는 일은 Track 에서 열립니다.</b>{" "}
+          지금은 검사에서 고르신 산업과 직무로 차례가 섭니다.{" "}
+          <Link href="/me/track">Track 보기</Link>
+        </p>
+      )}
+      {sp.targets === "1" && track.on ? (
+        <p className="cm-none" role="status" style={{ marginBottom: 14 }}>
+          고르신 산업과 직무로 다시 세웠습니다.
+        </p>
+      ) : null}
 
       {/* **먼저 볼 산업은 카드로, 나머지는 줄로**(규격 §8). 여덟을 같은
           줄로 깔면 훑어 고르는 자리가 읽어 내려가는 표가 된다.

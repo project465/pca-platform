@@ -348,7 +348,13 @@
  * 손전화 서랍의 줄을 흰 판에 맞게 다시 세운다. 남색 띠의 글자색과 아래 띠
  * 칸의 모양을 물려받아 글자가 안 보이고 고른 줄이 빈 파란 막대로 섰다.
  */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V52";
+/**
+ * CareerMatri Track 1단계. `내 구독` 쪽이 지금 상태 · 기간권 고르기 · 열리는
+ * 것 · 준비 중 · 구독 기록을 세우고, 탐색에 관심 산업·직무 다시 고르기,
+ * 지원한 곳에 내 근거 나란히 보기, 계정에 Track 칸이 선다. 열려 있지 않으면
+ * 폼을 흐리게 세우지 않고 한 줄과 길만 둔다.
+ */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V53";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -386,7 +392,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V52";
  * 것 이름과 경험 추가의 예시·흐름 말이 나머지 열넷에서도 그 전공의 말로 선다.
  */
 /** 화면 시안(2026-10-20): 첫 화면 제목을 인사로 바꿨다 */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.33";
+/** Track 1단계: 기간권·구독 상태·잠긴 기능 안내 문장 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.34";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

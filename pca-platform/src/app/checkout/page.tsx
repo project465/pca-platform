@@ -7,6 +7,7 @@ import { formatMoney } from "@/lib/money";
 import { resolveLang } from "@/lib/locale-server";
 import LangSwitch from "@/components/lang-switch";
 import CheckoutForm from "./checkout-form";
+import { toLang2, tx } from "@/lib/surface-text";
 
 export const metadata = { title: "결제 · CareerMatri" };
 
@@ -57,11 +58,22 @@ export default async function CheckoutPage({
               정수이고, 쪼개지는 자릿수는 통화만 안다(`src/lib/money.ts`) */}
           <b>{formatMoney(product.amount, product.currency, lang === "ko" ? "ko" : "en")}</b>
         </div>
-        <ul className="paynote">
-          <li>{t("payNote1", lang)}</li>
-          <li>{t("payNote2", lang)}</li>
-          <li>{t("payNote3", lang)}</li>
-        </ul>
+        {/* **산 것이 다르면 적는 말도 다르다.** Track 은 기간권이라
+            `응시권 1개가 발급됩니다` 를 적으면 사는 사람이 검사를 한 번 더
+            받는 줄 안다 */}
+        {product.kind === "track" ? (
+          <ul className="paynote">
+            <li>{tx("payTrackNote1", toLang2(lang))}</li>
+            <li>{tx("payTrackNote2", toLang2(lang))}</li>
+            <li>{tx("payTrackNote3", toLang2(lang))}</li>
+          </ul>
+        ) : (
+          <ul className="paynote">
+            <li>{t("payNote1", lang)}</li>
+            <li>{t("payNote2", lang)}</li>
+            <li>{t("payNote3", lang)}</li>
+          </ul>
+        )}
 
         {provider === "mock" ? (
           <p className="testbar">

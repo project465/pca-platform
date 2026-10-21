@@ -739,6 +739,16 @@ export const UI = {
     "CareerMatri Career Report (high school)",
     "CareerMatri Kariyer Raporu (lise)",
   ),
+  prodTRACK_30D: d(
+    "CareerMatri Track 30일",
+    "CareerMatri Track · 30 days",
+    "CareerMatri Track · 30 gün",
+  ),
+  prodTRACK_365D: d(
+    "CareerMatri Track 365일",
+    "CareerMatri Track · 365 days",
+    "CareerMatri Track · 365 gün",
+  ),
   prodHS_FREE: d(
     "커리어메트리 플러스 무료 진단",
     "CareerMatri Plus free assessment",
