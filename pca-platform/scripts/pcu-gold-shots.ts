@@ -29,7 +29,7 @@ import { core as coreEntry } from "../src/lib/me-v3/core-registry";
 import { walk, enterAssessment, pickOne } from "./_v3-walk";
 import { PEOPLE, answerAll } from "./_v3-answer";
 
-const UNI = "PCU";
+const UNI = process.env.UNI ?? "PCU";
 const CORE = process.env.CORE ?? "BIZ_CORE_V1";
 const LEAF = process.env.LEAF ?? "PCU26_BIZ";
 const TAG = process.env.TAG ?? "after";
@@ -51,7 +51,7 @@ const ok = (w: string, c: boolean, saw = ""): void => {
   if (c) { pass++; console.log(`  통과  ${w}`); }
   else { bad.push(w); console.log(`  걸림  ${w} ${saw}`); }
 };
-const CODE = /\bTD\d\d\b|\b[A-Z]{2,6}_CORE_V\d\b|\bSPEC_[A-Z_]+\b|\bPCU2[67]_[A-Z_]+\b|\bZ[1-4]_[A-Z_]+\b/;
+const CODE = /\bTD\d\d\b|\b[A-Z]{2,6}_CORE_V\d\b|\bSPEC_[A-Z_]+\b|\b(?:PCU|JJU)2[67]_[A-Z_]+\b|\bZ[1-4]_[A-Z_]+\b/;
 const seen = new Map<string, string>();
 
 /** 그림 한 장. 지문이 겹치면(같은 자리를 두 번 찍었으면) 걸린다 */
@@ -128,8 +128,10 @@ async function main(): Promise<void> {
     college_code: seat.college.code, department_code: seat.leaf.code,
   }, { userId: actor.user_id, role: actor.role, orgId: Number(actor.org_id) });
   if (!st.ok || !st.password) throw new Error(`계정 발급 ${st.why ?? ""}`);
+  /* **학교가 아이디 앞에 학교를 붙인다**(`jju-…`). 넣은 값으로 찾으면 못 찾는다 */
+  const loginId = st.login_id ?? sid;
   const stu = await queryOne<{ id: string }>(
-    `SELECT id::text FROM users WHERE login_id = $1`, [sid]);
+    `SELECT id::text FROM users WHERE login_id = $1`, [loginId]);
   if (!stu) throw new Error("발급한 계정을 찾지 못했습니다");
   await query(`UPDATE users SET is_demo = FALSE WHERE id = $1::bigint`, [stu.id]);
 
@@ -140,12 +142,23 @@ async function main(): Promise<void> {
     ...(gate ? { httpCredentials: gate } : {}),
   });
   try {
-    const p = await login(ctx, sid, st.password);
+    /* **학교 계정은 학교 로그인으로 들어온다.** 개인 로그인(`/login`)은 학교
+       발급 계정을 학교 맥락으로 들이지 않는다 */
+    const p = await ctx.newPage();
+    await p.goto(`${BASE}/campus/${UNI.toLowerCase()}/login`, { waitUntil: "networkidle" });
+    await p.waitForTimeout(1500);
+    await p.fill('input[name="identifier"]', loginId);
+    await p.fill('input[type="password"]', st.password);
+    await p.click('button[type="submit"]');
+    await p.waitForURL((x) => !/\/login/.test(new URL(x).pathname), { timeout: 30000 })
+      .catch(() => undefined);
+    console.log(`  로그인 뒤 — ${p.url()}`);
     await p.goto(`${BASE}/campus/${UNI.toLowerCase()}/d/${seat.leaf.code}`,
       { waitUntil: "networkidle" });
     for (let t = 0; t < 2 && !/\/v3\//.test(p.url()); t += 1) {
-      await p.locator('form button[type="submit"]').first().click({ timeout: 5000 })
-        .catch(() => undefined);
+      /* **첫 폼 단추가 `로그아웃` 일 수 있다**(학교 머리띠). 이름으로 누른다 */
+      await p.getByRole("button", { name: /검사 시작|이어서|이어하기/ }).first()
+        .click({ timeout: 5000 }).catch(() => undefined);
       await p.waitForURL((x) => !/\/campus\//.test(new URL(x).pathname),
         { timeout: 20000 }).catch(() => undefined);
       await p.waitForLoadState("networkidle").catch(() => undefined);
@@ -333,7 +346,9 @@ async function main(): Promise<void> {
     }
   } finally {
     await ctx.close(); await browser.close();
-    await query(`DELETE FROM users WHERE id = $1::bigint`, [stu.id])
+    /* `KEEP` 를 주면 남긴다: 발표 자료에 같은 사람의 화면을 더 뜰 때 쓴다 */
+    if (process.env.KEEP) console.log(`  남김 — ${loginId} · ${st.password}`);
+    else await query(`DELETE FROM users WHERE id = $1::bigint`, [stu.id])
       .catch(() => undefined);
   }
 
