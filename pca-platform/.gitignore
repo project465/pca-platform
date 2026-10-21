@@ -89,3 +89,6 @@ var/gm4/
 var/tmp-r4*/
 var/tmp-r5*/
 var/r5long-try/
+
+# 모든 단추 눌러 보기 결과 (scripts/lab/click-all.ts)
+var/click-all/
