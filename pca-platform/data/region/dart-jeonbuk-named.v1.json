@@ -1,0 +1,176 @@
+{
+ "checked_on": "2026-10-21",
+ "source": "OpenDART 기업개황(company.json)",
+ "orgs": [
+  {
+   "corp_code": "00178897",
+   "corp_name": "동우화인켐주식회사",
+   "corp_cls": "E",
+   "stock_code": "",
+   "adres": "전라북도 익산시 약촌로 132",
+   "induty_code": "20119",
+   "est_dt": "19911207",
+   "hm_url": "www.dwchem.co.kr"
+  },
+  {
+   "corp_code": "00857727",
+   "corp_name": "(주)하림",
+   "corp_cls": "K",
+   "stock_code": "136480",
+   "adres": "전라북도 익산시  망성면 망성로 14 (주)하림",
+   "induty_code": "1012",
+   "est_dt": "20110104",
+   "hm_url": "-"
+  },
+  {
+   "corp_code": "00148364",
+   "corp_name": "(주)하림지주",
+   "corp_cls": "K",
+   "stock_code": "003380",
+   "adres": "전라북도 익산시 중앙로 121 -",
+   "induty_code": "64992",
+   "est_dt": "19500401",
+   "hm_url": "www.harimholdings.co.kr"
+  },
+  {
+   "corp_code": "00446868",
+   "corp_name": "타타대우모빌리티 주식회사 ",
+   "corp_cls": "E",
+   "stock_code": "",
+   "adres": "전라북도 군산시 동장산로 172 (소룡동, 타타대우상용차(주))",
+   "induty_code": "30123",
+   "est_dt": "20021101",
+   "hm_url": "www.tata-daewoo.com/"
+  },
+  {
+   "corp_code": "01351415",
+   "corp_name": "에스케이넥실리스 주식회사",
+   "corp_cls": "E",
+   "stock_code": "",
+   "adres": "전라북도 정읍시 북면 3산단2길 2",
+   "induty_code": "2629",
+   "est_dt": "20170804",
+   "hm_url": "www.sknexilis.com"
+  },
+  {
+   "corp_code": "00764205",
+   "corp_name": "이스타항공 주식회사",
+   "corp_cls": "E",
+   "stock_code": "",
+   "adres": "서울특별시 강서구 공항대로 236 (마곡동) 9층",
+   "induty_code": "51",
+   "est_dt": "20071023",
+   "hm_url": "www.eastarjet.co.kr"
+  },
+  {
+   "corp_code": "00147295",
+   "corp_name": "(주)전북은행",
+   "corp_cls": "E",
+   "stock_code": "006350",
+   "adres": "전북특별자치도 전주시 덕진구 백제대로 566 (금암동, 전북은행빌딩)",
+   "induty_code": "64121",
+   "est_dt": "19691210",
+   "hm_url": "www.jbbank.co.kr"
+  },
+  {
+   "corp_code": "00234971",
+   "corp_name": "제이비우리캐피탈주식회사",
+   "corp_cls": "E",
+   "stock_code": "",
+   "adres": "전북특별자치도 전주시 덕진구 백제대로 566 (금암동, 전북은행빌딩) 18층",
+   "induty_code": "64913",
+   "est_dt": "19951207",
+   "hm_url": "www.wooricap.com"
+  },
+  {
+   "corp_code": "01412725",
+   "corp_name": "두산퓨얼셀 주식회사",
+   "corp_cls": "Y",
+   "stock_code": "336260",
+   "adres": "전라북도 익산시 석암로7길 100 (팔봉동)",
+   "induty_code": "28111",
+   "est_dt": "20191001",
+   "hm_url": "www.doosanfuelcell.com"
+  },
+  {
+   "corp_code": "00113997",
+   "corp_name": "롯데에너지머티리얼즈(주)",
+   "corp_cls": "Y",
+   "stock_code": "020150",
+   "adres": "전라북도 익산시 석암로3길 63-25",
+   "induty_code": "2629",
+   "est_dt": "19870811",
+   "hm_url": "www.lotteenergymaterials.com"
+  },
+  {
+   "corp_code": "01316254",
+   "corp_name": "에이치에스효성첨단소재(주)",
+   "corp_cls": "Y",
+   "stock_code": "298050",
+   "adres": "서울특별시 마포구 마포대로 119 효성빌딩",
+   "induty_code": "205",
+   "est_dt": "20180604",
+   "hm_url": "www.hyosungadvancedmaterials.com"
+  },
+  {
+   "corp_code": "00164742",
+   "corp_name": "현대자동차(주)",
+   "corp_cls": "Y",
+   "stock_code": "005380",
+   "adres": "서울특별시 서초구  헌릉로 12",
+   "induty_code": "30121",
+   "est_dt": "19671229",
+   "hm_url": "www.hyundai.com"
+  },
+  {
+   "corp_code": "00683627",
+   "corp_name": "엘에스엠트론(주)",
+   "corp_cls": "E",
+   "stock_code": "",
+   "adres": "경기도 안양시 동안구 엘에스로 127",
+   "induty_code": "29",
+   "est_dt": "20080702",
+   "hm_url": "www.lsmtron.co.kr"
+  },
+  {
+   "corp_code": "01423891",
+   "corp_name": "주식회사 전주페이퍼",
+   "corp_cls": "E",
+   "stock_code": "",
+   "adres": "전라북도 전주시 덕진구 팔복로 59 (팔복동2가, (주)전주페이퍼)",
+   "induty_code": "17102",
+   "est_dt": "20190901",
+   "hm_url": "https://www.jeonjupaper.com/"
+  },
+  {
+   "corp_code": "00945040",
+   "corp_name": "OCI SE 주식회사",
+   "corp_cls": "E",
+   "stock_code": "",
+   "adres": "전라북도 군산시 새만금산단3로 213 (오식도동, OCISE)",
+   "induty_code": "351",
+   "est_dt": "20120731",
+   "hm_url": "ocise.co.kr"
+  },
+  {
+   "corp_code": "01629495",
+   "corp_name": "세아베스틸",
+   "corp_cls": "E",
+   "stock_code": "",
+   "adres": "서울특별시 마포구 양화로 45 세아타워",
+   "induty_code": "24119",
+   "est_dt": "20220401",
+   "hm_url": "www.seahbesteel.co.kr"
+  },
+  {
+   "corp_code": "00706742",
+   "corp_name": "국민연금공단",
+   "corp_cls": "E",
+   "stock_code": "",
+   "adres": "전라북도 전주시 덕진구 기지로 180 (만성동, 국민연금공단)",
+   "induty_code": "84620",
+   "est_dt": "19870929",
+   "hm_url": "www.nps.or.kr"
+  }
+ ]
+}

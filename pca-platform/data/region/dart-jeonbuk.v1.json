@@ -1,0 +1,993 @@
+{
+ "schema": "dart-jeonbuk.v1",
+ "checked_on": "2026-10-21",
+ "source": "OpenDART 기업개황(company.json) · 단일회사 주요계정(fnlttSinglAcnt.json, 사업보고서) · 직원현황(empSttus.json)",
+ "rule": "상장사(stock_code 있음) 가운데 기업개황 주소가 전북 또는 전라북도로 시작하는 회사만. 채용 여부는 확인하지 않았다. 상장 폐지 등으로 공시 숫자가 없는 기타법인은 뺐다",
+ "listed_checked": 4000,
+ "orgs": [
+  {
+   "corp_code": "00148364",
+   "corp_name": "(주)하림지주",
+   "corp_cls": "K",
+   "stock_code": "003380",
+   "adres": "전라북도 익산시 중앙로 121 -",
+   "induty_code": "64992",
+   "est_dt": "19500401",
+   "hm_url": "www.harimholdings.co.kr",
+   "acc_mt": "12",
+   "bizr_no": "3068103054",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 13214884000000,
+     "영업이익": 887427000000,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 91
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00857727",
+   "corp_name": "(주)하림",
+   "corp_cls": "K",
+   "stock_code": "136480",
+   "adres": "전라북도 익산시  망성면 망성로 14 (주)하림",
+   "induty_code": "1012",
+   "est_dt": "20110104",
+   "hm_url": "-",
+   "acc_mt": "12",
+   "bizr_no": "4038161113",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 1439995096000,
+     "영업이익": 47681001000,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 2564
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00155948",
+   "corp_name": "로젠(주)",
+   "corp_cls": "K",
+   "stock_code": "033290",
+   "adres": "전라북도 김제시 용지면 백자3길 37 -",
+   "induty_code": "474",
+   "est_dt": "19740611",
+   "hm_url": "www.cowellfashion.co.kr",
+   "acc_mt": "12",
+   "bizr_no": "1248122987",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 793167527098,
+     "영업이익": 22667516100,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 324
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00113997",
+   "corp_name": "롯데에너지머티리얼즈(주)",
+   "corp_cls": "Y",
+   "stock_code": "020150",
+   "adres": "전라북도 익산시 석암로3길 63-25",
+   "induty_code": "2629",
+   "est_dt": "19870811",
+   "hm_url": "www.lotteenergymaterials.com",
+   "acc_mt": "12",
+   "bizr_no": "4038103729",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 677530806593,
+     "영업이익": -145226366142,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 591
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "01412822",
+   "corp_name": "솔루스첨단소재 주식회사",
+   "corp_cls": "Y",
+   "stock_code": "336370",
+   "adres": "전북특별자치도 익산시 용안면 동지산안대길 46 -",
+   "induty_code": "26299",
+   "est_dt": "20191001",
+   "hm_url": "www.solusadvancedmaterials.com",
+   "acc_mt": "12",
+   "bizr_no": "6688101406",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 616083220023,
+     "영업이익": -73336006541,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 198
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "01234297",
+   "corp_name": "미원스페셜티케미칼(주)",
+   "corp_cls": "Y",
+   "stock_code": "268280",
+   "adres": "전라북도 완주군 봉동읍 완주산단1로 167",
+   "induty_code": "201",
+   "est_dt": "20170501",
+   "hm_url": "www.miramer.co.kr",
+   "acc_mt": "12",
+   "bizr_no": "7788700797",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 532122514140,
+     "영업이익": 65482438995,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 512
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "01412725",
+   "corp_name": "두산퓨얼셀 주식회사",
+   "corp_cls": "Y",
+   "stock_code": "336260",
+   "adres": "전라북도 익산시 석암로7길 100 (팔봉동)",
+   "induty_code": "28111",
+   "est_dt": "20191001",
+   "hm_url": "www.doosanfuelcell.com",
+   "acc_mt": "12",
+   "bizr_no": "7738801177",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 454794706613,
+     "영업이익": -105673394536,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 709
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "01182578",
+   "corp_name": "(주)디에이치오토리드",
+   "corp_cls": "K",
+   "stock_code": "290120",
+   "adres": "전라북도 완주군 봉동읍 완주산단8로 66",
+   "induty_code": "30399",
+   "est_dt": "20161004",
+   "hm_url": "www.dhautolead.co.kr",
+   "acc_mt": "12",
+   "bizr_no": "7458600413",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 355590427771,
+     "영업이익": 21921482734,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 230
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00228712",
+   "corp_name": "동우팜투테이블",
+   "corp_cls": "K",
+   "stock_code": "088910",
+   "adres": "전라북도 군산시  서수면 동군산로 1095 주식회사 동우",
+   "induty_code": "10121",
+   "est_dt": "19930217",
+   "hm_url": "dongwoofarmtotable.com",
+   "acc_mt": "12",
+   "bizr_no": "4018106526",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 325457698211,
+     "영업이익": 13151439758,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 549
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00122472",
+   "corp_name": "피케이씨(주)",
+   "corp_cls": "Y",
+   "stock_code": "001340",
+   "adres": "전라북도 군산시  임해로 494-16",
+   "induty_code": "20131",
+   "est_dt": "19541125",
+   "hm_url": "www.pkc.kr",
+   "acc_mt": "12",
+   "bizr_no": "1138101094",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 272137469082,
+     "영업이익": 12150680899,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 303
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00134723",
+   "corp_name": "페이퍼코리아(주)",
+   "corp_cls": "Y",
+   "stock_code": "001020",
+   "adres": "전라북도 군산시 외항로 1245 페이퍼코리아(주)",
+   "induty_code": "171",
+   "est_dt": "19530606",
+   "hm_url": "www.papercorea.co.kr",
+   "acc_mt": "12",
+   "bizr_no": "4018100013",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 266668528958,
+     "영업이익": -5279064383,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 158
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00160861",
+   "corp_name": "(주)한농화성",
+   "corp_cls": "Y",
+   "stock_code": "011500",
+   "adres": "전라북도 군산시  외항1길 24 (소룡동,0)",
+   "induty_code": "20421",
+   "est_dt": "19760710",
+   "hm_url": "hannong.koreasme.com",
+   "acc_mt": "12",
+   "bizr_no": "4018101273",
+   "financials": {
+    "year": "2025",
+    "consolidated": null,
+    "separate": {
+     "매출액": 214492954042,
+     "영업이익": 3577198138,
+     "당기순이익": null
+    }
+   },
+   "staff": {
+    "year": "2025",
+    "total": 181
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00100601",
+   "corp_name": "(주)강원에너지",
+   "corp_cls": "K",
+   "stock_code": "114190",
+   "adres": "전라북도 군산시 자유무역1길 60 웰크론강원 510-9, 510-10, 510-12",
+   "induty_code": "289",
+   "est_dt": "19760206",
+   "hm_url": "kwenergy.co.kr",
+   "acc_mt": "12",
+   "bizr_no": "1248146960",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 212251840367,
+     "영업이익": -6095759149,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 128
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "01274329",
+   "corp_name": "성일하이텍 주식회사",
+   "corp_cls": "K",
+   "stock_code": "365340",
+   "adres": "전북특별자치도 군산시 새만금북로 122 -",
+   "induty_code": "201",
+   "est_dt": "20170329",
+   "hm_url": "www.sungeelht.com/",
+   "acc_mt": "12",
+   "bizr_no": "5208800609",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 194629131476,
+     "영업이익": -54533608529,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 332
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00350048",
+   "corp_name": "오성첨단소재(주)",
+   "corp_cls": "K",
+   "stock_code": "052420",
+   "adres": "전라북도 익산시 석암로17길 104 오성첨단소재(주)",
+   "induty_code": "222",
+   "est_dt": "19940622",
+   "hm_url": "www.osungam.com",
+   "acc_mt": "12",
+   "bizr_no": "1228128215",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 165707403024,
+     "영업이익": 30123323165,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 136
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00111689",
+   "corp_name": "아진전자부품(주)",
+   "corp_cls": "Y",
+   "stock_code": "009320",
+   "adres": "전라북도 정읍시  공단2길 3",
+   "induty_code": "303",
+   "est_dt": "19731013",
+   "hm_url": "www.dwecc.com",
+   "acc_mt": "12",
+   "bizr_no": "1238100262",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 151831619994,
+     "영업이익": 6297563802,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 305
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00152729",
+   "corp_name": "광전자(주)",
+   "corp_cls": "Y",
+   "stock_code": "017900",
+   "adres": "전라북도 익산시 약촌로8길 62-8 (어양동)",
+   "induty_code": "2612",
+   "est_dt": "19840731",
+   "hm_url": "www.auk.co.kr",
+   "acc_mt": "12",
+   "bizr_no": "4038102808",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 132685277641,
+     "영업이익": 1204703470,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 708
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00123523",
+   "corp_name": "(주)창해에탄올",
+   "corp_cls": "K",
+   "stock_code": "004650",
+   "adres": "전라북도 전주시 덕진구 원만성로 15",
+   "induty_code": "11121",
+   "est_dt": "19660616",
+   "hm_url": "www.chethanol.com",
+   "acc_mt": "12",
+   "bizr_no": "4168100072",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 122344462021,
+     "영업이익": 15893046140,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 61
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00663669",
+   "corp_name": "(주)폴라리스우노",
+   "corp_cls": "K",
+   "stock_code": "114630",
+   "adres": "전라북도 완주군  봉동읍 완주산단3로 158-15 우노앤컴퍼니",
+   "induty_code": "20501",
+   "est_dt": "19990719",
+   "hm_url": "www.unon.co.kr",
+   "acc_mt": "12",
+   "bizr_no": "4188119261",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 101825593820,
+     "영업이익": 7790837571,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 104
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00136457",
+   "corp_name": "(주)SH에너지화학",
+   "corp_cls": "Y",
+   "stock_code": "002360",
+   "adres": "전라북도 군산시 외항7길 20",
+   "induty_code": "201",
+   "est_dt": "19580509",
+   "hm_url": "www.sh-enerchem.com",
+   "acc_mt": "12",
+   "bizr_no": "4018109407",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 98627094841,
+     "영업이익": -12249904855,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 153
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00116426",
+   "corp_name": "(주)이렘",
+   "corp_cls": "K",
+   "stock_code": "009730",
+   "adres": "전라북도 부안군  행안면 부안농공단지길 29",
+   "induty_code": "2413",
+   "est_dt": "19740325",
+   "hm_url": "www.irem.co.kr",
+   "acc_mt": "12",
+   "bizr_no": "2068134034",
+   "financials": {
+    "year": "2025",
+    "consolidated": null,
+    "separate": {
+     "매출액": 91994767552,
+     "영업이익": -13889588817,
+     "당기순이익": null
+    }
+   },
+   "staff": {
+    "year": "2025",
+    "total": 130
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00563518",
+   "corp_name": "비나텍주식회사",
+   "corp_cls": "K",
+   "stock_code": "126340",
+   "adres": "전라북도 전주시 덕진구 운암로 15",
+   "induty_code": "282",
+   "est_dt": "19990726",
+   "hm_url": "www.vina.co.kr",
+   "acc_mt": "12",
+   "bizr_no": "1238149760",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 82228905359,
+     "영업이익": 1773717709,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 203
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00972503",
+   "corp_name": "일진하이솔루스(주)",
+   "corp_cls": "Y",
+   "stock_code": "271940",
+   "adres": "전라북도 완주군 봉동읍 완주산단5로 97-46",
+   "induty_code": "319",
+   "est_dt": "20121102",
+   "hm_url": "hysolus.co.kr",
+   "acc_mt": "12",
+   "bizr_no": "4028198956",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 81586396146,
+     "영업이익": -11204466312,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 275
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "01708163",
+   "corp_name": "(주)엔알비",
+   "corp_cls": "K",
+   "stock_code": "475230",
+   "adres": "전북특별자치도 군산시 군산산단로 96",
+   "induty_code": "259",
+   "est_dt": "20191024",
+   "hm_url": "www.and-rb.com/kor",
+   "acc_mt": "12",
+   "bizr_no": "4338701796",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 59481544678,
+     "영업이익": 4499216922,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 121
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00203209",
+   "corp_name": "(주)에쎈테크",
+   "corp_cls": "K",
+   "stock_code": "043340",
+   "adres": "전라북도 군산시 자유무역2길 15 (오식도동, 군산자유무역표준공장 7동)",
+   "induty_code": "29133",
+   "est_dt": "19930806",
+   "hm_url": "www.essentech.co.kr",
+   "acc_mt": "12",
+   "bizr_no": "1398105578",
+   "financials": {
+    "year": "2025",
+    "consolidated": null,
+    "separate": {
+     "매출액": 57909045929,
+     "영업이익": 1969736357,
+     "당기순이익": null
+    }
+   },
+   "staff": {
+    "year": "2025",
+    "total": 152
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00409140",
+   "corp_name": "이원컴포텍(주)",
+   "corp_cls": "K",
+   "stock_code": "088290",
+   "adres": "전라북도 정읍시 첨단1로 8 (신정동)",
+   "induty_code": "303",
+   "est_dt": "19941118",
+   "hm_url": "www.ewonseat.co.kr",
+   "acc_mt": "12",
+   "bizr_no": "3088105946",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 56577030456,
+     "영업이익": 1574965924,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 129
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00577380",
+   "corp_name": "(주)신진에스엠",
+   "corp_cls": "K",
+   "stock_code": "138070",
+   "adres": "전라북도 장수군  장계면 장무로 352-73 (주)신진에스엠장수공장",
+   "induty_code": "259",
+   "est_dt": "20010718",
+   "hm_url": "www.sinjin-sm.co.kr",
+   "acc_mt": "12",
+   "bizr_no": "1248186623",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 54436124843,
+     "영업이익": -382547242,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 179
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "01367586",
+   "corp_name": "(주)제이아이테크",
+   "corp_cls": "K",
+   "stock_code": "417500",
+   "adres": "전라북도 군산시 중가도길 16",
+   "induty_code": "204",
+   "est_dt": "20140328",
+   "hm_url": "www.ji-tech.co.kr",
+   "acc_mt": "12",
+   "bizr_no": "4018153863",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 53551170592,
+     "영업이익": 10396611151,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 164
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00529815",
+   "corp_name": "(주)오디텍",
+   "corp_cls": "K",
+   "stock_code": "080520",
+   "adres": "전라북도 완주군 봉동읍 완주산단5로 87",
+   "induty_code": "2612",
+   "est_dt": "19991206",
+   "hm_url": "www.od-tech.com",
+   "acc_mt": "12",
+   "bizr_no": "4038120067",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 37959545863,
+     "영업이익": -2276892782,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 280
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00136101",
+   "corp_name": "메이슨캐피탈주식회사",
+   "corp_cls": "K",
+   "stock_code": "021880",
+   "adres": "전라북도 전주시 완산구 기린대로 213 대우빌딩 14층 12호",
+   "induty_code": "64911",
+   "est_dt": "19890901",
+   "hm_url": "mason-capital.co.kr",
+   "acc_mt": "12",
+   "bizr_no": "4028108740",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 25090614032,
+     "영업이익": -10097939629,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 14
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00516246",
+   "corp_name": "주식회사알에프세미",
+   "corp_cls": "E",
+   "stock_code": "096610",
+   "adres": "전북특별자치도 완주군 봉동읍 완주산단6로 12 알에프세미 전주1공장",
+   "induty_code": "2612",
+   "est_dt": "19991022",
+   "hm_url": "www.rfsemi.co.kr",
+   "acc_mt": "12",
+   "bizr_no": "3148128793",
+   "financials": {
+    "year": "2025",
+    "consolidated": {
+     "매출액": 24468236893,
+     "영업이익": 1770166856,
+     "당기순이익": null
+    },
+    "separate": null
+   },
+   "staff": {
+    "year": "2025",
+    "total": 93
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "01284751",
+   "corp_name": "주식회사 시지트로닉스",
+   "corp_cls": "K",
+   "stock_code": "429270",
+   "adres": "전라북도 완주군 봉동읍 테크노밸리로 497",
+   "induty_code": "26129",
+   "est_dt": "20080125",
+   "hm_url": "sigetronics.com",
+   "acc_mt": "12",
+   "bizr_no": "4188124779",
+   "financials": {
+    "year": "2025",
+    "consolidated": null,
+    "separate": {
+     "매출액": 12748957402,
+     "영업이익": -7585557629,
+     "당기순이익": null
+    }
+   },
+   "staff": {
+    "year": "2025",
+    "total": 81
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "01575361",
+   "corp_name": "세븐브로이맥주 주식회사",
+   "corp_cls": "N",
+   "stock_code": "267080",
+   "adres": "전북특별자치도 익산시 왕궁면 국가식품로4길 21 -",
+   "induty_code": "11112",
+   "est_dt": "20110705",
+   "hm_url": "sevenbrau.com",
+   "acc_mt": "12",
+   "bizr_no": "2248151730",
+   "financials": {
+    "year": "2025",
+    "consolidated": null,
+    "separate": {
+     "매출액": 6831219026,
+     "영업이익": -5364356590,
+     "당기순이익": null
+    }
+   },
+   "staff": {
+    "year": "2025",
+    "total": 45
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00133715",
+   "corp_name": "대주코레스(주)",
+   "corp_cls": "E",
+   "stock_code": "008340",
+   "adres": "전라북도 완주군 봉동읍 완주산단6로 266",
+   "induty_code": "24222",
+   "est_dt": "19721229",
+   "hm_url": "www.kores21.com",
+   "acc_mt": "12",
+   "bizr_no": "1348100961",
+   "financials": null,
+   "staff": {
+    "year": "2025",
+    "total": 339
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00147295",
+   "corp_name": "(주)전북은행",
+   "corp_cls": "E",
+   "stock_code": "006350",
+   "adres": "전북특별자치도 전주시 덕진구 백제대로 566 (금암동, 전북은행빌딩)",
+   "induty_code": "64121",
+   "est_dt": "19691210",
+   "hm_url": "www.jbbank.co.kr",
+   "acc_mt": "12",
+   "bizr_no": "4188107090",
+   "financials": null,
+   "staff": {
+    "year": "2025",
+    "total": 1432
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "01139497",
+   "corp_name": "주식회사 에스제이켐",
+   "corp_cls": "N",
+   "stock_code": "217910",
+   "adres": "전라북도 익산시 왕궁면 무왕로 2243-23",
+   "induty_code": "20129",
+   "est_dt": "20031009",
+   "hm_url": "www.sj-chem.com/",
+   "acc_mt": "12",
+   "bizr_no": "3078120911",
+   "financials": null,
+   "staff": {
+    "year": "2025",
+    "total": 38
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "01924673",
+   "corp_name": "(주)나노솔루션",
+   "corp_cls": "N",
+   "stock_code": "238540",
+   "adres": "전북특별자치도 전주시 덕진구 만성북로 51-25",
+   "induty_code": "204",
+   "est_dt": "20061222",
+   "hm_url": "nano-sol.com",
+   "acc_mt": "12",
+   "bizr_no": "4188121582",
+   "financials": null,
+   "staff": {
+    "year": "2025",
+    "total": 63
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00980122",
+   "corp_name": "(주)JB금융지주",
+   "corp_cls": "Y",
+   "stock_code": "175330",
+   "adres": "전라북도 전주시 덕진구  백제대로 566",
+   "induty_code": "64992",
+   "est_dt": "20130701",
+   "hm_url": "www.jbfg.com",
+   "acc_mt": "12",
+   "bizr_no": "4188144697",
+   "financials": null,
+   "staff": {
+    "year": "2025",
+    "total": 108
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "01352575",
+   "corp_name": "바이오텐(주)",
+   "corp_cls": "N",
+   "stock_code": "289170",
+   "adres": "전북특별자치도 정읍시 첨단2로 64 -",
+   "induty_code": "108",
+   "est_dt": "20101004",
+   "hm_url": "www.bioten.co.kr",
+   "acc_mt": "12",
+   "bizr_no": "4048134434",
+   "financials": null,
+   "staff": {
+    "year": "2025",
+    "total": 17
+   },
+   "annual_reports": []
+  },
+  {
+   "corp_code": "00126089",
+   "corp_name": "(주)디에이치오토넥스",
+   "corp_cls": "Y",
+   "stock_code": "000300",
+   "adres": "전북특별자치도 김제시 용지면 용지로 55 김제(본사)",
+   "induty_code": "303",
+   "est_dt": "19671230",
+   "hm_url": "dhautonex.co.kr",
+   "acc_mt": "12",
+   "bizr_no": "1198101490",
+   "financials": null,
+   "staff": {
+    "year": "2025",
+    "total": 92
+   },
+   "annual_reports": []
+  }
+ ]
+}

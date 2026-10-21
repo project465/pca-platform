@@ -1,0 +1,4140 @@
+{
+ "schema": "jeonbuk-orgs.v1",
+ "built_on": "2026-10-21",
+ "sources": {
+  "venture": "중소벤처기업부 벤처기업 확인 명단(공개 CSV) 가운데 소재지 전북특별자치도 · 업종명과 주생산품은 명단 값",
+  "dart": "OpenDART 기업개황 · 본점 주소 전북특별자치도 · 확인일 2026-10-21"
+ },
+ "groups": [
+  {
+   "code": "SW",
+   "name": "소프트웨어·IT 서비스"
+  },
+  {
+   "code": "RND",
+   "name": "연구개발·엔지니어링·컨설팅"
+  },
+  {
+   "code": "MEDIA",
+   "name": "광고·디자인·콘텐츠"
+  },
+  {
+   "code": "BIO",
+   "name": "바이오·의약·식품"
+  },
+  {
+   "code": "FIN",
+   "name": "지주·금융"
+  },
+  {
+   "code": "MACH",
+   "name": "기계·장비·전기·통신기기"
+  },
+  {
+   "code": "MAT",
+   "name": "소재·화학·부품"
+  },
+  {
+   "code": "SVC",
+   "name": "건설·생활 서비스"
+  }
+ ],
+ "rule": "공개 명단의 값만 옮겼다. 채용 여부·근무 조건은 확인하지 않았다",
+ "orgs": [
+  {
+   "name": "(주)담다",
+   "source": "venture",
+   "sector": "빵류, 과자류, 당류, 초콜릿 도매업",
+   "product": "대규모 문화시설(공연장 등) 관객 대상 식음료  및 주류 판매",
+   "group": "BIO",
+   "venture_id": "30956"
+  },
+  {
+   "name": "(주)라비",
+   "source": "venture",
+   "sector": "그 외 기타 의료용 기기 제조업",
+   "product": "의료기기, 화장품",
+   "group": "BIO",
+   "venture_id": "17591"
+  },
+  {
+   "name": "(주)봉선장",
+   "source": "venture",
+   "sector": "수산물 가공식품 도매업",
+   "product": "신선 수산식품 (꽃게, 갑오징어, 수산식품 밀키트, 간장게장 등등)",
+   "group": "BIO",
+   "venture_id": "3606"
+  },
+  {
+   "name": "(주)시샘",
+   "source": "venture",
+   "sector": "기타 식사용 가공처리 조리식품 제조업",
+   "product": "식품 제조/음식점 프랜차이즈,경영컨설팅/식사재 유통",
+   "group": "BIO",
+   "venture_id": "35474"
+  },
+  {
+   "name": "(주)알앤비테크놀로지",
+   "source": "venture",
+   "sector": "구조용 금속 판제품 및 공작물 제조업",
+   "product": "태양광발전장치(PV/BIPV), 건축자재, 특수지붕재",
+   "group": "BIO",
+   "venture_id": "36375"
+  },
+  {
+   "name": "(주)우리비앤비",
+   "source": "venture",
+   "sector": "기초 의약 물질 제조업",
+   "product": "생물학적 제재 제조",
+   "group": "BIO",
+   "venture_id": "19765"
+  },
+  {
+   "name": "(주)이샘바이오",
+   "source": "venture",
+   "sector": "건강기능식품 제조업",
+   "product": "건강기능식품",
+   "group": "BIO",
+   "venture_id": "2308"
+  },
+  {
+   "name": "(주)카이바이오텍",
+   "source": "venture",
+   "sector": "합성의약품 및 기타 완제 의약품 제조업",
+   "product": "방사성 진단,치료 의약품 제조",
+   "group": "BIO",
+   "venture_id": "24139"
+  },
+  {
+   "name": "(주)하림",
+   "source": "dart",
+   "sector": "식료품 제조업",
+   "product": "",
+   "group": "BIO",
+   "listed": "코스닥",
+   "stock_code": "136480",
+   "induty_code": "1012",
+   "adres": "전라북도 익산시  망성면 망성로 14 (주)하림"
+  },
+  {
+   "name": "㈜씨비에이치",
+   "source": "venture",
+   "sector": "그 외 기타 의료용 기기 제조업",
+   "product": "스마트 척추 이완 Chair ,카본소재 의료기기, 카본테이블",
+   "group": "BIO",
+   "venture_id": "23077"
+  },
+  {
+   "name": "㈜인디셀바이오",
+   "source": "venture",
+   "sector": "화장품 제조업",
+   "product": "화장품",
+   "group": "BIO",
+   "venture_id": "348"
+  },
+  {
+   "name": "㈜필텍",
+   "source": "venture",
+   "sector": "그 외 기타 의료용 기기 제조업",
+   "product": "일회용 주사기",
+   "group": "BIO",
+   "venture_id": "24043"
+  },
+  {
+   "name": "국민바이오 주식회사",
+   "source": "venture",
+   "sector": "건강기능식품 제조업",
+   "product": "건강기능식품 고시형 유산균 및 발효식품미생물 유래 발효 배양상등액 외",
+   "group": "BIO",
+   "venture_id": "7749"
+  },
+  {
+   "name": "나라바이오 주식회사",
+   "source": "venture",
+   "sector": "복합비료 및 기타 화학비료 제조업",
+   "product": "복합비료,화학비료,산미사료,플라스틱 제조/농산물 도소매,통신판매",
+   "group": "BIO",
+   "venture_id": "8075"
+  },
+  {
+   "name": "남영제약 영농조힙법인",
+   "source": "venture",
+   "sector": "한의약품 제조업",
+   "product": "천마발효고,도라지발효고,황실진고",
+   "group": "BIO",
+   "venture_id": "7769"
+  },
+  {
+   "name": "농업법인회사 유한회사 영인바이오",
+   "source": "venture",
+   "sector": "과실 및 그 외 채소 절임식품 제조업",
+   "product": "순살꽃게장 외 수산물 가공식품",
+   "group": "BIO",
+   "venture_id": "14145"
+  },
+  {
+   "name": "농업회사법인 유한회사 데일리팜",
+   "source": "venture",
+   "sector": "낙농품 및 동.식물성 유지 도매업",
+   "product": "유산균음료",
+   "group": "BIO",
+   "venture_id": "36841"
+  },
+  {
+   "name": "농업회사법인 주식회사 바이오엔진",
+   "source": "venture",
+   "sector": "건강보조용 액화식품 제조업",
+   "product": "기타가공품",
+   "group": "BIO",
+   "venture_id": "12062"
+  },
+  {
+   "name": "농업회사법인 주식회사 피앤에프바이오",
+   "source": "venture",
+   "sector": "유기질 비료 및 상토 제조업",
+   "product": "미량요소비료",
+   "group": "BIO",
+   "venture_id": "39074"
+  },
+  {
+   "name": "농업회사법인홉앤호프주식회사",
+   "source": "venture",
+   "sector": "채소류, 서류 및 향신작물류 도매업",
+   "product": "농산물 도소매,전자상거래/농산물 유통판매,종자생산/호프,차류가공,맥아,맥주,음료 제조/스마트팜 개발,농식품 컨설팅",
+   "group": "BIO",
+   "venture_id": "7269"
+  },
+  {
+   "name": "눈부신자연애바이오(주)",
+   "source": "venture",
+   "sector": "복합비료 및 기타 화학비료 제조업",
+   "product": "미량요소 복합비료",
+   "group": "BIO",
+   "venture_id": "6792"
+  },
+  {
+   "name": "동우팜투테이블",
+   "source": "dart",
+   "sector": "식료품 제조업",
+   "product": "",
+   "group": "BIO",
+   "listed": "코스닥",
+   "stock_code": "088910",
+   "induty_code": "10121",
+   "adres": "전라북도 군산시  서수면 동군산로 1095 주식회사 동우"
+  },
+  {
+   "name": "모던메탈 유한회사",
+   "source": "venture",
+   "sector": "구조용 금속 판제품 및 공작물 제조업",
+   "product": "디자인형울타리, 핸드레일, 벽부형핸드레일",
+   "group": "BIO",
+   "venture_id": "37175"
+  },
+  {
+   "name": "바이오텐(주)",
+   "source": "venture+dart",
+   "sector": "기타 식품 첨가물 제조업",
+   "product": "보조사료 외",
+   "group": "BIO",
+   "venture_id": "35248",
+   "listed": "코넥스",
+   "stock_code": "289170",
+   "induty_code": "108",
+   "adres": "전북특별자치도 정읍시 첨단2로 64 -"
+  },
+  {
+   "name": "써니사이드업",
+   "source": "venture",
+   "sector": "화장품 제조업",
+   "product": "화장품 제조업,건강 보조용 액화식품 제조업,화장품 및 화장용품 도매업,시스템 소프트웨어 개발 및 공급업,시각 디자인업",
+   "group": "BIO",
+   "venture_id": "23063"
+  },
+  {
+   "name": "썬메디텍㈜",
+   "source": "venture",
+   "sector": "그 외 기타 의료용 기기 제조업",
+   "product": "무선디지털청진기",
+   "group": "BIO",
+   "venture_id": "17701"
+  },
+  {
+   "name": "에이플러스 아로마",
+   "source": "venture",
+   "sector": "화장품 제조업",
+   "product": "편백수 편백오일 외",
+   "group": "BIO",
+   "venture_id": "34235"
+  },
+  {
+   "name": "엠비헬스케어(주)",
+   "source": "venture",
+   "sector": "그 외 기타 의료용품 및 의약 관련제품 제조업",
+   "product": "의료용 압박밴드. MB2020 DVT PUMP.  보호대",
+   "group": "BIO",
+   "venture_id": "3067"
+  },
+  {
+   "name": "유니크바이오텍 주식회사",
+   "source": "venture",
+   "sector": "건강기능식품 제조업",
+   "product": "프로폴리스",
+   "group": "BIO",
+   "venture_id": "10528"
+  },
+  {
+   "name": "유한회사하이존바이오",
+   "source": "venture",
+   "sector": "복합비료 및 기타 화학비료 제조업",
+   "product": "비료.동식물성장제",
+   "group": "BIO",
+   "venture_id": "596"
+  },
+  {
+   "name": "제너럴바이오주식회사",
+   "source": "venture",
+   "sector": "화장품 제조업",
+   "product": "화장품,건강기능식품,세제 등",
+   "group": "BIO",
+   "venture_id": "13605"
+  },
+  {
+   "name": "제이에스케이 주식회사",
+   "source": "venture",
+   "sector": "기타 가공식품 도매업",
+   "product": "프리믹스",
+   "group": "BIO",
+   "venture_id": "7319"
+  },
+  {
+   "name": "주식회사 그레인뱅크",
+   "source": "venture",
+   "sector": "곡물 및 유지작물 도매업",
+   "product": "진공미, 고객 라이프스타일 맞춤형 AI 추천 서비스",
+   "group": "BIO",
+   "venture_id": "12629"
+  },
+  {
+   "name": "주식회사 덴하우스",
+   "source": "venture",
+   "sector": "그 외 기타 의료용 기기 제조업",
+   "product": "Osscore, RP 모델",
+   "group": "BIO",
+   "venture_id": "7044"
+  },
+  {
+   "name": "주식회사 마르페",
+   "source": "venture",
+   "sector": "그 외 기타 의료용 기기 제조업",
+   "product": "재활 치료 관련 의료기기 및 운동기기",
+   "group": "BIO",
+   "venture_id": "33984"
+  },
+  {
+   "name": "주식회사 마스팜",
+   "source": "venture",
+   "sector": "작물재배 지원 서비스업",
+   "product": "AIaaS 플랫폼 기반 API 올인원 원스톱 재배 구독 서비스 통한 토마토 등 수경재배 작물 재배 규격 서비스의  스마트팜시스템",
+   "group": "BIO",
+   "venture_id": "24644"
+  },
+  {
+   "name": "주식회사 바실로바이오",
+   "source": "venture",
+   "sector": "그 외 기타 식료품 제조업",
+   "product": "식품, 사료",
+   "group": "BIO",
+   "venture_id": "26053"
+  },
+  {
+   "name": "주식회사 바이오니트",
+   "source": "venture",
+   "sector": "그 외 기타 의료용 기기 제조업",
+   "product": "그 외 기타 의료용 기기 제조업,전자상거래 소매업,경영 컨설팅업",
+   "group": "BIO",
+   "venture_id": "28111"
+  },
+  {
+   "name": "주식회사 바이오리올로직스",
+   "source": "venture",
+   "sector": "그 외 기타 의료용 기기 제조업",
+   "product": "혈액점도 측정시스템",
+   "group": "BIO",
+   "venture_id": "10103"
+  },
+  {
+   "name": "주식회사 보부상바이오팜",
+   "source": "venture",
+   "sector": "그 외 기타 식료품 제조업",
+   "product": "일반건강식품",
+   "group": "BIO",
+   "venture_id": "6975"
+  },
+  {
+   "name": "주식회사 보유",
+   "source": "venture",
+   "sector": "그 외 기타 식료품 제조업",
+   "product": "건강보조식품, 눈마사지기, 보조배터리 등",
+   "group": "BIO",
+   "venture_id": "33761"
+  },
+  {
+   "name": "주식회사 보타닉센스",
+   "source": "venture",
+   "sector": "화장품 제조업",
+   "product": "화장품, 기능성 화장품",
+   "group": "BIO",
+   "venture_id": "36351"
+  },
+  {
+   "name": "주식회사 수려메디",
+   "source": "venture",
+   "sector": "그 외 기타 의료용품 및 의약 관련제품 제조업",
+   "product": "PDO Lifting Thread",
+   "group": "BIO",
+   "venture_id": "12972"
+  },
+  {
+   "name": "주식회사 쓰리에프씨",
+   "source": "venture",
+   "sector": "그 외 기타 식료품 제조업",
+   "product": "화장품, 식품",
+   "group": "BIO",
+   "venture_id": "11024"
+  },
+  {
+   "name": "주식회사 에코메트론",
+   "source": "venture",
+   "sector": "그 외 기타 의료용품 및 의약 관련제품 제조업",
+   "product": "소변분석키트",
+   "group": "BIO",
+   "venture_id": "30741"
+  },
+  {
+   "name": "주식회사 엔텍바이오에스",
+   "source": "venture",
+   "sector": "단미 사료 및 기타 사료 제조업",
+   "product": "프리바이오 퍼밀레이션 제조 및 판매 및 그린바이오 플랜트",
+   "group": "BIO",
+   "venture_id": "25479"
+  },
+  {
+   "name": "주식회사 엠씨바이오텍",
+   "source": "venture",
+   "sector": "복합비료 및 기타 화학비료 제조업",
+   "product": "미생물배양기",
+   "group": "BIO",
+   "venture_id": "13490"
+  },
+  {
+   "name": "주식회사 이스텍바이오",
+   "source": "venture",
+   "sector": "기초 의약 물질 제조업",
+   "product": "재조합단백질",
+   "group": "BIO",
+   "venture_id": "7389"
+  },
+  {
+   "name": "주식회사 정농바이오",
+   "source": "venture",
+   "sector": "단미 사료 및 기타 사료 제조업",
+   "product": "보조사료 미생물제",
+   "group": "BIO",
+   "venture_id": "13948"
+  },
+  {
+   "name": "주식회사 조인앤조인",
+   "source": "venture",
+   "sector": "빵류 제조업",
+   "product": "마카롱, 쿠키류, 베이커리, 스낵 등",
+   "group": "BIO",
+   "venture_id": "15146"
+  },
+  {
+   "name": "주식회사 참사람덴탈",
+   "source": "venture",
+   "sector": "그 외 기타 의료용품 및 의약 관련제품 제조업",
+   "product": "구강 관리 용품 및 장치",
+   "group": "BIO",
+   "venture_id": "2907"
+  },
+  {
+   "name": "주식회사 키베이직",
+   "source": "venture",
+   "sector": "단미 사료 및 기타 사료 제조업",
+   "product": "반려동물사료제조업",
+   "group": "BIO",
+   "venture_id": "22981"
+  },
+  {
+   "name": "주식회사 프로바이오닉",
+   "source": "venture",
+   "sector": "건강기능식품 제조업",
+   "product": "프로바이오틱스건강기능식품외)",
+   "group": "BIO",
+   "venture_id": "33376"
+  },
+  {
+   "name": "주식회사 홉스바이오사이언스",
+   "source": "venture",
+   "sector": "기타 작물 재배업",
+   "product": "유전자교정작물, 식물기능성소재연구및분석,유전자교정작물개발컨설팅",
+   "group": "BIO",
+   "venture_id": "18927"
+  },
+  {
+   "name": "키움바이오",
+   "source": "venture",
+   "sector": "단미 사료 및 기타 사료 제조업",
+   "product": "보조사료 및 친환경 유기농업자재",
+   "group": "BIO",
+   "venture_id": "2159"
+  },
+  {
+   "name": "피에스비바이오㈜",
+   "source": "venture",
+   "sector": "화장품 제조업",
+   "product": "생물학적제제, 샴푸, 케어팩",
+   "group": "BIO",
+   "venture_id": "7397"
+  },
+  {
+   "name": "한국스테비아 주식회사",
+   "source": "venture",
+   "sector": "복합비료 및 기타 화학비료 제조업",
+   "product": "유기농업자재 및 유기가공식품",
+   "group": "BIO",
+   "venture_id": "32601"
+  },
+  {
+   "name": "한국신텍스제약㈜",
+   "source": "venture",
+   "sector": "한의약품 제조업",
+   "product": "청심환외",
+   "group": "BIO",
+   "venture_id": "8148"
+  },
+  {
+   "name": "해들녘영농조합법인",
+   "source": "venture",
+   "sector": "채소, 과실 및 뿌리작물 소매업",
+   "product": "고구마",
+   "group": "BIO",
+   "venture_id": "31451"
+  },
+  {
+   "name": "(주)JB금융지주",
+   "source": "dart",
+   "sector": "금융업",
+   "product": "",
+   "group": "FIN",
+   "listed": "유가증권",
+   "stock_code": "175330",
+   "induty_code": "64992",
+   "adres": "전라북도 전주시 덕진구  백제대로 566"
+  },
+  {
+   "name": "(주)전북은행",
+   "source": "dart",
+   "sector": "금융업",
+   "product": "",
+   "group": "FIN",
+   "listed": "기타",
+   "stock_code": "006350",
+   "induty_code": "64121",
+   "adres": "전북특별자치도 전주시 덕진구 백제대로 566 (금암동, 전북은행빌딩)"
+  },
+  {
+   "name": "(주)하림지주",
+   "source": "dart",
+   "sector": "금융업",
+   "product": "",
+   "group": "FIN",
+   "listed": "코스닥",
+   "stock_code": "003380",
+   "induty_code": "64992",
+   "adres": "전라북도 익산시 중앙로 121 -"
+  },
+  {
+   "name": "메이슨캐피탈주식회사",
+   "source": "dart",
+   "sector": "금융업",
+   "product": "",
+   "group": "FIN",
+   "listed": "코스닥",
+   "stock_code": "021880",
+   "induty_code": "64911",
+   "adres": "전라북도 전주시 완산구 기린대로 213 대우빌딩 14층 12호"
+  },
+  {
+   "name": "(사) 꿈드래장애인협회",
+   "source": "venture",
+   "sector": "전기전자 및 정밀기기 수리업",
+   "product": "수배전반 조명기구 하수처리장치 등",
+   "group": "MACH",
+   "venture_id": "9800"
+  },
+  {
+   "name": "(유)비츠",
+   "source": "venture",
+   "sector": "일반 통신 공사업",
+   "product": "영상감시장치, 산업관리소프트웨어개발",
+   "group": "MACH",
+   "venture_id": "11502"
+  },
+  {
+   "name": "(유)엔텍코리아",
+   "source": "venture",
+   "sector": "전기회로 개폐, 보호장치 제조업",
+   "product": "단락보호기, 자동제어분전반, 전력보호시스템, 에너지절전시스템 외",
+   "group": "MACH",
+   "venture_id": "25767"
+  },
+  {
+   "name": "(주) 메이저스마트건설",
+   "source": "venture",
+   "sector": "전동기 및 발전기 제조업",
+   "product": "전기수배전반,태양광발전설비",
+   "group": "MACH",
+   "venture_id": "15543"
+  },
+  {
+   "name": "(주)가온ENC",
+   "source": "venture",
+   "sector": "일반전기 공사업",
+   "product": "신재생에너지, 태양광발전, 알루미늄구조물",
+   "group": "MACH",
+   "venture_id": "24962"
+  },
+  {
+   "name": "(주)강원에너지",
+   "source": "dart",
+   "sector": "전기장비 제조업",
+   "product": "",
+   "group": "MACH",
+   "listed": "코스닥",
+   "stock_code": "114190",
+   "induty_code": "289",
+   "adres": "전라북도 군산시 자유무역1길 60 웰크론강원 510-9, 510-10, 510-12"
+  },
+  {
+   "name": "(주)그룬",
+   "source": "venture",
+   "sector": "그 외 기타 기계 및 장비 도매업",
+   "product": "환경기자재및플랜트,여과기,정수설비,환경기자재및플랜트,여과기,정수설비,태양광발전,환경전문공사,무역,임대,부동산매매업,위탁관리",
+   "group": "MACH",
+   "venture_id": "13901"
+  },
+  {
+   "name": "(주)다온정보기술",
+   "source": "venture",
+   "sector": "내부 통신배선 공사업",
+   "product": "정보통신공사/프로그램 개발,디지털콘텐츠 제작/영상정보디스플레이장치,컴퓨터,주변기기 도소매/자료처리,전산입력용역,데이터베이스 제작,공급",
+   "group": "MACH",
+   "venture_id": "24420"
+  },
+  {
+   "name": "(주)데크카본",
+   "source": "venture",
+   "sector": "항공기용 부품 제조업",
+   "product": "항공기/자동차 브레이크 디스크, 초고온 복합재",
+   "group": "MACH",
+   "venture_id": "26916"
+  },
+  {
+   "name": "(주)디앤",
+   "source": "venture",
+   "sector": "전동기 및 발전기 제조업",
+   "product": "전동기, 발전기 및 전기 변환장치 제조업,기타 기계 및 장비 도매업, 가전제품, 통신장비 및 부춤 도매업 그 외 기타 가정용품 소매,공학 연구개발업",
+   "group": "MACH",
+   "venture_id": "14925"
+  },
+  {
+   "name": "(주)디에이치오토넥스",
+   "source": "dart",
+   "sector": "자동차 및 트레일러 제조업",
+   "product": "",
+   "group": "MACH",
+   "listed": "유가증권",
+   "stock_code": "000300",
+   "induty_code": "303",
+   "adres": "전북특별자치도 김제시 용지면 용지로 55 김제(본사)"
+  },
+  {
+   "name": "(주)디에이치오토리드",
+   "source": "dart",
+   "sector": "자동차 및 트레일러 제조업",
+   "product": "",
+   "group": "MACH",
+   "listed": "코스닥",
+   "stock_code": "290120",
+   "induty_code": "30399",
+   "adres": "전라북도 완주군 봉동읍 완주산단8로 66"
+  },
+  {
+   "name": "(주)디케이에코팜",
+   "source": "venture",
+   "sector": "농업 및 임업용 기계 제조업",
+   "product": "스마트팜완전제어용)컨테이너통합제어 완전제어형 외",
+   "group": "MACH",
+   "venture_id": "33147"
+  },
+  {
+   "name": "(주)뱅크정밀항공",
+   "source": "venture",
+   "sector": "주형 및 금형 제조업",
+   "product": "금형,탄소섬유 제조업,항공기부품,그 외 기타 금속 가공업,태양력 발전업,기타 기술 시험, 검사 및 분석업",
+   "group": "MACH",
+   "venture_id": "24998"
+  },
+  {
+   "name": "(주)비디텍",
+   "source": "venture",
+   "sector": "그 외 자동차용 신품 부품 제조업",
+   "product": "전기자동차 배터리 케이스 가공 부품",
+   "group": "MACH",
+   "venture_id": "18109"
+  },
+  {
+   "name": "(주)승원",
+   "source": "venture",
+   "sector": "액체 여과기 제조업",
+   "product": "액체여과기",
+   "group": "MACH",
+   "venture_id": "35645"
+  },
+  {
+   "name": "(주)아이에스피",
+   "source": "venture",
+   "sector": "물질 검사, 측정 및 분석기구 제조업",
+   "product": "엑스선형광분석기, 도금두께측정기, 유해물질분석기 외",
+   "group": "MACH",
+   "venture_id": "38060"
+  },
+  {
+   "name": "(주)애드아임",
+   "source": "venture",
+   "sector": "전자 응용 절삭기계 제조업",
+   "product": "엣지디바이스 및 데이터학습시스템 개발",
+   "group": "MACH",
+   "venture_id": "37819"
+  },
+  {
+   "name": "(주)에쎈테크",
+   "source": "dart",
+   "sector": "기타 기계 및 장비 제조업",
+   "product": "",
+   "group": "MACH",
+   "listed": "코스닥",
+   "stock_code": "043340",
+   "induty_code": "29133",
+   "adres": "전라북도 군산시 자유무역2길 15 (오식도동, 군산자유무역표준공장 7동)"
+  },
+  {
+   "name": "(주)제우",
+   "source": "venture",
+   "sector": "전동기 및 발전기 제조업",
+   "product": "전기기계기구,자동차부품,드론 및 시험기,건축자재,드론 및 부품,무역업(쎈서외 전자부품),소프트웨어개발,전기ㆍ전자 연구개발업",
+   "group": "MACH",
+   "venture_id": "22796"
+  },
+  {
+   "name": "(주)지에이티",
+   "source": "venture",
+   "sector": "그 외 자동차용 신품 부품 제조업",
+   "product": "자동차부품　제조　및　조립",
+   "group": "MACH",
+   "venture_id": "8297"
+  },
+  {
+   "name": "(주)하나엔텍",
+   "source": "venture",
+   "sector": "액체 여과기 제조업",
+   "product": "탈취기 및 수처리 환경 기계",
+   "group": "MACH",
+   "venture_id": "17443"
+  },
+  {
+   "name": "(주)한국재생에너지연구원",
+   "source": "venture",
+   "sector": "전동기 및 발전기 제조업",
+   "product": "FFR/SIC/FR 제어기, WPC, WFMS, LTSA",
+   "group": "MACH",
+   "venture_id": "9101"
+  },
+  {
+   "name": "㈜네프",
+   "source": "venture",
+   "sector": "기타 전기 변환장치 제조업",
+   "product": "태양광발전장치,접속반,환경센서,ESS",
+   "group": "MACH",
+   "venture_id": "5804"
+  },
+  {
+   "name": "㈜대경산전",
+   "source": "venture",
+   "sector": "배전반 및 전기 자동제어반 제조업",
+   "product": "태양광 발전장치, 수배전반, 자동제어반, 계장(계측)제어장치, ESS",
+   "group": "MACH",
+   "venture_id": "20435"
+  },
+  {
+   "name": "㈜삼영메탈",
+   "source": "venture",
+   "sector": "그 외 자동차용 신품 부품 제조업",
+   "product": "자동차부품, 농기계부품, 기계부품",
+   "group": "MACH",
+   "venture_id": "18297"
+  },
+  {
+   "name": "㈜세기종합환경",
+   "source": "venture",
+   "sector": "기체 여과기 제조업",
+   "product": "수질정화겸용 태양광부유체",
+   "group": "MACH",
+   "venture_id": "10777"
+  },
+  {
+   "name": "㈜아람솔루션",
+   "source": "venture",
+   "sector": "기타 무선 통신장비 제조업",
+   "product": "IoT디바이스 및 플랫폼",
+   "group": "MACH",
+   "venture_id": "21008"
+  },
+  {
+   "name": "㈜위에너지",
+   "source": "venture",
+   "sector": "기타 전기 변환장치 제조업",
+   "product": "태양광발전장치시스템,하이브리드인버터,이동형 태양광 발전소",
+   "group": "MACH",
+   "venture_id": "5290"
+  },
+  {
+   "name": "㈜유비쿼터스통신",
+   "source": "venture",
+   "sector": "유선 통신장비 제조업",
+   "product": "종합 통신시스템 구축",
+   "group": "MACH",
+   "venture_id": "12194"
+  },
+  {
+   "name": "광전자(주)",
+   "source": "dart",
+   "sector": "전자부품, 컴퓨터, 영상, 음향 및 통신장비 제조업",
+   "product": "",
+   "group": "MACH",
+   "listed": "유가증권",
+   "stock_code": "017900",
+   "induty_code": "2612",
+   "adres": "전라북도 익산시 약촌로8길 62-8 (어양동)"
+  },
+  {
+   "name": "농업회사법인 렛츠팜 주식회사",
+   "source": "venture",
+   "sector": "농업 및 임업용 기계 제조업",
+   "product": "농업용기계(식물생장조절실, 식물생장계, 식물컴퓨터),멀티미디어 학습장치,컴퓨터,농산물,농자재 및 농업용기계,정보통신관련기기,프로그램 개발 및 공급,디지",
+   "group": "MACH",
+   "venture_id": "6877"
+  },
+  {
+   "name": "대영엔지니지어링주식회사",
+   "source": "venture",
+   "sector": "그 외 자동차용 신품 부품 제조업",
+   "product": "전기차배터리팩 케이스 부품 절연코팅, 자동차 부품 표면처리, 가전부품 표면처리",
+   "group": "MACH",
+   "venture_id": "25740"
+  },
+  {
+   "name": "두산퓨얼셀 주식회사",
+   "source": "dart",
+   "sector": "전기장비 제조업",
+   "product": "",
+   "group": "MACH",
+   "listed": "유가증권",
+   "stock_code": "336260",
+   "induty_code": "28111",
+   "adres": "전라북도 익산시 석암로7길 100 (팔봉동)"
+  },
+  {
+   "name": "두이엔지 주식회사",
+   "source": "venture",
+   "sector": "산업용 로봇 제조업",
+   "product": "로봇 자동화 시스템, 3D 엔지니어링, 자동차 부품 제작 및 개발",
+   "group": "MACH",
+   "venture_id": "5359"
+  },
+  {
+   "name": "롯데에너지머티리얼즈(주)",
+   "source": "dart",
+   "sector": "전자부품, 컴퓨터, 영상, 음향 및 통신장비 제조업",
+   "product": "",
+   "group": "MACH",
+   "listed": "유가증권",
+   "stock_code": "020150",
+   "induty_code": "2629",
+   "adres": "전라북도 익산시 석암로3길 63-25"
+  },
+  {
+   "name": "모나 주식회사",
+   "source": "venture",
+   "sector": "전자축전기 제조업",
+   "product": "연료전지, 배터리",
+   "group": "MACH",
+   "venture_id": "17743"
+  },
+  {
+   "name": "발산공업",
+   "source": "venture",
+   "sector": "농업 및 임업용 기계 제조업",
+   "product": "콩탈곡기 콩정선선별기 외",
+   "group": "MACH",
+   "venture_id": "23417"
+  },
+  {
+   "name": "비나에프씨엠(주)",
+   "source": "venture",
+   "sector": "전기용 탄소제품 및 절연제품 제조업",
+   "product": "수소연료전지분리판",
+   "group": "MACH",
+   "venture_id": "14419"
+  },
+  {
+   "name": "비씨모빌리티 주식회사",
+   "source": "venture",
+   "sector": "기타 운송장비 임대업",
+   "product": "이륜자동차(오토바이)의 렌트 및 리스 사업",
+   "group": "MACH",
+   "venture_id": "36508"
+  },
+  {
+   "name": "샘기술 주식회사",
+   "source": "venture",
+   "sector": "배전반 및 전기 자동제어반 제조업",
+   "product": "배전반 및 전기 자동제어반, 전동기, 발전기, 전력변환장치, 태양광발전장치류, 동력계, 엔진 제조 시험 등",
+   "group": "MACH",
+   "venture_id": "28132"
+  },
+  {
+   "name": "솔루스첨단소재 주식회사",
+   "source": "dart",
+   "sector": "전자부품, 컴퓨터, 영상, 음향 및 통신장비 제조업",
+   "product": "",
+   "group": "MACH",
+   "listed": "유가증권",
+   "stock_code": "336370",
+   "induty_code": "26299",
+   "adres": "전북특별자치도 익산시 용안면 동지산안대길 46 -"
+  },
+  {
+   "name": "수퍼빈 주식회사",
+   "source": "venture",
+   "sector": "산업용 로봇 제조업",
+   "product": "폐기물 빅데이터 기반 AI재활용 회수 로봇네프론)",
+   "group": "MACH",
+   "venture_id": "23009"
+  },
+  {
+   "name": "스마트솔루션 유한회사",
+   "source": "venture",
+   "sector": "컴퓨터 제조업",
+   "product": "데스크톱컴퓨터, LED전광판, 음향장비, 인쇄업, 정보통신공사업",
+   "group": "MACH",
+   "venture_id": "2885"
+  },
+  {
+   "name": "씨이에스 주식회사",
+   "source": "venture",
+   "sector": "전기용 탄소제품 및 절연제품 제조업",
+   "product": "난방장치 농업 및 임업용 기계제조 소프트웨어 개발",
+   "group": "MACH",
+   "venture_id": "9843"
+  },
+  {
+   "name": "아임",
+   "source": "venture",
+   "sector": "기타 가정용 전기기기 제조업",
+   "product": "드라이기",
+   "group": "MACH",
+   "venture_id": "7545"
+  },
+  {
+   "name": "아진전자부품(주)",
+   "source": "dart",
+   "sector": "자동차 및 트레일러 제조업",
+   "product": "",
+   "group": "MACH",
+   "listed": "유가증권",
+   "stock_code": "009320",
+   "induty_code": "303",
+   "adres": "전라북도 정읍시  공단2길 3"
+  },
+  {
+   "name": "유한회사 대성에너지솔루션",
+   "source": "venture",
+   "sector": "일반전기 공사업",
+   "product": "태양광 구조물",
+   "group": "MACH",
+   "venture_id": "19883"
+  },
+  {
+   "name": "유한회사 동방이노베이션",
+   "source": "venture",
+   "sector": "기타 무선 통신장비 제조업",
+   "product": "자동기상관측장비 및 기타 통신장비",
+   "group": "MACH",
+   "venture_id": "20303"
+  },
+  {
+   "name": "유한회사 정우이앤씨",
+   "source": "venture",
+   "sector": "일반전기 공사업",
+   "product": "전기공사 및 전기용품 도소매",
+   "group": "MACH",
+   "venture_id": "2917"
+  },
+  {
+   "name": "유한회사 한창에너지",
+   "source": "venture",
+   "sector": "배전반 및 전기 자동제어반 제조업",
+   "product": "배전반 및 전기자동제어반, 접지선",
+   "group": "MACH",
+   "venture_id": "5447"
+  },
+  {
+   "name": "유한회사 해신",
+   "source": "venture",
+   "sector": "일반전기 공사업",
+   "product": "태양광발전시설",
+   "group": "MACH",
+   "venture_id": "10346"
+  },
+  {
+   "name": "유한회사유엔에스테크",
+   "source": "venture",
+   "sector": "컴퓨터 제조업",
+   "product": "컴퓨터, 서버, CCTV, NVR,소프트웨어개발,전구 및 램프 제조업,교통 신호장치 제조업,텔레비전 제조업,정보통신공사,경미한공사(네트워크공사, CCTV설치),컴퓨터",
+   "group": "MACH",
+   "venture_id": "36344"
+  },
+  {
+   "name": "이원컴포텍(주)",
+   "source": "dart",
+   "sector": "자동차 및 트레일러 제조업",
+   "product": "",
+   "group": "MACH",
+   "listed": "코스닥",
+   "stock_code": "088290",
+   "induty_code": "303",
+   "adres": "전라북도 정읍시 첨단1로 8 (신정동)"
+  },
+  {
+   "name": "일진하이솔루스(주)",
+   "source": "dart",
+   "sector": "기타 운송장비 제조업",
+   "product": "",
+   "group": "MACH",
+   "listed": "유가증권",
+   "stock_code": "271940",
+   "induty_code": "319",
+   "adres": "전라북도 완주군 봉동읍 완주산단5로 97-46"
+  },
+  {
+   "name": "주식회사  본테크",
+   "source": "venture",
+   "sector": "기타 무선 통신장비 제조업",
+   "product": "영상감시장치,차량번호판독기,교통정보전광판",
+   "group": "MACH",
+   "venture_id": "2473"
+  },
+  {
+   "name": "주식회사 가온셀",
+   "source": "venture",
+   "sector": "전동기 및 발전기 제조업",
+   "product": "연료전지시스템",
+   "group": "MACH",
+   "venture_id": "28205"
+  },
+  {
+   "name": "주식회사 가자",
+   "source": "venture",
+   "sector": "차체 및 특장차 제조업",
+   "product": "캠핑카",
+   "group": "MACH",
+   "venture_id": "9118"
+  },
+  {
+   "name": "주식회사 넥서스비",
+   "source": "venture",
+   "sector": "반도체 제조용 기계 제조업",
+   "product": "반도체 및 디스플레이용 진공증착장비 ALD",
+   "group": "MACH",
+   "venture_id": "33483"
+  },
+  {
+   "name": "주식회사 넥스트에너지",
+   "source": "venture",
+   "sector": "전동기 및 발전기 제조업",
+   "product": "연료전지및수소용품,기타 무선 통신장비 제조업",
+   "group": "MACH",
+   "venture_id": "28867"
+  },
+  {
+   "name": "주식회사 다이나믹인더스트리",
+   "source": "venture",
+   "sector": "그 외 기타 특수목적용 기계 제조업",
+   "product": "태양광 패널 재활용소재 장비, 기계 제작 및 설계",
+   "group": "MACH",
+   "venture_id": "21311"
+  },
+  {
+   "name": "주식회사 다함",
+   "source": "venture",
+   "sector": "배전반 및 전기 자동제어반 제조업",
+   "product": "배전반및자동제어반,ict복합환경제어,ict양액기,응용프로그래밍",
+   "group": "MACH",
+   "venture_id": "23287"
+  },
+  {
+   "name": "주식회사 더넥스트",
+   "source": "venture",
+   "sector": "자동차 차체용 신품 부품 제조업",
+   "product": "자동차부품,범퍼,금형제작",
+   "group": "MACH",
+   "venture_id": "29634"
+  },
+  {
+   "name": "주식회사 더케이",
+   "source": "venture",
+   "sector": "그 외 기타 전기 통신업",
+   "product": "CCTV, 보안카메라. 정보통신공사업",
+   "group": "MACH",
+   "venture_id": "39113"
+  },
+  {
+   "name": "주식회사 동일이앤지",
+   "source": "venture",
+   "sector": "차체 및 특장차 제조업",
+   "product": "특장차부품,태양광에너지부품 제조/신재생에너지사업",
+   "group": "MACH",
+   "venture_id": "23092"
+  },
+  {
+   "name": "주식회사 드림솔라",
+   "source": "venture",
+   "sector": "일반전기 공사업",
+   "product": "태양광",
+   "group": "MACH",
+   "venture_id": "3853"
+  },
+  {
+   "name": "주식회사 라이브맥",
+   "source": "venture",
+   "sector": "농업 및 임업용 기계 제조업",
+   "product": "베일러, 랩핑기, 집초기",
+   "group": "MACH",
+   "venture_id": "289"
+  },
+  {
+   "name": "주식회사 랜드로드",
+   "source": "venture",
+   "sector": "그 외 기타 일반목적용 기계 제조업",
+   "product": "환경제품생산-비점오염저감장치",
+   "group": "MACH",
+   "venture_id": "23396"
+  },
+  {
+   "name": "주식회사 맨든",
+   "source": "venture",
+   "sector": "무인 항공기 및 무인 비행장치 제조업",
+   "product": "드론스테이션,소프트웨어",
+   "group": "MACH",
+   "venture_id": "2553"
+  },
+  {
+   "name": "주식회사 모션다이나믹스",
+   "source": "venture",
+   "sector": "산업용 로봇 제조업",
+   "product": "모션플랫폼",
+   "group": "MACH",
+   "venture_id": "25549"
+  },
+  {
+   "name": "주식회사 모스터일렉",
+   "source": "venture",
+   "sector": "기타 가정용 전기기기 제조업",
+   "product": "전자제품, 전자부품",
+   "group": "MACH",
+   "venture_id": "20700"
+  },
+  {
+   "name": "주식회사 몰드",
+   "source": "venture",
+   "sector": "자동차용 신품 조향장치 및 현가 장치 제조업",
+   "product": "현가장치, 특장차, 중장비 프레임, 화물이송장치 등",
+   "group": "MACH",
+   "venture_id": "21489"
+  },
+  {
+   "name": "주식회사 미래엠에스",
+   "source": "venture",
+   "sector": "그 외 자동차용 신품 부품 제조업",
+   "product": "전기차 전장 부품 개발 설계 제작/승용,상용 전기차 개조사업/ 무선,유선 전기차 충전기 사업/ 수소차 전장부품 개발사업",
+   "group": "MACH",
+   "venture_id": "1552"
+  },
+  {
+   "name": "주식회사 바이오램프",
+   "source": "venture",
+   "sector": "전기용 탄소제품 및 절연제품 제조업",
+   "product": "나노탄소복합소재",
+   "group": "MACH",
+   "venture_id": "6296"
+  },
+  {
+   "name": "주식회사 백현이앤에스",
+   "source": "venture",
+   "sector": "전동기 및 발전기 제조업",
+   "product": "태양광 발전용 접속함",
+   "group": "MACH",
+   "venture_id": "38139"
+  },
+  {
+   "name": "주식회사 비모빌리티",
+   "source": "venture",
+   "sector": "기타 전기 변환장치 제조업",
+   "product": "배터리팩, 충전기",
+   "group": "MACH",
+   "venture_id": "10298"
+  },
+  {
+   "name": "주식회사 비에스이엔지",
+   "source": "venture",
+   "sector": "그 외 자동차용 신품 부품 제조업",
+   "product": "자동차 부품, 특장차 부품, 자동화 기기",
+   "group": "MACH",
+   "venture_id": "27848"
+  },
+  {
+   "name": "주식회사 상봉모터스",
+   "source": "venture",
+   "sector": "자동차 엔진용 신품 부품 제조업",
+   "product": "배기파이프 SCRUREATANK",
+   "group": "MACH",
+   "venture_id": "17256"
+  },
+  {
+   "name": "주식회사 세형아마존",
+   "source": "venture",
+   "sector": "농업 및 임업용 기계 제조업",
+   "product": "치즐쟁기 파종기 디스크해로우 로타리 심경쟁기",
+   "group": "MACH",
+   "venture_id": "4456"
+  },
+  {
+   "name": "주식회사 씨엔와이더스",
+   "source": "venture",
+   "sector": "기타 조명장치 제조업",
+   "product": "IOT기반 스마트 LED, IOT기반 스마트 원격제어시스템",
+   "group": "MACH",
+   "venture_id": "34622"
+  },
+  {
+   "name": "주식회사 씨코어",
+   "source": "venture",
+   "sector": "전기용 탄소제품 및 절연제품 제조업",
+   "product": "활성탄소 일체형필터, 히터일체형 공기정화기, 건조보온기, 히팅베드 외",
+   "group": "MACH",
+   "venture_id": "830"
+  },
+  {
+   "name": "주식회사 아성",
+   "source": "venture",
+   "sector": "산업용 로봇 제조업",
+   "product": "산업용로봇자동화",
+   "group": "MACH",
+   "venture_id": "429"
+  },
+  {
+   "name": "주식회사 아이엘",
+   "source": "venture",
+   "sector": "일반용 전기 조명장치 제조업",
+   "product": "LED경관기구, 일반조명기구, 조명장치,논슬립,전기용품, 전자부품,전기공사,LED경관조명, 전구램프 및 조명장치,전기용품, 전자부품,무역,회로설계 및 공급서비",
+   "group": "MACH",
+   "venture_id": "14378"
+  },
+  {
+   "name": "주식회사 아이오토",
+   "source": "venture",
+   "sector": "그 외 자동차용 신품 부품 제조업",
+   "product": "자동차 전장품, 부품, 전자기기, 전자장치,금형 제작 및 설계,자동차 신품 판매업,자동차 전장품, 부품, 전자기기, 전자장치,무역,자동차 기술시험, 검사 및 분",
+   "group": "MACH",
+   "venture_id": "31014"
+  },
+  {
+   "name": "주식회사 에니에스",
+   "source": "venture",
+   "sector": "가정용 전기 난방기기 제조업",
+   "product": "히터,난방필름,탄소볼라드",
+   "group": "MACH",
+   "venture_id": "26846"
+  },
+  {
+   "name": "주식회사 에스엠전자",
+   "source": "venture",
+   "sector": "배전반 및 전기 자동제어반 제조업",
+   "product": "배전반 및 전기 자동제어반 제조업",
+   "group": "MACH",
+   "venture_id": "11150"
+  },
+  {
+   "name": "주식회사 에이이에스텍",
+   "source": "venture",
+   "sector": "기체 여과기 제조업",
+   "product": "액화 암모니아 전기분해 수소 추출 시스템",
+   "group": "MACH",
+   "venture_id": "38733"
+  },
+  {
+   "name": "주식회사 에이치지솔루션",
+   "source": "venture",
+   "sector": "전기용 탄소제품 및 절연제품 제조업",
+   "product": "탄소소재 응용제품 등 (전기용 탄소제품/전기경보 및 신호장치 외)",
+   "group": "MACH",
+   "venture_id": "5117"
+  },
+  {
+   "name": "주식회사 에코펨",
+   "source": "venture",
+   "sector": "전동기 및 발전기 제조업",
+   "product": "고분자전해질막",
+   "group": "MACH",
+   "venture_id": "14059"
+  },
+  {
+   "name": "주식회사 에프엠에스",
+   "source": "venture",
+   "sector": "기타 측정, 시험, 항해, 제어 및 정밀기기 제조업",
+   "product": "정밀측정기외",
+   "group": "MACH",
+   "venture_id": "21248"
+  },
+  {
+   "name": "주식회사 와이에이치에스앤티",
+   "source": "venture",
+   "sector": "농업 및 임업용 기계 제조업",
+   "product": "농기계부품,자동화물류기기,구조용금속제품 제조",
+   "group": "MACH",
+   "venture_id": "30778"
+  },
+  {
+   "name": "주식회사 우리아이오",
+   "source": "venture",
+   "sector": "물질 검사, 측정 및 분석기구 제조업",
+   "product": "무채혈 혈당 측정기, 접이식 드론, 토양 탄소 측정기, 대기측정모듈, 지뢰 탐지기 등",
+   "group": "MACH",
+   "venture_id": "7651"
+  },
+  {
+   "name": "주식회사 우진이엔에스",
+   "source": "venture",
+   "sector": "배전반 및 전기 자동제어반 제조업",
+   "product": "계장(계측)제어장치",
+   "group": "MACH",
+   "venture_id": "8326"
+  },
+  {
+   "name": "주식회사 이공기전",
+   "source": "venture",
+   "sector": "전동기 및 발전기 제조업",
+   "product": "전동기및발전기,변압기,방전관용안정기,기타",
+   "group": "MACH",
+   "venture_id": "3706"
+  },
+  {
+   "name": "주식회사 이에스테크",
+   "source": "venture",
+   "sector": "일반 통신 공사업",
+   "product": "정보 통신 공사업,영상감지장치, 보안용카메라, 방송장치, 차량 번호 판독시스템, 출입통제 시스템,전자제품, 컴퓨터 주변기기,컴퓨터 주변기기 시스템,시스템통",
+   "group": "MACH",
+   "venture_id": "3802"
+  },
+  {
+   "name": "주식회사 일루베이션",
+   "source": "venture",
+   "sector": "농업 및 임업용 기계 제조업",
+   "product": "농업 및 임업용 기계 제조업,기타 측정, 시험, 항해, 제어 및 정밀 기기 제조업,소프트웨어개발",
+   "group": "MACH",
+   "venture_id": "13991"
+  },
+  {
+   "name": "주식회사 지앤지비팩토리",
+   "source": "venture",
+   "sector": "가정용 전기 난방기기 제조업",
+   "product": "가정용 전기 난방기기",
+   "group": "MACH",
+   "venture_id": "37494"
+  },
+  {
+   "name": "주식회사 지음",
+   "source": "venture",
+   "sector": "전동기 및 발전기 제조업",
+   "product": "태양광발전장치",
+   "group": "MACH",
+   "venture_id": "17426"
+  },
+  {
+   "name": "주식회사 진산테크윈",
+   "source": "venture",
+   "sector": "배전반 및 전기 자동제어반 제조업",
+   "product": "자동제어장치",
+   "group": "MACH",
+   "venture_id": "21969"
+  },
+  {
+   "name": "주식회사 진솔이엔지",
+   "source": "venture",
+   "sector": "그 외 기타 특수목적용 기계 제조업",
+   "product": "시험용역,시험장비제조",
+   "group": "MACH",
+   "venture_id": "5820"
+  },
+  {
+   "name": "주식회사 카이테크",
+   "source": "venture",
+   "sector": "자동차용 신품 전기장치 제조업",
+   "product": "자동차 전장품",
+   "group": "MACH",
+   "venture_id": "12765"
+  },
+  {
+   "name": "주식회사 케이룩수",
+   "source": "venture",
+   "sector": "그 외 기타 전기장비 제조업",
+   "product": "RF(ID)센서, RF(ID)송수신기, 통신기자재, 지중매설물 관리시스템",
+   "group": "MACH",
+   "venture_id": "779"
+  },
+  {
+   "name": "주식회사 티클기술",
+   "source": "venture",
+   "sector": "물질 검사, 측정 및 분석기구 제조업",
+   "product": "온라인 이물입도분석기, 테라헤르츠 비파계검사시스템",
+   "group": "MACH",
+   "venture_id": "35974"
+  },
+  {
+   "name": "주식회사 파로스",
+   "source": "venture",
+   "sector": "기타 무선 통신장비 제조업",
+   "product": "CCTV",
+   "group": "MACH",
+   "venture_id": "38954"
+  },
+  {
+   "name": "주식회사 팔복인더스트리",
+   "source": "venture",
+   "sector": "산업용 로봇 제조업",
+   "product": "산업용 단축 로봇, 자동화 기계",
+   "group": "MACH",
+   "venture_id": "24845"
+  },
+  {
+   "name": "주식회사 플라즈메이스",
+   "source": "venture",
+   "sector": "그 외 기타 전기장비 제조업",
+   "product": "핸드레일 살균장치",
+   "group": "MACH",
+   "venture_id": "732"
+  },
+  {
+   "name": "주식회사 플래닝썬",
+   "source": "venture",
+   "sector": "반도체 제조용 기계 제조업",
+   "product": "반도체 개발 설계 및 의료기기 설비 제조, 설비 판매, 채혈관제조",
+   "group": "MACH",
+   "venture_id": "12688"
+  },
+  {
+   "name": "주식회사 피움",
+   "source": "venture",
+   "sector": "전동기 및 발전기 제조업",
+   "product": "금속공기연료전지",
+   "group": "MACH",
+   "venture_id": "36724"
+  },
+  {
+   "name": "주식회사 하늘항공",
+   "source": "venture",
+   "sector": "무인 항공기 및 무인 비행장치 제조업",
+   "product": "농업용 드론 제작 및 판매",
+   "group": "MACH",
+   "venture_id": "10686"
+  },
+  {
+   "name": "주식회사 하다",
+   "source": "venture",
+   "sector": "농업 및 임업용 기계 제조업",
+   "product": "농업용 기계 및 로봇",
+   "group": "MACH",
+   "venture_id": "19448"
+  },
+  {
+   "name": "주식회사 하이로봇",
+   "source": "venture",
+   "sector": "그 외 기타 일반목적용 기계 제조업",
+   "product": "농업용로봇",
+   "group": "MACH",
+   "venture_id": "38387"
+  },
+  {
+   "name": "주식회사 해라이트",
+   "source": "venture",
+   "sector": "일반용 전기 조명장치 제조업",
+   "product": "태양광 가로등, 버스승강장 태양광LED조명, LED램프, 컨트롤러 외",
+   "group": "MACH",
+   "venture_id": "8943"
+  },
+  {
+   "name": "주식회사 홀로랩",
+   "source": "venture",
+   "sector": "기타 광학기기 및 사진기 제조업",
+   "product": "홀로그램부품 및 시스템",
+   "group": "MACH",
+   "venture_id": "31272"
+  },
+  {
+   "name": "주식회사 황금전력",
+   "source": "venture",
+   "sector": "전동기 및 발전기 제조업",
+   "product": "전기수배전반",
+   "group": "MACH",
+   "venture_id": "15703"
+  },
+  {
+   "name": "주식회사뉴텍바이오",
+   "source": "venture",
+   "sector": "주방용 전기기기 제조업",
+   "product": "음식물처리기",
+   "group": "MACH",
+   "venture_id": "28618"
+  },
+  {
+   "name": "주식회사대양솔루션",
+   "source": "venture",
+   "sector": "그 외 기타 전기장비 제조업",
+   "product": "선박용 자동조타기",
+   "group": "MACH",
+   "venture_id": "34489"
+  },
+  {
+   "name": "주식회사세자에너지",
+   "source": "venture",
+   "sector": "기타 전기 변환장치 제조업",
+   "product": "에너지저장장치,기타전기변환장치",
+   "group": "MACH",
+   "venture_id": "21326"
+  },
+  {
+   "name": "주식회사아이팝",
+   "source": "venture",
+   "sector": "무인 항공기 및 무인 비행장치 제조업",
+   "product": "무인항공기",
+   "group": "MACH",
+   "venture_id": "1601"
+  },
+  {
+   "name": "주식회사알에프세미",
+   "source": "dart",
+   "sector": "전자부품, 컴퓨터, 영상, 음향 및 통신장비 제조업",
+   "product": "",
+   "group": "MACH",
+   "listed": "기타",
+   "stock_code": "096610",
+   "induty_code": "2612",
+   "adres": "전북특별자치도 완주군 봉동읍 완주산단6로 12 알에프세미 전주1공장"
+  },
+  {
+   "name": "주식회사에이에스케이",
+   "source": "venture",
+   "sector": "반도체 제조용 기계 제조업",
+   "product": "반도체장치및부품업",
+   "group": "MACH",
+   "venture_id": "1925"
+  },
+  {
+   "name": "테라릭스 주식회사",
+   "source": "venture",
+   "sector": "전동기 및 발전기 제조업",
+   "product": "연료전지파워팩,연료전지,제어장비,연료전지기반무인항공기 제조/신재생에너지 투자금융/시스템소프트웨어 개발 ,공급",
+   "group": "MACH",
+   "venture_id": "15433"
+  },
+  {
+   "name": "한삼코라(주)",
+   "source": "venture",
+   "sector": "기체 여과기 제조업",
+   "product": "수처리기기,물탱크,전기공급,제어장치 제조/상하수도설비공사/건축물 일반청소",
+   "group": "MACH",
+   "venture_id": "23149"
+  },
+  {
+   "name": "해드림이엔지(주)",
+   "source": "venture",
+   "sector": "배전반 및 전기 자동제어반 제조업",
+   "product": "태양광발전장치 구조물",
+   "group": "MACH",
+   "venture_id": "12954"
+  },
+  {
+   "name": "형제레이저 주식회사",
+   "source": "venture",
+   "sector": "자동차 차체용 신품 부품 제조업",
+   "product": "자동차부품 태양광부품 농기계부품",
+   "group": "MACH",
+   "venture_id": "14193"
+  },
+  {
+   "name": "(유)중앙강재",
+   "source": "venture",
+   "sector": "그 외 기타 1차 철강 제조업",
+   "product": "금속기와, BIPV 모듈",
+   "group": "MAT",
+   "venture_id": "39518"
+  },
+  {
+   "name": "(유)태산",
+   "source": "venture",
+   "sector": "금속 문, 창, 셔터 및 관련제품 제조업",
+   "product": "계장 계측제어, 수질분석기,프로세스제어반,경미한공사,정보통신공사,계장 계측제어, 수질분석기,소프트웨어개발 및 판매,학술연구용역",
+   "group": "MAT",
+   "venture_id": "22038"
+  },
+  {
+   "name": "(유)한빛글로벌",
+   "source": "venture",
+   "sector": "금속 문, 창, 셔터 및 관련제품 제조업",
+   "product": "창호",
+   "group": "MAT",
+   "venture_id": "36725"
+  },
+  {
+   "name": "(주) 다스",
+   "source": "venture",
+   "sector": "그 외 기타 전자부품 제조업",
+   "product": "전자접속카드 외",
+   "group": "MAT",
+   "venture_id": "33492"
+  },
+  {
+   "name": "(주)SH에너지화학",
+   "source": "dart",
+   "sector": "화학 물질 및 화학제품 제조업",
+   "product": "",
+   "group": "MAT",
+   "listed": "유가증권",
+   "stock_code": "002360",
+   "induty_code": "201",
+   "adres": "전라북도 군산시 외항7길 20"
+  },
+  {
+   "name": "(주)나노솔루션",
+   "source": "dart",
+   "sector": "화학 물질 및 화학제품 제조업",
+   "product": "",
+   "group": "MAT",
+   "listed": "코넥스",
+   "stock_code": "238540",
+   "induty_code": "204",
+   "adres": "전북특별자치도 전주시 덕진구 만성북로 51-25"
+  },
+  {
+   "name": "(주)링크롤",
+   "source": "venture",
+   "sector": "전자감지장치 제조업",
+   "product": "모션센서, 자동제어반, 모니터링시스템",
+   "group": "MAT",
+   "venture_id": "19461"
+  },
+  {
+   "name": "(주)신진에스엠",
+   "source": "dart",
+   "sector": "금속 가공제품 제조업",
+   "product": "",
+   "group": "MAT",
+   "listed": "코스닥",
+   "stock_code": "138070",
+   "induty_code": "259",
+   "adres": "전라북도 장수군  장계면 장무로 352-73 (주)신진에스엠장수공장"
+  },
+  {
+   "name": "(주)아이트론",
+   "source": "venture",
+   "sector": "그 외 기타 전자부품 제조업",
+   "product": "그 외 기타 전자 부품 제조업",
+   "group": "MAT",
+   "venture_id": "25771"
+  },
+  {
+   "name": "(주)에스디기술단",
+   "source": "venture",
+   "sector": "수상 금속 골조 구조재 제조업",
+   "product": "에너지저장장치",
+   "group": "MAT",
+   "venture_id": "26376"
+  },
+  {
+   "name": "(주)에스에스티",
+   "source": "venture",
+   "sector": "그 외 기타 전자부품 제조업",
+   "product": "전자부품조립,전광판,스코어보드전광판,무인안내,버스,차량정보,영상정보디스플레이 제조/정보통신공사",
+   "group": "MAT",
+   "venture_id": "33123"
+  },
+  {
+   "name": "(주)엔알비",
+   "source": "venture+dart",
+   "sector": "기타 구조용 금속제품 제조업",
+   "product": "이동형 학교 모듈러",
+   "group": "MAT",
+   "venture_id": "30622",
+   "listed": "코스닥",
+   "stock_code": "475230",
+   "induty_code": "259",
+   "adres": "전북특별자치도 군산시 군산산단로 96"
+  },
+  {
+   "name": "(주)엠파워",
+   "source": "venture",
+   "sector": "그 외 기타 달리 분류되지 않은 제품 제조업",
+   "product": "표지판",
+   "group": "MAT",
+   "venture_id": "35242"
+  },
+  {
+   "name": "(주)오이스텍",
+   "source": "venture",
+   "sector": "그 외 기타 분류 안된 화학제품 제조업",
+   "product": "바이오 화학제품",
+   "group": "MAT",
+   "venture_id": "18481"
+  },
+  {
+   "name": "(주)이렘",
+   "source": "dart",
+   "sector": "1차 금속 제조업",
+   "product": "",
+   "group": "MAT",
+   "listed": "코스닥",
+   "stock_code": "009730",
+   "induty_code": "2413",
+   "adres": "전라북도 부안군  행안면 부안농공단지길 29"
+  },
+  {
+   "name": "(주)제이아이테크",
+   "source": "venture+dart",
+   "sector": "그 외 기타 분류 안된 화학제품 제조업",
+   "product": "반도체 프리커서,쿼츠,블랭크,포토마스크용 케이스 제조",
+   "group": "MAT",
+   "venture_id": "8180",
+   "listed": "코스닥",
+   "stock_code": "417500",
+   "induty_code": "204",
+   "adres": "전라북도 군산시 중가도길 16"
+  },
+  {
+   "name": "(주)지엘티",
+   "source": "venture",
+   "sector": "금속 표시판 제조업",
+   "product": "교통안전표지판,도로표지판,도로표지병,조명기구,가로등,수배전,가로등기구,무대장치 제조/태양광발전/경미한공사/무역",
+   "group": "MAT",
+   "venture_id": "10215"
+  },
+  {
+   "name": "(주)천보비엘에스",
+   "source": "venture",
+   "sector": "그 외 기타 분류 안된 화학제품 제조업",
+   "product": "2차전지전해질",
+   "group": "MAT",
+   "venture_id": "26578"
+  },
+  {
+   "name": "(주)폴라리스우노",
+   "source": "dart",
+   "sector": "화학 물질 및 화학제품 제조업",
+   "product": "",
+   "group": "MAT",
+   "listed": "코스닥",
+   "stock_code": "114630",
+   "induty_code": "20501",
+   "adres": "전라북도 완주군  봉동읍 완주산단3로 158-15 우노앤컴퍼니"
+  },
+  {
+   "name": "(주)하이플",
+   "source": "venture",
+   "sector": "포장용 플라스틱 성형용기 제조업",
+   "product": "플라스틱운반용기",
+   "group": "MAT",
+   "venture_id": "37709"
+  },
+  {
+   "name": "(주)한농화성",
+   "source": "dart",
+   "sector": "화학 물질 및 화학제품 제조업",
+   "product": "",
+   "group": "MAT",
+   "listed": "유가증권",
+   "stock_code": "011500",
+   "induty_code": "20421",
+   "adres": "전라북도 군산시  외항1길 24 (소룡동,0)"
+  },
+  {
+   "name": "㈜로드씰",
+   "source": "venture",
+   "sector": "그 외 기타 분류 안된 화학제품 제조업",
+   "product": "포장도로봉함재,신축이음재,교면방수재,자착식방수시트",
+   "group": "MAT",
+   "venture_id": "11991"
+  },
+  {
+   "name": "㈜위델소재",
+   "source": "venture",
+   "sector": "그 외 기타 분류 안된 화학제품 제조업",
+   "product": "OLED재료, IT세정제, 화장품재료",
+   "group": "MAT",
+   "venture_id": "37046"
+  },
+  {
+   "name": "㈜인에코",
+   "source": "venture",
+   "sector": "그 외 기타 분류 안된 비금속 광물제품 제조업",
+   "product": "기능성 친환경 건축자재 아이에코 블록",
+   "group": "MAT",
+   "venture_id": "5408"
+  },
+  {
+   "name": "㈜케이에스아이",
+   "source": "venture",
+   "sector": "육상 금속 골조 구조재 제조업",
+   "product": "금속구조물",
+   "group": "MAT",
+   "venture_id": "12026"
+  },
+  {
+   "name": "㈜퓨어멤",
+   "source": "venture",
+   "sector": "그 외 기타 플라스틱 제품 제조업",
+   "product": "중공사막",
+   "group": "MAT",
+   "venture_id": "19805"
+  },
+  {
+   "name": "㈜플루콘",
+   "source": "venture",
+   "sector": "그 외 기타 전자부품 제조업",
+   "product": "전자부품용 플라스틱 필름",
+   "group": "MAT",
+   "venture_id": "15957"
+  },
+  {
+   "name": "내쇼날씨엔디 주식회사",
+   "source": "venture",
+   "sector": "금속 가구 제조업",
+   "product": "고정식연결의자옥외용벤치",
+   "group": "MAT",
+   "venture_id": "14410"
+  },
+  {
+   "name": "달슨",
+   "source": "venture",
+   "sector": "전자감지장치 제조업",
+   "product": "센서 및 센서모듈 (광센서, 초음파센서)",
+   "group": "MAT",
+   "venture_id": "36198"
+  },
+  {
+   "name": "대주코레스(주)",
+   "source": "dart",
+   "sector": "1차 금속 제조업",
+   "product": "",
+   "group": "MAT",
+   "listed": "기타",
+   "stock_code": "008340",
+   "induty_code": "24222",
+   "adres": "전라북도 완주군 봉동읍 완주산단6로 266"
+  },
+  {
+   "name": "도가테크",
+   "source": "venture",
+   "sector": "그 외 기타 전자부품 제조업",
+   "product": "LED전광판 영상정보디스플레이장치CCTV",
+   "group": "MAT",
+   "venture_id": "19760"
+  },
+  {
+   "name": "미원스페셜티케미칼(주)",
+   "source": "dart",
+   "sector": "화학 물질 및 화학제품 제조업",
+   "product": "",
+   "group": "MAT",
+   "listed": "유가증권",
+   "stock_code": "268280",
+   "induty_code": "201",
+   "adres": "전라북도 완주군 봉동읍 완주산단1로 167"
+  },
+  {
+   "name": "바크로드",
+   "source": "venture",
+   "sector": "기타 이차전지 제조업",
+   "product": "기타 전기 변환장치 제조업",
+   "group": "MAT",
+   "venture_id": "36018"
+  },
+  {
+   "name": "비나텍주식회사",
+   "source": "venture+dart",
+   "sector": "그 외 기타 전자부품 제조업",
+   "product": "슈퍼커패시터",
+   "group": "MAT",
+   "venture_id": "12350",
+   "listed": "코스닥",
+   "stock_code": "126340",
+   "induty_code": "282",
+   "adres": "전라북도 전주시 덕진구 운암로 15"
+  },
+  {
+   "name": "상명이엔텍주식회사",
+   "source": "venture",
+   "sector": "기타 기초 유기 화학물질 제조업",
+   "product": "연소첨가제,수용성 액체 및 고체 분사장치 제조업,화학공업설비 설치공사업,화학제품",
+   "group": "MAT",
+   "venture_id": "17368"
+  },
+  {
+   "name": "선진공업(주)",
+   "source": "venture",
+   "sector": "금속 가구 제조업",
+   "product": "철재목재가구,주방가구및기구,실내건축 공사업,경미한공사,철재목재가구,주방가구및　기구,기타무역업,철재목재가구",
+   "group": "MAT",
+   "venture_id": "11434"
+  },
+  {
+   "name": "성보넥스코㈜",
+   "source": "venture",
+   "sector": "그 외 기타 분류 안된 화학제품 제조업",
+   "product": "콘크리트혼합물",
+   "group": "MAT",
+   "venture_id": "39414"
+  },
+  {
+   "name": "성일하이텍 주식회사",
+   "source": "dart",
+   "sector": "화학 물질 및 화학제품 제조업",
+   "product": "",
+   "group": "MAT",
+   "listed": "코스닥",
+   "stock_code": "365340",
+   "induty_code": "201",
+   "adres": "전북특별자치도 군산시 새만금북로 122 -"
+  },
+  {
+   "name": "신우전자㈜",
+   "source": "venture",
+   "sector": "포장용 플라스틱 성형용기 제조업",
+   "product": "Embossed Carrier Tape",
+   "group": "MAT",
+   "venture_id": "16480"
+  },
+  {
+   "name": "씨피에스 주식회사",
+   "source": "venture",
+   "sector": "그 외 기타 분류 안된 화학제품 제조업",
+   "product": "전도성 페이스트",
+   "group": "MAT",
+   "venture_id": "31024"
+  },
+  {
+   "name": "에너에버배터리솔루션(주)",
+   "source": "venture",
+   "sector": "기타 이차전지 제조업",
+   "product": "이차전지 분리막 및 코팅 분리막",
+   "group": "MAT",
+   "venture_id": "32138"
+  },
+  {
+   "name": "에코엔텍주식회사",
+   "source": "venture",
+   "sector": "기타 기초 무기 화학물질 제조업",
+   "product": "에코채움재(ecoment)",
+   "group": "MAT",
+   "venture_id": "5630"
+  },
+  {
+   "name": "오성첨단소재(주)",
+   "source": "dart",
+   "sector": "고무 및 플라스틱제품 제조업",
+   "product": "",
+   "group": "MAT",
+   "listed": "코스닥",
+   "stock_code": "052420",
+   "induty_code": "222",
+   "adres": "전라북도 익산시 석암로17길 104 오성첨단소재(주)"
+  },
+  {
+   "name": "유니레즈㈜",
+   "source": "venture",
+   "sector": "발광 다이오드 제조업",
+   "product": "LED 패키지",
+   "group": "MAT",
+   "venture_id": "12962"
+  },
+  {
+   "name": "유한회사 그린바이오",
+   "source": "venture",
+   "sector": "그 외 기타 분류 안된 화학제품 제조업",
+   "product": "부숙토 비료",
+   "group": "MAT",
+   "venture_id": "25612"
+  },
+  {
+   "name": "유한회사 오케이이엔지",
+   "source": "venture",
+   "sector": "그 외 기타 비금속광물 광업",
+   "product": "전기및 태양광",
+   "group": "MAT",
+   "venture_id": "39599"
+  },
+  {
+   "name": "유한회사 줌바이오텍",
+   "source": "venture",
+   "sector": "그 외 기타 분류 안된 화학제품 제조업",
+   "product": "친환경수질정화시스템,미생물촉매제",
+   "group": "MAT",
+   "venture_id": "39481"
+  },
+  {
+   "name": "이스켐 주식회사",
+   "source": "venture",
+   "sector": "산업용 그 외 비경화 고무제품 제조업",
+   "product": "다이아프램",
+   "group": "MAT",
+   "venture_id": "25968"
+  },
+  {
+   "name": "이피캠텍 주식회사",
+   "source": "venture",
+   "sector": "그 외 기타 플라스틱 제품 제조업",
+   "product": "코팅제코팅시트코팅필름 외",
+   "group": "MAT",
+   "venture_id": "13681"
+  },
+  {
+   "name": "제일전자",
+   "source": "venture",
+   "sector": "그 외 기타 전자부품 제조업",
+   "product": "광센서,엘이디광원,조명기기,전자부품,태양광모듈",
+   "group": "MAT",
+   "venture_id": "11101"
+  },
+  {
+   "name": "주식회사  송백이엔에스",
+   "source": "venture",
+   "sector": "그 외 기타 전자부품 제조업",
+   "product": "전자부품,반도체,LED조명,전광판,교통신호장치 제조/전자부품,반도체,전광판교통신호장치 도소매",
+   "group": "MAT",
+   "venture_id": "9003"
+  },
+  {
+   "name": "주식회사 골드플랫",
+   "source": "venture",
+   "sector": "시계 및 귀금속제품 도매업",
+   "product": "귀금속 커머스 플랫폼",
+   "group": "MAT",
+   "venture_id": "35316"
+  },
+  {
+   "name": "주식회사 넥스젠",
+   "source": "venture",
+   "sector": "기타 이차전지 제조업",
+   "product": "2차전지 배터리팩 등",
+   "group": "MAT",
+   "venture_id": "5559"
+  },
+  {
+   "name": "주식회사 다시",
+   "source": "venture",
+   "sector": "비금속류 원료 재생업",
+   "product": "바이오디젤 원료",
+   "group": "MAT",
+   "venture_id": "22638"
+  },
+  {
+   "name": "주식회사 대명산업",
+   "source": "venture",
+   "sector": "기타 기초 유기 화학물질 제조업",
+   "product": "해초제거제",
+   "group": "MAT",
+   "venture_id": "10238"
+  },
+  {
+   "name": "주식회사 더엠제이",
+   "source": "venture",
+   "sector": "코르크 및 조물제품 제조업",
+   "product": "코르크바닥포장재및조물 제품 (양식장수조),도장, 습식, 방수, 석공,경미한공사,건축자재, 무역",
+   "group": "MAT",
+   "venture_id": "23490"
+  },
+  {
+   "name": "주식회사 더클아이앤디",
+   "source": "venture",
+   "sector": "침구 및 관련제품 제조업",
+   "product": "탄소/한지소재방석, 마스크, 방호복",
+   "group": "MAT",
+   "venture_id": "26530"
+  },
+  {
+   "name": "주식회사 로보다인시스템",
+   "source": "venture",
+   "sector": "그 외 기타 전자부품 제조업",
+   "product": "교육용로봇",
+   "group": "MAT",
+   "venture_id": "23577"
+  },
+  {
+   "name": "주식회사 미래기술",
+   "source": "venture",
+   "sector": "그 외 기타 전자부품 제조업",
+   "product": "전자부품",
+   "group": "MAT",
+   "venture_id": "769"
+  },
+  {
+   "name": "주식회사 바이오룸",
+   "source": "venture",
+   "sector": "그 외 기타 플라스틱 제품 제조업",
+   "product": "바이오 스티로폼",
+   "group": "MAT",
+   "venture_id": "16414"
+  },
+  {
+   "name": "주식회사 신화철강",
+   "source": "venture",
+   "sector": "그 외 기타 1차 철강 제조업",
+   "product": "태양광구조물, 기타철강재",
+   "group": "MAT",
+   "venture_id": "7631"
+  },
+  {
+   "name": "주식회사 아란",
+   "source": "venture",
+   "sector": "그 외 기타 콘크리트 제품 및 유사제품 제조업",
+   "product": "인공암",
+   "group": "MAT",
+   "venture_id": "20507"
+  },
+  {
+   "name": "주식회사 알디솔루션",
+   "source": "venture",
+   "sector": "기타 비철금속 제련, 정련 및 합금 제조업",
+   "product": "Co-Ni 합금, 탄산리튬 등 이차전지 소재",
+   "group": "MAT",
+   "venture_id": "21838"
+  },
+  {
+   "name": "주식회사 알이에스(파주1공장)",
+   "source": "venture",
+   "sector": "기타 기초 무기 화학물질 제조업",
+   "product": "배터리 순화자원 Ni, Co, Mn 솔루션, 탄산리튬, 혼합수산화침전물(Ni), Cu 금속, , 비철금속혼합물질(블랙매스)",
+   "group": "MAT",
+   "venture_id": "28296"
+  },
+  {
+   "name": "주식회사 알트에코",
+   "source": "venture",
+   "sector": "기타 1차 비철금속 제조업",
+   "product": "이차전지원료용 블랙매스 및 전구체",
+   "group": "MAT",
+   "venture_id": "33806"
+  },
+  {
+   "name": "주식회사 에스더블유케미컬즈",
+   "source": "venture",
+   "sector": "그 외 기타 분류 안된 화학제품 제조업",
+   "product": "나노다이아몬드 정제 분말 및 분산액",
+   "group": "MAT",
+   "venture_id": "19874"
+  },
+  {
+   "name": "주식회사 에스엠엔테크",
+   "source": "venture",
+   "sector": "금속탱크 및 저장용기 제조업",
+   "product": "공작기계(에어탱크,공기살균기) 제조/산업용 로봇,제어기,공기조화장치 도소매,전자상거래/방역용품,공기살균기 임대",
+   "group": "MAT",
+   "venture_id": "21604"
+  },
+  {
+   "name": "주식회사 에스제이켐",
+   "source": "dart",
+   "sector": "화학 물질 및 화학제품 제조업",
+   "product": "",
+   "group": "MAT",
+   "listed": "코넥스",
+   "stock_code": "217910",
+   "induty_code": "20129",
+   "adres": "전라북도 익산시 왕궁면 무왕로 2243-23"
+  },
+  {
+   "name": "주식회사 에이치온",
+   "source": "venture",
+   "sector": "과자류 및 코코아 제품 제조업",
+   "product": "과자류 면류",
+   "group": "MAT",
+   "venture_id": "14681"
+  },
+  {
+   "name": "주식회사 엘립",
+   "source": "venture",
+   "sector": "기타 직물제품 제조업",
+   "product": "화재대피용 마스크, 흡착 필터",
+   "group": "MAT",
+   "venture_id": "29278"
+  },
+  {
+   "name": "주식회사 엘티에스(LTS, Corp)",
+   "source": "venture",
+   "sector": "부직포 및 펠트 제조업",
+   "product": "소음진동 저감, 음향품질개선 및 공기질개선 건축자재",
+   "group": "MAT",
+   "venture_id": "35260"
+  },
+  {
+   "name": "주식회사 오가넬",
+   "source": "venture",
+   "sector": "그 외 기타 분류 안된 화학제품 제조업",
+   "product": "살균제, 탈취제, 화장품소재",
+   "group": "MAT",
+   "venture_id": "21546"
+  },
+  {
+   "name": "주식회사 이큐브머티리얼즈",
+   "source": "venture",
+   "sector": "비금속광물 분쇄물 생산업",
+   "product": "나노탄소와 나노실리콘제조",
+   "group": "MAT",
+   "venture_id": "29422"
+  },
+  {
+   "name": "주식회사 정석케미칼",
+   "source": "venture",
+   "sector": "일반용 도료 및 관련제품 제조업",
+   "product": "노면표지용도료",
+   "group": "MAT",
+   "venture_id": "33679"
+  },
+  {
+   "name": "주식회사 제이엘(JL)",
+   "source": "venture",
+   "sector": "그 외 기타 달리 분류되지 않은 제품 제조업",
+   "product": "마술도구",
+   "group": "MAT",
+   "venture_id": "18897"
+  },
+  {
+   "name": "주식회사 주미당",
+   "source": "venture",
+   "sector": "기타 종이 상자 및 용기 제조업",
+   "product": "소매 음식점이 업셀링하는 AI 기반 맞춤형 페어링 제품 및 콘텐츠 솔루션",
+   "group": "MAT",
+   "venture_id": "17850"
+  },
+  {
+   "name": "주식회사 지안산업",
+   "source": "venture",
+   "sector": "그 외 기타 분류 안된 비금속 광물제품 제조업",
+   "product": "지반고화재",
+   "group": "MAT",
+   "venture_id": "11572"
+  },
+  {
+   "name": "주식회사 진셀바이오텍",
+   "source": "venture",
+   "sector": "그 외 기타 분류 안된 화학제품 제조업",
+   "product": "재조합단백질, 산업용 효소",
+   "group": "MAT",
+   "venture_id": "13182"
+  },
+  {
+   "name": "주식회사 진웅",
+   "source": "venture",
+   "sector": "그 외 기타 분류 안된 화학제품 제조업",
+   "product": "산업용세척제, 수처리제 외",
+   "group": "MAT",
+   "venture_id": "24454"
+  },
+  {
+   "name": "주식회사 코솔러스",
+   "source": "venture",
+   "sector": "그 외 기타 분류 안된 화학제품 제조업",
+   "product": "폐이차전지 양극재 회수용 추출제, 난연 마스터 배치",
+   "group": "MAT",
+   "venture_id": "32922"
+  },
+  {
+   "name": "주식회사 하이솔",
+   "source": "venture",
+   "sector": "금속탱크 및 저장용기 제조업",
+   "product": "액화수소단열창 배관자재",
+   "group": "MAT",
+   "venture_id": "7808"
+  },
+  {
+   "name": "주식회사 해븐코리아",
+   "source": "venture",
+   "sector": "일반용 도료 및 관련제품 제조업",
+   "product": "방수자재외",
+   "group": "MAT",
+   "venture_id": "12268"
+  },
+  {
+   "name": "주식회사 호트코퍼레이션",
+   "source": "venture",
+   "sector": "기타 구조용 금속제품 제조업",
+   "product": "특수목적 산업용 설비 및 특수목적 물류용 설비 제작",
+   "group": "MAT",
+   "venture_id": "30445"
+  },
+  {
+   "name": "주식회사성현",
+   "source": "venture",
+   "sector": "기타 구조용 금속제품 제조업",
+   "product": "발전플랜트기자재",
+   "group": "MAT",
+   "venture_id": "20662"
+  },
+  {
+   "name": "진흥패턴",
+   "source": "venture",
+   "sector": "그 외 기타 비금속광물 광업",
+   "product": "가로등주 및 led 등기구",
+   "group": "MAT",
+   "venture_id": "9893"
+  },
+  {
+   "name": "페이퍼코리아(주)",
+   "source": "dart",
+   "sector": "펄프, 종이 및 종이제품 제조업",
+   "product": "",
+   "group": "MAT",
+   "listed": "유가증권",
+   "stock_code": "001020",
+   "induty_code": "171",
+   "adres": "전라북도 군산시 외항로 1245 페이퍼코리아(주)"
+  },
+  {
+   "name": "피케이씨(주)",
+   "source": "dart",
+   "sector": "화학 물질 및 화학제품 제조업",
+   "product": "",
+   "group": "MAT",
+   "listed": "유가증권",
+   "stock_code": "001340",
+   "induty_code": "20131",
+   "adres": "전라북도 군산시  임해로 494-16"
+  },
+  {
+   "name": "한국바이오차 농업회사법인 주식회사",
+   "source": "venture",
+   "sector": "그 외 기타 나무제품 제조업",
+   "product": "바이오차",
+   "group": "MAT",
+   "venture_id": "812"
+  },
+  {
+   "name": "(주)광희테크윈",
+   "source": "venture",
+   "sector": "전시 및 광고용 조명장치 제조업",
+   "product": "LED전광판 제작,영상정보디스플레이장치,열차행선안내장치,CCTV, 버스및차량정보 안내장치,방송 및 무선통신기기 과학기자재, 계측기기, 측정장비, 이화학기기,",
+   "group": "MEDIA",
+   "venture_id": "37815"
+  },
+  {
+   "name": "(주)레인보우핀토스미디어",
+   "source": "venture",
+   "sector": "기타 인쇄업",
+   "product": "광학홀로그램",
+   "group": "MEDIA",
+   "venture_id": "34936"
+  },
+  {
+   "name": "(주)소유브랜딩",
+   "source": "venture",
+   "sector": "시각 디자인업",
+   "product": "산업디자인/문구용종이제품 제조/경미한공사(인테리어)/소프트웨어 개발,공급/경영컨설팅/광고디자인,전문디자인,광고물 작성",
+   "group": "MEDIA",
+   "venture_id": "10416"
+  },
+  {
+   "name": "비주얼바이브 주식회사",
+   "source": "venture",
+   "sector": "그 외 기타 광고 관련 서비스업",
+   "product": "광고사진",
+   "group": "MEDIA",
+   "venture_id": "4996"
+  },
+  {
+   "name": "어바웃스토리",
+   "source": "venture",
+   "sector": "광고 영화 및 비디오물 제작업",
+   "product": "미디어콘텐츠창작, 행사 홍보영상 촬영, 콘텐츠 관련 소프트웨어 개발",
+   "group": "MEDIA",
+   "venture_id": "39000"
+  },
+  {
+   "name": "주식회사 넥스첨단소재",
+   "source": "venture",
+   "sector": "연성 및 기타 인쇄회로기판 제조업",
+   "product": "FCCL, 광학필름, 인쇄 및 제책용기기, 연구 개발업",
+   "group": "MEDIA",
+   "venture_id": "31784"
+  },
+  {
+   "name": "주식회사 씨삼공일",
+   "source": "venture",
+   "sector": "광고 대행업",
+   "product": "광고 대행 플랫폼",
+   "group": "MEDIA",
+   "venture_id": "3819"
+  },
+  {
+   "name": "주식회사 이모션",
+   "source": "venture",
+   "sector": "광고 영화 및 비디오물 제작업",
+   "product": "광고영화,비디오물 제작,기록매체 복제/정보통신공사,경미한공사",
+   "group": "MEDIA",
+   "venture_id": "20453"
+  },
+  {
+   "name": "주식회사 인톡",
+   "source": "venture",
+   "sector": "광고 대행업",
+   "product": "금융 영업사원 AX를 위한 인공지능 기반 온보딩 및 금융상품 맞춤설계 AI 자동화 솔루션",
+   "group": "MEDIA",
+   "venture_id": "30365"
+  },
+  {
+   "name": "(주)더원헬스디자인",
+   "source": "venture",
+   "sector": "농림수산학 및 수의학 연구개발업",
+   "product": "식품, 화장품, 학술연구용역",
+   "group": "RND",
+   "venture_id": "14448"
+  },
+  {
+   "name": "(주)바이오드",
+   "source": "venture",
+   "sector": "농림수산학 및 수의학 연구개발업",
+   "product": "의약품.의료용품.바이오연구개발및동물실험연구대행(안전성,유효성평가),질병방제시스템구축 컨설팅,질병진단서비스",
+   "group": "RND",
+   "venture_id": "21322"
+  },
+  {
+   "name": "(주)지니스",
+   "source": "venture",
+   "sector": "의학 및 약학 연구개발업",
+   "product": "항암, 항비만, 백신",
+   "group": "RND",
+   "venture_id": "23659"
+  },
+  {
+   "name": "(주)케비젠",
+   "source": "venture",
+   "sector": "의학 및 약학 연구개발업",
+   "product": "기능성화장품，신약개발,발효유,사료첨가제및사료,식품류,신기능성물질,사료첨가제및사료,식품류및발효유,식품류및발효유",
+   "group": "RND",
+   "venture_id": "23626"
+  },
+  {
+   "name": "(주)한국에너지기술단",
+   "source": "venture",
+   "sector": "기타 엔지니어링 서비스업",
+   "product": "엔지니어링 서비스",
+   "group": "RND",
+   "venture_id": "29920"
+  },
+  {
+   "name": "㈜씨엔텍",
+   "source": "venture",
+   "sector": "건물 및 토목 엔지니어링 서비스업",
+   "product": "토목건축기계설비 엔지니어링 ,조립금속모듈제작",
+   "group": "RND",
+   "venture_id": "30111"
+  },
+  {
+   "name": "㈜팀경영컨설팅",
+   "source": "venture",
+   "sector": "경영 컨설팅업",
+   "product": "경영자문, 경영컨설팅, 기술컨설팅, 학술연구용역, 경영기술관련교육, 소프트웨어개발",
+   "group": "RND",
+   "venture_id": "6832"
+  },
+  {
+   "name": "㈜휴벳",
+   "source": "venture",
+   "sector": "농림수산학 및 수의학 연구개발업",
+   "product": "비임상CRO 동물용사료 동물용 의약품",
+   "group": "RND",
+   "venture_id": "16104"
+  },
+  {
+   "name": "로노제약 주식회사",
+   "source": "venture",
+   "sector": "의학 및 약학 연구개발업",
+   "product": "의학 및 약학 연구개발",
+   "group": "RND",
+   "venture_id": "33660"
+  },
+  {
+   "name": "맥소프트㈜",
+   "source": "venture",
+   "sector": "기타 공학 연구개발업",
+   "product": "복합재 제품개발 연구,기술용역,무역",
+   "group": "RND",
+   "venture_id": "12776"
+  },
+  {
+   "name": "멜리엔스 농업회사법인 주식회사",
+   "source": "venture",
+   "sector": "농림수산학 및 수의학 연구개발업",
+   "product": "저탄소 축산 플랫폼",
+   "group": "RND",
+   "venture_id": "23755"
+  },
+  {
+   "name": "서튼후 주식회사",
+   "source": "venture",
+   "sector": "경영 컨설팅업",
+   "product": "금융 관련 정보시스템 구축 및 자문 서비스",
+   "group": "RND",
+   "venture_id": "11709"
+  },
+  {
+   "name": "이브이앤솔루션 주식회사",
+   "source": "venture",
+   "sector": "기타 엔지니어링 서비스업",
+   "product": "전기트럭 전용 콜드체인 특장차",
+   "group": "RND",
+   "venture_id": "32653"
+  },
+  {
+   "name": "제닉스큐어 주식회사",
+   "source": "venture",
+   "sector": "의학 및 약학 연구개발업",
+   "product": "신약개발",
+   "group": "RND",
+   "venture_id": "26188"
+  },
+  {
+   "name": "제이그린바이오 주식회사",
+   "source": "venture",
+   "sector": "자연과학 및 공학 융합 연구개발업",
+   "product": "미생물제제 및 건강기능식품",
+   "group": "RND",
+   "venture_id": "3969"
+  },
+  {
+   "name": "주식회사 꾼",
+   "source": "venture",
+   "sector": "그 외 기타 분류 안된 전문, 과학 및 기술 서비스업",
+   "product": "짐 운반 소비자 서비스, 운송 최적화 DB, 고객 정성 데이터 가공",
+   "group": "RND",
+   "venture_id": "7276"
+  },
+  {
+   "name": "주식회사 나눔스페이스",
+   "source": "venture",
+   "sector": "의학 및 약학 연구개발업",
+   "product": "e임상솔루션서비스",
+   "group": "RND",
+   "venture_id": "37599"
+  },
+  {
+   "name": "주식회사 나디안바이오",
+   "source": "venture",
+   "sector": "의학 및 약학 연구개발업",
+   "product": "바이오 연구개발",
+   "group": "RND",
+   "venture_id": "33263"
+  },
+  {
+   "name": "주식회사 뉴로그린",
+   "source": "venture",
+   "sector": "의학 및 약학 연구개발업",
+   "product": "pain streaming",
+   "group": "RND",
+   "venture_id": "17411"
+  },
+  {
+   "name": "주식회사 디에프알엔",
+   "source": "venture",
+   "sector": "자연과학 및 공학 융합 연구개발업",
+   "product": "바이오 촉매 개발을 통한 재생소재 생산 및 공급",
+   "group": "RND",
+   "venture_id": "29475"
+  },
+  {
+   "name": "주식회사 미라클스타",
+   "source": "venture",
+   "sector": "그 외 기타 분류 안된 전문, 과학 및 기술 서비스업",
+   "product": "부동산투자교육사업, 기업자문컨설팅,부동산개발기획및 분양용역업,페인트,방수",
+   "group": "RND",
+   "venture_id": "18896"
+  },
+  {
+   "name": "주식회사 배터리솔루션",
+   "source": "venture",
+   "sector": "자연과학 및 공학 융합 연구개발업",
+   "product": "이차전지용 양극소재 (전구체)",
+   "group": "RND",
+   "venture_id": "34806"
+  },
+  {
+   "name": "주식회사 셀레브레인",
+   "source": "venture",
+   "sector": "의학 및 약학 연구개발업",
+   "product": "줄기세포유전자치료제",
+   "group": "RND",
+   "venture_id": "8085"
+  },
+  {
+   "name": "주식회사 셀코",
+   "source": "venture",
+   "sector": "의학 및 약학 연구개발업",
+   "product": "골이식재 및 의약학 소재 개발",
+   "group": "RND",
+   "venture_id": "37681"
+  },
+  {
+   "name": "주식회사 소노파마",
+   "source": "venture",
+   "sector": "의학 및 약학 연구개발업",
+   "product": "의료기기 개발",
+   "group": "RND",
+   "venture_id": "30108"
+  },
+  {
+   "name": "주식회사 스코프로",
+   "source": "venture",
+   "sector": "의학 및 약학 연구개발업",
+   "product": "위장관 전층 절제용 오버튜브",
+   "group": "RND",
+   "venture_id": "858"
+  },
+  {
+   "name": "주식회사 아헤스",
+   "source": "venture",
+   "sector": "기타 자연과학 연구개발업",
+   "product": "연구개발 및 용역,그 외 기타 일반 목적용 기계 제조업,무역업,기타 공학 연구개발업",
+   "group": "RND",
+   "venture_id": "22093"
+  },
+  {
+   "name": "주식회사 엘아이엔티",
+   "source": "venture",
+   "sector": "그 외 기타 분류 안된 전문, 과학 및 기술 서비스업",
+   "product": "팜코디(스마트팜, IOT)",
+   "group": "RND",
+   "venture_id": "27624"
+  },
+  {
+   "name": "주식회사 이노플러스",
+   "source": "venture",
+   "sector": "환경 관련 엔지니어링 서비스업",
+   "product": "대기환경 분석대행, 환경컨설팅, 환경기술개발",
+   "group": "RND",
+   "venture_id": "1306"
+  },
+  {
+   "name": "주식회사 이피에스솔루션",
+   "source": "venture",
+   "sector": "환경 관련 엔지니어링 서비스업",
+   "product": "하수관거 모니터링시스템, 유지관리시스템(OMAS) 및 기술진단(영상해석)서비스",
+   "group": "RND",
+   "venture_id": "16508"
+  },
+  {
+   "name": "주식회사 인우",
+   "source": "venture",
+   "sector": "건물 및 토목 엔지니어링 서비스업",
+   "product": "토목설계도시설계등",
+   "group": "RND",
+   "venture_id": "3055"
+  },
+  {
+   "name": "주식회사 일원바이오",
+   "source": "venture",
+   "sector": "기타 자연과학 연구개발업",
+   "product": "화학 및 생물학 및 기타 자연과학 연구개발업, 건강기능식품",
+   "group": "RND",
+   "venture_id": "12714"
+  },
+  {
+   "name": "주식회사 제로나인메트리얼",
+   "source": "venture",
+   "sector": "전기ㆍ전자공학 연구개발업",
+   "product": "특수LED 및 전자파 차페부품 개발 외",
+   "group": "RND",
+   "venture_id": "29915"
+  },
+  {
+   "name": "주식회사 제이비랩",
+   "source": "venture",
+   "sector": "전기ㆍ전자공학 연구개발업",
+   "product": "전자 부품 및 시스템, 아이오티(IoT), 엣지컴퓨팅기반, 정보통신기기 알앤디(R&D), 전문, 과학 및 기술 서비스업",
+   "group": "RND",
+   "venture_id": "39311"
+  },
+  {
+   "name": "주식회사 주영바이오",
+   "source": "venture",
+   "sector": "자연과학 및 공학 융합 연구개발업",
+   "product": "신약개발, 사료, 학술연구용역, 인공지능응용제품개발, 동물식품개발",
+   "group": "RND",
+   "venture_id": "29446"
+  },
+  {
+   "name": "주식회사 지능로봇스튜디오",
+   "source": "venture",
+   "sector": "자연과학 및 공학 융합 연구개발업",
+   "product": "스마트팜 복합환경센서",
+   "group": "RND",
+   "venture_id": "33578"
+  },
+  {
+   "name": "주식회사 큐로텍",
+   "source": "venture",
+   "sector": "자연과학 및 공학 융합 연구개발업",
+   "product": "레이더기반 헬스케어 기기 및 SW",
+   "group": "RND",
+   "venture_id": "33039"
+  },
+  {
+   "name": "주식회사 큐티뮨바이오",
+   "source": "venture",
+   "sector": "의학 및 약학 연구개발업",
+   "product": "아토피 및 알러지성 결막염 치료제 개발, 여드름용 보습제, 비듬제거용 삼푸",
+   "group": "RND",
+   "venture_id": "24049"
+  },
+  {
+   "name": "주식회사 태서",
+   "source": "venture",
+   "sector": "기타 엔지니어링 서비스업",
+   "product": "기타 엔지니어링",
+   "group": "RND",
+   "venture_id": "6709"
+  },
+  {
+   "name": "주식회사 트루펀딩랩",
+   "source": "venture",
+   "sector": "경영 컨설팅업",
+   "product": "컨설팅 서비스",
+   "group": "RND",
+   "venture_id": "29294"
+  },
+  {
+   "name": "주식회사 팡세",
+   "source": "venture",
+   "sector": "물리, 화학 및 생물학 연구개발업",
+   "product": "바이오 프린팅 장치",
+   "group": "RND",
+   "venture_id": "18263"
+  },
+  {
+   "name": "주식회사 프리모바이오텍",
+   "source": "venture",
+   "sector": "의학 및 약학 연구개발업",
+   "product": "오공약침, 법제유황, 한의약품 연구개발",
+   "group": "RND",
+   "venture_id": "38049"
+  },
+  {
+   "name": "주식회사 플라스바이오",
+   "source": "venture",
+   "sector": "물리, 화학 및 생물학 연구개발업",
+   "product": "브레인인젝트, 스마트인젝트",
+   "group": "RND",
+   "venture_id": "10083"
+  },
+  {
+   "name": "주식회사 하이드로봇테크앤리서치",
+   "source": "venture",
+   "sector": "그 외 기타 분류 안된 전문, 과학 및 기술 서비스업",
+   "product": "해양조사,공학융합 연구개발업",
+   "group": "RND",
+   "venture_id": "23026"
+  },
+  {
+   "name": "(유)해은",
+   "source": "venture",
+   "sector": "교통 신호장치 제조업",
+   "product": "교통신호장치/정보통신업",
+   "group": "SVC",
+   "venture_id": "32708"
+  },
+  {
+   "name": "(주) 스펄스엠텍",
+   "source": "venture",
+   "sector": "선박 구성 부분품 제조업",
+   "product": "선박용 로프절단장치",
+   "group": "SVC",
+   "venture_id": "1732"
+  },
+  {
+   "name": "(주)나노전자",
+   "source": "venture",
+   "sector": "기타 반도체소자 제조업",
+   "product": "IR-LED Chip,Micro LED, R&D Service",
+   "group": "SVC",
+   "venture_id": "402"
+  },
+  {
+   "name": "(주)동서기술",
+   "source": "venture",
+   "sector": "건축설계 및 관련 서비스업",
+   "product": "안전진단업,비계,구조물 해체 공사업, 석면해체제거업,정보통신공사업,시스템 소프트웨어 개발 및 공급업,기타 인문 및 사회과학 연구개발업,건물　및　토목엔지",
+   "group": "SVC",
+   "venture_id": "25449"
+  },
+  {
+   "name": "(주)에리스",
+   "source": "venture",
+   "sector": "도배, 실내장식 및 내장 목공사업",
+   "product": "도장공사,기타 구조용 금속제품 제조업,미장, 타일 및 방수 공사업,건물용 금속 공작물 설치 공사업,경미한공사,건설자재,아스팔트제품,전자상거래 소매업,기타",
+   "group": "SVC",
+   "venture_id": "22246"
+  },
+  {
+   "name": "(주)에이디컴",
+   "source": "venture",
+   "sector": "기타 반도체소자 제조업",
+   "product": "전자응용제품",
+   "group": "SVC",
+   "venture_id": "29305"
+  },
+  {
+   "name": "(주)오디텍",
+   "source": "venture+dart",
+   "sector": "기타 반도체소자 제조업",
+   "product": "반도체 chip 센서 모듈",
+   "group": "SVC",
+   "venture_id": "20302",
+   "listed": "코스닥",
+   "stock_code": "080520",
+   "induty_code": "2612",
+   "adres": "전라북도 완주군 봉동읍 완주산단5로 87"
+  },
+  {
+   "name": "(주)창해에탄올",
+   "source": "dart",
+   "sector": "음료 제조업",
+   "product": "",
+   "group": "SVC",
+   "listed": "코스닥",
+   "stock_code": "004650",
+   "induty_code": "11121",
+   "adres": "전라북도 전주시 덕진구 원만성로 15"
+  },
+  {
+   "name": "(주)피앤엘세미",
+   "source": "venture",
+   "sector": "기타 반도체소자 제조업",
+   "product": "반도체제조",
+   "group": "SVC",
+   "venture_id": "34864"
+  },
+  {
+   "name": "(주)홍시궁",
+   "source": "venture",
+   "sector": "떡류 제조업",
+   "product": "떡,빵,과자 제조,도매/가공식품,커피,차 도매,전자상거래",
+   "group": "SVC",
+   "venture_id": "37720"
+  },
+  {
+   "name": "㈜아이스트",
+   "source": "venture",
+   "sector": "방사선 장치 제조업",
+   "product": "X-ray Detector",
+   "group": "SVC",
+   "venture_id": "23753"
+  },
+  {
+   "name": "㈜옵토웰",
+   "source": "venture",
+   "sector": "기타 반도체소자 제조업",
+   "product": "전자통신부품",
+   "group": "SVC",
+   "venture_id": "18620"
+  },
+  {
+   "name": "㈜웨이투메이크",
+   "source": "venture",
+   "sector": "가정용 및 산업용 공기 조화장치 제조업",
+   "product": "공기살균기, 세라믹 나노분말",
+   "group": "SVC",
+   "venture_id": "23904"
+  },
+  {
+   "name": "농업회사법인 깊은숲속행복한식품(주)",
+   "source": "venture",
+   "sector": "기타 곡물 가공품 제조업",
+   "product": "과자곡물 호화미",
+   "group": "SVC",
+   "venture_id": "28075"
+  },
+  {
+   "name": "농업회사법인 주식회사 오브제바이오",
+   "source": "venture",
+   "sector": "생물 살균 살충제 및 식물보호제 제조업",
+   "product": "미생물농약",
+   "group": "SVC",
+   "venture_id": "15130"
+  },
+  {
+   "name": "디자인보라",
+   "source": "venture",
+   "sector": "기타 전문 서비스업",
+   "product": "산업디자인, 연구개발업",
+   "group": "SVC",
+   "venture_id": "28746"
+  },
+  {
+   "name": "로젠(주)",
+   "source": "dart",
+   "sector": "소매업",
+   "product": "",
+   "group": "SVC",
+   "listed": "코스닥",
+   "stock_code": "033290",
+   "induty_code": "474",
+   "adres": "전라북도 김제시 용지면 백자3길 37 -"
+  },
+  {
+   "name": "메타네이션 주식회사",
+   "source": "venture",
+   "sector": "영상물 제공 서비스업",
+   "product": "영상플랫폼",
+   "group": "SVC",
+   "venture_id": "32933"
+  },
+  {
+   "name": "미르기계",
+   "source": "venture",
+   "sector": "절삭가공 및 유사처리업",
+   "product": "면취기공구거치대",
+   "group": "SVC",
+   "venture_id": "4234"
+  },
+  {
+   "name": "뽕의도리 농업회사법인 유한회사",
+   "source": "venture",
+   "sector": "가금류 가공 및 저장 처리업",
+   "product": "소시지,햄,식육부산물,그 외 기타 상품 전문 도매업,교육,체험",
+   "group": "SVC",
+   "venture_id": "7794"
+  },
+  {
+   "name": "설로인 주식회사",
+   "source": "venture",
+   "sector": "육류 포장육 및 냉동육 가공업 (가금류 제외)",
+   "product": "한우",
+   "group": "SVC",
+   "venture_id": "11641"
+  },
+  {
+   "name": "세븐브로이맥주 주식회사",
+   "source": "venture+dart",
+   "sector": "맥아 및 맥주 제조업",
+   "product": "맥주 제조/물리,화학,생물학 연구개발",
+   "group": "SVC",
+   "venture_id": "1367",
+   "listed": "코넥스",
+   "stock_code": "267080",
+   "induty_code": "11112",
+   "adres": "전북특별자치도 익산시 왕궁면 국가식품로4길 21 -"
+  },
+  {
+   "name": "수에너지 주식회사",
+   "source": "venture",
+   "sector": "가정용 및 산업용 공기 조화장치 제조업",
+   "product": "신재생에너지 이용 시스템",
+   "group": "SVC",
+   "venture_id": "17771"
+  },
+  {
+   "name": "스코트라(주)",
+   "source": "venture",
+   "sector": "기타 선박 건조업",
+   "product": "조립식수상태양광부유장치(플로트) 구초제 설계,제조,시공/태양광 발전/엔지니어링/무역(수출입)",
+   "group": "SVC",
+   "venture_id": "15372"
+  },
+  {
+   "name": "아이센서스 주식회사",
+   "source": "venture",
+   "sector": "기타 반도체소자 제조업",
+   "product": "중적외선 반도체 기판소재/소자",
+   "group": "SVC",
+   "venture_id": "20723"
+  },
+  {
+   "name": "아티클21 주식회사",
+   "source": "venture",
+   "sector": "사업 및 무형 재산권 중개업",
+   "product": "지식재산 중개, 상품 개발 및 유통 컨설팅",
+   "group": "SVC",
+   "venture_id": "4559"
+  },
+  {
+   "name": "액셀레타 주식회사",
+   "source": "venture",
+   "sector": "기타 반도체소자 제조업",
+   "product": "전력반도체 제조 및 연구개발 서비스",
+   "group": "SVC",
+   "venture_id": "36049"
+  },
+  {
+   "name": "어업회사법인 유한회사 대박수산",
+   "source": "venture",
+   "sector": "신선, 냉동 및 기타 수산물 도매업",
+   "product": "박대",
+   "group": "SVC",
+   "venture_id": "3024"
+  },
+  {
+   "name": "에쓰비케이 주식회사",
+   "source": "venture",
+   "sector": "바이오 연료 및 혼합물 제조업",
+   "product": "바이오중유",
+   "group": "SVC",
+   "venture_id": "5747"
+  },
+  {
+   "name": "우진글로벌 주식회사",
+   "source": "venture",
+   "sector": "일반철물 제조업",
+   "product": "자동롤 방충망 외",
+   "group": "SVC",
+   "venture_id": "19739"
+  },
+  {
+   "name": "유한회사 상상마루",
+   "source": "venture",
+   "sector": "기타 교육지원 서비스업",
+   "product": "문화콘텐츠 및 문화예술상품",
+   "group": "SVC",
+   "venture_id": "1181"
+  },
+  {
+   "name": "유한회사 아리울수산",
+   "source": "venture",
+   "sector": "수산동물 건조 및 염장품 제조업",
+   "product": "반건조 박대",
+   "group": "SVC",
+   "venture_id": "15332"
+  },
+  {
+   "name": "유한회사 아이쏠루션",
+   "source": "venture",
+   "sector": "1차 유리제품, 유리섬유 및 광학용 유리 제조업",
+   "product": "섬유단열재 (진공단열재)",
+   "group": "SVC",
+   "venture_id": "38741"
+  },
+  {
+   "name": "유한회사 이지스건설",
+   "source": "venture",
+   "sector": "그 외 기타 건축 마무리 공사업",
+   "product": "경미한공사,플라스틱 선, 봉, 관 및 호스 (드레인바)제조업,태양광발전,건설자재,아스팔트제품,전자상거래 소매업,기타 통신 판매업,임대,도로포장용장비",
+   "group": "SVC",
+   "venture_id": "14678"
+  },
+  {
+   "name": "유한회사 트윈솔루션",
+   "source": "venture",
+   "sector": "그 외 기타 정보 서비스업",
+   "product": "AI 기반 건설 솔루션 플랫폼  빌드지니",
+   "group": "SVC",
+   "venture_id": "37622"
+  },
+  {
+   "name": "유한회사 효송그린푸드",
+   "source": "venture",
+   "sector": "수산동물 건조 및 염장품 제조업",
+   "product": "젓갈류 및 절임식품류",
+   "group": "SVC",
+   "venture_id": "19722"
+  },
+  {
+   "name": "이에스바이오에너지 주식회사",
+   "source": "venture",
+   "sector": "바이오 연료 및 혼합물 제조업",
+   "product": "바이오디젤",
+   "group": "SVC",
+   "venture_id": "31599"
+  },
+  {
+   "name": "자연",
+   "source": "venture",
+   "sector": "솜 및 실 염색가공업",
+   "product": "선염사, 재봉사, 천연염색제품",
+   "group": "SVC",
+   "venture_id": "9983"
+  },
+  {
+   "name": "주식회사 담꽃",
+   "source": "venture",
+   "sector": "떡류 제조업",
+   "product": "떡,한과,빵외,전자상거래업,카페",
+   "group": "SVC",
+   "venture_id": "6791"
+  },
+  {
+   "name": "주식회사 대영바이오에너지",
+   "source": "venture",
+   "sector": "바이오 연료 및 혼합물 제조업",
+   "product": "바이오 고형연료",
+   "group": "SVC",
+   "venture_id": "2691"
+  },
+  {
+   "name": "주식회사 도영이앤지",
+   "source": "venture",
+   "sector": "측량업",
+   "product": "공공측량,지하시설물측량,수치지도제작/마스크,측량경계점 표지,매설판매/전산업무개발관련SW,측량사업시스템 개발,지질 조사,지도제작,전문설계",
+   "group": "SVC",
+   "venture_id": "29082"
+  },
+  {
+   "name": "주식회사 디쏠",
+   "source": "venture",
+   "sector": "탄소섬유 제조업",
+   "product": "특수섬유소재(탄소섬유),섬유기계 제조/무역/학술연구용역,기술컨설팅",
+   "group": "SVC",
+   "venture_id": "9661"
+  },
+  {
+   "name": "주식회사 레이머티리얼즈",
+   "source": "venture",
+   "sector": "정형외과용 및 신체보정용 기기 제조업",
+   "product": "김서림 방지 렌즈 및 기타",
+   "group": "SVC",
+   "venture_id": "33852"
+  },
+  {
+   "name": "주식회사 룩센테크놀러지",
+   "source": "venture",
+   "sector": "기타 반도체소자 제조업",
+   "product": "ROIC, X-ray용 Detector",
+   "group": "SVC",
+   "venture_id": "9265"
+  },
+  {
+   "name": "주식회사 리퓨터",
+   "source": "venture",
+   "sector": "컴퓨터 모니터 제조업",
+   "product": "컴퓨터서버,LCD패널및 모니터.영상정보디스플레이장치",
+   "group": "SVC",
+   "venture_id": "8746"
+  },
+  {
+   "name": "주식회사 미라클에이지아이",
+   "source": "venture",
+   "sector": "직원훈련기관",
+   "product": "비대면 온라인 교육 플랫폼, 온라인 교육, LMS",
+   "group": "SVC",
+   "venture_id": "8251"
+  },
+  {
+   "name": "주식회사 미트플랫폼글로벌",
+   "source": "venture",
+   "sector": "그 외 기타 정보 서비스업",
+   "product": "축산물 기반 AI장치 제조 및 응용소프트웨어 개발 공급 (AI 프리미엄 숙성육 유통플랫폼)",
+   "group": "SVC",
+   "venture_id": "36919"
+  },
+  {
+   "name": "주식회사 바이오메이신",
+   "source": "venture",
+   "sector": "바이오 연료 및 혼합물 제조업",
+   "product": "바이오소재",
+   "group": "SVC",
+   "venture_id": "13170"
+  },
+  {
+   "name": "주식회사 바트텍",
+   "source": "venture",
+   "sector": "에너지 저장장치 제조업",
+   "product": "에너지저장장치, 이차전지",
+   "group": "SVC",
+   "venture_id": "2367"
+  },
+  {
+   "name": "주식회사 보다",
+   "source": "venture",
+   "sector": "기타 반도체소자 제조업",
+   "product": "열화상 센서칩",
+   "group": "SVC",
+   "venture_id": "26008"
+  },
+  {
+   "name": "주식회사 비전트리",
+   "source": "venture",
+   "sector": "온라인 교육 학원",
+   "product": "위탁교육 등",
+   "group": "SVC",
+   "venture_id": "30050"
+  },
+  {
+   "name": "주식회사 삼성종합건설",
+   "source": "venture",
+   "sector": "사무.상업용 및 공공기관용 건물 건설업",
+   "product": "건축공사 및 안전 서비스 시스템",
+   "group": "SVC",
+   "venture_id": "38203"
+  },
+  {
+   "name": "주식회사 시지트로닉스",
+   "source": "venture+dart",
+   "sector": "기타 반도체소자 제조업",
+   "product": "반도체 전자부품",
+   "group": "SVC",
+   "venture_id": "21881",
+   "listed": "코스닥",
+   "stock_code": "429270",
+   "induty_code": "26129",
+   "adres": "전라북도 완주군 봉동읍 테크노밸리로 497"
+  },
+  {
+   "name": "주식회사 씨스원 (CISONE Co.,Ltd.)",
+   "source": "venture",
+   "sector": "기타 주변기기 제조업",
+   "product": "전자제품",
+   "group": "SVC",
+   "venture_id": "2279"
+  },
+  {
+   "name": "주식회사 씨앤바이오테크",
+   "source": "venture",
+   "sector": "내수면 양식 어업",
+   "product": "수산물, 과학기자재",
+   "group": "SVC",
+   "venture_id": "5899"
+  },
+  {
+   "name": "주식회사 아이오지",
+   "source": "venture",
+   "sector": "기타 반도체소자 제조업",
+   "product": "반도체 웨이퍼",
+   "group": "SVC",
+   "venture_id": "30513"
+  },
+  {
+   "name": "주식회사 엑솔",
+   "source": "venture",
+   "sector": "공공관계 서비스업",
+   "product": "수출컨설팅, 경영컨설팅",
+   "group": "SVC",
+   "venture_id": "39134"
+  },
+  {
+   "name": "주식회사 엘템",
+   "source": "venture",
+   "sector": "기타 음향기기 제조업",
+   "product": "고출력지향성스피커, 초지향성스피커, 드론, 경계감시장비",
+   "group": "SVC",
+   "venture_id": "16553"
+  },
+  {
+   "name": "주식회사 오수젠",
+   "source": "venture",
+   "sector": "그 외 기타 정보 서비스업",
+   "product": "팻관련",
+   "group": "SVC",
+   "venture_id": "1727"
+  },
+  {
+   "name": "주식회사 우석에이엠테크",
+   "source": "venture",
+   "sector": "속도계 및 적산계기 제조업",
+   "product": "가스계량기, 전기계량기, 냉온수계량기, 정보통신기기",
+   "group": "SVC",
+   "venture_id": "13500"
+  },
+  {
+   "name": "주식회사 위드아트",
+   "source": "venture",
+   "sector": "예술품 및 골동품 소매업",
+   "product": "미술품판매,미술품렌탈",
+   "group": "SVC",
+   "venture_id": "4954"
+  },
+  {
+   "name": "주식회사 유경덴탈워크",
+   "source": "venture",
+   "sector": "정형외과용 및 신체보정용 기기 제조업",
+   "product": "치과보철물",
+   "group": "SVC",
+   "venture_id": "18233"
+  },
+  {
+   "name": "주식회사 이커머스",
+   "source": "venture",
+   "sector": "그 외 기타 정보 서비스업",
+   "product": "소프트웨어 개발 및 공급업",
+   "group": "SVC",
+   "venture_id": "3826"
+  },
+  {
+   "name": "주식회사 인성이앤씨",
+   "source": "venture",
+   "sector": "보링, 그라우팅 및 관정 공사업",
+   "product": "보링그라우팅,토공사/미장·방수 조적공사업,건설자재,건설장비임대,엔지니어링업,사업 및 무형 재산권 중개업",
+   "group": "SVC",
+   "venture_id": "28447"
+  },
+  {
+   "name": "주식회사 자라윈드",
+   "source": "venture",
+   "sector": "탄소섬유 제조업",
+   "product": "풍력발전기 블레이드",
+   "group": "SVC",
+   "venture_id": "10995"
+  },
+  {
+   "name": "주식회사 조이",
+   "source": "venture",
+   "sector": "유원지 및 테마파크 운영업",
+   "product": "물놀이시설, 카바나, 수상레저, 눈썰매장 운영, 커피, 음료 판매 외",
+   "group": "SVC",
+   "venture_id": "7038"
+  },
+  {
+   "name": "주식회사 진성식품",
+   "source": "venture",
+   "sector": "기타 수산동물 가공 및 저장 처리업",
+   "product": "기타 수산동물 가공 및 저장 처리업,기타 식사용 가공처리 조리식품 제조업,수산물가공,무역업,수산물,기계장비",
+   "group": "SVC",
+   "venture_id": "37656"
+  },
+  {
+   "name": "주식회사 청세",
+   "source": "venture",
+   "sector": "치약, 비누 및 기타 세제 제조업",
+   "product": "얼룩약, 빨래약 등",
+   "group": "SVC",
+   "venture_id": "23576"
+  },
+  {
+   "name": "주식회사 카보넥스",
+   "source": "venture",
+   "sector": "기타 반도체소자 제조업",
+   "product": "웨이퍼캐리어",
+   "group": "SVC",
+   "venture_id": "1468"
+  },
+  {
+   "name": "주식회사 쿨베어스",
+   "source": "venture",
+   "sector": "그 외 기타 봉제의복 제조업",
+   "product": "친환경 소재만을 사용한 일상생활에서도 착용가능한 &apos;비즈레저&apos;룩의 골프웨어",
+   "group": "SVC",
+   "venture_id": "13273"
+  },
+  {
+   "name": "주식회사 키위에듀",
+   "source": "venture",
+   "sector": "기타 교육지원 서비스업",
+   "product": "코딩교육",
+   "group": "SVC",
+   "venture_id": "11177"
+  },
+  {
+   "name": "주식회사 키즈팩토리",
+   "source": "venture",
+   "sector": "문구용품 및 회화용품 소매업",
+   "product": "문구, 완구, 회화용품",
+   "group": "SVC",
+   "venture_id": "11923"
+  },
+  {
+   "name": "주식회사 토모텍",
+   "source": "venture",
+   "sector": "비디오 및 기타 영상기기 제조업",
+   "product": "홀로그램과 IoT를 활용한 안전용품 및 홍보용품",
+   "group": "SVC",
+   "venture_id": "26089"
+  },
+  {
+   "name": "주식회사 투디에피",
+   "source": "venture",
+   "sector": "기타 반도체소자 제조업",
+   "product": "이차원 전이금속 디칼코게나이드 화합물 반도체",
+   "group": "SVC",
+   "venture_id": "3121"
+  },
+  {
+   "name": "주식회사 팜조아 농업회사법인",
+   "source": "venture",
+   "sector": "기타 과실ㆍ채소 가공 및 저장 처리업",
+   "product": "농산물IQF,BQF(과채가공품,쳔연향신료,간편조리세트) 외",
+   "group": "SVC",
+   "venture_id": "14529"
+  },
+  {
+   "name": "주식회사 포셈 (PhoSem. CO., Ltd.)",
+   "source": "venture",
+   "sector": "기타 반도체소자 제조업",
+   "product": "포토다이오드 및 레이저다이오드",
+   "group": "SVC",
+   "venture_id": "38453"
+  },
+  {
+   "name": "주식회사 피에조닉스",
+   "source": "venture",
+   "sector": "기타 반도체소자 제조업",
+   "product": "소재",
+   "group": "SVC",
+   "venture_id": "14353"
+  },
+  {
+   "name": "주식회사 해오름과학",
+   "source": "venture",
+   "sector": "정밀기기 및 과학기기 도매업",
+   "product": "과학기기,필터 도소매,무역/측정,분석기,진단키트 제조",
+   "group": "SVC",
+   "venture_id": "10310"
+  },
+  {
+   "name": "주식회사에이스중공업",
+   "source": "venture",
+   "sector": "액체 펌프 제조업",
+   "product": "액체펌프,수문,밸브,권양기,크레인 등",
+   "group": "SVC",
+   "venture_id": "4279"
+  },
+  {
+   "name": "지스타모빌리티 주식회사",
+   "source": "venture",
+   "sector": "모터사이클 제조업",
+   "product": "전기자전거, 전기오토바이, 신재생에너지 개발 시스템, 배터리패케이징, 통신모듈, 탄소배출권",
+   "group": "SVC",
+   "venture_id": "6960"
+  },
+  {
+   "name": "지이엔티 주식회사",
+   "source": "venture",
+   "sector": "그 외 기타 달리 분류되지 않은 개인 서비스업",
+   "product": "그릇 대여,식기 세척/주방용품,가정용유리,요업제품 도소매",
+   "group": "SVC",
+   "venture_id": "33790"
+  },
+  {
+   "name": "화인 주식회사",
+   "source": "venture",
+   "sector": "컴퓨터 프린터 제조업",
+   "product": "선박전용 잉크젯프린터",
+   "group": "SVC",
+   "venture_id": "16700"
+  },
+  {
+   "name": "(주)데니어",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "시스템 응용 소프트웨어 개발 및 공급업",
+   "group": "SW",
+   "venture_id": "29895"
+  },
+  {
+   "name": "(주)블루프로그",
+   "source": "venture",
+   "sector": "데이터베이스 및 온라인정보 제공업",
+   "product": "글로벌 멤버십 플랫폼",
+   "group": "SW",
+   "venture_id": "12357"
+  },
+  {
+   "name": "(주)센소프트",
+   "source": "venture",
+   "sector": "컴퓨터 프로그래밍 서비스업",
+   "product": "웹프로그램 제작",
+   "group": "SW",
+   "venture_id": "21534"
+  },
+  {
+   "name": "(주)스패셜티",
+   "source": "venture",
+   "sector": "시스템 소프트웨어 개발 및 공급업",
+   "product": "SW개발",
+   "group": "SW",
+   "venture_id": "26132"
+  },
+  {
+   "name": "(주)엔베이스",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "응용소프트웨어개발 및 공급",
+   "group": "SW",
+   "venture_id": "28919"
+  },
+  {
+   "name": "(주)엔지아이",
+   "source": "venture",
+   "sector": "컴퓨터시스템 통합 자문 및 구축 서비스업",
+   "product": "시스템 통합(SI, NI), 클라우드 전환, 시스템 개발(모바일 행정알리미, 데이터허브, 인공지능, 스마트시티 서비스 등), 기록물관리, 통합유지보수",
+   "group": "SW",
+   "venture_id": "7800"
+  },
+  {
+   "name": "(주)엠에이치소프트",
+   "source": "venture",
+   "sector": "시스템 소프트웨어 개발 및 공급업",
+   "product": "다중원격제어 모니터링 프로그램, 에듀테크 스마트 미러링 프로그램",
+   "group": "SW",
+   "venture_id": "36409"
+  },
+  {
+   "name": "(주)올포랜드",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "응용소프트웨어,시스템소프트웨어 개발,공급,지리정보데이타베이스 구축,수치도화/정보통신공사",
+   "group": "SW",
+   "venture_id": "16013"
+  },
+  {
+   "name": "(주)우리요",
+   "source": "venture",
+   "sector": "기타 정보기술 및 컴퓨터운영 관련 서비스업",
+   "product": "핀플 (비대면 인사관리 SaaS)",
+   "group": "SW",
+   "venture_id": "31020"
+  },
+  {
+   "name": "(주)인맥",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "어플리케이션개발업",
+   "group": "SW",
+   "venture_id": "34726"
+  },
+  {
+   "name": "(주)좋은정보기술",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "콘텐츠관리시스템 빅데이터 AI 등",
+   "group": "SW",
+   "venture_id": "24373"
+  },
+  {
+   "name": "(주)히트가이즈",
+   "source": "venture",
+   "sector": "시스템 소프트웨어 개발 및 공급업",
+   "product": "음식점 매장관리시스템 및 기업형 식대관리시스템",
+   "group": "SW",
+   "venture_id": "19581"
+  },
+  {
+   "name": "㈜나인이즈",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "소프트웨어개발및공급",
+   "group": "SW",
+   "venture_id": "21849"
+  },
+  {
+   "name": "㈜명지정보기술",
+   "source": "venture",
+   "sector": "시스템 소프트웨어 개발 및 공급업",
+   "product": "소프트웨어",
+   "group": "SW",
+   "venture_id": "8799"
+  },
+  {
+   "name": "㈜스마트미디어테크",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "음성데이터베이스, 소프트웨어",
+   "group": "SW",
+   "venture_id": "11946"
+  },
+  {
+   "name": "㈜스코인포",
+   "source": "venture",
+   "sector": "컴퓨터시스템 통합 자문 및 구축 서비스업",
+   "product": "웹서비스 통합구축 솔루션(RFC)",
+   "group": "SW",
+   "venture_id": "20624"
+  },
+  {
+   "name": "㈜아이티스테이션",
+   "source": "venture",
+   "sector": "시스템 소프트웨어 개발 및 공급업",
+   "product": "네트워크 보안시스템",
+   "group": "SW",
+   "venture_id": "25032"
+  },
+  {
+   "name": "㈜애니스마트",
+   "source": "venture",
+   "sector": "컴퓨터시스템 통합 자문 및 구축 서비스업",
+   "product": "정보통신시스템 통합유지관리",
+   "group": "SW",
+   "venture_id": "16677"
+  },
+  {
+   "name": "㈜텔로스",
+   "source": "venture",
+   "sector": "시스템 소프트웨어 개발 및 공급업",
+   "product": "소프트웨어 개발",
+   "group": "SW",
+   "venture_id": "6610"
+  },
+  {
+   "name": "금성아이티",
+   "source": "venture",
+   "sector": "시스템 소프트웨어 개발 및 공급업",
+   "product": "시스템소프트웨어 개발,공급,전문 서비스,신재생에너지 연구개발/에너지저장장치,전기회로 개폐,보호,접속장치 제조",
+   "group": "SW",
+   "venture_id": "21504"
+  },
+  {
+   "name": "농업회사법인 새록 주식회사",
+   "source": "venture",
+   "sector": "전자상거래 소매업",
+   "product": "농산물 도소매",
+   "group": "SW",
+   "venture_id": "39254"
+  },
+  {
+   "name": "딥세일즈(주)",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "응용 소프트웨어 개발 및 공급업,상품 종합 도매업,포털 및 기타 인터넷 정보 매개 서비스업,데이터베이스 및 온라인 정보 제공업,기타 정보 기술 및 컴퓨터 운",
+   "group": "SW",
+   "venture_id": "26605"
+  },
+  {
+   "name": "메디앙시스템",
+   "source": "venture",
+   "sector": "컴퓨터 프로그래밍 서비스업",
+   "product": "농생명 지능정보 시스템",
+   "group": "SW",
+   "venture_id": "29815"
+  },
+  {
+   "name": "메디케이시스템",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "한방 탕전실 솔루션",
+   "group": "SW",
+   "venture_id": "19442"
+  },
+  {
+   "name": "비스타로보틱스 주식회사",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "물류 로봇 소프트웨어",
+   "group": "SW",
+   "venture_id": "35365"
+  },
+  {
+   "name": "수라가차",
+   "source": "venture",
+   "sector": "전자상거래 소매업",
+   "product": "글루텐 저감 된 저당 쌀 약과",
+   "group": "SW",
+   "venture_id": "33107"
+  },
+  {
+   "name": "스타라이크 주식회사",
+   "source": "venture",
+   "sector": "유선 온라인 게임 소프트웨어 개발 및 공급업",
+   "product": "PC, 모바일, 콘솔 게임",
+   "group": "SW",
+   "venture_id": "7672"
+  },
+  {
+   "name": "아이하우 주식회사",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "소프트웨어 개발",
+   "group": "SW",
+   "venture_id": "17801"
+  },
+  {
+   "name": "알고스",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "스마트팩토리/스마트팜/스마트시티구축 솔루션 개발 및 공급, 유지보수",
+   "group": "SW",
+   "venture_id": "14906"
+  },
+  {
+   "name": "액티부키 주식회사",
+   "source": "venture",
+   "sector": "데이터베이스 및 온라인정보 제공업",
+   "product": "농촌 및 여행 관련 온라인 정보제공",
+   "group": "SW",
+   "venture_id": "16092"
+  },
+  {
+   "name": "에스에이치 주식회사",
+   "source": "venture",
+   "sector": "컴퓨터 프로그래밍 서비스업",
+   "product": "AI를 활용한 로컬 기반 건축 및 리모델링 사업 타당성 분석 시스템",
+   "group": "SW",
+   "venture_id": "28891"
+  },
+  {
+   "name": "우주일호 주식회사",
+   "source": "venture",
+   "sector": "컴퓨터 프로그래밍 서비스업",
+   "product": "컴퓨터 프로그래밍 서비스",
+   "group": "SW",
+   "venture_id": "1465"
+  },
+  {
+   "name": "유저인사이트 주식회사",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "응용소프트웨어 개발,공급,미디어콘텐츠창작,정보기술,컴퓨터 운영/컴퓨터 제조/컴퓨터,주변장치,소프트웨어 도소매",
+   "group": "SW",
+   "venture_id": "29411"
+  },
+  {
+   "name": "제이지물산 주식회사",
+   "source": "venture",
+   "sector": "전자상거래 소매업",
+   "product": "커피 등",
+   "group": "SW",
+   "venture_id": "34287"
+  },
+  {
+   "name": "주식회사 다오벤처스",
+   "source": "venture",
+   "sector": "시스템 소프트웨어 개발 및 공급업",
+   "product": "AI 어플리케이션",
+   "group": "SW",
+   "venture_id": "4391"
+  },
+  {
+   "name": "주식회사 데움아이티",
+   "source": "venture",
+   "sector": "컴퓨터시스템 통합 자문 및 구축 서비스업",
+   "product": "시스템 소프트웨어 개발 및 공급업",
+   "group": "SW",
+   "venture_id": "33182"
+  },
+  {
+   "name": "주식회사 데이타몬드",
+   "source": "venture",
+   "sector": "데이터베이스 및 온라인정보 제공업",
+   "product": "모바일 앱 서비스, 페르소나 데이터",
+   "group": "SW",
+   "venture_id": "15451"
+  },
+  {
+   "name": "주식회사 디어그린",
+   "source": "venture",
+   "sector": "컴퓨터시스템 통합 자문 및 구축 서비스업",
+   "product": "소프트웨어",
+   "group": "SW",
+   "venture_id": "4650"
+  },
+  {
+   "name": "주식회사 딜미",
+   "source": "venture",
+   "sector": "포털 및 기타 인터넷 정보매개 서비스업",
+   "product": "모바일 플랫폼",
+   "group": "SW",
+   "venture_id": "2529"
+  },
+  {
+   "name": "주식회사 라온네스트",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "ICT디바이스 및 플랫폼",
+   "group": "SW",
+   "venture_id": "10760"
+  },
+  {
+   "name": "주식회사 루멘테라",
+   "source": "venture",
+   "sector": "시스템 소프트웨어 개발 및 공급업",
+   "product": "시스템 소프트웨어",
+   "group": "SW",
+   "venture_id": "3904"
+  },
+  {
+   "name": "주식회사 마이밸류",
+   "source": "venture",
+   "sector": "전자상거래 소매업",
+   "product": "건강기능식품, 기타가공품",
+   "group": "SW",
+   "venture_id": "12522"
+  },
+  {
+   "name": "주식회사 모노플로우",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "응용 소프트웨어 개발 및 공급",
+   "group": "SW",
+   "venture_id": "10730"
+  },
+  {
+   "name": "주식회사 모디",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "스마트화 솔루션 개발",
+   "group": "SW",
+   "venture_id": "27636"
+  },
+  {
+   "name": "주식회사 모빌리티랩",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "군집자율비행기술기반 드론 솔루션",
+   "group": "SW",
+   "venture_id": "21593"
+  },
+  {
+   "name": "주식회사 모해컴퍼니 (MO-HE COMPANY CO., Ltd.)",
+   "source": "venture",
+   "sector": "포털 및 기타 인터넷 정보매개 서비스업",
+   "product": "해양레저예약중개업",
+   "group": "SW",
+   "venture_id": "32718"
+  },
+  {
+   "name": "주식회사 무버스",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "AI 소프트웨어",
+   "group": "SW",
+   "venture_id": "3656"
+  },
+  {
+   "name": "주식회사 베이지안웍스",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "응용 소프트웨어 개발 및 공급업",
+   "group": "SW",
+   "venture_id": "12502"
+  },
+  {
+   "name": "주식회사 브리즈랩",
+   "source": "venture",
+   "sector": "시스템 소프트웨어 개발 및 공급업",
+   "product": "시스템소프트웨어 개발,공급",
+   "group": "SW",
+   "venture_id": "8112"
+  },
+  {
+   "name": "주식회사 비아",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "드론 자율주행 / 인공지능 시스템, 농생명 인공지능 소프트웨어",
+   "group": "SW",
+   "venture_id": "6549"
+  },
+  {
+   "name": "주식회사 새눈",
+   "source": "venture",
+   "sector": "시스템 소프트웨어 개발 및 공급업",
+   "product": "NE-PARK, NE-TIS, NE-TMS, NE-CSM",
+   "group": "SW",
+   "venture_id": "26423"
+  },
+  {
+   "name": "주식회사 세이프스펙",
+   "source": "venture",
+   "sector": "포털 및 기타 인터넷 정보매개 서비스업",
+   "product": "포털 및 인터넷 정보운영,유아완구, 생활용품,완구,전자상거래,광고대행,전시, 컨벤션 및 행사 대행업",
+   "group": "SW",
+   "venture_id": "19217"
+  },
+  {
+   "name": "주식회사 스마트아크",
+   "source": "venture",
+   "sector": "시스템 소프트웨어 개발 및 공급업",
+   "product": "농산물 시설재배",
+   "group": "SW",
+   "venture_id": "12159"
+  },
+  {
+   "name": "주식회사 시크한(SEEKHAN)",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "콜드체인 수출물류 통합 솔루션",
+   "group": "SW",
+   "venture_id": "32065"
+  },
+  {
+   "name": "주식회사 씨어스",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "영상분석 소프트웨어",
+   "group": "SW",
+   "venture_id": "601"
+  },
+  {
+   "name": "주식회사 아그모",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "디지털 농업 서비스",
+   "group": "SW",
+   "venture_id": "36127"
+  },
+  {
+   "name": "주식회사 에스지솔루션",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "응용 소프트웨어 개발 및 공급업, 경영컨설팅",
+   "group": "SW",
+   "venture_id": "32894"
+  },
+  {
+   "name": "주식회사 에스피에스컴퍼니",
+   "source": "venture",
+   "sector": "데이터베이스 및 온라인정보 제공업",
+   "product": "기프트콘, 소프트웨어 자문, 개발 및 공급업, 전자상품권발행 및 전자지급결제대행, 결제 시스템에 대한 네트웍 구성 및 정보제공업",
+   "group": "SW",
+   "venture_id": "18485"
+  },
+  {
+   "name": "주식회사 에이티비랩",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "배터리 진단 및 운영 솔루션",
+   "group": "SW",
+   "venture_id": "7432"
+  },
+  {
+   "name": "주식회사 엑스브릿지 (XBridge Co., Ltd.)",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "AI 기반 수출입 원스탑 운영 SaaS (플랫폼)",
+   "group": "SW",
+   "venture_id": "38823"
+  },
+  {
+   "name": "주식회사 오팔",
+   "source": "venture",
+   "sector": "데이터베이스 및 온라인정보 제공업",
+   "product": "데이터 베이스 및 온라인 정보제공업",
+   "group": "SW",
+   "venture_id": "36172"
+  },
+  {
+   "name": "주식회사 와따에이아이",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "컴퓨터,멀티미디어 프로그램의 개발, 제조 및 판매업,통신판매업,전기ㆍ전자공학 연구개발업,데이터베이스 검색, 개발 및 판매업",
+   "group": "SW",
+   "venture_id": "23771"
+  },
+  {
+   "name": "주식회사 위트글로벌",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "스마트 관광과 AI 디지털 키오스크",
+   "group": "SW",
+   "venture_id": "33944"
+  },
+  {
+   "name": "주식회사 유독컴퍼니",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "온라인 이커머스 입점 솔루션 플랫폼",
+   "group": "SW",
+   "venture_id": "18776"
+  },
+  {
+   "name": "주식회사 이썸",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "데이터 시각화 대시보드 저작 지원 소프트웨어, 에너지 관제 시스템, 모바일 애플리케이션 유지보수/운영",
+   "group": "SW",
+   "venture_id": "34176"
+  },
+  {
+   "name": "주식회사 잇웰",
+   "source": "venture",
+   "sector": "시스템 소프트웨어 개발 및 공급업",
+   "product": "고객 맞춤형 건강식 도시락",
+   "group": "SW",
+   "venture_id": "14433"
+  },
+  {
+   "name": "주식회사 지에이랩",
+   "source": "venture",
+   "sector": "컴퓨터시스템 통합 자문 및 구축 서비스업",
+   "product": "웹서비스 개발",
+   "group": "SW",
+   "venture_id": "26898"
+  },
+  {
+   "name": "주식회사 지투시그마 (Z to Sigma Inc.)",
+   "source": "venture",
+   "sector": "데이터베이스 및 온라인정보 제공업",
+   "product": "클라우드 SaaS어플리케이션/웹",
+   "group": "SW",
+   "venture_id": "24713"
+  },
+  {
+   "name": "주식회사 첫눈",
+   "source": "venture",
+   "sector": "컴퓨터시스템 통합 자문 및 구축 서비스업",
+   "product": "지능형 CCTV 함체 운영관리시스템 First Eye v2.0",
+   "group": "SW",
+   "venture_id": "8721"
+  },
+  {
+   "name": "주식회사 커런시유나이티드",
+   "source": "venture",
+   "sector": "시스템 소프트웨어 개발 및 공급업",
+   "product": "온라인 환전 플랫폼 (cuunit)",
+   "group": "SW",
+   "venture_id": "20376"
+  },
+  {
+   "name": "주식회사 코어솔루션",
+   "source": "venture",
+   "sector": "컴퓨터 프로그래밍 서비스업",
+   "product": "소프트웨어 개발 및 컨텐츠 제공업",
+   "group": "SW",
+   "venture_id": "12834"
+  },
+  {
+   "name": "주식회사 크로스허브",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "블록체인 기반 DID 서비스",
+   "group": "SW",
+   "venture_id": "11661"
+  },
+  {
+   "name": "주식회사 크로프트농업회사법인",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "AI 기반 자율운영 스마트온실 솔루션",
+   "group": "SW",
+   "venture_id": "37268"
+  },
+  {
+   "name": "주식회사 토리에듀핀",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "모바일 앱",
+   "group": "SW",
+   "venture_id": "18269"
+  },
+  {
+   "name": "주식회사 토트",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "응용 소프트웨어 개발 및 공급업,로봇 및 자동화 장비의 제조, 판매, 임대 및 중개알선업,컴퓨터 시스템 통합 자문 및 구축 서비스업,전기ㆍ전자공학 연구개발업",
+   "group": "SW",
+   "venture_id": "8211"
+  },
+  {
+   "name": "주식회사 패스유",
+   "source": "venture",
+   "sector": "기타 정보기술 및 컴퓨터운영 관련 서비스업",
+   "product": "시스템 소프트웨어 개발 및 공급, 어플리케이션개발 및 공급",
+   "group": "SW",
+   "venture_id": "35224"
+  },
+  {
+   "name": "주식회사 펀웨이브",
+   "source": "venture",
+   "sector": "컴퓨터 프로그래밍 서비스업",
+   "product": "프로그램 개발 및 공급",
+   "group": "SW",
+   "venture_id": "6550"
+  },
+  {
+   "name": "주식회사 펀잇",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "AR/VR/AI/메타버스 기술개발 및 소프트웨어 개발",
+   "group": "SW",
+   "venture_id": "10174"
+  },
+  {
+   "name": "주식회사 플래노스",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "의료기기, 응용 소프트웨어",
+   "group": "SW",
+   "venture_id": "27499"
+  },
+  {
+   "name": "주식회사건파워",
+   "source": "venture",
+   "sector": "기타 게임 소프트웨어 개발 및 공급업",
+   "product": "서바이벌게임 관제시스템 소프트웨어",
+   "group": "SW",
+   "venture_id": "34680"
+  },
+  {
+   "name": "주식회사에이씨엠컴퍼니",
+   "source": "venture",
+   "sector": "컴퓨터시스템 통합 자문 및 구축 서비스업",
+   "product": "전자상거래 소매업",
+   "group": "SW",
+   "venture_id": "35942"
+  },
+  {
+   "name": "주식회사카이세리",
+   "source": "venture",
+   "sector": "데이터베이스 및 온라인정보 제공업",
+   "product": "빅데이터가공",
+   "group": "SW",
+   "venture_id": "34276"
+  },
+  {
+   "name": "주식회사트레디오",
+   "source": "venture",
+   "sector": "응용 소프트웨어 개발 및 공급업",
+   "product": "태양광 EMS 시스템,스마트 커팅 시스템 ,임베디드 시스템",
+   "group": "SW",
+   "venture_id": "24091"
+  },
+  {
+   "name": "주식회사포에스코퍼레이션",
+   "source": "venture",
+   "sector": "전자상거래 소매업",
+   "product": "온열기기 및 마사지기류",
+   "group": "SW",
+   "venture_id": "19772"
+  },
+  {
+   "name": "치얼업코리아 주식회사",
+   "source": "venture",
+   "sector": "컴퓨터 프로그래밍 서비스업",
+   "product": "데이터 가공 서비스",
+   "group": "SW",
+   "venture_id": "34725"
+  },
+  {
+   "name": "힐링에듀케어 주식회사",
+   "source": "venture",
+   "sector": "데이터베이스 및 온라인정보 제공업",
+   "product": "앱 서비스, 강의 콘텐츠",
+   "group": "SW",
+   "venture_id": "26020"
+  }
+ ]
+}

@@ -17,6 +17,7 @@ import { Shell, PageHead, Section } from "@/components/sf/shell";
 import { campusNav } from "@/lib/campus/org-mode";
 import { BarList, Empty, Kpi } from "@/components/sf/parts";
 import LangSelect from "@/components/sf/lang-select";
+import { ColorBars, CollegeStack, Progress, StatusDonut } from "./charts";
 
 export const metadata = { title: `전공 진단 집계 · ${BRAND.campus}` };
 
@@ -319,6 +320,29 @@ export default async function CampusV3({
         ) : null}
       </Section>
 
+      {/* ── 한눈에(그림) ── 위 넷과 같은 수를 모양으로 다시 그린다. 새 값은 없다 */}
+      <Section title="한눈에 보기" note="대상자 가운데 몇 명이 시작했고 몇 명이 결과를 받았는지입니다">
+        <div className="cvx-row">
+          <div className="cvx-card">
+            <h3>진행 단계</h3>
+            <p className="cvx-note">막대 길이는 대상자에 대한 몫입니다</p>
+            <Progress target={v3.target} started={v3.started} scored={v3.scored} />
+          </div>
+          {counts ? (
+            <div className="cvx-card">
+              <h3>명단 학생의 응시 상태</h3>
+              <p className="cvx-note">학교가 계정을 발급한 학생 기준입니다</p>
+              <StatusDonut parts={[
+                { label: "결과 받음", n: counts.scored, color: "#14907f" },
+                { label: "푸는 중", n: counts.in_progress, color: "#7aa2ff" },
+                { label: "시작 전", n: counts.none, color: "#f0b44c" },
+                { label: "이용 멈춤", n: counts.disabled, color: "#c3cad6" },
+              ]} />
+            </div>
+          ) : null}
+        </div>
+      </Section>
+
       {/* ── 미응시 · 진행중 · 완료(규격 §17) ──
           **메일이나 문자를 여기서 보내지 않는다.** 그 기능이 이 제품에
           없는데 단추를 만들면 누른 담당자가 보낸 줄로 읽고, 학생은 아무
@@ -427,7 +451,14 @@ export default async function CampusV3({
               적지 않는다. 다섯이 안 되는 칸은 수를 내지 않는다 */}
           {v3.college_rows.length ? (
             <Section title="단과대학별 응시 현황"
-              note="학교 전용 진입으로 들어온 응시입니다">
+              note="학교 전용 진입으로 들어온 응시입니다. 막대는 대상자 안에서 결과 받음 · 푸는 중을 쌓은 것입니다">
+              <div className="cvx-card">
+                <CollegeStack minCell={MIN_CELL} rows={v3.college_rows.map((r) => ({
+                  name: name.college(r.code), target: r.target, started: r.started, scored: r.scored, rate: r.rate,
+                }))} />
+              </div>
+              <details className="sf-fold" style={{ marginTop: 10 }}>
+              <summary>표로 보기</summary>
               <div className="sf-tw">
                 <table className="sf-table">
                   <thead>
@@ -455,6 +486,7 @@ export default async function CampusV3({
                   </tbody>
                 </table>
               </div>
+              </details>
             </Section>
           ) : null}
 
@@ -509,6 +541,19 @@ export default async function CampusV3({
           {/* **긴 목록을 첫 화면에 펼치지 않는다**(규격 §22). 담당자가 이
               화면을 여는 까닭은 위의 여섯이고, 아래 다섯은 되짚어 보실
               자리다. 담긴 것은 그대로다 */}
+          {/* ── 학생 관심 분포 ── 고른 산업 · 고른 직무 · 영역 묶음. 적합도도 추천도
+              아니다: 학생이 응시 중에 고른 것과 결과의 묶음을 센 것이다 */}
+          <Section title="학생들이 고른 것" note="응시 중에 깊게 보기로 고른 산업과 직무, 결과에서 영역이 놓인 자리입니다">
+            <div className="cvx-tri">
+              <ColorBars title="고른 산업" note="적합도가 아닙니다" minCell={MIN_CELL}
+                rows={v3.by_industry.map((r) => ({ label: packKo(r.key), n: r.n }))} />
+              <ColorBars title="고른 직무" note="추천이 아닙니다" minCell={MIN_CELL}
+                rows={v3.by_role.map((r) => ({ label: packKo(r.key), n: r.n }))} />
+              <ColorBars title="기술영역의 자리" note="(학생 × 영역) 칸 수입니다" minCell={MIN_CELL}
+                rows={v3.zone_cells.map((r) => ({ label: r.label, n: r.n }))} />
+            </div>
+          </Section>
+
           <details className="sf-fold">
             <summary>전공 · 학위 · 산업 · 직무 · 영역 분포 보기</summary>
 
