@@ -301,8 +301,10 @@ export default async function V3PilotPage({
           사람 수로 셉니다. 같은 응시의 같은 걸음은 한 번만 적히므로 줄
           수가 곧 사람 수입니다. 비율은 여기서 만들지 않습니다. 바닥이 0 인데
           0% 를 찍으면 거짓말입니다. 검사 시작과 등급 완료는 응답과 제출 시각에서
-          옮겨 적습니다. <SyncButton />
+          옮겨 적습니다.
         </p>
+        {/* form 을 p 안에 두면 브라우저가 밖으로 끌어내 서버 HTML 과 어긋난다(React #418) */}
+        <div><SyncButton /></div>
         <div className="tablewrap">
         <table>
           <thead><tr><th>걸음</th><th>사람 수</th></tr></thead>
