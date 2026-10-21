@@ -39,11 +39,22 @@ const AX = ["J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8"] as const;
 const AXN: Record<string, string> = Object.fromEntries(AX.map((a) => [a, JUDGE[a].name]));
 const LV = (s: string | undefined, missing?: string): number | null =>
   missing === "NOT_ROUTED" ? null : s === "OWNED" ? 3 : s === "CONFIRMED" ? 2 : s === "PARTICIPATED" ? 1 : 0;
-const ZC: Record<string, string> = {
-  Z1_EVIDENCE_ESTABLISHED: C.navy, Z2_EVIDENCE_INCOMPLETE: C.blue, Z3_EVIDENCE_LOW_INTEREST: C.teal,
-  Z4_INSUFFICIENT_EVIDENCE: C.amber, NOT_EXPLORED: "#c9ced8",
+/* 그래프 색. 남색·파랑 한 갈래로만 그리면 쪽이 넘어가도 같은 그림으로 읽힌다.
+   뜻이 있는 색(묶음 · 단계 · 관심)은 갈래마다 다른 색상을 쓰고, 영역에는 영역마다 제 색을 준다 */
+const PAL = {
+  blue: "#2c63d6", teal: "#13a08a", amber: "#f08a24", coral: "#e5566f", violet: "#7b5cd6",
+  sky: "#2fa9d6", green: "#5ea34a", gold: "#d8a31a", plum: "#a8488f", brick: "#c8553d", mint: "#3fbfa0", navy: "#1b2f57",
 };
-const IC: Record<string, string> = { HIGH: C.blue, MID: C.sky, LOW: "#dfe5ef" };
+const DOMPAL = [PAL.blue, PAL.coral, PAL.amber, PAL.teal, PAL.violet, PAL.sky, PAL.green, PAL.gold, PAL.plum, PAL.brick, PAL.mint, PAL.navy];
+const DC = (code: string) => DOMPAL[(Number(String(code).replace(/\D/g, "")) - 1 + 12) % 12];
+const CYC = [PAL.blue, PAL.teal, PAL.amber, PAL.coral, PAL.violet, PAL.sky, PAL.green, PAL.gold, PAL.plum];
+/** 단계 색: 지시받아 · 직접 수행 · 기준까지 결정이 색상부터 갈린다 */
+const LVC = ["#eceef3", "#f6c26b", "#2fb59c", "#3a56d4"];
+const ZC: Record<string, string> = {
+  Z1_EVIDENCE_ESTABLISHED: PAL.blue, Z2_EVIDENCE_INCOMPLETE: PAL.teal, Z3_EVIDENCE_LOW_INTEREST: PAL.violet,
+  Z4_INSUFFICIENT_EVIDENCE: PAL.amber, NOT_EXPLORED: "#cfd5df",
+};
+const IC: Record<string, string> = { HIGH: PAL.coral, MID: "#f5a8b6", LOW: "#e9ecf2" };
 const IK: Record<string, string> = { HIGH: "높음", MID: "보통", LOW: "낮음" };
 const EXK: Record<string, string> = { SEVERAL: "여러 번", ONCE_OR_TWICE: "한두 번", NONE: "없음" };
 const won = (v: number | null | undefined) => (v == null ? "—" : `${Math.round(v / 1e8).toLocaleString("ko-KR")}억 원`);
@@ -100,7 +111,7 @@ const tag = (t: string, color?: string) => `<span class="tag" style="${color ? `
 const zoneTag = (z: string) => `<span class="ztag" style="--z:${ZC[z] ?? "#c9ced8"}">${E(ZONE_SAID[z]?.tag ?? z)}</span>`;
 const pip = (lv: number | null, est = false) => lv == null
   ? `<span class="pp"><i style="background:${C.l0}"></i><i style="background:${C.l0}"></i><i style="background:${C.l0}"></i><em>해 본 적 없음</em></span>`
-  : `<span class="pp${est ? " est" : ""}"><i style="background:${lv >= 1 ? LEVEL_COLOR[Math.max(1, lv)] : C.l0}"></i><i style="background:${lv >= 2 ? LEVEL_COLOR[lv] : C.l0}"></i><i style="background:${lv >= 3 ? LEVEL_COLOR[3] : C.l0}"></i><em>${E(STEP[lv as 0].tag)}${est ? " · 응답 기준" : ""}</em></span>`;
+  : `<span class="pp${est ? " est" : ""}"><i style="background:${lv >= 1 ? LVC[Math.max(1, lv)] : C.l0}"></i><i style="background:${lv >= 2 ? LVC[lv] : C.l0}"></i><i style="background:${lv >= 3 ? LVC[3] : C.l0}"></i><em>${E(STEP[lv as 0].tag)}${est ? " · 응답 기준" : ""}</em></span>`;
 const filled = (label: string, text: string) => `<div class="fl">${label ? `<p class="wl-l">${label}</p>` : ""}<p class="fl-t">${text}</p></div>`;
 const lines = (n: number, label?: string) => `<div class="wl">${label ? `<p class="wl-l">${label}</p>` : ""}${"<i></i>".repeat(n)}</div>`;
 const ul = (xs: string[], cls = "") => `<ul class="ls ${cls}">${xs.map((x) => `<li>${x}</li>`).join("")}</ul>`;
@@ -261,7 +272,7 @@ function outer(d: D, x: X): Page {
 
 function cover(d: D, x: X): Page {
   const r = d.r;
-  const series = r.radar.series.map((s: A, i: number) => ({ name: s.name, levels: s.levels, color: [C.navy, C.blue, C.teal][i] }));
+  const series = r.radar.series.map((s: A, i: number) => ({ name: s.name, levels: s.levels, color: [PAL.blue, PAL.coral, PAL.teal][i] }));
   return {
     part: "", partName: "", title: "표지", kind: "cover",
     body: `<div class="cv-top"><span class="cv-org">${E(ORG)}</span><span class="cv-s">청년 진로·일자리 상담 연계 프로그램</span></div>
@@ -332,7 +343,7 @@ function howToRead(): Page {
     part: "", partName: "들어가며", title: "읽는 법",
     body: T("그래프와 표는 네 단계와 다섯 묶음으로 읽습니다", "모든 그래프가 같은 말을 씁니다. 한 번 익혀 두면 어느 쪽에서나 같은 뜻으로 읽힙니다.") +
       H("판단 단계 넷", "방사형 그래프와 단계 칸에서 씁니다") +
-      `<div class="steps4">${[0, 1, 2, 3].map((k) => `<div class="st4"><div class="st4-b">${[1, 2, 3].map((j) => `<i style="background:${k >= j ? LEVEL_COLOR[Math.max(1, k)] : C.l0}"></i>`).join("")}</div><b>${E(STEP[k as 0].tag)}</b><p>${E(STEP[k as 0].said)}</p></div>`).join("")}</div>` +
+      `<div class="steps4">${[0, 1, 2, 3].map((k) => `<div class="st4"><div class="st4-b">${[1, 2, 3].map((j) => `<i style="background:${k >= j ? LVC[Math.max(1, k)] : C.l0}"></i>`).join("")}</div><b>${E(STEP[k as 0].tag)}</b><p>${E(STEP[k as 0].said)}</p></div>`).join("")}</div>` +
       H("영역 묶음 다섯", "12가지 영역 지도와 고리 그래프에서 씁니다") +
       `<div class="zones5">${z.map(([k, v]) => `<div class="zn"><span class="zsw" style="background:${ZC[k]}"></span><div><b>${E(v.tag)}</b><p>${E(v.said)}</p></div></div>`).join("")}</div>` +
       H("근거의 층", "문장마다 어디서 온 말인지 표시합니다") +
@@ -412,9 +423,9 @@ function bucketOf(d: D, x: X, z: A): "A" | "B" | "C" | "D" {
   return "D";
 }
 const BUCKET: Record<string, { head: string; act: string; color: string; ink: string }> = {
-  A: { head: "지원서에 바로 쓴다", act: "결과물 이름과 정한 기준을 한 문단으로", color: C.navy, ink: "#fff" },
-  B: { head: "결과물을 하나 더 남긴다", act: "해 본 일에 비교 기록이나 문서를 붙이기", color: C.blue, ink: "#fff" },
-  C: { head: "짧은 과제로 겪어 본다", act: "수업·동아리에서 4주짜리 과제 하나", color: C.teal, ink: "#fff" },
+  A: { head: "지원서에 바로 쓴다", act: "결과물 이름과 정한 기준을 한 문단으로", color: PAL.blue, ink: "#fff" },
+  B: { head: "결과물을 하나 더 남긴다", act: "해 본 일에 비교 기록이나 문서를 붙이기", color: PAL.teal, ink: "#fff" },
+  C: { head: "짧은 과제로 겪어 본다", act: "수업·동아리에서 4주짜리 과제 하나", color: PAL.amber, ink: "#fff" },
   D: { head: "지금은 미뤄 둔다", act: "다른 영역을 먼저 다지고 필요할 때", color: "#9aa6bb", ink: "#fff" },
 };
 
@@ -495,8 +506,8 @@ function p1action(d: D, x: X): Page {
 function p1dash(d: D, x: X): Page {
   const k = x.counts;
   const zoneParts = [
-    { label: "근거 갖춤", value: k.z1, color: C.navy }, { label: "근거 일부", value: k.z2, color: C.blue },
-    { label: "넓혀 갈 영역", value: k.ne, color: "#c9ced8" },
+    { label: "근거 갖춤", value: k.z1, color: ZC.Z1_EVIDENCE_ESTABLISHED }, { label: "근거 일부", value: k.z2, color: ZC.Z2_EVIDENCE_INCOMPLETE },
+    { label: "넓혀 갈 영역", value: k.ne, color: ZC.Z4_INSUFFICIENT_EVIDENCE },
   ];
   const ints = ["HIGH", "MID", "LOW"].map((v) => ({ label: `관심 ${IK[v]}`, value: d.r.map.filter((z: A) => z.interest === v).length, color: IC[v] }));
   const tiles = [
@@ -530,7 +541,7 @@ function p1ring(d: D, x: X): Page {
 
 function p1quad(d: D, x: X): Page {
   const r = d.r;
-  const dots = r.map.map((z: A, i: number) => ({ label: z.name, x: z.interest === "HIGH" ? 2 : z.interest === "MID" ? 1 : 0, y: z.depth ?? 0, color: ZC[z.zone], n: i + 1 }));
+  const dots = r.map.map((z: A, i: number) => ({ label: z.name, x: z.interest === "HIGH" ? 2 : z.interest === "MID" ? 1 : 0, y: z.depth ?? 0, color: DC(z.code), n: i + 1 }));
   return {
     part: "01", partName: "한눈에 보기", title: "관심과 경험의 사분면",
     body: T("관심이 높은데 아직 경험이 없는 영역이 둘 있습니다", "가로는 관심 정도, 세로는 그 영역에서 가장 깊이 해 본 단계입니다. 오른쪽 위로 갈수록 ‘하고 싶고 해 본’ 영역입니다.") +
@@ -545,7 +556,7 @@ function p1quad(d: D, x: X): Page {
 
 function p1best(d: D, x: X): Page {
   const r = d.r;
-  const rows = r.radar.best.map((b: A) => ({ label: AXN[b.axis], value: b.level, color: LEVEL_COLOR[Math.max(1, b.level)], note: b.where.join(" · ") }));
+  const rows = r.radar.best.map((b: A) => ({ label: AXN[b.axis], value: b.level, color: LVC[Math.max(1, b.level)], note: b.where.join(" · ") }));
   return {
     part: "01", partName: "한눈에 보기", title: "판단 여덟 가지의 가장 깊은 단계",
     body: T("여덟 판단 가운데 넷은 기준까지 직접 정해 봤습니다", "영역을 가리지 않고, 판단마다 가장 깊이 해 본 단계를 모았습니다. 막대 오른쪽은 그 단계가 나온 영역입니다.") +
@@ -558,7 +569,7 @@ function p1role(d: D, x: X): Page {
   const r = d.r, dir = r.directions.find((z: A) => z.goal) ?? r.directions[0];
   const pack = d.rolePacks.find((p: A) => p.code === dir.code);
   const best = Object.fromEntries(r.radar.best.map((b: A) => [b.axis, b.level]));
-  const rows = (pack?.required_axes ?? []).map((a: string) => ({ label: AXN[a], value: best[a] ?? 0, color: C.navy }));
+  const rows = (pack?.required_axes ?? []).map((a: string) => ({ label: AXN[a], value: best[a] ?? 0, color: LVC[Math.max(1, best[a] ?? 0)] }));
   return {
     part: "01", partName: "한눈에 보기", title: "목표 직무 준비 한눈에",
     body: T(`목표 직무인 ${E(dir.name)}의 핵심 판단 둘은 모두 기준까지 해 봤습니다`, E(dir.summary)) +
@@ -579,7 +590,7 @@ function p1role(d: D, x: X): Page {
 
 function p2radar(d: D, x: X): Page {
   const r = d.r;
-  const series = r.radar.series.map((s: A, i: number) => ({ name: s.name, levels: s.levels, color: [C.navy, C.blue, C.teal][i] }));
+  const series = r.radar.series.map((s: A, i: number) => ({ name: s.name, levels: s.levels, color: [PAL.blue, PAL.coral, PAL.teal][i] }));
   return {
     part: "02", partName: "판단 프로파일", title: "판단 프로파일 방사형 그래프",
     body: T("기획은 ‘정하고 남기는’ 쪽, 데이터는 ‘고르고 확인하는’ 쪽으로 넓습니다", "깊게 물은 세 영역의 판단 여덟 가지를 한 그래프에 겹쳤습니다. 바깥 고리가 ‘기준까지 직접 정함’입니다.") +
@@ -599,7 +610,7 @@ function p2small(d: D, x: X): Page {
   return {
     part: "02", partName: "판단 프로파일", title: "영역별 방사형 그래프",
     body: T("세 영역을 따로 그리면 모양이 서로 다릅니다", "겹쳐 그린 그래프에서 가려진 모양을 영역마다 따로 보았습니다. 모양이 다르다는 것은 같은 사람이 영역에 따라 다른 판단을 맡아 왔다는 뜻입니다.") +
-      `<div class="g3 sm-mult">${r.radar.series.map((s: A, i: number) => `<div class="card cen"><h4>${E(s.name)}</h4>${radar(r.radar.axes.map((a: A) => a.label), [{ name: s.name, levels: s.levels, color: [C.navy, C.blue, C.teal][i] }], { size: 300, label: 13, ring: false })}<p class="mut sm">${E(d.r.domains.find((z: A) => z.code === s.code)?.zoneTag ?? "")}</p></div>`).join("")}</div>` +
+      `<div class="g3 sm-mult">${r.radar.series.map((s: A, i: number) => `<div class="card cen"><h4>${E(s.name)}</h4>${radar(r.radar.axes.map((a: A) => a.label), [{ name: s.name, levels: s.levels, color: [PAL.blue, PAL.coral, PAL.teal][i] }], { size: 300, label: 13, ring: false })}<p class="mut sm">${E(d.r.domains.find((z: A) => z.code === s.code)?.zoneTag ?? "")}</p></div>`).join("")}</div>` +
       `<table class="tb tb-s"><thead><tr><th>판단</th>${r.radar.series.map((s: A) => `<th>${E(s.name)}</th>`).join("")}</tr></thead><tbody>${AX.map((a, k) => `<tr><td><b>${E(AXN[a])}</b></td>${r.radar.series.map((s: A) => `<td>${pip(s.levels[k])}</td>`).join("")}</tr>`).join("")}</tbody></table>` +
       band("읽는 법", "기획(경영전략·기획)에서는 ‘기준과 배분 정하기’와 ‘문서와 결과물 만들기’가, 데이터(데이터·의사결정)에서는 ‘조사·분석 방법 고르기’와 ‘실적·대안과 비교하기’가 바깥 고리에 닿습니다. 두 쪽을 이으면 ‘자료로 근거를 만들고 그 근거로 배분을 정한’ 이야기가 됩니다."),
   };
@@ -610,14 +621,14 @@ function p2heat(d: D, x: X): Page {
   const rows = r.map.map((z: A) => z.name);
   const cell = (i: number, j: number) => {
     const code = r.map[i].code, lv = x.levels(code)[j] ?? 0;
-    if (x.est(code)) return { fill: ["#f1f3f7", "#e3e9f5", "#c9d6ee", "#c9d6ee"][lv], text: ["없음", "지시받아", "직접 수행", "직접 수행"][lv], ink: C.ink3 };
-    return { fill: LEVEL_COLOR[lv], text: ["없음", "지시받아", "직접 수행", "기준까지"][lv], ink: lv >= 2 ? "#fff" : C.ink2 };
+    if (x.est(code)) return { fill: ["#f1f3f7", "#fbe7c4", "#c9ece4", "#c9ece4"][lv], text: ["없음", "지시받아", "직접 수행", "직접 수행"][lv], ink: C.ink3 };
+    return { fill: LVC[lv], text: ["없음", "지시받아", "직접 수행", "기준까지"][lv], ink: lv >= 2 ? "#fff" : C.ink2 };
   };
   return {
     part: "02", partName: "판단 프로파일", title: "영역 × 판단 지도",
     body: T(`판단을 물은 칸 ${x.asked.length * 8}개 가운데 ${x.asked.reduce((a: number, c: string) => a + x.levels(c).filter((v) => v != null && v >= 2).length, 0)}개가 ‘직접 수행’ 이상입니다`, "12가지 영역과 여덟 판단을 한 장에 놓았습니다. 옅은 칸은 그 영역의 경험 응답과 공통 판단 응답으로 읽은 단계입니다.") +
       `<div class="wide-art">${heat(rows, AX.map((a) => AXN[a]), cell, { width: 700, label: 150, head: 70, row: 33, colWrap: 7 })}</div>` +
-      `<div class="lg lg-row">${[0, 1, 2, 3].map((k) => `<span><i style="background:${LEVEL_COLOR[k]}"></i>${E(STEP[k as 0].tag)}</span>`).join("")}<span><i style="background:#e3e9f5;border:1px solid #dfe3ea"></i>경험 응답으로 읽은 단계(옅은 칸)</span></div>` +
+      `<div class="lg lg-row">${[0, 1, 2, 3].map((k) => `<span><i style="background:${LVC[k]}"></i>${E(STEP[k as 0].tag)}</span>`).join("")}<span><i style="background:#c9ece4;border:1px solid #dfe3ea"></i>경험 응답으로 읽은 단계(옅은 칸)</span></div>` +
       `<div class="two">
         <div class="note"><b>가로로 읽기</b><p>한 영역 안에서 어느 판단까지 해 봤는지 봅니다. 경영전략·기획은 여덟 칸 가운데 ${x.levels("TD01").filter((v) => v != null && v >= 2).length}칸이 ‘직접 수행’ 이상입니다.</p></div>
         <div class="note"><b>세로로 읽기</b><p>한 판단이 몇 영역에서 나왔는지 봅니다. ‘결과가 결정에 쓰이기’는 세 영역 모두 아직 ‘지시받아 수행’ 이하입니다. 다음 활동에서 가장 먼저 겨냥할 칸입니다.</p></div>
@@ -645,7 +656,7 @@ function p2strength(d: D, x: X, k: number): Page {
       `<div class="two r74">
         <div>${s.decisions.length ? H("직접 정한 것", "고른 근거") + ul(s.decisions.map(E)) : ""}${s.acts.length ? H("해 본 일", "고른 근거") + ul(s.acts.map(E)) : ""}
           <div class="chips">${s.artifacts.map((t: string) => `<span class="art">${E(t)}</span>`).join("")}${s.comparisons.map((t: string) => `<span>${E(t)}와 비교</span>`).join("")}</div></div>
-        <div class="card cen">${radar(AX.map((a) => AXN[a]), [{ name: s.name, levels: lv, color: [C.navy, C.blue, C.teal][k % 3] }], { size: 300, label: 13, ring: false })}${zoneTag(s.zone)}</div>
+        <div class="card cen">${radar(AX.map((a) => AXN[a]), [{ name: s.name, levels: lv, color: [PAL.blue, PAL.coral, PAL.teal][k % 3] }], { size: 300, label: 13, ring: false })}${zoneTag(s.zone)}</div>
       </div>` +
       `<div class="g3">
         <div class="note"><b>보여 줄 것</b><p>${E(s.show)}</p></div>
@@ -672,7 +683,7 @@ function p2quality(d: D, x: X): Page {
         ["응답", "‘기준을 직접 정했다’고 답함"], ["고른 근거", "그 장면을 체크리스트에서 둘 이상 고름"], ["결과물", "남긴 문서·표를 함께 고름"], ["단계", "그때만 ‘기준까지 직접 정함’"],
       ].map(([h, b]) => `<div class="f5"><b>${h}</b><p>${b}</p></div>`).join("")}</div>` +
       H("물은 칸 스물네 개의 단계", "깊게 물은 세 영역 × 여덟 판단") +
-      hbars([3, 2, 1, 0].map((k) => ({ label: STEP[k as 0].tag, value: x.asked.reduce((a: number, c: string) => a + x.levels(c).filter((v) => v === k).length, 0), color: LEVEL_COLOR[Math.max(1, k)] })), { max: 12, width: 640, label: 150, row: 30, valueText: (b) => `${b.value}칸` }) +
+      hbars([3, 2, 1, 0].map((k) => ({ label: STEP[k as 0].tag, value: x.asked.reduce((a: number, c: string) => a + x.levels(c).filter((v) => v === k).length, 0), color: LVC[Math.max(1, k)] })), { max: 12, width: 640, label: 150, row: 30, valueText: (b) => `${b.value}칸` }) +
       H("이 결과가 말하지 않는 것") +
       `<div class="two"><div>${ul(["결과물의 완성도(성과 수치는 참여자가 상담에서 적은 것만 씁니다)", "직무 적합도·합격 가능성·연봉", "다른 참여자와 견준 순위(규준이 아직 없습니다)"])}</div><div>${ul(["체크리스트 근거 없이 경험 응답으로 읽은 영역의 실제 숙련도", "기업의 채용 계획(공시로 확인한 것은 회사 개황뿐입니다)", "성격이나 적성 유형"])}</div></div>`,
   };
@@ -690,7 +701,7 @@ function p3domain(d: D, x: X, code: string, no: number): Page {
   const deep = d.r.domains.find((v: A) => v.code === code);
   const pk = x.picks(code);
   const art = asked
-    ? radar(AX.map((a) => AXN[a]), [{ name: z.name, levels: lv, color: ZC[z.zone] }], { size: 280, label: 12.5, ring: false })
+    ? radar(AX.map((a) => AXN[a]), [{ name: z.name, levels: lv, color: DC(z.code) }], { size: 280, label: 12.5, ring: false })
     : `${radar(AX.map((a) => AXN[a]), [{ name: z.name, levels: lv, color: "#8fa3c9" }], { size: 250, label: 12, ring: false })}
        <div class="est3"><div><span>관심</span><b>${five(x.intOf(code))}</b></div><div><span>해 본 횟수</span><b>${EXN[x.expOf(code)]}</b></div><div><span>배울 뜻</span><b>${five(x.leaOf(code))}</b></div></div>`;
   const head = asked
@@ -739,12 +750,12 @@ const recFill = (title: string) => Object.entries(FILL.rec).find(([k]) => title.
 
 function p3timeline(d: D, x: X): Page {
   const r = d.r;
-  const items = r.records.map((rc: A, i: number) => { const [a, b] = rc.period.split(" ~ "); return { label: rc.title, from: a, to: b ?? a, color: [C.navy, C.blue, C.teal][i % 3] }; });
+  const items = r.records.map((rc: A, i: number) => { const [a, b] = rc.period.split(" ~ "); return { label: rc.title, from: a, to: b ?? a, color: [PAL.blue, PAL.coral, PAL.teal][i % 3] }; });
   return {
     part: "03", partName: "12가지 업무 영역", title: "경험 기록 시간축",
     body: T("경험 기록 세 건이 1년 사이에 이어져 있습니다", "참여자가 플랫폼에 적어 둔 활동입니다. 검사 응답과 따로 받았고, 같은 영역을 가리키는지 다음 쪽에서 맞춰 봅니다.") +
       `<div class="wide-art">${timeline(items, { width: 700 })}</div>` +
-      r.records.map((rc: A, i: number) => `<div class="rec" style="--c:${[C.navy, C.blue, C.teal][i % 3]}"><div class="rec-h"><b>${E(rc.title)}</b><span>${E(rc.kind)} · ${E(rc.period)} · ${rc.domains.map(E).join(", ")}</span></div>
+      r.records.map((rc: A, i: number) => `<div class="rec" style="--c:${[PAL.blue, PAL.coral, PAL.teal][i % 3]}"><div class="rec-h"><b>${E(rc.title)}</b><span>${E(rc.kind)} · ${E(rc.period)} · ${rc.domains.map(E).join(", ")}</span></div>
         <div class="g3 rec-b"><div><p class="k">다룬 문제</p>${ul(rc.problems.map(E))}</div><div><p class="k">직접 정한 것</p>${ul(rc.decisions.map(E))}</div><div><p class="k">남긴 것 · 쓰인 곳</p>${ul([...rc.artifacts.map((a: string) => `<b>${E(a)}</b>`), ...rc.usedWhere.map(E)])}</div></div>
         <p class="sm"><b class="mine">맡은 역할</b> ${E(recFill(rc.title).role)}</p></div>`).join(""),
   };
@@ -790,14 +801,14 @@ function p4matrix(d: D, x: X): Page {
   const cell = (i: number, j: number) => {
     const s = strength(roles[i].code, tds[j]), z = x.zones[tds[j]];
     const core = (roles[i].core_ref?.td ?? []).includes(tds[j]);
-    const fill = s === "중심" ? (z === "Z1_EVIDENCE_ESTABLISHED" ? C.navy : z === "Z2_EVIDENCE_INCOMPLETE" ? C.blue : "#9aa6bb") : s === "있음" ? (z === "Z1_EVIDENCE_ESTABLISHED" ? "#8fa3c9" : z === "Z2_EVIDENCE_INCOMPLETE" ? C.sky : "#dfe3ea") : "#f6f7f9";
+    const fill = s === "중심" ? (z === "Z1_EVIDENCE_ESTABLISHED" ? PAL.blue : z === "Z2_EVIDENCE_INCOMPLETE" ? PAL.teal : PAL.amber) : s === "있음" ? (z === "Z1_EVIDENCE_ESTABLISHED" ? "#a9c1f2" : z === "Z2_EVIDENCE_INCOMPLETE" ? "#9fdccf" : "#f8d9b3") : "#f6f7f9";
     return { fill, text: core ? "●" : "", ink: s === "중심" ? "#fff" : C.ink2 };
   };
   return {
     part: "04", partName: "직무 탐색", title: "직무와 영역의 지도",
     body: T("경영기획과 데이터·분석은 근거 갖춘 영역이 직무의 중심과 겹칩니다", "가로는 12가지 업무 영역, 세로는 경영계열 대표 직무 여덟입니다. 진한 칸은 그 직무의 중심 업무이고, 색이 짙을수록 참여자의 근거가 갖춰진 영역입니다. ●는 직무의 핵심 영역입니다.") +
       `<div class="wide-art">${heat(roles.map((p: A) => p.name_ko ?? p.name), d.r.map.map((z: A) => z.name), cell, { width: 710, label: 120, head: 92, row: 34, colWrap: 5 })}</div>` +
-      `<div class="lg lg-row"><span><i style="background:${C.navy}"></i>중심 업무 · 근거 갖춤</span><span><i style="background:${C.blue}"></i>중심 업무 · 근거 일부</span><span><i style="background:#9aa6bb"></i>중심 업무 · 아직</span><span><i style="background:#8fa3c9"></i>함께 하는 업무 · 근거 갖춤</span><span><i style="background:#dfe3ea"></i>함께 하는 업무 · 아직</span></div>` +
+      `<div class="lg lg-row"><span><i style="background:${PAL.blue}"></i>중심 업무 · 근거 갖춤</span><span><i style="background:${PAL.teal}"></i>중심 업무 · 근거 일부</span><span><i style="background:${PAL.amber}"></i>중심 업무 · 아직</span><span><i style="background:#a9c1f2"></i>함께 하는 업무 · 근거 갖춤</span><span><i style="background:#f8d9b3"></i>함께 하는 업무 · 아직</span></div>` +
       band("직무 일반", "이 지도는 직무마다 어떤 영역이 중심인지에 대한 일반 안내 위에 참여자의 근거를 겹친 것입니다. 개인의 직무 적합도를 계산한 것이 아닙니다."),
   };
 }
@@ -812,7 +823,7 @@ function p4coverage(d: D, x: X): Page {
   return {
     part: "04", partName: "직무 탐색", title: "직무별로 갖춘 근거",
     body: T("여덟 직무 가운데 셋은 핵심 영역 셋 중 둘 이상에 근거가 있습니다", "직무마다 핵심 영역 세 곳에서 근거가 몇 곳 갖춰졌는지와, 그 직무가 특히 보는 판단 두 가지의 단계를 나란히 놓았습니다.") +
-      `<div class="wide-art">${hbars(rows.map((r) => ({ label: r.p.name_ko ?? r.p.name, value: r.z1 + r.z2 * 0.5, color: r.z1 >= 2 ? C.navy : r.z1 + r.z2 >= 1 ? C.blue : "#c9ced8", note: `근거 갖춤 ${r.z1} · 일부 ${r.z2} / 핵심 영역 3` })), { max: 3, width: 700, label: 130, row: 38, valueText: (b) => (b as A).note })}</div>` +
+      `<div class="wide-art">${hbars(rows.map((r) => ({ label: r.p.name_ko ?? r.p.name, value: r.z1 + r.z2 * 0.5, color: r.z1 >= 2 ? PAL.blue : r.z1 + r.z2 >= 1 ? PAL.teal : "#c9ced8", note: `근거 갖춤 ${r.z1} · 일부 ${r.z2} / 핵심 영역 3` })), { max: 3, width: 700, label: 130, row: 38, valueText: (b) => (b as A).note })}</div>` +
       `<table class="tb tb-s"><thead><tr><th>직무</th><th>핵심 영역</th><th>특히 보는 판단과 지금 단계</th></tr></thead><tbody>${rows.map((r) => `<tr><td><b>${E(r.p.name_ko ?? r.p.name)}</b></td><td>${r.tds.map((t) => `${E(x.name(t))}<span class="dot" style="background:${ZC[x.zones[t]]}"></span>`).join(" ")}</td><td>${r.req.map((q: A) => `${E(AXN[q.a])} ${pip(q.lv)}`).join("<br>")}</td></tr>`).join("")}</tbody></table>` +
       `<p class="mut sm">막대 길이는 근거 갖춘 영역을 1, 근거 일부 영역을 0.5로 세어 더한 것입니다. 센 개수를 보기 쉽게 그린 것이고 적합도 점수가 아닙니다.</p>`,
   };
@@ -826,7 +837,7 @@ function rolePages(d: D, x: X, code: string, depth: number): Page[] {
   out.push({
     part: "04", partName: "직무 탐색", title: `${name} · 하는 일`,
     body: T(`${E(name)}은 ${E(g.summary)}입니다`, dir ? E(dir.summary) : `이 직무의 핵심 영역은 ${pack.core_ref.td.map((t: string) => E(x.name(t))).join(", ")}입니다.`) +
-      H("일이 흘러가는 순서", "직무 안내") + chain(g.process.slice(0, 6).map((s: A, i: number) => ({ head: s.step, body: s.what, color: i % 2 ? C.blue : C.navy })), { width: 700, height: 168 }) +
+      H("일이 흘러가는 순서", "직무 안내") + chain(g.process.slice(0, 6).map((s: A, i: number) => ({ head: s.step, body: s.what, color: CYC[i % CYC.length] })), { width: 700, height: 168 }) +
       `<div class="two">
         <div class="card">${H("주로 맡는 일")}${ul(g.responsibilities.map(E))}</div>
         <div class="card">${H("알아야 할 것 · 쓰는 도구")}${ul([...g.knowledge.map(E), ...g.tools.map((t: string) => `<span class="mut">${E(t)}</span>`)])}</div>
@@ -853,7 +864,7 @@ function rolePages(d: D, x: X, code: string, depth: number): Page[] {
     out.push({
       part: "04", partName: "직무 탐색", title: `${name} · 첫 프로젝트와 배울 순서`,
       body: T(`첫 프로젝트: ${E(fp.title)}`, E(fp.goal)) +
-        chain(fp.steps.map((s: string, i: number) => ({ head: `${i + 1}단계`, body: s, color: [C.navy, C.blue, C.teal, C.amber][i % 4] })), { width: 700, height: 160 }) +
+        chain(fp.steps.map((s: string, i: number) => ({ head: `${i + 1}단계`, body: s, color: [PAL.blue, PAL.teal, PAL.amber, PAL.coral][i % 4] })), { width: 700, height: 160 }) +
         `<div class="two">
           <div class="card">${H("완료 기준")}<p class="big">${E(fp.check)}</p><p class="mut">남길 것: ${E(fp.output)}</p></div>
           <div class="card">${H("배울 순서")}<ol class="lo">${g.learnOrder.map((l: A) => `<li><b>${E(l.step)}</b><span>${E(l.why)}</span></li>`).join("")}</ol></div>
@@ -931,7 +942,7 @@ function p5sejong(d: D, x: X): Page[] {
     out.push({
       part: "05", partName: "세종·충청에서 찾아보기", title: "세종 상장사의 매출과 영업이익",
       body: T(`세종 본점 상장사 가운데 매출이 큰 ${top.length}곳의 2025년 숫자입니다`, `2025년 사업보고서의 주요 계정입니다(연결 재무제표가 있으면 연결, 없으면 별도). 금액은 억 원 단위로 반올림했습니다. 막대는 같은 눈금이라 규모 차이가 그대로 보입니다.`) +
-        `<div class="wide-art">${moneyBars(top.map((o: A) => ({ label: short(o.corp_name), values: [{ name: "매출액", v: fv(o).매출액 ?? null, color: C.navy }, { name: "영업이익", v: fv(o).영업이익 ?? null, color: C.teal }] })), { width: 700 })}</div>` +
+        `<div class="wide-art">${moneyBars(top.map((o: A) => ({ label: short(o.corp_name), values: [{ name: "매출액", v: fv(o).매출액 ?? null, color: PAL.blue }, { name: "영업이익", v: fv(o).영업이익 ?? null, color: PAL.amber }] })), { width: 700 })}</div>` +
         `<div class="two"><div class="note"><b>업종이 한쪽에 모여 있습니다</b><p>화장품·건강기능식품(콜마 계열), 제약(신신제약·한국유나이티드제약), 소재·부품(나노신소재·켐트로닉스·유라테크·에이치비 계열)이 세종 산업단지에 본점을 두고 있습니다. 공시의 업종 코드와 사업의 개요로 확인할 수 있습니다.</p></div>
         <div class="note warm"><b>숫자를 읽는 법</b><p>매출은 회사의 규모를, 영업이익은 본업에서 남긴 돈을 보여 줍니다. 경영기획 지망자라면 ‘이 회사의 다음 해 목표 지표 세 개’를 이 숫자에서 골라 보는 연습을 해 보세요.</p></div></div>`,
     });
@@ -939,7 +950,7 @@ function p5sejong(d: D, x: X): Page[] {
     out.push({
       part: "05", partName: "세종·충청에서 찾아보기", title: "세종 상장사의 직원 수와 공시 원문",
       body: T(`세종 본점 상장사 ${st.length}곳의 직원 수는 사업보고서에 적혀 있습니다`, "사업보고서 ‘직원 등의 현황’의 합계입니다(2025년 사업보고서). 본사·공장·영업 인원이 모두 들어 있어 세종에서 일하는 인원과는 다를 수 있습니다.") +
-        `<div class="wide-art">${hbars(st.map((o: A) => ({ label: short(o.corp_name), value: o.staff.total, color: C.blue })), { max: Math.max(...st.map((o: A) => o.staff.total)) * 1.08, width: 700, label: 150, row: 22, valueText: (b) => `${b.value.toLocaleString("ko-KR")}명` })}</div>` +
+        `<div class="wide-art">${hbars(st.map((o: A, i: number) => ({ label: short(o.corp_name), value: o.staff.total, color: CYC[i % CYC.length] })), { max: Math.max(...st.map((o: A) => o.staff.total)) * 1.08, width: 700, label: 150, row: 22, valueText: (b) => `${b.value.toLocaleString("ko-KR")}명` })}</div>` +
         `<table class="tb tb-xs"><thead><tr><th>회사</th><th>매출액</th><th>영업이익</th><th>당기순이익</th><th>사업보고서 접수</th></tr></thead><tbody>${fin.map((o: A) => `<tr><td><b>${E(o.corp_name)}</b></td><td>${won(fv(o).매출액)}</td><td>${won(fv(o).영업이익)}</td><td>${won(fv(o).당기순이익)}</td><td class="mut">${E(o.annual_reports?.[0]?.rcept_dt ?? "")}</td></tr>`).join("")}</tbody></table>`,
     });
   }
@@ -962,8 +973,8 @@ const SJG: Record<string, { tds: string[]; work: string; try: string }> = {
   SVC: { tds: ["TD09", "TD07", "TD06"], work: "현장 운영 · 고객 응대 · 인력 관리", try: "그 서비스를 이용하는 사람이 겪는 불편 하나를 찾아 개선안을 적어 보세요" },
 };
 const TIER: Record<string, { head: string; lead: string; color: string }> = {
-  A: { head: "내 결과와 잘 맞는 곳", lead: "확인된 강점이 그 업종에서 자주 맡는 일과 겹칩니다", color: C.navy },
-  B: { head: "이어서 볼 곳", lead: "정리 중인 강점이 그 업종의 일과 겹칩니다", color: C.blue },
+  A: { head: "내 결과와 잘 맞는 곳", lead: "확인된 강점이 그 업종에서 자주 맡는 일과 겹칩니다", color: PAL.blue },
+  B: { head: "이어서 볼 곳", lead: "정리 중인 강점이 그 업종의 일과 겹칩니다", color: PAL.teal },
   C: { head: "넓혀 볼 곳", lead: "아직 채우지 않은 판단이 많이 쓰이는 업종입니다", color: "#8c97ab" },
 };
 
@@ -1060,7 +1071,7 @@ function p5daejeon(d: D, x: X): Page {
   return {
     part: "05", partName: "세종·충청에서 찾아보기", title: "대전·충청 상장사 공시 숫자",
     body: T("세종과 생활권이 겹치는 대전·충청의 상장사도 함께 봅니다", "공시로 본점이 대전·충청인 것을 확인한 상장사의 2025년 사업보고서 숫자입니다. 지역 산업이 바이오·영상센서·건설처럼 서로 다른 쪽에 있다는 것을 보여 줍니다.") +
-      `<div class="wide-art">${moneyBars(listed.map((o: A) => { const f = o.financials.consolidated?.매출액 != null ? o.financials.consolidated : o.financials.separate; return { label: o.name.replace(/\(주\)|주식회사/g, "").trim(), values: [{ name: "매출액", v: f?.매출액 ?? null, color: C.navy }, { name: "영업이익", v: f?.영업이익 ?? null, color: C.teal }] }; }), { width: 700 })}</div>` +
+      `<div class="wide-art">${moneyBars(listed.map((o: A) => { const f = o.financials.consolidated?.매출액 != null ? o.financials.consolidated : o.financials.separate; return { label: o.name.replace(/\(주\)|주식회사/g, "").trim(), values: [{ name: "매출액", v: f?.매출액 ?? null, color: PAL.violet }, { name: "영업이익", v: f?.영업이익 ?? null, color: PAL.coral }] }; }), { width: 700 })}</div>` +
       `<table class="tb tb-s"><thead><tr><th>회사</th><th>본점</th><th>사업부문별 직원</th><th>사업보고서</th></tr></thead><tbody>${listed.map((o: A) => `<tr><td><b>${E(o.name)}</b></td><td class="mut">${E((o.dart.adres ?? "").split(" ").slice(0, 2).join(" "))}</td><td>${(o.staff?.by_segment ?? []).map((s: A) => `${E(s.segment)} ${s.count.toLocaleString("ko-KR")}명`).join(" · ")}</td><td class="mut">${E(o.financials.report)} ${E(o.financials.year)} · 접수 ${E(o.annual_reports?.[0]?.rcept_dt ?? "")}</td></tr>`).join("")}</tbody></table>` +
       band("출처", `금융감독원 전자공시(OpenDART) 기업개황·사업보고서 주요 계정 · 확인일 ${E(d.dart.checked_on)}. 채용 여부와 근무지는 확인하지 않았습니다.`),
   };
@@ -1148,7 +1159,7 @@ function p6portfolio(d: D, x: X): Page {
   return {
     part: "06", partName: "자기소개서·면접 준비", title: "포트폴리오 목록",
     body: T(`포트폴리오에 넣을 결과물은 이미 ${have}개, 새로 만들 것은 ${pf.length - have}개입니다`, "검사와 경험 기록에서 고른 결과물을 목록으로 만들었습니다. 결과물 하나마다 ‘내가 정한 것 한 줄’과 ‘비교한 대상 한 줄’을 붙이면 됩니다.") +
-      `<div class="two r46"><div class="card cen">${donut([{ label: "보유", value: have, color: C.navy }, { label: "새로 만들기", value: pf.length - have, color: C.amber }], { size: 220, center: [`${have}`, "이미 가진 결과물"] })}<div class="lg"><span><i style="background:${C.navy}"></i>보유 ${have}</span><span><i style="background:${C.amber}"></i>새로 만들기 ${pf.length - have}</span></div></div>
+      `<div class="two r46"><div class="card cen">${donut([{ label: "보유", value: have, color: PAL.teal }, { label: "새로 만들기", value: pf.length - have, color: PAL.amber }], { size: 220, center: [`${have}`, "이미 가진 결과물"] })}<div class="lg"><span><i style="background:${C.navy}"></i>보유 ${have}</span><span><i style="background:${C.amber}"></i>새로 만들기 ${pf.length - have}</span></div></div>
       <table class="tb tb-s"><thead><tr><th>결과물</th><th>상태</th><th>출처</th></tr></thead><tbody>${pf.map((p: A) => `<tr><td><b>${E(p.title)}</b></td><td>${tag(p.status, p.status === "보유" ? C.navy : C.amber)}</td><td class="mut">${E(p.from)}</td></tr>`).join("")}</tbody></table></div>` +
       H("결과물 한 장의 구성") +
       `<div class="g3"><div class="note"><b>1. 결과물</b><p>표·문서 한 장(캡처해도 됩니다)</p></div><div class="note"><b>2. 내가 정한 것</b><p>그 결과물 안에서 직접 정한 기준 한 줄</p></div><div class="note"><b>3. 비교한 대상</b><p>목표·지난 실적·다른 안 가운데 무엇과 비교했는지 한 줄</p></div></div>` +
@@ -1226,7 +1237,7 @@ function p7gantt(d: D, x: X): Page {
   return {
     part: "07", partName: "실행 로드맵", title: "90일 실행 간트",
     body: T("90일 동안 결과물 여섯 개를 남깁니다", "기간마다 결과물 둘씩입니다. 막대 안의 글은 남길 결과물입니다. 한 기간에 둘보다 많이 잡지 않았습니다.") +
-      `<div class="wide-art">${gantt(pl.map((p: A, i: number) => ({ label: p.label, from: span[p.period][0], to: span[p.period][1], color: [C.navy, C.blue, C.teal][Math.floor(i / 2) % 3], note: p.output })), { width: 710, label: 250 })}</div>` +
+      `<div class="wide-art">${gantt(pl.map((p: A, i: number) => ({ label: p.label, from: span[p.period][0], to: span[p.period][1], color: [PAL.blue, PAL.coral, PAL.teal][Math.floor(i / 2) % 3], note: p.output })), { width: 710, label: 250 })}</div>` +
       `<table class="tb tb-s"><thead><tr><th>기간</th><th>할 일</th><th>어디서</th><th>확인</th></tr></thead><tbody>${pl.map((p: A) => `<tr><td>${E(p.period)}</td><td><b>${E(p.label)}</b><br><span class="mut">${E(p.what)}</span></td><td>${E(p.how ?? "")}</td><td class="mut">${E(p.check ?? "")}</td></tr>`).join("")}</tbody></table>`,
   };
 }
@@ -1237,7 +1248,7 @@ function p7long(d: D, x: X): Page {
   return {
     part: "07", partName: "실행 로드맵", title: "6개월 · 12개월",
     body: T("6개월 뒤에는 포트폴리오 첫 장을, 12개월 뒤에는 재검사로 달라진 점을 봅니다", "90일 계획 뒤에 이어지는 길입니다. 달마다 결과물 하나씩을 남기도록 적었습니다.") +
-      chain(months.map((mm: A, i: number) => ({ head: mm.when, body: mm.what, color: [C.navy, C.blue, C.teal, C.amber, C.rose][i % 5] })), { width: 700, height: 176 }) +
+      chain(months.map((mm: A, i: number) => ({ head: mm.when, body: mm.what, color: [PAL.blue, PAL.teal, PAL.amber, PAL.coral, PAL.violet][i % 5] })), { width: 700, height: 176 }) +
       `<table class="tb tb-s"><thead><tr><th>시점</th><th>남길 것</th></tr></thead><tbody>${months.map((mm: A) => `<tr><td>${E(mm.when)}</td><td>${E(mm.output)}</td></tr>`).join("")}${pl.map((p: A) => `<tr><td>${E(p.period)}</td><td><b>${E(p.label)}</b> — ${E(p.output)}</td></tr>`).join("")}</tbody></table>` +
       band("재검사", "12개월 뒤 같은 검사를 다시 보면, 이번 결과와 무엇이 달라졌는지를 영역·판단 단위로 비교할 수 있습니다. 지난 결과는 고쳐지지 않고 그대로 남습니다."),
   };
@@ -1385,7 +1396,7 @@ function build(d: D): Page[] {
   /* 자기소개서·면접을 둘째 장으로 당긴다: 참여자가 가장 먼저 쓰는 쪽이다 */
   P.push(chapter("02", "자기소개서·면접 준비", "검사와 경험 기록에서 고른 근거로 자기소개서 문단과 면접 답변을 만들었습니다.", ["자기소개서 재료", "자기소개서 문단", "포트폴리오 목록", "면접 질문 여섯과 준비한 답", "경영기획 직무 면접 질문", "제출 전 점검표 · 30초 자기소개"], DOC));
   P.push(p6stories(d, x, 0), p6stories(d, x, 2), p6frame(d, x), p6portfolio(d, x), p6interview(d, x, 0), p6interview(d, x, 3), p6roleQ(d, x), p6check(d, x));
-  P.push(chapter("03", "판단 프로파일", "여덟 가지 업무 판단을 어디까지 해 봤는지 방사형 그래프와 지도로 봅니다.", ["판단 프로파일 방사형 그래프", "영역별 방사형 그래프", "영역 × 판단 지도", "프로파일 해석", "강점 세 가지", "응답을 믿을 수 있는가"], radar(AX.map(() => ""), d.r.radar.series.map((s: A, i: number) => ({ name: s.name, levels: s.levels, color: [C.navy, C.blue, C.teal][i] })), { size: 360, ring: false })));
+  P.push(chapter("03", "판단 프로파일", "여덟 가지 업무 판단을 어디까지 해 봤는지 방사형 그래프와 지도로 봅니다.", ["판단 프로파일 방사형 그래프", "영역별 방사형 그래프", "영역 × 판단 지도", "프로파일 해석", "강점 세 가지", "응답을 믿을 수 있는가"], radar(AX.map(() => ""), d.r.radar.series.map((s: A, i: number) => ({ name: s.name, levels: s.levels, color: [PAL.blue, PAL.coral, PAL.teal][i] })), { size: 360, ring: false })));
   P.push(p2radar(d, x), p2small(d, x), p2heat(d, x), p2profile(d, x), p2strength(d, x, 0), p2strength(d, x, 1), p2strength(d, x, 2), p2quality(d, x));
   P.push(chapter("04", "12가지 업무 영역", "영역마다 일이 흘러가는 순서와 판단 여덟 가지의 지금 단계를 한 쪽씩 적었습니다.", ["영역 01~12", "근거 원장", "경험 기록 시간축", "경험 기록 해설", "검사와 기록의 교차 확인"], ring(d.r.map.map((z: A) => ({ name: "", fill: ZC[z.zone] })), { size: 360 })));
   d.r.map.forEach((z: A, i: number) => P.push(p3domain(d, x, z.code, i + 1)));
@@ -1394,8 +1405,8 @@ function build(d: D): Page[] {
   P.push(p4matrix(d, x), p4coverage(d, x));
   P.push(...rolePages(d, x, "ROLE_PLAN_V1", 3), ...rolePages(d, x, "ROLE_ANALYTICS_V1", 2), ...rolePages(d, x, "ROLE_MKT_V1", 1), ...rolePages(d, x, "ROLE_FINACC_V1", 1));
   P.push(p4others(d, x, ["ROLE_OPS_V1", "ROLE_CS_V1", "ROLE_SALES_V1", "ROLE_HR_V1"]), p4industry(d, x), p4public(d, x));
-  P.push(chapter("06", "세종·충청에서 찾아보기", `벤처기업 확인 명단과 공시(OpenDART)로 확인한 세종 기업 ${d.sjorgs?.orgs?.length ?? 0}곳을 내 결과에 대어 보고, 대전·충청의 기업과 공기업, 관심 기관을 조사하는 법을 정리했습니다.`, [`세종 기업 ${d.sjorgs?.orgs?.length ?? 0}곳과 내 결과`, "내 결과와 잘 맞는 곳", "이어서 볼 곳 · 넓혀 볼 곳", "세종 본점 상장사", "매출과 영업이익", "대전·충청 상장사 공시 숫자", "사업보고서 읽기", "충청권 공기업 개황", "기관 조사 양식"], PIN));
-  P.push(...p5fit(d, x), ...p5sejong(d, x), p5daejeon(d, x), p5overview(d, x), p5public(d, x), p5how(d, x));
+  P.push(chapter("06", "세종·충청에서 찾아보기", `벤처기업 확인 명단과 공시(OpenDART)로 확인한 세종 기업 ${d.sjorgs?.orgs?.length ?? 0}곳을 내 결과에 대어 보고, 대전·충청의 기업과 공기업, 관심 기관을 조사하는 법을 정리했습니다.`, [`세종 기업 ${d.sjorgs?.orgs?.length ?? 0}곳과 내 결과`, "내 결과와 잘 맞는 곳", "이어서 볼 곳 · 넓혀 볼 곳", "세종 본점 상장사", "매출과 영업이익", "대전·충청 상장사 공시 숫자", "기관 조사 양식"], PIN));
+  P.push(...p5fit(d, x), ...p5sejong(d, x), p5daejeon(d, x), p5how(d, x));
   P.push(chapter("07", "실행 로드맵", "먼저 채울 판단 세 가지에서 시작해 90일 · 6개월 · 12개월 계획으로 이어집니다.", ["먼저 채울 판단 세 가지", "90일 실행 간트", "6개월 · 12개월", "직무를 알아보는 다섯 걸음", "주간 점검표", "상담 기록지"], gantt([{ label: "", from: 1, to: 30, color: C.navy }, { label: "", from: 20, to: 60, color: C.blue }, { label: "", from: 50, to: 90, color: C.teal }], { width: 360, label: 4 })));
   P.push(p7chains(d, x), p7gantt(d, x), p7long(d, x), p7research(d, x), p7weekly(d, x), p7log(d, x));
   P.push(a1answers(d, x), a2trace(d, x), a3sources(d, x), a4method(d, x), a5words(), a6close(d));
