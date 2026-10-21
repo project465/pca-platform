@@ -263,3 +263,17 @@ CREATE INDEX IF NOT EXISTS v3_applications_user
 
 COMMENT ON TABLE v3_applications IS
   '본인이 적는 지원 이력. 알선하지 않는다. 자유입력은 기한을 들고 다닌다';
+
+-- ============================================================
+--  3-1. 채용공고 통계 (2026-10-21)
+--
+--  공고 한 줄이 어느 전공(Core)의 공고인지를 칸으로 둔다. 전에는
+--  `required_td` 의 영역 코드만 있었는데, 영역 코드는 Core 안에서만 뜻이
+--  있다(TD01 이 기계공학에서 기계설계이고 경영에서 경영전략이다).
+--  **모르면 비운다**: 짐작으로 채운 전공은 그 전공의 통계를 흐린다.
+-- ============================================================
+ALTER TABLE v3_job_postings ADD COLUMN IF NOT EXISTS core_code TEXT;
+CREATE INDEX IF NOT EXISTS v3_job_postings_core_posted
+  ON v3_job_postings (core_code, posted_on);
+COMMENT ON COLUMN v3_job_postings.core_code IS
+  '공고를 단 전공. 규칙으로 갈리지 않으면 비운다';

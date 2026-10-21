@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { timingSafeEqual } from "node:crypto";
 import { flushOutbox, checkCodeStock } from "@/lib/outbox";
 import { runAssistantTick } from "@/lib/assistant/nudges";
+import { runJobsTick } from "@/lib/jobs/tick";
 
 export const dynamic = "force-dynamic";
 
@@ -35,8 +36,10 @@ export async function POST(req: Request) {
      **실패해도 메일 내보내기를 막지 않는다** */
   const assistant = await runAssistantTick().catch(() => null);
   const mail = await flushOutbox(200);
+  /* 공고는 맨 뒤다. 남의 서버를 기다리는 일이라 메일을 붙들지 않게 한다 */
+  const jobs = await runJobsTick().catch(() => null);
   return NextResponse.json(
-    { ok: true, ...mail, lowStock: low.length, assistant },
+    { ok: true, ...mail, lowStock: low.length, assistant, jobs },
     { headers: { "cache-control": "no-store" } },
   );
 }

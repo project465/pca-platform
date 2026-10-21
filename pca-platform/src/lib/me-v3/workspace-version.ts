@@ -355,7 +355,8 @@
  * 폼을 흐리게 세우지 않고 한 줄과 길만 둔다.
  */
 /** AI 티 문장 정리 (견줍니다·섭니다·세웠습니다 등) */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V54";
+/** 공고 쪽이 공고 통계(이 전공의 공고가 묻는 영역)를 세운다 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V55";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -395,7 +396,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V54";
 /** 화면 시안(2026-10-20): 첫 화면 제목을 인사로 바꿨다 */
 /** Track 1단계: 기간권·구독 상태·잠긴 기능 안내 문장 */
 /** AI 티 문장 정리 (견줍니다·섭니다·세웠습니다 등) */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.35";
+/** 공고 통계 쪽의 글 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.36";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**
