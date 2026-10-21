@@ -138,13 +138,25 @@ export function hbars(rows: Bar[], o: { max: number; width?: number; label?: num
     const gx = x(k + (o.ticks!.length === o.max ? 1 : 0));
     return `<line x1="${f1(gx)}" y1="${top - 4}" x2="${f1(gx)}" y2="${H - 4}" stroke="${C.line}" stroke-dasharray="2 3"/><text x="${f1(gx)}" y="${top - 10}" font-size="10.5" text-anchor="middle" fill="${C.ink3}">${esc(t)}</text>`;
   }).join("");
+  /* **막대 끝 글이 그림 밖으로 나가지 않게 한다.** 끝까지 찬 막대 뒤에 긴 글을
+     붙이면 쪽 오른쪽 끝을 넘어 잘린다. 들어갈 자리가 없으면 막대 안쪽 끝에 흰
+     글로 둔다 */
+  const valueLabel = (b: Bar, end: number, y: number): string => {
+    const t = o.valueText ? o.valueText(b) : String(b.value);
+    const need = [...t].reduce((a, ch) => a + (/[\u3131-\uD7A3]/.test(ch) ? 11.5 : 6.6), 0);
+    const room = W - (Math.max(end, L) + 8);
+    if (need <= room || end - L < need + 16) {
+      return `<text x="${f1(Math.max(end, L) + 8)}" y="${y + rh / 2}" font-size="11.5" dominant-baseline="middle" fill="${C.ink2}" font-weight="600">${esc(t)}</text>`;
+    }
+    return `<text x="${f1(end - 8)}" y="${y + rh / 2}" font-size="11.5" text-anchor="end" dominant-baseline="middle" fill="#fff" font-weight="700">${esc(t)}</text>`;
+  };
   const bars = rows.map((b, i) => {
     const y = top + i * rh;
     const w = Math.max(0, x(b.value) - L);
     return `<text x="${L - 12}" y="${y + rh / 2}" font-size="12.5" text-anchor="end" dominant-baseline="middle" fill="${C.ink}" font-weight="600">${esc(b.label)}</text>` +
       `<rect x="${L}" y="${y + rh * 0.2}" width="${f1(W - L - 70)}" height="${f1(rh * 0.6)}" rx="3" fill="${C.line2}"/>` +
       (w > 0 ? `<rect x="${L}" y="${y + rh * 0.2}" width="${f1(w)}" height="${f1(rh * 0.6)}" rx="3" fill="${b.color ?? C.blue}"/>` : "") +
-      `<text x="${f1(Math.max(x(b.value), L) + 8)}" y="${y + rh / 2}" font-size="11.5" dominant-baseline="middle" fill="${C.ink2}" font-weight="600">${esc(o.valueText ? o.valueText(b) : String(b.value))}</text>`;
+      valueLabel(b, x(b.value), y);
   }).join("");
   return `<svg viewBox="0 0 ${W} ${H}" width="100%" xmlns="http://www.w3.org/2000/svg" role="img">${grid}${bars}</svg>`;
 }

@@ -142,10 +142,10 @@ const FILL = {
   } as Record<string, { role: string; compare: string; result: string }>,
   /** 자기소개서 재료의 빈칸: from 앞머리 → 칸 이름 → 채운 글 */
   story: {
-    "경영전략·기획": { "상황과 내 역할": "경영전략 캡스톤(2026-03~06) · 4명 팀의 팀장으로 신사업 세 안을 비교", "무엇과 비교했고 무엇이 달라졌나": "전사 목표와 비교 — 첫해 손익분기 고객 420명을 목표로 세 안 가운데 하나를 고름" },
-    "데이터·의사결정": { "상황과 내 역할": "청년 일경험 프로그램(2026-07~08) · 사업 실적 자료 정리 담당", "무엇과 비교했고 무엇이 달라졌나": "지난 기간 값과 비교 — 전년 같은 기간 대비 참여 인원이 줄어든 사업 하나를 찾아 보고서 첫 쪽에 올림" },
-    "청년 일경험 프로그램": { "상황과 내 역할": "현장실습·인턴 · 2026-07~08 · 인턴 3명 가운데 실적 자료 정리 담당", "무엇과 비교했고 무엇이 달라졌나": "전년 같은 기간 실적과 비교 — 사업 3개 · 지표 5개를 한 장 표로 정리" },
-    "원가회계 팀과제": { "상황과 내 역할": "수업 과제 · 2025-09~12 · 3명 팀에서 간접비 배분 담당", "무엇과 비교했고 무엇이 달라졌나": "단일 배부율 방식과 비교 — 한 제품의 원가가 약 18% 낮게 잡힌 것을 찾음" },
+    "경영전략·기획": { "상황과 내 역할": "경영전략 캡스톤(2026-03~06) · 4명 팀의 팀장으로 신사업 세 안을 비교", "무엇과 비교했고 무엇이 달라졌나": "전사 목표와 비교 — 첫해 손익분기 고객 420명을 목표로 세 안 가운데 하나를 선택했습니다" },
+    "데이터·의사결정": { "상황과 내 역할": "청년 일경험 프로그램(2026-07~08) · 사업 실적 자료 정리 담당", "무엇과 비교했고 무엇이 달라졌나": "지난 기간 값과 비교 — 전년 같은 기간 대비 참여 인원이 줄어든 사업 하나를 찾아 보고서 첫 쪽에 올렸습니다" },
+    "청년 일경험 프로그램": { "상황과 내 역할": "현장실습·인턴 · 2026-07~08 · 인턴 3명 가운데 실적 자료 정리 담당", "무엇과 비교했고 무엇이 달라졌나": "전년 같은 기간 실적과 비교 — 사업 3개와 지표 5개를 한 장 표로 정리했습니다" },
+    "원가회계 팀과제": { "상황과 내 역할": "수업 과제 · 2025-09~12 · 3명 팀에서 간접비 배분 담당", "무엇과 비교했고 무엇이 달라졌나": "단일 배부율 방식과 비교 — 한 제품의 원가가 약 18% 낮게 잡힌 것을 찾았습니다" },
   } as Record<string, Record<string, string>>,
   firstLine: [
     "경영전략 캡스톤에서 4명 팀의 팀장으로 세종 지역 서비스 기업의 신사업 세 안을 비교했고, 첫해 손익분기 고객 수를 기준으로 출장 정비 구독 안을 골라 목표와 지표 표와 사업계획으로 남겼습니다.",
@@ -157,8 +157,8 @@ const FILL = {
     "학과 행사 홍보에서 목표를 ‘참여 신청 80명’으로 정하고 채널별 신청 수를 비교했습니다. 반응이 가장 낮은 채널 하나를 접고 SNS 안내를 두 번으로 늘려 신청 86명으로 마감했습니다.",
   ],
   interview: [
-    "세 안을 수요 · 초기 비용 · 운영 인력으로 비교 → 공유 창고는 초기 비용 때문에 버림 → 출장 정비 구독을 고르고 첫해 손익분기 고객 420명을 목표로 둠.",
-    "합계 대신 전년 같은 기간과 비교하는 방법을 고름 → 참여 인원이 줄어든 사업 하나를 찾아 보고서 첫 쪽에 올림 → 담당 부서가 하반기 홍보 계획을 다시 짬.",
+    "세 안을 수요, 초기 비용, 운영 인력으로 비교했습니다. 공유 창고 안은 초기 비용 때문에 제외했고, 출장 정비 구독 안을 선택해 첫해 손익분기 고객 420명을 목표로 정했습니다.",
+    "합계 대신 전년 같은 기간과 비교하는 방법을 택했습니다. 그래서 참여 인원이 줄어든 사업 하나를 찾아 보고서 첫 쪽에 올렸고, 담당 부서가 하반기 홍보 계획을 다시 세웠습니다.",
     "가장 가까운 장면은 캡스톤에서 ‘고객 수’와 ‘객단가’ 목표가 부딪혔을 때 첫해에는 고객 수를 먼저 지키기로 한 일입니다. 30일 할 일로 목표·지표 정의표를 만든 뒤, 그 표로 우선순위를 정한 장면을 다시 정리해 답합니다.",
     "캡스톤 손익분기 계산에서 객단가 2만 9천 원과 재구독률 60%를 가정으로 두었습니다. 60일 할 일로 가정마다 근거와 버린 값을 한 줄씩 적은 메모를 만들어, 그 메모를 들고 답합니다.",
     "학과 행사 홍보에서 목표를 신청 80명으로 정했습니다. 지난해 신청 62명을 바탕으로 약 30% 높게 잡았고, 결과는 86명이었습니다.",
@@ -166,7 +166,7 @@ const FILL = {
   ],
   frame: { role: "4명 팀의 팀장", basis: "세종 안의 수요, 초기 비용, 운영 인력", drop: "초기 비용이 커 첫해 손익분기를 넘기 어렵다는", result: "첫해 손익분기 고객 420명 목표를 세웠고, 시민 112명 설문으로 그 수요를 확인했음" },
   paragraph: "경영전략 캡스톤에서 세종 지역 서비스 기업의 신사업을 검토할 때, 저는 4명 팀의 팀장을 맡았습니다. 신사업 세 안 가운데 하나를 고르기 위해 세종 안의 수요, 초기 비용, 운영 인력 세 기준을 먼저 정했습니다. 공유 창고 안은 초기 비용이 커 첫해 손익분기를 넘기 어렵다고 보고 제외했고, 출장 정비 구독 안을 골랐습니다. 이 판단을 목표와 지표 표와 사업계획 한 벌로 남겼고, 시민 112명 설문으로 첫해 손익분기 고객 420명의 수요가 있음을 확인했습니다. 이 경험으로 목표를 숫자로 옮기고 그 숫자로 안을 고르는 일이 경영기획의 출발점이라는 것을 배웠습니다.",
-  portfolio: [["결과물 이름", "목표와 지표 표"], ["어떤 과제에서", "경영전략 캡스톤 — 세종 지역 서비스 기업 신사업 검토 (2026-03~06)"], ["내가 정한 것", "세 안을 비교할 기준 세 가지(세종 안 수요 · 초기 비용 · 운영 인력)와 기준마다의 목표 수치"], ["비교한 대상과 결과", "전사 목표(첫해 손익분기 고객 420명)와 비교해 출장 정비 구독 안을 고름"], ["이 결과물로 답할 면접 질문", "“여러 안 가운데 하나를 고를 때 무엇을 기준으로 정했나요?”"]],
+  portfolio: [["결과물 이름", "목표와 지표 표"], ["어떤 과제에서", "경영전략 캡스톤 · 세종 지역 서비스 기업 신사업 검토 (2026-03~06)"], ["내가 정한 것", "세 안을 비교할 기준 세 가지(세종 안 수요 · 초기 비용 · 운영 인력)와 기준마다의 목표 수치"], ["비교한 대상과 결과", "전사 목표(첫해 손익분기 고객 420명)와 비교해 출장 정비 구독 안을 선택"], ["이 결과물로 답할 면접 질문", "“여러 안 가운데 하나를 고를 때 무엇을 기준으로 정했나요?”"]],
   roleQ: "캡스톤에서 첫해 목표를 ‘손익분기 고객 420명’으로 정했습니다. 고정비를 객단가와 재구독률로 나눠 계산했고, 설문의 지불 의향 값으로 객단가를 정했습니다. 세 안 가운데 이 숫자를 넘길 수 있는 안이 하나뿐이어서 그 안을 골랐고, 목표가 달라지면 결과가 어떻게 바뀌는지도 함께 적어 두었습니다.",
   selfIntro: "안녕하세요, 경영기획을 준비하는 이서윤입니다. 저는 자료로 근거를 만들고, 그 근거로 선택하는 일을 해 왔습니다. 경영전략 캡스톤에서는 신사업 세 안을 세 가지 기준으로 비교해 하나를 골랐고, 청년 일경험 프로그램에서는 공공기관 사업 실적을 전년과 비교한 보고서를 만들어 내부 보고에 썼습니다. 입사하면 목표를 지표로 옮기고, 그 지표로 성과를 점검하는 일부터 맡아 조직의 결정을 돕고 싶습니다.",
   practice: {
@@ -183,10 +183,10 @@ const FILL = {
     ["세종 소재 공공기관 · 성과평가", "경영평가 지표 관리, 자료 취합", "지표 설계, 통계 기초", "지표 정의표"],
   ],
   weekly: [
-    ["캡스톤 사업계획에서 목표 문장 6개를 뽑음", "옮길 목표 3개를 고름", "목표 목록 메모", "재는 방법이 애매한 목표 1개", "목표마다 지표 후보 정하기"],
-    ["목표마다 지표 후보를 2개씩 적음", "후보 가운데 하나씩 고름", "지표 후보표", "자료를 구할 수 없는 지표 1개", "재는 방법과 주기 적기"],
-    ["지표마다 재는 방법 · 주기 · 자료 출처를 적음", "분기마다 재기로 정함", "목표·지표 정의표 초안", "없음", "상담에서 검토받기"],
-    ["상담에서 검토받고 고른 까닭을 한 줄씩 더함", "버린 지표 2개의 까닭을 적음", "목표·지표 정의표 완성본", "없음", "경험 기록에 더하기"],
+    ["캡스톤 사업계획에서 목표 문장 6개 추출", "옮길 목표 3개 선택", "목표 목록 메모", "재는 방법이 애매한 목표 1개", "지표 후보 정하기"],
+    ["목표마다 지표 후보 2개씩 작성", "후보 가운데 하나씩 선택", "지표 후보표", "자료를 구할 수 없는 지표 1개", "재는 방법·주기 적기"],
+    ["지표마다 재는 방법·주기·자료 출처 기록", "분기마다 재기로 결정", "정의표 초안", "없음", "상담에서 검토받기"],
+    ["상담 검토 뒤 선택 까닭을 한 줄씩 추가", "뺀 지표 2개의 까닭 기록", "정의표 완성본", "없음", "경험 기록에 더하기"],
   ],
   log: [["상담일", "2026-10-21"], ["상담자", "청년일자리 상담 담당"], ["오늘 함께 본 쪽", "01 한눈에 보기 · 02 자기소개서·면접 준비 · 07 실행 로드맵"], ["참여자가 동의한 강점", "경영전략·기획에서 여러 안 가운데 하나를 근거를 들어 고른 일(캡스톤)"], ["이번에 고른 빈자리", "목표를 숫자로 재는 지표로 옮겨 적기"], ["30일 할 일 (어디서 · 무엇을 · 무엇으로 남길지)", "캡스톤 사업계획에서 · 목표 3개를 지표로 옮겨 · 목표·지표 정의표로 남기기"], ["연계할 지원 사업·프로그램", "기관의 청년 일경험 · 취업 지원 프로그램 안내(담당자가 일정 확인 후 연결)"], ["다음 만남 · 가져올 것", "2026-11-18 · 목표·지표 정의표와 주간 점검표 네 줄"]],
 };
@@ -480,7 +480,7 @@ function p1action(d: D, x: X): Page {
   const col = (head: string, sub: string, color: string, cards: string[]) =>
     `<div class="am-col"><div class="am-h" style="--c:${color}"><b>${head}</b><span>${sub}</span></div>${cards.join("")}</div>`;
   const card = (t: string, s: string, color: string, tagT?: string) =>
-    `<div class="am-c" style="--c:${color}">${tagT ? `<span class="am-t">${E(tagT)}</span>` : ""}<b>${E(t)}</b><span>${E(s)}</span></div>`;
+    `<div class="am-c" style="--c:${color}">${tagT ? `<span class="am-t">${E(tagT)}</span>` : ""}<b>${E(t)}</b><span>${s.split(" · ").map((v) => `<i class="nw">${E(v)}</i>`).join(" · ")}</span></div>`;
   const goalRole = r.strategy.roleName;
   return {
     part: "01", partName: "한눈에 보기", title: "결과에서 할 일까지 한 장",
@@ -561,7 +561,7 @@ function p1best(d: D, x: X): Page {
     part: "01", partName: "한눈에 보기", title: "판단 여덟 가지의 가장 깊은 단계",
     body: T("여덟 판단 가운데 넷은 기준까지 직접 정해 봤습니다", "영역을 가리지 않고, 판단마다 가장 깊이 해 본 단계를 모았습니다. 막대 오른쪽은 그 단계가 나온 영역입니다.") +
       `<div class="wide-art">${hbars(rows, { max: 3, width: 690, label: 200, ticks: ["지시받아 수행", "직접 수행", "기준까지 결정"], row: 40, valueText: (b) => (b as A).note })}</div>` +
-      `<table class="tb tb-s"><thead><tr><th>판단</th><th>무엇을 뜻하나</th><th>업무 장면 예</th></tr></thead><tbody>${AX.map((a) => `<tr><td><b>${E(JUDGE[a].name)}</b></td><td>${E(JUDGE[a].plain)}</td><td class="mut">${E(JUDGE[a].scene)}</td></tr>`).join("")}</tbody></table>`,
+      `<table class="tb tb-s"><thead><tr><th>판단</th><th>무엇을 뜻하나</th><th>업무 장면 예</th></tr></thead><tbody>${AX.map((a) => `<tr><th>${E(JUDGE[a].name)}</th><td>${E(JUDGE[a].plain)}</td><td class="mut">${E(JUDGE[a].scene)}</td></tr>`).join("")}</tbody></table>`,
   };
 }
 
@@ -674,13 +674,13 @@ function p2quality(d: D, x: X): Page {
     part: "02", partName: "판단 프로파일", title: "응답을 믿을 수 있는가",
     body: T("응답은 고르게 들어왔고, 다시 볼 응답은 없습니다", "결과를 읽기 전에 응답이 성실했는지부터 확인했습니다. 한쪽으로 몰린 응답이나 서로 어긋나는 응답이 있으면 결과지 맨 앞에 적습니다.") +
       `<div class="kpis k3">
-        <div class="kpi"><p>응답 품질</p><b>${m.response_quality.flag === "OK" ? "고름" : "다시 보기"}</b><span>한쪽 쏠림 · 어긋남 검사</span></div>
+        <div class="kpi"><p>응답 품질</p><b>${m.response_quality.flag === "OK" ? "이상 없음" : "다시 보기"}</b><span>한쪽 쏠림 · 어긋남 검사</span></div>
         <div class="kpi"><p>고른 장면이 응답을 받치는가</p><b>${x.counts.owned}<small>개</small></b><span>‘기준까지’는 고른 근거가 둘 이상일 때만</span></div>
         <div class="kpi"><p>검사와 기록이 같은 쪽을 가리킨 영역</p><b>${d.r.cross.filter((c: A) => c.kind === "BOTH").length}<small>곳</small></b><span>교차 확인 쪽에서 자세히</span></div>
       </div>` +
       H("단계를 올리는 규칙", "응답만으로는 ‘기준까지’로 올라가지 않습니다") +
       `<div class="flow5 f4">${[
-        ["응답", "‘기준을 직접 정했다’고 답함"], ["고른 근거", "그 장면을 체크리스트에서 둘 이상 고름"], ["결과물", "남긴 문서·표를 함께 고름"], ["단계", "그때만 ‘기준까지 직접 정함’"],
+        ["응답", "‘기준을 직접 정했다’고 답함"], ["고른 근거", "그 장면을 체크리스트에서 둘 이상 선택"], ["결과물", "남긴 문서·표도 함께 선택"], ["단계", "그때만 ‘기준까지 직접 정함’"],
       ].map(([h, b]) => `<div class="f5"><b>${h}</b><p>${b}</p></div>`).join("")}</div>` +
       H("물은 칸 스물네 개의 단계", "깊게 물은 세 영역 × 여덟 판단") +
       hbars([3, 2, 1, 0].map((k) => ({ label: STEP[k as 0].tag, value: x.asked.reduce((a: number, c: string) => a + x.levels(c).filter((v) => v === k).length, 0), color: LVC[Math.max(1, k)] })), { max: 12, width: 640, label: 150, row: 30, valueText: (b) => `${b.value}칸` }) +
@@ -724,7 +724,7 @@ function p3domain(d: D, x: X, code: string, no: number): Page {
       }).join("")}</tbody></table>
       <div class="g3">
         <div class="note"><b>이어지는 직무</b><p>${roles.slice(0, 4).map((t: A) => `${E(t.role_name)}<span class="mut">(${E(t.strength)})</span>`).join(" · ") || "직무 안내 없음"}</p></div>
-        <div class="note"><b>공공·공기관에서는</b><p>${dims.length ? dims.map((j: A) => `${E(j.name)} <span class="mut">: ${E(j.why)}</span>`).join("<br>") : "이 영역을 따로 보는 판단 기준은 적혀 있지 않습니다."}</p></div>
+        <div class="note"><b>공공·공기관에서는</b><p>${dims.length ? dims.map((j: A) => `<span class="dim-n">${E(j.name)}</span><span class="dim-w">${E(j.why)}</span>`).join("") : "이 영역을 따로 보는 판단 기준은 적혀 있지 않습니다."}</p></div>
         <div class="note"><b>남기는 결과물</b><p>${df.artifacts.slice(0, 4).map(E).join(" · ")}</p></div>
       </div>` + (asked
         ? band("다음 단계", E(deep?.develop?.[0]?.how ?? `${z.name}에서 비어 있는 판단 하나를 골라 다음 과제에서 직접 맡아 봅니다.`))
@@ -787,7 +787,7 @@ function p3cross(d: D, x: X): Page {
   return {
     part: "03", partName: "12가지 업무 영역", title: "검사와 기록의 교차 확인",
     body: T("검사 응답과 경험 기록이 같은 영역을 가리키는지 맞춰 봤습니다", "두 근거가 같은 쪽을 가리키면 면접에서 ‘언제, 어떤 과제에서’라는 질문에 바로 답할 수 있습니다. 한쪽에만 있으면 다른 쪽을 채울 차례입니다.") +
-      `<table class="tb"><thead><tr><th>영역</th><th>근거</th><th>검사</th><th>경험 기록</th></tr></thead><tbody>${cr.map((c: A) => `<tr><td><b>${E(c.name)}</b></td><td>${tag(kindK[c.kind] ?? c.kind, c.kind === "BOTH" ? C.navy : c.kind === "TEST_ONLY" ? C.blue : C.teal)}</td><td>${E(c.test)}</td><td>${E(c.record ?? "—")}</td></tr>`).join("")}</tbody></table>` +
+      `<table class="tb"><thead><tr><th>영역</th><th>근거</th><th>검사</th><th>경험 기록</th></tr></thead><tbody>${cr.map((c: A) => `<tr><th>${E(c.name)}</th><td>${tag(kindK[c.kind] ?? c.kind, c.kind === "BOTH" ? C.navy : c.kind === "TEST_ONLY" ? C.blue : C.teal)}</td><td>${E(c.test)}</td><td>${E(c.record ?? "—")}</td></tr>`).join("")}</tbody></table>` +
       `<div class="g2l">${cr.map((c: A) => `<div class="note"><b>${E(c.name)}</b><p>${E(c.reading)}</p><p class="mut sm">${E(c.verify)}</p></div>`).join("")}</div>`,
   };
 }
@@ -824,7 +824,7 @@ function p4coverage(d: D, x: X): Page {
     part: "04", partName: "직무 탐색", title: "직무별로 갖춘 근거",
     body: T("여덟 직무 가운데 셋은 핵심 영역 셋 중 둘 이상에 근거가 있습니다", "직무마다 핵심 영역 세 곳에서 근거가 몇 곳 갖춰졌는지와, 그 직무가 특히 보는 판단 두 가지의 단계를 나란히 놓았습니다.") +
       `<div class="wide-art">${hbars(rows.map((r) => ({ label: r.p.name_ko ?? r.p.name, value: r.z1 + r.z2 * 0.5, color: r.z1 >= 2 ? PAL.blue : r.z1 + r.z2 >= 1 ? PAL.teal : "#c9ced8", note: `근거 갖춤 ${r.z1} · 일부 ${r.z2} / 핵심 영역 3` })), { max: 3, width: 700, label: 130, row: 38, valueText: (b) => (b as A).note })}</div>` +
-      `<table class="tb tb-s"><thead><tr><th>직무</th><th>핵심 영역</th><th>특히 보는 판단과 지금 단계</th></tr></thead><tbody>${rows.map((r) => `<tr><td><b>${E(r.p.name_ko ?? r.p.name)}</b></td><td>${r.tds.map((t) => `${E(x.name(t))}<span class="dot" style="background:${ZC[x.zones[t]]}"></span>`).join(" ")}</td><td>${r.req.map((q: A) => `${E(AXN[q.a])} ${pip(q.lv)}`).join("<br>")}</td></tr>`).join("")}</tbody></table>` +
+      `<table class="tb tb-s"><thead><tr><th>직무</th><th>핵심 영역</th><th>특히 보는 판단과 지금 단계</th></tr></thead><tbody>${rows.map((r) => `<tr><td><b>${E(r.p.name_ko ?? r.p.name)}</b></td><td>${r.tds.map((t) => `<span class="dz">${E(x.name(t))}<span class="dot" style="background:${ZC[x.zones[t]]}"></span></span>`).join(" ")}</td><td>${r.req.map((q: A) => `${E(AXN[q.a])} ${pip(q.lv)}`).join("<br>")}</td></tr>`).join("")}</tbody></table>` +
       `<p class="mut sm">막대 길이는 근거 갖춘 영역을 1, 근거 일부 영역을 0.5로 세어 더한 것입니다. 센 개수를 보기 쉽게 그린 것이고 적합도 점수가 아닙니다.</p>`,
   };
 }
@@ -881,7 +881,7 @@ function p4others(d: D, x: X, codes: string[]): Page {
     part: "04", partName: "직무 탐색", title: "그 밖의 직무 넷",
     body: T("나머지 네 직무도 한 쪽에 정리했습니다", "지금 근거가 적은 직무입니다. 관심이 생기면 아래 ‘들어가는 길’ 하나부터 해 보면 됩니다.") +
       `<div class="g2">${codes.map((c) => { const g = d.guide[c]; const p = d.rolePacks.find((z: A) => z.code === c);
-        return `<div class="card"><h4>${E(p.name_ko ?? p.name)}</h4><p>${E(g.summary)}</p><p class="k">핵심 영역</p><p>${p.core_ref.td.map((t: string) => `${E(x.name(t))}<span class="dot" style="background:${ZC[x.zones[t]]}"></span>`).join(" ")}</p><p class="k">특히 보는 판단</p><p>${p.required_axes.map((a: string) => `${E(AXN[a])} ${pip(Math.max(0, ...p.core_ref.td.map((t: string) => x.levels(t)[AX.indexOf(a as A)] ?? 0)))}`).join("<br>")}</p><p class="k">들어가는 길</p>${ul(g.entry.slice(0, 2).map(E))}<p class="k">연습 과제 하나</p><p class="mut">${E(g.firstProject.title)}</p></div>`; }).join("")}</div>`,
+        return `<div class="card"><h4>${E(p.name_ko ?? p.name)}</h4><p>${E(g.summary)}</p><p class="k">핵심 영역</p><p>${p.core_ref.td.map((t: string) => `<span class="dz">${E(x.name(t))}<span class="dot" style="background:${ZC[x.zones[t]]}"></span></span>`).join(" ")}</p><p class="k">특히 보는 판단</p><p>${p.required_axes.map((a: string) => `${E(AXN[a])} ${pip(Math.max(0, ...p.core_ref.td.map((t: string) => x.levels(t)[AX.indexOf(a as A)] ?? 0)))}`).join("<br>")}</p><p class="k">들어가는 길</p>${ul(g.entry.slice(0, 2).map(E))}<p class="k">연습 과제 하나</p><p class="mut">${E(g.firstProject.title)}</p></div>`; }).join("")}</div>`,
   };
 }
 
@@ -1026,7 +1026,7 @@ function p5fit(d: D, x: X): Page[] {
         { head: "나의 다음 걸음", body: "묶음마다 해 볼 조사 하나", color: C.amber },
       ], { width: 700, height: 132 }) +
       `<div class="wide-art">${hbars(sorted.map((g: A) => ({ label: g.name, value: g.orgs.length, color: TIER[g.tier].color })), { max: Math.max(...gs.map((g: A) => g.orgs.length)) * 1.12, width: 700, label: 190, row: 21, valueText: (b) => `${b.value}곳` })}</div>` +
-      `<table class="tb tb-xs"><thead><tr><th class="w22">업종 묶음</th><th>경영계열이 자주 맡는 일</th><th class="w30">내 결과와 이어지는 점</th><th>묶음</th></tr></thead><tbody>${sorted.map((g: A) => `<tr><td><b>${E(g.name)}</b> <span class="mut">${g.orgs.length}곳</span></td><td>${E(g.cfg.work)}</td><td>${E(g.tier === "C" ? `아직 확인되지 않은 ${g.cfg.tds.slice(0, 2).map((t: string) => x.name(t)).join(" · ")}` : g.cfg.tds.filter((t: string) => x.zones[t] !== "NOT_EXPLORED" && x.zones[t] !== "Z4_INSUFFICIENT_EVIDENCE").map((t: string) => x.name(t)).join(" · "))}</td><td><span class="tag" style="background:${TIER[g.tier].color}">${E(TIER[g.tier].head)}</span></td></tr>`).join("")}</tbody></table>` +
+      `<table class="tb tb-xs"><thead><tr><th>업종 묶음</th><th>경영계열이 자주 맡는 일</th><th class="w30">내 결과와 이어지는 점</th><th>묶음</th></tr></thead><tbody>${sorted.map((g: A) => `<tr><th>${E(g.name)}<span class="mut sm cnt">${g.orgs.length}곳</span></th><td>${E(g.cfg.work)}</td><td>${g.tier === "C" ? `아직 확인되지 않은 ${g.cfg.tds.slice(0, 2).map((t: string) => `<i class="nw">${E(x.name(t))}</i>`).join(" · ")}` : g.cfg.tds.filter((t: string) => x.zones[t] !== "NOT_EXPLORED" && x.zones[t] !== "Z4_INSUFFICIENT_EVIDENCE").map((t: string) => `<i class="nw">${E(x.name(t))}</i>`).join(" · ")}</td><td><span class="tag" style="background:${TIER[g.tier].color}">${E(TIER[g.tier].head)}</span></td></tr>`).join("")}</tbody></table>` +
       `<div class="g3">${(["A", "B", "C"] as const).map((t) => `<div class="b4" style="--c:${TIER[t].color}"><b>${TIER[t].head} · ${cnt(t)}곳</b><p>${E(TIER[t].lead)}</p><p class="mut">${by(t).map((g: A) => E(g.name)).join(" · ")}</p></div>`).join("")}</div>` +
       band("읽는 법", SJ_LAW),
   });
@@ -1160,9 +1160,9 @@ function p6portfolio(d: D, x: X): Page {
     part: "06", partName: "자기소개서·면접 준비", title: "포트폴리오 목록",
     body: T(`포트폴리오에 넣을 결과물은 이미 ${have}개, 새로 만들 것은 ${pf.length - have}개입니다`, "검사와 경험 기록에서 고른 결과물을 목록으로 만들었습니다. 결과물 하나마다 ‘내가 정한 것 한 줄’과 ‘비교한 대상 한 줄’을 붙이면 됩니다.") +
       `<div class="two r46"><div class="card cen">${donut([{ label: "보유", value: have, color: PAL.teal }, { label: "새로 만들기", value: pf.length - have, color: PAL.amber }], { size: 220, center: [`${have}`, "이미 가진 결과물"] })}<div class="lg"><span><i style="background:${C.navy}"></i>보유 ${have}</span><span><i style="background:${C.amber}"></i>새로 만들기 ${pf.length - have}</span></div></div>
-      <table class="tb tb-s"><thead><tr><th>결과물</th><th>상태</th><th>출처</th></tr></thead><tbody>${pf.map((p: A) => `<tr><td><b>${E(p.title)}</b></td><td>${tag(p.status, p.status === "보유" ? C.navy : C.amber)}</td><td class="mut">${E(p.from)}</td></tr>`).join("")}</tbody></table></div>` +
+      <table class="tb tb-s"><thead><tr><th>결과물</th><th>상태</th><th>출처</th></tr></thead><tbody>${pf.map((p: A) => `<tr><td><b>${E(p.title)}</b></td><td>${tag(p.status, p.status === "보유" ? C.navy : C.amber)}</td><td class="mut">${E(String(p.from).replace(/에서 고른 결과물$/, ""))}</td></tr>`).join("")}</tbody></table></div>` +
       H("결과물 한 장의 구성") +
-      `<div class="g3"><div class="note"><b>1. 결과물</b><p>표·문서 한 장(캡처해도 됩니다)</p></div><div class="note"><b>2. 내가 정한 것</b><p>그 결과물 안에서 직접 정한 기준 한 줄</p></div><div class="note"><b>3. 비교한 대상</b><p>목표·지난 실적·다른 안 가운데 무엇과 비교했는지 한 줄</p></div></div>` +
+      `<div class="g3"><div class="note"><b>1. 결과물</b><p>표·문서 한 장(캡처해도 됩니다)</p></div><div class="note"><b>2. 내가 정한 것</b><p>직접 정한 기준 한 줄</p></div><div class="note"><b>3. 비교한 대상</b><p>목표·지난 실적·다른 안 가운데 무엇과 비교했는지 한 줄</p></div></div>` +
       H("포트폴리오 첫 장", "참여자 작성") +
       `<table class="tb ws"><tbody>${FILL.portfolio.map(([h, v]) => `<tr><th>${E(h)}</th><td>${E(v)}</td></tr>`).join("")}</tbody></table>`,
   };
@@ -1423,7 +1423,7 @@ const CSS = `
 @page{size:A4;margin:0}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:#e9ecf1}
-body{font-family:Pretendard,"Noto Sans KR",sans-serif;color:${C.ink};font-size:9.6pt;line-height:1.55;word-break:keep-all;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{font-family:Pretendard,"Noto Sans KR",sans-serif;color:${C.ink};font-size:9.6pt;line-height:1.55;word-break:keep-all;text-wrap:pretty;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .pg{width:210mm;height:297mm;padding:13mm 15mm 11mm;background:#fff;position:relative;overflow:hidden;display:flex;flex-direction:column;page-break-after:always;break-after:page;margin:0 auto}
 .rh{display:flex;align-items:baseline;gap:10px;border-bottom:1.5px solid ${C.navy};padding-bottom:2.2mm;margin-bottom:5mm;font-size:8.6pt;color:${C.ink3}}
 .rh-n{font-weight:800;color:${C.blue};letter-spacing:.02em}.rh-t{font-weight:700;color:${C.navy}}.rh-r{margin-left:auto}.rh-r b{color:${C.rose};font-weight:700}
@@ -1433,7 +1433,7 @@ body{font-family:Pretendard,"Noto Sans KR",sans-serif;color:${C.ink};font-size:9
 .dek{font-size:10.6pt;color:${C.ink2};margin:2mm 0 0;line-height:1.6}
 .sh{font-size:11pt;color:${C.navy};margin:1mm 0 -1.5mm;font-weight:800;display:flex;align-items:baseline;gap:8px}.sh span{font-size:8.6pt;color:${C.ink3};font-weight:500}
 h4{font-size:11pt;margin:0 0 1.5mm;color:${C.ink};font-weight:700;line-height:1.4}
-p{margin:0}.k{font-size:8.4pt;color:${C.blue};font-weight:700;margin-bottom:1mm;letter-spacing:.01em}.mut{color:${C.ink3}}.sm{font-size:8.6pt}.big{font-size:11pt;line-height:1.6;color:${C.ink}}
+p{margin:0}p,li,td,dd{text-wrap:pretty}.dz,.nw{white-space:nowrap}.cnt{display:block;font-weight:400}.nw{font-style:normal}.dim-n{display:block}.dim-w{display:block;color:${C.ink3};font-size:8.6pt;margin-bottom:1mm}.k{font-size:8.4pt;color:${C.blue};font-weight:700;margin-bottom:1mm;letter-spacing:.01em}.mut{color:${C.ink3}}.sm{font-size:8.6pt}.big{font-size:11pt;line-height:1.6;color:${C.ink}}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:5mm}.two.r74{grid-template-columns:1.6fr 1fr}.two.r64{grid-template-columns:1.25fr 1fr}.two.r46{grid-template-columns:.8fr 1.2fr;align-items:center}
 .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:4mm}.g2,.g2l{display:grid;grid-template-columns:1fr 1fr;gap:4mm}
 .card{border:1px solid ${C.line};border-radius:6px;padding:4mm;background:#fff}.card.cen{display:flex;flex-direction:column;align-items:center;gap:2mm;text-align:center}.card.cen svg{max-width:100%}
@@ -1447,7 +1447,7 @@ p{margin:0}.k{font-size:8.4pt;color:${C.blue};font-weight:700;margin-bottom:1mm;
 .tb{width:100%;border-collapse:collapse;font-size:9pt}.tb th,.tb td{border-bottom:1px solid ${C.line2};padding:1.6mm 2mm;text-align:left;vertical-align:top}.tb thead th{font-size:8.4pt;color:${C.ink3};font-weight:700;border-bottom:1.5px solid ${C.line}}
 .tb tbody th{color:${C.navy};font-weight:700;white-space:nowrap;width:1%}.tb-s{font-size:8.7pt}.tb-xs{font-size:8.4pt}.tb-xs td,.tb-xs th{padding:1.15mm 1.6mm}.tb td.c{text-align:center}
 .tb-k th{width:32%}.w30{width:30%}.w22{width:22%}.w18{width:18%}
-.ws td{height:9.5mm;border:1px solid ${C.line}}.ws th{border:1px solid ${C.line};background:#f7f8fa;width:24%}.lg-ws td{height:15mm}.wk td{height:24mm}.wk th:first-child,.wk td:first-child{width:7%;text-align:center}.wk th:nth-child(2),.wk td:nth-child(2){width:25%}.wk th:nth-child(3),.wk td:nth-child(3){width:19%}.wk th:nth-child(4),.wk td:nth-child(4){width:17%}.wk th:nth-child(5),.wk td:nth-child(5){width:16%}.wk th:nth-child(6),.wk td:nth-child(6){width:16%}.wk{table-layout:fixed}.tall td{height:15mm}.ring-art svg{max-height:104mm}
+.ws td{height:9.5mm;border:1px solid ${C.line}}.ws th{border:1px solid ${C.line};background:#f7f8fa;width:24%}.lg-ws td{height:15mm}.wk td{height:24mm}.wk th:first-child,.wk td:first-child{width:7%;text-align:center}.wk th:nth-child(2),.wk td:nth-child(2){width:24%}.wk th:nth-child(3),.wk td:nth-child(3){width:18%}.wk th:nth-child(4),.wk td:nth-child(4){width:16%}.wk th:nth-child(5),.wk td:nth-child(5){width:17%}.wk th:nth-child(6),.wk td:nth-child(6){width:18%}.wk{table-layout:fixed}.tall td{height:15mm}.ring-art svg{max-height:104mm}
 .wide-art{display:flex;justify-content:center}.wide-art svg{max-height:118mm}
 .radar-big{display:flex;justify-content:center;margin:-2mm 0}.radar-big svg{width:178mm}
 .lg{display:flex;flex-wrap:wrap;gap:2mm 5mm;justify-content:center;font-size:8.6pt;color:${C.ink2}}.lg i{display:inline-block;width:3.2mm;height:3.2mm;border-radius:2px;margin-right:1.4mm;vertical-align:-.4mm}.lg i.thin{height:1.4mm;vertical-align:.4mm}.lg-row{margin-top:-2mm}
@@ -1462,7 +1462,7 @@ p{margin:0}.k{font-size:8.4pt;color:${C.blue};font-weight:700;margin-bottom:1mm;
 .qs{margin:0;padding-left:5mm;display:flex;flex-direction:column;gap:2mm}.qs li{font-size:10pt;line-height:1.55}
 .toc{display:flex;flex-direction:column}.toc-r{display:flex;gap:6mm;align-items:baseline;border-bottom:1px solid ${C.line2};padding:3.6mm 0}.toc-n{font-size:22pt;font-weight:800;color:${C.blue};width:16mm}.toc-b{flex:1}.toc-b b{display:block;font-size:13pt;color:${C.navy}}.toc-b span{font-size:8.8pt;color:${C.ink3}}.toc-p{font-size:13pt;font-weight:800;color:${C.navy}}
 .dh{display:flex;gap:5mm;align-items:center}.dh-n{font-size:30pt;font-weight:800;color:${C.blue};line-height:1}.dh h1{font-size:19pt;margin:0;color:${C.navy};font-weight:800}.dh-t{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:1mm;font-size:8.6pt}
-.wf{margin:0;padding:0;list-style:none;counter-reset:w;display:flex;flex-direction:column;gap:1.4mm}.wf li{counter-increment:w;display:grid;grid-template-columns:6mm 25mm 1fr;gap:2mm;font-size:8.8pt;align-items:baseline}.wf li::before{content:counter(w);font-weight:800;color:${C.blue}}.wf b{color:${C.navy}}.wf span{color:${C.ink2}}
+.wf{margin:0;padding:0;list-style:none;counter-reset:w;display:grid;grid-template-columns:5mm max-content 1fr;gap:1.4mm 2.6mm;font-size:8.8pt;align-items:baseline}.wf li{display:contents}.wf li::before{counter-increment:w;content:counter(w);font-weight:800;color:${C.blue}}.wf b{color:${C.navy};white-space:nowrap}.wf span{color:${C.ink2}}
 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:3mm}.b4{border-top:3px solid var(--c);background:#f7f9fc;border-radius:0 0 5px 5px;padding:2.4mm 3mm}.b4 b{display:block;color:var(--c);font-size:9.6pt}.b4 p{font-size:8.6pt;color:${C.ink2};margin-top:.8mm}
 .am{display:grid;grid-template-columns:1fr 1fr 1fr 1.05fr;gap:7mm;position:relative}.am-col{display:flex;flex-direction:column;gap:2.6mm;position:relative}.am-col:not(:last-child)::after{content:"";position:absolute;right:-5.6mm;top:46%;width:0;height:0;border-left:3.4mm solid #b7c2d6;border-top:2.6mm solid transparent;border-bottom:2.6mm solid transparent}
 .am-h{border-bottom:2.4px solid var(--c);padding-bottom:1.4mm}.am-h b{display:block;color:var(--c);font-size:11pt}.am-h span{font-size:8.2pt;color:${C.ink3}}
@@ -1538,13 +1538,60 @@ const REWRITE: [string | RegExp, string][] = [
   ["자세히 묻지 않음", "경험 응답 기준"],
   ["이번에 묻지 않음", "응답 기준"],
   [/(\S)\s+—\s+(?=\S)/g, "$1 : "],
+  [/(\S) —(?=\s*<)/g, "$1 :"],
   ["핵심 진단", "주요 진단"],
+  ["직접 고름", "직접 선택"],
+  [/가지는 기준까지 직접 정함(?=[\s<])/g, "가지는 기준까지 직접 정했습니다"],
+  [/답함(?=[\s<·])/g, "답했습니다"],
+  ["고르게 답함(", "고르게 답했습니다("],
+  [/(\S)를 고름(?=[\s<.,])/g, "$1를 선택"],
+  [/(\S)을 고름(?=[\s<.,])/g, "$1을 선택"],
 ];
 const rewrite = (h: string) => REWRITE.reduce((a, [f, t]) => (typeof f === "string" ? a.split(f).join(t) : a.replace(f, t)), h);
 
 function page(pages: Page[], d: D): string {
   return rewrite(`<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>${E(NAME)}</title><style>${CSS}</style></head><body>${pages.map((p, i) => shell(p, i, pages.length, d)).join("")}</body></html>`);
 }
+
+
+/**
+ * **줄 넘김을 눈으로 지키지 않는다.** 두 가지를 센다: 여러 줄로 접힌 글의 마지막
+ * 줄에 글자가 세 자 이하로 혼자 떨어진 자리(외톨이 줄), 그리고 이름표처럼 짧은
+ * 글(열네 자 이하)이 두 줄로 접힌 자리. 글자마다 자리를 재서 줄을 가른다.
+ */
+const WRAP_JS = `(() => {
+  const out = [];
+  const pgs = [...document.querySelectorAll(".pg")];
+  pgs.forEach((pg, i) => {
+    const els = [...pg.querySelectorAll("p,li,td,th,b,strong,span,h1,h2,h3,h4,dt,dd,small,em,div")]
+      .filter((e) => e.childNodes.length && [...e.childNodes].every((c) => c.nodeType === 3 || (c.nodeType === 1 && getComputedStyle(c).display.startsWith("inline"))));
+    for (const e of els) {
+      const txt = e.textContent.replace(/\\s+/g, " ").trim();
+      if (!txt || e.closest("svg")) continue;
+      if (e.querySelector("br")) continue;
+      const boxes = [];
+      const walker = document.createTreeWalker(e, NodeFilter.SHOW_TEXT);
+      let n;
+      while ((n = walker.nextNode())) {
+        for (let k = 0; k < n.length; k++) {
+          const ch = n.data[k]; if (/\\s/.test(ch)) continue;
+          const r = document.createRange(); r.setStart(n, k); r.setEnd(n, k + 1);
+          const b = r.getBoundingClientRect(); if (!b.height) continue;
+          boxes.push({ t: b.top, b: b.bottom, c: (b.top + b.bottom) / 2 });
+        }
+      }
+      if (!boxes.length) continue;
+      const lines = [];
+      for (const x of boxes) { const l = lines.find((y) => x.c >= y.t && x.c <= y.b || y.c >= x.t && y.c <= x.b); if (l) { l.n++; l.t = Math.min(l.t, x.t); l.b = Math.max(l.b, x.b); } else lines.push({ t: x.t, b: x.b, c: x.c, n: 1 }); }
+      if (lines.length < 2) continue;
+      lines.sort((a, b) => a.t - b.t);
+      const last = lines[lines.length - 1].n;
+      if (txt.length <= 14) out.push({ i: i + 1, kind: "이름표 접힘", txt });
+      else if (last <= 3) out.push({ i: i + 1, kind: "외톨이 줄", txt: txt.slice(-24) });
+    }
+  });
+  return out;
+})()`;
 
 const OVER_JS = `(() => [...document.querySelectorAll(".pg")].map((pg, i) => {
   const bd = pg.querySelector(".bd"); if (!bd) return { i: i + 1, over: 0 };
@@ -1566,6 +1613,7 @@ async function main(): Promise<void> {
   await p.evaluate("document.fonts.ready");
   await p.emulateMedia({ media: "print" });
   const over = await p.evaluate(OVER_JS) as { i: number; over: number; fill: number }[];
+  const wraps = await p.evaluate(WRAP_JS) as { i: number; kind: string; txt: string }[];
   const pdf = path.join(OUT, `${NAME}.pdf`);
   await p.pdf({ path: pdf, format: "A4", printBackground: true, preferCSSPageSize: true });
   await b.close();
@@ -1577,8 +1625,11 @@ async function main(): Promise<void> {
   writeFileSync(path.join(OUT, "BUILD.md"), [
     `# ${ORG} 진로 분석 리포트 예시 (응시 ${ID})`, "",
     `- 쪽 수: **${n}** (설계 ${pages.length}) · 넘친 쪽: ${bad.length ? bad.map((o) => `${o.i}쪽 ${o.over}px`).join(", ") : "없음"}`, "",
+    `- 줄 넘김: ${wraps.length ? wraps.length + "곳" : "없음"}`, "", ...wraps.map((w) => `  - ${w.i}쪽 · ${w.kind} · ${w.txt}`), "",
     "| 쪽 | 장 | 제목 | 채움 |", "|---|---|---|---|", ...pages.map((pg, i) => `| ${i + 1} | ${pg.partName || "표지"} | ${pg.title} | ${over[i]?.fill ?? "—"}% |`), "",
   ].join("\n"));
+  console.log(`  줄 넘김 ${wraps.length}곳`);
+  for (const w of wraps.slice(0, 200)) console.log(`   ${w.i}쪽 · ${w.kind} · ${w.txt}`);
   console.log(`→ ${pdf} · ${n}쪽 · 넘친 쪽 ${bad.length}${bad.length ? " " + bad.map((o) => `${o.i}(${o.over}px)`).join(" ") : ""}`);
   process.exit(n === pages.length && !bad.length ? 0 : 1);
 }
