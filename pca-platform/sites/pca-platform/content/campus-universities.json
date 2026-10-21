@@ -3124,6 +3124,7 @@
      "SJEPA26_SME",
      "SJEPA26_TRADE",
      "SJEPA26_TOURISM",
+     "SJEPA26_ACCT",
      "SJEPA26_MECH",
      "SJEPA26_EE",
      "SJEPA26_SW",
@@ -3225,9 +3226,9 @@
          "code": "SJEPA26_ACCT",
          "name": "회계·금융",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "BIZ_CORE_V1",
+         "specialization": "SPEC_BIZ_FINACC",
+         "mapping_note": "회계·세무 Core 와 금융 Core 가 아직 준비 중이라, 경영 Core 의 재무·회계 갈래로 받는다(회계·원가 · 재무·투자 판단 영역이 먼저 선다). 그 Core 가 서면 새 코드로 옮긴다"
         }
        ]
       },

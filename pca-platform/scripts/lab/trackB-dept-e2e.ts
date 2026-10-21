@@ -26,9 +26,11 @@ import { bankVersionOf } from "../../src/lib/me-v3/scoring/version";
 import { answerAll, PEOPLE, type Policy } from "../_v3-answer";
 
 const URL_ = process.env.DATABASE_URL ?? "";
-if (!/^postgres(ql)?:\/\/\/(cm_dev|cm_gm_iso)\b/.test(URL_)) { console.error(`로컬 개발 DB 가 아니다: ${URL_}`); process.exit(2); }
+if (!/^postgres(ql)?:\/\/(\/(cm_dev|cm_gm_iso)\b|[^@/]*@?(127\.0\.0\.1|localhost)(:\d+)?\/)/.test(URL_)) { console.error(`로컬 개발 DB 가 아니다: ${URL_}`); process.exit(2); }
 const OUT = process.env.OUT ?? "docs/metri/review/tracks/B";
 const WORKERS = Number(process.env.WORKERS ?? 4);
+/* 다른 기관도 같은 길로 밟는다(기본은 배재대) */
+const UNI = process.env.UNI ?? "PCU";
 const ONLY = process.env.ONLY ? new Set(process.env.ONLY.split(",")) : null;
 
 type Row = {
@@ -40,7 +42,7 @@ async function one(leafCode: string, name: string, core: string, spec: string | 
   const t0 = Date.now(); const why: string[] = [];
   const login = `zztb-${pol.id.toLowerCase()}-${leafCode.toLowerCase()}`;
   const st = await makeStudent(login);
-  await registerCampusStudent(st.id, "PCU", leafCode);
+  await registerCampusStudent(st.id, UNI, leafCode);
   const c = await campusStudentContext(st.id);
   if (!c) return { leaf: leafCode, name, core, spec, person: pol.id, ok: false, why: ["학교 맥락이 서지 않는다"], ms: Date.now() - t0 };
   const a = await S.openAttempt({ userId: st.id, tier: "BASIC", stage: "bachelor", gradField: null, campus: c.ctx });
@@ -62,7 +64,7 @@ async function one(leafCode: string, name: string, core: string, spec: string | 
   const m = await S.latestResult(a.id);
   if (!m) why.push("결과 모델이 없다");
   const meta = await resultMeta(a.id, core);
-  if (meta.school !== "배재대학교") why.push(`학교 표시: ${meta.school}`);
+  if (meta.school !== university(UNI)!.university_name) why.push(`학교 표시: ${meta.school}`);
   if (!meta.department?.includes(name)) why.push(`학과 표시: ${meta.department}`);
   const zones = m ? m.domains.map((d) => `${d.code}:${d.zone}`).join(",") : "";
   /* 치운다(시험 계정만) */
@@ -80,12 +82,12 @@ async function pool<T, R>(xs: T[], n: number, f: (x: T) => Promise<R>): Promise<
 }
 
 async function main(): Promise<void> {
-  const u = university("PCU")!;
+  const u = university(UNI)!;
   const leaves = allLeaves(u);
   const seats = leaves.filter((l) => l.leaf.core_code && !l.leaf.routing_only && (!ONLY || ONLY.has(l.leaf.code)));
   const routing = leaves.filter((l) => l.leaf.routing_only);
   const noCore = leaves.filter((l) => !l.leaf.core_code && !l.leaf.routing_only);
-  console.log(`PCU 자리 ${leaves.length} · 검사 대상 ${seats.length} · 전공 고르기 ${routing.length} · Core 없음 ${noCore.length}`);
+  console.log(`${UNI} 자리 ${leaves.length} · 검사 대상 ${seats.length} · 전공 고르기 ${routing.length} · Core 없음 ${noCore.length}`);
 
   const jobs: [string, string, string, string | null, Policy][] = seats.map((l) =>
     [l.leaf.code, l.leaf.name, l.leaf.core_code!, l.leaf.specialization ?? null, PEOPLE[1]]);
@@ -118,7 +120,7 @@ async function main(): Promise<void> {
     "# Track B · 배재대 학과 자리별 검사 → 결과 (서버 레벨)", "",
     `- 실행: ${new Date().toISOString().slice(0, 16)}Z · DB \`${URL_}\` (로컬 개발 DB · 운영 아님) · 동시 ${WORKERS}`,
     "- 길: 학교 학생 등록 → 학교 맥락 응시 → 끝까지 답함 → 제출 → 결과 모델 · 판본 · 학교/학과 표시. **브라우저 아님** (화면은 NOT VERIFIED).",
-    `- PCU 자리 ${leaves.length} = 검사 대상 ${seats.length} + 전공 고르기 ${routing.length} + Core 없음 ${noCore.length}`, "",
+    `- ${UNI} 자리 ${leaves.length} = 검사 대상 ${seats.length} + 전공 고르기 ${routing.length} + Core 없음 ${noCore.length}`, "",
     `**학과 자리 통과 ${passSeats} / ${seatRows.length}** · 전체 실행 통과 ${passAll} / ${rows.length} · 학생별 결과 갈림 ${diffOk} / ${diff.length} Core`, "",
     "## 학생에 따라 결과가 갈리는가 (Core 마다 첫 자리 · 사람 A/B/C 의 영역 판정)", "",
     "| Core | 자리 | A≠B | B≠C | A≠C |", "|---|---|---|---|---|",
