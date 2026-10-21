@@ -4,17 +4,17 @@
  "item_bank_version": "SPORTS_V1_ITEM_BANK_V1.3",
  "note": "체육·운동재활 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=SPORTS_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
-  "sports-industry-packs.json": "c8b49afe69c3bdaff4a8b61ffb4ee7964643d7929791487a7368b9d524055853",
-  "sports-role-packs.json": "383efe4f5d77f17f820baf699bd81ff09f3e7a8b2e4b38f88673398db7060916",
-  "sports-v1-checklist-additions.json": "d409b4e83aa134d586df8fab6f5fc307da3d1c0b1b24cd4a5cf3d741f40b7144",
-  "sports-v1-checklists.json": "27fa075e3afbbb126da07d78eccd902ce153aa20bfaa7a4c24170eb65fd22c13",
-  "sports-v1-common-additions.json": "b544fe21cdb5dd3403b10152467d208dded2de3124e445c03c08a73f415849a6",
+  "sports-industry-packs.json": "557824201cd300085fca7aa693ed8d22573399e642a21ea291cee0d658601a54",
+  "sports-role-packs.json": "97c3c6c7e2ceb6f5bc2ff908ff29e74595a0ece2c9da6ee69cbce9a167016e4d",
+  "sports-v1-checklist-additions.json": "fd09dfe8aa597dc538ef5a4e651718589c5faca1f342a93f83aa8cf2284c4620",
+  "sports-v1-checklists.json": "87a8aa572ecfa7b02116b7f4c1dfcae861a716f35a051bacffc5d8794124055f",
+  "sports-v1-common-additions.json": "b622016d2ab20eefc64e856aa2ca45a22eacc08ff07d00c65725eb2777b890d0",
   "sports-v1-constructs.json": "0e35539a0dcfb08ff99f37f308cb89ca38079f8326f5d8940e1eea7af5940b80",
-  "sports-v1-domains.json": "090db40bdd488ec3247a665e587b00aa66198d51785949fc58c108c45b1650c7",
+  "sports-v1-domains.json": "3ff7837259f43f0544d290e1b347f3b11dd3ac1f576bc5d1de1945150fc1baa0",
   "sports-v1-items-blueprint.json": "2fa0f53418dd07ef9ef1d022d2af59e102162cee0db3e198df00e2bd18fc6ee0",
-  "sports-v1-items.json": "8b7601cc57a25cafc31eec7aab360ce12d1cbdd5c0b5ef14274054679151674b",
-  "sports-v1-relations.json": "c3869ba330effbe2b686b194f2f9f13b6a8c84224a827991beb6262e3efaa1b6",
-  "sports-v1-taxonomy.json": "140f9ba42812c6bd0604ad3e738eedae9366e09493d1037dd802db2a6d509297"
+  "sports-v1-items.json": "91c6a5769149f772b32d1901b3f1976918c203bbb43c0c3ee3b02643be337abb",
+  "sports-v1-relations.json": "2e72954db21c5715169670a7524f2b1684d5f038ceb01ec4945ec4b68549ccd5",
+  "sports-v1-taxonomy.json": "1fd72ec0a692689b48d4399a97ccf24503d2f4a39fcf8d62bb392353cb8df4e8"
  },
  "scoring_version": "me-v3-scoring.5"
 }

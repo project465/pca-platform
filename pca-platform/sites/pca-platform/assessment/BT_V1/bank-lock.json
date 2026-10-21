@@ -4,17 +4,17 @@
  "item_bank_version": "BT_V1_ITEM_BANK_V1.5",
  "note": "바이오·생명공학 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=BT_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
-  "bt-industry-packs.json": "e6ca9b433fd3a0089506ae657bbfe538171eaba0f761d195c513f55435d98578",
-  "bt-role-packs.json": "316718d5964077cde85e4d99ff56ae1f580f86ace51228716b82910180bd61e1",
-  "bt-v1-checklist-additions.json": "c46078794ac76c5028fd8091d10135f39cb0d84370a076bb0e658dcc37d1ffad",
-  "bt-v1-checklists.json": "46efe6f170f57397d2fce0ecbde5e2a2276ca0c50203fcff6aac61246e00cb71",
-  "bt-v1-common-additions.json": "4bcf1783da0bb83274af66e778872b4d320ab1a9ddebf9d4b3dd761fd55303f0",
+  "bt-industry-packs.json": "4c526a1561dee37d7b5822f7cedad26ce36589acd0fab2422fe42c616e3c99db",
+  "bt-role-packs.json": "c581a1bb5a81c388abebd6ad79c76f397153ce81885ad4b04f027ec29255175f",
+  "bt-v1-checklist-additions.json": "d82cfd1c193c71f3e6bee360df743b5821c933d6e668590af2738901f0414378",
+  "bt-v1-checklists.json": "4654ba0bf3cbe799b86e997ccdce2f27520c8874ab095240e0a3ff5a1140118b",
+  "bt-v1-common-additions.json": "60e9f5822384cf2f8c0bbad1cf598672825cb36014e6a8d06e0d5e3435799535",
   "bt-v1-constructs.json": "fdf6bbf4918b6dbdad11547c03ce74e5f30881376a0d6b9252646681bb424438",
-  "bt-v1-domains.json": "683c3f624427e9ad5ca90733015092f1cfd6fafec0eb7e8c7953b3144b0aeff3",
+  "bt-v1-domains.json": "98a71f2558f630e52b1ad8e9446ab005c9c0a225e559990f7d78f4a9252520d7",
   "bt-v1-items-blueprint.json": "a6764a7d40977e3ac424967cee4249cbac0dabbe96412623a419cde462820d9a",
   "bt-v1-items.json": "11c555e0e6b28acc7faf01fdbb300e4700eae0084a5842c25e184c82c688412b",
-  "bt-v1-relations.json": "3d23bb58b53016f1f837e6339e510d33f14b94b6d8c88ebb5966454c136d6ed6",
-  "bt-v1-taxonomy.json": "66a2d219cb87843cda17ba133b8d629fd3eb2d3434980600a60fcbc388e7bc6f"
+  "bt-v1-relations.json": "ed1812ba9adea5dbf03247d53e877f46681ad01219b0703eddb7c3ac0f2babc1",
+  "bt-v1-taxonomy.json": "2ec661e812c0aa561fcaf5d8c52c2f8a8dc9c06298422e5aab37627a45aad70c"
  },
  "scoring_version": "me-v3-scoring.5"
 }

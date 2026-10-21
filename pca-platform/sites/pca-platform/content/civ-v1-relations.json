@@ -706,13 +706,13 @@
    "industry": "INDUSTRY_CONSTRUCTION_V1",
    "industry_name": "종합건설·토목 시공",
    "strength": "중심",
-   "appears_as": "종합건설·토목 시공 에서는 공정을 실제 일수와 견주는가 · 밀린 까닭을 좁히는가 로 나타납니다",
+   "appears_as": "종합건설·토목 시공 에서는 공정을 실제 일수와 비교하는가 · 밀린 까닭을 좁히는가 로 나타납니다",
    "axes_watched": [
     "J6",
     "J7"
    ],
    "dimensions": [
-    "공정을 실제 일수와 견주는가",
+    "공정을 실제 일수와 비교하는가",
     "밀린 까닭을 좁히는가"
    ]
   },
@@ -1182,12 +1182,12 @@
    "industry": "INDUSTRY_GEOTECH_V1",
    "industry_name": "지반·기초 전문",
    "strength": "있음",
-   "appears_as": "지반·기초 전문 에서는 침하 이력과 견주는가 로 나타납니다",
+   "appears_as": "지반·기초 전문 에서는 침하 이력과 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "침하 이력과 견주는가"
+    "침하 이력과 비교하는가"
    ]
   },
   {

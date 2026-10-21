@@ -914,13 +914,13 @@
    "industry": "INDUSTRY_ADAGENCY_V1",
    "industry_name": "광고 대행·캠페인",
    "strength": "중심",
-   "appears_as": "광고 대행·캠페인 에서는 집행 뒤의 수를 목표와 견주는가 · 수가 떨어진 까닭을 좁히는가 로 나타납니다",
+   "appears_as": "광고 대행·캠페인 에서는 집행 뒤의 수를 목표와 비교하는가 · 수가 떨어진 까닭을 좁히는가 로 나타납니다",
    "axes_watched": [
     "J6",
     "J7"
    ],
    "dimensions": [
-    "집행 뒤의 수를 목표와 견주는가",
+    "집행 뒤의 수를 목표와 비교하는가",
     "수가 떨어진 까닭을 좁히는가"
    ]
   },
@@ -930,12 +930,12 @@
    "industry": "INDUSTRY_BROADCAST_V1",
    "industry_name": "방송 프로그램",
    "strength": "있음",
-   "appears_as": "방송 프로그램 에서는 시청과 조회 수를 견주는가 로 나타납니다",
+   "appears_as": "방송 프로그램 에서는 시청과 조회 수를 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "시청과 조회 수를 견주는가"
+    "시청과 조회 수를 비교하는가"
    ]
   },
   {
@@ -954,12 +954,12 @@
    "industry": "INDUSTRY_PERFORM_V1",
    "industry_name": "공연·무대",
    "strength": "있음",
-   "appears_as": "공연·무대 에서는 객석과 반응을 견주는가 로 나타납니다",
+   "appears_as": "공연·무대 에서는 객석과 반응을 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "객석과 반응을 견주는가"
+    "객석과 반응을 비교하는가"
    ]
   },
   {
@@ -968,12 +968,12 @@
    "industry": "INDUSTRY_MUSIC_V1",
    "industry_name": "음악·음반",
    "strength": "있음",
-   "appears_as": "음악·음반 에서는 발매 뒤 반응을 견주는가 로 나타납니다",
+   "appears_as": "음악·음반 에서는 발매 뒤 반응을 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "발매 뒤 반응을 견주는가"
+    "발매 뒤 반응을 비교하는가"
    ]
   },
   {
@@ -982,12 +982,12 @@
    "industry": "INDUSTRY_PR_V1",
    "industry_name": "기업 홍보·커뮤니케이션",
    "strength": "있음",
-   "appears_as": "기업 홍보·커뮤니케이션 에서는 보도 반응을 견주는가 로 나타납니다",
+   "appears_as": "기업 홍보·커뮤니케이션 에서는 보도 반응을 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "보도 반응을 견주는가"
+    "보도 반응을 비교하는가"
    ]
   },
   {
@@ -996,7 +996,7 @@
    "industry": "INDUSTRY_PLATFORM_V1",
    "industry_name": "플랫폼 콘텐츠·채널 운영",
    "strength": "중심",
-   "appears_as": "플랫폼 콘텐츠·채널 운영 에서는 쓸 지표를 가르는가 · 지표 정의를 남기는가 · 지난 회차와 견주는가 · 수가 떨어진 까닭을 좁히는가 로 나타납니다",
+   "appears_as": "플랫폼 콘텐츠·채널 운영 에서는 쓸 지표를 가르는가 · 지표 정의를 남기는가 · 지난 회차와 비교하는가 · 수가 떨어진 까닭을 좁히는가 로 나타납니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -1006,7 +1006,7 @@
    "dimensions": [
     "쓸 지표를 가르는가",
     "지표 정의를 남기는가",
-    "지난 회차와 견주는가",
+    "지난 회차와 비교하는가",
     "수가 떨어진 까닭을 좁히는가"
    ]
   },
@@ -1016,12 +1016,12 @@
    "industry": "INDUSTRY_EVENT_V1",
    "industry_name": "행사·전시 운영",
    "strength": "있음",
-   "appears_as": "행사·전시 운영 에서는 들어온 사람 수를 견주는가 로 나타납니다",
+   "appears_as": "행사·전시 운영 에서는 들어온 사람 수를 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "들어온 사람 수를 견주는가"
+    "들어온 사람 수를 비교하는가"
    ]
   },
   {

@@ -217,7 +217,7 @@ const rows: Row[] = SPECS.map((spec) => {
   const model = buildResult(snap, loaded, { packs: { industries: [], roles: [] } });
   const owned = snap.domains.reduce((n, d) => n + d.owned.length, 0);
   const confirmed = snap.domains.reduce((n, d) => n + d.confirmed.length, 0);
-  const cm = commonKo(model.common);
+  const cm = commonKo(model.common, core);
   /**
    * **사람이 읽는 말로 견준다.**
    *

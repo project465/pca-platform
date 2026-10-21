@@ -4,17 +4,17 @@
  "item_bank_version": "PUBADM_V1_ITEM_BANK_V1.5",
  "note": "행정 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=PUBADM_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
-  "pubadm-industry-packs.json": "ac781fe49407846c09b042509fc2225257a4c368893440b71a39f660ebcaf2d3",
-  "pubadm-role-packs.json": "3a40499f25ee5e815248b75bacbeb389300831e843c45ceb41e80f3a34521bb9",
-  "pubadm-v1-checklist-additions.json": "b105ca024785b7d2b171746b157ab06a843722a942c85570f4f6d2512ccefe0a",
-  "pubadm-v1-checklists.json": "a3abdb25aa4d4a3ea9d9d31b5057440f43a53a8beb10474b7875895400b2425d",
-  "pubadm-v1-common-additions.json": "1a53dfe080ecd37969f8a37c34a136faa1f8edd83245b89f5b6b6f89cd0829ea",
+  "pubadm-industry-packs.json": "7d25e83e33d3ddb1cff0f236b1990153b06eb4cefb55656864aadc9b08aeae22",
+  "pubadm-role-packs.json": "eecbce0eea9062beda036dbca0d200633b2590e45268894d56229f2bb3449275",
+  "pubadm-v1-checklist-additions.json": "9ecba7c78a9b139a0b35bd04b2baa4bb9edddd9d91d6ed030b0c04cfea15ae9e",
+  "pubadm-v1-checklists.json": "32939a4cf48ca633305e5c0f3474fcc925f2bb19432d97723f885a0fbd3def62",
+  "pubadm-v1-common-additions.json": "2a40450cac023a7efee3b488b95cc110e44e100477d63947734bce2a5e54a62d",
   "pubadm-v1-constructs.json": "82cb4a714ea8dc26a05f2da1f338e18ffbd11e5af02ec12bb392191bb92cf628",
-  "pubadm-v1-domains.json": "087593fa7edfce7844b2a1509e03cbd10c7e9ab36045eddbb4bde6df9bceec62",
+  "pubadm-v1-domains.json": "3b9a1bafb1a960defd7cff27db468f649ad9968508b28a13592ac94a4d24d3fc",
   "pubadm-v1-items-blueprint.json": "1a6a3febae46f42f5f658049be7c51c5bbbf0a9631bc3258288d71567b99302d",
-  "pubadm-v1-items.json": "5cf33e0bd765b2a2b20ee1e9b837b4b2ca6780f2795bd43ec14beae93c269251",
-  "pubadm-v1-relations.json": "89aeaa89d589701a08a4c37435960a374b03d62e202f2d225862fa1833597ed2",
-  "pubadm-v1-taxonomy.json": "0eae5fcbe270b0538c1ee026479e9822206e0e9737adfc161e3d9e54ca4ecd2d"
+  "pubadm-v1-items.json": "ca3c4645fef26e47cd1c8ce4019363018555706876d3f4a5f77d079e202273f3",
+  "pubadm-v1-relations.json": "3d88412fcb5f01d8f196bae805fbe474bab06bf89f513a28de2199eae46d514c",
+  "pubadm-v1-taxonomy.json": "425154f663781054363acfa120aaf135d86263d06d21045a6d333b14f240aaee"
  },
  "scoring_version": "me-v3-scoring.5"
 }

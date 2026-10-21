@@ -55,7 +55,7 @@ export default function StudentRows(
           DB 에는 해시만 남는다 */}
       {state.issued?.length ? (
         <div className="sf-issued">
-          <b>새 비밀번호 — 이 화면에서만 보입니다</b>
+          <b>새 비밀번호 (이 화면에서만 보입니다)</b>
           <ul>
             {state.issued.map((x) => (
               <li key={x.login_id}>

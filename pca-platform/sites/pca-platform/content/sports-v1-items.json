@@ -2596,7 +2596,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "재활운동 과제에서 이번 단계에서 볼 것과 다음 단계로 미룰 것을 나눠 봤나요?",
+   "wording": "재활운동 과제를 하면서 이번 단계에서 볼 것과 다음 단계로 미룰 것을 나눠 봤나요?",
    "stage_wording": {
     "bachelor": "재활운동 과제에서 이번 단계에서 볼 것과 다음 단계로 미룰 것을 나눠 봤나요?",
     "master": "석사 과정의 연구나 현장 지도에서 이번 단계에서 볼 것과 다음 단계로 미룰 것을 나눠 봤나요?",
@@ -3483,7 +3483,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "건강 상담 실습에서 다음 상담에서 확인한 결과를 기록해 두었나요?",
+   "wording": "건강 상담 실습을 하면서 다음 상담에서 확인한 결과를 기록해 두었나요?",
    "stage_wording": {
     "bachelor": "건강 상담 실습에서 다음 상담에서 확인한 결과를 기록해 두었나요?",
     "master": "석사 과정의 연구나 현장 지도에서 다음 상담에서 확인한 결과를 기록해 두었나요?",
@@ -3658,7 +3658,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "건강 상담 실습에서 이번 상담에서 다룰 것과 다음으로 미룰 것을 나눠 봤나요?",
+   "wording": "건강 상담 실습을 하면서 이번 상담에서 다룰 것과 다음으로 미룰 것을 나눠 봤나요?",
    "stage_wording": {
     "bachelor": "건강 상담 실습에서 이번 상담에서 다룰 것과 다음으로 미룰 것을 나눠 봤나요?",
     "master": "석사 과정의 연구나 현장 지도에서 이번 상담에서 다룰 것과 다음으로 미룰 것을 나눠 봤나요?",
@@ -10418,7 +10418,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "체육시설 현장실습에서 그 시설에서 지도할 수 있는 자격 범위를 정리해 안내해 봤나요?",
+   "wording": "체육시설 현장실습을 하면서 그 시설에서 지도할 수 있는 자격 범위를 정리해 안내해 봤나요?",
    "stage_wording": null,
    "options": [
     "없다",

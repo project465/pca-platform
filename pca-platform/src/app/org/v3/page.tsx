@@ -260,7 +260,7 @@ export default async function CampusV3({
         </form>
         {narrowed ? (
           <p className="sf-meta" style={{ marginTop: 8 }}>
-            지금 보는 범위 — {scopeKo} · <Link href="/org/v3">전체로 돌아가기</Link>
+            지금 보는 범위: {scopeKo} · <Link href="/org/v3">전체로 돌아가기</Link>
           </p>
         ) : null}
       </Section>
@@ -379,18 +379,18 @@ export default async function CampusV3({
           <li>
             <a href={`/org/v3/export/students.csv${qs}`}>
               학생 응시 상태 CSV
-            </a>{" "}— 학번 · 이름 · 학과 · 계정 상태 · 응시 상태 · 완료일
+            </a>{" "}(학번 · 이름 · 학과 · 계정 상태 · 응시 상태 · 완료일)
           </li>
           <li>
             <a href={`/org/v3/export/departments.csv${qs}`}>
               학과별 집계 CSV
-            </a>{" "}— 단과대학과 학과별 대상자 · 시작 · 완료. {MIN_CELL}명
+            </a>: 단과대학과 학과별 대상자 · 시작 · 완료. {MIN_CELL}명
             미만 칸은 수가 비어 있습니다
           </li>
           <li>
             <a href={`/org/v3/report.pdf${qs}`}>대학 운영 요약 PDF</a>{" · "}
             <Link href={`/org/v3/report${qs}`}>미리 보기</Link>{" "}
-            — 개인 응답은 들어 있지 않습니다
+            · 개인 응답은 들어 있지 않습니다
           </li>
         </ul>
       </Section>
@@ -478,7 +478,7 @@ export default async function CampusV3({
               <ul className="sf-list">
                 {v3.attention.slice(0, 6).map((r) => (
                   <li key={r.code}>
-                    <b>{name.dept(r.code)}</b> — 시작 {r.started}명 가운데
+                    <b>{name.dept(r.code)}</b>: 시작 {r.started}명 가운데
                     {" "}{r.open}명이 아직 결과를 받지 않았습니다
                   </li>
                 ))}
@@ -499,7 +499,7 @@ export default async function CampusV3({
             <ul className="sf-list">
               {v3.recent.slice(-7).map((d) => (
                 <li key={d.day}>
-                  <b>{d.day}</b> — 시작 {d.started === null ? "5명 미만" : `${d.started}명`}
+                  <b>{d.day}</b>: 시작 {d.started === null ? "5명 미만" : `${d.started}명`}
                   {" · "}결과 {d.scored === null ? "5명 미만" : `${d.scored}명`}
                 </li>
               ))}

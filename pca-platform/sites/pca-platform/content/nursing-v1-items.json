@@ -8678,7 +8678,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "수술실 실습에서 그 방에서 지킬 멸균 절차를 정리해 조원들과 나눠 봤나요?",
+   "wording": "수술실 실습을 하면서 그 방에서 지킬 멸균 절차를 정리해 조원들과 나눠 봤나요?",
    "stage_wording": null,
    "options": [
     "없다",

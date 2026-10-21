@@ -191,7 +191,7 @@ export default async function Explore({
     <CmShell active="/me/explore" title="탐색" major={major}>
       <CmHead
         title="산업과 직무"
-        lead="내가 해 본 영역과 이어지는 쪽이 먼저 섭니다."
+        lead="내가 해 본 영역과 이어지는 쪽이 먼저 나옵니다."
       />
 
       {/**

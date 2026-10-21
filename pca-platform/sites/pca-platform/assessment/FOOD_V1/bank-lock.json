@@ -4,17 +4,17 @@
  "item_bank_version": "FOOD_V1_ITEM_BANK_V1.4",
  "note": "식품 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=FOOD_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
-  "food-industry-packs.json": "06711abbd082d1a4af62d8ade57ef4df8a77b6d8ae0954c61c2da4e5eb6e1511",
-  "food-role-packs.json": "0e98430cff570c280445dc865e6881c052994fe986ebfe6117534b8edaccdd3d",
-  "food-v1-checklist-additions.json": "fe26984de4ff1a5c3492bacd75cae92aff4064ba0dfadbbcffe9bb7ae1bef918",
-  "food-v1-checklists.json": "45ea890898ba96e65d4cc35ba3bbc3e76e99b55c5916aed10a03f98154611dd9",
-  "food-v1-common-additions.json": "43f7f51e56bdf0bbcddc6fe2094f4cbf09054cccf25304d83521fd27e9670a1a",
+  "food-industry-packs.json": "84a82f8fccb4f9e738a21286eba6af2da5790d78adfec7a26751fcc6d2d8c6a0",
+  "food-role-packs.json": "0e78068e6940ac673061b7c190e8319bee014b625b74cab651f9262207382a1a",
+  "food-v1-checklist-additions.json": "fd68a40671a47de025069623f4c569bfe63f5fe09b5de43c2ef4f30de5ac7fce",
+  "food-v1-checklists.json": "4ddacbd2956b617d43160775542c58048449ddbe68a46e52cad48e0f4dde7f10",
+  "food-v1-common-additions.json": "d2809dd0c6f35bcc0371086907f2249e95f9681b8072a4ccbe72fa0fd1bb43ee",
   "food-v1-constructs.json": "bc5002effd25a924eb016af676ebd164f4623b7b42abc4b347d9144403060003",
-  "food-v1-domains.json": "e948a219e3a276a5067313a65bced4b61f4f1f2f1bfb8cc60aadf8006cc29b34",
+  "food-v1-domains.json": "68fca35ce3c1d58f11689daae69743b1c6754bc5ef7431d82f292f8668e02c1f",
   "food-v1-items-blueprint.json": "994ab9fb7343705a84f57d6896548dbe4465721a8bf5a1297119bed8fa87edeb",
   "food-v1-items.json": "3f5b0371f23c11e3f1b8d69d4e3e7ac46c956ce998d55e5545eed0b89f642bdd",
-  "food-v1-relations.json": "194f4bc19779ed4d68c2fa0ea8ece88bce70755998f94bb36187412f29ec06a3",
-  "food-v1-taxonomy.json": "756e81aba1e4fbdaf2565dc7f9d59d90a4264fe6da4eb1b1e0c6fcdaee2dbc94"
+  "food-v1-relations.json": "9c0c7bdf24ba2ba2932732001249572ef61a289d86202219c7afcc8d7346d982",
+  "food-v1-taxonomy.json": "cff698ee2d588e370fecb2f2a15d53488bdb3e495b801d47eb754f0c16a96912"
  },
  "scoring_version": "me-v3-scoring.5"
 }

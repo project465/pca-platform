@@ -48,12 +48,12 @@
    "industry": "INDUSTRY_LTC_V1",
    "industry_name": "요양·장기요양",
    "strength": "있음",
-   "appears_as": "요양·장기요양 에서는 지금 상태를 몇 달 전과 견주는가 로 나타납니다",
+   "appears_as": "요양·장기요양 에서는 지금 상태를 몇 달 전과 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "지금 상태를 몇 달 전과 견주는가"
+    "지금 상태를 몇 달 전과 비교하는가"
    ]
   },
   {
@@ -86,12 +86,12 @@
    "industry": "INDUSTRY_MENTAL_V1",
    "industry_name": "정신건강·재활",
    "strength": "있음",
-   "appears_as": "정신건강·재활 에서는 위험을 지난 기록과 견주는가 로 나타납니다",
+   "appears_as": "정신건강·재활 에서는 위험을 지난 기록과 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "위험을 지난 기록과 견주는가"
+    "위험을 지난 기록과 비교하는가"
    ]
   },
   {
@@ -376,12 +376,12 @@
    "industry": "INDUSTRY_COMMUNITY_V1",
    "industry_name": "보건소·방문간호",
    "strength": "있음",
-   "appears_as": "보건소·방문간호 에서는 변화를 지난 방문과 견주는가 로 나타납니다",
+   "appears_as": "보건소·방문간호 에서는 변화를 지난 방문과 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "변화를 지난 방문과 견주는가"
+    "변화를 지난 방문과 비교하는가"
    ]
   },
   {

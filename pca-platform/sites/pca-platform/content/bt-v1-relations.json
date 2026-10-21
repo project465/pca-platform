@@ -142,12 +142,12 @@
    "industry": "INDUSTRY_DIAGNOSTIC_V1",
    "industry_name": "진단·시약·장비",
    "strength": "있음",
-   "appears_as": "진단·시약·장비 에서는 세포로 하는 시험을 지난 값과 견주는가 로 나타납니다",
+   "appears_as": "진단·시약·장비 에서는 세포로 하는 시험을 지난 값과 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "세포로 하는 시험을 지난 값과 견주는가"
+    "세포로 하는 시험을 지난 값과 비교하는가"
    ]
   },
   {
@@ -184,12 +184,12 @@
    "industry": "INDUSTRY_ENVBIO_V1",
    "industry_name": "환경·바이오에너지",
    "strength": "있음",
-   "appears_as": "환경·바이오에너지 에서는 독성이나 영향을 견주는가 로 나타납니다",
+   "appears_as": "환경·바이오에너지 에서는 독성이나 영향을 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "독성이나 영향을 견주는가"
+    "독성이나 영향을 비교하는가"
    ]
   },
   {
@@ -340,12 +340,12 @@
    "industry": "INDUSTRY_CDMO_V1",
    "industry_name": "위탁 개발·생산",
    "strength": "있음",
-   "appears_as": "위탁 개발·생산 에서는 수율을 작은 규모의 값과 견주는가 로 나타납니다",
+   "appears_as": "위탁 개발·생산 에서는 수율을 작은 규모의 값과 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "수율을 작은 규모의 값과 견주는가"
+    "수율을 작은 규모의 값과 비교하는가"
    ]
   },
   {
@@ -554,12 +554,12 @@
    "industry": "INDUSTRY_DIAGNOSTIC_V1",
    "industry_name": "진단·시약·장비",
    "strength": "있음",
-   "appears_as": "진단·시약·장비 에서는 성능을 다른 방법의 값과 견주는가 로 나타납니다",
+   "appears_as": "진단·시약·장비 에서는 성능을 다른 방법의 값과 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "성능을 다른 방법의 값과 견주는가"
+    "성능을 다른 방법의 값과 비교하는가"
    ]
   },
   {
@@ -690,12 +690,12 @@
    "industry": "INDUSTRY_AGRIBIO_V1",
    "industry_name": "농업·종자·동물",
    "strength": "있음",
-   "appears_as": "농업·종자·동물 에서는 형질 자료를 지난 세대와 견주는가 로 나타납니다",
+   "appears_as": "농업·종자·동물 에서는 형질 자료를 지난 세대와 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "형질 자료를 지난 세대와 견주는가"
+    "형질 자료를 지난 세대와 비교하는가"
    ]
   },
   {
@@ -940,12 +940,12 @@
    "industry": "INDUSTRY_PUBLICLAB_V1",
    "industry_name": "공공 연구·검정 기관",
    "strength": "있음",
-   "appears_as": "공공 연구·검정 기관 에서는 중간 평가의 지표와 견주는가 로 나타납니다",
+   "appears_as": "공공 연구·검정 기관 에서는 중간 평가의 지표와 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "중간 평가의 지표와 견주는가"
+    "중간 평가의 지표와 비교하는가"
    ]
   },
   {

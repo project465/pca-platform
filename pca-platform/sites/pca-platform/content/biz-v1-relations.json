@@ -110,12 +110,12 @@
    "industry": "INDUSTRY_CONSUMER_V1",
    "industry_name": "소비재·유통",
    "strength": "있음",
-   "appears_as": "소비재·유통 에서는 채널별 수익을 갈라 보는가 로 나타납니다",
+   "appears_as": "소비재·유통 에서는 채널별 수익을 나눠 보는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "채널별 수익을 갈라 보는가"
+    "채널별 수익을 나눠 보는가"
    ]
   },
   {

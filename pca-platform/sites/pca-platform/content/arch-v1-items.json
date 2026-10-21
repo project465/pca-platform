@@ -1534,7 +1534,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "설계 스튜디오에서 이번 안에서 다룰 입면과 다루지 않을 입면을 나눠 정해 봤나요?",
+   "wording": "설계 스튜디오를 하면서 이번 안에서 다룰 입면과 다루지 않을 입면을 나눠 정해 봤나요?",
    "stage_wording": {
     "bachelor": "설계 스튜디오에서 이번 안에서 다룰 입면과 다루지 않을 입면을 나눠 정해 봤나요?",
     "master": "석사 과정의 연구나 설계 작업에서 이번 안에서 다룰 입면과 다루지 않을 입면을 나눠 정해 봤나요?",

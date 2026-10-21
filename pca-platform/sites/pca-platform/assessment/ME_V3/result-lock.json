@@ -2,10 +2,10 @@
  "schema_version": "me-v3-result-lock.1",
  "note": "결과지 화면 1차 동결. 문장만 고치면 `RESULT_COPY_VERSION` 만 올리고, 칸이나 절이 바뀌면 `RESULT_MODEL_VERSION`, 화면 구조가 바뀌면 `RESULT_UI_VERSION` 을 올린다. 채점 판본은 이 가운데 무엇으로도 올리지 않는다",
  "versions": {
-  "result_ui_version": "ME_V3_RESULT_UI_V80",
-  "result_copy_version": "me-v3-result-copy.66",
+  "result_ui_version": "ME_V3_RESULT_UI_V81",
+  "result_copy_version": "me-v3-result-copy.67",
   "result_model_version": "me-v3-result-model.6",
-  "item_bank_version": "ME_V3_ITEM_BANK_V2.5",
+  "item_bank_version": "ME_V3_ITEM_BANK_V2.6",
   "scoring_version": "me-v3-scoring.5"
  },
  "guards": {
@@ -22,28 +22,28 @@
  "files": {
   "src/app/v3/result.css": "d08d5f6db19bc0344c0d443776fa6ad4895d126835a169c8ef3e593c96facd76",
   "src/app/surface.css": "03ebfbed94b46928225df3843c206121a2cf48802c7700bcf9225171545980a6",
-  "src/app/v3/[attemptId]/result/page.tsx": "0efef2876d22e0bb49d415d68d80749b665a2233752165445c01243a72a834d5",
+  "src/app/v3/[attemptId]/result/page.tsx": "537947f30f7636c3aefd54d96751004933c053ec3abc0cc2f3b47f7e70be83fc",
   "src/app/v3/[attemptId]/result/fold.tsx": "da6c8b16f124941d283dc9ae4ad0f41b2271fd8d8233028bfdc3d4c500d4fbb4",
   "src/app/v3/[attemptId]/result/disclose.tsx": "04e8a84916ec0fcd642e9287377e370b8bff250ac496ed66cfdf3d9f2e640f5a",
   "src/app/v3/[attemptId]/result/save.tsx": "2830e503419eba94015798787ab2f7cd4abca39c8126fe1cf3dca087f6c6e7c1",
   "src/app/v3/[attemptId]/result/track.tsx": "6136c271ee7df7323f029912182c7496a8633fdf7479b6080697a6f4a217787c",
   "src/app/v3/[attemptId]/result/second.tsx": "656a5c0ce5ea2d41e5e34f61fc6b6f61925054744dd953ca4206ebbf5069c126",
-  "src/lib/me-v3/result/text.ko.ts": "9eaabe56937c86777258f1e02702ecf3b8e9504d071ccdbb0995f21a1543abcd",
+  "src/lib/me-v3/result/text.ko.ts": "bc48154f3a76df55b2dbc74389886054a4dbe388295693645d8ce77ff3d94d07",
   "src/lib/me-v3/result/say.ts": "1ca895cbeb84b08c5579fc3fcaaf4f8c89b766e131f277bcd92bba74abcebc95",
   "src/lib/me-v3/result/josa.ts": "152cd30c2af136172618c14fa6fb4175b97cf16350db631e3e2e6c72fd7dd4af",
-  "src/lib/me-v3/result/version.ts": "8af437c37050e0635625d80c1f44c17945f09a61d9e950d918e8a94c90083d5a",
+  "src/lib/me-v3/result/version.ts": "3ad94d93e16f8608ff64d79c8a8efa3c6ddf6031f84f7632b5f7a380be462351",
   "src/lib/me-v3/result/tile-sub.ts": "8e51d0087d789341b20679e15503c7d31d62b36c943998cea70d992539c2d785",
-  "src/lib/me-v3/student/copy.ts": "e7bd695e60650226df869f1c776f303cae65f63f4161e0c7bfff017081409a50",
+  "src/lib/me-v3/student/copy.ts": "3c5f96455be8222018a30f1d5423aee1608e436ec11c49d681b208956ef60a1a",
   "src/lib/me-v3/student/icon.ts": "65836ae7a141a7dcdf844e5d5b4bcdbcc558dad0a3890a4a67384a3b17c7aea2",
   "src/lib/me-v3/student/index.ts": "909ca63ece9cac62f1bbf734dc924a043108676ad1211972f23909a73025dc12",
   "src/lib/me-v3/student/state.ts": "2118e6d333368d97420a1ebbb608ccba04c53a9bba7c4077e121984a71937b4a",
-  "src/lib/me-v3/student/common.ts": "586fc21262bd0330e0c718d37ea79878de424a54205398222e5d93dee5f1b55c",
+  "src/lib/me-v3/student/common.ts": "ef363c4dc4b9ab7cf5a50457de8648aa108233429d4fab316892a8c77a2e5ca3",
   "src/lib/me-v3/result/spec-view.ts": "5996808b444eead599e03d41d22629c6ae8ce2690e06937ce64471d189b04fe7",
   "src/lib/me-v3/result/meta.ts": "bf2c3f49a2bc49108e6e63f6c9ac6f03cce070b6fe50f24ad8a3f4027aaa85cc",
-  "src/app/v3/[attemptId]/result/charts.tsx": "ba553c2eee1d44f2de2b2ab72d81ef51ca68060ca428dec04190113aedf722b4",
+  "src/app/v3/[attemptId]/result/charts.tsx": "2d9f287c7189620bc323addaa59e9b1505ea64a1573f14686700cfce5c554fd3",
   "src/app/v3/[attemptId]/result/art.tsx": "2588ecb162ba7bedd2de5a688ba3ffdb7776d11105044e5ccbb9d20ac160f1e8",
   "src/lib/me-v3/result/chart-data.ts": "62e508fa151b0664b0c89e46745ac4f452390534ff919ba62f0ddac070734308",
   "src/lib/me-v3/runtime/domain-facts.ts": "49f73a7eb5de3b5ae72885f5d8399bd147c20a2b82bab62167338c4ae48b2695",
-  "src/lib/me-v3/result/chains.ts": "adae59ca54527e45bffada3c4531a1297f9b08615accd24bc927959c33ccf5d6"
+  "src/lib/me-v3/result/chains.ts": "34dc241b9e7f743994d6b606990f5d19f4a94777d585dce6e3330169739522f8"
  }
 }

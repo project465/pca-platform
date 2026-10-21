@@ -14,7 +14,7 @@
   "deep_per_attempt": 1,
   "add_later": true,
   "subscription_gate": false,
-  "note": "여덟 역할 전부를 견줄 수 있다. 한 번에 쉰여섯을 묻지 않고 Core 심화가 끝난 뒤에 관심 있는 역할을 둘까지 고르고, 고른 역할을 STANDARD 부터 깊게 확인한다. 고르지 않은 역할은 Core 의 확인된 축으로 견준다. 역할 선택이 Core 판정을 바꾸지 않는다"
+  "note": "여덟 역할 전부를 비교할 수 있다. 한 번에 쉰여섯을 묻지 않고 Core 심화가 끝난 뒤에 관심 있는 역할을 둘까지 고르고, 고른 역할을 STANDARD 부터 깊게 확인한다. 고르지 않은 역할은 Core 의 확인된 축으로 비교한다. 역할 선택이 Core 판정을 바꾸지 않는다"
  },
  "packs": [
   {
@@ -88,7 +88,7 @@
      "id": "ROLE_POLICYDRAFT_V1_R5",
      "axis": "J6",
      "domain": "TD07",
-     "ask": "다른 기관의 같은 규정과 견준 결과를 들고 안을 바꾸자고 올려 통과시킨 적 있나요?"
+     "ask": "다른 기관의 같은 규정과 비교한 결과를 들고 안을 바꾸자고 올려 통과시킨 적 있나요?"
     },
     {
      "id": "ROLE_POLICYDRAFT_V1_R6",
@@ -276,7 +276,7 @@
      "id": "ROLE_ADJUDICATE_V1_R4",
      "axis": "J6",
      "domain": "TD07",
-     "ask": "앞선 판정들과 견준 결과를 들고 이번 결론을 바꾼 적 있나요?"
+     "ask": "앞선 판정들과 비교한 결과를 들고 이번 결론을 바꾼 적 있나요?"
     },
     {
      "id": "ROLE_ADJUDICATE_V1_R5",
@@ -585,7 +585,7 @@
      "id": "ROLE_CASEMGMT_V1_R7",
      "axis": "J6",
      "domain": "TD04",
-     "ask": "내가 세운 차례를 지난 처리 기록과 견주어 고친 적 있나요?"
+     "ask": "내가 세운 차례를 지난 처리 기록과 비교해 고친 적 있나요?"
     }
    ],
    "compare_with": [

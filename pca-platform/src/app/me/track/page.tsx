@@ -99,7 +99,7 @@ export default async function Track({
         kicker={state.on ? "이용 중" : "기간권"}
         title="AI 취업비서"
         lead={"매주 할 일 하나를 먼저 알려 드리고, 메모를 경험 기록으로 옮기고, "
-          + "직접 찾은 공고를 내 경험과 맞대어 드립니다. 자동으로 갱신되지 않습니다."}
+          + "직접 찾은 공고를 내 경험과 맞대어 봅니다. 자동으로 갱신되지 않습니다."}
       />
 
       {sp.e && FAIL[sp.e] ? (
@@ -161,7 +161,7 @@ export default async function Track({
           </div>
 
           <SectionHeader icon="log" title="공고 확인"
-            sub="직접 찾은 채용 공고를 붙여 넣으면 요구 항목마다 내 경험이 있는지 나눠 드립니다." />
+            sub="직접 찾은 채용 공고를 붙여 넣으면 요구 항목마다 내 경험이 있는지 나눠 보여 줍니다." />
           <div className="cm-panel is-one" id="posting">
             <div className="cm-pane">
               <form action={addPosting} className="cm-compose">

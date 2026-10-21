@@ -68,14 +68,14 @@
    "industry": "INDUSTRY_SENIOR_V1",
    "industry_name": "노인·건강증진",
    "strength": "중심",
-   "appears_as": "노인·건강증진 에서는 넘어질 위험을 재어 가르는가 · 기준표와 견주는가 로 나타납니다",
+   "appears_as": "노인·건강증진 에서는 넘어질 위험을 재어 가르는가 · 기준표와 비교하는가 로 나타납니다",
    "axes_watched": [
     "J3",
     "J6"
    ],
    "dimensions": [
     "넘어질 위험을 재어 가르는가",
-    "기준표와 견주는가"
+    "기준표와 비교하는가"
    ]
   },
   {
@@ -442,7 +442,7 @@
    "industry": "INDUSTRY_REHAB_V1",
    "industry_name": "병원·재활센터",
    "strength": "중심",
-   "appears_as": "병원·재활센터 에서는 소견을 올리는 조건으로 옮기는가 · 좌우를 견주어 판정하는가 · 조건을 못 채웠을 때 가르는가 로 나타납니다",
+   "appears_as": "병원·재활센터 에서는 소견을 올리는 조건으로 옮기는가 · 좌우를 비교해 판정하는가 · 조건을 못 채웠을 때 가르는가 로 나타납니다",
    "axes_watched": [
     "J2",
     "J3",
@@ -450,7 +450,7 @@
    ],
    "dimensions": [
     "소견을 올리는 조건으로 옮기는가",
-    "좌우를 견주어 판정하는가",
+    "좌우를 비교해 판정하는가",
     "조건을 못 채웠을 때 가르는가"
    ]
   },
@@ -908,12 +908,12 @@
    "industry": "INDUSTRY_FACILITY_V1",
    "industry_name": "시설 운영·행정",
    "strength": "있음",
-   "appears_as": "시설 운영·행정 에서는 사용률을 지난해와 견주는가 로 나타납니다",
+   "appears_as": "시설 운영·행정 에서는 사용률을 지난해와 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "사용률을 지난해와 견주는가"
+    "사용률을 지난해와 비교하는가"
    ]
   },
   {
@@ -942,12 +942,12 @@
    "industry": "INDUSTRY_FITNESS_V1",
    "industry_name": "체육관·피트니스",
    "strength": "있음",
-   "appears_as": "체육관·피트니스 에서는 재등록을 지난달과 견주는가 로 나타납니다",
+   "appears_as": "체육관·피트니스 에서는 재등록을 지난달과 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "재등록을 지난달과 견주는가"
+    "재등록을 지난달과 비교하는가"
    ]
   },
   {
@@ -956,12 +956,12 @@
    "industry": "INDUSTRY_SCHOOL_V1",
    "industry_name": "학교·유소년",
    "strength": "있음",
-   "appears_as": "학교·유소년 에서는 학기 종목을 지난해와 견주는가 로 나타납니다",
+   "appears_as": "학교·유소년 에서는 학기 종목을 지난해와 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "학기 종목을 지난해와 견주는가"
+    "학기 종목을 지난해와 비교하는가"
    ]
   },
   {
@@ -986,12 +986,12 @@
    "industry": "INDUSTRY_EVENT_V1",
    "industry_name": "대회·경기 운영",
    "strength": "있음",
-   "appears_as": "대회·경기 운영 에서는 참가 집계를 지난 대회와 견주는가 로 나타납니다",
+   "appears_as": "대회·경기 운영 에서는 참가 집계를 지난 대회와 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "참가 집계를 지난 대회와 견주는가"
+    "참가 집계를 지난 대회와 비교하는가"
    ]
   },
   {

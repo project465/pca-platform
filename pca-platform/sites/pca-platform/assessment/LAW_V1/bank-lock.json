@@ -4,17 +4,17 @@
  "item_bank_version": "LAW_V1_ITEM_BANK_V1.4",
  "note": "법·경찰 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=LAW_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
-  "law-industry-packs.json": "2e91cdce0762affefdf11a3862dfef7e764cd97fbc80376e41aeb67bc75299d1",
-  "law-role-packs.json": "836179586a8e8983d185218999dd4fea2f0dd424247d05fffbfe5aa99652c9e7",
-  "law-v1-checklist-additions.json": "f1b0a85dbff8f1d168b18e4677420f0b06d04f6fa0baf741345d93fef07add32",
-  "law-v1-checklists.json": "42b04ef677f3d42c618f24945e7d019b5621ced98699fbcef0bd05cd0aabe174",
-  "law-v1-common-additions.json": "f5386c154e39a8ffaf8361055953af186347dc5058611d6a1e0ad832a405c15b",
+  "law-industry-packs.json": "3f0cabedc57a318df2575ca3bc68187f5a7f7a106e1f1a171d277d3dff684e1b",
+  "law-role-packs.json": "1fee46643481d5223177af9235fc07620d06d82918e8756ddbe40ec05f3c56b9",
+  "law-v1-checklist-additions.json": "6ad050669f39626b37253600ad0ff93e89a7316576f7f392d31978e6c52eff45",
+  "law-v1-checklists.json": "5d121ab00d2a9a098e048e7f519d7ca2d16021dec8dac39a4f0861c24437be21",
+  "law-v1-common-additions.json": "bbb711e6e809d7c483af2c2081811108668b2c9ee64bb35f47c25808bc8b68c1",
   "law-v1-constructs.json": "5618cff847bec644354634b0028d7958d67b83a84a5381de815aeda0905bf314",
-  "law-v1-domains.json": "b7b41f112cc665c7c9450af9d6dabd547e8cbf169b1883c6acb512c854fbd1a8",
+  "law-v1-domains.json": "83a8bd98e2cfa7e4b7a9ca54fd697804dd2af30f606c6a8dd63f43aa0f08b6b1",
   "law-v1-items-blueprint.json": "f43443a6c47af56fdacec2f91066fa1fc712cb467666d466f1e84897392d911a",
   "law-v1-items.json": "d4faa3c7a6c4bbdf3bc86289508344f0a54c817884c8f436f864bc903d4cfc4a",
-  "law-v1-relations.json": "6596ee9955e1a7f602f2868eb6ef77a905a59d82c3bfffe1a047d1e823357159",
-  "law-v1-taxonomy.json": "e95a26bc52503878c7df8258d34b5255443ee48ef5564d266cdc5e9a34bf27c1"
+  "law-v1-relations.json": "680b2a9ed197acba3e647bcb2a7a4593ae9e2e2fab458fab1daee4bcad239392",
+  "law-v1-taxonomy.json": "fadc3790f1ed7e4eedbb763c9fc9651c1128243322a7e6f52edf1bdec3827b5b"
  },
  "scoring_version": "me-v3-scoring.5"
 }

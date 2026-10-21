@@ -4,17 +4,17 @@
  "item_bank_version": "VISUAL_V1_ITEM_BANK_V1.4",
  "note": "문면을 고치면 이 지문이 어긋난다. 그때 판본을 올리고 BANK=update 로 다시 적는다",
  "files": {
-  "visual-industry-packs.json": "7f0ffe831dc2417531c3df709190d6f30093500c80d019d2832b395012872f49",
-  "visual-role-packs.json": "1f942ef79855cbcda0070335914799ec8f7c72bb9ca05d5a1f28a29c58032655",
-  "visual-v1-checklist-additions.json": "9a5ca24a0da42cafdb218d04f2c7cec85fd7a56519740532c3b7d9c8b1ca1e4d",
-  "visual-v1-checklists.json": "c2abd99362261bc86c66453e353e9795177b50b02d7b50b6a6fcc2488492b769",
-  "visual-v1-common-additions.json": "02de90b3a670a6a0f5ca0cd3a03d3184cd266835b1e047586530ca1a9946f3a8",
+  "visual-industry-packs.json": "7285c5b3990a162ef3bae4544d45f7ed79a1c8f99a379bdd5051aec832a4b2e6",
+  "visual-role-packs.json": "b4c718495c37b20d0efdce2956cfab96a3c9bbacea1800892b4f5a6fb89da261",
+  "visual-v1-checklist-additions.json": "2f6b8a81d0328f9dc2d5ced4c37fe1faf67824e8522773646e66ab839416b7b7",
+  "visual-v1-checklists.json": "cd9105bb2bafd0803119d1cd2c1ad4d6d63c514ede8e291ce7730e2dc1b051af",
+  "visual-v1-common-additions.json": "9babb395290dceecc3879647aaf7e928409ceccc6e6941519a62fc1816fcc001",
   "visual-v1-constructs.json": "6f07825bf180737597d0885f50c56cf58a1ffcba50eae4f64753c608c261a02e",
-  "visual-v1-domains.json": "1d55be7c5133fc740d5d125d9fbc57bfbe9426b2f13ce102b10557097a4776b3",
+  "visual-v1-domains.json": "fa3f9103c95c9abcd0972841a4eb27cb68b36451d7db2d4fcf4eba0c8ea8cf24",
   "visual-v1-items-blueprint.json": "ce081e11c62c7f066c36589069f05064843c3b13b631be1ff941198ce6a13b75",
-  "visual-v1-items.json": "a01d268ce13e81b418bb0e7a418040c95d9ac0bd5ecac9073e4731789f5ea77d",
+  "visual-v1-items.json": "8496d2d28f4920003ce5f9029b0945ced412490ba7851d7b4c67e041b6d54c05",
   "visual-v1-relations.json": "0241850909b6c85e941db8e1fa2f880b43b5f8a7e1b25b5d85b930dc9d2a01a0",
-  "visual-v1-taxonomy.json": "94b0c948c797ead5fcbc93ee96bf4d5d3b6ded022b71ccb656f197396ede6bd8"
+  "visual-v1-taxonomy.json": "66c0a23f1ece0d8ad66c5a50b750dd8d3b5a6df522a30c085ea081b3a8d0651a"
  },
  "scoring_version": "me-v3-scoring.5"
 }

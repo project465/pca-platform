@@ -650,12 +650,12 @@
    "industry": "INDUSTRY_LOCAL_V1",
    "industry_name": "지방행정·주민서비스",
    "strength": "있음",
-   "appears_as": "지방행정·주민서비스 에서는 동네 단위로 자료를 갈라 보는가 로 나타납니다",
+   "appears_as": "지방행정·주민서비스 에서는 동네 단위로 자료를 나눠 보는가 로 나타납니다",
    "axes_watched": [
     "J4"
    ],
    "dimensions": [
-    "동네 단위로 자료를 갈라 보는가"
+    "동네 단위로 자료를 나눠 보는가"
    ]
   },
   {
@@ -720,12 +720,12 @@
    "industry": "INDUSTRY_EDUCULT_V1",
    "industry_name": "교육·문화 행정",
    "strength": "있음",
-   "appears_as": "교육·문화 행정 에서는 참여 자료를 갈라 보는가 로 나타납니다",
+   "appears_as": "교육·문화 행정 에서는 참여 자료를 나눠 보는가 로 나타납니다",
    "axes_watched": [
     "J4"
    ],
    "dimensions": [
-    "참여 자료를 갈라 보는가"
+    "참여 자료를 나눠 보는가"
    ]
   },
   {

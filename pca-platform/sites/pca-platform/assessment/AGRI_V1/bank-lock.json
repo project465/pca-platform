@@ -4,17 +4,17 @@
  "item_bank_version": "AGRI_V1_ITEM_BANK_V1.3",
  "note": "문면을 고치면 이 지문이 어긋난다. 그때 판본을 올리고 BANK=update 로 다시 적는다",
  "files": {
-  "agri-industry-packs.json": "60d40744e442b523cd24a1812dbaed47f4893d080a3d431bd10d19e89645a8ee",
-  "agri-role-packs.json": "6f2ece3a9fba75db98470fbd252fbc7aa627dce4da41de6ced54c3e675b9325e",
-  "agri-v1-checklist-additions.json": "a2d65ab3ca10f640637add0435112bf08dabedb5c63df2e993bf48d7bf3ff642",
-  "agri-v1-checklists.json": "3712d7c1dc4eb8d8f211edbf918eaf68de00bea14793492f2de597a47c893e63",
-  "agri-v1-common-additions.json": "3e877a1c62bc87ed01f9c284f304258176e4c30bc72f5c00b16f468a1efa379e",
+  "agri-industry-packs.json": "8a90e6371d9e03cf7f0f39b1a3f895affbc24c5dc5e629b381344a60f95bd777",
+  "agri-role-packs.json": "e975741049f167b59e171ba2c41f9788a037f6c9f2c6d87902378ab5a98dd2ff",
+  "agri-v1-checklist-additions.json": "1a1f3ea072bf49e7e4874af2e4253347a0a4750e03b7daa5c60b89d7cbb9562a",
+  "agri-v1-checklists.json": "605f8426400950015d03baefe6e1099beda68d9c4991b89ba5643e968c1a9c7d",
+  "agri-v1-common-additions.json": "f9589ba54ca91f89b8b5a4f5780e3cd6d30fd6acc8a1d6567030f6bf15326f48",
   "agri-v1-constructs.json": "a1a89dbe0296efa4a67f3eaf52742e10b19af9e7f3ff5890b88b28d135017d6b",
-  "agri-v1-domains.json": "584b94712929045a7707fb4c01c55f0770a4aa20a187eda61c1ed4ed8ddb97bf",
+  "agri-v1-domains.json": "eb9fd05806155da836163c9e7222bed691f417945cf893071f486c0095f0813a",
   "agri-v1-items-blueprint.json": "da998660212824fbc342bf484e6dab3e04435cdd1a270b0b2fbfc270a2f4a7a8",
-  "agri-v1-items.json": "f590c6be3f23b494155826b9fdb8bb6abaf7667f0f47efbe74d37b96c6112ea7",
-  "agri-v1-relations.json": "bc75ba6b7d8493e08e43ddd8a68ab9d572d73affa2f233341ae425f1478ba8f7",
-  "agri-v1-taxonomy.json": "f790dfce88f7e06791f27859f3697c7c3de8217609976db7d76b14572249d6bc"
+  "agri-v1-items.json": "084147e07eb7891abeb45b2e03dd39c24f64b78719a918fcbe472b7348656a93",
+  "agri-v1-relations.json": "3f619755037fd47ce9a67027b90eaa94aed0a76003779d376f7aa984e04f17f7",
+  "agri-v1-taxonomy.json": "a719ab2b653f3d7cd1f869ea4bd40768632379003c1e010d228cef448d39872a"
  },
  "scoring_version": "me-v3-scoring.5"
 }

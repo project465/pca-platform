@@ -227,7 +227,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "팀 과제에서 이번 계획에서 하지 않기로 한 일을 골라 적어 둔 적이 있나요?",
+   "wording": "팀 과제를 하면서 이번 계획에서 하지 않기로 한 일을 골라 적어 둔 적이 있나요?",
    "stage_wording": {
     "bachelor": "팀 과제에서 이번 계획에서 하지 않기로 한 일을 골라 적어 둔 적이 있나요?",
     "master": "연구실 과제에서 이번 계획에서 하지 않기로 한 일을 골라 적어 둔 적이 있나요?",
@@ -437,7 +437,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "동아리 활동에서 다음 계획에서 같은 차질이 나지 않게 조건을 바꿔 봤나요?",
+   "wording": "동아리 활동을 하면서 다음 계획에서 같은 차질이 나지 않게 조건을 바꿔 봤나요?",
    "stage_wording": {
     "bachelor": "동아리 활동에서 다음 계획에서 같은 차질이 나지 않게 조건을 바꿔 봤나요?",
     "master": "연구실 과제에서 다음 계획에서 같은 차질이 나지 않게 조건을 바꿔 봤나요?",
@@ -472,7 +472,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "팀 과제에서 주어진 목표에서 이번에 다루지 않을 범위를 정해 적어 봤나요?",
+   "wording": "팀 과제를 하면서 주어진 목표에서 이번에 다루지 않을 범위를 정해 적어 봤나요?",
    "stage_wording": {
     "bachelor": "팀 과제에서 주어진 목표에서 이번에 다루지 않을 범위를 정해 적어 봤나요?",
     "master": "연구실 과제에서 주어진 목표에서 이번에 다루지 않을 범위를 정해 적어 봤나요?",
@@ -2596,7 +2596,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "회계 과제에서 이번 결산에서 다룰 거래와 다음으로 넘길 거래를 나눠 적어 봤나요?",
+   "wording": "회계 과제를 하면서 이번 결산에서 다룰 거래와 다음으로 넘길 거래를 나눠 적어 봤나요?",
    "stage_wording": {
     "bachelor": "회계 과제에서 이번 결산에서 다룰 거래와 다음으로 넘길 거래를 나눠 적어 봤나요?",
     "master": "연구실 과제에서 이번 결산에서 다룰 거래와 다음으로 넘길 거래를 나눠 적어 봤나요?",
@@ -7421,7 +7421,7 @@
     "자료를 모으고 정리하는 방법",
     "사람의 요구를 조건으로 옮기는 방법",
     "여러 사람의 결정을 묶는 방법",
-    "비용과 효과를 견주는 방법",
+    "비용과 효과를 비교하는 방법",
     "아직 모르겠다"
    ],
    "grid_row": null,

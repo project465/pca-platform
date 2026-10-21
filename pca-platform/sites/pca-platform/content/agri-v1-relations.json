@@ -20,14 +20,14 @@
    "industry": "INDUSTRY_OPENFIELD_V1",
    "industry_name": "노지 채소·과수",
    "strength": "중심",
-   "appears_as": "노지 채소·과수 에서는 심을 품목을 좁히는가 · 지난 철과 견주는가 로 나타납니다",
+   "appears_as": "노지 채소·과수 에서는 심을 품목을 좁히는가 · 지난 철과 비교하는가 로 나타납니다",
    "axes_watched": [
     "J1",
     "J6"
    ],
    "dimensions": [
     "심을 품목을 좁히는가",
-    "지난 철과 견주는가"
+    "지난 철과 비교하는가"
    ]
   },
   {
@@ -36,14 +36,14 @@
    "industry": "INDUSTRY_SEEDLING_V1",
    "industry_name": "종묘·육묘",
    "strength": "중심",
-   "appears_as": "종묘·육묘 에서는 다룰 품종 범위를 좁히는가 · 고를 품종을 견주는가 로 나타납니다",
+   "appears_as": "종묘·육묘 에서는 다룰 품종 범위를 좁히는가 · 고를 품종을 비교하는가 로 나타납니다",
    "axes_watched": [
     "J1",
     "J6"
    ],
    "dimensions": [
     "다룰 품종 범위를 좁히는가",
-    "고를 품종을 견주는가"
+    "고를 품종을 비교하는가"
    ]
   },
   {
@@ -156,14 +156,14 @@
    "industry": "INDUSTRY_FLORI_V1",
    "industry_name": "화훼·절화",
    "strength": "중심",
-   "appears_as": "화훼·절화 에서는 생장 조절 방법을 고르는가 · 다른 동과 견주는가 로 나타납니다",
+   "appears_as": "화훼·절화 에서는 생장 조절 방법을 고르는가 · 다른 동과 비교하는가 로 나타납니다",
    "axes_watched": [
     "J4",
     "J6"
    ],
    "dimensions": [
     "생장 조절 방법을 고르는가",
-    "다른 동과 견주는가"
+    "다른 동과 비교하는가"
    ]
   },
   {

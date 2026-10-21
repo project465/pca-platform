@@ -127,7 +127,7 @@ export function axisOfPick(d: Report3["domains"][number], pick: string): string 
   if (has(/문서로|남겼|정의표를|기획서/)) return "J5";
   if (has(/견주|비교|같은 조건/)) return "J6";
   if (has(/까닭|뒤집|고쳤|바꿨/)) return "J7";
-  if (has(/다룰 것|범위|좁혔|갈라 적/)) return "J1";
+  if (has(/다룰 것|범위|좁혔|갈라 적|나눠 적/)) return "J1";
   if (has(/반영|결정에 쓰/)) return "J8";
   return d.levels.find((l) => (l.level ?? 0) >= 2)?.axis ?? "J3";
 }

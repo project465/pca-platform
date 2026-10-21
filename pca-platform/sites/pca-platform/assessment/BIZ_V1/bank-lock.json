@@ -4,17 +4,17 @@
  "item_bank_version": "BIZ_V1_ITEM_BANK_V1.4",
  "note": "경영 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=BIZ_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
-  "biz-industry-packs.json": "28d0d34f59beb534b32fb3e75845fb5249279d799145a9910e3738aab2c00be2",
-  "biz-role-packs.json": "3ed3ab95c10b84623bf2932201b73a3a97042f649738217a3d796175a1197d2a",
-  "biz-v1-checklist-additions.json": "39b1d65219dbfedcc97e9eab9779bd5e1bb29f16830ad96cf2032d0b55598452",
-  "biz-v1-checklists.json": "dff84f3e3003f87a57ad63a5433f68aca0e660f341658b07555a232745fbbf56",
-  "biz-v1-common-additions.json": "29fc63cfccc492e95558c15778b02cbcfee06963110758af5efdfc89a8831465",
+  "biz-industry-packs.json": "97736a92a7984004a104416e26eb8ddada499aeaedf36dc77173f0fa1d83b1ff",
+  "biz-role-packs.json": "f8036d8282d1a9bdb6ba640d77586fb262a43fd7f545fffcb1d87f813bbaa09f",
+  "biz-v1-checklist-additions.json": "2e2ef02c0619d9266a6708ab2c8eb220342238cdf91b5f00913c9dc01e648243",
+  "biz-v1-checklists.json": "171ec6c9796286e20ed8ad1b98ca9595497c8ef1a58647ab4e750a7c6fa3dcc5",
+  "biz-v1-common-additions.json": "a69d340c701d5fa6d0f5fc2b79567dadfe60c4c9eed21940fbea3afc53bdd2ed",
   "biz-v1-constructs.json": "2f7ae00799b9446fd68d32da11cd00e4408dc809074dce5b5661abd55d5ed9bb",
-  "biz-v1-domains.json": "a27fbeda717a5a2bd34721d016ee1336c243e47bcd3479addd78caec46567ecd",
+  "biz-v1-domains.json": "3990f84848def54200725ee6ba4479dbdc6f23051091b0ee3e5db149e69726d8",
   "biz-v1-items-blueprint.json": "63a6b695cc5db9494fdb4ac963b6e6aec44ee7089a6a0946cf27dbcd7f7c1cbf",
-  "biz-v1-items.json": "5c1c47b1aeb5ac8112bf3c69f9e149ad7ace90041c483edcebb878a2564e28d5",
-  "biz-v1-relations.json": "9666e035e17474bf425406787e261db75cecde094dca5cbc5abb6eda1e9cf434",
-  "biz-v1-taxonomy.json": "d57e36ebda92d985a403cc54423df440ad209e919808960a78317969bbc08e1b"
+  "biz-v1-items.json": "fb96bdd68f78c7e2509659053950d7f72ceb4b21f9dc97ec36563ef4d3b1a8b3",
+  "biz-v1-relations.json": "50adc0d13bc2aacba0f6cfceac84181948549187f0c5fd6a2669cfb252607dcc",
+  "biz-v1-taxonomy.json": "9b2332565c5051fb3f44daa71e6861abd8a88b397783967660769cac8bf66619"
  },
  "scoring_version": "me-v3-scoring.5"
 }

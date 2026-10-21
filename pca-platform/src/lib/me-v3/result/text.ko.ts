@@ -1580,7 +1580,7 @@ export const COMMON_ITEM_KO: Record<string, string> = COMMON_ME;
  * 판단이었는지를 되돌려 준다. 둘 가운데 하나만 두면 읽는 사람이 자기 답을
  * 알아보지 못하거나(축만) 전체가 안 보인다(문항만).
  */
-export function commonKo(v: CommonView, core = "ME_CORE_V3"): {
+export function commonKo(v: CommonView, core: string): {
   owned: string[]; confirmed: string[];
   didOwn: string[]; didConfirm: string[];
 } {

@@ -4,17 +4,17 @@
  "item_bank_version": "HEALTH_V1_ITEM_BANK_V1.4",
  "note": "보건·의료복지 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=HEALTH_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
-  "health-industry-packs.json": "d8ea899749d3c73f08b1fe719a575c45ab1617a574dd77d6766a21a8fce77250",
-  "health-role-packs.json": "fadb273c8fc6c132382fe6927baf58f59c1c19f53a0bdfbb3a94e0c494e3972b",
-  "health-v1-checklist-additions.json": "ce1050e1b2b9c0d0968c280ec46fe6897991bca62f8ae365202393e854418ca4",
-  "health-v1-checklists.json": "aea79694eeb5ea8d82e5376398e7457703ad569d9c8b34f9170e3b6c306a29c7",
-  "health-v1-common-additions.json": "2ab943547c7b7121d85213a770ff25a05eb84e3018312e825fda2cac211e10e2",
+  "health-industry-packs.json": "b28fe22aab199cf04663d566bd0ce5a0fbdc55a58561837822203ea9e6d2dffe",
+  "health-role-packs.json": "cec9e4e1398b069ee4ee6283dbf9300497ce14cbbfe1fe4380910ff5aa2cfabc",
+  "health-v1-checklist-additions.json": "87abffeb5f80acba2e03aedb8cd3ae444cb138d2bc0cb5ca98167a65dd820b8b",
+  "health-v1-checklists.json": "d59020c940dfe7d6f415dca2ba87292912c85ffca47ad378d65f4ea1b155e4d9",
+  "health-v1-common-additions.json": "6cba2f550347aa981c53a18d0ba084a58362c85c094b2f1311fc90af82c47a8c",
   "health-v1-constructs.json": "4e090a13d23603bc6e7ea500e8c33458b24f1751ce087d28685d8241ef3ee629",
-  "health-v1-domains.json": "3ea78b56b04ae139e59b6dc3881436bbfc78cb34bbccb64175bd52e0cd31578a",
+  "health-v1-domains.json": "a1f6cecbfe1285ee377e49d118a9461adaee8be1abc720d36f3fc59488b50515",
   "health-v1-items-blueprint.json": "7f62247ae466dd1db4f086243b2a86f5337ad1fa0e988fde2c155e58da68067a",
   "health-v1-items.json": "7329a886a997cb31639120858a39fd503de5951fd6b6ac521f7a60ccba42156b",
   "health-v1-relations.json": "5d5c412ef3d55936c355e4adf4dbcb7cb75f22465a28e3f74e2fd751f4db4ec6",
-  "health-v1-taxonomy.json": "d62c2f2d634e34ede9d21819a80e06e588efe695d6cd36db3f585ca644c6f368"
+  "health-v1-taxonomy.json": "5ddf9d8a1036f01fd201288846fe56bb7455e67c747616cece840e7f51407830"
  },
  "scoring_version": "me-v3-scoring.5"
 }

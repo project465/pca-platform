@@ -4,17 +4,17 @@
  "item_bank_version": "CIV_V1_ITEM_BANK_V1.3",
  "note": "문면을 고치면 이 지문이 어긋난다. 그때 판본을 올리고 BANK=update 로 다시 적는다",
  "files": {
-  "civ-industry-packs.json": "b9905da40c9fbb43729baf01a1ab7e56cdcad23356d303674d34d3ca7e00c9bb",
-  "civ-role-packs.json": "48420c5879de379ab429f9f25446b71b1486e6625870d670b088fc0b8d4e7efb",
-  "civ-v1-checklist-additions.json": "60127ecfafc163c8e0831368e91f93390bd185b13d8a39f5110e27bc014c3938",
-  "civ-v1-checklists.json": "d27ffd313f33ae3598d33106f705b363c02289119b08a0c873d44157adfa6d05",
-  "civ-v1-common-additions.json": "6264d24d71517b8a24aef5e6b6fa3c2174ee85bbe5ba496f6972bbee32e32cf6",
+  "civ-industry-packs.json": "337b0d72cbdd4ed4a55e703f8dd1a39ec95ca82115fd333a515d1d2de90bf1d6",
+  "civ-role-packs.json": "63daf5907e12b23f09ede38eb6543842afae48472f9632a76247dda3d08a6aea",
+  "civ-v1-checklist-additions.json": "111e8bce0ea9f4cedb79c8a1e434c37099020c8bcb907f09fdf4d07e353df6d6",
+  "civ-v1-checklists.json": "74389f37eeb8ee3c633a871000f1e997435fea2b3ebe6f5c5b06447c5e9ee0ec",
+  "civ-v1-common-additions.json": "eb2cf56922f049fe3d46f2f28744a1d4a99d0f07f1054b666d8bbdae49fae82c",
   "civ-v1-constructs.json": "0101968a394890bb6bbe9bde025b278e8a9343755b0f2d64553f0149647a4890",
-  "civ-v1-domains.json": "82686e220b0ad0f9b220865fe7dafaaeb1de2261cae80e84d8407066436d821d",
+  "civ-v1-domains.json": "78c5137579ace73225d1cb4ed74274c85fb8b3405fd8d6620eabfa39510211f4",
   "civ-v1-items-blueprint.json": "2f865fc0e05ffb0f21ccc2b4c97af0911de082dfe95d7753a740bbc3ab80ad7c",
-  "civ-v1-items.json": "53574a29ab7404e67f51e4008cd58163b6cbbd87058e3886d4009444723ab18e",
-  "civ-v1-relations.json": "8ed5d5014f1762e8d38a8609d1a4dde4eb47b798378bf576d3c829b00806fe23",
-  "civ-v1-taxonomy.json": "cd0c16850ecad800e0208b36fcb8ff0f00a05d0b9d359e6761e3f5337bf564fd"
+  "civ-v1-items.json": "fb7280eb45e7b4f6004b5046f989d1495c872caf130787179e321d28bc8d94f8",
+  "civ-v1-relations.json": "3663f4a4e57b19a48612dda8a0c1c4eeb7ca63f5dd2deeb5b917a50384da990c",
+  "civ-v1-taxonomy.json": "fae45b9bf79a2bdee33952c0fe85d8d43e0a92f68745c05ddb2abdafd6bd0253"
  },
  "scoring_version": "me-v3-scoring.5"
 }
