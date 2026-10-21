@@ -1,61 +1,54 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import { activeMajorName } from "@/lib/me-v3/major-name";
-import { trackInterest } from "@/lib/me-v3/platform";
 import { getProduct } from "@/lib/orders";
 import { formatMoney } from "@/lib/money";
 import {
   TRACK_PRODUCTS, TRACK_TRIAL, activeTrack, proTrialClaimable, trackHistory,
 } from "@/lib/track";
+import { aiReady } from "@/lib/assistant/claude";
+import { settingsOf } from "@/lib/assistant/settings";
+import { postingsOf } from "@/lib/assistant/posting";
+import { nudgeUser, nudgesOf } from "@/lib/assistant/nudges";
 import { CmShell, CmHead } from "../shell";
 import { SectionHeader } from "../ui";
-import { claimTrial, toggleInterest } from "./actions";
+import {
+  addPosting, changeConsent, changeDigest, claimTrial, makeDraft, readAllNudges,
+} from "./actions";
 
-export const metadata = { title: "CareerMatri Track" };
+export const metadata = { title: "AI 취업비서" };
 
 /**
- * CareerMatri Track · 내 구독.
+ * AI 취업비서 · 내 구독.
  *
- * **산업팩을 더 여는 상품이 아니다.** 여덟 산업과 여덟 역할은 진단에
- * 포함되고 탐색에서 전부 볼 수 있다. Track 이 파는 것은 **내 커리어
- * 상황이 바뀔 때 다시 견주는 일**이다.
+ * **하는 일은 셋이다.** 매주 할 일 하나를 먼저 알려 주고, 적어 주신 메모를
+ * 경험 기록으로 옮겨 주고, 직접 찾아 붙여 넣은 공고를 내 경험과 맞대어
+ * 준다. 셋 다 결과지가 이미 정한 판정 위에서 돌고 **점수를 새로 만들지
+ * 않는다**(설계 원칙 6).
  *
- * **1단계는 기간권이다.** 30일권과 365일권을 한 번씩 팔고 자동으로 갱신하지
- * 않는다. 기간이 끝나면 저절로 닫히고 카드가 다시 긁히지 않는다. 정기결제는
- * PG 계약과 중도 해지·정산 규칙이 정해진 뒤에 연다.
+ * **공고를 우리가 고르지 않는다.** 사용자가 찾은 공고를 붙여 넣고, 지원도
+ * 그 사람이 직접 한다(CLAUDE.md 법적 범위). 그래서 이 화면에 `추천 기업`
+ * 이 서지 않는다.
  *
- * **지금 열리는 것과 준비 중인 것을 가른다.** 준비 중인 것을 산 것처럼
- * 적으면 그것이 약속이 된다. 열리는 것은 제자리로 보내는 링크로, 준비 중인
- * 것은 줄로만 적는다(테를 두르고 아이콘을 붙이면 있는 기능처럼 보인다).
+ * **기간권이다.** 30일권과 365일권을 한 번씩 팔고 자동으로 갱신하지 않는다.
+ * 기간이 끝나면 저절로 닫히고 카드가 다시 긁히지 않는다.
  */
-
-/** 표시를 받는 열쇠 하나. 줄마다 따로 받지 않는다 */
-const WAIT = "track";
-
-/** Track 으로 지금 열리는 것. **Track 안에 두지 않고 제자리를 가리킨다** */
-const OPEN: { href: string; title: string; body: string }[] = [
-  {
-    href: "/me/explore",
-    title: "관심 산업·직무 바꿔 다시 비교하기",
-    body: "산업과 직무를 둘씩 골라 그쪽 기준으로 내 경험을 다시 세웁니다. 횟수 제한이 없습니다.",
-  },
-  {
-    href: "/me/apply",
-    title: "지원한 곳과 내 근거 나란히 보기",
-    body: "적어 두신 지원 직무마다 설명할 수 있는 영역과 비어 있는 영역을 가릅니다.",
-  },
-];
-
-/** 준비 중. **넷을 넘기지 않고 날짜를 적지 않는다** */
-const PLANNED: string[] = [
-  "달라진 것만 모은 월간 변화 리포트 PDF",
-  "분기마다 한 번 다른 전공 기준으로 보기",
-];
 
 const day = (iso: string) =>
   new Intl.DateTimeFormat("ko-KR", {
     timeZone: "Asia/Seoul", year: "numeric", month: "long", day: "numeric",
   }).format(new Date(iso));
+
+const short = (iso: string) =>
+  new Intl.DateTimeFormat("ko-KR", {
+    timeZone: "Asia/Seoul", month: "numeric", day: "numeric",
+  }).format(new Date(iso));
+
+/** 마감까지 남은 날. 한국 날짜로 센다 */
+function leftDays(deadline: string): number {
+  const today = new Date(new Date().getTime() + 9 * 3600_000).toISOString().slice(0, 10);
+  return Math.round((Date.parse(deadline) - Date.parse(today)) / 86400_000);
+}
 
 const NAME: Record<string, string> = {
   TRACK_30D: "30일권",
@@ -63,39 +56,55 @@ const NAME: Record<string, string> = {
   [TRACK_TRIAL]: "PRO 구매 첫 1개월",
 };
 
+const FAIL: Record<string, string> = {
+  off: "기간권이 열려 있지 않아 저장하지 못했습니다. 아래에서 기간권을 고르시면 바로 열립니다.",
+  short: "공고 본문을 조금 더 붙여 넣어 주세요. 하는 일과 자격 요건이 들어 있으면 됩니다.",
+  posting: "공고를 저장하지 못했습니다. 붙여 넣은 글은 그대로 두고 한 번 더 눌러 주세요.",
+  memo: "메모를 한두 문장 더 적어 주세요. 무엇을 했고 무엇이 남았는지면 됩니다.",
+  draft: "메모를 옮기지 못했습니다. 한 번 더 눌러 주세요.",
+};
+
 export default async function Track({
   searchParams,
 }: {
-  searchParams: Promise<{ trial?: string }>;
+  searchParams: Promise<{ trial?: string; e?: string }>;
 }) {
   const sp = await searchParams;
   const user = await requireUser();
-  const [major, wait, state, history, claimable, prods] = await Promise.all([
+  const state = await activeTrack(user.id);
+  /* 이번 주 한 줄이 아직 없으면 지금 만든다. **밤 당번을 기다리게 하지
+     않는다**: 기간권을 막 산 사람이 빈 알림 칸을 본다 */
+  if (state.on) await nudgeUser(user.id).catch(() => undefined);
+  const [major, history, claimable, prods, settings, postings, nudges] = await Promise.all([
     activeMajorName(user.id),
-    trackInterest(user.id),
-    activeTrack(user.id),
     trackHistory(user.id),
     proTrialClaimable(user.id),
     Promise.all(TRACK_PRODUCTS.map((c) => getProduct(c))),
+    settingsOf(user.id),
+    state.on ? postingsOf(user.id) : Promise.resolve([]),
+    state.on ? nudgesOf(user.id, 6) : Promise.resolve([]),
   ]);
-  const on = wait.length > 0;
   const sale = prods.filter((p): p is NonNullable<typeof p> => !!p);
   const p30 = sale.find((p) => p.code === "TRACK_30D");
   const p365 = sale.find((p) => p.code === "TRACK_365D");
   /* 1년치를 30일권으로 사면 얼마인지와 견준다. **지어낸 할인율이 아니고**
      두 상품의 값으로 그 자리에서 센 수다 */
   const save = p30 && p365 ? p30.amount * 12 - p365.amount : 0;
+  const ai = aiReady() && Boolean(settings.ai_consent_at);
+  const unread = nudges.filter((n) => !n.read_at).length;
 
   return (
-    <CmShell active="/me/track" title="Track" major={major}>
+    <CmShell active="/me/track" title="AI 취업비서" major={major}>
       <CmHead
-        kicker={state.on ? "구독 중" : "기간권"}
-        title="경험이 늘고 목표가 바뀔 때마다 다시 견줍니다"
-        lead={"검사 결과는 응시한 날의 상태로 굳어 있습니다. Track 이 열려 있는 "
-          + "동안에는 관심 산업과 직무를 바꿔 보고, 지원한 곳과 내 근거를 나란히 "
-          + "놓아 볼 수 있습니다. 자동으로 갱신되지 않습니다."}
+        kicker={state.on ? "이용 중" : "기간권"}
+        title="AI 취업비서"
+        lead={"매주 할 일 하나를 먼저 알려 드리고, 메모를 경험 기록으로 옮기고, "
+          + "직접 찾은 공고를 내 경험과 맞대어 드립니다. 자동으로 갱신되지 않습니다."}
       />
 
+      {sp.e && FAIL[sp.e] ? (
+        <p className="cm-fail" role="alert">{FAIL[sp.e]}</p>
+      ) : null}
       {sp.trial === "1" ? (
         <p className="cm-none" role="status" style={{ marginBottom: 12 }}>
           {state.on ? "첫 1개월이 열렸습니다." : "이미 받으셨거나 받을 수 있는 결제가 없습니다."}
@@ -106,16 +115,10 @@ export default async function Track({
       <div className="cm-panel is-one">
         <div className="cm-pane">
           {state.on && state.until ? (
-            <>
-              <p className="cm-row">
-                <b>{day(state.until)}까지 열려 있습니다</b>
-                <span>{NAME[state.product ?? ""] ?? "Track"}{state.queued ? " · 이어서 산 기간 포함" : ""}</span>
-              </p>
-              <p className="cm-none">
-                기간이 끝나면 저절로 닫히고 결제가 다시 이뤄지지 않습니다. 남은
-                기간은 지원 화면에서 일할로 환불을 요청할 수 있습니다.
-              </p>
-            </>
+            <p className="cm-row">
+              <b>{day(state.until)}까지 열려 있습니다</b>
+              <span>{NAME[state.product ?? ""] ?? "기간권"}{state.queued ? " · 이어서 산 기간 포함" : ""}</span>
+            </p>
           ) : (
             <p className="cm-row">
               <b>열려 있지 않습니다</b>
@@ -124,12 +127,153 @@ export default async function Track({
           )}
           {claimable ? (
             <form action={claimTrial} className="cm-acts">
-              <span className="cm-none">PRO 결과지를 사셨습니다. Track 첫 1개월을 받으실 수 있습니다.</span>
+              <span className="cm-none">PRO 결과지를 사셨습니다. 첫 1개월을 받으실 수 있습니다.</span>
               <button className="cm-btn is-primary" type="submit">첫 1개월 받기</button>
             </form>
           ) : null}
         </div>
       </div>
+
+      {state.on ? (
+        <>
+          <SectionHeader icon="spark" title="이번 주 알림"
+            sub={unread ? `읽지 않은 알림 ${unread}개` : "새로 온 알림이 없습니다."} />
+          <div className="cm-panel is-one">
+            <div className="cm-pane">
+              <div className="cm-rows">
+                {nudges.map((n) => (
+                  <p className="cm-row" key={n.id}>
+                    <b>{n.read_at ? "" : "● "}{n.title}</b>
+                    <span>
+                      {n.body}{" "}
+                      {n.href ? <Link href={n.href}>바로 가기</Link> : null}
+                      {" · "}{short(n.created_at)}
+                    </span>
+                  </p>
+                ))}
+              </div>
+              {unread ? (
+                <form action={readAllNudges} className="cm-acts">
+                  <button className="cm-btn" type="submit">모두 읽음으로</button>
+                </form>
+              ) : null}
+            </div>
+          </div>
+
+          <SectionHeader icon="log" title="공고 확인"
+            sub="직접 찾은 채용 공고를 붙여 넣으면 요구 항목마다 내 경험이 있는지 나눠 드립니다." />
+          <div className="cm-panel is-one" id="posting">
+            <div className="cm-pane">
+              <form action={addPosting} className="cm-compose">
+                <label className="cm-field">
+                  <span>공고 이름</span>
+                  <input className="cm-input" name="label" maxLength={80}
+                    placeholder="예: OO전자 생산기술 신입" />
+                </label>
+                <label className="cm-field">
+                  <span>마감일 (알면)</span>
+                  <input className="cm-input" type="date" name="deadline" />
+                </label>
+                <label className="cm-field">
+                  <span>공고 본문</span>
+                  <textarea className="cm-textarea" name="text" rows={8} maxLength={12000}
+                    required placeholder="하는 일, 자격 요건, 우대 사항이 들어 있는 부분을 붙여 넣어 주세요." />
+                </label>
+                <p className="cm-none">
+                  {ai ? "AI가 요구 항목을 뽑고, 판정은 내 결과와 경험으로 합니다."
+                    : "지금은 규칙으로 요구 항목을 뽑습니다. 아래 설정에서 AI 분석을 켤 수 있습니다."}
+                  {" "}지원은 공고를 낸 곳에서 직접 하시면 됩니다.
+                </p>
+                <div className="cm-acts">
+                  <button className="cm-btn is-primary" type="submit">공고와 내 경험 맞대 보기</button>
+                </div>
+              </form>
+              {postings.length ? (
+                <div className="cm-rows" style={{ marginTop: 16 }}>
+                  {postings.map((p) => {
+                    const left = p.deadline ? leftDays(p.deadline) : null;
+                    return (
+                      <p className="cm-row" key={p.id}>
+                        <b><Link href={`/me/track/posting/${p.id}`}>{p.label}</Link></b>
+                        <span>
+                          {left === null ? "마감 미입력" : left < 0 ? "마감 지남"
+                            : left === 0 ? "오늘 마감" : `마감 ${left}일 전`}
+                          {" · "}설명할 경험 {p.analysis.counts.ready} · 정리 필요 {p.analysis.counts.partial}
+                          {" · "}아직 없음 {p.analysis.counts.empty}
+                          {p.state === "applied" ? " · 지원함" : p.state === "closed" ? " · 닫음" : ""}
+                        </span>
+                      </p>
+                    );
+                  })}
+                </div>
+              ) : null}
+            </div>
+          </div>
+
+          <SectionHeader icon="check" title="경험 채우기"
+            sub="최근에 한 일을 편하게 적으면 경험 추가 화면의 보기로 옮겨 드립니다. 저장은 직접 하십니다." />
+          <div className="cm-panel is-one" id="draft">
+            <div className="cm-pane">
+              <form action={makeDraft} className="cm-compose">
+                <label className="cm-field">
+                  <span>메모</span>
+                  <textarea className="cm-textarea" name="note" rows={5} maxLength={1500} required
+                    placeholder="예: 마케팅원론 팀 과제에서 20대 대상 설문 문항을 짰고, 응답 120개를 엑셀로 정리해 발표했다." />
+                </label>
+                <div className="cm-acts">
+                  <button className="cm-btn is-primary" type="submit">경험 기록으로 옮기기</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <SectionHeader icon="box" title="함께 열리는 것" />
+          <div className="cm-panel is-one">
+            <div className="cm-pane">
+              <div className="cm-rows">
+                <p className="cm-row">
+                  <b><Link href="/me/explore">관심 산업·직무 바꿔 다시 비교하기</Link></b>
+                  <span>산업과 직무를 둘씩 골라 그쪽 기준으로 내 경험을 다시 봅니다.</span>
+                </p>
+                <p className="cm-row">
+                  <b><Link href="/me/apply">지원한 곳과 내 근거 나란히 보기</Link></b>
+                  <span>적어 두신 지원 직무마다 설명할 수 있는 영역과 비어 있는 영역을 가릅니다.</span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <SectionHeader icon="clock" title="설정" />
+          <div className="cm-panel is-one" id="settings">
+            <div className="cm-pane">
+              <p className="cm-row">
+                <b>AI 분석 {settings.ai_consent_at ? "켜짐" : "꺼짐"}</b>
+                <span>
+                  켜면 붙여 넣은 공고와 메모가 Anthropic(미국)의 Claude로 보내져 읽힙니다.
+                  이름과 연락처는 보내지 않습니다. 끄면 규칙으로만 읽고 밖으로 보내지 않습니다.
+                  {aiReady() ? "" : " 지금은 서비스 쪽 설정이 끝나지 않아 켜도 규칙으로 읽습니다."}
+                </span>
+              </p>
+              <form action={changeConsent} className="cm-acts">
+                <input type="hidden" name="on" value={settings.ai_consent_at ? "0" : "1"} />
+                <button className="cm-btn" type="submit">
+                  {settings.ai_consent_at ? "AI 분석 끄기" : "동의하고 AI 분석 켜기"}
+                </button>
+              </form>
+              <p className="cm-row" style={{ marginTop: 12 }}>
+                <b>주간 알림 메일 {settings.email_digest ? "받음" : "받지 않음"}</b>
+                <span>한 주에 한 통이고, 할 일과 공고 이름은 메일에 적지 않습니다.</span>
+              </p>
+              <form action={changeDigest} className="cm-acts">
+                <input type="hidden" name="on" value={settings.email_digest ? "0" : "1"} />
+                <button className="cm-btn" type="submit">
+                  {settings.email_digest ? "메일 끄기" : "메일로도 받기"}
+                </button>
+              </form>
+            </div>
+          </div>
+        </>
+      ) : null}
 
       {sale.length ? (
         <>
@@ -161,53 +305,9 @@ export default async function Track({
         </>
       ) : null}
 
-      <SectionHeader icon="check" title="Track 으로 열리는 것" />
-      <div className="cm-panel is-one">
-        <div className="cm-pane">
-          <div className="cm-rows">
-            {OPEN.map((a) => (
-              <p className="cm-row" key={a.href}>
-                <b>{a.title}</b>
-                <span>{a.body}</span>
-              </p>
-            ))}
-          </div>
-          <div className="cm-acts">
-            {OPEN.map((a) => (
-              <Link className="cm-btn" href={a.href} key={a.href}>
-                {a.href === "/me/explore" ? "산업·직무" : "지원 기록"}
-              </Link>
-            ))}
-          </div>
-          <p className="cm-none">
-            새 경험을 적고 현재 상태에 더하는 일은 Track 없이도 됩니다. 학교에서
-            받은 검사와 결과도 그대로입니다.
-          </p>
-        </div>
-      </div>
-
-      <SectionHeader icon="spark" title="준비 중" />
-      <div className="cm-panel is-one">
-        <div className="cm-pane">
-          <div className="cm-rows">
-            {PLANNED.map((t) => (
-              <p className="cm-row" key={t}><b>{t}</b></p>
-            ))}
-          </div>
-          <p className="cm-none">여는 날은 아직 정해지지 않았습니다.</p>
-          <form action={toggleInterest} className="cm-acts">
-            <input type="hidden" name="feature" value={WAIT} />
-            <input type="hidden" name="on" value={on ? "0" : "1"} />
-            <button className="cm-btn" type="submit">
-              {on ? "알림 끄기" : "열리면 알려주세요"}
-            </button>
-          </form>
-        </div>
-      </div>
-
       {history.length ? (
         <>
-          <SectionHeader icon="log" title="구독 기록" />
+          <SectionHeader icon="log" title="이용 기록" />
           <div className="cm-tablewrap">
             <table className="cm-table">
               <thead>

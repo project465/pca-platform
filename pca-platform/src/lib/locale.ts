@@ -176,7 +176,7 @@ export const UI = {
   repSec05: d("가장 앞에 있는 직무가 요구하는 역량", "What the top role requires", "İlk sıradaki rolün gerektirdikleri"),
   repSec06: d("다음 여섯 달", "The next six months", "Önümüzdeki altı ay"),
   repLead: d(
-    "250문항이 재는 것은 무엇을 하고 싶은가입니다. 실력이 아니라 관심의 방향입니다.",
+    "250문항이 재는 것은 무엇을 하고 싶은가입니다. 실력보다 관심의 방향을 봅니다.",
     "The 250 items measure what you want to do: the direction of your interest, not your skill level.",
     "250 soru ne yapmak istediğinizi ölçer: yetkinliğinizi değil, ilginizin yönünü.",
   ),
@@ -236,18 +236,18 @@ export const UI = {
   // 그렇다). 그때 "가장 높은 쪽이 X" 라고 쓰면 없는 차이를 주장하게 된다.
   // 직무 묶음에서 이미 지킨 원칙: 못 가리면 못 가린다고 적는다.
   repNote03Flat: d(
-    "250문항 중 120문항에 성향이 심어져 있습니다. 여섯 축은 절대값으로 읽지 않고 서로 견줘 읽는데, 이번 응답에서는 여섯이 같은 값으로 나왔습니다. 더 뚜렷한 쪽이 없습니다.",
+    "250문항 중 120문항에 성향이 심어져 있습니다. 여섯 축은 절대값으로 읽지 않고 서로 비교해 읽는데, 이번 응답에서는 여섯이 같은 값으로 나왔습니다. 더 뚜렷한 쪽이 없습니다.",
     "120 of the 250 items carry a work-style signal. What matters is the relative height of the six, and in this response all six came out level. None of them stands out over the others.",
     "250 sorunun 120'si çalışma eğilimi taşır. Bu yanıtta altısı da aynı düzeyde çıktı; hiçbiri diğerlerinin önünde değil.",
   ),
   repNote03FlatHs: d(
-    "문항 112개 중 96개에 성향이 심어져 있습니다. 여섯 축은 절대값으로 읽지 않고 서로 견줘 읽는데, 이번 응답에서는 여섯이 같은 값으로 나왔습니다. 더 뚜렷한 쪽이 없습니다.",
+    "문항 112개 중 96개에 성향이 심어져 있습니다. 여섯 축은 절대값으로 읽지 않고 서로 비교해 읽는데, 이번 응답에서는 여섯이 같은 값으로 나왔습니다. 더 뚜렷한 쪽이 없습니다.",
     "96 of the 112 items carry a work-style signal. What matters is the relative height of the six, and in this response all six came out level. None of them stands out over the others.",
     "112 sorunun 96'sı çalışma eğilimi taşır. Bu yanıtta altısı da aynı düzeyde çıktı.",
   ),
   repKpiTraitFlat: d("여섯이 고르게", "All six level", "Altısı da eşit"),
   repNote04: d(
-    "활동 선호 75% + 업무 성향 25%로 계산했습니다. 등수를 매기지 않고 묶음으로 보여드립니다. 같은 묶음 안의 직무는 이 검사로 우열을 가릴 수 없습니다. 가는 막대가 그 폭입니다.",
+    "활동 선호 75% + 업무 성향 25%로 계산했습니다. 등수를 매기지 않고 그룹으로 보여드립니다. 같은 그룹 안의 직무는 이 검사로 우열을 가릴 수 없습니다. 가는 막대가 그 폭입니다.",
     "Computed as 75% activity preference + 25% work style. We group rather than rank: this assessment cannot separate roles inside the same group. The thin bar shows that margin.",
     "Hesaplama: %75 faaliyet tercihi + %25 çalışma eğilimi. Sıralamak yerine gruplandırıyoruz: aynı gruptaki roller bu testle ayrılamaz. İnce çubuk bu payı gösterir.",
   ),
@@ -290,7 +290,7 @@ export const UI = {
     "{area} tarafında bir proje bitirin. Kanıt olarak ürün değil, sürecin kaydı sayılır.",
   ),
   repPlan3: d(
-    "다음으로 높게 나온 {job}[과/와] 비교해 다시 봅니다. 구간이 겹쳤다면 해 본 경험이 순위를 가릅니다.",
+    "다음으로 높게 나온 {job}[과/와] 비교해 다시 봅니다. 구간이 겹쳤다면 해 본 경험으로 순서를 정합니다.",
     "Revisit this against {job}, the next one up. Where the intervals overlapped, experience is what separates them.",
     "Bir sonraki {job} ile yeniden karşılaştırın. Aralıklar çakıştıysa ayrımı deneyim yapar.",
   ),
@@ -355,7 +355,7 @@ export const UI = {
     "Üniversitelerin önerdiği derslerle karşılaştırma",
   ),
   repLockItem4: d(
-    "업무 성향 6축: 같은 계열 안에서 어떤 자리가 맞는지",
+    "업무 성향 6축: 같은 계열 안에서 어떤 역할이 맞는지",
     "The six work styles: which seat inside that field fits you",
     "Altı çalışma tarzı",
   ),
@@ -393,7 +393,7 @@ export const UI = {
   ),
   freeIncHead: d("무료로 나오는 것", "What the free part gives", "Ücretsiz bölümde gelenler"),
   freeInc1: d(
-    "이공계 8계열 적합도: 구간과 묶음으로 냅니다. 등수는 매기지 않습니다",
+    "이공계 8계열 적합도: 구간과 그룹으로 냅니다. 등수는 매기지 않습니다",
     "Fit across the eight engineering fields: bands and groups. No ranking",
     "Sekiz mühendislik alanında uyum: sıralama değil, aralık",
   ),
@@ -496,8 +496,8 @@ export const UI = {
      다음에 볼 곳이다. */
   /* 예전에는 "선두" 였는데, 다음 묶음에 여섯이 들어가면 그중 하나를 선두로
      세우는 것이 곧 없는 등수를 매기는 일이다. 묶음 자체를 가리킨다. */
-  repKpiAreaHs: d("다음 묶음", "The next group", "Sonraki grup"),
-  repKpiNextNone: d("없음 (한 묶음뿐)", "None (a single group)", "Yok (tek grup)"),
+  repKpiAreaHs: d("다음 그룹", "The next group", "Sonraki grup"),
+  repKpiNextNone: d("없음 (한 그룹뿐)", "None (a single group)", "Yok (tek grup)"),
   repPlanM1Hs: d("이번 학기", "This term", "Bu dönem"),
   repPlanM2Hs: d("다음 방학", "Next break", "Sonraki tatil"),
   repPlanM3Hs: d("다음 학년", "Next year", "Gelecek yıl"),
@@ -517,7 +517,7 @@ export const UI = {
     "112 sorunun 96'sı çalışma eğilimi taşır. Önemli olan altısının birbirine göre konumudur. En yüksek {hi}; en düşük {lo}.",
   ),
   repNote04Hs: d(
-    "문항 응답 75% + 업무 성향 25%로 계산했습니다. 등수를 매기지 않고 묶음으로 보여드립니다. 같은 묶음 안의 계열은 이 검사로 우열을 가릴 수 없습니다. 가는 막대가 그 폭입니다.",
+    "문항 응답 75% + 업무 성향 25%로 계산했습니다. 등수를 매기지 않고 그룹으로 보여드립니다. 같은 그룹 안의 계열은 이 검사로 우열을 가릴 수 없습니다. 가는 막대가 그 폭입니다.",
     "Computed as 75% item response + 25% work style. We group rather than rank: this assessment cannot separate fields inside the same group. The thin bar shows that margin.",
     "Hesaplama: %75 soru yanıtı + %25 çalışma eğilimi. Sıralamak yerine gruplandırıyoruz; ince çubuk bu payı gösterir.",
   ),
@@ -537,7 +537,7 @@ export const UI = {
     "{area} sorularında yüksek puan verdiğiniz etkinlikleri gerçekten yapın ve kaydını tutun.",
   ),
   repPlan3Hs: d(
-    "{job} 쪽도 한 번은 해 봅니다. 묶음이 겹치는 안에서는 해 본 경험이 답을 줍니다. 이 검사로는 여기까지입니다.",
+    "{job} 쪽도 한 번은 해 봅니다. 그룹이 겹치는 안에서는 해 본 경험이 답을 줍니다. 이 검사로는 여기까지입니다.",
     "Try the {job} side at least once too. Inside an overlapping group, experience answers the question; this assessment cannot.",
     "{job} tarafını da bir kez deneyin. Çakışan grup içinde yanıtı bu test değil, deneyim verir.",
   ),
@@ -740,14 +740,14 @@ export const UI = {
     "CareerMatri Kariyer Raporu (lise)",
   ),
   prodTRACK_30D: d(
-    "CareerMatri Track 30일",
-    "CareerMatri Track · 30 days",
-    "CareerMatri Track · 30 gün",
+    "AI 취업비서 30일",
+    "AI career assistant · 30 days",
+    "AI kariyer asistanı · 30 gün",
   ),
   prodTRACK_365D: d(
-    "CareerMatri Track 365일",
-    "CareerMatri Track · 365 days",
-    "CareerMatri Track · 365 gün",
+    "AI 취업비서 365일",
+    "AI career assistant · 365 days",
+    "AI kariyer asistanı · 365 gün",
   ),
   prodHS_FREE: d(
     "커리어메트리 플러스 무료 진단",

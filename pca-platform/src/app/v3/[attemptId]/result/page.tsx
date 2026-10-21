@@ -80,11 +80,11 @@ function PackBody(
 ) {
   const cell = (d: string | null, ax: Axis | null) =>
     [d ? dn(d) : null, ax ? AXIS_KO[ax] : null].filter(Boolean).join(" · ")
-      || "이 자리에서 맡는 범위";
+      || "이 직무에서 맡는 범위";
   const uniq = (xs: string[]) => [...new Set(xs)];
   return (
     <div className="rs-pack">
-      <h3>이 자리에서 자주 묻는 것</h3>
+      <h3>이 직무에서 자주 묻는 것</h3>
       <p>{v.vocabulary.slice(0, 6).join(" · ")}</p>
       {/* **칩 벽을 기본으로 세우지 않는다**(규격 §42). 다섯 묶음에 담긴
           칩이 서른을 넘고, 산업 절과 직무 절에 한 번씩 서면 결과지의
@@ -268,7 +268,7 @@ function Why({ d }: { d: ResultDomain }) {
   const empty = [
     !did.length && !decided.length ? "해 봤다고 고른 것" : "",
     !d.artifacts.length ? "남겼다고 고른 결과물" : "",
-    !d.verifications.length ? "견줬다고 고른 대상" : "",
+    !d.verifications.length ? "비교했다고 고른 대상" : "",
   ].filter(Boolean);
   /* **고른 항목 가운데 응답으로는 확인에 못 미친 것**(R34 §1 추적표).
      결과 모델의 `did` · `decided` 는 확인·소유로 선 축의 항목만 들어서,
@@ -307,7 +307,7 @@ function Why({ d }: { d: ResultDomain }) {
           <dd><Picks items={d.artifacts} max={6} /></dd>
         </>) : null}
         {d.verifications.length ? (<>
-          <dt>견줬다고 고른 대상</dt>
+          <dt>비교했다고 고른 대상</dt>
           <dd><Picks items={d.verifications} max={6} /></dd>
         </>) : null}
         {unconfirmed.length ? (<>
@@ -448,7 +448,7 @@ function Strongest({ d }: { d: ResultDomain }) {
          R34: `아직 고른 근거 없음` 은 무엇을 안 골랐는지가 없어 읽는 사람이
          `근거가 없다` 로 읽었다. 검사에서 해 봤다고 답한 것과 근거 항목을
          고르는 것은 다른 일이라 그 둘을 한 줄에 적는다 */
-      <p className="rs-dnone">검사에서 해 봤다고 답했고, 근거 항목(판단 · 결과물 · 견준 대상)은 고르지 않았습니다</p>
+      <p className="rs-dnone">검사에서 해 봤다고 답했고, 근거 항목(판단 · 결과물 · 비교 대상)은 고르지 않았습니다</p>
     );
   }
   return (
@@ -1583,8 +1583,8 @@ export default async function V3Result({
             <p className="rs-note rs-layers">
               아래 항목은 전부 검사에서 스스로 고른 답입니다. 네 층으로 적습니다:
               해 봤다고 고른 것 → 직접 정했다고 고른 것 → 남겼다고 고른 결과물 →
-              견줬다고 고른 대상. 파일이나 평가처럼 밖에서 확인한 기록은 아니고,
-              묶음 딱지와 상태 문장만 검사가 가른 것입니다. 권하는 행동은
+              비교했다고 고른 대상. 파일이나 평가처럼 밖에서 확인한 기록은 아니고,
+              그룹 표시와 상태 문장만 검사가 정한 것입니다. 권하는 행동은
               ‘적을 과제 고르기’ 에 따로 적습니다.
             </p>
             {evRows.length ? (
@@ -1774,7 +1774,7 @@ export default async function V3Result({
             <div className="rs-ev">
               <section>
                 <h3>지원서에서 설명할 수 있는 경험</h3>
-                <p>직접 정한 것으로 확인됐고, 고른 근거 항목이 함께 있는 자리입니다.</p>
+                <p>직접 정한 것으로 확인됐고, 고른 근거 항목이 함께 있는 영역입니다.</p>
                 {model.evidence.ready.length ? (<>
                   {model.evidence.ready.filter((e) => e.picks.length).slice(0, 6).map((e) => (
                     <EvidenceRow key={`${e.domain}.${e.axis}`} core={core} domain={e.domain}
@@ -1792,7 +1792,7 @@ export default async function V3Result({
                     하면 채워지는지로 잇는다 */}
                 </>) : (
                   <p>
-                    지원서로 옮길 자리는 아직 없습니다. 아래
+                    지원서로 옮길 영역은 아직 없습니다. 아래
                     ‘적을 과제 고르기’ 가운데 하나를 끝내면 이 칸이 먼저
                     채워집니다.
                   </p>
@@ -1800,7 +1800,7 @@ export default async function V3Result({
               </section>
               <section>
                 <h3>경험은 있지만 설명 근거를 더 붙일 부분</h3>
-                <p>해 본 것은 확인됐고, 어디까지 직접 정했는지가 덜 적힌 자리입니다.</p>
+                <p>해 본 것은 확인됐고, 어디까지 직접 정했는지가 덜 적힌 영역입니다.</p>
                 {model.evidence.partial.length ? (<>
                   {model.evidence.partial.filter((e) => e.picks.length).slice(0, 6).map((e) => (
                     <EvidenceRow key={`${e.domain}.${e.axis}`} core={core} domain={e.domain}
@@ -1814,7 +1814,7 @@ export default async function V3Result({
                   ) : null}
                 </>) : (
                   <p>
-                    여기에 걸린 자리는 지금 없습니다. 해 본 일이 확인된
+                    여기에 해당하는 영역은 지금 없습니다. 해 본 일이 확인된
                     영역에서 어디까지 직접 정했는지를 적으면 이 칸이
                     생깁니다.
                   </p>
@@ -1909,7 +1909,7 @@ export default async function V3Result({
             <p className="rs-note">
               지금 응답만으로는 다음 한 걸음을 적을 만큼 영역 사이에 차이가
               생기지 않았습니다. 위의 영역 가운데 하나를 짧은 과제로 한 번
-              해보신 뒤에 다시 보시면 그 자리에 적힙니다.
+              해보신 뒤에 다시 보시면 여기에 적힙니다.
             </p>
           )}
 
@@ -1937,13 +1937,13 @@ export default async function V3Result({
               ) : null}
               {sv.application.resume ? (
                 <>
-                  <h3>그 경험을 지원서에서 꺼내는 자리</h3>
+                  <h3>그 경험을 지원서에서 꺼내는 법</h3>
                   <p className="rs-note">{sv.application.resume}</p>
                 </>
               ) : null}
               {sv.application.interview.length ? (
                 <>
-                  <h3>면접에서 같은 구조로 되묻는 자리</h3>
+                  <h3>면접에서 같은 구조로 다시 묻는 질문</h3>
                   <ul className="rs-first">
                     {sv.application.interview.map((t) => <li key={t}>{t}</li>)}
                   </ul>
@@ -2038,7 +2038,7 @@ export default async function V3Result({
             올라가 접히지 않는 자리에 선다 */}
         <Detail
           label="전체 기술영역과 지역 자료 보기"
-          note="먼저 볼 영역 · 비어 있는 자리 · 열두 영역 전체">
+          note="먼저 볼 영역 · 비어 있는 칸 · 열두 영역 전체">
 
         <ResultNav />
 
@@ -2206,7 +2206,7 @@ export default async function V3Result({
             <h2>전체 기술영역이 지금 어디에 있는가</h2>
             <p className="rs-note">
               {deep
-                ? "순위가 아니라 현재 상태를 보여드립니다."
+                ? "순위를 매기지 않고 현재 상태를 보여드립니다."
                 : "관심과 배울 뜻에 답하신 내용으로만 묶었습니다."}
             </p>
             {/* **기본 Reading Path 를 다섯으로 제한한다**(규격 §2).
@@ -2255,7 +2255,7 @@ export default async function V3Result({
                   다음에 볼 자리로 잇는다 */}
               {deep && zoneRows.some((r) => !r.list.length) ? (
                 <p className="rs-zempty">
-                  나머지 묶음에 걸린 영역은 지금 없습니다.
+                  나머지 그룹에 해당하는 영역은 지금 없습니다.
                   더 채울 곳은 ‘앞으로 채울 것’ 에 적혀 있습니다.
                 </p>
               ) : null}
@@ -2275,7 +2275,7 @@ export default async function V3Result({
               <p className="rs-zempty">
                 {`영역 훑기에서 같은 값으로 답하신 둘을 놓고 ${model.overview.tied_pick
                   .map((c) => domainName(core, c)).join(" · ")} 쪽을 고르셨습니다. `}
-                위의 묶음은 그 선택과 상관없이 응답에서 나온 것입니다.
+                위의 그룹은 그 선택과 상관없이 응답에서 나온 것입니다.
               </p>
             ) : null}
             {/* **영역에 걸치지 않는 판단을 버리지 않는다.** 공통 판단과 학위
@@ -2353,7 +2353,7 @@ export default async function V3Result({
                 {" · "}
                 {sv.domainLead.map((c) => domainName(core, c)).join(" · ")}
                 {hasBars ? ". 아래 막대에서 그 영역을 먼저 보시면 됩니다."
-                  : ". 위 묶음에서 그 영역을 먼저 보시면 됩니다."}
+                  : ". 위 그룹에서 그 영역을 먼저 보시면 됩니다."}
               </p>
             ) : null}
             {/* ── 그림은 보조 정보다(COMMERCIAL FINAL §11) ──
@@ -2405,7 +2405,7 @@ export default async function V3Result({
                 ) : null}
                 {/* 그림 묶음을 닫는 한 줄. **그림 뒤에 둔다**(§13) */}
                 <p className="rs-note">
-                  위에 적은 상태를 그림으로 되짚는 자리입니다. 점수도
+                  위에 적은 상태를 그림으로 다시 보여 드립니다. 점수도
                   순위도 아닙니다.
                 </p>
               </div>
@@ -2436,7 +2436,7 @@ export default async function V3Result({
               <h3>이 경험이 활용될 수 있는 일</h3>
               <p className="rs-note">
                 확인된 기술영역이 어느 산업과 직무에서 자주 쓰이는지를 적은
-                것입니다. 적합도나 합격 가능성이 아니고, 함께 살펴볼 자리를
+                것입니다. 적합도나 합격 가능성이 아니고, 함께 살펴볼 곳을
                 가리킵니다.
               </p>
               {revIndustry.length ? (
@@ -2472,7 +2472,7 @@ export default async function V3Result({
                 </dl>
               ) : null}
               <p className="rs-others">
-                순위가 아닙니다. 같은 수로 걸린 자리는 차례를 만들지 않습니다.
+                순위가 아닙니다. 같은 수가 나온 항목은 순서를 매기지 않습니다.
               </p>
             </div>
           ) : null}
@@ -2539,7 +2539,7 @@ export default async function V3Result({
               일을 정하는 데 쓰이지 않는다. 고른 권역과 그 지역의 기관
               상태는 위에 그대로 선다 */}
           <div className="rs-pack rs-webonly">
-            <h3>권역마다 자리의 성격이 다릅니다</h3>
+            <h3>권역마다 일자리의 성격이 다릅니다</h3>
             <dl>
               {regionLayer().regions.map((r) => (
                 <div key={r.code}>
@@ -2621,7 +2621,7 @@ export default async function V3Result({
                     중견기업에도 있다 */}
                 {orgKinds.length ? (
                   <div>
-                    <dt>그런 자리가 있는 기관</dt>
+                    <dt>그런 일자리가 있는 기관</dt>
                     <dd>{orgKinds.join(" · ")}</dd>
                   </div>
                 ) : null}
@@ -2672,14 +2672,14 @@ export default async function V3Result({
                 <div>
                   <dt>‘아직’의 뜻</dt>
                   <dd>
-                    못 한다는 뜻이 아닙니다. 지금 응답에서 그 자리의 근거를
+                    못 한다는 뜻이 아닙니다. 지금 응답에서 그 직무의 근거를
                     찾지 못했다는 뜻이고, 경험을 하나 적으면 달라집니다.
                   </dd>
                 </div>
                 <div>
                   <dt>고정되어 있습니다</dt>
                   <dd>
-                    응시하신 시점의 문항과 기준으로 굳어 있습니다. 나중에
+                    응시하신 시점의 문항과 기준으로 고정되어 있습니다. 나중에
                     기준이 바뀌어도 이 결과는 달라지지 않습니다.
                   </dd>
                 </div>
@@ -2765,7 +2765,7 @@ export default async function V3Result({
             <p className="rs-end-l">{meta.school ?? "CareerMatri"}</p>
             <h2 className="rs-end-h">다음 한 줄은 내 CareerMatri에서</h2>
             <p className="rs-end-p">
-              이 결과는 그날의 기록으로 굳어 있습니다. 경험을 더하면 지금
+              이 결과는 그날의 기록으로 고정되어 있습니다. 경험을 더하면 지금
               상태가 이어서 바뀝니다.
             </p>
             {/* **입구라는 것을 눈으로 보인다**(R19 §10). 다섯 마디가 전부
@@ -2798,8 +2798,10 @@ export default async function V3Result({
                   띄워 종이를 만드는 자리다 */}
               <li><a href={`/v3/${attemptId}/result/pdf`}>PDF 저장</a></li>
             </ul>
-            {/* **준비 중인 것을 카드로 세우지 않는다**(규격 §7) */}
-            <p className="rs-end-note">CareerMatri Track 은 준비 중입니다.</p>
+            {/* **카드로 세우지 않는다**(규격 §7). 한 줄 링크로 둔다 */}
+            <p className="rs-end-note">
+              매주 할 일과 공고 확인은 <Link href="/me/track">AI 취업비서</Link>에서 이어집니다.
+            </p>
           </div>
         </section>
       </main>

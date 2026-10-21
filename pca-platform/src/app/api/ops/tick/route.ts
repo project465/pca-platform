@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { timingSafeEqual } from "node:crypto";
 import { flushOutbox, checkCodeStock } from "@/lib/outbox";
+import { runAssistantTick } from "@/lib/assistant/nudges";
 
 export const dynamic = "force-dynamic";
 
@@ -30,9 +31,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false }, { status: 401, headers: { "cache-control": "no-store" } });
   }
   const low = await checkCodeStock();
+  /* AI 취업비서 알림을 먼저 쌓는다. 그래야 같은 당번이 그 메일까지 내보낸다.
+     **실패해도 메일 내보내기를 막지 않는다** */
+  const assistant = await runAssistantTick().catch(() => null);
   const mail = await flushOutbox(200);
   return NextResponse.json(
-    { ok: true, ...mail, lowStock: low.length },
+    { ok: true, ...mail, lowStock: low.length, assistant },
     { headers: { "cache-control": "no-store" } },
   );
 }

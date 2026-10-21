@@ -7,17 +7,21 @@
  */
 import { requireUser } from "@/lib/session";
 import { mark } from "@/lib/me-v3/workspace-events";
+import { draftOf } from "@/lib/assistant/draft";
 import Compose from "../compose";
 
 export const metadata = { title: "경험 추가 · 내 CareerMatri" };
 
 export default async function NewExperience(
-  { searchParams }: { searchParams: Promise<{ e?: string; td?: string }> },
+  { searchParams }: { searchParams: Promise<{ e?: string; td?: string; draft?: string }> },
 ) {
   const user = await requireUser();
   const sp = await searchParams;
   /* **적기 시작한 사람과 저장한 사람을 가른다.** 둘이 크게 벌어지면
      고칠 자리는 결과가 아니라 이 화면이다 */
   await mark("experience_add_started", user.id);
-  return <Compose userId={user.id} e={sp.e} td={sp.td} />;
+  /* 초안은 **그 사람의 것만** 열린다(`draftOf` 가 사람과 번호로 함께 거른다) */
+  const d = sp.draft ? await draftOf(user.id, sp.draft).catch(() => null) : null;
+  return <Compose userId={user.id} e={sp.e} td={sp.td}
+    draft={d?.value ?? null} {...(d && sp.draft ? { draftId: sp.draft } : {})} />;
 }

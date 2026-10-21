@@ -42,8 +42,8 @@ export type Order = {
 const NAMES: Record<string, string> = {
   REPORT_UNIV: "CareerMatri 진로 결과지 (대학)",
   REPORT_HS: "CareerMatri 진로 결과지 (고교)",
-  TRACK_30D: "CareerMatri Track 30일",
-  TRACK_365D: "CareerMatri Track 365일",
+  TRACK_30D: "AI 취업비서 30일",
+  TRACK_365D: "AI 취업비서 365일",
 };
 
 export function orderName(code: string): string {

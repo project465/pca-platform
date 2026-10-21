@@ -12704,3 +12704,46 @@ PGPORT=5433 DATABASE_URL=postgres:///cm_iso_c npx tsx scripts/lab/trackB-content
 PGPORT=5433 DATABASE_URL=postgres:///cm_iso_c npx tsx scripts/lab/trackB-routing.ts    # 자율전공 두 갈래
 PGPORT=5433 DATABASE_URL=postgres:///cm_iso_c npx tsx scripts/lab/trackE-r2.ts         # 정책 · 파기 · 접근 · 패키징
 ```
+
+**AI 취업비서. 구독(Track 기간권)이 여는 세 가지.** (2026-10-21)
+
+기간권의 화면 이름을 `AI 취업비서` 로 바꿨다(코드 이름과 상품 코드
+`TRACK_30D` · `TRACK_365D` 와 `/me/track` 주소는 그대로다). 여는 것은 셋이다:
+매주 할 일 하나를 먼저 알려 주는 알림 · 메모를 경험 기록의 보기로 옮기는
+초안 · 직접 찾아 붙여 넣은 공고를 내 경험과 맞대는 표. 읽는 자리는
+`src/lib/assistant/` 이고 표는 `db/schema_assistant.sql` 이다.
+
+**점수를 만들지 않는다**(설계 원칙 6). Claude 가 하는 일은 공고 문장을 요구
+항목으로 끊어 그 Core 의 영역 코드에 다는 것과, 메모에 맞는 체크리스트
+문장을 고르는 것까지다. 요구 항목이 `설명할 경험 있음 · 정리가 덜 됨 · 아직
+없음 · 전공 밖 조건` 가운데 어디인지는 `currentState()` 가 정하고, 넷을 더해
+합격 가능성으로 만들지 않는다. **목록 밖의 말은 버린다**: 돌려받은 코드와
+문장을 그 Core 의 목록으로 거른다(`catalog.ts` · `draft.ts` 의 `clamp`).
+
+**초안은 저장하지 않는다.** `/me/experience/new?draft=` 가 보기를 켜 둔 채로
+열고 사람이 고쳐서 직접 저장한다. 저장 경로와 판정은 그대로다(`saveExperience`).
+
+**공고를 우리가 고르지 않는다.** 사용자가 찾은 공고를 붙여 넣고 지원도 그
+사람이 한다(법적 범위). 그래서 `추천 기업` 이 서지 않는다.
+
+**Claude 는 둘이 다 맞을 때만 부른다**: 운영 환경변수 `ANTHROPIC_API_KEY` 와
+그 사람의 동의(`assistant_settings.ai_consent_at`). 하나라도 없으면 규칙으로
+읽고 화면이 그 까닭을 적는다. 동의는 붙여 넣은 글이 Anthropic(미국)으로
+나간다는 뜻이라 **개인정보처리방침 9절을 고친 뒤에** 열쇠를 넣는다
+(초안 `docs/assistant/PRIVACY_ADDENDUM_DRAFT.md`). 모델은 `claude-opus-5-5`,
+`@anthropic-ai/sdk` 0.131.0 의 `beta.messages.parse` 로 구조화 출력을 받고
+`fallbacks: "default"`(`server-side-fallback-2026-07-01`)를 켜 둔다. 거절
+(`stop_reason === "refusal"`)과 오류는 규칙으로 내려간다.
+
+**알림은 앱 안이 먼저다.** 밤 당번(`/api/ops/tick`)이 열려 있는 사람마다 주간
+할 일 한 줄과 마감 7·3·1일 전 알림을 쌓고 `(user_id, dedupe_key)` 가 두 번
+쌓이지 않게 막는다. 메일(`assistant_digest`)은 켠 사람에게만 한 주 한 통이고
+본문을 담지 않는다. 붙여 넣은 공고 본문은 1년, 메모는 30일 뒤 비운다.
+
+**npm 이 이 컨테이너에서 레지스트리에 닿지 않는 까닭**은 `no_proxy` 에
+`registry.npmjs.org` 가 들어 있어서다. `env -u no_proxy -u NO_PROXY -u
+npm_config_noproxy npm install ...` 로 프록시를 탄다.
+
+```bash
+LOGIN=test-jju-cs-01 npx tsx scripts/lab/assistant-check.ts   # 18가지 (열쇠가 있으면 20)
+```

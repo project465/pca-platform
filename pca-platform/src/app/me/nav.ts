@@ -95,7 +95,7 @@ export const CM_GROUPS: CmNavGroup[] = [
       /* **띠에는 아이콘과 이름만 둔다**(규격 §20). `준비 중` 을 여기
          적어 두면 아직 없는 것이 메뉴에서 한 줄을 더 먹고, 그 사실은
          들어가면 쪽이 첫 줄에 적는다 */
-      { href: "/me/track", label: "Track", icon: "globe" },
+      { href: "/me/track", label: "AI 취업비서", icon: "globe" },
       { href: "/my", label: "계정", icon: "user" },
     ],
   },

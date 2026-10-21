@@ -12,6 +12,7 @@ import { MonthPick } from "../ui";
 import { saveExperience, editExperience } from "./actions";
 import Steps from "./steps";
 import UnsavedGuard from "../unsaved";
+import type { DraftValue } from "@/lib/assistant/draft";
 
 /**
  * 그 결과가 어디로 갔는가.
@@ -72,7 +73,7 @@ const KIND_GROUPS: { label: string; hint: string; codes: string[] }[] = [
  * 갈리는 것은 셋뿐이다: 머리글 · 보내는 자리 · 되돌려 줄 값.
  */
 export default async function Compose(
-  { userId, value, e, td }: {
+  { userId, value, e, td, draft, draftId }: {
     userId: string;
     /** 고치는 자리면 적어 둔 기록. 없으면 새로 적는 자리다 */
     value?: Experience | null;
@@ -80,6 +81,12 @@ export default async function Compose(
     e?: string;
     /** 할 일에서 넘어왔을 때 미리 켜 둘 기술영역(규격 §10) */
     td?: string;
+    /**
+     * AI 취업비서가 메모에서 옮겨 둔 보기. **켜 두기만 하고 저장하지 않는다**:
+     * 사람이 보고 고친 뒤 직접 저장한다. 고치는 자리에서는 쓰지 않는다
+     */
+    draft?: DraftValue | null;
+    draftId?: string;
   },
 ) {
   const user = { id: userId };
@@ -113,13 +120,16 @@ export default async function Compose(
     ...(model ? studentStateView(core, model, zoneOf, 3).tiles.map((t) => t.code) : []),
     ...(value?.td_codes ?? []),
   ];
+  const d0 = edit ? null : draft ?? null;
   const picked = {
-    td: value?.td_codes ?? (td ? [td] : []),
-    problems: value?.problems ?? [],
-    decisions: value?.decisions ?? [],
-    artifacts: value?.artifacts ?? [],
-    verifications: value?.verifications ?? [],
+    td: value?.td_codes ?? (d0?.td.length ? d0.td : td ? [td] : []),
+    problems: value?.problems ?? d0?.problems ?? [],
+    decisions: value?.decisions ?? d0?.decisions ?? [],
+    artifacts: value?.artifacts ?? d0?.artifacts ?? [],
+    verifications: value?.verifications ?? d0?.verifications ?? [],
   };
+  /* 1단의 두 칸도 초안에서 켜 둔다. 고치는 자리면 적어 둔 기록이 먼저다 */
+  const start = value ?? (d0 ? { kind: d0.kind ?? undefined, title: d0.title } : null);
 
   return (
     <CmShell active="/me/experience"
@@ -157,6 +167,17 @@ export default async function Compose(
           사라지는 자리다 */}
       <UnsavedGuard />
 
+      {/* 메모에서 옮겨 온 초안이면 **그 사실과 되물을 것**을 적는다. 켜 둔
+          칸은 사람이 고칠 수 있고, 저장 전에는 아무것도 기록되지 않는다 */}
+      {d0 ? (
+        <div className="cm-none" role="status">
+          적어 주신 메모를 보기로 옮겨 두었습니다. 맞지 않는 칸은 끄고 저장해 주세요.
+          {d0.ask.length ? (
+            <ul>{d0.ask.map((q) => <li key={q}>{q}</li>)}</ul>
+          ) : null}
+        </div>
+      ) : null}
+
       {/* **적는 자리를 한 판 위에 올린다**(규격 §13 · 시각 규격 §9).
           전에는 칸과 칩이 쪽 바탕 위에 그대로 떠 있어서, 같은 쪽에 적는
           자리의 경계가 없고 **덜 그린 화면**으로 읽혔다. 기록을 쓰는
@@ -166,6 +187,7 @@ export default async function Compose(
             로그인한 사람으로 한 번 더 거른다: 주소에 남의 번호를 넣어도
             열리지 않는다 */}
         {value ? <input type="hidden" name="id" value={value.id} /> : null}
+        {d0 && draftId ? <input type="hidden" name="draft" value={draftId} /> : null}
         <Steps
           value={picked}
           flow={flow}
@@ -203,7 +225,7 @@ export default async function Compose(
                         {EXPERIENCE_KINDS.filter((k) => g.codes.includes(k.code)).map((k) => (
                           <label className="cm-pick" key={k.code}>
                             <input type="radio" name="kind" value={k.code} required
-                              defaultChecked={value?.kind === k.code} />
+                              defaultChecked={start?.kind === k.code} />
                             {k.label}
                           </label>
                         ))}
@@ -218,7 +240,7 @@ export default async function Compose(
               <label className="cm-field">
                 <span>무엇을 했는지 한 줄로</span>
                 <input className="cm-input" name="title" maxLength={120} required
-                  defaultValue={value?.title ?? ""}
+                  defaultValue={start?.title ?? ""}
                   /* **다른 전공의 예시를 공통 화면에 박아 두지
                      않는다**(CROSS-CORE §7). 전에는 이 자리가
                      `예: 전동 스쿠터 프레임 경량화 캡스톤` 한 줄이라
@@ -305,7 +327,7 @@ export default async function Compose(
         <ul>
           <li>지원서와 면접에서 설명할 근거가 한 줄 늘어납니다.</li>
           <li>부족했던 부분이 채워지면 다음 할 일이 그만큼 달라집니다.</li>
-          <li>검사 당시 결과는 그대로 남고, 현재 상태만 다시 섭니다.</li>
+          <li>검사 당시 결과는 그대로 남고, 현재 상태만 다시 계산됩니다.</li>
         </ul>
       </details>
     </CmShell>

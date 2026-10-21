@@ -18,6 +18,8 @@
  * 각 쪽의 `requireUser()` 다.
  */
 import Link from "next/link";
+import { currentUser } from "@/lib/session";
+import { unreadCount } from "@/lib/assistant/nudges";
 import type { ReactNode } from "react";
 import { Icon } from "@/components/sf/icon";
 import { BrandMark } from "@/components/sf/brand-mark";
@@ -73,18 +75,28 @@ function NavRow({ it, active }: { it: typeof CM_NAV[number]; active: string }) {
  * 지어낸 값이 아니다. 좁은 화면에서는 첫 글자만 남는다.
  */
 /**
- * 최근 변화로 가는 길 하나.
+ * 알림 종.
  *
- * 목표 화면의 알림 종 자리다. **가짜 배지를 달지 않는다**: CareerMatri
- * 에는 알림 대기열이 없고, 세어 둔 수가 없는데 빨간 점을 찍으면 그것이
- * 가짜 기능이 된다. 눌러서 가는 곳은 `현재 상태` 의 최근 변화이고,
- * **그 쪽은 이미 도는 쪽이다.**
+ * **세어 둔 수만 적는다.** AI 취업비서가 쌓은 알림(`assistant_nudges`)
+ * 가운데 읽지 않은 것이 있을 때만 그 수를 달고 그쪽으로 보낸다. 없으면
+ * 전처럼 `현재 상태` 의 최근 변화로 간다. 수가 없는데 빨간 점을 찍으면
+ * 그것이 가짜 기능이 된다.
  *
- * `aria-label` 이 `최근 변화` 인 까닭은 종 그림만으로는 무엇이 열리는지
- * 보조기기에 전해지지 않기 때문이다.
+ * **세지 못하면 배지를 달지 않는다.** 표가 아직 없는 배포본이나 로그인
+ * 전의 쪽에서 이 칸 하나 때문에 화면이 오류가 되면 안 된다.
  */
-function CmBell() {
-  return (
+async function CmBell() {
+  let n = 0;
+  try {
+    const u = await currentUser();
+    if (u) n = await unreadCount(u.id);
+  } catch { n = 0; }
+  return n > 0 ? (
+    <Link className="cm-util-bell" href="/me/track" aria-label={`읽지 않은 알림 ${n}개`}>
+      <Icon name="bell" size={17} />
+      <span className="cm-util-dot" aria-hidden>{n > 9 ? "9+" : n}</span>
+    </Link>
+  ) : (
     <Link className="cm-util-bell" href="/me/state#changes" aria-label="최근 변화">
       <Icon name="bell" size={17} />
     </Link>

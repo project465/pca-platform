@@ -1,0 +1,207 @@
+import * as z from "zod/v4";
+import { query, queryOne } from "@/lib/db";
+import {
+  currentState, experiencesOf, type CurrentState, type Experience,
+} from "@/lib/me-v3/platform";
+import type { Axis } from "@/lib/me-v3/scoring/types";
+import { AXIS_KO } from "@/lib/me-v3/result/text.ko";
+import { domainName } from "@/lib/me-v3/runtime/session";
+import { aiFailKo, askStructured, type AiFail } from "./claude";
+import { catalog, catalogPrompt, isAxis, wordsOf } from "./catalog";
+import { aiConsented } from "./settings";
+
+/**
+ * 붙여 넣은 공고 하나를 읽고 지금 상태와 나란히 놓는다.
+ *
+ * **공고를 우리가 고르지 않는다.** 사용자가 직접 찾은 공고를 붙여 넣고,
+ * 우리는 그 공고가 묻는 것과 그 사람이 이미 가진 것을 맞대어 볼 뿐이다.
+ * 지원도 대신하지 않는다. 직업정보제공사업이 할 수 있는 범위 안이다
+ * (CLAUDE.md 법적 범위).
+ *
+ * **합격 가능성을 말하지 않는다.** 나오는 것은 요구 항목마다 `설명할 경험
+ * 있음 · 정리가 덜 됨 · 아직 없음 · 이 전공 밖` 넷 가운데 하나와 그 까닭
+ * 이고, 이것을 더해 점수 하나로 만들지 않는다.
+ *
+ * **판정은 굳은 결과와 지금 값이 정한다.** Claude 가 하는 일은 공고 문장을
+ * 요구 항목으로 끊고 그 Core 의 영역 코드에 다는 것까지다. 그 영역이 지금
+ * 어느 묶음인지는 `currentState()` 가 답하고, 여기서 새로 계산하지 않는다.
+ */
+
+export type ItemStatus = "ready" | "partial" | "empty" | "unmapped";
+
+export type PostingItem = {
+  text: string;
+  kind: "must" | "nice";
+  domain: string | null;
+  axis: Axis | null;
+  status: ItemStatus;
+  /** 그 영역에 적어 둔 경험의 제목 */
+  evidence: string[];
+};
+
+export type PostingAnalysis = {
+  schema: "assistant-posting.1";
+  role: string | null;
+  items: PostingItem[];
+  counts: Record<ItemStatus, number>;
+  /** 규칙으로 읽었으면 그 까닭. Claude 가 읽었으면 비어 있다 */
+  note: string | null;
+};
+
+export type PostingRow = {
+  id: string; label: string; deadline: string | null; state: string;
+  analyzed_by: "claude" | "rules"; created_at: string;
+  analysis: PostingAnalysis;
+};
+
+const Read = z.object({
+  role: z.string().nullable(),
+  deadline: z.string().nullable(),
+  requirements: z.array(z.object({
+    text: z.string(),
+    kind: z.enum(["must", "nice"]),
+    domain: z.string().nullable(),
+    axis: z.string().nullable(),
+  })),
+});
+type ReadOut = z.infer<typeof Read>;
+
+const SYSTEM =
+  "당신은 대학생의 취업 준비를 돕는 진로 상담사입니다. 학생이 직접 찾아 붙여 넣은 " +
+  "채용 공고에서 요구 항목을 뽑아, 아래 목록의 기술영역 코드와 판단축 코드에 답니다.\n" +
+  "규칙:\n" +
+  "1. 요구 항목은 공고에 실제로 적힌 것만 뽑고, 공고의 말을 짧게 줄여 한국어 한 줄로 적습니다.\n" +
+  "2. 우대·가산·선호로 적힌 것은 kind=nice, 나머지는 must 입니다.\n" +
+  "3. domain 과 axis 는 목록에 있는 코드만 씁니다. 맞는 것이 없으면 null 입니다.\n" +
+  "4. 학력·연차·어학 점수·자격증 같은 조건은 domain=null 로 둡니다.\n" +
+  "5. 지원자를 평가하거나 합격 가능성을 말하지 않습니다.\n" +
+  "6. 최대 12개까지만 뽑습니다.";
+
+/** 규칙으로 읽는다. 열쇠가 없거나 동의하지 않았거나 Claude 가 거절했을 때 */
+function readByRules(core: string, text: string): ReadOut {
+  const cat = catalog(core);
+  const lines = text
+    .split(/\n|(?<=[.!?。])\s+|·\s|•|▶|■|-\s/)
+    .map((s) => s.replace(/\s+/g, " ").trim())
+    .filter((s) => s.length >= 6 && s.length <= 160);
+  const out: ReadOut["requirements"] = [];
+  const seen = new Set<string>();
+  for (const line of lines) {
+    const w = new Set(wordsOf(line));
+    let best: { code: string; hit: number } | null = null;
+    for (const d of cat) {
+      const hit = d.words.filter((x) => w.has(x) || line.includes(x)).length;
+      if (hit && (!best || hit > best.hit)) best = { code: d.code, hit };
+    }
+    const cond = /(학사|석사|박사|경력|년 이상|토익|TOEIC|어학|자격증|면허)/.test(line);
+    if (!best && !cond) continue;
+    const key = line.slice(0, 40);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push({
+      text: line.length > 80 ? `${line.slice(0, 78)}…` : line,
+      kind: /(우대|가산|선호|플러스)/.test(line) ? "nice" : "must",
+      domain: cond ? null : best?.code ?? null,
+      axis: null,
+    });
+    if (out.length >= 12) break;
+  }
+  const dl = text.match(/(20\d{2})[.\-/년\s]+(\d{1,2})[.\-/월\s]+(\d{1,2})/);
+  return {
+    role: null,
+    deadline: dl ? `${dl[1]}-${dl[2].padStart(2, "0")}-${dl[3].padStart(2, "0")}` : null,
+    requirements: out,
+  };
+}
+
+/** 요구 항목 하나를 지금 상태에 댄다 */
+function judge(
+  st: CurrentState, exps: Experience[], r: ReadOut["requirements"][number],
+): PostingItem {
+  const domain = r.domain && catalog(st.core).some((d) => d.code === r.domain) ? r.domain : null;
+  const axis = isAxis(r.axis) ? r.axis : null;
+  const evidence = domain
+    ? exps.filter((e) => e.td_codes.includes(domain)).map((e) => e.title).slice(0, 3)
+    : [];
+  let status: ItemStatus = "unmapped";
+  if (domain) {
+    const zone = st.zoneOf[domain];
+    const gap = st.gaps.some((g) => g.domain === domain && (!axis || g.axis === axis));
+    if (zone === "Z1_EVIDENCE_ESTABLISHED" && !gap) status = "ready";
+    else if (zone === "Z1_EVIDENCE_ESTABLISHED" || zone === "Z2_EVIDENCE_INCOMPLETE"
+      || evidence.length) status = "partial";
+    else status = "empty";
+  }
+  return { text: r.text.slice(0, 120), kind: r.kind, domain, axis, status, evidence };
+}
+
+export async function analyzePosting(userId: string, input: {
+  label: string; text: string; deadline: string | null;
+}): Promise<{ id: string; by: "claude" | "rules" }> {
+  const st = await currentState(userId);
+  const exps = await experiencesOf(userId, st.core);
+  const text = input.text.slice(0, 12000);
+  let read: ReadOut;
+  let by: "claude" | "rules" = "rules";
+  let model: string | null = null;
+  let note: string | null = null;
+  const consent = await aiConsented(userId);
+  if (!consent) {
+    read = readByRules(st.core, text);
+    note = aiFailKo("consent");
+  } else {
+    const r = await askStructured({
+      op: "assistant.posting", schema: Read, system: SYSTEM,
+      user: `${catalogPrompt(st.core)}\n\n<공고>\n${text}\n</공고>`,
+    });
+    if (r.ok) { read = r.value; by = "claude"; model = r.model; }
+    else { read = readByRules(st.core, text); note = aiFailKo(r.reason as AiFail); }
+  }
+  const items = read.requirements.slice(0, 12).map((x) => judge(st, exps, x));
+  const counts = { ready: 0, partial: 0, empty: 0, unmapped: 0 } as Record<ItemStatus, number>;
+  for (const it of items) counts[it.status] += 1;
+  const analysis: PostingAnalysis = {
+    schema: "assistant-posting.1",
+    role: read.role ? read.role.slice(0, 60) : null,
+    items, counts, note,
+  };
+  /* 사용자가 적은 마감이 먼저다. 비었으면 공고에서 읽은 날짜를 쓴다 */
+  const dl = input.deadline || (read.deadline && /^\d{4}-\d{2}-\d{2}$/.test(read.deadline)
+    ? read.deadline : null);
+  const row = await queryOne<{ id: string }>(
+    `INSERT INTO assistant_postings
+       (user_id, core_code, label, deadline, raw_text, analysis, analyzed_by, model)
+     VALUES ($1,$2,$3,$4::date,$5,$6::jsonb,$7,$8) RETURNING id::text`,
+    [userId, st.core, input.label.slice(0, 80), dl, text,
+      JSON.stringify(analysis), by, model],
+  );
+  return { id: row!.id, by };
+}
+
+export async function postingsOf(userId: string): Promise<PostingRow[]> {
+  return query<PostingRow>(
+    `SELECT id::text, label, deadline::text, state, analyzed_by, created_at::text, analysis
+       FROM assistant_postings WHERE user_id = $1
+      ORDER BY (state = 'closed'), deadline NULLS LAST, created_at DESC LIMIT 30`,
+    [userId]);
+}
+
+/** 한 건. **남의 것은 열리지 않는다**: 주소의 번호와 로그인한 사람으로 거른다 */
+export async function postingOf(userId: string, id: string): Promise<PostingRow | null> {
+  if (!/^\d+$/.test(id)) return null;
+  return queryOne<PostingRow>(
+    `SELECT id::text, label, deadline::text, state, analyzed_by, created_at::text, analysis
+       FROM assistant_postings WHERE user_id = $1 AND id = $2`, [userId, id]);
+}
+
+export async function setPostingState(userId: string, id: string, state: string): Promise<void> {
+  if (!["watching", "applied", "closed"].includes(state) || !/^\d+$/.test(id)) return;
+  await query(`UPDATE assistant_postings SET state = $3 WHERE user_id = $1 AND id = $2`,
+    [userId, id, state]);
+}
+
+export function itemDomainKo(core: string, it: PostingItem): string {
+  if (!it.domain) return "전공 밖 조건";
+  return it.axis ? `${domainName(core, it.domain)} · ${AXIS_KO[it.axis]}`
+    : domainName(core, it.domain);
+}

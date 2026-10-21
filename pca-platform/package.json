@@ -212,6 +212,7 @@
     "pcu:signoff": "tsx scripts/pcu-signoff-shots.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "0.131.0",
     "@types/nodemailer": "^8.0.1",
     "bcryptjs": "3.0.2",
     "next": "15.5.25",

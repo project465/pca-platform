@@ -162,7 +162,7 @@ async function main() {
    * 표시 없이 한 통도 쌓이지 않았다. 종류를 늘릴 때 제약도 같이 늘린다.
    */
   const kinds = ["signup", "report_ready", "upgrade_done", "code_low",
-    "purchase_done", "refund_requested", "refund_done"];
+    "purchase_done", "refund_requested", "refund_done", "assistant_digest"];
   const probe = await query<{ kind: string }>(
     `SELECT k AS kind FROM unnest($1::text[]) AS k
       WHERE NOT (SELECT pg_get_constraintdef(oid) FROM pg_constraint
@@ -170,7 +170,7 @@ async function main() {
     [kinds],
   ).catch(() => [{ kind: "제약을 읽지 못했다" }]);
   ok("DB 가 거래 메일 종류를 전부 받는다", probe.length === 0,
-    `${probe.map((p) => p.kind).join(" · ")} — npm run db:phase2_2`);
+    `${probe.map((p) => p.kind).join(" · ")} — npm run db:upgrade`);
 
 
   /* ── 6. 법적 본문과 사업자 표시 ─────────────────────────────────── */

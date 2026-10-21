@@ -9,6 +9,7 @@ import {
 import { autoRecompute } from "@/lib/me-v3/recompute";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { opFail, ref } from "@/lib/oplog";
+import { markDraftUsed } from "@/lib/assistant/draft";
 
 /**
  * 경험 하나를 저장한다.
@@ -88,6 +89,9 @@ export async function saveExperience(form: FormData): Promise<void> {
     id = "";
   }
   if (!id) redirect("/me/experience/new?e=save");
+  /* AI 취업비서 초안에서 왔으면 그 메모를 비운다. 남겨 둘 이유가 끝났다 */
+  const draft = String(form.get("draft") ?? "");
+  if (draft) await markDraftUsed(user.id, draft);
   await mark("experience_added", user.id, { n: form.getAll("td").length });
   /* **저장이 성공한 뒤에만 돈다**(규격 §2). 그리고 **저장을 되돌리지
      않는다**: 여기서 무엇이 틀어져도 위에서 적은 기록은 그대로 있다.

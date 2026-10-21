@@ -286,6 +286,14 @@ a.cm-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
   width: clamp(19px, 2.08vw, 30px); height: clamp(19px, 2.08vw, 30px);
 }
 .cm-util-bell:hover { color: var(--sf-accent); }
+/* 읽지 않은 알림 수. **세어 둔 수가 있을 때만 선다**(shell.tsx `CmBell`) */
+.cm-util-bell { position: relative; }
+.cm-util-dot {
+  position: absolute; top: 2px; right: 0;
+  min-width: 17px; height: 17px; padding: 0 4px; border-radius: 999px;
+  background: var(--sf-accent); color: #fff;
+  font-size: 11px; line-height: 17px; font-weight: var(--ui-w-bd); text-align: center;
+}
 @media (max-width: 900px) { .cm-utilrow { display: none; } }
 
 .cm-canvas {
