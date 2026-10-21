@@ -49,7 +49,7 @@ export const kr: SiteContent = {
     items: [
       { label: "서비스 소개", href: "/#how" },
       { label: "대학·기관", href: "/universities" },
-      { label: "AI 취업비서", href: "/assistant" },
+      { label: "MAT", href: "/assistant" },
       { label: "요금", href: "/pricing" },
       { label: "도입 문의", href: "/contact" },
     ],
@@ -217,7 +217,7 @@ export const kr: SiteContent = {
         },
         {
           tag: "구독",
-          title: "AI 취업비서",
+          title: "MAT · AI 취업비서",
           body: "검사 다음에도 매주 할 일과 마감을 챙기고, 저장한 공고와 내 경험을 나란히 비교합니다.",
           price: `${TRACK_KR.month.name} ${TRACK_KR.month.price} · ${TRACK_KR.year.name} ${TRACK_KR.year.price}`,
           priceNote: "자동 갱신 없음",
@@ -225,7 +225,7 @@ export const kr: SiteContent = {
             "기간이 끝나면 저절로 종료되고 다시 결제되지 않습니다",
             "PRO 결과지를 구매하시면 첫 1개월이 무료입니다",
           ],
-          cta: { label: "AI 취업비서 알아보기", href: "/assistant" },
+          cta: { label: "MAT 알아보기", href: "/assistant" },
         },
       ],
     },
@@ -327,6 +327,7 @@ export const kr: SiteContent = {
         { title: "미응시 학생 명단", body: "아직 시작하지 않은 학생만 모아 CSV로 내려받습니다." },
         { title: "CSV 내보내기", body: "명단과 진행 상황, 집계를 CSV로 내려받아 학내 보고에 씁니다." },
         { title: "재응시 허용", body: "학교 응시는 한 번이 기본이고, 담당자가 허용한 학생만 다시 볼 수 있습니다." },
+        { title: "MAT 학교 이용권", body: "학교가 정한 인원 안에서 담당자가 학생에게 MAT(AI 취업비서)를 6개월 또는 1년 동안 열어 줍니다. 비용은 도입 계약에 함께 담습니다." },
       ],
     },
     access: {
@@ -381,15 +382,15 @@ export const kr: SiteContent = {
 
   assistant: {
     meta: {
-      title: "AI 취업비서 | CareerMatri",
-      description: `검사 다음에도 매주 할 일과 마감을 챙기고, 저장한 공고와 내 경험을 비교하는 CareerMatri 구독 상품입니다. ${TRACK_KR.month.name} ${TRACK_KR.month.price}, ${TRACK_KR.year.name} ${TRACK_KR.year.price}.`,
+      title: "MAT · AI 취업비서 | CareerMatri",
+      description: `MAT는 검사 다음에도 매주 할 일과 마감을 챙기고, 직접 찾은 공고와 내 경험을 맞대어 보는 CareerMatri의 AI 취업비서입니다. ${TRACK_KR.month.name} ${TRACK_KR.month.price}, ${TRACK_KR.year.name} ${TRACK_KR.year.price}.`,
     },
     hero: {
       eyebrow: "구독 상품",
-      title: ["검사 다음 준비를", "AI 취업비서와 이어 가세요"],
+      title: ["검사 다음 준비를", "MAT와 이어 가세요"],
       lead:
-        "AI 취업비서는 내 CareerMatri 작업공간에서 쓰는 구독 상품입니다. 매주 할 일과 마감을 알려 드리고, 경험을 채워 넣도록 돕고, 저장한 공고와 내 경험을 비교해 드립니다.",
-      primary: { label: "AI 취업비서 시작하기", href: "/me/track" },
+        "MAT는 내 CareerMatri 작업공간에서 쓰는 AI 취업비서입니다. 매주 할 일과 마감을 알려 드리고, 적어 둔 메모를 경험 기록으로 옮기도록 돕고, 직접 찾은 공고와 내 경험을 맞대어 드립니다.",
+      primary: { label: "MAT 시작하기", href: "/me/track" },
       secondary: { label: "요금 보기", href: "#plans" },
       note: "로그인이 필요합니다. 계정이 없으면 로그인 화면에서 개인으로 가입할 수 있습니다.",
     },
@@ -397,9 +398,9 @@ export const kr: SiteContent = {
       label: "하는 일",
       title: "취업 준비를 매주 이어 가도록 돕습니다",
       items: [
-        { title: "매주 할 일과 마감 알림", body: "이번 주에 할 일과 다가오는 마감을 푸시 알림으로 알려 드립니다." },
-        { title: "경험 채우기 도움", body: "결과지에서 비어 있던 부분을 어떤 경험으로 채우면 되는지 안내하고, 적는 순서를 함께 정리합니다." },
-        { title: "저장한 공고와 내 경험 비교", body: "저장해 둔 공고마다 내 경험으로 설명할 수 있는 부분과 아직 비어 있는 부분을 나란히 보여 드립니다." },
+        { title: "매주 할 일과 마감 알림", body: "이번 주에 할 일 하나와 다가오는 마감을 앱 안에서 알려 드립니다. 원하시면 한 주에 한 번 메일로도 받으실 수 있습니다." },
+        { title: "메모를 경험 기록으로", body: "최근에 한 일을 편하게 적으면 경험 기록의 보기로 옮겨 드립니다. 저장은 직접 확인한 뒤에 하십니다." },
+        { title: "공고와 내 경험 맞대기", body: "직접 찾은 채용 공고를 붙여 넣으면 요구 항목마다 내 경험으로 설명할 수 있는 부분과 아직 비어 있는 부분을 나눠 보여 드립니다." },
         { title: "관심 산업·직무 바꿔 다시 비교", body: "관심 산업이나 직무를 바꾸면 그 기준으로 내 경험을 다시 비교합니다." },
       ],
       planned: "월간 변화 리포트 · 준비 중",
@@ -428,13 +429,13 @@ export const kr: SiteContent = {
       ],
       notes: [
         "자동 갱신이 없습니다. 기간이 끝나면 저절로 종료됩니다.",
-        "결제는 CareerMatri 앱의 AI 취업비서 화면에서 진행합니다.",
+        "결제는 CareerMatri 앱의 MAT 화면에서 진행합니다.",
       ],
-      trial: "PRO 결과지를 구매하시면 AI 취업비서 첫 1개월을 무료로 쓸 수 있습니다.",
+      trial: "PRO 결과지를 구매하시면 MAT 첫 1개월을 무료로 쓸 수 있습니다.",
     },
     faq: {
       label: "자주 묻는 질문",
-      title: "AI 취업비서에 대해 많이 물어보시는 것",
+      title: "MAT에 대해 많이 물어보시는 것",
       items: [
         {
           q: "매달 자동으로 결제되나요?",
@@ -442,12 +443,12 @@ export const kr: SiteContent = {
         },
         {
           q: "PRO 결과지를 샀는데 무료 1개월은 어떻게 받나요?",
-          a: "로그인한 뒤 AI 취업비서 화면에서 무료 1개월을 받을 수 있습니다. 한 사람당 한 번 받을 수 있습니다.",
-          link: { label: "AI 취업비서 화면 열기", href: "/me/track" },
+          a: "로그인한 뒤 MAT 화면에서 무료 1개월을 받을 수 있습니다. 한 사람당 한 번 받을 수 있습니다.",
+          link: { label: "MAT 화면 열기", href: "/me/track" },
         },
         {
           q: "월간 변화 리포트는 언제 받을 수 있나요?",
-          a: "아직 준비 중이라 날짜를 약속드리지 않습니다. 열리면 AI 취업비서 화면에서 먼저 알려 드립니다.",
+          a: "아직 준비 중이라 날짜를 약속드리지 않습니다. 열리면 MAT 화면에서 먼저 알려 드립니다.",
         },
         {
           q: "환불은 어떻게 되나요?",
@@ -458,8 +459,8 @@ export const kr: SiteContent = {
     },
     closing: {
       title: "이번 주에 할 일부터 정리해 보세요",
-      lead: "로그인하면 AI 취업비서 화면에서 바로 시작할 수 있습니다. 검사를 아직 보지 않으셨다면 검사부터 시작해도 좋습니다.",
-      primary: { label: "AI 취업비서 시작하기", href: "/me/track" },
+      lead: "로그인하면 MAT 화면에서 바로 시작할 수 있습니다. 검사를 아직 보지 않으셨다면 검사부터 시작해도 좋습니다.",
+      primary: { label: "MAT 시작하기", href: "/me/track" },
       secondary: { label: "검사 먼저 보기", href: "/cores" },
     },
   },
@@ -497,7 +498,7 @@ export const kr: SiteContent = {
         message: "문의 내용",
         messageHint: "도입 시기나 궁금한 점을 적어 주세요.",
       },
-      types: ["대학·기관 도입", "학과 단위 도입", "개인 이용", "AI 취업비서", "제휴·기타"],
+      types: ["대학·기관 도입", "학과 단위 도입", "개인 이용", "MAT(AI 취업비서)", "제휴·기타"],
       subject: "[CareerMatri 문의]",
       bodyIntro: "CareerMatri 홈페이지에서 정리한 문의입니다.",
       send: "메일 앱으로 보내기",
@@ -571,7 +572,7 @@ export const kr: SiteContent = {
           { label: "서비스 소개", href: "/#how" },
           { label: "전공 목록", href: "/#majors" },
           { label: "대학·기관", href: "/universities" },
-          { label: "AI 취업비서", href: "/assistant" },
+          { label: "MAT · AI 취업비서", href: "/assistant" },
           { label: "요금", href: "/pricing" },
         ],
       },

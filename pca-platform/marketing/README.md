@@ -11,7 +11,7 @@
 |---|---|
 | `/` | 첫 화면 · 이용 순서(`#how`) · 결과지(`#report`) · 전공 20개(`#majors`) · 대학·기관(`#campus`) · 개인(`#personal`) · 자주 묻는 질문 |
 | `/universities` | 대학·기관 도입: 진행 순서 · 담당자 화면 기능 · 학교 전용 주소 · 개인정보 · FAQ |
-| `/assistant` | AI 취업비서(30일권 · 365일권). 한국어판에만 있다 |
+| `/assistant` | MAT · AI 취업비서(30일권 · 365일권). 한국어판에만 있다 |
 | `/contact` | 문의. 메일 주소·전화를 고를 수 있는 글자로 두고, 칸을 채우면 메일 앱이 열린다 |
 | 그 밖 | 404 쪽, `sitemap.xml`, `robots.txt`, `icon.svg`, `og-kr.png` · `og-global.png` |
 
@@ -32,11 +32,13 @@
 
 ## 만들고 띄우기
 
-npm 레지스트리가 막힌 환경에서는 상위(`pca-platform/node_modules`)의 의존성을 쓴다.
+이 폴더의 `node_modules` 로 굽는다. **상위(`pca-platform/node_modules`)의 next 로
+굽지 않는다**: 그 next 가 이 폴더의 React 와 짝이 맞지 않아 `/404` 를 미리 그리다
+`Cannot read properties of null (reading 'useContext')` 로 멈춘다.
 
 ```bash
-SITE=kr node ../node_modules/next/dist/bin/next build      # 기본값이 kr 이다
-SITE=kr node ../node_modules/next/dist/bin/next start -p 3200
+SITE=kr ./node_modules/.bin/next build      # 기본값이 kr 이다
+SITE=kr ./node_modules/.bin/next start -p 3200
 # 의존성이 있는 곳에서는: SITE=kr npm run build && npm start (PORT 기본 3200)
 ```
 
