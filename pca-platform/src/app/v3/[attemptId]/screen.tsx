@@ -31,6 +31,8 @@ const AUTO_MS = 250;
  * 그 자리에서 끝난다.
  */
 const MOVE_TIMEOUT_MS = 8000;
+/** 고르는 칸만 서는 화면. 다 채우면 저절로 다음으로 간다 */
+const AUTO_KINDS = new Set(["single", "pair", "sweep", "group"]);
 
 /**
  * 응시 화면 하나.
@@ -144,8 +146,11 @@ export default function Screen({
     setVals((v) => ({ ...v, [f.itemId]: raw }));
     setWarn(false);
     push(() => answerAction(s.attemptId, f.itemId, a));
-    /* 한 선택으로 끝나는 화면은 켜진 것을 보여 준 뒤에 넘어간다 */
-    if (s.auto && s.fields.length === 1 && s.nextIndex !== null) {
+    /* **누르면 저장하고 넘어간다**(전 기관·전 학과 공통). 한 선택으로
+       끝나는 화면은 그 자리에서, 질문이 여럿인 화면은 **마지막 빈 칸을
+       채운 순간** 넘어간다. 켜진 것을 잠깐 보여 준 뒤에 옮긴다 */
+    const done = s.fields.every((g) => g.itemId === f.itemId || !empty(g));
+    if (s.nextIndex !== null && (s.auto && s.fields.length === 1 || autoAll && done)) {
       setMoving(true);
       window.setTimeout(() => { void go(s.nextIndex); }, AUTO_MS);
     }
@@ -196,6 +201,13 @@ export default function Screen({
 
   const empty = (f: Field): boolean =>
     vals[f.itemId] === null || vals[f.itemId] === undefined;
+  /**
+   * 질문이 여럿인 화면도 저절로 넘어가는가. 고르는 칸만 있는 화면이다.
+   * **직접 적는 칸이 붙은 화면은 손으로 넘긴다**: 고르자마자 넘어가면
+   * 그 칸에 한 줄을 적을 틈이 없다.
+   */
+  const autoAll = AUTO_KINDS.has(s.kind) && s.fields.length > 0
+    && s.fields.every((f) => !(f.control.kind === "choice" && f.control.note));
   const filled = s.fields.every((f) => !empty(f));
   /**
    * **무엇이 비었는지를 질문 옆에 적는다**(규격 §4).

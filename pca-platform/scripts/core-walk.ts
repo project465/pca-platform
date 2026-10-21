@@ -225,7 +225,9 @@ async function main(): Promise<void> {
       row?.core_code === CORE && row?.university_code === leaf.uni
       && row?.department_code === leaf.code,
       `${row?.core_code} · ${row?.university_code} · ${row?.department_code}`);
-    ok("등급은 이용권이 정한다", row?.tier === TIER, `${row?.tier}`);
+    /* 학교 맥락이 선 응시는 서버가 받은 값을 보지 않고 PRO 로 연다(학교는 등급을 고르지 않는다) */
+    const wantTier = row?.university_code ? "PRO" : TIER;
+    ok(row?.university_code ? "학교 응시는 늘 PRO 다" : "등급은 이용권이 정한다", row?.tier === wantTier, `${row?.tier}`);
 
     const first = await walk(p, 400);
     ok("끝까지 간다", first.done, `화면 ${first.screens}`);
@@ -282,19 +284,20 @@ async function main(): Promise<void> {
       ok("선별 결과지는 관심과 해 본 정도로 적는다",
         /관심|해 본/.test(body) && !/아직 확인되지 않/.test(body));
     } else {
-      ok("결과지에 설명할 수 있는 경험이 선다",
-        /지원서에서 설명할 수 있는 경험|지금 확인된 것/.test(body));
       /* 걸릴 때 **무엇이 섰는지**를 함께 적는다. 까닭을 적지 않으면
          다음 사람이 화면을 다시 열어 눈으로 찾는다 */
       const heads = (await p.locator("h2, h3").allInnerTexts())
         .map((t) => t.trim().split("\n")[0]).filter(Boolean);
+      ok("결과지에 설명할 수 있는 경험이 선다",
+        /지원서에서 설명할 수 있는 경험|지금 확인된 것/.test(body + heads.join(" ")));
       /* **이름이 바뀐 것과 절이 사라진 것은 다른 일이다.** 그 칸은
          `앞으로 채울 것` 에서 `더 채울 부분` 으로 이름이 갈렸고(규격 §3),
          그 뒤로 이 줄은 절이 멀쩡히 서 있어도 늘 걸리는 줄이었다. 옛
          이름을 지우지 않는 까닭은 옛 판본으로 굳은 결과지를 이 검사가
          그대로 읽기 때문이다 */
       ok("결과지에 부족한 부분이 선다",
-        /더 채울 부분|앞으로 채울 것|비어 있는 것|설명 근거를 더 붙일/.test(body),
+        /* 접힌 절의 글은 innerText 에 없다. 머리는 heads 가 든다 */
+        /더 채울 부분|앞으로 채울 것|비어 있는 것|설명 근거를 더 붙일/.test(body + heads.join(" ")),
         heads.slice(0, 12).join(" / "));
     }
     ok("결과지에 다음 할 일이 선다", /지금 해볼 것|다음에 할 일|지금 할 일/.test(body));

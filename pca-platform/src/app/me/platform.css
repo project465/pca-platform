@@ -1997,3 +1997,41 @@ a.cm-nav.is-on { border-radius: 12px; }
 .cm-sheet a.cm-nav.is-on::before { display: none; }
 .cm-sheet a.cm-nav.is-on small { color: #1f4fd1; opacity: .8; }
 .cm-sheet a.cm-nav:focus-visible { outline: 2px solid #2f6bff; outline-offset: 2px; }
+
+/* ── AI 취업비서 안내 (me/track/guide.tsx) ── */
+.cm-aig { display: grid; gap: 18px; margin-bottom: 28px; }
+.cm-aig-lead { margin: 0; font-size: var(--ui-t-body); line-height: 1.7; color: var(--sf-ink); max-width: 62rem; }
+.cm-aig-lead b { font-weight: var(--ui-w-sb); }
+.cm-aig-for { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+.cm-aig-for li { padding: 6px 12px; border-radius: 999px; background: var(--sf-surface-2);
+  font-size: var(--ui-t-cap); color: var(--sf-ink-2); }
+.cm-aig-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.cm-aig-card { position: relative; display: flex; flex-direction: column; gap: 10px;
+  padding: 20px; border: 1px solid var(--sf-line); border-radius: var(--ui-r-lg); background: var(--ui-surface); min-width: 0; }
+.cm-aig-card h3 { margin: 0; font-size: var(--ui-t-q); font-weight: var(--ui-w-bd); color: var(--sf-ink); }
+.cm-aig-no { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 50%;
+  background: var(--sf-accent); color: #fff; font-size: 14px; font-weight: var(--ui-w-bd); }
+.cm-aig-what { margin: 0; font-size: var(--ui-t-sub); line-height: 1.6; color: var(--sf-ink-2); }
+.cm-aig-steps { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; font-size: var(--ui-t-sub); line-height: 1.55; color: var(--sf-ink); }
+.cm-aig-ex { margin-top: auto; padding: 12px 14px; border-radius: var(--ui-r-sm); background: var(--sf-surface-2); display: grid; gap: 6px; }
+.cm-aig-ex-h { margin: 0; font-size: 12px; font-weight: var(--ui-w-sb); color: var(--sf-ink-3); }
+.cm-aig-in { margin: 0; font-size: var(--ui-t-cap); line-height: 1.55; color: var(--sf-ink-2); border-left: 2px solid var(--sf-line); padding-left: 8px; }
+.cm-aig-out { margin: 0; padding-left: 1.1em; font-size: var(--ui-t-cap); line-height: 1.55; color: var(--sf-ink); display: grid; gap: 2px; }
+.cm-aig-go { align-self: flex-start; font-size: var(--ui-t-cap); font-weight: var(--ui-w-sb); color: var(--sf-accent); }
+.cm-aig-h { margin: 6px 0 0; font-size: var(--ui-t-q); font-weight: var(--ui-w-bd); color: var(--sf-ink); }
+.cm-aig-week { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); counter-reset: w; }
+.cm-aig-week li { display: grid; gap: 4px; padding: 14px 16px; border-top: 3px solid var(--sf-accent);
+  background: var(--sf-surface-2); border-radius: 0 0 var(--ui-r-sm) var(--ui-r-sm); }
+.cm-aig-week b { font-size: var(--ui-t-sub); color: var(--sf-ink); }
+.cm-aig-week span, .cm-aig-not span { font-size: var(--ui-t-cap); line-height: 1.55; color: var(--sf-ink-2); }
+.cm-aig-not { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.cm-aig-not li { display: grid; gap: 4px; padding: 12px 14px; border: 1px solid var(--sf-line); border-radius: var(--ui-r-sm); }
+.cm-aig-not b { font-size: var(--ui-t-sub); color: var(--sf-ink); }
+.cm-aig-ask { display: grid; gap: 8px; }
+.cm-aig-ask details { border: 1px solid var(--sf-line); border-radius: var(--ui-r-sm); padding: 12px 14px; }
+.cm-aig-ask summary { cursor: pointer; font-size: var(--ui-t-sub); font-weight: var(--ui-w-sb); color: var(--sf-ink); }
+.cm-aig-ask p { margin: 8px 0 0; font-size: var(--ui-t-sub); line-height: 1.6; color: var(--sf-ink-2); }
+.cm-aig-fold { margin-bottom: 24px; border: 1px solid var(--sf-line); border-radius: var(--ui-r-lg); padding: 14px 18px; }
+.cm-aig-fold > summary { cursor: pointer; font-size: var(--ui-t-sub); font-weight: var(--ui-w-sb); color: var(--sf-accent); }
+.cm-aig-fold[open] > summary { margin-bottom: 16px; }

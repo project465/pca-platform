@@ -11,6 +11,7 @@ import { settingsOf } from "@/lib/assistant/settings";
 import { postingsOf } from "@/lib/assistant/posting";
 import { nudgeUser, nudgesOf } from "@/lib/assistant/nudges";
 import { CmShell, CmHead } from "../shell";
+import { AssistantGuide } from "./guide";
 import { SectionHeader } from "../ui";
 import {
   addPosting, changeConsent, changeDigest, claimTrial, makeDraft, readAllNudges,
@@ -98,8 +99,9 @@ export default async function Track({
       <CmHead
         kicker={state.on ? "이용 중" : "기간권"}
         title="AI 취업비서"
-        lead={"매주 할 일 하나를 먼저 알려 드리고, 메모를 경험 기록으로 옮기고, "
-          + "직접 찾은 공고를 내 경험과 맞대어 봅니다. 자동으로 갱신되지 않습니다."}
+        lead={"검사 결과를 받은 뒤 지원하는 동안 매주 옆에서 챙깁니다. "
+          + "이번 주 할 일을 먼저 알리고, 메모를 경험 기록으로 옮기고, "
+          + "직접 찾은 공고에서 내 경험이 비어 있는 부분을 짚어 줍니다. 자동으로 결제되지 않습니다."}
       />
 
       {sp.e && FAIL[sp.e] ? (
@@ -134,8 +136,11 @@ export default async function Track({
         </div>
       </div>
 
+      {state.on ? <AssistantGuide on compact /> : <AssistantGuide on={false} />}
+
       {state.on ? (
         <>
+          <span id="nudge" />
           <SectionHeader icon="spark" title="이번 주 알림"
             sub={unread ? `읽지 않은 알림 ${unread}개` : "새로 온 알림이 없습니다."} />
           <div className="cm-panel is-one">

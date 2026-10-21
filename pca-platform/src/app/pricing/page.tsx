@@ -195,6 +195,12 @@ export default async function PricingPage({
           <section className="pxband" id="track">
             <h2>{T("pxTrackTitle")}</h2>
             <p className="pxwhat">{T("pxTrackLead")}</p>
+            <ul className="pxtrack-f">
+              <li>{T("pxTrackF1")}</li>
+              <li>{T("pxTrackF2")}</li>
+              <li>{T("pxTrackF3")}</li>
+            </ul>
+            <p className="pxwhat">{T("pxTrackNot")} <Link href="/me/track">{T("pxTrackMore")}</Link></p>
             <div className="pxband-g">
               {tracks.map((t) => (
                 <div key={t.code} className="pxband-i">

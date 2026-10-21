@@ -1979,3 +1979,5 @@ body:has(.stgmark) .cm-tabs { bottom: var(--stg-h) }
 .sf-grid > .sf-kpi .sf-kpi-l { color: var(--sf-ink-2); }
 
 .sf-top { background: rgba(243, 246, 251, .9); border-bottom-color: transparent; }
+.pxtrack-f { margin: 12px 0; padding-left: 1.2em; display: grid; gap: 6px;
+  font-size: var(--ui-t-sub); line-height: 1.6; color: var(--sf-ink-2); max-width: 62rem; }

@@ -95,6 +95,7 @@ const FILES = [
   "src/app/me/apply/actions.ts",
   /* 기타 */
   "src/app/me/track/page.tsx",
+  "src/app/me/track/guide.tsx",
   /* 계정 — 같은 껍데기를 쓰므로 같은 목록에 든다 */
   "src/app/my/layout.tsx",
   "src/app/my/page.tsx",

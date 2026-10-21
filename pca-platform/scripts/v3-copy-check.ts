@@ -180,6 +180,7 @@ const FILES = [
   "src/app/me/region/page.tsx",
   "src/app/me/jobs/page.tsx",
   "src/app/me/track/page.tsx",
+  "src/app/me/track/guide.tsx",
   "src/app/me/gap/page.tsx",
   "src/app/me/apply/page.tsx",
   "src/app/me/recompute/page.tsx",

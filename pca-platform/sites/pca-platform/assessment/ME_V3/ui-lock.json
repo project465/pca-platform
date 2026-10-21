@@ -2,7 +2,7 @@
  "schema_version": "me-v3-ui-lock.1",
  "note": "검사 화면 1차 동결. 결과지 작업 중에는 명백한 버그와 접근성 오류만 고치고, 고쳤으면 `ui-version.ts` 의 판본을 올린 뒤 `FREEZE=update npm run v3:freeze` 로 지문을 다시 적는다",
  "versions": {
-  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V47",
+  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V48",
   "assessment_copy_version": "me-v3-2-assessment-copy.27",
   "assessment_version": "ME_V3_2",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.6",
@@ -10,7 +10,7 @@
  },
  "files": {
   "src/app/v3/layout.tsx": "5169464a4bd3741726beea4d17ee6ddb9d070c090513a3ca029f526883e05864",
-  "src/app/surface.css": "03ebfbed94b46928225df3843c206121a2cf48802c7700bcf9225171545980a6",
+  "src/app/surface.css": "edbb16d5270484deb2737e73611d8035296ce813a8c1afbede5ddd76cb35c38f",
   "src/app/v3/assessment.css": "5a2600e915c2f75cccc28d4118d18afd43354adca6b8fd47bacdf4bc9b4f758e",
   "src/app/v3/tier-text.ts": "d8593d415ad062b821dccf7de8b59fa8d2601f3da338e32e55c4198d74ebde07",
   "src/app/v3/start/page.tsx": "289140cd7544a279a260b574e1c4f7581a3cc62fb8fa217499d2310913d946f3",
@@ -19,7 +19,7 @@
   "src/app/v3/[attemptId]/page.tsx": "9bf971e055a1eb125f29e62ec3ffb3beea5b87f28f4f1a524dd20d81c3a8f03c",
   "src/app/v3/[attemptId]/intro/page.tsx": "967f5d71f81cd3df065df260cdc822de0b1c0a5cdae1bf96f1e3743cd729f8c1",
   "src/app/v3/[attemptId]/done/page.tsx": "6c39b5aae12b8c1e743d93e70035ad667ccbd4c3592e4ef6765cea686b98d314",
-  "src/app/v3/[attemptId]/screen.tsx": "b3133ea9947beac7fb8955c7795977e9db6b9f63903f12005f91821c5a76ca6f",
+  "src/app/v3/[attemptId]/screen.tsx": "567c8eb186053d60688b7d9e9537a17e2f080a92aad63554d60edaea929ce320",
   "src/app/v3/[attemptId]/model.ts": "54fa5e4425f7ea45b42a62ea47c30378ab387fbac3d82b959ef22a6b57a92d8b",
   "src/app/v3/[attemptId]/actions.ts": "cff4d6b883de9d3465dbcb84eea618643e4254eeb7d8a195a743f173e2f60c70",
   "src/lib/me-v3/runtime/blocks.ts": "34598d7af4898ba7edf8e3f808c5b0766f5819233b7abef75646f1b57b35e5a9",
