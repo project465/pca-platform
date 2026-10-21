@@ -19,6 +19,23 @@ export type SiteKey = "kr" | "global";
 export type Link = { label: string; href: string };
 export type Titled = { title: string; body: string };
 
+/**
+ * 그 나라 말로 보인 검사지·결과지 한 벌. `status` 가 그 말의 상태를 정직하게
+ * 적는다: 실제 문항이 있는 말과 번역 초안인 말을 같은 모양으로 두지 않는다
+ */
+export type GlobalSample = {
+  /** 화면에 서는 언어 이름 (예: English · Türkçe · Русский) */
+  lang: string;
+  /** `lang` 속성 값 (en · tr · ru) */
+  code: string;
+  /** 한국어 언어 이름 */
+  langKo: string;
+  status: "live" | "draft";
+  statusLabel: string;
+  question: { label: string; area: string; text: string; scale: string[] };
+  result: { label: string; areasLabel: string; areas: string[]; nextLabel: string; next: string };
+};
+
 /** 화면 예시. 실제 응시자의 자료가 아니라는 표시(`label`)를 늘 같이 든다 */
 export type WorkspaceMock = {
   label: string;
@@ -141,6 +158,24 @@ export type SiteContent = {
       groups: { name: string; items: string[] }[];
       note: string;
       cta: Link;
+    };
+    /**
+     * 해외 진행. 지도에 칠하는 나라는 `iso`(ISO 3166 숫자 코드, world-atlas 의
+     * id)로 고른다. **확인된 자료가 있는 나라만 적는다**: 지어낸 나라 하나가
+     * 지도 전체의 신뢰를 깎는다. 없는 원고(global)는 이 절을 세우지 않는다
+     */
+    global?: {
+      label: string;
+      title: string;
+      lead: string;
+      legend: { done: string; planned: string };
+      countries: { iso: string; name: string; status: "done" | "planned"; schools?: string[] }[];
+      source: string;
+      samples: {
+        title: string;
+        lead: string;
+        items: GlobalSample[];
+      };
     };
     campus: {
       label: string;

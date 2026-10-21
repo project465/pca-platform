@@ -185,6 +185,97 @@ export const kr: SiteContent = {
         "학교·기관이 계약한 범위에 따라 열리는 전공이 다릅니다. 지금 시작할 수 있는 전공은 검사 시작 화면에서 확인할 수 있습니다.",
       cta: { label: "내 전공 찾고 시작하기", href: "/cores" },
     },
+    /* 나라 목록은 ACADEMIX PCA 소개 자료(academix.co.kr)의 '진행 · 예정'
+       그대로다. 학교 이름은 기록이 있는 곳만 적는다(로고는 사용 허락을 받은
+       뒤에). 영어·튀르키예어 문항은 `data/metri/items_pca_me_v1.json` 의
+       PCA.ME.001 원문 그대로이고, 러시아어와 결과 예시 문장은 번역 초안이다 */
+    global: {
+      label: "해외",
+      title: "해외에서도 진행하고 있습니다",
+      lead:
+        "CareerMatri의 진단 엔진(PCA)은 한국 밖에서도 쓰였습니다. 공학 직무는 나라가 달라도 같은 판단을 요구해서, 같은 문항을 그 나라 말로 옮겨 씁니다.",
+      legend: { done: "진행한 나라", planned: "진행 예정" },
+      countries: [
+        { iso: "410", name: "한국", status: "done" },
+        { iso: "792", name: "튀르키예", status: "done", schools: ["앙카라 사회과학대학교(ASBU)"] },
+        { iso: "276", name: "독일", status: "done" },
+        { iso: "840", name: "미국", status: "done" },
+        { iso: "392", name: "일본", status: "done" },
+        { iso: "156", name: "중국", status: "done" },
+        { iso: "398", name: "카자흐스탄", status: "planned" },
+        { iso: "250", name: "프랑스", status: "planned" },
+        { iso: "710", name: "남아프리카공화국", status: "planned" },
+        { iso: "608", name: "필리핀", status: "planned" },
+      ],
+      source: "ACADEMIX PCA 소개 자료 기준입니다. 진행 예정인 나라는 아직 진행 전입니다.",
+      samples: {
+        title: "그 나라 말로 보는 검사지와 결과지",
+        lead:
+          "기계공학 검사의 같은 문항이 영어와 튀르키예어로 준비되어 있습니다. 러시아어는 카자흐스탄 진행을 위해 옮기고 있는 번역 초안입니다.",
+        items: [
+          {
+            lang: "English",
+            code: "en",
+            langKo: "영어",
+            status: "live",
+            statusLabel: "검사지·결과지 영어판 있음",
+            question: {
+              label: "Sample question",
+              area: "Design & Development",
+              text: "When I receive a design assignment, I tend to organize the component requirements on my own and set my own priorities before the team meeting.",
+              scale: ["Strongly disagree", "Disagree", "Neutral", "Agree", "Strongly agree"],
+            },
+            result: {
+              label: "Sample result",
+              areasLabel: "Areas to look at first",
+              areas: ["Design & Development", "Robotics & Automation", "Automotive & Aerospace"],
+              nextLabel: "Next step",
+              next: "Pick one design project and write down one requirement you set yourself, and why.",
+            },
+          },
+          {
+            lang: "Türkçe",
+            code: "tr",
+            langKo: "튀르키예어",
+            status: "live",
+            statusLabel: "검사지 튀르키예어판 있음 · 결과 문장은 번역 초안",
+            question: {
+              label: "Örnek soru",
+              area: "Tasarım ve Geliştirme",
+              text: "Bir tasarım görevi aldığımda ekip toplantısından önce parça koşullarını tek başıma düzenleyip nereden başlayacağımın ölçütünü belirleme eğilimindeyim.",
+              scale: ["Kesinlikle katılmıyorum", "Katılmıyorum", "Kararsızım", "Katılıyorum", "Kesinlikle katılıyorum"],
+            },
+            result: {
+              label: "Örnek sonuç",
+              areasLabel: "Önce bakılacak alanlar",
+              areas: ["Tasarım ve Geliştirme", "Robotik ve Otomasyon", "Otomotiv ve Havacılık"],
+              nextLabel: "Sonraki adım",
+              next: "Bir tasarım projesi seçin ve kendi belirlediğiniz bir koşulu nedeniyle birlikte yazın.",
+            },
+          },
+          {
+            lang: "Русский",
+            code: "ru",
+            langKo: "러시아어",
+            status: "draft",
+            statusLabel: "번역 초안 · 현지 검수 전",
+            question: {
+              label: "Пример вопроса",
+              area: "Проектирование и разработка",
+              text: "Получив задание по проектированию, я обычно ещё до встречи с командой сам систематизирую требования к деталям и решаю, с чего начать.",
+              scale: ["Полностью не согласен", "Не согласен", "Затрудняюсь ответить", "Согласен", "Полностью согласен"],
+            },
+            result: {
+              label: "Пример результата",
+              areasLabel: "С каких областей начать",
+              areas: ["Проектирование и разработка", "Робототехника и автоматизация", "Автомобилестроение и авиация"],
+              nextLabel: "Следующий шаг",
+              next: "Выберите один проект по проектированию и запишите одно требование, которое вы определили сами, и почему.",
+            },
+          },
+        ],
+      },
+    },
     campus: {
       label: "대학·기관",
       title: "학과 단위로 검사를 열고 진행 상황을 한 화면에서 확인합니다",

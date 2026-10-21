@@ -597,9 +597,80 @@ html[lang="en"] .company div { grid-template-columns: 140px minmax(0, 1fr); }
 .mock-table td.is-hidden { color: var(--ink-4); font-weight: 600; background: repeating-linear-gradient(135deg, #f6f8fc 0 4px, #eef2f8 4px 8px); }
 .mock-hidden-note { display: inline-flex; align-items: center; gap: 5px; margin-top: 8px; font-size: 10.5px; color: var(--ink-3); }
 
+/* 해외: 지도 · 나라 목록 · 그 나라 말 샘플 */
+.world-grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+.world-fig {
+  margin: 0; background: #fff; border: 1px solid var(--line); border-radius: var(--r-lg);
+  padding: 18px 18px 14px; box-shadow: var(--sh-card); min-width: 0;
+}
+.world { display: block; width: 100%; height: auto; }
+.world .w-land { fill: #e3e9f3; stroke: #fff; stroke-width: .6; }
+.world .w-done { fill: var(--blue); stroke: #fff; stroke-width: .6; }
+.world .w-planned { fill: url(#world-hatch); stroke: #fff; stroke-width: .6; }
+.world .w-planned-bg { fill: #d7e2ff; }
+.world .w-planned-line { stroke: #8fa9f5; stroke-width: 2.2; }
+.world .w-dot { fill: var(--blue-deep); stroke: #fff; stroke-width: 2; }
+.world .w-ring { fill: rgba(47, 107, 255, .16); stroke: rgba(47, 107, 255, .45); stroke-width: 1; }
+.world .w-dot-planned { fill: #fff; stroke: var(--blue); stroke-width: 2; }
+.world-legend { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 10px; font-size: 13.5px; color: var(--ink-2); font-weight: 600; }
+.world-legend span { display: inline-flex; align-items: center; gap: 8px; }
+.world-legend i { width: 14px; height: 14px; border-radius: 4px; display: inline-block; }
+.world-legend .lg-done { background: var(--blue); }
+.world-legend .lg-planned { background: repeating-linear-gradient(45deg, #d7e2ff 0 3px, #8fa9f5 3px 5px); }
+.world-list { display: grid; gap: 22px; min-width: 0; }
+.world-list h3 { font-size: 15px; font-weight: 750; margin-bottom: 10px; color: var(--ink); }
+.country-list { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 8px; }
+.country-list li {
+  display: inline-flex; flex-direction: column; gap: 2px; padding: 9px 13px; border-radius: 12px;
+  background: #fff; border: 1px solid var(--line); min-width: 0;
+}
+.country-list b { font-size: 15px; font-weight: 700; color: var(--ink); }
+.country-list span { font-size: 12.5px; color: var(--ink-3); font-weight: 600; }
+.country-list.is-done li { border-color: var(--blue-line); box-shadow: inset 3px 0 0 var(--blue); }
+.country-list.is-planned b { color: var(--ink-2); font-weight: 650; }
+.world-list .fine { margin: 0; }
+
+.sample-head { margin: 56px 0 20px; }
+.sample-head h3 { font-size: var(--t-h3); font-weight: 750; color: var(--ink); margin-bottom: 6px; }
+.sample-head p { color: var(--ink-2); font-size: 15px; line-height: 1.6; max-width: 46em; }
+.samples { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.sample {
+  display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line);
+  border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--sh-card); min-width: 0;
+}
+.sample.is-draft { border-style: dashed; border-color: #b9c6dc; box-shadow: none; }
+.sample-top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; padding: 16px 20px; border-bottom: 1px solid var(--line-2); }
+.sample-top b { font-size: 18px; font-weight: 750; color: var(--ink); }
+.sample-top > span { font-size: 13px; color: var(--ink-3); font-weight: 600; }
+.sample-status {
+  flex-basis: 100%; font-style: normal; font-size: 12px; font-weight: 700; line-height: 1.4;
+  color: var(--ok); margin-top: 2px;
+}
+.sample-status.is-draft { color: var(--warn); }
+.sample-q, .sample-r { padding: 16px 20px; }
+.sample-r { background: var(--surface-2); border-top: 1px solid var(--line-2); margin-top: auto; }
+.sample-label { display: block; font-size: 12px; font-weight: 700; color: var(--blue-ink); margin-bottom: 8px; }
+.sample-q p { font-size: 15px; line-height: 1.6; color: var(--ink); font-weight: 600; }
+.sample-scale { display: grid; gap: 6px; margin-top: 12px; }
+.sample-scale li {
+  display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 9px;
+  border: 1px solid var(--line); font-size: 13.5px; color: var(--ink-2); line-height: 1.3;
+}
+.sample-scale li span {
+  flex: none; width: 22px; height: 22px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; background: var(--surface-2); color: var(--ink-3);
+}
+.sample-scale li.is-on { border-color: var(--blue); background: var(--blue-soft); color: var(--ink); font-weight: 650; }
+.sample-scale li.is-on span { background: var(--blue); color: #fff; }
+.sample-r small { display: block; font-size: 12.5px; font-weight: 700; color: var(--ink-3); margin: 6px 0 6px; }
+.sample-r ul { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.sample-r li { padding: 5px 10px; border-radius: 999px; background: #fff; border: 1px solid var(--blue-line); font-size: 13px; font-weight: 650; color: var(--blue-ink); }
+.sample-r p { font-size: 14px; line-height: 1.6; color: var(--ink); }
+
 /* ── 좁은 화면 ───────────────────────────────────────────────── */
 @media (max-width: 1080px) {
-  .hero-grid, .split, .campus-grid { grid-template-columns: minmax(0, 1fr); gap: 44px; }
+  .hero-grid, .split, .campus-grid, .world-grid { grid-template-columns: minmax(0, 1fr); gap: 44px; }
+  .samples { grid-template-columns: minmax(0, 1fr); max-width: 640px; }
   .faq-wrap { grid-template-columns: minmax(0, 1fr); gap: 28px; }
   .faq-wrap .sec-head { position: static; }
   .majors { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -629,6 +700,8 @@ html[lang="en"] .company div { grid-template-columns: 140px minmax(0, 1fr); }
   .feature-list, .campus-points, .majors, .feature-grid, .feature-grid-2, .field-row { grid-template-columns: minmax(0, 1fr); }
   .majors-foot { flex-direction: column; align-items: stretch; }
   .majors-foot .btn { width: 100%; }
+  .world-fig { padding: 10px 8px 12px; }
+  .sample-head { margin-top: 40px; }
   .plans { grid-template-columns: minmax(0, 1fr); }
   .footer-top { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
   .composer, .contact-card, .others { padding: 22px 18px; }

@@ -3,6 +3,7 @@ import { Shell } from "@/components/chrome";
 import { Button, Closing, FaqList, SectionHead } from "@/components/blocks";
 import { Icon, type IconName } from "@/components/icons";
 import { ReportMockView, WorkspaceMockView } from "@/components/mocks";
+import { WorldMap } from "@/components/world";
 
 /**
  * 홈. 이 순서가 곧 설명의 순서다:
@@ -137,6 +138,83 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ── 해외 ───────────────────────────────────────────── */}
+      {h.global && (
+        <section className="section section-tint" id="global">
+          <div className="wrap">
+            <SectionHead label={h.global.label} title={h.global.title} lead={h.global.lead} />
+            <div className="world-grid">
+              <figure className="world-fig">
+                <WorldMap
+                  countries={h.global.countries}
+                  label={`${h.global.legend.done}: ${h.global.countries.filter((c) => c.status === "done").map((c) => c.name).join(", ")}. ${h.global.legend.planned}: ${h.global.countries.filter((c) => c.status === "planned").map((c) => c.name).join(", ")}.`}
+                />
+                <figcaption className="world-legend">
+                  <span><i className="lg-done" />{h.global.legend.done}</span>
+                  <span><i className="lg-planned" />{h.global.legend.planned}</span>
+                </figcaption>
+              </figure>
+              <div className="world-list">
+                {(["done", "planned"] as const).map((st) => (
+                  <div key={st}>
+                    <h3>{st === "done" ? h.global!.legend.done : h.global!.legend.planned}</h3>
+                    <ul className={`country-list is-${st}`}>
+                      {h.global!.countries.filter((c) => c.status === st).map((c) => (
+                        <li key={c.iso}>
+                          <b>{c.name}</b>
+                          {c.schools?.map((s) => <span key={s}>{s}</span>)}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+                <p className="fine">
+                  <Icon name="shield" size={16} />
+                  {h.global.source}
+                </p>
+              </div>
+            </div>
+
+            <div className="sample-head">
+              <h3>{h.global.samples.title}</h3>
+              <p>{h.global.samples.lead}</p>
+            </div>
+            <div className="samples">
+              {h.global.samples.items.map((s) => (
+                <article key={s.code} className={`sample is-${s.status}`} lang={s.code}>
+                  <header className="sample-top">
+                    <b>{s.lang}</b>
+                    <span lang="ko">{s.langKo}</span>
+                    <em lang="ko" className={`sample-status is-${s.status}`}>{s.statusLabel}</em>
+                  </header>
+                  <div className="sample-q">
+                    <span className="sample-label">{s.question.label} · {s.question.area}</span>
+                    <p>{s.question.text}</p>
+                    <ol className="sample-scale">
+                      {s.question.scale.map((l, i) => (
+                        <li key={l} className={i === 3 ? "is-on" : undefined}>
+                          <span>{i + 1}</span>
+                          {l}
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                  <div className="sample-r">
+                    <span className="sample-label">{s.result.label}</span>
+                    <small>{s.result.areasLabel}</small>
+                    <ul>
+                      {s.result.areas.map((a) => <li key={a}>{a}</li>)}
+                    </ul>
+                    <small>{s.result.nextLabel}</small>
+                    <p>{s.result.next}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ── 대학·기관 ──────────────────────────────────────── */}
       <section className="section section-navy" id="campus">
