@@ -1,916 +1,472 @@
-import { PLATFORM_URL, SITE_DOMAIN, MARKET_LINKS } from "@/lib/domains";
-import { GLOBAL_TIERS, priceRange, tierLines } from "@/lib/prices";
-import type { SiteContent } from "./types";
+import { PLATFORM_URL, HOME_DOMAIN } from "@/lib/domains";
+import type { SiteContent } from "./model";
 
 /**
- * 영어판. 한국어판과 같은 페이지를 옮기되, 말을 거는 상대가 다르다.
- * 해외 대학과 파트너에게는 "우리 나라에서도 되느냐" 가 첫 질문이라
- * 국가 전개 지도를 하나 더 둔다. 대전 사례는 한국 사례로 소개한다.
+ * Global (English) edition (2026-10-21).
+ *
+ * Same structure as the Korean site, with two honest differences:
+ *
+ * - The global market only exposes four STEM cores (`content/markets.json` +
+ *   `major-cores.json`): Mechanical, Electrical and Electronic, Computer
+ *   Science and Software, Biotechnology.
+ * - The current assessment and report are written in Korean. We say so
+ *   instead of implying an English report.
+ *
+ * The AI career assistant (Track) is sold in Korea only, so this edition has
+ * no `assistant` block and the page is not linked.
  */
 export const global: SiteContent = {
   key: "global",
   lang: "en",
-  domain: SITE_DOMAIN.global,
+  domain: HOME_DOMAIN,
   brand: "CareerMatri",
-  org: "ACADEMIX",
-  orgTagline: "EDUCATION & CONFERENCE",
   platformUrl: PLATFORM_URL,
 
   meta: {
-    title: "CareerMatri | Engineering majors, read against the roles that hire them",
+    title: "CareerMatri | Major-based career diagnosis and workspace",
     description:
-      "Mechanical engineering coursework, projects and research read as the work judgements of real engineering roles. Not a personality type: the report names the evidence you already hold and the evidence a role has not seen yet.",
+      "A major-specific diagnostic, a written report, and a personal workspace where students keep adding experience and see what to do next. Universities can adopt it department by department.",
+    ogAlt: "CareerMatri major-based career diagnosis",
+  },
+
+  ui: {
+    skip: "Skip to content",
+    menu: "Open menu",
+    close: "Close menu",
+    mockTag: "Example screen",
+    copy: "Copy",
+    copied: "Copied",
+    external: "Opens the CareerMatri app",
+  },
+
+  nav: {
+    items: [
+      { label: "How it works", href: "/#how" },
+      { label: "Universities", href: "/universities" },
+      { label: "Pricing", href: "/pricing" },
+      { label: "Contact", href: "/contact" },
+    ],
+    staffLogin: { label: "University staff sign in", href: "/login" },
+    login: { label: "Sign in", href: "/login" },
+    start: { label: "Start the assessment", href: "/cores" },
+    startShort: "Start",
+  },
+
+  home: {
+    hero: {
+      eyebrow: "Major-based diagnosis · Report · Workspace",
+      title: ["See where the work you did", "in your major can take you"],
+      lead:
+        "CareerMatri asks what you have actually done in classes, assignments and projects, and what you decided yourself. You get a report, then keep going in your own workspace: add experience, refresh your current state and pick the next task.",
+      primary: { label: "Start the assessment", href: "/cores" },
+      secondary: { label: "Talk to us about adoption", href: "/contact" },
+      note: "Got an ID from your university?",
+      noteLink: { label: "Sign in to start", href: "/login" },
+    },
+    mock: {
+      label: "Example screen",
+      brandSub: "Mechanical Eng.",
+      nav: ["Home", "Assessment", "Next task", "Current state", "Experience", "Results"],
+      title: "My career",
+      meta: "Mechanical Engineering · Updated 2026-10-18",
+      todoLabel: "Next task",
+      todoTitle: "Write up one experience on a single page",
+      todoBody: "One line on the criteria you set yourself is something you can use straight away in an interview.",
+      todoCta: "Write it up",
+      todoMore: "2 more tasks",
+      stateLabel: "Current state",
+      stateSub: "Areas you can explain right now",
+      tiles: [
+        { name: "Structures", sub: "Model · analysis report" },
+        { name: "Materials", sub: "Test report · spec" },
+        { name: "Testing", sub: "Test plan · results" },
+      ],
+      changeLabel: "Recent changes",
+      changes: [
+        { text: "Design: the conditions and criteria you set yourself were confirmed", date: "10-18" },
+        { text: "A new experience added evidence to Testing", date: "10-05" },
+      ],
+    },
+    how: {
+      label: "How it works",
+      title: "Start with the assessment, keep going in the workspace",
+      lead:
+        "The assessment is a starting point. After the report, every experience you add updates your current state and changes what you should do next.",
+      steps: [
+        {
+          no: "01",
+          title: "Major-based assessment",
+          body: "Pick your major and answer what you did in classes, assignments and projects, and what you decided yourself.",
+          points: [
+            "Each major has its own questions, written around the work of that field",
+            "Answers are saved as you go, so you can close the page and come back",
+            "No aptitude or personality-type questions",
+          ],
+        },
+        {
+          no: "02",
+          title: "Report (web and PDF)",
+          body: "One document with the experience you can explain, what is still missing and what to do next.",
+          points: [
+            "Read it on the web or download it as a PDF",
+            "Shows which industries and roles your confirmed experience connects to",
+            "Collects material you can turn into application and interview answers",
+          ],
+        },
+        {
+          no: "03",
+          title: "Your CareerMatri workspace",
+          body: "Add experience and your current state is recalculated, with a new next task.",
+          points: [
+            "Add experience, refresh your state, then take the next task",
+            "The report from the day you took the test is kept unchanged",
+            "Sign in any time to reopen your report",
+          ],
+        },
+      ],
+    },
+    report: {
+      label: "The report",
+      title: "What the report covers",
+      lead:
+        "The report is built only from your answers, in an order you can follow: what was confirmed, what is still missing and what to do about it.",
+      items: [
+        { title: "Summary", body: "Confirmed experience, the area to look at first and your next task, on the first screen." },
+        { title: "Evidence you already have", body: "What you did, what you decided and what you produced, laid out together." },
+        { title: "What to fill in", body: "Gaps by area, with a short note on why each one matters." },
+        { title: "Industries and roles", body: "Where your confirmed experience is used in industry and in specific roles." },
+        { title: "Next tasks", body: "Concrete tasks to write up next and the output each one should leave behind." },
+        { title: "Application wording", body: "A starting structure for application and interview answers, based on what you chose." },
+      ],
+      note: "The report does not estimate aptitude or hiring chances, and it does not rank you. Depth varies by tier.",
+      mock: {
+        label: "Example report",
+        school: "Career report",
+        docTitle: "Business Administration",
+        docMeta: "PRO · answered 2026-10-16",
+        headline: "You have experience in strategy and planning you can use in applications",
+        headlineSub: "Both what you did and what you decided yourself were confirmed.",
+        cells: [
+          { label: "Confirmed", title: "Strategy · Marketing", body: "Chose one option out of several with reasons, and split a budget by item." },
+          { label: "Next task", title: "Write down what you decided", body: "Note in three lines how you turned the request into conditions." },
+          { label: "Evidence", title: "Goals and metrics table", body: "Material you can bring into an application." },
+          { label: "To fill in", title: "Data and decisions", body: "The criteria you set and what you produced are not written yet." },
+        ],
+      },
+    },
+    majors: {
+      label: "Majors",
+      title: "20 major assessments, run through university and institution contracts",
+      lead:
+        "Each core is written around the real tasks and decisions of its field. Department names differ between universities, so each department is linked to the closest core.",
+      groups: [
+        { name: "Engineering", items: ["Mechanical Engineering", "Electrical and Electronic Engineering", "Computer Science and Software", "Architecture and Interior Architecture", "Civil and Railway Engineering"] },
+        { name: "Life and health", items: ["Biotechnology", "Nursing", "Health Administration and Welfare", "Food Science", "Sports Science and Rehabilitation", "Horticulture, Forestry and Landscape"] },
+        { name: "Business and society", items: ["Business Administration", "Public Administration", "Law and Police Studies", "Psychology", "Education"] },
+        { name: "Humanities and arts", items: ["Language and Literature", "Media, Communications and Performing Arts", "Visual Design", "Fashion, Beauty and Styling"] },
+      ],
+      note:
+        "Which majors are open depends on the contract. The assessment and report are currently written in Korean. Outside Korea, four majors are set up first: Mechanical, Electrical and Electronic, Computer Science and Software, and Biotechnology.",
+      cta: { label: "Find your major and start", href: "/cores" },
+    },
+    campus: {
+      label: "Universities",
+      title: "Open the assessment by department and follow progress on one screen",
+      lead:
+        "Staff issue student accounts and see progress and department totals. Students sign in through their university's own address and get the same assessment and report.",
+      points: [
+        { title: "Assessment per department", body: "Each contracted department gets the assessment for its major." },
+        { title: "Student accounts", body: "Issue IDs and passwords one by one or in bulk from a CSV file." },
+        { title: "Progress and department totals", body: "Started and completed counts per department. Cells under five people stay hidden." },
+        { title: "CSV export", body: "Download the roster and progress as CSV for internal reporting." },
+      ],
+      primary: { label: "For universities", href: "/universities" },
+      secondary: { label: "Contact us", href: "/contact" },
+    },
+    personal: {
+      label: "Individuals",
+      title: "No university account? You can still sign up",
+      lead:
+        "Individuals can sign up directly. Prices and what is on sale right now are listed on the pricing page inside the CareerMatri app.",
+      cards: [
+        {
+          tag: "Assessment and report",
+          title: "Major-based assessment",
+          body: "When you finish, you get a web report and a PDF, and your CareerMatri workspace opens.",
+          points: [
+            "Prices and tier differences are on the app's pricing page",
+            "Refundable until you answer the first question",
+          ],
+          cta: { label: "See pricing", href: "/pricing" },
+        },
+        {
+          tag: "University account",
+          title: "Got an ID from your university?",
+          body: "Sign in with the ID and password your university gave you. Your department's assessment is ready for you.",
+          points: [
+            "No payment needed for university accounts",
+            "Your report and workspace stay in your account",
+          ],
+          cta: { label: "Sign in", href: "/login" },
+        },
+      ],
+    },
+    faq: {
+      label: "FAQ",
+      title: "Questions people ask before starting",
+      items: [
+        {
+          q: "My university gave me an ID. Where do I sign in?",
+          a: "Use your university's own address, or the CareerMatri sign-in page, with the ID and password you were given.",
+          link: { label: "Open sign-in", href: "/login" },
+        },
+        {
+          q: "Is it available in English?",
+          a: "The assessment and report are currently written in Korean. For enquiries from outside Korea, please contact us.",
+          link: { label: "Contact us", href: "/contact" },
+        },
+        {
+          q: "If I close the page halfway, do I start again?",
+          a: "No. Each answer is saved straight away, and you continue where you stopped.",
+        },
+        {
+          q: "Will it tell me my chances of being hired, or rank me?",
+          a: "No. It shows the experience your answers confirm, what is still missing and what to do next.",
+        },
+        {
+          q: "Is the assessment validated?",
+          a: "Pilot studies and cognitive interviews are still in progress, so we do not call it a validated test. Please use the report as one input to your decisions.",
+        },
+      ],
+    },
+    closing: {
+      title: "Start your first assessment in your major",
+      lead: "Sign in with your university account, or sign up as an individual.",
+      primary: { label: "Start the assessment", href: "/cores" },
+      secondary: { label: "Contact us", href: "/contact" },
+    },
+  },
+
+  universities: {
+    meta: {
+      title: "For universities | CareerMatri",
+      description:
+        "Run a major-based career diagnosis with university accounts. Issue student accounts, follow progress, see department totals and export CSV from the staff screen.",
+    },
+    hero: {
+      eyebrow: "Universities and institutions",
+      title: ["Run a major-based diagnosis", "with your university accounts"],
+      lead:
+        "Staff issue student accounts and students sign in through the university's own address. Progress and department totals are on the staff screen and can be downloaded as CSV.",
+      primary: { label: "Talk to us", href: "/contact" },
+      secondary: { label: "University staff sign in", href: "/login" },
+    },
+    mock: {
+      label: "Example screen · fictional university and numbers",
+      title: "Assessment overview",
+      meta: "Fall semester 2026",
+      kpis: [
+        { label: "Students", value: "128", note: "From the uploaded roster" },
+        { label: "Started", value: "96", note: "Began the assessment" },
+        { label: "Completed", value: "71", note: "Received a report" },
+      ],
+      tableTitle: "Progress by department",
+      head: ["Department", "Students", "Started", "Done"],
+      rows: [
+        ["Business", "42", "35", "28"],
+        ["Electrical Eng.", "38", "30", "24"],
+        ["Nursing", "44", "31", "19"],
+        ["Psychology", "Hidden", "Hidden", "Hidden"],
+      ],
+      hiddenNote: "Cells under five people are not shown",
+      exportLabel: "Download CSV",
+    },
+    flow: {
+      label: "How it runs",
+      title: "Six steps from adoption to results",
+      lead: "From issuing accounts to checking totals, everything happens on the staff screen. Nothing to install.",
+      steps: [
+        { title: "Choose departments", body: "Decide which departments take part and roughly how many students. Each department is linked to the closest major assessment." },
+        { title: "Get a staff account", body: "We create the staff account for your university." },
+        { title: "Issue student accounts", body: "Issue IDs and passwords one by one, or in bulk from a CSV file." },
+        { title: "Students sign in", body: "Students use the university's own address, pick their department and take the assessment." },
+        { title: "Follow progress", body: "See started and completed counts and department totals." },
+        { title: "Export CSV", body: "Download the roster, progress and totals as CSV." },
+      ],
+    },
+    features: {
+      label: "Staff screen",
+      title: "What staff can do themselves",
+      items: [
+        { title: "Add students", body: "Add one at a time or upload a CSV, with a preview before anything is saved." },
+        { title: "Reset passwords", body: "Issue a new initial password to a student who lost theirs." },
+        { title: "Pause and reopen accounts", body: "Pause accounts that are not in use and reopen them later." },
+        { title: "Progress per student", body: "See who has not started, who is in progress and who is done." },
+        { title: "Department totals", body: "Students, started and completed counts by college and department." },
+        { title: "Not-started list", body: "Download only the students who have not started yet." },
+        { title: "CSV export", body: "Roster, progress and totals for internal reporting." },
+        { title: "Allow a retake", body: "One attempt is the default. Staff can allow a retake for a specific student." },
+      ],
+    },
+    access: {
+      label: "Student access",
+      title: "Students sign in through your university's address",
+      body: "Each university has its own address. Students choose their department there and sign in with the ID they were issued.",
+      url: `${PLATFORM_URL.replace(/^https?:\/\//, "")}/campus/your-code`,
+      urlNote: "The university code is set during onboarding.",
+      login: { label: "See the student sign-in page", href: "/login" },
+    },
+    privacy: {
+      label: "Privacy",
+      title: "What staff can and cannot see",
+      items: [
+        "Individual answers and reports do not appear on the staff screen.",
+        "Totals hide any cell with fewer than five people.",
+        "CSV files hold the roster, progress and totals, not item-level answers.",
+        "Initial passwords are shown once when issued and are not stored.",
+      ],
+    },
+    faq: {
+      label: "FAQ",
+      title: "Questions universities ask",
+      items: [
+        { q: "Does each department get a different assessment?", a: "Yes. Students take the major assessment their department is linked to, with examples suited to their department." },
+        { q: "What do we need to prepare?", a: "The departments, a rough headcount and a staff contact. The student roster is uploaded later on the staff screen." },
+        { q: "Is the assessment available in English?", a: "Not yet. The assessment and report are currently written in Korean." },
+        { q: "How is pricing set?", a: "By departments and headcount. Contact us and we will explain how it would work for your university.", link: { label: "Contact us", href: "/contact" } },
+      ],
+    },
+    closing: {
+      title: "We will walk you through how it fits your university",
+      lead: "Tell us your university, departments and rough headcount, and we will reply after reviewing them.",
+      primary: { label: "Contact us", href: "/contact" },
+      secondary: { label: "University staff sign in", href: "/login" },
+    },
+  },
+
+  contact: {
+    meta: {
+      title: "Contact | CareerMatri",
+      description: "Questions about adoption or use. Email hari_info@hari.re.kr, phone +82 44-867-7211.",
+    },
+    eyebrow: "Contact",
+    title: "Talk to us about adoption or use",
+    lead: "We take enquiries about university adoption, individual use and partnerships by email and phone. You can draft your message below and send it from your mail app.",
+    direct: {
+      title: "Reach us directly",
+      emailLabel: "Email",
+      telLabel: "Phone (Korea)",
+      hoursNote: "If calling is difficult, please email. We reply after reviewing your message.",
+    },
+    company: { title: "Company" },
+    form: {
+      title: "Draft your email",
+      lead: "Fill in the fields and press the button. Your mail app opens with the message filled in.",
+      honest: "This page does not store or send anything for you. The message is sent only when you press send in your mail app.",
+      fields: {
+        org: "Organisation",
+        orgHint: "e.g. University careers office",
+        name: "Your name",
+        nameHint: "",
+        reply: "Reply to",
+        replyHint: "Email or phone",
+        type: "Topic",
+        size: "Expected headcount",
+        sizeHint: "e.g. 3 departments, about 300 students",
+        message: "Message",
+        messageHint: "Timing, questions, anything we should know.",
+      },
+      types: ["University adoption", "Department adoption", "Individual use", "Partnership or other"],
+      subject: "[CareerMatri enquiry]",
+      bodyIntro: "Enquiry drafted on the CareerMatri website.",
+      send: "Open in my mail app",
+      copy: "Copy message",
+      opened: "Your mail app should now be open. Press send there to deliver it. If nothing opened, copy the message and email it to the address above.",
+      copiedAll: "Message copied. Paste it into your email and send it to the address above.",
+      needOrg: "Please fill in at least the message or your organisation.",
+    },
+    after: {
+      title: "What happens next",
+      items: [
+        "We review your message and reply to the contact you gave.",
+        "Universities get an outline of how adoption would work for their departments.",
+        "Individual questions are answered after checking your account or payment.",
+      ],
+    },
+    others: {
+      title: "Looking for something else?",
+      items: [
+        { label: "University staff sign in", href: "/login" },
+        { label: "Support (orders, refunds, password)", href: "/support" },
+        { label: "Terms of service", href: "/legal/terms" },
+        { label: "Privacy policy", href: "/legal/privacy" },
+      ],
+    },
+  },
+
+  notFound: {
+    title: "Page not found",
+    body: "This address has changed or no longer exists. Head back home or start the assessment.",
+    home: { label: "Back to home", href: "/" },
+    start: { label: "Start the assessment", href: "/cores" },
   },
 
   legal: {
-    /* Taken from the business registration certificate; nothing invented.
-       **Only the mail-order licence number is left empty**: it has not been
-       issued yet, and an empty field is printed as "Not confirmed". Hiding it
-       would leave the page looking finished while the shop still has no
-       licence number.
-
-       On the app side the source of truth is the `site_settings` table behind
-       `/admin/business`. This site is a static build and cannot read it, so
-       there are two places to change. */
-    company: "HARI Research Institute Co., Ltd.",
-    ceo: "Geonhui Jo, Jeongin Han",
-    address: "704, 2143 Hannuri-daero, Sejong, Republic of Korea",
+    company: "주식회사 에이치에이연구원",
+    ceo: "조건희, 한정인",
+    address: "704, 2143 Hannuri-daero, Sejong-si, Republic of Korea",
     tel: "+82 44-867-7211",
     email: "hari_info@hari.re.kr",
     bizNo: "375-88-02588",
     mailOrderNo: "",
     jobInfoNo: "J1700020220007",
-    privacyOfficer: "Geonhui Jo, Jeongin Han",
+    privacyOfficer: "조건희, 한정인",
     labels: {
       heading: "Business information",
-      company: "Company", ceo: "Representative", address: "Address", tel: "Phone",
-      email: "Email", bizNo: "Business registration no.", mailOrderNo: "Mail-order licence no.",
-      jobInfoNo: "Career information provider no.", privacyOfficer: "Privacy officer",
-      unset: "to be confirmed",
-    },
-    links: { terms: "Terms", privacy: "Privacy", refund: "Refunds" },
-  },
-  nav: {
-    items: [
-      { label: "Sample report", href: "/sample" },
-      { label: "Localisation", href: "/localisation" },
-      { label: "Partnership", href: "/partnership" },
-      { label: "Pricing", href: "/pricing" },
-      { label: "About", href: "/about" },
-    ],
-    contact: "Talk to us",
-    menu: "Menu",
-    floating: "Contact",
-    start: "Start",
-    signin: "Sign in",
-  },
-
-  hero: {
-    eyebrow: "CareerMatri · Engineering career diagnostics",
-    title: ["They chose engineering.", "Nobody told them which engineering."],
-    lead:
-      "Mechanical engineering coursework, projects and research laid against the areas an engineering role actually checks. The report does not say “you are collaborative”. It names the role group to look at first and the evidence that role has not seen yet. The activity axes are the same in every country, which is why the instrument travels.",
-    primary: { label: "Start free", href: "/pricing" },
-    secondary: { label: "Talk to us", href: "/contact" },
-    priceline:
-      "Three tiers. BASIC costs nothing; STANDARD is $14.99 when you still have roles to weigh up, and PRO is $24.99 once the direction is set. Departments contract by cohort size.",
-    watermark: "CareerMatri",
-    /* The number bar is gone. Of the four values, three were either wrong
-       against the data or unverifiable, and none of them is something the
-       product computes. */
-  },
-
-  sample: {
-    label: "A real report",
-    heading: "Before the method, look at what a student is handed",
-    lead:
-      "What PCA measures is the second question. Below are four pages of the report put on one screen. A student does not receive a type name. They receive this.",
-    disclaimer:
-      `An illustrative screen showing the format of the report. It is not a real student's submission, and it shows the report a student receives under a department contract. The three individual tiers are rendered by the live engine at ${PLATFORM_URL}/sample.`,
-    docTag: "CareerMatri individual report",
-    page: "extract · 00-1 · 00-2 · 05–06 · regional annex",
-    person: {
-      name: "Sample student",
-      dept: "Mechanical Engineering, year 3",
-      meta: [
-        { l: "Sat", v: "11 March 2026" },
-        { l: "Time taken", v: "32 min" },
-        { l: "Tier", v: "STANDARD" },
-      ],
-    },
-    jobsLabel: "00-1 Job-area fit · ten areas, scored out of 100",
-    jobsNote:
-      "The thin bar is the measurement error. Areas whose intervals overlap are shown as one group, because we do not rank differences smaller than the error. Areas in a lower group carry the reason they fell there, so the student never has to ask why they were ruled out.",
-    tierLabel: "Group {n}",
-    tierNote:
-      "Two areas share the top group. This assessment cannot separate them, so both stay open and experience decides.",
-    jobs: [
-      { name: "Design & Development", score: 92, band: [87, 97], tier: 1 },
-      { name: "Automotive & Aerospace", score: 88, band: [83, 93], tier: 1 },
-      { name: "Research & Education", score: 79, band: [74, 84], tier: 2 },
-      { name: "Manufacturing & Production", score: 74, band: [69, 79], tier: 2 },
-      { name: "Robotics & Automation", score: 70, band: [65, 75], tier: 2 },
-      { name: "IT Convergence & Data Analysis", score: 66, band: [61, 71], tier: 3 },
-      { name: "Energy & Plant", score: 61, band: [56, 66], tier: 3 },
-      { name: "Construction & Facility Management", score: 48, band: [43, 53], tier: 4 },
-      { name: "Bio & Healthcare", score: 45, band: [40, 50], tier: 4 },
-      { name: "Public Institutions & Other Fields", score: 41, band: [36, 46], tier: 4 },
-    ],
-    styleLabel: "00-2 Work style · six profiles",
-    styleTypeLabel: "Profile",
-    styleType: "Quality-led · independent",
-    styleVerdict:
-      "Strong where a standard is set and has to be met to the end. Costly in a team that runs on speed and on pulling other people along. For now, aim at posts where the standard is explicit, such as process and quality, and leave leading a team until year three or later.",
-    styleAxes: ["Independent", "Collaborative", "Challenge-oriented", "Stability-oriented", "Speed-focused", "Quality-focused"],
-    styleScores: [78, 55, 62, 71, 49, 86],
-    planLabel: "Sections 05–06 · the next twelve months",
-    planNote:
-      "It does not end at a label. A month and a task are attached, and one line saying why it is worth doing.",
-    plan: [
-      {
-        when: "Month 1",
-        what: "Register for the quality-management certificate named in the report",
-        why: "It sits in the gap the report named for this student",
-      },
-      {
-        when: "Months 2–3",
-        what: "Reframe the capstone project around defect-rate reduction",
-        why: "Leaves a number the student can say out loud in an interview",
-      },
-      {
-        when: "Month 6",
-        what: "Draft the first application answer from the sentence frames in section 06",
-        why: "The strengths are already written; the student edits rather than starts",
-      },
-      {
-        when: "Month 9",
-        what: "Apply to the five employers, in the order given",
-        why: "Chosen by fit, not by brand recognition",
-      },
-    ],
-    localLabel: "Regional annex · where they can go, near where they live",
-    localNote: "",
-    /* Emptied. The employer and posting tables hold no rows, so there is no
-       screening by fit to show. An empty array removes the block. */
-    local: [],
-    cta: {
-      line: "Every student in the department gets one of these, with their own name on it.",
-      sub: "Tell us the department and the cohort size; we come back within a day with a plan and a quote.",
-      primary: { label: "Talk to us", href: "/contact" },
-      secondary: { label: "See the product in detail", href: "/product" },
-    },
-  },
-
-  channels: {
-    label: "Who it is for",
-    heading: "Two doors, one engine",
-    lead:
-      "A student can take it alone. A department can look at 500 at once. Both run on the same assessment and the same skill graph - what differs is the unit you buy and the document you walk away with.",
-    items: [
-      {
-        key: "individual",
-        tag: "INDIVIDUAL",
-        title: "Take it on your own",
-        who: "Students, job seekers, recent graduates",
-        body:
-          "Start with a free 12-item check to see the direction. Buy the full report one at a time. No institutional contract required.",
-        gets: [
-          "Free 12-item check - top role shown in full",
-          "Full report - roles, industries, employers, skill gaps",
-          "A six-month action plan",
-          "An account that outlives graduation",
-        ],
-        unit: "One seat, pay per report",
-        cta: { label: "See individual pricing", href: "/pricing" },
-      },
-      {
-        key: "campus",
-        tag: "CAMPUS",
-        title: "See a whole cohort at once",
-        who: "Departments, career services, schools",
-        body:
-          "Every student gets their own report; the department gets the anonymised roll-up. Where student gaps overlap with employer demand is where the curriculum has work to do.",
-        gets: [
-          "Individual reports for every student",
-          "Anonymised cohort report - role spread, target industries, gaps",
-          "Overlap with employer demand marked automatically",
-          "Local employer matching by campus location",
-          "Process data for outcome reporting",
-        ],
-        unit: "Annual contract, priced per seat",
-        cta: { label: "Talk to us about adoption", href: "/adopt" },
-      },
-    ],
-    note:
-      "When a department contracts, its students reach the full report without paying individually - and keep the account after they graduate.",
-  },
-
-  who: {
-    label: "Whose problem this is",
-    heading: "Who brings CareerMatri into a country",
-    items: [
-      {
-        no: "01",
-        title: "Engineering faculties and departments",
-        body: "“Careers services hand out a personality type. A mechanical engineering student still cannot tell design from CAE from process engineering.”",
-        tag: "Job cluster fit with a confidence interval",
-      },
-      {
-        no: "02",
-        title: "Ministries and consortia",
-        body: "“We can report how many attended. We cannot report which competencies the cohort is missing.”",
-        tag: "Cohort gaps you can put in a budget line",
-      },
-      {
-        no: "03",
-        title: "Local partners",
-        body: "“We have the university relationships. We do not have an engineering instrument worth selling.”",
-        tag: "Operate it under your brand",
-      },
-    ],
-  },
-
-  analyze: {
-    label: "What it reads",
-    heading: "Three layers, and only the first one is a questionnaire",
-    lead:
-      "Interest is measured. Competency is never asked about. It is computed from coursework, certificates and projects. Keeping the two apart is the whole point: wanting to do CAE and being able to do CAE are different facts, and a report that blends them cannot be acted on.",
-    items: [
-      {
-        no: "01",
-        kicker: "MEASURED",
-        title: "Ten engineering job areas, eight activity axes",
-        body:
-          "250 items, 25 per job area. Design, manufacturing, energy and plant, automotive and aerospace, robotics, IT convergence, construction, research, bio, public sector. Those ten fold into eight activity axes: analysis, design, build and test, programming, field and plant, optimisation, research and coordination. They mean the same thing in Seoul, Ankara and Astana.",
-      },
-      {
-        no: "02",
-        kicker: "MEASURED",
-        title: "Six work styles, carried inside the same items",
-        body:
-          "120 of the 250 items carry a work-style signal without naming it. Independent, collaborative, challenge-oriented, stability-oriented, speed-focused, quality-focused. What matters is not the absolute height but which sits above which. The same student is an asset in process quality and a liability on a sprint team.",
-      },
-      {
-        no: "03",
-        kicker: "COMPUTED",
-        title: "Held competency, from evidence only",
-        body:
-          "A course passed, a certificate held, a project shipped. Each carries its own weight and reliability, and the sum converts to a level from 0 to 5. Ask a student to rate their own ANSYS and everyone says three. Where there is no evidence the report says so rather than guessing.",
-      },
-    ],
-  },
-
-  why: {
-    label: "Why this assessment",
-    heading: "“You are collaborative” does not tell a student where to apply",
-    vs: "VS",
-    before: {
-      tag: "Recommendation-led",
-      title: "A conventional career test",
-      steps: ["Check traits and interests", "Suggest an occupational group", "Leave the preparation to the student"],
-      verdict: "“You know the result, and still have to work out what to do.”",
-    },
-    after: {
-      tag: "Strategy-led",
-      title: "PCA",
-      steps: [
-        "Analyse the job areas that fit",
-        "Map work style across six axes",
-        "Projects, applications, interviews, founding",
-      ],
-      verdict: "“The result becomes the roadmap.”",
-    },
-  },
-
-  sheet: {
-    label: "The eleven sections",
-    heading: "What the report contains",
-    lead: [
-      "PCA runs diagnosis → strengths → application → strategy → execution.",
-      "Open a section to see how the report is built.",
-    ],
-    more: "continues in the report",
-    disclaimer:
-      "※ A worked example for a mechanical engineering student, shown to illustrate how the report is built. It contains no real respondent's personal data.",
-    jobAxes: [
-      "Simulation & CAE",
-      "Mechanical design",
-      "Process engineering",
-      "Quality & reliability",
-      "Robotics & automation",
-      "Semiconductor equipment",
-    ],
-    jobScores: [80, 73, 60, 65, 67, 61],
-    styleAxes: [
-      "Independent",
-      "Collaborative",
-      "Challenging",
-      "Stable",
-      "Speed-oriented",
-      "Quality-oriented",
-    ],
-    styleScores: [84, 78, 86, 66, 72, 91],
-    tabs: [
-      {
-        no: "00-1",
-        nav: "Job area analysis",
-        title: "Job area analysis",
-        chart: "jobs",
-        meta: [
-          { label: "Highest area", value: "Simulation & CAE" },
-          { label: "Score", value: "80" },
-          { label: "Respondent", value: "■■■" },
-        ],
-        chartNote: "Across the ten job areas, the top group holds Simulation & CAE with two others.",
-        capTitle: "Job area analysis",
-        capBody: "Ten mechanical engineering job areas, scored out of 100 and grouped where the intervals overlap.",
-        capArrow: "Answers “which role does this major lead to?” with data",
-      },
-      {
-        no: "00-2",
-        nav: "Work style analysis",
-        title: "Work style analysis",
-        chart: "styles",
-        meta: [
-          { label: "Highest work style", value: "Quality-oriented" },
-          { label: "Score", value: "91" },
-          { label: "Combination", value: "Quality-oriented + Challenging + Independent" },
-        ],
-        chartNote: "Representative combination: Quality-oriented + Challenging + Independent",
-        capTitle: "Work style analysis",
-        capBody: "Six work styles scored, and the representative combination drawn out.",
-        capArrow: "Shows the way of working that fits",
-      },
-      {
-        no: "01",
-        nav: "Core summary",
-        title: "Section 1. Core diagnostic summary",
-        capTitle: "Core diagnostic summary",
-        capBody: "The top group with its intervals, plus work style, in one place.",
-        capArrow: "The reference point for everything after",
-      },
-      {
-        no: "02",
-        nav: "Strength profile",
-        title: "Section 2. Strength profile",
-        capTitle: "Strength profile",
-        capBody: "Three strengths and how to use them in applications.",
-        capArrow: "Straight into the cover letter and interview",
-      },
-      {
-        no: "03",
-        nav: "The work itself",
-        title: "Section 3. What the work looks like",
-        capTitle: "What the work looks like",
-        capBody: "A real scenario in the area, and the capability it demands.",
-        capArrow: "Fit tested before committing",
-      },
-      {
-        no: "04",
-        nav: "Roles and direction",
-        title: "Section 4. Roles and career direction",
-        capTitle: "Roles and direction",
-        capBody: "Connected roles, what to examine first, and how to choose.",
-        capArrow: "Roles grouped, not just listed",
-      },
-      {
-        no: "05",
-        nav: "Projects",
-        title: "Section 5. Projects and portfolio",
-        capTitle: "Projects and portfolio",
-        capBody: "Directions, worked examples and a four-week plan.",
-        capArrow: "A portfolio to start this week",
-      },
-      {
-        no: "06",
-        nav: "Applications",
-        title: "Section 6. Cover letter and interview",
-        capTitle: "Cover letter and interview",
-        capBody: "How to write, and how to structure likely questions.",
-        capArrow: "Example sentences and expected questions",
-      },
-      {
-        no: "07",
-        nav: "Technical venture",
-        title: "Section 7. Starting a technical venture",
-        capTitle: "Starting a technical venture",
-        capBody: "Venture ideas from the major, and how to enter.",
-        capArrow: "A route other than employment",
-      },
-      {
-        no: "08",
-        nav: "Growth points",
-        title: "Section 8. Growth points and next steps",
-        capTitle: "Growth points and next steps",
-        capBody: "What to watch for, and a 30-day checklist.",
-        capArrow: "Down to what to do today",
-      },
-      {
-        no: "09",
-        nav: "Regional careers",
-        title: "Section 9. Regional careers and settling",
-        capTitle: "Regional careers and settling",
-        capBody: "Employers and institutions around the campus, connected to the leading job areas and ordered by fit.",
-        capArrow: "Carries the result through to a route into work in the region",
-      },
-    ],
-  },
-
-  styles: {
-    label: "Six work styles",
-    heading: "Two students can score 80 and work nothing alike",
-    chartNote: "Work style analysis (sample)",
-    items: [
-      { name: "Independent", body: "Absorbed in focused, solitary work" },
-      { name: "Collaborative", body: "Solves problems alongside other people" },
-      { name: "Challenging", body: "Takes the lead where nothing is defined yet" },
-      { name: "Steady", body: "Works well inside set standards and procedures" },
-      { name: "Fast-moving", body: "Prefers quick execution and visible results" },
-      { name: "Quality-first", body: "Holds out for completeness and accuracy" },
-    ],
-  },
-
-  evidence: {
-    label: "What it rests on",
-    heading: "The items were worked backwards from what a role checks",
-    lead:
-      "For each role we first wrote down what has to be confirmed before someone can explain that work, and the items were derived from those areas. The cognitive interviews and the pilot have not been run, so we do not call this a validated psychometric test.",
-    /* The six sample figures are gone. They come from a proposal we cannot
-       verify, and they describe a different instrument from the one on sale. */
-    stats: [],
-    copyright: {
-      title: "Registered copyright (Republic of Korea)",
-      rows: [
-        { name: "Engineering department indicators", no: "C-2025-058658" },
-        { name: "Engineering department selection indicators", no: "C-2025-059731" },
-        { name: "Graduate career confirmation indicators", no: "C-2025-059732" },
-      ],
-      note: "The core diagnostic items in the PCA indicator family are registered with the Korea Copyright Commission and legally protected.",
-    },
-    /* The framework table is gone. Every row claimed a reference we cannot
-       show in the product. */
-    standards: {
-      title: "Standards referenced in the design",
-      head: ["Framework", "Issued by / lineage", "How it informed the design"],
-      rows: [],
-      note: "",
-    },
-  },
-
-  gap: {
-    label: "After the assessment",
-    heading: "The assessment is the entrance. The expensive problem sits behind it.",
-    lead:
-      "When a department spends its training budget, the thing it knows least is who needs which training. Put a shelf of courses in front of students and the coordinator picks by instinct. CareerMatri aggregates the cohort anonymously and names which evidence is missing across it.",
-    /* The four funnel cells are gone. Two of them came from regional posting
-       data, and that table holds no rows. */
-    funnel: [],
-    funnelNote: "",
-    matrix: {
-      head: ["Kind of tool", "What it has", "What it lacks"],
-      rows: [
-        ["Labour-market alignment analytics", "Curriculum measured against regional demand", "No individual student"],
-        ["Individual skill-matching services", "Personal skills matched to postings", "No department-level aggregate"],
-        ["National competency frameworks", "A standard dictionary of roles and skills", "No student assessment"],
-        ["Free public career tests", "Free, open to everyone", "Neither engineering focus nor cohort view"],
-        ["Vocational training platforms", "Hundreds of courses and a university channel", "No diagnosis, no idea who to sell to"],
-        ["CareerMatri", "Individual assessment → cohort aggregate → named training demand", "Training delivery runs through partners"],
-      ],
-      note:
-        "We list kinds of tool rather than company names. Each does its own job well; what is empty is the cell where all five meet.",
-    },
-  },
-  choose: {
-    label: "Why CareerMatri",
-    heading: "Why institutions pick this over a generic career test",
-    items: [
-      {
-        title: "Engineering-specific, not engineering-adjacent",
-        body:
-          "General career tests end at “technical field”. CareerMatri separates mechanical design from structural analysis from process engineering from equipment engineering, because those four hire differently, pay differently and require different software.",
-      },
-      {
-        title: "Scores you can recompute",
-        body:
-          "Every weight sits in a table, not in code. A department can be handed the formula and arrive at the same 82. A score nobody can reproduce does not survive a procurement review.",
-      },
-      {
-        title: "Intervals, not false precision",
-        body:
-          "Straight-lining, rushed answers and failed attention checks widen the confidence interval instead of silently lowering the score. Where two roles overlap, the report says so rather than inventing a rank.",
-      },
-      {
-        title: "The instrument already travels",
-        body:
-          "The same 250 items exist in Korean, English and Turkish, and the eight activity axes are country-invariant by construction. Localisation replaces the labour-market layer, meaning postings, employers and credentials. The instrument itself stays put.",
-      },
-    ],
-  },
-
-  closing: {
-    kicker: "Tell us the department and a headcount",
-    heading: ["We will come back with a scope,", "not a brochure"],
-    lead: "Which departments, what the localisation would involve, and what the regional module would cost to build in your market.",
-    primary: { label: "Talk to us", href: "/contact" },
-    secondary: { label: "See how localisation works", href: "/localisation" },
-  },
-
-  about: {
-    label: "Who builds it",
-    heading: "Developed by ACADEMIX",
-    body:
-      "ACADEMIX designs education programmes and runs events for universities and public institutions. PCA was developed in-house.",
-    highlight:
-      "Staffed by people out of government-funded research institutes and backed by a wide industry network, guiding career preparation from undergraduates through doctoral graduates.",
-    brandsLabel: "Brands",
-    brands: [
-      { name: "ACADEMIX", note: "flagship · programmes and events" },
-      { name: "career peak", note: "STEM careers and employment" },
-      { name: "JOBINDUSTRY", note: "STEM graduate platform" },
-    ],
-    partnersLabel: "Worked with",
-    partners: [
-      "Seoul National University",
-      "POSTECH",
-      "Samsung",
-      "Hyundai Mobis",
-      "KARI",
-      "ETRI",
-      "KORAIL",
-      "IBK",
-      "KAERI",
-    ],
-    partnersNote:
-      "Lectures, mentoring and recruitment events delivered with universities, government research institutes, public bodies and companies.",
-  },
-
-  program: {
-    label: "Programme",
-    heading: "The diagnosis is one part of a programme",
-    lead:
-      "PCA is not sold as a test in isolation. The result feeds the lectures, mentoring and recruitment events that follow it.",
-    items: [
-      {
-        title: "Employment lectures and industry speakers",
-        body: "Role-specific sessions with invited practitioners, chosen against the job areas the cohort scored highest on.",
-      },
-      {
-        title: "STEM-focused mentoring",
-        body: "Industry-linked mentoring across bachelor's, master's and doctoral students, matched to each student's priority roles.",
-      },
-      {
-        title: "Career fairs and networking",
-        body: "Large-scale recruitment events run with universities and employers.",
-      },
-      {
-        title: "AI-assisted career matching",
-        body: "Application-essay analysis and interview practice that continue from section 06 of the report.",
-      },
-    ],
-  },
-
-  localisation: {
-    label: "Localisation",
-    heading: "What travels, and what gets rebuilt",
-    lead:
-      "A new country is a content project, not a rebuild. Three layers: one is shared worldwide, one is rewritten per country, one is per university. Knowing which is which is what makes a rollout predictable.",
-    layers: [
-      {
-        tag: "Layer 1",
-        title: "Shared worldwide",
-        body: "Built once, reused in every market. This is the part you do not pay to rebuild.",
-        items: [
-          "The instrument and its scoring rules",
-          "The ten job areas and the six work styles",
-          "The report structure, sections 00-1 through 08",
-          "The competency framework behind the strength profile",
-        ],
-      },
-      {
-        tag: "Layer 2",
-        title: "Rebuilt per country",
-        body: "Where the diagnosis meets a labour market. This is the actual localisation work.",
-        items: [
-          "Translation of every human-readable name and passage",
-          "Alignment to the national occupational standard, alongside NCS and O*NET",
-          "Local occupation names, entry routes and credential conventions",
-          "Regional employer data, where a country wants the settlement module",
-        ],
-      },
-      {
-        tag: "Layer 3",
-        title: "Filled in per university",
-        body: "Supplied by the institution itself, with an intake template.",
-        items: [
-          "The department list and its own character",
-          "Local employers and institutions around the campus",
-          "Release policy: who sees results, and when",
-        ],
-      },
-    ],
-    note:
-      "Because layer 1 is shared, cohorts in different countries stay comparable. That comparability is the asset, and it is why the platform students sit on is one system worldwide even though the marketing sites are separate.",
-  },
-
-  partnership: {
-    label: "Partnership",
-    heading: "What the first year looks like",
-    lead:
-      "Two ways in: run it as a university, or operate it in your market as a partner. Either way the split of work is the same.",
-    columns: [
-      {
-        title: "ACADEMIX provides",
-        items: [
-          "The instrument, scoring engine and report generation",
-          "The shared job-area and work-style framework",
-          "Intake templates for local occupation and employer data",
-          "Training for the people who will run sittings and read results",
-          "The administrator area for participation and outcome reporting",
-        ],
-      },
-      {
-        title: "The local partner provides",
-        items: [
-          "Translation review by someone who knows the sector",
-          "Alignment to the national occupational standard",
-          "Regional employer and institution data, where that module is wanted",
-          "The relationship with universities and the operation on the ground",
-        ],
-      },
-    ],
-    steps: [
-      {
-        title: "Scoping call",
-        body: "Which departments, roughly how many students, and whether the regional module is in scope.",
-      },
-      {
-        title: "Pilot cohort",
-        body: "One department sits the assessment against a first-pass localisation, and reads the reports with us.",
-      },
-      {
-        title: "Localisation build",
-        body: "Translation, standard alignment and employer data are completed from the pilot's findings.",
-      },
-      {
-        title: "Rollout",
-        body: "Department by department, with the institutional report accumulating from the first sitting.",
-      },
-    ],
-  },
-
-  faq: {
-    label: "Questions we get",
-    heading: "What institutions ask first",
-    items: [
-      {
-        q: "Does this only work in Korea?",
-        a: "No. The instrument, the ten job areas and the six work styles are shared worldwide. What is rebuilt per country is the translation, the alignment to that country's occupational standard, and, where wanted, regional employer data. That split is set out under Localisation.",
-      },
-      {
-        q: "How long does a localisation take?",
-        a: "It depends on whether the regional employer module is in scope. Translation and standard alignment are the bulk of it; employer data is the long pole. We scope it against a pilot cohort rather than quoting blind.",
-      },
-      {
-        q: "Can we run it under our own brand?",
-        a: "Yes. Local partners operate the diagnosis in their market under a licence. ACADEMIX supplies the instrument, scoring and report generation; the partner supplies the local data and the relationship with universities.",
-      },
-      {
-        q: "Where does student data live?",
-        a: "Responses and results are stored server-side; nothing is kept in the browser. Residency, retention and hand-back at contract end are set out in the agreement, and can be arranged to meet local requirements.",
-      },
-      {
-        q: "How do students take it?",
-        a: "We issue a participation link per university and department. A student opens the link, completes the assessment and receives their report automatically. There is no student sign-up and no roster upload.",
-      },
-      {
-        q: "What does the institution receive?",
-        a: "An anonymised aggregate report covering the cohort's distribution across job areas and work styles, usable as evidence of graduate outcomes. An administrator area covering every engineering department is on the way.",
-      },
-      {
-        q: "Is it validated?",
-        a: "It is not a personality test. For each role we wrote down what has to be confirmed before someone can explain that work, and the items were derived from those areas. The same answers always produce the same scores and the weights are visible in the data, so a department can re-score an answer sheet. The cognitive interviews and the pilot have not been run, so we do not call it validated.",
-      },
-    ],
-  },
-
-  pricing: {
-    label: "Pricing",
-    heading: "BASIC costs nothing; the two tiers above it are a choice",
-    lead:
-            "Take BASIC first and decide from there. The tiers differ in what you get back, and you pick one on the pricing page. Departments contract by cohort size, and most run one department first and widen from there. A single year group is enough to see what the reports change.",
-    planLabel: "What you are interested in",
-    plans: [
-      {
-        key: "individual",
-        name: "Individual",
-        who: "A student, a job seeker, a graduate-school applicant",
-        /* Prices live in `src/lib/prices.ts`. Written here, one of the four
-           content files is left behind the day the approved value changes */
-        price: priceRange(GLOBAL_TIERS),
-        unit: "three tiers, per person",
-        note: "BASIC costs nothing. Which tier to take is a decision you make on the pricing page, against what each one returns. Overseas Visa and Mastercard are accepted once the merchant review clears.",
-        features: [
-          ...tierLines(GLOBAL_TIERS),
-          "Six work styles as a hexagon",
-          "Competency gaps: required level against held level",
-          "Projects, applications, interviews",
-        ],
-        cta: { ready: "Buy now", ask: "Request an assessment" },
-      },
-      {
-        key: "department",
-        name: "Department",
-        who: "A department or careers service",
-        price: null,
-        unit: "per student",
-        note: "Unit price depends on the cohort size.",
-        features: [
-          "Everything in Individual",
-          "A participation link per department",
-          "Anonymised aggregate report",
-          "Regional employer matching, where localised",
-          "The department sets when results are released",
-        ],
-        cta: { ready: "Start a rollout", ask: "Talk about a rollout" },
-        featured: true,
-      },
-      {
-        key: "country",
-        name: "Country partner",
-        who: "An operator bringing PCA to their market",
-        price: null,
-        unit: "licence",
-        note: "Scoped against a pilot cohort rather than quoted blind.",
-        features: [
-          "Everything in Department",
-          "Localisation build for your country",
-          "Operate under your own brand",
-          "Training for the people running it",
-          "Administrator area for outcome reporting",
-        ],
-        cta: { ready: "Start a partnership", ask: "Talk about a partnership" },
-      },
-    ],
-    note:
-      "Price depends on cohort size and whether the regional module is in scope. Tell us the department and a rough number and we will come back with an estimate.",
-    howBuy: {
-      label: "How buying works",
-      heading: "If the price works for you, here is what happens next",
-      tracks: [
-        {
-          key: "individual",
-          name: "Individual: take BASIC, then pick a tier",
-          who: "A student or a job seeker",
-          steps: [
-            "Start free opens the pricing page. Signing up logs you in and returns you to where you were",
-            "BASIC costs nothing. Every answer saves as you go, so you can close the tab and come back",
-            "The role group to look at first, and one next step, open as soon as it is scored. No departmental approval to wait on",
-            "Take STANDARD if roles still need weighing up, or PRO once the direction is set",
-          ],
-        },
-        {
-          key: "org",
-          name: "Department or university, by contract",
-          who: "A department, a careers office, a university",
-          steps: [
-            "Tell us the department and a rough number; we come back with an estimate",
-            "The contract creates the seats. Students never see a payment screen",
-            "Upload the roster and each student gets their own credentials",
-            "Students sit the assessment; the coordinator reads the anonymous cohort report first",
-            "Reports open to students when the coordinator releases them",
-          ],
-        },
-      ],
-      caveat:
-        "Individual card payment opens once the Korean merchant review and the mail-order seller filing clear. Until then individual assessments are booked through the form, while department contracts run today, because a contract does not go through a payment screen. We do not list something as working when it does not.",
-    },
-  },
-
-  regions: {
-    label: "Countries",
-    heading: "Open the site for your country",
-    lead:
-      "Each country runs its own site in its own language, against its own labour-market data. The platform students sit on is one, worldwide.",
-    liveLabel: "Open",
-    soonLabel: "In preparation",
-    note:
-      "No country site is open yet. The domains below are reserved names, not live addresses. The assessment itself runs; what is pending is the domain and the local rollout. If your country is not listed, talk to us. That is how one starts.",
-    items: [
-      { code: "KR", name: "Korea", native: "한국", domain: SITE_DOMAIN.kr,
-        href: `https://${SITE_DOMAIN.kr}`, live: false },
-      { code: "DE", name: "Germany", native: "Deutschland", domain: "metri.de", href: "https://metri.de", live: false },
-      { code: "US", name: "United States", native: "United States", domain: "metri.us", href: "https://metri.us", live: false },
-      { code: "JP", name: "Japan", native: "日本", domain: "metri.jp", href: "https://metri.jp", live: false },
-      { code: "CN", name: "China", native: "中国", domain: "metri.cn", href: "https://metri.cn", live: false },
-      { code: "TR", name: "Türkiye", native: "Türkiye", domain: "metri.com.tr", href: "https://metri.com.tr", live: false },
-      { code: "KZ", name: "Kazakhstan", native: "Қазақстан", domain: "metri.kz", href: "#contact", live: false },
-      { code: "FR", name: "France", native: "France", domain: "metri.fr", href: "#contact", live: false },
-      { code: "ZA", name: "South Africa", native: "South Africa", domain: "metri.co.za", href: "#contact", live: false },
-      { code: "PH", name: "Philippines", native: "Pilipinas", domain: "metri.ph", href: "#contact", live: false },
-    ],
-  },
-
-  contact: {
-    heading: "Talk to us",
-    lead:
-      "The department and a rough headcount are enough. We come back with what a rollout would actually involve in your market.",
-    quickHeading: "One minute",
-    quickNote: "The department and a rough number are enough. We reply with a scope, not a brochure.",
-    quickSubmit: "Send",
-    typeLabel: "What is this about",
-    types: [
-      { value: "org", label: "University, department or school rollout" },
-      { value: "partner", label: "Operating CareerMatri in my country" },
-      { value: "individual", label: "An individual assessment" },
-    ],
-    afterLabel: "What happens next",
-    after: [
-      "We read it and check the fit",
-      "We come back with a scope and an estimate",
-      "We agree a pilot cohort and a timeline",
-    ],
-    fields: {
-      org: "University · department",
-      name: "Your name",
-      email: "Email for our reply",
-      size: "Students expected to sit",
-      sizeHint: "Leave blank for an individual assessment",
-      message: "Anything else",
-      messageHint: "Timing, questions, constraints",
-    },
-    submit: "Send",
-    sending: "Sending…",
-    success: "Thanks, we have it",
-    successBody: "We will reply to the address you gave.",
-    error: "That did not send. Please try again in a moment.",
-  },
-
-  chrome: {
-    glanceLabel: "At a glance",
-    glanceHeading: "One sitting, carried through to execution",
-    flow: ["Sitting", "Ten job areas", "Six work styles", "Execution plan", "Report"],
-    seeSheet: "See the result sheet",
-    photosHome: [
-      "Photo: employment lecture",
-      "Photo: STEM mentoring session",
-      "Photo: career fair",
-    ],
-    photosAbout: [
-      "Photo: university event",
-      "Photo: invited speaker",
-      "Photo: the team",
-    ],
-    photoCohort: "Photo: a department sitting the assessment",
-    deeperLabel: "Go deeper",
-    deeperHeading: "Start where it matters to you",
-    nextLabel: "Next",
-    nextSheetToAdopt: "What would this look like at your institution?",
-    nextContact: "Talk to us",
-    policy: {
-      termsLabel: "Terms of service",
-      termsTitle: "Terms of service",
-      termsLead: "What we do, what we do not do, and what a credit and a report actually are.",
-      privacyLabel: "Privacy policy",
-      privacyTitle: "How we handle personal data",
-      privacyLead: "What we collect, how long we keep it, and how it is destroyed.",
-      refundLabel: "Refund policy",
-      refundTitle: "When we refund",
-      refundLead: "Before a sitting and after a sitting are different. The boundary comes first.",
-      updated: "Updated 2026-09-11",
-      reviewNote: "These terms are not legal advice. Have counsel review them before publishing.",
+      company: "Company",
+      ceo: "Representatives",
+      address: "Address",
+      tel: "Phone",
+      email: "Email",
+      bizNo: "Business registration no.",
+      mailOrderNo: "Mail-order business no.",
+      jobInfoNo: "Job information business no.",
+      privacyOfficer: "Privacy officer",
+      unset: "Pending",
     },
   },
 
   footer: {
-    note: "PCA · developed by ACADEMIX",
-    sitesLabel: "Countries",
-    sites: [
-    ...MARKET_LINKS,
-      { label: "Қазақстан", href: "https://metri.kz", ready: false },
-      { label: "Türkiye", href: "https://metri.com.tr", ready: false },
+    tagline: "Major-based career diagnosis and workspace",
+    columns: [
+      {
+        title: "Product",
+        links: [
+          { label: "How it works", href: "/#how" },
+          { label: "Majors", href: "/#majors" },
+          { label: "Universities", href: "/universities" },
+          { label: "Pricing", href: "/pricing" },
+        ],
+      },
+      {
+        title: "Go to",
+        links: [
+          { label: "Start the assessment", href: "/cores" },
+          { label: "Sign in", href: "/login" },
+          { label: "University staff sign in", href: "/login" },
+          { label: "Contact", href: "/contact" },
+          { label: "Support", href: "/support" },
+        ],
+      },
+      {
+        title: "Legal",
+        links: [
+          { label: "Terms of service", href: "/legal/terms" },
+          { label: "Privacy policy", href: "/legal/privacy" },
+          { label: "Refund policy", href: "/legal/refund" },
+        ],
+      },
     ],
-    soonLabel: "coming soon",
-    closing: "So that a major leads somewhere",
-  },
-
-  map: {
-    heading: "Where PCA runs",
-    lead:
-      "The instrument, the job areas and the work-style framework are shared worldwide. What is filled in per country is the university, its local employers, and the translations.",
-    countries: [
-      { code: "DE", name: "Germany", status: "live", note: "Running" },
-      { code: "US", name: "United States", status: "live", note: "Running" },
-      { code: "JP", name: "Japan", status: "live", note: "Running" },
-      { code: "CN", name: "China", status: "live", note: "Running" },
-      { code: "TR", name: "Türkiye", status: "live", note: "Running" },
-      { code: "KR", name: "Korea", status: "live", note: "Home market · Daejeon regional matching" },
-      { code: "KZ", name: "Kazakhstan", status: "planned", note: "Planned" },
-      { code: "FR", name: "France", status: "planned", note: "Planned" },
-      { code: "ZA", name: "South Africa", status: "planned", note: "Planned" },
-      { code: "PH", name: "Philippines", status: "planned", note: "Planned" },
-    ],
-    statusLabel: { live: "Running", progress: "Onboarding", planned: "Planned" },
-    footnote:
-      "Regional matching is rebuilt per region from that region's own employers. The method travels; the list does not.",
+    copyright: "© 2026 주식회사 에이치에이연구원 · CareerMatri",
   },
 };

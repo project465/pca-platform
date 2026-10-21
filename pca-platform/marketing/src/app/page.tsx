@@ -1,96 +1,213 @@
 import { getSite } from "@/content";
-import Shell from "@/components/shell";
-import Hero from "@/components/hero";
-import {
-  Analyze,
-  ChannelsSection,
-  Closing,
-  GapSection,
-  PricingSection,
-  RegionsSection,
-  Who,
-} from "@/components/sections";
-import { FlowDiagram, NextLink, PhotoSlot, PullQuote, ReportMini } from "@/components/visuals";
-import { appHref, hrefSlug } from "@/lib/platform";
-import SampleReport from "@/components/sample-report";
+import { Shell } from "@/components/chrome";
+import { Button, Closing, FaqList, SectionHead } from "@/components/blocks";
+import { Icon, type IconName } from "@/components/icons";
+import { ReportMockView, WorkspaceMockView } from "@/components/mocks";
+
+/**
+ * 홈. 이 순서가 곧 설명의 순서다:
+ *
+ *   무엇을 하는가 → 어떻게 쓰나 → 결과지에 무엇이 담기나 → 어느 전공인가
+ *   → 학교·기관 → 개인 → 자주 묻는 것 → 시작
+ *
+ * 검사도 결제도 여기 두지 않는다. 단추는 전부 앱으로 가거나(검사 시작 ·
+ * 로그인 · 요금) 이 사이트의 다른 쪽으로 간다(대학·기관 · 문의).
+ */
+const STEP_ICON: IconName[] = ["clipboard", "doc", "layers"];
+const REPORT_ICON: IconName[] = ["target", "check", "pencil", "link", "calendar", "doc"];
+const CAMPUS_ICON: IconName[] = ["cap", "key", "chart", "download"];
 
 export default function Home() {
   const site = getSite();
-
-  const c = site.chrome;
-  const flow = c.flow.map((v, i) => ({ k: String(i + 1).padStart(2, "0"), v }));
+  const h = site.home;
 
   return (
-    <Shell>
-      <Hero site={site} />
-
-      <SampleReport site={site} />
-
-      <section className="divided">
-        <div className="wrap">
-          <div className="sec-head">
-            <span className="label-sm">{c.glanceLabel}</span>
-            <h2>{c.glanceHeading}</h2>
-          </div>
-          <FlowDiagram steps={flow} />
-        </div>
-      </section>
-
-      <ChannelsSection site={site} />
-
-      <Who site={site} />
-      <Analyze site={site} />
-
-      <section className="divided tinted">
-        <div className="wrap photosplit">
-          <div>
-            <span className="label-sm">{site.sheet.label}</span>
-            <h2 style={{ margin: "16px 0 16px" }}>{site.sheet.heading}</h2>
-            <p className="lead">{site.sheet.lead[0]}</p>
-            <div style={{ marginTop: 24 }}>
-              {/* 결과지는 앱 하나다. 홈페이지가 또 들고 있으면 절 수와
-                  구성이 두 곳에서 따로 자란다 */}
-              <a className="btn lg solid" href={appHref(site, "/sample")}>
-                {c.seeSheet}
-              </a>
+    <Shell site={site}>
+      {/* ── 첫 화면 ─────────────────────────────────────────── */}
+      <section className="hero">
+        <div className="wrap hero-grid">
+          <div className="hero-copy">
+            <span className="pill">{h.hero.eyebrow}</span>
+            <h1>
+              {h.hero.title.map((t, i) => (
+                <span key={t} className={i === h.hero.title.length - 1 ? "hl" : undefined}>
+                  {t}
+                </span>
+              ))}
+            </h1>
+            <p className="hero-lead">{h.hero.lead}</p>
+            <div className="hero-acts">
+              <Button link={h.hero.primary} size="lg" arrow />
+              <Button link={h.hero.secondary} kind="ghost" size="lg" />
             </div>
+            <p className="hero-note">
+              {h.hero.note}{" "}
+              <a href={h.hero.noteLink.href}>
+                {h.hero.noteLink.label}
+                <Icon name="arrow" size={15} />
+              </a>
+            </p>
           </div>
-          <ReportMini site={site} />
+          <div className="hero-visual">
+            <WorkspaceMockView m={h.mock} />
+          </div>
         </div>
       </section>
 
-      <section className="divided">
+      {/* ── 어떻게 쓰나 ─────────────────────────────────────── */}
+      <section className="section" id="how">
         <div className="wrap">
-          <PullQuote source={site.why.after.title}>
-            {site.why.after.verdict}
-          </PullQuote>
-          <div className="photorow" style={{ marginTop: 34 }}>
-            {c.photosHome.map((caption) => (
-              <PhotoSlot key={caption} caption={caption} />
+          <SectionHead label={h.how.label} title={h.how.title} lead={h.how.lead} />
+          <ol className="steps">
+            {h.how.steps.map((s, i) => (
+              <li key={s.no} className="step">
+                <div className="step-top">
+                  <span className="step-ico">
+                    <Icon name={STEP_ICON[i] ?? "doc"} size={22} />
+                  </span>
+                  <span className="step-no">{s.no}</span>
+                </div>
+                <h3>{s.title}</h3>
+                <p>{s.body}</p>
+                <ul className="checks">
+                  {s.points.map((p) => (
+                    <li key={p}>
+                      <Icon name="check" size={16} stroke={2.2} />
+                      {p}
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* ── 결과지 ─────────────────────────────────────────── */}
+      <section className="section section-tint" id="report">
+        <div className="wrap split">
+          <div>
+            <SectionHead label={h.report.label} title={h.report.title} lead={h.report.lead} />
+            <ul className="feature-list">
+              {h.report.items.map((it, i) => (
+                <li key={it.title}>
+                  <span className="feature-ico">
+                    <Icon name={REPORT_ICON[i] ?? "doc"} size={18} />
+                  </span>
+                  <div>
+                    <b>{it.title}</b>
+                    <p>{it.body}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <p className="fine">
+              <Icon name="shield" size={16} />
+              {h.report.note}
+            </p>
+          </div>
+          <div className="split-visual">
+            <ReportMockView m={h.report.mock} />
+          </div>
+        </div>
+      </section>
+
+      {/* ── 전공 Core ──────────────────────────────────────── */}
+      <section className="section" id="majors">
+        <div className="wrap">
+          <SectionHead label={h.majors.label} title={h.majors.title} lead={h.majors.lead} />
+          <div className="majors">
+            {h.majors.groups.map((g) => (
+              <div className="major-group" key={g.name}>
+                <h3>
+                  {g.name}
+                  <span>{g.items.length}</span>
+                </h3>
+                <ul>
+                  {g.items.map((m) => (
+                    <li key={m}>{m}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <div className="majors-foot">
+            <p>{h.majors.note}</p>
+            <Button link={h.majors.cta} arrow />
+          </div>
+        </div>
+      </section>
+
+      {/* ── 대학·기관 ──────────────────────────────────────── */}
+      <section className="section section-navy" id="campus">
+        <div className="wrap">
+          <div className="campus-grid">
+            <div>
+              <SectionHead label={h.campus.label} title={h.campus.title} lead={h.campus.lead} invert />
+              <div className="campus-acts">
+                <Button link={h.campus.primary} kind="light" arrow />
+                <Button link={h.campus.secondary} kind="outline-light" />
+              </div>
+            </div>
+            <ul className="campus-points">
+              {h.campus.points.map((p, i) => (
+                <li key={p.title}>
+                  <span className="feature-ico is-invert">
+                    <Icon name={CAMPUS_ICON[i] ?? "check"} size={18} />
+                  </span>
+                  <div>
+                    <b>{p.title}</b>
+                    <p>{p.body}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 개인 ───────────────────────────────────────────── */}
+      <section className="section" id="personal">
+        <div className="wrap">
+          <SectionHead label={h.personal.label} title={h.personal.title} lead={h.personal.lead} />
+          <div className="cards-2">
+            {h.personal.cards.map((c, i) => (
+              <article key={c.title} className={`card offer${i === 1 ? " is-accent" : ""}`}>
+                <span className="tag">{c.tag}</span>
+                <h3>{c.title}</h3>
+                <p>{c.body}</p>
+                {c.price && (
+                  <div className="offer-price">
+                    <b>{c.price}</b>
+                    {c.priceNote && <span>{c.priceNote}</span>}
+                  </div>
+                )}
+                <ul className="checks">
+                  {c.points.map((p) => (
+                    <li key={p}>
+                      <Icon name="check" size={16} stroke={2.2} />
+                      {p}
+                    </li>
+                  ))}
+                </ul>
+                <div className="card-foot">
+                  <Button link={c.cta} kind={i === 1 ? "primary" : "ghost"} arrow />
+                </div>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="divided">
-        <div className="wrap">
-          <div className="sec-head">
-            <span className="label-sm">{c.deeperLabel}</span>
-            <h2>{c.deeperHeading}</h2>
-          </div>
-          <div className="nextgrid">
-            {site.nav.items.slice(0, 4).map((i) => (
-              <NextLink key={i.href} label={hrefSlug(i.href)} title={i.label} href={i.href} />
-            ))}
-          </div>
+      {/* ── 자주 묻는 것 ───────────────────────────────────── */}
+      <section className="section section-tint" id="faq">
+        <div className="wrap faq-wrap">
+          <SectionHead label={h.faq.label} title={h.faq.title} />
+          <FaqList items={h.faq.items} />
         </div>
       </section>
 
-      <GapSection site={site} />
-
-      <PricingSection site={site} />
-      <RegionsSection site={site} />
-      <Closing site={site} />
+      <Closing {...h.closing} />
     </Shell>
   );
 }

@@ -38,6 +38,22 @@ export const GLOBAL_TIERS: TierPrice[] = [
   { tier: "PRO",      price: "$24.99",  headline: "Evidence strategy and plan",  when: "Direction already set" },
 ];
 
+/**
+ * AI 취업비서(앱 안의 이름은 Track) 기간권. 한국 시장에만 판다.
+ *
+ * 정본은 `db/schema_track.sql` 의 `TRACK_30D` · `TRACK_365D` 다. 자동 갱신이
+ * 없고(기간이 끝나면 저절로 닫힌다), PRO 결과지를 산 사람의 첫 한 달은
+ * `TRACK_PRO_TRIAL` 이 연다. 앱 값이 바뀌면 고칠 곳은 그 파일과 이 줄이다.
+ *
+ * **검사 등급 값은 홈페이지에 적지 않는다.** 지금 앱의 가격표가 판매 중인
+ * 등급을 내놓지 않는 시장이 있어서, 여기 적어 두면 사는 쪽이 앱에서 볼 수
+ * 없는 값을 홈페이지에서 보게 된다. 개인 요금은 앱 `/pricing` 으로 보낸다.
+ */
+export const TRACK_KR = {
+  month: { name: "30일권", price: "4,900원" },
+  year: { name: "365일권", price: "39,000원" },
+} as const;
+
 /** 값을 한 줄로 늘어놓는다 (`무료 · 14,900원 · 21,900원`) */
 export function priceRange(tiers: TierPrice[]): string {
   return tiers.map((t) => t.price).join(" · ");

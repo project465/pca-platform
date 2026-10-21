@@ -1,36 +1,32 @@
-import type { SiteContent, SiteKey } from "./types";
+import type { SiteContent, SiteKey } from "./model";
 import { withAppLinks } from "@/lib/platform";
 import { global } from "./global";
 import { kr } from "./kr";
-import { kz } from "./kz";
-import { tr } from "./tr";
 
 /**
- * 나라를 추가할 때 손대는 곳은 여기 한 줄과 원고 파일 하나다.
- * 지금 네 나라가 들어와 있다 — global · kr · kz · tr. 나라를 더할 때 손대는 곳은
- * 여기 한 줄과 원고 파일 하나뿐이다. 컴포넌트는 건드리지 않는다.
+ * 어느 원고를 실을지는 빌드할 때 `SITE` 가 정한다.
+ *
+ * **kz·tr 은 이 판의 쪽에 연결하지 않았다.** 두 원고(`kz.ts` · `tr.ts`)는
+ * 옛 모양(`types.ts`)으로 쓴 현지 검수 전 초안이고, 지금 제품이 하지 않는
+ * 일(직무 적합도 점수 · 업무 성향 6축 · 지역 기업 매칭)을 적고 있다. 그대로
+ * 띄우면 그 나라 사람이 없는 기능을 읽게 된다. 다시 붙일 때는 `model.ts`
+ * 모양으로 원고를 새로 쓰고 아래 표에 한 줄을 더한다.
  */
-const SITES: Partial<Record<SiteKey, SiteContent>> = { global, kr, kz, tr };
+const SITES: Record<SiteKey, SiteContent> = { kr, global };
 
 export function getSite(): SiteContent {
-  const key = (process.env.SITE ?? "global") as SiteKey;
+  const key = (process.env.SITE ?? "kr") as SiteKey;
   const site = SITES[key];
   if (!site) {
     const known = Object.keys(SITES).join(", ");
-    throw new Error(`SITE=${key} 에 해당하는 원고가 없습니다. 지금 있는 것: ${known}`);
+    throw new Error(
+      `SITE=${key} 에 해당하는 원고가 없습니다. 지금 있는 것: ${known}. ` +
+        "kz·tr 은 옛 원고만 남아 있고 이 판의 쪽에는 연결하지 않았습니다.",
+    );
   }
-  /* **앱이 맡은 길은 앱으로 보낸다.** 원고에 `/pricing` · `/login` 처럼
-     상대 주소로 적혀 있어서 눌리면 홈페이지 안에서 끝났다. 원고를 네 벌
-     고치는 대신 읽는 자리에서 한 번 돌린다(`lib/platform.ts`) */
+  /* **앱이 맡은 길은 앱으로 보낸다.** 원고에는 `/cores` · `/login` 처럼
+     상대 주소로 적혀 있고, 여기서 한 번 돌린다(`lib/platform.ts`) */
   return withAppLinks(site, site);
 }
 
-export type {
-  SiteContent,
-  SiteKey,
-  MapContent,
-  DeployStatus,
-  SheetTab,
-  Named,
-  Link,
-} from "./types";
+export type { SiteContent, SiteKey, Link, Titled, Faq } from "./model";
