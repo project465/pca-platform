@@ -4,7 +4,7 @@ import type * as z from "zod/v4";
 import { opFail } from "@/lib/oplog";
 
 /**
- * 매트가 Claude 를 부르는 유일한 자리.
+ * MAT이 Claude 를 부르는 유일한 자리.
  *
  * **점수를 만들지 않는다**(설계 원칙 6). 여기서 나오는 것은 붙여 넣은
  * 공고에서 뽑은 요구 항목과, 적어 주신 메모를 그 Core 의 보기로 옮긴

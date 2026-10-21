@@ -1,7 +1,7 @@
 import { query, queryOne } from "@/lib/db";
 
 /**
- * 매트의 사람별 설정.
+ * MAT의 사람별 설정.
  *
  * **동의는 사람이 눌러야 생긴다.** 붙여 넣은 글을 Claude 로 보내는 것은
  * 그 글이 나라 밖(Anthropic, 미국)으로 나간다는 뜻이라, 켜 둔 채로 두지

@@ -2800,7 +2800,7 @@ export default async function V3Result({
             </ul>
             {/* **카드로 세우지 않는다**(규격 §7). 한 줄 링크로 둔다 */}
             <p className="rs-end-note">
-              매주 할 일과 공고 확인은 <Link href="/me/track">매트</Link>에서 이어집니다.
+              매주 할 일과 공고 확인은 <Link href="/me/track">MAT</Link>에서 이어집니다.
             </p>
           </div>
         </section>

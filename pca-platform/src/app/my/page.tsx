@@ -102,16 +102,16 @@ export default async function AccountHome({
           </div>
         </section>
 
-        {/* ── 매트 ── 기간이 언제 끝나는지는 이 계정에서 찾는 사람이 많다 */}
+        {/* ── MAT ── 기간이 언제 끝나는지는 이 계정에서 찾는 사람이 많다 */}
         <section className="cm-card">
-          <h2><Icon name="clock" size={17} />매트</h2>
+          <h2><Icon name="clock" size={17} />MAT</h2>
           <p>
             {track.on && track.until
               ? `${new Intl.DateTimeFormat("ko-KR", { timeZone: "Asia/Seoul", year: "numeric", month: "long", day: "numeric" }).format(new Date(track.until))}까지 열려 있습니다. 자동으로 갱신되지 않습니다.`
               : "열려 있지 않습니다. 30일권과 365일권이 있습니다."}
           </p>
           <div className="cm-acts">
-            <Link href="/me/track" className="cm-btn">{track.on ? "매트 열기" : "매트 보기"}</Link>
+            <Link href="/me/track" className="cm-btn">{track.on ? "MAT 열기" : "MAT 보기"}</Link>
           </div>
         </section>
 

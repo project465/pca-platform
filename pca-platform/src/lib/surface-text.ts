@@ -203,8 +203,8 @@ export const TX = {
     "Evidence architecture, research ownership, organization value, next evidence project, 30/90/365 plan",
   ),
   pxBuy: p("시작하기", "Get started"),
-  /* ── 매트 (기간권 · 코드 이름은 Track) ───────────────────────────────── */
-  pxTrackTitle: p("매트", "Mat, career assistant"),
+  /* ── MAT (기간권 · 코드 이름은 Track) ───────────────────────────────── */
+  pxTrackTitle: p("MAT", "MAT, AI career assistant"),
   pxTrackLead: p(
     "매주 할 일 하나를 먼저 알려 드리고, 메모를 경험 기록으로 옮기고, 직접 찾은 공고를 내 경험과 맞대어 드립니다. 자동으로 갱신되지 않고 기간이 끝나면 저절로 닫힙니다.",
     "It tells you one thing to do each week, turns your notes into experience records, and lines up postings you found against your experience. It does not renew on its own and simply closes when the period ends.",
@@ -223,16 +223,16 @@ export const TX = {
   pxTrack30Why: p("한 달만 써 보고 정해도 됩니다.", "Try it for a month first."),
   pxTrackSave: p("30일권을 열두 번 사는 것보다 적게 냅니다.", "Less than buying 30 days twelve times."),
   pxTrackTrial: p(
-    "PRO 결과지를 사시면 매트 첫 1개월이 함께 열립니다.",
+    "PRO 결과지를 사시면 MAT 첫 1개월이 함께 열립니다.",
     "Buying the PRO report opens your first month of the assistant.",
   ),
   pxTrackSoon: p(
     "공고 자동 수집은 준비 중입니다. 지금은 직접 찾은 공고를 붙여 넣어 확인합니다.",
     "Automatic posting collection is on the way. For now you paste postings you found.",
   ),
-  pxTrackBuy: p("매트 시작하기", "Start the assistant"),
+  pxTrackBuy: p("MAT 시작하기", "Start the assistant"),
   payTrackNote1: p(
-    "결제하면 바로 매트가 열립니다. 검사 응시권은 생기지 않습니다.",
+    "결제하면 바로 MAT이 열립니다. 검사 응시권은 생기지 않습니다.",
     "The assistant opens as soon as you pay. It does not add an assessment credit.",
   ),
   payTrackNote2: p(
@@ -243,12 +243,12 @@ export const TX = {
     "남은 기간은 일할로 환불을 요청할 수 있습니다.",
     "You can ask for a pro-rated refund of the days left.",
   ),
-  okTrackTitle: p("매트가 열렸습니다.", "Your assistant is on."),
+  okTrackTitle: p("MAT이 열렸습니다.", "Your assistant is on."),
   okTrackBody: p(
     "기간이 끝나면 저절로 닫히고 다시 결제되지 않습니다.",
     "It closes on its own when the period ends and is not charged again.",
   ),
-  okTrackGo: p("매트 열기", "Open the assistant"),
+  okTrackGo: p("MAT 열기", "Open the assistant"),
 
   /* ── 동의 ───────────────────────────────────────────────────────
      **`locale.ts` 에 넣지 않는다.** 저쪽은 세 언어를 한 줄에 쓰게 묶여

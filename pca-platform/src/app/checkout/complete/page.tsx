@@ -85,7 +85,7 @@ export default async function CompletePage({
       <div className="pub">
         <div className="pubwrap">
           <div className="asdone">
-            <div className="sf-eyebrow">매트</div>
+            <div className="sf-eyebrow">MAT</div>
             <h1 className="sf-h1" style={{ marginTop: 10 }}>{T("okTrackTitle")}</h1>
             <p className="sf-sub">{T("okTrackBody")}</p>
             <dl className="sf-defs" style={{ marginTop: 20 }}>

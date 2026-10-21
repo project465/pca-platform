@@ -357,7 +357,7 @@
 /** AI 티 문장 정리 (견줍니다·섭니다·세웠습니다 등) */
 /** 공고 쪽이 공고 통계(이 전공의 공고가 묻는 영역)를 세운다 */
 /** 지원서·면접 준비 쪽이 선다(문항 넷 · 예상 질문 · 직접 적는 답) — V56 */
-/** 매트 쪽이 하는 일 셋 · 한 주 쓰는 법 · 하지 않는 일 · 자주 묻는 것을 세운다(guide.tsx).
+/** MAT 쪽이 하는 일 셋 · 한 주 쓰는 법 · 하지 않는 일 · 자주 묻는 것을 세운다(guide.tsx).
  *  열려 있지 않은 사람은 펼쳐 두고 쓰는 사람은 접어 둔다. 가격표에도 세 줄이 붙는다 */
 export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V57";
 
@@ -402,7 +402,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V57";
 /** 공고 통계 쪽의 글 */
 /** 지원서·면접 준비 쪽의 글 */
 /** AI 취업비서의 이름을 '매트'로 바꿨다(화면 구조는 그대로) */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.38";
+/** 이름을 다시 바꿨다: 매트 → MAT. 설명 이름은 AI 취업비서로 둔다 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.39";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**
