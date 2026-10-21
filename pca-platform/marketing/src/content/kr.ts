@@ -43,6 +43,7 @@ export const kr: SiteContent = {
     copy: "복사",
     copied: "복사했습니다",
     external: "CareerMatri 앱으로 이동합니다",
+    langLabel: "언어",
   },
 
   nav: {
@@ -364,6 +365,93 @@ export const kr: SiteContent = {
         ],
       },
       note: "비교 기준이 생기기 전까지는 결과지에 백분위나 순위를 적지 않습니다.",
+      math: {
+        title: "점수는 이렇게 계산합니다",
+        lead: "모든 점수는 아래 식으로만 계산합니다. 가중치와 변환 행렬은 코드가 아니라 데이터 표에 있어서, 학과나 나라에 맞게 바꿔도 계산 방법은 그대로입니다.",
+        steps: [
+          {
+            no: "01",
+            title: "영역 점수",
+            formula: "S<sub>a</sub> = 25 · ( x̄<sub>a</sub> − 1 ),&ensp; x̄<sub>a</sub> = <sup>1</sup>&frasl;<sub>n</sub> Σ<sub>i</sub> x<sub>i</sub>",
+            body: "한 직무 영역 문항들의 평균(1~5점)을 0~100으로 폅니다. 1점은 0, 3점은 50, 5점은 100입니다.",
+          },
+          {
+            no: "02",
+            title: "측정 오차",
+            formula: "SE<sub>a</sub> = 25 · s<sub>a</sub> / √n",
+            body: "같은 영역 안 응답이 얼마나 흩어졌는지로 오차를 잽니다. 정해 둔 값을 쓰지 않고 사람마다 계산합니다.",
+          },
+          {
+            no: "03",
+            title: "가중치로 활동 축 만들기",
+            formula: "A<sub>k</sub> = Σ<sub>a</sub> w<sub>a,k</sub> x̄<sub>a</sub> / Σ<sub>a</sub> w<sub>a,k</sub>",
+            body: "직무 영역 점수를 가중치 행렬 w로 8개 활동 축(해석·계산, 설계·구상, 제작·실험 등)에 옮깁니다.",
+          },
+          {
+            no: "04",
+            title: "오차 전파",
+            formula: "SE(A<sub>k</sub>) = √ Σ<sub>a</sub> ( w<sub>a,k</sub> / Σw · SE<sub>a</sub> )<sup>2</sup>",
+            body: "축 점수를 만든 가중치 그대로 오차도 옮깁니다. 축마다 얼마나 믿을 만한지가 함께 계산됩니다.",
+          },
+          {
+            no: "05",
+            title: "개인 안에서의 위치",
+            formula: "z<sub>k</sub> = ( A<sub>k</sub> − Ā ) / s<sub>A</sub>,&ensp; |z<sub>k</sub>| ≤ 3",
+            body: "축마다 묶인 영역 수가 달라 생기는 치우침을 없애려고, 그 사람의 여러 축 사이에서 높낮이로 바꿉니다.",
+          },
+          {
+            no: "06",
+            title: "직무 적합도",
+            formula: "F<sub>j</sub> = 0.75 · 100σ(ℓ<sub>j</sub>) + 0.25 · 100σ(p<sub>j</sub>),&ensp; σ(z) = 1 / ( 1 + e<sup>−1.2z</sup> )",
+            body: "직무마다 무겁게 보는 축의 가중치 v로 활동 선호 ℓ = Σ v·z / Σ v 를 구하고, 업무 성향 점수 p와 3 : 1로 합칩니다.",
+          },
+          {
+            no: "07",
+            title: "구간과 묶음",
+            formula: "F<sub>j</sub> ± SE(F<sub>j</sub>)&ensp;(약 68% 구간)",
+            body: "구간이 겹치는 직무는 순위를 매기지 않고 같은 묶음으로 보여 줍니다. 오차보다 작은 차이로 1위와 2위를 가르지 않습니다.",
+          },
+          {
+            no: "08",
+            title: "근거 판정 (전공 검사)",
+            formula: "근거 있음 ⇔ |C| ≥ 4 ∧ R ⊆ C ∧ O ≥ 1",
+            body: "전공 검사는 점수를 더하지 않습니다. 확인된 판단 축 C가 4개 이상이고, 그 영역의 필수 축 R이 모두 들어 있고, 남긴 결과물 O가 있어야 '근거가 있는 영역'이 됩니다.",
+          },
+          {
+            no: "09",
+            title: "신뢰도 분석",
+            formula: "α = <sup>k</sup>&frasl;<sub>k−1</sub> · ( 1 − Σ<sub>i</sub> σ<sub>i</sub><sup>2</sup> / σ<sub>X</sub><sup>2</sup> )",
+            body: "실제 응시 자료가 모이면 영역마다 내적 일관성(크론바흐 α)을 계산해 공개합니다.",
+            status: "next",
+          },
+        ],
+        weights: {
+          title: "가중치 예시",
+          lead: "기계공학 검사의 실제 가중치 표에서 두 영역을 가져왔습니다. 영역마다 합은 1입니다.",
+          areas: [
+            {
+              name: "설계 및 개발",
+              rows: [
+                { axis: "설계·구상", w: 0.45 },
+                { axis: "해석·계산", w: 0.25 },
+                { axis: "제작·실험", w: 0.2 },
+                { axis: "개선·효율", w: 0.1 },
+              ],
+            },
+            {
+              name: "에너지 및 플랜트",
+              rows: [
+                { axis: "현장·설비", w: 0.4 },
+                { axis: "해석·계산", w: 0.25 },
+                { axis: "조율·관리", w: 0.2 },
+                { axis: "개선·효율", w: 0.15 },
+              ],
+            },
+          ],
+          note: "가중치는 데이터 표(job_area_axis_weights)에 있고, 바뀌면 판본을 올려 이전 응시자의 결과가 달라지지 않게 합니다.",
+        },
+        nextLabel: "예정",
+      },
     },
     campus: {
       label: "대학·기관",

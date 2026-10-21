@@ -18,6 +18,8 @@ export default function MobileMenu({
   start,
   openLabel,
   closeLabel,
+  langLabel,
+  langs,
 }: {
   items: Link[];
   staffLogin: Link;
@@ -25,6 +27,8 @@ export default function MobileMenu({
   start: Link;
   openLabel: string;
   closeLabel: string;
+  langLabel: string;
+  langs: { lang: string; label: string; href: string; htmlLang: string; current: boolean }[];
 }) {
   const [open, setOpen] = useState(false);
 
@@ -72,6 +76,15 @@ export default function MobileMenu({
             {staffLogin.label}
           </a>
         </div>
+        {langs.length > 0 && (
+          <div className="mmenu-langs" role="group" aria-label={langLabel}>
+            {langs.map((l) => (
+              <a key={l.lang} href={l.href} hrefLang={l.htmlLang} lang={l.htmlLang} aria-current={l.current ? "true" : undefined}>
+                {l.label}
+              </a>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

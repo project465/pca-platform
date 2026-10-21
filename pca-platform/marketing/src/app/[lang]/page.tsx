@@ -1,9 +1,12 @@
-import { getSite } from "@/content";
+import { getSite, type Lang } from "@/content";
+import { pageMeta, type PageParams } from "@/lib/seo";
+import { HTML_LANG } from "@/lib/i18n";
 import { Shell } from "@/components/chrome";
 import { Button, Closing, FaqList, SectionHead } from "@/components/blocks";
 import { Icon, type IconName } from "@/components/icons";
 import { ReportMockView, WorkspaceMockView } from "@/components/mocks";
 import { WorldMap } from "@/components/world";
+import type { Metadata } from "next";
 
 /**
  * 홈. 이 순서가 곧 설명의 순서다:
@@ -17,14 +20,21 @@ import { WorldMap } from "@/components/world";
 const STEP_ICON: IconName[] = ["clipboard", "doc", "layers"];
 const REPORT_ICON: IconName[] = ["target", "check", "pencil", "link", "calendar", "doc"];
 const CAMPUS_ICON: IconName[] = ["cap", "key", "chart", "download"];
+export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
+  const { lang } = await params;
+  const site = getSite(lang);
+  return pageMeta(lang as Lang, "/", site.meta);
+}
+
 const TRUST_ICON: IconName[] = ["shield", "list", "building"];
 
-export default function Home() {
-  const site = getSite();
+export default async function Home({ params }: PageParams) {
+  const { lang } = await params;
+  const site = getSite(lang);
   const h = site.home;
 
   return (
-    <Shell site={site}>
+    <Shell site={site} path="/">
       {/* ── 첫 화면 ─────────────────────────────────────────── */}
       <section className="hero">
         <div className="wrap hero-grid">
@@ -186,8 +196,9 @@ export default function Home() {
                 <article key={s.code} className={`sample is-${s.status}`} lang={s.code}>
                   <header className="sample-top">
                     <b>{s.lang}</b>
-                    <span lang="ko">{s.langKo}</span>
-                    <em lang="ko" className={`sample-status is-${s.status}`}>{s.statusLabel}</em>
+                    {/* 그 말을 쓰는 판에서는 같은 이름이 두 번 선다 */}
+                    {s.langKo !== s.lang && <span lang={HTML_LANG[lang as Lang]}>{s.langKo}</span>}
+                    <em lang={HTML_LANG[lang as Lang]} className={`sample-status is-${s.status}`}>{s.statusLabel}</em>
                   </header>
                   <div className="sample-q">
                     <span className="sample-label">{s.question.label} · {s.question.area}</span>
@@ -260,6 +271,59 @@ export default function Home() {
                 {h.trust.note}
               </p>
             </div>
+
+            {h.trust.math && (
+              <div className="math">
+                <div className="math-head">
+                  <h3>{h.trust.math.title}</h3>
+                  <p>{h.trust.math.lead}</p>
+                </div>
+                <ol className="math-steps">
+                  {h.trust.math.steps.map((s) => (
+                    <li key={s.no} className={s.status === "next" ? "is-next" : undefined}>
+                      <div className="math-top">
+                        <span className="math-no">{s.no}</span>
+                        <b>{s.title}</b>
+                        {s.status === "next" && <em className="verify-badge">{h.trust!.math!.nextLabel}</em>}
+                      </div>
+                      {/* 식은 이 사이트가 쓴 짧은 HTML 이다(sub · sup · frasl). 밖에서 받은 글을 담지 않는다 */}
+                      {/* 식 둘을 쉼표로 이어 적은 자리는 줄을 나눈다. 한 줄에 두면 칸 폭을
+                          넘어 뒤 식이 잘려 보인다 */}
+                      <div className="math-f" dangerouslySetInnerHTML={{ __html: s.formula.replace(/,&ensp;/g, "<br>") }} />
+                      <p>{s.body}</p>
+                    </li>
+                  ))}
+                </ol>
+                <div className="weights">
+                  <div className="weights-head">
+                    <h4>{h.trust.math.weights.title}</h4>
+                    <p>{h.trust.math.weights.lead}</p>
+                  </div>
+                  <div className="weights-grid">
+                    {h.trust.math.weights.areas.map((a) => (
+                      <figure key={a.name} className="weight-card">
+                        <figcaption>{a.name}</figcaption>
+                        <ul>
+                          {a.rows.map((r) => (
+                            <li key={r.axis}>
+                              <span className="w-axis">{r.axis}</span>
+                              <span className="w-bar" aria-hidden="true">
+                                <i style={{ width: `${Math.round(r.w * 200)}%` }} />
+                              </span>
+                              <span className="w-val">{r.w.toFixed(2)}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </figure>
+                    ))}
+                  </div>
+                  <p className="fine">
+                    <Icon name="list" size={16} />
+                    {h.trust.math.weights.note}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </section>
       )}

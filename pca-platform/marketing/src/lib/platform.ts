@@ -1,4 +1,6 @@
 import type { SiteContent } from "@/content/model";
+import type { Lang } from "@/content/model";
+import { appLang, localePath } from "./i18n";
 
 /**
  * 플랫폼으로 들어가는 주소.
@@ -19,8 +21,8 @@ export function platformUrl(site: SiteContent, path = "/"): string {
  * 거기서 끝난다. 플랫폼은 ?lang= 을 쿠키로 굳히므로 한 번만 붙이면 된다.
  */
 export function platformStart(site: SiteContent, path = "/start"): string {
-  // 카자흐어 화면은 플랫폼에 아직 없다. 영어로 보낸다.
-  const lang = site.lang === "kk" ? "en" : site.lang;
+  /* 앱이 내놓지 않는 언어(일본어 · 중국어 · 카자흐어)는 영어로 보낸다 */
+  const lang = appLang(site.lang);
   /* 주소에 이미 물음표나 해시가 있으면 그 사이에 끼운다. `?` 를 두 번 붙이면
      앱이 언어를 못 읽고 기본 언어로 연다 */
   const [base, hash = ""] = path.split("#");
@@ -99,4 +101,27 @@ export function withAppLinks<T>(site: SiteContent, node: T): T {
 export function hrefSlug(href: string): string {
   const path = href.split(/[?#]/)[0].replace(/\/+$/, "");
   return path.split("/").pop() ?? "";
+}
+
+/**
+ * 이 사이트 안의 주소에 그 언어의 앞머리를 붙인다(`/universities` →
+ * `/en/universities`). 앱으로 돌린 주소는 이미 `https://` 라 건드리지 않는다.
+ *
+ * **원고는 언어마다 같은 주소를 적는다.** 일본어 원고에 `/ja/contact` 를 적어
+ * 두면 쪽 이름을 바꾸는 날 네 벌을 고쳐야 하고, 한 벌이 옛 주소로 남는다.
+ */
+export function withLangLinks<T>(lang: Lang, node: T): T {
+  if (typeof node === "string") return node as T;
+  if (Array.isArray(node)) return node.map((x) => withLangLinks(lang, x)) as T;
+  if (node && typeof node === "object") {
+    const out: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(node as Record<string, unknown>)) {
+      out[k] =
+        k === "href" && typeof v === "string" && v.startsWith("/") && !v.startsWith("//")
+          ? localePath(lang, v)
+          : withLangLinks(lang, v);
+    }
+    return out as T;
+  }
+  return node;
 }

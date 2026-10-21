@@ -37,6 +37,7 @@ export const global: SiteContent = {
     copy: "Copy",
     copied: "Copied",
     external: "Opens the CareerMatri app",
+    langLabel: "Language",
   },
 
   nav: {

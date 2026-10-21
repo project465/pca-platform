@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
-import { getSite } from "@/content";
+import { getSite, type Lang } from "@/content";
+import { pageMeta, type PageParams } from "@/lib/seo";
 import { Shell } from "@/components/chrome";
 import { Button, Closing, FaqList, SectionHead } from "@/components/blocks";
 import { Icon, type IconName } from "@/components/icons";
 import { CampusMockView } from "@/components/mocks";
 
-export function generateMetadata(): Metadata {
-  const u = getSite().universities;
-  return { title: u.meta.title, description: u.meta.description };
+export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
+  const { lang } = await params;
+  const site = getSite(lang);
+  return pageMeta(lang as Lang, "/universities", site.universities.meta);
 }
 
 /**
@@ -23,12 +25,13 @@ export function generateMetadata(): Metadata {
  */
 const FEATURE_ICON: IconName[] = ["users", "key", "pause", "list", "chart", "bell", "download", "refresh"];
 
-export default function Universities() {
-  const site = getSite();
+export default async function Universities({ params }: PageParams) {
+  const { lang } = await params;
+  const site = getSite(lang);
   const u = site.universities;
 
   return (
-    <Shell site={site}>
+    <Shell site={site} path="/universities">
       <section className="hero hero-sub">
         <div className="wrap hero-grid">
           <div className="hero-copy">

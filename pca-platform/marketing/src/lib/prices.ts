@@ -63,3 +63,11 @@ export function priceRange(tiers: TierPrice[]): string {
 export function tierLines(tiers: TierPrice[]): string[] {
   return tiers.map((t) => `${t.tier} — ${t.headline} (${t.price})`);
 }
+
+/**
+ * 다른 언어 판에서 원화를 적는 꼴 (`4,900원` → `₩4,900`). 값은 위 표에서만
+ * 읽는다: 번역 원고에 숫자를 다시 적으면 고칠 때 한 벌이 남는다
+ */
+export function krw(price: string): string {
+  return price.endsWith("원") ? `₩${price.slice(0, -1)}` : price;
+}

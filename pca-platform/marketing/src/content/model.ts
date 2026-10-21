@@ -16,6 +16,8 @@
  */
 
 export type SiteKey = "kr" | "global";
+/** 홈페이지가 내놓는 언어. 앱은 ko·en 둘만 내놓는다 */
+export type Lang = "ko" | "en" | "ja" | "zh";
 export type Link = { label: string; href: string };
 export type Titled = { title: string; body: string };
 
@@ -115,6 +117,14 @@ export type SiteContent = {
     copy: string;
     copied: string;
     external: string;
+    /** 언어 고르기의 이름표 (보조기기가 읽는다) */
+    langLabel: string;
+    /**
+     * 앱 화면이 이 언어로 나오지 않을 때 그 사실을 적는 한 줄. 앱은 한국어·영어
+     * 둘만 내놓으므로 일본어·중국어 판은 단추가 영어 화면으로 간다. 적지 않으면
+     * 눌러 본 사람이 고장으로 읽는다
+     */
+    appLangNote?: string;
   };
 
   nav: {
@@ -192,6 +202,24 @@ export type SiteContent = {
         lead: string;
         statusLabel: { done: string; doing: string; next: string };
         steps: { status: "done" | "doing" | "next"; title: string; body: string }[];
+      };
+      /**
+       * 계산이 어떻게 되는가. 식은 `src/lib/scoring.ts`(PCA 엔진)와
+       * `me-v3/scoring/zones.ts`(전공 검사의 근거 판정)가 실제로 하는 것만 적는다.
+       * `formula` 는 이 사이트가 쓴 짧은 HTML(sub · sup · i)이다: 밖에서 받은 글을
+       * 담지 않는다
+       */
+      math?: {
+        title: string;
+        lead: string;
+        steps: { no: string; title: string; formula: string; body: string; status?: "next" }[];
+        weights: {
+          title: string;
+          lead: string;
+          areas: { name: string; rows: { axis: string; w: number }[] }[];
+          note: string;
+        };
+        nextLabel: string;
       };
       note: string;
     };

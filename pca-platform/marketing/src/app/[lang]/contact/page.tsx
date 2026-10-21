@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
-import { getSite } from "@/content";
+import { getSite, type Lang } from "@/content";
+import { pageMeta, type PageParams } from "@/lib/seo";
 import { Shell } from "@/components/chrome";
 import { Icon } from "@/components/icons";
 import CopyText from "@/components/copy-text";
 import MailComposer from "@/components/mail-composer";
 
-export function generateMetadata(): Metadata {
-  const c = getSite().contact;
-  return { title: c.meta.title, description: c.meta.description };
+export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
+  const { lang } = await params;
+  const site = getSite(lang);
+  return pageMeta(lang as Lang, "/contact", site.contact.meta);
 }
 
 /**
@@ -18,14 +20,15 @@ export function generateMetadata(): Metadata {
  * 복사 단추를 곁에 둔다. 값은 사업자 표시(`legal`)에서 읽어 두 곳이
  * 갈리지 않게 한다.
  */
-export default function Contact() {
-  const site = getSite();
+export default async function Contact({ params }: PageParams) {
+  const { lang } = await params;
+  const site = getSite(lang);
   const c = site.contact;
   const L = site.legal;
   const tel = L.tel.replace(/[^\d+]/g, "");
 
   return (
-    <Shell site={site}>
+    <Shell site={site} path="/contact">
       <section className="page-head">
         <div className="wrap">
           <span className="pill">{c.eyebrow}</span>

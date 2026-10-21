@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getSite } from "@/content";
+import { getSite, type Lang } from "@/content";
+import { pageMeta, type PageParams } from "@/lib/seo";
 import { Shell } from "@/components/chrome";
 import { Button, Closing, FaqList, SectionHead } from "@/components/blocks";
 import { Icon, type IconName } from "@/components/icons";
 
-export function generateMetadata(): Metadata {
-  const a = getSite().assistant;
-  return a ? { title: a.meta.title, description: a.meta.description } : {};
+export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
+  const { lang } = await params;
+  const site = getSite(lang);
+  return site.assistant ? pageMeta(lang as Lang, "/assistant", site.assistant.meta) : {};
 }
 
 /**
@@ -23,13 +25,14 @@ export function generateMetadata(): Metadata {
  */
 const FEATURE_ICON: IconName[] = ["bell", "pencil", "compare", "swap"];
 
-export default function Assistant() {
-  const site = getSite();
+export default async function Assistant({ params }: PageParams) {
+  const { lang } = await params;
+  const site = getSite(lang);
   const a = site.assistant;
   if (!a) notFound();
 
   return (
-    <Shell site={site}>
+    <Shell site={site} path="/assistant">
       <section className="hero hero-sub hero-assistant">
         <div className="wrap hero-grid">
           <div className="hero-copy">
