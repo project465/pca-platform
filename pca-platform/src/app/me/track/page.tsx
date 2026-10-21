@@ -17,10 +17,10 @@ import {
   addPosting, changeConsent, changeDigest, claimTrial, makeDraft, readAllNudges,
 } from "./actions";
 
-export const metadata = { title: "AI 취업비서" };
+export const metadata = { title: "매트" };
 
 /**
- * AI 취업비서 · 내 구독.
+ * 매트 · 내 구독.
  *
  * **하는 일은 셋이다.** 매주 할 일 하나를 먼저 알려 주고, 적어 주신 메모를
  * 경험 기록으로 옮겨 주고, 직접 찾아 붙여 넣은 공고를 내 경험과 맞대어
@@ -95,10 +95,10 @@ export default async function Track({
   const unread = nudges.filter((n) => !n.read_at).length;
 
   return (
-    <CmShell active="/me/track" title="AI 취업비서" major={major}>
+    <CmShell active="/me/track" title="매트" major={major}>
       <CmHead
         kicker={state.on ? "이용 중" : "기간권"}
-        title="AI 취업비서"
+        title="매트"
         lead={"검사 결과를 받은 뒤 지원하는 동안 매주 옆에서 챙깁니다. "
           + "이번 주 할 일을 먼저 알리고, 메모를 경험 기록으로 옮기고, "
           + "직접 찾은 공고에서 내 경험이 비어 있는 부분을 짚어 줍니다. 자동으로 결제되지 않습니다."}

@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false }, { status: 401, headers: { "cache-control": "no-store" } });
   }
   const low = await checkCodeStock();
-  /* AI 취업비서 알림을 먼저 쌓는다. 그래야 같은 당번이 그 메일까지 내보낸다.
+  /* 매트 알림을 먼저 쌓는다. 그래야 같은 당번이 그 메일까지 내보낸다.
      **실패해도 메일 내보내기를 막지 않는다** */
   const assistant = await runAssistantTick().catch(() => null);
   const mail = await flushOutbox(200);

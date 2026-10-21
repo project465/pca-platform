@@ -172,7 +172,7 @@ export const ROUTE_TABLE: RouteRow[] = [
   { route: "/me/explore", newUser: "산업·직무 탐색", oldUser: "같음", cls: "CURRENT" },
   { route: "/me/region", newUser: "지역과 기관", oldUser: "같음", cls: "CURRENT" },
   { route: "/me/track", newUser: "Track", oldUser: "같음", cls: "CURRENT" },
-  { route: "/me/track/posting/[id]", newUser: "AI 취업비서 · 붙여 넣은 공고 맞대 보기",
+  { route: "/me/track/posting/[id]", newUser: "매트 · 붙여 넣은 공고 맞대 보기",
     oldUser: "같음", cls: "CURRENT" },
   { route: "/me/jobs", newUser: "Track 안의 공고 목록", oldUser: "같음", cls: "CURRENT" },
   { route: "/me/prep", newUser: "지원서·면접 준비", oldUser: "같음", cls: "CURRENT" },

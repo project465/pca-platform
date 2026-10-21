@@ -77,7 +77,7 @@ function NavRow({ it, active }: { it: typeof CM_NAV[number]; active: string }) {
 /**
  * 알림 종.
  *
- * **세어 둔 수만 적는다.** AI 취업비서가 쌓은 알림(`assistant_nudges`)
+ * **세어 둔 수만 적는다.** 매트가 쌓은 알림(`assistant_nudges`)
  * 가운데 읽지 않은 것이 있을 때만 그 수를 달고 그쪽으로 보낸다. 없으면
  * 전처럼 `현재 상태` 의 최근 변화로 간다. 수가 없는데 빨간 점을 찍으면
  * 그것이 가짜 기능이 된다.

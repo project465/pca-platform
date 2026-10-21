@@ -1998,7 +1998,7 @@ a.cm-nav.is-on { border-radius: 12px; }
 .cm-sheet a.cm-nav.is-on small { color: #1f4fd1; opacity: .8; }
 .cm-sheet a.cm-nav:focus-visible { outline: 2px solid #2f6bff; outline-offset: 2px; }
 
-/* ── AI 취업비서 안내 (me/track/guide.tsx) ── */
+/* ── 매트 안내 (me/track/guide.tsx) ── */
 .cm-aig { display: grid; gap: 18px; margin-bottom: 28px; }
 .cm-aig-lead { margin: 0; font-size: var(--ui-t-body); line-height: 1.7; color: var(--sf-ink); max-width: 62rem; }
 .cm-aig-lead b { font-weight: var(--ui-w-sb); }

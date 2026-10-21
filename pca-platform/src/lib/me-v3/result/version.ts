@@ -169,7 +169,8 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
  * 사전으로 선다(전에는 `domainSub` 토막). 판정과 결과 모델은 그대로다.
  */
 /** AI 티 문장 정리 (견줍니다·섭니다·세웠습니다 등) */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.67";
+/** AI 취업비서의 이름을 '매트'로 바꿨다(작업공간으로 가는 한 줄) */
+export const RESULT_COPY_VERSION = "me-v3-result-copy.68";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**

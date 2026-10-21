@@ -1,5 +1,5 @@
 /**
- * AI 취업비서를 실제 DB 로 한 바퀴 돈다(로컬·staging 전용).
+ * 매트를 실제 DB 로 한 바퀴 돈다(로컬·staging 전용).
  *
  *   LOGIN=test-jju-cs-01 npx tsx scripts/lab/assistant-check.ts
  *
@@ -43,7 +43,7 @@ async function main(): Promise<void> {
   if (!u) { console.error(`${login} 이 없다`); process.exit(2); }
   const uid = u.id;
   const core = await activeCore(uid);
-  console.log(`\n── AI 취업비서 (사용자 ${uid} · ${core} · AI ${aiReady() ? "켜짐" : "꺼짐"})\n`);
+  console.log(`\n── 매트 (사용자 ${uid} · ${core} · AI ${aiReady() ? "켜짐" : "꺼짐"})\n`);
 
   /* 기간권 하나를 붙인다. 이 검사만의 줄이라 끝에서 지운다 */
   await query(`DELETE FROM entitlements WHERE user_id=$1 AND kind='track' AND product_code='TRACK_LAB'`, [uid]);

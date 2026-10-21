@@ -9,7 +9,7 @@ import { CmShell, CmHead } from "../../../shell";
 import { SectionHeader } from "../../../ui";
 import { changePostingState } from "../../actions";
 
-export const metadata = { title: "공고 확인 · AI 취업비서" };
+export const metadata = { title: "공고 확인 · 매트" };
 
 /**
  * 붙여 넣은 공고 하나와 내 경험을 맞대 본 결과.
@@ -126,7 +126,7 @@ export default async function Posting({ params }: { params: Promise<{ id: string
             합격 가능성은 적지 않습니다. 이 표는 공고에 적힌 요구와 내 기록을 나란히 놓은 것입니다.
           </p>
           <div className="cm-acts">
-            <Link className="cm-btn" href="/me/track">AI 취업비서로</Link>
+            <Link className="cm-btn" href="/me/track">매트로</Link>
           </div>
         </div>
       </div>

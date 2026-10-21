@@ -740,13 +740,13 @@ export const UI = {
     "CareerMatri Kariyer Raporu (lise)",
   ),
   prodTRACK_30D: d(
-    "AI 취업비서 30일",
-    "AI career assistant · 30 days",
+    "매트 30일",
+    "Mat · 30 days",
     "AI kariyer asistanı · 30 gün",
   ),
   prodTRACK_365D: d(
-    "AI 취업비서 365일",
-    "AI career assistant · 365 days",
+    "매트 365일",
+    "Mat · 365 days",
     "AI kariyer asistanı · 365 gün",
   ),
   prodHS_FREE: d(

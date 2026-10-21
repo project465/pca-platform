@@ -19,7 +19,7 @@ export type OutboxKind =
   | "refund_requested"
   | "refund_done"
   | "code_low"
-  /** AI 취업비서 주간 정리. **본문을 담지 않는다**: 몇 가지가 쌓였는지만 */
+  /** 매트 주간 정리. **본문을 담지 않는다**: 몇 가지가 쌓였는지만 */
   | "assistant_digest";
 
 /**
@@ -206,11 +206,11 @@ const MAIL = {
     /* **무엇이 쌓였는지 적지 않는다.** 할 일과 공고 이름은 로그인해서
        보시게 한다. 메일은 전달 과정에서 남의 눈에 띌 수 있다 */
     assistant_digest: (n: string, base: string, p: Record<string, string>) => ({
-      subject: "이번 주 AI 취업비서 알림이 왔습니다",
+      subject: "이번 주 매트 알림이 왔습니다",
       text: `${n}님, 이번 주 알림 ${p.n ?? "1"}개가 쌓였습니다.` +
         `${Number(p.deadlines ?? 0) > 0 ? ` 마감이 다가온 공고가 ${p.deadlines}개 있습니다.` : ""}\n\n` +
-        `로그인하시면 AI 취업비서에서 보실 수 있습니다.\n${base}/me/track\n\n` +
-        `이 메일을 그만 받으시려면 AI 취업비서 화면에서 메일 받기를 끄시면 됩니다.\n`,
+        `로그인하시면 매트에서 보실 수 있습니다.\n${base}/me/track\n\n` +
+        `이 메일을 그만 받으시려면 매트 화면에서 메일 받기를 끄시면 됩니다.\n`,
     }),
     password_reset: (n: string, _base: string, p: Record<string, string>) => ({
       subject: "비밀번호를 다시 정하실 수 있습니다",

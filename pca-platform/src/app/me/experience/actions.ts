@@ -89,7 +89,7 @@ export async function saveExperience(form: FormData): Promise<void> {
     id = "";
   }
   if (!id) redirect("/me/experience/new?e=save");
-  /* AI 취업비서 초안에서 왔으면 그 메모를 비운다. 남겨 둘 이유가 끝났다 */
+  /* 매트 초안에서 왔으면 그 메모를 비운다. 남겨 둘 이유가 끝났다 */
   const draft = String(form.get("draft") ?? "");
   if (draft) await markDraftUsed(user.id, draft);
   await mark("experience_added", user.id, { n: form.getAll("td").length });

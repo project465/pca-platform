@@ -1,5 +1,5 @@
 /**
- * AI 취업비서가 **무엇을 해 주는가.**
+ * 매트가 **무엇을 해 주는가.**
  *
  * 한동안 이 쪽은 기간권이 열려 있지 않은 사람에게 `열려 있지 않습니다` 와
  * 결제 카드 둘만 세웠다. 그러면 무엇을 사는지가 화면 어디에도 없고, 산
@@ -157,7 +157,7 @@ export function AssistantGuide({ on, compact }: { on: boolean; compact?: boolean
 
   return (
     <>
-      <SectionHeader icon="spark" title={compact ? "AI 취업비서 사용법" : "AI 취업비서가 해 드리는 일"}
+      <SectionHeader icon="spark" title={compact ? "매트 사용법" : "매트가 해 드리는 일"}
         sub={compact ? undefined : "세 가지 도구를 매주 이어서 씁니다. 결과지 한 장으로 끝나지 않게 하는 자리입니다."} />
       {compact ? (
         <details className="cm-aig-fold">

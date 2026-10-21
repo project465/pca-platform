@@ -50,7 +50,7 @@ const REMOVE: { table: string; why: string }[] = [
   { table: "v3_prep_answers", why: "본인이 적은 지원서·면접 답" },
   /* ── 지금 검사(ME_V3)와 작업공간 ─────────────────────────────
      **이 묶음이 한동안 빠져 있었다.** 파기 목록이 옛 검사의 표만 들고
-     있어서, 지금 검사로 적은 경험·지원 기록·AI 취업비서 메모가 탈퇴한
+     있어서, 지금 검사로 적은 경험·지원 기록·매트 메모가 탈퇴한
      뒤에도 남았다. `npm run erasure:check` 가 `user_id` 를 든 표를 전부
      세어 어느 목록에도 없는 표가 생기면 걸린다 */
   { table: "career_events", why: "다시 계산할 일. 적어 두신 경험을 가리킨다" },
@@ -60,7 +60,7 @@ const REMOVE: { table: string; why: string }[] = [
   { table: "v3_actions", why: "담아 둔 할 일. 그 사람의 계획이다" },
   { table: "v3_saved_jobs", why: "저장한 공고는 그 사람의 관심이다" },
   { table: "v3_track_interest", why: "관심 표시" },
-  { table: "assistant_drafts", why: "AI 취업비서에 적은 메모" },
+  { table: "assistant_drafts", why: "매트에 적은 메모" },
   { table: "assistant_postings", why: "붙여 넣은 공고 본문" },
   { table: "assistant_nudges", why: "그 사람에게 보낸 알림" },
   { table: "assistant_settings", why: "알림 · 동의 설정" },
@@ -280,7 +280,7 @@ export const ERASE_GROUPS: {
       "v3_track_interest"],
   },
   {
-    ko: "지원서·면접 준비와 AI 취업비서", en: "Application prep and AI assistant",
+    ko: "지원서·면접 준비와 매트", en: "Application prep and AI assistant",
     detail: {
       ko: "적어 두신 지원서·면접 답 · 붙여 넣은 공고 · 메모 · 알림 설정",
       en: "Your application and interview answers, pasted postings, notes, notification settings",
