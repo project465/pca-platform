@@ -207,7 +207,11 @@ export type GanttRow = { label: string; from: number; to: number; color: string;
 
 /** 90일 실행 간트. from·to 는 날(1~90)이다 */
 export function gantt(rows: GanttRow[], o: { width?: number; days?: number; label?: number } = {}): string {
-  const W = o.width ?? 680, D = o.days ?? 90, L = o.label ?? 230, rh = 32, top = 34, H = top + rows.length * rh + 10;
+  const W = o.width ?? 680, D = o.days ?? 90, L = o.label ?? 230, top = 34;
+  /* 이름표는 잘라 붙이지 않고 두 줄까지 접는다. 접히는 줄이 있으면 줄 높이를 키운다 */
+  const n = Math.max(4, Math.floor((L - 14) / 11.5));
+  const lab = rows.map((r) => { const ls = wrap(r.label, n); return ls.length > 2 ? [ls[0], ls[1].slice(0, Math.max(1, n - 1)) + "…"] : ls; });
+  const rh = lab.some((l) => l.length > 1) ? 40 : 32, H = top + rows.length * rh + 10;
   const x = (d: number) => L + ((W - L - 10) * d) / D;
   const marks = [0, 30, 60, 90].filter((d) => d <= D);
   const heads = marks.map((d) => `<line x1="${f1(x(d))}" y1="${top - 6}" x2="${f1(x(d))}" y2="${H - 4}" stroke="${C.line}"/>`).join("") +
@@ -215,7 +219,8 @@ export function gantt(rows: GanttRow[], o: { width?: number; days?: number; labe
       .map(([t, a, b]) => `<text x="${f1((x(a as number) + x(b as number)) / 2)}" y="${top - 14}" font-size="11.5" text-anchor="middle" fill="${C.ink}" font-weight="700">${t}</text>`).join("");
   const body = rows.map((r, i) => {
     const y = top + i * rh;
-    return `<text x="${L - 10}" y="${y + rh / 2}" font-size="11.5" text-anchor="end" dominant-baseline="middle" fill="${C.ink}" font-weight="600">${esc(r.label.length > 19 ? r.label.slice(0, 19) + "…" : r.label)}</text>` +
+    const ls = lab[i], y0 = y + rh / 2 - ((ls.length - 1) * 13.5) / 2;
+    return `<text x="${L - 10}" y="${f1(y0)}" font-size="11.5" text-anchor="end" dominant-baseline="middle" fill="${C.ink}" font-weight="600">${ls.map((l, k) => `<tspan x="${L - 10}" dy="${k ? 13.5 : 0}">${esc(l)}</tspan>`).join("")}</text>` +
       `<rect x="${f1(x(r.from - 1))}" y="${y + 6}" width="${f1(Math.max(6, x(r.to) - x(r.from - 1)))}" height="${rh - 12}" rx="5" fill="${r.color}"/>` +
       (r.note ? `<text x="${f1(x(r.from - 1) + 8)}" y="${y + rh / 2 + 0.5}" font-size="10" dominant-baseline="middle" fill="#fff" font-weight="700">${esc(r.note)}</text>` : "");
   }).join("");
