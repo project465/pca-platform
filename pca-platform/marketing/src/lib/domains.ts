@@ -28,7 +28,14 @@ export const PLATFORM_URL = "https://app.careermatri.com";
  * 원칙 5). 호스트로 가르면 `careermatri.co.kr` 을 사기 전까지 한국 판매가
  * 막히고, 그것은 앱이 아니라 소개 사이트의 사정이다.
  */
-export const HOME_DOMAIN = "careermatri.com";
+export const HOME_DOMAIN = "www.careermatri.com";
+
+/**
+ * www 를 뗀 주소. **정규 주소는 www 가 붙은 쪽이다**(2026-10-22 대표 확인):
+ * 이 주소로 들어오면 미들웨어가 `HOME_DOMAIN` 으로 넘긴다. 둘을 같은 값으로
+ * 두면 넘김이 제자리를 돈다
+ */
+export const HOME_APEX = HOME_DOMAIN.replace(/^www\./, "");
 
 /** 옛 이름. 두 칸이 같은 주소를 가리킨다 */
 export const SITE_DOMAIN = {

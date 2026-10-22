@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { DEFAULT_LANG, isLang } from "@/lib/i18n";
-import { HOME_DOMAIN } from "@/lib/domains";
+import { HOME_APEX, HOME_DOMAIN } from "@/lib/domains";
 
 /**
  * 주소의 언어를 쪽에 넘긴다(`lib/i18n.ts`).
@@ -17,11 +17,11 @@ import { HOME_DOMAIN } from "@/lib/domains";
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  /* www 로 들어오면 정규 주소로 넘긴다. 같은 쪽이 주소 둘에 서면 검색엔진이
+  /* www 를 뗀 주소로 들어오면 정규 주소(www.careermatri.com)로 넘긴다. 같은 쪽이 주소 둘에 서면 검색엔진이
      한 벌을 베낀 것으로 보고, 공유된 주소도 두 갈래로 흩어진다. 호스트는
      앞단(Railway)이 넘겨준 값을 본다: 서버 안의 주소는 0.0.0.0:PORT 다 */
   const host = (req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? "").split(":")[0];
-  if (host === `www.${HOME_DOMAIN}`) {
+  if (HOME_APEX !== HOME_DOMAIN && host === HOME_APEX) {
     return NextResponse.redirect(`https://${HOME_DOMAIN}${pathname}${req.nextUrl.search}`, 308);
   }
 
