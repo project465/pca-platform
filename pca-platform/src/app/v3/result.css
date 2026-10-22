@@ -1752,6 +1752,11 @@
      아래로는 `body` 의 연회색이 그대로 깔린다. 화면에서는 안 보이지만
      종이에서는 마지막 쪽의 남은 자리가 통째로 회색 바닥으로 뽑혔다 */
   html, body { background: #fff; }
+  /* **종이에서는 회색 글자를 한 단 짙게 한다.** 화면의 거드는 글
+     (#4a5568 · #6b7588)은 레이저 인쇄와 복사를 한 번 거치면 흐려져서,
+     상담 자리에서 받은 종이의 설명 줄이 잘 안 읽혔다. 크기와 줄 사이는
+     그대로라 쪽 수가 바뀌지 않는다 */
+  .rs { --r-ink-2: #36404f; --r-ink-3: #4d5768; }
   /* **본문 활자는 10pt 다**(상용화 PHASE 0). 10.5pt · 1.55 로 두었을
      때 STANDARD 가 열 쪽이고 마지막 쪽에 고지문 한 덩이만 남았다. 담긴
      글을 한 줄도 덜어내지 않고 활자와 줄 사이에서 돌려받는다: A4 에서
@@ -2569,6 +2574,11 @@
 }
 /* 이번에 묻지 않은 영역. **흐리게만 가르지 않는다**: 합친 칸이 그 사실을
    글자로 적고 색은 거드는 자리다 */
+/* 값 칸은 머리와 같은 자리에 선다. 머리는 가운데·값은 오른쪽이면 긴
+   머리(`비교했다고 고른 것`) 아래에서 값이 어느 칸 것인지 눈이 한 번 더
+   맞춰 본다 */
+.pv-matrix thead th:not(:first-child), .pv-matrix td { text-align: center; }
+.pv-matrix .pv-nil { color: var(--r-ink-3); }
 .pv-matrix tr.is-unasked th[scope="row"] { font-weight: var(--ui-w-rg); }
 .pv-matrix tr.is-unasked td { color: var(--r-ink-3); text-align: left; }
 

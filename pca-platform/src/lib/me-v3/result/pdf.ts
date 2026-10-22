@@ -119,11 +119,11 @@ const MARK_SVG = '<svg width="10" height="10" viewBox="0 0 120 120">'
   + ' fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"'
   + ' stroke-linejoin="round"/></svg>';
 function headerTemplate(header: string | undefined): string {
-  return '<div style="font-size:7pt;color:#5f6e86;width:100%;padding:0 14mm;'
+  return '<div style="font-size:8pt;color:#3d4757;width:100%;padding:0 14mm;'
     + 'font-family:sans-serif;display:flex;align-items:center;gap:5px">'
     + MARK_SVG + '<span>' + escapeHtml(header ?? "CareerMatri") + '</span></div>';
 }
-const FOOTER_TEMPLATE = '<div style="font-size:7pt;color:#5f6e86;width:100%;'
+const FOOTER_TEMPLATE = '<div style="font-size:8pt;color:#3d4757;width:100%;'
   + 'padding:0 14mm;text-align:right;font-family:sans-serif">'
   + '<span class="pageNumber" style="color:#2f6bff;font-weight:700"></span>'
   + ' / <span class="totalPages"></span></div>';

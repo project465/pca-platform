@@ -466,7 +466,12 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.69";
  * 파란 M 상표. 담긴 글과 결과 모델은 그대로다.
  */
 /** AI 티 문장 정리 (견줍니다·섭니다·세웠습니다 등) */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V81";
+/**
+ * 종이 가독성: 경험·근거 표의 머리와 값을 같은 자리(가운데)에 세우고
+ * `아직` 을 한 단 옅게 둔다. 종이에서 회색 글자를 한 단 짙게 하고 쪽머리와
+ * 쪽 번호를 7pt 에서 8pt 로 올렸다. 크기와 줄 사이는 그대로라 쪽 수가 같다.
+ */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V82";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

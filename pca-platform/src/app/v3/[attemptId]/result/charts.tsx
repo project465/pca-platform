@@ -191,7 +191,9 @@ export function EvidenceMatrix(
 ): React.JSX.Element | null {
   const rows: MatrixRow[] = matrixRows(model);
   if (!rows.length) return null;
-  const cell = (v: number) => (v ? String(v) : "아직");
+  /* `아직` 은 한 단 옅게 둔다. 칸 스무 개가 같은 무게로 서면 수가 있는
+     칸이 그 사이에 묻힌다. 글자는 그대로 남아 흑백 종이에서도 읽힌다 */
+  const cell = (v: number) => (v ? String(v) : <span className="pv-nil">아직</span>);
   return (
     <div className="pv-matrix">
       <table>
