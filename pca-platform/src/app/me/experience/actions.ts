@@ -10,6 +10,9 @@ import { autoRecompute } from "@/lib/me-v3/recompute";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { opFail, ref } from "@/lib/oplog";
 import { markDraftUsed } from "@/lib/assistant/draft";
+import { readUpload, uploadFailKo, UPLOAD_MONTHLY_CAP, type UploadResult } from "@/lib/assistant/upload";
+import { setFileConsent } from "@/lib/assistant/settings";
+import { activeTrack } from "@/lib/track";
 
 /**
  * 경험 하나를 저장한다.
@@ -195,4 +198,49 @@ export async function dropExperience(form: FormData): Promise<void> {
   revalidatePath("/me/experience");
   revalidatePath("/me/state");
   revalidatePath("/me/next");
+}
+
+export type UploadState = {
+  ok: boolean;
+  msg: string;
+  drafts: { id: string; title: string }[];
+  used: number;
+  cap: number;
+} | null;
+
+/**
+ * 올린 파일 하나를 읽어 경험 초안으로 옮긴다.
+ *
+ * **열려 있는지는 서버가 본다.** MAT 기간이 끝난 사람이 폼을 직접 보내도
+ * 여기서 돌아간다. 동의 칸을 켜고 보내면 그때 동의를 적는다: 화면이 켜
+ * 두지 않으므로 사람이 누른 것이다.
+ */
+export async function uploadForDraft(_prev: UploadState, form: FormData): Promise<UploadState> {
+  const user = await requireUser();
+  const base = { drafts: [], cap: UPLOAD_MONTHLY_CAP };
+  if (!(await activeTrack(user.id)).on) {
+    return { ok: false, msg: "파일 읽기는 MAT 이용 중에만 열립니다.", used: 0, ...base };
+  }
+  if (String(form.get("consent") ?? "") === "1") await setFileConsent(user.id, true);
+  const file = form.get("file");
+  if (!(file instanceof File) || file.size === 0) {
+    return { ok: false, msg: "올릴 파일을 골라 주세요.", used: 0, ...base };
+  }
+  let r: UploadResult;
+  try {
+    r = await readUpload(user.id, Buffer.from(await file.arrayBuffer()));
+  } catch (e) {
+    opFail({ operation: "assistant.upload", ref: ref("user", user.id), step: "read", category: "db" }, e);
+    return { ok: false, msg: uploadFailKo("error"), used: 0, ...base };
+  }
+  if (!r.ok) return { ok: false, msg: uploadFailKo(r.reason), used: r.used, ...base };
+  revalidatePath("/me/experience/new");
+  return {
+    ok: true,
+    msg: r.reused
+      ? "전에 올리신 파일이라 그때 옮겨 둔 것을 다시 보여 드립니다. 이번 달 건수에 세지 않았습니다."
+      : `${r.drafts.length}가지를 옮겨 두었습니다. 하나씩 열어 맞지 않는 칸을 끄고 저장해 주세요.`,
+    drafts: r.drafts.map((d) => ({ id: d.id, title: d.title })),
+    used: r.used, cap: UPLOAD_MONTHLY_CAP,
+  };
 }

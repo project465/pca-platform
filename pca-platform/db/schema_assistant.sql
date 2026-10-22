@@ -101,3 +101,36 @@ DO $$ BEGIN
                     'purchase_done', 'refund_requested', 'refund_done',
                     'assistant_digest'));
 EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+
+-- ============================================================
+--  올린 파일 읽기(성적증명서 · 수료증 · 상장 · 활동 확인서)
+--
+--  **원본 파일을 저장하지 않는다.** 읽은 뒤 그 자리에서 버리고, 여기
+--  남는 것은 같은 파일을 두 번 읽지 않으려는 지문(sha256)과 한 달에 몇 번
+--  읽었는가와 만든 초안의 번호뿐이다. 파일 이름도 적지 않는다: 이름에
+--  학번이나 이름이 들어가는 일이 흔하다.
+--
+--  **동의를 따로 받는다.** 메모·공고와 달리 파일에는 이름 · 학번 ·
+--  생년월일이 찍혀 있고, 그것까지 국외(Anthropic, 미국)로 나간다.
+-- ============================================================
+
+ALTER TABLE assistant_settings ADD COLUMN IF NOT EXISTS file_consent_at TIMESTAMPTZ;
+
+CREATE TABLE IF NOT EXISTS assistant_uploads (
+  id          BIGSERIAL PRIMARY KEY,
+  user_id     BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  core_code   TEXT NOT NULL,
+  sha256      TEXT NOT NULL,
+  file_kind   TEXT NOT NULL CHECK (file_kind IN ('pdf', 'image')),
+  /* read = 초안을 만들었다 · empty = 읽었지만 옮길 것이 없었다 ·
+     refused = 모델이 읽지 않았다 · failed = 부르지 못했다(한도에 세지 않는다) */
+  status      TEXT NOT NULL CHECK (status IN ('read', 'empty', 'refused', 'failed')),
+  model       TEXT,
+  input_tokens  INTEGER,
+  output_tokens INTEGER,
+  draft_ids   BIGINT[] NOT NULL DEFAULT '{}',
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+  purge_after TIMESTAMPTZ NOT NULL DEFAULT now() + interval '30 days'
+);
+CREATE INDEX IF NOT EXISTS assistant_uploads_user_idx
+  ON assistant_uploads (user_id, created_at DESC);

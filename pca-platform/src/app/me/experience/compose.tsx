@@ -13,6 +13,11 @@ import { saveExperience, editExperience } from "./actions";
 import Steps from "./steps";
 import UnsavedGuard from "../unsaved";
 import type { DraftValue } from "@/lib/assistant/draft";
+import { activeTrack } from "@/lib/track";
+import { settingsOf } from "@/lib/assistant/settings";
+import { pendingFileDrafts, usedThisMonth, UPLOAD_MONTHLY_CAP } from "@/lib/assistant/upload";
+import FileDrop from "./upload";
+import Link from "next/link";
 
 /**
  * 그 결과가 어디로 갔는가.
@@ -121,6 +126,14 @@ export default async function Compose(
     ...(value?.td_codes ?? []),
   ];
   const d0 = edit ? null : draft ?? null;
+  /* 파일로 옮기기(MAT). 새로 적는 자리에서만, 초안을 펴 둔 동안에는 세우지
+     않는다: 위에서 이미 무엇을 옮겨 왔는지 읽는 중이다 */
+  const mat = !edit && !d0 ? await activeTrack(user.id).catch(() => ({ on: false })) : { on: false };
+  const drop = mat.on ? {
+    consented: Boolean((await settingsOf(user.id)).file_consent_at),
+    used: await usedThisMonth(user.id),
+    pending: await pendingFileDrafts(user.id),
+  } : null;
   const picked = {
     td: value?.td_codes ?? (d0?.td.length ? d0.td : td ? [td] : []),
     problems: value?.problems ?? d0?.problems ?? [],
@@ -167,11 +180,23 @@ export default async function Compose(
           사라지는 자리다 */}
       <UnsavedGuard />
 
+      {drop ? (
+        <FileDrop consented={drop.consented} used={drop.used}
+          cap={UPLOAD_MONTHLY_CAP} pending={drop.pending} />
+      ) : !edit && !d0 ? (
+        <p className="cm-none" style={{ marginBottom: 12 }}>
+          MAT을 쓰시면 성적증명서·수료증 파일을 올려 이 칸을 채울 수 있습니다.{" "}
+          <Link href="/me/track">MAT 알아보기</Link>
+        </p>
+      ) : null}
+
       {/* 메모에서 옮겨 온 초안이면 **그 사실과 되물을 것**을 적는다. 켜 둔
           칸은 사람이 고칠 수 있고, 저장 전에는 아무것도 기록되지 않는다 */}
       {d0 ? (
         <div className="cm-none" role="status">
-          적어 주신 메모를 보기로 옮겨 두었습니다. 맞지 않는 칸은 끄고 저장해 주세요.
+          {d0.from === "file"
+            ? "올리신 파일에서 읽은 것을 보기로 옮겨 두었습니다. 파일에 없던 것은 비워 두었으니, 직접 정한 것과 남은 결과물을 골라 저장해 주세요."
+            : "적어 주신 메모를 보기로 옮겨 두었습니다. 맞지 않는 칸은 끄고 저장해 주세요."}
           {d0.ask.length ? (
             <ul>{d0.ask.map((q) => <li key={q}>{q}</li>)}</ul>
           ) : null}

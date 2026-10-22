@@ -22,6 +22,9 @@ export default async function NewExperience(
   await mark("experience_add_started", user.id);
   /* 초안은 **그 사람의 것만** 열린다(`draftOf` 가 사람과 번호로 함께 거른다) */
   const d = sp.draft ? await draftOf(user.id, sp.draft).catch(() => null) : null;
-  return <Compose userId={user.id} e={sp.e} td={sp.td}
+  /* **초안마다 폼을 새로 세운다.** 파일에서 옮긴 초안 목록은 같은 쪽 안의
+     링크라, 열쇠가 같으면 React 가 칸을 재사용해 앞 초안의 선택(또는 빈
+     칸)이 그대로 남고 `defaultChecked` 가 다시 걸리지 않는다 */
+  return <Compose key={sp.draft ?? "new"} userId={user.id} e={sp.e} td={sp.td}
     draft={d?.value ?? null} {...(d && sp.draft ? { draftId: sp.draft } : {})} />;
 }

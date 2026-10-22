@@ -8,7 +8,7 @@ import { markTrackInterest } from "@/lib/me-v3/platform";
 import { activeTrack, grantProTrialTx, proTrialClaimable } from "@/lib/track";
 import { analyzePosting, setPostingState } from "@/lib/assistant/posting";
 import { draftExperience } from "@/lib/assistant/draft";
-import { setAiConsent, setEmailDigest } from "@/lib/assistant/settings";
+import { setAiConsent, setEmailDigest, setFileConsent } from "@/lib/assistant/settings";
 import { markNudgesRead } from "@/lib/assistant/nudges";
 import { opFail, ref } from "@/lib/oplog";
 
@@ -100,6 +100,14 @@ export async function makeDraft(form: FormData): Promise<void> {
 export async function changeConsent(form: FormData): Promise<void> {
   const user = await requireUser();
   await setAiConsent(user.id, String(form.get("on") ?? "") === "1");
+  revalidatePath("/me/track");
+  redirect("/me/track#settings");
+}
+
+/** 파일 읽기 동의. 끄면 그 뒤로 올린 파일을 읽지 않는다 */
+export async function changeFileConsent(form: FormData): Promise<void> {
+  const user = await requireUser();
+  await setFileConsent(user.id, String(form.get("on") ?? "") === "1");
   revalidatePath("/me/track");
   redirect("/me/track#settings");
 }

@@ -12747,3 +12747,31 @@ npm_config_noproxy npm install ...` 로 프록시를 탄다.
 ```bash
 LOGIN=test-jju-cs-01 npx tsx scripts/lab/assistant-check.ts   # 18가지 (열쇠가 있으면 20)
 ```
+
+**MAT 파일 읽기. 성적증명서를 끌어다 놓으면 경험 초안이 된다.** (2026-10-22)
+
+경험 추가 화면에 `파일로 옮기기` 가 선다(MAT 이용 중일 때만). PDF·JPG·PNG·WEBP 를
+받아 **Claude Haiku 5.5**(`UPLOAD_MODEL`)로 읽고, 경험으로 적을 만한 과목·자격·상을
+최대 다섯 개의 초안으로 옮긴다. 읽는 자리는 `src/lib/assistant/upload.ts` 하나다.
+가격은 월 4,900원 그대로이고, 비용을 지키는 선은 **한 달 10건**이다.
+
+**원본을 저장하지 않는다.** 바이트는 함수 안에서만 살고, 남는 것은 지문(sha256)과
+월 건수와 초안뿐이며 30일 뒤 지운다. 파일 이름도 적지 않는다. **동의를 따로 받는다**
+(`assistant_settings.file_consent_at`): 메모·공고와 달리 파일에는 이름·학번·생년월일이
+찍혀 있고 그것까지 국외로 나간다. 개인정보처리방침 1-5 · 8 · 9절에 적었다(10-29 적용).
+
+**같은 파일은 다시 읽지 않고 세지 않는다. 부르지 못한 것도 세지 않는다.** 그림은
+긴 변 1600px JPEG 로 줄여 보낸다. Haiku 에는 서버 쪽 대체 모델(`fallbacks`)이 없어
+보내지 않는다. 초안은 메모 초안과 같은 표(`assistant_drafts`, `from: "file"`)에 쌓이고
+보기는 그 Core 의 체크리스트에 있는 문장만 남는다(`clamp`). **점수에 들어가지 않는다.**
+
+**초안마다 폼을 새로 세운다**(`<Compose key={draft}>`). 초안 목록이 같은 쪽 안의 링크라
+열쇠가 같으면 React 가 칸을 재사용해 `defaultChecked` 가 다시 걸리지 않았다.
+
+```bash
+npx tsx scripts/lab/upload-check.ts    # 가짜 Claude 서버로 24가지 (열쇠 없이 돈다)
+npx tsx scripts/lab/upload-shots.ts    # 실제 브라우저로 7가지 (가짜 서버를 물린 배포본에서)
+```
+
+**아직 아닌 것.** 실제 Haiku 로 한 번도 읽히지 않았다(이 환경에 열쇠가 없다). 운영에는
+`db:upgrade` 한 번과, 방침 적용일 뒤 `ANTHROPIC_API_KEY` 가 필요하다.

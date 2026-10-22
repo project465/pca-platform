@@ -14,7 +14,7 @@ import { CmShell, CmHead } from "../shell";
 import { AssistantGuide } from "./guide";
 import { SectionHeader } from "../ui";
 import {
-  addPosting, changeConsent, changeDigest, claimTrial, makeDraft, readAllNudges,
+  addPosting, changeConsent, changeDigest, changeFileConsent, claimTrial, makeDraft, readAllNudges,
 } from "./actions";
 
 export const metadata = { title: "MAT · AI 취업비서" };
@@ -220,6 +220,10 @@ export default async function Track({
 
           <SectionHeader icon="check" title="경험 채우기"
             sub="최근에 한 일을 편하게 적으면 경험 추가 화면의 보기로 옮겨 드립니다. 저장은 직접 하십니다." />
+          <p className="cm-none" style={{ marginBottom: 12 }}>
+            성적증명서·수료증·상장 파일은{" "}
+            <Link href="/me/experience/new#upload">경험 추가 화면</Link>에 끌어다 놓으면 옮겨 드립니다(한 달 10건).
+          </p>
           <div className="cm-panel is-one" id="draft">
             <div className="cm-pane">
               <form action={makeDraft} className="cm-compose">
@@ -266,6 +270,19 @@ export default async function Track({
                 <input type="hidden" name="on" value={settings.ai_consent_at ? "0" : "1"} />
                 <button className="cm-btn" type="submit">
                   {settings.ai_consent_at ? "AI 분석 끄기" : "동의하고 AI 분석 켜기"}
+                </button>
+              </form>
+              <p className="cm-row" style={{ marginTop: 12 }}>
+                <b>파일 읽기 {settings.file_consent_at ? "켜짐" : "꺼짐"}</b>
+                <span>
+                  켜면 올린 파일이 Anthropic(미국)의 Claude로 보내져 읽힙니다. 파일에 적힌 이름·학번·
+                  생년월일도 함께 보내집니다. 원본 파일은 읽은 뒤 바로 버립니다.
+                </span>
+              </p>
+              <form action={changeFileConsent} className="cm-acts">
+                <input type="hidden" name="on" value={settings.file_consent_at ? "0" : "1"} />
+                <button className="cm-btn" type="submit">
+                  {settings.file_consent_at ? "파일 읽기 끄기" : "동의하고 파일 읽기 켜기"}
                 </button>
               </form>
               <p className="cm-row" style={{ marginTop: 12 }}>

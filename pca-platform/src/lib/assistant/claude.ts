@@ -25,11 +25,24 @@ import { opFail } from "@/lib/oplog";
  */
 
 export const ASSISTANT_MODEL = "claude-opus-5-5";
+/**
+ * 올린 파일(성적증명서·수료증·상장)을 읽는 모델. 하는 일이 문서에서 과목과
+ * 활동 이름을 뽑아 정해진 보기로 옮기는 것이라 가장 싼 모델로 충분하다.
+ * 월 4,900원 안에서 한 사람이 열 건을 올려도 남도록 고른 값이다.
+ * **서버 쪽 대체 모델이 없다**: 이 모델에는 `fallbacks` 를 보내지 않는다.
+ */
+export const UPLOAD_MODEL = "claude-haiku-5-5";
+
+/** 문서·그림 블록. 올린 파일을 그대로 넘길 때만 쓴다 */
+export type AiBlock =
+  | { type: "text"; text: string }
+  | { type: "document"; source: { type: "base64"; media_type: "application/pdf"; data: string } }
+  | { type: "image"; source: { type: "base64"; media_type: "image/jpeg" | "image/png" | "image/webp"; data: string } };
 
 export type AiFail = "off" | "refusal" | "rate" | "timeout" | "error" | "parse";
 
 export type AiResult<T> =
-  | { ok: true; value: T; model: string }
+  | { ok: true; value: T; model: string; usage?: { input: number; output: number } }
   | { ok: false; reason: AiFail };
 
 export function aiReady(): boolean {
@@ -54,23 +67,40 @@ export async function askStructured<S extends z.ZodType>(opts: {
   op: string;
   schema: S;
   system: string;
+  /** 글 한 덩이. `blocks` 를 주면 그 뒤에 붙는다 */
   user: string;
+  /** 올린 파일. 글보다 먼저 둔다(문서를 먼저 읽고 지시를 읽는 차례) */
+  blocks?: AiBlock[];
+  /** 기본은 `ASSISTANT_MODEL`. 파일 읽기는 `UPLOAD_MODEL` */
+  model?: string;
   maxTokens?: number;
 }): Promise<AiResult<z.infer<S>>> {
   if (!aiReady()) return { ok: false, reason: "off" };
+  const model = opts.model ?? ASSISTANT_MODEL;
+  /* 대체 모델은 Opus 쪽에만 있다. Haiku 에 보내면 400 이다 */
+  const fallback = model === ASSISTANT_MODEL
+    ? { betas: ["server-side-fallback-2026-07-01"], fallbacks: "default" as const }
+    : {};
   try {
     const res = await client().beta.messages.parse({
-      model: ASSISTANT_MODEL,
+      model,
       max_tokens: opts.maxTokens ?? 4000,
-      betas: ["server-side-fallback-2026-07-01"],
-      fallbacks: "default",
+      ...fallback,
       system: opts.system,
-      messages: [{ role: "user", content: opts.user }],
+      messages: [{
+        role: "user",
+        content: opts.blocks?.length
+          ? [...opts.blocks, { type: "text" as const, text: opts.user }]
+          : opts.user,
+      }],
       output_config: { effort: "low", format: betaZodOutputFormat(opts.schema) },
     });
     if (res.stop_reason === "refusal") return { ok: false, reason: "refusal" };
     if (res.parsed_output == null) return { ok: false, reason: "parse" };
-    return { ok: true, value: res.parsed_output as z.infer<S>, model: res.model };
+    return {
+      ok: true, value: res.parsed_output as z.infer<S>, model: res.model,
+      usage: { input: res.usage.input_tokens, output: res.usage.output_tokens },
+    };
   } catch (e) {
     const reason: AiFail =
       e instanceof Anthropic.RateLimitError ? "rate"

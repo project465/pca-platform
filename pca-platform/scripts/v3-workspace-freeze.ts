@@ -80,6 +80,7 @@ const FILES = [
   "src/app/me/experience/steps.tsx",
   "src/app/me/experience/[id]/edit/page.tsx",
   "src/app/me/experience/actions.ts",
+  "src/app/me/experience/upload.tsx",
   "src/app/me/recompute/page.tsx",
   "src/app/me/recompute/apply.tsx",
   "src/app/me/recompute/actions.ts",

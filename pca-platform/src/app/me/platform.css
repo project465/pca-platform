@@ -2035,3 +2035,22 @@ a.cm-nav.is-on { border-radius: 12px; }
 .cm-aig-fold { margin-bottom: 24px; border: 1px solid var(--sf-line); border-radius: var(--ui-r-lg); padding: 14px 18px; }
 .cm-aig-fold > summary { cursor: pointer; font-size: var(--ui-t-sub); font-weight: var(--ui-w-sb); color: var(--sf-accent); }
 .cm-aig-fold[open] > summary { margin-bottom: 16px; }
+
+/* ── 파일로 옮기기(MAT) ──
+   놓는 자리는 **점선 한 칸**이다. 점선은 아직 안 만든 자리로 읽힐 수 있어
+   쪽 전체에서는 걷었지만, 여기는 `여기에 놓으라` 는 뜻이 있는 유일한 자리다 */
+.cm-drop {
+  display: flex; flex-direction: column; gap: 4px; align-items: center;
+  text-align: center; padding: 22px 16px; cursor: pointer;
+  border: 1.5px dashed var(--cm-blue-line); border-radius: var(--cm-r-lg);
+  background: var(--cm-blue-soft);
+}
+.cm-drop b { font-size: var(--ui-t-sub); color: var(--cm-ink); }
+.cm-drop span { font-size: var(--ui-t-cap); color: var(--cm-ink-3); }
+.cm-drop.is-over { border-style: solid; box-shadow: 0 0 0 3px var(--cm-blue-line); }
+.cm-drop.is-off { cursor: not-allowed; opacity: .6; background: transparent; }
+.cm-check {
+  display: flex; gap: 8px; align-items: flex-start; margin-bottom: 10px;
+  font-size: var(--ui-t-cap); color: var(--cm-ink-2); line-height: 1.5;
+}
+.cm-check input { margin-top: 3px; flex: none; width: 18px; height: 18px; }

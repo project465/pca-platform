@@ -31,11 +31,13 @@ export type DraftValue = {
   verifications: string[];
   /** 메모에 없어 사람이 채워야 하는 것 */
   ask: string[];
+  /** 어디서 옮겨 왔나. 비어 있으면 메모다 */
+  from?: "memo" | "file";
 };
 
-const KINDS = EXPERIENCE_KINDS.map((k) => k.code) as [string, ...string[]];
+export const KINDS = EXPERIENCE_KINDS.map((k) => k.code) as [string, ...string[]];
 
-const Out = z.object({
+export const Out = z.object({
   kind: z.enum(KINDS).nullable(),
   title: z.string(),
   domains: z.array(z.string()),
@@ -57,7 +59,7 @@ const SYSTEM =
   "성과를 만들지 않습니다.\n" +
   "5. ask 는 메모에 빠져 있어 학생에게 되물을 짧은 질문 최대 3개입니다. 존댓말로 적습니다.";
 
-function menu(core: string): string {
+export function menu(core: string): string {
   return catalog(core).map((d) => [
     `## ${d.code} ${d.name}`,
     `문제: ${d.checklist.J1.slice(0, 6).join(" | ")}`,
@@ -68,7 +70,7 @@ function menu(core: string): string {
 }
 
 /** 목록에 있는 것만 남긴다. **Claude 가 고른 것을 그대로 믿지 않는다** */
-function clamp(core: string, raw: z.infer<typeof Out>): DraftValue {
+export function clamp(core: string, raw: z.infer<typeof Out>): DraftValue {
   const cat = catalog(core);
   const td = raw.domains.filter((c) => cat.some((d) => d.code === c)).slice(0, 2);
   const ds = cat.filter((d) => td.includes(d.code));

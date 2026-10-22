@@ -1,3 +1,4 @@
+import { purgeUploads } from "./upload";
 import { query } from "@/lib/db";
 import { enqueue } from "@/lib/outbox";
 import { openActions } from "@/lib/me-v3/open-actions";
@@ -155,5 +156,6 @@ export async function runAssistantTick(now = new Date()): Promise<{
   const p2 = await query<{ id: string }>(
     `UPDATE assistant_drafts SET note_text = NULL
       WHERE note_text IS NOT NULL AND purge_after < now() RETURNING id::text`).catch(() => []);
-  return { users: users.length, weekly, deadline, mailed, purged: p1.length + p2.length };
+  const p3 = await purgeUploads();
+  return { users: users.length, weekly, deadline, mailed, purged: p1.length + p2.length + p3 };
 }

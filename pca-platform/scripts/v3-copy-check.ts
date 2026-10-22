@@ -175,6 +175,7 @@ const FILES = [
   "src/app/me/experience/new/page.tsx",
   "src/app/me/experience/steps.tsx",
   "src/app/me/experience/compose.tsx",
+  "src/app/me/experience/upload.tsx",
   "src/app/me/experience/[id]/edit/page.tsx",
   "src/app/me/explore/page.tsx",
   "src/app/me/region/page.tsx",
