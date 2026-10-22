@@ -195,7 +195,7 @@ export const kr: SiteContent = {
       label: "해외",
       title: "해외에서도 진행하고 있습니다",
       lead:
-        "CareerMatri의 진단 엔진(PCA)은 한국 밖에서도 쓰였습니다. 공학 직무는 나라가 달라도 같은 판단을 요구해서, 같은 문항을 그 나라 말로 옮겨 씁니다.",
+        "CareerMatri의 진단 엔진(PCA)은 한국 밖에서도 쓰였습니다. 직무가 요구하는 판단은 나라가 달라도 크게 다르지 않아서, 같은 문항을 그 나라 말로 옮겨 씁니다.",
       legend: { done: "진행한 나라", planned: "진행 예정" },
       countries: [
         { iso: "410", name: "한국", status: "done" },

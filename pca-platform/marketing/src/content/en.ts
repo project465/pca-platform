@@ -178,7 +178,7 @@ export const en: SiteContent = {
       label: "International",
       title: "Also in use outside Korea",
       lead:
-        "CareerMatri's assessment engine (PCA) has also been used outside Korea. Engineering roles call for the same judgments from country to country, so we use the same questions translated into each language.",
+        "CareerMatri's assessment engine (PCA) has also been used outside Korea. The judgments a role calls for differ little from country to country, so we use the same questions translated into each language.",
       legend: { done: "Completed", planned: "Planned" },
       countries: [
         { iso: "410", name: "South Korea", status: "done" },

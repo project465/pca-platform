@@ -181,7 +181,7 @@ export const ja: SiteContent = {
       label: "海外",
       title: "海外でも実施しています",
       lead:
-        "CareerMatriの診断エンジン（PCA）は、韓国以外でも使われてきました。工学の仕事は国が違っても同じ判断が求められるため、同じ設問をその国の言語に訳して使っています。",
+        "CareerMatriの診断エンジン（PCA）は、韓国以外でも使われてきました。職務に求められる判断は国が違っても大きくは変わらないため、同じ設問をその国の言語に訳して使っています。",
       legend: { done: "実施した国", planned: "実施予定" },
       countries: [
         { iso: "410", name: "韓国", status: "done" },

@@ -177,7 +177,7 @@ export const zh: SiteContent = {
       label: "海外",
       title: "我们也在海外开展",
       lead:
-        "CareerMatri的诊断引擎（PCA）已在韩国以外使用过。工程类岗位即使国家不同，要求的判断也是一样的，所以同一套题目会翻译成当地语言使用。",
+        "CareerMatri的诊断引擎（PCA）已在韩国以外使用过。岗位所要求的判断在不同国家之间差别不大，所以同一套题目会翻译成当地语言使用。",
       legend: { done: "已开展的国家", planned: "计划开展" },
       countries: [
         { iso: "410", name: "韩国", status: "done" },
