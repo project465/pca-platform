@@ -36,6 +36,7 @@ const ONLY = (process.env.WHO ?? "").split(",").filter(Boolean);
 const MAX_PAGES = Number(process.env.MAX_PAGES ?? 70);
 const MAX_BTN = Number(process.env.MAX_BTN ?? 30);
 const MOBILE = process.env.MOBILE !== "0";
+const ORG = (process.env.ORG ?? "PCU").toUpperCase();
 
 /** 누르지 않는 단추. 상태를 바꾸거나 되돌릴 수 없는 일을 한다 */
 const DANGER = /로그아웃|나가기|탈퇴|삭제|지우|재발급|비밀번호 (바꾸|재설정|변경)|멈추|멈춤|중지|비활성|결제|구매|환불|취소|초기화|제출|결과 만들기|발급|파기|적용|등록하기|추가하기|저장|보내기|내보내|다시 열어|열어 주기|담아|끝냈|완료|반영|업로드|가입|시작하기|검사 시작|다시 시작|이어하기|업그레이드|신청|요청|승인|거절|공개|해지|만들기|복구|교환|쓰기|켜기|끄기|동의/;
@@ -258,15 +259,16 @@ async function main() {
         const st = await makeStudent(login_id);
         return { login: login_id, pw: st.pw };
       } },
-    { who: "campus", starts: ["/me", "/campus/pcu", "/v3/start"],
+    /* 기관을 바꿔 돈다: `ORG=KUS LEAF=KUS26_...` . 기본은 배재대 경영이다 */
+    { who: "campus", starts: ["/me", `/campus/${ORG.toLowerCase()}`, "/v3/start"],
       make: async () => {
         const login_id = `zzca-c${stamp}`;
         const st = await makeStudent(login_id);
-        await registerCampusStudent(st.id, "PCU", process.env.LEAF ?? "PCU26_BIZ");
+        await registerCampusStudent(st.id, ORG, process.env.LEAF ?? "PCU26_BIZ");
         return { login: login_id, pw: st.pw };
       } },
     { who: "orgadmin", starts: ["/org", "/org/v3", "/org/v3/students"],
-      make: async () => ({ login: `zzca-o${stamp}`, pw: await staffUser(`zzca-o${stamp}`, "org_admin", "PCU") }) },
+      make: async () => ({ login: `zzca-o${stamp}`, pw: await staffUser(`zzca-o${stamp}`, "org_admin", ORG) }) },
     { who: "admin", starts: ["/admin"],
       make: async () => ({ login: `zzca-a${stamp}`, pw: await staffUser(`zzca-a${stamp}`, "superadmin") }) },
   ];

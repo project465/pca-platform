@@ -28,6 +28,8 @@ export type ResultMeta = {
    * 같은 갈래가 Core 둘에 설 수 있다.
    */
   specializationCode: string | null;
+  /** 학교 코드. **화면에 적지 않는다**: 그 학교 지역의 기업 명단을 고를 때만 쓴다 */
+  universityCode: string | null;
   /** 응답을 끝낸 날. 없으면 결과를 굳힌 날 */
   answeredOn: string | null;
 };
@@ -75,6 +77,7 @@ export async function resultMeta(attemptId: string, core: string): Promise<Resul
   return {
     major, school, department, specialization,
     specializationCode: row?.specialization_code ?? null,
+    universityCode: u ? row?.university_code ?? null : null,
     answeredOn: row?.answered ?? null,
   };
 }

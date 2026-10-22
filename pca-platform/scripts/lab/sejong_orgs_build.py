@@ -10,13 +10,13 @@
 출처가 없어 넣지 않는다. 채용 여부는 어느 줄도 확인하지 않았다.
 
     python3 -I scripts/lab/sejong_orgs_build.py <companies_sejong_base.json>
-    → data/region/sejong-orgs.v1.json
+    → sites/pca-platform/content/sejong-orgs.v1.json
 """
 import datetime, json, re, sys
 
 BASE = sys.argv[1] if len(sys.argv) > 1 else "/home/user/pca-line/_RISE_전국데이터_백업/pca-rise-section9/data/companies_sejong_base.json"
 DART = "data/region/dart-sejong.v1.json"
-OUT = "data/region/sejong-orgs.v1.json"
+OUT = "sites/pca-platform/content/sejong-orgs.v1.json"
 
 # KSIC 10차 중분류 (공시 업종 코드의 앞 두 자리)
 KSIC2 = {

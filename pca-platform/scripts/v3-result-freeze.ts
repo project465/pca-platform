@@ -84,6 +84,10 @@ const FILES = [
      짚어 세 자리를 고칠 때까지 고쳐도 아무 기록이 흔들리지 않았다
      (PCU HUMAN REVIEW FINAL CORRECTION §4) */
   "src/lib/me-v3/result/chains.ts",
+  /* 세종에서 이어 볼 기업(고려대 세종 · 세종일자리경제진흥원). **판정에
+     닿지 않지만** 학생이 읽는 회사 줄과 묶음을 고르므로 이 동결이 덮는다 */
+  "src/lib/me-v3/result/sejong.ts",
+  "src/app/v3/[attemptId]/result/sejong.tsx",
 ];
 
 /** 동결 조건과 그것을 지키는 검사 */

@@ -1607,7 +1607,21 @@
      "KU26_MEDIA",
      "KU26_HEALTHPOL",
      "KU26_PSY",
-     "KU26_SECURITY"
+     "KU26_SECURITY",
+     "KU26_CLASSIC",
+     "KU26_ENG",
+     "KU26_GERMAN",
+     "KU26_FRENCH",
+     "KU26_CHINESE",
+     "KU26_RUSSIAN",
+     "KU26_SPANISH",
+     "KU26_LINGUISTICS",
+     "KU26_LIFESCI",
+     "KU26_STAT",
+     "KU26_SEMI",
+     "KU26_BME",
+     "KU26_BIOMED",
+     "KU26_HEALTHENV"
     ],
     "note": "**사업주 지시로 Core 가 열린 자리를 전부 연다(2026-10-20).** 경영 · 기계에 더해 컴퓨터·소프트웨어 · 전기전자 · 언어 · 시각디자인 · 미디어 · 패션뷰티 · 체육 · 법·경찰 · 행정 · 식품 · 원예조경 · 보건 · 건축 · 심리 · 교육 · 바이오 · 간호 · 토목 Core 를 가리키고 매핑이 EXACT 인 자리다. Core 가 없는 자리(`core_code: null`)와 전공을 고르는 자리(routing)는 들지 않는다. 한 자리라도 운영에서 걸리면 그 자리만 이 목록에서 뺀다"
    },
@@ -1719,49 +1733,49 @@
          "code": "KU26_CLASSIC",
          "name": "한문학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "LANG_CORE_V1",
+         "specialization": "SPEC_LANG_LINGUISTICS",
+         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
         },
         {
          "code": "KU26_ENG",
          "name": "영어영문학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "LANG_CORE_V1",
+         "specialization": "SPEC_LANG_FOREIGN",
+         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
         },
         {
          "code": "KU26_GERMAN",
          "name": "독어독문학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "LANG_CORE_V1",
+         "specialization": "SPEC_LANG_FOREIGN",
+         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
         },
         {
          "code": "KU26_FRENCH",
          "name": "불어불문학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "LANG_CORE_V1",
+         "specialization": "SPEC_LANG_FOREIGN",
+         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
         },
         {
          "code": "KU26_CHINESE",
          "name": "중어중문학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "LANG_CORE_V1",
+         "specialization": "SPEC_LANG_FOREIGN",
+         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
         },
         {
          "code": "KU26_RUSSIAN",
          "name": "노어노문학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "LANG_CORE_V1",
+         "specialization": "SPEC_LANG_FOREIGN",
+         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
         },
         {
          "code": "KU26_JAPANESE",
@@ -1775,17 +1789,17 @@
          "code": "KU26_SPANISH",
          "name": "서어서문학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "LANG_CORE_V1",
+         "specialization": "SPEC_LANG_FOREIGN",
+         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
         },
         {
          "code": "KU26_LINGUISTICS",
          "name": "언어학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "LANG_CORE_V1",
+         "specialization": "SPEC_LANG_LINGUISTICS",
+         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
         }
        ]
       },
@@ -1797,9 +1811,9 @@
          "code": "KU26_LIFESCI",
          "name": "생명과학부",
          "kind": "department",
-         "core_code": null,
+         "core_code": "BT_CORE_V1",
          "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
         },
         {
          "code": "KU26_BIOTECH",
@@ -1857,9 +1871,9 @@
          "code": "KU26_STAT",
          "name": "통계학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "CS_CORE_V1",
+         "specialization": "SPEC_CS_AI",
+         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
         },
         {
          "code": "KU26_PUBADM",
@@ -1933,7 +1947,8 @@
          "name": "건축사회환경공학부",
          "kind": "department",
          "core_code": "CIV_CORE_V1",
-         "specialization": null
+         "specialization": "SPEC_CIV_GENERAL",
+         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
         },
         {
          "code": "KU26_ARCH",
@@ -1947,7 +1962,8 @@
          "name": "기계공학부",
          "kind": "department",
          "core_code": "ME_CORE_V3",
-         "specialization": null
+         "specialization": "SPEC_ME_GENERAL",
+         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
         },
         {
          "code": "KU26_IE",
@@ -1976,9 +1992,9 @@
          "code": "KU26_SEMI",
          "name": "반도체공학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "EE_CORE_V1",
+         "specialization": "SPEC_EE_SEMI",
+         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
         },
         {
          "code": "KU26_COMM",
@@ -2012,7 +2028,8 @@
          "name": "교육학과",
          "kind": "department",
          "core_code": "EDU_CORE_V1",
-         "specialization": null
+         "specialization": "SPEC_EDU_GENERAL",
+         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
         },
         {
          "code": "KU26_PE",
@@ -2151,25 +2168,25 @@
          "code": "KU26_BME",
          "name": "바이오의공학부",
          "kind": "department",
-         "core_code": null,
+         "core_code": "BT_CORE_V1",
          "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
         },
         {
          "code": "KU26_BIOMED",
          "name": "바이오시스템의과학부",
          "kind": "department",
-         "core_code": null,
+         "core_code": "BT_CORE_V1",
          "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
         },
         {
          "code": "KU26_HEALTHENV",
          "name": "보건환경융합과학부",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "HEALTH_CORE_V1",
+         "specialization": "SPEC_HEALTH_GENERAL",
+         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
         },
         {
          "code": "KU26_HEALTHPOL",
@@ -2264,7 +2281,13 @@
      "KUS26_SPORTSSCI",
      "KUS26_SPORTSBIZ",
      "KUS26_MEDIAWRITE",
-     "KUS26_CULTCONTENT"
+     "KUS26_CULTCONTENT",
+     "KUS26_SEMIPHYS",
+     "KUS26_DATACOMP",
+     "KUS26_CHINAST",
+     "KUS26_ENGST",
+     "KUS26_GERMANST",
+     "KUS26_BIGDATA"
     ],
     "note": "**사업주 지시로 Core 가 열린 자리를 전부 연다(2026-10-20).** 경영 · 기계에 더해 컴퓨터·소프트웨어 · 전기전자 · 언어 · 시각디자인 · 미디어 · 패션뷰티 · 체육 · 법·경찰 · 행정 · 식품 · 원예조경 · 보건 · 건축 · 심리 · 교육 · 바이오 · 간호 · 토목 Core 를 가리키고 매핑이 EXACT 인 자리다. Core 가 없는 자리(`core_code: null`)와 전공을 고르는 자리(routing)는 들지 않는다. 한 자리라도 운영에서 걸리면 그 자리만 이 목록에서 뺀다"
    },
@@ -2349,8 +2372,9 @@
          "name": "전자·기계융합공학과",
          "kind": "department",
          "core_code": "ME_CORE_V3",
-         "specialization": null,
-         "note": "기계 설계 · 제작 · 시험이 이 학과 실습의 중심이라 기계공학 Core 로 잰다. 전자 쪽 경험은 기계공학 Core 의 제어 · 계측 영역이 함께 묻는다"
+         "specialization": "SPEC_ME_MECHATRONICS",
+         "note": "기계 설계 · 제작 · 시험이 이 학과 실습의 중심이라 기계공학 Core 로 잰다. 전자 쪽 경험은 기계공학 Core 의 제어 · 계측 영역이 함께 묻는다",
+         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
         },
         {
          "code": "KUS26_ENVSYS",
@@ -2364,9 +2388,9 @@
          "code": "KUS26_SEMIPHYS",
          "name": "반도체물리학부",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "물리학 Core 와 반도체공학 Core 가 아직 계획 단계다. 어느 쪽으로 잴지는 그 Core 가 서는 날 정한다"
+         "core_code": "EE_CORE_V1",
+         "specialization": "SPEC_EE_SEMI",
+         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
         },
         {
          "code": "KUS26_BIOINFO",
@@ -2386,9 +2410,9 @@
          "code": "KUS26_DATACOMP",
          "name": "데이터계산과학전공",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "수학·통계 Core(`MATH_CORE_V1`)가 아직 계획 단계다. 그 Core 가 서면 그때 잇는다"
+         "core_code": "CS_CORE_V1",
+         "specialization": "SPEC_CS_AI",
+         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
         }
        ]
       },
@@ -2438,25 +2462,25 @@
            "code": "KUS26_CHINAST",
            "name": "중국학전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null,
-           "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+           "core_code": "LANG_CORE_V1",
+           "specialization": "SPEC_LANG_FOREIGN",
+           "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
           },
           {
            "code": "KUS26_ENGST",
            "name": "영미학전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null,
-           "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+           "core_code": "LANG_CORE_V1",
+           "specialization": "SPEC_LANG_FOREIGN",
+           "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
           },
           {
            "code": "KUS26_GERMANST",
            "name": "독일학전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null,
-           "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+           "core_code": "LANG_CORE_V1",
+           "specialization": "SPEC_LANG_FOREIGN",
+           "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
           }
          ]
         }
@@ -2517,9 +2541,9 @@
            "code": "KUS26_BIGDATA",
            "name": "빅데이터사이언스전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null,
-           "mapping_note": "수학·통계 Core(`MATH_CORE_V1`)가 아직 계획 단계다. 그 Core 가 서면 그때 잇는다"
+           "core_code": "CS_CORE_V1",
+           "specialization": "SPEC_CS_AI",
+           "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
           }
          ]
         }
@@ -3241,7 +3265,8 @@
          "name": "기계·자동차",
          "kind": "department",
          "core_code": "ME_CORE_V3",
-         "specialization": null
+         "specialization": "SPEC_ME_GENERAL",
+         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
         },
         {
          "code": "SJEPA26_EE",
@@ -3269,7 +3294,8 @@
          "name": "토목·건설",
          "kind": "department",
          "core_code": "CIV_CORE_V1",
-         "specialization": null
+         "specialization": "SPEC_CIV_GENERAL",
+         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
         },
         {
          "code": "SJEPA26_BIO",

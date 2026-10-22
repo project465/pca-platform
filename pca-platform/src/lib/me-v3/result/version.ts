@@ -171,7 +171,13 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
 /** AI 티 문장 정리 (견줍니다·섭니다·세웠습니다 등) */
 /** AI 취업비서의 이름을 '매트'로 바꿨다(작업공간으로 가는 한 줄) */
 /** 이름을 다시 바꿨다: 매트 → MAT(작업공간으로 가는 한 줄) */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.69";
+/**
+ * 세종 학교(고려대 세종 · 세종일자리경제진흥원) 결과지에 `세종에서 이 경험을
+ * 이어 볼 기업` 절을 더했다: 비전세미콘(주)과 이어지는 점, 내 결과와 잘 맞는
+ * 곳, 이어서 볼 곳, 회사를 볼 때 해 볼 것. 공개 명단의 업종·주력 품목만 옮기고
+ * 점수와 순위를 만들지 않는다. 판정과 결과 모델은 그대로다.
+ */
+export const RESULT_COPY_VERSION = "me-v3-result-copy.70";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -471,7 +477,8 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.69";
  * `아직` 을 한 단 옅게 둔다. 종이에서 회색 글자를 한 단 짙게 하고 쪽머리와
  * 쪽 번호를 7pt 에서 8pt 로 올렸다. 크기와 줄 사이는 그대로라 쪽 수가 같다.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V82";
+/** 세종 학교 결과지에 기업 절 하나를 더했다(기존 class 만 쓴다) */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V83";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

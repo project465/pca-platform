@@ -111,7 +111,9 @@ async function data() {
   const rs = await query<{ item_id: string; value_int: number | null }>(
     `SELECT item_id, value_int FROM v3_responses WHERE attempt_id = $1`, [ID]);
   const resp = Object.fromEntries(rs.map((x) => [x.item_id, x.value_int]));
-  const sjorgs: A = existsSync(`data/region/${PF.region}-orgs.v1.json`) ? J(`data/region/${PF.region}-orgs.v1.json`) : null;
+  /* 세종 명단은 결과지가 함께 읽어서 콘텐츠 자리로 옮겼다. 다른 지역은 전과 같다 */
+  const sjPath = [`sites/pca-platform/content/${PF.region}-orgs.v1.json`, `data/region/${PF.region}-orgs.v1.json`].find((p) => existsSync(p));
+  const sjorgs: A = sjPath ? J(sjPath) : null;
   return { r, m, doms, rel, rolePacks, industry, guide, dart, overview, sejong, kodata, resp, sjorgs, big };
 }
 type D = Awaited<ReturnType<typeof data>>;

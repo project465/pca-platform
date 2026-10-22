@@ -34,6 +34,8 @@ import { openActions } from "@/lib/me-v3/open-actions";
 import { sayKo, thingKo } from "@/lib/me-v3/result/say";
 import { resultMeta } from "@/lib/me-v3/result/meta";
 import { leadFirst, specView } from "@/lib/me-v3/result/spec-view";
+import { sejongView } from "@/lib/me-v3/result/sejong";
+import SejongSection from "./sejong";
 import { participantOf, savedActions } from "@/lib/me-v3/pilot/store";
 import { takeActionsFromResult } from "@/app/me/next/actions";
 import {
@@ -892,6 +894,17 @@ export default async function V3Result({
   const industryName = (c: string) =>
     industryChoices(core).find((x) => x.code === c)?.name ?? c;
   const roleName = (c: string) => roleChoices(core).find((x) => x.code === c)?.name ?? c;
+  /* **세종에서 이어 볼 기업**(고려대 세종 · 세종일자리경제진흥원). 학교
+     등록부의 첫 도시에 명단 파일이 있을 때만 선다. 새 점수를 만들지 않고
+     업종과 확인된 영역이 같은 분야인지만 나란히 놓는다 */
+  const sejong = sejongView({
+    universityCode: meta.universityCode,
+    domains: model.domains.map((d) => ({
+      name: domainName(core, d.code), zone: d.zone, confirmed: d.confirmed.length,
+    })),
+    linked: [...revIndustry.map((r) => industryName(r.code)), ...revRole.map((r) => roleName(r.code))],
+    labels: [meta.specialization, meta.major].filter((x): x is string => !!x),
+  });
   /**
    * 넓게 살펴보라는 할 일이 **어느 영역에서**인가(규격 §16).
    *
@@ -2024,6 +2037,7 @@ export default async function V3Result({
             ) : null}
           </section>
         ) : null}
+        {sejong ? <SejongSection v={sejong} /> : null}
         {/* ══ 부록 ══
             **다섯 장면에 들지 않는 것은 전부 여기다**(R18 §6).
             먼저 볼 영역과 비어 있는 자리와 전체 기술영역과 지역은
