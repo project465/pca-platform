@@ -80,11 +80,14 @@ const INTERNAL = [
  * 다른 말을 요구하면 전공을 하나 더 열 때 이 목록을 같이 고쳐야 하고,
  * 그러면 어느 날 안 고치고 넘어간다.
  */
+/* 결과지 개편(R18~R21)으로 이름이 바뀐 셋을 따라왔다: `다음에 할 일` →
+   `적을 과제 고르기`, `…꺼내는 자리` → `…꺼내는 법`, `…되묻는 자리` →
+   `…다시 묻는 질문`. 절은 그대로 서 있었고 이 목록만 옛 이름이었다 */
 const PAPER_NEEDS = [
-  "먼저 볼 영역", "내가 이미 가진 근거", "앞으로 채울 것", "다음에 할 일",
+  "먼저 볼 영역", "내가 이미 가진 근거", "앞으로 채울 것", "적을 과제 고르기",
   "쪽에서 먼저 보는 영역", "쪽에서 흔히 남기는 것",
-  "쪽에서 지금 할 수 있는 한 걸음", "그 경험을 지원서에서 꺼내는 자리",
-  "면접에서 같은 구조로 되묻는 자리",
+  "쪽에서 지금 할 수 있는 한 걸음", "그 경험을 지원서에서 꺼내는 법",
+  "면접에서 같은 구조로 다시 묻는 질문",
 ];
 
 /**
@@ -108,6 +111,16 @@ function foreignDomainNames(mine: string): { name: string; core: string }[] {
     }
   }
   const mineNames = [...all].filter(([, c]) => c.has(mine)).map(([n]) => n);
+  /**
+   * **내 산업·역할 팩이 쓰는 말도 남의 말이 아니다.** 심리학의 산업팩
+   * `기업 인사·조직`(산업·조직심리)이 경영 영역 이름 `인사·조직` 으로
+   * 걸려 멀쩡한 종이가 걸렸다. 팩 파일 글자를 통째로 들고 그 안에 든
+   * 이름은 뺀다.
+   */
+  let ownPacks = "";
+  for (const k of ["industry", "role"] as const) {
+    try { ownPacks += JSON.stringify(packs(mine, k)); } catch { /* 팩이 없는 Core 다 */ }
+  }
   const out: { name: string; core: string }[] = [];
   for (const [n, cores] of all) {
     if (cores.size !== 1 || cores.has(mine)) continue;
@@ -120,6 +133,7 @@ function foreignDomainNames(mine: string): { name: string; core: string }[] {
      * 자리를 빼고 센다.
      */
     if (mineNames.some((m) => m.includes(n) || n.includes(m))) continue;
+    if (ownPacks.includes(n)) continue;
     out.push({ name: n, core: [...cores][0] });
   }
   return out;
