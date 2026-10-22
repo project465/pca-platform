@@ -27,5 +27,8 @@
     "@types/topojson-client": "^3.1.5",
     "playwright": "^1.56.1",
     "typescript": "5.9.2"
+  },
+  "engines": {
+    "node": ">=20.9 <23"
   }
 }
