@@ -81,7 +81,7 @@ export default function SejongSection({ v }: { v: SejongView }) {
           </dl>
           {v.semiRelevant && v.semiCount < 5 ? (
             <p className="rs-others">
-              {v.city} 명단에서 업종이나 주력 품목에 반도체가 적힌 곳은 {v.semiCount}곳입니다.
+              {v.city} 명단에서 업종이나 주력 품목에 반도체가 적힌 곳은 {v.semiCount}곳입니다.{" "}
               {withJosa(f.org.name, "이가")} 기계 제조업으로 등록되어 있듯, 반도체 쪽 일은 아래
               기계·장비와 전기·전자 묶음의 회사에서도 함께 찾아볼 수 있습니다.
             </p>

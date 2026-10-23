@@ -60,6 +60,18 @@ const themesOf = (s: string) => THEMES.filter((t) => t.re.test(s)).map((t) => t.
 /** 회사 이름에서 법인 표시를 걷는다. 찾기와 줄 세우기에만 쓴다 */
 const bare = (n: string) => n.replace(/주식회사|\(주\)|㈜|\s/g, "");
 
+/**
+ * 명단의 주력 품목을 읽을 수 있게만 고친다. 글자를 더하거나 바꾸지 않고,
+ * 전각 공백 줄과 쉼표 앞뒤 빈칸을 고르고, 업종명을 그대로 되풀이한 토막과
+ * 같은 토막을 뺀다. **뜻을 지어내지 않는다**
+ */
+function cleanProduct(raw: string, sector: string): string {
+  const parts = raw.replace(/[\s\u3000]+/g, " ").split(/\s*[,，]\s*/)
+    .map((x) => x.trim()).filter(Boolean)
+    .filter((x) => !sector.trim().endsWith(x));
+  return [...new Set(parts)].join(", ");
+}
+
 let cache: { file: string; data: OrgFile } | null = null;
 function load(file: string, dir = CONTENT_DIR): OrgFile | null {
   if (cache?.file === file) return cache.data;
@@ -161,7 +173,7 @@ export function sejongView(x: SejongInput): SejongView | null {
   const line = (o: Org, via: Map<string, string[]>, ts: string[]): SejongOrgLine => ({
     name: o.name.replace(/\s+/g, " ").trim(), listed: o.listed ?? null,
     sector: o.sector.replace(/^그 외 (기타 )?/, "").replace(/^기타 /, ""),
-    product: (o.product ?? "").trim(),
+    product: cleanProduct(o.product ?? "", o.sector),
     themes: ts, via: [...new Set(ts.flatMap((t) => via.get(t) ?? []))].slice(0, 3),
   });
   const order = (a: SejongOrgLine, b: SejongOrgLine) =>
@@ -179,7 +191,8 @@ export function sejongView(x: SejongInput): SejongView | null {
       const linked = [...new Set(own.flatMap((t) => strongVia.get(t) ?? []))];
       const open = [...new Set(own.flatMap((t) => partialVia.get(t) ?? []))]
         .filter((n) => !linked.includes(n) && domainNames.has(n));
-      const paths = [...new Set(own.flatMap((t) => pathVia.get(t) ?? []))];
+      const pathAll = [...new Set(own.flatMap((t) => pathVia.get(t) ?? []))];
+      const paths = pathAll.filter((n) => !pathAll.some((m) => m !== n && m.includes(n)));
       focus = { org: line(o, new Map([...partialVia, ...strongVia]), own), linked, open, paths };
       continue;
     }
@@ -201,7 +214,11 @@ export function sejongView(x: SejongInput): SejongView | null {
       .slice(0, maxG)
       .map(([theme, orgs]) => {
         orgs.sort(order);
-        return { theme, via: (via.get(theme) ?? []).slice(0, 3), orgs: orgs.slice(0, per), more: Math.max(0, orgs.length - per) };
+        /* `반도체` 와 `반도체·디스플레이` 처럼 한 이름이 다른 이름 안에 들면
+           짧은 쪽을 뺀다: 같은 말을 두 번 적는 줄이 된다 */
+        const all = via.get(theme) ?? [];
+        const names = all.filter((n) => !all.some((m) => m !== n && m.includes(n)));
+        return { theme, via: names.slice(0, 3), orgs: orgs.slice(0, per), more: Math.max(0, orgs.length - per) };
       });
   };
   const strongG = group(strong, strongVia, 3, 4);

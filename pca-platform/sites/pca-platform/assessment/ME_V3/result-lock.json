@@ -45,7 +45,7 @@
   "src/lib/me-v3/result/chart-data.ts": "62e508fa151b0664b0c89e46745ac4f452390534ff919ba62f0ddac070734308",
   "src/lib/me-v3/runtime/domain-facts.ts": "49f73a7eb5de3b5ae72885f5d8399bd147c20a2b82bab62167338c4ae48b2695",
   "src/lib/me-v3/result/chains.ts": "34dc241b9e7f743994d6b606990f5d19f4a94777d585dce6e3330169739522f8",
-  "src/lib/me-v3/result/sejong.ts": "ccbf10a723c6c996aa9b609cf1d30fdbdd7d52866ef84d053b2e3a86d903110c",
-  "src/app/v3/[attemptId]/result/sejong.tsx": "1082a26d875d92d4eee6c57054a0aa9e64d9d873e3d75a34263f5806e6cb9b4d"
+  "src/lib/me-v3/result/sejong.ts": "efb45ce6ce5ed9e77ffb3a6d6cfedfdaa2bfd112f3c6c2379544f293033b42ed",
+  "src/app/v3/[attemptId]/result/sejong.tsx": "0176a3bf7a75a943085c963d38162a9cdbc762ae6707e8b1a3ad90cd3cd20ec1"
  }
 }
