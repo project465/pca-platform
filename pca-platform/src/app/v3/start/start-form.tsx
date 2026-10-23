@@ -62,8 +62,7 @@ export default function StartForm({ error, core }: { error?: string; core?: stri
               ))}
           </div>
           <p className="qs-guide">
-            전공계열에 따라 질문과 선택지가 달라집니다. 평가 기준은 네 계열이
-            모두 같습니다.
+            계열에 따라 질문 속 상황만 달라지고, 결과를 보는 기준은 같습니다.
           </p>
         </fieldset>
       ) : null}

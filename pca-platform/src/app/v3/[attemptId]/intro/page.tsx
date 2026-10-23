@@ -36,9 +36,11 @@ export const metadata = { title: "검사 시작 전 안내 · CareerMatri" };
  */
 const GUIDE: [IconName, string, string][] = [
   ["compass", "무엇을 보나요",
-    "관심과 해 본 일과 그때 직접 정한 것을 봅니다. 전공지식 시험이 아닙니다."],
+    "관심 있는 일, 해 본 일, 그때 직접 정한 것을 봅니다. 전공 지식을 묻는 시험이 아닙니다."],
+  /* `모르겠다` 보기는 영역을 처음 훑는 화면에만 있다. 모든 문항에 있는
+     것처럼 적으면 약속이 틀린다 */
   ["skip", "어떻게 답하나요",
-    "보기에서 고르기만 하면 됩니다. 어려운 문항은 모르겠다로 넘어갑니다."],
+    "보기에서 고르기만 하면 됩니다. 처음 훑는 화면에서는 잘 모르는 일에 ‘모르겠다’를 고르셔도 됩니다."],
   ["bolt", "얼마나 걸리나요", ""],
 ];
 
@@ -144,8 +146,8 @@ export default async function V3Intro({
             스물여섯 자쯤이라 쉰 자를 넘으면 세 줄이 되고, 그러면 제목과
             카드 사이에 읽을거리가 한 덩이 더 선다 */}
         <p className="qs-lead">
-          {coreName} 쪽에서 해 본 일과 그때 직접 정한 것을 묻고, 설명할 수
-          있는 영역과 채울 부분을 정리합니다.
+          {coreName} 분야에서 해 본 일과 그때 직접 정한 것을 여쭙고, 내세울 수
+          있는 경험과 더 채울 부분을 정리해 드립니다.
         </p>
 
         <ul className="qs-three">
@@ -160,7 +162,7 @@ export default async function V3Intro({
                     않는다**: 분량이 첫 인상이 되면 읽는 쪽이 이 검사를
                     길이로 값 매긴다 */}
                 <span>{i === 2
-                  ? `약 ${mins}분입니다. 문항마다 자동 저장되어 중간에 닫아도 이어집니다.`
+                  ? `약 ${mins}분 걸립니다. 답할 때마다 저장되니 중간에 닫아도 이어서 하시면 됩니다.`
                   : note}</span>
               </div>
             </li>
@@ -185,10 +187,10 @@ export default async function V3Intro({
           <summary>검사에 대해 더 알아보기</summary>
           {sv.scene.length ? (
             <section className="qs-major">
-              <h2>{coreName} 쪽에서 자주 겪는 상황</h2>
+              <h2>{coreName} 전공자가 자주 하는 일</h2>
               <p>
-                아래 같은 상황에서 무엇을 직접 정했는지를 묻습니다. 겪은 적이
-                없는 상황은 없다고 고르시면 됩니다.
+                이런 일에서 무엇을 직접 정해 봤는지 여쭙니다. 해 본 적 없는
+                일은 &lsquo;해 본 적 없음&rsquo;을 고르시면 됩니다.
               </p>
               <ul>
                 {sv.scene.slice(0, 3).map((t) => <li key={t}>{t}</li>)}

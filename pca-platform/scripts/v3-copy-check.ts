@@ -317,8 +317,12 @@ for (const [text, kinds] of byHelp) {
   if (kinds.size > 1) flag(`같은 도움말을 ${[...kinds].join(" · ")} 화면이 함께 쓴다 — ${text}`);
 }
 
-/* 고르는 자리에 붙는 한 줄도 같은 자로 잰다 */
-for (const [k, v] of Object.entries({ ...INDUSTRY_HINT, ...ROLE_HINT, ...ORG_HINT })) {
+/* 고르는 자리에 붙는 한 줄도 같은 자로 잰다. **조직 표는 Core 마다 따로**
+   들어서(`ORG_HINT[core][code]`) 펼쳐서 잰다: 그대로 펼치면 표 하나가 글
+   한 줄로 세어져 길이도 코드도 재지 않은 채 지나간다 */
+const ORG_LINES = Object.fromEntries(Object.entries(ORG_HINT)
+  .flatMap(([core, t]) => Object.entries(t).map(([k, v]) => [`${core}.${k}`, v])));
+for (const [k, v] of Object.entries({ ...INDUSTRY_HINT, ...ROLE_HINT, ...ORG_LINES })) {
   if (CODE.test(v)) flag(`팩 설명에 내부 코드 — ${k}: ${v}`);
   if (v.length > 34) flag(`팩 설명이 길다(${v.length}자) — ${k}: ${v}`);
 }

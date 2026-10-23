@@ -96,6 +96,8 @@ export function exampleOf(
  * 실제로 하는 판단 한 줄만 둔다.
  */
 export function sceneHint(core: string, dir = CONTENT_DIR): string {
-  const list = studentScenes(core, dir).slice(0, 5).join(" · ");
-  return `${list} 가운데 어디에서 해 본 것이든 괜찮습니다.`;
+  /* 장면 이름을 쉼표로 잇는다. 가운뎃점으로 이으면 이름 안의 가운뎃점
+     (`교지·학보 활동`)과 섞이고, `가운데` 로 맺으면 고르는 화면처럼 읽힌다 */
+  const list = studentScenes(core, dir).slice(0, 5).join(", ");
+  return `${list} 등 어디에서 해 본 일이든 괜찮습니다.`;
 }

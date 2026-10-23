@@ -266,6 +266,27 @@ function main(): void {
     /STEM|HUMANITIES|BUSINESS/.test(String(i.response_scale ?? "")));
   ok("계열이 척도에 들어가지 않는다", fieldInScale.length === 0);
 
+  /* 11-1. 대학원 장면에 학부생 활동이 남지 않는다(경영 문면 감사 §5).
+     대학원 문면을 학부 문장의 앞머리만 바꿔 끼우면 `학위 연구에서 장부
+     숫자와 영수증을 하나씩 맞춰 봤나요?` · `연구실 과제에서 티켓을 언제
+     얼마에 팔지` 같은 문장이 선다. 장면 앞머리가 아니라 **대상 자리**에
+     학생 활동 낱말이 남은 자리를 센다.
+     **다시 쓴 Core 만 걸고 나머지는 보고로 둔다.** 다른 Core 의 은행은
+     잠겨 있고 아직 다시 쓰지 않았다: 걸면 그 Core 의 검사가 이 회차와
+     상관없이 깨진다 */
+  const STUDENT_ONLY = /동아리|아르바이트|협찬|학생회|티켓|회장단|축제/;
+  const GRAD_REWRITTEN = ["BIZ_CORE_V1"];
+  const gradStudent = items.filter((i) => Object.entries(i.stage_wording ?? {})
+    .some(([st, t]) => st !== "bachelor" && STUDENT_ONLY.test(String(t))));
+  if (GRAD_REWRITTEN.includes(code)) {
+    ok("대학원 장면에 학부생 활동 낱말이 없다", gradStudent.length === 0,
+       gradStudent.length ? gradStudent.slice(0, 4).map((i) => i.item_id).join(" ")
+         : "석사 · 박사 · 포닥 문면");
+  } else if (gradStudent.length) {
+    note("대학원 장면에 학부생 활동 낱말",
+      `${gradStudent.length}개: ${gradStudent.slice(0, 4).map((i) => i.item_id).join(" ")}`);
+  }
+
   /**
    * 12. 역방향과 일관성 짝.
    *

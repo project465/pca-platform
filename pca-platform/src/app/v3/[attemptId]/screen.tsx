@@ -649,7 +649,7 @@ export default function Screen({
         {s.groups ? (
           <>
             <p className="qs-picked is-lead">
-              <span>해 봤다고 답한 판단 <b>{s.groups.length}</b>가지</span>
+              <span>해 봤다고 답한 일 <b>{s.groups.length}</b>가지</span>
               <span className="qs-grow" />
               <span>고른 것 <b>{Object.values(picks).reduce((n, v) => n + v.length, 0)}</b>개</span>
             </p>
@@ -688,7 +688,7 @@ export default function Screen({
               <span><b>{many.length}</b> / {s.max ?? 2} 선택</span>
               <span className="qs-grow" />
               <span className="qs-hint">{many.length >= (s.max ?? 2)
-                ? "둘까지 고를 수 있습니다. 바꾸려면 고른 것을 한 번 더 누르세요"
+                ? "두 개까지 고를 수 있습니다. 다시 누르면 선택이 풀립니다"
                 : "고르지 않고 넘어가셔도 됩니다"}</span>
             </p>
             <fieldset className="qs-opts" style={{ margin: 0, border: 0, padding: 0 }}>
@@ -721,28 +721,28 @@ export default function Screen({
             {s.summary ? (
               <ul className="qs-summary">
                 <li>
-                  <span>확인한 기술영역</span>
-                  <b>{s.summary.explored}개 영역</b>
+                  <span>살펴본 업무 영역</span>
+                  <b>{s.summary.explored}개</b>
                 </li>
                 {s.summary.deep.length ? (
                   <li>
-                    <span>자세히 확인한 영역</span>
+                    <span>자세히 본 영역</span>
                     <b>{s.summary.deep.join(" · ")}</b>
                   </li>
                 ) : null}
                 <li>
-                  <span>실제 판단을 물은 문항</span>
+                  <span>실제 경험을 물은 문항</span>
                   <b>{s.summary.judged}개</b>
                 </li>
                 <li>
                   <span>응답과 선택</span>
-                  <b>답변 {s.answered}개
-                    {s.summary.evidence ? <em> · 선택한 항목 {s.summary.evidence}개</em> : null}
+                  <b>답한 문항 {s.answered}개
+                    {s.summary.evidence ? <em> · 고른 항목 {s.summary.evidence}개</em> : null}
                   </b>
                 </li>
                 {s.summary.industry || s.summary.role ? (
                   <li>
-                    <span>산업·역할</span>
+                    <span>관심 산업·직무</span>
                     <b>{[s.summary.industry, s.summary.role].filter(Boolean).join(" · ")}</b>
                   </li>
                 ) : null}
@@ -757,9 +757,8 @@ export default function Screen({
             {!s.done && s.gaps?.length ? (
               <div className="qs-review">
                 <h2>아직 답하지 않은 문항이 {s.gaps.length}개 있습니다</h2>
-                <p>눌러서 그 문항으로 돌아가 고칠 수 있습니다. 비워 둔 채로
-                  제출해도 됩니다 — 답하지 않은 문항은 결과에서 그 사실을
-                  그대로 적습니다.</p>
+                <p>누르면 그 문항으로 돌아갑니다. 비워 둔 채 제출하셔도 되고,
+                  답하지 않은 문항은 결과에 &lsquo;답하지 않음&rsquo;으로 표시됩니다.</p>
                 <ul>
                   {s.gaps.map((g) => (
                     <li key={g.index}>
@@ -777,7 +776,7 @@ export default function Screen({
             ) : null}
             <p className="qs-help" style={{ marginTop: 24 }}>
               {s.done
-                ? "검사는 시작일 뿐입니다. 경험이 늘면 근거와 부족한 부분을 다시 계산합니다."
+                ? "나중에 경험을 더 넣으시면 결과를 다시 정리해 드립니다."
                 : "지금까지 답하신 것으로 결과를 정리합니다. 만든 뒤에도 이전으로 돌아가 고칠 수 있습니다."}
             </p>
             {/* **PDF 하나로 끝내지 않는다.** 결과를 받은 사람이 다음에 갈
@@ -785,12 +784,16 @@ export default function Screen({
             {s.done ? (
               <ul className="qs-done-next">
                 {[
-                  [`/v3/${s.attemptId}/result`, "결과 보기", "기술영역과 산업과 직무를 이어 읽습니다"],
-                  ["/me", "내 CareerMatri", "지금 방향과 근거와 부족한 부분을 한 쪽에 둡니다"],
-                  [`/v3/${s.attemptId}/result#evidence`, "내가 가진 근거", "확인된 판단과 고른 근거"],
-                  ["/me/state#gaps", "아직 부족한 것", "무엇이 모자라고 무엇을 하면 메워지는지"],
-                  ["/me/explore", "관심 산업과 직무", "여덟 산업과 여덟 직무를 다시 봅니다"],
-                  ["/me/experience/new", "새 경험 추가", "다음 재분석에 들어갑니다"],
+                  [`/v3/${s.attemptId}/result`, "결과 보기", "내 경험을 업무 영역, 산업, 직무와 이어서 보여 드립니다"],
+                  ["/me", "내 CareerMatri", "지금 방향, 근거, 부족한 점을 한곳에서 봅니다"],
+                  [`/v3/${s.attemptId}/result#evidence`, "내가 가진 근거", "확인된 경험과 고른 항목"],
+                  ["/me/state#gaps", "아직 부족한 것", "무엇이 부족하고 어떻게 채우면 되는지"],
+                  /* 산업과 직무의 수는 그 Core 의 팩에서 센다. 박아 두면
+                     산업이 일곱인 Core 에도 `여덟 산업` 이 선다 */
+                  ["/me/explore", "관심 산업과 직무", s.summary
+                    ? `산업 ${s.summary.industryCount}개와 직무 ${s.summary.roleCount}개를 다시 둘러봅니다`
+                    : "산업과 직무를 다시 둘러봅니다"],
+                  ["/me/experience/new", "새 경험 추가", "새 경험을 넣으면 결과를 다시 정리할 수 있습니다"],
                 ].map(([href, label, note]) => (
                   <li key={href}>
                     <a href={href}>
@@ -935,7 +938,7 @@ function One({
             않게 하는 자리다 */}
         {f.optionHelpFold ? (
           <details className="qs-optfold" open={f.optionFoldOpen}>
-            <summary>보기가 어떻게 갈리나요</summary>
+            <summary>보기 고르는 법</summary>
             {/* **읽는 법을 한 자리에 모은다.** 전에는 같은 내용이 보기
                 아래 줄글로 한 번 더 섰다. 접힌 `보기가 어떻게 갈리나요`
                 와 같은 말을 하는 자리라, 한 화면에 설명이 두 번 서고

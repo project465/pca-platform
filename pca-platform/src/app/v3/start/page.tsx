@@ -131,21 +131,23 @@ export default async function V3Start({
             ? `${campus.university_name} ${campus.department_name} · ${coreName} 진로 진단`
             : `${coreName} 진로 진단`}
         </p>
-        <h1 className="qs-h1">해 본 일에서 직접 판단한 경험을 찾습니다</h1>
+        <h1 className="qs-h1">해 본 일 가운데 직접 정해 본 경험을 찾아 드립니다</h1>
+        {/* **`기술영역` 을 적지 않는다.** 기계공학 Core 의 말이 스무 Core 의
+            시작 화면에 그대로 섰다. 경영 학생은 자기 일을 그렇게 부르지 않는다 */}
         <p className="qs-lead">
-          적성이나 성격은 묻지 않습니다. {coreName}의 기술영역마다 무엇을 해 봤고
-          무엇을 직접 정했는지, 아직 부족한 곳은 어디인지 알려드립니다.
+          적성이나 성격 검사가 아닙니다. {coreName}의 여러 업무 영역에서 무엇을 해
+          봤고 무엇을 직접 정했는지, 어디가 아직 부족한지 알려 드립니다.
         </p>
 
         {/* 무엇을 보는 검사인지 먼저. 분량은 아래로 내린다 */}
         <ul className="qs-three">
           <li>
             <b>무엇을 해 봤는지</b>
-            <span>기술영역마다 해 본 일을 하나씩 묻습니다</span>
+            <span>영역마다 해 본 일을 여쭙니다</span>
           </li>
           <li>
-            <b>무엇을 직접 판단했는지</b>
-            <span>같은 일이라도 주어진 조건대로 한 것과 직접 정한 것을 나눠 묻습니다</span>
+            <b>무엇을 직접 정했는지</b>
+            <span>같은 일이라도 시킨 대로 한 것과 내가 정한 것을 구분합니다</span>
           </li>
           <li>
             <b>어떤 경험이 아직 부족한지</b>
@@ -166,13 +168,13 @@ export default async function V3Start({
         <section className="qs-sect">
           <h2>묻는 순서</h2>
           <ul className="qs-steps">
-            <li>기술영역을 하나씩 보며 관심과 해 본 적과 배울 뜻을 묻습니다</li>
-            <li>경험이 있는 영역은 조금 더 자세히 질문합니다</li>
+            <li>업무 영역마다 관심이 있는지, 해 봤는지, 배우고 싶은지 여쭙니다</li>
+            <li>해 본 일이 있는 영역은 조금 더 자세히 여쭙니다</li>
             {tier !== "BASIC" ? (
-              <li>경험이 있는 영역은 여덟 가지 관점으로 나누어 묻습니다</li>
+              <li>그 가운데 몇 영역은 범위·방법·결과·활용까지 나눠서 여쭙니다</li>
             ) : null}
             {tier === "PRO" ? (
-              <li>연구나 프로젝트 하나를 직무 언어로 바꾸고, 산업과 역할을 하나씩 자세히 살펴봅니다</li>
+              <li>과제나 프로젝트 하나를 골라 지원서에 쓸 말로 정리하고, 관심 산업과 직무를 하나씩 더 자세히 봅니다</li>
             ) : null}
           </ul>
         </section>
@@ -180,7 +182,7 @@ export default async function V3Start({
         <section className="qs-sect">
           <h2>시작하기 전에</h2>
           <ul className="qs-steps">
-            <li>경험이 없는 영역은 없다고 답해주세요. 그 답변도 결과에 쓰입니다</li>
+            <li>해 본 적 없는 일은 &lsquo;해 본 적 없음&rsquo;을 고르시면 됩니다. 그 답도 결과에 들어갑니다</li>
             <li>학위가 높다고 결과가 좋아지지 않습니다. 질문에 나오는 상황 설명만 달라집니다</li>
             <li>창을 닫아도 보던 위치에서 이어집니다. 이전으로 돌아가 수정할 수 있습니다</li>
           </ul>
@@ -192,8 +194,8 @@ export default async function V3Start({
         </div>
 
         <p className="qs-fine">
-          모르는 용어가 나오면 보기 아래에 쉬운 설명이 함께 나옵니다. 용어를
-          몰라도 결과가 낮아지지 않습니다.
+          낯선 용어에는 질문 바로 아래에 쉬운 풀이를 붙였습니다. 용어를 몰라도
+          결과에 불리하지 않습니다.
         </p>
       </main>
     </div>

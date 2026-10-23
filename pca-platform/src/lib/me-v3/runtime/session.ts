@@ -231,8 +231,8 @@ export function checklistFor(core: string, td: string): { slot: string; label: s
     slot: axis, label: axisLabel(axis), items: list.map((x) => x.text),
   }));
   if (dom) {
-    out.push({ slot: "ARTIFACT", label: "그때 만든 자료", items: dom.artifacts });
-    out.push({ slot: "VERIFY", label: "맞춰 본 대상", items: dom.verify_targets });
+    out.push({ slot: "ARTIFACT", label: "만든 자료", items: dom.artifacts });
+    out.push({ slot: "VERIFY", label: "비교해 본 기준", items: dom.verify_targets });
   }
   return out;
 }
@@ -251,16 +251,26 @@ export function axisLabel(a: string): string { return AXIS_LABEL[a] ?? a; }
  * 되짚는 자리(축 이름 · 운영 표)에 남고, 고르는 자리에는 이쪽이 선다.
  */
 const AXIS_ASK: Record<string, string> = {
-  J1: "무엇을 문제로 잡았는지",
-  J2: "요구를 조건으로 옮긴 일",
+  J1: "범위를 정할 때",
+  J2: "요구를 구체적인 조건으로 바꿀 때",
   J3: "직접 정한 것",
   J4: "쓴 방법과 도구",
   J5: "남긴 결과물",
   J6: "비교하고 확인한 것",
-  J7: "문제가 생겼을 때",
-  J8: "결과가 실제로 쓰인 곳",
+  J7: "잘 안 됐을 때",
+  J8: "결과가 쓰인 곳",
 };
-export function axisAsk(a: string): string { return AXIS_ASK[a] ?? axisLabel(a); }
+/**
+ * **그 Core 의 말로 바꾸는 자리.** 경영의 J2 근거는 `목표를 매출이나
+ * 건수 같은 숫자로 바꿔 적었다` 처럼 목표를 숫자로 바꾸는 일이고, 도구를
+ * 고르는 칸이 따로 없다. 표가 없는 Core 는 위의 공통 이름이 선다.
+ */
+const AXIS_ASK_BY_CORE: Record<string, Partial<Record<string, string>>> = {
+  BIZ_CORE_V1: { J2: "목표를 숫자로 바꿀 때", J4: "쓴 방법" },
+};
+export function axisAsk(a: string, core?: string): string {
+  return (core ? AXIS_ASK_BY_CORE[core]?.[a] : undefined) ?? AXIS_ASK[a] ?? axisLabel(a);
+}
 
 export function industryChoices(core: string) {
   return industryPacks(core).packs
@@ -888,6 +898,8 @@ export function planDeps(core: string): Deps {
        따로 적어 두면 Core 를 더하는 날 둘이 갈리고, 갈린 쪽이 남의 전공
        이름을 적는다 */
     majorName: coreOf(core).name_ko,
+    /* 화면 글을 Core 마다 갈라 적는 자리가 읽는다(`blocks.ts` 의 `CORE_COPY`) */
+    core,
   };
 }
 

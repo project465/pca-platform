@@ -10,16 +10,16 @@ import type { Tier } from "@/lib/me-v3/scoring/types";
 
 export const TIER_WHAT: Record<Tier, { label: string; what: string }> = {
   BASIC: {
-    label: "기본 선별",
-    what: "전체 기술영역 가운데 어디부터 살펴볼지와, 지금까지 확인된 경험이 무엇인지",
+    label: "기본",
+    what: "여러 업무 영역 가운데 어디부터 살펴볼지와, 지금까지 확인된 경험이 무엇인지",
   },
   STANDARD: {
     label: "경험 심화",
-    what: "경험이 확인된 영역을 여덟 가지 관점으로 나누어 보고, 아직 부족한 부분과 채우는 방법까지",
+    what: "해 본 일이 있는 영역을 범위·방법·결과·활용까지 나눠 보고, 아직 부족한 부분과 채우는 방법까지",
   },
   PRO: {
-    label: "경험 번역",
-    what: "연구나 프로젝트 하나를 직무 언어로 바꾸고, 산업과 역할을 하나씩 자세히 살펴보는 것까지",
+    label: "지원서 연결",
+    what: "과제나 프로젝트 하나를 지원서에 쓸 말로 정리하고, 관심 산업과 직무를 하나씩 더 자세히 보는 것까지",
   },
 };
 
@@ -64,7 +64,7 @@ export const undergradGloss = (major: string, examples: string): Record<string, 
  */
 export const UNDERGRAD_ASK = "학부 전공";
 export const UNDERGRAD_HELP =
-  "대학원 전공과 따로 받습니다. 결과를 읽을 때 두 전공을 나란히 놓고 봅니다.";
+  "대학원 전공과 따로 여쭙습니다. 결과에서 두 전공을 함께 보여 드립니다.";
 
 /**
  * 보기 넷을 화면에 적는 말.
@@ -92,17 +92,17 @@ export const UNDERGRAD_HELP =
  * 은행 문면과 채점은 한 글자도 바뀌지 않는다.**
  */
 export const OWNERSHIP_SHORT = [
-  "해본 적 없음",
-  "정해진 대로",
-  "직접 해봄",
-  "기준도 정함",
+  "해 본 적 없음",
+  "시킨 대로 함",
+  "내가 직접 함",
+  "내가 정함",
 ];
 
 export const OWNERSHIP_LABEL = [
-  "해본 적 없음",
-  "주어진 기준에 맞춰 해봄",
-  "방법을 선택해 직접 해봄",
-  "기준부터 직접 정해봄",
+  "해 본 적 없음",
+  "정해 준 기준대로 해 봄",
+  "방법을 골라 직접 해 봄",
+  "기준까지 직접 정해 봄",
 ];
 
 /**
@@ -114,9 +114,9 @@ export const OWNERSHIP_LABEL = [
  */
 export const OWNERSHIP_HELP = [
   "아직 없음",
-  "기준은 받았음",
-  "방법은 내가 골랐음",
-  "기준도 내가 정했음",
+  "기준은 받음",
+  "방법은 내가 고름",
+  "기준도 내가 정함",
 ];
 
 /**
@@ -137,13 +137,14 @@ export const OWNERSHIP_EXAMPLE = [
   /* 첫 자리에는 예시를 두지 않는다. 갈릴 자리가 없는데 장면을 붙이면
      바로 위 뜻풀이를 한 번 더 적는 셈이다 */
   "",
-  "선배나 지도자가 정해 둔 조건으로 돌렸거나, 받은 양식에 값만 채웠습니다.",
+  "선배나 교수님이 정해 준 대로 했거나, 받은 양식에 숫자만 채웠습니다.",
   "조건은 함께 정했고 실제 작업과 계산은 제가 했습니다.",
-  "어느 값을 쓸지와 합격 기준을 제가 정했고, 그 결정대로 다음 작업이 진행됐습니다.",
+  "어떤 기준으로 할지 제가 정했고, 팀이 그 결정대로 다음 일을 진행했습니다.",
 ];
 
 /** 그 산업에서 실제로 다루는 것. **추천이 아니라 탐색 안내다**.
-    기계공학 산업팩의 줄이고, 다른 Core 의 팩은 제 자료가 들고 있다 */
+    팩 코드가 Core 마다 달라서(`_V2` 기계공학 · `_V1` 경영) 한 표에 둔다.
+    적지 않은 Core 의 팩은 제 자료(`demands` 첫 줄)가 든다 */
 export const INDUSTRY_HINT: Record<string, string> = {
   INDUSTRY_SEMICON_V2: "정밀 구조 · 열변형 · 떨림 · 진공 · 장비 가동",
   INDUSTRY_DEFENSE_V2: "요구조건 · 경량화 근거 · 충격과 진동 · 환경 시험",
@@ -153,6 +154,15 @@ export const INDUSTRY_HINT: Record<string, string> = {
   INDUSTRY_SHIP_V2: "큰 구조 · 선급 규정 · 용접 변형 · 부식과 수명",
   INDUSTRY_ENERGY_V2: "계통 작동점 · 회전기계 상태 · 점검 주기 · 가동률",
   INDUSTRY_SMARTFACTORY_V2: "자동화 범위 · 장치 제작 · 라인 흐름 · 측정과 기록",
+  /* 경영(BIZ_CORE_V1). 전에는 표에 없어서 `demands` 첫 줄(`팔리는 속도와
+     남는 물건이 같은 저울에 있다`)이 카드 밑에 섰다 */
+  INDUSTRY_B2B_V1: "고객사 요구 · 납기 · 단가와 원가 · 인수인계",
+  INDUSTRY_CONSUMER_V1: "재고 · 판매 채널 · 할인과 이익 · 유행",
+  INDUSTRY_DIGITAL_V1: "지표 · 이탈률 · 요금제 · 업무 시스템",
+  INDUSTRY_FINANCE_V1: "규정 · 심사 · 손실 위험 · 기록과 감사",
+  INDUSTRY_TRAVEL_V1: "객실·좌석 판매 · 성수기 · 고객 응대 · 현장 판단",
+  INDUSTRY_AVIATION_V1: "정시 운항 · 안전 규정 · 좌석 배정 · 지연 대응",
+  INDUSTRY_PUBLIC_V1: "규정과 서식 · 예산 집행 · 선정 기준 · 감사",
 };
 
 /** 그 역할이 실제로 내리는 판단. **순위를 뜻하지 않는다** */
@@ -165,6 +175,16 @@ export const ROLE_HINT: Record<string, string> = {
   ROLE_MAINT_V2: "장비가 제 성능을 내게 하고 멈추면 되살립니다",
   ROLE_QUALITY_V2: "양산과 수명 내내 요구가 지켜지는지 보증합니다",
   ROLE_PM_V2: "요구와 일정과 역할을 묶어 순서를 정합니다",
+  /* 경영(BIZ_CORE_V1). 전에는 표에 없어서 영역 이름 셋이 가운뎃점으로
+     이어져 섰다(`경영전략·기획 · 재무·투자 판단 · …`) */
+  ROLE_PLAN_V1: "목표를 세우고 예산과 사람을 어디에 쓸지 정합니다",
+  ROLE_ANALYTICS_V1: "무엇을 숫자로 볼지 정하고, 자료로 결론을 냅니다",
+  ROLE_FINACC_V1: "돈의 흐름을 기준에 맞게 기록하고 결산합니다",
+  ROLE_OPS_V1: "일의 순서와 담당을 정해 업무가 잘 돌아가게 합니다",
+  ROLE_CS_V1: "응대 기준과, 현장에서 바로 들어줄 수 있는 범위를 정합니다",
+  ROLE_SALES_V1: "고객에게 내놓을 조건과 물러서지 않을 선을 정합니다",
+  ROLE_MKT_V1: "누구에게 어떤 채널로 알릴지 정하고 반응을 봅니다",
+  ROLE_HR_V1: "어떤 사람을 뽑고 어떻게 평가할지 기준을 정합니다",
 };
 
 /**
@@ -174,8 +194,14 @@ export const ROLE_HINT: Record<string, string> = {
  * 평가받는가. 앞 판본은 뒤엣것만 적어서(`판단의 추적 가능성이
  * 산출물입니다`) 고르는 사람이 그것이 어떤 자리인지 알 수 없었다.
  * 지어낸 기관 이름을 적지 않는다: 적는 것은 그 유형이 하는 일까지다.
+ *
+ * **Core 마다 따로 든다.** `OC1`~`OC7` 은 Core 마다 다른 조직을 가리키는데
+ * (경영의 `OC3` 은 유통·판매 채널이고 기계공학의 `OC3` 은 엔지니어링
+ * 서비스다) 한 벌로 두었더니 스무 Core 전부의 카드에 기계공학 문장이
+ * 섰다. 경영 학생이 `유통·판매 채널` 밑에서 `다른 회사의 설계와 해석을
+ * 맡고` 를 읽은 자리다. 표가 없는 Core 는 taxonomy 의 `differs` 가 선다.
  */
-export const ORG_HINT: Record<string, string> = {
+const ORG_HINT_ME: Record<string, string> = {
   OC1: "완성품을 만들고 성능과 원가와 납기를 함께 맞춥니다",
   OC2: "부품·장비·소재를 납품하고 고객 사양으로 평가받습니다",
   OC3: "다른 회사의 설계와 해석을 맡고 기한으로 평가받습니다",
@@ -183,4 +209,20 @@ export const ORG_HINT: Record<string, string> = {
   OC5: "방법이 맞는지 스스로 세우고 논문으로 남깁니다",
   OC6: "기준에 맞는지 판정하고 근거를 기록으로 남깁니다",
   OC7: "설계와 시험과 생산을 겹쳐 맡고 빨리 냅니다",
+};
+
+export const ORG_HINT: Record<string, Record<string, string>> = {
+  ME_CORE_V3: ORG_HINT_ME,
+  /* 전기전자는 조직 이름 일곱이 기계공학과 같다(`me-v3-2-taxonomy.json` ·
+     `ee-v1-taxonomy.json`). 전에도 이 문장이 섰다 */
+  EE_CORE_V1: ORG_HINT_ME,
+  BIZ_CORE_V1: {
+    OC1: "자기 상품을 팔고, 결정이 매출로 바로 돌아옵니다",
+    OC2: "다른 회사에 납품하고, 고객사 요구에 맞춰 움직입니다",
+    OC3: "여러 상품을 들여와 팔고, 판매 속도와 재고를 함께 봅니다",
+    OC4: "규정과 예산 안에서 일하고, 근거를 기록으로 남깁니다",
+    OC5: "조사와 분석으로 답을 찾고, 보고서나 논문으로 남깁니다",
+    OC6: "규정과 심사를 지키며, 판단 근거를 하나하나 남깁니다",
+    OC7: "적은 인원이 여러 일을 함께 맡고, 빨리 정합니다",
+  },
 };

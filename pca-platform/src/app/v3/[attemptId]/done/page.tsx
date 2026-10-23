@@ -83,8 +83,8 @@ export default async function V3Done({
             </div>
 
             <p className="qs-fine">
-              결과는 이 시점의 응답으로 고정됩니다. 경험을 더하면 현재
-              상태가 다시 계산되고, 지금 받은 결과는 그대로 남습니다.
+              지금 받은 결과는 그대로 보관됩니다. 나중에 경험을 더 넣으시면
+              &lsquo;현재 상태&rsquo;만 새로 정리됩니다.
             </p>
           </>
         ) : (

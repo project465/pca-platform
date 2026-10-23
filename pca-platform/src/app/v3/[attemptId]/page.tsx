@@ -140,7 +140,7 @@ export default async function V3Screen({
         slot: g.slot,
         /* 묶음마다 `· 내가 정한 것` 을 되풀이하지 않는다. 그 말은 질문이
            이미 하고 있고, 열 번 되풀이되면 묶음 이름이 안 읽힌다 */
-        label: g.slot === "ARTIFACT" || g.slot === "VERIFY" ? g.label : axisAsk(g.slot),
+        label: g.slot === "ARTIFACT" || g.slot === "VERIFY" ? g.label : axisAsk(g.slot, a0.core_code),
         items: g.items,
         picked: g.slot === "ARTIFACT" ? (v.picks.artifacts[dom] ?? [])
           : g.slot === "VERIFY" ? (v.picks.verifications[dom] ?? [])
@@ -163,7 +163,9 @@ export default async function V3Screen({
         }))
       : pickKind === "org"
         ? orgChoices(a0.core_code).map((p) => ({
-            code: p.code, name: p.name, gloss: ORG_HINT[p.code] ?? p.first,
+            code: p.code, name: p.name,
+            /* 조직 코드는 Core 마다 뜻이 달라 그 Core 의 표를 읽는다 */
+            gloss: ORG_HINT[a0.core_code]?.[p.code] ?? p.first,
           }))
         : undefined;
   const pickedMany = pickKind === "industry" ? (v.attempt.industry_interest ?? [])
@@ -257,6 +259,11 @@ export default async function V3Screen({
       /* **실제 판단을 몇 가지 받았는지.** 관심과 경험을 훑은 수와 섞지
          않는다: 그 둘이 섞인 수는 응시자에게 `설문 쉰 문항` 으로 읽힌다 */
       judged: judgedCount(v.plan.screens),
+      /* 끝낸 뒤 `관심 산업과 직무` 에 적는 수. **글자로 박지 않는다**:
+         `여덟 산업과 여덟 직무` 로 박혀 있어서 산업이 일곱인 경영에도
+         여덟이 섰다 */
+      industryCount: industryChoices(a0.core_code).length,
+      roleCount: roleChoices(a0.core_code).length,
     } : undefined,
     /* 아직 비어 있는 자리. 끝 화면에서만 센다 */
     gaps,

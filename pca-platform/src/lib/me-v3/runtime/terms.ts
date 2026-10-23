@@ -54,7 +54,8 @@ export function termGlossOf(core: string, text: string): string | null {
     .sort((a, b) => b.length - a.length)
     .slice(0, MAX);
   if (!hit.length) return null;
-  return hit.map((t) => `${t} — ${table[t]}`).join(" · ");
+  /* 낱말과 풀이 사이는 쌍점이다. 대시(—)는 화면 문장에 쓰지 않는다 */
+  return hit.map((t) => `${t}: ${table[t]}`).join(" · ");
 }
 
 /** 그 Core 가 받치는 말 전부. 검사가 읽는다 */

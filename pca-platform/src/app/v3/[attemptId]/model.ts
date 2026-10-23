@@ -143,6 +143,9 @@ export type ScreenModel = {
     industry: string | null;
     role: string | null;
     judged: number;
+    /** 그 Core 의 산업팩과 역할팩 수. 끝낸 뒤 안내가 수를 박지 않게 받는다 */
+    industryCount: number;
+    roleCount: number;
   };
 };
 
