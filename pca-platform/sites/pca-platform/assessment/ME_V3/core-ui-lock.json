@@ -5,18 +5,18 @@
  "locks": {
   "assessment": "93b7b918c0701bb1",
   "result": "827eded9868fc3da",
-  "workspace": "dcc7909a3475fab0"
+  "workspace": "ebe6726247cda98a"
  },
  "versions": {
   "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V48",
   "assessment_copy_version": "me-v3-2-assessment-copy.27",
   "result_ui_version": "ME_V3_RESULT_UI_V83",
   "result_copy_version": "me-v3-result-copy.70",
-  "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V58",
-  "workspace_copy_version": "careermatri-workspace-copy.42"
+  "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V59",
+  "workspace_copy_version": "careermatri-workspace-copy.43"
  },
  "screens": {
-  "Home": "workspace:91636662d4e920ea",
+  "Home": "workspace:c41e81851a2fe144",
   "Assessment Intro": "assessment:967f5d71f81cd3df",
   "Assessment": "assessment:9bf971e055a1eb12",
   "Completion Bridge": "assessment:6c39b5aae12b8c1e",

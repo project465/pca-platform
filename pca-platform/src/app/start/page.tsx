@@ -5,7 +5,8 @@ import { homePathFor } from "@/lib/roles";
 import { resolveLang } from "@/lib/locale-server";
 import { toLang2 } from "@/lib/surface-text";
 import { START } from "@/lib/start-copy";
-import BrandHome from "@/components/sf/brand-home";
+import EntryFrame from "@/components/sf/entry-frame";
+import { Icon } from "@/components/sf/icon";
 import PublicFooter from "@/components/sf/public-footer";
 import LangSwitch from "@/components/lang-switch";
 
@@ -47,6 +48,7 @@ export default async function StartPage({
       title: START.individual[L],
       note: START.individualNote[L],
       primary: true,
+      icon: "user" as const,
     },
     {
       key: "campus",
@@ -55,39 +57,41 @@ export default async function StartPage({
       href: "/login",
       title: START.campus[L],
       note: START.campusNote[L],
+      icon: "building" as const,
     },
   ];
 
   return (
-    <div className="door">
-      <header className="door-bar">
-        <BrandHome />
-        <LangSwitch current={lang} />
-      </header>
+    /* **작업공간 홈과 같은 톤으로 연다**(EntryFrame). 왼쪽 남색 판이
+       하는 일 셋을 들고, 주된 문은 홈의 `지금 할 일` 과 같은 면이다 */
+    <>
+      <EntryFrame top={<LangSwitch current={lang} />}>
+        <p className="en-kicker">CareerMatri 시작하기</p>
+        <h1 className="en-h1">{START.title[L]}</h1>
+        <p className="en-sub">{START.sub[L]}</p>
 
-      <main className="door-main">
-        <h1>{START.title[L]}</h1>
-        <p className="door-sub">{START.sub[L]}</p>
-
-        <ul className="doors">
+        <ul className="en-doors">
           {doors.map((dr) => (
             <li key={dr.key}>
-              <Link href={dr.href} className={`door-card${dr.primary ? " primary" : ""}`}>
-                <b>{dr.title}</b>
-                <span>{dr.note}</span>
+              <Link href={dr.href} className={`en-door${dr.primary ? " is-primary" : ""}`}>
+                <span className="en-door-ico"><Icon name={dr.icon} size={24} /></span>
+                <span className="en-door-txt">
+                  <b>{dr.title}</b>
+                  <span>{dr.note}</span>
+                </span>
+                <span className="en-door-go"><Icon name="chev" size={20} /></span>
               </Link>
             </li>
           ))}
         </ul>
 
-        <p className="door-foot">
+        <p className="en-foot">
           {START.hasAccount[L]} <Link href="/login">{START.signIn[L]}</Link>
           {" · "}
           <Link href="/product">{START.about[L]}</Link>
         </p>
-      </main>
-
+      </EntryFrame>
       <PublicFooter lang={L} />
-    </div>
+    </>
   );
 }

@@ -19,10 +19,11 @@ import {
 import { resultMeta } from "@/lib/me-v3/result/meta";
 import { CmShell, CmHead } from "./shell";
 import {
-  ActivityRow, DomainTile, EmptyState, PrimaryActionHero, RecordRow,
+  ActivityRow, DomainTile, PrimaryActionHero, RecordRow,
   SectionHeader, SectionNote,
 } from "./ui";
 import { continueAssessment } from "./actions";
+import { queryOne } from "@/lib/db";
 
 export const metadata = { title: "홈 · CareerMatri" };
 
@@ -54,6 +55,13 @@ export default async function Home() {
     applicationsOf(user.id),
   ]);
   const actions = act.rows;
+  /* 진행 중이면 몇 문항에 답했는지만 센다(Hero 한 줄). 전체 문항 수는
+     등급과 고른 산업에 따라 갈려서 여기서 짐작해 적지 않는다 */
+  const answered = st.stage === "IN_PROGRESS" && st.open
+    ? Number((await queryOne<{ n: string }>(
+        "SELECT count(*)::text AS n FROM v3_responses WHERE attempt_id = $1",
+        [st.open.id]))?.n ?? 0)
+    : 0;
 
   /* **센 것이 화면을 늦추거나 깨지 않는다.** `mark()` 는 던지지 않는다 */
   await mark("workspace_opened", user.id, { stage: st.stage });
@@ -211,48 +219,66 @@ export default async function Home() {
         title={`${user.name} 학생, 안녕하세요`}
         /* 제목 아래 한 줄(규격 §4) */
         meta={`${major ?? "전공 진단"}${st.result_at ? ` · 최근 업데이트 ${st.result_at}` : ""}`}
-        /* **결과가 있는 사람에게는 설명 문단을 두지 않는다**(규격 §9).
-           바로 아래 Hero 가 그 사람이 지금 할 일을 들고 있어서, 그 위의
-           문단은 행동 앞에 놓인 읽을거리가 된다 */
-        lead={st.model ? undefined : LEAD[st.stage]}
-        /* **짙은 단추는 쪽에 하나다**(규격 §19).
-           결과가 있는 사람에게는 바로 아래 `지금 할 일` 칸이 그 단추를
-           들고 있으므로 머리에 또 세우지 않는다. 둘을 세워 두었더니 같은
-           화면에 짙은 단추가 둘이고, 그 둘이 **서로 다른 쪽으로** 갔다. */
-        actions={st.model ? null : (
-          <>
-            {st.stage === "IN_PROGRESS" ? (
-              /* 이어하기만 폼이다. 누른 것을 세려면 누르는 자리에서 센다 */
-              <form action={continueAssessment}>
-                <button className="cm-btn is-primary" type="submit">{cta.label}</button>
-              </form>
-            ) : (
-              <Link className="cm-btn is-primary" href={cta.href}>{cta.label}</Link>
-            )}
-          </>
-        )}
+        /* **설명 문단과 단추를 머리에 두지 않는다**(규격 §9 · §19). 바로
+           아래 Hero 가 지금 할 일과 쪽의 짙은 단추 하나를 든다. 머리에도
+           세우면 같은 화면에 짙은 단추가 둘이 된다 */
       />
 
-      {/* ── A. 검사 전 ── 받는 것 셋만 세운다. 빈 카드를 쌓지 않는다 ── */}
-      {st.stage === "NO_ASSESSMENT" ? (
+      {/* ── A·B. 결과가 아직 없는 사람 ──
+          **결과가 있는 홈과 같은 모양으로 선다**(전주대·원광대에 보인 화면).
+          전에는 검사 전은 흰 칸 셋, 진행 중은 흰 카드 한 장만 서서, 같은
+          작업공간인데 첫 화면이 다른 서비스처럼 보였다. 파란 Hero 가 지금
+          할 한 가지(시작 · 이어하기)를 들고, 그 아래 칸들이 검사를 끝내면
+          열리는 자리를 미리 보여 준다. **값을 지어내지 않는다**: 칸에는 그
+          자리의 이름과 무엇을 담는지만 적는다 */}
+      {!st.model && (st.stage === "NO_ASSESSMENT" || st.stage === "IN_PROGRESS") ? (
         <>
-          <div className="cm-grid">
-            {[
-              ["무엇을 해 봤는지", "전체 기술영역에서 해 본 일을 하나씩 묻습니다"],
-              ["무엇을 직접 정했는지", "받아서 한 일과 직접 정한 일을 구분합니다"],
-              ["다음에 무엇을 할지", "아직 부족한 부분과 그것을 메우는 일을 적습니다"],
-            ].map(([t, b]) => (
-              <div className="cm-card" key={t}>
-                <h2>{t}</h2>
-                <p>{b}</p>
-              </div>
+          <PrimaryActionHero
+            tag={st.stage === "IN_PROGRESS" ? "검사 진행 중" : "검사 시작"}
+            tagIcon={st.stage === "IN_PROGRESS" ? "clipboard" : "target"}
+            title={st.stage === "IN_PROGRESS"
+              ? "검사를 끝내면 결과와 할 일이 이 화면에 나옵니다."
+              : `${major ?? "전공"} 검사로 내 경험을 정리해 보세요.`}
+            why={st.stage === "IN_PROGRESS"
+              ? (answered
+                ? `지금까지 ${answered}문항에 답했습니다. 마지막으로 답한 문항에서 이어집니다.`
+                : "답한 것은 문항마다 저장되어, 마지막으로 답한 문항에서 이어집니다.")
+              : "적성이나 성격은 묻지 않습니다. 해 본 일에서 직접 판단한 경험을 찾습니다. 12분 안팎입니다."}
+            action={st.stage === "IN_PROGRESS" ? (
+              /* 이어하기만 폼이다. 누른 것을 세려면 누르는 자리에서 센다 */
+              <form action={continueAssessment}>
+                <button className="cm-btn is-primary" type="submit">검사 이어하기 →</button>
+              </form>
+            ) : (
+              <Link className="cm-btn is-primary" href={cta.href}>{cta.label} →</Link>
+            )}
+          />
+
+          <SectionHeader icon="chart" title="검사를 끝내면 열리는 곳"
+            sub="결과가 나오면 아래 자리마다 내 결과가 채워집니다." />
+          <div className="cm-tiles">
+            {PRE_TILES.map((t) => (
+              <DomainTile key={t.href} href={t.href} icon={t.icon}
+                title={t.title} sub={t.sub} />
             ))}
           </div>
-          <EmptyState style={{ marginTop: 18 }}>
-            <b>적성이나 성격은 묻지 않습니다.</b> 해 본 일에서 직접 판단한
-            경험을 찾고, 그것을 지원서와 면접에서 설명할 수 있는 근거로
-            정리합니다. 12분 안팎입니다.
-          </EmptyState>
+
+          {st.stage === "IN_PROGRESS" ? (
+            <>
+              <SectionHeader icon="clock" tone="c" title="최근 기록"
+                sub="풀던 검사와 적어 둔 경험이 여기에 쌓입니다." />
+              <ul className="cm-feed is-rec">
+                <RecordRow icon="clipboard"
+                  title={`${major ?? "전공"} 검사 · 진행 중`}
+                  note={answered ? `${answered}문항 답함 · 문항마다 저장됨` : "문항마다 저장됨"}
+                  actions={
+                    <form action={continueAssessment}>
+                      <button className="cm-btn" type="submit">이어하기</button>
+                    </form>
+                  } />
+              </ul>
+            </>
+          ) : null}
         </>
       ) : null}
 
@@ -283,24 +309,6 @@ export default async function Home() {
             </div>
           </div>
         </>
-      ) : null}
-
-      {/* ── B. 진행 중 ── 이어하기 하나만 ── */}
-      {st.stage === "IN_PROGRESS" ? (
-        <div className="cm-card is-wide">
-          <h2>풀던 검사가 있습니다 <em>{st.open?.tier}</em></h2>
-          <p>
-            마지막으로 답한 문항에서 이어집니다. 답한 것은 서버에 저장되어
-            있어 다른 기기에서도 그 문항으로 돌아옵니다.
-          </p>
-          <div className="cm-acts">
-            {/* **짙은 단추는 쪽에 하나다**(규격 §26). 쪽 머리의 단추가
-                같은 `이어하기` 이므로 여기는 거드는 자리다 */}
-            <form action={continueAssessment}>
-              <button className="cm-btn" type="submit">이어하기</button>
-            </form>
-          </div>
-        </div>
       ) : null}
 
       {/* ── C~F. 결과가 있는 사람 ──
@@ -476,6 +484,13 @@ export default async function Home() {
  * 달라서 제목도 갈린다: 검사 전에는 받을 것의 이름이고, 끝낸 뒤에는
  * 지금 들고 있는 것의 이름이다.
  */
+/** 결과가 나오기 전 홈의 칸. 검사를 끝내면 그 자리가 내 결과로 채워진다 */
+const PRE_TILES: { href: string; icon: IconName; title: string; sub: string }[] = [
+  { href: "/me/state", icon: "chart", title: "현재 상태", sub: "설명할 수 있는 영역" },
+  { href: "/me/next", icon: "target", title: "지금 할 일", sub: "부족한 부분 메우기" },
+  { href: "/me/results", icon: "report", title: "결과 기록", sub: "결과지와 PDF" },
+];
+
 const HEAD: Record<string, string> = {
   NO_ASSESSMENT: "전공 진로 검사",
   IN_PROGRESS: "풀던 검사가 있습니다",
@@ -485,20 +500,6 @@ const HEAD: Record<string, string> = {
   STANDARD_DONE: "내 커리어",
   PRO_DONE: "내 커리어",
   RECOMPUTED: "내 커리어",
-};
-
-const LEAD: Record<string, string> = {
-  NO_ASSESSMENT: "검사를 한 번 끝내면 여기에 확인된 근거와 아직 부족한 부분과"
-    + " 다음 할 일이 나옵니다.",
-  IN_PROGRESS: "답한 것은 문항마다 저장되어 있어, 마지막으로 멈춘 곳에서"
-    + " 그대로 이어집니다.",
-  BASIC_DONE: "어느 영역부터 살펴볼지 정하는 데까지 확인했습니다."
-    + " 경험을 자세히 묻는 질문은 아직 받지 않았습니다.",
-  STANDARD_DONE: "지금 확인된 근거와 아직 부족한 부분입니다. 경험을 하나 더 적으면"
-    + " 이 값이 다시 달라집니다.",
-  PRO_DONE: "확인된 근거를 산업과 직무의 말로 옮긴 결과까지 있습니다.",
-  RECOMPUTED: "새 경험까지 더한 현재 상태이고, 검사 당시 결과는 그대로"
-    + " 남아 있습니다.",
 };
 
 /** 지원 기록의 상태를 사람의 말로. **영문 코드를 화면에 내지 않는다** */

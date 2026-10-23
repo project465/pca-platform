@@ -7,7 +7,7 @@ import { campusStudentContext } from "@/lib/campus/students";
 import "../surface.css";
 import "../me/platform.css";
 import { CmShell, CmHead } from "../me/shell";
-import { PickCard, PickGrid, SectionHeader } from "../me/ui";
+import { DomainTile, PickCard, PickGrid, PrimaryActionHero, SectionHeader } from "../me/ui";
 import type { IconName } from "@/components/sf/icon";
 
 export const metadata = { title: "전공 Core · CareerMatri" };
@@ -56,14 +56,18 @@ export default async function Cores() {
   const st = mine ? await campusAttemptState(user.id) : null;
 
   return (
-    <CmShell active="/cores" title="검사">
+    /* **로그아웃이 이 쪽에도 선다.** 학교 학생이 로그인하면 처음 닿는 자리가
+       여기인데, 실용 줄이 없어 나가는 길이 계정 쪽에만 있었다 */
+    <CmShell active="/cores" title="검사" who={user.name}>
       {/* **구조를 설명하지 않는다.** `Core` 와 `엔진` 과 `판단축` 은
           우리가 안쪽에서 쓰는 말이고, 고르는 사람에게 필요한 것은
           전공에 따라 무엇이 달라지는가 한 줄이다 */}
       <CmHead
         kicker="검사 시작"
-        title="전공을 선택해주세요"
-        lead="전공에 따라 살펴보는 경험과 기술 분야가 달라집니다."
+        /* 학교 계정은 학과가 정해져 있어 고를 것이 없다. 고르라는 제목을
+           세우면 학생이 어디서 학과를 바꾸는지 찾는다 */
+        title={mine ? `${user.name} 학생, 안녕하세요` : "전공을 선택해주세요"}
+        lead={mine ? undefined : "전공에 따라 살펴보는 경험과 기술 분야가 달라집니다."}
       />
 
       {/*
@@ -72,7 +76,7 @@ export default async function Cores() {
         읽고 결과 PDF 를 받는 데까지로 생각했다. 그 뒤에 무엇이 쌓이는지를
         네 줄로 적는다.
       */}
-      {open ? (
+      {open && !mine ? (
         <div className="cm-card is-wide" style={{ marginBottom: 18 }}>
           <h2>이어서 풀 응시가 있습니다 <em>{open.tier}</em></h2>
           <p>
@@ -87,24 +91,35 @@ export default async function Cores() {
 
       {mine ? (
         <>
-          <SectionHeader icon="clipboard" title="학교에서 받은 계정입니다" />
-          <PickGrid cols={1}>
-            <PickCard
-              href={open ? `/v3/${open.id}`
-                : st?.kind === "result" ? `/v3/${st.attemptId}/result`
-                : `/campus/${mine.row.university_code.toLowerCase()}/start`}
-              icon="compass"
-              title={`${mine.university_name} ${mine.department_name}`}
-              tag="학교 계약"
-              lead={"학교가 적어 준 학과로 검사를 시작합니다. 결과는 그 학과 "
-                + "담당자의 집계에 들어갑니다."}
-              meta="적힌 학과가 다르면 학과 담당자에게 알려 주세요."
-              cta={open ? "이어하기" : st?.kind === "result" ? "결과 보기"
-                : st?.kind === "retake" ? "학과 확인하고 다시 시작하기"
-                : "학과 확인하고 시작하기"}
-              strong
-            />
-          </PickGrid>
+          {/* **학생 홈과 같은 면으로 연다**(전주대·원광대에 보인 화면).
+              파란 Hero 가 학교·학과와 시작 단추 하나를 들고, 아래 칸이
+              검사를 끝내면 열리는 자리를 보여 준다 */}
+          <PrimaryActionHero
+            tag="학교 계약 · 내 학과"
+            tagIcon="building"
+            title={`${mine.university_name} ${mine.department_name}`}
+            why={open
+              ? "풀던 검사가 있습니다. 마지막으로 답한 문항에서 이어집니다."
+              : "학교가 적어 준 학과로 검사를 시작합니다. 결과는 그 학과 담당자의 집계에 들어갑니다."
+                + " 적힌 학과가 다르면 학과 담당자에게 알려 주세요."}
+            action={
+              <Link className="cm-btn is-primary"
+                href={open ? `/v3/${open.id}`
+                  : st?.kind === "result" ? `/v3/${st.attemptId}/result`
+                  : `/campus/${mine.row.university_code.toLowerCase()}/start`}>
+                {open ? "이어하기 →" : st?.kind === "result" ? "결과 보기 →"
+                  : st?.kind === "retake" ? "학과 확인하고 다시 시작하기 →"
+                  : "학과 확인하고 시작하기 →"}
+              </Link>
+            }
+          />
+          <SectionHeader icon="chart" title="검사를 끝내면 열리는 곳"
+            sub="결과가 나오면 아래 자리마다 내 결과가 채워집니다." />
+          <div className="cm-tiles">
+            <DomainTile href="/me/state" icon="chart" title="현재 상태" sub="설명할 수 있는 영역" />
+            <DomainTile href="/me/next" icon="target" title="지금 할 일" sub="부족한 부분 메우기" />
+            <DomainTile href="/me/results" icon="report" title="결과 기록" sub="결과지와 PDF" />
+          </div>
         </>
       ) : (
       <>
@@ -144,6 +159,10 @@ export default async function Cores() {
       {/* **서른한 개를 pill 로 늘어놓지 않는다**(규격 §6). 계열마다 칸
           하나를 세우고 대표 전공 서넛만 적는다. 전부 펼치면 `준비 중` 이
           메뉴처럼 보이고, 그 순간 검사 가능한 것으로 읽힌다 */}
+      {/* 학교 계정에는 세우지 않는다. 학과가 이미 정해져 있어 읽을 까닭이
+          없고, `반도체공학 · 준비 중` 이 반도체 학과 학생에게 자기 검사가
+          막힌 것으로 읽힌다 */}
+      {mine ? null : (<>
       <SectionHeader icon="layers" tone="c" title="준비 중인 전공"
         sub="문항과 산업 자료를 그 전공을 아는 분이 써야 열립니다. 지금은 응시할 수 없습니다." />
       <PickGrid cols={3}>
@@ -164,6 +183,7 @@ export default async function Cores() {
           );
         })}
       </PickGrid>
+      </>)}
 
       {/* **긴 설명은 첫 화면에서 내린다**(규격 §9 · §15). 고르는 자리에
           필요한 것은 무엇이 달라지는가 한 줄이고, 그 뒤에 쌓이는 것은

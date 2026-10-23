@@ -3,9 +3,8 @@ import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/session";
 import LoginForm from "./login-form";
 import OauthButtons from "./oauth-buttons";
-import AuthBrand from "@/components/auth-brand";
+import EntryFrame from "@/components/sf/entry-frame";
 import PublicFooter from "@/components/sf/public-footer";
-import { BRAND } from "@/lib/surface-text";
 import { enabledProviders } from "@/lib/auth-oauth";
 import { safeNext } from "@/lib/safe-next";
 
@@ -58,9 +57,9 @@ export default async function LoginPage({
   const msg = error ? (ERRORS[error] ?? ERRORS.OAuthCallback) : null;
 
   return (
-    <main className="center-wrap">
+    /* **작업공간 홈과 같은 톤으로 연다**(EntryFrame) */
+    <EntryFrame>
       <div className="authwrap">
-        <AuthBrand name={BRAND.root} />
         <div className="panel narrow">
           <h1>다시 오셨군요</h1>
           <p className="sub">
@@ -93,6 +92,6 @@ export default async function LoginPage({
             고객지원으로 가는 길만 남긴다 */}
         <PublicFooter lang="ko" compact />
       </div>
-    </main>
+    </EntryFrame>
   );
 }

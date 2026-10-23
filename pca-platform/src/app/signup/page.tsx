@@ -7,8 +7,8 @@ import { resolveLang } from "@/lib/locale-server";
 import LangSwitch from "@/components/lang-switch";
 import SignupForm from "./signup-form";
 import { activeDocs } from "@/lib/consent";
-import { BRAND, toLang2, txer } from "@/lib/surface-text";
-import AuthBrand from "@/components/auth-brand";
+import { toLang2, txer } from "@/lib/surface-text";
+import EntryFrame from "@/components/sf/entry-frame";
 import PublicFooter from "@/components/sf/public-footer";
 import { formatMoney } from "@/lib/money";
 
@@ -48,9 +48,9 @@ export default async function SignupPage({
   };
 
   return (
-    <div className="center-wrap">
+    /* 작업공간 홈과 같은 톤으로 연다(EntryFrame) */
+    <EntryFrame>
       <div className="authwrap">
-        <AuthBrand name={BRAND.root} />
         <div className="panel narrow">
         <div className="panel-top">
           <LangSwitch current={lang} />
@@ -79,6 +79,6 @@ export default async function SignupPage({
             고객지원으로 가는 길만 남긴다 */}
         <PublicFooter lang={L} compact />
       </div>
-    </div>
+    </EntryFrame>
   );
 }

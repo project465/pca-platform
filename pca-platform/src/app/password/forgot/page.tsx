@@ -1,11 +1,12 @@
 import Link from "next/link";
 import ForgotForm from "./forgot-form";
+import EntryFrame from "@/components/sf/entry-frame";
 
 export const metadata = { title: "비밀번호 재설정 · CareerMatri" };
 
 export default function ForgotPage() {
   return (
-    <main className="center-wrap">
+    <EntryFrame>
       <div className="panel narrow">
         <h1>비밀번호 재설정</h1>
         <p className="sub">등록된 학번이나 이메일을 입력하세요.</p>
@@ -16,6 +17,6 @@ export default function ForgotPage() {
           <Link href="/login">로그인</Link>
         </div>
       </div>
-    </main>
+    </EntryFrame>
   );
 }
