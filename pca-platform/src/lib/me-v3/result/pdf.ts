@@ -101,7 +101,7 @@ export function resolveChromium(): { bin: string | null; tried: string[] } {
  * 로컬은 http 라 이름에 접두사가 붙지 않는다. 그래서 이 탈은 **운영에서만**
  * 나고, 로그에는 `step=render` 시간 초과로만 남았다.
  */
-function cookiesFor(header: string, url: string) {
+export function cookiesFor(header: string, url: string) {
   const origin = new URL(url).origin;
   return header.split(";").map((x) => x.trim()).filter(Boolean).map((pair) => {
     const i = pair.indexOf("=");

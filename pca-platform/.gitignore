@@ -95,3 +95,6 @@ var/click-all/
 var/click-all-*/
 # 진흥원식 결과지 시연판 (scripts/lab/sjepa-report.ts 산출물)
 var/pdf-campus/
+
+# 긴 결과지 점검 산출물 (응시자 이름이 들어 있다)
+var/report-long/

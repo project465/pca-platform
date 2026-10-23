@@ -1,0 +1,162 @@
+/**
+ * 결과 모델에서 쪽마다 쓸 값을 모은다. 새 판단을 하지 않는다.
+ *
+ * 단계(0~3)는 축 상태를 그대로 옮긴 것이고, 묻지 않은 축은 `null` 이다(0 으로 적지
+ * 않는다). 영역 묶음 · 빈자리 · 할 일은 결과 모델이 정한 그대로다. 차례를 세우는
+ * 자리(강점 · 직무)는 센 개수와 고른 목표로만 세우고, 그 차례를 점수라고 적지 않는다.
+ */
+import type { Axis, AxisState } from "../scoring/types";
+import type { Action, Gap, ResultDomain } from "../result/model";
+import { AXIS_KO, AXIS_WHAT_KO } from "../result/text.ko";
+import { studentActivity, studentEvidence } from "../student";
+import type { DomainDef, Inputs, Level, RolePack, IndustryPack, TaxDomain } from "./types";
+
+export const AXES: Axis[] = ["J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8"];
+const LV: Record<AxisState, Level> = { NOT_OBSERVED: 0, PARTICIPATED: 1, CONFIRMED: 2, OWNED: 3 };
+
+export const ZONES = ["Z1_EVIDENCE_ESTABLISHED", "Z2_EVIDENCE_INCOMPLETE", "Z3_EVIDENCE_LOW_INTEREST", "Z4_INSUFFICIENT_EVIDENCE", "NOT_EXPLORED"] as const;
+export type ZoneKey = typeof ZONES[number];
+
+/** 영역 묶음의 짧은 이름과 뜻(학생에게 하는 말) */
+export const ZONE_WORD: Record<ZoneKey, { tag: string; said: string }> = {
+  Z1_EVIDENCE_ESTABLISHED: { tag: "근거 갖춤", said: "직접 판단한 일과 남긴 결과물이 함께 확인된 영역" },
+  Z2_EVIDENCE_INCOMPLETE: { tag: "근거 일부", said: "해 본 일은 확인되지만 결과물이나 비교 기록이 아직 적은 영역" },
+  Z3_EVIDENCE_LOW_INTEREST: { tag: "경험은 있고 관심 낮음", said: "해 본 일은 있는데 지금 관심이 낮게 나온 영역" },
+  Z4_INSUFFICIENT_EVIDENCE: { tag: "관심 높음 · 경험 적음", said: "관심은 높고 아직 해 본 일이 적은 영역" },
+  NOT_EXPLORED: { tag: "이번에 깊게 묻지 않음", said: "관심과 경험만 묻고 판단 여덟 가지는 이번 검사에서 묻지 않은 영역" },
+};
+export const STEP_WORD: Record<Level, { tag: string; said: string }> = {
+  0: { tag: "해 본 적 없음", said: "그 판단을 해 본 장면이 없다고 답한 칸입니다" },
+  1: { tag: "지시받아 수행", said: "다른 사람이 정한 조건 안에서 해 봤다고 답한 칸입니다" },
+  2: { tag: "직접 수행", said: "스스로 맡아 해 봤다고 답한 칸입니다" },
+  3: { tag: "기준까지 직접 결정", said: "기준을 직접 정했다고 답했고 그 장면을 고른 근거로도 확인한 칸입니다" },
+};
+export const BAND_WORD: Record<string, string> = { HIGH: "높음", MID: "보통", LOW: "낮음" };
+export const EXP_WORD: Record<string, string> = { NONE: "없음", ONCE_OR_TWICE: "한두 번", SEVERAL: "여러 번" };
+
+export type Bucket = "A" | "B" | "C" | "D";
+
+export function derive(x: Inputs) {
+  const { m } = x;
+  const byCode = new Map(m.domains.map((d) => [d.code, d]));
+  const defOf = new Map(x.defs.map((d) => [d.code, d]));
+  const taxOf = new Map(x.tax.technical_domains.map((d) => [d.code, d]));
+  const name = (td: string) => defOf.get(td)?.name ?? taxOf.get(td)?.name ?? "이 영역";
+  const def = (td: string): DomainDef | undefined => defOf.get(td);
+  const tax = (td: string): TaxDomain | undefined => taxOf.get(td);
+  const dom = (td: string): ResultDomain | undefined => byCode.get(td);
+  const asked = (d: ResultDomain | undefined) => !!d && (d.opened.deep || d.opened.probe);
+  const level = (td: string, ax: Axis): Level | null => {
+    const d = byCode.get(td);
+    if (!asked(d)) return null;
+    const a = d!.axes.find((v) => v.axis === ax);
+    if (!a || a.missing === "NOT_ROUTED") return null;
+    return LV[a.state];
+  };
+  const levels = (td: string) => AXES.map((a) => level(td, a));
+  const picks = (td: string, ax: Axis) => byCode.get(td)?.axes.find((v) => v.axis === ax)?.picks ?? [];
+  const depth = (td: string): Level | null => {
+    const vs = levels(td).filter((v): v is Level => v !== null);
+    return vs.length ? (Math.max(...vs) as Level) : null;
+  };
+  const axisName = (a: Axis) => AXIS_KO[a];
+  const axisWhat = (a: Axis) => AXIS_WHAT_KO[a];
+  const activity = (td: string) => studentActivity(x.coreCode, td);
+  const evidenceWord = (td: string) => studentEvidence(x.coreCode, td) || def(td)?.artifacts[0] || "결과물";
+
+  const doms = m.domains;
+  const zoneCount = (z: ZoneKey) => doms.filter((d) => d.zone === z).length;
+  const askedDoms = doms.filter(asked);
+  const counts = {
+    domains: doms.length,
+    asked: askedDoms.length,
+    z1: zoneCount("Z1_EVIDENCE_ESTABLISHED"), z2: zoneCount("Z2_EVIDENCE_INCOMPLETE"), z3: zoneCount("Z3_EVIDENCE_LOW_INTEREST"),
+    z4: zoneCount("Z4_INSUFFICIENT_EVIDENCE"), ne: zoneCount("NOT_EXPLORED"),
+    confirmed: m.overview.counts.confirmed_axes, owned: m.overview.counts.owned_axes, items: m.overview.counts.evidence_items,
+    gaps: m.gaps.length, actions: m.actions.length, records: x.exps.length,
+    artifacts: [...new Set(doms.flatMap((d) => d.artifacts))].length,
+    highInterest: doms.filter((d) => d.interest === "HIGH").length,
+  };
+
+  /** 지금 할 일 네 갈래: 결과 모델의 묶음과 관심·배울 뜻 응답만 쓴다 */
+  const bucket = (d: ResultDomain): Bucket => {
+    if (d.zone === "Z1_EVIDENCE_ESTABLISHED") return "A";
+    if (d.zone === "Z2_EVIDENCE_INCOMPLETE" || d.zone === "Z3_EVIDENCE_LOW_INTEREST") return "B";
+    if (d.interest === "HIGH" || d.learning === "HIGH") return "C";
+    return "D";
+  };
+
+  /** 강점: 근거 갖춤 → 근거 일부 → 관심 낮음 차례, 같은 묶음 안에서는 직접 정한 판단 수와 확인된 판단 수로 */
+  const ZO = ["Z1_EVIDENCE_ESTABLISHED", "Z2_EVIDENCE_INCOMPLETE", "Z3_EVIDENCE_LOW_INTEREST"];
+  const strengths = doms.filter((d) => ZO.includes(d.zone) && d.confirmed.length)
+    .sort((a, b) => ZO.indexOf(a.zone) - ZO.indexOf(b.zone) || b.owned.length - a.owned.length || b.confirmed.length - a.confirmed.length)
+    .slice(0, 3);
+
+  /** 고른 항목을 네 갈래로: 결과물과 비교 대상이 `한 일` 목록에 섞여 들어와 있다 */
+  const evidenceOf = (d: ResultDomain) => {
+    const art = new Set(d.artifacts), ver = new Set(d.verifications);
+    const noun = (t: string) => art.has(t) || ver.has(t);
+    const decisions = d.decided.filter((t) => !noun(t));
+    const acts = d.did.filter((t) => !noun(t) && !decisions.includes(t));
+    return { decisions, acts, artifacts: d.artifacts, comparisons: d.verifications };
+  };
+
+  const actionOf = (g: Gap): Action | undefined => m.actions.find((a) => a.id === g.action_id);
+  const gaps = [...m.gaps].sort((a, b) => a.rank - b.rank);
+
+  /* 목표: 적어 둔 목표 → 고른 산업·직무 문항 → 관심 목록 */
+  const goalRole = x.roles.find((r) => r.code === (m.targets.goal.role ?? m.role_context?.code ?? m.targets.roles[0])) ?? null;
+  const goalInd = x.inds.find((p) => p.code === (m.targets.goal.industry ?? m.industry_context?.code ?? m.targets.industries[0])) ?? null;
+
+  /** 직무마다 핵심 영역에서 갖춘 근거를 센다. 차례는 목표 → 관심 → 센 개수 */
+  const roleCover = (r: RolePack) => {
+    const tds = r.core_ref.td;
+    const z1 = tds.filter((t) => dom(t)?.zone === "Z1_EVIDENCE_ESTABLISHED");
+    const z2 = tds.filter((t) => ["Z2_EVIDENCE_INCOMPLETE", "Z3_EVIDENCE_LOW_INTEREST"].includes(dom(t)?.zone ?? ""));
+    const req = r.required_axes.map((a) => {
+      const vs = tds.map((t) => level(t, a)).filter((v): v is Level => v !== null);
+      return { axis: a, level: vs.length ? (Math.max(...vs) as Level) : null };
+    });
+    return { role: r, tds, z1, z2, req };
+  };
+  const roleOrder = [...x.roles].sort((a, b) => {
+    const pa = a.code === goalRole?.code ? 0 : m.targets.roles.includes(a.code) ? 1 : 2;
+    const pb = b.code === goalRole?.code ? 0 : m.targets.roles.includes(b.code) ? 1 : 2;
+    const ca = roleCover(a), cb = roleCover(b);
+    return pa - pb || (cb.z1.length * 2 + cb.z2.length) - (ca.z1.length * 2 + ca.z2.length) || x.roles.indexOf(a) - x.roles.indexOf(b);
+  });
+  const indOrder = [...x.inds].sort((a, b) => {
+    const pa = a.code === goalInd?.code ? 0 : m.targets.industries.includes(a.code) ? 1 : 2;
+    const pb = b.code === goalInd?.code ? 0 : m.targets.industries.includes(b.code) ? 1 : 2;
+    return pa - pb || x.inds.indexOf(a) - x.inds.indexOf(b);
+  });
+  const roleName = (code: string) => x.roles.find((r) => r.code === code)?.name_ko ?? "";
+  const indName = (code: string) => x.inds.find((r) => r.code === code)?.name_ko ?? "";
+  const orgName = (code: string | null) => (code ? x.tax.org_contexts.find((o) => o.code === code)?.name ?? null : null);
+
+  /** 축마다 가장 깊은 단계와 그 영역(물은 영역에서만) */
+  const best = AXES.map((a) => {
+    const vals = askedDoms.map((d) => ({ d, v: level(d.code, a) })).filter((z): z is { d: ResultDomain; v: Level } => z.v !== null);
+    if (!vals.length) return { axis: a, level: null as Level | null, where: [] as string[] };
+    const top = Math.max(...vals.map((z) => z.v)) as Level;
+    return { axis: a, level: top, where: vals.filter((z) => z.v === top).map((z) => z.d.code) };
+  });
+  /** 방사형 그래프에 겹칠 영역: 깊게 물은 영역 먼저, 넷까지 */
+  const radarDoms = [...askedDoms].sort((a, b) => Number(b.opened.deep) - Number(a.opened.deep) || ZONES.indexOf(a.zone as ZoneKey) - ZONES.indexOf(b.zone as ZoneKey)).slice(0, 4);
+
+  /** 그 영역이 이어지는 직무와 산업(관계표) */
+  const rolesOf = (td: string) => x.rel.td_role.filter((r) => r.td === td && r.strength !== "드묾")
+    .sort((a, b) => Number(b.strength === "중심") - Number(a.strength === "중심"));
+  const indsOf = (td: string) => x.rel.td_industry.filter((r) => r.td === td && r.strength !== "드묾")
+    .sort((a, b) => Number(b.strength === "중심") - Number(a.strength === "중심"));
+  /** 이 축에서 아직 고르지 않은 체크리스트 장면 */
+  const scenes = (td: string, a: Axis) => (x.checklists.domains[td]?.[a] ?? []).map((c) => c.text);
+
+  return {
+    name, def, tax, dom, asked, level, levels, picks, depth, axisName, axisWhat, activity, evidenceWord,
+    counts, bucket, strengths, evidenceOf, actionOf, gaps, goalRole, goalInd, roleCover, roleOrder, indOrder,
+    roleName, indName, orgName, best, radarDoms, rolesOf, indsOf, scenes,
+  };
+}
+export type X = ReturnType<typeof derive>;
+export type { IndustryPack, RolePack };

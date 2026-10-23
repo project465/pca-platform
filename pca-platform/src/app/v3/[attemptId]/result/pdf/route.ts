@@ -14,6 +14,7 @@ import { query } from "@/lib/db";
 import { attemptOf, latestResult } from "@/lib/me-v3/runtime/session";
 import { resultMeta } from "@/lib/me-v3/result/meta";
 import { drawResultPdf, PdfFailed, resolveChromium } from "@/lib/me-v3/result/pdf";
+import { drawBookPdf } from "@/lib/me-v3/report-long/pdf";
 import { participantOf, record } from "@/lib/me-v3/pilot/store";
 import { mark } from "@/lib/me-v3/pilot/funnel";
 
@@ -94,13 +95,22 @@ export async function GET(
   try {
     /* 쪽머리 한 줄. **값을 여기서 만들지 않는다**: 결과지 머리와 같은
        자리를 읽어(`resultMeta`) 종이와 화면이 다른 학과를 적지 않게 한다 */
-    const meta = await resultMeta(attemptId, a.core_code);
-    const header = [meta.school, meta.department]
-      .filter(Boolean).concat("CareerMatri 진로 분석 리포트").join(" · ");
-    const pdf = await drawResultPdf({
-      attemptId, baseUrl: base, cookie: h.get("cookie") ?? "", header,
-    });
-    console.log(`[v3-pdf] done attempt=${attemptId} ${pdf.length}바이트 `
+    /* PRO 는 긴 결과지(책자)를 뽑는다. 책자 웹 쪽(`/result/book`)을 그대로
+       인쇄하므로 웹과 종이가 같다. 쪽머리와 쪽번호는 책자가 스스로 그린다.
+       BASIC 과 STANDARD 는 지금의 결과지를 그대로 뽑는다 */
+    const book = a.tier === "PRO";
+    let pdf: Buffer;
+    if (book) {
+      pdf = await drawBookPdf({ attemptId, baseUrl: base, cookie: h.get("cookie") ?? "" });
+    } else {
+      const meta = await resultMeta(attemptId, a.core_code);
+      const header = [meta.school, meta.department]
+        .filter(Boolean).concat("CareerMatri 진로 분석 리포트").join(" · ");
+      pdf = await drawResultPdf({
+        attemptId, baseUrl: base, cookie: h.get("cookie") ?? "", header,
+      });
+    }
+    console.log(`[v3-pdf] done attempt=${attemptId} ${book ? "book " : ""}${pdf.length}바이트 `
       + `${Date.now() - t0}ms`);
     const p = await participantOf(user.id);
     if (p) {
@@ -132,7 +142,7 @@ export async function GET(
      */
     const step = e instanceof PdfFailed ? e.step : "unknown";
     const why = String((e as Error)?.message ?? e).split("\n")[0].slice(0, 300);
-    const line = `[v3-pdf] attempt=${attemptId} tier=${a.tier} step=${step} `
+    const line = `[v3-pdf] attempt=${attemptId} tier=${a.tier}${a.tier === "PRO" ? " book" : ""} step=${step} `
       + `base=${base} chromium=${got.bin ?? "(없음)"} tried=${got.tried.length} `
       + `${Date.now() - t0}ms :: ${why}`;
     console.error(line);

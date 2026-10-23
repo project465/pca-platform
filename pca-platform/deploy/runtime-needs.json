@@ -46,6 +46,18 @@
       "옛 검사 문항 적재가 막힌다"
     ],
     [
+      "data/report-gm/role-guide",
+      "PRO 책자의 직무 탐색 장이 직무 안내 없이 얇게 나간다"
+    ],
+    [
+      "data/region/dart-sejong.v1.json",
+      "PRO 책자에서 세종 지역 장이 빠진다"
+    ],
+    [
+      "data/region/dart-checks.v1.json",
+      "PRO 책자에서 대전·충청 지역 장이 빠진다"
+    ],
+    [
       "sites/pca-platform/v2.html",
       "결과지 엔진이 404 — 결과지와 PDF 가 멈춘다"
     ],
