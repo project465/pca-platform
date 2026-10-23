@@ -4,17 +4,17 @@
  "item_bank_version": "ARCH_V1_ITEM_BANK_V1.5",
  "note": "문면을 고치면 이 지문이 어긋난다. 그때 판본을 올리고 BANK=update 로 다시 적는다",
  "files": {
-  "arch-industry-packs.json": "4bcdae4bec417cb58ba44f9a82153f3710de7f717185af70d4130a2a7533409c",
+  "arch-industry-packs.json": "80da32610126667c61b24baf18f7b4d5e0c76638b1bd87b758389fde1575df86",
   "arch-role-packs.json": "b1411276d8ad7532fc6c9961df04a0497573672802188336359c44d156ef9e32",
-  "arch-v1-checklist-additions.json": "260e8177beab6af5a5f978958a5045bf9303d90f3dfa674262551e21dd57d2fb",
-  "arch-v1-checklists.json": "cfdfb6510305c111a4ff27d9de4d602b6cc8a444023f3bd3fb1f26e6816ef079",
-  "arch-v1-common-additions.json": "ca0c3591117b58f0f16c3673335753f2364087fd97bc49e9f3a3fcb897e1ced1",
+  "arch-v1-checklist-additions.json": "1da20bada1e74e131b61d55236eb666bd8159e1eaddde33d534b88b2b6797d2b",
+  "arch-v1-checklists.json": "71c7c214c414836cb262e23c2fb4d0ca6d7dd72002ec7922c9c34e0be2944fc0",
+  "arch-v1-common-additions.json": "82055e0aadd6705a085da6612f468d1f65a940ee137e121bdd3c1f1eecb36530",
   "arch-v1-constructs.json": "4d36f944e8bc5f6d4f1a94c6f86612c76a92d01085d06def6594da6fbc8e67c6",
-  "arch-v1-domains.json": "b174d6c4cef5787c263de1eed941e0dff3b7ae04e958837893d9617636d56945",
+  "arch-v1-domains.json": "f9ebfc74bce9fe5ea6ff804ba98887ccaf44234c4fe351672d7415867bf190fd",
   "arch-v1-items-blueprint.json": "189581f021844fc33dca69c8178c26a92b139972eb5fdfd37527e612ceccb3f5",
-  "arch-v1-items.json": "b1987b6f2ae852cab9b9ca4fc7b9d81b30031f02563e0ed294637dac593a8ce8",
+  "arch-v1-items.json": "6c8781bb76226a90b92d45299b2341434b69e1e8f872b59e4adcb6c0c9844186",
   "arch-v1-relations.json": "3bd123cd084652ec8179c9f33f2df73540499fc86b7ac9c6c8349a2f5602c24a",
-  "arch-v1-taxonomy.json": "6bb7499ce44d12dffc0508182bdf905540d394fc62e5e0a981d63a8a2f4fd7be"
+  "arch-v1-taxonomy.json": "4bec67d28a9745610ad6d95315633cf6d13791c9b55da793bc8e739485487748"
  },
  "scoring_version": "me-v3-scoring.5"
 }

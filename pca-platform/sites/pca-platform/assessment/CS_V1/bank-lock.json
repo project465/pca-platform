@@ -1,20 +1,20 @@
 {
  "schema_version": "cs-v1-bank-lock.1",
  "core": "CS_CORE_V1",
- "item_bank_version": "CS_V1_ITEM_BANK_V1.4",
+ "item_bank_version": "CS_V1_ITEM_BANK_V1.5",
  "note": "컴퓨터·소프트웨어 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=CS_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
-  "cs-industry-packs.json": "11f44de741f1c7dde49a36871c9b4b5b7f53c55e8e9d01f1b02a135fc2bb39f4",
+  "cs-industry-packs.json": "26869b02f769deda5f102e1d8c38497dbe8fb02893c7d3d3ceb6ae2d3fac5db5",
   "cs-role-packs.json": "a2c978b3cb11582639b892198dfb402684261399ea740b42bd673839bf09c034",
-  "cs-v1-checklist-additions.json": "8f1924f9aa196b70d4980832afec031823c3cb6d4b010320f34f9d3e519c2e4d",
-  "cs-v1-checklists.json": "124e7c38603f2435154ef6abcd0ce73a3947fe4ebfddbe3fcedfab1dd1e75c21",
-  "cs-v1-common-additions.json": "36e7f2568442435753d0478be08d669d6f303088b9a1669fe71da7b4b8ffe039",
+  "cs-v1-checklist-additions.json": "1964f55cb3c617cbd28dc553e429e246f4cbd38701ba89c2a4e97f0fe2d28b6d",
+  "cs-v1-checklists.json": "1f653a2cd3d16f8a26c772b01cb4a74e7ca60cd179caf54f2da7bcf4eb49e2a2",
+  "cs-v1-common-additions.json": "20409a2a182fa58102223330d7f8c195bf9c947e173a3e2431817a0a72680af2",
   "cs-v1-constructs.json": "5acb3745bfd0b66b2c38c753cb710d7b122590e8634b65ec857d9c409fa93bfd",
-  "cs-v1-domains.json": "c4f578cbbf4a41a1cb8dbc6244b0f7cc5d323fa4a082b6dfe487f47bda080e5f",
+  "cs-v1-domains.json": "9e704f4297264edba5c4e187ca18c97f4236583c2a3468c9871034a44063d5e4",
   "cs-v1-items-blueprint.json": "e28b68287c63584e90ad6115c898f8040fe3b9fdc4dd54126739e6c66fe8278f",
-  "cs-v1-items.json": "51b98c3c2ca301213b7c7a2cce74f57ea2cc67c9d2cae2a526cb9acebf808e4b",
+  "cs-v1-items.json": "7112f4f8d380732f06d876c2fa1a67d284f48735eb9ac22162b4ecb779166e6d",
   "cs-v1-relations.json": "d19894df7e3447cdc36046779971c35851937fddb3b7b4e99b1fb8d4ac370846",
-  "cs-v1-taxonomy.json": "7e20d1b9a7fca51b07091190e36e1d936dc6fb10fe16a09bac9bfcedd2b999c4"
+  "cs-v1-taxonomy.json": "2ddfbf8879bf00efbf5ca9de2f333056432068624cf04f2d137b6ae2b9edb129"
  },
  "scoring_version": "me-v3-scoring.5"
 }
