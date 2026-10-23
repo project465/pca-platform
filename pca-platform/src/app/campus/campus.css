@@ -538,8 +538,9 @@ a.cm-cmp-row:focus-visible { outline: 2px solid var(--pcu-blue); outline-offset:
 }
 .cm-cmp-flow strong { margin-top: 0; }
 .cm-cmp-flow span { color: rgba(255, 255, 255, .78); }
-.cm-cmp-cta { color: #1f4fd1; border-radius: 12px; }
-.cm-cmp-cta-2 { border-radius: 12px; }
+/* 단추가 `<Link>` 로 서는 자리에서 브라우저 기본 밑줄이 섰다 */
+.cm-cmp-cta { color: #1f4fd1; border-radius: 12px; text-decoration: none; }
+.cm-cmp-cta-2 { border-radius: 12px; text-decoration: none; }
 
 .cm-cmp-auth {
   max-width: 440px;
