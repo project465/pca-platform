@@ -5,19 +5,19 @@
   {
    "td": "TD01",
    "axis": "J1",
-   "text": "볼 항목을 좁혀 적었다",
+   "text": "이번에 살펴볼 사정 항목을 골라 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD01",
    "axis": "J1",
-   "text": "보지 않을 항목과 그 까닭을 적어 두었다",
+   "text": "이번에 보지 않을 항목과 그 이유를 적어 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD01",
    "axis": "J2",
-   "text": "환자가 말한 것을 기록 항목으로 옮겼다",
+   "text": "환자가 말한 것을 기록 서식의 항목에 맞춰 적었다",
    "source": "nursing_v1"
   },
   {
@@ -29,37 +29,37 @@
   {
    "td": "TD01",
    "axis": "J2",
-   "text": "다시 잴 때를 적었다",
+   "text": "언제 다시 잴지 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD01",
    "axis": "J3",
-   "text": "지금 문제로 볼 것을 직접 정했다",
+   "text": "지금 무엇을 간호문제로 볼지 직접 정했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD01",
    "axis": "J3",
-   "text": "먼저 볼 문제의 차례를 직접 짰다",
+   "text": "어떤 문제부터 다룰지 순서를 직접 정했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD01",
    "axis": "J3",
-   "text": "문제가 아니라고 가려 둔 것을 적었다",
+   "text": "문제가 아니라고 판단한 것을 따로 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD01",
    "axis": "J4",
-   "text": "쓸 척도나 사정 방법을 골라 적용했다",
+   "text": "쓸 척도나 사정 방법을 골라 썼다",
    "source": "nursing_v1"
   },
   {
    "td": "TD01",
    "axis": "J4",
-   "text": "말로 묻지 못하는 대상에 맞춰 방법을 바꿨다",
+   "text": "말로 묻기 어려운 환자에게 맞춰 사정 방법을 바꿨다",
    "source": "nursing_v1"
   },
   {
@@ -71,133 +71,133 @@
   {
    "td": "TD01",
    "axis": "J5",
-   "text": "지금 문제의 목록을 남겼다",
+   "text": "간호문제 목록을 만들어 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD01",
    "axis": "J5",
-   "text": "말할 수 없는 것을 적어 두었다",
+   "text": "이 사정만으로는 판단할 수 없는 것을 적어 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD01",
    "axis": "J6",
-   "text": "내 사정을 검사값과 대조했다",
+   "text": "내가 사정한 내용을 검사 결과와 비교했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD01",
    "axis": "J6",
-   "text": "앞 근무의 기록이나 다른 간호사의 판단과 비교했다",
+   "text": "앞 근무자의 기록이나 다른 간호사의 판단과 비교했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD01",
    "axis": "J7",
-   "text": "본 것과 들은 것이 어긋난 까닭을 좁혔다",
+   "text": "본 것과 들은 것이 다를 때 왜 다른지 따져 봤다",
    "source": "nursing_v1"
   },
   {
    "td": "TD01",
    "axis": "J7",
-   "text": "다시 재어 판단을 고쳤다",
+   "text": "다시 재 보고 처음 판단을 고쳤다",
    "source": "nursing_v1"
   },
   {
    "td": "TD01",
    "axis": "J8",
-   "text": "내 사정이 회진에서 쓰였다",
+   "text": "회진에서 내 사정 내용을 그대로 다뤘다",
    "source": "nursing_v1"
   },
   {
    "td": "TD01",
    "axis": "J8",
-   "text": "내 사정이 치료 방향을 바꿨다",
+   "text": "내 사정 결과를 보고 치료 방향이 바뀌었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD02",
    "axis": "J1",
-   "text": "이번 근무에 할 것을 좁혀 적었다",
+   "text": "이번 근무에 할 간호를 골라 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD02",
    "axis": "J1",
-   "text": "미룰 것과 그 까닭을 적어 두었다",
+   "text": "다음으로 미룰 간호와 그 이유를 적어 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD02",
    "axis": "J2",
-   "text": "처방을 간호 중재로 옮겼다",
+   "text": "의사 처방을 간호사가 할 일로 풀어 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD02",
    "axis": "J2",
-   "text": "확인할 항목과 때를 적었다",
+   "text": "무엇을 언제 확인할지 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD02",
    "axis": "J2",
-   "text": "퇴원까지의 목표를 적었다",
+   "text": "퇴원할 때까지의 목표를 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD02",
    "axis": "J3",
-   "text": "먼저 할 중재를 직접 정했다",
+   "text": "어떤 간호를 먼저 할지 직접 정했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD02",
    "axis": "J3",
-   "text": "맡길 범위를 직접 가렸다",
+   "text": "다른 사람에게 맡길 일을 직접 정했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD02",
    "axis": "J3",
-   "text": "뺄 중재를 직접 가렸다",
+   "text": "이번에 뺄 간호를 직접 골랐다",
    "source": "nursing_v1"
   },
   {
    "td": "TD02",
    "axis": "J4",
-   "text": "표준 중재를 그 환자에게 맞춰 바꿨다",
+   "text": "교과서의 표준 간호를 그 환자에게 맞게 고쳤다",
    "source": "nursing_v1"
   },
   {
    "td": "TD02",
    "axis": "J4",
-   "text": "쓸 교육 자료를 골라 맞췄다",
+   "text": "그 환자에게 맞는 교육 자료를 골랐다",
    "source": "nursing_v1"
   },
   {
    "td": "TD02",
    "axis": "J5",
-   "text": "간호계획을 남겼다",
+   "text": "간호계획서를 썼다",
    "source": "nursing_v1"
   },
   {
    "td": "TD02",
    "axis": "J5",
-   "text": "중재를 고른 근거를 남겼다",
+   "text": "그 간호를 고른 근거를 적어 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD02",
    "axis": "J5",
-   "text": "퇴원까지의 차례를 남겼다",
+   "text": "퇴원까지 이어질 간호 순서를 정리해 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD02",
    "axis": "J6",
-   "text": "세운 계획을 상태 변화와 대조했다",
+   "text": "세운 계획이 환자 상태 변화와 맞는지 확인했다",
    "source": "nursing_v1"
   },
   {
@@ -209,73 +209,73 @@
   {
    "td": "TD02",
    "axis": "J7",
-   "text": "계획대로 되지 않은 까닭을 좁혔다",
+   "text": "계획대로 안 된 이유를 찾아 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD02",
    "axis": "J7",
-   "text": "차례를 바꿔 다시 해 보았다",
+   "text": "간호 순서를 바꿔 다시 해 봤다",
    "source": "nursing_v1"
   },
   {
    "td": "TD02",
    "axis": "J8",
-   "text": "내 계획이 병동의 표준이 됐다",
+   "text": "내가 세운 계획이 병동의 표준 간호계획이 됐다",
    "source": "nursing_v1"
   },
   {
    "td": "TD02",
    "axis": "J8",
-   "text": "내 계획이 퇴원 결정에 쓰였다",
+   "text": "내 간호계획을 보고 퇴원 일정이 정해졌다",
    "source": "nursing_v1"
   },
   {
    "td": "TD03",
    "axis": "J1",
-   "text": "확인할 것을 좁혀 적었다",
+   "text": "투약 전에 꼭 확인할 것을 골라 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD03",
    "axis": "J1",
-   "text": "넘길 것과 그 까닭을 적어 두었다",
+   "text": "이번에 넘어가도 될 것과 그 이유를 적어 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD03",
    "axis": "J2",
-   "text": "약품 기준을 확인 항목으로 옮겼다",
+   "text": "약품 기준을 확인할 항목으로 바꿔 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD03",
    "axis": "J2",
-   "text": "준 뒤 볼 항목과 때를 적었다",
+   "text": "약을 준 뒤 무엇을 언제 볼지 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD03",
    "axis": "J2",
-   "text": "되물을 기준을 적었다",
+   "text": "어떤 처방이면 다시 물어볼지 기준을 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD03",
    "axis": "J3",
-   "text": "그대로 줄지 되물을지 직접 정했다",
+   "text": "처방대로 줄지 다시 물어볼지 직접 정했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD03",
    "axis": "J3",
-   "text": "멈출 투약을 직접 가렸다",
+   "text": "멈춰야 할 투약을 직접 골랐다",
    "source": "nursing_v1"
   },
   {
    "td": "TD03",
    "axis": "J3",
-   "text": "주는 때를 직접 바꿨다",
+   "text": "처방 범위 안에서 약 주는 시간을 직접 조정했다",
    "source": "nursing_v1"
   },
   {
@@ -287,7 +287,7 @@
   {
    "td": "TD03",
    "axis": "J4",
-   "text": "혈관이나 경로를 골라 바꿨다",
+   "text": "환자 상태를 보고 쓸 혈관이나 주입 경로를 골랐다",
    "source": "nursing_v1"
   },
   {
@@ -299,109 +299,109 @@
   {
    "td": "TD03",
    "axis": "J5",
-   "text": "되물은 내용과 그 답을 남겼다",
+   "text": "다시 물어본 내용과 받은 답을 적어 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD03",
    "axis": "J5",
-   "text": "준 뒤 관찰 기록을 남겼다",
+   "text": "약을 준 뒤 관찰한 내용을 기록했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD03",
    "axis": "J6",
-   "text": "줄 약을 처방과 대조했다",
+   "text": "줄 약을 처방과 하나씩 맞춰 봤다",
    "source": "nursing_v1"
   },
   {
    "td": "TD03",
    "axis": "J6",
-   "text": "약품 기준이나 지난 기록과 비교했다",
+   "text": "약품 기준이나 지난 투약 기록과 비교했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD03",
    "axis": "J7",
-   "text": "이상이 생긴 까닭을 좁혔다",
+   "text": "이상 반응이 생긴 원인을 찾아 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD03",
    "axis": "J7",
-   "text": "조건을 바꿔 다시 나지 않게 했다",
+   "text": "확인 순서를 바꿔 같은 일이 없게 했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD03",
    "axis": "J8",
-   "text": "내가 되물어 처방이 바뀌었다",
+   "text": "내가 다시 물어본 뒤 처방이 바뀌었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD03",
    "axis": "J8",
-   "text": "내 확인 차례가 병동의 절차가 됐다",
+   "text": "내가 정한 확인 순서가 병동의 절차가 됐다",
    "source": "nursing_v1"
   },
   {
    "td": "TD04",
    "axis": "J1",
-   "text": "특히 볼 신호를 좁혀 적었다",
+   "text": "그 환자에게 특히 지켜볼 신호를 골라 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD04",
    "axis": "J1",
-   "text": "보지 않을 신호와 그 까닭을 적어 두었다",
+   "text": "덜 볼 신호와 그 이유를 적어 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD04",
    "axis": "J2",
-   "text": "조기경고 기준을 알릴 선으로 옮겼다",
+   "text": "조기경고 점수를 보고 몇 점이면 알릴지 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD04",
    "axis": "J2",
-   "text": "다시 잴 때를 적었다",
+   "text": "언제 다시 잴지 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD04",
    "axis": "J2",
-   "text": "알릴 상대를 적었다",
+   "text": "누구에게 알릴지 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD04",
    "axis": "J3",
-   "text": "지금 알릴지 더 볼지 직접 정했다",
+   "text": "지금 알릴지 더 지켜볼지 직접 정했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD04",
    "axis": "J3",
-   "text": "기다리는 동안 할 것을 직접 정했다",
+   "text": "답을 기다리는 동안 할 간호를 직접 정했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD04",
    "axis": "J3",
-   "text": "알리지 않고 둘 것을 직접 가렸다",
+   "text": "알리지 않고 지켜볼 것을 직접 골랐다",
    "source": "nursing_v1"
   },
   {
    "td": "TD04",
    "axis": "J4",
-   "text": "재는 자리나 방법을 바꿔 다시 쟀다",
+   "text": "재는 부위나 방법을 바꿔 다시 쟀다",
    "source": "nursing_v1"
   },
   {
    "td": "TD04",
    "axis": "J4",
-   "text": "장치의 설정을 그 환자에 맞춰 바꿨다",
+   "text": "모니터 알람 설정을 그 환자에 맞춰 바꿨다",
    "source": "nursing_v1"
   },
   {
@@ -413,67 +413,67 @@
   {
    "td": "TD04",
    "axis": "J5",
-   "text": "알린 내용과 때를 남겼다",
+   "text": "알린 내용과 시각을 적어 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD04",
    "axis": "J5",
-   "text": "알리지 않고 둔 까닭을 남겼다",
+   "text": "알리지 않고 지켜본 이유를 적어 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD04",
    "axis": "J6",
-   "text": "지금 값을 그 환자의 평소 값과 대조했다",
+   "text": "지금 수치를 그 환자의 평소 수치와 비교했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD04",
    "axis": "J6",
-   "text": "기준 점수나 앞 근무의 기록과 비교했다",
+   "text": "조기경고 점수나 앞 근무자의 기록과 비교했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD04",
    "axis": "J7",
-   "text": "늦게 알린 날 흘려 본 신호를 되짚었다",
+   "text": "보고가 늦었던 날 놓친 신호를 되짚어 봤다",
    "source": "nursing_v1"
   },
   {
    "td": "TD04",
    "axis": "J7",
-   "text": "볼 신호를 바꿔 다시 해 보았다",
+   "text": "지켜볼 신호를 바꿔 다시 해 봤다",
    "source": "nursing_v1"
   },
   {
    "td": "TD04",
    "axis": "J8",
-   "text": "내 보고가 치료 방향을 바꿨다",
+   "text": "내 보고를 듣고 치료 방향이 바뀌었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD04",
    "axis": "J8",
-   "text": "내가 적은 알릴 선이 병동의 기준이 됐다",
+   "text": "내가 정한 보고 기준을 병동이 쓰게 됐다",
    "source": "nursing_v1"
   },
   {
    "td": "TD05",
    "axis": "J1",
-   "text": "이번에 할 범위를 좁혀 적었다",
+   "text": "이번에 할 처치 범위를 정해 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD05",
    "axis": "J1",
-   "text": "미룰 범위와 그 까닭을 적어 두었다",
+   "text": "다음으로 미룰 처치와 그 이유를 적어 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD05",
    "axis": "J2",
-   "text": "처치 지침을 지킬 조건으로 옮겼다",
+   "text": "처치 지침을 그 환자에게 지킬 조건으로 풀어 적었다",
    "source": "nursing_v1"
   },
   {
@@ -485,19 +485,19 @@
   {
    "td": "TD05",
    "axis": "J2",
-   "text": "끝난 뒤 볼 항목을 적었다",
+   "text": "처치가 끝난 뒤 확인할 항목을 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD05",
    "axis": "J3",
-   "text": "도중에 멈출지 직접 정했다",
+   "text": "처치 도중에 멈출지 직접 정했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD05",
    "axis": "J3",
-   "text": "다른 사람에게 넘길지 직접 가렸다",
+   "text": "다른 사람에게 넘길지 직접 판단했다",
    "source": "nursing_v1"
   },
   {
@@ -509,37 +509,37 @@
   {
    "td": "TD05",
    "axis": "J4",
-   "text": "쓸 방법과 자리를 환자에 맞춰 골랐다",
+   "text": "환자에 맞춰 처치 방법과 부위를 골랐다",
    "source": "nursing_v1"
   },
   {
    "td": "TD05",
    "axis": "J4",
-   "text": "보조 장비를 써 방법을 바꿨다",
+   "text": "보조 기구를 써서 방법을 바꿨다",
    "source": "nursing_v1"
   },
   {
    "td": "TD05",
    "axis": "J5",
-   "text": "수행 기록을 남겼다",
+   "text": "처치 기록을 남겼다",
    "source": "nursing_v1"
   },
   {
    "td": "TD05",
    "axis": "J5",
-   "text": "쓸 방법을 고른 근거를 남겼다",
+   "text": "그 방법을 고른 근거를 적어 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD05",
    "axis": "J5",
-   "text": "끝난 뒤 관찰 기록을 남겼다",
+   "text": "처치 후 관찰한 내용을 기록했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD05",
    "axis": "J6",
-   "text": "내 수행을 지침과 대조했다",
+   "text": "내가 한 처치를 지침과 한 단계씩 비교했다",
    "source": "nursing_v1"
   },
   {
@@ -551,211 +551,211 @@
   {
    "td": "TD05",
    "axis": "J7",
-   "text": "안 들어간 까닭을 좁혔다",
+   "text": "바늘이 안 들어간 원인을 찾아봤다",
    "source": "nursing_v1"
   },
   {
    "td": "TD05",
    "axis": "J7",
-   "text": "자리를 바꿔 다시 해 보았다",
+   "text": "부위를 바꿔 다시 해 봤다",
    "source": "nursing_v1"
   },
   {
    "td": "TD05",
    "axis": "J8",
-   "text": "내 방법이 병동의 절차가 됐다",
+   "text": "내가 쓴 방법이 병동의 처치 절차가 됐다",
    "source": "nursing_v1"
   },
   {
    "td": "TD05",
    "axis": "J8",
-   "text": "내 기록이 합병증 검토에 쓰였다",
+   "text": "합병증을 검토할 때 내 기록을 근거로 봤다",
    "source": "nursing_v1"
   },
   {
    "td": "TD06",
    "axis": "J1",
-   "text": "남길 항목을 좁혀 적었다",
+   "text": "기록에 꼭 남길 항목을 골라 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD06",
    "axis": "J1",
-   "text": "적지 않을 항목과 그 까닭을 적어 두었다",
+   "text": "적지 않아도 될 항목과 그 이유를 적어 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD06",
    "axis": "J2",
-   "text": "서식 항목을 적을 말로 옮겼다",
+   "text": "서식의 항목을 그 환자에게 맞는 표현으로 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD06",
    "axis": "J2",
-   "text": "쓸 척도와 표기를 적었다",
+   "text": "쓸 척도와 표기 방법을 정해 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD06",
    "axis": "J2",
-   "text": "남은 일을 적었다",
+   "text": "다음 근무자가 할 일을 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD06",
    "axis": "J3",
-   "text": "어디까지 넘길지 직접 정했다",
+   "text": "인계 때 어디까지 전할지 직접 정했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD06",
    "axis": "J3",
-   "text": "먼저 넘길 것의 차례를 직접 짰다",
+   "text": "먼저 전할 내용의 순서를 직접 정했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD06",
    "axis": "J3",
-   "text": "넘기지 않을 것을 직접 가렸다",
+   "text": "전하지 않아도 될 것을 직접 골랐다",
    "source": "nursing_v1"
   },
   {
    "td": "TD06",
    "axis": "J4",
-   "text": "적는 말이나 척도를 골라 맞춰 썼다",
+   "text": "정해진 용어나 척도를 골라 기록했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD06",
    "axis": "J4",
-   "text": "쓰기 어려운 상태의 표기를 바꿨다",
+   "text": "적기 어려운 상태를 다른 표현으로 바꿔 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD06",
    "axis": "J5",
-   "text": "간호기록을 남겼다",
+   "text": "간호기록을 썼다",
    "source": "nursing_v1"
   },
   {
    "td": "TD06",
    "axis": "J5",
-   "text": "인계 노트를 남겼다",
+   "text": "인계 메모를 썼다",
    "source": "nursing_v1"
   },
   {
    "td": "TD06",
    "axis": "J5",
-   "text": "되읽어 고친 자리를 남겼다",
+   "text": "다시 읽고 고친 부분을 표시해 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD06",
    "axis": "J6",
-   "text": "내 기록을 필수 항목과 대조했다",
+   "text": "내 기록을 서식의 필수 항목과 하나씩 맞춰 봤다",
    "source": "nursing_v1"
   },
   {
    "td": "TD06",
    "axis": "J6",
-   "text": "점검 기준이나 앞 근무의 기록과 비교했다",
+   "text": "기록 점검 기준이나 앞 근무자의 기록과 비교했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD06",
    "axis": "J7",
-   "text": "되물은 까닭을 어느 항목이 빠졌는지로 좁혔다",
+   "text": "다시 물어본 이유가 어떤 항목이 빠져서인지 찾았다",
    "source": "nursing_v1"
   },
   {
    "td": "TD06",
    "axis": "J7",
-   "text": "적는 차례를 바꿔 다시 해 보았다",
+   "text": "전하는 순서를 바꿔 다시 해 봤다",
    "source": "nursing_v1"
   },
   {
    "td": "TD06",
    "axis": "J8",
-   "text": "내가 고친 서식이 병동에서 쓰였다",
+   "text": "내가 고친 서식을 병동에서 쓰게 됐다",
    "source": "nursing_v1"
   },
   {
    "td": "TD06",
    "axis": "J8",
-   "text": "내 기록이 심사나 분쟁에서 근거로 쓰였다",
+   "text": "심사나 분쟁 때 내 기록을 근거로 삼았다",
    "source": "nursing_v1"
   },
   {
    "td": "TD07",
    "axis": "J1",
-   "text": "먼저 끊을 자리를 좁혀 적었다",
+   "text": "먼저 막을 감염 경로를 골라 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD07",
    "axis": "J1",
-   "text": "뒤로 둘 자리와 그 까닭을 적어 두었다",
+   "text": "나중에 볼 경로와 그 이유를 적어 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD07",
    "axis": "J2",
-   "text": "지침을 확인할 항목으로 옮겼다",
+   "text": "감염관리 지침을 점검 항목으로 바꿔 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD07",
    "axis": "J2",
-   "text": "점검 주기를 적었다",
+   "text": "얼마나 자주 점검할지 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD07",
    "axis": "J2",
-   "text": "깨진 날의 조치를 적었다",
+   "text": "절차가 깨졌을 때 할 조치를 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD07",
    "axis": "J3",
-   "text": "무균이 깨졌을 때 다시 할지 직접 정했다",
+   "text": "무균이 깨졌을 때 처음부터 다시 할지 직접 정했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD07",
    "axis": "J3",
-   "text": "격리를 걸지 풀지 직접 가렸다",
+   "text": "격리를 시작할지 풀지 직접 정했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD07",
    "axis": "J3",
-   "text": "멈출 작업을 직접 정했다",
+   "text": "멈춰야 할 작업을 직접 정했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD07",
    "axis": "J4",
-   "text": "소독이나 격리 방법을 그 균에 맞춰 골랐다",
+   "text": "균 종류에 맞춰 소독이나 격리 방법을 골랐다",
    "source": "nursing_v1"
   },
   {
    "td": "TD07",
    "axis": "J4",
-   "text": "물품이나 동선을 바꿔 맞췄다",
+   "text": "물품 배치나 다니는 길을 바꿨다",
    "source": "nursing_v1"
   },
   {
    "td": "TD07",
    "axis": "J5",
-   "text": "위험 목록을 남겼다",
+   "text": "감염 위험 목록을 만들었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD07",
    "axis": "J5",
-   "text": "점검표와 점검 기록을 남겼다",
+   "text": "점검표를 만들고 점검 기록을 남겼다",
    "source": "nursing_v1"
   },
   {
@@ -767,97 +767,97 @@
   {
    "td": "TD07",
    "axis": "J6",
-   "text": "점검 결과를 법정 기준과 대조했다",
+   "text": "점검 결과를 법정 기준과 비교했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD07",
    "axis": "J6",
-   "text": "감염 집계나 멸균 지표와 비교했다",
+   "text": "감염 발생 집계나 멸균 확인 결과와 비교했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD07",
    "axis": "J7",
-   "text": "감염이 난 뒤 끊기지 않은 단계를 되짚었다",
+   "text": "감염이 난 뒤 어느 단계에서 막지 못했는지 되짚어 봤다",
    "source": "nursing_v1"
   },
   {
    "td": "TD07",
    "axis": "J7",
-   "text": "절차를 바꿔 다시 나지 않게 했다",
+   "text": "절차를 고쳐 같은 감염이 다시 없게 했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD07",
    "axis": "J8",
-   "text": "내 절차가 기관의 점검표가 됐다",
+   "text": "내가 만든 절차가 기관의 점검표가 됐다",
    "source": "nursing_v1"
   },
   {
    "td": "TD07",
    "axis": "J8",
-   "text": "내 개선 보고가 다른 병동에서 쓰였다",
+   "text": "다른 병동도 내 개선 보고를 가져다 썼다",
    "source": "nursing_v1"
   },
   {
    "td": "TD08",
    "axis": "J1",
-   "text": "먼저 막을 위험을 좁혀 적었다",
+   "text": "먼저 막을 위험을 골라 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD08",
    "axis": "J1",
-   "text": "뒤로 둘 위험과 그 까닭을 적어 두었다",
+   "text": "나중에 볼 위험과 그 이유를 적어 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD08",
    "axis": "J2",
-   "text": "평가 점수를 할 조치로 옮겼다",
+   "text": "위험 평가 점수를 보고 할 조치를 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD08",
    "axis": "J2",
-   "text": "다시 평가할 때를 적었다",
+   "text": "언제 다시 평가할지 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD08",
    "axis": "J2",
-   "text": "보고할 기준을 적었다",
+   "text": "어떤 경우에 보고할지 기준을 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD08",
    "axis": "J3",
-   "text": "억제나 보조를 쓸지 직접 정했다",
+   "text": "낙상을 막을 보조 도구를 쓸지 직접 정했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD08",
    "axis": "J3",
-   "text": "병실이나 침상을 바꿀지 직접 가렸다",
+   "text": "병실이나 침상을 옮길지 직접 판단했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD08",
    "axis": "J3",
-   "text": "가족에게 맡길 범위를 직접 정했다",
+   "text": "가족이 도와줄 범위를 직접 정했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD08",
    "axis": "J4",
-   "text": "막는 방법을 그 환자에 맞춰 골랐다",
+   "text": "그 환자에게 맞는 예방 방법을 골랐다",
    "source": "nursing_v1"
   },
   {
    "td": "TD08",
    "axis": "J4",
-   "text": "병실의 물품이나 배치를 바꿔 맞췄다",
+   "text": "병실 물품이나 침대 배치를 바꿨다",
    "source": "nursing_v1"
   },
   {
@@ -869,19 +869,19 @@
   {
    "td": "TD08",
    "axis": "J5",
-   "text": "막는 방법을 적어 남겼다",
+   "text": "예방 방법을 적어 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD08",
    "axis": "J5",
-   "text": "사고 보고를 남겼다",
+   "text": "사고 보고서를 썼다",
    "source": "nursing_v1"
   },
   {
    "td": "TD08",
    "axis": "J6",
-   "text": "우리 집계를 평가 기준과 대조했다",
+   "text": "우리 병동 사고 집계를 기준과 비교했다",
    "source": "nursing_v1"
   },
   {
@@ -893,85 +893,85 @@
   {
    "td": "TD08",
    "axis": "J7",
-   "text": "사고가 난 뒤 겹친 조건을 되짚었다",
+   "text": "사고가 난 뒤 어떤 조건이 겹쳤는지 되짚어 봤다",
    "source": "nursing_v1"
   },
   {
    "td": "TD08",
    "axis": "J7",
-   "text": "조건을 바꿔 다시 나지 않게 했다",
+   "text": "겹친 조건 하나를 바꿔 같은 사고를 막았다",
    "source": "nursing_v1"
   },
   {
    "td": "TD08",
    "axis": "J8",
-   "text": "내 방법이 기관의 절차가 됐다",
+   "text": "내가 정리한 예방 방법이 기관의 절차가 됐다",
    "source": "nursing_v1"
   },
   {
    "td": "TD08",
    "axis": "J8",
-   "text": "내 보고가 다른 병동의 개선에 쓰였다",
+   "text": "다른 병동도 내 보고를 참고해 고쳤다",
    "source": "nursing_v1"
   },
   {
    "td": "TD09",
    "axis": "J1",
-   "text": "이번에 말할 것을 좁혀 적었다",
+   "text": "이번 교육에서 말할 것을 골라 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD09",
    "axis": "J1",
-   "text": "미룰 것과 그 까닭을 적어 두었다",
+   "text": "다음에 설명할 것과 그 이유를 적어 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD09",
    "axis": "J2",
-   "text": "처방과 지침을 집에서 할 수 있는 말로 옮겼다",
+   "text": "처방과 지침을 환자가 집에서 따라 할 수 있는 말로 바꿨다",
    "source": "nursing_v1"
   },
   {
    "td": "TD09",
    "axis": "J2",
-   "text": "다시 확인할 때를 적었다",
+   "text": "언제 다시 확인할지 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD09",
    "axis": "J2",
-   "text": "집에서 할 차례를 적었다",
+   "text": "집에서 할 일의 순서를 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD09",
    "axis": "J3",
-   "text": "먼저 말할 것을 직접 정했다",
+   "text": "무엇부터 설명할지 직접 정했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD09",
    "axis": "J3",
-   "text": "빼고 갈 설명을 직접 가렸다",
+   "text": "이번에 뺄 설명을 직접 골랐다",
    "source": "nursing_v1"
   },
   {
    "td": "TD09",
    "axis": "J3",
-   "text": "가족에게 맡길 범위를 직접 정했다",
+   "text": "가족이 맡을 일을 직접 정했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD09",
    "axis": "J4",
-   "text": "쓰는 말이나 보여 주는 방법을 바꿨다",
+   "text": "쓰는 말이나 보여 주는 방법을 상대에 맞게 바꿨다",
    "source": "nursing_v1"
   },
   {
    "td": "TD09",
    "axis": "J4",
-   "text": "이해 정도에 맞춰 자료를 골랐다",
+   "text": "환자가 이해하는 정도에 맞춰 자료를 골랐다",
    "source": "nursing_v1"
   },
   {
@@ -983,109 +983,109 @@
   {
    "td": "TD09",
    "axis": "J5",
-   "text": "집에서 할 수 있게 적은 한 장을 남겼다",
+   "text": "집에서 보고 따라 할 안내문을 만들었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD09",
    "axis": "J5",
-   "text": "되물어 확인한 결과를 남겼다",
+   "text": "다시 말해 보게 해 확인한 결과를 적어 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD09",
    "axis": "J6",
-   "text": "다시 말해 보게 해 이해한 만큼을 확인했다",
+   "text": "환자가 다시 말해 보게 해서 이해했는지 확인했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD09",
    "axis": "J6",
-   "text": "지난 교육 기록이나 퇴원 뒤 경과와 비교했다",
+   "text": "지난 교육 기록이나 퇴원 후 경과와 비교했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD09",
    "axis": "J7",
-   "text": "안 지켜진 까닭을 좁혔다",
+   "text": "설명대로 하지 않은 이유를 물어 찾았다",
    "source": "nursing_v1"
   },
   {
    "td": "TD09",
    "axis": "J7",
-   "text": "방법을 바꿔 다시 해 보았다",
+   "text": "설명 방법을 바꿔 다시 해 봤다",
    "source": "nursing_v1"
   },
   {
    "td": "TD09",
    "axis": "J8",
-   "text": "내가 만든 안내지가 병동에서 쓰였다",
+   "text": "내가 만든 안내문을 병동에서 쓰게 됐다",
    "source": "nursing_v1"
   },
   {
    "td": "TD09",
    "axis": "J8",
-   "text": "내 교육이 퇴원 결정에 쓰였다",
+   "text": "내 교육 결과를 보고 퇴원을 정했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD10",
    "axis": "J1",
-   "text": "볼 범위를 좁혀 적었다",
+   "text": "이번에 맡을 환자 범위를 정해 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD10",
    "axis": "J1",
-   "text": "넘길 범위와 그 까닭을 적어 두었다",
+   "text": "다른 사람에게 넘길 환자와 그 이유를 적어 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD10",
    "axis": "J2",
-   "text": "분류 기준을 물을 항목으로 옮겼다",
+   "text": "분류 기준표를 환자에게 물을 질문으로 바꿨다",
    "source": "nursing_v1"
   },
   {
    "td": "TD10",
    "axis": "J2",
-   "text": "다시 볼 때를 적었다",
+   "text": "언제 다시 볼지 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD10",
    "axis": "J2",
-   "text": "보낼 자리의 기준을 적었다",
+   "text": "어디로 보낼지 기준을 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD10",
    "axis": "J3",
-   "text": "먼저 볼 사람을 직접 정했다",
+   "text": "누구를 먼저 볼지 직접 정했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD10",
    "axis": "J3",
-   "text": "보낼 자리를 직접 가렸다",
+   "text": "어느 구역으로 보낼지 직접 정했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD10",
    "axis": "J3",
-   "text": "밀린 사람의 다시 볼 때를 직접 정했다",
+   "text": "뒤로 밀린 환자를 언제 다시 볼지 직접 정했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD10",
    "axis": "J4",
-   "text": "묻고 보는 차례를 그 자리에 맞춰 바꿨다",
+   "text": "상황에 맞춰 묻고 보는 순서를 바꿨다",
    "source": "nursing_v1"
   },
   {
    "td": "TD10",
    "axis": "J4",
-   "text": "혼잡한 날의 분류 방법을 바꿨다",
+   "text": "환자가 몰린 날 분류 방법을 바꿨다",
    "source": "nursing_v1"
   },
   {
@@ -1097,19 +1097,19 @@
   {
    "td": "TD10",
    "axis": "J5",
-   "text": "먼저 본 까닭을 남겼다",
+   "text": "먼저 본 이유를 적어 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD10",
    "axis": "J5",
-   "text": "밀린 사람의 다시 볼 때를 남겼다",
+   "text": "뒤로 밀린 환자를 다시 볼 시각을 적어 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD10",
    "axis": "J6",
-   "text": "내 분류를 기준표와 대조했다",
+   "text": "내 분류 결과를 기준표와 비교했다",
    "source": "nursing_v1"
   },
   {
@@ -1121,67 +1121,67 @@
   {
    "td": "TD10",
    "axis": "J7",
-   "text": "낮게 매긴 사람이 나빠진 까닭을 좁혔다",
+   "text": "낮게 분류한 환자가 나빠진 이유를 찾아봤다",
    "source": "nursing_v1"
   },
   {
    "td": "TD10",
    "axis": "J7",
-   "text": "볼 항목을 바꿔 다시 해 보았다",
+   "text": "확인할 항목을 바꿔 다시 해 봤다",
    "source": "nursing_v1"
   },
   {
    "td": "TD10",
    "axis": "J8",
-   "text": "내 분류 차례가 기관의 절차가 됐다",
+   "text": "내가 정리한 분류 순서가 기관의 절차가 됐다",
    "source": "nursing_v1"
   },
   {
    "td": "TD10",
    "axis": "J8",
-   "text": "내 기록이 전원 결정에 쓰였다",
+   "text": "내 기록을 보고 다른 병원으로 옮길지 정했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD11",
    "axis": "J1",
-   "text": "채울 자리를 좁혀 적었다",
+   "text": "꼭 채울 근무를 골라 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD11",
    "axis": "J1",
-   "text": "비워 둘 자리와 그 까닭을 적어 두었다",
+   "text": "비워 둘 근무와 그 이유를 적어 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD11",
    "axis": "J2",
-   "text": "인력 기준을 배치 조건으로 옮겼다",
+   "text": "인력 기준을 근무별 배치 조건으로 바꿔 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD11",
    "axis": "J2",
-   "text": "맡길 범위를 적었다",
+   "text": "누구에게 무엇을 맡길지 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD11",
    "axis": "J2",
-   "text": "모자란 날의 조치를 적었다",
+   "text": "인력이 모자란 날 할 조치를 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD11",
    "axis": "J3",
-   "text": "모자란 날 무엇을 줄일지 직접 정했다",
+   "text": "인력이 모자란 날 어떤 일을 줄일지 직접 정했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD11",
    "axis": "J3",
-   "text": "누구에게 맡길지 직접 가렸다",
+   "text": "누구에게 어떤 환자를 맡길지 직접 정했다",
    "source": "nursing_v1"
   },
   {
@@ -1193,37 +1193,37 @@
   {
    "td": "TD11",
    "axis": "J4",
-   "text": "배치 방법을 중증도와 경력에 맞춰 바꿨다",
+   "text": "환자 중증도와 간호사 경력에 맞춰 배치 방법을 바꿨다",
    "source": "nursing_v1"
   },
   {
    "td": "TD11",
    "axis": "J4",
-   "text": "교대 방식을 바꿔 맞췄다",
+   "text": "교대 방식을 바꿔 봤다",
    "source": "nursing_v1"
   },
   {
    "td": "TD11",
    "axis": "J5",
-   "text": "근무표를 남겼다",
+   "text": "근무표를 짰다",
    "source": "nursing_v1"
   },
   {
    "td": "TD11",
    "axis": "J5",
-   "text": "배치를 가른 근거를 남겼다",
+   "text": "그렇게 배치한 근거를 적어 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD11",
    "axis": "J5",
-   "text": "모자란 날의 조치 기록을 남겼다",
+   "text": "인력이 모자란 날 한 조치를 기록했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD11",
    "axis": "J6",
-   "text": "짠 배치를 인력 기준과 대조했다",
+   "text": "짠 배치를 인력 기준과 비교했다",
    "source": "nursing_v1"
   },
   {
@@ -1235,85 +1235,85 @@
   {
    "td": "TD11",
    "axis": "J7",
-   "text": "일이 밀린 까닭을 좁혔다",
+   "text": "일이 밀린 원인을 찾아 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD11",
    "axis": "J7",
-   "text": "배치를 바꿔 다시 해 보았다",
+   "text": "배치를 바꿔 다시 짜 봤다",
    "source": "nursing_v1"
   },
   {
    "td": "TD11",
    "axis": "J8",
-   "text": "내 배치가 기관의 근무 기준이 됐다",
+   "text": "내가 짠 배치가 기관의 근무 기준이 됐다",
    "source": "nursing_v1"
   },
   {
    "td": "TD11",
    "axis": "J8",
-   "text": "내 집계가 인력 요청의 근거로 쓰였다",
+   "text": "인력을 더 요청할 때 내 집계를 근거로 냈다",
    "source": "nursing_v1"
   },
   {
    "td": "TD12",
    "axis": "J1",
-   "text": "이번에 다룰 범위를 좁혀 적었다",
+   "text": "간호사가 이번에 다룰 범위를 정해 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD12",
    "axis": "J1",
-   "text": "올려 보낼 범위와 그 까닭을 적어 두었다",
+   "text": "책임자에게 보고할 일과 그 이유를 적어 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD12",
    "axis": "J2",
-   "text": "법령을 지킬 항목으로 옮겼다",
+   "text": "법 조문을 지켜야 할 확인 항목으로 바꿔 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD12",
    "axis": "J2",
-   "text": "받을 동의의 범위를 적었다",
+   "text": "어디까지 동의를 받을지 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD12",
    "axis": "J2",
-   "text": "남길 기록을 적었다",
+   "text": "무엇을 기록으로 남길지 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD12",
    "axis": "J3",
-   "text": "뜻이 부딪힐 때 어느 쪽에 맞출지 직접 정했다",
+   "text": "환자와 가족의 뜻이 다를 때 어느 쪽을 따를지 직접 정했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD12",
    "axis": "J3",
-   "text": "윤리위원회로 올릴지 직접 가렸다",
+   "text": "윤리위원회에 올릴 사례인지 직접 판단했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD12",
    "axis": "J3",
-   "text": "거절했을 때의 처리를 직접 정했다",
+   "text": "환자가 거절했을 때 어떻게 할지 직접 정했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD12",
    "axis": "J4",
-   "text": "동의를 받는 방법을 그 사람에 맞춰 바꿨다",
+   "text": "환자 처지에 맞춰 동의 받는 방법을 바꿨다",
    "source": "nursing_v1"
   },
   {
    "td": "TD12",
    "axis": "J4",
-   "text": "설명 방식을 바꿔 맞췄다",
+   "text": "설명 방식을 상대에 맞게 바꿨다",
    "source": "nursing_v1"
   },
   {
@@ -1325,19 +1325,19 @@
   {
    "td": "TD12",
    "axis": "J5",
-   "text": "알린 범위를 가른 근거를 남겼다",
+   "text": "어디까지 알렸는지와 그 근거를 적어 두었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD12",
    "axis": "J5",
-   "text": "보고하고 신고한 기록을 남겼다",
+   "text": "보고하거나 신고한 내용을 기록했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD12",
    "axis": "J6",
-   "text": "내 판단을 법령과 대조했다",
+   "text": "내 판단을 법령과 비교했다",
    "source": "nursing_v1"
   },
   {
@@ -1349,25 +1349,25 @@
   {
    "td": "TD12",
    "axis": "J7",
-   "text": "뒤에 문제가 된 까닭을 좁혔다",
+   "text": "나중에 문제가 된 원인을 찾아 적었다",
    "source": "nursing_v1"
   },
   {
    "td": "TD12",
    "axis": "J7",
-   "text": "절차를 바꿔 다시 나지 않게 했다",
+   "text": "절차를 고쳐 같은 문제가 다시 없게 했다",
    "source": "nursing_v1"
   },
   {
    "td": "TD12",
    "axis": "J8",
-   "text": "내가 올린 사례가 기관의 지침이 됐다",
+   "text": "내가 올린 사례로 기관의 지침이 생겼다",
    "source": "nursing_v1"
   },
   {
    "td": "TD12",
    "axis": "J8",
-   "text": "내 기록이 분쟁 처리의 근거로 쓰였다",
+   "text": "분쟁을 처리할 때 내 기록을 근거로 삼았다",
    "source": "nursing_v1"
   }
  ]
