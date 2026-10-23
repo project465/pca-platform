@@ -29,7 +29,7 @@ import { coreFile, registry } from "../src/lib/me-v3/core-registry";
 const OUT = path.resolve(process.env.OUT ?? "var/report-long");
 const FONT = `file://${path.resolve("public/fonts/cm-book")}/`;
 const MIN_PRO = Number(process.env.MIN_PAGES ?? 70);
-const MAX_PRO = Number(process.env.MAX_PAGES ?? 80);
+const MAX_PRO = Number(process.env.MAX_PAGES ?? 84);
 /** 쪽 높이에서 흰 띠가 이만큼을 넘으면 빈 쪽으로 센다 */
 const BLANK_MAX = Number(process.env.BLANK_MAX ?? 0.22);
 /** 흰 띠를 세지 않는 쪽: 겉표지 · 표지 · 장 첫 쪽 · 쪽 전체가 쓰는 칸인 쪽 */

@@ -45,7 +45,6 @@ export function domainPage(x: Inputs, d: X, z: ResultDomain, no: number): Page {
   const roles = d.rolesOf(z.code).slice(0, 4);
   const inds = d.indsOf(z.code).slice(0, 4);
   const gapA = x.m.gaps.filter((g) => g.domain === z.code).map((g) => d.actionOf(g)).find(Boolean);
-  const art = asked ? "" : `<div class="est3"><div><span>관심</span><b>${z.interest ? BAND_WORD[z.interest] : "응답 없음"}</b></div><div><span>해 본 횟수</span><b>${z.experience ? EXP_WORD[z.experience] : "응답 없음"}</b></div><div><span>배울 뜻</span><b>${z.learning ? BAND_WORD[z.learning] : "묻지 않음"}</b></div></div>`;
   const rowsHtml = AXES.map((a, k) => {
     const own = d.picks(z.code, a);
     const what = own.length ? own.slice(0, 2).map(E).join(" · ") + (own.length > 2 ? ` <span class="mut">외 ${own.length - 2}개</span>` : "") : `<span class="mut">${E(okOr(def?.axes?.[a]?.l2))}</span>`;
@@ -60,13 +59,11 @@ export function domainPage(x: Inputs, d: X, z: ResultDomain, no: number): Page {
         : `수업 과제나 동아리 활동에서 ${q(def?.axes?.J3?.l2 ?? def?.workflow?.[2]?.detail ?? "기준 하나를 직접 정하는 일")} 정도의 일을 한 번 맡아 봅니다. 남길 것은 ${def?.artifacts?.[0] ?? "결과 문서"}입니다.`;
   return {
     part: "03", partName: PART3(x), title: `영역 ${String(no).padStart(2, "0")} · ${nm}`,
-    body: `<div class="dh"><span class="dh-n">${String(no).padStart(2, "0")}</span><div><p class="k">${E(x.domainWord)}</p><h1>${E(nm)}</h1></div><div class="dh-t">${zoneTag(z.zone)}<span class="mut">관심 ${z.interest ? BAND_WORD[z.interest] : "응답 없음"} · 해 본 횟수 ${z.experience ? EXP_WORD[z.experience] : "응답 없음"}</span></div></div>
+    body: `<div class="dh"><span class="dh-n">${String(no).padStart(2, "0")}</span><div><p class="k">${E(x.domainWord)}</p><h1>${E(nm)}</h1></div><div class="dh-t">${zoneTag(z.zone)}<span class="mut">관심 ${z.interest ? BAND_WORD[z.interest] : "응답 없음"} · 해 본 횟수 ${z.experience ? EXP_WORD[z.experience] : "응답 없음"}${asked ? "" : ` · 배울 뜻 ${z.learning ? BAND_WORD[z.learning] : "묻지 않음"}`}</span></div></div>
       <p class="dek">${E(domainHead(x, d, z))}${okText(tx?.owns) ? ` <span class="mut">이 영역은 ${E(polite(tx!.owns))}</span>` : ""}</p>
       ${tx?.subareas?.length ? chips(tx.subareas) : ""}
-      ${art}
-      ${H("이 영역의 일은 이렇게 흘러갑니다", "전공 사전")}<div class="wf2">${(def?.workflow ?? []).map((w) => `<div class="wf2-i"><span>${w.step}</span><p><b>${E(w.name)}</b>${E(okOr(w.detail))}</p></div>`).join("")}</div>
-      ${H("판단 여덟 가지와 지금 단계", asked ? "응답 · 고른 근거" : "이번에 묻지 않음 · 오른쪽은 그 판단이 이 영역에서 나타나는 모습")}
-      <table class="tb tb-xs"><tbody>${rowsHtml}</tbody></table>
+      ${H("이 영역의 일은 이렇게 흘러갑니다", "전공 사전")}<div class="wf2${asked ? "" : " wf2s"}">${(def?.workflow ?? []).map((w) => `<div class="wf2-i"><span>${w.step}</span><p><b>${E(w.name)}</b>${E(okOr(w.detail))}</p></div>`).join("")}</div>
+      ${asked ? `${H("판단 여덟 가지와 지금 단계", "응답 · 고른 근거")}<table class="tb tb-xs"><tbody>${rowsHtml}</tbody></table>` : ""}
       <div class="g3">
         ${note("이어지는 직무", roles.length ? roles.map((r) => `${E(d.roleName(r.role))} <span class="mut">(${E(r.strength)})</span>`).join(" · ") : "관계표에 적힌 직무가 없습니다.")}
         ${note("이 영역을 쓰는 산업", inds.length ? inds.map((r) => `${E(d.indName(r.industry))} <span class="mut">(${E(r.strength)})</span>`).join(" · ") : "관계표에 적힌 산업이 없습니다.")}
@@ -108,10 +105,12 @@ export function recordPages(x: Inputs, d: X): Page[] {
   const exps = x.exps;
   if (!exps.length) {
     return [{
+      keep: true,
       part: "03", partName: PART3(x), title: "경험 기록",
       body: T("이 결과를 굳힌 때까지 적어 둔 경험 기록이 없습니다", `이 리포트는 결과를 굳힌 ${E(x.builtOn)}까지 저장된 경험 기록만 싣습니다. 그 뒤에 적은 기록은 내 CareerMatri의 현재 상태에서 봅니다. 수업 과제, 캡스톤, 실습, 동아리 활동 하나를 적으면 검사가 가리킨 영역과 그 활동이 같은 쪽을 가리키는지 맞춰 볼 수 있습니다.`) +
         `<div class="two">${note("적는 법", ul(["활동 이름과 기간", "어느 영역의 일이었는지", "직접 정한 것 한두 가지", "남은 결과물과 무엇과 비교했는지"]))}${note("적으면 달라지는 것", ul(["내 CareerMatri의 현재 상태에 그 활동이 근거로 붙습니다", "다음 검사를 마치고 받는 리포트에 그 활동의 쪽과 자기소개서 재료가 실립니다", "이 리포트와 검사 당시 결과는 그대로 남습니다"]), true)}</div>` +
-        lines(5, "지금 떠오르는 활동 셋 (이름 · 기간 · 맡은 일)") +
+        H("지금 떠오르는 활동 셋", "참여자가 채웁니다 · 경험 추가에 그대로 옮깁니다") +
+        `<table class="tb ws rec"><thead><tr><th style="width:24%">활동 이름 · 기간</th><th style="width:20%">어느 ${E(x.domainWord)}</th><th>직접 정한 것</th><th style="width:22%">남은 결과물 · 비교한 것</th></tr></thead><tbody>${"<tr><td></td><td></td><td></td><td></td></tr>".repeat(3)}</tbody></table>` +
         band("어디서", "내 CareerMatri의 ‘경험 추가’에서 적습니다."),
     }];
   }
@@ -179,14 +178,16 @@ export function translationPage(x: Inputs, d: X): Page | null {
   if (!t || !t.steps.length || !x.m.limits.allows_translation) return null;
   const steps = t.steps.filter((s) => TRANS_STEP_KO[s.item_id]);
   if (!steps.length) return null;
+  const answered = steps.some((s) => s.choice);
   return {
     part: "03", partName: PART3(x), title: "경험 하나를 직무의 말로",
-    body: (steps.some((s) => s.choice)
+    keep: !answered,
+    body: (answered
       ? T("고른 경험 하나를 열 단계로 옮겼습니다", "검사의 마지막 묶음에서 경험 하나를 골라 문제부터 활용까지 차례로 답했습니다. 고른 보기를 그대로 적었고, 이 표가 지원서 문단의 뼈대가 됩니다.")
       : T("경험 하나를 열 단계로 옮겨 적는 쪽입니다", "이번 응답에는 열 단계에서 고른 보기가 남아 있지 않아 칸을 비워 두었습니다. 검사에서 깊게 본 영역의 경험 하나를 골라 직접 채웁니다.")) +
-      `<table class="tb tb-s"><tbody>${steps.map((s) => `<tr><th class="w30">${E(TRANS_STEP_KO[s.item_id])}</th><td>${s.choice ? E(s.choice) : `<div class="wl"><i></i></div>`}</td></tr>`).join("")}</tbody></table>` +
+      `<table class="tb tb-s${answered ? "" : " trs"}"><tbody>${steps.map((s) => `<tr><th class="w30">${E(TRANS_STEP_KO[s.item_id])}</th><td>${s.choice ? E(s.choice) : `<div class="wl"><i></i></div>`}</td></tr>`).join("")}</tbody></table>` +
       (t.domains.length ? `<p class="sm">이 경험이 닿은 영역: ${E(t.domains.map(d.name).join(" · "))}</p>` : "") +
-      lines(4, "이 열 줄을 이어 쓴 한 문단") +
+      lines(answered ? 4 : 6, "이 열 줄을 이어 쓴 한 문단") +
       band("쓰는 법", "‘무엇을 직접 정했나’와 ‘무엇이 남았나’ 두 줄이 문단의 중심입니다. 나머지 줄은 그 두 줄을 받쳐 주는 순서로 놓습니다."),
   };
 }

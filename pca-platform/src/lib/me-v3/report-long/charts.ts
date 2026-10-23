@@ -242,8 +242,11 @@ export function gantt(rows: GanttRow[], o: { width?: number; days?: number; labe
 
 /** 걸음 사슬. 칸마다 작은 머리와 본문을 두고 화살표로 잇는다 */
 export function chain(steps: { head: string; body: string; color?: string }[], o: { width?: number; height?: number } = {}): string {
-  const W = o.width ?? 680, H = o.height ?? 150, n = steps.length, gap = 22, bw = (W - gap * (n - 1)) / n;
-  return `<svg viewBox="0 0 ${W} ${H}" width="100%" xmlns="http://www.w3.org/2000/svg" role="img">${steps.map((s, i) => {
+  const W0 = o.width ?? 680, n = steps.length, gap = 22, bw = (W0 - gap * (n - 1)) / n;
+  /* 글이 길면 상자를 키운다. 그림 높이를 못 박아 두면 넘친 줄이 그림 밖으로 잘려 나간다 */
+  const most = Math.max(...steps.map((s) => wrap(s.body, Math.max(6, Math.floor(bw / 12.5))).length));
+  const W = W0, H = Math.max(o.height ?? 150, 30 + 18 + most * 11 * 1.35 + 14);
+  return `<svg viewBox="0 0 ${W} ${f1(H)}" width="100%" xmlns="http://www.w3.org/2000/svg" role="img">${steps.map((s, i) => {
     const x = i * (bw + gap);
     return `<rect x="${f1(x)}" y="2" width="${f1(bw)}" height="${H - 4}" rx="8" fill="#fff" stroke="${s.color ?? C.line}" stroke-width="1.4"/>` +
       `<rect x="${f1(x)}" y="2" width="${f1(bw)}" height="30" rx="8" fill="${s.color ?? C.navy}"/><rect x="${f1(x)}" y="22" width="${f1(bw)}" height="10" fill="${s.color ?? C.navy}"/>` +

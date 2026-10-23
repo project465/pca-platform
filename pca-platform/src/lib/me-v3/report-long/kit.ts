@@ -7,7 +7,7 @@ import { STEP_WORD, ZONE_WORD, type ZoneKey } from "./derive";
 
 export type Page = {
   part: string; partName: string; title: string; body: string;
-  kind?: "outer" | "cover" | "chapter" | "plain" | "sheet";
+  kind?: "outer" | "cover" | "chapter" | "plain" | "sheet" | "fill";
   /** 한 장으로 읽어야 하는 쪽. 쪽 모으기가 나누지 않고 통째로만 옮긴다 */
   keep?: boolean;
 };
@@ -87,7 +87,7 @@ ${[400, 600, 700, 800].map((w) => `@font-face{font-family:"CM Book Sans";src:url
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:#e9ecf1}
 body{font-family:"CM Book Sans",Pretendard,"Noto Sans CJK KR","Noto Sans KR",sans-serif;color:${C.ink};font-size:9.6pt;line-height:1.58;word-break:keep-all;overflow-wrap:break-word;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.pg{contain:layout paint;width:210mm;height:297mm;padding:13mm 15mm 11mm;background:#fff;position:relative;overflow:hidden;display:flex;flex-direction:column;page-break-after:always;break-after:page;margin:0 auto}
+.pg[data-kind="fill"]{display:none}.pg{contain:layout paint;width:210mm;height:297mm;padding:13mm 15mm 11mm;background:#fff;position:relative;overflow:hidden;display:flex;flex-direction:column;page-break-after:always;break-after:page;margin:0 auto}
 @media screen{.pg{margin:0 auto 6mm;box-shadow:0 1px 6px rgba(20,38,77,.12)}}
 .rh{display:flex;align-items:baseline;gap:10px;border-bottom:1.5px solid ${C.navy};padding-bottom:2.2mm;margin-bottom:5mm;font-size:8.6pt;color:${C.ink3}}
 .rh-n{font-weight:800;color:#a8871c;letter-spacing:.04em}.rh-t{font-weight:700;color:${C.navy}}.rh-r{margin-left:auto}
@@ -111,7 +111,7 @@ p{margin:0}p,li,td,dd{text-wrap:pretty}.nw{white-space:nowrap;font-style:normal}
 .tb{width:100%;border-collapse:collapse;font-size:9pt}.tb th,.tb td{border-bottom:1px solid ${C.line2};padding:1.6mm 2mm;text-align:left;vertical-align:top}.tb thead th{font-size:8.4pt;color:${C.ink3};font-weight:700;border-bottom:1.5px solid ${C.line}}
 .tb tbody th{color:${C.navy};font-weight:700;width:1%;white-space:nowrap}.tb-s{font-size:8.7pt}.tb-xs{font-size:8.3pt}.tb-xs td,.tb-xs th{padding:1.1mm 1.6mm}.tb td.c{text-align:center}
 .w34{width:34%}.w30{width:30%}.w24{width:24%}.w22{width:22%}.w18{width:18%}
-.ws td{height:9.5mm;border:1px solid ${C.line};vertical-align:middle}.ws th{border:1px solid ${C.line};background:#f7f8fa;width:26%;white-space:normal}.ws.tall td{height:15mm}.ws.wk td{height:21mm}.ws.wk{table-layout:fixed}.ws.big td{height:13mm}
+.ws td{height:9.5mm;border:1px solid ${C.line};vertical-align:middle}.ws th{border:1px solid ${C.line};background:#f7f8fa;width:26%;white-space:normal}.ws.tall td{height:15mm}.ax2 td{vertical-align:top}.wf2s .wf2-i p{font-size:8.4pt;line-height:1.45}.w16{width:16%}.ws.wk td{height:36mm}.ws.wk{table-layout:fixed}.ws.big td{height:25mm}.ws.log td{height:27mm}.trs .wl i{height:10.5mm}.rec td{height:24mm;vertical-align:top}.ws.cl td{height:21mm;vertical-align:top}
 .wide-art{display:flex;justify-content:center}.wide-art svg{max-height:120mm}.ring-art svg{max-height:96mm}
 .radar-big{display:flex;justify-content:center;margin:-2mm 0}.radar-big svg{width:168mm}
 .lg{display:flex;flex-wrap:wrap;gap:2mm 5mm;justify-content:center;font-size:8.6pt;color:${C.ink2}}.lg i{display:inline-block;width:3.2mm;height:3.2mm;border-radius:2px;margin-right:1.4mm;vertical-align:-.4mm}.lg i.thin{height:1.4mm;vertical-align:.4mm}
@@ -199,14 +199,22 @@ export const PACK_JS = String.raw`(function () {
   function segs(pg) { return Array.prototype.slice.call(bdOf(pg).children).filter(function (e) { return e.classList.contains("seg"); }); }
   function fits(pg) {
     var bd = bdOf(pg); var b = bd.getBoundingClientRect().bottom; var m = 0;
-    var ss = segs(pg); var last = ss[ss.length - 1]; if (!last) return true;
-    m = last.getBoundingClientRect().bottom;
-    last.querySelectorAll("*").forEach(function (e) { var r = e.getBoundingClientRect(); if (r.height && r.width && r.bottom > m) m = r.bottom; });
-    return m <= b + 0.5;
+    var ss = segs(pg); if (!ss.length) return true;
+    /* 마지막 덩이만 재지 않는다. 덩이 사이를 벌린 쪽에서는 앞 덩이의 안쪽이 바닥을 넘기도 한다 */
+    ss.forEach(function (s) { var q = s.getBoundingClientRect(); if (q.bottom > m) m = q.bottom; s.querySelectorAll("*").forEach(function (e) { var r = e.getBoundingClientRect(); if (r.height && r.width && r.bottom > m) m = r.bottom; }); });
+    return m <= b - 1;
+  }
+  /* 쪽에 남은 자리(본문 높이에 대한 비율) */
+  function gap(pg) {
+    var bd = bdOf(pg); var r = bd.getBoundingClientRect(); var ss = segs(pg); var last = ss[ss.length - 1];
+    if (!last) return 1;
+    var m = last.getBoundingClientRect().bottom;
+    last.querySelectorAll("*").forEach(function (e) { var q = e.getBoundingClientRect(); if (q.height && q.width && q.bottom > m) m = q.bottom; });
+    return Math.max(0, (r.bottom - m) / r.height);
   }
   function isHead(e) {
     if (!e) return false;
-    if (e.matches("h1,h2,h3,h4,.ph,.sh,.cont")) return true;
+    if (e.matches("h1,h2,h3,h4,.ph,.sh,.cont,p.k")) return true;
     return false;
   }
   /* 표를 줄 단위로 옮긴다. 옮긴 줄이 둘보다 적으면 되돌린다 */
@@ -221,6 +229,32 @@ export const PACK_JS = String.raw`(function () {
       n++;
     }
     if (n < 2) { while (nb.rows.length) body.insertBefore(nb.lastElementChild, body.firstElementChild); into.removeChild(cl); return false; }
+    return true;
+  }
+  /* 그림 덩이가 조금 넘치면 그림을 줄여 넣는다. 원래 크기의 72% 아래로는 줄이지 않는다 */
+  function shrink(c, pg) {
+    var svg = c.matches(".wide-art") ? c.querySelector("svg") : null; if (!svg) return false;
+    var r = svg.getBoundingClientRect(); var over = 0;
+    var b = bdOf(pg).getBoundingClientRect().bottom; var m = 0;
+    c.querySelectorAll("*").forEach(function (e) { var q = e.getBoundingClientRect(); if (q.height && q.bottom > m) m = q.bottom; });
+    over = Math.max(m, c.getBoundingClientRect().bottom) - b + 2;
+    var h = r.height - over; if (h < r.height * 0.72) return false;
+    svg.style.height = h + "px"; svg.style.width = (r.width * h / r.height) + "px"; svg.style.maxHeight = "none";
+    if (fits(pg)) return true;
+    svg.style.height = ""; svg.style.width = ""; svg.style.maxHeight = "";
+    return false;
+  }
+  /* 카드 격자를 줄 단위로 옮긴다. 한 줄도 못 옮기거나 남는 줄이 없으면 되돌린다 */
+  function splitGrid(c, into, pg) {
+    var cols = c.matches(".g3") ? 3 : 2; if (c.children.length <= cols) return false;
+    var cl = c.cloneNode(false); into.appendChild(cl); var n = 0;
+    while (c.children.length > cols) {
+      var row = Array.prototype.slice.call(c.children, 0, cols);
+      row.forEach(function (e) { cl.appendChild(e); });
+      if (!fits(pg)) { row.reverse().forEach(function (e) { c.insertBefore(e, c.firstElementChild); }); break; }
+      n++;
+    }
+    if (!n) { into.removeChild(cl); return false; }
     return true;
   }
   /* 다음 쪽의 앞 덩이를 cur 로 끌어 올린다. 다 옮겼으면 true */
@@ -238,11 +272,18 @@ export const PACK_JS = String.raw`(function () {
       while (s.firstElementChild) {
         var c = s.firstElementChild; ns.appendChild(c);
         if (fits(cur)) { moved++; continue; }
+        if (shrink(c, cur)) { moved++; continue; }
         s.insertBefore(c, s.firstElementChild);
         if (c.tagName === "TABLE" && splitTable(c, ns, cur)) moved++;
+        else if (c.matches(".g2,.g3") && splitGrid(c, ns, cur)) moved++;
         break;
       }
       while (ns.lastElementChild && isHead(ns.lastElementChild)) { s.insertBefore(ns.lastElementChild, s.firstElementChild); moved--; }
+      /* 남는 쪽이 안내 띠 하나만 들고 가지 않게, 앞 덩이 하나를 함께 넘긴다 */
+      while (s.firstElementChild && Array.prototype.every.call(s.children, function (e) { return e.matches(".band,.cont"); }) && Array.prototype.filter.call(ns.children, function (e) { return !isHead(e); }).length > 1) {
+        s.insertBefore(ns.lastElementChild, s.firstElementChild);
+        while (ns.lastElementChild && isHead(ns.lastElementChild)) s.insertBefore(ns.lastElementChild, s.firstElementChild);
+      }
       var meaningful = Array.prototype.some.call(ns.children, function (e) { return !isHead(e); });
       if (!meaningful) { while (ns.lastElementChild) s.insertBefore(ns.lastElementChild, s.firstElementChild); bd.removeChild(ns); return false; }
       if (s.firstElementChild && !s.firstElementChild.matches(".ph,.cont")) {
@@ -253,7 +294,20 @@ export const PACK_JS = String.raw`(function () {
     }
     return true;
   }
+  /* 다른 쪽을 통째로 붙여 본다. 안 들어가면 되돌린다 */
+  function whole(cur, q) {
+    var bd = bdOf(cur); var moved = segs(q);
+    moved.forEach(function (s) { bd.appendChild(s); });
+    if (fits(cur)) return true;
+    moved.forEach(function (s) { bdOf(q).appendChild(s); });
+    return false;
+  }
   function run() {
+    /* 덧붙일 거리는 그 장의 맨 끝으로 옮겨 둔다. 본문 쪽 사이에 끼어 있으면 끌어 올리기가 거기서 멈춘다 */
+    Array.prototype.slice.call(document.querySelectorAll('section.pg[data-kind="fill"]')).forEach(function (f) {
+      var same = Array.prototype.slice.call(document.querySelectorAll("section.pg")).filter(function (pg) { return pg.getAttribute("data-part") === f.getAttribute("data-part") && pg.getAttribute("data-kind") !== "fill"; });
+      var last = same[same.length - 1]; if (last && last.nextSibling !== f) last.parentNode.insertBefore(f, last.nextSibling);
+    });
     var list = Array.prototype.slice.call(document.querySelectorAll("section.pg"));
     for (var i = 0; i < list.length; i++) {
       var cur = list[i]; if (!plain(cur) || cur.getAttribute("data-keep") === "1") continue;
@@ -264,7 +318,60 @@ export const PACK_JS = String.raw`(function () {
         if (pull(cur, nx)) { nx.parentNode.removeChild(nx); list.splice(i + 1, 1); continue; }
         break;
       }
+      /* 남은 자리에 같은 장의 조금 뒤 쪽이 통째로 들어가면 당겨 온다. 이어지는 쪽이 제 앞 쪽을 앞지르지는 않는다 */
+      var skipped = []; var j = i + 1;
+      while (j < list.length && skipped.length < 4) {
+        var q = list[j];
+        if (!plain(q) || q.getAttribute("data-part") !== part) break;
+        var base = q.getAttribute("data-base");
+        var blocked = skipped.some(function (k) { return k.getAttribute("data-base") === base; });
+        if (j > i + 1 && !blocked && whole(cur, q)) { q.parentNode.removeChild(q); list.splice(j, 1); continue; }
+        skipped.push(q); j++;
+      }
     }
+    /* 남은 자리가 넓은 쪽을 그 장의 덧붙일 거리로 채운다. 들어갈 자리가 없는 거리는 싣지 않는다 */
+    var pages = Array.prototype.slice.call(document.querySelectorAll("section.pg"));
+    var fills = pages.filter(function (pg) { return pg.getAttribute("data-kind") === "fill"; });
+    pages.forEach(function (pg) {
+      if (!plain(pg) || pg.getAttribute("data-keep") === "1") return;
+      var part = pg.getAttribute("data-part");
+      for (var k = 0; k < fills.length && gap(pg) > 0.2; k++) {
+        var f = fills[k]; if (!f.parentNode || f.getAttribute("data-part") !== part) continue;
+        if (whole(pg, f)) { f.parentNode.removeChild(f); }
+      }
+    });
+    fills.forEach(function (f) { if (f.parentNode) f.parentNode.removeChild(f); });
+    /* 쓰는 칸 표(.ws)가 있는 쪽은 남은 자리를 그 표의 쓰는 줄에 나눠 준다(줄마다 20mm 까지) */
+    Array.prototype.slice.call(document.querySelectorAll("section.pg")).forEach(function (pg) {
+      if (!plain(pg)) return;
+      var g = gap(pg); if (g <= 0.03) return;
+      var ws = pg.querySelectorAll(".bd table.ws tbody tr"); if (!ws.length) return;
+      var px = (g - 0.02) * bdOf(pg).getBoundingClientRect().height;
+      var add = Math.min(px / ws.length, 20 * 96 / 25.4);
+      ws.forEach(function (tr) { var h = tr.getBoundingClientRect().height; Array.prototype.forEach.call(tr.cells, function (c) { c.style.height = (h + add) + "px"; }); });
+      if (!fits(pg)) ws.forEach(function (tr) { Array.prototype.forEach.call(tr.cells, function (c) { c.style.height = ""; }); });
+    });
+    /* 그림이 있는 쪽은 남은 자리만큼 그림을 키운다(원래 크기의 135% 까지) */
+    Array.prototype.slice.call(document.querySelectorAll("section.pg")).forEach(function (pg) {
+      if (!plain(pg)) return;
+      var g = gap(pg); if (g <= 0.12) return;
+      var svg = pg.querySelector(".bd .wide-art svg"); if (!svg) return;
+      var r = svg.getBoundingClientRect(); if (!r.height) return;
+      var px = (g - 0.05) * bdOf(pg).getBoundingClientRect().height;
+      var h = Math.min(r.height * 1.35, r.height + px);
+      svg.style.maxHeight = "none"; svg.style.height = h + "px"; svg.style.width = Math.min(r.width * h / r.height, svg.parentNode.getBoundingClientRect().width) + "px";
+      if (!fits(pg)) { svg.style.height = ""; svg.style.width = ""; svg.style.maxHeight = ""; }
+    });
+    /* 조금 남은 자리(쪽 높이의 30% 까지)는 덩이 사이에 고르게 나눈다 */
+    Array.prototype.slice.call(document.querySelectorAll("section.pg")).forEach(function (pg) {
+      if (!plain(pg)) return;
+      var g = gap(pg); if (g <= 0.02 || g > 0.4) return;
+      var bd = bdOf(pg); var ss = segs(pg);
+      /* 덩이 사이 하나에 본문 높이의 10% 를 넘게 벌리지 않는다 */
+      if (ss.length > 1 && g / (ss.length - 1) <= 0.1) { bd.style.justifyContent = "space-between"; return; }
+      var host = ss[ss.length - 1]; if (!host || g / Math.max(1, host.children.length - 1) > 0.1) return;
+      host.style.flex = "1"; host.style.justifyContent = "space-between";
+    });
     var all = Array.prototype.slice.call(document.querySelectorAll("section.pg"));
     all.forEach(function (pg, k) { var n = pg.querySelector(".rf-no"); if (n) n.textContent = (k + 1) + " / " + all.length; });
     document.querySelectorAll("[data-toc-part]").forEach(function (el) {

@@ -65,7 +65,7 @@ export function longPage(x: Inputs, d: X): Page {
 export function researchPage(x: Inputs, d: X): Page {
   const role = d.goalRole ?? d.roleOrder[0];
   const aliases = x.tax.job_aliases.filter((a) => a.td.some((t) => role.core_ref.td.includes(t))).slice(0, 6).map((a) => a.posting_name);
-  return P("직무를 직접 알아보는 다섯 걸음",
+  return { keep: true, ...P("직무를 직접 알아보는 다섯 걸음",
     T("직무 이름보다 공고의 ‘담당 업무’ 문장을 모으는 것이 먼저입니다", `${E(role.name_ko)} 쪽을 알아볼 때의 순서입니다. 검색어는 이 전공 사전의 공고 이름에서 가져왔습니다.`) +
     `<ol class="lo big">
       <li><b>공고 다섯 건 모으기</b><span>${aliases.length ? `‘${E(aliases.join("’ · ‘"))}’ 같은 이름으로 찾습니다.` : "직무 이름으로 찾습니다."} 회사가 달라도 됩니다.</span></li>
@@ -75,23 +75,23 @@ export function researchPage(x: Inputs, d: X): Page {
       <li><b>현직자에게 묻기</b><span>학과 선배나 상담 담당자를 거쳐, 그 업무에서 신입이 맡는 범위를 물어봅니다.</span></li>
     </ol>` +
     H("공고 다섯 건 비교표", "참여자가 채웁니다") +
-    `<table class="tb ws tall"><thead><tr><th>기관 · 회사</th><th>담당 업무(두 번 이상 나온 것)</th><th>필요 지식 · 기술</th><th>내 근거</th></tr></thead><tbody>${"<tr><td></td><td></td><td></td><td></td></tr>".repeat(5)}</tbody></table>`);
+    `<table class="tb ws tall"><thead><tr><th>기관 · 회사</th><th>담당 업무(두 번 이상 나온 것)</th><th>필요 지식 · 기술</th><th>내 근거</th></tr></thead><tbody>${"<tr><td></td><td></td><td></td><td></td></tr>".repeat(5)}</tbody></table>`) };
 }
 
 export function weeklyPage(): Page {
-  return P("주간 점검표",
+  return { keep: true, ...P("주간 점검표",
     T("한 주에 한 번, 다섯 칸만 적습니다", "30일 할 일을 주 단위로 나눠 점검하는 표입니다. 네 주가 지나면 첫 결과물이 나와 있어야 합니다.") +
     `<table class="tb ws wk"><thead><tr><th style="width:7%">주</th><th>이번 주 한 일</th><th>직접 정한 것</th><th>남긴 것</th><th>막힌 것</th><th>다음 주</th></tr></thead><tbody>${[1, 2, 3, 4].map((w) => `<tr><td style="text-align:center">${w}주</td><td></td><td></td><td></td><td></td><td></td></tr>`).join("")}</tbody></table>` +
-    `<div class="two">${note("막혔을 때", ul(["결과물 이름부터 정하고 칸을 먼저 만듭니다", "기준을 정하기 어려우면 버릴 안부터 적습니다", "상담 때 이 표를 그대로 가져옵니다"]))}${note("끝났을 때", ul(["결과물을 경험 기록에 더합니다", "정한 것 한 줄과 비교 대상 한 줄을 붙입니다", "현재 상태가 어떻게 바뀌었는지 확인합니다"]), true)}</div>`);
+    `<div class="two">${note("막혔을 때", ul(["결과물 이름부터 정하고 칸을 먼저 만듭니다", "기준을 정하기 어려우면 버릴 안부터 적습니다", "상담 때 이 표를 그대로 가져옵니다"]))}${note("끝났을 때", ul(["결과물을 경험 기록에 더합니다", "정한 것 한 줄과 비교 대상 한 줄을 붙입니다", "현재 상태가 어떻게 바뀌었는지 확인합니다"]), true)}</div>`) };
 }
 
 export function logPage(x: Inputs): Page {
-  return P("상담 기록지",
+  return { keep: true, ...P("상담 기록지",
     T("상담 기록지", `${E(x.issuer === "CareerMatri" ? "상담 담당자" : `${x.issuer} 상담 담당자`)}와 참여자가 함께 씁니다. 다음 만남에서 무엇이 달라졌는지 이 장으로 바로 비교합니다.`) +
-    `<table class="tb ws big"><tbody>
+    `<table class="tb ws log"><tbody>
       <tr><th>상담일</th><td></td><th>상담자</th><td></td></tr>
       ${["오늘 함께 본 장", "참여자가 동의한 강점", "이번에 고른 빈자리", "30일 할 일 (어디서 · 무엇을 · 무엇으로 남길지)", "연계할 지원 사업이나 프로그램", "다음 만남 · 가져올 것"].map((h) => `<tr><th>${h}</th><td colspan="3"></td></tr>`).join("")}
-    </tbody></table>` + band("개인정보", "기록지에는 참여자의 연락처를 적지 않습니다. 기관의 상담 기록 규정을 따릅니다."));
+    </tbody></table>` + band("개인정보", "기록지에는 참여자의 연락처를 적지 않습니다. 기관의 상담 기록 규정을 따릅니다.")) };
 }
 
 /* ── 부록 ── */
@@ -172,14 +172,13 @@ export function wordsPage(x: Inputs, d: X): Page {
 }
 
 export function closePage(x: Inputs, d: X): Page {
-  const acts = x.m.actions.slice(0, 3);
-  return A("맺으며",
-    T("다음 단계는 이 결과를 문서와 과제로 바꾸는 일입니다", "이 리포트는 시작점입니다. 할 일 하나를 끝낼 때마다 경험 기록에 더하면 내 CareerMatri의 현재 상태가 그만큼 달라집니다.") +
-    `<div class="g3">${acts.map((a, i) => card(`<p class="k">${E(HORIZON_DAYS[a.horizon])}</p><h4>${i + 1}. ${E(actionHead(a, a.domain ? d.name(a.domain) : "관심 영역"))}</h4><p class="mut">${E(actionOutput(a, a.domain ? d.def(a.domain) : undefined))}</p>`)).join("")}</div>` +
+  const acts = x.m.actions.slice(0, 5);
+  return { keep: true, ...A("맺으며",
+    T("다음 단계는 이 결과를 문서와 과제로 바꾸는 일입니다", "이 리포트는 시작점입니다. 아래 할 일은 결과 모델이 고른 차례 그대로이고, 끝낸 날과 남긴 것은 참여자가 채웁니다. 끝낼 때마다 경험 기록에 더하면 내 CareerMatri의 현재 상태가 그만큼 달라집니다.") +
+    (acts.length ? `<table class="tb ws cl"><thead><tr><th style="width:9%">때</th><th>할 일 · 남길 것</th><th style="width:14%">끝낸 날</th><th style="width:28%">남긴 것 · 비교한 것</th></tr></thead><tbody>${acts.map((a) => `<tr><td>${E(HORIZON_DAYS[a.horizon])}</td><td><b>${E(actionHead(a, a.domain ? d.name(a.domain) : "관심 영역"))}</b><br><span class="mut">${E(actionOutput(a, a.domain ? d.def(a.domain) : undefined))}</span></td><td></td><td></td></tr>`).join("")}</tbody></table>` : "") +
     `<div class="close-box"><p class="k">${E(x.issuer === "CareerMatri" ? "CareerMatri" : `${x.issuer} × CareerMatri`)}</p><h3>경험을 근거로, 근거를 다음 할 일로</h3><p>참여자 본인이 결과를 먼저 받고, 기관에는 동의한 경우의 개인 결과와 다섯 명 미만이면 수를 내지 않는 집계만 제공됩니다.</p></div>` +
     `<div class="two">${note("다음 상담 때 가져올 것", ul(["30일 할 일의 결과물", "주간 점검표 네 줄", "새로 적은 경험 기록 한 건"]))}${note("플랫폼에서 이어 하기", ul(["경험 기록에 결과물 더하기", "현재 상태에서 달라진 판단 확인", "12개월 뒤 다시 검사해 비교"]), true)}</div>` +
-    `<p class="mut sm">CareerMatri는 직업정보제공사업 신고 사업자가 운영하며, 취업 알선을 하지 않습니다. 기업 정보는 공시와 공개 명단으로 확인한 범위만 실었습니다.</p>` +
-    chips([]));
+    `<p class="mut sm">CareerMatri는 직업정보제공사업 신고 사업자가 운영하며, 취업 알선을 하지 않습니다. 기업 정보는 공시와 공개 명단으로 확인한 범위만 실었습니다.</p>`) };
 }
 
 export const ch7 = { prioPages, ganttPage, longPage, researchPage, weeklyPage, logPage };

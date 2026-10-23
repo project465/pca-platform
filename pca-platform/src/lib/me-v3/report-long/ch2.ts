@@ -164,7 +164,8 @@ export function qualityPage(x: Inputs, d: X): Page {
 
 export function ch2Pages(x: Inputs, d: X): Page[] {
   const out = [radarBig(x, d)];
-  if (d.radarDoms.length) out.push(smallMult(x, d));
+  /* 영역별 작은 그래프 쪽은 싣지 않는다. 같은 값이 겹친 그래프와 지도 쪽에 있다 */
+  if (!d.radarDoms.length) out.push(smallMult(x, d));
   out.push(heatPage(x, d), profileRead(x, d));
   d.strengths.forEach((_, k) => out.push(strengthPage(x, d, k)));
   out.push(commonPage(x, d), qualityPage(x, d));

@@ -162,7 +162,7 @@ export function counselor(x: Inputs, d: X): Page {
 export function toc(pages: Page[]): Page {
   const starts: { no: string; name: string; at: number; titles: string[] }[] = [];
   pages.forEach((p, i) => {
-    if (p.kind === "cover" || p.kind === "outer" || p.partName === "들어가며") return;
+    if (p.kind === "cover" || p.kind === "outer" || p.kind === "fill" || p.partName === "들어가며") return;
     const last = starts[starts.length - 1];
     /* 차례 쪽이 앞(셋째 자리)에 끼므로 그 뒤 쪽 번호는 하나씩 밀린다 */
     const at = i + 2;

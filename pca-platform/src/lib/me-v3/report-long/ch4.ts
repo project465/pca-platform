@@ -150,7 +150,7 @@ export function boundaryPages(x: Inputs, d: X): Page[] {
   /* 물은 영역이나 관심이 높은 영역이 걸린 경계를 먼저, 여덟까지 */
   const rel = (td: string) => { const z = d.dom(td); return (z && d.asked(z) ? 2 : 0) + (z?.interest === "HIGH" ? 1 : 0); };
   const bs = x.tax.boundaries.filter((b) => [b.a_question, b.b_question, ...[b.shared, b.a_difference, b.b_difference].map(polite)].every(okText))
-    .map((b, i) => ({ b, i, w: rel(b.a.td) + rel(b.b.td) })).sort((p, q0) => q0.w - p.w || p.i - q0.i).slice(0, 8).map((v) => v.b);
+    .map((b, i) => ({ b, i, w: rel(b.a.td) + rel(b.b.td) })).sort((p, q0) => q0.w - p.w || p.i - q0.i).slice(0, 6).map((v) => v.b);
   if (!bs.length) return [];
   const side = (td: string, diff: string, ques: string) => `<div class="b4" style="--c:${ZC[d.dom(td)?.zone ?? "NOT_EXPLORED"] === "#cfd5df" ? "#8c97ab" : ZC[d.dom(td)?.zone ?? "NOT_EXPLORED"]}"><b>${E(d.name(td))}</b><p>${E(polite(diff))}</p><p class="mut">스스로 묻기: ${E(ques)}?</p></div>`;
   return paginate(bs, () => 1, 4, 4).map((chunk, k) => P(`가까운 두 일의 경계${k ? ` (${k + 1})` : ""}`,
@@ -172,14 +172,15 @@ export function industryDeep(x: Inputs, d: X): Page[] {
   const gaps = x.m.gaps.map((g) => g.axis).filter((a): a is Axis => !!a);
   const lang = [...new Set(gaps)].map((a) => ({ a, t: p.gap_language?.[a] })).filter((v) => okText(v.t)).slice(0, 4);
   const reading = (p.evidence_reading ?? []).filter((v) => okText(v.same) && okText(v.reads_as)).slice(0, 5);
-  pages.push(P(`${p.name_ko}의 말로 다시 읽기`,
+  /* 둘째 쪽은 덧붙일 거리로 둔다. 남은 자리가 있는 쪽에만 실린다 */
+  pages.push({ kind: "fill", ...P(`${p.name_ko}의 말로 다시 읽기`,
     T(`같은 경험도 ${E(p.name_ko)}에서는 다른 말로 읽힙니다`, E(okOr(p.result_line, "수업과 과제에서 한 일이 이 산업에서 어떤 말로 읽히는지 산업팩에서 옮겼습니다."))) +
     (reading.length ? H("이 산업에서 읽히는 말", "산업팩") + `<table class="tb tb-s"><thead><tr><th class="w34">수업과 과제에서 한 일</th><th>이 산업에서 읽히는 말</th></tr></thead><tbody>${reading.map((v) => `<tr><td>${E(v.same)}</td><td>${E(v.reads_as)}</td></tr>`).join("")}</tbody></table>` : "") +
     (lang.length ? H("비어 있는 판단을 이 산업의 말로") + ul(lang.map((v) => `<b>${E(d.axisName(v.a))}</b> ${E(polite(v.t!))}`)) : "") +
     `<div class="two">
       ${note("이 산업 문항으로 확인된 것", ic?.answered?.length ? ul(ic.answered.slice(0, 5).map((v) => `${E(v.domain ? d.name(v.domain) : "")} · ${E(v.axis ? d.axisName(v.axis) : "")}${v.owned ? " (직접 정함)" : ""}`)) : "이 산업의 문항은 고른 산업에서만 묻습니다.")}
       ${note("공고에서 자주 보는 이름", chips((p.job_aliases ?? []).slice(0, 6)) || "적힌 이름이 없습니다.", true)}
-    </div>` + (p.vocabulary?.length ? H("이 산업에서 쓰는 말") + chips(p.vocabulary.slice(0, 10)) : "")));
+    </div>` + (p.vocabulary?.length ? H("이 산업에서 쓰는 말") + chips(p.vocabulary.slice(0, 10)) : "")) });
   return pages;
 }
 
@@ -206,12 +207,13 @@ export function orgPage(x: Inputs, d: X): Page {
     `<table class="tb tb-xs"><tbody>${x.tax.role_functions.map((f) => `<tr><th class="w22">${E(f.name)}</th><td>${E(polite(f.one_line))}</td><td class="mut w34">남기는 것: ${E(f.output_kind)}</td></tr>`).join("")}</tbody></table>`);
 }
 
-export function ch4Pages(x: Inputs, d: X): Page[] {
+export function ch4Pages(x: Inputs, d: X, roomy = false): Page[] {
   const out: Page[] = [matrixPage(x, d), coveragePage(x, d)];
   const [r0, r1, r2, ...rest] = d.roleOrder;
   if (r0) out.push(...rolePages(x, d, r0, 3));
-  if (r1) out.push(...rolePages(x, d, r1, 2));
-  if (r2) out.push(...rolePages(x, d, r2, x.guide.roles[r2.code] ? 2 : 1));
+  /* 지역 장이 없는 책은 둘째 직무를 두 쪽으로 싣는다(쪽 수를 70~80 안에 두려는 배분이다) */
+  if (r1) out.push(...rolePages(x, d, r1, roomy ? 2 : 1));
+  if (r2) out.push(...rolePages(x, d, r2, 1));
   out.push(...othersPages(x, d, rest));
   out.push(...aliasPages(x, d), ...boundaryPages(x, d), ...industryDeep(x, d), industriesPage(x, d), orgPage(x, d));
   return out;
