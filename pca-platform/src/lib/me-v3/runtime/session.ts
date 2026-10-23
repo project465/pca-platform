@@ -933,7 +933,22 @@ function planInput(
       const a = answers[`G_${td}_EXP`];
       return !!a && a.kind === "exposure" && a.value >= 1;
     }),
+    didCells: didCellsOf(a.core_code, answers),
   };
+}
+
+/**
+ * 선별·심화에서 `내가 했다` 이상으로 답한 (영역 · 축). 근거 고르기가
+ * 판정에 들어가는 칸이 정확히 이것이다(`scoring/axes.ts` 의 소유 ·
+ * `engine.ts` 의 산출물 근거). 계획과 화면이 같은 함수를 읽는다.
+ */
+export function didCellsOf(core: string, answers: Record<string, Answer>): string[] {
+  const levels: Record<string, number> = {};
+  for (const [id, v] of Object.entries(answers)) {
+    if (v.kind === "level") levels[id] = v.index;
+  }
+  const cells = content(core).bank.items.filter((i) => i.module === "PROBE-S4" || i.module === "DEEP-S8");
+  return strongCells(levels, cells);
 }
 
 export async function planFor(a: V3Attempt): Promise<Plan> {

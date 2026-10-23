@@ -896,6 +896,19 @@
   color: var(--q-ink-3); font-variant-numeric: tabular-nums;
 }
 .qs-group[open] > summary em { color: var(--q-accent-ink); }
+/* 해 봤다고 답한 판단만 세우므로 묶음이 둘에서 다섯이다. 접지 않는다:
+   접은 머리 열 개를 하나씩 눌러 여는 것이 이 화면에서 가장 성가신 일이었다 */
+.qs-group.is-flat { padding-top: var(--q-s3); }
+.qs-group-head {
+  display: flex; align-items: baseline; gap: var(--q-s3);
+  margin: 0; padding: var(--q-s2) var(--q-s5) var(--q-s3);
+  font-size: var(--q-t-body); font-weight: var(--ui-w-sb); color: var(--q-ink);
+  letter-spacing: -.015em;
+}
+.qs-group-head em {
+  flex: none; font-style: normal; font-size: var(--q-t-cap); font-weight: var(--ui-w-sb);
+  color: var(--q-accent-ink); font-variant-numeric: tabular-nums;
+}
 /**
  * 근거 칩(규격 §18).
  *

@@ -188,6 +188,18 @@ export type PlanInput = {
    * 비어 있으면 거르지 않는다(옛 응시와 검사 틀).
    */
   touched?: string[];
+  /**
+   * 선별·심화에서 `내가 했다` 이상으로 답한 (영역 · 축).
+   *
+   * 근거 고르기는 이 칸에서만 판정에 들어간다: 소유는 `내가 정했다` 와
+   * 근거 둘이 함께 서야 하고, 산출물 근거는 산출물 축이 확인일 때만 본다.
+   * 그래서 **이 칸이 하나도 없는 영역은 근거 화면을 세우지 않는다.**
+   * 해 본 적 없다고 답한 판단의 근거를 열 묶음씩 고르게 하면 그 화면이
+   * 검사에서 가장 긴 쪽이 되고 판정은 한 글자도 바뀌지 않는다.
+   *
+   * 비어 있으면 거르지 않는다(가장 긴 경우를 세는 `estimate` 와 옛 응시).
+   */
+  didCells?: string[];
 };
 
 /** 목록을 둘씩 묶는다. 홀수면 마지막 하나는 혼자 선다 */
@@ -609,12 +621,13 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
   /* ── 근거 고르기. **문항을 다 받은 뒤에 묻는다**: 묻지도 않은 축의 근거를
         먼저 고르게 하면 응시자가 무엇을 고르는지 알 수 없다 ── */
   for (const td of input.probe) {
+    if (input.didCells && !input.didCells.some((c) => c.startsWith(`${td}.`))) continue;
     add({
       id: `ev-${td}`, stage: "EVIDENCE", kind: "checklist", required: false, auto: false,
       eyebrow: "근거 고르기",
       subject: domainName(td),
-      question: "직접 정했거나 결과물로 남긴 것을 모두 골라주세요",
-      help: "해당하는 것이 없으면 비워두셔도 됩니다.",
+      question: "직접 했다고 답한 일에서, 실제로 한 것을 골라주세요",
+      help: "앞에서 해 봤다고 답한 판단만 모았습니다. 맞는 것이 없으면 비워 두셔도 됩니다.",
       items: [], domain: td,
     });
   }

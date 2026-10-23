@@ -8,7 +8,7 @@ import { controlOf } from "@/lib/me-v3/runtime/menus";
 import {
   answersOf, attemptOf, axisAsk, checklistFor, content, domainName,
   industryChoices, industryGloss, itemOf, menuContextOf, moveTo, optionGuidance, orgChoices,
-  roleChoices, viewOf, wordingOf,
+  didCellsOf, roleChoices, viewOf, wordingOf,
 } from "@/lib/me-v3/runtime/session";
 import { STAGE_LEAD } from "@/lib/me-v3/runtime/blocks";
 import type { Field, Group, PickKind, ProgressModel, ScreenModel } from "./model";
@@ -128,6 +128,13 @@ export default async function V3Screen({
   }
 
   const dom = sc.domain;
+  /* **해 봤다고 답한 판단의 묶음만 세운다.** 근거가 판정에 들어가는 칸이
+     그것뿐이고(소유 · 산출물 근거), 열 묶음을 다 세우면 `해 본 적 없음` 을
+     고른 판단의 근거까지 고르라는 화면이 된다. 이미 고른 것이 있는 묶음은
+     답을 바꾼 뒤에도 남겨 둔다: 지울 자리가 사라지면 안 된다 */
+  const did = new Set(dom ? didCellsOf(a0.core_code, v.answers)
+    .filter((c) => c.startsWith(`${dom}.`)).map((c) => c.slice(dom.length + 1)) : []);
+  const wantSlot = (slot: string) => did.has(slot === "ARTIFACT" ? "J5" : slot === "VERIFY" ? "J6" : slot);
   const groups: Group[] | undefined = sc.kind === "checklist" && dom
     ? checklistFor(a0.core_code, dom).map((g) => ({
         slot: g.slot,
@@ -138,7 +145,7 @@ export default async function V3Screen({
         picked: g.slot === "ARTIFACT" ? (v.picks.artifacts[dom] ?? [])
           : g.slot === "VERIFY" ? (v.picks.verifications[dom] ?? [])
             : (v.picks.checklists[`${dom}.${g.slot}`] ?? []),
-      }))
+      })).filter((g) => g.items.length && (wantSlot(g.slot) || g.picked.length))
     : undefined;
 
   /* 고르기 전에 읽는 한 줄. 팩의 `demands` 는 문항이 서는 장면이라 길고,

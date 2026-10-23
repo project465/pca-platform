@@ -649,19 +649,19 @@ export default function Screen({
         {s.groups ? (
           <>
             <p className="qs-picked is-lead">
-              <span>지금까지 확인된 경험</span>
+              <span>해 봤다고 답한 판단 <b>{s.groups.length}</b>가지</span>
               <span className="qs-grow" />
-              <span>선택한 근거 <b>{Object.values(picks).reduce((n, v) => n + v.length, 0)}</b>개</span>
+              <span>고른 것 <b>{Object.values(picks).reduce((n, v) => n + v.length, 0)}</b>개</span>
             </p>
             <div className="qs-groups">
             {s.groups.map((g) => {
               const on = picks[g.slot] ?? [];
               return (
-                <details className="qs-group" key={g.slot} open={on.length > 0}>
-                  <summary>
+                <section className="qs-group is-flat" key={g.slot}>
+                  <h3 className="qs-group-head">
                     <span className="qs-group-name">{g.label}</span>
-                    <em>{on.length ? `${on.length}개` : "선택 없음"}</em>
-                  </summary>
+                    {on.length ? <em>{on.length}개</em> : null}
+                  </h3>
                   <div className="qs-chips">
                     {g.items.map((it) => {
                       const checked = on.includes(it);
@@ -674,7 +674,7 @@ export default function Screen({
                       );
                     })}
                   </div>
-                </details>
+                </section>
               );
             })}
             </div>

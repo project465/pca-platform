@@ -160,7 +160,8 @@
  * (`note`)이 있는 화면과 근거 고르기 · 적는 칸은 손으로 넘긴다. 저장은 전과
  * 같이 고를 때마다 먼저 가고, 넘어가는 동안 단추를 꺼 두어 두 번 넘지 않는다.
  * 문항·보기·저장 값·routing 은 그대로다. */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V48";
+/* V49 — 근거 고르기: 해 봤다고 답한 판단의 묶음만 펼쳐 세우고, 그런 판단이 없는 영역은 화면을 건너뛴다 */
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V49";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
 /* copy.15 — 받침 한 줄과 보기 넷의 예시가 화면에 서는 글자다 */
@@ -170,7 +171,8 @@ export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V48";
 /* copy.19 — 산업 장면과 대학원 알약이 그 전공의 이름으로 선다(P0) */
 /** 화면 시안(2026-10-20): 답안 현황 칸의 머리와 안내 한 줄을 더했다 */
 /** AI 티 문장 정리 (견줍니다·섭니다·세웠습니다 등) */
-export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.27";
+/* copy.28 — 근거 고르기 질문과 안내 한 줄이 바뀌었다 */
+export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.28";
 
 /*
  * `V19` · `copy.14` 로 올린 까닭. **경험 빈도의 화면 말을 공통으로
