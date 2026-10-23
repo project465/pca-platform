@@ -160,6 +160,12 @@ export async function walk(
           **이미 고른 칩을 다시 누르지 않는다**: 칩은 켜고 끄는 자리라
           같은 자리를 다시 누르면 꺼진다. 한 화면을 두 번 지나면 고른 것이
           사라지고, 그 자리에서 영영 못 넘어간다 */
+    /* 근거 묶음은 처음에 접혀 있다(고른 것이 없는 묶음). 사람처럼 펼치고 고른다 */
+    const closed = p.locator("details.qs-group:not([open]) > summary");
+    for (let k = await closed.count(); k > 0; k -= 1) {
+      await closed.first().click({ timeout: 2500 }).catch(() => undefined);
+      await p.waitForTimeout(30);
+    }
     const groups = p.locator(".qs-chips");
     const gn = await groups.count();
     for (let g = 0; g < gn; g += 1) {

@@ -39,18 +39,18 @@ export const AXIS_NEED: Record<Axis, string> = {
 };
 
 export const GAP_KIND: Record<Gap["kind"], string> = {
-  REQUIRED_AXIS: "그 영역에서 빠지면 안 되는 판단이 아직 비어 있습니다",
-  OUTPUT: "해 본 일을 보여 줄 결과물이 아직 없습니다",
-  OUTPUT_EVIDENCE: "결과물을 남겼다는 답은 있고, 그 결과물을 고른 근거는 아직 없습니다",
-  VERIFICATION: "결과를 무엇과 비교해 확인했는지가 아직 없습니다",
-  AXIS: "이 판단을 직접 해 본 장면이 아직 확인되지 않았습니다",
-  PARTIAL_EVIDENCE: "해 본 일은 확인됐고, 직접 정했다고 보기에는 근거가 모자랍니다",
+  REQUIRED_AXIS: "꼭 필요한 판단인데 해 본 장면이 아직 나오지 않았습니다",
+  OUTPUT: "해 본 일을 보여 줄 결과물을 아직 고르지 않았습니다",
+  OUTPUT_EVIDENCE: "결과물을 남겼다고 답했고, 어떤 결과물인지는 아직 고르지 않았습니다",
+  VERIFICATION: "결과를 무엇과 맞춰 봤는지가 아직 적혀 있지 않습니다",
+  AXIS: "이 판단을 직접 해 본 장면이 아직 나오지 않았습니다",
+  PARTIAL_EVIDENCE: "해 본 일은 보이고, 직접 정했다고 말하려면 근거가 하나 더 필요합니다",
 };
 export const GAP_WHY: Record<Gap["why"], string> = {
-  REQUIRED_FOR_DOMAIN: "이 영역에서 반드시 보는 판단입니다",
-  BLOCKS_EVIDENCE: "이 칸이 채워지면 이 영역의 근거가 갖춰집니다",
-  NEEDED_BY_INDUSTRY: "고른 산업에서 특히 보는 판단입니다",
-  NEEDED_BY_ROLE: "고른 직무에서 특히 보는 판단입니다",
+  REQUIRED_FOR_DOMAIN: "이 영역 일을 맡으면 거의 늘 하게 되는 판단입니다",
+  BLOCKS_EVIDENCE: "여기까지 채우면 이 영역은 근거를 갖춘 영역이 됩니다",
+  NEEDED_BY_INDUSTRY: "고르신 산업이 눈여겨보는 판단입니다",
+  NEEDED_BY_ROLE: "고르신 직무가 눈여겨보는 판단입니다",
 };
 export const HORIZON_DAYS: Record<Action["horizon"], string> = { NOW: "30일", NEXT: "60일", LATER: "90일" };
 
@@ -79,33 +79,33 @@ export function actionLine(a: Action, dn: string, def: DomainDef | undefined): s
   switch (a.code) {
     case "BUILD_OUTPUT":
       return art.length
-        ? `다음 ${dn} 과제를 끝까지 해서 ${j(orJoin(art), "을를")} 한 벌 남깁니다. 무엇을 정했고 왜 그렇게 정했는지 한 줄을 붙입니다.`
-        : `다음 ${dn} 과제에서 정한 내용을 문서 한 장으로 남깁니다.`;
+        ? `다음 ${dn} 과제는 끝까지 해서 ${j(orJoin(art), "을를")} 남기고, 왜 그렇게 정했는지 한 줄 붙여 두세요.`
+        : `다음 ${dn} 과제에서 정한 내용을 문서 한 장으로 남겨 두세요.`;
     case "ADD_VERIFICATION":
       return vt.length
-        ? `${dn}에서 낸 결과를 ${j(orJoin(vt), "과와")} 비교하고, 두 값의 차이와 그 까닭을 표 한 장으로 남깁니다.`
-        : `${dn}에서 낸 결과를 기준값과 비교한 표 한 장을 남깁니다.`;
+        ? `${dn}에서 낸 결과를 ${j(orJoin(vt), "과와")} 나란히 놓고, 차이와 그 까닭을 표 한 장에 적어 보세요.`
+        : `${dn}에서 낸 결과를 기준값과 나란히 놓은 표 한 장을 만들어 보세요.`;
     case "FILL_AXIS":
       return l2
-        ? `다음 ${dn} 과제에서 ${q(l2)}에 해당하는 일을 직접 맡고, 고른 까닭을 한 줄 남깁니다.`
-        : `다음 ${dn} 과제에서 ${a.axis ? AXIS_NEED[a.axis] : "한 가지"}를 직접 맡아 봅니다.`;
+        ? `다음 ${dn} 과제에서 ${q(l2)} 같은 일을 직접 맡고, 고른 까닭을 한 줄 적어 두세요.`
+        : `다음 ${dn} 과제에서 ${a.axis ? AXIS_NEED[a.axis] : "한 가지"}를 직접 맡아 보세요.`;
     case "DEEPEN_OWNERSHIP":
       return l2
-        ? `이미 해 본 ${dn} 과제에서 ${q(l2)}의 어디까지를 직접 정했는지 세 줄로 적습니다.`
-        : `이미 해 본 ${dn} 과제에서 직접 정한 것을 세 줄로 적습니다.`;
+        ? `이미 해 본 ${dn} 과제에서 ${q(l2)} 가운데 직접 정한 것을 세 줄로 적어 보세요.`
+        : `이미 해 본 ${dn} 과제에서 직접 정한 것을 세 줄로 적어 보세요.`;
     case "TRY_SHORT_EXPERIENCE":
-      return `${j(dn, "을를")} 다루는 짧은 과제나 스터디 하나를 정해 해 보고, 한 일과 직접 정한 것을 다섯 줄로 적습니다.`;
+      return `${j(dn, "을를")} 다루는 짧은 과제나 스터디 하나를 해 보고, 한 일과 직접 정한 것을 다섯 줄로 적어 두세요.`;
     case "STUDY_NEXT":
-      return `${dn} 수업이나 교육 하나를 듣고, 배운 것을 작은 과제에 한 번 써 봅니다. 무엇이 남았는지 적어 둡니다.`;
+      return `${dn} 수업이나 교육을 하나 듣고, 배운 것을 작은 과제에 한 번 써 본 뒤 남은 것을 적어 두세요.`;
     case "RECHECK_DIRECTION":
-      return `${j(dn, "을를")} 앞으로도 진로로 둘지 정하고, 그렇게 정한 까닭을 한 줄 적습니다.`;
+      return `${j(dn, "을를")} 앞으로도 진로로 둘지 정하고, 그 까닭을 한 줄 적어 두세요.`;
     case "EXPLORE_BROADLY":
-      return "관심이 높게 나온 영역 가운데 하나를 골라 수업이나 교내 과제로 짧게 해 보고, 무엇을 했고 무엇을 정했는지 다섯 줄로 적습니다.";
+      return "관심이 높게 나온 영역 하나를 골라 수업이나 교내 과제로 짧게 해 보고, 무엇을 했고 무엇을 정했는지 다섯 줄로 적어 두세요.";
     case "WRITE_UP": {
       const ch = mt.chain ?? [];
       return ch.length
-        ? `${dn} 경험 하나를 골라 ${ch.join(", ")} 차례로 한 쪽에 정리합니다.`
-        : `${dn} 경험 하나를 골라 무엇을 정했고 그 결과가 어디에 쓰였는지 한 쪽으로 정리합니다.`;
+        ? `${dn} 경험 하나를 골라 ${ch.join(", ")} 차례로 한 쪽에 정리해 보세요.`
+        : `${dn} 경험 하나를 골라 무엇을 정했고 그 결과가 어디에 쓰였는지 한 쪽으로 정리해 보세요.`;
     }
   }
 }
@@ -174,7 +174,7 @@ export function asSentence(s0: string): string {
  * `A가 아니라 B` 대구다. 걸리는 문장은 고쳐 쓰지 않고 그 자리를 비우거나 다른 줄을 쓴다.
  * `최적화` 는 기술 용어(구조 최적화)라 막지 않고 `최적화된` 만 막는다.
  */
-const CONTENT_BAD = [/아니라/, /다양한/, /효과적으로/, /역량을 강화/, /핵심은/, /중요합니다/, /[을를] 통해/, /결국/, /혁신적/, /획기적/,
+const CONTENT_BAD = [/아니라/, /다양한/, /효과적으로/, /역량을 강화/, /핵심은/, /중요합니다/, /[을를] 통해/, /결국/, /혁신[적]/, /획기[적]/,
   /견줍니다/, /섭니다/, /세웠습니다/, /가지고 있/, /되어진/, /시너지/, /인사이트/, /차별화된/, /최적화된/, /이유(?:다|입니다)/];
 export const okText = (s: string | null | undefined): s is string => !!s && !CONTENT_BAD.some((r) => r.test(s));
 export const okOr = (s: string | null | undefined, alt = "") => (okText(s) ? s : alt);

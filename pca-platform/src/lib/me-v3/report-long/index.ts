@@ -24,6 +24,7 @@ import { ch6Pages } from "./ch6";
 import { appendix, ch7 } from "./ch7";
 import { AXES } from "./derive";
 import { C, gantt, heat, radar, ring } from "./charts";
+import { j } from "./text";
 import type { Inputs, RegionKey } from "./types";
 
 export type LongReport = {
@@ -55,7 +56,7 @@ export function assemble(x: Inputs): { pages: Page[]; notes: string[]; region: s
   const rv0 = regionView(x, d.name);
   /* 이 전공의 산업과 이어지는 회사가 한 곳도 없으면 장을 세우지 않는다. 남의 전공 회사를 늘어놓지 않는다 */
   const rv = rv0 && rv0.groups.length ? rv0 : null;
-  /* 장마다 덧붙일 거리. 쪽 모으기가 남은 자리가 넓은 쪽에만 싣는다 */
+  /* 장마다 붙는 채움 쪽. 쪽 모으기가 남은 자리가 넓은 쪽에만 싣는다 */
   const fill = fillPages(x, d, PART3(x), rv ? { name: `${rv.area}에서 찾아보기`, sources: rv.sources, groups: rv.groups } : null);
   P.push(outer(x, d), cover(x, d), about(x, d), howToRead(x), counselor(x, d), ...fill["들어가며"] ?? []);
 
@@ -63,26 +64,26 @@ export function assemble(x: Inputs): { pages: Page[]; notes: string[]; region: s
     ring(x.m.domains.map((z) => ({ name: "", fill: fill(z), ring2: ring2 ? (z.interest ? IC[z.interest] : "#f1f2f5") : undefined })), { size: 360 });
 
   const c1 = ch1Pages(x, d);
-  P.push(chapter("01", "한눈에 보기", "지금 설명할 수 있는 일과 비어 있는 일, 목표 직무까지 남은 거리를 차례로 담았습니다.", c1.map((p) => p.title), ringArt((z) => ZC[z.zone], true)), ...c1, ...fill["한눈에 보기"] ?? []);
+  P.push(chapter("01", "한눈에 보기", "지금까지 해 본 일 가운데 근거로 쓸 수 있는 것과 아직 비어 있는 것을 먼저 보고, 목표로 적은 직무까지 얼마나 남았는지 짚어 봅니다.", c1.map((p) => p.title), ringArt((z) => ZC[z.zone], true)), ...c1, ...fill["한눈에 보기"] ?? []);
 
   const c2 = ch2Pages(x, d);
   const radarSeries = d.radarDoms.map((v, i) => ({ name: v.code, levels: d.levels(v.code), color: [PAL.blue, PAL.coral, PAL.teal, PAL.violet][i] }));
-  P.push(chapter("02", "판단 프로파일", "여덟 가지 판단을 어디까지 직접 해 봤는지 방사형 그래프와 지도로 봅니다.", [...new Set(c2.map((p) => p.title.replace(/^강점 \d · .*/, "강점 해설")))], radarSeries.length ? radar(AXES.map(() => ""), radarSeries, { size: 360, ring: false }) : ringArt((z) => ZC[z.zone])), ...c2, ...fill["판단 프로파일"] ?? []);
+  P.push(chapter("02", "판단 프로파일", "문제를 정하는 일부터 결과를 다음 결정에 쓰이게 하는 일까지, 일하면서 내리는 판단을 어디까지 직접 해 봤는지 그래프로 살펴봅니다.", [...new Set(c2.map((p) => p.title.replace(/^강점 \d · .*/, "강점 해설")))], radarSeries.length ? radar(AXES.map(() => ""), radarSeries, { size: 360, ring: false }) : ringArt((z) => ZC[z.zone])), ...c2, ...fill["판단 프로파일"] ?? []);
 
   const c3 = ch3Pages(x, d);
-  P.push(chapter("03", PART3(x), `${d.counts.domains}가지 ${E(x.domainWord)}마다 일이 흘러가는 순서와 판단 여덟 가지의 지금 단계를 차례로 적었습니다.`, [`영역 01~${String(d.counts.domains).padStart(2, "0")}`, ...[...new Set(c3.filter((p) => !p.title.startsWith("영역 ")).map((p) => p.title.replace(/ \(\d+\)$/, "").replace(/^경험 기록 · .*/, "경험 기록 해설")))]], ringArt((z) => ZC[z.zone])), ...c3, ...fill[PART3(x)] ?? []);
+  P.push(chapter("03", PART3(x), `${d.counts.domains}개 ${E(j(x.domainWord, "을를"))} 하나씩 열어, 그 일이 어떤 순서로 흘러가는지와 그 안에서 어디까지 해 봤는지를 적었습니다.`, [`영역 01~${String(d.counts.domains).padStart(2, "0")}`, ...[...new Set(c3.filter((p) => !p.title.startsWith("영역 ")).map((p) => p.title.replace(/ \(\d+\)$/, "").replace(/^경험 기록 · .*/, "경험 기록 해설")))]], ringArt((z) => ZC[z.zone])), ...c3, ...fill[PART3(x)] ?? []);
 
   const c4 = ch4Pages(x, d, !rv);
-  P.push(chapter("04", "직무 탐색", `${E(x.major)} 대표 직무 ${x.roles.length}개와 참여자의 근거를 겹쳐 보고, 목표 직무와 산업을 깊게 봅니다.`, [...new Set(c4.map((p) => p.title.replace(/ \(\d+\)$/, "").replace(/ · (하는 일|판단과 연습|첫 프로젝트와 배울 순서|핵심 영역에서 하는 판단)$/, "")))].slice(0, 9), heat(["", "", "", ""], ["", "", "", "", "", ""], (i, j) => ({ fill: [C.navy, C.blue, C.sky, "#dfe3ea"][(i + j) % 4] }), { width: 360, label: 4, head: 4, row: 40 })), ...c4, ...fill["직무 탐색"] ?? []);
+  P.push(chapter("04", "직무 탐색", `${E(x.major)} 쪽 대표 직무 ${x.roles.length}개에 지금 가진 근거를 대어 보고, 목표로 적은 직무와 산업은 한 걸음 더 들어가 봅니다.`, [...new Set(c4.map((p) => p.title.replace(/ \(\d+\)$/, "").replace(/ · (하는 일|판단과 연습|첫 프로젝트와 배울 순서|핵심 영역에서 하는 판단)$/, "")))].slice(0, 9), heat(["", "", "", ""], ["", "", "", "", "", ""], (i, j) => ({ fill: [C.navy, C.blue, C.sky, "#dfe3ea"][(i + j) % 4] }), { width: 360, label: 4, head: 4, row: 40 })), ...c4, ...fill["직무 탐색"] ?? []);
 
   if (rv) P.push(...regionPages(x, d, rv), ...fill[`${rv.area}에서 찾아보기`] ?? []);
   else notes.push(!x.region ? "소속 기관에 맞는 지역 자료가 없어 05장을 뺐습니다" : rv0 ? `지역 자료(${x.region})에 이 전공의 산업과 이어지는 회사가 없어 05장을 뺐습니다` : `지역 자료(${x.region})를 읽지 못해 05장을 뺐습니다`);
 
   const c6 = ch6Pages(x, d);
-  P.push(chapter("06", "자기소개서·면접 준비", "검사와 경험 기록에서 고른 근거로 자기소개서 재료와 면접 질문을 만들었습니다. 응답에 없는 내용은 쓰는 칸으로 비워 두었습니다.", [...new Set(c6.map((p) => p.title.replace(/ \d.*$/, "")))], `<svg viewBox="0 0 200 200" width="100%" xmlns="http://www.w3.org/2000/svg"><rect x="52" y="22" width="96" height="128" rx="8" fill="#fff" opacity=".12"/><rect x="62" y="36" width="96" height="128" rx="8" fill="#fff"/><rect x="76" y="56" width="52" height="7" rx="3" fill="#2c63d6"/><rect x="76" y="74" width="66" height="5" rx="2.5" fill="#c9d3e6"/><rect x="76" y="86" width="60" height="5" rx="2.5" fill="#c9d3e6"/><rect x="76" y="98" width="64" height="5" rx="2.5" fill="#c9d3e6"/><rect x="76" y="116" width="40" height="18" rx="4" fill="#14907f"/><circle cx="152" cy="150" r="20" fill="#c9a227"/><path d="M143 150l6 6 12-12" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/></svg>`), ...c6, ...fill["자기소개서·면접 준비"] ?? []);
+  P.push(chapter("06", "자기소개서·면접 준비", "검사에서 답한 내용과 경험 기록을 자기소개서 문장과 면접 답변의 재료로 옮겼습니다. 그대로 베끼기보다 내 말로 고쳐 쓰는 바탕으로 쓰시면 됩니다.", [...new Set(c6.map((p) => p.title.replace(/ \d.*$/, "")))], `<svg viewBox="0 0 200 200" width="100%" xmlns="http://www.w3.org/2000/svg"><rect x="52" y="22" width="96" height="128" rx="8" fill="#fff" opacity=".12"/><rect x="62" y="36" width="96" height="128" rx="8" fill="#fff"/><rect x="76" y="56" width="52" height="7" rx="3" fill="#2c63d6"/><rect x="76" y="74" width="66" height="5" rx="2.5" fill="#c9d3e6"/><rect x="76" y="86" width="60" height="5" rx="2.5" fill="#c9d3e6"/><rect x="76" y="98" width="64" height="5" rx="2.5" fill="#c9d3e6"/><rect x="76" y="116" width="40" height="18" rx="4" fill="#14907f"/><circle cx="152" cy="150" r="20" fill="#c9a227"/><path d="M143 150l6 6 12-12" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/></svg>`), ...c6, ...fill["자기소개서·면접 준비"] ?? []);
 
-  const c7 = [...ch7.prioPages(x, d), ch7.ganttPage(x, d), ch7.longPage(x, d), ch7.researchPage(x, d), ch7.weeklyPage(), ch7.logPage(x)];
-  P.push(chapter("07", "실행 로드맵", "먼저 채울 판단에서 시작해 90일, 6개월, 12개월 계획으로 이어집니다.", [...new Set(c7.map((p) => p.title.replace(/ \(\d+\)$/, "")))], gantt([{ label: "", from: 1, to: 30, color: C.navy }, { label: "", from: 20, to: 60, color: C.blue }, { label: "", from: 50, to: 90, color: C.teal }], { width: 360, label: 4 })), ...c7);
+  const c7 = [...ch7.prioPages(x, d), ch7.ganttPage(x, d), ch7.longPage(x, d), ch7.researchPage(x, d), ch7.weeklyPage(x, d), ch7.logPage(x, d)];
+  P.push(chapter("07", "실행 로드맵", "가장 먼저 손댈 일에서 시작해 90일 계획, 6개월과 12개월 뒤의 모습까지 이어 두었습니다. 칸 대부분은 응답으로 미리 채운 초안이라 상담하면서 고쳐 쓰시면 됩니다.", [...new Set(c7.map((p) => p.title.replace(/ \(\d+\)$/, "")))], gantt([{ label: "", from: 1, to: 30, color: C.navy }, { label: "", from: 20, to: 60, color: C.blue }, { label: "", from: 50, to: 90, color: C.teal }], { width: 360, label: 4 })), ...c7);
 
   P.push(...fill["실행 로드맵"] ?? []);
   /* 응답 요약 쪽은 싣지 않는다. 같은 값이 02장의 지도와 공통 판단 쪽에 있다 */

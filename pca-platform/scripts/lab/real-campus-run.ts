@@ -29,8 +29,52 @@ if (!OUT || path.resolve(OUT).startsWith(path.resolve("."))) {
   throw new Error("OUT 에 저장소 밖 자리를 적으십시오(열쇠가 적힌다)");
 }
 const RUNS = (process.env.RUNS
-  ?? "PCU:PCU26_BIZ:박서진,SJEPA:SJEPA26_MECH:최민재,KUS:KUS26_SEMIPHYS:김하준")
+  ?? "PCU:PCU26_BIZ:박서진,SJEPA:SJEPA26_MECH:최민재,KUS:KUS26_SEMIPHYS:김하준,JJU:JJU26_AI:이도윤")
   .split(",").map((s) => { const [uni, leaf, name] = s.split(":"); return { uni, leaf, name }; });
+
+/**
+ * 검사 전에 학생이 적어 두는 경험 두 건(예시 참여자라 지어낸 내용이다).
+ * 화면의 세 걸음(종류·제목 → 영역 → 문제·정한 것·결과물·확인)을 그대로 누른다.
+ * `kind` 는 경험 종류 보기의 차례, `tds` 는 영역 보기의 차례다.
+ */
+const EXPS: Record<string, { kind: number; title: string; tds: number[] }[]> = {
+  PCU26_BIZ: [
+    { kind: 0, title: "마케팅원론 팀 과제: 대전 동네 카페 단골 고객 설문 분석", tds: [5, 9] },
+    { kind: 1, title: "교내 창업동아리 운영비 예산 편성과 분기 정산", tds: [3, 0] },
+  ],
+  SJEPA26_MECH: [
+    { kind: 1, title: "캡스톤디자인: 소형 컨베이어 구동부 설계와 시제품 제작", tds: [0, 3] },
+    { kind: 0, title: "기계공작실습: 선반 가공 부품 치수 측정과 불량 원인 기록", tds: [6, 9] },
+  ],
+  KUS26_SEMIPHYS: [
+    { kind: 0, title: "반도체공정실험: 박막 증착 후 두께 측정과 조건별 비교", tds: [6, 7] },
+    { kind: 1, title: "학부연구생: 소자 전류-전압 특성 측정 자동화 스크립트", tds: [2, 0] },
+  ],
+  JJU26_AI: [
+    { kind: 1, title: "캡스톤: 전주 한옥마을 방문 후기 감성 분류 모델", tds: [9, 4] },
+    { kind: 0, title: "데이터베이스 수업: 교내 식당 혼잡도 예측 웹 서비스", tds: [3, 0] },
+  ],
+};
+
+async function addExperience(p: import("playwright").Page, e: { kind: number; title: string; tds: number[] }) {
+  await p.goto(`${BASE}/me/experience/new`, { waitUntil: "domcontentloaded" });
+  await p.waitForLoadState("networkidle").catch(() => undefined);
+  await p.locator('label.cm-pick:has(input[name="kind"])').nth(e.kind).click();
+  await p.fill('input[name="title"]', e.title);
+  await p.getByRole("button", { name: "다음", exact: true }).click();
+  for (const i of e.tds) await p.locator('label.cm-pick:has(input[name="td"])').nth(i).click().catch(() => undefined);
+  await p.getByRole("button", { name: "다음", exact: true }).click();
+  const subs = p.locator(".cm-sub");
+  for (let k = 0; k < await subs.count(); k += 1) {
+    const picks = subs.nth(k).locator("label.cm-pick");
+    for (let j = 0; j < Math.min(2, await picks.count()); j += 1) await picks.nth(j).click().catch(() => undefined);
+  }
+  await Promise.all([
+    p.waitForURL((u) => !u.pathname.endsWith("/new"), { timeout: 30000 }).catch(() => undefined),
+    p.getByRole("button", { name: "저장", exact: true }).click(),
+  ]);
+  await p.waitForLoadState("networkidle").catch(() => undefined);
+}
 
 const lines: string[] = [];
 const ok = (label: string, pass: boolean, note = "") => {
@@ -80,12 +124,20 @@ async function one(run: { uni: string; leaf: string; name: string }, browser: im
   await p.waitForURL(/\/v3\/\d+/, { timeout: 30000 }).catch(() => undefined);
   const att = /\/v3\/(\d+)/.exec(p.url())?.[1] ?? "";
   ok("검사가 열린다", Boolean(att), `응시 ${att}`);
+  /* 검사를 연 뒤 작업공간의 경험 화면에서 경험을 적고 돌아와 이어서 푼다.
+     전공이 정해지기 전에는 경험 화면이 전공 고르기로 돌아간다 */
+  for (const e of EXPS[run.leaf] ?? []) await addExperience(p, e);
+  const nexp = await queryOne<{ n: string }>(`SELECT count(*)::text n FROM v3_experiences WHERE user_id=$1::bigint`, [prov.userId]);
+  ok("경험 기록을 화면으로 적었다", Number(nexp?.n ?? 0) === (EXPS[run.leaf] ?? []).length, `${nexp?.n}건`);
+  await p.goto(`${BASE}/v3/${att}`, { waitUntil: "domcontentloaded" });
   const t0 = Date.now();
   const w = await walk(p, 260);
   ok("화면을 눌러 끝까지 풀었다", w.done, `화면 ${w.screens}개 · ${Math.round((Date.now() - t0) / 1000)}초`);
   const row = await queryOne<{ tier: string; n: string; dep: string }>(
     `SELECT a.tier, a.department_code dep, (SELECT count(*) FROM v3_responses r WHERE r.attempt_id = a.id)::text n
        FROM v3_attempts a WHERE a.id = $1::bigint`, [att]);
+  const np = await queryOne<{ n: string }>(`SELECT count(*)::text n FROM v3_evidence_picks WHERE attempt_id=$1::bigint`, [att]);
+  ok("근거 항목을 골라 저장했다", Number(np?.n ?? 0) > 0, `${np?.n}개`);
   ok("응답이 서버에 저장됐다", Number(row?.n ?? 0) > 40, `${row?.n}개 · 등급 ${row?.tier} · ${row?.dep}`);
 
   await p.goto(`${BASE}/v3/${att}/result`, { waitUntil: "domcontentloaded" });

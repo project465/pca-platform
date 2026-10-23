@@ -155,8 +155,8 @@ export function hbars(rows: Bar[], o: { max: number; width?: number; label?: num
     const y = top + i * rh;
     const w = Math.max(0, x(b.value) - L);
     return `<text x="${L - 12}" y="${y + rh / 2}" font-size="12.5" text-anchor="end" dominant-baseline="middle" fill="${C.ink}" font-weight="600">${esc(b.label)}</text>` +
-      `<rect x="${L}" y="${y + rh * 0.2}" width="${f1(W - L - 70)}" height="${f1(rh * 0.6)}" rx="3" fill="${C.line2}"/>` +
-      (w > 0 ? `<rect x="${L}" y="${y + rh * 0.2}" width="${f1(w)}" height="${f1(rh * 0.6)}" rx="3" fill="${b.color ?? C.blue}"/>` : "") +
+      `<rect x="${L}" y="${y + rh * 0.2}" width="${f1(W - L - 70)}" height="${f1(rh * 0.6)}" rx="${f1(rh * 0.3)}" fill="${C.line2}"/>` +
+      (w > 0 ? `<rect x="${L}" y="${y + rh * 0.2}" width="${f1(w)}" height="${f1(rh * 0.6)}" rx="${f1(rh * 0.3)}" fill="${b.color ?? C.blue}"/>` : "") +
       valueLabel(b, x(b.value), y);
   }).join("");
   return `<svg viewBox="0 0 ${W} ${H}" width="100%" xmlns="http://www.w3.org/2000/svg" role="img">${grid}${bars}</svg>`;
@@ -174,7 +174,7 @@ export function heat(rows: string[], cols: string[], cell: (r: number, c: number
     return `<text x="${L - 10}" y="${y + rh / 2}" font-size="12" text-anchor="end" dominant-baseline="middle" fill="${C.ink}" font-weight="600">${esc(r)}</text>` +
       cols.map((_, j) => {
         const k = cell(i, j);
-        return `<rect x="${f1(L + cw * j + 1.5)}" y="${y + 1.5}" width="${f1(cw - 3)}" height="${rh - 3}" rx="3" fill="${k.fill}"/>` +
+        return `<rect x="${f1(L + cw * j + 1.5)}" y="${y + 1.5}" width="${f1(cw - 3)}" height="${rh - 3}" rx="7" fill="${k.fill}"/>` +
           (k.text ? `<text x="${f1(L + cw * j + cw / 2)}" y="${y + rh / 2}" font-size="10.5" text-anchor="middle" dominant-baseline="middle" fill="${k.ink ?? "#fff"}" font-weight="700">${esc(k.text)}</text>` : "");
       }).join("");
   }).join("");
@@ -194,7 +194,7 @@ export function quadrant(dots: Dot[], o: { width?: number; xNames: string[]; yNa
   const grid = Array.from({ length: nx * ny }, (_, k) => {
     const i = k % nx, j = Math.floor(k / nx);
     const hot = i >= nx - 1 && j >= ny - 2, warm = i >= nx - 1 && j < ny - 2;
-    return `<rect x="${f1(L + i * cw + 1)}" y="${f1(T + (ny - 1 - j) * ch + 1)}" width="${f1(cw - 2)}" height="${f1(ch - 2)}" rx="4" fill="${hot ? "#eaf1fd" : warm ? "#fdf5e8" : "#f6f7f9"}"/>`;
+    return `<rect x="${f1(L + i * cw + 1)}" y="${f1(T + (ny - 1 - j) * ch + 1)}" width="${f1(cw - 2)}" height="${f1(ch - 2)}" rx="12" fill="${hot ? "#eaf1fd" : warm ? "#fdf5e8" : "#f6f7f9"}"/>`;
   }).join("");
   const xl = o.xNames.map((t, i) => `<text x="${f1(L + i * cw + cw / 2)}" y="${f1(H - B + 20)}" font-size="12" text-anchor="middle" fill="${C.ink}" font-weight="600">${esc(t)}</text>`).join("") +
     `<text x="${f1(L + (W - L - R) / 2)}" y="${f1(H - 8)}" font-size="11.5" text-anchor="middle" fill="${C.ink3}">관심 정도 →</text>`;
@@ -234,7 +234,7 @@ export function gantt(rows: GanttRow[], o: { width?: number; days?: number; labe
     const y = top + i * rh;
     const ls = lab[i], y0 = y + rh / 2 - ((ls.length - 1) * 13.5) / 2;
     return `<text x="${L - 10}" y="${f1(y0)}" font-size="11.5" text-anchor="end" dominant-baseline="middle" fill="${C.ink}" font-weight="600">${ls.map((l, k) => `<tspan x="${L - 10}" dy="${k ? 13.5 : 0}">${esc(l)}</tspan>`).join("")}</text>` +
-      `<rect x="${f1(x(r.from - 1))}" y="${y + 6}" width="${f1(Math.max(6, x(r.to) - x(r.from - 1)))}" height="${rh - 12}" rx="5" fill="${r.color}"/>` +
+      `<rect x="${f1(x(r.from - 1))}" y="${y + 6}" width="${f1(Math.max(6, x(r.to) - x(r.from - 1)))}" height="${rh - 12}" rx="${(rh - 12) / 2}" fill="${r.color}"/>` +
       (r.note ? `<text x="${f1(x(r.from - 1) + 8)}" y="${y + rh / 2 + 0.5}" font-size="10" dominant-baseline="middle" fill="#fff" font-weight="700">${esc(r.note)}</text>` : "");
   }).join("");
   return `<svg viewBox="0 0 ${W} ${H}" width="100%" xmlns="http://www.w3.org/2000/svg" role="img">${heads}${body}</svg>`;
@@ -248,8 +248,8 @@ export function chain(steps: { head: string; body: string; color?: string }[], o
   const W = W0, H = Math.max(o.height ?? 150, 30 + 18 + most * 11 * 1.35 + 14);
   return `<svg viewBox="0 0 ${W} ${f1(H)}" width="100%" xmlns="http://www.w3.org/2000/svg" role="img">${steps.map((s, i) => {
     const x = i * (bw + gap);
-    return `<rect x="${f1(x)}" y="2" width="${f1(bw)}" height="${H - 4}" rx="8" fill="#fff" stroke="${s.color ?? C.line}" stroke-width="1.4"/>` +
-      `<rect x="${f1(x)}" y="2" width="${f1(bw)}" height="30" rx="8" fill="${s.color ?? C.navy}"/><rect x="${f1(x)}" y="22" width="${f1(bw)}" height="10" fill="${s.color ?? C.navy}"/>` +
+    return `<rect x="${f1(x)}" y="2" width="${f1(bw)}" height="${H - 4}" rx="16" fill="#fff" stroke="${s.color ?? C.line}" stroke-width="1.4"/>` +
+      `<rect x="${f1(x)}" y="2" width="${f1(bw)}" height="32" rx="16" fill="${s.color ?? C.navy}"/><rect x="${f1(x)}" y="18" width="${f1(bw)}" height="14" fill="${s.color ?? C.navy}"/>` +
       `<text x="${f1(x + bw / 2)}" y="18" font-size="11.5" text-anchor="middle" dominant-baseline="middle" fill="#fff" font-weight="700">${esc(s.head)}</text>` +
       multiText(x + bw / 2, (H + 30) / 2, s.body, Math.max(6, Math.floor(bw / 12.5)), { size: 11, color: C.ink, weight: 500, lh: 1.35 }) +
       (i < n - 1 ? `<path d="M${f1(x + bw + 4)},${H / 2} l${gap - 10},0 m-6,-5 l6,5 l-6,5" fill="none" stroke="${C.ink3}" stroke-width="1.6"/>` : "");
@@ -269,7 +269,7 @@ export function timeline(items: { label: string; from: string; to: string; color
   }).join("");
   const body = items.map((it, i) => {
     const y = top + i * rh, a = x(months(it.from)), b = x(months(it.to) + 1);
-    return `<rect x="${f1(a)}" y="${y + 6}" width="${f1(b - a)}" height="16" rx="5" fill="${it.color}"/>` +
+    return `<rect x="${f1(a)}" y="${y + 6}" width="${f1(b - a)}" height="16" rx="8" fill="${it.color}"/>` +
       (() => { const t = it.label.length > 44 ? it.label.slice(0, 44) + "…" : it.label; const tw = [...t].reduce((n, ch) => n + (/[ -~]/.test(ch) ? 6.2 : 11), 0);
         /* 오른쪽 끝을 넘으면 막대 끝에 붙여 오른쪽 맞춤으로 쓴다 */
         return a + tw > W - R ? `<text x="${f1(Math.min(b, W - R))}" y="${y + 36}" font-size="11" fill="${C.ink}" font-weight="600" text-anchor="end">${esc(t)}</text>` : `<text x="${f1(a)}" y="${y + 36}" font-size="11" fill="${C.ink}" font-weight="600">${esc(t)}</text>`; })();
@@ -288,14 +288,14 @@ export function moneyBars(rows: { label: string; values: { name: string; v: numb
   const H = top + rows.length * (rows[0]?.values.length ?? 1) * gh + rows.length * gap + 10;
   let y = top;
   const names = rows[0]?.values ?? [];
-  const legend = names.map((v, i) => `<rect x="${L + i * 120}" y="4" width="12" height="12" rx="2" fill="${v.color}"/><text x="${L + i * 120 + 18}" y="14" font-size="11" fill="${C.ink2}">${esc(v.name)}</text>`).join("");
+  const legend = names.map((v, i) => `<rect x="${L + i * 120}" y="4" width="12" height="12" rx="6" fill="${v.color}"/><text x="${L + i * 120 + 18}" y="14" font-size="11" fill="${C.ink2}">${esc(v.name)}</text>`).join("");
   const body = rows.map((r) => {
     const y0 = y;
     const bars = r.values.map((v, k) => {
       const yy = y0 + k * gh, val = v.v ?? 0, w = (Math.abs(val) / max) * span;
       const bx = val < 0 ? zero - w : zero;
       const txt = v.v == null ? "공시 없음" : `${(val / 1e8).toLocaleString("ko-KR", { maximumFractionDigits: 0 })}억 원`;
-      return `<rect x="${f1(bx)}" y="${yy + 3}" width="${f1(Math.max(1, w))}" height="${gh - 6}" rx="3" fill="${v.color}"/>` +
+      return `<rect x="${f1(bx)}" y="${yy + 3}" width="${f1(Math.max(1, w))}" height="${gh - 6}" rx="${(gh - 6) / 2}" fill="${v.color}"/>` +
         `<text x="${f1(val < 0 ? bx - 6 : bx + w + 6)}" y="${yy + gh / 2 + 0.5}" font-size="10.5" text-anchor="${val < 0 ? "end" : "start"}" dominant-baseline="middle" fill="${C.ink2}">${txt}</text>`;
     }).join("");
     y += r.values.length * gh + gap;
