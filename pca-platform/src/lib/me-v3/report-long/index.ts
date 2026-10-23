@@ -102,7 +102,7 @@ export function assemble(x: Inputs): { pages: Page[]; notes: string[]; region: s
 }
 
 export function renderHtml(x: Inputs, pages: Page[], fontBase = "/fonts/cm-book/"): string {
-  const ctx = { issuer: x.issuer, major: x.major, tier: x.tier, person: x.person, answeredOn: x.answeredOn };
+  const ctx = { issuer: x.issuer, major: x.department ?? x.major, tier: x.tier, person: x.person, answeredOn: x.answeredOn };
   const title = `${x.person} 님 진로 분석 리포트 · CareerMatri`;
   return `<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${E(title)}</title><style>${css(fontBase)}</style></head><body>${pages.map((p, i) => shell(p, i, pages.length, ctx)).join("")}<script>${PACK_JS}</script></body></html>`;
 }

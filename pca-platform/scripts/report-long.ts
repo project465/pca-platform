@@ -96,16 +96,19 @@ function scan(text: string, core: string, allow: string[]): Hit[] {
   const flat = t.replace(/\s*\n\s*/g, " ");
   const hits: Hit[] = [];
   const near = (i: number, s: string) => s.slice(Math.max(0, i - 24), i + 30).replace(/\s+/g, " ");
-  const find = (rule: string, re: RegExp, keep?: (ctx: string) => boolean) => {
+  const find = (rule: string, re: RegExp, keep?: (ctx: string, before: string) => boolean) => {
     const g = new RegExp(re.source, re.flags.includes("g") ? re.flags : re.flags + "g");
     for (const mm of flat.matchAll(g)) {
       const ctx = flat.slice(Math.max(0, (mm.index ?? 0) - 40), (mm.index ?? 0) + mm[0].length + 40);
-      if (keep && keep(ctx)) continue;
+      if (keep && keep(ctx, flat.charAt((mm.index ?? 0) - 1))) continue;
       hits.push({ rule, at: near(mm.index ?? 0, flat) });
     }
   };
   find("대시(—)", /[—–]/);
-  for (const re of bannedFromGuideCheck()) if (re.source !== "—") find(`쓰지 않는 말 /${re.source}/`, re, (c) => terms.some((w) => re.test(w) && c.includes(w)));
+  for (const re of bannedFromGuideCheck()) if (re.source !== "—") find(`쓰지 않는 말 /${re.source}/`, re, (c, before) =>
+    terms.some((w) => re.test(w) && c.includes(w))
+    /* 회사 이름 같은 고유명사 안의 글자(유저인사이트)는 문장이 아니다. 명사형 낱말만 앞 글자를 본다 */
+    || (/^(인사이트|시너지)$/.test(re.source) && /[가-힣]/.test(before)));
   find("'A가 아니라 B'", /(?:이|가|은|는|을|를)\s*아니라/);
   find("잠언 종결 '~이유다'", /이유(?:다|입니다)[.\s]/);
   find("hype 어휘", /압도적|파격적|폭발적|전례 없|시사하는 바|주목할 만|매우 중요/);

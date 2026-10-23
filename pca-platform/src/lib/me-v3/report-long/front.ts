@@ -64,7 +64,7 @@ export function cover(x: Inputs, d: X): Page {
     body: `<div class="cv-top"><span class="cv-org">${E(x.issuer)}</span><span class="cv-s">CareerMatri 진로 분석 리포트 · ${E(x.tier)}</span></div>
       <div class="cv-mid">
         <p class="cv-k">진로 분석 결과</p>
-        <h1 class="cv-t">${E(x.person)} 님의<br>${E(x.major)} 진로 분석</h1>
+        <h1 class="cv-t">${E(x.person)} 님의<br>${E(x.department ?? x.major)} 진로 분석</h1>
         <p class="cv-d">${E(leadOf(x, d))}</p>
         ${series.length ? `<div class="cv-art">${radar(d.best.map((b) => d.axisName(b.axis)), series, { size: 420, ring: false })}</div>
         <div class="cv-legend">${series.map((s) => `<span><i style="background:${s.color}"></i>${E(s.name)}</span>`).join("")}</div>` : ""}
