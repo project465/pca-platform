@@ -2903,3 +2903,80 @@
   .rs .rs-st .rs-tile small { color: rgba(255,255,255,.88); font-size: var(--pt-cap); white-space: normal; }
   .rs .rs-st .rs-tile em { display: none; }
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   웹 결과 한 장(`summary.tsx`, 2026-10-23).
+   화면에는 다섯 덩어리만 서고, 아래 원래 절들은 종이(BASIC·STANDARD PDF)만
+   쓴다. PRO 종이는 책자(`/result/book`)라 이 쪽을 쓰지 않는다.
+   이름은 전부 `rsum-` 이다: 다른 CSS 에 같은 이름이 없는지 보고 지었다.
+   ══════════════════════════════════════════════════════════════════ */
+@media screen { .rs-main > :not(.rsum) { display: none !important; } }
+@media print { .rsum { display: none !important; } }
+.rsum {
+  display: flex; flex-direction: column; gap: 20px;
+  max-width: 760px; margin: 0 auto; padding: 28px 0 56px;
+  color: var(--r-ink);
+}
+.rsum-top { padding: 4px 4px 8px; }
+.rsum-who { margin: 0 0 10px; font-size: 14px; color: var(--r-ink-3); }
+.rsum-h1 { margin: 0; font-size: clamp(24px, 3.2vw, 32px); line-height: 1.35; font-weight: 700; letter-spacing: -.02em; text-wrap: balance; }
+.rsum-lead { margin: 12px 0 0; font-size: 17px; line-height: 1.65; color: var(--r-ink-2); }
+.rsum-note { margin: 12px 0 0; padding: 12px 16px; border-radius: 14px; background: var(--r-sunk); font-size: 14.5px; line-height: 1.6; color: var(--r-ink-2); }
+.rsum-sect, .rsum-end {
+  background: var(--r-paper); border: 1px solid var(--r-line); border-radius: 20px;
+  padding: 24px clamp(18px, 3vw, 28px);
+}
+.rsum-h2 { display: flex; align-items: center; gap: 10px; margin: 0 0 16px; font-size: 20px; font-weight: 700; letter-spacing: -.015em; }
+.rsum-h2 span {
+  display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--r-accent-soft); color: var(--r-accent-ink); font-size: 14px; font-weight: 700;
+}
+.rsum-zones { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.rsum-zone { border-radius: 16px; padding: 14px 16px; background: var(--r-sunk); border-left: 0; }
+.rsum-zone > b { display: block; font-size: 16px; }
+.rsum-zone > p { margin: 4px 0 10px; font-size: 14.5px; line-height: 1.55; color: var(--r-ink-2); }
+.rsum-zone.is-ready { background: var(--r-mint-soft); }
+.rsum-zone.is-partial { background: var(--r-accent-soft); }
+.rsum-zone.is-off > p, .rsum-zone.is-off > b { color: var(--r-ink-3); }
+.rsum-names { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.rsum-names li { padding: 5px 12px; border-radius: 999px; background: var(--r-paper); font-size: 14px; font-weight: 600; border: 1px solid var(--r-line); }
+.rsum-ev { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.rsum-ev > li { border-radius: 16px; background: var(--r-sunk); padding: 16px; }
+.rsum-ev-name { display: block; margin-bottom: 8px; font-size: 16px; }
+.rsum-ev dl { margin: 0; display: grid; grid-template-columns: 7.5em 1fr; gap: 6px 12px; font-size: 15px; line-height: 1.55; }
+.rsum-ev dt { color: var(--r-ink-3); }
+.rsum-ev dd { margin: 0; min-width: 0; }
+.rsum-steps { margin: 0; padding: 0; list-style: none; counter-reset: rsum; display: grid; gap: 14px; }
+.rsum-steps > li { counter-increment: rsum; position: relative; padding: 16px 16px 16px 52px; border-radius: 16px; background: var(--r-sunk); }
+.rsum-steps > li::before {
+  content: counter(rsum); position: absolute; left: 16px; top: 16px; width: 24px; height: 24px; border-radius: 50%;
+  display: grid; place-items: center; background: var(--r-accent); color: #fff; font-size: 13px; font-weight: 700;
+}
+.rsum-steps b { display: block; font-size: 16px; line-height: 1.5; }
+.rsum-steps p { margin: 6px 0 0; font-size: 15px; line-height: 1.6; color: var(--r-ink-2); }
+.rsum-steps .rsum-need { color: var(--r-ink-3); font-size: 14px; }
+.rsum-write { display: inline-block; margin-top: 10px; font-size: 14.5px; font-weight: 600; color: var(--r-accent-ink); }
+.rsum-keep { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 16px; font-size: 14px; color: var(--r-ink-3); }
+.rsum-keep button {
+  min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--r-line);
+  background: var(--r-paper); font: inherit; font-size: 15px; font-weight: 600; color: var(--r-ink); cursor: pointer;
+}
+.rsum-empty { margin: 0; font-size: 15px; line-height: 1.65; color: var(--r-ink-2); }
+.rsum-end { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; background: var(--r-ink); border-color: var(--r-ink); color: #fff; }
+.rsum-end b { font-size: 18px; }
+.rsum-end p { margin: 6px 0 0; font-size: 14.5px; line-height: 1.6; color: #c9d2e3; }
+.rsum-end-a { display: flex; flex-wrap: wrap; gap: 10px; }
+.rsum-pdf, .rsum-me { display: inline-grid; place-items: center; min-height: 46px; padding: 0 20px; border-radius: 999px; font-weight: 700; font-size: 15px; text-decoration: none; }
+.rsum-pdf { background: #fff; color: var(--r-ink); }
+.rsum-me { border: 1px solid #5a6b88; color: #fff; }
+@media (max-width: 560px) {
+  .rsum { padding-top: 16px; }
+  .rsum-ev dl { grid-template-columns: 1fr; gap: 2px; }
+  .rsum-ev dt { margin-top: 6px; }
+}
+.rsum-ev dl { display: grid; grid-template-columns: 1fr; gap: 8px; }
+.rsum-ev-row { display: grid; grid-template-columns: 9.5em 1fr; gap: 12px; }
+.rsum-ev-row dt em { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 999px; background: var(--r-mint-soft); color: var(--r-mint); font-style: normal; font-size: 12px; font-weight: 700; }
+.rsum-steps .rsum-why { color: var(--r-ink-3); font-size: 14px; }
+@media (max-width: 560px) { .rsum-ev-row { grid-template-columns: 1fr; gap: 2px; } }
+.rsum-ev-row dt em { display: table; margin: 4px 0 0; }

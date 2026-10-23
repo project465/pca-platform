@@ -2,8 +2,8 @@
  "schema_version": "me-v3-result-lock.1",
  "note": "결과지 화면 1차 동결. 문장만 고치면 `RESULT_COPY_VERSION` 만 올리고, 칸이나 절이 바뀌면 `RESULT_MODEL_VERSION`, 화면 구조가 바뀌면 `RESULT_UI_VERSION` 을 올린다. 채점 판본은 이 가운데 무엇으로도 올리지 않는다",
  "versions": {
-  "result_ui_version": "ME_V3_RESULT_UI_V83",
-  "result_copy_version": "me-v3-result-copy.70",
+  "result_ui_version": "ME_V3_RESULT_UI_V84",
+  "result_copy_version": "me-v3-result-copy.71",
   "result_model_version": "me-v3-result-model.6",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.6",
   "scoring_version": "me-v3-scoring.5"
@@ -20,18 +20,18 @@
   "종이에 빈 쪽과 범위 밖 쪽수가 없다": "v3:result:pdf"
  },
  "files": {
-  "src/app/v3/result.css": "996df7dde8707817ede44a5a154c3b8f16f2ab32428450070a4d9559a245653b",
+  "src/app/v3/result.css": "3d2ba942aebbeed32fef7ec8d2c531cbea2adfe81ba6712f85e18cded567891a",
   "src/app/surface.css": "edbb16d5270484deb2737e73611d8035296ce813a8c1afbede5ddd76cb35c38f",
-  "src/app/v3/[attemptId]/result/page.tsx": "93b969533b9372ddd79adfb68656e50f51ee1053f77771e3fd62511dd239b0cf",
+  "src/app/v3/[attemptId]/result/page.tsx": "c50df3ff09d66ff74aa34694866b970748818e3aceb4198180d4eb0346ef9303",
   "src/app/v3/[attemptId]/result/fold.tsx": "da6c8b16f124941d283dc9ae4ad0f41b2271fd8d8233028bfdc3d4c500d4fbb4",
   "src/app/v3/[attemptId]/result/disclose.tsx": "04e8a84916ec0fcd642e9287377e370b8bff250ac496ed66cfdf3d9f2e640f5a",
   "src/app/v3/[attemptId]/result/save.tsx": "2830e503419eba94015798787ab2f7cd4abca39c8126fe1cf3dca087f6c6e7c1",
   "src/app/v3/[attemptId]/result/track.tsx": "6136c271ee7df7323f029912182c7496a8633fdf7479b6080697a6f4a217787c",
   "src/app/v3/[attemptId]/result/second.tsx": "656a5c0ce5ea2d41e5e34f61fc6b6f61925054744dd953ca4206ebbf5069c126",
-  "src/lib/me-v3/result/text.ko.ts": "bc48154f3a76df55b2dbc74389886054a4dbe388295693645d8ce77ff3d94d07",
+  "src/lib/me-v3/result/text.ko.ts": "82932069908da96dc6ccc33439483b4d925d3a340befc3bea555e422b3f3ac6a",
   "src/lib/me-v3/result/say.ts": "1ca895cbeb84b08c5579fc3fcaaf4f8c89b766e131f277bcd92bba74abcebc95",
   "src/lib/me-v3/result/josa.ts": "152cd30c2af136172618c14fa6fb4175b97cf16350db631e3e2e6c72fd7dd4af",
-  "src/lib/me-v3/result/version.ts": "f7a993af48991d64055ce6df9a2d44d4140ef71eb0690a185270c936d6b988e1",
+  "src/lib/me-v3/result/version.ts": "c36376c79910836ce59607cf4b1746ac81025644859f793344e98d3690f033f8",
   "src/lib/me-v3/result/tile-sub.ts": "8e51d0087d789341b20679e15503c7d31d62b36c943998cea70d992539c2d785",
   "src/lib/me-v3/student/copy.ts": "3c5f96455be8222018a30f1d5423aee1608e436ec11c49d681b208956ef60a1a",
   "src/lib/me-v3/student/icon.ts": "65836ae7a141a7dcdf844e5d5b4bcdbcc558dad0a3890a4a67384a3b17c7aea2",

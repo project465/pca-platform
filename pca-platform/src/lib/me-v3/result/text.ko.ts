@@ -843,7 +843,7 @@ const FILL_KO: Record<Axis, (d: string, m: Mat) => string> = {
   J1: (d, m) => `${bringNext(d)} 무엇을 문제로 잡을지 직접 정하고,`
     + ` 그 범위를 ${keep(m, 0, "정리한 문서")} 맨 앞에 한 줄 적습니다.`,
   J2: (d, m) => `${bringNext(d)} 받은 요구를 숫자로 옮기는 일을 맡고,`
-    + ` 그 조건을 ${keep(m, 1, "정리한 문서")}로 남깁니다.`,
+    + ` 그 조건을 ${withJosa(keep(m, 1, "정리한 문서"), "으로")} 남깁니다.`,
   J3: (d, m) => `${bringNext(d)} 기준이 되는 값을 직접 정하고,`
     + ` 왜 그 값인지 ${keep(m, 2, "정리한 문서")}에 함께 적습니다.`,
   J4: (d, m) => `${bringNext(d)} 쓸 방법을 직접 고르고,`
@@ -926,7 +926,7 @@ export function actionHeadKo(a: Action, domainName?: string): string {
     case "BUILD_OUTPUT": return `${d} 과제에서 손에 남는 결과물 하나 만들기`;
     case "ADD_VERIFICATION": return `${d}에서 낸 결과를 한 번 비교해 보기`;
     case "FILL_AXIS":
-      return need ? `다음 ${d} 과제에서 ${need} 직접 정하기`
+      return need ? `다음 ${d} 과제에서 ${need.replace(/^직접 정한 /, "")} 직접 정하기`
         : `다음 ${d} 과제에서 한 가지를 직접 정하기`;
     case "TRY_SHORT_EXPERIENCE": return `${d}에서 한 가지를 짧게 해 보기`;
     case "STUDY_NEXT": return `${d} 수업에서 배운 것을 작은 과제에 써 보기`;

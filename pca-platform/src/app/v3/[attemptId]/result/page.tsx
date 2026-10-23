@@ -54,6 +54,7 @@ import SecondStory from "./second";
 import Fold from "./fold";
 import SaveAction from "./save";
 import Track from "./track";
+import Summary, { type SummaryEvidence, type SummaryStep, type SummaryZone } from "./summary";
 
 export const metadata = { title: "결과 · CareerMatri" };
 
@@ -1291,6 +1292,71 @@ export default async function V3Result({
     ["기관 유형", orgKinds.join(" · ") || "아직 고르지 않으셨습니다"],
   ];
 
+  /* ── 웹 화면 한 장(`summary.tsx`). 종이는 아래 원래 절들을 그대로 쓴다 ── */
+  const dn = (td: string) => domainName(core, td);
+  const sumZones: SummaryZone[] = bg
+    ? ([
+        ["do_now", "ready"], ["scan", "partial"], ["low", "low"], ["unseen", "off"],
+      ] as const).map(([k, tone]) => ({
+        key: k, tone, title: BASIC_GROUP_KO[k].title, lead: BASIC_GROUP_KO[k].lead,
+        names: bg[k].map(dn),
+      })).filter((z) => z.names.length)
+    : ([
+        ["Z1_EVIDENCE_ESTABLISHED", "ready"], ["Z2_EVIDENCE_INCOMPLETE", "partial"],
+        ["Z3_EVIDENCE_LOW_INTEREST", "low"], ["Z4_INSUFFICIENT_EVIDENCE", "few"],
+        ["NOT_EXPLORED", "off"],
+      ] as const)
+        .filter(([z]) => !(z === "Z1_EVIDENCE_ESTABLISHED" && !model.limits.allows_evidence_established))
+        .map(([z, tone]) => ({
+          key: z, tone, title: ZONE_TITLE_KO[z], lead: ZONE_LEAD_KO[z],
+          names: model.domains.filter((d) => d.zone === z).map((d) => dn(d.code)),
+        })).filter((z) => z.names.length);
+  /* 근거는 **확인된 판단축마다** 고르신 문장을 그대로 세운다. 모델의
+     `decided` 에는 결과물 이름(`업계 자료`)이 섞여 있어 그대로 쓰면
+     `직접 정한 것` 칸에 이름표가 선다 */
+  const AX_LABEL: Record<Axis, string> = {
+    J1: "문제로 잡은 것", J2: "요구를 조건으로 옮긴 것", J3: "직접 판단한 것",
+    J4: "쓴 방법", J5: "만든 것", J6: "비교하고 확인한 것", J7: "고친 것",
+    J8: "결과가 쓰인 곳",
+  };
+  const sumEvidence: SummaryEvidence[] = [...new Set([
+    ...model.evidence.ready.map((e) => e.domain),
+    ...model.evidence.partial.map((e) => e.domain),
+  ])].slice(0, 3).map((code) => {
+    const d = model.domains.find((x) => x.code === code)!;
+    const rows = d.axes
+      .filter((x) => (x.state === "OWNED" || x.state === "CONFIRMED") && x.picks.some((t) => t.endsWith("다")))
+      .sort((x, y) => (y.state === "OWNED" ? 1 : 0) - (x.state === "OWNED" ? 1 : 0))
+      .slice(0, 3)
+      .map((x) => ({
+        label: AX_LABEL[x.axis], owned: x.state === "OWNED",
+        items: x.picks.filter((t) => t.endsWith("다")).slice(0, 2),
+      }));
+    return { name: dn(code), rows, left: [...new Set(d.artifacts)].slice(0, 3) };
+  }).filter((e) => e.rows.length || e.left.length);
+  /* 할 일 본문. `actionKo` 가 `최근 ○○ 과제 하나. ~합니다.` 처럼 이름씨
+     토막으로 열어서 그대로 두면 메모로 읽힌다. **뜻은 그대로 두고 첫
+     마디만 문장으로 잇는다** */
+  const flow = (t: string) => t
+    .replace(/^최근 (.+?) 과제 하나\.\s*/, "최근 $1 과제를 하나 골라, ")
+    .replace(/^다음 (.+?) 과제 하나\.\s*/, "다음 $1 과제에서는 ")
+    .replace(/^(.+?) 수업 하나\.\s*/, "$1 수업을 하나 골라, ");
+  const sumSteps: SummaryStep[] = model.actions.slice(0, 3).map((x) => {
+    const nm = x.domain ? dn(x.domain) : "";
+    return {
+      head: actionHeadKo(x, nm),
+      body: flow(actionKo(x, nm, model.stage,
+        x.code === "EXPLORE_BROADLY" ? exploreWhere() : undefined).do),
+      why: actionWhyKo(x),
+      href: x.domain ? `/me/experience/new?td=${x.domain}` : "/me/experience/new",
+    };
+  });
+  const sumWho = [meta.school,
+    [meta.department, meta.specialization].filter(Boolean).join(" · "),
+    meta.answeredOn ? `${meta.answeredOn} 응답` : null,
+    meta.school ? null : model.tier]
+    .filter(Boolean).join(" · ");
+
   return (
     /* **학교가 전달하는 리포트일 때만 장을 나눈다.** 표지와 장 바뀜은
        학교가 보관·전달하는 종이의 모양이고(규격 §14), 개인 결제 종이는
@@ -1320,6 +1386,13 @@ export default async function V3Result({
       </header>
 
       <main className="rs-main">
+        <Summary
+          title={h.title} lead={h.lead} who={sumWho}
+          zones={sumZones} evidence={sumEvidence} steps={sumSteps}
+          pdfHref={`/v3/${attemptId}/result/pdf`}
+          keepAction={model.actions.length ? takeActionsFromResult : null}
+          kept={kept}
+          tierNote={model.tier === "BASIC" ? TIER_NOTE_KO.BASIC : null} />
         {/*
             ── 종이 표지 ── **화면에는 서지 않는다**(규격 §14).
 

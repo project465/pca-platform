@@ -177,7 +177,8 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
  * 곳, 이어서 볼 곳, 회사를 볼 때 해 볼 것. 공개 명단의 업종·주력 품목만 옮기고
  * 점수와 순위를 만들지 않는다. 판정과 결과 모델은 그대로다.
  */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.70";
+/* copy.71 — `계획로` 조사, `직접 정한 기준 직접 정하기` 겹말을 고쳤다 */
+export const RESULT_COPY_VERSION = "me-v3-result-copy.71";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -478,7 +479,8 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.70";
  * 쪽 번호를 7pt 에서 8pt 로 올렸다. 크기와 줄 사이는 그대로라 쪽 수가 같다.
  */
 /** 세종 학교 결과지에 기업 절 하나를 더했다(기존 class 만 쓴다) */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V83";
+/* V84 — 웹 화면은 다섯 덩어리(`summary.tsx`)만 세우고 원래 절들은 종이만 쓴다 */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V84";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX
