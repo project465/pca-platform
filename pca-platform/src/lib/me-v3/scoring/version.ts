@@ -104,7 +104,7 @@ export const SCORING_VERSION = "me-v3-scoring.5";
  * 읽지 않고(`v3:freeze:measure` 9번), item_id · 축 · 보기 · 값 · routing ·
  * 차례가 그대로라 같은 응답이 같은 판정으로 간다.
  */
-export const ITEM_BANK_VERSION = "ME_V3_ITEM_BANK_V2.6";
+export const ITEM_BANK_VERSION = "ME_V3_ITEM_BANK_V2.7";
 
 export type ModuleVersions = {
   core_version: string;

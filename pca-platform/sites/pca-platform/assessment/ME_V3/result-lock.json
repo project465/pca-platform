@@ -5,7 +5,7 @@
   "result_ui_version": "ME_V3_RESULT_UI_V84",
   "result_copy_version": "me-v3-result-copy.71",
   "result_model_version": "me-v3-result-model.6",
-  "item_bank_version": "ME_V3_ITEM_BANK_V2.6",
+  "item_bank_version": "ME_V3_ITEM_BANK_V2.7",
   "scoring_version": "me-v3-scoring.5"
  },
  "guards": {
@@ -20,9 +20,9 @@
   "종이에 빈 쪽과 범위 밖 쪽수가 없다": "v3:result:pdf"
  },
  "files": {
-  "src/app/v3/result.css": "3d2ba942aebbeed32fef7ec8d2c531cbea2adfe81ba6712f85e18cded567891a",
+  "src/app/v3/result.css": "9176d4118d228396b726737b1b9fcd0798298602084ece56eb1b26e349d79833",
   "src/app/surface.css": "edbb16d5270484deb2737e73611d8035296ce813a8c1afbede5ddd76cb35c38f",
-  "src/app/v3/[attemptId]/result/page.tsx": "c50df3ff09d66ff74aa34694866b970748818e3aceb4198180d4eb0346ef9303",
+  "src/app/v3/[attemptId]/result/page.tsx": "d8973db09af56e193b155cd14b769c9bbe8a013139eb36ac2b10c0f9d050d0ae",
   "src/app/v3/[attemptId]/result/fold.tsx": "da6c8b16f124941d283dc9ae4ad0f41b2271fd8d8233028bfdc3d4c500d4fbb4",
   "src/app/v3/[attemptId]/result/disclose.tsx": "04e8a84916ec0fcd642e9287377e370b8bff250ac496ed66cfdf3d9f2e640f5a",
   "src/app/v3/[attemptId]/result/save.tsx": "2830e503419eba94015798787ab2f7cd4abca39c8126fe1cf3dca087f6c6e7c1",

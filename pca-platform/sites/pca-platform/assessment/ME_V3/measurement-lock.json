@@ -4,19 +4,19 @@
   "at": "2026-10-23",
   "versions": {
     "core": "ME_CORE_V3",
-    "item_bank": "ME_V3_ITEM_BANK_V2.6",
+    "item_bank": "ME_V3_ITEM_BANK_V2.7",
     "scoring": "me-v3-scoring.5",
     "result_model": "me-v3-result-model.6"
   },
   "files": {
-    "sites/pca-platform/content/me-v3-2-items.json": "1496868b67f3f9fd",
+    "sites/pca-platform/content/me-v3-2-items.json": "bb8744ea39773360",
     "sites/pca-platform/content/me-v3-2-items-blueprint.json": "07f1905a50d4293a",
     "sites/pca-platform/content/me-v3-2-constructs.json": "a4c8c5e0fc6333fd",
-    "sites/pca-platform/content/me-v3-2-domains.json": "cc87729591637376",
-    "sites/pca-platform/content/me-v3-2-checklists.json": "5c464104b89078f6",
+    "sites/pca-platform/content/me-v3-2-domains.json": "6aac05af6ed61430",
+    "sites/pca-platform/content/me-v3-2-checklists.json": "f8920efebad75b7a",
     "sites/pca-platform/content/me-v3-2-taxonomy.json": "17e87a50dc8cb4aa",
     "sites/pca-platform/content/me-v3-2-relations.json": "61172bf9281f34a2",
-    "sites/pca-platform/content/industry-packs-v2.json": "6aa6bd668d374ffb",
+    "sites/pca-platform/content/industry-packs-v2.json": "f2d554b8775607fb",
     "sites/pca-platform/content/role-packs-v2.json": "055fcf1a9bcb83a1",
     "src/lib/me-v3/scoring/engine.ts": "678c57cd6ab60fb0",
     "src/lib/me-v3/scoring/axes.ts": "50deee77b67615de",
@@ -24,7 +24,7 @@
     "src/lib/me-v3/scoring/normalize.ts": "57013f9d4dd52bb8",
     "src/lib/me-v3/scoring/quality.ts": "36b87f17746cf8b0",
     "src/lib/me-v3/scoring/zones.ts": "8ad1f3eb8256c025",
-    "src/lib/me-v3/scoring/version.ts": "18a510ca0b605f2f",
+    "src/lib/me-v3/scoring/version.ts": "c6546e928c427651",
     "src/lib/me-v3/measurement/registry.ts": "c4d5974056b6d7d9",
     "src/lib/me-v3/result/model.ts": "a56659443d97579b",
     "src/lib/me-v3/result/build.ts": "e486679c85274c40"
