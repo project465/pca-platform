@@ -96,7 +96,7 @@ export function tree(x: Inputs, d: X): Page {
   x.m.domains.forEach((v) => groups[d.bucket(v)].push(d.name(v.code)));
   const Wd = 700, Hd = 500;
   const box = (cx: number, y: number, w: number, h: number, fill: string, stroke: string, ls: string[], o: { size?: number; color?: string; weight?: number } = {}) =>
-    `<rect x="${cx - w / 2}" y="${y}" width="${w}" height="${h}" rx="10" fill="${fill}" stroke="${stroke}" stroke-width="1.4"/>` +
+    `<rect x="${cx - w / 2}" y="${y}" width="${w}" height="${h}" rx="${Math.min(22, h / 2)}" fill="${fill}" stroke="${stroke}" stroke-width="1.4"/>` +
     svgText(ls, cx, y + h / 2 - ((ls.length - 1) * (o.size ?? 12) * 1.35) / 2 + (o.size ?? 12) * 0.36, o);
   const edge = (x1: number, y1: number, x2: number, y2: number, label: string) => {
     const my = (y1 + y2) / 2;
@@ -116,8 +116,8 @@ export function tree(x: Inputs, d: X): Page {
     ${keys.map((k, i) => {
       const b = BUCKET[k], cx = leafX[i], g = groups[k], top = 214;
       const listed = g.length > 8 ? [...g.slice(0, 7), `외 ${g.length - 7}곳`] : g;
-      return `<rect x="${cx - 82}" y="${top}" width="164" height="${Hd - top - 4}" rx="10" fill="#fff" stroke="${b.color}" stroke-width="1.6"/>
-        <rect x="${cx - 82}" y="${top}" width="164" height="50" rx="10" fill="${b.color}"/><rect x="${cx - 82}" y="${top + 38}" width="164" height="12" fill="${b.color}"/>
+      return `<rect x="${cx - 82}" y="${top}" width="164" height="${Hd - top - 4}" rx="18" fill="#fff" stroke="${b.color}" stroke-width="1.6"/>
+        <rect x="${cx - 82}" y="${top}" width="164" height="50" rx="18" fill="${b.color}"/><rect x="${cx - 82}" y="${top + 30}" width="164" height="20" fill="${b.color}"/>
         ${svgText(wrapT(b.head, 10), cx, top + 21, { size: 12.5, color: "#fff", weight: 800 })}
         ${svgText([`${g.length}곳`], cx, top + 74, { size: 20, color: b.color === "#9aa6bb" ? C.ink2 : b.color, weight: 800 })}
         ${listed.length ? svgText(listed.flatMap((t) => wrapT(t, 11)).slice(0, 12), cx, top + 100, { size: 10.5, color: C.ink, weight: 600, lh: 1.42 }) : ""}

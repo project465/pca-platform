@@ -190,7 +190,7 @@ export function portfolioPage(x: Inputs, d: X): Page {
   ] : [];
 
   return P("포트폴리오 목록",
-    T(all.length ? (nh ? `포트폴리오에 넣을 결과물은 ${nh}개가 이미 있고, ${nm ? `${nm}개는 새로 만들면 됩니다` : "새로 만들 것은 없습니다"}` : `포트폴리오에 넣을 결과물은 아직 없고, 새로 만들 것이 ${nm}개입니다`) : "포트폴리오에 넣을 결과물을 아직 고르지 않으셨습니다",
+    T(all.length ? (nh ? (nm ? `포트폴리오에 넣을 결과물이 ${nh}개 있고, ${nm}개를 더 만들면 됩니다` : `포트폴리오에 넣을 결과물 ${nh}개가 이미 손에 있습니다`) : `포트폴리오에 넣을 결과물 ${nm}개를 앞으로 만들어 갑니다`) : "포트폴리오에 넣을 결과물을 아직 고르지 않으셨습니다",
       "검사와 경험 기록에서 고르신 결과물에, 07장 할 일로 새로 만들 결과물을 더해 한 목록으로 정리했습니다.") +
     (all.length ? (nh && nm
       ? `<div class="two r46"><div class="card cen">${donut([{ label: "보유", value: nh, color: PAL.teal }, { label: "새로 만들기", value: nm, color: PAL.amber }], { size: 200, center: [`${nh}`, "이미 가진 결과물"] })}<div class="lg"><span><i style="background:${PAL.teal}"></i>보유 ${nh}</span><span><i style="background:${PAL.amber}"></i>새로 만들기 ${nm}</span></div></div>`
