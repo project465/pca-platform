@@ -103,8 +103,15 @@ export const SCORING_VERSION = "me-v3-scoring.5";
  * 고르게 나눴다. **채점 판본을 올리지 않는다**: 채점과 결과 모델은 문면을
  * 읽지 않고(`v3:freeze:measure` 9번), item_id · 축 · 보기 · 값 · routing ·
  * 차례가 그대로라 같은 응답이 같은 판정으로 간다.
+ *
+ * `.8` 로 올린 까닭. **보기 넷의 글을 전기전자 · 경영 은행과 같은 말로 바꿨다**
+ * (`해 본 적 없다` · `남이 정한 대로 하거나 남이 한 것을 받아 썼다` · `내가 직접
+ * 했다` · `내가 정했고, 그 결정대로 다음 일이 진행됐다`). `option_guidance` 가
+ * 이미 적어 둔 뜻을 보기 글에 옮긴 것이다. 보기 수 · 차례 · 자리 번호의 뜻
+ * (NONE < RECEIVED < DID < DECIDED_USED)과 `option_values` 가 그대로라 같은
+ * 응답이 같은 판정으로 간다.
  */
-export const ITEM_BANK_VERSION = "ME_V3_ITEM_BANK_V2.7";
+export const ITEM_BANK_VERSION = "ME_V3_ITEM_BANK_V2.8";
 
 export type ModuleVersions = {
   core_version: string;

@@ -165,7 +165,8 @@
    조직 카드 설명을 Core 마다 따로 읽고(`ORG_HINT[core]`), 끝낸 뒤 안내가 산업·직무 수를
    그 Core 의 팩에서 세고(`여덟 산업` 을 박지 않는다), 심화 첫 화면의 띠를 걷었다(단계 첫 줄과
    같은 말이 한 화면에 두 번 섰다). 문항·보기 차례·저장 값·routing·채점은 그대로다 */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V50";
+/* V51 (2026-10-23) — 산업·직무 카드 설명도 Core 마다 따로 읽는다(`INDUSTRY_HINT[core]` · `ROLE_HINT[core]`): 팩 코드가 Core 사이에 겹쳐 간호 `간호계획 수립` 밑에 경영 문장이 섰다. 문항·보기 차례·저장 값·routing·채점은 그대로다 */
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V51";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
 /* copy.15 — 받침 한 줄과 보기 넷의 예시가 화면에 서는 글자다 */
@@ -180,7 +181,8 @@ export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V50";
    (`기술영역` → `업무 영역`, 반쪽 문장 머리글 → 주제, 보기 넷 `해 본 적 없음 · 시킨 대로 함 ·
    내가 직접 함 · 내가 정함`). 공통 글은 스무 Core 에 맞게 두고, 그 전공에만 맞는 말은
    Core 표(`CORE_COPY` · `branchCopy` · `axisAsk`)가 든다 */
-export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.29";
+/* copy.30 — 스무 Core 의 산업·직무·조직 카드 설명, 안내 화면 장면 줄, 장면 목록, 용어 받침을 그 전공 말로 채웠고 기계공학 은행 보기 넷을 전기전자·경영과 같은 글로 맞췄다(뜻·차례·값 그대로) */
+export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.30";
 
 /*
  * `V19` · `copy.14` 로 올린 까닭. **경험 빈도의 화면 말을 공통으로

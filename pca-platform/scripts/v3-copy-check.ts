@@ -29,8 +29,8 @@ import { coreFile } from "../src/lib/me-v3/core-registry";
 import { buildPlan } from "../src/lib/me-v3/runtime/blocks";
 import { branchBlock } from "../src/lib/me-v3/runtime/routing";
 import {
-  content, domainName, gridRowOf, industryGloss, industryScene, planDeps, roleName,
-  wordingOf,
+  content, domainName, gridRowOf, industryChoices, industryGloss, industryScene, orgChoices,
+  planDeps, roleChoices, roleName, wordingOf,
 } from "../src/lib/me-v3/runtime/session";
 import {
   INDUSTRY_HINT, ORG_HINT, OWNERSHIP_LABEL, OWNERSHIP_SHORT, ROLE_HINT, TIER_WHAT,
@@ -317,14 +317,32 @@ for (const [text, kinds] of byHelp) {
   if (kinds.size > 1) flag(`같은 도움말을 ${[...kinds].join(" · ")} 화면이 함께 쓴다 — ${text}`);
 }
 
-/* 고르는 자리에 붙는 한 줄도 같은 자로 잰다. **조직 표는 Core 마다 따로**
+/* 고르는 자리에 붙는 한 줄도 같은 자로 잰다. **세 표 모두 Core 마다 따로**
    들어서(`ORG_HINT[core][code]`) 펼쳐서 잰다: 그대로 펼치면 표 하나가 글
    한 줄로 세어져 길이도 코드도 재지 않은 채 지나간다 */
-const ORG_LINES = Object.fromEntries(Object.entries(ORG_HINT)
-  .flatMap(([core, t]) => Object.entries(t).map(([k, v]) => [`${core}.${k}`, v])));
-for (const [k, v] of Object.entries({ ...INDUSTRY_HINT, ...ROLE_HINT, ...ORG_LINES })) {
+const perCore = (t: Record<string, Record<string, string>>) => Object.fromEntries(Object.entries(t)
+  .flatMap(([core, x]) => Object.entries(x).map(([k, v]) => [`${core}.${k}`, v])));
+/* 산업 · 직무 표도 Core 마다 따로 든다(팩 코드가 Core 사이에 겹친다). 키에 Core 를
+   붙여 펼치므로 같은 코드가 두 Core 에 있어도 한쪽이 다른 쪽을 덮지 않는다 */
+for (const [k, v] of Object.entries({
+  ...perCore(INDUSTRY_HINT), ...perCore(ROLE_HINT), ...perCore(ORG_HINT),
+})) {
   if (CODE.test(v)) flag(`팩 설명에 내부 코드 — ${k}: ${v}`);
   if (v.length > 34) flag(`팩 설명이 길다(${v.length}자) — ${k}: ${v}`);
+}
+/* 표의 줄은 **그 Core 가 실제로 내놓는 카드**에만 붙어야 한다. 다른 Core 의
+   코드를 적어 두면 화면에는 안 서고, 그 Core 의 카드는 빈 채로 남는다 */
+for (const [t, offered] of [
+  [INDUSTRY_HINT, (c: string) => industryChoices(c).map((p) => p.code)],
+  [ROLE_HINT, (c: string) => roleChoices(c).map((p) => p.code)],
+  [ORG_HINT, (c: string) => orgChoices(c).map((p) => p.code)],
+] as const) {
+  for (const [core, x] of Object.entries(t)) {
+    const has = new Set(offered(core));
+    for (const k of Object.keys(x)) {
+      if (!has.has(k)) flag(`그 Core 가 내놓지 않는 카드의 설명 — ${core}.${k}`);
+    }
+  }
 }
 /* 보기 넷을 화면에 적는 말. **한 줄에 들어와야 한다**: 두 줄로 접히면
    둘째와 셋째를 눈으로 가르는 자리가 사라진다 */
@@ -343,7 +361,11 @@ for (const [k, v] of Object.entries(TIER_WHAT)) {
 /* ── 3. 문항 은행은 그대로인가 ────────────────────────────────── */
 const bank = coreFile<{ items: { item_id: string }[]; level_options: string[] }>(
   "ME_CORE_V3", "items");
-const LEVEL = ["없다", "남이 한 것을 받아 썼다", "내가 했다", "내가 정하고 그 결과가 쓰였다"];
+/* V2.8 에서 전기전자 · 경영 은행과 같은 말로 바꿨다. 수 · 차례 · 자리 번호의 뜻은 그대로다 */
+const LEVEL = [
+  "해 본 적 없다", "남이 정한 대로 하거나 남이 한 것을 받아 썼다", "내가 직접 했다",
+  "내가 정했고, 그 결정대로 다음 일이 진행됐다",
+];
 if (JSON.stringify(bank.level_options) !== JSON.stringify(LEVEL)) {
   flag("보기 넷의 문면이 바뀌었다 — 네 단계의 뜻이 판정 규칙과 묶여 있다");
 }

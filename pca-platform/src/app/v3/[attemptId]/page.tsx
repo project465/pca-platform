@@ -154,12 +154,14 @@ export default async function V3Screen({
     : sc.kind === "pick-role" ? "role" : sc.kind === "pick-org" ? "org" : undefined;
   const packs = pickKind === "industry"
     ? industryChoices(a0.core_code).map((p) => ({
-        code: p.code, name: p.name, gloss: INDUSTRY_HINT[p.code] ?? p.first,
+        /* 산업·직무 코드도 Core 사이에 겹쳐서(`INDUSTRY_PUBLIC_V1` · `ROLE_PLAN_V1`)
+           그 Core 의 표를 읽는다. 없으면 **그 Core 의 팩**이 든 줄로 떨어진다 */
+        code: p.code, name: p.name, gloss: INDUSTRY_HINT[a0.core_code]?.[p.code] ?? p.first,
       }))
     : pickKind === "role"
       ? roleChoices(a0.core_code).map((p) => ({
           code: p.code, name: p.name,
-          gloss: ROLE_HINT[p.code] ?? p.domains.slice(0, 3).join(" · "),
+          gloss: ROLE_HINT[a0.core_code]?.[p.code] ?? p.domains.slice(0, 3).join(" · "),
         }))
       : pickKind === "org"
         ? orgChoices(a0.core_code).map((p) => ({

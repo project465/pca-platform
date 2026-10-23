@@ -275,7 +275,12 @@ function main(): void {
      잠겨 있고 아직 다시 쓰지 않았다: 걸면 그 Core 의 검사가 이 회차와
      상관없이 깨진다 */
   const STUDENT_ONLY = /동아리|아르바이트|협찬|학생회|티켓|회장단|축제/;
-  const GRAD_REWRITTEN = ["BIZ_CORE_V1"];
+  /* 2026-10-23: 간호 · 보건 · 체육 · 심리 · 미디어 · 시각 · 패션 문면 정리 회차에서
+     석사 · 박사 · 포닥 문면에 이 낱말이 0개인 것을 확인하고 건다 */
+  const GRAD_REWRITTEN = [
+    "BIZ_CORE_V1", "NURSING_CORE_V1", "HEALTH_CORE_V1", "SPORTS_CORE_V1", "PSY_CORE_V1",
+    "MEDIA_CORE_V1", "VISUAL_CORE_V1", "STYLE_CORE_V1",
+  ];
   const gradStudent = items.filter((i) => Object.entries(i.stage_wording ?? {})
     .some(([st, t]) => st !== "bachelor" && STUDENT_ONLY.test(String(t))));
   if (GRAD_REWRITTEN.includes(code)) {
