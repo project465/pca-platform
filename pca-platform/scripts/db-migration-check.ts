@@ -76,7 +76,13 @@ function initFiles(ref: string | null): string[] {
     return [...c.base, ...c.upgrade];
   }
   const at = (p: string) => sh("git", ["show", `${ref}:./${p}`]);
-  const pkg = JSON.parse(at("package.json")) as { scripts: Record<string, string> };
+  /* 운영 갈래처럼 그 판본에 이미 `db-chain.json` 이 있으면 그것을 읽는다.
+     예전 방식으로 읽으면 목록이 비어 옛 DB 가 빈 채로 서고, 그러면
+     `이 DB 는 비어 있습니다` 로 끝나 아무것도 묻지 않는 검사가 된다 */
+  let chain: { base: string[]; upgrade: string[] } | null = null;
+  try { chain = JSON.parse(at(CHAIN)); } catch { chain = null; }
+  if (chain) return [...chain.base, ...chain.upgrade];
+  const pkg =JSON.parse(at("package.json")) as { scripts: Record<string, string> };
   const fileOf = (name: string): string[] => {
     const s = pkg.scripts[name];
     if (!s) return [];
