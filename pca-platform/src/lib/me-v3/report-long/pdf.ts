@@ -67,6 +67,8 @@ export async function drawBookPdf(opts: BookDrawOpts): Promise<Buffer> {
       await page.waitForSelector(".pg", { state: "attached", timeout: 20000 });
       await page.waitForLoadState("load", { timeout: 20000 }).catch(() => undefined);
       await page.evaluate("document.fonts.ready");
+      /* 쪽 모으기가 끝난 뒤에 뽑는다 */
+      await page.waitForSelector("html[data-packed]", { state: "attached", timeout: 30000 });
     } catch (e) {
       throw new PdfFailed("render",
         `쪽이 열렸는데 본문이 서지 않았습니다: ${(e as Error).message.split("\n")[0]}`);

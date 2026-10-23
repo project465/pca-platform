@@ -11,7 +11,8 @@
  *   GUIDE=off ATTEMPT=257 npm run report:long  직무 안내가 없는 Core 처럼 그려 본다(점검용)
  *
  * 응시마다 `var/report-long/<응시>/` 에 book.html · book.pdf · pages/p-NN.png ·
- * contact.png · REPORT.md 를 남긴다. 세는 것은 넷이다: 넘친 쪽, 쪽 수(PRO 는 60쪽 이상),
+ * contact.png · REPORT.md 를 남긴다. 세는 것은 다섯이다: 넘친 쪽, 쪽 수(PRO 는 70~80쪽),
+ * 빈 쪽(70dpi 그림에서 흰 띠가 쪽 높이의 22% 를 넘는 쪽, 표지·장 첫 쪽·쓰는 칸 쪽은 뺀다),
  * 뽑은 PDF 의 글자에서 걸리는 말(대시 · 쓰지 않는 말 · 안쪽 코드 · 법적 범위 · 다른
  * 전공의 말), 그리고 제목과 이름표의 외톨이 줄(보고만 한다). 하나라도 걸리면 1 로 끝난다.
  */
@@ -26,8 +27,46 @@ import { scoredAttempts } from "../src/lib/me-v3/report-long/data";
 import { coreFile, registry } from "../src/lib/me-v3/core-registry";
 
 const OUT = path.resolve(process.env.OUT ?? "var/report-long");
-const FONT = `file://${path.resolve("public/fonts/pretendard")}/`;
-const MIN_PRO = Number(process.env.MIN_PAGES ?? 60);
+const FONT = `file://${path.resolve("public/fonts/cm-book")}/`;
+const MIN_PRO = Number(process.env.MIN_PAGES ?? 70);
+const MAX_PRO = Number(process.env.MAX_PAGES ?? 80);
+/** 쪽 높이에서 흰 띠가 이만큼을 넘으면 빈 쪽으로 센다 */
+const BLANK_MAX = Number(process.env.BLANK_MAX ?? 0.22);
+/** 흰 띠를 세지 않는 쪽: 겉표지 · 표지 · 장 첫 쪽 · 쪽 전체가 쓰는 칸인 쪽 */
+const BLANK_EXEMPT = new Set(["outer", "cover", "chapter", "sheet"]);
+
+/**
+ * 쪽마다 가장 긴 흰 띠. 70dpi 회색 그림에서 폭 8~92% 를 훑어 245 보다 밝은 줄만
+ * 이어진 구간을 높이 10~92% 안에서 찾는다. 쓰는 칸의 줄(점선)은 그보다 어둡게 그려
+ * 내용으로 센다.
+ */
+function blankBands(pdf: string, dir: string): number[] {
+  rmSync(dir, { recursive: true, force: true }); mkdirSync(dir, { recursive: true });
+  execFileSync("pdftoppm", ["-r", "70", "-gray", pdf, path.join(dir, "g")]);
+  const files = readdirSync(dir).filter((f) => f.endsWith(".pgm")).sort((a, b) => Number(/(\d+)\.pgm$/.exec(a)![1]) - Number(/(\d+)\.pgm$/.exec(b)![1]));
+  const out = files.map((f) => {
+    const buf = readFileSync(path.join(dir, f));
+    let pos = 0; const tok: string[] = [];
+    while (tok.length < 4) {
+      while (/\s/.test(String.fromCharCode(buf[pos]))) pos++;
+      if (buf[pos] === 35) { while (buf[pos] !== 10) pos++; continue; }
+      let t = ""; while (!/\s/.test(String.fromCharCode(buf[pos]))) t += String.fromCharCode(buf[pos++]);
+      tok.push(t);
+    }
+    pos++;
+    const w = Number(tok[1]), h = Number(tok[2]);
+    const x0 = Math.floor(w * 0.08), x1 = Math.ceil(w * 0.92), y0 = Math.floor(h * 0.10), y1 = Math.ceil(h * 0.92);
+    let run = 0, best = 0;
+    for (let y = y0; y < y1; y++) {
+      let white = true;
+      for (let x = x0; x < x1; x += 2) if (buf[pos + y * w + x] <= 245) { white = false; break; }
+      run = white ? run + 1 : 0; best = Math.max(best, run);
+    }
+    return Math.round((best / h) * 1000) / 1000;
+  });
+  rmSync(dir, { recursive: true, force: true });
+  return out;
+}
 
 /** 직무 안내 검사의 쓰지 않는 말을 그대로 읽는다. 두 벌로 적어 두면 한쪽만 늘어난다 */
 function bannedFromGuideCheck(): RegExp[] {
@@ -107,7 +146,7 @@ const WRAP_JS = `(() => {
   return out;
 })()`;
 
-type Row = { id: string; core: string; tier: string; org: string; region: string | null; pages: number; designed: number; over: string[]; hits: Hit[]; wraps: number; notes: string[]; ms: number };
+type Row = { id: string; core: string; tier: string; org: string; region: string | null; pages: number; designed: number; over: string[]; hits: Hit[]; wraps: number; notes: string[]; ms: number; blank: string[]; maxBlank: number; bytes: number };
 
 async function one(id: string, uni: string | null): Promise<Row> {
   const t0 = Date.now();
@@ -123,6 +162,10 @@ async function one(id: string, uni: string | null): Promise<Row> {
   await p.goto("file://" + hf, { waitUntil: "load" });
   await p.evaluate("document.fonts.ready");
   await p.emulateMedia({ media: "print" });
+  /* 쪽 모으기가 끝난 뒤에 잰다. 쪽 크기를 mm 로 박아 두어 화면과 인쇄에서 쪽 높이가 같다 */
+  await p.waitForSelector("html[data-packed]", { timeout: 30000 });
+  const kinds = await p.evaluate(`[...document.querySelectorAll("section.pg")].map((s) => s.getAttribute("data-kind") || "plain")`) as string[];
+  const titles = await p.evaluate(`[...document.querySelectorAll("section.pg")].map((s) => [...s.querySelectorAll(":scope .bd > .seg")].map((g, k) => k ? "+" : "").length > 1 ? s.getAttribute("data-title") + " 외 " + (s.querySelectorAll(".bd > .seg").length - 1) : s.getAttribute("data-title"))`) as string[];
   const over = await p.evaluate(OVER_JS) as { i: number; title: string; over: number; side: number; fill: number }[];
   const wraps = await p.evaluate(WRAP_JS) as { i: number; txt: string }[];
   const pdf = path.join(dir, "book.pdf");
@@ -136,22 +179,31 @@ async function one(id: string, uni: string | null): Promise<Row> {
   } catch { /* 이음 그림이 없어도 검사는 이어 간다 */ }
   const text = execFileSync("pdftotext", ["-layout", pdf, "-"]).toString();
   writeFileSync(path.join(dir, "book.txt"), text);
+  const bands = blankBands(pdf, path.join(dir, "gray"));
+  const counted = bands.map((b, i) => ({ i: i + 1, b, title: titles[i] ?? "", kind: kinds[i] ?? "plain" })).filter((x) => !BLANK_EXEMPT.has(x.kind));
+  const blank = counted.filter((x) => x.b > BLANK_MAX);
+  const maxBlank = counted.reduce((a, x) => Math.max(a, x.b), 0);
+  const bytes = Number(execFileSync("stat", ["-c", "%s", pdf]).toString().trim());
   const reg = registry().cores.find((c) => c.code === rep.core);
   const hits = scan(text, rep.core, [reg?.name_ko ?? "", ...(reg?.aliases ?? [])].filter(Boolean));
   const bad = over.filter((o) => o.over > 1 || o.side > 1);
-  const row: Row = { id, core: rep.core, tier: rep.tier, org: uni ?? "", region: rep.region, pages: n, designed: rep.pages.length, over: bad.map((o) => `${o.i}쪽(${o.title}) 아래 ${o.over}px 옆 ${o.side}px`), hits, wraps: wraps.length, notes: rep.notes, ms: Date.now() - t0 };
+  const row: Row = { id, core: rep.core, tier: rep.tier, org: uni ?? "", region: rep.region, pages: n, designed: rep.pages.length, over: bad.map((o) => `${o.i}쪽(${o.title}) 아래 ${o.over}px 옆 ${o.side}px`), hits, wraps: wraps.length, notes: rep.notes, ms: Date.now() - t0, blank: blank.map((x) => `${x.i}쪽(${x.title}) ${Math.round(x.b * 100)}%`), maxBlank, bytes };
   writeFileSync(path.join(dir, "REPORT.md"), [
     `# 긴 결과지 점검 · 응시 ${id}${REGION ? ` · 지역 ${REGION}` : ""}`, "",
     `- Core ${rep.core} · ${rep.tier} · 기관 ${uni ?? "없음"} · 지역 ${rep.region ?? "없음"}`,
-    `- 쪽 수 **${n}** (설계 ${rep.pages.length}) · 넘친 쪽 ${bad.length} · 걸린 말 ${hits.length} · 외톨이 줄 ${wraps.length}`,
+    `- 쪽 수 **${n}** (설계 ${rep.pages.length}) · 넘친 쪽 ${bad.length} · 걸린 말 ${hits.length} · 빈 쪽 ${blank.length} (가장 긴 흰 띠 ${Math.round(maxBlank * 100)}%) · PDF ${(bytes / 1048576).toFixed(2)}MB · 외톨이 줄 ${wraps.length}`,
     ...rep.notes.map((x) => `- 사정: ${x}`), "",
     "## 넘친 쪽", ...(bad.length ? bad.map((o) => `- ${o.i}쪽 ${o.title} · 아래 ${o.over}px · 옆 ${o.side}px`) : ["- 없음"]), "",
+    `## 빈 쪽 (흰 띠 > ${Math.round(BLANK_MAX * 100)}%)`, ...(blank.length ? blank.map((x) => `- ${x.i}쪽 ${x.title} · ${Math.round(x.b * 100)}%`) : ["- 없음"]), "",
     "## 걸린 말", ...(hits.length ? hits.map((h) => `- ${h.rule} · …${h.at}…`) : ["- 없음"]), "",
     "## 외톨이 줄(보고만)", ...(wraps.length ? wraps.slice(0, 80).map((w) => `- ${w.i}쪽 · ${w.txt}`) : ["- 없음"]), "",
-    "## 쪽", "| 쪽 | 제목 | 채움 |", "|---|---|---|", ...over.map((o) => `| ${o.i} | ${o.title} | ${o.fill}% |`), "",
+    "## 쪽", "| 쪽 | 제목 | 종류 | 채움 | 흰 띠 |", "|---|---|---|---|---|", ...over.map((o) => `| ${o.i} | ${o.title} | ${kinds[o.i - 1] ?? ""} | ${o.fill}% | ${Math.round((bands[o.i - 1] ?? 0) * 100)}% |`), "",
   ].join("\n"));
   return row;
 }
+
+/** 걸리는 것: 넘친 쪽 · 걸린 말 · 빈 쪽 · PRO 쪽 수가 범위 밖 */
+const bad = (r: Row) => !!(r.over.length || r.hits.length || r.blank.length || (r.tier === "PRO" && (r.pages < MIN_PRO || r.pages > MAX_PRO)));
 
 async function main(): Promise<void> {
   mkdirSync(OUT, { recursive: true });
@@ -175,19 +227,20 @@ async function main(): Promise<void> {
     try {
       const r = await one(p.id, p.uni);
       rows.push(r);
-      console.log(`${r.over.length || r.hits.length || (r.tier === "PRO" && r.pages < MIN_PRO) ? "  걸림" : "  통과"}  ${p.id} ${r.core} ${r.org} → ${r.pages}쪽 · 넘침 ${r.over.length} · 걸린 말 ${r.hits.length} · 외톨이 ${r.wraps} · ${r.ms}ms${r.notes.length ? ` · ${r.notes.join(" / ")}` : ""}`);
+      console.log(`${bad(r) ? "  걸림" : "  통과"}  ${p.id} ${r.core} ${r.org} → ${r.pages}쪽 · 넘침 ${r.over.length} · 걸린 말 ${r.hits.length} · 빈 쪽 ${r.blank.length} (최대 흰 띠 ${Math.round(r.maxBlank * 100)}%) · ${(r.bytes / 1048576).toFixed(2)}MB · 외톨이 ${r.wraps} · ${r.ms}ms${r.notes.length ? ` · ${r.notes.join(" / ")}` : ""}`);
       for (const o of r.over.slice(0, 6)) console.log(`        넘침 ${o}`);
+      for (const o of r.blank.slice(0, 12)) console.log(`        빈 쪽 ${o}`);
       for (const h of r.hits.slice(0, 8)) console.log(`        ${h.rule} · …${h.at}…`);
     } catch (e) {
       console.log(`  실패  ${p.id}: ${(e as Error).stack?.split("\n").slice(0, 3).join(" | ")}`);
-      rows.push({ id: p.id, core: "?", tier: "?", org: p.uni ?? "", region: null, pages: 0, designed: 0, over: ["실패"], hits: [], wraps: 0, notes: [String((e as Error).message)], ms: 0 });
+      rows.push({ id: p.id, core: "?", tier: "?", org: p.uni ?? "", region: null, pages: 0, designed: 0, over: ["실패"], hits: [], wraps: 0, notes: [String((e as Error).message)], ms: 0, blank: [], maxBlank: 0, bytes: 0 });
     }
   }
-  const md = ["# 긴 결과지 점검 요약", "", "| 응시 | Core | 기관 | 지역 | 쪽 | 넘침 | 걸린 말 | 외톨이 | 사정 |", "|---|---|---|---|---|---|---|---|---|",
-    ...rows.map((r) => `| ${r.id} | ${r.core} | ${r.org} | ${r.region ?? "-"} | ${r.pages} | ${r.over.length} | ${r.hits.length} | ${r.wraps} | ${r.notes.join("; ")} |`)].join("\n");
+  const md = ["# 긴 결과지 점검 요약", "", "| 응시 | Core | 기관 | 지역 | 쪽 | 최대 흰 띠 | 빈 쪽 | 넘침 | 걸린 말 | PDF | 외톨이 | 사정 |", "|---|---|---|---|---|---|---|---|---|---|---|---|",
+    ...rows.map((r) => `| ${r.id} | ${r.core} | ${r.org} | ${r.region ?? "-"} | ${r.pages} | ${Math.round(r.maxBlank * 100)}% | ${r.blank.length} | ${r.over.length} | ${r.hits.length} | ${(r.bytes / 1048576).toFixed(2)}MB | ${r.wraps} | ${r.notes.join("; ")} |`)].join("\n");
   writeFileSync(path.join(OUT, "SUMMARY.md"), md + "\n");
   writeFileSync(path.join(OUT, "summary.json"), JSON.stringify(rows, null, 1));
-  const failed = rows.filter((r) => r.over.length || r.hits.length || (r.tier === "PRO" && r.pages < MIN_PRO));
+  const failed = rows.filter(bad);
   console.log(`\n${rows.length}권 · 걸림 ${failed.length} → ${path.join(OUT, "SUMMARY.md")}`);
   process.exit(failed.length ? 1 : 0);
 }

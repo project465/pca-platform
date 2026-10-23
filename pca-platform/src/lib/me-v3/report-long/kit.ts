@@ -7,7 +7,9 @@ import { STEP_WORD, ZONE_WORD, type ZoneKey } from "./derive";
 
 export type Page = {
   part: string; partName: string; title: string; body: string;
-  kind?: "outer" | "cover" | "chapter" | "plain";
+  kind?: "outer" | "cover" | "chapter" | "plain" | "sheet";
+  /** 한 장으로 읽어야 하는 쪽. 쪽 모으기가 나누지 않고 통째로만 옮긴다 */
+  keep?: boolean;
 };
 
 /** 꺾쇠를 막고 대시를 쉼표로 푼다. 사전 자료에 섞인 대시가 종이에 나가지 않게 한다 */
@@ -80,17 +82,17 @@ export function lineArt(levels: (number | null)[]): string {
 
 export function css(fontBase: string): string {
   return `
-@font-face{font-family:"Pretendard";src:url("${fontBase}PretendardVariable.woff2") format("woff2-variations"),url("${fontBase}PretendardVariable.woff2") format("woff2");font-weight:45 920;font-style:normal;font-display:block}
+${[400, 600, 700, 800].map((w) => `@font-face{font-family:"CM Book Sans";src:url("${fontBase}cm-book-sans-${w}.woff2") format("woff2");font-weight:${w};font-style:normal;font-display:block}`).join("")}PretendardVariable.woff2") format("woff2");font-weight:45 920;font-style:normal;font-display:block}
 @page{size:A4;margin:0}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:#e9ecf1}
-body{font-family:Pretendard,"Noto Sans CJK KR","Noto Sans KR",sans-serif;color:${C.ink};font-size:9.6pt;line-height:1.58;word-break:keep-all;overflow-wrap:break-word;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.pg{width:210mm;height:297mm;padding:13mm 15mm 11mm;background:#fff;position:relative;overflow:hidden;display:flex;flex-direction:column;page-break-after:always;break-after:page;margin:0 auto}
+body{font-family:"CM Book Sans",Pretendard,"Noto Sans CJK KR","Noto Sans KR",sans-serif;color:${C.ink};font-size:9.6pt;line-height:1.58;word-break:keep-all;overflow-wrap:break-word;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.pg{contain:layout paint;width:210mm;height:297mm;padding:13mm 15mm 11mm;background:#fff;position:relative;overflow:hidden;display:flex;flex-direction:column;page-break-after:always;break-after:page;margin:0 auto}
 @media screen{.pg{margin:0 auto 6mm;box-shadow:0 1px 6px rgba(20,38,77,.12)}}
 .rh{display:flex;align-items:baseline;gap:10px;border-bottom:1.5px solid ${C.navy};padding-bottom:2.2mm;margin-bottom:5mm;font-size:8.6pt;color:${C.ink3}}
 .rh-n{font-weight:800;color:#a8871c;letter-spacing:.04em}.rh-t{font-weight:700;color:${C.navy}}.rh-r{margin-left:auto}
 .rf{display:flex;gap:12px;border-top:1px solid ${C.line};padding-top:2mm;margin-top:3mm;font-size:8pt;color:${C.ink3}}.rf-no{margin-left:auto;font-weight:700;color:${C.navy}}
-.bd{flex:1;display:flex;flex-direction:column;gap:4.2mm;min-height:0}
+.bd{flex:1;display:flex;flex-direction:column;gap:6.5mm;min-height:0}.seg{flex:none;display:flex;flex-direction:column;gap:4.2mm}.seg+.seg{border-top:1px solid #d6dbe4;padding-top:5.5mm}.cont{font-size:8.6pt;font-weight:700;color:#a8871c;letter-spacing:.02em}
 .ph h1{font-size:18.5pt;line-height:1.32;margin:0;color:${C.navy};font-weight:800;letter-spacing:-.015em;text-wrap:balance}
 .dek{font-size:10.4pt;color:${C.ink2};margin:2mm 0 0;line-height:1.62;text-wrap:pretty}
 .sh{font-size:11pt;color:${C.navy};margin:1mm 0 -1.5mm;font-weight:800;display:flex;align-items:baseline;gap:8px}.sh span{font-size:8.6pt;color:${C.ink3};font-weight:500}
@@ -100,7 +102,7 @@ p{margin:0}p,li,td,dd{text-wrap:pretty}.nw{white-space:nowrap;font-style:normal}
 .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:4mm}.g2{display:grid;grid-template-columns:1fr 1fr;gap:4mm}.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:3mm}
 .card{border:1px solid ${C.line};border-radius:6px;padding:4mm;background:#fff}.card.cen{display:flex;flex-direction:column;align-items:center;gap:2mm;text-align:center}.card.cen svg{max-width:100%}
 .note{border-left:3px solid ${C.blue};background:#f5f8fe;padding:3mm 3.6mm;border-radius:0 5px 5px 0}.note b{display:block;color:${C.navy};margin-bottom:1mm;font-size:9.8pt}.note.warm{border-color:${C.amber};background:#fdf7ec}
-.band{margin-top:auto;display:flex;gap:4mm;align-items:baseline;background:#eef3fc;border-radius:6px;padding:3.2mm 4mm;font-size:9.3pt}.band b{color:${C.navy};white-space:nowrap}
+.band{display:flex;gap:4mm;align-items:baseline;background:#eef3fc;border-radius:6px;padding:3.2mm 4mm;font-size:9.3pt}.band b{color:${C.navy};white-space:nowrap}
 .ls{margin:0;padding-left:4.5mm}.ls li{margin:.6mm 0}
 .tag{display:inline-block;color:#fff;background:${C.navy};border-radius:999px;padding:.3mm 2.4mm;font-size:8.2pt;font-weight:700;white-space:nowrap}
 .ztag{display:inline-flex;align-items:center;gap:1.6mm;font-size:8.6pt;font-weight:700;color:${C.ink2};white-space:nowrap}.ztag::before{content:"";width:3mm;height:3mm;border-radius:2px;background:var(--z)}
@@ -130,7 +132,7 @@ p{margin:0}p,li,td,dd{text-wrap:pretty}.nw{white-space:nowrap;font-style:normal}
 .est3{display:grid;grid-template-columns:repeat(3,1fr);gap:2mm;width:100%;margin-top:1mm}.est3 div{background:#f2f5fb;border-radius:5px;padding:1.6mm 1mm;text-align:center}.est3 span{display:block;font-size:8pt;color:${C.ink3}}.est3 b{font-size:10pt;color:${C.navy}}
 .na-box{border:1.5px dashed ${C.line};border-radius:8px;padding:6mm;text-align:center;color:${C.ink2};width:100%}.na-box b{display:block;color:${C.navy};margin-bottom:2mm}
 .rec{border-left:4px solid var(--c);padding:2.4mm 3.6mm;background:#fafbfc;border-radius:0 6px 6px 0}.rec-h{display:flex;flex-direction:column;gap:.4mm;margin-bottom:1.6mm}.rec-h b{color:${C.navy};font-size:10.2pt}.rec-h span{font-size:8.4pt;color:${C.ink3}}
-.wl{display:flex;flex-direction:column;gap:0}.wl i{display:block;height:7.6mm;border-bottom:1px dashed #c3c9d4}.wl-l{font-size:8.6pt;color:${C.ink3};font-weight:600}
+.wl{display:flex;flex-direction:column;gap:0}.wl i{display:block;height:7.6mm;border-bottom:1px dashed #9aa3b2}.wl-l{font-size:8.6pt;color:${C.ink3};font-weight:600}
 .lo{margin:0;padding-left:5mm;display:flex;flex-direction:column;gap:1.6mm}.lo li b{display:block;color:${C.navy}}.lo li span{font-size:8.8pt;color:${C.ink2}}.lo.big li{font-size:10pt}.lo.big li span{font-size:9.3pt}
 .prose{display:flex;flex-direction:column;gap:3mm}.pr{display:grid;grid-template-columns:24mm 1fr;gap:4mm;border-bottom:1px solid ${C.line2};padding-bottom:3mm}.pr-n{font-weight:800;color:${C.blue};font-size:9.6pt}.pr p{font-size:10pt;line-height:1.68}
 .story{border:1px solid ${C.line};border-radius:6px;padding:3.4mm}.story-h{display:flex;justify-content:space-between;gap:4mm;margin-bottom:2mm}.story-h b{color:${C.navy}}.story-h span{font-size:8.4pt;color:${C.ink3};text-align:right}
@@ -173,12 +175,107 @@ p{margin:0}p,li,td,dd{text-wrap:pretty}.nw{white-space:nowrap;font-style:normal}
 
 /** 쪽 하나를 틀에 담는다 */
 export function shell(p: Page, i: number, total: number, ctx: { issuer: string; major: string; tier: string; person: string; answeredOn: string }): string {
-  if (p.kind === "outer") return `<section class="pg outer" data-title="${E(p.title)}">${p.body}</section>`;
-  if (p.kind === "cover") return `<section class="pg cover" data-title="${E(p.title)}">${p.body}</section>`;
+  const attrs = (k: string) => `data-title="${E(p.title)}" data-kind="${k}" data-part="${E(p.partName)}" data-base="${E(p.title.replace(/ \(\d+\)$/, "").replace(/ · 이어서$/, ""))}"${p.keep ? ` data-keep="1"` : ""}`;
+  if (p.kind === "outer") return `<section class="pg outer" ${attrs("outer")}>${p.body}</section>`;
+  if (p.kind === "cover") return `<section class="pg cover" ${attrs("cover")}>${p.body}</section>`;
   const head = p.kind === "chapter" ? "" : `<header class="rh"><span class="rh-n">${p.part ? `PART ${p.part}` : ""}</span><span class="rh-t">${E(p.partName)}</span><span class="rh-r">${E(ctx.issuer)} · 진로 분석 리포트</span></header>`;
   const foot = `<footer class="rf"><span>CareerMatri · ${E(ctx.major)} · ${E(ctx.tier)}</span><span>${E(ctx.person)} 님 · ${E(ctx.answeredOn)} 응답</span><span class="rf-no">${i + 1} / ${total}</span></footer>`;
-  return `<section class="pg ${p.kind === "chapter" ? "chap" : ""}" data-title="${E(p.title)}">${head}<div class="bd">${p.body}</div>${foot}</section>`;
+  const body = p.kind === "chapter" ? p.body : `<div class="seg">${p.body}</div>`;
+  return `<section class="pg ${p.kind === "chapter" ? "chap" : ""}" ${attrs(p.kind ?? "plain")}>${head}<div class="bd">${body}</div>${foot}</section>`;
 }
+
+/**
+ * 쪽 모으기. 글꼴이 다 내려온 뒤 브라우저에서 한 번 돈다(웹과 종이가 같은 일을 한다).
+ *
+ * 같은 장 안에서 뒤 쪽의 내용을 앞 쪽의 남은 자리로 차례대로 끌어 올린다. 통째로 들어가면
+ * 통째로, 아니면 덩이(표 · 상자 · 문단) 단위로 들어가는 데까지 옮기고, 긴 표는 줄 단위로
+ * 나눠 머리줄을 다시 단다. 차례는 바꾸지 않는다. 제목이나 작은 머리가 쪽 끝에 혼자 남지
+ * 않게 다음 덩이와 함께 넘긴다. `data-keep` 이 붙은 쪽(한 장으로 읽어야 하는 쪽)은
+ * 통째로만 옮긴다. 넣어 보고 넘치면 되돌린다. 다 모은 뒤 쪽 번호와 차례를 다시 적는다.
+ */
+export const PACK_JS = String.raw`(function () {
+  function plain(pg) { return pg.getAttribute("data-kind") === "plain"; }
+  function bdOf(pg) { return pg.querySelector(".bd"); }
+  function segs(pg) { return Array.prototype.slice.call(bdOf(pg).children).filter(function (e) { return e.classList.contains("seg"); }); }
+  function fits(pg) {
+    var bd = bdOf(pg); var b = bd.getBoundingClientRect().bottom; var m = 0;
+    var ss = segs(pg); var last = ss[ss.length - 1]; if (!last) return true;
+    m = last.getBoundingClientRect().bottom;
+    last.querySelectorAll("*").forEach(function (e) { var r = e.getBoundingClientRect(); if (r.height && r.width && r.bottom > m) m = r.bottom; });
+    return m <= b + 0.5;
+  }
+  function isHead(e) {
+    if (!e) return false;
+    if (e.matches("h1,h2,h3,h4,.ph,.sh,.cont")) return true;
+    return false;
+  }
+  /* 표를 줄 단위로 옮긴다. 옮긴 줄이 둘보다 적으면 되돌린다 */
+  function splitTable(tb, into, pg) {
+    var body = tb.tBodies[0]; if (!body || body.rows.length < 4) return false;
+    var cl = tb.cloneNode(false); if (tb.tHead) cl.appendChild(tb.tHead.cloneNode(true));
+    var nb = document.createElement("tbody"); cl.appendChild(nb); into.appendChild(cl);
+    var n = 0;
+    while (body.rows.length > 1) {
+      nb.appendChild(body.rows[0]);
+      if (!fits(pg)) { body.insertBefore(nb.lastElementChild, body.firstElementChild); break; }
+      n++;
+    }
+    if (n < 2) { while (nb.rows.length) body.insertBefore(nb.lastElementChild, body.firstElementChild); into.removeChild(cl); return false; }
+    return true;
+  }
+  /* 다음 쪽의 앞 덩이를 cur 로 끌어 올린다. 다 옮겼으면 true */
+  function pull(cur, nx) {
+    var keep = nx.getAttribute("data-keep") === "1";
+    var bd = bdOf(cur);
+    while (segs(nx).length) {
+      var s = segs(nx)[0];
+      bd.appendChild(s);
+      if (fits(cur)) continue;
+      bdOf(nx).insertBefore(s, bdOf(nx).firstChild);
+      if (keep) return false;
+      var ns = document.createElement("div"); ns.className = s.className; bd.appendChild(ns);
+      var moved = 0;
+      while (s.firstElementChild) {
+        var c = s.firstElementChild; ns.appendChild(c);
+        if (fits(cur)) { moved++; continue; }
+        s.insertBefore(c, s.firstElementChild);
+        if (c.tagName === "TABLE" && splitTable(c, ns, cur)) moved++;
+        break;
+      }
+      while (ns.lastElementChild && isHead(ns.lastElementChild)) { s.insertBefore(ns.lastElementChild, s.firstElementChild); moved--; }
+      var meaningful = Array.prototype.some.call(ns.children, function (e) { return !isHead(e); });
+      if (!meaningful) { while (ns.lastElementChild) s.insertBefore(ns.lastElementChild, s.firstElementChild); bd.removeChild(ns); return false; }
+      if (s.firstElementChild && !s.firstElementChild.matches(".ph,.cont")) {
+        var t = document.createElement("p"); t.className = "cont"; t.textContent = (nx.getAttribute("data-base") || "") + " · 이어서";
+        s.insertBefore(t, s.firstElementChild);
+      }
+      return false;
+    }
+    return true;
+  }
+  function run() {
+    var list = Array.prototype.slice.call(document.querySelectorAll("section.pg"));
+    for (var i = 0; i < list.length; i++) {
+      var cur = list[i]; if (!plain(cur) || cur.getAttribute("data-keep") === "1") continue;
+      var part = cur.getAttribute("data-part");
+      while (i + 1 < list.length) {
+        var nx = list[i + 1];
+        if (!plain(nx) || nx.getAttribute("data-part") !== part) break;
+        if (pull(cur, nx)) { nx.parentNode.removeChild(nx); list.splice(i + 1, 1); continue; }
+        break;
+      }
+    }
+    var all = Array.prototype.slice.call(document.querySelectorAll("section.pg"));
+    all.forEach(function (pg, k) { var n = pg.querySelector(".rf-no"); if (n) n.textContent = (k + 1) + " / " + all.length; });
+    document.querySelectorAll("[data-toc-part]").forEach(function (el) {
+      var name = el.getAttribute("data-toc-part");
+      for (var k = 0; k < all.length; k++) if (all[k].getAttribute("data-part") === name) { el.textContent = String(k + 1); break; }
+    });
+    document.documentElement.setAttribute("data-packed", String(all.length));
+  }
+  function go() { (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function () { requestAnimationFrame(run); }); }
+  if (document.readyState === "complete") go(); else window.addEventListener("load", go);
+})();`;
 
 export function chapter(no: string, name: string, promise: string, inside: string[], art: string): Page {
   return {

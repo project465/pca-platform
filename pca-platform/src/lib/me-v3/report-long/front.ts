@@ -171,6 +171,6 @@ export function toc(pages: Page[]): Page {
   });
   return {
     part: "", partName: "들어가며", title: "차례",
-    body: T("차례") + `<div class="toc">${starts.map((s) => `<div class="toc-r"><span class="toc-n">${s.no || "··"}</span><div class="toc-b"><b>${E(s.name)}</b><span>${s.titles.map(E).join(" · ")}</span></div><span class="toc-p">${s.at}</span></div>`).join("")}</div>`,
+    body: T("차례") + `<div class="toc">${starts.map((s) => `<div class="toc-r"><span class="toc-n">${s.no || "··"}</span><div class="toc-b"><b>${E(s.name)}</b><span>${s.titles.map(E).join(" · ")}</span></div><span class="toc-p" data-toc-part="${E(s.name)}">${s.at}</span></div>`).join("")}</div>`,
   };
 }

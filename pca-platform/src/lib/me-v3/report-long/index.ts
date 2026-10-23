@@ -12,7 +12,7 @@ import { loadInputs } from "./data";
 import { loadGuide } from "./guide";
 import { derive } from "./derive";
 import { regionView } from "./region";
-import { E, IC, PAL, ZC, chapter, css, shell, type Page } from "./kit";
+import { E, IC, PACK_JS, PAL, ZC, chapter, css, shell, type Page } from "./kit";
 import { about, counselor, cover, howToRead, outer, toc } from "./front";
 import { ch1Pages } from "./ch1";
 import { ch2Pages } from "./ch2";
@@ -27,7 +27,7 @@ import type { Inputs, RegionKey } from "./types";
 
 export type LongReport = {
   html: string;
-  pages: { title: string; part: string }[];
+  pages: { title: string; part: string; kind: string }[];
   /** 만들면서 남긴 사정(직무 안내 없음 · 지역 자료 없음 등). 화면에 내보내지 않는다 */
   notes: string[];
   core: string;
@@ -36,7 +36,7 @@ export type LongReport = {
 };
 
 export type BuildOpts = {
-  /** Pretendard 파일이 있는 자리(끝에 `/`). 웹은 `/fonts/pretendard/` */
+  /** 책자 글꼴(`cm-book-sans-*.woff2`)이 있는 자리(끝에 `/`). 웹은 `/fonts/cm-book/` */
   fontBase?: string;
   /** 점검용: 지역 장을 끄거나(`off`) 다른 권역 자료로 그려 본다. 제품 경로는 넘기지 않는다 */
   region?: RegionKey | "off";
@@ -94,10 +94,10 @@ export function assemble(x: Inputs): { pages: Page[]; notes: string[]; region: s
   return { pages: P, notes, region: rv?.key ?? null };
 }
 
-export function renderHtml(x: Inputs, pages: Page[], fontBase = "/fonts/pretendard/"): string {
+export function renderHtml(x: Inputs, pages: Page[], fontBase = "/fonts/cm-book/"): string {
   const ctx = { issuer: x.issuer, major: x.major, tier: x.tier, person: x.person, answeredOn: x.answeredOn };
   const title = `${x.person} 님 진로 분석 리포트 · CareerMatri`;
-  return `<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${E(title)}</title><style>${css(fontBase)}</style></head><body>${pages.map((p, i) => shell(p, i, pages.length, ctx)).join("")}</body></html>`;
+  return `<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${E(title)}</title><style>${css(fontBase)}</style></head><body>${pages.map((p, i) => shell(p, i, pages.length, ctx)).join("")}<script>${PACK_JS}</script></body></html>`;
 }
 
 export async function buildLongReport(attemptId: string, opts: BuildOpts = {}): Promise<LongReport> {
@@ -108,7 +108,7 @@ export async function buildLongReport(attemptId: string, opts: BuildOpts = {}): 
   for (const n of notes) console.warn(`[report-long] attempt=${attemptId} core=${x.coreCode} ${n}`);
   return {
     html: renderHtml(x, pages, opts.fontBase),
-    pages: pages.map((p) => ({ title: p.title, part: p.partName })),
+    pages: pages.map((p) => ({ title: p.title, part: p.partName, kind: p.kind ?? "plain" })),
     notes, core: x.coreCode, tier: x.tier, region,
   };
 }

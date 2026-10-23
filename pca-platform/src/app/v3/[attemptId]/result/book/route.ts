@@ -26,7 +26,7 @@ export async function GET(
   if (!a) return new Response("not found", { status: 404 });
   if (!(await latestResult(attemptId))) return new Response("not found", { status: 404 });
   if (a.tier !== "PRO") redirect(`/v3/${encodeURIComponent(attemptId)}/result`);
-  const rep = await buildLongReport(attemptId, { fontBase: "/fonts/pretendard/" });
+  const rep = await buildLongReport(attemptId, { fontBase: "/fonts/cm-book/" });
   return new Response(rep.html, {
     headers: {
       "content-type": "text/html; charset=utf-8",
