@@ -72,7 +72,7 @@ async function one(run: { uni: string; leaf: string; name: string }, browser: im
   const st = (await p.locator("body").innerText()).replace(/\s+/g, " ");
   ok("내 학과가 이미 적혀 있다", st.includes(seat.leaf.name), seat.leaf.name);
 
-  await p.locator('form button[type="submit"]').first().click();
+  await p.getByRole("button", { name: /검사 시작하기/ }).first().click(); /* 첫 폼은 머리띠의 로그아웃이다 */
   await p.waitForURL(/\/v3\/start/, { timeout: 30000 }).catch(() => undefined);
   await p.waitForLoadState("networkidle").catch(() => undefined);
   await p.getByText("학부", { exact: true }).click();

@@ -260,7 +260,7 @@ async function main(): Promise<void> {
      * 자리다**: 등급은 이용권이 정하고 화면이 고를 수 없다. 처음에는 이
      * 걸음을 몰라 `/v3/start` 에서 응시가 안 열렸다고 적었다.
      */
-    await p.locator('form button[type="submit"]').first().click();
+    await p.getByRole("button", { name: /검사 시작하기/ }).first().click(); /* 첫 폼은 머리띠의 로그아웃이다 */
     await p.waitForURL(/\/v3\/start/, { timeout: 30000 }).catch(() => undefined);
     await p.waitForLoadState("networkidle").catch(() => undefined);
     const common = (await p.locator("body").innerText()).replace(/\s+/g, " ");
