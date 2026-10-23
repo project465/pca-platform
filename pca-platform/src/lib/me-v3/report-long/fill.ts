@@ -10,13 +10,13 @@ import type { Inputs } from "./types";
 import { AXES, STEP_WORD, type X } from "./derive";
 import { E, H, chips, ul, type Page } from "./kit";
 import { j, polite } from "./text";
-import type { FitGroup } from "./region";
+import type { FitGroup, ROrg } from "./region";
 
 const F = (part: string, partName: string, title: string, sub: string, body: string): Page =>
   ({ part, partName, title, kind: "fill", body: H(title, sub) + body });
 
 /** 장 이름(partName)마다 채움 쪽. 차례가 곧 먼저 쓰는 차례다 */
-export function fillPages(x: Inputs, d: X, part3: string, region: { name: string; sources: string[]; groups: FitGroup[] } | null): Record<string, Page[]> {
+export function fillPages(x: Inputs, d: X, part3: string, region: { name: string; sources: string[]; groups: FitGroup[]; neighbor?: ROrg[]; listed?: ROrg[]; label?: string } | null): Record<string, Page[]> {
   const out: Record<string, Page[]> = {};
   const add = (p: Page) => { (out[p.partName] ??= []).push(p); };
 
@@ -91,11 +91,50 @@ export function fillPages(x: Inputs, d: X, part3: string, region: { name: string
       `<div class="two"><div>${ul(g.postingCheck.slice(0, 4).map(E))}</div><div><p>${E(g.watch)}</p>${chips(g.portfolio.slice(0, 4), "art")}</div></div>`));
   }
 
-  /* 05 지역: 잘 맞는 묶음에서 표에 다 싣지 못한 회사(명단과 공시 값 그대로) */
-  if (region) for (const g of region.groups.filter((v) => v.tier === "A" && v.orgs.length > 4).slice(0, 3)) {
-    const more = g.orgs.slice(4, 14);
-    add(F("05", region.name, `${g.pack.name_ko} 쪽 회사 더 보기`, `${g.orgs.length}곳 가운데 앞의 표에 다 싣지 못한 곳 · 공개 명단과 공시 값`,
-      `<table class="tb tb-xs"><tbody>${more.map((o) => `<tr><td class="w30"><b>${E(o.name)}</b>${o.listed ? ` <span class="mut sm">${E(o.listed)}</span>` : ""}</td><td>${E(o.sector)}</td><td class="mut">${E((o.product || "").length > 40 ? `${(o.product || "").slice(0, 39)}…` : o.product || "")}</td></tr>`).join("")}</tbody></table>`));
+  /* 05 지역: 표에 다 싣지 못한 회사(명단과 공시 값 그대로). 다섯 곳씩 나눠 두어 남은 자리 크기에 맞춰 들어가게 한다.
+     겹치지 않게 잘라서, 두 조각이 함께 실려도 같은 회사가 두 번 나오지 않는다 */
+  if (region) for (const g of region.groups.filter((v) => (v.tier === "A" || v.tier === "B") && v.orgs.length > 4).slice(0, 4)) {
+    for (let k = 4; k < Math.min(g.orgs.length, 24); k += 5) {
+      const more = g.orgs.slice(k, k + 5);
+      add(F("05", region.name, `${g.pack.name_ko} 쪽 회사${k > 4 ? " · 이어서" : " 더 보기"}`, `${g.orgs.length}곳 가운데 ${k + 1}~${k + more.length}번째 · 공개 명단과 공시 값`,
+        `<table class="tb tb-xs"><tbody>${more.map((o) => `<tr><td class="w30"><b>${E(o.name)}</b>${o.listed ? ` <span class="mut sm">${E(o.listed)}</span>` : ""}</td><td>${E(o.sector)}</td><td class="mut">${E((o.product || "").length > 40 ? `${(o.product || "").slice(0, 39)}…` : o.product || "")}</td></tr>`).join("")}</tbody></table>`));
+    }
+  }
+
+  /* 05 지역: 앞의 표에 다 싣지 못한 상장사(공시 값 그대로). 대전·충청처럼 명단 회사가 적은 지역에서 장 끝을 채운다 */
+  const won = (v: number | null | undefined) => (v == null ? "" : `${Math.round(v / 1e8).toLocaleString("ko-KR")}억 원`);
+  const lrow = (o: ROrg) => `<tr><td class="w30"><b>${E(o.name)}</b></td><td>${E(o.sector)}</td><td class="mut">${E([won(o.fin?.sales) && `매출 ${won(o.fin?.sales)}`, o.segments?.[0] ? `${o.segments[0].segment} ${o.segments[0].count.toLocaleString("ko-KR")}명` : ""].filter(Boolean).join(" · "))}</td></tr>`;
+  if (region?.neighbor && region.neighbor.length > 8) for (let k = 8; k < Math.min(region.neighbor.length, 28); k += 5) {
+    const more = region.neighbor.slice(k, k + 5);
+    add(F("05", region.name, `가까운 상장사 · 이어서`, `${region.neighbor.length}곳 가운데 ${k + 1}~${k + more.length}번째 · 공시 값`, `<table class="tb tb-xs"><tbody>${more.map(lrow).join("")}</tbody></table>`));
+  }
+  if (region?.listed && region.listed.length > 12) for (let k = 12; k < Math.min(region.listed.length, 32); k += 5) {
+    const more = region.listed.slice(k, k + 5);
+    add(F("05", region.name, `${region.label ?? ""} 본점 상장사 · 이어서`, `${region.listed.length}곳 가운데 ${k + 1}~${k + more.length}번째 · 공시 값`, `<table class="tb tb-xs"><tbody>${more.map(lrow).join("")}</tbody></table>`));
+  }
+
+  /* 05 지역: 이 장에서 확인한 것을 순서로 묶는다. 숫자는 이 장의 명단과 공시에서 센 것만 쓴다 */
+  if (region) {
+    const gs = region.groups.filter((g) => g.orgs.length);
+    const n = gs.reduce((a, g) => a + g.orgs.length, 0);
+    const g0 = [...gs].sort((a, b) => "ABC".indexOf(a.tier) - "ABC".indexOf(b.tier) || b.orgs.length - a.orgs.length)[0];
+    const firsts = g0 ? g0.orgs.slice(0, 3).map((o) => o.name) : [];
+    const lst = (region.listed ?? []).length, nb = (region.neighbor ?? []).length;
+    const steps = [
+      n ? `이 장에서 ${x.major} 전공의 산업과 이어지는 회사 ${n}곳을 ${gs.length}개 묶음으로 나눴습니다.` : "",
+      g0 ? `먼저 ${g0.pack.name_ko} 묶음${firsts.length ? `(${firsts.join(", ")} 등)` : ""}에서 한 곳을 골라 앞의 세 단계로 알아보세요.` : "",
+      lst || nb ? `공시 숫자는 ${region.label ?? "이 지역"} 본점 상장사 ${lst}곳${nb ? `, 가까운 지역 상장사 ${nb}곳` : ""}에 대해 실었습니다. 매출과 사업부문별 직원을 보면 그 회사에서 ${x.major} 전공자가 일할 부문이 보입니다.` : "",
+      "알아본 회사 가운데 한 곳은 07장 계획의 할 일과 묶어, 그 회사 공고의 담당 업무에 맞춘 결과물을 하나 남기세요.",
+    ].filter(Boolean);
+    if (steps.length >= 3) add(F("05", region.name, `${region.label ?? ""}에서 알아볼 때의 순서`, "이 장의 명단과 공시에서 정리", `<ol class="x-ol">${steps.map((t) => `<li>${E(t)}</li>`).join("")}</ol>`));
+  }
+
+  /* 05 지역: 목표 직무 공고를 이 지역에서 읽을 때 확인할 것(직무 안내) */
+  if (region) {
+    const gr = d.goalRole ?? d.roleOrder[0];
+    const g = gr ? x.guide.roles[gr.code] : undefined;
+    if (g?.postingCheck?.length) add(F("05", region.name, `${region.label ?? ""} 회사의 ${gr!.name_ko} 공고를 읽을 때`, "직무 안내 · 공고에서 먼저 확인할 것",
+      ul(g.postingCheck.slice(0, 5).map(E))));
   }
 
   /* 05 지역: 자료의 출처와 확인일 */
@@ -107,6 +146,14 @@ export function fillPages(x: Inputs, d: X, part3: string, region: { name: string
     if (!g?.interview?.length) continue;
     add(F("06", "자기소개서·면접 준비", `${r.name_ko} 면접 질문`, "직무 안내 · 면접에서 이 질문을 하는 까닭",
       `<table class="tb tb-xs"><tbody>${g.interview.slice(0, 3).map((v) => `<tr><td class="w16"><b>${E(d.axisName(v.axis))}</b></td><td><b>${E(v.q)}</b><br><span class="mut">${E(v.why)}</span></td></tr>`).join("")}</tbody></table>`));
+  }
+
+  /* 06: 직무마다 포트폴리오에 넣을 결과물(직무 안내). 지원서에 붙일 자료를 고를 때 쓴다 */
+  for (const r of d.roleOrder.slice(0, 4)) {
+    const g = x.guide.roles[r.code];
+    if (!g?.portfolio?.length) continue;
+    add(F("06", "자기소개서·면접 준비", `${r.name_ko} 쪽 포트폴리오에 넣을 것`, "직무 안내",
+      ul(g.portfolio.slice(0, 4).map(E))));
   }
 
   /* 07: 목표 직무와 다음 직무가 반기는 경험(직무 안내). 표시 칸 없이 목록으로 싣는다 */

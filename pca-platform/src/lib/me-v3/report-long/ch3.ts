@@ -240,6 +240,8 @@ export function translationPage(x: Inputs, d: X): Page | null {
   const steps = t.steps.filter((s) => TRANS_STEP_KO[s.item_id]);
   if (!steps.length) return null;
   const answered = steps.some((s) => s.choice);
+  /* 답하지 않은 열 단계를 빈 표로 내지 않는다. 쓰는 칸만 남은 쪽은 빈칸으로 읽힌다 */
+  if (!answered) return null;
   const ch = (id: string) => steps.find((s) => s.item_id === id)?.choice ?? null;
   /* 고른 보기로 문단 순서를 미리 짜 둔다(빈 줄을 두지 않는다) */
   const draft = [

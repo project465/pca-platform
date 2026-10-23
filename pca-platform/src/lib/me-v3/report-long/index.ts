@@ -57,7 +57,7 @@ export function assemble(x: Inputs): { pages: Page[]; notes: string[]; region: s
   /* 이 전공의 산업과 이어지는 회사가 한 곳도 없으면 장을 세우지 않는다. 남의 전공 회사를 늘어놓지 않는다 */
   const rv = rv0 && rv0.groups.length ? rv0 : null;
   /* 장마다 붙는 채움 쪽. 쪽 모으기가 남은 자리가 넓은 쪽에만 싣는다 */
-  const fill = fillPages(x, d, PART3(x), rv ? { name: `${rv.area}에서 찾아보기`, sources: rv.sources, groups: rv.groups } : null);
+  const fill = fillPages(x, d, PART3(x), rv ? { name: `${rv.area}에서 찾아보기`, sources: rv.sources, groups: rv.groups, neighbor: rv.neighbor, listed: rv.listed, label: rv.label } : null);
   P.push(outer(x, d), cover(x, d), about(x, d), howToRead(x), counselor(x, d), ...fill["들어가며"] ?? []);
 
   const ringArt = (fill: (z: (typeof x.m.domains)[number]) => string, ring2?: boolean) =>

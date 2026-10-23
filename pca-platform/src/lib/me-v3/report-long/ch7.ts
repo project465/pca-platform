@@ -80,7 +80,7 @@ export function ganttPage(x: Inputs, d: X): Page {
   return P("90일 계획",
     T(acts.length ? `90일 동안 할 일 ${acts.length}가지를 달력에 올렸습니다` : "90일 계획 초안입니다", dek) +
     (bars.length ? `<div class="wide-art">${gantt(bars, { width: 710, label: 250 })}</div>` : "") +
-    (rows.length ? `<table class="tb tb-xs"><thead><tr><th>기간</th><th>할 일</th><th>남길 것</th></tr></thead><tbody>${rows.map((r) => `<tr><td class="w18">${E(r.when)}${r.draft ? `<br>${DRAFT}` : ""}</td><td><b>${E(r.head)}</b><br><span class="mut">${E(r.line)}</span></td><td class="w22">${E(r.out)}</td></tr>`).join("")}</tbody></table>` : "") +
+    (rows.length ? `<table class="tb tb-xs"><thead><tr><th>기간</th><th>할 일</th><th>남길 것</th></tr></thead><tbody>${rows.map((r, i) => `<tr><td class="w18">${E(r.when)}${r.draft ? `<br>${DRAFT}` : ""}</td><td><b>${E(r.head)}</b>${rows.length > 5 && i >= 4 ? "" : `<br><span class="mut">${E(r.line)}</span>`}</td><td class="w22">${E(r.out)}</td></tr>`).join("")}</tbody></table>` : "") +
     band("한 기간에", "결과물은 두 개까지만 잡는 편이 끝까지 가기 쉽습니다. 끝낸 일은 내 CareerMatri 경험 기록에 올려 두십시오."));
 }
 

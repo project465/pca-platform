@@ -101,14 +101,19 @@ export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
     const top = fin.slice(0, 9);
     const strong = d.strengths[0] ? d.name(d.strengths[0].code) : d.radarDoms[0] ? d.name(d.radarDoms[0].code) : "관심 영역";
     /* 표를 먼저 둔다. 표는 줄 단위로 나뉘어 앞 쪽의 남은 자리를 채우고, 막대 그림은 통째로 다음 쪽에 선다 */
+    const tableAt = out.length;
     out.push(part(`${r.label} 본점 상장사의 공시 숫자`,
       T(`${E(r.label)}에 본점을 둔 상장사 ${Math.min(fin.length, 12)}곳의 공시 숫자입니다`, "사업보고서의 주요 계정과 ‘직원 등의 현황’에서 옮겼습니다. 연결 재무제표가 있는 회사는 연결 기준, 없는 회사는 별도 기준이고, 금액은 억 원 단위로 반올림했습니다.") +
       `<table class="tb tb-xs"><thead><tr><th>회사</th><th>매출액</th><th>영업이익</th><th>당기순이익</th><th>직원</th><th>기준</th></tr></thead><tbody>${fin.slice(0, 12).map((o) => `<tr><td><b>${E(o.name)}</b></td><td>${won(o.fin!.sales)}</td><td>${won(o.fin!.op)}</td><td>${won(o.fin!.net)}</td><td>${o.staff != null ? `${o.staff.toLocaleString("ko-KR")}명` : "공시 없음"}</td><td class="mut">${E(o.fin!.year)} ${E(o.fin!.basis)}</td></tr>`).join("")}</tbody></table><p class="mut sm">직원 수는 사업보고서 ‘직원 등의 현황’의 합계라서 본사와 공장과 영업 인원이 다 들어 있습니다. 이 지역에서 일하는 사람 수와는 다를 수 있습니다.</p>` +
       note("표를 읽는 법", ul(["당기순이익에는 본업 밖의 손익과 세금이 들어가서, 영업이익과 방향이 반대로 나오는 해도 있습니다.", "사업부문별 직원 수를 보면 그 회사 사람들이 어느 부문에 많이 모여 있는지 알 수 있습니다.", `채용 공고의 근무 부서가 어느 사업부문에 속하는지 맞춰 보면 ${E(x.major)} 전공자가 갈 자리를 짐작하기 쉬워집니다.`, "직원이 많은 회사라고 신입을 많이 뽑는 것은 아니니, 뽑는 인원은 그해 공고에서 보시면 됩니다."]))));
+    /* 회사가 적으면 막대 쪽을 표 앞에 둔다. 장 끝에 막대 하나만 남으면 쪽 절반이 빈다 */
+    if (fin.length <= 8) out.splice(tableAt, 0, out.pop()!);
     out.push(part(`${r.label} 본점 상장사의 매출과 영업이익`,
       H(`매출이 큰 ${top.length}곳을 막대로 보면`, "막대는 모두 같은 눈금입니다") +
       `<div class="wide-art">${moneyBars(top.map((o) => ({ label: cut(short(o.name), 12), values: [{ name: "매출액", v: o.fin!.sales, color: PAL.blue }, { name: "영업이익", v: o.fin!.op, color: PAL.amber }] })), { width: 700 })}</div>` +
       `<div class="two">${note("숫자를 읽는 법", "매출은 회사의 덩치를, 영업이익은 본업으로 남긴 돈을 보여 줍니다. 영업이익이 마이너스인 해는 연구개발이나 설비에 먼저 돈을 쓴 해인 경우가 많습니다.")}${note(`${x.major} 전공이라면`, `관심 가는 회사의 사업보고서 ‘사업의 내용’에서 ${E(j(strong, "과와"))} 이어지는 제품이나 공정을 하나 찾아 표시해 두세요. 면접에서 그 회사를 왜 골랐는지 말할 거리가 됩니다.`, true)}</div>`));
+    /* 회사가 적으면 막대 쪽을 표 앞에 둔다. 표는 줄 단위로 나뉘어 남는 자리를 채우지만, 막대 쪽이 장 끝에 남으면 쪽 절반이 빈다 */
+    if (fin.length <= 8) out.splice(tableAt, 0, out.pop()!);
   }
   if (r.neighbor.length) {
     out.push(part("가까운 대전·충청 상장사",
@@ -147,14 +152,38 @@ export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
   const expRow = rec || st ? draft(E([rec ? rec.title : "", st ? `${d.name(st.code)}에서 ${ev?.decisions[0] ? polite(ev.decisions[0]) : l2 ? polite(l2) : "해 본 일이 확인됐습니다."}` : ""].filter(Boolean).join(" · "))) : "";
   /* 정한 것은 위 줄이 이미 옮겼으면 다시 쓰지 않는다 */
   const madeRow = ev?.artifacts[0] ? draft(E(`남긴 것: ${ev.artifacts.slice(0, 2).join(", ")}`)) : "";
-  out.push(part("기관 한 곳을 직접 조사하는 법",
-    T("관심 가는 기관 하나를 골라 공식 자료로 한 장을 채워 보세요", "사업보고서에서 무엇으로 돈을 버는 회사인지, 누리집에서 제품과 조직을, 채용 공고에서 담당 업무와 필요한 지식을 차례로 확인한 다음 아래 표에 내 경험과 이어 적어 보세요. 이렇게 해 두면 면접에서 ‘우리 회사를 어떻게 알게 됐느냐’는 질문에 자료를 들어 답할 수 있습니다.") +
-    H("한 장 정리", roleRow || expRow || madeRow ? "회색 초안은 내 결과에서 옮긴 것입니다. 공고를 보고 고쳐 쓰세요" : "직접 채웁니다") +
-    /* 줄을 셋으로 둔다. 넷 이상이면 쪽 모으기가 표를 줄 단위로 갈라 한 장 정리가 두 쪽에 걸친다 */
-    `<table class="tb ws tall"><tbody>
-      <tr><th>기관 이름</th><td></td><th>확인한 날</th><td></td></tr>
-      <tr><th>지원할 직무와 담당 업무</th><td>${roleRow}</td><th>그 업무와 이어지는 내 경험 · 정한 것 · 남긴 것</th><td>${[expRow, madeRow].filter(Boolean).join("<br>")}</td></tr>
-      <tr><th>무엇으로 일하나(사업)</th><td></td><th>아직 확인하지 못한 것</th><td></td></tr>
-    </tbody></table>` + band("상담 연계", `이 한 장을 들고 ${E(x.issuer)} 상담에 오시면 지역 일자리와 지원 사업을 함께 찾아볼 수 있습니다.`)));
+  /* 한 쪽으로 읽는 안내라 나누지 않는다. 나누면 미리 옮긴 줄만 다음 쪽에 혼자 남는다 */
+  out.push({ ...part("기관 한 곳을 직접 조사하는 법",
+    T("관심 가는 기관 하나는 세 군데 자료로 알아봅니다", "사업보고서, 누리집, 채용 공고를 차례로 읽고 그 기관의 일과 내 경험이 닿는 곳을 찾아 두세요. 이렇게 해 두면 면접에서 ‘우리 회사를 어떻게 알게 됐느냐’는 질문에 자료를 들어 답할 수 있습니다.") +
+    `<div class="g3">${[
+      ["사업보고서", "사업의 개요와 사업부문별 매출을 읽고 무엇으로 돈을 버는 회사인지 한 줄로 적어 둡니다."],
+      ["누리집", "제품과 서비스, 조직도를 보고 지원할 직무가 어느 부서에 있는지 찾습니다."],
+      ["채용 공고", "담당 업무와 필요한 지식을 읽고, 내 경험과 겹치는 줄에 표시해 둡니다."],
+    ].map(([h, t], i) => `<div class="card"><p class="k">${i + 1}단계</p><h4>${h}</h4><p>${t}</p></div>`).join("")}</div>` +
+    (() => {
+      /* 세 단계를 바로 해 볼 수 있게, 가장 잘 이어지는 묶음의 회사 몇 곳을 명단 값 그대로 붙인다 */
+      const g0 = [...r.groups].sort((a, b) => "ABC".indexOf(a.tier) - "ABC".indexOf(b.tier))[0];
+      const os = g0 ? [...g0.orgs].sort((a, b) => Number(!!b.url) - Number(!!a.url)).slice(0, 3) : [];
+      return os.length ? H(`이 순서로 먼저 알아보기 좋은 곳`, `${E(g0.pack.name_ko)} 묶음 · 명단과 공시 값 그대로`) +
+        `<table class="tb tb-xs"><thead><tr><th>회사</th><th>업종</th><th>주력 품목</th><th>누리집</th></tr></thead><tbody>${os.map((o) => `<tr><td><b>${E(o.name)}</b>${o.listed ? ` <span class="mut sm">${E(o.listed)}</span>` : ""}</td><td>${E(o.sector)}</td><td class="mut">${E((o.product || "").length > 30 ? `${(o.product || "").slice(0, 29)}…` : o.product || "")}</td><td class="mut sm">${E((o.url ?? "").replace(/^https?:\/\//, "").replace(/\/$/, ""))}</td></tr>`).join("")}</tbody></table>` : "";
+    })() +
+    (roleRow || expRow || madeRow ? note("내 결과에서 미리 옮겨 둔 것", ul([roleRow && `지원할 직무 · ${roleRow}`, expRow && `이어지는 경험 · ${expRow}`, madeRow].filter(Boolean) as string[])) : "") +
+    band("상담 연계", `알아본 내용을 들고 ${E(x.issuer)} 상담에 오시면 지역 일자리와 지원 사업을 함께 찾아볼 수 있습니다.`)) });
+  /* 조사하는 법은 회사 목록 바로 뒤, 공시 숫자 앞에 둔다. 장 끝에 두면 뒤에서 끌어올 쪽이 없어 반쪽이 빈 채로 끝난다 */
+  const research = out.pop()!;
+  const at = out.findIndex((p) => /상장사|공기업|사업의 개요/.test(p.title));
+  out.splice(at > 0 ? at : out.length, 0, research);
+  /* 공기업 개황도 짧은 쪽이라 장 끝에 두지 않는다. 조사하는 법 바로 뒤로 옮긴다 */
+  const pi = out.findIndex((p) => /공기업/.test(p.title));
+  if (pi > 0 && pi === out.length - 1) {
+    const pub = out.splice(pi, 1)[0];
+    out.splice(out.indexOf(research) + 1, 0, pub);
+  }
+  /* 사업의 개요 읽기(통째로 읽는 쪽)도 장 끝에 두지 않는다. 장은 줄 단위로 나눌 수 있는 표로 끝나야 남는 자리가 생기지 않는다 */
+  const oi = out.findIndex((p) => /사업의 개요/.test(p.title));
+  if (oi > 0 && oi === out.length - 1) {
+    const ov = out.splice(oi, 1)[0];
+    out.splice(out.indexOf(research) + 1, 0, ov);
+  }
   return out;
 }

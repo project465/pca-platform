@@ -235,7 +235,13 @@ export function gantt(rows: GanttRow[], o: { width?: number; days?: number; labe
     const ls = lab[i], y0 = y + rh / 2 - ((ls.length - 1) * 13.5) / 2;
     return `<text x="${L - 10}" y="${f1(y0)}" font-size="11.5" text-anchor="end" dominant-baseline="middle" fill="${C.ink}" font-weight="600">${ls.map((l, k) => `<tspan x="${L - 10}" dy="${k ? 13.5 : 0}">${esc(l)}</tspan>`).join("")}</text>` +
       `<rect x="${f1(x(r.from - 1))}" y="${y + 6}" width="${f1(Math.max(6, x(r.to) - x(r.from - 1)))}" height="${rh - 12}" rx="${(rh - 12) / 2}" fill="${r.color}"/>` +
-      (r.note ? `<text x="${f1(x(r.from - 1) + 8)}" y="${y + rh / 2 + 0.5}" font-size="10" dominant-baseline="middle" fill="#fff" font-weight="700">${esc(r.note)}</text>` : "");
+      (r.note ? (() => {
+        /* 막대 안에 들어갈 만큼만 쓴다. 넘치면 쉼표 앞 첫 덩이만, 그래도 길면 줄인다 */
+        const room = (x(r.to) - x(r.from - 1) - 16) / 10;
+        let t = r.note; if (vlen(t) > room) t = t.split(/[,·]/)[0].trim();
+        if (vlen(t) > room) t = [...t].slice(0, Math.max(4, Math.floor(room) - 1)).join("") + "…";
+        return `<text x="${f1(x(r.from - 1) + 8)}" y="${y + rh / 2 + 0.5}" font-size="10" dominant-baseline="middle" fill="#fff" font-weight="700">${esc(t)}</text>`;
+      })() : "");
   }).join("");
   return `<svg viewBox="0 0 ${W} ${H}" width="100%" xmlns="http://www.w3.org/2000/svg" role="img">${heads}${body}</svg>`;
 }
