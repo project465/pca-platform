@@ -44,7 +44,7 @@
    ],
    "owns": "Finalizes shape, dimensions, material and tolerances",
    "decides": [
-    "Wall thickness and cross-section",
+    "Thickness and cross-section",
     "Fits and tolerance grades",
     "Fastening method",
     "Material and grade"
@@ -76,7 +76,7 @@
      "id": "ROLE_DESIGN_V2_R3",
      "axis": "J2",
      "domain": "TD11",
-     "ask": "When requirements conflicted, have you decided which one to protect first?"
+     "ask": "When requirements conflicted, have you decided which one to meet first?"
     },
     {
      "id": "ROLE_DESIGN_V2_R4",
@@ -117,7 +117,7 @@
   {
    "code": "ROLE_CAE_V2",
    "version": 2,
-   "name_ko": "Analysis",
+   "name_ko": "Analysis and Prediction",
    "name_en": "Analysis",
    "core": "ME_CORE_V3",
    "markets": [
@@ -214,7 +214,7 @@
   {
    "code": "ROLE_RND_V2",
    "version": 2,
-   "name_ko": "Research & Advanced",
+   "name_ko": "Exploration and Advanced Development",
    "name_en": "Research & Advanced",
    "core": "ME_CORE_V3",
    "markets": [
@@ -288,7 +288,7 @@
      "id": "ROLE_RND_V2_R6",
      "axis": "J5",
      "domain": "TD06",
-     "ask": "Have you published your method and conditions so others could reproduce your results?"
+     "ask": "Have you made your method and conditions public so others could reproduce your results?"
     },
     {
      "id": "ROLE_RND_V2_R7",
@@ -311,7 +311,7 @@
   {
    "code": "ROLE_TEST_V2",
    "version": 2,
-   "name_ko": "Test & Validation",
+   "name_ko": "Test and Verification",
    "name_en": "Test & Validation",
    "core": "ME_CORE_V3",
    "markets": [
@@ -366,7 +366,7 @@
      "id": "ROLE_TEST_V2_R3",
      "axis": "J5",
      "domain": "TD07",
-     "ask": "Have you delivered a test report all the way to the verdict?"
+     "ask": "Have you delivered a test report that includes the verdict?"
     },
     {
      "id": "ROLE_TEST_V2_R4",
@@ -503,7 +503,7 @@
   {
    "code": "ROLE_MAINT_V2",
    "version": 2,
-   "name_ko": "Equipment & Maintenance",
+   "name_ko": "Equipment and Maintenance",
    "name_en": "Equipment & Maintenance",
    "core": "ME_CORE_V3",
    "markets": [
@@ -599,7 +599,7 @@
   {
    "code": "ROLE_QUALITY_V2",
    "version": 2,
-   "name_ko": "Quality & Reliability",
+   "name_ko": "Quality and Reliability",
    "name_en": "Quality & Reliability",
    "core": "ME_CORE_V3",
    "markets": [
@@ -695,7 +695,7 @@
   {
    "code": "ROLE_PM_V2",
    "version": 2,
-   "name_ko": "Technical Planning",
+   "name_ko": "Technical Planning and Project Management",
    "name_en": "Technical Planning",
    "core": "ME_CORE_V3",
    "markets": [

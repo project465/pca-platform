@@ -142,7 +142,7 @@
      "id": "INDUSTRY_SEMICON_V2_I1",
      "axis": "J3",
      "domain": "TD01",
-     "ask": "Have you set a shape and material with a special environment, such as vacuum or high temperature, as a condition?",
+     "ask": "Have you set a shape and material for a special environment, such as vacuum or high temperature?",
      "gloss": "Choosing the material and shape of a part used where temperature or pressure is out of the ordinary"
     },
     {
@@ -218,7 +218,7 @@
     "J7": "In this industry, failure and correction means narrowing down causes so the same failure does not happen twice",
     "J8": "In this industry, organizational use shows up as equipment downtime and uptime"
    },
-   "result_line": "Semiconductor equipment deals with precision structures, thermal deformation, vibration and vacuum all at once. Experience setting dimensions and materials, calculating thermal deformation, and measuring to see whether the same value comes out again is closest to the entry point of this industry.",
+   "result_line": "Semiconductor equipment deals with precision structures, thermal deformation, vibration and vacuum all at once. Experience setting dimensions and materials, calculating thermal deformation, and measuring to see whether the same value comes out again puts you close to the entry point of this industry.",
    "evidence_reading": [
     {
      "same": "Finite element analysis (FEA)",
@@ -267,7 +267,7 @@
   {
    "code": "INDUSTRY_DEFENSE_V2",
    "version": 2,
-   "name_ko": "Defense & Aerospace",
+   "name_ko": "Defense and Aerospace",
    "name_en": "Defense & Aerospace",
    "core": "ME_CORE_V3",
    "markets": [
@@ -462,7 +462,7 @@
     "J5": "In this industry, deliverables include not just hardware but the documents that record the basis for judgments",
     "J6": "In this industry, comparison and verification means confirming through the tests a standard specifies"
    },
-   "result_line": "In defense and aerospace, requirements arrive as documents, and recording the basis for decisions is half of the output. Experience breaking down requirements, setting dimensions on a strength basis, and revising a design based on test results is closest to the entry point of this industry.",
+   "result_line": "In defense and aerospace, requirements arrive as documents, and recording the basis for decisions is half of the output. Experience breaking down requirements, setting dimensions on a strength basis, and revising a design based on test results puts you close to the entry point of this industry.",
    "evidence_reading": [
     {
      "same": "Structural analysis report",
@@ -511,7 +511,7 @@
   {
    "code": "INDUSTRY_MOBILITY_V2",
    "version": 2,
-   "name_ko": "Automotive & Mobility",
+   "name_ko": "Automotive and Mobility",
    "name_en": "Automotive & Mobility",
    "core": "ME_CORE_V3",
    "markets": [
@@ -520,7 +520,7 @@
    ],
    "status": "building",
    "demands": [
-    "Cost, weight and performance are decided on the same table",
+    "Cost, weight and performance are weighed against each other in a single decision",
     "Millions of vehicles have to come out at the same quality, so what the process can handle becomes a design condition",
     "Noise and vibration are quality that customers feel immediately",
     "Changing one part shifts the schedules of several teams at once"
@@ -528,7 +528,7 @@
    "scene": "In the automotive industry, mechanical engineers set dimensions while weighing cost, weight and performance together, look at process conditions so millions of units come out the same, reduce noise and vibration, and confirm service life through testing.",
    "judgement_dimensions": [
     {
-     "name": "Do you decide cost and performance on the same table?",
+     "name": "Do you weigh cost and performance together in one decision?",
      "axis": "J3",
      "domain": "TD01",
      "why": "Cost comes in as a design condition"
@@ -638,7 +638,7 @@
      "id": "INDUSTRY_MOBILITY_V2_I2",
      "axis": "J2",
      "domain": "TD08",
-     "ask": "Have you built the range that can be mass-produced into the design conditions?",
+     "ask": "Have you built mass-production limits into the design conditions?",
      "gloss": "Revising a design after checking whether it could easily be made in quantity"
     },
     {
@@ -659,7 +659,7 @@
      "id": "INDUSTRY_MOBILITY_V2_I5",
      "axis": "J6",
      "domain": "TD10",
-     "ask": "Have you confirmed service life in a shortened, accelerated way to back a warranty period?",
+     "ask": "Have you used an accelerated test to confirm service life and back up a warranty period?",
      "gloss": "Using a short test to see in advance what happens after long use"
     },
     {
@@ -702,12 +702,12 @@
     }
    ],
    "gap_language": {
-    "J3": "In this industry, technical decisions show up as deciding cost, weight and performance on the same table",
+    "J3": "In this industry, technical decisions show up as weighing cost, weight and performance together in one decision",
     "J6": "In this industry, comparison and verification show up as accelerated testing and tolerance stack-up checks",
     "J4": "In this industry, methods and tools show in separating the transfer paths of noise and vibration",
     "J7": "In this industry, failure and correction means narrowing down the causes of field failures"
    },
-   "result_line": "The automotive industry decides cost, weight and performance together and demands that millions of units come out the same. Experience setting dimensions with cost in view, calculating tolerance stack-up, and confirming service life through testing is closest to the entry point of this industry.",
+   "result_line": "The automotive industry decides cost, weight and performance together and demands that millions of units come out the same. Experience setting dimensions with cost in view, calculating tolerance stack-up, and confirming service life through testing puts you close to the entry point of this industry.",
    "evidence_reading": [
     {
      "same": "Tolerance analysis",
@@ -757,7 +757,7 @@
   {
    "code": "INDUSTRY_ROBOT_V2",
    "version": 2,
-   "name_ko": "Robotics & Automation",
+   "name_ko": "Robotics and Automation",
    "name_en": "Robotics & Automation",
    "core": "ME_CORE_V3",
    "markets": [
@@ -877,7 +877,7 @@
      "axis": "J3",
      "domain": "TD05",
      "ask": "Have you set the gear ratio or transmission type to meet the required accuracy?",
-     "gloss": "Deciding whether speed or accuracy should be protected first"
+     "gloss": "Deciding whether speed or accuracy should come first"
     },
     {
      "id": "INDUSTRY_ROBOT_V2_I3",
@@ -918,7 +918,7 @@
      "id": "INDUSTRY_ROBOT_V2_I8",
      "axis": "J4",
      "domain": "TD05",
-     "ask": "Have you run a device and adjusted acceleration based on the response you measured?",
+     "ask": "Have you run a device and adjusted acceleration and deceleration based on the response you measured?",
      "gloss": "Actually running it and adjusting the acceleration and deceleration settings"
     },
     {
@@ -942,7 +942,7 @@
     "J6": "In this industry, comparison and verification look at repeat positioning accuracy and cycle time measurements",
     "J7": "In this industry, failure and correction means separating the causes of vibration and stalls into the mechanism or the tuning"
    },
-   "result_line": "In robotics and automation, what moves is the product. Experience choosing a drive from load and inertia, setting a drivetrain, and measuring repeatability is closest to the entry point of this industry.",
+   "result_line": "In robotics and automation, what moves is the product. Experience choosing a drive from load and inertia, setting a drivetrain, and measuring repeatability puts you close to the entry point of this industry.",
    "evidence_reading": [
     {
      "same": "Drive sizing calculations",
@@ -1068,7 +1068,7 @@
      "why": "The date the line starts running is fixed first"
     },
     {
-     "name": "Do you collect data and reset the conditions?",
+     "name": "Do you collect data and use it to readjust the conditions?",
      "axis": "J5",
      "domain": "TD12",
      "why": "There are too many variables to track by hand"
@@ -1185,8 +1185,8 @@
      "id": "INDUSTRY_BATTERY_V2_I10",
      "axis": "J5",
      "domain": "TD12",
-     "ask": "Have you organized accumulated data and reset the conditions from it?",
-     "gloss": "Organizing collected measurement data into tables or graphs and resetting the conditions"
+     "ask": "Have you organized accumulated data and used it to readjust the conditions?",
+     "gloss": "Organizing collected measurement data into tables or graphs and readjusting the conditions"
     }
    ],
    "gap_language": {
@@ -1195,7 +1195,7 @@
     "J7": "In this industry, failure and correction means separating the cause of defects into material, equipment and conditions",
     "J5": "In this industry, deliverables are documents that record condition ranges and control items"
    },
-   "result_line": "Batteries deal with heat, deformation and a narrow process window all at once. Experience setting a heat removal path, varying conditions to find the working range, and looking at measurement variation is closest to the entry point of this industry.",
+   "result_line": "Batteries deal with heat, deformation and a narrow process window all at once. Experience setting a heat removal path, varying conditions to find the working range, and looking at measurement variation puts you close to the entry point of this industry.",
    "evidence_reading": [
     {
      "same": "Thermal analysis",
@@ -1219,7 +1219,7 @@
     "Thermal design",
     "Process engineering",
     "Equipment engineering",
-    "Quality and Reliability"
+    "Quality and reliability"
    ],
    "org_mix": {
     "OC2": "Common",
@@ -1244,7 +1244,7 @@
   {
    "code": "INDUSTRY_SHIP_V2",
    "version": 2,
-   "name_ko": "Shipbuilding & Offshore",
+   "name_ko": "Shipbuilding and Offshore",
    "name_en": "Shipbuilding & Offshore",
    "core": "ME_CORE_V3",
    "markets": [
@@ -1437,7 +1437,7 @@
     "J5": "In this industry, deliverables are drawings and the technical documents used for acceptance",
     "J7": "In this industry, failure and correction means preventing stoppages where there is no backup equipment"
    },
-   "result_line": "Shipbuilding and offshore build one unit at a time, and regulations come first. Experience turning regulations into design conditions, working through the strength of large structures, and revising a design based on whether it could be built is closest to the entry point of this industry.",
+   "result_line": "Shipbuilding and offshore build one unit at a time, and regulations come first. Experience turning regulations into design conditions, working through the strength of large structures, and revising a design based on whether it could be built puts you close to the entry point of this industry.",
    "evidence_reading": [
     {
      "same": "Structural analysis",
@@ -1486,7 +1486,7 @@
   {
    "code": "INDUSTRY_ENERGY_V2",
    "version": 2,
-   "name_ko": "Energy & Plant",
+   "name_ko": "Energy and Plant Engineering",
    "name_en": "Energy & Plant",
    "core": "ME_CORE_V3",
    "markets": [
@@ -1500,7 +1500,7 @@
     "Stoppages are costly, so inspection intervals and spare parts are weighed in money",
     "Legally required inspections and certifications set the schedule"
    ],
-   "scene": "In energy and plant, mechanical engineers set the thermal and flow operating point, read the condition of rotating machinery, choose materials and inspection intervals so the plant can run for decades, and reduce downtime.",
+   "scene": "In energy and plant engineering, mechanical engineers set the thermal and flow operating point, read the condition of rotating machinery, choose materials and inspection intervals so the plant can run for decades, and reduce downtime.",
    "judgement_dimensions": [
     {
      "name": "Do you set the thermal and flow operating point?",
@@ -1673,7 +1673,7 @@
     "J7": "In this industry, failure and correction means stopping the same failure from recurring",
     "J8": "In this industry, organizational use shows up as uptime and downtime"
    },
-   "result_line": "In energy and plant, once something is built it runs for decades. Experience setting an operating point, reading equipment condition, and setting inspection intervals is closest to the entry point of this industry.",
+   "result_line": "In energy and plant engineering, once something is built it runs for decades. Experience setting an operating point, reading equipment condition, and setting inspection intervals puts you close to the entry point of this industry.",
    "evidence_reading": [
     {
      "same": "Flow and thermal analysis",
@@ -1722,7 +1722,7 @@
   {
    "code": "INDUSTRY_SMARTFACTORY_V2",
    "version": 2,
-   "name_ko": "Smart Factory & Equipment",
+   "name_ko": "Smart Factory and Equipment",
    "name_en": "Smart Factory & Equipment",
    "core": "ME_CORE_V3",
    "markets": [
@@ -1911,7 +1911,7 @@
     "J6": "In this industry, comparison and verification means comparing before and after an improvement in numbers",
     "J8": "In this industry, organizational use shows up as whether what you handed over keeps being used"
    },
-   "result_line": "Smart factory work means improving factories that already exist. Experience defining the scope of automation, building devices yourself, and proving improvements with measurements and records is closest to the entry point of this industry.",
+   "result_line": "Smart factory work means improving factories that already exist. Experience defining the scope of automation, building devices yourself, and proving improvements with measurements and records puts you close to the entry point of this industry.",
    "evidence_reading": [
     {
      "same": "Automation scripts",

@@ -20,7 +20,7 @@
      "from": "new"
     },
     {
-     "text": "Built the range that can be assembled and machined into the design conditions",
+     "text": "Built assembly and machining limits into the design conditions",
      "from": "new"
     },
     {
@@ -30,7 +30,7 @@
    ],
    "J3": [
     {
-     "text": "Set a wall thickness or cross-section based on loads and material",
+     "text": "Set a thickness or cross-section based on loads and material",
      "from": "new"
     },
     {
@@ -164,7 +164,7 @@
    ],
    "J5": [
     {
-     "text": "Delivered an analysis report all the way to a pass/fail conclusion",
+     "text": "Delivered an analysis report with a pass/fail conclusion",
      "from": "new"
     },
     {
@@ -300,7 +300,7 @@
    ],
    "J8": [
     {
-     "text": "A real build was made following my thermal design",
+     "text": "Hardware was actually built to my thermal design",
      "from": "new"
     },
     {
@@ -416,7 +416,7 @@
      "from": "new"
     },
     {
-     "text": "Turned the required throughput into cycle time and acceleration conditions",
+     "text": "Turned the required throughput into cycle time and acceleration and deceleration conditions",
      "from": "new"
     },
     {
@@ -448,7 +448,7 @@
      "from": "new"
     },
     {
-     "text": "Ran it, measured the response and adjusted acceleration",
+     "text": "Ran it, measured the response and adjusted acceleration and deceleration",
      "from": "new"
     },
     {
@@ -658,7 +658,7 @@
    ],
    "J5": [
     {
-     "text": "Delivered a test report all the way to the verdict",
+     "text": "Delivered a test report that includes the verdict",
      "from": "new"
     },
     {
@@ -1078,7 +1078,7 @@
      "from": "new"
     },
     {
-     "text": "Decided which of the conflicting requirements to protect first",
+     "text": "Decided which of the conflicting requirements to meet first",
      "from": "new"
     },
     {
@@ -1126,7 +1126,7 @@
    ],
    "J7": [
     {
-     "text": "Redivided the work when requirements changed",
+     "text": "Divided up the tasks again when requirements changed",
      "from": "new"
     },
     {
@@ -1140,7 +1140,7 @@
      "from": "new"
     },
     {
-     "text": "The team worked to my schedule plan",
+     "text": "The team followed the schedule I planned",
      "from": "new"
     }
    ]
@@ -1190,7 +1190,7 @@
      "from": "new"
     },
     {
-     "text": "Kept the version and environment so the same result comes out again",
+     "text": "Recorded the versions and environment so the same result can be reproduced",
      "from": "new"
     }
    ],
@@ -1247,7 +1247,7 @@
  "common": {
   "J1": [
    {
-    "text": "I narrowed down and decided what to work on",
+    "text": "Narrowed down and decided myself what to work on",
     "from": "new"
    },
    {

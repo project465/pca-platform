@@ -126,11 +126,11 @@
   }
  },
  "scenes": [
-  "Course project",
-  "Team design project",
-  "Capstone",
-  "Mechanical engineering club",
-  "Preparing for a competition",
-  "Internship"
+  "course projects",
+  "team design projects",
+  "capstone projects",
+  "mechanical engineering clubs",
+  "preparing for competitions",
+  "internships"
  ]
 }

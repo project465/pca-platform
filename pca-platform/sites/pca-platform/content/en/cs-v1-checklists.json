@@ -6,89 +6,89 @@
   "TD01": {
    "J1": [
     {
-     "text": "I separated what this system would handle from what it would not",
+     "text": "Separated what this system would handle from what it would not",
      "from": "new"
     },
     {
-     "text": "Where requirements were unclear, I wrote down my assumptions",
+     "text": "Wrote down assumptions where requirements were unclear",
      "from": "new"
     }
    ],
    "J2": [
     {
-     "text": "I turned requirements into numbers such as response time or concurrent users",
+     "text": "Turned requirements into numbers such as response time or concurrent users",
      "from": "new"
     },
     {
-     "text": "When requirements conflicted, I decided which to meet first",
+     "text": "Decided which of the conflicting requirements to meet first",
      "from": "new"
     },
     {
-     "text": "I wrote the conditions to meet as completion criteria",
+     "text": "Wrote the conditions to meet as completion criteria",
      "from": "new"
     }
    ],
    "J3": [
     {
-     "text": "I decided where to split modules",
+     "text": "Decided where to split modules",
      "from": "new"
     },
     {
-     "text": "I decided which module handles which feature",
+     "text": "Decided which module handles which feature",
      "from": "new"
     },
     {
-     "text": "I set the direction of dependencies between modules",
+     "text": "Set the direction of dependencies between modules",
      "from": "new"
     }
    ],
    "J4": [
     {
-     "text": "I chose a notation (for example, UML) for drawing the structure",
+     "text": "Chose a notation (for example, UML) for drawing the structure",
      "from": "new"
     },
     {
-     "text": "I decided how design decisions would be recorded",
+     "text": "Decided how design decisions would be recorded",
      "from": "new"
     }
    ],
    "J5": [
     {
-     "text": "I documented the module diagram",
+     "text": "Documented the module diagram",
      "from": "new"
     },
     {
-     "text": "I wrote down the interface contracts",
+     "text": "Wrote down the interface contracts",
      "from": "new"
     },
     {
-     "text": "I created a glossary the team used together",
+     "text": "Created a glossary the team used together",
      "from": "new"
     }
    ],
    "J6": [
     {
-     "text": "I compared two designs against the same criteria",
+     "text": "Compared two designs against the same criteria",
      "from": "new"
     },
     {
-     "text": "I checked whether the finished code matched the design",
+     "text": "Checked whether the finished code matched the design",
      "from": "new"
     }
    ],
    "J7": [
     {
-     "text": "When fixing one place broke another, I found the cause",
+     "text": "Found the cause when fixing one place broke another",
      "from": "new"
     },
     {
-     "text": "I restructured the code so the same fix wouldn't have to be repeated",
+     "text": "Restructured the code so the same fix would not have to be repeated",
      "from": "new"
     }
    ],
    "J8": [
     {
-     "text": "I explained a design in a review meeting",
+     "text": "Explained a design in a review meeting",
      "from": "new"
     },
     {
@@ -100,85 +100,85 @@
   "TD02": {
    "J1": [
     {
-     "text": "I wrote the problem to solve in terms of inputs and outputs",
+     "text": "Wrote the problem to solve in terms of inputs and outputs",
      "from": "new"
     },
     {
-     "text": "I wrote down the range of inputs I would not handle",
+     "text": "Wrote down the range of inputs I would not handle",
      "from": "new"
     }
    ],
    "J2": [
     {
-     "text": "I wrote the response time limit as a number",
+     "text": "Wrote the response time limit as a number",
      "from": "new"
     },
     {
-     "text": "I wrote a memory ceiling as a condition",
+     "text": "Wrote a memory ceiling as a condition",
      "from": "new"
     }
    ],
    "J3": [
     {
-     "text": "I chose the data structure to store the data in",
+     "text": "Chose the data structure to store the data in",
      "from": "new"
     },
     {
-     "text": "I decided which operations to make fast",
+     "text": "Decided which operations to make fast",
      "from": "new"
     },
     {
-     "text": "I gave up a little accuracy to gain speed",
+     "text": "Gave up a little accuracy to gain speed",
      "from": "new"
     }
    ],
    "J4": [
     {
-     "text": "I worked out the complexity (amount of computation) by hand",
+     "text": "Worked out the complexity (amount of computation) by hand",
      "from": "new"
     },
     {
-     "text": "I chose and used a method for measuring speed",
+     "text": "Chose and used a method for measuring speed",
      "from": "new"
     }
    ],
    "J5": [
     {
-     "text": "I left implementation code others could use",
+     "text": "Left implementation code others could use",
      "from": "new"
     },
     {
-     "text": "I wrote a note explaining, in terms of computation, why it is fast",
+     "text": "Wrote a note explaining, in terms of computation, why it is fast",
      "from": "new"
     }
    ],
    "J6": [
     {
-     "text": "I compared my estimated speed with the measured time",
+     "text": "Compared my estimated speed with the measured time",
      "from": "new"
     },
     {
-     "text": "I ran the same input with a different data structure and compared",
+     "text": "Ran the same input with a different data structure and compared",
      "from": "new"
     },
     {
-     "text": "I checked the results on empty inputs and very large inputs",
+     "text": "Checked the results on empty inputs and very large inputs",
      "from": "new"
     }
    ],
    "J7": [
     {
-     "text": "I timed the code to find the slow parts",
+     "text": "Timed the code to find the slow parts",
      "from": "new"
     },
     {
-     "text": "I timed it again after the fix",
+     "text": "Timed it again after the fix",
      "from": "new"
     }
    ],
    "J8": [
     {
-     "text": "I explained a performance comparison to the team",
+     "text": "Explained a performance comparison to the team",
      "from": "new"
     },
     {
@@ -190,85 +190,85 @@
   "TD03": {
    "J1": [
     {
-     "text": "I wrote down the types of requests the server would handle",
+     "text": "Wrote down the types of requests the server would handle",
      "from": "new"
     },
     {
-     "text": "I wrote down separately what processing the server would not handle",
+     "text": "Wrote down separately what processing the server would not handle",
      "from": "new"
     }
    ],
    "J2": [
     {
-     "text": "I wrote the response time target as a number",
+     "text": "Wrote the response time target as a number",
      "from": "new"
     },
     {
-     "text": "I wrote down how many calls per minute are allowed as a condition",
+     "text": "Wrote down how many calls per minute are allowed as a condition",
      "from": "new"
     }
    ],
    "J3": [
     {
-     "text": "I set the request URL rules and the response format",
+     "text": "Set the request URL rules and the response format",
      "from": "new"
     },
     {
-     "text": "I set the rules for error codes",
+     "text": "Set the rules for error codes",
      "from": "new"
     },
     {
-     "text": "I set the scope of work handled together as one transaction",
+     "text": "Set the scope of work handled together as one transaction",
      "from": "new"
     }
    ],
    "J4": [
     {
-     "text": "I made it safe for the same request to arrive twice",
+     "text": "Made it safe for the same request to arrive twice",
      "from": "new"
     },
     {
-     "text": "I decided how to retry when an external call fails, and implemented it",
+     "text": "Decided how to retry when an external call fails, and implemented it",
      "from": "new"
     }
    ],
    "J5": [
     {
-     "text": "I wrote a document of request and response formats (API documentation)",
+     "text": "Wrote a document of request and response formats (API documentation)",
      "from": "new"
     },
     {
-     "text": "I left test code that sends requests automatically",
+     "text": "Left test code that sends requests automatically",
      "from": "new"
     },
     {
-     "text": "I made an error code table and shared it",
+     "text": "Made an error code table and shared it",
      "from": "new"
     }
    ],
    "J6": [
     {
-     "text": "I sent test requests and compared the actual responses with the documentation",
+     "text": "Sent test requests and compared the actual responses with the documentation",
      "from": "new"
     },
     {
-     "text": "I sent many requests at once and checked whether the response time target was met",
+     "text": "Sent many requests at once and checked whether the response time target was met",
      "from": "new"
     }
    ],
    "J7": [
     {
-     "text": "I found the stage where wrong responses came from",
+     "text": "Found the stage where wrong responses came from",
      "from": "new"
     },
     {
-     "text": "After the fix, I checked that the same error no longer occurred",
+     "text": "Checked after the fix that the same error no longer occurred",
      "from": "new"
     }
    ],
    "J8": [
     {
-     "text": "Before changing a format, I agreed on it with the team that uses it",
+     "text": "Agreed on a format change with the team that uses it before making it",
      "from": "new"
     },
     {
@@ -280,85 +280,85 @@
   "TD04": {
    "J1": [
     {
-     "text": "I wrote down the data fields to store",
+     "text": "Wrote down the data fields to store",
      "from": "new"
     },
     {
-     "text": "I wrote down separately the data not to store",
+     "text": "Wrote down separately the data not to store",
      "from": "new"
     }
    ],
    "J2": [
     {
-     "text": "I estimated in numbers how much data would accumulate",
+     "text": "Estimated in numbers how much data would accumulate",
      "from": "new"
     },
     {
-     "text": "I wrote down the conditions most often searched on",
+     "text": "Wrote down the conditions most often searched on",
      "from": "new"
     }
    ],
    "J3": [
     {
-     "text": "I decided how to split the tables",
+     "text": "Decided how to split the tables",
      "from": "new"
     },
     {
-     "text": "I set the value type and constraints for each column",
+     "text": "Set the value type and constraints for each column",
      "from": "new"
     },
     {
-     "text": "I decided which conditions should be fast to look up",
+     "text": "Decided which conditions should be fast to look up",
      "from": "new"
     }
    ],
    "J4": [
     {
-     "text": "I organized the relationships between tables to reduce duplicate data",
+     "text": "Organized the relationships between tables to reduce duplicate data",
      "from": "new"
     },
     {
-     "text": "I chose and applied an index type",
+     "text": "Chose and applied an index type",
      "from": "new"
     }
    ],
    "J5": [
     {
-     "text": "I documented the table structure (schema)",
+     "text": "Documented the table structure (schema)",
      "from": "new"
     },
     {
-     "text": "I left a list of indexes",
+     "text": "Left a list of indexes",
      "from": "new"
     },
     {
-     "text": "I wrote down the steps for moving old data into the new structure",
+     "text": "Wrote down the steps for moving old data into the new structure",
      "from": "new"
     }
    ],
    "J6": [
     {
-     "text": "I read the query plan to check whether an index was used",
+     "text": "Read the query plan to check whether an index was used",
      "from": "new"
     },
     {
-     "text": "I timed queries before and after creating an index and compared",
+     "text": "Timed queries before and after creating an index and compared",
      "from": "new"
     }
    ],
    "J7": [
     {
-     "text": "I used the query plan to find why a query was slow",
+     "text": "Used the query plan to find why a query was slow",
      "from": "new"
     },
     {
-     "text": "I timed the query again after the fix",
+     "text": "Timed the query again after the fix",
      "from": "new"
     }
    ],
    "J8": [
     {
-     "text": "Before changing the table structure, I agreed on it with the team that uses it",
+     "text": "Agreed on a table structure change with the team that uses it before making it",
      "from": "new"
     },
     {
@@ -370,89 +370,89 @@
   "TD05": {
    "J1": [
     {
-     "text": "I wrote down the actions available on this screen",
+     "text": "Wrote down the actions available on this screen",
      "from": "new"
     },
     {
-     "text": "I wrote down separately the features this screen would not handle",
+     "text": "Wrote down separately the features this screen would not handle",
      "from": "new"
     }
    ],
    "J2": [
     {
-     "text": "I wrote down the devices and screen sizes to support as conditions",
+     "text": "Wrote down the devices and screen sizes to support as conditions",
      "from": "new"
     },
     {
-     "text": "I wrote down accessibility requirements as conditions",
+     "text": "Wrote down accessibility requirements as conditions",
      "from": "new"
     }
    ],
    "J3": [
     {
-     "text": "I decided where changing values (state) would live",
+     "text": "Decided where changing values (state) would live",
      "from": "new"
     },
     {
-     "text": "I decided which edge cases, such as empty values or errors, to handle",
+     "text": "Decided which edge cases, such as empty values or errors, to handle",
      "from": "new"
     },
     {
-     "text": "I set input validation rules",
+     "text": "Set input validation rules",
      "from": "new"
     }
    ],
    "J4": [
     {
-     "text": "I chose and used a UI library",
+     "text": "Chose and used a UI library",
      "from": "new"
     },
     {
-     "text": "I chose and used a way to change the layout by screen size",
+     "text": "Chose and used a way to change the layout by screen size",
      "from": "new"
     }
    ],
    "J5": [
     {
-     "text": "I left UI code others could use",
+     "text": "Left UI code others could use",
      "from": "new"
     },
     {
-     "text": "I left a list of edge cases",
+     "text": "Left a list of edge cases",
      "from": "new"
     },
     {
-     "text": "I kept screenshots at each screen size",
+     "text": "Kept screenshots at each screen size",
      "from": "new"
     }
    ],
    "J6": [
     {
-     "text": "I compared the design mockup with the real screen",
+     "text": "Compared the design mockup with the real screen",
      "from": "new"
     },
     {
-     "text": "I used an accessibility checker to see whether the standards were met",
+     "text": "Used an accessibility checker to see whether the standards were met",
      "from": "new"
     }
    ],
    "J7": [
     {
-     "text": "When the screen looked wrong, I found the cause by checking which values changed",
+     "text": "Found why the screen looked wrong by checking which values changed",
      "from": "new"
     },
     {
-     "text": "After the fix, I checked that the same symptom was gone",
+     "text": "Checked after the fix that the same symptom was gone",
      "from": "new"
     }
    ],
    "J8": [
     {
-     "text": "I reviewed the UI mockups with the product planner or users and decided",
+     "text": "Reviewed the UI mockups with the product planner or users and decided on them together",
      "from": "new"
     },
     {
-     "text": "The release scope was set following the screen layout I decided",
+     "text": "The release scope was set to follow the screen layout I decided on",
      "from": "new"
     }
    ]
@@ -460,85 +460,85 @@
   "TD06": {
    "J1": [
     {
-     "text": "I wrote down which tasks run concurrently and which run separately",
+     "text": "Wrote down which tasks run concurrently and which run separately",
      "from": "new"
     },
     {
-     "text": "I wrote down the execution paths not covered this time",
+     "text": "Wrote down the execution paths not covered this time",
      "from": "new"
     }
    ],
    "J2": [
     {
-     "text": "I wrote down as a number how often processing must happen",
+     "text": "Wrote down as a number how often processing must happen",
      "from": "new"
     },
     {
-     "text": "I wrote a memory ceiling as a condition",
+     "text": "Wrote a memory ceiling as a condition",
      "from": "new"
     }
    ],
    "J3": [
     {
-     "text": "I decided the order in which tasks use shared resources",
+     "text": "Decided the order in which tasks use shared resources",
      "from": "new"
     },
     {
-     "text": "I decided how wide the lock scope should be",
+     "text": "Decided how wide the lock scope should be",
      "from": "new"
     },
     {
-     "text": "I decided when memory would be freed",
+     "text": "Decided when memory would be freed",
      "from": "new"
     }
    ],
    "J4": [
     {
-     "text": "I found and fixed leaks with a memory checker",
+     "text": "Found and fixed leaks with a memory checker",
      "from": "new"
     },
     {
-     "text": "I ran a tool that detects simultaneous access to the same value and checked the results",
+     "text": "Ran a tool that detects simultaneous access to the same value and checked the results",
      "from": "new"
     }
    ],
    "J5": [
     {
-     "text": "I left lock design notes",
+     "text": "Left lock design notes",
      "from": "new"
     },
     {
-     "text": "I kept records of measured memory use and processing time",
+     "text": "Kept records of measured memory use and processing time",
      "from": "new"
     },
     {
-     "text": "I wrote up failure analysis records",
+     "text": "Wrote up failure analysis records",
      "from": "new"
     }
    ],
    "J6": [
     {
-     "text": "I measured memory and processing time and compared them with the set limits",
+     "text": "Measured memory and processing time and compared them with the set limits",
      "from": "new"
     },
     {
-     "text": "I ran it many times to check the result was the same each time",
+     "text": "Ran it many times to check the result was the same each time",
      "from": "new"
     }
    ],
    "J7": [
     {
-     "text": "I found why a program hung by following the execution order",
+     "text": "Found why a program hung by following the execution order",
      "from": "new"
     },
     {
-     "text": "After the fix, I ran it many times to make sure the problem didn't return",
+     "text": "Ran it many times after the fix to make sure the problem did not return",
      "from": "new"
     }
    ],
    "J8": [
     {
-     "text": "I explained the rules for using memory and resources to the team",
+     "text": "Explained the rules for using memory and resources to the team",
      "from": "new"
     },
     {
@@ -550,85 +550,85 @@
   "TD07": {
    "J1": [
     {
-     "text": "I wrote down which segments I own and which others own",
+     "text": "Wrote down which segments I own and which others own",
      "from": "new"
     },
     {
-     "text": "I wrote down the failure cases not covered this time",
+     "text": "Wrote down the failure cases not covered this time",
      "from": "new"
     }
    ],
    "J2": [
     {
-     "text": "I wrote down as a number how much delay is acceptable",
+     "text": "Wrote down as a number how much delay is acceptable",
      "from": "new"
     },
     {
-     "text": "I wrote down the acceptable share of lost data as a condition",
+     "text": "Wrote down the acceptable share of lost data as a condition",
      "from": "new"
     }
    ],
    "J3": [
     {
-     "text": "I decided how quickly data on several servers must become identical",
+     "text": "Decided how quickly data on several servers must become identical",
      "from": "new"
     },
     {
-     "text": "I decided how many seconds to wait for a response",
+     "text": "Decided how many seconds to wait for a response",
      "from": "new"
     },
     {
-     "text": "I set the number of retries and the interval between them",
+     "text": "Set the number of retries and the interval between them",
      "from": "new"
     }
    ],
    "J4": [
     {
-     "text": "I chose and used a way to measure latency for each segment",
+     "text": "Chose and used a way to measure latency for each segment",
      "from": "new"
     },
     {
-     "text": "I designed and ran tests that shut down or disconnect servers on purpose",
+     "text": "Designed and ran tests that shut down or disconnect servers on purpose",
      "from": "new"
     }
    ],
    "J5": [
     {
-     "text": "I left a network settings table",
+     "text": "Left a network settings table",
      "from": "new"
     },
     {
-     "text": "I wrote down an incident response procedure",
+     "text": "Wrote down an incident response procedure",
      "from": "new"
     },
     {
-     "text": "I left a diagram showing the network segments",
+     "text": "Left a diagram showing the network segments",
      "from": "new"
     }
    ],
    "J6": [
     {
-     "text": "I compared the results of deliberate failures with the design",
+     "text": "Compared the results of deliberate failures with the design",
      "from": "new"
     },
     {
-     "text": "I compared measured latency with the target",
+     "text": "Compared measured latency with the target",
      "from": "new"
     }
    ],
    "J7": [
     {
-     "text": "I found which segment caused a dropped connection",
+     "text": "Found which segment caused a dropped connection",
      "from": "new"
     },
     {
-     "text": "After the fix, I checked that the same failure no longer occurred",
+     "text": "Checked after the fix that the same failure no longer occurred",
      "from": "new"
     }
    ],
    "J8": [
     {
-     "text": "Before changing communication rules, I agreed on them with other teams",
+     "text": "Agreed on communication rule changes with the other teams before making them",
      "from": "new"
     },
     {
@@ -640,89 +640,89 @@
   "TD08": {
    "J1": [
     {
-     "text": "I listed the data and systems to protect",
+     "text": "Listed the data and systems to protect",
      "from": "new"
     },
     {
-     "text": "I wrote down separately the attacks not covered this time",
+     "text": "Wrote down separately the attacks not covered this time",
      "from": "new"
     }
    ],
    "J2": [
     {
-     "text": "I turned what the regulations require into design conditions",
+     "text": "Turned what the regulations require into design conditions",
      "from": "new"
     },
     {
-     "text": "I listed the situations to prevent",
+     "text": "Listed the situations to prevent",
      "from": "new"
     },
     {
-     "text": "I wrote down how much risk would be acceptable",
+     "text": "Wrote down how much risk would be acceptable",
      "from": "new"
     }
    ],
    "J3": [
     {
-     "text": "I decided what to allow for whom",
+     "text": "Decided what to allow for whom",
      "from": "new"
     },
     {
-     "text": "I decided at which stage bad requests would be blocked",
+     "text": "Decided at which stage bad requests would be blocked",
      "from": "new"
     }
    ],
    "J4": [
     {
-     "text": "I chose and ran a vulnerability scanner",
+     "text": "Chose and ran a vulnerability scanner",
      "from": "new"
     },
     {
-     "text": "I decided the encryption scheme and how keys are stored",
+     "text": "Decided the encryption scheme and how keys are stored",
      "from": "new"
     }
    ],
    "J5": [
     {
-     "text": "I left a list of expected attacks",
+     "text": "Left a list of expected attacks",
      "from": "new"
     },
     {
-     "text": "I left a permission table for each user",
+     "text": "Left a permission table for each user",
      "from": "new"
     },
     {
-     "text": "I wrote down a response procedure",
+     "text": "Wrote down a response procedure",
      "from": "new"
     }
    ],
    "J6": [
     {
-     "text": "I compared inspection results with the regulations and decided pass or fail",
+     "text": "Compared inspection results with the regulations and decided pass or fail",
      "from": "new"
     },
     {
-     "text": "I used simulated attacks to check whether they were blocked",
+     "text": "Used simulated attacks to check whether they were blocked",
      "from": "new"
     },
     {
-     "text": "I compared published vulnerability information with our configuration",
+     "text": "Compared published vulnerability information with our configuration",
      "from": "new"
     }
    ],
    "J7": [
     {
-     "text": "I found why a path that an attack got through was open",
+     "text": "Found why the path an attack got through had been left open",
      "from": "new"
     },
     {
-     "text": "After the fix, I checked that the path was closed",
+     "text": "Checked after the fix that the path was closed",
      "from": "new"
     }
    ],
    "J8": [
     {
-     "text": "I decided who can access what together with the team that uses it",
+     "text": "Decided who can access what together with the team that uses it",
      "from": "new"
     },
     {
@@ -734,89 +734,89 @@
   "TD09": {
    "J1": [
     {
-     "text": "I rewrote the question I wanted answered so the available data could answer it",
+     "text": "Rewrote the question I wanted answered so the available data could answer it",
      "from": "new"
     },
     {
-     "text": "I wrote down separately what the available data could not answer",
+     "text": "Wrote down separately what the available data could not answer",
      "from": "new"
     }
    ],
    "J2": [
     {
-     "text": "I wrote down as a number how much error is acceptable",
+     "text": "Wrote down as a number how much error is acceptable",
      "from": "new"
     },
     {
-     "text": "I wrote down the range of usable data as a condition",
+     "text": "Wrote down the range of usable data as a condition",
      "from": "new"
     }
    ],
    "J3": [
     {
-     "text": "I decided the conditions for evaluating the model",
+     "text": "Decided the conditions for evaluating the model",
      "from": "new"
     },
     {
-     "text": "I decided which metric to look at first",
+     "text": "Decided which metric to look at first",
      "from": "new"
     },
     {
-     "text": "I set the rule for splitting the data",
+     "text": "Set the rule for splitting the data",
      "from": "new"
     }
    ],
    "J4": [
     {
-     "text": "I set the order of data cleaning steps and followed it",
+     "text": "Set the order of data cleaning steps and followed it",
      "from": "new"
     },
     {
-     "text": "I chose and applied a method",
+     "text": "Chose and applied a method",
      "from": "new"
     },
     {
-     "text": "I decided how to handle missing values and outliers",
+     "text": "Decided how to handle missing values and outliers",
      "from": "new"
     }
    ],
    "J5": [
     {
-     "text": "I left analysis code others could run",
+     "text": "Left analysis code others could run",
      "from": "new"
     },
     {
-     "text": "I wrote down the data preparation procedure",
+     "text": "Wrote down the data preparation procedure",
      "from": "new"
     },
     {
-     "text": "I kept experiment records",
+     "text": "Kept experiment records",
      "from": "new"
     }
    ],
    "J6": [
     {
-     "text": "I compared against a simple baseline under the same conditions",
+     "text": "Compared against a simple baseline under the same conditions",
      "from": "new"
     },
     {
-     "text": "I checked performance on test data set aside from the start",
+     "text": "Checked performance on test data set aside from the start",
      "from": "new"
     }
    ],
    "J7": [
     {
-     "text": "I gathered cases the model got wrong and found a common cause",
+     "text": "Gathered cases the model got wrong and found a common cause",
      "from": "new"
     },
     {
-     "text": "I measured performance again after the fix",
+     "text": "Measured performance again after the fix",
      "from": "new"
     }
    ],
    "J8": [
     {
-     "text": "I explained analysis results in a meeting",
+     "text": "Explained analysis results in a meeting",
      "from": "new"
     },
     {
@@ -828,89 +828,89 @@
   "TD10": {
    "J1": [
     {
-     "text": "I wrote down what to test and what not to",
+     "text": "Wrote down what to test and what not to",
      "from": "new"
     },
     {
-     "text": "I decided which tests would be done by hand",
+     "text": "Decided which tests would be done by hand",
      "from": "new"
     }
    ],
    "J2": [
     {
-     "text": "I wrote down as a number how long the service may be down",
+     "text": "Wrote down as a number how long the service may be down",
      "from": "new"
     },
     {
-     "text": "I wrote quality requirements as conditions that can be checked",
+     "text": "Wrote quality requirements as conditions that can be checked",
      "from": "new"
     }
    ],
    "J3": [
     {
-     "text": "I set the pass criteria",
+     "text": "Set the pass criteria",
      "from": "new"
     },
     {
-     "text": "I decided which tests run automatically",
+     "text": "Decided which tests run automatically",
      "from": "new"
     },
     {
-     "text": "I decided how to roll back to the previous version if a problem occurs",
+     "text": "Decided how to roll back to the previous version if a problem occurs",
      "from": "new"
     }
    ],
    "J4": [
     {
-     "text": "I chose and applied a test method",
+     "text": "Chose and applied a test method",
      "from": "new"
     },
     {
-     "text": "I chose and used a deployment tool and procedure",
+     "text": "Chose and used a deployment tool and procedure",
      "from": "new"
     }
    ],
    "J5": [
     {
-     "text": "I left a test suite",
+     "text": "Left a test suite",
      "from": "new"
     },
     {
-     "text": "I wrote down the deployment procedure",
+     "text": "Wrote down the deployment procedure",
      "from": "new"
     },
     {
-     "text": "I left the thresholds that trigger an alert when something goes wrong",
+     "text": "Left the thresholds that trigger an alert when something goes wrong",
      "from": "new"
     }
    ],
    "J6": [
     {
-     "text": "I compared test results with the pass criteria and decided pass or fail",
+     "text": "Compared test results with the pass criteria and decided pass or fail",
      "from": "new"
     },
     {
-     "text": "I compared metrics before and after deployment",
+     "text": "Compared metrics before and after deployment",
      "from": "new"
     }
    ],
    "J7": [
     {
-     "text": "I found which change caused a problem after deployment",
+     "text": "Found which change caused a problem after deployment",
      "from": "new"
     },
     {
-     "text": "After rolling back, I checked whether error counts or speed returned to normal",
+     "text": "Checked after rolling back whether error counts or speed returned to normal",
      "from": "new"
     },
     {
-     "text": "I added tests so the same problem would not come back",
+     "text": "Added tests so the same problem would not come back",
      "from": "new"
     }
    ],
    "J8": [
     {
-     "text": "I explained to the team why I decided to deploy or hold back",
+     "text": "Explained to the team why I decided to deploy or hold back",
      "from": "new"
     },
     {
@@ -922,85 +922,85 @@
   "TD11": {
    "J1": [
     {
-     "text": "I wrote down what this scene would show",
+     "text": "Wrote down what this scene would show",
      "from": "new"
     },
     {
-     "text": "I wrote down separately the effects to leave out",
+     "text": "Wrote down separately the effects to leave out",
      "from": "new"
     }
    ],
    "J2": [
     {
-     "text": "I wrote down a target number of frames per second",
+     "text": "Wrote down a target number of frames per second",
      "from": "new"
     },
     {
-     "text": "I wrote down the device performance to support as a condition",
+     "text": "Wrote down the device performance to support as a condition",
      "from": "new"
     }
    ],
    "J3": [
     {
-     "text": "I set the order of what to draw first",
+     "text": "Set the order of what to draw first",
      "from": "new"
     },
     {
-     "text": "I decided which graphics settings to lower",
+     "text": "Decided which graphics settings to lower",
      "from": "new"
     },
     {
-     "text": "I split the time for drawing one frame across stages",
+     "text": "Split the time for drawing one frame across stages",
      "from": "new"
     }
    ],
    "J4": [
     {
-     "text": "I chose and used a way to render shadows or lighting",
+     "text": "Chose and used a way to render shadows or lighting",
      "from": "new"
     },
     {
-     "text": "I chose and used a tool to measure the time per frame",
+     "text": "Chose and used a tool to measure the time per frame",
      "from": "new"
     }
    ],
    "J5": [
     {
-     "text": "I cleaned up graphics code and left it for others to use",
+     "text": "Cleaned up graphics code and left it for others to use",
      "from": "new"
     },
     {
-     "text": "I left a graphics settings table",
+     "text": "Left a graphics settings table",
      "from": "new"
     },
     {
-     "text": "I left measurement records for each device",
+     "text": "Left measurement records for each device",
      "from": "new"
     }
    ],
    "J6": [
     {
-     "text": "I measured frame time on each device and compared it with the target",
+     "text": "Measured frame time on each device and compared it with the target",
      "from": "new"
     },
     {
-     "text": "I measured the delay from input to screen and compared it with the limit",
+     "text": "Measured the delay from input to screen and compared it with the limit",
      "from": "new"
     }
    ],
    "J7": [
     {
-     "text": "I timed the game to find where the screen stutters",
+     "text": "Timed the game to find where the screen stutters",
      "from": "new"
     },
     {
-     "text": "After the fix, I checked that the screen ran smoothly again",
+     "text": "Checked after the fix that the screen ran smoothly again",
      "from": "new"
     }
    ],
    "J8": [
     {
-     "text": "I decided with the game designer whether to give up image quality or speed",
+     "text": "Decided with the game designer whether to give up image quality or speed",
      "from": "new"
     },
     {
@@ -1013,47 +1013,47 @@
  "common": {
   "J1": [
    {
-    "text": "I narrowed down and decided what to work on",
+    "text": "Narrowed down and decided myself what to work on",
     "from": "new"
    },
    {
-    "text": "I separated what from the given topic would not be covered this time",
+    "text": "Wrote down what, within the given topic, would not be covered this time",
     "from": "new"
    }
   ],
   "J2": [
    {
-    "text": "I rewrote a given goal so it could be checked with numbers",
+    "text": "Rewrote a given goal so it could be checked with numbers",
     "from": "new"
    },
    {
-    "text": "When requirements conflicted, I decided which to meet first",
+    "text": "Decided which of the conflicting requirements to meet first",
     "from": "new"
    }
   ],
   "J3": [
    {
-    "text": "I chose one of several options, with reasons",
+    "text": "Chose one of several options, with reasons",
     "from": "new"
    },
    {
-    "text": "For uncertain values, I set assumptions and wrote them down",
+    "text": "Set and wrote down my own assumptions for uncertain values",
     "from": "new"
    }
   ],
   "J4": [
    {
-    "text": "I found, learned and applied a method on my own",
+    "text": "Found, learned and applied a method on my own",
     "from": "new"
    },
    {
-    "text": "When a method didn't fit, I switched to another one",
+    "text": "Switched to another method when the one I was using did not fit",
     "from": "new"
    }
   ],
   "J5": [
    {
-    "text": "I left a document others could read and use",
+    "text": "Left a document others could read and use",
     "from": "new"
    },
    {
@@ -1063,31 +1063,31 @@
   ],
   "J6": [
    {
-    "text": "I checked the results again using a different method",
+    "text": "Checked the results again using a different method",
     "from": "new"
    },
    {
-    "text": "I compared my results with the set criteria",
+    "text": "Compared my results with the set criteria",
     "from": "new"
    }
   ],
   "J7": [
    {
-    "text": "I went through the possible causes one by one",
+    "text": "Went through the possible causes one by one",
     "from": "new"
    },
    {
-    "text": "I changed conditions so the same problem would not happen again",
+    "text": "Changed conditions so the same problem would not happen again",
     "from": "new"
    },
    {
-    "text": "I found where my own judgment had been wrong and wrote it down",
+    "text": "Found where my own judgment had been wrong and wrote it down",
     "from": "new"
    }
   ],
   "J8": [
    {
-    "text": "I explained my thinking in a meeting and got agreement",
+    "text": "Explained my thinking in a meeting and got agreement",
     "from": "new"
    },
    {

@@ -85,35 +85,35 @@
    ],
    "axes": {
     "J1": {
-     "l2": "I wrote down what this system would cover within the given topic",
-     "l3": "The scope I drew became the development scope as is"
+     "l2": "Wrote down what this system would cover within the given topic",
+     "l3": "The scope I defined became the development scope as is"
     },
     "J2": {
-     "l2": "I turned requirements into conditions to meet and metrics",
+     "l2": "Turned requirements into conditions to meet and metrics",
      "l3": "The conditions I set were used as acceptance criteria"
     },
     "J3": {
-     "l2": "I set the lines between modules and the direction of dependencies",
+     "l2": "Set the lines between modules and the direction of dependencies",
      "l3": "The code was split along the boundaries I set, and they held"
     },
     "J4": {
-     "l2": "I chose and used a method and tool for describing the structure",
+     "l2": "Chose and used a method and tool for describing the structure",
      "l3": "The way I chose to describe the structure became the team default"
     },
     "J5": {
-     "l2": "I documented the module diagram and interface contracts",
+     "l2": "Documented the module diagram and interface contracts",
      "l3": "Someone else implemented from the contracts I left"
     },
     "J6": {
-     "l2": "I compared two designs by the cost of change",
-     "l3": "I changed the design based on the comparison"
+     "l2": "Compared two designs by the cost of change",
+     "l3": "Changed the design based on the comparison"
     },
     "J7": {
-     "l2": "When fixing one place, I found and narrowed down the modules that changed with it",
-     "l3": "After redrawing the boundaries, I confirmed that the scope of changes shrank"
+     "l2": "Found and narrowed down the modules that had to change along with a fix",
+     "l3": "Confirmed after redrawing the boundaries that the scope of changes shrank"
     },
     "J8": {
-     "l2": "I presented a design in a review meeting and explained it",
+     "l2": "Presented a design in a review meeting and explained it",
      "l3": "My design decisions were used for the development schedule and staffing"
     }
    },
@@ -173,7 +173,7 @@
     {
      "step": 8,
      "name": "When it goes wrong",
-     "detail": "If it's slow, narrow the cause down to data representation, iteration count or memory access"
+     "detail": "If it is slow, narrow the cause down to data representation, iteration count or memory access"
     }
    ],
    "tools": [
@@ -199,35 +199,35 @@
    ],
    "axes": {
     "J1": {
-     "l2": "I wrote the computational problem to solve in terms of inputs and outputs",
+     "l2": "Wrote the computational problem to solve in terms of inputs and outputs",
      "l3": "The problem definition I set determined the implementation scope"
     },
     "J2": {
-     "l2": "I wrote the allowed time and memory limits as numbers",
+     "l2": "Wrote the allowed time and memory limits as numbers",
      "l3": "The limits I set were used as design criteria"
     },
     "J3": {
-     "l2": "I decided how to represent the data and which operations to make fast",
+     "l2": "Decided how to represent the data and which operations to make fast",
      "l3": "The implementation settled on the representation I chose"
     },
     "J4": {
-     "l2": "I calculated the complexity and chose a measurement method",
+     "l2": "Calculated the complexity and chose a measurement method",
      "l3": "The measurement method I set became the team standard"
     },
     "J5": {
-     "l2": "I left the implementation code together with the complexity reasoning",
+     "l2": "Left the implementation code together with the complexity reasoning",
      "l3": "Someone else took and used the implementation I left"
     },
     "J6": {
-     "l2": "I compared theoretical complexity with measured time on the same input",
-     "l3": "I changed the data representation based on the comparison"
+     "l2": "Compared theoretical complexity with measured time on the same input",
+     "l3": "Changed the data representation based on the comparison"
     },
     "J7": {
-     "l2": "I narrowed down the cause of a slow section to iteration count and memory access",
-     "l3": "I fixed the cause I found and confirmed the time went down"
+     "l2": "Narrowed down the cause of a slow section to iteration count and memory access",
+     "l3": "Fixed the cause I found and confirmed the time went down"
     },
     "J8": {
-     "l2": "I explained performance comparison results to the team",
+     "l2": "Explained performance comparison results to the team",
      "l3": "My performance reasoning was used to decide which features to add or drop"
     }
    },
@@ -313,35 +313,35 @@
    ],
    "axes": {
     "J1": {
-     "l2": "I wrote down the types of requests the server would handle",
+     "l2": "Wrote down the types of requests the server would handle",
      "l3": "The request scope I set was implemented as is"
     },
     "J2": {
-     "l2": "I wrote response time commitments and call frequency as numbers",
+     "l2": "Wrote response time commitments and call frequency as numbers",
      "l3": "The commitments I set were used as operating standards"
     },
     "J3": {
-     "l2": "I set the URL scheme, response format and error codes",
+     "l2": "Set the URL scheme, response format and error codes",
      "l3": "Other teams called the API following the contract I set"
     },
     "J4": {
-     "l2": "I chose and used methods for transaction boundaries and safe retries",
+     "l2": "Chose and used methods for transaction boundaries and safe retries",
      "l3": "The handling approach I chose was used in other features too"
     },
     "J5": {
-     "l2": "I left server code together with a response contract document",
+     "l2": "Left server code together with a response contract document",
      "l3": "The UI side was built from the contract document I left"
     },
     "J6": {
-     "l2": "I checked the commitments against request tests and load tests",
-     "l3": "I changed the processing flow based on the comparison"
+     "l2": "Checked the commitments against request tests and load tests",
+     "l3": "Changed the processing flow based on the comparison"
     },
     "J7": {
-     "l2": "I narrowed down the cause of wrong responses to queries and external calls",
-     "l3": "I fixed the cause I found and confirmed the same error was gone"
+     "l2": "Narrowed down the cause of wrong responses to queries and external calls",
+     "l3": "Fixed the cause I found and confirmed the same error was gone"
     },
     "J8": {
-     "l2": "I agreed on contract changes with the teams that use it",
+     "l2": "Agreed on contract changes with the teams that use it",
      "l3": "My contract was deployed to fit other teams' schedules"
     }
    },
@@ -427,35 +427,35 @@
    ],
    "axes": {
     "J1": {
-     "l2": "I wrote down which data fields to store and which not to",
-     "l3": "The data scope I drew became the schema as is"
+     "l2": "Wrote down which data fields to store and which not to",
+     "l3": "The data scope I defined became the schema as is"
     },
     "J2": {
-     "l2": "I wrote growth volume and lookup conditions as numbers",
+     "l2": "Wrote growth volume and lookup conditions as numbers",
      "l3": "The conditions I set were used as storage design criteria"
     },
     "J3": {
-     "l2": "I set where tables split, the column types and the constraints",
+     "l2": "Set where tables split, the column types and the constraints",
      "l3": "The schema I designed went into production and was used"
     },
     "J4": {
-     "l2": "I chose and used a way to organize relationships and the index types",
+     "l2": "Chose and used a way to organize relationships and the index types",
      "l3": "The approach I chose was applied to other tables too"
     },
     "J5": {
-     "l2": "I documented the schema definition and index list",
+     "l2": "Documented the schema definition and index list",
      "l3": "Someone else wrote queries from the schema I left"
     },
     "J6": {
-     "l2": "I compared query plans and timings to check the indexes",
-     "l3": "I changed indexes or queries based on the comparison"
+     "l2": "Compared query plans and timings to check the indexes",
+     "l3": "Changed indexes or queries based on the comparison"
     },
     "J7": {
-     "l2": "I narrowed down the cause of a slow query from the query plan",
-     "l3": "I fixed the cause I found and confirmed the query time went down"
+     "l2": "Narrowed down the cause of a slow query from the query plan",
+     "l3": "Fixed the cause I found and confirmed the query time went down"
     },
     "J8": {
-     "l2": "I agreed on schema changes with the teams that use it",
+     "l2": "Agreed on schema changes with the teams that use it",
      "l3": "My schema decisions were used to set the order of feature development"
     }
    },
@@ -541,35 +541,35 @@
    ],
    "axes": {
     "J1": {
-     "l2": "I wrote down what this screen would do and what it would not",
-     "l3": "The screen scope I drew was implemented as is"
+     "l2": "Wrote down what this screen would do and what it would not",
+     "l3": "The screen scope I defined was implemented as is"
     },
     "J2": {
-     "l2": "I wrote down target devices, screen widths and accessibility requirements as conditions",
+     "l2": "Wrote down target devices, screen widths and accessibility requirements as conditions",
      "l3": "The conditions I set were used as screen approval criteria"
     },
     "J3": {
-     "l2": "I decided where state lives and which edge cases to handle",
+     "l2": "Decided where state lives and which edge cases to handle",
      "l3": "The screen kept to the state structure I set"
     },
     "J4": {
-     "l2": "I chose and used a UI library and layout method",
+     "l2": "Chose and used a UI library and layout method",
      "l3": "The approach I chose was used on other screens too"
     },
     "J5": {
-     "l2": "I left UI code together with a list of edge cases",
+     "l2": "Left UI code together with a list of edge cases",
      "l3": "Someone else took and used UI components I left"
     },
     "J6": {
-     "l2": "I compared screen sketches with the real screen at each width",
-     "l3": "I changed the layout or state structure based on the comparison"
+     "l2": "Compared screen sketches with the real screen at each width",
+     "l3": "Changed the layout or state structure based on the comparison"
     },
     "J7": {
-     "l2": "I narrowed down why the screen flickered or shifted to state changes",
-     "l3": "I fixed the cause I found and confirmed the same symptom was gone"
+     "l2": "Narrowed down why the screen flickered or shifted to state changes",
+     "l3": "Fixed the cause I found and confirmed the same symptom was gone"
     },
     "J8": {
-     "l2": "I reviewed the screen design with users or product planners and reached agreement",
+     "l2": "Reviewed the screen design with users or product planners and reached agreement",
      "l3": "My UI decisions were used to set the release scope"
     }
    },
@@ -655,35 +655,35 @@
    ],
    "axes": {
     "J1": {
-     "l2": "I wrote down which work runs concurrently and which runs separately",
+     "l2": "Wrote down which work runs concurrently and which runs separately",
      "l3": "The execution units I defined were implemented as is"
     },
     "J2": {
-     "l2": "I wrote the processing cycle and memory ceiling as numbers",
+     "l2": "Wrote the processing cycle and memory ceiling as numbers",
      "l3": "The limits I set were used as design criteria"
     },
     "J3": {
-     "l2": "I set the order in which resources are acquired and the lock scope",
+     "l2": "Set the order in which resources are acquired and the lock scope",
      "l3": "The locking policy I set held up in operation"
     },
     "J4": {
-     "l2": "I chose and used methods and tools for handling memory lifetimes",
+     "l2": "Chose and used methods and tools for handling memory lifetimes",
      "l3": "The approach I chose was used in other modules too"
     },
     "J5": {
-     "l2": "I left system code together with lock design notes",
+     "l2": "Left system code together with lock design notes",
      "l3": "The design notes I left were used in someone else's implementation"
     },
     "J6": {
-     "l2": "I measured resource use and compared it with the set limits",
-     "l3": "I changed the resource policy based on the comparison"
+     "l2": "Measured resource use and compared it with the set limits",
+     "l3": "Changed the resource policy based on the comparison"
     },
     "J7": {
-     "l2": "I narrowed down the cause of hangs or inconsistent results",
-     "l3": "I fixed the cause I found and confirmed it no longer appeared in repeated runs"
+     "l2": "Narrowed down the cause of hangs or inconsistent results",
+     "l3": "Fixed the cause I found and confirmed it no longer appeared in repeated runs"
     },
     "J8": {
-     "l2": "I explained the resource policy to the teams using it and reached agreement",
+     "l2": "Explained the resource policy to the teams using it and reached agreement",
      "l3": "My resource decisions were used to choose device specifications"
     }
    },
@@ -769,35 +769,35 @@
    ],
    "axes": {
     "J1": {
-     "l2": "I wrote down which segments I own and which others own",
-     "l3": "The segment ownership I drew became the operating standard"
+     "l2": "Wrote down which segments I own and which others own",
+     "l3": "The segment ownership I defined became the operating standard"
     },
     "J2": {
-     "l2": "I wrote acceptable latency and loss rate as numbers",
+     "l2": "Wrote acceptable latency and loss rate as numbers",
      "l3": "The figures I set were used as uptime commitments"
     },
     "J3": {
-     "l2": "I set the consistency level, timeouts and retry counts",
+     "l2": "Set the consistency level, timeouts and retry counts",
      "l3": "The values I set went into the production configuration and were used"
     },
     "J4": {
-     "l2": "I chose and used methods for latency measurement and fault injection",
+     "l2": "Chose and used methods for latency measurement and fault injection",
      "l3": "The test method I set became the team procedure"
     },
     "J5": {
-     "l2": "I left a network settings table and an incident response procedure",
+     "l2": "Left a network settings table and an incident response procedure",
      "l3": "Someone else handled an outage by following the procedure I left"
     },
     "J6": {
-     "l2": "I injected failures on purpose and compared whether the system held up as designed",
-     "l3": "I changed timeouts or retries based on the comparison"
+     "l2": "Injected failures on purpose and compared whether the system held up as designed",
+     "l3": "Changed timeouts or retries based on the comparison"
     },
     "J7": {
-     "l2": "I narrowed down the causes of drops and duplicates segment by segment",
-     "l3": "I fixed the cause I found and confirmed the same failure was gone"
+     "l2": "Narrowed down the causes of drops and duplicates segment by segment",
+     "l3": "Fixed the cause I found and confirmed the same failure was gone"
     },
     "J8": {
-     "l2": "I agreed on changes to communication rules with other teams",
+     "l2": "Agreed on changes to communication rules with other teams",
      "l3": "My segment decisions were used for machine placement and cost"
     }
    },
@@ -883,35 +883,35 @@
    ],
    "axes": {
     "J1": {
-     "l2": "I separated the assets to protect from the threats not covered this time",
-     "l3": "The threat scope I drew became the inspection scope"
+     "l2": "Separated the assets to protect from the threats not covered this time",
+     "l3": "The threat scope I defined became the inspection scope"
     },
     "J2": {
-     "l2": "I turned regulatory requirements and situations to prevent into conditions",
+     "l2": "Turned regulatory requirements and situations to prevent into conditions",
      "l3": "The conditions I wrote were used as security criteria"
     },
     "J3": {
-     "l2": "I decided what to allow for whom and where to block",
+     "l2": "Decided what to allow for whom and where to block",
      "l3": "The access scope I set was applied in operation"
     },
     "J4": {
-     "l2": "I chose and used an inspection method and an encryption scheme",
+     "l2": "Chose and used an inspection method and an encryption scheme",
      "l3": "The approach I chose was used in other systems too"
     },
     "J5": {
-     "l2": "I left a threat list and a permission design table",
+     "l2": "Left a threat list and a permission design table",
      "l3": "Permissions were configured following the design table I left"
     },
     "J6": {
-     "l2": "I compared inspection results with regulatory requirements and made a judgment",
-     "l3": "I changed configuration or code based on the comparison"
+     "l2": "Compared inspection results with regulatory requirements and made a judgment",
+     "l3": "Changed configuration or code based on the comparison"
     },
     "J7": {
-     "l2": "I narrowed down why a path was left unblocked",
-     "l3": "I fixed the cause I found and confirmed the same path was closed"
+     "l2": "Narrowed down why a path was left unblocked",
+     "l3": "Fixed the cause I found and confirmed the same path was closed"
     },
     "J8": {
-     "l2": "I agreed on the access scope with the teams that use it",
+     "l2": "Agreed on the access scope with the teams that use it",
      "l3": "My security judgment was used to decide whether to release"
     }
    },
@@ -997,35 +997,35 @@
    ],
    "axes": {
     "J1": {
-     "l2": "I rewrote the question I wanted answered in a form the data could answer",
+     "l2": "Rewrote the question I wanted answered in a form the data could answer",
      "l3": "The question I set became the project scope as is"
     },
     "J2": {
-     "l2": "I wrote down the acceptable error and the range of data I could use",
+     "l2": "Wrote down the acceptable error and the range of data I could use",
      "l3": "The criteria I set were used as the project's pass mark"
     },
     "J3": {
-     "l2": "I set the evaluation conditions and the metric to look at first",
+     "l2": "Set the evaluation conditions and the metric to look at first",
      "l3": "The evaluation conditions I set became the team standard"
     },
     "J4": {
-     "l2": "I chose and applied a method and a data cleaning procedure",
+     "l2": "Chose and applied a method and a data cleaning procedure",
      "l3": "The method I chose was used in other projects too"
     },
     "J5": {
-     "l2": "I left analysis code together with a data preparation procedure",
+     "l2": "Left analysis code together with a data preparation procedure",
      "l3": "Someone else reproduced the same results using the procedure I left"
     },
     "J6": {
-     "l2": "I compared performance with a baseline under the same conditions",
-     "l3": "I changed the method or the data based on the comparison"
+     "l2": "Compared performance with a baseline under the same conditions",
+     "l3": "Changed the method or the data based on the comparison"
     },
     "J7": {
-     "l2": "I gathered the cases the model got wrong and narrowed down the cause",
-     "l3": "I fixed the cause I found and confirmed performance improved"
+     "l2": "Gathered the cases the model got wrong and narrowed down the cause",
+     "l3": "Fixed the cause I found and confirmed performance improved"
     },
     "J8": {
-     "l2": "I presented analysis results in a decision meeting and explained them",
+     "l2": "Presented analysis results in a decision meeting and explained them",
      "l3": "My analysis was used in a product or policy decision"
     }
    },
@@ -1111,35 +1111,35 @@
    ],
    "axes": {
     "J1": {
-     "l2": "I wrote down what to test and what not to",
-     "l3": "The test scope I drew was used as is"
+     "l2": "Wrote down what to test and what not to",
+     "l3": "The test scope I defined was used as is"
     },
     "J2": {
-     "l2": "I wrote acceptable downtime and quality requirements as numbers",
+     "l2": "Wrote acceptable downtime and quality requirements as numbers",
      "l3": "The figures I set were used as uptime commitments"
     },
     "J3": {
-     "l2": "I set the pass criteria, the scope of automation and the rollback path",
+     "l2": "Set the pass criteria, the scope of automation and the rollback path",
      "l3": "The criteria I set became the line that blocks or allows a deployment"
     },
     "J4": {
-     "l2": "I chose and used a test method and deployment tool",
+     "l2": "Chose and used a test method and deployment tool",
      "l3": "The procedure I set became the team's standard procedure"
     },
     "J5": {
-     "l2": "I left a test suite and a deployment procedure",
+     "l2": "Left a test suite and a deployment procedure",
      "l3": "Someone else deployed by following the procedure I left"
     },
     "J6": {
-     "l2": "I compared test results with the pass criteria and made a judgment",
-     "l3": "I changed the criteria or the tests based on the comparison"
+     "l2": "Compared test results with the pass criteria and made a judgment",
+     "l3": "Changed the criteria or the tests based on the comparison"
     },
     "J7": {
-     "l2": "I narrowed down the cause of a post-release problem to a set of changes",
-     "l3": "I fixed the cause I found and confirmed the same problem was gone"
+     "l2": "Narrowed down the cause of a post-release problem to a set of changes",
+     "l3": "Fixed the cause I found and confirmed the same problem was gone"
     },
     "J8": {
-     "l2": "I explained my deploy-or-hold judgment to the team and reached agreement",
+     "l2": "Explained my deploy-or-hold judgment to the team and reached agreement",
      "l3": "My judgment was used to decide the release schedule"
     }
    },
@@ -1155,7 +1155,7 @@
   },
   {
    "code": "TD11",
-   "name": "Real-time Graphics and Game Development",
+   "name": "Real-Time Graphics and Game Development",
    "required_axes": [
     "J3",
     "J6"
@@ -1225,35 +1225,35 @@
    ],
    "axes": {
     "J1": {
-     "l2": "I wrote down what this scene would show and what it would leave out",
-     "l3": "The scene scope I drew was built as is"
+     "l2": "Wrote down what this scene would show and what it would leave out",
+     "l3": "The scene scope I defined was built as is"
     },
     "J2": {
-     "l2": "I wrote the target frame rate and device performance as numbers",
+     "l2": "Wrote the target frame rate and device performance as numbers",
      "l3": "The targets I set were used as release criteria"
     },
     "J3": {
-     "l2": "I set the drawing order, the quality to cut and the frame budget",
+     "l2": "Set the drawing order, the quality to cut and the frame budget",
      "l3": "The scene shipped within the budget I set"
     },
     "J4": {
-     "l2": "I chose and used rendering methods and measurement tools",
+     "l2": "Chose and used rendering methods and measurement tools",
      "l3": "The approach I chose was used in other scenes too"
     },
     "J5": {
-     "l2": "I left rendering code together with a graphics settings table",
+     "l2": "Left rendering code together with a graphics settings table",
      "l3": "Someone else took and used the settings table I left"
     },
     "J6": {
-     "l2": "I measured frame time on each device and compared it with the target",
-     "l3": "I changed the drawing order or quality based on the comparison"
+     "l2": "Measured frame time on each device and compared it with the target",
+     "l3": "Changed the drawing order or quality based on the comparison"
     },
     "J7": {
-     "l2": "I narrowed down the cause of frame drops section by section",
-     "l3": "I fixed the cause I found and confirmed the frame rate recovered"
+     "l2": "Narrowed down the cause of frame drops section by section",
+     "l3": "Fixed the cause I found and confirmed the frame rate recovered"
     },
     "J8": {
-     "l2": "I agreed on the quality and performance trade-off with the game designers",
+     "l2": "Agreed on the quality and performance trade-off with the game designers",
      "l3": "My budget decisions were used for the list of supported devices"
     }
    },

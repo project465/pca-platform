@@ -76,7 +76,7 @@
      "id": "ROLE_DESIGN_V1_R3",
      "axis": "J2",
      "domain": "TD01",
-     "ask": "Have you decided which of several conflicting requirements to protect first?"
+     "ask": "Have you decided which of several conflicting requirements to prioritize?"
     },
     {
      "id": "ROLE_DESIGN_V1_R4",
@@ -282,7 +282,7 @@
      "id": "ROLE_TEST_V1_R5",
      "axis": "J7",
      "domain": "TD12",
-     "ask": "Have you decided under what conditions to retest?"
+     "ask": "Have you decided yourself under what conditions to retest?"
     },
     {
      "id": "ROLE_TEST_V1_R6",

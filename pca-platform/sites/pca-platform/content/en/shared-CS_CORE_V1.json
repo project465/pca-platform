@@ -33,11 +33,11 @@
     ]
    },
    "evidence_action": {
-    "first": "Pick one feature you worked on in a systems assignment or capstone, and write a one-page design note on how you decided when and in what order resources are acquired and released",
-    "next": "Run it repeatedly with the same input to check the results match, and record the resource use of any mismatched runs and the lock scope you changed in your measurement log"
+    "first": "Pick one feature you worked on in a systems assignment or capstone, and write a one-page design note on how you yourself decided when and in what order resources are acquired and released.",
+    "next": "Run it repeatedly with the same input to check the results match, and record the resource use of any mismatched runs and the lock scope you changed in your measurement log."
    },
    "application": {
-    "resume": "In one paragraph, explain how you decided the order for acquiring and releasing resources in a feature you worked on, how you narrowed down mismatches across repeated runs, and how you then changed the lock scope",
+    "resume": "In one paragraph, explain how you decided the order for acquiring and releasing resources in a feature you worked on, how you narrowed down mismatches across repeated runs, and how you then changed the lock scope.",
     "interview": [
      "What was your reasoning for setting the lock scope that way?",
      "When results differed across repeated runs, what did you measure first?",
@@ -66,15 +66,15 @@
      "Adding test code to a capstone project and running it after every change",
      "Writing down the deployment steps in a lab, including a way to roll back",
      "Preparing for a competition by walking through another service's screens and turning them into a feature list",
-     "Collecting where bugs occurred in a club project and fixing them so the same thing wouldn't happen again"
+     "Collecting where bugs occurred in a club project and fixing them so the same thing would not happen again"
     ]
    },
    "evidence_action": {
-    "first": "Pick one module you worked on in a team project, and record your reasoning for where to draw its boundaries as a decision record and an interface contract",
-    "next": "Have another teammate implement it from that contract alone, and log the questions that blocked them and the contract items you changed as a result in the change log"
+    "first": "Pick one module you worked on in a team project, and record your reasoning for where to draw its boundaries as a decision record and an interface contract.",
+    "next": "Have another teammate implement it from that contract alone, and log the questions that blocked them and the contract items you changed as a result in the change log."
    },
    "application": {
-    "resume": "In one paragraph, explain how you decided the boundaries of a module you worked on, how you checked whether others could implement it from the interface contract alone, and which items you changed because of questions that blocked them",
+    "resume": "In one paragraph, explain how you decided the boundaries of a module you worked on, how you checked whether others could implement it from the interface contract alone, and which items you changed because of questions that blocked them.",
     "interview": [
      "What was your reasoning for splitting the module boundaries that way?",
      "How did you fix the parts of the contract where others got stuck?",
@@ -107,11 +107,11 @@
     ]
    },
    "evidence_action": {
-    "first": "Pick one system you worked on in a security lab assignment, and record your reasoning for what to allow for whom as a threat list and a permission design table",
-    "next": "Match the inspection results one by one against the items the regulations require, and record any mismatched items and the measures you decided on to block them in the inspection report"
+    "first": "Pick one system you worked on in a security lab assignment, and record your reasoning for what to allow for whom as a threat list and a permission design table.",
+    "next": "Match the inspection results one by one against the items the regulations require, and record any mismatched items and the measures you decided on to block them in the inspection report."
    },
    "application": {
-    "resume": "In one paragraph, explain how you set the permission scope for a system you worked on, what measures you used to block the mismatched items in the inspection report, and how you then changed the inspection items",
+    "resume": "In one paragraph, explain how you set the permission scope for a system you worked on, what measures you used to block the mismatched items in the inspection report, and how you then changed the inspection items.",
     "interview": [
      "What was your reasoning for allowing that level of permission?",
      "Of the items flagged in the inspection, which did you decide to block first?",
@@ -144,11 +144,11 @@
     ]
    },
    "evidence_action": {
-    "first": "Pick one scene you worked on in a game assignment or campus contest, and record in the settings table your reasoning for how the time in one frame is split",
-    "next": "Measure frame time across different devices, and record in your measurement log where you decided to cut quality and the line you chose to hold anyway"
+    "first": "Pick one scene you worked on in a game assignment or campus contest, and record in the settings table your reasoning for how the time in one frame is split.",
+    "next": "Measure frame time across different devices, and record in your measurement log where you decided to cut quality and the line you chose to hold anyway."
    },
    "application": {
-    "resume": "In one paragraph, explain how you split the frame budget for a scene you worked on, what per-device measurements led you to cut or keep, and what you then changed in the graphics settings table",
+    "resume": "In one paragraph, explain how you split the frame budget for a scene you worked on, what per-device measurements led you to cut or keep, and what you then changed in the graphics settings table.",
     "interview": [
      "What was your reasoning for splitting the frame budget that way?",
      "What did you look at to choose where to cut quality?",
@@ -176,16 +176,16 @@
      "Running two models on the same data in a team project and comparing the results",
      "Deciding first, in a capstone, what exactly you were predicting and choosing the metric to measure it",
      "Splitting training and test data in a lab and checking whether the model also worked on new data",
-     "Gathering the cases that didn't fit well in a competition and working out why",
+     "Gathering the cases that did not fit well in a competition and working out why",
      "Writing down the sources of the data used in a club project and what you changed in it"
     ]
    },
    "evidence_action": {
-    "first": "Pick one problem you worked on in a data analysis assignment, and record the criteria you set yourself for how to split the data and what to evaluate with, in analysis code and a short explanatory document",
-    "next": "Compare against the simplest baseline method under the same conditions, and record the size of the improvement and what the wrong cases had in common in the evaluation results table"
+    "first": "Pick one problem you worked on in a data analysis assignment, and record the criteria you set yourself for how to split the data and what to evaluate with, in analysis code and a short explanatory document.",
+    "next": "Compare against the simplest baseline method under the same conditions, and record the size of the improvement and what the wrong cases had in common in the evaluation results table."
    },
    "application": {
-    "resume": "In one paragraph, explain how you set the evaluation criteria and data split for a problem you worked on, how you read the comparison with the baseline, and what you changed in the data preparation procedure after looking at the wrong cases",
+    "resume": "In one paragraph, explain how you set the evaluation criteria and data split for a problem you worked on, how you read the comparison with the baseline, and what you changed in the data preparation procedure after looking at the wrong cases.",
     "interview": [
      "What was your reasoning for choosing that evaluation criterion?",
      "How did you confirm it really was better than the baseline?",
@@ -218,11 +218,11 @@
     ]
    },
    "evidence_action": {
-    "first": "Pick one feature you worked on in a team project, and record in the requirements list your reasoning for the languages to support and the date and time zone handling rules you set",
-    "next": "Compare the screens and stored values for users in different time zones using the same cases, and record any mismatches and the display formats you changed as a result in the date and time zone handling rules"
+    "first": "Pick one feature you worked on in a team project, and record in the requirements list your reasoning for the languages to support and the date and time zone handling rules you set yourself.",
+    "next": "Compare the screens and stored values for users in different time zones using the same cases, and record any mismatches and the display formats you changed as a result in the date and time zone handling rules."
    },
    "application": {
-    "resume": "In one paragraph, explain how you decided the languages to support and the time zone handling rules for a feature you worked on, and how you found and fixed mismatches on the screens of users in other time zones",
+    "resume": "In one paragraph, explain how you decided the languages to support and the time zone handling rules for a feature you worked on, and how you found and fixed mismatches on the screens of users in other time zones.",
     "interview": [
      "What was your reasoning for choosing those languages and date formats?",
      "What did you look at to find mismatches for users in other time zones?",
@@ -266,11 +266,11 @@
   }
  },
  "scenes": [
-  "Team project",
-  "Personal project",
-  "Hackathon",
-  "Algorithm study group",
-  "Capstone project",
-  "Internship"
+  "team projects",
+  "personal projects",
+  "hackathons",
+  "algorithm study groups",
+  "capstone projects",
+  "internships"
  ]
 }

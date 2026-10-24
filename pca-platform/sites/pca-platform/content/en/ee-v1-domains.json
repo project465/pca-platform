@@ -34,7 +34,7 @@
     {
      "step": 3,
      "name": "What gets decided first",
-     "detail": "Circuit topology, type of active device, and which performance target to protect first"
+     "detail": "Circuit topology, type of active device, and which performance target to prioritize"
     },
     {
      "step": 4,
@@ -489,7 +489,7 @@
     {
      "step": 3,
      "name": "What gets decided first",
-     "detail": "Modulation scheme, code rate and access scheme, and which metric to protect first"
+     "detail": "Modulation scheme, code rate and access scheme, and which metric to prioritize"
     },
     {
      "step": 4,
@@ -603,7 +603,7 @@
     {
      "step": 3,
      "name": "What gets decided first",
-     "detail": "Antenna structure, feed method and matching network, and which metric to protect first"
+     "detail": "Antenna structure, feed method and matching network, and which metric to prioritize"
     },
     {
      "step": 4,
@@ -717,7 +717,7 @@
     {
      "step": 3,
      "name": "What gets decided first",
-     "detail": "Device structure, process sequence and parameters, and which characteristic to protect first"
+     "detail": "Device structure, process sequence and parameters, and which characteristic to prioritize"
     },
     {
      "step": 4,
@@ -831,7 +831,7 @@
     {
      "step": 3,
      "name": "What gets decided first",
-     "detail": "Converter topology, switching devices and passive components, and which metric to protect first"
+     "detail": "Converter topology, switching devices and passive components, and which metric to prioritize"
     },
     {
      "step": 4,
@@ -1059,7 +1059,7 @@
     {
      "step": 3,
      "name": "What gets decided first",
-     "detail": "Plant capacity, configuration and operating strategy, and which metric to protect first"
+     "detail": "Plant capacity, configuration and operating strategy, and which metric to prioritize"
     },
     {
      "step": 4,
@@ -1173,7 +1173,7 @@
     {
      "step": 3,
      "name": "What gets decided first",
-     "detail": "Control structure, gains and sensor setup, and which metric to protect first"
+     "detail": "Control structure, gains and sensor setup, and which metric to prioritize"
     },
     {
      "step": 4,

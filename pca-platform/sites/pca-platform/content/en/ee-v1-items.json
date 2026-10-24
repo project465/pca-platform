@@ -12,52 +12,52 @@
  ],
  "scene_by_axis": {
   "J1": {
-   "bachelor": "In a class project or capstone",
+   "bachelor": "In a course project or capstone",
    "master": "In a research lab project",
-   "phd": "In your doctoral research",
-   "postdoc": "In a research project you lead"
+   "phd": "In your PhD research",
+   "postdoc": "In your own research project"
   },
   "J2": {
    "bachelor": "When given a project's requirements",
    "master": "In a research lab project",
-   "phd": "In your doctoral research",
-   "postdoc": "In a research project you lead"
+   "phd": "In your PhD research",
+   "postdoc": "In your own research project"
   },
   "J3": {
-   "bachelor": "In a class project or capstone",
+   "bachelor": "In a course project or capstone",
    "master": "In a research lab project",
-   "phd": "In your doctoral research",
-   "postdoc": "In a research project you lead"
+   "phd": "In your PhD research",
+   "postdoc": "In your own research project"
   },
   "J4": {
    "bachelor": "In a lab or project",
    "master": "In a research lab project",
-   "phd": "In your doctoral research",
-   "postdoc": "In a research project you lead"
+   "phd": "In your PhD research",
+   "postdoc": "In your own research project"
   },
   "J5": {
    "bachelor": "As the result of a project or capstone",
    "master": "In a research lab project",
-   "phd": "In your doctoral research",
-   "postdoc": "In a research project you lead"
+   "phd": "In your PhD research",
+   "postdoc": "In your own research project"
   },
   "J6": {
-   "bachelor": "In a lab or measurement",
+   "bachelor": "In a lab experiment or measurement",
    "master": "In a research lab project",
-   "phd": "In your doctoral research",
-   "postdoc": "In a research project you lead"
+   "phd": "In your PhD research",
+   "postdoc": "In your own research project"
   },
   "J7": {
    "bachelor": "When a result was not what you expected",
    "master": "In a research lab project",
-   "phd": "In your doctoral research",
-   "postdoc": "In a research project you lead"
+   "phd": "In your PhD research",
+   "postdoc": "In your own research project"
   },
   "J8": {
    "bachelor": "In a capstone or internship",
    "master": "In a research lab project",
-   "phd": "In your doctoral research",
-   "postdoc": "In a research project you lead"
+   "phd": "In your PhD research",
+   "postdoc": "In your own research project"
   }
  },
  "wording_rule": "**The wording asks about the axis's `l2` behavior.** The four options separate the ownership levels, and `l3` wording only goes into the result when checklist evidence backs it. Putting `l3` in the wording would push an undergraduate who drew a schematic that never went to fabrication down to `none`",
@@ -153,7 +153,7 @@
    "education_routing": "all",
    "measurement_axis": "learning_intent",
    "evidence_axis": null,
-   "wording": "Do you want to learn now how to calculate and choose component values for amplifier, filter and power circuits?",
+   "wording": "Would you like to start learning how to calculate and choose component values for amplifier, filter and power circuits?",
    "stage_wording": null,
    "options": [
     "Don't want to learn it at all",
@@ -196,8 +196,8 @@
    "stage_wording": {
     "bachelor": "In an electronics lab, have you calculated and set resistor and capacitor values to hit a target gain?",
     "master": "In a research lab project, have you calculated and set resistor and capacitor values to hit a target gain?",
-    "phd": "In your doctoral research, have you calculated and set resistor and capacitor values to hit a target gain?",
-    "postdoc": "In a research project you lead, have you calculated and set resistor and capacitor values to hit a target gain?"
+    "phd": "In your PhD research, have you calculated and set resistor and capacitor values to hit a target gain?",
+    "postdoc": "In your own research project, have you calculated and set resistor and capacitor values to hit a target gain?"
    },
    "options": [
     "Never done it",
@@ -227,12 +227,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "Have you picked a transistor or op amp yourself from its datasheet specs in a circuit design project?",
+   "wording": "In a circuit design project, have you chosen a transistor or op amp yourself based on its datasheet specs?",
    "stage_wording": {
-    "bachelor": "Have you picked a transistor or op amp yourself from its datasheet specs in a circuit design project?",
-    "master": "Have you picked a transistor or op amp yourself from its datasheet specs in a research lab project?",
-    "phd": "Have you picked a transistor or op amp yourself from its datasheet specs in your doctoral research?",
-    "postdoc": "Have you picked a transistor or op amp yourself from its datasheet specs in a research project you lead?"
+    "bachelor": "In a circuit design project, have you chosen a transistor or op amp yourself based on its datasheet specs?",
+    "master": "In a research lab project, have you chosen a transistor or op amp yourself based on its datasheet specs?",
+    "phd": "In your PhD research, have you chosen a transistor or op amp yourself based on its datasheet specs?",
+    "postdoc": "In your own research project, have you chosen a transistor or op amp yourself based on its datasheet specs?"
    },
    "options": [
     "Never done it",
@@ -266,8 +266,8 @@
    "stage_wording": {
     "bachelor": "In a team project, have you organized a schematic and component selection table so teammates could follow them at a glance?",
     "master": "In a research lab project, have you organized a schematic and component selection table so teammates could follow them at a glance?",
-    "phd": "In your doctoral research, have you organized a schematic and component selection table so teammates could follow them at a glance?",
-    "postdoc": "In a research project you lead, have you organized a schematic and component selection table so teammates could follow them at a glance?"
+    "phd": "In your PhD research, have you organized a schematic and component selection table so teammates could follow them at a glance?",
+    "postdoc": "In your own research project, have you organized a schematic and component selection table so teammates could follow them at a glance?"
    },
    "options": [
     "Never done it",
@@ -301,8 +301,8 @@
    "stage_wording": {
     "bachelor": "In a circuit project, did you write down how you calculated component values and reuse those notes in a later project?",
     "master": "In a research lab project, did you write down how you calculated component values and reuse those notes in a later project?",
-    "phd": "In your doctoral research, did you write down how you calculated component values and reuse those notes in a later project?",
-    "postdoc": "In a research project you lead, did you write down how you calculated component values and reuse those notes in a later project?"
+    "phd": "In your PhD research, did you write down how you calculated component values and reuse those notes in a later project?",
+    "postdoc": "In your own research project, did you write down how you calculated component values and reuse those notes in a later project?"
    },
    "options": [
     "Never done it",
@@ -336,8 +336,8 @@
    "stage_wording": {
     "bachelor": "Have you compared simulated and measured values under the same conditions in an electronics lab?",
     "master": "Have you compared simulated and measured values under the same conditions in a research lab project?",
-    "phd": "Have you compared simulated and measured values under the same conditions in your doctoral research?",
-    "postdoc": "Have you compared simulated and measured values under the same conditions in a research project you lead?"
+    "phd": "Have you compared simulated and measured values under the same conditions in your PhD research?",
+    "postdoc": "Have you compared simulated and measured values under the same conditions in your own research project?"
    },
    "options": [
     "Never done it",
@@ -371,8 +371,8 @@
    "stage_wording": {
     "bachelor": "In a circuit design project, have you checked that your design values stay within the datasheet's maximum ratings?",
     "master": "In a research lab project, have you checked that your design values stay within the datasheet's maximum ratings?",
-    "phd": "In your doctoral research, have you checked that your design values stay within the datasheet's maximum ratings?",
-    "postdoc": "In a research project you lead, have you checked that your design values stay within the datasheet's maximum ratings?"
+    "phd": "In your PhD research, have you checked that your design values stay within the datasheet's maximum ratings?",
+    "postdoc": "In your own research project, have you checked that your design values stay within the datasheet's maximum ratings?"
    },
    "options": [
     "Never done it",
@@ -406,8 +406,8 @@
    "stage_wording": {
     "bachelor": "In an electronics lab, when the output oscillated or stuck at one rail (saturation), did you look for the cause?",
     "master": "In a research lab project, when the output oscillated or stuck at one rail (saturation), did you look for the cause?",
-    "phd": "In your doctoral research, when the output oscillated or stuck at one rail (saturation), did you look for the cause?",
-    "postdoc": "In a research project you lead, when the output oscillated or stuck at one rail (saturation), did you look for the cause?"
+    "phd": "In your PhD research, when the output oscillated or stuck at one rail (saturation), did you look for the cause?",
+    "postdoc": "In your own research project, when the output oscillated or stuck at one rail (saturation), did you look for the cause?"
    },
    "options": [
     "Never done it",
@@ -441,8 +441,8 @@
    "stage_wording": {
     "bachelor": "In an electronics lab, after changing component values, have you remeasured to see how the output changed?",
     "master": "In a research lab project, after changing component values, have you remeasured to see how the output changed?",
-    "phd": "In your doctoral research, after changing component values, have you remeasured to see how the output changed?",
-    "postdoc": "In a research project you lead, after changing component values, have you remeasured to see how the output changed?"
+    "phd": "In your PhD research, after changing component values, have you remeasured to see how the output changed?",
+    "postdoc": "In your own research project, after changing component values, have you remeasured to see how the output changed?"
    },
    "options": [
     "Never done it",
@@ -476,8 +476,8 @@
    "stage_wording": {
     "bachelor": "In a circuit design project, have you read the spec you were given and written down what this circuit would cover?",
     "master": "In a research lab project, have you read the spec you were given and written down what this circuit would cover?",
-    "phd": "In your doctoral research, have you read the spec you were given and written down what this circuit would cover?",
-    "postdoc": "In a research project you lead, have you read the spec you were given and written down what this circuit would cover?"
+    "phd": "In your PhD research, have you read the spec you were given and written down what this circuit would cover?",
+    "postdoc": "In your own research project, have you read the spec you were given and written down what this circuit would cover?"
    },
    "options": [
     "Never done it",
@@ -511,8 +511,8 @@
    "stage_wording": {
     "bachelor": "In a circuit design project, have you turned a request like \"make the signal bigger\" into numbers such as gain and bandwidth?",
     "master": "In a research lab project, have you turned a request like \"make the signal bigger\" into numbers such as gain and bandwidth?",
-    "phd": "In your doctoral research, have you turned a request like \"make the signal bigger\" into numbers such as gain and bandwidth?",
-    "postdoc": "In a research project you lead, have you turned a request like \"make the signal bigger\" into numbers such as gain and bandwidth?"
+    "phd": "In your PhD research, have you turned a request like \"make the signal bigger\" into numbers such as gain and bandwidth?",
+    "postdoc": "In your own research project, have you turned a request like \"make the signal bigger\" into numbers such as gain and bandwidth?"
    },
    "options": [
     "Never done it",
@@ -542,12 +542,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "Have you used a circuit simulator to check operating voltages and frequency response ahead of time in a circuit lab?",
+   "wording": "In a circuit lab, have you used a circuit simulator to check operating voltages and frequency response beforehand?",
    "stage_wording": {
-    "bachelor": "Have you used a circuit simulator to check operating voltages and frequency response ahead of time in a circuit lab?",
-    "master": "Have you used a circuit simulator to check operating voltages and frequency response ahead of time in a research lab project?",
-    "phd": "Have you used a circuit simulator to check operating voltages and frequency response ahead of time in your doctoral research?",
-    "postdoc": "Have you used a circuit simulator to check operating voltages and frequency response ahead of time in a research project you lead?"
+    "bachelor": "In a circuit lab, have you used a circuit simulator to check operating voltages and frequency response beforehand?",
+    "master": "In a research lab project, have you used a circuit simulator to check operating voltages and frequency response beforehand?",
+    "phd": "In your PhD research, have you used a circuit simulator to check operating voltages and frequency response beforehand?",
+    "postdoc": "In your own research project, have you used a circuit simulator to check operating voltages and frequency response beforehand?"
    },
    "options": [
     "Never done it",
@@ -581,8 +581,8 @@
    "stage_wording": {
     "bachelor": "In your capstone project, have you explained a schematic you drew during a design review?",
     "master": "In a research lab project, have you explained a schematic you drew during a design review?",
-    "phd": "In your doctoral research, have you explained a schematic you drew during a design review?",
-    "postdoc": "In a research project you lead, have you explained a schematic you drew during a design review?"
+    "phd": "In your PhD research, have you explained a schematic you drew during a design review?",
+    "postdoc": "In your own research project, have you explained a schematic you drew during a design review?"
    },
    "options": [
     "Never done it",
@@ -684,7 +684,7 @@
    "education_routing": "all",
    "measurement_axis": "learning_intent",
    "evidence_axis": null,
-   "wording": "Do you want to learn now how to design digital logic circuits and get the signal timing right?",
+   "wording": "Would you like to start learning how to design digital logic circuits and get the signal timing right?",
    "stage_wording": null,
    "options": [
     "Don't want to learn it at all",
@@ -727,8 +727,8 @@
    "stage_wording": {
     "bachelor": "In a digital design lab, have you defined a state machine's states and transition conditions yourself?",
     "master": "In a research lab project, have you defined a state machine's states and transition conditions yourself?",
-    "phd": "In your doctoral research, have you defined a state machine's states and transition conditions yourself?",
-    "postdoc": "In a research project you lead, have you defined a state machine's states and transition conditions yourself?"
+    "phd": "In your PhD research, have you defined a state machine's states and transition conditions yourself?",
+    "postdoc": "In your own research project, have you defined a state machine's states and transition conditions yourself?"
    },
    "options": [
     "Never done it",
@@ -762,8 +762,8 @@
    "stage_wording": {
     "bachelor": "In a digital design project, have you decided how many pipeline stages to use, based on the required speed?",
     "master": "In a research lab project, have you decided how many pipeline stages to use, based on the required speed?",
-    "phd": "In your doctoral research, have you decided how many pipeline stages to use, based on the required speed?",
-    "postdoc": "In a research project you lead, have you decided how many pipeline stages to use, based on the required speed?"
+    "phd": "In your PhD research, have you decided how many pipeline stages to use, based on the required speed?",
+    "postdoc": "In your own research project, have you decided how many pipeline stages to use, based on the required speed?"
    },
    "options": [
     "Never done it",
@@ -797,8 +797,8 @@
    "stage_wording": {
     "bachelor": "In a team project, have you organized HDL code (e.g. Verilog) and constraint files so someone else could pick up the work?",
     "master": "In a research lab project, have you organized HDL code (e.g. Verilog) and constraint files so someone else could pick up the work?",
-    "phd": "In your doctoral research, have you organized HDL code (e.g. Verilog) and constraint files so someone else could pick up the work?",
-    "postdoc": "In a research project you lead, have you organized HDL code (e.g. Verilog) and constraint files so someone else could pick up the work?"
+    "phd": "In your PhD research, have you organized HDL code (e.g. Verilog) and constraint files so someone else could pick up the work?",
+    "postdoc": "In your own research project, have you organized HDL code (e.g. Verilog) and constraint files so someone else could pick up the work?"
    },
    "options": [
     "Never done it",
@@ -828,12 +828,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "Have you written up your verification results in a report and shared it with others in a digital design lab?",
+   "wording": "In a digital design lab, have you written up your verification results in a report and shared it with others?",
    "stage_wording": {
-    "bachelor": "Have you written up your verification results in a report and shared it with others in a digital design lab?",
-    "master": "Have you written up your verification results in a report and shared it with others in a research lab project?",
-    "phd": "Have you written up your verification results in a report and shared it with others in your doctoral research?",
-    "postdoc": "Have you written up your verification results in a report and shared it with others in a research project you lead?"
+    "bachelor": "In a digital design lab, have you written up your verification results in a report and shared it with others?",
+    "master": "In a research lab project, have you written up your verification results in a report and shared it with others?",
+    "phd": "In your PhD research, have you written up your verification results in a report and shared it with others?",
+    "postdoc": "In your own research project, have you written up your verification results in a report and shared it with others?"
    },
    "options": [
     "Never done it",
@@ -867,8 +867,8 @@
    "stage_wording": {
     "bachelor": "In a digital design lab, have you compared simulation waveforms side by side with the real signals on the board?",
     "master": "In a research lab project, have you compared simulation waveforms side by side with the real signals on the board?",
-    "phd": "In your doctoral research, have you compared simulation waveforms side by side with the real signals on the board?",
-    "postdoc": "In a research project you lead, have you compared simulation waveforms side by side with the real signals on the board?"
+    "phd": "In your PhD research, have you compared simulation waveforms side by side with the real signals on the board?",
+    "postdoc": "In your own research project, have you compared simulation waveforms side by side with the real signals on the board?"
    },
    "options": [
     "Never done it",
@@ -902,8 +902,8 @@
    "stage_wording": {
     "bachelor": "In a digital design project, have you gone through a timing report looking for paths with too little slack?",
     "master": "In a research lab project, have you gone through a timing report looking for paths with too little slack?",
-    "phd": "In your doctoral research, have you gone through a timing report looking for paths with too little slack?",
-    "postdoc": "In a research project you lead, have you gone through a timing report looking for paths with too little slack?"
+    "phd": "In your PhD research, have you gone through a timing report looking for paths with too little slack?",
+    "postdoc": "In your own research project, have you gone through a timing report looking for paths with too little slack?"
    },
    "options": [
     "Never done it",
@@ -937,8 +937,8 @@
    "stage_wording": {
     "bachelor": "In a digital design lab, when logic that worked in simulation failed on the board, did you track down why?",
     "master": "In a research lab project, when logic that worked in simulation failed on the board, did you track down why?",
-    "phd": "In your doctoral research, when logic that worked in simulation failed on the board, did you track down why?",
-    "postdoc": "In a research project you lead, when logic that worked in simulation failed on the board, did you track down why?"
+    "phd": "In your PhD research, when logic that worked in simulation failed on the board, did you track down why?",
+    "postdoc": "In your own research project, when logic that worked in simulation failed on the board, did you track down why?"
    },
    "options": [
     "Never done it",
@@ -972,8 +972,8 @@
    "stage_wording": {
     "bachelor": "In a digital design lab, after a fix, have you rerun the inputs that caused the problem to confirm it was solved?",
     "master": "In a research lab project, after a fix, have you rerun the inputs that caused the problem to confirm it was solved?",
-    "phd": "In your doctoral research, after a fix, have you rerun the inputs that caused the problem to confirm it was solved?",
-    "postdoc": "In a research project you lead, after a fix, have you rerun the inputs that caused the problem to confirm it was solved?"
+    "phd": "In your PhD research, after a fix, have you rerun the inputs that caused the problem to confirm it was solved?",
+    "postdoc": "In your own research project, after a fix, have you rerun the inputs that caused the problem to confirm it was solved?"
    },
    "options": [
     "Never done it",
@@ -1003,12 +1003,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J1",
-   "wording": "In a digital design project, have you written down which parts existing modules would handle and which logic you would write?",
+   "wording": "In a digital design project, have you written down which parts existing modules would handle and which logic you would write yourself?",
    "stage_wording": {
-    "bachelor": "In a digital design project, have you written down which parts existing modules would handle and which logic you would write?",
-    "master": "In a research lab project, have you written down which parts existing modules would handle and which logic you would write?",
-    "phd": "In your doctoral research, have you written down which parts existing modules would handle and which logic you would write?",
-    "postdoc": "In a research project you lead, have you written down which parts existing modules would handle and which logic you would write?"
+    "bachelor": "In a digital design project, have you written down which parts existing modules would handle and which logic you would write yourself?",
+    "master": "In a research lab project, have you written down which parts existing modules would handle and which logic you would write yourself?",
+    "phd": "In your PhD research, have you written down which parts existing modules would handle and which logic you would write yourself?",
+    "postdoc": "In your own research project, have you written down which parts existing modules would handle and which logic you would write yourself?"
    },
    "options": [
     "Never done it",
@@ -1042,8 +1042,8 @@
    "stage_wording": {
     "bachelor": "In a digital design project, have you turned a request like \"make it fast\" into numbers such as clock speed and allowed latency?",
     "master": "In a research lab project, have you turned a request like \"make it fast\" into numbers such as clock speed and allowed latency?",
-    "phd": "In your doctoral research, have you turned a request like \"make it fast\" into numbers such as clock speed and allowed latency?",
-    "postdoc": "In a research project you lead, have you turned a request like \"make it fast\" into numbers such as clock speed and allowed latency?"
+    "phd": "In your PhD research, have you turned a request like \"make it fast\" into numbers such as clock speed and allowed latency?",
+    "postdoc": "In your own research project, have you turned a request like \"make it fast\" into numbers such as clock speed and allowed latency?"
    },
    "options": [
     "Never done it",
@@ -1073,12 +1073,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "Have you simulated a circuit written in a hardware description language such as Verilog in a digital design lab?",
+   "wording": "In a digital design lab, have you simulated a circuit written in a hardware description language such as Verilog?",
    "stage_wording": {
-    "bachelor": "Have you simulated a circuit written in a hardware description language such as Verilog in a digital design lab?",
-    "master": "Have you simulated a circuit written in a hardware description language such as Verilog in a research lab project?",
-    "phd": "Have you simulated a circuit written in a hardware description language such as Verilog in your doctoral research?",
-    "postdoc": "Have you simulated a circuit written in a hardware description language such as Verilog in a research project you lead?"
+    "bachelor": "In a digital design lab, have you simulated a circuit written in a hardware description language such as Verilog?",
+    "master": "In a research lab project, have you simulated a circuit written in a hardware description language such as Verilog?",
+    "phd": "In your PhD research, have you simulated a circuit written in a hardware description language such as Verilog?",
+    "postdoc": "In your own research project, have you simulated a circuit written in a hardware description language such as Verilog?"
    },
    "options": [
     "Never done it",
@@ -1112,8 +1112,8 @@
    "stage_wording": {
     "bachelor": "In a team project, have you explained the logic structure you designed to teammates during a design review?",
     "master": "In a research lab project, have you explained the logic structure you designed to teammates during a design review?",
-    "phd": "In your doctoral research, have you explained the logic structure you designed to teammates during a design review?",
-    "postdoc": "In a research project you lead, have you explained the logic structure you designed to teammates during a design review?"
+    "phd": "In your PhD research, have you explained the logic structure you designed to teammates during a design review?",
+    "postdoc": "In your own research project, have you explained the logic structure you designed to teammates during a design review?"
    },
    "options": [
     "Never done it",
@@ -1215,7 +1215,7 @@
    "education_routing": "all",
    "measurement_axis": "learning_intent",
    "evidence_axis": null,
-   "wording": "Do you want to learn now how to program firmware on a microcontroller to make a device work?",
+   "wording": "Would you like to start learning how to program firmware on a microcontroller to make a device work?",
    "stage_wording": null,
    "options": [
     "Don't want to learn it at all",
@@ -1258,8 +1258,8 @@
    "stage_wording": {
     "bachelor": "In an embedded project, have you set interrupt priorities and loop periods yourself?",
     "master": "In a research lab project, have you set interrupt priorities and loop periods yourself?",
-    "phd": "In your doctoral research, have you set interrupt priorities and loop periods yourself?",
-    "postdoc": "In a research project you lead, have you set interrupt priorities and loop periods yourself?"
+    "phd": "In your PhD research, have you set interrupt priorities and loop periods yourself?",
+    "postdoc": "In your own research project, have you set interrupt priorities and loop periods yourself?"
    },
    "options": [
     "Never done it",
@@ -1293,8 +1293,8 @@
    "stage_wording": {
     "bachelor": "In an embedded project, have you set the conditions for when to switch to sleep mode to save power?",
     "master": "In a research lab project, have you set the conditions for when to switch to sleep mode to save power?",
-    "phd": "In your doctoral research, have you set the conditions for when to switch to sleep mode to save power?",
-    "postdoc": "In a research project you lead, have you set the conditions for when to switch to sleep mode to save power?"
+    "phd": "In your PhD research, have you set the conditions for when to switch to sleep mode to save power?",
+    "postdoc": "In your own research project, have you set the conditions for when to switch to sleep mode to save power?"
    },
    "options": [
     "Never done it",
@@ -1328,8 +1328,8 @@
    "stage_wording": {
     "bachelor": "In a team project, have you commented and tidied firmware code so teammates could take it over and change it?",
     "master": "In a research lab project, have you commented and tidied firmware code so teammates could take it over and change it?",
-    "phd": "In your doctoral research, have you commented and tidied firmware code so teammates could take it over and change it?",
-    "postdoc": "In a research project you lead, have you commented and tidied firmware code so teammates could take it over and change it?"
+    "phd": "In your PhD research, have you commented and tidied firmware code so teammates could take it over and change it?",
+    "postdoc": "In your own research project, have you commented and tidied firmware code so teammates could take it over and change it?"
    },
    "options": [
     "Never done it",
@@ -1363,8 +1363,8 @@
    "stage_wording": {
     "bachelor": "Have you documented pin connections and configuration settings in an embedded project?",
     "master": "Have you documented pin connections and configuration settings in a research lab project?",
-    "phd": "Have you documented pin connections and configuration settings in your doctoral research?",
-    "postdoc": "Have you documented pin connections and configuration settings in a research project you lead?"
+    "phd": "Have you documented pin connections and configuration settings in your PhD research?",
+    "postdoc": "Have you documented pin connections and configuration settings in your own research project?"
    },
    "options": [
     "Never done it",
@@ -1398,8 +1398,8 @@
    "stage_wording": {
     "bachelor": "In an embedded project, have you timed the response to a button or sensor and compared it with the required time?",
     "master": "In a research lab project, have you timed the response to a button or sensor and compared it with the required time?",
-    "phd": "In your doctoral research, have you timed the response to a button or sensor and compared it with the required time?",
-    "postdoc": "In a research project you lead, have you timed the response to a button or sensor and compared it with the required time?"
+    "phd": "In your PhD research, have you timed the response to a button or sensor and compared it with the required time?",
+    "postdoc": "In your own research project, have you timed the response to a button or sensor and compared it with the required time?"
    },
    "options": [
     "Never done it",
@@ -1433,8 +1433,8 @@
    "stage_wording": {
     "bachelor": "In an embedded project, have you measured the actual current draw and checked it against your power budget?",
     "master": "In a research lab project, have you measured the actual current draw and checked it against your power budget?",
-    "phd": "In your doctoral research, have you measured the actual current draw and checked it against your power budget?",
-    "postdoc": "In a research project you lead, have you measured the actual current draw and checked it against your power budget?"
+    "phd": "In your PhD research, have you measured the actual current draw and checked it against your power budget?",
+    "postdoc": "In your own research project, have you measured the actual current draw and checked it against your power budget?"
    },
    "options": [
     "Never done it",
@@ -1468,8 +1468,8 @@
    "stage_wording": {
     "bachelor": "In an embedded project, when the device suddenly froze, did you rule out the suspected causes one by one?",
     "master": "In a research lab project, when the device suddenly froze, did you rule out the suspected causes one by one?",
-    "phd": "In your doctoral research, when the device suddenly froze, did you rule out the suspected causes one by one?",
-    "postdoc": "In a research project you lead, when the device suddenly froze, did you rule out the suspected causes one by one?"
+    "phd": "In your PhD research, when the device suddenly froze, did you rule out the suspected causes one by one?",
+    "postdoc": "In your own research project, when the device suddenly froze, did you rule out the suspected causes one by one?"
    },
    "options": [
     "Never done it",
@@ -1503,8 +1503,8 @@
    "stage_wording": {
     "bachelor": "In an embedded project, after fixing the firmware, have you rerun it under the same conditions to confirm it no longer froze?",
     "master": "In a research lab project, after fixing the firmware, have you rerun it under the same conditions to confirm it no longer froze?",
-    "phd": "In your doctoral research, after fixing the firmware, have you rerun it under the same conditions to confirm it no longer froze?",
-    "postdoc": "In a research project you lead, after fixing the firmware, have you rerun it under the same conditions to confirm it no longer froze?"
+    "phd": "In your PhD research, after fixing the firmware, have you rerun it under the same conditions to confirm it no longer froze?",
+    "postdoc": "In your own research project, after fixing the firmware, have you rerun it under the same conditions to confirm it no longer froze?"
    },
    "options": [
     "Never done it",
@@ -1538,8 +1538,8 @@
    "stage_wording": {
     "bachelor": "In an embedded project, have you written down which jobs the hardware would handle and which the firmware would?",
     "master": "In a research lab project, have you written down which jobs the hardware would handle and which the firmware would?",
-    "phd": "In your doctoral research, have you written down which jobs the hardware would handle and which the firmware would?",
-    "postdoc": "In a research project you lead, have you written down which jobs the hardware would handle and which the firmware would?"
+    "phd": "In your PhD research, have you written down which jobs the hardware would handle and which the firmware would?",
+    "postdoc": "In your own research project, have you written down which jobs the hardware would handle and which the firmware would?"
    },
    "options": [
     "Never done it",
@@ -1573,8 +1573,8 @@
    "stage_wording": {
     "bachelor": "In an embedded project, have you written a timing requirement such as \"respond within X ms of a button press\"?",
     "master": "In a research lab project, have you written a timing requirement such as \"respond within X ms of a button press\"?",
-    "phd": "In your doctoral research, have you written a timing requirement such as \"respond within X ms of a button press\"?",
-    "postdoc": "In a research project you lead, have you written a timing requirement such as \"respond within X ms of a button press\"?"
+    "phd": "In your PhD research, have you written a timing requirement such as \"respond within X ms of a button press\"?",
+    "postdoc": "In your own research project, have you written a timing requirement such as \"respond within X ms of a button press\"?"
    },
    "options": [
     "Never done it",
@@ -1604,12 +1604,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "Have you stepped through firmware behavior line by line with a debugger and output logs in an embedded project?",
+   "wording": "In an embedded project, have you stepped through firmware behavior line by line with a debugger and output logs?",
    "stage_wording": {
-    "bachelor": "Have you stepped through firmware behavior line by line with a debugger and output logs in an embedded project?",
-    "master": "Have you stepped through firmware behavior line by line with a debugger and output logs in a research lab project?",
-    "phd": "Have you stepped through firmware behavior line by line with a debugger and output logs in your doctoral research?",
-    "postdoc": "Have you stepped through firmware behavior line by line with a debugger and output logs in a research project you lead?"
+    "bachelor": "In an embedded project, have you stepped through firmware behavior line by line with a debugger and output logs?",
+    "master": "In a research lab project, have you stepped through firmware behavior line by line with a debugger and output logs?",
+    "phd": "In your PhD research, have you stepped through firmware behavior line by line with a debugger and output logs?",
+    "postdoc": "In your own research project, have you stepped through firmware behavior line by line with a debugger and output logs?"
    },
    "options": [
     "Never done it",
@@ -1643,8 +1643,8 @@
    "stage_wording": {
     "bachelor": "In a team project, have you explained your firmware structure to teammates in a code review?",
     "master": "In a research lab project, have you explained your firmware structure to teammates in a code review?",
-    "phd": "In your doctoral research, have you explained your firmware structure to teammates in a code review?",
-    "postdoc": "In a research project you lead, have you explained your firmware structure to teammates in a code review?"
+    "phd": "In your PhD research, have you explained your firmware structure to teammates in a code review?",
+    "postdoc": "In your own research project, have you explained your firmware structure to teammates in a code review?"
    },
    "options": [
     "Never done it",
@@ -1746,7 +1746,7 @@
    "education_routing": "all",
    "measurement_axis": "learning_intent",
    "evidence_axis": null,
-   "wording": "Do you want to learn now how to filter noise out of measured signals and pull out the information you need?",
+   "wording": "Would you like to start learning how to filter noise out of measured signals and pull out the information you need?",
    "stage_wording": null,
    "options": [
     "Don't want to learn it at all",
@@ -1789,8 +1789,8 @@
    "stage_wording": {
     "bachelor": "In a DSP project, have you chosen the filter type and order yourself to meet the requirements?",
     "master": "In a research lab project, have you chosen the filter type and order yourself to meet the requirements?",
-    "phd": "In your doctoral research, have you chosen the filter type and order yourself to meet the requirements?",
-    "postdoc": "In a research project you lead, have you chosen the filter type and order yourself to meet the requirements?"
+    "phd": "In your PhD research, have you chosen the filter type and order yourself to meet the requirements?",
+    "postdoc": "In your own research project, have you chosen the filter type and order yourself to meet the requirements?"
    },
    "options": [
     "Never done it",
@@ -1824,8 +1824,8 @@
    "stage_wording": {
     "bachelor": "In a DSP project, have you chosen the frame length and window function for a frequency analysis?",
     "master": "In a research lab project, have you chosen the frame length and window function for a frequency analysis?",
-    "phd": "In your doctoral research, have you chosen the frame length and window function for a frequency analysis?",
-    "postdoc": "In a research project you lead, have you chosen the frame length and window function for a frequency analysis?"
+    "phd": "In your PhD research, have you chosen the frame length and window function for a frequency analysis?",
+    "postdoc": "In your own research project, have you chosen the frame length and window function for a frequency analysis?"
    },
    "options": [
     "Never done it",
@@ -1859,8 +1859,8 @@
    "stage_wording": {
     "bachelor": "In a DSP project, have you left processing code and filter coefficients that others could reuse as they were?",
     "master": "In a research lab project, have you left processing code and filter coefficients that others could reuse as they were?",
-    "phd": "In your doctoral research, have you left processing code and filter coefficients that others could reuse as they were?",
-    "postdoc": "In a research project you lead, have you left processing code and filter coefficients that others could reuse as they were?"
+    "phd": "In your PhD research, have you left processing code and filter coefficients that others could reuse as they were?",
+    "postdoc": "In your own research project, have you left processing code and filter coefficients that others could reuse as they were?"
    },
    "options": [
     "Never done it",
@@ -1890,12 +1890,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "Have you written a report with plots comparing the signal before and after processing in a DSP project?",
+   "wording": "In a DSP project, have you written a report with plots comparing the signal before and after processing?",
    "stage_wording": {
-    "bachelor": "Have you written a report with plots comparing the signal before and after processing in a DSP project?",
-    "master": "Have you written a report with plots comparing the signal before and after processing in a research lab project?",
-    "phd": "Have you written a report with plots comparing the signal before and after processing in your doctoral research?",
-    "postdoc": "Have you written a report with plots comparing the signal before and after processing in a research project you lead?"
+    "bachelor": "In a DSP project, have you written a report with plots comparing the signal before and after processing?",
+    "master": "In a research lab project, have you written a report with plots comparing the signal before and after processing?",
+    "phd": "In your PhD research, have you written a report with plots comparing the signal before and after processing?",
+    "postdoc": "In your own research project, have you written a report with plots comparing the signal before and after processing?"
    },
    "options": [
     "Never done it",
@@ -1929,8 +1929,8 @@
    "stage_wording": {
     "bachelor": "In a DSP project, have you compared the response predicted by theory with the actual processing result?",
     "master": "In a research lab project, have you compared the response predicted by theory with the actual processing result?",
-    "phd": "In your doctoral research, have you compared the response predicted by theory with the actual processing result?",
-    "postdoc": "In a research project you lead, have you compared the response predicted by theory with the actual processing result?"
+    "phd": "In your PhD research, have you compared the response predicted by theory with the actual processing result?",
+    "postdoc": "In your own research project, have you compared the response predicted by theory with the actual processing result?"
    },
    "options": [
     "Never done it",
@@ -1964,8 +1964,8 @@
    "stage_wording": {
     "bachelor": "In a DSP project, have you checked your results against a different processing method on the same signal?",
     "master": "In a research lab project, have you checked your results against a different processing method on the same signal?",
-    "phd": "In your doctoral research, have you checked your results against a different processing method on the same signal?",
-    "postdoc": "In a research project you lead, have you checked your results against a different processing method on the same signal?"
+    "phd": "In your PhD research, have you checked your results against a different processing method on the same signal?",
+    "postdoc": "In your own research project, have you checked your results against a different processing method on the same signal?"
    },
    "options": [
     "Never done it",
@@ -1999,8 +1999,8 @@
    "stage_wording": {
     "bachelor": "In a DSP project, when results were inconsistent, did you find which stage was unstable?",
     "master": "In a research lab project, when results were inconsistent, did you find which stage was unstable?",
-    "phd": "In your doctoral research, when results were inconsistent, did you find which stage was unstable?",
-    "postdoc": "In a research project you lead, when results were inconsistent, did you find which stage was unstable?"
+    "phd": "In your PhD research, when results were inconsistent, did you find which stage was unstable?",
+    "postdoc": "In your own research project, when results were inconsistent, did you find which stage was unstable?"
    },
    "options": [
     "Never done it",
@@ -2034,8 +2034,8 @@
    "stage_wording": {
     "bachelor": "In a DSP project, after changing conditions, have you recalculated metrics such as the noise level?",
     "master": "In a research lab project, after changing conditions, have you recalculated metrics such as the noise level?",
-    "phd": "In your doctoral research, after changing conditions, have you recalculated metrics such as the noise level?",
-    "postdoc": "In a research project you lead, after changing conditions, have you recalculated metrics such as the noise level?"
+    "phd": "In your PhD research, after changing conditions, have you recalculated metrics such as the noise level?",
+    "postdoc": "In your own research project, after changing conditions, have you recalculated metrics such as the noise level?"
    },
    "options": [
     "Never done it",
@@ -2069,8 +2069,8 @@
    "stage_wording": {
     "bachelor": "In a DSP project, have you first written down what information you had to get from the signal?",
     "master": "In a research lab project, have you first written down what information you had to get from the signal?",
-    "phd": "In your doctoral research, have you first written down what information you had to get from the signal?",
-    "postdoc": "In a research project you lead, have you first written down what information you had to get from the signal?"
+    "phd": "In your PhD research, have you first written down what information you had to get from the signal?",
+    "postdoc": "In your own research project, have you first written down what information you had to get from the signal?"
    },
    "options": [
     "Never done it",
@@ -2104,8 +2104,8 @@
    "stage_wording": {
     "bachelor": "In a DSP project, have you set the required sampling rate and allowed latency as numbers and written them down?",
     "master": "In a research lab project, have you set the required sampling rate and allowed latency as numbers and written them down?",
-    "phd": "In your doctoral research, have you set the required sampling rate and allowed latency as numbers and written them down?",
-    "postdoc": "In a research project you lead, have you set the required sampling rate and allowed latency as numbers and written them down?"
+    "phd": "In your PhD research, have you set the required sampling rate and allowed latency as numbers and written them down?",
+    "postdoc": "In your own research project, have you set the required sampling rate and allowed latency as numbers and written them down?"
    },
    "options": [
     "Never done it",
@@ -2139,8 +2139,8 @@
    "stage_wording": {
     "bachelor": "In a DSP project, have you designed a filter with a computing tool and applied it to a real signal?",
     "master": "In a research lab project, have you designed a filter with a computing tool and applied it to a real signal?",
-    "phd": "In your doctoral research, have you designed a filter with a computing tool and applied it to a real signal?",
-    "postdoc": "In a research project you lead, have you designed a filter with a computing tool and applied it to a real signal?"
+    "phd": "In your PhD research, have you designed a filter with a computing tool and applied it to a real signal?",
+    "postdoc": "In your own research project, have you designed a filter with a computing tool and applied it to a real signal?"
    },
    "options": [
     "Never done it",
@@ -2174,8 +2174,8 @@
    "stage_wording": {
     "bachelor": "In your capstone project, have you explained signal analysis results at a team meeting?",
     "master": "In a research lab project, have you explained signal analysis results at a team meeting?",
-    "phd": "In your doctoral research, have you explained signal analysis results at a team meeting?",
-    "postdoc": "In a research project you lead, have you explained signal analysis results at a team meeting?"
+    "phd": "In your PhD research, have you explained signal analysis results at a team meeting?",
+    "postdoc": "In your own research project, have you explained signal analysis results at a team meeting?"
    },
    "options": [
     "Never done it",
@@ -2277,7 +2277,7 @@
    "education_routing": "all",
    "measurement_axis": "learning_intent",
    "evidence_axis": null,
-   "wording": "Do you want to learn now how to choose communication schemes and settings to send data over a distance?",
+   "wording": "Would you like to start learning how to choose communication schemes and settings to send data over a distance?",
    "stage_wording": null,
    "options": [
     "Don't want to learn it at all",
@@ -2320,8 +2320,8 @@
    "stage_wording": {
     "bachelor": "In a communications lab, have you chosen the modulation scheme yourself to meet the required data rate?",
     "master": "In a research lab project, have you chosen the modulation scheme yourself to meet the required data rate?",
-    "phd": "In your doctoral research, have you chosen the modulation scheme yourself to meet the required data rate?",
-    "postdoc": "In a research project you lead, have you chosen the modulation scheme yourself to meet the required data rate?"
+    "phd": "In your PhD research, have you chosen the modulation scheme yourself to meet the required data rate?",
+    "postdoc": "In your own research project, have you chosen the modulation scheme yourself to meet the required data rate?"
    },
    "options": [
     "Never done it",
@@ -2355,8 +2355,8 @@
    "stage_wording": {
     "bachelor": "In a communications project, have you calculated and set the error-correcting code rate and when to retransmit?",
     "master": "In a research lab project, have you calculated and set the error-correcting code rate and when to retransmit?",
-    "phd": "In your doctoral research, have you calculated and set the error-correcting code rate and when to retransmit?",
-    "postdoc": "In a research project you lead, have you calculated and set the error-correcting code rate and when to retransmit?"
+    "phd": "In your PhD research, have you calculated and set the error-correcting code rate and when to retransmit?",
+    "postdoc": "In your own research project, have you calculated and set the error-correcting code rate and when to retransmit?"
    },
    "options": [
     "Never done it",
@@ -2386,12 +2386,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "Have you put together a link budget table showing how much signal is left at the receiver in a communications project?",
+   "wording": "In a communications project, have you put together a link budget table showing how much signal is left at the receiver?",
    "stage_wording": {
-    "bachelor": "Have you put together a link budget table showing how much signal is left at the receiver in a communications project?",
-    "master": "Have you put together a link budget table showing how much signal is left at the receiver in a research lab project?",
-    "phd": "Have you put together a link budget table showing how much signal is left at the receiver in your doctoral research?",
-    "postdoc": "Have you put together a link budget table showing how much signal is left at the receiver in a research project you lead?"
+    "bachelor": "In a communications project, have you put together a link budget table showing how much signal is left at the receiver?",
+    "master": "In a research lab project, have you put together a link budget table showing how much signal is left at the receiver?",
+    "phd": "In your PhD research, have you put together a link budget table showing how much signal is left at the receiver?",
+    "postdoc": "In your own research project, have you put together a link budget table showing how much signal is left at the receiver?"
    },
    "options": [
     "Never done it",
@@ -2425,8 +2425,8 @@
    "stage_wording": {
     "bachelor": "In a communications project, have you tabulated your link settings and reused them in the next experiment?",
     "master": "In a research lab project, have you tabulated your link settings and reused them in the next experiment?",
-    "phd": "In your doctoral research, have you tabulated your link settings and reused them in the next experiment?",
-    "postdoc": "In a research project you lead, have you tabulated your link settings and reused them in the next experiment?"
+    "phd": "In your PhD research, have you tabulated your link settings and reused them in the next experiment?",
+    "postdoc": "In your own research project, have you tabulated your link settings and reused them in the next experiment?"
    },
    "options": [
     "Never done it",
@@ -2460,8 +2460,8 @@
    "stage_wording": {
     "bachelor": "In a communications lab, have you compared the calculated and measured error rates under the same conditions?",
     "master": "In a research lab project, have you compared the calculated and measured error rates under the same conditions?",
-    "phd": "In your doctoral research, have you compared the calculated and measured error rates under the same conditions?",
-    "postdoc": "In a research project you lead, have you compared the calculated and measured error rates under the same conditions?"
+    "phd": "In your PhD research, have you compared the calculated and measured error rates under the same conditions?",
+    "postdoc": "In your own research project, have you compared the calculated and measured error rates under the same conditions?"
    },
    "options": [
     "Never done it",
@@ -2495,8 +2495,8 @@
    "stage_wording": {
     "bachelor": "In a communications project, have you checked that measured values fall within the limits in the standard?",
     "master": "In a research lab project, have you checked that measured values fall within the limits in the standard?",
-    "phd": "In your doctoral research, have you checked that measured values fall within the limits in the standard?",
-    "postdoc": "In a research project you lead, have you checked that measured values fall within the limits in the standard?"
+    "phd": "In your PhD research, have you checked that measured values fall within the limits in the standard?",
+    "postdoc": "In your own research project, have you checked that measured values fall within the limits in the standard?"
    },
    "options": [
     "Never done it",
@@ -2530,8 +2530,8 @@
    "stage_wording": {
     "bachelor": "In a communications lab, when the link kept dropping, did you check step by step where the problem was?",
     "master": "In a research lab project, when the link kept dropping, did you check step by step where the problem was?",
-    "phd": "In your doctoral research, when the link kept dropping, did you check step by step where the problem was?",
-    "postdoc": "In a research project you lead, when the link kept dropping, did you check step by step where the problem was?"
+    "phd": "In your PhD research, when the link kept dropping, did you check step by step where the problem was?",
+    "postdoc": "In your own research project, when the link kept dropping, did you check step by step where the problem was?"
    },
    "options": [
     "Never done it",
@@ -2565,8 +2565,8 @@
    "stage_wording": {
     "bachelor": "In a communications lab, after changing settings, have you remeasured how much the error rate changed?",
     "master": "In a research lab project, after changing settings, have you remeasured how much the error rate changed?",
-    "phd": "In your doctoral research, after changing settings, have you remeasured how much the error rate changed?",
-    "postdoc": "In a research project you lead, after changing settings, have you remeasured how much the error rate changed?"
+    "phd": "In your PhD research, after changing settings, have you remeasured how much the error rate changed?",
+    "postdoc": "In your own research project, after changing settings, have you remeasured how much the error rate changed?"
    },
    "options": [
     "Never done it",
@@ -2600,8 +2600,8 @@
    "stage_wording": {
     "bachelor": "In a communications project, have you used the given conditions to set out which part of the path this link would cover?",
     "master": "In a research lab project, have you used the given conditions to set out which part of the path this link would cover?",
-    "phd": "In your doctoral research, have you used the given conditions to set out which part of the path this link would cover?",
-    "postdoc": "In a research project you lead, have you used the given conditions to set out which part of the path this link would cover?"
+    "phd": "In your PhD research, have you used the given conditions to set out which part of the path this link would cover?",
+    "postdoc": "In your own research project, have you used the given conditions to set out which part of the path this link would cover?"
    },
    "options": [
     "Never done it",
@@ -2635,8 +2635,8 @@
    "stage_wording": {
     "bachelor": "In a communications project, have you written down the required data rate and allowed error rate as numbers?",
     "master": "In a research lab project, have you written down the required data rate and allowed error rate as numbers?",
-    "phd": "In your doctoral research, have you written down the required data rate and allowed error rate as numbers?",
-    "postdoc": "In a research project you lead, have you written down the required data rate and allowed error rate as numbers?"
+    "phd": "In your PhD research, have you written down the required data rate and allowed error rate as numbers?",
+    "postdoc": "In your own research project, have you written down the required data rate and allowed error rate as numbers?"
    },
    "options": [
     "Never done it",
@@ -2666,12 +2666,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "Have you used a communication simulator to estimate the error rate in noise beforehand in a communications project?",
+   "wording": "In a communications project, have you used a communication simulator to estimate the error rate in noise beforehand?",
    "stage_wording": {
-    "bachelor": "Have you used a communication simulator to estimate the error rate in noise beforehand in a communications project?",
-    "master": "Have you used a communication simulator to estimate the error rate in noise beforehand in a research lab project?",
-    "phd": "Have you used a communication simulator to estimate the error rate in noise beforehand in your doctoral research?",
-    "postdoc": "Have you used a communication simulator to estimate the error rate in noise beforehand in a research project you lead?"
+    "bachelor": "In a communications project, have you used a communication simulator to estimate the error rate in noise beforehand?",
+    "master": "In a research lab project, have you used a communication simulator to estimate the error rate in noise beforehand?",
+    "phd": "In your PhD research, have you used a communication simulator to estimate the error rate in noise beforehand?",
+    "postdoc": "In your own research project, have you used a communication simulator to estimate the error rate in noise beforehand?"
    },
    "options": [
     "Never done it",
@@ -2705,8 +2705,8 @@
    "stage_wording": {
     "bachelor": "In a team project, have you used a link budget table to support your explanation in a network design review?",
     "master": "In a research lab project, have you used a link budget table to support your explanation in a network design review?",
-    "phd": "In your doctoral research, have you used a link budget table to support your explanation in a network design review?",
-    "postdoc": "In a research project you lead, have you used a link budget table to support your explanation in a network design review?"
+    "phd": "In your PhD research, have you used a link budget table to support your explanation in a network design review?",
+    "postdoc": "In your own research project, have you used a link budget table to support your explanation in a network design review?"
    },
    "options": [
     "Never done it",
@@ -2775,7 +2775,7 @@
    "education_routing": "all",
    "measurement_axis": "exposure",
    "evidence_axis": null,
-   "wording": "Have you ever refined antennas or RF circuits so they radiated signals well?",
+   "wording": "Have you ever refined antennas and RF circuits so they radiated signals well?",
    "stage_wording": null,
    "options": [
     "Never",
@@ -2808,7 +2808,7 @@
    "education_routing": "all",
    "measurement_axis": "learning_intent",
    "evidence_axis": null,
-   "wording": "Do you want to learn now how to refine antennas and RF circuits so they radiate signals well?",
+   "wording": "Would you like to start learning how to refine antennas and RF circuits so they radiate signals well?",
    "stage_wording": null,
    "options": [
     "Don't want to learn it at all",
@@ -2851,8 +2851,8 @@
    "stage_wording": {
     "bachelor": "In an antenna lab, have you calculated and set the antenna length yourself for the operating frequency?",
     "master": "In a research lab project, have you calculated and set the antenna length yourself for the operating frequency?",
-    "phd": "In your doctoral research, have you calculated and set the antenna length yourself for the operating frequency?",
-    "postdoc": "In a research project you lead, have you calculated and set the antenna length yourself for the operating frequency?"
+    "phd": "In your PhD research, have you calculated and set the antenna length yourself for the operating frequency?",
+    "postdoc": "In your own research project, have you calculated and set the antenna length yourself for the operating frequency?"
    },
    "options": [
     "Never done it",
@@ -2886,8 +2886,8 @@
    "stage_wording": {
     "bachelor": "In an RF lab, have you used measurements to choose matching component values that reduce reflection?",
     "master": "In a research lab project, have you used measurements to choose matching component values that reduce reflection?",
-    "phd": "In your doctoral research, have you used measurements to choose matching component values that reduce reflection?",
-    "postdoc": "In a research project you lead, have you used measurements to choose matching component values that reduce reflection?"
+    "phd": "In your PhD research, have you used measurements to choose matching component values that reduce reflection?",
+    "postdoc": "In your own research project, have you used measurements to choose matching component values that reduce reflection?"
    },
    "options": [
     "Never done it",
@@ -2921,8 +2921,8 @@
    "stage_wording": {
     "bachelor": "In an EM project, have you recorded the simulation model and settings so someone else could rerun it?",
     "master": "In a research lab project, have you recorded the simulation model and settings so someone else could rerun it?",
-    "phd": "In your doctoral research, have you recorded the simulation model and settings so someone else could rerun it?",
-    "postdoc": "In a research project you lead, have you recorded the simulation model and settings so someone else could rerun it?"
+    "phd": "In your PhD research, have you recorded the simulation model and settings so someone else could rerun it?",
+    "postdoc": "In your own research project, have you recorded the simulation model and settings so someone else could rerun it?"
    },
    "options": [
     "Never done it",
@@ -2952,12 +2952,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "Have you left antenna drawings that the person building it could follow in an antenna lab?",
+   "wording": "In an antenna lab, have you left antenna drawings that the person building the antenna could follow?",
    "stage_wording": {
-    "bachelor": "Have you left antenna drawings that the person building it could follow in an antenna lab?",
-    "master": "Have you left antenna drawings that the person building it could follow in a research lab project?",
-    "phd": "Have you left antenna drawings that the person building it could follow in your doctoral research?",
-    "postdoc": "Have you left antenna drawings that the person building it could follow in a research project you lead?"
+    "bachelor": "In an antenna lab, have you left antenna drawings that the person building the antenna could follow?",
+    "master": "In a research lab project, have you left antenna drawings that the person building the antenna could follow?",
+    "phd": "In your PhD research, have you left antenna drawings that the person building the antenna could follow?",
+    "postdoc": "In your own research project, have you left antenna drawings that the person building the antenna could follow?"
    },
    "options": [
     "Never done it",
@@ -2991,8 +2991,8 @@
    "stage_wording": {
     "bachelor": "In an antenna lab, have you compared the simulated radiation pattern with the measured one?",
     "master": "In a research lab project, have you compared the simulated radiation pattern with the measured one?",
-    "phd": "In your doctoral research, have you compared the simulated radiation pattern with the measured one?",
-    "postdoc": "In a research project you lead, have you compared the simulated radiation pattern with the measured one?"
+    "phd": "In your PhD research, have you compared the simulated radiation pattern with the measured one?",
+    "postdoc": "In your own research project, have you compared the simulated radiation pattern with the measured one?"
    },
    "options": [
     "Never done it",
@@ -3026,8 +3026,8 @@
    "stage_wording": {
     "bachelor": "In an antenna lab, have you compared your antenna's measurements side by side with a reference antenna's?",
     "master": "In a research lab project, have you compared your antenna's measurements side by side with a reference antenna's?",
-    "phd": "In your doctoral research, have you compared your antenna's measurements side by side with a reference antenna's?",
-    "postdoc": "In a research project you lead, have you compared your antenna's measurements side by side with a reference antenna's?"
+    "phd": "In your PhD research, have you compared your antenna's measurements side by side with a reference antenna's?",
+    "postdoc": "In your own research project, have you compared your antenna's measurements side by side with a reference antenna's?"
    },
    "options": [
     "Never done it",
@@ -3061,8 +3061,8 @@
    "stage_wording": {
     "bachelor": "In an RF lab, when reflection went over the limit, did you work through the suspected causes one by one?",
     "master": "In a research lab project, when reflection went over the limit, did you work through the suspected causes one by one?",
-    "phd": "In your doctoral research, when reflection went over the limit, did you work through the suspected causes one by one?",
-    "postdoc": "In a research project you lead, when reflection went over the limit, did you work through the suspected causes one by one?"
+    "phd": "In your PhD research, when reflection went over the limit, did you work through the suspected causes one by one?",
+    "postdoc": "In your own research project, when reflection went over the limit, did you work through the suspected causes one by one?"
    },
    "options": [
     "Never done it",
@@ -3096,8 +3096,8 @@
    "stage_wording": {
     "bachelor": "In an antenna lab, after changing the antenna structure, have you remeasured the pattern to see if it improved?",
     "master": "In a research lab project, after changing the antenna structure, have you remeasured the pattern to see if it improved?",
-    "phd": "In your doctoral research, after changing the antenna structure, have you remeasured the pattern to see if it improved?",
-    "postdoc": "In a research project you lead, after changing the antenna structure, have you remeasured the pattern to see if it improved?"
+    "phd": "In your PhD research, after changing the antenna structure, have you remeasured the pattern to see if it improved?",
+    "postdoc": "In your own research project, after changing the antenna structure, have you remeasured the pattern to see if it improved?"
    },
    "options": [
     "Never done it",
@@ -3131,8 +3131,8 @@
    "stage_wording": {
     "bachelor": "In an antenna design project, have you set out which directions to radiate in and which to leave out this time?",
     "master": "In a research lab project, have you set out which directions to radiate in and which to leave out this time?",
-    "phd": "In your doctoral research, have you set out which directions to radiate in and which to leave out this time?",
-    "postdoc": "In a research project you lead, have you set out which directions to radiate in and which to leave out this time?"
+    "phd": "In your PhD research, have you set out which directions to radiate in and which to leave out this time?",
+    "postdoc": "In your own research project, have you set out which directions to radiate in and which to leave out this time?"
    },
    "options": [
     "Never done it",
@@ -3166,8 +3166,8 @@
    "stage_wording": {
     "bachelor": "In an antenna design project, have you set target numbers for the gain and reflection (VSWR) the antenna had to meet?",
     "master": "In a research lab project, have you set target numbers for the gain and reflection (VSWR) the antenna had to meet?",
-    "phd": "In your doctoral research, have you set target numbers for the gain and reflection (VSWR) the antenna had to meet?",
-    "postdoc": "In a research project you lead, have you set target numbers for the gain and reflection (VSWR) the antenna had to meet?"
+    "phd": "In your PhD research, have you set target numbers for the gain and reflection (VSWR) the antenna had to meet?",
+    "postdoc": "In your own research project, have you set target numbers for the gain and reflection (VSWR) the antenna had to meet?"
    },
    "options": [
     "Never done it",
@@ -3197,12 +3197,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "Have you calculated an antenna's radiation pattern with EM simulation software in an EM project?",
+   "wording": "In an EM project, have you calculated an antenna's radiation pattern with EM simulation software?",
    "stage_wording": {
-    "bachelor": "Have you calculated an antenna's radiation pattern with EM simulation software in an EM project?",
-    "master": "Have you calculated an antenna's radiation pattern with EM simulation software in a research lab project?",
-    "phd": "Have you calculated an antenna's radiation pattern with EM simulation software in your doctoral research?",
-    "postdoc": "Have you calculated an antenna's radiation pattern with EM simulation software in a research project you lead?"
+    "bachelor": "In an EM project, have you calculated an antenna's radiation pattern with EM simulation software?",
+    "master": "In a research lab project, have you calculated an antenna's radiation pattern with EM simulation software?",
+    "phd": "In your PhD research, have you calculated an antenna's radiation pattern with EM simulation software?",
+    "postdoc": "In your own research project, have you calculated an antenna's radiation pattern with EM simulation software?"
    },
    "options": [
     "Never done it",
@@ -3236,8 +3236,8 @@
    "stage_wording": {
     "bachelor": "In a team project, have you used simulation results to explain your design during a design review?",
     "master": "In a research lab project, have you used simulation results to explain your design during a design review?",
-    "phd": "In your doctoral research, have you used simulation results to explain your design during a design review?",
-    "postdoc": "In a research project you lead, have you used simulation results to explain your design during a design review?"
+    "phd": "In your PhD research, have you used simulation results to explain your design during a design review?",
+    "postdoc": "In your own research project, have you used simulation results to explain your design during a design review?"
    },
    "options": [
     "Never done it",
@@ -3306,7 +3306,7 @@
    "education_routing": "all",
    "measurement_axis": "exposure",
    "evidence_axis": null,
-   "wording": "Have you ever set the structure or process conditions of semiconductor devices?",
+   "wording": "Have you ever set the structure and process conditions of semiconductor devices?",
    "stage_wording": null,
    "options": [
     "Never",
@@ -3339,7 +3339,7 @@
    "education_routing": "all",
    "measurement_axis": "learning_intent",
    "evidence_axis": null,
-   "wording": "Do you want to learn now how to set the structure and process conditions of semiconductor devices?",
+   "wording": "Would you like to start learning how to set the structure and process conditions of semiconductor devices?",
    "stage_wording": null,
    "options": [
     "Don't want to learn it at all",
@@ -3378,12 +3378,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "In a fabrication lab, have you set process parameters such as temperature or time to hit target characteristics?",
+   "wording": "In a semiconductor fabrication lab, have you set process parameters such as temperature or time to hit target characteristics?",
    "stage_wording": {
-    "bachelor": "In a fabrication lab, have you set process parameters such as temperature or time to hit target characteristics?",
+    "bachelor": "In a semiconductor fabrication lab, have you set process parameters such as temperature or time to hit target characteristics?",
     "master": "In a research lab project, have you set process parameters such as temperature or time to hit target characteristics?",
-    "phd": "In your doctoral research, have you set process parameters such as temperature or time to hit target characteristics?",
-    "postdoc": "In a research project you lead, have you set process parameters such as temperature or time to hit target characteristics?"
+    "phd": "In your PhD research, have you set process parameters such as temperature or time to hit target characteristics?",
+    "postdoc": "In your own research project, have you set process parameters such as temperature or time to hit target characteristics?"
    },
    "options": [
     "Never done it",
@@ -3417,8 +3417,8 @@
    "stage_wording": {
     "bachelor": "In a semiconductor device project, have you calculated and set dimensions such as layer thickness or channel length?",
     "master": "In a research lab project, have you calculated and set dimensions such as layer thickness or channel length?",
-    "phd": "In your doctoral research, have you calculated and set dimensions such as layer thickness or channel length?",
-    "postdoc": "In a research project you lead, have you calculated and set dimensions such as layer thickness or channel length?"
+    "phd": "In your PhD research, have you calculated and set dimensions such as layer thickness or channel length?",
+    "postdoc": "In your own research project, have you calculated and set dimensions such as layer thickness or channel length?"
    },
    "options": [
     "Never done it",
@@ -3448,12 +3448,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "In a fabrication lab, have you turned your results into a process recipe sheet for the next person?",
+   "wording": "In a semiconductor fabrication lab, have you turned your results into a process recipe sheet for the next person?",
    "stage_wording": {
-    "bachelor": "In a fabrication lab, have you turned your results into a process recipe sheet for the next person?",
+    "bachelor": "In a semiconductor fabrication lab, have you turned your results into a process recipe sheet for the next person?",
     "master": "In a research lab project, have you turned your results into a process recipe sheet for the next person?",
-    "phd": "In your doctoral research, have you turned your results into a process recipe sheet for the next person?",
-    "postdoc": "In a research project you lead, have you turned your results into a process recipe sheet for the next person?"
+    "phd": "In your PhD research, have you turned your results into a process recipe sheet for the next person?",
+    "postdoc": "In your own research project, have you turned your results into a process recipe sheet for the next person?"
    },
    "options": [
     "Never done it",
@@ -3483,12 +3483,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "In a semiconductor device project, have you made a report of measured characteristics your baseline for the next experiment?",
+   "wording": "In a semiconductor device project, have you reported measured characteristics and used them as the baseline for the next experiment?",
    "stage_wording": {
-    "bachelor": "In a semiconductor device project, have you made a report of measured characteristics your baseline for the next experiment?",
-    "master": "In a research lab project, have you made a report of measured characteristics your baseline for the next experiment?",
-    "phd": "In your doctoral research, have you made a report of measured characteristics your baseline for the next experiment?",
-    "postdoc": "In a research project you lead, have you made a report of measured characteristics your baseline for the next experiment?"
+    "bachelor": "In a semiconductor device project, have you reported measured characteristics and used them as the baseline for the next experiment?",
+    "master": "In a research lab project, have you reported measured characteristics and used them as the baseline for the next experiment?",
+    "phd": "In your PhD research, have you reported measured characteristics and used them as the baseline for the next experiment?",
+    "postdoc": "In your own research project, have you reported measured characteristics and used them as the baseline for the next experiment?"
    },
    "options": [
     "Never done it",
@@ -3522,8 +3522,8 @@
    "stage_wording": {
     "bachelor": "In a semiconductor device project, have you compared simulated device characteristics with measured ones?",
     "master": "In a research lab project, have you compared simulated device characteristics with measured ones?",
-    "phd": "In your doctoral research, have you compared simulated device characteristics with measured ones?",
-    "postdoc": "In a research project you lead, have you compared simulated device characteristics with measured ones?"
+    "phd": "In your PhD research, have you compared simulated device characteristics with measured ones?",
+    "postdoc": "In your own research project, have you compared simulated device characteristics with measured ones?"
    },
    "options": [
     "Never done it",
@@ -3553,12 +3553,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "Have you checked that measurements across multiple samples fell within the process spec in a fabrication lab?",
+   "wording": "In a semiconductor fabrication lab, have you checked that measurements across multiple samples fell within the process spec?",
    "stage_wording": {
-    "bachelor": "Have you checked that measurements across multiple samples fell within the process spec in a fabrication lab?",
-    "master": "Have you checked that measurements across multiple samples fell within the process spec in a research lab project?",
-    "phd": "Have you checked that measurements across multiple samples fell within the process spec in your doctoral research?",
-    "postdoc": "Have you checked that measurements across multiple samples fell within the process spec in a research project you lead?"
+    "bachelor": "In a semiconductor fabrication lab, have you checked that measurements across multiple samples fell within the process spec?",
+    "master": "In a research lab project, have you checked that measurements across multiple samples fell within the process spec?",
+    "phd": "In your PhD research, have you checked that measurements across multiple samples fell within the process spec?",
+    "postdoc": "In your own research project, have you checked that measurements across multiple samples fell within the process spec?"
    },
    "options": [
     "Never done it",
@@ -3588,12 +3588,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "In a fabrication lab, when characteristics missed the target, did you work out which process step was at fault?",
+   "wording": "In a semiconductor fabrication lab, when characteristics missed the target, did you work out which process step was at fault?",
    "stage_wording": {
-    "bachelor": "In a fabrication lab, when characteristics missed the target, did you work out which process step was at fault?",
+    "bachelor": "In a semiconductor fabrication lab, when characteristics missed the target, did you work out which process step was at fault?",
     "master": "In a research lab project, when characteristics missed the target, did you work out which process step was at fault?",
-    "phd": "In your doctoral research, when characteristics missed the target, did you work out which process step was at fault?",
-    "postdoc": "In a research project you lead, when characteristics missed the target, did you work out which process step was at fault?"
+    "phd": "In your PhD research, when characteristics missed the target, did you work out which process step was at fault?",
+    "postdoc": "In your own research project, when characteristics missed the target, did you work out which process step was at fault?"
    },
    "options": [
     "Never done it",
@@ -3623,12 +3623,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J7",
-   "wording": "In a fabrication lab, after changing process conditions, have you remeasured how much the characteristics changed?",
+   "wording": "In a semiconductor fabrication lab, after changing process conditions, have you remeasured how much the characteristics changed?",
    "stage_wording": {
-    "bachelor": "In a fabrication lab, after changing process conditions, have you remeasured how much the characteristics changed?",
+    "bachelor": "In a semiconductor fabrication lab, after changing process conditions, have you remeasured how much the characteristics changed?",
     "master": "In a research lab project, after changing process conditions, have you remeasured how much the characteristics changed?",
-    "phd": "In your doctoral research, after changing process conditions, have you remeasured how much the characteristics changed?",
-    "postdoc": "In a research project you lead, after changing process conditions, have you remeasured how much the characteristics changed?"
+    "phd": "In your PhD research, after changing process conditions, have you remeasured how much the characteristics changed?",
+    "postdoc": "In your own research project, after changing process conditions, have you remeasured how much the characteristics changed?"
    },
    "options": [
     "Never done it",
@@ -3662,8 +3662,8 @@
    "stage_wording": {
     "bachelor": "In a semiconductor device project, have you used the target characteristics to set out which devices you would cover?",
     "master": "In a research lab project, have you used the target characteristics to set out which devices you would cover?",
-    "phd": "In your doctoral research, have you used the target characteristics to set out which devices you would cover?",
-    "postdoc": "In a research project you lead, have you used the target characteristics to set out which devices you would cover?"
+    "phd": "In your PhD research, have you used the target characteristics to set out which devices you would cover?",
+    "postdoc": "In your own research project, have you used the target characteristics to set out which devices you would cover?"
    },
    "options": [
     "Never done it",
@@ -3693,12 +3693,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "In a semiconductor device project, have you turned targets into numbers such as threshold voltage and leakage current?",
+   "wording": "In a semiconductor device project, have you turned target characteristics into numbers such as threshold voltage and leakage current?",
    "stage_wording": {
-    "bachelor": "In a semiconductor device project, have you turned targets into numbers such as threshold voltage and leakage current?",
-    "master": "In a research lab project, have you turned targets into numbers such as threshold voltage and leakage current?",
-    "phd": "In your doctoral research, have you turned targets into numbers such as threshold voltage and leakage current?",
-    "postdoc": "In a research project you lead, have you turned targets into numbers such as threshold voltage and leakage current?"
+    "bachelor": "In a semiconductor device project, have you turned target characteristics into numbers such as threshold voltage and leakage current?",
+    "master": "In a research lab project, have you turned target characteristics into numbers such as threshold voltage and leakage current?",
+    "phd": "In your PhD research, have you turned target characteristics into numbers such as threshold voltage and leakage current?",
+    "postdoc": "In your own research project, have you turned target characteristics into numbers such as threshold voltage and leakage current?"
    },
    "options": [
     "Never done it",
@@ -3732,8 +3732,8 @@
    "stage_wording": {
     "bachelor": "Have you obtained current-voltage characteristics with a device simulator in a semiconductor device project?",
     "master": "Have you obtained current-voltage characteristics with a device simulator in a research lab project?",
-    "phd": "Have you obtained current-voltage characteristics with a device simulator in your doctoral research?",
-    "postdoc": "Have you obtained current-voltage characteristics with a device simulator in a research project you lead?"
+    "phd": "Have you obtained current-voltage characteristics with a device simulator in your PhD research?",
+    "postdoc": "Have you obtained current-voltage characteristics with a device simulator in your own research project?"
    },
    "options": [
     "Never done it",
@@ -3767,8 +3767,8 @@
    "stage_wording": {
     "bachelor": "In a team project, have you used a device characterization report to explain your reasoning in a process review?",
     "master": "In a research lab project, have you used a device characterization report to explain your reasoning in a process review?",
-    "phd": "In your doctoral research, have you used a device characterization report to explain your reasoning in a process review?",
-    "postdoc": "In a research project you lead, have you used a device characterization report to explain your reasoning in a process review?"
+    "phd": "In your PhD research, have you used a device characterization report to explain your reasoning in a process review?",
+    "postdoc": "In your own research project, have you used a device characterization report to explain your reasoning in a process review?"
    },
    "options": [
     "Never done it",
@@ -3870,7 +3870,7 @@
    "education_routing": "all",
    "measurement_axis": "learning_intent",
    "evidence_axis": null,
-   "wording": "Do you want to learn now how to handle switching and heat in power conversion circuits?",
+   "wording": "Would you like to start learning how to handle switching and heat in power conversion circuits?",
    "stage_wording": null,
    "options": [
     "Don't want to learn it at all",
@@ -3913,8 +3913,8 @@
    "stage_wording": {
     "bachelor": "In a power electronics lab, have you calculated losses and then chosen the switching frequency yourself?",
     "master": "In a research lab project, have you calculated losses and then chosen the switching frequency yourself?",
-    "phd": "In your doctoral research, have you calculated losses and then chosen the switching frequency yourself?",
-    "postdoc": "In a research project you lead, have you calculated losses and then chosen the switching frequency yourself?"
+    "phd": "In your PhD research, have you calculated losses and then chosen the switching frequency yourself?",
+    "postdoc": "In your own research project, have you calculated losses and then chosen the switching frequency yourself?"
    },
    "options": [
     "Never done it",
@@ -3948,8 +3948,8 @@
    "stage_wording": {
     "bachelor": "In a power electronics project, have you calculated and set an inductor's value and number of turns?",
     "master": "In a research lab project, have you calculated and set an inductor's value and number of turns?",
-    "phd": "In your doctoral research, have you calculated and set an inductor's value and number of turns?",
-    "postdoc": "In a research project you lead, have you calculated and set an inductor's value and number of turns?"
+    "phd": "In your PhD research, have you calculated and set an inductor's value and number of turns?",
+    "postdoc": "In your own research project, have you calculated and set an inductor's value and number of turns?"
    },
    "options": [
     "Never done it",
@@ -3983,8 +3983,8 @@
    "stage_wording": {
     "bachelor": "In a power electronics project, have you drawn a converter schematic that the person assembling it could build from as drawn?",
     "master": "In a research lab project, have you drawn a converter schematic that the person assembling it could build from as drawn?",
-    "phd": "In your doctoral research, have you drawn a converter schematic that the person assembling it could build from as drawn?",
-    "postdoc": "In a research project you lead, have you drawn a converter schematic that the person assembling it could build from as drawn?"
+    "phd": "In your PhD research, have you drawn a converter schematic that the person assembling it could build from as drawn?",
+    "postdoc": "In your own research project, have you drawn a converter schematic that the person assembling it could build from as drawn?"
    },
    "options": [
     "Never done it",
@@ -4018,8 +4018,8 @@
    "stage_wording": {
     "bachelor": "In a power electronics project, did you keep loss and thermal calculations and start the next design from them?",
     "master": "In a research lab project, did you keep loss and thermal calculations and start the next design from them?",
-    "phd": "In your doctoral research, did you keep loss and thermal calculations and start the next design from them?",
-    "postdoc": "In a research project you lead, did you keep loss and thermal calculations and start the next design from them?"
+    "phd": "In your PhD research, did you keep loss and thermal calculations and start the next design from them?",
+    "postdoc": "In your own research project, did you keep loss and thermal calculations and start the next design from them?"
    },
    "options": [
     "Never done it",
@@ -4053,8 +4053,8 @@
    "stage_wording": {
     "bachelor": "Have you compared calculated losses with measured efficiency under the same conditions in a power electronics lab?",
     "master": "Have you compared calculated losses with measured efficiency under the same conditions in a research lab project?",
-    "phd": "Have you compared calculated losses with measured efficiency under the same conditions in your doctoral research?",
-    "postdoc": "Have you compared calculated losses with measured efficiency under the same conditions in a research project you lead?"
+    "phd": "Have you compared calculated losses with measured efficiency under the same conditions in your PhD research?",
+    "postdoc": "Have you compared calculated losses with measured efficiency under the same conditions in your own research project?"
    },
    "options": [
     "Never done it",
@@ -4088,8 +4088,8 @@
    "stage_wording": {
     "bachelor": "In a power electronics lab, have you checked that the actual voltage across a part stayed within its rating?",
     "master": "In a research lab project, have you checked that the actual voltage across a part stayed within its rating?",
-    "phd": "In your doctoral research, have you checked that the actual voltage across a part stayed within its rating?",
-    "postdoc": "In a research project you lead, have you checked that the actual voltage across a part stayed within its rating?"
+    "phd": "In your PhD research, have you checked that the actual voltage across a part stayed within its rating?",
+    "postdoc": "In your own research project, have you checked that the actual voltage across a part stayed within its rating?"
    },
    "options": [
     "Never done it",
@@ -4123,8 +4123,8 @@
    "stage_wording": {
     "bachelor": "In a power electronics lab, when a part ran hot, did you work through the possible causes one by one?",
     "master": "In a research lab project, when a part ran hot, did you work through the possible causes one by one?",
-    "phd": "In your doctoral research, when a part ran hot, did you work through the possible causes one by one?",
-    "postdoc": "In a research project you lead, when a part ran hot, did you work through the possible causes one by one?"
+    "phd": "In your PhD research, when a part ran hot, did you work through the possible causes one by one?",
+    "postdoc": "In your own research project, when a part ran hot, did you work through the possible causes one by one?"
    },
    "options": [
     "Never done it",
@@ -4158,8 +4158,8 @@
    "stage_wording": {
     "bachelor": "In a power electronics lab, after changing the design, have you checked whether part temperatures came down?",
     "master": "In a research lab project, after changing the design, have you checked whether part temperatures came down?",
-    "phd": "In your doctoral research, after changing the design, have you checked whether part temperatures came down?",
-    "postdoc": "In a research project you lead, after changing the design, have you checked whether part temperatures came down?"
+    "phd": "In your PhD research, after changing the design, have you checked whether part temperatures came down?",
+    "postdoc": "In your own research project, after changing the design, have you checked whether part temperatures came down?"
    },
    "options": [
     "Never done it",
@@ -4193,8 +4193,8 @@
    "stage_wording": {
     "bachelor": "In a power electronics project, have you read the input and output specs and written down what the converter would cover?",
     "master": "In a research lab project, have you read the input and output specs and written down what the converter would cover?",
-    "phd": "In your doctoral research, have you read the input and output specs and written down what the converter would cover?",
-    "postdoc": "In a research project you lead, have you read the input and output specs and written down what the converter would cover?"
+    "phd": "In your PhD research, have you read the input and output specs and written down what the converter would cover?",
+    "postdoc": "In your own research project, have you read the input and output specs and written down what the converter would cover?"
    },
    "options": [
     "Never done it",
@@ -4228,8 +4228,8 @@
    "stage_wording": {
     "bachelor": "In a power electronics project, have you set numerical limits for efficiency and allowed output voltage variation?",
     "master": "In a research lab project, have you set numerical limits for efficiency and allowed output voltage variation?",
-    "phd": "In your doctoral research, have you set numerical limits for efficiency and allowed output voltage variation?",
-    "postdoc": "In a research project you lead, have you set numerical limits for efficiency and allowed output voltage variation?"
+    "phd": "In your PhD research, have you set numerical limits for efficiency and allowed output voltage variation?",
+    "postdoc": "In your own research project, have you set numerical limits for efficiency and allowed output voltage variation?"
    },
    "options": [
     "Never done it",
@@ -4263,8 +4263,8 @@
    "stage_wording": {
     "bachelor": "Have you plotted voltage and current waveforms with a power circuit simulator in a power electronics project?",
     "master": "Have you plotted voltage and current waveforms with a power circuit simulator in a research lab project?",
-    "phd": "Have you plotted voltage and current waveforms with a power circuit simulator in your doctoral research?",
-    "postdoc": "Have you plotted voltage and current waveforms with a power circuit simulator in a research project you lead?"
+    "phd": "Have you plotted voltage and current waveforms with a power circuit simulator in your PhD research?",
+    "postdoc": "Have you plotted voltage and current waveforms with a power circuit simulator in your own research project?"
    },
    "options": [
     "Never done it",
@@ -4298,8 +4298,8 @@
    "stage_wording": {
     "bachelor": "In your capstone project, have you used your loss calculations to explain your design in a design review?",
     "master": "In a research lab project, have you used your loss calculations to explain your design in a design review?",
-    "phd": "In your doctoral research, have you used your loss calculations to explain your design in a design review?",
-    "postdoc": "In a research project you lead, have you used your loss calculations to explain your design in a design review?"
+    "phd": "In your PhD research, have you used your loss calculations to explain your design in a design review?",
+    "postdoc": "In your own research project, have you used your loss calculations to explain your design in a design review?"
    },
    "options": [
     "Never done it",
@@ -4368,7 +4368,7 @@
    "education_routing": "all",
    "measurement_axis": "exposure",
    "evidence_axis": null,
-   "wording": "Have you ever sized electrical equipment or protective devices for buildings and factories?",
+   "wording": "Have you ever sized electrical equipment and protective devices for buildings and factories?",
    "stage_wording": null,
    "options": [
     "Never",
@@ -4401,7 +4401,7 @@
    "education_routing": "all",
    "measurement_axis": "learning_intent",
    "evidence_axis": null,
-   "wording": "Do you want to learn now how to size electrical equipment and protective devices for buildings and factories?",
+   "wording": "Would you like to start learning how to size electrical equipment and protective devices for buildings and factories?",
    "stage_wording": null,
    "options": [
     "Don't want to learn it at all",
@@ -4444,8 +4444,8 @@
    "stage_wording": {
     "bachelor": "In a power systems project, have you calculated a building's load and sized the transformer or breakers yourself?",
     "master": "In a research lab project, have you calculated a building's load and sized the transformer or breakers yourself?",
-    "phd": "In your doctoral research, have you calculated a building's load and sized the transformer or breakers yourself?",
-    "postdoc": "In a research project you lead, have you calculated a building's load and sized the transformer or breakers yourself?"
+    "phd": "In your PhD research, have you calculated a building's load and sized the transformer or breakers yourself?",
+    "postdoc": "In your own research project, have you calculated a building's load and sized the transformer or breakers yourself?"
    },
    "options": [
     "Never done it",
@@ -4479,8 +4479,8 @@
    "stage_wording": {
     "bachelor": "In a power systems project, have you set protection settings so protective devices trip in the right order?",
     "master": "In a research lab project, have you set protection settings so protective devices trip in the right order?",
-    "phd": "In your doctoral research, have you set protection settings so protective devices trip in the right order?",
-    "postdoc": "In a research project you lead, have you set protection settings so protective devices trip in the right order?"
+    "phd": "In your PhD research, have you set protection settings so protective devices trip in the right order?",
+    "postdoc": "In your own research project, have you set protection settings so protective devices trip in the right order?"
    },
    "options": [
     "Never done it",
@@ -4514,8 +4514,8 @@
    "stage_wording": {
     "bachelor": "Have you drawn a single-line diagram that installers could work from in a power systems project?",
     "master": "Have you drawn a single-line diagram that installers could work from in a research lab project?",
-    "phd": "Have you drawn a single-line diagram that installers could work from in your doctoral research?",
-    "postdoc": "Have you drawn a single-line diagram that installers could work from in a research project you lead?"
+    "phd": "Have you drawn a single-line diagram that installers could work from in your PhD research?",
+    "postdoc": "Have you drawn a single-line diagram that installers could work from in your own research project?"
    },
    "options": [
     "Never done it",
@@ -4549,8 +4549,8 @@
    "stage_wording": {
     "bachelor": "In a power systems project, have you made a protection settings table and reused it on a similar project?",
     "master": "In a research lab project, have you made a protection settings table and reused it on a similar project?",
-    "phd": "In your doctoral research, have you made a protection settings table and reused it on a similar project?",
-    "postdoc": "In a research project you lead, have you made a protection settings table and reused it on a similar project?"
+    "phd": "In your PhD research, have you made a protection settings table and reused it on a similar project?",
+    "postdoc": "In your own research project, have you made a protection settings table and reused it on a similar project?"
    },
    "options": [
     "Never done it",
@@ -4584,8 +4584,8 @@
    "stage_wording": {
     "bachelor": "In a power systems project, have you compared power system analysis results with measurements under the same conditions?",
     "master": "In a research lab project, have you compared power system analysis results with measurements under the same conditions?",
-    "phd": "In your doctoral research, have you compared power system analysis results with measurements under the same conditions?",
-    "postdoc": "In a research project you lead, have you compared power system analysis results with measurements under the same conditions?"
+    "phd": "In your PhD research, have you compared power system analysis results with measurements under the same conditions?",
+    "postdoc": "In your own research project, have you compared power system analysis results with measurements under the same conditions?"
    },
    "options": [
     "Never done it",
@@ -4619,8 +4619,8 @@
    "stage_wording": {
     "bachelor": "In a power systems project, have you checked each setting against the limits in the electrical code?",
     "master": "In a research lab project, have you checked each setting against the limits in the electrical code?",
-    "phd": "In your doctoral research, have you checked each setting against the limits in the electrical code?",
-    "postdoc": "In a research project you lead, have you checked each setting against the limits in the electrical code?"
+    "phd": "In your PhD research, have you checked each setting against the limits in the electrical code?",
+    "postdoc": "In your own research project, have you checked each setting against the limits in the electrical code?"
    },
    "options": [
     "Never done it",
@@ -4654,8 +4654,8 @@
    "stage_wording": {
     "bachelor": "In an electric machines lab, when a protective device tripped when it should not have, did you track down why?",
     "master": "In a research lab project, when a protective device tripped when it should not have, did you track down why?",
-    "phd": "In your doctoral research, when a protective device tripped when it should not have, did you track down why?",
-    "postdoc": "In a research project you lead, when a protective device tripped when it should not have, did you track down why?"
+    "phd": "In your PhD research, when a protective device tripped when it should not have, did you track down why?",
+    "postdoc": "In your own research project, when a protective device tripped when it should not have, did you track down why?"
    },
    "options": [
     "Never done it",
@@ -4689,8 +4689,8 @@
    "stage_wording": {
     "bachelor": "In an electric machines lab, after changing settings, have you retested whether the protective device worked properly?",
     "master": "In a research lab project, after changing settings, have you retested whether the protective device worked properly?",
-    "phd": "In your doctoral research, after changing settings, have you retested whether the protective device worked properly?",
-    "postdoc": "In a research project you lead, after changing settings, have you retested whether the protective device worked properly?"
+    "phd": "In your PhD research, after changing settings, have you retested whether the protective device worked properly?",
+    "postdoc": "In your own research project, after changing settings, have you retested whether the protective device worked properly?"
    },
    "options": [
     "Never done it",
@@ -4724,8 +4724,8 @@
    "stage_wording": {
     "bachelor": "In a power systems project, have you used the load list to write down which part of the system you would cover?",
     "master": "In a research lab project, have you used the load list to write down which part of the system you would cover?",
-    "phd": "In your doctoral research, have you used the load list to write down which part of the system you would cover?",
-    "postdoc": "In a research project you lead, have you used the load list to write down which part of the system you would cover?"
+    "phd": "In your PhD research, have you used the load list to write down which part of the system you would cover?",
+    "postdoc": "In your own research project, have you used the load list to write down which part of the system you would cover?"
    },
    "options": [
     "Never done it",
@@ -4759,8 +4759,8 @@
    "stage_wording": {
     "bachelor": "In a power systems project, have you calculated and written down the required rating and allowed voltage variation?",
     "master": "In a research lab project, have you calculated and written down the required rating and allowed voltage variation?",
-    "phd": "In your doctoral research, have you calculated and written down the required rating and allowed voltage variation?",
-    "postdoc": "In a research project you lead, have you calculated and written down the required rating and allowed voltage variation?"
+    "phd": "In your PhD research, have you calculated and written down the required rating and allowed voltage variation?",
+    "postdoc": "In your own research project, have you calculated and written down the required rating and allowed voltage variation?"
    },
    "options": [
     "Never done it",
@@ -4794,8 +4794,8 @@
    "stage_wording": {
     "bachelor": "Have you used power system analysis software to find the fault current in a power systems project?",
     "master": "Have you used power system analysis software to find the fault current in a research lab project?",
-    "phd": "Have you used power system analysis software to find the fault current in your doctoral research?",
-    "postdoc": "Have you used power system analysis software to find the fault current in a research project you lead?"
+    "phd": "Have you used power system analysis software to find the fault current in your PhD research?",
+    "postdoc": "Have you used power system analysis software to find the fault current in your own research project?"
    },
    "options": [
     "Never done it",
@@ -4829,8 +4829,8 @@
    "stage_wording": {
     "bachelor": "In a team project, have you explained your design from the single-line diagram during a design review?",
     "master": "In a research lab project, have you explained your design from the single-line diagram during a design review?",
-    "phd": "In your doctoral research, have you explained your design from the single-line diagram during a design review?",
-    "postdoc": "In a research project you lead, have you explained your design from the single-line diagram during a design review?"
+    "phd": "In your PhD research, have you explained your design from the single-line diagram during a design review?",
+    "postdoc": "In your own research project, have you explained your design from the single-line diagram during a design review?"
    },
    "options": [
     "Never done it",
@@ -4899,7 +4899,7 @@
    "education_routing": "all",
    "measurement_axis": "exposure",
    "evidence_axis": null,
-   "wording": "Have you ever planned the size and operation of solar, battery or similar systems?",
+   "wording": "Have you ever planned the size and operation of solar, battery and similar systems?",
    "stage_wording": null,
    "options": [
     "Never",
@@ -4932,7 +4932,7 @@
    "education_routing": "all",
    "measurement_axis": "learning_intent",
    "evidence_axis": null,
-   "wording": "Do you want to learn now how to plan the size and operation of solar, battery and similar systems?",
+   "wording": "Would you like to start learning how to plan the size and operation of solar, battery and similar systems?",
    "stage_wording": null,
    "options": [
     "Don't want to learn it at all",
@@ -4975,8 +4975,8 @@
    "stage_wording": {
     "bachelor": "In a solar design project, have you sized a plant from resource data such as solar irradiance?",
     "master": "In a research lab project, have you sized a plant from resource data such as solar irradiance?",
-    "phd": "In your doctoral research, have you sized a plant from resource data such as solar irradiance?",
-    "postdoc": "In a research project you lead, have you sized a plant from resource data such as solar irradiance?"
+    "phd": "In your PhD research, have you sized a plant from resource data such as solar irradiance?",
+    "postdoc": "In your own research project, have you sized a plant from resource data such as solar irradiance?"
    },
    "options": [
     "Never done it",
@@ -5010,8 +5010,8 @@
    "stage_wording": {
     "bachelor": "In an energy systems project, have you calculated the battery capacity and set rules for when to charge and discharge?",
     "master": "In a research lab project, have you calculated the battery capacity and set rules for when to charge and discharge?",
-    "phd": "In your doctoral research, have you calculated the battery capacity and set rules for when to charge and discharge?",
-    "postdoc": "In a research project you lead, have you calculated the battery capacity and set rules for when to charge and discharge?"
+    "phd": "In your PhD research, have you calculated the battery capacity and set rules for when to charge and discharge?",
+    "postdoc": "In your own research project, have you calculated the battery capacity and set rules for when to charge and discharge?"
    },
    "options": [
     "Never done it",
@@ -5045,8 +5045,8 @@
    "stage_wording": {
     "bachelor": "In an energy systems project, have you put together sizing calculations to hand over to whoever would run the equipment?",
     "master": "In a research lab project, have you put together sizing calculations to hand over to whoever would run the equipment?",
-    "phd": "In your doctoral research, have you put together sizing calculations to hand over to whoever would run the equipment?",
-    "postdoc": "In a research project you lead, have you put together sizing calculations to hand over to whoever would run the equipment?"
+    "phd": "In your PhD research, have you put together sizing calculations to hand over to whoever would run the equipment?",
+    "postdoc": "In your own research project, have you put together sizing calculations to hand over to whoever would run the equipment?"
    },
    "options": [
     "Never done it",
@@ -5080,8 +5080,8 @@
    "stage_wording": {
     "bachelor": "In an energy systems project, did you document how to operate the equipment and carry it into the next project?",
     "master": "In a research lab project, did you document how to operate the equipment and carry it into the next project?",
-    "phd": "In your doctoral research, did you document how to operate the equipment and carry it into the next project?",
-    "postdoc": "In a research project you lead, did you document how to operate the equipment and carry it into the next project?"
+    "phd": "In your PhD research, did you document how to operate the equipment and carry it into the next project?",
+    "postdoc": "In your own research project, did you document how to operate the equipment and carry it into the next project?"
    },
    "options": [
     "Never done it",
@@ -5115,8 +5115,8 @@
    "stage_wording": {
     "bachelor": "Have you compared forecast energy yield with actual generation over the same period in a solar project?",
     "master": "Have you compared forecast energy yield with actual generation over the same period in a research lab project?",
-    "phd": "Have you compared forecast energy yield with actual generation over the same period in your doctoral research?",
-    "postdoc": "Have you compared forecast energy yield with actual generation over the same period in a research project you lead?"
+    "phd": "Have you compared forecast energy yield with actual generation over the same period in your PhD research?",
+    "postdoc": "Have you compared forecast energy yield with actual generation over the same period in your own research project?"
    },
    "options": [
     "Never done it",
@@ -5150,8 +5150,8 @@
    "stage_wording": {
     "bachelor": "In an energy systems project, have you checked measured power quality against the grid connection requirements?",
     "master": "In a research lab project, have you checked measured power quality against the grid connection requirements?",
-    "phd": "In your doctoral research, have you checked measured power quality against the grid connection requirements?",
-    "postdoc": "In a research project you lead, have you checked measured power quality against the grid connection requirements?"
+    "phd": "In your PhD research, have you checked measured power quality against the grid connection requirements?",
+    "postdoc": "In your own research project, have you checked measured power quality against the grid connection requirements?"
    },
    "options": [
     "Never done it",
@@ -5185,8 +5185,8 @@
    "stage_wording": {
     "bachelor": "In a solar project, when energy yield was far from the forecast, did you work out why?",
     "master": "In a research lab project, when energy yield was far from the forecast, did you work out why?",
-    "phd": "In your doctoral research, when energy yield was far from the forecast, did you work out why?",
-    "postdoc": "In a research project you lead, when energy yield was far from the forecast, did you work out why?"
+    "phd": "In your PhD research, when energy yield was far from the forecast, did you work out why?",
+    "postdoc": "In your own research project, when energy yield was far from the forecast, did you work out why?"
    },
    "options": [
     "Never done it",
@@ -5220,8 +5220,8 @@
    "stage_wording": {
     "bachelor": "In an energy systems project, have you changed operating conditions and checked whether performance improved?",
     "master": "In a research lab project, have you changed operating conditions and checked whether performance improved?",
-    "phd": "In your doctoral research, have you changed operating conditions and checked whether performance improved?",
-    "postdoc": "In a research project you lead, have you changed operating conditions and checked whether performance improved?"
+    "phd": "In your PhD research, have you changed operating conditions and checked whether performance improved?",
+    "postdoc": "In your own research project, have you changed operating conditions and checked whether performance improved?"
    },
    "options": [
     "Never done it",
@@ -5255,8 +5255,8 @@
    "stage_wording": {
     "bachelor": "In an energy systems project, have you used resource data to write down which parts of the plant you would cover?",
     "master": "In a research lab project, have you used resource data to write down which parts of the plant you would cover?",
-    "phd": "In your doctoral research, have you used resource data to write down which parts of the plant you would cover?",
-    "postdoc": "In a research project you lead, have you used resource data to write down which parts of the plant you would cover?"
+    "phd": "In your PhD research, have you used resource data to write down which parts of the plant you would cover?",
+    "postdoc": "In your own research project, have you used resource data to write down which parts of the plant you would cover?"
    },
    "options": [
     "Never done it",
@@ -5290,8 +5290,8 @@
    "stage_wording": {
     "bachelor": "In an energy systems project, have you set the yearly energy needed and the storage capacity as numbers?",
     "master": "In a research lab project, have you set the yearly energy needed and the storage capacity as numbers?",
-    "phd": "In your doctoral research, have you set the yearly energy needed and the storage capacity as numbers?",
-    "postdoc": "In a research project you lead, have you set the yearly energy needed and the storage capacity as numbers?"
+    "phd": "In your PhD research, have you set the yearly energy needed and the storage capacity as numbers?",
+    "postdoc": "In your own research project, have you set the yearly energy needed and the storage capacity as numbers?"
    },
    "options": [
     "Never done it",
@@ -5325,8 +5325,8 @@
    "stage_wording": {
     "bachelor": "Have you estimated a year's generation with yield forecasting software in a solar design project?",
     "master": "Have you estimated a year's generation with yield forecasting software in a research lab project?",
-    "phd": "Have you estimated a year's generation with yield forecasting software in your doctoral research?",
-    "postdoc": "Have you estimated a year's generation with yield forecasting software in a research project you lead?"
+    "phd": "Have you estimated a year's generation with yield forecasting software in your PhD research?",
+    "postdoc": "Have you estimated a year's generation with yield forecasting software in your own research project?"
    },
    "options": [
     "Never done it",
@@ -5360,8 +5360,8 @@
    "stage_wording": {
     "bachelor": "In a team project, have you used a generation performance report to support your explanation in an operations check?",
     "master": "In a research lab project, have you used a generation performance report to support your explanation in an operations check?",
-    "phd": "In your doctoral research, have you used a generation performance report to support your explanation in an operations check?",
-    "postdoc": "In a research project you lead, have you used a generation performance report to support your explanation in an operations check?"
+    "phd": "In your PhD research, have you used a generation performance report to support your explanation in an operations check?",
+    "postdoc": "In your own research project, have you used a generation performance report to support your explanation in an operations check?"
    },
    "options": [
     "Never done it",
@@ -5391,7 +5391,7 @@
    "education_routing": "all",
    "measurement_axis": "interest",
    "evidence_axis": null,
-   "wording": "Would you like to try tuning control values so motors and devices move the way you want?",
+   "wording": "Would you like to try tuning control values so motors or devices move the way you want?",
    "stage_wording": null,
    "options": [
     "Not at all interested",
@@ -5401,7 +5401,7 @@
     "Very interested",
     "Not sure"
    ],
-   "grid_row": "Tuning control values so motors and devices move the way you want",
+   "grid_row": "Tuning control values so motors or devices move the way you want",
    "grid_stem": "Would you like to try it?",
    "option_values": [
     1,
@@ -5437,7 +5437,7 @@
     "Once or twice",
     "Several times"
    ],
-   "grid_row": "Tuning control values so motors and devices move the way you want",
+   "grid_row": "Tuning control values so motors or devices move the way you want",
    "grid_stem": "Have you done it?",
    "option_values": [
     0,
@@ -5463,7 +5463,7 @@
    "education_routing": "all",
    "measurement_axis": "learning_intent",
    "evidence_axis": null,
-   "wording": "Do you want to learn now how to tune control values so motors and devices move the way you want?",
+   "wording": "Would you like to start learning how to tune control values so motors or devices move the way you want?",
    "stage_wording": null,
    "options": [
     "Don't want to learn it at all",
@@ -5473,7 +5473,7 @@
     "Really want to learn it",
     "Not sure"
    ],
-   "grid_row": "Tuning control values so motors and devices move the way you want",
+   "grid_row": "Tuning control values so motors or devices move the way you want",
    "grid_stem": "Do you want to learn it now?",
    "option_values": [
     1,
@@ -5506,8 +5506,8 @@
    "stage_wording": {
     "bachelor": "In a control lab, have you set controller gains yourself to get the response speed you wanted?",
     "master": "In a research lab project, have you set controller gains yourself to get the response speed you wanted?",
-    "phd": "In your doctoral research, have you set controller gains yourself to get the response speed you wanted?",
-    "postdoc": "In a research project you lead, have you set controller gains yourself to get the response speed you wanted?"
+    "phd": "In your PhD research, have you set controller gains yourself to get the response speed you wanted?",
+    "postdoc": "In your own research project, have you set controller gains yourself to get the response speed you wanted?"
    },
    "options": [
     "Never done it",
@@ -5541,8 +5541,8 @@
    "stage_wording": {
     "bachelor": "In an automation project, have you decided which sensors to use and where to mount them?",
     "master": "In a research lab project, have you decided which sensors to use and where to mount them?",
-    "phd": "In your doctoral research, have you decided which sensors to use and where to mount them?",
-    "postdoc": "In a research project you lead, have you decided which sensors to use and where to mount them?"
+    "phd": "In your PhD research, have you decided which sensors to use and where to mount them?",
+    "postdoc": "In your own research project, have you decided which sensors to use and where to mount them?"
    },
    "options": [
     "Never done it",
@@ -5576,8 +5576,8 @@
    "stage_wording": {
     "bachelor": "In an automation project, have you drawn a control block diagram that the people running the system could understand?",
     "master": "In a research lab project, have you drawn a control block diagram that the people running the system could understand?",
-    "phd": "In your doctoral research, have you drawn a control block diagram that the people running the system could understand?",
-    "postdoc": "In a research project you lead, have you drawn a control block diagram that the people running the system could understand?"
+    "phd": "In your PhD research, have you drawn a control block diagram that the people running the system could understand?",
+    "postdoc": "In your own research project, have you drawn a control block diagram that the people running the system could understand?"
    },
    "options": [
     "Never done it",
@@ -5607,12 +5607,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J5",
-   "wording": "Have you recorded how you chose the gains, along with your reasoning in a control lab?",
+   "wording": "In a control lab, have you recorded how you chose the gains, along with your reasoning?",
    "stage_wording": {
-    "bachelor": "Have you recorded how you chose the gains, along with your reasoning in a control lab?",
-    "master": "Have you recorded how you chose the gains, along with your reasoning in a research lab project?",
-    "phd": "Have you recorded how you chose the gains, along with your reasoning in your doctoral research?",
-    "postdoc": "Have you recorded how you chose the gains, along with your reasoning in a research project you lead?"
+    "bachelor": "In a control lab, have you recorded how you chose the gains, along with your reasoning?",
+    "master": "In a research lab project, have you recorded how you chose the gains, along with your reasoning?",
+    "phd": "In your PhD research, have you recorded how you chose the gains, along with your reasoning?",
+    "postdoc": "In your own research project, have you recorded how you chose the gains, along with your reasoning?"
    },
    "options": [
     "Never done it",
@@ -5646,8 +5646,8 @@
    "stage_wording": {
     "bachelor": "In a control lab, have you compared the simulated and actual responses to the same input?",
     "master": "In a research lab project, have you compared the simulated and actual responses to the same input?",
-    "phd": "In your doctoral research, have you compared the simulated and actual responses to the same input?",
-    "postdoc": "In a research project you lead, have you compared the simulated and actual responses to the same input?"
+    "phd": "In your PhD research, have you compared the simulated and actual responses to the same input?",
+    "postdoc": "In your own research project, have you compared the simulated and actual responses to the same input?"
    },
    "options": [
     "Never done it",
@@ -5681,8 +5681,8 @@
    "stage_wording": {
     "bachelor": "In an automation project, have you checked that the emergency stop works as the safety standard requires?",
     "master": "In a research lab project, have you checked that the emergency stop works as the safety standard requires?",
-    "phd": "In your doctoral research, have you checked that the emergency stop works as the safety standard requires?",
-    "postdoc": "In a research project you lead, have you checked that the emergency stop works as the safety standard requires?"
+    "phd": "In your PhD research, have you checked that the emergency stop works as the safety standard requires?",
+    "postdoc": "In your own research project, have you checked that the emergency stop works as the safety standard requires?"
    },
    "options": [
     "Never done it",
@@ -5716,8 +5716,8 @@
    "stage_wording": {
     "bachelor": "In a control lab, when oscillation remained, did you test the sensor and the mechanics separately to find the cause?",
     "master": "In a research lab project, when oscillation remained, did you test the sensor and the mechanics separately to find the cause?",
-    "phd": "In your doctoral research, when oscillation remained, did you test the sensor and the mechanics separately to find the cause?",
-    "postdoc": "In a research project you lead, when oscillation remained, did you test the sensor and the mechanics separately to find the cause?"
+    "phd": "In your PhD research, when oscillation remained, did you test the sensor and the mechanics separately to find the cause?",
+    "postdoc": "In your own research project, when oscillation remained, did you test the sensor and the mechanics separately to find the cause?"
    },
    "options": [
     "Never done it",
@@ -5751,8 +5751,8 @@
    "stage_wording": {
     "bachelor": "In a control lab, after changing the gains, have you remeasured how the response changed?",
     "master": "In a research lab project, after changing the gains, have you remeasured how the response changed?",
-    "phd": "In your doctoral research, after changing the gains, have you remeasured how the response changed?",
-    "postdoc": "In a research project you lead, after changing the gains, have you remeasured how the response changed?"
+    "phd": "In your PhD research, after changing the gains, have you remeasured how the response changed?",
+    "postdoc": "In your own research project, after changing the gains, have you remeasured how the response changed?"
    },
    "options": [
     "Never done it",
@@ -5786,8 +5786,8 @@
    "stage_wording": {
     "bachelor": "In a control project, have you used the required response to write down the range of motion the controller would cover?",
     "master": "In a research lab project, have you used the required response to write down the range of motion the controller would cover?",
-    "phd": "In your doctoral research, have you used the required response to write down the range of motion the controller would cover?",
-    "postdoc": "In a research project you lead, have you used the required response to write down the range of motion the controller would cover?"
+    "phd": "In your PhD research, have you used the required response to write down the range of motion the controller would cover?",
+    "postdoc": "In your own research project, have you used the required response to write down the range of motion the controller would cover?"
    },
    "options": [
     "Never done it",
@@ -5821,8 +5821,8 @@
    "stage_wording": {
     "bachelor": "In a control project, have you written a condition like \"the motor must stop at the target within X seconds\" as numbers?",
     "master": "In a research lab project, have you written a condition like \"the motor must stop at the target within X seconds\" as numbers?",
-    "phd": "In your doctoral research, have you written a condition like \"the motor must stop at the target within X seconds\" as numbers?",
-    "postdoc": "In a research project you lead, have you written a condition like \"the motor must stop at the target within X seconds\" as numbers?"
+    "phd": "In your PhD research, have you written a condition like \"the motor must stop at the target within X seconds\" as numbers?",
+    "postdoc": "In your own research project, have you written a condition like \"the motor must stop at the target within X seconds\" as numbers?"
    },
    "options": [
     "Never done it",
@@ -5852,12 +5852,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "Have you simulated the response ahead of time with a control design tool in a control project?",
+   "wording": "In a control project, have you simulated the response beforehand with a control design tool?",
    "stage_wording": {
-    "bachelor": "Have you simulated the response ahead of time with a control design tool in a control project?",
-    "master": "Have you simulated the response ahead of time with a control design tool in a research lab project?",
-    "phd": "Have you simulated the response ahead of time with a control design tool in your doctoral research?",
-    "postdoc": "Have you simulated the response ahead of time with a control design tool in a research project you lead?"
+    "bachelor": "In a control project, have you simulated the response beforehand with a control design tool?",
+    "master": "In a research lab project, have you simulated the response beforehand with a control design tool?",
+    "phd": "In your PhD research, have you simulated the response beforehand with a control design tool?",
+    "postdoc": "In your own research project, have you simulated the response beforehand with a control design tool?"
    },
    "options": [
     "Never done it",
@@ -5891,8 +5891,8 @@
    "stage_wording": {
     "bachelor": "In a team project, have you shown response records to explain your results during an operations check?",
     "master": "In a research lab project, have you shown response records to explain your results during an operations check?",
-    "phd": "In your doctoral research, have you shown response records to explain your results during an operations check?",
-    "postdoc": "In a research project you lead, have you shown response records to explain your results during an operations check?"
+    "phd": "In your PhD research, have you shown response records to explain your results during an operations check?",
+    "postdoc": "In your own research project, have you shown response records to explain your results during an operations check?"
    },
    "options": [
     "Never done it",
@@ -5994,7 +5994,7 @@
    "education_routing": "all",
    "measurement_axis": "learning_intent",
    "evidence_axis": null,
-   "wording": "Do you want to learn now how to set test criteria: how to measure and what counts as a pass?",
+   "wording": "Would you like to start learning how to set test criteria: how to measure and what counts as a pass?",
    "stage_wording": null,
    "options": [
     "Don't want to learn it at all",
@@ -6037,8 +6037,8 @@
    "stage_wording": {
     "bachelor": "In a measurement lab, have you read a standard and set the measurement conditions and pass criteria yourself?",
     "master": "In a research lab project, have you read a standard and set the measurement conditions and pass criteria yourself?",
-    "phd": "In your doctoral research, have you read a standard and set the measurement conditions and pass criteria yourself?",
-    "postdoc": "In a research project you lead, have you read a standard and set the measurement conditions and pass criteria yourself?"
+    "phd": "In your PhD research, have you read a standard and set the measurement conditions and pass criteria yourself?",
+    "postdoc": "In your own research project, have you read a standard and set the measurement conditions and pass criteria yourself?"
    },
    "options": [
     "Never done it",
@@ -6072,8 +6072,8 @@
    "stage_wording": {
     "bachelor": "In a measurement lab, have you split the allowed error across sources such as equipment, temperature and operator?",
     "master": "In a research lab project, have you split the allowed error across sources such as equipment, temperature and operator?",
-    "phd": "In your doctoral research, have you split the allowed error across sources such as equipment, temperature and operator?",
-    "postdoc": "In a research project you lead, have you split the allowed error across sources such as equipment, temperature and operator?"
+    "phd": "In your PhD research, have you split the allowed error across sources such as equipment, temperature and operator?",
+    "postdoc": "In your own research project, have you split the allowed error across sources such as equipment, temperature and operator?"
    },
    "options": [
     "Never done it",
@@ -6107,8 +6107,8 @@
    "stage_wording": {
     "bachelor": "In a testing project, have you written a test plan that the tester could follow exactly?",
     "master": "In a research lab project, have you written a test plan that the tester could follow exactly?",
-    "phd": "In your doctoral research, have you written a test plan that the tester could follow exactly?",
-    "postdoc": "In a research project you lead, have you written a test plan that the tester could follow exactly?"
+    "phd": "In your PhD research, have you written a test plan that the tester could follow exactly?",
+    "postdoc": "In your own research project, have you written a test plan that the tester could follow exactly?"
    },
    "options": [
     "Never done it",
@@ -6142,8 +6142,8 @@
    "stage_wording": {
     "bachelor": "In a measurement lab, did you write the measurement steps up as a procedure and follow it exactly next time?",
     "master": "In a research lab project, did you write the measurement steps up as a procedure and follow it exactly next time?",
-    "phd": "In your doctoral research, did you write the measurement steps up as a procedure and follow it exactly next time?",
-    "postdoc": "In a research project you lead, did you write the measurement steps up as a procedure and follow it exactly next time?"
+    "phd": "In your PhD research, did you write the measurement steps up as a procedure and follow it exactly next time?",
+    "postdoc": "In your own research project, did you write the measurement steps up as a procedure and follow it exactly next time?"
    },
    "options": [
     "Never done it",
@@ -6177,8 +6177,8 @@
    "stage_wording": {
     "bachelor": "Have you checked that the spread of repeated measurements stayed within spec limits in a measurement lab?",
     "master": "Have you checked that the spread of repeated measurements stayed within spec limits in a research lab project?",
-    "phd": "Have you checked that the spread of repeated measurements stayed within spec limits in your doctoral research?",
-    "postdoc": "Have you checked that the spread of repeated measurements stayed within spec limits in a research project you lead?"
+    "phd": "Have you checked that the spread of repeated measurements stayed within spec limits in your PhD research?",
+    "postdoc": "Have you checked that the spread of repeated measurements stayed within spec limits in your own research project?"
    },
    "options": [
     "Never done it",
@@ -6212,8 +6212,8 @@
    "stage_wording": {
     "bachelor": "In a measurement lab, have you checked your error range against the instrument's calibration record?",
     "master": "In a research lab project, have you checked your error range against the instrument's calibration record?",
-    "phd": "In your doctoral research, have you checked your error range against the instrument's calibration record?",
-    "postdoc": "In a research project you lead, have you checked your error range against the instrument's calibration record?"
+    "phd": "In your PhD research, have you checked your error range against the instrument's calibration record?",
+    "postdoc": "In your own research project, have you checked your error range against the instrument's calibration record?"
    },
    "options": [
     "Never done it",
@@ -6247,8 +6247,8 @@
    "stage_wording": {
     "bachelor": "In a measurement lab, when readings were unstable, did you work out whether the sample or the equipment was at fault?",
     "master": "In a research lab project, when readings were unstable, did you work out whether the sample or the equipment was at fault?",
-    "phd": "In your doctoral research, when readings were unstable, did you work out whether the sample or the equipment was at fault?",
-    "postdoc": "In a research project you lead, when readings were unstable, did you work out whether the sample or the equipment was at fault?"
+    "phd": "In your PhD research, when readings were unstable, did you work out whether the sample or the equipment was at fault?",
+    "postdoc": "In your own research project, when readings were unstable, did you work out whether the sample or the equipment was at fault?"
    },
    "options": [
     "Never done it",
@@ -6282,8 +6282,8 @@
    "stage_wording": {
     "bachelor": "In a measurement lab, after revising the procedure, have you remeasured to see if the spread got smaller?",
     "master": "In a research lab project, after revising the procedure, have you remeasured to see if the spread got smaller?",
-    "phd": "In your doctoral research, after revising the procedure, have you remeasured to see if the spread got smaller?",
-    "postdoc": "In a research project you lead, after revising the procedure, have you remeasured to see if the spread got smaller?"
+    "phd": "In your PhD research, after revising the procedure, have you remeasured to see if the spread got smaller?",
+    "postdoc": "In your own research project, after revising the procedure, have you remeasured to see if the spread got smaller?"
    },
    "options": [
     "Never done it",
@@ -6317,8 +6317,8 @@
    "stage_wording": {
     "bachelor": "In a testing project, have you read the applicable standard and written down the scope of the tests?",
     "master": "In a research lab project, have you read the applicable standard and written down the scope of the tests?",
-    "phd": "In your doctoral research, have you read the applicable standard and written down the scope of the tests?",
-    "postdoc": "In a research project you lead, have you read the applicable standard and written down the scope of the tests?"
+    "phd": "In your PhD research, have you read the applicable standard and written down the scope of the tests?",
+    "postdoc": "In your own research project, have you read the applicable standard and written down the scope of the tests?"
    },
    "options": [
     "Never done it",
@@ -6352,8 +6352,8 @@
    "stage_wording": {
     "bachelor": "In a testing project, have you listed each measurement item and allowed error the standard requires?",
     "master": "In a research lab project, have you listed each measurement item and allowed error the standard requires?",
-    "phd": "In your doctoral research, have you listed each measurement item and allowed error the standard requires?",
-    "postdoc": "In a research project you lead, have you listed each measurement item and allowed error the standard requires?"
+    "phd": "In your PhD research, have you listed each measurement item and allowed error the standard requires?",
+    "postdoc": "In your own research project, have you listed each measurement item and allowed error the standard requires?"
    },
    "options": [
     "Never done it",
@@ -6383,12 +6383,12 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J4",
-   "wording": "Have you measured the items listed in a standard yourself with test equipment in a measurement lab?",
+   "wording": "In a measurement lab, have you measured the items listed in a standard yourself with test equipment?",
    "stage_wording": {
-    "bachelor": "Have you measured the items listed in a standard yourself with test equipment in a measurement lab?",
-    "master": "Have you measured the items listed in a standard yourself with test equipment in a research lab project?",
-    "phd": "Have you measured the items listed in a standard yourself with test equipment in your doctoral research?",
-    "postdoc": "Have you measured the items listed in a standard yourself with test equipment in a research project you lead?"
+    "bachelor": "In a measurement lab, have you measured the items listed in a standard yourself with test equipment?",
+    "master": "In a research lab project, have you measured the items listed in a standard yourself with test equipment?",
+    "phd": "In your PhD research, have you measured the items listed in a standard yourself with test equipment?",
+    "postdoc": "In your own research project, have you measured the items listed in a standard yourself with test equipment?"
    },
    "options": [
     "Never done it",
@@ -6422,8 +6422,8 @@
    "stage_wording": {
     "bachelor": "In a team project, have you explained test results at a quality review meeting?",
     "master": "In a research lab project, have you explained test results at a quality review meeting?",
-    "phd": "In your doctoral research, have you explained test results at a quality review meeting?",
-    "postdoc": "In a research project you lead, have you explained test results at a quality review meeting?"
+    "phd": "In your PhD research, have you explained test results at a quality review meeting?",
+    "postdoc": "In your own research project, have you explained test results at a quality review meeting?"
    },
    "options": [
     "Never done it",
@@ -6457,8 +6457,8 @@
    "stage_wording": {
     "bachelor": "In a team project, have you decided yourself how far the work would go this time?",
     "master": "In a research lab project, have you decided yourself how far the work would go this time?",
-    "phd": "In your doctoral research, have you decided yourself how far the work would go this time?",
-    "postdoc": "In a research project you lead, have you decided yourself how far the work would go this time?"
+    "phd": "In your PhD research, have you decided yourself how far the work would go this time?",
+    "postdoc": "In your own research project, have you decided yourself how far the work would go this time?"
    },
    "options": [
     "Never done it",
@@ -6492,8 +6492,8 @@
    "stage_wording": {
     "bachelor": "In a project, have you rewritten a goal given only in words so it could be checked with numbers?",
     "master": "In a research lab project, have you rewritten a goal given only in words so it could be checked with numbers?",
-    "phd": "In your doctoral research, have you rewritten a goal given only in words so it could be checked with numbers?",
-    "postdoc": "In a research project you lead, have you rewritten a goal given only in words so it could be checked with numbers?"
+    "phd": "In your PhD research, have you rewritten a goal given only in words so it could be checked with numbers?",
+    "postdoc": "In your own research project, have you rewritten a goal given only in words so it could be checked with numbers?"
    },
    "options": [
     "Never done it",
@@ -6527,8 +6527,8 @@
    "stage_wording": {
     "bachelor": "Have you written down why you chose the method you used in an experiment?",
     "master": "Have you written down why you chose the method you used in a research lab project?",
-    "phd": "Have you written down why you chose the method you used in your doctoral research?",
-    "postdoc": "Have you written down why you chose the method you used in a research project you lead?"
+    "phd": "Have you written down why you chose the method you used in your PhD research?",
+    "postdoc": "Have you written down why you chose the method you used in your own research project?"
    },
    "options": [
     "Never done it",
@@ -6562,8 +6562,8 @@
    "stage_wording": {
     "bachelor": "In a project, have you compared two or more options against the same criteria?",
     "master": "In a research lab project, have you compared two or more options against the same criteria?",
-    "phd": "In your doctoral research, have you compared two or more options against the same criteria?",
-    "postdoc": "In a research project you lead, have you compared two or more options against the same criteria?"
+    "phd": "In your PhD research, have you compared two or more options against the same criteria?",
+    "postdoc": "In your own research project, have you compared two or more options against the same criteria?"
    },
    "options": [
     "Never done it",
@@ -6597,8 +6597,8 @@
    "stage_wording": {
     "bachelor": "In a team project, has someone else used material you made for the next piece of work?",
     "master": "In a research lab project, has someone else used material you made for the next piece of work?",
-    "phd": "In your doctoral research, has someone else used material you made for the next piece of work?",
-    "postdoc": "In a research project you lead, has someone else used material you made for the next piece of work?"
+    "phd": "In your PhD research, has someone else used material you made for the next piece of work?",
+    "postdoc": "In your own research project, has someone else used material you made for the next piece of work?"
    },
    "options": [
     "Never done it",
@@ -6632,8 +6632,8 @@
    "stage_wording": {
     "bachelor": "In a team project, have you changed the design conditions you were first given, with reasons to back it up?",
     "master": "In a research lab project, have you changed the design conditions you were first given, with reasons to back it up?",
-    "phd": "In your doctoral research, have you changed the design conditions you were first given, with reasons to back it up?",
-    "postdoc": "In a research project you lead, have you changed the design conditions you were first given, with reasons to back it up?"
+    "phd": "In your PhD research, have you changed the design conditions you were first given, with reasons to back it up?",
+    "postdoc": "In your own research project, have you changed the design conditions you were first given, with reasons to back it up?"
    },
    "options": [
     "Never done it",
@@ -7023,7 +7023,7 @@
    "education_routing": "phd-core",
    "measurement_axis": "experience_translation",
    "evidence_axis": "J1",
-   "wording": "When a research problem was too big, have you broken it back down into pieces you could solve?",
+   "wording": "When a research problem was too big, have you broken it down into pieces you could solve?",
    "stage_wording": null,
    "options": [
     "Never done it",
@@ -7383,7 +7383,7 @@
    "education_routing": "xfield",
    "measurement_axis": "translation_context",
    "evidence_axis": null,
-   "wording": "Choose the field you worked in during graduate school",
+   "wording": "Choose the field you worked in during graduate school.",
    "stage_wording": null,
    "options": [
     "Humanities and social sciences",
@@ -7415,11 +7415,11 @@
    "education_routing": "xfield",
    "measurement_axis": "translation_context",
    "evidence_axis": null,
-   "wording": "Choose the methods from graduate school that could also be used on EE problems",
+   "wording": "Choose the methods from graduate school that could also be used on electrical and electronic engineering problems.",
    "stage_wording": null,
    "options": [
     "Collecting and organizing data",
-    "Turning people's needs into conditions",
+    "Turning people's needs into requirements",
     "Bringing several people's decisions together",
     "Comparing costs and benefits",
     "Not sure yet"
@@ -7446,7 +7446,7 @@
    "education_routing": "xfield",
    "measurement_axis": "translation_context",
    "evidence_axis": null,
-   "wording": "Choose when you last did electrical or electronic engineering work",
+   "wording": "Choose when you last did electrical and electronic engineering work.",
    "stage_wording": null,
    "options": [
     "Within the past year",
@@ -7476,11 +7476,11 @@
    "education_routing": "xfield",
    "measurement_axis": "translation_context",
    "evidence_axis": null,
-   "wording": "Choose the deepest electrical or electronic engineering work you did as an undergraduate",
+   "wording": "Choose the deepest electrical and electronic engineering work you did as an undergraduate.",
    "stage_wording": null,
    "options": [
     "A capstone or design project",
-    "Undergraduate research or lab membership",
+    "Undergraduate research or lab work",
     "An internship or work placement",
     "A competition or club build",
     "Coursework only"
@@ -7507,12 +7507,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J1",
-   "wording": "Describe the problem you were trying to solve in that experience, in one or two lines",
+   "wording": "In one or two lines, describe the problem you were trying to solve in that experience.",
    "stage_wording": {
-    "bachelor": "Describe the problem you were trying to solve in that project, in one or two lines",
-    "master": "Describe the problem you were trying to solve in that research project, in one or two lines",
-    "phd": "Describe the problem you were trying to solve in that doctoral research, in one or two lines",
-    "postdoc": "Describe the problem you were trying to solve in the research project you led, in one or two lines"
+    "bachelor": "In one or two lines, describe the problem you were trying to solve in that project.",
+    "master": "In one or two lines, describe the problem you were trying to solve in that research project.",
+    "phd": "In one or two lines, describe the problem you were trying to solve in your PhD research.",
+    "postdoc": "In one or two lines, describe the problem you were trying to solve in the research project you were responsible for."
    },
    "options": null,
    "grid_row": null,
@@ -7537,12 +7537,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J2",
-   "wording": "Choose the closest reason why it was a problem worth solving, and add one line",
+   "wording": "Choose the closest reason this was a problem worth solving, and explain in one line.",
    "stage_wording": {
-    "bachelor": "Choose the closest reason why you had to solve it in that project, and add one line",
-    "master": "Choose the closest reason why you had to solve it in that research, and add one line",
-    "phd": "Choose the closest reason why it was a problem in that doctoral research, and add one line",
-    "postdoc": "Choose the closest reason why it was a problem in that project, and add one line"
+    "bachelor": "Choose the closest reason you had to solve it in that project, and explain in one line.",
+    "master": "Choose the closest reason you had to solve it in that research, and explain in one line.",
+    "phd": "Choose the closest reason this was a problem in that PhD research, and explain in one line.",
+    "postdoc": "Choose the closest reason this was a problem in that project, and explain in one line."
    },
    "options": null,
    "grid_row": null,
@@ -7567,12 +7567,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J4",
-   "wording": "Choose the methods you used, and note any methods you considered but did not use",
+   "wording": "Choose the methods you used, and note any methods you considered but did not use.",
    "stage_wording": {
-    "bachelor": "Choose the methods you used in the project, and note any you considered but did not use",
-    "master": "Choose the methods you used in your research, and note any you considered but did not use",
-    "phd": "Choose the methods you used in your doctoral research, and note any you considered but did not use",
-    "postdoc": "Choose the methods you used in the project you led, and note any you considered but did not use"
+    "bachelor": "Choose the methods you used in the project, and note any you considered but did not use.",
+    "master": "Choose the methods you used in your research, and note any you considered but did not use.",
+    "phd": "Choose the methods you used in your PhD research, and note any you considered but did not use.",
+    "postdoc": "Choose the methods you used in the project you were responsible for, and note any you considered but did not use."
    },
    "options": null,
    "grid_row": null,
@@ -7597,12 +7597,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J3",
-   "wording": "Choose the conditions you kept fixed and the ones you varied",
+   "wording": "Choose the conditions you kept fixed and the ones you varied.",
    "stage_wording": {
-    "bachelor": "Choose the conditions you kept fixed and the ones you varied in the project",
-    "master": "Choose the conditions you kept fixed and the ones you varied in the experiment",
-    "phd": "Choose the conditions you kept fixed and the ones you varied in your doctoral research",
-    "postdoc": "Choose the conditions you kept fixed and the ones you varied in the project you led"
+    "bachelor": "Choose the conditions you kept fixed and the ones you varied in the project.",
+    "master": "Choose the conditions you kept fixed and the ones you varied in the experiment.",
+    "phd": "Choose the conditions you kept fixed and the ones you varied in your PhD research.",
+    "postdoc": "Choose the conditions you kept fixed and the ones you varied in the project you were responsible for."
    },
    "options": null,
    "grid_row": null,
@@ -7627,12 +7627,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J4",
-   "wording": "Choose what you actually did, and note how many times you repeated it",
+   "wording": "Choose what you actually did, and note how many times you repeated it.",
    "stage_wording": {
-    "bachelor": "Choose what you actually did in the project, and note how many times you repeated it",
-    "master": "Choose what you actually did in your research, and note how many times you repeated it",
-    "phd": "Choose what you actually did in your doctoral research, and note how many times you repeated it",
-    "postdoc": "Choose what you actually did in the project you led, and note how many times you repeated it"
+    "bachelor": "Choose what you actually did in the project, and note how many times you repeated it.",
+    "master": "Choose what you actually did in your research, and note how many times you repeated it.",
+    "phd": "Choose what you actually did in your PhD research, and note how many times you repeated it.",
+    "postdoc": "Choose what you actually did in the project you were responsible for, and note how many times you repeated it."
    },
    "options": null,
    "grid_row": null,
@@ -7657,12 +7657,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J6",
-   "wording": "Choose what you compared the results against",
+   "wording": "Choose what you compared the results against.",
    "stage_wording": {
-    "bachelor": "Choose what you compared the project results against",
-    "master": "Choose what you compared the research results against",
-    "phd": "Choose what you compared the results of your doctoral research against",
-    "postdoc": "Choose what you compared against when producing the project results"
+    "bachelor": "Choose what you compared the project results against.",
+    "master": "Choose what you compared the research results against.",
+    "phd": "Choose what you compared the results of your PhD research against.",
+    "postdoc": "Choose what you compared against when producing the project results."
    },
    "options": null,
    "grid_row": null,
@@ -7687,12 +7687,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J7",
-   "wording": "Choose what you did when the results were not what you expected",
+   "wording": "Choose what you did when the results were not what you expected.",
    "stage_wording": {
-    "bachelor": "Choose what you did when the project results were not what you expected",
-    "master": "Choose what you did when experimental results could not be reproduced",
-    "phd": "Choose what you did when the results contradicted your assumptions",
-    "postdoc": "Choose what you did when a method did not work"
+    "bachelor": "Choose what you did when the project results were not what you expected.",
+    "master": "Choose what you did when experimental results could not be reproduced.",
+    "phd": "Choose what you did when the results contradicted your assumptions.",
+    "postdoc": "Choose what you did when a method did not work."
    },
    "options": null,
    "grid_row": null,
@@ -7717,12 +7717,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J3",
-   "wording": "Choose what you newly decided based on the results",
+   "wording": "Choose what you newly decided based on the results.",
    "stage_wording": {
-    "bachelor": "Choose what you newly decided based on the project results",
-    "master": "Choose what you newly decided based on the research results",
-    "phd": "Choose what you newly decided based on the results of your doctoral research",
-    "postdoc": "Choose what you newly decided based on the project results"
+    "bachelor": "Choose what you newly decided based on the project results.",
+    "master": "Choose what you newly decided based on the research results.",
+    "phd": "Choose what you newly decided based on the results of your PhD research.",
+    "postdoc": "Choose what you newly decided based on the project results."
    },
    "options": null,
    "grid_row": null,
@@ -7747,12 +7747,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J5",
-   "wording": "Choose the outputs that came out of that work",
+   "wording": "Choose the outputs that came out of that work.",
    "stage_wording": {
-    "bachelor": "Choose the outputs that came out of that project",
-    "master": "Choose the outputs that came out of that research",
-    "phd": "Choose the papers or other outputs that came out of your doctoral research",
-    "postdoc": "Choose the outputs that came out of that project"
+    "bachelor": "Choose the outputs that came out of that project.",
+    "master": "Choose the outputs that came out of that research.",
+    "phd": "Choose the papers or other outputs that came out of your PhD research.",
+    "postdoc": "Choose the outputs that came out of that project."
    },
    "options": null,
    "grid_row": null,
@@ -7777,12 +7777,12 @@
    "education_routing": "all",
    "measurement_axis": "translation_step",
    "evidence_axis": "J8",
-   "wording": "Choose who could use these results and where, and add one line",
+   "wording": "Choose who could use these results and where, and explain in one line.",
    "stage_wording": {
-    "bachelor": "Choose who could use these project results and where, and add one line",
-    "master": "Choose who could use these research results and where, and add one line",
-    "phd": "Choose who could use the results of your doctoral research and where, and add one line",
-    "postdoc": "Choose which organizations or companies could use these project results, and add one line"
+    "bachelor": "Choose who could use these project results and where, and explain in one line.",
+    "master": "Choose who could use these research results and where, and explain in one line.",
+    "phd": "Choose who could use the results of your PhD research and where, and explain in one line.",
+    "postdoc": "Choose which organizations or companies could use these project results, and explain in one line."
    },
    "options": null,
    "grid_row": null,
@@ -7807,12 +7807,12 @@
    "education_routing": "all",
    "measurement_axis": "consistency",
    "evidence_axis": "J3",
-   "wording": "While doing coursework, have you ever set judgment criteria yourself?",
+   "wording": "While doing coursework, have you ever set decision criteria yourself?",
    "stage_wording": {
-    "bachelor": "In the domain you just chose, have you set judgment criteria yourself while doing coursework?",
-    "master": "In graduate coursework or research, have you ever set judgment criteria yourself?",
-    "phd": "In your doctoral research, have you ever set judgment criteria yourself?",
-    "postdoc": "In the research project you lead now, have you ever set judgment criteria yourself?"
+    "bachelor": "In the domain you just chose, have you set decision criteria yourself while doing coursework?",
+    "master": "In graduate coursework or research, have you ever set decision criteria yourself?",
+    "phd": "In your PhD research, have you ever set decision criteria yourself?",
+    "postdoc": "In the research project you are responsible for now, have you ever set decision criteria yourself?"
    },
    "options": [
     "Never done it",
@@ -7842,12 +7842,12 @@
    "education_routing": "all",
    "measurement_axis": "consistency",
    "evidence_axis": "J3",
-   "wording": "Outside school, such as in an internship or extracurricular activity, have you ever set judgment criteria yourself?",
+   "wording": "Outside school, such as in an internship or extracurricular activity, have you ever set decision criteria yourself?",
    "stage_wording": {
-    "bachelor": "In the domain you just chose, have you set judgment criteria yourself outside school, such as in an internship or activity?",
-    "master": "Outside school, such as in an industry-sponsored project or internship, have you ever set judgment criteria yourself?",
-    "phd": "Outside school, such as in work with a company, have you ever set judgment criteria yourself?",
-    "postdoc": "In work with another organization, have you ever set judgment criteria yourself?"
+    "bachelor": "In the domain you just chose, have you set decision criteria yourself outside school, such as in an internship or extracurricular activity?",
+    "master": "Outside school, such as in an industry-sponsored project or internship, have you ever set decision criteria yourself?",
+    "phd": "Outside school, such as in work with a company, have you ever set decision criteria yourself?",
+    "postdoc": "In work with another organization, have you ever set decision criteria yourself?"
    },
    "options": [
     "Never done it",
@@ -7947,7 +7947,7 @@
    "education_routing": "all",
    "measurement_axis": "target_input",
    "evidence_axis": null,
-   "wording": "Choose the roles you would like to work in",
+   "wording": "Choose the roles you would like to work in.",
    "stage_wording": null,
    "options": null,
    "grid_row": null,
@@ -7972,7 +7972,7 @@
    "education_routing": "all",
    "measurement_axis": "target_input",
    "evidence_axis": null,
-   "wording": "Choose the industries you are interested in",
+   "wording": "Choose the industries you are interested in.",
    "stage_wording": null,
    "options": null,
    "grid_row": null,
@@ -7997,7 +7997,7 @@
    "education_routing": "all",
    "measurement_axis": "target_input",
    "evidence_axis": null,
-   "wording": "Choose the types of organization you would like to work for",
+   "wording": "Choose the types of organization you would like to work for.",
    "stage_wording": null,
    "options": null,
    "grid_row": null,
@@ -8025,8 +8025,8 @@
    "wording": "If you could try only one of these two first, which would it be?",
    "stage_wording": null,
    "options": [
-    "(One of the domains paired in the grid)",
-    "(One of the domains paired in the grid)"
+    "(One of the domains tied in the grid)",
+    "(One of the domains tied in the grid)"
    ],
    "grid_row": null,
    "grid_stem": null,
@@ -8053,8 +8053,8 @@
    "wording": "Which of these two domains would you rather explore further right now?",
    "stage_wording": null,
    "options": [
-    "(One of the domains paired in the grid)",
-    "(One of the domains paired in the grid)"
+    "(One of the domains tied in the grid)",
+    "(One of the domains tied in the grid)"
    ],
    "grid_row": null,
    "grid_stem": null,
@@ -8348,7 +8348,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "Have you adjusted digital circuit timing conditions to match an equipment's operating cycle?",
+   "wording": "Have you adjusted digital circuit timing conditions to match a machine's operating cycle?",
    "stage_wording": null,
    "options": [
     "Never done it",
@@ -8468,7 +8468,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "Have you measured whether units interfere with each other electromagnetically?",
+   "wording": "Have you measured whether devices interfere with each other electromagnetically?",
    "stage_wording": null,
    "options": [
     "Never done it",
@@ -8678,7 +8678,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "Starting from the available power and distance, have you split up the link budget?",
+   "wording": "Have you allocated the link budget based on the available power and distance?",
    "stage_wording": null,
    "options": [
     "Never done it",
@@ -10268,7 +10268,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J3",
-   "wording": "Have you provided a backup power path so it keeps running if one side fails?",
+   "wording": "Have you provided a backup power path so a system keeps running if one path fails?",
    "stage_wording": null,
    "options": [
     "Never done it",
@@ -10328,7 +10328,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J6",
-   "wording": "Have you tested under severe conditions whether it holds up over long use?",
+   "wording": "Have you tested under harsh conditions whether a design holds up over long use?",
    "stage_wording": null,
    "options": [
     "Never done it",
@@ -10538,7 +10538,7 @@
    "education_routing": "all",
    "measurement_axis": "axis_level",
    "evidence_axis": "J2",
-   "wording": "Among conflicting requirements, such as performance versus price, have you decided which to protect first?",
+   "wording": "Among conflicting requirements, such as performance versus price, have you decided which to meet first?",
    "stage_wording": null,
    "options": [
     "Never done it",

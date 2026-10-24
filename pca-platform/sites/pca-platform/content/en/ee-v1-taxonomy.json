@@ -10,11 +10,11 @@
   },
   "J2": {
    "name": "Requirements interpretation",
-   "question": "Were requirements turned into numbers and constraints?"
+   "question": "Did you turn the requirements into numbers and constraints?"
   },
   "J3": {
    "name": "Technical decisions",
-   "question": "Which items did you decide?"
+   "question": "Which items did you decide yourself?"
   },
   "J4": {
    "name": "Methods and tools",
@@ -22,15 +22,15 @@
   },
   "J5": {
    "name": "Deliverables",
-   "question": "What was left behind?"
+   "question": "What output remained?"
   },
   "J6": {
    "name": "Comparison and verification",
-   "question": "What was it compared against?"
+   "question": "What did you compare it against?"
   },
   "J7": {
    "name": "Failure and correction",
-   "question": "How was the error narrowed down?"
+   "question": "How did you narrow down what went wrong?"
   },
   "J8": {
    "name": "Organizational use",
@@ -301,7 +301,7 @@
   },
   {
    "code": "RF8",
-   "name": "Quality and Reliability",
+   "name": "Quality and reliability",
    "one_line": "Assures that requirements hold through mass production and over the product's life",
    "output_kind": "Criteria, pass/fail decisions, corrective actions",
    "success": "Defects do not recur and the basis for each decision can be traced"
@@ -1005,7 +1005,7 @@
    "b_question": "Have you seen a measured value change after changing the structure?"
   },
   {
-   "pair": "Test and verification vs. quality and reliability",
+   "pair": "Testing and verification vs. quality and reliability",
    "a": {
     "td": "TD12",
     "rf": "RF3"

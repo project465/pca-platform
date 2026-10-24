@@ -14,15 +14,15 @@
   },
   "J3": {
    "name": "Technical decisions",
-   "question": "Which items did you decide?"
+   "question": "Which items did you decide yourself?"
   },
   "J4": {
    "name": "Methods and tools",
-   "question": "What did you use, and how did you do it?"
+   "question": "What did you use, and how?"
   },
   "J5": {
    "name": "Deliverables",
-   "question": "What was left behind?"
+   "question": "What output remained?"
   },
   "J6": {
    "name": "Comparison and verification",
@@ -301,7 +301,7 @@
   },
   {
    "code": "RF8",
-   "name": "Quality and Reliability",
+   "name": "Quality and reliability",
    "one_line": "Assures that requirements hold through mass production and over the product's life",
    "output_kind": "Criteria, pass/fail decisions, corrective actions",
    "success": "Defects do not recur and the basis for each decision can be traced"

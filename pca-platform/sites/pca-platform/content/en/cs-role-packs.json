@@ -94,7 +94,7 @@
      "id": "ROLE_DEV_V1_R6",
      "axis": "J7",
      "domain": "TD03",
-     "ask": "When an implementation didn't behave as intended, have you changed its processing flow?"
+     "ask": "When an implementation did not behave as intended, have you changed its processing flow?"
     },
     {
      "id": "ROLE_DEV_V1_R7",
@@ -602,7 +602,7 @@
   {
    "code": "ROLE_RESEARCH_V1",
    "version": 1,
-   "name_ko": "Research and Exploration",
+   "name_ko": "Exploration and Research",
    "name_en": "Research and Exploration",
    "core": "CS_CORE_V1",
    "markets": [
@@ -670,7 +670,7 @@
      "id": "ROLE_RESEARCH_V1_R5",
      "axis": "J5",
      "domain": "TD11",
-     "ask": "Have you published code and settings so others could rerun your work?"
+     "ask": "Have you shared code and settings so others could rerun your work?"
     },
     {
      "id": "ROLE_RESEARCH_V1_R6",

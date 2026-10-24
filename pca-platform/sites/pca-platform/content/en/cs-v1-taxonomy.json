@@ -10,11 +10,11 @@
   },
   "J2": {
    "name": "Requirements interpretation",
-   "question": "Were requirements turned into numbers and constraints?"
+   "question": "Did you turn the requirements into numbers and constraints?"
   },
   "J3": {
    "name": "Technical decisions",
-   "question": "Which items did you decide?"
+   "question": "Which items did you decide yourself?"
   },
   "J4": {
    "name": "Methods and tools",
@@ -22,15 +22,15 @@
   },
   "J5": {
    "name": "Deliverables",
-   "question": "What was left behind?"
+   "question": "What output remained?"
   },
   "J6": {
    "name": "Comparison and verification",
-   "question": "What was it compared against?"
+   "question": "What did you compare it against?"
   },
   "J7": {
    "name": "Failure and correction",
-   "question": "How was the error narrowed down?"
+   "question": "How did you narrow down what went wrong?"
   },
   "J8": {
    "name": "Organizational use",
@@ -220,7 +220,7 @@
   },
   {
    "code": "TD11",
-   "name": "Real-time Graphics and Game Development",
+   "name": "Real-Time Graphics and Game Development",
    "owns": "Settles the compute budget within one frame and the drawing order",
    "subareas": [
     "Rendering paths",
@@ -237,56 +237,56 @@
  "role_functions": [
   {
    "code": "RF1",
-   "name": "Design and Development",
+   "name": "Design and development",
    "one_line": "Decides what to build",
    "output_kind": "Design documents, interface contracts, implementation",
    "success": "One buildable option that meets the requirements"
   },
   {
    "code": "RF2",
-   "name": "Performance Analysis and Estimation",
+   "name": "Performance analysis and estimation",
    "one_line": "Knows before building",
    "output_kind": "Performance analysis, capacity estimates, complexity reasoning",
    "success": "Evidence that matches measurements and changed the design"
   },
   {
    "code": "RF3",
-   "name": "Test and Verification",
+   "name": "Testing and verification",
    "one_line": "Checks that what was built is right",
    "output_kind": "Test design, defect reports, verdicts",
    "success": "Results with reproducible verdicts and a stated scope"
   },
   {
    "code": "RF4",
-   "name": "Build and Deployment Automation",
+   "name": "Build and deployment automation",
    "one_line": "Makes builds repeatable",
    "output_kind": "Deployment procedures, environment configuration, rollback paths",
    "success": "The same input yields the same output, and it can be rolled back"
   },
   {
    "code": "RF5",
-   "name": "Service Operations",
+   "name": "Service operations",
    "one_line": "Keeps things running",
    "output_kind": "Operations metrics, incident records, response procedures",
    "success": "Uptime stays within the commitment and the same outage does not recur"
   },
   {
    "code": "RF6",
-   "name": "Integration and Coordination",
+   "name": "Integration and coordination",
    "one_line": "Brings many people's decisions together into one",
    "output_kind": "Requirements, schedules, change logs",
    "success": "Requirement fulfillment rate and schedule"
   },
   {
    "code": "RF7",
-   "name": "Research and Exploration",
-   "one_line": "Narrows down questions that don't have answers yet",
+   "name": "Exploration and research",
+   "one_line": "Narrows down questions that do not have answers yet",
    "output_kind": "Papers, patents, prototypes, methods",
    "success": "The question is narrowed and a method remains"
   },
   {
    "code": "RF8",
-   "name": "Quality and Reliability",
+   "name": "Quality and reliability",
    "one_line": "Assures that requirements hold throughout operation",
    "output_kind": "Quality standards, verdicts, corrective actions",
    "success": "Defects do not recur and the reasons behind verdicts are traceable"
@@ -878,7 +878,7 @@
    "b_question": "Have you set the normalization level and indexes yourself?"
   },
   {
-   "pair": "Machine learning vs. research and exploration",
+   "pair": "Machine learning vs. exploration and research",
    "a": {
     "td": "TD09",
     "rf": "RF1"
@@ -889,7 +889,7 @@
    },
    "shared": "Both work with models",
    "a_difference": "Brings models to usable performance and hands them over",
-   "b_difference": "Narrows down questions that don't have answers yet",
+   "b_difference": "Narrows down questions that do not have answers yet",
    "a_question": "Have you compared against existing methods under the same conditions?",
    "b_question": "Have you narrowed down a hypothesis you set, through experiments?"
   },

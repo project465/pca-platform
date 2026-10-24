@@ -38,73 +38,73 @@
    "scene": "In semiconductor and display process equipment, EE graduates work on small-signal measurement, spread in device characteristics, high-voltage power supplies and equipment control. Setting circuit conditions and confirming them by measurement carries straight over.",
    "judgement_dimensions": [
     {
-     "name": "Separates small signals from noise",
+     "name": "Do you separate small signals from noise?",
      "axis": "J3",
      "domain": "TD01",
      "why": "Many of the values to be read are smaller than the noise"
     },
     {
-     "name": "Judges measurement repeatability against yield criteria",
+     "name": "Do you judge measurement repeatability against yield criteria?",
      "axis": "J6",
      "domain": "TD12",
      "why": "A value that was right once is not evidence"
     },
     {
-     "name": "Traces spread in device characteristics back to process conditions",
+     "name": "Do you trace spread in device characteristics back to process conditions?",
      "axis": "J6",
      "domain": "TD07",
      "why": "The width of the distribution is the yield"
     },
     {
-     "name": "Varies process parameters to find the window that works",
+     "name": "Do you vary process parameters to find the window that works?",
      "axis": "J3",
      "domain": "TD07",
      "why": "The width of the working window makes the yield"
     },
     {
-     "name": "Treats high-voltage insulation and heat removal as design conditions",
+     "name": "Do you treat high-voltage insulation and heat removal as design conditions?",
      "axis": "J3",
      "domain": "TD08",
      "why": "Thousands of volts sit inside the same tool"
     },
     {
-     "name": "Decides the conditions under which the equipment stops",
+     "name": "Do you decide the conditions under which the equipment stops?",
      "axis": "J3",
      "domain": "TD11",
      "why": "A wrong stop scraps a whole process batch"
     },
     {
-     "name": "Raises resolution through signal processing",
+     "name": "Do you raise resolution through signal processing?",
      "axis": "J4",
      "domain": "TD04",
      "why": "Equipment performance depends on measurement resolution"
     },
     {
-     "name": "Cuts the paths by which supply noise reaches the measurement",
+     "name": "Do you cut the paths by which supply noise reaches the measurement?",
      "axis": "J7",
      "domain": "TD12",
      "why": "The cause is often outside the instrument"
     },
     {
-     "name": "Manages equipment downtime in numbers",
+     "name": "Do you manage equipment downtime in numbers?",
      "axis": "J8",
      "domain": "TD09",
      "why": "Uptime is part of the delivery terms"
     },
     {
-     "name": "Matches digital timing to the equipment cycle",
+     "name": "Do you match digital timing to the equipment cycle?",
      "axis": "J3",
      "domain": "TD02",
      "why": "The process cycle and the control cycle have to mesh"
     },
     {
-     "name": "Judges facility power capacity and protection by equipment criteria",
+     "name": "Do you judge facility power capacity and protection by equipment criteria?",
      "axis": "J2",
      "domain": "TD09",
      "why": "The inrush current of a single tool affects the whole fab"
     },
     {
-     "name": "Narrows down causes so the same failure does not happen again",
+     "name": "Do you narrow down causes so the same failure does not happen again?",
      "axis": "J7",
      "domain": "TD03",
      "why": "The same failure twice becomes a contract issue"
@@ -220,7 +220,7 @@
     "J7": "In this industry, failure and correction means widening the search for why a measurement was unstable beyond the instrument itself",
     "J8": "In this industry, organizational use shows up as equipment downtime and uptime"
    },
-   "result_line": "Semiconductor and display equipment deals with small-signal measurement, spread in device characteristics and high-voltage power supplies all at once. Experience setting circuit conditions, changing process conditions and repeating measurements is the closest way into this industry.",
+   "result_line": "Semiconductor and display equipment deals with small-signal measurement, spread in device characteristics and high-voltage power supplies all at once. Experience setting circuit conditions, changing process conditions and repeating measurements puts you close to the entry point of this industry.",
    "evidence_reading": [
     {
      "same": "Amplifier circuit design",
@@ -285,73 +285,73 @@
    "scene": "In automotive electronics and electrification, EE graduates work on in-vehicle networks, traction power conversion, motor control and EMC. Setting circuit and control conditions and confirming them under vehicle conditions carries straight over.",
    "judgement_dimensions": [
     {
-     "name": "Looks at efficiency and heat together in traction power conversion",
+     "name": "Do you look at efficiency and heat together in traction power conversion?",
      "axis": "J3",
      "domain": "TD08",
      "why": "Driving range and cooling are decided in the same design"
     },
     {
-     "name": "Translates motor control response into how the car feels to drive",
+     "name": "Do you translate motor control response into how the car feels to drive?",
      "axis": "J3",
      "domain": "TD11",
      "why": "Controller gains show up as driving feel"
     },
     {
-     "name": "Treats latency and loss on the vehicle network as conditions",
+     "name": "Do you treat latency and loss on the vehicle network as conditions?",
      "axis": "J2",
      "domain": "TD05",
      "why": "Messages must arrive within the control period"
     },
     {
-     "name": "Considers EMC at the design stage",
+     "name": "Do you consider EMC at the design stage?",
      "axis": "J6",
      "domain": "TD12",
      "why": "Units inside a car interfere with each other"
     },
     {
-     "name": "Decides in advance how the system behaves on failure",
+     "name": "Do you decide in advance how the system behaves on failure?",
      "axis": "J3",
      "domain": "TD03",
      "why": "How it stops is part of the safety requirements"
     },
     {
-     "name": "Makes the design withstand supply variation and inrush current",
+     "name": "Do you make the design withstand supply variation and inrush current?",
      "axis": "J7",
      "domain": "TD01",
      "why": "Starting and load changes shake the supply"
     },
     {
-     "name": "Reads sensor signals through vibration",
+     "name": "Do you read sensor signals through vibration?",
      "axis": "J4",
      "domain": "TD04",
      "why": "Road surface and vibration get mixed into signals"
     },
     {
-     "name": "Absorbs production spread within design margins",
+     "name": "Do you absorb production spread within design margins?",
      "axis": "J6",
      "domain": "TD07",
      "why": "The same circuit ships in hundreds of thousands of vehicles"
     },
     {
-     "name": "Works across the full battery voltage range",
+     "name": "Do you make it work across the full battery voltage range?",
      "axis": "J2",
      "domain": "TD10",
      "why": "Voltage changes a lot with state of charge"
     },
     {
-     "name": "Keeps execution periods inside the controller on time",
+     "name": "Do you keep execution periods inside the controller on time?",
      "axis": "J3",
      "domain": "TD02",
      "why": "Missing a control period makes the behavior unstable"
     },
     {
-     "name": "Sets insulation and protection for the high-voltage system",
+     "name": "Do you set insulation and protection for the high-voltage system?",
      "axis": "J3",
      "domain": "TD09",
      "why": "Hundreds of volts are close to people"
     },
     {
-     "name": "Traces failures returned from the field back to the design",
+     "name": "Do you trace failures returned from the field back to the design?",
      "axis": "J7",
      "domain": "TD11",
      "why": "Recall costs change design decisions"
@@ -471,7 +471,7 @@
     "J6": "In this industry, comparison and verification means measuring under vehicle conditions that units do not interfere with each other",
     "J7": "In this industry, failure and correction means tracing failures returned from the field back to the design"
    },
-   "result_line": "Automotive electronics and electrification deals with traction power conversion, motor control, in-vehicle networks and EMC together. Experience weighing efficiency against heat, tuning a response and measuring interference is the closest way into this industry.",
+   "result_line": "Automotive electronics and electrification deals with traction power conversion, motor control, in-vehicle networks and EMC together. Experience weighing efficiency against heat, tuning a response and measuring interference puts you close to the entry point of this industry.",
    "evidence_reading": [
     {
      "same": "Power converter design",
@@ -535,73 +535,73 @@
    "scene": "In communication and network equipment, EE graduates work on modulation and coding, RF circuits and antennas, protocol processing, and power and heat. Setting link conditions and confirming them on a test network carries straight over.",
    "judgement_dimensions": [
     {
-     "name": "Splits the link budget across sections",
+     "name": "Do you split the link budget across sections?",
      "axis": "J3",
      "domain": "TD05",
      "why": "Usable power and distance are fixed in advance"
     },
     {
-     "name": "Turns standards into design conditions",
+     "name": "Do you turn standards into design conditions?",
      "axis": "J2",
      "domain": "TD12",
      "why": "Standards cut the degrees of freedom first"
     },
     {
-     "name": "Gets RF matching and losses right by design",
+     "name": "Do you get RF matching and losses right by design?",
      "axis": "J3",
      "domain": "TD06",
      "why": "A mismatch sends power back"
     },
     {
-     "name": "Compares error rates with theory",
+     "name": "Do you compare error rates with theory?",
      "axis": "J6",
      "domain": "TD05",
      "why": "Measurements alone do not show where the loss came from"
     },
     {
-     "name": "Finishes protocol processing within real-time limits",
+     "name": "Do you finish protocol processing within real-time limits?",
      "axis": "J3",
      "domain": "TD03",
      "why": "Slow processing overflows the buffers"
     },
     {
-     "name": "Confirms antenna patterns by measurement",
+     "name": "Do you confirm antenna patterns by measurement?",
      "axis": "J6",
      "domain": "TD06",
      "why": "Simulation alone cannot see the installation environment"
     },
     {
-     "name": "Looks at power supply efficiency and heat in the equipment",
+     "name": "Do you look at power supply efficiency and heat in the equipment?",
      "axis": "J3",
      "domain": "TD08",
      "why": "Communication equipment runs without ever switching off"
     },
     {
-     "name": "Checks interoperability with other vendors' equipment",
+     "name": "Do you check interoperability with other vendors' equipment?",
      "axis": "J6",
      "domain": "TD12",
      "why": "Following the standard does not guarantee that equipment connects"
     },
     {
-     "name": "Raises receiver performance through signal processing",
+     "name": "Do you raise receiver performance through signal processing?",
      "axis": "J4",
      "domain": "TD04",
      "why": "Makes the signal go further on the same power"
     },
     {
-     "name": "Narrows the cause of dropped sections down to propagation or equipment",
+     "name": "Do you narrow the cause of dropped sections down to propagation or equipment?",
      "axis": "J7",
      "domain": "TD05",
      "why": "The radio environment and equipment faults produce the same symptoms"
     },
     {
-     "name": "Puts the impact on subscribers into numbers",
+     "name": "Do you put the impact on subscribers into numbers?",
      "axis": "J8",
      "domain": "TD09",
      "why": "Outage time is part of the contract terms"
     },
     {
-     "name": "Meets timing in digital processing circuits",
+     "name": "Do you meet timing in digital processing circuits?",
      "axis": "J3",
      "domain": "TD02",
      "why": "Timing is the first thing to break as speeds rise"
@@ -715,7 +715,7 @@
     "J6": "In this industry, comparison and verification means comparing with both theory and other vendors' equipment",
     "J7": "In this industry, failure and correction means narrowing down why a link dropped to propagation or equipment"
    },
-   "result_line": "Communication and network equipment deals with link quality, RF matching and real-time processing together. Experience splitting link conditions, turning standards into numbers and comparing with theory is the closest way into this industry.",
+   "result_line": "Communication and network equipment deals with link quality, RF matching and real-time processing together. Experience splitting link conditions, turning standards into numbers and comparing with theory puts you close to the entry point of this industry.",
    "evidence_reading": [
     {
      "same": "Link budget calculation",
@@ -779,73 +779,73 @@
    "scene": "In power, energy and renewables, EE graduates work on system capacity and protection coordination, generation and storage plants, power quality and equipment maintenance. Setting capacity by calculation and confirming it in the field carries straight over.",
    "judgement_dimensions": [
     {
-     "name": "Sizes equipment from load calculations",
+     "name": "Do you size equipment from load calculations?",
      "axis": "J3",
      "domain": "TD09",
      "why": "Undersized equipment is hard to expand later"
     },
     {
-     "name": "Coordinates protection section by section",
+     "name": "Do you coordinate protection section by section?",
      "axis": "J6",
      "domain": "TD09",
      "why": "If the wrong section trips first, a wider area goes down"
     },
     {
-     "name": "Estimates energy yield from resource data",
+     "name": "Do you estimate energy yield from resource data?",
      "axis": "J3",
      "domain": "TD10",
      "why": "The weather sets the plant's revenue"
     },
     {
-     "name": "Takes grid connection requirements as design conditions",
+     "name": "Do you take grid connection requirements as design conditions?",
      "axis": "J2",
      "domain": "TD10",
      "why": "The conditions for connecting to the grid are set by law"
     },
     {
-     "name": "Judges power quality by measurement",
+     "name": "Do you judge power quality by measurement?",
      "axis": "J6",
      "domain": "TD12",
      "why": "Voltage distortion cannot be seen by eye"
     },
     {
-     "name": "Looks at losses and heat in conversion equipment",
+     "name": "Do you look at losses and heat in conversion equipment?",
      "axis": "J3",
      "domain": "TD08",
      "why": "Losses come straight out of revenue"
     },
     {
-     "name": "Sets inspection intervals and replacement criteria",
+     "name": "Do you set inspection intervals and replacement criteria?",
      "axis": "J7",
      "domain": "TD09",
      "why": "Repairing after a failure means the outage comes first"
     },
     {
-     "name": "Uses remote monitoring data in operating decisions",
+     "name": "Do you use remote monitoring data in operating decisions?",
      "axis": "J8",
      "domain": "TD11",
      "why": "There is not always someone on site"
     },
     {
-     "name": "Writes down the operating rules for storage",
+     "name": "Do you write down the operating rules for storage?",
      "axis": "J5",
      "domain": "TD10",
      "why": "How storage is used sets its lifetime, so the rules must be on record"
     },
     {
-     "name": "Questions the reliability of measurement data",
+     "name": "Do you question the reliability of measurement data?",
      "axis": "J6",
      "domain": "TD04",
      "why": "Decisions made on faulty measurements are the most expensive"
     },
     {
-     "name": "Narrows outage causes down to equipment or settings",
+     "name": "Do you narrow outage causes down to equipment or settings?",
      "axis": "J7",
      "domain": "TD11",
      "why": "The same symptom comes from different causes"
     },
     {
-     "name": "Turns safety regulations into work procedures",
+     "name": "Do you turn safety regulations into work procedures?",
      "axis": "J2",
      "domain": "TD12",
      "why": "In electrical work, one mistake can injure someone"
@@ -955,7 +955,7 @@
     "J6": "In this industry, comparison and verification means backing up calculations with field measurements",
     "J7": "In this industry, failure and correction means narrowing outage causes down to equipment or settings"
    },
-   "result_line": "Power, energy and renewables deals with system capacity, protection coordination, energy yield estimation and equipment maintenance together. Experience calculating loads, turning codes into design conditions and measuring in the field is the closest way into this industry.",
+   "result_line": "Power, energy and renewables deals with system capacity, protection coordination, energy yield estimation and equipment maintenance together. Experience calculating loads, turning codes into design conditions and measuring in the field puts you close to the entry point of this industry.",
    "evidence_reading": [
     {
      "same": "Load calculation",
@@ -1020,73 +1020,73 @@
    "scene": "In home appliance and consumer electronics, EE graduates work on power supply circuits, motor control, user interfaces, wireless connectivity and safety certification. Balancing cost and performance and getting through certification testing carries straight over.",
    "judgement_dimensions": [
     {
-     "name": "Meets performance within the cost target",
+     "name": "Do you meet performance within the cost target?",
      "axis": "J2",
      "domain": "TD01",
      "why": "One line of unit cost can send the design back to the drawing board"
     },
     {
-     "name": "Takes safety certification requirements into the design",
+     "name": "Do you take safety certification requirements into the design?",
      "axis": "J2",
      "domain": "TD12",
      "why": "Without certification it cannot be sold"
     },
     {
-     "name": "Reduces motor noise through control",
+     "name": "Do you reduce motor noise through control?",
      "axis": "J3",
      "domain": "TD11",
      "why": "Noise decides how the product is rated"
     },
     {
-     "name": "Reduces standby power in power supply circuits",
+     "name": "Do you reduce standby power in power supply circuits?",
      "axis": "J3",
      "domain": "TD08",
      "why": "Standby power is limited by regulation"
     },
     {
-     "name": "Reduces dropouts in wireless connections",
+     "name": "Do you reduce dropouts in wireless connections?",
      "axis": "J7",
      "domain": "TD05",
      "why": "The home environment blocks radio signals"
     },
     {
-     "name": "Plans substitutes in case parts are discontinued",
+     "name": "Do you plan substitutes in case parts are discontinued?",
      "axis": "J3",
      "domain": "TD07",
      "why": "For long-selling products, parts disappear first"
     },
     {
-     "name": "Handles user input through signal processing",
+     "name": "Do you handle user input through signal processing?",
      "axis": "J4",
      "domain": "TD04",
      "why": "A deliberate press has to be told apart from an accidental touch"
     },
     {
-     "name": "Decides production test items",
+     "name": "Do you decide production test items?",
      "axis": "J5",
      "domain": "TD12",
      "why": "Not everything can be fully tested on every unit"
     },
     {
-     "name": "Keeps radiated emissions within limits",
+     "name": "Do you keep radiated emissions within limits?",
      "axis": "J6",
      "domain": "TD06",
      "why": "Small layout differences change emissions"
     },
     {
-     "name": "Leaves a path for firmware updates",
+     "name": "Do you leave a path for firmware updates?",
      "axis": "J5",
      "domain": "TD03",
      "why": "Things need fixing after launch"
     },
     {
-     "name": "Traces field failures back to the design",
+     "name": "Do you trace field failures back to the design?",
      "axis": "J7",
      "domain": "TD12",
      "why": "Recall costs change design decisions"
     },
     {
-     "name": "Makes the design hard to get wrong in assembly",
+     "name": "Do you make the design hard to get wrong in assembly?",
      "axis": "J8",
      "domain": "TD02",
      "why": "It is a process with a lot of manual handling"
@@ -1204,7 +1204,7 @@
     "J5": "In this industry, deliverables show up as production test items and a way to fix things later",
     "J7": "In this industry, failure and correction means tracing field failures back to the design"
    },
-   "result_line": "Home appliance and consumer electronics balances cost, performance and certification in one design. Experience taking unit cost as a condition, turning standards into design and getting through testing is the closest way into this industry.",
+   "result_line": "Home appliance and consumer electronics balances cost, performance and certification in one design. Experience taking unit cost as a condition, turning standards into design and getting through testing puts you close to the entry point of this industry.",
    "evidence_reading": [
     {
      "same": "Circuit cost review",
@@ -1268,73 +1268,73 @@
    "scene": "In industrial automation and robotics, EE graduates work on controller configuration, motor drives, sensor integration, safety circuits and industrial communication. Setting sequences and gains and tuning them on site carries straight over.",
    "judgement_dimensions": [
     {
-     "name": "Decides safety-stop conditions first",
+     "name": "Do you decide safety-stop conditions first?",
      "axis": "J3",
      "domain": "TD11",
      "why": "Machines move in the same space as people"
     },
     {
-     "name": "Sizes drives from the load",
+     "name": "Do you size drives from the load?",
      "axis": "J3",
      "domain": "TD09",
      "why": "Too small and it stops; too big and it is expensive"
     },
     {
-     "name": "Reads sensor signals through plant noise",
+     "name": "Do you read sensor signals through plant noise?",
      "axis": "J4",
      "domain": "TD04",
      "why": "Welders and inverters share the same supply lines"
     },
     {
-     "name": "Keeps industrial communication on cycle",
+     "name": "Do you keep industrial communication on cycle?",
      "axis": "J2",
      "domain": "TD05",
      "why": "Missing a control period throws the motion out of step"
     },
     {
-     "name": "Retunes gains on site",
+     "name": "Do you retune gains on site?",
      "axis": "J7",
      "domain": "TD11",
      "why": "The same equipment moves differently at each site"
     },
     {
-     "name": "Watches voltage drop on the drive supply",
+     "name": "Do you watch voltage drop on the drive supply?",
      "axis": "J3",
      "domain": "TD08",
      "why": "Long cable runs eat into the voltage"
     },
     {
-     "name": "Measures stopping accuracy repeatedly",
+     "name": "Do you measure stopping accuracy repeatedly?",
      "axis": "J6",
      "domain": "TD12",
      "why": "Precision achieved once is not a spec"
     },
     {
-     "name": "Uses failure history to improve equipment",
+     "name": "Do you use failure history to improve equipment?",
      "axis": "J8",
      "domain": "TD09",
      "why": "The same failure repeats on every line"
     },
     {
-     "name": "Leaves control code the next person can read",
+     "name": "Do you leave control code the next person can read?",
      "axis": "J5",
      "domain": "TD03",
      "why": "Equipment outlives the person in charge"
     },
     {
-     "name": "Runs equipment from several vendors together",
+     "name": "Do you run equipment from several vendors together?",
      "axis": "J6",
      "domain": "TD05",
      "why": "Even with the same standard, things do not always connect"
     },
     {
-     "name": "Cuts electromagnetic interference through wiring",
+     "name": "Do you cut electromagnetic interference through wiring?",
      "axis": "J7",
      "domain": "TD12",
      "why": "Inverter noise disturbs sensors"
     },
     {
-     "name": "Collects equipment condition as numbers",
+     "name": "Do you collect equipment condition as numbers?",
      "axis": "J8",
      "domain": "TD11",
      "why": "There are signals that can be seen before a stop"
@@ -1446,7 +1446,7 @@
     "J6": "In this industry, comparison and verification means checking that it lands in the same place on repetition, not just once",
     "J8": "In this industry, organizational use shows up as equipment uptime and failure history"
    },
-   "result_line": "Industrial automation and robotics deals with safety stops, drive sizing and on-site tuning together. Experience deciding stop conditions, choosing capacity from the load and retuning on site is the closest way into this industry.",
+   "result_line": "Industrial automation and robotics deals with safety stops, drive sizing and on-site tuning together. Experience deciding stop conditions, choosing capacity from the load and retuning on site puts you close to the entry point of this industry.",
    "evidence_reading": [
     {
      "same": "Control lab work",
@@ -1510,73 +1510,73 @@
    "scene": "In medical devices and instrumentation, EE graduates work on amplifying very small signals, patient isolation, measurement uncertainty, signal processing and regulatory testing. Setting measurement conditions and keeping the evidence carries straight over.",
    "judgement_dimensions": [
     {
-     "name": "Lifts very small signals out of noise",
+     "name": "Do you lift very small signals out of noise?",
      "axis": "J3",
      "domain": "TD01",
      "why": "Signals from the body are very small"
     },
     {
-     "name": "Takes patient isolation and leakage current into the design",
+     "name": "Do you take patient isolation and leakage current into the design?",
      "axis": "J2",
      "domain": "TD09",
      "why": "The device touches people"
     },
     {
-     "name": "States measurement uncertainty",
+     "name": "Do you state measurement uncertainty?",
      "axis": "J3",
      "domain": "TD12",
      "why": "The values are used in diagnosis"
     },
     {
-     "name": "Reduces noise through signal processing",
+     "name": "Do you reduce noise through signal processing?",
      "axis": "J4",
      "domain": "TD04",
      "why": "Motion and supply noise come in together"
     },
     {
-     "name": "Keeps design records in the format regulatory review requires",
+     "name": "Do you keep design records in the format regulatory review requires?",
      "axis": "J5",
      "domain": "TD12",
      "why": "Without evidence it will not pass review"
     },
     {
-     "name": "Calibrates against a reference standard",
+     "name": "Do you calibrate against a reference standard?",
      "axis": "J6",
      "domain": "TD12",
      "why": "An instrument cannot tell on its own whether it is right"
     },
     {
-     "name": "Designs power and grounding with noise in mind",
+     "name": "Do you design power and grounding with noise in mind?",
      "axis": "J3",
      "domain": "TD08",
      "why": "The power supply shows up directly in the measurement"
     },
     {
-     "name": "Corrects for spread in sensor characteristics",
+     "name": "Do you correct for spread in sensor characteristics?",
      "axis": "J6",
      "domain": "TD07",
      "why": "The same sensor differs from unit to unit"
     },
     {
-     "name": "Stops safely on malfunction",
+     "name": "Do you make the device stop safely on malfunction?",
      "axis": "J3",
      "domain": "TD11",
      "why": "How it stops is patient safety"
     },
     {
-     "name": "Handles dropouts in wireless connections",
+     "name": "Do you handle dropouts in wireless connections?",
      "axis": "J7",
      "domain": "TD05",
      "why": "The radio environment in hospitals is complex"
     },
     {
-     "name": "Turns clinical needs into numbers",
+     "name": "Do you turn clinical needs into numbers?",
      "axis": "J2",
      "domain": "TD04",
      "why": "What clinicians say and what the design needs are different languages"
     },
     {
-     "name": "Traces failure records back to the design",
+     "name": "Do you trace failure records back to the design?",
      "axis": "J7",
      "domain": "TD12",
      "why": "The same failure must never reach a patient twice"
@@ -1690,7 +1690,7 @@
     "J5": "In this industry, deliverables show up as test records that reviewers can read",
     "J6": "In this industry, comparison and verification means checking against calibrated reference standards"
    },
-   "result_line": "Medical devices and instrumentation deals with very small signals, patient isolation and measurement uncertainty together. Experience setting amplifier conditions, designing for isolation and checking against a reference standard is the closest way into this industry.",
+   "result_line": "Medical devices and instrumentation deals with very small signals, patient isolation and measurement uncertainty together. Experience setting amplifier conditions, designing for isolation and checking against a reference standard puts you close to the entry point of this industry.",
    "evidence_reading": [
     {
      "same": "Amplifier circuit lab work",
@@ -1754,73 +1754,73 @@
    "scene": "In defense and aerospace, EE graduates work on circuits that run in harsh environments, RF and antennas, power systems and reliability testing. Taking standards as design conditions and backing them up with tests carries straight over.",
    "judgement_dimensions": [
     {
-     "name": "Takes environmental conditions as design conditions",
+     "name": "Do you take environmental conditions as design conditions?",
      "axis": "J2",
      "domain": "TD01",
      "why": "Temperature and vibration set circuit lifetime"
     },
     {
-     "name": "Reads the standard's test items first",
+     "name": "Do you read the standard's test items first?",
      "axis": "J2",
      "domain": "TD12",
      "why": "Without passing the tests, there is no delivery"
     },
     {
-     "name": "Gets RF losses and matching right by design",
+     "name": "Do you get RF losses and matching right by design?",
      "axis": "J3",
      "domain": "TD06",
      "why": "Reflected power damages equipment"
     },
     {
-     "name": "Provides alternate paths for failures",
+     "name": "Do you provide alternate paths for failures?",
      "axis": "J3",
      "domain": "TD09",
      "why": "Some places cannot be reached for repair"
     },
     {
-     "name": "Makes the power system withstand sudden loads",
+     "name": "Do you make the power system withstand sudden loads?",
      "axis": "J3",
      "domain": "TD08",
      "why": "Peak power is far above normal"
     },
     {
-     "name": "Backs up lifetime with reliability testing",
+     "name": "Do you back up lifetime with reliability testing?",
      "axis": "J6",
      "domain": "TD12",
      "why": "A single unit failing means mission failure"
     },
     {
-     "name": "Separates targets from noise through signal processing",
+     "name": "Do you separate targets from noise through signal processing?",
      "axis": "J4",
      "domain": "TD04",
      "why": "Most of the received signal is of no use"
     },
     {
-     "name": "Takes parts supply and discontinuation into the design",
+     "name": "Do you take parts supply and discontinuation into the design?",
      "axis": "J3",
      "domain": "TD07",
      "why": "In long-lived equipment, parts disappear first"
     },
     {
-     "name": "Keeps records that can be traced",
+     "name": "Do you keep records that can be traced?",
      "axis": "J5",
      "domain": "TD12",
      "why": "Traceability of each judgment is the deliverable"
     },
     {
-     "name": "Treats EMC at the system level",
+     "name": "Do you treat EMC at the system level?",
      "axis": "J6",
      "domain": "TD06",
      "why": "Transmitters and receivers sit together in one system"
     },
     {
-     "name": "Traces the causes of failure back to the design stage",
+     "name": "Do you trace the causes of failure back to the design stage?",
      "axis": "J7",
      "domain": "TD12",
      "why": "There is no room to repeat the same failure"
     },
     {
-     "name": "Keeps communication links from dropping",
+     "name": "Do you keep communication links from dropping?",
      "axis": "J3",
      "domain": "TD05",
      "why": "Once a link drops, there may be no way to restore it"
@@ -1934,7 +1934,7 @@
     "J5": "In this industry, deliverables show up as decision records that can be traced",
     "J6": "In this industry, comparison and verification means backing up lifetime with harsh-condition testing"
    },
-   "result_line": "Defense and aerospace deals with harsh environments, qualification testing and the reliability of each unit together. Experience taking the environment as a condition, reading the standard first and measuring under harsh conditions is the closest way into this industry.",
+   "result_line": "Defense and aerospace deals with harsh environments, qualification testing and the reliability of each unit together. Experience taking the environment as a condition, reading the standard first and measuring under harsh conditions puts you close to the entry point of this industry.",
    "evidence_reading": [
     {
      "same": "Taking part in environmental testing",

@@ -208,7 +208,7 @@
     "J7": "In this industry, failure and correction is judged by how well the system holds up while part of it is down",
     "J8": "In this industry, organizational use shows up as decisions to turn features on and off based on metrics"
    },
-   "result_line": "Online platform services deal with heavy request loads, frequent deployments and response latency all at once. Experience designing a processing flow, making queries faster, or rolling back a release is close to the entry point for this industry.",
+   "result_line": "Online platform services deal with heavy request loads, frequent deployments and response latency all at once. Experience designing a processing flow, making queries faster, or rolling back a release puts you close to the entry point of this industry.",
    "evidence_reading": [
     {
      "same": "Building server features",
@@ -285,13 +285,13 @@
      "why": "The rules to follow come from outside"
     },
     {
-     "name": "Do you design storage so records can't be erased?",
+     "name": "Do you design storage so records cannot be erased?",
      "axis": "J3",
      "domain": "TD04",
      "why": "Auditors look at the records"
     },
     {
-     "name": "Do you choose a consistency level based on what's at stake in money?",
+     "name": "Do you choose a consistency level based on what is at stake in money?",
      "axis": "J3",
      "domain": "TD07",
      "why": "Being correct comes before being fast"
@@ -309,7 +309,7 @@
      "why": "Insiders are part of the threat model too"
     },
     {
-     "name": "When there's an outage, do you roll back and narrow down the cause?",
+     "name": "When there is an outage, do you roll back and narrow down the cause?",
      "axis": "J7",
      "domain": "TD10",
      "why": "Outage time is counted as loss"
@@ -318,7 +318,7 @@
      "name": "Do you pick out abnormal transactions from the data?",
      "axis": "J4",
      "domain": "TD09",
-     "why": "There's more than any person could review"
+     "why": "There is more than any person could review"
     },
     {
      "name": "Do you get calculations right down to the rounding?",
@@ -380,7 +380,7 @@
      "id": "INDUSTRY_FINTECH_V1_I3",
      "axis": "J3",
      "domain": "TD04",
-     "ask": "Have you designed storage so records can't be erased?",
+     "ask": "Have you designed storage so records cannot be erased?",
      "gloss": "Making records that must be kept impossible to delete or edit"
     },
     {
@@ -439,7 +439,7 @@
     "J6": "In this industry, comparison and verification means judging pass or fail against the standard",
     "J7": "In this industry, failure and correction means rolling back and then narrowing down the cause with the records"
    },
-   "result_line": "Finance and payments deal with transaction consistency, audit records and regulatory requirements all at once. Experience making something process only once, turning regulations into conditions, or judging results against a standard is close to the entry point for this industry.",
+   "result_line": "Finance and payments deal with transaction consistency, audit records and regulatory requirements all at once. Experience making something process only once, turning regulations into conditions, or judging results against a standard puts you close to the entry point of this industry.",
    "evidence_reading": [
     {
      "same": "Building transaction processing",
@@ -487,7 +487,7 @@
   {
    "code": "INDUSTRY_GAME_V1",
    "version": 1,
-   "name_ko": "Games and Real-time Content",
+   "name_ko": "Games and Real-Time Content",
    "name_en": "Games and Real-time Content",
    "core": "CS_CORE_V1",
    "markets": [
@@ -519,7 +519,7 @@
      "name": "Do you deal with the delay from input to screen?",
      "axis": "J3",
      "domain": "TD05",
-     "why": "Lag at the fingertips decides whether it's fun"
+     "why": "Lag at the fingertips decides whether it is fun"
     },
     {
      "name": "Do you decide when assets are loaded and unloaded?",
@@ -672,7 +672,7 @@
     "J6": "In this industry, comparison and verification means measuring on every device and taking the slowest one as the reference",
     "J8": "In this industry, organizational use shows up as agreeing with designers on the trade-off between performance and content"
    },
-   "result_line": "Games and real-time content deal with frame budgets, performance differences across devices and post-launch operations all at once. Experience setting a drawing order, measuring on multiple devices, or reworking asset loading is close to the entry point for this industry.",
+   "result_line": "Games and real-time content deal with frame budgets, performance differences across devices and post-launch operations all at once. Experience setting a drawing order, measuring on multiple devices, or reworking asset loading puts you close to the entry point of this industry.",
    "evidence_reading": [
     {
      "same": "Rendering implementation",
@@ -737,7 +737,7 @@
    "scene": "In enterprise software and contracted development, computer science and software graduates deal with problems like interpreting client requirements, installing in client environments, acceptance criteria and long-term maintenance. Turning requirements into conditions and checking results against standards carries over directly.",
    "judgement_dimensions": [
     {
-     "name": "Do you separate out which client requirements you won't take on?",
+     "name": "Do you separate out which client requirements you will not take on?",
      "axis": "J2",
      "domain": "TD01",
      "why": "Taking on everything means missing the deadline"
@@ -752,7 +752,7 @@
      "name": "Do you make sure it installs the same way in the client's environment?",
      "axis": "J3",
      "domain": "TD10",
-     "why": "It can't only work on your own machines"
+     "why": "It cannot only work on your own machines"
     },
     {
      "name": "Do you define the contract for exchanging data with existing systems?",
@@ -875,7 +875,7 @@
      "id": "INDUSTRY_ENTERPRISE_V1_I8",
      "axis": "J7",
      "domain": "TD06",
-     "ask": "Have you narrowed down a problem that wouldn't reproduce on your side?",
+     "ask": "Have you narrowed down a problem that would not reproduce on your side?",
      "gloss": "Finding an error that only happened in someone else's environment"
     },
     {
@@ -894,12 +894,12 @@
     }
    ],
    "gap_language": {
-    "J2": "In this industry, requirements interpretation shows up as turning what the client wrote into acceptance criteria and separating out what won't be taken on",
+    "J2": "In this industry, requirements interpretation shows up as turning what the client wrote into acceptance criteria and separating out what will not be taken on",
     "J3": "In this industry, technical decisions show up as setting contracts with existing systems and installation conditions in the client's environment",
     "J5": "In this industry, deliverables include documentation that lets others maintain the system after handover",
-    "J7": "In this industry, failure and correction means narrowing down, in the client's environment, problems that don't reproduce on your side"
+    "J7": "In this industry, failure and correction means narrowing down, in the client's environment, problems that do not reproduce on your side"
    },
-   "result_line": "Enterprise software and contracted development deal with interpreting client requirements, installing in client environments and acceptance criteria all at once. Experience drawing scope lines, connecting to someone else's system, or judging results against a standard is close to the entry point for this industry.",
+   "result_line": "Enterprise software and contracted development deal with interpreting client requirements, installing in client environments and acceptance criteria all at once. Experience drawing scope lines, connecting to someone else's system, or judging results against a standard puts you close to the entry point of this industry.",
    "evidence_reading": [
     {
      "same": "Organizing requirements",
@@ -973,7 +973,7 @@
      "name": "Do you manage memory within tight resources?",
      "axis": "J7",
      "domain": "TD06",
-     "why": "The hardware can't be changed"
+     "why": "The hardware cannot be changed"
     },
     {
      "name": "Do you turn safety standards into design conditions?",
@@ -991,7 +991,7 @@
      "name": "Do you update code inside vehicles safely?",
      "axis": "J3",
      "domain": "TD10",
-     "why": "If it can't be rolled back, it's an accident"
+     "why": "If it cannot be rolled back, it is an accident"
     },
     {
      "name": "Do you protect the channels that send vehicle data?",
@@ -1054,7 +1054,7 @@
      "axis": "J3",
      "domain": "TD06",
      "ask": "Have you split processing so it finishes within a set time?",
-     "gloss": "Breaking processing that can't run late into smaller tasks"
+     "gloss": "Breaking processing that cannot run late into smaller tasks"
     },
     {
      "id": "INDUSTRY_MOBILITY_V1_I2",
@@ -1124,9 +1124,9 @@
     "J2": "In this industry, requirements interpretation shows up as turning functional safety and security standards into design conditions",
     "J3": "In this industry, technical decisions show up as splitting processing within a set time and tight resources",
     "J5": "In this industry, deliverables include records that let you trace back what happened",
-    "J7": "In this industry, failure and correction means narrowing down causes inside hardware that can't be changed"
+    "J7": "In this industry, failure and correction means narrowing down causes inside hardware that cannot be changed"
    },
-   "result_line": "Automotive and mobility software deals with response time, tight resources and safety standards all at once. Experience splitting up processing, narrowing down memory problems, or turning standards into conditions is close to the entry point for this industry.",
+   "result_line": "Automotive and mobility software deals with response time, tight resources and safety standards all at once. Experience splitting up processing, narrowing down memory problems, or turning standards into conditions puts you close to the entry point of this industry.",
    "evidence_reading": [
     {
      "same": "Embedded implementation",
@@ -1134,7 +1134,7 @@
     },
     {
      "same": "Resource analysis",
-     "reads_as": "Decisions made inside hardware that can't be changed"
+     "reads_as": "Decisions made inside hardware that cannot be changed"
     },
     {
      "same": "Checking compliance with standards",
@@ -1142,7 +1142,7 @@
     },
     {
      "same": "Sensor data processing",
-     "reads_as": "Experience handling data that isn't clean"
+     "reads_as": "Experience handling data that is not clean"
     }
    ],
    "job_aliases": [
@@ -1194,7 +1194,7 @@
      "name": "Do you limit and log who can view data?",
      "axis": "J3",
      "domain": "TD08",
-     "why": "It's the most sensitive data there is"
+     "why": "It is the most sensitive data there is"
     },
     {
      "name": "Do you unify formats that differ by institution?",
@@ -1350,7 +1350,7 @@
     "J6": "In this industry, comparison and verification means measuring performance on held-out data",
     "J7": "In this industry, failure and correction means gathering wrong cases and narrowing down the cause"
    },
-   "result_line": "Healthcare information deals with sensitive personal data, data formats that differ by institution and record retention all at once. Experience limiting access, reconciling data, or validating on held-out data is close to the entry point for this industry.",
+   "result_line": "Healthcare information deals with sensitive personal data, data formats that differ by institution and record retention all at once. Experience limiting access, reconciling data, or validating on held-out data puts you close to the entry point of this industry.",
    "evidence_reading": [
     {
      "same": "Permission design",
@@ -1408,7 +1408,7 @@
    "status": "building",
    "demands": [
     "You have to show, with evidence, that standards are met",
-    "Networks are separated, so outside tools can't be used as is",
+    "Networks are separated, so outside tools cannot be used as is",
     "Systems, once built, are maintained for a very long time",
     "Who did what and when is all recorded"
    ],
@@ -1430,7 +1430,7 @@
      "name": "Do you choose tools within a separated network?",
      "axis": "J4",
      "domain": "TD10",
-     "why": "Outside tools can't be used"
+     "why": "Outside tools cannot be used"
     },
     {
      "name": "Do you split the system with very long maintenance in mind?",
@@ -1460,7 +1460,7 @@
      "name": "Do you assume a disconnected network?",
      "axis": "J7",
      "domain": "TD07",
-     "why": "It isn't connected to the outside"
+     "why": "It is not connected to the outside"
     },
     {
      "name": "Do you narrow permissions to match organizational rules?",
@@ -1526,7 +1526,7 @@
      "axis": "J3",
      "domain": "TD01",
      "ask": "Have you split a system with very long maintenance in mind?",
-     "gloss": "Separating what will change from what won't, with long-term use in mind"
+     "gloss": "Separating what will change from what will not, with long-term use in mind"
     },
     {
      "id": "INDUSTRY_PUBLIC_V1_I5",
@@ -1577,7 +1577,7 @@
     "J5": "In this industry, deliverables include records that trace who did what and when",
     "J6": "In this industry, comparison and verification means showing compliance with standards, with evidence"
    },
-   "result_line": "Public sector and defense IT deal with proving compliance, separated networks and long-term maintenance all at once. Experience presenting evidence, turning regulations into conditions, or migrating legacy data is close to the entry point for this industry.",
+   "result_line": "Public sector and defense IT deal with proving compliance, separated networks and long-term maintenance all at once. Experience presenting evidence, turning regulations into conditions, or migrating legacy data puts you close to the entry point of this industry.",
    "evidence_reading": [
     {
      "same": "Checking compliance with standards",
