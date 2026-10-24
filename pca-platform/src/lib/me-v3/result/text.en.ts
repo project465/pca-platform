@@ -444,7 +444,7 @@ const keep = (m: Mat, i: number, alt: string): string => {
 
 function fewer(list: string): string {
   const xs = list.split(/\s*[,·]\s*/).filter(Boolean);
-  return lc(xs.slice(0, 2).join(" or "));
+  return orList(xs.slice(0, 2).map(lc));
 }
 
 const OWN: Record<Axis, (d: string, m: Mat) => string> = {
@@ -460,9 +460,9 @@ const OWN: Record<Axis, (d: string, m: Mat) => string> = {
     + ` ${m.workflow.method ? fewer(m.workflow.method) : "your method"}.`
     + ` Keep it in ${keep(m, 3, "your write-up")}.`,
   J5: (d, m) => `${bring(d)} Add one line each on assumptions and limits to`
-    + ` ${m.artifacts.length ? `the ${lc(orList(m.artifacts))} you made` : "what you made"}.`,
+    + ` ${m.artifacts.length ? `the ${orList(m.artifacts.map(lc))} you made` : "what you made"}.`,
   J6: (d, m) => `${bring(d)} Note ${m.verify_targets.length
-    ? `which of ${lc(orList(m.verify_targets))} you compared it with`
+    ? `which of ${orList(m.verify_targets.map(lc))} you compared it with`
     : "what you compared the result with"},`
     + ` and record the difference in ${keep(m, 1, "your write-up")}.`,
   J7: (d, m) => `${bring(d)} Add, step by step, what you changed when it didn't work`
@@ -608,7 +608,7 @@ export function pickSentenceKo(picks: string[]): string {
   const x = picks.filter(Boolean).slice(0, 2);
   if (!x.length) return "";
   if (!x.every((t) => isClause(t, "en"))) {
-    return `You've worked with ${lc(andList(x))}.`;
+    return `You've worked with ${andList(x.map(lc))}.`;
   }
   if (x.length === 1) return sentence(x[0]);
   return `${cap(x[0])}, and ${lc(x[1])}.`;
@@ -629,9 +629,9 @@ export function actionKo(
   const w = a.material.workflow;
   const arts = a.material.artifacts.length ? a.material.artifacts
     : (w?.output ? [w.output] : []);
-  const art = lc(orList(arts));
+  const art = orList(arts.map(lc));
   const vts = a.material.verify_targets;
-  const vt = lc(orList(vts.join("").length > 60 ? vts.slice(0, 1) : vts.slice(0, 2)));
+  const vt = orList((vts.join("").length > 60 ? vts.slice(0, 1) : vts.slice(0, 2)).map(lc));
   const depth = stage ? DEPTH[stage] : undefined;
 
   if (a.code === "WRITE_UP") {

@@ -1406,6 +1406,10 @@
   .qs-cell i { font-size: var(--q-t-cap); }
   .qs-cell:not(:has(b)) i { font-size: var(--q-t-sub); }
   .qs-crumb .prev, .qs-crumb .next, .qs-crumb i { display: none; }
+  /* **좁은 화면에서는 지금 단계도 줄어든다.** 넓은 화면에서 잘리지 않게
+     둔 규칙을 그대로 두면, 단계 이름이 긴 언어(영어 `Industries`)에서
+     옆의 저장 알약 밑으로 글자가 파고든다 */
+  .qs-crumb .now { flex: 0 1 auto; min-width: 0; overflow: hidden; }
   /* 좁은 화면에서는 학교 이름을 접고 학과만 남긴다. 둘 다 세우면 상표와
      진행 사이가 한 줄을 넘는다 */
   .qs-where {

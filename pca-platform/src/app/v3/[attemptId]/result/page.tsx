@@ -1304,9 +1304,9 @@ export default async function V3Result({
   /* **조직환경(OC)과 기관 유형(ORG)은 다른 층이다.** 앞엣것은 그 일을
      하는 자리의 성격이고 뒤엣것은 그 자리를 가진 기관의 종류다 */
   const orgTypeName = (c: string) =>
-    regionLayer().org_types.find((x) => x.code === c)?.label ?? c;
+    tr(regionLayer().org_types.find((x) => x.code === c)?.label ?? c);
   const orgKinds = [...new Set(model.targets.orgs
-    .flatMap((oc) => orgTypesFor(oc).map((o) => o.label)))];
+    .flatMap((oc) => orgTypesFor(oc).map((o) => tr(o.label))))];
   const goal = model.targets.goal;
   /* 넷이 모이면 물어볼 수 있는 것. **자료가 0줄이어도 열쇠는 보여 준다**:
      무엇이 모이면 답이 나오는지 알아야 비어 있는 것이 아직으로 읽힌다 */

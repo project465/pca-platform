@@ -181,7 +181,7 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.7";
 /* copy.71 — `계획로` 조사, `직접 정한 기준 직접 정하기` 겹말을 고쳤다 */
 /* copy.72 — 결과지가 읽는 갈래 예시(`examples.artifacts` · `evidence`)의 글을 여덟 Core 에서 고쳤다(`한 벌` · `까닭` · `대조표` 등). 기계공학 은행 판본이 V2.8 로 올라 동결 기록도 다시 적는다. 판정과 결과 모델은 그대로다 */
 /* copy.73 — 영어판 1단계: 결과 문장의 영어 벌(`text.en`)과 원고 사전(`localize`)이 섰다. 한국어 결과 글은 그대로다 */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.73";
+export const RESULT_COPY_VERSION = "me-v3-result-copy.74";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -484,7 +484,7 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.73";
 /** 세종 학교 결과지에 기업 절 하나를 더했다(기존 class 만 쓴다) */
 /* V84 — 웹 화면은 다섯 덩어리(`summary.tsx`)만 세우고 원래 절들은 종이만 쓴다 */
 /* V85 — 결과지가 응시 언어로 그린다. 영어 응시에는 작업공간 · 지역 · 세종 절이 서지 않고 PRO 종이는 웹 결과 종이판이다(1단계) */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V85";
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V86";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

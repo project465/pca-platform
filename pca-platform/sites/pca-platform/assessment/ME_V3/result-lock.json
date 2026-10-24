@@ -2,8 +2,8 @@
  "schema_version": "me-v3-result-lock.1",
  "note": "결과지 화면 1차 동결. 문장만 고치면 `RESULT_COPY_VERSION` 만 올리고, 칸이나 절이 바뀌면 `RESULT_MODEL_VERSION`, 화면 구조가 바뀌면 `RESULT_UI_VERSION` 을 올린다. 채점 판본은 이 가운데 무엇으로도 올리지 않는다",
  "versions": {
-  "result_ui_version": "ME_V3_RESULT_UI_V85",
-  "result_copy_version": "me-v3-result-copy.73",
+  "result_ui_version": "ME_V3_RESULT_UI_V86",
+  "result_copy_version": "me-v3-result-copy.74",
   "result_model_version": "me-v3-result-model.7",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.8",
   "scoring_version": "me-v3-scoring.5"
@@ -22,7 +22,7 @@
  "files": {
   "src/app/v3/result.css": "9176d4118d228396b726737b1b9fcd0798298602084ece56eb1b26e349d79833",
   "src/app/surface.css": "edbb16d5270484deb2737e73611d8035296ce813a8c1afbede5ddd76cb35c38f",
-  "src/app/v3/[attemptId]/result/page.tsx": "bffa16efe0f87899a5a4105dd09f9f6c019effc68a2b96c5074940ccff378847",
+  "src/app/v3/[attemptId]/result/page.tsx": "893800214ce038b84c3fe659c82ea80e969b9bcd0ba388fc27e0b8987be2f809",
   "src/app/v3/[attemptId]/result/fold.tsx": "da6c8b16f124941d283dc9ae4ad0f41b2271fd8d8233028bfdc3d4c500d4fbb4",
   "src/app/v3/[attemptId]/result/disclose.tsx": "04e8a84916ec0fcd642e9287377e370b8bff250ac496ed66cfdf3d9f2e640f5a",
   "src/app/v3/[attemptId]/result/save.tsx": "17e047ae27df85fc1fd501d7031d322d4a02414d15b1d91302133e3bd505d197",
@@ -31,7 +31,7 @@
   "src/lib/me-v3/result/text.ko.ts": "82932069908da96dc6ccc33439483b4d925d3a340befc3bea555e422b3f3ac6a",
   "src/lib/me-v3/result/say.ts": "1ca895cbeb84b08c5579fc3fcaaf4f8c89b766e131f277bcd92bba74abcebc95",
   "src/lib/me-v3/result/josa.ts": "152cd30c2af136172618c14fa6fb4175b97cf16350db631e3e2e6c72fd7dd4af",
-  "src/lib/me-v3/result/version.ts": "9510ea3230b7efc64dd60ebee92a94d127bf1965f9fe99613ebfbaee74b2d8b7",
+  "src/lib/me-v3/result/version.ts": "a3c4f098d4f0510678352ff68357dfea71d41b303004a0f8768dabb4673537b3",
   "src/lib/me-v3/result/tile-sub.ts": "8e51d0087d789341b20679e15503c7d31d62b36c943998cea70d992539c2d785",
   "src/lib/me-v3/student/copy.ts": "3c5f96455be8222018a30f1d5423aee1608e436ec11c49d681b208956ef60a1a",
   "src/lib/me-v3/student/icon.ts": "65836ae7a141a7dcdf844e5d5b4bcdbcc558dad0a3890a4a67384a3b17c7aea2",
@@ -48,12 +48,12 @@
   "src/lib/me-v3/result/sejong.ts": "efb45ce6ce5ed9e77ffb3a6d6cfedfdaa2bfd112f3c6c2379544f293033b42ed",
   "src/app/v3/[attemptId]/result/sejong.tsx": "0176a3bf7a75a943085c963d38162a9cdbc762ae6707e8b1a3ad90cd3cd20ec1",
   "src/lib/me-v3/result/text.ts": "9740c80e8a5ad77d2d2e84796cf2d4835ef1f4a18163e4c6f5b3c047dc028b07",
-  "src/lib/me-v3/result/text.en.ts": "a9bc8796764b04732c5442f869b18089adb9b83409ad5411e32bbf49ee7b824f",
+  "src/lib/me-v3/result/text.en.ts": "044fc1aea9146b140d85f6500f0fa550b4d9bde762bb5fcf6873fa40c6e6e7e4",
   "src/lib/me-v3/result/localize.ts": "ef139d66fbf83b53dddf021dda8799d4e6b26312490eb2ec8a429ae578d9c96c",
   "src/lib/me-v3/result/render-lang.ts": "9562d78062f0a904427ed7e683331524a22036244fd927120e905565bdb0f003",
   "src/lib/me-v3/result/reason.en.ts": "73344ae1fd4095c3ff84ee0c4a8f6d410f44dd998c940883a898842becedb34e",
   "src/lib/me-v3/result/common.en.ts": "62f3147aaab12f0a2761b0f5a125b66e69d3560f5ecadac93e17c704783f2b6c",
   "src/lib/me-v3/phrase.ts": "2f093ec0d6eecd54201c9f0fff3a3c121ae6b39f9b04f5d1c178aa9466f72a22",
-  "src/lib/me-v3/phrases.en.ts": "7c484a0d3057bb1b71785d36ff3de36b8e4ddfadb19b45b9baed5c30784c4647"
+  "src/lib/me-v3/phrases.en.ts": "e3e8da701d03bd3f32db34e2a0cf70754ca8519117dd0c35a74c7c168628bb07"
  }
 }

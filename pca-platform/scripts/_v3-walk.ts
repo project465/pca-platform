@@ -100,7 +100,14 @@ export type WalkOut = {
  */
 export async function walk(
   p: Page, max: number,
-  opts?: { onFinish?: (btn: Locator, page: Page) => Promise<void> },
+  opts?: {
+    onFinish?: (btn: Locator, page: Page) => Promise<void>;
+    /** 화면마다 한 번 부른다. 영어판이 화면마다 한글을 세는 자리다 */
+    onScreen?: (page: Page) => Promise<void>;
+    /** 덧붙이는 한 줄. **응시 언어로 적는다**: 영어 응시에 한국어 줄을 넣으면
+        결과지가 그 줄을 옮겨 적어 한글이 선다 */
+    note?: string;
+  },
 ): Promise<WalkOut> {
   /* **시작 안내를 먼저 지난다.** 그 쪽에도 짙은 단추가 하나 있어서, 모르고
      들어오면 `끝 화면` 으로 보고 한 문항도 안 푼 응시를 통과시킨다 */
@@ -121,6 +128,7 @@ export async function walk(
   for (let i = 0; i < max; i += 1) {
     await p.waitForLoadState("networkidle");
     await note();
+    if (opts?.onScreen) await opts.onScreen(p);
 
     /* 1. 고르는 묶음마다 하나씩. 이미 고른 자리는 덮지 않는다.
           **한 칸으로 밀지 않는다**: 열두 영역에 같은 값을 넣으면 영역
@@ -187,7 +195,7 @@ export async function walk(
     const an = await areas.count();
     for (let t = 0; t < an; t += 1) {
       if (await areas.nth(t).inputValue().catch(() => "")) continue;
-      await areas.nth(t).fill("구속 조건과 하중을 직접 정해 해석에 넣었습니다.")
+      await areas.nth(t).fill(opts?.note ?? "구속 조건과 하중을 직접 정해 해석에 넣었습니다.")
         .catch(() => undefined);
       await areas.nth(t).blur().catch(() => undefined);
     }

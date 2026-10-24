@@ -150,6 +150,7 @@
     "v3:owner": "tsx scripts/v3-owner-check.ts",
     "v3:length": "tsx scripts/v3-length-check.ts",
     "v3:i18n": "tsx scripts/v3-i18n-check.ts",
+    "v3:en:walk": "tsx scripts/v3-en-walk.ts",
     "db:v3": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 --single-transaction -f db/schema_v3_runtime.sql",
     "db:v3:arch": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 --single-transaction -f db/schema_v3_arch.sql",
     "db:v3:platform": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 --single-transaction -f db/schema_v3_platform.sql",
