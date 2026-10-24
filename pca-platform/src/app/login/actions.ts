@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { inactiveReason, signIn } from "@/lib/auth";
 import { clientIpFrom, loginGate } from "@/lib/login-throttle";
+import { entrySay } from "@/lib/entry-say";
 
 export type LoginState = { error?: string };
 
@@ -15,9 +16,9 @@ export type LoginState = { error?: string };
  * 고치기를 되풀이한다. 남은 시간은 **아이디가 있든 없든 같은 규칙으로**
  * 정해지므로 이 수가 계정의 존재를 알려 주지 않는다.
  */
-function waitKo(sec: number): string {
-  if (sec <= 90) return "약 1분";
-  return `약 ${Math.ceil(sec / 60)}분`;
+function waitKo(sec: number, say = entrySay("ko")): string {
+  if (sec <= 90) return say("약 1분");
+  return say("약 {n}분", { n: Math.ceil(sec / 60) });
 }
 
 export async function loginAction(
@@ -26,9 +27,11 @@ export async function loginAction(
 ): Promise<LoginState> {
   const identifier = String(formData.get("identifier") ?? "").trim();
   const password = String(formData.get("password") ?? "");
+  /* 폼이 그 화면의 언어를 들고 온다. 화면 문구만 고르고 판단에는 쓰지 않는다 */
+  const say = entrySay(formData.get("lang") === "en" ? "en" : "ko");
 
   if (!identifier || !password) {
-    return { error: "아이디와 비밀번호를 모두 입력하세요." };
+    return { error: say("아이디와 비밀번호를 모두 입력하세요.") };
   }
 
   /**
@@ -42,7 +45,8 @@ export async function loginAction(
   const gate = loginGate(clientIpFrom(await headers()), identifier);
   if (!gate.ok) {
     return {
-      error: `로그인 시도가 너무 많습니다. ${waitKo(gate.retryAfterSec)} 뒤에 다시 시도해주세요.`,
+      error: say("로그인 시도가 너무 많습니다. {wait} 뒤에 다시 시도해주세요.",
+        { wait: waitKo(gate.retryAfterSec, say) }),
     };
   }
 
@@ -61,20 +65,20 @@ export async function loginAction(
       const why = await inactiveReason(identifier, password);
       if (why === "disabled") {
         return {
-          error: "이 계정은 지금 이용이 멈춰 있습니다."
-            + " 학과 담당자에게 계정을 다시 열어 달라고 말씀해 주세요.",
+          error: say("이 계정은 지금 이용이 멈춰 있습니다."
+            + " 학과 담당자에게 계정을 다시 열어 달라고 말씀해 주세요."),
         };
       }
       if (why === "erased") {
         return {
-          error: "이 계정은 파기 처리되어 더 쓰실 수 없습니다."
-            + " 다시 쓰시려면 학과 담당자에게 말씀해 주세요.",
+          error: say("이 계정은 파기 처리되어 더 쓰실 수 없습니다."
+            + " 다시 쓰시려면 학과 담당자에게 말씀해 주세요."),
         };
       }
       return {
-        error: "아이디 또는 비밀번호가 올바르지 않습니다."
+        error: say("아이디 또는 비밀번호가 올바르지 않습니다."
           + " 학교에서 받은 비밀번호가 기억나지 않으면 학과 담당자가"
-          + " 다시 발급해 드립니다.",
+          + " 다시 발급해 드립니다."),
       };
     }
     throw e;

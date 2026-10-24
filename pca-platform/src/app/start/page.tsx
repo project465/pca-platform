@@ -9,6 +9,8 @@ import EntryFrame from "@/components/sf/entry-frame";
 import { Icon } from "@/components/sf/icon";
 import PublicFooter from "@/components/sf/public-footer";
 import LangSwitch from "@/components/lang-switch";
+import { resolveMarket } from "@/lib/market";
+import { entrySay } from "@/lib/entry-say";
 
 export const metadata = { title: "CareerMatri" };
 
@@ -34,6 +36,15 @@ export default async function StartPage({
   const { lang: q } = await searchParams;
   const lang = await resolveLang(q);
   const L = toLang2(lang);
+  const say = entrySay(L);
+  /**
+   * **해외 개인은 가격표로 보내지 않는다**(영어판 2단계). 글로벌 시장에는
+   * 지금 파는 등급이 없어 가격표가 `판매 중인 등급 없음` 으로 끝나고, 그
+   * 사람은 거기서 나간다. 무료 기본 검사는 가입하고 전공을 고르면 바로
+   * 열리므로 그 길로 보낸다. 유료 등급은 해외 결제가 열리는 날 가격표가
+   * 다시 받는다.
+   */
+  const global = (await resolveMarket().catch(() => null))?.market === "GLOBAL";
 
   const doors = [
     {
@@ -44,9 +55,11 @@ export default async function StartPage({
 
          옛 검사의 무료 구간(`/free`)은 그대로 열려 있다. 길을 없애지
          않았고, 첫 문패가 가리키는 곳만 바뀌었다. */
-      href: "/pricing",
+      href: global ? "/signup?next=%2Fcores" : "/pricing",
       title: START.individual[L],
-      note: START.individualNote[L],
+      note: global
+        ? say("무료 기본 검사로 시작합니다. 가입하고 전공을 고르면 바로 응시로 들어갑니다.")
+        : START.individualNote[L],
       primary: true,
       icon: "user" as const,
     },
@@ -65,8 +78,8 @@ export default async function StartPage({
     /* **작업공간 홈과 같은 톤으로 연다**(EntryFrame). 왼쪽 남색 판이
        하는 일 셋을 들고, 주된 문은 홈의 `지금 할 일` 과 같은 면이다 */
     <>
-      <EntryFrame top={<LangSwitch current={lang} />}>
-        <p className="en-kicker">CareerMatri 시작하기</p>
+      <EntryFrame lang={L} top={<LangSwitch current={lang} />}>
+        <p className="en-kicker">{say("CareerMatri 시작하기")}</p>
         <h1 className="en-h1">{START.title[L]}</h1>
         <p className="en-sub">{START.sub[L]}</p>
 

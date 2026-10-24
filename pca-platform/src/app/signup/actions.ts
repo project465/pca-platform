@@ -13,6 +13,7 @@ import { record as consentRecord } from "@/lib/consent";
 import { sendVerification } from "@/lib/verify-email";
 import { publicBase } from "@/lib/urls";
 import { headers } from "next/headers";
+import { entrySay } from "@/lib/entry-say";
 
 export type SignupState = { errors?: FieldErrors; message?: string };
 
@@ -21,12 +22,19 @@ export type SignupState = { errors?: FieldErrors; message?: string };
  * 결제하러 온 사람에게 "가입됐습니다. 다시 로그인하세요" 는 이탈이다.
  */
 export async function signupAction(_prev: SignupState, form: FormData): Promise<SignupState> {
+  /* 화면의 언어. 오류 문구를 고르고 계정의 언어로 적는다(메일이 이것을 본다) */
+  const lang2 = (await resolveLang().catch(() => "ko")) === "en" ? "en" : "ko";
+  const say = entrySay(lang2);
   const parsed = signupSchema.safeParse({
     email: form.get("email"),
     name: form.get("name"),
     password: form.get("password"),
   });
-  if (!parsed.success) return { errors: fieldErrors(parsed.error) };
+  if (!parsed.success) {
+    const errs = fieldErrors(parsed.error);
+    for (const k of Object.keys(errs)) errs[k] = say(errs[k]);
+    return { errors: errs };
+  }
   const { email, name, password } = parsed.data;
 
   const taken = await queryOne<{ id: string }>(
@@ -34,15 +42,17 @@ export async function signupAction(_prev: SignupState, form: FormData): Promise<
     [email],
   );
   if (taken) {
-    return { errors: { email: "이미 가입된 이메일입니다. 로그인해 주세요." } };
+    return { errors: { email: say("이미 가입된 이메일입니다. 로그인해 주세요.") } };
   }
 
   const hash = await hashPassword(password);
   const created = await queryOne<{ id: string }>(
-    `INSERT INTO users (email, display_name, password_hash, must_reset_pw, status)
-     VALUES ($1, $2, $3, false, 'active')
+    /* **가입한 화면의 언어를 계정에 적는다.** 비밀번호 재설정 · 결과 알림
+       메일이 이 칸을 읽는다. 비워 두면 영어로 가입한 사람에게 한국어 메일이 간다 */
+    `INSERT INTO users (email, display_name, password_hash, must_reset_pw, status, locale)
+     VALUES ($1, $2, $3, false, 'active', $4)
      RETURNING id`,
-    [email, name, hash],
+    [email, name, hash, lang2],
   );
 
   /**
@@ -53,7 +63,6 @@ export async function signupAction(_prev: SignupState, form: FormData): Promise<
    * **필수가 빠지면 가입을 되돌린다.** 화면의 `required` 는 안내이고,
    * 막는 것은 여기다(개발자 도구로 지울 수 있는 것은 막는 것이 아니다).
    */
-  const lang2 = (await resolveLang().catch(() => "ko")) === "en" ? "en" : "ko";
   if (created) {
     const agreed = form.getAll("consent").map(String).filter(Boolean);
     const saved = await consentRecord({
@@ -68,7 +77,7 @@ export async function signupAction(_prev: SignupState, form: FormData): Promise<
           step: "delete", category: "db",
           detail: "동의 저장이 실패해 계정을 되돌리는 중",
         }));
-      return { message: saved.reason };
+      return { message: say(saved.reason) };
     }
   }
 
@@ -101,7 +110,7 @@ export async function signupAction(_prev: SignupState, form: FormData): Promise<
   try {
     await signIn("credentials", { identifier: email, password, redirect: false });
   } catch (e) {
-    if (e instanceof AuthError) return { message: "가입은 됐습니다. 로그인해 주세요." };
+    if (e instanceof AuthError) return { message: say("가입은 됐습니다. 로그인해 주세요.") };
     throw e;
   }
 

@@ -107,6 +107,16 @@ export default async function V3Start({
   const market = campus ? "KR"
     : picked && !sellableCores(mk).some((c) => c.code === picked) ? "KR" : mk;
   const chosen = campus ? null : await explicitLang(wantLang ?? null);
+  /**
+   * **글로벌 시장의 개인은 전공 고르기를 거쳐 온다**(영어판 2단계). 전공 없이
+   * 이 주소로 오면 기본 전공이 한국 시장 목록의 첫째라, 영어 원고가 없는
+   * 전공으로 한국어 응시가 열릴 수 있다. 고른 전공에 영어 원고가 없을 때도
+   * 같다. 한국어를 직접 고른 사람은 그대로 둔다.
+   */
+  if (!campus && mk === "GLOBAL" && chosen !== "ko"
+    && (!picked || localeFor({ core: picked, market: "GLOBAL", override: "en" }) !== "en")) {
+    redirect("/cores");
+  }
   const lang = campus ? "ko" : localeFor({ core, market, override: chosen });
   const say = phrase(lang);
   const coreName = (() => {

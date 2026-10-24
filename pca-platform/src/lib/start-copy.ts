@@ -31,7 +31,7 @@ export const START = {
   ),
   sub: p(
     "개인은 계정 없이 바로 시작하실 수 있고, 대학·기관은 계약한 곳에 계정을 발급합니다.",
-    "You can start on your own without an account. Universities and institutions receive accounts under contract.",
+    "Individuals sign up and start right away. Universities and institutions receive accounts under contract.",
   ),
   individual: p("개인으로 시작하기", "Start as an individual"),
   individualNote: p(

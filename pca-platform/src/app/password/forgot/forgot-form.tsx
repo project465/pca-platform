@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { useActionState } from "react";
 import { forgotAction, type ForgotState } from "./actions";
+import { entrySay, type EntryLang } from "@/lib/entry-say";
 
 const initial: ForgotState = {};
 
-export default function ForgotForm() {
+export default function ForgotForm({ lang = "ko" }: { lang?: EntryLang }) {
   const [state, formAction, pending] = useActionState(forgotAction, initial);
+  const say = entrySay(lang);
 
   if (state.done) {
     return (
@@ -16,23 +18,20 @@ export default function ForgotForm() {
           /* 메일이 안 붙어 있으면 그 사실을 적는다. "보냈습니다" 로 끝내면
              기다리는 사람은 받은 편지함만 들여다본다 */
           <p className="notice">
-            이 서버는 메일 발송이 아직 연결되지 않아 재설정 링크를 보내지
-            못했습니다. 기다리셔도 메일은 오지 않습니다.
+            {say("이 서버는 메일 발송이 아직 연결되지 않아 재설정 링크를 보내지 못했습니다. 기다리셔도 메일은 오지 않습니다.")}
           </p>
         ) : (
           <p className="notice ok">
-            입력하신 계정이 등록돼 있다면 재설정 링크를 보냈습니다.
+            {say("입력하신 계정이 등록돼 있다면 재설정 링크를 보냈습니다.")}
           </p>
         )}
         <p className="sub" style={{ marginBottom: 0 }}>
-          메일이 없는 학생 계정은 학과 담당자가 직접 재설정 링크를 발급합니다.
-          담당자에게 문의하세요.
+          {say("메일이 없는 학생 계정은 학과 담당자가 직접 재설정 링크를 발급합니다. 담당자에게 문의하세요.")}
         </p>
 
         {state.devLink ? (
           <div className="notice">
-            <b>개발 모드</b>. 메일 발송이 아직 연결되지 않아 링크를 여기에 표시합니다.
-            운영 환경에서는 표시되지 않습니다.
+            <b>{say("개발 모드")}</b>. {say("메일 발송이 아직 연결되지 않아 링크를 여기에 표시합니다. 운영 환경에서는 표시되지 않습니다.")}
             <br />
             <Link className="mono" href={state.devLink}>
               {state.devLink}
@@ -41,7 +40,7 @@ export default function ForgotForm() {
         ) : null}
 
         <Link className="act full" href="/login">
-          로그인으로 돌아가기
+          {say("로그인으로 돌아가기")}
         </Link>
       </div>
     );
@@ -50,7 +49,7 @@ export default function ForgotForm() {
   return (
     <form action={formAction} className="form">
       <div className="field">
-        <label htmlFor="identifier">학번 또는 이메일</label>
+        <label htmlFor="identifier">{say("학번 또는 이메일")}</label>
         <input
           id="identifier"
           name="identifier"
@@ -63,7 +62,7 @@ export default function ForgotForm() {
       </div>
 
       <button className="act solid full" type="submit" disabled={pending}>
-        {pending ? "처리 중…" : "재설정 링크 받기"}
+        {pending ? say("처리 중…") : say("재설정 링크 받기")}
       </button>
     </form>
   );

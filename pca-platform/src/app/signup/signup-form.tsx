@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { startTransition, useActionState, type FormEvent } from "react";
 import { t, type Lang } from "@/lib/locale";
 import { signupAction, type SignupState } from "./actions";
 import ConsentBlock, { type ConsentItem, type ConsentLabels } from "./consent-block";
@@ -15,9 +15,20 @@ export default function SignupForm({
 }) {
   const [state, action, pending] = useActionState<SignupState, FormData>(signupAction, {});
   const err = state.errors ?? {};
+  /**
+   * **오류가 나도 적은 것을 지우지 않는다.** `<form action>` 으로 두면 React 가
+   * 응답이 온 뒤 폼을 통째로 비운다. 비밀번호 한 칸이 짧았을 뿐인데 이름 ·
+   * 이메일 · 동의 체크가 다 사라져 처음부터 다시 적어야 했다(영어판 2단계
+   * 예행에서 걸렸다). 보내는 것을 손으로 해서 비우는 단계를 건너뛴다.
+   */
+  const submit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    startTransition(() => action(fd));
+  };
 
   return (
-    <form className="form" action={action}>
+    <form className="form" onSubmit={submit}>
       <input type="hidden" name="next" value={next} />
 
       <div className="field">

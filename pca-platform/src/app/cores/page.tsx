@@ -9,8 +9,19 @@ import "../me/platform.css";
 import { CmShell, CmHead } from "../me/shell";
 import { DomainTile, PickCard, PickGrid, PrimaryActionHero, SectionHeader } from "../me/ui";
 import type { IconName } from "@/components/sf/icon";
+import { queryOne } from "@/lib/db";
+import { explicitLang } from "@/lib/locale-server";
+import { resolveMarket } from "@/lib/market";
+import { localeFor } from "@/lib/me-v3/i18n";
+import { majorNameIn } from "@/lib/me-v3/runtime/session";
+import { sellableCores } from "@/lib/me-v3/core-registry";
+import { tierMinutes } from "@/lib/tier-minutes";
+import CoresEn from "./cores-en";
 
-export const metadata = { title: "전공 Core · CareerMatri" };
+export async function generateMetadata() {
+  const en = (await explicitLang(null).catch(() => null)) === "en";
+  return { title: en ? "Choose your major · CareerMatri" : "전공 Core · CareerMatri" };
+}
 
 /**
  * 전공 Core 고르기.
@@ -51,6 +62,31 @@ export default async function Cores() {
    * `openAttempt()` 하나다(설계 원칙 10).
    */
   const mine = await campusStudentContext(user.id);
+
+  /**
+   * **영어로 들어온 개인은 영어 화면으로 고른다**(영어판 2단계). 학교 학생은
+   * 늘 한국어 학교 경로다. 영어를 직접 골랐거나 글로벌 시장이면 영어이고,
+   * 고를 수 있는 전공은 그 시장에서 **영어 원고까지 다 있는** Core 뿐이다.
+   */
+  const mk = (await resolveMarket().catch(() => null))?.market ?? "KR";
+  const chosen = await explicitLang(null).catch(() => null);
+  if (!mine && (chosen === "en" || (mk === "GLOBAL" && chosen !== "ko"))) {
+    const market = mk === "GLOBAL" ? "GLOBAL" : "KR";
+    const choices = sellableCores(market)
+      .filter((c) => localeFor({ core: c.code, market, override: "en" }) === "en")
+      .map((c) => {
+        const m = tierMinutes(c.code).BASIC;
+        return {
+          code: c.code, name: majorNameIn(c.code, "en"),
+          minutes: m.low === m.high ? String(m.low) : `${m.low}–${m.high}`,
+        };
+      });
+    const last = open ? null : await queryOne<{ id: string }>(
+      `SELECT id::text FROM v3_attempts
+        WHERE user_id = $1 AND status <> 'in_progress'
+        ORDER BY started_at DESC LIMIT 1`, [user.id]).catch(() => null);
+    return <CoresEn cores={choices} openId={open?.id ?? null} resultId={last?.id ?? null} />;
+  }
   /* 학교 학생의 단추는 그 학생의 응시 상태가 정한다: 결과를 받은
      학생에게 `시작하기` 를 세우지 않는다(누르면 지난 결과로 돌아간다) */
   const st = mine ? await campusAttemptState(user.id) : null;

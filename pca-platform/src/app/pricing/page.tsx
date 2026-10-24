@@ -7,6 +7,7 @@ import {
   catalogFor, priceState, sellable, type CatalogItem,
 } from "@/lib/catalog";
 import { money, resolveMarket } from "@/lib/market";
+import { entrySay } from "@/lib/entry-say";
 import { sellableCores } from "@/lib/me-v3/core-registry";
 import { openGrants } from "@/lib/me-v2/attempt";
 import { resumePathFor } from "@/lib/engine-entry";
@@ -87,6 +88,15 @@ export default async function PricingPage({
     props: { market: mk.market, locale: L },
   });
 
+  /**
+   * **파는 등급이 없는 글로벌 시장에서는 결제 이야기를 하지 않는다**(영어판
+   * 2단계). 무료 기본 검사만 열린 자리에 `결제하는 즉시 시작` · `세 등급
+   * 모두에` · `사기 전에(환불)` 를 세우면 살 수 없는 것을 사는 법을 읽게 된다.
+   * 머리말도 기계공학 한 전공이 아니라 열린 이공계 전공 전부를 가리킨다.
+   */
+  const freeOnly = mk.market === "GLOBAL" && !list.length;
+  const say = entrySay(L);
+
   const qs = (m: string) => `/pricing?market=${m}${sp.lang ? `&lang=${sp.lang}` : ""}`;
   /* **링크가 시장을 떨어뜨리지 않게 들고 다닌다** */
   const q = `?market=${mk.market}${sp.lang ? `&lang=${sp.lang}` : ""}`;
@@ -130,7 +140,7 @@ export default async function PricingPage({
 
       <div className="pubwrap">
         <section className="pxhero">
-          <div className="sf-eyebrow">{T("pxTitle")}</div>
+          <div className="sf-eyebrow">{freeOnly ? say("이공계 진로 진단") : T("pxTitle")}</div>
           <h1>{T("pxLead")}</h1>
           <p>{T("pxLeadSub")}</p>
           <nav className="pxmkt" aria-label={T("pxMarketKR")}>
@@ -143,11 +153,19 @@ export default async function PricingPage({
           </nav>
           {/* 사기 전에 가장 많이 걸리는 셋을 머리에 둔다. **지키지 못할 말을
               적지 않는다**: 셋 다 지금 코드가 실제로 하는 일이다 */}
-          <ul className="pxtrust">
-            <li>{T("pxTrust1")}</li>
-            <li>{T("pxTrust2")}</li>
-            <li>{T("pxTrust3")}</li>
-          </ul>
+          {freeOnly ? (
+            <ul className="pxtrust">
+              <li>{say("무료 기본 검사")}</li>
+              <li>{say("웹 결과와 A4 PDF")}</li>
+              <li>{say("답할 때마다 저장되어 이어서 풉니다")}</li>
+            </ul>
+          ) : (
+            <ul className="pxtrust">
+              <li>{T("pxTrust1")}</li>
+              <li>{T("pxTrust2")}</li>
+              <li>{T("pxTrust3")}</li>
+            </ul>
+          )}
         </section>
 
         {/* 제품의 사고 순서. **가격을 보기 전에 무엇을 사는지 보인다** */}
@@ -179,7 +197,17 @@ export default async function PricingPage({
           </div>
         ) : (
           <div className="sf-section">
-            <Empty icon="box" title={T("pxEmpty")} body={T("pxEmptyBody")} />
+            {/* **글로벌 시장에서 빈 가격표로 끝내지 않는다**(영어판 2단계). 파는
+                등급은 없어도 무료 기본 검사는 열려 있고, 그 길을 모르면 해외
+                개인은 여기서 나간다 */}
+            {mk.market === "GLOBAL" ? (
+              <Empty icon="box" title={say("해외에서는 무료 기본 검사가 열려 있습니다")}
+                body={say("유료 등급(Standard · Pro)은 아직 한국 밖에서 결제할 수 없습니다.")}
+                cta={{ href: user ? "/cores" : "/signup?next=%2Fcores",
+                  label: say("무료 기본 검사 시작하기") }} />
+            ) : (
+              <Empty icon="box" title={T("pxEmpty")} body={T("pxEmptyBody")} />
+            )}
           </div>
         )}
 
@@ -228,6 +256,7 @@ export default async function PricingPage({
           </section>
         ) : null}
 
+        {freeOnly ? null : (<>
         <section className="pxband">
           <h2>{T("pxCommon")}</h2>
           <div className="pxband-g">
@@ -254,6 +283,7 @@ export default async function PricingPage({
             <Link href={`/product${q}`}>{T("pxMore")}</Link>
           </p>
         </section>
+        </>)}
       </div>
 
       <PublicFooter lang={L} />

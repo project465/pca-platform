@@ -1,20 +1,27 @@
 import Link from "next/link";
 import ForgotForm from "./forgot-form";
 import EntryFrame from "@/components/sf/entry-frame";
+import { resolveLang } from "@/lib/locale-server";
+import { entrySay } from "@/lib/entry-say";
 
-export const metadata = { title: "비밀번호 재설정 · CareerMatri" };
+export async function generateMetadata() {
+  const say = entrySay(await resolveLang().catch(() => "ko"));
+  return { title: say("비밀번호 재설정 · CareerMatri") };
+}
 
-export default function ForgotPage() {
+export default async function ForgotPage() {
+  const lang = (await resolveLang().catch(() => "ko")) === "en" ? "en" : "ko";
+  const say = entrySay(lang);
   return (
-    <EntryFrame>
+    <EntryFrame lang={lang}>
       <div className="panel narrow">
-        <h1>비밀번호 재설정</h1>
-        <p className="sub">등록된 학번이나 이메일을 입력하세요.</p>
+        <h1>{say("비밀번호 재설정")}</h1>
+        <p className="sub">{say("등록된 학번이나 이메일을 입력하세요.")}</p>
 
-        <ForgotForm />
+        <ForgotForm lang={lang} />
 
         <div className="foot-links">
-          <Link href="/login">로그인</Link>
+          <Link href="/login">{say("로그인")}</Link>
         </div>
       </div>
     </EntryFrame>

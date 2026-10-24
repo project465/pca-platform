@@ -27,7 +27,12 @@ export function platformStart(site: SiteContent, path = "/start"): string {
      앱이 언어를 못 읽고 기본 언어로 연다 */
   const [base, hash = ""] = path.split("#");
   const sep = base.includes("?") ? "&" : "?";
-  return platformUrl(site, `${base}${sep}lang=${encodeURIComponent(lang)}${hash ? `#${hash}` : ""}`);
+  /* **시장도 들고 간다.** 언어만 넘기면 앱은 시장을 모르는 채로 기본값(한국)을
+     써서, 글로벌 사이트에서 누른 사람이 원화 가격표와 한국 전공 목록을
+     만난다. 앱이 `?market=` 을 쿠키로 굳힌다(`middleware.ts`) */
+  const market = site.key === "kr" ? "KR" : "GLOBAL";
+  return platformUrl(site,
+    `${base}${sep}lang=${encodeURIComponent(lang)}&market=${market}${hash ? `#${hash}` : ""}`);
 }
 
 /**

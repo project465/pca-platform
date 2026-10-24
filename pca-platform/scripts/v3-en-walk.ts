@@ -12,6 +12,11 @@
  *     TIER=PRO OUT=<저장소 밖> npm run v3:en:walk
  *
  * 찍은 그림은 `OUT` 에 남긴다(넓은 화면 1440 · 손전화 390).
+ *
+ * **입구부터 한 번 더 밟는다**(영어판 2단계, `ENTRY=0` 이면 건너뛴다). 쿠키를
+ * 미리 넣지 않고 홈페이지가 넘겨 주는 주소(`/start?lang=en&market=GLOBAL`)로
+ * 들어와서, 사람처럼 `개인으로 시작` → 가입 → 전공 고르기 → 무료 기본 검사 →
+ * 결과까지 간다. 로그인 · 비밀번호 찾기 · 가격표 · 없는 쪽도 영어인지 센다.
  */
 import { execFileSync } from "node:child_process";
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -189,9 +194,105 @@ async function one(core: string): Promise<void> {
   }
 }
 
+/** 홈페이지에서 넘어온 처음 온 사람. 이용권 없이 무료 기본 검사로 간다 */
+async function entry(core: string): Promise<void> {
+  console.log(`\n■ 입구부터 · ${core} · 무료 기본`);
+  const mail = `en-entry-${Date.now()}@test.invalid`;
+  const gate = gateCreds();
+  const browser = await chromium.launch();
+  const ctx = await browser.newContext({
+    viewport: { width: 1440, height: 900 }, locale: "en-US",
+    ...(gate ? { httpCredentials: gate } : {}),
+  });
+  const p = await ctx.newPage();
+  const errs: string[] = [];
+  p.on("pageerror", (e) => errs.push(String(e.message).slice(0, 120)));
+  p.on("response", (r) => { if (r.status() >= 500) errs.push(`${r.status()} ${r.url()}`); });
+  const clean = async (what: string, name: string) => {
+    /* 언어 고르기의 `한국어` 는 뺀다. 언어 이름은 그 언어로 적는 것이 맞다 */
+    const t = (await bodyText(p)).replace(/한국어/g, "");
+    ok(`${what}에 한글이 없다`, !hangulAt(t), hangulAt(t) ?? new URL(p.url()).pathname);
+    await shot(p, `entry-${name}`);
+  };
+  try {
+    await p.goto(`${BASE}/start?lang=en&market=GLOBAL`, { waitUntil: "networkidle" });
+    await clean("문 고르기", "1-start");
+    for (const path of ["/login", "/password/forgot", "/pricing", "/this-page-does-not-exist"]) {
+      await p.goto(`${BASE}${path}`, { waitUntil: "networkidle" });
+      await clean(path, path.replace(/\W+/g, "-"));
+    }
+    await p.goto(`${BASE}/start`, { waitUntil: "networkidle" });
+    await Promise.all([
+      p.waitForURL(/\/signup/, { timeout: 20000 }).catch(() => undefined),
+      p.locator("a.en-door.is-primary").first().click(),
+    ]);
+    ok("개인으로 시작이 가입으로 간다", /\/signup/.test(p.url()), new URL(p.url()).pathname);
+    await clean("가입", "2-signup");
+    await p.fill('input[name="name"]', "Alex Kim");
+    await p.fill('input[name="email"]', mail);
+    await p.fill('input[name="password"]', "short");
+    for (const c of await p.locator('input[type="checkbox"]').all()) await c.check({ force: true }).catch(() => undefined);
+    await p.locator('button[type="submit"]').click();
+    await p.waitForTimeout(1500);
+    await clean("가입 오류 문구", "2b-signup-error");
+    ok("오류가 나도 적은 이름 · 이메일 · 동의가 남는다",
+      (await p.inputValue('input[name="email"]')) === mail
+      && (await p.locator('input[name="consent"]:checked').count()) > 0);
+    await p.fill('input[name="password"]', `Pw-${Date.now()}-walk`);
+    await Promise.all([
+      p.waitForURL((u) => !u.pathname.startsWith("/signup"), { timeout: 30000 }).catch(() => undefined),
+      p.locator('button[type="submit"]').click(),
+    ]);
+    await p.waitForLoadState("networkidle");
+    ok("가입하면 전공 고르기로 간다", new URL(p.url()).pathname === "/cores", new URL(p.url()).pathname);
+    await clean("전공 고르기", "3-cores");
+    const u = await query<{ locale: string }>(`SELECT locale FROM users WHERE email = $1`, [mail]);
+    ok("계정에 영어가 적힌다", u[0]?.locale?.trim() === "en", u[0]?.locale ?? "없음");
+    const cards = await p.locator("a.en-door").count();
+    ok("전공 카드는 영어 원고가 있는 셋이다", cards === 3, `${cards}장`);
+    await Promise.all([
+      p.waitForURL(/\/v3\/start/, { timeout: 20000 }).catch(() => undefined),
+      p.locator(`a.en-door[href*="${core}"]`).first().click(),
+    ]);
+    await p.waitForLoadState("networkidle");
+    await clean("검사 시작 화면", "4-v3start");
+    await p.locator('label:has(input[name="stage"][value="bachelor"])').first().click().catch(() => undefined);
+    await Promise.all([
+      p.waitForURL(/\/v3\/\d+/, { timeout: 30000 }).catch(() => undefined),
+      p.locator('button[type="submit"]').last().click({ force: true }),
+    ]);
+    const id = (p.url().match(/\/v3\/(\d+)/) ?? [])[1] ?? "";
+    const row = await query<{ locale: string; tier: string; core_code: string }>(
+      `SELECT locale, tier, core_code FROM v3_attempts WHERE id = $1::bigint`, [id]);
+    ok("무료 기본 · 영어 · 고른 전공으로 열린다",
+      row[0]?.locale === "en" && row[0]?.tier === "BASIC" && row[0]?.core_code === core,
+      `${row[0]?.locale} ${row[0]?.tier} ${row[0]?.core_code}`);
+    const hits: string[] = [];
+    const out = await walk(p, 200, {
+      note: "I chose the motor size myself after working out load and inertia.",
+      onScreen: async (pg) => {
+        const h = hangulAt(await bodyText(pg));
+        if (h) hits.push(`${new URL(pg.url()).pathname} … ${h}`);
+      },
+    });
+    ok("검사가 끝까지 가고 한글이 없다", out.done && !hits.length,
+      `${out.screens}화면 ${hits.slice(0, 2).join(" | ")}`);
+    if (!/\/result/.test(p.url())) await p.goto(`${BASE}/v3/${id}/result`, { waitUntil: "networkidle" });
+    await clean("결과", "5-result");
+    await p.goto(`${BASE}/cores`, { waitUntil: "networkidle" });
+    await clean("다 푼 뒤 전공 고르기", "6-cores-done");
+    ok("다 푼 뒤에는 결과로 가는 단추가 선다",
+      (await p.locator(`a.en-door[href="/v3/${id}/result"]`).count()) === 1);
+    ok("브라우저 오류와 500 이 없다", errs.length === 0, errs.slice(0, 3).join(" | "));
+  } finally {
+    await browser.close();
+  }
+}
+
 async function main(): Promise<void> {
   assertFreshServer();
   if (OUT) mkdirSync(OUT, { recursive: true });
+  if (process.env.ENTRY !== "0") await entry(CORES[0]);
   for (const c of CORES) await one(c);
   console.log(`\n통과 ${pass} · 걸림 ${bad.length}`);
   if (bad.length) { console.log(bad.map((b) => `  - ${b}`).join("\n")); process.exit(1); }

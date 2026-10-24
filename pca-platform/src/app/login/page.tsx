@@ -7,8 +7,13 @@ import EntryFrame from "@/components/sf/entry-frame";
 import PublicFooter from "@/components/sf/public-footer";
 import { enabledProviders } from "@/lib/auth-oauth";
 import { safeNext } from "@/lib/safe-next";
+import { resolveLang } from "@/lib/locale-server";
+import { entrySay } from "@/lib/entry-say";
 
-export const metadata = { title: "로그인 · CareerMatri" };
+export async function generateMetadata() {
+  const say = entrySay(await resolveLang().catch(() => "ko"));
+  return { title: say("로그인 · CareerMatri") };
+}
 
 /**
  * 소셜 로그인이 끊긴 자리마다 **사람이 읽을 수 있는 한 줄.**
@@ -54,16 +59,20 @@ export default async function LoginPage({
   if (await currentUser()) redirect(nx || "/");
 
   const providers = enabledProviders();
-  const msg = error ? (ERRORS[error] ?? ERRORS.OAuthCallback) : null;
+  /* **들어온 화면의 언어로 선다**(영어판 2단계). 해외 개인이 영어 가입
+     화면에서 `로그인` 을 누르면 여기로 온다 */
+  const lang = (await resolveLang().catch(() => "ko")) === "en" ? "en" : "ko";
+  const say = entrySay(lang);
+  const msg = error ? say(ERRORS[error] ?? ERRORS.OAuthCallback) : null;
 
   return (
     /* **작업공간 홈과 같은 톤으로 연다**(EntryFrame) */
-    <EntryFrame>
+    <EntryFrame lang={lang}>
       <div className="authwrap">
         <div className="panel narrow">
-          <h1>다시 오셨군요</h1>
+          <h1>{say("다시 오셨군요")}</h1>
           <p className="sub">
-            학교에서 받은 아이디나, 개인으로 가입하신 이메일로 들어오세요.
+            {say("학교에서 받은 아이디나, 개인으로 가입하신 이메일로 들어오세요.")}
           </p>
 
           {msg ? <p className="notice error" role="alert">{msg}</p> : null}
@@ -73,24 +82,24 @@ export default async function LoginPage({
               아직 대부분이고, 그분들에게는 아래 칸이 유일한 길이다 */}
           {providers.length ? (
             <>
-              <OauthButtons providers={providers} next={nx} lang="ko" />
-              <div className="orline"><span>또는</span></div>
+              <OauthButtons providers={providers} next={nx} lang={lang} />
+              <div className="orline"><span>{say("또는")}</span></div>
             </>
           ) : null}
 
-          <LoginForm next={nx} />
+          <LoginForm next={nx} lang={lang} />
 
           <div className="foot-links">
-            <Link href="/password/forgot">비밀번호를 잊으셨나요?</Link>
+            <Link href="/password/forgot">{say("비밀번호를 잊으셨나요?")}</Link>
             <Link href={`/signup${nx ? `?next=${encodeURIComponent(nx)}` : ""}`}>
-              개인으로 가입하기
+              {say("개인으로 가입하기")}
             </Link>
           </div>
         </div>
 
         {/* 한 가지만 하는 쪽이라 법적 표시 전체는 두지 않는다. 약관과
             고객지원으로 가는 길만 남긴다 */}
-        <PublicFooter lang="ko" compact />
+        <PublicFooter lang={lang} compact />
       </div>
     </EntryFrame>
   );

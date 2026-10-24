@@ -363,7 +363,7 @@
 /** 실용 줄(로그아웃 · 계정 · 종)이 쪽 머리에 덮여 눌리지 않던 것을 고쳤다.
  *  결과 전 홈(검사 전 · 진행 중)과 학교 학생의 첫 화면이 결과 뒤 홈과 같은
  *  Hero · 색 타일로 선다. 전공 고르기 쪽에도 로그아웃이 선다 — V59 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V60";
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V61";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.

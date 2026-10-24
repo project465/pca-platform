@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import BrandHome from "@/components/sf/brand-home";
 import { Icon, type IconName } from "@/components/sf/icon";
+import { entrySay } from "@/lib/entry-say";
 import "@/app/entry.css";
 
 /**
@@ -22,26 +23,29 @@ const STEPS: { icon: IconName; title: string; sub: string }[] = [
 ];
 
 export default function EntryFrame({
-  children, top,
+  children, top, lang,
 }: {
   children: ReactNode;
   /** 오른쪽 위 한 줄(언어 고르기 등) */
   top?: ReactNode;
+  /** 왼쪽 판의 언어. 오른쪽 본문과 같은 언어로 선다(영어판 2단계) */
+  lang?: string | null;
 }) {
+  const t = entrySay(lang);
   return (
     <div className="en">
       <aside className="en-side">
         <BrandHome className="en-brand" />
-        <p className="en-tag">전공과 경험으로 찾는 내 커리어</p>
+        <p className="en-tag">{t("전공과 경험으로 찾는 내 커리어")}</p>
         <ul className="en-steps">
           {STEPS.map((s) => (
             <li key={s.title}>
               <span className="en-step-ico"><Icon name={s.icon} size={18} /></span>
-              <span className="en-step-txt"><b>{s.title}</b><small>{s.sub}</small></span>
+              <span className="en-step-txt"><b>{t(s.title)}</b><small>{t(s.sub)}</small></span>
             </li>
           ))}
         </ul>
-        <p className="en-note">대학·기관 계정과 개인 계정이 같은 화면을 씁니다.</p>
+        <p className="en-note">{t("대학·기관 계정과 개인 계정이 같은 화면을 씁니다.")}</p>
       </aside>
       <div className="en-main">
         {top ? <div className="en-top">{top}</div> : null}

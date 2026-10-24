@@ -49,7 +49,7 @@ export default async function SignupPage({
 
   return (
     /* 작업공간 홈과 같은 톤으로 연다(EntryFrame) */
-    <EntryFrame>
+    <EntryFrame lang={L}>
       <div className="authwrap">
         <div className="panel narrow">
         <div className="panel-top">
