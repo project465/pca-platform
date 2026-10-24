@@ -1,0 +1,797 @@
+{
+ "schema_version": "cs-role-packs.1",
+ "core": "CS_CORE_V1",
+ "note": "A depth module at the level of job titles in postings. It creates no new axes: `core_ref` points to the Core's technical domains and role functions. Each role function pairs with one role pack. `differs_from` states in one line how a role differs from its neighbors, and the results report reads that line. Items ask about different decisions for each role",
+ "caps": {
+  "industry_items_max": 10,
+  "role_items_max": 7,
+  "deep_industry_max": 1,
+  "deep_role_max": 2,
+  "interest_pick_max": 2
+ },
+ "exploration": {
+  "browse": "all",
+  "deep_per_attempt": 1,
+  "add_later": true,
+  "subscription_gate": false,
+  "note": "All eight roles can be compared. Instead of asking fifty-six items at once, after the Core in-depth stage the person picks up to two roles of interest and those roles are checked in depth from STANDARD on. Roles not picked are compared using the Core's confirmed axes. Choosing a role does not change the Core result"
+ },
+ "packs": [
+  {
+   "code": "ROLE_DEV_V1",
+   "version": 1,
+   "name_ko": "Design and Development",
+   "name_en": "Design and Development",
+   "core": "CS_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD01",
+     "TD03",
+     "TD05"
+    ],
+    "rf": [
+     "RF1"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J5"
+   ],
+   "owns": "Settles module boundaries, interfaces and how things are implemented",
+   "decides": [
+    "Module boundaries",
+    "Interface contracts",
+    "Libraries to use",
+    "Processing flow"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_PERF_V1",
+     "line": "Performance analysis is accountable for sound predictions; development has the authority to change the structure"
+    },
+    {
+     "vs": "ROLE_QA_V1",
+     "line": "Testing sets the pass criteria; development builds the thing that has to pass"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_DEV_V1_R1",
+     "axis": "J3",
+     "domain": "TD01",
+     "ask": "Have you been responsible for changing module boundaries and made the call yourself?"
+    },
+    {
+     "id": "ROLE_DEV_V1_R2",
+     "axis": "J5",
+     "domain": "TD01",
+     "ask": "Have you produced an interface contract that someone else implemented from?"
+    },
+    {
+     "id": "ROLE_DEV_V1_R3",
+     "axis": "J2",
+     "domain": "TD01",
+     "ask": "When requirements conflicted, have you decided which to meet first?"
+    },
+    {
+     "id": "ROLE_DEV_V1_R4",
+     "axis": "J3",
+     "domain": "TD03",
+     "ask": "Have you compared libraries and settled on one?"
+    },
+    {
+     "id": "ROLE_DEV_V1_R5",
+     "axis": "J6",
+     "domain": "TD05",
+     "ask": "Have you put two implementations against the same criteria and chosen one?"
+    },
+    {
+     "id": "ROLE_DEV_V1_R6",
+     "axis": "J7",
+     "domain": "TD03",
+     "ask": "When an implementation didn't behave as intended, have you changed its processing flow?"
+    },
+    {
+     "id": "ROLE_DEV_V1_R7",
+     "axis": "J8",
+     "domain": "TD01",
+     "ask": "Has another team started implementing from a contract you produced?"
+    }
+   ],
+   "compare_with": [
+    "ROLE_PERF_V1",
+    "ROLE_QA_V1",
+    "ROLE_RESEARCH_V1"
+   ],
+   "application_material": [
+    "A module diagram with its interface contracts",
+    "Decision records",
+    "A one-page note on what was not accepted"
+   ]
+  },
+  {
+   "code": "ROLE_PERF_V1",
+   "version": 1,
+   "name_ko": "Performance Analysis and Estimation",
+   "name_en": "Performance Analysis and Estimation",
+   "core": "CS_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD02",
+     "TD04",
+     "TD07"
+    ],
+    "rf": [
+     "RF2"
+    ]
+   },
+   "required_axes": [
+    "J4",
+    "J6"
+   ],
+   "owns": "Predicts performance and capacity before building, and settles the reasoning behind it",
+   "decides": [
+    "Measurement methods",
+    "Prediction models",
+    "Likely bottlenecks",
+    "Capacity criteria"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_DEV_V1",
+     "line": "Development changes the structure; analysis provides the evidence for changing it"
+    },
+    {
+     "vs": "ROLE_SRE_V1",
+     "line": "Operations watches what is happening now; analysis looks at what will happen"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_PERF_V1_R1",
+     "axis": "J4",
+     "domain": "TD02",
+     "ask": "Have you measured a slow spot and predicted how much faster it would get if fixed?"
+    },
+    {
+     "id": "ROLE_PERF_V1_R2",
+     "axis": "J6",
+     "domain": "TD02",
+     "ask": "Have you compared predicted and measured times under the same conditions?"
+    },
+    {
+     "id": "ROLE_PERF_V1_R3",
+     "axis": "J3",
+     "domain": "TD04",
+     "ask": "Have you identified where a bottleneck was and presented the evidence?"
+    },
+    {
+     "id": "ROLE_PERF_V1_R4",
+     "axis": "J6",
+     "domain": "TD04",
+     "ask": "Have you timed queries before and after adding an index and compared them?"
+    },
+    {
+     "id": "ROLE_PERF_V1_R5",
+     "axis": "J2",
+     "domain": "TD07",
+     "ask": "Have you set capacity criteria in numbers and handed them to design?"
+    },
+    {
+     "id": "ROLE_PERF_V1_R6",
+     "axis": "J5",
+     "domain": "TD07",
+     "ask": "Have you produced a performance analysis report others could use?"
+    },
+    {
+     "id": "ROLE_PERF_V1_R7",
+     "axis": "J8",
+     "domain": "TD02",
+     "ask": "Has your prediction been used to decide the number of machines or the feature scope?"
+    }
+   ],
+   "compare_with": [
+    "ROLE_DEV_V1",
+    "ROLE_SRE_V1",
+    "ROLE_RESEARCH_V1"
+   ],
+   "application_material": [
+    "A performance analysis report",
+    "A table comparing predictions with measurements",
+    "A one-page note on why something was judged a bottleneck"
+   ]
+  },
+  {
+   "code": "ROLE_QA_V1",
+   "version": 1,
+   "name_ko": "Test and Verification",
+   "name_en": "Test and Verification",
+   "core": "CS_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD10",
+     "TD05",
+     "TD03"
+    ],
+    "rf": [
+     "RF3"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "owns": "Settles test cases, pass criteria and the scope covered",
+   "decides": [
+    "Test cases",
+    "Pass criteria",
+    "Scope of automation",
+    "Retest conditions"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_DEV_V1",
+     "line": "Development builds what must pass; testing sets the pass criteria"
+    },
+    {
+     "vs": "ROLE_QUALITY_V1",
+     "line": "Quality assures things hold throughout operation; testing judges this build"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_QA_V1_R1",
+     "axis": "J3",
+     "domain": "TD10",
+     "ask": "Have you been responsible for changing pass criteria and made the call yourself?"
+    },
+    {
+     "id": "ROLE_QA_V1_R2",
+     "axis": "J6",
+     "domain": "TD10",
+     "ask": "Have you made a pass-or-hold call under your own name?"
+    },
+    {
+     "id": "ROLE_QA_V1_R3",
+     "axis": "J3",
+     "domain": "TD05",
+     "ask": "Have you decided yourself how far to test edge cases?"
+    },
+    {
+     "id": "ROLE_QA_V1_R4",
+     "axis": "J5",
+     "domain": "TD03",
+     "ask": "Have you produced a test suite that someone else ran as is?"
+    },
+    {
+     "id": "ROLE_QA_V1_R5",
+     "axis": "J7",
+     "domain": "TD10",
+     "ask": "Have you added tests so the same defect could not come back?"
+    },
+    {
+     "id": "ROLE_QA_V1_R6",
+     "axis": "J2",
+     "domain": "TD10",
+     "ask": "Have you turned quality requirements into items that can be tested?"
+    },
+    {
+     "id": "ROLE_QA_V1_R7",
+     "axis": "J8",
+     "domain": "TD10",
+     "ask": "Has your verdict been used to decide whether to release?"
+    }
+   ],
+   "compare_with": [
+    "ROLE_DEV_V1",
+    "ROLE_QUALITY_V1",
+    "ROLE_DEPLOY_V1"
+   ],
+   "application_material": [
+    "A set of test cases with a pass criteria table",
+    "Defect reports",
+    "A one-page note on what was not covered"
+   ]
+  },
+  {
+   "code": "ROLE_DEPLOY_V1",
+   "version": 1,
+   "name_ko": "Build and Deployment Automation",
+   "name_en": "Build and Deployment Automation",
+   "core": "CS_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD10",
+     "TD06",
+     "TD07"
+    ],
+    "rf": [
+     "RF4"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J5"
+   ],
+   "owns": "Settles procedures in which the same input yields the same output, and the rollback path",
+   "decides": [
+    "Build procedures",
+    "Environment configuration",
+    "Deployment stages",
+    "Rollback path"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_SRE_V1",
+     "line": "Operations guards things after release; deployment builds the road out"
+    },
+    {
+     "vs": "ROLE_QA_V1",
+     "line": "Testing decides what passes; deployment ships what passed"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_DEPLOY_V1_R1",
+     "axis": "J3",
+     "domain": "TD10",
+     "ask": "Have you decided the deployment stages and the conditions for stopping yourself?"
+    },
+    {
+     "id": "ROLE_DEPLOY_V1_R2",
+     "axis": "J5",
+     "domain": "TD10",
+     "ask": "Have you produced a deployment procedure that someone else used as is?"
+    },
+    {
+     "id": "ROLE_DEPLOY_V1_R3",
+     "axis": "J3",
+     "domain": "TD06",
+     "ask": "Have you written environment configuration as code so it can be recreated?"
+    },
+    {
+     "id": "ROLE_DEPLOY_V1_R4",
+     "axis": "J7",
+     "domain": "TD07",
+     "ask": "When a problem appeared after deployment, have you rolled it back?"
+    },
+    {
+     "id": "ROLE_DEPLOY_V1_R5",
+     "axis": "J6",
+     "domain": "TD10",
+     "ask": "Have you checked that the same input produces the same output?"
+    },
+    {
+     "id": "ROLE_DEPLOY_V1_R6",
+     "axis": "J4",
+     "domain": "TD10",
+     "ask": "Have you compared deployment tools and settled on one?"
+    },
+    {
+     "id": "ROLE_DEPLOY_V1_R7",
+     "axis": "J8",
+     "domain": "TD10",
+     "ask": "Has your procedure become the team's standard way of deploying?"
+    }
+   ],
+   "compare_with": [
+    "ROLE_SRE_V1",
+    "ROLE_QA_V1",
+    "ROLE_DEV_V1"
+   ],
+   "application_material": [
+    "A deployment procedure",
+    "Environment configuration code",
+    "A one-page note describing the rollback path"
+   ]
+  },
+  {
+   "code": "ROLE_SRE_V1",
+   "version": 1,
+   "name_ko": "Service Operations",
+   "name_en": "Service Operations",
+   "core": "CS_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD07",
+     "TD10",
+     "TD03"
+    ],
+    "rf": [
+     "RF5"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J7"
+   ],
+   "owns": "Settles uptime commitments, alert thresholds and response steps",
+   "decides": [
+    "Uptime commitments",
+    "Alert thresholds",
+    "Response steps",
+    "When to add capacity"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_DEPLOY_V1",
+     "line": "Deployment builds the road out; operations keeps what shipped from going down"
+    },
+    {
+     "vs": "ROLE_PERF_V1",
+     "line": "Analysis predicts what will happen; operations narrows down what did happen"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_SRE_V1_R1",
+     "axis": "J3",
+     "domain": "TD07",
+     "ask": "Have you set the threshold at which an alert fires yourself?"
+    },
+    {
+     "id": "ROLE_SRE_V1_R2",
+     "axis": "J7",
+     "domain": "TD07",
+     "ask": "Have you narrowed the cause of an outage segment by segment and restored service?"
+    },
+    {
+     "id": "ROLE_SRE_V1_R3",
+     "axis": "J3",
+     "domain": "TD10",
+     "ask": "Have you set the response steps, including who steps in and when?"
+    },
+    {
+     "id": "ROLE_SRE_V1_R4",
+     "axis": "J5",
+     "domain": "TD07",
+     "ask": "Have you produced a document saying who does what during an outage?"
+    },
+    {
+     "id": "ROLE_SRE_V1_R5",
+     "axis": "J6",
+     "domain": "TD03",
+     "ask": "After an outage, did you calculate how far the uptime commitment was missed and reset next month's target?"
+    },
+    {
+     "id": "ROLE_SRE_V1_R6",
+     "axis": "J2",
+     "domain": "TD07",
+     "ask": "Have you committed to an allowed downtime figure in numbers?"
+    },
+    {
+     "id": "ROLE_SRE_V1_R7",
+     "axis": "J8",
+     "domain": "TD07",
+     "ask": "Has your operations judgment been used to decide on adding capacity or changing the architecture?"
+    }
+   ],
+   "compare_with": [
+    "ROLE_DEPLOY_V1",
+    "ROLE_PERF_V1",
+    "ROLE_QUALITY_V1"
+   ],
+   "application_material": [
+    "Operations metrics with alert thresholds",
+    "Incident records and recurrence prevention",
+    "A one-page note describing the response steps"
+   ]
+  },
+  {
+   "code": "ROLE_PM_V1",
+   "version": 1,
+   "name_ko": "Integration and Coordination",
+   "name_en": "Integration and Coordination",
+   "core": "CS_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD01",
+     "TD04",
+     "TD10"
+    ],
+    "rf": [
+     "RF6"
+    ]
+   },
+   "required_axes": [
+    "J2",
+    "J8"
+   ],
+   "owns": "Settles, from many people's requirements, what to build first and what not to accept",
+   "decides": [
+    "Requirements to accept and to drop",
+    "Build order",
+    "Schedule and staffing",
+    "Handling changes"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_DEV_V1",
+     "line": "Development decides how to build; coordination decides what to build first"
+    },
+    {
+     "vs": "ROLE_QUALITY_V1",
+     "line": "Quality makes sure standards are kept; coordination trades standards off against deadlines"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_PM_V1_R1",
+     "axis": "J2",
+     "domain": "TD01",
+     "ask": "Have you been the one who dropped requirements to cut the build scope?"
+    },
+    {
+     "id": "ROLE_PM_V1_R2",
+     "axis": "J8",
+     "domain": "TD01",
+     "ask": "Have you brought people with different requirements to agreement?"
+    },
+    {
+     "id": "ROLE_PM_V1_R3",
+     "axis": "J3",
+     "domain": "TD01",
+     "ask": "Have you set the build order yourself and put it into the schedule?"
+    },
+    {
+     "id": "ROLE_PM_V1_R4",
+     "axis": "J5",
+     "domain": "TD04",
+     "ask": "Have you produced a requirements list and change log that others used?"
+    },
+    {
+     "id": "ROLE_PM_V1_R5",
+     "axis": "J6",
+     "domain": "TD10",
+     "ask": "Have you compared the promised scope with what was delivered?"
+    },
+    {
+     "id": "ROLE_PM_V1_R6",
+     "axis": "J7",
+     "domain": "TD01",
+     "ask": "When the schedule slipped, have you redrawn the scope?"
+    },
+    {
+     "id": "ROLE_PM_V1_R7",
+     "axis": "J4",
+     "domain": "TD01",
+     "ask": "Have you chosen and used a way to collect and track requirements?"
+    }
+   ],
+   "compare_with": [
+    "ROLE_DEV_V1",
+    "ROLE_QUALITY_V1",
+    "ROLE_QA_V1"
+   ],
+   "application_material": [
+    "A requirements list with priorities",
+    "Change log",
+    "A one-page note on requirements turned down and why"
+   ]
+  },
+  {
+   "code": "ROLE_RESEARCH_V1",
+   "version": 1,
+   "name_ko": "Research and Exploration",
+   "name_en": "Research and Exploration",
+   "core": "CS_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD09",
+     "TD02",
+     "TD11"
+    ],
+    "rf": [
+     "RF7"
+    ]
+   },
+   "required_axes": [
+    "J1",
+    "J6"
+   ],
+   "owns": "Narrows down open questions and settles whether a method is sound",
+   "decides": [
+    "Question to address",
+    "Experimental conditions",
+    "Baseline methods for comparison",
+    "When to stop"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_DEV_V1",
+     "line": "Development makes things usable; research first finds out whether they will work at all"
+    },
+    {
+     "vs": "ROLE_PERF_V1",
+     "line": "Analysis predicts with known methods; research looks for the method itself"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_RESEARCH_V1_R1",
+     "axis": "J1",
+     "domain": "TD09",
+     "ask": "Have you narrowed down and framed the question to address yourself?"
+    },
+    {
+     "id": "ROLE_RESEARCH_V1_R2",
+     "axis": "J6",
+     "domain": "TD09",
+     "ask": "Have you compared your method with a baseline under the same conditions?"
+    },
+    {
+     "id": "ROLE_RESEARCH_V1_R3",
+     "axis": "J3",
+     "domain": "TD02",
+     "ask": "When several methods were possible, did you pick one through experiments and write down why?"
+    },
+    {
+     "id": "ROLE_RESEARCH_V1_R4",
+     "axis": "J7",
+     "domain": "TD09",
+     "ask": "Have you found and written down where your method stops working?"
+    },
+    {
+     "id": "ROLE_RESEARCH_V1_R5",
+     "axis": "J5",
+     "domain": "TD11",
+     "ask": "Have you published code and settings so others could rerun your work?"
+    },
+    {
+     "id": "ROLE_RESEARCH_V1_R6",
+     "axis": "J4",
+     "domain": "TD09",
+     "ask": "Have you set experimental conditions yourself and repeated the experiments?"
+    },
+    {
+     "id": "ROLE_RESEARCH_V1_R7",
+     "axis": "J8",
+     "domain": "TD09",
+     "ask": "Have your results been used in someone else's research or product?"
+    }
+   ],
+   "compare_with": [
+    "ROLE_DEV_V1",
+    "ROLE_PERF_V1",
+    "ROLE_PM_V1"
+   ],
+   "application_material": [
+    "Experimental conditions with results",
+    "A table comparing against baseline methods",
+    "A one-page note on where the method does not work"
+   ]
+  },
+  {
+   "code": "ROLE_QUALITY_V1",
+   "version": 1,
+   "name_ko": "Quality and Reliability",
+   "name_en": "Quality and Reliability",
+   "core": "CS_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD08",
+     "TD10",
+     "TD06"
+    ],
+    "rf": [
+     "RF8"
+    ]
+   },
+   "required_axes": [
+    "J6",
+    "J7"
+   ],
+   "owns": "Assures, with standards and evidence, that requirements hold throughout operation",
+   "decides": [
+    "Quality standards",
+    "Inspection cycle",
+    "Corrective actions",
+    "Acceptable risk"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_QA_V1",
+     "line": "Testing judges this build; quality checks that it holds for the next build too"
+    },
+    {
+     "vs": "ROLE_SRE_V1",
+     "line": "Operations keeps things running; quality keeps the same thing from happening again"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_QUALITY_V1_R1",
+     "axis": "J6",
+     "domain": "TD08",
+     "ask": "Have you checked your system against a standard and judged whether it complied?"
+    },
+    {
+     "id": "ROLE_QUALITY_V1_R2",
+     "axis": "J7",
+     "domain": "TD10",
+     "ask": "Have you changed conditions so the same defect would not recur?"
+    },
+    {
+     "id": "ROLE_QUALITY_V1_R3",
+     "axis": "J3",
+     "domain": "TD08",
+     "ask": "Have you set the acceptable level of risk yourself?"
+    },
+    {
+     "id": "ROLE_QUALITY_V1_R4",
+     "axis": "J5",
+     "domain": "TD06",
+     "ask": "Have you kept records so the reasons behind a verdict can be traced?"
+    },
+    {
+     "id": "ROLE_QUALITY_V1_R5",
+     "axis": "J2",
+     "domain": "TD10",
+     "ask": "Have you turned an external standard into inspection items?"
+    },
+    {
+     "id": "ROLE_QUALITY_V1_R6",
+     "axis": "J4",
+     "domain": "TD08",
+     "ask": "Have you set an inspection method and schedule and run it?"
+    },
+    {
+     "id": "ROLE_QUALITY_V1_R7",
+     "axis": "J8",
+     "domain": "TD10",
+     "ask": "Has your verdict stopped or allowed a release?"
+    }
+   ],
+   "compare_with": [
+    "ROLE_QA_V1",
+    "ROLE_SRE_V1",
+    "ROLE_PM_V1"
+   ],
+   "application_material": [
+    "Quality standards with inspection results",
+    "Corrective action records",
+    "A one-page note on accepted risks and why"
+   ]
+  }
+ ]
+}

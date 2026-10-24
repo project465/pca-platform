@@ -1,0 +1,929 @@
+{
+ "schema_version": "cs-v1-taxonomy.1",
+ "assessment_version": "CS_V1",
+ "major_id": "CS",
+ "note": "Three axes: technical domain x role function x organizational context. Job titles are aliases for combinations, and none of the axes produces a ranking. This file is where changes are made. The eight axes, two scales and four levels use the same values as the Mechanical Engineering Core: results from two majors can only be compared on the same ruler, and building a new ruler for each major would break comparison within a university",
+ "axes": {
+  "J1": {
+   "name": "Problem definition",
+   "question": "Who decided what to work on?"
+  },
+  "J2": {
+   "name": "Requirements interpretation",
+   "question": "Were requirements turned into numbers and constraints?"
+  },
+  "J3": {
+   "name": "Technical decisions",
+   "question": "Which items did you decide?"
+  },
+  "J4": {
+   "name": "Methods and tools",
+   "question": "What did you use, and how?"
+  },
+  "J5": {
+   "name": "Deliverables",
+   "question": "What was left behind?"
+  },
+  "J6": {
+   "name": "Comparison and verification",
+   "question": "What was it compared against?"
+  },
+  "J7": {
+   "name": "Failure and correction",
+   "question": "How was the error narrowed down?"
+  },
+  "J8": {
+   "name": "Organizational use",
+   "question": "Who used it, and for what?"
+  }
+ },
+ "scales": {
+  "S4": {
+   "axes": [
+    "J3",
+    "J5",
+    "J6",
+    "J7"
+   ],
+   "note": "Screening scale. The four axes asked at BASIC. Organizational use is left out of screening because it puts undergraduates at a structural disadvantage: whether your work was used by an organization can only be answered if you were placed in one, and someone who has only done classes and a capstone will have that cell empty even if they made decisions. Organizational use is asked only in the in-depth stage"
+  },
+  "S8": {
+   "axes": [
+    "J1",
+    "J2",
+    "J3",
+    "J4",
+    "J5",
+    "J6",
+    "J7",
+    "J8"
+   ],
+   "note": "Full scale. STANDARD and above. Do not use S8 as the denominator for S4. What the in-depth stage newly opens are the four axes not in screening (problem definition, requirements interpretation, methods and tools, organizational use)"
+  }
+ },
+ "levels": {
+  "L0": "None",
+  "L1": "Exposed. Watched or reused what someone else did",
+  "L2": "Performed. Did the work myself",
+  "L3": "Owned. Decided it myself, and the result was used"
+ },
+ "technical_domains": [
+  {
+   "code": "TD01",
+   "name": "Software Design and Architecture",
+   "owns": "Settles what to build, the module boundaries and the interfaces",
+   "subareas": [
+    "Organizing requirements",
+    "Module decomposition",
+    "Interface contracts",
+    "Dependency direction"
+   ],
+   "required_axes": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "code": "TD02",
+   "name": "Data Structures and Algorithms",
+   "owns": "Settles how data is represented and the limits of computational complexity",
+   "subareas": [
+    "Choosing data representations",
+    "Complexity analysis",
+    "Searching and sorting",
+    "Optimization"
+   ],
+   "required_axes": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD03",
+   "name": "Server and API Development",
+   "owns": "Settles the flow for receiving and processing requests and the response contract",
+   "subareas": [
+    "Request handling flow",
+    "Response contracts",
+    "Authentication and authorization",
+    "Error handling"
+   ],
+   "required_axes": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "code": "TD04",
+   "name": "Data Storage and Query Design",
+   "owns": "Settles how data is stored and the paths used to find it",
+   "subareas": [
+    "Schema design",
+    "Indexing strategy",
+    "Query performance",
+    "Data migration"
+   ],
+   "required_axes": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD05",
+   "name": "User Interface Development",
+   "owns": "Settles the screen's state structure, input handling and accessibility",
+   "subareas": [
+    "Screen state management",
+    "Input and validation",
+    "Accessibility",
+    "Responsive layout"
+   ],
+   "required_axes": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "code": "TD06",
+   "name": "Systems and Concurrent Programming",
+   "owns": "Settles memory and concurrency policy within one machine",
+   "subareas": [
+    "Memory management",
+    "Concurrency and synchronization",
+    "File and device I/O",
+    "Resource limits"
+   ],
+   "required_axes": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "code": "TD07",
+   "name": "Networks and Distributed Systems",
+   "owns": "Settles the communication rules between machines and how partial failures are handled",
+   "subareas": [
+    "Protocol configuration",
+    "Consistency levels",
+    "Retries and timeouts",
+    "Load balancing"
+   ],
+   "required_axes": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "code": "TD08",
+   "name": "Information Security",
+   "owns": "Assumes threats and settles what is allowed and where to block",
+   "subareas": [
+    "Threat modeling",
+    "Authentication and authorization",
+    "Vulnerability scanning",
+    "Detection and response"
+   ],
+   "required_axes": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD09",
+   "name": "Machine Learning and Data Analysis",
+   "owns": "Settles the patterns to extract from data and the conditions for measuring performance",
+   "subareas": [
+    "Data preparation",
+    "Model selection",
+    "Evaluation design",
+    "Interpreting results"
+   ],
+   "required_axes": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD10",
+   "name": "Testing, Quality and Release Operations",
+   "owns": "Settles pass criteria, deployment procedures and rollback paths",
+   "subareas": [
+    "Test design",
+    "Scope of automation",
+    "Deployment procedures",
+    "Production monitoring"
+   ],
+   "required_axes": [
+    "J6",
+    "J7"
+   ]
+  },
+  {
+   "code": "TD11",
+   "name": "Real-time Graphics and Game Development",
+   "owns": "Settles the compute budget within one frame and the drawing order",
+   "subareas": [
+    "Rendering paths",
+    "Frame budget",
+    "Input responsiveness",
+    "Resource lifetime"
+   ],
+   "required_axes": [
+    "J3",
+    "J6"
+   ]
+  }
+ ],
+ "role_functions": [
+  {
+   "code": "RF1",
+   "name": "Design and Development",
+   "one_line": "Decides what to build",
+   "output_kind": "Design documents, interface contracts, implementation",
+   "success": "One buildable option that meets the requirements"
+  },
+  {
+   "code": "RF2",
+   "name": "Performance Analysis and Estimation",
+   "one_line": "Knows before building",
+   "output_kind": "Performance analysis, capacity estimates, complexity reasoning",
+   "success": "Evidence that matches measurements and changed the design"
+  },
+  {
+   "code": "RF3",
+   "name": "Test and Verification",
+   "one_line": "Checks that what was built is right",
+   "output_kind": "Test design, defect reports, verdicts",
+   "success": "Results with reproducible verdicts and a stated scope"
+  },
+  {
+   "code": "RF4",
+   "name": "Build and Deployment Automation",
+   "one_line": "Makes builds repeatable",
+   "output_kind": "Deployment procedures, environment configuration, rollback paths",
+   "success": "The same input yields the same output, and it can be rolled back"
+  },
+  {
+   "code": "RF5",
+   "name": "Service Operations",
+   "one_line": "Keeps things running",
+   "output_kind": "Operations metrics, incident records, response procedures",
+   "success": "Uptime stays within the commitment and the same outage does not recur"
+  },
+  {
+   "code": "RF6",
+   "name": "Integration and Coordination",
+   "one_line": "Brings many people's decisions together into one",
+   "output_kind": "Requirements, schedules, change logs",
+   "success": "Requirement fulfillment rate and schedule"
+  },
+  {
+   "code": "RF7",
+   "name": "Research and Exploration",
+   "one_line": "Narrows down questions that don't have answers yet",
+   "output_kind": "Papers, patents, prototypes, methods",
+   "success": "The question is narrowed and a method remains"
+  },
+  {
+   "code": "RF8",
+   "name": "Quality and Reliability",
+   "one_line": "Assures that requirements hold throughout operation",
+   "output_kind": "Quality standards, verdicts, corrective actions",
+   "success": "Defects do not recur and the reasons behind verdicts are traceable"
+  }
+ ],
+ "role_functions_note": "Eight of them, using the **same codes** as the Mechanical Engineering Core. Role functions are a layer above majors, so they are not rebuilt for each major. Only two names changed: `Process and Mass Production` and `Operation and Maintenance` are manufacturing terms, and software students would not find themselves in them. What each role does is kept word for word, so the axes did not split; what differs is the kind of output produced: design documents, deployment procedures and operations metrics take the place of drawings",
+ "org_contexts": [
+  {
+   "code": "OC1",
+   "name": "Product companies running their own services",
+   "performance": "User metrics, response time, operating cost",
+   "differs": "You build your own service and run it for years"
+  },
+  {
+   "code": "OC2",
+   "name": "Solution and platform vendors",
+   "performance": "Meeting customer needs, compatibility, unit price",
+   "differs": "You build products other companies use and follow agreed rules"
+  },
+  {
+   "code": "OC3",
+   "name": "Contract development and technical services",
+   "performance": "Deadlines, meeting acceptance conditions, repeat business",
+   "differs": "You build to customer requirements and hand over by the agreed deadline"
+  },
+  {
+   "code": "OC4",
+   "name": "Government-funded research institutes",
+   "performance": "Program goals, technology readiness, potential for technology transfer",
+   "differs": "Work runs on government-funded programs, and interim reviews set the schedule"
+  },
+  {
+   "code": "OC5",
+   "name": "Universities and research labs",
+   "performance": "Novelty, reproducibility, scholarly contribution",
+   "differs": "You question whether your methods are sound and publish them as papers"
+  },
+  {
+   "code": "OC6",
+   "name": "Public sector, regulation and certification",
+   "performance": "Judgments of compliance with standards and the evidence behind them",
+   "differs": "You judge whether things meet standards and keep the evidence on record"
+  },
+  {
+   "code": "OC7",
+   "name": "Startups and small teams",
+   "performance": "A working service, launched before the money runs out",
+   "differs": "A few people share many roles and ship fast"
+  }
+ ],
+ "job_aliases": [
+  {
+   "posting_name": "Backend developer",
+   "td": [
+    "TD03",
+    "TD04"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC7"
+   ],
+   "distinguisher": "Decides the response contract and the storage structure"
+  },
+  {
+   "posting_name": "Frontend developer",
+   "td": [
+    "TD05"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC7"
+   ],
+   "distinguisher": "Decides the screen's state structure and edge-case handling"
+  },
+  {
+   "posting_name": "Full-stack developer",
+   "td": [
+    "TD03",
+    "TD05"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC7",
+    "OC1"
+   ],
+   "distinguisher": "Draws the line of responsibility between the UI and the server"
+  },
+  {
+   "posting_name": "Mobile app developer",
+   "td": [
+    "TD05",
+    "TD06"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC7"
+   ],
+   "distinguisher": "Handles the screen lifecycle and the device's resource limits"
+  },
+  {
+   "posting_name": "Software architect",
+   "td": [
+    "TD01"
+   ],
+   "rf": [
+    "RF1",
+    "RF6"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC3"
+   ],
+   "distinguisher": "Has the authority to change module boundaries and dependency direction"
+  },
+  {
+   "posting_name": "Requirements and systems analyst",
+   "td": [
+    "TD01"
+   ],
+   "rf": [
+    "RF6"
+   ],
+   "oc": [
+    "OC3",
+    "OC6",
+    "OC2"
+   ],
+   "distinguisher": "Separates what to build from what will not be accepted"
+  },
+  {
+   "posting_name": "Embedded software engineer",
+   "td": [
+    "TD06"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC2",
+    "OC1"
+   ],
+   "distinguisher": "Decides memory layout and concurrency policy"
+  },
+  {
+   "posting_name": "Systems programmer",
+   "td": [
+    "TD06"
+   ],
+   "rf": [
+    "RF1",
+    "RF2"
+   ],
+   "oc": [
+    "OC2",
+    "OC4"
+   ],
+   "distinguisher": "Decides resource allocation and synchronization policy"
+  },
+  {
+   "posting_name": "Network engineer",
+   "td": [
+    "TD07"
+   ],
+   "rf": [
+    "RF1",
+    "RF5"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC6"
+   ],
+   "distinguisher": "Decides protocol settings and timeout criteria"
+  },
+  {
+   "posting_name": "Distributed systems developer",
+   "td": [
+    "TD07",
+    "TD03"
+   ],
+   "rf": [
+    "RF1",
+    "RF2"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Decides consistency levels and retry policy"
+  },
+  {
+   "posting_name": "Database engineer",
+   "td": [
+    "TD04"
+   ],
+   "rf": [
+    "RF1",
+    "RF2"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC3"
+   ],
+   "distinguisher": "Decides the schema and indexing strategy"
+  },
+  {
+   "posting_name": "Data engineer",
+   "td": [
+    "TD04",
+    "TD09"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Decides load schedules and data quality criteria"
+  },
+  {
+   "posting_name": "Data analyst",
+   "td": [
+    "TD09"
+   ],
+   "rf": [
+    "RF2"
+   ],
+   "oc": [
+    "OC1",
+    "OC3",
+    "OC6"
+   ],
+   "distinguisher": "Decides metric definitions and comparison conditions"
+  },
+  {
+   "posting_name": "Machine learning engineer",
+   "td": [
+    "TD09"
+   ],
+   "rf": [
+    "RF1",
+    "RF7"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC4"
+   ],
+   "distinguisher": "Decides training conditions and evaluation criteria"
+  },
+  {
+   "posting_name": "AI researcher",
+   "td": [
+    "TD09"
+   ],
+   "rf": [
+    "RF7"
+   ],
+   "oc": [
+    "OC4",
+    "OC5"
+   ],
+   "distinguisher": "Narrows down open problems on their own"
+  },
+  {
+   "posting_name": "Information security specialist",
+   "td": [
+    "TD08"
+   ],
+   "rf": [
+    "RF8"
+   ],
+   "oc": [
+    "OC1",
+    "OC6",
+    "OC2"
+   ],
+   "distinguisher": "Decides the criteria for allowing and blocking"
+  },
+  {
+   "posting_name": "Penetration tester",
+   "td": [
+    "TD08"
+   ],
+   "rf": [
+    "RF3"
+   ],
+   "oc": [
+    "OC3",
+    "OC6"
+   ],
+   "distinguisher": "Decides the test scope and the conditions for stopping"
+  },
+  {
+   "posting_name": "Security monitoring analyst",
+   "td": [
+    "TD08",
+    "TD07"
+   ],
+   "rf": [
+    "RF5"
+   ],
+   "oc": [
+    "OC1",
+    "OC6"
+   ],
+   "distinguisher": "Decides detection rules and response steps"
+  },
+  {
+   "posting_name": "Algorithm developer",
+   "td": [
+    "TD02"
+   ],
+   "rf": [
+    "RF1",
+    "RF2"
+   ],
+   "oc": [
+    "OC2",
+    "OC4",
+    "OC5"
+   ],
+   "distinguisher": "Decides data representations and complexity limits"
+  },
+  {
+   "posting_name": "Game client developer",
+   "td": [
+    "TD11",
+    "TD05"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC7"
+   ],
+   "distinguisher": "Handles the frame budget and input responsiveness"
+  },
+  {
+   "posting_name": "Game engine developer",
+   "td": [
+    "TD11",
+    "TD06"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC2",
+    "OC1"
+   ],
+   "distinguisher": "Decides rendering paths and resource lifetimes"
+  },
+  {
+   "posting_name": "Graphics programmer",
+   "td": [
+    "TD11"
+   ],
+   "rf": [
+    "RF1",
+    "RF2"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Decides the drawing order and how much quality to give up"
+  },
+  {
+   "posting_name": "QA and test engineer",
+   "td": [
+    "TD10"
+   ],
+   "rf": [
+    "RF3"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC3"
+   ],
+   "distinguisher": "Decides test cases and pass criteria"
+  },
+  {
+   "posting_name": "Test automation developer",
+   "td": [
+    "TD10"
+   ],
+   "rf": [
+    "RF3",
+    "RF4"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Decides what to automate and what to keep manual"
+  },
+  {
+   "posting_name": "DevOps and build engineer",
+   "td": [
+    "TD10"
+   ],
+   "rf": [
+    "RF4"
+   ],
+   "oc": [
+    "OC1",
+    "OC7",
+    "OC2"
+   ],
+   "distinguisher": "Decides deployment procedures and rollback paths"
+  },
+  {
+   "posting_name": "Site reliability engineer",
+   "td": [
+    "TD10",
+    "TD07"
+   ],
+   "rf": [
+    "RF5"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Decides uptime commitments and alert thresholds"
+  },
+  {
+   "posting_name": "Technical planning and product management",
+   "td": [
+    "TD01"
+   ],
+   "rf": [
+    "RF6"
+   ],
+   "oc": [
+    "OC1",
+    "OC7",
+    "OC3"
+   ],
+   "distinguisher": "Takes part in deciding what to build first"
+  },
+  {
+   "posting_name": "Public-sector IT auditor",
+   "td": [
+    "TD01",
+    "TD10"
+   ],
+   "rf": [
+    "RF8"
+   ],
+   "oc": [
+    "OC6",
+    "OC3"
+   ],
+   "distinguisher": "Judges compliance with standards, with supporting evidence"
+  }
+ ],
+ "boundaries": [
+  {
+   "pair": "Software design vs. requirements coordination",
+   "a": {
+    "td": "TD01",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD01",
+    "rf": "RF6"
+   },
+   "shared": "Both are present when deciding what to build",
+   "a_difference": "Settles module boundaries and interfaces",
+   "b_difference": "Picks what to build first from many people's requirements",
+   "a_question": "Have you decided the direction of dependencies between modules yourself?",
+   "b_question": "Have you sorted out yourself which of the requirements you received would not be accepted?"
+  },
+  {
+   "pair": "Algorithms vs. server development",
+   "a": {
+    "td": "TD02",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD03",
+    "rf": "RF1"
+   },
+   "shared": "Both write code that runs fast",
+   "a_difference": "Responsible for data representation and computational complexity",
+   "b_difference": "Responsible for the contract for receiving requests and returning responses",
+   "a_question": "Have you changed a data structure to reduce complexity?",
+   "b_question": "Have you set the response contract and error codes yourself?"
+  },
+  {
+   "pair": "Server development vs. data storage design",
+   "a": {
+    "td": "TD03",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD04",
+    "rf": "RF1"
+   },
+   "shared": "Both receive requests and handle data",
+   "a_difference": "Responsible for the request handling flow and the response contract",
+   "b_difference": "Responsible for the storage structure and query performance",
+   "a_question": "Have you made a request safe to receive twice?",
+   "b_question": "Have you added an index to cut query time?"
+  },
+  {
+   "pair": "User interface vs. real-time graphics",
+   "a": {
+    "td": "TD05",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD11",
+    "rf": "RF1"
+   },
+   "shared": "Both build screens people look at",
+   "a_difference": "Responsible for state changes, input handling and accessibility",
+   "b_difference": "Responsible for the compute budget within one frame and the drawing order",
+   "a_question": "Have you decided yourself where screen state should live?",
+   "b_question": "Have you lowered quality to fit within the frame budget?"
+  },
+  {
+   "pair": "Systems programming vs. distributed systems",
+   "a": {
+    "td": "TD06",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD07",
+    "rf": "RF1"
+   },
+   "shared": "Both deal with many things running at once",
+   "a_difference": "Responsible for memory and concurrency within one machine",
+   "b_difference": "Responsible for latency and partial failures between machines",
+   "a_question": "Have you set lock scope or memory lifetimes yourself?",
+   "b_question": "Have you set timeout and retry policies yourself?"
+  },
+  {
+   "pair": "Information security vs. test and verification",
+   "a": {
+    "td": "TD08",
+    "rf": "RF8"
+   },
+   "b": {
+    "td": "TD10",
+    "rf": "RF3"
+   },
+   "shared": "Both look for conditions that will fail",
+   "a_difference": "Judges by what an attacker could do",
+   "b_difference": "Judges by whether it works as required",
+   "a_question": "Have you assumed a threat and narrowed the allowed access yourself?",
+   "b_question": "Have you set pass criteria and test cases yourself?"
+  },
+  {
+   "pair": "Machine learning vs. data storage design",
+   "a": {
+    "td": "TD09",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD04",
+    "rf": "RF1"
+   },
+   "shared": "Both handle large amounts of data",
+   "a_difference": "Extracts patterns from data and evaluates performance",
+   "b_difference": "Decides the structures for storing and finding data",
+   "a_question": "Have you split evaluation conditions to catch overfitting?",
+   "b_question": "Have you set the normalization level and indexes yourself?"
+  },
+  {
+   "pair": "Machine learning vs. research and exploration",
+   "a": {
+    "td": "TD09",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD09",
+    "rf": "RF7"
+   },
+   "shared": "Both work with models",
+   "a_difference": "Brings models to usable performance and hands them over",
+   "b_difference": "Narrows down questions that don't have answers yet",
+   "a_question": "Have you compared against existing methods under the same conditions?",
+   "b_question": "Have you narrowed down a hypothesis you set, through experiments?"
+  },
+  {
+   "pair": "Testing and deployment vs. service operations",
+   "a": {
+    "td": "TD10",
+    "rf": "RF4"
+   },
+   "b": {
+    "td": "TD10",
+    "rf": "RF5"
+   },
+   "shared": "Both deal with the path into production",
+   "a_difference": "Builds procedures so the same result repeats",
+   "b_difference": "Keeps things running after release",
+   "a_question": "Have you built a rollback path yourself?",
+   "b_question": "Have you set alert thresholds and response steps yourself?"
+  },
+  {
+   "pair": "Networks vs. security monitoring",
+   "a": {
+    "td": "TD07",
+    "rf": "RF5"
+   },
+   "b": {
+    "td": "TD08",
+    "rf": "RF5"
+   },
+   "shared": "Both watch passing traffic",
+   "a_difference": "Keeps connections from dropping",
+   "b_difference": "Blocks what should not get in",
+   "a_question": "Have you narrowed down the causes of latency and loss to a network segment?",
+   "b_question": "Have you written the rules that separate normal traffic from attacks yourself?"
+  }
+ ]
+}

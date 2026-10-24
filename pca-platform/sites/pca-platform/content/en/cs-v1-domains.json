@@ -1,0 +1,1272 @@
+{
+ "schema_version": "cs-v1-domains.1",
+ "assessment_version": "CS_V1",
+ "note": "For each domain: the eight steps of the workflow and the performing and ownership conditions for the eight judgment axes. Items, the results report and experience input all read this one file. `verify_targets` and `artifacts` are what the results report's action steps draw on, so they must be concrete here to avoid vague wording",
+ "workflow_steps": [
+  "How the problem arrives",
+  "Inputs received",
+  "What gets decided first",
+  "Methods used",
+  "Tools used",
+  "Deliverables produced",
+  "What it is compared against",
+  "When it goes wrong"
+ ],
+ "domains": [
+  {
+   "code": "TD01",
+   "name": "Software Design and Architecture",
+   "required_axes": [
+    "J2",
+    "J3"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "What people want arrives as a verbal description or a screen sketch"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Stakeholder requirements, constraints of existing systems, deadline and team size"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "What is out of scope this time, and the lines that separate modules"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Writing user flows, dividing responsibilities, writing contracts, comparing the cost of change"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Diagramming tools, a document repository, a dependency analyzer, meeting notes"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Requirements list, module diagram, interface contracts, decision records"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Requirements list, existing system architecture, similar cases, number of changes after implementation"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If fixing one place forces changes in several modules, redraw the boundaries"
+    }
+   ],
+   "tools": [
+    "Diagramming tool",
+    "Document repository",
+    "Dependency analyzer",
+    "Decision record",
+    "User flow diagram"
+   ],
+   "artifacts": [
+    "Requirements list",
+    "Module diagram",
+    "Interface contract",
+    "Decision record",
+    "Glossary"
+   ],
+   "verify_targets": [
+    "Requirements list",
+    "Existing system architecture",
+    "Number of fixes after implementation",
+    "Similar cases",
+    "Review comments"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "I wrote down what this system would cover within the given topic",
+     "l3": "The scope I drew became the development scope as is"
+    },
+    "J2": {
+     "l2": "I turned requirements into conditions to meet and metrics",
+     "l3": "The conditions I set were used as acceptance criteria"
+    },
+    "J3": {
+     "l2": "I set the lines between modules and the direction of dependencies",
+     "l3": "The code was split along the boundaries I set, and they held"
+    },
+    "J4": {
+     "l2": "I chose and used a method and tool for describing the structure",
+     "l3": "The way I chose to describe the structure became the team default"
+    },
+    "J5": {
+     "l2": "I documented the module diagram and interface contracts",
+     "l3": "Someone else implemented from the contracts I left"
+    },
+    "J6": {
+     "l2": "I compared two designs by the cost of change",
+     "l3": "I changed the design based on the comparison"
+    },
+    "J7": {
+     "l2": "When fixing one place, I found and narrowed down the modules that changed with it",
+     "l3": "After redrawing the boundaries, I confirmed that the scope of changes shrank"
+    },
+    "J8": {
+     "l2": "I presented a design in a review meeting and explained it",
+     "l3": "My design decisions were used for the development schedule and staffing"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "A structure that can be maintained for years, and its operating cost",
+    "OC2": "Contracts that customers can adopt and use",
+    "OC3": "Design deliverables that meet the acceptance criteria",
+    "OC4": "Architecture design as a project deliverable",
+    "OC5": "A design written so the method can be reproduced",
+    "OC6": "Design reasoning that can show compliance with standards",
+    "OC7": "A structure that can be changed quickly and thrown away"
+   }
+  },
+  {
+   "code": "TD02",
+   "name": "Data Structures and Algorithms",
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "The size of the data to process and the time it must take arrive as constraints"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Input size and distribution, memory limits, acceptable response time"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "How to represent the data, and which operations to make fast"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Calculating complexity, comparing data representations, testing edge-case inputs, comparing measured results"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Complexity analysis notes, performance measurement tools, test input generators, memory profilers"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Implementation code, complexity reasoning notes, performance measurement records, edge-case input tests"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Theoretical complexity, measured time, results from other representations, existing implementations"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If it's slow, narrow the cause down to data representation, iteration count or memory access"
+    }
+   ],
+   "tools": [
+    "Performance measurement tool",
+    "Memory profiler",
+    "Test input generator",
+    "Complexity analysis notes",
+    "Visualization tool"
+   ],
+   "artifacts": [
+    "Implementation code",
+    "Complexity reasoning notes",
+    "Performance measurement records",
+    "Empty-input and large-input tests",
+    "Comparison table"
+   ],
+   "verify_targets": [
+    "Estimated amount of computation",
+    "Actual measured time",
+    "Results with a different data structure",
+    "Existing implementation",
+    "Empty-input and large-input results"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "I wrote the computational problem to solve in terms of inputs and outputs",
+     "l3": "The problem definition I set determined the implementation scope"
+    },
+    "J2": {
+     "l2": "I wrote the allowed time and memory limits as numbers",
+     "l3": "The limits I set were used as design criteria"
+    },
+    "J3": {
+     "l2": "I decided how to represent the data and which operations to make fast",
+     "l3": "The implementation settled on the representation I chose"
+    },
+    "J4": {
+     "l2": "I calculated the complexity and chose a measurement method",
+     "l3": "The measurement method I set became the team standard"
+    },
+    "J5": {
+     "l2": "I left the implementation code together with the complexity reasoning",
+     "l3": "Someone else took and used the implementation I left"
+    },
+    "J6": {
+     "l2": "I compared theoretical complexity with measured time on the same input",
+     "l3": "I changed the data representation based on the comparison"
+    },
+    "J7": {
+     "l2": "I narrowed down the cause of a slow section to iteration count and memory access",
+     "l3": "I fixed the cause I found and confirmed the time went down"
+    },
+    "J8": {
+     "l2": "I explained performance comparison results to the team",
+     "l3": "My performance reasoning was used to decide which features to add or drop"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Response time users feel, and server cost",
+    "OC2": "Processing limits that hold in customer environments too",
+    "OC3": "An implementation that met the required performance within the deadline",
+    "OC4": "Project performance targets and the reasoning behind them",
+    "OC5": "Complexity proofs and experiments for a new method",
+    "OC6": "Evidence for judging compliance with performance standards",
+    "OC7": "The simplest implementation that holds up at the current data volume"
+   }
+  },
+  {
+   "code": "TD03",
+   "name": "Server and API Development",
+   "required_axes": [
+    "J3",
+    "J5"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Features needed by the UI or other systems arrive as a list of requests"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Request types and call frequency, response time commitments, data that must be retained"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The URL scheme, response format and error codes, and how much to process in one go"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Writing request handling flows, setting transaction boundaries, making retries safe, load testing"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Web frameworks, request testing tools, load testing tools, log collection, documentation generators"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Server code, response contract documents, request test suites, load test records"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Response contract documents, request test results, response time commitments, existing server logs"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If a response is slow or wrong, narrow the cause down to queries, external calls or serialization"
+    }
+   ],
+   "tools": [
+    "Web framework",
+    "Request testing tool",
+    "Load testing tool",
+    "Log collection tool",
+    "Documentation generator"
+   ],
+   "artifacts": [
+    "Server code",
+    "API documentation",
+    "Request test code",
+    "Load test records",
+    "Error code table"
+   ],
+   "verify_targets": [
+    "API documentation",
+    "Request test results",
+    "Response time target",
+    "Existing server logs",
+    "Load test figures"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "I wrote down the types of requests the server would handle",
+     "l3": "The request scope I set was implemented as is"
+    },
+    "J2": {
+     "l2": "I wrote response time commitments and call frequency as numbers",
+     "l3": "The commitments I set were used as operating standards"
+    },
+    "J3": {
+     "l2": "I set the URL scheme, response format and error codes",
+     "l3": "Other teams called the API following the contract I set"
+    },
+    "J4": {
+     "l2": "I chose and used methods for transaction boundaries and safe retries",
+     "l3": "The handling approach I chose was used in other features too"
+    },
+    "J5": {
+     "l2": "I left server code together with a response contract document",
+     "l3": "The UI side was built from the contract document I left"
+    },
+    "J6": {
+     "l2": "I checked the commitments against request tests and load tests",
+     "l3": "I changed the processing flow based on the comparison"
+    },
+    "J7": {
+     "l2": "I narrowed down the cause of wrong responses to queries and external calls",
+     "l3": "I fixed the cause I found and confirmed the same error was gone"
+    },
+    "J8": {
+     "l2": "I agreed on contract changes with the teams that use it",
+     "l3": "My contract was deployed to fit other teams' schedules"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Response time, error rate and server cost",
+    "OC2": "Stability of the contracts customers call",
+    "OC3": "Server deliverables that passed acceptance testing",
+    "OC4": "Server features used in project demos",
+    "OC5": "A collection server that gathers experimental data",
+    "OC6": "Evidence for record retention and access control",
+    "OC7": "The simplest server that holds up at the current number of users"
+   }
+  },
+  {
+   "code": "TD04",
+   "name": "Data Storage and Query Design",
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "The data to store and how it will be looked up arrive as requirements"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Data fields and relationships, growth volume, lookup conditions, retention period"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Where to split tables, column types, which conditions to make fast to look up"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Organizing relationships, designing indexes, reading query plans, writing data migration procedures"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Database clients, query plan tools, data generators, migration scripts"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Schema definitions, index lists, query collections, migration procedures, query plan records"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Query plans, query time, record counts compared, retention rules"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If a query is slow, narrow the cause down to indexes, condition order or data distribution"
+    }
+   ],
+   "tools": [
+    "Database client",
+    "Query plan tool",
+    "Data generator",
+    "Migration script",
+    "Relationship diagram"
+   ],
+   "artifacts": [
+    "Schema definition",
+    "Index list",
+    "Query collection",
+    "Data migration procedure",
+    "Query plan records"
+   ],
+   "verify_targets": [
+    "Query plan",
+    "Query time",
+    "Record counts before and after migration",
+    "Retention rules",
+    "Existing schema"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "I wrote down which data fields to store and which not to",
+     "l3": "The data scope I drew became the schema as is"
+    },
+    "J2": {
+     "l2": "I wrote growth volume and lookup conditions as numbers",
+     "l3": "The conditions I set were used as storage design criteria"
+    },
+    "J3": {
+     "l2": "I set where tables split, the column types and the constraints",
+     "l3": "The schema I designed went into production and was used"
+    },
+    "J4": {
+     "l2": "I chose and used a way to organize relationships and the index types",
+     "l3": "The approach I chose was applied to other tables too"
+    },
+    "J5": {
+     "l2": "I documented the schema definition and index list",
+     "l3": "Someone else wrote queries from the schema I left"
+    },
+    "J6": {
+     "l2": "I compared query plans and timings to check the indexes",
+     "l3": "I changed indexes or queries based on the comparison"
+    },
+    "J7": {
+     "l2": "I narrowed down the cause of a slow query from the query plan",
+     "l3": "I fixed the cause I found and confirmed the query time went down"
+    },
+    "J8": {
+     "l2": "I agreed on schema changes with the teams that use it",
+     "l3": "My schema decisions were used to set the order of feature development"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Query response time and storage cost",
+    "OC2": "Schemas that get migrated into customer environments",
+    "OC3": "Data structures that meet the acceptance criteria",
+    "OC4": "Structures and public formats for project data",
+    "OC5": "Reproducible storage of experimental data",
+    "OC6": "Evidence for retention periods and access logs",
+    "OC7": "The simplest schema that holds up at the current data volume"
+   }
+  },
+  {
+   "code": "TD05",
+   "name": "User Interface Development",
+   "required_axes": [
+    "J3",
+    "J5"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Screen sketches and the desired interactions arrive as requirements"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "List of screens and navigation paths, target devices and screen widths, accessibility requirements"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Where to keep state, and which edge cases to handle"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Designing state structure, writing input validation, checking accessibility, checking layout at each width"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "UI libraries, browser developer tools, accessibility checkers, state inspection tools"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "UI code, state structure notes, edge-case lists, accessibility check records"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Screen sketches, accessibility standards, the real screen at each width, input validation results"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If the screen looks wrong, narrow the cause down to state changes, layout rules or browser differences"
+    }
+   ],
+   "tools": [
+    "UI library",
+    "Browser developer tools",
+    "Accessibility checker",
+    "State inspection tool",
+    "Screenshots"
+   ],
+   "artifacts": [
+    "UI code",
+    "Notes on the state (changing values) structure",
+    "List of edge cases",
+    "Accessibility check records",
+    "Screenshots at each screen size"
+   ],
+   "verify_targets": [
+    "Design mockup",
+    "Accessibility standards",
+    "The real screen at each screen size",
+    "Input validation results",
+    "Existing screens"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "I wrote down what this screen would do and what it would not",
+     "l3": "The screen scope I drew was implemented as is"
+    },
+    "J2": {
+     "l2": "I wrote down target devices, screen widths and accessibility requirements as conditions",
+     "l3": "The conditions I set were used as screen approval criteria"
+    },
+    "J3": {
+     "l2": "I decided where state lives and which edge cases to handle",
+     "l3": "The screen kept to the state structure I set"
+    },
+    "J4": {
+     "l2": "I chose and used a UI library and layout method",
+     "l3": "The approach I chose was used on other screens too"
+    },
+    "J5": {
+     "l2": "I left UI code together with a list of edge cases",
+     "l3": "Someone else took and used UI components I left"
+    },
+    "J6": {
+     "l2": "I compared screen sketches with the real screen at each width",
+     "l3": "I changed the layout or state structure based on the comparison"
+    },
+    "J7": {
+     "l2": "I narrowed down why the screen flickered or shifted to state changes",
+     "l3": "I fixed the cause I found and confirmed the same symptom was gone"
+    },
+    "J8": {
+     "l2": "I reviewed the screen design with users or product planners and reached agreement",
+     "l3": "My UI decisions were used to set the release scope"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Share of users who finish a flow, and number of support requests",
+    "OC2": "Compatibility of UI components customers adopt",
+    "OC3": "UI deliverables that passed acceptance testing",
+    "OC4": "Screens used in project demos",
+    "OC5": "Tool screens used by experiment participants",
+    "OC6": "Evidence of compliance with accessibility standards",
+    "OC7": "The simplest screen that can be changed quickly"
+   }
+  },
+  {
+   "code": "TD06",
+   "name": "Systems and Concurrent Programming",
+   "required_axes": [
+    "J3",
+    "J7"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Work that must run concurrently and the available resources arrive as constraints"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Processing cycle and number of concurrent tasks, memory ceiling, device and operating system types"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Who holds which resource and when, and how wide the lock scope should be"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Designing memory lifetimes, setting lock scope, testing for race conditions, measuring resource use"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Debuggers, memory checkers, race condition detectors, resource monitors, trace logs"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "System code, resource use measurements, race condition tests, lock design notes"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Resource use measurements, memory check results, results of repeated runs, operating system documentation"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If it hangs, narrow the cause down to locks, memory lifetimes or device responses"
+    }
+   ],
+   "tools": [
+    "Debugger",
+    "Memory checker",
+    "Race condition detector",
+    "Resource monitor",
+    "Trace logs"
+   ],
+   "artifacts": [
+    "System code",
+    "Resource use measurements",
+    "Concurrency conflict tests",
+    "Lock design notes",
+    "Failure analysis records"
+   ],
+   "verify_targets": [
+    "Resource use measurements",
+    "Memory check results",
+    "Results of repeated runs",
+    "Operating system documentation",
+    "Existing implementation"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "I wrote down which work runs concurrently and which runs separately",
+     "l3": "The execution units I defined were implemented as is"
+    },
+    "J2": {
+     "l2": "I wrote the processing cycle and memory ceiling as numbers",
+     "l3": "The limits I set were used as design criteria"
+    },
+    "J3": {
+     "l2": "I set the order in which resources are acquired and the lock scope",
+     "l3": "The locking policy I set held up in operation"
+    },
+    "J4": {
+     "l2": "I chose and used methods and tools for handling memory lifetimes",
+     "l3": "The approach I chose was used in other modules too"
+    },
+    "J5": {
+     "l2": "I left system code together with lock design notes",
+     "l3": "The design notes I left were used in someone else's implementation"
+    },
+    "J6": {
+     "l2": "I measured resource use and compared it with the set limits",
+     "l3": "I changed the resource policy based on the comparison"
+    },
+    "J7": {
+     "l2": "I narrowed down the cause of hangs or inconsistent results",
+     "l3": "I fixed the cause I found and confirmed it no longer appeared in repeated runs"
+    },
+    "J8": {
+     "l2": "I explained the resource policy to the teams using it and reached agreement",
+     "l3": "My resource decisions were used to choose device specifications"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Variation in response latency, and number of servers",
+    "OC2": "Resource limits that hold on customer device specifications",
+    "OC3": "System deliverables that meet the acceptance criteria",
+    "OC4": "Project target performance and the measurements behind it",
+    "OC5": "A runtime environment where experiments can be repeated",
+    "OC6": "Evidence from resource use records and safe shutdowns",
+    "OC7": "The simplest implementation that runs on low-cost devices"
+   }
+  },
+  {
+   "code": "TD07",
+   "name": "Networks and Distributed Systems",
+   "required_axes": [
+    "J3",
+    "J7"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Work that several machines must share arrives as a requirement"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Number of machines and latency, acceptable loss, concurrent requests, consistency requirements"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Consistency level, timeout values and retry counts"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Measuring latency, fault injection testing, designing load balancing, reviewing ordering guarantees"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Packet analyzers, latency measurement tools, fault injection tools, load balancers, trace collection"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Network settings tables, latency measurement records, fault injection results, incident response procedures"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Latency measurements, fault injection results, consistency requirements, existing operations logs"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If messages drop or duplicate, narrow the cause down to a segment, timeouts or retries"
+    }
+   ],
+   "tools": [
+    "Packet analyzer",
+    "Latency measurement tool",
+    "Fault injection tool",
+    "Load balancer",
+    "Trace collection tool"
+   ],
+   "artifacts": [
+    "Network settings table",
+    "Latency measurement records",
+    "Results of deliberately injected failures",
+    "Incident response procedure",
+    "Network segment diagram"
+   ],
+   "verify_targets": [
+    "Latency measurements",
+    "Results of deliberately injected failures",
+    "Requirements for data consistency between servers",
+    "Existing operations logs",
+    "Standard specifications"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "I wrote down which segments I own and which others own",
+     "l3": "The segment ownership I drew became the operating standard"
+    },
+    "J2": {
+     "l2": "I wrote acceptable latency and loss rate as numbers",
+     "l3": "The figures I set were used as uptime commitments"
+    },
+    "J3": {
+     "l2": "I set the consistency level, timeouts and retry counts",
+     "l3": "The values I set went into the production configuration and were used"
+    },
+    "J4": {
+     "l2": "I chose and used methods for latency measurement and fault injection",
+     "l3": "The test method I set became the team procedure"
+    },
+    "J5": {
+     "l2": "I left a network settings table and an incident response procedure",
+     "l3": "Someone else handled an outage by following the procedure I left"
+    },
+    "J6": {
+     "l2": "I injected failures on purpose and compared whether the system held up as designed",
+     "l3": "I changed timeouts or retries based on the comparison"
+    },
+    "J7": {
+     "l2": "I narrowed down the causes of drops and duplicates segment by segment",
+     "l3": "I fixed the cause I found and confirmed the same failure was gone"
+    },
+    "J8": {
+     "l2": "I agreed on changes to communication rules with other teams",
+     "l3": "My segment decisions were used for machine placement and cost"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Uptime and tail latency",
+    "OC2": "Communication protocols that hold on customer networks too",
+    "OC3": "Network setups that meet the acceptance criteria",
+    "OC4": "Setup and measurement of a project demo network",
+    "OC5": "Network conditions under which experiments can be repeated",
+    "OC6": "Evidence for keeping communication logs and blocking traffic",
+    "OC7": "The simplest setup that holds up with a few machines"
+   }
+  },
+  {
+   "code": "TD08",
+   "name": "Information Security",
+   "required_axes": [
+    "J2",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Assets to protect and situations to prevent arrive as requirements"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Asset list and who accesses what, regulatory requirements, possible attack paths"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "What to allow for whom, and where to block"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Writing threat lists, designing permissions, running vulnerability scans, writing detection rules"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Vulnerability scanners, permission management tools, log analysis tools, cryptography libraries"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Threat lists, permission design tables, inspection reports, detection rules, response procedures"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Regulatory requirements, inspection results, published vulnerability information, past incident records"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If there was a breach, narrow the cause down to permissions, input validation or configuration"
+    }
+   ],
+   "tools": [
+    "Vulnerability scanner",
+    "Permission management tool",
+    "Log analysis tool",
+    "Cryptography library",
+    "Simulated attack tool"
+   ],
+   "artifacts": [
+    "Threat list",
+    "Permission design table",
+    "Inspection report",
+    "Detection rules",
+    "Response procedure"
+   ],
+   "verify_targets": [
+    "What the regulations require",
+    "Inspection results",
+    "Published vulnerability information",
+    "Past incident records",
+    "Simulated attack results"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "I separated the assets to protect from the threats not covered this time",
+     "l3": "The threat scope I drew became the inspection scope"
+    },
+    "J2": {
+     "l2": "I turned regulatory requirements and situations to prevent into conditions",
+     "l3": "The conditions I wrote were used as security criteria"
+    },
+    "J3": {
+     "l2": "I decided what to allow for whom and where to block",
+     "l3": "The access scope I set was applied in operation"
+    },
+    "J4": {
+     "l2": "I chose and used an inspection method and an encryption scheme",
+     "l3": "The approach I chose was used in other systems too"
+    },
+    "J5": {
+     "l2": "I left a threat list and a permission design table",
+     "l3": "Permissions were configured following the design table I left"
+    },
+    "J6": {
+     "l2": "I compared inspection results with regulatory requirements and made a judgment",
+     "l3": "I changed configuration or code based on the comparison"
+    },
+    "J7": {
+     "l2": "I narrowed down why a path was left unblocked",
+     "l3": "I fixed the cause I found and confirmed the same path was closed"
+    },
+    "J8": {
+     "l2": "I agreed on the access scope with the teams that use it",
+     "l3": "My security judgment was used to decide whether to release"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Balance between number of incidents and user inconvenience",
+    "OC2": "Meeting customer security requirements and passing certification",
+    "OC3": "Inspection reports and confirmation of corrective actions",
+    "OC4": "Evidence that project security requirements were met",
+    "OC5": "Experiments on attack methods and how well defenses work",
+    "OC6": "Compliance judgments and traceable evidence",
+    "OC7": "The simplest configuration that protects only what needs protecting now"
+   }
+  },
+  {
+   "code": "TD09",
+   "name": "Machine Learning and Data Analysis",
+   "required_axes": [
+    "J4",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "The question to answer and the available data arrive as constraints"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Number of records and missing values, label quality, acceptable error, compute resources"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The evaluation conditions, the method to use, and which metric to look at first"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Cleaning data, splitting data, training models, calculating metrics, analyzing error cases"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Numerical computing tools, experiment tracking tools, data cleaning code, visualization tools"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Analysis code, data preparation procedures, evaluation results tables, error case lists"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Baseline performance, results on held-out data, human judgments, existing reports"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If performance falls short, narrow the cause down to the data, the labels or the evaluation conditions"
+    }
+   ],
+   "tools": [
+    "Numerical computing tool",
+    "Experiment tracking tool",
+    "Data cleaning code",
+    "Visualization tool",
+    "Model library"
+   ],
+   "artifacts": [
+    "Analysis code",
+    "Data preparation procedure",
+    "Evaluation results table",
+    "Error case list",
+    "Experiment records"
+   ],
+   "verify_targets": [
+    "Baseline model performance",
+    "Results on held-out test data",
+    "Judgments made directly by people",
+    "Existing reports",
+    "Results of repeated runs"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "I rewrote the question I wanted answered in a form the data could answer",
+     "l3": "The question I set became the project scope as is"
+    },
+    "J2": {
+     "l2": "I wrote down the acceptable error and the range of data I could use",
+     "l3": "The criteria I set were used as the project's pass mark"
+    },
+    "J3": {
+     "l2": "I set the evaluation conditions and the metric to look at first",
+     "l3": "The evaluation conditions I set became the team standard"
+    },
+    "J4": {
+     "l2": "I chose and applied a method and a data cleaning procedure",
+     "l3": "The method I chose was used in other projects too"
+    },
+    "J5": {
+     "l2": "I left analysis code together with a data preparation procedure",
+     "l3": "Someone else reproduced the same results using the procedure I left"
+    },
+    "J6": {
+     "l2": "I compared performance with a baseline under the same conditions",
+     "l3": "I changed the method or the data based on the comparison"
+    },
+    "J7": {
+     "l2": "I gathered the cases the model got wrong and narrowed down the cause",
+     "l3": "I fixed the cause I found and confirmed performance improved"
+    },
+    "J8": {
+     "l2": "I presented analysis results in a decision meeting and explained them",
+     "l3": "My analysis was used in a product or policy decision"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Improvement in user metrics, and compute cost",
+    "OC2": "Performance that holds on customer data too",
+    "OC3": "Analysis reports delivered within the deadline",
+    "OC4": "Project target metrics and evidence they were reached",
+    "OC5": "Performance of a new method and reproducible experiments",
+    "OC6": "Reasoning behind judgments and bias check records",
+    "OC7": "The simplest model that works with the current data"
+   }
+  },
+  {
+   "code": "TD10",
+   "name": "Testing, Quality and Release Operations",
+   "required_axes": [
+    "J6",
+    "J7"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Features to ship and the quality to maintain arrive as requirements"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Feature list and change frequency, acceptable downtime, available environments"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Pass criteria, the scope of automation, and the rollback path"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Designing test cases, writing automated tests, writing deployment procedures, setting alert thresholds"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Test runners, CI tools, deployment tools, monitoring and alerting tools"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Test suites, pass criteria tables, deployment procedures, alert thresholds, incident records"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Pass criteria tables, test results, metrics before and after deployment, incident records"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If a problem appears after release, roll back and narrow the cause down to a set of changes"
+    }
+   ],
+   "tools": [
+    "Test runner",
+    "CI tool",
+    "Deployment tool",
+    "Monitoring tool",
+    "Alerting tool"
+   ],
+   "artifacts": [
+    "Test suite",
+    "Pass criteria table",
+    "Deployment procedure",
+    "Alert thresholds",
+    "Incident records"
+   ],
+   "verify_targets": [
+    "Pass criteria table",
+    "Test results",
+    "Metrics before and after deployment",
+    "Incident records",
+    "Rollback results"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "I wrote down what to test and what not to",
+     "l3": "The test scope I drew was used as is"
+    },
+    "J2": {
+     "l2": "I wrote acceptable downtime and quality requirements as numbers",
+     "l3": "The figures I set were used as uptime commitments"
+    },
+    "J3": {
+     "l2": "I set the pass criteria, the scope of automation and the rollback path",
+     "l3": "The criteria I set became the line that blocks or allows a deployment"
+    },
+    "J4": {
+     "l2": "I chose and used a test method and deployment tool",
+     "l3": "The procedure I set became the team's standard procedure"
+    },
+    "J5": {
+     "l2": "I left a test suite and a deployment procedure",
+     "l3": "Someone else deployed by following the procedure I left"
+    },
+    "J6": {
+     "l2": "I compared test results with the pass criteria and made a judgment",
+     "l3": "I changed the criteria or the tests based on the comparison"
+    },
+    "J7": {
+     "l2": "I narrowed down the cause of a post-release problem to a set of changes",
+     "l3": "I fixed the cause I found and confirmed the same problem was gone"
+    },
+    "J8": {
+     "l2": "I explained my deploy-or-hold judgment to the team and reached agreement",
+     "l3": "My judgment was used to decide the release schedule"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Deployment frequency and time to recover from outages",
+    "OC2": "Installation results that repeat reliably in customer environments",
+    "OC3": "Passing acceptance tests and acceptance paperwork",
+    "OC4": "Verification records for project deliverables",
+    "OC5": "Environment setups where experiments can be repeated",
+    "OC6": "Traceability of test evidence and change history",
+    "OC7": "The simplest deployment that can be rolled back"
+   }
+  },
+  {
+   "code": "TD11",
+   "name": "Real-time Graphics and Game Development",
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "The scenes to show and the frame rate to hold arrive as constraints"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Target frame rate and device performance, screen resolution, scene complexity"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The drawing order, what quality to cut, and how much time to spend per frame"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Designing rendering paths, measuring frame time, managing asset lifetimes, measuring input latency"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Profilers, graphics debuggers, game engines, frame measurement tools"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Rendering code, frame time records, asset lifetime notes, graphics settings tables"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Target frame rate, frame time measurements, results per device, existing scene records"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If the frame rate drops, narrow the cause down to draw calls, asset loading or computation"
+    }
+   ],
+   "tools": [
+    "Profiler",
+    "Graphics debugger",
+    "Game engine",
+    "Frame measurement tool",
+    "Asset loading analyzer"
+   ],
+   "artifacts": [
+    "Rendering code",
+    "Frame time records",
+    "Notes on when files are loaded and unloaded",
+    "Graphics settings table",
+    "Measurements per device"
+   ],
+   "verify_targets": [
+    "Target frames per second",
+    "Frame time measurements",
+    "Results per device",
+    "Existing scene measurement records",
+    "Input latency measurements"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "I wrote down what this scene would show and what it would leave out",
+     "l3": "The scene scope I drew was built as is"
+    },
+    "J2": {
+     "l2": "I wrote the target frame rate and device performance as numbers",
+     "l3": "The targets I set were used as release criteria"
+    },
+    "J3": {
+     "l2": "I set the drawing order, the quality to cut and the frame budget",
+     "l3": "The scene shipped within the budget I set"
+    },
+    "J4": {
+     "l2": "I chose and used rendering methods and measurement tools",
+     "l3": "The approach I chose was used in other scenes too"
+    },
+    "J5": {
+     "l2": "I left rendering code together with a graphics settings table",
+     "l3": "Someone else took and used the settings table I left"
+    },
+    "J6": {
+     "l2": "I measured frame time on each device and compared it with the target",
+     "l3": "I changed the drawing order or quality based on the comparison"
+    },
+    "J7": {
+     "l2": "I narrowed down the cause of frame drops section by section",
+     "l3": "I fixed the cause I found and confirmed the frame rate recovered"
+    },
+    "J8": {
+     "l2": "I agreed on the quality and performance trade-off with the game designers",
+     "l3": "My budget decisions were used for the list of supported devices"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Frame rate stability and the range of supported devices",
+    "OC2": "Performance guarantees for engine features customers use",
+    "OC3": "Scene deliverables handed over within the deadline",
+    "OC4": "Project demo scenes and the measurements behind them",
+    "OC5": "Performance experiments on new rendering methods",
+    "OC6": "Evidence of compliance with content and accessibility standards",
+    "OC7": "The simplest scene that runs on low-cost devices"
+   }
+  }
+ ],
+ "review_note": "Computer science and software covers work inside a single machine, work between machines, and screens that people look at, all in one file. What keeps them apart is `required_axes`: design work depends on requirements interpretation, distributed and systems work on failure and correction, and algorithm and learning work on comparison and verification"
+}

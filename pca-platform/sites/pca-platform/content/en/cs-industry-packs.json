@@ -1,0 +1,1626 @@
+{
+ "schema_version": "cs-industry-packs.1",
+ "core": "CS_CORE_V1",
+ "note": "Holds industry context, judgment dimensions, follow-up questions, evidence interpretation and links to jobs. Industries do not change scores: `axis_emphasis` marks the axes an industry looks at more closely and does not enter axis-level calculation. `scene` is a short introduction shown before Core screening and produces no score",
+ "caps": {
+  "industry_items_max": 10,
+  "role_items_max": 7,
+  "deep_industry_max": 1,
+  "deep_role_max": 2,
+  "interest_pick_max": 2
+ },
+ "reading_rule": "An industry pack is not a quiz on industry knowledge. What it looks at is whether the person can recognize their existing computer science and software experience in that industry's problems and connect the two. So each item has a `gloss` restating the decision in general computer science and software terms, and the test screen shows that line with the item. Not knowing industry jargon is never recorded as a poor fit",
+ "exploration": {
+  "browse": "all",
+  "deep_per_attempt": 1,
+  "add_later": true,
+  "subscription_gate": false,
+  "note": "All eight industries can be explored in the results. At the start of the test the person picks up to two industries of interest, reads the scenes for those industries before Core screening, and is asked in depth about one of them in PRO. Industries not picked are compared lightly using Core results. Do not change this into a structure where industry packs unlock only with a subscription"
+ },
+ "packs": [
+  {
+   "code": "INDUSTRY_PLATFORM_V1",
+   "version": 1,
+   "name_ko": "Online Platform Services",
+   "name_en": "Online Platform Services",
+   "core": "CS_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "The same features must hold up even if the number of users grows a hundredfold",
+    "Changes ship several times a day, and get rolled back when something goes wrong",
+    "Users leave if responses slow down even slightly",
+    "Features are switched on and off in experiments, and decisions are made from metrics"
+   ],
+   "scene": "In online platform services, computer science and software graduates deal with problems like requests from many users, several deployments a day, response latency and decisions driven by metrics. Defining response contracts and confirming them through measurement carries over directly.",
+   "judgement_dimensions": [
+    {
+     "name": "Do you design a structure that holds up as requests grow?",
+     "axis": "J3",
+     "domain": "TD03",
+     "why": "User numbers often spike"
+    },
+    {
+     "name": "Do you look at queries and indexes in terms of actual usage?",
+     "axis": "J6",
+     "domain": "TD04",
+     "why": "One slow query can block everything"
+    },
+    {
+     "name": "Do you keep a deployment path that can be rolled back?",
+     "axis": "J3",
+     "domain": "TD10",
+     "why": "Releases ship several times a day"
+    },
+    {
+     "name": "Do you keep partial failures from stopping the whole system?",
+     "axis": "J7",
+     "domain": "TD07",
+     "why": "Some machine somewhere is always down"
+    },
+    {
+     "name": "Do you split screen state to fit a growing feature set?",
+     "axis": "J3",
+     "domain": "TD05",
+     "why": "Screens keep multiplying"
+    },
+    {
+     "name": "Do you use metrics to decide whether to turn features on or off?",
+     "axis": "J8",
+     "domain": "TD09",
+     "why": "Decisions are made by numbers, not gut feeling"
+    },
+    {
+     "name": "Do you change data representations to match usage?",
+     "axis": "J3",
+     "domain": "TD02",
+     "why": "The same code meets a hundred times more data"
+    },
+    {
+     "name": "Do you split modules so they can be maintained for years?",
+     "axis": "J2",
+     "domain": "TD01",
+     "why": "A service is maintained and changed for years"
+    },
+    {
+     "name": "Do you block the paths through which personal data could leak?",
+     "axis": "J6",
+     "domain": "TD08",
+     "why": "User data is the most valuable asset"
+    },
+    {
+     "name": "Do you decide when resources are acquired and released?",
+     "axis": "J3",
+     "domain": "TD06",
+     "why": "Server costs come from resource policy"
+    }
+   ],
+   "axis_emphasis": {
+    "TD03": [
+     "J3"
+    ],
+    "TD04": [
+     "J6"
+    ],
+    "TD10": [
+     "J3"
+    ],
+    "TD07": [
+     "J7"
+    ],
+    "TD05": [
+     "J3"
+    ],
+    "TD09": [
+     "J8"
+    ],
+    "TD02": [
+     "J3"
+    ],
+    "TD01": [
+     "J2"
+    ],
+    "TD08": [
+     "J6"
+    ],
+    "TD06": [
+     "J3"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_PLATFORM_V1_I1",
+     "axis": "J3",
+     "domain": "TD03",
+     "ask": "Have you designed a processing flow that holds up when requests pile in?",
+     "gloss": "Changing how a server processes requests after a sudden jump in users"
+    },
+    {
+     "id": "INDUSTRY_PLATFORM_V1_I2",
+     "axis": "J6",
+     "domain": "TD04",
+     "ask": "Have you timed queries and added or changed indexes?",
+     "gloss": "Finding a slow lookup and making it faster"
+    },
+    {
+     "id": "INDUSTRY_PLATFORM_V1_I3",
+     "axis": "J3",
+     "domain": "TD10",
+     "ask": "Have you built a rollback path in advance for when something goes wrong?",
+     "gloss": "Rolling back to the previous version when a deployed feature broke"
+    },
+    {
+     "id": "INDUSTRY_PLATFORM_V1_I4",
+     "axis": "J7",
+     "domain": "TD07",
+     "ask": "Have you made changes so the whole system keeps running when one part dies?",
+     "gloss": "Keeping a failure in one place from spreading to the whole service"
+    },
+    {
+     "id": "INDUSTRY_PLATFORM_V1_I5",
+     "axis": "J3",
+     "domain": "TD05",
+     "ask": "Have you decided where to keep state so the UI holds up under heavy traffic?",
+     "gloss": "Reworking how state is managed as the number of screens grew"
+    },
+    {
+     "id": "INDUSTRY_PLATFORM_V1_I6",
+     "axis": "J8",
+     "domain": "TD09",
+     "ask": "Have you taken part in a metrics-based decision to turn a feature on or off?",
+     "gloss": "Taking a feature down, or bringing it back, based on usage metrics"
+    },
+    {
+     "id": "INDUSTRY_PLATFORM_V1_I7",
+     "axis": "J3",
+     "domain": "TD02",
+     "ask": "When data grew, have you changed how it was represented?",
+     "gloss": "Changing a data structure as the number of records grew"
+    },
+    {
+     "id": "INDUSTRY_PLATFORM_V1_I8",
+     "axis": "J2",
+     "domain": "TD01",
+     "ask": "Have you set module boundaries with years of maintenance in mind?",
+     "gloss": "Splitting code by feature so it is easier to change later"
+    },
+    {
+     "id": "INDUSTRY_PLATFORM_V1_I9",
+     "axis": "J6",
+     "domain": "TD08",
+     "ask": "Have you checked the paths through which personal data could leave the system?",
+     "gloss": "Checking which personal data is visible to whom"
+    },
+    {
+     "id": "INDUSTRY_PLATFORM_V1_I10",
+     "axis": "J3",
+     "domain": "TD06",
+     "ask": "Have you cut costs by deciding when resources are acquired and released?",
+     "gloss": "Changing code so it uses memory or connections more sparingly"
+    }
+   ],
+   "gap_language": {
+    "J3": "In this industry, technical decisions show up as choosing structures that hold up as requests grow, and rollback paths",
+    "J6": "In this industry, comparison and verification means measuring metrics before and after a change under the same conditions",
+    "J7": "In this industry, failure and correction is judged by how well the system holds up while part of it is down",
+    "J8": "In this industry, organizational use shows up as decisions to turn features on and off based on metrics"
+   },
+   "result_line": "Online platform services deal with heavy request loads, frequent deployments and response latency all at once. Experience designing a processing flow, making queries faster, or rolling back a release is close to the entry point for this industry.",
+   "evidence_reading": [
+    {
+     "same": "Building server features",
+     "reads_as": "Evidence for a processing flow that holds up as requests grow"
+    },
+    {
+     "same": "Improving query performance",
+     "reads_as": "Storage design decisions matched to usage"
+    },
+    {
+     "same": "Deployment automation",
+     "reads_as": "The groundwork for shipping several times a day"
+    },
+    {
+     "same": "Metrics analysis",
+     "reads_as": "Evidence for decisions to turn features on and off"
+    }
+   ],
+   "job_aliases": [
+    "Backend developer",
+    "Frontend developer",
+    "Data engineer",
+    "Site reliability engineer",
+    "DevOps and build engineer"
+   ],
+   "org_mix": {
+    "OC1": "Common",
+    "OC2": "Present",
+    "OC3": "Rare",
+    "OC4": "Rare",
+    "OC5": "Rare",
+    "OC6": "Rare",
+    "OC7": "Common"
+   },
+   "vocabulary": [
+    "Concurrent users",
+    "Response latency",
+    "Rollback",
+    "Metrics",
+    "Feature flags",
+    "Load balancing",
+    "Cache"
+   ]
+  },
+  {
+   "code": "INDUSTRY_FINTECH_V1",
+   "version": 1,
+   "name_ko": "Finance and Payments",
+   "name_en": "Finance and Payments",
+   "core": "CS_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "Money must never be taken twice, or not taken at all",
+    "Who did what and when is kept on record and audited",
+    "Financial regulations set the conditions that must be met",
+    "Every minute of an outage means lost money and customer complaints"
+   ],
+   "scene": "In finance and payments, computer science and software graduates deal with problems like transaction consistency, audit records, regulatory requirements and incident response. Setting transaction boundaries and checking results against standards carries over directly.",
+   "judgement_dimensions": [
+    {
+     "name": "Do you set transaction boundaries so each one is processed only once?",
+     "axis": "J3",
+     "domain": "TD03",
+     "why": "Charging twice is an incident on the spot"
+    },
+    {
+     "name": "Do you turn regulatory requirements into design conditions?",
+     "axis": "J2",
+     "domain": "TD08",
+     "why": "The rules to follow come from outside"
+    },
+    {
+     "name": "Do you design storage so records can't be erased?",
+     "axis": "J3",
+     "domain": "TD04",
+     "why": "Auditors look at the records"
+    },
+    {
+     "name": "Do you choose a consistency level based on what's at stake in money?",
+     "axis": "J3",
+     "domain": "TD07",
+     "why": "Being correct comes before being fast"
+    },
+    {
+     "name": "Do you judge pass or fail by checking against the standard?",
+     "axis": "J6",
+     "domain": "TD10",
+     "why": "The pass criteria are written into the contract"
+    },
+    {
+     "name": "Do you narrow permissions to the minimum?",
+     "axis": "J6",
+     "domain": "TD08",
+     "why": "Insiders are part of the threat model too"
+    },
+    {
+     "name": "When there's an outage, do you roll back and narrow down the cause?",
+     "axis": "J7",
+     "domain": "TD10",
+     "why": "Outage time is counted as loss"
+    },
+    {
+     "name": "Do you pick out abnormal transactions from the data?",
+     "axis": "J4",
+     "domain": "TD09",
+     "why": "There's more than any person could review"
+    },
+    {
+     "name": "Do you get calculations right down to the rounding?",
+     "axis": "J6",
+     "domain": "TD02",
+     "why": "Off by one cent is still wrong"
+    },
+    {
+     "name": "Do you keep a traceable history of changes?",
+     "axis": "J5",
+     "domain": "TD01",
+     "why": "People ask what was changed and why"
+    }
+   ],
+   "axis_emphasis": {
+    "TD03": [
+     "J3"
+    ],
+    "TD08": [
+     "J2",
+     "J6"
+    ],
+    "TD04": [
+     "J3"
+    ],
+    "TD07": [
+     "J3"
+    ],
+    "TD10": [
+     "J6",
+     "J7"
+    ],
+    "TD09": [
+     "J4"
+    ],
+    "TD02": [
+     "J6"
+    ],
+    "TD01": [
+     "J5"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_FINTECH_V1_I1",
+     "axis": "J3",
+     "domain": "TD03",
+     "ask": "Have you made sure a request is processed only once, even if it arrives twice?",
+     "gloss": "Stopping a duplicate request from being processed twice"
+    },
+    {
+     "id": "INDUSTRY_FINTECH_V1_I2",
+     "axis": "J2",
+     "domain": "TD08",
+     "ask": "Have you turned what financial rules require into checks the code enforces?",
+     "gloss": "Turning rules you had to follow into validation checks in code"
+    },
+    {
+     "id": "INDUSTRY_FINTECH_V1_I3",
+     "axis": "J3",
+     "domain": "TD04",
+     "ask": "Have you designed storage so records can't be erased?",
+     "gloss": "Making records that must be kept impossible to delete or edit"
+    },
+    {
+     "id": "INDUSTRY_FINTECH_V1_I4",
+     "axis": "J3",
+     "domain": "TD07",
+     "ask": "Have you decided whether to favor being correct or being fast?",
+     "gloss": "Deciding whether accuracy or speed comes first"
+    },
+    {
+     "id": "INDUSTRY_FINTECH_V1_I5",
+     "axis": "J6",
+     "domain": "TD10",
+     "ask": "Where money changes hands, have you written the must-never-fail conditions as pass criteria and judged against them?",
+     "gloss": "Setting pass criteria and checking results against them one by one"
+    },
+    {
+     "id": "INDUSTRY_FINTECH_V1_I6",
+     "axis": "J6",
+     "domain": "TD08",
+     "ask": "Have you narrowed permissions down to only what is needed?",
+     "gloss": "Reducing what each account can see"
+    },
+    {
+     "id": "INDUSTRY_FINTECH_V1_I7",
+     "axis": "J7",
+     "domain": "TD10",
+     "ask": "After an outage, have you rolled back and narrowed down the cause?",
+     "gloss": "Digging through logs to find the cause when a feature stopped working"
+    },
+    {
+     "id": "INDUSTRY_FINTECH_V1_I8",
+     "axis": "J4",
+     "domain": "TD09",
+     "ask": "Have you used a method to pick out unusual records from data?",
+     "gloss": "Using a method to pick out data that looks different from usual"
+    },
+    {
+     "id": "INDUSTRY_FINTECH_V1_I9",
+     "axis": "J6",
+     "domain": "TD02",
+     "ask": "Have you checked calculation results by hand or with another method?",
+     "gloss": "Recalculating numbers a program produced by hand to check them"
+    },
+    {
+     "id": "INDUSTRY_FINTECH_V1_I10",
+     "axis": "J5",
+     "domain": "TD01",
+     "ask": "Have you recorded what you changed and why, and later had a change traced through that record?",
+     "gloss": "Recording why code changed in commit messages or other notes"
+    }
+   ],
+   "gap_language": {
+    "J2": "In this industry, requirements interpretation shows up as turning what regulations and contracts set into design conditions",
+    "J3": "In this industry, technical decisions show up as setting process-once boundaries and consistency levels",
+    "J6": "In this industry, comparison and verification means judging pass or fail against the standard",
+    "J7": "In this industry, failure and correction means rolling back and then narrowing down the cause with the records"
+   },
+   "result_line": "Finance and payments deal with transaction consistency, audit records and regulatory requirements all at once. Experience making something process only once, turning regulations into conditions, or judging results against a standard is close to the entry point for this industry.",
+   "evidence_reading": [
+    {
+     "same": "Building transaction processing",
+     "reads_as": "Evidence for decisions that prevent double charges"
+    },
+    {
+     "same": "Permission design",
+     "reads_as": "Threat judgments that include insiders"
+    },
+    {
+     "same": "Writing test criteria",
+     "reads_as": "Evidence for the pass criteria written into contracts"
+    },
+    {
+     "same": "Detecting data anomalies",
+     "reads_as": "Methods for screening more data than people can review"
+    }
+   ],
+   "job_aliases": [
+    "Backend developer",
+    "Information security specialist",
+    "Data analyst",
+    "QA and test engineer",
+    "Database engineer"
+   ],
+   "org_mix": {
+    "OC1": "Common",
+    "OC2": "Present",
+    "OC3": "Present",
+    "OC4": "Rare",
+    "OC5": "Rare",
+    "OC6": "Common",
+    "OC7": "Present"
+   },
+   "vocabulary": [
+    "Transaction consistency",
+    "Audit records",
+    "Duplicate prevention",
+    "Reconciliation",
+    "Ledger",
+    "Separation of duties",
+    "Electronic payment regulations"
+   ]
+  },
+  {
+   "code": "INDUSTRY_GAME_V1",
+   "version": 1,
+   "name_ko": "Games and Real-time Content",
+   "name_en": "Games and Real-time Content",
+   "core": "CS_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "The computation that must finish within one frame is fixed",
+    "The same game has to run on everything from cheap to high-end devices",
+    "Content keeps being added and operated after launch",
+    "How the system handles moments when crowds arrive at once defines service quality"
+   ],
+   "scene": "In games and real-time content, computer science and software graduates deal with problems like frame budgets, performance differences across devices, post-launch operations and concurrent players. Setting the drawing order and confirming it through measurement carries over directly.",
+   "judgement_dimensions": [
+    {
+     "name": "Do you set the drawing order within one frame's budget?",
+     "axis": "J3",
+     "domain": "TD11",
+     "why": "Players feel a frame drop instantly"
+    },
+    {
+     "name": "Do you measure on each device and compare with the target?",
+     "axis": "J6",
+     "domain": "TD11",
+     "why": "The cheapest device sets the bar"
+    },
+    {
+     "name": "Do you deal with the delay from input to screen?",
+     "axis": "J3",
+     "domain": "TD05",
+     "why": "Lag at the fingertips decides whether it's fun"
+    },
+    {
+     "name": "Do you decide when assets are loaded and unloaded?",
+     "axis": "J3",
+     "domain": "TD06",
+     "why": "Memory is the first thing to run out"
+    },
+    {
+     "name": "Do you hold up under concurrent load when crowds gather?",
+     "axis": "J7",
+     "domain": "TD07",
+     "why": "The peak moments are predictable"
+    },
+    {
+     "name": "Do you choose data representations by amount of computation?",
+     "axis": "J3",
+     "domain": "TD02",
+     "why": "This code runs every frame"
+    },
+    {
+     "name": "Do you ship post-launch content so it can be rolled back?",
+     "axis": "J3",
+     "domain": "TD10",
+     "why": "It keeps changing while live"
+    },
+    {
+     "name": "Do you judge correctness based on state held on the server?",
+     "axis": "J6",
+     "domain": "TD03",
+     "why": "Cheating must be stopped"
+    },
+    {
+     "name": "Do you judge difficulty from usage records?",
+     "axis": "J4",
+     "domain": "TD09",
+     "why": "Play records keep piling up"
+    },
+    {
+     "name": "Do you agree on what to show and what to leave out?",
+     "axis": "J8",
+     "domain": "TD01",
+     "why": "Design ambitions and performance always clash"
+    }
+   ],
+   "axis_emphasis": {
+    "TD11": [
+     "J3",
+     "J6"
+    ],
+    "TD05": [
+     "J3"
+    ],
+    "TD06": [
+     "J3"
+    ],
+    "TD07": [
+     "J7"
+    ],
+    "TD02": [
+     "J3"
+    ],
+    "TD10": [
+     "J3"
+    ],
+    "TD03": [
+     "J6"
+    ],
+    "TD09": [
+     "J4"
+    ],
+    "TD01": [
+     "J8"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_GAME_V1_I1",
+     "axis": "J3",
+     "domain": "TD11",
+     "ask": "When frames dropped, did you set the order of what to draw first and what to postpone?",
+     "gloss": "Fixing the drawing order or method because the screen stuttered"
+    },
+    {
+     "id": "INDUSTRY_GAME_V1_I2",
+     "axis": "J6",
+     "domain": "TD11",
+     "ask": "Have you measured frame rates on each device and compared them with the target?",
+     "gloss": "Running on several devices and comparing their speed"
+    },
+    {
+     "id": "INDUSTRY_GAME_V1_I3",
+     "axis": "J3",
+     "domain": "TD05",
+     "ask": "Have you reduced the delay from input to screen?",
+     "gloss": "Fixing a slow response after pressing a button"
+    },
+    {
+     "id": "INDUSTRY_GAME_V1_I4",
+     "axis": "J3",
+     "domain": "TD06",
+     "ask": "Have you decided when assets are loaded and unloaded?",
+     "gloss": "Changing how files are loaded because memory ran short"
+    },
+    {
+     "id": "INDUSTRY_GAME_V1_I5",
+     "axis": "J7",
+     "domain": "TD07",
+     "ask": "Have you changed a system so it holds up the moment crowds arrive?",
+     "gloss": "Fixing a server that slowed down under a surge of connections"
+    },
+    {
+     "id": "INDUSTRY_GAME_V1_I6",
+     "axis": "J3",
+     "domain": "TD02",
+     "ask": "Have you changed data representations to cut computation that runs every time?",
+     "gloss": "Cutting down calculations that repeat every time"
+    },
+    {
+     "id": "INDUSTRY_GAME_V1_I7",
+     "axis": "J3",
+     "domain": "TD10",
+     "ask": "Have you added content to a live service while keeping a way to roll it back?",
+     "gloss": "Shipping an update to a program that was already live"
+    },
+    {
+     "id": "INDUSTRY_GAME_V1_I8",
+     "axis": "J6",
+     "domain": "TD03",
+     "ask": "Have you judged whether something is valid based on values held on the server?",
+     "gloss": "Rechecking values on the server to stop tampering"
+    },
+    {
+     "id": "INDUSTRY_GAME_V1_I9",
+     "axis": "J4",
+     "domain": "TD09",
+     "ask": "Have you judged difficulty or balance from accumulated usage records?",
+     "gloss": "Adjusting difficulty after looking at accumulated play records"
+    },
+    {
+     "id": "INDUSTRY_GAME_V1_I10",
+     "axis": "J8",
+     "domain": "TD01",
+     "ask": "Have you agreed with the game designers on what to show and what to leave out?",
+     "gloss": "Agreeing with the team to cut content for the sake of speed"
+    }
+   ],
+   "gap_language": {
+    "J3": "In this industry, technical decisions show up as setting the per-frame budget and when assets are loaded and unloaded",
+    "J4": "In this industry, methods and tools are chosen to cut computation that runs every frame",
+    "J6": "In this industry, comparison and verification means measuring on every device and taking the slowest one as the reference",
+    "J8": "In this industry, organizational use shows up as agreeing with designers on the trade-off between performance and content"
+   },
+   "result_line": "Games and real-time content deal with frame budgets, performance differences across devices and post-launch operations all at once. Experience setting a drawing order, measuring on multiple devices, or reworking asset loading is close to the entry point for this industry.",
+   "evidence_reading": [
+    {
+     "same": "Rendering implementation",
+     "reads_as": "Evidence for decisions that keep within the frame budget"
+    },
+    {
+     "same": "Performance measurement",
+     "reads_as": "Judgments that take the slowest device as the reference"
+    },
+    {
+     "same": "Asset management",
+     "reads_as": "Evidence for fitting content within memory limits"
+    },
+    {
+     "same": "Play record analysis",
+     "reads_as": "Methods for judging balance by the numbers"
+    }
+   ],
+   "job_aliases": [
+    "Game client developer",
+    "Game engine developer",
+    "Graphics programmer",
+    "Backend developer",
+    "Site reliability engineer"
+   ],
+   "org_mix": {
+    "OC1": "Common",
+    "OC2": "Present",
+    "OC3": "Rare",
+    "OC4": "Rare",
+    "OC5": "Rare",
+    "OC6": "Rare",
+    "OC7": "Common"
+   },
+   "vocabulary": [
+    "Frame budget",
+    "Draw order",
+    "Asset loading",
+    "Concurrent users",
+    "Live operations",
+    "Input latency",
+    "Optimization"
+   ]
+  },
+  {
+   "code": "INDUSTRY_ENTERPRISE_V1",
+   "version": 1,
+   "name_ko": "Enterprise Software and Contracted Development",
+   "name_en": "Enterprise Software and Contracted Development",
+   "core": "CS_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "The requirements the client wrote become the acceptance criteria as is",
+    "The software must install and run in the client company's own environment",
+    "Deadlines and acceptance conditions are written into the contract",
+    "After handover, the software is maintained and changed for years"
+   ],
+   "scene": "In enterprise software and contracted development, computer science and software graduates deal with problems like interpreting client requirements, installing in client environments, acceptance criteria and long-term maintenance. Turning requirements into conditions and checking results against standards carries over directly.",
+   "judgement_dimensions": [
+    {
+     "name": "Do you separate out which client requirements you won't take on?",
+     "axis": "J2",
+     "domain": "TD01",
+     "why": "Taking on everything means missing the deadline"
+    },
+    {
+     "name": "Do you judge results against the acceptance criteria?",
+     "axis": "J6",
+     "domain": "TD10",
+     "why": "Acceptance is both the end and the beginning"
+    },
+    {
+     "name": "Do you make sure it installs the same way in the client's environment?",
+     "axis": "J3",
+     "domain": "TD10",
+     "why": "It can't only work on your own machines"
+    },
+    {
+     "name": "Do you define the contract for exchanging data with existing systems?",
+     "axis": "J3",
+     "domain": "TD03",
+     "why": "There is always something already in place to connect to"
+    },
+    {
+     "name": "Do you build procedures for migrating client data?",
+     "axis": "J5",
+     "domain": "TD04",
+     "why": "Data migration is what breaks most often"
+    },
+    {
+     "name": "Do you fit permission requirements to the client's organization structure?",
+     "axis": "J3",
+     "domain": "TD08",
+     "why": "The approval chain is the permission design"
+    },
+    {
+     "name": "Do you split modules so they can be maintained for years?",
+     "axis": "J3",
+     "domain": "TD01",
+     "why": "It gets maintained and changed for years"
+    },
+    {
+     "name": "When something breaks, do you narrow it down in the client's environment?",
+     "axis": "J7",
+     "domain": "TD06",
+     "why": "Often the problem only reproduces on the client's side"
+    },
+    {
+     "name": "Do you leave a traceable record of what was changed and why?",
+     "axis": "J5",
+     "domain": "TD01",
+     "why": "People ask for the reason behind changes"
+    },
+    {
+     "name": "Do you negotiate requirement changes together with the deadline?",
+     "axis": "J8",
+     "domain": "TD01",
+     "why": "Requirements always grow"
+    }
+   ],
+   "axis_emphasis": {
+    "TD01": [
+     "J2",
+     "J3",
+     "J5",
+     "J8"
+    ],
+    "TD10": [
+     "J6",
+     "J3"
+    ],
+    "TD03": [
+     "J3"
+    ],
+    "TD04": [
+     "J5"
+    ],
+    "TD08": [
+     "J3"
+    ],
+    "TD06": [
+     "J7"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_ENTERPRISE_V1_I1",
+     "axis": "J2",
+     "domain": "TD01",
+     "ask": "Of everything the client wrote down, have you picked out what would stay out of this contract?",
+     "gloss": "Cutting the scope to build because there were too many requirements"
+    },
+    {
+     "id": "INDUSTRY_ENTERPRISE_V1_I2",
+     "axis": "J6",
+     "domain": "TD10",
+     "ask": "Have you judged results against the acceptance criteria?",
+     "gloss": "Checking a deliverable against the completion criteria item by item"
+    },
+    {
+     "id": "INDUSTRY_ENTERPRISE_V1_I3",
+     "axis": "J3",
+     "domain": "TD10",
+     "ask": "Have you made software install the same way in other environments?",
+     "gloss": "Fixing a program that only worked on your computer so it works elsewhere too"
+    },
+    {
+     "id": "INDUSTRY_ENTERPRISE_V1_I4",
+     "axis": "J3",
+     "domain": "TD03",
+     "ask": "Have you defined the contract for exchanging data with an existing system?",
+     "gloss": "Connecting your program to a system someone else built"
+    },
+    {
+     "id": "INDUSTRY_ENTERPRISE_V1_I5",
+     "axis": "J5",
+     "domain": "TD04",
+     "ask": "When moving existing data to a new system, did you write down how to roll back before you moved it?",
+     "gloss": "Moving old data into a new structure"
+    },
+    {
+     "id": "INDUSTRY_ENTERPRISE_V1_I6",
+     "axis": "J3",
+     "domain": "TD08",
+     "ask": "Have you set permissions to fit the approval process of the organization using the system?",
+     "gloss": "Splitting the features people can use by job level or team"
+    },
+    {
+     "id": "INDUSTRY_ENTERPRISE_V1_I7",
+     "axis": "J3",
+     "domain": "TD01",
+     "ask": "Have you split modules with years of maintenance in mind?",
+     "gloss": "Splitting long-lived code into modules"
+    },
+    {
+     "id": "INDUSTRY_ENTERPRISE_V1_I8",
+     "axis": "J7",
+     "domain": "TD06",
+     "ask": "Have you narrowed down a problem that wouldn't reproduce on your side?",
+     "gloss": "Finding an error that only happened in someone else's environment"
+    },
+    {
+     "id": "INDUSTRY_ENTERPRISE_V1_I9",
+     "axis": "J5",
+     "domain": "TD01",
+     "ask": "Have you recorded the reason for a change and had that record used later?",
+     "gloss": "Writing down why a requirement changed, along with the date"
+    },
+    {
+     "id": "INDUSTRY_ENTERPRISE_V1_I10",
+     "axis": "J8",
+     "domain": "TD01",
+     "ask": "Have you negotiated growing requirements together with the deadline?",
+     "gloss": "Rescheduling because requirements grew"
+    }
+   ],
+   "gap_language": {
+    "J2": "In this industry, requirements interpretation shows up as turning what the client wrote into acceptance criteria and separating out what won't be taken on",
+    "J3": "In this industry, technical decisions show up as setting contracts with existing systems and installation conditions in the client's environment",
+    "J5": "In this industry, deliverables include documentation that lets others maintain the system after handover",
+    "J7": "In this industry, failure and correction means narrowing down, in the client's environment, problems that don't reproduce on your side"
+   },
+   "result_line": "Enterprise software and contracted development deal with interpreting client requirements, installing in client environments and acceptance criteria all at once. Experience drawing scope lines, connecting to someone else's system, or judging results against a standard is close to the entry point for this industry.",
+   "evidence_reading": [
+    {
+     "same": "Organizing requirements",
+     "reads_as": "Evidence for decisions about what not to take on"
+    },
+    {
+     "same": "Building integrations",
+     "reads_as": "Decisions about contracts with existing systems"
+    },
+    {
+     "same": "Installation automation",
+     "reads_as": "Evidence that it runs the same in client environments"
+    },
+    {
+     "same": "Data migration",
+     "reads_as": "Experience with the part that breaks most often"
+    }
+   ],
+   "job_aliases": [
+    "Software architect",
+    "Requirements and systems analyst",
+    "Backend developer",
+    "QA and test engineer",
+    "Public-sector IT auditor"
+   ],
+   "org_mix": {
+    "OC1": "Present",
+    "OC2": "Common",
+    "OC3": "Common",
+    "OC4": "Present",
+    "OC5": "Rare",
+    "OC6": "Present",
+    "OC7": "Present"
+   },
+   "vocabulary": [
+    "Requirements specification",
+    "Acceptance testing",
+    "Data migration",
+    "Integration",
+    "On-premises",
+    "Maintenance",
+    "Change management"
+   ]
+  },
+  {
+   "code": "INDUSTRY_MOBILITY_V1",
+   "version": 1,
+   "name_ko": "Automotive and Mobility Software",
+   "name_en": "Automotive and Mobility Software",
+   "core": "CS_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "Failing to respond within a set time becomes a safety problem",
+    "Device resources are small, and once shipped, software is hard to fix",
+    "Functional safety and security standards are imposed from outside",
+    "Software is written assuming communication between vehicles and servers can drop"
+   ],
+   "scene": "In automotive and mobility software, computer science and software graduates deal with problems like response time, tight device resources, safety and security standards and unreliable communication. Setting resource policies and checking results against standards carries over directly.",
+   "judgement_dimensions": [
+    {
+     "name": "Do you split processing so it finishes within a set time?",
+     "axis": "J3",
+     "domain": "TD06",
+     "why": "Being late becomes a safety problem"
+    },
+    {
+     "name": "Do you manage memory within tight resources?",
+     "axis": "J7",
+     "domain": "TD06",
+     "why": "The hardware can't be changed"
+    },
+    {
+     "name": "Do you turn safety standards into design conditions?",
+     "axis": "J2",
+     "domain": "TD10",
+     "why": "The standards come from outside"
+    },
+    {
+     "name": "Do you treat a dropped connection as the default state?",
+     "axis": "J3",
+     "domain": "TD07",
+     "why": "There are always tunnels and underground garages"
+    },
+    {
+     "name": "Do you update code inside vehicles safely?",
+     "axis": "J3",
+     "domain": "TD10",
+     "why": "If it can't be rolled back, it's an accident"
+    },
+    {
+     "name": "Do you protect the channels that send vehicle data?",
+     "axis": "J6",
+     "domain": "TD08",
+     "why": "Remote control is a threat"
+    },
+    {
+     "name": "Do you handle noise in sensor data?",
+     "axis": "J4",
+     "domain": "TD09",
+     "why": "Data is never perfectly clean"
+    },
+    {
+     "name": "Do you trace the cause of incidents from logs?",
+     "axis": "J5",
+     "domain": "TD06",
+     "why": "You have to prove what happened"
+    },
+    {
+     "name": "Do you show compliance with standards, with evidence?",
+     "axis": "J6",
+     "domain": "TD10",
+     "why": "Nothing ships without certification"
+    },
+    {
+     "name": "Do you balance safety against features?",
+     "axis": "J8",
+     "domain": "TD01",
+     "why": "More features means more risk"
+    }
+   ],
+   "axis_emphasis": {
+    "TD06": [
+     "J3",
+     "J7",
+     "J5"
+    ],
+    "TD10": [
+     "J2",
+     "J3",
+     "J6"
+    ],
+    "TD07": [
+     "J3"
+    ],
+    "TD08": [
+     "J6"
+    ],
+    "TD09": [
+     "J4"
+    ],
+    "TD01": [
+     "J8"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_MOBILITY_V1_I1",
+     "axis": "J3",
+     "domain": "TD06",
+     "ask": "Have you split processing so it finishes within a set time?",
+     "gloss": "Breaking processing that can't run late into smaller tasks"
+    },
+    {
+     "id": "INDUSTRY_MOBILITY_V1_I2",
+     "axis": "J7",
+     "domain": "TD06",
+     "ask": "Working within tight memory, have you narrowed down why it ran short?",
+     "gloss": "Finding out why memory was running short"
+    },
+    {
+     "id": "INDUSTRY_MOBILITY_V1_I3",
+     "axis": "J2",
+     "domain": "TD10",
+     "ask": "Have you turned an external safety standard into design conditions?",
+     "gloss": "Turning a standard you had to meet into a program's operating conditions"
+    },
+    {
+     "id": "INDUSTRY_MOBILITY_V1_I4",
+     "axis": "J3",
+     "domain": "TD07",
+     "ask": "Have you designed with a dropped connection as the default state?",
+     "gloss": "Designing behavior by thinking first about what happens when the connection drops"
+    },
+    {
+     "id": "INDUSTRY_MOBILITY_V1_I5",
+     "axis": "J3",
+     "domain": "TD10",
+     "ask": "Have you set up a device update procedure that can be rolled back?",
+     "gloss": "Updating a program installed on a device"
+    },
+    {
+     "id": "INDUSTRY_MOBILITY_V1_I6",
+     "axis": "J6",
+     "domain": "TD08",
+     "ask": "Have you checked whether the channel used to send data is secure?",
+     "gloss": "Encrypting the data being exchanged to protect it"
+    },
+    {
+     "id": "INDUSTRY_MOBILITY_V1_I7",
+     "axis": "J4",
+     "domain": "TD09",
+     "ask": "Have you used a method to filter noise out of sensor data?",
+     "gloss": "Smoothing out jumpy sensor readings"
+    },
+    {
+     "id": "INDUSTRY_MOBILITY_V1_I8",
+     "axis": "J5",
+     "domain": "TD06",
+     "ask": "Have you kept records that let you trace back what happened?",
+     "gloss": "Keeping operation logs and reviewing them later"
+    },
+    {
+     "id": "INDUSTRY_MOBILITY_V1_I9",
+     "axis": "J6",
+     "domain": "TD10",
+     "ask": "Have you shown, with evidence, whether something meets a standard?",
+     "gloss": "Showing through test results that something meets a standard"
+    },
+    {
+     "id": "INDUSTRY_MOBILITY_V1_I10",
+     "axis": "J8",
+     "domain": "TD01",
+     "ask": "Have you decided together on the trade-off between features and safety?",
+     "gloss": "Agreeing with the team to cut a feature for safety"
+    }
+   ],
+   "gap_language": {
+    "J2": "In this industry, requirements interpretation shows up as turning functional safety and security standards into design conditions",
+    "J3": "In this industry, technical decisions show up as splitting processing within a set time and tight resources",
+    "J5": "In this industry, deliverables include records that let you trace back what happened",
+    "J7": "In this industry, failure and correction means narrowing down causes inside hardware that can't be changed"
+   },
+   "result_line": "Automotive and mobility software deals with response time, tight resources and safety standards all at once. Experience splitting up processing, narrowing down memory problems, or turning standards into conditions is close to the entry point for this industry.",
+   "evidence_reading": [
+    {
+     "same": "Embedded implementation",
+     "reads_as": "Evidence for decisions that finish within a set time"
+    },
+    {
+     "same": "Resource analysis",
+     "reads_as": "Decisions made inside hardware that can't be changed"
+    },
+    {
+     "same": "Checking compliance with standards",
+     "reads_as": "Evidence for getting certified"
+    },
+    {
+     "same": "Sensor data processing",
+     "reads_as": "Experience handling data that isn't clean"
+    }
+   ],
+   "job_aliases": [
+    "Embedded software engineer",
+    "Systems programmer",
+    "Information security specialist",
+    "QA and test engineer",
+    "Machine learning engineer"
+   ],
+   "org_mix": {
+    "OC1": "Common",
+    "OC2": "Common",
+    "OC3": "Present",
+    "OC4": "Present",
+    "OC5": "Rare",
+    "OC6": "Present",
+    "OC7": "Rare"
+   },
+   "vocabulary": [
+    "Real-time constraints",
+    "Functional safety",
+    "Vehicle communication",
+    "Over-the-air updates",
+    "Device resources",
+    "Operation logs",
+    "Certification"
+   ]
+  },
+  {
+   "code": "INDUSTRY_HEALTH_V1",
+   "version": 1,
+   "name_ko": "Healthcare Information",
+   "name_en": "Healthcare Information",
+   "core": "CS_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "The data handled is the most sensitive kind of personal information",
+    "Software supports human judgment; it does not replace it",
+    "Data arrives in different formats from each institution",
+    "Records are kept for a long time, along with who viewed them"
+   ],
+   "scene": "In healthcare information, computer science and software graduates deal with problems like sensitive personal data, the line where software supports human judgment, data formats that differ by institution, and record retention. Setting data conditions and checking results against standards carries over directly.",
+   "judgement_dimensions": [
+    {
+     "name": "Do you limit and log who can view data?",
+     "axis": "J3",
+     "domain": "TD08",
+     "why": "It's the most sensitive data there is"
+    },
+    {
+     "name": "Do you unify formats that differ by institution?",
+     "axis": "J3",
+     "domain": "TD04",
+     "why": "Even with standards, everyone does it differently"
+    },
+    {
+     "name": "Do you check data quality before using it?",
+     "axis": "J4",
+     "domain": "TD09",
+     "why": "Missing values can change the conclusion"
+    },
+    {
+     "name": "Do you leave room for people to make the call?",
+     "axis": "J2",
+     "domain": "TD01",
+     "why": "Software must not decide on their behalf"
+    },
+    {
+     "name": "Do you design storage for long-term retention?",
+     "axis": "J5",
+     "domain": "TD04",
+     "why": "Retention periods are set by law"
+    },
+    {
+     "name": "Do you turn regulatory requirements into design conditions?",
+     "axis": "J2",
+     "domain": "TD08",
+     "why": "The rules to follow come from outside"
+    },
+    {
+     "name": "Do you check performance on held-out data?",
+     "axis": "J6",
+     "domain": "TD09",
+     "why": "You must not measure on the data used for training"
+    },
+    {
+     "name": "Do you gather wrong cases and narrow down the cause?",
+     "axis": "J7",
+     "domain": "TD09",
+     "why": "A single misjudgment costs a lot"
+    },
+    {
+     "name": "Do you record where data came from?",
+     "axis": "J5",
+     "domain": "TD09",
+     "why": "People ask for the source"
+    },
+    {
+     "name": "Do you explain results to clinicians?",
+     "axis": "J8",
+     "domain": "TD09",
+     "why": "The users are experts"
+    }
+   ],
+   "axis_emphasis": {
+    "TD08": [
+     "J3",
+     "J2"
+    ],
+    "TD04": [
+     "J3",
+     "J5"
+    ],
+    "TD09": [
+     "J4",
+     "J6",
+     "J7",
+     "J5",
+     "J8"
+    ],
+    "TD01": [
+     "J2"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_HEALTH_V1_I1",
+     "axis": "J3",
+     "domain": "TD08",
+     "ask": "Have you limited who can view data and kept a record of who viewed it?",
+     "gloss": "Restricting who can see sensitive data"
+    },
+    {
+     "id": "INDUSTRY_HEALTH_V1_I2",
+     "axis": "J3",
+     "domain": "TD04",
+     "ask": "Have you unified data formats that differ from place to place?",
+     "gloss": "Combining data from different sources into one format"
+    },
+    {
+     "id": "INDUSTRY_HEALTH_V1_I3",
+     "axis": "J4",
+     "domain": "TD09",
+     "ask": "Have you checked data quality before using it?",
+     "gloss": "Checking for missing or odd values before analysis"
+    },
+    {
+     "id": "INDUSTRY_HEALTH_V1_I4",
+     "axis": "J2",
+     "domain": "TD01",
+     "ask": "Have you designed a system that leaves room for people to make the call?",
+     "gloss": "Leaving a decision to a person instead of letting the program make it"
+    },
+    {
+     "id": "INDUSTRY_HEALTH_V1_I5",
+     "axis": "J5",
+     "domain": "TD04",
+     "ask": "Have you documented a storage structure designed for long-term retention?",
+     "gloss": "Designing the storage structure for data kept for years"
+    },
+    {
+     "id": "INDUSTRY_HEALTH_V1_I6",
+     "axis": "J2",
+     "domain": "TD08",
+     "ask": "Have you turned what regulations require into design conditions?",
+     "gloss": "Turning privacy rules into conditions the program must meet"
+    },
+    {
+     "id": "INDUSTRY_HEALTH_V1_I7",
+     "axis": "J6",
+     "domain": "TD09",
+     "ask": "Have you re-measured performance on patient data not used in training?",
+     "gloss": "Rechecking a model on data not used for training"
+    },
+    {
+     "id": "INDUSTRY_HEALTH_V1_I8",
+     "axis": "J7",
+     "domain": "TD09",
+     "ask": "Have you grouped misdiagnosis cases to see which patient groups they come from?",
+     "gloss": "Gathering the cases a model got wrong and finding out why"
+    },
+    {
+     "id": "INDUSTRY_HEALTH_V1_I9",
+     "axis": "J5",
+     "domain": "TD09",
+     "ask": "Have you recorded where data came from and used that record later?",
+     "gloss": "Noting the source of the data you received"
+    },
+    {
+     "id": "INDUSTRY_HEALTH_V1_I10",
+     "axis": "J8",
+     "domain": "TD09",
+     "ask": "Have you explained analysis results to experts in that field?",
+     "gloss": "Explaining analysis results to someone from a different discipline"
+    }
+   ],
+   "gap_language": {
+    "J2": "In this industry, requirements interpretation shows up as turning privacy rules and the points where people decide into design conditions",
+    "J3": "In this industry, technical decisions show up as setting who can view what and the rules for reconciling data",
+    "J4": "In this industry, methods and tools include a procedure for checking data quality before use",
+    "J6": "In this industry, comparison and verification means measuring performance on held-out data",
+    "J7": "In this industry, failure and correction means gathering wrong cases and narrowing down the cause"
+   },
+   "result_line": "Healthcare information deals with sensitive personal data, data formats that differ by institution and record retention all at once. Experience limiting access, reconciling data, or validating on held-out data is close to the entry point for this industry.",
+   "evidence_reading": [
+    {
+     "same": "Permission design",
+     "reads_as": "Decisions that limit access to sensitive data"
+    },
+    {
+     "same": "Data integration",
+     "reads_as": "Decisions that reconcile formats differing from place to place"
+    },
+    {
+     "same": "Evaluation design",
+     "reads_as": "Evidence for separating training data from evaluation data"
+    },
+    {
+     "same": "Error case analysis",
+     "reads_as": "Experience narrowing down the causes of misjudgments"
+    }
+   ],
+   "job_aliases": [
+    "Data engineer",
+    "Machine learning engineer",
+    "Information security specialist",
+    "Database engineer",
+    "Data analyst"
+   ],
+   "org_mix": {
+    "OC1": "Present",
+    "OC2": "Present",
+    "OC3": "Present",
+    "OC4": "Common",
+    "OC5": "Common",
+    "OC6": "Common",
+    "OC7": "Present"
+   },
+   "vocabulary": [
+    "Personal data",
+    "Data standards",
+    "Anonymization",
+    "Retention period",
+    "Access logs",
+    "Data quality",
+    "Clinical judgment"
+   ]
+  },
+  {
+   "code": "INDUSTRY_PUBLIC_V1",
+   "version": 1,
+   "name_ko": "Public Sector and Defense IT",
+   "name_en": "Public Sector and Defense IT",
+   "core": "CS_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "You have to show, with evidence, that standards are met",
+    "Networks are separated, so outside tools can't be used as is",
+    "Systems, once built, are maintained for a very long time",
+    "Who did what and when is all recorded"
+   ],
+   "scene": "In public sector and defense IT, computer science and software graduates deal with problems like proving compliance with standards, separated networks, long-term maintenance and traceability. Turning requirements into conditions and checking results against standards carries over directly.",
+   "judgement_dimensions": [
+    {
+     "name": "Do you show compliance with standards, with evidence?",
+     "axis": "J6",
+     "domain": "TD10",
+     "why": "Auditors look at the evidence"
+    },
+    {
+     "name": "Do you turn regulatory requirements into design conditions?",
+     "axis": "J2",
+     "domain": "TD08",
+     "why": "The rules to follow arrive as official regulations"
+    },
+    {
+     "name": "Do you choose tools within a separated network?",
+     "axis": "J4",
+     "domain": "TD10",
+     "why": "Outside tools can't be used"
+    },
+    {
+     "name": "Do you split the system with very long maintenance in mind?",
+     "axis": "J3",
+     "domain": "TD01",
+     "why": "Some systems are used for ten years"
+    },
+    {
+     "name": "Do you record who did what?",
+     "axis": "J5",
+     "domain": "TD08",
+     "why": "Everything is traced"
+    },
+    {
+     "name": "Do you define the contract for handing over and receiving data?",
+     "axis": "J3",
+     "domain": "TD03",
+     "why": "Data is exchanged between institutions"
+    },
+    {
+     "name": "Do you migrate existing data into new structures?",
+     "axis": "J5",
+     "domain": "TD04",
+     "why": "There is always an old system"
+    },
+    {
+     "name": "Do you assume a disconnected network?",
+     "axis": "J7",
+     "domain": "TD07",
+     "why": "It isn't connected to the outside"
+    },
+    {
+     "name": "Do you narrow permissions to match organizational rules?",
+     "axis": "J3",
+     "domain": "TD08",
+     "why": "The approval chain is the rule"
+    },
+    {
+     "name": "Do you handle requirement changes according to procedure?",
+     "axis": "J8",
+     "domain": "TD01",
+     "why": "Changes have a procedure too"
+    }
+   ],
+   "axis_emphasis": {
+    "TD10": [
+     "J6",
+     "J4"
+    ],
+    "TD08": [
+     "J2",
+     "J5",
+     "J3"
+    ],
+    "TD01": [
+     "J3",
+     "J8"
+    ],
+    "TD03": [
+     "J3"
+    ],
+    "TD04": [
+     "J5"
+    ],
+    "TD07": [
+     "J7"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_PUBLIC_V1_I1",
+     "axis": "J6",
+     "domain": "TD10",
+     "ask": "Have you shown, with evidence, whether something meets a standard?",
+     "gloss": "Bundling test results into supporting evidence and submitting them"
+    },
+    {
+     "id": "INDUSTRY_PUBLIC_V1_I2",
+     "axis": "J2",
+     "domain": "TD08",
+     "ask": "Have you turned what official regulations require into conditions?",
+     "gloss": "Reflecting rules set from outside in a design"
+    },
+    {
+     "id": "INDUSTRY_PUBLIC_V1_I3",
+     "axis": "J4",
+     "domain": "TD10",
+     "ask": "Where only certain tools were allowed, have you chosen from within that set?",
+     "gloss": "Developing in an environment without internet access"
+    },
+    {
+     "id": "INDUSTRY_PUBLIC_V1_I4",
+     "axis": "J3",
+     "domain": "TD01",
+     "ask": "Have you split a system with very long maintenance in mind?",
+     "gloss": "Separating what will change from what won't, with long-term use in mind"
+    },
+    {
+     "id": "INDUSTRY_PUBLIC_V1_I5",
+     "axis": "J5",
+     "domain": "TD08",
+     "ask": "Have you kept records of who did what and when?",
+     "gloss": "Logging who did what and when"
+    },
+    {
+     "id": "INDUSTRY_PUBLIC_V1_I6",
+     "axis": "J3",
+     "domain": "TD03",
+     "ask": "Have you defined the contract for exchanging data between institutions?",
+     "gloss": "Aligning data exchange formats with another organization"
+    },
+    {
+     "id": "INDUSTRY_PUBLIC_V1_I7",
+     "axis": "J5",
+     "domain": "TD04",
+     "ask": "Have you migrated data from an old system into a new structure?",
+     "gloss": "Moving old data into a new system"
+    },
+    {
+     "id": "INDUSTRY_PUBLIC_V1_I8",
+     "axis": "J7",
+     "domain": "TD07",
+     "ask": "On a network with no outside connection, have you narrowed down a problem?",
+     "gloss": "Tracking down a failure on a network cut off from outside"
+    },
+    {
+     "id": "INDUSTRY_PUBLIC_V1_I9",
+     "axis": "J3",
+     "domain": "TD08",
+     "ask": "Have you narrowed permissions to match organizational rules?",
+     "gloss": "Splitting the menus each user can access according to the rules"
+    },
+    {
+     "id": "INDUSTRY_PUBLIC_V1_I10",
+     "axis": "J8",
+     "domain": "TD01",
+     "ask": "Have you handled requirement changes according to a set procedure?",
+     "gloss": "Processing change requests by the set procedure"
+    }
+   ],
+   "gap_language": {
+    "J2": "In this industry, requirements interpretation shows up as turning what official regulations and rules set into design conditions",
+    "J3": "In this industry, technical decisions show up as setting long-lived structures and contracts between institutions",
+    "J5": "In this industry, deliverables include records that trace who did what and when",
+    "J6": "In this industry, comparison and verification means showing compliance with standards, with evidence"
+   },
+   "result_line": "Public sector and defense IT deal with proving compliance, separated networks and long-term maintenance all at once. Experience presenting evidence, turning regulations into conditions, or migrating legacy data is close to the entry point for this industry.",
+   "evidence_reading": [
+    {
+     "same": "Checking compliance with standards",
+     "reads_as": "Evidence that auditors look at"
+    },
+    {
+     "same": "Interpreting regulations",
+     "reads_as": "Decisions that turn outside requirements into conditions"
+    },
+    {
+     "same": "Data migration",
+     "reads_as": "Experience taking over legacy systems"
+    },
+    {
+     "same": "Designing activity logs",
+     "reads_as": "Deliverables for an environment where everything is traced"
+    }
+   ],
+   "job_aliases": [
+    "Public-sector IT auditor",
+    "Requirements and systems analyst",
+    "Information security specialist",
+    "Backend developer",
+    "Database engineer"
+   ],
+   "org_mix": {
+    "OC1": "Rare",
+    "OC2": "Present",
+    "OC3": "Common",
+    "OC4": "Present",
+    "OC5": "Rare",
+    "OC6": "Common",
+    "OC7": "Rare"
+   },
+   "vocabulary": [
+    "IT audit",
+    "Network separation",
+    "Official regulations",
+    "Traceability",
+    "Data migration",
+    "Long-term maintenance",
+    "Approval chain"
+   ]
+  }
+ ]
+}
