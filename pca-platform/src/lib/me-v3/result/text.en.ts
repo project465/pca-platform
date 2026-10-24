@@ -72,9 +72,13 @@ function yours(x: string): string {
 
 /* ── 축 ───────────────────────────────────────────────────────── */
 
+/* **화면의 축 이름과 같은 말이다**(`copy.en.ts` 의 `axisLabel`, 분류 파일). 한
+   쪽에 `Own decisions`, 다른 쪽에 `Technical decisions` 를 두면 같은 쪽에서 한
+   판단이 두 이름으로 불린다(작업공간 영어화에서 걸렸다) */
 export const AXIS_KO: Record<Axis, string> = {
-  J1: "Problem definition", J2: "Reading requirements", J3: "Own decisions", J4: "Methods and tools",
-  J5: "Outputs", J6: "Comparison and checks", J7: "Fixing what failed", J8: "Real-world use",
+  J1: "Problem definition", J2: "Requirements interpretation", J3: "Technical decisions",
+  J4: "Methods and tools", J5: "Deliverables", J6: "Comparison and verification",
+  J7: "Failure and correction", J8: "Organizational use",
 };
 
 export const AXIS_WHAT_KO: Record<Axis, string> = {
