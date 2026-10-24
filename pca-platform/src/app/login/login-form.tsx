@@ -17,8 +17,12 @@ export default function LoginForm({ next = "", lang = "ko" }: { next?: string; l
     startTransition(() => formAction(fd));
   };
 
+  /* `action` 도 같이 둔다. 화면 스크립트가 아직 안 올라온 때(느린 손전화)
+     누르면 브라우저가 폼을 그냥 보내는데, `action` 이 없으면 그것이 GET 이라
+     **비밀번호가 주소창과 서버 기록에 남는다.** `action` 이 있으면 그때도
+     POST 로 서버 함수에 가고, 올라온 뒤에는 위 `submit` 이 막고 대신 보낸다 */
   return (
-    <form onSubmit={submit} className="form">
+    <form action={formAction} onSubmit={submit} className="form">
       <input type="hidden" name="next" value={next} />
       <input type="hidden" name="lang" value={lang} />
       {state.error ? (
