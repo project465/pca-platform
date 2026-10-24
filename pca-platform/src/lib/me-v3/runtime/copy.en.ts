@@ -199,8 +199,9 @@ export const COPY_EN: RuntimeCopy = {
     },
   },
   axisLabel: {
-    J1: "Problem definition", J2: "Requirements", J3: "Own decisions", J4: "Methods and tools",
-    J5: "Outputs", J6: "Comparison and checks", J7: "Fixing what failed", J8: "Real-world use",
+    /* 콘텐츠(분류 파일)의 축 이름과 같은 말이다. 화면과 결과가 한 축을 두 이름으로 부르지 않는다 */
+    J1: "Problem definition", J2: "Requirements interpretation", J3: "Technical decisions", J4: "Methods and tools",
+    J5: "Deliverables", J6: "Comparison and verification", J7: "Failure and correction", J8: "Organizational use",
   },
   axisAsk: {
     J1: "When you set the scope",

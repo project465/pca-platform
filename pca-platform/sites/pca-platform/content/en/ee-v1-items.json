@@ -2,7 +2,7 @@
  "schema_version": "ee-v1-items.1",
  "core": "EE_CORE_V1",
  "assessment_version": "EE_V1",
- "item_bank_version": "EE_V1_ITEM_BANK_V1.5",
+ "item_bank_version": "EE_V1_ITEM_BANK_V1.6",
  "note": "The wording was written by hand. This file is the source: wording is changed here, and afterwards `CORE=EE_CORE_V1 npm run v3:wording` and `v3:items` are run. Item numbers not tied to a domain are the same as in the Mechanical Engineering Core. 2026-10-21: the wording was rewritten to the difficulty level of the group PCA items. Each item asks about one student scene and one l2 behavior in plain words; the four options, axes and scoring are unchanged (EE_V1_ITEM_BANK_V1.4)",
  "level_options": [
   "Never done it",
@@ -7809,7 +7809,7 @@
    "evidence_axis": "J3",
    "wording": "While doing coursework, have you ever set decision criteria yourself?",
    "stage_wording": {
-    "bachelor": "In the domain you just chose, have you set decision criteria yourself while doing coursework?",
+    "bachelor": "While doing coursework, have you ever set decision criteria yourself?",
     "master": "In graduate coursework or research, have you ever set decision criteria yourself?",
     "phd": "In your PhD research, have you ever set decision criteria yourself?",
     "postdoc": "In the research project you are responsible for now, have you ever set decision criteria yourself?"
@@ -7844,7 +7844,7 @@
    "evidence_axis": "J3",
    "wording": "Outside school, such as in an internship or extracurricular activity, have you ever set decision criteria yourself?",
    "stage_wording": {
-    "bachelor": "In the domain you just chose, have you set decision criteria yourself outside school, such as in an internship or extracurricular activity?",
+    "bachelor": "Outside school, such as in an internship or extracurricular activity, have you ever set decision criteria yourself?",
     "master": "Outside school, such as in an industry-sponsored project or internship, have you ever set decision criteria yourself?",
     "phd": "Outside school, such as in work with a company, have you ever set decision criteria yourself?",
     "postdoc": "In work with another organization, have you ever set decision criteria yourself?"
@@ -7879,7 +7879,7 @@
    "evidence_axis": "J5",
    "wording": "Have you ever produced a piece of work on your own from start to finish?",
    "stage_wording": {
-    "bachelor": "In the domain you just chose, have you ever produced a piece of work on your own from start to finish?",
+    "bachelor": "Have you ever produced a piece of work on your own from start to finish?",
     "master": "Have you ever produced a piece of research output on your own from start to finish?",
     "phd": "Have you ever produced a piece of research output on your own from start to finish?",
     "postdoc": "Have you ever produced a project deliverable on your own from start to finish?"
@@ -7914,7 +7914,7 @@
    "evidence_axis": "J5",
    "wording": "Has anyone ever used something you made as it was, without changing it?",
    "stage_wording": {
-    "bachelor": "In the domain you just chose, has anyone ever used something you made as it was, without changing it?",
+    "bachelor": "Has anyone ever used something you made as it was, without changing it?",
     "master": "Has anyone ever taken research output you produced and used it as it was?",
     "phd": "Has anyone ever taken research output you produced and used it as it was?",
     "postdoc": "Has another organization ever taken a project deliverable you produced and used it as it was?"

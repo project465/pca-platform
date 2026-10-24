@@ -1,6 +1,6 @@
 {
  "schema_version": "ee-v1-bank-lock.1",
- "item_bank_version": "EE_V1_ITEM_BANK_V1.5",
+ "item_bank_version": "EE_V1_ITEM_BANK_V1.6",
  "note": "전기전자 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=EE_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
   "ee-industry-packs.json": "dcd3fdebaf601e382ce540c3bab1e68e4eeb58fba11e0833b17a22d60b76b94d",
@@ -11,7 +11,7 @@
   "ee-v1-constructs.json": "91ff645931afdaa42cc73b48b5284fe0f866c1bbeba5a089db14b364ff6c49e2",
   "ee-v1-domains.json": "d6cbea844e5e8edcacb5b0e19ca06e4e7df064dfa6050f192f769b4d9df851ff",
   "ee-v1-items-blueprint.json": "4311be046a62c8474854460e6767b6eccab86849641da8dc2b981c175a1f20eb",
-  "ee-v1-items.json": "e32791facb8d6699598fe26d9d6d1887bdea32ee754f9fcbb6db4c273d42b3e5",
+  "ee-v1-items.json": "fa75fb11ccd8c7477277f2b8afa4692cacd230629220357847fe5536df0ee11b",
   "ee-v1-relations.json": "c553d689ce20e8199edb971c1319e17c28ae65d910385f22c53d7eaeafa5121c",
   "ee-v1-taxonomy.json": "720e03c9b7810e3174308044de423c1ac8dcc6f328c81d13496a162c3a4686ac"
  },

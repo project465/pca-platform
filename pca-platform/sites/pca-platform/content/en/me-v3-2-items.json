@@ -1406,9 +1406,9 @@
    "wording": "Have you narrowed down the scope yourself and given your reasons?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you narrowed down the scope yourself and given your reasons?",
-    "master": "In your graduate research or a project, have you narrowed down the scope yourself and given your reasons?",
-    "phd": "In your PhD research or a project you joined, have you narrowed down the scope yourself and given your reasons?",
-    "postdoc": "In your own research or a joint project, have you narrowed down the scope yourself and given your reasons?"
+    "master": "In grad research or projects, have you narrowed down the scope yourself and given your reasons?",
+    "phd": "In PhD research or joint projects, have you narrowed down the scope yourself and given your reasons?",
+    "postdoc": "In your research or joint projects, have you narrowed down the scope yourself and given your reasons?"
    },
    "options": [
     "Never done it",
@@ -1441,9 +1441,9 @@
    "wording": "Have you taken a requirement given to you in words and turned it into numbers?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you taken a requirement given to you in words and turned it into numbers?",
-    "master": "In your graduate research or a project, have you taken a requirement given to you in words and turned it into numbers?",
-    "phd": "In your PhD research or a project you joined, have you taken a requirement given to you in words and turned it into numbers?",
-    "postdoc": "In your own research or a joint project, have you taken a requirement given to you in words and turned it into numbers?"
+    "master": "In grad research or projects, have you taken a requirement given to you in words and turned it into numbers?",
+    "phd": "In PhD research or joint projects, have you taken a requirement given to you in words and turned it into numbers?",
+    "postdoc": "In your research or joint projects, have you taken a requirement given to you in words and turned it into numbers?"
    },
    "options": [
     "Never done it",
@@ -1476,9 +1476,9 @@
    "wording": "Have you picked one method out of several and explained why you chose it?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you picked one method out of several and explained why you chose it?",
-    "master": "In your graduate research or a project, have you picked one method out of several and explained why you chose it?",
-    "phd": "In your PhD research or a project you joined, have you picked one method out of several and explained why you chose it?",
-    "postdoc": "In your own research or a joint project, have you picked one method out of several and explained why you chose it?"
+    "master": "In grad research or projects, have you picked one method out of several and explained why you chose it?",
+    "phd": "In PhD research or joint projects, have you picked one method out of several and explained why you chose it?",
+    "postdoc": "In your research or joint projects, have you picked one method out of several and explained why you chose it?"
    },
    "options": [
     "Never done it",
@@ -1511,9 +1511,9 @@
    "wording": "Have you compared two or more options against the same criteria and then picked one?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you compared two or more options against the same criteria and then picked one?",
-    "master": "In your graduate research or a project, have you compared two or more options against the same criteria and then picked one?",
-    "phd": "In your PhD research or a project you joined, have you compared two or more options against the same criteria and then picked one?",
-    "postdoc": "In your own research or a joint project, have you compared two or more options against the same criteria and then picked one?"
+    "master": "In grad research or projects, have you compared two or more options against the same criteria and then picked one?",
+    "phd": "In PhD research or joint projects, have you compared two or more options against the same criteria and then picked one?",
+    "postdoc": "In your research or joint projects, have you compared two or more options against the same criteria and then picked one?"
    },
    "options": [
     "Never done it",
@@ -1546,9 +1546,9 @@
    "wording": "Has someone else picked up a deliverable of yours and used it?",
    "stage_wording": {
     "bachelor": "In a capstone or internship, has someone else picked up a deliverable of yours and used it?",
-    "master": "In your graduate research or a project, has someone else picked up a deliverable of yours and used it?",
-    "phd": "In your PhD research or a project you joined, has someone else picked up a deliverable of yours and used it?",
-    "postdoc": "In your own research or a joint project, has someone else picked up a deliverable of yours and used it?"
+    "master": "In grad research or projects, has someone else picked up a deliverable of yours and used it?",
+    "phd": "In PhD research or joint projects, has someone else picked up a deliverable of yours and used it?",
+    "postdoc": "In your research or joint projects, has someone else picked up a deliverable of yours and used it?"
    },
    "options": [
     "Never done it",
@@ -1581,9 +1581,9 @@
    "wording": "Have you changed the conditions you were originally given, and backed the change with evidence?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you changed the conditions you were originally given, and backed the change with evidence?",
-    "master": "In your graduate research or a project, have you changed the conditions you were originally given, and backed the change with evidence?",
-    "phd": "In your PhD research or a project you joined, have you changed the conditions you were originally given, and backed the change with evidence?",
-    "postdoc": "In your own research or a joint project, have you changed the conditions you were originally given, and backed the change with evidence?"
+    "master": "In grad research or projects, have you changed the conditions you were originally given, and backed the change with evidence?",
+    "phd": "In PhD research or joint projects, have you changed the conditions you were originally given, and backed the change with evidence?",
+    "postdoc": "In your research or joint projects, have you changed the conditions you were originally given, and backed the change with evidence?"
    },
    "options": [
     "Never done it",
@@ -2460,9 +2460,9 @@
    "wording": "Have you set a thickness or cross-section size yourself based on the loads and material?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you set a thickness or cross-section size yourself based on the loads and material?",
-    "master": "In your graduate research or a project, have you set a thickness or cross-section size yourself based on the loads and material?",
-    "phd": "In your PhD research or a project you joined, have you set a thickness or cross-section size yourself based on the loads and material?",
-    "postdoc": "In your own research or a joint project, have you set a thickness or cross-section size yourself based on the loads and material?"
+    "master": "In grad research or projects, have you set a thickness or cross-section size yourself based on the loads and material?",
+    "phd": "In PhD research or joint projects, have you set a thickness or cross-section size yourself based on the loads and material?",
+    "postdoc": "In your research or joint projects, have you set a thickness or cross-section size yourself based on the loads and material?"
    },
    "options": [
     "Never done it",
@@ -2495,9 +2495,9 @@
    "wording": "Have you chosen the fit between mating parts and their allowable variation (tolerance) yourself?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you chosen the fit between mating parts and their allowable variation (tolerance) yourself?",
-    "master": "In your graduate research or a project, have you chosen the fit between mating parts and their allowable variation (tolerance) yourself?",
-    "phd": "In your PhD research or a project you joined, have you chosen the fit between mating parts and their allowable variation (tolerance) yourself?",
-    "postdoc": "In your own research or a joint project, have you chosen the fit between mating parts and their allowable variation (tolerance) yourself?"
+    "master": "In grad research or projects, have you chosen the fit between mating parts and their allowable variation (tolerance) yourself?",
+    "phd": "In PhD research or joint projects, have you chosen the fit between mating parts and their allowable variation (tolerance) yourself?",
+    "postdoc": "In your research or joint projects, have you chosen the fit between mating parts and their allowable variation (tolerance) yourself?"
    },
    "options": [
     "Never done it",
@@ -2530,9 +2530,9 @@
    "wording": "Have you drawn up a fabrication drawing or part specification yourself?",
    "stage_wording": {
     "bachelor": "In a project or capstone, have you drawn up a fabrication drawing or part specification yourself?",
-    "master": "In your graduate research or a project, have you drawn up a fabrication drawing or part specification yourself?",
-    "phd": "In your PhD research or a project you joined, have you drawn up a fabrication drawing or part specification yourself?",
-    "postdoc": "In your own research or a joint project, have you drawn up a fabrication drawing or part specification yourself?"
+    "master": "In grad research or projects, have you drawn up a fabrication drawing or part specification yourself?",
+    "phd": "In PhD research or joint projects, have you drawn up a fabrication drawing or part specification yourself?",
+    "postdoc": "In your research or joint projects, have you drawn up a fabrication drawing or part specification yourself?"
    },
    "options": [
     "Never done it",
@@ -2565,9 +2565,9 @@
    "wording": "Have you put together an assembly drawing and parts list as one complete set?",
    "stage_wording": {
     "bachelor": "In a project or capstone, have you put together an assembly drawing and parts list as one complete set?",
-    "master": "In your graduate research or a project, have you put together an assembly drawing and parts list as one complete set?",
-    "phd": "In your PhD research or a project you joined, have you put together an assembly drawing and parts list as one complete set?",
-    "postdoc": "In your own research or a joint project, have you put together an assembly drawing and parts list as one complete set?"
+    "master": "In grad research or projects, have you put together an assembly drawing and parts list as one complete set?",
+    "phd": "In PhD research or joint projects, have you put together an assembly drawing and parts list as one complete set?",
+    "postdoc": "In your research or joint projects, have you put together an assembly drawing and parts list as one complete set?"
    },
    "options": [
     "Never done it",
@@ -2600,9 +2600,9 @@
    "wording": "Have you calculated whether parts will still assemble once their tolerances stack up?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you calculated whether parts will still assemble once their tolerances stack up?",
-    "master": "In your graduate research or a project, have you calculated whether parts will still assemble once their tolerances stack up?",
-    "phd": "In your PhD research or a project you joined, have you calculated whether parts will still assemble once their tolerances stack up?",
-    "postdoc": "In your own research or a joint project, have you calculated whether parts will still assemble once their tolerances stack up?"
+    "master": "In grad research or projects, have you calculated whether parts will still assemble once their tolerances stack up?",
+    "phd": "In PhD research or joint projects, have you calculated whether parts will still assemble once their tolerances stack up?",
+    "postdoc": "In your research or joint projects, have you calculated whether parts will still assemble once their tolerances stack up?"
    },
    "options": [
     "Never done it",
@@ -2635,9 +2635,9 @@
    "wording": "Have you built a prototype and measured whether its actual dimensions matched the drawing?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you built a prototype and measured whether its actual dimensions matched the drawing?",
-    "master": "In your graduate research or a project, have you built a prototype and measured whether its actual dimensions matched the drawing?",
-    "phd": "In your PhD research or a project you joined, have you built a prototype and measured whether its actual dimensions matched the drawing?",
-    "postdoc": "In your own research or a joint project, have you built a prototype and measured whether its actual dimensions matched the drawing?"
+    "master": "In grad research or projects, have you built a prototype and measured whether its actual dimensions matched the drawing?",
+    "phd": "In PhD research or joint projects, have you built a prototype and measured whether its actual dimensions matched the drawing?",
+    "postdoc": "In your research or joint projects, have you built a prototype and measured whether its actual dimensions matched the drawing?"
    },
    "options": [
     "Never done it",
@@ -2670,9 +2670,9 @@
    "wording": "When parts would not fit together at assembly, have you corrected the dimensions?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, when parts would not fit together at assembly, have you corrected the dimensions?",
-    "master": "In your graduate research or a project, when parts would not fit together at assembly, have you corrected the dimensions?",
-    "phd": "In your PhD research or a project you joined, when parts would not fit together at assembly, have you corrected the dimensions?",
-    "postdoc": "In your own research or a joint project, when parts would not fit together at assembly, have you corrected the dimensions?"
+    "master": "In grad research or projects, when parts would not fit together at assembly, have you corrected the dimensions?",
+    "phd": "In PhD research or joint projects, when parts would not fit together at assembly, have you corrected the dimensions?",
+    "postdoc": "In your research or joint projects, when parts would not fit together at assembly, have you corrected the dimensions?"
    },
    "options": [
     "Never done it",
@@ -2705,9 +2705,9 @@
    "wording": "Has a prototype ever broken or bent, leading you to change its cross-section or material?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, has a prototype ever broken or bent, leading you to change its cross-section or material?",
-    "master": "In your graduate research or a project, has a prototype ever broken or bent, leading you to change its cross-section or material?",
-    "phd": "In your PhD research or a project you joined, has a prototype ever broken or bent, leading you to change its cross-section or material?",
-    "postdoc": "In your own research or a joint project, has a prototype ever broken or bent, leading you to change its cross-section or material?"
+    "master": "In grad research or projects, has a prototype ever broken or bent, leading you to change its cross-section or material?",
+    "phd": "In PhD research or joint projects, has a prototype ever broken or bent, leading you to change its cross-section or material?",
+    "postdoc": "In your research or joint projects, has a prototype ever broken or bent, leading you to change its cross-section or material?"
    },
    "options": [
     "Never done it",
@@ -2740,9 +2740,9 @@
    "wording": "Have you looked at a specification you were given and written down what this design would cover?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you looked at a specification you were given and written down what this design would cover?",
-    "master": "In your graduate research or a project, have you looked at a specification you were given and written down what this design would cover?",
-    "phd": "In your PhD research or a project you joined, have you looked at a specification you were given and written down what this design would cover?",
-    "postdoc": "In your own research or a joint project, have you looked at a specification you were given and written down what this design would cover?"
+    "master": "In grad research or projects, have you looked at a specification you were given and written down what this design would cover?",
+    "phd": "In PhD research or joint projects, have you looked at a specification you were given and written down what this design would cover?",
+    "postdoc": "In your research or joint projects, have you looked at a specification you were given and written down what this design would cover?"
    },
    "options": [
     "Never done it",
@@ -2775,9 +2775,9 @@
    "wording": "Have you turned the requirements you received into numbers such as dimensions and loads?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you turned the requirements you received into numbers such as dimensions and loads?",
-    "master": "In your graduate research or a project, have you turned the requirements you received into numbers such as dimensions and loads?",
-    "phd": "In your PhD research or a project you joined, have you turned the requirements you received into numbers such as dimensions and loads?",
-    "postdoc": "In your own research or a joint project, have you turned the requirements you received into numbers such as dimensions and loads?"
+    "master": "In grad research or projects, have you turned the requirements you received into numbers such as dimensions and loads?",
+    "phd": "In PhD research or joint projects, have you turned the requirements you received into numbers such as dimensions and loads?",
+    "postdoc": "In your research or joint projects, have you turned the requirements you received into numbers such as dimensions and loads?"
    },
    "options": [
     "Never done it",
@@ -2810,9 +2810,9 @@
    "wording": "Have you modeled parts and an assembly in 3D CAD?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you modeled parts and an assembly in 3D CAD?",
-    "master": "In your graduate research or a project, have you modeled parts and an assembly in 3D CAD?",
-    "phd": "In your PhD research or a project you joined, have you modeled parts and an assembly in 3D CAD?",
-    "postdoc": "In your own research or a joint project, have you modeled parts and an assembly in 3D CAD?"
+    "master": "In grad research or projects, have you modeled parts and an assembly in 3D CAD?",
+    "phd": "In PhD research or joint projects, have you modeled parts and an assembly in 3D CAD?",
+    "postdoc": "In your research or joint projects, have you modeled parts and an assembly in 3D CAD?"
    },
    "options": [
     "Never done it",
@@ -2845,9 +2845,9 @@
    "wording": "Have you explained a design you drew up at a review meeting?",
    "stage_wording": {
     "bachelor": "During a capstone or internship, have you explained a design you drew up at a review meeting?",
-    "master": "During your graduate research or a project, have you explained a design you drew up at a review meeting?",
-    "phd": "During your PhD research or a project you joined, have you explained a design you drew up at a review meeting?",
-    "postdoc": "During your own research or a joint project, have you explained a design you drew up at a review meeting?"
+    "master": "During grad research or projects, have you explained a design you drew up at a review meeting?",
+    "phd": "During PhD research or joint projects, have you explained a design you drew up at a review meeting?",
+    "postdoc": "During your research or joint projects, have you explained a design you drew up at a review meeting?"
    },
    "options": [
     "Never done it",
@@ -2880,9 +2880,9 @@
    "wording": "Have you decided yourself where to fix the model and where to apply loads in an analysis?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you decided yourself where to fix the model and where to apply loads in an analysis?",
-    "master": "In your graduate research or a project, have you decided yourself where to fix the model and where to apply loads in an analysis?",
-    "phd": "In your PhD research or a project you joined, have you decided yourself where to fix the model and where to apply loads in an analysis?",
-    "postdoc": "In your own research or a joint project, have you decided yourself where to fix the model and where to apply loads in an analysis?"
+    "master": "In grad research or projects, have you decided yourself where to fix the model and where to apply loads in an analysis?",
+    "phd": "In PhD research or joint projects, have you decided yourself where to fix the model and where to apply loads in an analysis?",
+    "postdoc": "In your research or joint projects, have you decided yourself where to fix the model and where to apply loads in an analysis?"
    },
    "options": [
     "Never done it",
@@ -2915,9 +2915,9 @@
    "wording": "Have you chosen yourself where to source the material properties for an analysis?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you chosen yourself where to source the material properties for an analysis?",
-    "master": "In your graduate research or a project, have you chosen yourself where to source the material properties for an analysis?",
-    "phd": "In your PhD research or a project you joined, have you chosen yourself where to source the material properties for an analysis?",
-    "postdoc": "In your own research or a joint project, have you chosen yourself where to source the material properties for an analysis?"
+    "master": "In grad research or projects, have you chosen yourself where to source the material properties for an analysis?",
+    "phd": "In PhD research or joint projects, have you chosen yourself where to source the material properties for an analysis?",
+    "postdoc": "In your research or joint projects, have you chosen yourself where to source the material properties for an analysis?"
    },
    "options": [
     "Never done it",
@@ -2950,9 +2950,9 @@
    "wording": "Have you written up analysis results as a report, all the way to a conclusion?",
    "stage_wording": {
     "bachelor": "In a project or capstone, have you written up analysis results as a report, all the way to a conclusion?",
-    "master": "In your graduate research or a project, have you written up analysis results as a report, all the way to a conclusion?",
-    "phd": "In your PhD research or a project you joined, have you written up analysis results as a report, all the way to a conclusion?",
-    "postdoc": "In your own research or a joint project, have you written up analysis results as a report, all the way to a conclusion?"
+    "master": "In grad research or projects, have you written up analysis results as a report, all the way to a conclusion?",
+    "phd": "In PhD research or joint projects, have you written up analysis results as a report, all the way to a conclusion?",
+    "postdoc": "In your research or joint projects, have you written up analysis results as a report, all the way to a conclusion?"
    },
    "options": [
     "Never done it",
@@ -2985,9 +2985,9 @@
    "wording": "Have you kept a separate record of the conditions and assumptions that went into an analysis?",
    "stage_wording": {
     "bachelor": "In a project or capstone, have you kept a separate record of the conditions and assumptions that went into an analysis?",
-    "master": "In your graduate research or a project, have you kept a separate record of the conditions and assumptions that went into an analysis?",
-    "phd": "In your PhD research or a project you joined, have you kept a separate record of the conditions and assumptions that went into an analysis?",
-    "postdoc": "In your own research or a joint project, have you kept a separate record of the conditions and assumptions that went into an analysis?"
+    "master": "In grad research or projects, have you kept a separate record of the conditions and assumptions that went into an analysis?",
+    "phd": "In PhD research or joint projects, have you kept a separate record of the conditions and assumptions that went into an analysis?",
+    "postdoc": "In your research or joint projects, have you kept a separate record of the conditions and assumptions that went into an analysis?"
    },
    "options": [
     "Never done it",
@@ -3020,9 +3020,9 @@
    "wording": "Have you checked analysis results against hand calculations?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you checked analysis results against hand calculations?",
-    "master": "In your graduate research or a project, have you checked analysis results against hand calculations?",
-    "phd": "In your PhD research or a project you joined, have you checked analysis results against hand calculations?",
-    "postdoc": "In your own research or a joint project, have you checked analysis results against hand calculations?"
+    "master": "In grad research or projects, have you checked analysis results against hand calculations?",
+    "phd": "In PhD research or joint projects, have you checked analysis results against hand calculations?",
+    "postdoc": "In your research or joint projects, have you checked analysis results against hand calculations?"
    },
    "options": [
     "Never done it",
@@ -3055,9 +3055,9 @@
    "wording": "Have you checked whether analysis results fall within the allowable limits set by a standard?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you checked whether analysis results fall within the allowable limits set by a standard?",
-    "master": "In your graduate research or a project, have you checked whether analysis results fall within the allowable limits set by a standard?",
-    "phd": "In your PhD research or a project you joined, have you checked whether analysis results fall within the allowable limits set by a standard?",
-    "postdoc": "In your own research or a joint project, have you checked whether analysis results fall within the allowable limits set by a standard?"
+    "master": "In grad research or projects, have you checked whether analysis results fall within the allowable limits set by a standard?",
+    "phd": "In PhD research or joint projects, have you checked whether analysis results fall within the allowable limits set by a standard?",
+    "postdoc": "In your research or joint projects, have you checked whether analysis results fall within the allowable limits set by a standard?"
    },
    "options": [
     "Never done it",
@@ -3090,9 +3090,9 @@
    "wording": "When results looked wrong, have you corrected the conditions or model and rerun the analysis?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, when results looked wrong, have you corrected the conditions or model and rerun the analysis?",
-    "master": "In your graduate research or a project, when results looked wrong, have you corrected the conditions or model and rerun the analysis?",
-    "phd": "In your PhD research or a project you joined, when results looked wrong, have you corrected the conditions or model and rerun the analysis?",
-    "postdoc": "In your own research or a joint project, when results looked wrong, have you corrected the conditions or model and rerun the analysis?"
+    "master": "In grad research or projects, when results looked wrong, have you corrected the conditions or model and rerun the analysis?",
+    "phd": "In PhD research or joint projects, when results looked wrong, have you corrected the conditions or model and rerun the analysis?",
+    "postdoc": "In your research or joint projects, when results looked wrong, have you corrected the conditions or model and rerun the analysis?"
    },
    "options": [
     "Never done it",
@@ -3125,9 +3125,9 @@
    "wording": "Have you worked through, one by one, why analysis values and test values differed?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you worked through, one by one, why analysis values and test values differed?",
-    "master": "In your graduate research or a project, have you worked through, one by one, why analysis values and test values differed?",
-    "phd": "In your PhD research or a project you joined, have you worked through, one by one, why analysis values and test values differed?",
-    "postdoc": "In your own research or a joint project, have you worked through, one by one, why analysis values and test values differed?"
+    "master": "In grad research or projects, have you worked through, one by one, why analysis values and test values differed?",
+    "phd": "In PhD research or joint projects, have you worked through, one by one, why analysis values and test values differed?",
+    "postdoc": "In your research or joint projects, have you worked through, one by one, why analysis values and test values differed?"
    },
    "options": [
     "Never done it",
@@ -3160,9 +3160,9 @@
    "wording": "Have you chosen yourself which load cases to analyze?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you chosen yourself which load cases to analyze?",
-    "master": "In your graduate research or a project, have you chosen yourself which load cases to analyze?",
-    "phd": "In your PhD research or a project you joined, have you chosen yourself which load cases to analyze?",
-    "postdoc": "In your own research or a joint project, have you chosen yourself which load cases to analyze?"
+    "master": "In grad research or projects, have you chosen yourself which load cases to analyze?",
+    "phd": "In PhD research or joint projects, have you chosen yourself which load cases to analyze?",
+    "postdoc": "In your research or joint projects, have you chosen yourself which load cases to analyze?"
    },
    "options": [
     "Never done it",
@@ -3195,9 +3195,9 @@
    "wording": "Have you turned a required life, or the loads a part must withstand, into analysis conditions?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you turned a required life, or the loads a part must withstand, into analysis conditions?",
-    "master": "In your graduate research or a project, have you turned a required life, or the loads a part must withstand, into analysis conditions?",
-    "phd": "In your PhD research or a project you joined, have you turned a required life, or the loads a part must withstand, into analysis conditions?",
-    "postdoc": "In your own research or a joint project, have you turned a required life, or the loads a part must withstand, into analysis conditions?"
+    "master": "In grad research or projects, have you turned a required life, or the loads a part must withstand, into analysis conditions?",
+    "phd": "In PhD research or joint projects, have you turned a required life, or the loads a part must withstand, into analysis conditions?",
+    "postdoc": "In your research or joint projects, have you turned a required life, or the loads a part must withstand, into analysis conditions?"
    },
    "options": [
     "Never done it",
@@ -3230,9 +3230,9 @@
    "wording": "Have you built a model in analysis software and run the calculation?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you built a model in analysis software and run the calculation?",
-    "master": "In your graduate research or a project, have you built a model in analysis software and run the calculation?",
-    "phd": "In your PhD research or a project you joined, have you built a model in analysis software and run the calculation?",
-    "postdoc": "In your own research or a joint project, have you built a model in analysis software and run the calculation?"
+    "master": "In grad research or projects, have you built a model in analysis software and run the calculation?",
+    "phd": "In PhD research or joint projects, have you built a model in analysis software and run the calculation?",
+    "postdoc": "In your research or joint projects, have you built a model in analysis software and run the calculation?"
    },
    "options": [
     "Never done it",
@@ -3265,9 +3265,9 @@
    "wording": "Have you summarized analysis results and passed them on to the teammate in charge of the design?",
    "stage_wording": {
     "bachelor": "In a capstone or internship, have you summarized analysis results and passed them on to the teammate in charge of the design?",
-    "master": "In your graduate research or a project, have you summarized analysis results and passed them on to the teammate in charge of the design?",
-    "phd": "In your PhD research or a project you joined, have you summarized analysis results and passed them on to the teammate in charge of the design?",
-    "postdoc": "In your own research or a joint project, have you summarized analysis results and passed them on to the teammate in charge of the design?"
+    "master": "In grad research or projects, have you summarized analysis results and passed them on to the teammate in charge of the design?",
+    "phd": "In PhD research or joint projects, have you summarized analysis results and passed them on to the teammate in charge of the design?",
+    "postdoc": "In your research or joint projects, have you summarized analysis results and passed them on to the teammate in charge of the design?"
    },
    "options": [
     "Never done it",
@@ -3300,9 +3300,9 @@
    "wording": "Have you decided the cooling method and the heat removal path yourself?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you decided the cooling method and the heat removal path yourself?",
-    "master": "In your graduate research or a project, have you decided the cooling method and the heat removal path yourself?",
-    "phd": "In your PhD research or a project you joined, have you decided the cooling method and the heat removal path yourself?",
-    "postdoc": "In your own research or a joint project, have you decided the cooling method and the heat removal path yourself?"
+    "master": "In grad research or projects, have you decided the cooling method and the heat removal path yourself?",
+    "phd": "In PhD research or joint projects, have you decided the cooling method and the heat removal path yourself?",
+    "postdoc": "In your research or joint projects, have you decided the cooling method and the heat removal path yourself?"
    },
    "options": [
     "Never done it",
@@ -3335,9 +3335,9 @@
    "wording": "Have you set the size of an air or water passage and its allowable pressure drop yourself?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you set the size of an air or water passage and its allowable pressure drop yourself?",
-    "master": "In your graduate research or a project, have you set the size of an air or water passage and its allowable pressure drop yourself?",
-    "phd": "In your PhD research or a project you joined, have you set the size of an air or water passage and its allowable pressure drop yourself?",
-    "postdoc": "In your own research or a joint project, have you set the size of an air or water passage and its allowable pressure drop yourself?"
+    "master": "In grad research or projects, have you set the size of an air or water passage and its allowable pressure drop yourself?",
+    "phd": "In PhD research or joint projects, have you set the size of an air or water passage and its allowable pressure drop yourself?",
+    "postdoc": "In your research or joint projects, have you set the size of an air or water passage and its allowable pressure drop yourself?"
    },
    "options": [
     "Never done it",
@@ -3370,9 +3370,9 @@
    "wording": "Have you put together a thermal design report or a flow passage specification?",
    "stage_wording": {
     "bachelor": "In a project or capstone, have you put together a thermal design report or a flow passage specification?",
-    "master": "In your graduate research or a project, have you put together a thermal design report or a flow passage specification?",
-    "phd": "In your PhD research or a project you joined, have you put together a thermal design report or a flow passage specification?",
-    "postdoc": "In your own research or a joint project, have you put together a thermal design report or a flow passage specification?"
+    "master": "In grad research or projects, have you put together a thermal design report or a flow passage specification?",
+    "phd": "In PhD research or joint projects, have you put together a thermal design report or a flow passage specification?",
+    "postdoc": "In your research or joint projects, have you put together a thermal design report or a flow passage specification?"
    },
    "options": [
     "Never done it",
@@ -3405,9 +3405,9 @@
    "wording": "Have you documented the operating conditions together with the remaining margin?",
    "stage_wording": {
     "bachelor": "In a project or capstone, have you documented the operating conditions together with the remaining margin?",
-    "master": "In your graduate research or a project, have you documented the operating conditions together with the remaining margin?",
-    "phd": "In your PhD research or a project you joined, have you documented the operating conditions together with the remaining margin?",
-    "postdoc": "In your own research or a joint project, have you documented the operating conditions together with the remaining margin?"
+    "master": "In grad research or projects, have you documented the operating conditions together with the remaining margin?",
+    "phd": "In PhD research or joint projects, have you documented the operating conditions together with the remaining margin?",
+    "postdoc": "In your research or joint projects, have you documented the operating conditions together with the remaining margin?"
    },
    "options": [
     "Never done it",
@@ -3440,9 +3440,9 @@
    "wording": "Did you ever compare calculated temperatures with values from the literature?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, did you ever compare calculated temperatures with values from the literature?",
-    "master": "In your graduate research or a project, did you ever compare calculated temperatures with values from the literature?",
-    "phd": "In your PhD research or a project you joined, did you ever compare calculated temperatures with values from the literature?",
-    "postdoc": "In your own research or a joint project, did you ever compare calculated temperatures with values from the literature?"
+    "master": "In grad research or projects, did you ever compare calculated temperatures with values from the literature?",
+    "phd": "In PhD research or joint projects, did you ever compare calculated temperatures with values from the literature?",
+    "postdoc": "In your research or joint projects, did you ever compare calculated temperatures with values from the literature?"
    },
    "options": [
     "Never done it",
@@ -3475,9 +3475,9 @@
    "wording": "Have you measured the actual flow rate and compared it with the required flow rate?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you measured the actual flow rate and compared it with the required flow rate?",
-    "master": "In your graduate research or a project, have you measured the actual flow rate and compared it with the required flow rate?",
-    "phd": "In your PhD research or a project you joined, have you measured the actual flow rate and compared it with the required flow rate?",
-    "postdoc": "In your own research or a joint project, have you measured the actual flow rate and compared it with the required flow rate?"
+    "master": "In grad research or projects, have you measured the actual flow rate and compared it with the required flow rate?",
+    "phd": "In PhD research or joint projects, have you measured the actual flow rate and compared it with the required flow rate?",
+    "postdoc": "In your research or joint projects, have you measured the actual flow rate and compared it with the required flow rate?"
    },
    "options": [
     "Never done it",
@@ -3510,9 +3510,9 @@
    "wording": "When a temperature would not come down, have you changed the flow passage or heat dissipation area?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, when a temperature would not come down, have you changed the flow passage or heat dissipation area?",
-    "master": "In your graduate research or a project, when a temperature would not come down, have you changed the flow passage or heat dissipation area?",
-    "phd": "In your PhD research or a project you joined, when a temperature would not come down, have you changed the flow passage or heat dissipation area?",
-    "postdoc": "In your own research or a joint project, when a temperature would not come down, have you changed the flow passage or heat dissipation area?"
+    "master": "In grad research or projects, when a temperature would not come down, have you changed the flow passage or heat dissipation area?",
+    "phd": "In PhD research or joint projects, when a temperature would not come down, have you changed the flow passage or heat dissipation area?",
+    "postdoc": "In your research or joint projects, when a temperature would not come down, have you changed the flow passage or heat dissipation area?"
    },
    "options": [
     "Never done it",
@@ -3545,9 +3545,9 @@
    "wording": "Have you worked out whether high temperatures came from flow rate or contact conditions?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you worked out whether high temperatures came from flow rate or contact conditions?",
-    "master": "In your graduate research or a project, have you worked out whether high temperatures came from flow rate or contact conditions?",
-    "phd": "In your PhD research or a project you joined, have you worked out whether high temperatures came from flow rate or contact conditions?",
-    "postdoc": "In your own research or a joint project, have you worked out whether high temperatures came from flow rate or contact conditions?"
+    "master": "In grad research or projects, have you worked out whether high temperatures came from flow rate or contact conditions?",
+    "phd": "In PhD research or joint projects, have you worked out whether high temperatures came from flow rate or contact conditions?",
+    "postdoc": "In your research or joint projects, have you worked out whether high temperatures came from flow rate or contact conditions?"
    },
    "options": [
     "Never done it",
@@ -3580,9 +3580,9 @@
    "wording": "Have you figured out whether the problem was too much heat or too little flow?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you figured out whether the problem was too much heat or too little flow?",
-    "master": "In your graduate research or a project, have you figured out whether the problem was too much heat or too little flow?",
-    "phd": "In your PhD research or a project you joined, have you figured out whether the problem was too much heat or too little flow?",
-    "postdoc": "In your own research or a joint project, have you figured out whether the problem was too much heat or too little flow?"
+    "master": "In grad research or projects, have you figured out whether the problem was too much heat or too little flow?",
+    "phd": "In PhD research or joint projects, have you figured out whether the problem was too much heat or too little flow?",
+    "postdoc": "In your research or joint projects, have you figured out whether the problem was too much heat or too little flow?"
    },
    "options": [
     "Never done it",
@@ -3615,9 +3615,9 @@
    "wording": "Have you written a temperature limit and a required flow rate into the design conditions?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you written a temperature limit and a required flow rate into the design conditions?",
-    "master": "In your graduate research or a project, have you written a temperature limit and a required flow rate into the design conditions?",
-    "phd": "In your PhD research or a project you joined, have you written a temperature limit and a required flow rate into the design conditions?",
-    "postdoc": "In your own research or a joint project, have you written a temperature limit and a required flow rate into the design conditions?"
+    "master": "In grad research or projects, have you written a temperature limit and a required flow rate into the design conditions?",
+    "phd": "In PhD research or joint projects, have you written a temperature limit and a required flow rate into the design conditions?",
+    "postdoc": "In your research or joint projects, have you written a temperature limit and a required flow rate into the design conditions?"
    },
    "options": [
     "Never done it",
@@ -3650,9 +3650,9 @@
    "wording": "Did you ever calculate temperatures with a heat transfer calculation or a flow simulation?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, did you ever calculate temperatures with a heat transfer calculation or a flow simulation?",
-    "master": "In your graduate research or a project, did you ever calculate temperatures with a heat transfer calculation or a flow simulation?",
-    "phd": "In your PhD research or a project you joined, did you ever calculate temperatures with a heat transfer calculation or a flow simulation?",
-    "postdoc": "In your own research or a joint project, did you ever calculate temperatures with a heat transfer calculation or a flow simulation?"
+    "master": "In grad research or projects, did you ever calculate temperatures with a heat transfer calculation or a flow simulation?",
+    "phd": "In PhD research or joint projects, did you ever calculate temperatures with a heat transfer calculation or a flow simulation?",
+    "postdoc": "In your research or joint projects, did you ever calculate temperatures with a heat transfer calculation or a flow simulation?"
    },
    "options": [
     "Never done it",
@@ -3685,9 +3685,9 @@
    "wording": "Have you presented thermal design results at a design review meeting?",
    "stage_wording": {
     "bachelor": "In a capstone or internship, have you presented thermal design results at a design review meeting?",
-    "master": "In your graduate research or a project, have you presented thermal design results at a design review meeting?",
-    "phd": "In your PhD research or a project you joined, have you presented thermal design results at a design review meeting?",
-    "postdoc": "In your own research or a joint project, have you presented thermal design results at a design review meeting?"
+    "master": "In grad research or projects, have you presented thermal design results at a design review meeting?",
+    "phd": "In PhD research or joint projects, have you presented thermal design results at a design review meeting?",
+    "postdoc": "In your research or joint projects, have you presented thermal design results at a design review meeting?"
    },
    "options": [
     "Never done it",
@@ -3720,9 +3720,9 @@
    "wording": "Have you decided yourself how to excite a structure and which frequency range to look at?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you decided yourself how to excite a structure and which frequency range to look at?",
-    "master": "In your graduate research or a project, have you decided yourself how to excite a structure and which frequency range to look at?",
-    "phd": "In your PhD research or a project you joined, have you decided yourself how to excite a structure and which frequency range to look at?",
-    "postdoc": "In your own research or a joint project, have you decided yourself how to excite a structure and which frequency range to look at?"
+    "master": "In grad research or projects, have you decided yourself how to excite a structure and which frequency range to look at?",
+    "phd": "In PhD research or joint projects, have you decided yourself how to excite a structure and which frequency range to look at?",
+    "postdoc": "In your research or joint projects, have you decided yourself how to excite a structure and which frequency range to look at?"
    },
    "options": [
     "Never done it",
@@ -3755,9 +3755,9 @@
    "wording": "Have you chosen rubber mounts or damping materials yourself to cut vibration?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you chosen rubber mounts or damping materials yourself to cut vibration?",
-    "master": "In your graduate research or a project, have you chosen rubber mounts or damping materials yourself to cut vibration?",
-    "phd": "In your PhD research or a project you joined, have you chosen rubber mounts or damping materials yourself to cut vibration?",
-    "postdoc": "In your own research or a joint project, have you chosen rubber mounts or damping materials yourself to cut vibration?"
+    "master": "In grad research or projects, have you chosen rubber mounts or damping materials yourself to cut vibration?",
+    "phd": "In PhD research or joint projects, have you chosen rubber mounts or damping materials yourself to cut vibration?",
+    "postdoc": "In your research or joint projects, have you chosen rubber mounts or damping materials yourself to cut vibration?"
    },
    "options": [
     "Never done it",
@@ -3790,9 +3790,9 @@
    "wording": "Have you organized vibration measurements by transfer path and reported them?",
    "stage_wording": {
     "bachelor": "In a project or capstone, have you organized vibration measurements by transfer path and reported them?",
-    "master": "In your graduate research or a project, have you organized vibration measurements by transfer path and reported them?",
-    "phd": "In your PhD research or a project you joined, have you organized vibration measurements by transfer path and reported them?",
-    "postdoc": "In your own research or a joint project, have you organized vibration measurements by transfer path and reported them?"
+    "master": "In grad research or projects, have you organized vibration measurements by transfer path and reported them?",
+    "phd": "In PhD research or joint projects, have you organized vibration measurements by transfer path and reported them?",
+    "postdoc": "In your research or joint projects, have you organized vibration measurements by transfer path and reported them?"
    },
    "options": [
     "Never done it",
@@ -3825,9 +3825,9 @@
    "wording": "Have you put vibration levels from before and after a countermeasure into a single document?",
    "stage_wording": {
     "bachelor": "In a project or capstone, have you put vibration levels from before and after a countermeasure into a single document?",
-    "master": "In your graduate research or a project, have you put vibration levels from before and after a countermeasure into a single document?",
-    "phd": "In your PhD research or a project you joined, have you put vibration levels from before and after a countermeasure into a single document?",
-    "postdoc": "In your own research or a joint project, have you put vibration levels from before and after a countermeasure into a single document?"
+    "master": "In grad research or projects, have you put vibration levels from before and after a countermeasure into a single document?",
+    "phd": "In PhD research or joint projects, have you put vibration levels from before and after a countermeasure into a single document?",
+    "postdoc": "In your research or joint projects, have you put vibration levels from before and after a countermeasure into a single document?"
    },
    "options": [
     "Never done it",
@@ -3860,9 +3860,9 @@
    "wording": "Did you ever check whether the mode shapes from an analysis matched the measurements?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, did you ever check whether the mode shapes from an analysis matched the measurements?",
-    "master": "In your graduate research or a project, did you ever check whether the mode shapes from an analysis matched the measurements?",
-    "phd": "In your PhD research or a project you joined, did you ever check whether the mode shapes from an analysis matched the measurements?",
-    "postdoc": "In your own research or a joint project, did you ever check whether the mode shapes from an analysis matched the measurements?"
+    "master": "In grad research or projects, did you ever check whether the mode shapes from an analysis matched the measurements?",
+    "phd": "In PhD research or joint projects, did you ever check whether the mode shapes from an analysis matched the measurements?",
+    "postdoc": "In your research or joint projects, did you ever check whether the mode shapes from an analysis matched the measurements?"
    },
    "options": [
     "Never done it",
@@ -3895,9 +3895,9 @@
    "wording": "Have you measured vibration levels before and after a countermeasure under the same conditions?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you measured vibration levels before and after a countermeasure under the same conditions?",
-    "master": "In your graduate research or a project, have you measured vibration levels before and after a countermeasure under the same conditions?",
-    "phd": "In your PhD research or a project you joined, have you measured vibration levels before and after a countermeasure under the same conditions?",
-    "postdoc": "In your own research or a joint project, have you measured vibration levels before and after a countermeasure under the same conditions?"
+    "master": "In grad research or projects, have you measured vibration levels before and after a countermeasure under the same conditions?",
+    "phd": "In PhD research or joint projects, have you measured vibration levels before and after a countermeasure under the same conditions?",
+    "postdoc": "In your research or joint projects, have you measured vibration levels before and after a countermeasure under the same conditions?"
    },
    "options": [
     "Never done it",
@@ -3930,9 +3930,9 @@
    "wording": "When vibration persisted after a countermeasure, have you gone back to look for the cause?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, when vibration persisted after a countermeasure, have you gone back to look for the cause?",
-    "master": "In your graduate research or a project, when vibration persisted after a countermeasure, have you gone back to look for the cause?",
-    "phd": "In your PhD research or a project you joined, when vibration persisted after a countermeasure, have you gone back to look for the cause?",
-    "postdoc": "In your own research or a joint project, when vibration persisted after a countermeasure, have you gone back to look for the cause?"
+    "master": "In grad research or projects, when vibration persisted after a countermeasure, have you gone back to look for the cause?",
+    "phd": "In PhD research or joint projects, when vibration persisted after a countermeasure, have you gone back to look for the cause?",
+    "postdoc": "In your research or joint projects, when vibration persisted after a countermeasure, have you gone back to look for the cause?"
    },
    "options": [
     "Never done it",
@@ -3965,9 +3965,9 @@
    "wording": "Have you separated the cause of a vibration into its source and its transfer path?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you separated the cause of a vibration into its source and its transfer path?",
-    "master": "In your graduate research or a project, have you separated the cause of a vibration into its source and its transfer path?",
-    "phd": "In your PhD research or a project you joined, have you separated the cause of a vibration into its source and its transfer path?",
-    "postdoc": "In your own research or a joint project, have you separated the cause of a vibration into its source and its transfer path?"
+    "master": "In grad research or projects, have you separated the cause of a vibration into its source and its transfer path?",
+    "phd": "In PhD research or joint projects, have you separated the cause of a vibration into its source and its transfer path?",
+    "postdoc": "In your research or joint projects, have you separated the cause of a vibration into its source and its transfer path?"
    },
    "options": [
     "Never done it",
@@ -4000,9 +4000,9 @@
    "wording": "Have you identified which frequency band a problem vibration falls in?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you identified which frequency band a problem vibration falls in?",
-    "master": "In your graduate research or a project, have you identified which frequency band a problem vibration falls in?",
-    "phd": "In your PhD research or a project you joined, have you identified which frequency band a problem vibration falls in?",
-    "postdoc": "In your own research or a joint project, have you identified which frequency band a problem vibration falls in?"
+    "master": "In grad research or projects, have you identified which frequency band a problem vibration falls in?",
+    "phd": "In PhD research or joint projects, have you identified which frequency band a problem vibration falls in?",
+    "postdoc": "In your research or joint projects, have you identified which frequency band a problem vibration falls in?"
    },
    "options": [
     "Never done it",
@@ -4035,9 +4035,9 @@
    "wording": "Have you turned vibration or noise limits into measurement points and operating conditions?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you turned vibration or noise limits into measurement points and operating conditions?",
-    "master": "In your graduate research or a project, have you turned vibration or noise limits into measurement points and operating conditions?",
-    "phd": "In your PhD research or a project you joined, have you turned vibration or noise limits into measurement points and operating conditions?",
-    "postdoc": "In your own research or a joint project, have you turned vibration or noise limits into measurement points and operating conditions?"
+    "master": "In grad research or projects, have you turned vibration or noise limits into measurement points and operating conditions?",
+    "phd": "In PhD research or joint projects, have you turned vibration or noise limits into measurement points and operating conditions?",
+    "postdoc": "In your research or joint projects, have you turned vibration or noise limits into measurement points and operating conditions?"
    },
    "options": [
     "Never done it",
@@ -4070,9 +4070,9 @@
    "wording": "Did you ever measure vibration yourself with an accelerometer?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, did you ever measure vibration yourself with an accelerometer?",
-    "master": "In your graduate research or a project, did you ever measure vibration yourself with an accelerometer?",
-    "phd": "In your PhD research or a project you joined, did you ever measure vibration yourself with an accelerometer?",
-    "postdoc": "In your own research or a joint project, did you ever measure vibration yourself with an accelerometer?"
+    "master": "In grad research or projects, did you ever measure vibration yourself with an accelerometer?",
+    "phd": "In PhD research or joint projects, did you ever measure vibration yourself with an accelerometer?",
+    "postdoc": "In your research or joint projects, did you ever measure vibration yourself with an accelerometer?"
    },
    "options": [
     "Never done it",
@@ -4105,9 +4105,9 @@
    "wording": "Have you reported vibration or noise results to people in design or production?",
    "stage_wording": {
     "bachelor": "In a capstone or internship, have you reported vibration or noise results to people in design or production?",
-    "master": "In your graduate research or a project, have you reported vibration or noise results to people in design or production?",
-    "phd": "In your PhD research or a project you joined, have you reported vibration or noise results to people in design or production?",
-    "postdoc": "In your own research or a joint project, have you reported vibration or noise results to people in design or production?"
+    "master": "In grad research or projects, have you reported vibration or noise results to people in design or production?",
+    "phd": "In PhD research or joint projects, have you reported vibration or noise results to people in design or production?",
+    "postdoc": "In your research or joint projects, have you reported vibration or noise results to people in design or production?"
    },
    "options": [
     "Never done it",
@@ -4140,9 +4140,9 @@
    "wording": "Have you sized a motor yourself after working through weight, inertia and friction?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you sized a motor yourself after working through weight, inertia and friction?",
-    "master": "In your graduate research or a project, have you sized a motor yourself after working through weight, inertia and friction?",
-    "phd": "In your PhD research or a project you joined, have you sized a motor yourself after working through weight, inertia and friction?",
-    "postdoc": "In your own research or a joint project, have you sized a motor yourself after working through weight, inertia and friction?"
+    "master": "In grad research or projects, have you sized a motor yourself after working through weight, inertia and friction?",
+    "phd": "In PhD research or joint projects, have you sized a motor yourself after working through weight, inertia and friction?",
+    "postdoc": "In your research or joint projects, have you sized a motor yourself after working through weight, inertia and friction?"
    },
    "options": [
     "Never done it",
@@ -4175,9 +4175,9 @@
    "wording": "Have you chosen the gear ratio and transmission type yourself to meet the required accuracy?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you chosen the gear ratio and transmission type yourself to meet the required accuracy?",
-    "master": "In your graduate research or a project, have you chosen the gear ratio and transmission type yourself to meet the required accuracy?",
-    "phd": "In your PhD research or a project you joined, have you chosen the gear ratio and transmission type yourself to meet the required accuracy?",
-    "postdoc": "In your own research or a joint project, have you chosen the gear ratio and transmission type yourself to meet the required accuracy?"
+    "master": "In grad research or projects, have you chosen the gear ratio and transmission type yourself to meet the required accuracy?",
+    "phd": "In PhD research or joint projects, have you chosen the gear ratio and transmission type yourself to meet the required accuracy?",
+    "postdoc": "In your research or joint projects, have you chosen the gear ratio and transmission type yourself to meet the required accuracy?"
    },
    "options": [
     "Never done it",
@@ -4210,9 +4210,9 @@
    "wording": "Have you built a moving mechanism or device yourself?",
    "stage_wording": {
     "bachelor": "In a project or capstone, have you built a moving mechanism or device yourself?",
-    "master": "In your graduate research or a project, have you built a moving mechanism or device yourself?",
-    "phd": "In your PhD research or a project you joined, have you built a moving mechanism or device yourself?",
-    "postdoc": "In your own research or a joint project, have you built a moving mechanism or device yourself?"
+    "master": "In grad research or projects, have you built a moving mechanism or device yourself?",
+    "phd": "In PhD research or joint projects, have you built a moving mechanism or device yourself?",
+    "postdoc": "In your research or joint projects, have you built a moving mechanism or device yourself?"
    },
    "options": [
     "Never done it",
@@ -4245,9 +4245,9 @@
    "wording": "Have you documented your motor sizing calculations along with the reasoning behind them?",
    "stage_wording": {
     "bachelor": "In a project or capstone, have you documented your motor sizing calculations along with the reasoning behind them?",
-    "master": "In your graduate research or a project, have you documented your motor sizing calculations along with the reasoning behind them?",
-    "phd": "In your PhD research or a project you joined, have you documented your motor sizing calculations along with the reasoning behind them?",
-    "postdoc": "In your own research or a joint project, have you documented your motor sizing calculations along with the reasoning behind them?"
+    "master": "In grad research or projects, have you documented your motor sizing calculations along with the reasoning behind them?",
+    "phd": "In PhD research or joint projects, have you documented your motor sizing calculations along with the reasoning behind them?",
+    "postdoc": "In your research or joint projects, have you documented your motor sizing calculations along with the reasoning behind them?"
    },
    "options": [
     "Never done it",
@@ -4280,9 +4280,9 @@
    "wording": "Did you ever compare the target motion time with the time it actually took?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, did you ever compare the target motion time with the time it actually took?",
-    "master": "In your graduate research or a project, did you ever compare the target motion time with the time it actually took?",
-    "phd": "In your PhD research or a project you joined, did you ever compare the target motion time with the time it actually took?",
-    "postdoc": "In your own research or a joint project, did you ever compare the target motion time with the time it actually took?"
+    "master": "In grad research or projects, did you ever compare the target motion time with the time it actually took?",
+    "phd": "In PhD research or joint projects, did you ever compare the target motion time with the time it actually took?",
+    "postdoc": "In your research or joint projects, did you ever compare the target motion time with the time it actually took?"
    },
    "options": [
     "Never done it",
@@ -4315,9 +4315,9 @@
    "wording": "Have you measured over repeated runs how precisely a device stops at the same position?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you measured over repeated runs how precisely a device stops at the same position?",
-    "master": "In your graduate research or a project, have you measured over repeated runs how precisely a device stops at the same position?",
-    "phd": "In your PhD research or a project you joined, have you measured over repeated runs how precisely a device stops at the same position?",
-    "postdoc": "In your own research or a joint project, have you measured over repeated runs how precisely a device stops at the same position?"
+    "master": "In grad research or projects, have you measured over repeated runs how precisely a device stops at the same position?",
+    "phd": "In PhD research or joint projects, have you measured over repeated runs how precisely a device stops at the same position?",
+    "postdoc": "In your research or joint projects, have you measured over repeated runs how precisely a device stops at the same position?"
    },
    "options": [
     "Never done it",
@@ -4350,9 +4350,9 @@
    "wording": "When a device vibrated or stalled, have you found the cause and fixed it?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, when a device vibrated or stalled, have you found the cause and fixed it?",
-    "master": "In your graduate research or a project, when a device vibrated or stalled, have you found the cause and fixed it?",
-    "phd": "In your PhD research or a project you joined, when a device vibrated or stalled, have you found the cause and fixed it?",
-    "postdoc": "In your own research or a joint project, when a device vibrated or stalled, have you found the cause and fixed it?"
+    "master": "In grad research or projects, when a device vibrated or stalled, have you found the cause and fixed it?",
+    "phd": "In PhD research or joint projects, when a device vibrated or stalled, have you found the cause and fixed it?",
+    "postdoc": "In your research or joint projects, when a device vibrated or stalled, have you found the cause and fixed it?"
    },
    "options": [
     "Never done it",
@@ -4385,9 +4385,9 @@
    "wording": "Have you worked out whether a device stalled because of its weight, friction or stiffness?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you worked out whether a device stalled because of its weight, friction or stiffness?",
-    "master": "In your graduate research or a project, have you worked out whether a device stalled because of its weight, friction or stiffness?",
-    "phd": "In your PhD research or a project you joined, have you worked out whether a device stalled because of its weight, friction or stiffness?",
-    "postdoc": "In your own research or a joint project, have you worked out whether a device stalled because of its weight, friction or stiffness?"
+    "master": "In grad research or projects, have you worked out whether a device stalled because of its weight, friction or stiffness?",
+    "phd": "In PhD research or joint projects, have you worked out whether a device stalled because of its weight, friction or stiffness?",
+    "postdoc": "In your research or joint projects, have you worked out whether a device stalled because of its weight, friction or stiffness?"
    },
    "options": [
     "Never done it",
@@ -4420,9 +4420,9 @@
    "wording": "Have you written down separately which parts would move and which would stay fixed this time?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you written down separately which parts would move and which would stay fixed this time?",
-    "master": "In your graduate research or a project, have you written down separately which parts would move and which would stay fixed this time?",
-    "phd": "In your PhD research or a project you joined, have you written down separately which parts would move and which would stay fixed this time?",
-    "postdoc": "In your own research or a joint project, have you written down separately which parts would move and which would stay fixed this time?"
+    "master": "In grad research or projects, have you written down separately which parts would move and which would stay fixed this time?",
+    "phd": "In PhD research or joint projects, have you written down separately which parts would move and which would stay fixed this time?",
+    "postdoc": "In your research or joint projects, have you written down separately which parts would move and which would stay fixed this time?"
    },
    "options": [
     "Never done it",
@@ -4455,9 +4455,9 @@
    "wording": "Have you turned the required speed and stopping accuracy into numerical conditions?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you turned the required speed and stopping accuracy into numerical conditions?",
-    "master": "In your graduate research or a project, have you turned the required speed and stopping accuracy into numerical conditions?",
-    "phd": "In your PhD research or a project you joined, have you turned the required speed and stopping accuracy into numerical conditions?",
-    "postdoc": "In your own research or a joint project, have you turned the required speed and stopping accuracy into numerical conditions?"
+    "master": "In grad research or projects, have you turned the required speed and stopping accuracy into numerical conditions?",
+    "phd": "In PhD research or joint projects, have you turned the required speed and stopping accuracy into numerical conditions?",
+    "postdoc": "In your research or joint projects, have you turned the required speed and stopping accuracy into numerical conditions?"
    },
    "options": [
     "Never done it",
@@ -4490,9 +4490,9 @@
    "wording": "Have you calculated the load and inertia on a motor to check that your choice was right?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you calculated the load and inertia on a motor to check that your choice was right?",
-    "master": "In your graduate research or a project, have you calculated the load and inertia on a motor to check that your choice was right?",
-    "phd": "In your PhD research or a project you joined, have you calculated the load and inertia on a motor to check that your choice was right?",
-    "postdoc": "In your own research or a joint project, have you calculated the load and inertia on a motor to check that your choice was right?"
+    "master": "In grad research or projects, have you calculated the load and inertia on a motor to check that your choice was right?",
+    "phd": "In PhD research or joint projects, have you calculated the load and inertia on a motor to check that your choice was right?",
+    "postdoc": "In your research or joint projects, have you calculated the load and inertia on a motor to check that your choice was right?"
    },
    "options": [
     "Never done it",
@@ -4525,9 +4525,9 @@
    "wording": "Have you handed a device you built over to others to use?",
    "stage_wording": {
     "bachelor": "In a capstone or internship, have you handed a device you built over to others to use?",
-    "master": "In your graduate research or a project, have you handed a device you built over to others to use?",
-    "phd": "In your PhD research or a project you joined, have you handed a device you built over to others to use?",
-    "postdoc": "In your own research or a joint project, have you handed a device you built over to others to use?"
+    "master": "In grad research or projects, have you handed a device you built over to others to use?",
+    "phd": "In PhD research or joint projects, have you handed a device you built over to others to use?",
+    "postdoc": "In your research or joint projects, have you handed a device you built over to others to use?"
    },
    "options": [
     "Never done it",
@@ -4560,9 +4560,9 @@
    "wording": "Have you chosen the material and grade for a part yourself?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you chosen the material and grade for a part yourself?",
-    "master": "In your graduate research or a project, have you chosen the material and grade for a part yourself?",
-    "phd": "In your PhD research or a project you joined, have you chosen the material and grade for a part yourself?",
-    "postdoc": "In your own research or a joint project, have you chosen the material and grade for a part yourself?"
+    "master": "In grad research or projects, have you chosen the material and grade for a part yourself?",
+    "phd": "In PhD research or joint projects, have you chosen the material and grade for a part yourself?",
+    "postdoc": "In your research or joint projects, have you chosen the material and grade for a part yourself?"
    },
    "options": [
     "Never done it",
@@ -4595,9 +4595,9 @@
    "wording": "Have you decided the safety margin (safety factor) or allowable stress yourself?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you decided the safety margin (safety factor) or allowable stress yourself?",
-    "master": "In your graduate research or a project, have you decided the safety margin (safety factor) or allowable stress yourself?",
-    "phd": "In your PhD research or a project you joined, have you decided the safety margin (safety factor) or allowable stress yourself?",
-    "postdoc": "In your own research or a joint project, have you decided the safety margin (safety factor) or allowable stress yourself?"
+    "master": "In grad research or projects, have you decided the safety margin (safety factor) or allowable stress yourself?",
+    "phd": "In PhD research or joint projects, have you decided the safety margin (safety factor) or allowable stress yourself?",
+    "postdoc": "In your research or joint projects, have you decided the safety margin (safety factor) or allowable stress yourself?"
    },
    "options": [
     "Never done it",
@@ -4630,9 +4630,9 @@
    "wording": "Have you written up a material specification or analysis results as a report?",
    "stage_wording": {
     "bachelor": "In a project or capstone, have you written up a material specification or analysis results as a report?",
-    "master": "In your graduate research or a project, have you written up a material specification or analysis results as a report?",
-    "phd": "In your PhD research or a project you joined, have you written up a material specification or analysis results as a report?",
-    "postdoc": "In your own research or a joint project, have you written up a material specification or analysis results as a report?"
+    "master": "In grad research or projects, have you written up a material specification or analysis results as a report?",
+    "phd": "In PhD research or joint projects, have you written up a material specification or analysis results as a report?",
+    "postdoc": "In your research or joint projects, have you written up a material specification or analysis results as a report?"
    },
    "options": [
     "Never done it",
@@ -4665,9 +4665,9 @@
    "wording": "Have you written down your reasons for choosing a particular material?",
    "stage_wording": {
     "bachelor": "In a project or capstone, have you written down your reasons for choosing a particular material?",
-    "master": "In your graduate research or a project, have you written down your reasons for choosing a particular material?",
-    "phd": "In your PhD research or a project you joined, have you written down your reasons for choosing a particular material?",
-    "postdoc": "In your own research or a joint project, have you written down your reasons for choosing a particular material?"
+    "master": "In grad research or projects, have you written down your reasons for choosing a particular material?",
+    "phd": "In PhD research or joint projects, have you written down your reasons for choosing a particular material?",
+    "postdoc": "In your research or joint projects, have you written down your reasons for choosing a particular material?"
    },
    "options": [
     "Never done it",
@@ -4700,9 +4700,9 @@
    "wording": "Did you ever compare test results with values from standards or textbooks?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, did you ever compare test results with values from standards or textbooks?",
-    "master": "In your graduate research or a project, did you ever compare test results with values from standards or textbooks?",
-    "phd": "In your PhD research or a project you joined, did you ever compare test results with values from standards or textbooks?",
-    "postdoc": "In your own research or a joint project, did you ever compare test results with values from standards or textbooks?"
+    "master": "In grad research or projects, did you ever compare test results with values from standards or textbooks?",
+    "phd": "In PhD research or joint projects, did you ever compare test results with values from standards or textbooks?",
+    "postdoc": "In your research or joint projects, did you ever compare test results with values from standards or textbooks?"
    },
    "options": [
     "Never done it",
@@ -4735,9 +4735,9 @@
    "wording": "Have you run a side-by-side test against other materials under the same conditions?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you run a side-by-side test against other materials under the same conditions?",
-    "master": "In your graduate research or a project, have you run a side-by-side test against other materials under the same conditions?",
-    "phd": "In your PhD research or a project you joined, have you run a side-by-side test against other materials under the same conditions?",
-    "postdoc": "In your own research or a joint project, have you run a side-by-side test against other materials under the same conditions?"
+    "master": "In grad research or projects, have you run a side-by-side test against other materials under the same conditions?",
+    "phd": "In PhD research or joint projects, have you run a side-by-side test against other materials under the same conditions?",
+    "postdoc": "In your research or joint projects, have you run a side-by-side test against other materials under the same conditions?"
    },
    "options": [
     "Never done it",
@@ -4770,9 +4770,9 @@
    "wording": "When the same spot broke again, have you changed the material or shape?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, when the same spot broke again, have you changed the material or shape?",
-    "master": "In your graduate research or a project, when the same spot broke again, have you changed the material or shape?",
-    "phd": "In your PhD research or a project you joined, when the same spot broke again, have you changed the material or shape?",
-    "postdoc": "In your own research or a joint project, when the same spot broke again, have you changed the material or shape?"
+    "master": "In grad research or projects, when the same spot broke again, have you changed the material or shape?",
+    "phd": "In PhD research or joint projects, when the same spot broke again, have you changed the material or shape?",
+    "postdoc": "In your research or joint projects, when the same spot broke again, have you changed the material or shape?"
    },
    "options": [
     "Never done it",
@@ -4805,9 +4805,9 @@
    "wording": "Have you ruled out possible causes of a fracture one by one, based on the evidence?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you ruled out possible causes of a fracture one by one, based on the evidence?",
-    "master": "In your graduate research or a project, have you ruled out possible causes of a fracture one by one, based on the evidence?",
-    "phd": "In your PhD research or a project you joined, have you ruled out possible causes of a fracture one by one, based on the evidence?",
-    "postdoc": "In your own research or a joint project, have you ruled out possible causes of a fracture one by one, based on the evidence?"
+    "master": "In grad research or projects, have you ruled out possible causes of a fracture one by one, based on the evidence?",
+    "phd": "In PhD research or joint projects, have you ruled out possible causes of a fracture one by one, based on the evidence?",
+    "postdoc": "In your research or joint projects, have you ruled out possible causes of a fracture one by one, based on the evidence?"
    },
    "options": [
     "Never done it",
@@ -4840,9 +4840,9 @@
    "wording": "Have you examined how a part failed and identified the type of damage, such as fatigue or corrosion?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you examined how a part failed and identified the type of damage, such as fatigue or corrosion?",
-    "master": "In your graduate research or a project, have you examined how a part failed and identified the type of damage, such as fatigue or corrosion?",
-    "phd": "In your PhD research or a project you joined, have you examined how a part failed and identified the type of damage, such as fatigue or corrosion?",
-    "postdoc": "In your own research or a joint project, have you examined how a part failed and identified the type of damage, such as fatigue or corrosion?"
+    "master": "In grad research or projects, have you examined how a part failed and identified the type of damage, such as fatigue or corrosion?",
+    "phd": "In PhD research or joint projects, have you examined how a part failed and identified the type of damage, such as fatigue or corrosion?",
+    "postdoc": "In your research or joint projects, have you examined how a part failed and identified the type of damage, such as fatigue or corrosion?"
    },
    "options": [
     "Never done it",
@@ -4875,9 +4875,9 @@
    "wording": "Have you turned the operating environment and required life into material conditions?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you turned the operating environment and required life into material conditions?",
-    "master": "In your graduate research or a project, have you turned the operating environment and required life into material conditions?",
-    "phd": "In your PhD research or a project you joined, have you turned the operating environment and required life into material conditions?",
-    "postdoc": "In your own research or a joint project, have you turned the operating environment and required life into material conditions?"
+    "master": "In grad research or projects, have you turned the operating environment and required life into material conditions?",
+    "phd": "In PhD research or joint projects, have you turned the operating environment and required life into material conditions?",
+    "postdoc": "In your research or joint projects, have you turned the operating environment and required life into material conditions?"
    },
    "options": [
     "Never done it",
@@ -4910,9 +4910,9 @@
    "wording": "Did you ever measure strength yourself on a materials testing machine?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, did you ever measure strength yourself on a materials testing machine?",
-    "master": "In your graduate research or a project, did you ever measure strength yourself on a materials testing machine?",
-    "phd": "In your PhD research or a project you joined, did you ever measure strength yourself on a materials testing machine?",
-    "postdoc": "In your own research or a joint project, did you ever measure strength yourself on a materials testing machine?"
+    "master": "In grad research or projects, did you ever measure strength yourself on a materials testing machine?",
+    "phd": "In PhD research or joint projects, did you ever measure strength yourself on a materials testing machine?",
+    "postdoc": "In your research or joint projects, did you ever measure strength yourself on a materials testing machine?"
    },
    "options": [
     "Never done it",
@@ -4945,9 +4945,9 @@
    "wording": "Have you shared your analysis results with people in design or quality?",
    "stage_wording": {
     "bachelor": "In a capstone or internship, have you shared your analysis results with people in design or quality?",
-    "master": "In your graduate research or a project, have you shared your analysis results with people in design or quality?",
-    "phd": "In your PhD research or a project you joined, have you shared your analysis results with people in design or quality?",
-    "postdoc": "In your own research or a joint project, have you shared your analysis results with people in design or quality?"
+    "master": "In grad research or projects, have you shared your analysis results with people in design or quality?",
+    "phd": "In PhD research or joint projects, have you shared your analysis results with people in design or quality?",
+    "postdoc": "In your research or joint projects, have you shared your analysis results with people in design or quality?"
    },
    "options": [
     "Never done it",
@@ -4980,9 +4980,9 @@
    "wording": "Have you decided yourself which items to measure and how to measure them?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you decided yourself which items to measure and how to measure them?",
-    "master": "In your graduate research or a project, have you decided yourself which items to measure and how to measure them?",
-    "phd": "In your PhD research or a project you joined, have you decided yourself which items to measure and how to measure them?",
-    "postdoc": "In your own research or a joint project, have you decided yourself which items to measure and how to measure them?"
+    "master": "In grad research or projects, have you decided yourself which items to measure and how to measure them?",
+    "phd": "In PhD research or joint projects, have you decided yourself which items to measure and how to measure them?",
+    "postdoc": "In your research or joint projects, have you decided yourself which items to measure and how to measure them?"
    },
    "options": [
     "Never done it",
@@ -5015,9 +5015,9 @@
    "wording": "Have you decided yourself on the fixture (jig) that holds a test sample and how it is clamped?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you decided yourself on the fixture (jig) that holds a test sample and how it is clamped?",
-    "master": "In your graduate research or a project, have you decided yourself on the fixture (jig) that holds a test sample and how it is clamped?",
-    "phd": "In your PhD research or a project you joined, have you decided yourself on the fixture (jig) that holds a test sample and how it is clamped?",
-    "postdoc": "In your own research or a joint project, have you decided yourself on the fixture (jig) that holds a test sample and how it is clamped?"
+    "master": "In grad research or projects, have you decided yourself on the fixture (jig) that holds a test sample and how it is clamped?",
+    "phd": "In PhD research or joint projects, have you decided yourself on the fixture (jig) that holds a test sample and how it is clamped?",
+    "postdoc": "In your research or joint projects, have you decided yourself on the fixture (jig) that holds a test sample and how it is clamped?"
    },
    "options": [
     "Never done it",
@@ -5050,9 +5050,9 @@
    "wording": "Have you written up test results as a test report with a pass/fail verdict?",
    "stage_wording": {
     "bachelor": "In a project or capstone, have you written up test results as a test report with a pass/fail verdict?",
-    "master": "In your graduate research or a project, have you written up test results as a test report with a pass/fail verdict?",
-    "phd": "In your PhD research or a project you joined, have you written up test results as a test report with a pass/fail verdict?",
-    "postdoc": "In your own research or a joint project, have you written up test results as a test report with a pass/fail verdict?"
+    "master": "In grad research or projects, have you written up test results as a test report with a pass/fail verdict?",
+    "phd": "In PhD research or joint projects, have you written up test results as a test report with a pass/fail verdict?",
+    "postdoc": "In your research or joint projects, have you written up test results as a test report with a pass/fail verdict?"
    },
    "options": [
     "Never done it",
@@ -5085,9 +5085,9 @@
    "wording": "Have you recorded the test conditions, equipment and margin of error?",
    "stage_wording": {
     "bachelor": "In a project or capstone, have you recorded the test conditions, equipment and margin of error?",
-    "master": "In your graduate research or a project, have you recorded the test conditions, equipment and margin of error?",
-    "phd": "In your PhD research or a project you joined, have you recorded the test conditions, equipment and margin of error?",
-    "postdoc": "In your own research or a joint project, have you recorded the test conditions, equipment and margin of error?"
+    "master": "In grad research or projects, have you recorded the test conditions, equipment and margin of error?",
+    "phd": "In PhD research or joint projects, have you recorded the test conditions, equipment and margin of error?",
+    "postdoc": "In your research or joint projects, have you recorded the test conditions, equipment and margin of error?"
    },
    "options": [
     "Never done it",
@@ -5120,9 +5120,9 @@
    "wording": "Did you ever measure repeatedly under the same conditions to see how much the values scattered?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, did you ever measure repeatedly under the same conditions to see how much the values scattered?",
-    "master": "In your graduate research or a project, did you ever measure repeatedly under the same conditions to see how much the values scattered?",
-    "phd": "In your PhD research or a project you joined, did you ever measure repeatedly under the same conditions to see how much the values scattered?",
-    "postdoc": "In your own research or a joint project, did you ever measure repeatedly under the same conditions to see how much the values scattered?"
+    "master": "In grad research or projects, did you ever measure repeatedly under the same conditions to see how much the values scattered?",
+    "phd": "In PhD research or joint projects, did you ever measure repeatedly under the same conditions to see how much the values scattered?",
+    "postdoc": "In your research or joint projects, did you ever measure repeatedly under the same conditions to see how much the values scattered?"
    },
    "options": [
     "Never done it",
@@ -5155,9 +5155,9 @@
    "wording": "Did you ever compare measurement results with reference values set by a standard?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, did you ever compare measurement results with reference values set by a standard?",
-    "master": "In your graduate research or a project, did you ever compare measurement results with reference values set by a standard?",
-    "phd": "In your PhD research or a project you joined, did you ever compare measurement results with reference values set by a standard?",
-    "postdoc": "In your own research or a joint project, did you ever compare measurement results with reference values set by a standard?"
+    "master": "In grad research or projects, did you ever compare measurement results with reference values set by a standard?",
+    "phd": "In PhD research or joint projects, did you ever compare measurement results with reference values set by a standard?",
+    "postdoc": "In your research or joint projects, did you ever compare measurement results with reference values set by a standard?"
    },
    "options": [
     "Never done it",
@@ -5190,9 +5190,9 @@
    "wording": "When values fluctuated, have you changed the measurement method or the fixture?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, when values fluctuated, have you changed the measurement method or the fixture?",
-    "master": "In your graduate research or a project, when values fluctuated, have you changed the measurement method or the fixture?",
-    "phd": "In your PhD research or a project you joined, when values fluctuated, have you changed the measurement method or the fixture?",
-    "postdoc": "In your own research or a joint project, when values fluctuated, have you changed the measurement method or the fixture?"
+    "master": "In grad research or projects, when values fluctuated, have you changed the measurement method or the fixture?",
+    "phd": "In PhD research or joint projects, when values fluctuated, have you changed the measurement method or the fixture?",
+    "postdoc": "In your research or joint projects, when values fluctuated, have you changed the measurement method or the fixture?"
    },
    "options": [
     "Never done it",
@@ -5225,9 +5225,9 @@
    "wording": "Have you worked out whether fluctuating values came from the sample, fixture or instrument?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you worked out whether fluctuating values came from the sample, fixture or instrument?",
-    "master": "In your graduate research or a project, have you worked out whether fluctuating values came from the sample, fixture or instrument?",
-    "phd": "In your PhD research or a project you joined, have you worked out whether fluctuating values came from the sample, fixture or instrument?",
-    "postdoc": "In your own research or a joint project, have you worked out whether fluctuating values came from the sample, fixture or instrument?"
+    "master": "In grad research or projects, have you worked out whether fluctuating values came from the sample, fixture or instrument?",
+    "phd": "In PhD research or joint projects, have you worked out whether fluctuating values came from the sample, fixture or instrument?",
+    "postdoc": "In your research or joint projects, have you worked out whether fluctuating values came from the sample, fixture or instrument?"
    },
    "options": [
     "Never done it",
@@ -5260,9 +5260,9 @@
    "wording": "Have you written down beforehand what a test was supposed to confirm?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you written down beforehand what a test was supposed to confirm?",
-    "master": "In your graduate research or a project, have you written down beforehand what a test was supposed to confirm?",
-    "phd": "In your PhD research or a project you joined, have you written down beforehand what a test was supposed to confirm?",
-    "postdoc": "In your own research or a joint project, have you written down beforehand what a test was supposed to confirm?"
+    "master": "In grad research or projects, have you written down beforehand what a test was supposed to confirm?",
+    "phd": "In PhD research or joint projects, have you written down beforehand what a test was supposed to confirm?",
+    "postdoc": "In your research or joint projects, have you written down beforehand what a test was supposed to confirm?"
    },
    "options": [
     "Never done it",
@@ -5295,9 +5295,9 @@
    "wording": "Have you turned a standard's acceptance criteria into measurable quantities and a pass/fail line?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you turned a standard's acceptance criteria into measurable quantities and a pass/fail line?",
-    "master": "In your graduate research or a project, have you turned a standard's acceptance criteria into measurable quantities and a pass/fail line?",
-    "phd": "In your PhD research or a project you joined, have you turned a standard's acceptance criteria into measurable quantities and a pass/fail line?",
-    "postdoc": "In your own research or a joint project, have you turned a standard's acceptance criteria into measurable quantities and a pass/fail line?"
+    "master": "In grad research or projects, have you turned a standard's acceptance criteria into measurable quantities and a pass/fail line?",
+    "phd": "In PhD research or joint projects, have you turned a standard's acceptance criteria into measurable quantities and a pass/fail line?",
+    "postdoc": "In your research or joint projects, have you turned a standard's acceptance criteria into measurable quantities and a pass/fail line?"
    },
    "options": [
     "Never done it",
@@ -5330,9 +5330,9 @@
    "wording": "Have you connected measuring equipment and collected data from it?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you connected measuring equipment and collected data from it?",
-    "master": "In your graduate research or a project, have you connected measuring equipment and collected data from it?",
-    "phd": "In your PhD research or a project you joined, have you connected measuring equipment and collected data from it?",
-    "postdoc": "In your own research or a joint project, have you connected measuring equipment and collected data from it?"
+    "master": "In grad research or projects, have you connected measuring equipment and collected data from it?",
+    "phd": "In PhD research or joint projects, have you connected measuring equipment and collected data from it?",
+    "postdoc": "In your research or joint projects, have you connected measuring equipment and collected data from it?"
    },
    "options": [
     "Never done it",
@@ -5365,9 +5365,9 @@
    "wording": "Have you summarized test results and reported them to the people who needed them?",
    "stage_wording": {
     "bachelor": "In a capstone or internship, have you summarized test results and reported them to the people who needed them?",
-    "master": "In your graduate research or a project, have you summarized test results and reported them to the people who needed them?",
-    "phd": "In your PhD research or a project you joined, have you summarized test results and reported them to the people who needed them?",
-    "postdoc": "In your own research or a joint project, have you summarized test results and reported them to the people who needed them?"
+    "master": "In grad research or projects, have you summarized test results and reported them to the people who needed them?",
+    "phd": "In PhD research or joint projects, have you summarized test results and reported them to the people who needed them?",
+    "postdoc": "In your research or joint projects, have you summarized test results and reported them to the people who needed them?"
    },
    "options": [
     "Never done it",
@@ -5400,9 +5400,9 @@
    "wording": "Have you decided yourself which manufacturing method to use and the order of machining steps?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you decided yourself which manufacturing method to use and the order of machining steps?",
-    "master": "In your graduate research or a project, have you decided yourself which manufacturing method to use and the order of machining steps?",
-    "phd": "In your PhD research or a project you joined, have you decided yourself which manufacturing method to use and the order of machining steps?",
-    "postdoc": "In your own research or a joint project, have you decided yourself which manufacturing method to use and the order of machining steps?"
+    "master": "In grad research or projects, have you decided yourself which manufacturing method to use and the order of machining steps?",
+    "phd": "In PhD research or joint projects, have you decided yourself which manufacturing method to use and the order of machining steps?",
+    "postdoc": "In your research or joint projects, have you decided yourself which manufacturing method to use and the order of machining steps?"
    },
    "options": [
     "Never done it",
@@ -5435,9 +5435,9 @@
    "wording": "Have you set the range for machining or forming conditions yourself?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you set the range for machining or forming conditions yourself?",
-    "master": "In your graduate research or a project, have you set the range for machining or forming conditions yourself?",
-    "phd": "In your PhD research or a project you joined, have you set the range for machining or forming conditions yourself?",
-    "postdoc": "In your own research or a joint project, have you set the range for machining or forming conditions yourself?"
+    "master": "In grad research or projects, have you set the range for machining or forming conditions yourself?",
+    "phd": "In PhD research or joint projects, have you set the range for machining or forming conditions yourself?",
+    "postdoc": "In your research or joint projects, have you set the range for machining or forming conditions yourself?"
    },
    "options": [
     "Never done it",
@@ -5470,9 +5470,9 @@
    "wording": "Have you produced a work standard or process chart that sets out the sequence of operations?",
    "stage_wording": {
     "bachelor": "In a project or capstone, have you produced a work standard or process chart that sets out the sequence of operations?",
-    "master": "In your graduate research or a project, have you produced a work standard or process chart that sets out the sequence of operations?",
-    "phd": "In your PhD research or a project you joined, have you produced a work standard or process chart that sets out the sequence of operations?",
-    "postdoc": "In your own research or a joint project, have you produced a work standard or process chart that sets out the sequence of operations?"
+    "master": "In grad research or projects, have you produced a work standard or process chart that sets out the sequence of operations?",
+    "phd": "In PhD research or joint projects, have you produced a work standard or process chart that sets out the sequence of operations?",
+    "postdoc": "In your research or joint projects, have you produced a work standard or process chart that sets out the sequence of operations?"
    },
    "options": [
     "Never done it",
@@ -5505,9 +5505,9 @@
    "wording": "Have you documented the condition ranges together with the items to be controlled?",
    "stage_wording": {
     "bachelor": "In a project or capstone, have you documented the condition ranges together with the items to be controlled?",
-    "master": "In your graduate research or a project, have you documented the condition ranges together with the items to be controlled?",
-    "phd": "In your PhD research or a project you joined, have you documented the condition ranges together with the items to be controlled?",
-    "postdoc": "In your own research or a joint project, have you documented the condition ranges together with the items to be controlled?"
+    "master": "In grad research or projects, have you documented the condition ranges together with the items to be controlled?",
+    "phd": "In PhD research or joint projects, have you documented the condition ranges together with the items to be controlled?",
+    "postdoc": "In your research or joint projects, have you documented the condition ranges together with the items to be controlled?"
    },
    "options": [
     "Never done it",
@@ -5540,9 +5540,9 @@
    "wording": "Did you ever compare defect rates before and after changing the conditions?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, did you ever compare defect rates before and after changing the conditions?",
-    "master": "In your graduate research or a project, did you ever compare defect rates before and after changing the conditions?",
-    "phd": "In your PhD research or a project you joined, did you ever compare defect rates before and after changing the conditions?",
-    "postdoc": "In your own research or a joint project, did you ever compare defect rates before and after changing the conditions?"
+    "master": "In grad research or projects, did you ever compare defect rates before and after changing the conditions?",
+    "phd": "In PhD research or joint projects, did you ever compare defect rates before and after changing the conditions?",
+    "postdoc": "In your research or joint projects, did you ever compare defect rates before and after changing the conditions?"
    },
    "options": [
     "Never done it",
@@ -5575,9 +5575,9 @@
    "wording": "Did you ever measure the actual process time and compare it with the target?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, did you ever measure the actual process time and compare it with the target?",
-    "master": "In your graduate research or a project, did you ever measure the actual process time and compare it with the target?",
-    "phd": "In your PhD research or a project you joined, did you ever measure the actual process time and compare it with the target?",
-    "postdoc": "In your own research or a joint project, did you ever measure the actual process time and compare it with the target?"
+    "master": "In grad research or projects, did you ever measure the actual process time and compare it with the target?",
+    "phd": "In PhD research or joint projects, did you ever measure the actual process time and compare it with the target?",
+    "postdoc": "In your research or joint projects, did you ever measure the actual process time and compare it with the target?"
    },
    "options": [
     "Never done it",
@@ -5610,9 +5610,9 @@
    "wording": "When defects appeared, have you changed the conditions or the tooling?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, when defects appeared, have you changed the conditions or the tooling?",
-    "master": "In your graduate research or a project, when defects appeared, have you changed the conditions or the tooling?",
-    "phd": "In your PhD research or a project you joined, when defects appeared, have you changed the conditions or the tooling?",
-    "postdoc": "In your own research or a joint project, when defects appeared, have you changed the conditions or the tooling?"
+    "master": "In grad research or projects, when defects appeared, have you changed the conditions or the tooling?",
+    "phd": "In PhD research or joint projects, when defects appeared, have you changed the conditions or the tooling?",
+    "postdoc": "In your research or joint projects, when defects appeared, have you changed the conditions or the tooling?"
    },
    "options": [
     "Never done it",
@@ -5645,9 +5645,9 @@
    "wording": "Have you sorted out whether a defect came from the equipment, the material or the conditions?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you sorted out whether a defect came from the equipment, the material or the conditions?",
-    "master": "In your graduate research or a project, have you sorted out whether a defect came from the equipment, the material or the conditions?",
-    "phd": "In your PhD research or a project you joined, have you sorted out whether a defect came from the equipment, the material or the conditions?",
-    "postdoc": "In your own research or a joint project, have you sorted out whether a defect came from the equipment, the material or the conditions?"
+    "master": "In grad research or projects, have you sorted out whether a defect came from the equipment, the material or the conditions?",
+    "phd": "In PhD research or joint projects, have you sorted out whether a defect came from the equipment, the material or the conditions?",
+    "postdoc": "In your research or joint projects, have you sorted out whether a defect came from the equipment, the material or the conditions?"
    },
    "options": [
     "Never done it",
@@ -5680,9 +5680,9 @@
    "wording": "Have you pinpointed which step of a process had the problem, and what it was?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you pinpointed which step of a process had the problem, and what it was?",
-    "master": "In your graduate research or a project, have you pinpointed which step of a process had the problem, and what it was?",
-    "phd": "In your PhD research or a project you joined, have you pinpointed which step of a process had the problem, and what it was?",
-    "postdoc": "In your own research or a joint project, have you pinpointed which step of a process had the problem, and what it was?"
+    "master": "In grad research or projects, have you pinpointed which step of a process had the problem, and what it was?",
+    "phd": "In PhD research or joint projects, have you pinpointed which step of a process had the problem, and what it was?",
+    "postdoc": "In your research or joint projects, have you pinpointed which step of a process had the problem, and what it was?"
    },
    "options": [
     "Never done it",
@@ -5715,9 +5715,9 @@
    "wording": "Have you turned drawing dimensions and tolerances into conditions the process must hold?",
    "stage_wording": {
     "bachelor": "While working on a course project or capstone, have you turned drawing dimensions and tolerances into conditions the process must hold?",
-    "master": "During your graduate research or a project, have you turned drawing dimensions and tolerances into conditions the process must hold?",
-    "phd": "During your PhD research or a project you joined, have you turned drawing dimensions and tolerances into conditions the process must hold?",
-    "postdoc": "During your own research or a joint project, have you turned drawing dimensions and tolerances into conditions the process must hold?"
+    "master": "During grad research or projects, have you turned drawing dimensions and tolerances into conditions the process must hold?",
+    "phd": "During PhD research or joint projects, have you turned drawing dimensions and tolerances into conditions the process must hold?",
+    "postdoc": "During your research or joint projects, have you turned drawing dimensions and tolerances into conditions the process must hold?"
    },
    "options": [
     "Never done it",
@@ -5750,9 +5750,9 @@
    "wording": "Have you made trial runs while varying the conditions?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you made trial runs while varying the conditions?",
-    "master": "In your graduate research or a project, have you made trial runs while varying the conditions?",
-    "phd": "In your PhD research or a project you joined, have you made trial runs while varying the conditions?",
-    "postdoc": "In your own research or a joint project, have you made trial runs while varying the conditions?"
+    "master": "In grad research or projects, have you made trial runs while varying the conditions?",
+    "phd": "In PhD research or joint projects, have you made trial runs while varying the conditions?",
+    "postdoc": "In your research or joint projects, have you made trial runs while varying the conditions?"
    },
    "options": [
     "Never done it",
@@ -5785,9 +5785,9 @@
    "wording": "Have you applied conditions you worked out on a real production line?",
    "stage_wording": {
     "bachelor": "In a capstone or internship, have you applied conditions you worked out on a real production line?",
-    "master": "In your graduate research or a project, have you applied conditions you worked out on a real production line?",
-    "phd": "In your PhD research or a project you joined, have you applied conditions you worked out on a real production line?",
-    "postdoc": "In your own research or a joint project, have you applied conditions you worked out on a real production line?"
+    "master": "In grad research or projects, have you applied conditions you worked out on a real production line?",
+    "phd": "In PhD research or joint projects, have you applied conditions you worked out on a real production line?",
+    "postdoc": "In your research or joint projects, have you applied conditions you worked out on a real production line?"
    },
    "options": [
     "Never done it",
@@ -5820,9 +5820,9 @@
    "wording": "Have you set equipment inspection items and inspection intervals yourself?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you set equipment inspection items and inspection intervals yourself?",
-    "master": "In your graduate research or a project, have you set equipment inspection items and inspection intervals yourself?",
-    "phd": "In your PhD research or a project you joined, have you set equipment inspection items and inspection intervals yourself?",
-    "postdoc": "In your own research or a joint project, have you set equipment inspection items and inspection intervals yourself?"
+    "master": "In grad research or projects, have you set equipment inspection items and inspection intervals yourself?",
+    "phd": "In PhD research or joint projects, have you set equipment inspection items and inspection intervals yourself?",
+    "postdoc": "In your research or joint projects, have you set equipment inspection items and inspection intervals yourself?"
    },
    "options": [
     "Never done it",
@@ -5855,9 +5855,9 @@
    "wording": "Have you decided yourself how many spare parts or consumables to keep?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you decided yourself how many spare parts or consumables to keep?",
-    "master": "In your graduate research or a project, have you decided yourself how many spare parts or consumables to keep?",
-    "phd": "In your PhD research or a project you joined, have you decided yourself how many spare parts or consumables to keep?",
-    "postdoc": "In your own research or a joint project, have you decided yourself how many spare parts or consumables to keep?"
+    "master": "In grad research or projects, have you decided yourself how many spare parts or consumables to keep?",
+    "phd": "In PhD research or joint projects, have you decided yourself how many spare parts or consumables to keep?",
+    "postdoc": "In your research or joint projects, have you decided yourself how many spare parts or consumables to keep?"
    },
    "options": [
     "Never done it",
@@ -5890,9 +5890,9 @@
    "wording": "Have you delivered an inspection checklist or a record of the repairs made?",
    "stage_wording": {
     "bachelor": "In a project or capstone, have you delivered an inspection checklist or a record of the repairs made?",
-    "master": "In your graduate research or a project, have you delivered an inspection checklist or a record of the repairs made?",
-    "phd": "In your PhD research or a project you joined, have you delivered an inspection checklist or a record of the repairs made?",
-    "postdoc": "In your own research or a joint project, have you delivered an inspection checklist or a record of the repairs made?"
+    "master": "In grad research or projects, have you delivered an inspection checklist or a record of the repairs made?",
+    "phd": "In PhD research or joint projects, have you delivered an inspection checklist or a record of the repairs made?",
+    "postdoc": "In your research or joint projects, have you delivered an inspection checklist or a record of the repairs made?"
    },
    "options": [
     "Never done it",
@@ -5925,9 +5925,9 @@
    "wording": "Have you left calibration records or documents to hand over to the next person?",
    "stage_wording": {
     "bachelor": "In a project or capstone, have you left calibration records or documents to hand over to the next person?",
-    "master": "In your graduate research or a project, have you left calibration records or documents to hand over to the next person?",
-    "phd": "In your PhD research or a project you joined, have you left calibration records or documents to hand over to the next person?",
-    "postdoc": "In your own research or a joint project, have you left calibration records or documents to hand over to the next person?"
+    "master": "In grad research or projects, have you left calibration records or documents to hand over to the next person?",
+    "phd": "In PhD research or joint projects, have you left calibration records or documents to hand over to the next person?",
+    "postdoc": "In your research or joint projects, have you left calibration records or documents to hand over to the next person?"
    },
    "options": [
     "Never done it",
@@ -5960,9 +5960,9 @@
    "wording": "Did you ever measure actual equipment performance and compare it with the specification values?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, did you ever measure actual equipment performance and compare it with the specification values?",
-    "master": "In your graduate research or a project, did you ever measure actual equipment performance and compare it with the specification values?",
-    "phd": "In your PhD research or a project you joined, did you ever measure actual equipment performance and compare it with the specification values?",
-    "postdoc": "In your own research or a joint project, did you ever measure actual equipment performance and compare it with the specification values?"
+    "master": "In grad research or projects, did you ever measure actual equipment performance and compare it with the specification values?",
+    "phd": "In PhD research or joint projects, did you ever measure actual equipment performance and compare it with the specification values?",
+    "postdoc": "In your research or joint projects, did you ever measure actual equipment performance and compare it with the specification values?"
    },
    "options": [
     "Never done it",
@@ -5995,9 +5995,9 @@
    "wording": "Have you measured equipment condition before and after a repair and compared the two?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you measured equipment condition before and after a repair and compared the two?",
-    "master": "In your graduate research or a project, have you measured equipment condition before and after a repair and compared the two?",
-    "phd": "In your PhD research or a project you joined, have you measured equipment condition before and after a repair and compared the two?",
-    "postdoc": "In your own research or a joint project, have you measured equipment condition before and after a repair and compared the two?"
+    "master": "In grad research or projects, have you measured equipment condition before and after a repair and compared the two?",
+    "phd": "In PhD research or joint projects, have you measured equipment condition before and after a repair and compared the two?",
+    "postdoc": "In your research or joint projects, have you measured equipment condition before and after a repair and compared the two?"
    },
    "options": [
     "Never done it",
@@ -6030,9 +6030,9 @@
    "wording": "When the same failure happened again, have you gone back and looked for the cause?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, when the same failure happened again, have you gone back and looked for the cause?",
-    "master": "In your graduate research or a project, when the same failure happened again, have you gone back and looked for the cause?",
-    "phd": "In your PhD research or a project you joined, when the same failure happened again, have you gone back and looked for the cause?",
-    "postdoc": "In your own research or a joint project, when the same failure happened again, have you gone back and looked for the cause?"
+    "master": "In grad research or projects, when the same failure happened again, have you gone back and looked for the cause?",
+    "phd": "In PhD research or joint projects, when the same failure happened again, have you gone back and looked for the cause?",
+    "postdoc": "In your research or joint projects, when the same failure happened again, have you gone back and looked for the cause?"
    },
    "options": [
     "Never done it",
@@ -6065,9 +6065,9 @@
    "wording": "Have you sorted the possible causes of a failure into equipment, conditions and how it was used?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you sorted the possible causes of a failure into equipment, conditions and how it was used?",
-    "master": "In your graduate research or a project, have you sorted the possible causes of a failure into equipment, conditions and how it was used?",
-    "phd": "In your PhD research or a project you joined, have you sorted the possible causes of a failure into equipment, conditions and how it was used?",
-    "postdoc": "In your own research or a joint project, have you sorted the possible causes of a failure into equipment, conditions and how it was used?"
+    "master": "In grad research or projects, have you sorted the possible causes of a failure into equipment, conditions and how it was used?",
+    "phd": "In PhD research or joint projects, have you sorted the possible causes of a failure into equipment, conditions and how it was used?",
+    "postdoc": "In your research or joint projects, have you sorted the possible causes of a failure into equipment, conditions and how it was used?"
    },
    "options": [
     "Never done it",
@@ -6100,9 +6100,9 @@
    "wording": "Have you chosen which of several pieces of equipment to check first?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you chosen which of several pieces of equipment to check first?",
-    "master": "In your graduate research or a project, have you chosen which of several pieces of equipment to check first?",
-    "phd": "In your PhD research or a project you joined, have you chosen which of several pieces of equipment to check first?",
-    "postdoc": "In your own research or a joint project, have you chosen which of several pieces of equipment to check first?"
+    "master": "In grad research or projects, have you chosen which of several pieces of equipment to check first?",
+    "phd": "In PhD research or joint projects, have you chosen which of several pieces of equipment to check first?",
+    "postdoc": "In your research or joint projects, have you chosen which of several pieces of equipment to check first?"
    },
    "options": [
     "Never done it",
@@ -6135,9 +6135,9 @@
    "wording": "Have you turned a required accuracy into inspection items and tolerances?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you turned a required accuracy into inspection items and tolerances?",
-    "master": "In your graduate research or a project, have you turned a required accuracy into inspection items and tolerances?",
-    "phd": "In your PhD research or a project you joined, have you turned a required accuracy into inspection items and tolerances?",
-    "postdoc": "In your own research or a joint project, have you turned a required accuracy into inspection items and tolerances?"
+    "master": "In grad research or projects, have you turned a required accuracy into inspection items and tolerances?",
+    "phd": "In PhD research or joint projects, have you turned a required accuracy into inspection items and tolerances?",
+    "postdoc": "In your research or joint projects, have you turned a required accuracy into inspection items and tolerances?"
    },
    "options": [
     "Never done it",
@@ -6170,9 +6170,9 @@
    "wording": "Have you used an instrument to check whether a machine's condition was within spec?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you used an instrument to check whether a machine's condition was within spec?",
-    "master": "In your graduate research or a project, have you used an instrument to check whether a machine's condition was within spec?",
-    "phd": "In your PhD research or a project you joined, have you used an instrument to check whether a machine's condition was within spec?",
-    "postdoc": "In your own research or a joint project, have you used an instrument to check whether a machine's condition was within spec?"
+    "master": "In grad research or projects, have you used an instrument to check whether a machine's condition was within spec?",
+    "phd": "In PhD research or joint projects, have you used an instrument to check whether a machine's condition was within spec?",
+    "postdoc": "In your research or joint projects, have you used an instrument to check whether a machine's condition was within spec?"
    },
    "options": [
     "Never done it",
@@ -6205,9 +6205,9 @@
    "wording": "Have you shown other people how to use a piece of equipment?",
    "stage_wording": {
     "bachelor": "In a capstone or internship, have you shown other people how to use a piece of equipment?",
-    "master": "In your graduate research or a project, have you shown other people how to use a piece of equipment?",
-    "phd": "In your PhD research or a project you joined, have you shown other people how to use a piece of equipment?",
-    "postdoc": "In your own research or a joint project, have you shown other people how to use a piece of equipment?"
+    "master": "In grad research or projects, have you shown other people how to use a piece of equipment?",
+    "phd": "In PhD research or joint projects, have you shown other people how to use a piece of equipment?",
+    "postdoc": "In your research or joint projects, have you shown other people how to use a piece of equipment?"
    },
    "options": [
     "Never done it",
@@ -6240,9 +6240,9 @@
    "wording": "Have you set the quality items to be controlled and their tolerances yourself?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you set the quality items to be controlled and their tolerances yourself?",
-    "master": "In your graduate research or a project, have you set the quality items to be controlled and their tolerances yourself?",
-    "phd": "In your PhD research or a project you joined, have you set the quality items to be controlled and their tolerances yourself?",
-    "postdoc": "In your own research or a joint project, have you set the quality items to be controlled and their tolerances yourself?"
+    "master": "In grad research or projects, have you set the quality items to be controlled and their tolerances yourself?",
+    "phd": "In PhD research or joint projects, have you set the quality items to be controlled and their tolerances yourself?",
+    "postdoc": "In your research or joint projects, have you set the quality items to be controlled and their tolerances yourself?"
    },
    "options": [
     "Never done it",
@@ -6275,9 +6275,9 @@
    "wording": "Have you set the sample size and inspection frequency yourself?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you set the sample size and inspection frequency yourself?",
-    "master": "In your graduate research or a project, have you set the sample size and inspection frequency yourself?",
-    "phd": "In your PhD research or a project you joined, have you set the sample size and inspection frequency yourself?",
-    "postdoc": "In your own research or a joint project, have you set the sample size and inspection frequency yourself?"
+    "master": "In grad research or projects, have you set the sample size and inspection frequency yourself?",
+    "phd": "In PhD research or joint projects, have you set the sample size and inspection frequency yourself?",
+    "postdoc": "In your research or joint projects, have you set the sample size and inspection frequency yourself?"
    },
    "options": [
     "Never done it",
@@ -6310,9 +6310,9 @@
    "wording": "Have you delivered inspection criteria or a quality control plan as a document?",
    "stage_wording": {
     "bachelor": "In a project or capstone, have you delivered inspection criteria or a quality control plan as a document?",
-    "master": "In your graduate research or a project, have you delivered inspection criteria or a quality control plan as a document?",
-    "phd": "In your PhD research or a project you joined, have you delivered inspection criteria or a quality control plan as a document?",
-    "postdoc": "In your own research or a joint project, have you delivered inspection criteria or a quality control plan as a document?"
+    "master": "In grad research or projects, have you delivered inspection criteria or a quality control plan as a document?",
+    "phd": "In PhD research or joint projects, have you delivered inspection criteria or a quality control plan as a document?",
+    "postdoc": "In your research or joint projects, have you delivered inspection criteria or a quality control plan as a document?"
    },
    "options": [
     "Never done it",
@@ -6345,9 +6345,9 @@
    "wording": "Have you left an improvement report recording the cause of a defect and the countermeasure?",
    "stage_wording": {
     "bachelor": "In a project or capstone, have you left an improvement report recording the cause of a defect and the countermeasure?",
-    "master": "In your graduate research or a project, have you left an improvement report recording the cause of a defect and the countermeasure?",
-    "phd": "In your PhD research or a project you joined, have you left an improvement report recording the cause of a defect and the countermeasure?",
-    "postdoc": "In your own research or a joint project, have you left an improvement report recording the cause of a defect and the countermeasure?"
+    "master": "In grad research or projects, have you left an improvement report recording the cause of a defect and the countermeasure?",
+    "phd": "In PhD research or joint projects, have you left an improvement report recording the cause of a defect and the countermeasure?",
+    "postdoc": "In your research or joint projects, have you left an improvement report recording the cause of a defect and the countermeasure?"
    },
    "options": [
     "Never done it",
@@ -6380,9 +6380,9 @@
    "wording": "Have you compared inspection results with a standard to decide pass or fail?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you compared inspection results with a standard to decide pass or fail?",
-    "master": "In your graduate research or a project, have you compared inspection results with a standard to decide pass or fail?",
-    "phd": "In your PhD research or a project you joined, have you compared inspection results with a standard to decide pass or fail?",
-    "postdoc": "In your own research or a joint project, have you compared inspection results with a standard to decide pass or fail?"
+    "master": "In grad research or projects, have you compared inspection results with a standard to decide pass or fail?",
+    "phd": "In PhD research or joint projects, have you compared inspection results with a standard to decide pass or fail?",
+    "postdoc": "In your research or joint projects, have you compared inspection results with a standard to decide pass or fail?"
    },
    "options": [
     "Never done it",
@@ -6415,9 +6415,9 @@
    "wording": "Did you ever compare accelerated life test results with actual service life?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, did you ever compare accelerated life test results with actual service life?",
-    "master": "In your graduate research or a project, did you ever compare accelerated life test results with actual service life?",
-    "phd": "In your PhD research or a project you joined, did you ever compare accelerated life test results with actual service life?",
-    "postdoc": "In your own research or a joint project, did you ever compare accelerated life test results with actual service life?"
+    "master": "In grad research or projects, did you ever compare accelerated life test results with actual service life?",
+    "phd": "In PhD research or joint projects, did you ever compare accelerated life test results with actual service life?",
+    "postdoc": "In your research or joint projects, did you ever compare accelerated life test results with actual service life?"
    },
    "options": [
     "Never done it",
@@ -6450,9 +6450,9 @@
    "wording": "When the same defect came back, have you reworked the countermeasure?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, when the same defect came back, have you reworked the countermeasure?",
-    "master": "In your graduate research or a project, when the same defect came back, have you reworked the countermeasure?",
-    "phd": "In your PhD research or a project you joined, when the same defect came back, have you reworked the countermeasure?",
-    "postdoc": "In your own research or a joint project, when the same defect came back, have you reworked the countermeasure?"
+    "master": "In grad research or projects, when the same defect came back, have you reworked the countermeasure?",
+    "phd": "In PhD research or joint projects, when the same defect came back, have you reworked the countermeasure?",
+    "postdoc": "In your research or joint projects, when the same defect came back, have you reworked the countermeasure?"
    },
    "options": [
     "Never done it",
@@ -6485,9 +6485,9 @@
    "wording": "Have you separated where a defect was created from where inspection failed to catch it?",
    "stage_wording": {
     "bachelor": "While working on a lab experiment or project, have you separated where a defect was created from where inspection failed to catch it?",
-    "master": "During your graduate research or a project, have you separated where a defect was created from where inspection failed to catch it?",
-    "phd": "During your PhD research or a project you joined, have you separated where a defect was created from where inspection failed to catch it?",
-    "postdoc": "During your own research or a joint project, have you separated where a defect was created from where inspection failed to catch it?"
+    "master": "During grad research or projects, have you separated where a defect was created from where inspection failed to catch it?",
+    "phd": "During PhD research or joint projects, have you separated where a defect was created from where inspection failed to catch it?",
+    "postdoc": "During your research or joint projects, have you separated where a defect was created from where inspection failed to catch it?"
    },
    "options": [
     "Never done it",
@@ -6520,9 +6520,9 @@
    "wording": "Have you chosen which quality characteristics to control?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you chosen which quality characteristics to control?",
-    "master": "In your graduate research or a project, have you chosen which quality characteristics to control?",
-    "phd": "In your PhD research or a project you joined, have you chosen which quality characteristics to control?",
-    "postdoc": "In your own research or a joint project, have you chosen which quality characteristics to control?"
+    "master": "In grad research or projects, have you chosen which quality characteristics to control?",
+    "phd": "In PhD research or joint projects, have you chosen which quality characteristics to control?",
+    "postdoc": "In your research or joint projects, have you chosen which quality characteristics to control?"
    },
    "options": [
     "Never done it",
@@ -6555,9 +6555,9 @@
    "wording": "Have you turned customer requirements and standards into control limits and life targets?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you turned customer requirements and standards into control limits and life targets?",
-    "master": "In your graduate research or a project, have you turned customer requirements and standards into control limits and life targets?",
-    "phd": "In your PhD research or a project you joined, have you turned customer requirements and standards into control limits and life targets?",
-    "postdoc": "In your own research or a joint project, have you turned customer requirements and standards into control limits and life targets?"
+    "master": "In grad research or projects, have you turned customer requirements and standards into control limits and life targets?",
+    "phd": "In PhD research or joint projects, have you turned customer requirements and standards into control limits and life targets?",
+    "postdoc": "In your research or joint projects, have you turned customer requirements and standards into control limits and life targets?"
    },
    "options": [
     "Never done it",
@@ -6590,9 +6590,9 @@
    "wording": "Did you ever plot quality values over time on a chart (a control chart)?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, did you ever plot quality values over time on a chart (a control chart)?",
-    "master": "In your graduate research or a project, did you ever plot quality values over time on a chart (a control chart)?",
-    "phd": "In your PhD research or a project you joined, did you ever plot quality values over time on a chart (a control chart)?",
-    "postdoc": "In your own research or a joint project, did you ever plot quality values over time on a chart (a control chart)?"
+    "master": "In grad research or projects, did you ever plot quality values over time on a chart (a control chart)?",
+    "phd": "In PhD research or joint projects, did you ever plot quality values over time on a chart (a control chart)?",
+    "postdoc": "In your research or joint projects, did you ever plot quality values over time on a chart (a control chart)?"
    },
    "options": [
     "Never done it",
@@ -6625,9 +6625,9 @@
    "wording": "Have you summarized quality inspection results and reported them to the team?",
    "stage_wording": {
     "bachelor": "In a capstone or internship, have you summarized quality inspection results and reported them to the team?",
-    "master": "In your graduate research or a project, have you summarized quality inspection results and reported them to the team?",
-    "phd": "In your PhD research or a project you joined, have you summarized quality inspection results and reported them to the team?",
-    "postdoc": "In your own research or a joint project, have you summarized quality inspection results and reported them to the team?"
+    "master": "In grad research or projects, have you summarized quality inspection results and reported them to the team?",
+    "phd": "In PhD research or joint projects, have you summarized quality inspection results and reported them to the team?",
+    "postdoc": "In your research or joint projects, have you summarized quality inspection results and reported them to the team?"
    },
    "options": [
     "Never done it",
@@ -6660,9 +6660,9 @@
    "wording": "Have you decided yourself what had to be matched between parts or between teams?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you decided yourself what had to be matched between parts or between teams?",
-    "master": "In your graduate research or a project, have you decided yourself what had to be matched between parts or between teams?",
-    "phd": "In your PhD research or a project you joined, have you decided yourself what had to be matched between parts or between teams?",
-    "postdoc": "In your own research or a joint project, have you decided yourself what had to be matched between parts or between teams?"
+    "master": "In grad research or projects, have you decided yourself what had to be matched between parts or between teams?",
+    "phd": "In PhD research or joint projects, have you decided yourself what had to be matched between parts or between teams?",
+    "postdoc": "In your research or joint projects, have you decided yourself what had to be matched between parts or between teams?"
    },
    "options": [
     "Never done it",
@@ -6695,9 +6695,9 @@
    "wording": "When requirements conflicted, have you decided yourself which one to satisfy first?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, when requirements conflicted, have you decided yourself which one to satisfy first?",
-    "master": "In your graduate research or a project, when requirements conflicted, have you decided yourself which one to satisfy first?",
-    "phd": "In your PhD research or a project you joined, when requirements conflicted, have you decided yourself which one to satisfy first?",
-    "postdoc": "In your own research or a joint project, when requirements conflicted, have you decided yourself which one to satisfy first?"
+    "master": "In grad research or projects, when requirements conflicted, have you decided yourself which one to satisfy first?",
+    "phd": "In PhD research or joint projects, when requirements conflicted, have you decided yourself which one to satisfy first?",
+    "postdoc": "In your research or joint projects, when requirements conflicted, have you decided yourself which one to satisfy first?"
    },
    "options": [
     "Never done it",
@@ -6730,9 +6730,9 @@
    "wording": "Have you produced a requirements table or acceptance criteria?",
    "stage_wording": {
     "bachelor": "In a project or capstone, have you produced a requirements table or acceptance criteria?",
-    "master": "In your graduate research or a project, have you produced a requirements table or acceptance criteria?",
-    "phd": "In your PhD research or a project you joined, have you produced a requirements table or acceptance criteria?",
-    "postdoc": "In your own research or a joint project, have you produced a requirements table or acceptance criteria?"
+    "master": "In grad research or projects, have you produced a requirements table or acceptance criteria?",
+    "phd": "In PhD research or joint projects, have you produced a requirements table or acceptance criteria?",
+    "postdoc": "In your research or joint projects, have you produced a requirements table or acceptance criteria?"
    },
    "options": [
     "Never done it",
@@ -6765,9 +6765,9 @@
    "wording": "Have you kept a schedule together with a record of what changed?",
    "stage_wording": {
     "bachelor": "In a project or capstone, have you kept a schedule together with a record of what changed?",
-    "master": "In your graduate research or a project, have you kept a schedule together with a record of what changed?",
-    "phd": "In your PhD research or a project you joined, have you kept a schedule together with a record of what changed?",
-    "postdoc": "In your own research or a joint project, have you kept a schedule together with a record of what changed?"
+    "master": "In grad research or projects, have you kept a schedule together with a record of what changed?",
+    "phd": "In PhD research or joint projects, have you kept a schedule together with a record of what changed?",
+    "postdoc": "In your research or joint projects, have you kept a schedule together with a record of what changed?"
    },
    "options": [
     "Never done it",
@@ -6800,9 +6800,9 @@
    "wording": "Did you ever check, one by one, whether what was built met each requirement?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, did you ever check, one by one, whether what was built met each requirement?",
-    "master": "In your graduate research or a project, did you ever check, one by one, whether what was built met each requirement?",
-    "phd": "In your PhD research or a project you joined, did you ever check, one by one, whether what was built met each requirement?",
-    "postdoc": "In your own research or a joint project, did you ever check, one by one, whether what was built met each requirement?"
+    "master": "In grad research or projects, did you ever check, one by one, whether what was built met each requirement?",
+    "phd": "In PhD research or joint projects, did you ever check, one by one, whether what was built met each requirement?",
+    "postdoc": "In your research or joint projects, did you ever check, one by one, whether what was built met each requirement?"
    },
    "options": [
     "Never done it",
@@ -6835,9 +6835,9 @@
    "wording": "Have you gone through a requirements table and written down the items that were not met?",
    "stage_wording": {
     "bachelor": "While working on a lab experiment or project, have you gone through a requirements table and written down the items that were not met?",
-    "master": "During your graduate research or a project, have you gone through a requirements table and written down the items that were not met?",
-    "phd": "During your PhD research or a project you joined, have you gone through a requirements table and written down the items that were not met?",
-    "postdoc": "During your own research or a joint project, have you gone through a requirements table and written down the items that were not met?"
+    "master": "During grad research or projects, have you gone through a requirements table and written down the items that were not met?",
+    "phd": "During PhD research or joint projects, have you gone through a requirements table and written down the items that were not met?",
+    "postdoc": "During your research or joint projects, have you gone through a requirements table and written down the items that were not met?"
    },
    "options": [
     "Never done it",
@@ -6870,9 +6870,9 @@
    "wording": "When requirements changed, have you divided up the tasks again?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, when requirements changed, have you divided up the tasks again?",
-    "master": "In your graduate research or a project, when requirements changed, have you divided up the tasks again?",
-    "phd": "In your PhD research or a project you joined, when requirements changed, have you divided up the tasks again?",
-    "postdoc": "In your own research or a joint project, when requirements changed, have you divided up the tasks again?"
+    "master": "In grad research or projects, when requirements changed, have you divided up the tasks again?",
+    "phd": "In PhD research or joint projects, when requirements changed, have you divided up the tasks again?",
+    "postdoc": "In your research or joint projects, when requirements changed, have you divided up the tasks again?"
    },
    "options": [
     "Never done it",
@@ -6905,9 +6905,9 @@
    "wording": "Have you broken down, task by task, why a schedule slipped?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you broken down, task by task, why a schedule slipped?",
-    "master": "In your graduate research or a project, have you broken down, task by task, why a schedule slipped?",
-    "phd": "In your PhD research or a project you joined, have you broken down, task by task, why a schedule slipped?",
-    "postdoc": "In your own research or a joint project, have you broken down, task by task, why a schedule slipped?"
+    "master": "In grad research or projects, have you broken down, task by task, why a schedule slipped?",
+    "phd": "In PhD research or joint projects, have you broken down, task by task, why a schedule slipped?",
+    "postdoc": "In your research or joint projects, have you broken down, task by task, why a schedule slipped?"
    },
    "options": [
     "Never done it",
@@ -6940,9 +6940,9 @@
    "wording": "Have you written down separately what would and would not be done this time?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you written down separately what would and would not be done this time?",
-    "master": "In your graduate research or a project, have you written down separately what would and would not be done this time?",
-    "phd": "In your PhD research or a project you joined, have you written down separately what would and would not be done this time?",
-    "postdoc": "In your own research or a joint project, have you written down separately what would and would not be done this time?"
+    "master": "In grad research or projects, have you written down separately what would and would not be done this time?",
+    "phd": "In PhD research or joint projects, have you written down separately what would and would not be done this time?",
+    "postdoc": "In your research or joint projects, have you written down separately what would and would not be done this time?"
    },
    "options": [
     "Never done it",
@@ -6975,9 +6975,9 @@
    "wording": "Have you broken a request like \"make it do this\" into numerical conditions that can be met?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you broken a request like \"make it do this\" into numerical conditions that can be met?",
-    "master": "In your graduate research or a project, have you broken a request like \"make it do this\" into numerical conditions that can be met?",
-    "phd": "In your PhD research or a project you joined, have you broken a request like \"make it do this\" into numerical conditions that can be met?",
-    "postdoc": "In your own research or a joint project, have you broken a request like \"make it do this\" into numerical conditions that can be met?"
+    "master": "In grad research or projects, have you broken a request like \"make it do this\" into numerical conditions that can be met?",
+    "phd": "In PhD research or joint projects, have you broken a request like \"make it do this\" into numerical conditions that can be met?",
+    "postdoc": "In your research or joint projects, have you broken a request like \"make it do this\" into numerical conditions that can be met?"
    },
    "options": [
     "Never done it",
@@ -7010,9 +7010,9 @@
    "wording": "Have you checked progress against a requirements table every week?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you checked progress against a requirements table every week?",
-    "master": "In your graduate research or a project, have you checked progress against a requirements table every week?",
-    "phd": "In your PhD research or a project you joined, have you checked progress against a requirements table every week?",
-    "postdoc": "In your own research or a joint project, have you checked progress against a requirements table every week?"
+    "master": "In grad research or projects, have you checked progress against a requirements table every week?",
+    "phd": "In PhD research or joint projects, have you checked progress against a requirements table every week?",
+    "postdoc": "In your research or joint projects, have you checked progress against a requirements table every week?"
    },
    "options": [
     "Never done it",
@@ -7045,9 +7045,9 @@
    "wording": "Have you shared organized requirements with your teammates?",
    "stage_wording": {
     "bachelor": "In a capstone or internship, have you shared organized requirements with your teammates?",
-    "master": "In your graduate research or a project, have you shared organized requirements with your teammates?",
-    "phd": "In your PhD research or a project you joined, have you shared organized requirements with your teammates?",
-    "postdoc": "In your own research or a joint project, have you shared organized requirements with your teammates?"
+    "master": "In grad research or projects, have you shared organized requirements with your teammates?",
+    "phd": "In PhD research or joint projects, have you shared organized requirements with your teammates?",
+    "postdoc": "In your research or joint projects, have you shared organized requirements with your teammates?"
    },
    "options": [
     "Never done it",
@@ -7080,9 +7080,9 @@
    "wording": "Have you decided yourself on the processing order and how much to automate?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you decided yourself on the processing order and how much to automate?",
-    "master": "In your graduate research or a project, have you decided yourself on the processing order and how much to automate?",
-    "phd": "In your PhD research or a project you joined, have you decided yourself on the processing order and how much to automate?",
-    "postdoc": "In your own research or a joint project, have you decided yourself on the processing order and how much to automate?"
+    "master": "In grad research or projects, have you decided yourself on the processing order and how much to automate?",
+    "phd": "In PhD research or joint projects, have you decided yourself on the processing order and how much to automate?",
+    "postdoc": "In your research or joint projects, have you decided yourself on the processing order and how much to automate?"
    },
    "options": [
     "Never done it",
@@ -7115,9 +7115,9 @@
    "wording": "Have you written rules yourself to catch wrong values?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you written rules yourself to catch wrong values?",
-    "master": "In your graduate research or a project, have you written rules yourself to catch wrong values?",
-    "phd": "In your PhD research or a project you joined, have you written rules yourself to catch wrong values?",
-    "postdoc": "In your own research or a joint project, have you written rules yourself to catch wrong values?"
+    "master": "In grad research or projects, have you written rules yourself to catch wrong values?",
+    "phd": "In PhD research or joint projects, have you written rules yourself to catch wrong values?",
+    "postdoc": "In your research or joint projects, have you written rules yourself to catch wrong values?"
    },
    "options": [
     "Never done it",
@@ -7150,9 +7150,9 @@
    "wording": "Have you produced a calculation tool that works properly, or a set of organized data?",
    "stage_wording": {
     "bachelor": "In a project or capstone, have you produced a calculation tool that works properly, or a set of organized data?",
-    "master": "In your graduate research or a project, have you produced a calculation tool that works properly, or a set of organized data?",
-    "phd": "In your PhD research or a project you joined, have you produced a calculation tool that works properly, or a set of organized data?",
-    "postdoc": "In your own research or a joint project, have you produced a calculation tool that works properly, or a set of organized data?"
+    "master": "In grad research or projects, have you produced a calculation tool that works properly, or a set of organized data?",
+    "phd": "In PhD research or joint projects, have you produced a calculation tool that works properly, or a set of organized data?",
+    "postdoc": "In your research or joint projects, have you produced a calculation tool that works properly, or a set of organized data?"
    },
    "options": [
     "Never done it",
@@ -7185,9 +7185,9 @@
    "wording": "Have you written down how to use a tool and what format its input data should be in?",
    "stage_wording": {
     "bachelor": "In a project or capstone, have you written down how to use a tool and what format its input data should be in?",
-    "master": "In your graduate research or a project, have you written down how to use a tool and what format its input data should be in?",
-    "phd": "In your PhD research or a project you joined, have you written down how to use a tool and what format its input data should be in?",
-    "postdoc": "In your own research or a joint project, have you written down how to use a tool and what format its input data should be in?"
+    "master": "In grad research or projects, have you written down how to use a tool and what format its input data should be in?",
+    "phd": "In PhD research or joint projects, have you written down how to use a tool and what format its input data should be in?",
+    "postdoc": "In your research or joint projects, have you written down how to use a tool and what format its input data should be in?"
    },
    "options": [
     "Never done it",
@@ -7220,9 +7220,9 @@
    "wording": "Did you ever compare automatically generated values with values you calculated by hand?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, did you ever compare automatically generated values with values you calculated by hand?",
-    "master": "In your graduate research or a project, did you ever compare automatically generated values with values you calculated by hand?",
-    "phd": "In your PhD research or a project you joined, did you ever compare automatically generated values with values you calculated by hand?",
-    "postdoc": "In your own research or a joint project, did you ever compare automatically generated values with values you calculated by hand?"
+    "master": "In grad research or projects, did you ever compare automatically generated values with values you calculated by hand?",
+    "phd": "In PhD research or joint projects, did you ever compare automatically generated values with values you calculated by hand?",
+    "postdoc": "In your research or joint projects, did you ever compare automatically generated values with values you calculated by hand?"
    },
    "options": [
     "Never done it",
@@ -7255,9 +7255,9 @@
    "wording": "Have you run a tool on several cases to check that it gives the same values?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you run a tool on several cases to check that it gives the same values?",
-    "master": "In your graduate research or a project, have you run a tool on several cases to check that it gives the same values?",
-    "phd": "In your PhD research or a project you joined, have you run a tool on several cases to check that it gives the same values?",
-    "postdoc": "In your own research or a joint project, have you run a tool on several cases to check that it gives the same values?"
+    "master": "In grad research or projects, have you run a tool on several cases to check that it gives the same values?",
+    "phd": "In PhD research or joint projects, have you run a tool on several cases to check that it gives the same values?",
+    "postdoc": "In your research or joint projects, have you run a tool on several cases to check that it gives the same values?"
    },
    "options": [
     "Never done it",
@@ -7290,9 +7290,9 @@
    "wording": "When a wrong value came out, have you found where the problem was and fixed it?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, when a wrong value came out, have you found where the problem was and fixed it?",
-    "master": "In your graduate research or a project, when a wrong value came out, have you found where the problem was and fixed it?",
-    "phd": "In your PhD research or a project you joined, when a wrong value came out, have you found where the problem was and fixed it?",
-    "postdoc": "In your own research or a joint project, when a wrong value came out, have you found where the problem was and fixed it?"
+    "master": "In grad research or projects, when a wrong value came out, have you found where the problem was and fixed it?",
+    "phd": "In PhD research or joint projects, when a wrong value came out, have you found where the problem was and fixed it?",
+    "postdoc": "In your research or joint projects, when a wrong value came out, have you found where the problem was and fixed it?"
    },
    "options": [
     "Never done it",
@@ -7325,9 +7325,9 @@
    "wording": "Have you worked out whether an error came from the input, assumptions or calculation method?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, have you worked out whether an error came from the input, assumptions or calculation method?",
-    "master": "In your graduate research or a project, have you worked out whether an error came from the input, assumptions or calculation method?",
-    "phd": "In your PhD research or a project you joined, have you worked out whether an error came from the input, assumptions or calculation method?",
-    "postdoc": "In your own research or a joint project, have you worked out whether an error came from the input, assumptions or calculation method?"
+    "master": "In grad research or projects, have you worked out whether an error came from the input, assumptions or calculation method?",
+    "phd": "In PhD research or joint projects, have you worked out whether an error came from the input, assumptions or calculation method?",
+    "postdoc": "In your research or joint projects, have you worked out whether an error came from the input, assumptions or calculation method?"
    },
    "options": [
     "Never done it",
@@ -7360,9 +7360,9 @@
    "wording": "Have you chosen which repetitive task to cut down?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you chosen which repetitive task to cut down?",
-    "master": "In your graduate research or a project, have you chosen which repetitive task to cut down?",
-    "phd": "In your PhD research or a project you joined, have you chosen which repetitive task to cut down?",
-    "postdoc": "In your own research or a joint project, have you chosen which repetitive task to cut down?"
+    "master": "In grad research or projects, have you chosen which repetitive task to cut down?",
+    "phd": "In PhD research or joint projects, have you chosen which repetitive task to cut down?",
+    "postdoc": "In your research or joint projects, have you chosen which repetitive task to cut down?"
    },
    "options": [
     "Never done it",
@@ -7395,9 +7395,9 @@
    "wording": "Have you defined the format of the incoming data and of the results that should come out?",
    "stage_wording": {
     "bachelor": "In a course project or capstone, have you defined the format of the incoming data and of the results that should come out?",
-    "master": "In your graduate research or a project, have you defined the format of the incoming data and of the results that should come out?",
-    "phd": "In your PhD research or a project you joined, have you defined the format of the incoming data and of the results that should come out?",
-    "postdoc": "In your own research or a joint project, have you defined the format of the incoming data and of the results that should come out?"
+    "master": "In grad research or projects, have you defined the format of the incoming data and of the results that should come out?",
+    "phd": "In PhD research or joint projects, have you defined the format of the incoming data and of the results that should come out?",
+    "postdoc": "In your research or joint projects, have you defined the format of the incoming data and of the results that should come out?"
    },
    "options": [
     "Never done it",
@@ -7430,9 +7430,9 @@
    "wording": "Did you ever set up a program to run a repetitive calculation automatically?",
    "stage_wording": {
     "bachelor": "In a lab experiment or project, did you ever set up a program to run a repetitive calculation automatically?",
-    "master": "In your graduate research or a project, did you ever set up a program to run a repetitive calculation automatically?",
-    "phd": "In your PhD research or a project you joined, did you ever set up a program to run a repetitive calculation automatically?",
-    "postdoc": "In your own research or a joint project, did you ever set up a program to run a repetitive calculation automatically?"
+    "master": "In grad research or projects, did you ever set up a program to run a repetitive calculation automatically?",
+    "phd": "In PhD research or joint projects, did you ever set up a program to run a repetitive calculation automatically?",
+    "postdoc": "In your research or joint projects, did you ever set up a program to run a repetitive calculation automatically?"
    },
    "options": [
     "Never done it",
@@ -7465,9 +7465,9 @@
    "wording": "Have you handed a program you wrote over to someone else to use?",
    "stage_wording": {
     "bachelor": "In a capstone or internship, have you handed a program you wrote over to someone else to use?",
-    "master": "In your graduate research or a project, have you handed a program you wrote over to someone else to use?",
-    "phd": "In your PhD research or a project you joined, have you handed a program you wrote over to someone else to use?",
-    "postdoc": "In your own research or a joint project, have you handed a program you wrote over to someone else to use?"
+    "master": "In grad research or projects, have you handed a program you wrote over to someone else to use?",
+    "phd": "In PhD research or joint projects, have you handed a program you wrote over to someone else to use?",
+    "postdoc": "In your research or joint projects, have you handed a program you wrote over to someone else to use?"
    },
    "options": [
     "Never done it",
@@ -7500,8 +7500,8 @@
    "wording": "In a school project, have you set the decision criteria yourself?",
    "stage_wording": {
     "bachelor": "In a school project, have you set the decision criteria yourself?",
-    "master": "In your graduate research or a project, have you set the decision criteria yourself?",
-    "phd": "In your PhD research or a project you joined, have you set the decision criteria yourself?",
+    "master": "In grad research or projects, have you set the decision criteria yourself?",
+    "phd": "In PhD research or joint projects, have you set the decision criteria yourself?",
     "postdoc": "In your own research project, have you set the decision criteria yourself?"
    },
    "options": [

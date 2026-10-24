@@ -49,8 +49,13 @@ const MAX = 2;
 export function termGlossOf(core: string, text: string, lang = "ko"): string | null {
   const table = lang === "ko" ? doc().by_core[core] : termsIn(core, lang);
   if (!table) return null;
+  /* 영어는 낱말 경계로 찾는다. 글자로만 찾으면 `gain` 이 `again` 에서,
+     `lock` 이 `block` 에서 걸려 엉뚱한 문항 아래 풀이가 섰다. 한국어는
+     조사가 붙어 경계가 없으므로 그대로 글자로 찾는다 */
+  const found = (t: string) => lang === "ko" ? text.includes(t)
+    : new RegExp(`(^|[^A-Za-z])${t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}([^A-Za-z]|$)`, "i").test(text);
   const hit = Object.keys(table)
-    .filter((t) => text.includes(t))
+    .filter(found)
     .sort((a, b) => b.length - a.length)
     .slice(0, MAX);
   if (!hit.length) return null;
