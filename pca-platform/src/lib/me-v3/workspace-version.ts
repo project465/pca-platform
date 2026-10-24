@@ -365,7 +365,8 @@
  *  Hero · 색 타일로 선다. 전공 고르기 쪽에도 로그아웃이 선다 — V59 */
 /** 영어판 작업공간(2단계b): 응시 언어가 영어면 띠·홈·현재 상태·다음 할 일·경험·반영·결과·탐색·준비가
  *  영어로 서고, 국내 전용 쪽 넷(지역·공고·지원·MAT)은 띠에서 빠지고 홈으로 돌린다 — V62 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V62";
+/** MAT 공고 확인: 영역에 잇지 못한 줄을 `전공 밖 조건` 과 갈라 `영역 확인 필요` 로 적는다 — V63 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V63";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -414,7 +415,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V62";
 /** 파일로 옮기기 안내 · 동의 문구 · 파일 초안 안내 줄 */
 /** 결과 전 홈과 학교 학생 첫 화면의 Hero · 타일 문장 */
 /** 영어 사전 아홉 벌(ws-en/*). 한국어 문장은 한 글자도 바뀌지 않았다 */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.44";
+/** MAT 안내: AI 를 껐을 때 무엇이 어떻게 도는지 맞게 고쳤다 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.45";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

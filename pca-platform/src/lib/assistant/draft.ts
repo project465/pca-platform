@@ -2,7 +2,8 @@ import * as z from "zod/v4";
 import { query, queryOne } from "@/lib/db";
 import { EXPERIENCE_KINDS, activeCoreOrPick } from "@/lib/me-v3/platform";
 import { aiFailKo, askStructured, type AiFail } from "./claude";
-import { catalog, wordsOf } from "./catalog";
+import { catalog } from "./catalog";
+import { draftByRules } from "./rules";
 import { aiConsented } from "./settings";
 
 /**
@@ -88,36 +89,12 @@ export function clamp(core: string, raw: z.infer<typeof Out>): DraftValue {
   };
 }
 
-/** 규칙으로 옮긴다. 낱말이 겹치는 영역과 보기만 켠다 */
+/**
+ * 규칙으로 옮긴다. 읽는 법은 `rules.ts` 한 곳에 있다: 확신이 설 때만 보기를 켜고,
+ * 정한 것이나 남은 것을 보기에 대지 못하면 그 사람이 쓴 말을 돌려주며 묻는다.
+ */
 function byRules(core: string, note: string): DraftValue {
-  const w = new Set(wordsOf(note));
-  const scored = catalog(core)
-    .map((d) => ({ d, hit: d.words.filter((x) => w.has(x) || note.includes(x)).length }))
-    .filter((x) => x.hit > 0)
-    .sort((a, b) => b.hit - a.hit)
-    .slice(0, 1);
-  const ds = scored.map((x) => x.d);
-  const pick = (pool: string[]) =>
-    pool.filter((s) => wordsOf(s).some((x) => w.has(x))).slice(0, 2);
-  const kind = /인턴|현장실습/.test(note) ? "internship"
-    : /캡스톤|졸업 ?작품/.test(note) ? "capstone"
-      : /연구|실험|랩/.test(note) ? "research"
-        : /동아리|공모전|대회|프로젝트/.test(note) ? "project"
-          : /과제|레포트|리포트/.test(note) ? "assignment"
-            : /수업|강의/.test(note) ? "course" : null;
-  return {
-    kind,
-    title: note.split(/\n|[.!?]/)[0].trim().slice(0, 40),
-    td: ds.map((d) => d.code),
-    problems: ds.flatMap((d) => pick(d.checklist.J1.slice(0, 6))),
-    decisions: ds.flatMap((d) => pick(d.checklist.J3.slice(0, 8))),
-    artifacts: ds.flatMap((d) => pick(d.artifacts)),
-    verifications: ds.flatMap((d) => pick(d.verify)),
-    ask: [
-      "그 일에서 직접 정한 기준이나 조건은 무엇이었나요?",
-      "끝나고 손에 남은 결과물은 무엇인가요?",
-    ],
-  };
+  return draftByRules(core, note);
 }
 
 export async function draftExperience(userId: string, note: string): Promise<{

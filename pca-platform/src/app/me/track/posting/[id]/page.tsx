@@ -5,7 +5,7 @@ import { requireUser } from "@/lib/session";
 import { activeMajorName } from "@/lib/me-v3/major-name";
 import { activeCoreOrPick } from "@/lib/me-v3/platform";
 import { activeTrack } from "@/lib/track";
-import { itemDomainKo, postingOf, type ItemStatus } from "@/lib/assistant/posting";
+import { itemDomainKo, postingOf, type ItemStatus, type PostingItem } from "@/lib/assistant/posting";
 import { CmShell, CmHead } from "../../../shell";
 import { SectionHeader } from "../../../ui";
 import { changePostingState } from "../../actions";
@@ -26,8 +26,16 @@ const STATUS: Record<ItemStatus, { label: string; why: string }> = {
   ready: { label: "설명할 경험 있음", why: "결과에서 근거가 선 영역입니다." },
   partial: { label: "정리가 덜 됨", why: "해 본 일은 있는데 직접 정한 것이나 남긴 것이 아직 적혀 있지 않습니다." },
   empty: { label: "아직 없음", why: "이 영역의 경험이 아직 기록에 없습니다." },
-  unmapped: { label: "전공 밖 조건", why: "학력·연차·어학처럼 경험 기록으로 판단하지 않는 조건입니다." },
+  unmapped: { label: "전공 밖 조건", why: "학력·자격·근무 여건·태도처럼 경험 기록으로 판단하지 않는 조건입니다." },
 };
+
+/**
+ * 영역에 잇지 못한 줄은 조건과 따로 적는다. `Git 협업 경험` 같은 줄을 `전공 밖
+ * 조건` 으로 적으면 읽는 사람이 그것을 준비하지 않아도 되는 줄로 읽는다.
+ */
+const UNMATCHED = { label: "영역 확인 필요", why: "이 전공의 업무 영역에 바로 잇지 못한 줄입니다. 어느 경험으로 설명할지 직접 정해 주세요." };
+const statusOf = (it: PostingItem) =>
+  it.status === "unmapped" && it.reason === "unmatched" ? UNMATCHED : STATUS[it.status];
 
 const ORDER: ItemStatus[] = ["empty", "partial", "ready", "unmapped"];
 
@@ -48,6 +56,7 @@ export default async function Posting({ params }: { params: Promise<{ id: string
       || (x.kind === y.kind ? 0 : x.kind === "must" ? -1 : 1));
   const firstGap = items.find((it) => it.status === "empty" && it.domain)
     ?? items.find((it) => it.status === "partial" && it.domain);
+  const unmatched = items.filter((it) => it.status === "unmapped" && it.reason === "unmatched").length;
 
   return (
     <CmShell active="/me/track" title="공고 확인" major={major}>
@@ -59,7 +68,7 @@ export default async function Posting({ params }: { params: Promise<{ id: string
       {a.note ? <p className="cm-none" role="status">{a.note}</p> : null}
 
       <SectionHeader icon="check" title="한눈에"
-        sub={`설명할 경험 ${a.counts.ready} · 정리가 덜 됨 ${a.counts.partial} · 아직 없음 ${a.counts.empty} · 전공 밖 조건 ${a.counts.unmapped}`} />
+        sub={`설명할 경험 ${a.counts.ready} · 정리가 덜 됨 ${a.counts.partial} · 아직 없음 ${a.counts.empty} · 전공 밖 조건 ${a.counts.unmapped - unmatched}${unmatched ? ` · 영역 확인 필요 ${unmatched}` : ""}`} />
       {firstGap?.domain ? (
         <div className="cm-panel is-one">
           <div className="cm-pane">
@@ -90,7 +99,7 @@ export default async function Posting({ params }: { params: Promise<{ id: string
                   <td>{it.text}</td>
                   <td>{it.kind === "must" ? "필수" : "우대"}</td>
                   <td>{itemDomainKo(core, it)}</td>
-                  <td><b>{STATUS[it.status].label}</b><br /><small>{STATUS[it.status].why}</small></td>
+                  <td><b>{statusOf(it).label}</b><br /><small>{statusOf(it).why}</small></td>
                   <td>
                     {it.evidence.length ? it.evidence.join(" / ")
                       : it.domain && it.status !== "ready" ? (

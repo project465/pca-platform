@@ -7,7 +7,8 @@ import type { Axis } from "@/lib/me-v3/scoring/types";
 import { AXIS_KO } from "@/lib/me-v3/result/text.ko";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import { aiFailKo, askStructured, type AiFail } from "./claude";
-import { catalog, catalogPrompt, isAxis, wordsOf } from "./catalog";
+import { catalog, catalogPrompt, isAxis } from "./catalog";
+import { readPosting } from "./rules";
 import { aiConsented } from "./settings";
 
 /**
@@ -37,6 +38,13 @@ export type PostingItem = {
   status: ItemStatus;
   /** 그 영역에 적어 둔 경험의 제목 */
   evidence: string[];
+  /**
+   * 영역이 없을 때 그 까닭. `condition` 은 학력·연차·면허처럼 경험 기록으로
+   * 판단하지 않는 조건이고, `unmatched` 는 이 전공의 업무 영역에 잇지 못한 줄이다.
+   * 둘을 한 말(`전공 밖 조건`)로 적으면 `Git 협업 경험` 같은 줄이 전공 밖이 된다.
+   * 옛 분석 줄에는 없다(그때는 조건으로 읽는다).
+   */
+  reason?: "condition" | "unmatched";
 };
 
 export type PostingAnalysis = {
@@ -62,6 +70,7 @@ const Read = z.object({
     kind: z.enum(["must", "nice"]),
     domain: z.string().nullable(),
     axis: z.string().nullable(),
+    reason: z.enum(["condition", "unmatched"]).optional(),
   })),
 });
 type ReadOut = z.infer<typeof Read>;
@@ -77,41 +86,13 @@ const SYSTEM =
   "5. 지원자를 평가하거나 합격 가능성을 말하지 않습니다.\n" +
   "6. 최대 12개까지만 뽑습니다.";
 
-/** 규칙으로 읽는다. 열쇠가 없거나 동의하지 않았거나 Claude 가 거절했을 때 */
+/**
+ * 규칙으로 읽는다. 열쇠가 없거나 동의하지 않았거나 Claude 가 거절했을 때.
+ * 읽는 법은 `rules.ts` 한 곳에 있고 `npm run mat:gold` 가 시험지 셋으로 잰다.
+ */
 function readByRules(core: string, text: string): ReadOut {
-  const cat = catalog(core);
-  const lines = text
-    .split(/\n|(?<=[.!?。])\s+|·\s|•|▶|■|-\s/)
-    .map((s) => s.replace(/\s+/g, " ").trim())
-    .filter((s) => s.length >= 6 && s.length <= 160);
-  const out: ReadOut["requirements"] = [];
-  const seen = new Set<string>();
-  for (const line of lines) {
-    const w = new Set(wordsOf(line));
-    let best: { code: string; hit: number } | null = null;
-    for (const d of cat) {
-      const hit = d.words.filter((x) => w.has(x) || line.includes(x)).length;
-      if (hit && (!best || hit > best.hit)) best = { code: d.code, hit };
-    }
-    const cond = /(학사|석사|박사|경력|년 이상|토익|TOEIC|어학|자격증|면허)/.test(line);
-    if (!best && !cond) continue;
-    const key = line.slice(0, 40);
-    if (seen.has(key)) continue;
-    seen.add(key);
-    out.push({
-      text: line.length > 80 ? `${line.slice(0, 78)}…` : line,
-      kind: /(우대|가산|선호|플러스)/.test(line) ? "nice" : "must",
-      domain: cond ? null : best?.code ?? null,
-      axis: null,
-    });
-    if (out.length >= 12) break;
-  }
-  const dl = text.match(/(20\d{2})[.\-/년\s]+(\d{1,2})[.\-/월\s]+(\d{1,2})/);
-  return {
-    role: null,
-    deadline: dl ? `${dl[1]}-${dl[2].padStart(2, "0")}-${dl[3].padStart(2, "0")}` : null,
-    requirements: out,
-  };
+  const r = readPosting(core, text);
+  return { role: r.role, deadline: r.deadline, requirements: r.requirements };
 }
 
 /** 요구 항목 하나를 지금 상태에 댄다 */
@@ -132,7 +113,9 @@ function judge(
       || evidence.length) status = "partial";
     else status = "empty";
   }
-  return { text: r.text.slice(0, 120), kind: r.kind, domain, axis, status, evidence };
+  /* 영역이 없으면 까닭을 남긴다. Claude 는 조건 줄만 비워 두라고 받았으므로 조건이다 */
+  const reason = domain ? undefined : (r.reason ?? "condition");
+  return { text: r.text.slice(0, 120), kind: r.kind, domain, axis, status, evidence, ...(reason ? { reason } : {}) };
 }
 
 export async function analyzePosting(userId: string, input: {
@@ -157,7 +140,7 @@ export async function analyzePosting(userId: string, input: {
     if (r.ok) { read = r.value; by = "claude"; model = r.model; }
     else { read = readByRules(st.core, text); note = aiFailKo(r.reason as AiFail); }
   }
-  const items = read.requirements.slice(0, 12).map((x) => judge(st, exps, x));
+  const items = read.requirements.slice(0, 15).map((x) => judge(st, exps, x));
   const counts = { ready: 0, partial: 0, empty: 0, unmapped: 0 } as Record<ItemStatus, number>;
   for (const it of items) counts[it.status] += 1;
   const analysis: PostingAnalysis = {
@@ -201,7 +184,7 @@ export async function setPostingState(userId: string, id: string, state: string)
 }
 
 export function itemDomainKo(core: string, it: PostingItem): string {
-  if (!it.domain) return "전공 밖 조건";
+  if (!it.domain) return it.reason === "unmatched" ? "영역을 찾지 못함" : "전공 밖 조건";
   return it.axis ? `${domainName(core, it.domain)} · ${AXIS_KO[it.axis]}`
     : domainName(core, it.domain);
 }
