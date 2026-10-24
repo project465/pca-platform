@@ -4,16 +4,22 @@ import { activeMajorName } from "@/lib/me-v3/major-name";
 import { currentState, profileOf, activeCoreOrPick } from "@/lib/me-v3/platform";
 import {
   domainName, industryChoices, industryDomains, industryScene,
-  roleChoices, roleDomains,
+  majorNameIn, roleChoices, roleDomains,
 } from "@/lib/me-v3/runtime/session";
 import { regionLayer } from "@/lib/me-v3/region";
+import { wsLang } from "@/lib/me-v3/ws-lang";
+import { wsSay } from "@/lib/me-v3/ws-say";
 import { CmShell, CmHead } from "../shell";
 import { Icon } from "@/components/sf/icon";
 import { PickCard, PickGrid, SectionHeader } from "../ui";
 import { activeTrack } from "@/lib/track";
 import { changeTargets } from "./actions";
 
-export const metadata = { title: "탐색 · 내 CareerMatri" };
+export async function generateMetadata() {
+  const user = await requireUser();
+  const t = wsSay(await wsLang(user.id));
+  return { title: t("탐색 · 내 CareerMatri") };
+}
 
 
 /**
@@ -40,15 +46,23 @@ export default async function Explore({
 }) {
   const sp = await searchParams;
   const user = await requireUser();
-  const major = await activeMajorName(user.id);
+  const lang = await wsLang(user.id);
+  const t = wsSay(lang);
+  const majorKo = await activeMajorName(user.id);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
   const core = await activeCoreOrPick(user.id);
+  /* 영어면 전공 이름도 그 언어 원고에서 읽는다. 모르면 비워 껍데기가 채운다 */
+  let major = majorKo;
+  if (lang === "en" && majorKo) {
+    try { major = majorNameIn(core, "en"); } catch { major = null; }
+  }
   const [profile, st, track] = await Promise.all([
     profileOf(user.id), currentState(user.id), activeTrack(user.id),
   ]);
   const mine = new Set(profile?.target_industry ?? []);
   const myRoles = new Set(profile?.target_role ?? []);
-  const region = regionLayer();
+  /* 지역 층은 한국 자료다. 영어 작업공간에는 세우지 않는다 */
+  const region = lang !== "en" ? regionLayer() : null;
   /**
    * **홈과 같은 `현재 상태` 를 읽는다**(설계 원칙 10).
    *
@@ -72,19 +86,19 @@ export default async function Explore({
    * 묶음을 가르는 것은 `중심` 이고, 줄에 적는 것은 그 산업이 실제로 다루는
    * 영역(`중심` 과 `있음`)이다. **여기서 수를 만들지 않는다**(규격 §18).
    */
-  const names = (cs: string[]) => cs.map((c) => domainName(core, c));
+  const names = (cs: string[]) => cs.map((c) => domainName(core, c, lang));
   const pick = (rows: { td: string; strength: string }[], ...ok: string[]) =>
     [...new Set(rows.filter((r) => ok.includes(r.strength) && confirmed.has(r.td))
       .map((r) => r.td))];
 
-  const industries = industryChoices(core).map((x) => {
+  const industries = industryChoices(core, lang).map((x) => {
     const rows = industryDomains(core, x.code);
     return {
-      ...x, scene: industryScene(core, x.code),
+      ...x, scene: industryScene(core, x.code, lang),
       core: pick(rows, "중심"), link: pick(rows, "중심", "있음"),
     };
   });
-  const roles = roleChoices(core).map((r) => {
+  const roles = roleChoices(core, lang).map((r) => {
     const rows = roleDomains(core, r.code);
     return { ...r, core: pick(rows, "중심"), link: pick(rows, "중심", "있음") };
   });
@@ -160,17 +174,21 @@ export default async function Explore({
                 <Icon name="check" size={12} />
               </span>
             ) : null}
-            <span>자세히 보기</span>
+            <span>{t("자세히 보기#explore")}</span>
           </span>
           {/* **겹치는 것이 없으면 그 사실을 적는다.** 칸을 비우면 읽는
               사람이 자기 결과가 덜 만들어진 줄 안다. 묶음마다 적는 말이
               달라야 왜 이쪽에 섰는지가 읽힌다 */}
           <span className="cm-item-sub">
             {core.length
-              ? `${kind} 가장 많이 보는 영역 가운데 내가 해 본 것 · ${names(core).join(" · ")}`
+              ? (kind === "이 산업이"
+                ? t("이 산업이 가장 많이 보는 영역 가운데 내가 해 본 것 · {areas}",
+                  { areas: names(core).join(" · ") })
+                : t("이 직무가 가장 많이 보는 영역 가운데 내가 해 본 것 · {areas}",
+                  { areas: names(core).join(" · ") }))
               : link.length
-                ? `내 경험과 겹치는 영역 · ${names(link).join(" · ")}`
-                : "아직 이 쪽과 겹치는 내 경험이 없습니다"}
+                ? t("내 경험과 겹치는 영역 · {areas}", { areas: names(link).join(" · ") })
+                : t("아직 이 쪽과 겹치는 내 경험이 없습니다")}
           </span>
         </summary>
         {more?.lines.length ? (
@@ -188,10 +206,10 @@ export default async function Explore({
   );
 
   return (
-    <CmShell active="/me/explore" title="탐색" major={major}>
+    <CmShell active="/me/explore" title={t("탐색")} major={major} lang={lang}>
       <CmHead
-        title="산업과 직무"
-        lead="내가 해 본 영역과 이어지는 쪽이 먼저 나옵니다."
+        title={t("산업과 직무")}
+        lead={t("내가 해 본 영역과 이어지는 쪽이 먼저 나옵니다.")}
       />
 
       {/**
@@ -207,15 +225,15 @@ export default async function Explore({
        */}
       {track.on ? (
         <details className="cm-fold">
-          <summary>관심 산업·직무 다시 고르기</summary>
+          <summary>{t("관심 산업·직무 다시 고르기")}</summary>
           <form action={changeTargets} className="cm-formcard">
             <p className="cm-none">
-              산업과 직무를 둘씩까지 고르면 그쪽이 맨 위에 서서 다시 견줄 수
-              있습니다. 검사 당시 결과는 그대로 남습니다.
+              {t("산업과 직무를 둘씩까지 고르면 그쪽이 맨 위에 서서 다시 견줄 수 "
+                + "있습니다. 검사 당시 결과는 그대로 남습니다.")}
             </p>
-            <p className="cm-listhead">산업</p>
+            <p className="cm-listhead">{t("산업#explore")}</p>
             <div className="cm-pickset">
-              {industryChoices(core).map((x) => (
+              {industryChoices(core, lang).map((x) => (
                 <label className="cm-pick" key={x.code}>
                   <input type="checkbox" name="industry" value={x.code}
                     defaultChecked={mine.has(x.code)} />
@@ -223,9 +241,9 @@ export default async function Explore({
                 </label>
               ))}
             </div>
-            <p className="cm-listhead">직무</p>
+            <p className="cm-listhead">{t("직무#explore")}</p>
             <div className="cm-pickset">
-              {roleChoices(core).map((x) => (
+              {roleChoices(core, lang).map((x) => (
                 <label className="cm-pick" key={x.code}>
                   <input type="checkbox" name="role" value={x.code}
                     defaultChecked={myRoles.has(x.code)} />
@@ -234,11 +252,12 @@ export default async function Explore({
               ))}
             </div>
             <div className="cm-acts" style={{ marginTop: 16 }}>
-              <button className="cm-btn is-primary" type="submit">이대로 다시 비교하기</button>
+              <button className="cm-btn is-primary" type="submit">{t("이대로 다시 비교하기")}</button>
             </div>
           </form>
         </details>
-      ) : (
+      ) : lang === "en" ? null : (
+        /* Track 은 한국 상품이다(`WS_KR_ONLY`). 영어 작업공간에는 그리로 가는 길을 두지 않는다 */
         <p className="cm-soon" style={{ marginBottom: 18 }}>
           <b>관심 산업·직무를 바꿔 다시 비교하는 일은 Track 에서 열립니다.</b>{" "}
           지금은 검사에서 고르신 산업과 직무로 차례가 섭니다.{" "}
@@ -247,7 +266,7 @@ export default async function Explore({
       )}
       {sp.targets === "1" && track.on ? (
         <p className="cm-none" role="status" style={{ marginBottom: 14 }}>
-          고르신 산업과 직무로 다시 세웠습니다.
+          {t("고르신 산업과 직무로 다시 세웠습니다.")}
         </p>
       ) : null}
 
@@ -257,10 +276,10 @@ export default async function Explore({
           `중심`으로 걸린 확인된 영역이 있는가뿐이다 */}
       {ind.top.length ? (
         <>
-          <SectionHeader icon="compass" title="먼저 볼 산업"
+          <SectionHeader icon="compass" title={t("먼저 볼 산업")}
             sub={mine.size
-              ? "응시에서 고른 산업이 먼저 서고, 그다음이 지금 확인된 영역과 겹치는 쪽입니다."
-              : "지금 확인된 영역이 이 산업들이 보는 판단과 겹칩니다."} />
+              ? t("응시에서 고른 산업이 먼저 서고, 그다음이 지금 확인된 영역과 겹치는 쪽입니다.")
+              : t("지금 확인된 영역이 이 산업들이 보는 판단과 겹칩니다.")} />
           {/* **남는 칸을 두지 않는다**(규격 §17). 위에 서는 것이 하나나
               둘이면 세 칸 격자에 빈 면이 남는다. 칸 수를 담긴 수에
               맞춘다 */}
@@ -268,12 +287,12 @@ export default async function Explore({
             {ind.top.map((x) => (
               <PickCard key={x.code} href="#ind-all" icon="building" tone="b"
                 title={x.name}
-                selected={mine.has(x.code) ? { label: "고른 산업" } : undefined}
+                selected={mine.has(x.code) ? { label: t("고른 산업") } : undefined}
                 lead={x.first}
                 meta={x.core.length
-                  ? `이어지는 영역 · ${names(x.core).slice(0, 3).join(" · ")}`
-                  : "지금 확인된 영역과 겹치는 것은 아직 없습니다"}
-                cta="자세히 보기" />
+                  ? t("이어지는 영역 · {areas}", { areas: names(x.core).slice(0, 3).join(" · ") })
+                  : t("지금 확인된 영역과 겹치는 것은 아직 없습니다")}
+                cta={t("자세히 보기#explore")} />
             ))}
           </PickGrid>
         </>
@@ -281,68 +300,76 @@ export default async function Explore({
       {/* **적는 수가 실제 줄 수다.** 위에 선 것을 빼고 적지 않으면 일곱
           줄짜리 목록 머리에 `여덟` 이 선다 */}
       <p className="cm-listhead" id="ind-all">
-        {ind.top.length ? "다른 산업" : "산업"}<em>{ind.rest.length}개</em>
+        {ind.top.length ? t("다른 산업") : t("산업#explore")}
+        <em>{t("{n}개#explore", { n: ind.rest.length })}</em>
       </p>
       <ul className="cm-list">
         {ind.rest.map((x) => (
           <Row key={x.code} name={x.name} kind="이 산업이" line={x.first}
             core={x.core} link={x.link}
-            chosen={mine.has(x.code) ? "고른 산업" : undefined}
+            chosen={mine.has(x.code) ? t("고른 산업") : undefined}
             more={x.scene
-              ? { scene: x.scene.scene, head: "이 산업이 보는 판단", lines: x.scene.demands }
+              ? { scene: x.scene.scene, head: t("이 산업이 보는 판단"), lines: x.scene.demands }
               : null} />
         ))}
       </ul>
 
       {role.top.length ? (
         <>
-          <SectionHeader icon="send" tone="c" title="먼저 볼 직무"
+          <SectionHeader icon="send" tone="c" title={t("먼저 볼 직무")}
             sub={myRoles.size
-              ? "응시에서 고른 직무가 먼저 서고, 그다음이 확인된 영역을 많이 쓰는 쪽입니다."
-              : "확인된 영역을 가장 많이 쓰는 직무입니다."} />
+              ? t("응시에서 고른 직무가 먼저 서고, 그다음이 확인된 영역을 많이 쓰는 쪽입니다.")
+              : t("확인된 영역을 가장 많이 쓰는 직무입니다.")} />
           <PickGrid cols={Math.min(role.top.length, 3) as 1 | 2 | 3}>
             {role.top.map((r) => (
               <PickCard key={r.code} href="#role-all" icon="target" tone="c"
                 title={r.name}
-                selected={myRoles.has(r.code) ? { label: "고른 직무" } : undefined}
+                selected={myRoles.has(r.code) ? { label: t("고른 직무") } : undefined}
                 lead={r.first}
                 meta={r.core.length
-                  ? `이어지는 영역 · ${names(r.core).slice(0, 3).join(" · ")}`
-                  : "지금 확인된 영역과 겹치는 것은 아직 없습니다"}
-                cta="자세히 보기" />
+                  ? t("이어지는 영역 · {areas}", { areas: names(r.core).slice(0, 3).join(" · ") })
+                  : t("지금 확인된 영역과 겹치는 것은 아직 없습니다")}
+                cta={t("자세히 보기#explore")} />
             ))}
           </PickGrid>
         </>
       ) : null}
       <p className="cm-listhead" id="role-all">
-        {role.top.length ? "다른 직무" : "직무"}<em>{role.rest.length}개</em>
+        {role.top.length ? t("다른 직무") : t("직무#explore")}
+        <em>{t("{n}개#explore", { n: role.rest.length })}</em>
       </p>
       <ul className="cm-list">
         {role.rest.map((r) => (
           <Row key={r.code} name={r.name} kind="이 직무가" line={r.first}
             core={r.core} link={r.link}
-            chosen={myRoles.has(r.code) ? "고른 직무" : undefined}
+            chosen={myRoles.has(r.code) ? t("고른 직무") : undefined}
             more={r.domains.length
-              ? { head: "이 직무가 다루는 기술영역", lines: r.domains } : null} />
+              ? { head: t("이 직무가 다루는 기술영역"), lines: r.domains } : null} />
         ))}
       </ul>
 
-      <p className="cm-listhead" style={{ marginTop: 26 }}>
-        지역과 기관
-        <Link href="/me/region">희망 지역 고르기</Link>
-      </p>
-      <div className="cm-panel is-quiet">
-        <div className="cm-pane">
-          <div className="cm-rows">
-            {region.regions.map((r) => (
-              <p className="cm-row" key={r.code}>
-                <b>{r.name}</b>
-                <span>{r.includes.join(" · ")}</span>
-              </p>
-            ))}
+      {/* **지역과 기관은 한국 자료다**(`WS_KR_ONLY`). 영어 작업공간에 세우면
+          해외 손님이 한국 권역을 자기 것으로 읽는다 */}
+      {region ? (
+        <>
+          <p className="cm-listhead" style={{ marginTop: 26 }}>
+            지역과 기관
+            <Link href="/me/region">희망 지역 고르기</Link>
+          </p>
+          <div className="cm-panel is-quiet">
+            <div className="cm-pane">
+              <div className="cm-rows">
+                {region.regions.map((r) => (
+                  <p className="cm-row" key={r.code}>
+                    <b>{r.name}</b>
+                    <span>{r.includes.join(" · ")}</span>
+                  </p>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </>
+      ) : null}
     </CmShell>
   );
 }
