@@ -158,6 +158,8 @@ const FILES = [
   "src/lib/me-v3/runtime/menus.ts",
   "src/lib/me-v3/student/translate.ts",
   "src/lib/me-v3/runtime/session.ts",
+  /* 영어판 1단계에서 위 넷의 한국어 화면 글이 이리로 모였다. **빠뜨리면 그 글이 검사 밖으로 나간다** */
+  "src/lib/me-v3/runtime/copy.ko.ts",
   /* 내 CareerMatri. **검사 화면만 재면 플랫폼 쪽이 다른 말투로 선다.**
      한 사람이 검사를 끝내고 이어서 누르는 쪽이라, 여기가 설명서 말투면
      그 어긋남은 한 쪽씩 볼 때 안 보이고 이어서 누를 때만 보인다 */

@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { BrandMark } from "@/components/sf/brand-mark";
 import { notFound, redirect } from "next/navigation";
-import { requireUser } from "@/lib/session";
+import { currentUser, requireUser } from "@/lib/session";
 import { RETAKE_BLOCKED_KO } from "@/lib/me-v3/retake";
 import { mark } from "@/lib/me-v3/workspace-events";
 import {
   attemptOf, domainName, industryChoices, latestResult, orgChoices,
-  roleChoices, industriesFromDomains, rolesFromDomains,
+  roleChoices, industriesFromDomains, rolesFromDomains, domainSub,
 } from "@/lib/me-v3/runtime/session";
 import { domainArtifacts } from "@/lib/me-v3/runtime/domain-facts";
 import type { Axis, Zone } from "@/lib/me-v3/scoring/types";
@@ -15,16 +15,12 @@ import {
   type Action, type Gap, type PackView, type ResultDomain,
   type ResultModel, type TranslationView,
 } from "@/lib/me-v3/result/model";
-import {
-  actionBriefKo, actionHeadKo, actionKo, axisStateKo, AXIS_KO, AXIS_WHAT_KO,
-  BASIC_GROUP_KO, bridgeKo,
-  commonKo, domainChainKo, draftFrameKo, draftKo, gapCellKo, gapKo, gapNeedKo, gapShortKo,
-  actionWhyKo, AXIS_DID_KO, headlineBadgeKo, headlineKo, needKo,
-  pickSentenceKo,
-  evidenceStoryKo, keptNoteKo, moreReadyKo,
-  HORIZON_KO, QUALITY_KO, TIER_NOTE_KO, TRANS_ORDER, TRANS_STEP_KO,
-  XFIELD_ORDER, xfieldKo, ZONE_LEAD_KO, ZONE_TITLE_KO,
-} from "@/lib/me-v3/result/text.ko";
+import * as KO from "@/lib/me-v3/result/text.ko";
+import { textFor } from "@/lib/me-v3/result/text";
+import { stateLeadEn } from "@/lib/me-v3/result/text.en";
+import { isClause, localizeResult } from "@/lib/me-v3/result/localize";
+import { renderLang, setRenderLang } from "@/lib/me-v3/result/render-lang";
+import { phrase } from "@/lib/me-v3/phrase";
 import {
   orgTypesFor, regionLayer, regionOrganizations, regionOrgCount,
 } from "@/lib/me-v3/region";
@@ -56,7 +52,28 @@ import SaveAction from "./save";
 import Track from "./track";
 import Summary, { type SummaryEvidence, type SummaryStep, type SummaryZone } from "./summary";
 
-export const metadata = { title: "결과 · CareerMatri" };
+/* 탭 제목도 그 응시의 언어다 */
+export async function generateMetadata(
+  { params }: { params: Promise<{ attemptId: string }> },
+) {
+  const { attemptId } = await params;
+  const u = await currentUser();
+  const a = u ? await attemptOf(attemptId, u.id).catch(() => null) : null;
+  return { title: phrase(a?.locale)("결과 · CareerMatri") };
+}
+
+/*
+ * **이 쪽의 언어는 응시가 정한다**(`v3_attempts.locale`). 조각이 많아 인자로
+ * 넘기지 않고 요청 하나 동안 들고 다닌다(`render-lang.ts`). 원고 글자는 모델을
+ * 그 언어로 읽어 넘기고(`localizeResult`), 문장은 그 언어 벌(`textFor`)이,
+ * 화면 글은 사전(`phrase`)이 고른다. 한국어 응시는 세 자리 모두 전과 같은 글자다.
+ */
+const L = () => renderLang();
+const TX = () => textFor(L());
+const tr = (ko: string, vars?: Record<string, string | number>) => phrase(L())(ko, vars);
+/* 한국어 어미·조사 장치는 한국어에만 쓴다. 영어 원고는 그대로 선다 */
+const sayL = (x: string) => (L() === "ko" ? sayKo(x) : x);
+const thingL = (x: string) => (L() === "ko" ? thingKo(x) : x);
 
 const AX: Axis[] = ["J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8"];
 const ZONE_CLASS: Record<string, string> = {
@@ -82,12 +99,12 @@ function PackBody(
   },
 ) {
   const cell = (d: string | null, ax: Axis | null) =>
-    [d ? dn(d) : null, ax ? AXIS_KO[ax] : null].filter(Boolean).join(" · ")
-      || "이 직무에서 맡는 범위";
+    [d ? dn(d) : null, ax ? TX().AXIS_KO[ax] : null].filter(Boolean).join(" · ")
+      || tr("이 직무에서 맡는 범위");
   const uniq = (xs: string[]) => [...new Set(xs)];
   return (
     <div className="rs-pack">
-      <h3>이 직무에서 자주 묻는 것</h3>
+      <h3>{tr("이 직무에서 자주 묻는 것")}</h3>
       <p>{v.vocabulary.slice(0, 6).join(" · ")}</p>
       {/* **칩 벽을 기본으로 세우지 않는다**(규격 §42). 다섯 묶음에 담긴
           칩이 서른을 넘고, 산업 절과 직무 절에 한 번씩 서면 결과지의
@@ -105,27 +122,27 @@ function PackBody(
           지금 서는 것은 둘이다: 여기서도 쓸 수 있는 경험 · 여기서 한 번 더
           보는 것. **담긴 자료를 줄이지 않았다**: 겹치는 자리가 맨 앞에
           서고 나머지가 그 뒤에 이어진다 */}
-      <Disclose label="확인된 경험 전부 보기">
+      <Disclose label={tr("확인된 경험 전부 보기")}>
       <dl>
         <div>
-          <dt>여기서도 쓸 수 있는 경험</dt>
+          <dt>{tr("여기서도 쓸 수 있는 경험")}</dt>
           <dd>
             <Picks own max={6} items={uniq([
               ...v.overlap.map((o) => cell(o.domain, o.axis)),
               ...v.answered.map((a) => cell(a.domain, a.axis)),
               ...v.established.map((e) =>
-                `${dn(e.domain)} · ${e.axes.slice(0, 3).map((x) => AXIS_KO[x]).join(", ")}`
-                + `${e.axes.length > 3 ? " 외" : ""}`),
+                `${dn(e.domain)} · ${e.axes.slice(0, 3).map((x) => TX().AXIS_KO[x]).join(", ")}`
+                + `${e.axes.length > 3 ? tr(" 외") : ""}`),
             ]).slice(0, 12)} />
           </dd>
         </div>
         {/* **`없다` 로 답하신 자리와 안 물어본 자리를 가른다.** 한 칸에
             담으면 묻지 않은 것이 `없다` 로 적힌다 */}
         <div>
-          <dt>여기서 한 번 더 보는 것</dt>
+          <dt>{tr("여기서 한 번 더 보는 것")}</dt>
           <dd>
             <Picks max={6} items={uniq([
-              ...v.requested.map((r) => `${dn(r.domain)} · ${AXIS_KO[r.axis]}`),
+              ...v.requested.map((r) => `${dn(r.domain)} · ${TX().AXIS_KO[r.axis]}`),
               ...v.not_yet.map((a) => cell(a.domain, a.axis)),
             ]).slice(0, 10)} />
           </dd>
@@ -136,7 +153,7 @@ function PackBody(
           적고 끝내면 읽는 사람이 그래서 무엇을 하라는 것인지 모른다 */}
       {action ? (
         <p className="rs-do">
-          <b>다음에 만들 근거</b>
+          <b>{tr("다음에 만들 근거")}</b>
           {say(action)}
         </p>
       ) : null}
@@ -146,7 +163,7 @@ function PackBody(
 
 /** 고른 항목. **스무 개를 한 줄에 깔면 그 가운데 무엇도 안 읽힌다** */
 function Picks(
-  { items, own, max = 8, none = "아직 고른 것이 없습니다" }:
+  { items, own, max = 8, none = tr("아직 고른 것이 없습니다") }:
   { items: string[]; own?: boolean; max?: number; none?: string },
 ) {
   if (!items.length) return <span className="rs-none">{none}</span>;
@@ -155,7 +172,7 @@ function Picks(
     <>
       {head.map((t) => <span key={t} className={`rs-pick${own ? " own" : ""}`}>{t}</span>)}
       {items.length > head.length
-        ? <span className="rs-more">외 {items.length - head.length}개</span> : null}
+        ? <span className="rs-more">{tr("외 {n}개", { n: items.length - head.length })}</span> : null}
     </>
   );
 }
@@ -174,8 +191,8 @@ function Axes({ d }: { d: ResultDomain }) {
         const a = d.axes.find((x) => x.axis === ax)!;
         return (
           <li key={ax} className={`rs-axis s-${a.state.toLowerCase()}`}>
-            <p className="rs-axis-s">{axisStateKo(ax, a.state)}</p>
-            <p className="rs-axis-q">{AXIS_WHAT_KO[ax]}</p>
+            <p className="rs-axis-s">{TX().axisStateKo(ax, a.state)}</p>
+            <p className="rs-axis-q">{TX().AXIS_WHAT_KO[ax]}</p>
           </li>
         );
       })}
@@ -183,14 +200,15 @@ function Axes({ d }: { d: ResultDomain }) {
   );
 }
 
-const BAND_KO = { HIGH: "높음", MID: "보통", LOW: "낮음" } as const;
-const EXP_KO = {
+/* 함수로 둔다: 모듈을 읽는 순간이 아니라 그리는 순간의 언어로 고른다 */
+const BAND_KO = () => ({ HIGH: tr("높음"), MID: tr("보통"), LOW: tr("낮음") }) as const;
+const EXP_KO = () => ({
   /* **응시 화면과 같은 세 낱말이다**(규격 §7). 전에는 첫 칸만
      `해 본 적 없음` 이라, 응시할 때 읽은 척도(`없음 · 1~2회 · 3회 이상`)와
      결과지의 척도가 한 칸 어긋났다. 같은 값을 두 이름으로 적으면 읽는
      사람이 둘을 다른 척도로 읽는다 */
-  NONE: "없음", ONCE_OR_TWICE: "1~2회", SEVERAL: "3회 이상",
-} as const;
+  NONE: tr("없음"), ONCE_OR_TWICE: tr("1~2회"), SEVERAL: tr("3회 이상"),
+}) as const;
 
 /**
  * 여덟 축을 묻지 않은 응시(BASIC)의 영역 한 자리.
@@ -200,18 +218,18 @@ const EXP_KO = {
  * 받은 것만 적는다: 관심과 경험과 배울 뜻.
  */
 function Basic({ core, d }: { core: string; d: ResultDomain }) {
-  const chain = domainChainKo(core, d.code);
-  const made = domainArtifacts(core, d.code);
+  const chain = TX().domainChainKo(core, d.code);
+  const made = domainArtifacts(core, d.code, L());
   return (
     <>
       <div className="rs-why rs-why3">
         <dl>
-          <dt>관심</dt>
-          <dd><span className="rs-pick">{d.interest ? BAND_KO[d.interest] : "답하지 않음"}</span></dd>
-          <dt>해 본 횟수</dt>
-          <dd><span className="rs-pick">{d.experience ? EXP_KO[d.experience] : "답하지 않음"}</span></dd>
-          <dt>배울 뜻</dt>
-          <dd><span className="rs-pick">{d.learning ? BAND_KO[d.learning] : "답하지 않음"}</span></dd>
+          <dt>{tr("관심")}</dt>
+          <dd><span className="rs-pick">{d.interest ? BAND_KO()[d.interest] : tr("답하지 않음")}</span></dd>
+          <dt>{tr("해 본 횟수")}</dt>
+          <dd><span className="rs-pick">{d.experience ? EXP_KO()[d.experience] : tr("답하지 않음")}</span></dd>
+          <dt>{tr("배울 뜻")}</dt>
+          <dd><span className="rs-pick">{d.learning ? BAND_KO()[d.learning] : tr("답하지 않음")}</span></dd>
         </dl>
       </div>
       {/* **아직 해 보지 않은 사람에게 가장 먼저 필요한 것.** 어느 쪽부터
@@ -221,10 +239,10 @@ function Basic({ core, d }: { core: string; d: ResultDomain }) {
       {chain.length ? (
         <div className="rs-intro">
           <dl>
-            <dt>이 영역이 일하는 차례</dt>
+            <dt>{tr("이 영역이 일하는 차례")}</dt>
             <dd>{chain.join(" → ")}</dd>
             {made.length ? (<>
-              <dt>흔히 남기는 결과물</dt>
+              <dt>{tr("흔히 남기는 결과물")}</dt>
               <dd>{made.join(" · ")}</dd>
             </>) : null}
           </dl>
@@ -269,9 +287,9 @@ function Why({ d }: { d: ResultDomain }) {
      세 이름표 아래에 `아직 고른 것이 없습니다` 가 세 번 섰다(종이 7쪽).
      비어 있는 칸은 이름만 모아 한 줄로 적고, 전부 비면 그 한 줄뿐이다 */
   const empty = [
-    !did.length && !decided.length ? "해 봤다고 고른 것" : "",
-    !d.artifacts.length ? "남겼다고 고른 결과물" : "",
-    !d.verifications.length ? "비교했다고 고른 대상" : "",
+    !did.length && !decided.length ? tr("해 봤다고 고른 것") : "",
+    !d.artifacts.length ? tr("남겼다고 고른 결과물") : "",
+    !d.verifications.length ? tr("비교했다고 고른 대상") : "",
   ].filter(Boolean);
   /* **고른 항목 가운데 응답으로는 확인에 못 미친 것**(R34 §1 추적표).
      결과 모델의 `did` · `decided` 는 확인·소유로 선 축의 항목만 들어서,
@@ -293,7 +311,7 @@ function Why({ d }: { d: ResultDomain }) {
       <dl>
         {decided.length ? (
           <>
-            <dt>직접 정했다고 고른 것</dt>
+            <dt>{tr("직접 정했다고 고른 것")}</dt>
             <dd><Picks items={decided} own /></dd>
           </>
         ) : null}
@@ -301,25 +319,25 @@ function Why({ d }: { d: ResultDomain }) {
             없는 문제를 만들어 보이게 된다 */}
         {did.length || !decided.length ? (
           <>
-            <dt>해 봤다고 고른 것</dt>
+            <dt>{tr("해 봤다고 고른 것")}</dt>
             <dd><Picks items={did} /></dd>
           </>
         ) : null}
         {d.artifacts.length ? (<>
-          <dt>남겼다고 고른 결과물</dt>
+          <dt>{tr("남겼다고 고른 결과물")}</dt>
           <dd><Picks items={d.artifacts} max={6} /></dd>
         </>) : null}
         {d.verifications.length ? (<>
-          <dt>비교했다고 고른 대상</dt>
+          <dt>{tr("비교했다고 고른 대상")}</dt>
           <dd><Picks items={d.verifications} max={6} /></dd>
         </>) : null}
         {unconfirmed.length ? (<>
-          <dt>골랐지만 응답으로는 아직 확인되지 않은 것</dt>
+          <dt>{tr("골랐지만 응답으로는 아직 확인되지 않은 것")}</dt>
           <dd><Picks items={unconfirmed} max={6} /></dd>
         </>) : null}
       </dl>
       {empty.length ? (
-        <p className="rs-dnone">아직 고르지 않음 · {empty.join(" · ")}</p>
+        <p className="rs-dnone">{tr("아직 고르지 않음 · {list}", { list: empty.join(" · ") })}</p>
       ) : null}
     </div>
   );
@@ -351,9 +369,9 @@ function DomainPanel(
     sameZone?: boolean;
   },
 ) {
-  const name = domainName(core, d.code);
-  const g = gap ? gapKo(gap, name) : null;
-  const gapCell = gap ? gapCellKo(gap) : "";
+  const name = domainName(core, d.code, L());
+  const g = gap ? TX().gapKo(gap, name) : null;
+  const gapCell = gap ? TX().gapCellKo(gap) : "";
   /* 할 일 문장은 이 카드에서 적지 않는다(아래 주석). 인자는 그대로 받아
      둔다: 부르는 자리가 그 영역의 할 일을 이미 골라 넘기고 있어서, 여기서
      빼면 고르는 코드가 두 벌이 된다 */
@@ -366,7 +384,7 @@ function DomainPanel(
             `근거를 더 만들어야 하는 영역` 이 적혀 있어서, 근거를 묻지 않은
             응시에 그대로 붙이면 재지 않은 것을 판정으로 적는 셈이다 */}
         {showAxes ? (
-          <span className={`rs-zone ${ZONE_CLASS[d.zone]}`}>{ZONE_TITLE_KO[d.zone]}</span>
+          <span className={`rs-zone ${ZONE_CLASS[d.zone]}`}>{TX().ZONE_TITLE_KO[d.zone]}</span>
         ) : null}
       </header>
       {showAxes ? (<>
@@ -375,7 +393,7 @@ function DomainPanel(
             이 문장이 글자까지 같아서, 카드 넷에 네 번 서면 읽는 사람이
             같은 데를 또 도는 줄 안다. 딱지는 카드마다 그대로 선다: 그것은
             이름표이고 되풀이되는 것이 맞다 */}
-        {sameZone ? null : <p className="rs-dstate">{ZONE_LEAD_KO[d.zone]}</p>}
+        {sameZone ? null : <p className="rs-dstate">{TX().ZONE_LEAD_KO[d.zone]}</p>}
         <Strongest d={d} />
         {/* **라벨과 값 짝을 회색 박스에 담지 않는다**(R21 §D). 전에는
             `여기서 더 보여줄 것` 이라는 머리와 그 값이 영역마다 회색 면
@@ -394,10 +412,10 @@ function DomainPanel(
         /* **여덟 축을 기본으로 펼치지 않는다**(규격 §14). 여덟 줄이
            기본으로 서면 그 목록이 영역 한 자리에서 가장 큰 덩이가 되고,
            읽는 사람이 자기 상태를 여덟 개의 판정으로 읽는다 */
-        <Fold label="상세 근거 보기">
+        <Fold label={tr("상세 근거 보기")}>
           <Why d={d} />
           <p className="rs-meta">
-            확인된 판단 {d.confirmed.length} · 직접 정한 것 {d.owned.length}
+            {tr("확인된 판단 {a} · 직접 정한 것 {b}", { a: d.confirmed.length, b: d.owned.length })}
           </p>
           <Axes d={d} />
         </Fold>
@@ -439,8 +457,8 @@ function Strongest({ d }: { d: ResultDomain }) {
      적고 아래에는 행동만 선다 */
   const groups = [
     /* 산출물 이름은 아래 줄이 제 이름으로 적는다(`evidenceRows`) */
-    { label: "직접 정했다고 고른 것", items: take(evidenceRows(d).decided) },
-    { label: "남겼다고 고른 결과물", items: take(d.artifacts) },
+    { label: tr("직접 정했다고 고른 것"), items: take(evidenceRows(d).decided) },
+    { label: tr("남겼다고 고른 결과물"), items: take(d.artifacts) },
   ].filter((g) => g.items.length);
   if (!groups.length) {
     return (
@@ -451,7 +469,7 @@ function Strongest({ d }: { d: ResultDomain }) {
          R34: `아직 고른 근거 없음` 은 무엇을 안 골랐는지가 없어 읽는 사람이
          `근거가 없다` 로 읽었다. 검사에서 해 봤다고 답한 것과 근거 항목을
          고르는 것은 다른 일이라 그 둘을 한 줄에 적는다 */
-      <p className="rs-dnone">검사에서 해 봤다고 답했고, 근거 항목(판단 · 결과물 · 비교 대상)은 고르지 않았습니다</p>
+      <p className="rs-dnone">{tr("검사에서 해 봤다고 답했고, 근거 항목(판단 · 결과물 · 비교 대상)은 고르지 않았습니다")}</p>
     );
   }
   return (
@@ -478,23 +496,23 @@ function Strongest({ d }: { d: ResultDomain }) {
 function EvidenceRow(
   { core, domain, axis, state, picks, own }: {
     core: string; domain: string; axis: Axis;
-    state: Parameters<typeof axisStateKo>[1];
+    state: Parameters<typeof KO.axisStateKo>[1];
     picks: string[]; own?: boolean;
   },
 ) {
   return (
     <div className="row">
       <p className="judge">
-        <b>{domainName(core, domain)}</b>
-        {" — "}{axisStateKo(axis, state)}
+        <b>{domainName(core, domain, L())}</b>
+        {" — "}{TX().axisStateKo(axis, state)}
       </p>
       <div className="keys">
-        <span className="rs-keylabel">고른 항목</span>
+        <span className="rs-keylabel">{tr("고른 항목")}</span>
         {/* **`아직 고른 것이 없습니다` 를 여기 그대로 쓰지 않는다.** 바로
             위에 `확인됐습니다` 가 적혀 있어서 두 줄이 서로를 부순다.
             이 자리에서 비어 있다는 것은 **설명할 재료가 없다**는 뜻이다 */}
         <Picks items={picks} max={4} own={own}
-          none="고르신 근거 항목이 없어, 지금은 설명할 재료가 없습니다" />
+          none={tr("고르신 근거 항목이 없어, 지금은 설명할 재료가 없습니다")} />
       </div>
     </div>
   );
@@ -509,7 +527,7 @@ function EvidenceRow(
  * 판단이 그 상태인지는 이름으로 남는다.
  */
 function EvidenceNone(
-  { core, rows }: { core: string; rows: { domain: string; axis: Axis; state: Parameters<typeof axisStateKo>[1]; picks: string[] }[] },
+  { core, rows }: { core: string; rows: { domain: string; axis: Axis; state: Parameters<typeof KO.axisStateKo>[1]; picks: string[] }[] },
 ) {
   const none = rows.filter((e) => !e.picks.length);
   if (!none.length) return null;
@@ -519,18 +537,17 @@ function EvidenceNone(
   const by = new Map<string, string[]>();
   for (const e of none) {
     const list = by.get(e.domain) ?? [];
-    list.push(AXIS_KO[e.axis]);
+    list.push(TX().AXIS_KO[e.axis]);
     by.set(e.domain, list);
   }
   return (
     <div className="rs-evnone">
       <p className="rs-none">
-        검사에서 해 봤다고 답했지만 근거 항목을 고르지 않은 판단이 {none.length}개
-        있습니다. 지금은 설명할 재료가 없습니다.
+        {tr("검사에서 해 봤다고 답했지만 근거 항목을 고르지 않은 판단이 {n}개 있습니다. 지금은 설명할 재료가 없습니다.", { n: none.length })}
       </p>
       <ul>
         {[...by.entries()].map(([td, axes]) => (
-          <li key={td}><b>{domainName(core, td)}</b> {axes.join(" · ")}</li>
+          <li key={td}><b>{domainName(core, td, L())}</b> {axes.join(" · ")}</li>
         ))}
       </ul>
     </div>
@@ -553,7 +570,7 @@ function Plan(
     <div className="rs-plan">
       {groups.map(({ h, list }) => (
         <section className="rs-when" key={h}>
-          <h3>{HORIZON_KO[h]}</h3>
+          <h3>{TX().HORIZON_KO[h]}</h3>
           <ol>
             {(() => {
               /**
@@ -572,7 +589,7 @@ function Plan(
               const key = (a: Action) => (
                 a.code === "EXPLORE_BROADLY"
                   ? `explore:${a.id}`
-                  : actionKo(a, MARK, stage).do + (actionKo(a, MARK, stage).guide ?? ""));
+                  : TX().actionKo(a, MARK, stage).do + (TX().actionKo(a, MARK, stage).guide ?? ""));
               const merged: { key: string; list: Action[] }[] = [];
               for (const a of list) {
                 const k = key(a);
@@ -586,8 +603,8 @@ function Plan(
               let last = "";
               return merged.map(({ list: same }) => {
                 const a = same[0];
-                const names = same.map((x) => (x.domain ? domainName(core, x.domain) : "전체"));
-                const t = actionKo(
+                const names = same.map((x) => (x.domain ? domainName(core, x.domain, L()) : tr("전체")));
+                const t = TX().actionKo(
                   a, same.every((x) => x.domain) ? names.join(" · ") : "",
                   stage,
                   a.code === "EXPLORE_BROADLY" ? where : undefined);
@@ -598,7 +615,7 @@ function Plan(
                    골라보세요.` 라, 영역 이름이 한 줄에 두 번 서고 네 줄이
                    같은 마디로 열려 **기계가 찍어 낸 표**로 읽힌다. 그
                    마디는 절 머리에 한 번만 적고 줄은 행동부터 연다.
-                   **문장을 고치지 않는다**: `actionKo` 가 내놓는 값은
+                   **문장을 고치지 않는다**: `TX().actionKo` 가 내놓는 값은
                    그대로이고 이 자리에서 앞 마디만 덜어 읽는다 */
                 const doText = t.do.replace(/^최근 .{1,40}? 과제 하나를 골라보세요\.\s*/, "");
                 return (
@@ -609,7 +626,7 @@ function Plan(
                       {note ? <i>{note}</i> : null}
                     </div>
                     {saved ? same.map((x) => (
-                      <SaveAction key={x.id} attemptId={attemptId} actionId={x.id}
+                      <SaveAction key={x.id} lang={L()} attemptId={attemptId} actionId={x.id}
                         saved={saved.includes(x.id)} />
                     )) : null}
                   </li>
@@ -632,22 +649,22 @@ function Plan(
  */
 function Translation({ view, major }: { view: TranslationView; major: string }) {
   /* 열 단계만 세운다. 꼬리표(`TR_TAG_*`)는 이야기의 한 마디가 아니다 */
-  const rows = TRANS_ORDER
+  const rows = TX().TRANS_ORDER
     .map((id) => view.steps.find((s) => s.item_id === id))
-    .filter((s): s is TranslationView["steps"][number] => !!s && !!TRANS_STEP_KO[s.item_id]);
+    .filter((s): s is TranslationView["steps"][number] => !!s && !!TX().TRANS_STEP_KO[s.item_id]);
   /* 타계열 대학원 맥락. **열 단계가 없어도 이 절을 세운다**: 적어 주신 것이
      어디로도 가지 않으면 받고 쓰지 않은 응답이 된다 */
-  const xf = XFIELD_ORDER
+  const xf = TX().XFIELD_ORDER
     .map((id) => view.xfield.find((x) => x.item_id === id))
-    .filter((x): x is TranslationView["xfield"][number] => !!x && !!xfieldKo(x.item_id, major));
+    .filter((x): x is TranslationView["xfield"][number] => !!x && !!TX().xfieldKo(x.item_id, major));
   if (!rows.length && !xf.length) return null;
-  const draft = draftKo(view.steps);
-  const frame = draftFrameKo(view.steps);
+  const draft = TX().draftKo(view.steps);
+  const frame = TX().draftFrameKo(view.steps);
   return (
     <section className="rs-sect" id="translation">
-      <h2>연구·프로젝트를 직무 언어로</h2>
+      <h2>{tr("연구·프로젝트를 직무 언어로")}</h2>
       <p className="rs-note">
-        적어주신 과제를 지원서와 면접에서 말하는 차례로 나눴습니다.
+        {tr("적어주신 과제를 지원서와 면접에서 말하는 차례로 나눴습니다.")}
       </p>
       {/* **긴 문단을 기본 화면의 큰 박스로 두지 않는다**(규격 §5).
           전에는 열 단계 목록과 이어 붙인 문단이 함께 펼쳐져 이 절 하나가
@@ -656,25 +673,24 @@ function Translation({ view, major }: { view: TranslationView; major: string }) 
           **새 문장을 만들지 않는다**: 고르신 답을 이은 것을 그대로 자른다 */}
       {draft.length >= 3 ? (
         <div className="rs-draft is-pre">
-          <h3>지원서에서 이렇게 묶어볼 수 있습니다</h3>
+          <h3>{tr("지원서에서 이렇게 묶어볼 수 있습니다")}</h3>
           <p className="rs-draft-pre">{draft[0]}</p>
         </div>
       ) : null}
-      <Disclose label="작성 근거 자세히 보기">
+      <Disclose label={tr("작성 근거 자세히 보기")}>
       {/* **대학원 전공이 다른 분의 경험을 기계공학 판단으로 세지 않는다.**
           여기 적는 것은 그 경험을 직무 말로 옮길 때 읽는 맥락이고, 위의
           영역별 판정에는 한 글자도 들어가지 않는다 */}
       {xf.length ? (
         <div className="rs-pack">
-          <h3>대학원 경험을 어디에 걸칠지</h3>
+          <h3>{tr("대학원 경험을 어디에 걸칠지")}</h3>
           <p>
-            학부에서 {major}을(를) 하시고 대학원은 다른 분야를 하셨다고 답해주셨습니다.
-            대학원 경험은 {major} 영역 확인과 따로 보고, 아래 번역에서 읽었습니다.
+            {tr("학부에서 {major}을(를) 하시고 대학원은 다른 분야를 하셨다고 답해주셨습니다. 대학원 경험은 {major} 영역 확인과 따로 보고, 아래 번역에서 읽었습니다.", { major })}
           </p>
           <dl>
             {xf.map((x) => (
               <div key={x.item_id}>
-                <dt>{xfieldKo(x.item_id, major)}</dt>
+                <dt>{TX().xfieldKo(x.item_id, major)}</dt>
                 <dd>{x.choice}</dd>
               </div>
             ))}
@@ -688,7 +704,7 @@ function Translation({ view, major }: { view: TranslationView; major: string }) 
         <ol className="rs-steps">
           {rows.filter((s) => s.choice).map((s) => (
             <li key={s.item_id}>
-              <span>{TRANS_STEP_KO[s.item_id]}</span>
+              <span>{TX().TRANS_STEP_KO[s.item_id]}</span>
               <b>{s.choice}</b>
             </li>
           ))}
@@ -696,9 +712,9 @@ function Translation({ view, major }: { view: TranslationView; major: string }) 
       ) : null}
       {rows.some((s) => !s.choice) ? (
         <p className="rs-note">
-          아직 적지 않으신 단계 {rows.filter((s) => !s.choice).length}개 ·{" "}
+          {tr("아직 적지 않으신 단계 {n}개 ·", { n: rows.filter((s) => !s.choice).length })}{" "}
           {rows.filter((s) => !s.choice)
-            .map((s) => TRANS_STEP_KO[s.item_id]).join(" · ")}
+            .map((s) => TX().TRANS_STEP_KO[s.item_id]).join(" · ")}
         </p>
       ) : null}
       {/* R32: 보기를 `~했습니다.` 로 이어 붙인 문단을 내놓지 않는다(종이 5쪽).
@@ -706,7 +722,7 @@ function Translation({ view, major }: { view: TranslationView; major: string }) 
           돌려주고, 문장으로 잇는 일과 수치를 채우는 일은 그 사람이 한다 */}
       {frame.length >= 2 ? (
         <div className="rs-draft rs-frame">
-          <h3>지원서 문단의 뼈대: 역할 · 행동 · 판단 · 결과</h3>
+          <h3>{tr("지원서 문단의 뼈대: 역할 · 행동 · 판단 · 결과")}</h3>
           <dl>
             {frame.map((f) => (
               <div key={f.label}>
@@ -716,8 +732,7 @@ function Translation({ view, major }: { view: TranslationView; major: string }) 
             ))}
           </dl>
           <p className="rs-note">
-            네 칸은 고르신 보기 그대로입니다. 한 문단으로 잇는 것과 수치 · 기간 ·
-            결과를 채우는 것은 직접 하셔야 하고, 여기에 없는 성과를 적지 않습니다.
+            {tr("네 칸은 고르신 보기 그대로입니다. 한 문단으로 잇는 것과 수치 · 기간 · 결과를 채우는 것은 직접 하셔야 하고, 여기에 없는 성과를 적지 않습니다.")}
           </p>
         </div>
       ) : null}
@@ -741,10 +756,15 @@ export default async function V3Result({
   if (!a) notFound();
   if (a.status === "in_progress") redirect(`/v3/${attemptId}`);
 
-  const m = await latestResult(attemptId);
+  /* 응시 언어. 이 요청의 조각 전부가 같은 값을 읽는다 */
+  const lang = a.locale ?? "ko";
+  setRenderLang(lang);
+  const m0 = await latestResult(attemptId);
   /* 굳혀 둔 결과가 없으면 다시 만들지 않는다. 다시 만들면 엔진이 바뀐 날
      그 사람의 결과지가 조용히 달라진다 */
-  if (!m) notFound();
+  if (!m0) notFound();
+  /* **판정은 굳은 그대로다.** 원고 글자만 그 응시 언어로 읽는다 */
+  const m = localizeResult(m0, coreOf(m0), lang);
 
   /* **파일럿 참가자에게만 재는 자리가 선다.** 모두를 재면 그것은
      파일럿이 아니라 추적이다 */
@@ -788,11 +808,11 @@ export default async function V3Result({
   const kept = op.fromResult ? 0 : op.rows.filter((r) => r.state !== "done").length;
   /* **첫 쪽의 머리 한 줄**(규격 §15): 학교 · 학과 · 전공 · 등급 · 응답일.
      전공 이름을 글자로 적지 않는다: 그 결과의 Core 에서 읽는다 */
-  const meta = await resultMeta(attemptId, core);
+  const meta = await resultMeta(attemptId, core, L());
   /* **첫 줄에서 무엇이 있는지까지 말한다**(SIGN-OFF §2). 이름을 넘기면
      머리글이 떠받치는 영역의 이름을 적고, 그 묶음이 비어 있으면 전과 같은
      문장이 선다. 영역 이름은 **그 결과의 Core 사전**에서 온다 */
-  const h = headlineKo(model, (td: string) => domainName(core, td));
+  const h = TX().headlineKo(model, (td: string) => domainName(core, td, L()));
   /* **확인된 영역에서 거꾸로 읽는다**(규격 Reverse Mapping). 고른 산업
      하나와 직무 하나만 적으면, 아직 아무것도 고르지 않은 사람에게
      `어떤 산업과 연결되는가` 가 결과지에서 답해지지 않는다.
@@ -808,7 +828,7 @@ export default async function V3Result({
    * 자기 전공이 자주 서는 자리를 먼저 읽는다. 자르기 전에 세워야 **그
    * 학과의 자리가 넷 밖으로 밀리지 않는다.**
    */
-  const sv = specView(core, meta.specializationCode);
+  const sv = specView(core, meta.specializationCode, L());
   const revIndustry = leadFirst(
     industriesFromDomains(core, confirmedDomains), sv.industryLead, (r) => r.code,
   ).slice(0, 4);
@@ -848,7 +868,7 @@ export default async function V3Result({
            판단 하나를 글줄로 세우는데, 쓰는 자리가 같은 것을 또 집으면
            한 묶음 안에서 같은 말이 두 번 선다 */
         decisions: (d?.decided ?? [])
-          .filter((t) => t.endsWith("다") && t !== d?.decided[0]),
+          .filter((t) => isClause(t, L()) && t !== d?.decided[0]),
         artifacts: d?.artifacts ?? [],
         verifications: d?.verifications ?? [],
         left: d?.artifacts[0] ?? d?.verifications[0] ?? null,
@@ -856,7 +876,7 @@ export default async function V3Result({
     });
   /* 네 단계에 세우지 못한 나머지 영역. **차례를 다시 매기지 않는다** */
   const readyDomains = [...new Set(model.evidence.ready.map((e) => e.domain))];
-  const restReady = readyDomains.slice(2).map((c) => domainName(core, c));
+  const restReady = readyDomains.slice(2).map((c) => domainName(core, c, L()));
   const focus = model.domains.filter((d) => model.overview.focus.includes(d.code));
   const compare = model.domains.filter((d) => model.overview.compare.includes(d.code));
   const deep = model.limits.deep_axes;
@@ -893,15 +913,15 @@ export default async function V3Result({
   const stage = model.stage;
   const counts = model.overview.counts;
   const industryName = (c: string) =>
-    industryChoices(core).find((x) => x.code === c)?.name ?? c;
-  const roleName = (c: string) => roleChoices(core).find((x) => x.code === c)?.name ?? c;
+    industryChoices(core, L()).find((x) => x.code === c)?.name ?? c;
+  const roleName = (c: string) => roleChoices(core, L()).find((x) => x.code === c)?.name ?? c;
   /* **세종에서 이어 볼 기업**(고려대 세종 · 세종일자리경제진흥원). 학교
      등록부의 첫 도시에 명단 파일이 있을 때만 선다. 새 점수를 만들지 않고
      업종과 확인된 영역이 같은 분야인지만 나란히 놓는다 */
   const sejong = sejongView({
     universityCode: meta.universityCode,
     domains: model.domains.map((d) => ({
-      name: domainName(core, d.code), zone: d.zone, confirmed: d.confirmed.length,
+      name: domainName(core, d.code, L()), zone: d.zone, confirmed: d.confirmed.length,
     })),
     linked: [...revIndustry.map((r) => industryName(r.code)), ...revRole.map((r) => roleName(r.code))],
     labels: [meta.specialization, meta.major].filter((x): x is string => !!x),
@@ -917,11 +937,11 @@ export default async function V3Result({
     ...(model.industry_context?.domains ?? []),
     ...(model.role_context?.domains ?? []),
     ...model.domains.map((d) => d.code),
-  ].filter((c, i, xs) => xs.indexOf(c) === i).slice(0, 2).map((c) => domainName(core, c));
-  const say = (x: Action) => actionKo(
-    x, x.domain ? domainName(core, x.domain) : "", stage,
+  ].filter((c, i, xs) => xs.indexOf(c) === i).slice(0, 2).map((c) => domainName(core, c, L()));
+  const say = (x: Action) => TX().actionKo(
+    x, x.domain ? domainName(core, x.domain, L()) : "", stage,
     x.code === "EXPLORE_BROADLY" ? exploreWhere() : undefined).do;
-  const gapTile = (g: Gap) => gapShortKo(g, domainName(core, g.domain));
+  const gapTile = (g: Gap) => TX().gapShortKo(g, domainName(core, g.domain, L()));
 
   /**
    * 첫 화면 세 번째 칸.
@@ -938,7 +958,7 @@ export default async function V3Result({
     if (move === "WRITE_UP" && writeUp) return { text: say(writeUp), usedId: writeUp.id };
     const first = model.actions[0];
     if (first) return { text: say(first), usedId: first.id };
-    return { text: "응답이 적어 다음 걸음까지 적지 못했습니다.", usedId: null };
+    return { text: tr("응답이 적어 다음 걸음까지 적지 못했습니다."), usedId: null };
   };
   const { text: moveText } = moveOf();
   /**
@@ -990,7 +1010,7 @@ export default async function V3Result({
    * 길이는 스물여덟 자 안팎이 한 줄 반이고, 더 길면 네 줄로 벌어져
    * 한눈에 들어오지 않는다.
    */
-  const toldAll = (xs: string[]): string[] => xs.filter((x) => x.endsWith("다"));
+  const toldAll = (xs: string[]): string[] => xs.filter((x) => isClause(x, L()));
   const told = (focus.length && toldAll(focus[0].decided).length)
     ? toldAll(focus[0].decided) : toldAll(says);
   const best = [...told].sort(
@@ -1002,21 +1022,21 @@ export default async function V3Result({
     ? [...told].filter((x) => x !== best).sort((a, b) => a.length - b.length)
       .find((x) => best.length + x.length <= 34) ?? ""
     : "";
-  const openQuote = best ? pickSentenceKo(more ? [best, more] : [best]) : "";
+  const openQuote = best ? TX().pickSentenceKo(more ? [best, more] : [best]) : "";
   /* 카드는 **다른 문장**을 든다. 아래 목록이 이미 적는 이름을 다시
      문장으로 세우지 않는다 */
   const cardPick = says.find(
     (x) => x !== best && !left.some((a) => x.includes(a))) ?? "";
-  const cardSay = cardPick ? pickSentenceKo([cardPick]) : "";
+  const cardSay = cardPick ? TX().pickSentenceKo([cardPick]) : "";
   const openLine = openQuote || h.title;
   /* 근거 절의 두 이야기. **둘이 같은 꼴을 돌려받는다**(R12 §1): 가르는
      것은 자료 꼴이 아니라 화면 쪽 DOM 이다 */
-  const evLead = chains[0] ? evidenceStoryKo(
+  const evLead = chains[0] ? TX().evidenceStoryKo(
     core, chains[0].code, chains[0], "lead",
-    domainName(core, chains[0].code)) : null;
-  const evAlso = chains[1] ? evidenceStoryKo(
+    domainName(core, chains[0].code, L())) : null;
+  const evAlso = chains[1] ? TX().evidenceStoryKo(
     core, chains[1].code, chains[1], "second",
-    domainName(core, chains[1].code)) : null;
+    domainName(core, chains[1].code, L())) : null;
   /*
    * **첫 화면의 큰 글과 근거 절의 큰 글이 같은 문장이면 안 된다**(R17 §3).
    *
@@ -1043,11 +1063,11 @@ export default async function V3Result({
    * 카드 B `이 경험에서 쓸 수 있는 것`.
    *
    * **없는 역량을 적지 않는다.** 여기 서는 칩은 전부 그 응시에서 **확인된
-   * 판단축**이고, 이름은 학생이 읽는 말로 적는다(`AXIS_KO`). 재지 않은
+   * 판단축**이고, 이름은 학생이 읽는 말로 적는다(`TX().AXIS_KO`). 재지 않은
    * 역량 보유를 단정하는 말을 쓰지 않는 것은 전과 같다 */
   /**
    * 확인된 판단축. 칩은 축 이름이고 **그 위 한 줄은 학생의 말**이다
-   * (`AXIS_DID_KO`). 소유까지 간 축을 먼저 세워, 그 사람이 가장 깊게
+   * (`TX().AXIS_DID_KO`). 소유까지 간 축을 먼저 세워, 그 사람이 가장 깊게
    * 들어간 자리가 한 줄로 선다. **새로 판정하지 않는다.**
    */
   const useAxes = [...focus.flatMap((d) => d.axes)]
@@ -1091,8 +1111,11 @@ export default async function V3Result({
   const stateView = studentStateView(core, model, stateZone, 3);
   const stateTiles = stateView.tiles.map((t, i) => ({
     code: t.code,
-    name: domainName(core, t.code),
-    sub: t.sub,
+    name: domainName(core, t.code, L()),
+    /* 영어판: 학생 활동 사전(`student/copy.ts`)이 한국어뿐이라 세부 줄을 영어
+       taxonomy 의 세부 영역에서 다시 읽는다. 남긴 것이 있으면 그 이름(이미 영어다) */
+    sub: L() === "ko" ? t.sub
+      : (t.kind === "artifact" && t.artifact ? t.artifact : domainSub(core, t.code, 40, "en")),
     icon: (t.family ? FAMILY_FILL[t.family] : NEUTRAL_FILL) as IcFName,
     tint: i % 3,
   }));
@@ -1116,7 +1139,7 @@ export default async function V3Result({
   /* **묶음이 말하는 것만 적는다**(R30). 정리가 덜 된 영역(Z2)에
      `설명할 수 있는` 을 적지 않는다: 그 사람이 지금 할 수 없는 것을 할 수
      있다고 적는 자리였다. 글자는 `studentStateView` 가 든다 */
-  const stateLead = stateView.lead;
+  const stateLead = L() === "ko" ? stateView.lead : stateLeadEn(stateView.counts);
 
   /**
    * ── SCENE 3 EVIDENCE 들머리 ──
@@ -1133,7 +1156,7 @@ export default async function V3Result({
       const d = model.domains.find((x) => x.code === code);
       return {
         code,
-        name: domainName(core, code),
+        name: domainName(core, code, L()),
         said: evidenceRows(d!).decided[0] ?? d?.did[0] ?? "",
         /* **남긴 것만 든다**(R34). 견준 대상을 결과물 자리에 세우면 `지난
            캠페인 반응` 이 손에 남은 것으로 읽힌다 */
@@ -1162,14 +1185,14 @@ export default async function V3Result({
   const linkReady = [
     ...(model.industry_context?.established ?? []),
     ...(model.role_context?.established ?? []),
-  ].map((e) => domainName(core, e.domain));
+  ].map((e) => domainName(core, e.domain, L()));
   /* **상담 자리에서 그대로 말할 수 있는 문장만 쓴다**(COMMERCIAL FINAL §4).
      전에는 `지금 확인된 것으로는 아직 이어지는 영역이 없습니다` 였다.
      뜻은 맞지만 사람이 학생을 앞에 두고 그렇게 말하지 않는다 */
   const linkText = linkNames.length
     ? (linkReady.length
-      ? `${[...new Set(linkReady)].slice(0, 2).join(" · ")}에서 해 본 일이 이어져요`
-      : "아직 이쪽으로 이어지는 경험은 보이지 않습니다")
+      ? tr("{where}에서 해 본 일이 이어져요", { where: [...new Set(linkReady)].slice(0, 2).join(" · ") })
+      : tr("아직 이쪽으로 이어지는 경험은 보이지 않습니다"))
     : "";
 
   /**
@@ -1210,37 +1233,41 @@ export default async function V3Result({
   /** 첫 화면이 이미 적은 한 가지를 뺀 나머지. **같은 것을 두 번 적지 않는다** */
   const alsoActions = model.actions
     .filter((a) => a.id !== shownAction?.id).slice(0, 3);
+  /* **작업공간(`/me`)은 한국어판만 있다**(영어판 1단계). 영어 응시의 결과지에서
+     그리로 가는 길을 세우면 누른 사람이 한국어 화면에 떨어지므로 길을 걷는다.
+     결과와 종이는 그대로다 */
+  const ws = L() === "ko";
   const writeHref = shownAction?.domain
     ? `/me/experience/new?td=${shownAction.domain}`
     : "/me/experience/new";
   /* 머리에 **영역**을 담는다(R30). 종류만 적은 머리 아래에 다른 축의
      설명이 서면 둘이 어긋난다 */
   const doHead = shownAction
-    ? actionHeadKo(shownAction, shownAction.domain ? domainName(core, shownAction.domain) : "")
-    : topGap ? "먼저 적어 두기" : moveText;
+    ? TX().actionHeadKo(shownAction, shownAction.domain ? domainName(core, shownAction.domain, L()) : "")
+    : topGap ? tr("먼저 적어 두기") : moveText;
   const doDetail = shownAction
-    ? actionBriefKo(
-      shownAction, shownAction.domain ? domainName(core, shownAction.domain) : "",
+    ? TX().actionBriefKo(
+      shownAction, shownAction.domain ? domainName(core, shownAction.domain, L()) : "",
       shownAction.code === "EXPLORE_BROADLY" ? exploreWhere() : undefined)
-    : topGap ? gapNeedKo(topGap, domainName(core, topGap.domain)) : null;
+    : topGap ? TX().gapNeedKo(topGap, domainName(core, topGap.domain, L())) : null;
   /**
    * 할 일을 **대상 · 행동 · 남길 결과** 세 문장으로(Gate §6).
    *
    * 전에는 이 칸이 머리 한 줄(`그때 직접 정한 것을 적어 두기`)과 그 영역이
    * 일하는 차례를 이름씨로 늘어놓은 목록을 들었다. 머리는 무엇을 하라는
    * 것인지 말하지 않고, 이름씨 목록은 **명사 나열**이라 할 일로 읽히지
-   * 않는다. `actionKo` 가 이미 그 셋을 문장으로 들고 있으므로 여기서는
+   * 않는다. `TX().actionKo` 가 이미 그 셋을 문장으로 들고 있으므로 여기서는
    * 끊어서 세우기만 한다. **새 문장을 짓지 않는다**
    */
   const doSay = shownAction
-    ? actionKo(
-      shownAction, shownAction.domain ? domainName(core, shownAction.domain) : "",
+    ? TX().actionKo(
+      shownAction, shownAction.domain ? domainName(core, shownAction.domain, L()) : "",
       model.stage,
       shownAction.code === "EXPLORE_BROADLY" ? exploreWhere() : undefined).do
       .split(/(?<=\.)\s+/).map((x) => x.trim()).filter(Boolean)
     : [];
   /* 할 일이 있을 때만 적는다. 없는 자리에 이유를 적으면 그 줄이 거짓이 된다 */
-  const doWhy = shownAction ? actionWhyKo(shownAction) : null;
+  const doWhy = shownAction ? TX().actionWhyKo(shownAction) : null;
   const indAction = packAction(model.industry_context, [shownAction]);
   const roleAction = packAction(model.role_context, [shownAction, indAction]);
 
@@ -1254,12 +1281,12 @@ export default async function V3Result({
    * 줄은 그대로 선다.
    */
   const indBridge = model.industry_context
-    ? bridgeKo(model.industry_context, industryName(model.industry_context.code),
-      (td: string) => domainName(core, td), null, model.stage)
+    ? TX().bridgeKo(model.industry_context, industryName(model.industry_context.code),
+      (td: string) => domainName(core, td, L()), null, model.stage)
     : [];
   const roleBridge = model.role_context
-    ? bridgeKo(model.role_context, roleName(model.role_context.code),
-      (td: string) => domainName(core, td), null, model.stage)
+    ? TX().bridgeKo(model.role_context, roleName(model.role_context.code),
+      (td: string) => domainName(core, td, L()), null, model.stage)
       .filter((l) => !indBridge.includes(l))
     : [];
 
@@ -1272,8 +1299,8 @@ export default async function V3Result({
   const bg = model.overview.basic_groups;
   /* 영역에 걸치지 않는 판단. **열두 영역에 넣지 않는다**: 기술영역을 묻지
      않은 자리라 영역별 판정과 섞이면 안 된다 */
-  const cm = commonKo(model.common, core);
-  const orgName = (c: string) => orgChoices(core).find((x) => x.code === c)?.name ?? c;
+  const cm = TX().commonKo(model.common, core);
+  const orgName = (c: string) => orgChoices(core, L()).find((x) => x.code === c)?.name ?? c;
   /* **조직환경(OC)과 기관 유형(ORG)은 다른 층이다.** 앞엣것은 그 일을
      하는 자리의 성격이고 뒤엣것은 그 자리를 가진 기관의 종류다 */
   const orgTypeName = (c: string) =>
@@ -1284,21 +1311,21 @@ export default async function V3Result({
   /* 넷이 모이면 물어볼 수 있는 것. **자료가 0줄이어도 열쇠는 보여 준다**:
      무엇이 모이면 답이 나오는지 알아야 비어 있는 것이 아직으로 읽힌다 */
   const exploreKey: [string, string][] = [
-    ["산업", model.industry_context ? industryName(model.industry_context.code)
-      : (model.targets.industries.map(industryName).join(" · ") || "아직 없음")],
-    ["직무", model.role_context ? roleName(model.role_context.code)
-      : (model.targets.roles.map(roleName).join(" · ") || "아직 없음")],
-    ["권역", regionPicked ?? "아직 고르지 않으셨습니다"],
-    ["기관 유형", orgKinds.join(" · ") || "아직 고르지 않으셨습니다"],
+    [tr("산업"), model.industry_context ? industryName(model.industry_context.code)
+      : (model.targets.industries.map(industryName).join(" · ") || tr("아직 없음"))],
+    [tr("직무"), model.role_context ? roleName(model.role_context.code)
+      : (model.targets.roles.map(roleName).join(" · ") || tr("아직 없음"))],
+    [tr("권역"), regionPicked ?? tr("아직 고르지 않으셨습니다")],
+    [tr("기관 유형"), orgKinds.join(" · ") || tr("아직 고르지 않으셨습니다")],
   ];
 
   /* ── 웹 화면 한 장(`summary.tsx`). 종이는 아래 원래 절들을 그대로 쓴다 ── */
-  const dn = (td: string) => domainName(core, td);
+  const dn = (td: string) => domainName(core, td, L());
   const sumZones: SummaryZone[] = bg
     ? ([
         ["do_now", "ready"], ["scan", "partial"], ["low", "low"], ["unseen", "off"],
       ] as const).map(([k, tone]) => ({
-        key: k, tone, title: BASIC_GROUP_KO[k].title, lead: BASIC_GROUP_KO[k].lead,
+        key: k, tone, title: TX().BASIC_GROUP_KO[k].title, lead: TX().BASIC_GROUP_KO[k].lead,
         names: bg[k].map(dn),
       })).filter((z) => z.names.length)
     : ([
@@ -1308,16 +1335,16 @@ export default async function V3Result({
       ] as const)
         .filter(([z]) => !(z === "Z1_EVIDENCE_ESTABLISHED" && !model.limits.allows_evidence_established))
         .map(([z, tone]) => ({
-          key: z, tone, title: ZONE_TITLE_KO[z], lead: ZONE_LEAD_KO[z],
+          key: z, tone, title: TX().ZONE_TITLE_KO[z], lead: TX().ZONE_LEAD_KO[z],
           names: model.domains.filter((d) => d.zone === z).map((d) => dn(d.code)),
         })).filter((z) => z.names.length);
   /* 근거는 **확인된 판단축마다** 고르신 문장을 그대로 세운다. 모델의
      `decided` 에는 결과물 이름(`업계 자료`)이 섞여 있어 그대로 쓰면
      `직접 정한 것` 칸에 이름표가 선다 */
   const AX_LABEL: Record<Axis, string> = {
-    J1: "문제로 잡은 것", J2: "요구를 조건으로 옮긴 것", J3: "직접 판단한 것",
-    J4: "쓴 방법", J5: "만든 것", J6: "비교하고 확인한 것", J7: "고친 것",
-    J8: "결과가 쓰인 곳",
+    J1: tr("문제로 잡은 것"), J2: tr("요구를 조건으로 옮긴 것"), J3: tr("직접 판단한 것"),
+    J4: tr("쓴 방법"), J5: tr("만든 것"), J6: tr("비교하고 확인한 것"), J7: tr("고친 것"),
+    J8: tr("결과가 쓰인 곳"),
   };
   const sumEvidence: SummaryEvidence[] = [...new Set([
     ...model.evidence.ready.map((e) => e.domain),
@@ -1325,16 +1352,16 @@ export default async function V3Result({
   ])].slice(0, 3).map((code) => {
     const d = model.domains.find((x) => x.code === code)!;
     const rows = d.axes
-      .filter((x) => (x.state === "OWNED" || x.state === "CONFIRMED") && x.picks.some((t) => t.endsWith("다")))
+      .filter((x) => (x.state === "OWNED" || x.state === "CONFIRMED") && x.picks.some((t) => isClause(t, L())))
       .sort((x, y) => (y.state === "OWNED" ? 1 : 0) - (x.state === "OWNED" ? 1 : 0))
       .slice(0, 3)
       .map((x) => ({
         label: AX_LABEL[x.axis], owned: x.state === "OWNED",
-        items: x.picks.filter((t) => t.endsWith("다")).slice(0, 2),
+        items: x.picks.filter((t) => isClause(t, L())).slice(0, 2),
       }));
     return { name: dn(code), rows, left: [...new Set(d.artifacts)].slice(0, 3) };
   }).filter((e) => e.rows.length || e.left.length);
-  /* 할 일 본문. `actionKo` 가 `최근 ○○ 과제 하나. ~합니다.` 처럼 이름씨
+  /* 할 일 본문. `TX().actionKo` 가 `최근 ○○ 과제 하나. ~합니다.` 처럼 이름씨
      토막으로 열어서 그대로 두면 메모로 읽힌다. **뜻은 그대로 두고 첫
      마디만 문장으로 잇는다** */
   const flow = (t: string) => t
@@ -1344,16 +1371,16 @@ export default async function V3Result({
   const sumSteps: SummaryStep[] = model.actions.slice(0, 3).map((x) => {
     const nm = x.domain ? dn(x.domain) : "";
     return {
-      head: actionHeadKo(x, nm),
-      body: flow(actionKo(x, nm, model.stage,
+      head: TX().actionHeadKo(x, nm),
+      body: flow(TX().actionKo(x, nm, model.stage,
         x.code === "EXPLORE_BROADLY" ? exploreWhere() : undefined).do),
-      why: actionWhyKo(x),
+      why: TX().actionWhyKo(x),
       href: x.domain ? `/me/experience/new?td=${x.domain}` : "/me/experience/new",
     };
   });
   const sumWho = [meta.school,
     [meta.department, meta.specialization].filter(Boolean).join(" · "),
-    meta.answeredOn ? `${meta.answeredOn} 응답` : null,
+    meta.answeredOn ? tr("{date} 응답", { date: meta.answeredOn }) : null,
     meta.school ? null : model.tier]
     .filter(Boolean).join(" · ");
 
@@ -1362,7 +1389,7 @@ export default async function V3Result({
        학교가 보관·전달하는 종이의 모양이고(규격 §14), 개인 결제 종이는
        전과 같은 이어지는 문서다. 한 벌로 묶었더니 선별 등급 종이의
        마지막 장이 16% 만 찼다 */
-    <div className={`rs${meta.school ? " is-report" : ""}`}>
+    <div className={`rs${meta.school ? " is-report" : ""}`} lang={L() === "ko" ? undefined : L()}>
       {pilot ? <Track attemptId={attemptId} /> : null}
       <header className="rs-head">
         <div className="rs-head-in">
@@ -1370,7 +1397,7 @@ export default async function V3Result({
               작업공간에서 결과지로 들어온 사람이 끝까지 내려가야 돌아갈
               수 있었다. 종이에서는 이 줄이 찍히지 않는다(`.rs-back`) */}
           <BrandMark size={20} className="rs-mark" />
-          <Link className="rs-back" href="/me">내 CareerMatri</Link>
+          {ws ? <Link className="rs-back" href="/me">{tr("내 CareerMatri")}</Link> : null}
           {/* **산 것의 이름을 적는다.** 별명(`경험 번역`)은 가격표에도
               결제에도 없는 말이라, 받은 사람이 자기가 무엇을 샀는지
               되짚을 수 없다(규격 §24).
@@ -1390,9 +1417,9 @@ export default async function V3Result({
           title={h.title} lead={h.lead} who={sumWho}
           zones={sumZones} evidence={sumEvidence} steps={sumSteps}
           pdfHref={`/v3/${attemptId}/result/pdf`}
-          keepAction={model.actions.length ? takeActionsFromResult : null}
+          keepAction={ws && model.actions.length ? takeActionsFromResult : null}
           kept={kept}
-          tierNote={model.tier === "BASIC" ? TIER_NOTE_KO.BASIC : null} />
+          tierNote={model.tier === "BASIC" ? TX().TIER_NOTE_KO.BASIC : null} />
         {/*
             ── 종이 표지 ── **화면에는 서지 않는다**(규격 §14).
 
@@ -1413,7 +1440,7 @@ export default async function V3Result({
             </div>
             <div className="rs-cover-band">
               <div className="rs-cover-mid">
-                <h2>진로 분석 리포트</h2>
+                <h2>{tr("진로 분석 리포트")}</h2>
                 {/* **같은 말을 두 번 적지 않는다.** 갈래 이름이 있으면 전공
                     이름은 그 안에 들어 있다(`경영학과 · 경영 일반 · 경영`) */}
                 <p className="rs-cover-who">
@@ -1422,7 +1449,7 @@ export default async function V3Result({
                 </p>
                 <p className="rs-cover-day">
                   {[`CareerMatri ${model.tier}`,
-                    meta.answeredOn ? `${meta.answeredOn} 응답` : null]
+                    meta.answeredOn ? tr("{date} 응답", { date: meta.answeredOn }) : null]
                     .filter(Boolean).join(" · ")}
                 </p>
               </div>
@@ -1455,9 +1482,9 @@ export default async function V3Result({
                 여기 적는 셋은 본문이 실제로 답하는 것이고, **값을 적지
                 않는다**: 표지에서 결과를 먼저 읽게 하지 않는다 */}
             <ol className="rs-cover-asks">
-              <li>지금 무엇이 확인됐는가</li>
-              <li>무엇이 더 필요한가</li>
-              <li>다음에 무엇을 하면 되는가</li>
+              <li>{tr("지금 무엇이 확인됐는가")}</li>
+              <li>{tr("무엇이 더 필요한가")}</li>
+              <li>{tr("다음에 무엇을 하면 되는가")}</li>
             </ol>
 
             {/* 차례. **쪽 번호를 적지 않는다**: 담긴 양에 따라 밀리는데,
@@ -1467,26 +1494,25 @@ export default async function V3Result({
                 되짚어 볼 자료다. 한 줄로 늘어놓으면 열둘이 같은 무게로
                 서서, 받은 사람이 **어디까지 읽으면 되는지**를 모른다 */}
             <ol className="rs-cover-toc">
-              <li>한눈에 보는 결과</li>
-              <li>내가 이미 가진 근거</li>
-              <li>적을 과제 고르기</li>
-              <li>지원서·면접에서 쓸 문장</li>
-              <li>산업·직무 연결</li>
+              <li>{tr("한눈에 보는 결과")}</li>
+              <li>{tr("내가 이미 가진 근거")}</li>
+              <li>{tr("적을 과제 고르기")}</li>
+              <li>{tr("지원서·면접에서 쓸 문장")}</li>
+              <li>{tr("산업·직무 연결")}</li>
             </ol>
-            <p className="rs-cover-appx">부록</p>
+            <p className="rs-cover-appx">{tr("부록")}</p>
             <ol className="rs-cover-toc is-appx">
-              <li>먼저 볼 영역</li>
-              <li>앞으로 채울 것</li>
+              <li>{tr("먼저 볼 영역")}</li>
+              <li>{tr("앞으로 채울 것")}</li>
               {/* **그리지 않은 절을 차례에 적지 않는다.** 판단을 물은 영역이
                   셋 미만이면 그래프가 서지 않는다 */}
-              <li>전체 기술영역{hasRadar || hasBars ? "과 경험·근거 분포" : ""}</li>
-              <li>이 경험을 쓸 곳</li>
-              <li>검사에서 고르신 목표</li>
-              <li>이 결과를 읽는 기준</li>
+              <li>{hasRadar || hasBars ? tr("전체 기술영역과 경험·근거 분포") : tr("전체 기술영역")}</li>
+              <li>{tr("이 경험을 쓸 곳")}</li>
+              <li>{tr("검사에서 고르신 목표")}</li>
+              <li>{tr("이 결과를 읽는 기준")}</li>
             </ol>
             <p className="rs-cover-foot">
-              이 리포트는 응답한 내용만으로 만들어집니다. 적성이나 합격
-              가능성을 내지 않고, 순위도 매기지 않습니다.
+              {tr("이 리포트는 응답한 내용만으로 만들어집니다. 적성이나 합격 가능성을 내지 않고, 순위도 매기지 않습니다.")}
             </p>
           </section>
         ) : null}
@@ -1495,9 +1521,9 @@ export default async function V3Result({
           /* **막는 말만 적지 않는다**(규격 §21). 무슨 일이 일어났는지와
              무엇을 하면 되는지를 함께 적는다 */
           <p className="rs-again" role="status">
-            <b>{RETAKE_BLOCKED_KO.title}</b>
-            <span>{RETAKE_BLOCKED_KO.body}</span>
-            <span>{RETAKE_BLOCKED_KO.how}</span>
+            <b>{tr(RETAKE_BLOCKED_KO.title)}</b>
+            <span>{tr(RETAKE_BLOCKED_KO.body)}</span>
+            <span>{tr(RETAKE_BLOCKED_KO.how)}</span>
           </p>
         ) : null}
 
@@ -1523,13 +1549,13 @@ export default async function V3Result({
           <p className="rs-who">
             {[meta.school,
               [meta.department, meta.specialization].filter(Boolean).join(" · "),
-              meta.answeredOn ? `${meta.answeredOn} 응답` : null]
+              meta.answeredOn ? tr("{date} 응답", { date: meta.answeredOn }) : null]
               .filter(Boolean).join(" · ")}
           </p>
           {/* 손에 남은 것. **라벨과 값 짝이 아니라 가로로 놓인 물건이다** */}
           {left.length ? (
             <ul className="rs-rail">
-              {left.slice(0, 3).map((x) => <li key={x}>{thingKo(x)}</li>)}
+              {left.slice(0, 3).map((x) => <li key={x}>{thingL(x)}</li>)}
             </ul>
           ) : null}
           {/* 판정 한 줄은 종이에만 */}
@@ -1553,8 +1579,8 @@ export default async function V3Result({
           <section className="rs-st" id="state">
             <div className="rs-sh">
               <i aria-hidden="true"><IcF name="bars" /></i>
-              <h2>현재 상태</h2>
-              <a href="#focus">전체 보기 →</a>
+              <h2>{tr("현재 상태")}</h2>
+              <a href="#focus">{tr("전체 보기 →")}</a>
             </div>
             <p className="rs-sh-s">{stateLead}</p>
             <ul className="rs-tile">
@@ -1586,16 +1612,18 @@ export default async function V3Result({
             ══════════════════════════════════════════════════════════ */}
         <section className="rs-do1">
           <div className="rs-do1-b">
-            <p className="rs-do1-l"><i aria-hidden="true"><Ic name="plan" /></i>지금 할 일</p>
+            <p className="rs-do1-l"><i aria-hidden="true"><Ic name="plan" /></i>{tr("지금 할 일")}</p>
             <p className="rs-do1-h">{doHead}</p>
             {doDetail ? <p className="rs-do1-d">{doDetail}</p> : null}
             <div className="rs-do1-a">
-              <Link className="rs-take" href={writeHref}>
-                지금 적어두기<Ic name="pen" />
-              </Link>
+              {ws ? (
+                <Link className="rs-take" href={writeHref}>
+                  {tr("지금 적어두기")}<Ic name="pen" />
+                </Link>
+              ) : null}
               {alsoActions.length ? (
                 <a className="rs-do1-m" href="#plan">
-                  그 밖에 할 일 {alsoActions.length}개 ∨
+                  {tr("그 밖에 할 일 {n}개 ∨", { n: alsoActions.length })}
                 </a>
               ) : null}
             </div>
@@ -1603,14 +1631,14 @@ export default async function V3Result({
                 끌어내서 서버가 보낸 것과 브라우저가 세운 것이 달라지고,
                 화면은 멀쩡해 보이는데 눌리는 것만 안 된다(R19 에서 한 번
                 겪은 자리다) */}
-            <div className="rs-do1-f">
+            {ws ? <div className="rs-do1-f">
               <form action={takeActionsFromResult}>
-                <button className="rs-keep" type="submit">할 일에 담아두기</button>
+                <button className="rs-keep" type="submit">{tr("할 일에 담아두기")}</button>
               </form>
               {kept ? (
-                <span>이미 담아 둔 할 일 {kept}개 · <Link href="/me/next">보기</Link></span>
+                <span>{tr("이미 담아 둔 할 일 {n}개 ·", { n: kept })} <Link href="/me/next">{tr("보기")}</Link></span>
               ) : null}
-            </div>
+            </div> : null}
           </div>
           {/* 오른쪽 그림 자리. **값을 그리지 않는다**: 눈금도 수도 없는
               결의 그림이고, 레퍼런스가 그 자리에 두는 것과 같은 일을 한다 */}
@@ -1623,7 +1651,7 @@ export default async function V3Result({
             {linkNames.map((x) => <b key={x}>{x}</b>)}
             <span>{linkText}</span>
           </>) : (
-            <span>보실 산업과 직무를 아직 고르지 않으셨어요.</span>
+            <span>{tr("보실 산업과 직무를 아직 고르지 않으셨어요.")}</span>
           )}
         </p>
 
@@ -1641,7 +1669,7 @@ export default async function V3Result({
             {/* **쪽마다 답하는 질문 하나**(COMMERCIAL FINAL §10). 종이에서만 선다:
               화면은 절 머리와 첫 화면 넷이 그 일을 이미 하고 있어서, 여기에
               한 줄을 더 세우면 같은 말이 두 번 선다 */}
-            <p className="rs-q">지원서에서 꺼내 쓸 경험은 무엇인가</p>
+            <p className="rs-q">{tr("지원서에서 꺼내 쓸 경험은 무엇인가")}</p>
             {/* ══════════════════════════════════════════════════════
                 SCENE 3 — EVIDENCE 들머리. **레퍼런스의 `최근 기록` 줄이다.**
 
@@ -1659,19 +1687,15 @@ export default async function V3Result({
                 ══════════════════════════════════════════════════════ */}
             <div className="rs-sh">
               <i aria-hidden="true"><Ic name="note" /></i>
-              <h2>내가 이미 가진 근거</h2>
+              <h2>{tr("내가 이미 가진 근거")}</h2>
 
-              {evRows.length ? <a href="#plan">다음 할 일 →</a> : null}
+              {evRows.length ? <a href="#plan">{tr("다음 할 일 →")}</a> : null}
             </div>
             {/* R32: 네 층을 가른다. 여기 적힌 항목은 전부 **그 사람이 응답에서
                 고른 것**이고, 묶음 딱지와 상태 문장만 검사가 가른 것이다. 그
                 사실을 절 머리에서 한 번 적는다 */}
             <p className="rs-note rs-layers">
-              아래 항목은 전부 검사에서 스스로 고른 답입니다. 네 층으로 적습니다:
-              해 봤다고 고른 것 → 직접 정했다고 고른 것 → 남겼다고 고른 결과물 →
-              비교했다고 고른 대상. 파일이나 평가처럼 밖에서 확인한 기록은 아니고,
-              그룹 표시와 상태 문장만 검사가 정한 것입니다. 권하는 행동은
-              ‘적을 과제 고르기’ 에 따로 적습니다.
+              {tr("아래 항목은 전부 검사에서 스스로 고른 답입니다. 네 층으로 적습니다: 해 봤다고 고른 것 → 직접 정했다고 고른 것 → 남겼다고 고른 결과물 → 비교했다고 고른 대상. 파일이나 평가처럼 밖에서 확인한 기록은 아니고, 그룹 표시와 상태 문장만 검사가 정한 것입니다. 권하는 행동은 ‘적을 과제 고르기’ 에 따로 적습니다.")}
             </p>
             {evRows.length ? (
               <>
@@ -1680,24 +1704,24 @@ export default async function V3Result({
                     없으면 `남긴 것 확인 필요`. 수치와 결과는 어느 줄에도 없고
                     그 사실을 아래 한 줄이 적는다 */}
                 <p className="rs-sh-s">
-                  지원서로 옮길 재료가 있는 경험 {evRows.length}가지입니다.
+                  {tr("지원서로 옮길 재료가 있는 경험 {n}가지입니다.", { n: evRows.length })}
                 </p>
                 <ul className="rs-ebr">
                   {evRows.map((r) => (
                     <li key={r.code}>
                       <i aria-hidden="true"><Ic name="check" /></i>
                       <span>
-                        <b>{sayKo(r.said)}</b>
+                        <b>{sayL(r.said)}</b>
                         <small>{r.name}</small>
                       </span>
                       {r.left
-                        ? <em>남겼다고 고른 것 · {thingKo(r.left)}</em>
-                        : <em>남긴 것 확인 필요</em>}
+                        ? <em>{tr("남겼다고 고른 것 · {x}", { x: thingL(r.left) })}</em>
+                        : <em>{tr("남긴 것 확인 필요")}</em>}
                     </li>
                   ))}
                 </ul>
                 <p className="rs-note rs-ebr-note">
-                  수치 · 기간 · 결과는 여기 없습니다. 지원서에 옮길 때 직접 적습니다.
+                  {tr("수치 · 기간 · 결과는 여기 없습니다. 지원서에 옮길 때 직접 적습니다.")}
                 </p>
               </>
             ) : null}
@@ -1711,8 +1735,7 @@ export default async function V3Result({
                     이 줄을 할 일로 보고 결과지 마흔 벌에서 걸었다. 여기서
                     남길 것을 적을 수는 없다: 어느 영역인지가 아직 없다 */}
                 <p className="rs-note">
-                  지원서로 옮길 만큼 확인된 경험은 아직 없어요. 아래 &lsquo;적을 과제
-                  고르기&rsquo;부터 보시면 돼요.
+                  {tr("지원서로 옮길 만큼 확인된 경험은 아직 없어요. 아래 ‘적을 과제 고르기’부터 보시면 돼요.")}
                 </p>
                 {/* **그 학과 학생이 낼 수 있는 근거를 적는다**(갈래 계약의
                     `examples.evidence`). 아직 아무것도 확인되지 않은 사람에게
@@ -1721,7 +1744,7 @@ export default async function V3Result({
                     목록이고, 여기서 판정에 넣지 않는다 */}
                 {sv.evidence.length ? (
                   <>
-                    <p className="rs-note">이런 걸 해보면 여기에 적혀요.</p>
+                    <p className="rs-note">{tr("이런 걸 해보면 여기에 적혀요.")}</p>
                     <ul className="rs-first">
                       {sv.evidence.slice(0, 3).map((t) => <li key={t}>{t}</li>)}
                     </ul>
@@ -1755,7 +1778,7 @@ export default async function V3Result({
                 <article className="rs-ev3-story is-primary">
                   <p className="rs-ev3-meta">
                     <span>{evOpen.domain}</span>
-                    <i>먼저 써볼 경험</i>
+                    <i>{tr("먼저 써볼 경험")}</i>
                   </p>
                   <div className="rs-ev3-main">
                     {/* **결과물이 문장보다 먼저 선다**(R18 §4). 전에는
@@ -1781,21 +1804,21 @@ export default async function V3Result({
                         뒤엣것은 따옴표를 단 큰 인용이다 */}
                     <aside className="rs-ev3-use">
                       <p className="rs-ev3-ap">
-                        <span>지원서</span>{evOpen.application}
+                        <span>{tr("지원서")}</span>{evOpen.application}
                       </p>
                       {/* **닫는 따옴표가 제 줄에 혼자 서지 않게** 물음만
                           감싼다: `::after` 를 인용 전체에 걸면 그 부호가
                           아래 이름표 다음 줄에 떨어진다 */}
                       <blockquote className="rs-ev3-q">
                         <p>{evOpen.interview}</p>
-                        <cite>면접에서 이어질 물음</cite>
+                        <cite>{tr("면접에서 이어질 물음")}</cite>
                       </blockquote>
                     </aside>
                   </div>
                 </article>
 
                 {evAlso ? (
-                  <SecondStory name={evAlso.domain}>
+                  <SecondStory lang={L()} name={evAlso.domain}>
                     <article className="rs-ev3-story is-second">
                       <div className="rs-ev3-sh">
                         <div>
@@ -1806,7 +1829,7 @@ export default async function V3Result({
                         </div>
                         {evAlso.outputs.length ? (
                           <p className="rs-ev3-so">
-                            <span>손에 남은 것</span>
+                            <span>{tr("손에 남은 것")}</span>
                             <strong>{evAlso.outputs.join(" · ")}</strong>
                           </p>
                         ) : null}
@@ -1816,11 +1839,11 @@ export default async function V3Result({
                       ) : null}
                       <div className="rs-ev3-su">
                         <div>
-                          <span>지원서</span>
+                          <span>{tr("지원서")}</span>
                           <p>{evAlso.application}</p>
                         </div>
                         <div>
-                          <span>면접</span>
+                          <span>{tr("면접")}</span>
                           <p>{evAlso.interview}</p>
                         </div>
                       </div>
@@ -1830,8 +1853,8 @@ export default async function V3Result({
 
                 {restReady.length ? (
                   <footer className="rs-ev3-more">
-                    <span>다른 경험도 남아 있습니다</span>
-                    <p>{moreReadyKo(restReady)}</p>
+                    <span>{tr("다른 경험도 남아 있습니다")}</span>
+                    <p>{TX().moreReadyKo(restReady)}</p>
                   </footer>
                 ) : null}
               </div>
@@ -1846,21 +1869,20 @@ export default async function V3Result({
                 이어져 읽혀야** 하기 때문이다(COMMERCIAL FINAL §9) */}
             {sv.artifacts.length ? (
               <div className="rs-pack" id="deptartifacts">
-                <h3>{meta.specialization ?? meta.major} 쪽에서 흔히 남기는 것</h3>
+                <h3>{tr("{major} 쪽에서 흔히 남기는 것", { major: meta.specialization ?? meta.major ?? "" })}</h3>
                 <p className="rs-note">
-                  이 가운데 하나라도 손에 있으면 위의 ‘남아 있는 결과’ 가
-                  채워집니다.
+                  {tr("이 가운데 하나라도 손에 있으면 위의 ‘남아 있는 결과’ 가 채워집니다.")}
                 </p>
                 <ul className="rs-first">
-                  {sv.artifacts.slice(0, 4).map((t) => <li key={t}>{thingKo(t)}</li>)}
+                  {sv.artifacts.slice(0, 4).map((t) => <li key={t}>{thingL(t)}</li>)}
                 </ul>
               </div>
             ) : null}
-            <Disclose label="전체 보기">
+            <Disclose label={tr("전체 보기")}>
             <div className="rs-ev">
               <section>
-                <h3>지원서에서 설명할 수 있는 경험</h3>
-                <p>직접 정한 것으로 확인됐고, 고른 근거 항목이 함께 있는 영역입니다.</p>
+                <h3>{tr("지원서에서 설명할 수 있는 경험")}</h3>
+                <p>{tr("직접 정한 것으로 확인됐고, 고른 근거 항목이 함께 있는 영역입니다.")}</p>
                 {model.evidence.ready.length ? (<>
                   {model.evidence.ready.filter((e) => e.picks.length).slice(0, 6).map((e) => (
                     <EvidenceRow key={`${e.domain}.${e.axis}`} core={core} domain={e.domain}
@@ -1869,8 +1891,7 @@ export default async function V3Result({
                   <EvidenceNone core={core} rows={model.evidence.ready} />
                   {model.evidence.ready.length > 6 ? (
                     <p className="rs-none rs-evmore">
-                      이 밖에 {model.evidence.ready.length - 6}가지가 더 확인됐습니다.
-                      위의 영역별 설명에서 보실 수 있어요.
+                      {tr("이 밖에 {n}가지가 더 확인됐습니다. 위의 영역별 설명에서 보실 수 있어요.", { n: model.evidence.ready.length - 6 })}
                     </p>
                   ) : null}
                 {/* **`아직 없습니다` 로 끝내지 않는다**(COMMERCIAL GOLD
@@ -1878,15 +1899,13 @@ export default async function V3Result({
                     하면 채워지는지로 잇는다 */}
                 </>) : (
                   <p>
-                    지원서로 옮길 영역은 아직 없습니다. 아래
-                    ‘적을 과제 고르기’ 가운데 하나를 끝내면 이 칸이 먼저
-                    채워집니다.
+                    {tr("지원서로 옮길 영역은 아직 없습니다. 아래 ‘적을 과제 고르기’ 가운데 하나를 끝내면 이 칸이 먼저 채워집니다.")}
                   </p>
                 )}
               </section>
               <section>
-                <h3>경험은 있지만 설명 근거를 더 붙일 부분</h3>
-                <p>해 본 것은 확인됐고, 어디까지 직접 정했는지가 덜 적힌 영역입니다.</p>
+                <h3>{tr("경험은 있지만 설명 근거를 더 붙일 부분")}</h3>
+                <p>{tr("해 본 것은 확인됐고, 어디까지 직접 정했는지가 덜 적힌 영역입니다.")}</p>
                 {model.evidence.partial.length ? (<>
                   {model.evidence.partial.filter((e) => e.picks.length).slice(0, 6).map((e) => (
                     <EvidenceRow key={`${e.domain}.${e.axis}`} core={core} domain={e.domain}
@@ -1895,14 +1914,12 @@ export default async function V3Result({
                   <EvidenceNone core={core} rows={model.evidence.partial} />
                   {model.evidence.partial.length > 6 ? (
                     <p className="rs-none rs-evmore">
-                      이 밖에 {model.evidence.partial.length - 6}가지가 더 있어요.
+                      {tr("이 밖에 {n}가지가 더 있어요.", { n: model.evidence.partial.length - 6 })}
                     </p>
                   ) : null}
                 </>) : (
                   <p>
-                    여기에 해당하는 영역은 지금 없습니다. 해 본 일이 확인된
-                    영역에서 어디까지 직접 정했는지를 적으면 이 칸이
-                    생깁니다.
+                    {tr("여기에 해당하는 영역은 지금 없습니다. 해 본 일이 확인된 영역에서 어디까지 직접 정했는지를 적으면 이 칸이 생깁니다.")}
                   </p>
                 )}
               </section>
@@ -1917,8 +1934,8 @@ export default async function V3Result({
                 펼쳐 두면 첫 화면이 창의 여섯 배를 넘는다(`v3:result:height`
                 가 그 자리에서 걸렸다). 담긴 것은 그대로고 종이에서는
                 펴진다 */}
-            <Disclose label="근거가 어디에 어떻게 남아 있는가">
-              <EvidenceMatrix model={model} name={(c) => domainName(core, c)} />
+            <Disclose label={tr("근거가 어디에 어떻게 남아 있는가")}>
+              <EvidenceMatrix model={model} name={(c) => domainName(core, c, L())} />
             </Disclose>
           </section>
         ) : null}
@@ -1926,7 +1943,7 @@ export default async function V3Result({
 
         {model.response_quality.flag !== "OK" ? (
           <p className="rs-flag">
-            {QUALITY_KO[model.response_quality.flag as keyof typeof QUALITY_KO]}
+            {TX().QUALITY_KO[model.response_quality.flag as keyof typeof KO.QUALITY_KO]}
           </p>
         ) : null}
 
@@ -1945,8 +1962,8 @@ export default async function V3Result({
             {/* **쪽마다 답하는 질문 하나**(COMMERCIAL FINAL §10). 종이에서만 선다:
               화면은 절 머리와 첫 화면 넷이 그 일을 이미 하고 있어서, 여기에
               한 줄을 더 세우면 같은 말이 두 번 선다 */}
-            <p className="rs-q">다음에 또 무엇을 적으면 되는가</p>
-          <h2>다른 영역부터 적어도 돼요</h2>
+            <p className="rs-q">{tr("다음에 또 무엇을 적으면 되는가")}</p>
+          <h2>{tr("다른 영역부터 적어도 돼요")}</h2>
           {alsoActions.length ? (<>
             {/* ── 고르는 줄 ── **표가 아니다**(R21 §C). 전에는 네 줄이
                 `영역명(9.5rem 고정) — 설명 — 적기` 로 이어지는 가로 행이라
@@ -1959,16 +1976,24 @@ export default async function V3Result({
             <ul className="rs-pk">
               {alsoActions.map((a) => (
                 <li key={a.id}>
+                  {ws ? (
                   <Link href={a.domain
                     ? `/me/experience/new?td=${a.domain}`
                     : "/me/experience/new"}>
-                    <span>{a.domain ? domainName(core, a.domain) : "어느 영역이든"}</span>
-                    {/* **네 줄이 같은 말을 적지 않는다.** `actionHeadKo` 는
+                    <span>{a.domain ? domainName(core, a.domain, L()) : tr("어느 영역이든")}</span>
+                    {/* **네 줄이 같은 말을 적지 않는다.** `TX().actionHeadKo` 는
                         할 일의 **종류**로 고르는 말이라, 네 영역이 같은
                         종류면 네 줄이 글자까지 같아진다. 여기 적을 것은
                         그 줄에서 **무엇을 적는가**이고 그것은 축이 든다 */}
-                    <b>{a.axis ? needKo(a.axis) : actionHeadKo(a)}</b>
+                    <b>{a.axis ? TX().needKo(a.axis) : TX().actionHeadKo(a)}</b>
                   </Link>
+                  ) : (
+                    /* 영어판: 가는 자리(작업공간)가 없어 글만 세운다. 생김새는 `.rs-pk a` 그대로 */
+                    <a>
+                      <span>{a.domain ? domainName(core, a.domain, L()) : tr("어느 영역이든")}</span>
+                      <b>{a.axis ? TX().needKo(a.axis) : TX().actionHeadKo(a)}</b>
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
@@ -1976,15 +2001,15 @@ export default async function V3Result({
           {model.actions.length ? (<>
             <p className="rs-pk-f">
               {model.translation
-                ? <a href="#translation">적고 나서 쓸 지원서 문장 →</a>
+                ? <a href="#translation">{tr("적고 나서 쓸 지원서 문장 →")}</a>
                 : null}
-              <Link href="/me/experience">적어 둔 경험 보기 →</Link>
+              {ws ? <Link href="/me/experience">{tr("적어 둔 경험 보기 →")}</Link> : null}
             </p>
             {/* **걸음 번호를 세우지 않는다**(R21 §C). 1·2·3·4 가 붙은 네
                 줄은 진행 표시로 읽혔고, 경험 추가 화면이 이미 그 걸음을
                 적는다. 담긴 글은 한 줄도 덜어내지 않았고 종이에서는 그대로
                 펴진다 */}
-            <Disclose label="영역마다 무엇을 적나요">
+            <Disclose label={tr("영역마다 무엇을 적나요")}>
               <Plan core={core} actions={model.actions} stage={model.stage}
                 attemptId={attemptId} saved={saved} where={exploreWhere()} />
             </Disclose>
@@ -1993,9 +2018,7 @@ export default async function V3Result({
                문장 아래가 비어 있었다. 빈 자리는 고장으로 읽히고, 읽는
                사람은 자기 결과가 덜 만들어졌다고 본다. 까닭을 적는다 */
             <p className="rs-note">
-              지금 응답만으로는 다음 한 걸음을 적을 만큼 영역 사이에 차이가
-              생기지 않았습니다. 위의 영역 가운데 하나를 짧은 과제로 한 번
-              해보신 뒤에 다시 보시면 여기에 적힙니다.
+              {tr("지금 응답만으로는 다음 한 걸음을 적을 만큼 영역 사이에 차이가 생기지 않았습니다. 위의 영역 가운데 하나를 짧은 과제로 한 번 해보신 뒤에 다시 보시면 여기에 적힙니다.")}
             </p>
           )}
 
@@ -2012,8 +2035,8 @@ export default async function V3Result({
               위의 할 일은 그 사람의 응답에서 나온 것이다. 담긴 글은
               그대로이고 눌러서 펴지며 종이에서는 전부 펴진다 */}
           {(sv.evidenceFirst || sv.application.resume) ? (
-            <Disclose label={`${meta.specialization ?? meta.major} 쪽에서 지금 할 수 있는 한 걸음`}
-              printLabel={`${meta.specialization ?? meta.major} 쪽에서 지금 할 수 있는 한 걸음`}>
+            <Disclose label={tr("{major} 쪽에서 지금 할 수 있는 한 걸음", { major: meta.specialization ?? meta.major ?? "" })}
+              printLabel={tr("{major} 쪽에서 지금 할 수 있는 한 걸음", { major: meta.specialization ?? meta.major ?? "" })}>
             <div className="rs-pack" id="deptnext">
               {sv.evidenceFirst ? (
                 <ul className="rs-first">
@@ -2023,13 +2046,13 @@ export default async function V3Result({
               ) : null}
               {sv.application.resume ? (
                 <>
-                  <h3>그 경험을 지원서에서 꺼내는 법</h3>
+                  <h3>{tr("그 경험을 지원서에서 꺼내는 법")}</h3>
                   <p className="rs-note">{sv.application.resume}</p>
                 </>
               ) : null}
               {sv.application.interview.length ? (
                 <>
-                  <h3>면접에서 같은 구조로 다시 묻는 질문</h3>
+                  <h3>{tr("면접에서 같은 구조로 다시 묻는 질문")}</h3>
                   <ul className="rs-first">
                     {sv.application.interview.map((t) => <li key={t}>{t}</li>)}
                   </ul>
@@ -2044,7 +2067,7 @@ export default async function V3Result({
             활용하기` 라, 문장 만드는 자리를 할 일 앞에 두면 아직 하지도
             않은 일을 적는 차례가 된다 */}
         {model.translation
-          ? <Translation view={model.translation} major={meta.major ?? "이 전공"} />
+          ? <Translation view={model.translation} major={meta.major ?? tr("이 전공")} />
           : null}
         {/* ══ SCENE 5 · 이 경험이 닿는 곳 ══
             **같은 근거를 그 산업과 직무의 말로 다시 읽는 자리**이고,
@@ -2059,10 +2082,10 @@ export default async function V3Result({
             {/* **쪽마다 답하는 질문 하나**(COMMERCIAL FINAL §10). 종이에서만 선다:
               화면은 절 머리와 첫 화면 넷이 그 일을 이미 하고 있어서, 여기에
               한 줄을 더 세우면 같은 말이 두 번 선다 */}
-            <p className="rs-q">이 경험이 어느 산업으로 이어지는가</p>
+            <p className="rs-q">{tr("이 경험이 어느 산업으로 이어지는가")}</p>
             {/* **산업을 직무라고 적지 않는다.** 반도체는 산업이고 설계는
                 직무다. 한 말로 적으면 둘의 층이 같아 보인다 */}
-            <h2>{industryName(model.industry_context.code)} 쪽에 연결하면</h2>
+            <h2>{tr("{x} 쪽에 연결하면", { x: industryName(model.industry_context.code) })}</h2>
             {/* **네 카드를 한 이야기로 잇는다.** 확인된 것 → 이 산업을
                 보려면 모자란 것 → 다음에 할 일이 한 문단이다. 전에는 넷이
                 따로 서서, 네 번 읽고도 `그래서 무엇이 더 필요한가` 가 한
@@ -2073,17 +2096,15 @@ export default async function V3Result({
                 문단이 맡는 것은 확인된 것과 이 산업에서 모자란 것까지다 */}
             <p className="rs-bridge">{indBridge.join(" ")}</p>
             <p className="rs-note">
-              같은 경험을 {industryName(model.industry_context.code)}에서 쓰는
-              표현으로 놓았습니다. 맞는다거나 맞지 않는다고 판정하지 않습니다.
+              {tr("같은 경험을 {x}에서 쓰는 표현으로 놓았습니다. 맞는다거나 맞지 않는다고 판정하지 않습니다.", { x: industryName(model.industry_context.code) })}
             </p>
             <PackBody v={model.industry_context}
               name={industryName(model.industry_context.code)}
-              domainName={(td: string) => domainName(core, td)} say={say}
+              domainName={(td: string) => domainName(core, td, L())} say={say}
               action={indAction} />
             {model.industry_context.others.length ? (
               <p className="rs-others">
-                다른 산업에서 보시려면 다시 응시하지 않아도 됩니다. 기술영역
-                결과는 산업을 바꿔도 그대로입니다.
+                {tr("다른 산업에서 보시려면 다시 응시하지 않아도 됩니다. 기술영역 결과는 산업을 바꿔도 그대로입니다.")}
               </p>
             ) : null}
           </section>
@@ -2091,26 +2112,26 @@ export default async function V3Result({
 
         {model.role_context ? (
           <section className="rs-sect" id="role">
-            <h2>{roleName(model.role_context.code)} 직무에 연결하면</h2>
+            <h2>{tr("{x} 직무에 연결하면", { x: roleName(model.role_context.code) })}</h2>
             {roleBridge.length
               ? <p className="rs-bridge">{roleBridge.join(" ")}</p> : null}
             <p className="rs-note">
-              같은 경험을 {roleName(model.role_context.code)}에서 먼저 읽는 차례로
-              놓았습니다. 기술영역 결과는 그대로입니다.
+              {tr("같은 경험을 {x}에서 먼저 읽는 차례로 놓았습니다. 기술영역 결과는 그대로입니다.", { x: roleName(model.role_context.code) })}
             </p>
             <PackBody v={model.role_context}
               name={roleName(model.role_context.code)}
-              domainName={(td: string) => domainName(core, td)} say={say}
+              domainName={(td: string) => domainName(core, td, L())} say={say}
               action={roleAction} />
             {model.role_context.compare_with.length ? (
               <p className="rs-others">
-                같이 놓고 보실 직무 {model.role_context.compare_with
-                  .map((c) => roleName(c)).join(" · ")}
+                {tr("같이 놓고 보실 직무 {x}", { x: model.role_context.compare_with
+                  .map((c) => roleName(c)).join(" · ") })}
               </p>
             ) : null}
           </section>
         ) : null}
-        {sejong ? <SejongSection v={sejong} /> : null}
+        {/* 세종 지역 자료는 한국어판 전용이다 */}
+        {sejong && ws ? <SejongSection v={sejong} /> : null}
         {/* ══ 부록 ══
             **다섯 장면에 들지 않는 것은 전부 여기다**(R18 §6).
             먼저 볼 영역과 비어 있는 자리와 전체 기술영역과 지역은
@@ -2123,19 +2144,19 @@ export default async function V3Result({
             첫 줄이 든다.
             **`다음에 할 일` 을 이 줄에 적지 않는다**: 그 절은 SCENE 4 로
             올라가 접히지 않는 자리에 선다 */}
-        <Detail
-          label="전체 기술영역과 지역 자료 보기"
-          note="먼저 볼 영역 · 비어 있는 칸 · 열두 영역 전체">
+        <Detail lang={L()}
+          label={tr("전체 기술영역과 지역 자료 보기")}
+          note={tr("먼저 볼 영역 · 비어 있는 칸 · 열두 영역 전체")}>
 
         <ResultNav />
 
         {/* ── 먼저 볼 영역 ── 그 영역을 한 자리에서 끝낸다 */}
         <section className="rs-sect" id="focus">
-          <h2>먼저 볼 영역</h2>
+          <h2>{tr("먼저 볼 영역")}</h2>
           <p className="rs-note">
             {focus.length
-              ? "응답에서 확인된 내용만 정리했습니다. 아래 항목은 전부 검사에서 스스로 고른 답이고, 파일이나 평가처럼 밖에서 확인한 기록이 아닙니다."
-              : "지금 응답만으로는 어느 영역이 앞선다고 보기 어렵습니다. 아래 전체 영역에서 한 가지를 골라 짧게 해 보고, 무엇을 했고 무엇을 정했는지 다섯 줄로 적어보세요."}
+              ? tr("응답에서 확인된 내용만 정리했습니다. 아래 항목은 전부 검사에서 스스로 고른 답이고, 파일이나 평가처럼 밖에서 확인한 기록이 아닙니다.")
+              : tr("지금 응답만으로는 어느 영역이 앞선다고 보기 어렵습니다. 아래 전체 영역에서 한 가지를 골라 짧게 해 보고, 무엇을 했고 무엇을 정했는지 다섯 줄로 적어보세요.")}
           </p>
           {focus.map((d, i) => (
             <DomainPanel key={d.code} core={core} d={d} showAxes={deep}
@@ -2144,9 +2165,9 @@ export default async function V3Result({
           ))}
           {compare.length ? (
             <>
-              <h2 className="rs-h2b">같이 놓고 볼 영역</h2>
+              <h2 className="rs-h2b">{tr("같이 놓고 볼 영역")}</h2>
               <p className="rs-note">
-                먼저 볼 영역과 같은 상태이거나 바로 다음입니다. 차례를 매기지 않았습니다.
+                {tr("먼저 볼 영역과 같은 상태이거나 바로 다음입니다. 차례를 매기지 않았습니다.")}
               </p>
               {compare.map((d, i) => (
                 <DomainPanel key={d.code} core={core} d={d} showAxes={deep}
@@ -2166,8 +2187,8 @@ export default async function V3Result({
             {/* **쪽마다 답하는 질문 하나**(COMMERCIAL FINAL §10). 종이에서만 선다:
               화면은 절 머리와 첫 화면 넷이 그 일을 이미 하고 있어서, 여기에
               한 줄을 더 세우면 같은 말이 두 번 선다 */}
-            <p className="rs-q">무엇을 더 채우면 되는가</p>
-            <h2>앞으로 채울 것</h2>
+            <p className="rs-q">{tr("무엇을 더 채우면 되는가")}</p>
+            <h2>{tr("앞으로 채울 것")}</h2>
             {/* **빈자리가 0 인 까닭이 둘이다**(규격 §8).
                 하나는 다 채운 사람이고, 하나는 **빈자리를 셀 만큼 해 본
                 일이 아직 없는 사람**이다. 전에는 둘을 한 문장으로 적어서,
@@ -2180,12 +2201,12 @@ export default async function V3Result({
                 판정하지 않고 그 값을 읽는다 */}
             <p className="rs-note">
               {model.gaps.length
-                ? "무엇이 비었는지와 그것이 왜 필요한지를 적었습니다."
-                  + " 할 일은 위 ‘적을 과제 고르기’ 에 영역별로 모았습니다."
+                ? tr("무엇이 비었는지와 그것이 왜 필요한지를 적었습니다.")
+                  + tr(" 할 일은 위 ‘적을 과제 고르기’ 에 영역별로 모았습니다.")
                 : move === "WRITE_UP"
-                  ? "완전히 비어 있는 축은 없습니다. 남은 일은 확인된 경험을 설명 문장으로 만드는 쪽입니다."
-                  : "지금 응답만으로는 비어 있는 축을 셀 만큼의 경험이 모이지 않았습니다."
-                    + " 위 ‘적을 과제 고르기’ 의 첫 줄부터 해 보시면 됩니다."}
+                  ? tr("완전히 비어 있는 축은 없습니다. 남은 일은 확인된 경험을 설명 문장으로 만드는 쪽입니다.")
+                  : tr("지금 응답만으로는 비어 있는 축을 셀 만큼의 경험이 모이지 않았습니다.")
+                    + tr(" 위 ‘적을 과제 고르기’ 의 첫 줄부터 해 보시면 됩니다.")}
             </p>
             {/* **같은 까닭을 세 번 적지 않는다**(규격 §4). 같은 종류의
                 빈자리는 까닭이 글자까지 같고, 카드마다 되풀이되면 세 칸이
@@ -2206,7 +2227,7 @@ export default async function V3Result({
                  않았고**, 그래서 글자까지 같은 칸이 넷 섰다. 이 절이 적는
                  것은 제목과 까닭까지이므로 묶는 열쇠도 그 둘이다 */
               const key = (g: Gap) => {
-                const k = gapKo(g, MARK);
+                const k = TX().gapKo(g, MARK);
                 return `${k.title}|${k.why}`;
               };
               const merged: { key: string; list: Gap[] }[] = [];
@@ -2223,8 +2244,8 @@ export default async function V3Result({
               const saidWhy = new Set<string>();
               return merged.map(({ list }) => {
                 const g = list[0];
-                const names = list.map((x) => domainName(core, x.domain)).join(" · ");
-                const k = gapKo(g, names);
+                const names = list.map((x) => domainName(core, x.domain, L())).join(" · ");
+                const k = TX().gapKo(g, names);
                 const sameWhy = saidWhy.has(k.why);
                 saidWhy.add(k.why);
                 return (
@@ -2258,10 +2279,9 @@ export default async function V3Result({
             **담긴 글을 한 줄도 덜어내지 않았다.** 차례만 바뀌고 종이에서는
             이 머리가 부록의 시작을 적는다 */}
         <section className="rs-sect rs-appx-head" id="appendix">
-          <h2>부록</h2>
+          <h2>{tr("부록")}</h2>
           <p className="rs-note">
-            여기서부터는 참고 자료입니다. 앞의 내용만으로도 지금 상태와 다음
-            행동을 확인하실 수 있습니다.
+            {tr("여기서부터는 참고 자료입니다. 앞의 내용만으로도 지금 상태와 다음 행동을 확인하실 수 있습니다.")}
           </p>
         </section>
 
@@ -2275,7 +2295,7 @@ export default async function V3Result({
             {/* **쪽마다 답하는 질문 하나**(COMMERCIAL FINAL §10). 종이에서만 선다:
               화면은 절 머리와 첫 화면 넷이 그 일을 이미 하고 있어서, 여기에
               한 줄을 더 세우면 같은 말이 두 번 선다 */}
-            <p className="rs-q">이번 응답에서 무엇이 확인됐는가</p>
+            <p className="rs-q">{tr("이번 응답에서 무엇이 확인됐는가")}</p>
           {/* **글이 먼저고 그림이 뒤다**(GOLD MASTER §14·§15).
               전에는 이 절이 레이더로 열려서, 결과를 연 사람이 가장
               먼저 보는 본문이 **분포 그림**이었다. 그림은 재는 층이
@@ -2290,11 +2310,11 @@ export default async function V3Result({
             {/* **절을 둘로 읽히게 두지 않는다.** 아래 그림이 이 덩이를
                 그림으로 되짚는 자리라, 둘이 한 절 안에 선다 */}
             {/* 이 절의 머리다. **그림이 아니라 글이 절을 연다**(§15) */}
-            <h2>전체 기술영역이 지금 어디에 있는가</h2>
+            <h2>{tr("전체 기술영역이 지금 어디에 있는가")}</h2>
             <p className="rs-note">
               {deep
-                ? "순위를 매기지 않고 현재 상태를 보여드립니다."
-                : "관심과 배울 뜻에 답하신 내용으로만 묶었습니다."}
+                ? tr("순위를 매기지 않고 현재 상태를 보여드립니다.")
+                : tr("관심과 배울 뜻에 답하신 내용으로만 묶었습니다.")}
             </p>
             {/* **기본 Reading Path 를 다섯으로 제한한다**(규격 §2).
                 기본 화면이 답하는 것은 지금 확인된 것 · 지금 할 일 · 먼저
@@ -2302,18 +2322,18 @@ export default async function V3Result({
                 묶음별로 늘어놓은 이 목록은 **되짚어 보실 자리**라, 펼쳐 두면
                 읽는 흐름이 여기서 한 번 끊긴다. 담긴 것은 그대로고 종이에서는
                 펴진다 */}
-            <Disclose label="전체 기술영역 상태 보기">
+            <Disclose label={tr("전체 기술영역 상태 보기")}>
             <div className="rs-zones">
               {deep ? zoneRows.filter((r) => r.list.length).map(({ z, list }) => (
                 <section key={z}>
-                  <h3>{ZONE_TITLE_KO[z]}</h3>
-                  <p>{ZONE_LEAD_KO[z]}</p>
-                  <ul>{list.map((c) => <li key={c}>{domainName(core, c)}</li>)}</ul>
+                  <h3>{TX().ZONE_TITLE_KO[z]}</h3>
+                  <p>{TX().ZONE_LEAD_KO[z]}</p>
+                  <ul>{list.map((c) => <li key={c}>{domainName(core, c, L())}</li>)}</ul>
                 </section>
               )) : BASIC_GROUPS.filter((k) => (bg?.[k].length ?? 0) > 0).map((k) => (
                 <section key={k}>
-                  <h3>{BASIC_GROUP_KO[k].title}</h3>
-                  <p>{BASIC_GROUP_KO[k].lead}</p>
+                  <h3>{TX().BASIC_GROUP_KO[k].title}</h3>
+                  <p>{TX().BASIC_GROUP_KO[k].lead}</p>
                   {/* **이름만 늘어놓으면 고를 수가 없다.** `동역학·진동·NVH`
                       가 무슨 일인지 모르는 사람에게 영역 이름 열둘은 고를
                       거리가 아니라 외울 거리다. 해 볼지 말지 정하라고 적은
@@ -2322,13 +2342,13 @@ export default async function V3Result({
                     <ul className="rs-rows">
                       {bg![k].map((c) => (
                         <li key={c}>
-                          <b>{domainName(core, c)}</b>
-                          <span>{domainChainKo(core, c).join(" → ")}</span>
+                          <b>{domainName(core, c, L())}</b>
+                          <span>{TX().domainChainKo(core, c).join(" → ")}</span>
                         </li>
                       ))}
                     </ul>
                   ) : (
-                    <ul>{bg![k].map((c) => <li key={c}>{domainName(core, c)}</li>)}</ul>
+                    <ul>{bg![k].map((c) => <li key={c}>{domainName(core, c, L())}</li>)}</ul>
                   )}
                 </section>
               ))}
@@ -2342,15 +2362,14 @@ export default async function V3Result({
                   다음에 볼 자리로 잇는다 */}
               {deep && zoneRows.some((r) => !r.list.length) ? (
                 <p className="rs-zempty">
-                  나머지 그룹에 해당하는 영역은 지금 없습니다.
-                  더 채울 곳은 ‘앞으로 채울 것’ 에 적혀 있습니다.
+                  {tr("나머지 그룹에 해당하는 영역은 지금 없습니다. 더 채울 곳은 ‘앞으로 채울 것’ 에 적혀 있습니다.")}
                 </p>
               ) : null}
               {deep && model.overview.not_explored.length ? (
                 <section>
-                  <h3>{ZONE_TITLE_KO.NOT_EXPLORED}</h3>
-                  <p>이번 응시에서 묻지 않은 영역입니다. 경험이 없다는 뜻이 아닙니다.</p>
-                  <ul>{model.overview.not_explored.map((c) => <li key={c}>{domainName(core, c)}</li>)}</ul>
+                  <h3>{TX().ZONE_TITLE_KO.NOT_EXPLORED}</h3>
+                  <p>{tr("이번 응시에서 묻지 않은 영역입니다. 경험이 없다는 뜻이 아닙니다.")}</p>
+                  <ul>{model.overview.not_explored.map((c) => <li key={c}>{domainName(core, c, L())}</li>)}</ul>
                 </section>
               ) : null}
             </div>
@@ -2360,9 +2379,9 @@ export default async function V3Result({
                 두 번 고르셨다. 차례로 적지 않고 고른 것으로 적는다 */}
             {model.overview.tied_pick.length ? (
               <p className="rs-zempty">
-                {`영역 훑기에서 같은 값으로 답하신 둘을 놓고 ${model.overview.tied_pick
-                  .map((c) => domainName(core, c)).join(" · ")} 쪽을 고르셨습니다. `}
-                위의 그룹은 그 선택과 상관없이 응답에서 나온 것입니다.
+                {tr("영역 훑기에서 같은 값으로 답하신 둘을 놓고 {x} 쪽을 고르셨습니다. ", { x: model.overview.tied_pick
+                  .map((c) => domainName(core, c, L())).join(" · ") })}
+                {tr("위의 그룹은 그 선택과 상관없이 응답에서 나온 것입니다.")}
               </p>
             ) : null}
             {/* **영역에 걸치지 않는 판단을 버리지 않는다.** 공통 판단과 학위
@@ -2373,25 +2392,24 @@ export default async function V3Result({
               /* **기본 본문에서 내린다**(규격 §12). 이 묶음은 핵심 결과가
                  아니라 영역을 가로지르는 단서이고, 긴 목록이 펼쳐져 있으면
                  결과를 읽어 내려가는 흐름이 거기서 끊긴다 */
-              <Disclose label="여러 영역에서 공통으로 확인된 판단">
+              <Disclose label={tr("여러 영역에서 공통으로 확인된 판단")}>
               <div className="rs-pack">
                 {/* **우리 쪽 비유(`자리`)와 판정이라는 말을 걷는다**
                     (COMMERCIAL FINAL §4·§5). 사람이 학생에게 하는 말은
                     `어느 영역에서 한 일인지까지는 묻지 않았습니다` 다 */}
                 <p>
-                  어느 기술영역에서 한 일인지까지는 묻지 않았습니다. 그래서
-                  위의 영역별 결과에는 들어가지 않습니다.
+                  {tr("어느 기술영역에서 한 일인지까지는 묻지 않았습니다. 그래서 위의 영역별 결과에는 들어가지 않습니다.")}
                 </p>
                 <dl>
                   {cm.owned.length ? (
                     <div>
-                      <dt>직접 정한 것으로 확인</dt>
+                      <dt>{tr("직접 정한 것으로 확인")}</dt>
                       <dd>{cm.owned.join(" · ")}</dd>
                     </div>
                   ) : null}
                   {cm.confirmed.length ? (
                     <div>
-                      <dt>해 본 것으로 확인</dt>
+                      <dt>{tr("해 본 것으로 확인")}</dt>
                       <dd>{cm.confirmed.join(" · ")}</dd>
                     </div>
                   ) : null}
@@ -2408,17 +2426,17 @@ export default async function V3Result({
                      `해 본 것으로 확인`)이 이미 무엇이 확인됐는지를 말하므로
                      목록은 **되짚어 보실 자리**다. 접어도 담긴 것은 그대로고
                      종이에서는 펴진다 */
-                  <Fold label="고르신 판단 모두 보기">
+                  <Fold label={tr("고르신 판단 모두 보기")}>
                     <div className="rs-cmitems">
                       {cm.didOwn.length ? (
                         <section>
-                          <h4>직접 정하고 그 결과가 쓰였다고 답하신 것</h4>
+                          <h4>{tr("직접 정하고 그 결과가 쓰였다고 답하신 것")}</h4>
                           <ul>{cm.didOwn.map((t) => <li key={t}>{t}</li>)}</ul>
                         </section>
                       ) : null}
                       {cm.didConfirm.length ? (
                         <section>
-                          <h4>직접 해 보셨다고 답하신 것</h4>
+                          <h4>{tr("직접 해 보셨다고 답하신 것")}</h4>
                           <ul>{cm.didConfirm.map((t) => <li key={t}>{t}</li>)}</ul>
                         </section>
                       ) : null}
@@ -2436,11 +2454,11 @@ export default async function V3Result({
                 열두 영역을 같은 무게로 읽는다 */}
             {sv.domainLead.length ? (
               <p className="rs-note">
-                <b>{meta.specialization ?? meta.major} 쪽에서 먼저 보는 영역</b>
+                <b>{tr("{major} 쪽에서 먼저 보는 영역", { major: meta.specialization ?? meta.major ?? "" })}</b>
                 {" · "}
-                {sv.domainLead.map((c) => domainName(core, c)).join(" · ")}
-                {hasBars ? ". 아래 막대에서 그 영역을 먼저 보시면 됩니다."
-                  : ". 위 그룹에서 그 영역을 먼저 보시면 됩니다."}
+                {sv.domainLead.map((c) => domainName(core, c, L())).join(" · ")}
+                {hasBars ? tr(". 아래 막대에서 그 영역을 먼저 보시면 됩니다.")
+                  : tr(". 위 그룹에서 그 영역을 먼저 보시면 됩니다.")}
               </p>
             ) : null}
             {/* ── 그림은 보조 정보다(COMMERCIAL FINAL §11) ──
@@ -2461,19 +2479,17 @@ export default async function V3Result({
                     `같은 것을 그림으로` 였다. 무엇을 보는 자리인지는 말하지만
                     **읽는 사람이 거기서 무엇을 알게 되는지**를 말하지 않아,
                     종이에서 그 쪽이 보조 자료로 읽혔다 */}
-                <h3 className="pv-h3">내 경험은 어느 단계까지 와 있는가</h3>
+                <h3 className="pv-h3">{tr("내 경험은 어느 단계까지 와 있는가")}</h3>
                 {hasBars ? (
                   <>
                     {/* **설명이 그림보다 먼저 서면 안 된다**(§13).
                         차례는 머리글 → 그림 → 설명이다: 설명을 앞에 두면
                         읽는 사람이 자기 그림을 보기 전에 읽는 법을 먼저
                         읽는다 */}
-                    <h4 className="pv-h4">영역별 경험 단계</h4>
-                    <StageBars model={model} name={(c) => domainName(core, c)} />
+                    <h4 className="pv-h4">{tr("영역별 경험 단계")}</h4>
+                    <StageBars model={model} name={(c) => domainName(core, c, L())} />
                     <p className="rs-note">
-                      이번 응시에서 판단을 물은 영역입니다. 막대의 길이는 물은
-                      축의 수이고, 영역마다 물은 축의 수가 달라 비율로 바꾸지
-                      않습니다.
+                      {tr("이번 응시에서 판단을 물은 영역입니다. 막대의 길이는 물은 축의 수이고, 영역마다 물은 축의 수가 달라 비율로 바꾸지 않습니다.")}
                     </p>
                   </>
                 ) : null}
@@ -2483,7 +2499,7 @@ export default async function V3Result({
                         축 이름과 상태를 글자로 적고 있어서, 위에 이름을 또
                         붙이면 그림 하나에 머리가 둘이 된다. 종이에서는 그
                         한 줄이 쪽을 하나 더 열 수 있다 */}
-                    <Radar model={model} name={(c) => domainName(core, c)} />
+                    <Radar model={model} name={(c) => domainName(core, c, L())} />
                     {/* **경고는 그대로 둔다**(SIGN-OFF §14). 레이더는 적성도
                         역량 순위도 직무 적합도가 아니고, 그 줄이 빠지면
                         꼭짓점이 뻗은 그림이 점수로 읽힌다 */}
@@ -2492,8 +2508,7 @@ export default async function V3Result({
                 ) : null}
                 {/* 그림 묶음을 닫는 한 줄. **그림 뒤에 둔다**(§13) */}
                 <p className="rs-note">
-                  위에 적은 상태를 그림으로 다시 보여 드립니다. 점수도
-                  순위도 아닙니다.
+                  {tr("위에 적은 상태를 그림으로 다시 보여 드립니다. 점수도 순위도 아닙니다.")}
                 </p>
               </div>
             ) : null}
@@ -2503,11 +2518,12 @@ export default async function V3Result({
             **기업 이름을 담지 않는다.** 직업정보제공사업으로 할 수 있는
             것은 공고를 띄우는 데까지다. 그리고 기관 수를 짐작으로 채우지
             않는다: 그 수가 근거처럼 읽힌다 */}
-        <section className="rs-sect" id="region">
+        {/* 영어판 1단계에는 이 절을 세우지 않는다: 권역과 기관 유형이 한국 자료다 */}
+        {ws ? <section className="rs-sect" id="region">
           {/* **제목이 그 절이 답하는 질문이다**(SIGN-OFF §12). 전에는
               `어디에서 찾을지` 였다. 무엇을 찾는 자리인지가 빠져 있어서
               읽는 사람이 제목만으로는 이 절을 건너뛸지 정할 수 없었다 */}
-          <h2>이 경험을 쓸 곳은 어디에 있는가</h2>
+          <h2>{tr("이 경험을 쓸 곳은 어디에 있는가")}</h2>
 
           {/* ── 확인된 영역에서 이어 볼 산업과 직무 ──
               **고르신 하나만 적지 않는다**(규격 Reverse Mapping). 세는
@@ -2520,11 +2536,9 @@ export default async function V3Result({
                   `잘 맞는 직무` 와 `적합 직무` 는 이 검사가 계산하지 않는
                   값이고, 그렇게 적으면 읽는 사람이 그 줄을 결론으로 읽는다.
                   적는 것은 **확인된 경험이 어디에서 쓰이는가**까지다 */}
-              <h3>이 경험이 활용될 수 있는 일</h3>
+              <h3>{tr("이 경험이 활용될 수 있는 일")}</h3>
               <p className="rs-note">
-                확인된 기술영역이 어느 산업과 직무에서 자주 쓰이는지를 적은
-                것입니다. 적합도나 합격 가능성이 아니고, 함께 살펴볼 곳을
-                가리킵니다.
+                {tr("확인된 기술영역이 어느 산업과 직무에서 자주 쓰이는지를 적은 것입니다. 적합도나 합격 가능성이 아니고, 함께 살펴볼 곳을 가리킵니다.")}
               </p>
               {revIndustry.length ? (
                 <dl>
@@ -2533,9 +2547,9 @@ export default async function V3Result({
                       <dt>{industryName(r.code)}</dt>
                       <dd>
                         {[...r.core_domains, ...r.seen_domains]
-                          .slice(0, 3).map((td) => domainName(core, td)).join(" · ")}
+                          .slice(0, 3).map((td) => domainName(core, td, L())).join(" · ")}
                         {r.core_domains.length
-                          ? ` · 이 산업이 중심으로 보는 영역 ${r.core_domains.length}곳`
+                          ? tr(" · 이 산업이 중심으로 보는 영역 {n}곳", { n: r.core_domains.length })
                           : ""}
                       </dd>
                     </div>
@@ -2549,9 +2563,9 @@ export default async function V3Result({
                       <dt>{roleName(r.code)}</dt>
                       <dd>
                         {[...r.core_domains, ...r.seen_domains]
-                          .slice(0, 3).map((td) => domainName(core, td)).join(" · ")}
+                          .slice(0, 3).map((td) => domainName(core, td, L())).join(" · ")}
                         {r.core_domains.length
-                          ? ` · 이 직무가 중심으로 쓰는 영역 ${r.core_domains.length}곳`
+                          ? tr(" · 이 직무가 중심으로 쓰는 영역 {n}곳", { n: r.core_domains.length })
                           : ""}
                       </dd>
                     </div>
@@ -2559,7 +2573,7 @@ export default async function V3Result({
                 </dl>
               ) : null}
               <p className="rs-others">
-                순위가 아닙니다. 같은 수가 나온 항목은 순서를 매기지 않습니다.
+                {tr("순위가 아닙니다. 같은 수가 나온 항목은 순서를 매기지 않습니다.")}
               </p>
             </div>
           ) : null}
@@ -2570,10 +2584,9 @@ export default async function V3Result({
               DB 가 거절하고, 비어 있으면 비었다고 적는다 */}
           {regionOrgs.length ? (
             <div className="rs-pack">
-              <h3>이 지역에서 함께 볼 곳</h3>
+              <h3>{tr("이 지역에서 함께 볼 곳")}</h3>
               <p className="rs-note">
-                {regionPicked} 기준으로 함께 탐색해 볼 수 있는 기관입니다.
-                채용 여부나 합격 가능성과는 관계가 없습니다.
+                {tr("{region} 기준으로 함께 탐색해 볼 수 있는 기관입니다. 채용 여부나 합격 가능성과는 관계가 없습니다.", { region: regionPicked ?? "" })}
               </p>
               <dl>
                 {regionOrgs.map((o) => (
@@ -2587,32 +2600,31 @@ export default async function V3Result({
                         .filter(Boolean).join(" · ")}
                       <br />
                       {o.related_majors.length
-                        ? `${o.related_majors.join(" · ")} 전공에서 이어 볼 수 있습니다`
-                        : "전공 연결은 아직 적히지 않았습니다"}
+                        ? tr("{majors} 전공에서 이어 볼 수 있습니다", { majors: o.related_majors.join(" · ") })
+                        : tr("전공 연결은 아직 적히지 않았습니다")}
                     </dd>
                   </div>
                 ))}
               </dl>
               {regionOrgN > regionOrgs.length ? (
                 <p className="rs-others">
-                  <Link href="/me/region">지역 기업·기관 더 보기 →</Link>
+                  <Link href="/me/region">{tr("지역 기업·기관 더 보기 →")}</Link>
                 </p>
               ) : null}
             </div>
           ) : regionPicked ? (
             <div className="rs-pack">
-              <h3>이 지역의 기관 목록은 아직 비어 있습니다</h3>
+              <h3>{tr("이 지역의 기관 목록은 아직 비어 있습니다")}</h3>
               <p className="rs-others">
-                기관은 공식 홈페이지와 공공데이터에서 확인한 것만 적습니다.
-                확인되기 전까지 짐작으로 채우지 않습니다.
+                {tr("기관은 공식 홈페이지와 공공데이터에서 확인한 것만 적습니다. 확인되기 전까지 짐작으로 채우지 않습니다.")}
               </p>
             </div>
           ) : null}
 
           <p className="rs-note">
             {regionPicked
-              ? `지금 ${regionPicked} 기준으로 보고 계십니다. 이 선택은 기술영역 결과를 바꾸지 않습니다.`
-              : "희망 지역을 고르면 산업과 직무를 읽는 순서가 그 권역 기준으로 바뀝니다. 기술영역 결과는 그대로입니다."}
+              ? tr("지금 {region} 기준으로 보고 계십니다. 이 선택은 기술영역 결과를 바꾸지 않습니다.", { region: regionPicked })
+              : tr("희망 지역을 고르면 산업과 직무를 읽는 순서가 그 권역 기준으로 바뀝니다. 기술영역 결과는 그대로입니다.")}
           </p>
           {/* **참고 자료를 기본으로 펼치지 않는다**(규격 §3 B · §4).
               권역 다섯과 조합 넷과 고르신 자리를 한꺼번에 펼치면 이 절
@@ -2620,13 +2632,13 @@ export default async function V3Result({
               무엇을 할지와 상관없는 참고 목록**이 된다. 기본으로 서는
               것은 지역 선택이 무엇을 바꾸고 무엇을 바꾸지 않는가 한 줄과
               고르러 가는 길이다 */}
-          <Disclose label="권역과 고르신 것 보기">
+          <Disclose label={tr("권역과 고르신 것 보기")}>
           {/* **종이에서는 권역 다섯 설명을 싣지 않는다**(상용화 PHASE 0).
               어느 응시에서나 같은 글이고, 종이에서 읽는 사람이 다음에 할
               일을 정하는 데 쓰이지 않는다. 고른 권역과 그 지역의 기관
               상태는 위에 그대로 선다 */}
           <div className="rs-pack rs-webonly">
-            <h3>권역마다 일자리의 성격이 다릅니다</h3>
+            <h3>{tr("권역마다 일자리의 성격이 다릅니다")}</h3>
             <dl>
               {regionLayer().regions.map((r) => (
                 <div key={r.code}>
@@ -2636,21 +2648,18 @@ export default async function V3Result({
               ))}
             </dl>
             <p className="rs-others">
-              기관 수와 기업 목록은 아직 담지 않았습니다. 공개 통계를 붙이기
-              전까지 짐작으로 채우지 않습니다.
+              {tr("기관 수와 기업 목록은 아직 담지 않았습니다. 공개 통계를 붙이기 전까지 짐작으로 채우지 않습니다.")}
             </p>
           </div>
           <div className="rs-pack" id="fourkeys">
-            <h3>이 넷이 모이면 그 조합을 물어볼 수 있습니다</h3>
+            <h3>{tr("이 넷이 모이면 그 조합을 물어볼 수 있습니다")}</h3>
             <dl>
               {exploreKey.map(([k, v]) => (
                 <div key={k}><dt>{k}</dt><dd>{v}</dd></div>
               ))}
             </dl>
             <p className="rs-others">
-              지금은 물어볼 자료가 없어서 답을 내지 않습니다. 고르신 넷은
-              내 CareerMatri에 남아 있고, 공고와 기관 자료가 들어오면 그
-              조합부터 보여드립니다.
+              {tr("지금은 물어볼 자료가 없어서 답을 내지 않습니다. 고르신 넷은 내 CareerMatri에 남아 있고, 공고와 기관 자료가 들어오면 그 조합부터 보여드립니다.")}
             </p>
           </div>
           </Disclose>
@@ -2658,9 +2667,9 @@ export default async function V3Result({
               화면에서만 선다: 뽑아 둔 종이에서는 눌리지 않고, 마지막 쪽에
               혼자 서면 밑줄 친 글자 한 줄이 남는다 */}
           <p className="rs-note rs-webonly">
-            <Link href="/me/region">희망 지역 고르기</Link>
+            <Link href="/me/region">{tr("희망 지역 고르기")}</Link>
           </p>
-        </section>
+        </section> : null}
 
 
         </Detail>
@@ -2680,7 +2689,7 @@ export default async function V3Result({
               **따로 접지 않는다**: 종이에서 둘을 가르면 읽는 기준만
               마지막 쪽에 221자(13%)로 남는다. 이 저장소가 겪은 자리라
               한 덩이로 묶어 둔다. 담긴 글은 그대로고 종이에서는 펴진다 */}
-          <Disclose label="결과 읽는 기준과 고르신 목표">
+          <Disclose label={tr("결과 읽는 기준과 고르신 목표")}>
           {/* **고르신 것을 돌려드린다.** 관심 기관 유형과 목표는 응시 중에
               받아 두고 결과지에 한 글자도 나오지 않았다. 판정에 들어가지
               않는다는 것도 함께 적는다 */}
@@ -2690,15 +2699,14 @@ export default async function V3Result({
                   이 묶음이 드는 것은 응시 중에 고르신 목표 산업·직무·조직
                   이고, 그 자리를 부르는 자연스러운 말이 `목표` 다. 담는
                   값과 쓰이지 않는다는 설명은 그대로다 */}
-              <h3>검사에서 고르신 목표</h3>
+              <h3>{tr("검사에서 고르신 목표")}</h3>
               <p>
-                응시하면서 고르신 것입니다. 기술영역 결과에는 들어가지 않고,
-                산업과 직무를 읽는 순서에만 쓰입니다.
+                {tr("응시하면서 고르신 것입니다. 기술영역 결과에는 들어가지 않고, 산업과 직무를 읽는 순서에만 쓰입니다.")}
               </p>
               <dl>
                 {model.targets.orgs.length ? (
                   <div>
-                    <dt>고르신 조직환경</dt>
+                    <dt>{tr("고르신 조직환경")}</dt>
                     <dd>{model.targets.orgs.map(orgName).join(" · ")}</dd>
                   </div>
                 ) : null}
@@ -2708,25 +2716,25 @@ export default async function V3Result({
                     중견기업에도 있다 */}
                 {orgKinds.length ? (
                   <div>
-                    <dt>그런 일자리가 있는 기관</dt>
+                    <dt>{tr("그런 일자리가 있는 기관")}</dt>
                     <dd>{orgKinds.join(" · ")}</dd>
                   </div>
                 ) : null}
                 {goal.industry ? (
                   <div>
-                    <dt>목표 산업</dt>
+                    <dt>{tr("목표 산업")}</dt>
                     <dd>{industryName(goal.industry)}</dd>
                   </div>
                 ) : null}
                 {goal.role ? (
                   <div>
-                    <dt>목표 직무</dt>
+                    <dt>{tr("목표 직무")}</dt>
                     <dd>{roleName(goal.role)}</dd>
                   </div>
                 ) : null}
                 {goal.org ? (
                   <div>
-                    <dt>가고 싶은 조직</dt>
+                    <dt>{tr("가고 싶은 조직")}</dt>
                     <dd>{orgName(goal.org)}</dd>
                   </div>
                 ) : null}
@@ -2738,36 +2746,32 @@ export default async function V3Result({
               아래에 늘 펼쳐 두면 결과의 마지막 인상이 그 해설이 된다.
               **지우지 않았다**: 무엇을 재고 무엇을 재지 않았는지는 결과의
               일부라, 읽는 기준을 모아 둔 이 자리로 옮기고 종이에서는 펴진다 */}
-            <h3>결과 읽는 기준</h3>
-            <p>{TIER_NOTE_KO[model.tier]}</p>
+            <h3>{tr("결과 읽는 기준")}</h3>
+            <p>{TX().TIER_NOTE_KO[model.tier]}</p>
             <div className="rs-pack" id="howto">
               <dl>
                 <div>
-                  <dt>재는 것</dt>
+                  <dt>{tr("재는 것")}</dt>
                   <dd>
-                    해 본 일에서 무엇을 직접 정했는지입니다. 적성이나 성격이
-                    아니고, 능력의 높낮이도 아닙니다.
+                    {tr("해 본 일에서 무엇을 직접 정했는지입니다. 적성이나 성격이 아니고, 능력의 높낮이도 아닙니다.")}
                   </dd>
                 </div>
                 <div>
-                  <dt>재지 않는 것</dt>
+                  <dt>{tr("재지 않는 것")}</dt>
                   <dd>
-                    합격 가능성과 연봉과 순위입니다. 그 셋은 이 응답으로 알 수
-                    없고, 적어 두면 그걸 믿고 움직이는 사람이 생깁니다.
+                    {tr("합격 가능성과 연봉과 순위입니다. 그 셋은 이 응답으로 알 수 없고, 적어 두면 그걸 믿고 움직이는 사람이 생깁니다.")}
                   </dd>
                 </div>
                 <div>
-                  <dt>‘아직’의 뜻</dt>
+                  <dt>{tr("‘아직’의 뜻")}</dt>
                   <dd>
-                    못 한다는 뜻이 아닙니다. 지금 응답에서 그 직무의 근거를
-                    찾지 못했다는 뜻이고, 경험을 하나 적으면 달라집니다.
+                    {tr("못 한다는 뜻이 아닙니다. 지금 응답에서 그 직무의 근거를 찾지 못했다는 뜻이고, 경험을 하나 적으면 달라집니다.")}
                   </dd>
                 </div>
                 <div>
-                  <dt>고정되어 있습니다</dt>
+                  <dt>{tr("고정되어 있습니다")}</dt>
                   <dd>
-                    응시하신 시점의 문항과 기준으로 고정되어 있습니다. 나중에
-                    기준이 바뀌어도 이 결과는 달라지지 않습니다.
+                    {tr("응시하신 시점의 문항과 기준으로 고정되어 있습니다. 나중에 기준이 바뀌어도 이 결과는 달라지지 않습니다.")}
                   </dd>
                 </div>
               </dl>
@@ -2786,8 +2790,8 @@ export default async function V3Result({
                  마지막 쪽에 홀로 서면 숫자 한 줄이 결과의 마지막 인상이
                  된다. 같은 수는 영역마다 제자리에 적혀 있다 */
               <p className="rs-note rs-webonly">
-                확인된 판단 {counts.confirmed_axes} · 직접 정한 것 {counts.owned_axes}
-                {" · "}고르신 근거 {counts.evidence_items}
+                {tr("확인된 판단 {a} · 직접 정한 것 {b}", { a: counts.confirmed_axes, b: counts.owned_axes })}
+                {" · "}{tr("고르신 근거 {n}", { n: counts.evidence_items })}
               </p>
             ) : null}
           </Disclose>
@@ -2797,7 +2801,7 @@ export default async function V3Result({
               주된 길이 서 있고, 머리띠에도 돌아가는 길이 있다. 여기 또
               두면 같은 자리로 가는 링크가 한 쪽에 셋이다 */}
           {pilot ? (
-            <p><Link href={`/v3/${attemptId}/feedback`}>파일럿 의견 적기</Link></p>
+            <p><Link href={`/v3/${attemptId}/feedback`}>{tr("파일럿 의견 적기")}</Link></p>
           ) : null}
         </div>
         {/* ── 결과 다음에 갈 자리 ──
@@ -2822,9 +2826,9 @@ export default async function V3Result({
             없습니다` 한 줄이고, 그 한 줄이 절 하나를 차지했다. 적게 만드는
             일은 위 `적을 경험 하나 고르기` 가 맡고, 여기는 **이미 적어 둔
             것이 있을 때만** 선다 */}
-        {exps.length ? (
+        {ws && exps.length ? (
           <section className="rs-sect rs-webonly" id="records">
-            <h2>남긴 기록</h2>
+            <h2>{tr("남긴 기록")}</h2>
             <ul className="rs-rec">
               {exps.slice(0, 3).map((e) => (
                 <li key={e.id}>
@@ -2836,12 +2840,24 @@ export default async function V3Result({
               ))}
             </ul>
             <p className="rs-rec-f">
-              <Link href="/me/experience">경험 {exps.length}개 모두 보기 →</Link>
-              {kept ? <Link href="/me/next">담아 둔 할 일 {kept}개 →</Link> : null}
+              <Link href="/me/experience">{tr("경험 {n}개 모두 보기 →", { n: exps.length })}</Link>
+              {kept ? <Link href="/me/next">{tr("담아 둔 할 일 {n}개 →", { n: kept })}</Link> : null}
             </p>
           </section>
         ) : null}
 
+        {!ws ? (
+          /* 영어판 1단계의 닫는 자리. 작업공간이 아직 한국어뿐이라 그리로 가는 길
+             대신 종이 길 하나만 둔다 */
+          <section className="rs-sect rs-webonly" id="next">
+            <div className="rs-end">
+              <p className="rs-end-l">{meta.school ?? "CareerMatri"}</p>
+              <h2 className="rs-end-h">{tr("이 결과는 그날의 기록입니다#end")}</h2>
+              <p className="rs-end-p">{tr("이 결과는 고정돼 있습니다. 다시 열어도 같은 내용이 나옵니다.#end")}</p>
+              <a className="rs-end-a" href={`/v3/${attemptId}/result/pdf`}>{tr("PDF 저장")}</a>
+            </div>
+          </section>
+        ) : (
         <section className="rs-sect rs-webonly" id="next">
           {/* **닫는 자리가 이 쪽의 두 번째이자 마지막 색면이다**(R17 §1).
               전에는 여기 흰 면 위의 글 묶음이 서고, 쪽 위쪽에 같은 말을
@@ -2850,10 +2866,9 @@ export default async function V3Result({
               무게를 겨루지 않는다 */}
           <div className="rs-end">
             <p className="rs-end-l">{meta.school ?? "CareerMatri"}</p>
-            <h2 className="rs-end-h">다음 한 줄은 내 CareerMatri에서</h2>
+            <h2 className="rs-end-h">{tr("다음 한 줄은 내 CareerMatri에서")}</h2>
             <p className="rs-end-p">
-              이 결과는 그날의 기록으로 고정되어 있습니다. 경험을 더하면 지금
-              상태가 이어서 바뀝니다.
+              {tr("이 결과는 그날의 기록으로 고정되어 있습니다. 경험을 더하면 지금 상태가 이어서 바뀝니다.")}
             </p>
             {/* **입구라는 것을 눈으로 보인다**(R19 §10). 다섯 마디가 전부
                 실제로 도는 자리이고, 지금 어디에 서 있는지만 표시한다.
@@ -2869,28 +2884,29 @@ export default async function V3Result({
                 수이고, 없으면 비어 있다는 것을 그대로 적는다 */}
             <p className="rs-end-w">
               {kept || exps.length
-                ? [kept ? `담아 둔 할 일 ${kept}개` : null,
-                  exps.length ? `적어 둔 경험 ${exps.length}개` : null]
-                  .filter(Boolean).join(" · ") + "이 기다리고 있어요"
-                : "아직 담아 둔 것이 없어요. 위에서 하나를 고르면 저쪽에 쌓입니다"}
+                ? [kept ? tr("담아 둔 할 일 {n}개", { n: kept }) : null,
+                  exps.length ? tr("적어 둔 경험 {n}개", { n: exps.length }) : null]
+                  .filter(Boolean).join(" · ") + tr("이 기다리고 있어요")
+                : tr("아직 담아 둔 것이 없어요. 위에서 하나를 고르면 저쪽에 쌓입니다")}
             </p>
-            <Link className="rs-end-a" href="/me">내 CareerMatri 열기</Link>
+            <Link className="rs-end-a" href="/me">{tr("내 CareerMatri 열기")}</Link>
             <ul className="rs-end-sub">
-              <li><Link href="/me/state">현재 상태</Link></li>
-              <li><Link href="/me/experience/new">경험 추가</Link></li>
-              <li><Link href="/me/next">지금 할 일</Link></li>
-              <li><Link href="/me/explore">산업·직무</Link></li>
+              <li><Link href="/me/state">{tr("현재 상태")}</Link></li>
+              <li><Link href="/me/experience/new">{tr("경험 추가")}</Link></li>
+              <li><Link href="/me/next">{tr("지금 할 일")}</Link></li>
+              <li><Link href="/me/explore">{tr("산업·직무")}</Link></li>
               {/* **종이 길은 `Link` 로 걸지 않는다.** Next 가 화면에 들어온
                   `Link` 를 미리 불러오는데, 그 길은 머리 없는 브라우저를
                   띄워 종이를 만드는 자리다 */}
-              <li><a href={`/v3/${attemptId}/result/pdf`}>PDF 저장</a></li>
+              <li><a href={`/v3/${attemptId}/result/pdf`}>{tr("PDF 저장")}</a></li>
             </ul>
             {/* **카드로 세우지 않는다**(규격 §7). 한 줄 링크로 둔다 */}
             <p className="rs-end-note">
-              매주 할 일과 공고 확인은 <Link href="/me/track">MAT</Link>에서 이어집니다.
+              {tr("매주 할 일과 공고 확인은")} <Link href="/me/track">MAT</Link>{tr("에서 이어집니다.")}
             </p>
           </div>
         </section>
+        )}
       </main>
     </div>
   );

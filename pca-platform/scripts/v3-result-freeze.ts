@@ -88,6 +88,16 @@ const FILES = [
      닿지 않지만** 학생이 읽는 회사 줄과 묶음을 고르므로 이 동결이 덮는다 */
   "src/lib/me-v3/result/sejong.ts",
   "src/app/v3/[attemptId]/result/sejong.tsx",
+  /* 영어판 1단계(2026-10-24). 결과 문장의 영어 벌과 그것을 고르는 자리,
+     원고 사전. **판정에 닿지 않지만** 영어 응시자가 읽는 글을 고른다 */
+  "src/lib/me-v3/result/text.ts",
+  "src/lib/me-v3/result/text.en.ts",
+  "src/lib/me-v3/result/localize.ts",
+  "src/lib/me-v3/result/render-lang.ts",
+  "src/lib/me-v3/result/reason.en.ts",
+  "src/lib/me-v3/result/common.en.ts",
+  "src/lib/me-v3/phrase.ts",
+  "src/lib/me-v3/phrases.en.ts",
 ];
 
 /** 동결 조건과 그것을 지키는 검사 */

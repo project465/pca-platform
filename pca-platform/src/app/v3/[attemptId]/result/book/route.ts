@@ -26,6 +26,8 @@ export async function GET(
   if (!a) return new Response("not found", { status: 404 });
   if (!(await latestResult(attemptId))) return new Response("not found", { status: 404 });
   if (a.tier !== "PRO") redirect(`/v3/${encodeURIComponent(attemptId)}/result`);
+  /* 책자는 한국어로만 쓰여 있다(영어판 1단계). 영어 응시는 웹 결과로 보낸다 */
+  if (a.locale !== "ko") redirect(`/v3/${encodeURIComponent(attemptId)}/result`);
   const rep = await buildLongReport(attemptId, { fontBase: "/fonts/cm-book/" });
   return new Response(rep.html, {
     headers: {

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { requireUser } from "@/lib/session";
+import { currentUser, requireUser } from "@/lib/session";
 import { majorExamplesOf, majorNameOf } from "@/lib/me-v3/major-name";
 import { resultMeta } from "@/lib/me-v3/result/meta";
 import { OWNERSHIP } from "@/lib/me-v3/scoring/ownership";
@@ -8,17 +8,27 @@ import { controlOf } from "@/lib/me-v3/runtime/menus";
 import {
   answersOf, attemptOf, axisAsk, checklistFor, content, domainName,
   industryChoices, industryGloss, itemOf, menuContextOf, moveTo, optionGuidance, orgChoices,
-  didCellsOf, roleChoices, viewOf, wordingOf,
+  didCellsOf, majorNameIn, roleChoices, viewOf, wordingOf,
 } from "@/lib/me-v3/runtime/session";
-import { STAGE_LEAD } from "@/lib/me-v3/runtime/blocks";
+import { stageLeadOf } from "@/lib/me-v3/runtime/blocks";
+import { copyFor } from "@/lib/me-v3/runtime/copy";
+import { phrase } from "@/lib/me-v3/phrase";
 import type { Field, Group, PickKind, ProgressModel, ScreenModel } from "./model";
-import {
-  INDUSTRY_HINT, ORG_HINT, OWNERSHIP_EXAMPLE, OWNERSHIP_LABEL, OWNERSHIP_SHORT,
-  ROLE_HINT, TIER_WHAT,
-} from "../tier-text";
+import { tierText } from "../tier-text.i18n";
 import Screen from "./screen";
 
-export const metadata = { title: "검사 · CareerMatri" };
+/**
+ * 탭 제목도 **그 응시의 언어**다. 쿠키로 고르지 않는다: 영어로 연 응시의
+ * 탭에 한국어가 서면 그 한 줄이 영어판에 남은 한글이다.
+ */
+export async function generateMetadata(
+  { params }: { params: Promise<{ attemptId: string }> },
+) {
+  const { attemptId } = await params;
+  const u = await currentUser();
+  const a = u ? await attemptOf(attemptId, u.id).catch(() => null) : null;
+  return { title: phrase(a?.locale)("검사 · CareerMatri") };
+}
 
 /**
  * 지금 보여 줄 화면 하나.
@@ -51,6 +61,12 @@ export default async function V3Screen({
 
   const stage = v.attempt.education_stage;
   const sc = v.screen;
+  /* **응시 언어.** 화면 글만 고른다: 문항 · 보기 차례 · 저장되는 값은 같다 */
+  const lang = v.attempt.locale ?? "ko";
+  const {
+    INDUSTRY_HINT, ORG_HINT, OWNERSHIP_EXAMPLE, OWNERSHIP_LABEL, OWNERSHIP_SHORT,
+    ROLE_HINT,
+  } = tierText(lang);
   /* 이 응시에서 **보기 넷을 처음 만나는 화면**인가. 뜻풀이를 거기서만 펼친다 */
   const levelScreens = v.plan.screens.filter((x) =>
     x.items.some((id) => itemOf(a0.core_code, id)?.response_scale === "L0~L3"));
@@ -62,7 +78,7 @@ export default async function V3Screen({
   const firstLevelItem = sc.items.find((id) => itemOf(a0.core_code, id)?.response_scale === "L0~L3");
 
   const fieldOf = async (id: string, label?: string): Promise<Field | null> => {
-    const it = itemOf(a0.core_code, id);
+    const it = itemOf(a0.core_code, id, lang);
     if (!it) return null;
     const ctx = await menuContextOf(v.attempt);
     const control = controlOf(it, ctx);
@@ -93,8 +109,12 @@ export default async function V3Screen({
          뜻만 적으면 둘째와 셋째와 넷째가 끝까지 읽어도 갈리지 않는다.
          뜻은 `ownership.ts` 가 들고(측정 동결) 장면은 화면이 든다 */
       optionHelpFold: control.kind === "level" && id === firstLevelItem
-        ? OWNERSHIP.map((o, n) => (OWNERSHIP_EXAMPLE[n]
-          ? `${o.means}. 예: ${OWNERSHIP_EXAMPLE[n]}` : o.means)) : undefined,
+        ? OWNERSHIP.map((o, n) => {
+          /* 뜻은 한국어면 `ownership.ts` 그대로이고 다른 언어는 같은 자리의 번역이다 */
+          const means = copyFor(lang).ownershipMeans[n] ?? o.means;
+          return OWNERSHIP_EXAMPLE[n]
+            ? copyFor(lang).ownershipWithExample(means, OWNERSHIP_EXAMPLE[n]) : means;
+        }) : undefined,
       /* **처음 만나는 화면에서도 펼쳐 두지 않는다**(규격: 긴 안내는 접거나
          제거). 펼쳐 두었더니 그 네 줄(약 250자)이 질문과 예시를 합친 것보다
          큰 덩이가 되어, 눈으로 읽으면 **설명문이 질문보다 세다.** 뜻은 이제
@@ -104,14 +124,15 @@ export default async function V3Screen({
          문항은 `gloss`(그 판단을 일반 말로 바꿔 적은 줄)를 쓰고, 그
          줄은 전에는 검사 셋만 읽고 **화면에 한 번도 서지 않았다** */
       example: control.kind === "level"
-        ? exampleOf(a0.core_code, it, industryGloss(a0.core_code, id)) ?? undefined
+        ? exampleOf(a0.core_code, it, industryGloss(a0.core_code, id, lang), undefined, lang)
+          ?? undefined
         : undefined,
     };
   };
 
   const fields: Field[] = [];
   for (const id of sc.items) {
-    const it = itemOf(a0.core_code, id);
+    const it = itemOf(a0.core_code, id, lang);
     /* 훑는 화면은 영역 이름이 줄이 된다. 문항 문면은 어미까지 붙어 길고,
        열두 줄을 그대로 세우면 같은 어미가 열두 번 되풀이된다.
        **한 화면에 문항이 둘 이상이면 문면이 줄이 된다.** 전에는 훑는
@@ -121,7 +142,7 @@ export default async function V3Screen({
        상자에는 보기 넷만 되풀이됐다. `pair` 화면이 검사의 절반이라
        응시자가 가장 오래 보는 자리가 그 상태였다 */
     const label = sc.kind === "sweep" ? (it?.grid_row ?? undefined)
-      : sc.items.length > 1 ? wordingOf(a0.core_code, id, stage)
+      : sc.items.length > 1 ? wordingOf(a0.core_code, id, stage, lang)
         : undefined;
     const f = await fieldOf(id, label ?? undefined);
     if (f) fields.push(f);
@@ -136,12 +157,14 @@ export default async function V3Screen({
     .filter((c) => c.startsWith(`${dom}.`)).map((c) => c.slice(dom.length + 1)) : []);
   const wantSlot = (slot: string) => did.has(slot === "ARTIFACT" ? "J5" : slot === "VERIFY" ? "J6" : slot);
   const groups: Group[] | undefined = sc.kind === "checklist" && dom
-    ? checklistFor(a0.core_code, dom).map((g) => ({
+    ? checklistFor(a0.core_code, dom, lang).map((g) => ({
         slot: g.slot,
         /* 묶음마다 `· 내가 정한 것` 을 되풀이하지 않는다. 그 말은 질문이
            이미 하고 있고, 열 번 되풀이되면 묶음 이름이 안 읽힌다 */
-        label: g.slot === "ARTIFACT" || g.slot === "VERIFY" ? g.label : axisAsk(g.slot, a0.core_code),
+        label: g.slot === "ARTIFACT" || g.slot === "VERIFY" ? g.label
+          : axisAsk(g.slot, a0.core_code, lang),
         items: g.items,
+        /* 고른 것은 이 응시 언어의 글자로 저장돼 있어서 화면 목록과 그대로 맞는다 */
         picked: g.slot === "ARTIFACT" ? (v.picks.artifacts[dom] ?? [])
           : g.slot === "VERIFY" ? (v.picks.verifications[dom] ?? [])
             : (v.picks.checklists[`${dom}.${g.slot}`] ?? []),
@@ -153,18 +176,18 @@ export default async function V3Screen({
   const pickKind: PickKind | undefined = sc.kind === "pick-industry" ? "industry"
     : sc.kind === "pick-role" ? "role" : sc.kind === "pick-org" ? "org" : undefined;
   const packs = pickKind === "industry"
-    ? industryChoices(a0.core_code).map((p) => ({
+    ? industryChoices(a0.core_code, lang).map((p) => ({
         /* 산업·직무 코드도 Core 사이에 겹쳐서(`INDUSTRY_PUBLIC_V1` · `ROLE_PLAN_V1`)
            그 Core 의 표를 읽는다. 없으면 **그 Core 의 팩**이 든 줄로 떨어진다 */
         code: p.code, name: p.name, gloss: INDUSTRY_HINT[a0.core_code]?.[p.code] ?? p.first,
       }))
     : pickKind === "role"
-      ? roleChoices(a0.core_code).map((p) => ({
+      ? roleChoices(a0.core_code, lang).map((p) => ({
           code: p.code, name: p.name,
           gloss: ROLE_HINT[a0.core_code]?.[p.code] ?? p.domains.slice(0, 3).join(" · "),
         }))
       : pickKind === "org"
-        ? orgChoices(a0.core_code).map((p) => ({
+        ? orgChoices(a0.core_code, lang).map((p) => ({
             code: p.code, name: p.name,
             /* 조직 코드는 Core 마다 뜻이 달라 그 Core 의 표를 읽는다 */
             gloss: ORG_HINT[a0.core_code]?.[p.code] ?? p.first,
@@ -197,7 +220,7 @@ export default async function V3Screen({
       .map(({ x, i }) => ({
         index: i,
         label: [x.eyebrow, x.question ?? x.subject].filter(Boolean).join(" · ")
-          || `${i + 1}번째 화면`,
+          || phrase(lang)("{n}번째 화면", { n: i + 1 }),
       }))
       .slice(0, 12)
     : undefined;
@@ -220,16 +243,16 @@ export default async function V3Screen({
        줄이 새 틀이 되고, 아예 없으면 관심을 묻다가 경험을 묻는 자리에서
        응시자가 다른 검사로 넘어온 줄 안다 */
     stageLead: v.plan.screens.findIndex((x) => x.stage === sc.stage) === v.index
-      ? (STAGE_LEAD[sc.stage] || undefined) : undefined,
+      ? (stageLeadOf(sc.stage, lang) || undefined) : undefined,
     /* **보기 읽는 법을 화면마다 되풀이하지 않는다.** 선별 등급에서만
        스물여덟 화면에 같은 두 줄이 섰고, 바로 아래 `보기가 어떻게
        갈리나요` 와 같은 말이라 한 화면에 설명이 두 번 선 셈이었다.
        처음 만나는 화면에서 한 번만 적는다 */
     guide: firstLevel && fields.some((f) => f.control.kind === "level")
-      ? optionGuidance(a0.core_code) : undefined,
+      ? optionGuidance(a0.core_code, lang) : undefined,
     /* 묶음이 바뀐 첫 질문에만. 매 화면에 세우면 그것이 새 틀이 된다 */
     scenes: sc.strip && fields.some((f) => f.control.kind === "level")
-      ? sceneHint(a0.core_code) : undefined,
+      ? sceneHint(a0.core_code, undefined, lang) : undefined,
     fields,
     groups,
     body: sc.body,
@@ -248,15 +271,15 @@ export default async function V3Screen({
     summary: sc.kind === "done" ? {
       explored: content(a0.core_code).domains.domains.length,
       deep: (v.attempt.opened_deep.length ? v.attempt.opened_deep : v.attempt.opened_probe)
-        .map((td) => domainName(a0.core_code, td)),
+        .map((td) => domainName(a0.core_code, td, lang)),
       evidence: Object.values(v.picks.checklists).flat().length
         + Object.values(v.picks.artifacts).flat().length
         + Object.values(v.picks.verifications).flat().length,
       industry: (v.attempt.industry_interest ?? [])
-        .map((c) => industryChoices(a0.core_code).find((x) => x.code === c)?.name)
+        .map((c) => industryChoices(a0.core_code, lang).find((x) => x.code === c)?.name)
         .filter(Boolean).join(" · ") || null,
       role: (v.attempt.role_interest ?? [])
-        .map((c) => roleChoices(a0.core_code).find((x) => x.code === c)?.name)
+        .map((c) => roleChoices(a0.core_code, lang).find((x) => x.code === c)?.name)
         .filter(Boolean).join(" · ") || null,
       /* **실제 판단을 몇 가지 받았는지.** 관심과 경험을 훑은 수와 섞지
          않는다: 그 둘이 섞인 수는 응시자에게 `설문 쉰 문항` 으로 읽힌다 */
@@ -312,8 +335,11 @@ export default async function V3Screen({
          아니라 한 벌이고, 적어 두면 고를 수 있는 값이 있는 줄로 읽힌다 */
       tierLabel={meta.school ? null : v.attempt.tier}
       school={meta.school} department={meta.department}
-      major={majorNameOf(v.attempt.core_code) ?? "이 전공"}
-      majorExamples={majorExamplesOf(v.attempt.core_code)} />
+      major={lang === "ko" ? (majorNameOf(v.attempt.core_code) ?? "이 전공")
+        : majorNameIn(v.attempt.core_code, lang)}
+      /* 학과 보기는 등록부의 별칭(한국 학과 이름)이라 한국어 응시에만 선다 */
+      majorExamples={lang === "ko" ? majorExamplesOf(v.attempt.core_code) : ""}
+      lang={lang} />
   );
 }
 

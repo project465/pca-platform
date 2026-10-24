@@ -6,7 +6,8 @@
  * 간다고 읽는다. 그래서 큰 단계는 **이름으로** 적고, 지금 묶음 안에서만
  * 숫자를 적는다.
  */
-import { STAGES, type Plan, type StageCode } from "./blocks";
+import { STAGES, stageLabel, type Plan, type StageCode } from "./blocks";
+import type { V3Lang } from "../i18n";
 
 export type Progress = {
   /** 큰 단계. 이름과 지난 자리 */
@@ -17,7 +18,8 @@ export type Progress = {
   screen: { index: number; total: number };
 };
 
-export function progressOf(plan: Plan, screenId: string): Progress {
+/** `lang` 은 단계 이름만 고른다. 차례와 수는 언어와 무관하다 */
+export function progressOf(plan: Plan, screenId: string, lang?: V3Lang): Progress {
   const at = Math.max(0, plan.screens.findIndex((s) => s.id === screenId));
   const cur = plan.screens[at];
   const order = STAGES.map((s) => s.code);
@@ -28,13 +30,13 @@ export function progressOf(plan: Plan, screenId: string): Progress {
   return {
     stages: STAGES.filter((s) => (plan.perStage[s.code] ?? 0) > 0 || s.code === "DONE")
       .map((s) => ({
-        code: s.code, label: s.label,
+        code: s.code, label: stageLabel(s.code, lang),
         state: order.indexOf(s.code) < curRank ? "done"
           : s.code === cur.stage ? "current" : "todo",
       })),
     inStage: {
       index: inIndex, total: sameStage.length,
-      label: STAGES.find((s) => s.code === cur.stage)?.label ?? "",
+      label: STAGES.some((s) => s.code === cur.stage) ? stageLabel(cur.stage, lang) : "",
     },
     screen: { index: at + 1, total: plan.screens.length },
   };

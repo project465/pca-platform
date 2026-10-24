@@ -25,7 +25,8 @@
  * 읽지 않는다. 같은 응답이면 예시가 무엇이든 같은 판정이 나온다.
  */
 import { readFileSync } from "node:fs";
-import { CONTENT_DIR, coreFile } from "../core-registry";
+import { CONTENT_DIR, coreFile, sharedFile } from "../core-registry";
+import { copyFor } from "./copy";
 
 type Checklists = {
   domains: Record<string, Record<string, { text: string }[]>>;
@@ -40,7 +41,14 @@ type Item = {
 let scenes: Record<string, string[]> | null = null;
 
 /** 그 Core 의 장면 묶음. **적지 않은 Core 는 그 자리에서 멈춘다** */
-export function studentScenes(core: string, dir = CONTENT_DIR): string[] {
+export function studentScenes(core: string, dir = CONTENT_DIR, lang = "ko"): string[] {
+  /* 다른 언어는 공용 원고의 `scenes` 다. **없으면 멈춘다**: 한국어 장면을
+     영어 화면에 세우지 않는다 */
+  if (lang !== "ko") {
+    const got = scenesOf(sharedFile(core, lang, dir).scenes, core);
+    if (!got.length) throw new Error(`${core} 의 ${lang} 학생 장면이 공용 원고에 없습니다`);
+    return got;
+  }
   if (!scenes) {
     scenes = (JSON.parse(readFileSync(
       `${dir}/me-v3-student-scenes.json`, "utf8")) as
@@ -51,6 +59,21 @@ export function studentScenes(core: string, dir = CONTENT_DIR): string[] {
     throw new Error(`${core} 의 학생 장면이 me-v3-student-scenes.json 에 없습니다`);
   }
   return got;
+}
+
+/**
+ * 공용 원고의 장면 칸. 계약은 `me-v3-student-scenes.json` 의 그 Core 항목과
+ * **같은 모양**(글자 배열)이다. Core 이름을 열쇠로 한 겹 더 싼 꼴도 받는다:
+ * 원고를 쓰는 쪽이 원본 파일의 모양을 그대로 옮겨 오는 일이 흔하다.
+ */
+export function scenesOf(raw: unknown, core: string): string[] {
+  if (Array.isArray(raw)) return raw.filter((x): x is string => typeof x === "string");
+  if (raw && typeof raw === "object") {
+    const o = raw as Record<string, unknown>;
+    const inner = o[core] ?? o.scenes ?? Object.values(o).find(Array.isArray);
+    return Array.isArray(inner) ? inner.filter((x): x is string => typeof x === "string") : [];
+  }
+  return [];
 }
 
 /** 같은 문항이면 늘 같은 자리를 고른다. 찍을 때마다 장면이 바뀌면 안 된다 */
@@ -67,13 +90,15 @@ function pick<T>(list: T[], key: string): T {
  * 문항은 예시가 필요한 자리가 아니다: 묻는 것이 경험이 아니다.
  */
 export function exampleOf(
-  core: string, it: Item, gloss?: string | null, dir = CONTENT_DIR,
+  core: string, it: Item, gloss?: string | null, dir = CONTENT_DIR, lang = "ko",
 ): string | null {
   if (it.response_scale !== "L0~L3") return null;
   /* 산업팩은 그 산업의 낱말을 쓴다. 쉬운 말 풀이가 그 자리의 예시다 */
   if (gloss) return gloss;
 
-  const cl = coreFile<Checklists>(core, "checklists", dir);
+  /* 고르는 자리가 언어와 무관하다: 두 원고는 길이와 차례가 같아서, 같은 문항이면
+     두 언어에서 같은 줄(같은 뜻)이 선다 */
+  const cl = coreFile<Checklists>(core, "checklists", dir, lang);
   const axis = it.evidence_axis ?? null;
   if (!axis) return null;
   const list = it.technical_domain
@@ -95,9 +120,9 @@ export function exampleOf(
  * 그래서 장면은 **묶음마다 한 번** 세우고, 문항 아래에는 그 영역에서
  * 실제로 하는 판단 한 줄만 둔다.
  */
-export function sceneHint(core: string, dir = CONTENT_DIR): string {
+export function sceneHint(core: string, dir = CONTENT_DIR, lang = "ko"): string {
   /* 장면 이름을 쉼표로 잇는다. 가운뎃점으로 이으면 이름 안의 가운뎃점
-     (`교지·학보 활동`)과 섞이고, `가운데` 로 맺으면 고르는 화면처럼 읽힌다 */
-  const list = studentScenes(core, dir).slice(0, 5).join(", ");
-  return `${list} 등 어디에서 해 본 일이든 괜찮습니다.`;
+     (`교지·학보 활동`)과 섞이고, `가운데` 로 맺으면 고르는 화면처럼 읽힌다.
+     문장은 언어마다 `copy.*.ts` 의 `sceneHint` 가 든다 */
+  return copyFor(lang).sceneHint(studentScenes(core, dir, lang).slice(0, 5));
 }

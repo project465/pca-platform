@@ -17,6 +17,12 @@
  * PDF 가 든다. 종이는 이 화면을 쓰지 않는다(`@media print` 에서 숨긴다).
  */
 import Link from "next/link";
+import { phrase } from "@/lib/me-v3/phrase";
+import { renderLang } from "@/lib/me-v3/result/render-lang";
+
+/* 그 응시의 언어(요청마다). 결과지 쪽과 같은 자리를 읽는다 */
+const tr = (ko: string, vars?: Record<string, string | number>) => phrase(renderLang())(ko, vars);
+
 
 export type SummaryZone = { key: string; title: string; lead: string; names: string[]; tone: "ready" | "partial" | "low" | "few" | "off" };
 export type SummaryEvidence = {
@@ -40,6 +46,8 @@ export default function Summary({
   kept: number;
   tierNote: string | null;
 }) {
+  /* 작업공간(`/me`)은 한국어판만 있다. 영어 응시에는 그리로 가는 길을 세우지 않는다 */
+  const ws = renderLang() === "ko";
   return (
     <div className="rsum">
       <section className="rsum-top">
@@ -50,7 +58,7 @@ export default function Summary({
       </section>
 
       <section className="rsum-sect" aria-labelledby="rsum-map">
-        <h2 id="rsum-map" className="rsum-h2"><span>1</span>영역별로 보면</h2>
+        <h2 id="rsum-map" className="rsum-h2"><span>1</span>{tr("영역별로 보면")}</h2>
         <ul className="rsum-zones">
           {zones.map((z) => (
             <li key={z.key} className={`rsum-zone is-${z.tone}`}>
@@ -65,7 +73,7 @@ export default function Summary({
       </section>
 
       <section className="rsum-sect" aria-labelledby="rsum-ev">
-        <h2 id="rsum-ev" className="rsum-h2"><span>2</span>지원서에 꺼내 쓸 경험</h2>
+        <h2 id="rsum-ev" className="rsum-h2"><span>2</span>{tr("지원서에 꺼내 쓸 경험")}</h2>
         {evidence.length ? (
           <ul className="rsum-ev">
             {evidence.map((e) => (
@@ -74,13 +82,13 @@ export default function Summary({
                 <dl>
                   {e.rows.map((r) => (
                     <div key={r.label} className="rsum-ev-row">
-                      <dt>{r.label}{r.owned ? <em>직접 정함</em> : null}</dt>
+                      <dt>{r.label}{r.owned ? <em>{tr("직접 정함")}</em> : null}</dt>
                       <dd>{r.items.join(" / ")}</dd>
                     </div>
                   ))}
                   {e.left.length ? (
                     <div className="rsum-ev-row">
-                      <dt>남은 결과물</dt><dd>{e.left.join(" / ")}</dd>
+                      <dt>{tr("남은 결과물")}</dt><dd>{e.left.join(" / ")}</dd>
                     </div>
                   ) : null}
                 </dl>
@@ -89,14 +97,13 @@ export default function Summary({
           </ul>
         ) : (
           <p className="rsum-empty">
-            이번 답에서는 아직 지원서에 바로 쓸 만큼 정리된 경험이 없습니다.
-            아래 할 일 하나를 해 보고 경험을 적으면 여기가 채워집니다.
+            {tr("이번 답에서는 아직 지원서에 바로 쓸 만큼 정리된 경험이 없습니다. 아래 할 일 하나를 해 보고 경험을 적으면 여기가 채워집니다.")}
           </p>
         )}
       </section>
 
       <section className="rsum-sect" aria-labelledby="rsum-do">
-        <h2 id="rsum-do" className="rsum-h2"><span>3</span>다음에 할 일</h2>
+        <h2 id="rsum-do" className="rsum-h2"><span>3</span>{tr("다음에 할 일")}</h2>
         {steps.length ? (
           <ol className="rsum-steps">
             {steps.map((s, i) => (
@@ -104,30 +111,30 @@ export default function Summary({
                 <b>{s.head}</b>
                 <p>{s.body}</p>
                 {s.why ? <p className="rsum-why">{s.why}</p> : null}
-                <Link className="rsum-write" href={s.href}>해 본 일 적기</Link>
+                {ws ? <Link className="rsum-write" href={s.href}>{tr("해 본 일 적기")}</Link> : null}
               </li>
             ))}
           </ol>
         ) : (
-          <p className="rsum-empty">지금 답으로는 따로 적을 할 일이 없습니다.</p>
+          <p className="rsum-empty">{tr("지금 답으로는 따로 적을 할 일이 없습니다.")}</p>
         )}
         {keepAction ? (
           <form action={keepAction} className="rsum-keep">
-            <button type="submit">할 일 목록에 담기</button>
-            {kept ? <span>담아 둔 할 일 {kept}개 · <Link href="/me/next">보기</Link></span> : null}
+            <button type="submit">{tr("할 일 목록에 담기")}</button>
+            {kept ? <span>{tr("담아 둔 할 일 {n}개 ·", { n: kept })} <Link href="/me/next">{tr("보기")}</Link></span> : null}
           </form>
         ) : null}
       </section>
 
       <section className="rsum-end">
         <div>
-          <b>자세한 분석은 PDF에 있습니다</b>
-          <p>영역별 해설, 산업·직무 연결, 지원서 문장, 지역 기업 자료를 한 권으로 묶었습니다.</p>
+          <b>{tr("자세한 분석은 PDF에 있습니다")}</b>
+          <p>{tr("영역별 해설, 산업·직무 연결, 지원서 문장, 지역 기업 자료를 한 권으로 묶었습니다.")}</p>
         </div>
         <div className="rsum-end-a">
           {/* 종이 길은 `Link` 로 걸지 않는다: 미리 불러오면 종이가 만들어진다 */}
-          <a className="rsum-pdf" href={pdfHref}>PDF 받기</a>
-          <Link className="rsum-me" href="/me">내 CareerMatri</Link>
+          <a className="rsum-pdf" href={pdfHref}>{tr("PDF 받기")}</a>
+          {ws ? <Link className="rsum-me" href="/me">{tr("내 CareerMatri")}</Link> : null}
         </div>
       </section>
     </div>

@@ -15,7 +15,7 @@
 import type { PoolClient } from "pg";
 import { query, queryOne, tx } from "@/lib/db";
 import {
-  core as coreOf, coreFile, defaultCore, packs as readPacks, sellableCores,
+  core as coreOf, coreFile, defaultCore, packs as readPacks, sellableCores, sharedFile,
 } from "../core-registry";
 import { load, score } from "../scoring/engine";
 import type {
@@ -40,6 +40,8 @@ import { buildResult } from "../result/build";
 import type { ResultModel } from "../result/model";
 import { RESULT_COPY_VERSION, RESULT_MODEL_VERSION, RESULT_UI_VERSION } from "../result/version";
 import { WORKSPACE_UI_VERSION } from "../workspace-version";
+import { localeFor, type V3Lang } from "../i18n";
+import { copyFor } from "./copy";
 
 /**
  * **core 를 글자로 박지 않는다.** 어느 Major Core 를 읽을지는 응시와
@@ -80,6 +82,13 @@ export type V3Attempt = {
    */
   university_code: string | null; college_code: string | null;
   department_code: string | null; specialization_code: string | null;
+  /**
+   * 응시 언어(`schema_v3_locale.sql`). **시작할 때 정하고 바꾸지 않는다.**
+   *
+   * 화면 · 결과 · PDF 가 이 값 하나를 읽는다. 채점은 읽지 않는다: 같은 응답이면
+   * 언어와 무관하게 같은 판정이 나와야 한다(`v3:i18n` 의 골든).
+   */
+  locale: V3Lang;
 };
 
 /** 응시 한 줄을 읽는 열쇠 목록. 두 자리에서 따로 적다 칸이 빠진 적이 있다 */
@@ -88,7 +97,8 @@ const ATTEMPT_COLS = `id::text, user_id::text, tier, core_code, market_code,
        opened_probe, opened_deep, fourth_reason,
        industry_interest, role_interest, org_interest,
        industry_pack, role_pack, item_bank_version, scoring_version,
-       university_code, college_code, department_code, specialization_code`;
+       university_code, college_code, department_code, specialization_code,
+       locale`;
 
 type Domains = {
   domains: { code: string; name: string; artifacts: string[]; verify_targets: string[];
@@ -97,18 +107,25 @@ type Domains = {
 type Checklists = { domains: Record<string, Record<string, { text: string }[]>> };
 
 type CoreContent = { bank: Bank; domains: Domains; checklists: Checklists };
-/** core 마다 한 벌씩 들고 있는다. 전공이 늘어도 읽는 코드는 그대로다 */
+/**
+ * core 와 언어마다 한 벌씩 들고 있는다. 전공이 늘어도 읽는 코드는 그대로다.
+ *
+ * **열쇠가 `core|lang` 이다.** core 하나로 잡으면 먼저 읽힌 언어가 그 core 의
+ * 모든 응시에 선다. 한국어가 아닌 원고가 없으면 `coreFile` 이 던진다:
+ * 한국어로 대신 읽지 않는다.
+ */
 const cache = new Map<string, CoreContent>();
 
-export function content(core: string): CoreContent {
-  let c = cache.get(core);
+export function content(core: string, lang: V3Lang = "ko"): CoreContent {
+  const key = `${core}|${lang}`;
+  let c = cache.get(key);
   if (!c) {
     c = {
-      bank: coreFile<Bank>(core, "items"),
-      domains: coreFile<Domains>(core, "domains"),
-      checklists: coreFile<Checklists>(core, "checklists"),
+      bank: coreFile<Bank>(core, "items", undefined, lang),
+      domains: coreFile<Domains>(core, "domains", undefined, lang),
+      checklists: coreFile<Checklists>(core, "checklists", undefined, lang),
     };
-    cache.set(core, c);
+    cache.set(key, c);
   }
   return c;
 }
@@ -122,35 +139,37 @@ type IndustryPack = {
 type RolePack = {
   code: string; name_ko: string; owns: string; core_ref: { td: string[] };
 };
-function industryPacks(core: string): { packs: IndustryPack[] } {
-  return readPacks<{ packs: IndustryPack[] }>(core, "industry");
+/* **다른 언어 팩도 `name_ko` 자리에 그 언어의 이름을 든다**(파일 계약: 열쇠는
+   그대로 두고 값만 바꾼다). 그래서 읽는 코드가 언어마다 갈리지 않는다 */
+function industryPacks(core: string, lang: V3Lang = "ko"): { packs: IndustryPack[] } {
+  return readPacks<{ packs: IndustryPack[] }>(core, "industry", undefined, lang);
 }
-function rolePacks(core: string): { packs: RolePack[] } {
-  return readPacks<{ packs: RolePack[] }>(core, "role");
+function rolePacks(core: string, lang: V3Lang = "ko"): { packs: RolePack[] } {
+  return readPacks<{ packs: RolePack[] }>(core, "role", undefined, lang);
 }
 
 /** 산업 장면. Core 선별 앞에 읽히고 **점수를 만들지 않는다** */
-export function industryScene(core: string, code: string): IndustryScene | null {
-  const p = industryPacks(core).packs.find((x) => x.code === code);
+export function industryScene(core: string, code: string, lang: V3Lang = "ko"): IndustryScene | null {
+  const p = industryPacks(core, lang).packs.find((x) => x.code === code);
   if (!p) return null;
   return { code, name: p.name_ko, scene: p.scene, demands: p.demands };
 }
 
 /** 산업팩 문항의 쉬운 말 풀이. 용어를 모르는 사람이 떨어지지 않게 함께 띄운다 */
-export function industryGloss(core: string, itemId: string): string | null {
-  for (const p of industryPacks(core).packs) {
+export function industryGloss(core: string, itemId: string, lang: V3Lang = "ko"): string | null {
+  for (const p of industryPacks(core, lang).packs) {
     const hit = p.items.find((x) => x.id === itemId);
     if (hit) return hit.gloss;
   }
   return null;
 }
 
-export function roleName(core: string, code: string): string {
-  return rolePacks(core).packs.find((x) => x.code === code)?.name_ko ?? code;
+export function roleName(core: string, code: string, lang: V3Lang = "ko"): string {
+  return rolePacks(core, lang).packs.find((x) => x.code === code)?.name_ko ?? code;
 }
 
-export function domainName(core: string, td: string): string {
-  return content(core).domains.domains.find((d) => d.code === td)?.name ?? td;
+export function domainName(core: string, td: string, lang: V3Lang = "ko"): string {
+  return content(core, lang).domains.domains.find((d) => d.code === td)?.name ?? td;
 }
 
 /**
@@ -172,17 +191,17 @@ export function domainName(core: string, td: string): string {
  */
 type Sub = { areas: string[]; owns: string };
 const SUB = new Map<string, Map<string, Sub>>();
-export function domainSub(core: string, td: string, budget = 11): string {
-  let m = SUB.get(core);
+export function domainSub(core: string, td: string, budget = 11, lang: V3Lang = "ko"): string {
+  let m = SUB.get(`${core}|${lang}`);
   if (!m) {
     const tax = coreFile<{
       technical_domains: { code: string; subareas?: string[]; owns?: string }[];
-    }>(core, "taxonomy");
+    }>(core, "taxonomy", undefined, lang);
     m = new Map();
     for (const d of tax.technical_domains) {
       m.set(d.code, { areas: d.subareas ?? [], owns: d.owns ?? "" });
     }
-    SUB.set(core, m);
+    SUB.set(`${core}|${lang}`, m);
   }
   const d = m.get(td);
   if (!d) return "";
@@ -200,47 +219,96 @@ export function domainSub(core: string, td: string, budget = 11): string {
   return out;
 }
 
-export function gridRowOf(core: string, td: string): string {
-  const i = content(core).bank.items.find((x) => x.item_id === `G_${td}_INT`) as
+export function gridRowOf(core: string, td: string, lang: V3Lang = "ko"): string {
+  const i = content(core, lang).bank.items.find((x) => x.item_id === `G_${td}_INT`) as
     (BankItem & { grid_row?: string }) | undefined;
-  return i?.grid_row ?? domainName(core, td);
+  return i?.grid_row ?? domainName(core, td, lang);
 }
-export function wordingOf(core: string, id: string, stage: string): string {
-  const i = content(core).bank.items.find((x) => x.item_id === id) as
+export function wordingOf(core: string, id: string, stage: string, lang: V3Lang = "ko"): string {
+  const i = content(core, lang).bank.items.find((x) => x.item_id === id) as
     (BankItem & { wording: string; stage_wording?: Record<string, string> }) | undefined;
   if (!i) return id;
   return i.stage_wording?.[stage] ?? i.wording;
 }
-export function itemOf(core: string, id: string): (BankItem & {
+/**
+ * 문항 한 줄. **언어마다 문면과 보기 글이 다르고 나머지 칸은 같다**
+ * (파일 계약: id · 축 · 보기 개수와 차례 · 척도는 원본과 글자까지 같다).
+ */
+export function itemOf(core: string, id: string, lang: V3Lang = "ko"): (BankItem & {
   wording: string; options?: string[] | null; grid_row?: string | null;
   grid_stem?: string | null; response_scale?: string | null;
   option_values?: number[] | null;
 }) | undefined {
-  return content(core).bank.items.find((x) => x.item_id === id) as never;
+  return content(core, lang).bank.items.find((x) => x.item_id === id) as never;
 }
-export function levelOptions(core: string): string[] {
-  return (content(core).bank as unknown as { level_options: string[] }).level_options;
+export function levelOptions(core: string, lang: V3Lang = "ko"): string[] {
+  return (content(core, lang).bank as unknown as { level_options: string[] }).level_options;
 }
-export function optionGuidance(core: string): string {
-  return (content(core).bank as unknown as { option_guidance: string }).option_guidance;
+export function optionGuidance(core: string, lang: V3Lang = "ko"): string {
+  return (content(core, lang).bank as unknown as { option_guidance: string }).option_guidance;
 }
-export function checklistFor(core: string, td: string): { slot: string; label: string; items: string[] }[] {
-  const c = content(core).checklists.domains[td] ?? {};
-  const dom = content(core).domains.domains.find((d) => d.code === td);
+export function checklistFor(
+  core: string, td: string, lang: V3Lang = "ko",
+): { slot: string; label: string; items: string[] }[] {
+  const c = content(core, lang).checklists.domains[td] ?? {};
+  const dom = content(core, lang).domains.domains.find((d) => d.code === td);
   const out = Object.entries(c).map(([axis, list]) => ({
-    slot: axis, label: axisLabel(axis), items: list.map((x) => x.text),
+    slot: axis, label: axisLabel(axis, lang), items: list.map((x) => x.text),
   }));
   if (dom) {
-    out.push({ slot: "ARTIFACT", label: "만든 자료", items: dom.artifacts });
-    out.push({ slot: "VERIFY", label: "비교해 본 기준", items: dom.verify_targets });
+    const L = copyFor(lang).slotLabel;
+    out.push({ slot: "ARTIFACT", label: L.ARTIFACT, items: dom.artifacts });
+    out.push({ slot: "VERIFY", label: L.VERIFY, items: dom.verify_targets });
   }
   return out;
 }
-const AXIS_LABEL: Record<string, string> = {
-  J1: "문제 정의", J2: "요구 해석", J3: "직접 판단", J4: "방법과 도구",
-  J5: "산출물", J6: "비교와 검증", J7: "실패와 수정", J8: "조직 활용",
-};
-export function axisLabel(a: string): string { return AXIS_LABEL[a] ?? a; }
+/* 축의 재는 이름. 언어마다 `copy.*.ts` 의 `axisLabel` 이 든다 */
+export function axisLabel(a: string, lang: V3Lang = "ko"): string {
+  return (copyFor(lang).axisLabel as Record<string, string>)[a] ?? a;
+}
+
+/**
+ * 고른 근거를 **원본(한국어) 글자로** 되돌린다. 채점에 넘기기 직전에만 쓴다.
+ *
+ * 고른 항목은 그 응시 언어의 글자로 저장된다(계약 원칙 2). 그런데 채점과
+ * 결과 모델은 고른 글자를 근거 열쇠로 들고 간다(`checklist:<글자>`). 영어
+ * 글자를 그대로 넘기면 같은 응답이 언어에 따라 다른 스냅샷이 되고, 결과지가
+ * 한국어 원본으로 묶어 둔 차례와 어긋난다. 그래서 **같은 자리의 원본 글자**로
+ * 바꿔 넘긴다: 두 원고는 배열 길이와 차례가 같다(`v3:i18n` 이 센다).
+ *
+ * 그 언어 목록에 없는 글자(옛 응시가 남긴 한국어 등)는 그대로 둔다.
+ */
+export function canonicalPicks<T extends {
+  checklists: Record<string, string[]>;
+  artifacts: Record<string, string[]>;
+  verifications: Record<string, string[]>;
+}>(core: string, lang: V3Lang, picks: T): T {
+  if (lang === "ko") return picks;
+  const ko = content(core, "ko");
+  const xx = content(core, lang);
+  const back = (from: string[], to: string[], t: string): string => {
+    const i = from.indexOf(t);
+    return i >= 0 && to[i] !== undefined ? to[i] : t;
+  };
+  const checklists: Record<string, string[]> = {};
+  for (const [k, list] of Object.entries(picks.checklists)) {
+    const [td, ax] = k.split(".");
+    const from = (xx.checklists.domains[td]?.[ax] ?? []).map((x) => x.text);
+    const to = (ko.checklists.domains[td]?.[ax] ?? []).map((x) => x.text);
+    checklists[k] = list.map((t) => back(from, to, t));
+  }
+  const dom = (c: CoreContent, td: string) => c.domains.domains.find((d) => d.code === td);
+  const artifacts: Record<string, string[]> = {};
+  for (const [td, list] of Object.entries(picks.artifacts)) {
+    artifacts[td] = list.map((t) => back(dom(xx, td)?.artifacts ?? [], dom(ko, td)?.artifacts ?? [], t));
+  }
+  const verifications: Record<string, string[]> = {};
+  for (const [td, list] of Object.entries(picks.verifications)) {
+    verifications[td] = list.map((t) =>
+      back(dom(xx, td)?.verify_targets ?? [], dom(ko, td)?.verify_targets ?? [], t));
+  }
+  return { ...picks, checklists, artifacts, verifications };
+}
 
 /**
  * 같은 여덟 축을 **고르는 사람의 말로** 적은 이름.
@@ -250,30 +318,21 @@ export function axisLabel(a: string): string { return AXIS_LABEL[a] ?? a; }
  * 자기가 한 일보다 **우리 분류**를 먼저 읽는다. 재는 이름은 결과를
  * 되짚는 자리(축 이름 · 운영 표)에 남고, 고르는 자리에는 이쪽이 선다.
  */
-const AXIS_ASK: Record<string, string> = {
-  J1: "범위를 정할 때",
-  J2: "요구를 구체적인 조건으로 바꿀 때",
-  J3: "직접 정한 것",
-  J4: "쓴 방법과 도구",
-  J5: "남긴 결과물",
-  J6: "비교하고 확인한 것",
-  J7: "잘 안 됐을 때",
-  J8: "결과가 쓰인 곳",
-};
+/* 글은 언어마다 `copy.*.ts` 의 `axisAsk` 가 든다 */
 /**
  * **그 Core 의 말로 바꾸는 자리.** 경영의 J2 근거는 `목표를 매출이나
  * 건수 같은 숫자로 바꿔 적었다` 처럼 목표를 숫자로 바꾸는 일이고, 도구를
  * 고르는 칸이 따로 없다. 표가 없는 Core 는 위의 공통 이름이 선다.
  */
-const AXIS_ASK_BY_CORE: Record<string, Partial<Record<string, string>>> = {
-  BIZ_CORE_V1: { J2: "목표를 숫자로 바꿀 때", J4: "쓴 방법" },
-};
-export function axisAsk(a: string, core?: string): string {
-  return (core ? AXIS_ASK_BY_CORE[core]?.[a] : undefined) ?? AXIS_ASK[a] ?? axisLabel(a);
+/* 바꾸는 칸은 `copy.*.ts` 의 `axisAskByCore` 가 든다 */
+export function axisAsk(a: string, core?: string, lang: V3Lang = "ko"): string {
+  const t = copyFor(lang);
+  return (core ? t.axisAskByCore[core]?.[a] : undefined)
+    ?? (t.axisAsk as Record<string, string>)[a] ?? axisLabel(a, lang);
 }
 
-export function industryChoices(core: string) {
-  return industryPacks(core).packs
+export function industryChoices(core: string, lang: V3Lang = "ko") {
+  return industryPacks(core, lang).packs
     .map((p) => ({ code: p.code, name: p.name_ko, first: p.demands[0] ?? "" }));
 }
 /**
@@ -365,10 +424,10 @@ export function rolesFromDomains(core: string, confirmed: string[]): ReverseLink
     (r: never) => (r as { role: string }).role, confirmed);
 }
 
-export function roleChoices(core: string) {
-  return rolePacks(core).packs.map((p) => ({
+export function roleChoices(core: string, lang: V3Lang = "ko") {
+  return rolePacks(core, lang).packs.map((p) => ({
     code: p.code, name: p.name_ko, first: p.owns,
-    domains: p.core_ref.td.map((td) => domainName(core, td)),
+    domains: p.core_ref.td.map((td) => domainName(core, td, lang)),
   }));
 }
 
@@ -378,9 +437,9 @@ export function roleChoices(core: string) {
  * taxonomy 의 조직환경을 그대로 읽는다. 화면에 짧은 이름을 따로 적어
  * 두면 taxonomy 를 고친 날 두 이름이 갈린다.
  */
-export function orgChoices(core: string) {
+export function orgChoices(core: string, lang: V3Lang = "ko") {
   const tax = coreFile<{ org_contexts: { code: string; name: string; differs: string }[] }>(
-    core, "taxonomy");
+    core, "taxonomy", undefined, lang);
   return tax.org_contexts.map((o) => ({ code: o.code, name: o.name, first: o.differs }));
 }
 
@@ -492,6 +551,14 @@ export async function openAttempt(args: {
    * 아니면 버리고 기본 전공으로 연다.
    */
   core?: string | null;
+  /**
+   * 사용자가 고른 화면 언어(쿠키 · `?lang=`). **내놓는 언어 목록에 있을 때만
+   * 부르는 쪽이 넘긴다**(`resolveLang()`). 없으면 시장의 기본 언어다.
+   *
+   * 그대로 믿지 않는다: 그 Core 가 그 언어의 시장에 열려 있고 원고가 다
+   * 있어야 그 언어가 된다(`localeFor`). 아니면 한국어로 연다.
+   */
+  lang?: string | null;
 }): Promise<V3Attempt> {
   /* 이어보기가 먼저다. 중복 응시를 만들지 않는다 */
   const open = await currentAttempt(args.userId);
@@ -550,15 +617,24 @@ export async function openAttempt(args: {
    * 학교 맥락이 선 응시는 그 자리에서 PRO 로 적는다.
    */
   const tier: Tier = campus ? "PRO" : args.tier;
+  /**
+   * **응시 언어를 Core 와 시장을 정한 자리에서 같이 정한다.** GLOBAL 이면
+   * 영어, KR 이면 한국어가 기본이고, 고른 언어가 있으면 그것이 먼저다. 한 번
+   * 적으면 바꾸지 않는다: 한 응시 안에서 화면 · 결과 · PDF 가 같은 언어다.
+   */
+  /* **학교 진입은 한국어로 연다.** 학교 · 학과 이름과 학교 등록부가 한국어뿐이라,
+     영어 응시로 열면 머리띠와 결과지 첫 줄에 한글이 선다(영어판 1단계 범위 밖) */
+  const locale = campus ? "ko" as const
+    : localeFor({ core: coreCode, market, override: args.lang ?? null });
   const row = await queryOne<{ id: string }>(
     `INSERT INTO v3_attempts
        (user_id, entitlement_id, tier, market_code, education_stage, grad_field,
         undergrad_core, assessment_version,
         item_bank_version, scoring_version, current_screen,
         core_code, university_code, college_code, department_code,
-        specialization_code)
+        specialization_code, locale)
      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,'profile',
-             $11,$12,$13,$14,$15)
+             $11,$12,$13,$14,$15,$16)
      RETURNING id::text`,
     [args.userId, args.entitlementId ?? null, tier, market,
      args.stage, args.gradField, args.undergradCore ?? null,
@@ -566,7 +642,7 @@ export async function openAttempt(args: {
      bankVersionOf(coreCode), SCORING_VERSION,
      coreCode, campus?.university_code ?? null,
      campus?.college_code ?? null, campus?.department_code ?? null,
-     campus?.specialization ?? null],
+     campus?.specialization ?? null, locale],
   );
   return (await attemptOf(row?.id as string, args.userId)) as V3Attempt;
 }
@@ -884,23 +960,37 @@ export function tiedPairIn(answers: Record<string, Answer>, tds: string[]): stri
  * 하나 늘 때 네 자리 가운데 세 곳이 뒤처지고, **그 셋이 보는 것은 그만큼
  * 옛 화면**이다. 전공 이름이 여기로 들어오는 자리가 그 모양이었다.
  */
-export function planDeps(core: string): Deps {
+export function planDeps(core: string, lang: V3Lang = "ko"): Deps {
   return {
-    items: content(core).bank.items,
-    domainName: (td: string) => domainName(core, td),
-    wording: (id: string, stage: string) => wordingOf(core, id, stage),
-    gridRow: (td: string) => gridRowOf(core, td),
-    scene: (code: string) => industryScene(core, code),
-    gloss: (itemId: string) => industryGloss(core, itemId),
-    termGloss: (text: string) => termGlossOf(core, text),
-    roleName: (code: string) => roleName(core, code),
+    /* **문항 줄은 언어와 무관하다**: 묶음 · 축 · 등급 · 차례가 원본과 같다.
+       화면에 서는 글만 그 언어 원고에서 읽는다 */
+    items: content(core, lang).bank.items,
+    domainName: (td: string) => domainName(core, td, lang),
+    wording: (id: string, stage: string) => wordingOf(core, id, stage, lang),
+    gridRow: (td: string) => gridRowOf(core, td, lang),
+    scene: (code: string) => industryScene(core, code, lang),
+    gloss: (itemId: string) => industryGloss(core, itemId, lang),
+    termGloss: (text: string) => termGlossOf(core, text, lang),
+    roleName: (code: string) => roleName(core, code, lang),
     /* 그 전공의 이름. **등록부가 유일한 출처다**(설계 원칙 10): 화면 쪽에
        따로 적어 두면 Core 를 더하는 날 둘이 갈리고, 갈린 쪽이 남의 전공
        이름을 적는다 */
-    majorName: coreOf(core).name_ko,
-    /* 화면 글을 Core 마다 갈라 적는 자리가 읽는다(`blocks.ts` 의 `CORE_COPY`) */
+    majorName: lang === "ko" ? coreOf(core).name_ko : majorNameIn(core, lang),
+    /* 화면 글을 Core 마다 갈라 적는 자리가 읽는다(`copy.*.ts` 의 `coreCopy`) */
     core,
+    lang,
   };
+}
+
+/**
+ * 그 언어의 전공 이름. **공용 원고(`shared-<CORE>.json`)가 정본이다.**
+ * 원고가 없으면 등록부의 영어 이름이다: 그것도 사람이 적어 둔 값이고
+ * 한국어로 떨어지지 않는다.
+ */
+export function majorNameIn(core: string, lang: V3Lang): string {
+  if (lang === "ko") return coreOf(core).name_ko;
+  try { return sharedFile(core, lang).core_name || coreOf(core).name_en; }
+  catch { return coreOf(core).name_en; }
 }
 
 /**
@@ -965,7 +1055,7 @@ export function didCellsOf(core: string, answers: Record<string, Answer>): strin
 
 export async function planFor(a: V3Attempt): Promise<Plan> {
   const answers = await answersOf(a.id);
-  return buildPlan(planInput(a, answers), planDeps(a.core_code));
+  return buildPlan(planInput(a, answers), planDeps(a.core_code, a.locale ?? "ko"));
 }
 
 /**
@@ -1024,7 +1114,8 @@ export async function viewOf(
       : ids[0]);
   const at = ids.indexOf(target);
   return {
-    attempt: a, plan, screen: plan.screens[at], progress: progressOf(plan, target),
+    attempt: a, plan, screen: plan.screens[at],
+    progress: progressOf(plan, target, a.locale ?? "ko"),
     answers, notes, picks,
     prevId: at > 0 ? ids[at - 1] : null,
     nextId: at < ids.length - 1 ? ids[at + 1] : null,
@@ -1044,14 +1135,18 @@ export async function viewOf(
 export async function menuContextOf(a: V3Attempt): Promise<MenuContext> {
   const answers = await answersOf(a.id);
   const tds = content(a.core_code).domains.domains.map((d) => d.code);
+  /* **보기 글만 그 언어다.** 저장되는 값(영역 · 산업 · 역할 · 조직 코드)은
+     언어와 무관하다 */
+  const lang = a.locale ?? "ko";
   return {
     core: a.core_code,
+    lang,
     tiedPair: tiedPairIn(answers, tds)
-      .map((code) => ({ code, name: domainName(a.core_code, code) })),
-    domains: tds.map((code) => ({ code, name: domainName(a.core_code, code) })),
-    industries: industryChoices(a.core_code).map((i) => ({ code: i.code, name: i.name })),
-    roles: roleChoices(a.core_code).map((r) => ({ code: r.code, name: r.name })),
-    orgs: orgChoices(a.core_code).map((o) => ({ code: o.code, name: o.name })),
+      .map((code) => ({ code, name: domainName(a.core_code, code, lang) })),
+    domains: tds.map((code) => ({ code, name: domainName(a.core_code, code, lang) })),
+    industries: industryChoices(a.core_code, lang).map((i) => ({ code: i.code, name: i.name })),
+    roles: roleChoices(a.core_code, lang).map((r) => ({ code: r.code, name: r.name })),
+    orgs: orgChoices(a.core_code, lang).map((o) => ({ code: o.code, name: o.name })),
   };
 }
 
@@ -1135,7 +1230,9 @@ export async function newScreensAfterUpgrade(
 
 export async function submissionOf(a: V3Attempt, db?: Reader): Promise<Submission> {
   const answers = await answersOf(a.id, db);
-  const picks = await picksOf(a.id, db);
+  /* **채점은 원본 글자만 받는다.** 그 언어로 저장된 근거를 같은 자리의 원본
+     글자로 되돌려 넘긴다(`canonicalPicks`). 판정과 결과 모델이 언어와 무관해진다 */
+  const picks = canonicalPicks(a.core_code, a.locale ?? "ko", await picksOf(a.id, db));
   const plan = buildPlan(planInput(a, answers), planDeps(a.core_code));
   return {
     attempt_id: a.id, tier: a.tier, stage: a.education_stage, grad_field: a.grad_field,
@@ -1213,6 +1310,12 @@ export async function submit(a: V3Attempt): Promise<{ snapshot: Snapshot; id: st
        */
       core_code: a.core_code,
       specialization: a.specialization_code ?? null,
+      /**
+       * 응시 언어. **판정에 쓰이지 않는다**: 같은 응답이면 두 언어의 스냅샷이
+       * 글자까지 같다(`v3:i18n` 골든). 결과지와 종이를 어느 언어로 그렸는지
+       * 되짚는 자리다.
+       */
+      locale: a.locale ?? "ko",
       assessment_ui_version: ASSESSMENT_UI_VERSION,
       assessment_copy_version: ASSESSMENT_COPY_VERSION,
       result_model_version: RESULT_MODEL_VERSION,

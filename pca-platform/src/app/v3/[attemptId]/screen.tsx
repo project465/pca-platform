@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { BrandMark } from "@/components/sf/brand-mark";
 import { useRouter } from "next/navigation";
 import { UNKNOWN, type Answer } from "@/lib/me-v3/scoring/types";
@@ -10,11 +10,17 @@ import {
   answerAction, cursorAction, finishAction, noteAction, picksAction,
   picksAction3, profileAction,
 } from "./actions";
-import {
-  FIELD_LABEL, STAGE_LABEL, UNDERGRAD_ASK, UNDERGRAD_HELP,
-  undergradGloss, undergradLabel,
-} from "../tier-text";
+import { tierText } from "../tier-text.i18n";
+import { phrase, type Say } from "@/lib/me-v3/phrase";
 import type { Field, ProgressModel, ScreenModel } from "./model";
+
+/**
+ * 이 응시의 언어로 고른 `t()`. **아래 작은 조각들이 같은 것을 읽는다.**
+ *
+ * 조각마다 언어를 받아 넘기면 하나가 빠지는 날 그 조각만 한국어로 선다.
+ * 모듈 전역에 담지 않는다: 서버에서 그릴 때 다른 사람의 요청과 섞인다.
+ */
+const SayCtx = createContext<Say>(phrase("ko"));
 
 /**
  * 고른 자리가 켜졌다는 것을 눈으로 본 뒤에 넘어가는 시간.
@@ -56,7 +62,7 @@ const AUTO_KINDS = new Set(["single", "pair", "sweep", "group"]);
  * 지우지 않는다: 영역이 빠지면 읽히지 않을 뿐이고 되돌아오면 그대로 쓰인다.
  */
 export default function Screen({
-  s, prog, tier, tierLabel, school, department, major, majorExamples,
+  s, prog, tier, tierLabel, school, department, major, majorExamples, lang,
 }: {
   s: ScreenModel; prog: ProgressModel; tier: string;
   /** 산 등급. **학교 진입이면 `null`** 이고 그때는 머리띠에 서지 않는다 */
@@ -69,7 +75,12 @@ export default function Screen({
   major: string;
   /** 그 계열에 드는 학과 보기. 등록부의 별칭에서 온다 */
   majorExamples: string;
+  /** 응시 언어(`v3_attempts.locale`). 화면 글만 고른다 */
+  lang?: string;
 }) {
+  const t = phrase(lang);
+  const { FIELD_LABEL, STAGE_LABEL, UNDERGRAD_ASK, UNDERGRAD_HELP, undergradGloss, undergradLabel } =
+    tierText(lang);
   const router = useRouter();
   const [vals, setVals] = useState<Record<string, number | string | null>>(
     Object.fromEntries(s.fields.map((f) => [f.itemId, f.value])));
@@ -367,7 +378,8 @@ export default function Screen({
     : (s.kind === "transition" || s.kind === "done") ? " is-calm" : "";
 
   return (
-    <div className={`qs${width}`}>
+    <SayCtx.Provider value={t}>
+    <div className={`qs${width}`} lang={lang === "ko" ? undefined : lang}>
       {/* **머리띠는 한 줄과 막대 하나다**(규격 §13).
           브랜드 · 지나온 단계와 지금 · 등급과 몇째인가가 한 줄에 서고 그
           아래에 2px 막대가 눕는다. 한동안 세 줄이었다: 브랜드와 등급 ·
@@ -400,11 +412,11 @@ export default function Screen({
                 움직일 때만 글자가 바뀌고 평소에는 `저장됨` 한 마디다 */}
             {mid ? null : failed ? (
               <button type="button" className="qs-save is-bad" onClick={retrySave}>
-                저장 실패 · 다시 시도
+                {t("저장 실패 · 다시 시도")}
               </button>
             ) : (
               <small className="qs-save">
-                {saving > 0 ? "저장 중…" : sent ? "저장됨" : "자동 저장"}
+                {saving > 0 ? t("저장 중…") : sent ? t("저장됨") : t("자동 저장")}
               </small>
             )}
             {/* **오른쪽은 산 등급과 몇째인가 한 묶음이다**(규격 §5).
@@ -423,7 +435,7 @@ export default function Screen({
           </div>
           <div className="qs-bar" role="progressbar" aria-valuenow={prog.percent}
             aria-valuemin={0} aria-valuemax={100}
-            aria-label={`검사 진행 · ${prog.now}`}>
+            aria-label={t("검사 진행 · {now}", { now: prog.now })}>
             <span style={{ width: `${prog.percent}%` }} />
           </div>
         </div>
@@ -451,7 +463,7 @@ export default function Screen({
             `준비가 됐습니다` 를 그대로 두면** 아직 할 일이 남은 줄 안다 */}
         {s.question ? (
           <h1 className="qs-q">
-            {s.kind === "done" && s.done ? "내 CareerMatri가 만들어졌습니다" : s.question}
+            {s.kind === "done" && s.done ? t("내 CareerMatri가 만들어졌습니다") : s.question}
           </h1>
         ) : null}
         {/* 전환 화면은 **한 줄 설명과 칩 한 줄**이다.
@@ -464,7 +476,7 @@ export default function Screen({
         {/* **낱말의 뜻은 안내가 아니다.** 답하는 법을 적는 `qs-help` 와
             같은 모양으로 세워 두면 여덟 자 질문 아래 서른 자 회색 글이
             서서 그 줄이 질문보다 세게 읽힌다. `예` 줄과 같은 꼴로 받친다 */}
-        {s.term ? <p className="qs-term"><span>뜻</span>{s.term}</p> : null}
+        {s.term ? <p className="qs-term"><span>{t("뜻")}</span>{s.term}</p> : null}
         {s.chips?.length ? (
           <ul className="qs-next">
             {s.chips.map((x) => <li key={x}>{x}</li>)}
@@ -489,7 +501,7 @@ export default function Screen({
         {s.profile ? (
           <>
             <fieldset className="qs-opts">
-              <legend>현재 학업 단계</legend>
+              <legend>{t("현재 학업 단계")}</legend>
               <div className="qs-list">
                 {(["bachelor", "master", "phd", "postdoc"] as const).map((v) => (
                   <label key={v} className={`qs-opt${stage === v ? " is-on" : ""}`}>
@@ -507,8 +519,8 @@ export default function Screen({
             </fieldset>
             {stage !== "bachelor" ? (
               <fieldset className="qs-opts">
-                <legend>대학원 전공계열</legend>
-                <p className="qs-eyebrow" aria-hidden>대학원 전공계열</p>
+                <legend>{t("대학원 전공계열")}</legend>
+                <p className="qs-eyebrow" aria-hidden>{t("대학원 전공계열")}</p>
                 <div className="qs-list">
                   {(["STEM", "HUMANITIES_SOCIAL", "BUSINESS", "OTHER_INTERDISCIPLINARY"] as const)
                     .map((v) => (
@@ -560,17 +572,14 @@ export default function Screen({
                 멈추고 전공 고르는 자리로 돌려보낸다 */}
             {offCore ? (
               <div className="qs-stop" role="alert">
-                <b>이 검사는 {major} 경험을 읽습니다.</b>
+                <b>{t("이 검사는 {major} 경험을 읽습니다.", { major })}</b>
                 <p>
-                  학부와 대학원이 모두 {major} 계열이 아니면 지금 드릴 수
-                  있는 결과가 없습니다. 끝까지 답하셔도 결과가 비어 있어
-                  여기서 멈춥니다.
+                  {t("학부와 대학원이 모두 {major} 계열이 아니면 지금 드릴 수 있는 결과가 없습니다. 끝까지 답하셔도 결과가 비어 있어 여기서 멈춥니다.", { major })}
                 </p>
                 <p>
-                  학부가 {major} 계열이면 위에서 다시 골라주세요. 전공별
-                  검사는 준비되는 대로 전공 목록에 열립니다.
+                  {t("학부가 {major} 계열이면 위에서 다시 골라주세요. 전공별 검사는 준비되는 대로 전공 목록에 열립니다.", { major })}
                 </p>
-                <a className="qs-btn qs-btn-main" href="/cores">전공 목록으로</a>
+                <a className="qs-btn qs-btn-main" href="/cores">{t("전공 목록으로")}</a>
               </div>
             ) : null}
           </>
@@ -649,9 +658,9 @@ export default function Screen({
         {s.groups ? (
           <>
             <p className="qs-picked is-lead">
-              <span>해 봤다고 답한 일 <b>{s.groups.length}</b>가지</span>
+              <span>{t("해 봤다고 답한 일")} <b>{s.groups.length}</b>{t("가지")}</span>
               <span className="qs-grow" />
-              <span>고른 것 <b>{Object.values(picks).reduce((n, v) => n + v.length, 0)}</b>개</span>
+              <span>{t("고른 것")} <b>{Object.values(picks).reduce((n, v) => n + v.length, 0)}</b>{t("개")}</span>
             </p>
             <div className="qs-groups">
             {s.groups.map((g) => {
@@ -660,7 +669,7 @@ export default function Screen({
                 <section className="qs-group is-flat" key={g.slot}>
                   <h3 className="qs-group-head">
                     <span className="qs-group-name">{g.label}</span>
-                    {on.length ? <em>{on.length}개</em> : null}
+                    {on.length ? <em>{t("{n}개", { n: on.length })}</em> : null}
                   </h3>
                   <div className="qs-chips">
                     {g.items.map((it) => {
@@ -685,11 +694,11 @@ export default function Screen({
         {s.packs ? (
           <>
             <p className="qs-picked is-lead">
-              <span><b>{many.length}</b> / {s.max ?? 2} 선택</span>
+              <span><b>{many.length}</b> / {s.max ?? 2} {t("선택")}</span>
               <span className="qs-grow" />
               <span className="qs-hint">{many.length >= (s.max ?? 2)
-                ? "두 개까지 고를 수 있습니다. 다시 누르면 선택이 풀립니다"
-                : "고르지 않고 넘어가셔도 됩니다"}</span>
+                ? t("두 개까지 고를 수 있습니다. 다시 누르면 선택이 풀립니다")
+                : t("고르지 않고 넘어가셔도 됩니다")}</span>
             </p>
             <fieldset className="qs-opts" style={{ margin: 0, border: 0, padding: 0 }}>
               <legend>{s.question}</legend>
@@ -711,7 +720,7 @@ export default function Screen({
             </fieldset>
             <button type="button"
               className={`qs-none${noPick && !many.length ? " is-on" : ""}`}
-              onClick={clearMany}>아직 잘 모르겠습니다</button>
+              onClick={clearMany}>{t("아직 잘 모르겠습니다")}</button>
           </>
         ) : null}
 
@@ -721,28 +730,28 @@ export default function Screen({
             {s.summary ? (
               <ul className="qs-summary">
                 <li>
-                  <span>살펴본 업무 영역</span>
-                  <b>{s.summary.explored}개</b>
+                  <span>{t("살펴본 업무 영역")}</span>
+                  <b>{t("{n}개", { n: s.summary.explored })}</b>
                 </li>
                 {s.summary.deep.length ? (
                   <li>
-                    <span>자세히 본 영역</span>
+                    <span>{t("자세히 본 영역")}</span>
                     <b>{s.summary.deep.join(" · ")}</b>
                   </li>
                 ) : null}
                 <li>
-                  <span>실제 경험을 물은 문항</span>
-                  <b>{s.summary.judged}개</b>
+                  <span>{t("실제 경험을 물은 문항")}</span>
+                  <b>{t("{n}개", { n: s.summary.judged })}</b>
                 </li>
                 <li>
-                  <span>응답과 선택</span>
-                  <b>답한 문항 {s.answered}개
-                    {s.summary.evidence ? <em> · 고른 항목 {s.summary.evidence}개</em> : null}
+                  <span>{t("응답과 선택")}</span>
+                  <b>{t("답한 문항 {n}개", { n: s.answered ?? 0 })}
+                    {s.summary.evidence ? <em> · {t("고른 항목 {n}개", { n: s.summary.evidence })}</em> : null}
                   </b>
                 </li>
                 {s.summary.industry || s.summary.role ? (
                   <li>
-                    <span>관심 산업·직무</span>
+                    <span>{t("관심 산업·직무")}</span>
                     <b>{[s.summary.industry, s.summary.role].filter(Boolean).join(" · ")}</b>
                   </li>
                 ) : null}
@@ -756,9 +765,8 @@ export default function Screen({
                 답할 수 없는 문항 하나에 사람이 갇힌다 */}
             {!s.done && s.gaps?.length ? (
               <div className="qs-review">
-                <h2>아직 답하지 않은 문항이 {s.gaps.length}개 있습니다</h2>
-                <p>누르면 그 문항으로 돌아갑니다. 비워 둔 채 제출하셔도 되고,
-                  답하지 않은 문항은 결과에 &lsquo;답하지 않음&rsquo;으로 표시됩니다.</p>
+                <h2>{t("아직 답하지 않은 문항이 {n}개 있습니다", { n: s.gaps.length })}</h2>
+                <p>{t("누르면 그 문항으로 돌아갑니다. 비워 둔 채 제출하셔도 되고, 답하지 않은 문항은 결과에 ‘답하지 않음’으로 표시됩니다.")}</p>
                 <ul>
                   {s.gaps.map((g) => (
                     <li key={g.index}>
@@ -771,30 +779,35 @@ export default function Screen({
             ) : null}
             {!s.done && s.gaps && !s.gaps.length ? (
               <p className="qs-review-ok" role="status">
-                답해야 하는 문항을 모두 채우셨습니다.
+                {t("답해야 하는 문항을 모두 채우셨습니다.")}
               </p>
             ) : null}
             <p className="qs-help" style={{ marginTop: 24 }}>
               {s.done
-                ? "나중에 경험을 더 넣으시면 결과를 다시 정리해 드립니다."
-                : "지금까지 답하신 것으로 결과를 정리합니다. 만든 뒤에도 이전으로 돌아가 고칠 수 있습니다."}
+                ? t("나중에 경험을 더 넣으시면 결과를 다시 정리해 드립니다.")
+                : t("지금까지 답하신 것으로 결과를 정리합니다. 만든 뒤에도 이전으로 돌아가 고칠 수 있습니다.")}
             </p>
             {/* **PDF 하나로 끝내지 않는다.** 결과를 받은 사람이 다음에 갈
                 자리가 여섯이다. 하나만 두면 그 하나를 누른 날 끝난다 */}
             {s.done ? (
               <ul className="qs-done-next">
                 {[
-                  [`/v3/${s.attemptId}/result`, "결과 보기", "내 경험을 업무 영역, 산업, 직무와 이어서 보여 드립니다"],
-                  ["/me", "내 CareerMatri", "지금 방향, 근거, 부족한 점을 한곳에서 봅니다"],
-                  [`/v3/${s.attemptId}/result#evidence`, "내가 가진 근거", "확인된 경험과 고른 항목"],
-                  ["/me/state#gaps", "아직 부족한 것", "무엇이 부족하고 어떻게 채우면 되는지"],
+                  [`/v3/${s.attemptId}/result`, t("결과 보기"), t("내 경험을 업무 영역, 산업, 직무와 이어서 보여 드립니다")],
+                  ["/me", t("내 CareerMatri"), t("지금 방향, 근거, 부족한 점을 한곳에서 봅니다")],
+                  [`/v3/${s.attemptId}/result#evidence`, t("내가 가진 근거"), t("확인된 경험과 고른 항목")],
+                  ["/me/state#gaps", t("아직 부족한 것"), t("무엇이 부족하고 어떻게 채우면 되는지")],
                   /* 산업과 직무의 수는 그 Core 의 팩에서 센다. 박아 두면
                      산업이 일곱인 Core 에도 `여덟 산업` 이 선다 */
-                  ["/me/explore", "관심 산업과 직무", s.summary
-                    ? `산업 ${s.summary.industryCount}개와 직무 ${s.summary.roleCount}개를 다시 둘러봅니다`
-                    : "산업과 직무를 다시 둘러봅니다"],
-                  ["/me/experience/new", "새 경험 추가", "새 경험을 넣으면 결과를 다시 정리할 수 있습니다"],
-                ].map(([href, label, note]) => (
+                  ["/me/explore", t("관심 산업과 직무"), s.summary
+                    ? t("산업 {i}개와 직무 {r}개를 다시 둘러봅니다",
+                      { i: s.summary.industryCount, r: s.summary.roleCount })
+                    : t("산업과 직무를 다시 둘러봅니다")],
+                  ["/me/experience/new", t("새 경험 추가"), t("새 경험을 넣으면 결과를 다시 정리할 수 있습니다")],
+                ]
+                  /* **작업공간(`/me`)은 아직 한국어뿐이다**(영어판 1단계). 영어 응시에서
+                     거기로 보내면 다음 쪽이 통째로 한국어라, 결과지 안의 자리만 남긴다 */
+                  .filter(([href]) => lang !== "en" || href.startsWith("/v3/"))
+                  .map(([href, label, note]) => (
                   <li key={href}>
                     <a href={href}>
                       <b>{label}</b>
@@ -811,8 +824,8 @@ export default function Screen({
             세는 까닭은 `progress.ts` 와 같다: 전체 분모는 routing 으로
             늘어날 수 있어서 거꾸로 가는 것처럼 읽힌다 */}
         {!mid && prog.inStage.total > 1 ? (
-          <aside className="qs-omr" aria-label="이번 문항 그룹 답안 현황">
-            <p className="qs-omr-h">답안 현황</p>
+          <aside className="qs-omr" aria-label={t("이번 문항 그룹 답안 현황")}>
+            <p className="qs-omr-h">{t("답안 현황")}</p>
             <p className="qs-omr-sum">
               <b>{prog.now}</b> {prog.inStage.index} / {prog.inStage.total}
             </p>
@@ -826,16 +839,16 @@ export default function Screen({
                 </li>
               ))}
             </ol>
-            <p className="qs-omr-note">답은 고를 때마다 저장됩니다. 창을 닫아도 이어서 풀 수 있습니다.</p>
+            <p className="qs-omr-note">{t("답은 고를 때마다 저장됩니다. 창을 닫아도 이어서 풀 수 있습니다.")}</p>
           </aside>
         ) : null}
       </main>
 
-      <nav className="qs-nav" aria-label="화면 이동">
+      <nav className="qs-nav" aria-label={t("화면 이동")}>
         <div className="qs-nav-in">
           {s.prevIndex !== null ? (
             <button type="button" className="qs-btn qs-btn-ghost"
-              onClick={() => go(s.prevIndex)} disabled={moving}>이전</button>
+              onClick={() => go(s.prevIndex)} disabled={moving}>{t("이전")}</button>
           ) : null}
           <span className="qs-grow" />
           {/* 전환과 완료에는 저장할 것이 없다. 거기 띄우면 뜻 없는 글자가
@@ -844,21 +857,21 @@ export default function Screen({
             ? (
               <span className="qs-need" role="status">
                 {s.fields.length > 1 && missing.length
-                  ? `아직 답하지 않은 질문이 ${missing.length}개 있습니다`
-                  : "답을 고른 뒤 다음으로 넘어가세요"}
+                  ? t("아직 답하지 않은 질문이 {n}개 있습니다", { n: missing.length })
+                  : t("답을 고른 뒤 다음으로 넘어가세요")}
               </span>
             )
             : null}
           {s.kind === "done" ? (
             s.done ? (
-              <a className="qs-btn qs-btn-main" href={`/v3/${s.attemptId}/result`}>결과 보기</a>
+              <a className="qs-btn qs-btn-main" href={`/v3/${s.attemptId}/result`}>{t("결과 보기")}</a>
             ) : (
               /* **가짜 퍼센트를 적지 않는다**(규격 §9). 몇 초가 걸릴지
                  모르는 일에 73% 를 적으면 그 수가 근거처럼 읽힌다. 지금
                  무슨 일이 도는지 한 마디만 적는다 */
               <button type="button" className="qs-btn qs-btn-main"
                 onClick={finish} disabled={moving}>
-                {moving ? "결과를 정리하고 있습니다" : "결과 만들기"}
+                {moving ? t("결과를 정리하고 있습니다") : t("결과 만들기")}
               </button>
             )
           ) : (
@@ -868,12 +881,13 @@ export default function Screen({
                한 줄 적는 쪽이 낫다 */
             <button type="button" className="qs-btn qs-btn-main"
               onClick={next} disabled={moving || s.nextIndex === null || offCore}>
-              {s.kind === "transition" ? "계속" : "다음"}
+              {s.kind === "transition" ? t("계속") : t("다음")}
             </button>
           )}
         </div>
       </nav>
     </div>
+    </SayCtx.Provider>
   );
 }
 
@@ -891,6 +905,7 @@ function One({
   onNote: (f: Field, t: string) => void;
   onNoteDone: (f: Field) => void;
 }) {
+  const t = useContext(SayCtx);
   const c = f.control;
   if (c.kind === "steps") {
     return <Steps f={f} value={value} onPick={onPick} />;
@@ -903,7 +918,7 @@ function One({
     const labels = f.optionLabel ?? c.options;
     return (
       <fieldset className="qs-opts">
-        <legend>{f.label ?? "보기"}</legend>
+        <legend>{f.label ?? t("보기")}</legend>
         {/* **넓은 화면에서는 보기 넷이 한 행에 선다**(규격 §4).
             세로로 쌓으면 상자 하나가 85px 이라 한 문항이 340px 을 먹고,
             한 화면에 문항이 둘인 자리에서는 같은 네 줄이 여덟 번 읽힌다.
@@ -938,7 +953,7 @@ function One({
             않게 하는 자리다 */}
         {f.optionHelpFold ? (
           <details className="qs-optfold" open={f.optionFoldOpen}>
-            <summary>보기 고르는 법</summary>
+            <summary>{t("보기 고르는 법")}</summary>
             {/* **읽는 법을 한 자리에 모은다.** 전에는 같은 내용이 보기
                 아래 줄글로 한 번 더 섰다. 접힌 `보기가 어떻게 갈리나요`
                 와 같은 말을 하는 자리라, 한 화면에 설명이 두 번 서고
@@ -959,7 +974,7 @@ function One({
     return (
       <>
         <fieldset className="qs-opts">
-          <legend>{f.label ?? "보기"}</legend>
+          <legend>{f.label ?? t("보기")}</legend>
           <div className="qs-list">
             {c.options.map((o) => (
               <label key={o.value} className={`qs-opt${value === o.value ? " is-on" : ""}`}>
@@ -1009,6 +1024,7 @@ function Steps({
   f: Field; value: number | string | null;
   onPick: (f: Field, raw: number | string, a: Answer) => void;
 }) {
+  const t = useContext(SayCtx);
   const c = f.control;
   if (c.kind !== "steps") return null;
   const steps = c.options.filter((o) => o.value !== null);
@@ -1021,7 +1037,7 @@ function Steps({
       : { kind: "scale5", value: o.value });
   return (
     <fieldset className="qs-opts">
-      <legend>{f.label ?? "보기"}</legend>
+      <legend>{f.label ?? t("보기")}</legend>
       {/* 보기 다섯(해 본 적은 셋)이 한 행에 선다. 서로 견주어 고르는
           말이라 나란히 놓으면 눈이 한 번에 훑는다. 좁은 화면에서는
           아래 `@media` 가 한 줄짜리 칸으로 다시 쌓는다 */}
@@ -1095,6 +1111,7 @@ function Sum({
   n: number; of: number; miss?: boolean;
   onOpen: () => void;
 }) {
+  const t = useContext(SayCtx);
   const label = pickedLabel(f, value);
   return (
     <button type="button" onClick={onOpen} aria-expanded={false}
@@ -1102,7 +1119,7 @@ function Sum({
       <span className="qs-sum-n" aria-hidden>{n} / {of}</span>
       <span className="qs-sum-q">{f.label}</span>
       <span className="qs-sum-a">
-        {label ?? (miss ? "아직 답하지 않았습니다" : "답할 차례")}
+        {label ?? (miss ? t("아직 답하지 않았습니다") : t("답할 차례"))}
       </span>
     </button>
   );
@@ -1123,6 +1140,7 @@ function Row({
   onNote: (f: Field, t: string) => void;
   onNoteDone: (f: Field) => void;
 }) {
+  const t = useContext(SayCtx);
   const c = f.control;
   if (c.kind === "scale5" || c.kind === "exposure") {
     const labels = c.kind === "scale5" ? c.labels : c.options;
@@ -1130,9 +1148,9 @@ function Row({
        가운데 칸이 무엇인지 모르면 사람들은 가운데를 누른다 */
     return (
       <fieldset className={`qs-row qs-opts${miss ? " is-miss" : ""}`}>
-        <legend>{f.label ?? "척도"}</legend>
+        <legend>{f.label ?? t("척도")}</legend>
         {f.label ? <span aria-hidden>{f.label}</span> : null}
-        {miss ? <span className="qs-miss">아직 답하지 않았습니다</span> : null}
+        {miss ? <span className="qs-miss">{t("아직 답하지 않았습니다")}</span> : null}
         <div className="qs-scale">
           {labels.map((label, i) => {
             const v = c.kind === "scale5" ? i + 1 : i;
@@ -1165,12 +1183,12 @@ function Row({
             {f.label}
           </span>
         ) : null}
-        {miss ? <span className="qs-miss">아직 답하지 않았습니다</span> : null}
+        {miss ? <span className="qs-miss">{t("아직 답하지 않았습니다")}</span> : null}
         {/* **질문 → 예시 → 선택**(규격). 지어낸 문장이 아니라 그 영역의
             체크리스트나 그 산업팩의 쉬운 말 풀이에서 온 한 줄이다.
             `aria-hidden` 을 두지 않는다: 보조 기기로 읽는 사람에게도
             이 줄이 질문을 자기 경험에 대 보게 하는 자리다 */}
-        {f.example ? <p className="qs-ex"><span>예</span>{f.example}</p> : null}
+        {f.example ? <p className="qs-ex"><span>{t("예")}</span>{f.example}</p> : null}
         <One f={f} value={value} onPick={onPick} guide={guide}
           notes={notes} onNote={onNote} onNoteDone={onNoteDone} />
       </div>

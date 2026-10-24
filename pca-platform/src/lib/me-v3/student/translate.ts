@@ -168,8 +168,131 @@ export const TRANSLATE_MENU: Record<string, TranslateMenu> = {
   BIZ_CORE_V1: BIZ,
 };
 
-/** 그 Core 의 한 단계 보기. 사전이 없으면 중립 벌 */
-export function translateMenu(core: string, itemId: string): TranslateStep | null {
+/* ── 영어(영어판 1차, 2026-10-24) ──────────────────────────────────────
+   **수와 차례가 한국어 벌과 같다.** 저장되는 값이 자리(`S1`~`S5`)라서 차례가
+   어긋나면 같은 답이 다른 보기로 읽힌다. `없다` 류가 서는 자리도 같다.
+   영어판을 여는 Core 가 이공계 셋이라 기계공학 벌과 중립 벌만 적었다
+   (전기전자 · 컴퓨터는 한국어에서도 중립 벌을 받는다) */
+
+const EN_NOTE_T1 = "Describe the problem in a line or two (optional)";
+const EN_NOTE_T2 = "In one line, what made it a problem? (optional)";
+const EN_NOTE_T3 = "Any method you considered but didn't use? (optional)";
+const EN_NOTE_T4 = "Anything you kept the same throughout? (optional)";
+const EN_NOTE_T5 = "How many times? (optional)";
+const EN_NOTE_T10 = "In one line, who could use it? (optional)";
+
+/** 기계공학 */
+const ME_EN: TranslateMenu = {
+  TR_T1: { options: [
+    "Setting dimensions or values under given conditions", "Finding out why something didn't work",
+    "Building the method or procedure itself", "Balancing requirements that pulled against each other",
+  ], note: EN_NOTE_T1 },
+  TR_T2: { options: [
+    "Left as it was, it couldn't meet the spec", "The next step couldn't start until an earlier one was settled",
+    "The usual method couldn't meet the time or budget", "There was no basis for trusting the results",
+  ], note: EN_NOTE_T2 },
+  TR_T3: { options: [
+    "I predicted it ahead of time with calculations or simulation", "I measured it with tests or instruments",
+    "I built it first and then improved it", "I gathered and organized past cases and data",
+  ], note: EN_NOTE_T3 },
+  TR_T4: { options: [
+    "I changed the geometry or dimensions", "I changed the material or parts",
+    "I changed conditions or settings", "I changed the procedure or order",
+  ], note: EN_NOTE_T4 },
+  TR_T5: { options: [
+    "I ran it several times with different conditions", "I measured it several times under the same conditions to check the spread",
+    "I did it once and wrote up the results", "I compiled results someone else produced",
+  ], note: EN_NOTE_T5 },
+  TR_T6: { options: [
+    "I compared it with a standard or target value", "I compared it with test or measurement results",
+    "I compared it with values calculated another way", "I didn't compare it with anything",
+  ] },
+  TR_T7: { options: [
+    "I narrowed down the cause, changed conditions and tried again", "I fixed the model or assumptions and recalculated",
+    "I changed how I measured or tested", "I narrowed the scope and wrote down the limits",
+    "It went as expected",
+  ] },
+  TR_T8: { options: [
+    "I decided which option to go with", "I set the conditions or target values",
+    "I decided what to redo and what to drop", "I didn't decide anything myself",
+  ] },
+  TR_T9: { options: [
+    "It became drawings or specifications", "It became a simulation or test report",
+    "It became a procedure or standard", "It became a presentation or paper", "Nothing tangible came out of it",
+  ] },
+  TR_T10: { options: [
+    "As input for the next design or analysis", "As production or process conditions",
+    "As the basis for a pass/fail call or certification", "As a starting point for follow-up research",
+  ], note: EN_NOTE_T10 },
+};
+
+/** 사전이 없는 Core 의 영어 벌. 어느 전공도 가리키지 않는 말 */
+const NEUTRAL_EN: TranslateMenu = {
+  TR_T1: { options: [
+    "Setting values or criteria under given conditions", "Finding out why something didn't work",
+    "Building the method or procedure itself", "Balancing requirements that pulled against each other",
+  ], note: EN_NOTE_T1 },
+  TR_T2: { options: [
+    "Left as it was, it couldn't meet the requirement", "The next step couldn't start until an earlier one was settled",
+    "The usual method couldn't meet the time or budget", "There was no basis for trusting the results",
+  ], note: EN_NOTE_T2 },
+  TR_T3: { options: [
+    "I predicted it ahead of time with data and calculations", "I measured or checked it directly",
+    "I tried it first and then improved it", "I gathered and organized past cases and data",
+  ], note: EN_NOTE_T3 },
+  TR_T4: { options: [
+    "I changed the target or scope", "I changed the materials or components",
+    "I changed conditions or settings", "I changed the procedure or order",
+  ], note: EN_NOTE_T4 },
+  TR_T5: { options: [
+    "I ran it several times with different conditions", "I checked it several times under the same conditions to see the spread",
+    "I did it once and wrote up the results", "I compiled results someone else produced",
+  ], note: EN_NOTE_T5 },
+  TR_T6: { options: [
+    "I compared it with a standard or target value", "I compared it with real results or measurements",
+    "I compared it with values found another way", "I didn't compare it with anything",
+  ] },
+  TR_T7: { options: [
+    "I narrowed down the cause, changed conditions and tried again", "I fixed the assumptions or model and recalculated",
+    "I changed how I checked it", "I narrowed the scope and wrote down the limits",
+    "It went as expected",
+  ] },
+  TR_T8: { options: [
+    "I decided which option to go with", "I set the conditions or target values",
+    "I decided what to redo and what to drop", "I didn't decide anything myself",
+  ] },
+  TR_T9: { options: [
+    "It became a design or specification", "It became an analysis or review report",
+    "It became a procedure or standard", "It became a presentation or paper", "Nothing tangible came out of it",
+  ] },
+  TR_T10: { options: [
+    "As input for the next design or analysis", "As operating or field conditions",
+    "As the basis for a pass/fail call or approval", "As a starting point for follow-up work",
+  ], note: EN_NOTE_T10 },
+};
+
+export const TRANSLATE_MENU_EN: Record<string, TranslateMenu> = {
+  ME_CORE_V3: ME_EN,
+};
+
+/**
+ * 그 Core 의 한 단계 보기. 사전이 없으면 중립 벌.
+ *
+ * `lang` 이 영어면 영어 벌을 고른다. 영어 벌이 없는 Core 는 영어 중립 벌이다:
+ * 한국어 벌로 떨어지지 않는다.
+ */
+export function translateMenu(
+  core: string, itemId: string, lang: string = "ko",
+): TranslateStep | null {
+  if (lang === "en") {
+    return (TRANSLATE_MENU_EN[core] ?? NEUTRAL_EN)[itemId] ?? NEUTRAL_EN[itemId] ?? null;
+  }
   return (TRANSLATE_MENU[core] ?? TRANSLATE_NEUTRAL)[itemId]
     ?? TRANSLATE_NEUTRAL[itemId] ?? null;
+}
+
+/** 영어 벌 전부. 결과지가 굳은 한국어 보기를 같은 자리의 영어로 옮길 때 읽는다 */
+export function translateMenus(core: string, lang: string): TranslateMenu {
+  if (lang === "en") return TRANSLATE_MENU_EN[core] ?? NEUTRAL_EN;
+  return TRANSLATE_MENU[core] ?? TRANSLATE_NEUTRAL;
 }

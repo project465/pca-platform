@@ -1,16 +1,26 @@
 import { notFound, redirect } from "next/navigation";
 import { BrandMark } from "@/components/sf/brand-mark";
 import { Icon, type IconName } from "@/components/sf/icon";
-import { requireUser } from "@/lib/session";
+import { currentUser, requireUser } from "@/lib/session";
 import { attemptOf, estimate } from "@/lib/me-v3/runtime/session";
 import { core } from "@/lib/me-v3/core-registry";
 import { specView } from "@/lib/me-v3/result/spec-view";
 import { resultMeta } from "@/lib/me-v3/result/meta";
 import { planFor } from "@/lib/me-v3/runtime/session";
-import { STAGE_LEAD, STAGES } from "@/lib/me-v3/runtime/blocks";
-import { TIER_WHAT } from "../../tier-text";
+import { STAGES, stageLabel, stageLeadOf } from "@/lib/me-v3/runtime/blocks";
+import { majorNameIn } from "@/lib/me-v3/runtime/session";
+import { tierText } from "../../tier-text.i18n";
+import { phrase } from "@/lib/me-v3/phrase";
 
-export const metadata = { title: "검사 시작 전 안내 · CareerMatri" };
+/* 탭 제목도 그 응시의 언어다 */
+export async function generateMetadata(
+  { params }: { params: Promise<{ attemptId: string }> },
+) {
+  const { attemptId } = await params;
+  const u = await currentUser();
+  const a = u ? await attemptOf(attemptId, u.id).catch(() => null) : null;
+  return { title: phrase(a?.locale)("검사 시작 전 안내 · CareerMatri") };
+}
 
 /**
  * 첫 문항 앞의 안내 한 쪽.
@@ -56,8 +66,12 @@ export default async function V3Intro({
      보여 주면 처음부터 다시 푸는 줄 안다 */
   if (a.status !== "in_progress") redirect(`/v3/${attemptId}/result`);
 
-  const t = TIER_WHAT[a.tier];
+  /* 응시 언어. 글만 고른다 */
+  const lang = a.locale ?? "ko";
+  const say = phrase(lang);
+  const t = tierText(lang).TIER_WHAT[a.tier];
   const coreName = (() => {
+    if (lang !== "ko") return majorNameIn(a.core_code, lang);
     /* **모르면 전공 이름을 지어내지 않는다.** 전에는 기계공학으로
        떨어져서, 다른 전공 응시의 시작 안내가 기계공학으로 적혔다 */
     try { return core(a.core_code).name_ko; } catch { return "이 전공"; }
@@ -81,7 +95,7 @@ export default async function V3Intro({
    * **묻는 것이 아니다.** 문항도 보기도 routing 도 등급도 건드리지 않고,
    * 답을 유도하지 않게 **장면만 적고 무엇을 고르라고 적지 않는다.**
    */
-  const sv = specView(a.core_code, a.specialization_code);
+  const sv = specView(a.core_code, a.specialization_code, lang);
 
   /**
    * **누구의 검사인지를 첫 줄에 적는다**(GOLD MASTER §9·§12).
@@ -89,7 +103,7 @@ export default async function V3Intro({
    * 결과지의 첫 줄과 같은 자리(`resultMeta`)에서 읽는다: 학교와 학과를
    * 두 곳에서 따로 만들면 어느 날 둘이 갈린다.
    */
-  const meta = await resultMeta(attemptId, a.core_code);
+  const meta = await resultMeta(attemptId, a.core_code, lang);
 
   /**
    * **이 응시가 실제로 지나는 단계**를 미리 보여 준다(GOLD MASTER §3).
@@ -102,8 +116,8 @@ export default async function V3Intro({
    */
   const plan = await planFor(a);
   const steps = STAGES
-    .filter((x) => (plan.perStage[x.code] ?? 0) > 0 && STAGE_LEAD[x.code])
-    .map((x) => ({ label: x.label, lead: STAGE_LEAD[x.code] }));
+    .filter((x) => (plan.perStage[x.code] ?? 0) > 0 && stageLeadOf(x.code, lang))
+    .map((x) => ({ label: stageLabel(x.code, lang), lead: stageLeadOf(x.code, lang) }));
 
   const est = estimate(a.core_code, a.education_stage, a.grad_field);
   const low = est.responses[a.tier] ?? 0;
@@ -141,13 +155,12 @@ export default async function V3Intro({
         </p>
         {/* **첫 인상이 `긴 검사` 가 아니어야 한다**(§4). 제목이 분량을
             말하지 않고 **이 검사가 무엇을 하는 자리인가**를 말한다 */}
-        <h1 className="qs-h1">내 전공과 경험을 정리합니다</h1>
+        <h1 className="qs-h1">{say("내 전공과 경험을 정리합니다")}</h1>
         {/* **두 줄 안에서 끝낸다**(FINAL POLISH §4). 손전화에서 한 줄이
             스물여섯 자쯤이라 쉰 자를 넘으면 세 줄이 되고, 그러면 제목과
             카드 사이에 읽을거리가 한 덩이 더 선다 */}
         <p className="qs-lead">
-          {coreName} 분야에서 해 본 일과 그때 직접 정한 것을 여쭙고, 내세울 수
-          있는 경험과 더 채울 부분을 정리해 드립니다.
+          {say("{major} 분야에서 해 본 일과 그때 직접 정한 것을 여쭙고, 내세울 수 있는 경험과 더 채울 부분을 정리해 드립니다.", { major: coreName })}
         </p>
 
         <ul className="qs-three">
@@ -157,13 +170,13 @@ export default async function V3Intro({
                 <Icon name={ic} size={18} />
               </span>
               <div className="qs-three-tx">
-                <b>{title}</b>
+                <b>{say(title)}</b>
                 {/* 셋째 줄만 이 응시의 값이다. **문항 수를 여기 적지
                     않는다**: 분량이 첫 인상이 되면 읽는 쪽이 이 검사를
                     길이로 값 매긴다 */}
                 <span>{i === 2
-                  ? `약 ${mins}분 걸립니다. 답할 때마다 저장되니 중간에 닫아도 이어서 하시면 됩니다.`
-                  : note}</span>
+                  ? say("약 {mins}분 걸립니다. 답할 때마다 저장되니 중간에 닫아도 이어서 하시면 됩니다.", { mins })
+                  : say(note)}</span>
               </div>
             </li>
           ))}
@@ -175,22 +188,21 @@ export default async function V3Intro({
             로 내린다: 길이 사라진 것이 아니라 무게가 갈린 것이다 */}
         <div className="qs-start-nav">
           <a className="qs-btn qs-btn-main qs-btn-go" href={`/v3/${attemptId}`}>
-            검사 시작하기 →
+            {say("검사 시작하기 →")}
           </a>
-          <a className="qs-later" href="/me">나중에 하기</a>
+          <a className="qs-later" href="/me">{say("나중에 하기")}</a>
         </div>
 
         {/* **나머지는 접는다**(§4). 지우지 않는 까닭은 전공 장면과 묻는
             차례가 이 검사가 무엇을 묻는지 미리 알고 싶은 사람에게 쓸모가
             있어서다. 다만 시작을 막는 자리에 두지 않는다 */}
         <details className="qs-more">
-          <summary>검사에 대해 더 알아보기</summary>
+          <summary>{say("검사에 대해 더 알아보기")}</summary>
           {sv.scene.length ? (
             <section className="qs-major">
-              <h2>{coreName} 전공자가 자주 하는 일</h2>
+              <h2>{say("{major} 전공자가 자주 하는 일", { major: coreName })}</h2>
               <p>
-                이런 일에서 무엇을 직접 정해 봤는지 여쭙니다. 해 본 적 없는
-                일은 &lsquo;해 본 적 없음&rsquo;을 고르시면 됩니다.
+                {say("이런 일에서 무엇을 직접 정해 봤는지 여쭙니다. 해 본 적 없는 일은 ‘해 본 적 없음’을 고르시면 됩니다.")}
               </p>
               <ul>
                 {sv.scene.slice(0, 3).map((t) => <li key={t}>{t}</li>)}
@@ -200,7 +212,7 @@ export default async function V3Intro({
 
           {steps.length > 2 ? (
             <section className="qs-steps-pre">
-              <h2>이런 차례로 묻습니다</h2>
+              <h2>{say("이런 차례로 묻습니다")}</h2>
               <ol>
                 {steps.map((x, i) => (
                   <li key={x.label}>
@@ -213,10 +225,10 @@ export default async function V3Intro({
           ) : null}
 
           <ul className="qs-facts">
-            <li><span>문항</span><b>{items}개</b></li>
-            <li><span>응답 방식</span><b>선택형</b></li>
-            <li><span>중간 저장</span><b>문항마다 자동 저장</b></li>
-            <li><span>결과</span><b>완료 후 바로 확인</b></li>
+            <li><span>{say("문항")}</span><b>{say("{n}개", { n: items })}</b></li>
+            <li><span>{say("응답 방식")}</span><b>{say("선택형")}</b></li>
+            <li><span>{say("중간 저장")}</span><b>{say("문항마다 자동 저장")}</b></li>
+            <li><span>{say("결과")}</span><b>{say("완료 후 바로 확인")}</b></li>
           </ul>
         </details>
 

@@ -707,7 +707,83 @@ export const CHAIN_KO: Record<string, Record<string, string[]>> = {
  * **모르는 Core 와 모르는 영역에는 차례가 없다.** 빈 배열을 돌려주면
  * 부르는 쪽이 차례 없는 문장을 쓰고, 그것은 틀린 차례를 적는 것보다 낫다.
  */
-export function chainFor(core: string, domain: string | null): string[] {
+export function chainFor(core: string, domain: string | null, lang = "ko"): string[] {
   if (!domain) return [];
+  /* 다른 언어는 그 언어의 표에서 읽는다. **한국어 차례로 떨어지지 않는다**:
+     표가 없으면 차례 없는 문장이 선다(위와 같은 규칙) */
+  if (lang === "en") return CHAIN_EN[core]?.[domain] ?? [];
   return CHAIN_KO[core]?.[domain] ?? [];
 }
+
+/**
+ * 영어판(1차)의 차례. **이공계 셋만 적었다**(`i18n.ts` 의 `EDITION_CORES`).
+ *
+ * 한국어 표와 영역 · 칸 수 · 차례가 같다. 굳은 결과 모델은 한국어 차례를
+ * 들고 있어서, 결과지가 같은 자리의 영어로 바꿔 읽는다(`result/localize.ts`).
+ */
+export const CHAIN_EN: Record<string, Record<string, string[]>> = {
+  ME_CORE_V3: {
+    TD01: ["Requirements", "Comparing concepts", "Tolerance and fastening decisions", "Drawings", "Prototype check"],
+    TD02: ["Loads and constraints", "Idealization and model", "Analysis results", "Validation check", "Design change"],
+    TD03: ["Heat load and flow conditions", "Dominant heat path", "Operating point choice", "Analysis results", "Check against measurements"],
+    TD04: ["Frequency range", "Excitation sources", "Transfer paths", "Measurements", "Before-and-after results"],
+    TD05: ["Required motion", "Drive and control architecture", "Sequence", "Commissioning results", "Cycle time check"],
+    TD06: ["Fracture surface inspection", "Candidate failure mechanisms", "Analysis method", "Evidence", "Ruled-out candidates"],
+    TD07: ["Test purpose", "Fixtures and sensors", "Pass/fail criteria", "Results", "Handling scatter and error"],
+    TD08: ["Drawing tolerances", "Process selection", "Process trials", "Process capability", "Standardization"],
+    TD09: ["Failure history", "Failure modes", "Inspection intervals and replacement criteria", "Actions taken", "Uptime before and after"],
+    TD10: ["Customer requirements", "Characteristics to control", "Control limits", "Corrective action", "Defect rates before and after"],
+    TD11: ["Top-level requirements", "Requirement breakdown", "Allocation and interfaces", "Verification assignment", "Fulfillment rate"],
+    TD12: ["Repetitive tasks", "Input and output specs", "Automation scope", "Validation rules", "Check against manual results"],
+  },
+  EE_CORE_V1: {
+    TD01: ["Signal and supply requirements", "Circuit topology and parts", "Operating point and noise budget",
+      "Schematic and design calculations", "Check against prototype board measurements"],
+    TD02: ["Clock speed and resource limits", "State machine and pipeline structure", "Timing constraints",
+      "HDL code and constraint files", "Simulation vs. hardware check"],
+    TD03: ["Cycle time and resource limits", "Task structure and interrupt layout", "Drivers and scheduling",
+      "Control parameter table and test logs", "Check against required response time"],
+    TD04: ["Sampling and noise level", "Filter type and order", "Transform range and window",
+      "Processing code and filter coefficients", "Theory vs. measured signal check"],
+    TD05: ["Data rate and error tolerance", "Modulation and code rate", "Link budget calculation",
+      "Link budget and settings table", "Check against test network measurements"],
+    TD06: ["Frequency and installation limits", "Antenna structure and feed", "EM simulation and matching",
+      "Simulation model and antenna drawings", "Check against measured patterns"],
+    TD07: ["Threshold voltage and uniformity limits", "Device structure and process flow", "Conditions and characterization plan",
+      "Process condition table and characterization report", "Simulation vs. measured characteristics"],
+    TD08: ["Efficiency and temperature limits", "Converter topology and parts", "Loss and thermal calculations",
+      "Converter schematic and calculations", "Check against efficiency measurements"],
+    TD09: ["Capacity and protection coordination", "Equipment ratings and wiring", "Load and fault calculations",
+      "Single-line diagram and protection settings", "Check against code limits and field measurements"],
+    TD10: ["Output and grid connection standards", "Plant capacity and layout", "Output estimates and operation simulation",
+      "Sizing report and layout diagram", "Check against actual generation"],
+    TD11: ["Settling time and overshoot limits", "Control structure and sensors", "Model and gain tuning",
+      "Control diagram and gain settings", "Check against measured response"],
+    TD12: ["Test items and pass criteria", "Measurement conditions and criteria", "Uncertainty estimate",
+      "Test plan and test report", "Check against spec limits and repeat spread"],
+  },
+  CS_CORE_V1: {
+    TD01: ["Requirements and existing constraints", "How to split modules", "Responsibilities and contracts",
+      "Architecture diagram and decision records", "Check against changes after implementation"],
+    TD02: ["Input size and response time", "Choosing data representations", "Complexity analysis",
+      "Implementation and benchmark records", "Theory vs. measured check"],
+    TD03: ["Request types and call frequency", "Endpoint design and response format", "Transaction scope and retries",
+      "API contract and test suite", "Check against response time targets"],
+    TD04: ["Data to store and query conditions", "Where to split tables", "Index design",
+      "Schema and query set", "Check against query plans"],
+    TD05: ["Screen list and navigation", "Where state lives", "Input validation and accessibility checks",
+      "UI code and edge-case list", "Check against real screens at each width"],
+    TD06: ["Cycle time and resource limits", "Lock scope", "Memory lifetime design",
+      "Race condition test records", "Check across repeated runs"],
+    TD07: ["Node count and latency", "Consistency level and timeouts", "Fault injection tests",
+      "Network settings and measurement records", "Check against production logs"],
+    TD08: ["Assets and who accesses them", "What to allow and where to block", "Threat list",
+      "Permission design and audit report", "Check against compliance requirements"],
+    TD09: ["The question and the data you have", "Choosing evaluation conditions", "Data splits and training",
+      "Analysis code and results table", "Check against a baseline method"],
+    TD10: ["Feature list and change frequency", "Pass criteria", "Writing automated tests",
+      "Release process and alert thresholds", "Metrics before and after release"],
+    TD11: ["Target frame rate and devices", "Draw order and quality", "Frame time measurement",
+      "Rendering code and quality settings", "Check across devices"],
+  },
+};

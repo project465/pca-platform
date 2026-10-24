@@ -8,6 +8,9 @@
  * **산업과 역할 선택이 심화 영역을 바꾸지 않는다.** 기술영역은 Core 응답으로
  * 먼저 확정하고, 그 뒤에 팩이 올라간다(`v3:runtime` 이 센다).
  */
+import type { V3Lang } from "../i18n";
+import { COPY_KO } from "./copy.ko";
+import { copyFor } from "./copy";
 import type { GradField, Stage, Tier, UndergradCore } from "../scoring/types";
 
 export type DomainPick = {
@@ -174,59 +177,31 @@ export function branchBlock(
   return "postdoc-core";
 }
 
-/** 학위 묶음의 머리말과 도움말. 화면이 읽는다 */
+/**
+ * 학위 묶음의 머리말과 도움말. 화면이 읽는다.
+ *
+ * **글은 언어마다 `copy.*.ts` 의 `branch` 가 든다.** 문항이 둘인 화면의 큰
+ * 글씨이고 학위마다 묻는 자리가 다르다: `~하셨는지` 로 끝나는 반쪽 문장을
+ * 큰 글씨에 두지 않는다(바로 아래에 진짜 질문이 둘 선다). 모든 Core 가
+ * 함께 쓰는 줄이라 그 전공에만 있는 말(`실험`)을 두지 않고, 채점이 무엇을
+ * 보는지 설명하지 않는다(전에는 `난이도를 묻는 자리가 아니고 직접 정했는지만
+ * 봅니다` 였다: 읽는 사람이 받아야 하는 것은 답하는 법이다).
+ */
 export const BRANCH_COPY: Record<
   BranchBlock, { eyebrow: string; ask: string; help: string }
-> = {
-  "ug-core": {
-    eyebrow: "수업과 과제",
-    /* 문항이 둘인 화면의 큰 글씨. **학위마다 묻는 자리가 다르다**.
-       `~하셨는지` 로 끝나는 반쪽 문장을 큰 글씨에 두지 않는다: 바로 아래에
-       진짜 질문이 둘 서므로 여기는 주제만 적는다 */
-    ask: "수업과 과제에서 해 본 일",
-    /* 모든 Core 가 함께 쓰는 줄이라 그 전공에만 있는 말(`실험`)을 두지
-       않는다. Core 의 말은 아래 `BRANCH_COPY_BY_CORE` 가 든다 */
-    help: "수업, 실습, 팀 과제, 동아리, 인턴에서 한 일을 모두 떠올려 주세요.",
-  },
-  "ms-core": {
-    eyebrow: "연구와 과제",
-    ask: "연구와 과제에서 직접 정한 것",
-    /* **채점이 무엇을 보는지 설명하지 않는다.** 전에는 `난이도를 묻는
-       자리가 아니고 직접 정했는지만 봅니다` 였다. 읽는 사람이 받아야
-       하는 것은 답하는 법이고, 무엇이 점수가 되는지는 아니다 */
-    help: "직접 정한 것과 받아서 한 것을 구분해 답해 주세요.",
-  },
-  "phd-core": {
-    eyebrow: "문제를 정하는 단계",
-    ask: "연구 문제와 가정 세우기",
-    help: "가정과 변수와 한계를 누가 정했는지 답해주세요.",
-  },
-  "postdoc-core": {
-    eyebrow: "맡아서 끌고 간 범위",
-    ask: "맡아서 이끈 범위",
-    help: "혼자 한 범위와 나눠 맡긴 범위를 나눠 답해주세요.",
-  },
-};
+> = COPY_KO.branch;
 
 /**
  * **그 Core 의 장면으로 바꾸는 자리.** 위 표는 스무 Core 가 함께 읽어서,
  * 기계공학의 말(`실험` · `캡스톤`)이 경영 학생에게도 섰다. 바꿀 칸만
- * 적고 나머지는 위 표가 든다. 묻는 문항과 묶음은 그대로다.
+ * 적고 나머지는 위 표가 든다(`copy.*.ts` 의 `branchByCore`). 묻는 문항과
+ * 묶음은 그대로다.
  */
-const BRANCH_COPY_BY_CORE: Record<string,
-  Partial<Record<BranchBlock, Partial<{ eyebrow: string; ask: string; help: string }>>>> = {
-  ME_CORE_V3: {
-    "ug-core": { help: "수업, 실험, 캡스톤, 동아리, 인턴에서 한 일을 모두 떠올려 주세요." },
-  },
-  BIZ_CORE_V1: {
-    "ug-core": { help: "수업, 팀 과제, 공모전, 동아리, 인턴에서 한 일을 모두 떠올려 주세요." },
-  },
-};
-
 export function branchCopy(
-  block: BranchBlock, core?: string,
+  block: BranchBlock, core?: string, lang?: V3Lang,
 ): { eyebrow: string; ask: string; help: string } {
-  return { ...BRANCH_COPY[block], ...(core ? BRANCH_COPY_BY_CORE[core]?.[block] : undefined) };
+  const t = copyFor(lang);
+  return { ...t.branch[block], ...(core ? t.branchByCore[core]?.[block] : undefined) };
 }
 
 /**

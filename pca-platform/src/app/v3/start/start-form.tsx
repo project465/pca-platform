@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { startV3 } from "./actions";
-import { FIELD_LABEL, STAGE_LABEL } from "../tier-text";
+import { tierText } from "../tier-text.i18n";
+import { phrase } from "@/lib/me-v3/phrase";
 
 /**
  * 시작 전에 묻는 둘.
@@ -11,7 +12,15 @@ import { FIELD_LABEL, STAGE_LABEL } from "../tier-text";
  * 칸이 하나 서고, 그 칸이 비어 있는 것을 응시자가 자기 잘못으로 읽는다.
  * 묻는 장면만 달라지고 판정 기준은 같다는 것을 한 줄로 적어 둔다.
  */
-export default function StartForm({ error, core }: { error?: string; core?: string }) {
+export default function StartForm({ error, core, lang, chosen }: {
+  error?: string; core?: string;
+  /** 열릴 응시의 언어. 화면 글만 고른다 */
+  lang?: string;
+  /** 사람이 주소(`?lang=`)로 고른 언어. 서버가 응시 언어를 정할 때 다시 본다 */
+  chosen?: string;
+}) {
+  const t = phrase(lang);
+  const { FIELD_LABEL, STAGE_LABEL } = tierText(lang);
   /**
    * **미리 골라 두지 않는다.**
    *
@@ -31,9 +40,10 @@ export default function StartForm({ error, core }: { error?: string; core?: stri
           (`openAttempt`), 응시할 수 없는 Core 면 거기서 버린다. 학교 진입은
           쿠키의 학과가 정하므로 이 칸을 세우지 않는다 */}
       {core ? <input type="hidden" name="core" value={core} /> : null}
+      {chosen ? <input type="hidden" name="lang" value={chosen} /> : null}
       <fieldset className="qs-opts">
-        <legend>현재 학업 단계</legend>
-        <h2 className="qs-eyebrow" aria-hidden>현재 학업 단계</h2>
+        <legend>{t("현재 학업 단계")}</legend>
+        <h2 className="qs-eyebrow" aria-hidden>{t("현재 학업 단계")}</h2>
         <div className="qs-list">
           {(["bachelor", "master", "phd", "postdoc"] as const).map((v) => (
             <label key={v} className={`qs-opt${stage === v ? " is-on" : ""}`}>
@@ -48,8 +58,8 @@ export default function StartForm({ error, core }: { error?: string; core?: stri
 
       {grad ? (
         <fieldset className="qs-opts">
-          <legend>대학원 전공계열</legend>
-          <h2 className="qs-eyebrow" aria-hidden>대학원 전공계열</h2>
+          <legend>{t("대학원 전공계열")}</legend>
+          <h2 className="qs-eyebrow" aria-hidden>{t("대학원 전공계열")}</h2>
           <div className="qs-list">
             {(["STEM", "HUMANITIES_SOCIAL", "BUSINESS", "OTHER_INTERDISCIPLINARY"] as const)
               .map((v) => (
@@ -62,17 +72,17 @@ export default function StartForm({ error, core }: { error?: string; core?: stri
               ))}
           </div>
           <p className="qs-guide">
-            계열에 따라 질문 속 상황만 달라지고, 결과를 보는 기준은 같습니다.
+            {t("계열에 따라 질문 속 상황만 달라지고, 결과를 보는 기준은 같습니다.")}
           </p>
         </fieldset>
       ) : null}
 
       {error ? <p className="qs-need" role="alert" style={{ marginTop: 16 }}>
-        {error === "field" ? "대학원 전공계열을 선택해주세요." : "학업 단계를 선택해주세요."}
+        {error === "field" ? t("대학원 전공계열을 선택해주세요.") : t("학업 단계를 선택해주세요.")}
       </p> : null}
 
       <div className="qs-start-nav">
-        <button type="submit" className="qs-btn qs-btn-main qs-btn-go">검사 시작</button>
+        <button type="submit" className="qs-btn qs-btn-main qs-btn-go">{t("검사 시작")}</button>
       </div>
     </form>
   );
