@@ -1,0 +1,965 @@
+{
+ "schema_version": "me-v3-taxonomy.2",
+ "assessment_version": "ME_V3_2",
+ "major_id": "ME",
+ "note": "Three axes: technical domain x role function x organizational context. A job title is an alias for a combination, and no axis produces a ranking. This file is the place to edit. Changes in ME_V3_2: the fourth axis of the screening scale moved from organizational use to failure and correction; the materials domain was renamed to include strength; the ownership scope of control, equipment, requirements and automation was narrowed to what mechanical engineers actually take on; and quality and reliability was added to the role functions, making eight.",
+ "axes": {
+  "J1": {
+   "name": "Problem definition",
+   "question": "Who decided what to work on?"
+  },
+  "J2": {
+   "name": "Requirements interpretation",
+   "question": "Did you turn the requirements into numbers and constraints?"
+  },
+  "J3": {
+   "name": "Technical decisions",
+   "question": "Which items did you decide?"
+  },
+  "J4": {
+   "name": "Methods and tools",
+   "question": "What did you use, and how did you do it?"
+  },
+  "J5": {
+   "name": "Deliverables",
+   "question": "What was left behind?"
+  },
+  "J6": {
+   "name": "Comparison and verification",
+   "question": "What did you compare it against?"
+  },
+  "J7": {
+   "name": "Failure and correction",
+   "question": "How did you narrow down what went wrong?"
+  },
+  "J8": {
+   "name": "Organizational use",
+   "question": "Who used it, and for what?"
+  }
+ },
+ "scales": {
+  "S4": {
+   "axes": [
+    "J3",
+    "J5",
+    "J6",
+    "J7"
+   ],
+   "note": "Screening scale. These are the four asked in BASIC. Organizational use is left out of screening because it puts undergraduates at a structural disadvantage: whether your work was used by an organization can only be answered if you had a place in one, so someone with only coursework and a capstone leaves that cell empty even if they made real judgments. Failure and correction can be answered from undergraduate projects and still separates participation from ownership just as well. Organizational use is asked only in the in-depth part."
+  },
+  "S8": {
+   "axes": [
+    "J1",
+    "J2",
+    "J3",
+    "J4",
+    "J5",
+    "J6",
+    "J7",
+    "J8"
+   ],
+   "note": "Full scale. STANDARD and above. Do not report the S4 denominator as S8. What the in-depth part newly opens are the four not in screening (problem definition, requirements interpretation, methods and tools, organizational use)."
+  }
+ },
+ "levels": {
+  "L0": "None",
+  "L1": "Exposed. Watched or reused what someone else did",
+  "L2": "Performed. Did the work myself",
+  "L3": "Owned. Decided it myself, and the result was used"
+ },
+ "technical_domains": [
+  {
+   "code": "TD01",
+   "name": "Mechanical and Product Design",
+   "owns": "Finalizes shape, dimensions, material, tolerances and fastening",
+   "subareas": [
+    "Mechanical design",
+    "Product design",
+    "Mold and injection design",
+    "Jig and fixture design"
+   ],
+   "required_axes": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "code": "TD02",
+   "name": "Structural and Durability Analysis",
+   "owns": "Whether it breaks under load, how much it deforms, and how many cycles it survives",
+   "subareas": [
+    "Linear and nonlinear structures",
+    "Fatigue and durability",
+    "Crash and buckling",
+    "Structural optimization"
+   ],
+   "required_axes": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD03",
+   "name": "Thermal and Fluid Systems",
+   "owns": "Where the heat goes, and how flow rate and pressure are matched",
+   "subareas": [
+    "Thermal design",
+    "HVAC and cooling",
+    "Flow analysis (CFD)",
+    "Energy systems"
+   ],
+   "required_axes": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD04",
+   "name": "Dynamics, Vibration and Noise",
+   "owns": "At which frequencies it shakes, and where the vibration travels",
+   "subareas": [
+    "Modal analysis and vibration",
+    "Noise (NVH)",
+    "Multibody dynamics",
+    "Ride comfort"
+   ],
+   "required_axes": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD05",
+   "name": "Actuation, Transmission and Motion Design",
+   "owns": "Looks at load, inertia and friction, then chooses the actuator and transmission to produce the required motion",
+   "subareas": [
+    "Actuator and gear ratio selection",
+    "Transmission and mechanism design",
+    "Motion sequence and positioning accuracy",
+    "Commissioning and response tuning"
+   ],
+   "required_axes": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "code": "TD06",
+   "name": "Materials, Strength and Failure",
+   "owns": "Which material and treatment to use, and at what strength and why it failed",
+   "subareas": [
+    "Material selection",
+    "Heat treatment and surface treatment",
+    "Strength and safety factor",
+    "Failure and wear analysis"
+   ],
+   "required_axes": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD07",
+   "name": "Testing and Measurement",
+   "owns": "What to measure, how, and how to judge the result",
+   "subareas": [
+    "Test planning",
+    "Test fixtures and instrumentation",
+    "Environmental and durability testing",
+    "Measurement uncertainty"
+   ],
+   "required_axes": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "code": "TD08",
+   "name": "Production and Process Engineering",
+   "owns": "Which manufacturing method and conditions make repeatable production",
+   "subareas": [
+    "Manufacturing method selection",
+    "Machining and forming conditions",
+    "Introducing tooling and equipment",
+    "Process window and yield"
+   ],
+   "required_axes": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD09",
+   "name": "Equipment and Facility Operation",
+   "owns": "Keeps the equipment performing as it should, and brings it back when it stops",
+   "subareas": [
+    "Operating lab and measurement equipment",
+    "Operating machining and fabrication equipment",
+    "Condition diagnosis and root cause of failures",
+    "Inspection and modification planning"
+   ],
+   "required_axes": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "code": "TD10",
+   "name": "Quality and Reliability",
+   "owns": "Whether the requirements hold through mass production and over the product's life",
+   "subareas": [
+    "Process quality",
+    "Reliability and service life",
+    "Failure mode analysis",
+    "Standards and certification"
+   ],
+   "required_axes": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD11",
+   "name": "Requirements, Constraints and Schedule",
+   "owns": "Breaks down requirements and constraints and ties them into a schedule and interfaces",
+   "subareas": [
+    "Organizing requirements",
+    "Design constraints",
+    "Interfaces and division of roles",
+    "Schedule and change management"
+   ],
+   "required_axes": [
+    "J2",
+    "J5"
+   ]
+  },
+  {
+   "code": "TD12",
+   "name": "Task Automation and Data",
+   "owns": "Captures repeated calculations, data handling and pass/fail judgments so they can be reused",
+   "subareas": [
+    "Automating repetitive tasks",
+    "Organizing measurement and test data",
+    "Automating analysis and design procedures",
+    "Automating decision criteria"
+   ],
+   "required_axes": [
+    "J5",
+    "J8"
+   ]
+  }
+ ],
+ "role_functions": [
+  {
+   "code": "RF1",
+   "name": "Design and development",
+   "one_line": "Decides what will be built",
+   "output_kind": "Drawings, specifications, models",
+   "success": "One design that can be built and meets the requirements"
+  },
+  {
+   "code": "RF2",
+   "name": "Analysis and prediction",
+   "one_line": "Knows the outcome before it is built",
+   "output_kind": "Analysis reports, predicted values",
+   "success": "Predictions that match tests and justify a design change"
+  },
+  {
+   "code": "RF3",
+   "name": "Testing and verification",
+   "one_line": "Checks whether what was built is right",
+   "output_kind": "Test reports, pass/fail decisions",
+   "success": "A result whose verdict can be reproduced, with the uncertainty stated"
+  },
+  {
+   "code": "RF4",
+   "name": "Process and mass production",
+   "one_line": "Makes it possible to build repeatedly",
+   "output_kind": "Process charts, work standards, conditions",
+   "success": "Yield and takt time within target"
+  },
+  {
+   "code": "RF5",
+   "name": "Operation and maintenance",
+   "one_line": "Keeps things from stopping",
+   "output_kind": "Maintenance plans, failure reports",
+   "success": "High uptime and no recurrence"
+  },
+  {
+   "code": "RF6",
+   "name": "Integration and coordination",
+   "one_line": "Ties many people's decisions into one",
+   "output_kind": "Requirements, schedules, change records",
+   "success": "Requirement fulfillment and schedule"
+  },
+  {
+   "code": "RF7",
+   "name": "Exploration and research",
+   "one_line": "Narrows down things that have no answer yet",
+   "output_kind": "Papers, patents, prototypes, methods",
+   "success": "The question is narrowed and a method remains"
+  },
+  {
+   "code": "RF8",
+   "name": "Quality and Reliability",
+   "one_line": "Assures that requirements hold through mass production and over the product's life",
+   "output_kind": "Criteria, pass/fail decisions, corrective actions",
+   "success": "Defects do not recur and the basis for each decision can be traced"
+  }
+ ],
+ "org_contexts": [
+  {
+   "code": "OC1",
+   "name": "Finished-product company",
+   "performance": "Performance, cost, delivery, field quality",
+   "differs": "Receives requirements and does a lot of integration"
+  },
+  {
+   "code": "OC2",
+   "name": "Component, equipment or materials company",
+   "performance": "Meeting customer specs, yield, unit price",
+   "differs": "Goes deep in one area and passes customer validation"
+  },
+  {
+   "code": "OC3",
+   "name": "Engineering and technical services",
+   "performance": "Deadlines, use in the client's decisions, repeat business",
+   "differs": "Takes on someone else's problem, states its assumptions openly and delivers an answer"
+  },
+  {
+   "code": "OC4",
+   "name": "Government-funded research institute",
+   "performance": "Project goals, technology level, transferability",
+   "differs": "Project templates and interim reviews set the schedule"
+  },
+  {
+   "code": "OC5",
+   "name": "University and research lab",
+   "performance": "Novelty, reproducibility, scholarly contribution",
+   "differs": "Has to establish the validity of its own methods"
+  },
+  {
+   "code": "OC6",
+   "name": "Public sector, regulation and certification",
+   "performance": "Judgments of compliance with standards, and their basis",
+   "differs": "The traceability of the judgment is the output"
+  },
+  {
+   "code": "OC7",
+   "name": "Startup or small manufacturer",
+   "performance": "A working product, launched before the money runs out",
+   "differs": "One person takes on several roles at once"
+  }
+ ],
+ "job_aliases": [
+  {
+   "posting_name": "Mechanical design",
+   "td": [
+    "TD01"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC7"
+   ],
+   "distinguisher": "Has the authority to change drawing dimensions"
+  },
+  {
+   "posting_name": "Product design",
+   "td": [
+    "TD01"
+   ],
+   "rf": [
+    "RF1",
+    "RF6"
+   ],
+   "oc": [
+    "OC1"
+   ],
+   "distinguisher": "Matches the interfaces between several parts"
+  },
+  {
+   "posting_name": "Mold and injection design",
+   "td": [
+    "TD01",
+    "TD08"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC2"
+   ],
+   "distinguisher": "Looks at molding conditions and mold structure together"
+  },
+  {
+   "posting_name": "Structural analysis / CAE",
+   "td": [
+    "TD02"
+   ],
+   "rf": [
+    "RF2"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC3"
+   ],
+   "distinguisher": "Reports lead to design changes"
+  },
+  {
+   "posting_name": "Durability development",
+   "td": [
+    "TD02",
+    "TD07"
+   ],
+   "rf": [
+    "RF2",
+    "RF3"
+   ],
+   "oc": [
+    "OC1"
+   ],
+   "distinguisher": "One person ties together analysis and durability testing"
+  },
+  {
+   "posting_name": "Thermal design",
+   "td": [
+    "TD03"
+   ],
+   "rf": [
+    "RF1",
+    "RF2"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Finalizes heat loads and the flow operating point"
+  },
+  {
+   "posting_name": "CFD analysis",
+   "td": [
+    "TD03"
+   ],
+   "rf": [
+    "RF2"
+   ],
+   "oc": [
+    "OC2",
+    "OC3"
+   ],
+   "distinguisher": "Chooses the mesh and the turbulence model"
+  },
+  {
+   "posting_name": "NVH / vibration",
+   "td": [
+    "TD04"
+   ],
+   "rf": [
+    "RF2",
+    "RF3"
+   ],
+   "oc": [
+    "OC1"
+   ],
+   "distinguisher": "Separates transfer paths and verifies countermeasures"
+  },
+  {
+   "posting_name": "Control design",
+   "td": [
+    "TD05"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC2",
+    "OC7"
+   ],
+   "distinguisher": "Sets actuation and control parameters"
+  },
+  {
+   "posting_name": "Robotics and automation engineer",
+   "td": [
+    "TD05",
+    "TD01"
+   ],
+   "rf": [
+    "RF1",
+    "RF4"
+   ],
+   "oc": [
+    "OC2",
+    "OC7"
+   ],
+   "distinguisher": "Responsible for the takt time of the whole cell"
+  },
+  {
+   "posting_name": "Materials development",
+   "td": [
+    "TD06"
+   ],
+   "rf": [
+    "RF1",
+    "RF7"
+   ],
+   "oc": [
+    "OC2",
+    "OC4"
+   ],
+   "distinguisher": "Changes combinations of material and process"
+  },
+  {
+   "posting_name": "Failure analysis",
+   "td": [
+    "TD06",
+    "TD10"
+   ],
+   "rf": [
+    "RF3",
+    "RF8"
+   ],
+   "oc": [
+    "OC1",
+    "OC6"
+   ],
+   "distinguisher": "Identifies the damage mechanism based on evidence"
+  },
+  {
+   "posting_name": "Test and evaluation",
+   "td": [
+    "TD07"
+   ],
+   "rf": [
+    "RF3"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC6"
+   ],
+   "distinguisher": "Sets acceptance criteria and measurement uncertainty"
+  },
+  {
+   "posting_name": "Production engineering",
+   "td": [
+    "TD08"
+   ],
+   "rf": [
+    "RF4"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Hands new products over into mass production conditions"
+  },
+  {
+   "posting_name": "Process engineering",
+   "td": [
+    "TD08"
+   ],
+   "rf": [
+    "RF4"
+   ],
+   "oc": [
+    "OC2"
+   ],
+   "distinguisher": "Maintains the production process window and yield"
+  },
+  {
+   "posting_name": "Equipment engineering",
+   "td": [
+    "TD09"
+   ],
+   "rf": [
+    "RF5"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Sets uptime targets and maintenance intervals"
+  },
+  {
+   "posting_name": "Quality assurance",
+   "td": [
+    "TD10"
+   ],
+   "rf": [
+    "RF8"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Approves criteria and corrective actions"
+  },
+  {
+   "posting_name": "Reliability engineer",
+   "td": [
+    "TD10",
+    "TD07"
+   ],
+   "rf": [
+    "RF8"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Sets life distributions and accelerated test conditions"
+  },
+  {
+   "posting_name": "Systems engineer",
+   "td": [
+    "TD11"
+   ],
+   "rf": [
+    "RF6"
+   ],
+   "oc": [
+    "OC1",
+    "OC4"
+   ],
+   "distinguisher": "Breaks down requirements, allocates them and traces them"
+  },
+  {
+   "posting_name": "Technical PM / project management",
+   "td": [
+    "TD11"
+   ],
+   "rf": [
+    "RF6"
+   ],
+   "oc": [
+    "OC1",
+    "OC4"
+   ],
+   "distinguisher": "Responsible for schedule, resources and changes"
+  },
+  {
+   "posting_name": "Advanced development engineer",
+   "td": [
+    "TD01",
+    "TD03",
+    "TD05",
+    "TD06"
+   ],
+   "rf": [
+    "RF7"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Creates designs where no specification exists yet"
+  },
+  {
+   "posting_name": "Researcher (public research institute)",
+   "td": [
+    "TD02",
+    "TD03",
+    "TD06",
+    "TD07"
+   ],
+   "rf": [
+    "RF7"
+   ],
+   "oc": [
+    "OC4"
+   ],
+   "distinguisher": "Turns project goals into research questions"
+  },
+  {
+   "posting_name": "CAE automation",
+   "td": [
+    "TD12",
+    "TD02"
+   ],
+   "rf": [
+    "RF2"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Builds analysis procedures that others use"
+  },
+  {
+   "posting_name": "Field and application engineering",
+   "td": [
+    "TD05",
+    "TD07",
+    "TD09"
+   ],
+   "rf": [
+    "RF5",
+    "RF6"
+   ],
+   "oc": [
+    "OC2",
+    "OC3"
+   ],
+   "distinguisher": "Adjusts specifications to customer conditions"
+  },
+  {
+   "posting_name": "Facility maintenance and utilities",
+   "td": [
+    "TD09"
+   ],
+   "rf": [
+    "RF5"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Sets inspection intervals and replacement criteria"
+  },
+  {
+   "posting_name": "Equipment engineer (semiconductor, display)",
+   "td": [
+    "TD09",
+    "TD05"
+   ],
+   "rf": [
+    "RF5",
+    "RF4"
+   ],
+   "oc": [
+    "OC2"
+   ],
+   "distinguisher": "Looks at equipment condition and process results together"
+  },
+  {
+   "posting_name": "Technical planning and requirements",
+   "td": [
+    "TD11",
+    "TD12"
+   ],
+   "rf": [
+    "RF6"
+   ],
+   "oc": [
+    "OC1",
+    "OC4"
+   ],
+   "distinguisher": "Ties requirements and schedule together and sets the order of decisions"
+  },
+  {
+   "posting_name": "Design automation and engineering data",
+   "td": [
+    "TD12"
+   ],
+   "rf": [
+    "RF6",
+    "RF2"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Leaves procedures and decision criteria that others use"
+  }
+ ],
+ "boundaries": [
+  {
+   "pair": "Mechanical design vs. structural analysis",
+   "a": {
+    "td": "TD01",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD02",
+    "rf": "RF2"
+   },
+   "shared": "Both size parts based on loads and materials",
+   "a_difference": "Has the authority to change dimensions",
+   "b_difference": "Responsible for the validity of the prediction",
+   "a_question": "Did that result change the dimensions on the drawing?",
+   "b_question": "Have you checked that result against hand calculations or tests?"
+  },
+  {
+   "pair": "Advanced development vs. mechanical design",
+   "a": {
+    "td": "TD01",
+    "rf": "RF7"
+   },
+   "b": {
+    "td": "TD01",
+    "rf": "RF1"
+   },
+   "shared": "Decides what will be built",
+   "a_difference": "Defines the functions to deliver when no specification exists",
+   "b_difference": "Delivers a design that meets a given specification",
+   "a_question": "Have you written the required specifications yourself?",
+   "b_question": "Have you released an approved drawing?"
+  },
+  {
+   "pair": "Structural analysis vs. thermal-fluid analysis",
+   "a": {
+    "td": "TD02",
+    "rf": "RF2"
+   },
+   "b": {
+    "td": "TD03",
+    "rf": "RF2"
+   },
+   "shared": "Both solve physics with commercial tools",
+   "a_difference": "Looks at loads, stresses and service life",
+   "b_difference": "Looks at heat loads, flow rates and pressures",
+   "a_question": "Have you calculated a fatigue life or a safety factor?",
+   "b_question": "Have you chosen a mesh and a turbulence model?"
+  },
+  {
+   "pair": "Structural analysis vs. vibration and NVH",
+   "a": {
+    "td": "TD02",
+    "rf": "RF2"
+   },
+   "b": {
+    "td": "TD04",
+    "rf": "RF2"
+   },
+   "shared": "Both look at how a structure behaves",
+   "a_difference": "Looks at static and fatigue loads",
+   "b_difference": "Looks at frequencies and transfer paths",
+   "a_question": "Have you found a stress concentration and reinforced it?",
+   "b_question": "Have you changed a design to avoid a resonant frequency?"
+  },
+  {
+   "pair": "Testing and measurement vs. quality and reliability",
+   "a": {
+    "td": "TD07",
+    "rf": "RF3"
+   },
+   "b": {
+    "td": "TD10",
+    "rf": "RF3"
+   },
+   "shared": "Both judge whether something meets a standard",
+   "a_difference": "Sets the verdict and the uncertainty for a single case",
+   "b_difference": "Checks that it holds through mass production and over the product's life",
+   "a_question": "Have you stated a measurement uncertainty?",
+   "b_question": "Have you calculated process capability or a life distribution?"
+  },
+  {
+   "pair": "Production and process engineering vs. equipment and maintenance",
+   "a": {
+    "td": "TD08",
+    "rf": "RF4"
+   },
+   "b": {
+    "td": "TD09",
+    "rf": "RF5"
+   },
+   "shared": "Both keep the line running",
+   "a_difference": "Controls quality and takt time through conditions and methods",
+   "b_difference": "Keeps the equipment from stopping",
+   "a_question": "Have you changed machining conditions or a manufacturing method?",
+   "b_question": "Have you set a maintenance interval or a replacement criterion?"
+  },
+  {
+   "pair": "Materials and failure vs. quality and reliability",
+   "a": {
+    "td": "TD06",
+    "rf": "RF3"
+   },
+   "b": {
+    "td": "TD10",
+    "rf": "RF3"
+   },
+   "shared": "Both look at why something broke",
+   "a_difference": "Identifies the damage mechanism from the materials side",
+   "b_difference": "Separates occurrence from escape on the process side",
+   "a_question": "Have you examined a fracture surface or a microstructure?",
+   "b_question": "Have you set countermeasures separately for occurrence and escape?"
+  },
+  {
+   "pair": "Systems and requirements vs. technical PM",
+   "a": {
+    "td": "TD11",
+    "rf": "RF6"
+   },
+   "b": {
+    "td": "TD11",
+    "rf": "RF6"
+   },
+   "shared": "Both tie together many people's decisions",
+   "a_difference": "Breaks down requirements, allocates them and traces them",
+   "b_difference": "Responsible for schedule, resources and changes",
+   "a_question": "Have you assigned a verification method to each requirement?",
+   "b_question": "Have you reworked a schedule and resources?"
+  },
+  {
+   "pair": "Engineering automation vs. data analysis",
+   "a": {
+    "td": "TD12",
+    "rf": "RF2"
+   },
+   "b": {
+    "td": "TD12",
+    "rf": "RF2"
+   },
+   "shared": "Both turn repetition into code",
+   "a_difference": "Builds procedures that others use",
+   "b_difference": "Finds trends and anomalies in the values",
+   "a_question": "Are other people doing their work with it?",
+   "b_question": "Have you set decision criteria as numbers?"
+  },
+  {
+   "pair": "Control and mechatronics vs. mechanical design",
+   "a": {
+    "td": "TD05",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD01",
+    "rf": "RF1"
+   },
+   "shared": "Both make a device move",
+   "a_difference": "Sets actuation and control parameters",
+   "b_difference": "Sets shape, stiffness and tolerances",
+   "a_question": "Have you tuned a gain or a sequence?",
+   "b_question": "Have you decided a tolerance allocation?"
+  },
+  {
+   "pair": "Analysis and prediction vs. exploration and research",
+   "a": {
+    "td": "TD02",
+    "rf": "RF2"
+   },
+   "b": {
+    "td": "TD06",
+    "rf": "RF7"
+   },
+   "shared": "Both know the result before it is built",
+   "a_difference": "Responsible for the validity of predictions on problems that have a specification",
+   "b_difference": "Establishes the method itself when there is no specification",
+   "a_question": "Have you checked that prediction against test values?",
+   "b_question": "Have you created a new method because no usable one existed?"
+  },
+  {
+   "pair": "Equipment and facility operation vs. production and process engineering",
+   "a": {
+    "td": "TD09",
+    "rf": "RF5"
+   },
+   "b": {
+    "td": "TD08",
+    "rf": "RF4"
+   },
+   "shared": "Results only come when the equipment runs",
+   "a_difference": "Keeps the equipment performing as it should, and brings it back when it stops",
+   "b_difference": "Decides what to make with that equipment and under which conditions",
+   "a_question": "Have you narrowed down the cause when equipment behaved abnormally?",
+   "b_question": "Have you set machining or molding conditions?"
+  }
+ ],
+ "role_functions_note": "There are eight. The boundaries were rewritten so that analysis and prediction and exploration and research do not refer to the same work: analysis and prediction is responsible for the validity of predictions on problems that have a specification, while exploration and research establishes the method itself when there is no specification. Quality and reliability was separated from testing and verification because a test judges a single case, while quality assures the whole of mass production and service life."
+}

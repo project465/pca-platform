@@ -1,0 +1,792 @@
+{
+ "schema_version": "role-packs.2",
+ "core": "ME_CORE_V3",
+ "note": "Depth modules at the level of job titles in postings. They do not create new axes: `core_ref` points to the Core's technical domains and role functions. ME_V3_2 brought the number to eight: equipment and maintenance was added, quality and reliability was separated from test and verification, and analysis/prediction and exploration/advanced development, which had pointed to the same role function, were split apart. Role functions and role packs are paired one-to-one. `differs_from` states in one line how a role differs from its neighbors, and the report reads that line. Items ask about a different judgment for each role: running the same question with only the role name changed would make comparison meaningless.",
+ "caps": {
+  "industry_items_max": 10,
+  "role_items_max": 7,
+  "deep_industry_max": 1,
+  "deep_role_max": 2,
+  "interest_pick_max": 2
+ },
+ "exploration": {
+  "browse": "all",
+  "deep_per_attempt": 1,
+  "add_later": true,
+  "subscription_gate": false,
+  "note": "All eight roles can be compared. Rather than asking fifty-six items at once, you pick up to two roles of interest after the Core in-depth part, and the chosen roles are examined in depth from STANDARD up. Roles you did not pick are compared through the axes confirmed in the Core. Choosing a role does not change the Core judgment."
+ },
+ "packs": [
+  {
+   "code": "ROLE_DESIGN_V2",
+   "version": 2,
+   "name_ko": "Design",
+   "name_en": "Design",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD01",
+     "TD06",
+     "TD11"
+    ],
+    "rf": [
+     "RF1"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J5"
+   ],
+   "owns": "Finalizes shape, dimensions, material and tolerances",
+   "decides": [
+    "Wall thickness and cross-section",
+    "Fits and tolerance grades",
+    "Fastening method",
+    "Material and grade"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_CAE_V2",
+     "line": "Analysis is responsible for the validity of the prediction; design has the authority to change drawing dimensions"
+    },
+    {
+     "vs": "ROLE_MFG_V2",
+     "line": "Production engineering sets the conditions for making it repeatedly; design decides what is made in the first place"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_DESIGN_V2_R1",
+     "axis": "J3",
+     "domain": "TD01",
+     "ask": "Have you set dimensions or tolerances yourself, with the authority to change them?"
+    },
+    {
+     "id": "ROLE_DESIGN_V2_R2",
+     "axis": "J5",
+     "domain": "TD01",
+     "ask": "Have you delivered drawings and a parts list that went to fabrication?"
+    },
+    {
+     "id": "ROLE_DESIGN_V2_R3",
+     "axis": "J2",
+     "domain": "TD11",
+     "ask": "When requirements conflicted, have you decided which one to protect first?"
+    },
+    {
+     "id": "ROLE_DESIGN_V2_R4",
+     "axis": "J6",
+     "domain": "TD01",
+     "ask": "Have you calculated a tolerance stack-up to confirm that parts would assemble?"
+    },
+    {
+     "id": "ROLE_DESIGN_V2_R5",
+     "axis": "J7",
+     "domain": "TD01",
+     "ask": "Have you corrected dimensions after running into an assembly or breakage problem?"
+    },
+    {
+     "id": "ROLE_DESIGN_V2_R6",
+     "axis": "J3",
+     "domain": "TD06",
+     "ask": "Have you chosen the material and grade yourself?"
+    },
+    {
+     "id": "ROLE_DESIGN_V2_R7",
+     "axis": "J8",
+     "domain": "TD01",
+     "ask": "Has your design been adopted at a design review and built as it was?"
+    }
+   ],
+   "compare_with": [
+    "ROLE_CAE_V2",
+    "ROLE_MFG_V2",
+    "ROLE_RND_V2"
+   ],
+   "application_material": [
+    "A set of assembly and part drawings",
+    "Design calculations",
+    "One page explaining where you concentrated the tolerance budget"
+   ]
+  },
+  {
+   "code": "ROLE_CAE_V2",
+   "version": 2,
+   "name_ko": "Analysis",
+   "name_en": "Analysis",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD02",
+     "TD03",
+     "TD04"
+    ],
+    "rf": [
+     "RF2"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "owns": "Predicts results before anything is built and is responsible for the validity of that prediction",
+   "decides": [
+    "Constraint and load conditions",
+    "Elements and mesh",
+    "Property values to use and their sources",
+    "Pass/fail criteria"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_DESIGN_V2",
+     "line": "Design has the authority to change dimensions; analysis provides the evidence for why they should change"
+    },
+    {
+     "vs": "ROLE_RND_V2",
+     "line": "Exploration creates a method when none exists; analysis establishes validity with existing methods"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_CAE_V2_R1",
+     "axis": "J3",
+     "domain": "TD02",
+     "ask": "Have you set the constraints and load application points yourself?"
+    },
+    {
+     "id": "ROLE_CAE_V2_R2",
+     "axis": "J4",
+     "domain": "TD02",
+     "ask": "Have you changed the mesh to check that the results converge?"
+    },
+    {
+     "id": "ROLE_CAE_V2_R3",
+     "axis": "J6",
+     "domain": "TD02",
+     "ask": "Have you checked analysis values against test values and written down why they differed?"
+    },
+    {
+     "id": "ROLE_CAE_V2_R4",
+     "axis": "J5",
+     "domain": "TD02",
+     "ask": "Have you documented the analysis conditions and assumptions?"
+    },
+    {
+     "id": "ROLE_CAE_V2_R5",
+     "axis": "J4",
+     "domain": "TD03",
+     "ask": "Have you estimated the magnitude of analysis results with a hand calculation?"
+    },
+    {
+     "id": "ROLE_CAE_V2_R6",
+     "axis": "J8",
+     "domain": "TD02",
+     "ask": "Has a design change been approved based on your analysis?"
+    },
+    {
+     "id": "ROLE_CAE_V2_R7",
+     "axis": "J7",
+     "domain": "TD04",
+     "ask": "When results looked wrong, have you fixed the conditions or model and run it again?"
+    }
+   ],
+   "compare_with": [
+    "ROLE_DESIGN_V2",
+    "ROLE_TEST_V2",
+    "ROLE_RND_V2"
+   ],
+   "application_material": [
+    "A full analysis report",
+    "A table comparing analysis with test results",
+    "One page listing conditions and assumptions"
+   ]
+  },
+  {
+   "code": "ROLE_RND_V2",
+   "version": 2,
+   "name_ko": "Research & Advanced",
+   "name_en": "Research & Advanced",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD06",
+     "TD05",
+     "TD03"
+    ],
+    "rf": [
+     "RF7"
+    ]
+   },
+   "required_axes": [
+    "J1",
+    "J4"
+   ],
+   "owns": "Establishes the functions to deliver and the methods to use when no specification exists",
+   "decides": [
+    "Scope of the problem to tackle",
+    "Method to use",
+    "Assumptions to verify",
+    "Requirements to give up"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_CAE_V2",
+     "line": "Analysis establishes the validity of predictions with existing methods; exploration creates a method when none is available"
+    },
+    {
+     "vs": "ROLE_DESIGN_V2",
+     "line": "Design delivers a solution that meets a given specification; exploration writes that specification in the first place"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_RND_V2_R1",
+     "axis": "J4",
+     "domain": "TD06",
+     "ask": "Have you created a new method because no usable one existed?"
+    },
+    {
+     "id": "ROLE_RND_V2_R2",
+     "axis": "J1",
+     "domain": "TD06",
+     "ask": "Have you narrowed down and settled on the problem to tackle yourself?"
+    },
+    {
+     "id": "ROLE_RND_V2_R3",
+     "axis": "J6",
+     "domain": "TD03",
+     "ask": "Have you set out assumptions to verify and checked those first?"
+    },
+    {
+     "id": "ROLE_RND_V2_R4",
+     "axis": "J1",
+     "domain": "TD05",
+     "ask": "Have you decided which requirements to give up and narrowed the scope?"
+    },
+    {
+     "id": "ROLE_RND_V2_R5",
+     "axis": "J7",
+     "domain": "TD06",
+     "ask": "Have you confirmed that something would not work and changed direction?"
+    },
+    {
+     "id": "ROLE_RND_V2_R6",
+     "axis": "J5",
+     "domain": "TD06",
+     "ask": "Have you published your method and conditions so others could reproduce your results?"
+    },
+    {
+     "id": "ROLE_RND_V2_R7",
+     "axis": "J8",
+     "domain": "TD03",
+     "ask": "Have your results become the starting point for the next stage of development?"
+    }
+   ],
+   "compare_with": [
+    "ROLE_CAE_V2",
+    "ROLE_DESIGN_V2",
+    "ROLE_TEST_V2"
+   ],
+   "application_material": [
+    "A full record of how a method was established",
+    "A table of assumptions and verification results",
+    "One page on what did not work and why"
+   ]
+  },
+  {
+   "code": "ROLE_TEST_V2",
+   "version": 2,
+   "name_ko": "Test & Validation",
+   "name_en": "Test & Validation",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD07",
+     "TD04"
+    ],
+    "rf": [
+     "RF3"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J5"
+   ],
+   "owns": "Measures whether what was built meets the requirements and makes the call",
+   "decides": [
+    "Measurement items and methods",
+    "Acceptance criteria",
+    "Fixtures and constraints",
+    "Range of uncertainty"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_QUALITY_V2",
+     "line": "Testing judges a single case; quality assures that requirements hold through mass production and over the product's life"
+    },
+    {
+     "vs": "ROLE_CAE_V2",
+     "line": "Analysis predicts before anything is built; testing judges what has been built"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_TEST_V2_R1",
+     "axis": "J2",
+     "domain": "TD07",
+     "ask": "Have you written down pass/fail criteria in advance?"
+    },
+    {
+     "id": "ROLE_TEST_V2_R2",
+     "axis": "J3",
+     "domain": "TD07",
+     "ask": "Have you built a fixture that applies loads or constraints like real use?"
+    },
+    {
+     "id": "ROLE_TEST_V2_R3",
+     "axis": "J5",
+     "domain": "TD07",
+     "ask": "Have you delivered a test report all the way to the verdict?"
+    },
+    {
+     "id": "ROLE_TEST_V2_R4",
+     "axis": "J6",
+     "domain": "TD07",
+     "ask": "Have you measured several times to check the spread?"
+    },
+    {
+     "id": "ROLE_TEST_V2_R5",
+     "axis": "J7",
+     "domain": "TD07",
+     "ask": "When values fluctuated, have you changed the measurement method or fixture?"
+    },
+    {
+     "id": "ROLE_TEST_V2_R6",
+     "axis": "J4",
+     "domain": "TD04",
+     "ask": "Have you measured vibration or noise and separated where it was coming from?"
+    },
+    {
+     "id": "ROLE_TEST_V2_R7",
+     "axis": "J8",
+     "domain": "TD07",
+     "ask": "Has a shipping or design change decision been made based on your verdict?"
+    }
+   ],
+   "compare_with": [
+    "ROLE_QUALITY_V2",
+    "ROLE_CAE_V2",
+    "ROLE_MAINT_V2"
+   ],
+   "application_material": [
+    "A full test report",
+    "Fixture drawings and test procedure",
+    "One page on variation and uncertainty"
+   ]
+  },
+  {
+   "code": "ROLE_MFG_V2",
+   "version": 2,
+   "name_ko": "Manufacturing Engineering",
+   "name_en": "Manufacturing Engineering",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD08",
+     "TD01"
+    ],
+    "rf": [
+     "RF4"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "owns": "Sets the methods and conditions so the same thing can be made repeatedly",
+   "decides": [
+    "Manufacturing method and machining sequence",
+    "Range of conditions",
+    "Tooling and equipment specifications",
+    "Control items"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_DESIGN_V2",
+     "line": "Design decides what is made; production engineering sets the conditions for making it repeatedly"
+    },
+    {
+     "vs": "ROLE_MAINT_V2",
+     "line": "Production engineering decides what to make on that equipment and under which conditions; maintenance keeps the equipment running"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_MFG_V2_R1",
+     "axis": "J3",
+     "domain": "TD08",
+     "ask": "Have you chosen the manufacturing method and machining sequence yourself?"
+    },
+    {
+     "id": "ROLE_MFG_V2_R2",
+     "axis": "J4",
+     "domain": "TD08",
+     "ask": "Have you set the range of conditions through trial machining?"
+    },
+    {
+     "id": "ROLE_MFG_V2_R3",
+     "axis": "J5",
+     "domain": "TD08",
+     "ask": "Have you delivered a work standard or process chart?"
+    },
+    {
+     "id": "ROLE_MFG_V2_R4",
+     "axis": "J6",
+     "domain": "TD08",
+     "ask": "Have you compared target yield or process time with the actual figures?"
+    },
+    {
+     "id": "ROLE_MFG_V2_R5",
+     "axis": "J7",
+     "domain": "TD08",
+     "ask": "When defects occurred, have you changed the conditions or tooling?"
+    },
+    {
+     "id": "ROLE_MFG_V2_R6",
+     "axis": "J2",
+     "domain": "TD01",
+     "ask": "Have you asked for a design change based on how easy it would be to manufacture?"
+    },
+    {
+     "id": "ROLE_MFG_V2_R7",
+     "axis": "J8",
+     "domain": "TD08",
+     "ask": "Has production run on conditions you set?"
+    }
+   ],
+   "compare_with": [
+    "ROLE_DESIGN_V2",
+    "ROLE_MAINT_V2",
+    "ROLE_QUALITY_V2"
+   ],
+   "application_material": [
+    "A full work standard",
+    "A record of how the range of conditions was set",
+    "One tooling drawing"
+   ]
+  },
+  {
+   "code": "ROLE_MAINT_V2",
+   "version": 2,
+   "name_ko": "Equipment & Maintenance",
+   "name_en": "Equipment & Maintenance",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD09",
+     "TD08"
+    ],
+    "rf": [
+     "RF5"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J7"
+   ],
+   "owns": "Keeps the equipment performing as it should, and brings it back when it stops",
+   "decides": [
+    "Inspection items and intervals",
+    "Replacement criteria",
+    "Spare parts stocking level",
+    "Scope of repairs"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_MFG_V2",
+     "line": "Maintenance keeps the equipment running; production engineering decides what to make on it and under which conditions"
+    },
+    {
+     "vs": "ROLE_TEST_V2",
+     "line": "Testing judges the product; maintenance is responsible for the condition of the equipment that makes that judgment"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_MAINT_V2_R1",
+     "axis": "J3",
+     "domain": "TD09",
+     "ask": "Have you set inspection items or intervals yourself?"
+    },
+    {
+     "id": "ROLE_MAINT_V2_R2",
+     "axis": "J4",
+     "domain": "TD09",
+     "ask": "Have you judged warning signs from noise, heat and vibration?"
+    },
+    {
+     "id": "ROLE_MAINT_V2_R3",
+     "axis": "J7",
+     "domain": "TD09",
+     "ask": "When the same symptom came back, have you split the cause into equipment, conditions and the way it was used?"
+    },
+    {
+     "id": "ROLE_MAINT_V2_R4",
+     "axis": "J6",
+     "domain": "TD09",
+     "ask": "Have you checked equipment condition with calibration references or reference samples?"
+    },
+    {
+     "id": "ROLE_MAINT_V2_R5",
+     "axis": "J5",
+     "domain": "TD09",
+     "ask": "Have you left inspection checklists or action records that others could follow?"
+    },
+    {
+     "id": "ROLE_MAINT_V2_R6",
+     "axis": "J3",
+     "domain": "TD09",
+     "ask": "Have you decided how many spare parts or consumables to keep?"
+    },
+    {
+     "id": "ROLE_MAINT_V2_R7",
+     "axis": "J8",
+     "domain": "TD09",
+     "ask": "Have you taught others how to use equipment and handed it over?"
+    }
+   ],
+   "compare_with": [
+    "ROLE_MFG_V2",
+    "ROLE_TEST_V2",
+    "ROLE_QUALITY_V2"
+   ],
+   "application_material": [
+    "A full inspection checklist",
+    "Failure and action record",
+    "One calibration or handover document"
+   ]
+  },
+  {
+   "code": "ROLE_QUALITY_V2",
+   "version": 2,
+   "name_ko": "Quality & Reliability",
+   "name_en": "Quality & Reliability",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD10",
+     "TD07"
+    ],
+    "rf": [
+     "RF8"
+    ]
+   },
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "owns": "Assures, through criteria and judgments, that requirements hold through mass production and over the product's life",
+   "decides": [
+    "Characteristics to control",
+    "Control ranges and samples",
+    "Acceptance criteria and corrective actions",
+    "Conditions for life estimation"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_TEST_V2",
+     "line": "Testing judges a single case; quality assures the whole of mass production and service life"
+    },
+    {
+     "vs": "ROLE_MFG_V2",
+     "line": "Production engineering sets the conditions; quality checks against criteria that those conditions are held"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_QUALITY_V2_R1",
+     "axis": "J1",
+     "domain": "TD10",
+     "ask": "Have you worked out what is most critical under the customer's operating conditions and decided what to control?"
+    },
+    {
+     "id": "ROLE_QUALITY_V2_R2",
+     "axis": "J3",
+     "domain": "TD10",
+     "ask": "Have you set the items to control and their control ranges yourself?"
+    },
+    {
+     "id": "ROLE_QUALITY_V2_R3",
+     "axis": "J4",
+     "domain": "TD10",
+     "ask": "Have you calculated process capability indices to see whether a process was in control?"
+    },
+    {
+     "id": "ROLE_QUALITY_V2_R4",
+     "axis": "J6",
+     "domain": "TD10",
+     "ask": "Have you confirmed service life with accelerated or repeated testing?"
+    },
+    {
+     "id": "ROLE_QUALITY_V2_R5",
+     "axis": "J7",
+     "domain": "TD10",
+     "ask": "When the same defect came back, have you separated occurrence from escape and set countermeasures?"
+    },
+    {
+     "id": "ROLE_QUALITY_V2_R6",
+     "axis": "J5",
+     "domain": "TD10",
+     "ask": "Have you combined the cause, countermeasures and verification results into one report and had it approved?"
+    },
+    {
+     "id": "ROLE_QUALITY_V2_R7",
+     "axis": "J8",
+     "domain": "TD10",
+     "ask": "Has a process or inspection changed because of your criteria?"
+    }
+   ],
+   "compare_with": [
+    "ROLE_TEST_V2",
+    "ROLE_MFG_V2",
+    "ROLE_DESIGN_V2"
+   ],
+   "application_material": [
+    "A full control plan",
+    "Corrective action report",
+    "One page on the basis for a life estimate"
+   ]
+  },
+  {
+   "code": "ROLE_PM_V2",
+   "version": 2,
+   "name_ko": "Technical Planning",
+   "name_en": "Technical Planning",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "core_ref": {
+    "td": [
+     "TD11",
+     "TD12"
+    ],
+    "rf": [
+     "RF6"
+    ]
+   },
+   "required_axes": [
+    "J2",
+    "J5"
+   ],
+   "owns": "Ties together many people's requirements, schedules and constraints and sets the order of decisions",
+   "decides": [
+    "How requirements are broken down",
+    "Acceptance criteria",
+    "Roles and interfaces",
+    "Schedule and scope of changes"
+   ],
+   "differs_from": [
+    {
+     "vs": "ROLE_DESIGN_V2",
+     "line": "Design finalizes one part; technical planning sets the order so that many parts fit together"
+    },
+    {
+     "vs": "ROLE_QUALITY_V2",
+     "line": "Quality checks whether criteria are met; technical planning decides who meets those criteria and when"
+    }
+   ],
+   "items": [
+    {
+     "id": "ROLE_PM_V2_R1",
+     "axis": "J2",
+     "domain": "TD11",
+     "ask": "Have you gathered requirements from several people into one table and found where they conflict?"
+    },
+    {
+     "id": "ROLE_PM_V2_R2",
+     "axis": "J2",
+     "domain": "TD11",
+     "ask": "Have you attached to each requirement what would count as meeting it?"
+    },
+    {
+     "id": "ROLE_PM_V2_R3",
+     "axis": "J3",
+     "domain": "TD11",
+     "ask": "Have you decided what had to be matched between parts or teams?"
+    },
+    {
+     "id": "ROLE_PM_V2_R4",
+     "axis": "J4",
+     "domain": "TD11",
+     "ask": "Have you traced the impact of a changed requirement and rebuilt the schedule?"
+    },
+    {
+     "id": "ROLE_PM_V2_R5",
+     "axis": "J5",
+     "domain": "TD11",
+     "ask": "Have you kept a requirements table and change history?"
+    },
+    {
+     "id": "ROLE_PM_V2_R6",
+     "axis": "J6",
+     "domain": "TD11",
+     "ask": "At the end of a project, have you opened the requirements table and picked out the items that were missed?"
+    },
+    {
+     "id": "ROLE_PM_V2_R7",
+     "axis": "J8",
+     "domain": "TD12",
+     "ask": "Has your team worked to a schedule and division of work you set?"
+    }
+   ],
+   "compare_with": [
+    "ROLE_DESIGN_V2",
+    "ROLE_QUALITY_V2",
+    "ROLE_RND_V2"
+   ],
+   "application_material": [
+    "A full requirements table",
+    "Schedule and change history",
+    "One page summarizing roles and interfaces"
+   ]
+  }
+ ]
+}

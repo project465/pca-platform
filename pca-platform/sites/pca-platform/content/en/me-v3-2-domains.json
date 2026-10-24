@@ -1,0 +1,1548 @@
+{
+ "schema_version": "me-v3-domains.2",
+ "assessment_version": "ME_V3_2",
+ "note": "For each domain: the eight steps of the workflow and the performed/owned conditions for the eight judgment axes. The items, the result report and the experience input all read this one file. ME_V3_2 revised five domains. Actuation, transmission and motion design had read like control testing from electrical engineering, so it was moved toward load, inertia and drivetrains; materials was renamed to include strength; and for equipment and facility operation, requirements, constraints and schedule, and task automation, wording that only people with factory experience could answer was brought down to situations that can also be answered from undergraduate labs and capstone projects.",
+ "workflow_steps": [
+  "How the problem arrives",
+  "Inputs received",
+  "What gets decided first",
+  "Methods used",
+  "Tools used",
+  "Outputs delivered",
+  "What it is compared against",
+  "When it goes wrong"
+ ],
+ "domains": [
+  {
+   "code": "TD01",
+   "name": "Mechanical and Product Design",
+   "required_axes": [
+    "J3",
+    "J5"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "A new product or a change request comes in as a specification or a preliminary review"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Required performance, space constraints, load conditions, cost targets and the production method"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "How many concepts to develop and which requirement to protect first"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Concept design, load path review, fastener and bearing selection, tolerance allocation, manufacturability review"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "3D CAD, design calculations, tolerance stack-up calculations, standard part selection charts"
+    },
+    {
+     "step": 6,
+     "name": "Outputs delivered",
+     "detail": "Assembly and part drawings, BOM, design calculations, change history"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Comparison between designs, interference and tolerance stack-up, prototype assembly, analysis results, standards"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "When there is interference, a part that cannot be assembled, or a breakage, narrow the cause down to dimensions, material or process"
+    }
+   ],
+   "tools": [
+    "3D CAD",
+    "2D drawings",
+    "Tolerance analysis",
+    "Standard part selection",
+    "PLM"
+   ],
+   "artifacts": [
+    "Assembly drawing",
+    "Part drawing",
+    "BOM",
+    "Design calculations",
+    "Change history",
+    "Prototype"
+   ],
+   "verify_targets": [
+    "Alternative designs",
+    "Hand calculations",
+    "Analysis results",
+    "Prototype assembly",
+    "Standards or company design standards",
+    "Previous products"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote the design scope from a given specification",
+     "l3": "Set the functions and constraints to meet when no specification existed"
+    },
+    "J2": {
+     "l2": "Turned requirements into dimensions, loads, service life and assembly conditions",
+     "l3": "Set priorities between conflicting requirements"
+    },
+    "J3": {
+     "l2": "Decided one of thickness, cross-section, material or fastening",
+     "l3": "Set tolerance allocation and safety margins based on function"
+    },
+    "J4": {
+     "l2": "Built the geometry and assembly in 3D CAD",
+     "l3": "Documented clamping force, bearing life and stiffness with hand calculations"
+    },
+    "J5": {
+     "l2": "Delivered assembly and part drawings",
+     "l3": "The drawings went to manufacturing, with the BOM and tolerances stated"
+    },
+    "J6": {
+     "l2": "Compared two or more designs against the same criteria",
+     "l3": "Checked interference and tolerance stack-up, or confirmed with a prototype"
+    },
+    "J7": {
+     "l2": "Ran into interference or a breakage and changed the dimensions",
+     "l3": "Narrowed the cause down to dimensions, material or process and prevented it from recurring"
+    },
+    "J8": {
+     "l2": "Presented it at a design review",
+     "l3": "Manufacturing or ordering went ahead based on that drawing"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Product performance, cost and assembly hours",
+    "OC2": "Meeting customer specifications and unit price",
+    "OC3": "Design deliverables on time and customer approval",
+    "OC4": "Device design as a project deliverable",
+    "OC5": "Experimental setup and the methods section of a paper",
+    "OC6": "A design that complies with standards, and the basis for it",
+    "OC7": "A working prototype and the launch schedule"
+   }
+  },
+  {
+   "code": "TD02",
+   "name": "Structural and Durability Analysis",
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "A request comes in to confirm whether a design will hold up under its load conditions"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Geometry model, material, load history, required life and allowable stress"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Which phenomenon to look at and how far to idealize"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Idealization, setting boundary conditions, checking mesh convergence, fatigue life calculation, sensitivity"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Finite element analysis, fatigue analysis, hand calculations, optimization, scripts"
+    },
+    {
+     "step": 6,
+     "name": "Outputs delivered",
+     "detail": "Analysis report, model files, predicted life, design change proposal"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Hand calculations, earlier analyses, test results, allowable values in standards, other analysts"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "When results disagree with tests, narrow the cause down to boundary conditions, material or mesh"
+    }
+   ],
+   "tools": [
+    "Finite element analysis (FEA)",
+    "Fatigue and durability analysis",
+    "Hand calculations",
+    "Optimization",
+    "Post-processing scripts"
+   ],
+   "artifacts": [
+    "Analysis report",
+    "Analysis model",
+    "Predicted life",
+    "Design change proposal",
+    "Verification record"
+   ],
+   "verify_targets": [
+    "Hand calculations",
+    "Previous analyses",
+    "Test results",
+    "Allowable values in standards",
+    "Another method",
+    "Before-and-after comparison"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Decided which load cases to examine",
+     "l3": "Identified the governing phenomenon among fatigue, buckling and impact and set the scope"
+    },
+    "J2": {
+     "l2": "Turned the required life and allowable stress into analysis input conditions",
+     "l3": "Turned test standards or customer specifications into analysis conditions as well"
+    },
+    "J3": {
+     "l2": "Set the boundary conditions and loads",
+     "l3": "Chose the level of idealization and the material model"
+    },
+    "J4": {
+     "l2": "Built and ran a model in a commercial analysis tool",
+     "l3": "Checked mesh convergence and sensitivity"
+    },
+    "J5": {
+     "l2": "Delivered an analysis report",
+     "l3": "The report states the predicted life, assumptions and limitations"
+    },
+    "J6": {
+     "l2": "Compared with hand calculations or earlier results",
+     "l3": "Checked against test results and calibrated the model"
+    },
+    "J7": {
+     "l2": "Corrected the model when results disagreed with tests",
+     "l3": "Narrowed the disagreement down to boundary conditions, material or mesh"
+    },
+    "J8": {
+     "l2": "Reported the results to the design team",
+     "l3": "Drawing dimensions or materials changed as a result"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Fewer prototypes and a basis for design changes",
+    "OC2": "Passing customer validation and proving the specification",
+    "OC3": "Analysis reports used in customer decisions",
+    "OC4": "Technical basis for the project's interim review",
+    "OC5": "A paper with a validated model",
+    "OC6": "A traceable basis for judging compliance with standards",
+    "OC7": "A prototype that does not break, and lower material cost"
+   }
+  },
+  {
+   "code": "TD03",
+   "name": "Thermal and Fluid Systems",
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "A problem of high temperature or insufficient flow comes up from testing or the field"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Heat generation, allowable temperature, flow rate, pressure drop target and operating environment"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The dominant heat transfer path and which operating point to use as the design point"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Heat load calculation, thermal network setup, flow analysis, operating point selection, mesh independence check"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "CFD, thermal network calculations, 1D system analysis, processing measured data"
+    },
+    {
+     "step": 6,
+     "name": "Outputs delivered",
+     "detail": "Thermal design specification, analysis report, flow path design, basis for fan and pump selection"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "1D calculations, literature values, measured temperatures and flow rates, earlier models"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "When temperatures are higher than expected, narrow it down to the flow path, contact thermal resistance or fan selection"
+    }
+   ],
+   "tools": [
+    "Computational fluid dynamics (CFD)",
+    "Thermal network calculation",
+    "1D system analysis",
+    "Measurement data processing"
+   ],
+   "artifacts": [
+    "Thermal design specification",
+    "Analysis report",
+    "Flow path design",
+    "Selection rationale",
+    "Measured vs. predicted comparison table"
+   ],
+   "verify_targets": [
+    "1D calculations",
+    "Literature values",
+    "Measured temperatures",
+    "Measured flow rates",
+    "Previous models",
+    "Before-and-after comparison"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Decided whether the problem was the heat load or the flow rate",
+     "l3": "Identified the dominant path among conduction, convection and radiation and set the scope"
+    },
+    "J2": {
+     "l2": "Turned allowable temperature and pressure drop targets into boundary condition values",
+     "l3": "Included the operating environment and worst-case conditions in the conditions"
+    },
+    "J3": {
+     "l2": "Set the boundary conditions and operating point",
+     "l3": "Chose the turbulence model, meshing strategy and treatment of contact thermal resistance"
+    },
+    "J4": {
+     "l2": "Produced values with CFD or a thermal network calculation",
+     "l3": "Documented mesh independence and convergence criteria"
+    },
+    "J5": {
+     "l2": "Delivered an analysis report or a thermal design specification",
+     "l3": "The specification states the operating point, margins and assumptions"
+    },
+    "J6": {
+     "l2": "Compared with 1D calculations or literature values",
+     "l3": "Checked against measured temperatures and flow rates"
+    },
+    "J7": {
+     "l2": "Revised the design because temperatures were higher than expected",
+     "l3": "Narrowed the cause down to the flow path, contact or fan selection"
+    },
+    "J8": {
+     "l2": "Presented the results at a design review",
+     "l3": "The cooling structure or fan specification was decided from those results"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Product cooling performance and power consumption",
+    "OC2": "Meeting customer thermal specifications",
+    "OC3": "Thermal analysis reports on time and repeat requests",
+    "OC4": "Energy performance metrics for the project",
+    "OC5": "A paper with a validated heat transfer model",
+    "OC6": "Judging compliance with energy standards",
+    "OC7": "A prototype that runs without overheating"
+   }
+  },
+  {
+   "code": "TD04",
+   "name": "Dynamics, Vibration and Noise",
+   "required_axes": [
+    "J4",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Reports that noise or vibration exceeds the standard come from testing or customers"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Target noise and vibration levels, excitation sources, structural model and operating conditions"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Which frequency band to look at, measurement points and excitation conditions"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Modal analysis, vibration measurement, frequency response analysis, transfer path analysis, verifying countermeasures"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Accelerometers and microphones, signal analysis, modal analysis, multibody dynamics"
+    },
+    {
+     "step": 6,
+     "name": "Outputs delivered",
+     "detail": "Measurement and analysis reports, countermeasure proposals, before-and-after tables, judgment of whether targets were met"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Analysis vs. measured modes, before and after countermeasures, target criteria, competitor products"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "When a countermeasure has no effect, narrow it down to resonance, the excitation source or the transfer path"
+    }
+   ],
+   "tools": [
+    "Modal analysis",
+    "Signal and order analysis",
+    "Transfer path analysis",
+    "Multibody dynamics",
+    "Acceleration and sound pressure measurement"
+   ],
+   "artifacts": [
+    "Measurement report",
+    "Modal analysis report",
+    "Countermeasure proposal",
+    "Before-and-after comparison table",
+    "Judgment record"
+   ],
+   "verify_targets": [
+    "Analysis modes vs. measured modes",
+    "Before and after countermeasures",
+    "Target criteria",
+    "Another method",
+    "Competitor products"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Decided which frequency band the problem was in",
+     "l3": "Identified whether structure-borne or airborne transmission was dominant"
+    },
+    "J2": {
+     "l2": "Turned allowable vibration and noise levels into measurement points and operating conditions",
+     "l3": "Turned ride comfort or quietness into measurable values"
+    },
+    "J3": {
+     "l2": "Set the measurement points and excitation conditions",
+     "l3": "Set damping and coupling conditions and chose the direction of the countermeasure"
+    },
+    "J4": {
+     "l2": "Carried out a modal analysis or vibration measurement",
+     "l3": "Used frequency response, order analysis and transfer path analysis"
+    },
+    "J5": {
+     "l2": "Delivered a measurement or analysis report",
+     "l3": "The report states the before-and-after comparison for the countermeasure and whether the target was met"
+    },
+    "J6": {
+     "l2": "Compared analysis modes with measured modes",
+     "l3": "Measured before and after the countermeasure under the same conditions"
+    },
+    "J7": {
+     "l2": "Took another look when a countermeasure had no effect",
+     "l3": "Narrowed the cause down to resonance, the excitation source or the transfer path"
+    },
+    "J8": {
+     "l2": "Reported the results to design or production",
+     "l3": "The structure, mounts or sound insulation specification changed as a result"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Quietness metrics and fewer customer complaints",
+    "OC2": "Meeting component vibration specifications",
+    "OC3": "Root cause reports and repeat requests",
+    "OC4": "The project's noise reduction targets",
+    "OC5": "A paper with a transfer path model",
+    "OC6": "Judging compliance with noise standards",
+    "OC7": "A prototype that runs without shaking"
+   }
+  },
+  {
+   "code": "TD05",
+   "name": "Actuation, Transmission and Motion Design",
+   "required_axes": [
+    "J3",
+    "J5"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "A requirement comes in for what has to move, how fast and how precisely"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Mass and inertia to be moved, required speed and acceleration, positioning accuracy, friction and resistance, available space"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Drive type, motor size, gear ratio, transmission type and how it stops"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Load torque calculation, reflected inertia, motion profiles, actuator selection, commissioning and tuning"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Drive sizing calculations, gearbox and transmission component data, motion profiles, response measurement, safety review"
+    },
+    {
+     "step": 6,
+     "name": "Outputs delivered",
+     "detail": "A moving mechanism or device, drive selection rationale, motion sequence chart, commissioning records"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Target cycle time, repeat positioning accuracy, motor margin, previous configuration"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "When it is slow, vibrates or stops, narrow it down to inertia, friction, stiffness or gain"
+    }
+   ],
+   "tools": [
+    "Load and inertia calculation",
+    "Actuator and gearbox selection",
+    "Transmission component selection",
+    "Drawing motion profiles",
+    "Response measurement and tuning"
+   ],
+   "artifacts": [
+    "Moving mechanism",
+    "Drive sizing calculations",
+    "Motion sequence chart",
+    "Commissioning records",
+    "Safety review"
+   ],
+   "verify_targets": [
+    "Target cycle time",
+    "Repeat positioning accuracy",
+    "Motor margin",
+    "Previous configuration",
+    "Hand calculations and measurements"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Separated what had to move from what would not move this time",
+     "l3": "Decided which required motions to give up and narrowed the scope"
+    },
+    "J2": {
+     "l2": "Turned required speed and positioning accuracy into numerical conditions",
+     "l3": "Fixed acceleration and margins as non-negotiable design conditions"
+    },
+    "J3": {
+     "l2": "Decided the motor size or gear ratio",
+     "l3": "Decided the drive type and transmission structure, and the build went ahead with that configuration"
+    },
+    "J4": {
+     "l2": "Calculated and checked load torque and reflected inertia",
+     "l3": "Adjusted acceleration or gains based on measured response"
+    },
+    "J5": {
+     "l2": "Delivered a moving mechanism or drive sizing calculations",
+     "l3": "A motion sequence chart and commissioning records were both kept"
+    },
+    "J6": {
+     "l2": "Compared actual motion with the target cycle time",
+     "l3": "Measured repeat positioning accuracy several times and checked the spread"
+    },
+    "J7": {
+     "l2": "Fixed it when it vibrated or stopped",
+     "l3": "Narrowed the cause down to inertia, friction, stiffness or gain"
+    },
+    "J8": {
+     "l2": "Handed the device over for other people to use",
+     "l3": "The device was used for real work and cut the time it took"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Line takt time and equipment uptime",
+    "OC2": "Meeting equipment motion specifications and passing delivery inspection",
+    "OC3": "Building equipment on time and repeat requests",
+    "OC4": "A project prototype that delivers the required motion",
+    "OC5": "An experimental setup that reproduces the required trajectory",
+    "OC6": "Judging compliance of drive units with safety standards",
+    "OC7": "Working equipment that takes load off people's hands"
+   },
+   "review_perspectives": [
+    {
+     "name": "Defining required motion and accuracy",
+     "axis": "J2"
+    },
+    {
+     "name": "Load and inertia",
+     "axis": "J3"
+    },
+    {
+     "name": "Actuator selection",
+     "axis": "J3"
+    },
+    {
+     "name": "Drivetrain and backlash",
+     "axis": "J3"
+    },
+    {
+     "name": "Acceleration and margin",
+     "axis": "J4"
+    },
+    {
+     "name": "Stopping method and safety",
+     "axis": "J2"
+    },
+    {
+     "name": "Commissioning and tuning",
+     "axis": "J4"
+    },
+    {
+     "name": "Checking repeatability",
+     "axis": "J6"
+    },
+    {
+     "name": "Narrowing down causes of vibration and stalls",
+     "axis": "J7"
+    }
+   ]
+  },
+  {
+   "code": "TD06",
+   "name": "Materials, Strength and Failure",
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Fracture, wear or deformation comes up from the field or testing"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Fracture surface, usage history, load conditions, environment and material specification"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Candidate causes of damage to investigate, and which material to use at what strength"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Fractography, microstructure examination, composition analysis, mechanical testing, comparative material testing"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Microscopes and analytical equipment, hardness and tensile testing, heat treatment, friction and wear testing"
+    },
+    {
+     "step": 6,
+     "name": "Outputs delivered",
+     "detail": "Analysis report, material specification, test report, countermeasure proposal"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Values in standards, literature values, other materials under the same conditions, usage history"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "When the cause cannot be narrowed to one, rule out the candidates one at a time with evidence"
+    }
+   ],
+   "tools": [
+    "Microscopy and microstructure examination",
+    "Composition analysis",
+    "Mechanical testing",
+    "Heat treatment and surface treatment",
+    "Friction and wear testing"
+   ],
+   "artifacts": [
+    "Analysis report",
+    "Material specification",
+    "Test report",
+    "Countermeasure proposal",
+    "Basis for the judgment"
+   ],
+   "verify_targets": [
+    "Values in standards",
+    "Literature values",
+    "Safety factor",
+    "Comparative tests with other materials",
+    "Usage history"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Decided how to interpret the damage",
+     "l3": "Listed fatigue, corrosion, wear and creep as candidates and set the scope"
+    },
+    "J2": {
+     "l2": "Turned the operating environment and required life into material requirements",
+     "l3": "Set the criteria where strength, cost and machinability conflicted"
+    },
+    "J3": {
+     "l2": "Decided the material or heat treatment conditions",
+     "l3": "Changed the combination of material and treatment to balance strength and cost, and that option was used"
+    },
+    "J4": {
+     "l2": "Carried out mechanical testing or microstructure examination",
+     "l3": "Combined fractography and composition analysis to identify the mechanism"
+    },
+    "J5": {
+     "l2": "Delivered a test report or an analysis report",
+     "l3": "The material specification and the basis for the judgment were documented"
+    },
+    "J6": {
+     "l2": "Compared with values in standards or the literature",
+     "l3": "Ran comparative tests against other materials under the same conditions"
+    },
+    "J7": {
+     "l2": "Took another look at why it broke",
+     "l3": "Ruled out candidate mechanisms with evidence and narrowed it down to one"
+    },
+    "J8": {
+     "l2": "Reported the results to design or quality",
+     "l3": "Material or process standards changed as a result"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Fewer field failures and lower warranty costs",
+    "OC2": "Meeting material specifications and unit price",
+    "OC3": "Root cause reports and repeat requests",
+    "OC4": "Materials technology level and transferability",
+    "OC5": "A paper identifying a damage mechanism",
+    "OC6": "Judging compliance with materials standards",
+    "OC7": "Parts that do not break"
+   }
+  },
+  {
+   "code": "TD07",
+   "name": "Testing and Measurement",
+   "required_axes": [
+    "J3",
+    "J5"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "A request comes from design or quality to judge whether a requirement is met"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Standards, acceptance criteria, samples, test facilities and environmental conditions"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "What to measure, where, how many and how, and the pass/fail line"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Test planning, fixture design, setting up the measurement chain, calibration, repeated measurement, uncertainty evaluation"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Data acquisition equipment, sensors, fixtures, environmental chambers, signal processing"
+    },
+    {
+     "step": 6,
+     "name": "Outputs delivered",
+     "detail": "Test plan, test report, uncertainty evaluation, judgment records"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Scatter in repeated measurements, analysis values, other methods, standards, calibration references"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "When results fluctuate, narrow it down to the fixture, sensor, sample or environment"
+    }
+   ],
+   "tools": [
+    "Data acquisition equipment",
+    "Sensor selection",
+    "Fixture design",
+    "Environmental chamber",
+    "Signal processing"
+   ],
+   "artifacts": [
+    "Test plan",
+    "Test report",
+    "Uncertainty evaluation",
+    "Fixture drawing",
+    "Judgment record"
+   ],
+   "verify_targets": [
+    "Repeated measurements",
+    "Analysis values",
+    "Another measurement method",
+    "Standards",
+    "Calibration references",
+    "Before-and-after comparison"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Decided what the test was meant to confirm",
+     "l3": "Separated the questions the verdict can answer from those it cannot"
+    },
+    "J2": {
+     "l2": "Turned the acceptance criteria in a standard into quantities to measure and a pass/fail line",
+     "l3": "Set a justified pass/fail line for an item that no standard covered"
+    },
+    "J3": {
+     "l2": "Set the measurement points and conditions",
+     "l3": "Decided sensor selection, fixture constraints, sample size and acceptance criteria"
+    },
+    "J4": {
+     "l2": "Collected data with measuring equipment",
+     "l3": "Built the measurement chain with calibration, resolution and noise in mind"
+    },
+    "J5": {
+     "l2": "Delivered a test report",
+     "l3": "The report states the uncertainty, conditions and basis for the verdict"
+    },
+    "J6": {
+     "l2": "Looked at the scatter through repeated measurements",
+     "l3": "Cross-checked against analysis values or another method"
+    },
+    "J7": {
+     "l2": "Measured again because the results fluctuated",
+     "l3": "Narrowed the cause down to the fixture, sensor, sample or environment"
+    },
+    "J8": {
+     "l2": "Reported the results",
+     "l3": "Production approval or a design change was decided based on that verdict"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Shipping decisions and the development schedule",
+    "OC2": "Passing customer-witnessed tests",
+    "OC3": "Accredited test reports and repeat requests",
+    "OC4": "Evidence that the project met its performance goals",
+    "OC5": "A reproducible measurement method",
+    "OC6": "The basis for certification decisions",
+    "OC7": "Minimum verification before launch"
+   }
+  },
+  {
+   "code": "TD08",
+   "name": "Production and Process Engineering",
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "A new product transfer or a yield or takt time problem comes up from the line"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Drawings, tolerances, production volume targets, equipment capability and material conditions"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Manufacturing method, range of machining conditions, tooling and inspection points"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Method selection, condition trials, design of experiments, process capability calculation, standardization"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Machining and forming equipment, tooling, measuring instruments, design of experiments, process data analysis"
+    },
+    {
+     "step": 6,
+     "name": "Outputs delivered",
+     "detail": "Work standards, process charts, condition sheets, tooling drawings, process capability reports"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Defect rate and takt time before and after, process capability, drawing tolerances, other methods"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "When defects occur, narrow it down to equipment, material, conditions or work practice"
+    }
+   ],
+   "tools": [
+    "Machining and forming equipment",
+    "Jigs and fixtures",
+    "Measuring instruments",
+    "Design of experiments (DOE)",
+    "Process data analysis"
+   ],
+   "artifacts": [
+    "Work standard",
+    "Process chart",
+    "Condition sheet",
+    "Tooling drawing",
+    "Process capability report"
+   ],
+   "verify_targets": [
+    "Defect rate before and after",
+    "Work time (takt)",
+    "Process capability",
+    "Drawing tolerances",
+    "Other manufacturing methods",
+    "Production transfer decision"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Decided which process had the problem and what it was",
+     "l3": "Decided which to tackle first: yield, takt time or cost"
+    },
+    "J2": {
+     "l2": "Took drawing requirements and tolerances as process requirements",
+     "l3": "Requested a design change from a manufacturability standpoint"
+    },
+    "J3": {
+     "l2": "Decided the manufacturing method or machining conditions",
+     "l3": "Set the process window, tooling and inspection points"
+    },
+    "J4": {
+     "l2": "Ran trial production with changed conditions",
+     "l3": "Designed factors and levels with DOE to find the conditions"
+    },
+    "J5": {
+     "l2": "Delivered a work standard or process chart",
+     "l3": "The standard states the conditions, control limits and response to abnormalities"
+    },
+    "J6": {
+     "l2": "Compared defect rates or takt time before and after",
+     "l3": "Calculated process capability and confirmed the process was in control"
+    },
+    "J7": {
+     "l2": "Rolled back the conditions when defects occurred",
+     "l3": "Narrowed the cause down to equipment, material, conditions or work practice"
+    },
+    "J8": {
+     "l2": "Applied it on the line",
+     "l3": "Production ran on that standard and the yield target was met"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Production yield, takt time and machining cost",
+    "OC2": "Customer production approval and unit price",
+    "OC3": "Process improvement reports and repeat requests",
+    "OC4": "Transferability of process technology",
+    "OC5": "A paper on the relationship between process conditions and properties",
+    "OC6": "Judging compliance with process standards",
+    "OC7": "Repeatable production of what used to be made by hand"
+   }
+  },
+  {
+   "code": "TD09",
+   "name": "Equipment and Facility Operation",
+   "required_axes": [
+    "J3",
+    "J7"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Starts where the equipment in use fails to deliver correct values, stops, or keeps drifting out of alignment"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Equipment specifications, usage history, abnormal symptoms, required accuracy and available spare parts"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "What to check first, inspection intervals, replacement criteria and the scope of repair"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Checking condition, reproducing the symptom, ruling out candidate causes, setting inspection criteria, repairing"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Checking and calibrating instruments, checking noise, heat and vibration, logging history, managing spare parts"
+    },
+    {
+     "step": 6,
+     "name": "Outputs delivered",
+     "detail": "Checklists, calibration records, failure and action records, modification drawings, handover documents"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Equipment specification values, before-and-after condition, other units of the same equipment, calibration references"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "When the same symptom comes back, narrow it down to the equipment, the conditions or the way it is used"
+    }
+   ],
+   "tools": [
+    "Equipment inspection and calibration",
+    "Checking noise, heat and vibration",
+    "History logging",
+    "Spare parts management",
+    "Simple modifications"
+   ],
+   "artifacts": [
+    "Inspection checklist",
+    "Calibration record",
+    "Failure and action record",
+    "Modification drawing",
+    "Handover document"
+   ],
+   "verify_targets": [
+    "Equipment specification values",
+    "Before-and-after condition",
+    "Other units of the same equipment",
+    "Calibration references",
+    "Reference samples"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Decided which equipment to look at and what to check",
+     "l3": "Set the order of repairs based on symptoms and impact"
+    },
+    "J2": {
+     "l2": "Turned required accuracy or operating conditions into inspection items",
+     "l3": "Wrote down the limits of usable conditions and left them as criteria"
+    },
+    "J3": {
+     "l2": "Decided inspection items or intervals",
+     "l3": "Set replacement criteria and the scope of repair, and they were applied as set"
+    },
+    "J4": {
+     "l2": "Checked the condition with instruments or calibration references",
+     "l3": "Combined noise, heat and vibration to judge where the problem was"
+    },
+    "J5": {
+     "l2": "Delivered an inspection checklist or action record",
+     "l3": "Calibration records and handover documents were both kept"
+    },
+    "J6": {
+     "l2": "Compared equipment specification values or before-and-after condition",
+     "l3": "Checked against other units of the same equipment or reference samples"
+    },
+    "J7": {
+     "l2": "Took another look when the same symptom came back",
+     "l3": "Narrowed the cause down to the equipment, the conditions or the way it was used, and prevented recurrence"
+    },
+    "J8": {
+     "l2": "Showed other people how to use the equipment",
+     "l3": "Those criteria are used as they are to run equipment in the lab or on the line"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Uptime and downtime",
+    "OC2": "Equipment uptime guarantees and service contracts",
+    "OC3": "Diagnostic reports and repeat requests",
+    "OC4": "Project equipment running within the schedule",
+    "OC5": "An experimental setup that gives the same values again",
+    "OC6": "Judging compliance with inspection criteria",
+    "OC7": "Keeping one-of-a-kind equipment from going down"
+   },
+   "review_perspectives": [
+    {
+     "name": "Required equipment accuracy",
+     "axis": "J2"
+    },
+    {
+     "name": "Usable operating range",
+     "axis": "J2"
+    },
+    {
+     "name": "Reading abnormal symptoms",
+     "axis": "J1"
+    },
+    {
+     "name": "Inspection items",
+     "axis": "J3"
+    },
+    {
+     "name": "Calibration and reference samples",
+     "axis": "J4"
+    },
+    {
+     "name": "Spare parts and consumables",
+     "axis": "J3"
+    },
+    {
+     "name": "Downtime",
+     "axis": "J6"
+    },
+    {
+     "name": "Narrowing down the cause",
+     "axis": "J7"
+    },
+    {
+     "name": "Modification and improvement",
+     "axis": "J5"
+    },
+    {
+     "name": "Safety and handover",
+     "axis": "J8"
+    }
+   ]
+  },
+  {
+   "code": "TD10",
+   "name": "Quality and Reliability",
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Comes in when defects escape or a service life requirement has to be met"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Customer requirements, standards, defect history, process data and operating conditions"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Characteristics to control, sampling, control limits and acceleration conditions"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Failure mode analysis, running control charts, life testing, process capability calculation, corrective action"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Control charts, measurement system analysis, life distribution estimation, 8D, accelerated testing"
+    },
+    {
+     "step": 6,
+     "name": "Outputs delivered",
+     "detail": "Quality reports, corrective action reports, reliability reports, control criteria, certification documents"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Defect rate before and after, standards, process capability, life targets, field data"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "When a defect escapes, separate occurrence from escape and set a countermeasure for each"
+    }
+   ],
+   "tools": [
+    "Control charts",
+    "Measurement system analysis (MSA)",
+    "Life distribution estimation",
+    "Failure mode analysis",
+    "Accelerated testing"
+   ],
+   "artifacts": [
+    "Quality report",
+    "Corrective action report",
+    "Reliability report",
+    "Control criteria",
+    "Certification documents"
+   ],
+   "verify_targets": [
+    "Defect rate before and after",
+    "Standards",
+    "Process capability",
+    "Life targets",
+    "Field usage data",
+    "Other lots"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Decided which characteristics to control",
+     "l3": "Sorted control items by severity and set the scope"
+    },
+    "J2": {
+     "l2": "Turned customer requirements and standards into control limits and life targets",
+     "l3": "Set justified control criteria for an item that no standard covered"
+    },
+    "J3": {
+     "l2": "Decided inspection items and sampling",
+     "l3": "Set control limits, acceleration conditions and criteria for corrective action"
+    },
+    "J4": {
+     "l2": "Ran control charts or life tests",
+     "l3": "Used failure mode analysis, 8D and life distribution estimation"
+    },
+    "J5": {
+     "l2": "Delivered a quality report or corrective action report",
+     "l3": "Process capability, life estimates and their basis were documented"
+    },
+    "J6": {
+     "l2": "Checked inspection or test results against standards",
+     "l3": "Calculated process capability or a life distribution and checked against it"
+    },
+    "J7": {
+     "l2": "Looked for the cause when a defect escaped",
+     "l3": "Separated occurrence from escape and set a countermeasure for each"
+    },
+    "J8": {
+     "l2": "Reported the results",
+     "l3": "Shipping approval or a design change was decided based on that judgment"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Field defect rate and warranty costs",
+    "OC2": "Passing customer audits and supplier qualification",
+    "OC3": "Quality diagnostic reports and repeat requests",
+    "OC4": "Evidence that reliability targets were met",
+    "OC5": "Validity of the life model",
+    "OC6": "Certification and judging compliance with standards",
+    "OC7": "Not stopping because of early failures"
+   }
+  },
+  {
+   "code": "TD11",
+   "name": "Requirements, Constraints and Schedule",
+   "required_axes": [
+    "J2",
+    "J5"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Starts when a project or development effort involving several people begins and the requirements exist only as written text"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "What was asked for, regulations to follow, available budget, deadlines and people"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "How to break down the requirements, who takes on what, and what counts as done"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Organizing requirements, writing down constraints, dividing roles, agreeing on interfaces, breaking down the schedule"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Requirements table, interface notes, schedule, change log"
+    },
+    {
+     "step": 6,
+     "name": "Outputs delivered",
+     "detail": "Requirements table, acceptance criteria, roles and interfaces, schedule and change history"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Whether each requirement was met, regulations followed, the planned schedule, past projects"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "When a requirement changes, trace how far the impact reaches and narrow the scope"
+    }
+   ],
+   "tools": [
+    "Requirements table",
+    "List of constraints",
+    "Interface notes",
+    "Breaking down the schedule",
+    "Change log"
+   ],
+   "artifacts": [
+    "Requirements table",
+    "Acceptance criteria",
+    "Interface summary",
+    "Schedule",
+    "Change history"
+   ],
+   "verify_targets": [
+    "Results for each requirement",
+    "Regulations to follow",
+    "Planned schedule",
+    "Past projects",
+    "Confirmation from the person who assigned the work"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down what would and would not be done this time",
+     "l3": "Picked out the problem to work on from several people's requests"
+    },
+    "J2": {
+     "l2": "Broke down what was asked for into numerical conditions that can be met",
+     "l3": "Attached to each requirement what would count as meeting it"
+    },
+    "J3": {
+     "l2": "Decided what had to be matched between parts or teams",
+     "l3": "Decided which of the conflicting requirements to protect first"
+    },
+    "J4": {
+     "l2": "Managed the work using a requirements table or schedule",
+     "l3": "Traced the impact of a changed requirement and rebuilt the schedule"
+    },
+    "J5": {
+     "l2": "Delivered a requirements table or acceptance criteria",
+     "l3": "The schedule and change history were both kept, so the work can be traced back"
+    },
+    "J6": {
+     "l2": "Checked whether what was built met the requirements",
+     "l3": "Checked results against each requirement and noted the ones not met"
+    },
+    "J7": {
+     "l2": "Redivided the work when requirements changed",
+     "l3": "Traced the effects of the change and narrowed the scope of impact"
+    },
+    "J8": {
+     "l2": "Circulated the organized requirements to the team",
+     "l3": "Other people's work went ahead based on those requirements"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Development schedule and requirement fulfillment",
+    "OC2": "Agreement on customer specifications and change management",
+    "OC3": "Managing the scope of proposals and delivery",
+    "OC4": "Meeting project goals and interim reviews",
+    "OC5": "Consistency of the research plan",
+    "OC6": "Traceability of requirements and decisions",
+    "OC7": "Holding the scope with a small team"
+   },
+   "review_perspectives": [
+    {
+     "name": "Breaking down requirements",
+     "axis": "J2"
+    },
+    {
+     "name": "Regulations and constraints to follow",
+     "axis": "J2"
+    },
+    {
+     "name": "Acceptance criteria",
+     "axis": "J2"
+    },
+    {
+     "name": "Division of roles",
+     "axis": "J3"
+    },
+    {
+     "name": "Interfaces between parts and teams",
+     "axis": "J3"
+    },
+    {
+     "name": "Breaking down the schedule",
+     "axis": "J4"
+    },
+    {
+     "name": "Requirements table and history",
+     "axis": "J5"
+    },
+    {
+     "name": "Checking results against each requirement",
+     "axis": "J6"
+    },
+    {
+     "name": "Impact of changed requirements",
+     "axis": "J7"
+    }
+   ]
+  },
+  {
+   "code": "TD12",
+   "name": "Task Automation and Data",
+   "required_axes": [
+    "J5",
+    "J8"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Starts where people are doing the same calculation or data handling over and over"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "The input format of the repeated task, the required output format, who will use it, and exceptions"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "What to automate, what people should still review, and rules to catch errors"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Writing out the procedure, automating it, adding rules to catch errors, checking against manual results, handing it over to others"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Organizing measurement data, automating repeated calculations, automating analysis procedures, version control"
+    },
+    {
+     "step": 6,
+     "name": "Outputs delivered",
+     "detail": "A working procedure, organized data, usage instructions, input specification, checked cases"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Manual results, multiple cases, edge cases, the previous version"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "When a wrong value comes out, narrow it down to the input, the assumptions or the tool itself, and add a rule to catch it"
+    }
+   ],
+   "tools": [
+    "Organizing measurement data",
+    "Automating repeated calculations",
+    "Automating analysis procedures",
+    "Version control",
+    "Automatic generation of result tables and plots"
+   ],
+   "artifacts": [
+    "A working calculation tool",
+    "Organized data",
+    "Usage instructions",
+    "Input specification",
+    "Checked cases"
+   ],
+   "verify_targets": [
+    "Manual results",
+    "Multiple cases",
+    "Edge cases",
+    "Previous version",
+    "Results from other people using it"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Decided which repetitive task to reduce",
+     "l3": "Separated tasks worth automating from those to leave as they are"
+    },
+    "J2": {
+     "l2": "Defined the input format and the required output format",
+     "l3": "Wrote down users' conditions and exceptions as requirements in advance"
+    },
+    "J3": {
+     "l2": "Decided the processing order",
+     "l3": "Set rules to catch errors and the decision criteria"
+    },
+    "J4": {
+     "l2": "Automated a repeated calculation or data-handling task",
+     "l3": "Kept the version and environment together so the same result comes out again"
+    },
+    "J5": {
+     "l2": "Delivered a working procedure or organized data",
+     "l3": "Usage instructions, the input specification and the limitations come with it"
+    },
+    "J6": {
+     "l2": "Compared with manual results",
+     "l3": "Confirmed with multiple cases that the same values come out, and checked the edge cases"
+    },
+    "J7": {
+     "l2": "Fixed it when a wrong value came out",
+     "l3": "Narrowed the cause down to the input, the assumptions or the tool itself and added a rule"
+    },
+    "J8": {
+     "l2": "Handed what was built over for other people to use",
+     "l3": "Other people are doing their work with it"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Analysis and decisions take less time, and the same results come out again",
+    "OC2": "Verification runs automatically and throughput went up",
+    "OC3": "The same method was reused on other work",
+    "OC4": "A tool left behind as a project deliverable",
+    "OC5": "An analysis procedure that can be run again",
+    "OC6": "The decision process can be traced back",
+    "OC7": "Calculations that run without a person"
+   },
+   "review_perspectives": [
+    {
+     "name": "Choosing which repetition to reduce",
+     "axis": "J1"
+    },
+    {
+     "name": "Input and output formats",
+     "axis": "J2"
+    },
+    {
+     "name": "Processing order",
+     "axis": "J3"
+    },
+    {
+     "name": "Rules to catch errors",
+     "axis": "J3"
+    },
+    {
+     "name": "Automating it",
+     "axis": "J4"
+    },
+    {
+     "name": "Usage instructions and input specification",
+     "axis": "J5"
+    },
+    {
+     "name": "Checking against hand calculations",
+     "axis": "J6"
+    },
+    {
+     "name": "Causes of wrong values",
+     "axis": "J7"
+    },
+    {
+     "name": "Handing it over to others",
+     "axis": "J8"
+    }
+   ]
+  }
+ ],
+ "review_note": "`review_perspectives` is the list of perspectives received in the 2026-10-07 quality review. Each perspective records which axis receives it, and `v3:domains` counts whether that axis has at least two items to choose from. If only the list is kept, nobody will notice when the next person deletes an item."
+}

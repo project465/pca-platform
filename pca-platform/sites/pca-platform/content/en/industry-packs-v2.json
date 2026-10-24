@@ -1,0 +1,1961 @@
+{
+ "schema_version": "industry-packs.2",
+ "core": "ME_CORE_V3",
+ "note": "Holds industry context, judgment dimensions, extra questions, evidence interpretation and job links. Industries do not change scores: `axis_emphasis` marks the axes an industry looks at more closely, and it does not enter the axis level calculation. ME_V3_2 added three fields. `scene` is a short introduction shown before Core screening and produces no score. `judgement_dimensions` are the twelve judgments the industry actually requires of mechanical engineers, and the items take ten of them. `gap_language` and `result_line` are read when the report explains gaps in that industry's own terms.",
+ "caps": {
+  "industry_items_max": 10,
+  "role_items_max": 7,
+  "deep_industry_max": 1,
+  "deep_role_max": 2,
+  "interest_pick_max": 2
+ },
+ "reading_rule": "An industry pack is not an industry trivia quiz. What it looks at is whether existing mechanical engineering experience can be recognized in, and connected to, that industry's problem situations. So for each item, `gloss` restates the judgment in general mechanical engineering terms, and the test screen shows that line together with the item. Not knowing industry jargon is never recorded as a poor fit: the report only goes as far as `in this industry, this is called...`. That is why items never ask whether you know a term, like `Have you managed particles?`, and instead say `Have you treated the ways contamination gets in as a design condition?`",
+ "exploration": {
+  "browse": "all",
+  "deep_per_attempt": 1,
+  "add_later": true,
+  "subscription_gate": false,
+  "note": "All eight industries can be explored in the results. At the start of the assessment you pick up to two industries of interest, read the scenes for those industries before Core screening, and in PRO one of them is asked about in depth. Industries you did not pick are compared lightly through your Core results. The structure is not to be changed so that industry packs open only with a subscription."
+ },
+ "packs": [
+  {
+   "code": "INDUSTRY_SEMICON_V2",
+   "version": 2,
+   "name_ko": "Semiconductor",
+   "name_en": "Semiconductor",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "Holds position and shape accuracy at the nanometer-to-micron scale throughout the process",
+    "Equipment has to give the same values again and again even under vacuum, heat and vibration at the same time",
+    "Contamination shows up directly in yield, so materials, surfaces and airflow are considered together",
+    "Equipment downtime is written into the contract terms with the customer"
+   ],
+   "scene": "In semiconductor equipment, mechanical engineers deal with problems such as precision structures, thermal deformation, vibration, vacuum and keeping equipment from stopping. Choosing materials, setting dimensions and confirming by measurement all carry over directly.",
+   "judgement_dimensions": [
+    {
+     "name": "Do you control thermal deformation at the design stage?",
+     "axis": "J3",
+     "domain": "TD03",
+     "why": "Temperature differences between the chamber and the stage turn directly into position error"
+    },
+    {
+     "name": "Do you allocate accuracy among the parts?",
+     "axis": "J3",
+     "domain": "TD01",
+     "why": "Overall accuracy is decided by where the tolerance budget is concentrated"
+    },
+    {
+     "name": "Do you turn vacuum and cleanroom conditions into material conditions?",
+     "axis": "J2",
+     "domain": "TD06",
+     "why": "Materials that outgas cannot be used, and surface treatment becomes a condition"
+    },
+    {
+     "name": "Do you confirm vibration of moving axes by measurement?",
+     "axis": "J6",
+     "domain": "TD04",
+     "why": "If vibration remains, alignment will be off"
+    },
+    {
+     "name": "Do you cut off the paths contamination takes through design?",
+     "axis": "J1",
+     "domain": "TD06",
+     "why": "Contamination is not caught after it appears; you block the way it gets in"
+    },
+    {
+     "name": "Do you manage equipment downtime in numbers?",
+     "axis": "J8",
+     "domain": "TD09",
+     "why": "Uptime is part of the delivery terms"
+    },
+    {
+     "name": "Do you check whether the same value comes out again?",
+     "axis": "J6",
+     "domain": "TD07",
+     "why": "A value that matched once is not evidence"
+    },
+    {
+     "name": "Do you vary conditions to find the working range?",
+     "axis": "J3",
+     "domain": "TD08",
+     "why": "The width of the process window is what produces yield"
+    },
+    {
+     "name": "Do you try different combinations of material and surface treatment?",
+     "axis": "J3",
+     "domain": "TD06",
+     "why": "Even with the same geometry, the surface decides the result"
+    },
+    {
+     "name": "Do you capture repeated calculations and decisions so they can be reused?",
+     "axis": "J5",
+     "domain": "TD12",
+     "why": "There are many equipment types, so the same calculations come up again and again"
+    },
+    {
+     "name": "Do you measure positioning accuracy repeatedly?",
+     "axis": "J6",
+     "domain": "TD05",
+     "why": "The specification is repeatability, not one-time accuracy"
+    },
+    {
+     "name": "Do you narrow down causes so a failure does not happen again?",
+     "axis": "J7",
+     "domain": "TD09",
+     "why": "If the same failure happens twice, it becomes a contract issue"
+    }
+   ],
+   "axis_emphasis": {
+    "TD01": [
+     "J3"
+    ],
+    "TD03": [
+     "J3"
+    ],
+    "TD06": [
+     "J1"
+    ],
+    "TD04": [
+     "J6"
+    ],
+    "TD07": [
+     "J6"
+    ],
+    "TD08": [
+     "J3"
+    ],
+    "TD09": [
+     "J8",
+     "J7"
+    ],
+    "TD12": [
+     "J5"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_SEMICON_V2_I1",
+     "axis": "J3",
+     "domain": "TD01",
+     "ask": "Have you set a shape and material with a special environment, such as vacuum or high temperature, as a condition?",
+     "gloss": "Choosing the material and shape of a part used where temperature or pressure is out of the ordinary"
+    },
+    {
+     "id": "INDUSTRY_SEMICON_V2_I2",
+     "axis": "J3",
+     "domain": "TD01",
+     "ask": "To meet overall accuracy, have you allocated tolerances among the parts?",
+     "gloss": "Deciding which parts get tighter tolerances so the assembly meets its accuracy"
+    },
+    {
+     "id": "INDUSTRY_SEMICON_V2_I3",
+     "axis": "J3",
+     "domain": "TD03",
+     "ask": "Have you calculated deformation caused by temperature differences in advance and revised a design?",
+     "gloss": "Calculating how much a part grows when heated and changing dimensions or how it is fixed"
+    },
+    {
+     "id": "INDUSTRY_SEMICON_V2_I4",
+     "axis": "J1",
+     "domain": "TD06",
+     "ask": "Have you treated the ways contamination gets in, or cleanliness, as a design condition?",
+     "gloss": "Deciding covers or gap structures to keep dust or oil out"
+    },
+    {
+     "id": "INDUSTRY_SEMICON_V2_I5",
+     "axis": "J6",
+     "domain": "TD04",
+     "ask": "Have you confirmed vibration or position error on a moving axis by measurement?",
+     "gloss": "Measuring how much a moving part shakes and whether it stops where you want it to"
+    },
+    {
+     "id": "INDUSTRY_SEMICON_V2_I6",
+     "axis": "J6",
+     "domain": "TD07",
+     "ask": "Have you measured several times under the same conditions to check that the value comes out again?",
+     "gloss": "Measuring at several points to see whether values differ by location even within the same device"
+    },
+    {
+     "id": "INDUSTRY_SEMICON_V2_I7",
+     "axis": "J3",
+     "domain": "TD08",
+     "ask": "Have you varied conditions to find the range that works?",
+     "gloss": "Varying temperature, pressure or speed to find the range where things work well",
+     "review": "HUMAN_DOMAIN_REVIEW_REQUIRED",
+     "review_reason": "The judgment of finding a condition window is 0.59 similar to BATTERY_I3. The conditions that differ in semiconductors (yield and the process window) are missing from the wording.",
+     "review_added": "2026-10-10"
+    },
+    {
+     "id": "INDUSTRY_SEMICON_V2_I8",
+     "axis": "J8",
+     "domain": "TD09",
+     "ask": "Have you recorded the time between failures to reduce equipment downtime?",
+     "gloss": "Recording how many times and for how long lab equipment stopped"
+    },
+    {
+     "id": "INDUSTRY_SEMICON_V2_I9",
+     "axis": "J7",
+     "domain": "TD09",
+     "ask": "When the same abnormality kept recurring, have you separated the equipment side from the process side?",
+     "gloss": "When the same problem keeps happening, separating whether the equipment or the operating conditions are at fault"
+    },
+    {
+     "id": "INDUSTRY_SEMICON_V2_I10",
+     "axis": "J5",
+     "domain": "TD12",
+     "ask": "Have you captured repeated calculations or decisions so others could use them?",
+     "gloss": "Organizing frequent calculations into a table or procedure so others can use them too"
+    }
+   ],
+   "gap_language": {
+    "J3": "In this industry, technical decisions show up as where to concentrate accuracy and how much attention to give thermal deformation",
+    "J6": "In this industry, comparison and verification look for values that come out again, not a value that matched once",
+    "J7": "In this industry, failure and correction means narrowing down causes so the same failure does not happen twice",
+    "J8": "In this industry, organizational use shows up as equipment downtime and uptime"
+   },
+   "result_line": "Semiconductor equipment deals with precision structures, thermal deformation, vibration and vacuum all at once. Experience setting dimensions and materials, calculating thermal deformation, and measuring to see whether the same value comes out again is closest to the entry point of this industry.",
+   "evidence_reading": [
+    {
+     "same": "Finite element analysis (FEA)",
+     "reads_as": "Evidence of predicting thermal deformation and alignment error down to very small scales"
+    },
+    {
+     "same": "Vibration measurement",
+     "reads_as": "Evaluating external vibration that determines equipment accuracy"
+    },
+    {
+     "same": "Experiments run while varying conditions",
+     "reads_as": "Setting condition ranges that feed directly into yield"
+    },
+    {
+     "same": "Equipment inspection records",
+     "reads_as": "The foundation for uptime guarantees"
+    }
+   ],
+   "job_aliases": [
+    "Semiconductor equipment design",
+    "Equipment mechanical design",
+    "Thermal and flow analysis (equipment)",
+    "Equipment reliability",
+    "Equipment engineering (fab)"
+   ],
+   "org_mix": {
+    "OC2": "Common",
+    "OC1": "Present",
+    "OC3": "Present",
+    "OC4": "Rare",
+    "OC5": "Rare",
+    "OC6": "Rare",
+    "OC7": "Present"
+   },
+   "vocabulary": [
+    "Chamber",
+    "Vacuum",
+    "Stage",
+    "Particles",
+    "Overlay",
+    "Uptime",
+    "Mean time between failures (MTBF)",
+    "Cleanroom"
+   ]
+  },
+  {
+   "code": "INDUSTRY_DEFENSE_V2",
+   "version": 2,
+   "name_ko": "Defense & Aerospace",
+   "name_en": "Defense & Aerospace",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "Requirements arrive as specification documents, and how each one will be verified is decided in advance",
+    "Weight has to come down while strength and life are maintained, so you need evidence to justify reducing safety margins",
+    "Shock, vibration and temperature ranges are wider than for ordinary products",
+    "Leaving a record of the basis for decisions is half of the deliverable"
+   ],
+   "scene": "In defense and aerospace, mechanical engineers turn requirements that arrive as specifications into dimensions and materials, trade weight against strength, make things withstand wide temperature and vibration ranges, and leave a record of the basis for those judgments.",
+   "judgement_dimensions": [
+    {
+     "name": "Do you turn requirements in specification documents into design conditions?",
+     "axis": "J2",
+     "domain": "TD11",
+     "why": "Requirements come as sentences, and design only starts once they are turned into conditions"
+    },
+    {
+     "name": "Do you decide what will count as meeting each requirement?",
+     "axis": "J2",
+     "domain": "TD11",
+     "why": "The verification method is decided together with the requirement"
+    },
+    {
+     "name": "Do you build the case for trading weight against strength?",
+     "axis": "J3",
+     "domain": "TD02",
+     "why": "Every decision to reduce weight demands a strength justification"
+    },
+    {
+     "name": "Do you decide where to put the safety factor?",
+     "axis": "J3",
+     "domain": "TD06",
+     "why": "It has to be set between the value a standard gives and actual test values"
+    },
+    {
+     "name": "Do you treat a wide temperature range as a condition?",
+     "axis": "J2",
+     "domain": "TD03",
+     "why": "The operating range is wider than for civilian products"
+    },
+    {
+     "name": "Do you anticipate shock and vibration testing at the design stage?",
+     "axis": "J6",
+     "domain": "TD04",
+     "why": "If it fails the test, there is no time to go back"
+    },
+    {
+     "name": "Do you choose materials and processes within the specification?",
+     "axis": "J3",
+     "domain": "TD06",
+     "why": "Usable materials are limited to an approved list"
+    },
+    {
+     "name": "Do you leave a traceable record of your reasoning?",
+     "axis": "J5",
+     "domain": "TD11",
+     "why": "Certification only holds if the basis for each judgment is on record"
+    },
+    {
+     "name": "Do you list failure modes in advance?",
+     "axis": "J1",
+     "domain": "TD10",
+     "why": "A single failure means mission failure"
+    },
+    {
+     "name": "Do you feed test results back into the design?",
+     "axis": "J7",
+     "domain": "TD07",
+     "why": "A test is not a stamp of approval; it is design input"
+    },
+    {
+     "name": "Do you align the interfaces between several teams?",
+     "axis": "J3",
+     "domain": "TD11",
+     "why": "One system is built in pieces by several organizations"
+    },
+    {
+     "name": "Do you manage schedule and changes through records?",
+     "axis": "J4",
+     "domain": "TD11",
+     "why": "A single change can shift the certification schedule"
+    }
+   ],
+   "axis_emphasis": {
+    "TD11": [
+     "J2",
+     "J3",
+     "J5"
+    ],
+    "TD02": [
+     "J3"
+    ],
+    "TD06": [
+     "J3"
+    ],
+    "TD03": [
+     "J2"
+    ],
+    "TD04": [
+     "J6"
+    ],
+    "TD10": [
+     "J1"
+    ],
+    "TD07": [
+     "J7"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_DEFENSE_V2_I1",
+     "axis": "J2",
+     "domain": "TD11",
+     "ask": "Have you broken requirements written as sentences into numerical conditions that can be met?",
+     "gloss": "Turning the wording of competition rules or a project call into numerical conditions to meet"
+    },
+    {
+     "id": "INDUSTRY_DEFENSE_V2_I2",
+     "axis": "J2",
+     "domain": "TD11",
+     "ask": "Have you attached acceptance criteria to each requirement, defining what counts as meeting it?",
+     "gloss": "Deciding for each requirement whether it will be confirmed by test or by calculation"
+    },
+    {
+     "id": "INDUSTRY_DEFENSE_V2_I3",
+     "axis": "J3",
+     "domain": "TD02",
+     "ask": "Have you built a calculated case that a part still holds up while cutting the safety factor?",
+     "gloss": "Reducing thickness to make something lighter and confirming by calculation that it still holds up"
+    },
+    {
+     "id": "INDUSTRY_DEFENSE_V2_I4",
+     "axis": "J3",
+     "domain": "TD06",
+     "ask": "Have you chosen yourself whether to use a standard value or a test value?",
+     "gloss": "Deciding whether to use material values from a handbook or values you measured yourself"
+    },
+    {
+     "id": "INDUSTRY_DEFENSE_V2_I5",
+     "axis": "J2",
+     "domain": "TD03",
+     "ask": "Have you treated a wide operating temperature range as a design condition?",
+     "gloss": "Setting design conditions so a product survives both midwinter and midsummer temperatures"
+    },
+    {
+     "id": "INDUSTRY_DEFENSE_V2_I6",
+     "axis": "J6",
+     "domain": "TD04",
+     "ask": "Have you revised a design in advance, anticipating shock or vibration tests?",
+     "gloss": "Reinforcing a design in advance with drop or shake tests in mind",
+     "review": "HUMAN_DOMAIN_REVIEW_REQUIRED",
+     "review_reason": "The judgment of revising a design in anticipation of tests is 0.65 similar to BATTERY_I6. The conditions that differ in defense (specified test items, environmental test grades) are missing from the wording.",
+     "review_added": "2026-10-10"
+    },
+    {
+     "id": "INDUSTRY_DEFENSE_V2_I7",
+     "axis": "J1",
+     "domain": "TD10",
+     "ask": "Have you listed failure modes in advance and worked through their effects?",
+     "gloss": "Writing down where and how something could fail, and working through the ones with the biggest impact first"
+    },
+    {
+     "id": "INDUSTRY_DEFENSE_V2_I8",
+     "axis": "J7",
+     "domain": "TD07",
+     "ask": "Have you taken test results and gone back to revise the design?",
+     "gloss": "Revising a design after it failed to meet the criteria in a test"
+    },
+    {
+     "id": "INDUSTRY_DEFENSE_V2_I9",
+     "axis": "J3",
+     "domain": "TD11",
+     "ask": "Have you decided what had to be matched between several teams or parts?",
+     "gloss": "When work is split across teams, settling in advance the mating dimensions and connection methods"
+    },
+    {
+     "id": "INDUSTRY_DEFENSE_V2_I10",
+     "axis": "J5",
+     "domain": "TD11",
+     "ask": "Have you recorded the basis for a judgment so it could be traced back later?",
+     "gloss": "Documenting why something was decided so it can be revisited later"
+    }
+   ],
+   "gap_language": {
+    "J2": "In this industry, requirements interpretation means turning specification wording into numerical conditions and acceptance criteria",
+    "J3": "In this industry, technical decisions show up as trading weight against strength and setting safety factors",
+    "J5": "In this industry, deliverables include not just hardware but the documents that record the basis for judgments",
+    "J6": "In this industry, comparison and verification means confirming through the tests a standard specifies"
+   },
+   "result_line": "In defense and aerospace, requirements arrive as documents, and recording the basis for decisions is half of the output. Experience breaking down requirements, setting dimensions on a strength basis, and revising a design based on test results is closest to the entry point of this industry.",
+   "evidence_reading": [
+    {
+     "same": "Structural analysis report",
+     "reads_as": "Verification evidence attached to each requirement"
+    },
+    {
+     "same": "Requirements table",
+     "reads_as": "A record of breaking system requirements down into lower-level requirements"
+    },
+    {
+     "same": "Vibration and shock testing",
+     "reads_as": "The foundation for environmental tests specified by standards"
+    },
+    {
+     "same": "Material selection rationale",
+     "reads_as": "Judgment within a restricted list of materials"
+    }
+   ],
+   "job_aliases": [
+    "System design",
+    "Structural design",
+    "Requirements management",
+    "Environmental testing",
+    "Reliability and safety"
+   ],
+   "org_mix": {
+    "OC1": "Common",
+    "OC4": "Common",
+    "OC2": "Present",
+    "OC6": "Present",
+    "OC3": "Present",
+    "OC5": "Rare",
+    "OC7": "Rare"
+   },
+   "vocabulary": [
+    "Requirements",
+    "Verification",
+    "Safety factor",
+    "Environmental testing",
+    "Configuration management",
+    "Traceability",
+    "System",
+    "Interface"
+   ]
+  },
+  {
+   "code": "INDUSTRY_MOBILITY_V2",
+   "version": 2,
+   "name_ko": "Automotive & Mobility",
+   "name_en": "Automotive & Mobility",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "Cost, weight and performance are decided on the same table",
+    "Millions of vehicles have to come out at the same quality, so what the process can handle becomes a design condition",
+    "Noise and vibration are quality that customers feel immediately",
+    "Changing one part shifts the schedules of several teams at once"
+   ],
+   "scene": "In the automotive industry, mechanical engineers set dimensions while weighing cost, weight and performance together, look at process conditions so millions of units come out the same, reduce noise and vibration, and confirm service life through testing.",
+   "judgement_dimensions": [
+    {
+     "name": "Do you decide cost and performance on the same table?",
+     "axis": "J3",
+     "domain": "TD01",
+     "why": "Cost comes in as a design condition"
+    },
+    {
+     "name": "Do you build what mass production can handle into the design?",
+     "axis": "J2",
+     "domain": "TD08",
+     "why": "A design that cannot be manufactured is not a design"
+    },
+    {
+     "name": "Do you build the case for reducing weight?",
+     "axis": "J3",
+     "domain": "TD02",
+     "why": "Fuel economy and driving range depend on weight"
+    },
+    {
+     "name": "Do you separate the transfer paths of noise and vibration?",
+     "axis": "J4",
+     "domain": "TD04",
+     "why": "If you cannot separate the causes, you cannot build a countermeasure"
+    },
+    {
+     "name": "Do you confirm service life with accelerated testing?",
+     "axis": "J6",
+     "domain": "TD10",
+     "why": "The warranty period has to be backed by testing"
+    },
+    {
+     "name": "Do you decide where the heat goes?",
+     "axis": "J3",
+     "domain": "TD03",
+     "why": "With electrification, thermal design decides performance"
+    },
+    {
+     "name": "Do you narrow down the causes of field failures?",
+     "axis": "J7",
+     "domain": "TD06",
+     "why": "Recall costs are bigger than design costs"
+    },
+    {
+     "name": "Do you calculate tolerance stack-up to confirm assembly?",
+     "axis": "J6",
+     "domain": "TD01",
+     "why": "Across millions of units, variation is a defect"
+    },
+    {
+     "name": "Do you trace the scope of impact of a change?",
+     "axis": "J4",
+     "domain": "TD11",
+     "why": "A single part involves several teams"
+    },
+    {
+     "name": "Do you pick out the characteristics to control and set criteria?",
+     "axis": "J3",
+     "domain": "TD10",
+     "why": "You cannot control everything"
+    },
+    {
+     "name": "Do you correlate testing with analysis?",
+     "axis": "J6",
+     "domain": "TD02",
+     "why": "Analysis has to match testing to be used for the next model"
+    },
+    {
+     "name": "Do you revise shapes based on assembly and machining hours?",
+     "axis": "J3",
+     "domain": "TD08",
+     "why": "Labor hours go straight into cost"
+    }
+   ],
+   "axis_emphasis": {
+    "TD01": [
+     "J3",
+     "J6"
+    ],
+    "TD08": [
+     "J2"
+    ],
+    "TD02": [
+     "J3",
+     "J6"
+    ],
+    "TD04": [
+     "J4"
+    ],
+    "TD10": [
+     "J6",
+     "J3"
+    ],
+    "TD03": [
+     "J3"
+    ],
+    "TD06": [
+     "J7"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_MOBILITY_V2_I1",
+     "axis": "J3",
+     "domain": "TD01",
+     "ask": "Have you revised a shape or material after looking at cost or machining hours?",
+     "gloss": "Changing a shape or material to make something cheaper or faster to produce"
+    },
+    {
+     "id": "INDUSTRY_MOBILITY_V2_I2",
+     "axis": "J2",
+     "domain": "TD08",
+     "ask": "Have you built the range that can be mass-produced into the design conditions?",
+     "gloss": "Revising a design after checking whether it could easily be made in quantity"
+    },
+    {
+     "id": "INDUSTRY_MOBILITY_V2_I3",
+     "axis": "J3",
+     "domain": "TD02",
+     "ask": "Have you looked for a way to reduce weight without raising cost?",
+     "gloss": "Finding ways to reduce weight without increasing cost"
+    },
+    {
+     "id": "INDUSTRY_MOBILITY_V2_I4",
+     "axis": "J4",
+     "domain": "TD04",
+     "ask": "Have you separated where noise or vibration travels?",
+     "gloss": "Measuring where noise or vibration comes from and where it travels"
+    },
+    {
+     "id": "INDUSTRY_MOBILITY_V2_I5",
+     "axis": "J6",
+     "domain": "TD10",
+     "ask": "Have you confirmed service life in a shortened, accelerated way to back a warranty period?",
+     "gloss": "Using a short test to see in advance what happens after long use"
+    },
+    {
+     "id": "INDUSTRY_MOBILITY_V2_I6",
+     "axis": "J3",
+     "domain": "TD03",
+     "ask": "Have you decided the path heat should be removed along?",
+     "gloss": "Deciding the path for removing heat from hot parts inside a tight space",
+     "review": "HUMAN_DOMAIN_REVIEW_REQUIRED",
+     "review_reason": "The judgment of setting a heat path cannot be told apart from a general mechanical engineering sentence. The conditions that differ in automotive (packaging space, airflow while driving, regulatory temperature limits) are missing from the wording.",
+     "review_added": "2026-10-10"
+    },
+    {
+     "id": "INDUSTRY_MOBILITY_V2_I7",
+     "axis": "J6",
+     "domain": "TD01",
+     "ask": "Have you calculated in advance the dimensional variation that comes with producing in high volume?",
+     "gloss": "Calculating whether parts still assemble once the dimensional differences of several parts stack up"
+    },
+    {
+     "id": "INDUSTRY_MOBILITY_V2_I8",
+     "axis": "J7",
+     "domain": "TD06",
+     "ask": "Have you narrowed the cause of a defect that appeared in use down to the material or the conditions?",
+     "gloss": "Looking at a broken or worn part and telling whether the material or the way it was used was the problem"
+    },
+    {
+     "id": "INDUSTRY_MOBILITY_V2_I9",
+     "axis": "J3",
+     "domain": "TD10",
+     "ask": "Have you picked out the characteristics to control and set criteria for them?",
+     "gloss": "Since you cannot check everything, choosing only the dimensions or performance that must be held and controlling those"
+    },
+    {
+     "id": "INDUSTRY_MOBILITY_V2_I10",
+     "axis": "J6",
+     "domain": "TD02",
+     "ask": "Have you correlated analysis results with test results?",
+     "gloss": "Matching values from analysis against values measured in real tests"
+    }
+   ],
+   "gap_language": {
+    "J3": "In this industry, technical decisions show up as deciding cost, weight and performance on the same table",
+    "J6": "In this industry, comparison and verification show up as accelerated testing and tolerance stack-up checks",
+    "J4": "In this industry, methods and tools show in separating the transfer paths of noise and vibration",
+    "J7": "In this industry, failure and correction means narrowing down the causes of field failures"
+   },
+   "result_line": "The automotive industry decides cost, weight and performance together and demands that millions of units come out the same. Experience setting dimensions with cost in view, calculating tolerance stack-up, and confirming service life through testing is closest to the entry point of this industry.",
+   "evidence_reading": [
+    {
+     "same": "Tolerance analysis",
+     "reads_as": "The foundation for managing assembly variation across millions of vehicles"
+    },
+    {
+     "same": "Durability analysis and testing",
+     "reads_as": "Evidence backing the warranty period"
+    },
+    {
+     "same": "Vibration measurement",
+     "reads_as": "Evaluating the quality customers feel"
+    },
+    {
+     "same": "Cost review",
+     "reads_as": "Cost judgment that comes in as a design condition"
+    }
+   ],
+   "job_aliases": [
+    "Mechanical design",
+    "Body and chassis design",
+    "Durability development",
+    "NVH",
+    "Production engineering",
+    "Quality assurance"
+   ],
+   "org_mix": {
+    "OC1": "Common",
+    "OC2": "Common",
+    "OC3": "Present",
+    "OC6": "Present",
+    "OC4": "Rare",
+    "OC5": "Rare",
+    "OC7": "Present"
+   },
+   "vocabulary": [
+    "Tolerance",
+    "Durability",
+    "NVH",
+    "Manufacturability",
+    "Yield",
+    "Recall",
+    "Accelerated testing",
+    "Controlled characteristics"
+   ]
+  },
+  {
+   "code": "INDUSTRY_ROBOT_V2",
+   "version": 2,
+   "name_ko": "Robotics & Automation",
+   "name_en": "Robotics & Automation",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "What moves is the product, so weight, inertia and the power transmission method decide performance",
+    "Cycle time per operation and repeatability are the specifications, and the two pull against each other",
+    "Robots move in the same space as people, so safety conditions become design conditions",
+    "Conditions differ from site to site, so each unit is adapted one at a time"
+   ],
+   "scene": "In robotics and automation, mechanical engineers look at the weight and inertia of what has to move to choose motors and gearboxes, set the drivetrain and stiffness, balance cycle time against repeatability, and make machines safe to work alongside people.",
+   "judgement_dimensions": [
+    {
+     "name": "Do you choose the drive after working through load and inertia?",
+     "axis": "J3",
+     "domain": "TD05",
+     "why": "If the selection is wrong, all the tuning that follows is wasted"
+    },
+    {
+     "name": "Do you trade cycle time against accuracy?",
+     "axis": "J3",
+     "domain": "TD05",
+     "why": "Going faster costs accuracy"
+    },
+    {
+     "name": "Do you look at drivetrain stiffness and backlash?",
+     "axis": "J3",
+     "domain": "TD01",
+     "why": "Some problems live in the mechanics and cannot be covered up by control"
+    },
+    {
+     "name": "Do you measure repeat positioning accuracy many times?",
+     "axis": "J6",
+     "domain": "TD05",
+     "why": "Accuracy measured once is not a specification"
+    },
+    {
+     "name": "Do you separate the cause of vibration into stiffness versus gain?",
+     "axis": "J7",
+     "domain": "TD04",
+     "why": "If you cannot separate the causes, you only shuffle the problem around"
+    },
+    {
+     "name": "Do you turn safety requirements into design conditions?",
+     "axis": "J2",
+     "domain": "TD11",
+     "why": "It moves in the same space as people"
+    },
+    {
+     "name": "Do you separate manual work from what the device will do?",
+     "axis": "J1",
+     "domain": "TD05",
+     "why": "Automating everything does not pay off"
+    },
+    {
+     "name": "Do you adjust specifications to site conditions?",
+     "axis": "J3",
+     "domain": "TD11",
+     "why": "Every site has different space and different objects to handle"
+    },
+    {
+     "name": "Do you keep commissioning records?",
+     "axis": "J5",
+     "domain": "TD05",
+     "why": "The next unit is built from those records"
+    },
+    {
+     "name": "Do you narrow down why the equipment stopped?",
+     "axis": "J7",
+     "domain": "TD09",
+     "why": "When the line stops, losses start immediately"
+    },
+    {
+     "name": "Do you hand over operation and recovery to the users?",
+     "axis": "J8",
+     "domain": "TD09",
+     "why": "If you cannot hand it over, the person who built it has to stay attached to it"
+    },
+    {
+     "name": "Do you capture repeated sizing calculations and reuse them?",
+     "axis": "J5",
+     "domain": "TD12",
+     "why": "The same calculation is done for every unit"
+    }
+   ],
+   "axis_emphasis": {
+    "TD05": [
+     "J3",
+     "J6",
+     "J1",
+     "J4",
+     "J5"
+    ],
+    "TD04": [
+     "J7"
+    ],
+    "TD11": [
+     "J2"
+    ],
+    "TD09": [
+     "J8"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_ROBOT_V2_I1",
+     "axis": "J3",
+     "domain": "TD05",
+     "ask": "Have you sized a motor after working through the weight and inertia of what had to move?",
+     "gloss": "Choosing a motor based on the weight and speed of the object to be lifted"
+    },
+    {
+     "id": "INDUSTRY_ROBOT_V2_I2",
+     "axis": "J3",
+     "domain": "TD05",
+     "ask": "Have you set the gear ratio or transmission type to meet the required accuracy?",
+     "gloss": "Deciding whether speed or accuracy should be protected first"
+    },
+    {
+     "id": "INDUSTRY_ROBOT_V2_I3",
+     "axis": "J3",
+     "domain": "TD05",
+     "ask": "Have you traded speed off against accuracy?",
+     "gloss": "Measuring whether vibration or noise during motion stays within target"
+    },
+    {
+     "id": "INDUSTRY_ROBOT_V2_I4",
+     "axis": "J6",
+     "domain": "TD05",
+     "ask": "Have you measured repeat positioning accuracy several times and checked the spread?",
+     "gloss": "Measuring, across different poses, whether it stops precisely at the same position"
+    },
+    {
+     "id": "INDUSTRY_ROBOT_V2_I5",
+     "axis": "J7",
+     "domain": "TD04",
+     "ask": "Have you separated the cause of vibration into mechanical stiffness and control gain?",
+     "gloss": "Separating whether shaking comes from a weak mechanism or from control settings"
+    },
+    {
+     "id": "INDUSTRY_ROBOT_V2_I6",
+     "axis": "J2",
+     "domain": "TD11",
+     "ask": "Have you turned safety requirements for a device people work alongside into design conditions?",
+     "gloss": "Deciding stop conditions and safeguards in advance so nobody gets hurt"
+    },
+    {
+     "id": "INDUSTRY_ROBOT_V2_I7",
+     "axis": "J1",
+     "domain": "TD05",
+     "ask": "Have you written down separately which motions a person would do and which the device would do?",
+     "gloss": "Deciding where to draw the line between what a person does and what the device does"
+    },
+    {
+     "id": "INDUSTRY_ROBOT_V2_I8",
+     "axis": "J4",
+     "domain": "TD05",
+     "ask": "Have you run a device and adjusted acceleration based on the response you measured?",
+     "gloss": "Actually running it and adjusting the acceleration and deceleration settings"
+    },
+    {
+     "id": "INDUSTRY_ROBOT_V2_I9",
+     "axis": "J8",
+     "domain": "TD09",
+     "ask": "Have you handed over a device you built to its users along with how to operate it?",
+     "gloss": "Showing others how to use a device you built so they can run it on their own"
+    },
+    {
+     "id": "INDUSTRY_ROBOT_V2_I10",
+     "axis": "J5",
+     "domain": "TD05",
+     "ask": "Have you kept a motion sequence chart or commissioning records?",
+     "gloss": "Writing down the order in which a device moves and the results of its trial runs"
+    }
+   ],
+   "gap_language": {
+    "J3": "In this industry, technical decisions show up as choosing the drive and drivetrain based on load and inertia",
+    "J5": "In this industry, deliverables are moving devices, motion sequence charts and commissioning records",
+    "J6": "In this industry, comparison and verification look at repeat positioning accuracy and cycle time measurements",
+    "J7": "In this industry, failure and correction means separating the causes of vibration and stalls into the mechanism or the tuning"
+   },
+   "result_line": "In robotics and automation, what moves is the product. Experience choosing a drive from load and inertia, setting a drivetrain, and measuring repeatability is closest to the entry point of this industry.",
+   "evidence_reading": [
+    {
+     "same": "Drive sizing calculations",
+     "reads_as": "Judgment that balances cycle time against accuracy"
+    },
+    {
+     "same": "Commissioning records",
+     "reads_as": "The foundation the next unit is built on"
+    },
+    {
+     "same": "Vibration measurement",
+     "reads_as": "Evidence that separates mechanism stiffness from tuning"
+    },
+    {
+     "same": "Motion sequence chart",
+     "reads_as": "An output that can be handed over to the site"
+    }
+   ],
+   "job_aliases": [
+    "Robotics and automation engineer",
+    "Drive design",
+    "Equipment design",
+    "Commissioning and application engineering",
+    "Equipment mechanical design"
+   ],
+   "org_mix": {
+    "OC2": "Common",
+    "OC7": "Common",
+    "OC3": "Present",
+    "OC1": "Present",
+    "OC4": "Present",
+    "OC5": "Rare",
+    "OC6": "Rare"
+   },
+   "vocabulary": [
+    "Inertia",
+    "Gear ratio",
+    "Backlash",
+    "Cycle time",
+    "Repeatability",
+    "Commissioning",
+    "Safety category",
+    "Teaching (robot programming)"
+   ]
+  },
+  {
+   "code": "INDUSTRY_BATTERY_V2",
+   "version": 2,
+   "name_ko": "Battery",
+   "name_en": "Battery",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "Where the heat goes decides both safety and service life",
+    "The process window is narrow, and its width shows up directly in yield",
+    "The structure has to absorb swelling and compression",
+    "Factories are expanded quickly, so equipment and processes are decided together"
+   ],
+   "scene": "In batteries, mechanical engineers decide where heat goes, absorb swelling and compression forces with the structure, find the process window, and make the equipment hold those conditions.",
+   "judgement_dimensions": [
+    {
+     "name": "Do you decide where the heat goes?",
+     "axis": "J3",
+     "domain": "TD03",
+     "why": "Heat decides both safety and service life"
+    },
+    {
+     "name": "Do you absorb swelling and compression forces with the structure?",
+     "axis": "J3",
+     "domain": "TD02",
+     "why": "The design assumes the cells will deform"
+    },
+    {
+     "name": "Do you find the window where conditions work?",
+     "axis": "J3",
+     "domain": "TD08",
+     "why": "The window is narrow, so a small deviation means a defect"
+    },
+    {
+     "name": "Do you look at yield and process time together?",
+     "axis": "J6",
+     "domain": "TD08",
+     "why": "Each one eats into the other"
+    },
+    {
+     "name": "Do you check the compatibility of materials with the environment?",
+     "axis": "J3",
+     "domain": "TD06",
+     "why": "Materials that can touch the electrolyte are limited"
+    },
+    {
+     "name": "Do you anticipate safety tests at the design stage?",
+     "axis": "J6",
+     "domain": "TD10",
+     "why": "A single incident can stop everything"
+    },
+    {
+     "name": "Do you check that the equipment holds its conditions?",
+     "axis": "J7",
+     "domain": "TD09",
+     "why": "Holding the conditions is the equipment's job"
+    },
+    {
+     "name": "Do you pick out the characteristics to control?",
+     "axis": "J3",
+     "domain": "TD10",
+     "why": "There are too many process variables"
+    },
+    {
+     "name": "Do you check that measured values come out again?",
+     "axis": "J6",
+     "domain": "TD07",
+     "why": "If the variation is larger than the process window, no judgment can be made"
+    },
+    {
+     "name": "Do you tie the expansion schedule and the design together?",
+     "axis": "J4",
+     "domain": "TD11",
+     "why": "The date the line starts running is fixed first"
+    },
+    {
+     "name": "Do you collect data and reset the conditions?",
+     "axis": "J5",
+     "domain": "TD12",
+     "why": "There are too many variables to track by hand"
+    },
+    {
+     "name": "Do you separate the cause of a defect into material, equipment and conditions?",
+     "axis": "J7",
+     "domain": "TD08",
+     "why": "The three come up mixed together"
+    }
+   ],
+   "axis_emphasis": {
+    "TD03": [
+     "J3"
+    ],
+    "TD02": [
+     "J3"
+    ],
+    "TD08": [
+     "J3",
+     "J6"
+    ],
+    "TD06": [
+     "J3"
+    ],
+    "TD10": [
+     "J6",
+     "J3"
+    ],
+    "TD09": [
+     "J7"
+    ],
+    "TD07": [
+     "J6"
+    ],
+    "TD12": [
+     "J5"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_BATTERY_V2_I1",
+     "axis": "J3",
+     "domain": "TD03",
+     "ask": "Have you decided the path heat should take away from a part that gets hot?",
+     "gloss": "Deciding the path for removing heat from a part that gets hot",
+     "review": "HUMAN_DOMAIN_REVIEW_REQUIRED",
+     "review_reason": "The judgment of setting a heat path is 0.67 similar to MOBILITY_I6. The conditions that differ for batteries (temperature variation between cells, thermal runaway propagation) are missing from the wording.",
+     "review_added": "2026-10-10"
+    },
+    {
+     "id": "INDUSTRY_BATTERY_V2_I2",
+     "axis": "J3",
+     "domain": "TD02",
+     "ask": "Have you decided on a structure that absorbs swelling or compression?",
+     "gloss": "Choosing a fixing method or cross-section that holds up even when things swell or are compressed"
+    },
+    {
+     "id": "INDUSTRY_BATTERY_V2_I3",
+     "axis": "J3",
+     "domain": "TD08",
+     "ask": "Have you varied conditions to find the window that works?",
+     "gloss": "Changing temperature, pressure or speed little by little to find the range that works without problems",
+     "review": "HUMAN_DOMAIN_REVIEW_REQUIRED",
+     "review_reason": "Paired with SEMICON_I7. The conditions that differ for batteries (process window and spread in capacity and life) are missing from the wording.",
+     "review_added": "2026-10-10"
+    },
+    {
+     "id": "INDUSTRY_BATTERY_V2_I4",
+     "axis": "J6",
+     "domain": "TD08",
+     "ask": "When you fell short of the target yield, have you looked for where it was being lost?",
+     "gloss": "When there are more defects than targeted, finding the step where they occur"
+    },
+    {
+     "id": "INDUSTRY_BATTERY_V2_I5",
+     "axis": "J3",
+     "domain": "TD06",
+     "ask": "Have you checked how well a material suits the environment it is used in?",
+     "gloss": "Choosing materials for parts that are exposed to chemicals or moisture"
+    },
+    {
+     "id": "INDUSTRY_BATTERY_V2_I6",
+     "axis": "J6",
+     "domain": "TD10",
+     "ask": "Have you revised a design in advance, anticipating safety-related tests?",
+     "gloss": "Changing a design in advance with fire or explosion scenarios in mind",
+     "review": "HUMAN_DOMAIN_REVIEW_REQUIRED",
+     "review_reason": "Paired with DEFENSE_I6. The conditions that differ in battery safety testing (thermal runaway, crush and overcharge tests) are missing from the wording.",
+     "review_added": "2026-10-10"
+    },
+    {
+     "id": "INDUSTRY_BATTERY_V2_I7",
+     "axis": "J7",
+     "domain": "TD09",
+     "ask": "Have you checked whether equipment holds the conditions it is set to?",
+     "gloss": "Checking that equipment runs at the temperature or speed it is set to"
+    },
+    {
+     "id": "INDUSTRY_BATTERY_V2_I8",
+     "axis": "J3",
+     "domain": "TD10",
+     "ask": "With many variables in play, have you chosen which items to control?",
+     "gloss": "When there are many things to consider, picking out only the items that must be controlled"
+    },
+    {
+     "id": "INDUSTRY_BATTERY_V2_I9",
+     "axis": "J6",
+     "domain": "TD07",
+     "ask": "Have you repeatedly checked whether a measured value comes out the same again?",
+     "gloss": "Measuring the same thing several times to check the value comes out again"
+    },
+    {
+     "id": "INDUSTRY_BATTERY_V2_I10",
+     "axis": "J5",
+     "domain": "TD12",
+     "ask": "Have you organized accumulated data and reset the conditions from it?",
+     "gloss": "Organizing collected measurement data into tables or graphs and resetting the conditions"
+    }
+   ],
+   "gap_language": {
+    "J3": "In this industry, technical decisions show up as setting the heat removal path and the process window",
+    "J6": "In this industry, comparison and verification means looking at yield and process time together",
+    "J7": "In this industry, failure and correction means separating the cause of defects into material, equipment and conditions",
+    "J5": "In this industry, deliverables are documents that record condition ranges and control items"
+   },
+   "result_line": "Batteries deal with heat, deformation and a narrow process window all at once. Experience setting a heat removal path, varying conditions to find the working range, and looking at measurement variation is closest to the entry point of this industry.",
+   "evidence_reading": [
+    {
+     "same": "Thermal analysis",
+     "reads_as": "Evidence for judgments that decide both safety and service life"
+    },
+    {
+     "same": "Structural analysis",
+     "reads_as": "Design evidence for absorbing swelling and compression forces"
+    },
+    {
+     "same": "Condition experiments",
+     "reads_as": "Setting a process window that feeds directly into yield"
+    },
+    {
+     "same": "Measurement variation records",
+     "reads_as": "The foundation for making judgments within a narrow process window"
+    }
+   ],
+   "job_aliases": [
+    "Battery structure design",
+    "Thermal design",
+    "Process engineering",
+    "Equipment engineering",
+    "Quality and Reliability"
+   ],
+   "org_mix": {
+    "OC2": "Common",
+    "OC1": "Present",
+    "OC3": "Present",
+    "OC4": "Present",
+    "OC5": "Rare",
+    "OC6": "Rare",
+    "OC7": "Present"
+   },
+   "vocabulary": [
+    "Cell",
+    "Module",
+    "Swelling",
+    "Process window",
+    "Yield",
+    "Process time",
+    "Thermal runaway",
+    "Electrolyte"
+   ]
+  },
+  {
+   "code": "INDUSTRY_SHIP_V2",
+   "version": 2,
+   "name_ko": "Shipbuilding & Offshore",
+   "name_en": "Shipbuilding & Offshore",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "Ships are built one at a time, so a design change immediately changes work in the yard",
+    "Classification society rules and regulations come in first as design conditions",
+    "Structures are large and thick, so welding and distortion are worked through at the design stage",
+    "Materials are chosen with seawater, corrosion and long service life in mind"
+   ],
+   "scene": "In shipbuilding and offshore, mechanical engineers turn regulations into design conditions, look at the strength and welding distortion of large structures, choose materials that last in the marine environment, and design things so they can be built in the yard.",
+   "judgement_dimensions": [
+    {
+     "name": "Do you turn regulations into design conditions?",
+     "axis": "J2",
+     "domain": "TD11",
+     "why": "Classification rules are the starting point of the design"
+    },
+    {
+     "name": "Do you work through the strength of large structures?",
+     "axis": "J3",
+     "domain": "TD02",
+     "why": "Thick, long structures behave differently from small parts"
+    },
+    {
+     "name": "Do you build welding distortion into the design?",
+     "axis": "J3",
+     "domain": "TD08",
+     "why": "Welding changes dimensions"
+    },
+    {
+     "name": "Do you treat corrosion and long service life as material conditions?",
+     "axis": "J3",
+     "domain": "TD06",
+     "why": "It has to last decades at sea"
+    },
+    {
+     "name": "Do you design so it can be built in the yard?",
+     "axis": "J2",
+     "domain": "TD08",
+     "why": "It is built in a dock, not a factory"
+    },
+    {
+     "name": "Do you coordinate the layout of piping and equipment?",
+     "axis": "J3",
+     "domain": "TD11",
+     "why": "Space is tight and there is a lot of interference"
+    },
+    {
+     "name": "Do you deal with vibration and noise?",
+     "axis": "J4",
+     "domain": "TD04",
+     "why": "Vibration in living quarters is a regulated item"
+    },
+    {
+     "name": "Do you keep one-of-a-kind equipment from going down?",
+     "axis": "J7",
+     "domain": "TD09",
+     "why": "There is no backup equipment"
+    },
+    {
+     "name": "Do you confirm performance through commissioning?",
+     "axis": "J6",
+     "domain": "TD07",
+     "why": "You only know once it actually floats and runs"
+    },
+    {
+     "name": "Do you trace the scope of impact of a change?",
+     "axis": "J4",
+     "domain": "TD11",
+     "why": "A single change alters work in the yard"
+    },
+    {
+     "name": "Do you set the thermal and flow operating point?",
+     "axis": "J3",
+     "domain": "TD03",
+     "why": "The operating points of the engine and auxiliary machinery decide performance"
+    },
+    {
+     "name": "Do you leave drawings and technical documents?",
+     "axis": "J5",
+     "domain": "TD11",
+     "why": "They become the basis for acceptance and inspection"
+    }
+   ],
+   "axis_emphasis": {
+    "TD11": [
+     "J2",
+     "J3",
+     "J5"
+    ],
+    "TD02": [
+     "J3"
+    ],
+    "TD08": [
+     "J3",
+     "J2"
+    ],
+    "TD06": [
+     "J3"
+    ],
+    "TD04": [
+     "J4"
+    ],
+    "TD09": [
+     "J7"
+    ],
+    "TD07": [
+     "J6"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_SHIP_V2_I1",
+     "axis": "J2",
+     "domain": "TD11",
+     "ask": "Have you turned regulations or standards into design conditions?",
+     "gloss": "Reading regulations that must be followed and writing them down as design conditions"
+    },
+    {
+     "id": "INDUSTRY_SHIP_V2_I2",
+     "axis": "J3",
+     "domain": "TD02",
+     "ask": "Have you set dimensions after working through the strength of a large, thick structure?",
+     "gloss": "Calculating and setting the thickness or cross-section of members that carry large loads"
+    },
+    {
+     "id": "INDUSTRY_SHIP_V2_I3",
+     "axis": "J3",
+     "domain": "TD08",
+     "ask": "Have you built distortion from welding or machining into a design?",
+     "gloss": "Adjusting dimensions in advance because welding will make things bend"
+    },
+    {
+     "id": "INDUSTRY_SHIP_V2_I4",
+     "axis": "J3",
+     "domain": "TD06",
+     "ask": "Have you chosen a material on the assumption of corrosion or a long service life?",
+     "gloss": "Choosing a material that will not rust from water or moisture"
+    },
+    {
+     "id": "INDUSTRY_SHIP_V2_I5",
+     "axis": "J2",
+     "domain": "TD08",
+     "ask": "Have you revised a design after checking whether it could be built on site?",
+     "gloss": "Changing a design after working out whether it could actually be built or assembled"
+    },
+    {
+     "id": "INDUSTRY_SHIP_V2_I6",
+     "axis": "J3",
+     "domain": "TD11",
+     "ask": "Have you worked out the layout of piping or equipment in a tight space?",
+     "gloss": "When space ran short, arranging piping or parts so they did not collide"
+    },
+    {
+     "id": "INDUSTRY_SHIP_V2_I7",
+     "axis": "J4",
+     "domain": "TD04",
+     "ask": "Have you modified a structure to reduce vibration or noise?",
+     "gloss": "Reducing shaking or noise through reinforcement or a structural change"
+    },
+    {
+     "id": "INDUSTRY_SHIP_V2_I8",
+     "axis": "J7",
+     "domain": "TD09",
+     "ask": "Have you kept equipment with no backup from going down?",
+     "gloss": "Inspecting and maintaining one-of-a-kind equipment so it does not stop"
+    },
+    {
+     "id": "INDUSTRY_SHIP_V2_I9",
+     "axis": "J6",
+     "domain": "TD07",
+     "ask": "Have you actually run something and checked its performance?",
+     "gloss": "Running a finished device under real conditions and checking its performance"
+    },
+    {
+     "id": "INDUSTRY_SHIP_V2_I10",
+     "axis": "J5",
+     "domain": "TD11",
+     "ask": "Have you left drawings or technical documents that could be used for acceptance?",
+     "gloss": "Organizing drawings and documents so someone else could pick them up and use them right away"
+    }
+   ],
+   "gap_language": {
+    "J2": "In this industry, requirements interpretation means turning classification rules and site constraints into design conditions",
+    "J3": "In this industry, technical decisions show up as deciding the strength of large structures, welding distortion and materials",
+    "J5": "In this industry, deliverables are drawings and the technical documents used for acceptance",
+    "J7": "In this industry, failure and correction means preventing stoppages where there is no backup equipment"
+   },
+   "result_line": "Shipbuilding and offshore build one unit at a time, and regulations come first. Experience turning regulations into design conditions, working through the strength of large structures, and revising a design based on whether it could be built is closest to the entry point of this industry.",
+   "evidence_reading": [
+    {
+     "same": "Structural analysis",
+     "reads_as": "The strength evidence classification rules require"
+    },
+    {
+     "same": "Welding and machining review",
+     "reads_as": "Judgment on whether it can be built on site"
+    },
+    {
+     "same": "Material selection",
+     "reads_as": "Judgment that assumes corrosion and long service life"
+    },
+    {
+     "same": "Layout drawings",
+     "reads_as": "A record of resolving interference in tight spaces"
+    }
+   ],
+   "job_aliases": [
+    "Hull structural design",
+    "Machinery and piping design",
+    "Outfitting design",
+    "Production design",
+    "Commissioning"
+   ],
+   "org_mix": {
+    "OC1": "Common",
+    "OC2": "Present",
+    "OC3": "Present",
+    "OC6": "Present",
+    "OC4": "Rare",
+    "OC5": "Rare",
+    "OC7": "Rare"
+   },
+   "vocabulary": [
+    "Classification society",
+    "Outfitting",
+    "Block",
+    "Welding distortion",
+    "Dock",
+    "Commissioning",
+    "Corrosion",
+    "Layout"
+   ]
+  },
+  {
+   "code": "INDUSTRY_ENERGY_V2",
+   "version": 2,
+   "name_ko": "Energy & Plant",
+   "name_en": "Energy & Plant",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "Once built, a plant has to run for decades, so service life and maintenance are design conditions",
+    "Heat, fluids and rotating machinery are tied together into one system",
+    "Stoppages are costly, so inspection intervals and spare parts are weighed in money",
+    "Legally required inspections and certifications set the schedule"
+   ],
+   "scene": "In energy and plant, mechanical engineers set the thermal and flow operating point, read the condition of rotating machinery, choose materials and inspection intervals so the plant can run for decades, and reduce downtime.",
+   "judgement_dimensions": [
+    {
+     "name": "Do you set the thermal and flow operating point?",
+     "axis": "J3",
+     "domain": "TD03",
+     "why": "The performance of the whole system is decided at the operating point"
+    },
+    {
+     "name": "Do you read the condition of rotating machinery?",
+     "axis": "J4",
+     "domain": "TD09",
+     "why": "Vibration and sound tell you first"
+    },
+    {
+     "name": "Do you treat a service life of decades as a material condition?",
+     "axis": "J3",
+     "domain": "TD06",
+     "why": "Replacement is difficult and expensive"
+    },
+    {
+     "name": "Do you set inspection intervals and replacement criteria?",
+     "axis": "J3",
+     "domain": "TD09",
+     "why": "The interval decides both cost and risk"
+    },
+    {
+     "name": "Do you include legally required inspections as requirements?",
+     "axis": "J2",
+     "domain": "TD11",
+     "why": "The law sets the schedule"
+    },
+    {
+     "name": "Do you manage downtime in numbers?",
+     "axis": "J8",
+     "domain": "TD09",
+     "why": "Uptime is revenue"
+    },
+    {
+     "name": "Do you narrow down causes so a failure does not happen again?",
+     "axis": "J7",
+     "domain": "TD09",
+     "why": "When the same failure keeps repeating, the problem is the judgment, not the equipment"
+    },
+    {
+     "name": "Do you balance pressure and flow across the system?",
+     "axis": "J3",
+     "domain": "TD03",
+     "why": "One good component is not enough if the system does not match"
+    },
+    {
+     "name": "Do you use vibration to see failures coming?",
+     "axis": "J6",
+     "domain": "TD04",
+     "why": "It is the entry point to predictive maintenance"
+    },
+    {
+     "name": "Do you set spare parts stocking criteria?",
+     "axis": "J3",
+     "domain": "TD09",
+     "why": "Without them, downtime gets longer"
+    },
+    {
+     "name": "Do you collect operating records and revise criteria?",
+     "axis": "J5",
+     "domain": "TD12",
+     "why": "Data accumulates when things run for a long time"
+    },
+    {
+     "name": "Do you build safety and environmental conditions into the design?",
+     "axis": "J2",
+     "domain": "TD10",
+     "why": "The effects of an accident reach beyond the site"
+    }
+   ],
+   "axis_emphasis": {
+    "TD03": [
+     "J3"
+    ],
+    "TD09": [
+     "J4",
+     "J3",
+     "J8",
+     "J7"
+    ],
+    "TD06": [
+     "J3"
+    ],
+    "TD11": [
+     "J2"
+    ],
+    "TD04": [
+     "J6"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_ENERGY_V2_I1",
+     "axis": "J3",
+     "domain": "TD03",
+     "ask": "Have you set a thermal or flow operating point?",
+     "gloss": "Setting operating conditions so a pump or fan runs at the right flow rate"
+    },
+    {
+     "id": "INDUSTRY_ENERGY_V2_I2",
+     "axis": "J4",
+     "domain": "TD09",
+     "ask": "Have you judged the condition of a running machine from its sound or vibration?",
+     "gloss": "Telling from sound or vibration whether a machine is behaving abnormally"
+    },
+    {
+     "id": "INDUSTRY_ENERGY_V2_I3",
+     "axis": "J3",
+     "domain": "TD06",
+     "ask": "Have you set a material or thickness on the assumption of long service life?",
+     "gloss": "Choosing a material or adding thickness margin so something lasts a long time"
+    },
+    {
+     "id": "INDUSTRY_ENERGY_V2_I4",
+     "axis": "J3",
+     "domain": "TD09",
+     "ask": "Have you set inspection items or intervals?",
+     "gloss": "Deciding whether to inspect on fixed dates or based on condition"
+    },
+    {
+     "id": "INDUSTRY_ENERGY_V2_I5",
+     "axis": "J2",
+     "domain": "TD11",
+     "ask": "Have you included inspections required by law or regulation in the requirements?",
+     "gloss": "Putting inspection items required by law or regulation into the schedule"
+    },
+    {
+     "id": "INDUSTRY_ENERGY_V2_I6",
+     "axis": "J8",
+     "domain": "TD09",
+     "ask": "Have you managed downtime or the time between failures in numbers?",
+     "gloss": "Recording how often and how long equipment stopped and sharing it with others"
+    },
+    {
+     "id": "INDUSTRY_ENERGY_V2_I7",
+     "axis": "J7",
+     "domain": "TD09",
+     "ask": "Have you narrowed down the cause of a failure so it would not happen again?",
+     "gloss": "Deciding when to replace a part by weighing cost against the risk of a stoppage"
+    },
+    {
+     "id": "INDUSTRY_ENERGY_V2_I8",
+     "axis": "J3",
+     "domain": "TD03",
+     "ask": "Have you balanced pressure and flow across a whole system?",
+     "gloss": "Connecting several components and calculating pressure and flow so they match"
+    },
+    {
+     "id": "INDUSTRY_ENERGY_V2_I9",
+     "axis": "J6",
+     "domain": "TD04",
+     "ask": "Have you measured vibration to detect a failure before it happened?",
+     "gloss": "Measuring vibration to find an abnormality before something breaks"
+    },
+    {
+     "id": "INDUSTRY_ENERGY_V2_I10",
+     "axis": "J3",
+     "domain": "TD09",
+     "ask": "Have you identified the parts whose shortage would stop equipment and set stocking criteria for them?",
+     "gloss": "Deciding how many of the parts whose absence would stop the equipment to keep on hand"
+    }
+   ],
+   "gap_language": {
+    "J3": "In this industry, technical decisions show up as setting the operating point, inspection intervals and materials",
+    "J4": "In this industry, methods and tools show in reading equipment condition from vibration and sound",
+    "J7": "In this industry, failure and correction means stopping the same failure from recurring",
+    "J8": "In this industry, organizational use shows up as uptime and downtime"
+   },
+   "result_line": "In energy and plant, once something is built it runs for decades. Experience setting an operating point, reading equipment condition, and setting inspection intervals is closest to the entry point of this industry.",
+   "evidence_reading": [
+    {
+     "same": "Flow and thermal analysis",
+     "reads_as": "Evidence for judging the system operating point"
+    },
+    {
+     "same": "Vibration measurement",
+     "reads_as": "The entry point to predictive maintenance"
+    },
+    {
+     "same": "Inspection records",
+     "reads_as": "The foundation for managing uptime"
+    },
+    {
+     "same": "Material selection",
+     "reads_as": "Judgment that assumes a service life of decades"
+    }
+   ],
+   "job_aliases": [
+    "Plant mechanical design",
+    "Rotating machinery engineering",
+    "Equipment and maintenance",
+    "Utilities",
+    "Performance and commissioning"
+   ],
+   "org_mix": {
+    "OC1": "Common",
+    "OC3": "Common",
+    "OC2": "Present",
+    "OC6": "Present",
+    "OC4": "Present",
+    "OC5": "Rare",
+    "OC7": "Rare"
+   },
+   "vocabulary": [
+    "Operating point",
+    "System",
+    "Rotating machinery",
+    "Predictive maintenance",
+    "Uptime",
+    "Statutory inspection",
+    "Spare parts",
+    "Commissioning"
+   ]
+  },
+  {
+   "code": "INDUSTRY_SMARTFACTORY_V2",
+   "version": 2,
+   "name_ko": "Smart Factory & Equipment",
+   "name_en": "Smart Factory & Equipment",
+   "core": "ME_CORE_V3",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "The work is improving factories that already exist, so existing equipment and the way people work are constraints",
+    "Without measurements and records, you cannot show that anything improved",
+    "How far you automate decides when the investment pays back",
+    "You look at the flow of the whole line, not a single machine"
+   ],
+   "scene": "In smart factories and equipment, mechanical engineers look at existing equipment to decide what to automate, build moving devices, prove improvements with measurements and records, and balance the flow of the whole line.",
+   "judgement_dimensions": [
+    {
+     "name": "Do you draw the line on how far to automate?",
+     "axis": "J1",
+     "domain": "TD05",
+     "why": "Automating everything never pays back"
+    },
+    {
+     "name": "Do you connect to existing equipment?",
+     "axis": "J3",
+     "domain": "TD09",
+     "why": "You cannot build everything new"
+    },
+    {
+     "name": "Do you look at the flow of the whole line?",
+     "axis": "J3",
+     "domain": "TD08",
+     "why": "If only one process gets faster, something else gets blocked"
+    },
+    {
+     "name": "Do you prove improvements with measurements and records?",
+     "axis": "J6",
+     "domain": "TD12",
+     "why": "Without numbers, it is not an improvement"
+    },
+    {
+     "name": "Do you collect data in a usable form?",
+     "axis": "J5",
+     "domain": "TD12",
+     "why": "Data that is only collected cannot be used"
+    },
+    {
+     "name": "Do you build moving devices yourself?",
+     "axis": "J5",
+     "domain": "TD05",
+     "why": "Something that fits the site cannot be bought off the shelf"
+    },
+    {
+     "name": "Do you measure cycle time and match it to the target?",
+     "axis": "J6",
+     "domain": "TD05",
+     "why": "Takt time is the line's specification"
+    },
+    {
+     "name": "Do you consider safety and how people move around?",
+     "axis": "J2",
+     "domain": "TD11",
+     "why": "People and equipment share the same space"
+    },
+    {
+     "name": "Do you narrow down why equipment stopped?",
+     "axis": "J7",
+     "domain": "TD09",
+     "why": "Downtime eats into the effect of improvements"
+    },
+    {
+     "name": "Do you hand things over to the people who use them?",
+     "axis": "J8",
+     "domain": "TD12",
+     "why": "If you cannot hand it over, the improvement will not last"
+    },
+    {
+     "name": "Do you automate repeated data handling and decisions?",
+     "axis": "J4",
+     "domain": "TD12",
+     "why": "It cannot be done by hand every day"
+    },
+    {
+     "name": "Do you compare investment and effect in numbers?",
+     "axis": "J6",
+     "domain": "TD11",
+     "why": "The payback period is the decision criterion"
+    }
+   ],
+   "axis_emphasis": {
+    "TD05": [
+     "J1",
+     "J5",
+     "J6"
+    ],
+    "TD09": [
+     "J3"
+    ],
+    "TD08": [
+     "J3"
+    ],
+    "TD12": [
+     "J6",
+     "J5",
+     "J4",
+     "J8"
+    ],
+    "TD11": [
+     "J2"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_SMARTFACTORY_V2_I1",
+     "axis": "J1",
+     "domain": "TD05",
+     "ask": "Have you drawn the line between what would be automated and what people would do?",
+     "gloss": "Dividing what will be automated from what people will keep doing"
+    },
+    {
+     "id": "INDUSTRY_SMARTFACTORY_V2_I2",
+     "axis": "J3",
+     "domain": "TD09",
+     "ask": "Have you connected a new device to existing equipment or facilities?",
+     "gloss": "Adding a sensor or new device to existing equipment and getting it working"
+    },
+    {
+     "id": "INDUSTRY_SMARTFACTORY_V2_I3",
+     "axis": "J3",
+     "domain": "TD08",
+     "ask": "When one process sped up and caused a blockage elsewhere, have you rebalanced the flow?",
+     "gloss": "Matching overall speed when one step is fast and the next one backs up"
+    },
+    {
+     "id": "INDUSTRY_SMARTFACTORY_V2_I4",
+     "axis": "J6",
+     "domain": "TD12",
+     "ask": "Have you compared before and after an improvement in numbers, using measurements and records?",
+     "gloss": "Comparing before and after a fix using measurement records"
+    },
+    {
+     "id": "INDUSTRY_SMARTFACTORY_V2_I5",
+     "axis": "J5",
+     "domain": "TD12",
+     "ask": "Have you gathered scattered data and organized it into a usable form?",
+     "gloss": "Bringing records from several places onto the same units and intervals and combining them into one table"
+    },
+    {
+     "id": "INDUSTRY_SMARTFACTORY_V2_I6",
+     "axis": "J5",
+     "domain": "TD05",
+     "ask": "Have you built a moving device yourself to fit a particular site?",
+     "gloss": "Designing and building a needed conveying device yourself"
+    },
+    {
+     "id": "INDUSTRY_SMARTFACTORY_V2_I7",
+     "axis": "J6",
+     "domain": "TD05",
+     "ask": "Have you measured cycle time and matched it to a target?",
+     "gloss": "Measuring how long one operation takes and comparing it with the target"
+    },
+    {
+     "id": "INDUSTRY_SMARTFACTORY_V2_I8",
+     "axis": "J2",
+     "domain": "TD11",
+     "ask": "Have you decided a layout with people's movement and safety as conditions?",
+     "gloss": "Arranging equipment so people can move around without getting hurt"
+    },
+    {
+     "id": "INDUSTRY_SMARTFACTORY_V2_I9",
+     "axis": "J4",
+     "domain": "TD12",
+     "ask": "Have you automated repeated data handling or decisions?",
+     "gloss": "Making a program handle record-keeping that used to be done by hand"
+    },
+    {
+     "id": "INDUSTRY_SMARTFACTORY_V2_I10",
+     "axis": "J8",
+     "domain": "TD12",
+     "ask": "Have you handed something you built to its users so it stayed in use?",
+     "gloss": "Handing a tool you made to others so they keep using it"
+    }
+   ],
+   "gap_language": {
+    "J1": "In this industry, problem definition shows up as drawing the line on how far to automate",
+    "J5": "In this industry, deliverables are moving devices and data organized so it can be used",
+    "J6": "In this industry, comparison and verification means comparing before and after an improvement in numbers",
+    "J8": "In this industry, organizational use shows up as whether what you handed over keeps being used"
+   },
+   "result_line": "Smart factory work means improving factories that already exist. Experience defining the scope of automation, building devices yourself, and proving improvements with measurements and records is closest to the entry point of this industry.",
+   "evidence_reading": [
+    {
+     "same": "Automation scripts",
+     "reads_as": "The foundation for improvements that can run every day"
+    },
+    {
+     "same": "Before-and-after measurements",
+     "reads_as": "Evidence that proves an improvement"
+    },
+    {
+     "same": "Building devices",
+     "reads_as": "An output that fits the site"
+    },
+    {
+     "same": "Data organization",
+     "reads_as": "Records that let decisions be traced back"
+    }
+   ],
+   "job_aliases": [
+    "Production engineering",
+    "Equipment design",
+    "Automation engineer",
+    "Manufacturing data",
+    "Process improvement"
+   ],
+   "org_mix": {
+    "OC1": "Common",
+    "OC2": "Common",
+    "OC7": "Present",
+    "OC3": "Present",
+    "OC4": "Rare",
+    "OC5": "Rare",
+    "OC6": "Rare"
+   },
+   "vocabulary": [
+    "Takt time",
+    "Uptime",
+    "Line balancing",
+    "Scope of automation",
+    "Traceability",
+    "Improvement effect",
+    "Jigs and fixtures",
+    "Equipment investment"
+   ]
+  }
+ ]
+}

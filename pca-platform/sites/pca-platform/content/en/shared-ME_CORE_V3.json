@@ -1,0 +1,136 @@
+{
+ "core": "ME_CORE_V3",
+ "core_name": "Mechanical Engineering",
+ "examples": {
+  "scene": [
+   "Setting the limits on dimensions and loads from the requirements first",
+   "Choosing which to suspect first when analysis and test results disagree",
+   "Choosing between a design that is easy to make and one that performs better"
+  ],
+  "artifacts": [
+   "Design drawings",
+   "Analysis condition sheet",
+   "Test records",
+   "Design change records"
+  ],
+  "evidence": [
+   "In a design course, drawing up one part and writing down the reasons behind its dimensions",
+   "In a lab course, testing a material or structure and comparing the results with calculated values",
+   "In a team project, using analysis software to find stress or temperature and trying different conditions",
+   "In a capstone, building and testing a prototype and revising the design",
+   "In an internship, recording how production equipment or a process works",
+   "In a club or competition, building a vehicle or robot and documenting the part you were responsible for"
+  ]
+ },
+ "examples_note": "Default examples are those of SPEC_ME_GENERAL. Per-specialization text is under `specializations`, keyed by the same codes as major-cores.json.",
+ "specializations": {
+  "SPEC_ME_GENERAL": {
+   "name": "General Mechanical Engineering",
+   "note": "The broad side of designing, building and testing machines",
+   "examples": {
+    "scene": [
+     "Setting the limits on dimensions and loads from the requirements first",
+     "Choosing which to suspect first when analysis and test results disagree",
+     "Choosing between a design that is easy to make and one that performs better"
+    ],
+    "artifacts": [
+     "Design drawings",
+     "Analysis condition sheet",
+     "Test records",
+     "Design change records"
+    ],
+    "evidence": [
+     "In a design course, drawing up one part and writing down the reasons behind its dimensions",
+     "In a lab course, testing a material or structure and comparing the results with calculated values",
+     "In a team project, using analysis software to find stress or temperature and trying different conditions",
+     "In a capstone, building and testing a prototype and revising the design",
+     "In an internship, recording how production equipment or a process works",
+     "In a club or competition, building a vehicle or robot and documenting the part you were responsible for"
+    ]
+   },
+   "evidence_action": {
+    "first": "Pick one part you were responsible for in a design or lab project, and record the reasons behind its dimensions or conditions, along with the values you calculated, in a design drawing and an analysis condition sheet.",
+    "next": "Test or recalculate that part and compare against the earlier values, then write down in a design change record why any difference exceeded the allowable range and what you changed in the design as a result.",
+    "note": "The material for these tasks comes from that domain's `verify_targets` and `artifacts`. No new material is invented here."
+   },
+   "application": {
+    "resume": "In one paragraph, describe one part you were responsible for: the basis on which you set its dimensions and conditions, and what you changed after seeing test or analysis results.",
+    "interview": [
+     "What was the basis for setting those dimensions or conditions the way you did?",
+     "When calculations and test results differed, what did you check first?",
+     "After changing the design, how did you confirm it was better?"
+    ],
+    "note": "How to bring that experience up in applications and interviews (spec §11). **Do not write the answer for them**: what is written stops at what each question is asking, and the words that go there come from the items the person chose."
+   }
+  },
+  "SPEC_ME_MECHATRONICS": {
+   "name": "Mechatronics",
+   "note": "The side that adds sensors and control to mechanical devices to make them move",
+   "examples": {
+    "scene": [
+     "Choosing motors and sensors that suit the part that has to move",
+     "When target motion and actual motion differ, working out whether the mechanism or the control is at fault",
+     "Setting the sequence for a repetitive task and the conditions for stopping it"
+    ],
+    "artifacts": [
+     "Drive selection sheet",
+     "Control flowchart",
+     "Motion test records",
+     "Sensor measurement records"
+    ],
+    "evidence": [
+     "In a lab course, wiring up motors and sensors and recording what you observed as they moved",
+     "In a team project, comparing motors and sensors on their datasheets and choosing which to use",
+     "In a capstone, designing the mechanism and circuit together and fixing them through testing",
+     "In a lab course, measuring position or vibration to set control values and trying changes",
+     "In an internship, recording the conditions and alarms that make automated equipment stop",
+     "In a club or competition, building a robot or drone and documenting the part you were responsible for"
+    ]
+   },
+   "evidence_action": {
+    "first": "Pick one project where you made a device move, and record the reasons you chose its motors and sensors, along with the control values you tuned the motion with, in a drive selection sheet and a motion test record.",
+    "next": "Repeat the same motion many times, collect the cases that exceeded the allowable error, decide whether each deviation came from the mechanism or the control, and write it in the motion test record.",
+    "note": "The material for these tasks comes from that domain's `verify_targets` and `artifacts`. No new material is invented here."
+   },
+   "application": {
+    "resume": "In one paragraph, describe one device you built: the basis on which you chose its drive and sensors, and, when the motion went wrong, how far you narrowed down the cause and what you fixed.",
+    "interview": [
+     "What was the basis for choosing those motors and sensors?",
+     "When the motion went wrong, which did you look at first, the mechanism or the control?",
+     "After the fix, how did you confirm it was moving correctly?"
+    ],
+    "note": "How to bring that experience up in applications and interviews (spec §11). **Do not write the answer for them**: what is written stops at what each question is asking, and the words that go there come from the items the person chose."
+   }
+  }
+ },
+ "terms": {
+  "공차": {
+   "term": "tolerance",
+   "gloss": "The range a dimension is allowed to vary from its target"
+  },
+  "수렴": {
+   "term": "convergence",
+   "gloss": "The point where making the mesh or steps finer no longer changes the result"
+  },
+  "공정능력": {
+   "term": "process capability",
+   "gloss": "How consistently what is produced stays within specification"
+  },
+  "경계 조건": {
+   "term": "boundary conditions",
+   "gloss": "The setup in an analysis that defines what is held fixed and where forces are applied"
+  },
+  "불확도": {
+   "term": "measurement uncertainty",
+   "gloss": "How much a measured value could vary"
+  }
+ },
+ "scenes": [
+  "Course project",
+  "Team design project",
+  "Capstone",
+  "Mechanical engineering club",
+  "Preparing for a competition",
+  "Internship"
+ ]
+}
