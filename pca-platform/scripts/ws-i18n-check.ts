@@ -68,7 +68,9 @@ let bad = 0;
 const missing = wsMissing([...keys.keys()]);
 for (const k of missing) { bad++; console.log(`  빠짐   ${keys.get(k)}: ${k.slice(0, 70)}`); }
 
-const vars = (s: string) => [...s.matchAll(/\{([a-zA-Z_][a-zA-Z0-9_]*)(?:\|[^}]*)?\}/g)].map((m) => m[1]).sort().join(",");
+/* **이름의 모임으로 견준다.** 영어는 같은 수를 두 번 쓰기도 한다
+   (`{n} {n|item|items}`). 몇 번 나오는지가 아니라 빠지거나 남는 이름이 걸림이다 */
+const vars = (s: string) => [...new Set([...s.matchAll(/\{([a-zA-Z_][a-zA-Z0-9_]*)(?:\|[^}]*)?\}/g)].map((m) => m[1]))].sort().join(",");
 const AD = /\b(unlock|leverage|empower|seamless|journey|delve|elevate|supercharge|game-?changer)\b/i;
 for (const [ko, en] of Object.entries(dict)) {
   const at = ko.slice(0, 50);

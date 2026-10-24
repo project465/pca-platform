@@ -1,13 +1,16 @@
 import Link from "next/link";
-import { requireUser } from "@/lib/session";
+import { currentUser, requireUser } from "@/lib/session";
 import {
   EXPERIENCE_KINDS, applicationsOf, currentState, experiencesOf, activeCoreOrPick } from "@/lib/me-v3/platform";
-import { domainName } from "@/lib/me-v3/runtime/session";
+import { domainName, domainSub, majorNameIn } from "@/lib/me-v3/runtime/session";
 import {
-  ZONE_TITLE_KO, actionBriefKo, actionHeadKo, actionWhyKo, domainChainKo,
-  gapKo,
+  ZONE_TITLE_KO, domainChainKo,
 } from "@/lib/me-v3/result/text.ko";
+import { textFor } from "@/lib/me-v3/result/text";
+import { stateLeadEn } from "@/lib/me-v3/result/text.en";
 import { thingKo } from "@/lib/me-v3/result/say";
+import { wsLang, type WsLang } from "@/lib/me-v3/ws-lang";
+import { wsSay, type WsSay } from "@/lib/me-v3/ws-say";
 import { Icon, type IconName } from "@/components/sf/icon";
 import { openActions } from "@/lib/me-v3/open-actions";
 import { recentChangeKo } from "@/lib/me-v3/change-text.ko";
@@ -25,7 +28,11 @@ import {
 import { continueAssessment } from "./actions";
 import { queryOne } from "@/lib/db";
 
-export const metadata = { title: "홈 · CareerMatri" };
+export async function generateMetadata() {
+  const u = await currentUser().catch(() => null);
+  const t = wsSay(u ? await wsLang(u.id) : "ko");
+  return { title: `${t("홈")} · CareerMatri` };
+}
 
 /**
  * Workspace 홈.
@@ -45,6 +52,11 @@ export const metadata = { title: "홈 · CareerMatri" };
  */
 export default async function Home() {
   const user = await requireUser();
+  const lang = await wsLang(user.id);
+  const t = wsSay(lang);
+  const tx = textFor(lang);
+  const en = lang === "en";
+  const day = (s: string | null | undefined) => daySay(s, lang);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
   const core = await activeCoreOrPick(user.id);
   /* **홈이 묻지 않는 것은 읽지도 않는다**(규격 §10). 고르신 산업과
@@ -97,18 +109,18 @@ export default async function Home() {
    * 함수를 부른다. 굳은 결과에서 그 할 일을 못 찾으면(담아 둔 줄만 있는
    * 경우) 담긴 문장을 그대로 쓴다.
    */
-  const nowDomain = nowModel?.domain ? domainName(core, nowModel.domain) : "";
+  const nowDomain = nowModel?.domain ? domainName(core, nowModel.domain, lang) : "";
   const nowSay = nowModel && st.model
     ? {
       /* 머리에 **영역**을 담는다(R30). `그때 직접 정한 것을 적어 두기` 만
          읽은 사람은 어느 과제의 무엇을 적으라는 것인지 알 수 없었다.
          목표 화면의 Hero 가 영역과 할 일을 한 문장에 담는 자리다 */
-      head: actionHeadKo(nowModel, nowDomain),
-      brief: actionBriefKo(nowModel, nowDomain),
+      head: tx.actionHeadKo(nowModel, nowDomain),
+      brief: tx.actionBriefKo(nowModel, nowDomain),
       /* **둘째 층은 그걸 하면 무엇이 남는지다**(SIGN-OFF §6). 결과지의
          `지금 할 일` 칸이 같은 함수를 부르므로 두 쪽의 말이 갈리지
          않는다. 어떻게 적으면 되는지는 `다음 할 일` 쪽이 든다 */
-      gain: actionWhyKo(nowModel),
+      gain: tx.actionWhyKo(nowModel),
     }
     : { head: first?.body ?? "", brief: "", gain: "" };
   const nowGap = first
@@ -116,7 +128,7 @@ export default async function Home() {
         && (g.axis ?? "") === (first.axis_code ?? ""))
       ?? st.gaps.find((g) => g.domain === first.td_code) ?? null
     : null;
-  const nowWhy = nowGap ? gapKo(nowGap, domainName(core, nowGap.domain)).why : "";
+  const nowWhy = nowGap ? tx.gapKo(nowGap, domainName(core, nowGap.domain, lang)).why : "";
   /**
    * **홈은 요약이고 세부 쪽이 전체다.**
    *
@@ -154,8 +166,15 @@ export default async function Home() {
      이 칸이 사전의 결과물 이름(`사업계획서`)을 남겼는지와 무관하게 적어서,
      아무것도 남기지 않은 사람이 그것을 가진 것으로 읽혔다. 남긴 것이 없으면
      사전의 활동 구(해 본 일)가 서고, 둘 다 `studentStateView` 가 정한다 */
-  const tileSub = (d: string): string =>
-    stateView.tiles.find((t) => t.code === d)?.sub ?? "";
+  const tileSub = (d: string): string => {
+    const tile = stateView.tiles.find((x) => x.code === d);
+    if (!en) return tile?.sub ?? "";
+    /* 영어판: 학생 활동 사전(`student/copy.ts`)이 한국어뿐이라 결과지와 같이
+       영어 taxonomy 의 세부 영역에서 다시 읽는다. 남긴 것이 있으면 그 이름이다 */
+    if (!tile) return "";
+    return tile.kind === "artifact" && tile.artifact
+      ? tile.artifact : domainSub(core, d, 40, "en");
+  };
   const tileIcon = (d: string): IconName => {
     const fam = stateView.tiles.find((t) => t.code === d)?.family ?? null;
     return fam ? FAMILY_LINE[fam] : NEUTRAL_LINE;
@@ -165,7 +184,7 @@ export default async function Home() {
      화면과 현재 상태가 쓰는 함수를 그대로 부른다 */
   /* **줄 셋까지다**(규격 §7). 목표 화면의 `최근 변화` 가 세 줄짜리
      목록이고, 나머지 수는 마지막 줄이 든다. 전체는 `현재 상태` 가 든다 */
-  const change = recentChangeKo(st, (td) => domainName(core, td), 3);
+  const change = recentChangeKo(st, (td) => domainName(core, td, lang), 3, lang);
 
   /**
    * **주된 단추는 늘 `지금 할 일` 이다**(규격 §12).
@@ -176,7 +195,7 @@ export default async function Home() {
    * 그 자리를 비워 두지 않는다. 검사 전과 진행 중만 갈린다.
    */
   /* **전공 이름을 글자로 적지 않는다.** 이 사람이 쓰는 Core 에서 읽는다 */
-  const major = majorNameOf(st.core);
+  const major = en ? majorEn(st.core) : majorNameOf(st.core);
   /**
    * 학교에서 받은 검사인가(규격 §15).
    *
@@ -188,17 +207,18 @@ export default async function Home() {
     ? await resultMeta(String(st.model.attempt_id), st.core)
     : null;
   const cta = st.stage === "NO_ASSESSMENT"
-    ? { href: "/cores", label: major ? `${major} 검사 시작` : "검사 시작" }
+    ? { href: "/cores", label: major ? t("{major} 검사 시작", { major }) : t("검사 시작") }
     : st.stage === "IN_PROGRESS"
-      ? { href: st.open ? `/v3/${st.open.id}` : "/cores", label: "검사 이어하기" }
-      : { href: "/me/next", label: "지금 할 일" };
+      ? { href: st.open ? `/v3/${st.open.id}` : "/cores", label: t("검사 이어하기") }
+      : { href: "/me/next", label: t("지금 할 일") };
+  const head = headSay(t);
 
   return (
-    <CmShell active="/me" title="홈" who={user.name}
+    <CmShell active="/me" title={t("홈")} who={user.name} lang={lang}
       /* 바로가기 찾기가 더 찾게 해 줄 것. **이 쪽이 이미 들고 있는
          값이다**: 서버를 한 번도 더 부르지 않는다 */
       finds={Object.keys(st.zoneOf).map((d) => ({
-        label: domainName(core, d), sub: "기술영역", href: "/me/state",
+        label: domainName(core, d, lang), sub: t("기술영역"), href: "/me/state",
       }))}
       /* **왼쪽 띠에 학교 이름이 선다**(규격 §15). 학교에서 받은 검사를
          푼 사람에게 전공 이름만 적어 두면, 이 작업공간이 학교와 무관한
@@ -208,17 +228,17 @@ export default async function Home() {
          알림은 CareerMatri 에 없는 기능이라 두지 않았다. 여기 서는 것은
          실제로 있는 한 가지다 */
       bar={st.model
-        ? <Link className="cm-btn" href="/me/experience/new">+ 경험 추가</Link>
+        ? <Link className="cm-btn" href="/me/experience/new">{t("+ 경험 추가")}</Link>
         : null}>
       <CmHead
         /* **첫 화면은 인사로 연다**(화면 시안 2026-10-20). 학교 포털의
            첫 화면처럼 `○○ 학생, 안녕하세요` 가 제목이고, 이 쪽이 지금
            어느 단계인지는 제목 위 한 줄로 옮겼다. 다른 쪽은 그대로 쪽
            이름이 제목이다 */
-        kicker={HEAD[st.stage]}
-        title={`${user.name} 학생, 안녕하세요`}
+        kicker={head[st.stage]}
+        title={t("{name} 학생, 안녕하세요", { name: user.name })}
         /* 제목 아래 한 줄(규격 §4) */
-        meta={`${major ?? "전공 진단"}${st.result_at ? ` · 최근 업데이트 ${st.result_at}` : ""}`}
+        meta={`${major ?? t("전공 진단")}${st.result_at ? t(" · 최근 업데이트 {at}", { at: day(st.result_at) ?? "" }) : ""}`}
         /* **설명 문단과 단추를 머리에 두지 않는다**(규격 §9 · §19). 바로
            아래 Hero 가 지금 할 일과 쪽의 짙은 단추 하나를 든다. 머리에도
            세우면 같은 화면에 짙은 단추가 둘이 된다 */
@@ -234,46 +254,52 @@ export default async function Home() {
       {!st.model && (st.stage === "NO_ASSESSMENT" || st.stage === "IN_PROGRESS") ? (
         <>
           <PrimaryActionHero
-            tag={st.stage === "IN_PROGRESS" ? "검사 진행 중" : "검사 시작"}
+            tag={st.stage === "IN_PROGRESS" ? t("검사 진행 중") : t("검사 시작#tag")}
             tagIcon={st.stage === "IN_PROGRESS" ? "clipboard" : "target"}
             title={st.stage === "IN_PROGRESS"
-              ? "검사를 끝내면 결과와 할 일이 이 화면에 나옵니다."
-              : `${major ?? "전공"} 검사로 내 경험을 정리해 보세요.`}
+              ? t("검사를 끝내면 결과와 할 일이 이 화면에 나옵니다.")
+              : (major
+                ? t("{major} 검사로 내 경험을 정리해 보세요.", { major })
+                : t("전공 검사로 내 경험을 정리해 보세요."))}
             why={st.stage === "IN_PROGRESS"
               ? (answered
-                ? `지금까지 ${answered}문항에 답했습니다. 마지막으로 답한 문항에서 이어집니다.`
-                : "답한 것은 문항마다 저장되어, 마지막으로 답한 문항에서 이어집니다.")
-              : "적성이나 성격은 묻지 않습니다. 해 본 일에서 직접 판단한 경험을 찾습니다. 12분 안팎입니다."}
+                ? t("지금까지 {n}문항에 답했습니다. 마지막으로 답한 문항에서 이어집니다.", { n: answered })
+                : t("답한 것은 문항마다 저장되어, 마지막으로 답한 문항에서 이어집니다."))
+              : t("적성이나 성격은 묻지 않습니다. 해 본 일에서 직접 판단한 경험을 찾습니다. 12분 안팎입니다.")}
             action={st.stage === "IN_PROGRESS" ? (
               /* 이어하기만 폼이다. 누른 것을 세려면 누르는 자리에서 센다 */
               <form action={continueAssessment}>
-                <button className="cm-btn is-primary" type="submit">검사 이어하기 →</button>
+                <button className="cm-btn is-primary" type="submit">{t("검사 이어하기 →")}</button>
               </form>
             ) : (
               <Link className="cm-btn is-primary" href={cta.href}>{cta.label} →</Link>
             )}
           />
 
-          <SectionHeader icon="chart" title="검사를 끝내면 열리는 곳"
-            sub="결과가 나오면 아래 자리마다 내 결과가 채워집니다." />
+          <SectionHeader icon="chart" title={t("검사를 끝내면 열리는 곳")}
+            sub={t("결과가 나오면 아래 자리마다 내 결과가 채워집니다.")} />
           <div className="cm-tiles">
-            {PRE_TILES.map((t) => (
-              <DomainTile key={t.href} href={t.href} icon={t.icon}
-                title={t.title} sub={t.sub} />
+            {preTiles(t).map((p) => (
+              <DomainTile key={p.href} href={p.href} icon={p.icon}
+                title={p.title} sub={p.sub} />
             ))}
           </div>
 
           {st.stage === "IN_PROGRESS" ? (
             <>
-              <SectionHeader icon="clock" tone="c" title="최근 기록"
-                sub="풀던 검사와 적어 둔 경험이 여기에 쌓입니다." />
+              <SectionHeader icon="clock" tone="c" title={t("최근 기록")}
+                sub={t("풀던 검사와 적어 둔 경험이 여기에 쌓입니다.")} />
               <ul className="cm-feed is-rec">
                 <RecordRow icon="clipboard"
-                  title={`${major ?? "전공"} 검사 · 진행 중`}
-                  note={answered ? `${answered}문항 답함 · 문항마다 저장됨` : "문항마다 저장됨"}
+                  title={major
+                    ? t("{major} 검사 · 진행 중", { major })
+                    : t("전공 검사 · 진행 중")}
+                  note={answered
+                    ? t("{n}문항 답함 · 문항마다 저장됨", { n: answered })
+                    : t("문항마다 저장됨")}
                   actions={
                     <form action={continueAssessment}>
-                      <button className="cm-btn" type="submit">이어하기</button>
+                      <button className="cm-btn" type="submit">{t("이어하기")}</button>
                     </form>
                   } />
               </ul>
@@ -288,23 +314,23 @@ export default async function Home() {
           `기록` 묶음이 같은 줄을 들고 가므로 여기는 그 전에만 선다 */}
       {!st.model && exps.length ? (
         <>
-          <h2 className="cm-sect">적어 둔 경험</h2>
+          <h2 className="cm-sect">{t("적어 둔 경험")}</h2>
           <div className="cm-panel">
             <div className="cm-pane">
-              <h3>최근 경험<em>{exps.length}개</em></h3>
+              <h3>{t("최근 경험")}<em>{t("{n}개#count", { n: exps.length })}</em></h3>
               <div className="cm-rows">
                 {exps.slice(0, HOME_RECENT).map((e) => (
                   <p className="cm-row" key={e.id}>
                     <b>{e.title}</b>
-                    <span className="cm-when">{e.created_at.slice(0, 10)}</span>
+                    <span className="cm-when">{day(e.created_at.slice(0, 10))}</span>
                   </p>
                 ))}
               </div>
               <p className="cm-none">
-                검사를 한 번 끝내면 이 경험이 어느 판단으로 가는지 맞춰 봅니다.
+                {t("검사를 한 번 끝내면 이 경험이 어느 판단으로 가는지 맞춰 봅니다.")}
               </p>
               <div className="cm-acts">
-                <Link className="cm-btn" href="/me/experience">경험 전체 보기</Link>
+                <Link className="cm-btn" href="/me/experience">{t("경험 전체 보기")}</Link>
               </div>
             </div>
           </div>
@@ -332,8 +358,8 @@ export default async function Home() {
               까닭과 주된 단추와 나머지 수를 담는다. **문장을 여기서 짓지
               않는다**: 결과지와 `다음 할 일` 이 쓰는 같은 함수를 부른다 */}
           <PrimaryActionHero
-            tag="지금 할 일"
-            title={first ? nowSay.head : "지금 꼭 해야 하는 일은 없습니다."}
+            tag={t("지금 할 일")}
+            title={first ? nowSay.head : t("지금 꼭 해야 하는 일은 없습니다.")}
             /* **두 층이다**(SIGN-OFF §6): 위가 할 일이고 아래가 그걸
                하면 무엇이 남는지다. 어떻게 적으면 되는지와 그렇게 본
                까닭은 `다음 할 일` 과 `현재 상태` 쪽이 든다: 홈의 이 칸에
@@ -341,15 +367,15 @@ export default async function Home() {
                셋 다 없으면 그 줄이 없다 */
             why={first
               ? (nowSay.gain || nowSay.brief || nowWhy || undefined)
-              : NO_ACTION_WHY}
+              : noActionWhy(t)}
             action={
               <Link className="cm-btn is-primary" href="/me/experience/new">
-                {first ? "지금 정리하기 →" : "경험 추가 →"}
+                {first ? t("지금 정리하기 →") : t("경험 추가 →")}
               </Link>
             }
             more={first && open.length > 1 ? (
               <Link className="cm-hero-more" href="/me/next">
-                그 밖에 할 일 {open.length - 1}개
+                {t("그 밖에 할 일 {n}개", { n: open.length - 1 })}
                 <Icon name="chev" size={14} />
               </Link>
             ) : null}
@@ -361,16 +387,18 @@ export default async function Home() {
               거드는 줄에 `영역` 을 쓰지 않는다: 바로 아래 칸이 그 분류를
               이름으로 적고 있어서, 위에서 한 번 더 세면 이 줄이 그 사람이
               한 일 대신 우리 표를 가리킨다 */}
-          <SectionHeader icon="chart" title="현재 상태"
-            moreHref="/me/state" moreLabel="전체 보기 →"
+          <SectionHeader icon="chart" title={t("현재 상태")}
+            moreHref="/me/state" moreLabel={t("전체 보기 →")}
             /* **묶음이 말하는 것만 적는다**(R30): 정리가 덜 된 영역을
                `설명할 수 있다` 고 적지 않는다. 글자는 결과지와 같은 자리가 든다 */
-            sub={ready.length ? `${stateView.lead}입니다.` : READY_NONE} />
+            sub={ready.length
+              ? t("{lead}입니다.", { lead: en ? stateLeadEn(stateView.counts) : stateView.lead })
+              : readyNone(t)} />
           {ready.length ? (
             <div className="cm-tiles">
               {ready.map((d) => (
                 <DomainTile key={d} href="/me/state"
-                  icon={tileIcon(d)} title={domainName(core, d)}
+                  icon={tileIcon(d)} title={domainName(core, d, lang)}
                   /* **여기서 새 수를 만들지 않는다**: 고르신 항목의
                      이름이거나 영역 설명 한 토막이다 */
                   sub={tileSub(d)} />
@@ -381,12 +409,12 @@ export default async function Home() {
           {/* ── 최근 변화 (규격 §7) ── 줄 중심. 줄마다 카드를 만들지 않는다 */}
           {st.stage === "RECOMPUTED" || st.pending > 0 ? (
             <>
-              <SectionHeader icon="bolt" tone="b" title="최근 변화"
-                moreHref="/me/state#changes" moreLabel="모두 보기 →" />
+              <SectionHeader icon="bolt" tone="b" title={t("최근 변화")}
+                moreHref="/me/state#changes" moreLabel={t("모두 보기 →")} />
               {st.stage === "RECOMPUTED" ? (
                 <>
                   <SectionNote>
-                    최근 추가한 경험으로 다음과 같은 변화가 생겼습니다.
+                    {t("최근 추가한 경험으로 다음과 같은 변화가 생겼습니다.")}
                   </SectionNote>
                   <ul className="cm-feed">
                     {change.lines.map((line, i) => (
@@ -394,13 +422,13 @@ export default async function Home() {
                          것이다**(`recentChangeKo` 가 그 차례로 잇는다).
                          표시를 갈라 두면 같은 줄 넷이 한 덩이로 읽히지
                          않는다. 색은 뜻을 갖지 않는다 */
-                      <ActivityRow key={line} text={line} time={st.recomputed_at}
+                      <ActivityRow key={line} text={line} time={day(st.recomputed_at)}
                         tint={CHANGE_TINT[i % 3] || undefined}
                         icon={i < st.zoneMoved.length ? "ladder" : CHANGE_ICON[i % 3]} />
                     ))}
                     {change.more ? (
                       <ActivityRow rest icon="log"
-                        text={`그 밖에 ${change.more}가지가 더 달라졌습니다.`} />
+                        text={t("그 밖에 {n}가지가 더 달라졌습니다.", { n: change.more })} />
                     ) : null}
                   </ul>
                 </>
@@ -408,14 +436,14 @@ export default async function Home() {
               {st.pending > 0 ? (
                 <>
                   <SectionNote>
-                    적어 두신 경험이 어느 판단으로 가는지 먼저 보고 더합니다.
-                    더해도 검사 당시 결과는 그대로 남습니다.
+                    {t("적어 두신 경험이 어느 판단으로 가는지 먼저 보고 더합니다."
+                      + " 더해도 검사 당시 결과는 그대로 남습니다.")}
                   </SectionNote>
                   <ul className="cm-feed">
                     <ActivityRow icon="layers"
-                      text={<b>아직 더하지 않은 경험 {st.pending}건</b>}
+                      text={<b>{t("아직 더하지 않은 경험 {n}건", { n: st.pending })}</b>}
                       actions={
-                        <Link className="cm-btn" href="/me/recompute">새 경험 더하기</Link>
+                        <Link className="cm-btn" href="/me/recompute">{t("새 경험 더하기")}</Link>
                       } />
                   </ul>
                 </>
@@ -428,9 +456,9 @@ export default async function Home() {
               없다` 고 적고 걷었는데, 그림을 세 배로 올려 다시 읽으니 이
               줄이 거기 그대로 있다(`최근 변화` 쪽도 같다). 눈으로 읽고
               적은 판정이 틀렸던 자리다 */}
-          <SectionHeader icon="clock" tone="c" title="최근 기록"
-            moreHref="/me/results" moreLabel="모두 보기 →"
-            sub="최근 검사 결과와 경험을 확인할 수 있습니다." />
+          <SectionHeader icon="clock" tone="c" title={t("최근 기록")}
+            moreHref="/me/results" moreLabel={t("모두 보기 →")}
+            sub={t("최근 검사 결과와 경험을 확인할 수 있습니다.")} />
           {/* **학교 · 학과 · 검사일이 한 줄에 선다**(규격 §15). 전에는
               `경영 결과 (PRO)` 였고, 학교에서 받은 검사라는 것도 어느 학과로
               친 것인지도 이 줄에 없었다. 학교 진입이면 등급을 적지 않는다:
@@ -438,16 +466,18 @@ export default async function Home() {
           <ul className="cm-feed is-rec">
             <RecordRow icon="report"
               title={meta?.school
-                ? `${meta.school} · ${meta.department ?? major ?? "진로진단"}`
-                : `${major ?? "진로진단"} 결과 (${st.model.tier})`}
+                ? `${meta.school} · ${meta.department ?? major ?? t("진로진단")}`
+                : t("{major} 결과 ({tier})", {
+                  major: major ?? t("진로진단"), tier: tierSay(st.model.tier, lang),
+                })}
               note={meta?.school
-                ? `${major ?? "진로진단"} 진로 분석 리포트 · 고정됨`
-                : "고정됨 · 그날의 문항과 기준 그대로입니다"}
-              time={st.result_at ?? ""}
+                ? t("{major} 진로 분석 리포트 · 고정됨", { major: major ?? t("진로진단") })
+                : t("고정됨 · 그날의 문항과 기준 그대로입니다")}
+              time={day(st.result_at) ?? ""}
               actions={
                 <>
                   <Link className="cm-btn" href={`/v3/${st.model.attempt_id}/result`}>
-                    결과 보기
+                    {t("결과 보기")}
                   </Link>
                   {/* **`Link` 로 걸지 않는다.** Next 가 화면에 들어온 `Link` 를
                       미리 불러오면서 종이를 한 벌씩 만들어 버린다 */}
@@ -458,13 +488,14 @@ export default async function Home() {
               } />
             {exps.slice(0, HOME_RECENT).map((e) => (
               <RecordRow key={e.id} icon="layers" tint="t-4" title={e.title}
-                note={KIND_KO.get(e.kind) ?? "경험"}
-                time={e.started_on ?? e.created_at.slice(0, 10)}
+                note={kindSay(t)[e.kind] ?? t("경험")}
+                time={day(e.started_on ?? e.created_at.slice(0, 10))}
                 actions={
-                  <Link className="cm-btn" href="/me/experience">자세히 보기</Link>
+                  <Link className="cm-btn" href="/me/experience">{t("자세히 보기")}</Link>
                 } />
             ))}
-            {apps.slice(0, HOME_RECENT).map((a) => (
+            {/* 영어판에는 서지 않는다: 지원 기록은 국내 공고와 이어진 쪽이다(`WS_KR_ONLY`) */}
+            {(en ? [] : apps).slice(0, HOME_RECENT).map((a) => (
               <RecordRow key={a.id} icon="send" tint="t-2"
                 title={a.org_name ?? a.role_label ?? "이름 없음"}
                 note={APPLY_SAY[a.state]}
@@ -485,22 +516,22 @@ export default async function Home() {
  * 지금 들고 있는 것의 이름이다.
  */
 /** 결과가 나오기 전 홈의 칸. 검사를 끝내면 그 자리가 내 결과로 채워진다 */
-const PRE_TILES: { href: string; icon: IconName; title: string; sub: string }[] = [
-  { href: "/me/state", icon: "chart", title: "현재 상태", sub: "설명할 수 있는 영역" },
-  { href: "/me/next", icon: "target", title: "지금 할 일", sub: "부족한 부분 메우기" },
-  { href: "/me/results", icon: "report", title: "결과 기록", sub: "결과지와 PDF" },
+const preTiles = (t: WsSay): { href: string; icon: IconName; title: string; sub: string }[] => [
+  { href: "/me/state", icon: "chart", title: t("현재 상태"), sub: t("설명할 수 있는 영역") },
+  { href: "/me/next", icon: "target", title: t("지금 할 일"), sub: t("부족한 부분 메우기") },
+  { href: "/me/results", icon: "report", title: t("결과 기록"), sub: t("결과지와 PDF") },
 ];
 
-const HEAD: Record<string, string> = {
-  NO_ASSESSMENT: "전공 진로 검사",
-  IN_PROGRESS: "풀던 검사가 있습니다",
+const headSay = (t: WsSay): Record<string, string> => ({
+  NO_ASSESSMENT: t("전공 진로 검사"),
+  IN_PROGRESS: t("풀던 검사가 있습니다"),
   /* 홈의 제목을 `현재 상태` 로 두지 않는다. 그 이름은 띠에 제 줄이 있는
      다른 쪽(`/me/state`)의 이름이고, 홈의 첫 카드가 그쪽의 요약이다 */
-  BASIC_DONE: "내 커리어",
-  STANDARD_DONE: "내 커리어",
-  PRO_DONE: "내 커리어",
-  RECOMPUTED: "내 커리어",
-};
+  BASIC_DONE: t("내 커리어"),
+  STANDARD_DONE: t("내 커리어"),
+  PRO_DONE: t("내 커리어"),
+  RECOMPUTED: t("내 커리어"),
+});
 
 /** 지원 기록의 상태를 사람의 말로. **영문 코드를 화면에 내지 않는다** */
 const APPLY_SAY: Record<string, string> = {
@@ -514,12 +545,34 @@ const CHANGE_ICON: IconName[] = ["chart", "spark", "report"];
 const CHANGE_TINT = ["", "t-2", "t-3"];
 
 /** 할 일이 없는 사람에게 적는 까닭 한 줄 */
-const NO_ACTION_WHY = "새 경험을 적으면 현재 상태가 다시 서고 그다음 할 일이"
-  + " 나옵니다.";
+const noActionWhy = (t: WsSay) => t("새 경험을 적으면 현재 상태가 다시 서고 그다음 할 일이"
+  + " 나옵니다.");
 
 /** 설명할 수 있는 영역이 아직 없을 때 묶음 머리 아래에 서는 줄 */
-const READY_NONE = "지원서에서 설명할 만한 경험이 아직 없습니다. 관심이 높은"
-  + " 영역에서 짧게 한 번 해 보는 것이 다음 걸음입니다.";
+const readyNone = (t: WsSay) => t("지원서에서 설명할 만한 경험이 아직 없습니다. 관심이 높은"
+  + " 영역에서 짧게 한 번 해 보는 것이 다음 걸음입니다.");
+
+/** 날짜. 한국어는 받은 글자(`YYYY-MM-DD`) 그대로이고 영어는 `Oct 24, 2026` 이다 */
+function daySay(s: string | null | undefined, lang: WsLang): string | null {
+  if (!s) return s ?? null;
+  if (lang !== "en" || !/^\d{4}-\d{2}-\d{2}/.test(s)) return s;
+  const d = new Date(`${s.slice(0, 10)}T00:00:00Z`);
+  return Number.isNaN(d.getTime()) ? s : d.toLocaleDateString("en-US", {
+    month: "short", day: "numeric", year: "numeric", timeZone: "UTC",
+  });
+}
+
+/** 영어판 전공 이름. **모르면 `null`** 이다(`majorNameOf` 와 같은 규칙) */
+function majorEn(core: string | null | undefined): string | null {
+  if (!core) return null;
+  try { return majorNameIn(core, "en") || null; } catch { return null; }
+}
+
+/** 등급 이름. 한국어 화면은 코드를 그대로 적어 왔다 */
+function tierSay(tier: string, lang: WsLang): string {
+  if (lang !== "en") return tier;
+  return ({ BASIC: "Basic", STANDARD: "Standard", PRO: "Pro" } as Record<string, string>)[tier] ?? tier;
+}
 
 /** 홈이 드는 줄 수. **요약이 세부를 대신하면 세부 쪽이 죽는다** */
 const HOME_ROWS = 3;
@@ -555,6 +608,13 @@ const HOME_RECENT = 1;
 
 /** 경험 종류를 사람의 말로. **표의 코드를 화면에 내지 않는다** */
 const KIND_KO = new Map(EXPERIENCE_KINDS.map((k) => [k.code as string, k.label]));
+/* 열쇠가 `EXPERIENCE_KINDS` 의 이름과 글자까지 같아서 한국어는 그대로 나간다 */
+const kindSay = (t: WsSay): Record<string, string> => ({
+  course: t("수업"), assignment: t("과제"), capstone: t("캡스톤·설계 과제"),
+  research: t("연구·실험"), paper: t("논문·학회"), internship: t("인턴·현장실습"),
+  project: t("개인·동아리 프로젝트"), work: t("직장 경험"), credential: t("자격·교육 이수"),
+});
+void KIND_KO;
 
 void ZONE_TITLE_KO;
 
