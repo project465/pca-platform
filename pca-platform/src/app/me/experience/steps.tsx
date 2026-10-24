@@ -2,6 +2,8 @@
 
 import { useRef, useState, type ReactNode } from "react";
 import type { ExperienceFlow } from "@/lib/me-v3/student";
+import type { WsLang } from "@/lib/me-v3/ws-lang";
+import { wsSay } from "@/lib/me-v3/ws-say";
 
 export type Dom = {
   code: string; name: string;
@@ -71,8 +73,10 @@ function Guide({ n, title, body }: { n: number; title: string; body: ReactNode }
  * 먼저 본다: 지나왔으면 채워져 있으므로 마지막 저장에서 걸릴 것이 없다.
  */
 export default function Steps(
-  { domains, one, three, value, saveLabel, flow, fromAction, suggest }: {
+  { domains, one, three, value, saveLabel, flow, fromAction, suggest, lang = "ko" }: {
     domains: Dom[]; one: ReactNode; three: ReactNode; value?: Picked;
+    /** 작업공간 언어(`wsLang()`). 함수는 서버에서 넘길 수 없어 여기서 `wsSay` 를 부른다 */
+    lang?: WsLang;
     /**
      * 걸음 어디서나 저장할 수 있게 한다. **고치는 자리에서만 켠다.**
      *
@@ -97,6 +101,7 @@ export default function Steps(
     suggest?: string[];
   },
 ) {
+  const t = wsSay(lang);
   const [step, setStep] = useState(1);
   /* 고쳐 적는 자리는 **적어 둔 영역이 켜진 채로** 선다. 그래야 그 영역의
      판단과 결과물 칸이 처음부터 보인다 */
@@ -123,9 +128,9 @@ export default function Steps(
     </label>
   );
   const steps = [
-    { n: 1, title: "무슨 경험" },
+    { n: 1, title: t("무슨 경험") },
     { n: 2, title: flow.step2 },
-    { n: 3, title: "남은 것" },
+    { n: 3, title: t("남은 것") },
   ];
 
   /** 1단의 필수 칸을 지나기 전에 본다. 비었으면 그 칸을 집어서 알려 준다 */
@@ -185,7 +190,7 @@ export default function Steps(
       {/* 어디까지 왔는지. **한 줄이다**(규격 §2). 셋을 다 적는 까닭은
           남은 걸음이 몇인지 모르면 둘째에서 닫기 때문이고, 한 줄로 적는
           까닭은 이 표가 첫 입력 칸보다 커지면 안 되기 때문이다 */}
-      <ol className="cm-wiz" aria-label="세 걸음 가운데 지금">
+      <ol className="cm-wiz" aria-label={t("세 걸음 가운데 지금")}>
         {steps.map((s) => (
           <li key={s.n} className={s.n === step ? "is-on" : s.n < step ? "is-done" : ""}>
             <b>{s.n}</b>{s.title}
@@ -195,27 +200,29 @@ export default function Steps(
 
       {/* ── 1단. 무슨 경험이었나 ── */}
       <div ref={firstPanel} hidden={step !== 1}>
-        <Guide n={1} title="경험 하나만 떠올리면 됩니다"
-          body="수업 과제든 동아리 일이든 직접 맡았던 것 하나를 고르고 한 줄로 적습니다. 지원서와 면접에서 꺼내 쓸 근거가 한 줄 늘고, 검사 당시 결과는 그대로 남습니다." />
+        <Guide n={1} title={t("경험 하나만 떠올리면 됩니다")}
+          body={t("수업 과제든 동아리 일이든 직접 맡았던 것 하나를 고르고 한 줄로 적습니다. 지원서와 면접에서 꺼내 쓸 근거가 한 줄 늘고, 검사 당시 결과는 그대로 남습니다.")} />
         {one}
       </div>
 
       {/* ── 2단. 어디에서 무엇을 직접 정했나 ── */}
       <div hidden={step !== 2}>
-        <Guide n={2} title="그 일에서 무엇을 직접 정했나요"
+        <Guide n={2} title={t("그 일에서 무엇을 직접 정했나요")}
           body={
             <>
               {fromAction
-                ? <>할 일에서 넘어온 영역이 켜져 있습니다: {fromAction}. 다른 영역의 일이면 바꾸셔도 됩니다. </>
+                ? t("할 일에서 넘어온 영역이 켜져 있습니다: {name}. 다른 영역의 일이면 바꾸셔도 됩니다. ",
+                  { name: fromAction })
                 : null}
-              {flow.domainWord}을 고르면 그 영역에서 <b>맡은 역할로 직접 정한 것</b>을 먼저
-              고르고, 그다음에 다룬 문제를 고릅니다. 지원서와 면접에서 눈에 띄는 쪽은
-              한 일보다 직접 정한 것입니다.
+              {t("{word}을 고르면 그 영역에서 ", { word: flow.domainWord })}
+              <b>{t("맡은 역할로 직접 정한 것")}</b>
+              {t("을 먼저 고르고, 그다음에 다룬 문제를 고릅니다. 지원서와 면접에서 눈에 띄는 쪽은"
+                + " 한 일보다 직접 정한 것입니다.")}
             </>
           } />
         <fieldset className="cm-field">
-          <legend><span>어느 {flow.domainWord}의 일이었나요</span></legend>
-          <em>여러 개 고를 수 있습니다.</em>
+          <legend><span>{t("어느 {word}의 일이었나요", { word: flow.domainWord })}</span></legend>
+          <em>{t("여러 개 고를 수 있습니다.")}</em>
           {/* **영역 고르기와 판단 고르기를 같은 생김새로 두지 않는다**
               (규격 §9). 영역은 고르는 **표**이고 판단은 고르는 **말**이다.
               칸마다 이름 아래에 **그 영역에서 학생이 해 본 일**을 사전의
@@ -223,7 +230,7 @@ export default function Steps(
               `재무·투자 판단` 이 자기 동아리 예산 일인지 알 수 없다 */}
           {rest.length ? (
             <em className="cm-dom-lead">
-              최근 결과에서 확인된 {flow.domainWord}부터 보여 드립니다.
+              {t("최근 결과에서 확인된 {word}부터 보여 드립니다.", { word: flow.domainWord })}
             </em>
           ) : null}
           <div className="cm-pickset is-td is-dom">
@@ -234,7 +241,7 @@ export default function Steps(
               `td` 로 보낸다 */}
           {rest.length ? (
             <details className="cm-fold is-dom-more">
-              <summary>다른 {flow.domainWord} 보기 · {rest.length}</summary>
+              <summary>{t("다른 {word} 보기 · {n}", { word: flow.domainWord, n: rest.length })}</summary>
               <div className="cm-pickset is-td is-dom">
                 {rest.map(domPick)}
               </div>
@@ -247,16 +254,16 @@ export default function Steps(
                   읽히는 쪽이 앞엣것이라 그 칸을 먼저 만난다. 저장되는 칸 이름과
                   값은 그대로다 */}
               {group(flow.decidedQ, "decision", d.decisions, `${d.code}-d`, "decisions",
-                "맡은 역할에서 직접 정한 것 · 지원서에서 눈에 띄는 쪽")}
+                t("맡은 역할에서 직접 정한 것 · 지원서에서 눈에 띄는 쪽"))}
               {group(flow.problemQ, "problem", d.problems, `${d.code}-p`, "problems",
-                "그때의 상황")}
+                t("그때의 상황"))}
             </section>
           ))}
           {!picked.length ? (
             <p className="cm-none">
-              {flow.domainWord}을 고르면 그 영역에서 직접 정한 것을 고르는 칸이 뜹니다.
-              고르지 않으시면 이 기록은 현재 상태에 더해지지 않고 목록에만
-              남습니다.
+              {t("{word}을 고르면 그 영역에서 직접 정한 것을 고르는 칸이 뜹니다."
+                + " 고르지 않으시면 이 기록은 현재 상태에 더해지지 않고 목록에만 남습니다.",
+              { word: flow.domainWord })}
             </p>
           ) : null}
         </fieldset>
@@ -264,12 +271,12 @@ export default function Steps(
 
       {/* ── 3단. 무엇이 남았나 ── */}
       <div hidden={step !== 3}>
-        <Guide n={3} title="손에 남은 것이 있나요"
-          body="남긴 결과물과 비교해 본 것을 고르면 같은 영역의 근거가 둘이 되고, 그만큼 현재 상태와 다음 할 일이 달라집니다. 없으면 비워 두셔도 됩니다." />
+        <Guide n={3} title={t("손에 남은 것이 있나요")}
+          body={t("남긴 결과물과 비교해 본 것을 고르면 같은 영역의 근거가 둘이 되고, 그만큼 현재 상태와 다음 할 일이 달라집니다. 없으면 비워 두셔도 됩니다.")} />
         {picked.length ? (
           <fieldset className="cm-field">
-            <legend><span>무엇이 남았나요</span></legend>
-            <em>해당하는 것이 없으면 비워 두셔도 됩니다.</em>
+            <legend><span>{t("무엇이 남았나요")}</span></legend>
+            <em>{t("해당하는 것이 없으면 비워 두셔도 됩니다.")}</em>
             {/* **고른 영역 가운데 첫째만 펴 둔다**(규격 §21).
                 영역 하나가 결과물 여섯에 비교 대상 여섯이라, 셋을 고른
                 사람에게는 칩이 서른여섯 개 깔린다. 그 벽을 보면 적는
@@ -278,8 +285,8 @@ export default function Steps(
             {picked.map((d, i) => {
               const body = (
                 <>
-                  {group("무엇이 남았나", "artifact", d.artifacts, `${d.code}-a`, "artifacts")}
-                  {group("무엇과 비교해 확인했나", "verification", d.verify, `${d.code}-v`,
+                  {group(t("무엇이 남았나"), "artifact", d.artifacts, `${d.code}-a`, "artifacts")}
+                  {group(t("무엇과 비교해 확인했나"), "verification", d.verify, `${d.code}-v`,
                     "verifications")}
                 </>
               );
@@ -290,7 +297,7 @@ export default function Steps(
                 </section>
               ) : (
                 <details className="cm-fold" key={`o-${d.code}`}>
-                  <summary>{d.name} · 다른 결과물 보기</summary>
+                  <summary>{t("{name} · 다른 결과물 보기", { name: d.name })}</summary>
                   <div className="cm-subs">{body}</div>
                 </details>
               );
@@ -298,8 +305,8 @@ export default function Steps(
           </fieldset>
         ) : (
           <p className="cm-none">
-            2단에서 {flow.domainWord}을 고르시면 그 영역에서 남긴 결과물과 비교해
-            확인한 것을 고를 수 있습니다.
+            {t("2단에서 {word}을 고르시면 그 영역에서 남긴 결과물과 비교해 확인한 것을 고를 수 있습니다.",
+              { word: flow.domainWord })}
           </p>
         )}
         {three}
@@ -324,21 +331,21 @@ export default function Steps(
         {step > 1 ? (
           <button key="back" className="cm-btn" type="button"
             onClick={(e) => go(step - 1, e)}>
-            이전
+            {t("이전")}
           </button>
         ) : null}
         {step < 3 ? (
           <button key="next" className="cm-btn is-primary" type="button"
             onClick={(e) => go(step + 1, e)}>
-            다음
+            {t("다음")}
           </button>
         ) : (
-          <button key="save" className="cm-btn is-primary" type="submit">저장</button>
+          <button key="save" className="cm-btn is-primary" type="submit">{t("저장")}</button>
         )}
         {/* 2단에서도 저장할 수 있게 둔다. **3단은 전부 선택 칸이라**
             거기까지 가야 저장되는 구조면 비워 둘 사람이 한 걸음을 헛돈다 */}
         {step === 2 && !saveLabel ? (
-          <button key="save2" className="cm-btn" type="submit">여기까지 저장</button>
+          <button key="save2" className="cm-btn" type="submit">{t("여기까지 저장")}</button>
         ) : null}
         {saveLabel && step < 3 ? (
           <button key="saveNow" className="cm-btn" type="submit">{saveLabel}</button>

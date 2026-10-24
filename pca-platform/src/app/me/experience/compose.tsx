@@ -1,11 +1,14 @@
 import { activeMajorName } from "@/lib/me-v3/major-name";
 import {
-  EXPERIENCE_KINDS, activeCoreOrPick, latestResult, type Experience,
+  EXPERIENCE_KINDS, activeCoreOrPick, kindLabel, latestResult, type Experience,
 } from "@/lib/me-v3/platform";
-import { content, domainName } from "@/lib/me-v3/runtime/session";
+import { content, domainName, domainSub, majorNameIn } from "@/lib/me-v3/runtime/session";
 import {
   experienceExample, experienceFlow, studentActivity, studentStateView,
+  type ExperienceFlow,
 } from "@/lib/me-v3/student";
+import { wsLang, type WsLang } from "@/lib/me-v3/ws-lang";
+import { wsSay, type WsSay } from "@/lib/me-v3/ws-say";
 import type { Zone } from "@/lib/me-v3/scoring/types";
 import { CmShell, CmHead } from "../shell";
 import { MonthPick } from "../ui";
@@ -25,16 +28,41 @@ import Link from "next/link";
  * **`없음` 을 보기에 둔다.** 그 답도 자료이고, 그 칸을 없애면 아무거나
  * 고르게 된다. 그리고 쓰인 자리가 없는 것은 흔한 일이지 흠이 아니다.
  */
-const USED_WHERE = [
-  "수업이나 과제 평가에 들어갔다",
-  "제작이나 발주로 이어졌다",
-  "시제품이나 장비에 적용됐다",
-  "공정이나 운전 기준이 바뀌었다",
-  "논문이나 학회 발표가 됐다",
-  "보고서나 과제 결과물로 제출됐다",
-  "팀이나 다음 사람이 이어받았다",
-  "아직 쓰인 곳이 없다",
+/* 영어 작업공간에서는 **영어 글자가 그대로 저장된다.** 다시 세는 자리는
+   (영역 · 축)마다 고른 수만 세고 글자를 맞춰 보지 않는다 */
+const usedWhere = (t: WsSay) => [
+  t("수업이나 과제 평가에 들어갔다"),
+  t("제작이나 발주로 이어졌다"),
+  t("시제품이나 장비에 적용됐다"),
+  t("공정이나 운전 기준이 바뀌었다"),
+  t("논문이나 학회 발표가 됐다"),
+  t("보고서나 과제 결과물로 제출됐다"),
+  t("팀이나 다음 사람이 이어받았다"),
+  t("아직 쓰인 곳이 없다"),
 ];
+
+/**
+ * 그 Core 의 사전이 든 말을 작업공간 언어로(영어판). 사전(`student/copy.ts`)은
+ * 한국어뿐이라 **열쇠에 꼬리 `#flow` 를 붙여** 이 쪽 사전에서 읽는다. 한국어는
+ * 꼬리를 떼고 그대로 나간다
+ */
+export function flowSay(flow: ExperienceFlow, t: WsSay): ExperienceFlow {
+  return {
+    step2: t(`${flow.step2}#flow`),
+    domainWord: t(`${flow.domainWord}#flow`),
+    problemQ: t(`${flow.problemQ}#flow`),
+    decidedQ: t(`${flow.decidedQ}#flow`),
+  };
+}
+
+/**
+ * 영역 이름과 체크리스트를 어느 언어 원고로 읽는가. **영어 원고가 없는 Core 는
+ * 한국어로 읽는다**: `content(core, "en")` 은 원고가 없으면 던진다
+ */
+export function contentLang(core: string, lang: WsLang): WsLang {
+  if (lang !== "en") return "ko";
+  try { content(core, "en"); return "en"; } catch { return "ko"; }
+}
 
 /**
  * 아홉 종류를 **세 묶음**으로 세운다(R30 · PHASE 2).
@@ -45,12 +73,12 @@ const USED_WHERE = [
  * 한 글자도 바뀌지 않는다. 아홉이 빠짐없이 어느 묶음에 드는지는
  * `v3:student` 가 센다.
  */
-const KIND_GROUPS: { label: string; hint: string; codes: string[] }[] = [
-  { label: "수업·과제", hint: "들으면서 맡거나 제출한 것",
+const kindGroups = (t: WsSay): { label: string; hint: string; codes: string[] }[] => [
+  { label: t("수업·과제"), hint: t("들으면서 맡거나 제출한 것"),
     codes: ["course", "assignment", "capstone"] },
-  { label: "연구·프로젝트", hint: "직접 끌고 간 것",
+  { label: t("연구·프로젝트"), hint: t("직접 끌고 간 것"),
     codes: ["research", "paper", "project"] },
-  { label: "현장·자격", hint: "밖에서 맡았거나 따 둔 것",
+  { label: t("현장·자격"), hint: t("밖에서 맡았거나 따 둔 것"),
     codes: ["internship", "work", "credential"] },
 ];
 
@@ -95,11 +123,21 @@ export default async function Compose(
   },
 ) {
   const user = { id: userId };
-  const major = await activeMajorName(user.id);
+  const lang = await wsLang(user.id);
+  const t = wsSay(lang);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
   const core = await activeCoreOrPick(user.id);
+  const cl = contentLang(core, lang);
+  const major = lang === "en" ? majorNameIn(core, "en") : await activeMajorName(user.id);
   const edit = Boolean(value);
-  const c = content(core);
+  const c = content(core, cl);
+  const USED_WHERE = usedWhere(t);
+  const KIND_GROUPS = kindGroups(t);
+  /* 영역 이름 아래 한 줄. 학생 사전(`studentActivity`)이 한국어뿐이라 영어는
+     그 영역의 세부 이름을 쉼표로 잇는다 */
+  const activity = (td: string) => cl === "en"
+    ? domainSub(core, td, 34, "en").split("·").join(", ")
+    : studentActivity(core, td);
   const domains = c.domains.domains;
   const lists = c.checklists.domains as Record<string, Record<string, { text: string }[]>>;
   const pick = (t: string, ax: string, n: number) =>
@@ -113,7 +151,7 @@ export default async function Compose(
    */
   /* 묻는 말은 **그 Core 의 사전**이 든다(R30). `기술 판단` 을 화면에 박지
      않는다: 경영학과 학생이 자기 과제를 그 말로 읽지 못한다 */
-  const flow = experienceFlow(core);
+  const flow = flowSay(experienceFlow(core), t);
   /* 2단에서 먼저 세울 영역(R31). **결과지와 홈이 읽는 같은 함수**로 고른다:
      그 사람의 결과가 서 있는 영역 셋이고, 할 일에서 넘어온 영역이 있으면
      그것이 맨 앞이다. 결과가 없으면 비어 있고 그때는 전부가 선다 */
@@ -128,7 +166,10 @@ export default async function Compose(
   const d0 = edit ? null : draft ?? null;
   /* 파일로 옮기기(MAT). 새로 적는 자리에서만, 초안을 펴 둔 동안에는 세우지
      않는다: 위에서 이미 무엇을 옮겨 왔는지 읽는 중이다 */
-  const mat = !edit && !d0 ? await activeTrack(user.id).catch(() => ({ on: false })) : { on: false };
+  /* **영어 작업공간에는 세우지 않는다**(`WS_KR_ONLY`): 파일 읽기는 국내 개인정보
+     동의로 열었고 MAT 은 국내 상품이다 */
+  const mat = lang !== "en" && !edit && !d0
+    ? await activeTrack(user.id).catch(() => ({ on: false })) : { on: false };
   const drop = mat.on ? {
     consented: Boolean((await settingsOf(user.id)).file_consent_at),
     used: await usedThisMonth(user.id),
@@ -145,8 +186,8 @@ export default async function Compose(
   const start = value ?? (d0 ? { kind: d0.kind ?? undefined, title: d0.title } : null);
 
   return (
-    <CmShell active="/me/experience"
-      title={edit ? "경험 고치기" : "경험 추가"} form major={major}>
+    <CmShell active="/me/experience" lang={lang}
+      title={edit ? t("경험 고치기") : t("경험 추가")} form major={major}>
       {/* **부담 없는 한 건이다**(규격 §8). 1~2분 안에 하나를 적는 자리라
           적기 전에 읽을 것을 없애고 까닭은 폼 아래로 접는다.
 
@@ -154,7 +195,7 @@ export default async function Compose(
           는 아래를 한 번 보면 알 수 있는 사실이고, 그 줄이 서 있는 동안
           손전화에서 첫 입력 칸이 그만큼 아래로 내려간다. 시스템이 제
           생김새를 설명하는 줄은 적는 사람에게 값이 없다 */}
-      <CmHead title={edit ? "적어 둔 경험 고치기" : "새 경험 하나 추가"} />
+      <CmHead title={edit ? t("적어 둔 경험 고치기") : t("새 경험 하나 추가")} />
 
       {/* 저장이 거절된 자리. **통보로 끝내지 않고 무엇을 채우면 되는지
           적는다**(규격 §39).
@@ -165,25 +206,24 @@ export default async function Compose(
           의심하며 칸을 고친다 */}
       {e === "form" ? (
         <p className="cm-fail" role="alert">
-          저장하지 못했습니다. 어떤 경험인지와 한 줄 설명을 채워주세요.
+          {t("저장하지 못했습니다. 어떤 경험인지와 한 줄 설명을 채워주세요.")}
         </p>
       ) : e === "save" ? (
         <p className="cm-fail" role="alert">
-          경험을 저장하지 못했습니다. 적어 주신 내용은 아직 저장되지
-          않았으니, 아래에서 한 번 더 눌러 주세요. 다시 안 되면 고객지원으로
-          알려 주세요.
+          {t("경험을 저장하지 못했습니다. 적어 주신 내용은 아직 저장되지 않았으니,"
+            + " 아래에서 한 번 더 눌러 주세요. 다시 안 되면 고객지원으로 알려 주세요.")}
         </p>
       ) : null}
 
       {/* 적다 만 것을 들고 나가지 않게 막는다(규격 §4). 손전화에서 저장
           단추 바로 아래가 아래 띠라, 한 칸 아래를 누르면 적던 것이 통째로
           사라지는 자리다 */}
-      <UnsavedGuard />
+      <UnsavedGuard lang={lang} />
 
       {drop ? (
         <FileDrop consented={drop.consented} used={drop.used}
           cap={UPLOAD_MONTHLY_CAP} pending={drop.pending} />
-      ) : !edit && !d0 ? (
+      ) : !edit && !d0 && lang !== "en" ? (
         <p className="cm-none" style={{ marginBottom: 12 }}>
           MAT을 쓰시면 성적증명서·수료증 파일을 올려 이 칸을 채울 수 있습니다.{" "}
           <Link href="/me/track">MAT 알아보기</Link>
@@ -195,8 +235,8 @@ export default async function Compose(
       {d0 ? (
         <div className="cm-none" role="status">
           {d0.from === "file"
-            ? "올리신 파일에서 읽은 것을 보기로 옮겨 두었습니다. 파일에 없던 것은 비워 두었으니, 직접 정한 것과 남은 결과물을 골라 저장해 주세요."
-            : "적어 주신 메모를 보기로 옮겨 두었습니다. 맞지 않는 칸은 끄고 저장해 주세요."}
+            ? t("올리신 파일에서 읽은 것을 보기로 옮겨 두었습니다. 파일에 없던 것은 비워 두었으니, 직접 정한 것과 남은 결과물을 골라 저장해 주세요.")
+            : t("적어 주신 메모를 보기로 옮겨 두었습니다. 맞지 않는 칸은 끄고 저장해 주세요.")}
           {d0.ask.length ? (
             <ul>{d0.ask.map((q) => <li key={q}>{q}</li>)}</ul>
           ) : null}
@@ -214,17 +254,18 @@ export default async function Compose(
         {value ? <input type="hidden" name="id" value={value.id} /> : null}
         {d0 && draftId ? <input type="hidden" name="draft" value={draftId} /> : null}
         <Steps
+          lang={lang}
           value={picked}
           flow={flow}
-          {...(edit ? { saveLabel: "고친 내용 저장" } : {})}
-          {...(!edit && td ? { fromAction: domainName(core, td) } : {})}
+          {...(edit ? { saveLabel: t("고친 내용 저장") } : {})}
+          {...(!edit && td ? { fromAction: domainName(core, td, cl) } : {})}
           suggest={[...new Set(suggest)]}
           domains={domains.map((d) => ({
-            code: d.code, name: domainName(core, d.code),
+            code: d.code, name: domainName(core, d.code, cl),
             /* 이름 아래 한 줄은 **그 영역에서 학생이 해 본 일**이다. 사전이
                없는 Core 는 전과 같이 `domainSub` 로 떨어지고 그 사실은
                `v3:student` 가 센다 */
-            sub: studentActivity(core, d.code),
+            sub: activity(d.code),
             /* 문제와 판단은 **그 영역의 체크리스트에서** 온다. 지어낸
                보기를 두면 고르는 사람이 자기 일과 다른 말을 고른다 */
             problems: pick(d.code, "J1", 6),
@@ -238,7 +279,7 @@ export default async function Compose(
                   것을 글로 한 번 더 읽게 하는 줄이다. 설명문을 읽어야
                   적을 수 있는 칸이면 그 칸이 잘못 서 있는 것이다 */}
               <fieldset className="cm-field">
-                <legend><span>어떤 경험인가요</span></legend>
+                <legend><span>{t("어떤 경험인가요")}</span></legend>
                 <div className="cm-kinds">
                   {KIND_GROUPS.map((g) => (
                     <div className="cm-kind-g" key={g.label}>
@@ -251,7 +292,7 @@ export default async function Compose(
                           <label className="cm-pick" key={k.code}>
                             <input type="radio" name="kind" value={k.code} required
                               defaultChecked={start?.kind === k.code} />
-                            {k.label}
+                            {kindLabel(k.code, lang) ?? k.label}
                           </label>
                         ))}
                       </div>
@@ -263,7 +304,7 @@ export default async function Compose(
               {/* 빈 칸의 길잡이는 **예시 하나**가 맡는다. 같은 말을 설명으로
                   한 번 더 적으면 칸 하나에 읽을 줄이 셋이 된다 */}
               <label className="cm-field">
-                <span>무엇을 했는지 한 줄로</span>
+                <span>{t("무엇을 했는지 한 줄로")}</span>
                 <input className="cm-input" name="title" maxLength={120} required
                   defaultValue={start?.title ?? ""}
                   /* **다른 전공의 예시를 공통 화면에 박아 두지
@@ -271,7 +312,7 @@ export default async function Compose(
                      `예: 전동 스쿠터 프레임 경량화 캡스톤` 한 줄이라
                      경영학과 학생이 기계공학 예시를 읽었다. 운영
                      Canary 의 `기계공학자` 와 같은 모양이다 */
-                  placeholder={experienceExample(core)} />
+                  placeholder={t(`${experienceExample(core)}#ex`)} />
               </label>
 
               {/* **언제는 한 칸이다**(규격 §3). 시작과 끝을 같은 크기의 큰
@@ -282,8 +323,8 @@ export default async function Compose(
                   판정에 들어가는 값이 아니라, 제목 아래 한 단 작은 자리에
                   대략이면 된다는 말과 함께 선다 */}
               <div className="cm-meta">
-                <MonthPick name="started_on" label="시작한 달"
-                  hint="대략이면 됩니다. 나중에 찾을 때만 씁니다."
+                <MonthPick name="started_on" label={t("시작한 달")} lang={lang}
+                  hint={t("대략이면 됩니다. 나중에 찾을 때만 씁니다.")}
                   value={value?.started_on ?? null} />
               </div>
             </>
@@ -294,8 +335,8 @@ export default async function Compose(
                   아니고 `그 결과가 어디로 갔는가` 한 가지 물음이라, 영역별
                   체크리스트에 두면 같은 보기가 열두 번 선다 */}
               <fieldset className="cm-field">
-                <legend><span>그 결과가 어디에 쓰였나요</span></legend>
-                <em>쓰인 곳이 없으면 비워 두세요. 비웠다고 불리해지지 않습니다.</em>
+                <legend><span>{t("그 결과가 어디에 쓰였나요")}</span></legend>
+                <em>{t("쓰인 곳이 없으면 비워 두세요. 비웠다고 불리해지지 않습니다.")}</em>
                 <div className="cm-pickset">
                   {USED_WHERE.map((u) => (
                     <label className="cm-pick" key={u}>
@@ -309,21 +350,21 @@ export default async function Compose(
               {/* 나머지 둘은 더 접는다. 적으면 좋지만 없어도 저장되는 값이고,
                   저장한 뒤에도 고칠 수 있다 */}
               <details className="cm-why is-fields">
-                <summary>더 적을 것이 있으면 (선택)</summary>
+                <summary>{t("더 적을 것이 있으면 (선택)")}</summary>
 
                 <MonthPick
-                  name="ended_on" label="끝난 달"
+                  name="ended_on" label={t("끝난 달")} lang={lang}
                   value={value?.ended_on ?? null}
                   on={Boolean(value && value.started_on && !value.ended_on)}
-                  ongoing={{ name: "ongoing", label: "아직 진행 중" }} />
+                  ongoing={{ name: "ongoing", label: t("아직 진행 중") }} />
 
                 <label className="cm-field">
-                  <span>보완 설명 한 줄</span>
-                  <em>결과를 바꾸지 않습니다. 결과를 쓸 때 당신의 말로 옮길 때만 읽고,
-                    1년이 지나면 지웁니다.</em>
+                  <span>{t("보완 설명 한 줄")}</span>
+                  <em>{t("결과를 바꾸지 않습니다. 결과를 쓸 때 당신의 말로 옮길 때만 읽고,"
+                    + " 1년이 지나면 지웁니다.")}</em>
                   <textarea className="cm-textarea" name="note" maxLength={400}
                     defaultValue={value?.note_text ?? ""}
-                    placeholder="예: 하중 조건을 직접 정하고 시험값과 10% 안에서 맞췄습니다" />
+                    placeholder={t("예: 하중 조건을 직접 정하고 시험값과 10% 안에서 맞췄습니다")} />
                 </label>
               </details>
 
@@ -331,8 +372,8 @@ export default async function Compose(
                   깨진 날 저장까지 막히지 않게 하려는 것이 하나이고, 무엇이
                   달라지는지 먼저 보고 누르게 하려는 것이 둘이다 */}
               <p className="cm-none" style={{ marginTop: 10 }}>
-                저장하면 무엇이 달라지는지 먼저 보여 드리고, 거기서 반영을 누르면
-                현재 상태에 들어갑니다. 검사 당시 결과는 그대로 남습니다.
+                {t("저장하면 무엇이 달라지는지 먼저 보여 드리고, 거기서 반영을 누르면"
+                  + " 현재 상태에 들어갑니다. 검사 당시 결과는 그대로 남습니다.")}
               </p>
             </>
           }
@@ -348,11 +389,11 @@ export default async function Compose(
         결과는 한 글자도 바뀌지 않는다.
       */}
       <details className="cm-why">
-        <summary>이걸 적으면 무엇이 달라지나요</summary>
+        <summary>{t("이걸 적으면 무엇이 달라지나요")}</summary>
         <ul>
-          <li>지원서와 면접에서 설명할 근거가 한 줄 늘어납니다.</li>
-          <li>부족했던 부분이 채워지면 다음 할 일이 그만큼 달라집니다.</li>
-          <li>검사 당시 결과는 그대로 남고, 현재 상태만 다시 계산됩니다.</li>
+          <li>{t("지원서와 면접에서 설명할 근거가 한 줄 늘어납니다.")}</li>
+          <li>{t("부족했던 부분이 채워지면 다음 할 일이 그만큼 달라집니다.")}</li>
+          <li>{t("검사 당시 결과는 그대로 남고, 현재 상태만 다시 계산됩니다.")}</li>
         </ul>
       </details>
     </CmShell>

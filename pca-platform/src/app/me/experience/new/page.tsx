@@ -5,12 +5,18 @@
  * 걸음이 한 번 바뀐 날 한 곳만 고쳐지고, 그러면 고치러 들어온 사람이 새로
  * 적을 때와 다른 칸을 본다.
  */
-import { requireUser } from "@/lib/session";
+import { currentUser, requireUser } from "@/lib/session";
+import { wsLang } from "@/lib/me-v3/ws-lang";
+import { wsSay } from "@/lib/me-v3/ws-say";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { draftOf } from "@/lib/assistant/draft";
 import Compose from "../compose";
 
-export const metadata = { title: "경험 추가 · 내 CareerMatri" };
+export async function generateMetadata() {
+  const u = await currentUser().catch(() => null);
+  const t = wsSay(u ? await wsLang(u.id) : "ko");
+  return { title: t("경험 추가 · 내 CareerMatri") };
+}
 
 export default async function NewExperience(
   { searchParams }: { searchParams: Promise<{ e?: string; td?: string; draft?: string }> },

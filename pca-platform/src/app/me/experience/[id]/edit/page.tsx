@@ -8,11 +8,17 @@
  * **남의 번호를 넣어도 열리지 않는다**: 읽는 자리가 `user_id` 로 거른다.
  */
 import { notFound } from "next/navigation";
-import { requireUser } from "@/lib/session";
+import { currentUser, requireUser } from "@/lib/session";
+import { wsLang } from "@/lib/me-v3/ws-lang";
+import { wsSay } from "@/lib/me-v3/ws-say";
 import { experienceOf } from "@/lib/me-v3/platform";
 import Compose from "../../compose";
 
-export const metadata = { title: "경험 고치기 · 내 CareerMatri" };
+export async function generateMetadata() {
+  const u = await currentUser().catch(() => null);
+  const t = wsSay(u ? await wsLang(u.id) : "ko");
+  return { title: t("경험 고치기 · 내 CareerMatri") };
+}
 
 export default async function EditExperience(
   { params, searchParams }: {

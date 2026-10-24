@@ -289,6 +289,29 @@ export const EXPERIENCE_KINDS = [
 
 export type ExperienceKind = typeof EXPERIENCE_KINDS[number]["code"];
 
+/**
+ * 같은 아홉 종류의 영어(작업공간 영어판). **코드와 차례는 위와 같다**: 저장되는
+ * 값은 코드이고 이 표는 화면에 적는 이름뿐이다. 한국어를 부르는 자리는 위의
+ * `EXPERIENCE_KINDS` 를 그대로 읽는다.
+ */
+export const EXPERIENCE_KINDS_EN: Record<ExperienceKind, { label: string; hint: string }> = {
+  course: { label: "Course", hint: "Something you worked out or decided yourself in a class" },
+  assignment: { label: "Assignment", hint: "An assignment or report you turned in" },
+  capstone: { label: "Capstone or design project", hint: "A design you carried for a semester or more" },
+  research: { label: "Research or lab work", hint: "An experiment or analysis you ran in a lab" },
+  paper: { label: "Paper or conference", hint: "A paper you wrote or a talk you gave" },
+  internship: { label: "Internship or co-op", hint: "Work you took on at a company or organization" },
+  project: { label: "Personal or club project", hint: "A competition entry, a build, or something you made on your own" },
+  work: { label: "Work experience", hint: "Work you took on and saw through" },
+  credential: { label: "Certification or training", hint: "A certification you earned or training you completed" },
+};
+
+/** 종류 이름. 모르는 코드면 `undefined` 다(부르는 쪽이 `경험` 으로 떨어진다) */
+export function kindLabel(code: string, lang: "ko" | "en" = "ko"): string | undefined {
+  if (lang === "en") return (EXPERIENCE_KINDS_EN as Record<string, { label: string }>)[code]?.label;
+  return EXPERIENCE_KINDS.find((k) => k.code === code)?.label;
+}
+
 export type Experience = {
   id: string;
   kind: ExperienceKind;

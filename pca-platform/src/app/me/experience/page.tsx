@@ -1,18 +1,32 @@
 import Link from "next/link";
-import { requireUser } from "@/lib/session";
+import { currentUser, requireUser } from "@/lib/session";
 import { activeMajorName } from "@/lib/me-v3/major-name";
 import {
-  EXPERIENCE_KINDS, experiencesOf, reflectedExperiences, activeCoreOrPick } from "@/lib/me-v3/platform";
+  experiencesOf, kindLabel, reflectedExperiences, activeCoreOrPick } from "@/lib/me-v3/platform";
 import { experienceFlow } from "@/lib/me-v3/student";
 import { recomputeStatus } from "@/lib/me-v3/recompute";
-import { domainName } from "@/lib/me-v3/runtime/session";
+import { domainName, majorNameIn } from "@/lib/me-v3/runtime/session";
+import { wsLang } from "@/lib/me-v3/ws-lang";
+import { wsSay } from "@/lib/me-v3/ws-say";
 import { CmShell, CmHead } from "../shell";
 import { EmptyState } from "../ui";
 import { dropExperience } from "./actions";
+import { contentLang, flowSay } from "./compose";
 
-export const metadata = { title: "경험 · 내 CareerMatri" };
+export async function generateMetadata() {
+  const u = await currentUser().catch(() => null);
+  const t = wsSay(u ? await wsLang(u.id) : "ko");
+  return { title: t("경험 · 내 CareerMatri") };
+}
 
-const KIND = new Map(EXPERIENCE_KINDS.map((k) => [k.code as string, k.label]));
+/** 영어는 달을 이름으로 적는다(`Mar 2025`). 한국어는 전과 같이 `2025-03` 이다 */
+const MONTHS_EN = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+function monthAt(d: string, lang: string): string {
+  const m = /^(\d{4})-(\d{2})/.exec(d);
+  if (lang !== "en" || !m) return d.slice(0, 7);
+  return `${MONTHS_EN[Number(m[2]) - 1]} ${m[1]}`;
+}
 
 /**
  * 적어 둔 경험.
@@ -30,22 +44,25 @@ const KIND = new Map(EXPERIENCE_KINDS.map((k) => [k.code as string, k.label]));
  */
 export default async function Experiences() {
   const user = await requireUser();
-  const major = await activeMajorName(user.id);
+  const lang = await wsLang(user.id);
+  const t = wsSay(lang);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
   const core = await activeCoreOrPick(user.id);
+  const cl = contentLang(core, lang);
+  const major = lang === "en" ? majorNameIn(core, "en") : await activeMajorName(user.id);
   /* 영역을 부르는 말은 그 Core 의 사전이 든다(R30) */
-  const flow = experienceFlow(core);
+  const flow = flowSay(experienceFlow(core), t);
   const [rows, st, done] = await Promise.all([
     experiencesOf(user.id), recomputeStatus(user.id), reflectedExperiences(user.id),
   ]);
 
   return (
-    <CmShell active="/me/experience" title="경험" major={major}
-      bar={<Link className="cm-btn is-primary" href="/me/experience/new">새 경험 추가</Link>}>
+    <CmShell active="/me/experience" title={t("경험")} major={major} lang={lang}
+      bar={<Link className="cm-btn is-primary" href="/me/experience/new">{t("새 경험 추가")}</Link>}>
       <CmHead
-        title="경험"
-        lead="적어 둔 것이 현재 상태에 더할 때 근거로 들어갑니다."
-        actions={<Link className="cm-btn is-primary" href="/me/experience/new">+ 새 경험 추가</Link>}
+        title={t("경험")}
+        lead={t("적어 둔 것이 현재 상태에 더할 때 근거로 들어갑니다.")}
+        actions={<Link className="cm-btn is-primary" href="/me/experience/new">{t("+ 새 경험 추가")}</Link>}
         narrowActions
       />
 
@@ -54,29 +71,28 @@ export default async function Experiences() {
           할 일이 아닌 것이 할 일처럼 보인다 */}
       {st.running ? (
         <div className="cm-state is-run" role="status" style={{ marginBottom: 18 }}>
-          현재 상태를 다시 확인하고 있습니다. 끝나면 저절로 더해집니다.
+          {t("현재 상태를 다시 확인하고 있습니다. 끝나면 저절로 더해집니다.")}
         </div>
       ) : st.pending > 0 ? (
         /* **화면을 덮는 큰 빨간 상자를 두지 않는다**(규격 §14). 저장은
            끝났고 더하기만 남은 상태라, 한 줄과 다시 할 길이면 된다 */
         <div className="cm-state is-warn" role="alert" style={{ marginBottom: 18 }}>
-          경험 {st.pending}건이 아직 현재 상태에 들어가지 못했습니다.
-          {" "}<Link href="/me/recompute?e=recompute">다시 시도</Link>
+          {t("경험 {n}건이 아직 현재 상태에 들어가지 못했습니다.", { n: st.pending })}
+          {" "}<Link href="/me/recompute?e=recompute">{t("다시 시도")}</Link>
         </div>
       ) : null}
 
       {rows.length === 0 ? (
         <EmptyState>
-          <b>아직 적어 둔 경험이 없습니다.</b> 새로 겪은 일을 쌓으면 현재
-          상태에 더할 수 있습니다.
+          <b>{t("아직 적어 둔 경험이 없습니다.")}</b> {t("새로 겪은 일을 쌓으면 현재 상태에 더할 수 있습니다.")}
           <p style={{ marginTop: 10 }}>
-            <Link href="/me/experience/new">첫 경험 추가</Link>
+            <Link href="/me/experience/new">{t("첫 경험 추가")}</Link>
           </p>
         </EmptyState>
       ) : (
         <>
           <p className="cm-listhead">
-            적어 둔 경험<em>{rows.length}건</em>
+            {t("적어 둔 경험")}<em>{t("{n}건#count", { n: rows.length })}</em>
           </p>
           {/**
             * **줄로 쌓는다**(규격 §5·§10).
@@ -90,13 +106,13 @@ export default async function Experiences() {
             {rows.map((e) => {
               /* 날짜는 **겪은 때**가 먼저다. 안 적으셨으면 적어 둔 날이다 */
               const at = e.started_on ?? e.created_at.slice(0, 10);
-              const tds = e.td_codes.map((c) => domainName(core, c));
+              const tds = e.td_codes.map((c) => domainName(core, c, cl));
               const picks: [string, string[]][] = [
-                ["문제로 잡은 것", e.problems ?? []],
-                ["직접 정한 것", e.decisions],
-                ["남긴 것", e.artifacts],
-                ["비교해 확인한 것", e.verifications],
-                ["쓰인 곳", e.used_where ?? []],
+                [t("문제로 잡은 것"), e.problems ?? []],
+                [t("직접 정한 것"), e.decisions],
+                [t("남긴 것"), e.artifacts],
+                [t("비교해 확인한 것"), e.verifications],
+                [t("쓰인 곳"), e.used_where ?? []],
               ];
               const any = picks.some(([, v]) => v.length);
               const on = done.has(e.id);
@@ -106,23 +122,24 @@ export default async function Experiences() {
                     <summary>
                       <span className="cm-item-t">
                         <b>{e.title}</b>
-                        <em>{KIND.get(e.kind) ?? "경험"}</em>
+                        <em>{kindLabel(e.kind, lang) ?? t("경험")}</em>
                       </span>
                       <span className="cm-item-meta">
                         {/* **반영 여부가 이 줄에서 가장 쓸모 있는 값이다**:
                             더하지 않은 경험은 현재 상태에 아직 없다 */}
                         <span className={`cm-dot${on ? " is-on" : ""}`}>
-                          {on ? "현재 상태에 더함" : "아직 더하지 않음"}
+                          {on ? t("현재 상태에 더함") : t("아직 더하지 않음")}
                         </span>
-                        <time dateTime={at}>{at.slice(0, 7)}</time>
+                        <time dateTime={at}>{monthAt(at, lang)}</time>
                       </span>
                       {/* 연결된 기술영역. **고르지 않으셨으면 그 사실을
                           적는다**: 그 경우 이 경험은 판단으로 가지 않는다 */}
                       <span className="cm-item-sub">
                         {tds.length
                           ? tds.join(" · ")
-                          : `${flow.domainWord}을 고르지 않으셔서 아직 어느 판단으로도 가지 않았습니다`}
-                        {e.started_on ? "" : " · 날짜는 적어 둔 날입니다"}
+                          : t("{word}을 고르지 않으셔서 아직 어느 판단으로도 가지 않았습니다",
+                            { word: flow.domainWord })}
+                        {e.started_on ? "" : t(" · 날짜는 적어 둔 날입니다")}
                       </span>
                     </summary>
                     <div className="cm-item-more">
@@ -134,17 +151,17 @@ export default async function Experiences() {
                           </p>
                         )) : (
                           <p className="cm-row">
-                            <span>고른 항목 없이 제목만 적어 두셨습니다.</span>
+                            <span>{t("고른 항목 없이 제목만 적어 두셨습니다.")}</span>
                           </p>
                         )}
                         {e.ended_on ? (
                           <p className="cm-row">
-                            <b>끝난 달</b><span>{e.ended_on.slice(0, 7)}</span>
+                            <b>{t("끝난 달")}</b><span>{monthAt(e.ended_on, lang)}</span>
                           </p>
                         ) : null}
                         {e.note_text ? (
                           <p className="cm-row">
-                            <b>기억해 둘 한 줄</b><span>{e.note_text}</span>
+                            <b>{t("기억해 둘 한 줄")}</b><span>{e.note_text}</span>
                           </p>
                         ) : null}
                       </div>
@@ -154,12 +171,12 @@ export default async function Experiences() {
                             지우고 다시 적게 하면 그 사람이 손대지 않을
                             칸까지 전부 다시 고른다 */}
                         <Link className="cm-btn is-primary"
-                          href={`/me/experience/${e.id}/edit`}>고치기</Link>
+                          href={`/me/experience/${e.id}/edit`}>{t("고치기")}</Link>
                         {/* **지우기를 줄 머리에 두지 않는다**: 훑는 자리에서
                             가장 되돌리기 어려운 단추가 가장 먼저 눌린다 */}
                         <form action={dropExperience}>
                           <input type="hidden" name="id" value={e.id} />
-                          <button className="cm-btn" type="submit">이 기록 지우기</button>
+                          <button className="cm-btn" type="submit">{t("이 기록 지우기")}</button>
                         </form>
                       </div>
                     </div>
