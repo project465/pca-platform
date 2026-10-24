@@ -17,8 +17,16 @@
  * 올라간 자리는 **그 축이 무엇을 묻는 자리인지**로 적는다.
  */
 import type { Axis, AxisState, Zone } from "./scoring/types";
-import { AXIS_KO, ZONE_TITLE_KO } from "./result/text.ko";
+import { ZONE_TITLE_KO } from "./result/text.ko";
+import { ZONE_TITLE_KO as ZONE_TITLE_EN } from "./result/text.en";
 import { withJosa } from "./result/josa";
+
+/**
+ * 작업공간 언어(영어판 2단계b). **이 파일 이름은 그대로 둔다**: 네 화면이
+ * 이 이름으로 부르고, 영어를 다른 파일로 갈라 두면 같은 변화를 두 곳에서
+ * 문장으로 옮기게 된다. 판정이 없는 파일이라 언어는 고르는 말만 바꾼다.
+ */
+type Lang = "ko" | "en";
 
 /** 경험으로 올라간 축 하나 */
 export type Raised = { domain: string; axis: Axis; state: AxisState };
@@ -48,7 +56,19 @@ const RAISED_KO: Record<Axis, string> = {
  *
  * `구조·내구 해석에서 직접 정한 조건과 기준이 확인됐습니다` 처럼 읽힌다.
  */
-export function raisedKo(r: Raised, domainName: string): string {
+const RAISED_EN: Record<Axis, string> = {
+  J1: "the problem you took on is now clearer",
+  J2: "how you read the requirements now shows",
+  J3: "the conditions and criteria you set yourself are confirmed",
+  J4: "the method you used is now on record",
+  J5: "what you produced is confirmed",
+  J6: "what you compared your work against has been added",
+  J7: "what you fixed when things went wrong is now on record",
+  J8: "where your result was used is confirmed",
+};
+
+export function raisedKo(r: Raised, domainName: string, lang: Lang = "ko"): string {
+  if (lang === "en") return `In ${domainName}, ${RAISED_EN[r.axis]}`;
   /* `에서` 는 받침을 타지 않는다. 조사를 고를 자리가 아니므로 그냥 붙인다 */
   return `${domainName}에서 ${RAISED_KO[r.axis]}`;
 }
@@ -60,7 +80,8 @@ export function raisedKo(r: Raised, domainName: string): string {
  * `이/가` 와 묶음 이름 뒤의 `으로/로`. 손으로 이어 붙이면
  * `기구·제품 설계가` 가 `기구·제품 설계이` 로 나간다.
  */
-export function zoneMovedKo(z: ZoneMove, domainName: string): string {
+export function zoneMovedKo(z: ZoneMove, domainName: string, lang: Lang = "ko"): string {
+  if (lang === "en") return `${domainName} moved to “${ZONE_TITLE_EN[z.after]}”`;
   const zone = ZONE_TITLE_KO[z.after];
   return `${withJosa(domainName, "이가")} ${withJosa(zone, "으로")} 옮겨 갔습니다`;
 }
@@ -92,6 +113,29 @@ export const NO_CHANGE_KO: Record<NoChangeWhy, { title: string; why: string }> =
   },
 };
 
+export const NO_CHANGE_EN: Record<NoChangeWhy, { title: string; why: string }> = {
+  NEED_SECOND_PICK: {
+    title: "Your experience is saved, and your current state hasn't changed",
+    why: "A judgment moves up to confirmed once you've picked two items for it in the"
+      + " same area. Right now there's one each, so nothing has moved yet.",
+  },
+  ALREADY_CONFIRMED: {
+    title: "Your experience is saved, and your current state hasn't changed",
+    why: "This experience falls within what the assessment had already confirmed, so"
+      + " there was nowhere higher to go. You do have more to draw on in applications.",
+  },
+  NO_DOMAIN_PICK: {
+    title: "Your experience is saved, but it doesn't count toward any judgment yet",
+    why: "Pick a technical area and the items under it, and that part counts toward"
+      + " a judgment. This record doesn't have any items picked yet.",
+  },
+};
+
+/** 그 언어의 `변화 없음` 문장 */
+export function noChangeText(why: NoChangeWhy, lang: Lang = "ko") {
+  return (lang === "en" ? NO_CHANGE_EN : NO_CHANGE_KO)[why];
+}
+
 /**
  * 왜 안 바뀌었는지 고른다.
  *
@@ -119,15 +163,18 @@ export function recentChangeKo(
   st: { raised: Raised[]; zoneMoved: ZoneMove[]; recomputed_at: string | null },
   domainName: (code: string) => string,
   max = 2,
+  lang: Lang = "ko",
 ): { lines: string[]; more: number } {
   if (!st.recomputed_at) return { lines: [], more: 0 };
   const all = [
-    ...st.zoneMoved.map((z) => zoneMovedKo(z, domainName(z.domain))),
-    ...st.raised.map((r) => raisedKo(r, domainName(r.domain))),
+    ...st.zoneMoved.map((z) => zoneMovedKo(z, domainName(z.domain), lang)),
+    ...st.raised.map((r) => raisedKo(r, domainName(r.domain), lang)),
   ];
   if (!all.length) {
     return {
-      lines: ["새 경험을 더했고 현재 상태는 그대로입니다."],
+      lines: [lang === "en"
+        ? "You added new experience, and your current state stayed the same."
+        : "새 경험을 더했고 현재 상태는 그대로입니다."],
       more: 0,
     };
   }

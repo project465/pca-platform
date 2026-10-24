@@ -1,3 +1,5 @@
+import { wsLang } from "@/lib/me-v3/ws-lang";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import { activeMajorName } from "@/lib/me-v3/major-name";
@@ -75,6 +77,9 @@ export default async function Track({
 }) {
   const sp = await searchParams;
   const user = await requireUser();
+  /* **영어 작업공간에는 이 자리가 없다**(`WS_KR_ONLY`). 한국 자료에 서
+     있는 쪽이라, 번역해 세우면 해외 손님이 한국 자료를 자기 것으로 읽는다 */
+  if ((await wsLang(user.id)) === "en") redirect("/me");
   const state = await activeTrack(user.id);
   /* 이번 주 한 줄이 아직 없으면 지금 만든다. **밤 당번을 기다리게 하지
      않는다**: 기간권을 막 산 사람이 빈 알림 칸을 본다 */

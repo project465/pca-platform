@@ -19,7 +19,8 @@ import { Icon } from "@/components/sf/icon";
 
 export type FindItem = { label: string; sub?: string; href: string };
 
-export function CmFind({ items }: { items: FindItem[] }) {
+export function CmFind({ items, lang = "ko" }: { items: FindItem[]; lang?: "ko" | "en" }) {
+  const en = lang === "en";
   const [q, setQ] = useState("");
   const [on, setOn] = useState(false);
   const box = useRef<HTMLDivElement | null>(null);
@@ -48,8 +49,8 @@ export function CmFind({ items }: { items: FindItem[] }) {
       <input
         type="search"
         value={q}
-        placeholder="메뉴·기술영역 찾기"
-        aria-label="작업공간에서 찾기"
+        placeholder={en ? "Find a menu or technical area" : "메뉴·기술영역 찾기"}
+        aria-label={en ? "Search your workspace" : "작업공간에서 찾기"}
         aria-expanded={on && key.length > 0}
         aria-controls={listId}
         onChange={(e) => { setQ(e.target.value); setOn(true); }}
@@ -69,7 +70,8 @@ export function CmFind({ items }: { items: FindItem[] }) {
             /* **빈 결과를 조용히 두지 않는다.** 무엇으로 찾는지를
                적는다 */
             <p className="cm-find-none">
-              일치하는 메뉴가 없습니다. 기술영역 이름으로도 찾습니다.
+              {en ? "No matching menu. You can also search by technical area."
+                : "일치하는 메뉴가 없습니다. 기술영역 이름으로도 찾습니다."}
             </p>
           )}
         </div>

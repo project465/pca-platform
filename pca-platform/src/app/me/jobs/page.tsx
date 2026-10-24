@@ -1,3 +1,5 @@
+import { wsLang } from "@/lib/me-v3/ws-lang";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import { activeMajorName } from "@/lib/me-v3/major-name";
@@ -27,6 +29,9 @@ const REGION_KO: Record<string, string> = {
  */
 export default async function Jobs() {
   const user = await requireUser();
+  /* **영어 작업공간에는 이 자리가 없다**(`WS_KR_ONLY`). 한국 자료에 서
+     있는 쪽이라, 번역해 세우면 해외 손님이 한국 자료를 자기 것으로 읽는다 */
+  if ((await wsLang(user.id)) === "en") redirect("/me");
   const major = await activeMajorName(user.id);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
   const core = await activeCoreOrPick(user.id);

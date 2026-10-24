@@ -24,8 +24,10 @@ import type { ReactNode } from "react";
 import { Icon } from "@/components/sf/icon";
 import { BrandMark } from "@/components/sf/brand-mark";
 import LogoutButton from "@/components/logout-button";
-import { CM_GROUPS, CM_TABS, CM_NAV, navOn } from "./nav";
+import { CM_GROUPS, CM_TABS, type CmNavItem, navOn } from "./nav";
 import { CmFind, type FindItem } from "./find";
+import { wsSay } from "@/lib/me-v3/ws-say";
+import { wsKrOnly, type WsLang } from "@/lib/me-v3/ws-lang";
 
 /**
  * 지금 어느 전공인가. **쪽이 넘겨 준다.**
@@ -46,15 +48,32 @@ const MAJOR_FALLBACK = "전공 진단";
  * 메뉴에 제 줄이 없는 **실제로 도는 세 곳**을 뒤에 더한다. 메뉴에 두면
  * 띠가 열네 줄이 되는데, 찾는 사람은 그 이름으로 찾는다.
  */
-const FIND_BASE: FindItem[] = [
-  ...CM_GROUPS.flatMap((g) =>
-    g.items.map((it) => ({ label: it.label, sub: g.title, href: it.href }))),
-  { label: "경험 추가", sub: "내 커리어", href: "/me/experience/new" },
-  { label: "새 경험 더하기", sub: "내 커리어", href: "/me/recompute" },
-  { label: "부족한 부분", sub: "내 커리어", href: "/me/state#gaps" },
-];
+/**
+ * 그 언어의 메뉴. **영어에서는 한국 자료에 서 있는 줄을 뺀다**
+ * (`WS_KR_ONLY`). 이름은 사전을 거친다: 한국어는 글자가 그대로다.
+ */
+function groupsFor(lang: WsLang) {
+  const t = wsSay(lang);
+  return CM_GROUPS.map((g) => ({
+    title: t(g.title),
+    items: g.items
+      .filter((it) => lang !== "en" || !wsKrOnly(it.href))
+      .map((it) => ({ ...it, label: t(it.label), tabLabel: it.tabLabel ? t(it.tabLabel) : undefined })),
+  })).filter((g) => g.items.length);
+}
 
-function NavRow({ it, active }: { it: typeof CM_NAV[number]; active: string }) {
+function findBase(lang: WsLang): FindItem[] {
+  const t = wsSay(lang);
+  return [
+    ...groupsFor(lang).flatMap((g) =>
+      g.items.map((it) => ({ label: it.label, sub: g.title, href: it.href }))),
+    { label: t("경험 추가"), sub: t("내 커리어"), href: "/me/experience/new" },
+    { label: t("새 경험 더하기"), sub: t("내 커리어"), href: "/me/recompute" },
+    { label: t("부족한 부분"), sub: t("내 커리어"), href: "/me/state#gaps" },
+  ];
+}
+
+function NavRow({ it, active }: { it: CmNavItem; active: string }) {
   const on = navOn(it.href, active);
   return (
     <Link href={it.href}
@@ -85,39 +104,47 @@ function NavRow({ it, active }: { it: typeof CM_NAV[number]; active: string }) {
  * **세지 못하면 배지를 달지 않는다.** 표가 아직 없는 배포본이나 로그인
  * 전의 쪽에서 이 칸 하나 때문에 화면이 오류가 되면 안 된다.
  */
-async function CmBell() {
+async function CmBell({ lang = "ko" }: { lang?: WsLang }) {
+  const t = wsSay(lang);
   let n = 0;
   try {
     const u = await currentUser();
     if (u) n = await unreadCount(u.id);
   } catch { n = 0; }
-  return n > 0 ? (
+  /* 알림은 AI 취업비서가 쌓는다. 영어 작업공간에는 그 자리가 없다 */
+  return n > 0 && lang !== "en" ? (
     <Link className="cm-util-bell" href="/me/track" aria-label={`읽지 않은 알림 ${n}개`}>
       <Icon name="bell" size={17} />
       <span className="cm-util-dot" aria-hidden>{n > 9 ? "9+" : n}</span>
     </Link>
   ) : (
-    <Link className="cm-util-bell" href="/me/state#changes" aria-label="최근 변화">
+    <Link className="cm-util-bell" href="/me/state#changes" aria-label={t("최근 변화")}>
       <Icon name="bell" size={17} />
     </Link>
   );
 }
 
-function CmUtil({ name }: { name: string }) {
-  const initial = name.trim().slice(0, 1) || "나";
+function CmUtil({ name, lang = "ko" }: { name: string; lang?: WsLang }) {
+  const t = wsSay(lang);
+  const initial = name.trim().slice(0, 1) || t("나");
   return (
-    <Link className="cm-util-me" href="/my" aria-label="계정">
+    <Link className="cm-util-me" href="/my" aria-label={t("계정")}>
       <span className="cm-util-av" aria-hidden>{initial}</span>
-      <b>{name.trim() || "계정"}</b>
+      <b>{name.trim() || t("계정")}</b>
       <Icon name="chev" size={13} />
     </Link>
   );
 }
 
 export function CmShell({
-  active, title, form, read, hold, bar, who, major, finds, children,
+  active, title, form, read, hold, bar, who, major, finds, children, lang = "ko",
 }: {
   active: string; title?: string;
+  /**
+   * 작업공간 언어(`wsLang()`). 쪽이 넘겨 준다. 영어면 메뉴 이름이 영어이고
+   * 한국 자료에 서 있는 줄(지역 · 공고 · 지원 기록 · AI 취업비서)이 빠진다.
+   */
+  lang?: WsLang;
   /**
    * 이 쪽이 더 찾게 해 줄 것. 지금 넘기는 곳은 홈이고 넘기는 값은
    * **그 사람이 설명할 수 있는 기술영역 이름**이다. 쪽이 이미 들고 있는
@@ -155,6 +182,10 @@ export function CmShell({
   hold?: boolean;
   children: ReactNode;
 }) {
+  const t = wsSay(lang);
+  const groups = groupsFor(lang);
+  const tabs = CM_TABS.map((it) => ({ ...it, label: t(it.label), tabLabel: it.tabLabel ? t(it.tabLabel) : undefined }));
+  const fallback = t(MAJOR_FALLBACK);
   return (
     <div className="cm">
       {/* 손전화 위 띠. 넓은 화면에서는 왼쪽 띠가 그 일을 한다.
@@ -177,10 +208,10 @@ export function CmShell({
             이미 들고 있다. 그래서 여기 서는 것은 최근 변화와 계정이다 */}
         {who ? (
           <span className="cm-topbar-acts">
-            <CmBell />
-            <Link className="cm-topbar-me" href="/my" aria-label="계정">
+            <CmBell lang={lang} />
+            <Link className="cm-topbar-me" href="/my" aria-label={t("계정")}>
               <span className="cm-util-av" aria-hidden>
-                {who.trim().slice(0, 1) || "나"}
+                {who.trim().slice(0, 1) || t("나")}
               </span>
             </Link>
           </span>
@@ -188,7 +219,7 @@ export function CmShell({
       </div>
 
       <div className="cm-wrap">
-        <nav className="cm-rail" aria-label="CareerMatri 메뉴">
+        <nav className="cm-rail" aria-label={t("CareerMatri 메뉴")}>
           <Link className="cm-rail-brand" href="/me">
             {/* **공식 상표 하나만 쓴다**(규격 §4). 임시 아이콘과 네모를
                 쓰던 자리가 셋이었고 셋이 서로 달랐다. 출처는
@@ -196,12 +227,12 @@ export function CmShell({
             <BrandMark size={39} className="cm-rail-mark" />
             <span className="cm-rail-name">
               <b>CareerMatri</b>
-              <small>{major ?? MAJOR_FALLBACK}</small>
+              <small>{major ?? fallback}</small>
             </span>
           </Link>
 
           <div className="cm-rail-scroll">
-            {CM_GROUPS.map((g) => (
+            {groups.map((g) => (
               <section className="cm-group" key={g.title}>
                 <h2>{g.title}</h2>
                 {g.items.map((it) => <NavRow key={it.href} it={it} active={active} />)}
@@ -226,14 +257,15 @@ export function CmShell({
                   {bar}
                   {who ? (
                     <>
-                      <CmFind items={finds?.length ? [...FIND_BASE, ...finds] : FIND_BASE} />
-                      <CmBell />
+                      <CmFind lang={lang}
+                        items={finds?.length ? [...findBase(lang), ...finds] : findBase(lang)} />
+                      <CmBell lang={lang} />
                     </>
                   ) : null}
-                  {who ? <CmUtil name={who} /> : null}
+                  {who ? <CmUtil name={who} lang={lang} /> : null}
                   {/* 로그아웃은 한 번에 닿아야 한다. 계정 쪽 안에만 두었더니
                       공용 PC 에서 학생이 나가는 길을 찾지 못했다 */}
-                  {who ? <LogoutButton className="cm-util-out" /> : null}
+                  {who ? <LogoutButton className="cm-util-out" label={t("로그아웃")} /> : null}
                 </div>
               ) : null}
               {children}
@@ -247,8 +279,8 @@ export function CmShell({
         **`details` 하나로 연다**: 자바스크립트가 꺼져 있어도 열리고,
         닫는 상태를 브라우저가 들고 있어 쪽을 옮기면 저절로 닫힌다.
       */}
-      <nav className="cm-tabs" aria-label="아래 메뉴">
-        {CM_TABS.map((it) => (
+      <nav className="cm-tabs" aria-label={t("아래 메뉴")}>
+        {tabs.map((it) => (
           <Link key={it.href} href={it.href}
             className={navOn(it.href, active) ? "is-on" : ""}
             aria-label={it.label}
@@ -258,20 +290,20 @@ export function CmShell({
           </Link>
         ))}
         <details className="cm-more">
-          <summary aria-label="메뉴 전체 보기">
+          <summary aria-label={t("메뉴 전체 보기")}>
             <Icon name="grid" />
-            <span>더보기</span>
+            <span>{t("더보기")}</span>
           </summary>
           <div className="cm-sheet">
-            <p className="cm-sheet-head">CareerMatri · {major ?? MAJOR_FALLBACK}</p>
-            {CM_GROUPS.map((g) => (
+            <p className="cm-sheet-head">CareerMatri · {major ?? fallback}</p>
+            {groups.map((g) => (
               <section className="cm-group" key={g.title}>
                 <h2>{g.title}</h2>
                 {g.items.map((it) => <NavRow key={it.href} it={it} active={active} />)}
               </section>
             ))}
             {who ? (
-              <div className="cm-sheet-out"><LogoutButton className="cm-util-out" /></div>
+              <div className="cm-sheet-out"><LogoutButton className="cm-util-out" label={t("로그아웃")} /></div>
             ) : null}
           </div>
         </details>

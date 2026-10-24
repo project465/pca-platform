@@ -1,5 +1,6 @@
+import { wsLang } from "@/lib/me-v3/ws-lang";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { activeMajorName } from "@/lib/me-v3/major-name";
 import { activeCoreOrPick } from "@/lib/me-v3/platform";
@@ -33,6 +34,9 @@ const ORDER: ItemStatus[] = ["empty", "partial", "ready", "unmapped"];
 export default async function Posting({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const user = await requireUser();
+  /* **영어 작업공간에는 이 자리가 없다**(`WS_KR_ONLY`). 한국 자료에 서
+     있는 쪽이라, 번역해 세우면 해외 손님이 한국 자료를 자기 것으로 읽는다 */
+  if ((await wsLang(user.id)) === "en") redirect("/me");
   const [p, major, core, state] = await Promise.all([
     postingOf(user.id, id), activeMajorName(user.id), activeCoreOrPick(user.id),
     activeTrack(user.id),
