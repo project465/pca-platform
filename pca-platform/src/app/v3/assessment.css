@@ -485,6 +485,10 @@
 .qs-card b {
   font-size: var(--q-t-opt); font-weight: var(--ui-w-sb); color: var(--q-ink);
   letter-spacing: -.015em;
+  /* 오른쪽 위 네모(14px + 16px)를 비켜 선다. 이름이 긴 언어(영어
+     `Automotive Electronics and Electrification`)에서 글자가 네모 밑으로
+     들어갔다 */
+  padding-right: 22px;
 }
 .qs-card span {
   font-size: var(--q-t-gloss); color: var(--q-ink-3); line-height: 1.5;

@@ -12,15 +12,15 @@ import type { Tier } from "@/lib/me-v3/scoring/types";
 
 export const TIER_WHAT: Record<Tier, { label: string; what: string }> = {
   BASIC: {
-    label: "Basic",
+    label: "Starting point",
     what: "Where to start among the work areas, and what experience already shows in your answers",
   },
   STANDARD: {
-    label: "Standard",
+    label: "Experience in depth",
     what: "A closer look at the areas you've worked in, from scope and method to results and use, plus what's still missing and how to fill it",
   },
   PRO: {
-    label: "Pro",
+    label: "For your applications",
     what: "Turning one project into words you can use in applications, plus a closer look at one industry and one role",
   },
 };

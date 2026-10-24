@@ -2,8 +2,8 @@
  "schema_version": "me-v3-ui-lock.1",
  "note": "검사 화면 1차 동결. 결과지 작업 중에는 명백한 버그와 접근성 오류만 고치고, 고쳤으면 `ui-version.ts` 의 판본을 올린 뒤 `FREEZE=update npm run v3:freeze` 로 지문을 다시 적는다",
  "versions": {
-  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V54",
-  "assessment_copy_version": "me-v3-2-assessment-copy.33",
+  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V55",
+  "assessment_copy_version": "me-v3-2-assessment-copy.34",
   "assessment_version": "ME_V3_2",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.8",
   "scoring_version": "me-v3-scoring.5"
@@ -11,7 +11,7 @@
  "files": {
   "src/app/v3/layout.tsx": "5169464a4bd3741726beea4d17ee6ddb9d070c090513a3ca029f526883e05864",
   "src/app/surface.css": "edbb16d5270484deb2737e73611d8035296ce813a8c1afbede5ddd76cb35c38f",
-  "src/app/v3/assessment.css": "b5fa00bc5b4ae00467a8c30adc398259ae7ec55a7ccd695c00a6d925cc2468be",
+  "src/app/v3/assessment.css": "855fc1d451393c251964d06a67b374146092bb985c77797a783715ccb04a915d",
   "src/app/v3/tier-text.ts": "b60712f61fcb5daad6fbfc76afa795bac62b1f674c19906bba8054ba694949c8",
   "src/app/v3/start/page.tsx": "d92b1897b89f63e79ae034e6c4db1ebcb589fb8fa388b5dfa5c885b87fdc85e3",
   "src/app/v3/start/start-form.tsx": "045cbe27ad13c8318f40a800097fb2aa60f637c00dc4733dcb73e9974f98c04c",
@@ -34,7 +34,7 @@
   "src/lib/me-v3/runtime/copy.ts": "ced61ba25395417415a1ee0ef600e20aa04df80bf9056d5fb8ed3e2ee51a5511",
   "src/lib/me-v3/runtime/copy.ko.ts": "e278d3720f87d1ead66632c8b813b9bdc9d95e6bcdb0bde70f2bc736abcff702",
   "src/lib/me-v3/runtime/copy.en.ts": "31d009e627dac98d35acad4eded0f0072ecf22eacbda2128b2c95fbf60c45880",
-  "src/app/v3/tier-text.en.ts": "a73f0f8b5e37107b2fdf3f9692031e4eb4eae251f4a302afaf6fa489778c02a9",
+  "src/app/v3/tier-text.en.ts": "90b81086116933d2c931b40299e686e545d14f91b2266a995a20df3e17bfd985",
   "src/app/v3/tier-text.i18n.ts": "9437e0afdfa209e3a40ff7dd2726f48728bdb4e161aff878dfea9d42057d9bf6",
   "src/lib/me-v3/phrase.ts": "2f093ec0d6eecd54201c9f0fff3a3c121ae6b39f9b04f5d1c178aa9466f72a22",
   "src/lib/me-v3/phrases.en.ts": "e3e8da701d03bd3f32db34e2a0cf70754ca8519117dd0c35a74c7c168628bb07"
