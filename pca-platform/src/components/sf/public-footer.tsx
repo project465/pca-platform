@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { businessInfo, jobInfoLicense } from "@/lib/business";
+import { businessInfo, businessNameEn, jobInfoLicense } from "@/lib/business";
 import { supportConfig } from "@/lib/support";
 import type { Lang2 } from "@/lib/surface-text";
 import { BRAND } from "@/lib/surface-text";
@@ -34,6 +34,9 @@ export default async function PublicFooter({
 }) {
   const L = lang;
   const biz = await businessInfo();
+  /* 영어 화면에서는 영문 상호를 앞에 두고 등록 상호를 괄호로 붙인다.
+     **등록 상호를 빼지 않는다**(제10조 표시는 등록증의 이름이다) */
+  const nameEn = L === "en" ? await businessNameEn().catch(() => null) : null;
   const license = await jobInfoLicense();
   const sup = await supportConfig();
   const year = new Date().getFullYear();
@@ -83,7 +86,9 @@ export default async function PublicFooter({
           {PLAIN.map(([k, ko]) => (
             <div key={k}>
               <dt>{lab(k, ko)}</dt>
-              <dd>{val(by[k]?.value ?? null)}</dd>
+              <dd>{k === "name" && nameEn && by[k]?.value
+                ? `${nameEn} (${by[k]?.value})`
+                : val(by[k]?.value ?? null)}</dd>
             </div>
           ))}
           <div>
