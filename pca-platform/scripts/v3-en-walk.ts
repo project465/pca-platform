@@ -23,7 +23,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { chromium, type Page } from "playwright";
 import {
-  BASE, assertFreshServer, gateCreds, loadEnv, login, makeStudent,
+  BASE, assertFreshServer, fillExperience, gateCreds, loadEnv, login, makeStudent,
 } from "./_loop-fixture";
 import { walk } from "./_v3-walk";
 import { query } from "../src/lib/db";
@@ -279,6 +279,40 @@ async function entry(core: string): Promise<void> {
       `${out.screens}화면 ${hits.slice(0, 2).join(" | ")}`);
     if (!/\/result/.test(p.url())) await p.goto(`${BASE}/v3/${id}/result`, { waitUntil: "networkidle" });
     await clean("결과", "5-result");
+    ok("결과에서 내 CareerMatri 로 가는 길이 선다",
+      (await p.locator('a[href="/me"]').count()) > 0);
+
+    /* ── 작업공간(영어판 2단계b). **화면마다 한글을 세고**, 경험을 하나 적어
+       반영까지 간다. 한국 자료에 서 있는 쪽은 영어에서 홈으로 돌아가야 한다 */
+    for (const path of ["/me", "/me/state", "/me/next", "/me/experience",
+      "/me/results", "/me/explore", "/me/prep", "/my"]) {
+      await p.goto(`${BASE}${path}`, { waitUntil: "networkidle" });
+      ok(`${path} 가 열린다`, new URL(p.url()).pathname === path, new URL(p.url()).pathname);
+      await clean(`작업공간 ${path}`, `7-ws${path.replace(/\W+/g, "-")}`);
+    }
+    for (const path of ["/me/region", "/me/jobs", "/me/apply", "/me/track"]) {
+      await p.goto(`${BASE}${path}`, { waitUntil: "networkidle" });
+      ok(`한국 전용 ${path} 는 홈으로 돌아간다`, new URL(p.url()).pathname === "/me",
+        new URL(p.url()).pathname);
+    }
+    const title = "Gearbox redesign for a capstone rig";
+    const picked = await fillExperience(p, title, {
+      onStep: async (n) => {
+        const t = (await bodyText(p)).replace(/한국어/g, "");
+        ok(`경험 적기 ${n}단계에 한글이 없다`, !hangulAt(t), hangulAt(t) ?? "");
+        await shot(p, `8-exp-step${n}`);
+      },
+    });
+    ok("경험에서 기술영역이 골라졌다", picked > 0, `${picked}개`);
+    ok("저장하면 반영 화면으로 간다", new URL(p.url()).pathname === "/me/recompute",
+      new URL(p.url()).pathname);
+    await clean("반영 화면", "9-recompute");
+    await p.goto(`${BASE}/me`, { waitUntil: "networkidle" });
+    ok("홈에 방금 적은 경험이 선다", (await bodyText(p)).includes(title));
+    await clean("반영 뒤 홈", "10-home-after");
+    await p.goto(`${BASE}/me/state`, { waitUntil: "networkidle" });
+    await clean("반영 뒤 현재 상태", "11-state-after");
+
     await p.goto(`${BASE}/cores`, { waitUntil: "networkidle" });
     await clean("다 푼 뒤 전공 고르기", "6-cores-done");
     ok("다 푼 뒤에는 결과로 가는 단추가 선다",

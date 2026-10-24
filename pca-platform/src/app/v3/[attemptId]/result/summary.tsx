@@ -46,8 +46,8 @@ export default function Summary({
   kept: number;
   tierNote: string | null;
 }) {
-  /* 작업공간(`/me`)은 한국어판만 있다. 영어 응시에는 그리로 가는 길을 세우지 않는다 */
-  const ws = renderLang() === "ko";
+  /* 작업공간(`/me`)이 두 언어로 선다(영어판 2단계b) */
+  const ws = true;
   return (
     <div className="rsum">
       <section className="rsum-top">

@@ -1233,10 +1233,11 @@ export default async function V3Result({
   /** 첫 화면이 이미 적은 한 가지를 뺀 나머지. **같은 것을 두 번 적지 않는다** */
   const alsoActions = model.actions
     .filter((a) => a.id !== shownAction?.id).slice(0, 3);
-  /* **작업공간(`/me`)은 한국어판만 있다**(영어판 1단계). 영어 응시의 결과지에서
-     그리로 가는 길을 세우면 누른 사람이 한국어 화면에 떨어지므로 길을 걷는다.
-     결과와 종이는 그대로다 */
-  const ws = L() === "ko";
+  /* **작업공간(`/me`)이 두 언어로 선다**(영어판 2단계b). 결과지에서 그리로
+     가는 길을 두 언어 모두 세운다. 다만 **한국 자료에 서 있는 절**(권역 ·
+     기관 유형 · 세종 지역)은 한국어판에만 세운다(`kr`) */
+  const ws = true;
+  const kr = L() === "ko";
   const writeHref = shownAction?.domain
     ? `/me/experience/new?td=${shownAction.domain}`
     : "/me/experience/new";
@@ -2131,7 +2132,7 @@ export default async function V3Result({
           </section>
         ) : null}
         {/* 세종 지역 자료는 한국어판 전용이다 */}
-        {sejong && ws ? <SejongSection v={sejong} /> : null}
+        {sejong && kr ? <SejongSection v={sejong} /> : null}
         {/* ══ 부록 ══
             **다섯 장면에 들지 않는 것은 전부 여기다**(R18 §6).
             먼저 볼 영역과 비어 있는 자리와 전체 기술영역과 지역은
@@ -2518,8 +2519,8 @@ export default async function V3Result({
             **기업 이름을 담지 않는다.** 직업정보제공사업으로 할 수 있는
             것은 공고를 띄우는 데까지다. 그리고 기관 수를 짐작으로 채우지
             않는다: 그 수가 근거처럼 읽힌다 */}
-        {/* 영어판 1단계에는 이 절을 세우지 않는다: 권역과 기관 유형이 한국 자료다 */}
-        {ws ? <section className="rs-sect" id="region">
+        {/* 영어판에는 이 절을 세우지 않는다: 권역과 기관 유형이 한국 자료다 */}
+        {kr ? <section className="rs-sect" id="region">
           {/* **제목이 그 절이 답하는 질문이다**(SIGN-OFF §12). 전에는
               `어디에서 찾을지` 였다. 무엇을 찾는 자리인지가 빠져 있어서
               읽는 사람이 제목만으로는 이 절을 건너뛸지 정할 수 없었다 */}
@@ -2846,18 +2847,7 @@ export default async function V3Result({
           </section>
         ) : null}
 
-        {!ws ? (
-          /* 영어판 1단계의 닫는 자리. 작업공간이 아직 한국어뿐이라 그리로 가는 길
-             대신 종이 길 하나만 둔다 */
-          <section className="rs-sect rs-webonly" id="next">
-            <div className="rs-end">
-              <p className="rs-end-l">{meta.school ?? "CareerMatri"}</p>
-              <h2 className="rs-end-h">{tr("이 결과는 그날의 기록입니다#end")}</h2>
-              <p className="rs-end-p">{tr("이 결과는 고정돼 있습니다. 다시 열어도 같은 내용이 나옵니다.#end")}</p>
-              <a className="rs-end-a" href={`/v3/${attemptId}/result/pdf`}>{tr("PDF 저장")}</a>
-            </div>
-          </section>
-        ) : (
+        {(
         <section className="rs-sect rs-webonly" id="next">
           {/* **닫는 자리가 이 쪽의 두 번째이자 마지막 색면이다**(R17 §1).
               전에는 여기 흰 면 위의 글 묶음이 서고, 쪽 위쪽에 같은 말을
