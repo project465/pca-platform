@@ -17,6 +17,12 @@
  * 미리 넣지 않고 홈페이지가 넘겨 주는 주소(`/start?lang=en&market=GLOBAL`)로
  * 들어와서, 사람처럼 `개인으로 시작` → 가입 → 전공 고르기 → 무료 기본 검사 →
  * 결과까지 간다. 로그인 · 비밀번호 찾기 · 가격표 · 없는 쪽도 영어인지 센다.
+ *
+ * **DB 없이 배포본에서도 돈다**(`NODB=1`). 입구 한 바퀴만 브라우저로 지나가고,
+ * DB 를 들여다보는 두 줄은 `못 봄` 으로 적는다. 전공별 PRO 바퀴는 이용권을 DB 에
+ * 넣어야 해서 이 모드에서는 돌지 않는다.
+ *
+ *   NODB=1 UI_BASE=https://<staging> STAGING_BASIC_AUTH=<자물쇠> npm run v3:en:walk
  */
 import { execFileSync } from "node:child_process";
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -34,6 +40,7 @@ const CORES = (process.env.CORES ?? "ME_CORE_V3,EE_CORE_V1,CS_CORE_V1").split(",
 const TIER = (process.env.TIER ?? "PRO") as "BASIC" | "STANDARD" | "PRO";
 const STAGE = process.env.STAGE ?? "bachelor";
 const OUT = process.env.OUT ?? "";
+const NODB = process.env.NODB === "1";
 const HANGUL = /[ᄀ-ᇿ㄰-㆏가-힯]/;
 /** 손님 화면에 서면 안 되는 안쪽 코드 */
 const INNER = /\bTD\d\d\b|\bJ[1-8]\b|INDUSTRY_|ROLE_|_CORE_V\d/;
@@ -247,8 +254,11 @@ async function entry(core: string): Promise<void> {
     await p.waitForLoadState("networkidle");
     ok("가입하면 전공 고르기로 간다", new URL(p.url()).pathname === "/cores", new URL(p.url()).pathname);
     await clean("전공 고르기", "3-cores");
-    const u = await query<{ locale: string }>(`SELECT locale FROM users WHERE email = $1`, [mail]);
-    ok("계정에 영어가 적힌다", u[0]?.locale?.trim() === "en", u[0]?.locale ?? "없음");
+    if (NODB) console.log("  못 봄  계정에 영어가 적힌다 — NODB");
+    else {
+      const u = await query<{ locale: string }>(`SELECT locale FROM users WHERE email = $1`, [mail]);
+      ok("계정에 영어가 적힌다", u[0]?.locale?.trim() === "en", u[0]?.locale ?? "없음");
+    }
     const cards = await p.locator("a.en-door").count();
     ok("전공 카드는 영어 원고가 있는 셋이다", cards === 3, `${cards}장`);
     await Promise.all([
@@ -263,11 +273,14 @@ async function entry(core: string): Promise<void> {
       p.locator('button[type="submit"]').last().click({ force: true }),
     ]);
     const id = (p.url().match(/\/v3\/(\d+)/) ?? [])[1] ?? "";
-    const row = await query<{ locale: string; tier: string; core_code: string }>(
-      `SELECT locale, tier, core_code FROM v3_attempts WHERE id = $1::bigint`, [id]);
-    ok("무료 기본 · 영어 · 고른 전공으로 열린다",
-      row[0]?.locale === "en" && row[0]?.tier === "BASIC" && row[0]?.core_code === core,
-      `${row[0]?.locale} ${row[0]?.tier} ${row[0]?.core_code}`);
+    if (NODB) ok("응시가 열린다", Boolean(id), new URL(p.url()).pathname);
+    else {
+      const row = await query<{ locale: string; tier: string; core_code: string }>(
+        `SELECT locale, tier, core_code FROM v3_attempts WHERE id = $1::bigint`, [id]);
+      ok("무료 기본 · 영어 · 고른 전공으로 열린다",
+        row[0]?.locale === "en" && row[0]?.tier === "BASIC" && row[0]?.core_code === core,
+        `${row[0]?.locale} ${row[0]?.tier} ${row[0]?.core_code}`);
+    }
     const hits: string[] = [];
     const out = await walk(p, 200, {
       note: "I chose the motor size myself after working out load and inertia.",
@@ -325,10 +338,10 @@ async function entry(core: string): Promise<void> {
 }
 
 async function main(): Promise<void> {
-  assertFreshServer();
+  if (!NODB) assertFreshServer();
   if (OUT) mkdirSync(OUT, { recursive: true });
   if (process.env.ENTRY !== "0") await entry(CORES[0]);
-  for (const c of CORES) await one(c);
+  if (!NODB) for (const c of CORES) await one(c);
   console.log(`\n통과 ${pass} · 걸림 ${bad.length}`);
   if (bad.length) { console.log(bad.map((b) => `  - ${b}`).join("\n")); process.exit(1); }
   process.exit(0);
