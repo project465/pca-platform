@@ -363,7 +363,9 @@
 /** 실용 줄(로그아웃 · 계정 · 종)이 쪽 머리에 덮여 눌리지 않던 것을 고쳤다.
  *  결과 전 홈(검사 전 · 진행 중)과 학교 학생의 첫 화면이 결과 뒤 홈과 같은
  *  Hero · 색 타일로 선다. 전공 고르기 쪽에도 로그아웃이 선다 — V59 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V61";
+/** 영어판 작업공간(2단계b): 응시 언어가 영어면 띠·홈·현재 상태·다음 할 일·경험·반영·결과·탐색·준비가
+ *  영어로 서고, 국내 전용 쪽 넷(지역·공고·지원·MAT)은 띠에서 빠지고 홈으로 돌린다 — V62 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V62";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -411,7 +413,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V61";
 /** 왼쪽 메뉴의 MAT 줄을 'AI 취업비서' 로 적는다(쪽 안의 제품 이름은 MAT 그대로) */
 /** 파일로 옮기기 안내 · 동의 문구 · 파일 초안 안내 줄 */
 /** 결과 전 홈과 학교 학생 첫 화면의 Hero · 타일 문장 */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.43";
+/** 영어 사전 아홉 벌(ws-en/*). 한국어 문장은 한 글자도 바뀌지 않았다 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.44";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

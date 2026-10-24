@@ -3,6 +3,7 @@ import { currentUser, requireUser } from "@/lib/session";
 import {
   EXPERIENCE_KINDS, applicationsOf, currentState, experiencesOf, activeCoreOrPick } from "@/lib/me-v3/platform";
 import { domainName, domainSub, majorNameIn } from "@/lib/me-v3/runtime/session";
+import { localizer } from "@/lib/me-v3/result/localize";
 import {
   ZONE_TITLE_KO, domainChainKo,
 } from "@/lib/me-v3/result/text.ko";
@@ -166,14 +167,17 @@ export default async function Home() {
      이 칸이 사전의 결과물 이름(`사업계획서`)을 남겼는지와 무관하게 적어서,
      아무것도 남기지 않은 사람이 그것을 가진 것으로 읽혔다. 남긴 것이 없으면
      사전의 활동 구(해 본 일)가 서고, 둘 다 `studentStateView` 가 정한다 */
+  const enOf = en ? localizer(core, "en") : (x: string) => x;
   const tileSub = (d: string): string => {
     const tile = stateView.tiles.find((x) => x.code === d);
     if (!en) return tile?.sub ?? "";
     /* 영어판: 학생 활동 사전(`student/copy.ts`)이 한국어뿐이라 결과지와 같이
        영어 taxonomy 의 세부 영역에서 다시 읽는다. 남긴 것이 있으면 그 이름이다 */
     if (!tile) return "";
-    return tile.kind === "artifact" && tile.artifact
-      ? tile.artifact : domainSub(core, d, 40, "en");
+    /* 남긴 것의 이름은 그 Core 의 한국어 사전 값이라 결과지와 같은 자리
+       (`localizer`)에서 영어로 읽는다. 영어 판본에 짝이 없으면 세부 영역으로 */
+    const art = tile.kind === "artifact" && tile.artifact ? enOf(tile.artifact) : "";
+    return art && !/[가-힯]/.test(art) ? art : domainSub(core, d, 40, "en");
   };
   const tileIcon = (d: string): IconName => {
     const fam = stateView.tiles.find((t) => t.code === d)?.family ?? null;

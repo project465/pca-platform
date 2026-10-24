@@ -92,7 +92,7 @@ export default async function Experiences() {
       ) : (
         <>
           <p className="cm-listhead">
-            {t("적어 둔 경험")}<em>{t("{n}건#count", { n: rows.length })}</em>
+            {t("적어 둔 경험#list")}<em>{t("{n}건#count", { n: rows.length })}</em>
           </p>
           {/**
             * **줄로 쌓는다**(규격 §5·§10).
@@ -111,7 +111,7 @@ export default async function Experiences() {
                 [t("문제로 잡은 것"), e.problems ?? []],
                 [t("직접 정한 것"), e.decisions],
                 [t("남긴 것"), e.artifacts],
-                [t("비교해 확인한 것"), e.verifications],
+                [t("비교해 확인한 것#exp"), e.verifications],
                 [t("쓰인 곳"), e.used_where ?? []],
               ];
               const any = picks.some(([, v]) => v.length);

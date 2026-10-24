@@ -102,7 +102,7 @@ export default async function Recompute(
     { label: t("다룬 문제"), items: fresh.problems ?? [] },
     { label: t("직접 정한 것"), items: fresh.decisions },
     { label: t("남긴 것"), items: fresh.artifacts },
-    { label: t("비교해 확인한 것"), items: fresh.verifications },
+    { label: t("비교해 확인한 것#exp"), items: fresh.verifications },
     { label: t("쓰인 곳"), items: (fresh.used_where ?? [])
       .filter((u) => !/아직 쓰인 곳이 없다/.test(u) && u !== noUse) },
   ].filter((g) => g.items.length) : [];

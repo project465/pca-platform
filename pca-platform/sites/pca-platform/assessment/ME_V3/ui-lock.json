@@ -3,7 +3,7 @@
  "note": "검사 화면 1차 동결. 결과지 작업 중에는 명백한 버그와 접근성 오류만 고치고, 고쳤으면 `ui-version.ts` 의 판본을 올린 뒤 `FREEZE=update npm run v3:freeze` 로 지문을 다시 적는다",
  "versions": {
   "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V56",
-  "assessment_copy_version": "me-v3-2-assessment-copy.34",
+  "assessment_copy_version": "me-v3-2-assessment-copy.35",
   "assessment_version": "ME_V3_2",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.8",
   "scoring_version": "me-v3-scoring.5"
@@ -25,7 +25,7 @@
   "src/lib/me-v3/runtime/blocks.ts": "acca33d294476c81c75c41bf873dcb3ae522246cf2f9aac3814766b36492afed",
   "src/lib/me-v3/runtime/menus.ts": "c5824a2aeb875f2e333975c6f67b20c3ebfa126e95eae4235a59be8d32708b65",
   "src/lib/me-v3/student/translate.ts": "6680c91acb1a026e79f9cc7c5c0044c09279deb3a4c46ba685237803126622d5",
-  "src/lib/me-v3/runtime/session.ts": "6c7e348b94c9c4b15bf390a4a1edce879e8183dc87a121ddf7a590ccb063087b",
+  "src/lib/me-v3/runtime/session.ts": "55c71f3dcf544d410085f565a1a2c9886e0721f5b42cb4e70d9dff3be517b484",
   "src/lib/me-v3/runtime/routing.ts": "751cd2400f325500c0500a809d2767c41aa1d58847822274a473274ed1266c27",
   "src/lib/me-v3/runtime/progress.ts": "863b883aaa55ad3b9e2411b477f1f02ba2621bcb19b16cb83f2a1efd4e9980d0",
   "src/lib/me-v3/runtime/terms.ts": "3e110c9ee24d09f4b86fe07c87ff82b0f1ced6007c6b422468a1b5f0f5fd66e9",

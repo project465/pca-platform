@@ -186,7 +186,8 @@ export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V56";
 /* copy.30 — 스무 Core 의 산업·직무·조직 카드 설명, 안내 화면 장면 줄, 장면 목록, 용어 받침을 그 전공 말로 채웠고 기계공학 은행 보기 넷을 전기전자·경영과 같은 글로 맞췄다(뜻·차례·값 그대로) */
 /* copy.31 — 화면 글을 언어별 사전으로 뺐다(`copy.ko/en` · `tier-text.en` · `phrases.en`). 한국어 글은 그대로이고 영어 글이 새로 선다 */
 /* copy.32 — 영어 축 이름을 콘텐츠와 같은 말로(Technical decisions · Deliverables · Organizational use) */
-export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.34";
+/** 영어 화면에서 영역 아래 세부 이름을 쉼표로 잇는다(한국어는 가운뎃점 그대로) */
+export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.35";
 
 /*
  * `V19` · `copy.14` 로 올린 까닭. **경험 빈도의 화면 말을 공통으로

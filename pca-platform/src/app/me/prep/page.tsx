@@ -80,7 +80,10 @@ export default async function Prep({
       <CmHead
         title={t("지원서·면접 준비")}
         meta={t("{date} 검사 결과 기준 · 적어 둔 답 {done} / {total}",
-          { date: meta.answeredOn ?? "", done: doneCount, total })}
+          { date: lang === "en" && meta.answeredOn
+            ? new Date(`${meta.answeredOn.slice(0, 10)}T00:00:00`).toLocaleDateString("en-US",
+              { month: "short", day: "numeric", year: "numeric" })
+            : meta.answeredOn ?? "", done: doneCount, total })}
         lead={t("내 결과와 경험에서 지원서 문항의 재료와 예상 면접 질문을 꺼냈습니다. "
           + "글은 직접 쓰고, 저장해 두면 다시 와서 고칠 수 있습니다.")}
       />

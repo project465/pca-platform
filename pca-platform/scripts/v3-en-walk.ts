@@ -180,13 +180,14 @@ async function one(core: string): Promise<void> {
       ok("PDF 에 한글이 없다", !!txt && !hangulAt(txt), hangulAt(txt) ?? `${pages}쪽`);
     }
 
-    /* 로그인한 사람의 첫 화면. 작업공간은 아직 한국어 한 벌이라
-       영어 응시자는 그 결과로 가야 한다(`src/app/me/layout.tsx`) */
+    /* 로그인한 사람의 첫 화면. **작업공간이 영어로 선다**(영어판 2단계b).
+       시험 계정의 표시 이름(`홍길동`)은 사람이 적은 값이라 세지 않는다 */
     await p.goto(`${BASE}/me`, { waitUntil: "networkidle" });
-    const me = await bodyText(p);
+    const me = (await bodyText(p)).replace(/홍길동|홍/g, "");
     const mePath = new URL(p.url()).pathname;
-    ok("내 화면이 영어 응시자를 그 결과로 보낸다",
-      mePath === `/v3/${id}/result` && !hangulAt(me), `${mePath} ${hangulAt(me) ?? ""}`);
+    ok("내 CareerMatri 가 영어로 선다", mePath === "/me" && !hangulAt(me),
+      `${mePath} ${hangulAt(me) ?? ""}`);
+    await shot(p, `${core}-me`);
 
     ok("브라우저 오류와 500 이 없다", errs.length === 0, errs.slice(0, 3).join(" | "));
   } finally {

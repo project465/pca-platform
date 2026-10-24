@@ -212,7 +212,10 @@ export function domainSub(core: string, td: string, budget = 11, lang: V3Lang = 
     /* **사이띄개를 두지 않는다**(R27 §B). 레퍼런스의 세부 줄은
        `모델링·해석·설계` 이고 ` · ` 가 아니다. 사이를 띄우면 같은 자리에
        두 글자가 더 들어가 **한 줄에 들어가던 줄이 넘친다** */
-    const next = `${out}·${a}`;
+    /* 영어는 쉼표로 잇고 뒤 항목의 첫 글자를 낮춘다(약어는 그대로).
+       `vibration·Noise` 처럼 한국어 이음표가 영어 사이에 서면 오타로 읽힌다 */
+    const next = lang === "ko" ? `${out}·${a}`
+      : `${out}, ${/^[A-Z][a-z]/.test(a) ? a[0].toLowerCase() + a.slice(1) : a}`;
     if (next.length > budget) break;
     out = next;
   }
