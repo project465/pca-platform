@@ -49,7 +49,7 @@ export function CmFind({ items, lang = "ko" }: { items: FindItem[]; lang?: "ko" 
       <input
         type="search"
         value={q}
-        placeholder={en ? "Find a menu or technical area" : "메뉴·기술영역 찾기"}
+        placeholder={en ? "Search menus and areas" : "메뉴·기술영역 찾기"}
         aria-label={en ? "Search your workspace" : "작업공간에서 찾기"}
         aria-expanded={on && key.length > 0}
         aria-controls={listId}
