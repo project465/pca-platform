@@ -424,7 +424,7 @@ function packView(
  */
 export type ResultInput = {
   packs?: { industries: string[]; roles: string[] };
-  translation?: { item_id: string; choice: string | null }[];
+  translation?: { item_id: string; choice: string | null; note?: string | null }[];
 };
 
 export function buildResult(
@@ -554,6 +554,7 @@ export function buildResult(
           steps: s.context.translation_steps.map((id) => ({
             item_id: id,
             choice: input.translation?.find((t) => t.item_id === id)?.choice ?? null,
+            note: input.translation?.find((t) => t.item_id === id)?.note ?? null,
           })),
           domains: s.focus,
           xfield: s.context.xfield,

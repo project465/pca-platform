@@ -7,7 +7,8 @@
  */
 
 /** 결과 모델의 구조. 절이 늘거나 칸이 바뀌면 올린다 */
-export const RESULT_MODEL_VERSION = "me-v3-result-model.6";
+/* model.7 — 번역 단계마다 학생이 덧붙인 한 줄(`translation.steps[].note`)을 굳힌다 */
+export const RESULT_MODEL_VERSION = "me-v3-result-model.7";
 
 /** 결과지에 나가는 한국어. 문장만 바뀌면 이것만 올린다 */
 /* copy.19 — `EXPLORE_BROADLY` 가 어디에서 해 보면 되는지를 적고(§16),

@@ -239,7 +239,8 @@ export function translationPage(x: Inputs, d: X): Page | null {
   if (!t || !t.steps.length || !x.m.limits.allows_translation) return null;
   const steps = t.steps.filter((s) => TRANS_STEP_KO[s.item_id]);
   if (!steps.length) return null;
-  const answered = steps.some((s) => s.choice);
+  /* 보기를 안 고르고 한 줄만 적은 단계도 답한 것으로 센다(적어 주신 말을 싣는다) */
+  const answered = steps.some((s) => s.choice || s.note);
   /* 답하지 않은 열 단계를 빈 표로 내지 않는다. 쓰는 칸만 남은 쪽은 빈칸으로 읽힌다 */
   if (!answered) return null;
   const ch = (id: string) => steps.find((s) => s.item_id === id)?.choice ?? null;
@@ -257,7 +258,7 @@ export function translationPage(x: Inputs, d: X): Page | null {
     body: (answered
       ? T("검사에서 고른 경험 하나를 열 단계로 풀어 봤습니다", "검사 마지막 묶음에서 경험 하나를 골라 문제부터 쓰임새까지 차례로 답하셨습니다. 고르신 보기를 그대로 옮겼으니 지원서 문단의 뼈대로 쓰면 됩니다.")
       : T("경험 하나를 열 단계로 풀어 써 보세요", "검사에서 자세히 본 영역의 경험 하나를 떠올려 아래 질문에 한 줄씩 답해 보세요. 오른쪽에 무엇을 적으면 되는지 짧게 적어 두었습니다. 답이 모이면 그대로 지원서 문단의 뼈대가 됩니다.")) +
-      `<table class="tb tb-s${answered ? "" : " trs"}"><tbody>${steps.map((s) => `<tr><th class="w30">${E(TRANS_STEP_KO[s.item_id])}</th><td>${s.choice ? E(s.choice) : `<span class="mut">${E(TRANS_HINT[s.item_id] ?? "")}</span>`}</td></tr>`).join("")}</tbody></table>` +
+      `<table class="tb tb-s${answered ? "" : " trs"}"><tbody>${steps.map((s) => `<tr><th class="w30">${E(TRANS_STEP_KO[s.item_id])}</th><td>${s.choice ? E(s.choice) : s.note ? "" : `<span class="mut">${E(TRANS_HINT[s.item_id] ?? "")}</span>`}${s.note ? `<span class="tr-note">“${E(s.note)}”</span>` : ""}</td></tr>`).join("")}</tbody></table>` +
       (t.domains.length ? `<p class="sm">이 경험이 닿은 영역: ${E(t.domains.map(d.name).join(" · "))}</p>` : "") +
       (draft.length ? note("이 열 줄로 문단을 짜는 순서", ul(draft.map(E))) : "") +
       band("쓰는 법", "‘무엇을 직접 정했나’에 대한 답은 면접에서 30초 안에 말할 수 있게 소리 내어 연습해 두세요."),

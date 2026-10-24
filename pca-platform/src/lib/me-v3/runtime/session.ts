@@ -1281,7 +1281,7 @@ export async function submit(a: V3Attempt): Promise<{ snapshot: Snapshot; id: st
         industries: industryChoices(a.core_code).map((x) => x.code),
         roles: roleChoices(a.core_code).map((x) => x.code),
       },
-      translation: translationChoices(a.core_code, sub),
+      translation: translationChoices(a.core_code, sub, await translationNotes(a.id, c)),
     });
     /**
      * **응시마다 판본 열두 가지를 남긴다.**
@@ -1380,20 +1380,42 @@ export async function latestSnapshot(attemptId: string): Promise<Snapshot | null
  * 그 사람의 말을 그대로 돌려주려면 여기서 맞춰 붙인다.
  */
 function translationChoices(
-  core: string, sub: Submission,
-): { item_id: string; choice: string | null }[] {
+  core: string, sub: Submission, notes: Record<string, string> = {},
+): { item_id: string; choice: string | null; note: string | null }[] {
   const ctx = { core, tiedPair: [], domains: [], industries: [], roles: [], orgs: [] };
-  const out: { item_id: string; choice: string | null }[] = [];
+  const out: { item_id: string; choice: string | null; note: string | null }[] = [];
   for (const it of content(core).bank.items) {
     if (it.module !== "TRANS-10") continue;
     const a = sub.answers[it.item_id];
-    if (!a || a.kind !== "choice") continue;
+    const note = notes[it.item_id] ?? null;
+    /* 보기는 안 고르고 한 줄만 적은 단계도 싣는다. 적어 주신 말이 어디로도
+       가지 않으면 그 칸은 받고 쓰지 않는 칸이다(2026-10-24 사업주 결정) */
+    if ((!a || a.kind !== "choice") && !note) continue;
     let label: string | null = null;
-    try {
-      const c = controlOf(it as never, ctx);
-      if (c.kind === "choice") label = c.options.find((o) => o.value === a.value)?.label ?? null;
-    } catch { label = null; }
-    out.push({ item_id: it.item_id, choice: label });
+    if (a && a.kind === "choice") {
+      try {
+        const c = controlOf(it as never, ctx);
+        if (c.kind === "choice") label = c.options.find((o) => o.value === a.value)?.label ?? null;
+      } catch { label = null; }
+    }
+    out.push({ item_id: it.item_id, choice: label, note });
+  }
+  return out;
+}
+
+/**
+ * 번역 단계에 덧붙인 한 줄. **결과 모델에 같이 굳힌다**: 제출한 뒤 화면에서
+ * 고쳐도 그때 낸 결과지는 바뀌지 않는다. 판정에는 들어가지 않는다.
+ * 줄바꿈은 한 칸으로, 길이는 200자에서 끊는다(종이 한 칸에 들어가는 양).
+ */
+async function translationNotes(attemptId: string, c: Reader): Promise<Record<string, string>> {
+  const rows = await rowsOf<{ item_id: string; note_text: string | null }>(c,
+    `SELECT item_id, note_text FROM v3_responses
+      WHERE attempt_id = $1 AND note_text IS NOT NULL`, [attemptId]);
+  const out: Record<string, string> = {};
+  for (const r of rows) {
+    const t = (r.note_text ?? "").replace(/\s+/g, " ").trim().slice(0, 200);
+    if (t) out[r.item_id] = t;
   }
   return out;
 }

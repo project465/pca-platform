@@ -226,7 +226,11 @@ export type PackView = {
 };
 
 export type TranslationView = {
-  steps: { item_id: string; choice: string | null }[];
+  /**
+   * `note` 는 그 단계에 학생이 덧붙인 한 줄이다(제출 때 굳힌다). 이 칸이 생기기
+   * 전에 낸 결과에는 없다: 읽는 쪽은 없으면 아무것도 세우지 않는다
+   */
+  steps: { item_id: string; choice: string | null; note?: string | null }[];
   /** 번역에서 드러난 영역 */
   domains: string[];
   /**

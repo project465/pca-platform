@@ -4,7 +4,7 @@
  "versions": {
   "result_ui_version": "ME_V3_RESULT_UI_V85",
   "result_copy_version": "me-v3-result-copy.73",
-  "result_model_version": "me-v3-result-model.6",
+  "result_model_version": "me-v3-result-model.7",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.8",
   "scoring_version": "me-v3-scoring.5"
  },
@@ -31,7 +31,7 @@
   "src/lib/me-v3/result/text.ko.ts": "82932069908da96dc6ccc33439483b4d925d3a340befc3bea555e422b3f3ac6a",
   "src/lib/me-v3/result/say.ts": "1ca895cbeb84b08c5579fc3fcaaf4f8c89b766e131f277bcd92bba74abcebc95",
   "src/lib/me-v3/result/josa.ts": "152cd30c2af136172618c14fa6fb4175b97cf16350db631e3e2e6c72fd7dd4af",
-  "src/lib/me-v3/result/version.ts": "1d7e053ed675a2cd1bcdc467e79042acf2875587d22d2628e72e250a3ffb66cf",
+  "src/lib/me-v3/result/version.ts": "9510ea3230b7efc64dd60ebee92a94d127bf1965f9fe99613ebfbaee74b2d8b7",
   "src/lib/me-v3/result/tile-sub.ts": "8e51d0087d789341b20679e15503c7d31d62b36c943998cea70d992539c2d785",
   "src/lib/me-v3/student/copy.ts": "3c5f96455be8222018a30f1d5423aee1608e436ec11c49d681b208956ef60a1a",
   "src/lib/me-v3/student/icon.ts": "65836ae7a141a7dcdf844e5d5b4bcdbcc558dad0a3890a4a67384a3b17c7aea2",
