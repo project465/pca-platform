@@ -1,0 +1,238 @@
+{
+ "core": "EE_CORE_V1",
+ "core_name": "Electrical and Electronic Engineering",
+ "examples": {
+  "scene": [
+   "Designing and building a circuit, then using measurements to find what to fix",
+   "Looking at the supply and the load to set ratings and protection conditions",
+   "Narrowing down why something does not work to the circuit, the power supply or the code"
+  ],
+  "artifacts": [
+   "Schematics and parts lists",
+   "Measurement records",
+   "Test result tables",
+   "Protection settings calculations"
+  ],
+  "evidence": [
+   "Building a circuit in a lab class, measuring voltage and current and comparing them with calculations",
+   "Calculating and setting component values in a team project and noting why those values",
+   "Changing the supply or load in a capstone project and noting where the behavior changed",
+   "Calibrating test equipment in a lab and writing down each measurement condition",
+   "Connecting sensors and actuators for a competition, running them and narrowing down what failed",
+   "Making a schematic and parts list in a club and taking it all the way to a finished build"
+  ]
+ },
+ "examples_note": "Default examples are those of SPEC_EE_GENERAL (EE_CORE_V1 has no core-level examples in major-cores.json). Per-specialization text is under `specializations`, keyed by the same codes as major-cores.json.",
+ "specializations": {
+  "SPEC_EE_POWER": {
+   "name": "Electrical Power",
+   "examples": {
+    "scene": [
+     "Designing the power distribution equipment for a building or factory",
+     "Sizing motors and their drives",
+     "Connecting generation and storage equipment to the grid"
+    ],
+    "artifacts": [
+     "Single-line diagrams",
+     "Sizing calculations",
+     "Protection settings tables",
+     "Test reports"
+    ],
+    "evidence": [
+     "Running a motor or transformer in a lab class and recording the voltage and current",
+     "Adding up a building's loads in a team project and choosing breakers and wire sizes",
+     "Connecting solar panels or a battery in a capstone project and logging output over a day",
+     "Calculating protection settings in a lab, submitting them for review and noting why those values",
+     "Tracing and recording the cause of an outage or overload during an internship",
+     "Building a power supply in a club and checking it against safety standards item by item"
+    ]
+   }
+  },
+  "SPEC_EE_ELEC": {
+   "name": "Electronics and Circuits",
+   "examples": {
+    "scene": [
+     "Designing amplifier and filter circuits that read sensor signals",
+     "Setting the logic architecture and timing constraints and bringing up a board",
+     "Tracing spread in device characteristics back to process conditions"
+    ],
+    "artifacts": [
+     "Schematics",
+     "Component selection tables",
+     "Design calculations",
+     "Measurement reports"
+    ],
+    "evidence": [
+     "Designing a circuit for a class project, building it on a breadboard or PCB and measuring the waveforms",
+     "Calculating and setting resistor and capacitor values in a team project and noting the reasons",
+     "Comparing simulated waveforms with real measurements in a capstone project and noting the differences",
+     "Finding where noise was getting in during a lab and changing the grounding or layout",
+     "Building and running a circuit that receives and processes sensor signals for a competition",
+     "Making board drawings and a parts list in a club and taking them all the way to ordering"
+    ]
+   }
+  },
+  "SPEC_EE_COMM": {
+   "name": "Information and Communications",
+   "examples": {
+    "scene": [
+     "Setting link conditions from the usable power and distance",
+     "Designing processing that extracts usable values from a received signal",
+     "Setting antenna structure and matching and confirming them by measurement"
+    ],
+    "artifacts": [
+     "Link budget documents",
+     "Protocol settings tables",
+     "Processing code and coefficients",
+     "Pattern measurement records"
+    ],
+    "evidence": [
+     "Connecting two devices by wire or wirelessly in a class project and defining the message format",
+     "Measuring the distance at which the signal dropped in a team project and putting it in a table",
+     "Catching where packets were lost in a capstone project and narrowing down where it happened",
+     "Changing antennas or lines in a lab and recording received signal strength at each position",
+     "Putting several devices on one network for a competition and setting the order of exchanges",
+     "Keeping communication test results in a table in a club and checking them against criteria"
+    ]
+   }
+  },
+  "SPEC_EE_BATTERY": {
+   "name": "Smart Batteries",
+   "examples": {
+    "scene": [
+     "Setting upper limits on charge and discharge current and voltage as conditions",
+     "Setting where the protection circuit cuts off and the conditions for restoring it",
+     "Measuring temperature and current and checking them against the estimated lifetime"
+    ],
+    "artifacts": [
+     "Charge and discharge test records",
+     "Protection trip condition tables",
+     "Temperature and current measurement records",
+     "Estimated versus measured comparisons"
+    ],
+    "evidence": [
+     "Charging and discharging a cell repeatedly in a lab class and recording how its capacity dropped",
+     "Measuring a battery pack's voltage and temperature in a team project and setting a safe operating range",
+     "Changing the charge current in a capstone project and comparing how temperature and charge time changed",
+     "Adding a protection circuit in a lab and checking that it stopped overcharge and overdischarge",
+     "Calculating the run time of a battery-powered device for a competition and checking it against reality",
+     "Keeping a full set of battery test records in a club and writing down the criteria"
+    ]
+   }
+  },
+  "SPEC_EE_ROBOT": {
+   "name": "Drones and Robotics",
+   "examples": {
+    "scene": [
+     "Setting the processing period and how often sensors are read",
+     "Splitting sensor readings into the bands to keep and the bands to discard",
+     "Setting the conditions for stopping when motion goes wrong"
+    ],
+    "artifacts": [
+     "Control parameter tables and control block diagrams",
+     "Sensor calibration records",
+     "Driving and flight test logs",
+     "Lists of failure and safety conditions"
+    ],
+    "evidence": [
+     "Choosing and fitting actuators and sensors in a class project and setting the range of motion",
+     "Flying a drone or running a robot in a team project and fixing where it shook the most",
+     "Changing control gains in a capstone project and recording how the response changed",
+     "Finding where power or communication dropped in a lab and changing the wiring or layout",
+     "Planning the motion sequence to complete a competition task and noting where it failed",
+     "Keeping test flight or driving logs in a club and setting safety criteria"
+    ]
+   }
+  },
+  "SPEC_EE_GENERAL": {
+   "name": "General Electrical and Electronic Engineering",
+   "examples": {
+    "scene": [
+     "Designing and building a circuit, then using measurements to find what to fix",
+     "Looking at the supply and the load to set ratings and protection conditions",
+     "Narrowing down why something does not work to the circuit, the power supply or the code"
+    ],
+    "artifacts": [
+     "Schematics and parts lists",
+     "Measurement records",
+     "Test result tables",
+     "Protection settings calculations"
+    ],
+    "evidence": [
+     "Building a circuit in a lab class, measuring voltage and current and comparing them with calculations",
+     "Calculating and setting component values in a team project and noting why those values",
+     "Changing the supply or load in a capstone project and noting where the behavior changed",
+     "Calibrating test equipment in a lab and writing down each measurement condition",
+     "Connecting sensors and actuators for a competition, running them and narrowing down what failed",
+     "Making a schematic and parts list in a club and taking it all the way to a finished build"
+    ]
+   }
+  },
+  "SPEC_EE_SEMI": {
+   "name": "Semiconductors",
+   "examples": {
+    "scene": [
+     "Deciding which deposition or etch conditions to vary and which to hold fixed",
+     "Measuring devices and seeing how far their characteristics stray from design values",
+     "Deciding which process step to suspect first on a wafer with defects"
+    ],
+    "artifacts": [
+     "Process recipe sheets",
+     "Device characterization records",
+     "Measurement comparison tables by condition",
+     "Defect root-cause tracking records"
+    ],
+    "evidence": [
+     "Changing deposition time or temperature in a process lab and recording how film thickness changed",
+     "Measuring the current-voltage characteristics of a diode or transistor in a lab class and comparing them with textbook values",
+     "Setting out the process sequence in a team project and deciding the values to check at each step",
+     "Designing a device in a capstone project and noting the differences between simulation and measurement",
+     "Watching how cleanroom equipment was run during an internship or site visit and taking notes",
+     "Collecting material on the semiconductor process flow for a club or competition and summarizing it on one page"
+    ]
+   }
+  }
+ },
+ "terms": {
+  "이득": {
+   "term": "gain",
+   "gloss": "How many times bigger a signal comes out than it went in"
+  },
+  "커패시터": {
+   "term": "capacitor",
+   "gloss": "A component that briefly stores electric charge"
+  },
+  "오류율": {
+   "term": "error rate",
+   "gloss": "The share of transmitted signals that arrive wrong"
+  },
+  "정합": {
+   "term": "matching",
+   "gloss": "Adjusting the sending and receiving sides so their conditions fit each other"
+  },
+  "누설": {
+   "term": "leakage",
+   "gloss": "Current that escapes to where it should not flow"
+  },
+  "단선도": {
+   "term": "single-line diagram",
+   "gloss": "A one-page drawing of where power comes from and where it goes"
+  },
+  "불확도": {
+   "term": "uncertainty",
+   "gloss": "How much a measured value could be off"
+  },
+  "절연": {
+   "term": "insulation",
+   "gloss": "Keeping electricity from passing where it should not"
+  }
+ },
+ "scenes": [
+  "lab courses",
+  "team projects",
+  "capstone projects",
+  "electronics clubs",
+  "competition prep",
+  "internships"
+ ]
+}

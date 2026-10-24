@@ -1,0 +1,1982 @@
+{
+ "schema_version": "ee-industry-packs.1",
+ "core": "EE_CORE_V1",
+ "note": "Holds industry context, judgment dimensions, extra questions, evidence interpretation and job links. An industry does not change scores: `axis_emphasis` lists the axes that industry looks at more and is not part of the axis-level calculation. `scene` is a short introduction shown before Core screening and produces no score",
+ "caps": {
+  "industry_items_max": 10,
+  "role_items_max": 7,
+  "deep_industry_max": 1,
+  "deep_role_max": 2,
+  "interest_pick_max": 2
+ },
+ "reading_rule": "An industry pack is not an industry trivia quiz. What it looks at is whether existing electrical and electronic experience can be recognized in, and connected to, that industry's problems. That is why each item has a `gloss` restating the judgment in general EE terms, and the test screen shows that line with the item. Not knowing an industry's vocabulary is never recorded as a poor fit",
+ "exploration": {
+  "browse": "all",
+  "deep_per_attempt": 1,
+  "add_later": true,
+  "subscription_gate": false,
+  "note": "All eight industries can be explored in the results. At the start, the student picks up to two industries of interest, reads the chosen industries' scenes before Core screening, and in PRO one of them is asked in depth. Industries not chosen are compared lightly using the Core results. Industry packs are not put behind a subscription"
+ },
+ "packs": [
+  {
+   "code": "INDUSTRY_SEMI_V1",
+   "version": 1,
+   "name_ko": "Semiconductor and Display",
+   "name_en": "Semiconductor and Display",
+   "core": "EE_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "Process equipment needs small signals read out through noise",
+    "Any spread in device characteristics shows up straight away in yield, so measurements are repeated",
+    "High-voltage power supplies and precision measurement sit together inside one tool",
+    "Equipment downtime is written into contracts with customers"
+   ],
+   "scene": "In semiconductor and display process equipment, EE graduates work on small-signal measurement, spread in device characteristics, high-voltage power supplies and equipment control. Setting circuit conditions and confirming them by measurement carries straight over.",
+   "judgement_dimensions": [
+    {
+     "name": "Separates small signals from noise",
+     "axis": "J3",
+     "domain": "TD01",
+     "why": "Many of the values to be read are smaller than the noise"
+    },
+    {
+     "name": "Judges measurement repeatability against yield criteria",
+     "axis": "J6",
+     "domain": "TD12",
+     "why": "A value that was right once is not evidence"
+    },
+    {
+     "name": "Traces spread in device characteristics back to process conditions",
+     "axis": "J6",
+     "domain": "TD07",
+     "why": "The width of the distribution is the yield"
+    },
+    {
+     "name": "Varies process parameters to find the window that works",
+     "axis": "J3",
+     "domain": "TD07",
+     "why": "The width of the working window makes the yield"
+    },
+    {
+     "name": "Treats high-voltage insulation and heat removal as design conditions",
+     "axis": "J3",
+     "domain": "TD08",
+     "why": "Thousands of volts sit inside the same tool"
+    },
+    {
+     "name": "Decides the conditions under which the equipment stops",
+     "axis": "J3",
+     "domain": "TD11",
+     "why": "A wrong stop scraps a whole process batch"
+    },
+    {
+     "name": "Raises resolution through signal processing",
+     "axis": "J4",
+     "domain": "TD04",
+     "why": "Equipment performance depends on measurement resolution"
+    },
+    {
+     "name": "Cuts the paths by which supply noise reaches the measurement",
+     "axis": "J7",
+     "domain": "TD12",
+     "why": "The cause is often outside the instrument"
+    },
+    {
+     "name": "Manages equipment downtime in numbers",
+     "axis": "J8",
+     "domain": "TD09",
+     "why": "Uptime is part of the delivery terms"
+    },
+    {
+     "name": "Matches digital timing to the equipment cycle",
+     "axis": "J3",
+     "domain": "TD02",
+     "why": "The process cycle and the control cycle have to mesh"
+    },
+    {
+     "name": "Judges facility power capacity and protection by equipment criteria",
+     "axis": "J2",
+     "domain": "TD09",
+     "why": "The inrush current of a single tool affects the whole fab"
+    },
+    {
+     "name": "Narrows down causes so the same failure does not happen again",
+     "axis": "J7",
+     "domain": "TD03",
+     "why": "The same failure twice becomes a contract issue"
+    }
+   ],
+   "axis_emphasis": {
+    "TD01": [
+     "J3"
+    ],
+    "TD12": [
+     "J6",
+     "J7"
+    ],
+    "TD07": [
+     "J6",
+     "J3"
+    ],
+    "TD08": [
+     "J3"
+    ],
+    "TD11": [
+     "J3"
+    ],
+    "TD04": [
+     "J4"
+    ],
+    "TD09": [
+     "J8",
+     "J2"
+    ],
+    "TD02": [
+     "J3"
+    ],
+    "TD03": [
+     "J7"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_SEMI_V1_I1",
+     "axis": "J3",
+     "domain": "TD01",
+     "ask": "Have you set amplifier and filter conditions to read a small signal buried in noise?",
+     "gloss": "Changing the gain or filter values to read a very small sensor signal"
+    },
+    {
+     "id": "INDUSTRY_SEMI_V1_I2",
+     "axis": "J6",
+     "domain": "TD12",
+     "ask": "Have you repeated the same measurement many times and measured the spread?",
+     "gloss": "Measuring the same value several times to see how much it spreads"
+    },
+    {
+     "id": "INDUSTRY_SEMI_V1_I3",
+     "axis": "J6",
+     "domain": "TD07",
+     "ask": "Have you matched spread in device characteristics to the conditions they were made under?",
+     "gloss": "Looking for the reason in how samples were made when their values differed"
+    },
+    {
+     "id": "INDUSTRY_SEMI_V1_I4",
+     "axis": "J3",
+     "domain": "TD07",
+     "ask": "Have you varied parameter values to find the range that works?",
+     "gloss": "Changing conditions a little at a time to find the range where things work properly"
+    },
+    {
+     "id": "INDUSTRY_SEMI_V1_I5",
+     "axis": "J3",
+     "domain": "TD08",
+     "ask": "Have you set insulation distances and heat removal in a circuit handling high voltage?",
+     "gloss": "Deciding how to prevent electric shock and overheating in a circuit with high voltage on it"
+    },
+    {
+     "id": "INDUSTRY_SEMI_V1_I6",
+     "axis": "J3",
+     "domain": "TD11",
+     "ask": "Have you set the conditions for the equipment to stop and built them into the control?",
+     "gloss": "Setting the threshold at which an emergency stop or protection kicks in"
+    },
+    {
+     "id": "INDUSTRY_SEMI_V1_I7",
+     "axis": "J4",
+     "domain": "TD04",
+     "ask": "Have you raised the resolution you can read by adding signal processing?",
+     "gloss": "Averaging or filtering so that small differences become visible"
+    },
+    {
+     "id": "INDUSTRY_SEMI_V1_I8",
+     "axis": "J7",
+     "domain": "TD12",
+     "ask": "Have you narrowed down how noise coming from the power supply disturbed a measurement?",
+     "gloss": "A case where the measurement was unstable because of the power supply, not the instrument"
+    },
+    {
+     "id": "INDUSTRY_SEMI_V1_I9",
+     "axis": "J8",
+     "domain": "TD09",
+     "ask": "Have you recorded equipment downtime in numbers and managed it?",
+     "gloss": "Recording how long and how often lab equipment was down"
+    },
+    {
+     "id": "INDUSTRY_SEMI_V1_I10",
+     "axis": "J3",
+     "domain": "TD02",
+     "ask": "Have you set digital timing constraints to match an equipment cycle?",
+     "gloss": "Setting the order and delays of signals to keep operating cycles in step"
+    }
+   ],
+   "gap_language": {
+    "J3": "In this industry, technical decisions show up as setting circuit conditions to read small signals and finding the process window that works",
+    "J6": "In this industry, comparison and verification means checking that the same value comes back on repetition, not that a value was right once",
+    "J7": "In this industry, failure and correction means widening the search for why a measurement was unstable beyond the instrument itself",
+    "J8": "In this industry, organizational use shows up as equipment downtime and uptime"
+   },
+   "result_line": "Semiconductor and display equipment deals with small-signal measurement, spread in device characteristics and high-voltage power supplies all at once. Experience setting circuit conditions, changing process conditions and repeating measurements is the closest way into this industry.",
+   "evidence_reading": [
+    {
+     "same": "Amplifier circuit design",
+     "reads_as": "Evidence of measurement circuits that reach down to the noise floor"
+    },
+    {
+     "same": "Device characterization",
+     "reads_as": "Distribution assessment that feeds directly into yield"
+    },
+    {
+     "same": "Experiments run while varying conditions",
+     "reads_as": "A judgment that sets the working process window"
+    },
+    {
+     "same": "Equipment inspection records",
+     "reads_as": "The basis for guaranteeing uptime"
+    }
+   ],
+   "job_aliases": [
+    "Semiconductor equipment control development",
+    "Measurement circuit design",
+    "Device characterization",
+    "Power supply circuit design",
+    "Facility electrical engineering"
+   ],
+   "org_mix": {
+    "OC2": "Common",
+    "OC1": "Present",
+    "OC3": "Present",
+    "OC4": "Rare",
+    "OC5": "Rare",
+    "OC6": "Rare",
+    "OC7": "Present"
+   },
+   "vocabulary": [
+    "Wafer",
+    "Process equipment",
+    "Yield",
+    "Leakage current",
+    "Uptime",
+    "Cleanroom",
+    "Distribution of device characteristics"
+   ]
+  },
+  {
+   "code": "INDUSTRY_AUTOEV_V1",
+   "version": 1,
+   "name_ko": "Automotive Electronics and Electrification",
+   "name_en": "Automotive Electronics and Electrification",
+   "core": "EE_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "Every electronic unit in a car shares the same power supply and communication lines",
+    "A failure can become a safety problem, so behavior on failure is designed too",
+    "Converters handling traction power and small-signal circuits sit together in one car",
+    "High volumes make unit price and process variation design conditions"
+   ],
+   "scene": "In automotive electronics and electrification, EE graduates work on in-vehicle networks, traction power conversion, motor control and EMC. Setting circuit and control conditions and confirming them under vehicle conditions carries straight over.",
+   "judgement_dimensions": [
+    {
+     "name": "Looks at efficiency and heat together in traction power conversion",
+     "axis": "J3",
+     "domain": "TD08",
+     "why": "Driving range and cooling are decided in the same design"
+    },
+    {
+     "name": "Translates motor control response into how the car feels to drive",
+     "axis": "J3",
+     "domain": "TD11",
+     "why": "Controller gains show up as driving feel"
+    },
+    {
+     "name": "Treats latency and loss on the vehicle network as conditions",
+     "axis": "J2",
+     "domain": "TD05",
+     "why": "Messages must arrive within the control period"
+    },
+    {
+     "name": "Considers EMC at the design stage",
+     "axis": "J6",
+     "domain": "TD12",
+     "why": "Units inside a car interfere with each other"
+    },
+    {
+     "name": "Decides in advance how the system behaves on failure",
+     "axis": "J3",
+     "domain": "TD03",
+     "why": "How it stops is part of the safety requirements"
+    },
+    {
+     "name": "Makes the design withstand supply variation and inrush current",
+     "axis": "J7",
+     "domain": "TD01",
+     "why": "Starting and load changes shake the supply"
+    },
+    {
+     "name": "Reads sensor signals through vibration",
+     "axis": "J4",
+     "domain": "TD04",
+     "why": "Road surface and vibration get mixed into signals"
+    },
+    {
+     "name": "Absorbs production spread within design margins",
+     "axis": "J6",
+     "domain": "TD07",
+     "why": "The same circuit ships in hundreds of thousands of vehicles"
+    },
+    {
+     "name": "Works across the full battery voltage range",
+     "axis": "J2",
+     "domain": "TD10",
+     "why": "Voltage changes a lot with state of charge"
+    },
+    {
+     "name": "Keeps execution periods inside the controller on time",
+     "axis": "J3",
+     "domain": "TD02",
+     "why": "Missing a control period makes the behavior unstable"
+    },
+    {
+     "name": "Sets insulation and protection for the high-voltage system",
+     "axis": "J3",
+     "domain": "TD09",
+     "why": "Hundreds of volts are close to people"
+    },
+    {
+     "name": "Traces failures returned from the field back to the design",
+     "axis": "J7",
+     "domain": "TD11",
+     "why": "Recall costs change design decisions"
+    }
+   ],
+   "axis_emphasis": {
+    "TD08": [
+     "J3"
+    ],
+    "TD11": [
+     "J3",
+     "J7"
+    ],
+    "TD05": [
+     "J2"
+    ],
+    "TD12": [
+     "J6"
+    ],
+    "TD03": [
+     "J3"
+    ],
+    "TD01": [
+     "J7"
+    ],
+    "TD04": [
+     "J4"
+    ],
+    "TD07": [
+     "J6"
+    ],
+    "TD10": [
+     "J2"
+    ],
+    "TD02": [
+     "J3"
+    ],
+    "TD09": [
+     "J3"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_AUTOEV_V1_I1",
+     "axis": "J3",
+     "domain": "TD08",
+     "ask": "Have you set conditions for a converter circuit while weighing efficiency and heat together?",
+     "gloss": "Setting conditions in a power conversion circuit by weighing losses and temperature together"
+    },
+    {
+     "id": "INDUSTRY_AUTOEV_V1_I2",
+     "axis": "J3",
+     "domain": "TD11",
+     "ask": "Have you tuned control gains yourself by watching how a moving system responded?",
+     "gloss": "Adjusting control values while running a motor until the response was right"
+    },
+    {
+     "id": "INDUSTRY_AUTOEV_V1_I3",
+     "axis": "J2",
+     "domain": "TD05",
+     "ask": "Have you set up communication around the condition that messages must arrive within the control period?",
+     "gloss": "Setting communication conditions so data arrives within the control period"
+    },
+    {
+     "id": "INDUSTRY_AUTOEV_V1_I4",
+     "axis": "J6",
+     "domain": "TD12",
+     "ask": "Have you checked by measurement whether units interfere with each other?",
+     "gloss": "Measuring whether units interfered with each other when switched on together"
+    },
+    {
+     "id": "INDUSTRY_AUTOEV_V1_I5",
+     "axis": "J3",
+     "domain": "TD03",
+     "ask": "Have you decided in advance how to stop on a failure and put it in the code?",
+     "gloss": "Building into the code in advance how a device should stop when something goes wrong"
+    },
+    {
+     "id": "INDUSTRY_AUTOEV_V1_I6",
+     "axis": "J7",
+     "domain": "TD01",
+     "ask": "Have you narrowed down why a circuit misbehaved when the supply fluctuated badly?",
+     "gloss": "Finding the cause of a malfunction triggered by an unstable supply"
+    },
+    {
+     "id": "INDUSTRY_AUTOEV_V1_I7",
+     "axis": "J4",
+     "domain": "TD04",
+     "ask": "Have you extracted usable values from a sensor signal mixed with vibration?",
+     "gloss": "Picking out only the needed values from sensor readings mixed with vibration or noise"
+    },
+    {
+     "id": "INDUSTRY_AUTOEV_V1_I8",
+     "axis": "J6",
+     "domain": "TD07",
+     "ask": "Have you checked whether component spread was covered by design margins?",
+     "gloss": "Allowing margin in advance for parts whose values differ slightly"
+    },
+    {
+     "id": "INDUSTRY_AUTOEV_V1_I9",
+     "axis": "J2",
+     "domain": "TD10",
+     "ask": "Have you written down conditions so the circuit works across a wide voltage range?",
+     "gloss": "Writing down conditions so the circuit keeps working as the input voltage rises and falls"
+    },
+    {
+     "id": "INDUSTRY_AUTOEV_V1_I10",
+     "axis": "J3",
+     "domain": "TD09",
+     "ask": "Have you set insulation and protection for high voltage that people could touch?",
+     "gloss": "Adding covers or protective devices to high-voltage parts that people could touch"
+    }
+   ],
+   "gap_language": {
+    "J2": "In this industry, requirements interpretation shows up as receiving control periods, voltage ranges and safety levels as numbers",
+    "J3": "In this industry, technical decisions show up as balancing efficiency, heat and response in one design",
+    "J6": "In this industry, comparison and verification means measuring under vehicle conditions that units do not interfere with each other",
+    "J7": "In this industry, failure and correction means tracing failures returned from the field back to the design"
+   },
+   "result_line": "Automotive electronics and electrification deals with traction power conversion, motor control, in-vehicle networks and EMC together. Experience weighing efficiency against heat, tuning a response and measuring interference is the closest way into this industry.",
+   "evidence_reading": [
+    {
+     "same": "Power converter design",
+     "reads_as": "Evidence that decides driving range and cooling"
+    },
+    {
+     "same": "Motor control lab work",
+     "reads_as": "Response design that carries through to driving feel"
+    },
+    {
+     "same": "EMC measurement",
+     "reads_as": "Assessment of interference between units in a vehicle"
+    },
+    {
+     "same": "Failure mode analysis",
+     "reads_as": "Design evidence that takes on safety requirements"
+    }
+   ],
+   "job_aliases": [
+    "Automotive electronics design",
+    "Power conversion development",
+    "Motor control development",
+    "EMC testing",
+    "Functional safety design"
+   ],
+   "org_mix": {
+    "OC2": "Common",
+    "OC1": "Common",
+    "OC3": "Present",
+    "OC4": "Rare",
+    "OC5": "Rare",
+    "OC6": "Present",
+    "OC7": "Present"
+   },
+   "vocabulary": [
+    "In-vehicle networks",
+    "Traction inverter",
+    "Electromagnetic compatibility",
+    "Functional safety",
+    "Inrush current",
+    "Production spread"
+   ]
+  },
+  {
+   "code": "INDUSTRY_NETWORK_V1",
+   "version": 1,
+   "name_ko": "Communication and Network Equipment",
+   "name_en": "Communication and Network Equipment",
+   "core": "EE_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "Delivers the promised data rate and error rate within fixed frequencies and power",
+    "Standards set the range of what can be designed before anything else",
+    "Must work together when connected to other vendors' equipment",
+    "When one unit drops, every subscriber below it drops too"
+   ],
+   "scene": "In communication and network equipment, EE graduates work on modulation and coding, RF circuits and antennas, protocol processing, and power and heat. Setting link conditions and confirming them on a test network carries straight over.",
+   "judgement_dimensions": [
+    {
+     "name": "Splits the link budget across sections",
+     "axis": "J3",
+     "domain": "TD05",
+     "why": "Usable power and distance are fixed in advance"
+    },
+    {
+     "name": "Turns standards into design conditions",
+     "axis": "J2",
+     "domain": "TD12",
+     "why": "Standards cut the degrees of freedom first"
+    },
+    {
+     "name": "Gets RF matching and losses right by design",
+     "axis": "J3",
+     "domain": "TD06",
+     "why": "A mismatch sends power back"
+    },
+    {
+     "name": "Compares error rates with theory",
+     "axis": "J6",
+     "domain": "TD05",
+     "why": "Measurements alone do not show where the loss came from"
+    },
+    {
+     "name": "Finishes protocol processing within real-time limits",
+     "axis": "J3",
+     "domain": "TD03",
+     "why": "Slow processing overflows the buffers"
+    },
+    {
+     "name": "Confirms antenna patterns by measurement",
+     "axis": "J6",
+     "domain": "TD06",
+     "why": "Simulation alone cannot see the installation environment"
+    },
+    {
+     "name": "Looks at power supply efficiency and heat in the equipment",
+     "axis": "J3",
+     "domain": "TD08",
+     "why": "Communication equipment runs without ever switching off"
+    },
+    {
+     "name": "Checks interoperability with other vendors' equipment",
+     "axis": "J6",
+     "domain": "TD12",
+     "why": "Following the standard does not guarantee that equipment connects"
+    },
+    {
+     "name": "Raises receiver performance through signal processing",
+     "axis": "J4",
+     "domain": "TD04",
+     "why": "Makes the signal go further on the same power"
+    },
+    {
+     "name": "Narrows the cause of dropped sections down to propagation or equipment",
+     "axis": "J7",
+     "domain": "TD05",
+     "why": "The radio environment and equipment faults produce the same symptoms"
+    },
+    {
+     "name": "Puts the impact on subscribers into numbers",
+     "axis": "J8",
+     "domain": "TD09",
+     "why": "Outage time is part of the contract terms"
+    },
+    {
+     "name": "Meets timing in digital processing circuits",
+     "axis": "J3",
+     "domain": "TD02",
+     "why": "Timing is the first thing to break as speeds rise"
+    }
+   ],
+   "axis_emphasis": {
+    "TD05": [
+     "J3",
+     "J6",
+     "J7"
+    ],
+    "TD12": [
+     "J2",
+     "J6"
+    ],
+    "TD06": [
+     "J3",
+     "J6"
+    ],
+    "TD03": [
+     "J3"
+    ],
+    "TD08": [
+     "J3"
+    ],
+    "TD04": [
+     "J4"
+    ],
+    "TD09": [
+     "J8"
+    ],
+    "TD02": [
+     "J3"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_NETWORK_V1_I1",
+     "axis": "J3",
+     "domain": "TD05",
+     "ask": "Starting from the available power and distance, have you split up the link budget?",
+     "gloss": "Deciding how much signal margin to give the transmitting side and the receiving side"
+    },
+    {
+     "id": "INDUSTRY_NETWORK_V1_I2",
+     "axis": "J2",
+     "domain": "TD12",
+     "ask": "Have you read a specification document and turned it into numbers the design must meet?",
+     "gloss": "Reading a communication standard and pulling out the numbers that must be met"
+    },
+    {
+     "id": "INDUSTRY_NETWORK_V1_I3",
+     "axis": "J3",
+     "domain": "TD06",
+     "ask": "Have you set matching conditions to reduce reflected signals?",
+     "gloss": "Matching impedances to reduce the signal coming back"
+    },
+    {
+     "id": "INDUSTRY_NETWORK_V1_I4",
+     "axis": "J6",
+     "domain": "TD05",
+     "ask": "Have you compared a measured error rate with theory and explained the difference?",
+     "gloss": "Working out why a measured error rate differed from the calculated one"
+    },
+    {
+     "id": "INDUSTRY_NETWORK_V1_I5",
+     "axis": "J3",
+     "domain": "TD03",
+     "ask": "Have you set the code structure so processing finishes within a fixed time?",
+     "gloss": "Changing the code structure so processing finished within a fixed time"
+    },
+    {
+     "id": "INDUSTRY_NETWORK_V1_I6",
+     "axis": "J6",
+     "domain": "TD06",
+     "ask": "Have you measured an antenna pattern for real and matched it against simulation?",
+     "gloss": "Measuring an antenna pattern yourself and comparing it with the simulation"
+    },
+    {
+     "id": "INDUSTRY_NETWORK_V1_I7",
+     "axis": "J3",
+     "domain": "TD08",
+     "ask": "Have you set power efficiency and heat limits for equipment that never switches off?",
+     "gloss": "Weighing power efficiency and heat together for equipment that is always on"
+    },
+    {
+     "id": "INDUSTRY_NETWORK_V1_I8",
+     "axis": "J6",
+     "domain": "TD12",
+     "ask": "Have you connected and run equipment from another vendor and written down where it did not match?",
+     "gloss": "Connecting to another company's equipment and noting the parts that did not match"
+    },
+    {
+     "id": "INDUSTRY_NETWORK_V1_I9",
+     "axis": "J4",
+     "domain": "TD04",
+     "ask": "Have you changed the processing method to improve receiver performance?",
+     "gloss": "Changing the processing method to receive the same signal better"
+    },
+    {
+     "id": "INDUSTRY_NETWORK_V1_I10",
+     "axis": "J7",
+     "domain": "TD05",
+     "ask": "Have you narrowed the cause of a dropped section down to the propagation side or the equipment side?",
+     "gloss": "Working out whether a dropped connection was a radio problem or an equipment problem"
+    }
+   ],
+   "gap_language": {
+    "J2": "In this industry, requirements interpretation shows up as turning standards into numbers the design must meet",
+    "J3": "In this industry, technical decisions show up as setting the link budget, matching and real-time constraints",
+    "J6": "In this industry, comparison and verification means comparing with both theory and other vendors' equipment",
+    "J7": "In this industry, failure and correction means narrowing down why a link dropped to propagation or equipment"
+   },
+   "result_line": "Communication and network equipment deals with link quality, RF matching and real-time processing together. Experience splitting link conditions, turning standards into numbers and comparing with theory is the closest way into this industry.",
+   "evidence_reading": [
+    {
+     "same": "Link budget calculation",
+     "reads_as": "Evidence that sets usable power and distance"
+    },
+    {
+     "same": "RF measurement",
+     "reads_as": "Real-world confirmation of matching and losses"
+    },
+    {
+     "same": "Organizing standards documents",
+     "reads_as": "A judgment that takes on the design's degrees of freedom"
+    },
+    {
+     "same": "Interoperability test records",
+     "reads_as": "Evidence of whether it connects with other equipment"
+    }
+   ],
+   "job_aliases": [
+    "Communication modem design",
+    "Network equipment development",
+    "RF circuit design",
+    "Antenna design",
+    "Interoperability testing"
+   ],
+   "org_mix": {
+    "OC2": "Common",
+    "OC1": "Present",
+    "OC3": "Present",
+    "OC4": "Present",
+    "OC5": "Rare",
+    "OC6": "Present",
+    "OC7": "Present"
+   },
+   "vocabulary": [
+    "Link budget",
+    "Error rate",
+    "VSWR",
+    "Standards",
+    "Interoperability testing",
+    "Real-time processing"
+   ]
+  },
+  {
+   "code": "INDUSTRY_POWER_V1",
+   "version": 1,
+   "name_ko": "Power, Energy and Renewables",
+   "name_en": "Power, Energy and Renewables",
+   "core": "EE_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "When the power goes out, every piece of equipment downstream stops with it",
+    "Laws and codes set the scope of design, installation and inspection first",
+    "Output changes with the weather, so the operating method is decided at the design stage too",
+    "Equipment is kept in service for a long time, so it is kept going by inspection and repair rather than replacement"
+   ],
+   "scene": "In power, energy and renewables, EE graduates work on system capacity and protection coordination, generation and storage plants, power quality and equipment maintenance. Setting capacity by calculation and confirming it in the field carries straight over.",
+   "judgement_dimensions": [
+    {
+     "name": "Sizes equipment from load calculations",
+     "axis": "J3",
+     "domain": "TD09",
+     "why": "Undersized equipment is hard to expand later"
+    },
+    {
+     "name": "Coordinates protection section by section",
+     "axis": "J6",
+     "domain": "TD09",
+     "why": "If the wrong section trips first, a wider area goes down"
+    },
+    {
+     "name": "Estimates energy yield from resource data",
+     "axis": "J3",
+     "domain": "TD10",
+     "why": "The weather sets the plant's revenue"
+    },
+    {
+     "name": "Takes grid connection requirements as design conditions",
+     "axis": "J2",
+     "domain": "TD10",
+     "why": "The conditions for connecting to the grid are set by law"
+    },
+    {
+     "name": "Judges power quality by measurement",
+     "axis": "J6",
+     "domain": "TD12",
+     "why": "Voltage distortion cannot be seen by eye"
+    },
+    {
+     "name": "Looks at losses and heat in conversion equipment",
+     "axis": "J3",
+     "domain": "TD08",
+     "why": "Losses come straight out of revenue"
+    },
+    {
+     "name": "Sets inspection intervals and replacement criteria",
+     "axis": "J7",
+     "domain": "TD09",
+     "why": "Repairing after a failure means the outage comes first"
+    },
+    {
+     "name": "Uses remote monitoring data in operating decisions",
+     "axis": "J8",
+     "domain": "TD11",
+     "why": "There is not always someone on site"
+    },
+    {
+     "name": "Writes down the operating rules for storage",
+     "axis": "J5",
+     "domain": "TD10",
+     "why": "How storage is used sets its lifetime, so the rules must be on record"
+    },
+    {
+     "name": "Questions the reliability of measurement data",
+     "axis": "J6",
+     "domain": "TD04",
+     "why": "Decisions made on faulty measurements are the most expensive"
+    },
+    {
+     "name": "Narrows outage causes down to equipment or settings",
+     "axis": "J7",
+     "domain": "TD11",
+     "why": "The same symptom comes from different causes"
+    },
+    {
+     "name": "Turns safety regulations into work procedures",
+     "axis": "J2",
+     "domain": "TD12",
+     "why": "In electrical work, one mistake can injure someone"
+    }
+   ],
+   "axis_emphasis": {
+    "TD09": [
+     "J3",
+     "J6",
+     "J7"
+    ],
+    "TD10": [
+     "J3",
+     "J2",
+     "J5"
+    ],
+    "TD12": [
+     "J6",
+     "J2"
+    ],
+    "TD08": [
+     "J3"
+    ],
+    "TD11": [
+     "J8",
+     "J7"
+    ],
+    "TD04": [
+     "J6"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_POWER_V1_I1",
+     "axis": "J3",
+     "domain": "TD09",
+     "ask": "Did you size equipment yourself by calculating the load?",
+     "gloss": "Adding up all the power to be used to decide how big the equipment should be"
+    },
+    {
+     "id": "INDUSTRY_POWER_V1_I2",
+     "axis": "J6",
+     "domain": "TD09",
+     "ask": "Have you checked that sections are coordinated to trip in the right order?",
+     "gloss": "Checking that breakers trip in the set order when a fault occurs"
+    },
+    {
+     "id": "INDUSTRY_POWER_V1_I3",
+     "axis": "J3",
+     "domain": "TD10",
+     "ask": "Have you estimated energy yield from resource data and sized the plant?",
+     "gloss": "Estimating energy yield from weather or solar irradiance data"
+    },
+    {
+     "id": "INDUSTRY_POWER_V1_I4",
+     "axis": "J2",
+     "domain": "TD10",
+     "ask": "Have you read the grid connection requirements and written them down as design conditions?",
+     "gloss": "Building into the design the rules to follow when connecting to the grid"
+    },
+    {
+     "id": "INDUSTRY_POWER_V1_I5",
+     "axis": "J6",
+     "domain": "TD12",
+     "ask": "Have you measured power quality and judged whether it was within limits?",
+     "gloss": "Measuring voltage or harmonics to check they were within limits"
+    },
+    {
+     "id": "INDUSTRY_POWER_V1_I6",
+     "axis": "J3",
+     "domain": "TD08",
+     "ask": "Have you set conversion conditions knowing that losses come out of revenue?",
+     "gloss": "Setting conditions with higher efficiency as the design goal"
+    },
+    {
+     "id": "INDUSTRY_POWER_V1_I7",
+     "axis": "J7",
+     "domain": "TD09",
+     "ask": "Have you set inspection intervals and replacement criteria to prevent failures ahead of time?",
+     "gloss": "Planning inspections and part replacements in advance from failure records"
+    },
+    {
+     "id": "INDUSTRY_POWER_V1_I8",
+     "axis": "J8",
+     "domain": "TD11",
+     "ask": "Have you made operating decisions from remotely collected data?",
+     "gloss": "Deciding how to run distant equipment from the data collected"
+    },
+    {
+     "id": "INDUSTRY_POWER_V1_I9",
+     "axis": "J5",
+     "domain": "TD10",
+     "ask": "Have you written down operating rules for how storage should be used?",
+     "gloss": "Writing down rules for when to charge and when to use a battery"
+    },
+    {
+     "id": "INDUSTRY_POWER_V1_I10",
+     "axis": "J6",
+     "domain": "TD04",
+     "ask": "Have you checked whether measurement data could be trusted before using it?",
+     "gloss": "Filtering out missing or spiky values from collected data before using it"
+    }
+   ],
+   "gap_language": {
+    "J2": "In this industry, requirements interpretation shows up as turning laws and grid connection requirements into design conditions",
+    "J3": "In this industry, technical decisions show up as setting capacity, protection settings and operating rules",
+    "J6": "In this industry, comparison and verification means backing up calculations with field measurements",
+    "J7": "In this industry, failure and correction means narrowing outage causes down to equipment or settings"
+   },
+   "result_line": "Power, energy and renewables deals with system capacity, protection coordination, energy yield estimation and equipment maintenance together. Experience calculating loads, turning codes into design conditions and measuring in the field is the closest way into this industry.",
+   "evidence_reading": [
+    {
+     "same": "Load calculation",
+     "reads_as": "Evidence for sizing equipment"
+    },
+    {
+     "same": "Protection coordination review",
+     "reads_as": "A judgment that limits how much trips"
+    },
+    {
+     "same": "Power quality measurement",
+     "reads_as": "The basis for compliance judgments"
+    },
+    {
+     "same": "Inspection records",
+     "reads_as": "Evidence for preventing failures ahead of time"
+    }
+   ],
+   "job_aliases": [
+    "Electrical design",
+    "Power system design",
+    "Renewable power plant design",
+    "Electrical distribution maintenance",
+    "Power quality assessment"
+   ],
+   "org_mix": {
+    "OC1": "Present",
+    "OC2": "Present",
+    "OC3": "Common",
+    "OC4": "Present",
+    "OC5": "Rare",
+    "OC6": "Common",
+    "OC7": "Present"
+   },
+   "vocabulary": [
+    "Single-line diagram",
+    "Protection coordination",
+    "Short-circuit capacity",
+    "Grid connection requirements",
+    "Harmonics",
+    "Reverse power flow",
+    "Uptime"
+   ]
+  },
+  {
+   "code": "INDUSTRY_CONSUMER_V1",
+   "version": 1,
+   "name_ko": "Home Appliance and Consumer Electronics",
+   "name_en": "Home Appliance and Consumer Electronics",
+   "core": "EE_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "Making the same function cheaper is always part of the design goal",
+    "People handle these devices directly, so safety standards and noise become design conditions",
+    "High volumes mean a small price difference on one part changes the overall profit",
+    "Launch dates leave little time for design"
+   ],
+   "scene": "In home appliance and consumer electronics, EE graduates work on power supply circuits, motor control, user interfaces, wireless connectivity and safety certification. Balancing cost and performance and getting through certification testing carries straight over.",
+   "judgement_dimensions": [
+    {
+     "name": "Meets performance within the cost target",
+     "axis": "J2",
+     "domain": "TD01",
+     "why": "One line of unit cost can send the design back to the drawing board"
+    },
+    {
+     "name": "Takes safety certification requirements into the design",
+     "axis": "J2",
+     "domain": "TD12",
+     "why": "Without certification it cannot be sold"
+    },
+    {
+     "name": "Reduces motor noise through control",
+     "axis": "J3",
+     "domain": "TD11",
+     "why": "Noise decides how the product is rated"
+    },
+    {
+     "name": "Reduces standby power in power supply circuits",
+     "axis": "J3",
+     "domain": "TD08",
+     "why": "Standby power is limited by regulation"
+    },
+    {
+     "name": "Reduces dropouts in wireless connections",
+     "axis": "J7",
+     "domain": "TD05",
+     "why": "The home environment blocks radio signals"
+    },
+    {
+     "name": "Plans substitutes in case parts are discontinued",
+     "axis": "J3",
+     "domain": "TD07",
+     "why": "For long-selling products, parts disappear first"
+    },
+    {
+     "name": "Handles user input through signal processing",
+     "axis": "J4",
+     "domain": "TD04",
+     "why": "A deliberate press has to be told apart from an accidental touch"
+    },
+    {
+     "name": "Decides production test items",
+     "axis": "J5",
+     "domain": "TD12",
+     "why": "Not everything can be fully tested on every unit"
+    },
+    {
+     "name": "Keeps radiated emissions within limits",
+     "axis": "J6",
+     "domain": "TD06",
+     "why": "Small layout differences change emissions"
+    },
+    {
+     "name": "Leaves a path for firmware updates",
+     "axis": "J5",
+     "domain": "TD03",
+     "why": "Things need fixing after launch"
+    },
+    {
+     "name": "Traces field failures back to the design",
+     "axis": "J7",
+     "domain": "TD12",
+     "why": "Recall costs change design decisions"
+    },
+    {
+     "name": "Makes the design hard to get wrong in assembly",
+     "axis": "J8",
+     "domain": "TD02",
+     "why": "It is a process with a lot of manual handling"
+    }
+   ],
+   "axis_emphasis": {
+    "TD01": [
+     "J2"
+    ],
+    "TD12": [
+     "J2",
+     "J5",
+     "J7"
+    ],
+    "TD11": [
+     "J3"
+    ],
+    "TD08": [
+     "J3"
+    ],
+    "TD05": [
+     "J7"
+    ],
+    "TD07": [
+     "J3"
+    ],
+    "TD04": [
+     "J4"
+    ],
+    "TD06": [
+     "J6"
+    ],
+    "TD03": [
+     "J5"
+    ],
+    "TD02": [
+     "J8"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_CONSUMER_V1_I1",
+     "axis": "J2",
+     "domain": "TD01",
+     "ask": "Have you taken a unit-cost target as a design condition and redesigned a circuit?",
+     "gloss": "Redesigning a circuit to meet a parts-cost target"
+    },
+    {
+     "id": "INDUSTRY_CONSUMER_V1_I2",
+     "axis": "J2",
+     "domain": "TD12",
+     "ask": "Have you read safety certification requirements and written them down as conditions the design must meet?",
+     "gloss": "Reading safety certification items and building them into the design"
+    },
+    {
+     "id": "INDUSTRY_CONSUMER_V1_I3",
+     "axis": "J3",
+     "domain": "TD11",
+     "ask": "Have you changed control conditions to reduce noise?",
+     "gloss": "Changing control conditions because a motor was too loud"
+    },
+    {
+     "id": "INDUSTRY_CONSUMER_V1_I4",
+     "axis": "J3",
+     "domain": "TD08",
+     "ask": "Have you changed a circuit to reduce power used in standby?",
+     "gloss": "Changing a circuit to cut the power leaking away while switched off"
+    },
+    {
+     "id": "INDUSTRY_CONSUMER_V1_I5",
+     "axis": "J7",
+     "domain": "TD05",
+     "ask": "Have you narrowed down the cause where a wireless connection dropped?",
+     "gloss": "Finding out why a wireless connection kept dropping"
+    },
+    {
+     "id": "INDUSTRY_CONSUMER_V1_I6",
+     "axis": "J3",
+     "domain": "TD07",
+     "ask": "Have you chosen substitute components in case a part could no longer be used?",
+     "gloss": "Choosing other parts in advance in case a part could no longer be bought"
+    },
+    {
+     "id": "INDUSTRY_CONSUMER_V1_I7",
+     "axis": "J4",
+     "domain": "TD04",
+     "ask": "Have you processed input so a deliberate press is told apart from an accidental touch?",
+     "gloss": "Filtering signals so button or touch input is not registered by mistake"
+    },
+    {
+     "id": "INDUSTRY_CONSUMER_V1_I8",
+     "axis": "J5",
+     "domain": "TD12",
+     "ask": "Have you decided and recorded what to test in production?",
+     "gloss": "Choosing and writing down the items to inspect during production"
+    },
+    {
+     "id": "INDUSTRY_CONSUMER_V1_I9",
+     "axis": "J6",
+     "domain": "TD06",
+     "ask": "Have you measured radiated emissions and checked they were within limits?",
+     "gloss": "Measuring the emissions from a product or having it tested"
+    },
+    {
+     "id": "INDUSTRY_CONSUMER_V1_I10",
+     "axis": "J5",
+     "domain": "TD03",
+     "ask": "Have you left a path to fix things after launch through updates?",
+     "gloss": "Building a way to change the firmware later through updates"
+    }
+   ],
+   "gap_language": {
+    "J2": "In this industry, requirements interpretation shows up as taking unit cost and certification requirements together as design conditions",
+    "J3": "In this industry, technical decisions show up as balancing performance, noise and standby power within cost",
+    "J5": "In this industry, deliverables show up as production test items and a way to fix things later",
+    "J7": "In this industry, failure and correction means tracing field failures back to the design"
+   },
+   "result_line": "Home appliance and consumer electronics balances cost, performance and certification in one design. Experience taking unit cost as a condition, turning standards into design and getting through testing is the closest way into this industry.",
+   "evidence_reading": [
+    {
+     "same": "Circuit cost review",
+     "reads_as": "Evidence for making the same function cheaper"
+    },
+    {
+     "same": "Certification test preparation",
+     "reads_as": "A judgment that makes it sellable"
+    },
+    {
+     "same": "Motor control lab work",
+     "reads_as": "Evidence that looks at noise and performance together"
+    },
+    {
+     "same": "Firmware update architecture",
+     "reads_as": "A way to fix things after launch"
+    }
+   ],
+   "job_aliases": [
+    "Appliance circuit design",
+    "Power supply circuit design",
+    "Motor control development",
+    "Firmware development",
+    "Certification testing"
+   ],
+   "org_mix": {
+    "OC1": "Common",
+    "OC2": "Common",
+    "OC3": "Rare",
+    "OC4": "Rare",
+    "OC5": "Rare",
+    "OC6": "Present",
+    "OC7": "Present"
+   },
+   "vocabulary": [
+    "Standby power",
+    "Safety certification",
+    "Radiated emissions",
+    "Managing discontinued parts",
+    "Production inspection",
+    "Firmware updates"
+   ]
+  },
+  {
+   "code": "INDUSTRY_FACTORY_V1",
+   "version": 1,
+   "name_ko": "Industrial Automation and Robotics",
+   "name_en": "Industrial Automation and Robotics",
+   "core": "EE_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "When equipment stops, production on that line stops too",
+    "Machines move in the same space as people, so safety stops are decided first",
+    "Conditions differ from site to site, so even the same equipment is tuned again",
+    "Controllers and drives from several companies are mixed on one line"
+   ],
+   "scene": "In industrial automation and robotics, EE graduates work on controller configuration, motor drives, sensor integration, safety circuits and industrial communication. Setting sequences and gains and tuning them on site carries straight over.",
+   "judgement_dimensions": [
+    {
+     "name": "Decides safety-stop conditions first",
+     "axis": "J3",
+     "domain": "TD11",
+     "why": "Machines move in the same space as people"
+    },
+    {
+     "name": "Sizes drives from the load",
+     "axis": "J3",
+     "domain": "TD09",
+     "why": "Too small and it stops; too big and it is expensive"
+    },
+    {
+     "name": "Reads sensor signals through plant noise",
+     "axis": "J4",
+     "domain": "TD04",
+     "why": "Welders and inverters share the same supply lines"
+    },
+    {
+     "name": "Keeps industrial communication on cycle",
+     "axis": "J2",
+     "domain": "TD05",
+     "why": "Missing a control period throws the motion out of step"
+    },
+    {
+     "name": "Retunes gains on site",
+     "axis": "J7",
+     "domain": "TD11",
+     "why": "The same equipment moves differently at each site"
+    },
+    {
+     "name": "Watches voltage drop on the drive supply",
+     "axis": "J3",
+     "domain": "TD08",
+     "why": "Long cable runs eat into the voltage"
+    },
+    {
+     "name": "Measures stopping accuracy repeatedly",
+     "axis": "J6",
+     "domain": "TD12",
+     "why": "Precision achieved once is not a spec"
+    },
+    {
+     "name": "Uses failure history to improve equipment",
+     "axis": "J8",
+     "domain": "TD09",
+     "why": "The same failure repeats on every line"
+    },
+    {
+     "name": "Leaves control code the next person can read",
+     "axis": "J5",
+     "domain": "TD03",
+     "why": "Equipment outlives the person in charge"
+    },
+    {
+     "name": "Runs equipment from several vendors together",
+     "axis": "J6",
+     "domain": "TD05",
+     "why": "Even with the same standard, things do not always connect"
+    },
+    {
+     "name": "Cuts electromagnetic interference through wiring",
+     "axis": "J7",
+     "domain": "TD12",
+     "why": "Inverter noise disturbs sensors"
+    },
+    {
+     "name": "Collects equipment condition as numbers",
+     "axis": "J8",
+     "domain": "TD11",
+     "why": "There are signals that can be seen before a stop"
+    }
+   ],
+   "axis_emphasis": {
+    "TD11": [
+     "J3",
+     "J7",
+     "J8"
+    ],
+    "TD09": [
+     "J3",
+     "J8"
+    ],
+    "TD04": [
+     "J4"
+    ],
+    "TD05": [
+     "J2",
+     "J6"
+    ],
+    "TD08": [
+     "J3"
+    ],
+    "TD12": [
+     "J6",
+     "J7"
+    ],
+    "TD03": [
+     "J5"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_FACTORY_V1_I1",
+     "axis": "J3",
+     "domain": "TD11",
+     "ask": "Have you decided the stop conditions first, so nobody gets hurt?",
+     "gloss": "Deciding first the conditions under which equipment stops, so nobody gets hurt"
+    },
+    {
+     "id": "INDUSTRY_FACTORY_V1_I2",
+     "axis": "J3",
+     "domain": "TD09",
+     "ask": "Have you sized a drive by looking at the load it had to move?",
+     "gloss": "Choosing a motor size from the weight it had to move"
+    },
+    {
+     "id": "INDUSTRY_FACTORY_V1_I3",
+     "axis": "J4",
+     "domain": "TD04",
+     "ask": "Have you filtered and used a sensor signal mixed with plant noise?",
+     "gloss": "Filtering a sensor signal disturbed by nearby equipment before using it"
+    },
+    {
+     "id": "INDUSTRY_FACTORY_V1_I4",
+     "axis": "J2",
+     "domain": "TD05",
+     "ask": "Have you written down industrial communication conditions to match the control period?",
+     "gloss": "Setting the communication period between units to match the control period"
+    },
+    {
+     "id": "INDUSTRY_FACTORY_V1_I5",
+     "axis": "J7",
+     "domain": "TD11",
+     "ask": "Have you retuned gains because the motion was different on site?",
+     "gloss": "Retuning control values after watching the motion where it was installed"
+    },
+    {
+     "id": "INDUSTRY_FACTORY_V1_I6",
+     "axis": "J3",
+     "domain": "TD08",
+     "ask": "Have you set conditions after looking at the voltage drop from long cables?",
+     "gloss": "Setting supply conditions after seeing voltage fall over long cable runs"
+    },
+    {
+     "id": "INDUSTRY_FACTORY_V1_I7",
+     "axis": "J6",
+     "domain": "TD12",
+     "ask": "Have you repeated the same motion and measured the spread in where it stopped?",
+     "gloss": "Running the same motion many times and measuring how much the stopping position varied"
+    },
+    {
+     "id": "INDUSTRY_FACTORY_V1_I8",
+     "axis": "J8",
+     "domain": "TD09",
+     "ask": "Have you collected failure history and used it to improve equipment?",
+     "gloss": "Collecting records of frequent failures and using them in a repair plan"
+    },
+    {
+     "id": "INDUSTRY_FACTORY_V1_I9",
+     "axis": "J5",
+     "domain": "TD03",
+     "ask": "Have you left control code so the next person could read it?",
+     "gloss": "Tidying control code so the next person could read and fix it"
+    },
+    {
+     "id": "INDUSTRY_FACTORY_V1_I10",
+     "axis": "J7",
+     "domain": "TD12",
+     "ask": "Have you narrowed down, in the wiring, why drive noise was disturbing a sensor?",
+     "gloss": "Rewiring so motor noise did not get into a sensor"
+    }
+   ],
+   "gap_language": {
+    "J3": "In this industry, technical decisions show up as setting safety stops, drive ratings and control conditions",
+    "J5": "In this industry, deliverables show up as control documents the next engineer can take over",
+    "J6": "In this industry, comparison and verification means checking that it lands in the same place on repetition, not just once",
+    "J8": "In this industry, organizational use shows up as equipment uptime and failure history"
+   },
+   "result_line": "Industrial automation and robotics deals with safety stops, drive sizing and on-site tuning together. Experience deciding stop conditions, choosing capacity from the load and retuning on site is the closest way into this industry.",
+   "evidence_reading": [
+    {
+     "same": "Control lab work",
+     "reads_as": "Evidence for retuning on site"
+    },
+    {
+     "same": "Building safety circuits",
+     "reads_as": "A judgment that lets machines move in the same space as people"
+    },
+    {
+     "same": "Repeatability measurement",
+     "reads_as": "Evidence that backs up the spec"
+    },
+    {
+     "same": "Organizing failure history",
+     "reads_as": "The basis for equipment improvement"
+    }
+   ],
+   "job_aliases": [
+    "Control design",
+    "Automation equipment design",
+    "Robot control development",
+    "Equipment electrical maintenance",
+    "On-site commissioning"
+   ],
+   "org_mix": {
+    "OC1": "Present",
+    "OC2": "Common",
+    "OC3": "Common",
+    "OC4": "Rare",
+    "OC5": "Rare",
+    "OC6": "Rare",
+    "OC7": "Present"
+   },
+   "vocabulary": [
+    "Sequences",
+    "Servo",
+    "Safety stop",
+    "Repeatability",
+    "Industrial communication",
+    "Voltage drop"
+   ]
+  },
+  {
+   "code": "INDUSTRY_MEDICAL_V1",
+   "version": 1,
+   "name_ko": "Medical Devices and Instrumentation",
+   "name_en": "Medical Devices and Instrumentation",
+   "core": "EE_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "Signals from the human body are very small and buried in noise",
+    "Devices touch the body, so insulation and leakage current come first",
+    "Regulatory review asks for design records and test evidence together",
+    "Measured values are used in diagnosis, so how far they could be off (uncertainty) has to be stated"
+   ],
+   "scene": "In medical devices and instrumentation, EE graduates work on amplifying very small signals, patient isolation, measurement uncertainty, signal processing and regulatory testing. Setting measurement conditions and keeping the evidence carries straight over.",
+   "judgement_dimensions": [
+    {
+     "name": "Lifts very small signals out of noise",
+     "axis": "J3",
+     "domain": "TD01",
+     "why": "Signals from the body are very small"
+    },
+    {
+     "name": "Takes patient isolation and leakage current into the design",
+     "axis": "J2",
+     "domain": "TD09",
+     "why": "The device touches people"
+    },
+    {
+     "name": "States measurement uncertainty",
+     "axis": "J3",
+     "domain": "TD12",
+     "why": "The values are used in diagnosis"
+    },
+    {
+     "name": "Reduces noise through signal processing",
+     "axis": "J4",
+     "domain": "TD04",
+     "why": "Motion and supply noise come in together"
+    },
+    {
+     "name": "Keeps design records in the format regulatory review requires",
+     "axis": "J5",
+     "domain": "TD12",
+     "why": "Without evidence it will not pass review"
+    },
+    {
+     "name": "Calibrates against a reference standard",
+     "axis": "J6",
+     "domain": "TD12",
+     "why": "An instrument cannot tell on its own whether it is right"
+    },
+    {
+     "name": "Designs power and grounding with noise in mind",
+     "axis": "J3",
+     "domain": "TD08",
+     "why": "The power supply shows up directly in the measurement"
+    },
+    {
+     "name": "Corrects for spread in sensor characteristics",
+     "axis": "J6",
+     "domain": "TD07",
+     "why": "The same sensor differs from unit to unit"
+    },
+    {
+     "name": "Stops safely on malfunction",
+     "axis": "J3",
+     "domain": "TD11",
+     "why": "How it stops is patient safety"
+    },
+    {
+     "name": "Handles dropouts in wireless connections",
+     "axis": "J7",
+     "domain": "TD05",
+     "why": "The radio environment in hospitals is complex"
+    },
+    {
+     "name": "Turns clinical needs into numbers",
+     "axis": "J2",
+     "domain": "TD04",
+     "why": "What clinicians say and what the design needs are different languages"
+    },
+    {
+     "name": "Traces failure records back to the design",
+     "axis": "J7",
+     "domain": "TD12",
+     "why": "The same failure must never reach a patient twice"
+    }
+   ],
+   "axis_emphasis": {
+    "TD01": [
+     "J3"
+    ],
+    "TD09": [
+     "J2"
+    ],
+    "TD12": [
+     "J3",
+     "J5",
+     "J6",
+     "J7"
+    ],
+    "TD04": [
+     "J4",
+     "J2"
+    ],
+    "TD08": [
+     "J3"
+    ],
+    "TD07": [
+     "J6"
+    ],
+    "TD11": [
+     "J3"
+    ],
+    "TD05": [
+     "J7"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_MEDICAL_V1_I1",
+     "axis": "J3",
+     "domain": "TD01",
+     "ask": "Have you set amplifier conditions to bring up a very small signal?",
+     "gloss": "Adjusting an amplifier circuit to read a very small biosignal"
+    },
+    {
+     "id": "INDUSTRY_MEDICAL_V1_I2",
+     "axis": "J2",
+     "domain": "TD09",
+     "ask": "Have you written down insulation and leakage conditions for a device that touches people?",
+     "gloss": "Setting conditions to prevent electric shock in a device that touches the body"
+    },
+    {
+     "id": "INDUSTRY_MEDICAL_V1_I3",
+     "axis": "J3",
+     "domain": "TD12",
+     "ask": "Have you split the remaining uncertainty in a measurement by source?",
+     "gloss": "Calculating, source by source, how far a measured value could be off"
+    },
+    {
+     "id": "INDUSTRY_MEDICAL_V1_I4",
+     "axis": "J4",
+     "domain": "TD04",
+     "ask": "Have you reduced noise from motion and the power supply by processing?",
+     "gloss": "Cleaning up a signal disturbed by movement or by the power supply"
+    },
+    {
+     "id": "INDUSTRY_MEDICAL_V1_I5",
+     "axis": "J5",
+     "domain": "TD12",
+     "ask": "Have you kept test records in a format that could be submitted for review?",
+     "gloss": "Organizing test records and evidence so someone else could review them later"
+    },
+    {
+     "id": "INDUSTRY_MEDICAL_V1_I6",
+     "axis": "J6",
+     "domain": "TD12",
+     "ask": "Have you adjusted your measurements by comparing them with a reference standard?",
+     "gloss": "Comparing with calibrated equipment to check your measurements were right"
+    },
+    {
+     "id": "INDUSTRY_MEDICAL_V1_I7",
+     "axis": "J3",
+     "domain": "TD08",
+     "ask": "Have you set power and grounding with noise in mind?",
+     "gloss": "Changing power and grounding so less noise got in"
+    },
+    {
+     "id": "INDUSTRY_MEDICAL_V1_I8",
+     "axis": "J6",
+     "domain": "TD07",
+     "ask": "Have you corrected for differences between sensors so they gave the same value?",
+     "gloss": "Correcting values that differed between sensors so they read the same"
+    },
+    {
+     "id": "INDUSTRY_MEDICAL_V1_I9",
+     "axis": "J3",
+     "domain": "TD11",
+     "ask": "Have you set conditions so the device stops safely when it malfunctions?",
+     "gloss": "Setting conditions so a device stops safely when something goes wrong"
+    },
+    {
+     "id": "INDUSTRY_MEDICAL_V1_I10",
+     "axis": "J2",
+     "domain": "TD04",
+     "ask": "Have you turned what users said into numbers the design must meet?",
+     "gloss": "Turning what users asked for into numerical conditions to meet"
+    }
+   ],
+   "gap_language": {
+    "J2": "In this industry, requirements interpretation shows up as turning clinical language and safety standards into numbers",
+    "J3": "In this industry, technical decisions show up as setting very small signal amplification, isolation and uncertainty",
+    "J5": "In this industry, deliverables show up as test records that reviewers can read",
+    "J6": "In this industry, comparison and verification means checking against calibrated reference standards"
+   },
+   "result_line": "Medical devices and instrumentation deals with very small signals, patient isolation and measurement uncertainty together. Experience setting amplifier conditions, designing for isolation and checking against a reference standard is the closest way into this industry.",
+   "evidence_reading": [
+    {
+     "same": "Amplifier circuit lab work",
+     "reads_as": "Evidence of reading very small signals"
+    },
+    {
+     "same": "Uncertainty calculation",
+     "reads_as": "The basis for values used in diagnosis"
+    },
+    {
+     "same": "Calibration records",
+     "reads_as": "Evidence that the measurement is right"
+    },
+    {
+     "same": "Organizing test procedures",
+     "reads_as": "Material that regulatory review reads"
+    }
+   ],
+   "job_aliases": [
+    "Medical device circuit design",
+    "Instrumentation development",
+    "Signal processing development",
+    "Test and evaluation",
+    "Quality assurance"
+   ],
+   "org_mix": {
+    "OC2": "Common",
+    "OC1": "Present",
+    "OC3": "Present",
+    "OC4": "Present",
+    "OC5": "Present",
+    "OC6": "Common",
+    "OC7": "Common"
+   },
+   "vocabulary": [
+    "Leakage current",
+    "Patient isolation",
+    "Measurement uncertainty",
+    "Calibration",
+    "Regulatory testing",
+    "Very small signals"
+   ]
+  },
+  {
+   "code": "INDUSTRY_DEFENSE_V1",
+   "version": 1,
+   "name_ko": "Defense and Aerospace",
+   "name_en": "Defense and Aerospace",
+   "core": "EE_CORE_V1",
+   "markets": [
+    "KR",
+    "GLOBAL"
+   ],
+   "status": "building",
+   "demands": [
+    "Much of the equipment cannot be reached for repair once it is deployed",
+    "Temperature, vibration and radiation are all weighed as design conditions",
+    "Standards and test procedures are fixed before the design starts",
+    "Quantities are small, so the reliability of each unit decides overall performance"
+   ],
+   "scene": "In defense and aerospace, EE graduates work on circuits that run in harsh environments, RF and antennas, power systems and reliability testing. Taking standards as design conditions and backing them up with tests carries straight over.",
+   "judgement_dimensions": [
+    {
+     "name": "Takes environmental conditions as design conditions",
+     "axis": "J2",
+     "domain": "TD01",
+     "why": "Temperature and vibration set circuit lifetime"
+    },
+    {
+     "name": "Reads the standard's test items first",
+     "axis": "J2",
+     "domain": "TD12",
+     "why": "Without passing the tests, there is no delivery"
+    },
+    {
+     "name": "Gets RF losses and matching right by design",
+     "axis": "J3",
+     "domain": "TD06",
+     "why": "Reflected power damages equipment"
+    },
+    {
+     "name": "Provides alternate paths for failures",
+     "axis": "J3",
+     "domain": "TD09",
+     "why": "Some places cannot be reached for repair"
+    },
+    {
+     "name": "Makes the power system withstand sudden loads",
+     "axis": "J3",
+     "domain": "TD08",
+     "why": "Peak power is far above normal"
+    },
+    {
+     "name": "Backs up lifetime with reliability testing",
+     "axis": "J6",
+     "domain": "TD12",
+     "why": "A single unit failing means mission failure"
+    },
+    {
+     "name": "Separates targets from noise through signal processing",
+     "axis": "J4",
+     "domain": "TD04",
+     "why": "Most of the received signal is of no use"
+    },
+    {
+     "name": "Takes parts supply and discontinuation into the design",
+     "axis": "J3",
+     "domain": "TD07",
+     "why": "In long-lived equipment, parts disappear first"
+    },
+    {
+     "name": "Keeps records that can be traced",
+     "axis": "J5",
+     "domain": "TD12",
+     "why": "Traceability of each judgment is the deliverable"
+    },
+    {
+     "name": "Treats EMC at the system level",
+     "axis": "J6",
+     "domain": "TD06",
+     "why": "Transmitters and receivers sit together in one system"
+    },
+    {
+     "name": "Traces the causes of failure back to the design stage",
+     "axis": "J7",
+     "domain": "TD12",
+     "why": "There is no room to repeat the same failure"
+    },
+    {
+     "name": "Keeps communication links from dropping",
+     "axis": "J3",
+     "domain": "TD05",
+     "why": "Once a link drops, there may be no way to restore it"
+    }
+   ],
+   "axis_emphasis": {
+    "TD01": [
+     "J2"
+    ],
+    "TD12": [
+     "J2",
+     "J6",
+     "J5",
+     "J7"
+    ],
+    "TD06": [
+     "J3",
+     "J6"
+    ],
+    "TD09": [
+     "J3"
+    ],
+    "TD08": [
+     "J3"
+    ],
+    "TD04": [
+     "J4"
+    ],
+    "TD07": [
+     "J3"
+    ],
+    "TD05": [
+     "J3"
+    ]
+   },
+   "items": [
+    {
+     "id": "INDUSTRY_DEFENSE_V1_I1",
+     "axis": "J2",
+     "domain": "TD01",
+     "ask": "Have you taken temperature and vibration conditions into a circuit design?",
+     "gloss": "Building very cold or high-vibration environments into the design conditions"
+    },
+    {
+     "id": "INDUSTRY_DEFENSE_V1_I2",
+     "axis": "J2",
+     "domain": "TD12",
+     "ask": "Have you read a standard's test items first and written them down as design conditions?",
+     "gloss": "Reading the tests to be passed in advance and building them into the design"
+    },
+    {
+     "id": "INDUSTRY_DEFENSE_V1_I3",
+     "axis": "J3",
+     "domain": "TD06",
+     "ask": "Have you set an RF structure to reduce reflected power?",
+     "gloss": "Changing a structure so reflected power would not damage the circuit"
+    },
+    {
+     "id": "INDUSTRY_DEFENSE_V1_I4",
+     "axis": "J3",
+     "domain": "TD09",
+     "ask": "Have you provided an alternate path so it keeps running if one side fails?",
+     "gloss": "Building a backup path so it keeps working if one side fails"
+    },
+    {
+     "id": "INDUSTRY_DEFENSE_V1_I5",
+     "axis": "J3",
+     "domain": "TD08",
+     "ask": "Have you set up a power supply to withstand loads that jump suddenly?",
+     "gloss": "Designing a power supply to cope with sudden jumps in power demand"
+    },
+    {
+     "id": "INDUSTRY_DEFENSE_V1_I6",
+     "axis": "J6",
+     "domain": "TD12",
+     "ask": "Have you measured under harsh conditions whether it would last over long use?",
+     "gloss": "Running an accelerated test under harsh conditions to see what long use would do"
+    },
+    {
+     "id": "INDUSTRY_DEFENSE_V1_I7",
+     "axis": "J4",
+     "domain": "TD04",
+     "ask": "Have you separated what to keep from what to discard in a received signal?",
+     "gloss": "Picking out only the needed signal from noise"
+    },
+    {
+     "id": "INDUSTRY_DEFENSE_V1_I8",
+     "axis": "J3",
+     "domain": "TD07",
+     "ask": "Have you chosen components with long-term availability in mind?",
+     "gloss": "Choosing parts after checking they could be obtained for a long time"
+    },
+    {
+     "id": "INDUSTRY_DEFENSE_V1_I9",
+     "axis": "J5",
+     "domain": "TD12",
+     "ask": "Have you kept records so it was possible to trace which decisions were made and why?",
+     "gloss": "Keeping records so the reasons for a decision could be looked up later"
+    },
+    {
+     "id": "INDUSTRY_DEFENSE_V1_I10",
+     "axis": "J3",
+     "domain": "TD05",
+     "ask": "Have you set the margin for a communication link that cannot be restored once it drops?",
+     "gloss": "Leaving a generous signal margin so a communication link would not drop"
+    }
+   ],
+   "gap_language": {
+    "J2": "In this industry, requirements interpretation shows up as taking environmental conditions and qualification tests together as design conditions",
+    "J3": "In this industry, technical decisions show up as setting structures and margins that hold up under harsh conditions",
+    "J5": "In this industry, deliverables show up as decision records that can be traced",
+    "J6": "In this industry, comparison and verification means backing up lifetime with harsh-condition testing"
+   },
+   "result_line": "Defense and aerospace deals with harsh environments, qualification testing and the reliability of each unit together. Experience taking the environment as a condition, reading the standard first and measuring under harsh conditions is the closest way into this industry.",
+   "evidence_reading": [
+    {
+     "same": "Taking part in environmental testing",
+     "reads_as": "Evidence of holding up under harsh conditions"
+    },
+    {
+     "same": "RF measurement",
+     "reads_as": "A judgment that sets the balance between output and losses"
+    },
+    {
+     "same": "Reliability testing",
+     "reads_as": "The basis that backs up lifetime"
+    },
+    {
+     "same": "Organizing design records",
+     "reads_as": "Evidence of traceability"
+    }
+   ],
+   "job_aliases": [
+    "Avionics circuit design",
+    "RF circuit design",
+    "Reliability evaluation",
+    "EMC testing",
+    "System electrical design"
+   ],
+   "org_mix": {
+    "OC2": "Common",
+    "OC1": "Present",
+    "OC3": "Present",
+    "OC4": "Common",
+    "OC5": "Present",
+    "OC6": "Common",
+    "OC7": "Rare"
+   },
+   "vocabulary": [
+    "Environmental testing",
+    "Redundant systems",
+    "Traceability",
+    "Harsh conditions",
+    "Electromagnetic compatibility",
+    "Long-term parts supply"
+   ]
+  }
+ ]
+}

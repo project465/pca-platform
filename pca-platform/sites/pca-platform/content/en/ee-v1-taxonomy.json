@@ -1,0 +1,1040 @@
+{
+ "schema_version": "ee-v1-taxonomy.1",
+ "assessment_version": "EE_V1",
+ "major_id": "EE",
+ "note": "Three dimensions: technical domain × role function × organization type. A job title is just a name for a combination, and none of the dimensions ranks anything. This file is where changes go. The eight axes, two scales and four levels use the same values as the Mechanical Engineering Core: two majors can only be compared on the same ruler, and a new ruler for each major would break comparison within a school",
+ "axes": {
+  "J1": {
+   "name": "Problem definition",
+   "question": "Who decided what to work on?"
+  },
+  "J2": {
+   "name": "Requirements interpretation",
+   "question": "Were requirements turned into numbers and constraints?"
+  },
+  "J3": {
+   "name": "Technical decisions",
+   "question": "Which items did you decide?"
+  },
+  "J4": {
+   "name": "Methods and tools",
+   "question": "What did you use, and how?"
+  },
+  "J5": {
+   "name": "Deliverables",
+   "question": "What was left behind?"
+  },
+  "J6": {
+   "name": "Comparison and verification",
+   "question": "What was it compared against?"
+  },
+  "J7": {
+   "name": "Failure and correction",
+   "question": "How was the error narrowed down?"
+  },
+  "J8": {
+   "name": "Organizational use",
+   "question": "Who used it, and for what?"
+  }
+ },
+ "scales": {
+  "S4": {
+   "axes": [
+    "J3",
+    "J5",
+    "J6",
+    "J7"
+   ],
+   "note": "Screening scale. The four axes asked at BASIC. Organizational use is left out of screening because it puts undergraduates at a structural disadvantage: whether your work was used by an organization can only be answered if you were placed in one, and someone who has only done classes and a capstone will have that cell empty even if they made decisions. Organizational use is asked only in the in-depth stage"
+  },
+  "S8": {
+   "axes": [
+    "J1",
+    "J2",
+    "J3",
+    "J4",
+    "J5",
+    "J6",
+    "J7",
+    "J8"
+   ],
+   "note": "Full scale. STANDARD and above. Do not use S8 as the denominator for S4. What the in-depth stage newly opens are the four axes not in screening (problem definition, requirements interpretation, methods and tools, organizational use)"
+  }
+ },
+ "levels": {
+  "L0": "None",
+  "L1": "Exposed. Watched or reused what someone else did",
+  "L2": "Performed. Did the work myself",
+  "L3": "Owned. Decided it myself, and the result was used"
+ },
+ "technical_domains": [
+  {
+   "code": "TD01",
+   "name": "Analog Circuit Design",
+   "owns": "Finalizes component values and operating points for amplifier, filter and power circuits",
+   "subareas": [
+    "Amplifier circuits",
+    "Filter circuits",
+    "Power supply circuits",
+    "Sensor interfaces"
+   ],
+   "required_axes": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "code": "TD02",
+   "name": "Digital and Logic Design",
+   "owns": "Finalizes the logic architecture and timing constraints",
+   "subareas": [
+    "HDL design",
+    "Programmable logic implementation",
+    "Timing constraints",
+    "Verification environments"
+   ],
+   "required_axes": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD03",
+   "name": "Embedded Systems and Firmware",
+   "owns": "Finalizes peripheral configuration and control loop timing on a microcontroller",
+   "subareas": [
+    "Firmware architecture",
+    "Peripheral drivers",
+    "Real-time processing",
+    "Low-power design"
+   ],
+   "required_axes": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "code": "TD04",
+   "name": "Signal Processing",
+   "owns": "Finalizes the features to extract from a signal and the filter and transform settings",
+   "subareas": [
+    "Digital filters",
+    "Frequency analysis",
+    "Noise reduction",
+    "Feature extraction"
+   ],
+   "required_axes": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD05",
+   "name": "Communications and Networking",
+   "owns": "Finalizes modulation, coding and protocol settings",
+   "subareas": [
+    "Wireless transmission",
+    "Wired transmission",
+    "Protocol layers",
+    "Link budgets"
+   ],
+   "required_axes": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD06",
+   "name": "Electromagnetics and RF",
+   "owns": "Finalizes EM simulation conditions and RF matching structures",
+   "subareas": [
+    "Antennas",
+    "Transmission lines and matching",
+    "EM field simulation",
+    "RF components"
+   ],
+   "required_axes": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD07",
+   "name": "Semiconductor Devices and Processing",
+   "owns": "Finalizes device dimensions, process parameters and criteria for judging device characteristics",
+   "subareas": [
+    "Device characteristics",
+    "Process conditions",
+    "Device models",
+    "Yield and failure analysis"
+   ],
+   "required_axes": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD08",
+   "name": "Power Electronics",
+   "owns": "Finalizes switching conditions, device ratings and thermal design for power converters",
+   "subareas": [
+    "DC-DC conversion",
+    "Inverters",
+    "Gate drive",
+    "Thermal design"
+   ],
+   "required_axes": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "code": "TD09",
+   "name": "Electric Machines and Power Systems",
+   "owns": "Finalizes equipment ratings, system protection settings and operating conditions",
+   "subareas": [
+    "Rotating machines",
+    "Transformers",
+    "Distribution systems",
+    "Protection and switching"
+   ],
+   "required_axes": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "code": "TD10",
+   "name": "Energy and Renewable Systems",
+   "owns": "Finalizes how capacity is split between generation and storage and the operating thresholds",
+   "subareas": [
+    "Solar power",
+    "Energy storage",
+    "Grid connection",
+    "Operating strategy"
+   ],
+   "required_axes": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD11",
+   "name": "Control and Automation",
+   "owns": "Finalizes control structures, gains and safety-stop conditions",
+   "subareas": [
+    "Feedback control",
+    "Motor control",
+    "Sequence control",
+    "Integration of automated equipment"
+   ],
+   "required_axes": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "code": "TD12",
+   "name": "Measurement, Testing and EMC",
+   "owns": "Finalizes test items, measurement conditions and pass/fail criteria",
+   "subareas": [
+    "Measurement uncertainty",
+    "Test planning",
+    "Electromagnetic compatibility",
+    "Reliability testing"
+   ],
+   "required_axes": [
+    "J6",
+    "J7"
+   ]
+  }
+ ],
+ "role_functions": [
+  {
+   "code": "RF1",
+   "name": "Design and development",
+   "one_line": "Decides what will be built",
+   "output_kind": "Schematics, specs, models",
+   "success": "One design that can be built and meets the requirements"
+  },
+  {
+   "code": "RF2",
+   "name": "Analysis and prediction",
+   "one_line": "Knows the outcome before it is built",
+   "output_kind": "Analysis reports, predicted values",
+   "success": "Predictions that match measurements and give reasons to change the design"
+  },
+  {
+   "code": "RF3",
+   "name": "Testing and verification",
+   "one_line": "Checks whether what was built is right",
+   "output_kind": "Test reports, pass/fail decisions",
+   "success": "A result whose verdict can be reproduced, with the uncertainty stated"
+  },
+  {
+   "code": "RF4",
+   "name": "Process and mass production",
+   "one_line": "Makes it possible to build repeatedly",
+   "output_kind": "Process recipes, work standards",
+   "success": "Yield and takt time within target"
+  },
+  {
+   "code": "RF5",
+   "name": "Operation and maintenance",
+   "one_line": "Keeps things from stopping",
+   "output_kind": "Maintenance plans, failure reports",
+   "success": "High uptime and no recurrence"
+  },
+  {
+   "code": "RF6",
+   "name": "Integration and coordination",
+   "one_line": "Ties many people's decisions into one",
+   "output_kind": "Requirements, schedules, change records",
+   "success": "Requirement fulfillment and schedule"
+  },
+  {
+   "code": "RF7",
+   "name": "Exploration and research",
+   "one_line": "Narrows down things that have no answer yet",
+   "output_kind": "Papers, patents, prototypes, methods",
+   "success": "The question is narrowed and a method remains"
+  },
+  {
+   "code": "RF8",
+   "name": "Quality and Reliability",
+   "one_line": "Assures that requirements hold through mass production and over the product's life",
+   "output_kind": "Criteria, pass/fail decisions, corrective actions",
+   "success": "Defects do not recur and the basis for each decision can be traced"
+  }
+ ],
+ "role_functions_note": "Eight in total, with the same codes and names as the Mechanical Engineering Core. Role functions sit above the major, so they are not rebuilt for each major. What differs is the kind of deliverable: in electrical and electronic engineering, schematics, process recipes and protection settings tables take the place of drawings",
+ "org_contexts": [
+  {
+   "code": "OC1",
+   "name": "Finished-product company",
+   "performance": "Performance, cost, delivery, field quality",
+   "differs": "Receives requirements and does a lot of integration"
+  },
+  {
+   "code": "OC2",
+   "name": "Component, equipment or materials company",
+   "performance": "Meeting customer specs, yield, unit price",
+   "differs": "Goes deep in one area and passes customer validation"
+  },
+  {
+   "code": "OC3",
+   "name": "Engineering and technical services",
+   "performance": "Deadlines, use in the client's decisions, repeat business",
+   "differs": "Takes on someone else's problem, states its assumptions openly and delivers an answer"
+  },
+  {
+   "code": "OC4",
+   "name": "Government-funded research institute",
+   "performance": "Project goals, technology level, transferability",
+   "differs": "Project templates and interim reviews set the schedule"
+  },
+  {
+   "code": "OC5",
+   "name": "University and research lab",
+   "performance": "Novelty, reproducibility, scholarly contribution",
+   "differs": "Has to establish the validity of its own methods"
+  },
+  {
+   "code": "OC6",
+   "name": "Public sector, regulation and certification",
+   "performance": "Judgments of compliance with standards, and their basis",
+   "differs": "The traceability of the judgment is the output"
+  },
+  {
+   "code": "OC7",
+   "name": "Startup or small manufacturer",
+   "performance": "A working product, launched before the money runs out",
+   "differs": "One person takes on several roles at once"
+  }
+ ],
+ "job_aliases": [
+  {
+   "posting_name": "Analog circuit design",
+   "td": [
+    "TD01"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC7"
+   ],
+   "distinguisher": "Has authority to change component values and operating points"
+  },
+  {
+   "posting_name": "Power supply circuit design",
+   "td": [
+    "TD08",
+    "TD01"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC7"
+   ],
+   "distinguisher": "Sets switching conditions and thermal design themselves"
+  },
+  {
+   "posting_name": "Digital logic design",
+   "td": [
+    "TD02"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Sets logic architecture and timing constraints themselves"
+  },
+  {
+   "posting_name": "Circuit verification",
+   "td": [
+    "TD02"
+   ],
+   "rf": [
+    "RF3"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Sets what to verify and the pass criteria themselves"
+  },
+  {
+   "posting_name": "Embedded software",
+   "td": [
+    "TD03"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC7"
+   ],
+   "distinguisher": "Sets loop periods, priorities and device configuration themselves"
+  },
+  {
+   "posting_name": "Firmware development",
+   "td": [
+    "TD03"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC7"
+   ],
+   "distinguisher": "Sets register configuration and interrupt structure themselves"
+  },
+  {
+   "posting_name": "Signal processing development",
+   "td": [
+    "TD04"
+   ],
+   "rf": [
+    "RF1",
+    "RF2"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC4"
+   ],
+   "distinguisher": "Sets sampling and filter settings themselves"
+  },
+  {
+   "posting_name": "Image and audio processing development",
+   "td": [
+    "TD04"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC7"
+   ],
+   "distinguisher": "Sets processing stages and quality metrics themselves"
+  },
+  {
+   "posting_name": "Communication modem design",
+   "td": [
+    "TD05"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Sets modulation and coding settings themselves"
+  },
+  {
+   "posting_name": "Network equipment development",
+   "td": [
+    "TD05"
+   ],
+   "rf": [
+    "RF1",
+    "RF3"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Sets protocol settings and performance criteria themselves"
+  },
+  {
+   "posting_name": "Antenna design",
+   "td": [
+    "TD06"
+   ],
+   "rf": [
+    "RF1",
+    "RF2"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Sets structural dimensions and the feed method themselves"
+  },
+  {
+   "posting_name": "RF circuit design",
+   "td": [
+    "TD06",
+    "TD01"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Sets the matching structure and loss allocation themselves"
+  },
+  {
+   "posting_name": "EM simulation",
+   "td": [
+    "TD06"
+   ],
+   "rf": [
+    "RF2"
+   ],
+   "oc": [
+    "OC2",
+    "OC3",
+    "OC4"
+   ],
+   "distinguisher": "Sets up the simulation mesh and boundary conditions themselves"
+  },
+  {
+   "posting_name": "Semiconductor device development",
+   "td": [
+    "TD07"
+   ],
+   "rf": [
+    "RF7",
+    "RF1"
+   ],
+   "oc": [
+    "OC2",
+    "OC4",
+    "OC5"
+   ],
+   "distinguisher": "Sets device structure and target characteristics themselves"
+  },
+  {
+   "posting_name": "Semiconductor process development",
+   "td": [
+    "TD07"
+   ],
+   "rf": [
+    "RF4"
+   ],
+   "oc": [
+    "OC2"
+   ],
+   "distinguisher": "Sets process parameters and yield criteria themselves"
+  },
+  {
+   "posting_name": "Device characterization",
+   "td": [
+    "TD07",
+    "TD12"
+   ],
+   "rf": [
+    "RF3"
+   ],
+   "oc": [
+    "OC2",
+    "OC4"
+   ],
+   "distinguisher": "Sets measurement conditions and judgment criteria themselves"
+  },
+  {
+   "posting_name": "Power electronics design",
+   "td": [
+    "TD08"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC7"
+   ],
+   "distinguisher": "Sets converter topology and device ratings themselves"
+  },
+  {
+   "posting_name": "Motor control development",
+   "td": [
+    "TD08",
+    "TD11"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Sets the control method and drive conditions themselves"
+  },
+  {
+   "posting_name": "Electrical design",
+   "td": [
+    "TD09"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC3"
+   ],
+   "distinguisher": "Sets equipment ratings and connections themselves"
+  },
+  {
+   "posting_name": "Power system design",
+   "td": [
+    "TD09"
+   ],
+   "rf": [
+    "RF1",
+    "RF2"
+   ],
+   "oc": [
+    "OC3",
+    "OC6"
+   ],
+   "distinguisher": "Sets protection settings and design margins themselves"
+  },
+  {
+   "posting_name": "Electrical distribution maintenance",
+   "td": [
+    "TD09"
+   ],
+   "rf": [
+    "RF5"
+   ],
+   "oc": [
+    "OC1",
+    "OC6"
+   ],
+   "distinguisher": "Sets inspection intervals and replacement criteria themselves"
+  },
+  {
+   "posting_name": "Renewable power plant design",
+   "td": [
+    "TD10"
+   ],
+   "rf": [
+    "RF1",
+    "RF6"
+   ],
+   "oc": [
+    "OC3",
+    "OC7"
+   ],
+   "distinguisher": "Sets plant capacity and grid connection conditions themselves"
+  },
+  {
+   "posting_name": "Energy storage design",
+   "td": [
+    "TD10"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC2",
+    "OC3"
+   ],
+   "distinguisher": "Sets storage capacity and charge and discharge rules themselves"
+  },
+  {
+   "posting_name": "Power plant operation",
+   "td": [
+    "TD10"
+   ],
+   "rf": [
+    "RF5"
+   ],
+   "oc": [
+    "OC1",
+    "OC6"
+   ],
+   "distinguisher": "Sets operating thresholds and shutdown conditions themselves"
+  },
+  {
+   "posting_name": "Control design",
+   "td": [
+    "TD11"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC3"
+   ],
+   "distinguisher": "Sets control structure and gains themselves"
+  },
+  {
+   "posting_name": "Automation equipment design",
+   "td": [
+    "TD11"
+   ],
+   "rf": [
+    "RF1",
+    "RF6"
+   ],
+   "oc": [
+    "OC1",
+    "OC3",
+    "OC7"
+   ],
+   "distinguisher": "Sets sequences and safety-stop conditions themselves"
+  },
+  {
+   "posting_name": "Instrumentation development",
+   "td": [
+    "TD12",
+    "TD01"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC2",
+    "OC4",
+    "OC7"
+   ],
+   "distinguisher": "Sets the measurement method and uncertainty targets themselves"
+  },
+  {
+   "posting_name": "Test and evaluation",
+   "td": [
+    "TD12"
+   ],
+   "rf": [
+    "RF3"
+   ],
+   "oc": [
+    "OC2",
+    "OC6"
+   ],
+   "distinguisher": "Sets test items and pass criteria themselves"
+  },
+  {
+   "posting_name": "EMC testing",
+   "td": [
+    "TD12",
+    "TD06"
+   ],
+   "rf": [
+    "RF3"
+   ],
+   "oc": [
+    "OC2",
+    "OC6"
+   ],
+   "distinguisher": "Sets the test setup and retest conditions themselves"
+  },
+  {
+   "posting_name": "Reliability evaluation",
+   "td": [
+    "TD12"
+   ],
+   "rf": [
+    "RF8"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Sets accelerated conditions and lifetime criteria themselves"
+  },
+  {
+   "posting_name": "Quality assurance",
+   "td": [
+    "TD12"
+   ],
+   "rf": [
+    "RF8"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Sets corrective actions and recurrence prevention criteria themselves"
+  },
+  {
+   "posting_name": "R&D engineer",
+   "td": [
+    "TD07",
+    "TD04",
+    "TD06"
+   ],
+   "rf": [
+    "RF7"
+   ],
+   "oc": [
+    "OC4",
+    "OC5"
+   ],
+   "distinguisher": "Builds the method itself when there is no answer yet"
+  }
+ ],
+ "boundaries": [
+  {
+   "pair": "Analog circuit design vs. power electronics",
+   "a": {
+    "td": "TD01",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD08",
+    "rf": "RF1"
+   },
+   "shared": "Both design circuits that handle voltage and current",
+   "a_difference": "Responsible for gain and noise of small signals",
+   "b_difference": "Responsible for losses and heating at high power",
+   "a_question": "Did you split up the noise budget yourself?",
+   "b_question": "Have you calculated losses and temperature rise yourself?"
+  },
+  {
+   "pair": "Digital logic design vs. embedded firmware",
+   "a": {
+    "td": "TD02",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD03",
+    "rf": "RF1"
+   },
+   "shared": "Both design logic behavior and make it work",
+   "a_difference": "Responsible for logic and timing implemented in hardware",
+   "b_difference": "Responsible for the execution order and timing that drive a device",
+   "a_question": "Have you set timing constraints yourself and met them?",
+   "b_question": "Have you set loop periods and priorities yourself?"
+  },
+  {
+   "pair": "Signal processing vs. communications",
+   "a": {
+    "td": "TD04",
+    "rf": "RF2"
+   },
+   "b": {
+    "td": "TD05",
+    "rf": "RF1"
+   },
+   "shared": "Both handle signals with equations and algorithms",
+   "a_difference": "Responsible for the information extracted and the processing quality",
+   "b_difference": "Responsible for link quality and compliance with standards",
+   "a_question": "Have you calculated before-and-after metrics yourself?",
+   "b_question": "Have you built a link budget yourself?"
+  },
+  {
+   "pair": "Communications vs. electromagnetics and RF",
+   "a": {
+    "td": "TD05",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD06",
+    "rf": "RF2"
+   },
+   "shared": "Both deal with frequencies and propagation conditions",
+   "a_difference": "Responsible for the transmission scheme and protocol settings",
+   "b_difference": "Responsible for the propagating fields and matching structures",
+   "a_question": "Did you set modulation and coding yourself?",
+   "b_question": "Did you set up the simulation mesh and boundary conditions yourself?"
+  },
+  {
+   "pair": "Semiconductor devices vs. analog circuits",
+   "a": {
+    "td": "TD07",
+    "rf": "RF7"
+   },
+   "b": {
+    "td": "TD01",
+    "rf": "RF1"
+   },
+   "shared": "Device characteristics set circuit performance",
+   "a_difference": "Responsible for device structure and process conditions",
+   "b_difference": "Responsible for circuit operating points using those devices",
+   "a_question": "Did you set the process parameters yourself?",
+   "b_question": "Did you choose devices yourself by comparing their characteristics?"
+  },
+  {
+   "pair": "Semiconductor device development vs. mass production processes",
+   "a": {
+    "td": "TD07",
+    "rf": "RF7"
+   },
+   "b": {
+    "td": "TD07",
+    "rf": "RF4"
+   },
+   "shared": "Both use the same process tools and measurement equipment",
+   "a_difference": "Responsible for creating characteristics that do not exist yet",
+   "b_difference": "Responsible for yield, so the same characteristics repeat",
+   "a_question": "Have you set target characteristics yourself?",
+   "b_question": "Did you set yield criteria and process control limits yourself?"
+  },
+  {
+   "pair": "Power electronics vs. electric machines and power systems",
+   "a": {
+    "td": "TD08",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD09",
+    "rf": "RF1"
+   },
+   "shared": "Both deal with equipment that converts and delivers power",
+   "a_difference": "Responsible for switching and thermal design inside the converter",
+   "b_difference": "Responsible for ratings and protection coordination across the whole system",
+   "a_question": "Did you set the switching frequency yourself?",
+   "b_question": "Did you set the protection settings yourself?"
+  },
+  {
+   "pair": "Electric machines and power systems vs. energy and renewable systems",
+   "a": {
+    "td": "TD09",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD10",
+    "rf": "RF6"
+   },
+   "shared": "Both design equipment that supplies power",
+   "a_difference": "Responsible for equipment ratings and protection matched to a given load",
+   "b_difference": "Responsible for variable generation resources and the operating strategy",
+   "a_question": "Did you size the equipment yourself from load calculations?",
+   "b_question": "Did you estimate energy yield yourself from resource data?"
+  },
+  {
+   "pair": "Control and automation vs. embedded firmware",
+   "a": {
+    "td": "TD11",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD03",
+    "rf": "RF1"
+   },
+   "shared": "Both deal with code running on a controller",
+   "a_difference": "Responsible for the response and stability targets",
+   "b_difference": "Responsible for how the code runs on the device",
+   "a_question": "Did you set the gains yourself to tune the response?",
+   "b_question": "Did you set the device configuration and execution periods yourself?"
+  },
+  {
+   "pair": "Control and automation vs. power electronics",
+   "a": {
+    "td": "TD11",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD08",
+    "rf": "RF1"
+   },
+   "shared": "Both share the work of driving motors",
+   "a_difference": "Responsible for the position and speed response",
+   "b_difference": "Responsible for the converter that produces the current",
+   "a_question": "Did you turn response requirements into numbers and set the gains?",
+   "b_question": "Did you set device ratings and thermal design yourself?"
+  },
+  {
+   "pair": "Measurement and testing vs. electromagnetics and RF",
+   "a": {
+    "td": "TD12",
+    "rf": "RF3"
+   },
+   "b": {
+    "td": "TD06",
+    "rf": "RF2"
+   },
+   "shared": "Both use RF measurement equipment",
+   "a_difference": "Responsible for measurement uncertainty and the verdict",
+   "b_difference": "Responsible for the structure and analysis behind the measured value",
+   "a_question": "Did you split up the uncertainty budget yourself?",
+   "b_question": "Have you seen a measured value change after changing the structure?"
+  },
+  {
+   "pair": "Test and verification vs. quality and reliability",
+   "a": {
+    "td": "TD12",
+    "rf": "RF3"
+   },
+   "b": {
+    "td": "TD12",
+    "rf": "RF8"
+   },
+   "shared": "Both read standards and measurement data",
+   "a_difference": "Responsible for whether a single verdict can be reproduced",
+   "b_difference": "Responsible for whether that verdict holds through mass production and the whole service life",
+   "a_question": "Have you reproduced that verdict on different equipment?",
+   "b_question": "Did you decide the actions to keep the same defect from recurring?"
+  },
+  {
+   "pair": "Signal processing vs. control and automation",
+   "a": {
+    "td": "TD04",
+    "rf": "RF2"
+   },
+   "b": {
+    "td": "TD11",
+    "rf": "RF1"
+   },
+   "shared": "Both deal with values that change over time",
+   "a_difference": "Responsible for extracting information from past data",
+   "b_difference": "Responsible for keeping a moving system in the desired state",
+   "a_question": "Have you checked the processing results against another method?",
+   "b_question": "Did you set the safety-stop conditions yourself?"
+  }
+ ]
+}

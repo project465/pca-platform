@@ -1,0 +1,1385 @@
+{
+ "schema_version": "ee-v1-domains.1",
+ "assessment_version": "EE_V1",
+ "note": "For each domain: the eight workflow steps and the performed and owned conditions for each of the eight judgment axes. Items, results and evidence input all read this one file. `verify_targets` and `artifacts` are what the result's action items draw on, so they must be concrete here to avoid vague wording",
+ "workflow_steps": [
+  "How the problem arrives",
+  "Inputs received",
+  "What gets decided first",
+  "Methods used",
+  "Tools used",
+  "Deliverables produced",
+  "What it is compared against",
+  "When it goes wrong"
+ ],
+ "domains": [
+  {
+   "code": "TD01",
+   "name": "Analog Circuit Design",
+   "required_axes": [
+    "J3",
+    "J5"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Signal ranges and supply conditions required by a sensor or load arrive as a specification"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Input and output voltage and current, bandwidth, noise limits, operating temperature range"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Circuit topology, type of active device, and which performance target to protect first"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Operating point design, small-signal analysis, noise budget allocation, stability review"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Circuit simulator, component datasheets, calculation sheets, test equipment"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Schematic, component selection table, design calculations, prototype board and measurements"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Simulated values, datasheet limits, prototype board measurements, existing circuits"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "When oscillation, saturation or excess noise appears, narrow the cause to component values, layout or supply"
+    }
+   ],
+   "tools": [
+    "Circuit simulator",
+    "Datasheets",
+    "Oscilloscope",
+    "Network analyzer",
+    "Design calculations"
+   ],
+   "artifacts": [
+    "Schematic",
+    "Component selection table",
+    "Design calculations",
+    "Prototype board",
+    "Measurement report"
+   ],
+   "verify_targets": [
+    "Simulation results",
+    "Datasheet limits",
+    "Prototype board measurements",
+    "Hand calculations",
+    "Existing circuits"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down what the circuit would cover, based on the given spec",
+     "l3": "Decided the functions and limits the circuit had to meet when there was no spec"
+    },
+    "J2": {
+     "l2": "Turned the requirements into gain, bandwidth and noise figures",
+     "l3": "Set priorities between conflicting noise and current-draw targets"
+    },
+    "J3": {
+     "l2": "Set component values and the bias operating point",
+     "l3": "Allocated the noise budget and margins based on what each function needed"
+    },
+    "J4": {
+     "l2": "Checked the operating point and frequency response in a circuit simulator",
+     "l3": "Backed up the simulation results separately with hand calculations"
+    },
+    "J5": {
+     "l2": "Delivered the schematic and component selection table",
+     "l3": "A prototype board was built from that schematic"
+    },
+    "J6": {
+     "l2": "Compared simulated and measured values",
+     "l3": "Judged the design by checking datasheet limits against design margins"
+    },
+    "J7": {
+     "l2": "Changed component values after running into oscillation or saturation",
+     "l3": "Narrowed the cause to components, layout or supply and stopped it from recurring"
+    },
+    "J8": {
+     "l2": "Presented the schematic at a design review",
+     "l3": "That circuit went onto a product board"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Product performance, current draw and cost",
+    "OC2": "Meeting customer specs and unit price",
+    "OC3": "Circuit deliverables on schedule and customer sign-off",
+    "OC4": "Circuit modules as project deliverables",
+    "OC5": "Circuits for measurement setups and the methods section of a paper",
+    "OC6": "Circuits that meet standards, with the supporting evidence",
+    "OC7": "A working prototype board and the launch schedule"
+   }
+  },
+  {
+   "code": "TD02",
+   "name": "Digital and Logic Design",
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "The functions to implement and the required throughput arrive in a spec or a higher-level design"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Clock frequency, allowed latency, resource limits, interface specifications"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "State machine structure and how many pipeline stages to use"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "HDL design, writing timing constraints, synthesis and place and route, simulation-based verification"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Logic simulator, synthesis tool, logic analyzer, verification scripts"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "HDL code, constraint files, synthesis reports, verification results, implementation image"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Simulation waveforms, timing reports, measured behavior, reference model"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "When timing fails or the logic misbehaves, narrow the cause to logic, constraints or clocks"
+    }
+   ],
+   "tools": [
+    "Logic simulator",
+    "Synthesis tool",
+    "Timing analysis",
+    "Logic analyzer",
+    "Version control"
+   ],
+   "artifacts": [
+    "HDL code",
+    "Constraint file",
+    "Testbench",
+    "Synthesis and timing reports",
+    "Bitstream file"
+   ],
+   "verify_targets": [
+    "Simulation waveforms",
+    "Timing report",
+    "Reference model",
+    "Measured behavior",
+    "Specification documents"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down what the logic would cover, based on the given spec",
+     "l3": "Decided the processing flow and boundaries when there was no spec"
+    },
+    "J2": {
+     "l2": "Turned the requirements into clock frequency and latency figures",
+     "l3": "Set priorities between resource limits and throughput"
+    },
+    "J3": {
+     "l2": "Set the state machine structure and the pipeline stages",
+     "l3": "Chose clock domains and synchronization methods based on what each function needed"
+    },
+    "J4": {
+     "l2": "Wrote the HDL and ran it in a simulator",
+     "l3": "Built a testbench and covered the cases"
+    },
+    "J5": {
+     "l2": "Delivered the HDL code and the constraint file",
+     "l3": "That code passed synthesis and ran on a board"
+    },
+    "J6": {
+     "l2": "Compared simulation waveforms with the actual behavior",
+     "l3": "Judged the design by checking timing reports against design margins"
+    },
+    "J7": {
+     "l2": "Fixed the logic after running into a malfunction",
+     "l3": "Narrowed the cause to logic, constraints or clocks and stopped it from recurring"
+    },
+    "J8": {
+     "l2": "Explained the logic architecture in a design review",
+     "l3": "That module was integrated into a higher-level system"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Product features and resource usage",
+    "OC2": "Meeting customer specs and yield",
+    "OC3": "Verified modules on schedule",
+    "OC4": "Hardware modules as project deliverables",
+    "OC5": "Experimental logic and the implementation section of a paper",
+    "OC6": "Implementations that meet standards, with the supporting evidence",
+    "OC7": "Working prototype logic and the launch schedule"
+   }
+  },
+  {
+   "code": "TD03",
+   "name": "Embedded Systems and Firmware",
+   "required_axes": [
+    "J3",
+    "J7"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "The devices to control and the required response times arrive as requirements"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "List of I/O devices, loop periods, memory and power limits, communication standards"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "How to split the work into periodic tasks and where to place interrupts"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Driver development, scheduling design, memory layout, power mode design"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "IDE, debugger, logic analyzer, ammeter, version control"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Firmware source, build outputs, runtime logs, current-draw measurements"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Required response times, log timestamps, measured current, reference implementation"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "When the device freezes or lags, narrow the cause to interrupts, memory or power"
+    }
+   ],
+   "tools": [
+    "IDE",
+    "Debugger",
+    "Logic analyzer",
+    "Current meter",
+    "Version control"
+   ],
+   "artifacts": [
+    "Firmware source",
+    "Build outputs",
+    "Runtime logs",
+    "Current-draw measurements",
+    "Interface documents"
+   ],
+   "verify_targets": [
+    "Required response time",
+    "Log timestamps",
+    "Measured current draw",
+    "Reference implementation",
+    "Specification documents"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down what the firmware would cover, based on the given requirements",
+     "l3": "Decided operating conditions and limits when there were no requirements"
+    },
+    "J2": {
+     "l2": "Turned the requirements into loop-period and response-time figures",
+     "l3": "Set priorities between memory and power limits"
+    },
+    "J3": {
+     "l2": "Set the interrupt structure and loop periods",
+     "l3": "Set power-mode switching conditions based on what each function needed"
+    },
+    "J4": {
+     "l2": "Traced the behavior with a debugger and logs",
+     "l3": "Measured signal timing myself with a logic analyzer"
+    },
+    "J5": {
+     "l2": "Delivered working firmware and interface documents",
+     "l3": "That firmware was loaded onto a device and used"
+    },
+    "J6": {
+     "l2": "Compared the required response time with the measured time",
+     "l3": "Judged the design by checking measured current draw against the design budget"
+    },
+    "J7": {
+     "l2": "Restructured the firmware after running into freezes or delays",
+     "l3": "Narrowed the cause to interrupts, memory or power and stopped it from recurring"
+    },
+    "J8": {
+     "l2": "Submitted the structure for code review",
+     "l3": "A device ran in the field on that firmware"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Product stability and power consumption",
+    "OC2": "Fit in customer devices and unit price",
+    "OC3": "Working firmware on schedule",
+    "OC4": "Control software for project hardware",
+    "OC5": "Control of experimental setups and the methods section of a paper",
+    "OC6": "Behavior that meets standards, with records",
+    "OC7": "A working prototype and the launch schedule"
+   }
+  },
+  {
+   "code": "TD04",
+   "name": "Signal Processing",
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "The signals to measure and the information to extract arrive as requirements"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Sampling rate, noise level, allowed latency, computing resources"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Filter type and order, and what frame length to use for the transform"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Filter design, window selection, applying transforms, computing performance metrics"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Numerical computing tools, filter design tools, data acquisition hardware, datasets"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Processing code, filter coefficients, performance metrics, before-and-after plots"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Theoretical values, results from other methods, real measured signals, public data"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "When results are unstable, narrow the cause to sampling, filtering or noise"
+    }
+   ],
+   "tools": [
+    "Numerical computing tool",
+    "Filter design tool",
+    "Data acquisition hardware",
+    "Spectrum analyzer"
+   ],
+   "artifacts": [
+    "Processing code",
+    "Filter coefficients",
+    "Performance metrics",
+    "Before-and-after comparison",
+    "Analysis report"
+   ],
+   "verify_targets": [
+    "Theoretical values",
+    "Other processing methods",
+    "Real measured signals",
+    "Public data",
+    "Reference implementation"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down the information to extract from the given signal",
+     "l3": "Defined what counts as signal and what counts as noise"
+    },
+    "J2": {
+     "l2": "Turned the requirements into sampling-rate and latency figures",
+     "l3": "Set priorities between latency and the amount of noise removed"
+    },
+    "J3": {
+     "l2": "Set the filter type and order",
+     "l3": "Set the frame length and overlap based on what each function needed"
+    },
+    "J4": {
+     "l2": "Designed and applied a filter with a numerical computing tool",
+     "l3": "Calculated and recorded the metrics before and after processing"
+    },
+    "J5": {
+     "l2": "Delivered the processing code and filter coefficients",
+     "l3": "That processing went into a device or an analysis pipeline"
+    },
+    "J6": {
+     "l2": "Compared the theoretical response with the actual processing result",
+     "l3": "Judged the result by checking it against another processing method"
+    },
+    "J7": {
+     "l2": "Changed the conditions after the results proved unstable",
+     "l3": "Narrowed the cause to sampling, filtering or noise and stopped it from recurring"
+    },
+    "J8": {
+     "l2": "Presented analysis results at a meeting",
+     "l3": "The next decision was made based on those processing results"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Product recognition performance and processing latency",
+    "OC2": "Performance under customer signal conditions",
+    "OC3": "Analysis results on schedule and customer sign-off",
+    "OC4": "Reaching the project's target metrics",
+    "OC5": "Novelty and reproducibility of the method",
+    "OC6": "Compliance judgments, with the supporting evidence",
+    "OC7": "A working processing pipeline and the launch schedule"
+   }
+  },
+  {
+   "code": "TD05",
+   "name": "Communications and Networking",
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "The data volume, distance and radio environment arrive as conditions"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Data rate and error-rate limits, latency limits, usable frequencies"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Modulation scheme, code rate and access scheme, and which metric to protect first"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Link budget calculation, error-rate estimation, congestion estimation, retransmission design"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Communication simulator, spectrum analyzer, packet analyzer, link budget sheet"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Link budget document, protocol settings table, transmission test report, test-network measurement records"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Theoretical error rate, test-network measurements, limits in the standard, records of existing links"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "When transmission drops, narrow the cause to propagation, equipment or settings"
+    }
+   ],
+   "tools": [
+    "Communication simulator",
+    "Spectrum analyzer",
+    "Packet analyzer",
+    "Link budget sheet",
+    "Signal generator"
+   ],
+   "artifacts": [
+    "Link budget document",
+    "Protocol settings table",
+    "Transmission test report",
+    "Test-network diagram",
+    "Measurement records"
+   ],
+   "verify_targets": [
+    "Theoretical error rate",
+    "Test-network measurements",
+    "Limits in the standard",
+    "Hand calculations",
+    "Records of existing links"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down which part of the path the link would cover, based on the given conditions",
+     "l3": "Decided the quality and limits the link would guarantee when no conditions were given"
+    },
+    "J2": {
+     "l2": "Turned the requirements into data-rate and error-rate figures",
+     "l3": "Set priorities between conflicting data rate and range"
+    },
+    "J3": {
+     "l2": "Set the modulation scheme and code rate",
+     "l3": "Allocated the link budget margin to each section"
+    },
+    "J4": {
+     "l2": "Checked the error rate with a communication simulator",
+     "l3": "Backed up the link budget separately with a hand calculation"
+    },
+    "J5": {
+     "l2": "Delivered the link budget document and the protocol settings table",
+     "l3": "A test network was set up from that settings table"
+    },
+    "J6": {
+     "l2": "Compared the theoretical error rate with test-network measurements",
+     "l3": "Judged the results by checking measurements against the limits in the standard"
+    },
+    "J7": {
+     "l2": "Changed settings after running into dropped sections",
+     "l3": "Narrowed the cause to propagation, equipment or settings and stopped it from recurring"
+    },
+    "J8": {
+     "l2": "Presented the link budget at a network design review",
+     "l3": "Those settings went into a live network"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Product link quality, power consumption and cost",
+    "OC2": "Meeting customer specs and the delivered unit price",
+    "OC3": "Network design deliverables on schedule and customer sign-off",
+    "OC4": "Transmission test results as project deliverables",
+    "OC5": "Experimental communication links and the results section of a paper",
+    "OC6": "Compliance with standards, with the supporting evidence",
+    "OC7": "A working test network and the launch schedule"
+   }
+  },
+  {
+   "code": "TD06",
+   "name": "Electromagnetics and RF",
+   "required_axes": [
+    "J4",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "The operating frequency, radiation requirements and installation space arrive as conditions"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Gain and VSWR, bandwidth, polarization, installation constraints"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Antenna structure, feed method and matching network, and which metric to protect first"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "EM field simulation, matching calculations, loss estimation, review of structural changes"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "EM field solver, vector network analyzer, anechoic chamber, matching calculation tool"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Simulation model, antenna drawings, matching network schematic, pattern measurement records"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Simulation results, measured patterns, theoretical formulas, records of existing antennas"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "When VSWR goes out of spec, narrow the cause to structure, matching or nearby metal"
+    }
+   ],
+   "tools": [
+    "EM field solver",
+    "Vector network analyzer",
+    "Anechoic chamber",
+    "Matching calculation tool",
+    "Impedance analyzer"
+   ],
+   "artifacts": [
+    "Simulation model",
+    "Antenna drawings",
+    "Matching network schematic",
+    "Pattern measurement records",
+    "Simulation report"
+   ],
+   "verify_targets": [
+    "Simulation results",
+    "Measured patterns",
+    "Theoretical formulas",
+    "Hand calculations",
+    "Records of existing antennas"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down the coverage area to handle at the given frequency",
+     "l3": "Decided what the antenna would cover and its limits when there were no requirements"
+    },
+    "J2": {
+     "l2": "Turned the requirements into gain and VSWR figures",
+     "l3": "Set priorities between conflicting bandwidth and size"
+    },
+    "J3": {
+     "l2": "Set the antenna dimensions and matching component values",
+     "l3": "Allocated the loss margin to each section of the feed"
+    },
+    "J4": {
+     "l2": "Obtained radiation patterns with an EM field solver",
+     "l3": "Set up the simulation mesh and boundary conditions myself"
+    },
+    "J5": {
+     "l2": "Delivered the simulation model and antenna drawings",
+     "l3": "An antenna was built from those drawings"
+    },
+    "J6": {
+     "l2": "Compared simulation results with measured patterns",
+     "l3": "Judged the results by checking simulated values against theoretical formulas"
+    },
+    "J7": {
+     "l2": "Changed the structure after running into out-of-spec VSWR",
+     "l3": "Narrowed the cause to structure, matching or nearby metal and stopped it from recurring"
+    },
+    "J8": {
+     "l2": "Presented simulation results at a design review",
+     "l3": "That antenna went into a product"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Product range, size and cost",
+    "OC2": "Meeting customer specs and the delivered unit price",
+    "OC3": "Simulation deliverables on schedule and customer sign-off",
+    "OC4": "Antenna modules as project deliverables",
+    "OC5": "Experimental radiating structures and the methods section of a paper",
+    "OC6": "Compliance with radio regulations, with the supporting evidence",
+    "OC7": "A working prototype antenna and the launch schedule"
+   }
+  },
+  {
+   "code": "TD07",
+   "name": "Semiconductor Devices and Processing",
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Target device characteristics and the available process equipment arrive as conditions"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Threshold voltage and leakage current, breakdown voltage, uniformity limits"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Device structure, process sequence and parameters, and which characteristic to protect first"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Device simulation, characterization planning, yield estimation, failure analysis"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Device simulator, semiconductor parameter analyzer, process recipe sheet, microscope"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Process recipe sheet, device characterization report, model parameters, failure analysis report"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Simulated characteristics, measured characteristics, process spec limits, records of earlier devices"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "When characteristics miss the target, narrow the cause to structure, process conditions or measurement"
+    }
+   ],
+   "tools": [
+    "Device simulator",
+    "Semiconductor parameter analyzer",
+    "Process recipe sheet",
+    "Microscope",
+    "Model extraction tool"
+   ],
+   "artifacts": [
+    "Process recipe sheet",
+    "Device characterization report",
+    "Device model parameters",
+    "Failure analysis report",
+    "Sample evaluation records"
+   ],
+   "verify_targets": [
+    "Simulated characteristics",
+    "Measured characteristics",
+    "Process spec limits",
+    "Hand calculations",
+    "Records of earlier devices"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down the range of devices to cover, based on the given target characteristics",
+     "l3": "Decided the characteristics and limits the device had to meet when there were no targets"
+    },
+    "J2": {
+     "l2": "Turned the requirements into threshold-voltage and leakage-current figures",
+     "l3": "Set priorities between conflicting breakdown voltage and switching speed"
+    },
+    "J3": {
+     "l2": "Set the device structure dimensions and process parameters",
+     "l3": "Allocated the characteristic margins to each process step"
+    },
+    "J4": {
+     "l2": "Obtained current characteristics with a device simulator",
+     "l3": "Set the measurement conditions and extracted model parameters myself"
+    },
+    "J5": {
+     "l2": "Delivered the process recipe sheet and the device characterization report",
+     "l3": "Samples were fabricated from that recipe sheet"
+    },
+    "J6": {
+     "l2": "Compared simulated and measured characteristics",
+     "l3": "Judged the results by checking the measured distribution against the process spec limits"
+    },
+    "J7": {
+     "l2": "Changed the conditions after characteristics missed the target",
+     "l3": "Narrowed the cause to structure, process or measurement and stopped it from recurring"
+    },
+    "J8": {
+     "l2": "Presented the characterization report at a process review",
+     "l3": "Those conditions went into the mass production process"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Product device characteristics, yield and cost",
+    "OC2": "Meeting customer specs and delivered yield",
+    "OC3": "Process deliverables on schedule and customer sign-off",
+    "OC4": "Samples and characterization data as project deliverables",
+    "OC5": "Sample fabrication results and the results section of a paper",
+    "OC6": "Compliance with specifications, with the supporting evidence",
+    "OC7": "Working prototype devices and the launch schedule"
+   }
+  },
+  {
+   "code": "TD08",
+   "name": "Power Electronics",
+   "required_axes": [
+    "J3",
+    "J5"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Input and output voltages, power level and installation environment arrive as a specification"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Conversion efficiency and output ripple, switching frequency, allowed temperature"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Converter topology, switching devices and passive components, and which metric to protect first"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Loss calculation, magnetics design, thermal calculation, control loop design"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Power circuit simulator, power analyzer, thermal camera, loss calculation sheet"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Converter schematic, magnetic component specs, loss and thermal calculations, prototype power supply"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Calculated losses, measured efficiency, device ratings, records of existing power supplies"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "When a device overheats, narrow the cause to switching, magnetics or thermal design"
+    }
+   ],
+   "tools": [
+    "Power circuit simulator",
+    "Power analyzer",
+    "Thermal camera",
+    "Loss calculation sheet",
+    "High-voltage probe"
+   ],
+   "artifacts": [
+    "Converter schematic",
+    "Magnetic component specs",
+    "Loss and thermal calculations",
+    "Prototype power supply",
+    "Efficiency measurement report"
+   ],
+   "verify_targets": [
+    "Calculated losses",
+    "Measured efficiency",
+    "Device ratings",
+    "Hand calculations",
+    "Records of existing power supplies"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down what the converter would cover, based on the given spec",
+     "l3": "Decided the efficiency and limits the converter would guarantee when there was no spec"
+    },
+    "J2": {
+     "l2": "Turned the requirements into efficiency and output-ripple figures",
+     "l3": "Set priorities between conflicting efficiency and size"
+    },
+    "J3": {
+     "l2": "Set the switching frequency and device ratings",
+     "l3": "Allocated the loss margin to each conversion stage"
+    },
+    "J4": {
+     "l2": "Checked the waveforms with a power circuit simulator",
+     "l3": "Backed up the losses and thermal design separately with hand calculations"
+    },
+    "J5": {
+     "l2": "Delivered the converter schematic and the magnetic component specs",
+     "l3": "A prototype power supply was built to those specs"
+    },
+    "J6": {
+     "l2": "Compared calculated losses with measured efficiency",
+     "l3": "Judged the design by checking device ratings against the actual stress"
+    },
+    "J7": {
+     "l2": "Changed the design after a device overheated",
+     "l3": "Narrowed the cause to switching, magnetics or thermal design and stopped it from recurring"
+    },
+    "J8": {
+     "l2": "Presented the loss calculations at a design review",
+     "l3": "That power supply went into a product"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Product efficiency, size and cost",
+    "OC2": "Meeting customer specs and the delivered unit price",
+    "OC3": "Power supply design deliverables on schedule and customer sign-off",
+    "OC4": "Converter modules as project deliverables",
+    "OC5": "Power supplies for experimental setups and the methods section of a paper",
+    "OC6": "Compliance with safety standards, with the supporting evidence",
+    "OC7": "A working prototype power supply and the launch schedule"
+   }
+  },
+  {
+   "code": "TD09",
+   "name": "Electric Machines and Power Systems",
+   "required_axes": [
+    "J2",
+    "J3"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "The load list, supply conditions and installation codes arrive as conditions"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Ratings and voltage-variation limits, short-circuit capacity, protection coordination requirements"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Equipment ratings, connections and protection settings, and which condition to meet first"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Load calculation, short-circuit calculation, protection coordination review, voltage drop calculation"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Power system analysis tool, single-line diagram software, relay test set, insulation tester"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Single-line diagram, sizing calculations, protection settings table, test report"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Power system analysis results, field measurements, code limits, records of existing systems"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "When protection operates incorrectly, narrow the cause to load, settings or wiring"
+    }
+   ],
+   "tools": [
+    "Power system analysis tool",
+    "Single-line diagram software",
+    "Relay test set",
+    "Insulation tester",
+    "Power quality analyzer"
+   ],
+   "artifacts": [
+    "Single-line diagram",
+    "Sizing calculations",
+    "Protection settings table",
+    "Test report",
+    "Operating instructions"
+   ],
+   "verify_targets": [
+    "Power system analysis results",
+    "Field measurements",
+    "Code limits",
+    "Hand calculations",
+    "Records of existing systems"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down the part of the system to cover, based on the given load list",
+     "l3": "Decided the conditions and limits the system would guarantee when there was no data"
+    },
+    "J2": {
+     "l2": "Turned the requirements into rating and voltage-variation figures",
+     "l3": "Set priorities between conflicting supply reliability and equipment cost"
+    },
+    "J3": {
+     "l2": "Set equipment ratings and protection settings",
+     "l3": "Allocated the design margin to each section of the system"
+    },
+    "J4": {
+     "l2": "Calculated short-circuit currents with a power system analysis tool",
+     "l3": "Backed up the load calculation separately with a hand calculation"
+    },
+    "J5": {
+     "l2": "Delivered the single-line diagram and the protection settings table",
+     "l3": "Equipment was installed from that single-line diagram"
+    },
+    "J6": {
+     "l2": "Compared analysis results with field measurements",
+     "l3": "Judged the settings by checking them against code limits"
+    },
+    "J7": {
+     "l2": "Changed settings after protection operated incorrectly",
+     "l3": "Narrowed the cause to load, settings or wiring and stopped it from recurring"
+    },
+    "J8": {
+     "l2": "Presented the single-line diagram at a design review",
+     "l3": "Those settings were applied to equipment in operation"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Equipment uptime and electricity cost",
+    "OC2": "Meeting delivered equipment specs and unit price",
+    "OC3": "System design deliverables on schedule and client sign-off",
+    "OC4": "Power system analysis results as project deliverables",
+    "OC5": "Power systems for experimental facilities and the methods section of a paper",
+    "OC6": "Compliance with electrical installation standards, with the supporting evidence",
+    "OC7": "A working power installation and the occupancy schedule"
+   }
+  },
+  {
+   "code": "TD10",
+   "name": "Energy and Renewable Systems",
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Generation resource data, load patterns and grid connection conditions arrive as inputs"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Energy yield and storage capacity, export limits, grid connection requirements"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Plant capacity, configuration and operating strategy, and which metric to protect first"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Energy yield estimation, storage sizing, loss calculation, operation simulation"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Energy yield simulation tool, power quality analyzer, storage management interface, resource data"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Sizing report, system layout, operating strategy document, generation performance report"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Simulated yield, actual generation, grid connection limits, records of existing plants"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "When yield deviates from the simulation, narrow the cause to resource data, equipment or operation"
+    }
+   ],
+   "tools": [
+    "Energy yield simulation tool",
+    "Power quality analyzer",
+    "Storage management interface",
+    "Resource data",
+    "Loss calculation sheet"
+   ],
+   "artifacts": [
+    "Sizing report",
+    "System layout",
+    "Operating strategy document",
+    "Generation performance report",
+    "Grid connection study"
+   ],
+   "verify_targets": [
+    "Simulated yield",
+    "Actual generation",
+    "Grid connection limits",
+    "Hand calculations",
+    "Records of existing plants"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down the scope of the plant to cover, based on the given resource data",
+     "l3": "Decided the yield and limits the plant would guarantee when there was no data"
+    },
+    "J2": {
+     "l2": "Turned the requirements into energy-yield and storage-capacity figures",
+     "l3": "Set priorities between conflicting energy yield and investment cost"
+    },
+    "J3": {
+     "l2": "Set the plant capacity and operating thresholds",
+     "l3": "Allocated the loss margin to each section of the plant"
+    },
+    "J4": {
+     "l2": "Calculated annual energy yield with a yield simulation tool",
+     "l3": "Chose the resource data and set up the simulation conditions myself"
+    },
+    "J5": {
+     "l2": "Delivered the sizing report and the system layout",
+     "l3": "A plant was built from that sizing report"
+    },
+    "J6": {
+     "l2": "Compared simulated yield with actual generation",
+     "l3": "Judged the results by checking measured power quality against grid connection limits"
+    },
+    "J7": {
+     "l2": "Changed the conditions after yield deviated from the simulation",
+     "l3": "Narrowed the cause to resource data, equipment or operation and stopped it from recurring"
+    },
+    "J8": {
+     "l2": "Presented the generation performance report at an operations review",
+     "l3": "That strategy became part of the operating standard"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Generation revenue and plant uptime",
+    "OC2": "Meeting delivered plant performance and unit price",
+    "OC3": "Sizing deliverables on schedule and client sign-off",
+    "OC4": "Operational demonstration data as project deliverables",
+    "OC5": "Operating data from demonstration plants and the results section of a paper",
+    "OC6": "Compliance with grid connection requirements, with the supporting evidence",
+    "OC7": "A demonstration plant in operation and the project schedule"
+   }
+  },
+  {
+   "code": "TD11",
+   "name": "Control and Automation",
+   "required_axes": [
+    "J3",
+    "J7"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Response requirements and safety conditions for the system to be moved arrive as inputs"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Settling time and steady-state error, overshoot limits, safety-stop conditions"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Control structure, gains and sensor setup, and which metric to protect first"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Modeling, gain tuning, stability review, safety circuit design"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Control design tool, data acquisition unit, PLC, servo drive"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Control block diagram, gain settings table, sequence documents, response measurement records"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Simulated response, measured response, safety standards, responses of existing equipment"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "When oscillation persists, narrow the cause to sensors, gains or mechanics"
+    }
+   ],
+   "tools": [
+    "Control design tool",
+    "Data acquisition unit",
+    "PLC",
+    "Servo drive",
+    "Response measurement equipment"
+   ],
+   "artifacts": [
+    "Control block diagram",
+    "Gain settings table",
+    "Sequence documents",
+    "Response measurement records",
+    "Safety circuit diagram"
+   ],
+   "verify_targets": [
+    "Simulated response",
+    "Measured response",
+    "Safety standards",
+    "Hand calculations",
+    "Responses of existing equipment"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down the range of motion the control would cover, based on the given requirements",
+     "l3": "Decided the response and limits the control would guarantee when there were no requirements"
+    },
+    "J2": {
+     "l2": "Turned the requirements into settling-time and error figures",
+     "l3": "Set priorities between conflicting response speed and stability"
+    },
+    "J3": {
+     "l2": "Set controller gains and the sensor setup",
+     "l3": "Allocated stability margins to each control stage"
+    },
+    "J4": {
+     "l2": "Simulated the response with a control design tool",
+     "l3": "Fitted model coefficients to the measured response myself"
+    },
+    "J5": {
+     "l2": "Delivered the control block diagram and gain settings table",
+     "l3": "Equipment was run with those settings"
+    },
+    "J6": {
+     "l2": "Compared simulated and actual responses",
+     "l3": "Judged the design by checking stop behavior against safety standards"
+    },
+    "J7": {
+     "l2": "Changed the gains after oscillation persisted",
+     "l3": "Narrowed the cause to sensors, gains or mechanics and stopped it from recurring"
+    },
+    "J8": {
+     "l2": "Presented response records at an operations review",
+     "l3": "That control became part of the equipment standard"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Equipment productivity and defect rate",
+    "OC2": "Meeting delivered control specs and unit price",
+    "OC3": "Control deliverables on schedule and client sign-off",
+    "OC4": "Control demonstration results as project deliverables",
+    "OC5": "Control of experimental setups and the methods section of a paper",
+    "OC6": "Compliance with safety standards, with the supporting evidence",
+    "OC7": "Working automation equipment and the delivery date"
+   }
+  },
+  {
+   "code": "TD12",
+   "name": "Measurement, Testing and EMC",
+   "required_axes": [
+    "J6",
+    "J7"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "The applicable standards, the items to test and the available equipment arrive as conditions"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Test items and measurement uncertainty limits, pass criteria, sample counts"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Test items, measurement conditions and pass/fail criteria, and which item to check first"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Uncertainty estimation, writing test procedures, analyzing noise sources, retest design"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Spectrum analyzer, EMC test chamber, reliability test equipment, uncertainty calculation sheet"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Test plan, measurement procedure, test report, uncertainty budget"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Spec limits, spread of repeated measurements, calibration certificates, earlier test records"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "When measurements are unstable, narrow the cause to sample, equipment or procedure"
+    }
+   ],
+   "tools": [
+    "Spectrum analyzer",
+    "EMC test chamber",
+    "Reliability test equipment",
+    "Uncertainty calculation sheet",
+    "Calibration reference"
+   ],
+   "artifacts": [
+    "Test plan",
+    "Measurement procedure",
+    "Test report",
+    "Uncertainty budget",
+    "Retest records"
+   ],
+   "verify_targets": [
+    "Spec limits",
+    "Spread of repeated measurements",
+    "Calibration certificates",
+    "Hand calculations",
+    "Earlier test records"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down the scope of testing, based on the given standard",
+     "l3": "Decided the questions the test would answer and its limits when the standard was unclear"
+    },
+    "J2": {
+     "l2": "Turned the requirements into measurement items and uncertainty figures",
+     "l3": "Set priorities between conflicting test duration and confidence"
+    },
+    "J3": {
+     "l2": "Set the measurement conditions and pass/fail criteria",
+     "l3": "Split the uncertainty budget across the measurement contributors"
+    },
+    "J4": {
+     "l2": "Measured the items in the standard with test equipment",
+     "l3": "Chose the measurement setup myself after checking calibration certificates"
+    },
+    "J5": {
+     "l2": "Delivered the test plan and the test report",
+     "l3": "That procedure was used as the testing standard"
+    },
+    "J6": {
+     "l2": "Compared the spread of repeated measurements with the spec limits",
+     "l3": "Judged the results by checking measurement uncertainty against calibration certificates"
+    },
+    "J7": {
+     "l2": "Changed the procedure after measurements proved unstable",
+     "l3": "Narrowed the cause to sample, equipment or procedure and stopped it from recurring"
+    },
+    "J8": {
+     "l2": "Presented test results at a quality meeting",
+     "l3": "Those pass/fail criteria were written into company procedures"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Release decisions and cost of quality",
+    "OC2": "Delivered test results and retest cost",
+    "OC3": "Test reports on schedule and customer sign-off",
+    "OC4": "Measurement data as project deliverables",
+    "OC5": "Measurement methods and the methods section of a paper",
+    "OC6": "Compliance with specifications, with the supporting evidence",
+    "OC7": "Passed certification tests and the launch schedule"
+   }
+  }
+ ],
+ "review_note": "Electrical and electronic engineering puts data from the power side, the electronics side and the communications side in one file. `required_axes` keeps them apart: the power side depends on deliverables and protection settings, the electronics side on comparison and verification"
+}
