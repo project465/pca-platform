@@ -15,8 +15,8 @@
 1. Railway → 앱이 있는 프로젝트 → **production** 환경
 2. **+ Create → GitHub Repo → `project465/pca-platform`**
 3. 새 서비스 → **Settings**
-   - **Source → Root Directory**: `/marketing`
-   - **Source → Branch**: `claude/lucid-ptolemy-9my676`
+   - **Source → Root Directory**: `/pca-platform/marketing` (저장소 맨 위에 `pca-platform/` 폴더가 한 겹 더 있다)
+   - **Source → Branch**: `claude/amazing-thompson-w3f2o2` (운영 가지. 손님이 보는 쪽이라 개발 가지를 물리지 않는다)
    - 나머지(빌드·시작 명령, Watch Paths)는 `railway.json` 이 채운다. 화면에 다른 값이 적혀 있으면 비워 둔다
 4. (선택) **Variables**: `SITE` = `kr`
 5. 배포가 끝나면 **Settings → Networking → Generate Domain** → `…up.railway.app` 으로 먼저 열어 본다

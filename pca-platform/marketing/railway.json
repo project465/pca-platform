@@ -3,7 +3,7 @@
   "build": {
     "builder": "RAILPACK",
     "buildCommand": "npm run build",
-    "watchPatterns": ["/marketing/**"]
+    "watchPatterns": ["/pca-platform/marketing/**"]
   },
   "deploy": {
     "startCommand": "npm run start",
