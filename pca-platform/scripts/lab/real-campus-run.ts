@@ -74,10 +74,11 @@ const pickBy = (labels: string[], res: RegExp[]) => {
 const PROFILE: Record<string, (q: { text: string; n: number; want: number; labels: string[] }) => number> = {
   JJU26_BOOTCAMP_AI: ({ text, want, labels }) => {
     const q = text.split("\n")[0] + " " + text;
-    if (/기계학습|데이터 분석|모델|학습 데이터|추론|센서|로봇|제어|동시성|임베디드|알고리즘/.test(q)) {
+    /* 영역 훑기의 줄은 영역 이름이 아니라 쉬운 말이라(`자료에서 규칙을 찾고 모델이 …`) 그 말로도 본다 */
+    if (/기계학습|데이터 분석|모델|학습 데이터|추론|센서|로봇|제어|동시성|임베디드|알고리즘|규칙을 찾|여러 작업이 함께|계산을 더 빠르게|통신이 늦거나/.test(q)) {
       const k = pickBy(labels, HIGH); return k >= 0 ? k : want;
     }
-    if (/인터페이스|게임|그래픽스|렌더링|화면 구현/.test(q)) {
+    if (/인터페이스|게임|그래픽스|렌더링|화면 구현|화면에 보일|한 장면이 끊기지|공격을 가정/.test(q)) {
       const k = pickBy(labels, LOW); return k >= 0 ? k : want;
     }
     return want;
