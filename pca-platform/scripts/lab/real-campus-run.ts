@@ -65,8 +65,9 @@ const EXPS: Record<string, { kind: number; title: string; tds: number[] }[]> = {
  * 센서·제어·실시간 시스템 쪽을 높게, 화면·게임·그래픽스 쪽을 낮게 고른다.
  * 보기 차례가 낮은 칸 → 높은 칸이라 끝 칸을 고르면 높은 쪽이다.
  */
-const HIGH = [/정했고/, /매우 관심/, /매우 배우고/, /여러 번/, /직접 했다/, /관심 있다/, /배우고 싶다/];
-const LOW = [/받아 썼다/, /별로 관심/, /별로 배우고/, /한두 번/];
+/* 보기 글은 화면마다 다르다(`5 매우 관심 있음` · 숫자만 `5` · `3회 이상` · `내가 정함`) */
+const HIGH = [/정했고|내가 정함/, /매우 관심|매우 배우고/, /^5( |$)/, /3회 이상|여러 번/, /직접 했다|내가 직접 함/, /관심 있|배우고 싶/];
+const LOW = [/받아 썼다|시킨 대로/, /별로 관심|별로 배우고|관심 적음/, /^2( |$)/, /1~2회|한두 번/];
 const pickBy = (labels: string[], res: RegExp[]) => {
   for (const re of res) { const k = labels.findIndex((l) => re.test(l)); if (k >= 0) return k; }
   return -1;
