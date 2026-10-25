@@ -184,7 +184,11 @@ async function one(core: string): Promise<void> {
           return Number((info.match(/Pages:\s+(\d+)/) ?? [])[1] ?? 0);
         } catch { return 0; }
       })();
-      ok("PDF 에 한글이 없다", !!txt && !hangulAt(txt), hangulAt(txt) ?? `${pages}쪽`);
+      /* 시험 계정의 표시 이름(`홍길동`)은 사람이 적은 값이라 세지 않는다(/me 와 같은 규칙).
+         PRO 는 영어 책이므로 쪽 수도 본다 */
+      const body = txt.replace(/홍길동|홍/g, "");
+      ok("PDF 에 한글이 없다", !!txt && !hangulAt(body), hangulAt(body) ?? `${pages}쪽`);
+      if (TIER === "PRO") ok("PRO 종이가 영어 책(66쪽 이상)이다", pages >= 66, `${pages}쪽`);
     }
 
     /* 로그인한 사람의 첫 화면. **작업공간이 영어로 선다**(영어판 2단계b).
