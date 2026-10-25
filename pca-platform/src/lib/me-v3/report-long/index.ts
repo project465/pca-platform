@@ -1,3 +1,4 @@
+import { setBookLang, T } from "./lang";
 /**
  * 긴 결과지(PRO 책자) 한 권을 만든다.
  *
@@ -49,6 +50,7 @@ export type BuildOpts = {
 };
 
 export function assemble(x: Inputs): { pages: Page[]; notes: string[]; region: string | null } {
+  setBookLang(x.lang);
   const d = derive(x);
   const notes: string[] = [];
   if (x.guide.status !== "OK") notes.push(`직무 안내 ${x.guide.status}${x.guide.note ? `: ${x.guide.note}` : ""}`);
@@ -144,9 +146,10 @@ export function assemble(x: Inputs): { pages: Page[]; notes: string[]; region: s
 }
 
 export function renderHtml(x: Inputs, pages: Page[], fontBase = "/fonts/cm-book/"): string {
+  setBookLang(x.lang);
   const ctx = { issuer: x.issuer, major: x.department ?? x.major, tier: x.tier, person: x.person, answeredOn: x.answeredOn };
-  const title = `${x.person} 님 진로 분석 리포트 · CareerMatri`;
-  return `<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${E(title)}</title><style>${css(fontBase)}</style></head><body>${pages.map((p, i) => shell(p, i, pages.length, ctx)).join("")}<script>${PACK_JS}</script></body></html>`;
+  const title = T(`${x.person} 님 진로 분석 리포트 · CareerMatri`, `${x.person} · Career Analysis Report · CareerMatri`);
+  return `<!doctype html><html lang="${x.lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${E(title)}</title><style>${css(fontBase)}</style></head><body>${pages.map((p, i) => shell(p, i, pages.length, ctx)).join("")}<script>${PACK_JS}</script></body></html>`;
 }
 
 export async function buildLongReport(attemptId: string, opts: BuildOpts = {}): Promise<LongReport> {

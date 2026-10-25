@@ -84,6 +84,8 @@ export type RegionKey = "sejong" | "jeonbuk" | "chungcheong";
 
 export type Inputs = {
   attemptId: string;
+  /** 책의 언어. 응시 언어이고, 영어 원고가 없는 Core 는 한국어다 */
+  lang: import("./lang").BookLang;
   tier: string;
   userId: string;
   /** 사람 이름(`users.display_name`). 없으면 `응시자` */

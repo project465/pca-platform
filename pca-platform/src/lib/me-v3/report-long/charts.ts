@@ -1,3 +1,4 @@
+import { byLang } from "./lang";
 /**
  * 긴 결과지의 그래프. 전부 SVG 글자로 돌려준다(인쇄에서 흐려지지 않고 글꼴을 따른다).
  *
@@ -12,7 +13,7 @@ export const C = {
   l0: "#eceef3", l1: "#cddcf6", l2: "#86a9ea", l3: "#2c56b8",
 };
 
-export const LEVEL_KO = ["해 본 적 없음", "시킨 대로 해 봄", "직접 해 봄", "기준까지 직접 정함"];
+export const LEVEL_KO: string[] = byLang<string[]>(["해 본 적 없음", "시킨 대로 해 봄", "직접 해 봄", "기준까지 직접 정함"], ["Never done", "Followed a plan", "Did it myself", "Made the call"]);
 export const LEVEL_COLOR = [C.l0, C.l1, C.l2, C.l3];
 
 const esc = (s: string) => s.replace(/\s*[—–]\s*/g, ", ").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");

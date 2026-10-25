@@ -8,7 +8,7 @@
 import type { Axis } from "../scoring/types";
 import { QUALITY_KO, commonKo } from "../result/text.ko";
 import type { Inputs, Level } from "./types";
-import { AXES, STEP_WORD, type X } from "./derive";
+import { AXES, STEP_WORD, type X, notAsked } from "./derive";
 import { C, LEVEL_KO, hbars, heat, radar } from "./charts";
 import { E, H, LVC, PAL, T, band, chips, howto, note, pip, ul, zoneTag, type Page } from "./kit";
 import { andJoin, askNoun, j, list3, polite, q } from "./text";
@@ -19,7 +19,7 @@ const SERIES = [PAL.blue, PAL.coral, PAL.teal, PAL.violet];
 const NONE_BAR = "#b8bfcc";
 /** 지도 칸 안에 들어가는 짧은 글자. 칸 폭이 여섯 글자 남짓이라 단계 이름을 줄여 쓰고, 읽는 법에 온 이름을 붙인다 */
 const CELL_WORD = ["없음", "시킨 대로", "직접", "기준 정함"] as const;
-const NOT_ASKED = "#f6f7f9";
+const NA_FILL = "#f6f7f9";
 
 /** 그래프와 읽는 법을 한 덩이로 묶는다. 쪽 모으기가 둘을 다른 쪽으로 갈라 놓지 않게 한다 */
 const fig = (graph: string, how: string) => `<div style="display:flex;flex-direction:column;gap:2.4mm">${graph}${how}</div>`;
@@ -68,7 +68,7 @@ export function heatPage(x: Inputs, d: X): Page {
   const rows = x.m.domains.map((z) => d.name(z.code));
   const cell = (i: number, jj: number) => {
     const lv = d.level(x.m.domains[i].code, AXES[jj]);
-    if (lv === null) return { fill: NOT_ASKED, text: "", ink: C.ink3 };
+    if (lv === null) return { fill: NA_FILL, text: "", ink: C.ink3 };
     return { fill: LVC[lv], text: CELL_WORD[lv], ink: lv >= 2 ? "#fff" : C.ink2 };
   };
   const cells = x.m.domains.flatMap((z) => d.levels(z.code)).filter((v): v is Level => v !== null);
@@ -79,7 +79,7 @@ export function heatPage(x: Inputs, d: X): Page {
     fig(`<div class="wide-art">${heat(rows, AXES.map((a) => d.axisName(a)), cell, { width: 700, label: 150, head: 54, row: 30, colWrap: 6 })}</div>`, howto([
       ["가로줄", `${E(x.domainWord)} 하나`], ["세로줄", "판단 하나"],
       ...([0, 1, 2, 3] as const).map((k) => [LVC[k], `${E(STEP_WORD[k].tag)}${CELL_WORD[k] !== STEP_WORD[k].tag ? ` (칸 글자 ‘${CELL_WORD[k]}’)` : ""}`] as [string, string]),
-      [NOT_ASKED, "빈 칸: 이번에 판단까지 묻지 않은 영역"],
+      [NA_FILL, "빈 칸: 이번에 판단까지 묻지 않은 영역"],
     ])) +
     (() => {
       const askedD = x.m.domains.filter((z) => d.asked(z));
@@ -183,10 +183,10 @@ export function commonPage(x: Inputs, d: X): Page {
   const notYet = "아직 해 봤다고 나오지 않음";
   return P("영역을 가리지 않는 판단",
     T(rows.some((r) => r.lv === 3) ? `어떤 과제에서든 ${rows.filter((r) => r.lv === 3).length}가지 판단은 직접 정했다고 답했습니다` : "영역과 관계없이 과제마다 되풀이되는 판단도 따로 물었습니다", `${E(STAGE[x.m.stage] ?? "학업")} 과정의 수업과 팀 과제 장면으로 물은 문항이라, 영역별 결과와는 따로 셌어요.`) +
-    fig(`<div class="wide-art">${hbars(rows.map((r) => ({ label: d.axisName(r.a), value: r.lv ?? 0, color: LVC[Math.max(1, r.lv ?? 0)], note: r.lv == null ? NOT_ASKED : r.lv === 3 ? STEP_WORD[3].tag : r.lv === 2 ? STEP_WORD[2].tag : notYet })), { max: 3, width: 680, label: 130, row: 30, valueText: (b) => String((b as { note?: string }).note ?? "") })}</div>`, howto([
+    fig(`<div class="wide-art">${hbars(rows.map((r) => ({ label: d.axisName(r.a), value: r.lv ?? 0, color: LVC[Math.max(1, r.lv ?? 0)], note: r.lv == null ? notAsked() : r.lv === 3 ? STEP_WORD[3].tag : r.lv === 2 ? STEP_WORD[2].tag : notYet })), { max: 3, width: 680, label: 130, row: 30, valueText: (b) => String((b as { note?: string }).note ?? "") })}</div>`, howto([
       ["막대 길이", `그 판단을 어디까지 해 봤는지(끝까지 차면 ${E(STEP_WORD[3].tag)})`],
       [LVC[3], E(STEP_WORD[3].tag)], [LVC[2], E(STEP_WORD[2].tag)],
-      ["빈 막대", `${notYet} 또는 ${NOT_ASKED}(막대 끝 글자로 구분)`],
+      ["빈 막대", `${notYet} 또는 ${notAsked()}(막대 끝 글자로 구분)`],
     ])) +
     (() => {
       const own = c.didOwn.length ? ul(c.didOwn.slice(0, 6).map(E)) : c.owned.length ? E(c.owned.join(", ")) : "";

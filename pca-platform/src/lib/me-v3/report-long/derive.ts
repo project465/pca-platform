@@ -9,6 +9,7 @@ import type { Axis, AxisState } from "../scoring/types";
 import type { Action, Gap, ResultDomain } from "../result/model";
 import { AXIS_KO, AXIS_WHAT_KO } from "../result/text.ko";
 import { studentActivity, studentEvidence } from "../student";
+import { byLang, T } from "./lang";
 import type { DomainDef, Inputs, Level, RolePack, IndustryPack, TaxDomain } from "./types";
 
 export const AXES: Axis[] = ["J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8"];
@@ -18,28 +19,39 @@ export const ZONES = ["Z1_EVIDENCE_ESTABLISHED", "Z2_EVIDENCE_INCOMPLETE", "Z3_E
 export type ZoneKey = typeof ZONES[number];
 
 /** 영역 묶음의 짧은 이름과 뜻(학생에게 하는 말) */
-export const ZONE_WORD: Record<ZoneKey, { tag: string; said: string }> = {
+export const ZONE_WORD: Record<ZoneKey, { tag: string; said: string }> = byLang<Record<ZoneKey, { tag: string; said: string }>>({
   Z1_EVIDENCE_ESTABLISHED: { tag: "강점 영역", said: "직접 정한 일과 남긴 결과물이 둘 다 있는 영역" },
   Z2_EVIDENCE_INCOMPLETE: { tag: "키워 가는 영역", said: "해 본 일은 있는데 결과물이나 비교한 기록이 아직 적은 영역" },
   Z3_EVIDENCE_LOW_INTEREST: { tag: "해 봤지만 관심이 낮은 영역", said: "해 본 일은 있는데 지금은 관심이 낮다고 답한 영역" },
   Z4_INSUFFICIENT_EVIDENCE: { tag: "관심은 높고 경험이 적은 영역", said: "관심은 높은데 아직 해 본 일이 적은 영역" },
   NOT_EXPLORED: { tag: "관심·경험만 본 영역", said: "관심과 해 본 횟수까지만 물어본 영역" },
-};
+}, {
+  Z1_EVIDENCE_ESTABLISHED: { tag: "Strength area", said: "you made decisions yourself here and left a deliverable" },
+  Z2_EVIDENCE_INCOMPLETE: { tag: "Growing area", said: "you have done work here, but few deliverables or comparisons are on record yet" },
+  Z3_EVIDENCE_LOW_INTEREST: { tag: "Done, less interested", said: "you have done work here but said your interest is low for now" },
+  Z4_INSUFFICIENT_EVIDENCE: { tag: "High interest, little experience", said: "your interest is high but you have not done much here yet" },
+  NOT_EXPLORED: { tag: "Interest and exposure only", said: "we only asked about your interest and how often you had done it" },
+});
 /** 학생에게 보이는 단계 이름. 검사 화면의 보기(시킨 대로 함 · 내가 직접 함 · 내가 정함)와 같은 말을 쓴다 */
-export const STEP_WORD: Record<Level, { tag: string; said: string }> = {
+export const STEP_WORD: Record<Level, { tag: string; said: string }> = byLang<Record<Level, { tag: string; said: string }>>({
   0: { tag: "해 본 적 없음", said: "그 일을 해 본 적이 없다고 답했어요" },
   1: { tag: "시킨 대로 해 봄", said: "다른 사람이 정한 조건 안에서 해 봤다고 답했어요" },
   2: { tag: "직접 해 봄", said: "스스로 맡아서 해 봤다고 답했어요" },
   3: { tag: "기준까지 직접 정함", said: "기준을 직접 정했다고 답했고, 그 근거도 골랐어요" },
-};
+}, {
+  0: { tag: "Never done", said: "you said you had not done this yet" },
+  1: { tag: "Followed a plan", said: "you did it within conditions someone else set" },
+  2: { tag: "Did it myself", said: "you took it on and did it yourself" },
+  3: { tag: "Made the call", said: "you set the criteria yourself and picked the evidence to back it" },
+});
 /**
  * 그 판단을 이번 검사가 묻지 않은 자리. **한 곳에서만 정한다.** 쪽마다 `이번 검사에서
  * 묻지 않음` · `이번에 묻지 않음` · `이번에 깊게 묻지 않음` 이 따로 적혀 있었고, 같은 표에
  * 열 번씩 서면 기계가 쓴 글처럼 읽힌다. 뜻은 `읽는 법` 쪽에서 한 번 풀어 준다
  */
-export const NOT_ASKED = "물어보지 않음";
-export const BAND_WORD: Record<string, string> = { HIGH: "높음", MID: "보통", LOW: "낮음" };
-export const EXP_WORD: Record<string, string> = { NONE: "없음", ONCE_OR_TWICE: "한두 번", SEVERAL: "여러 번" };
+export const notAsked = (): string => T("물어보지 않음", "Not asked");
+export const BAND_WORD: Record<string, string> = byLang<Record<string, string>>({ HIGH: "높음", MID: "보통", LOW: "낮음" }, { HIGH: "High", MID: "Medium", LOW: "Low" });
+export const EXP_WORD: Record<string, string> = byLang<Record<string, string>>({ NONE: "없음", ONCE_OR_TWICE: "한두 번", SEVERAL: "여러 번" }, { NONE: "None", ONCE_OR_TWICE: "Once or twice", SEVERAL: "Several times" });
 
 export type Bucket = "A" | "B" | "C" | "D";
 

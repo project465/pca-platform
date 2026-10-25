@@ -23,8 +23,12 @@ function usable(r: unknown): r is RoleGuide {
     && !!g.firstProject && Array.isArray(g.firstProject.steps);
 }
 
-export function loadGuide(core: string, roleCodes: string[], root = process.cwd()): GuideState {
-  const candidates = [path.join(DIR, `${core}.json`), LEGACY[core]].filter(Boolean) as string[];
+export function loadGuide(core: string, roleCodes: string[], root = process.cwd(), lang = "ko"): GuideState {
+  /* 영어판은 `role-guide/en/` 한 벌이다. 없으면 한국어로 내려가지 않고 없는 것으로 둔다:
+     영어 책에 한국어 안내 쪽이 서는 것보다 그 쪽이 빠지는 편이 낫다 */
+  const candidates = (lang === "ko"
+    ? [path.join(DIR, `${core}.json`), LEGACY[core]]
+    : [path.join(DIR, lang, `${core}.json`)]).filter(Boolean) as string[];
   const file = candidates.find((f) => existsSync(path.join(root, f))) ?? null;
   if (!file) {
     return { status: "MISSING", file: null, roles: {}, missingRoles: roleCodes, note: `${core} 직무 안내 파일이 없습니다` };

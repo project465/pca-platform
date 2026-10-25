@@ -13,6 +13,10 @@ import { specView } from "../result/spec-view";
 import { experiencesOf } from "../platform";
 import { experienceFlow } from "../student";
 import { loadGuide } from "./guide";
+import type { BookLang } from "./lang";
+import { hasEdition } from "../i18n";
+import { localizeResult } from "../result/localize";
+import { majorNameIn } from "../runtime/session";
 import type {
   Checklists, DomainDef, IndustryPack, Inputs, RegionKey, Relations, RolePack, Taxonomy,
 } from "./types";
@@ -28,8 +32,9 @@ export async function loadInputs(attemptId: string, expScope: "snapshot" | "all"
   const row = await queryOne<{
     result_model: ResultModel; tier: string; user_id: string; core_code: string;
     university_code: string | null; display_name: string | null; snap_at: string; snap_on: string;
+    locale: string | null;
   }>(
-    `SELECT s.result_model, a.tier, a.user_id::text, a.core_code, a.university_code, u.display_name,
+    `SELECT s.result_model, a.tier, a.user_id::text, a.core_code, a.university_code, u.display_name, a.locale,
             s.created_at::text AS snap_at, to_char(s.created_at AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD') AS snap_on
        FROM v3_attempts a
        JOIN v3_snapshots s ON s.attempt_id = a.id
@@ -39,6 +44,8 @@ export async function loadInputs(attemptId: string, expScope: "snapshot" | "all"
   if (!row) throw new BookInputMissing(`${attemptId}: 굳은 결과가 없습니다`);
   const coreCode = row.core_code;
   const core = coreEntry(coreCode);
+  /* 책의 언어는 응시가 정한다. 영어 원고가 다 갖춰진 Core 만 영어 책이 선다 */
+  const lang: BookLang = row.locale === "en" && hasEdition(coreCode, "en") ? "en" : "ko";
   const meta = await resultMeta(attemptId, coreCode);
 
   /* 발행 기관: 학교 진입이면 그 학교, 아니면 소속 기관 이름, 둘 다 없으면 CareerMatri */
@@ -52,13 +59,13 @@ export async function loadInputs(attemptId: string, expScope: "snapshot" | "all"
     if (org) { issuer = org.name; issuerCode = issuerCode ?? org.code; }
   }
 
-  const defs = coreFile<{ domains: DomainDef[] }>(coreCode, "domains").domains;
-  const tax = coreFile<Taxonomy>(coreCode, "taxonomy");
+  const defs = coreFile<{ domains: DomainDef[] }>(coreCode, "domains", undefined, lang).domains;
+  const tax = coreFile<Taxonomy>(coreCode, "taxonomy", undefined, lang);
   const rel = coreFile<Relations>(coreCode, "relations");
-  const checklists = coreFile<Checklists>(coreCode, "checklists");
-  const roles = packs<{ packs: RolePack[] }>(coreCode, "role").packs;
-  const inds = packs<{ packs: IndustryPack[] }>(coreCode, "industry").packs;
-  const guide = loadGuide(coreCode, roles.map((r) => r.code));
+  const checklists = coreFile<Checklists>(coreCode, "checklists", undefined, lang);
+  const roles = packs<{ packs: RolePack[] }>(coreCode, "role", undefined, lang).packs;
+  const inds = packs<{ packs: IndustryPack[] }>(coreCode, "industry", undefined, lang).packs;
+  const guide = loadGuide(coreCode, roles.map((r) => r.code), undefined, lang);
   if (guide.status !== "OK") console.warn(`[report-long] ${coreCode} 직무 안내 ${guide.status}: ${guide.note ?? ""}`);
 
   /**
@@ -76,19 +83,21 @@ export async function loadInputs(attemptId: string, expScope: "snapshot" | "all"
     .filter((e) => e.status !== "draft" && keep.has(e.id))
     .map((e) => ({ ...e, note_text: null }));
 
-  const region = issuerCode ? REGION_BY_ORG[issuerCode] ?? null : null;
+  /* 지역 자료는 한국 공시와 명단이라 영어 책에는 싣지 않는다 */
+  const region = lang === "en" ? null : issuerCode ? REGION_BY_ORG[issuerCode] ?? null : null;
   const today = (await queryOne<{ d: string }>(`SELECT to_char(now(), 'YYYY-MM-DD') AS d`))?.d ?? "";
   return {
     attemptId, tier: row.tier, userId: row.user_id,
-    person: (row.display_name ?? "").trim() || "응시자",
-    coreCode, core, major: core.name_ko,
+    lang,
+    person: (row.display_name ?? "").trim() || (lang === "en" ? "Participant" : "응시자"),
+    coreCode, core, major: lang === "en" ? majorNameIn(coreCode, "en") : core.name_ko,
     department: meta.department, school: meta.school,
     specialization: meta.specialization,
     spec: specView(coreCode, meta.specializationCode),
     issuer: issuer ?? "CareerMatri", issuerCode: issuerCode ?? null,
     answeredOn: meta.answeredOn ?? today,
-    m: row.result_model, defs, tax, rel, roles, inds, checklists, guide, exps, region,
-    domainWord: experienceFlow(coreCode).domainWord,
+    m: localizeResult(row.result_model, coreCode, lang), defs, tax, rel, roles, inds, checklists, guide, exps, region,
+    domainWord: lang === "en" ? "area" : experienceFlow(coreCode).domainWord,
     builtOn: row.snap_on || today,
   };
 }

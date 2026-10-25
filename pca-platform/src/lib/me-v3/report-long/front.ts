@@ -2,7 +2,7 @@
  * 들어가며: 겉표지 · 표지 · 이 리포트에 대해 · 읽는 법 · 차례.
  */
 import type { Inputs } from "./types";
-import { AXES, STEP_WORD, ZONE_WORD, ZONES, type X, NOT_ASKED } from "./derive";
+import { AXES, STEP_WORD, ZONE_WORD, ZONES, type X, notAsked } from "./derive";
 import { C, LEVEL_KO, radar } from "./charts";
 import { E, H, LVC, MARK, PAL, T, ZC, band, howto, lineArt, tag, ul, type Page } from "./kit";
 import { actionLine, andJoin, j } from "./text";
@@ -136,7 +136,7 @@ export function howToRead(x: Inputs): Page {
       `<p class="mut sm" style="margin-top:2mm">${scope}</p>` +
       `<div class="two">
         <div class="note"><b>방사형 그래프</b><p>가운데가 ‘${E(LEVEL_KO[0])}’, 바깥 고리가 ‘${E(LEVEL_KO[3])}’이에요. 꼭짓점 하나가 판단 하나이고, 바깥으로 넓게 퍼진 판단일수록 면접에서 내 말로 풀어 설명하기 쉽습니다.</p></div>
-        <div class="note"><b>‘${E(NOT_ASKED)}’</b><p>‘${E(LEVEL_KO[0])}’은 물어봤는데 아직 없다고 답한 자리예요. ‘${E(NOT_ASKED)}’은 이번 검사가 그 판단까지는 묻지 않은 자리라서, 0으로 그리지 않고 흐리게 비워 뒀어요.</p></div>
+        <div class="note"><b>‘${E(notAsked())}’</b><p>‘${E(LEVEL_KO[0])}’은 물어봤는데 아직 없다고 답한 자리예요. ‘${E(notAsked())}’은 이번 검사가 그 판단까지는 묻지 않은 자리라서, 0으로 그리지 않고 흐리게 비워 뒀어요.</p></div>
       </div>` +
       H("문장 앞의 표시", "그 문장이 어디서 온 말인지 알려 줍니다") +
       `<table class="tb"><thead><tr><th>표시</th><th>뜻</th><th>예</th></tr></thead><tbody>

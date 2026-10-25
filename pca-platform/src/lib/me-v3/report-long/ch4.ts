@@ -11,7 +11,7 @@
  */
 import type { Axis } from "../scoring/types";
 import type { Inputs, Level, RoleGuide } from "./types";
-import { AXES, STEP_WORD, ZONE_WORD, ZONES, type RolePack, type X, NOT_ASKED } from "./derive";
+import { AXES, STEP_WORD, ZONE_WORD, ZONES, type RolePack, type X, notAsked } from "./derive";
 import { C, LEVEL_KO, chain, hbars, heat } from "./charts";
 import { E, H, LVC, PAL, T, ZC, band, chips, howto, lines, note, paginate, pip, rowsOf, ul, type Page } from "./kit";
 import { andJoin, asSentence, askNoun, j, okOr, okText, polite, politePara, q } from "./text";
@@ -115,7 +115,7 @@ function reqRows(x: Inputs, d: X, r: RolePack) {
 function reqChart(x: Inputs, d: X, r: RolePack): string {
   return hbars(reqRows(x, d, r), { max: 3, width: 340, label: 110, row: 42, valueText: (b) => String((b as { note?: string }).note ?? "") });
 }
-const reqHow = () => howto([["막대 길이", "핵심 영역에서 해 본 가장 깊은 단계"], [LVC[1], LEVEL_KO[1]], [LVC[2], LEVEL_KO[2]], [LVC[3], LEVEL_KO[3]], ["빈 막대", `${LEVEL_KO[0]} 또는 ${NOT_ASKED}`]]);
+const reqHow = () => howto([["막대 길이", "핵심 영역에서 해 본 가장 깊은 단계"], [LVC[1], LEVEL_KO[1]], [LVC[2], LEVEL_KO[2]], [LVC[3], LEVEL_KO[3]], ["빈 막대", `${LEVEL_KO[0]} 또는 ${notAsked()}`]]);
 /** 걸음 사슬의 읽는 법. 칸 색은 하나로 칠해서 뜻을 따로 두지 않는다 */
 const chainHow = (what: string) => howto([["화살표", "다음 걸음으로 넘어가는 차례"], ["칸 위", "걸음의 이름"], ["칸 안", what]]);
 

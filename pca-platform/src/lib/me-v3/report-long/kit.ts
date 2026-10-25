@@ -3,7 +3,7 @@
  */
 import { C } from "./charts";
 import type { Level } from "./types";
-import { STEP_WORD, ZONE_WORD, type ZoneKey, NOT_ASKED } from "./derive";
+import { STEP_WORD, ZONE_WORD, type ZoneKey, notAsked } from "./derive";
 
 export type Page = {
   part: string; partName: string; title: string; body: string;
@@ -38,7 +38,7 @@ export const band = (label: string, text: string) => `<div class="band"><b>${lab
 export const tag = (t: string, color?: string) => `<span class="tag" style="${color ? `background:${color}` : ""}">${E(t)}</span>`;
 export const zoneTag = (z: string) => `<span class="ztag" style="--z:${ZC[z] ?? "#c9ced8"}">${E(ZONE_WORD[z as ZoneKey]?.tag ?? "")}</span>`;
 export const pip = (lv: Level | null) => lv == null
-  ? `<span class="pp na">${NOT_ASKED}</span>`
+  ? `<span class="pp na">${notAsked()}</span>`
   : `<span class="pp"><i style="background:${lv >= 1 ? LVC[Math.max(1, lv)] : C.l0}"></i><i style="background:${lv >= 2 ? LVC[lv] : C.l0}"></i><i style="background:${lv >= 3 ? LVC[3] : C.l0}"></i><em>${E(STEP_WORD[lv].tag)}</em></span>`;
 export const ul = (xs: string[], cls = "") => (xs.length ? `<ul class="ls ${cls}">${xs.map((x) => `<li>${x}</li>`).join("")}</ul>` : "");
 /** 쓰는 칸: 줄만 긋는다. 학생이 채운다 */

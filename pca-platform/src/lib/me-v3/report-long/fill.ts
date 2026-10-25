@@ -7,7 +7,7 @@
  */
 import type { Axis } from "../scoring/types";
 import type { Inputs } from "./types";
-import { AXES, STEP_WORD, ZONE_WORD, type X, NOT_ASKED } from "./derive";
+import { AXES, STEP_WORD, ZONE_WORD, type X, notAsked } from "./derive";
 import { E, H, chips, ul, type Page } from "./kit";
 import { j, polite, politeList, politePara } from "./text";
 import type { FitGroup, ROrg } from "./region";
@@ -52,7 +52,7 @@ export function fillPages(x: Inputs, d: X, part3: string, region: { name: string
   /* 02 판단 프로파일 */
   add(F("02", "판단 프로파일", "판단마다 묻는 것과 내가 가장 깊이 해 본 단계", "판단의 뜻과 내 응답",
     lead("단계가 낮은 판단이 다음 과제에서 직접 맡아 볼 자리예요.") +
-    `<table class="tb tb-xs"><thead><tr><th class="w16">판단</th><th>묻는 것</th><th class="w16">가장 깊은 단계</th><th class="w12">그 단계인 영역</th></tr></thead><tbody>${d.best.map((b) => `<tr><td><b>${E(d.axisName(b.axis))}</b></td><td>${E(d.axisWhat(b.axis))}</td><td>${b.level == null ? NOT_ASKED : STEP_WORD[b.level].tag}</td><td>${b.where.length}곳</td></tr>`).join("")}</tbody></table>`));
+    `<table class="tb tb-xs"><thead><tr><th class="w16">판단</th><th>묻는 것</th><th class="w16">가장 깊은 단계</th><th class="w12">그 단계인 영역</th></tr></thead><tbody>${d.best.map((b) => `<tr><td><b>${E(d.axisName(b.axis))}</b></td><td>${E(d.axisWhat(b.axis))}</td><td>${b.level == null ? notAsked() : STEP_WORD[b.level].tag}</td><td>${b.where.length}곳</td></tr>`).join("")}</tbody></table>`));
   const pickRows = AXES.map((a) => {
     const all = x.m.domains.flatMap((z) => d.picks(z.code, a).map((t) => ({ t, z: z.code })));
     return { a, n: all.length, ex: all[0] };
