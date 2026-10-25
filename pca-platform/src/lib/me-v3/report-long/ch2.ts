@@ -183,10 +183,10 @@ export function commonPage(x: Inputs, d: X): Page {
   const notYet = "아직 해 봤다고 나오지 않음";
   return P("영역을 가리지 않는 판단",
     T(rows.some((r) => r.lv === 3) ? `어떤 과제에서든 ${rows.filter((r) => r.lv === 3).length}가지 판단은 직접 정했다고 답했습니다` : "영역과 관계없이 과제마다 되풀이되는 판단도 따로 물었습니다", `${E(STAGE[x.m.stage] ?? "학업")} 과정의 수업과 팀 과제 장면으로 물은 문항이라, 영역별 결과와는 따로 셌어요.`) +
-    fig(`<div class="wide-art">${hbars(rows.map((r) => ({ label: d.axisName(r.a), value: r.lv ?? 0, color: LVC[Math.max(1, r.lv ?? 0)], note: r.lv == null ? "이번에 묻지 않음" : r.lv === 3 ? STEP_WORD[3].tag : r.lv === 2 ? STEP_WORD[2].tag : notYet })), { max: 3, width: 680, label: 130, row: 30, valueText: (b) => String((b as { note?: string }).note ?? "") })}</div>`, howto([
+    fig(`<div class="wide-art">${hbars(rows.map((r) => ({ label: d.axisName(r.a), value: r.lv ?? 0, color: LVC[Math.max(1, r.lv ?? 0)], note: r.lv == null ? NOT_ASKED : r.lv === 3 ? STEP_WORD[3].tag : r.lv === 2 ? STEP_WORD[2].tag : notYet })), { max: 3, width: 680, label: 130, row: 30, valueText: (b) => String((b as { note?: string }).note ?? "") })}</div>`, howto([
       ["막대 길이", `그 판단을 어디까지 해 봤는지(끝까지 차면 ${E(STEP_WORD[3].tag)})`],
       [LVC[3], E(STEP_WORD[3].tag)], [LVC[2], E(STEP_WORD[2].tag)],
-      ["빈 막대", `${notYet} 또는 이번에 묻지 않음(막대 끝 글자로 구분)`],
+      ["빈 막대", `${notYet} 또는 ${NOT_ASKED}(막대 끝 글자로 구분)`],
     ])) +
     (() => {
       const own = c.didOwn.length ? ul(c.didOwn.slice(0, 6).map(E)) : c.owned.length ? E(c.owned.join(", ")) : "";

@@ -11,7 +11,7 @@
  */
 import type { Axis } from "../scoring/types";
 import type { Inputs, Level, RoleGuide } from "./types";
-import { AXES, STEP_WORD, ZONE_WORD, ZONES, type RolePack, type X } from "./derive";
+import { AXES, STEP_WORD, ZONE_WORD, ZONES, type RolePack, type X, NOT_ASKED } from "./derive";
 import { C, LEVEL_KO, chain, hbars, heat } from "./charts";
 import { E, H, LVC, PAL, T, ZC, band, chips, howto, lines, note, paginate, pip, rowsOf, ul, type Page } from "./kit";
 import { andJoin, asSentence, askNoun, j, okOr, okText, polite, politePara, q } from "./text";
@@ -115,7 +115,7 @@ function reqRows(x: Inputs, d: X, r: RolePack) {
 function reqChart(x: Inputs, d: X, r: RolePack): string {
   return hbars(reqRows(x, d, r), { max: 3, width: 340, label: 110, row: 42, valueText: (b) => String((b as { note?: string }).note ?? "") });
 }
-const reqHow = () => howto([["막대 길이", "핵심 영역에서 해 본 가장 깊은 단계"], [LVC[1], LEVEL_KO[1]], [LVC[2], LEVEL_KO[2]], [LVC[3], LEVEL_KO[3]], ["빈 막대", `${LEVEL_KO[0]} 또는 묻지 않음`]]);
+const reqHow = () => howto([["막대 길이", "핵심 영역에서 해 본 가장 깊은 단계"], [LVC[1], LEVEL_KO[1]], [LVC[2], LEVEL_KO[2]], [LVC[3], LEVEL_KO[3]], ["빈 막대", `${LEVEL_KO[0]} 또는 ${NOT_ASKED}`]]);
 /** 걸음 사슬의 읽는 법. 칸 색은 하나로 칠해서 뜻을 따로 두지 않는다 */
 const chainHow = (what: string) => howto([["화살표", "다음 걸음으로 넘어가는 차례"], ["칸 위", "걸음의 이름"], ["칸 안", what]]);
 
@@ -243,7 +243,7 @@ export function boundaryPages(x: Inputs, d: X): Page[] {
   if (!bs.length) return [];
   const side = (td: string, diff: string, ques: string) => `<div class="b4" style="--c:${sideColor(d.dom(td)?.zone ?? "NOT_EXPLORED")}"><b>${E(d.name(td))}</b><p>${E(tidy(polite(diff)))}</p><p class="mut">스스로 묻기: ${E(ques)}?</p></div>`;
   return paginate(bs, () => 1, 4, 4).map((chunk, k) => P(`가까운 두 일의 경계${k ? ` (${k + 1})` : ""}`,
-    (k ? cont("가까운 두 일의 경계") : T("가까운 두 영역은 누가 무엇을 정하느냐에서 갈립니다", "같은 일을 나눠 맡는 두 영역을 나란히 놓았어요. 칸마다 아래 질문에 ‘예’라고 답할 수 있으면, 그쪽이 지금 면접에서 더 자신 있게 이야기할 수 있는 영역입니다.") +
+    (k ? cont("가까운 두 일의 경계") : T("가까운 두 영역 가운데 내가 더 자신 있는 쪽을 질문 하나로 가려 보세요", "같은 일을 나눠 맡는 두 영역을 나란히 놓았어요. 칸마다 아래 질문에 ‘예’라고 답할 수 있으면, 그쪽이 지금 면접에서 더 자신 있게 이야기할 수 있는 영역입니다.") +
       zoneLegend("칸 위 띠", sideColor)) +
     chunk.map((b) => `<div class="card"><p class="k">${E(b.pair)}</p><p class="sm">함께 하는 일: ${E(tidy(polite(b.shared)))}</p><div class="two" style="margin-top:2mm">${side(b.a.td, b.a_difference, b.a_question)}${side(b.b.td, b.b_difference, b.b_question)}</div></div>`).join("")));
 }

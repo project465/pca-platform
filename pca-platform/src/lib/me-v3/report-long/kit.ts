@@ -3,7 +3,7 @@
  */
 import { C } from "./charts";
 import type { Level } from "./types";
-import { STEP_WORD, ZONE_WORD, type ZoneKey } from "./derive";
+import { STEP_WORD, ZONE_WORD, type ZoneKey, NOT_ASKED } from "./derive";
 
 export type Page = {
   part: string; partName: string; title: string; body: string;
@@ -38,7 +38,7 @@ export const band = (label: string, text: string) => `<div class="band"><b>${lab
 export const tag = (t: string, color?: string) => `<span class="tag" style="${color ? `background:${color}` : ""}">${E(t)}</span>`;
 export const zoneTag = (z: string) => `<span class="ztag" style="--z:${ZC[z] ?? "#c9ced8"}">${E(ZONE_WORD[z as ZoneKey]?.tag ?? "")}</span>`;
 export const pip = (lv: Level | null) => lv == null
-  ? `<span class="pp na">이번 검사에서 묻지 않음</span>`
+  ? `<span class="pp na">${NOT_ASKED}</span>`
   : `<span class="pp"><i style="background:${lv >= 1 ? LVC[Math.max(1, lv)] : C.l0}"></i><i style="background:${lv >= 2 ? LVC[lv] : C.l0}"></i><i style="background:${lv >= 3 ? LVC[3] : C.l0}"></i><em>${E(STEP_WORD[lv].tag)}</em></span>`;
 export const ul = (xs: string[], cls = "") => (xs.length ? `<ul class="ls ${cls}">${xs.map((x) => `<li>${x}</li>`).join("")}</ul>` : "");
 /** 쓰는 칸: 줄만 긋는다. 학생이 채운다 */
@@ -287,8 +287,13 @@ export const PACK_JS = String.raw`(function () {
       var moved = 0;
       while (s.firstElementChild) {
         var c = s.firstElementChild; ns.appendChild(c);
+        /* 그래프와 바로 뒤의 읽는 법은 한 덩이다. 그래프만 올라가면 읽는 법이 다음 쪽
+           맨 위에 혼자 서서, 무엇을 읽는 법인지 모르게 된다 */
+        var hw = s.firstElementChild && s.firstElementChild.matches(".howto") ? s.firstElementChild : null;
+        if (hw) ns.appendChild(hw);
         if (fits(cur)) { moved++; continue; }
-        if (shrink(c, cur)) { moved++; continue; }
+        if (hw) { s.insertBefore(hw, s.firstElementChild); }
+        else if (shrink(c, cur)) { moved++; continue; }
         s.insertBefore(c, s.firstElementChild);
         if (c.tagName === "TABLE" && splitTable(c, ns, cur)) moved++;
         else if (c.matches(".g2,.g3") && splitGrid(c, ns, cur)) moved++;

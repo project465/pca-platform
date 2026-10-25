@@ -102,7 +102,7 @@ export default function SejongSection({ v }: { v: SejongView }) {
 
       {v.next.length ? (
         <div className="rs-pack">
-          <h3>이어서 볼 곳 {v.nextN}곳</h3>
+          <h3>한 걸음 더 채우면 맞는 곳 {v.nextN}곳</h3>
           <p>
             해 본 적은 있지만 아직 정리가 덜 된 영역, 또는 확인된 영역에서 이어지는
             산업과 같은 분야에 있는 곳입니다.

@@ -32,6 +32,12 @@ export const STEP_WORD: Record<Level, { tag: string; said: string }> = {
   2: { tag: "직접 해 봄", said: "스스로 맡아서 해 봤다고 답했어요" },
   3: { tag: "기준까지 직접 정함", said: "기준을 직접 정했다고 답했고, 그 근거도 골랐어요" },
 };
+/**
+ * 그 판단을 이번 검사가 묻지 않은 자리. **한 곳에서만 정한다.** 쪽마다 `이번 검사에서
+ * 묻지 않음` · `이번에 묻지 않음` · `이번에 깊게 묻지 않음` 이 따로 적혀 있었고, 같은 표에
+ * 열 번씩 서면 기계가 쓴 글처럼 읽힌다. 뜻은 `읽는 법` 쪽에서 한 번 풀어 준다
+ */
+export const NOT_ASKED = "물어보지 않음";
 export const BAND_WORD: Record<string, string> = { HIGH: "높음", MID: "보통", LOW: "낮음" };
 export const EXP_WORD: Record<string, string> = { NONE: "없음", ONCE_OR_TWICE: "한두 번", SEVERAL: "여러 번" };
 

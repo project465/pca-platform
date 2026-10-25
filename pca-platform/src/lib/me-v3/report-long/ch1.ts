@@ -2,7 +2,7 @@
  * 01 한눈에 보기.
  */
 import type { Inputs } from "./types";
-import { AXES, BAND_WORD, EXP_WORD, STEP_WORD, ZONE_WORD, ZONES, type Bucket, type X } from "./derive";
+import { AXES, BAND_WORD, EXP_WORD, STEP_WORD, ZONE_WORD, ZONES, type Bucket, type X, NOT_ASKED } from "./derive";
 import { C, LEVEL_KO, donut, hbars, quadrant, ring } from "./charts";
 import { DC, E, H, IC, LVC, PAL, T, ZC, band, chips, howto, note, pip, ul, zoneTag, type Page } from "./kit";
 import { GAP_KIND, gapWhy, actionHead, actionLine, andJoin, askNoun, j, list3, okText, polite } from "./text";
@@ -197,7 +197,7 @@ export function ringPage(x: Inputs, d: X): Page {
       ["칸 안 숫자", "영역 번호(아래 표, 03장과 같은 번호)"],
       ["가운데 숫자", `${E(ZONE_WORD.Z1_EVIDENCE_ESTABLISHED.tag)} 수`],
     ], "칸 하나가 영역 하나예요. 칸 색은 그 영역이 놓인 자리이고, 바깥 띠 색은 그 영역에 관심이 얼마나 있다고 답했는지입니다.") +
-    `<table class="tb tb-xs"><thead><tr><th>번호</th><th>영역</th><th>놓인 자리</th><th>관심</th><th>해 본 횟수</th><th>배울 뜻</th></tr></thead><tbody>${x.m.domains.map((z, i) => `<tr><td>${i + 1}</td><td><b>${E(d.name(z.code))}</b></td><td>${zoneTag(z.zone)}</td><td>${z.interest ? BAND_WORD[z.interest] : "응답 없음"}</td><td>${z.experience ? EXP_WORD[z.experience] : "응답 없음"}</td><td>${z.learning ? BAND_WORD[z.learning] : "묻지 않음"}</td></tr>`).join("")}</tbody></table>`);
+    `<table class="tb tb-xs"><thead><tr><th>번호</th><th>영역</th><th>놓인 자리</th><th>관심</th><th>해 본 횟수</th><th>배울 뜻</th></tr></thead><tbody>${x.m.domains.map((z, i) => `<tr><td>${i + 1}</td><td><b>${E(d.name(z.code))}</b></td><td>${zoneTag(z.zone)}</td><td>${z.interest ? BAND_WORD[z.interest] : "응답 없음"}</td><td>${z.experience ? EXP_WORD[z.experience] : "응답 없음"}</td><td>${z.learning ? BAND_WORD[z.learning] : NOT_ASKED}</td></tr>`).join("")}</tbody></table>`);
 }
 
 export function quad(x: Inputs, d: X): Page {
@@ -232,7 +232,7 @@ export function quad(x: Inputs, d: X): Page {
 }
 
 export function bestPage(x: Inputs, d: X): Page {
-  const rows = d.best.map((b) => ({ label: d.axisName(b.axis), value: b.level ?? 0, color: LVC[Math.max(1, b.level ?? 0)], note: b.level == null ? "이번 검사에서 묻지 않음" : b.level === 0 ? LEVEL_KO[0] : b.where.length > 2 ? `${b.where.slice(0, 2).map(d.name).join(" · ")} 외 ${b.where.length - 2}곳` : b.where.map(d.name).join(" · ") }));
+  const rows = d.best.map((b) => ({ label: d.axisName(b.axis), value: b.level ?? 0, color: LVC[Math.max(1, b.level ?? 0)], note: b.level == null ? NOT_ASKED : b.level === 0 ? LEVEL_KO[0] : b.where.length > 2 ? `${b.where.slice(0, 2).map(d.name).join(" · ")} 외 ${b.where.length - 2}곳` : b.where.map(d.name).join(" · ") }));
   const owned = d.best.filter((b) => b.level === 3).length;
   const sceneOf = (b: (typeof d.best)[number]) => {
     const td = b.where[0] ?? d.radarDoms[0]?.code ?? x.defs[0]?.code;
@@ -258,7 +258,7 @@ export function goalPage(x: Inputs, d: X): Page {
   const rc = x.m.role_context?.code === r.code ? x.m.role_context : null;
   const ind = d.goalInd;
   const ic = ind && x.m.industry_context?.code === ind.code ? x.m.industry_context : null;
-  const rows = cov.req.map((q0) => ({ label: d.axisName(q0.axis), value: q0.level ?? 0, color: LVC[Math.max(1, q0.level ?? 0)], note: q0.level == null ? "묻지 않음" : STEP_WORD[q0.level].tag }));
+  const rows = cov.req.map((q0) => ({ label: d.axisName(q0.axis), value: q0.level ?? 0, color: LVC[Math.max(1, q0.level ?? 0)], note: q0.level == null ? NOT_ASKED : STEP_WORD[q0.level].tag }));
   const tdZones = ZONES.filter((z) => cov.tds.some((t) => (d.dom(t)?.zone ?? "NOT_EXPLORED") === z));
   const overlap = (rc?.overlap ?? []).slice(0, 4).map((o) => `${d.name(o.domain)} · ${d.axisName(o.axis)}`);
   const requested = (rc?.requested ?? ic?.requested ?? []).slice(0, 4).map((o) => `${d.name(o.domain)} · ${d.axisName(o.axis)}`);

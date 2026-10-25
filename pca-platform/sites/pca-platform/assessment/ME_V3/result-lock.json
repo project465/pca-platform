@@ -3,7 +3,7 @@
  "note": "결과지 화면 1차 동결. 문장만 고치면 `RESULT_COPY_VERSION` 만 올리고, 칸이나 절이 바뀌면 `RESULT_MODEL_VERSION`, 화면 구조가 바뀌면 `RESULT_UI_VERSION` 을 올린다. 채점 판본은 이 가운데 무엇으로도 올리지 않는다",
  "versions": {
   "result_ui_version": "ME_V3_RESULT_UI_V87",
-  "result_copy_version": "me-v3-result-copy.77",
+  "result_copy_version": "me-v3-result-copy.78",
   "result_model_version": "me-v3-result-model.7",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.9",
   "scoring_version": "me-v3-scoring.5"
@@ -31,7 +31,7 @@
   "src/lib/me-v3/result/text.ko.ts": "82932069908da96dc6ccc33439483b4d925d3a340befc3bea555e422b3f3ac6a",
   "src/lib/me-v3/result/say.ts": "1ca895cbeb84b08c5579fc3fcaaf4f8c89b766e131f277bcd92bba74abcebc95",
   "src/lib/me-v3/result/josa.ts": "152cd30c2af136172618c14fa6fb4175b97cf16350db631e3e2e6c72fd7dd4af",
-  "src/lib/me-v3/result/version.ts": "6cc8f94e76e62fb2a7e357cc4de3ba631e369df832931103aea56554173d358b",
+  "src/lib/me-v3/result/version.ts": "fedcf4a203dd7ff722fde456167f8492964c243a8091bf066c4beaa5492c5819",
   "src/lib/me-v3/result/tile-sub.ts": "8e51d0087d789341b20679e15503c7d31d62b36c943998cea70d992539c2d785",
   "src/lib/me-v3/student/copy.ts": "3c5f96455be8222018a30f1d5423aee1608e436ec11c49d681b208956ef60a1a",
   "src/lib/me-v3/student/icon.ts": "65836ae7a141a7dcdf844e5d5b4bcdbcc558dad0a3890a4a67384a3b17c7aea2",
@@ -46,7 +46,7 @@
   "src/lib/me-v3/runtime/domain-facts.ts": "4a52ef9a43a3d97d1713b415537f11c81cd5bd23e64fe7fff9875583e4081232",
   "src/lib/me-v3/result/chains.ts": "194c2e40a2eb53efca868e41aa3bce25a7601965b05b7142a8808b9f63398669",
   "src/lib/me-v3/result/sejong.ts": "efb45ce6ce5ed9e77ffb3a6d6cfedfdaa2bfd112f3c6c2379544f293033b42ed",
-  "src/app/v3/[attemptId]/result/sejong.tsx": "0176a3bf7a75a943085c963d38162a9cdbc762ae6707e8b1a3ad90cd3cd20ec1",
+  "src/app/v3/[attemptId]/result/sejong.tsx": "e2db708f24378eb808aa85ad785450411b1cb88958d3cf765c3dd8d8a2c51446",
   "src/lib/me-v3/result/text.ts": "9740c80e8a5ad77d2d2e84796cf2d4835ef1f4a18163e4c6f5b3c047dc028b07",
   "src/lib/me-v3/result/text.en.ts": "87feab057a5654cc6cb088337ef8d26f9cc55eec3291c3f95d5b47119c9c0e19",
   "src/lib/me-v3/result/localize.ts": "ef139d66fbf83b53dddf021dda8799d4e6b26312490eb2ec8a429ae578d9c96c",
