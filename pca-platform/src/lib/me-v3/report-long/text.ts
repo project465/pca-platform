@@ -230,11 +230,11 @@ export function actionOutput(a: Action, def: DomainDef | undefined): string {
 function actionHeadEn(a: Action, dn: string): string {
   switch (a.code) {
     case "BUILD_OUTPUT": return `Finish one ${dn} deliverable`;
-    case "ADD_VERIFICATION": return `Compare a ${dn} result with a reference`;
+    case "ADD_VERIFICATION": return `Compare one ${dn} result with a reference`;
     case "FILL_AXIS": return a.axis ? `${AXIS_DO_EN[a.axis]} in ${dn}` : `Make one call yourself in ${dn}`;
     case "DEEPEN_OWNERSHIP": return `Write down what you decided in ${dn}`;
     case "TRY_SHORT_EXPERIENCE": return `Try ${dn} in a short project`;
-    case "STUDY_NEXT": return `Take a ${dn} course and use it once`;
+    case "STUDY_NEXT": return `Take one ${dn} course and use it once`;
     case "RECHECK_DIRECTION": return `Decide whether to keep going with ${dn}`;
     case "EXPLORE_BROADLY": return "Try one area you're curious about";
     case "WRITE_UP": return `Write up one ${dn} experience on a page`;
@@ -253,16 +253,16 @@ function actionLineEn(a: Action, dn: string, def: DomainDef | undefined): string
         : `In your next ${dn} project, put what you decided into a one-page document.`;
     case "ADD_VERIFICATION":
       return vt.length
-        ? `Set a ${dn} result next to ${orJoinEn(vt)}, and write the difference and its cause in one table.`
-        : `Set a ${dn} result next to a reference value in one table.`;
+        ? `Take one ${dn} result, set it next to ${orJoinEn(vt)}, and write the difference and its cause in one table.`
+        : `Take one ${dn} result and set it next to a reference value in one table.`;
     case "FILL_AXIS":
       return l2
         ? `In your next ${dn} project, take on a step that lets you say ${iDid(l2)}, and write one line on why you chose what you did.`
         : `In your next ${dn} project, take on ${a.axis ? AXIS_NEED[a.axis] : "one decision"} yourself.`;
     case "DEEPEN_OWNERSHIP":
       return l2
-        ? `Think of a ${dn} project you've already done where you could say ${iDid(l2)}, and write three lines on what you decided yourself.`
-        : `Think of a ${dn} project you've already done, and write three lines on what you decided yourself.`;
+        ? `Think back to one ${dn} project you've done where you could say ${iDid(l2)}, and write three lines on what you decided yourself.`
+        : `Think back to one ${dn} project you've done, and write three lines on what you decided yourself.`;
     case "TRY_SHORT_EXPERIENCE":
       return `Do one short project or study group on ${dn}, then write five lines on what you did and what you decided.`;
     case "STUDY_NEXT":

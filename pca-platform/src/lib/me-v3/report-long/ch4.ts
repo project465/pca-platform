@@ -172,8 +172,9 @@ function reqRows(x: Inputs, d: X, r: RolePack) {
 /** 직무가 특히 보는 판단 막대. 읽는 법(`reqHow`)은 카드 줄 바로 아래에 한 줄로 둔다 */
 function reqChart(x: Inputs, d: X, r: RolePack): string {
   const rows = reqRows(x, d, r);
-  /* 영어 판단 이름은 길어서 이름 칸을 넓히고 그림 폭을 같이 늘린다(칸 폭에 맞춰 줄어든다) */
-  return hbars(rows, { max: 3, width: isEn() ? 440 : 340, label: labW(rows.map((v) => v.label), 12.5, 110), row: 42, valueText: (b) => String((b as { note?: string }).note ?? "") });
+  /* 영어 판단 이름은 길어서 이름 칸을 넓히고, 막대 자리가 남도록 그림 폭을 그만큼만 늘린다(그림은 칸 폭에 맞춰 줄어든다) */
+  const lw = labW(rows.map((v) => v.label), 12.5, 110);
+  return hbars(rows, { max: 3, width: isEn() ? Math.max(340, lw + 160) : 340, label: lw, row: 42, valueText: (b) => String((b as { note?: string }).note ?? "") });
 }
 const reqHow = () => howto([[L("막대 길이", "Bar length"), L("핵심 영역에서 해 본 가장 깊은 단계", "The deepest step you reached in the core areas")], [LVC[1], LEVEL_KO[1]], [LVC[2], LEVEL_KO[2]], [LVC[3], LEVEL_KO[3]], [L("빈 막대", "Empty bar"), L(`${LEVEL_KO[0]} 또는 ${notAsked()}`, `${LEVEL_KO[0]} or ${notAsked()}`)]]);
 /** 걸음 사슬의 읽는 법. 칸 색은 하나로 칠해서 뜻을 따로 두지 않는다 */
@@ -367,7 +368,7 @@ export function industryDeep(x: Inputs, d: X): Page[] {
   const shownOk = shown.filter((v) => (d.level(v.domain, v.axis) ?? -1) >= 2).length;
   const pn = p.name_ko;
   const lead = d.goalInd
-    ? L(`관심 산업으로 고르신 ${E(pn)}의 판단입니다.`, `These are the decisions in ${E(pn)}, the industry you picked.`)
+    ? L(`관심 산업으로 고르신 ${E(pn)}의 판단입니다.`, `You picked ${E(pn)} as your industry.`)
     : L(`관심 산업을 고르지 않아 ${E(j(pn, "을를"))} 예로 실었고, 다음 검사에서 고르면 그 산업으로 바뀝니다.`, `You did not pick an industry, so ${E(pn)} is shown as an example. If you pick one next time, this page will show that industry.`);
   const ask = (s: string) => (isEn() ? s.trim() : askNoun(s));
   pages.push(P(L(`${pn}에서 보는 판단`, `What ${pn} looks for`),

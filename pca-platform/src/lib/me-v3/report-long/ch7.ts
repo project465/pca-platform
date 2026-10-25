@@ -142,14 +142,14 @@ export function ganttPage(x: Inputs, d: X): Page {
     ...([[SPAN_C.NOW, "30일 안에 끝낼 일"], [SPAN_C.NEXT, "60일 안에 끝낼 일"], [SPAN_C.LATER, "90일 안에 끝낼 일"], [SPAN_C.DRAFT, "직무 안내의 첫 프로젝트로 채운 초안"]] as [string, string][]).filter(([c]) => has(c)),
   ];
   const dek = en
-    ? `Tasks are split into those to finish within 30, 60 and 90 days, and the text inside each bar is the deliverable you will have when it is done.${addFp && acts.length ? ` The last 30 days were empty, so the first project for ${E(role?.name_ko ?? "")} is in there as a draft.` : ""}`
+    ? `Tasks are grouped by when to finish them, and each bar shows the deliverable it leaves you with.${addFp && acts.length ? ` The last 30 days were empty, so the first project for ${E(role?.name_ko ?? "")} fills them as a draft.` : ""}`
     : `30일, 60일, 90일 안에 끝낼 일을 나눠 두었고, 막대 안 글은 끝냈을 때 손에 남는 결과물이에요.${addFp && acts.length ? ` 마지막 30일이 비어 있어 ${E(role?.name_ko ?? "")} 쪽 첫 프로젝트를 초안으로 넣었습니다.` : ""}`;
   return P(L("90일 계획", "90-day plan"),
     T(acts.length ? L(`90일 동안 할 일 ${acts.length}가지를 달력에 올렸습니다`, `Your ${pl(acts.length, "task", "tasks")} for the next 90 days, on a calendar`) : L("90일 계획 초안입니다", "A draft plan for the next 90 days"), dek) +
     (bars.length ? `<div class="wide-art">${gantt(bars, { width: 710, label: 250 })}</div>${howto(marks, L("줄마다 할 일 하나이고, 왼쪽 이름이 그 일이에요.", "Each row is one task, named on the left."))}` : "") +
     (rows.length ? `<table class="tb tb-xs"><thead><tr><th>${L("기간", "When")}</th><th>${L("할 일", "Task")}</th><th>${L("남길 것", "Deliverable")}</th></tr></thead><tbody>${rows.map((r, i) => `<tr><td class="w18">${E(r.when)}${r.draft ? `<br>${draft()}` : ""}</td><td><b>${E(r.head)}</b>${(en ? rows.length > 4 : rows.length > 5 && i >= 4) ? "" : `<br><span class="mut">${E(r.line)}</span>`}</td><td class="w22">${E(r.out)}</td></tr>`).join("")}</tbody></table>` : "") +
     band(L("한 기간에", "Per period"), L("결과물은 두 개까지만 잡아야 끝까지 가기 쉬워요. 끝낸 일은 내 CareerMatri 경험 기록에 올려 두세요.",
-      "Plan no more than two deliverables per period so you can see them through. Add each finished task to your experience records in My CareerMatri.")));
+      "Plan two deliverables at most per period, and log each finished task in My CareerMatri.")));
 }
 
 export function longPage(x: Inputs, d: X): Page {
@@ -397,14 +397,14 @@ export function wordsPage(x: Inputs, d: X): Page {
       ["Decision level", E(`How deeply you have made a decision yourself. In order: ${([0, 1, 2, 3] as const).map((k) => STEP_WORD[k].tag).join(" → ")}. The further right, the bigger your own share of the call.`)],
       ...zoneRows((s) => stop(cap(s))),
       ["Open decision", "A decision with no scene yet where you made it yourself. Worth filling in first."],
-      ["Checklist item", "A specific task or deliverable you picked during the assessment. It is the evidence for raising a level."],
+      ["Checklist item", "A specific task or deliverable you picked in the assessment, used as evidence."],
       ["Deliverable", "A table or document that lets other people read and use your decision."],
-      ["30, 60 and 90 days", "Deadlines for the action plan tasks, counted from your assessment date. Running late does not change your results."],
-      ["Draft", "Text filled in from your answers and the role material. Change or delete it to fit your situation."],
-      ["Underline and dotted line", "In the application drafts, underlined words are your own picks or answers, and dotted lines mark details your answers did not cover."],
-      ["Experience record", "An activity you wrote down yourself on the platform, kept separate from your assessment answers."],
+      ["30, 60 and 90 days", "Deadlines counted from your assessment date. Running late does not change your results."],
+      ["Draft", "Text filled in from your answers. Change or delete it to fit your situation."],
+      ["Underline and dotted line", "In the drafts, underlined words come from your answers, and dotted lines are details to fill in."],
+      ["Experience record", "An activity you logged on the platform, kept separate from your assessment answers."],
       ["Role guide", "A description of what a role usually involves. It contains nothing that judges you."],
-      ["Retake", "Taking the same assessment again and comparing the two results area by area. The earlier result stays as it is."],
+      ["Retake", "Taking the assessment again and comparing the results area by area. The old result stays."],
     ];
     return A("Glossary", T("Terms used in this report") + `<dl class="dl">${ws.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join("")}</dl>`);
   }

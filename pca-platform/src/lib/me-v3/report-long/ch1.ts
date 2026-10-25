@@ -373,12 +373,13 @@ export function goalPage(x: Inputs, d: X): Page[] {
       : hit
         ? `목표 직무 ${r.name_ko}의 핵심 영역 ${cov.tds.length}곳 가운데 ${hit}곳에서 해 본 일이 나왔습니다`
         : `${r.name_ko} 직무로 가려면 ${andJoin(cov.tds.slice(0, 2).map(d.name))} 쪽 경험부터 쌓으면 됩니다`);
+  /* 영어 글은 길어 한 쪽에 다 들어가지 않는다. 응답에서 나온 판단 한 묶음과 다른 직무와의 차이만 싣고,
+     목표 산업이 먼저 묻는 판단은 04장(산업 쪽)에 맡긴다 */
   const notes = en ? [
-    overlap.length ? note("Decisions that came up in both sets of answers", `<ul class="ls">${overlap.map((t) => `<li>${E(t)}</li>`).join("")}</ul><p class="mut sm">They came up in your ${E(x.major)} area answers and in the questions for this role.</p>`) : "",
-    requested.length ? note("Decisions this role and industry look at more", `<ul class="ls">${requested.map((t) => `<li>${E(t)}</li>`).join("")}</ul>`, true) : "",
-    (() => { const xs = r.differs_from.filter((v) => okText(v.line)).slice(0, 2); return xs.length ? note("How it differs from other roles", ul(xs.map((v) => `<b>${E(d.roleName(v.vs))}</b> ${E(sentenceEn(v.line))}`))) : ""; })(),
-    ind ? (() => { const xs = ind.judgement_dimensions.filter((v) => okText(v.name)).slice(0, 3); return xs.length ? note(`What ${E(ind.name_ko)} asks about first`, ul(xs.map((v) => `${E(v.name)} <span class="mut">${E(d.name(v.domain))}</span> ${pip(d.level(v.domain, v.axis))}`)), true) : ""; })()
-      : r.compare_with.length ? note("Roles to compare with", chips(r.compare_with.map(d.roleName)), true) : "",
+    overlap.length ? note("Decisions that came up in both sets of answers", `<ul class="ls">${overlap.map((t) => `<li>${E(t)}</li>`).join("")}</ul><p class="mut sm">They came up in your ${E(x.major)} area answers and in the questions for this role.</p>`)
+      : requested.length ? note("Decisions this role and industry look at more", `<ul class="ls">${requested.map((t) => `<li>${E(t)}</li>`).join("")}</ul>`, true) : "",
+    (() => { const xs = r.differs_from.filter((v) => okText(v.line)).slice(0, 2); return xs.length ? note("How it differs from other roles", ul(xs.map((v) => `<b>${E(d.roleName(v.vs))}</b> ${E(sentenceEn(v.line))}`)))
+      : r.compare_with.length ? note("Roles to compare with", chips(r.compare_with.map(d.roleName)), true) : ""; })(),
   ] : [
     overlap.length ? note("두 쪽 응답에서 모두 나온 판단", `<ul class="ls">${overlap.map((t) => `<li>${E(t)}</li>`).join("")}</ul><p class="mut sm">${E(x.major)} 영역 응답에서도, 이 직무 문항에서도 나온 판단입니다.</p>`) : "",
     requested.length ? note("이 직무와 산업이 더 보는 판단", `<ul class="ls">${requested.map((t) => `<li>${E(t)}</li>`).join("")}</ul>`, true) : "",
@@ -392,7 +393,7 @@ export function goalPage(x: Inputs, d: X): Page[] {
   const am0 = r.application_material[0];
   const indLine = ind ? (okText(ind.result_line) ? ind.result_line : okText(ind.scene) ? ind.scene : "") : "";
   const tail = ind
-    ? band(L("목표 산업", "Target industry"), `${E(ind.name_ko)}. ${E(en ? indLine.split(/(?<=\.)\s+/)[0] : indLine)}`)
+    ? band(L("목표 산업", "Target industry"), en ? `${E(ind.name_ko)}. ${E(indLine.split(/(?<=\.)\s+/)[0])} Chapter 04 shows what this industry asks about first.` : `${E(ind.name_ko)}. ${E(indLine)}`)
     : am0
       ? (en
         ? band("In your next project", `Put together ${E(lcEn(am0))}, the kind of material ${E(r.name_ko)} applications ask for. If you know the format early, you can use it as soon as you apply.`)
@@ -409,9 +410,8 @@ export function goalPage(x: Inputs, d: X): Page[] {
         ...tdZones.map((z) => [ZC[z], L(`왼쪽 핵심 영역 옆 점 · ${E(ZONE_WORD[z].tag)}`, `Dot by a core area on the left · ${E(ZONE_WORD[z].tag)}`)] as [string, string]),
       ], L("막대 길이는 이 직무가 특히 보는 판단을 핵심 영역에서 가장 깊이 해 본 단계예요.", "Bar length is the deepest step you reached, across the core areas, on each decision this role watches."))}</div>
     </div>` +
-    (en ? "" : pairs.join("") + tail));
-  /* 영어는 직무 비교와 산업 줄을 다음 쪽으로 넘긴다. 쪽 모으기가 남은 자리만큼 앞으로 끌어 올린다 */
-  return en && (pairs.length || tail) ? [main, P(`${title} (2)`, pairs.join("") + tail)] : [main];
+    pairs.join("") + tail);
+  return [main];
 }
 
 /**

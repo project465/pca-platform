@@ -69,7 +69,7 @@ function radarHow(series: { name: string; color: string }[], rings: boolean): st
     ...(rings ? ([[L("안쪽 고리", "Inner ring"), LEVEL_KO[1]], [L("가운데 고리", "Middle ring"), LEVEL_KO[2]]] as [string, string][]) : []),
     [L("바깥 고리", "Outer ring"), LEVEL_KO[3]],
     ...series.map((s) => [s.color, L(`${E(s.name)}의 선`, `${E(s.name)} line`)] as [string, string]),
-    [L("점 없는 꼭짓점", "Spoke with no dot"), L("이번에 묻지 않은 판단", "A judgment we did not ask about this time")],
+    [L("점 없는 꼭짓점", "No dot"), L("이번에 묻지 않은 판단", "Not asked this time")],
   ], rings ? L("꼭짓점 여덟 개가 판단 하나씩이고, 선이 바깥으로 나갈수록 그 판단을 깊이 해 봤다는 뜻이에요.", "Each of the eight spokes is one judgment. The further a line reaches out, the further you have gone with that judgment.") : undefined);
 }
 
@@ -199,12 +199,12 @@ export function strengthPage(x: Inputs, d: X, k: number): Page {
   const def = d.def(s.code);
   const gap = x.m.gaps.find((g) => g.domain === s.code);
   const nm = d.name(s.code);
-  const roles = d.rolesOf(s.code).slice(0, 4).map((r) => (en ? `${d.roleName(r.role)} (${strengthWord(r.strength)})` : `${d.roleName(r.role)}(${r.strength})`));
+  const roles = d.rolesOf(s.code).slice(0, en ? 3 : 4).map((r) => (en ? `${d.roleName(r.role)} (${strengthWord(r.strength)})` : `${d.roleName(r.role)}(${r.strength})`));
   const indRow = d.goalInd ? x.rel.td_industry.find((r) => r.td === s.code && r.industry === d.goalInd!.code && r.strength !== "드묾") : null;
   /* 영어: 관계표의 `dimensions` 는 한국어 원고라, 같은 자리를 산업팩(영어 원고)의 판단 이름에서 읽는다 */
   const indDim = en && indRow ? d.goalInd!.judgement_dimensions?.find((v) => v.domain === s.code)?.name : null;
   const indLine = en
-    ? (indDim ? `${d.goalInd!.name_ko} asks: ${qe(indDim)}` : null)
+    ? (indDim ? `${d.goalInd!.name_ko}: ${qe(indDim)}` : null)
     : indRow?.dimensions?.[0] ? `${d.goalInd!.name_ko}에서는 ${askNoun(indRow.dimensions[0])}를 봅니다.` : null;
   const pick = ev.decisions[0] ?? ev.acts[0];
   const story = en
@@ -216,7 +216,7 @@ export function strengthPage(x: Inputs, d: X, k: number): Page {
       : `${nm}에서는 판단 ${s.confirmed.length}가지를 직접 해 봤다고 답했어요. 어떤 과제였는지 체크리스트에서 골라 두면 지원서에 쓸 근거가 됩니다.`;
   const show = en
     ? (ev.artifacts.length
-      ? `Show ${qe(ev.artifacts[0])} as your deliverable.${ev.comparisons.length ? ` Attach what you compared it with (${lc(ev.comparisons[0])}) too.` : " Add one line on what you checked it against, and you can use it in an interview right away."}`
+      ? `Show ${qe(ev.artifacts[0])} as your deliverable${ev.comparisons.length ? `, along with the comparison (${lc(ev.comparisons[0])}).` : ". Add one line on what you checked it against, and it is ready for an interview."}`
       : `On your next ${nm} project, keep ${aN(def?.artifacts[0] ?? "result document")}. It becomes the first deliverable you can attach to an application.`)
     : ev.artifacts.length
       ? `${j(ev.artifacts[0], "을를")} 결과물로 내보이면 됩니다.${ev.comparisons.length ? ` ${j(ev.comparisons[0], "과와")} 비교한 내용도 함께 붙이세요.` : " 무엇과 비교해 확인했는지 한 줄 적어 두면 면접에서 바로 쓸 수 있어요."}`
@@ -244,7 +244,7 @@ export function strengthPage(x: Inputs, d: X, k: number): Page {
     ].filter(Boolean).join(" ");
   const question = en
     ? (pick
-      ? `You picked ${qe(pick)}. What did you base that on, and why didn't you use another method?`
+      ? `You picked ${qe(pick)}. What was that based on, and why not another method?`
       : [`Has a ${nm} project ever turned out differently from what you expected? What did you change?`,
         `What did you compare your ${nm} results with to check they were right?`,
         `Who used the material you made on your ${nm} project, and where?`][k % 3])
@@ -255,7 +255,7 @@ export function strengthPage(x: Inputs, d: X, k: number): Page {
         `${d.name(s.code)} 과제에서 만든 자료는 누가, 어디에 썼나요?`][k % 3];
   const color = SERIES[k % 4];
   /* 영어 문장은 한국어보다 길어 목록을 셋까지만 싣는다. 고른 항목 전부는 03장 ‘체크리스트에서 고른 항목’ 에 있다 */
-  const cap = en ? 3 : 5;
+  const cap = !en ? 5 : ev.decisions.length && ev.acts.length ? 2 : 3;
   const head = en
     /* 영어 제목에는 영역 이름을 다시 적지 않는다(바로 위 머리말에 있다). 영역 이름이 길어 두 줄을 먹는다 */
     ? (ev.decisions.length && ev.artifacts.length ? "You have decisions and deliverables to show here"
@@ -271,7 +271,7 @@ export function strengthPage(x: Inputs, d: X, k: number): Page {
     T(E(head), E(story)) +
     `<div class="two r64">
       <div>${ev.decisions.length ? H(L("직접 정한 것", "What you decided"), L("고른 근거", "Items you picked")) + ul(ev.decisions.slice(0, cap).map(E)) : ""}${ev.acts.length ? H(L("해 본 일", "What you did"), L("고른 근거", "Items you picked")) + ul(ev.acts.slice(0, cap).map(E)) : ""}
-        ${ev.artifacts.length ? H(L("남긴 것", "What you left behind")) + chips(ev.artifacts.slice(0, 6), "art") : ""}${ev.comparisons.length ? H(L("비교한 대상", "What you compared with")) + chips(ev.comparisons.slice(0, en ? 3 : 5)) : ""}</div>
+        ${ev.artifacts.length ? H(L("남긴 것", "What you left behind")) + chips(ev.artifacts.slice(0, 6), "art") : ""}${ev.comparisons.length ? H(L("비교한 대상", "What you compared with")) + chips(ev.comparisons.slice(0, en ? 2 : 5)) : ""}</div>
       <div class="card cen">${radar(AXES.map((a) => an(a)), [{ name: d.name(s.code), levels: d.levels(s.code), color }], { size: en ? 250 : 290, label: 13, ring: false })}${zoneTag(s.zone)}${radarHow([{ name: d.name(s.code), color }], false)}</div>
     </div>` +
     `<div class="g${roles.length ? 3 : 2}">
@@ -330,16 +330,16 @@ export function qualityPage(x: Inputs, d: X): Page {
   const max = Math.max(4, ...dist.map((v) => v.value));
   const total = dist.reduce((a, v) => a + v.value, 0);
   const qdek = en
-    ? E(QUALITY_EN[f as keyof typeof QUALITY_EN] || "") || "We checked whether your answers all leaned one way and whether repeated questions got matching answers."
+    ? E(QUALITY_EN[f as keyof typeof QUALITY_EN] || "") || "We checked for lopsided answers and for mismatches on repeated questions."
     : E(QUALITY_KO[f as keyof typeof QUALITY_KO] || "") || "검사는 모든 답을 같은 쪽으로 고르지 않았는지, 같은 경험을 두 번 물었을 때 답이 맞는지를 함께 봤어요.";
   const flow: [string, string][] = en
-    ? [["Answer", "You said you set the criteria yourself"], ["Scene", "You picked that scene in the checklist"], ["One more piece", "You also picked a deliverable or a comparison, so the evidence added up to two or more"], ["Level", `Only then did we count it as “${STEP_WORD[3].tag}”`]]
+    ? [["Answer", "You said you set the criteria yourself"], ["Scene", "You picked that scene in the checklist"], ["One more piece", "You also picked a deliverable or a comparison"], ["Level", `Only then did we count it as “${STEP_WORD[3].tag}”`]]
     : [["답", "‘기준을 내가 정했다’고 답했어요"], ["고른 장면", "체크리스트에서 그 장면을 골랐어요"], ["근거 하나 더", "남긴 결과물이나 비교한 대상까지 골라 근거가 둘 이상 모였어요"], ["단계", `이렇게 모였을 때만 ‘${STEP_WORD[3].tag}’으로 셌어요`]];
   return P(L("이 결과를 얼마나 믿어도 될까", "How far you can trust this result"),
     T(E(said[f] ?? said.REVIEW), qdek) +
     `<div class="kpis">
       <div class="kpi"><p>${L("응답 점검", "Answer check")}</p><b>${f === "OK" ? L("이상 없음", "No issues") : L("다시 볼 곳 있음", "Some to recheck")}</b><span>${L("한쪽으로 몰린 답 · 앞뒤가 다른 답", "Lopsided or mismatched answers")}</span></div>
-      <div class="kpi"><p>${L("기준까지 직접 정한 판단", "Calls you made")}</p><b>${d.counts.owned}${L("<small>개</small>", "")}</b><span>${L("체크리스트 근거가 둘 이상인 것만 셌어요", "Only with two or more pieces of evidence")}</span></div>
+      <div class="kpi"><p>${L("기준까지 직접 정한 판단", "Calls you made")}</p><b>${d.counts.owned}${L("<small>개</small>", "")}</b><span>${L("체크리스트 근거가 둘 이상인 것만 셌어요", "Two or more pieces of evidence")}</span></div>
       <div class="kpi"><p>${L("판단까지 물은 영역", "Areas asked in depth")}</p><b>${asked.length}${L("<small>곳</small>", "")}</b><span>${L(`${d.counts.domains}가지 ${E(x.domainWord)} 가운데`, `Out of ${d.counts.domains} areas`)}</span></div>
     </div>` +
     H(L(`‘${STEP_WORD[3].tag}’은 이렇게 셌어요`, `How we counted “${STEP_WORD[3].tag}”`), L("답 하나만으로는 올리지 않아요", "One answer alone is not enough")) +
@@ -348,7 +348,7 @@ export function qualityPage(x: Inputs, d: X): Page {
       fig(hbars(dist, { max, width: 640, label: 150, row: en ? 26 : 30, valueText: (b) => L(`${b.value}칸`, String(b.value)) }), howto([[L("막대 길이", "Bar length"), L("그 단계로 나온 칸의 수", "Number of cells at that level")], ...dist.map((v) => [v.color, E(v.label)] as [string, string])],
         L("칸 하나는 한 영역에서 한 판단에 답한 것이에요. 위쪽 막대가 길수록 직접 정한 일이 많다는 뜻입니다.", "One cell is one judgment in one area. The longer the top bar, the more calls you made."))) : "") +
     (asked.length ? H(L("물은 영역마다 직접 해 본 판단", "Judgments you did yourself, area by area"), L(`판단 ${AXES.length}가지 가운데 몇 가지인지`, `How many of the ${AXES.length} judgments`)) +
-      `<table class="tb tb-xs"><thead><tr><th>${L("영역", "Area")}</th><th>${L("지금 상태", "Status")}</th><th>${L("직접 해 본 판단", "Did myself")}</th><th>${L("기준까지 정한 판단", "Made the call")}</th><th>${L("다음에 맡아 볼 판단", "Take on next")}</th></tr></thead><tbody>${asked.map((z) => {
+      `<table class="tb tb-xs"><thead><tr><th>${L("영역", "Area")}</th><th>${L("지금 상태", "Status")}</th><th>${L("직접 해 본 판단", "Did it")}</th><th>${L("기준까지 정한 판단", "Decided")}</th><th>${L("다음에 맡아 볼 판단", "Take on next")}</th></tr></thead><tbody>${asked.map((z) => {
         const lv = d.levels(z.code);
         const next = AXES.filter((_, i) => lv[i] !== null && (lv[i] ?? 0) <= 1).map(axName(d)).slice(0, 2);
         return `<tr><td><b>${E(d.name(z.code))}</b></td><td>${zoneTag(z.zone)}</td><td>${lv.filter((v) => (v ?? 0) >= 2).length}${L("가지", "")}</td><td>${lv.filter((v) => v === 3).length}${L("가지", "")}</td><td class="mut">${E(next.join(", ") || L("기준까지 정해 보기", "Set the criteria yourself"))}</td></tr>`;

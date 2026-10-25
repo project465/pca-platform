@@ -241,7 +241,7 @@ function howToReadEn(x: Inputs, n: number, ne: number, NE: string): Page {
       zones5() +
       `<p class="mut sm" style="margin-top:2mm">${scope}</p>` +
       `<div class="two">
-        <div class="note"><b>Radar chart</b><p>The center is ‘${E(LEVEL_KO[0])}’ and the outer ring is ‘${E(LEVEL_KO[3])}’. Each point is one decision. The further out it sits, the easier it is to explain in an interview.</p></div>
+        <div class="note"><b>Radar chart</b><p>The center is ‘${E(LEVEL_KO[0])}’ and the outer ring ‘${E(LEVEL_KO[3])}’. Each point is one decision. The further out, the easier it is to explain.</p></div>
         <div class="note"><b>‘${E(notAsked())}’</b><p>‘${E(LEVEL_KO[0])}’ means we asked and you had not done it yet. ‘${E(notAsked())}’ means we did not ask, so the spot stays empty instead of showing zero.</p></div>
       </div>` +
       H("Labels in front of a sentence", "They show where the sentence comes from") +
@@ -253,7 +253,7 @@ function howToReadEn(x: Inputs, n: number, ne: number, NE: string): Page {
       </tbody></table>` +
       H("Before you start") +
       `<div class="two"><div>${ul([
-        "Charts show step names and counts, never scores, percentages, rankings or chances of being hired.",
+        "Charts show step names and counts. There are no scores, percentages, rankings or hiring odds.",
         "Your result is fixed to the day you answered. Experience added later only updates My CareerMatri.",
       ])}</div><div>${ul([
         "Work quality, performance figures, personality and aptitude are not measured. With no comparison group yet, there is no ranking.",
