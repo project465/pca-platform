@@ -12,7 +12,7 @@ export const C = {
   l0: "#eceef3", l1: "#cddcf6", l2: "#86a9ea", l3: "#2c56b8",
 };
 
-export const LEVEL_KO = ["해 본 적 없음", "지시받아 수행", "직접 수행", "기준까지 직접 결정"];
+export const LEVEL_KO = ["해 본 적 없음", "시킨 대로 해 봄", "직접 해 봄", "기준까지 직접 정함"];
 export const LEVEL_COLOR = [C.l0, C.l1, C.l2, C.l3];
 
 const esc = (s: string) => s.replace(/\s*[—–]\s*/g, ", ").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");

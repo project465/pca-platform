@@ -105,6 +105,10 @@ function scan(text: string, core: string, allow: string[]): Hit[] {
     }
   };
   find("대시(—)", /[—–]/);
+  /* 안쪽 이름과 상담자에게 하는 말(docs/metri/report-writing-rules.md 1·2절) */
+  find("안쪽 이름", /깊게 묻지|근거 갖춤|근거 일부|판단 여덟|묶음 다섯|단계 넷|지시받아 수행|기준까지 직접 결정|· 이어서/);
+  find("상담자에게 하는 말", /이 학생|학생 말로|학생 생각|상담 40분|상담 기록지|상담 담당자와|다음 상담|상담하면서|상담하다가/);
+  find("설계 문서 동사", /확정합니다|견줍니다|섭니다|세웁니다|가릅니다\.|끊습니다/);
   for (const re of bannedFromGuideCheck()) if (re.source !== "—") find(`쓰지 않는 말 /${re.source}/`, re, (c, before) =>
     terms.some((w) => re.test(w) && c.includes(w))
     /* 회사 이름 같은 고유명사 안의 글자(유저인사이트)는 문장이 아니다. 명사형 낱말만 앞 글자를 본다 */
@@ -122,6 +126,31 @@ function scan(text: string, core: string, allow: string[]): Hit[] {
   find("'대신 지원'", /대신\s?지원/);
   if (core !== "BIZ_CORE_V1") find("경영 쪽 말", /경영기획|경영계열|경영 계열|경영 직무|경영직|경영학/, (c) => allow.some((a) => c.includes(a)));
   if (core !== "ME_CORE_V3") find("기계공학 쪽 말", /기계공학/, (c) => allow.some((a) => c.includes(a)));
+  return hits;
+}
+
+/**
+ * HTML 에서 세는 것 둘(docs/metri/report-writing-rules.md 3·4절).
+ * 1. 한 덩어리(문단 · 목록 줄 · 표 칸) 안에서 `…니다.` 가 세 번 이어지는 자리
+ * 2. 그래프(`role="img"`)가 있는데 그 쪽에 읽는 법(`howto`)이 없는 쪽
+ */
+export function htmlRules(html: string): Hit[] {
+  const hits: Hit[] = [];
+  const strip = (t: string) => t.replace(/<[^>]+>/g, " ").replace(/&[a-z#0-9]+;/g, " ").replace(/\s+/g, " ").trim();
+  for (const mm of html.matchAll(/<(p|li|td|span class="dek")[^>]*>([\s\S]*?)<\/(p|li|td|span)>/g)) {
+    const t = strip(mm[2]);
+    const ss = t.split(/(?<=[.?!])\s+/).filter((x) => /[가-힣]/.test(x));
+    let run = 0;
+    for (const x of ss) {
+      run = /니다[.!]?$/.test(x.trim()) ? run + 1 : 0;
+      if (run >= 3) { hits.push({ rule: "같은 끝 세 번(…니다.)", at: t.slice(0, 70) }); break; }
+    }
+  }
+  for (const pg of html.split(/<section class="pg/).slice(1)) {
+    if (!/role="img"/.test(pg) || /class="howto"/.test(pg)) continue;
+    const title = /data-title="([^"]*)"/.exec(pg)?.[1] ?? "";
+    hits.push({ rule: "그래프 읽는 법 없음", at: title });
+  }
   return hits;
 }
 
@@ -191,7 +220,7 @@ async function one(id: string, uni: string | null): Promise<Row> {
   const maxBlank = counted.reduce((a, x) => Math.max(a, x.b), 0);
   const bytes = Number(execFileSync("stat", ["-c", "%s", pdf]).toString().trim());
   const reg = registry().cores.find((c) => c.code === rep.core);
-  const hits = scan(text, rep.core, [reg?.name_ko ?? "", ...(reg?.aliases ?? [])].filter(Boolean));
+  const hits = [...scan(text, rep.core, [reg?.name_ko ?? "", ...(reg?.aliases ?? [])].filter(Boolean)), ...htmlRules(rep.html)];
   const bad = over.filter((o) => o.over > 1 || o.side > 1);
   const row: Row = { id, core: rep.core, tier: rep.tier, org: uni ?? "", region: rep.region, pages: n, designed: rep.pages.length, over: bad.map((o) => `${o.i}쪽(${o.title}) 아래 ${o.over}px 옆 ${o.side}px`), hits, wraps: wraps.length, notes: rep.notes, ms: Date.now() - t0, blank: blank.map((x) => `${x.i}쪽(${x.title}) ${Math.round(x.b * 100)}%`), maxBlank, bytes };
   writeFileSync(path.join(dir, "REPORT.md"), [

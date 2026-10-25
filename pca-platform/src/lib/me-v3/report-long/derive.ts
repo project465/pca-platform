@@ -19,17 +19,18 @@ export type ZoneKey = typeof ZONES[number];
 
 /** 영역 묶음의 짧은 이름과 뜻(학생에게 하는 말) */
 export const ZONE_WORD: Record<ZoneKey, { tag: string; said: string }> = {
-  Z1_EVIDENCE_ESTABLISHED: { tag: "근거 갖춤", said: "직접 판단한 일과 남긴 결과물이 함께 확인된 영역" },
-  Z2_EVIDENCE_INCOMPLETE: { tag: "근거 일부", said: "해 본 일은 확인되지만 결과물이나 비교 기록이 아직 적은 영역" },
-  Z3_EVIDENCE_LOW_INTEREST: { tag: "경험은 있고 관심 낮음", said: "해 본 일은 있는데 지금 관심이 낮게 나온 영역" },
-  Z4_INSUFFICIENT_EVIDENCE: { tag: "관심 높음 · 경험 적음", said: "관심은 높고 아직 해 본 일이 적은 영역" },
-  NOT_EXPLORED: { tag: "이번에 깊게 묻지 않음", said: "관심과 경험만 묻고 판단 여덟 가지는 이번 검사에서 묻지 않은 영역" },
+  Z1_EVIDENCE_ESTABLISHED: { tag: "강점 영역", said: "직접 정한 일과 남긴 결과물이 둘 다 있는 영역" },
+  Z2_EVIDENCE_INCOMPLETE: { tag: "키워 가는 영역", said: "해 본 일은 있는데 결과물이나 비교한 기록이 아직 적은 영역" },
+  Z3_EVIDENCE_LOW_INTEREST: { tag: "해 봤지만 관심이 낮은 영역", said: "해 본 일은 있는데 지금은 관심이 낮다고 답한 영역" },
+  Z4_INSUFFICIENT_EVIDENCE: { tag: "관심은 높고 경험이 적은 영역", said: "관심은 높은데 아직 해 본 일이 적은 영역" },
+  NOT_EXPLORED: { tag: "관심·경험만 본 영역", said: "관심과 해 본 횟수까지만 물어본 영역" },
 };
+/** 학생에게 보이는 단계 이름. 검사 화면의 보기(시킨 대로 함 · 내가 직접 함 · 내가 정함)와 같은 말을 쓴다 */
 export const STEP_WORD: Record<Level, { tag: string; said: string }> = {
-  0: { tag: "해 본 적 없음", said: "그 판단을 해 본 장면이 없다고 답한 칸입니다" },
-  1: { tag: "지시받아 수행", said: "다른 사람이 정한 조건 안에서 해 봤다고 답한 칸입니다" },
-  2: { tag: "직접 수행", said: "스스로 맡아 해 봤다고 답한 칸입니다" },
-  3: { tag: "기준까지 직접 결정", said: "기준을 직접 정했다고 답했고 그 장면을 고른 근거로도 확인한 칸입니다" },
+  0: { tag: "해 본 적 없음", said: "그 일을 해 본 적이 없다고 답했어요" },
+  1: { tag: "시킨 대로 해 봄", said: "다른 사람이 정한 조건 안에서 해 봤다고 답했어요" },
+  2: { tag: "직접 해 봄", said: "스스로 맡아서 해 봤다고 답했어요" },
+  3: { tag: "기준까지 직접 정함", said: "기준을 직접 정했다고 답했고, 그 근거도 골랐어요" },
 };
 export const BAND_WORD: Record<string, string> = { HIGH: "높음", MID: "보통", LOW: "낮음" };
 export const EXP_WORD: Record<string, string> = { NONE: "없음", ONCE_OR_TWICE: "한두 번", SEVERAL: "여러 번" };
