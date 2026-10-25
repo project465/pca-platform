@@ -1,21 +1,52 @@
 /**
  * 들어가며: 겉표지 · 표지 · 이 리포트에 대해 · 읽는 법 · 차례.
+ *
+ * 영어 책은 같은 쪽을 같은 차례로 세운다. 한국어 글자는 `L(ko, en)` 의 첫 인자에
+ * 그대로 있고, 영어 쪽 문장은 영어 도구(`andJoinEn` · `nEn` …)로만 잇는다.
  */
 import type { Inputs } from "./types";
 import { AXES, STEP_WORD, ZONE_WORD, ZONES, type X, notAsked } from "./derive";
 import { C, LEVEL_KO, radar } from "./charts";
 import { E, H, LVC, MARK, PAL, T, ZC, band, howto, lineArt, tag, ul, type Page } from "./kit";
-import { actionLine, andJoin, j } from "./text";
+import { actionLine, andJoin, andJoinEn, j, nEn } from "./text";
+import { isEn, T as L } from "./lang";
+import { partNames } from "./fill";
 
 const SERIES = [PAL.blue, PAL.coral, PAL.teal, PAL.violet];
 /** 겉표지 선 그림의 선 색(kit.ts lineArt 와 같은 값) */
 const GOLD = "#d9b54a";
+
+/** 들어가며의 장 이름(fill.ts partNames 한 곳에서 정한다). 차례가 이 이름으로 들어가며 쪽을 건너뛴다 */
+const PART0 = () => partNames().intro;
+/** 응시자가 적은 글(이름 · 경험 제목)은 영어 책 검사가 세지 않게 표시한다. 한국어 책에는 붙이지 않는다 */
+const OWN = () => (isEn() ? " data-own" : "");
+/** `2026-10-24` → `24 Oct 2026` */
+const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+export function dateEn(s: string): string {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s.trim());
+  return m ? `${Number(m[3])} ${MON[Number(m[2]) - 1]} ${m[1]}` : s;
+}
+const day = (s: string) => (isEn() ? dateEn(s) : s);
 
 export function leadOf(x: Inputs, d: X): string {
   const m = x.m;
   const names = (z: string) => m.domains.filter((v) => v.zone === z).map((v) => d.name(v.code));
   const z1 = names("Z1_EVIDENCE_ESTABLISHED"), z2 = names("Z2_EVIDENCE_INCOMPLETE"), z3 = names("Z3_EVIDENCE_LOW_INTEREST");
   const high = m.domains.filter((v) => v.interest === "HIGH").map((v) => d.name(v.code));
+  if (isEn()) {
+    switch (m.overview.headline) {
+      case "EVIDENCE_READY":
+        return `In ${andJoinEn(z1)}, you made decisions yourself and kept something to show for them. You can use that in applications right away. In your next project, pick one decision you have done less of and take it on.`;
+      case "EVIDENCE_PARTIAL":
+        return `You have done a fair amount of hands-on work in ${andJoinEn(z2)}. There is little to show for it yet, such as a deliverable or a comparison, so the next time you do a similar project, plan what you will keep.`;
+      case "EVIDENCE_LOW_INTEREST":
+        return `You have done work in ${andJoinEn(z3)}, but your interest lies elsewhere for now. Decide where that experience will be useful, and try the areas you are drawn to with a short project first.`;
+      case "EXPLORING":
+        return `${high.length ? `You said your interest is high in ${andJoinEn(high.slice(0, 3))}. ` : ""}You have not done much hands-on work yet, so start with one class or club project you can finish within four weeks.`;
+      default:
+        return "You have not done much hands-on work yet. Pick one area that interests you, start with a small project, and write down what you decided along the way.";
+    }
+  }
   switch (m.overview.headline) {
     case "EVIDENCE_READY":
       return `${andJoin(z1)}에서는 직접 판단하고 결과물까지 남긴 경험이 있습니다. 지원서에 바로 꺼내 쓸 수 있는 경험이니, 다음 과제에서는 아직 덜 해 본 판단 하나를 골라 채워 보세요.`;
@@ -36,69 +67,96 @@ export function outer(x: Inputs, d: X): Page {
   /* 겉표지 그림도 내 응답을 그린 것이라 읽는 법을 단다. 어두운 바탕에 맞춰 색만 바꾼다 */
   const how = `<style>.oc-how{position:absolute;left:18mm;bottom:64mm;width:74mm}.oc-how .howto{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.22);color:#c4d2ee}.oc-how .howto b{color:#e6c766}.oc-how .howto li em{color:#fff}.oc-how .howto ul{flex-direction:column}</style>` +
     `<div class="oc-how">${howto([
-      [GOLD, "내가 가장 깊이 해 본 단계를 이은 선"],
-      ["꼭짓점", `일할 때 내리는 판단 ${AXES.length}가지(02장의 방사형 그래프와 같은 차례)`],
-      ["가운데 → 바깥", `${E(LEVEL_KO[0])} → ${E(LEVEL_KO[3])}`],
+      [GOLD, L("내가 가장 깊이 해 본 단계를 이은 선", "The line joins the deepest step you reached on each decision")],
+      [L("꼭짓점", "Points"), L(`일할 때 내리는 판단 ${AXES.length}가지(02장의 방사형 그래프와 같은 차례)`, `The ${AXES.length} decisions you make at work, in the same order as the radar chart in Chapter 02`)],
+      [L("가운데 → 바깥", "Center → edge"), `${E(LEVEL_KO[0])} → ${E(LEVEL_KO[3])}`],
     ])}</div>`;
   return {
-    part: "", partName: "", title: "겉표지", kind: "outer",
+    part: "", partName: "", title: L("겉표지", "Front cover"), kind: "outer",
     body: `<div class="oc-grid"></div>
       <div class="oc-top"><span class="oc-mark">${MARK}</span><span class="oc-brand">CareerMatri</span><span class="oc-tier">${E(x.tier)}</span></div>
       <div class="oc-art bleed">${lineArt(lv)}</div>
       <div class="oc-mid">
         <p class="oc-k">${E(x.issuer === "CareerMatri" ? "CAREER ANALYSIS REPORT" : x.issuer)}</p>
-        <h1 class="oc-t">진로 분석<br>리포트</h1>
+        <h1 class="oc-t">${L("진로 분석<br>리포트", "Your career<br>analysis")}</h1>
         <p class="oc-s">${E(x.major)}${E(dept)}</p>
       </div>
       ${how}
       <div class="oc-who">
-        <div><span>참여자</span><b>${E(x.person)}</b></div>
-        <div><span>응답일</span><b>${E(x.answeredOn)}</b></div>
-        <div><span>발행</span><b>${E(x.issuer)}</b></div>
+        <div><span>${L("참여자", "Prepared for")}</span><b${OWN()}>${E(x.person)}</b></div>
+        <div><span>${L("응답일", "Answered on")}</span><b>${E(day(x.answeredOn))}</b></div>
+        <div><span>${L("발행", "Issued by")}</span><b>${E(x.issuer)}</b></div>
       </div>
-      <div class="oc-foot">${x.issuer !== "CareerMatri" ? `<b>${E(x.issuer)}</b><span>×</span>` : ""}<b>CareerMatri</b><em>본인 열람용</em></div>`,
+      <div class="oc-foot">${x.issuer !== "CareerMatri" ? `<b>${E(x.issuer)}</b><span>×</span>` : ""}<b>CareerMatri</b><em>${L("본인 열람용", "Personal copy, for your eyes only")}</em></div>`,
   };
 }
 
 export function cover(x: Inputs, d: X): Page {
+  const en = isEn();
   const series = d.radarDoms.map((v, i) => ({ name: d.name(v.code), levels: d.levels(v.code), color: SERIES[i] }));
   const goal = [d.goalRole?.name_ko, d.goalInd?.name_ko].filter(Boolean).join(" · ");
   const near = d.roleOrder[0]?.name_ko ?? "";
   const k = d.counts;
-  const got = [k.confirmed && `직접 해 본 판단 ${k.confirmed}개`, k.items && `고른 항목 ${k.items}개`, k.artifacts && `결과물 ${k.artifacts}개`, k.records && `경험 기록 ${k.records}건`].filter(Boolean).join(" · ")
-    || `${k.domains}개 ${x.domainWord}의 관심과 해 본 횟수`;
+  const got = (en
+    ? [k.confirmed && nEn(k.confirmed, "decision you handled yourself", "decisions you handled yourself"), k.items && nEn(k.items, "item you picked", "items you picked"), k.artifacts && nEn(k.artifacts, "deliverable"), k.records && nEn(k.records, "experience record")]
+    : [k.confirmed && `직접 해 본 판단 ${k.confirmed}개`, k.items && `고른 항목 ${k.items}개`, k.artifacts && `결과물 ${k.artifacts}개`, k.records && `경험 기록 ${k.records}건`]).filter(Boolean).join(" · ")
+    || L(`${k.domains}개 ${x.domainWord}의 관심과 해 본 횟수`, `Your interest and experience in ${nEn(k.domains, x.domainWord)}`);
   const g0 = d.gaps[0], a0 = g0 ? d.actionOf(g0) : undefined;
-  const first = a0 && g0 ? actionLine(a0, d.name(g0.domain), d.def(g0.domain)) : "관심 가는 영역 하나를 골라 4주짜리 과제로 먼저 겪어 보세요.";
+  const first = a0 && g0 ? actionLine(a0, d.name(g0.domain), d.def(g0.domain)) : L("관심 가는 영역 하나를 골라 4주짜리 과제로 먼저 겪어 보세요.", "Pick one area that interests you and try it first as a four-week project.");
   const holes = series.some((s) => s.levels.some((v) => v == null));
   /* 그림을 조금 줄여 읽는 법이 들어갈 자리를 만든다(아래 칸이 쪽 끝에 붙은 '먼저 할 일' 띠와 겹치지 않게) */
   const art = series.length ? radar(d.best.map((b) => d.axisName(b.axis)), series, { size: 420, ring: false }).replace("<svg ", `<svg style="width:112mm" `) : "";
+  const major = x.department ?? x.major;
   return {
-    part: "", partName: "", title: "표지", kind: "cover",
-    body: `<div class="cv-top"><span class="cv-org">${E(x.issuer)}</span><span class="cv-s">CareerMatri 진로 분석 리포트 · ${E(x.tier)}</span></div>
+    part: "", partName: "", title: L("표지", "Title page"), kind: "cover",
+    body: `<div class="cv-top"><span class="cv-org">${E(x.issuer)}</span><span class="cv-s">${L(`CareerMatri 진로 분석 리포트 · ${E(x.tier)}`, `CareerMatri Career Analysis Report · ${E(x.tier)}`)}</span></div>
       <div class="cv-mid">
-        <p class="cv-k">진로 분석 결과</p>
-        <h1 class="cv-t">${E(x.person)} 님의<br>${E(x.department ?? x.major)} 진로 분석</h1>
+        ${en
+          ? `<p class="cv-k">Prepared for <span data-own>${E(x.person)}</span> · ${E(day(x.answeredOn))}</p>
+        <h1 class="cv-t">Your ${E(major)}<br>career analysis</h1>`
+          : `<p class="cv-k">진로 분석 결과</p>
+        <h1 class="cv-t">${E(x.person)} 님의<br>${E(major)} 진로 분석</h1>`}
         <p class="cv-d">${E(leadOf(x, d))}</p>
         ${series.length ? `<div class="cv-art">${art}</div>` + howto([
           ...series.map((s) => [s.color, E(s.name)] as [string, string]),
-          ["꼭짓점", `일할 때 내리는 판단 ${AXES.length}가지`],
-          ["가운데 → 바깥 고리", `${E(LEVEL_KO[0])} → ${E(LEVEL_KO[3])}`],
-          ...(holes ? [["점 없는 꼭짓점", "그 영역에서 이번 검사가 묻지 않은 판단"] as [string, string]] : []),
-        ], "선 하나가 업무 영역 하나예요. 바깥으로 넓게 퍼질수록 그 영역에서 깊이 해 본 판단이 많다는 뜻입니다.") : ""}
+          [L("꼭짓점", "Points"), L(`일할 때 내리는 판단 ${AXES.length}가지`, `The ${AXES.length} decisions you make at work`)],
+          [L("가운데 → 바깥 고리", "Center → outer ring"), `${E(LEVEL_KO[0])} → ${E(LEVEL_KO[3])}`],
+          ...(holes ? [[L("점 없는 꼭짓점", "Point with no dot"), L("그 영역에서 이번 검사가 묻지 않은 판단", "A decision this assessment did not ask about in that area")] as [string, string]] : []),
+        ], L("선 하나가 업무 영역 하나예요. 바깥으로 넓게 퍼질수록 그 영역에서 깊이 해 본 판단이 많다는 뜻입니다.", "Each line is one work area. The wider a line spreads, the more decisions you have taken further in that area.")) : ""}
       </div>
       <div class="cv-meta">
-        <div><span>응답일</span><b>${E(x.answeredOn)}</b></div>
-        <div><span>참여자 · 전공</span><b>${E(x.person)} · ${E(x.department ?? x.major)}</b></div>
-        ${goal ? `<div><span>목표 직무 · 산업</span><b>${E(goal)}</b></div>` : near ? `<div><span>근거가 가장 많이 겹치는 직무</span><b>${E(near)}</b></div>` : ""}
-        <div><span>이 리포트가 읽은 것</span><b>${E(got)}</b></div>
+        <div><span>${L("응답일", "Answered on")}</span><b>${E(day(x.answeredOn))}</b></div>
+        ${en
+          ? `<div><span>Major</span><b>${E(major)}</b></div>`
+          : `<div><span>참여자 · 전공</span><b>${E(x.person)} · ${E(major)}</b></div>`}
+        ${goal ? `<div><span>${L("목표 직무 · 산업", "Target role · Industry")}</span><b>${E(goal)}</b></div>` : near ? `<div><span>${L("근거가 가장 많이 겹치는 직무", "Role your evidence overlaps with most")}</span><b>${E(near)}</b></div>` : ""}
+        <div><span>${L("이 리포트가 읽은 것", "What this report read")}</span><b>${E(got)}</b></div>
       </div>
-      <div class="cv-foot"><b>먼저 할 일</b>${E(first)}</div>`,
+      <div class="cv-foot"><b>${L("먼저 할 일", "Start here")}</b>${E(first)}</div>`,
   };
 }
 
 export function about(x: Inputs, d: X): Page {
   const n = d.counts.domains;
   const goal = [d.goalRole?.name_ko, d.goalInd?.name_ko, d.orgName(x.m.targets.goal.org)].filter(Boolean).join(" · ");
+  if (isEn()) {
+    return {
+      part: "", partName: PART0(), title: "About this report",
+      body: T("This report is built from your own answers", "We read the work you said you did yourself, the checklist items you picked and the deliverables you named. The first half covers what you can point to now. The second half covers projects to try next term.") +
+        `<div class="g3">
+          <div class="card"><p class="k">What we looked at</p><h4>Decisions you make at work</h4><p>From choosing which problem to solve to making sure the result feeds the next decision, we looked at the ${AXES.length} decisions that come up again and again in ${E(x.major)} work, in each of your ${nEn(n, E(x.domainWord))}.</p></div>
+          <div class="card"><p class="k">What we read</p><h4>Your answers and picks</h4><p>Your assessment answers, the checklist items you picked and the experience records you saved on the platform. Anything you picked is quoted word for word.</p></div>
+          <div class="card"><p class="k">What you get</p><h4>Next steps and things to keep</h4><p>For each decision you have done less of, we note which project to try it in and what to keep from it. These carry through to the 90-day plan and the application drafts later in the book.</p></div>
+        </div>` +
+        H("Your details") +
+        `<table class="tb"><tbody>
+          <tr><th>Name</th><td data-own>${E(x.person)}</td><th>Answered on</th><td>${E(dateEn(x.answeredOn))}</td></tr>
+          <tr><th>Major</th><td>${E(x.major)}${x.department ? ` · ${E(x.department)}` : ""}</td><th>Tier</th><td>${E(x.tier)}</td></tr>
+          ${goal ? `<tr><th>Goal</th><td colspan="3">${E(goal)}</td></tr>` : ""}
+          ${x.exps.length ? `<tr><th>Experience records</th><td colspan="3">${x.exps.slice(0, 4).map((e) => `<span data-own>${E(e.title)}</span>`).join("<br>")}</td></tr>` : ""}
+        </tbody></table>`,
+    };
+  }
   return {
     part: "", partName: "들어가며", title: "이 리포트에 대해",
     body: T(`${E(x.person)} 님이 검사에서 고른 답으로 만든 리포트입니다`, "직접 해 봤다고 답한 일, 체크리스트에서 고른 항목, 남긴 결과물을 모아 읽었어요. 앞쪽은 지금 내세울 수 있는 경험을, 뒤쪽은 다음 학기에 해 볼 과제를 다룹니다.") +
@@ -122,6 +180,7 @@ export function howToRead(x: Inputs): Page {
   const n = x.m.domains.length;
   const ne = x.m.domains.filter((z) => z.zone === "NOT_EXPLORED").length;
   const NE = ZONE_WORD.NOT_EXPLORED.tag;
+  if (isEn()) return howToReadEn(x, n, ne, NE);
   const scope = ne
     ? `이번 검사는 ${E(dw)} ${n}곳 가운데 ${n - ne}곳만 판단 단계까지 자세히 물었고, 나머지 ${ne}곳은 관심과 해 본 횟수만 물었어요. 그 ${ne}곳은 ${E(j(`‘${NE}’`, "으로"))} 표시되고 판단 단계 칸은 흐리게 비어 있습니다. 그 영역에서 해 본 일이 있다면 경험 기록에 더해 두세요.`
     : `이번 검사는 ${E(dw)} ${n}곳 모두 판단 단계까지 물었어요.`;
@@ -129,10 +188,10 @@ export function howToRead(x: Inputs): Page {
     part: "", partName: "들어가며", title: "읽는 법",
     body: T("네 단계와 다섯 가지 영역 이름만 알면 뒤쪽 그래프를 읽을 수 있어요", "그래프의 색은 대부분 아래 두 가지 가운데 하나예요. 색 견본을 먼저 보고 넘어가면 어느 쪽에서든 바로 읽힙니다.") +
       H("판단을 어디까지 해 봤나 · 네 단계", "막대 그래프, 방사형 그래프, 단계 칸에서 씁니다") +
-      `<div class="steps4">${([0, 1, 2, 3] as const).map((k) => `<div class="st4"><div class="st4-b">${[1, 2, 3].map((jj) => `<i style="background:${k >= jj ? LVC[Math.max(1, k)] : C.l0}"></i>`).join("")}</div><b>${E(STEP_WORD[k].tag)}</b><p>${E(STEP_WORD[k].said)}</p></div>`).join("")}</div>` +
+      steps4() +
       `<p class="mut sm" style="margin-top:2mm">칸 세 개 가운데 몇 칸이 찼는지가 곧 단계예요. 색은 단계마다 달라서 칸 수를 세지 않아도 구분됩니다.</p>` +
       H(`${E(j(dw, "이가"))} 놓이는 자리 · 다섯 가지`, "영역 지도, 도넛 그래프, 표의 이름표에서 씁니다") +
-      `<div class="zones5">${ZONES.map((z) => `<div class="zn"><span class="zsw" style="background:${ZC[z]}"></span><div><b>${E(ZONE_WORD[z].tag)}</b><p>${E(ZONE_WORD[z].said)}</p></div></div>`).join("")}</div>` +
+      zones5() +
       `<p class="mut sm" style="margin-top:2mm">${scope}</p>` +
       `<div class="two">
         <div class="note"><b>방사형 그래프</b><p>가운데가 ‘${E(LEVEL_KO[0])}’, 바깥 고리가 ‘${E(LEVEL_KO[3])}’이에요. 꼭짓점 하나가 판단 하나이고, 바깥으로 넓게 퍼진 판단일수록 면접에서 내 말로 풀어 설명하기 쉽습니다.</p></div>
@@ -159,10 +218,57 @@ export function howToRead(x: Inputs): Page {
   };
 }
 
+/** 네 단계 견본: 칸 세 개 가운데 찬 칸 수가 단계다 */
+const steps4 = () => `<div class="steps4">${([0, 1, 2, 3] as const).map((k) => `<div class="st4"><div class="st4-b">${[1, 2, 3].map((jj) => `<i style="background:${k >= jj ? LVC[Math.max(1, k)] : C.l0}"></i>`).join("")}</div><b>${E(STEP_WORD[k].tag)}</b><p>${E(STEP_WORD[k].said)}</p></div>`).join("")}</div>`;
+/** 다섯 가지 영역 이름 견본 */
+const zones5 = () => `<div class="zones5">${ZONES.map((z) => `<div class="zn"><span class="zsw" style="background:${ZC[z]}"></span><div><b>${E(ZONE_WORD[z].tag)}</b><p>${E(ZONE_WORD[z].said)}</p></div></div>`).join("")}</div>`;
+
+/**
+ * 영어 책의 읽는 법. 지역 장과 공시 기업 자료가 영어 책에 서지 않으므로 `공시` 표시와
+ * 기업 정보 안내 줄은 싣지 않는다(없는 쪽을 설명하지 않는다).
+ */
+function howToReadEn(x: Inputs, n: number, ne: number, NE: string): Page {
+  const scope = ne
+    ? `We asked about decision steps in ${n - ne} of your ${n} areas. The other ${ne} are marked ‘${E(NE)}’: there we only asked about interest and experience, so their step boxes stay empty. If you have done work there, add it to your experience records.`
+    : `This assessment asked about decision steps in all ${n} areas.`;
+  return {
+    part: "", partName: PART0(), title: "How to read this report",
+    body: T("Four steps and five labels explain every chart", "Most chart colors come from one of the two keys below. Check the swatches once and every chart will read easily.") +
+      H("How far you took each decision · four steps", "Used in bar charts, radar charts and step boxes") +
+      steps4() +
+      `<p class="mut sm" style="margin-top:2mm">The number of filled boxes out of three is the step. Each step also has its own color, so you can tell them apart without counting.</p>` +
+      H("Where each area sits · five labels", "Used in the area map, donut charts and table labels") +
+      zones5() +
+      `<p class="mut sm" style="margin-top:2mm">${scope}</p>` +
+      `<div class="two">
+        <div class="note"><b>Radar chart</b><p>The center is ‘${E(LEVEL_KO[0])}’ and the outer ring is ‘${E(LEVEL_KO[3])}’. Each point is one decision. The further out it sits, the easier it is to explain in an interview.</p></div>
+        <div class="note"><b>‘${E(notAsked())}’</b><p>‘${E(LEVEL_KO[0])}’ means we asked and you had not done it yet. ‘${E(notAsked())}’ means we did not ask, so the spot stays empty instead of showing zero.</p></div>
+      </div>` +
+      H("Labels in front of a sentence", "They show where the sentence comes from") +
+      `<table class="tb"><thead><tr><th>Label</th><th>Meaning</th><th>Example</th></tr></thead><tbody>
+        <tr><td>${tag("Your answer", C.navy)}</td><td>The step you chose on a question</td><td>‘${E(STEP_WORD[2].tag)}’</td></tr>
+        <tr><td>${tag("Your pick", C.blue)}</td><td>A checklist item you picked</td><td>Quoted as written</td></tr>
+        <tr><td>${tag("Your record", C.teal)}</td><td>An activity you saved on the platform</td><td>Class project · capstone</td></tr>
+        <tr><td>${tag("Major guide", C.amber)}</td><td>General guidance on the major, not your result</td><td>How work flows in an area</td></tr>
+      </tbody></table>` +
+      H("Before you start") +
+      `<div class="two"><div>${ul([
+        "Charts show step names and counts, never scores, percentages, rankings or chances of being hired.",
+        "Your result is fixed to the day you answered. Experience added later only updates My CareerMatri.",
+      ])}</div><div>${ul([
+        "Work quality, performance figures, personality and aptitude are not measured. With no comparison group yet, there is no ranking.",
+        "This report is for you. With your consent, a school career adviser can go through it with you. Your institution sees only group totals, never for groups under five.",
+      ])}</div></div>` +
+      band("Career information", "CareerMatri does not place people in jobs. This report is career information, and you apply yourself."),
+  };
+}
+
 export function toc(pages: Page[]): Page {
   const starts: { no: string; name: string; at: number; titles: string[] }[] = [];
+  /* 첫 장 앞의 쪽은 모두 들어가며다. 채움 쪽의 장 이름이 언어마다 달라도 차례에 따로 서지 않게 자리로도 거른다 */
+  const first = pages.findIndex((p) => p.kind === "chapter");
   pages.forEach((p, i) => {
-    if (p.kind === "cover" || p.kind === "outer" || p.kind === "fill" || p.partName === "들어가며") return;
+    if (p.kind === "cover" || p.kind === "outer" || p.kind === "fill" || p.partName === "들어가며" || p.partName === PART0() || i < first) return;
     const last = starts[starts.length - 1];
     /* 차례 쪽이 앞(셋째 자리)에 끼므로 그 뒤 쪽 번호는 하나씩 밀린다 */
     const at = i + 2;
@@ -170,8 +276,8 @@ export function toc(pages: Page[]): Page {
     else if (p.kind !== "chapter" && last.titles.length < 5 && !last.titles.includes(p.title.replace(/ \(\d+\)$/, ""))) last.titles.push(p.title.replace(/ \(\d+\)$/, ""));
   });
   return {
-    part: "", partName: "들어가며", title: "차례",
-    body: T("차례", "장마다 처음 나오는 쪽 이름을 몇 개씩 적었어요. 오른쪽 숫자는 그 장이 시작하는 쪽입니다. 처음이라면 01장 한눈에 보기부터 읽어 보세요.") +
+    part: "", partName: PART0(), title: L("차례", "Contents"),
+    body: T(L("차례", "Contents"), L("장마다 처음 나오는 쪽 이름을 몇 개씩 적었어요. 오른쪽 숫자는 그 장이 시작하는 쪽입니다. 처음이라면 01장 한눈에 보기부터 읽어 보세요.", "For each chapter, we list the first few page titles. The number on the right is the page where the chapter starts. If this is your first time, begin with Chapter 01, At a glance.")) +
       `<div class="toc">${starts.map((s) => `<div class="toc-r"><span class="toc-n">${s.no || "··"}</span><div class="toc-b"><b>${E(s.name)}</b><span>${s.titles.map(E).join(" · ")}</span></div><span class="toc-p" data-toc-part="${E(s.name)}">${s.at}</span></div>`).join("")}</div>`,
   };
 }

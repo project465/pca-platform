@@ -4,6 +4,7 @@
 import { C } from "./charts";
 import type { Level } from "./types";
 import { STEP_WORD, ZONE_WORD, type ZoneKey, notAsked } from "./derive";
+import { isEn, T as L } from "./lang";
 
 export type Page = {
   part: string; partName: string; title: string; body: string;
@@ -52,7 +53,7 @@ export const note = (title: string, body: string, warm = false) => `<div class="
  * `marks` 는 [표시, 뜻] 이고 표시는 색(#...)이거나 짧은 말(가로축 · 숫자 · 점 크기)이다
  */
 export const howto = (marks: [string, string][], lead?: string) =>
-  `<div class="howto"><b>그래프 읽는 법</b>${lead ? `<p>${lead}</p>` : ""}<ul>${marks.map(([k, v]) =>
+  `<div class="howto"><b>${L("그래프 읽는 법", "How to read this chart")}</b>${lead ? `<p>${lead}</p>` : ""}<ul>${marks.map(([k, v]) =>
     `<li>${/^#[0-9a-f]{3,8}$/i.test(k) ? `<i style="background:${k}"></i>` : `<em>${E(k)}</em>`}<span>${v}</span></li>`).join("")}</ul></div>`;
 export const chips = (xs: string[], cls = "") => (xs.length ? `<div class="chips ${cls}">${xs.map((t) => `<span>${E(t)}</span>`).join("")}</div>` : "");
 
@@ -189,13 +190,16 @@ p{margin:0}p,li,td,dd{text-wrap:pretty}.nw{white-space:nowrap;font-style:normal}
 `;
 }
 
+/** 그 사람과 기관이 적은 글자(이름 · 학교). 영어 책 검사가 한글을 세지 않게 `data-own` 을 단다 */
+const own = (t: string) => `<em class="nw" data-own>${E(t)}</em>`;
+
 /** 쪽 하나를 틀에 담는다 */
 export function shell(p: Page, i: number, total: number, ctx: { issuer: string; major: string; tier: string; person: string; answeredOn: string }): string {
-  const attrs = (k: string) => `data-title="${E(p.title)}" data-kind="${k}" data-part="${E(p.partName)}" data-base="${E(p.title.replace(/ \(\d+\)$/, "").replace(/ \(계속\)$/, ""))}"${p.keep ? ` data-keep="1"` : ""}`;
+  const attrs = (k: string) => `data-title="${E(p.title)}" data-kind="${k}" data-part="${E(p.partName)}" data-base="${E(p.title.replace(/ \(\d+\)$/, "").replace(/ \(계속\)$/, "").replace(/ \(cont\.\)$/, ""))}"${p.keep ? ` data-keep="1"` : ""}`;
   if (p.kind === "outer") return `<section class="pg outer" ${attrs("outer")}>${p.body}</section>`;
   if (p.kind === "cover") return `<section class="pg cover" ${attrs("cover")}>${p.body}</section>`;
-  const head = p.kind === "chapter" ? "" : `<header class="rh"><span class="rh-n">${p.part ? `PART ${p.part}` : ""}</span><span class="rh-t">${E(p.partName)}</span><span class="rh-r">${E(ctx.issuer)} · 진로 분석 리포트</span></header>`;
-  const foot = `<footer class="rf"><span>CareerMatri · ${E(ctx.major)} · ${E(ctx.tier)}</span><span>${E(ctx.person)} 님 · ${E(ctx.answeredOn)} 응답</span><span class="rf-no">${i + 1} / ${total}</span></footer>`;
+  const head = p.kind === "chapter" ? "" : `<header class="rh"><span class="rh-n">${p.part ? `PART ${p.part}` : ""}</span><span class="rh-t">${E(p.partName)}</span><span class="rh-r">${isEn() ? `${own(ctx.issuer)} · Career Analysis Report` : `${E(ctx.issuer)} · 진로 분석 리포트`}</span></header>`;
+  const foot = `<footer class="rf"><span>CareerMatri · ${E(ctx.major)} · ${E(ctx.tier)}</span><span>${L(`${E(ctx.person)} 님 · ${E(ctx.answeredOn)} 응답`, `${own(ctx.person)} · answered ${E(ctx.answeredOn)}`)}</span><span class="rf-no">${i + 1} / ${total}</span></footer>`;
   const body = p.kind === "chapter" ? p.body : `<div class="seg">${p.body}</div>`;
   return `<section class="pg ${p.kind === "chapter" ? "chap" : ""}" ${attrs(p.kind ?? "plain")}>${head}<div class="bd">${body}</div>${foot}</section>`;
 }
@@ -406,6 +410,12 @@ export const PACK_JS = String.raw`(function () {
 })();`;
 
 /**
+ * 지금 언어의 쪽 모으기 스크립트. 한국어는 `PACK_JS` 글자 그대로(한국어 책 HTML 이 바뀌지 않게),
+ * 영어는 이어지는 쪽 머리의 ` (계속)` 만 ` (cont.)` 로 바꾼다
+ */
+export const packJs = (): string => (isEn() ? PACK_JS.replace(`" (계속)"`, `" (cont.)"`) : PACK_JS);
+
+/**
  * 장 첫 쪽. `promise` 는 이 장을 왜 읽는지와 읽고 나서 무엇을 하면 되는지다.
  * `art` 가 내 결과를 그린 그래프(`role="img"`)면 `how` 에 읽는 법(`howto`)을 넘긴다. 그러면
  * 그림과 읽는 법이 나란히 선다. 뜻 없는 장식은 `aria-hidden` 으로 표시하고 `how` 를 비운다
@@ -418,6 +428,6 @@ export function chapter(no: string, name: string, promise: string, inside: strin
     body: `<div class="ch-top"><span class="ch-k">PART</span><span class="ch-no">${no}</span></div>
       <h1 class="ch-t">${E(name)}</h1><p class="ch-p">${promise}</p>
       <div class="ch-art${how ? " ch-fig" : ""}">${how ? `<div class="ch-pic">${art}</div><div class="ch-how">${how}</div>` : art}</div>
-      <div class="ch-in">${H("이 장에 담은 것")}${ul(inside.filter(Boolean).map(E), "ch-ls")}</div>`,
+      <div class="ch-in">${H(L("이 장에 담은 것", "In this chapter"))}${ul(inside.filter(Boolean).map(E), "ch-ls")}</div>`,
   };
 }

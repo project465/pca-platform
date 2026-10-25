@@ -8,8 +8,10 @@
 import type { Axis, AxisState } from "../scoring/types";
 import type { Action, Gap, ResultDomain } from "../result/model";
 import { AXIS_KO, AXIS_WHAT_KO } from "../result/text.ko";
+import { AXIS_KO as AXIS_EN, AXIS_WHAT_KO as AXIS_WHAT_EN } from "../result/text.en";
 import { studentActivity, studentEvidence } from "../student";
-import { byLang, T } from "./lang";
+import { byLang, isEn, T } from "./lang";
+import { domainSub } from "../runtime/session";
 import type { DomainDef, Inputs, Level, RolePack, IndustryPack, TaxDomain } from "./types";
 
 export const AXES: Axis[] = ["J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8"];
@@ -60,7 +62,7 @@ export function derive(x: Inputs) {
   const byCode = new Map(m.domains.map((d) => [d.code, d]));
   const defOf = new Map(x.defs.map((d) => [d.code, d]));
   const taxOf = new Map(x.tax.technical_domains.map((d) => [d.code, d]));
-  const name = (td: string) => defOf.get(td)?.name ?? taxOf.get(td)?.name ?? "이 영역";
+  const name = (td: string) => defOf.get(td)?.name ?? taxOf.get(td)?.name ?? T("이 영역", "this area");
   const def = (td: string): DomainDef | undefined => defOf.get(td);
   const tax = (td: string): TaxDomain | undefined => taxOf.get(td);
   const dom = (td: string): ResultDomain | undefined => byCode.get(td);
@@ -78,10 +80,13 @@ export function derive(x: Inputs) {
     const vs = levels(td).filter((v): v is Level => v !== null);
     return vs.length ? (Math.max(...vs) as Level) : null;
   };
-  const axisName = (a: Axis) => AXIS_KO[a];
-  const axisWhat = (a: Axis) => AXIS_WHAT_KO[a];
-  const activity = (td: string) => studentActivity(x.coreCode, td);
-  const evidenceWord = (td: string) => studentEvidence(x.coreCode, td) || def(td)?.artifacts[0] || "결과물";
+  /* 축 이름은 웹 결과지와 같은 말을 쓴다(result/text.ko · text.en) */
+  const axisName = (a: Axis) => T(AXIS_KO[a], AXIS_EN[a]);
+  const axisWhat = (a: Axis) => T(AXIS_WHAT_KO[a], AXIS_WHAT_EN[a]);
+  /* 학생 사전(`studentActivity` · `studentEvidence`)은 한국어뿐이다. 영어 책은 그 영역의 세부 이름과
+     영어 사전의 결과물 이름을 쓴다(작업공간 영어판 `app/me/experience/compose.tsx` 와 같은 길) */
+  const activity = (td: string) => isEn() ? domainSub(x.coreCode, td, 34, "en").split("·").join(", ") : studentActivity(x.coreCode, td);
+  const evidenceWord = (td: string) => (isEn() ? "" : studentEvidence(x.coreCode, td)) || def(td)?.artifacts[0] || T("결과물", "deliverable");
 
   const doms = m.domains;
   const zoneCount = (z: ZoneKey) => doms.filter((d) => d.zone === z).length;

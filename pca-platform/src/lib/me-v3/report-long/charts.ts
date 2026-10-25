@@ -1,4 +1,4 @@
-import { byLang } from "./lang";
+import { byLang, isEn, T as tx } from "./lang";
 /**
  * 긴 결과지의 그래프. 전부 SVG 글자로 돌려준다(인쇄에서 흐려지지 않고 글꼴을 따른다).
  *
@@ -198,7 +198,7 @@ export function quadrant(dots: Dot[], o: { width?: number; xNames: string[]; yNa
     return `<rect x="${f1(L + i * cw + 1)}" y="${f1(T + (ny - 1 - j) * ch + 1)}" width="${f1(cw - 2)}" height="${f1(ch - 2)}" rx="12" fill="${hot ? "#eaf1fd" : warm ? "#fdf5e8" : "#f6f7f9"}"/>`;
   }).join("");
   const xl = o.xNames.map((t, i) => `<text x="${f1(L + i * cw + cw / 2)}" y="${f1(H - B + 20)}" font-size="12" text-anchor="middle" fill="${C.ink}" font-weight="600">${esc(t)}</text>`).join("") +
-    `<text x="${f1(L + (W - L - R) / 2)}" y="${f1(H - 8)}" font-size="11.5" text-anchor="middle" fill="${C.ink3}">관심 정도 →</text>`;
+    `<text x="${f1(L + (W - L - R) / 2)}" y="${f1(H - 8)}" font-size="11.5" text-anchor="middle" fill="${C.ink3}">${tx("관심 정도 →", "Interest →")}</text>`;
   const yl = o.yNames.map((t, j) => multiText(L - 10, T + (ny - 1 - j) * ch + ch / 2, t, 7, { size: 11.5, anchor: "end", color: C.ink, weight: 600 })).join("");
   const cells = new Map<string, Dot[]>();
   for (const d of dots) { const k = `${d.x}:${d.y}`; cells.set(k, [...(cells.get(k) ?? []), d]); }
@@ -229,7 +229,7 @@ export function gantt(rows: GanttRow[], o: { width?: number; days?: number; labe
   const x = (d: number) => L + ((W - L - 10) * d) / D;
   const marks = [0, 30, 60, 90].filter((d) => d <= D);
   const heads = marks.map((d) => `<line x1="${f1(x(d))}" y1="${top - 6}" x2="${f1(x(d))}" y2="${H - 4}" stroke="${C.line}"/>`).join("") +
-    [["1~30일", 0, 30], ["31~60일", 30, 60], ["61~90일", 60, 90]].filter((m) => (m[2] as number) <= D)
+    [[tx("1~30일", "Days 1-30"), 0, 30], [tx("31~60일", "Days 31-60"), 30, 60], [tx("61~90일", "Days 61-90"), 60, 90]].filter((m) => (m[2] as number) <= D)
       .map(([t, a, b]) => `<text x="${f1((x(a as number) + x(b as number)) / 2)}" y="${top - 14}" font-size="11.5" text-anchor="middle" fill="${C.ink}" font-weight="700">${t}</text>`).join("");
   const body = rows.map((r, i) => {
     const y = top + i * rh;
@@ -263,6 +263,7 @@ export function chain(steps: { head: string; body: string; color?: string }[], o
   }).join("")}</svg>`;
 }
 
+const MON_EN = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 /** 경험 기록 시간축. 달 단위로 칸을 나눈다 */
 export function timeline(items: { label: string; from: string; to: string; color: string }[], o: { width?: number } = {}): string {
   const W = o.width ?? 680;
@@ -272,7 +273,7 @@ export function timeline(items: { label: string; from: string; to: string; color
   const x = (m: number) => L + ((W - L - R) * (m - lo)) / (hi - lo + 1);
   const ticks = Array.from({ length: hi - lo + 1 }, (_, k) => lo + k).map((m) => {
     const y = Math.floor(m / 12), mm = (m % 12) + 1;
-    return `<line x1="${f1(x(m))}" y1="${top - 8}" x2="${f1(x(m))}" y2="${H - 4}" stroke="${C.line2}"/><text x="${f1(x(m) + (x(m + 1) - x(m)) / 2)}" y="${top - 14}" font-size="9.5" text-anchor="middle" fill="${C.ink3}">${mm === 1 || m === lo ? `${y}.` : ""}${mm}월</text>`;
+    return `<line x1="${f1(x(m))}" y1="${top - 8}" x2="${f1(x(m))}" y2="${H - 4}" stroke="${C.line2}"/><text x="${f1(x(m) + (x(m + 1) - x(m)) / 2)}" y="${top - 14}" font-size="9.5" text-anchor="middle" fill="${C.ink3}">${isEn() ? `${MON_EN[mm - 1]}${mm === 1 || m === lo ? ` ${y}` : ""}` : `${mm === 1 || m === lo ? `${y}.` : ""}${mm}월`}</text>`;
   }).join("");
   const body = items.map((it, i) => {
     const y = top + i * rh, a = x(months(it.from)), b = x(months(it.to) + 1);
@@ -301,7 +302,7 @@ export function moneyBars(rows: { label: string; values: { name: string; v: numb
     const bars = r.values.map((v, k) => {
       const yy = y0 + k * gh, val = v.v ?? 0, w = (Math.abs(val) / max) * span;
       const bx = val < 0 ? zero - w : zero;
-      const txt = v.v == null ? "공시 없음" : `${(val / 1e8).toLocaleString("ko-KR", { maximumFractionDigits: 0 })}억 원`;
+      const txt = v.v == null ? tx("공시 없음", "Not disclosed") : tx(`${(val / 1e8).toLocaleString("ko-KR", { maximumFractionDigits: 0 })}억 원`, `KRW ${(val / 1e9).toLocaleString("en-US", { maximumFractionDigits: 1 })} bn`);
       return `<rect x="${f1(bx)}" y="${yy + 3}" width="${f1(Math.max(1, w))}" height="${gh - 6}" rx="${(gh - 6) / 2}" fill="${v.color}"/>` +
         `<text x="${f1(val < 0 ? bx - 6 : bx + w + 6)}" y="${yy + gh / 2 + 0.5}" font-size="10.5" text-anchor="${val < 0 ? "end" : "start"}" dominant-baseline="middle" fill="${C.ink2}">${txt}</text>`;
     }).join("");
