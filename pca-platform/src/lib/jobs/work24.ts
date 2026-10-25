@@ -62,6 +62,36 @@ async function call(path: string, params: Record<string, string>): Promise<strin
   return res.text();
 }
 
+export type ListRow = { ref: string; title: string; address: string; posted: string; closes: string; url: string };
+
+/**
+ * 목록 응답 한 쪽을 읽는다. **네트워크 없이 시험할 수 있게 따로 둔다**(`jobs:check` 가
+ * 꼴을 흉내 낸 응답으로 돌린다). 번호가 없는 줄은 버린다: 번호가 없으면 같은 공고를
+ * 두 번 세는 것을 막을 수 없다.
+ */
+export function parseList(xml: string, seen = new Set<string>()): ListRow[] {
+  const out: ListRow[] = [];
+  for (const it of xml.split(/<\/wanted>/).filter((s) => s.includes("<wanted>"))) {
+    const r = first(it, FIELD.ref, seen);
+    if (!r) continue;
+    out.push({
+      ref: r, title: first(it, FIELD.title, seen), address: first(it, FIELD.address, seen),
+      posted: first(it, FIELD.posted, seen), closes: first(it, FIELD.closes, seen),
+      url: first(it, FIELD.url, seen),
+    });
+  }
+  return out;
+}
+
+/** 상세 응답에서 요구를 읽을 본문을 모은다. 회사 이름 칸은 읽지 않는다 */
+export function parseDetail(xml: string, seen = new Set<string>()): string {
+  return FIELD.body.map((n) => {
+    const v = tagValues(xml, n).join("\n");
+    if (v) seen.add(n);
+    return v;
+  }).filter(Boolean).join("\n");
+}
+
 export function work24Ready(): boolean {
   return (process.env.WORK24_AUTH_KEY ?? "").length >= 8;
 }
@@ -82,23 +112,15 @@ export async function runWork24(now = new Date()): Promise<{
   const ymd = (d: Date) => d.toISOString().slice(0, 10).replace(/-/g, "");
   const from = new Date(now.getTime() - 7 * 86400_000);
   try {
-    const list: { ref: string; title: string; address: string; posted: string; closes: string; url: string }[] = [];
+    const list: ListRow[] = [];
     for (let p = 1; p <= pages; p += 1) {
       const xml = await call("callOpenApiSvcInfo210L01.do", {
         callTp: "L", startPage: String(p), display: "100",
         srchBgnDt: ymd(from), srchEndDt: ymd(now),
       });
-      const items = xml.split(/<\/wanted>/).filter((s) => s.includes("<wanted>"));
-      if (!items.length) break;
-      for (const it of items) {
-        const r = first(it, FIELD.ref, seen);
-        if (!r) continue;
-        list.push({
-          ref: r, title: first(it, FIELD.title, seen), address: first(it, FIELD.address, seen),
-          posted: first(it, FIELD.posted, seen), closes: first(it, FIELD.closes, seen),
-          url: first(it, FIELD.url, seen),
-        });
-      }
+      const got = parseList(xml, seen);
+      if (!got.length) break;
+      list.push(...got);
     }
     const known = await knownRefs(SOURCE, list.map((x) => x.ref));
     const fresh = list.filter((x) => !known.has(x.ref)).slice(0, maxDetail);
@@ -109,11 +131,7 @@ export async function runWork24(now = new Date()): Promise<{
         const xml = await call("callOpenApiSvcInfo210D01.do", {
           callTp: "D", wantedAuthNo: x.ref, infoSvc: "VALIDATION",
         });
-        body = FIELD.body.map((n) => {
-          const v = tagValues(xml, n).join("\n");
-          if (v) seen.add(n);
-          return v;
-        }).filter(Boolean).join("\n");
+        body = parseDetail(xml, seen);
       } catch (e) {
         /* 한 건의 상세가 실패해도 나머지는 넣는다. 본문 없이 제목만으로 단다 */
         opFail({ operation: "jobs.work24", ref: ref("posting", x.ref), step: "detail", category: "upstream" }, e);

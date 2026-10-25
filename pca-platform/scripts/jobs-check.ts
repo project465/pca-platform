@@ -9,6 +9,7 @@
 import { registry, coreFile } from "../src/lib/me-v3/core-registry";
 import { mapPosting, regionOf } from "../src/lib/jobs/map";
 import { ingest, parseCsv, isoDate } from "../src/lib/jobs/ingest";
+import { parseDetail, parseList } from "../src/lib/jobs/work24";
 import { demandOf, MIN_TOTAL, MIN_CELL } from "../src/lib/jobs/stats";
 import { query } from "../src/lib/db";
 
@@ -52,6 +53,30 @@ async function main() {
     regionOf("세종특별자치시 한누리대로") === "KR-CHUNGCHEONG" && regionOf("서울 강남구") === "KR-CAPITAL"
     && regionOf("부산광역시") === "KR-YEONGNAM" && regionOf("") === null);
   ok("날짜 꼴 셋을 읽는다", isoDate("20261021") === "2026-10-21" && isoDate("2026.10.1") === "2026-10-01" && isoDate("모름") === null);
+  ok("고용24 의 두 자리 연도(26-10-21)와 '채용시까지' 를 읽는다",
+    isoDate("26-10-21") === "2026-10-21" && isoDate("채용시까지 26-11-19") === "2026-11-19"
+    && isoDate("채용시까지") === null && isoDate("2026-10-21") === "2026-10-21",
+    `${isoDate("26-10-21")} · ${isoDate("채용시까지 26-11-19")} · ${isoDate("채용시까지")}`);
+
+  /* 3-1. 고용24 응답 꼴. **꼴을 흉내 낸 응답이다**(이 환경에서 고용24 가 열리지 않아 실제
+     응답으로 확인하지 못했다). 열쇠를 받은 날 `runWork24` 가 돌려주는 seenFields 로 칸
+     이름을 다시 맞춘다. 여기서는 읽는 쪽이 회사 이름을 들고 오지 않는지와 번호 없는 줄을
+     버리는지를 본다 */
+  const listXml = `<?xml version="1.0" encoding="UTF-8"?><wantedRoot><total>2</total>
+<wanted><wantedAuthNo>K151612610210001</wantedAuthNo><company>(주)가나다정밀</company><title>기구설계 엔지니어 채용</title>
+<region>세종특별자치시 조치원읍</region><regDt>26-10-21</regDt><closeDt>채용시까지 26-11-19</closeDt>
+<wantedInfoUrl>https://www.work24.go.kr/wk/a/b/1500/empDetailAuthView.do?wantedAuthNo=K151612610210001</wantedInfoUrl></wanted>
+<wanted><company>번호없음</company><title>번호 없는 줄</title></wanted></wantedRoot>`;
+  const listed = parseList(listXml);
+  ok("고용24 목록에서 번호 있는 줄만 읽는다", listed.length === 1 && listed[0].ref === "K151612610210001", `${listed.length}줄`);
+  ok("고용24 목록의 날짜를 날짜로 바꾼다", isoDate(listed[0]?.posted) === "2026-10-21" && isoDate(listed[0]?.closes) === "2026-11-19");
+  ok("고용24 목록에서 회사 이름을 들고 오지 않는다", !JSON.stringify(listed).includes("가나다"));
+  const detailXml = `<wantedDtl><corpInfo><corpNm>(주)가나다정밀</corpNm></corpInfo><wantedInfo>
+<jobCont><![CDATA[- 3D CAD 로 구동부 기구를 설계하고 공차를 정합니다<br>- 시제품 시험 결과로 설계를 고칩니다]]></jobCont>
+<compAbl>CATIA 또는 SolidWorks 사용 가능자</compAbl></wantedInfo></wantedDtl>`;
+  const detailBody = parseDetail(detailXml);
+  ok("고용24 상세에서 요구 본문을 읽고 회사 이름은 읽지 않는다",
+    detailBody.includes("공차") && detailBody.includes("SolidWorks") && !detailBody.includes("가나다"), detailBody.slice(0, 60));
 
   /* 4. CSV: 회사 칸이 있어도 읽지 않는다 */
   const csv = `번호,회사,제목,내용,주소\n1,"(주)가나다","경영기획 담당","예산을 배분하고, ""목표""를 지표로 옮긴다",세종\n`;

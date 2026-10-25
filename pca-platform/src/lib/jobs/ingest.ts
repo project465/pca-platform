@@ -25,9 +25,20 @@ export type RawPosting = {
 };
 
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
-/** `20261021` · `2026.10.21` · `2026-10-21` 을 `2026-10-21` 로. 모르면 null */
+/**
+ * `20261021` · `2026.10.21` · `2026-10-21` · `26-10-21` 을 `2026-10-21` 로. 모르면 null.
+ *
+ * **두 자리 연도도 읽는다.** 고용24(옛 워크넷) 목록은 등록일·마감일을 `26-10-21` 꼴로
+ * 주는데, 네 자리만 읽으면 날짜 칸이 전부 비어 마감 순 정렬과 최근 180일 집계가 틀어진다.
+ * `채용시까지` 처럼 날짜가 없는 마감은 null 이다.
+ */
 export function isoDate(s: string | null | undefined): string | null {
-  const m = (s ?? "").match(/(20\d{2})\D?(\d{1,2})\D?(\d{1,2})/);
+  const t = s ?? "";
+  const m = t.match(/(20\d{2})\D?(\d{1,2})\D?(\d{1,2})/)
+    ?? (() => {
+      const y2 = t.match(/(?:^|[^\d])(\d{2})[-./](\d{1,2})[-./](\d{1,2})(?![\d])/);
+      return y2 ? [y2[0], `20${y2[1]}`, y2[2], y2[3]] as unknown as RegExpMatchArray : null;
+    })();
   if (!m) return null;
   const d = `${m[1]}-${m[2].padStart(2, "0")}-${m[3].padStart(2, "0")}`;
   return DATE.test(d) ? d : null;
