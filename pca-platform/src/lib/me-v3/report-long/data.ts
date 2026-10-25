@@ -15,7 +15,7 @@ import { experienceFlow } from "../student";
 import { loadGuide } from "./guide";
 import type { BookLang } from "./lang";
 import { hasEdition } from "../i18n";
-import { localizeResult } from "../result/localize";
+import { localizeResult, localizer } from "../result/localize";
 import { majorNameIn } from "../runtime/session";
 import type {
   Checklists, DomainDef, IndustryPack, Inputs, RegionKey, Relations, RolePack, Taxonomy,
@@ -81,7 +81,16 @@ export async function loadInputs(attemptId: string, expScope: "snapshot" | "all"
     [row.user_id, coreCode, until])).map((r) => r.id));
   const exps = (await experiencesOf(row.user_id, coreCode))
     .filter((e) => e.status !== "draft" && keep.has(e.id))
-    .map((e) => ({ ...e, note_text: null }));
+    .map((e) => ({ ...e, note_text: null }))
+    /* 경험 기록의 고른 칸은 한국어 원고 글자로 저장된다(검사와 같은 규칙). 영어 책에서는
+       같은 자리의 영어 원고로 읽는다. 사람이 적은 제목은 그대로 둔다 */
+    .map((e) => {
+      if (lang === "ko") return e;
+      const tr = localizer(coreCode, lang);
+      const arr = (v: unknown) => (Array.isArray(v) ? v.map((s) => (typeof s === "string" ? tr(s) : s)) : v);
+      return { ...e, decisions: arr(e.decisions), artifacts: arr(e.artifacts), verifications: arr(e.verifications),
+        problems: arr(e.problems), used_where: arr(e.used_where) } as typeof e;
+    });
 
   /* 지역 자료는 한국 공시와 명단이라 영어 책에는 싣지 않는다 */
   const region = lang === "en" ? null : issuerCode ? REGION_BY_ORG[issuerCode] ?? null : null;

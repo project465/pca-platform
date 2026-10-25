@@ -225,7 +225,7 @@ export function rolePages(x: Inputs, d: X, r: RolePack, depth: number): Page[] {
   } else {
     const items = (r.items ?? []).slice(0, 7);
     const mats = r.application_material.slice(0, 3);
-    out.push(P(work,
+    const topPart =
       T(isEn() ? `${E(nm)}: ${E(lcF(r.owns))}` : `${E(j(nm, "은는"))} ${E(tidy(polite(r.owns)))}`,
         isEn()
           ? `${goalLead}Its core areas are ${E(andEn(coreNames))}.${mats.length ? ` In applications, the deliverables to show are ${E(andEn(mats.map(lcF)))}.` : ""}`
@@ -233,13 +233,17 @@ export function rolePages(x: Inputs, d: X, r: RolePack, depth: number): Page[] {
       `<div class="two">
         <div class="card">${H(L("이 직무가 정하는 것", "What this role decides"), L("직무 자료", "From the role profile"))}${chips(r.decides)}<p class="k" style="margin-top:3mm">${L("핵심 영역", "Core areas")}</p><p>${r.core_ref.td.map((t) => dz(d, t)).join(" ")}</p>${r.application_material.length ? `<p class="k" style="margin-top:3mm">${L("지원 서류에 쓰는 결과물", "Deliverables for applications")}</p>${chips(r.application_material, "art")}` : ""}</div>
         <div class="card">${isEn() ? H("What this role weighs most") : H("이 직무가 특히 보는 판단", "내 지금 단계")}${reqChart(x, d, r)}</div>
-      </div>` + reqHow() +
+      </div>` + reqHow();
+    const askPart =
       (items.length ? H(L("이 직무에서 묻는 판단", "Decisions this role asks about"), ctx ? L("직무 문항 · 내 답", "Role questions · your answers") : L("직무 문항", "Role questions")) +
       `<table class="tb tb-xs"><tbody>${items.map((it) => {
         const ans = ctx?.answered.find((a) => a.axis === it.axis && a.domain === it.domain);
         const st = ctx ? (ans ? (ans.owned ? L("직접 정함", "Your call") : L("해 봄", "Done")) : ctx.not_yet.some((a) => a.axis === it.axis && a.domain === it.domain) ? L("아직", "Not yet") : "") : "";
         return `<tr><td class="w22">${E(d.axisName(it.axis))}</td><td>${E(it.ask)}</td><td class="w18 mut">${E(d.name(it.domain))}${st ? ` · ${E(st)}` : ""}</td></tr>`;
-      }).join("")}</tbody></table>` : "") + diffBand));
+      }).join("")}</tbody></table>` : "") + diffBand;
+    /* 영어는 직무 문항 표까지 한 장에 들지 않는다. 표부터 둘째 쪽으로 떼면 쪽 모으기가 남은 자리로 끌어 올린다 */
+    if (isEn() && askPart) out.push(P(work, topPart), P(L(`${nm} · 하는 일 (2)`, `${nm} · What the work involves (2)`), askPart));
+    else out.push(P(work, topPart + askPart));
   }
   if (depth >= 2) {
     if (g) {
@@ -430,11 +434,11 @@ export function orgPages(x: Inputs, d: X): Page[] {
     T(L(`같은 ${E(dn)}의 일도 일하는 자리에 따라 평가 기준이 다릅니다`, `Where you work changes how ${E(dn)} work is judged`),
       L(`일하는 자리 ${x.tax.org_contexts.length}가지마다 ${E(dn)}의 일을 무엇으로 평가하는지 정리했어요. 자리의 성격별로 흔히 쓰는 기준이라, 실제 기관의 평가 방식은 그 기관의 공고와 누리집에서 한 번 더 확인해 보세요.`,
         `What ${E(dn)} work is judged on in each of ${x.tax.org_contexts.length} kinds of workplace. These are typical standards, so check a real employer's postings and website to see how it judges the work.`)) +
-    `<table class="tb tb-xs"><thead><tr><th class="w22">${L("일하는 자리", "Workplace")}</th><th class="w24">${L("무엇으로 평가되나", "What it is judged on")}</th><th>${L("그 자리의 특징", "What sets it apart")}</th><th class="w24">${L(`${E(dn)}의 결과`, `${E(dn)} work there`)}</th></tr></thead><tbody>${x.tax.org_contexts.map((o) => `<tr><td><b>${E(o.name)}</b>${goalOc === o.code ? ` <span class="mut sm">${L("고른 자리", "your pick")}</span>` : ""}</td><td>${E(o.performance)}</td><td class="mut">${E(okText(o.differs) ? say(o.differs) : "")}</td><td>${E(okOr(oo[o.code]))}</td></tr>`).join("")}</tbody></table>`;
+    `<table class="tb tb-xs"><thead><tr><th class="w22">${L("일하는 자리", "Workplace")}</th><th class="w24">${L("무엇으로 평가되나", "What it is judged on")}</th><th>${L("그 자리의 특징", "What sets it apart")}</th><th class="w24">${L(`${E(dn)}의 결과`, "What counts as a result")}</th></tr></thead><tbody>${x.tax.org_contexts.map((o) => `<tr><td><b>${E(o.name)}</b>${goalOc === o.code ? ` <span class="mut sm">${L("고른 자리", "your pick")}</span>` : ""}</td><td>${E(o.performance)}</td><td class="mut">${E(okText(o.differs) ? say(o.differs) : "")}</td><td>${E(okOr(oo[o.code]))}</td></tr>`).join("")}</tbody></table>`;
   const parts =
     (isEn() ? H("Within one area, people take on different parts of the work") : H("같은 영역 안에서도 맡는 몫이 다릅니다", "몫마다 남기는 것")) +
     /* 영어는 `Leaves behind:` 를 칸마다 붙이면 줄이 하나씩 늘어 장을 넘긴다. 머리줄에 한 번만 적는다 */
-    `<table class="tb tb-xs">${isEn() ? `<thead><tr><th>Part of the work</th><th>What it does</th><th>What it leaves behind</th></tr></thead>` : ""}<tbody>${x.tax.role_functions.map((f) => `<tr><th class="w22">${E(f.name)}</th><td>${E(say(f.one_line))}</td><td class="mut w34">${isEn() ? "" : "남기는 것: "}${E(f.output_kind)}</td></tr>`).join("")}</tbody></table>`;
+    `<table class="tb tb-xs">${isEn() ? `<thead><tr><th>Part of the work</th><th>What it does</th><th style="width:42%">What it leaves behind</th></tr></thead>` : ""}<tbody>${x.tax.role_functions.map((f) => `<tr><th class="w22">${E(f.name)}</th><td>${E(say(f.one_line))}</td><td class="mut w34">${isEn() ? "" : "남기는 것: "}${E(f.output_kind)}</td></tr>`).join("")}</tbody></table>`;
   return [P(name, main + parts)];
 }
 

@@ -199,7 +199,7 @@ export function strengthPage(x: Inputs, d: X, k: number): Page {
   const def = d.def(s.code);
   const gap = x.m.gaps.find((g) => g.domain === s.code);
   const nm = d.name(s.code);
-  const roles = d.rolesOf(s.code).slice(0, en ? 3 : 4).map((r) => (en ? `${d.roleName(r.role)} (${strengthWord(r.strength)})` : `${d.roleName(r.role)}(${r.strength})`));
+  const roles = d.rolesOf(s.code).slice(0, en ? 2 : 4).map((r) => (en ? `${d.roleName(r.role)} (${strengthWord(r.strength)})` : `${d.roleName(r.role)}(${r.strength})`));
   const indRow = d.goalInd ? x.rel.td_industry.find((r) => r.td === s.code && r.industry === d.goalInd!.code && r.strength !== "드묾") : null;
   /* 영어: 관계표의 `dimensions` 는 한국어 원고라, 같은 자리를 산업팩(영어 원고)의 판단 이름에서 읽는다 */
   const indDim = en && indRow ? d.goalInd!.judgement_dimensions?.find((v) => v.domain === s.code)?.name : null;
@@ -350,7 +350,7 @@ export function qualityPage(x: Inputs, d: X): Page {
       fig(hbars(dist, { max, width: 640, label: 150, row: en ? 26 : 30, valueText: (b) => L(`${b.value}칸`, String(b.value)) }), howto([[L("막대 길이", "Bar length"), L("그 단계로 나온 칸의 수", "Number of cells at that level")], ...dist.map((v) => [v.color, E(v.label)] as [string, string])],
         L("칸 하나는 한 영역에서 한 판단에 답한 것이에요. 위쪽 막대가 길수록 직접 정한 일이 많다는 뜻입니다.", "One cell is one judgment in one area. The longer the top bar, the more calls you made."))) : "") +
     (asked.length ? H(L("물은 영역마다 직접 해 본 판단", "Judgments you did yourself, area by area"), L(`판단 ${AXES.length}가지 가운데 몇 가지인지`, `How many of the ${AXES.length} judgments`)) +
-      `<table class="tb tb-xs"><thead><tr><th>${L("영역", "Area")}</th><th>${L("지금 상태", "Status")}</th><th>${L("직접 해 본 판단", "Did it")}</th><th>${L("기준까지 정한 판단", "Decided")}</th><th>${L("다음에 맡아 볼 판단", "Take on next")}</th></tr></thead><tbody>${asked.map((z) => {
+      `<table class="tb tb-xs"><thead><tr><th>${L("영역", "Area")}</th><th>${L("지금 상태", "Status")}</th><th>${L("직접 해 본 판단", "Myself")}</th><th>${L("기준까지 정한 판단", "Decided")}</th><th>${L("다음에 맡아 볼 판단", "Take on next")}</th></tr></thead><tbody>${asked.map((z) => {
         const lv = d.levels(z.code);
         const next = AXES.filter((_, i) => lv[i] !== null && (lv[i] ?? 0) <= 1).map(axName(d)).slice(0, 2);
         return `<tr><td><b>${E(d.name(z.code))}</b></td><td>${zoneTag(z.zone)}</td><td>${lv.filter((v) => (v ?? 0) >= 2).length}${L("가지", "")}</td><td>${lv.filter((v) => v === 3).length}${L("가지", "")}</td><td class="mut">${E(next.join(", ") || L("기준까지 정해 보기", "Set the criteria yourself"))}</td></tr>`;
