@@ -28,7 +28,7 @@ const joinU = (xs: string[], tail: "을를" | "과와") => {
   const ys = xs.filter(Boolean).slice(0, 2);
   if (!ys.length) return "";
   const last = ys[ys.length - 1];
-  return `${ys.length === 2 ? `${U(ys[0])}${josaOf(ys[0], "과와")} ` : ""}${U(last)}${josaOf(last, tail)}`;
+  return `${ys.length === 2 ? `${U(ys[0])}${/[과와] /.test(ys.join(" ")) ? "," : josaOf(ys[0], "과와")} ` : ""}${U(last)}${josaOf(last, tail)}`;
 };
 const ym = (s: string | null) => (s ? s.slice(0, 7).replace("-", ".") : "");
 
@@ -255,6 +255,17 @@ function questions(x: Inputs, d: X): Qn[] {
     const l2 = d.def(g.domain)?.axes?.[g.axis]?.l2;
     const act = d.actionOf(g);
     const head = act ? actionHead(act, d.name(g.domain)) : "";
+    /* 반쯤 선 판단은 해 본 장면이 있다. 없다고 답하게 하면 01·02장과 어긋난다 */
+    if (g.kind === "PARTIAL_EVIDENCE") {
+      out.push({
+        q: `${d.name(g.domain)}에서 ${l2 ? `${q(l2)} 같은 일을 할 때` : `${AXIS_NEED[g.axis]}를 할 때`} 기준은 누가 정했나요?`,
+        why: `${asks(g.axis)} 이번 결과에서는 해 본 일은 확인됐고, 기준까지 직접 정한 장면은 아직 확인되지 않았습니다.`,
+        material: head ? `해 본 장면이 있습니다. 직접 정한 것은 07장 할 일 ${q(head)}에서 다룹니다.` : "해 본 장면이 있습니다. 직접 정한 것은 07장 할 일과 이어집니다.",
+        dir: "해 본 장면을 먼저 말하고, 그때 정해져 있던 것과 내가 정한 것을 나눠 답하면 됩니다.",
+        draft: `“그 일은 해 봤습니다. 그때 ${B()}은 이미 정해져 있었고, 제가 직접 정한 것은 ${B()}입니다.”`,
+      });
+      continue;
+    }
     out.push({
       q: l2 ? `${d.name(g.domain)}에서 ${q(l2)} 같은 일을 직접 해 본 적이 있나요?` : `${d.name(g.domain)}에서 ${j(AXIS_NEED[g.axis], "을를")} 직접 맡아 본 적이 있나요?`,
       why: `${asks(g.axis)} 이번 결과에서는 이 판단을 해 본 장면이 아직 확인되지 않았습니다.`,

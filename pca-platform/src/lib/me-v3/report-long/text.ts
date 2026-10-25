@@ -15,6 +15,8 @@ export const j = withJosa;
 export function andJoin(xs: string[]): string {
   const ys = xs.filter(Boolean);
   if (ys.length <= 1) return ys[0] ?? "";
+  /* 항목 안에 이미 ‘과/와’가 있으면(목표와 지표 표) 또 ‘와’로 이으면 경계가 안 보인다 */
+  if (ys.some((y) => /[과와] /.test(y))) return ys.join(", ");
   if (ys.length === 2) return `${j(ys[0], "과와")} ${ys[1]}`;
   return `${ys.slice(0, -2).join(", ")}, ${j(ys[ys.length - 2], "과와")} ${ys[ys.length - 1]}`;
 }
@@ -52,6 +54,9 @@ export const GAP_WHY: Record<Gap["why"], string> = {
   NEEDED_BY_INDUSTRY: "고르신 산업이 눈여겨보는 판단입니다",
   NEEDED_BY_ROLE: "고르신 직무가 눈여겨보는 판단입니다",
 };
+/** 반쯤 선 판단은 영역 묶음을 바꾸지 않는다. 채우면 단계가 올라간다 */
+export const gapWhy = (g: Pick<Gap, "kind" | "why">) =>
+  g.kind === "PARTIAL_EVIDENCE" ? "근거를 하나 더 붙이면 ‘기준까지 직접 결정’으로 올라갑니다" : GAP_WHY[g.why];
 export const HORIZON_DAYS: Record<Action["horizon"], string> = { NOW: "30일", NEXT: "60일", LATER: "90일" };
 
 /** 할 일의 짧은 이름(표와 간트 칸) */

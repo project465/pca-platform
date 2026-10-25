@@ -79,7 +79,7 @@ export function fillPages(x: Inputs, d: X, part3: string, region: { name: string
     const g = x.guide.roles[r.code] as unknown as { lens?: Record<string, { why?: string }> } | undefined;
     const lens = Object.entries(g?.lens ?? {}).filter(([, v]) => v?.why);
     if (lens.length < 2) continue;
-    add(F("04", "직무 탐색", `${j(r.name_ko, "이가")} ${j(x.domainWord, "을를")} 눈여겨보는 까닭`, "직무 안내",
+    add(F("04", "직무 탐색", `${r.name_ko} 쪽이 눈여겨보는 ${j(x.domainWord, "과와")} 그 까닭`, "직무 안내",
       `<table class="tb tb-xs"><tbody>${lens.slice(0, 6).map(([td, v]) => `<tr><td class="w22"><b>${E(d.name(td))}</b></td><td>${E(v.why ?? "")}</td></tr>`).join("")}</tbody></table>`));
   }
 
@@ -96,7 +96,7 @@ export function fillPages(x: Inputs, d: X, part3: string, region: { name: string
   if (region) for (const g of region.groups.filter((v) => (v.tier === "A" || v.tier === "B") && v.orgs.length > 4).slice(0, 4)) {
     for (let k = 4; k < Math.min(g.orgs.length, 24); k += 5) {
       const more = g.orgs.slice(k, k + 5);
-      add(F("05", region.name, `${g.pack.name_ko} 쪽 회사${k > 4 ? " · 이어서" : " 더 보기"}`, `${g.orgs.length}곳 가운데 ${k + 1}~${k + more.length}번째 · 공개 명단과 공시 값`,
+      add(F("05", region.name, `${g.pack.name_ko} 쪽 회사${k > 4 ? " · 이어서" : " 더 보기"}`, `${g.orgs.length}곳 가운데 ${more.length > 1 ? `${k + 1}~${k + more.length}` : k + 1}번째 · 공개 명단과 공시 값`,
         `<table class="tb tb-xs"><tbody>${more.map((o) => `<tr><td class="w30"><b>${E(o.name)}</b>${o.listed ? ` <span class="mut sm">${E(o.listed)}</span>` : ""}</td><td>${E(o.sector)}</td><td class="mut">${E((o.product || "").length > 40 ? `${(o.product || "").slice(0, 39)}…` : o.product || "")}</td></tr>`).join("")}</tbody></table>`));
     }
   }
@@ -106,11 +106,11 @@ export function fillPages(x: Inputs, d: X, part3: string, region: { name: string
   const lrow = (o: ROrg) => `<tr><td class="w30"><b>${E(o.name)}</b></td><td>${E(o.sector)}</td><td class="mut">${E([won(o.fin?.sales) && `매출 ${won(o.fin?.sales)}`, o.segments?.[0] ? `${o.segments[0].segment} ${o.segments[0].count.toLocaleString("ko-KR")}명` : ""].filter(Boolean).join(" · "))}</td></tr>`;
   if (region?.neighbor && region.neighbor.length > 8) for (let k = 8; k < Math.min(region.neighbor.length, 28); k += 5) {
     const more = region.neighbor.slice(k, k + 5);
-    add(F("05", region.name, `가까운 상장사 · 이어서`, `${region.neighbor.length}곳 가운데 ${k + 1}~${k + more.length}번째 · 공시 값`, `<table class="tb tb-xs"><tbody>${more.map(lrow).join("")}</tbody></table>`));
+    add(F("05", region.name, `가까운 상장사 · 이어서`, `${region.neighbor.length}곳 가운데 ${more.length > 1 ? `${k + 1}~${k + more.length}` : k + 1}번째 · 공시 값`, `<table class="tb tb-xs"><tbody>${more.map(lrow).join("")}</tbody></table>`));
   }
   if (region?.listed && region.listed.length > 12) for (let k = 12; k < Math.min(region.listed.length, 32); k += 5) {
     const more = region.listed.slice(k, k + 5);
-    add(F("05", region.name, `${region.label ?? ""} 본점 상장사 · 이어서`, `${region.listed.length}곳 가운데 ${k + 1}~${k + more.length}번째 · 공시 값`, `<table class="tb tb-xs"><tbody>${more.map(lrow).join("")}</tbody></table>`));
+    add(F("05", region.name, `${region.label ?? ""} 본점 상장사 · 이어서`, `${region.listed.length}곳 가운데 ${more.length > 1 ? `${k + 1}~${k + more.length}` : k + 1}번째 · 공시 값`, `<table class="tb tb-xs"><tbody>${more.map(lrow).join("")}</tbody></table>`));
   }
 
   /* 05 지역: 이 장에서 확인한 것을 순서로 묶는다. 숫자는 이 장의 명단과 공시에서 센 것만 쓴다 */

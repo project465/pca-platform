@@ -10,7 +10,7 @@ import type { Inputs } from "./types";
 import { AXES, type X } from "./derive";
 import { C, chain, gantt } from "./charts";
 import { E, H, PAL, T, band, card, note, paginate, rowsOf, ul, type Page } from "./kit";
-import { GAP_KIND, GAP_WHY, HORIZON_DAYS, actionHead, actionLine, actionOutput, askNoun, j, okOr, okText, polite } from "./text";
+import { GAP_KIND, gapWhy, HORIZON_DAYS, actionHead, actionLine, actionOutput, askNoun, j, okOr, okText, polite } from "./text";
 
 const P = (title: string, body: string): Page => ({ part: "07", partName: "실행 로드맵", title, body });
 const A = (title: string, body: string): Page => ({ part: "", partName: "부록", title, body });
@@ -41,7 +41,7 @@ export function prioPages(x: Inputs, d: X): Page[] {
       acts.map((a) => card(`<p class="k">${E(HORIZON_DAYS[a.horizon])}</p><h4>${E(actionHead(a, actDn(a, d)))}</h4><p>${E(actionLine(a, actDn(a, d), actDef(a, d)))}</p>`)).join("") + fpCard)];
   }
   const goalName = d.goalRole ? `${d.goalRole.name_ko} 직무` : d.goalInd ? `${d.goalInd.name_ko} 산업` : null;
-  const goal = goalName ?? `${x.major} 다음 과제`;
+  const goal = goalName ?? `${x.major} 쪽 근거 갖추기`;
   const dek = `${goalName ? `목표로 적은 ${E(goalName)}에 다가가려면 어디부터 메워야 하는지를 보고 차례를 정했습니다. ` : "어디부터 메워야 근거가 빨리 서는지를 보고 차례를 정했습니다. "}한 줄마다 지금 상태, 해 볼 일, 끝내면 손에 남을 것을 이어 읽으시면 됩니다.`;
   return paginate(gs, () => 1, 3).map((chunk, k) => P(`먼저 손댈 일${k ? ` (${k + 1})` : ""}`,
     (k ? `<p class="k">먼저 손댈 일 · 이어서</p>` : T(`먼저 손댈 일 ${gs.length}가지를 급한 것부터 놓았습니다`, dek)) +
@@ -55,7 +55,7 @@ export function prioPages(x: Inputs, d: X): Page[] {
           { head: "해 볼 일", body: a ? actionHead(a, dn) : "할 일 정하기", color: C.teal },
           { head: "남길 것", body: a ? actionOutput(a, def) : (def?.artifacts[0] ?? "결과 문서"), color: C.amber },
         ], { width: 700, height: 100 })}
-        <p class="sm">${E(GAP_WHY[g.why])}. ${a ? E(actionLine(a, dn, def)) : ""}</p></div>`;
+        <p class="sm">${E(gapWhy(g))}. ${a ? E(actionLine(a, dn, def)) : ""}</p></div>`;
     }).join("")));
 }
 
@@ -207,7 +207,7 @@ export function tracePages(x: Inputs, d: X): Page[] {
     const ev = d.evidenceOf(z);
     rows.push({ sec: "03 영역별 해설", claim: `${d.name(z.code)}: ${({ Z1_EVIDENCE_ESTABLISHED: "근거 갖춤", Z2_EVIDENCE_INCOMPLETE: "근거 일부", Z3_EVIDENCE_LOW_INTEREST: "경험은 있고 관심 낮음", Z4_INSUFFICIENT_EVIDENCE: "관심 높음 · 경험 적음" } as Record<string, string>)[z.zone]}`, ev: [...ev.decisions, ...ev.artifacts, ...ev.comparisons].slice(0, 4).join(" · ") || `확인된 판단 ${z.confirmed.length}가지 (응답)` });
   }
-  for (const g of d.gaps.slice(0, 6)) rows.push({ sec: "07 실행 로드맵", claim: `${d.name(g.domain)}${g.axis ? ` · ${d.axisName(g.axis)}` : ""}: 먼저 손댈 일`, ev: `${GAP_KIND[g.kind]} · ${GAP_WHY[g.why]}` });
+  for (const g of d.gaps.slice(0, 6)) rows.push({ sec: "07 실행 로드맵", claim: `${d.name(g.domain)}${g.axis ? ` · ${d.axisName(g.axis)}` : ""}: 먼저 손댈 일`, ev: `${GAP_KIND[g.kind]} · ${gapWhy(g)}` });
   if (d.goalRole) rows.push({ sec: "04 직무 탐색", claim: `목표 직무: ${d.goalRole.name_ko}`, ev: "응답에 적은 목표" });
   if (d.goalInd) rows.push({ sec: "04 직무 탐색", claim: `목표 산업: ${d.goalInd.name_ko}`, ev: "응답에 적은 목표" });
   for (const e of x.exps.slice(0, 3)) rows.push({ sec: "03 경험 기록", claim: e.title, ev: [...e.decisions, ...e.artifacts].slice(0, 3).join(" · ") || "경험 기록" });
@@ -237,7 +237,7 @@ export function methodPage(x: Inputs, d: X): Page {
     T("이 검사가 하는 일과 하지 않는 일") +
     `<div class="two">
       ${card(`${H("하는 일")}${ul([`${d.counts.domains}개 ${E(x.domainWord)}마다 관심과 경험, 배울 뜻을 묻고, 고른 영역은 문제를 정하는 일부터 결과를 다음 결정에 쓰이게 하는 일까지 한 단계씩 더 깊게 묻습니다.`, "‘기준까지 직접 결정’ 단계는 응답만으로 주지 않고, 체크리스트에서 고른 근거가 함께 있을 때만 줍니다.", "할 일은 응답에서 비어 있다고 나온 판단에서만 만듭니다."])}`)}
-      ${card(`${H("하지 않는 일")}${ul(["직무 적합도와 연봉, 합격 가능성은 계산하지 않습니다.", "다른 참여자와 견준 순위는 내지 않습니다. 비교할 기준 집단이 아직 없어서입니다.", "성격 유형이나 적성을 진단하지 않습니다.", "CareerMatri는 직업정보제공사업 신고 사업자로, 취업 알선은 하지 않고 회사를 골라 보내지도 않습니다."])}`)}
+      ${card(`${H("하지 않는 일")}${ul(["직무 적합도와 연봉, 합격 가능성은 계산하지 않습니다.", "다른 참여자 사이의 순위는 내지 않습니다. 비교할 기준 집단이 아직 없기 때문입니다.", "성격 유형이나 적성을 진단하지 않습니다.", "CareerMatri는 직업정보제공사업 신고 사업자로, 취업 알선은 하지 않고 회사를 골라 보내지도 않습니다."])}`)}
     </div>` +
     H("결과가 만들어지는 길") + chain([
       { head: "응답", body: "영역마다 관심과 경험, 판단별 단계", color: C.navy }, { head: "근거", body: "체크리스트에서 직접 고른 항목과 결과물", color: C.blue },

@@ -5,7 +5,7 @@ import type { Inputs } from "./types";
 import { AXES, BAND_WORD, EXP_WORD, STEP_WORD, ZONE_WORD, ZONES, type Bucket, type X } from "./derive";
 import { C, donut, hbars, quadrant, ring } from "./charts";
 import { DC, E, H, IC, LVC, PAL, T, ZC, band, chips, note, pip, ul, zoneTag, type Page } from "./kit";
-import { GAP_KIND, GAP_WHY, actionHead, actionLine, andJoin, askNoun, j, list3, okText, polite } from "./text";
+import { GAP_KIND, gapWhy, actionHead, actionLine, andJoin, askNoun, j, list3, okText, polite } from "./text";
 
 const P = (title: string, body: string): Page => ({ part: "01", partName: "한눈에 보기", title, body });
 
@@ -41,15 +41,15 @@ export function glance(x: Inputs, d: X): Page {
     points.push({
       label: "먼저 채울 판단",
       meaning: `${d.name(g0.domain)}${g0.axis ? `의 ${d.axisName(g0.axis)}` : ""}: ${GAP_KIND[g0.kind]}.`,
-      fact: `${GAP_WHY[g0.why]}.`,
+      fact: `${gapWhy(g0)}.`,
       action: a ? actionLine(a, d.name(g0.domain), d.def(g0.domain)) : "07장 실행 로드맵에서 언제 할지 정해 보세요.",
     });
   }
   const wish = m.domains.filter((v) => v.interest === "HIGH" && (v.zone === "Z4_INSUFFICIENT_EVIDENCE" || v.zone === "NOT_EXPLORED"));
   if (wish.length) {
     points.push({
-      label: "관심은 높고 해 본 일은 적은 영역",
-      meaning: `${andJoin(wish.slice(0, 3).map((v) => d.name(v.code)))}에 관심이 높다고 답했습니다. 직접 해 본 일은 아직 적거나, 이번에 자세히 묻지 않은 영역입니다.`,
+      label: "관심은 높고 근거는 아직 적은 영역",
+      meaning: `${andJoin(wish.slice(0, 3).map((v) => d.name(v.code)))}에 관심이 높다고 답했습니다. 직접 판단한 근거가 아직 적거나, 이번에 자세히 묻지 않은 영역입니다.`,
       fact: (() => {
         const by = new Map<string, string[]>();
         for (const v of wish.slice(0, 3)) { const w = v.experience ? `해 본 횟수 ${EXP_WORD[v.experience]}` : "해 본 횟수 응답 없음"; by.set(w, [...(by.get(w) ?? []), d.name(v.code)]); }
@@ -161,7 +161,7 @@ export function dash(x: Inputs, d: X): Page {
 export function ringPage(x: Inputs, d: X): Page {
   const secs = x.m.domains.map((z) => ({ name: d.name(z.code), fill: ZC[z.zone], ring2: z.interest ? IC[z.interest] : "#f1f2f5", mark: z.zone === "NOT_EXPLORED" ? C.ink2 : "#fff" }));
   return P(`${x.domainWord} 지도`,
-    T(`${d.counts.domains}가지 ${E(x.domainWord)} 가운데 ${d.counts.z1 + d.counts.z2 + d.counts.z3}곳에서 해 본 일이 확인됐습니다`, "안쪽 색은 영역 묶음, 바깥 얇은 띠는 관심 정도입니다. 숫자는 영역 번호이고 03장의 쪽 번호와 같습니다.") +
+    T(`${d.counts.domains}가지 ${E(x.domainWord)} 가운데 ${d.counts.z1 + d.counts.z2 + d.counts.z3}곳에서 해 본 일이 확인됐습니다`, "안쪽 색은 영역 묶음, 바깥 얇은 띠는 관심 정도입니다. 숫자는 영역 번호이고 03장의 영역 번호와 같습니다.") +
     `<div class="wide-art ring-art">${ring(secs, { size: 400, center: [`${d.counts.z1}`, "근거 갖춘 영역"] })}</div>` +
     `<div class="lg">${ZONES.filter((z) => x.m.domains.some((v) => v.zone === z)).map((z) => `<span><i style="background:${ZC[z]}"></i>${E(ZONE_WORD[z].tag)}</span>`).join("")}${(["HIGH", "MID", "LOW"] as const).map((v) => `<span><i class="thin" style="background:${IC[v]}"></i>관심 ${BAND_WORD[v]}</span>`).join("")}</div>` +
     `<table class="tb tb-xs"><thead><tr><th>번호</th><th>영역</th><th>묶음</th><th>관심</th><th>해 본 횟수</th><th>배울 뜻</th></tr></thead><tbody>${x.m.domains.map((z, i) => `<tr><td>${i + 1}</td><td><b>${E(d.name(z.code))}</b></td><td>${zoneTag(z.zone)}</td><td>${z.interest ? BAND_WORD[z.interest] : "응답 없음"}</td><td>${z.experience ? EXP_WORD[z.experience] : "응답 없음"}</td><td>${z.learning ? BAND_WORD[z.learning] : "묻지 않음"}</td></tr>`).join("")}</tbody></table>`);
@@ -219,7 +219,7 @@ export function goalPage(x: Inputs, d: X): Page {
       ? `목표 직무 ${r.name_ko}의 핵심 영역 ${cov.tds.length}곳 가운데 ${hit}곳에서 해 본 일이 나왔습니다`
       : `${r.name_ko} 직무로 가려면 ${andJoin(cov.tds.slice(0, 2).map(d.name))} 쪽 경험부터 쌓으면 됩니다`;
   const notes = [
-    overlap.length ? note("두 쪽 말로 다 설명할 수 있는 판단", `<ul class="ls">${overlap.map((t) => `<li>${E(t)}</li>`).join("")}</ul><p class="mut sm">${E(x.major)} 영역 응답에서도, 이 직무 문항에서도 나온 판단입니다.</p>`) : "",
+    overlap.length ? note("두 쪽 응답에서 모두 나온 판단", `<ul class="ls">${overlap.map((t) => `<li>${E(t)}</li>`).join("")}</ul><p class="mut sm">${E(x.major)} 영역 응답에서도, 이 직무 문항에서도 나온 판단입니다.</p>`) : "",
     requested.length ? note("이 직무와 산업이 더 보는 판단", `<ul class="ls">${requested.map((t) => `<li>${E(t)}</li>`).join("")}</ul>`, true) : "",
     (() => { const xs = r.differs_from.filter((v) => okText(v.line)).slice(0, 3); return xs.length ? note("다른 직무와 다른 점", ul(xs.map((v) => `<b>${E(d.roleName(v.vs))}</b> ${E(polite(v.line))}`))) : ""; })(),
     ind ? (() => { const xs = ind.judgement_dimensions.filter((v) => okText(v.name)).slice(0, 4); return xs.length ? note(`${E(ind.name_ko)}에서 먼저 묻는 판단`, ul(xs.map((v) => `${E(askNoun(v.name))} <span class="mut">${E(d.name(v.domain))}</span> ${pip(d.level(v.domain, v.axis))}`)), true) : ""; })()
@@ -267,7 +267,7 @@ export function deptPage(x: Inputs, d: X): Page | null {
     steps.length ? `${H("지금 할 수 있는 한 걸음")}${ul(steps.map(E))}` : "",
     sv.application.resume ? `${H("지원서에서 꺼내는 법")}<p>${E(sv.application.resume)}</p>` : "",
     sv.application.interview.length ? `${H("면접에서 다시 묻는 질문", "답은 고른 항목과 경험 기록에서 찾습니다")}${ul(sv.application.interview.map(E))}` : "",
-    note("이 쪽은 점수에 들어가지 않습니다", "학과 안내는 읽는 차례와 예시를 돕는 자료입니다. 강점과 비어 있는 판단은 앞 쪽과 02장이 응답으로 정한 그대로입니다."),
+    note("이 쪽은 점수에 들어가지 않습니다", "학과 안내는 어디부터 읽을지와 예시를 보여 드리는 자료입니다. 강점과 비어 있는 판단은 앞 쪽과 02장이 응답으로 정한 그대로입니다."),
   ].join("");
   return { ...P(`${name} 쪽에서 보면`, body), keep: true };
 }

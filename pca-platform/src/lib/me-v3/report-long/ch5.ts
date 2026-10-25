@@ -57,7 +57,7 @@ export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
   const cards = tiers.length > 1 ? `<div class="g${tiers.length}">${tiers.map(card).join("")}</div>` : tiers.map(card).join("");
   out.push(part(`${r.label} 기업과 내 결과`,
     T(`${E(r.label)} 기업 ${r.all.length}곳 가운데 ${matched}곳이 ${E(x.major)} 전공자가 일하는 산업과 이어집니다`,
-      `${venture ? `중소벤처기업부 벤처기업 확인 명단에서 소재지가 ${E(r.label)}인 회사 ${venture}곳과, ` : ""}공시로 본점이 ${E(r.label)}임을 확인한 회사 ${dart}곳을 합쳤습니다. 두 자료에 다 있는 회사는 한 번만 셌고, 업종명과 주력 품목은 원래 자료에 적힌 대로 옮겼습니다.`) +
+      `${venture ? `중소벤처기업부 벤처기업 확인 명단에서 소재지가 ${E(r.label)}인 회사 ${venture}곳과, ` : ""}공시로 본점이 ${E(r.label)}임을 확인한 회사 ${dart}곳${venture ? "을 합쳤습니다. 두 자료에 다 있는 회사는 한 번만 셌고," : "입니다."} 업종명과 주력 품목은 원래 자료에 적힌 대로 옮겼습니다.`) +
     chain([
       { head: "회사의 업종", body: "명단과 공시에 적힌 업종명과 주력 품목", color: C.navy },
       { head: "이 전공의 산업", body: `${x.major} 산업 ${x.inds.length}개 가운데 가장 가까운 하나로 묶음`, color: C.blue },
@@ -109,7 +109,7 @@ export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
     /* 회사가 적으면 막대 쪽을 표 앞에 둔다. 장 끝에 막대 하나만 남으면 쪽 절반이 빈다 */
     if (fin.length <= 8) out.splice(tableAt, 0, out.pop()!);
     out.push(part(`${r.label} 본점 상장사의 매출과 영업이익`,
-      H(`매출이 큰 ${top.length}곳을 막대로 보면`, "막대는 모두 같은 눈금입니다") +
+      H(`매출이 큰 ${top.length}곳을 막대로 놓았습니다`, "막대는 모두 같은 눈금입니다") +
       `<div class="wide-art">${moneyBars(top.map((o) => ({ label: cut(short(o.name), 12), values: [{ name: "매출액", v: o.fin!.sales, color: PAL.blue }, { name: "영업이익", v: o.fin!.op, color: PAL.amber }] })), { width: 700 })}</div>` +
       `<div class="two">${note("숫자를 읽는 법", "매출은 회사의 덩치를, 영업이익은 본업으로 남긴 돈을 보여 줍니다. 영업이익이 마이너스인 해는 연구개발이나 설비에 먼저 돈을 쓴 해인 경우가 많습니다.")}${note(`${x.major} 전공이라면`, `관심 가는 회사의 사업보고서 ‘사업의 내용’에서 ${E(j(strong, "과와"))} 이어지는 제품이나 공정을 하나 찾아 표시해 두세요. 면접에서 그 회사를 왜 골랐는지 말할 거리가 됩니다.`, true)}</div>`));
     /* 회사가 적으면 막대 쪽을 표 앞에 둔다. 표는 줄 단위로 나뉘어 남는 자리를 채우지만, 막대 쪽이 장 끝에 남으면 쪽 절반이 빈다 */

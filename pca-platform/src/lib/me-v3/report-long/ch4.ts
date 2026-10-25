@@ -158,10 +158,10 @@ export function aliasPages(x: Inputs, d: X): Page[] {
   if (!al.length) return [];
   const rf = (c: string) => x.tax.role_functions.find((v) => v.code === c)?.name ?? "";
   const oc = (c: string) => x.tax.org_contexts.find((v) => v.code === c)?.name ?? "";
-  return paginate(al, (a) => Math.max(2 + rowsOf(a.oc.map(oc).join(", "), 22), rowsOf(a.distinguisher, 20), a.td.length), 36, 28).map((chunk, k) => P(`공고에 적히는 직무 이름${k ? ` (${k + 1})` : ""}`,
+  return paginate(al, (a) => Math.max(2 + rowsOf(a.oc.map(oc).join(", "), 22), rowsOf(a.distinguisher, 20), a.td.length), 36, 28).map((chunk, k, all) => P(`공고에 적히는 직무 이름${k ? ` (${k + 1})` : ""}`,
     (k ? `<p class="k">공고에 적히는 직무 이름 · 이어서</p>` : T("공고에서 만나는 직무 이름이 어느 영역의 일인지 정리했습니다", `회사마다 같은 일을 다른 이름으로 뽑고, 이름이 같아도 맡기는 권한이 다릅니다. 공고를 읽을 때는 마지막 칸의 ‘가르는 기준’에 비춰 담당 업무 문장을 확인해 보세요. 영역 옆 점의 색은 참여자의 영역 묶음입니다.`)) +
     `<table class="tb tb-xs"><thead><tr><th class="w22">공고 이름</th><th class="w24">영역</th><th>하는 일 · 조직</th><th class="w30">가르는 기준</th></tr></thead><tbody>${chunk.map((a) => `<tr><td><b>${E(a.posting_name)}</b></td><td>${a.td.map((t) => dz(d, t)).join(" ")}</td><td>${E(a.rf.map(rf).join(", "))}<br><span class="mut">${E(a.oc.map(oc).join(", "))}</span></td><td>${E(okText(a.distinguisher) ? polite(a.distinguisher) : "")}</td></tr>`).join("")}</tbody></table>` +
-    band("공고 찾을 때", "검색창에는 이 표의 공고 이름을 그대로 넣고, 검색 결과에서는 ‘담당 업무’ 칸부터 읽으세요. 표의 이름은 업계에서 흔히 쓰는 이름을 모은 것입니다.")));
+    (k === all.length - 1 ? band("공고 찾을 때", "검색창에는 이 표의 공고 이름을 그대로 넣고, 검색 결과에서는 ‘담당 업무’ 칸부터 읽으세요. 표의 이름은 업계에서 흔히 쓰는 이름을 모은 것입니다.") : "")));
 }
 
 export function boundaryPages(x: Inputs, d: X): Page[] {

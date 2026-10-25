@@ -64,7 +64,7 @@ export function heatPage(x: Inputs, d: X): Page {
       if (!rowBest || !colLow) return "";
       return `<div class="two">
         ${note("가로로 읽기", `한 영역 안에서 어느 판단까지 해 봤는지 봅니다. ${E(j(d.name(rowBest.z.code), "은는"))} 여덟 칸 가운데 ${rowBest.n}칸이 ‘직접 수행’ 이상입니다.`)}
-        ${note("세로로 읽기", `한 판단이 몇 영역에서 나왔는지 봅니다. ${E(j(q(d.axisName(colLow.a)), "은는"))} 물은 ${askedD.length}개 영역 가운데 ${colLow.n}곳에서 ‘직접 수행’ 이상입니다. 다음 과제에서는 이 판단을 직접 맡아 보세요.`)}
+        ${note("세로로 읽기", `한 판단이 몇 영역에서 나왔는지 봅니다. ${E(j(q(d.axisName(colLow.a)), "은는"))} 물은 ${askedD.length}개 영역 가운데 ${colLow.n}곳에서 ‘직접 수행’ 이상입니다. ${colLow.n < askedD.length ? "다음 과제에서는 이 판단을 직접 맡아 보세요." : "다음 과제에서는 이 판단의 기준까지 직접 정해 보세요."}`)}
       </div>`;
     })());
 }
@@ -115,7 +115,7 @@ export function strengthPage(x: Inputs, d: X, k: number): Page {
     ? `${j(ev.artifacts[0], "을를")} 결과물로 내보이면 됩니다.${ev.comparisons.length ? ` ${j(ev.comparisons[0], "과와")} 비교한 내용도 함께 붙이세요.` : " 무엇과 비교해 확인했는지 한 줄 적어 두면 면접에서 바로 쓸 수 있습니다."}`
     : `다음 ${d.name(s.code)} 과제에서 ${j(def?.artifacts[0] ?? "결과 문서", "을를")} 남겨 두세요. 서류에 붙일 첫 결과물이 됩니다.`;
   const next = gap?.axis
-    ? `다음 과제에서는 ${j(q(d.axisName(gap.axis)), "을를")} 직접 맡아 보세요.${def?.axes?.[gap.axis]?.l2 ? ` 예를 들면 ${q(def.axes[gap.axis].l2)} 같은 일입니다.` : ""}`
+    ? `${gap.kind === "PARTIAL_EVIDENCE" ? `다음 과제에서는 ${q(d.axisName(gap.axis))}의 기준까지 직접 정해 보세요.` : `다음 과제에서는 ${j(q(d.axisName(gap.axis)), "을를")} 맡아서 해 보세요.`}${def?.axes?.[gap.axis]?.l2 ? ` 예를 들면 ${q(def.axes[gap.axis].l2)} 같은 일입니다.` : ""}`
     : "지금 근거로도 지원서 문단 하나를 쓸 수 있습니다. 결과 수치와 기간만 직접 채워 넣으면 됩니다.";
   /* 고른 항목이 없으면 그 영역에서 해 봤다고 답한 판단의 문항 장면(l2)으로 잇는다. 지어낸 장면을 쓰지 않는다 */
   const sc = [...new Set(s.confirmed.map((a) => def?.axes?.[a]?.l2 ?? "").filter(Boolean))];
@@ -168,7 +168,7 @@ export function qualityPage(x: Inputs, d: X): Page {
   const said: Record<string, string> = {
     OK: "응답이 고르게 들어와, 결과를 그대로 읽으시면 됩니다",
     REVIEW: "다시 볼 응답이 있습니다. 결과를 읽을 때 아래를 함께 봅니다",
-    LOW_VARIANCE: "응답이 한쪽으로 모였습니다. 영역 사이의 차이가 작게 나왔습니다",
+    LOW_VARIANCE: "응답이 한쪽으로 모여 영역 사이의 차이가 작게 나왔습니다",
     INCONSISTENT: "서로 어긋나는 응답이 있습니다. 그 영역은 조심해서 읽습니다",
   };
   const asked = x.m.domains.filter((z) => d.asked(z));
