@@ -1,0 +1,1454 @@
+{
+ "schema": "role-guide.v1",
+ "core": "CS_CORE_V1",
+ "status": "DRAFT_FOR_REVIEW",
+ "note": "A general description of computing and software roles. It is not a job description or hiring requirement from any company and is not used for measurement or scoring.",
+ "roles": {
+  "ROLE_DEV_V1": {
+   "summary": "Taking requirements, setting module boundaries and interfaces, and writing code that works within that structure",
+   "practiceWhere": "in a team project or your capstone build",
+   "lens": {
+    "TD01": {
+     "why": "Splitting requirements into modules and setting interface contracts is where design and development roles decide the structure.",
+     "mode": "domain",
+     "ctx": "in the design phase of a team project"
+    },
+    "TD03": {
+     "why": "Building server features that receive, process and respond to requests is where the structure you chose becomes real code.",
+     "mode": "domain",
+     "ctx": "when you build a web service assignment or your capstone server",
+     "out": {
+      "J2": "Response contract document",
+      "J5": "Request test suite",
+      "J7": "Record of narrowing down a cause"
+     }
+    },
+    "TD05": {
+     "why": "Implementing UI state and input handling is how you set the structure on the side users actually see.",
+     "mode": "domain",
+     "ctx": "in an assignment with a user interface or an app project",
+     "out": {
+      "J3": "Note on state structure",
+      "J6": "Screenshot comparison across screen widths"
+     }
+    }
+   },
+   "practice": {
+    "J1": {
+     "task": "At the start of a project, separate the features this system will handle from the ones you will not build this time, and write both at the top of the requirements list.",
+     "output": "Requirements list with scope",
+     "check": "Are the features you decided not to build listed with the reasons?"
+    },
+    "J2": {
+     "task": "Pick out the conditions you must meet, such as response time, concurrent users and supported devices, and rewrite them as statements you can verify.",
+     "output": "List of conditions and acceptance criteria",
+     "check": "Does every condition have a way to check it was met?"
+    },
+    "J3": {
+     "task": "Decide yourself where to split modules and which way dependencies point, and record why you chose one option and rejected the others in a decision record.",
+     "output": "Module diagram and decision record",
+     "check": "Can you explain why you did not choose a different boundary?"
+    },
+    "J4": {
+     "task": "Try two libraries or frameworks that could do the same job on a small example, and decide which to use.",
+     "output": "Library comparison note",
+     "check": "Did you write the comparison criteria (learning cost, documentation, maintenance status and so on) before comparing?"
+    },
+    "J5": {
+     "task": "Write the interface contract down so teammates can integrate with your code without opening it.",
+     "output": "Interface contract document",
+     "check": "Are the request and response formats and every error case written down?"
+    },
+    "J6": {
+     "task": "Compare two implementations on the same input and the same criteria (code size, how much changes when you modify it, run time) and pick one.",
+     "output": "Implementation comparison table",
+     "check": "Were the two implementations compared under the same conditions?"
+    },
+    "J7": {
+     "task": "Find a case where changing one feature touched many files, redraw the boundaries, and check whether the change footprint shrank.",
+     "output": "Before and after record of the restructuring",
+     "check": "Did you count changed files before and after on the same basis?"
+    },
+    "J8": {
+     "task": "Record whether teammates started building from your contract or diagram, and what questions came up when they did.",
+     "output": "Record of contract use and questions",
+     "check": "Does it say who built which part from that contract?"
+    }
+   },
+   "responsibilities": [
+    "Analysing requirements and setting feature scope",
+    "Designing module structure and interfaces",
+    "Implementing server and UI features and reviewing code",
+    "Fixing bugs and improving the structure of existing code"
+   ],
+   "process": [
+    {
+     "step": "Receive requirements",
+     "what": "Product or the customer describes the features they want, in words or as screen sketches."
+    },
+    {
+     "step": "Sort the requirements",
+     "what": "You separate the requirements you will take on from those you will not this time, and write down the conditions to meet."
+    },
+    {
+     "step": "Set the structure",
+     "what": "You set module boundaries and interface contracts and keep a decision record."
+    },
+    {
+     "step": "Implement",
+     "what": "You write the code, add tests and get it reviewed by colleagues."
+    },
+    {
+     "step": "Integrate and hand over",
+     "what": "You connect it with other modules and hand it to test and deployment."
+    },
+    {
+     "step": "Maintain and change",
+     "what": "You take bugs found in production and new requirements and adjust the structure."
+    }
+   ],
+   "knowledge": [
+    "Data structures and algorithms",
+    "Object-oriented design and design patterns",
+    "Operating system and networking basics",
+    "Databases and SQL"
+   ],
+   "tools": [
+    "Git and the pull request and code review features of your code host",
+    "An IDE and debugger",
+    "Web frameworks and API description formats (OpenAPI and similar)",
+    "Diagram notations such as UML"
+   ],
+   "experiences": [
+    "Owning one module in a team project from start to finish",
+    "Reading and modifying code someone else wrote",
+    "Giving and receiving code reviews and fixing what was pointed out"
+   ],
+   "entry": [
+    "Take on the design document in a software engineering or web programming team assignment",
+    "In your capstone, define the interface of one server or front-end module yourself",
+    "Pick a small issue in an open-source repository, fix it and go through the review process"
+   ],
+   "learnOrder": [
+    {
+     "step": "Finishing a small program in one language",
+     "why": "Before you can think about structure, you need one language you are comfortable in."
+    },
+    {
+     "step": "Collaborating with Git (branches, reviews, merges)",
+     "why": "In professional development you spend more time merging with other people's code than writing alone."
+    },
+    {
+     "step": "Splitting modules and writing interfaces",
+     "why": "Even a new hire's first tasks are judged on whether you can explain the boundaries of the module you own."
+    },
+    {
+     "step": "Tests and refactoring",
+     "why": "The habit of not breaking other things when you change code is the basis of maintenance."
+    }
+   ],
+   "firstProject": {
+    "title": "Build a small web service as three modules",
+    "goal": "Split a small service such as a to-do manager into UI, server and storage modules that can be connected using only their contracts",
+    "steps": [
+     "Write the features you will and will not build on a one-page requirements list",
+     "Write a contract for the boundaries of the three modules and the request and response formats they exchange",
+     "Implement each module and confirm with tests that it behaves according to the contract",
+     "Add one feature, count how many modules changed, and review the structure"
+    ],
+    "output": "Requirements list, module diagram and interface contracts, and a repository with tests",
+    "check": "When you added a feature, did only one module change, and if several did, can you explain why?"
+   },
+   "portfolio": [
+    "A module diagram with the reasons for drawing the boundaries that way",
+    "An interface contract someone else built against",
+    "One page on the requirements you chose not to take on and why"
+   ],
+   "interview": [
+    {
+     "axis": "J3",
+     "q": "When you split modules, what criteria did you use to set the boundaries?",
+     "why": "The basis for your structure shows your design habits."
+    },
+    {
+     "axis": "J5",
+     "q": "What did you leave behind so others could use your code?",
+     "why": "Development does not end with you and carries on to the next person through contracts and documents."
+    },
+    {
+     "axis": "J7",
+     "q": "If a change ever broke something else, how did you find it and prevent it?",
+     "why": "Narrowing down the impact of a change is a habit you use every day at work."
+    }
+   ],
+   "postingCheck": [
+    "Whether the role is backend, frontend or mobile",
+    "Whether the posting names the languages and frameworks",
+    "Whether the focus is building new things or maintaining existing systems"
+   ],
+   "watch": "Development postings are split by title, such as Backend Engineer, Frontend Engineer or Mobile Developer. Rather than listing languages, show that you set the boundaries of a module you owned and handed it over in a form others could use. That works for any of these postings."
+  },
+  "ROLE_PERF_V1": {
+   "summary": "Measuring and predicting processing time and resource needs before building or changing something, and providing the evidence for where to make changes",
+   "practiceWhere": "in algorithms or database assignments or performance checks on your capstone",
+   "lens": {
+    "TD02": {
+     "why": "Working out the complexity of data representations and algorithms and comparing it with measurements is the core of an analysis and estimation role.",
+     "mode": "domain",
+     "ctx": "in algorithms course assignments or coding labs"
+    },
+    "TD04": {
+     "why": "Narrowing down why a query is slow through execution plans and indexes, a place where service performance often wobbles.",
+     "mode": "domain",
+     "ctx": "in database course assignments or the storage layer of a project",
+     "out": {
+      "J4": "Execution plan record",
+      "J6": "Query time before and after indexing"
+     }
+    },
+    "TD07": {
+     "why": "Measuring latency and throughput between machines is how you set the capacity needed as users grow.",
+     "mode": "domain",
+     "ctx": "in networking labs or server load tests",
+     "out": {
+      "J2": "Capacity criteria table",
+      "J5": "Performance analysis report"
+     }
+    }
+   },
+   "practice": {
+    "J1": {
+     "task": "When someone says it is slow, first pin down and write which feature and which input size is slow.",
+     "output": "Analysis scope note",
+     "check": "Does it also say which features and input ranges you will not measure this time?"
+    },
+    "J2": {
+     "task": "Rewrite a requirement such as it must be fast as numeric conditions such as response time, throughput and a memory ceiling.",
+     "output": "Performance targets table",
+     "check": "Does every condition have a measurement method and a target value?"
+    },
+    "J3": {
+     "task": "Look at the measurements, pick one bottleneck, and write down the evidence for that call.",
+     "output": "Bottleneck judgement note",
+     "check": "Did you write why you did not treat the other candidates as the bottleneck?"
+    },
+    "J4": {
+     "task": "Look at the same problem two ways, by calculating theoretical complexity and by measuring real time, and decide which to use as evidence.",
+     "output": "Note comparing calculation and measurement",
+     "check": "Did you record the measurement setup (input size, number of runs, machine)?"
+    },
+    "J5": {
+     "task": "Write up your measurements and predictions as a report someone else could read and use to change the design.",
+     "output": "Performance analysis report",
+     "check": "Can a reader tell what to change and how much difference it will make?"
+    },
+    "J6": {
+     "task": "Compare the value you predicted before a change with the value you measured after it, under the same conditions.",
+     "output": "Predicted versus measured comparison table",
+     "check": "Did you measure with the same input and the same environment?"
+    },
+    "J7": {
+     "task": "Pick one prediction that missed, narrow down which assumption was wrong, and fix your prediction method.",
+     "output": "Note on why the prediction missed",
+     "check": "Do you have evidence that narrows it to one wrong assumption?"
+    },
+    "J8": {
+     "task": "Record how your analysis fed into team decisions such as a structural change or the number of servers.",
+     "output": "Record of use",
+     "check": "Does it say which measurement was used for which decision?"
+    }
+   },
+   "responsibilities": [
+    "Measuring response time and resource use of services and programs",
+    "Analysing bottlenecks and proposing improvements",
+    "Capacity planning for user growth",
+    "Reviewing database queries and indexes"
+   ],
+   "process": [
+    {
+     "step": "Take the problem",
+     "what": "Development or operations raises problems such as it has got slower, or users will grow next month."
+    },
+    {
+     "step": "Design the measurement",
+     "what": "You decide what to measure, with which inputs and how many times, and set up a consistent environment."
+    },
+    {
+     "step": "Measure and analyse",
+     "what": "You measure time and resources with profilers and load tests and narrow down bottleneck candidates."
+    },
+    {
+     "step": "Predict",
+     "what": "You calculate how much a fix will help and what will run out first as users grow."
+    },
+    {
+     "step": "Report",
+     "what": "You hand improvements and capacity criteria to development and operations, with the evidence."
+    },
+    {
+     "step": "Confirm",
+     "what": "After the fix you measure again, check whether the prediction held, and adjust your prediction method."
+    }
+   ],
+   "knowledge": [
+    "Data structures and algorithmic complexity",
+    "Computer architecture and operating systems (caches, memory, threads)",
+    "Database indexes and execution plans",
+    "Basic statistics for reading measurements (mean, variance, percentiles)"
+   ],
+   "tools": [
+    "Profilers (language-specific profilers, Linux perf and similar)",
+    "Load testing tools (JMeter, k6 and similar)",
+    "Database execution plans (EXPLAIN)",
+    "Spreadsheets or Python plotting for charting measurements"
+   ],
+   "experiences": [
+    "Measuring the run time of assignment code by input size and plotting it",
+    "Finding and fixing a slow part and comparing before and after",
+    "Fixing your assumptions after a prediction missed"
+   ],
+   "entry": [
+    "In an algorithms assignment, measure and compare the run time of two solutions by input size",
+    "In a database assignment, measure query times before and after adding an index",
+    "Run a load test on your capstone server and find where response time starts to climb"
+   ],
+   "learnOrder": [
+    {
+     "step": "Comparing complexity calculations with measurements",
+     "why": "Calculation is the first basis for a prediction, and only measurement tells you whether it is right."
+    },
+    {
+     "step": "Controlling the measurement environment",
+     "why": "If you compare two measurements taken under different conditions, no conclusion can be trusted."
+    },
+    {
+     "step": "Reading profilers and execution plans",
+     "why": "The bottleneck is more often where the tool points than where you guessed."
+    },
+    {
+     "step": "Capacity calculations and writing reports",
+     "why": "For an analysis to inform a decision, it has to become a document others can read."
+    }
+   ],
+   "firstProject": {
+    "title": "Write a performance analysis report for one project server",
+    "goal": "Measure the response time of a service you built, find one bottleneck, and compare your prediction with the measurement after the fix",
+    "steps": [
+     "Pick two or three key requests and set numeric response time targets",
+     "Run a load test, increasing concurrent requests, and measure response time and resource use",
+     "Pick one bottleneck and write down beforehand how much you expect fixing it to help",
+     "After the fix, measure again under the same conditions and put prediction and measurement in one table"
+    ],
+    "output": "A report containing the performance targets, measurement records and a predicted versus measured table",
+    "check": "Can you explain with measurements why the prediction held or missed?"
+   },
+   "portfolio": [
+    "A performance analysis report",
+    "A predicted versus measured comparison table",
+    "One page on the evidence that identified the bottleneck"
+   ],
+   "interview": [
+    {
+     "axis": "J4",
+     "q": "How did you find the slow part? Was it a guess or a measurement?",
+     "why": "The habit of narrowing down by measurement is where this role starts."
+    },
+    {
+     "axis": "J6",
+     "q": "If you predicted the speed-up before making a change, how close was the real result?",
+     "why": "Having compared prediction with measurement is the evidence behind an analysis role."
+    },
+    {
+     "axis": "J8",
+     "q": "Whose decision did your analysis feed into, and which one?",
+     "why": "An analysis counts as an achievement when it was used for someone's decision."
+    }
+   ],
+   "postingCheck": [
+    "Whether performance here means servers and databases or devices and embedded systems",
+    "Whether capacity planning or load testing are listed as duties",
+    "Whether it hires graduates or experienced developers"
+   ],
+   "watch": "Graduate roles that do only performance analysis are rare. People more often join as backend, systems or database developers and take on performance work, so it is realistic to look for duties such as performance improvement or load testing in development postings. Titles you may see include Performance Engineer and Capacity Planning Engineer."
+  },
+  "ROLE_QA_V1": {
+   "summary": "Deciding what to test and where the pass line sits, and judging whether the release about to go out clears it",
+   "practiceWhere": "in the test phase of a team project or a software engineering assignment",
+   "lens": {
+    "TD10": {
+     "why": "Setting test items and pass criteria and running automated tests is where test and verification roles make their call.",
+     "mode": "domain",
+     "ctx": "in the test phase of a team project"
+    },
+    "TD05": {
+     "why": "Handling UI input and edge cases produces many test items, because the interface is where users meet defects first.",
+     "mode": "domain",
+     "ctx": "in an assignment with a user interface or an app project",
+     "out": {
+      "J3": "List of edge cases",
+      "J6": "Check record across screen widths"
+     }
+    },
+    "TD03": {
+     "why": "Checking that requests and responses follow the contract is how you build a server-side test suite.",
+     "mode": "domain",
+     "ctx": "in the server part of a web service assignment",
+     "out": {
+      "J5": "Request test suite",
+      "J6": "Contract check results table"
+     }
+    }
+   },
+   "practice": {
+    "J1": {
+     "task": "Before testing starts, separate the features you will test in this release from those you will not, and write both down.",
+     "output": "Test scope note",
+     "check": "Are the untested areas listed with the reasons?"
+    },
+    "J2": {
+     "task": "Turn a requirement such as it should work properly into test items with inputs and expected results.",
+     "output": "Test item list",
+     "check": "Does every item have a single expected result?"
+    },
+    "J3": {
+     "task": "Decide yourself which boundary inputs to test (empty values, the longest value, malformed input) and set the pass criteria.",
+     "output": "Pass criteria table",
+     "check": "Can you explain why you drew the line where you did?"
+    },
+    "J4": {
+     "task": "Test the same feature two ways, by hand and with automated tests, and decide how much to automate.",
+     "output": "Automation scope note",
+     "check": "Does it give the reason for each item you chose not to automate?"
+    },
+    "J5": {
+     "task": "Leave a test suite and defect reports that a teammate could download and run as they are.",
+     "output": "Test suite and defect reports",
+     "check": "Could someone reproduce the defect from your report alone?"
+    },
+    "J6": {
+     "task": "Check the test results against the pass criteria table and judge this release as pass or hold.",
+     "output": "Verdict record",
+     "check": "For every held item, does it say which criterion it failed?"
+    },
+    "J7": {
+     "task": "Pick a defect that slipped through testing, narrow down why it was not caught, and add a test that catches that case.",
+     "output": "Record of the gap and the added test",
+     "check": "Did you confirm the new test actually catches that defect?"
+    },
+    "J8": {
+     "task": "Record how your verdict was used in the team's decision to present or release.",
+     "output": "Record of use",
+     "check": "Does it say who used the verdict for which decision?"
+    }
+   },
+   "responsibilities": [
+    "Writing test plans and test items from the requirements",
+    "Running functional and regression tests and reporting defects",
+    "Writing and maintaining automated tests",
+    "Making the pre-release call and reporting on quality status"
+   ],
+   "process": [
+    {
+     "step": "Test planning",
+     "what": "From the requirements documents and schedule, you set the test scope and criteria for this release."
+    },
+    {
+     "step": "Item design",
+     "what": "For each feature you write test items split into normal, boundary and error cases."
+    },
+    {
+     "step": "Execution",
+     "what": "You run manual and automated tests and record the results."
+    },
+    {
+     "step": "Defect reporting",
+     "what": "You file defects with reproduction steps and agree the fix order with development."
+    },
+    {
+     "step": "Retest",
+     "what": "You test the fixed build again and run regression tests to check nothing else broke."
+    },
+    {
+     "step": "Verdict",
+     "what": "You check against the pass criteria and report whether it can be released."
+    }
+   ],
+   "knowledge": [
+    "Software engineering (requirements analysis and test phases)",
+    "Test design techniques (equivalence partitioning, boundary value analysis)",
+    "Programming basics and data structures",
+    "How web and mobile apps work (requests and responses, UI state)"
+   ],
+   "tools": [
+    "Unit test frameworks (JUnit, pytest and similar)",
+    "UI automation tools (Selenium, Playwright and similar)",
+    "API testing tools (Postman and similar)",
+    "Defect management tools and issue trackers"
+   ],
+   "experiences": [
+    "Writing and running test items yourself on a team project",
+    "Reporting a defect so someone else could reproduce it",
+    "Adding an escaped defect to the tests so it would not come back"
+   ],
+   "entry": [
+    "Take on the test plan and test items in a software engineering course assignment",
+    "Add automated tests to your capstone and run them every time the code changes",
+    "Learn test terminology and design techniques from the ISTQB Foundation Level (CTFL) syllabus"
+   ],
+   "learnOrder": [
+    {
+     "step": "Turning requirements into test items",
+     "why": "Testing starts with writing down what you expect."
+    },
+    {
+     "step": "Boundary value analysis and equivalence partitioning",
+     "why": "You cannot test every input, so you need criteria for choosing."
+    },
+    {
+     "step": "Writing defect reports",
+     "why": "A defect nobody can reproduce is one development cannot fix."
+    },
+    {
+     "step": "Automated and regression testing",
+     "why": "If you run the same tests by hand every time, something gets missed with each new build."
+    }
+   ],
+   "firstProject": {
+    "title": "Own the test plan and verdict for one feature of a team project",
+    "goal": "Pick one feature, set its test items and pass criteria, and judge pass or hold from the test results",
+    "steps": [
+     "Read the requirements for one feature and write the scope you will and will not test",
+     "Write test items and expected results split into normal, boundary and error cases",
+     "Run the tests and report the defects you find with reproduction steps",
+     "Check against the pass criteria table, make the call, and add any missed cases to the next round"
+    ],
+    "output": "Test scope note, test items and pass criteria table, defect reports and verdict record",
+    "check": "If you judged hold, can you point to the item and the criterion it failed?"
+   },
+   "portfolio": [
+    "A set of test items and a pass criteria table",
+    "A defect report someone else reproduced",
+    "One page on the scope you did not cover"
+   ],
+   "interview": [
+    {
+     "axis": "J3",
+     "q": "Since you cannot test every input, what did you choose to test?",
+     "why": "Your criteria for choosing test scope show your judgement."
+    },
+    {
+     "axis": "J6",
+     "q": "When you separated pass from hold, what did you base the call on?",
+     "why": "Having made verdicts is the evidence behind a test role."
+    },
+    {
+     "axis": "J7",
+     "q": "If something passed testing and a defect appeared later, what did you change?",
+     "why": "This looks at whether you habitually feed escaped cases back into the tests."
+    }
+   ],
+   "postingCheck": [
+    "Whether the role is mainly manual testing or includes writing automated test code",
+    "Whether you would test web, mobile or devices",
+    "Whether experience with a programming language is required"
+   ],
+   "watch": "What test roles cover varies a lot between companies. Some, often titled QA Tester or QA Analyst, are mainly manual testing, while others, such as QA Engineer, SDET or Test Automation Engineer, are close to development roles that write test code. Use the duties in the posting to work out which kind it is first."
+  },
+  "ROLE_DEPLOY_V1": {
+   "summary": "Setting procedures and environments so the same code produces the same artefact whenever and wherever it is built, and creating a deployment path that can be rolled back when something goes wrong",
+   "practiceWhere": "while managing a team project repository or deploying your capstone server",
+   "lens": {
+    "TD10": {
+     "why": "Automating build, test and deploy steps and setting rollback paths is what build and deployment automation roles work on every day.",
+     "mode": "domain",
+     "ctx": "in a team project repository"
+    },
+    "TD06": {
+     "why": "Working with the operating system, processes and resource settings is the foundation for writing environment configuration as code.",
+     "mode": "domain",
+     "ctx": "in Linux or operating systems labs",
+     "out": {
+      "J3": "Environment configuration file",
+      "J6": "Record of repeated runs"
+     }
+    },
+    "TD07": {
+     "why": "Rolling out across several servers and changing a service without stopping it is what you use when splitting a deployment into stages.",
+     "mode": "role",
+     "ctx": "when you roll a service out across several servers"
+    }
+   },
+   "practice": {
+    "J1": {
+     "task": "Before starting deployment work, separate the steps you will automate this time from those you will leave manual, and write both down.",
+     "output": "Automation scope note",
+     "check": "Are the manual steps listed with the reasons?"
+    },
+    "J2": {
+     "task": "Rewrite a requirement such as deployment must be safe as conditions such as tests passing, build time and time to roll back.",
+     "output": "Deployment conditions table",
+     "check": "Does every condition have a way to check it?"
+    },
+    "J3": {
+     "task": "Decide yourself how many stages the deployment has and where it should stop, and record why.",
+     "output": "Deployment stages and stop conditions table",
+     "check": "Are the stop conditions written as criteria you can check?"
+    },
+    "J4": {
+     "task": "Run the same build two ways (a shell script and a container, or two CI tools) and decide which to use.",
+     "output": "Tool comparison note",
+     "check": "Did you write the comparison criteria before comparing?"
+    },
+    "J5": {
+     "task": "Leave the procedure and configuration files so a new teammate could build and deploy from a single page of documentation.",
+     "output": "Deployment procedure document and configuration files",
+     "check": "Did another teammate follow it and succeed?"
+    },
+    "J6": {
+     "task": "Build the same commit twice and on another machine, and compare whether the artefacts match.",
+     "output": "Build reproducibility check record",
+     "check": "Where differences appeared, did you write why?"
+    },
+    "J7": {
+     "task": "Deliberately create a post-deployment failure, roll back to the previous version, and fix any step that got stuck.",
+     "output": "Rollback drill record",
+     "check": "After rolling back, did you confirm the service runs as it did before?"
+    },
+    "J8": {
+     "task": "Record whether the deployment procedure you built became the team's standard way of working, and who uses it.",
+     "output": "Record of use",
+     "check": "Does it say who deploys with that procedure and since when?"
+    }
+   },
+   "responsibilities": [
+    "Building and maintaining build, test and deployment automation (CI/CD)",
+    "Setting up and managing development, test and production environments",
+    "Designing deployment stages and providing rollback paths",
+    "Helping developers with build and deployment problems"
+   ],
+   "process": [
+    {
+     "step": "Take the request",
+     "what": "Development asks how a new service or a changed architecture should be rolled out."
+    },
+    {
+     "step": "Define the environment",
+     "what": "You set the operating system, runtime and configuration needed and write them as code."
+    },
+    {
+     "step": "Build the pipeline",
+     "what": "You chain the build, test and deploy stages in a CI tool."
+    },
+    {
+     "step": "Test deployment",
+     "what": "You deploy to a test environment first and check that the stop condition at each stage works."
+    },
+    {
+     "step": "Production deployment",
+     "what": "You roll out to some servers or some users first and widen it while watching the metrics."
+    },
+    {
+     "step": "Check the rollback",
+     "what": "You practise the rollback path for when something goes wrong and fix the procedure."
+    }
+   ],
+   "knowledge": [
+    "Operating systems and Linux basics (processes, permissions, file systems)",
+    "Networking basics (addresses, ports, DNS)",
+    "Version control and branching strategies",
+    "Shell scripting and one programming language"
+   ],
+   "tools": [
+    "Git and CI tools (GitHub Actions, Jenkins and similar)",
+    "Containers (Docker) and container orchestration basics (Kubernetes and similar)",
+    "Basics of infrastructure-as-code tools",
+    "The Linux command line"
+   ],
+   "experiences": [
+    "Adding automated builds and tests to a team repository",
+    "Bringing up a project server yourself and writing a procedure anyone could use to bring it up again",
+    "Rolling back to a previous version after a problem appeared post-deployment"
+   ],
+   "entry": [
+    "Add an automated pipeline to your team project repository that runs the tests on every commit",
+    "Package your capstone server in a container so it runs the same on anyone's machine",
+    "Build command-line and system administration basics by preparing for an entry-level Linux certification"
+   ],
+   "learnOrder": [
+    {
+     "step": "The Linux command line and shell scripting",
+     "why": "Most deployment work happens on a server's command line."
+    },
+    {
+     "step": "Git branching and continuous integration",
+     "why": "What goes out and when is decided by the flow of the repository."
+    },
+    {
+     "step": "Containers and configuration as code",
+     "why": "Writing the environment as code is what lets you produce the same result again and again."
+    },
+    {
+     "step": "Staged deployment and rollback",
+     "why": "When a real incident happens, you use the way back before the way forward."
+    }
+   ],
+   "firstProject": {
+    "title": "Build a one-step deploy and rollback path for your capstone service",
+    "goal": "Make commits trigger test, build and deploy in sequence, with a way to roll back to the previous version when something goes wrong",
+    "steps": [
+     "Write the environment the service needs as configuration files and package it in a container",
+     "Add an automated pipeline to the repository that runs tests and builds on every commit",
+     "Separate test and production deployments and set a stop condition for each stage",
+     "Deploy a deliberately broken version, roll it back and record any step that got stuck"
+    ],
+    "output": "Environment configuration files, pipeline configuration, a deployment stages table and a rollback drill record",
+    "check": "Could another teammate produce the same artefact and roll it back from the documentation alone?"
+   },
+   "portfolio": [
+    "A deployment procedure with the reason for each stage's stop condition",
+    "Environment configuration code",
+    "One page on the rollback path and your drill record"
+   ],
+   "interview": [
+    {
+     "axis": "J3",
+     "q": "If you split deployment into stages, where did you make it stop, and why there?",
+     "why": "Where you put stop conditions shows how you see risk."
+    },
+    {
+     "axis": "J6",
+     "q": "Has the same code ever behaved differently on another machine? How did you make them match?",
+     "why": "A build that gives the same result every time is where this role starts."
+    },
+    {
+     "axis": "J7",
+     "q": "When a problem appeared after deployment, how did you roll back?",
+     "why": "Rollback experience is one of the first things checked in practice."
+    }
+   ],
+   "postingCheck": [
+    "Whether the posting is titled DevOps, Platform or Infrastructure, and what the actual duties say",
+    "Whether it names the cloud and container tools used",
+    "Whether development experience is required first"
+   ],
+   "watch": "Build and deployment automation is advertised under titles such as DevOps Engineer, Platform Engineer and Infrastructure Engineer. Graduate openings are often bundled with development or operations, so keep evidence in your repository history that you did this work on a team project."
+  },
+  "ROLE_SRE_V1": {
+   "summary": "Setting metrics and alert thresholds so a released service does not stop, and when an incident happens, narrowing down the cause, restoring service and preventing recurrence",
+   "practiceWhere": "while running your capstone server or looking after a club or society's service",
+   "lens": {
+    "TD07": {
+     "why": "Measuring latency and dropouts across machines and network segments and narrowing down the cause is what service operations looks at first in an incident.",
+     "mode": "domain",
+     "ctx": "in networking labs or a project that runs across several servers"
+    },
+    "TD10": {
+     "why": "Monitoring metrics, alert thresholds and incident records are the tools and documents operations uses every day.",
+     "mode": "domain",
+     "ctx": "after your capstone service has been released",
+     "out": {
+      "J2": "Uptime targets and alert thresholds table",
+      "J5": "Incident response procedure",
+      "J7": "Incident record and recurrence prevention note"
+     }
+    },
+    "TD03": {
+     "why": "Reading the request handling flow and error logs is how you narrow down where inside the server an incident happened.",
+     "mode": "role",
+     "ctx": "using server logs and error responses as evidence"
+    }
+   },
+   "practice": {
+    "J1": {
+     "task": "When you take on operations, set and write down the service scope you will protect (which features, which hours) and what you will not cover this time.",
+     "output": "Operations scope note",
+     "check": "Is the scope you will not cover listed with the reasons?"
+    },
+    "J2": {
+     "task": "Rewrite a requirement such as it must not go down as targets such as uptime percentage, response time and allowable downtime.",
+     "output": "Uptime targets table",
+     "check": "Does every target have the metric and the period it is measured over?"
+    },
+    "J3": {
+     "task": "Decide yourself which metric crossing which value should fire an alert, and who responds first.",
+     "output": "Alert thresholds and escalation table",
+     "check": "Did you consider alerts that fire too often or fail to fire when they should?"
+    },
+    "J4": {
+     "task": "Look at the same incident two ways, through logs and through metric graphs, and decide which to use first to narrow down the cause.",
+     "output": "Note on the diagnosis method",
+     "check": "Did you write the limit of the method you chose in one line?"
+    },
+    "J5": {
+     "task": "Write an incident response procedure that someone seeing it for the first time could follow.",
+     "output": "Incident response procedure",
+     "check": "Are where to look, who to contact and how to roll back written in order?"
+    },
+    "J6": {
+     "task": "Compare a month of uptime records with the targets you set at the start, on the same basis.",
+     "output": "Uptime record against targets",
+     "check": "Are the targets and records on the same metric and the same period?"
+    },
+    "J7": {
+     "task": "Pick one incident, narrow down the cause segment by segment, and write what you will change so it does not happen again.",
+     "output": "Incident record and recurrence prevention note",
+     "check": "Does the record contain the evidence that narrowed it to one cause?"
+    },
+    "J8": {
+     "task": "Record how your operations records fed into team decisions such as adding servers or changing the architecture.",
+     "output": "Record of use",
+     "check": "Does it say which record was used for which decision?"
+    }
+   },
+   "responsibilities": [
+    "Setting service monitoring metrics and alerts",
+    "Incident response, root cause analysis and recurrence prevention",
+    "Capacity reviews and deciding when to scale",
+    "Automating operational tasks and documenting response procedures"
+   ],
+   "process": [
+    {
+     "step": "Set the targets",
+     "what": "For each service you set the uptime level and response time to maintain."
+    },
+    {
+     "step": "Add monitoring",
+     "what": "You collect metrics and logs and set alert thresholds."
+    },
+    {
+     "step": "Incident response",
+     "what": "When an alert fires, you check the scope of impact first and restore the service by rolling back or routing around the problem."
+    },
+    {
+     "step": "Root cause analysis",
+     "what": "You narrow down the cause segment by segment and write the incident record."
+    },
+    {
+     "step": "Prevent recurrence",
+     "what": "You change configuration, procedures or architecture so the same thing does not happen again."
+    },
+    {
+     "step": "Capacity review",
+     "what": "You look at the accumulated records and decide when to scale and what it will cost."
+    }
+   ],
+   "knowledge": [
+    "Operating systems and Linux (processes, memory, disk)",
+    "Networking (TCP/IP, DNS, HTTP)",
+    "Distributed systems basics (replication, timeouts, retries)",
+    "Basic statistics for measuring uptime targets (means, percentiles)"
+   ],
+   "tools": [
+    "The Linux command line and system monitoring tools",
+    "Monitoring and visualisation tools (Prometheus, Grafana and similar)",
+    "Log collection and search tools",
+    "Shell scripts or Python to automate operational tasks"
+   ],
+   "experiences": [
+    "Running a server you set up yourself for a period and watching its metrics",
+    "Finding the cause and restoring service when it went down",
+    "Writing an incident record and applying a recurrence fix"
+   ],
+   "entry": [
+    "Run your capstone service until the end of the semester with monitoring graphs and alerts attached",
+    "In a networking lab, use a packet analyser to find the segment where latency and dropouts occur",
+    "Build systems and networking basics by preparing for an entry-level Linux or networking certification"
+   ],
+   "learnOrder": [
+    {
+     "step": "Linux and networking basics",
+     "why": "The cause of an incident usually shows up somewhere in these two layers."
+    },
+    {
+     "step": "Reading metrics and logs",
+     "why": "You can only spot an anomaly if you know what normal looks like."
+    },
+    {
+     "step": "Writing alert thresholds and response procedures",
+     "why": "Even an alert at 3 a.m. should be something you can handle by following the document."
+    },
+    {
+     "step": "Incident records and recurrence prevention",
+     "why": "Making sure you never go through the same incident twice is a large part of operations."
+    }
+   ],
+   "firstProject": {
+    "title": "Keep a semester-long operations log for your capstone service",
+    "goal": "Attach targets and alerts to a released service, and record the problems that occur as incident records with recurrence fixes",
+    "steps": [
+     "Set uptime and response time targets and write how you will measure them",
+     "Attach monitoring graphs and alerts and write down the alert thresholds",
+     "Every time a problem occurs, record the scope of impact, the cause and the recovery",
+     "At the end of the semester, compare the records with the targets and write up what to change"
+    ],
+    "output": "Uptime targets table, alert thresholds and response procedure, a set of incident records and a semester operations comparison",
+    "check": "For each incident, can you trace from the records how you narrowed the cause and what you changed?"
+   },
+   "portfolio": [
+    "A set of operational metrics and alert thresholds",
+    "Incident records and recurrence fixes",
+    "One page setting out the escalation steps"
+   ],
+   "interview": [
+    {
+     "axis": "J7",
+     "q": "When the service went down, what did you check first?",
+     "why": "This looks at whether you check the scope of impact first and then narrow down segment by segment."
+    },
+    {
+     "axis": "J3",
+     "q": "If you have set alert thresholds yourself, what did you base the values on?",
+     "why": "Alert thresholds show the basis for your operational judgement."
+    },
+    {
+     "axis": "J2",
+     "q": "If you had to put a reliable service into numbers, what would you measure?",
+     "why": "This looks at your instinct for making operational targets measurable."
+    }
+   ],
+   "postingCheck": [
+    "Whether the posting is titled Site Reliability Engineer, Systems Operations or Infrastructure Operations",
+    "Whether night or on-call shifts are part of the job",
+    "Whether writing automation code for operations is required"
+   ],
+   "watch": "Depending on company size, service operations is either combined with development or kept separate. Graduates often start in operations support or infrastructure operations, so prepare using records from a service you have actually run."
+  },
+  "ROLE_PM_V1": {
+   "summary": "Gathering requirements from many people, deciding what to build first and what not to take on, and matching schedule and staffing to carry development through to the end",
+   "practiceWhere": "as team lead or scheduler on a team project or capstone",
+   "lens": {
+    "TD01": {
+     "why": "Gathering requirements, drawing the scope and deciding what not to take on is the first thing integration and coordination roles handle.",
+     "mode": "domain",
+     "ctx": "in the planning phase of a team project"
+    },
+    "TD04": {
+     "why": "Organising requirements such as what data to hold, how it will be searched and how long it is kept is how a coordination role checks requirements down to the data fields.",
+     "mode": "role",
+     "ctx": "when you turn the requirements list into data fields"
+    },
+    "TD10": {
+     "why": "Deciding whether to ship by looking at release criteria and test results is where you compare the promised scope with what was delivered.",
+     "mode": "domain",
+     "ctx": "ahead of a team project presentation or release",
+     "out": {
+      "J6": "Promised scope versus results table",
+      "J8": "Release decision record"
+     }
+    }
+   },
+   "practice": {
+    "J1": {
+     "task": "At the start of a project, agree with your team what you will and will not build this semester, and write it down.",
+     "output": "One-page project scope definition",
+     "check": "Are the things you decided not to build listed with the reasons?"
+    },
+    "J2": {
+     "task": "Gather requirements from your supervisor, teammates and expected users, and turn them into a list with priorities and done criteria.",
+     "output": "Prioritised requirements list",
+     "check": "Does every requirement have a criterion for when it counts as done?"
+    },
+    "J3": {
+     "task": "Decide yourself the build order and who owns what, and write one line on why each deferred requirement was deferred.",
+     "output": "Schedule and roles table with a rationale note",
+     "check": "Can you explain why you deferred each deferred requirement?"
+    },
+    "J4": {
+     "task": "Try two ways of tracking requirements and tasks (an issue tracker, a kanban board, a spreadsheet) and decide which the team will use.",
+     "output": "Tracking method comparison note",
+     "check": "Did you write the drawback of the method you chose in one line?"
+    },
+    "J5": {
+     "task": "Record decisions from meetings and changed requirements in a change log every teammate can see.",
+     "output": "Meeting notes and change log",
+     "check": "For every changed requirement, does it say who changed it, when and why?"
+    },
+    "J6": {
+     "task": "At mid-semester and at the end, put the scope you originally promised and what you actually built on the same list and compare.",
+     "output": "Promised scope versus results table",
+     "check": "Does every missing feature have a reason?"
+    },
+    "J7": {
+     "task": "Pick a moment when the schedule slipped, redraw the scope, and write what you will change in the next plan.",
+     "output": "Scope readjustment record",
+     "check": "Is there a basis for what you cut and what you kept?"
+    },
+    "J8": {
+     "task": "Record how you reached agreement between teammates or users who disagreed, and what that agreement decided.",
+     "output": "Agreement record",
+     "check": "Does it say who agreed to what and which decision the agreement fed into?"
+    }
+   },
+   "responsibilities": [
+    "Gathering requirements from customers, users and internal teams and setting priorities",
+    "Planning development schedule and staffing and tracking progress",
+    "Handling requirement changes and coordinating stakeholders",
+    "Finalising release scope and reviewing results"
+   ],
+   "process": [
+    {
+     "step": "Gather requirements",
+     "what": "The features customers, product and operations want arrive through documents or meetings."
+    },
+    {
+     "step": "Draw the scope",
+     "what": "You separate the requirements you will take on from those you will not and set priorities."
+    },
+    {
+     "step": "Plan",
+     "what": "You set the build order, schedule and owners and align them with the team."
+    },
+    {
+     "step": "Track progress",
+     "what": "Each week you review progress and clear blockers or adjust the scope."
+    },
+    {
+     "step": "Handle changes",
+     "what": "You weigh the impact and cost of requirements that arrive midway and accept or defer them."
+    },
+    {
+     "step": "Wrap up and review",
+     "what": "You compare the promised scope with the results and feed that into the plan for the next release."
+    }
+   ],
+   "knowledge": [
+    "Software engineering (requirements analysis, development methodologies)",
+    "Ways of running development such as Agile and Scrum",
+    "Basics of databases and system architecture",
+    "Basics of schedule and risk management"
+   ],
+   "tools": [
+    "Issue trackers and kanban boards (Jira and similar)",
+    "Shared document tools and meeting note templates",
+    "UI design tools (Figma and similar) to agree requirements visually",
+    "Spreadsheets for managing schedule and scope"
+   ],
+   "experiences": [
+    "Acting as team lead or scheduler on a team project",
+    "Setting priorities and reaching agreement when requirements conflicted",
+    "Cutting scope because the schedule slipped"
+   ],
+   "entry": [
+    "Take charge of the requirements list and change log in your capstone",
+    "Write the requirements analysis and schedule yourself in a software engineering course",
+    "Gather user requirements for a campus service or a club app and try setting priorities"
+   ],
+   "learnOrder": [
+    {
+     "step": "Writing requirements as a list with done criteria",
+     "why": "Every coordination decision starts from what you agreed to build."
+    },
+    {
+     "step": "Development basics and system architecture",
+     "why": "You need to speak developers' language to set a realistic schedule and scope."
+    },
+    {
+     "step": "Setting priorities and cutting scope",
+     "why": "The call coordination roles make most often is what to cut."
+    },
+    {
+     "step": "Change logs and reviewing results",
+     "why": "If the reasons for changes are recorded, you can trace afterwards where things went off course."
+    }
+   ],
+   "firstProject": {
+    "title": "Manage the requirements list and change log for a semester of your capstone",
+    "goal": "Turn your team's requirements into a prioritised list, record requirement changes, and compare promises with results at the end of the semester",
+    "steps": [
+     "Gather requirements from the team, your supervisor and expected users into one list",
+     "Add a priority and done criterion to each requirement and decide which you will not take on this time",
+     "Record requirements that change during the semester in the change log, with who changed them and why",
+     "At the end of the semester, compare the promised scope with what was built and write up why items are missing"
+    ],
+    "output": "Prioritised requirements list, change log and promised scope versus results table",
+    "check": "For every requirement you declined or deferred, can you show from the records why you decided that?"
+   },
+   "portfolio": [
+    "A requirements list with the criteria you used to set priorities",
+    "A change log",
+    "One page on the requirements you chose not to take on and why"
+   ],
+   "interview": [
+    {
+     "axis": "J2",
+     "q": "When requirements conflicted, what did you decide to do first? What were your criteria?",
+     "why": "Your criteria for priorities show your coordination judgement."
+    },
+    {
+     "axis": "J7",
+     "q": "When the schedule slipped, what did you cut and what did you keep?",
+     "why": "Redrawing the scope is the experience used most often in practice."
+    },
+    {
+     "axis": "J8",
+     "q": "Have you reached agreement between people who disagreed?",
+     "why": "Coordination is less about deciding alone and more about getting others to follow."
+    }
+   ],
+   "postingCheck": [
+    "Whether PM here means product management or development scheduling and project management",
+    "Whether development experience or technical understanding is required",
+    "Whether working with client companies (contract development) is part of the job"
+   ],
+   "watch": "Integration and coordination roles go by a mix of titles, such as Product Manager, Technical Project Manager and Project Coordinator, and graduate openings are relatively few. People often join through development or testing and widen into coordination work, so keep records of owning requirements and schedules on team projects. They will be useful whichever route you take."
+  },
+  "ROLE_RESEARCH_V1": {
+   "summary": "Narrowing down a question that has no answer yet, and comparing a new method with a baseline under the same conditions to establish whether it works and how far",
+   "practiceWhere": "in a final-year thesis, as an undergraduate research assistant or in a machine learning project",
+   "lens": {
+    "TD09": {
+     "why": "Splitting data, training models and comparing them with a baseline is the core of an exploration and research role.",
+     "mode": "domain",
+     "ctx": "in machine learning coursework or a data analysis project"
+    },
+    "TD02": {
+     "why": "Weighing the computational cost and accuracy of a method is how you decide whether a new method is practical.",
+     "mode": "domain",
+     "ctx": "in algorithms assignments or lab experiments",
+     "out": {
+      "J3": "Note on why you chose the method",
+      "J6": "Complexity versus measured comparison"
+     }
+    },
+    "TD11": {
+     "why": "In fields such as graphics and image processing, results are judged by eye and by time together, which is where you check whether a researched method holds up under real-time constraints.",
+     "mode": "role",
+     "ctx": "in graphics or image processing assignments"
+    }
+   },
+   "practice": {
+    "J1": {
+     "task": "Pick a question left open in a paper or assignment you read, and narrow the scope you will answer this time to one sentence.",
+     "output": "One-page research question",
+     "check": "Is the scope you will not answer written down too?"
+    },
+    "J2": {
+     "task": "Before anything else, decide and write down how you will measure better: the evaluation metrics and the evaluation data.",
+     "output": "Evaluation conditions table",
+     "check": "Are the reason for the metrics and how you split the evaluation data written down?"
+    },
+    "J3": {
+     "task": "When several methods are possible, pick one with a small experiment and record why you rejected the others.",
+     "output": "Note on why you chose the method",
+     "check": "Did you run the rejected methods under the same conditions too?"
+    },
+    "J4": {
+     "task": "Set and record the experimental conditions (data split, random seed, hyperparameters) and repeat runs under the same conditions.",
+     "output": "Experiment log",
+     "check": "Could someone rerun the same experiment from your log alone?"
+    },
+    "J5": {
+     "task": "Package the experiment code, configuration and results in a repository and a short report others can rerun.",
+     "output": "Reproducible repository and experiment report",
+     "check": "Can someone follow it from installation through to the results table?"
+    },
+    "J6": {
+     "task": "Compare your method with the simplest baseline on the same data and the same metrics.",
+     "output": "Baseline comparison table",
+     "check": "Are the comparison conditions written in the table?"
+    },
+    "J7": {
+     "task": "Collect the cases where your method is wrong or does not work, find what they have in common, and rewrite the range where it works.",
+     "output": "Error case list and limitations note",
+     "check": "Can you show with examples where it does not work?"
+    },
+    "J8": {
+     "task": "Record how your results were used in other people's experiments in the lab or in team product decisions.",
+     "output": "Record of use",
+     "check": "Does it say who used them for which experiment or decision?"
+    }
+   },
+   "responsibilities": [
+    "Framing research questions and surveying related papers",
+    "Designing experiments and implementing models and algorithms",
+    "Running comparison experiments against baselines and analysing results",
+    "Writing papers and technical reports and assessing product use"
+   ],
+   "process": [
+    {
+     "step": "Take the question",
+     "what": "A problem to solve arrives as a product need or a research topic."
+    },
+    {
+     "step": "Survey prior work",
+     "what": "You read related papers and public implementations and separate what is solved from what remains."
+    },
+    {
+     "step": "Design the experiment",
+     "what": "You set the evaluation data, metrics and the baseline to compare against."
+    },
+    {
+     "step": "Experiment",
+     "what": "You implement the method, run it repeatedly under the same conditions and log the runs."
+    },
+    {
+     "step": "Analyse",
+     "what": "You compare with the baseline and collect failure cases to find the limits."
+    },
+    {
+     "step": "Write up and hand over",
+     "what": "You write a report or paper, and if the method is worth using, hand it to development."
+    }
+   ],
+   "knowledge": [
+    "Linear algebra, probability and statistics",
+    "Basics of machine learning and deep learning",
+    "Data structures and algorithms",
+    "Experimental design and evaluation methods"
+   ],
+   "tools": [
+    "Python with numerical and data tools (NumPy, pandas)",
+    "Model libraries (PyTorch, scikit-learn and similar)",
+    "Experiment tracking and notebook environments (Jupyter and similar)",
+    "Paper writing tools (LaTeX)"
+   ],
+   "experiences": [
+    "Rerunning the results of a paper yourself",
+    "Comparing a baseline and your own method under the same conditions",
+    "Finding why an experiment failed and revising the question"
+   ],
+   "entry": [
+    "Join a lab as an undergraduate research assistant and take on reproducing one of its experiments",
+    "In a machine learning assignment, compare a baseline with your own method on public data",
+    "Pick a paper in your area, run its published code and rebuild its results table"
+   ],
+   "learnOrder": [
+    {
+     "step": "Maths foundations (linear algebra, probability, statistics)",
+     "why": "They are the basis for understanding a paper's method and judging whether a difference in results can be trusted."
+    },
+    {
+     "step": "Reproducing one paper",
+     "why": "Getting someone else's result again builds the habit of writing down experimental conditions."
+    },
+    {
+     "step": "Comparing fairly with a baseline",
+     "why": "If the conditions are not the same, you cannot say it improved."
+    },
+    {
+     "step": "Writing down limits and failures",
+     "why": "Knowing where a method does not work is part of the research result too."
+    }
+   ],
+   "firstProject": {
+    "title": "Reproduce a paper and change one thing",
+    "goal": "Rerun the experiments of a published paper to confirm the results, then change one condition and see how the results change",
+    "steps": [
+     "Pick a paper in your area with public code and data, and write its research question in one sentence",
+     "Run it under the same conditions as the paper and compare how closely your results table matches",
+     "Change one of the data, metrics or settings and run it again alongside the baseline",
+     "Write up the changed results and the cases where it did not work in a short report"
+    ],
+    "output": "Experiment log, reproduction results compared with the original paper, a condition change comparison table and a short report",
+    "check": "Could someone rebuild the same tables from your repository alone?"
+   },
+   "portfolio": [
+    "A set of experimental conditions and results",
+    "A comparison table against the baseline",
+    "One page on where the method does not work"
+   ],
+   "interview": [
+    {
+     "axis": "J1",
+     "q": "How did you narrow down that research question? How does it differ from your first question?",
+     "why": "The process of narrowing the question shows your research judgement."
+    },
+    {
+     "axis": "J6",
+     "q": "How did you confirm it was better than the baseline?",
+     "why": "A fair comparison is what makes research results believable."
+    },
+    {
+     "axis": "J7",
+     "q": "When an experiment did not go as expected, what did you change?",
+     "why": "This looks at how you turn a failure into the next experiment."
+    }
+   ],
+   "postingCheck": [
+    "Whether a master's degree or higher is required, or bachelor's graduates are accepted",
+    "Whether the focus is publishing papers or applying results to products",
+    "Which field it covers (vision, language, recommendation, graphics and so on)"
+   ],
+   "watch": "Many research postings, such as Research Scientist or Research Engineer, ask for a graduate degree. As an undergraduate, build reproduction experience as a research assistant or lab intern, and it is realistic to also look at roles closer to product work, such as Machine Learning Engineer."
+  },
+  "ROLE_QUALITY_V1": {
+   "summary": "Turning external quality and security standards into check items, judging with evidence whether a service keeps meeting them throughout operation, and making sure the same defect does not come back",
+   "practiceWhere": "in security lab assignments or the review phase of a team project",
+   "lens": {
+    "TD08": {
+     "why": "Setting the assets to protect and the acceptable limits, and checking against the standard, is the basis on which quality and reliability roles make their calls.",
+     "mode": "domain",
+     "ctx": "in information security coursework or security labs"
+    },
+    "TD10": {
+     "why": "Collecting test results and incident records to see whether the same defect comes back is how you decide corrective action.",
+     "mode": "domain",
+     "ctx": "using your team project's defect records as evidence",
+     "out": {
+      "J6": "Defect recurrence tracking table",
+      "J7": "Corrective action record"
+     }
+    },
+    "TD06": {
+     "why": "Finding defects in memory handling and concurrent execution is how you narrow down the cause of defects that are rare but spread widely once they occur.",
+     "mode": "role",
+     "ctx": "in systems programming assignments"
+    }
+   },
+   "practice": {
+    "J1": {
+     "task": "At the start of a review, set and write down which parts of the system you will check this time and which you will not.",
+     "output": "Review scope note",
+     "check": "Are the parts you did not check listed with the reasons?"
+    },
+    "J2": {
+     "task": "Turn a public security checklist (such as the OWASP Top 10) or a quality standard into check items you can verify on your system.",
+     "output": "Check items table",
+     "check": "Does every item say what you need to see for it to pass?"
+    },
+    "J3": {
+     "task": "From the issues the review found, decide yourself which to fix now and which risks to accept, and record why.",
+     "output": "Accepted risk decision note",
+     "check": "Does every accepted risk have a reason and a date to revisit it?"
+    },
+    "J4": {
+     "task": "Choose the review methods (tool-based and manual) and the review interval, and run it once.",
+     "output": "Review method and interval table",
+     "check": "Did you write how you covered the items the tools cannot catch?"
+    },
+    "J5": {
+     "task": "Record every verdict with its evidence so you can trace later what it was based on.",
+     "output": "Review report",
+     "check": "Could someone reach the same verdict from the evidence alone?"
+    },
+    "J6": {
+     "task": "Check the review results against the standard item by item and judge each as compliant or non-compliant.",
+     "output": "Compliance verdict table",
+     "check": "For every non-compliant item, does it say which part of the standard it breaches?"
+    },
+    "J7": {
+     "task": "Pick a defect that kept recurring, narrow down the cause, change the procedure or configuration so it does not come back, and review again.",
+     "output": "Corrective action and re-review record",
+     "check": "Did you confirm the same defect does not come back after the change?"
+    },
+    "J8": {
+     "task": "Record how your verdict was used in the team's decision to hold or allow a release.",
+     "output": "Record of how verdicts were used",
+     "check": "Are the hold or allow decision and the evidence used at the time written down together?"
+    }
+   },
+   "responsibilities": [
+    "Organising quality and security standards and maintaining check items",
+    "Regular reviews, vulnerability assessments and compliance verdicts",
+    "Analysing the causes of defects and incidents and managing corrective action",
+    "Preparing evidence for certification audits and other audits"
+   ],
+   "process": [
+    {
+     "step": "Receive the standards",
+     "what": "Conditions to meet, such as laws, customer requirements and internal standards, arrive from outside."
+    },
+    {
+     "step": "Build the check items",
+     "what": "You turn the standards into check items you can verify on your system."
+    },
+    {
+     "step": "Review",
+     "what": "You check with tools and by hand and record the results with evidence."
+    },
+    {
+     "step": "Verdict",
+     "what": "You mark each item compliant or non-compliant and decide which risks to accept."
+    },
+    {
+     "step": "Corrective action",
+     "what": "You narrow down the cause of non-compliant items, fix them and review again."
+    },
+    {
+     "step": "Manage the cycle",
+     "what": "You set a review interval and keep checking that the standards are met throughout operation."
+    }
+   ],
+   "knowledge": [
+    "Software quality characteristics (ISO/IEC 25010 and similar)",
+    "Information security basics (authentication, authorisation, cryptography, web vulnerabilities)",
+    "Operating system and networking basics",
+    "Basic concepts of relevant laws such as data protection laws (the GDPR, for example)"
+   ],
+   "tools": [
+    "Web vulnerability scanners (OWASP ZAP and similar) and static analysis tools",
+    "Memory checkers (Valgrind and similar) and race condition detectors",
+    "Tools for tracking defect and review history",
+    "Templates for check item tables and verdict records"
+   ],
+   "experiences": [
+    "Looking for vulnerabilities in a project service against a checklist",
+    "Narrowing down the cause of a recurring defect and preventing it",
+    "Comparing your system's state with a standard and writing a report"
+   ],
+   "entry": [
+    "In an information security course, review your team project service against a web vulnerability list",
+    "Collect your team project's defect records and track the cases where the same defect came back",
+    "Learn quality and security terms and standards by preparing for an entry-level security certification"
+   ],
+   "learnOrder": [
+    {
+     "step": "Core concepts of security and quality",
+     "why": "You can only build check items once you know what needs protecting."
+    },
+    {
+     "step": "Turning standards into check items",
+     "why": "Standards from outside are often written in sentences you cannot check as they are."
+    },
+    {
+     "step": "Review tools and manual review",
+     "why": "You need to know how to split what the tools catch from what a person has to look at."
+    },
+    {
+     "step": "Recording evidence and corrective action",
+     "why": "A verdict can only be reused in audits and re-reviews if its evidence is kept."
+    }
+   ],
+   "firstProject": {
+    "title": "Write a quality and security review report for one team project service",
+    "goal": "Turn a public web vulnerability list into check items, review your service, then fix one non-compliant item and review again",
+    "steps": [
+     "Set the review scope and turn the standard list into check items for your service",
+     "Check each item with tools and by hand and write down the result and evidence",
+     "Split the non-compliant items into those to fix now and risks to accept, and write down why",
+     "Fix one, review again and record whether the verdict changed"
+    ],
+    "output": "Check items table, a review report with evidence, an accepted risk note and a corrective action and re-review record",
+    "check": "Can you show the evidence for every verdict, and point to whether the fixed item passed the re-review?"
+   },
+   "portfolio": [
+    "A set of quality criteria and review results",
+    "A corrective action record",
+    "One page on the risks you accepted and why"
+   ],
+   "interview": [
+    {
+     "axis": "J6",
+     "q": "If you have judged compliance with a standard, what did you use as evidence?",
+     "why": "The habit of keeping the evidence for a verdict is the basis of this role."
+    },
+    {
+     "axis": "J3",
+     "q": "When you could not fix every issue straight away, what did you fix first?",
+     "why": "This looks at your judgement in choosing which risks to accept."
+    },
+    {
+     "axis": "J7",
+     "q": "If the same defect has come back, what did you change to stop it?",
+     "why": "Preventing recurrence is what separates Quality and Reliability from Test and Verification."
+    }
+   ],
+   "postingCheck": [
+    "Whether quality assurance, security review or certification work carries the most weight",
+    "Whether compliance certifications such as ISO/IEC 27001 or SOC 2, or audit work, are listed",
+    "Whether security certifications are listed as a plus"
+   ],
+   "watch": "Quality and reliability work is split under different names at each company, such as Quality Assurance Engineer, Security Analyst and Compliance Engineer. Industries where outside bodies set the standards, such as finance and the public sector, take this work seriously, so it helps to decide on a target industry and search postings with it in mind."
+  }
+ }
+}

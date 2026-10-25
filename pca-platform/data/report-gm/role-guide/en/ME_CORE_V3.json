@@ -1,0 +1,1470 @@
+{
+ "schema": "role-guide.v1",
+ "core": "ME_CORE_V3",
+ "status": "DRAFT_FOR_REVIEW",
+ "note": "A general description of mechanical engineering roles. It is not a job description or hiring requirement from any company and is not used for measurement or scoring.",
+ "roles": {
+  "ROLE_DESIGN_V2": {
+   "summary": "Setting the shape, dimensions, materials and tolerances of a product or device, and releasing drawings and a bill of materials that can be built as they are",
+   "practiceWhere": "in a machine design course project or your capstone design",
+   "lens": {
+    "TD01": {
+     "why": "Fixing shape, dimensions and tolerances is the core of a design role.",
+     "mode": "domain",
+     "ctx": "in a machine design course project or your capstone design"
+    },
+    "TD06": {
+     "why": "Choosing a material and grade for the loads and operating environment gives you the basis for the material field on the drawing.",
+     "mode": "domain",
+     "ctx": "in a design project where you have to pick the material yourself",
+     "out": {
+      "J3": "Note on why you chose the material",
+      "J6": "Comparison table of candidate materials"
+     }
+    },
+    "TD11": {
+     "why": "Deciding which of several competing requirements to protect first comes before any design work starts.",
+     "mode": "domain",
+     "ctx": "when you sort out the requirements for a team design project",
+     "out": {
+      "J1": "Design scope note",
+      "J2": "Requirement priority table"
+     }
+    }
+   },
+   "practice": {
+    "J1": {
+     "task": "When you get a design brief, separate the functions the device must have from the ones you will not cover this time, and write both on the first page of your design specification.",
+     "output": "One page of design scope and exclusions",
+     "check": "Are the excluded functions listed together with the reason for leaving them out?"
+    },
+    "J2": {
+     "task": "Turn the requirements you received into design conditions such as loads, dimensions, operating environment and assembly constraints, and rank the ones that conflict.",
+     "output": "Design conditions table",
+     "check": "Does every condition have a number or a way to judge it?"
+    },
+    "J3": {
+     "task": "Pick one value yourself, such as a shaft diameter, a plate thickness or a fit tolerance grade, justify it from the loads and function, and keep the calculation.",
+     "output": "One section of a design calculation",
+     "check": "Can you explain the value you chose in terms of load or function?"
+    },
+    "J4": {
+     "task": "Work out the strength of a part or the life of a bearing two ways, by hand calculation and with a simple CAD analysis, and decide which result to base the design on.",
+     "output": "Note comparing the two calculation methods",
+     "check": "Where the two values differ, did you write the reason in one line?"
+    },
+    "J5": {
+     "task": "Put the assembly drawing, part drawings and bill of materials (BOM) together as one set that someone else could send straight out for machining.",
+     "output": "One set of assembly drawing, part drawings and BOM",
+     "check": "Are all dimensions, tolerances, materials and quantities on it?"
+    },
+    "J6": {
+     "task": "Calculate the tolerance stack-up between mating parts and check that they still assemble in the worst-case combination.",
+     "output": "Tolerance stack-up calculation",
+     "check": "Does it show the clearance or interference at the worst case?"
+    },
+    "J7": {
+     "task": "Pick one spot where a prototype did not fit or broke during assembly, narrow the cause down to dimensions, material or machining, and revise the drawing.",
+     "output": "Root cause note and drawing revision history",
+     "check": "Are the revision and the reason for it recorded in the drawing history?"
+    },
+    "J8": {
+     "task": "After a team design review, record whether your proposal was adopted and, if it was changed, which comments changed it.",
+     "output": "Design review record",
+     "check": "Does it say who accepted or changed the proposal, and on what grounds?"
+    }
+   },
+   "responsibilities": [
+    "Designing the shape and dimensions of new and revised parts",
+    "Allocating tolerances and choosing fits",
+    "Selecting materials and standard parts (bearings, fasteners, gears and so on)",
+    "Producing assembly drawings, part drawings and BOMs, and managing design changes"
+   ],
+   "process": [
+    {
+     "step": "Receive the requirements",
+     "what": "Target performance, available space and a cost target arrive through a specification or a change request."
+    },
+    {
+     "step": "Choose a concept",
+     "what": "You sketch two or three concepts, compare their load paths and assembly order, and pick one."
+    },
+    {
+     "step": "Detailed design",
+     "what": "You set thicknesses, sections, fastening, materials and tolerances, and record the reasoning in a design calculation."
+    },
+    {
+     "step": "Design review",
+     "what": "With the analysis, manufacturing and quality engineers, you check for interference and how easy the part is to make."
+    },
+    {
+     "step": "Prototype check",
+     "what": "The prototype is assembled and tested, and the measured values are compared with the drawing."
+    },
+    {
+     "step": "Release and change control",
+     "what": "You release the final drawings and manage every later change through revisions."
+    }
+   ],
+   "knowledge": [
+    "Mechanics of materials (stress, strain, buckling)",
+    "Machine element design (shafts, bearings, gears, fasteners)",
+    "Engineering drawing and geometric tolerancing",
+    "Engineering materials and basic heat treatment"
+   ],
+   "tools": [
+    "3D CAD (SolidWorks, CATIA or NX, whichever your school uses)",
+    "2D drawings with GD&T callouts",
+    "Tolerance stack-up spreadsheet",
+    "National and ISO standards and standard-part catalogues"
+   ],
+   "experiences": [
+    "Drawing parts and assemblies yourself and sending them out to be made",
+    "Setting a dimension or tolerance with a calculation behind it",
+    "Revising a drawing because a prototype did not fit"
+   ],
+   "entry": [
+    "Take on the mechanism design and drawings in your capstone project",
+    "On a student competition team such as Formula Student or a robotics team, own one part from design through to manufacture",
+    "Take apart a mechanical product at home, redraw its parts, and work out how it is fastened and what it is made of"
+   ],
+   "learnOrder": [
+    {
+     "step": "Engineering drawing and reading drawings",
+     "why": "What a designer hands over is a drawing, and if you cannot read one you cannot fix anyone else's design either."
+    },
+    {
+     "step": "Hand calculations in mechanics and machine elements",
+     "why": "You explain why a thickness or diameter is what it is through the calculation."
+    },
+    {
+     "step": "Tolerances and fits",
+     "why": "Whether parts assemble is often decided by the tolerances."
+    },
+    {
+     "step": "Design for manufacture and assembly",
+     "why": "A drawing that checks out on paper but cannot be made comes straight back from the shop floor."
+    }
+   ],
+   "firstProject": {
+    "title": "Design one small mechanism from start to finish",
+    "goal": "Choose a mechanism such as a hand-cranked gear reducer or a small vice, and complete the assembly drawing, part drawings and design calculation as one set",
+    "steps": [
+     "Write the required function, size and load conditions on one page",
+     "Size the shaft, bearings and bolts by hand calculation",
+     "Assemble it in 3D CAD and check interference and tolerance stack-up",
+     "Add tolerances and materials to the part drawings, then make one on a 3D printer or in the school workshop and assemble it"
+    ],
+    "output": "A set of assembly and part drawings, a design calculation, and a record of the prototype build and revisions",
+    "check": "Can you justify every dimension and tolerance on the drawings?"
+   },
+   "portfolio": [
+    "A set of assembly and part drawings with the BOM",
+    "A design calculation that sets a shaft diameter or wall thickness",
+    "One page on where you put the tight tolerances and why"
+   ],
+   "interview": [
+    {
+     "axis": "J3",
+     "q": "Have you set a dimension or tolerance yourself? What did you base the value on?",
+     "why": "Design means choosing values, and a designer is expected to explain the basis for each one."
+    },
+    {
+     "axis": "J6",
+     "q": "Before the parts were made, how did you check that they would assemble?",
+     "why": "Tolerance stack-up and interference checks are part of every drawing release."
+    },
+    {
+     "axis": "J7",
+     "q": "When a prototype did not fit or broke, what did you change?",
+     "why": "How you narrow the cause down to dimensions, material or machining shows your design judgement."
+    }
+   ],
+   "postingCheck": [
+    "Whether the role works on mechanisms inside a product or on production machinery and equipment",
+    "Whether the posting names the CAD software you would use",
+    "Whether an engineering licence or certification is listed as a plus, where your country has one"
+   ],
+   "watch": "What a design engineer works on varies a lot from company to company. Two postings with the same title, such as Mechanical Design Engineer, can mean the mechanisms inside consumer electronics or the design of production equipment, and the tools and judgements differ. Look at the product line in the posting first and match the examples in your portfolio to it."
+  },
+  "ROLE_CAE_V2": {
+   "summary": "Predicting strength, life, temperature and vibration by calculation before anything is built, and handing that prediction back to design along with the reasons to trust it",
+   "practiceWhere": "in a finite element analysis course project or your capstone",
+   "lens": {
+    "TD02": {
+     "why": "Setting constraints, loads and material properties to predict strength and life is the core of an analysis role.",
+     "mode": "domain",
+     "ctx": "in a finite element analysis course project or your capstone"
+    },
+    "TD03": {
+     "why": "Setting thermal and flow boundary conditions to predict temperatures and pressure drop is how cooling performance gets judged.",
+     "mode": "domain",
+     "ctx": "in heat transfer or fluid mechanics projects",
+     "out": {
+      "J2": "Thermal and flow analysis conditions table",
+      "J6": "Comparison of 1D calculation and simulation results"
+     }
+    },
+    "TD04": {
+     "why": "Predicting natural frequencies and mode shapes gives the evidence behind vibration and noise fixes.",
+     "mode": "domain",
+     "ctx": "in a vibration lab or a modal analysis project",
+     "out": {
+      "J1": "Note on the frequency range to study",
+      "J6": "Table matching simulated and measured modes"
+     }
+    }
+   },
+   "practice": {
+    "J1": {
+     "task": "Before you start an analysis, write on one page which behaviour you will look at (static strength, fatigue, buckling and so on) and which features you will simplify away.",
+     "output": "Note on analysis scope and assumptions",
+     "check": "Are the removed features listed together with the reason for removing them?"
+    },
+    "J2": {
+     "task": "Pick the worst case from the project's operating conditions and turn it into analysis conditions such as loads, constraints and temperatures.",
+     "output": "Analysis conditions table",
+     "check": "Does every condition say where its value came from?"
+    },
+    "J3": {
+     "task": "Choose the constraint locations, load points and material properties yourself, and write one line on how the result would change if you had chosen differently.",
+     "output": "Note on boundary condition choices",
+     "check": "Can you explain how the constraint matches the real way the part is held?"
+    },
+    "J4": {
+     "task": "Run the model at three mesh sizes to see whether the result converges, and check its order of magnitude with a hand calculation such as beam theory.",
+     "output": "Mesh convergence table and one page of hand calculations",
+     "check": "Where the hand calculation and the simulation differ, did you explain why?"
+    },
+    "J5": {
+     "task": "Write up the conditions, assumptions, results and verdict in a report detailed enough for someone else to rebuild the same model.",
+     "output": "Analysis report",
+     "check": "Could a reader reproduce your result from the report alone?"
+    },
+    "J6": {
+     "task": "Compare values measured in a mechanics or vibration lab with your simulation at the same location and under the same load.",
+     "output": "Simulation versus test comparison table",
+     "check": "Did you compare at the same location and under the same conditions?"
+    },
+    "J7": {
+     "task": "When simulation and measurement disagree, check boundary conditions, then material properties, then the mesh, fix the model and run it again.",
+     "output": "Model revision record",
+     "check": "Did you record what you changed and how much the gap closed?"
+    },
+    "J8": {
+     "task": "Record whether your results changed a thickness or shape in the team design, and if they did not, why not.",
+     "output": "Record of design changes from your analysis",
+     "check": "Does it say which dimension changed and which result it was based on?"
+    }
+   },
+   "responsibilities": [
+    "Structural strength and fatigue life analysis and verdicts",
+    "Thermal and flow analysis to predict temperatures and pressure drop",
+    "Modal and vibration analysis and review of fixes",
+    "Correlating analysis with test results and standardising analysis procedures"
+   ],
+   "process": [
+    {
+     "step": "Take the request",
+     "what": "Design asks questions such as whether this shape will hold or whether the temperature stays within the limit."
+    },
+    {
+     "step": "Set the conditions",
+     "what": "You take the load history, material, required life and allowable stress, and decide what to study and how far to simplify."
+    },
+    {
+     "step": "Build the model",
+     "what": "You simplify the geometry, set the boundary conditions and mesh, and run the analysis."
+    },
+    {
+     "step": "Check the result makes sense",
+     "what": "Mesh convergence, hand calculations and earlier analyses tell you whether the answer is believable."
+    },
+    {
+     "step": "Verdict and proposal",
+     "what": "You compare the result with the acceptance criteria and, if it falls short, propose the dimensions or shape to change."
+    },
+    {
+     "step": "Correlate with test",
+     "what": "When test results come in, you compare them with the analysis and update the model."
+    }
+   ],
+   "knowledge": [
+    "Mechanics of materials and solid mechanics",
+    "Principles of the finite element method",
+    "Heat transfer and fluid mechanics",
+    "Basics of mechanical vibration and fatigue"
+   ],
+   "tools": [
+    "Finite element software (ANSYS, Abaqus or whatever your school uses)",
+    "Basic computational fluid dynamics",
+    "MATLAB or Python for post-processing and reporting",
+    "Material property data and handbooks of hand-calculation formulas"
+   ],
+   "experiences": [
+    "Setting analysis conditions yourself and making the pass or fail call",
+    "Comparing simulation results with lab measurements",
+    "Fixing a model and running it again after an odd result"
+   ],
+   "entry": [
+    "Extend a finite element course assignment into a report that checks the results against hand calculations",
+    "Take on the analysis in your capstone team and provide the evidence for design changes",
+    "Join a lab that combines simulation and testing as an undergraduate research assistant"
+   ],
+   "learnOrder": [
+    {
+     "step": "Hand calculations in mechanics of materials",
+     "why": "A hand calculation is your first check on whether a simulation result makes sense."
+    },
+    {
+     "step": "Finite element principles and boundary conditions",
+     "why": "The same geometry can give very different results depending on how you constrain it."
+    },
+    {
+     "step": "Mesh convergence and result checks",
+     "why": "Results without a convergence check are not accepted as a basis for design."
+    },
+    {
+     "step": "Correlation with test",
+     "why": "Once you have explained a gap between simulation and test, you can give reasons to trust your results."
+    }
+   ],
+   "firstProject": {
+    "title": "Analyse a bracket and check it against a test",
+    "goal": "Find the stress and deflection of a simple cantilever bracket three ways, by hand calculation, finite element analysis and measurement, and reconcile them",
+    "steps": [
+     "Calculate deflection and peak stress by hand using beam theory",
+     "Model the same geometry in finite element software and check convergence over three mesh sizes",
+     "Load the bracket in the mechanics lab and measure deflection or strain",
+     "Put the three values in one table and write down why they differ"
+    ],
+    "output": "An analysis report, a hand-calculation, simulation and measurement comparison table, and one page of conditions and assumptions",
+    "check": "Where the three values differ, can you say which one you trust and why?"
+   },
+   "portfolio": [
+    "An analysis report covering conditions, assumptions and the verdict",
+    "A mesh convergence table with a hand-calculation check",
+    "A record of correlating analysis with test and revising the model"
+   ],
+   "interview": [
+    {
+     "axis": "J3",
+     "q": "How did you choose the constraints in your analysis? How would the result have changed if you had applied them differently?",
+     "why": "The same model can give very different results depending on the boundary conditions, and you need to be able to explain your choice."
+    },
+    {
+     "axis": "J6",
+     "q": "How did you confirm your analysis result was right?",
+     "why": "An analysis engineer does not stop at producing a number and is accountable for whether it holds up."
+    },
+    {
+     "axis": "J7",
+     "q": "When simulation and test disagreed, what did you suspect first?",
+     "why": "The order in which you narrow down causes shows how much analysis you have really done."
+    }
+   ],
+   "postingCheck": [
+    "Whether the role covers structural, thermal-fluid or vibration analysis",
+    "Whether it is analysis only or design with analysis",
+    "Whether it asks for a master's degree or higher, and which software it names"
+   ],
+   "watch": "Dedicated analysis roles such as CAE Analyst or Simulation Engineer tend to sit in research centres and large development organisations, and many postings ask for a master's degree. If you are applying with a bachelor's degree, it is realistic to also look at design roles that include analysis work."
+  },
+  "ROLE_RND_V2": {
+   "summary": "Taking on a technical problem that has no specification yet, and first working out what has to be achieved and how to approach it",
+   "practiceWhere": "as an undergraduate research assistant or in your final-year research project",
+   "lens": {
+    "TD06": {
+     "why": "When there is no method to use, you build and test a new combination of material and treatment, which is the classic case of advanced development creating a method.",
+     "mode": "domain",
+     "ctx": "as an undergraduate research assistant or in your final-year research project",
+     "out": {
+      "J4": "Note on why you chose the method",
+      "J7": "Record of combinations that failed and why"
+     }
+    },
+    "TD05": {
+     "why": "When even the required motion has not been set, you narrow down what has to move and by how much.",
+     "mode": "domain",
+     "ctx": "in a capstone or competition where you design a new mechanism",
+     "out": {
+      "J1": "Note defining the required motion",
+      "J2": "Table of must-have and dropped requirements"
+     }
+    },
+    "TD03": {
+     "why": "You set an assumption to test and check it first with a small experiment, an approach often used on topics such as thermal management.",
+     "mode": "domain",
+     "ctx": "in a thermal-fluids lab or your final-year research project",
+     "out": {
+      "J6": "Assumption check results table"
+     }
+    }
+   },
+   "practice": {
+    "J1": {
+     "task": "When you get a vague goal such as make it lighter or make it quieter, narrow it to one problem you will solve this time and write it as a one-line question.",
+     "output": "One-line research question with a scope note",
+     "check": "Is the question written so an experiment or calculation can answer it?"
+    },
+    "J2": {
+     "task": "Split the requirements into those you must meet and those you will drop this time, and write why you dropped each one.",
+     "output": "Requirement classification table",
+     "check": "Does every dropped requirement have a reason?"
+    },
+    "J3": {
+     "task": "Pick one of two or three candidate approaches and write down the assumptions that have to hold for it to work.",
+     "output": "Note on the chosen method and assumptions to test",
+     "check": "Did you identify the assumption most likely to fail first?"
+    },
+    "J4": {
+     "task": "Search papers and patents to see how others solved the same problem, summarise them, and note why you cannot use them as they are.",
+     "output": "Prior art review table",
+     "check": "Does it say how your approach differs from earlier ones?"
+    },
+    "J5": {
+     "task": "Keep a lab notebook of conditions, procedures and results so someone else could get the same result.",
+     "output": "Lab notebook",
+     "check": "Could another person run the same experiment from your notebook alone?"
+    },
+    "J6": {
+     "task": "Test one of your assumptions first with a small experiment or quick calculation, and decide whether it held.",
+     "output": "Assumption check results table",
+     "check": "Did you write the pass criterion before you ran the check?"
+    },
+    "J7": {
+     "task": "Pick one attempt that did not work, write why, and decide whether to change direction or only change the conditions.",
+     "output": "Failure record and direction decision note",
+     "check": "Did you explain the failure with experimental results?"
+    },
+    "J8": {
+     "task": "Record how your results fed into the next experiment or the team's design direction.",
+     "output": "Record of follow-on use",
+     "check": "Does it say who picked up what from your results?"
+    }
+   },
+   "responsibilities": [
+    "Concept review and feasibility checks for new structures and approaches",
+    "Prior art searches in papers and patents, and technology trend summaries",
+    "Building proof-of-concept prototypes and running experiments",
+    "Writing up specifications and methods to hand over to development"
+   ],
+   "process": [
+    {
+     "step": "Receive the topic",
+     "what": "A future technology, or a problem current methods cannot solve, arrives as a project."
+    },
+    {
+     "step": "Narrow the problem",
+     "what": "A prior art search filters out what is already known, and you decide the problem to solve and the requirements to drop."
+    },
+    {
+     "step": "Set the method and assumptions",
+     "what": "You choose an approach and decide which assumption to test first."
+    },
+    {
+     "step": "Test small",
+     "what": "You check the assumption with a quick prototype or a simple experiment."
+    },
+    {
+     "step": "Set the direction",
+     "what": "Based on the result, you decide whether to continue, change the conditions or stop."
+    },
+    {
+     "step": "Hand over",
+     "what": "You write up what works, under which conditions, and what failed, so development can take it on."
+    }
+   ],
+   "knowledge": [
+    "Core mechanics (solids, thermodynamics, fluids, dynamics)",
+    "Design of experiments and interpreting results",
+    "Engineering materials and basic manufacturing processes",
+    "How to read technical papers and patents"
+   ],
+   "tools": [
+    "Your library's paper databases and patent databases such as Google Patents or Espacenet",
+    "Lab notebooks and version control",
+    "MATLAB or Python for organising experimental data",
+    "Rapid prototyping tools such as 3D printers and laser cutters"
+   ],
+   "experiences": [
+    "Narrowing a vague topic down to a clear question",
+    "Setting an assumption and testing it by experiment",
+    "Recording a failed result and changing direction"
+   ],
+   "entry": [
+    "Join a lab as an undergraduate research assistant and take on one experiment in a lab project",
+    "When you choose a final-year research topic, do the prior art search yourself",
+    "Build a proof-of-concept prototype for a student design or invention competition"
+   ],
+   "learnOrder": [
+    {
+     "step": "How to search prior art",
+     "why": "It is the first step to avoid solving a problem that is already solved."
+    },
+    {
+     "step": "Narrowing the problem and setting assumptions",
+     "why": "Exploratory work never ends unless you set its scope."
+    },
+    {
+     "step": "Designing small experiments",
+     "why": "A quick test of one assumption sets the direction sooner than a big prototype."
+    },
+    {
+     "step": "Recording failures",
+     "why": "Methods that failed, and why, become the next person's starting point."
+    }
+   ],
+   "firstProject": {
+    "title": "Set one assumption and test it by experiment",
+    "goal": "Choose a topic you can test in your department's labs (heat sink fin shape, or print orientation and strength of 3D printed specimens, for example), set one assumption and settle it by experiment",
+    "steps": [
+     "Narrow the topic to a one-line question and summarise three or four prior sources",
+     "Before the experiment, write down the assumption to test first and the pass criterion",
+     "Run a comparison experiment on small specimens or prototypes while varying the conditions",
+     "Decide from the results whether to continue or change direction, and record why on one page"
+    ],
+    "output": "Research question and prior art table, lab notebook, and a one-page direction decision",
+    "check": "Could another person repeat the experiment from your notebook alone?"
+   },
+   "portfolio": [
+    "One page showing how you narrowed the question",
+    "A table of assumptions and what the checks showed",
+    "A record of attempts that failed and why"
+   ],
+   "interview": [
+    {
+     "axis": "J1",
+     "q": "When you were given a vague topic, what did you decide first?",
+     "why": "Advanced development starts with narrowing down the problem yourself."
+    },
+    {
+     "axis": "J4",
+     "q": "When there was no set method, how did you choose one?",
+     "why": "Building the method yourself is what separates this role from Analysis and Prediction."
+    },
+    {
+     "axis": "J7",
+     "q": "When you realised partway through that something would not work, what did you do?",
+     "why": "Admitting quickly that something failed and changing direction happens often in this role."
+    }
+   ],
+   "postingCheck": [
+    "Whether advanced development here is close to basic research or to pre-production development",
+    "Whether a master's or PhD is required",
+    "Whether the technical area (materials, thermal management, actuation and so on) matches your research experience"
+   ],
+   "watch": "Advanced development and research roles often hire graduate degree holders. As an undergraduate, you can build research assistant experience while weighing graduate school, or start in a development role and move across later."
+  },
+  "ROLE_TEST_V2": {
+   "summary": "Checking whether a prototype or product meets its requirements by setting the measurement method and acceptance criteria, measuring, and issuing the verdict in a test report",
+   "practiceWhere": "in a mechanical engineering lab course or capstone performance testing",
+   "lens": {
+    "TD07": {
+     "why": "Choosing what to measure, the acceptance criteria and the fixtures, then making the call, is the core of a test role.",
+     "mode": "domain",
+     "ctx": "in a mechanical engineering lab course or capstone performance testing"
+    },
+    "TD04": {
+     "why": "Measuring vibration and sound and tracing where they come from is the work you do on noise and vibration testing.",
+     "mode": "domain",
+     "ctx": "in a vibration lab or a noise measurement project",
+     "out": {
+      "J4": "Note on measurement points and method",
+      "J6": "Before and after comparison table"
+     }
+    },
+    "TD09": {
+     "why": "The condition of the equipment decides the result, so this is where you check calibration and equipment status before testing.",
+     "mode": "role",
+     "ctx": "before taking measurements with lab equipment",
+     "out": {
+      "J6": "Calibration status checklist"
+     }
+    }
+   },
+   "practice": {
+    "J1": {
+     "task": "When you take on a test, separate what this test will and will not judge, and write it at the top of the test plan.",
+     "output": "One page of test purpose and scope",
+     "check": "Are what is judged and what is excluded clearly separated?"
+    },
+    "J2": {
+     "task": "Before testing, turn the requirements or standards into measured quantities, measurement methods and acceptance criteria.",
+     "output": "Test plan",
+     "check": "Are the acceptance criteria written as numbers before the test?"
+    },
+    "J3": {
+     "task": "Decide how to hold the specimen and where to apply the load, then build or choose a simple fixture.",
+     "output": "Fixture sketch and note on how the specimen is held",
+     "check": "Can you explain how the fixture matches real operating conditions?"
+    },
+    "J4": {
+     "task": "Measure the same quantity two ways (a strain gauge and a displacement sensor, for example) and decide which to use for the verdict.",
+     "output": "Note comparing measurement methods",
+     "check": "Did you write the limit of the method you chose in one line?"
+    },
+    "J5": {
+     "task": "Put the specimen, conditions, equipment, measurements and verdict into a one-page test report.",
+     "output": "Test report",
+     "check": "Are specimen, conditions, equipment and verdict all included?"
+    },
+    "J6": {
+     "task": "Measure the same specimen several times, look at the scatter, and check whether it affects the verdict.",
+     "output": "Repeat measurement table with spread calculation",
+     "check": "Did you write how you will handle values close to the pass line?"
+    },
+    "J7": {
+     "task": "If a test gave unstable values, change the fixture, sensor, specimen and environment one at a time to find the cause, fix the method and measure again.",
+     "output": "Record of measurement method changes",
+     "check": "Did you confirm the scatter dropped after the fix?"
+    },
+    "J8": {
+     "task": "Record how your verdicts changed the team's design or the next test plan.",
+     "output": "Record of how verdicts were used",
+     "check": "Does it say who used your test report for which decision?"
+    }
+   },
+   "responsibilities": [
+    "Writing test plans and setting acceptance criteria",
+    "Designing test fixtures and setting up instrumentation",
+    "Running performance, durability and environmental tests and processing the data",
+    "Writing test reports and making the pass or fail call"
+   ],
+   "process": [
+    {
+     "step": "Take the request",
+     "what": "Design or quality asks you to judge whether a prototype meets its requirements."
+    },
+    {
+     "step": "Plan",
+     "what": "You read the standards and requirements and decide what to measure, how many, under which conditions, and where the pass line is."
+    },
+    {
+     "step": "Prepare",
+     "what": "You build fixtures, set up sensors and data acquisition, and check calibration status."
+    },
+    {
+     "step": "Test and measure",
+     "what": "You run the test and use repeat measurements to see how much the values scatter."
+    },
+    {
+     "step": "Verdict and report",
+     "what": "You compare the results with the criteria, make the call and issue the test report."
+    },
+    {
+     "step": "Feed back",
+     "what": "If it fails, you send the results back to design and analysis and set the retest conditions."
+    }
+   ],
+   "knowledge": [
+    "Measurement engineering and sensor principles",
+    "Mechanical engineering labs (materials, thermal-fluids, vibration)",
+    "Basic statistics (mean, standard deviation, measurement uncertainty)",
+    "Basics of mechanics of materials and vibration"
+   ],
+   "tools": [
+    "Data acquisition hardware and software such as LabVIEW",
+    "Sensors such as strain gauges, accelerometers and thermocouples",
+    "MATLAB, Python or Excel for processing measurement data",
+    "How to find test standards (ISO, ASTM and national standards)"
+   ],
+   "experiences": [
+    "Setting acceptance criteria before running a test",
+    "Mounting sensors yourself and taking measurements",
+    "Fixing a measurement method or fixture because the values were unstable"
+   ],
+   "entry": [
+    "In your lab reports, add the acceptance criteria and the spread of repeat measurements",
+    "Take on performance test planning and measurement in your capstone team",
+    "On a student vehicle or drone competition team, take charge of collecting driving or flight data"
+   ],
+   "learnOrder": [
+    {
+     "step": "Sensors and the measurement chain",
+     "why": "You can only trust a value if you know where error enters between the sensor and the record."
+    },
+    {
+     "step": "Repeat measurements and spread",
+     "why": "A single value is not enough for a verdict, and you have to look at the scatter too."
+    },
+    {
+     "step": "Test plans and acceptance criteria",
+     "why": "If you do not write the criteria first, you end up fitting the criteria to the results."
+    },
+    {
+     "step": "Fixture design",
+     "why": "How you hold the specimen changes what you measure."
+    }
+   ],
+   "firstProject": {
+    "title": "Write one test from plan to report",
+    "goal": "Pick a capstone part or a 3D printed specimen and do the test plan, measurement, verdict and report in one go",
+    "steps": [
+     "Before testing, write down what you will judge and the acceptance criteria",
+     "Decide how to hold the specimen and build a simple fixture",
+     "Measure several times under the same conditions and work out the mean and spread",
+     "Compare with the criteria, make the call, and write it up as a one-page test report"
+    ],
+    "output": "Test plan, repeat measurement table and a one-page test report",
+    "check": "Were the acceptance criteria set before you saw the results?"
+   },
+   "portfolio": [
+    "A test report that goes all the way to the verdict",
+    "A fixture sketch and test procedure",
+    "One page on the spread of repeat measurements and how you handled it"
+   ],
+   "interview": [
+    {
+     "axis": "J2",
+     "q": "Have you set acceptance criteria before a test? Where did they come from?",
+     "why": "Setting the criteria first is basic practice in test work."
+    },
+    {
+     "axis": "J6",
+     "q": "If you measured the same thing several times and got different values, how did you make the call?",
+     "why": "How you handle scatter shows how well you understand measurement."
+    },
+    {
+     "axis": "J7",
+     "q": "When a measurement looked wrong, what did you check first?",
+     "why": "Narrowing the cause through fixture, sensor, specimen and environment is the same order used in practice."
+    }
+   ],
+   "postingCheck": [
+    "Whether you test parts or complete products, and whether it is durability, environmental or noise and vibration testing",
+    "Whether the role is hands-on with equipment or focused on analysing results",
+    "Whether you would work at a proving ground or in a test lab inside a plant"
+   ],
+   "watch": "Test and validation engineers often work in a research centre's test building or in a lab inside a plant, so check the location first. Postings also appear under titles such as Validation Engineer, Test Engineer or Reliability Test Engineer, so read the duties section rather than filtering by title."
+  },
+  "ROLE_MFG_V2": {
+   "summary": "Choosing the processes, machining sequence, conditions and tooling so designed parts and products can be made again and again at the same quality",
+   "practiceWhere": "in a manufacturing processes workshop or an industry internship",
+   "lens": {
+    "TD08": {
+     "why": "Setting processes, machining sequence and the range of process conditions is the core of manufacturing engineering.",
+     "mode": "domain",
+     "ctx": "in a manufacturing processes workshop or an industry internship"
+    },
+    "TD01": {
+     "why": "This is where you look at how easy a part is to make and ask design to change it, which you do when reviewing drawings before production.",
+     "mode": "role",
+     "ctx": "when you hand capstone drawings over for machining",
+     "out": {
+      "J2": "Manufacturability review comments"
+     }
+    },
+    "TD09": {
+     "why": "Deciding what a machine will make and under which conditions requires knowing its specifications and capability.",
+     "mode": "domain",
+     "ctx": "when you use the machine tools in the workshop",
+     "out": {
+      "J3": "Equipment specification checklist"
+     }
+    }
+   },
+   "practice": {
+    "J1": {
+     "task": "When you get a part to make, separate what you will decide (process, sequence, conditions) from what goes back to design (dimension changes and so on), and write it at the top of the process plan.",
+     "output": "Process plan scope note",
+     "check": "Are the issues for design and the issues for you clearly separated?"
+    },
+    "J2": {
+     "task": "From the drawing tolerances and the required quantity, work out which processes and machine conditions can hold them.",
+     "output": "Process requirements table",
+     "check": "Is every tolerance paired with the process that will hold it?"
+    },
+    "J3": {
+     "task": "Decide the process and machining sequence for one part yourself, and write one line on why you rejected each alternative sequence.",
+     "output": "Process chart and sequence decision note",
+     "check": "Can you explain which surface you used as the datum and why?"
+    },
+    "J4": {
+     "task": "Run trial cuts at two or three levels of a condition such as cutting speed or feed, and find the range that gives the dimensions and surface finish you need.",
+     "output": "Condition trial record",
+     "check": "Does each condition have its dimensional or surface roughness result?"
+    },
+    "J5": {
+     "task": "Write the sequence and conditions as a work instruction that someone seeing it for the first time could follow.",
+     "output": "Work instruction",
+     "check": "Could another student make the same part from your instruction alone?"
+    },
+    "J6": {
+     "task": "Measure several machined parts, compare them with the drawing tolerances, and calculate a process capability index.",
+     "output": "Dimensional measurement table and capability calculation",
+     "check": "Did you measure all parts with the same gauge and method?"
+    },
+    "J7": {
+     "task": "Pick one defective part, narrow the cause down to machine, material, conditions or operator method, and change the conditions or tooling.",
+     "output": "Defect cause and corrective action record",
+     "check": "Did you check whether the same defect came back after the fix?"
+    },
+    "J8": {
+     "task": "Record whether the conditions or work instruction you set were used as they are by your team or the workshop.",
+     "output": "Record of how the standard was applied",
+     "check": "Does it say who used the standard for which job?"
+    }
+   },
+   "responsibilities": [
+    "Process design for new products and preparing the hand-over to production",
+    "Setting and standardising machining, forming and assembly conditions",
+    "Specifying tooling, jigs and fixtures, and equipment",
+    "Reducing defects and cycle time, and managing process data"
+   ],
+   "process": [
+    {
+     "step": "Receive the hand-over",
+     "what": "Finished drawings and production volume targets come over from design."
+    },
+    {
+     "step": "Process design",
+     "what": "You set the processes, sequence and inspection points, and choose the equipment and tooling needed."
+    },
+    {
+     "step": "Set the conditions",
+     "what": "In trial production you vary the conditions to find the range that works."
+    },
+    {
+     "step": "Standardise",
+     "what": "You turn the chosen conditions into work instructions and condition sheets for the shop floor."
+    },
+    {
+     "step": "Confirm production",
+     "what": "You compare the defect rate and cycle time of early production with the targets."
+    },
+    {
+     "step": "Improve",
+     "what": "When defects appear or targets are missed, you narrow down the cause and adjust conditions and tooling."
+    }
+   ],
+   "knowledge": [
+    "Manufacturing processes (machining, forming, welding, assembly)",
+    "Engineering drawing and tolerances",
+    "Basic quality control (process capability, control charts)",
+    "Basic production management"
+   ],
+   "tools": [
+    "Basic CNC machining and CAM",
+    "Gauges such as vernier calipers, micrometers and height gauges",
+    "Basic design of experiments",
+    "Excel for organising process data"
+   ],
+   "experiences": [
+    "Machining parts yourself on machine tools",
+    "Varying conditions to find the range that works",
+    "Writing down a work sequence and handing it to someone else"
+   ],
+   "entry": [
+    "In your manufacturing workshop, set the machining sequence and conditions yourself and record them",
+    "Take on one process improvement project during an internship at a manufacturer",
+    "On a student competition team, take charge of machining and assembly order for the parts"
+   ],
+   "learnOrder": [
+    {
+     "step": "Manufacturing processes and datums",
+     "why": "Which surface you use as the datum sets the machining sequence and the accuracy."
+    },
+    {
+     "step": "Tolerances and measurement",
+     "why": "You can only judge whether the conditions worked if you can read and measure tolerances."
+    },
+    {
+     "step": "Condition trials and process capability",
+     "why": "Knowing the range that works, not a single point, keeps production stable."
+    },
+    {
+     "step": "Writing work instructions",
+     "why": "Conditions are only followed if operators on the floor can follow what you wrote."
+    }
+   ],
+   "firstProject": {
+    "title": "Write the production readiness documents for one part",
+    "goal": "Pick a part made in your workshop, prepare a process chart, condition sheet and work instruction, then make several and check they fall within tolerance",
+    "steps": [
+     "Read the drawing, choose the process and machining sequence, and draw a process chart",
+     "Do trial machining at two or three conditions and measure dimensions and surface finish",
+     "Make several of the same part at the chosen conditions and look at the dimensional spread",
+     "Write a work instruction and have another student follow it"
+    ],
+    "output": "A process chart, condition trial record and work instruction",
+    "check": "When someone else follows the instruction, are their parts within tolerance?"
+   },
+   "portfolio": [
+    "A work instruction and process chart",
+    "A trial record that sets the working range of conditions",
+    "A tooling sketch or a before and after comparison"
+   ],
+   "interview": [
+    {
+     "axis": "J3",
+     "q": "Have you set a machining sequence yourself? Why that order?",
+     "why": "Choosing the sequence and datums is where manufacturing engineering starts."
+    },
+    {
+     "axis": "J4",
+     "q": "How did you set the machining conditions? Did you keep the first ones you chose?",
+     "why": "How you find the working range shows your feel for the shop floor."
+    },
+    {
+     "axis": "J7",
+     "q": "When defects appeared, how did you narrow down the cause?",
+     "why": "Separating machine, material, conditions and method is something you do every day in this job."
+    }
+   ],
+   "postingCheck": [
+    "Which process you would own: machining, assembly, welding or injection moulding",
+    "Whether the focus is launching new products or improving existing lines",
+    "The location, whether there is shift work, and whether a manufacturing or quality certification is listed as a plus"
+   ],
+   "watch": "Manufacturing engineers work at the plant, so the job is wherever the plant is. Postings with the same title, such as Manufacturing Engineer or Process Engineer, overlap with equipment roles to different degrees at each company, so read the duties section carefully."
+  },
+  "ROLE_MAINT_V2": {
+   "summary": "Setting inspection, calibration and replacement criteria so production machinery and equipment keep performing, and finding the cause and bringing them back when they stop",
+   "practiceWhere": "while looking after lab equipment or during an industry internship",
+   "lens": {
+    "TD09": {
+     "why": "Setting inspection items, intervals and replacement criteria, and restoring stopped equipment, is the core of a maintenance role.",
+     "mode": "domain",
+     "ctx": "while looking after lab equipment or during an industry internship"
+    },
+    "TD08": {
+     "why": "Process conditions only hold if the equipment runs, so when deciding which machine to service first you look at the flow of the production line too.",
+     "mode": "role",
+     "ctx": "when you observe a production line during an internship",
+     "out": {
+      "J1": "Note on the impact of equipment downtime",
+      "J3": "Inspection priority table"
+     }
+    },
+    "TD04": {
+     "why": "Reading the condition of rotating machinery from vibration and sound lets you catch a problem before it stops.",
+     "mode": "domain",
+     "ctx": "in a vibration measurement lab or when working with rotating equipment",
+     "out": {
+      "J4": "Vibration measurement record",
+      "J6": "Normal versus abnormal condition comparison"
+     }
+    }
+   },
+   "practice": {
+    "J1": {
+     "task": "Pick a piece of equipment your lab or club uses often, write what gets blocked if it stops or drifts, and set the scope you will look after.",
+     "output": "Note on equipment and scope covered",
+     "check": "Does it list the equipment you will not cover and why?"
+    },
+    "J2": {
+     "task": "Read the equipment specifications and manual and turn the conditions to maintain (lubrication, temperature, accuracy and so on) into inspection items.",
+     "output": "Inspection item list",
+     "check": "Does every item have its normal range?"
+    },
+    "J3": {
+     "task": "Set an interval and replacement criterion for each inspection item yourself, and write the reason for each interval next to it.",
+     "output": "Draft inspection checklist",
+     "check": "Can you explain why you made an interval shorter or longer?"
+    },
+    "J4": {
+     "task": "Check the equipment's sound, heat and vibration with instruments or by hand, record the normal state, and decide how you will spot warning signs.",
+     "output": "Normal condition record",
+     "check": "Is the line between normal and abnormal written down?"
+    },
+    "J5": {
+     "task": "Write up one breakdown or repair so that someone else could follow it in the same situation.",
+     "output": "Breakdown and repair record",
+     "check": "Are symptom, cause, action and confirmation written in order?"
+    },
+    "J6": {
+     "task": "Check measuring equipment against a calibration reference or standard sample, and if there are several of the same unit, compare their readings.",
+     "output": "Calibration check sheet",
+     "check": "Did you record the difference from the reference and decide whether to keep using it?"
+    },
+    "J7": {
+     "task": "If a machine has shown the same symptom more than once, work out whether the machine, the operating conditions or the way it is used is to blame, and decide how to prevent it recurring.",
+     "output": "Recurrence root cause note",
+     "check": "Do you have evidence that narrows it to one cause?"
+    },
+    "J8": {
+     "task": "Hand the operating method and inspection checklist to a junior student or teammate, and check that they keep using it after the hand-over.",
+     "output": "Hand-over document",
+     "check": "Could the person who took over do the inspection on their own?"
+    }
+   },
+   "responsibilities": [
+    "Setting equipment inspection criteria and planning preventive maintenance",
+    "Analysing failure causes and repairing or modifying equipment",
+    "Managing spare parts and consumables",
+    "Keeping equipment history and reducing downtime"
+   ],
+   "process": [
+    {
+     "step": "Alert",
+     "what": "The floor reports that a machine has stopped, drifted or started to sound different."
+    },
+    {
+     "step": "Check the condition",
+     "what": "You try to reproduce the symptom and look at sound, heat, vibration and the machine's history."
+    },
+    {
+     "step": "Narrow the cause",
+     "what": "You rule out candidate causes in the machine, the conditions and the way it is used, one by one."
+    },
+    {
+     "step": "Fix",
+     "what": "You replace or adjust parts and modify the equipment if needed."
+    },
+    {
+     "step": "Confirm and record",
+     "what": "After the fix you check performance and record the failure and what was done."
+    },
+    {
+     "step": "Update the criteria",
+     "what": "To stop the same failure coming back, you revise inspection items, intervals and spare part levels."
+    }
+   ],
+   "knowledge": [
+    "Machine elements (bearings, gears, belts, seals) and lubrication",
+    "Hydraulics, pneumatics and basic electrical and control (PLC concepts)",
+    "Basic mechanical vibration",
+    "Basics of wear and fatigue"
+   ],
+   "tools": [
+    "Vibration meters and infrared thermometers",
+    "Inspection checklists and equipment history records (Excel or a maintenance management system)",
+    "Reading hydraulic, pneumatic and electrical schematics",
+    "Basic hand tools and shaft alignment"
+   ],
+   "experiences": [
+    "Taking equipment apart and putting it back together",
+    "Finding a failure cause by ruling out possibilities one by one",
+    "Writing an inspection checklist or operating guide and handing it on"
+   ],
+   "entry": [
+    "Make an inspection checklist for one machine in your department's lab or workshop and take charge of it",
+    "During an internship at a manufacturer, shadow the maintenance team and keep notes",
+    "Take hydraulics, pneumatics or PLC lab courses and build circuits yourself"
+   ],
+   "learnOrder": [
+    {
+     "step": "Machine elements and lubrication",
+     "why": "Equipment failures often start in machine elements such as bearings, gears and seals."
+    },
+    {
+     "step": "Hydraulics, pneumatics and basic control",
+     "why": "If you only look at the mechanical side, you miss failures that come from air or electrical systems."
+    },
+    {
+     "step": "Reading condition from sound, heat and vibration",
+     "why": "Catching warning signs early lets you fix equipment before it stops."
+    },
+    {
+     "step": "Failure records and inspection criteria",
+     "why": "With records built up, you can change intervals and replacement criteria with evidence."
+    }
+   ],
+   "firstProject": {
+    "title": "Build a maintenance log for one piece of lab equipment",
+    "goal": "Pick a machine your department uses often and create an inspection checklist, a normal condition record and a breakdown response procedure as one set",
+    "steps": [
+     "Read the manual and specifications and write the inspection items and normal ranges",
+     "For a month, inspect at the interval you set and record sound, temperature and vibration",
+     "Ask the lab technician or teaching assistant about past breakdowns or problems and write up causes and actions",
+     "Hand the checklist and procedure to a junior student and have them do an inspection on their own"
+    ],
+    "output": "Inspection checklist, condition record and a one-page breakdown response procedure",
+    "check": "Can the person taking over do an inspection and the first response from the procedure alone?"
+   },
+   "portfolio": [
+    "An inspection checklist with items and intervals",
+    "A record of failure symptoms, causes and actions",
+    "A calibration check sheet or hand-over document"
+   ],
+   "interview": [
+    {
+     "axis": "J3",
+     "q": "Have you set an inspection interval? Why that interval?",
+     "why": "Setting inspection criteria with evidence behind them is central to maintenance work."
+    },
+    {
+     "axis": "J4",
+     "q": "How did you notice the equipment was not right?",
+     "why": "How you read the warning signs shows how well you understand the machine."
+    },
+    {
+     "axis": "J7",
+     "q": "When the same failure happened again, what did you change?",
+     "why": "Judgement that prevents recurrence lasts longer than a single repair."
+    }
+   ],
+   "postingCheck": [
+    "Whether you would handle mechanical maintenance only, or electrical and controls maintenance as well",
+    "Whether there is shift work or on-call duty",
+    "Whether a maintenance, mechanical or HVAC licence or certification is listed as a plus, where your country has one"
+   ],
+   "watch": "Equipment and maintenance roles are based on the plant floor or at a plant site, and can involve shift work or on-call duty. In equipment-heavy industries the same work is often advertised as Equipment Engineer or Maintenance Engineer, so search with a wide range of titles."
+  },
+  "ROLE_QUALITY_V2": {
+   "summary": "Assuring through control criteria and verdicts that production keeps meeting requirements and standards, and confirming through life testing that products do not fail during their service life",
+   "practiceWhere": "in a quality control or engineering statistics course project or an industry internship",
+   "lens": {
+    "TD10": {
+     "why": "Deciding which characteristics to control, their limits and acceptance criteria, and assuring production quality and life, is the core of a quality role.",
+     "mode": "domain",
+     "ctx": "in a quality control or engineering statistics course project or an industry internship"
+    },
+    "TD07": {
+     "why": "Confirming first that the measurement is trustworthy is what lets you turn verdicts into a standard for all of production.",
+     "mode": "domain",
+     "ctx": "when you handle measurement data in a mechanical engineering lab",
+     "out": {
+      "J4": "Measurement system check note",
+      "J6": "Repeatability and reproducibility table"
+     }
+    },
+    "TD08": {
+     "why": "Checking whether the set process conditions are being kept is how you find out why a defect occurred.",
+     "mode": "role",
+     "ctx": "when you look at process data during an internship",
+     "out": {
+      "J7": "Occurrence root cause table"
+     }
+    }
+   },
+   "practice": {
+    "J1": {
+     "task": "Pick a product, work out the most dangerous failure under the customer's conditions of use, and choose the characteristics to control.",
+     "output": "Note on selected control characteristics",
+     "check": "Is the reason for each characteristic tied to how the customer uses the product?"
+    },
+    "J2": {
+     "task": "Turn drawing tolerances and customer requirements into inspection items, sample sizes and acceptance criteria.",
+     "output": "Draft inspection standard",
+     "check": "Does every item have a measurement method and an acceptance criterion?"
+    },
+    "J3": {
+     "task": "Build a failure mode and effects analysis (FMEA), rate severity and occurrence for each failure mode, and decide yourself which items to address first.",
+     "output": "FMEA table",
+     "check": "Can you explain how you chose the items to address first?"
+    },
+    "J4": {
+     "task": "Draw a control chart from dimensional data you collected in a lab or project, and calculate a process capability index.",
+     "output": "Control chart and capability calculation",
+     "check": "Did the data come from the same conditions and the same measurement method?"
+    },
+    "J5": {
+     "task": "Write up the cause, countermeasure and verification of one defect as a corrective action report in a format such as 8D.",
+     "output": "Corrective action report",
+     "check": "Does it include the verification results after the countermeasure was applied?"
+    },
+    "J6": {
+     "task": "Collect times to failure from repeat or accelerated tests, estimate the life distribution, and compare it with the target life.",
+     "output": "Life estimate table",
+     "check": "Did you note how the test conditions differ from real use?"
+    },
+    "J7": {
+     "task": "Pick a case where the same defect came back, and set separate countermeasures for why it occurred and why it was not caught.",
+     "output": "Occurrence and escape countermeasure note",
+     "check": "Are the two countermeasures written separately?"
+    },
+    "J8": {
+     "task": "Record whether the criteria or countermeasures you set changed an inspection method or a process.",
+     "output": "Record of criteria applied",
+     "check": "Does it say which process or inspection changed and how?"
+    }
+   },
+   "responsibilities": [
+    "Setting inspection standards and control plans",
+    "Analysing process quality data and running control charts",
+    "Analysing defect causes and corrective action",
+    "Planning reliability tests, assessing life and handling customer quality issues"
+   ],
+   "process": [
+    {
+     "step": "Set the criteria",
+     "what": "You read the drawings and customer requirements and decide the characteristics to control and the inspection criteria."
+    },
+    {
+     "step": "Monitor the process",
+     "what": "Control charts and capability figures show whether production is staying within the criteria."
+    },
+    {
+     "step": "Respond to problems",
+     "what": "When a defect or customer complaint comes in, you quarantine the affected product and look for the cause."
+    },
+    {
+     "step": "Cause and countermeasure",
+     "what": "You set separate countermeasures for occurrence and escape, then check they work."
+    },
+    {
+     "step": "Confirm life",
+     "what": "Reliability tests show whether the product survives its intended service life."
+    },
+    {
+     "step": "Report and standardise",
+     "what": "You report the corrective action and revise the inspection standard and control plan."
+    }
+   ],
+   "knowledge": [
+    "Quality control and engineering statistics (control charts, process capability, acceptance sampling)",
+    "Basic reliability engineering (life distributions, accelerated testing)",
+    "Measurement and tolerances",
+    "The basic framework of a quality management system (ISO 9001)"
+   ],
+   "tools": [
+    "Statistics software such as Excel or Minitab",
+    "FMEA, 8D and control plan templates",
+    "Measurement system analysis (repeatability and reproducibility)",
+    "Basic Weibull analysis"
+   ],
+   "experiences": [
+    "Drawing a control chart from measured data",
+    "Finding a defect cause, setting a countermeasure and checking it worked",
+    "Setting inspection criteria yourself"
+   ],
+   "entry": [
+    "Do your quality control or engineering statistics assignments with data you actually measured",
+    "During an internship at a manufacturer, take on one defect analysis with the quality team",
+    "Build an FMEA for your capstone result and include it in your presentation"
+   ],
+   "learnOrder": [
+    {
+     "step": "Basic statistics and control charts",
+     "why": "Whether a process is within its criteria is judged from the spread of the data."
+    },
+    {
+     "step": "Measurement system analysis",
+     "why": "If the measurement wobbles, you reject good parts and pass bad ones."
+    },
+    {
+     "step": "FMEA and corrective action",
+     "why": "Recording causes and countermeasures in a set format is the basic language of quality work."
+    },
+    {
+     "step": "Reliability and life",
+     "why": "A product that passed at shipment can still fail in use, so you have to look at life as well."
+    }
+   ],
+   "firstProject": {
+    "title": "Write a small quality report on one workshop part",
+    "goal": "Use dimensional data from several parts made in your workshop to build a control chart, a capability calculation and an FMEA, and propose one improvement",
+    "steps": [
+     "Choose two or three control characteristics for one part and write the inspection criteria",
+     "Measure several parts with the same method, draw a control chart and calculate the capability index",
+     "List candidate causes of out-of-limit values or defects in an FMEA table",
+     "Write one countermeasure that separates occurrence and escape, and decide how you will check it worked"
+    ],
+    "output": "Inspection criteria, control chart and capability calculation, FMEA table and a one-page countermeasure",
+    "check": "Is the criterion for judging whether the countermeasure worked written as a number?"
+   },
+   "portfolio": [
+    "A control plan with control characteristics and inspection criteria",
+    "A corrective action report covering cause, countermeasure and verification",
+    "One page showing a life or process capability calculation"
+   ],
+   "interview": [
+    {
+     "axis": "J1",
+     "q": "When you chose what to control, what did you look at first?",
+     "why": "Quality starts with choosing what to control."
+    },
+    {
+     "axis": "J6",
+     "q": "How did you confirm that a countermeasure worked?",
+     "why": "A countermeasure without verification results is not accepted in a quality report."
+    },
+    {
+     "axis": "J7",
+     "q": "When the same problem came back, how did you respond?",
+     "why": "Looking at occurrence and escape separately is a basic skill in this role."
+    }
+   ],
+   "postingCheck": [
+    "Whether the job is process quality, outgoing quality, supplier quality or reliability",
+    "Whether it includes handling customer quality requirements or quality audits",
+    "Whether a quality engineering certification or experience with a quality management system such as ISO 9001 or IATF 16949 is listed as a plus"
+   ],
+   "watch": "Quality roles are often split between the plant quality team and the reliability team at a research centre. The plant side involves frequent floor issues and customer contact, while the research side centres on testing and life analysis, so first check which side the posting is on. Titles you will see include Quality Engineer, Supplier Quality Engineer and Reliability Engineer."
+  },
+  "ROLE_PM_V2": {
+   "summary": "On a development project that involves many people and departments, organising the requirements and setting roles, schedules and the scope of changes so the work fits together",
+   "practiceWhere": "as a capstone team lead or running a student competition team",
+   "lens": {
+    "TD11": {
+     "why": "Breaking down requirements and setting acceptance criteria, schedules and interfaces is the core of technical planning.",
+     "mode": "domain",
+     "ctx": "as a capstone team lead or running a student competition team"
+    },
+    "TD12": {
+     "why": "Keeping records and versions so requirements and decisions can be traced later is how you manage a project's history.",
+     "mode": "domain",
+     "ctx": "when you manage team documents and change history",
+     "out": {
+      "J5": "Note on how change history is managed",
+      "J8": "Example of the records being used"
+     }
+    },
+    "TD10": {
+     "why": "Deciding who meets which criteria and when is how you build test and verification stages into a development schedule.",
+     "mode": "role",
+     "ctx": "when you add test and verification stages to a development schedule",
+     "out": {
+      "J2": "Acceptance criteria table by stage"
+     }
+    }
+   },
+   "practice": {
+    "J1": {
+     "task": "At the start of a team project, agree with your teammates what counts as done and what is out of scope, and write it on one page.",
+     "output": "Project scope agreement",
+     "check": "Did every teammate agree to what is out of scope?"
+    },
+    "J2": {
+     "task": "Collect the requirements from your supervisor, teammates and the competition rules in one table, and add an acceptance criterion to each.",
+     "output": "Requirements table",
+     "check": "Does every requirement have a way to verify it, and are conflicting requirements marked?"
+    },
+    "J3": {
+     "task": "Set the dimensions, signals and schedule that parts or subsystems must agree on, and decide who owns each one.",
+     "output": "Roles and interfaces table",
+     "check": "Does every interface have a single owner?"
+    },
+    "J4": {
+     "task": "When a requirement changes, identify the parts and schedule items it affects and replan.",
+     "output": "Change impact note",
+     "check": "Did a teammate check that you caught every affected item?"
+    },
+    "J5": {
+     "task": "Keep the requirements table, schedule and change history in one document the whole team works from.",
+     "output": "Requirements table, schedule and change history",
+     "check": "Can you trace who changed what and when?"
+    },
+    "J6": {
+     "task": "At the end of the project, go through the requirements table item by item and pick out anything not met.",
+     "output": "Requirements compliance checklist",
+     "check": "Does every unmet item have a reason?"
+    },
+    "J7": {
+     "task": "Pick one stage that slipped, narrow down why, and write how you will plan differently on the next project.",
+     "output": "Schedule slip cause and improvement note",
+     "check": "Do you have evidence that narrows it to one cause?"
+    },
+    "J8": {
+     "task": "Record whether the team actually worked to the schedule and task split you set, and what changed along the way.",
+     "output": "Project management record",
+     "check": "Does it say when and how the team used that schedule?"
+    }
+   },
+   "responsibilities": [
+    "Organising requirements and finalising specifications for development projects",
+    "Planning schedule, staffing and budget, and tracking progress",
+    "Coordinating interfaces and design changes between departments",
+    "Running stage-gate reviews and reporting on the project"
+   ],
+   "process": [
+    {
+     "step": "Project start",
+     "what": "A new product development or an internal or publicly funded project is approved, with goals and a deadline."
+    },
+    {
+     "step": "Organise requirements",
+     "what": "You gather customer, regulatory and internal requirements into a requirements table with acceptance criteria."
+    },
+    {
+     "step": "Break down and assign",
+     "what": "You split the requirements by part and subsystem and set roles and interfaces."
+    },
+    {
+     "step": "Build the schedule",
+     "what": "You put design, prototype, test and production hand-over stages and review points on the schedule."
+    },
+    {
+     "step": "Track progress and changes",
+     "what": "You check progress and, when requirements change, map the impact and revise the schedule."
+    },
+    {
+     "step": "Close-out check",
+     "what": "You use the requirements table to confirm what was met, wrap up the project and pass it to the next stage."
+    }
+   ],
+   "knowledge": [
+    "Basic systems engineering (requirements, interfaces)",
+    "Product development stages and design reviews",
+    "Basic project management (schedule, resources, risk)",
+    "Engineering economics and cost basics"
+   ],
+   "tools": [
+    "Gantt charts and scheduling tools",
+    "A spreadsheet requirements traceability table",
+    "Shared documents and version control",
+    "Templates for meeting minutes and review records"
+   ],
+   "experiences": [
+    "Organising the requirements and schedule for a team project",
+    "Splitting roles and coordinating where the pieces meet",
+    "Replanning a schedule after the requirements changed"
+   ],
+   "entry": [
+    "Take on team lead, scheduling or documentation in your capstone",
+    "On a student vehicle or robotics competition team, handle interpreting the rules and managing the schedule",
+    "Help write project reports on an industry-sponsored project or during an internship"
+   ],
+   "learnOrder": [
+    {
+     "step": "Building a requirements table",
+     "why": "Once the requirements are laid out in a table, you can see which ones conflict."
+    },
+    {
+     "step": "Adding acceptance criteria",
+     "why": "Without a criterion for done, a project never finishes."
+    },
+    {
+     "step": "Setting roles and interfaces",
+     "why": "Problems during development often appear where parts meet parts and people meet people."
+    },
+    {
+     "step": "Change management",
+     "why": "Requirements always change during development, and mapping the impact at that point is what keeps the schedule."
+    }
+   ],
+   "firstProject": {
+    "title": "Build a requirements table and schedule for your capstone",
+    "goal": "Organise one team project's requirements in a table, and manage acceptance criteria, roles, schedule and change history through to the end",
+    "steps": [
+     "Gather the requirements from your supervisor, teammates and the rules in one table and add acceptance criteria",
+     "Break the requirements down by part and assign owners and interfaces",
+     "Put the design, build and test stages on the schedule and record progress every week",
+     "At the end, check compliance against the requirements table and write the reason for any item not met"
+    ],
+    "output": "Requirements table, roles and interfaces table, schedule and change history",
+    "check": "At the end, can you answer from the table whether each requirement was met?"
+   },
+   "portfolio": [
+    "A requirements table with acceptance criteria",
+    "A schedule and change history",
+    "One page setting out roles and interfaces"
+   ],
+   "interview": [
+    {
+     "axis": "J2",
+     "q": "Did requirements ever conflict on a team project? How did you sort them out?",
+     "why": "Laying conflicting requirements out in a table is where technical planning starts."
+    },
+    {
+     "axis": "J4",
+     "q": "When the requirements changed partway through, how did you revise the schedule?",
+     "why": "Mapping the impact of a change is the judgement used most often in project management."
+    },
+    {
+     "axis": "J6",
+     "q": "At the end of the project, how did you check that nothing was missing?",
+     "why": "Closing out against the requirements table is a basic habit in project management."
+    }
+   ],
+   "postingCheck": [
+    "Whether technical planning here means running development projects or technology strategy and trend research",
+    "Whether it includes writing proposals and reports for publicly funded projects",
+    "Whether it hires graduates or asks for development experience"
+   ],
+   "watch": "Technical planning and project management roles are often filled by people moving across from development, so there are few graduate openings. As a graduate, it is realistic to start in a design or test role, such as Mechanical Design Engineer or Test Engineer, and build project management experience from there."
+  }
+ }
+}
