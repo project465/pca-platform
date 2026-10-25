@@ -160,6 +160,7 @@ export async function walk(
         const text = `${await p.locator("h1.qs-q").first().textContent({ timeout: 300 }).catch(() => "") ?? ""} ${await box.innerText({ timeout: 500 }).catch(() => "")}`;
         const labelsText = (await labels.allInnerTexts().catch(() => [] as string[])).map((t) => t.replace(/\s+/g, " ").trim());
         want = Math.max(0, Math.min(n - 1, opts.choose({ text, n, want, labels: labelsText })));
+        if (process.env.WALK_DEBUG) console.error(`[walk] ${text.replace(/\s+/g, " ").slice(0, 70)} | ${labelsText.join(" / ").slice(0, 90)} → ${want}`);
       }
       const how = await pickOne(box, want);
       if (how === "covered") covered += 1;
