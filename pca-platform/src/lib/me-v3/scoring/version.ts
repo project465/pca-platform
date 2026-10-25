@@ -111,7 +111,11 @@ export const SCORING_VERSION = "me-v3-scoring.5";
  * (NONE < RECEIVED < DID < DECIDED_USED)과 `option_values` 가 그대로라 같은
  * 응답이 같은 판정으로 간다.
  */
-export const ITEM_BANK_VERSION = "ME_V3_ITEM_BANK_V2.8";
+/*
+ * `.9` 로 올린 까닭. 영역·축 정의와 관계표의 한국어(`권한을 가지는 자리` 같은 꼴)를
+ * 고쳤다. 문항 문면 · 보기 · 자리 번호와 판정 규칙은 그대로라 같은 응답이 같은 판정으로 간다.
+ */
+export const ITEM_BANK_VERSION = "ME_V3_ITEM_BANK_V2.9";
 
 export type ModuleVersions = {
   core_version: string;

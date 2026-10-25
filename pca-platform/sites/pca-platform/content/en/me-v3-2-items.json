@@ -2,7 +2,7 @@
  "schema_version": "me-v3-items.2",
  "core": "ME_CORE_V3",
  "assessment_version": "ME_V3_2",
- "item_bank_version": "ME_V3_ITEM_BANK_V2.8",
+ "item_bank_version": "ME_V3_ITEM_BANK_V2.9",
  "note": "The wording was written by hand. V1 stays frozen next to this file in `me-v3-items.json`: for the same response not to change meaning later, the old version has to remain somewhere it can be read. Each item records `origin`, `old_item_id` and `change_reason` so you can trace where it came from. This file is the source: edit the wording here, then run `v3:wording`, `v3:migrate` and `v3:qa`. V2.6: the wording was rewritten in the style of the group PCA items. Items ask about situations students actually go through (course projects, capstone, labs, internships) in plain language, and technical terms are explained in plain words or in parentheses. Each sentence asks about one action only, and about that axis's l2 behavior. Sentence endings were spread out so they do not all follow one pattern. item_id, module, axis, options, values, routing and order are unchanged. V2.8: the wording of the four options was changed to match the electrical engineering and business banks (`Never done it`, `Followed set conditions or reused someone else's result`, `Did it myself`, `I decided it, and the next work followed that decision`). This moves the meaning already written in `option_guidance` into the option text; the number of options, their order and the meaning of each position (NONE < RECEIVED < DID < DECIDED_USED) are unchanged.",
  "level_options": [
   "Never done it",

@@ -4,7 +4,7 @@
   "at": "2026-10-25",
   "versions": {
     "core": "ME_CORE_V3",
-    "item_bank": "ME_V3_ITEM_BANK_V2.8",
+    "item_bank": "ME_V3_ITEM_BANK_V2.9",
     "scoring": "me-v3-scoring.5",
     "result_model": "me-v3-result-model.7"
   },
@@ -24,7 +24,7 @@
     "src/lib/me-v3/scoring/normalize.ts": "57013f9d4dd52bb8",
     "src/lib/me-v3/scoring/quality.ts": "36b87f17746cf8b0",
     "src/lib/me-v3/scoring/zones.ts": "8ad1f3eb8256c025",
-    "src/lib/me-v3/scoring/version.ts": "d7e1698134356dc4",
+    "src/lib/me-v3/scoring/version.ts": "7c1d194c34e1e6a0",
     "src/lib/me-v3/measurement/registry.ts": "c4d5974056b6d7d9",
     "src/lib/me-v3/result/model.ts": "c8f3aef2396a3dee",
     "src/lib/me-v3/result/build.ts": "ea9ff1363a66f7d1"
