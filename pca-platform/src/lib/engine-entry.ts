@@ -119,6 +119,9 @@ export const ROUTE_TABLE: RouteRow[] = [
   /* ── 지금 검사 ─────────────────────────────────────────── */
   { route: "/cores", newUser: "여기로 들어온다", oldUser: "같음", cls: "CURRENT" },
   { route: "/v3/start", newUser: "`/cores` 가 보낸다", oldUser: "같음", cls: "CURRENT" },
+  /* 결제를 마친 개인이 산 등급으로 **같은 응시를 올리는** 자리(`upgradeTier`).
+     새 응시를 열지 않는다: 좌석 하나 = 응시 하나다 */
+  { route: "/v3/upgrade", newUser: "결제 뒤 등급을 올린다", oldUser: "같음", cls: "CURRENT" },
   { route: "/v3/[attemptId]", newUser: "응시", oldUser: "이어하기", cls: "CURRENT" },
   /* 들어가는 자리와 끝나는 자리. **응답도 routing 도 받지 않는다**: 앞은
      응시를 연 직후 한 번 서고 뒤는 제출과 결과지 사이에 선다. 표에 적지

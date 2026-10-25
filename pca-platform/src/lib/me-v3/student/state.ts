@@ -34,6 +34,7 @@ import type { ResultModel } from "../result/model";
 import type { Zone } from "../scoring/types";
 import { thingKo } from "../result/say";
 import { domainSub } from "../runtime/session";
+import { localizer } from "../result/localize";
 import { STUDENT_COPY, type IconFamily } from "./copy";
 
 export type StateTileKind =
@@ -85,7 +86,7 @@ const ZONE_RANK: Partial<Record<Zone, number>> = {
  */
 export function studentStateView(
   core: string, model: ResultModel | null,
-  zoneOf: Record<string, Zone>, max = 3,
+  zoneOf: Record<string, Zone>, max = 3, lang: "ko" | "en" = "ko",
 ): StateView {
   const none: StateView = {
     tiles: [], lead: "", kind: "activity",
@@ -114,9 +115,20 @@ export function studentStateView(
   });
   /* **셋이 한 종류다.** 전부 남긴 것이 있을 때만 그 이름을 세운다 */
   const kind: StateTileKind = rows.every((r) => r.left) ? "artifact" : "activity";
+  /* 영어판: 학생 활동 사전(`copy.ts`)이 한국어뿐이라 세부 줄을 영어 taxonomy 의
+     세부 영역에서 읽는다. 남긴 것의 이름은 결과지와 같은 자리(`localizer`)에서
+     영어로 읽고, 짝이 없어 한글이 남으면 세부 영역으로 내려간다. **결과지와
+     작업공간이 이 자리 하나를 읽는다**: 전에는 두 화면이 따로 적어서 결과지
+     쪽은 남긴 것의 한국어 이름을 영어 결과지에 그대로 세울 수 있었다 */
+  const enOf = lang === "en" ? localizer(core, "en") : null;
+  const subOf = (code: string, dict: { activity?: string } | null, left: { raw: string; say: string } | null): string => {
+    if (!enOf) return kind === "artifact" && left ? left.say : (dict?.activity ?? domainSub(core, code));
+    const art = kind === "artifact" && left ? enOf(left.raw) : "";
+    return art && !/[가-힯]/.test(art) ? art : domainSub(core, code, 40, "en");
+  };
   const tiles: StateTile[] = rows.map(({ code, dict, left }) => ({
     code, zone: zoneOf[code], kind,
-    sub: kind === "artifact" && left ? left.say : (dict?.activity ?? domainSub(core, code)),
+    sub: subOf(code, dict, left),
     family: dict?.family ?? null,
     artifact: left?.raw ?? null,
   }));

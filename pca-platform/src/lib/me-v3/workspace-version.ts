@@ -369,7 +369,8 @@
 /** MAT 공고 확인에 `이 공고로 면접을 본다면`(질문 · 가져갈 경험 · 답의 뼈대)과 `이번 주에 할 수 있는
  *  작은 일`(할 일 목록에 담기)이 선다. 학생이 담은 줄(`manual`)은 홈 · 현재 상태 · 지금 할 일에서
  *  결과의 할 일 문장으로 바꿔 읽지 않는다 — V64 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V64";
+/** 홈 현재 상태 타일의 영어 세부 줄을 결과지와 같은 함수(`studentStateView`)가 정한다 — V65 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V65";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.

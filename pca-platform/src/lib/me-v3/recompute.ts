@@ -435,9 +435,15 @@ export async function retryStuck(limit = 20): Promise<{ users: number; done: num
       LIMIT $1`, [limit]);
   let done = 0; let failed = 0;
   for (const r of rows) {
-    const o = await autoRecompute(r.user_id).catch(() => ({ state: "failed" as const }));
-    if (o.state === "done") done += 1;
-    if (o.state === "failed") failed += 1;
+    /* 한 사람이 던져도 다음 사람은 집는다. **조용히 넘기지 않는다**: 남겨야 운영 표에 선다 */
+    try {
+      const o = await autoRecompute(r.user_id);
+      if (o.state === "done") done += 1;
+      if (o.state === "failed") failed += 1;
+    } catch (e) {
+      failed += 1;
+      opFail({ operation: "recompute.retry", ref: ref("user", r.user_id), step: "auto", category: "db" }, e);
+    }
   }
   return { users: rows.length, done, failed };
 }

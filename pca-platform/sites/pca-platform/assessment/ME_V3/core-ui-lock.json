@@ -3,32 +3,32 @@
  "note": "Core 화면 열넷의 묶음 동결. 측정 동결과 별개다. layout 대변경은 별도 STOP GATE 이고, 고쳤으면 그 화면의 판본을 올리고 세 동결을 다시 적은 다음 `CORE_UI_FREEZE=write npm run v3:freeze:core`",
  "label": "CAREERMATRI_CORE_UI_FREEZE_1",
  "locks": {
-  "assessment": "93b7b918c0701bb1",
-  "result": "827eded9868fc3da",
-  "workspace": "ebe6726247cda98a"
+  "assessment": "3bd1b1402c9fc958",
+  "result": "ce135ea623f17941",
+  "workspace": "46c6c93b0f0ec3fd"
  },
  "versions": {
-  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V48",
-  "assessment_copy_version": "me-v3-2-assessment-copy.27",
-  "result_ui_version": "ME_V3_RESULT_UI_V83",
-  "result_copy_version": "me-v3-result-copy.70",
-  "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V59",
-  "workspace_copy_version": "careermatri-workspace-copy.43"
+  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V56",
+  "assessment_copy_version": "me-v3-2-assessment-copy.37",
+  "result_ui_version": "ME_V3_RESULT_UI_V88",
+  "result_copy_version": "me-v3-result-copy.79",
+  "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V65",
+  "workspace_copy_version": "careermatri-workspace-copy.47"
  },
  "screens": {
-  "Home": "workspace:c41e81851a2fe144",
-  "Assessment Intro": "assessment:967f5d71f81cd3df",
-  "Assessment": "assessment:9bf971e055a1eb12",
-  "Completion Bridge": "assessment:6c39b5aae12b8c1e",
-  "Experience": "workspace:2758b845ee8ac607",
-  "Current State": "workspace:f30eef516ccd5180",
-  "Next Action": "workspace:ed89ba0c479d019e",
-  "Result Summary": "result:93b969533b9372dd",
-  "Result Detail": "result:93b969533b9372dd",
-  "Explore": "workspace:a9a3adbc52b60dec",
-  "Result History": "workspace:a3135437b6e0288b",
-  "New Experience": "workspace:2758b845ee8ac607",
-  "Track": "workspace:4192c827a42c98c7",
-  "App Shell": "workspace:e5845f7a9fa9b951"
+  "Home": "workspace:179218a7569fd8e7",
+  "Assessment Intro": "assessment:0521e361a2d777bd",
+  "Assessment": "assessment:1d0b4645b79d79b9",
+  "Completion Bridge": "assessment:3108d3edac4bbc86",
+  "Experience": "workspace:7f4b2e0b489a25c8",
+  "Current State": "workspace:bbc4f06cb703c8f7",
+  "Next Action": "workspace:24c5dee7b1264e0b",
+  "Result Summary": "result:799549d45e3d7eea",
+  "Result Detail": "result:799549d45e3d7eea",
+  "Explore": "workspace:065a48617b704988",
+  "Result History": "workspace:06051db4cf9143fd",
+  "New Experience": "workspace:7f4b2e0b489a25c8",
+  "Track": "workspace:1985603e8dfa7fe0",
+  "App Shell": "workspace:1da053d783dfa46a"
  }
 }

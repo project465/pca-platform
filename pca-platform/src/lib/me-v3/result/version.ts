@@ -490,7 +490,9 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.79";
 /* V84 — 웹 화면은 다섯 덩어리(`summary.tsx`)만 세우고 원래 절들은 종이만 쓴다 */
 /* V85 — 결과지가 응시 언어로 그린다. 영어 응시에는 작업공간 · 지역 · 세종 절이 서지 않고 PRO 종이는 웹 결과 종이판이다(1단계) */
 /** 결과지가 작업공간 한 벌로만 선다(ws 분기 정리). 세종·지역 절은 한국어에서만 — V87 */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V87";
+/** 현재 상태 타일의 영어 세부 줄을 `studentStateView` 한 자리에서 읽는다. 전에는 결과지가 남긴 것의
+ *  한국어 이름을 영어 결과지에 그대로 세울 수 있었다 — V88 */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V88";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

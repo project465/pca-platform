@@ -2,8 +2,7 @@ import Link from "next/link";
 import { currentUser, requireUser } from "@/lib/session";
 import {
   EXPERIENCE_KINDS, applicationsOf, currentState, experiencesOf, activeCoreOrPick } from "@/lib/me-v3/platform";
-import { domainName, domainSub, majorNameIn } from "@/lib/me-v3/runtime/session";
-import { localizer } from "@/lib/me-v3/result/localize";
+import { domainName, majorNameIn } from "@/lib/me-v3/runtime/session";
 import {
   ZONE_TITLE_KO, domainChainKo,
 } from "@/lib/me-v3/result/text.ko";
@@ -150,7 +149,7 @@ export default async function Home() {
      번째 영역이면 **그 사람의 가장 센 자리가 홈에서 빠졌다**(시나리오 D).
      지금은 결과지와 같은 함수가 차례와 세부와 머리 한 줄을 정한다. 넘기는
      묶음은 **지금 값**(`st.zoneOf`)이라 경험을 더한 뒤의 변화가 그대로 선다 */
-  const stateView = studentStateView(core, st.model, st.zoneOf, HOME_ROWS);
+  const stateView = studentStateView(core, st.model, st.zoneOf, HOME_ROWS, en ? "en" : "ko");
   const ready = stateView.tiles.map((t) => t.code);
   /**
    * 영역 칸의 거드는 한 줄.
@@ -168,18 +167,8 @@ export default async function Home() {
      이 칸이 사전의 결과물 이름(`사업계획서`)을 남겼는지와 무관하게 적어서,
      아무것도 남기지 않은 사람이 그것을 가진 것으로 읽혔다. 남긴 것이 없으면
      사전의 활동 구(해 본 일)가 서고, 둘 다 `studentStateView` 가 정한다 */
-  const enOf = en ? localizer(core, "en") : (x: string) => x;
-  const tileSub = (d: string): string => {
-    const tile = stateView.tiles.find((x) => x.code === d);
-    if (!en) return tile?.sub ?? "";
-    /* 영어판: 학생 활동 사전(`student/copy.ts`)이 한국어뿐이라 결과지와 같이
-       영어 taxonomy 의 세부 영역에서 다시 읽는다. 남긴 것이 있으면 그 이름이다 */
-    if (!tile) return "";
-    /* 남긴 것의 이름은 그 Core 의 한국어 사전 값이라 결과지와 같은 자리
-       (`localizer`)에서 영어로 읽는다. 영어 판본에 짝이 없으면 세부 영역으로 */
-    const art = tile.kind === "artifact" && tile.artifact ? enOf(tile.artifact) : "";
-    return art && !/[가-힯]/.test(art) ? art : domainSub(core, d, 40, "en");
-  };
+  /* 영어판 세부 줄도 `studentStateView` 가 정한다(결과지와 한 자리) */
+  const tileSub = (d: string): string => stateView.tiles.find((x) => x.code === d)?.sub ?? "";
   const tileIcon = (d: string): IconName => {
     const fam = stateView.tiles.find((t) => t.code === d)?.family ?? null;
     return fam ? FAMILY_LINE[fam] : NEUTRAL_LINE;

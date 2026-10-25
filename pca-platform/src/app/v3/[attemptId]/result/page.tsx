@@ -7,7 +7,7 @@ import { RETAKE_BLOCKED_KO } from "@/lib/me-v3/retake";
 import { mark } from "@/lib/me-v3/workspace-events";
 import {
   attemptOf, domainName, industryChoices, latestResult, orgChoices,
-  roleChoices, industriesFromDomains, rolesFromDomains, domainSub,
+  roleChoices, industriesFromDomains, rolesFromDomains,
 } from "@/lib/me-v3/runtime/session";
 import { domainArtifacts } from "@/lib/me-v3/runtime/domain-facts";
 import type { Axis, Zone } from "@/lib/me-v3/scoring/types";
@@ -1109,14 +1109,12 @@ export default async function V3Result({
      세부는 **그 사람이 실제로 남긴 것**이 먼저이고 없으면 사전의 활동 구다 */
   const stateZone: Record<string, Zone> = {};
   for (const d of model.domains) stateZone[d.code] = d.zone;
-  const stateView = studentStateView(core, model, stateZone, 3);
+  const stateView = studentStateView(core, model, stateZone, 3, L() === "en" ? "en" : "ko");
   const stateTiles = stateView.tiles.map((t, i) => ({
     code: t.code,
     name: domainName(core, t.code, L()),
-    /* 영어판: 학생 활동 사전(`student/copy.ts`)이 한국어뿐이라 세부 줄을 영어
-       taxonomy 의 세부 영역에서 다시 읽는다. 남긴 것이 있으면 그 이름(이미 영어다) */
-    sub: L() === "ko" ? t.sub
-      : (t.kind === "artifact" && t.artifact ? t.artifact : domainSub(core, t.code, 40, "en")),
+    /* 영어판 세부 줄도 `studentStateView` 가 정한다(작업공간 홈과 한 자리) */
+    sub: t.sub,
     icon: (t.family ? FAMILY_FILL[t.family] : NEUTRAL_FILL) as IcFName,
     tint: i % 3,
   }));
