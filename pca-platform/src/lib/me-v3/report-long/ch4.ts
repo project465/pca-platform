@@ -432,8 +432,9 @@ export function orgPages(x: Inputs, d: X): Page[] {
         `What ${E(dn)} work is judged on in each of ${x.tax.org_contexts.length} kinds of workplace. These are typical standards, so check a real employer's postings and website to see how it judges the work.`)) +
     `<table class="tb tb-xs"><thead><tr><th class="w22">${L("일하는 자리", "Workplace")}</th><th class="w24">${L("무엇으로 평가되나", "What it is judged on")}</th><th>${L("그 자리의 특징", "What sets it apart")}</th><th class="w24">${L(`${E(dn)}의 결과`, `${E(dn)} work there`)}</th></tr></thead><tbody>${x.tax.org_contexts.map((o) => `<tr><td><b>${E(o.name)}</b>${goalOc === o.code ? ` <span class="mut sm">${L("고른 자리", "your pick")}</span>` : ""}</td><td>${E(o.performance)}</td><td class="mut">${E(okText(o.differs) ? say(o.differs) : "")}</td><td>${E(okOr(oo[o.code]))}</td></tr>`).join("")}</tbody></table>`;
   const parts =
-    H(L("같은 영역 안에서도 맡는 몫이 다릅니다", "Within one area, people take on different parts of the work"), L("몫마다 남기는 것", "What each part leaves behind")) +
-    `<table class="tb tb-xs"><tbody>${x.tax.role_functions.map((f) => `<tr><th class="w22">${E(f.name)}</th><td>${E(say(f.one_line))}</td><td class="mut w34">${L("남기는 것", "Leaves behind")}: ${E(f.output_kind)}</td></tr>`).join("")}</tbody></table>`;
+    (isEn() ? H("Within one area, people take on different parts of the work") : H("같은 영역 안에서도 맡는 몫이 다릅니다", "몫마다 남기는 것")) +
+    /* 영어는 `Leaves behind:` 를 칸마다 붙이면 줄이 하나씩 늘어 장을 넘긴다. 머리줄에 한 번만 적는다 */
+    `<table class="tb tb-xs">${isEn() ? `<thead><tr><th>Part of the work</th><th>What it does</th><th>What it leaves behind</th></tr></thead>` : ""}<tbody>${x.tax.role_functions.map((f) => `<tr><th class="w22">${E(f.name)}</th><td>${E(say(f.one_line))}</td><td class="mut w34">${isEn() ? "" : "남기는 것: "}${E(f.output_kind)}</td></tr>`).join("")}</tbody></table>`;
   return [P(name, main + parts)];
 }
 

@@ -8,9 +8,10 @@ import type { Inputs } from "./types";
 import { AXES, BAND_WORD, EXP_WORD, STEP_WORD, ZONE_WORD, ZONES, type Bucket, type X, notAsked } from "./derive";
 import { C, LEVEL_KO, donut, hbars, quadrant, ring } from "./charts";
 import { DC, E, H, IC, LVC, PAL, T, ZC, band, chips, howto, note, pip, ul, zoneTag, type Page } from "./kit";
-import { GAP_KIND, gapWhy, actionHead, actionLine, andJoin, andJoinEn, askNoun, j, lcEn, list3, nEn, okText, polite, sentenceEn } from "./text";
+import { GAP_KIND, gapWhy, actionHead, actionLine, andJoin, askNoun, j, lcEn, list3, nEn, okText, polite, sentenceEn } from "./text";
 import { byLang, isEn, T as L } from "./lang";
 import { partNames } from "./fill";
+import { andNamesEn } from "./front";
 import type { Gap } from "../result/model";
 
 /** 장 이름은 fill.ts partNames 한 곳에서 정한다. 장 첫 쪽(index.ts)과 같은 글자여야 차례와 쪽 머리가 한 장으로 묶인다 */
@@ -88,7 +89,7 @@ export function glance(x: Inputs, d: X): Page {
     points.push({
       label: L("관심은 높은데 아직 해 본 일이 적은 영역", "High interest, little hands-on work yet"),
       meaning: en
-        ? `You said your interest is high in ${andJoinEn(wn)}. Either you have not done much there yet, or this assessment only asked about your interest and experience in those areas.`
+        ? `You said your interest is high in ${andNamesEn(wn)}. Either you have not done much there yet, or this assessment only asked about your interest and experience in those areas.`
         : `${andJoin(wn)}에 관심이 높다고 답했어요. 아직 해 본 일이 적거나, 이번 검사에서 관심과 해 본 횟수까지만 물은 영역입니다.`,
       fact: (() => {
         const by = new Map<string, string[]>();

@@ -27,6 +27,15 @@ export function dateEn(s: string): string {
   return m ? `${Number(m[3])} ${MON[Number(m[2]) - 1]} ${m[1]}` : s;
 }
 const day = (s: string) => (isEn() ? dateEn(s) : s);
+/**
+ * 영역 이름을 영어 문장 안에서 잇는다. 이름 안에 이미 `and` 가 있으면(`Communications and Networking`)
+ * `A and B and C` 로 경계가 안 보이므로 `as well as` 로 잇는다(한국어 andJoin 이 `와/과` 가 든 항목을 쉼표로 잇는 것과 같은 까닭)
+ */
+export function andNamesEn(xs: string[]): string {
+  const ys = xs.filter(Boolean);
+  if (ys.length <= 1 || !ys.some((y) => / and /.test(y))) return andJoinEn(ys);
+  return `${ys.slice(0, -1).join(", ")} as well as ${ys[ys.length - 1]}`;
+}
 
 export function leadOf(x: Inputs, d: X): string {
   const m = x.m;
@@ -36,13 +45,13 @@ export function leadOf(x: Inputs, d: X): string {
   if (isEn()) {
     switch (m.overview.headline) {
       case "EVIDENCE_READY":
-        return `In ${andJoinEn(z1)}, you made decisions yourself and kept something to show for them. You can use that in applications right away. In your next project, pick one decision you have done less of and take it on.`;
+        return `In ${andNamesEn(z1)}, you made decisions yourself and kept something to show for them. You can use that in applications right away. In your next project, pick one decision you have done less of and take it on.`;
       case "EVIDENCE_PARTIAL":
-        return `You have done a fair amount of hands-on work in ${andJoinEn(z2)}. There is little to show for it yet, such as a deliverable or a comparison, so the next time you do a similar project, plan what you will keep.`;
+        return `You have done a fair amount of hands-on work in ${andNamesEn(z2)}. There is little to show for it yet, such as a deliverable or a comparison, so the next time you do a similar project, plan what you will keep.`;
       case "EVIDENCE_LOW_INTEREST":
-        return `You have done work in ${andJoinEn(z3)}, but your interest lies elsewhere for now. Decide where that experience will be useful, and try the areas you are drawn to with a short project first.`;
+        return `You have done work in ${andNamesEn(z3)}, but your interest lies elsewhere for now. Decide where that experience will be useful, and try the areas you are drawn to with a short project first.`;
       case "EXPLORING":
-        return `${high.length ? `You said your interest is high in ${andJoinEn(high.slice(0, 3))}. ` : ""}You have not done much hands-on work yet, so start with one class or club project you can finish within four weeks.`;
+        return `${high.length ? `You said your interest is high in ${andNamesEn(high.slice(0, 3))}. ` : ""}You have not done much hands-on work yet, so start with one class or club project you can finish within four weeks.`;
       default:
         return "You have not done much hands-on work yet. Pick one area that interests you, start with a small project, and write down what you decided along the way.";
     }
@@ -113,7 +122,7 @@ export function cover(x: Inputs, d: X): Page {
       <div class="cv-mid">
         ${en
           ? `<p class="cv-k">Prepared for <span data-own>${E(x.person)}</span> · ${E(day(x.answeredOn))}</p>
-        <h1 class="cv-t">Your ${E(major)}<br>career analysis</h1>`
+        <h1 class="cv-t">Your career analysis</h1>`
           : `<p class="cv-k">진로 분석 결과</p>
         <h1 class="cv-t">${E(x.person)} 님의<br>${E(major)} 진로 분석</h1>`}
         <p class="cv-d">${E(leadOf(x, d))}</p>
