@@ -419,7 +419,7 @@ export function industriesPage(x: Inputs, d: X): Page {
 export function orgPage(x: Inputs, d: X): Page {
   return orgPages(x, d)[0];
 }
-/** 일하는 자리 쪽. 영어는 표 둘이 한 장을 넘기 쉬워 맡는 몫 표를 둘째 쪽으로 뗀다(남은 자리가 있으면 쪽 모으기가 끌어 올린다) */
+/** 일하는 자리 쪽. 장의 마지막 쪽이라 나누지 않는다(나누면 뒤쪽이 거의 빈 채로 장이 끝난다) */
 export function orgPages(x: Inputs, d: X): Page[] {
   const td = d.strengths[0]?.code ?? d.radarDoms[0]?.code ?? x.defs[0].code;
   const oo = d.def(td)?.org_outcomes ?? {};
@@ -427,14 +427,14 @@ export function orgPages(x: Inputs, d: X): Page[] {
   const dn = d.name(td);
   const name = L("일하는 자리마다 다른 기준", "Different workplaces, different standards");
   const main =
-    T(L(`같은 ${E(dn)}의 일도 일하는 자리에 따라 평가 기준이 다릅니다`, `The same ${E(dn)} work is judged differently depending on where you do it`),
+    T(L(`같은 ${E(dn)}의 일도 일하는 자리에 따라 평가 기준이 다릅니다`, `Where you work changes how ${E(dn)} work is judged`),
       L(`일하는 자리 ${x.tax.org_contexts.length}가지마다 ${E(dn)}의 일을 무엇으로 평가하는지 정리했어요. 자리의 성격별로 흔히 쓰는 기준이라, 실제 기관의 평가 방식은 그 기관의 공고와 누리집에서 한 번 더 확인해 보세요.`,
-        `For each of the ${x.tax.org_contexts.length} kinds of workplace, this shows what ${E(dn)} work is judged on. These are the usual standards for each kind, so check how a real employer judges the work in its job postings and on its website.`)) +
+        `What ${E(dn)} work is judged on in each of ${x.tax.org_contexts.length} kinds of workplace. These are typical standards, so check a real employer's postings and website to see how it judges the work.`)) +
     `<table class="tb tb-xs"><thead><tr><th class="w22">${L("일하는 자리", "Workplace")}</th><th class="w24">${L("무엇으로 평가되나", "What it is judged on")}</th><th>${L("그 자리의 특징", "What sets it apart")}</th><th class="w24">${L(`${E(dn)}의 결과`, `${E(dn)} work there`)}</th></tr></thead><tbody>${x.tax.org_contexts.map((o) => `<tr><td><b>${E(o.name)}</b>${goalOc === o.code ? ` <span class="mut sm">${L("고른 자리", "your pick")}</span>` : ""}</td><td>${E(o.performance)}</td><td class="mut">${E(okText(o.differs) ? say(o.differs) : "")}</td><td>${E(okOr(oo[o.code]))}</td></tr>`).join("")}</tbody></table>`;
   const parts =
     H(L("같은 영역 안에서도 맡는 몫이 다릅니다", "Within one area, people take on different parts of the work"), L("몫마다 남기는 것", "What each part leaves behind")) +
     `<table class="tb tb-xs"><tbody>${x.tax.role_functions.map((f) => `<tr><th class="w22">${E(f.name)}</th><td>${E(say(f.one_line))}</td><td class="mut w34">${L("남기는 것", "Leaves behind")}: ${E(f.output_kind)}</td></tr>`).join("")}</tbody></table>`;
-  return isEn() ? [P(name, main), P(`${name} (2)`, parts)] : [P(name, main + parts)];
+  return [P(name, main + parts)];
 }
 
 export function ch4Pages(x: Inputs, d: X, roomy = false): Page[] {

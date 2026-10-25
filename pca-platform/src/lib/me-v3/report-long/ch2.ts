@@ -68,7 +68,7 @@ function radarHow(series: { name: string; color: string }[], rings: boolean): st
     [L("가운데", "Center"), `${LEVEL_KO[0]}`],
     ...(rings ? ([[L("안쪽 고리", "Inner ring"), LEVEL_KO[1]], [L("가운데 고리", "Middle ring"), LEVEL_KO[2]]] as [string, string][]) : []),
     [L("바깥 고리", "Outer ring"), LEVEL_KO[3]],
-    ...series.map((s) => [s.color, L(`${E(s.name)}의 선`, `${E(s.name)} line`)] as [string, string]),
+    ...series.map((s) => [s.color, L(`${E(s.name)}의 선`, rings ? `${E(s.name)} line` : "Your line for this area")] as [string, string]),
     [L("점 없는 꼭짓점", "No dot"), L("이번에 묻지 않은 판단", "Not asked this time")],
   ], rings ? L("꼭짓점 여덟 개가 판단 하나씩이고, 선이 바깥으로 나갈수록 그 판단을 깊이 해 봤다는 뜻이에요.", "Each of the eight spokes is one judgment. The further a line reaches out, the further you have gone with that judgment.") : undefined);
 }
@@ -112,8 +112,8 @@ export function heatPage(x: Inputs, d: X): Page {
   };
   const cells = x.m.domains.flatMap((z) => d.levels(z.code)).filter((v): v is Level => v !== null);
   const hi = cells.filter((v) => v >= 2).length;
-  /* 영어 영역 이름은 길어서 줄 이름 칸을 넓히고, 축 이름도 한 줄에 더 담는다 */
-  const opt = isEn() ? { width: 700, label: 236, head: 58, row: 30, colWrap: 11 } : { width: 700, label: 150, head: 54, row: 30, colWrap: 6 };
+  /* 영어 영역 이름과 축 이름은 길어서 그림 폭을 넓힌다(글자는 그만큼 작아진다). 칸마다 75 남짓이라 축 이름이 옆 칸과 겹치지 않는다 */
+  const opt = isEn() ? { width: 900, label: 300, head: 64, row: 30, colWrap: 7 } : { width: 700, label: 150, head: 54, row: 30, colWrap: 6 };
   return P(L(`${x.domainWord} × 판단 지도`, "Area × judgment map"),
     T(cells.length ? L(`물은 ${cells.length}칸 가운데 ${hi}칸은 직접 해 봤거나 기준까지 정했습니다`, `In ${hi} of the ${cells.length} cells we asked about, you did the work yourself or made the call`) : L(`${d.counts.domains}가지 ${E(x.domainWord)}과 여덟 가지 판단을 한 장에 놓았습니다`, `All ${d.counts.domains} areas and eight judgments on one page`),
       L("칸 하나가 한 영역에서 한 판단을 어디까지 해 봤는지 보여 줘요. 판단까지 자세히 물은 영역에만 색이 들어갑니다.", "Each cell shows how far you have gone with one judgment in one area. Only the areas we asked about in depth are colored.")) +
@@ -207,6 +207,8 @@ export function strengthPage(x: Inputs, d: X, k: number): Page {
     ? (indDim ? `${d.goalInd!.name_ko}: ${qe(indDim)}` : null)
     : indRow?.dimensions?.[0] ? `${d.goalInd!.name_ko}에서는 ${askNoun(indRow.dimensions[0])}를 봅니다.` : null;
   const pick = ev.decisions[0] ?? ev.acts[0];
+  /* 영어 문장에 옮길 비교 대상: 가장 짧은 것(긴 것은 여러 항목을 쉼표로 묶은 줄이라 한 문장에 넣으면 쪽이 넘친다) */
+  const cmp0 = [...ev.comparisons].sort((a, b) => a.length - b.length)[0];
   const story = en
     ? (ev.decisions.length || ev.acts.length
       ? "Everything here comes from the items you picked in the checklist."
@@ -216,7 +218,7 @@ export function strengthPage(x: Inputs, d: X, k: number): Page {
       : `${nm}에서는 판단 ${s.confirmed.length}가지를 직접 해 봤다고 답했어요. 어떤 과제였는지 체크리스트에서 골라 두면 지원서에 쓸 근거가 됩니다.`;
   const show = en
     ? (ev.artifacts.length
-      ? `Show ${qe(ev.artifacts[0])} as your deliverable${ev.comparisons.length ? `, along with the comparison (${lc(ev.comparisons[0])}).` : ". Add one line on what you checked it against, and it is ready for an interview."}`
+      ? `Show ${qe(ev.artifacts[0])} as your deliverable${cmp0 ? `, along with the comparison (${lc(cmp0)}).` : ". Add one line on what you checked it against, and it is ready for an interview."}`
       : `On your next ${nm} project, keep ${aN(def?.artifacts[0] ?? "result document")}. It becomes the first deliverable you can attach to an application.`)
     : ev.artifacts.length
       ? `${j(ev.artifacts[0], "을를")} 결과물로 내보이면 됩니다.${ev.comparisons.length ? ` ${j(ev.comparisons[0], "과와")} 비교한 내용도 함께 붙이세요.` : " 무엇과 비교해 확인했는지 한 줄 적어 두면 면접에서 바로 쓸 수 있어요."}`
@@ -234,7 +236,7 @@ export function strengthPage(x: Inputs, d: X, k: number): Page {
     ? [
       pick ? `On one ${nm} project, I ${lc(noDot(pick))}.` : sc[0] ? `On one ${nm} project, I ${lc(noDot(sc[0]))}.` : `On one ${nm} project, I took on ${andEn(s.confirmed.slice(0, 2).map((a) => lc(an(a))))} myself.`,
       !pick && sc[1] && !ev.artifacts[0] && !ev.comparisons[0] ? `I also ${lc(noDot(sc[1]))}.` : "",
-      ev.artifacts[0] ? `I documented the result in ${aN(ev.artifacts[0])}${ev.comparisons[0] ? ` and checked it against ${aN(ev.comparisons[0])}.` : "."}` : ev.comparisons[0] ? `I checked the result against ${aN(ev.comparisons[0])}.` : "",
+      ev.artifacts[0] ? `I documented the result in ${aN(ev.artifacts[0])}${cmp0 ? ` and checked it against ${aN(cmp0)}.` : "."}` : cmp0 ? `I checked the result against ${aN(cmp0)}.` : "",
     ].filter(Boolean).join(" ")
     : [
       pick ? `${d.name(s.code)} 과제를 하면서 ${polite(pick)}` : sc[0] ? `${d.name(s.code)} 과제를 하면서 ${polite(sc[0])}` : `${d.name(s.code)} 과제에서 ${j(andJoin(s.confirmed.slice(0, 2).map(d.axisName)), "을를")} 직접 맡았습니다.`,
