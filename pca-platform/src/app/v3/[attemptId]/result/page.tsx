@@ -1420,7 +1420,12 @@ export default async function V3Result({
           pdfHref={`/v3/${attemptId}/result/pdf`}
           keepAction={ws && model.actions.length ? takeActionsFromResult : null}
           kept={kept}
-          tierNote={model.tier === "BASIC" ? TX().TIER_NOTE_KO.BASIC : null} />
+          tierNote={model.tier === "BASIC" ? TX().TIER_NOTE_KO.BASIC : null}
+          book={model.tier === "PRO" && lang === "ko"}
+          /* 개인 응시만 넓히기를 권한다. 학교 응시는 늘 PRO 이고, 해외 시장은 유료
+             등급을 아직 팔지 않는다 */
+          upgradeHref={!meta.school && model.tier !== "PRO" && lang === "ko" && a.market_code !== "GLOBAL"
+            ? "/pricing?market=KR" : null} />
         {/*
             ── 종이 표지 ── **화면에는 서지 않는다**(규격 §14).
 

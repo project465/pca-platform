@@ -34,6 +34,7 @@ export type SummaryStep = { head: string; body: string; why: string | null; href
 
 export default function Summary({
   title, lead, who, zones, evidence, steps, pdfHref, keepAction, kept, tierNote,
+  book = true, upgradeHref = null,
 }: {
   title: string;
   lead: string;
@@ -45,6 +46,10 @@ export default function Summary({
   keepAction: (() => Promise<void>) | null;
   kept: number;
   tierNote: string | null;
+  /** 종이가 긴 책인가. PRO(한국어)만 책이고 나머지는 이 화면의 A4 판이다 */
+  book?: boolean;
+  /** 개인 응시가 더 넓힐 수 있으면 가격표. 학교 응시는 늘 PRO 라 없다 */
+  upgradeHref?: string | null;
 }) {
   /* 작업공간(`/me`)이 두 언어로 선다(영어판 2단계b) */
   const ws = true;
@@ -128,12 +133,23 @@ export default function Summary({
 
       <section className="rsum-end">
         <div>
-          <b>{tr("자세한 분석은 PDF에 있습니다")}</b>
-          <p>{tr("영역별 해설, 산업·직무 연결, 지원서 문장, 지역 기업 자료를 한 권으로 묶었습니다.")}</p>
+          {/* **받지 않을 책을 약속하지 않는다.** 책은 PRO 만 뽑는다(`pdf/route.ts`).
+              BASIC 에 `한 권으로 묶었습니다` 를 적으면 받은 사람이 A4 몇 장을 열고
+              나머지를 찾는다 */}
+          {book ? (<>
+            <b>{tr("자세한 분석은 PDF에 있습니다")}</b>
+            <p>{tr("영역별 해설, 산업·직무 연결, 지원서 문장, 지역 기업 자료를 한 권으로 묶었습니다.")}</p>
+          </>) : (<>
+            <b>{tr("이 결과를 PDF로 받을 수 있습니다")}</b>
+            <p>{upgradeHref
+              ? tr("PRO로 넓히면 영역별 해설, 산업·직무 연결, 지원서 문장을 70쪽 안팎의 한 권으로 받습니다. 앞에서 답한 것은 다시 풀지 않습니다.")
+              : tr("이 화면의 내용을 A4로 받습니다.")}</p>
+          </>)}
         </div>
         <div className="rsum-end-a">
           {/* 종이 길은 `Link` 로 걸지 않는다: 미리 불러오면 종이가 만들어진다 */}
           <a className="rsum-pdf" href={pdfHref}>{tr("PDF 받기")}</a>
+          {upgradeHref ? <Link className="rsum-me" href={upgradeHref}>{tr("PRO로 넓히기")}</Link> : null}
           {ws ? <Link className="rsum-me" href="/me">{tr("내 CareerMatri")}</Link> : null}
         </div>
       </section>

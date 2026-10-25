@@ -480,6 +480,10 @@ export const PHRASES_EN: Record<string, string> = {
   "할 일 목록에 담기": "Save to my to-do list",
   "담아 둔 할 일 {n}개 ·": "{n} saved ·",
   "자세한 분석은 PDF에 있습니다": "The full analysis is in the PDF",
+  "이 결과를 PDF로 받을 수 있습니다": "You can download these results as a PDF",
+  "PRO로 넓히면 영역별 해설, 산업·직무 연결, 지원서 문장을 70쪽 안팎의 한 권으로 받습니다. 앞에서 답한 것은 다시 풀지 않습니다.": "Extend to PRO for a book of about 70 pages with domain-by-domain notes, industry and role links, and application sentences. You will not need to answer again what you already did.",
+  "이 화면의 내용을 A4로 받습니다.": "You get what is on this screen on A4 pages.",
+  "PRO로 넓히기": "Extend to PRO",
   "영역별 해설, 산업·직무 연결, 지원서 문장, 지역 기업 자료를 한 권으로 묶었습니다.":
     "Area-by-area notes, industry and role links, and application sentences, all in one document.",
   "PDF 받기": "Download PDF",

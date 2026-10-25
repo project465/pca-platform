@@ -23,6 +23,7 @@ import NotOpen from "@/components/sf/not-open";
 import { publicCommerceGate } from "@/lib/public-gate";
 import CareerFlow from "@/components/sf/career-flow";
 import { trackOffers } from "@/lib/track";
+import { payOpen } from "@/lib/payments";
 
 export const metadata = { title: `가격 · ${BRAND.root}` };
 
@@ -348,7 +349,7 @@ function TierCard({
           <input type="hidden" name="product" value={p.code} />
           <button className="sf-btn ghost wide">{T("pxStartFree")}</button>
         </form>
-      ) : ok.ok ? (
+      ) : ok.ok && payOpen(p.market === "GLOBAL" ? "GLOBAL" : "KR") ? (
         <div className="pxcta">
           <Link href={`/checkout?product=${encodeURIComponent(p.code)}`}
             className={mid ? "sf-btn accent wide" : "sf-btn ghost wide"}>
@@ -359,7 +360,9 @@ function TierCard({
         /* `sellable` 의 거절 이유는 한국어 한 줄이라 영어 화면에 그대로 쓰지
            않는다. 까닭은 위의 값 자리에 이미 적혀 있다 */
         <div className="pxcta">
-          <span className="sf-btn ghost wide" aria-disabled="true">{T("pxBuy")}</span>
+          <span className="sf-btn ghost wide" aria-disabled="true">
+            {ok.ok ? T("pxPayNotReady") : T("pxBuy")}
+          </span>
         </div>
       )}
 

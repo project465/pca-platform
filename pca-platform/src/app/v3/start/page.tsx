@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { BrandMark } from "@/components/sf/brand-mark";
 import { requireUser } from "@/lib/session";
 import { retakeState } from "@/lib/me-v3/retake";
+import { upgradeTarget } from "@/lib/me-v3/upgrade";
 import { currentAttempt, estimate } from "@/lib/me-v3/runtime/session";
 import { core as coreEntry, sellableCores } from "@/lib/me-v3/core-registry";
 import { startGate } from "@/lib/campus/start-gate";
@@ -59,6 +60,10 @@ export default async function V3Start({
    * **지난 결과를 지우지 않는다**: 막는 것은 새 줄을 만드는 일이다.
    * 다시 여는 권한은 **그 길의 이용권만** 센다(`startGate`).
    */
+  /* **산 등급이 지난 응시보다 높으면 새로 열지 않고 넓힌다**(`upgrade.ts`).
+     새로 열면 같은 사람의 응답이 두 벌 쌓이고 앞에서 답한 것을 다시 푼다 */
+  if (gate.kind !== "campus" && (await upgradeTarget(user.id))) redirect("/v3/upgrade");
+
   const retake = await retakeState(user.id);
   if (retake.done > 0 && !gate.grants.length && retake.lastAttemptId) {
     redirect(gate.kind === "campus"

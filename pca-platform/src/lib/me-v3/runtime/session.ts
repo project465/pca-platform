@@ -667,6 +667,9 @@ export async function v3Grants(userId: string): Promise<
         AND e.assessment_version = $2
         AND (e.ends_at IS NULL OR e.ends_at > now())
         AND NOT EXISTS (SELECT 1 FROM v3_attempts a WHERE a.entitlement_id = e.id)
+        /* **등급 올리기에 쓴 이용권도 쓴 것이다.** 빼지 않으면 PRO 로 넓힌
+           뒤에도 그 PRO 이용권이 남아, 같은 사람이 처음부터 한 벌을 더 푼다 */
+        AND NOT EXISTS (SELECT 1 FROM v3_tier_events t WHERE t.entitlement_id = e.id)
       ORDER BY e.created_at`,
     [userId, ASSESSMENT_VERSION],
   ).catch(() => []);

@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { retakeState } from "@/lib/me-v3/retake";
+import { upgradeTarget } from "@/lib/me-v3/upgrade";
 import { clearCampusEntry } from "@/lib/campus/entry";
 import { pickRequired } from "@/lib/campus/registry";
 import { startGate } from "@/lib/campus/start-gate";
@@ -87,6 +88,10 @@ export async function startV3(form: FormData): Promise<void> {
      보내는 길이 남아 있으면 끝낸 사람의 응시가 하나 더 생긴다. **다시 여는
      권한은 그 길의 이용권만 센다**: 학교 응시를 한 번 끝낸 학생이 산 개인
      이용권으로 학교 응시를 하나 더 여는 길이 없다 */
+  /* **산 등급이 지난 응시보다 높으면 새로 열지 않고 넓힌다**(`upgrade.ts`).
+     새로 열면 같은 사람의 응답이 두 벌 쌓이고 앞에서 답한 것을 다시 푼다 */
+  if (gate.kind !== "campus" && (await upgradeTarget(user.id))) redirect("/v3/upgrade");
+
   const retake = await retakeState(user.id);
   if (retake.done > 0 && !gate.grants.length && retake.lastAttemptId) {
     redirect(gate.kind === "campus"

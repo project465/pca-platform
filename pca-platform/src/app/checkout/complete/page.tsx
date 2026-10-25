@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { resumePathFor, startPathFor } from "@/lib/engine-entry";
 import { requireUser } from "@/lib/session";
+import { upgradeTarget } from "@/lib/me-v3/upgrade";
 import { settlePayment } from "@/lib/orders";
 import { paymentProvider } from "@/lib/payments";
 import { t } from "@/lib/locale";
@@ -26,7 +27,7 @@ export default async function CompletePage({
     lang?: string;
   }>;
 }) {
-  await requireUser();
+  const user = await requireUser();
   const sp = await searchParams;
   const lang = await resolveLang(sp.lang);
 
@@ -103,7 +104,11 @@ export default async function CompletePage({
     );
   }
 
-  const startAt = startPathFor(result.ok ? result.assessmentVersion : null);
+  /* **무료로 먼저 풀어 본 분은 그 응시를 넓히는 자리로 보낸다**(`upgrade.ts`).
+     전공 고르기로 보내면 다른 전공을 누를 수 있고, 그러면 산 등급이 앞에서
+     푼 응시가 아닌 곳으로 가는 것처럼 보인다 */
+  const base = startPathFor(result.ok ? result.assessmentVersion : null);
+  const startAt = base && result.ok && (await upgradeTarget(user.id)) ? "/v3/upgrade" : base;
   if (result.ok && startAt && !result.upgradedAttemptId) {
     const L = toLang2(lang);
     const T = txer(L);

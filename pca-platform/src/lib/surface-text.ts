@@ -191,7 +191,9 @@ export const TX = {
   secContext: p("진로 맥락", "Career context"),
 
   /* ── 상품 ─────────────────────────────────────────────────────── */
-  pxTitle: p("기계공학 진로 진단", "Mechanical Engineering career diagnostic"),
+  /* 전공이 스무 개 열렸다. **한 전공 이름을 가격표 머리에 두지 않는다**:
+     경영학 학생이 `기계공학 진로 진단` 을 보고 자기 것이 아닌 줄 안다 */
+  pxTitle: p("전공별 진로 진단", "Career diagnostic by major"),
   pxBody: p(
     "전공과 경험을 실제 직무 선택으로 잇습니다. 먼저 볼 직무와 지금 비어 있는 증거, 다음에 만들 경험 하나를 정리해 드립니다.",
     "We connect your major and experience to an actual role decision: which roles to look at first, which evidence is missing, and the one experience to build next.",
@@ -203,6 +205,9 @@ export const TX = {
     "Evidence architecture, research ownership, organization value, next evidence project, 30/90/365 plan",
   ),
   pxBuy: p("시작하기", "Get started"),
+  /* 상품은 켜졌는데 결제 대행사 설정이 아직인 때. **누를 수 없는 단추에
+     `시작하기` 를 적지 않는다** */
+  pxPayNotReady: p("결제 준비 중", "Payment coming soon"),
   /* ── MAT (기간권 · 코드 이름은 Track) ───────────────────────────────── */
   pxTrackTitle: p("MAT", "MAT, AI career assistant"),
   pxTrackLead: p(
@@ -343,7 +348,7 @@ export const TX = {
   /* 머리글 아래에 **같은 말을 다시 적지 않는다.** 머리글이 무엇을 하는지
      말했으면 여기서는 무엇을 받는지 적는다 */
   pxLeadSub: p(
-    "어느 기술영역부터 볼지, 해 보신 일이 어디까지 설명되는지, 아직 비어 있는 판단이 무엇인지를 한 장에 정리해 드립니다.",
+    "어느 업무 영역부터 볼지, 해 보신 일이 어디까지 설명되는지, 아직 비어 있는 판단이 무엇인지를 한 장에 정리해 드립니다.",
     "One document: which technical domain to start with, how far what you have done already explains itself, and which judgements are still empty.",
   ),
   pxTrust1: p("결제하면 바로 시작합니다", "Start the moment you pay"),
@@ -389,7 +394,7 @@ export const TX = {
   flow1b: p("무엇을 배우셨는가", "What you studied"),
   flow2: p("경험", "Experience"),
   flow2b: p("무엇을 해보셨는가", "What you have done"),
-  flow3: p("기술영역 그룹", "Domain groups"),
+  flow3: p("영역 그룹", "Domain groups"),
   flow3b: p("어디부터 볼 것인가", "Where to start"),
   flow4: p("아직 비어 있는 근거", "Evidence gap"),
   flow4b: p("무엇이 비어 있는가", "What is still missing"),

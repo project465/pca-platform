@@ -3,7 +3,7 @@
  "note": "검사 화면 1차 동결. 결과지 작업 중에는 명백한 버그와 접근성 오류만 고치고, 고쳤으면 `ui-version.ts` 의 판본을 올린 뒤 `FREEZE=update npm run v3:freeze` 로 지문을 다시 적는다",
  "versions": {
   "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V56",
-  "assessment_copy_version": "me-v3-2-assessment-copy.36",
+  "assessment_copy_version": "me-v3-2-assessment-copy.37",
   "assessment_version": "ME_V3_2",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.9",
   "scoring_version": "me-v3-scoring.5"
@@ -13,9 +13,9 @@
   "src/app/surface.css": "edbb16d5270484deb2737e73611d8035296ce813a8c1afbede5ddd76cb35c38f",
   "src/app/v3/assessment.css": "855fc1d451393c251964d06a67b374146092bb985c77797a783715ccb04a915d",
   "src/app/v3/tier-text.ts": "b60712f61fcb5daad6fbfc76afa795bac62b1f674c19906bba8054ba694949c8",
-  "src/app/v3/start/page.tsx": "0b0b08618e89f861a4e5e85185372927d95f50d6de55b2ed37a491ef7d9b3d49",
+  "src/app/v3/start/page.tsx": "b8ce107187141808bbff187f0f0fb137d807f0e97667f07ef34e63c72727d53f",
   "src/app/v3/start/start-form.tsx": "045cbe27ad13c8318f40a800097fb2aa60f637c00dc4733dcb73e9974f98c04c",
-  "src/app/v3/start/actions.ts": "389e8c8486573913787a2a474935a3031a25927cdc25c40852ab57c4841db0ca",
+  "src/app/v3/start/actions.ts": "a75b204f3a2225273d847a3ffd582f90b873a2606577c512efe7a365b260c56e",
   "src/app/v3/[attemptId]/page.tsx": "1d0b4645b79d79b9f223e36cc531f89ca401056dbc023a47b381ebc53a8714c3",
   "src/app/v3/[attemptId]/intro/page.tsx": "0521e361a2d777bd93c5c4e0a3a9889dbcf809f25d0f44f5a132cc410464739b",
   "src/app/v3/[attemptId]/done/page.tsx": "3108d3edac4bbc8674d74fe9015eaa2dd6f341a109c4fb473302ff0d31867f24",
@@ -25,7 +25,7 @@
   "src/lib/me-v3/runtime/blocks.ts": "acca33d294476c81c75c41bf873dcb3ae522246cf2f9aac3814766b36492afed",
   "src/lib/me-v3/runtime/menus.ts": "c5824a2aeb875f2e333975c6f67b20c3ebfa126e95eae4235a59be8d32708b65",
   "src/lib/me-v3/student/translate.ts": "6680c91acb1a026e79f9cc7c5c0044c09279deb3a4c46ba685237803126622d5",
-  "src/lib/me-v3/runtime/session.ts": "55c71f3dcf544d410085f565a1a2c9886e0721f5b42cb4e70d9dff3be517b484",
+  "src/lib/me-v3/runtime/session.ts": "2283f3162d94a8f354fc2875f3d76d6d02c91551a26c08b4d2d5d59b063fd13c",
   "src/lib/me-v3/runtime/routing.ts": "751cd2400f325500c0500a809d2767c41aa1d58847822274a473274ed1266c27",
   "src/lib/me-v3/runtime/progress.ts": "863b883aaa55ad3b9e2411b477f1f02ba2621bcb19b16cb83f2a1efd4e9980d0",
   "src/lib/me-v3/runtime/terms.ts": "3e110c9ee24d09f4b86fe07c87ff82b0f1ced6007c6b422468a1b5f0f5fd66e9",
@@ -37,6 +37,6 @@
   "src/app/v3/tier-text.en.ts": "90b81086116933d2c931b40299e686e545d14f91b2266a995a20df3e17bfd985",
   "src/app/v3/tier-text.i18n.ts": "9437e0afdfa209e3a40ff7dd2726f48728bdb4e161aff878dfea9d42057d9bf6",
   "src/lib/me-v3/phrase.ts": "2f093ec0d6eecd54201c9f0fff3a3c121ae6b39f9b04f5d1c178aa9466f72a22",
-  "src/lib/me-v3/phrases.en.ts": "472ab5c295cb1f0beb13fa39efb646e4c01e50205428c38a96c59d1cf4cf2f85"
+  "src/lib/me-v3/phrases.en.ts": "a0c9ea58a11efbf336cd2332a0e4564a4428244c00fb49973c5faad46d7874fa"
  }
 }

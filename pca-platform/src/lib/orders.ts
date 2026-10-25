@@ -9,6 +9,7 @@ import { track } from "@/lib/funnel";
 
 import { ref, swallow } from "@/lib/oplog";
 import { grantProTrialTx, grantTrackTx } from "@/lib/track";
+import { isCurrentEngine } from "@/lib/engine-entry";
 export type Product = {
   code: string;
   kind: string;
@@ -50,6 +51,19 @@ const NAMES: Record<string, string> = {
 
 export function orderName(code: string): string {
   return NAMES[code] ?? "CareerMatri 진로 결과지";
+}
+
+/**
+ * **이용권으로 문을 여는 판본인가.** ME_V2 와 지금 판본(ME_V3_2)이 그렇다.
+ *
+ * 전에는 `=== "ME_V2"` 한 줄이라, 지금 판본 상품을 사면 맨 아래 좌석
+ * 쪽으로 떨어졌다. 좌석은 V3 응시가 보지 않으므로 **값을 내고 검사가 안
+ * 열리는** 자리였다(`v3Grants` 는 이용권만 센다). 판본은 상품이 적은
+ * 값을 그대로 이용권에 옮긴다: `ME_V2` 를 박아 두면 V3 이용권이 옛 판본
+ * 이용권이 된다.
+ */
+function grantsReport(v: string | null | undefined): boolean {
+  return v === "ME_V2" || isCurrentEngine(v);
 }
 
 export async function getProduct(code: string): Promise<Product | null> {
@@ -298,7 +312,7 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
         userId: order.user_id, orderId: order.id,
         productCode: order.product_code, days: product.duration_days,
       });
-    } else if (product?.assessment_version === "ME_V2") {
+    } else if (product && grantsReport(product.assessment_version)) {
       /**
        * ME_V2 는 좌석 대신 **이용권**이 문을 연다.
        *
@@ -314,10 +328,10 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
         `INSERT INTO entitlements
            (user_id, order_id, product_code, kind, tier, major_code,
             assessment_version, status, starts_at)
-         VALUES ($1, $2, $3, 'report', $4, $5, 'ME_V2', 'active', now())
+         VALUES ($1, $2, $3, 'report', $4, $5, $6, 'active', now())
          ON CONFLICT (order_id) WHERE order_id IS NOT NULL DO NOTHING`,
         [order.user_id, order.id, order.product_code,
-         product.tier ?? "BASIC", product.major_code ?? "ME"],
+         product.tier ?? "BASIC", product.major_code ?? "ME", product.assessment_version],
       );
       /* **PRO 를 산 분께 Track 첫 한 달.** 같은 거래 안에서 붙인다: 결과지
          이용권은 서고 이 줄만 빠지면 약속한 한 달이 조용히 사라진다.
@@ -439,7 +453,7 @@ export async function openFreeOrder(
     if (!o.rows[0]) return null;
     const id = o.rows[0].id;
 
-    if (product.assessment_version === "ME_V2") {
+    if (grantsReport(product.assessment_version)) {
       /**
        * ME_V2 는 좌석이 아니라 **이용권**이 문을 연다.
        *
@@ -451,9 +465,10 @@ export async function openFreeOrder(
         `INSERT INTO entitlements
            (user_id, order_id, product_code, kind, tier, major_code,
             assessment_version, status, starts_at)
-         VALUES ($1, $2, $3, 'report', $4, $5, 'ME_V2', 'active', now())
+         VALUES ($1, $2, $3, 'report', $4, $5, $6, 'active', now())
          ON CONFLICT (order_id) WHERE order_id IS NOT NULL DO NOTHING`,
-        [userId, id, product.code, product.tier ?? "BASIC", product.major_code ?? "ME"],
+        [userId, id, product.code, product.tier ?? "BASIC", product.major_code ?? "ME",
+         product.assessment_version],
       );
     } else {
       for (let i = 0; i < product.seat_count; i++) {

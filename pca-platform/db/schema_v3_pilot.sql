@@ -461,7 +461,10 @@ VALUES
    'KR', 'ME', 'PRO',      'ME_V3_2', 'approved')
 ON CONFLICT (code) DO UPDATE
   SET amount = EXCLUDED.amount, tier = EXCLUDED.tier,
-      assessment_version = EXCLUDED.assessment_version, active = false;
+      assessment_version = EXCLUDED.assessment_version;
+-- **다시 돌려도 판매를 닫지 않는다.** 전에는 여기서 `active = false` 를
+-- 덮어써서, 개인 판매를 연 뒤에도 `db:upgrade` 한 번이 가격표를 비웠다.
+-- 처음 넣을 때만 꺼 두고, 여는 것은 `schema_v3_sale.sql` 한 곳이 한다
 
 COMMENT ON COLUMN products.active IS
   '파는가. 파일럿용 ME_V3 상품 셋은 false 다 — 이용권이 가리킬 자리만 필요하다';
