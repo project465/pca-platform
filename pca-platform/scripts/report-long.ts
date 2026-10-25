@@ -146,6 +146,17 @@ export function htmlRules(html: string): Hit[] {
       if (run >= 3) { hits.push({ rule: "같은 끝 세 번(…니다.)", at: t.slice(0, 70) }); break; }
     }
   }
+  /* 영어 책에는 한글이 한 글자도 서지 않는다. 쪽마다 처음 걸린 자리를 적는다.
+     응시자가 직접 적은 글(경험 기록)은 `data-own` 안에 있어 세지 않는다 */
+  if (/<html lang="en"/.test(html)) {
+    for (const pg of html.split(/<section class="pg/).slice(1)) {
+      const title = /data-title="([^"]*)"/.exec(pg)?.[1] ?? "";
+      const body = strip(pg.slice(pg.indexOf(">") + 1).replace(/<style[\s\S]*?<\/style>/g, "").replace(/<script[\s\S]*?<\/script>/g, "")
+        .replace(/<[^>]*data-own[^>]*>[\s\S]*?<\/[a-z0-9]+>/g, " "));
+      const at = body.search(/[가-힣]/);
+      if (at >= 0 || /[가-힣]/.test(title)) hits.push({ rule: "영어 책에 한글", at: `${title} … ${body.slice(Math.max(0, at - 20), at + 30)}` });
+    }
+  }
   for (const pg of html.split(/<section class="pg/).slice(1)) {
     if (!/role="img"/.test(pg) || /class="howto"/.test(pg)) continue;
     const title = /data-title="([^"]*)"/.exec(pg)?.[1] ?? "";
