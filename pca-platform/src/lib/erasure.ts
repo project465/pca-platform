@@ -65,6 +65,7 @@ const REMOVE: { table: string; why: string }[] = [
   { table: "assistant_nudges", why: "그 사람에게 보낸 알림" },
   { table: "assistant_settings", why: "알림 · 동의 설정" },
   { table: "assistant_uploads", why: "올린 파일의 지문과 건수" },
+  { table: "push_subscriptions", why: "그 사람의 기기에 알림이 닿는 길" },
   { table: "campus_students", why: "학번은 그 학교 안에서 사람을 바로 가리킨다" },
   { table: "cohort_members", why: "어느 회차 명단에 있었는지" },
   { table: "auth_accounts", why: "구글·애플 계정 번호와 주소는 그 사람을 가리킨다" },
@@ -283,11 +284,11 @@ export const ERASE_GROUPS: {
   {
     ko: "지원서·면접 준비와 MAT", en: "Application prep and AI assistant",
     detail: {
-      ko: "적어 두신 지원서·면접 답 · 붙여 넣은 공고 · 메모 · 알림 설정",
-      en: "Your application and interview answers, pasted postings, notes, notification settings",
+      ko: "적어 두신 지원서·면접 답 · 붙여 넣은 공고 · 메모 · 알림 설정 · 알림을 받던 기기",
+      en: "Your application and interview answers, pasted postings, notes, notification settings, devices that received notifications",
     },
     tables: ["v3_prep_answers", "assistant_drafts", "assistant_postings",
-      "assistant_nudges", "assistant_settings", "assistant_uploads"],
+      "assistant_nudges", "assistant_settings", "assistant_uploads", "push_subscriptions"],
   },
   {
     ko: "지원 준비 자료", en: "Application material",

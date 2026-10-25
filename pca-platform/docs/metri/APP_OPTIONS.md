@@ -71,3 +71,37 @@
 - PWA 를 먼저 할지(권함)
 - 스토어 앱을 낸다면 개인 결제를 앱에 넣을지(수수료 20~30%) 아니면 학교 계정·웹 구매만 쓸지
 - 애플·구글 개발자 계정을 어느 사업자 이름으로 열지(주식회사 에이치에이연구원)
+
+## 6. 1단계를 만들었다 (2026-10-26)
+
+PWA 1단계를 코드로 세웠다. **스토어도 결제도 거치지 않는다.**
+
+| 무엇 | 어디 |
+|---|---|
+| 설치 정보(이름 · 아이콘 · 여는 자리 `/me` · 색) | `src/app/manifest.ts` |
+| 홈 화면 아이콘 넷(상표 한 벌에서 뽑는다) | `npm run pwa:icons` → `public/brand/careermatri/app-*.png` |
+| 연결이 끊기면 안내 한 장 · 알림 띄우기 · 누르면 열기 | `public/sw.js` · `public/offline.html` |
+| 웹 알림 보내기(VAPID 서명 · RFC 8291 암호화, 패키지 없이) | `src/lib/push.ts` |
+| 구독 받기 · 끊기 | `src/app/api/push/route.ts` · 표 `push_subscriptions`(`db/schema_push.sql`) |
+| MAT 밤 당번이 새 할 일 · 마감 알림을 기기로도 보낸다 | `src/lib/assistant/nudges.ts` |
+| 화면: 설치 안내 한 칸 · MAT 설정의 `이 기기로 알림 받기` | `src/components/install-card.tsx` · `push-toggle.tsx` |
+| 검사 | `npm run pwa:check` (암호를 받는 쪽 열쇠로 다시 열고, 서명을 공개 열쇠로 확인한다) |
+
+**지키는 것**
+- 로그인한 뒤의 쪽(결과지 · 경험 · 할 일)을 기기에 저장하지 않는다. 공용 PC 에서 연결을 끊고 열어 볼 수 있게 되기 때문이다
+- 알림 글에 이름 · 점수 · 공고 이름을 적지 않는다(잠긴 화면에 그대로 뜬다)
+- 같은 기기를 다른 사람이 켜면 앞사람 구독이 그 사람에게 옮겨 간다(공용 기기에서 남의 알림이 뜨지 않게)
+- 탈퇴하면 구독을 지운다(`erasure.ts`)
+
+**켜는 법 (사업주)**
+1. Railway → `pca-platform` → Console 에서 열쇠 한 벌을 만든다
+   ```
+   node -e "const c=require('crypto').createECDH('prime256v1');c.generateKeys();console.log('VAPID_PUBLIC_KEY='+c.getPublicKey('base64url'));console.log('VAPID_PRIVATE_KEY='+c.getPrivateKey('base64url'))"
+   ```
+2. 나온 두 줄을 Variables 에 넣고 Deploy. **비밀 열쇠는 어디에도 적어 두지 않는다**
+3. 열쇠를 바꾸면 그전에 켠 기기는 다시 켜야 한다. 그래서 한 번 정하면 바꾸지 않는다
+4. 운영 DB 에 표를 올린다: `psql "$DATABASE_URL" --single-transaction -f db/schema_push.sql`
+
+열쇠가 없으면 알림 단추가 서지 않고 아무것도 보내지 않는다. 설치(홈 화면 아이콘)와 연결 끊김 안내는 열쇠와 무관하게 돈다.
+
+**켜기 전에 확인할 것**: 개인정보처리방침에 "웹 알림을 켠 기기의 알림 주소(푸시 서버가 주는 주소)를 알림을 보내는 데만 쓰고, 끄거나 탈퇴하면 지운다" 한 줄이 들어가야 한다. 문안은 사업주가 정한다.

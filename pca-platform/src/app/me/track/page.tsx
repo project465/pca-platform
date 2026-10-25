@@ -10,6 +10,8 @@ import {
 } from "@/lib/track";
 import { aiReady } from "@/lib/assistant/claude";
 import { settingsOf } from "@/lib/assistant/settings";
+import { pushKeys } from "@/lib/push";
+import { PushToggle } from "@/components/push-toggle";
 import { postingsOf } from "@/lib/assistant/posting";
 import { nudgeUser, nudgesOf } from "@/lib/assistant/nudges";
 import { CmShell, CmHead } from "../shell";
@@ -100,6 +102,7 @@ export default async function Track({
      두 상품의 값으로 그 자리에서 센 수다 */
   const save = p30 && p365 ? p30.amount * 12 - p365.amount : 0;
   const ai = aiReady() && Boolean(settings.ai_consent_at);
+  const pushKey = pushKeys()?.publicKey ?? null;
   const unread = nudges.filter((n) => !n.read_at).length;
 
   return (
@@ -300,6 +303,8 @@ export default async function Track({
                   {settings.email_digest ? "메일 끄기" : "메일로도 받기"}
                 </button>
               </form>
+              {/* 기기 알림(PWA). 열쇠(VAPID)가 없으면 서지 않는다(`push.ts`) */}
+              {pushKey ? <PushToggle publicKey={pushKey} /> : null}
             </div>
           </div>
         </>

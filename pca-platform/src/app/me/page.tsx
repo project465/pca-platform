@@ -21,6 +21,7 @@ import {
 } from "@/lib/me-v3/student";
 import { resultMeta } from "@/lib/me-v3/result/meta";
 import { CmShell, CmHead } from "./shell";
+import { InstallCard } from "@/components/install-card";
 import {
   ActivityRow, DomainTile, PrimaryActionHero, RecordRow,
   SectionHeader, SectionNote,
@@ -500,6 +501,8 @@ export default async function Home() {
           </ul>
         </>
       ) : null}
+      {/* 홈 화면에 설치(PWA). 설치할 수 있는 브라우저에서만 선다(`install-card.tsx`) */}
+      <InstallCard lang={en ? "en" : "ko"} />
     </CmShell>
   );
 }

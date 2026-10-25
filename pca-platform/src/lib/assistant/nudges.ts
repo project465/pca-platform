@@ -1,6 +1,7 @@
 import { purgeUploads } from "./upload";
 import { query } from "@/lib/db";
 import { enqueue } from "@/lib/outbox";
+import { pushReady, sendPush } from "@/lib/push";
 import { openActions } from "@/lib/me-v3/open-actions";
 import { coreIfAny } from "@/lib/me-v3/platform";
 import { opFail, ref } from "@/lib/oplog";
@@ -141,6 +142,15 @@ export async function runAssistantTick(now = new Date()): Promise<{
     const r = await nudgeUser(u.id, now);
     weekly += r.weekly;
     deadline += r.deadline;
+    /* 기기 알림(PWA). **새로 쌓인 알림이 있을 때만** 한 번 보낸다: 알림 줄이
+       같은 주에 두 번 쌓이지 않으므로(`dedupe_key`) 알림도 두 번 뜨지 않는다.
+       글에는 공고 이름도 할 일 문장도 적지 않는다(잠긴 화면에 그대로 뜬다) */
+    if (r.weekly + r.deadline > 0 && pushReady()) {
+      await sendPush(u.id, r.deadline > 0
+        ? { title: "CareerMatri", body: "붙여 둔 공고의 마감이 다가옵니다.", url: "/me/track", tag: "mat-deadline" }
+        : { title: "CareerMatri", body: "이번 주 할 일이 하나 있습니다.", url: "/me/next", tag: "mat-weekly" },
+      ).catch(() => undefined);
+    }
     if (u.email_digest && u.email && r.weekly + r.deadline > 0) {
       await enqueue({
         kind: "assistant_digest", userId: u.id,

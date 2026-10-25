@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>연결이 끊겼습니다 · CareerMatri</title>
+<style>
+  /* 서비스 워커가 저장해 두는 단 한 장. 바깥 글꼴·스타일을 부르지 않는다(연결이 없으므로) */
+  :root { color-scheme: light; }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #F5F7FB;
+         font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif; color: #0F172A; }
+  main { max-width: 420px; padding: 32px 24px; text-align: center; }
+  img { width: 56px; height: 56px; }
+  h1 { font-size: 20px; margin: 20px 0 8px; }
+  p { font-size: 15px; line-height: 1.6; color: #475569; margin: 0 0 6px; }
+  p.en { font-size: 13px; color: #64748B; margin-top: 14px; }
+  button { margin-top: 22px; min-height: 44px; padding: 0 22px; border: 0; border-radius: 10px;
+           background: #2F6BFF; color: #FFFFFF; font-size: 15px; font-weight: 600; cursor: pointer; }
+</style>
+</head>
+<body>
+<main>
+  <img src="/brand/careermatri/mark.svg" alt="CareerMatri">
+  <h1>인터넷 연결이 끊겼습니다</h1>
+  <p>연결되면 이어서 볼 수 있습니다. 검사 답은 누를 때마다 서버에 저장돼 있어 사라지지 않습니다.</p>
+  <p class="en">You are offline. Your answers are saved on the server; reconnect to continue.</p>
+  <button type="button" onclick="location.reload()">다시 시도</button>
+</main>
+</body>
+</html>
