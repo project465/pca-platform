@@ -187,7 +187,8 @@ export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V56";
 /* copy.31 — 화면 글을 언어별 사전으로 뺐다(`copy.ko/en` · `tier-text.en` · `phrases.en`). 한국어 글은 그대로이고 영어 글이 새로 선다 */
 /* copy.32 — 영어 축 이름을 콘텐츠와 같은 말로(Technical decisions · Deliverables · Organizational use) */
 /** 영어 화면에서 영역 아래 세부 이름을 쉼표로 잇는다(한국어는 가운뎃점 그대로) */
-export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.35";
+/** 결과 쪽 영어 사전(phrases.en)의 열쇠 넷을 고친 한국어 문장에 맞췄다 */
+export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.36";
 
 /*
  * `V19` · `copy.14` 로 올린 까닭. **경험 빈도의 화면 말을 공통으로

@@ -251,13 +251,19 @@ export function regionView(x: Inputs, name: (td: string) => string): RegionView 
   const confirmedOf = new Map(x.m.domains.map((d) => [d.code, d.confirmed.length]));
   const byPack = new Map<string, ROrg[]>();
   let unmatched = 0;
+  /* 공기업은 따로 표를 세운다. 다만 이 전공에 공기업·발주청을 다루는 묶음이 있으면(경영 · 행정 ·
+     토목) 그 묶음으로도 받는다. 그 학생에게 이 지역 공기업은 남의 전공 회사가 아니다 */
+  const PUBLIC_PACK = /공기업|공기관|공공기관|발주청/;
   for (const o of all) {
-    if (publicOrgs.includes(o)) continue;
+    const pub = publicOrgs.includes(o);
+    if (pub && !packTh.some((t) => PUBLIC_PACK.test(packHead(t.p)))) continue;
     const text = `${o.sector} ${o.product} ${o.name}`;
     const th = themesOrg(text);
     let best: { code: string; n: number } | null = null;
     const flat = text.replace(/\s/g, "");
     for (const { p, th: pt, head, tokens } of packTh) {
+      /* 공기업은 공기업·발주청을 다루는 묶음으로만 받는다. `공공` 한 낱말로 수도 공사가 학교 묶음에 들던 것을 막는다 */
+      if (pub && !PUBLIC_PACK.test(packHead(p))) continue;
       /* 여러 묶음이 함께 가진 업종은 가볍게, 묶음 이름의 낱말이 업종에 그대로 있으면 무겁게 센다.
          **이름에 걸린 업종이 있는 묶음은 그 업종으로만 받는다**: 시설원예 묶음이 용어의 `센서`
          두 번으로 전자부품 회사를 받으면 그 학생에게 전압·전류를 읽어 보라는 할 일이 나간다 */

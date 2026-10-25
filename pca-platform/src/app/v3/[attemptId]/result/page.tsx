@@ -1722,7 +1722,7 @@ export default async function V3Result({
                   ))}
                 </ul>
                 <p className="rs-note rs-ebr-note">
-                  {tr("수치 · 기간 · 결과는 여기 없습니다. 지원서에 옮길 때 직접 적습니다.")}
+                  {tr("수치와 기간, 결과는 여기 없으니 지원서에 옮길 때 직접 적어 주세요.")}
                 </p>
               </>
             ) : null}
@@ -1892,7 +1892,7 @@ export default async function V3Result({
                   <EvidenceNone core={core} rows={model.evidence.ready} />
                   {model.evidence.ready.length > 6 ? (
                     <p className="rs-none rs-evmore">
-                      {tr("이 밖에 {n}가지가 더 확인됐습니다. 위의 영역별 설명에서 보실 수 있어요.", { n: model.evidence.ready.length - 6 })}
+                      {tr("이 밖에 {n}가지가 더 확인됐고, 위의 영역별 설명에서 보실 수 있어요.", { n: model.evidence.ready.length - 6 })}
                     </p>
                   ) : null}
                 {/* **`아직 없습니다` 로 끝내지 않는다**(COMMERCIAL GOLD
@@ -2369,7 +2369,7 @@ export default async function V3Result({
               {deep && model.overview.not_explored.length ? (
                 <section>
                   <h3>{TX().ZONE_TITLE_KO.NOT_EXPLORED}</h3>
-                  <p>{tr("이번 응시에서 묻지 않은 영역입니다. 경험이 없다는 뜻이 아닙니다.")}</p>
+                  <p>{tr("이번 응시에서 묻지 않은 영역이라, 경험이 없다는 뜻은 아닙니다.")}</p>
                   <ul>{model.overview.not_explored.map((c) => <li key={c}>{domainName(core, c, L())}</li>)}</ul>
                 </section>
               ) : null}
@@ -2877,7 +2877,7 @@ export default async function V3Result({
                 ? [kept ? tr("담아 둔 할 일 {n}개", { n: kept }) : null,
                   exps.length ? tr("적어 둔 경험 {n}개", { n: exps.length }) : null]
                   .filter(Boolean).join(" · ") + tr("이 기다리고 있어요")
-                : tr("아직 담아 둔 것이 없어요. 위에서 하나를 고르면 저쪽에 쌓입니다")}
+                : tr("아직 담아 둔 것이 없어요. 위에서 하나를 고르시면 저쪽 목록에 하나씩 쌓입니다")}
             </p>
             <Link className="rs-end-a" href="/me">{tr("내 CareerMatri 열기")}</Link>
             <ul className="rs-end-sub">

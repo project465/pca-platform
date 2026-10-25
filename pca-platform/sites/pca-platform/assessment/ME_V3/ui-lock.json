@@ -3,7 +3,7 @@
  "note": "검사 화면 1차 동결. 결과지 작업 중에는 명백한 버그와 접근성 오류만 고치고, 고쳤으면 `ui-version.ts` 의 판본을 올린 뒤 `FREEZE=update npm run v3:freeze` 로 지문을 다시 적는다",
  "versions": {
   "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V56",
-  "assessment_copy_version": "me-v3-2-assessment-copy.35",
+  "assessment_copy_version": "me-v3-2-assessment-copy.36",
   "assessment_version": "ME_V3_2",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.8",
   "scoring_version": "me-v3-scoring.5"
@@ -37,6 +37,6 @@
   "src/app/v3/tier-text.en.ts": "90b81086116933d2c931b40299e686e545d14f91b2266a995a20df3e17bfd985",
   "src/app/v3/tier-text.i18n.ts": "9437e0afdfa209e3a40ff7dd2726f48728bdb4e161aff878dfea9d42057d9bf6",
   "src/lib/me-v3/phrase.ts": "2f093ec0d6eecd54201c9f0fff3a3c121ae6b39f9b04f5d1c178aa9466f72a22",
-  "src/lib/me-v3/phrases.en.ts": "e3e8da701d03bd3f32db34e2a0cf70754ca8519117dd0c35a74c7c168628bb07"
+  "src/lib/me-v3/phrases.en.ts": "472ab5c295cb1f0beb13fa39efb646e4c01e50205428c38a96c59d1cf4cf2f85"
  }
 }

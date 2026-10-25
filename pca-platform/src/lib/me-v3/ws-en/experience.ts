@@ -43,7 +43,7 @@ export const WS_EN_EXPERIENCE: Record<string, string> = {
   "새 경험 하나 추가": "Add an experience",
   "저장하지 못했습니다. 어떤 경험인지와 한 줄 설명을 채워주세요.":
     "We couldn't save this. Choose what kind of experience it was and describe it in one line.",
-  "경험을 저장하지 못했습니다. 적어 주신 내용은 아직 저장되지 않았으니, 아래에서 한 번 더 눌러 주세요. 다시 안 되면 고객지원으로 알려 주세요.":
+  "경험을 저장하지 못했습니다. 적어 주신 내용은 아직 저장되지 않았으니, 아래에서 한 번 더 눌러 주시고, 그래도 안 되면 고객지원으로 알려 주세요.":
     "We couldn't save your experience. What you entered hasn't been saved yet, so please save again below. If it still doesn't work, let our support team know.",
   "올리신 파일에서 읽은 것을 보기로 옮겨 두었습니다. 파일에 없던 것은 비워 두었으니, 직접 정한 것과 남은 결과물을 골라 저장해 주세요.":
     "We've filled in the options with what we read from your file. Anything that wasn't in the file is left blank, so pick what you decided and what you produced, then save.",
@@ -62,7 +62,7 @@ export const WS_EN_EXPERIENCE: Record<string, string> = {
   "대략이면 됩니다. 나중에 찾을 때만 씁니다.":
     "A rough date is fine. It's only used to help you find this later.",
   "그 결과가 어디에 쓰였나요": "Where was the result used?",
-  "쓰인 곳이 없으면 비워 두세요. 비웠다고 불리해지지 않습니다.":
+  "쓰인 곳이 없으면 비워 두셔도 되고, 비웠다고 불리해지지 않습니다.":
     "If it wasn't used anywhere, leave this blank. Leaving it blank won't count against you.",
   "수업이나 과제 평가에 들어갔다": "It was graded in a course or assignment",
   "제작이나 발주로 이어졌다": "It went on to be built or ordered",
@@ -75,7 +75,7 @@ export const WS_EN_EXPERIENCE: Record<string, string> = {
   "더 적을 것이 있으면 (선택)": "Anything else to add (optional)",
   "아직 진행 중": "Still ongoing",
   "보완 설명 한 줄": "A one-line note",
-  "결과를 바꾸지 않습니다. 결과를 쓸 때 당신의 말로 옮길 때만 읽고, 1년이 지나면 지웁니다.":
+  "결과에는 들어가지 않고, 결과를 내 말로 풀어 적을 때만 읽으며 1년이 지나면 지웁니다.":
     "This doesn't change your results. We only read it when putting your results into your own words, and we delete it after one year.",
   "예: 하중 조건을 직접 정하고 시험값과 10% 안에서 맞췄습니다":
     "For example: I set the load conditions myself and matched the test values within 10%",

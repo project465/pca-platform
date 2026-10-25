@@ -416,7 +416,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V63";
 /** 결과 전 홈과 학교 학생 첫 화면의 Hero · 타일 문장 */
 /** 영어 사전 아홉 벌(ws-en/*). 한국어 문장은 한 글자도 바뀌지 않았다 */
 /** MAT 안내: AI 를 껐을 때 무엇이 어떻게 도는지 맞게 고쳤다 */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.45";
+/** 경험 적기 화면의 토막 문장 셋을 잇고 '당신의 말로' 를 걷었다 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.46";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

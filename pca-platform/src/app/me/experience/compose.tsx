@@ -211,7 +211,7 @@ export default async function Compose(
       ) : e === "save" ? (
         <p className="cm-fail" role="alert">
           {t("경험을 저장하지 못했습니다. 적어 주신 내용은 아직 저장되지 않았으니,"
-            + " 아래에서 한 번 더 눌러 주세요. 다시 안 되면 고객지원으로 알려 주세요.")}
+            + " 아래에서 한 번 더 눌러 주시고, 그래도 안 되면 고객지원으로 알려 주세요.")}
         </p>
       ) : null}
 
@@ -336,7 +336,7 @@ export default async function Compose(
                   체크리스트에 두면 같은 보기가 열두 번 선다 */}
               <fieldset className="cm-field">
                 <legend><span>{t("그 결과가 어디에 쓰였나요")}</span></legend>
-                <em>{t("쓰인 곳이 없으면 비워 두세요. 비웠다고 불리해지지 않습니다.")}</em>
+                <em>{t("쓰인 곳이 없으면 비워 두셔도 되고, 비웠다고 불리해지지 않습니다.")}</em>
                 <div className="cm-pickset">
                   {USED_WHERE.map((u) => (
                     <label className="cm-pick" key={u}>
@@ -360,7 +360,7 @@ export default async function Compose(
 
                 <label className="cm-field">
                   <span>{t("보완 설명 한 줄")}</span>
-                  <em>{t("결과를 바꾸지 않습니다. 결과를 쓸 때 당신의 말로 옮길 때만 읽고,"
+                  <em>{t("결과에는 들어가지 않고, 결과를 내 말로 풀어 적을 때만 읽으며"
                     + " 1년이 지나면 지웁니다.")}</em>
                   <textarea className="cm-textarea" name="note" maxLength={400}
                     defaultValue={value?.note_text ?? ""}

@@ -296,7 +296,7 @@ export const PHRASES_EN: Record<string, string> = {
   "지원서로 옮길 재료가 있는 경험 {n}가지입니다.": "You have {n} {n|experience|experiences} with material for your applications.",
   "남겼다고 고른 것 · {x}": "Output you picked · {x}",
   "남긴 것 확인 필요": "Output still to confirm",
-  "수치 · 기간 · 결과는 여기 없습니다. 지원서에 옮길 때 직접 적습니다.":
+  "수치와 기간, 결과는 여기 없으니 지원서에 옮길 때 직접 적어 주세요.":
     "Numbers, dates and results aren't included here. Add them yourself when you write your application.",
   "지원서로 옮길 만큼 확인된 경험은 아직 없어요. 아래 ‘적을 과제 고르기’부터 보시면 돼요.":
     "You don't have experience that's ready for applications yet. Start with ‘Pick something to write up’ below.",
@@ -314,7 +314,7 @@ export const PHRASES_EN: Record<string, string> = {
   "지원서에서 설명할 수 있는 경험": "Experience you can explain in applications",
   "직접 정한 것으로 확인됐고, 고른 근거 항목이 함께 있는 영역입니다.":
     "Areas where you decided things yourself and picked evidence to back it up.",
-  "이 밖에 {n}가지가 더 확인됐습니다. 위의 영역별 설명에서 보실 수 있어요.":
+  "이 밖에 {n}가지가 더 확인됐고, 위의 영역별 설명에서 보실 수 있어요.":
     "{n} more {n|was|were} confirmed. You'll find {n|it|them} in the area notes above.",
   "지원서로 옮길 영역은 아직 없습니다. 아래 ‘적을 과제 고르기’ 가운데 하나를 끝내면 이 칸이 먼저 채워집니다.":
     "No areas are ready for applications yet. Finish one item under ‘Pick something to write up’ below, and this is the first place it shows.",
@@ -374,7 +374,7 @@ export const PHRASES_EN: Record<string, string> = {
   "전체 기술영역 상태 보기": "See every technical area",
   "나머지 그룹에 해당하는 영역은 지금 없습니다. 더 채울 곳은 ‘앞으로 채울 것’ 에 적혀 있습니다.":
     "No areas fall into the other groups right now. What to fill in is under ‘What to fill in next’.",
-  "이번 응시에서 묻지 않은 영역입니다. 경험이 없다는 뜻이 아닙니다.":
+  "이번 응시에서 묻지 않은 영역이라, 경험이 없다는 뜻은 아닙니다.":
     "We didn't ask about these areas this time. It doesn't mean you have no experience in them.",
   "영역 훑기에서 같은 값으로 답하신 둘을 놓고 {x} 쪽을 고르셨습니다. ":
     "You gave two areas the same answer in the quick scan and chose {x}. ",
@@ -461,7 +461,7 @@ export const PHRASES_EN: Record<string, string> = {
   "담아 둔 할 일 {n}개": "{n} saved {n|to-do|to-dos}",
   "적어 둔 경험 {n}개": "{n} saved {n|experience|experiences}",
   "이 기다리고 있어요": " waiting for you",
-  "아직 담아 둔 것이 없어요. 위에서 하나를 고르면 저쪽에 쌓입니다":
+  "아직 담아 둔 것이 없어요. 위에서 하나를 고르시면 저쪽 목록에 하나씩 쌓입니다":
     "Nothing saved yet. Pick one above and it'll be waiting for you there.",
   "내 CareerMatri 열기": "Open My CareerMatri",
   "경험 추가": "Add experience",
