@@ -1,20 +1,20 @@
 {
  "schema_version": "food-v1-bank-lock.1",
  "core": "FOOD_CORE_V1",
- "item_bank_version": "FOOD_V1_ITEM_BANK_V1.5",
+ "item_bank_version": "FOOD_V1_ITEM_BANK_V1.6",
  "note": "식품 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=FOOD_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
-  "food-industry-packs.json": "3748c461d0e22cdf7c7093e246e4c66df71f5820f7e932c3be69976e3274ee51",
-  "food-role-packs.json": "e4b1533796287ce57475e74570dce5775906c3a2669ae9cc528bfd02cdf49dec",
+  "food-industry-packs.json": "773efed366222dbad46bbb4f95937ff5997b65237d6aacb9282424bbe1f8e975",
+  "food-role-packs.json": "e8327bdff5c8e3b4f171cdce767338825accd8a95553449df480cd060a7553c1",
   "food-v1-checklist-additions.json": "9c1574fb247722fb3ea0a6a7d82146c71866cccd951b767b9b0500aa5eb520ce",
   "food-v1-checklists.json": "dd8512ba2f1f959df08a6cabd16a1fb541fb78689e5613d2723474002a373ce3",
   "food-v1-common-additions.json": "588f8f0e431a1901795bb2dbe34b12c71afe99a7f1483d85b0db1716a1b3c8cc",
   "food-v1-constructs.json": "bc5002effd25a924eb016af676ebd164f4623b7b42abc4b347d9144403060003",
-  "food-v1-domains.json": "bd0b18fd6d3ae75f83f86f15e124c560dccfb87f2ed7e120ff60238d5f439ac0",
+  "food-v1-domains.json": "bdb464dbb5210a10be17b67b59adeb56c0cc0a31258ea240cc0121207fbe74e3",
   "food-v1-items-blueprint.json": "994ab9fb7343705a84f57d6896548dbe4465721a8bf5a1297119bed8fa87edeb",
-  "food-v1-items.json": "6980f6e58bd14f4403ae0d232be9a06044f35e889e1e2f2d9b19f9e61b6e1e07",
-  "food-v1-relations.json": "9c0c7bdf24ba2ba2932732001249572ef61a289d86202219c7afcc8d7346d982",
-  "food-v1-taxonomy.json": "cff698ee2d588e370fecb2f2a15d53488bdb3e495b801d47eb754f0c16a96912"
+  "food-v1-items.json": "803b49e164eccffe4460b298bb0beff12f03e75ece4d91daf0c128271599b795",
+  "food-v1-relations.json": "4b17475f0741d8805be234c5874ea3e310c05d8f3ec896d50f0cfcef27f20039",
+  "food-v1-taxonomy.json": "a58fa3fca31e6b344d71529a5cf5fb3a9616f29e550c1f3172dd85d584a1ab38"
  },
  "scoring_version": "me-v3-scoring.5"
 }

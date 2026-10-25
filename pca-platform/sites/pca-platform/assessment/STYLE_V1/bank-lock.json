@@ -1,20 +1,20 @@
 {
  "schema_version": "cm-bank-lock.1",
  "core": "STYLE_CORE_V1",
- "item_bank_version": "STYLE_V1_ITEM_BANK_V1.5",
+ "item_bank_version": "STYLE_V1_ITEM_BANK_V1.6",
  "note": "문면을 고치면 이 지문이 어긋난다. 그때 판본을 올리고 BANK=update 로 다시 적는다",
  "files": {
-  "style-industry-packs.json": "531537d3a0039f860a2ed357949107ac7d8136d8c56720de5482dc4485f48538",
-  "style-role-packs.json": "071491855605f9acada52c8b53a0c388d0b6f60a86f2ee76c3c093d92a9107a5",
+  "style-industry-packs.json": "1ea192bcb470ccad4d526eabc3e50cd17421c6d07663bf2ffad98b17ef3adda0",
+  "style-role-packs.json": "621146afd92021dd8ebbe73bcc00351fd98f9e08e534a38ddde13d69df30365e",
   "style-v1-checklist-additions.json": "2083a15e27fa7ca0d27d33a25ea2f0ea67c6ec2d7b6883271d94dc65ebf42af4",
   "style-v1-checklists.json": "b96c0b55fb6e2b7ab5dbce733c8ac02196e4d0cd24825a01e19f61bea2aa612a",
   "style-v1-common-additions.json": "aecea53ef81a439a6de2d3e15e5778fbdd3446830103cdc259b53a794a3ffc0d",
   "style-v1-constructs.json": "3281ea400e1e29e93fcd5e1edcb82385be3f5b3009ffea6dc6c183dd8c9397ff",
-  "style-v1-domains.json": "6919908c3408c0b9004f9968c745c88d1845f457b13db414d109788ee80e77e7",
+  "style-v1-domains.json": "baa5db8ea3ff90b05ae412037c11b21a7a0e466481ee760f1a3440a5b8fdae4a",
   "style-v1-items-blueprint.json": "bef7a02d29a02681657f495e9398898a12429521bd64f8d479b16bbb30b72982",
-  "style-v1-items.json": "65610513eff033a60f0651ff9d1a8e755f82c4de3a70612adb8a2171c98d511f",
-  "style-v1-relations.json": "878fd6ee16ab0b67a60709a4ffb4b092ee89d9d3d9453a703f64db63294e649d",
-  "style-v1-taxonomy.json": "15647fb296d74e0730e8aafb20b1e571286c16d03476021f1e02b8e9e87e23df"
+  "style-v1-items.json": "f0c373e57c341a7a18228a1cd867744b529ef5be45102c68ffd3dad0e6735e93",
+  "style-v1-relations.json": "795352ef2691a8c0eb4e1a4f5897005068833bdfd42c2b05c6c6b22e922885d1",
+  "style-v1-taxonomy.json": "f48acb067a40733040c4926a0f4d0b4421df43251c2ea66f7d8b359b101d631b"
  },
  "scoring_version": "me-v3-scoring.5"
 }

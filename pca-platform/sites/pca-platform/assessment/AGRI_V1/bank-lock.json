@@ -1,20 +1,20 @@
 {
  "schema_version": "cm-bank-lock.1",
  "core": "AGRI_CORE_V1",
- "item_bank_version": "AGRI_V1_ITEM_BANK_V1.4",
+ "item_bank_version": "AGRI_V1_ITEM_BANK_V1.5",
  "note": "문면을 고치면 이 지문이 어긋난다. 그때 판본을 올리고 BANK=update 로 다시 적는다",
  "files": {
-  "agri-industry-packs.json": "314937f2c59e3c40c8f8fa06f7a888de3d5a87a2ce63ca9f674a822e5fcfc721",
-  "agri-role-packs.json": "4fde95b0b487111238fb49d5c0a18e44b5566fe588207cf958f273e6b6da9ad7",
+  "agri-industry-packs.json": "b22e2b8b878135d10a760dc09195b65e7a3829855952ccb8c1d81cdcb1fb8880",
+  "agri-role-packs.json": "a9f71084c807415b64f1e9b8f5588da27a164b15dbbbf4c0e927078ecf960392",
   "agri-v1-checklist-additions.json": "409620392ea5378a5565405d328f17673694d56b2a38f2f32fb468303dae294e",
   "agri-v1-checklists.json": "c638a7d43c2e2b8345a875a366a842015ff5cd7026ab2cc89e89e83da017b44a",
   "agri-v1-common-additions.json": "a1ab2809a1f473851e4147a90398637b21d4502ed8b8fb8f44037a4a1c25b4a7",
   "agri-v1-constructs.json": "a1a89dbe0296efa4a67f3eaf52742e10b19af9e7f3ff5890b88b28d135017d6b",
-  "agri-v1-domains.json": "b730b28f39c77fe4d909e51d479f2ee05449cf5f0d618c18e63c9d154399f907",
+  "agri-v1-domains.json": "37626d77e232cc49a5e5ad9ebc3a9a6c93375574274967f38734d84250e1184e",
   "agri-v1-items-blueprint.json": "da998660212824fbc342bf484e6dab3e04435cdd1a270b0b2fbfc270a2f4a7a8",
-  "agri-v1-items.json": "ecc0f95511ac4aacb978de1b85472639dc227b7a76dc995a5620235f9220d2d6",
-  "agri-v1-relations.json": "3f619755037fd47ce9a67027b90eaa94aed0a76003779d376f7aa984e04f17f7",
-  "agri-v1-taxonomy.json": "a719ab2b653f3d7cd1f869ea4bd40768632379003c1e010d228cef448d39872a"
+  "agri-v1-items.json": "fa849ce63e1591195b14ef826a9fa9c9ca1f51ee86b46aa1c5fe57b4a1608bc7",
+  "agri-v1-relations.json": "a3cffa569fd0f6d738162c33175208e01c480835d9080414cd84297498a4cd40",
+  "agri-v1-taxonomy.json": "0d3af9964cadf6fe44b7c98a96bf922a1bfc9ea25c47357f9f15b9f20be7236e"
  },
  "scoring_version": "me-v3-scoring.5"
 }

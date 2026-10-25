@@ -1,20 +1,20 @@
 {
  "schema_version": "sports-v1-bank-lock.1",
  "core": "SPORTS_CORE_V1",
- "item_bank_version": "SPORTS_V1_ITEM_BANK_V1.4",
+ "item_bank_version": "SPORTS_V1_ITEM_BANK_V1.5",
  "note": "체육·운동재활 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=SPORTS_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
   "sports-industry-packs.json": "ef2ccaaaeab477b7486552eb6162e440650dec8fc57d9062e1f2c85183ac32cb",
-  "sports-role-packs.json": "97c3c6c7e2ceb6f5bc2ff908ff29e74595a0ece2c9da6ee69cbce9a167016e4d",
+  "sports-role-packs.json": "c836bec90a3642aeebc83c12ba33af3158c24ae3fc24e7be3fef765e84d8b591",
   "sports-v1-checklist-additions.json": "0295eb782ccddcc4484984f54fae212ad4c48e0da05f3caab198d7011c81c7a3",
   "sports-v1-checklists.json": "888073d2ca4efc6cc670d012a8368683aa6a82b435e220d95746e9ffe95c3e61",
   "sports-v1-common-additions.json": "d4ecac669b76a9eedd952e729570c20a5a5df940f4a7457b992e7ebf936eb7f4",
   "sports-v1-constructs.json": "0e35539a0dcfb08ff99f37f308cb89ca38079f8326f5d8940e1eea7af5940b80",
-  "sports-v1-domains.json": "846231f90d120a367b1de20fb1d4eb141df959ebcb6e030ad5cba82303934411",
+  "sports-v1-domains.json": "34ad5c6e57707936a268601682cdc0d3ed5c9cd6e0d9950b532a1490e6914f6d",
   "sports-v1-items-blueprint.json": "2fa0f53418dd07ef9ef1d022d2af59e102162cee0db3e198df00e2bd18fc6ee0",
-  "sports-v1-items.json": "f3774690cb2c98a3eed9509b5aa44a15e126f4d51ee4d987dcfc1d96918ffb9f",
-  "sports-v1-relations.json": "2e72954db21c5715169670a7524f2b1684d5f038ceb01ec4945ec4b68549ccd5",
-  "sports-v1-taxonomy.json": "1fd72ec0a692689b48d4399a97ccf24503d2f4a39fcf8d62bb392353cb8df4e8"
+  "sports-v1-items.json": "5ff5540571e3183cd73be25c5e04e2ffbb765e0e695d8e00c25ff529e12776e6",
+  "sports-v1-relations.json": "b8b285d781ed984325773e0bbd11897d8044e212722a44c1c0437f78547f04c4",
+  "sports-v1-taxonomy.json": "a74933b0b7071acf5b19d97b70d30a406199b786b66500ab6fcf2be14202ccc9"
  },
  "scoring_version": "me-v3-scoring.5"
 }

@@ -2,7 +2,7 @@
  "schema_version": "visual-v1-items.1",
  "core": "VISUAL_CORE_V1",
  "assessment_version": "VISUAL_V1",
- "item_bank_version": "VISUAL_V1_ITEM_BANK_V1.5",
+ "item_bank_version": "VISUAL_V1_ITEM_BANK_V1.6",
  "note": "문면을 손으로 썼다. 원본은 이 파일이다: 문면을 고칠 곳이 여기이고, 고친 뒤 `CORE=VISUAL_CORE_V1 npm run v3:wording` 과 `v3:items` 를 돌린다. 영역에 붙지 않는 자리의 번호는 기계공학 Core 와 같다 2026-10-23: 경영 문면 감사의 규칙으로 다시 적었다. `원인을 좁혀` · `~탓인지` · `~에 쓰였나요` 같은 틀을 장면마다 풀어 쓰고, 대학원 장면은 학부 앞머리를 바꿔 끼운 문장이라 대학원 프로젝트 장면으로 다시 적었다. 보기 넷의 문면을 풀어 썼고 뜻과 차례와 값은 그대로다(VISUAL_V1_ITEM_BANK_V1.5)",
  "level_options": [
   "해 본 적 없다",

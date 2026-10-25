@@ -1,19 +1,19 @@
 {
  "schema_version": "cs-v1-bank-lock.1",
  "core": "CS_CORE_V1",
- "item_bank_version": "CS_V1_ITEM_BANK_V1.5",
+ "item_bank_version": "CS_V1_ITEM_BANK_V1.6",
  "note": "컴퓨터·소프트웨어 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=CS_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
-  "cs-industry-packs.json": "26869b02f769deda5f102e1d8c38497dbe8fb02893c7d3d3ceb6ae2d3fac5db5",
+  "cs-industry-packs.json": "13c32cd0e0e14ff7530f913cb167d81c9a9bcb69cc794bb362d4ff0e08206952",
   "cs-role-packs.json": "a2c978b3cb11582639b892198dfb402684261399ea740b42bd673839bf09c034",
   "cs-v1-checklist-additions.json": "1964f55cb3c617cbd28dc553e429e246f4cbd38701ba89c2a4e97f0fe2d28b6d",
   "cs-v1-checklists.json": "1f653a2cd3d16f8a26c772b01cb4a74e7ca60cd179caf54f2da7bcf4eb49e2a2",
   "cs-v1-common-additions.json": "20409a2a182fa58102223330d7f8c195bf9c947e173a3e2431817a0a72680af2",
   "cs-v1-constructs.json": "5acb3745bfd0b66b2c38c753cb710d7b122590e8634b65ec857d9c409fa93bfd",
-  "cs-v1-domains.json": "9e704f4297264edba5c4e187ca18c97f4236583c2a3468c9871034a44063d5e4",
+  "cs-v1-domains.json": "baff63d676d331f62ad89b3fd9537dd905308efbd99e0d8414e326045947d777",
   "cs-v1-items-blueprint.json": "e28b68287c63584e90ad6115c898f8040fe3b9fdc4dd54126739e6c66fe8278f",
-  "cs-v1-items.json": "7112f4f8d380732f06d876c2fa1a67d284f48735eb9ac22162b4ecb779166e6d",
-  "cs-v1-relations.json": "d19894df7e3447cdc36046779971c35851937fddb3b7b4e99b1fb8d4ac370846",
+  "cs-v1-items.json": "1e215b5342a629817025e9ac160d3ca76bef5098564ddbee630e8ecc731d8ac2",
+  "cs-v1-relations.json": "0e33718eec01e5b803ce4cf817a17a83354b7b5cb2ea5fd02f535399c7d56e8c",
   "cs-v1-taxonomy.json": "2ddfbf8879bf00efbf5ca9de2f333056432068624cf04f2d137b6ae2b9edb129"
  },
  "scoring_version": "me-v3-scoring.5"

@@ -182,7 +182,8 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.7";
 /* copy.72 — 결과지가 읽는 갈래 예시(`examples.artifacts` · `evidence`)의 글을 여덟 Core 에서 고쳤다(`한 벌` · `까닭` · `대조표` 등). 기계공학 은행 판본이 V2.8 로 올라 동결 기록도 다시 적는다. 판정과 결과 모델은 그대로다 */
 /* copy.73 — 영어판 1단계: 결과 문장의 영어 벌(`text.en`)과 원고 사전(`localize`)이 섰다. 한국어 결과 글은 그대로다 */
 /** 영어 결과 문장의 판단축 이름을 작업공간 칩과 맞췄다(text.en.ts) */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.75";
+/* copy.76 — 학과 할 일 · 지원서 문장(`evidence_action` · `application.resume`)을 읽는 자리에서 높임으로 바꾼다. 스무 Core 의 은행 판본이 함께 올라 동결 기록을 다시 적는다. 판정과 결과 모델은 그대로다 */
+export const RESULT_COPY_VERSION = "me-v3-result-copy.76";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**

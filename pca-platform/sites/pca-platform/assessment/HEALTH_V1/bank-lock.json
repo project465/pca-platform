@@ -1,20 +1,20 @@
 {
  "schema_version": "health-v1-bank-lock.1",
  "core": "HEALTH_CORE_V1",
- "item_bank_version": "HEALTH_V1_ITEM_BANK_V1.5",
+ "item_bank_version": "HEALTH_V1_ITEM_BANK_V1.6",
  "note": "보건·의료복지 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=HEALTH_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
-  "health-industry-packs.json": "34a84b326426cf8042bcc22249eabe50c6e1eb95ef960cd58a9d6da9e7977203",
+  "health-industry-packs.json": "cc508be35c0b6ae0e4b182593541ba8fa79f40c039cba85a22eea2038c3a0abe",
   "health-role-packs.json": "cec9e4e1398b069ee4ee6283dbf9300497ce14cbbfe1fe4380910ff5aa2cfabc",
   "health-v1-checklist-additions.json": "d57720590bfcc55495d3d0e0f28af8f2014b6eb8ebfe28105245635784044077",
   "health-v1-checklists.json": "6ff2d6bc8ae6eb9fa477c52f165b0da22e7b548d47b77e8e9882d8c4dd3a6a2d",
   "health-v1-common-additions.json": "b16cdf2b341311950e73a13248e570b152771792161f139e6fd127d574bfe36a",
   "health-v1-constructs.json": "4e090a13d23603bc6e7ea500e8c33458b24f1751ce087d28685d8241ef3ee629",
-  "health-v1-domains.json": "ce1d611ef6065f40c1efdbece81f9a4611dcdab7716baea13444de353749b75e",
+  "health-v1-domains.json": "73ed5cb05b3ebea0b7b2cdef4c543e325841721b65326b34b5d72d6cee906b4a",
   "health-v1-items-blueprint.json": "7f62247ae466dd1db4f086243b2a86f5337ad1fa0e988fde2c155e58da68067a",
-  "health-v1-items.json": "b48abdb9d99ce38c79de42cac10df50b077d5a38fe033acfae32b38c8c6ac16f",
-  "health-v1-relations.json": "5d5c412ef3d55936c355e4adf4dbcb7cb75f22465a28e3f74e2fd751f4db4ec6",
-  "health-v1-taxonomy.json": "5ddf9d8a1036f01fd201288846fe56bb7455e67c747616cece840e7f51407830"
+  "health-v1-items.json": "a5ec7781844d60fcdb52e2ce19aff3fec00d51f6bff6a108d851d3a22b5646a9",
+  "health-v1-relations.json": "42371d983675a082341fbb6ffabf02c0cdfeae80be47e1a0939547a926b55a75",
+  "health-v1-taxonomy.json": "931ba232d9976c9ce4dc1bbcfe3c11e1e885b22c93ebdf6c2452fc87d8387e69"
  },
  "scoring_version": "me-v3-scoring.5"
 }

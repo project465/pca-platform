@@ -1,20 +1,20 @@
 {
  "schema_version": "edu-v1-bank-lock.1",
  "core": "EDU_CORE_V1",
- "item_bank_version": "EDU_V1_ITEM_BANK_V1.4",
+ "item_bank_version": "EDU_V1_ITEM_BANK_V1.5",
  "note": "교육 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=EDU_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
-  "edu-industry-packs.json": "581d15b6e62e3bdd55d44c8c26acddadbb9d4e8a75654c857838df22822ecd6f",
-  "edu-role-packs.json": "08f4fa604f3aef0fba1f1532ffa87184bd273b0ace884b9d897338e651abd6e8",
+  "edu-industry-packs.json": "6fd3ec134887601018dc1397655117bab00c40505341e3927c491a4e416761b2",
+  "edu-role-packs.json": "1639fb3c963eaa37810b55708305169178431baba436b914d91251700c0f1435",
   "edu-v1-checklist-additions.json": "1db72d49cae4f4e0c9c73c9d12a2e3bcd9f616193e7dfae317179963277e90b5",
   "edu-v1-checklists.json": "2cbdbc6cd96bd064f7d09aa7f3eb7b3c1248827bde35e0dc64132cdf7a7cd8ce",
   "edu-v1-common-additions.json": "b79868b28e62dc3c4d4903297788ba9d20773fd87ccdd5790baaaa27a1e21b3e",
   "edu-v1-constructs.json": "9b3916b2a22d205449965fa9f5451980eb37774e07f12c4c82592255410ba3b6",
-  "edu-v1-domains.json": "4cb6c592251fc336177f6e4cfc71ae5b1f325e65f8f1a7cf58e84c137ff972be",
+  "edu-v1-domains.json": "e043ba829c3c4a1427401d05dfa171036ecbad8853b312ed5360f169d9aad427",
   "edu-v1-items-blueprint.json": "33e7d4057be8d765643659e771b1693e2fa321308f1f184f55313d208270cf35",
-  "edu-v1-items.json": "7fa958046825a82bf7192da701be5134a9ef83c9f5b776b4418dfbc7817c5f01",
-  "edu-v1-relations.json": "f01cbbd1a622ba80e6d3a9ce0a7ecfb7917d9fa95d4b358d6f228a9b7aa8a676",
-  "edu-v1-taxonomy.json": "404f67f9a743b082ff2e198e8a27446c3d17d6d63d6ce1999121d01b7fa42829"
+  "edu-v1-items.json": "a103a3295539bb5d284def401e51fbf7994878bcc8df7d1a939c07de51e433af",
+  "edu-v1-relations.json": "b317aee3d204b9d356b58cbab5c74625d409c5f76fc13092d00223573f0c0bbc",
+  "edu-v1-taxonomy.json": "838fb6b1b205c1b696d3f30f846ad80ef622625bb641f54cff15e59b084f7bdc"
  },
  "scoring_version": "me-v3-scoring.5"
 }

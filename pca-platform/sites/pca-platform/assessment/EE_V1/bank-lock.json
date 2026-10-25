@@ -1,19 +1,19 @@
 {
  "schema_version": "ee-v1-bank-lock.1",
- "item_bank_version": "EE_V1_ITEM_BANK_V1.6",
+ "item_bank_version": "EE_V1_ITEM_BANK_V1.7",
  "note": "전기전자 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=EE_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
-  "ee-industry-packs.json": "dcd3fdebaf601e382ce540c3bab1e68e4eeb58fba11e0833b17a22d60b76b94d",
-  "ee-role-packs.json": "18789b48b3838dc8e18556246f9ed903dd78034f9cb8ab42decfbd099d00f610",
-  "ee-v1-checklist-additions.json": "91c1ff0f29c97fc1929e1ad9e476250f1ce2d03b768fb380a30b0021b16f891a",
-  "ee-v1-checklists.json": "289473683e7c6d99acd96e11b2332efdd58972321aaca4e4d9584a6f08ebc011",
+  "ee-industry-packs.json": "2170acaed56bb7ebf253b6ebb63c1df877760e5db6420a02a191cfce42ec9d1b",
+  "ee-role-packs.json": "a57f58aa10633cd4d3df8b5a475adf2d30127c688467efeb15115c0e15f9db7c",
+  "ee-v1-checklist-additions.json": "bf332cde405445a13af7e6207fb4ab2fc97752283b781186c7f557d85e819483",
+  "ee-v1-checklists.json": "e952d811b07363b066c18356792b9a5260f6dc6c15da5ab0eee0f05d07d47657",
   "ee-v1-common-additions.json": "293d463558257f2d0dc46fb4a3a22d92f62af50e992416c5478c92424e0b76b3",
   "ee-v1-constructs.json": "91ff645931afdaa42cc73b48b5284fe0f866c1bbeba5a089db14b364ff6c49e2",
-  "ee-v1-domains.json": "d6cbea844e5e8edcacb5b0e19ca06e4e7df064dfa6050f192f769b4d9df851ff",
+  "ee-v1-domains.json": "6d33295e7822f284fe6e2df8f98b1f08d997c6fdf4efd4baf892a3cb52a7696f",
   "ee-v1-items-blueprint.json": "4311be046a62c8474854460e6767b6eccab86849641da8dc2b981c175a1f20eb",
-  "ee-v1-items.json": "fa75fb11ccd8c7477277f2b8afa4692cacd230629220357847fe5536df0ee11b",
-  "ee-v1-relations.json": "c553d689ce20e8199edb971c1319e17c28ae65d910385f22c53d7eaeafa5121c",
-  "ee-v1-taxonomy.json": "720e03c9b7810e3174308044de423c1ac8dcc6f328c81d13496a162c3a4686ac"
+  "ee-v1-items.json": "9ca95d69e23a1571e2f82a6cab85defc1c4a362c15d217221efffbb1dd8d146d",
+  "ee-v1-relations.json": "aa64af7ef57e7e05a6021021133b8cb71b5b8e26f5de654d9f234f519e4f9781",
+  "ee-v1-taxonomy.json": "deceabe2d6cf3b25596efd3886fb466c56a647b1913cff6a8b3328fa17a2aa8b"
  },
  "scoring_version": "me-v3-scoring.5"
 }

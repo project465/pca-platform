@@ -1,20 +1,20 @@
 {
  "schema_version": "psy-v1-bank-lock.1",
  "core": "PSY_CORE_V1",
- "item_bank_version": "PSY_V1_ITEM_BANK_V1.5",
+ "item_bank_version": "PSY_V1_ITEM_BANK_V1.6",
  "note": "심리학 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=PSY_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
-  "psy-industry-packs.json": "8653b3c749d4bbf8b9358d47b7e5ff8cd0f168f2609ace1e143ff54ef10f520c",
-  "psy-role-packs.json": "9c8841329683ff64e5841533fe5eeddf2015337bc6ab0c462b80c0e35fe42b1b",
+  "psy-industry-packs.json": "693070190a040a4dff9baaefaaefbdef6a3bf6feac10e547e9dc4c5a3f86325c",
+  "psy-role-packs.json": "942ceff6f1f2a0c2d04b3ec0b711a835abed76b64eb8d43aff04ab853dce1935",
   "psy-v1-checklist-additions.json": "8233f53866846ea361ac6374ae2785d3d15255f74b6f2eeff3afc42ce2a38db5",
   "psy-v1-checklists.json": "8e2e744795dc74e893fe25710f85402e400055ccdbb9d49bf72a12e608f73659",
   "psy-v1-common-additions.json": "bd469b148cf851428a5bc1c7441f97ba3924919a69e93c7f73236c804bf9590a",
   "psy-v1-constructs.json": "2ea36e55fe847826ad57b5ed8fde4e0c46ce9ff33e48183dd7326d78ba2f4c0f",
-  "psy-v1-domains.json": "4dce51c64345467c824f2a5fd0c40898950bfa1856d075e68b22208bc54540b8",
+  "psy-v1-domains.json": "78d96679db847ae6ed00f2aee6ed7a926cc17eb4aaf2d23981f1ac32bb733c13",
   "psy-v1-items-blueprint.json": "df56d33d4d1b4d6b4dc0451eca4dfa7502a9f863fa1c4e582cc7b8c0b1321aa7",
-  "psy-v1-items.json": "47e3fd0e6e6ffe25c8a9be39d4e9b1a89e38af7bfb843e98a9191ee061e87b87",
-  "psy-v1-relations.json": "4b579d45139d2157f9da50840fc44ec62408fa522ee6ac2b7459da450c0216f3",
-  "psy-v1-taxonomy.json": "adf8e40c47ee159f10a4fa1b128dcdfa695a108d0148aa20a9919f2efab4d366"
+  "psy-v1-items.json": "7dd1d7212ff2b6569984646e342384fa8e5b728f873627c005cfaa78c1dd3222",
+  "psy-v1-relations.json": "a0adb0eb6eff22b557484604bbdbcffdee814f35ab7bbfe75c626efd6835dcf3",
+  "psy-v1-taxonomy.json": "bc638045f6fc1f4c74e1ccd6fadbc1101014ea02373ed5d4ee1eba71a149870b"
  },
  "scoring_version": "me-v3-scoring.5"
 }

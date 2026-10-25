@@ -2,7 +2,7 @@
  "schema_version": "edu-v1-items.1",
  "core": "EDU_CORE_V1",
  "assessment_version": "EDU_V1",
- "item_bank_version": "EDU_V1_ITEM_BANK_V1.4",
+ "item_bank_version": "EDU_V1_ITEM_BANK_V1.5",
  "note": "문면을 손으로 썼다. 원본은 이 파일이다: 문면을 고칠 곳이 여기이고, 고친 뒤 `CORE=EDU_CORE_V1 npm run v3:wording` 과 `v3:items` 를 돌린다. 영역에 붙지 않는 자리의 번호는 기계공학 Core 와 같다",
  "level_options": [
   "해 본 적 없다",

@@ -1,20 +1,20 @@
 {
  "schema_version": "bt-v1-bank-lock.1",
  "core": "BT_CORE_V1",
- "item_bank_version": "BT_V1_ITEM_BANK_V1.6",
+ "item_bank_version": "BT_V1_ITEM_BANK_V1.7",
  "note": "바이오·생명공학 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=BT_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
-  "bt-industry-packs.json": "d931d58a78c3fb02050d6b6e88c11ee7d3d1e6767aadf221eb052ccdacc23c67",
-  "bt-role-packs.json": "09523a717029df529daf5d58a561cf9239030233ddb27ea5d2acac2c57be6f24",
+  "bt-industry-packs.json": "b61d0204f0b3b98dfc660555448d66900441248aa42e51bc958871ca1e0c0148",
+  "bt-role-packs.json": "bc0e456ab6b73bfa1c6ba23ebd00048e038afc7b7abb4500367606e462004ab2",
   "bt-v1-checklist-additions.json": "7c5bade8f6ae34cd5a57b865a23320f8cce39d78a866bada4d1b002c726a2b20",
   "bt-v1-checklists.json": "33ea178822dca864bdf096efdd2d642d36b94321c4305c2663879a6c65d78872",
   "bt-v1-common-additions.json": "4954b71efe64bf908b2352711c9df88791d6b6033270693d0a6f40610e936ede",
   "bt-v1-constructs.json": "fdf6bbf4918b6dbdad11547c03ce74e5f30881376a0d6b9252646681bb424438",
-  "bt-v1-domains.json": "0a035dc3a4cf2c4d42c6e3aae582d4669c79c2f0148cc4a3f26ba7b7f6cf61ee",
+  "bt-v1-domains.json": "d03614db374c3df5532bdcd4685e95d654efc9fe31aa1b65742684318cd91529",
   "bt-v1-items-blueprint.json": "a6764a7d40977e3ac424967cee4249cbac0dabbe96412623a419cde462820d9a",
-  "bt-v1-items.json": "e42396b5e73db6e50c6d564351814516872d439e00180b2436cdc0bb0a07f459",
-  "bt-v1-relations.json": "ed1812ba9adea5dbf03247d53e877f46681ad01219b0703eddb7c3ac0f2babc1",
-  "bt-v1-taxonomy.json": "2ec661e812c0aa561fcaf5d8c52c2f8a8dc9c06298422e5aab37627a45aad70c"
+  "bt-v1-items.json": "b9b3d8d865339586592999a0e15397987a0891a7feb1e12ea0051b17f15c0215",
+  "bt-v1-relations.json": "5bd188c05af5866c10791765b1db6cdaaa7355bec5a3000c6d33de06dd3c8be5",
+  "bt-v1-taxonomy.json": "ded6879006ac99258db8c790a2459550717a25cf8cd0563801bf6a4f5b201664"
  },
  "scoring_version": "me-v3-scoring.5"
 }

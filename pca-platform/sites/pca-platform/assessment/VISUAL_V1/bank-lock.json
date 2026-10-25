@@ -1,20 +1,20 @@
 {
  "schema_version": "cm-bank-lock.1",
  "core": "VISUAL_CORE_V1",
- "item_bank_version": "VISUAL_V1_ITEM_BANK_V1.5",
+ "item_bank_version": "VISUAL_V1_ITEM_BANK_V1.6",
  "note": "문면을 고치면 이 지문이 어긋난다. 그때 판본을 올리고 BANK=update 로 다시 적는다",
  "files": {
-  "visual-industry-packs.json": "2d7f04334d1a6534e0456133f112b50c4b32c1c815f84a0d1b7017a565149bc9",
-  "visual-role-packs.json": "b4c718495c37b20d0efdce2956cfab96a3c9bbacea1800892b4f5a6fb89da261",
+  "visual-industry-packs.json": "12d3301eae9b2b64915a832caaed0ca3a09e54712c5f439d6481f68907340e21",
+  "visual-role-packs.json": "d6c06b413787a365017a85d3c1d445aee48f1bf9ca21375d0b1fedbcd1f35bf2",
   "visual-v1-checklist-additions.json": "513ba3ac8376d40d363bfc2dde435b9d92d6579d75149b02afe613b5e4b1443a",
   "visual-v1-checklists.json": "db0bd5e761883488f5483d898821da1bc25961411201def22bc918c078b2a34f",
   "visual-v1-common-additions.json": "6fe7bbcb1ffda89864057615ebbe17b610bef8e289db902e0051ca63bcbded7b",
   "visual-v1-constructs.json": "6f07825bf180737597d0885f50c56cf58a1ffcba50eae4f64753c608c261a02e",
-  "visual-v1-domains.json": "b8df58ff4fda09d2e285b7ba96542054b2c4bab67613bbaa0dde5976126abe4e",
+  "visual-v1-domains.json": "fa777aaa8b86ea49b6f0571e01523d9ce50f1552c8ff13e39c4709f7877e7469",
   "visual-v1-items-blueprint.json": "ce081e11c62c7f066c36589069f05064843c3b13b631be1ff941198ce6a13b75",
-  "visual-v1-items.json": "c816ba9e6f4f11247056fcd018930840dd564f6d1a1375499d5350b642090b8b",
-  "visual-v1-relations.json": "0241850909b6c85e941db8e1fa2f880b43b5f8a7e1b25b5d85b930dc9d2a01a0",
-  "visual-v1-taxonomy.json": "66c0a23f1ece0d8ad66c5a50b750dd8d3b5a6df522a30c085ea081b3a8d0651a"
+  "visual-v1-items.json": "2634a82b863b02b8ef3a4a7998863d31f1c302d60ce1054de2327abac4951923",
+  "visual-v1-relations.json": "40c6ae86dc3f8970c674c92906b2be3af6f09269fdb23f05dc24313266f8d60f",
+  "visual-v1-taxonomy.json": "6bce04485b83a184dbbc1f86fe3e9947d71642e9b41d23e6bac5f12ec222aff9"
  },
  "scoring_version": "me-v3-scoring.5"
 }

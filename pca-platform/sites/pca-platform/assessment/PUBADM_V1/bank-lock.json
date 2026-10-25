@@ -1,20 +1,20 @@
 {
  "schema_version": "pubadm-v1-bank-lock.1",
  "core": "PUBADM_CORE_V1",
- "item_bank_version": "PUBADM_V1_ITEM_BANK_V1.6",
+ "item_bank_version": "PUBADM_V1_ITEM_BANK_V1.7",
  "note": "행정 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=PUBADM_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
-  "pubadm-industry-packs.json": "3b5194758a40016d1203e95acf1b2bb79f8ba6044a5345891c4b8d4187a03945",
-  "pubadm-role-packs.json": "381a55f4478e03bd72268b9140592ebb7da7243f3a323cdb2ee363ff0b738ef6",
+  "pubadm-industry-packs.json": "566b3d4e3efbc4846c32e131c152680703f906635a8c37ee767285f074e30c6b",
+  "pubadm-role-packs.json": "e7b3aa4e19586141a4f20b26012a91e6e2c94cfb4ec235303eac39cef1266058",
   "pubadm-v1-checklist-additions.json": "1a3575d63205097c0888505b3d2d602416bba751cedb3b38ee30aef14103565b",
   "pubadm-v1-checklists.json": "80e7ac43871cc348439543975d9a6a387454ef7793c34cdf5de36059f79f04f1",
   "pubadm-v1-common-additions.json": "955156a4770a52a9f19958514b9df17733678d12f2a488f1a44a90c1a11304f7",
   "pubadm-v1-constructs.json": "82cb4a714ea8dc26a05f2da1f338e18ffbd11e5af02ec12bb392191bb92cf628",
-  "pubadm-v1-domains.json": "24f8fbcaf5daa5ebc94c1bdd3160da23d47c17b474c2a28a2bafa441469deec3",
+  "pubadm-v1-domains.json": "ce147aa58e4c5083c4ad6c028959b77b44b650a65c0e3572c9cd8451ab07b563",
   "pubadm-v1-items-blueprint.json": "1a6a3febae46f42f5f658049be7c51c5bbbf0a9631bc3258288d71567b99302d",
-  "pubadm-v1-items.json": "6883195975fe2adac615995cea19de34d7ddb2aa1a971dfa938c54859946946e",
-  "pubadm-v1-relations.json": "3d88412fcb5f01d8f196bae805fbe474bab06bf89f513a28de2199eae46d514c",
-  "pubadm-v1-taxonomy.json": "425154f663781054363acfa120aaf135d86263d06d21045a6d333b14f240aaee"
+  "pubadm-v1-items.json": "2474588da548dfc899aa8a32af8cdfa34122d2c96099728a5f9c4c5162a650d0",
+  "pubadm-v1-relations.json": "52ca154ba81d8c4f1e9f40c91904c0145709ebafbe0ed4400e8866ac2fce762d",
+  "pubadm-v1-taxonomy.json": "085c0e9eb99670a4edd5d696975425918ce2b161f0adbe1a7b5d4912147e6556"
  },
  "scoring_version": "me-v3-scoring.5"
 }

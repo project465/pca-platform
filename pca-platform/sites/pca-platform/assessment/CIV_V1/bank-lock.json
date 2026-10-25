@@ -1,20 +1,20 @@
 {
  "schema_version": "cm-bank-lock.1",
  "core": "CIV_CORE_V1",
- "item_bank_version": "CIV_V1_ITEM_BANK_V1.5",
+ "item_bank_version": "CIV_V1_ITEM_BANK_V1.6",
  "note": "문면을 고치면 이 지문이 어긋난다. 그때 판본을 올리고 BANK=update 로 다시 적는다",
  "files": {
-  "civ-industry-packs.json": "cfaee6b4188a232f88ee5df767716fe0c604cadf4f71bc641367c4489be457d9",
-  "civ-role-packs.json": "63daf5907e12b23f09ede38eb6543842afae48472f9632a76247dda3d08a6aea",
+  "civ-industry-packs.json": "ee4f9805f4babbdc4f429169d4a11f73674d0d0f7f1cc83eaadc378eb412bdb7",
+  "civ-role-packs.json": "de4f81f5b2dfc5afe8bb77e7fb62595ccf8622d4e191e2ba7e44c36d2632f95e",
   "civ-v1-checklist-additions.json": "cb27aa9c05e21df2fd6c96871cd6079074ca11cfd58c337cd0feb3b5387955d9",
   "civ-v1-checklists.json": "f40cdcbc489e6f33f79a7a97cf91d914c638c8cd1bef9a8cf6f205c514e219bd",
   "civ-v1-common-additions.json": "f2c7262ab8224e1b8a0f2ec5840ffc3aa6a8dad0f64a6241b027a223a5c56181",
   "civ-v1-constructs.json": "0101968a394890bb6bbe9bde025b278e8a9343755b0f2d64553f0149647a4890",
-  "civ-v1-domains.json": "9935bbef47d736293f0efd1d4ff9feaa5c55aad83ccaf58f4ef44e9df6150930",
+  "civ-v1-domains.json": "91218a93b7c68c9f3820dd8d6d22e928e2f4d5d2cd00194c2a3de3a052c963a4",
   "civ-v1-items-blueprint.json": "2f865fc0e05ffb0f21ccc2b4c97af0911de082dfe95d7753a740bbc3ab80ad7c",
-  "civ-v1-items.json": "445d7f5932227232044939150b01f9b442c61867a339bbe54781c22bb0f32d0a",
-  "civ-v1-relations.json": "3663f4a4e57b19a48612dda8a0c1c4eeb7ca63f5dd2deeb5b917a50384da990c",
-  "civ-v1-taxonomy.json": "49d8da2ec88f2bd48ad1dc80623e67bc2425fa67fb49ba2ec12f6eb3a44a05c0"
+  "civ-v1-items.json": "aa236f1a05310601fb3f3145e161a206af2490da69b1978b39eccfb05e0091d7",
+  "civ-v1-relations.json": "7d7911989a1bf7041c296aefb05d0a6c6a63a4db983c7e96e3d3335259e98711",
+  "civ-v1-taxonomy.json": "c69e8758f501266cfdee1c99cd87d494e2940f0050eb3136c41d7ec1756d0e06"
  },
  "scoring_version": "me-v3-scoring.5"
 }

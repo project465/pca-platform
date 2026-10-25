@@ -1,20 +1,20 @@
 {
  "schema_version": "law-v1-bank-lock.1",
  "core": "LAW_CORE_V1",
- "item_bank_version": "LAW_V1_ITEM_BANK_V1.5",
+ "item_bank_version": "LAW_V1_ITEM_BANK_V1.6",
  "note": "법·경찰 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=LAW_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
-  "law-industry-packs.json": "7b7c4af0f75bcf34a5e9aff65dc256cca1796ff363e14f232a6638588543a2a7",
-  "law-role-packs.json": "54b124c9bc4b9f3ec687690f82e5b7bc134b5e0f8d0cf6304df7b546a9c7146c",
+  "law-industry-packs.json": "25e371c0d1c251895123090419d052e29be1fd38d47a222816c91b22f3ecd4df",
+  "law-role-packs.json": "cca19d35a707f2de5cb922d6a49c11ccc1c4e18989b3af8fe74c02ba7e6dd2b6",
   "law-v1-checklist-additions.json": "95bf8b2a44e2a7a0ce2b4f8cbef7b261e60b9770e5a89135ac82fe7b5bcd137d",
   "law-v1-checklists.json": "ed2f1d3cdadd2b377f79dfeed0991537158697bdd7004c7dd77016fcced23d19",
   "law-v1-common-additions.json": "d847f3393556524bc97f8e9eb3d6b053424c959df66643667712084e9915b8f5",
   "law-v1-constructs.json": "5618cff847bec644354634b0028d7958d67b83a84a5381de815aeda0905bf314",
-  "law-v1-domains.json": "bc01ef858680a34e2b98fee323fb37ccd9bd53e2546692c3e3aa2c70f5faf101",
+  "law-v1-domains.json": "cdb053160790610eb1abe5038f8bdcbe980d899fbcc3352d9261766b38d5d1c6",
   "law-v1-items-blueprint.json": "f43443a6c47af56fdacec2f91066fa1fc712cb467666d466f1e84897392d911a",
-  "law-v1-items.json": "467e4a67e3ba1e9ea22b3392726b474fbfcedbde3803258e8cf33ecd42433037",
-  "law-v1-relations.json": "680b2a9ed197acba3e647bcb2a7a4593ae9e2e2fab458fab1daee4bcad239392",
-  "law-v1-taxonomy.json": "fadc3790f1ed7e4eedbb763c9fc9651c1128243322a7e6f52edf1bdec3827b5b"
+  "law-v1-items.json": "1fe76091354bec7d436d054fda755920b25dda9b5dd9e1f7b7a00efeed6a3d56",
+  "law-v1-relations.json": "20ce331eb7a0c1275c60854801d53b5c72c1896063b4cd967db45896096227db",
+  "law-v1-taxonomy.json": "835db674c00713a715a342b827bec32c1b5f712f1aa832966294d6f0c5ab92d4"
  },
  "scoring_version": "me-v3-scoring.5"
 }
