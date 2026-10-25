@@ -2,12 +2,15 @@
  * 문장을 만드는 작은 도구와 코드 → 말 표.
  *
  * 문장의 주어는 학생이거나 학생이 한 일이다. 측정 쪽 이름은 이름표로만 쓴다.
- * 끝맺음은 `~입니다` · `~합니다` 로 쓰고, 조사는 앞말의 받침을 보고 고른다.
+ * 사실은 `~입니다` · `~합니다`, 까닭은 `~이에요` · `~해요`, 할 일은 `~해 보세요` 로 맺어
+ * 한 문단이 `…니다.` 로만 이어지지 않게 한다(docs/metri/report-writing-rules.md 3절).
+ * 조사는 앞말의 받침을 보고 고른다.
  */
 import type { Axis } from "../scoring/types";
 import type { Action, Gap } from "../result/model";
 import { withJosa } from "../result/josa";
 import type { DomainDef } from "./types";
+import { STEP_WORD, ZONE_WORD } from "./derive";
 
 export const j = withJosa;
 
@@ -27,6 +30,8 @@ export function orJoin(xs: string[]): string {
 }
 export const dot = (xs: string[]) => xs.filter(Boolean).join(" · ");
 export const q = (s: string) => `‘${s.replace(/^‘|’$/g, "")}’`;
+/** 따옴표로 감싸고 조사를 붙인다: ‘강점 영역’이 */
+const quoteJ = (s: string, pair: Parameters<typeof withJosa>[1]) => `‘${s}’${withJosa(s, pair).slice(s.length)}`;
 /** 셋까지는 인용하고 나머지는 수로 */
 export function list3(xs: string[]): string {
   if (!xs.length) return "";
@@ -48,15 +53,16 @@ export const GAP_KIND: Record<Gap["kind"], string> = {
   AXIS: "이 판단을 직접 해 본 장면이 아직 나오지 않았습니다",
   PARTIAL_EVIDENCE: "해 본 일은 보이고, 직접 정했다고 말하려면 근거가 하나 더 필요합니다",
 };
+/** 왜 그 자리가 필요한지. 앞 문장(GAP_KIND)이 `…니다` 로 끝나므로 여기는 `…이에요` 로 맺는다 */
 export const GAP_WHY: Record<Gap["why"], string> = {
-  REQUIRED_FOR_DOMAIN: "이 영역 일을 맡으면 거의 늘 하게 되는 판단입니다",
-  BLOCKS_EVIDENCE: "여기까지 채우면 이 영역은 근거를 갖춘 영역이 됩니다",
-  NEEDED_BY_INDUSTRY: "고르신 산업이 눈여겨보는 판단입니다",
-  NEEDED_BY_ROLE: "고르신 직무가 눈여겨보는 판단입니다",
+  REQUIRED_FOR_DOMAIN: "이 영역 일을 맡으면 거의 늘 하게 되는 판단이에요",
+  BLOCKS_EVIDENCE: `여기까지 채우면 이 영역이 ${quoteJ(ZONE_WORD.Z1_EVIDENCE_ESTABLISHED.tag, "이가")} 돼요`,
+  NEEDED_BY_INDUSTRY: "고르신 산업에서 눈여겨보는 판단이에요",
+  NEEDED_BY_ROLE: "고르신 직무에서 눈여겨보는 판단이에요",
 };
-/** 반쯤 선 판단은 영역 묶음을 바꾸지 않는다. 채우면 단계가 올라간다 */
+/** 반쯤 선 판단은 영역이 들어간 자리를 바꾸지 않는다. 채우면 단계가 올라간다 */
 export const gapWhy = (g: Pick<Gap, "kind" | "why">) =>
-  g.kind === "PARTIAL_EVIDENCE" ? "근거를 하나 더 붙이면 ‘기준까지 직접 결정’으로 올라갑니다" : GAP_WHY[g.why];
+  g.kind === "PARTIAL_EVIDENCE" ? `근거를 하나 더 붙이면 ${quoteJ(STEP_WORD[3].tag, "으로")} 올라가요` : GAP_WHY[g.why];
 export const HORIZON_DAYS: Record<Action["horizon"], string> = { NOW: "30일", NEXT: "60일", LATER: "90일" };
 
 /** 할 일의 짧은 이름(표와 간트 칸) */
@@ -84,28 +90,28 @@ export function actionLine(a: Action, dn: string, def: DomainDef | undefined): s
   switch (a.code) {
     case "BUILD_OUTPUT":
       return art.length
-        ? `다음 ${dn} 과제는 끝까지 해서 ${j(orJoin(art), "을를")} 남기고, 왜 그렇게 정했는지 한 줄 붙여 두세요.`
-        : `다음 ${dn} 과제에서 정한 내용을 문서 한 장으로 남겨 두세요.`;
+        ? `다음 ${dn} 과제는 끝까지 해서 ${j(orJoin(art), "을를")} 남기고, 왜 그렇게 정했는지 한 줄 붙여 보세요.`
+        : `다음 ${dn} 과제에서 정한 내용을 문서 한 장으로 남겨 보세요.`;
     case "ADD_VERIFICATION":
       return vt.length
         ? `${dn}에서 낸 결과를 ${j(orJoin(vt), "과와")} 나란히 놓고, 차이와 그 까닭을 표 한 장에 적어 보세요.`
         : `${dn}에서 낸 결과를 기준값과 나란히 놓은 표 한 장을 만들어 보세요.`;
     case "FILL_AXIS":
       return l2
-        ? `다음 ${dn} 과제에서 ${q(l2)} 같은 일을 직접 맡고, 고른 까닭을 한 줄 적어 두세요.`
-        : `다음 ${dn} 과제에서 ${a.axis ? AXIS_NEED[a.axis] : "한 가지"}를 직접 맡아 보세요.`;
+        ? `다음 ${dn} 과제에서 ${q(l2)} 같은 일을 직접 맡고, 고른 까닭을 한 줄 적어 보세요.`
+        : `다음 ${dn} 과제에서 ${j(a.axis ? AXIS_NEED[a.axis] : "한 가지", "을를")} 직접 맡아 보세요.`;
     case "DEEPEN_OWNERSHIP":
       return l2
         ? `이미 해 본 ${dn} 과제에서 ${q(l2)}에 해당하는 일을 떠올려, 그때 직접 정한 것을 세 줄로 적어 보세요.`
         : `이미 해 본 ${dn} 과제에서 직접 정한 것을 세 줄로 적어 보세요.`;
     case "TRY_SHORT_EXPERIENCE":
-      return `${j(dn, "을를")} 다루는 짧은 과제나 스터디 하나를 해 보고, 한 일과 직접 정한 것을 다섯 줄로 적어 두세요.`;
+      return `${j(dn, "을를")} 다루는 짧은 과제나 스터디 하나를 해 보고, 한 일과 직접 정한 것을 다섯 줄로 적어 보세요.`;
     case "STUDY_NEXT":
-      return `${dn} 수업이나 교육을 하나 듣고, 배운 것을 작은 과제에 한 번 써 본 뒤 남은 것을 적어 두세요.`;
+      return `${dn} 수업이나 교육을 하나 듣고, 배운 것을 작은 과제에 한 번 써 본 뒤 손에 남은 것을 적어 보세요.`;
     case "RECHECK_DIRECTION":
-      return `${j(dn, "을를")} 앞으로도 진로로 둘지 정하고, 그 까닭을 한 줄 적어 두세요.`;
+      return `${j(dn, "을를")} 앞으로도 진로로 둘지 정하고, 그 까닭을 한 줄 적어 보세요.`;
     case "EXPLORE_BROADLY":
-      return "관심이 높게 나온 영역 하나를 골라 수업이나 교내 과제로 짧게 해 보고, 무엇을 했고 무엇을 정했는지 다섯 줄로 적어 두세요.";
+      return "관심이 높게 나온 영역 하나를 골라 수업이나 교내 과제로 짧게 해 보고, 무엇을 했고 무엇을 정했는지 다섯 줄로 적어 보세요.";
     case "WRITE_UP": {
       const ch = mt.chain ?? [];
       return ch.length
@@ -138,8 +144,11 @@ const isSyl = (c: string) => { const k = c.charCodeAt(0); return k >= H0 && k <=
 const jong = (c: string) => (c.charCodeAt(0) - H0) % 28;
 const setJong = (c: string, jg: number) => String.fromCharCode(c.charCodeAt(0) - jong(c) + jg);
 
-/** `확정한다` → `확정합니다` · `있다` → `있습니다` · `경로이다` → `경로입니다` */
+/** `확정한다` → `정합니다` · `있다` → `있습니다` · `경로이다` → `경로입니다` */
 export function polite(s0: string): string {
+  return plainVerb(politeRaw(s0));
+}
+function politeRaw(s0: string): string {
   const s = s0.trim().replace(/[.。]$/, "");
   if (!s.endsWith("다") || s.length < 2) return s ? `${s}.` : s;
   if (/아니다$/.test(s)) return `${s.slice(0, -3)}아닙니다.`;
@@ -147,6 +156,8 @@ export function polite(s0: string): string {
   if (s.endsWith("이다") && s.length > 2) return `${s.slice(0, -2)}입니다.`;
   if (s.endsWith("는다")) return `${s.slice(0, -2)}습니다.`;
   const prev = s[s.length - 2];
+  /* 따옴표나 괄호 뒤의 `다` 는 이름씨에서 `이` 가 빠진 꼴이다(‘어느 계정인가’다) */
+  if (/[’'"”)\]」』]/.test(prev)) return `${s.slice(0, -1)}입니다.`;
   if (!isSyl(prev)) return `${s}.`;
   const jg = jong(prev);
   if (jg === 4) return `${s.slice(0, -2)}${setJong(prev, 17)}니다.`;
@@ -162,12 +173,55 @@ export function polite(s0: string): string {
   }
   return `${s.slice(0, -1)}습니다.`;
 }
+/**
+ * 사전 문장에 섞인 설계 문서 동사를 학생에게 하는 말로 바꾼다
+ * (확정합니다 · 세웁니다 · 가릅니다 · 견줍니다 · 섭니다, docs/metri/report-writing-rules.md 3절).
+ * 사전은 고치지 않고 책에 옮길 때만 바꾼다
+ */
+const plainVerb = (s: string) => s
+  .replace(/확정합니다/g, "정합니다")
+  .replace(/(^|\s)세웁니다/g, "$1정합니다")
+  .replace(/(지|자기가|직접|스스로) 가릅니다/g, "$1 정합니다")
+  .replace(/(^|\s)가릅니다/g, "$1가려냅니다")
+  .replace(/견줍니다/g, "비교합니다")
+  .replace(/(^|\s)안 섭니다/g, "$1서지 않습니다")
+  .replace(/(^|\s)섭니다/g, "$1서 있습니다")
+  .replace(/(^|\s)끊습니다/g, "$1멈춥니다");
 /** 받침 없이 끝나는 형용사 줄기의 끝 글자 · 낱말 */
 const ADJ_LAST = new Set([..."하르크쁘프싸짜쓰되"]);
 const ADJ_STEM = ["느리", "흐리", "더디", "어리", "여리", "나쁘", "기쁘", "바쁘", "예쁘", "아프"];
 
-/** 여러 문장짜리 `~다.` 문단을 문장마다 높임으로 */
-export const politePara = (s0: string) => s0.trim().split(/(?<=다\.)\s+/).map(polite).join(" ");
+/** 여러 문장짜리 `~다.` 문단을 문장마다 높임으로 나눈다. 목록(`ul`)에 한 줄씩 넣을 때 쓴다 */
+export const politeList = (s0: string) => s0.trim().split(/(?<=다\.)\s+/).filter(Boolean).map(polite);
+
+/**
+ * 여러 문장짜리 `~다.` 문단을 문장마다 높임으로. `…니다.` 가 세 번 이어지는 자리는
+ * 셋째 문장을 `…요.` 로 바꿔 끊는다(바꿀 꼴을 모르면 그대로 둔다)
+ */
+export const politePara = (s0: string) => {
+  let run = 0;
+  return politeList(s0).map((t) => {
+    if (!/니다\.$/.test(t)) { run = 0; return t; }
+    if (++run < 3) return t;
+    const y = yo(t);
+    if (y) run = 0;
+    return y ?? t;
+  }).join(" ");
+};
+
+/** `…니다.` 한 문장을 `…요.` 로. 확실한 꼴만 바꾸고 나머지는 null */
+export function yo(t: string): string | null {
+  const m = /^([\s\S]*?)(입니다|합니다|됩니다|있습니다|없습니다|않습니다|갑니다|봅니다|줍니다|납니다|옵니다)\.$/.exec(t.trim());
+  if (!m) return null;
+  const [, head, end] = m;
+  if (end === "입니다") {
+    const last = head[head.length - 1];
+    if (!last || !isSyl(last)) return null;
+    return `${head}${jong(last) ? "이에요" : "예요"}.`;
+  }
+  const to: Record<string, string> = { 합니다: "해요", 됩니다: "돼요", 있습니다: "있어요", 없습니다: "없어요", 않습니다: "않아요", 갑니다: "가요", 봅니다: "봐요", 줍니다: "줘요", 납니다: "나요", 옵니다: "와요" };
+  return `${head}${to[end]}.`;
+}
 
 /** `확정한다` → `확정하는` (뒤에 `일` 을 붙여 쓴다) */
 export function adnominal(s0: string): string {

@@ -3,17 +3,26 @@
  */
 import type { Inputs } from "./types";
 import { AXES, BAND_WORD, EXP_WORD, STEP_WORD, ZONE_WORD, ZONES, type Bucket, type X } from "./derive";
-import { C, donut, hbars, quadrant, ring } from "./charts";
-import { DC, E, H, IC, LVC, PAL, T, ZC, band, chips, note, pip, ul, zoneTag, type Page } from "./kit";
+import { C, LEVEL_KO, donut, hbars, quadrant, ring } from "./charts";
+import { DC, E, H, IC, LVC, PAL, T, ZC, band, chips, howto, note, pip, ul, zoneTag, type Page } from "./kit";
 import { GAP_KIND, gapWhy, actionHead, actionLine, andJoin, askNoun, j, list3, okText, polite } from "./text";
+import type { Gap } from "../result/model";
 
 const P = (title: string, body: string): Page => ({ part: "01", partName: "한눈에 보기", title, body });
 
+/** 공용 문장(text.ts)에 남은 옛 단계·영역 이름을 이 장에서는 학생에게 보이는 이름으로 적는다 */
+const whyOf = (g: Pick<Gap, "kind" | "why">) => gapWhy(g)
+  .replace(/기준까지 직접 결정/g, LEVEL_KO[3]).replace(/근거를 갖춘 영역/g, ZONE_WORD.Z1_EVIDENCE_ESTABLISHED.tag);
+/** svg 를 쪽 안에서 조금 줄여 그 아래 읽는 법 자리를 만든다 */
+const fitH = (svg: string, mm: number) => svg.replace("<svg ", `<svg style="max-height:${mm}mm" `);
+/** 사분면 칸 바탕색(charts.ts quadrant 와 같은 값) */
+const Q_HOT = "#eaf1fd", Q_WARM = "#fdf5e8";
+
 export const BUCKET: Record<Bucket, { head: string; act: string; color: string }> = {
-  A: { head: "지원서에 바로 쓴다", act: "정한 기준과 결과물 이름을 한 문단으로", color: PAL.blue },
-  B: { head: "결과물을 하나 더 남긴다", act: "해 본 일에 비교 기록이나 문서를 붙이기", color: PAL.teal },
-  C: { head: "짧은 과제로 겪어 본다", act: "수업이나 동아리에서 4주짜리 과제 하나", color: PAL.amber },
-  D: { head: "지금은 미뤄 둔다", act: "다른 영역을 먼저 다지고 필요할 때", color: "#9aa6bb" },
+  A: { head: "지원서에 바로 쓰기", act: "정한 기준과 결과물 이름을 한 문단으로", color: PAL.blue },
+  B: { head: "결과물 하나 더 남기기", act: "해 본 일에 비교 기록이나 문서를 붙이기", color: PAL.teal },
+  C: { head: "짧은 과제로 겪어 보기", act: "수업이나 동아리에서 4주짜리 과제 하나", color: PAL.amber },
+  D: { head: "지금은 미뤄 두기", act: "다른 영역을 먼저 다지고 필요할 때", color: "#9aa6bb" },
 };
 
 export function glance(x: Inputs, d: X): Page {
@@ -28,7 +37,7 @@ export function glance(x: Inputs, d: X): Page {
       label: s0.zone === "Z1_EVIDENCE_ESTABLISHED" ? "가장 분명한 강점" : "가장 많이 해 본 영역",
       meaning: ev.artifacts.length
         ? `${d.name(s0.code)}에서는 일을 직접 맡아 했고, 그 결과를 ${j(ev.artifacts[0], "으로")} 남겼습니다.`
-        : `${d.name(s0.code)}에서 직접 해 본 판단이 ${s0.confirmed.length}가지 나왔습니다. 그 일을 보여 줄 결과물은 아직 고르지 않았습니다.`,
+        : `${d.name(s0.code)}에서 직접 해 본 판단이 ${s0.confirmed.length}가지 나왔어요. 그 일을 보여 줄 결과물은 아직 고르지 않았습니다.`,
       fact: said.length ? `고른 항목: ${list3(said)}` : `직접 해 본 판단: ${s0.confirmed.slice(0, 4).map(d.axisName).join(", ")}${s0.confirmed.length > 4 ? ` 외 ${s0.confirmed.length - 4}가지` : ""}`,
       action: s0.zone === "Z1_EVIDENCE_ESTABLISHED"
         ? "06장 자기소개서 재료로 옮겨 한 문단을 써 보세요."
@@ -41,15 +50,15 @@ export function glance(x: Inputs, d: X): Page {
     points.push({
       label: "먼저 채울 판단",
       meaning: `${d.name(g0.domain)}${g0.axis ? `의 ${d.axisName(g0.axis)}` : ""}: ${GAP_KIND[g0.kind]}.`,
-      fact: `${gapWhy(g0)}.`,
+      fact: `${whyOf(g0)}.`,
       action: a ? actionLine(a, d.name(g0.domain), d.def(g0.domain)) : "07장 실행 로드맵에서 언제 할지 정해 보세요.",
     });
   }
   const wish = m.domains.filter((v) => v.interest === "HIGH" && (v.zone === "Z4_INSUFFICIENT_EVIDENCE" || v.zone === "NOT_EXPLORED"));
   if (wish.length) {
     points.push({
-      label: "관심은 높고 근거는 아직 적은 영역",
-      meaning: `${andJoin(wish.slice(0, 3).map((v) => d.name(v.code)))}에 관심이 높다고 답했습니다. 직접 판단한 근거가 아직 적거나, 이번에 자세히 묻지 않은 영역입니다.`,
+      label: "관심은 높은데 아직 해 본 일이 적은 영역",
+      meaning: `${andJoin(wish.slice(0, 3).map((v) => d.name(v.code)))}에 관심이 높다고 답했어요. 아직 해 본 일이 적거나, 이번 검사에서 관심과 해 본 횟수까지만 물은 영역입니다.`,
       fact: (() => {
         const by = new Map<string, string[]>();
         for (const v of wish.slice(0, 3)) { const w = v.experience ? `해 본 횟수 ${EXP_WORD[v.experience]}` : "해 본 횟수 응답 없음"; by.set(w, [...(by.get(w) ?? []), d.name(v.code)]); }
@@ -60,13 +69,13 @@ export function glance(x: Inputs, d: X): Page {
   }
   const names = (z: string) => m.domains.filter((v) => v.zone === z).map((v) => d.name(v.code));
   const goal = [d.goalRole?.name_ko, d.goalInd?.name_ko].filter(Boolean).join(" · ");
+  /* 영역 이름표는 읽는 법 쪽의 색 견본과 같은 모양으로 단다. 칸 왼쪽은 HTML 이다 */
+  const ne = names("NOT_EXPLORED");
   const rows: [string, string][] = ([
-    ["근거 갖춘 영역", names("Z1_EVIDENCE_ESTABLISHED").join(" · ")],
-    ["근거 일부 영역", [...names("Z2_EVIDENCE_INCOMPLETE"), ...names("Z3_EVIDENCE_LOW_INTEREST")].join(" · ")],
-    ["관심 높음 · 경험 적음", names("Z4_INSUFFICIENT_EVIDENCE").join(" · ")],
-    ["이번에 깊게 묻지 않은 영역", names("NOT_EXPLORED").length ? `${names("NOT_EXPLORED").length}곳` : ""],
-    ["목표 직무 · 산업", goal],
-    ["응답 품질", m.response_quality.flag === "OK" ? "고르게 답했습니다" : "다시 볼 응답이 있습니다(02장 끝에서 설명)"],
+    ...ZONES.filter((z) => z !== "NOT_EXPLORED").map((z) => [zoneTag(z), E(names(z).join(" · "))]),
+    [zoneTag("NOT_EXPLORED"), ne.length ? `${ne.length}곳 <span class="mut">(관심과 해 본 횟수만 물음)</span>` : ""],
+    ["목표 직무 · 산업", E(goal)],
+    ["응답", m.response_quality.flag === "OK" ? "고르게 답했어요" : "다시 볼 응답이 있어요(02장 끝에서 설명)"],
   ] as [string, string][]).filter(([, b]) => b);
   const head = s0
     ? `지금 가장 자신 있게 말할 수 있는 영역은 ${d.name(s0.code)}입니다`
@@ -76,7 +85,7 @@ export function glance(x: Inputs, d: X): Page {
   return P("핵심 진단 요약",
     T(E(head), dek) +
     `<div class="pts">${points.map((p, i) => `<div class="pt"><span class="pt-n">${i + 1}</span><div><p class="k">${E(p.label)}</p><h4>${E(p.meaning)}</h4><p class="mut">${E(p.fact)}</p><p class="pt-a"><b>할 일</b> ${E(p.action)}</p></div></div>`).join("")}</div>` +
-    `<table class="tb tb-s"><tbody>${rows.map(([a, b]) => `<tr><th class="w30">${E(a)}</th><td>${E(b)}</td></tr>`).join("")}</tbody></table>`);
+    `<table class="tb tb-s"><tbody>${rows.map(([a, b]) => `<tr><th class="w30">${a}</th><td>${b}</td></tr>`).join("")}</tbody></table>`);
 }
 
 function wrapT(text: string, n: number): string[] {
@@ -106,13 +115,14 @@ export function tree(x: Inputs, d: X): Page {
   };
   const leafX = [92, 268, 444, 616];
   const keys: Bucket[] = ["A", "B", "C", "D"];
-  const svg = `<svg viewBox="0 0 ${Wd} ${Hd}" width="100%" xmlns="http://www.w3.org/2000/svg">
-    ${edge(350, 52, 190, 102, "있음")}${edge(350, 52, 530, 102, "없음")}
+  /* 갈림길마다 질문 하나. 뿌리에서 해 본 일이 확인됐는지 묻고, 그다음 왼쪽은 결과물까지 남았는지, 오른쪽은 관심이 높은지 묻는다(derive.ts bucket 과 같은 차례) */
+  const svg = `<svg viewBox="0 0 ${Wd} ${Hd}" width="100%" xmlns="http://www.w3.org/2000/svg" role="img">
+    ${edge(350, 52, 190, 102, "예")}${edge(350, 52, 530, 102, "아니오")}
     ${edge(190, 150, leafX[0], 214, "예")}${edge(190, 150, leafX[1], 214, "아직")}
     ${edge(530, 150, leafX[2], 214, "예")}${edge(530, 150, leafX[3], 214, "아니오")}
-    ${box(350, 6, 320, 46, C.navy, C.navy, [`내 결과 · ${d.counts.domains}가지 ${x.domainWord}`], { size: 14, color: "#fff", weight: 800 })}
-    ${box(190, 102, 250, 48, "#eef3fc", "#c9d6ee", ["직접 해 본 일이", "확인됐나요?"], { size: 11.5, color: C.navy, weight: 700 })}
-    ${box(530, 102, 250, 48, "#eef3fc", "#c9d6ee", ["관심이나 배울 뜻이", "높게 나왔나요?"], { size: 11.5, color: C.navy, weight: 700 })}
+    ${box(350, 6, 380, 46, C.navy, C.navy, [`${x.domainWord} ${d.counts.domains}곳 · 직접 해 본 일이 확인됐나요?`], { size: 13, color: "#fff", weight: 800 })}
+    ${box(190, 102, 250, 48, "#eef3fc", "#c9d6ee", ["직접 정한 일과 결과물이", "둘 다 있나요?"], { size: 11.5, color: C.navy, weight: 700 })}
+    ${box(530, 102, 250, 48, "#eef3fc", "#c9d6ee", ["관심이나 배울 뜻이", "높다고 답했나요?"], { size: 11.5, color: C.navy, weight: 700 })}
     ${keys.map((k, i) => {
       const b = BUCKET[k], cx = leafX[i], g = groups[k], top = 214;
       const listed = g.length > 8 ? [...g.slice(0, 7), `외 ${g.length - 7}곳`] : g;
@@ -124,14 +134,22 @@ export function tree(x: Inputs, d: X): Page {
         ${svgText(wrapT(b.act, 12), cx, Hd - 34, { size: 9.5, color: C.ink3, weight: 500 })}`;
     }).join("")}
   </svg>`;
+  /* 그림 칸에는 여덟 곳까지만 이름이 들어간다. 넘친 칸만 아래에 전체 이름을 다시 적는다 */
+  const over = keys.filter((k) => groups[k].length > 8);
   return P("결과에 따라 무엇을 할까",
-    T(`${d.counts.domains}가지 ${E(j(x.domainWord, "은는"))} 지금 할 일에 따라 네 갈래로 나뉩니다`, "직접 해 본 일이 나왔는지, 관심이나 배울 뜻이 높은지 두 가지만 물어 나눴습니다. 갈래마다 이번 학기에 할 일이 다릅니다.") +
+    T(`${E(x.domainWord)} ${d.counts.domains}곳을 지금 할 일 네 가지로 나눴습니다`, "직접 해 본 일이 확인됐는지, 관심이나 배울 뜻이 높은지에 따라 나눴어요. 이번 학기에 할 일이 칸마다 다릅니다.") +
     `<div class="wide-art">${svg}</div>` +
-    (() => { const ks = keys.filter((k) => groups[k].length); return `<div class="g${ks.length >= 4 ? 4 : Math.max(ks.length, 2)}">${ks.map((k) => `<div class="b4" style="--c:${BUCKET[k].color}"><b>${E(BUCKET[k].head)}</b><p>${groups[k].map(E).join(" · ")}</p></div>`).join("")}</div>`; })() +
+    howto([
+      ["갈림길", "위 상자의 질문에 ‘예’면 왼쪽, 아니면 오른쪽으로 내려가요"],
+      ["색 칸 제목", "그 칸에 든 영역에서 할 일"],
+      ["큰 숫자", "그 칸에 든 영역 수"],
+      ["칸 맨 아래 작은 글", "할 일을 한 줄로 풀어 쓴 것"],
+    ]) +
+    (over.length ? `<div class="g2">${over.map((k) => `<div class="b4" style="--c:${BUCKET[k].color}"><b>${E(BUCKET[k].head)}</b><p>${groups[k].map(E).join(" · ")}</p></div>`).join("")}</div>` : "") +
     band("이번 학기에는", (() => {
       const ab = groups.A.length + groups.B.length, c = groups.C.length;
-      const try1 = c ? `${E(groups.C[0])}처럼 ‘짧은 과제로 겪어 본다’에 든 ${c}곳 가운데 하나를 4주 과제로 골라 보세요.` : "관심 가는 영역 하나를 골라 4주 과제로 시작해 보세요.";
-      return ab ? `${ab}곳은 이미 해 본 일을 지원서 근거로 정리하면 되는 영역입니다. 여기에 더해 ${try1}` : try1;
+      const try1 = c ? `${E(groups.C[0])}처럼 ‘${E(BUCKET.C.head)}’에 든 ${c}곳 가운데 하나를 4주 과제로 골라 보세요.` : "관심 가는 영역 하나를 골라 4주 과제로 시작해 보세요.";
+      return ab ? `${ab}곳은 이미 해 본 일을 지원서 근거로 정리하면 되는 영역이에요. 여기에 더해 ${try1}` : try1;
     })()));
 }
 
@@ -144,27 +162,42 @@ export function dash(x: Inputs, d: X): Page {
   const all: [string, number, string, string][] = [
     ["기준까지 직접 정한 판단", k.owned, "개", "물은 영역 전체에서"], ["직접 해 본 판단", k.confirmed, "개", "기준까지 정한 것 포함"],
     ["고른 항목", k.items, "개", k.artifacts ? `그중 결과물 ${k.artifacts}개` : "해 본 일과 남긴 것"], ["경험 기록", k.records, "건", "플랫폼에 적어 둔 활동"],
-    ["근거 갖춘 영역", k.z1, "곳", `${k.domains}가지 ${x.domainWord} 가운데`], ["먼저 채울 판단", k.gaps, "곳", "영역과 판단으로 센 수"],
+    [ZONE_WORD.Z1_EVIDENCE_ESTABLISHED.tag, k.z1, "곳", `${x.domainWord} ${k.domains}곳 가운데`], ["먼저 채울 판단", k.gaps, "곳", "영역마다 판단 하나씩 센 수"],
   ];
   const tiles = all.filter((t) => t[1] > 0);
   if (!tiles.length) tiles.push(all[1]);
+  const did = ZONES.slice(0, 3).map((z) => ZONE_WORD[z].tag).join(" · ");
+  const dn = (svg: string) => `<div style="width:100%;max-width:62mm;margin:0 auto">${svg}</div>`;
   return P("숫자로 본 근거",
-    T(k.confirmed ? (k.owned ? `직접 해 본 판단은 ${k.confirmed}개이고, 그중 ${k.owned}개는 기준까지 정했습니다` : `직접 해 본 판단은 ${k.confirmed}개입니다`) : "판단 단계로 센 것은 아직 많지 않습니다") +
+    T(k.confirmed ? (k.owned ? `직접 해 본 판단은 ${k.confirmed}개이고, 그중 ${k.owned}개는 기준까지 정했습니다` : `직접 해 본 판단은 ${k.confirmed}개입니다`) : "판단 단계로 센 것은 아직 많지 않습니다", "위 칸은 검사 응답과 고른 항목을 센 개수예요. 아래 두 도넛은 같은 영역들을 두 가지로 나눠 본 것입니다.") +
     `<div class="kpis">${tiles.map(([a, b, u, c]) => `<div class="kpi"><p>${E(a)}</p><b>${b}<small>${u}</small></b><span>${E(c)}</span></div>`).join("")}</div>` +
     `<div class="two">
-      <div class="card cen">${H(`${E(j(x.domainWord, "은는"))} 어디에 놓였나`, "묶음")}${donut(zoneParts, { size: 220, center: [`${k.z1 + k.z2 + k.z3}`, "해 본 일이 확인된 영역"] })}<div class="lg">${zoneParts.map((p) => `<span><i style="background:${p.color}"></i>${E(p.label)} ${p.value}곳</span>`).join("")}</div></div>
-      <div class="card cen">${H("관심은 어떻게 나뉘었나", "관심 응답")}${donut(ints, { size: 220, center: [`${ints[0].value}`, "관심 높은 영역"] })}<div class="lg">${ints.map((p) => `<span><i style="background:${p.color}"></i>${E(p.label)} ${p.value}곳</span>`).join("")}</div></div>
+      <div class="card cen">${H(`${E(j(x.domainWord, "은는"))} 어디에 놓였나`, "영역 이름별")}${dn(donut(zoneParts, { size: 220, center: [`${k.z1 + k.z2 + k.z3}`, "해 본 일이 확인된 영역"] }))}<div class="lg">${zoneParts.map((p) => `<span><i style="background:${p.color}"></i>${E(p.label)} ${p.value}곳</span>`).join("")}</div></div>
+      <div class="card cen">${H("관심은 어떻게 나뉘었나", "관심 응답")}${dn(donut(ints, { size: 220, center: [`${ints[0].value}`, "관심 높은 영역"] }))}<div class="lg">${ints.map((p) => `<span><i style="background:${p.color}"></i>${E(p.label)} ${p.value}곳</span>`).join("")}</div></div>
     </div>` +
+    howto([
+      ["한 바퀴", `${E(x.domainWord)} ${k.domains}곳 전체`],
+      ["조각 길이", "그 색에 든 영역 수(색 이름 옆 숫자와 같음)"],
+      ["왼쪽 가운데 숫자", `해 본 일이 확인된 영역 수(${E(j(did, "을를"))} 더한 것)`],
+      ["오른쪽 가운데 숫자", "관심이 높다고 답한 영역 수"],
+    ]) +
     band("다음 과제는", `관심이 높은 영역은 ${ints[0].value}곳, 해 본 일이 나온 영역은 ${k.z1 + k.z2 + k.z3}곳입니다. 관심은 높은데 아직 해 본 일이 적은 영역에서 다음 과제를 고르면 됩니다.`));
 }
 
 export function ringPage(x: Inputs, d: X): Page {
   const secs = x.m.domains.map((z) => ({ name: d.name(z.code), fill: ZC[z.zone], ring2: z.interest ? IC[z.interest] : "#f1f2f5", mark: z.zone === "NOT_EXPLORED" ? C.ink2 : "#fff" }));
+  const noInt = x.m.domains.some((z) => !z.interest);
   return P(`${x.domainWord} 지도`,
-    T(`${d.counts.domains}가지 ${E(x.domainWord)} 가운데 ${d.counts.z1 + d.counts.z2 + d.counts.z3}곳에서 해 본 일이 확인됐습니다`, "안쪽 색은 영역 묶음, 바깥 얇은 띠는 관심 정도입니다. 숫자는 영역 번호이고 03장의 영역 번호와 같습니다.") +
-    `<div class="wide-art ring-art">${ring(secs, { size: 400, center: [`${d.counts.z1}`, "근거 갖춘 영역"] })}</div>` +
-    `<div class="lg">${ZONES.filter((z) => x.m.domains.some((v) => v.zone === z)).map((z) => `<span><i style="background:${ZC[z]}"></i>${E(ZONE_WORD[z].tag)}</span>`).join("")}${(["HIGH", "MID", "LOW"] as const).map((v) => `<span><i class="thin" style="background:${IC[v]}"></i>관심 ${BAND_WORD[v]}</span>`).join("")}</div>` +
-    `<table class="tb tb-xs"><thead><tr><th>번호</th><th>영역</th><th>묶음</th><th>관심</th><th>해 본 횟수</th><th>배울 뜻</th></tr></thead><tbody>${x.m.domains.map((z, i) => `<tr><td>${i + 1}</td><td><b>${E(d.name(z.code))}</b></td><td>${zoneTag(z.zone)}</td><td>${z.interest ? BAND_WORD[z.interest] : "응답 없음"}</td><td>${z.experience ? EXP_WORD[z.experience] : "응답 없음"}</td><td>${z.learning ? BAND_WORD[z.learning] : "묻지 않음"}</td></tr>`).join("")}</tbody></table>`);
+    T(`${E(x.domainWord)} ${d.counts.domains}곳 가운데 ${d.counts.z1 + d.counts.z2 + d.counts.z3}곳에서 해 본 일이 확인됐습니다`, "영역마다 지금 놓인 자리와 관심 정도를 한 바퀴에 그렸어요. 아래 표에 같은 내용을 번호 차례로 적었습니다.") +
+    `<div class="wide-art ring-art">${fitH(ring(secs, { size: 400, center: [`${d.counts.z1}`, ZONE_WORD.Z1_EVIDENCE_ESTABLISHED.tag] }), 84)}</div>` +
+    howto([
+      ...ZONES.filter((z) => x.m.domains.some((v) => v.zone === z)).map((z) => [ZC[z], `안쪽 칸 · ${E(ZONE_WORD[z].tag)}`] as [string, string]),
+      ...(["HIGH", "MID", "LOW"] as const).map((v) => [IC[v], `바깥 얇은 띠 · 관심 ${BAND_WORD[v]}`] as [string, string]),
+      ...(noInt ? [["#f1f2f5", "바깥 얇은 띠 · 관심 응답 없음"] as [string, string]] : []),
+      ["칸 안 숫자", "영역 번호(아래 표, 03장과 같은 번호)"],
+      ["가운데 숫자", `${E(ZONE_WORD.Z1_EVIDENCE_ESTABLISHED.tag)} 수`],
+    ], "칸 하나가 영역 하나예요. 칸 색은 그 영역이 놓인 자리이고, 바깥 띠 색은 그 영역에 관심이 얼마나 있다고 답했는지입니다.") +
+    `<table class="tb tb-xs"><thead><tr><th>번호</th><th>영역</th><th>놓인 자리</th><th>관심</th><th>해 본 횟수</th><th>배울 뜻</th></tr></thead><tbody>${x.m.domains.map((z, i) => `<tr><td>${i + 1}</td><td><b>${E(d.name(z.code))}</b></td><td>${zoneTag(z.zone)}</td><td>${z.interest ? BAND_WORD[z.interest] : "응답 없음"}</td><td>${z.experience ? EXP_WORD[z.experience] : "응답 없음"}</td><td>${z.learning ? BAND_WORD[z.learning] : "묻지 않음"}</td></tr>`).join("")}</tbody></table>`);
 }
 
 export function quad(x: Inputs, d: X): Page {
@@ -174,9 +207,18 @@ export function quad(x: Inputs, d: X): Page {
   const hiDid = nm((z) => z.interest === "HIGH" && z.experience === "SEVERAL");
   const hiNot = nm((z) => z.interest === "HIGH" && z.experience === "NONE");
   const low = nm((z) => z.interest === "LOW");
+  const missing = x.m.domains.length - dots.length;
   return P("관심과 해 본 횟수",
-    T(hiNot.length ? `관심이 높은데 아직 해 본 적이 없는 영역이 ${hiNot.length}곳 있습니다` : "관심과 해 본 횟수를 한 장에 놓았습니다", "가로는 관심 정도, 세로는 해 본 횟수입니다. 오른쪽 위로 갈수록 하고 싶고 여러 번 해 본 영역입니다.") +
-    `<div class="wide-art">${quadrant(dots, { width: 680, xNames: ["관심 낮음", "보통", "관심 높음"], yNames: ["해 본 적 없음", "한두 번", "여러 번"] })}</div>` +
+    T(hiNot.length ? `관심이 높은데 아직 해 본 적이 없는 영역이 ${hiNot.length}곳 있습니다` : "관심과 해 본 횟수를 한 장에 놓았습니다", "오른쪽 위로 갈수록 하고 싶고 여러 번 해 본 영역이에요.") +
+    `<div class="wide-art">${fitH(quadrant(dots, { width: 680, xNames: ["관심 낮음", "보통", "관심 높음"], yNames: ["해 본 적 없음", "한두 번", "여러 번"] }), 98)}</div>` +
+    howto([
+      ["가로축", "관심 정도(낮음 · 보통 · 높음)"],
+      ["세로축", "해 본 횟수(해 본 적 없음 · 한두 번 · 여러 번)"],
+      ["점 안 숫자", "영역 번호(앞 쪽 지도와 같은 번호)"],
+      ["점 색", "영역을 알아보기 쉽게 나눈 색이고 따로 뜻은 없어요"],
+      [Q_HOT, "관심이 높고 해 본 적도 있는 칸"],
+      [Q_WARM, "관심은 높은데 아직 해 본 적이 없는 칸"],
+    ], missing ? `관심이나 해 본 횟수에 답이 없는 ${missing}곳은 점을 찍지 않았어요.` : undefined) +
     (() => {
       const ns = [
         hiDid.length ? note("오른쪽 위 · 하고 싶고 여러 번 해 본 영역", `${E(hiDid.join(", "))}. 지원서의 중심 이야기는 여기서 꺼내면 됩니다.`) : "",
@@ -184,22 +226,29 @@ export function quad(x: Inputs, d: X): Page {
         low.length ? note("왼쪽 · 관심이 낮은 영역", `${E(low.join(", "))}. 지금은 뒤로 미뤄 두어도 됩니다.`) : "",
       ].filter(Boolean);
       return ns.length ? `<div class="g${Math.max(ns.length, 2)}">${ns.join("")}</div>` : "";
-    })() + band("상담에서", hiNot.length
+    })() + band("이번 학기에", hiNot.length
       ? `${E(hiNot[0])}처럼 관심은 높은데 아직 안 해 본 영역에서 이번 학기 과제를 하나 찾아보세요. 한 번 해 보면 다음 검사에서는 ‘해 본 적 있다’로 답할 수 있습니다.`
       : hiDid.length ? `${E(hiDid[0])}에서 해 본 일을 지원서 한 문단으로 먼저 정리해 보세요.` : "관심이 보통 이상인 영역 하나를 골라 짧은 과제로 겪어 보세요."));
 }
 
 export function bestPage(x: Inputs, d: X): Page {
-  const rows = d.best.map((b) => ({ label: d.axisName(b.axis), value: b.level ?? 0, color: LVC[Math.max(1, b.level ?? 0)], note: b.level == null ? "이번에 묻지 않음" : b.where.length > 2 ? `${b.where.slice(0, 2).map(d.name).join(" · ")} 외 ${b.where.length - 2}곳` : b.where.map(d.name).join(" · ") }));
+  const rows = d.best.map((b) => ({ label: d.axisName(b.axis), value: b.level ?? 0, color: LVC[Math.max(1, b.level ?? 0)], note: b.level == null ? "이번 검사에서 묻지 않음" : b.level === 0 ? LEVEL_KO[0] : b.where.length > 2 ? `${b.where.slice(0, 2).map(d.name).join(" · ")} 외 ${b.where.length - 2}곳` : b.where.map(d.name).join(" · ") }));
   const owned = d.best.filter((b) => b.level === 3).length;
   const sceneOf = (b: (typeof d.best)[number]) => {
     const td = b.where[0] ?? d.radarDoms[0]?.code ?? x.defs[0]?.code;
     return td ? d.def(td)?.axes?.[b.axis]?.l2 ?? "" : "";
   };
   const did = d.best.filter((b) => (b.level ?? 0) >= 2).length;
+  const nAx = AXES.length;
   return P("판단별 가장 깊은 단계",
-    T(owned ? `여덟 판단 가운데 ${owned}가지는 기준까지 직접 정해 봤습니다` : did === 8 ? "여덟 판단을 모두 직접 해 봤습니다" : did ? `여덟 판단 가운데 ${did}가지를 직접 해 봤습니다` : "판단마다 가장 깊이 해 본 단계를 모았습니다", "영역과 관계없이 판단마다 가장 깊이 해 본 단계를 골랐고, 막대 오른쪽에 그 단계가 나온 영역을 적었습니다.") +
-    `<div class="wide-art">${hbars(rows, { max: 3, width: 690, label: 130, ticks: ["지시받아 수행", "직접 수행", "기준까지 결정"], row: 36, valueText: (b) => String((b as { note?: string }).note ?? "") })}</div>` +
+    T(owned ? `일할 때 내리는 판단 ${nAx}가지 가운데 ${owned}가지는 기준까지 직접 정해 봤습니다` : did === nAx ? `일할 때 내리는 판단 ${nAx}가지를 모두 직접 해 봤습니다` : did ? `일할 때 내리는 판단 ${nAx}가지 가운데 ${did}가지를 직접 해 봤습니다` : "판단마다 가장 깊이 해 본 단계를 모았습니다", "물어본 영역을 모두 놓고, 판단마다 가장 깊이 해 본 단계 하나를 골랐어요.") +
+    `<div class="wide-art">${hbars(rows, { max: 3, width: 690, label: 130, ticks: LEVEL_KO.slice(1), row: 36, valueText: (b) => String((b as { note?: string }).note ?? "") })}</div>` +
+    howto([
+      [LVC[1], LEVEL_KO[1]], [LVC[2], LEVEL_KO[2]], [LVC[3], LEVEL_KO[3]],
+      ["막대 길이", "그 판단을 가장 깊이 해 본 단계(위 점선 눈금의 이름)"],
+      ["막대 끝 글", "그 단계가 나온 영역"],
+      ["막대 없음", `${E(LEVEL_KO[0])}이라고 답했거나 이번 검사에서 묻지 않은 판단`],
+    ]) +
     `<table class="tb tb-xs"><thead><tr><th>판단</th><th>무엇을 묻나</th><th>${E(x.major)} 일에서 보이는 모습</th></tr></thead><tbody>${AXES.map((a) => { const b = d.best.find((z) => z.axis === a)!; return `<tr><th>${E(d.axisName(a))}</th><td>${E(d.axisWhat(a))}</td><td class="mut">${E(sceneOf(b))}</td></tr>`; }).join("")}</tbody></table>`);
 }
 
@@ -209,7 +258,8 @@ export function goalPage(x: Inputs, d: X): Page {
   const rc = x.m.role_context?.code === r.code ? x.m.role_context : null;
   const ind = d.goalInd;
   const ic = ind && x.m.industry_context?.code === ind.code ? x.m.industry_context : null;
-  const rows = cov.req.map((q0) => ({ label: d.axisName(q0.axis), value: q0.level ?? 0, color: LVC[Math.max(1, q0.level ?? 0)], note: q0.level == null ? "이번에 묻지 않음" : STEP_WORD[q0.level].tag }));
+  const rows = cov.req.map((q0) => ({ label: d.axisName(q0.axis), value: q0.level ?? 0, color: LVC[Math.max(1, q0.level ?? 0)], note: q0.level == null ? "묻지 않음" : STEP_WORD[q0.level].tag }));
+  const tdZones = ZONES.filter((z) => cov.tds.some((t) => (d.dom(t)?.zone ?? "NOT_EXPLORED") === z));
   const overlap = (rc?.overlap ?? []).slice(0, 4).map((o) => `${d.name(o.domain)} · ${d.axisName(o.axis)}`);
   const requested = (rc?.requested ?? ic?.requested ?? []).slice(0, 4).map((o) => `${d.name(o.domain)} · ${d.axisName(o.axis)}`);
   const hit = cov.z1.length + cov.z2.length;
@@ -234,7 +284,11 @@ export function goalPage(x: Inputs, d: X): Page {
     T(E(headline), E(`${j(r.name_ko, "은는")} ${polite(r.owns)}`)) +
     `<div class="two">
       <div class="card">${H("이 직무가 정하는 것", "직무 안내")}${chips(r.decides)}<p class="k" style="margin-top:3mm">핵심 영역</p><p>${cov.tds.map((t) => `<span class="nw">${E(d.name(t))}<span class="dot" style="background:${ZC[d.dom(t)?.zone ?? "NOT_EXPLORED"]}"></span></span>`).join(" ")}</p><p class="k" style="margin-top:3mm">지원 서류에 쓰는 결과물</p>${chips(r.application_material, "art")}</div>
-      <div class="card">${H("특히 보는 판단과 지금 단계", "응답")}${hbars(rows, { max: 3, width: 340, label: 110, ticks: ["지시받아", "직접", "기준까지"], row: 44, valueText: (b) => String((b as { note?: string }).note ?? "") })}<p class="mut sm">단계는 핵심 영역 가운데 가장 깊이 해 본 것을 씁니다.</p></div>
+      <div class="card">${H("특히 보는 판단과 지금 단계", "응답")}${hbars(rows, { max: 3, width: 340, label: 110, ticks: ["시킨 대로", "직접", "기준까지"], row: 38, valueText: (b) => String((b as { note?: string }).note ?? "") })}${howto([
+        ...([1, 2, 3] as const).filter((k) => rows.some((r) => r.value === k)).map((k) => [LVC[k], LEVEL_KO[k]] as [string, string]),
+        ...(rows.some((r) => !r.value) ? [["막대 없음", `${E(LEVEL_KO[0])}이거나 핵심 영역에서 묻지 않은 판단`] as [string, string]] : []),
+        ...tdZones.map((z) => [ZC[z], `왼쪽 핵심 영역 옆 점 · ${E(ZONE_WORD[z].tag)}`] as [string, string]),
+      ], "막대 길이는 이 직무가 특히 보는 판단을 핵심 영역에서 가장 깊이 해 본 단계예요.")}</div>
     </div>` +
     pairs.join("") + tail);
 }
@@ -267,7 +321,7 @@ export function deptPage(x: Inputs, d: X): Page | null {
     steps.length ? `${H("지금 할 수 있는 한 걸음")}${ul(steps.map(E))}` : "",
     sv.application.resume ? `${H("지원서에서 꺼내는 법")}<p>${E(sv.application.resume)}</p>` : "",
     sv.application.interview.length ? `${H("면접에서 다시 묻는 질문", "답은 고른 항목과 경험 기록에서 찾습니다")}${ul(sv.application.interview.map(E))}` : "",
-    note("이 쪽은 점수에 들어가지 않습니다", "학과 안내는 어디부터 읽을지와 예시를 보여 드리는 자료입니다. 강점과 비어 있는 판단은 앞 쪽과 02장이 응답으로 정한 그대로입니다."),
+    note("이 쪽은 내 결과를 바꾸지 않아요", "학과 안내는 어디부터 읽을지와 예시를 보여 드리는 자료예요. 강점과 비어 있는 판단은 앞 쪽과 02장이 내 응답으로 정한 그대로입니다."),
   ].join("");
   return { ...P(`${name} 쪽에서 보면`, body), keep: true };
 }

@@ -38,7 +38,7 @@ export const band = (label: string, text: string) => `<div class="band"><b>${lab
 export const tag = (t: string, color?: string) => `<span class="tag" style="${color ? `background:${color}` : ""}">${E(t)}</span>`;
 export const zoneTag = (z: string) => `<span class="ztag" style="--z:${ZC[z] ?? "#c9ced8"}">${E(ZONE_WORD[z as ZoneKey]?.tag ?? "")}</span>`;
 export const pip = (lv: Level | null) => lv == null
-  ? `<span class="pp na">이번에 묻지 않음</span>`
+  ? `<span class="pp na">이번 검사에서 묻지 않음</span>`
   : `<span class="pp"><i style="background:${lv >= 1 ? LVC[Math.max(1, lv)] : C.l0}"></i><i style="background:${lv >= 2 ? LVC[lv] : C.l0}"></i><i style="background:${lv >= 3 ? LVC[3] : C.l0}"></i><em>${E(STEP_WORD[lv].tag)}</em></span>`;
 export const ul = (xs: string[], cls = "") => (xs.length ? `<ul class="ls ${cls}">${xs.map((x) => `<li>${x}</li>`).join("")}</ul>` : "");
 /** 쓰는 칸: 줄만 긋는다. 학생이 채운다 */
@@ -47,6 +47,13 @@ export const lines = (n: number, label?: string) => `<div class="wl">${label ? `
 export const mine = (label: string, text: string) => `<div class="fl">${label ? `<p class="wl-l">${label}</p>` : ""}<p class="fl-t">${text}</p></div>`;
 export const card = (inner: string, cls = "") => `<div class="card ${cls}">${inner}</div>`;
 export const note = (title: string, body: string, warm = false) => `<div class="note${warm ? " warm" : ""}"><b>${title}</b>${body.startsWith("<") ? body : `<p>${body}</p>`}</div>`;
+/**
+ * 그래프 읽는 법. 그래프마다 바로 아래에 붙인다(`docs/metri/report-writing-rules.md` 4절).
+ * `marks` 는 [표시, 뜻] 이고 표시는 색(#...)이거나 짧은 말(가로축 · 숫자 · 점 크기)이다
+ */
+export const howto = (marks: [string, string][], lead?: string) =>
+  `<div class="howto"><b>그래프 읽는 법</b>${lead ? `<p>${lead}</p>` : ""}<ul>${marks.map(([k, v]) =>
+    `<li>${/^#[0-9a-f]{3,8}$/i.test(k) ? `<i style="background:${k}"></i>` : `<em>${E(k)}</em>`}<span>${v}</span></li>`).join("")}</ul></div>`;
 export const chips = (xs: string[], cls = "") => (xs.length ? `<div class="chips ${cls}">${xs.map((t) => `<span>${E(t)}</span>`).join("")}</div>` : "");
 
 /** 줄 묶음을 쪽 높이에 맞춰 나눈다. 무게는 줄마다 대략의 높이(1 = 한 줄)다 */
@@ -102,6 +109,7 @@ p{margin:0}p,li,td,dd{text-wrap:pretty}.nw{white-space:nowrap;font-style:normal}
 .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:4mm}.g2{display:grid;grid-template-columns:1fr 1fr;gap:4mm}.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:3mm}
 .card{border:1px solid ${C.line};border-radius:14px;padding:4mm;background:#fff}.card.cen{display:flex;flex-direction:column;align-items:center;gap:2mm;text-align:center}.card.cen svg{max-width:100%}
 .note{border-left:0;box-shadow:inset 3px 0 0 ${C.blue};background:#f5f8fe;padding:3mm 4mm;border-radius:14px}.note b{display:block;color:${C.navy};margin-bottom:1mm;font-size:9.8pt}.note.warm{box-shadow:inset 3px 0 0 ${C.amber};background:#fdf7ec}
+.howto{margin-top:2mm;padding:2.4mm 3.4mm;border:1px solid ${C.line};border-radius:12px;background:#fbfcfe;font-size:8.6pt;color:${C.ink2}}.howto b{display:block;color:${C.navy};font-size:8.8pt;margin-bottom:1mm}.howto p{margin:0 0 1mm}.howto ul{display:flex;flex-wrap:wrap;gap:1mm 4mm;list-style:none;margin:0;padding:0}.howto li{display:flex;align-items:baseline;gap:1.4mm}.howto li i{display:inline-block;width:3mm;height:3mm;border-radius:2px;flex:none;transform:translateY(.4mm)}.howto li em{font-style:normal;font-weight:700;color:${C.ink}}
 .band{display:flex;gap:4mm;align-items:baseline;background:#eef3fc;border-radius:14px;padding:3.2mm 4mm;font-size:9.3pt}.band b{color:${C.navy};white-space:nowrap}
 .ls{margin:0;padding-left:4.5mm}.ls li{margin:.6mm 0}
 .tag{display:inline-block;color:#fff;background:${C.navy};border-radius:999px;padding:.3mm 2.4mm;font-size:8.2pt;font-weight:700;white-space:nowrap}
@@ -153,8 +161,16 @@ p{margin:0}p,li,td,dd{text-wrap:pretty}.nw{white-space:nowrap;font-style:normal}
 .ch-top{display:flex;align-items:baseline;gap:4mm;margin-top:12mm}.ch-k{font-size:11pt;letter-spacing:.32em;color:#e6c766;font-weight:700}.ch-no{font-size:96pt;font-weight:800;line-height:.9;color:#fff;letter-spacing:-.04em}
 .ch-t{font-size:29pt;margin:5mm 0 3mm;font-weight:800;color:#fff;letter-spacing:-.015em}.ch-p{font-size:11.6pt;line-height:1.7;color:#d5def0;max-width:150mm}
 .ch-art{margin:8mm 0 4mm;max-height:90mm;overflow:hidden;display:flex;justify-content:center;opacity:.95}.ch-art svg{width:104mm}
-.pg.chap .ch-art svg text{fill:#fff!important}
-.ch-in{margin-top:auto;border-top:1px solid #34497a;padding-top:5mm}.ch-in .sh{color:#e6c766}.ch-in .ls li{color:#d5def0;font-size:10.2pt}
+/* 숫자를 짙게 칠한 칸(관심·경험만 본 영역)은 짙은 글자 그대로 둔다. 흰 글자로 바꾸면 연회색 칸에서 안 읽힌다 */
+.pg.chap .ch-art svg text:not([fill="#3b4556"]){fill:#fff!important}
+/* 그래프와 읽는 법을 나란히. 어두운 바탕이라 읽는 법 상자도 어둡게 깐다 */
+.ch-fig{justify-content:flex-start;align-items:center;gap:6mm;max-height:none;overflow:visible;opacity:1;margin:6mm 0 3mm}
+.ch-pic{flex:none;width:86mm;display:flex;justify-content:center}.ch-fig .ch-pic svg{width:86mm;max-height:86mm}
+.ch-how{flex:1;min-width:0}.pg.chap .howto{margin:0;background:rgba(255,255,255,.06);border-color:#34497a;color:#d5def0;font-size:8.8pt;line-height:1.5}
+.pg.chap .howto b{color:#e6c766;font-size:9.4pt;margin-bottom:1.6mm}.pg.chap .howto p{margin:0 0 1.8mm}.pg.chap .howto ul{flex-direction:column;gap:1.3mm}
+.pg.chap .howto li em{color:#fff;flex:none}.pg.chap .howto li i{box-shadow:0 0 0 1px rgba(255,255,255,.35)}
+.ch-art svg[aria-hidden]{width:72mm}.pg.chap .howto .ch-keyp{margin:2mm 0 0;font-size:8pt;line-height:1.55;color:#aebbd6}
+.ch-in{margin-top:auto;border-top:1px solid #34497a;padding-top:5mm}.ch-in .sh{color:#e6c766}.ch-in .ls li{color:#d5def0;font-size:10.2pt}.ch-in .ch-ls{columns:2;column-gap:8mm}.ch-in .ch-ls li{break-inside:avoid}
 /* 표지 */
 .pg.cover{padding:16mm 17mm 14mm;background:#fff}
 .cv-top{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid ${C.navy};padding-bottom:3mm}.cv-org{font-size:15pt;font-weight:800;color:${C.navy}}.cv-s{font-size:9pt;color:${C.ink3}}
@@ -175,7 +191,7 @@ p{margin:0}p,li,td,dd{text-wrap:pretty}.nw{white-space:nowrap;font-style:normal}
 
 /** 쪽 하나를 틀에 담는다 */
 export function shell(p: Page, i: number, total: number, ctx: { issuer: string; major: string; tier: string; person: string; answeredOn: string }): string {
-  const attrs = (k: string) => `data-title="${E(p.title)}" data-kind="${k}" data-part="${E(p.partName)}" data-base="${E(p.title.replace(/ \(\d+\)$/, "").replace(/ · 이어서$/, ""))}"${p.keep ? ` data-keep="1"` : ""}`;
+  const attrs = (k: string) => `data-title="${E(p.title)}" data-kind="${k}" data-part="${E(p.partName)}" data-base="${E(p.title.replace(/ \(\d+\)$/, "").replace(/ \(계속\)$/, ""))}"${p.keep ? ` data-keep="1"` : ""}`;
   if (p.kind === "outer") return `<section class="pg outer" ${attrs("outer")}>${p.body}</section>`;
   if (p.kind === "cover") return `<section class="pg cover" ${attrs("cover")}>${p.body}</section>`;
   const head = p.kind === "chapter" ? "" : `<header class="rh"><span class="rh-n">${p.part ? `PART ${p.part}` : ""}</span><span class="rh-t">${E(p.partName)}</span><span class="rh-r">${E(ctx.issuer)} · 진로 분석 리포트</span></header>`;
@@ -287,7 +303,7 @@ export const PACK_JS = String.raw`(function () {
       var meaningful = Array.prototype.some.call(ns.children, function (e) { return !isHead(e); });
       if (!meaningful) { while (ns.lastElementChild) s.insertBefore(ns.lastElementChild, s.firstElementChild); bd.removeChild(ns); return false; }
       if (s.firstElementChild && !s.firstElementChild.matches(".ph,.cont")) {
-        var t = document.createElement("p"); t.className = "cont"; t.textContent = (nx.getAttribute("data-base") || "") + " · 이어서";
+        var t = document.createElement("p"); t.className = "cont"; t.textContent = (nx.getAttribute("data-base") || "") + " (계속)";
         s.insertBefore(t, s.firstElementChild);
       }
       return false;
@@ -384,12 +400,19 @@ export const PACK_JS = String.raw`(function () {
   if (document.readyState === "complete") go(); else window.addEventListener("load", go);
 })();`;
 
-export function chapter(no: string, name: string, promise: string, inside: string[], art: string): Page {
+/**
+ * 장 첫 쪽. `promise` 는 이 장을 왜 읽는지와 읽고 나서 무엇을 하면 되는지다.
+ * `art` 가 내 결과를 그린 그래프(`role="img"`)면 `how` 에 읽는 법(`howto`)을 넘긴다. 그러면
+ * 그림과 읽는 법이 나란히 선다. 뜻 없는 장식은 `aria-hidden` 으로 표시하고 `how` 를 비운다
+ */
+export function chapter(no: string, name: string, promise: string, inside: string[], art0: string, how = ""): Page {
+  /* 읽는 법이 없는 그림은 장식이다. 화면 읽기 도구가 건너뛰게 표시한다 */
+  const art = how || /role="img"/.test(art0) ? art0 : art0.replace(/<svg(?![^>]*aria-hidden)/, `<svg aria-hidden="true" focusable="false"`);
   return {
     part: no, partName: name, title: name, kind: "chapter",
     body: `<div class="ch-top"><span class="ch-k">PART</span><span class="ch-no">${no}</span></div>
       <h1 class="ch-t">${E(name)}</h1><p class="ch-p">${promise}</p>
-      <div class="ch-art">${art}</div>
-      <div class="ch-in">${H("이 장에 담은 것")}${ul(inside.map(E))}</div>`,
+      <div class="ch-art${how ? " ch-fig" : ""}">${how ? `<div class="ch-pic">${art}</div><div class="ch-how">${how}</div>` : art}</div>
+      <div class="ch-in">${H("이 장에 담은 것")}${ul(inside.filter(Boolean).map(E), "ch-ls")}</div>`,
   };
 }

@@ -10,16 +10,23 @@
  * 결과에 있는 값으로 채울 수 있는 줄은 초안으로 채워 둔다.
  */
 import type { Inputs } from "./types";
-import type { X } from "./derive";
+import { ZONE_WORD, type X } from "./derive";
 import { C, chain, hbars, moneyBars } from "./charts";
-import { E, H, PAL, T, band, chapter, note, paginate, rowsOf, ul, type Page } from "./kit";
+import { E, H, PAL, T, band, chapter, howto, note, paginate, rowsOf, ul, type Page } from "./kit";
 import { REGION_LAW, groupTheme, tryOf, type FitGroup, type ROrg, type RegionView, type Tier } from "./region";
 import { andJoin, cutQuote, j, okOr, polite } from "./text";
 
-export const TIER: Record<Tier, { head: string; lead: string; color: string }> = {
-  A: { head: "내 결과와 잘 맞는 곳", lead: "이 산업에서 많이 쓰는 영역 가운데, 직접 판단하고 결과물까지 남긴 영역이 이번 결과에서 확인된 회사들입니다", color: PAL.blue },
-  B: { head: "이어서 볼 곳", lead: "이 산업에서 많이 쓰는 영역을 해 본 적은 있지만, 결과물이나 비교 기록이 아직 적은 회사들입니다. 그 영역에서 결과물 하나를 더 남기면 잘 맞는 곳으로 옮겨 갈 수 있습니다", color: PAL.teal },
-  C: { head: "넓혀 볼 곳", lead: "이 산업에서 많이 쓰는 영역을 이번 검사에서는 아직 확인하지 못한 회사들입니다", color: "#8c97ab" },
+/**
+ * 세 곳의 이름과 나누는 기준. 기준은 `region.ts` 가 실제로 가르는 그대로다:
+ * 그 산업이 쓰는 영역 가운데 강점 영역이 하나라도 있으면 A, 강점 영역은 없고 해 본 일이
+ * 확인된 영역이 있으면 B, 둘 다 없으면 C. 영역 묶음 이름은 `ZONE_WORD` 에서 읽는다.
+ * B 를 `이어서 볼 곳` 이라 부르면 쪽이 넘어갈 때 붙는 `(계속)` 과 헷갈려서 이름을 바꿨다.
+ */
+const S1 = ZONE_WORD.Z1_EVIDENCE_ESTABLISHED;
+export const TIER: Record<Tier, { head: string; rule: string; next: string; color: string }> = {
+  A: { head: "내 결과와 잘 맞는 곳", rule: `그 산업이 쓰는 영역 가운데 ${j(S1.tag, "이가")} 하나라도 있는 곳`, next: "지원서와 면접에서 그 영역의 경험을 바로 꺼낼 수 있어요.", color: PAL.blue },
+  B: { head: "한 걸음 더 채우면 맞는 곳", rule: `그 산업이 쓰는 영역에서 해 본 일은 확인됐지만 ${S1.tag}까지는 아직 없는 곳`, next: "그 영역에서 결과물 하나를 더 남기면 잘 맞는 곳으로 옮겨 갈 수 있어요.", color: PAL.teal },
+  C: { head: "넓혀 볼 곳", rule: "그 산업이 쓰는 영역에서 해 본 일이 아직 확인되지 않은 곳", next: "그 영역에서 작은 과제 하나를 해 두면 다음 검사에서 한 걸음 더 채우면 맞는 곳으로 옮겨 올 수 있어요.", color: "#8c97ab" },
 };
 const won = (v: number | null | undefined) => (v == null ? "공시 없음" : `${Math.round(v / 1e8).toLocaleString("ko-KR")}억 원`);
 const short = (n: string) => n.replace(/\(주\)|주식회사|㈜/g, "").trim();
@@ -48,25 +55,28 @@ export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
   const dart = r.all.filter((o) => o.source !== "venture").length;
 
   out.push(chapter("05", `${r.area}에서 찾아보기`,
-    `공시(OpenDART)와 공개 명단에서 확인한 ${E(r.label)} 기업 ${r.all.length}곳을 ${E(x.major)} 전공자가 일하는 산업별로 묶고, 내 결과와 얼마나 맞는지에 따라 나눠 실었습니다.`,
+    `공시(OpenDART)와 공개 명단에서 확인한 ${E(r.label)} 기업 ${r.all.length}곳을 ${E(x.major)} 전공자가 일하는 산업별로 모으고, 그 산업이 쓰는 영역이 내 결과와 얼마나 맞는지에 따라 세 곳으로 나눠 실었습니다.`,
     [`${r.label} 기업과 내 결과`, ...tiers.map((t) => TIER[t].head), r.listed.length ? `${r.label} 본점 상장사의 공시 숫자` : "", "기관 한 곳을 조사하는 법"].filter(Boolean),
     `<svg viewBox="0 0 200 200" width="100%" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="150" r="46" fill="none" stroke="#3c5a96" stroke-width="2"/><circle cx="100" cy="150" r="26" fill="none" stroke="#3c5a96" stroke-width="2"/><path d="M100 30c-26 0-44 19-44 43 0 32 44 77 44 77s44-45 44-77c0-24-18-43-44-43z" fill="#c9a227"/><circle cx="100" cy="73" r="16" fill="#14264d"/></svg>`));
 
   const sorted = r.groups;
-  const card = (t: Tier) => `<div class="b4" style="--c:${TIER[t].color}"><b>${TIER[t].head} · ${cnt(t)}곳</b><p>${E(TIER[t].lead)}.</p><p class="mut">${E(r.groups.filter((g) => g.tier === t).map((g) => g.pack.name_ko).join(" · "))}</p></div>`;
+  const card = (t: Tier) => `<div class="b4" style="--c:${TIER[t].color}"><b>${TIER[t].head} · ${cnt(t)}곳</b><p>기준 · ${E(TIER[t].rule)}</p>${t === "C" ? "" : `<p class="mut">${E(t === "A" ? `${S1.tag}: ${S1.said}` : `해 본 일: ${ZONE_WORD.Z2_EVIDENCE_INCOMPLETE.tag}처럼 해 본 일은 있는데 결과물이나 비교한 기록이 아직 적은 영역`)}</p>`}<p>${E(TIER[t].next)}</p><p class="mut">${E(r.groups.filter((g) => g.tier === t).map((g) => g.pack.name_ko).join(" · "))}</p></div>`;
   const cards = tiers.length > 1 ? `<div class="g${tiers.length}">${tiers.map(card).join("")}</div>` : tiers.map(card).join("");
   out.push(part(`${r.label} 기업과 내 결과`,
     T(`${E(r.label)} 기업 ${r.all.length}곳 가운데 ${matched}곳이 ${E(x.major)} 전공자가 일하는 산업과 이어집니다`,
       `${venture ? `중소벤처기업부 벤처기업 확인 명단에서 소재지가 ${E(r.label)}인 회사 ${venture}곳과, ` : ""}공시로 본점이 ${E(r.label)}임을 확인한 회사 ${dart}곳${venture ? "을 합쳤습니다. 두 자료에 다 있는 회사는 한 번만 셌고," : "입니다."} 업종명과 주력 품목은 원래 자료에 적힌 대로 옮겼습니다.`) +
     chain([
       { head: "회사의 업종", body: "명단과 공시에 적힌 업종명과 주력 품목", color: C.navy },
-      { head: "이 전공의 산업", body: `${x.major} 산업 ${x.inds.length}개 가운데 가장 가까운 하나로 묶음`, color: C.blue },
-      { head: "그 산업이 쓰는 영역", body: "그 산업에서 이 전공자가 주로 맡는 영역", color: C.teal },
-      { head: "내 결과와 맞춰 보기", body: "판단과 결과물이 있으면 잘 맞는 곳, 해 본 일만 있으면 이어서 볼 곳", color: C.amber },
+      { head: "이 전공의 산업", body: `${x.major} 산업 ${x.inds.length}개 가운데 가장 가까운 하나에 넣기`, color: C.navy },
+      { head: "그 산업이 쓰는 영역", body: "그 산업에서 이 전공자가 주로 맡는 영역", color: C.navy },
+      { head: "내 결과와 맞춰 보기", body: "그 영역을 내 결과에 대어 보고 세 곳으로 나누기", color: C.navy },
     ], { width: 700, height: 120 }) +
-    (sorted.length ? `<div class="wide-art">${hbars(sorted.map((g) => ({ label: g.pack.name_ko, value: g.orgs.length, color: TIER[g.tier].color })), { max: Math.max(...sorted.map((g) => g.orgs.length)) * 1.15, width: 700, label: 190, row: 22, valueText: (b) => `${b.value}곳` })}</div>` : `<div class="na-box"><b>이 전공의 산업과 이어지는 회사를 명단에서 찾지 못했습니다</b>명단에 적힌 업종이 ${E(x.major)} 전공의 산업과 겹치지 않았습니다. 뒤쪽의 상장사 숫자와 조사 방법은 그대로 쓰실 수 있습니다.</div>`) +
+    howto([["화살표", "회사 하나를 내 결과까지 이어 붙인 차례"], ["칸 위", "걸음의 이름"], ["칸 안", "그 걸음에서 한 일"]]) +
+    (sorted.length ? `<div class="wide-art">${hbars(sorted.map((g) => ({ label: g.pack.name_ko, value: g.orgs.length, color: TIER[g.tier].color })), { max: Math.max(...sorted.map((g) => g.orgs.length)) * 1.15, width: 700, label: 190, row: 22, valueText: (b) => `${b.value}곳` })}</div>` +
+      howto([["막대 하나", `${x.major} 전공의 산업 하나`], ["막대 길이", "그 산업에 넣은 회사 수(곳)"], ...tiers.map((t) => [TIER[t].color, TIER[t].head] as [string, string])]) +
+      H("어떻게 나눴나", "회사마다 그 회사가 속한 산업이 쓰는 영역을 내 결과에 대어 봤어요") : `<div class="na-box"><b>이 전공의 산업과 이어지는 회사를 명단에서 찾지 못했습니다</b>명단에 적힌 업종이 ${E(x.major)} 전공의 산업과 겹치지 않았습니다. 뒤쪽의 상장사 숫자와 조사 방법은 그대로 쓰실 수 있습니다.</div>`) +
     cards +
-    (r.unmatched ? `<p class="mut sm">나머지 ${r.unmatched}곳은 업종명만으로는 ${E(x.major)} 전공의 어느 산업에 넣을지 가르기 어려워 이 장에서 묶지 않았습니다.</p>` : "") +
+    (r.unmatched ? `<p class="mut sm">나머지 ${r.unmatched}곳은 업종명만으로는 ${E(x.major)} 전공의 어느 산업에 넣을지 정하기 어려워 이 장에 싣지 않았습니다.</p>` : "") +
     band("알아 두실 점", REGION_LAW)));
 
   for (const t of ["A", "B"] as Tier[]) {
@@ -79,7 +89,7 @@ export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
     type Row2 = Row | { kind: "m"; n: number; g: FitGroup };
     const rows: Row2[] = gs.flatMap((g) => [{ kind: "g" as const, g }, ...g.orgs.slice(0, CAP).map((o) => ({ kind: "o" as const, o })), ...(g.orgs.length > CAP ? [{ kind: "m" as const, n: g.orgs.length - CAP, g }] : [])]);
     paginate(rows, (rw) => (rw.kind === "g" ? 4.8 : rw.kind === "m" ? 1.2 : Math.max(1, rowsOf(rw.o.product || "", 26), rowsOf(rw.o.name, 15))), 34, 27).forEach((chunk, k, all) => out.push(part(`${TIER[t].head}${k ? ` (${k + 1})` : ""}`,
-      (k === 0 ? T(`${TIER[t].head} ${cnt(t)}곳`, `${E(TIER[t].lead)}. 산업마다 상장사를 먼저 싣고, 나머지는 가나다순으로 적었습니다.`) : `<p class="k">${E(TIER[t].head)} · 이어서</p>`) +
+      (k === 0 ? T(`${TIER[t].head} ${cnt(t)}곳`, `${E(TIER[t].rule)}이에요. ${E(TIER[t].next)} 산업마다 상장사를 먼저, 나머지는 가나다순으로 적었습니다.`) : `<p class="k">${E(TIER[t].head)} (계속)</p>`) +
       `<table class="tb tb-xs sj"><thead><tr><th class="w30">회사</th><th class="w30">업종</th><th>주력 품목</th></tr></thead><tbody>${chunk.map((rw) => rw.kind === "m"
         ? `<tr><td colspan="3" class="mut">같은 산업에 ${rw.n}곳이 더 있습니다. ${E(rw.g.orgs.slice(CAP).map((o) => short(o.name)).slice(0, 14).join(" · "))}${rw.n > 14 ? " 등" : ""}</td></tr>`
         : rw.kind === "g"
@@ -91,9 +101,9 @@ export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
   if (cg.length) {
     const blocks = cg.map((g) => ({ g, h: 2 + Math.ceil(g.orgs.map((o) => short(o.name)).join(" · ").length / 95) }));
     paginate(blocks, (b) => b.h, 30).forEach((chunk, k) => out.push(part(`${TIER.C.head}${k ? ` (${k + 1})` : ""}`,
-      (k === 0 ? T(`${TIER.C.head} ${cnt("C")}곳`, `${E(TIER.C.lead)}. 그 영역에서 작은 과제 하나를 해 두면 다음 검사에서 이어서 볼 곳으로 옮겨 올 수 있습니다.`) : `<p class="k">${E(TIER.C.head)} · 이어서</p>`) +
+      (k === 0 ? T(`${TIER.C.head} ${cnt("C")}곳`, `${E(TIER.C.rule)}이에요. ${E(TIER.C.next)}`) : `<p class="k">${E(TIER.C.head)} (계속)</p>`) +
       chunk.map(({ g }) => `<div class="sj-c"><p class="sj-ch"><b>${E(g.pack.name_ko)} · ${g.orgs.length}곳</b><span>${E(why(x, g))}</span></p><p class="sj-cl">${g.orgs.map((o) => `${E(short(o.name))}${o.listed ? "<sup>상장</sup>" : ""}`).join(" · ")}</p></div>`).join("") +
-      (k === 0 ? `<div class="two" style="margin-top:3mm">${note("넓혀 보려면", `관심 가는 회사 한 곳의 주력 품목을 골라, ${E(andJoin(cg[0].core.slice(0, 2)))} 쪽에서 어떤 판단이 필요할지 짐작해 적어 보세요. 맞았는지는 그 회사 누리집과 공고에서 확인하면 됩니다.`)}${note("다음 검사에서", "그 영역의 짧은 과제를 하나 해서 경험 기록에 더하시면, 이 회사들이 ‘이어서 볼 곳’으로 옮겨 올 수 있습니다.", true)}</div>` : ""))));
+      (k === 0 ? `<div class="two" style="margin-top:3mm">${note("넓혀 보려면", `관심 가는 회사 한 곳의 주력 품목을 골라, ${E(andJoin(cg[0].core.slice(0, 2)))} 쪽에서 어떤 판단이 필요할지 짐작해 적어 보세요. 맞았는지는 그 회사 누리집과 공고에서 확인하면 됩니다.`)}${note("다음 검사에서", `그 영역의 짧은 과제를 하나 해서 경험 기록에 더하면, 이 회사들이 ${E(j(`‘${TIER.B.head}’`, "으로"))} 옮겨 올 수 있어요.`, true)}</div>` : ""))));
   }
 
   if (r.listed.length) {
@@ -109,8 +119,9 @@ export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
     /* 회사가 적으면 막대 쪽을 표 앞에 둔다. 장 끝에 막대 하나만 남으면 쪽 절반이 빈다 */
     if (fin.length <= 8) out.splice(tableAt, 0, out.pop()!);
     out.push(part(`${r.label} 본점 상장사의 매출과 영업이익`,
-      H(`매출이 큰 ${top.length}곳을 막대로 놓았습니다`, "막대는 모두 같은 눈금입니다") +
+      H(`매출이 큰 ${top.length}곳을 막대로 놓았습니다`, "사업보고서의 주요 계정") +
       `<div class="wide-art">${moneyBars(top.map((o) => ({ label: cut(short(o.name), 12), values: [{ name: "매출액", v: o.fin!.sales, color: PAL.blue }, { name: "영업이익", v: o.fin!.op, color: PAL.amber }] })), { width: 700 })}</div>` +
+      howto([[PAL.blue, "매출액(회사마다 위 막대)"], [PAL.amber, "영업이익(아래 막대)"], ["막대 길이", "금액, 억 원 · 같은 눈금"], ["세로줄", "0원 · 왼쪽으로 뻗으면 손실"]]) +
       `<div class="two">${note("숫자를 읽는 법", "매출은 회사의 덩치를, 영업이익은 본업으로 남긴 돈을 보여 줍니다. 영업이익이 마이너스인 해는 연구개발이나 설비에 먼저 돈을 쓴 해인 경우가 많습니다.")}${note(`${x.major} 전공이라면`, `관심 가는 회사의 사업보고서 ‘사업의 내용’에서 ${E(j(strong, "과와"))} 이어지는 제품이나 공정을 하나 찾아 표시해 두세요. 면접에서 그 회사를 왜 골랐는지 말할 거리가 됩니다.`, true)}</div>`));
     /* 회사가 적으면 막대 쪽을 표 앞에 둔다. 표는 줄 단위로 나뉘어 남는 자리를 채우지만, 막대 쪽이 장 끝에 남으면 쪽 절반이 빈다 */
     if (fin.length <= 8) out.splice(tableAt, 0, out.pop()!);
@@ -156,19 +167,19 @@ export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
   out.push({ ...part("기관 한 곳을 직접 조사하는 법",
     T("관심 가는 기관 하나는 세 군데 자료로 알아봅니다", "사업보고서, 누리집, 채용 공고를 차례로 읽고 그 기관의 일과 내 경험이 닿는 곳을 찾아 두세요. 이렇게 해 두면 면접에서 ‘우리 회사를 어떻게 알게 됐느냐’는 질문에 자료를 들어 답할 수 있습니다.") +
     `<div class="g3">${[
-      ["사업보고서", "사업의 개요와 사업부문별 매출을 읽고 무엇으로 돈을 버는 회사인지 한 줄로 적어 둡니다."],
-      ["누리집", "제품과 서비스, 조직도를 보고 지원할 직무가 어느 부서에 있는지 찾습니다."],
-      ["채용 공고", "담당 업무와 필요한 지식을 읽고, 내 경험과 겹치는 줄에 표시해 둡니다."],
+      ["사업보고서", "사업의 개요와 사업부문별 매출을 읽고, 무엇으로 돈을 버는 회사인지 한 줄로 적어 두세요."],
+      ["누리집", "제품과 서비스, 조직도를 보고 지원할 직무가 어느 부서에 있는지 찾아보세요."],
+      ["채용 공고", "담당 업무와 필요한 지식을 읽고, 내 경험과 겹치는 줄에 표시해 두세요."],
     ].map(([h, t], i) => `<div class="card"><p class="k">${i + 1}단계</p><h4>${h}</h4><p>${t}</p></div>`).join("")}</div>` +
     (() => {
       /* 세 단계를 바로 해 볼 수 있게, 가장 잘 이어지는 묶음의 회사 몇 곳을 명단 값 그대로 붙인다 */
       const g0 = [...r.groups].sort((a, b) => "ABC".indexOf(a.tier) - "ABC".indexOf(b.tier))[0];
       const os = g0 ? [...g0.orgs].sort((a, b) => Number(!!b.url) - Number(!!a.url)).slice(0, 3) : [];
-      return os.length ? H(`이 순서로 먼저 알아보기 좋은 곳`, `${E(g0.pack.name_ko)} 묶음 · 명단과 공시 값 그대로`) +
+      return os.length ? H(`이 순서로 먼저 알아보기 좋은 곳`, `${E(g0.pack.name_ko)} 쪽 회사 · 명단과 공시에 적힌 그대로`) +
         `<table class="tb tb-xs"><thead><tr><th>회사</th><th>업종</th><th>주력 품목</th><th>누리집</th></tr></thead><tbody>${os.map((o) => `<tr><td><b>${E(o.name)}</b>${o.listed ? ` <span class="mut sm">${E(o.listed)}</span>` : ""}</td><td>${E(o.sector)}</td><td class="mut">${E((o.product || "").length > 30 ? `${(o.product || "").slice(0, 29)}…` : o.product || "")}</td><td class="mut sm">${E((o.url ?? "").replace(/^https?:\/\//, "").replace(/\/$/, ""))}</td></tr>`).join("")}</tbody></table>` : "";
     })() +
     (roleRow || expRow || madeRow ? note("내 결과에서 미리 옮겨 둔 것", ul([roleRow && `지원할 직무 · ${roleRow}`, expRow && `이어지는 경험 · ${expRow}`, madeRow].filter(Boolean) as string[])) : "") +
-    band("상담 연계", `알아본 내용을 들고 ${E(x.issuer)} 상담에 오시면 지역 일자리와 지원 사업을 함께 찾아볼 수 있습니다.`)) });
+    band("함께 찾아볼 곳", `알아본 내용을 들고 ${E(x.issuer)} 진로·취업 상담을 찾으면, 지역 일자리와 지원 사업을 같이 찾아볼 수 있어요.`)) });
   /* 조사하는 법은 회사 목록 바로 뒤, 공시 숫자 앞에 둔다. 장 끝에 두면 뒤에서 끌어올 쪽이 없어 반쪽이 빈 채로 끝난다 */
   const research = out.pop()!;
   const at = out.findIndex((p) => /상장사|공기업|사업의 개요/.test(p.title));
