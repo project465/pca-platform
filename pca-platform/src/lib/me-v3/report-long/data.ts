@@ -9,6 +9,7 @@ import { query, queryOne } from "@/lib/db";
 import { core as coreEntry, coreFile, packs } from "../core-registry";
 import type { ResultModel } from "../result/model";
 import { resultMeta } from "../result/meta";
+import { specView } from "../result/spec-view";
 import { experiencesOf } from "../platform";
 import { experienceFlow } from "../student";
 import { loadGuide } from "./guide";
@@ -82,6 +83,8 @@ export async function loadInputs(attemptId: string, expScope: "snapshot" | "all"
     person: (row.display_name ?? "").trim() || "응시자",
     coreCode, core, major: core.name_ko,
     department: meta.department, school: meta.school,
+    specialization: meta.specialization,
+    spec: specView(coreCode, meta.specializationCode),
     issuer: issuer ?? "CareerMatri", issuerCode: issuerCode ?? null,
     answeredOn: meta.answeredOn ?? today,
     m: row.result_model, defs, tax, rel, roles, inds, checklists, guide, exps, region,

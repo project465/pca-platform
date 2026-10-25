@@ -229,7 +229,7 @@ export function goalPage(x: Inputs, d: X): Page {
   for (let i = 0; i < notes.length; i += 2) pairs.push(`<div class="two">${notes[i]}${notes[i + 1] ?? ""}</div>`);
   const tail = ind
     ? band("목표 산업", `${E(ind.name_ko)}. ${E(okText(ind.result_line) ? ind.result_line : okText(ind.scene) ? ind.scene : "")}`)
-    : r.application_material[0] ? band("다음 과제에서", `${E(r.name_ko)} 지원 서류에 들어가는 ${E(j(r.application_material[0], "을를"))} 하나 만들어 보세요. 형식을 미리 익혀 두면 지원할 때 바로 꺼내 쓸 수 있습니다.`) : "";
+    : r.application_material[0] ? band("다음 과제에서", `${E(r.name_ko)} 지원 서류에 들어가는 ${E(j(r.application_material[0], "을를"))}${/(한 (벌|장|편|권|건|개|줄|쪽|부)|하나)$/.test(r.application_material[0]) ? "" : " 하나"} 만들어 보세요. 형식을 미리 익혀 두면 지원할 때 바로 꺼내 쓸 수 있습니다.`) : "";
   return P("목표 직무 준비 한눈에",
     T(E(headline), E(`${j(r.name_ko, "은는")} ${polite(r.owns)}`)) +
     `<div class="two">
@@ -239,6 +239,40 @@ export function goalPage(x: Inputs, d: X): Page {
     pairs.join("") + tail);
 }
 
+/**
+ * 그 학과 쪽에서 보면.
+ *
+ * 한 Core 를 여러 학과가 나눠 쓴다(배재대 경영 쪽 학과만 스물이 넘는다). 웹 결과는
+ * 학과마다 먼저 보는 영역과 흔히 남기는 것과 그 학과의 한 걸음을 따로 세우는데,
+ * 책자에는 그 자리가 없어서 **같은 Core 학생 둘이 학과 이름만 다른 책을 받았다.**
+ * 웹과 같은 `specView` 를 읽어 한 쪽에 싣는다.
+ *
+ * **판정에 닿지 않는다.** 여기 적는 것은 그 학과라면 흔히 보는 것이고, 앞 쪽들의
+ * 결과는 응답에서 나온 것이다. 둘이 섞여 읽히지 않게 머리말에서 가른다.
+ * 학과 자료가 하나도 없으면 쪽을 세우지 않는다(빈 쪽은 덜 만든 책으로 읽힌다).
+ */
+export function deptPage(x: Inputs, d: X): Page | null {
+  const sv = x.spec;
+  const name = x.specialization ?? x.department;
+  if (!name) return null;
+  const lead = sv.domainLead.map((c) => d.name(c)).filter(Boolean).slice(0, 4);
+  const steps = [sv.evidenceFirst, sv.evidenceNext].filter(Boolean);
+  if (!lead.length && !sv.artifacts.length && !steps.length && !sv.application.resume) return null;
+  const body = [
+    T(`${E(name)} 쪽에서 보면`,
+      "같은 전공 계열이라도 학과마다 먼저 보는 일과 손에 남기는 결과물이 다릅니다. 이 쪽은 그 학과라면 흔히 보는 것을 적은 안내이고, 앞 쪽의 결과는 검사 응답에서 나온 것입니다."),
+    lead.length ? `${H("먼저 보는 영역")}${chips(lead)}` : "",
+    sv.scene.length ? `${H("자주 마주치는 장면")}${ul(sv.scene.slice(0, 4).map(E))}` : "",
+    sv.artifacts.length ? `${H("흔히 남기는 것", "하나라도 손에 있으면 03장의 근거로 옮겨 적을 수 있습니다")}${chips(sv.artifacts.slice(0, 8))}` : "",
+    steps.length ? `${H("지금 할 수 있는 한 걸음")}${ul(steps.map(E))}` : "",
+    sv.application.resume ? `${H("지원서에서 꺼내는 법")}<p>${E(sv.application.resume)}</p>` : "",
+    sv.application.interview.length ? `${H("면접에서 다시 묻는 질문", "답은 고른 항목과 경험 기록에서 찾습니다")}${ul(sv.application.interview.map(E))}` : "",
+    note("이 쪽은 점수에 들어가지 않습니다", "학과 안내는 읽는 차례와 예시를 돕는 자료입니다. 강점과 비어 있는 판단은 앞 쪽과 02장이 응답으로 정한 그대로입니다."),
+  ].join("");
+  return { ...P(`${name} 쪽에서 보면`, body), keep: true };
+}
+
 export function ch1Pages(x: Inputs, d: X): Page[] {
-  return [glance(x, d), tree(x, d), dash(x, d), ringPage(x, d), quad(x, d), bestPage(x, d), goalPage(x, d)];
+  const dept = deptPage(x, d);
+  return [glance(x, d), tree(x, d), dash(x, d), ringPage(x, d), quad(x, d), bestPage(x, d), goalPage(x, d), ...(dept ? [dept] : [])];
 }

@@ -34,8 +34,9 @@ import {
   makeStudent,
 } from "./_loop-fixture";
 import { query, queryOne } from "../src/lib/db";
+import { loadGuide } from "../src/lib/me-v3/report-long/guide";
 import {
-  core as coreEntry, hasCoreFile, packs, registry,
+  core as coreEntry, coreFile, hasCoreFile, packs, registry,
 } from "../src/lib/me-v3/core-registry";
 import {
   allLeaves, readinessOf, specializationName, statusOf, university,
@@ -91,6 +92,18 @@ const PAPER_NEEDS = [
 ];
 
 /**
+ * **PRO 책자(70~80쪽)가 들고 있어야 하는 것.** 학교 좌석은 PRO 라 학생이 받는
+ * 종이는 책자다(`result/pdf` 가 PRO 한국어면 책자를 뽑는다). 책자는 짧은 결과지와
+ * 절 이름이 달라서 위 목록으로 세면 **멀쩡한 책 전부가 걸렸다.** 책자의 장 이름과,
+ * 그 학과 쪽 한 쪽(`… 쪽에서 보면`)을 센다. 그 쪽이 없으면 같은 Core 를 쓰는 학과
+ * 둘이 학과 이름만 다른 책을 받는다.
+ */
+const BOOK_NEEDS = [
+  "한눈에 보기", "판단 프로파일", "직무 탐색", "실행 로드맵",
+  "쪽에서 보면", "먼저 보는 영역", "흔히 남기는 것", "지금 할 수 있는 한 걸음",
+];
+
+/**
  * **남의 전공의 말이 섞였는가**(§14).
  *
  * 세는 것은 **그 Core 에만 있는 영역 이름**이다. 두 Core 가 함께 쓰는
@@ -121,6 +134,15 @@ function foreignDomainNames(mine: string): { name: string; core: string }[] {
   for (const k of ["industry", "role"] as const) {
     try { ownPacks += JSON.stringify(packs(mine, k)); } catch { /* 팩이 없는 Core 다 */ }
   }
+  /* **내 직무 안내가 쓰는 말도 내 말이다.** 책자의 직무 장은 그 Core 의 직무 안내를
+     싣는데, 어문의 한국어교육 갈래가 남기는 `교육과정 설계` 가 교육 영역 이름과 같아
+     멀쩡한 책이 걸렸다 */
+  try {
+    const roles = packs<{ packs: { code: string }[] }>(mine, "role").packs.map((r) => r.code);
+    ownPacks += JSON.stringify(loadGuide(mine, roles));
+  } catch { /* 직무 안내가 없는 Core 다 */ }
+  /* 내 분류표(`*-taxonomy.json`)가 적은 결과물 이름도 내 말이다(같은 까닭) */
+  try { ownPacks += JSON.stringify(coreFile(mine, "taxonomy")); } catch { /* 분류표가 없는 Core 다 */ }
   const out: { name: string; core: string }[] = [];
   for (const [n, cores] of all) {
     if (cores.size !== 1 || cores.has(mine)) continue;
@@ -331,7 +353,7 @@ async function main(): Promise<void> {
             if (!txt.includes(s.name.replace(/\s+/g, ""))
               && !txt.includes(s.name)) paperBad.push("종이에 학과가 없다");
             if (specKo && !txt.includes(specKo)) paperBad.push("종이에 갈래가 없다");
-            for (const need of PAPER_NEEDS) {
+            for (const need of (pages > 20 ? BOOK_NEEDS : PAPER_NEEDS)) {
               if (!txt.includes(need)) paperBad.push(`종이에 '${need}' 절이 없다`);
             }
             const hit = foreignDomainNames(s.core).find((x) => txt.includes(x.name));
@@ -344,7 +366,8 @@ async function main(): Promise<void> {
       if (!provOk) problems.push(`응시 줄이 어긋난다(${row?.core_code}·${row?.department_code}·${row?.specialization_code})`);
       if (!identOk) problems.push("결과지가 학교·학과·갈래를 적지 않는다");
       if (leak) problems.push(`내부 코드 — ${leak}`);
-      if ((s as Slot & { paper?: boolean }).paper && !(pages >= 3 && pages <= 12)) {
+      const paperOk = pages > 20 ? pages >= 60 && pages <= 90 : pages >= 3 && pages <= 12;
+      if ((s as Slot & { paper?: boolean }).paper && !paperOk) {
         problems.push(`종이 ${pages}쪽`);
       }
       problems.push(...paperBad);

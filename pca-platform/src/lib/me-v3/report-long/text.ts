@@ -91,7 +91,7 @@ export function actionLine(a: Action, dn: string, def: DomainDef | undefined): s
         : `다음 ${dn} 과제에서 ${a.axis ? AXIS_NEED[a.axis] : "한 가지"}를 직접 맡아 보세요.`;
     case "DEEPEN_OWNERSHIP":
       return l2
-        ? `이미 해 본 ${dn} 과제에서 ${q(l2)} 가운데 직접 정한 것을 세 줄로 적어 보세요.`
+        ? `이미 해 본 ${dn} 과제에서 ${q(l2)}에 해당하는 일을 떠올려, 그때 직접 정한 것을 세 줄로 적어 보세요.`
         : `이미 해 본 ${dn} 과제에서 직접 정한 것을 세 줄로 적어 보세요.`;
     case "TRY_SHORT_EXPERIENCE":
       return `${j(dn, "을를")} 다루는 짧은 과제나 스터디 하나를 해 보고, 한 일과 직접 정한 것을 다섯 줄로 적어 두세요.`;

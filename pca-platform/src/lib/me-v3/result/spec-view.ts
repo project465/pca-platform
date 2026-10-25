@@ -16,6 +16,14 @@
  * 적는 자리다.
  */
 import { core as coreEntry, sharedFile, specializationOf } from "@/lib/me-v3/core-registry";
+import { polite } from "@/lib/me-v3/report-long/text";
+
+/**
+ * 등록부의 할 일 문장은 `~남긴다` 꼴로 적혀 있다. 그대로 세우면 높임으로
+ * 쓴 결과지 한가운데 그 줄만 반말로 서서 메모를 붙여 넣은 것처럼 읽힌다.
+ * **읽는 자리에서 말끝만 바꾼다**: 원본을 고치면 Core 스무 벌을 다시 써야 한다.
+ */
+const say = (v: unknown) => (typeof v === "string" && v.trim() ? polite(v) : "");
 
 export type SpecView = {
   /** 그 전공에서 자주 서는 장면 */
@@ -92,10 +100,10 @@ export function specView(core: string, spec: string | null, lang = "ko"): SpecVi
     domainLead: list(obj(pick("domain_emphasis")).lead),
     industryLead: list(obj(pick("industry_mapping")).lead),
     roleLead: list(obj(pick("role_mapping")).lead),
-    evidenceFirst: typeof ea.first === "string" ? ea.first : "",
-    evidenceNext: typeof ea.next === "string" ? ea.next : "",
+    evidenceFirst: say(ea.first),
+    evidenceNext: say(ea.next),
     application: {
-      resume: typeof ap.resume === "string" ? ap.resume : "",
+      resume: say(ap.resume),
       interview: list(ap.interview),
     },
   };

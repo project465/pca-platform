@@ -94,6 +94,13 @@ export type Inputs = {
   major: string;
   /** 학교 진입이면 학과 이름 */
   department: string | null;
+  /** 학과의 갈래 이름(`국어국문·한국어교육`). 학교 진입이 아니면 비어 있다 */
+  specialization: string | null;
+  /**
+   * 그 학과라면 먼저 보는 영역 · 남기는 것 · 한 걸음 · 지원서와 면접에서 꺼내는 법
+   * (`result/spec-view.ts`). 웹 결과가 읽는 것과 같은 자리에서 읽는다
+   */
+  spec: import("../result/spec-view").SpecView;
   school: string | null;
   /** 발행 기관: 학교·기관 이름, 없으면 CareerMatri */
   issuer: string;
