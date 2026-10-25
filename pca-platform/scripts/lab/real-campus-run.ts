@@ -60,6 +60,30 @@ const EXPS: Record<string, { kind: number; title: string; tds: number[] }[]> = {
   ],
 };
 
+/**
+ * 그 과정의 학생처럼 답하게 하는 규칙. 피지컬 AI 부트캠프 예시는 기계학습·데이터와
+ * 센서·제어·실시간 시스템 쪽을 높게, 화면·게임·그래픽스 쪽을 낮게 고른다.
+ * 보기 차례가 낮은 칸 → 높은 칸이라 끝 칸을 고르면 높은 쪽이다.
+ */
+const HIGH = [/정했고/, /매우 관심/, /매우 배우고/, /여러 번/, /직접 했다/, /관심 있다/, /배우고 싶다/];
+const LOW = [/받아 썼다/, /별로 관심/, /별로 배우고/, /한두 번/];
+const pickBy = (labels: string[], res: RegExp[]) => {
+  for (const re of res) { const k = labels.findIndex((l) => re.test(l)); if (k >= 0) return k; }
+  return -1;
+};
+const PROFILE: Record<string, (q: { text: string; n: number; want: number; labels: string[] }) => number> = {
+  JJU26_BOOTCAMP_AI: ({ text, want, labels }) => {
+    const q = text.split("\n")[0] + " " + text;
+    if (/기계학습|데이터 분석|모델|학습 데이터|추론|센서|로봇|제어|동시성|임베디드|알고리즘/.test(q)) {
+      const k = pickBy(labels, HIGH); return k >= 0 ? k : want;
+    }
+    if (/인터페이스|게임|그래픽스|렌더링|화면 구현/.test(q)) {
+      const k = pickBy(labels, LOW); return k >= 0 ? k : want;
+    }
+    return want;
+  },
+};
+
 async function addExperience(p: import("playwright").Page, e: { kind: number; title: string; tds: number[] }) {
   await p.goto(`${BASE}/me/experience/new`, { waitUntil: "domcontentloaded" });
   await p.waitForLoadState("networkidle").catch(() => undefined);
@@ -135,7 +159,7 @@ async function one(run: { uni: string; leaf: string; name: string }, browser: im
   ok("경험 기록을 화면으로 적었다", Number(nexp?.n ?? 0) === (EXPS[run.leaf] ?? []).length, `${nexp?.n}건`);
   await p.goto(`${BASE}/v3/${att}`, { waitUntil: "domcontentloaded" });
   const t0 = Date.now();
-  const w = await walk(p, 260);
+  const w = await walk(p, 260, PROFILE[run.leaf] ? { choose: PROFILE[run.leaf] } : undefined);
   ok("화면을 눌러 끝까지 풀었다", w.done, `화면 ${w.screens}개 · ${Math.round((Date.now() - t0) / 1000)}초`);
   const row = await queryOne<{ tier: string; n: string; dep: string }>(
     `SELECT a.tier, a.department_code dep, (SELECT count(*) FROM v3_responses r WHERE r.attempt_id = a.id)::text n

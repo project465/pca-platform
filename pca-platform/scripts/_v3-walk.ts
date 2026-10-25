@@ -107,6 +107,12 @@ export async function walk(
     /** 덧붙이는 한 줄. **응시 언어로 적는다**: 영어 응시에 한국어 줄을 넣으면
         결과지가 그 줄을 옮겨 적어 한글이 선다 */
     note?: string;
+    /**
+     * 고를 칸을 바꾼다. 예시 참여자를 **그 과정의 학생처럼** 답하게 할 때 쓴다
+     * (부트캠프 예시가 게임 그래픽스를 가장 잘한다고 나오면 예시가 되지 않는다).
+     * `text` 는 그 묶음과 화면 머리의 글자다. 없으면 흔드는 규칙 그대로다
+     */
+    choose?: (q: { text: string; n: number; want: number; labels: string[] }) => number;
   },
 ): Promise<WalkOut> {
   /* **시작 안내를 먼저 지난다.** 그 쪽에도 짙은 단추가 하나 있어서, 모르고
@@ -149,7 +155,12 @@ export async function walk(
       const n = await labels.count();
       if (!n) continue;
       const shake = [0.8, 0.4, 1, 0.2, 0.6][(i + g) % 5];
-      const want = n <= 2 ? 0 : Math.min(n - 1, Math.round((n - 1) * shake));
+      let want = n <= 2 ? 0 : Math.min(n - 1, Math.round((n - 1) * shake));
+      if (opts?.choose) {
+        const text = `${await p.locator("h1.qs-q").first().textContent({ timeout: 300 }).catch(() => "") ?? ""} ${await box.innerText({ timeout: 500 }).catch(() => "")}`;
+        const labelsText = (await labels.allInnerTexts().catch(() => [] as string[])).map((t) => t.replace(/\s+/g, " ").trim());
+        want = Math.max(0, Math.min(n - 1, opts.choose({ text, n, want, labels: labelsText })));
+      }
       const how = await pickOne(box, want);
       if (how === "covered") covered += 1;
       await p.waitForTimeout(40);
