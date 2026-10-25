@@ -11,12 +11,26 @@ export default function CopyText({ value, label, done }: { value: string; label:
       type="button"
       className="copy-btn"
       onClick={async () => {
+        let done = false;
         try {
           await navigator.clipboard.writeText(value);
+          done = true;
+        } catch {
+          /* 복사 권한이 없는 브라우저(카카오톡 안 브라우저 등). 메일 쓰기 칸과 같이
+             숨은 칸에 담아 복사한다. 전에는 여기서 아무 일도 없어 단추가 죽은 것처럼 보였다 */
+          const ta = document.createElement("textarea");
+          ta.value = value;
+          ta.setAttribute("readonly", "");
+          ta.style.position = "fixed";
+          ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.select();
+          try { done = document.execCommand("copy"); } catch { done = false; }
+          ta.remove();
+        }
+        if (done) {
           setOk(true);
           setTimeout(() => setOk(false), 1800);
-        } catch {
-          /* 복사 권한이 없으면 글자를 직접 고르면 된다 */
         }
       }}
     >
