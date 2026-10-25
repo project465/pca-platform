@@ -145,7 +145,8 @@ export default async function Next(
    * 필요한가` 가 영원히 서지 않는다.
    */
   /** 그 줄이 굳은 결과의 어느 할 일에서 왔는가 */
-  const modelOf = (a: ActionRow) => (model?.actions ?? []).find((x) =>
+  /* 학생이 공고 화면에서 고른 줄(`manual`)은 담긴 문장 그대로 적는다 */
+  const modelOf = (a: ActionRow) => a.source !== "result" ? null : (model?.actions ?? []).find((x) =>
     (x.domain ?? "") === (a.td_code ?? "") && (x.axis ?? "") === (a.axis_code ?? "")) ?? null;
 
   /**

@@ -3,12 +3,15 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { activeMajorName } from "@/lib/me-v3/major-name";
-import { activeCoreOrPick } from "@/lib/me-v3/platform";
+import { activeCoreOrPick, experiencesOf } from "@/lib/me-v3/platform";
 import { activeTrack } from "@/lib/track";
 import { itemDomainKo, postingOf, type ItemStatus, type PostingItem } from "@/lib/assistant/posting";
+import { interviewPrep, smallTasks } from "@/lib/assistant/prep";
+import { domainName } from "@/lib/me-v3/runtime/session";
+import { AXIS_KO } from "@/lib/me-v3/result/text.ko";
 import { CmShell, CmHead } from "../../../shell";
 import { SectionHeader } from "../../../ui";
-import { changePostingState } from "../../actions";
+import { changePostingState, takePostingTasks } from "../../actions";
 
 export const metadata = { title: "공고 확인 · MAT" };
 
@@ -39,8 +42,11 @@ const statusOf = (it: PostingItem) =>
 
 const ORDER: ItemStatus[] = ["empty", "partial", "ready", "unmapped"];
 
-export default async function Posting({ params }: { params: Promise<{ id: string }> }) {
+export default async function Posting({ params, searchParams }: {
+  params: Promise<{ id: string }>; searchParams: Promise<{ taken?: string }>;
+}) {
   const { id } = await params;
+  const takenRaw = (await searchParams).taken;
   const user = await requireUser();
   /* **영어 작업공간에는 이 자리가 없다**(`WS_KR_ONLY`). 한국 자료에 서
      있는 쪽이라, 번역해 세우면 해외 손님이 한국 자료를 자기 것으로 읽는다 */
@@ -57,6 +63,12 @@ export default async function Posting({ params }: { params: Promise<{ id: string
   const firstGap = items.find((it) => it.status === "empty" && it.domain)
     ?? items.find((it) => it.status === "partial" && it.domain);
   const unmatched = items.filter((it) => it.status === "unmapped" && it.reason === "unmatched").length;
+  /* 면접 준비와 작은 일은 **분석 순서(공고에 적힌 차례)** 로 만든다. 표의 정렬은
+     상태 차례라, 그것으로 고르면 필수 항목 여섯이 늘 `아직 없음` 쪽에서만 나온다 */
+  const exps = await experiencesOf(user.id, core);
+  const prep = interviewPrep(core, a.items, exps);
+  const tasks = smallTasks(core, a.items, exps);
+  const taken = takenRaw === undefined ? null : takenRaw === "x" ? -1 : Number(takenRaw);
 
   return (
     <CmShell active="/me/track" title="공고 확인" major={major}>
@@ -113,6 +125,74 @@ export default async function Posting({ params }: { params: Promise<{ id: string
         </div>
       ) : (
         <p className="cm-none">요구 항목을 찾지 못했습니다. 자격 요건과 하는 일이 적힌 부분을 다시 붙여 넣어 주세요.</p>
+      )}
+
+      <SectionHeader icon="users" title="이 공고로 면접을 본다면"
+        sub="필수 항목에서 나올 법한 질문과, 내 기록 가운데 가져갈 경험입니다. 소리 내어 한 번 답해 보세요." />
+      {prep.length ? (
+        <div className="cm-panel">
+          {prep.map((x, i) => (
+            <div className="cm-pane" key={i}>
+              <h3>{x.question}<em>{x.kind === "must" ? "필수" : "우대"} · {domainName(core, x.domain)} · {AXIS_KO[x.axis]}</em></h3>
+              <dl className="cm-dl">
+                <div><dt>공고의 요구</dt><dd>{x.text}</dd></div>
+                {x.experience ? (
+                  <div><dt>가져갈 경험</dt><dd>
+                    <Link href={`/me/experience/${encodeURIComponent(x.experience.id)}/edit`}>{x.experience.title}</Link>
+                  </dd></div>
+                ) : null}
+                {x.frame ? <div><dt>답의 뼈대</dt><dd>{x.frame}</dd></div> : null}
+                {x.honest ? (
+                  <div>
+                    <dt>{x.status === "empty" ? "아직 이 영역 경험이 없다면 이렇게 답할 수 있어요" : "적어 둔 경험이 없어요"}</dt>
+                    <dd>{x.honest}</dd>
+                  </div>
+                ) : null}
+              </dl>
+              {!x.experience ? (
+                <div className="cm-acts">
+                  <Link className="cm-btn" href={`/me/experience/new?td=${encodeURIComponent(x.domain)}`}>이 영역 경험 적기</Link>
+                </div>
+              ) : null}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="cm-none">이 공고에서는 경험으로 답할 요구 항목을 찾지 못했습니다. 학력·자격 같은 조건만 적힌 공고일 수 있어요.</p>
+      )}
+      <p className="cm-note">질문은 공고 문장과 이 전공의 업무 영역으로 만든 예시입니다. 실제 면접에서 이대로 나온다는 뜻은 아니에요.</p>
+
+      <SectionHeader icon="target" title="이번 주에 할 수 있는 작은 일"
+        sub="필수 항목 가운데 아직 없음 · 정리가 덜 됨인 줄마다 결과물 하나와 비교할 것 하나를 골랐습니다." />
+      <div id="tasks" />
+      {taken !== null ? (
+        <p className="cm-none" role="status">
+          {taken < 0 ? "지금 전공과 다른 전공으로 읽은 공고라 할 일로 담지 않았어요."
+            : taken > 0 ? `할 일 ${taken}개를 담았어요. 지금 할 일 쪽에서 이어서 볼 수 있어요.`
+              : "이미 담아 둔 할 일이라 새로 늘지 않았어요."}
+        </p>
+      ) : null}
+      {tasks.length ? (
+        <div className="cm-panel is-one">
+          <div className="cm-pane">
+            <dl className="cm-dl">
+              {tasks.map((t, i) => (
+                <div key={i}><dt>{t.text}</dt><dd>{t.task}</dd></div>
+              ))}
+            </dl>
+            <div className="cm-acts">
+              {state.on ? (
+                <form action={takePostingTasks}>
+                  <input type="hidden" name="id" value={p.id} />
+                  <button className="cm-btn is-primary" type="submit">할 일 목록에 담기</button>
+                </form>
+              ) : null}
+              <Link className="cm-btn" href="/me/next">지금 할 일 보기</Link>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <p className="cm-none">필수 항목 가운데 아직 없음이나 정리가 덜 된 줄이 없습니다.</p>
       )}
 
       <SectionHeader icon="clock" title="이 공고 상태" />

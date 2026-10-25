@@ -256,7 +256,7 @@ export default async function State(
                (규격 §9). 굳은 결과에서 같은 할 일을 찾으면 그쪽을 쓰고,
                못 찾으면 담아 둔 문장을 그대로 쓴다 */
             <p>{(() => {
-              const x = m.actions.find((a) =>
+              const x = nextOne.source !== "result" ? null : m.actions.find((a) =>
                 (a.domain ?? "") === (nextOne.td_code ?? "")
                 && (a.axis ?? "") === (nextOne.axis_code ?? ""));
               return x

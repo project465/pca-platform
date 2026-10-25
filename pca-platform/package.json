@@ -161,6 +161,7 @@
     "db:migration": "tsx scripts/db-migration-check.ts",
     "v3:smoke": "node scripts/v3-smoke.mjs",
     "mat:gold": "tsx scripts/mat-gold.ts",
+    "mat:prep": "tsx scripts/mat-prep-check.ts",
     "v3:recompute": "tsx scripts/v3-recompute-check.ts",
     "auth:check": "tsx scripts/auth-check.ts",
     "public:shots": "node scripts/public-shots.mjs",

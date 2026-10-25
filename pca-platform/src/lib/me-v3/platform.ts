@@ -647,21 +647,28 @@ export async function setActionState(
  * **같은 할 일을 두 번 쌓지 않는다.** 결과를 두 번 열어도 줄이 늘지 않게
  * 영역과 축과 문장으로 본다.
  */
+/*
+ * `source` 는 어디서 온 줄인가다. 결과지가 낸 것이 기본이고, 학생이 공고
+ * 화면에서 직접 고른 줄은 `manual` 로 담는다(표의 CHECK 가 허락하는 셋 가운데).
+ * **결과지 줄로 담으면** 할 일 쪽이 영역과 축이 같은 결과의 할 일을 찾아
+ * 그 문장으로 바꿔 적어서, 학생이 고른 줄이 화면에서 사라진다.
+ */
 export async function importActions(
   userId: string, rows: { td: string | null; axis: string | null;
                           body: string; horizon: number }[],
+  source: "result" | "manual" = "result",
 ): Promise<number> {
   let n = 0;
   for (const r of rows) {
     const got = await queryOne<{ id: string }>(
       `INSERT INTO v3_actions (user_id, core_code, source, td_code, axis_code, body, horizon)
-       SELECT $1,$2,'result',$3,$4,$5,$6
+       SELECT $1,$2,$7::text,$3,$4,$5,$6
         WHERE NOT EXISTS (
           SELECT 1 FROM v3_actions
            WHERE user_id=$1 AND core_code=$2 AND body=$5
              AND coalesce(td_code,'')=coalesce($3,''))
        RETURNING id::text`,
-      [userId, await activeCore(userId), r.td, r.axis, r.body.slice(0, 400), r.horizon]);
+      [userId, await activeCore(userId), r.td, r.axis, r.body.slice(0, 400), r.horizon, source]);
     if (got) n += 1;
   }
   return n;

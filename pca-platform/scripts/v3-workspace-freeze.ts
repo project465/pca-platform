@@ -97,6 +97,8 @@ const FILES = [
   /* 기타 */
   "src/app/me/track/page.tsx",
   "src/app/me/track/guide.tsx",
+  /* 공고 확인 쪽. **목록에 없어서 쓰는 class 이름 대조가 이 쪽을 보지 않았다** */
+  "src/app/me/track/posting/[id]/page.tsx",
   /* 계정 — 같은 껍데기를 쓰므로 같은 목록에 든다 */
   "src/app/my/layout.tsx",
   "src/app/my/page.tsx",

@@ -184,6 +184,9 @@ const FILES = [
   "src/app/me/jobs/page.tsx",
   "src/app/me/track/page.tsx",
   "src/app/me/track/guide.tsx",
+  /* MAT 공고 확인 쪽과 그 쪽의 면접 준비·작은 일 문장 */
+  "src/app/me/track/posting/[id]/page.tsx",
+  "src/lib/assistant/prep.ts",
   "src/app/me/gap/page.tsx",
   "src/app/me/apply/page.tsx",
   "src/app/me/recompute/page.tsx",

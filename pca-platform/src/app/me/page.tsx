@@ -93,7 +93,8 @@ export default async function Home() {
    * 지어낸 까닭은 그 자리에서 가장 그럴듯하게 읽히고 가장 먼저 거짓이
    * 된다.
    */
-  const nowModel = first && st.model
+  /* 학생이 공고 화면에서 고른 줄(`manual`)은 결과의 할 일로 바꿔 읽지 않는다 */
+  const nowModel = first && st.model && first.source === "result"
     ? st.model.actions.find((a) =>
         (a.domain ?? "") === (first.td_code ?? "")
         && (a.axis ?? "") === (first.axis_code ?? "")) ?? null
