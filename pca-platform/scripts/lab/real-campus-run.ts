@@ -54,6 +54,10 @@ const EXPS: Record<string, { kind: number; title: string; tds: number[] }[]> = {
     { kind: 1, title: "캡스톤: 전주 한옥마을 방문 후기 감성 분류 모델", tds: [9, 4] },
     { kind: 0, title: "데이터베이스 수업: 교내 식당 혼잡도 예측 웹 서비스", tds: [3, 0] },
   ],
+  JJU26_BOOTCAMP_AI: [
+    { kind: 1, title: "피지컬 AI 부트캠프: 로봇팔 카메라로 부품을 인식해 집는 모델 학습", tds: [8, 5] },
+    { kind: 0, title: "부트캠프 팀 과제: 공장 설비 진동 센서 이상 감지와 경보 기준 정하기", tds: [8, 9] },
+  ],
 };
 
 async function addExperience(p: import("playwright").Page, e: { kind: number; title: string; tds: number[] }) {
