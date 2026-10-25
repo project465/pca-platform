@@ -274,7 +274,7 @@ export function interviewPages(x: Inputs, d: X): Page[] {
     out.push(P(`면접 질문 ${a + 1}–${Math.min(a + 3, qs.length)}`.replace("–", "~"),
       T(a === 0 ? "면접관은 고르신 판단을 다시 물어봅니다" : "질문이 더 있습니다", a === 0 ? "질문은 고르신 근거와 이번 결과에서 비어 있는 자리로 만들었습니다. 질문마다 답변 초안을 붙였으니 점선을 채우고 소리 내어 한 번씩 말해 보세요." : "답변 초안은 앞쪽과 같은 방식으로 만들었습니다.") +
       qs.slice(a, a + 3).map((v, i) => `<div class="qa"><div class="qa-q"><span>Q${a + i + 1}</span><b>${E(v.q)}</b></div>
-        <div class="g3 qa-b"><div><p class="k">왜 묻나</p><p>${E(v.why)}</p></div><div><p class="k">내 재료</p><p>${E(v.material)}</p></div><div><p class="k">답하는 순서</p><p>${E(v.dir)}</p></div></div>
+        <div class="g3 qa-b"><div><p class="k">왜 묻나</p><p>${E(polite(v.why))}</p></div><div><p class="k">내 재료</p><p>${E(v.material)}</p></div><div><p class="k">답하는 순서</p><p>${E(v.dir)}</p></div></div>
         ${mine("답변 초안", v.draft)}</div>`).join("")));
   }
   return out;

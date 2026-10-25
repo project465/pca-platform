@@ -52,7 +52,7 @@
    "differs_from": [
     {
      "vs": "ROLE_LEGALANALYSIS_V1",
-     "line": "검토 쪽은 이미 있는 조문으로 답을 내고 법제 쪽은 그 조문을 새로 적을 권한을 가진다"
+     "line": "검토 쪽은 이미 있는 조문으로 답을 내고 법제 쪽은 그 조문을 새로 짓거나 고칠 안을 만든다"
     },
     {
      "vs": "ROLE_COMPLIANCE_V1",

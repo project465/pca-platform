@@ -1222,7 +1222,7 @@
    "role": "ROLE_LEGALANALYSIS_V1",
    "role_name": "법리 검토",
    "strength": "중심",
-   "appears_as": "법리 검토 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "법리 검토 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J6"
@@ -1342,7 +1342,7 @@
    "role": "ROLE_LITIGATION_V1",
    "role_name": "송무·서면",
    "strength": "중심",
-   "appears_as": "송무·서면 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "송무·서면 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J6"
@@ -1366,7 +1366,7 @@
    "role": "ROLE_CASEMGMT_V1",
    "role_name": "사건·과제 관리",
    "strength": "중심",
-   "appears_as": "사건·과제 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "사건·과제 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J5"
    ]
@@ -1377,7 +1377,7 @@
    "role": "ROLE_INVESTIGATE_V1",
    "role_name": "수사·조사",
    "strength": "중심",
-   "appears_as": "수사·조사 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "수사·조사 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J6"
    ]
@@ -1400,7 +1400,7 @@
    "role": "ROLE_POLICYDRAFT_V1",
    "role_name": "입법·법제",
    "strength": "중심",
-   "appears_as": "입법·법제 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "입법·법제 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J8"
@@ -1412,7 +1412,7 @@
    "role": "ROLE_LEGALANALYSIS_V1",
    "role_name": "법리 검토",
    "strength": "중심",
-   "appears_as": "법리 검토 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "법리 검토 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J3",
@@ -1425,7 +1425,7 @@
    "role": "ROLE_ADJUDICATE_V1",
    "role_name": "심사·판정",
    "strength": "중심",
-   "appears_as": "심사·판정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "심사·판정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5"
@@ -1533,7 +1533,7 @@
    "role": "ROLE_LITIGATION_V1",
    "role_name": "송무·서면",
    "strength": "중심",
-   "appears_as": "송무·서면 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "송무·서면 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J5",
@@ -1558,7 +1558,7 @@
    "role": "ROLE_CASEMGMT_V1",
    "role_name": "사건·과제 관리",
    "strength": "중심",
-   "appears_as": "사건·과제 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "사건·과제 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4",
     "J6",
@@ -1607,7 +1607,7 @@
    "role": "ROLE_LEGALANALYSIS_V1",
    "role_name": "법리 검토",
    "strength": "중심",
-   "appears_as": "법리 검토 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "법리 검토 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J5",
     "J8"
@@ -1727,7 +1727,7 @@
    "role": "ROLE_LITIGATION_V1",
    "role_name": "송무·서면",
    "strength": "중심",
-   "appears_as": "송무·서면 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "송무·서면 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J8"
@@ -1751,7 +1751,7 @@
    "role": "ROLE_CASEMGMT_V1",
    "role_name": "사건·과제 관리",
    "strength": "중심",
-   "appears_as": "사건·과제 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "사건·과제 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J3",
@@ -1788,7 +1788,7 @@
    "role": "ROLE_POLICYDRAFT_V1",
    "role_name": "입법·법제",
    "strength": "중심",
-   "appears_as": "입법·법제 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "입법·법제 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J6"
    ]
@@ -1811,7 +1811,7 @@
    "role": "ROLE_ADJUDICATE_V1",
    "role_name": "심사·판정",
    "strength": "중심",
-   "appears_as": "심사·판정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "심사·판정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J6",
@@ -1872,7 +1872,7 @@
    "role": "ROLE_COMPLIANCE_V1",
    "role_name": "준법·감찰",
    "strength": "중심",
-   "appears_as": "준법·감찰 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "준법·감찰 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J5",
@@ -1934,7 +1934,7 @@
    "role": "ROLE_FIELD_V1",
    "role_name": "현장 운영",
    "strength": "중심",
-   "appears_as": "현장 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "현장 운영 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4"
    ]
@@ -1957,7 +1957,7 @@
    "role": "ROLE_INVESTIGATE_V1",
    "role_name": "수사·조사",
    "strength": "중심",
-   "appears_as": "수사·조사 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "수사·조사 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J4",
@@ -2031,7 +2031,7 @@
    "role": "ROLE_FIELD_V1",
    "role_name": "현장 운영",
    "strength": "중심",
-   "appears_as": "현장 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "현장 운영 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J3",
@@ -2106,7 +2106,7 @@
    "role": "ROLE_ADJUDICATE_V1",
    "role_name": "심사·판정",
    "strength": "중심",
-   "appears_as": "심사·판정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "심사·판정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J7"
@@ -2130,7 +2130,7 @@
    "role": "ROLE_FIELD_V1",
    "role_name": "현장 운영",
    "strength": "중심",
-   "appears_as": "현장 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "현장 운영 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J7"
    ]
@@ -2249,7 +2249,7 @@
    "role": "ROLE_INVESTIGATE_V1",
    "role_name": "수사·조사",
    "strength": "중심",
-   "appears_as": "수사·조사 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "수사·조사 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J8"
@@ -2261,7 +2261,7 @@
    "role": "ROLE_COMPLIANCE_V1",
    "role_name": "준법·감찰",
    "strength": "중심",
-   "appears_as": "준법·감찰 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "준법·감찰 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J4"
@@ -2273,7 +2273,7 @@
    "role": "ROLE_POLICYDRAFT_V1",
    "role_name": "입법·법제",
    "strength": "중심",
-   "appears_as": "입법·법제 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "입법·법제 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J3",
@@ -2359,7 +2359,7 @@
    "role": "ROLE_COMPLIANCE_V1",
    "role_name": "준법·감찰",
    "strength": "중심",
-   "appears_as": "준법·감찰 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "준법·감찰 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J8"
    ]

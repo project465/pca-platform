@@ -79,16 +79,16 @@ const ksic = (code: string | null | undefined) => (code ? KSIC[String(code).slic
  */
 const THEMES: { key: string; org: RegExp; pack?: RegExp; try: string }[] = [
   { key: "반도체", org: /반도체|웨이퍼|디스플레이|증착|식각|클린룸/, try: "주력 제품이나 장비가 반도체 공정의 어느 단계에 들어가는지 누리집에서 찾아 한 줄로 적어 보세요" },
-  { key: "기계·장비", org: /기계|장비|설비|기구|구동|금형|자동화|로봇|자동차|트레일러|운송장비|조선|플랜트|발사체|항공기|무기|총포|방산|우주/, pack: /기계|장비|설비|구동|금형|자동화|로봇|자동차|조선|플랜트|발사체|항공|방산|우주/, try: "주력 장비 하나를 골라 어떤 부품과 구동 방식으로 움직일지 먼저 짐작해 적고, 누리집 자료와 맞춰 보세요" },
+  { key: "기계·장비", org: /기계|장비|설비|기구|구동|금형|자동화|로봇|자동차|트레일러|운송장비|조선|플랜트|발사체|항공기|무기|총포|방산|우주/, pack: /기계|(?<!시약·)장비|설비|구동|금형|자동화|로봇|자동차|조선|플랜트|발사체|항공|방산|우주/, try: "주력 장비 하나를 골라 어떤 부품과 구동 방식으로 움직일지 먼저 짐작해 적고, 누리집 자료와 맞춰 보세요" },
   { key: "전기·전자", org: /전기|전자(?!상거래)|회로|전력|제어|센서|계측|통신|무선|임베디드|전지|배터리|충전|태양광|연료전지/, try: "주력 제품의 사양표에서 전압, 전류, 통신 방식 같은 값을 찾아 수업에서 다뤄 본 값 옆에 적어 보세요" },
   { key: "소재·화학", org: /소재|화학|재료|고분자|코팅|필름|합성|도료|접착|세라믹|플라스틱|유리|금속|종이|펄프/, try: "주력 소재가 어느 제품에 들어가는지, 그 소재에서 따지는 물성이 무엇인지 하나만 찾아 적어 보세요" },
-  { key: "소프트웨어·데이터", org: /소프트웨어|데이터|정보|플랫폼|인공지능|보안|클라우드|프로그램|전산|시스템 통합|(^|[^a-z])ai([^a-z]|$)/i, pack: /소프트웨어|플랫폼|인공지능|클라우드|전산|정보화|정보 ?시스템|정보보호|개발자|서비스 기획|앱|웹 서비스/, try: "그 회사 서비스를 직접 써 본 뒤, 고치고 싶은 기능 하나와 그렇게 생각한 근거를 적어 보세요" },
+  { key: "소프트웨어·데이터", org: /소프트웨어|데이터|정보|플랫폼|인공지능|보안|클라우드|프로그램|전산|시스템 통합|(^|[^a-z])ai([^a-z]|$)/i, pack: /소프트웨어|플랫폼|인공지능|클라우드|전산|정보화|정보 ?시스템|개발자|서비스 기획|앱|웹 서비스/, try: "그 회사 서비스를 직접 써 본 뒤, 고치고 싶은 기능 하나와 그렇게 생각한 근거를 적어 보세요" },
   { key: "의약·바이오", org: /바이오|의약|진단|생명|제약|백신|시약|의료용 물질|건강기능/, pack: /바이오|의약|생명과학|제약|백신|시약|건강기능|체외진단|진단 ?키트/, try: "주력 제품 하나의 허가 기준이나 품질 기준을 찾아, 실험이나 실습에서 지켜 본 기준 옆에 적어 보세요" },
   { key: "식품", org: /식품|식료품|음료|제과|빵|육가공|급식|조리|발효|농산물/, try: "주력 제품 하나의 원료와 표시 사항을 찾아, 실습에서 다뤄 본 공정 옆에 적어 보세요" },
   { key: "화장품·뷰티", org: /화장품|미용|뷰티|네일|헤어|피부/, try: "주력 제품 하나를 골라 성분 표시와 누구를 위한 제품인지 찾아 정리해 보세요" },
   { key: "패션·섬유", org: /의류|의복|섬유|봉제|패션|직물|원단/, try: "주력 상품 하나가 어떤 소재로 어떻게 만들어지는지 찾아 한 줄로 적어 보세요" },
   { key: "의료기기", org: /의료(용)? ?기기|의료·정밀|광학기기|정밀기기/, try: "주력 기기 하나가 무엇을 재는지, 병원이나 현장에서 누가 쓰는지 찾아 적어 보세요" },
-  { key: "콘텐츠·디자인", org: /광고|디자인|콘텐츠|영상|출판|미디어|방송|공연|게임|웹툰|인쇄/, try: "최근 작업물 하나를 골라 누구를 위해 만들었는지, 내가 맡는다면 무엇을 바꿀지 적어 보세요" },
+  { key: "콘텐츠·디자인", org: /광고|디자인|콘텐츠|영상(?!·(통신|음향))|출판|미디어|방송|공연|게임|웹툰|인쇄/, try: "최근 작업물 하나를 골라 누구를 위해 만들었는지, 내가 맡는다면 무엇을 바꿀지 적어 보세요" },
   { key: "건설·환경", org: /건설|토목|건축|환경|시설|지반|측량|조경|상하수|폐기물|수자원|수도|철도/, pack: /건설|토목|건축|지반|측량|조경|상하수|폐기물|수자원|시공|철도|도시계획|환경공학|환경 ?플랜트/, try: "최근 맡은 공사나 사업 하나를 찾아 지반, 환경, 안전 가운데 어떤 조건이 판단을 갈랐을지 짐작해 적어 보세요" },
   { key: "에너지", org: /에너지|전력|발전|연료전지|태양광|원자력|가스/, try: "주력 설비나 사업 하나가 어떤 에너지를 다루는지, 거기에 걸린 안전 기준이 무엇인지 찾아 적어 보세요" },
   { key: "농업·조경", org: /농업|원예|종묘|화훼|조경|산림|임업|스마트팜|종자/, try: "주력 품목 하나의 재배 조건과 관리 조건을 찾아, 실습에서 다뤄 본 조건 옆에 적어 보세요" },
@@ -107,20 +107,28 @@ const themesOrg = (s: string) => THEMES.filter((t) => t.org.test(s)).map((t) => 
  * 소프트웨어 회사가 그 산업에 붙던 것을 막는다.
  */
 export function packThemes(p: IndustryPack): string[] {
-  const head = [p.name_ko, ...(p.job_aliases ?? [])].join(" ");
   const vocab = (p.vocabulary ?? []).join(" ");
   return THEMES.filter((t) => {
     const re = t.pack ?? t.org;
-    if (re.test(head)) return true;
+    if (re.test(packHead(p))) return true;
     const g = new RegExp(re.source, re.flags.includes("g") ? re.flags : re.flags + "g");
     return (vocab.match(g) ?? []).length >= 2;
   }).map((t) => t.key);
 }
+const packHead = (p: IndustryPack) => [p.name_ko, ...(p.job_aliases ?? [])].join(" ");
+/** 이름이나 공고 직무명에 걸린 업종. 용어에서만 걸린 업종보다 앞선다 */
+export function packHeadThemes(p: IndustryPack): string[] {
+  return THEMES.filter((t) => (t.pack ?? t.org).test(packHead(p))).map((t) => t.key);
+}
+/** 묶음 이름에서 가점을 줄 낱말. 여러 업종에 다 쓰이는 낱말은 뺀다(`장비` 하나로 고압 설비 회사가 통신 장비에 붙었다) */
+const GENERIC = /^(장비|전문|발주|개발|서비스|정보|관리|운영|일반|기업|산업|공공|시설)$/;
 export const tryOf = (key: string) => THEMES.find((t) => t.key === key)?.try ?? "";
 
 /** 묶음의 회사들이 가장 많이 함께 가진 업종. 해 볼 것 한 줄을 그 업종에 맞춘다 */
 export function groupTheme(pack: IndustryPack, orgs: { sector: string; product: string; name: string }[]): string {
-  const pt = packThemes(pack);
+  const all = packThemes(pack);
+  const head = packHeadThemes(pack);
+  const pt = head.length ? head : all;
   const n = new Map<string, number>();
   for (const o of orgs) for (const t of themesOrg(`${o.sector} ${o.product} ${o.name}`)) if (pt.includes(t)) n.set(t, (n.get(t) ?? 0) + 1);
   return [...n.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? pt[0] ?? "제조·일반기업";
@@ -236,7 +244,7 @@ export function regionView(x: Inputs, name: (td: string) => string): RegionView 
   const listed = all.filter((o) => o.listed && o.fin);
 
   /* 회사 → 이 전공의 산업 묶음 하나 */
-  const packTh = x.inds.map((p) => ({ p, th: packThemes(p), tokens: p.name_ko.split(/[·\s/]+/).filter((k) => k.length >= 2) }));
+  const packTh = x.inds.map((p) => ({ p, th: packThemes(p), head: packHeadThemes(p), tokens: p.name_ko.split(/[·\s/]+/).filter((k) => k.length >= 2 && !GENERIC.test(k)) }));
   const themeUse = new Map<string, number>();
   for (const { th } of packTh) for (const t of th) themeUse.set(t, (themeUse.get(t) ?? 0) + 1);
   const zoneOf = new Map(x.m.domains.map((d) => [d.code, d.zone]));
@@ -248,11 +256,15 @@ export function regionView(x: Inputs, name: (td: string) => string): RegionView 
     const text = `${o.sector} ${o.product} ${o.name}`;
     const th = themesOrg(text);
     let best: { code: string; n: number } | null = null;
-    for (const { p, th: pt, tokens } of packTh) {
-      /* 여러 묶음이 함께 가진 업종은 가볍게, 묶음 이름의 낱말이 업종에 그대로 있으면 무겁게 센다 */
+    const flat = text.replace(/\s/g, "");
+    for (const { p, th: pt, head, tokens } of packTh) {
+      /* 여러 묶음이 함께 가진 업종은 가볍게, 묶음 이름의 낱말이 업종에 그대로 있으면 무겁게 센다.
+         **이름에 걸린 업종이 있는 묶음은 그 업종으로만 받는다**: 시설원예 묶음이 용어의 `센서`
+         두 번으로 전자부품 회사를 받으면 그 학생에게 전압·전류를 읽어 보라는 할 일이 나간다 */
       const shared = th.filter((t) => pt.includes(t));
       if (!shared.length) continue;
-      const n = shared.reduce((a, t) => a + 1 / (themeUse.get(t) ?? 1), 0) + (tokens.some((k) => text.includes(k)) ? 2 : 0);
+      if (head.length && !shared.some((t) => head.includes(t))) continue;
+      const n = shared.reduce((a, t) => a + 1 / (themeUse.get(t) ?? 1), 0) + (tokens.some((k) => flat.includes(k)) ? 2 : 0);
       if (!best || n > best.n) best = { code: p.code, n };
     }
     if (!best) { unmatched++; continue; }
@@ -273,6 +285,9 @@ export function regionView(x: Inputs, name: (td: string) => string): RegionView 
   }
   groups.sort((a, b) => a.tier.localeCompare(b.tier) || b.orgs.length - a.orgs.length);
   if (!all.length) return null;
+  /* 사업의 개요는 이 전공의 묶음에 든 회사부터 싣는다. 생명공학 책 첫 장에 건설사가 오지 않게 */
+  const mine = new Set(groups.flatMap((g) => g.orgs.map((o) => bare(o.name))));
+  overview.sort((a, b) => Number(mine.has(bare(b.name))) - Number(mine.has(bare(a.name))));
   return {
     key: x.region, label: P.label, area: P.area, checkedOn, sources: [...new Set(sources)],
     all, listed, groups, unmatched, neighbor, publicOrgs, big, overview,

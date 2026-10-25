@@ -1268,7 +1268,7 @@
    "role": "ROLE_ASSESS_V1",
    "role_name": "사정·판단",
    "strength": "중심",
-   "appears_as": "사정·판단 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "사정·판단 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J3",
@@ -1330,7 +1330,7 @@
    "role": "ROLE_RESEARCH_V1",
    "role_name": "조사·연구",
    "strength": "중심",
-   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1"
    ]
@@ -1353,7 +1353,7 @@
    "role": "ROLE_PLAN_V1",
    "role_name": "간호 계획 설계",
    "strength": "중심",
-   "appears_as": "간호 계획 설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "간호 계획 설계 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J3",
@@ -1415,7 +1415,7 @@
    "role": "ROLE_COORD_V1",
    "role_name": "조정·연계",
    "strength": "중심",
-   "appears_as": "조정·연계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "조정·연계 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J3",
@@ -1477,7 +1477,7 @@
    "role": "ROLE_VERIFY_V1",
    "role_name": "확인·판정",
    "strength": "중심",
-   "appears_as": "확인·판정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "확인·판정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J3",
@@ -1503,7 +1503,7 @@
    "role": "ROLE_FIELD_V1",
    "role_name": "현장 간호 수행",
    "strength": "중심",
-   "appears_as": "현장 간호 수행 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "현장 간호 수행 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2"
    ]
@@ -1562,7 +1562,7 @@
    "role": "ROLE_ASSESS_V1",
    "role_name": "사정·판단",
    "strength": "중심",
-   "appears_as": "사정·판단 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "사정·판단 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5"
@@ -1598,7 +1598,7 @@
    "role": "ROLE_FIELD_V1",
    "role_name": "현장 간호 수행",
    "strength": "중심",
-   "appears_as": "현장 간호 수행 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "현장 간호 수행 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5"
@@ -1694,7 +1694,7 @@
    "role": "ROLE_FIELD_V1",
    "role_name": "현장 간호 수행",
    "strength": "중심",
-   "appears_as": "현장 간호 수행 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "현장 간호 수행 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J4",
@@ -1768,7 +1768,7 @@
    "role": "ROLE_VERIFY_V1",
    "role_name": "확인·판정",
    "strength": "중심",
-   "appears_as": "확인·판정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "확인·판정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J5"
    ]
@@ -1779,7 +1779,7 @@
    "role": "ROLE_RECORDS_V1",
    "role_name": "기록·표준 관리",
    "strength": "중심",
-   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J5",
     "J6",
@@ -1817,7 +1817,7 @@
    "role": "ROLE_RESEARCH_V1",
    "role_name": "조사·연구",
    "strength": "중심",
-   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4",
     "J5",
@@ -1927,7 +1927,7 @@
    "role": "ROLE_SAFETY_V1",
    "role_name": "감염·안전 규정 관리",
    "strength": "중심",
-   "appears_as": "감염·안전 규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "감염·안전 규정 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -1965,7 +1965,7 @@
    "role": "ROLE_VERIFY_V1",
    "role_name": "확인·판정",
    "strength": "중심",
-   "appears_as": "확인·판정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "확인·판정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J6",
     "J7"
@@ -2013,7 +2013,7 @@
    "role": "ROLE_RESEARCH_V1",
    "role_name": "조사·연구",
    "strength": "중심",
-   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J3"
@@ -2025,7 +2025,7 @@
    "role": "ROLE_SAFETY_V1",
    "role_name": "감염·안전 규정 관리",
    "strength": "중심",
-   "appears_as": "감염·안전 규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "감염·안전 규정 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J6"
@@ -2037,7 +2037,7 @@
    "role": "ROLE_PLAN_V1",
    "role_name": "간호 계획 설계",
    "strength": "중심",
-   "appears_as": "간호 계획 설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "간호 계획 설계 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4",
     "J6"
@@ -2097,7 +2097,7 @@
    "role": "ROLE_COORD_V1",
    "role_name": "조정·연계",
    "strength": "중심",
-   "appears_as": "조정·연계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "조정·연계 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J6",
     "J7"
@@ -2145,7 +2145,7 @@
    "role": "ROLE_ASSESS_V1",
    "role_name": "사정·판단",
    "strength": "중심",
-   "appears_as": "사정·판단 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "사정·판단 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2"
    ]
@@ -2192,7 +2192,7 @@
    "role": "ROLE_COORD_V1",
    "role_name": "조정·연계",
    "strength": "중심",
-   "appears_as": "조정·연계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "조정·연계 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2"
    ]
@@ -2227,7 +2227,7 @@
    "role": "ROLE_PLAN_V1",
    "role_name": "간호 계획 설계",
    "strength": "중심",
-   "appears_as": "간호 계획 설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "간호 계획 설계 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2"
    ]
@@ -2262,7 +2262,7 @@
    "role": "ROLE_RECORDS_V1",
    "role_name": "기록·표준 관리",
    "strength": "중심",
-   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4"
    ]
@@ -2357,7 +2357,7 @@
    "role": "ROLE_RECORDS_V1",
    "role_name": "기록·표준 관리",
    "strength": "중심",
-   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J3"
@@ -2405,7 +2405,7 @@
    "role": "ROLE_SAFETY_V1",
    "role_name": "감염·안전 규정 관리",
    "strength": "중심",
-   "appears_as": "감염·안전 규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "감염·안전 규정 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2"
    ]

@@ -125,7 +125,7 @@ export function tree(x: Inputs, d: X): Page {
     }).join("")}
   </svg>`;
   return P("결과에 따라 무엇을 할까",
-    T(`${d.counts.domains}가지 ${E(x.domainWord)}은 지금 할 일에 따라 네 갈래로 나뉩니다`, "직접 해 본 일이 나왔는지, 관심이나 배울 뜻이 높은지 두 가지만 물어 나눴습니다. 갈래마다 이번 학기에 할 일이 다릅니다.") +
+    T(`${d.counts.domains}가지 ${E(j(x.domainWord, "은는"))} 지금 할 일에 따라 네 갈래로 나뉩니다`, "직접 해 본 일이 나왔는지, 관심이나 배울 뜻이 높은지 두 가지만 물어 나눴습니다. 갈래마다 이번 학기에 할 일이 다릅니다.") +
     `<div class="wide-art">${svg}</div>` +
     (() => { const ks = keys.filter((k) => groups[k].length); return `<div class="g${ks.length >= 4 ? 4 : Math.max(ks.length, 2)}">${ks.map((k) => `<div class="b4" style="--c:${BUCKET[k].color}"><b>${E(BUCKET[k].head)}</b><p>${groups[k].map(E).join(" · ")}</p></div>`).join("")}</div>`; })() +
     band("이번 학기에는", (() => {
@@ -152,7 +152,7 @@ export function dash(x: Inputs, d: X): Page {
     T(k.confirmed ? (k.owned ? `직접 해 본 판단은 ${k.confirmed}개이고, 그중 ${k.owned}개는 기준까지 정했습니다` : `직접 해 본 판단은 ${k.confirmed}개입니다`) : "판단 단계로 센 것은 아직 많지 않습니다") +
     `<div class="kpis">${tiles.map(([a, b, u, c]) => `<div class="kpi"><p>${E(a)}</p><b>${b}<small>${u}</small></b><span>${E(c)}</span></div>`).join("")}</div>` +
     `<div class="two">
-      <div class="card cen">${H(`${E(x.domainWord)}은 어디에 놓였나`, "묶음")}${donut(zoneParts, { size: 220, center: [`${k.z1 + k.z2 + k.z3}`, "해 본 일이 확인된 영역"] })}<div class="lg">${zoneParts.map((p) => `<span><i style="background:${p.color}"></i>${E(p.label)} ${p.value}곳</span>`).join("")}</div></div>
+      <div class="card cen">${H(`${E(j(x.domainWord, "은는"))} 어디에 놓였나`, "묶음")}${donut(zoneParts, { size: 220, center: [`${k.z1 + k.z2 + k.z3}`, "해 본 일이 확인된 영역"] })}<div class="lg">${zoneParts.map((p) => `<span><i style="background:${p.color}"></i>${E(p.label)} ${p.value}곳</span>`).join("")}</div></div>
       <div class="card cen">${H("관심은 어떻게 나뉘었나", "관심 응답")}${donut(ints, { size: 220, center: [`${ints[0].value}`, "관심 높은 영역"] })}<div class="lg">${ints.map((p) => `<span><i style="background:${p.color}"></i>${E(p.label)} ${p.value}곳</span>`).join("")}</div></div>
     </div>` +
     band("다음 과제는", `관심이 높은 영역은 ${ints[0].value}곳, 해 본 일이 나온 영역은 ${k.z1 + k.z2 + k.z3}곳입니다. 관심은 높은데 아직 해 본 일이 적은 영역에서 다음 과제를 고르면 됩니다.`));

@@ -137,6 +137,7 @@ const setJong = (c: string, jg: number) => String.fromCharCode(c.charCodeAt(0) -
 export function polite(s0: string): string {
   const s = s0.trim().replace(/[.。]$/, "");
   if (!s.endsWith("다") || s.length < 2) return s ? `${s}.` : s;
+  if (/아니다$/.test(s)) return `${s.slice(0, -3)}아닙니다.`;
   if (/(니다|습니다)$/.test(s)) return `${s}.`;
   if (s.endsWith("이다") && s.length > 2) return `${s.slice(0, -2)}입니다.`;
   if (s.endsWith("는다")) return `${s.slice(0, -2)}습니다.`;
@@ -144,9 +145,24 @@ export function polite(s0: string): string {
   if (!isSyl(prev)) return `${s}.`;
   const jg = jong(prev);
   if (jg === 4) return `${s.slice(0, -2)}${setJong(prev, 17)}니다.`;
-  if (jg === 0) return `${s.slice(0, -2)}${setJong(prev, 17)}니다.`;
+  /* ㄹ 받침 줄기는 ㄹ 이 빠진다(드물다 → 드뭅니다) */
+  if (jg === 8) return `${s.slice(0, -2)}${setJong(prev, 17)}니다.`;
+  if (jg === 0) {
+    /* 받침 없는 글자 + `다` 는 형용사 줄기(다르다 · 크다)이거나 이름씨에서 `이` 가
+       빠진 꼴(자리다 · 근거다)이다. 한다체에서 움직씨는 늘 `~ㄴ다` 로 오므로
+       나머지는 이름씨로 읽는다. 이름씨에 `ㅂ니다` 를 붙이면 `자립니다` 가 된다 */
+    const stem = s.slice(0, -1);
+    if (ADJ_LAST.has(prev) || ADJ_STEM.some((a) => stem.endsWith(a))) return `${s.slice(0, -2)}${setJong(prev, 17)}니다.`;
+    return `${stem}입니다.`;
+  }
   return `${s.slice(0, -1)}습니다.`;
 }
+/** 받침 없이 끝나는 형용사 줄기의 끝 글자 · 낱말 */
+const ADJ_LAST = new Set([..."하르크쁘프싸짜쓰되"]);
+const ADJ_STEM = ["느리", "흐리", "더디", "어리", "여리", "나쁘", "기쁘", "바쁘", "예쁘", "아프"];
+
+/** 여러 문장짜리 `~다.` 문단을 문장마다 높임으로 */
+export const politePara = (s0: string) => s0.trim().split(/(?<=다\.)\s+/).map(polite).join(" ");
 
 /** `확정한다` → `확정하는` (뒤에 `일` 을 붙여 쓴다) */
 export function adnominal(s0: string): string {

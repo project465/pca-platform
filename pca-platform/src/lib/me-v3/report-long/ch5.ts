@@ -28,7 +28,7 @@ const sector = (s: string) => s.replace(/^그 외 (기타 )?/, "").replace(/^기
 
 function why(x: Inputs, g: FitGroup): string {
   const core = g.core.length ? g.core : g.uses;
-  const base = `${g.pack.name_ko} 회사에서 ${x.major} 전공자는 주로 ${andJoin(core.slice(0, 3))} 쪽 일을 맡습니다.`;
+  const base = `${g.pack.name_ko} 분야에서 ${x.major} 전공자는 주로 ${andJoin(core.slice(0, 3))} 쪽 일을 맡습니다.`;
   if (g.tier === "A") return `${base} 이번 결과에서 ${j(andJoin(g.z1.slice(0, 2)), "은는")} 직접 정한 판단과 남긴 결과물이 함께 확인됐습니다.`;
   if (g.tier === "B") return `${base} 이번 결과에서는 ${andJoin(g.z2.slice(0, 2))} 쪽에서 해 본 일이 확인됐습니다.`;
   return `${base} 이 영역들은 이번 검사에서 아직 판단을 확인하지 못했습니다.`;

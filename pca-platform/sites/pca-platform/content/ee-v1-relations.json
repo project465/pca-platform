@@ -1298,7 +1298,7 @@
    "role": "ROLE_DESIGN_V1",
    "role_name": "회로·시스템 설계",
    "strength": "중심",
-   "appears_as": "회로·시스템 설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "회로·시스템 설계 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J3",
@@ -1397,7 +1397,7 @@
    "role": "ROLE_DESIGN_V1",
    "role_name": "회로·시스템 설계",
    "strength": "중심",
-   "appears_as": "회로·시스템 설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "회로·시스템 설계 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J6"
    ]
@@ -1420,7 +1420,7 @@
    "role": "ROLE_TEST_V1",
    "role_name": "시험·검증",
    "strength": "중심",
-   "appears_as": "시험·검증 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "시험·검증 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2"
    ]
@@ -1431,7 +1431,7 @@
    "role": "ROLE_PROCESS_V1",
    "role_name": "공정·양산기술",
    "strength": "중심",
-   "appears_as": "공정·양산기술 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "공정·양산기술 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J5"
    ]
@@ -1598,7 +1598,7 @@
    "role": "ROLE_ANALYSIS_V1",
    "role_name": "해석·시뮬레이션",
    "strength": "중심",
-   "appears_as": "해석·시뮬레이션 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "해석·시뮬레이션 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J7"
@@ -1658,7 +1658,7 @@
    "role": "ROLE_RND_V1",
    "role_name": "선행 연구개발",
    "strength": "중심",
-   "appears_as": "선행 연구개발 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "선행 연구개발 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4",
     "J6"
@@ -1706,7 +1706,7 @@
    "role": "ROLE_TEST_V1",
    "role_name": "시험·검증",
    "strength": "중심",
-   "appears_as": "시험·검증 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "시험·검증 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4"
    ]
@@ -1741,7 +1741,7 @@
    "role": "ROLE_PM_V1",
    "role_name": "기술 기획·통합",
    "strength": "중심",
-   "appears_as": "기술 기획·통합 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "기술 기획·통합 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3"
    ]
@@ -1788,7 +1788,7 @@
    "role": "ROLE_ANALYSIS_V1",
    "role_name": "해석·시뮬레이션",
    "strength": "중심",
-   "appears_as": "해석·시뮬레이션 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "해석·시뮬레이션 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J4",
@@ -1849,7 +1849,7 @@
    "role": "ROLE_RND_V1",
    "role_name": "선행 연구개발",
    "strength": "중심",
-   "appears_as": "선행 연구개발 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "선행 연구개발 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J7"
@@ -1909,7 +1909,7 @@
    "role": "ROLE_PROCESS_V1",
    "role_name": "공정·양산기술",
    "strength": "중심",
-   "appears_as": "공정·양산기술 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "공정·양산기술 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J6",
@@ -1947,7 +1947,7 @@
    "role": "ROLE_RND_V1",
    "role_name": "선행 연구개발",
    "strength": "중심",
-   "appears_as": "선행 연구개발 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "선행 연구개발 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J5",
@@ -1960,7 +1960,7 @@
    "role": "ROLE_QUALITY_V1",
    "role_name": "품질·신뢰성",
    "strength": "중심",
-   "appears_as": "품질·신뢰성 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "품질·신뢰성 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4",
     "J7"
@@ -1972,7 +1972,7 @@
    "role": "ROLE_DESIGN_V1",
    "role_name": "회로·시스템 설계",
    "strength": "중심",
-   "appears_as": "회로·시스템 설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "회로·시스템 설계 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3"
    ]
@@ -1983,7 +1983,7 @@
    "role": "ROLE_ANALYSIS_V1",
    "role_name": "해석·시뮬레이션",
    "strength": "중심",
-   "appears_as": "해석·시뮬레이션 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "해석·시뮬레이션 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J5",
     "J8"
@@ -2115,7 +2115,7 @@
    "role": "ROLE_MAINT_V1",
    "role_name": "설비 운전·보전",
    "strength": "중심",
-   "appears_as": "설비 운전·보전 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "설비 운전·보전 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -2153,7 +2153,7 @@
    "role": "ROLE_QUALITY_V1",
    "role_name": "품질·신뢰성",
    "strength": "중심",
-   "appears_as": "품질·신뢰성 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "품질·신뢰성 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3"
    ]
@@ -2212,7 +2212,7 @@
    "role": "ROLE_MAINT_V1",
    "role_name": "설비 운전·보전",
    "strength": "중심",
-   "appears_as": "설비 운전·보전 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "설비 운전·보전 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2"
    ]
@@ -2223,7 +2223,7 @@
    "role": "ROLE_PM_V1",
    "role_name": "기술 기획·통합",
    "strength": "중심",
-   "appears_as": "기술 기획·통합 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "기술 기획·통합 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J6"
    ]
@@ -2306,7 +2306,7 @@
    "role": "ROLE_MAINT_V1",
    "role_name": "설비 운전·보전",
    "strength": "중심",
-   "appears_as": "설비 운전·보전 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "설비 운전·보전 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4",
     "J6"
@@ -2318,7 +2318,7 @@
    "role": "ROLE_PM_V1",
    "role_name": "기술 기획·통합",
    "strength": "중심",
-   "appears_as": "기술 기획·통합 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "기술 기획·통합 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J2",
@@ -2381,7 +2381,7 @@
    "role": "ROLE_TEST_V1",
    "role_name": "시험·검증",
    "strength": "중심",
-   "appears_as": "시험·검증 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "시험·검증 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -2396,7 +2396,7 @@
    "role": "ROLE_PROCESS_V1",
    "role_name": "공정·양산기술",
    "strength": "중심",
-   "appears_as": "공정·양산기술 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "공정·양산기술 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J4"
@@ -2444,7 +2444,7 @@
    "role": "ROLE_QUALITY_V1",
    "role_name": "품질·신뢰성",
    "strength": "중심",
-   "appears_as": "품질·신뢰성 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "품질·신뢰성 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J5",

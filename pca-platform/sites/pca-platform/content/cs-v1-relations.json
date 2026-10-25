@@ -1020,7 +1020,7 @@
    "role": "ROLE_DEV_V1",
    "role_name": "설계·개발",
    "strength": "중심",
-   "appears_as": "설계·개발 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "설계·개발 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J3",
@@ -1082,7 +1082,7 @@
    "role": "ROLE_PM_V1",
    "role_name": "통합·조정",
    "strength": "중심",
-   "appears_as": "통합·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "통합·조정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J3",
@@ -1133,7 +1133,7 @@
    "role": "ROLE_PERF_V1",
    "role_name": "해석·예측",
    "strength": "중심",
-   "appears_as": "해석·예측 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "해석·예측 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4",
     "J6",
@@ -1194,7 +1194,7 @@
    "role": "ROLE_RESEARCH_V1",
    "role_name": "탐색·연구",
    "strength": "중심",
-   "appears_as": "탐색·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "탐색·연구 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3"
    ]
@@ -1217,7 +1217,7 @@
    "role": "ROLE_DEV_V1",
    "role_name": "설계·개발",
    "strength": "중심",
-   "appears_as": "설계·개발 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "설계·개발 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J7"
@@ -1241,7 +1241,7 @@
    "role": "ROLE_QA_V1",
    "role_name": "시험·검증",
    "strength": "중심",
-   "appears_as": "시험·검증 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "시험·검증 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J5"
    ]
@@ -1264,7 +1264,7 @@
    "role": "ROLE_SRE_V1",
    "role_name": "서비스 운영",
    "strength": "중심",
-   "appears_as": "서비스 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "서비스 운영 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J6"
    ]
@@ -1323,7 +1323,7 @@
    "role": "ROLE_PERF_V1",
    "role_name": "해석·예측",
    "strength": "중심",
-   "appears_as": "해석·예측 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "해석·예측 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J6"
@@ -1371,7 +1371,7 @@
    "role": "ROLE_PM_V1",
    "role_name": "통합·조정",
    "strength": "중심",
-   "appears_as": "통합·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "통합·조정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J5"
    ]
@@ -1406,7 +1406,7 @@
    "role": "ROLE_DEV_V1",
    "role_name": "설계·개발",
    "strength": "중심",
-   "appears_as": "설계·개발 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "설계·개발 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J6"
    ]
@@ -1429,7 +1429,7 @@
    "role": "ROLE_QA_V1",
    "role_name": "시험·검증",
    "strength": "중심",
-   "appears_as": "시험·검증 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "시험·검증 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3"
    ]
@@ -1536,7 +1536,7 @@
    "role": "ROLE_DEPLOY_V1",
    "role_name": "빌드·배포 자동화",
    "strength": "중심",
-   "appears_as": "빌드·배포 자동화 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "빌드·배포 자동화 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3"
    ]
@@ -1583,7 +1583,7 @@
    "role": "ROLE_QUALITY_V1",
    "role_name": "품질·신뢰성",
    "strength": "중심",
-   "appears_as": "품질·신뢰성 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "품질·신뢰성 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J5"
    ]
@@ -1606,7 +1606,7 @@
    "role": "ROLE_PERF_V1",
    "role_name": "해석·예측",
    "strength": "중심",
-   "appears_as": "해석·예측 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "해석·예측 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J5"
@@ -1630,7 +1630,7 @@
    "role": "ROLE_DEPLOY_V1",
    "role_name": "빌드·배포 자동화",
    "strength": "중심",
-   "appears_as": "빌드·배포 자동화 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "빌드·배포 자동화 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J7"
    ]
@@ -1641,7 +1641,7 @@
    "role": "ROLE_SRE_V1",
    "role_name": "서비스 운영",
    "strength": "중심",
-   "appears_as": "서비스 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "서비스 운영 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J3",
@@ -1776,7 +1776,7 @@
    "role": "ROLE_QUALITY_V1",
    "role_name": "품질·신뢰성",
    "strength": "중심",
-   "appears_as": "품질·신뢰성 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "품질·신뢰성 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J4",
@@ -1861,7 +1861,7 @@
    "role": "ROLE_RESEARCH_V1",
    "role_name": "탐색·연구",
    "strength": "중심",
-   "appears_as": "탐색·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "탐색·연구 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J4",
@@ -1912,7 +1912,7 @@
    "role": "ROLE_QA_V1",
    "role_name": "시험·검증",
    "strength": "중심",
-   "appears_as": "시험·검증 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "시험·검증 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J3",
@@ -1927,7 +1927,7 @@
    "role": "ROLE_DEPLOY_V1",
    "role_name": "빌드·배포 자동화",
    "strength": "중심",
-   "appears_as": "빌드·배포 자동화 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "빌드·배포 자동화 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J4",
@@ -1942,7 +1942,7 @@
    "role": "ROLE_SRE_V1",
    "role_name": "서비스 운영",
    "strength": "중심",
-   "appears_as": "서비스 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "서비스 운영 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3"
    ]
@@ -1953,7 +1953,7 @@
    "role": "ROLE_PM_V1",
    "role_name": "통합·조정",
    "strength": "중심",
-   "appears_as": "통합·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "통합·조정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J6"
    ]
@@ -1976,7 +1976,7 @@
    "role": "ROLE_QUALITY_V1",
    "role_name": "품질·신뢰성",
    "strength": "중심",
-   "appears_as": "품질·신뢰성 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "품질·신뢰성 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J7",
@@ -2061,7 +2061,7 @@
    "role": "ROLE_RESEARCH_V1",
    "role_name": "탐색·연구",
    "strength": "중심",
-   "appears_as": "탐색·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "탐색·연구 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J5"
    ]

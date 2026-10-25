@@ -9,7 +9,7 @@ import type { Axis } from "../scoring/types";
 import type { Inputs } from "./types";
 import { AXES, STEP_WORD, type X } from "./derive";
 import { E, H, chips, ul, type Page } from "./kit";
-import { j, polite } from "./text";
+import { j, polite, politePara } from "./text";
 import type { FitGroup, ROrg } from "./region";
 
 const F = (part: string, partName: string, title: string, sub: string, body: string): Page =>
@@ -88,7 +88,7 @@ export function fillPages(x: Inputs, d: X, part3: string, region: { name: string
     const g = x.guide.roles[r.code];
     if (!g) continue;
     add(F("04", "직무 탐색", `${r.name_ko} 공고를 읽을 때`, "직무 안내",
-      `<div class="two"><div>${ul(g.postingCheck.slice(0, 4).map(E))}</div><div><p>${E(g.watch)}</p>${chips(g.portfolio.slice(0, 4), "art")}</div></div>`));
+      `<div class="two"><div>${ul(g.postingCheck.slice(0, 4).map(E))}</div><div><p>${E(politePara(g.watch))}</p>${chips(g.portfolio.slice(0, 4), "art")}</div></div>`));
   }
 
   /* 05 지역: 표에 다 싣지 못한 회사(명단과 공시 값 그대로). 다섯 곳씩 나눠 두어 남은 자리 크기에 맞춰 들어가게 한다.
@@ -145,7 +145,7 @@ export function fillPages(x: Inputs, d: X, part3: string, region: { name: string
     const g = x.guide.roles[r.code];
     if (!g?.interview?.length) continue;
     add(F("06", "자기소개서·면접 준비", `${r.name_ko} 면접 질문`, "직무 안내 · 면접에서 이 질문을 하는 까닭",
-      `<table class="tb tb-xs"><tbody>${g.interview.slice(0, 3).map((v) => `<tr><td class="w16"><b>${E(d.axisName(v.axis))}</b></td><td><b>${E(v.q)}</b><br><span class="mut">${E(v.why)}</span></td></tr>`).join("")}</tbody></table>`));
+      `<table class="tb tb-xs"><tbody>${g.interview.slice(0, 3).map((v) => `<tr><td class="w16"><b>${E(d.axisName(v.axis))}</b></td><td><b>${E(v.q)}</b><br><span class="mut">${E(polite(v.why))}</span></td></tr>`).join("")}</tbody></table>`));
   }
 
   /* 06: 직무마다 포트폴리오에 넣을 결과물(직무 안내). 지원서에 붙일 자료를 고를 때 쓴다 */

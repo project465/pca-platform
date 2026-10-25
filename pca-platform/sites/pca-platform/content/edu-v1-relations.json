@@ -1220,7 +1220,7 @@
    "role": "ROLE_CURRICULUM_V1",
    "role_name": "교육과정·제도 설계",
    "strength": "중심",
-   "appears_as": "교육과정·제도 설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "교육과정·제도 설계 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J3",
@@ -1246,7 +1246,7 @@
    "role": "ROLE_ASSESS_V1",
    "role_name": "평가·인정",
    "strength": "중심",
-   "appears_as": "평가·인정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "평가·인정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J8"
    ]
@@ -1293,7 +1293,7 @@
    "role": "ROLE_RESEARCH_V1",
    "role_name": "연구",
    "strength": "중심",
-   "appears_as": "연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "연구 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J8"
    ]
@@ -1316,7 +1316,7 @@
    "role": "ROLE_CURRICULUM_V1",
    "role_name": "교육과정·제도 설계",
    "strength": "중심",
-   "appears_as": "교육과정·제도 설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "교육과정·제도 설계 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J8"
@@ -1352,7 +1352,7 @@
    "role": "ROLE_MATERIAL_V1",
    "role_name": "자료·콘텐츠 제작",
    "strength": "중심",
-   "appears_as": "자료·콘텐츠 제작 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "자료·콘텐츠 제작 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J7"
@@ -1460,7 +1460,7 @@
    "role": "ROLE_TEACH_V1",
    "role_name": "수업·생활 운영",
    "strength": "중심",
-   "appears_as": "수업·생활 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "수업·생활 운영 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -1498,7 +1498,7 @@
    "role": "ROLE_SAFETY_V1",
    "role_name": "안전·규정 관리",
    "strength": "중심",
-   "appears_as": "안전·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "안전·규정 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J8"
    ]
@@ -1521,7 +1521,7 @@
    "role": "ROLE_DIAGNOSE_V1",
    "role_name": "분석·진단",
    "strength": "중심",
-   "appears_as": "분석·진단 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "분석·진단 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J7"
    ]
@@ -1532,7 +1532,7 @@
    "role": "ROLE_ASSESS_V1",
    "role_name": "평가·인정",
    "strength": "중심",
-   "appears_as": "평가·인정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "평가·인정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J3",
@@ -1618,7 +1618,7 @@
    "role": "ROLE_DIAGNOSE_V1",
    "role_name": "분석·진단",
    "strength": "중심",
-   "appears_as": "분석·진단 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "분석·진단 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J3",
@@ -1680,7 +1680,7 @@
    "role": "ROLE_RESEARCH_V1",
    "role_name": "연구",
    "strength": "중심",
-   "appears_as": "연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "연구 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4",
     "J7"
@@ -1752,7 +1752,7 @@
    "role": "ROLE_TEACH_V1",
    "role_name": "수업·생활 운영",
    "strength": "중심",
-   "appears_as": "수업·생활 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "수업·생활 운영 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5"
@@ -1788,7 +1788,7 @@
    "role": "ROLE_SAFETY_V1",
    "role_name": "안전·규정 관리",
    "strength": "중심",
-   "appears_as": "안전·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "안전·규정 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4"
    ]
@@ -1847,7 +1847,7 @@
    "role": "ROLE_TEACH_V1",
    "role_name": "수업·생활 운영",
    "strength": "중심",
-   "appears_as": "수업·생활 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "수업·생활 운영 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J6"
    ]
@@ -1858,7 +1858,7 @@
    "role": "ROLE_ADMIN_V1",
    "role_name": "사업·학사 관리",
    "strength": "중심",
-   "appears_as": "사업·학사 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "사업·학사 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J6"
    ]
@@ -2025,7 +2025,7 @@
    "role": "ROLE_MATERIAL_V1",
    "role_name": "자료·콘텐츠 제작",
    "strength": "중심",
-   "appears_as": "자료·콘텐츠 제작 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "자료·콘텐츠 제작 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J4",
@@ -2087,7 +2087,7 @@
    "role": "ROLE_CURRICULUM_V1",
    "role_name": "교육과정·제도 설계",
    "strength": "중심",
-   "appears_as": "교육과정·제도 설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "교육과정·제도 설계 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J6"
    ]
@@ -2146,7 +2146,7 @@
    "role": "ROLE_ADMIN_V1",
    "role_name": "사업·학사 관리",
    "strength": "중심",
-   "appears_as": "사업·학사 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "사업·학사 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J3",
@@ -2196,7 +2196,7 @@
    "role": "ROLE_DIAGNOSE_V1",
    "role_name": "분석·진단",
    "strength": "중심",
-   "appears_as": "분석·진단 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "분석·진단 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4",
     "J5"
@@ -2208,7 +2208,7 @@
    "role": "ROLE_ASSESS_V1",
    "role_name": "평가·인정",
    "strength": "중심",
-   "appears_as": "평가·인정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "평가·인정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4",
     "J7"
@@ -2256,7 +2256,7 @@
    "role": "ROLE_RESEARCH_V1",
    "role_name": "연구",
    "strength": "중심",
-   "appears_as": "연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "연구 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J2",
@@ -2318,7 +2318,7 @@
    "role": "ROLE_MATERIAL_V1",
    "role_name": "자료·콘텐츠 제작",
    "strength": "중심",
-   "appears_as": "자료·콘텐츠 제작 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "자료·콘텐츠 제작 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J8"
    ]
@@ -2341,7 +2341,7 @@
    "role": "ROLE_ADMIN_V1",
    "role_name": "사업·학사 관리",
    "strength": "중심",
-   "appears_as": "사업·학사 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "사업·학사 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J5",
     "J7"
@@ -2365,7 +2365,7 @@
    "role": "ROLE_SAFETY_V1",
    "role_name": "안전·규정 관리",
    "strength": "중심",
-   "appears_as": "안전·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "안전·규정 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J3",

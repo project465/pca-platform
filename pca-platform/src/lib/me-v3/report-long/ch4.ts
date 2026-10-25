@@ -10,7 +10,7 @@ import type { Inputs, Level, RoleGuide } from "./types";
 import { AXES, STEP_WORD, type RolePack, type X } from "./derive";
 import { C, chain, hbars, heat } from "./charts";
 import { CYC, E, H, LVC, PAL, T, ZC, band, chips, lines, note, paginate, pip, rowsOf, ul, type Page } from "./kit";
-import { andJoin, asSentence, askNoun, j, okOr, okText, polite, q } from "./text";
+import { andJoin, asSentence, askNoun, j, okOr, okText, polite, politePara, q } from "./text";
 
 const P = (title: string, body: string): Page => ({ part: "04", partName: "직무 탐색", title, body });
 const dz = (d: X, t: string) => `<span class="nw">${E(d.name(t))}<span class="dot" style="background:${ZC[d.dom(t)?.zone ?? "NOT_EXPLORED"]}"></span></span>`;
@@ -27,7 +27,7 @@ export function matrixPage(x: Inputs, d: X): Page {
     return { fill, text: core ? "●" : "", ink: s === "중심" ? "#fff" : C.ink2 };
   };
   return P("직무와 영역의 지도",
-    T(`${E(x.major)} 대표 직무 ${roles.length}개와 ${d.counts.domains}가지 ${E(x.domainWord)}을 한 표에 겹쳐 봤습니다`, "진한 칸은 그 직무가 주로 하는 일이고, 파란색에 가까울수록 참여자가 해 본 일이 많이 확인된 영역입니다. ● 표시는 그 직무의 핵심 영역입니다.") +
+    T(`${E(x.major)} 대표 직무 ${roles.length}개와 ${d.counts.domains}가지 ${E(j(x.domainWord, "을를"))} 한 표에 겹쳐 봤습니다`, "진한 칸은 그 직무가 주로 하는 일이고, 파란색에 가까울수록 참여자가 해 본 일이 많이 확인된 영역입니다. ● 표시는 그 직무의 핵심 영역입니다.") +
     `<div class="wide-art">${heat(roles.map((p) => p.name_ko), x.m.domains.map((z) => d.name(z.code)), cell, { width: 710, label: 120, head: 92, row: 34, colWrap: 5 })}</div>` +
     `<div class="lg"><span><i style="background:${PAL.blue}"></i>중심 업무 · 결과물까지 확인</span><span><i style="background:${PAL.teal}"></i>중심 업무 · 해 본 일 있음</span><span><i style="background:${PAL.amber}"></i>중심 업무 · 아직 해 보기 전</span><span><i style="background:#a9c1f2"></i>함께 하는 업무 · 결과물까지 확인</span><span><i style="background:#f8d9b3"></i>함께 하는 업무 · 아직 해 보기 전</span></div>` +
     band("읽는 법", "직무마다 어느 영역을 주로 쓰는지는 업계에서 일반적으로 나누는 방식을 따랐고, 그 위에 참여자의 응답을 색으로 얹었습니다. 관심 있는 직무 줄에서 ● 칸의 색을 보면, 그 직무 면접에서 바로 꺼낼 경험이 있는 영역이 어디인지 보입니다."));
@@ -128,7 +128,7 @@ export function rolePages(x: Inputs, d: X, r: RolePack, depth: number): Page[] {
   if (depth >= 3 && g) {
     const fp = g.firstProject;
     const post = g.postingCheck.slice(0, 3);
-    const side = [post.length ? note("공고에서 볼 것", ul(post.map(E))) : "", okText(g.watch) ? note("알아 둘 것", E(g.watch), true) : ""].filter(Boolean);
+    const side = [post.length ? note("공고에서 볼 것", ul(post.map(E))) : "", okText(g.watch) ? note("알아 둘 것", E(politePara(g.watch)), true) : ""].filter(Boolean);
     out.push(P(`${r.name_ko} · 첫 프로젝트와 배울 순서`,
       T(`첫 프로젝트: ${E(fp.title)}`, E(fp.goal)) +
       (fp.steps.length ? chain(fp.steps.slice(0, 4).map((s, i) => ({ head: `${i + 1}단계`, body: s, color: [PAL.blue, PAL.teal, PAL.amber, PAL.coral][i % 4] })), { width: 700, height: 150 }) : "") +

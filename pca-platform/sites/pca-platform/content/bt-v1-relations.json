@@ -1292,7 +1292,7 @@
    "role": "ROLE_RNDLAB_V1",
    "role_name": "연구개발 실험",
    "strength": "중심",
-   "appears_as": "연구개발 실험 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "연구개발 실험 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -1389,7 +1389,7 @@
    "role": "ROLE_RNDLAB_V1",
    "role_name": "연구개발 실험",
    "strength": "중심",
-   "appears_as": "연구개발 실험 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "연구개발 실험 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J6"
@@ -1437,7 +1437,7 @@
    "role": "ROLE_FACILITY_V1",
    "role_name": "장비·시설 운용",
    "strength": "중심",
-   "appears_as": "장비·시설 운용 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "장비·시설 운용 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J7"
@@ -1521,7 +1521,7 @@
    "role": "ROLE_PROCESS_V1",
    "role_name": "생물공정·생산",
    "strength": "중심",
-   "appears_as": "생물공정·생산 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "생물공정·생산 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J7"
@@ -1617,7 +1617,7 @@
    "role": "ROLE_PROCESS_V1",
    "role_name": "생물공정·생산",
    "strength": "중심",
-   "appears_as": "생물공정·생산 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "생물공정·생산 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3"
    ]
@@ -1676,7 +1676,7 @@
    "role": "ROLE_RNDLAB_V1",
    "role_name": "연구개발 실험",
    "strength": "중심",
-   "appears_as": "연구개발 실험 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "연구개발 실험 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J7"
@@ -1748,7 +1748,7 @@
    "role": "ROLE_DISCOVERY_V1",
    "role_name": "탐색 연구",
    "strength": "중심",
-   "appears_as": "탐색 연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "탐색 연구 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J7"
@@ -1784,7 +1784,7 @@
    "role": "ROLE_BIOINFO_V1",
    "role_name": "생물정보·데이터 분석",
    "strength": "중심",
-   "appears_as": "생물정보·데이터 분석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "생물정보·데이터 분석 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3"
    ]
@@ -1795,7 +1795,7 @@
    "role": "ROLE_VALIDATION_V1",
    "role_name": "시험·검증",
    "strength": "중심",
-   "appears_as": "시험·검증 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "시험·검증 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -1820,7 +1820,7 @@
    "role": "ROLE_FACILITY_V1",
    "role_name": "장비·시설 운용",
    "strength": "중심",
-   "appears_as": "장비·시설 운용 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "장비·시설 운용 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -1881,7 +1881,7 @@
    "role": "ROLE_BIOINFO_V1",
    "role_name": "생물정보·데이터 분석",
    "strength": "중심",
-   "appears_as": "생물정보·데이터 분석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "생물정보·데이터 분석 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -1943,7 +1943,7 @@
    "role": "ROLE_DISCOVERY_V1",
    "role_name": "탐색 연구",
    "strength": "중심",
-   "appears_as": "탐색 연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "탐색 연구 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J6"
@@ -1991,7 +1991,7 @@
    "role": "ROLE_VALIDATION_V1",
    "role_name": "시험·검증",
    "strength": "중심",
-   "appears_as": "시험·검증 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "시험·검증 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J7"
@@ -2027,7 +2027,7 @@
    "role": "ROLE_PROJECT_V1",
    "role_name": "과제·임상 운영",
    "strength": "중심",
-   "appears_as": "과제·임상 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "과제·임상 운영 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J7"
@@ -2099,7 +2099,7 @@
    "role": "ROLE_PROCESS_V1",
    "role_name": "생물공정·생산",
    "strength": "중심",
-   "appears_as": "생물공정·생산 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "생물공정·생산 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -2149,7 +2149,7 @@
    "role": "ROLE_QARA_V1",
    "role_name": "품질보증·규제",
    "strength": "중심",
-   "appears_as": "품질보증·규제 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "품질보증·규제 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3"
    ]
@@ -2184,7 +2184,7 @@
    "role": "ROLE_VALIDATION_V1",
    "role_name": "시험·검증",
    "strength": "중심",
-   "appears_as": "시험·검증 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "시험·검증 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J8"
@@ -2244,7 +2244,7 @@
    "role": "ROLE_QARA_V1",
    "role_name": "품질보증·규제",
    "strength": "중심",
-   "appears_as": "품질보증·규제 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "품질보증·규제 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -2270,7 +2270,7 @@
    "role": "ROLE_BIOINFO_V1",
    "role_name": "생물정보·데이터 분석",
    "strength": "중심",
-   "appears_as": "생물정보·데이터 분석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "생물정보·데이터 분석 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J7"
@@ -2318,7 +2318,7 @@
    "role": "ROLE_PROJECT_V1",
    "role_name": "과제·임상 운영",
    "strength": "중심",
-   "appears_as": "과제·임상 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "과제·임상 운영 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -2332,7 +2332,7 @@
    "role": "ROLE_DISCOVERY_V1",
    "role_name": "탐색 연구",
    "strength": "중심",
-   "appears_as": "탐색 연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "탐색 연구 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -2405,7 +2405,7 @@
    "role": "ROLE_FACILITY_V1",
    "role_name": "장비·시설 운용",
    "strength": "중심",
-   "appears_as": "장비·시설 운용 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "장비·시설 운용 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J8"
@@ -2417,7 +2417,7 @@
    "role": "ROLE_PROJECT_V1",
    "role_name": "과제·임상 운영",
    "strength": "중심",
-   "appears_as": "과제·임상 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "과제·임상 운영 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3"
    ]
@@ -2440,7 +2440,7 @@
    "role": "ROLE_QARA_V1",
    "role_name": "품질보증·규제",
    "strength": "중심",
-   "appears_as": "품질보증·규제 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "품질보증·규제 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J7"

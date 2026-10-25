@@ -1244,7 +1244,7 @@
    "role": "ROLE_PLAN_V1",
    "role_name": "기획·구성",
    "strength": "중심",
-   "appears_as": "기획·구성 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "기획·구성 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J2",
@@ -1257,7 +1257,7 @@
    "role": "ROLE_RESEARCH_V1",
    "role_name": "조사·분석",
    "strength": "중심",
-   "appears_as": "조사·분석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "조사·분석 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1"
    ]
@@ -1304,7 +1304,7 @@
    "role": "ROLE_OPS_V1",
    "role_name": "운영·조정",
    "strength": "중심",
-   "appears_as": "운영·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "운영·조정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J6"
@@ -1340,7 +1340,7 @@
    "role": "ROLE_PLAN_V1",
    "role_name": "기획·구성",
    "strength": "중심",
-   "appears_as": "기획·구성 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "기획·구성 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J8"
@@ -1412,7 +1412,7 @@
    "role": "ROLE_STUDY_V1",
    "role_name": "조사·연구",
    "strength": "중심",
-   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J7"
@@ -1448,7 +1448,7 @@
    "role": "ROLE_RESEARCH_V1",
    "role_name": "조사·분석",
    "strength": "중심",
-   "appears_as": "조사·분석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "조사·분석 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J4"
@@ -1472,7 +1472,7 @@
    "role": "ROLE_STANDARD_V1",
    "role_name": "기록·표준 관리",
    "strength": "중심",
-   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2"
    ]
@@ -1507,7 +1507,7 @@
    "role": "ROLE_STUDY_V1",
    "role_name": "조사·연구",
    "strength": "중심",
-   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4"
    ]
@@ -1578,7 +1578,7 @@
    "role": "ROLE_FIELD_V1",
    "role_name": "제작 현장",
    "strength": "중심",
-   "appears_as": "제작 현장 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "제작 현장 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J7"
@@ -1674,7 +1674,7 @@
    "role": "ROLE_FIELD_V1",
    "role_name": "제작 현장",
    "strength": "중심",
-   "appears_as": "제작 현장 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "제작 현장 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4",
     "J6"
@@ -1722,7 +1722,7 @@
    "role": "ROLE_PLAN_V1",
    "role_name": "기획·구성",
    "strength": "중심",
-   "appears_as": "기획·구성 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "기획·구성 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4",
     "J6"
@@ -1842,7 +1842,7 @@
    "role": "ROLE_REVIEW_V1",
    "role_name": "판정·심의 대응",
    "strength": "중심",
-   "appears_as": "판정·심의 대응 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "판정·심의 대응 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J7"
@@ -1854,7 +1854,7 @@
    "role": "ROLE_STANDARD_V1",
    "role_name": "기록·표준 관리",
    "strength": "중심",
-   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4",
     "J5",
@@ -1964,7 +1964,7 @@
    "role": "ROLE_FIELD_V1",
    "role_name": "제작 현장",
    "strength": "중심",
-   "appears_as": "제작 현장 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "제작 현장 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J3",
@@ -1977,7 +1977,7 @@
    "role": "ROLE_OPS_V1",
    "role_name": "운영·조정",
    "strength": "중심",
-   "appears_as": "운영·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "운영·조정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5"
@@ -2001,7 +2001,7 @@
    "role": "ROLE_RIGHTS_V1",
    "role_name": "권리·규정 관리",
    "strength": "중심",
-   "appears_as": "권리·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "권리·규정 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J6"
@@ -2073,7 +2073,7 @@
    "role": "ROLE_OPS_V1",
    "role_name": "운영·조정",
    "strength": "중심",
-   "appears_as": "운영·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "운영·조정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J4",
@@ -2122,7 +2122,7 @@
    "role": "ROLE_RESEARCH_V1",
    "role_name": "조사·분석",
    "strength": "중심",
-   "appears_as": "조사·분석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "조사·분석 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -2184,7 +2184,7 @@
    "role": "ROLE_STUDY_V1",
    "role_name": "조사·연구",
    "strength": "중심",
-   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J3",
@@ -2234,7 +2234,7 @@
    "role": "ROLE_REVIEW_V1",
    "role_name": "판정·심의 대응",
    "strength": "중심",
-   "appears_as": "판정·심의 대응 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "판정·심의 대응 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2"
    ]
@@ -2293,7 +2293,7 @@
    "role": "ROLE_RIGHTS_V1",
    "role_name": "권리·규정 관리",
    "strength": "중심",
-   "appears_as": "권리·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "권리·규정 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J3"
@@ -2329,7 +2329,7 @@
    "role": "ROLE_REVIEW_V1",
    "role_name": "판정·심의 대응",
    "strength": "중심",
-   "appears_as": "판정·심의 대응 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "판정·심의 대응 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -2343,7 +2343,7 @@
    "role": "ROLE_STANDARD_V1",
    "role_name": "기록·표준 관리",
    "strength": "중심",
-   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J3"
@@ -2391,7 +2391,7 @@
    "role": "ROLE_RIGHTS_V1",
    "role_name": "권리·규정 관리",
    "strength": "중심",
-   "appears_as": "권리·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "권리·규정 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J5",
     "J7",

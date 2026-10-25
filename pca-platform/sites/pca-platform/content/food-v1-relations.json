@@ -1222,7 +1222,7 @@
    "role": "ROLE_PRODPLAN_V1",
    "role_name": "제품·메뉴 기획",
    "strength": "중심",
-   "appears_as": "제품·메뉴 기획 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "제품·메뉴 기획 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J3",
@@ -1260,7 +1260,7 @@
    "role": "ROLE_STANDARD_V1",
    "role_name": "공정·레시피 표준화",
    "strength": "중심",
-   "appears_as": "공정·레시피 표준화 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "공정·레시피 표준화 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J6"
@@ -1296,7 +1296,7 @@
    "role": "ROLE_RESEARCH_V1",
    "role_name": "연구·조사",
    "strength": "중심",
-   "appears_as": "연구·조사 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "연구·조사 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4"
    ]
@@ -1319,7 +1319,7 @@
    "role": "ROLE_PRODPLAN_V1",
    "role_name": "제품·메뉴 기획",
    "strength": "중심",
-   "appears_as": "제품·메뉴 기획 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "제품·메뉴 기획 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2"
    ]
@@ -1354,7 +1354,7 @@
    "role": "ROLE_STANDARD_V1",
    "role_name": "공정·레시피 표준화",
    "strength": "중심",
-   "appears_as": "공정·레시피 표준화 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "공정·레시피 표준화 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4"
    ]
@@ -1425,7 +1425,7 @@
    "role": "ROLE_ANALYSIS_V1",
    "role_name": "분석·시험",
    "strength": "중심",
-   "appears_as": "분석·시험 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "분석·시험 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J5"
    ]
@@ -1436,7 +1436,7 @@
    "role": "ROLE_QC_V1",
    "role_name": "품질·규격 판정",
    "strength": "중심",
-   "appears_as": "품질·규격 판정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "품질·규격 판정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J3",
@@ -1499,7 +1499,7 @@
    "role": "ROLE_COMPLIANCE_V1",
    "role_name": "위생·표시 규정 관리",
    "strength": "중심",
-   "appears_as": "위생·표시 규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "위생·표시 규정 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J7",
     "J8"
@@ -1559,7 +1559,7 @@
    "role": "ROLE_FIELD_V1",
    "role_name": "생산·조리 현장 운영",
    "strength": "중심",
-   "appears_as": "생산·조리 현장 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "생산·조리 현장 운영 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J6"
@@ -1595,7 +1595,7 @@
    "role": "ROLE_COMPLIANCE_V1",
    "role_name": "위생·표시 규정 관리",
    "strength": "중심",
-   "appears_as": "위생·표시 규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "위생·표시 규정 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J4"
@@ -1619,7 +1619,7 @@
    "role": "ROLE_ANALYSIS_V1",
    "role_name": "분석·시험",
    "strength": "중심",
-   "appears_as": "분석·시험 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "분석·시험 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J4",
@@ -1633,7 +1633,7 @@
    "role": "ROLE_QC_V1",
    "role_name": "품질·규격 판정",
    "strength": "중심",
-   "appears_as": "품질·규격 판정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "품질·규격 판정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4"
    ]
@@ -1680,7 +1680,7 @@
    "role": "ROLE_RESEARCH_V1",
    "role_name": "연구·조사",
    "strength": "중심",
-   "appears_as": "연구·조사 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "연구·조사 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J5",
     "J6"
@@ -1716,7 +1716,7 @@
    "role": "ROLE_ANALYSIS_V1",
    "role_name": "분석·시험",
    "strength": "중심",
-   "appears_as": "분석·시험 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "분석·시험 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J7"
@@ -1764,7 +1764,7 @@
    "role": "ROLE_OPSMGMT_V1",
    "role_name": "급식·점포 관리",
    "strength": "중심",
-   "appears_as": "급식·점포 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "급식·점포 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4",
     "J5"
@@ -1860,7 +1860,7 @@
    "role": "ROLE_OPSMGMT_V1",
    "role_name": "급식·점포 관리",
    "strength": "중심",
-   "appears_as": "급식·점포 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "급식·점포 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3"
    ]
@@ -2039,7 +2039,7 @@
    "role": "ROLE_FIELD_V1",
    "role_name": "생산·조리 현장 운영",
    "strength": "중심",
-   "appears_as": "생산·조리 현장 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "생산·조리 현장 운영 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -2052,7 +2052,7 @@
    "role": "ROLE_OPSMGMT_V1",
    "role_name": "급식·점포 관리",
    "strength": "중심",
-   "appears_as": "급식·점포 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "급식·점포 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J6",
@@ -2126,7 +2126,7 @@
    "role": "ROLE_STANDARD_V1",
    "role_name": "공정·레시피 표준화",
    "strength": "중심",
-   "appears_as": "공정·레시피 표준화 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "공정·레시피 표준화 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -2140,7 +2140,7 @@
    "role": "ROLE_FIELD_V1",
    "role_name": "생산·조리 현장 운영",
    "strength": "중심",
-   "appears_as": "생산·조리 현장 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "생산·조리 현장 운영 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4",
     "J8"
@@ -2188,7 +2188,7 @@
    "role": "ROLE_PRODPLAN_V1",
    "role_name": "제품·메뉴 기획",
    "strength": "중심",
-   "appears_as": "제품·메뉴 기획 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "제품·메뉴 기획 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J6"
@@ -2260,7 +2260,7 @@
    "role": "ROLE_RESEARCH_V1",
    "role_name": "연구·조사",
    "strength": "중심",
-   "appears_as": "연구·조사 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "연구·조사 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J2",
@@ -2310,7 +2310,7 @@
    "role": "ROLE_QC_V1",
    "role_name": "품질·규격 판정",
    "strength": "중심",
-   "appears_as": "품질·규격 판정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "품질·규격 판정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J5"
    ]
@@ -2369,7 +2369,7 @@
    "role": "ROLE_COMPLIANCE_V1",
    "role_name": "위생·표시 규정 관리",
    "strength": "중심",
-   "appears_as": "위생·표시 규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "위생·표시 규정 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
