@@ -42,7 +42,12 @@ const lcF = (s: string) => {
 };
 /** 문장으로 닫는다. 물음표로 끝나면 그대로 */
 const sen = (s: string) => { const t = capF(s); return !t || /[?!]$/.test(t) ? t : `${t}.`; };
-const andEn = (xs: string[]) => { const ys = xs.filter(Boolean); return ys.length <= 1 ? ys[0] ?? "" : `${ys.slice(0, -1).join(", ")} and ${ys[ys.length - 1]}`; };
+/** `A and B` · `A, B, and C`. 영역 이름 안에 `and` 가 들어 있어서(Control and Automation) 셋부터는 마지막 쉼표를 둔다 */
+const andEn = (xs: string[]) => {
+  const ys = xs.filter(Boolean);
+  if (ys.length <= 1) return ys[0] ?? "";
+  return ys.length === 2 ? `${ys[0]} and ${ys[1]}` : `${ys.slice(0, -1).join(", ")}, and ${ys[ys.length - 1]}`;
+};
 const nOf = (n: number, one: string, many: string) => (n === 1 ? one : many);
 /** 영어 물음은 물음표 하나로 닫는다 */
 const askEn = (s: string) => `${bare(s).replace(/\?+$/, "")}?`;
@@ -107,7 +112,7 @@ export function matrixPage(x: Inputs, d: X): Page {
   const after = use && use.n >= 2
     ? (tier3(useZone) === 1 ? L(`이 영역은 내 결과에서 ${j(Z.Z1_EVIDENCE_ESTABLISHED.tag, "이라")}, 여러 직무 면접에서 같은 경험을 꺼낼 수 있어요.`, `It is a ‘${E(Z.Z1_EVIDENCE_ESTABLISHED.tag)}’ in your results, so you can bring up the same experience in interviews for several roles.`)
       : tier3(useZone) === 2 ? L("이 영역에서 결과물 하나를 더 남겨 두면 여러 직무에 함께 쓸 수 있어요.", "Leave one more deliverable in this area and you can use it for several roles at once.")
-      : L("이 영역은 아직 해 본 일이 적어서, 짧은 과제 하나로 먼저 겪어 보면 여러 직무에 함께 쓸 수 있어요.", "You have not done much here yet. Try it first through one short assignment, and that experience will count toward several roles."))
+      : L("이 영역은 아직 해 본 일이 적어서, 짧은 과제 하나로 먼저 겪어 보면 여러 직무에 함께 쓸 수 있어요.", "You have not done much in this area yet. Try it first through one short assignment, and that experience will count toward several roles."))
     : L("관심 있는 직무 줄에서 ● 칸의 색을 보면 바로 꺼낼 경험이 있는 영역이 보여요.", "In the row for a role you like, the colour of each ● cell shows the core areas where you already have experience to talk about.");
   /* 읽는 법에는 이 표에 실제로 칠한 색만 싣는다 */
   const used = new Set(roles.flatMap((_, i) => tds.map((__, jj) => cell(i, jj).fill)));

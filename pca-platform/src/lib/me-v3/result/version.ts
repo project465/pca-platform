@@ -185,7 +185,8 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.7";
 /* copy.76 — 학과 할 일 · 지원서 문장(`evidence_action` · `application.resume`)을 읽는 자리에서 높임으로 바꾼다. 스무 Core 의 은행 판본이 함께 올라 동결 기록을 다시 적는다. 판정과 결과 모델은 그대로다 */
 /* copy.77 — 끝 칸이 받을 종이를 맞게 적는다: 책은 PRO 만이라 BASIC · STANDARD 에는 `한 권으로 묶었습니다` 를 적지 않고, 개인 응시에는 `PRO로 넓히기` 를 둔다. 판정과 결과 모델은 그대로다 */
 /* copy.78 — 세종 기업 절의 묶음 이름을 책과 같은 `한 걸음 더 채우면 맞는 곳` 으로(책의 `(계속)` 표시와 헷갈리지 않게). 판정과 결과 모델은 그대로다 */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.78";
+/* copy.79 — 영어 응시(기계 · 전기전자 · 컴퓨터)의 PRO 도 70쪽 책을 받는다. 끝 칸이 그 사실을 적는다. 판정과 결과 모델은 그대로다 */
+export const RESULT_COPY_VERSION = "me-v3-result-copy.79";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**

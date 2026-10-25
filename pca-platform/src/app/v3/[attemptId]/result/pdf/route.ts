@@ -15,6 +15,7 @@ import { attemptOf, latestResult } from "@/lib/me-v3/runtime/session";
 import { resultMeta } from "@/lib/me-v3/result/meta";
 import { drawResultPdf, PdfFailed, resolveChromium } from "@/lib/me-v3/result/pdf";
 import { drawBookPdf } from "@/lib/me-v3/report-long/pdf";
+import { hasEdition } from "@/lib/me-v3/i18n";
 import { participantOf, record } from "@/lib/me-v3/pilot/store";
 import { mark } from "@/lib/me-v3/pilot/funnel";
 
@@ -121,7 +122,8 @@ export async function GET(
        `docs/metri/GLOBAL_EN_PLAN.md`). 책자(`report-long/`)는 한국어로만
        쓰여 있어 영어 응시에 뽑으면 한국어 70쪽이 나간다. 1단계 동안은 웹
        결과 종이판을 그대로 내고, 책자 번역은 2단계에서 한다 */
-    const book = a.tier === "PRO" && a.locale === "ko";
+    /* 영어 응시도 영어 원고가 다 갖춰진 전공(기계 · 전기전자 · 컴퓨터)은 책을 뽑는다(영어판 2단계) */
+    const book = a.tier === "PRO" && (a.locale === "ko" || hasEdition(a.core_code, "en"));
     let pdf: Buffer;
     if (book) {
       pdf = await drawBookPdf({ attemptId, baseUrl: base, cookie: h.get("cookie") ?? "" });
@@ -167,7 +169,7 @@ export async function GET(
      */
     const step = e instanceof PdfFailed ? e.step : "unknown";
     const why = String((e as Error)?.message ?? e).split("\n")[0].slice(0, 300);
-    const line = `[v3-pdf] attempt=${attemptId} tier=${a.tier}${a.tier === "PRO" && a.locale === "ko" ? " book" : ""} step=${step} `
+    const line = `[v3-pdf] attempt=${attemptId} tier=${a.tier}${a.tier === "PRO" ? " book?" : ""} step=${step} `
       + `base=${base} chromium=${got.bin ?? "(없음)"} tried=${got.tried.length} `
       + `${Date.now() - t0}ms :: ${why}`;
     console.error(line);

@@ -1,3 +1,4 @@
+import { hasEdition } from "@/lib/me-v3/i18n";
 import Link from "next/link";
 import { BrandMark } from "@/components/sf/brand-mark";
 import { notFound, redirect } from "next/navigation";
@@ -1421,7 +1422,7 @@ export default async function V3Result({
           keepAction={ws && model.actions.length ? takeActionsFromResult : null}
           kept={kept}
           tierNote={model.tier === "BASIC" ? TX().TIER_NOTE_KO.BASIC : null}
-          book={model.tier === "PRO" && lang === "ko"}
+          book={model.tier === "PRO" && (lang === "ko" || hasEdition(a.core_code, lang))}
           /* 개인 응시만 넓히기를 권한다. 학교 응시는 늘 PRO 이고, 해외 시장은 유료
              등급을 아직 팔지 않는다 */
           upgradeHref={!meta.school && model.tier !== "PRO" && lang === "ko" && a.market_code !== "GLOBAL"

@@ -2,7 +2,7 @@
  "schema_version": "cs-v1-items.1",
  "core": "CS_CORE_V1",
  "assessment_version": "CS_V1",
- "item_bank_version": "CS_V1_ITEM_BANK_V1.5",
+ "item_bank_version": "CS_V1_ITEM_BANK_V1.6",
  "note": "The item wording was written by hand. This file is the source: edit wording here, then run `CORE=CS_CORE_V1 npm run v3:wording` and `v3:items`. Item numbers outside the technical domains match the Mechanical Engineering Core. 2026-10-21: rewrote the wording at the difficulty level of the group PCA items. Each item asks about one student scene and one l2 behavior in plain words; the four options, axes and scoring are unchanged (CS_V1_ITEM_BANK_V1.4). 2026-10-23: applied the rules from the business-major wording audit (done after the owner took the test) to this major too. Repeated frames (`narrowed down the cause`, stacked `in` phrases, vague pointer words) were rewritten scene by scene, and graduate wording was rewritten with the same lead-in after removing undergraduate scene words. The four options were reworded; their meaning, order and values are unchanged (CS_V1_ITEM_BANK_V1.5)",
  "level_options": [
   "Never done it",

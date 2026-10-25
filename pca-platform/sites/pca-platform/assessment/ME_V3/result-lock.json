@@ -3,7 +3,7 @@
  "note": "결과지 화면 1차 동결. 문장만 고치면 `RESULT_COPY_VERSION` 만 올리고, 칸이나 절이 바뀌면 `RESULT_MODEL_VERSION`, 화면 구조가 바뀌면 `RESULT_UI_VERSION` 을 올린다. 채점 판본은 이 가운데 무엇으로도 올리지 않는다",
  "versions": {
   "result_ui_version": "ME_V3_RESULT_UI_V87",
-  "result_copy_version": "me-v3-result-copy.78",
+  "result_copy_version": "me-v3-result-copy.79",
   "result_model_version": "me-v3-result-model.7",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.9",
   "scoring_version": "me-v3-scoring.5"
@@ -22,7 +22,7 @@
  "files": {
   "src/app/v3/result.css": "9176d4118d228396b726737b1b9fcd0798298602084ece56eb1b26e349d79833",
   "src/app/surface.css": "edbb16d5270484deb2737e73611d8035296ce813a8c1afbede5ddd76cb35c38f",
-  "src/app/v3/[attemptId]/result/page.tsx": "5a14543031f7e6b01adbfa9e61378ac74e76ba14fe4e0f835f846e3d6e7e3103",
+  "src/app/v3/[attemptId]/result/page.tsx": "7a4679cc57fd65b5c527391a223e764296dfdca2b69eb443bd5f9aa633179fa9",
   "src/app/v3/[attemptId]/result/fold.tsx": "da6c8b16f124941d283dc9ae4ad0f41b2271fd8d8233028bfdc3d4c500d4fbb4",
   "src/app/v3/[attemptId]/result/disclose.tsx": "04e8a84916ec0fcd642e9287377e370b8bff250ac496ed66cfdf3d9f2e640f5a",
   "src/app/v3/[attemptId]/result/save.tsx": "17e047ae27df85fc1fd501d7031d322d4a02414d15b1d91302133e3bd505d197",
@@ -31,7 +31,7 @@
   "src/lib/me-v3/result/text.ko.ts": "82932069908da96dc6ccc33439483b4d925d3a340befc3bea555e422b3f3ac6a",
   "src/lib/me-v3/result/say.ts": "1ca895cbeb84b08c5579fc3fcaaf4f8c89b766e131f277bcd92bba74abcebc95",
   "src/lib/me-v3/result/josa.ts": "152cd30c2af136172618c14fa6fb4175b97cf16350db631e3e2e6c72fd7dd4af",
-  "src/lib/me-v3/result/version.ts": "fedcf4a203dd7ff722fde456167f8492964c243a8091bf066c4beaa5492c5819",
+  "src/lib/me-v3/result/version.ts": "9ede49ecd26e42032cd12e7d0751114064de453959ba929c38b8987fb722b433",
   "src/lib/me-v3/result/tile-sub.ts": "8e51d0087d789341b20679e15503c7d31d62b36c943998cea70d992539c2d785",
   "src/lib/me-v3/student/copy.ts": "3c5f96455be8222018a30f1d5423aee1608e436ec11c49d681b208956ef60a1a",
   "src/lib/me-v3/student/icon.ts": "65836ae7a141a7dcdf844e5d5b4bcdbcc558dad0a3890a4a67384a3b17c7aea2",

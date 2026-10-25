@@ -2,7 +2,7 @@
  "schema_version": "ee-v1-items.1",
  "core": "EE_CORE_V1",
  "assessment_version": "EE_V1",
- "item_bank_version": "EE_V1_ITEM_BANK_V1.6",
+ "item_bank_version": "EE_V1_ITEM_BANK_V1.7",
  "note": "The wording was written by hand. This file is the source: wording is changed here, and afterwards `CORE=EE_CORE_V1 npm run v3:wording` and `v3:items` are run. Item numbers not tied to a domain are the same as in the Mechanical Engineering Core. 2026-10-21: the wording was rewritten to the difficulty level of the group PCA items. Each item asks about one student scene and one l2 behavior in plain words; the four options, axes and scoring are unchanged (EE_V1_ITEM_BANK_V1.4)",
  "level_options": [
   "Never done it",

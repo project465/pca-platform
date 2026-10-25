@@ -12,6 +12,7 @@ import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { attemptOf, latestResult } from "@/lib/me-v3/runtime/session";
 import { buildLongReport } from "@/lib/me-v3/report-long";
+import { hasEdition } from "@/lib/me-v3/i18n";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -26,8 +27,8 @@ export async function GET(
   if (!a) return new Response("not found", { status: 404 });
   if (!(await latestResult(attemptId))) return new Response("not found", { status: 404 });
   if (a.tier !== "PRO") redirect(`/v3/${encodeURIComponent(attemptId)}/result`);
-  /* 책자는 한국어로만 쓰여 있다(영어판 1단계). 영어 응시는 웹 결과로 보낸다 */
-  if (a.locale !== "ko") redirect(`/v3/${encodeURIComponent(attemptId)}/result`);
+  /* 책자는 한국어와, 영어 원고가 다 갖춰진 전공(기계 · 전기전자 · 컴퓨터)의 영어로 선다. 나머지 영어 응시는 웹 결과로 보낸다 */
+  if (a.locale !== "ko" && !hasEdition(a.core_code, a.locale ?? "ko")) redirect(`/v3/${encodeURIComponent(attemptId)}/result`);
   const rep = await buildLongReport(attemptId, { fontBase: "/fonts/cm-book/" });
   return new Response(rep.html, {
     headers: {
