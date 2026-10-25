@@ -27,9 +27,10 @@
     "db/schema_assistant.sql",
     "db/schema_campus_mat.sql",
     "db/schema_v3_locale.sql",
-    "db/schema_v3_sale.sql"
+    "db/schema_v3_sale.sql",
+    "db/schema_home_www.sql"
   ],
-  "order": "차례가 곧 조건이다. `schema_v3_arch.sql` 의 `regions` 와 `career_profiles` 가 `schema_v3_platform.sql` 보다 먼저 서야 하고, `seed/v3_regions.sql` 은 `regions` 가 선 다음이다. `schema_auth_oauth.sql` 은 `users` 가 선 다음이면 어디든 되고, 맨 뒤에 둔다. `schema_v3_orgs.sql` 은 `regions` 가 선 다음이라 지역 시드 뒤에 둔다. `schema_campus_entry.sql` 은 `v3_attempts` 가 선 다음이므로 `schema_v3_runtime.sql` 뒤면 어디든 되고, 맨 뒤에 둔다. `schema_campus_students.sql` 은 `users` 가 선 다음이면 어디든 되고, 맨 뒤에 둔다. `schema_track.sql` 은 `schema_v3_arch.sql`(entitlements.kind 에 track 을 더한다) 뒤면 어디든 되고, 맨 뒤에 둔다. `schema_assistant.sql` 은 `outbox` 와 `users` 가 선 다음이면 어디든 되고, outbox 의 종류 제약을 다시 세우므로 `schema_phase2_2.sql` 보다 뒤여야 한다. 맨 뒤에 둔다. `schema_campus_mat.sql` 은 `schema_track.sql` 뒤여야 한다(entitlements.kind 가 track 을 받아야 한다). 맨 뒤에 둔다. `schema_v3_locale.sql` 은 `v3_attempts` 가 선 다음이면 어디든 되고, 맨 뒤에 둔다. `schema_v3_sale.sql` 은 `schema_v3_pilot.sql`(ME_V3 상품 줄을 만든다) 뒤여야 한다. 맨 뒤에 둔다.",
+  "order": "차례가 곧 조건이다. `schema_v3_arch.sql` 의 `regions` 와 `career_profiles` 가 `schema_v3_platform.sql` 보다 먼저 서야 하고, `seed/v3_regions.sql` 은 `regions` 가 선 다음이다. `schema_auth_oauth.sql` 은 `users` 가 선 다음이면 어디든 되고, 맨 뒤에 둔다. `schema_v3_orgs.sql` 은 `regions` 가 선 다음이라 지역 시드 뒤에 둔다. `schema_campus_entry.sql` 은 `v3_attempts` 가 선 다음이므로 `schema_v3_runtime.sql` 뒤면 어디든 되고, 맨 뒤에 둔다. `schema_campus_students.sql` 은 `users` 가 선 다음이면 어디든 되고, 맨 뒤에 둔다. `schema_track.sql` 은 `schema_v3_arch.sql`(entitlements.kind 에 track 을 더한다) 뒤면 어디든 되고, 맨 뒤에 둔다. `schema_assistant.sql` 은 `outbox` 와 `users` 가 선 다음이면 어디든 되고, outbox 의 종류 제약을 다시 세우므로 `schema_phase2_2.sql` 보다 뒤여야 한다. 맨 뒤에 둔다. `schema_campus_mat.sql` 은 `schema_track.sql` 뒤여야 한다(entitlements.kind 가 track 을 받아야 한다). 맨 뒤에 둔다. `schema_v3_locale.sql` 은 `v3_attempts` 가 선 다음이면 어디든 되고, 맨 뒤에 둔다. `schema_v3_sale.sql` 은 `schema_v3_pilot.sql`(ME_V3 상품 줄을 만든다) 뒤여야 한다. 맨 뒤에 둔다. `schema_home_www.sql` 은 `schema_phase2_3.sql`(정규 주소를 www 없는 쪽으로 적는다) 보다 뒤여야 한다. 맨 뒤에 둔다.",
   "not_in_chain": {
     "db/seed/platform_demo.sql": "눌러 볼 가상 자료. 운영 DB 에 넣지 않는다 (npm run db:demo)",
     "db/seed/platform_demo_people.sql": "같음"

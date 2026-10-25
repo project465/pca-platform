@@ -104,6 +104,8 @@ export function middleware(req: NextRequest) {
       maxAge: 60 * 60 * 24 * 180,
       sameSite: "lax",
       httpOnly: true,
+      /* 학교 입구 쿠키(`campus/entry.ts`)와 같은 기준이다. 운영 크롤러가 이것만 secure 가 빠진 것을 찾았다 */
+      secure: process.env.NODE_ENV === "production",
     });
   }
   return res;
