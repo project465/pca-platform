@@ -282,6 +282,7 @@ ok("코드가 글자로 적은 문항 번호가 전부 은행에 있다", bad.le
  */
 const RESULT_ROUTES = [
   "src/app/v3/[attemptId]/result/page.tsx",
+  "src/app/v3/[attemptId]/result/body.tsx",
   "src/app/me/results/page.tsx",
 ].filter((p) => existsSync(p));
 const recompute = RESULT_ROUTES.filter((p) =>

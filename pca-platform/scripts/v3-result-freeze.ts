@@ -42,6 +42,7 @@ const FILES = [
      결과지와 작업공간이 **같이** 바뀌므로 판본도 셋이 같이 올라야 한다 */
   "src/app/surface.css",
   "src/app/v3/[attemptId]/result/page.tsx",
+  "src/app/v3/[attemptId]/result/body.tsx",
   "src/app/v3/[attemptId]/result/fold.tsx",
   "src/app/v3/[attemptId]/result/disclose.tsx",
   "src/app/v3/[attemptId]/result/save.tsx",

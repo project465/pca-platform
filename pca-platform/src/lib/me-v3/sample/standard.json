@@ -1,0 +1,2270 @@
+{
+ "note": "견본 결과지. 지어낸 응시자 한 사람을 실제 엔진으로 돌린 값이다. 손으로 고치지 말고 npm run v3:sample 로 다시 뜬다",
+ "persona": "P03",
+ "core": "ME_CORE_V3",
+ "result_model_version": "me-v3-result-model.7",
+ "model": {
+  "schema": "me-v3-result.1",
+  "attempt_id": "P03",
+  "tier": "STANDARD",
+  "stage": "bachelor",
+  "grad_field": null,
+  "provenance": {
+   "module_versions": {
+    "core_version": "ME_CORE_V3",
+    "item_bank_version": "ME_V3_ITEM_BANK_V2.9",
+    "scoring_version": "me-v3-scoring.5",
+    "industry_pack_version": "INDUSTRY_MOBILITY_V2.v2",
+    "role_pack_version": "ROLE_CAE_V2.v2",
+    "region_layer_version": null
+   },
+   "result_model_version": "me-v3-result-model.7",
+   "snapshot_trace": 9
+  },
+  "limits": {
+   "allows_evidence_established": true,
+   "allows_axis_names": true,
+   "allows_translation": false,
+   "deep_axes": true
+  },
+  "overview": {
+   "headline": "EVIDENCE_READY",
+   "focus": [
+    "TD01"
+   ],
+   "compare": [
+    "TD08"
+   ],
+   "unclear": [
+    "TD02"
+   ],
+   "low_interest": [],
+   "not_explored": [
+    "TD03",
+    "TD04",
+    "TD05",
+    "TD06",
+    "TD07",
+    "TD09",
+    "TD10",
+    "TD11",
+    "TD12"
+   ],
+   "tied": [],
+   "tied_pick": [],
+   "counts": {
+    "domains": 12,
+    "confirmed_axes": 10,
+    "owned_axes": 2,
+    "evidence_items": 11
+   },
+   "top_gap": "TD01.J1",
+   "top_action": "A.TD01.J1",
+   "no_basis": false,
+   "first_move": "FILL_GAP",
+   "basic_groups": null
+  },
+  "domains": [
+   {
+    "code": "TD01",
+    "zone": "Z1_EVIDENCE_ESTABLISHED",
+    "opened": {
+     "probe": true,
+     "deep": true
+    },
+    "interest": "HIGH",
+    "experience": "SEVERAL",
+    "learning": "HIGH",
+    "axes": [
+     {
+      "axis": "J1",
+      "state": "CONFIRMED",
+      "picks": [],
+      "evidence": 0,
+      "from": [
+       "TD01_J1_1"
+      ],
+      "missing": "NONE_MISSING"
+     },
+     {
+      "axis": "J2",
+      "state": "CONFIRMED",
+      "picks": [],
+      "evidence": 0,
+      "from": [
+       "TD01_J2_1"
+      ],
+      "missing": "NONE_MISSING"
+     },
+     {
+      "axis": "J3",
+      "state": "OWNED",
+      "picks": [
+       "끼워 맞춤과 공차 등급을 정했다",
+       "하중과 재질을 근거로 두께나 단면을 정했다"
+      ],
+      "evidence": 3,
+      "from": [
+       "TD01_J3_1",
+       "TD01_J3_2"
+      ],
+      "missing": "NONE_MISSING"
+     },
+     {
+      "axis": "J4",
+      "state": "CONFIRMED",
+      "picks": [],
+      "evidence": 0,
+      "from": [
+       "TD01_J4_1"
+      ],
+      "missing": "NONE_MISSING"
+     },
+     {
+      "axis": "J5",
+      "state": "OWNED",
+      "picks": [
+       "부품도",
+       "조립도",
+       "승인된 도면이나 부품 사양을 냈다"
+      ],
+      "evidence": 4,
+      "from": [
+       "TD01_J5_1",
+       "TD01_J5_2"
+      ],
+      "missing": "NONE_MISSING"
+     },
+     {
+      "axis": "J6",
+      "state": "CONFIRMED",
+      "picks": [
+       "공차 누적을 계산해 조립이 되는지 확인했다",
+       "이전 모델이나 경쟁 제품의 치수와 비교했다",
+       "다른 설계안"
+      ],
+      "evidence": 4,
+      "from": [
+       "TD01_J6_1",
+       "TD01_J6_2"
+      ],
+      "missing": "NONE_MISSING"
+     },
+     {
+      "axis": "J7",
+      "state": "CONFIRMED",
+      "picks": [
+       "간섭이나 파손이 치수 때문인지 재질이나 공정 때문인지 따져 원인을 찾았다"
+      ],
+      "evidence": 2,
+      "from": [
+       "TD01_J7_1",
+       "TD01_J7_2"
+      ],
+      "missing": "NONE_MISSING"
+     },
+     {
+      "axis": "J8",
+      "state": "CONFIRMED",
+      "picks": [
+       "내 도면으로 제작이나 발주가 진행됐다",
+       "설계 검토에서 내 안이 채택됐다"
+      ],
+      "evidence": 2,
+      "from": [
+       "TD01_J8_1"
+      ],
+      "missing": "NONE_MISSING"
+     }
+    ],
+    "did": [
+     "끼워 맞춤과 공차 등급을 정했다",
+     "하중과 재질을 근거로 두께나 단면을 정했다",
+     "부품도",
+     "조립도",
+     "승인된 도면이나 부품 사양을 냈다",
+     "공차 누적을 계산해 조립이 되는지 확인했다",
+     "이전 모델이나 경쟁 제품의 치수와 비교했다",
+     "다른 설계안",
+     "간섭이나 파손이 치수 때문인지 재질이나 공정 때문인지 따져 원인을 찾았다",
+     "내 도면으로 제작이나 발주가 진행됐다",
+     "설계 검토에서 내 안이 채택됐다"
+    ],
+    "decided": [
+     "끼워 맞춤과 공차 등급을 정했다",
+     "하중과 재질을 근거로 두께나 단면을 정했다",
+     "부품도",
+     "조립도",
+     "승인된 도면이나 부품 사양을 냈다"
+    ],
+    "artifacts": [
+     "부품도",
+     "조립도"
+    ],
+    "verifications": [
+     "다른 설계안"
+    ],
+    "confirmed": [
+     "J1",
+     "J2",
+     "J3",
+     "J4",
+     "J5",
+     "J6",
+     "J7",
+     "J8"
+    ],
+    "owned": [
+     "J3",
+     "J5"
+    ],
+    "empty": [],
+    "required": [
+     "J3",
+     "J5"
+    ],
+    "reasons": [],
+    "next": [],
+    "trace": [
+     "TD01 zone=Z1_EVIDENCE_ESTABLISHED",
+     "confirmed=J1+J2+J3+J4+J5+J6+J7+J8",
+     "owned=J3+J5",
+     "required=J3+J5 ok=true",
+     "output(J5)=OWNED evidence=true",
+     "verify(J6)=CONFIRMED",
+     "interest=HIGH learning=HIGH",
+     "J1:CONFIRMED (ownership=DID, evidence=0)",
+     "J2:CONFIRMED (ownership=DID, evidence=0)",
+     "J3:OWNED (ownership=DECIDED_USED & evidence=3>=2, evidence=3)",
+     "J4:CONFIRMED (ownership=DID, evidence=0)",
+     "J5:OWNED (ownership=DECIDED_USED & evidence=4>=2, evidence=4)",
+     "J6:CONFIRMED (ownership=DID, evidence=4)",
+     "J7:CONFIRMED (ownership=DID, evidence=2)",
+     "J8:CONFIRMED (ownership=DID, evidence=2)",
+     "reasons=-"
+    ]
+   },
+   {
+    "code": "TD02",
+    "zone": "Z4_INSUFFICIENT_EVIDENCE",
+    "opened": {
+     "probe": true,
+     "deep": true
+    },
+    "interest": "MID",
+    "experience": "ONCE_OR_TWICE",
+    "learning": "MID",
+    "axes": [
+     {
+      "axis": "J1",
+      "state": "PARTICIPATED",
+      "picks": [],
+      "evidence": 0,
+      "from": [
+       "TD02_J1_1"
+      ],
+      "missing": "NONE_MISSING"
+     },
+     {
+      "axis": "J2",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "SKIPPED"
+     },
+     {
+      "axis": "J3",
+      "state": "PARTICIPATED",
+      "picks": [],
+      "evidence": 0,
+      "from": [
+       "TD02_J3_1",
+       "TD02_J3_2"
+      ],
+      "missing": "NONE_MISSING"
+     },
+     {
+      "axis": "J4",
+      "state": "PARTICIPATED",
+      "picks": [],
+      "evidence": 0,
+      "from": [
+       "TD02_J4_1"
+      ],
+      "missing": "NONE_MISSING"
+     },
+     {
+      "axis": "J5",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [
+       "TD02_J5_1",
+       "TD02_J5_2"
+      ],
+      "missing": "ANSWERED_NONE"
+     },
+     {
+      "axis": "J6",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [
+       "TD02_J6_1",
+       "TD02_J6_2"
+      ],
+      "missing": "ANSWERED_NONE"
+     },
+     {
+      "axis": "J7",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "SKIPPED"
+     },
+     {
+      "axis": "J8",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "SKIPPED"
+     }
+    ],
+    "did": [],
+    "decided": [],
+    "artifacts": [],
+    "verifications": [],
+    "confirmed": [],
+    "owned": [],
+    "empty": [
+     "J2",
+     "J5",
+     "J6",
+     "J7",
+     "J8"
+    ],
+    "required": [
+     "J3",
+     "J6"
+    ],
+    "reasons": [
+     "NO_CONFIRMED_AXIS"
+    ],
+    "next": [],
+    "trace": [
+     "TD02 zone=Z4_INSUFFICIENT_EVIDENCE",
+     "confirmed=-",
+     "owned=-",
+     "required=J3+J6 ok=false",
+     "output(J5)=NOT_OBSERVED evidence=false",
+     "verify(J6)=NOT_OBSERVED",
+     "interest=MID learning=MID",
+     "J1:PARTICIPATED (ownership=RECEIVED, evidence=0)",
+     "J2:NOT_OBSERVED (no-answer, evidence=0)",
+     "J3:PARTICIPATED (ownership=RECEIVED, evidence=0)",
+     "J4:PARTICIPATED (ownership=RECEIVED, evidence=0)",
+     "J5:NOT_OBSERVED (ownership=NONE, evidence=0)",
+     "J6:NOT_OBSERVED (ownership=NONE, evidence=0)",
+     "J7:NOT_OBSERVED (no-answer, evidence=0)",
+     "J8:NOT_OBSERVED (no-answer, evidence=0)",
+     "reasons=NO_CONFIRMED_AXIS"
+    ]
+   },
+   {
+    "code": "TD03",
+    "zone": "NOT_EXPLORED",
+    "opened": {
+     "probe": false,
+     "deep": false
+    },
+    "interest": "MID",
+    "experience": "NONE",
+    "learning": null,
+    "axes": [
+     {
+      "axis": "J1",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J2",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J3",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J4",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J5",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J6",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J7",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J8",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     }
+    ],
+    "did": [],
+    "decided": [],
+    "artifacts": [],
+    "verifications": [],
+    "confirmed": [],
+    "owned": [],
+    "empty": [
+     "J1",
+     "J2",
+     "J3",
+     "J4",
+     "J5",
+     "J6",
+     "J7",
+     "J8"
+    ],
+    "required": [
+     "J3",
+     "J6"
+    ],
+    "reasons": [
+     "NOT_ROUTED"
+    ],
+    "next": [],
+    "trace": [
+     "TD03 zone=NOT_EXPLORED",
+     "confirmed=-",
+     "owned=-",
+     "required=J3+J6 ok=false",
+     "output(J5)=NOT_OBSERVED evidence=false",
+     "verify(J6)=NOT_OBSERVED",
+     "interest=MID learning=-",
+     "J1:NOT_OBSERVED (no-answer, evidence=0)",
+     "J2:NOT_OBSERVED (no-answer, evidence=0)",
+     "J3:NOT_OBSERVED (no-answer, evidence=0)",
+     "J4:NOT_OBSERVED (no-answer, evidence=0)",
+     "J5:NOT_OBSERVED (no-answer, evidence=0)",
+     "J6:NOT_OBSERVED (no-answer, evidence=0)",
+     "J7:NOT_OBSERVED (no-answer, evidence=0)",
+     "J8:NOT_OBSERVED (no-answer, evidence=0)",
+     "reasons=NOT_ROUTED"
+    ]
+   },
+   {
+    "code": "TD04",
+    "zone": "NOT_EXPLORED",
+    "opened": {
+     "probe": false,
+     "deep": false
+    },
+    "interest": "MID",
+    "experience": "NONE",
+    "learning": null,
+    "axes": [
+     {
+      "axis": "J1",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J2",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J3",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J4",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J5",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J6",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J7",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J8",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     }
+    ],
+    "did": [],
+    "decided": [],
+    "artifacts": [],
+    "verifications": [],
+    "confirmed": [],
+    "owned": [],
+    "empty": [
+     "J1",
+     "J2",
+     "J3",
+     "J4",
+     "J5",
+     "J6",
+     "J7",
+     "J8"
+    ],
+    "required": [
+     "J4",
+     "J6"
+    ],
+    "reasons": [
+     "NOT_ROUTED"
+    ],
+    "next": [],
+    "trace": [
+     "TD04 zone=NOT_EXPLORED",
+     "confirmed=-",
+     "owned=-",
+     "required=J4+J6 ok=false",
+     "output(J5)=NOT_OBSERVED evidence=false",
+     "verify(J6)=NOT_OBSERVED",
+     "interest=MID learning=-",
+     "J1:NOT_OBSERVED (no-answer, evidence=0)",
+     "J2:NOT_OBSERVED (no-answer, evidence=0)",
+     "J3:NOT_OBSERVED (no-answer, evidence=0)",
+     "J4:NOT_OBSERVED (no-answer, evidence=0)",
+     "J5:NOT_OBSERVED (no-answer, evidence=0)",
+     "J6:NOT_OBSERVED (no-answer, evidence=0)",
+     "J7:NOT_OBSERVED (no-answer, evidence=0)",
+     "J8:NOT_OBSERVED (no-answer, evidence=0)",
+     "reasons=NOT_ROUTED"
+    ]
+   },
+   {
+    "code": "TD05",
+    "zone": "NOT_EXPLORED",
+    "opened": {
+     "probe": false,
+     "deep": false
+    },
+    "interest": "MID",
+    "experience": "NONE",
+    "learning": null,
+    "axes": [
+     {
+      "axis": "J1",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J2",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J3",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J4",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J5",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J6",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J7",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J8",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     }
+    ],
+    "did": [],
+    "decided": [],
+    "artifacts": [],
+    "verifications": [],
+    "confirmed": [],
+    "owned": [],
+    "empty": [
+     "J1",
+     "J2",
+     "J3",
+     "J4",
+     "J5",
+     "J6",
+     "J7",
+     "J8"
+    ],
+    "required": [
+     "J3",
+     "J5"
+    ],
+    "reasons": [
+     "NOT_ROUTED"
+    ],
+    "next": [],
+    "trace": [
+     "TD05 zone=NOT_EXPLORED",
+     "confirmed=-",
+     "owned=-",
+     "required=J3+J5 ok=false",
+     "output(J5)=NOT_OBSERVED evidence=false",
+     "verify(J6)=NOT_OBSERVED",
+     "interest=MID learning=-",
+     "J1:NOT_OBSERVED (no-answer, evidence=0)",
+     "J2:NOT_OBSERVED (no-answer, evidence=0)",
+     "J3:NOT_OBSERVED (no-answer, evidence=0)",
+     "J4:NOT_OBSERVED (no-answer, evidence=0)",
+     "J5:NOT_OBSERVED (no-answer, evidence=0)",
+     "J6:NOT_OBSERVED (no-answer, evidence=0)",
+     "J7:NOT_OBSERVED (no-answer, evidence=0)",
+     "J8:NOT_OBSERVED (no-answer, evidence=0)",
+     "reasons=NOT_ROUTED"
+    ]
+   },
+   {
+    "code": "TD06",
+    "zone": "NOT_EXPLORED",
+    "opened": {
+     "probe": false,
+     "deep": false
+    },
+    "interest": "MID",
+    "experience": "NONE",
+    "learning": null,
+    "axes": [
+     {
+      "axis": "J1",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J2",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J3",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J4",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J5",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J6",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J7",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J8",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     }
+    ],
+    "did": [],
+    "decided": [],
+    "artifacts": [],
+    "verifications": [],
+    "confirmed": [],
+    "owned": [],
+    "empty": [
+     "J1",
+     "J2",
+     "J3",
+     "J4",
+     "J5",
+     "J6",
+     "J7",
+     "J8"
+    ],
+    "required": [
+     "J3",
+     "J6"
+    ],
+    "reasons": [
+     "NOT_ROUTED"
+    ],
+    "next": [],
+    "trace": [
+     "TD06 zone=NOT_EXPLORED",
+     "confirmed=-",
+     "owned=-",
+     "required=J3+J6 ok=false",
+     "output(J5)=NOT_OBSERVED evidence=false",
+     "verify(J6)=NOT_OBSERVED",
+     "interest=MID learning=-",
+     "J1:NOT_OBSERVED (no-answer, evidence=0)",
+     "J2:NOT_OBSERVED (no-answer, evidence=0)",
+     "J3:NOT_OBSERVED (no-answer, evidence=0)",
+     "J4:NOT_OBSERVED (no-answer, evidence=0)",
+     "J5:NOT_OBSERVED (no-answer, evidence=0)",
+     "J6:NOT_OBSERVED (no-answer, evidence=0)",
+     "J7:NOT_OBSERVED (no-answer, evidence=0)",
+     "J8:NOT_OBSERVED (no-answer, evidence=0)",
+     "reasons=NOT_ROUTED"
+    ]
+   },
+   {
+    "code": "TD07",
+    "zone": "NOT_EXPLORED",
+    "opened": {
+     "probe": false,
+     "deep": false
+    },
+    "interest": "MID",
+    "experience": "NONE",
+    "learning": null,
+    "axes": [
+     {
+      "axis": "J1",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J2",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J3",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J4",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J5",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J6",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J7",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J8",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     }
+    ],
+    "did": [],
+    "decided": [],
+    "artifacts": [],
+    "verifications": [],
+    "confirmed": [],
+    "owned": [],
+    "empty": [
+     "J1",
+     "J2",
+     "J3",
+     "J4",
+     "J5",
+     "J6",
+     "J7",
+     "J8"
+    ],
+    "required": [
+     "J3",
+     "J5"
+    ],
+    "reasons": [
+     "NOT_ROUTED"
+    ],
+    "next": [],
+    "trace": [
+     "TD07 zone=NOT_EXPLORED",
+     "confirmed=-",
+     "owned=-",
+     "required=J3+J5 ok=false",
+     "output(J5)=NOT_OBSERVED evidence=false",
+     "verify(J6)=NOT_OBSERVED",
+     "interest=MID learning=-",
+     "J1:NOT_OBSERVED (no-answer, evidence=0)",
+     "J2:NOT_OBSERVED (no-answer, evidence=0)",
+     "J3:NOT_OBSERVED (no-answer, evidence=0)",
+     "J4:NOT_OBSERVED (no-answer, evidence=0)",
+     "J5:NOT_OBSERVED (no-answer, evidence=0)",
+     "J6:NOT_OBSERVED (no-answer, evidence=0)",
+     "J7:NOT_OBSERVED (no-answer, evidence=0)",
+     "J8:NOT_OBSERVED (no-answer, evidence=0)",
+     "reasons=NOT_ROUTED"
+    ]
+   },
+   {
+    "code": "TD08",
+    "zone": "Z2_EVIDENCE_INCOMPLETE",
+    "opened": {
+     "probe": true,
+     "deep": true
+    },
+    "interest": "HIGH",
+    "experience": "ONCE_OR_TWICE",
+    "learning": "HIGH",
+    "axes": [
+     {
+      "axis": "J1",
+      "state": "CONFIRMED",
+      "picks": [],
+      "evidence": 0,
+      "from": [
+       "TD08_J1_1"
+      ],
+      "missing": "NONE_MISSING"
+     },
+     {
+      "axis": "J2",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "SKIPPED"
+     },
+     {
+      "axis": "J3",
+      "state": "CONFIRMED",
+      "picks": [],
+      "evidence": 1,
+      "from": [
+       "TD08_J3_1",
+       "TD08_J3_2"
+      ],
+      "missing": "NONE_MISSING"
+     },
+     {
+      "axis": "J4",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "SKIPPED"
+     },
+     {
+      "axis": "J5",
+      "state": "PARTICIPATED",
+      "picks": [],
+      "evidence": 0,
+      "from": [
+       "TD08_J5_1",
+       "TD08_J5_2"
+      ],
+      "missing": "NONE_MISSING"
+     },
+     {
+      "axis": "J6",
+      "state": "PARTICIPATED",
+      "picks": [],
+      "evidence": 0,
+      "from": [
+       "TD08_J6_1",
+       "TD08_J6_2"
+      ],
+      "missing": "NONE_MISSING"
+     },
+     {
+      "axis": "J7",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "SKIPPED"
+     },
+     {
+      "axis": "J8",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "SKIPPED"
+     }
+    ],
+    "did": [],
+    "decided": [],
+    "artifacts": [],
+    "verifications": [],
+    "confirmed": [
+     "J1",
+     "J3"
+    ],
+    "owned": [],
+    "empty": [
+     "J2",
+     "J4",
+     "J7",
+     "J8"
+    ],
+    "required": [
+     "J3",
+     "J6"
+    ],
+    "reasons": [
+     "MISSING_REQUIRED_AXIS",
+     "MISSING_OUTPUT",
+     "INSUFFICIENT_CONFIRMED_AXES",
+     "MISSING_VERIFICATION"
+    ],
+    "next": [
+     "BUILD_OUTPUT"
+    ],
+    "trace": [
+     "TD08 zone=Z2_EVIDENCE_INCOMPLETE",
+     "confirmed=J1+J3",
+     "owned=-",
+     "required=J3+J6 ok=false",
+     "output(J5)=PARTICIPATED evidence=false",
+     "verify(J6)=PARTICIPATED",
+     "interest=HIGH learning=HIGH",
+     "J1:CONFIRMED (ownership=DID, evidence=0)",
+     "J2:NOT_OBSERVED (no-answer, evidence=0)",
+     "J3:CONFIRMED (ownership=DID, evidence=1)",
+     "J4:NOT_OBSERVED (no-answer, evidence=0)",
+     "J5:PARTICIPATED (ownership=RECEIVED, evidence=0)",
+     "J6:PARTICIPATED (ownership=RECEIVED, evidence=0)",
+     "J7:NOT_OBSERVED (no-answer, evidence=0)",
+     "J8:NOT_OBSERVED (no-answer, evidence=0)",
+     "reasons=MISSING_REQUIRED_AXIS,MISSING_OUTPUT,INSUFFICIENT_CONFIRMED_AXES,MISSING_VERIFICATION"
+    ]
+   },
+   {
+    "code": "TD09",
+    "zone": "NOT_EXPLORED",
+    "opened": {
+     "probe": false,
+     "deep": false
+    },
+    "interest": "MID",
+    "experience": "NONE",
+    "learning": null,
+    "axes": [
+     {
+      "axis": "J1",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J2",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J3",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J4",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J5",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J6",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J7",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J8",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     }
+    ],
+    "did": [],
+    "decided": [],
+    "artifacts": [],
+    "verifications": [],
+    "confirmed": [],
+    "owned": [],
+    "empty": [
+     "J1",
+     "J2",
+     "J3",
+     "J4",
+     "J5",
+     "J6",
+     "J7",
+     "J8"
+    ],
+    "required": [
+     "J3",
+     "J7"
+    ],
+    "reasons": [
+     "NOT_ROUTED"
+    ],
+    "next": [],
+    "trace": [
+     "TD09 zone=NOT_EXPLORED",
+     "confirmed=-",
+     "owned=-",
+     "required=J3+J7 ok=false",
+     "output(J5)=NOT_OBSERVED evidence=false",
+     "verify(J6)=NOT_OBSERVED",
+     "interest=MID learning=-",
+     "J1:NOT_OBSERVED (no-answer, evidence=0)",
+     "J2:NOT_OBSERVED (no-answer, evidence=0)",
+     "J3:NOT_OBSERVED (no-answer, evidence=0)",
+     "J4:NOT_OBSERVED (no-answer, evidence=0)",
+     "J5:NOT_OBSERVED (no-answer, evidence=0)",
+     "J6:NOT_OBSERVED (no-answer, evidence=0)",
+     "J7:NOT_OBSERVED (no-answer, evidence=0)",
+     "J8:NOT_OBSERVED (no-answer, evidence=0)",
+     "reasons=NOT_ROUTED"
+    ]
+   },
+   {
+    "code": "TD10",
+    "zone": "NOT_EXPLORED",
+    "opened": {
+     "probe": false,
+     "deep": false
+    },
+    "interest": "MID",
+    "experience": "NONE",
+    "learning": null,
+    "axes": [
+     {
+      "axis": "J1",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J2",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J3",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J4",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J5",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J6",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J7",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J8",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     }
+    ],
+    "did": [],
+    "decided": [],
+    "artifacts": [],
+    "verifications": [],
+    "confirmed": [],
+    "owned": [],
+    "empty": [
+     "J1",
+     "J2",
+     "J3",
+     "J4",
+     "J5",
+     "J6",
+     "J7",
+     "J8"
+    ],
+    "required": [
+     "J3",
+     "J6"
+    ],
+    "reasons": [
+     "NOT_ROUTED"
+    ],
+    "next": [],
+    "trace": [
+     "TD10 zone=NOT_EXPLORED",
+     "confirmed=-",
+     "owned=-",
+     "required=J3+J6 ok=false",
+     "output(J5)=NOT_OBSERVED evidence=false",
+     "verify(J6)=NOT_OBSERVED",
+     "interest=MID learning=-",
+     "J1:NOT_OBSERVED (no-answer, evidence=0)",
+     "J2:NOT_OBSERVED (no-answer, evidence=0)",
+     "J3:NOT_OBSERVED (no-answer, evidence=0)",
+     "J4:NOT_OBSERVED (no-answer, evidence=0)",
+     "J5:NOT_OBSERVED (no-answer, evidence=0)",
+     "J6:NOT_OBSERVED (no-answer, evidence=0)",
+     "J7:NOT_OBSERVED (no-answer, evidence=0)",
+     "J8:NOT_OBSERVED (no-answer, evidence=0)",
+     "reasons=NOT_ROUTED"
+    ]
+   },
+   {
+    "code": "TD11",
+    "zone": "NOT_EXPLORED",
+    "opened": {
+     "probe": false,
+     "deep": false
+    },
+    "interest": "MID",
+    "experience": "NONE",
+    "learning": null,
+    "axes": [
+     {
+      "axis": "J1",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J2",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J3",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J4",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J5",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J6",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J7",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J8",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     }
+    ],
+    "did": [],
+    "decided": [],
+    "artifacts": [],
+    "verifications": [],
+    "confirmed": [],
+    "owned": [],
+    "empty": [
+     "J1",
+     "J2",
+     "J3",
+     "J4",
+     "J5",
+     "J6",
+     "J7",
+     "J8"
+    ],
+    "required": [
+     "J2",
+     "J5"
+    ],
+    "reasons": [
+     "NOT_ROUTED"
+    ],
+    "next": [],
+    "trace": [
+     "TD11 zone=NOT_EXPLORED",
+     "confirmed=-",
+     "owned=-",
+     "required=J2+J5 ok=false",
+     "output(J5)=NOT_OBSERVED evidence=false",
+     "verify(J6)=NOT_OBSERVED",
+     "interest=MID learning=-",
+     "J1:NOT_OBSERVED (no-answer, evidence=0)",
+     "J2:NOT_OBSERVED (no-answer, evidence=0)",
+     "J3:NOT_OBSERVED (no-answer, evidence=0)",
+     "J4:NOT_OBSERVED (no-answer, evidence=0)",
+     "J5:NOT_OBSERVED (no-answer, evidence=0)",
+     "J6:NOT_OBSERVED (no-answer, evidence=0)",
+     "J7:NOT_OBSERVED (no-answer, evidence=0)",
+     "J8:NOT_OBSERVED (no-answer, evidence=0)",
+     "reasons=NOT_ROUTED"
+    ]
+   },
+   {
+    "code": "TD12",
+    "zone": "NOT_EXPLORED",
+    "opened": {
+     "probe": false,
+     "deep": false
+    },
+    "interest": "MID",
+    "experience": "NONE",
+    "learning": null,
+    "axes": [
+     {
+      "axis": "J1",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J2",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J3",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J4",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J5",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J6",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J7",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     },
+     {
+      "axis": "J8",
+      "state": "NOT_OBSERVED",
+      "picks": [],
+      "evidence": 0,
+      "from": [],
+      "missing": "NOT_ROUTED"
+     }
+    ],
+    "did": [],
+    "decided": [],
+    "artifacts": [],
+    "verifications": [],
+    "confirmed": [],
+    "owned": [],
+    "empty": [
+     "J1",
+     "J2",
+     "J3",
+     "J4",
+     "J5",
+     "J6",
+     "J7",
+     "J8"
+    ],
+    "required": [
+     "J5",
+     "J8"
+    ],
+    "reasons": [
+     "NOT_ROUTED"
+    ],
+    "next": [],
+    "trace": [
+     "TD12 zone=NOT_EXPLORED",
+     "confirmed=-",
+     "owned=-",
+     "required=J5+J8 ok=false",
+     "output(J5)=NOT_OBSERVED evidence=false",
+     "verify(J6)=NOT_OBSERVED",
+     "interest=MID learning=-",
+     "J1:NOT_OBSERVED (no-answer, evidence=0)",
+     "J2:NOT_OBSERVED (no-answer, evidence=0)",
+     "J3:NOT_OBSERVED (no-answer, evidence=0)",
+     "J4:NOT_OBSERVED (no-answer, evidence=0)",
+     "J5:NOT_OBSERVED (no-answer, evidence=0)",
+     "J6:NOT_OBSERVED (no-answer, evidence=0)",
+     "J7:NOT_OBSERVED (no-answer, evidence=0)",
+     "J8:NOT_OBSERVED (no-answer, evidence=0)",
+     "reasons=NOT_ROUTED"
+    ]
+   }
+  ],
+  "evidence": {
+   "ready": [
+    {
+     "domain": "TD01",
+     "axis": "J3",
+     "state": "OWNED",
+     "picks": [
+      "끼워 맞춤과 공차 등급을 정했다",
+      "하중과 재질을 근거로 두께나 단면을 정했다"
+     ]
+    },
+    {
+     "domain": "TD01",
+     "axis": "J5",
+     "state": "OWNED",
+     "picks": [
+      "부품도",
+      "조립도",
+      "승인된 도면이나 부품 사양을 냈다"
+     ]
+    }
+   ],
+   "partial": [
+    {
+     "domain": "TD01",
+     "axis": "J1",
+     "state": "CONFIRMED",
+     "picks": []
+    },
+    {
+     "domain": "TD01",
+     "axis": "J2",
+     "state": "CONFIRMED",
+     "picks": []
+    },
+    {
+     "domain": "TD01",
+     "axis": "J4",
+     "state": "CONFIRMED",
+     "picks": []
+    },
+    {
+     "domain": "TD01",
+     "axis": "J6",
+     "state": "CONFIRMED",
+     "picks": [
+      "공차 누적을 계산해 조립이 되는지 확인했다",
+      "이전 모델이나 경쟁 제품의 치수와 비교했다",
+      "다른 설계안"
+     ]
+    },
+    {
+     "domain": "TD01",
+     "axis": "J7",
+     "state": "CONFIRMED",
+     "picks": [
+      "간섭이나 파손이 치수 때문인지 재질이나 공정 때문인지 따져 원인을 찾았다"
+     ]
+    },
+    {
+     "domain": "TD01",
+     "axis": "J8",
+     "state": "CONFIRMED",
+     "picks": [
+      "내 도면으로 제작이나 발주가 진행됐다",
+      "설계 검토에서 내 안이 채택됐다"
+     ]
+    },
+    {
+     "domain": "TD08",
+     "axis": "J1",
+     "state": "CONFIRMED",
+     "picks": []
+    },
+    {
+     "domain": "TD08",
+     "axis": "J3",
+     "state": "CONFIRMED",
+     "picks": []
+    }
+   ],
+   "missing": [
+    {
+     "id": "TD01.J1",
+     "domain": "TD01",
+     "axis": "J1",
+     "kind": "PARTIAL_EVIDENCE",
+     "why": "BLOCKS_EVIDENCE",
+     "reason": "INSUFFICIENT_CONFIRMED_AXES",
+     "rank": 3,
+     "action_id": "A.TD01.J1"
+    },
+    {
+     "id": "TD08.J6",
+     "domain": "TD08",
+     "axis": "J6",
+     "kind": "VERIFICATION",
+     "why": "BLOCKS_EVIDENCE",
+     "reason": "MISSING_VERIFICATION",
+     "rank": 1,
+     "action_id": "A.TD08.J6"
+    },
+    {
+     "id": "TD08.J2",
+     "domain": "TD08",
+     "axis": "J2",
+     "kind": "AXIS",
+     "why": "NEEDED_BY_INDUSTRY",
+     "reason": "INSUFFICIENT_CONFIRMED_AXES",
+     "rank": 2,
+     "action_id": "A.TD08.J2"
+    },
+    {
+     "id": "TD08.J5",
+     "domain": "TD08",
+     "axis": "J5",
+     "kind": "OUTPUT",
+     "why": "BLOCKS_EVIDENCE",
+     "reason": "MISSING_OUTPUT",
+     "rank": 2,
+     "action_id": "A.TD08.J5"
+    }
+   ]
+  },
+  "gaps": [
+   {
+    "id": "TD01.J1",
+    "domain": "TD01",
+    "axis": "J1",
+    "kind": "PARTIAL_EVIDENCE",
+    "why": "BLOCKS_EVIDENCE",
+    "reason": "INSUFFICIENT_CONFIRMED_AXES",
+    "rank": 3,
+    "action_id": "A.TD01.J1"
+   },
+   {
+    "id": "TD08.J6",
+    "domain": "TD08",
+    "axis": "J6",
+    "kind": "VERIFICATION",
+    "why": "BLOCKS_EVIDENCE",
+    "reason": "MISSING_VERIFICATION",
+    "rank": 1,
+    "action_id": "A.TD08.J6"
+   },
+   {
+    "id": "TD08.J2",
+    "domain": "TD08",
+    "axis": "J2",
+    "kind": "AXIS",
+    "why": "NEEDED_BY_INDUSTRY",
+    "reason": "INSUFFICIENT_CONFIRMED_AXES",
+    "rank": 2,
+    "action_id": "A.TD08.J2"
+   },
+   {
+    "id": "TD08.J5",
+    "domain": "TD08",
+    "axis": "J5",
+    "kind": "OUTPUT",
+    "why": "BLOCKS_EVIDENCE",
+    "reason": "MISSING_OUTPUT",
+    "rank": 2,
+    "action_id": "A.TD08.J5"
+   }
+  ],
+  "actions": [
+   {
+    "id": "A.TD01.J1",
+    "domain": "TD01",
+    "axis": "J1",
+    "code": "DEEPEN_OWNERSHIP",
+    "horizon": "NOW",
+    "from_gap": "TD01.J1",
+    "material": {
+     "artifacts": [
+      "조립도",
+      "부품도",
+      "BOM"
+     ],
+     "verify_targets": [
+      "다른 설계안",
+      "손계산",
+      "해석 결과"
+     ],
+     "checklist_hint": [],
+     "workflow": {
+      "decide": "개념안 몇 개를 둘지와 어느 요구를 먼저 지킬지",
+      "method": "개념 설계",
+      "output": "조립도와 부품도",
+      "on_fail": "간섭이나 조립 불가나 파손이 나면 원인을 치수·재질·공정 가운데로 좁힌다"
+     },
+     "chain": [
+      "요구 조건",
+      "개념안 비교",
+      "공차와 체결 결정",
+      "도면",
+      "시작품 확인"
+     ]
+    }
+   },
+   {
+    "id": "A.TD08.J5",
+    "domain": "TD08",
+    "axis": "J5",
+    "code": "BUILD_OUTPUT",
+    "horizon": "NEXT",
+    "from_gap": "TD08.J5",
+    "material": {
+     "artifacts": [
+      "작업 표준",
+      "공정도",
+      "조건표"
+     ],
+     "verify_targets": [
+      "전후 불량률",
+      "작업 시간(택트)",
+      "공정능력"
+     ],
+     "checklist_hint": [],
+     "workflow": {
+      "decide": "공법과 가공 조건 범위와 치공구와 검사 지점",
+      "method": "공법 선정",
+      "output": "작업 표준",
+      "on_fail": "불량이 나면 설비·재료·조건·작업 가운데로 좁힌다"
+     },
+     "chain": [
+      "도면 공차",
+      "공법 선정",
+      "조건 실험",
+      "공정능력",
+      "표준화"
+     ]
+    }
+   },
+   {
+    "id": "A.TD08.J6",
+    "domain": "TD08",
+    "axis": "J6",
+    "code": "ADD_VERIFICATION",
+    "horizon": "NEXT",
+    "from_gap": "TD08.J6",
+    "material": {
+     "artifacts": [
+      "작업 표준",
+      "공정도",
+      "조건표"
+     ],
+     "verify_targets": [
+      "전후 불량률",
+      "작업 시간(택트)",
+      "공정능력"
+     ],
+     "checklist_hint": [],
+     "workflow": {
+      "decide": "공법과 가공 조건 범위와 치공구와 검사 지점",
+      "method": "공법 선정",
+      "output": "작업 표준",
+      "on_fail": "불량이 나면 설비·재료·조건·작업 가운데로 좁힌다"
+     },
+     "chain": [
+      "도면 공차",
+      "공법 선정",
+      "조건 실험",
+      "공정능력",
+      "표준화"
+     ]
+    }
+   },
+   {
+    "id": "A.TD08.J2",
+    "domain": "TD08",
+    "axis": "J2",
+    "code": "FILL_AXIS",
+    "horizon": "NEXT",
+    "from_gap": "TD08.J2",
+    "material": {
+     "artifacts": [
+      "작업 표준",
+      "공정도",
+      "조건표"
+     ],
+     "verify_targets": [
+      "전후 불량률",
+      "작업 시간(택트)",
+      "공정능력"
+     ],
+     "checklist_hint": [],
+     "workflow": {
+      "decide": "공법과 가공 조건 범위와 치공구와 검사 지점",
+      "method": "공법 선정",
+      "output": "작업 표준",
+      "on_fail": "불량이 나면 설비·재료·조건·작업 가운데로 좁힌다"
+     },
+     "chain": [
+      "도면 공차",
+      "공법 선정",
+      "조건 실험",
+      "공정능력",
+      "표준화"
+     ]
+    }
+   }
+  ],
+  "industry_context": {
+   "code": "INDUSTRY_MOBILITY_V2",
+   "version": "INDUSTRY_MOBILITY_V2.v2",
+   "explain_order": [
+    "J3",
+    "J6",
+    "J4",
+    "J7",
+    "J2"
+   ],
+   "established": [
+    {
+     "domain": "TD01",
+     "axes": [
+      "J1",
+      "J2",
+      "J3",
+      "J4",
+      "J5",
+      "J6",
+      "J7",
+      "J8"
+     ]
+    },
+    {
+     "domain": "TD08",
+     "axes": [
+      "J1",
+      "J3"
+     ]
+    }
+   ],
+   "requested": [
+    {
+     "domain": "TD02",
+     "axis": "J3"
+    },
+    {
+     "domain": "TD02",
+     "axis": "J6"
+    },
+    {
+     "domain": "TD03",
+     "axis": "J3"
+    },
+    {
+     "domain": "TD04",
+     "axis": "J4"
+    },
+    {
+     "domain": "TD06",
+     "axis": "J7"
+    },
+    {
+     "domain": "TD08",
+     "axis": "J2"
+    },
+    {
+     "domain": "TD10",
+     "axis": "J6"
+    },
+    {
+     "domain": "TD10",
+     "axis": "J3"
+    }
+   ],
+   "compare_with": [],
+   "vocabulary": [
+    "공차",
+    "내구",
+    "NVH",
+    "양산성",
+    "수율",
+    "리콜",
+    "가속시험",
+    "관리특성"
+   ],
+   "others": [
+    "INDUSTRY_SEMICON_V2",
+    "INDUSTRY_DEFENSE_V2",
+    "INDUSTRY_ROBOT_V2",
+    "INDUSTRY_BATTERY_V2",
+    "INDUSTRY_SHIP_V2",
+    "INDUSTRY_ENERGY_V2",
+    "INDUSTRY_SMARTFACTORY_V2"
+   ],
+   "answered": [],
+   "not_yet": [],
+   "overlap": [],
+   "domains": [
+    "TD01",
+    "TD02",
+    "TD03",
+    "TD04",
+    "TD06",
+    "TD08",
+    "TD10"
+   ]
+  },
+  "role_context": {
+   "code": "ROLE_CAE_V2",
+   "version": "ROLE_CAE_V2.v2",
+   "explain_order": [
+    "J3",
+    "J6"
+   ],
+   "established": [],
+   "requested": [
+    {
+     "domain": "TD02",
+     "axis": "J3"
+    },
+    {
+     "domain": "TD02",
+     "axis": "J6"
+    },
+    {
+     "domain": "TD03",
+     "axis": "J3"
+    },
+    {
+     "domain": "TD03",
+     "axis": "J6"
+    },
+    {
+     "domain": "TD04",
+     "axis": "J3"
+    },
+    {
+     "domain": "TD04",
+     "axis": "J6"
+    }
+   ],
+   "compare_with": [
+    "ROLE_DESIGN_V2",
+    "ROLE_TEST_V2",
+    "ROLE_RND_V2"
+   ],
+   "vocabulary": [
+    "해석 보고서 한 벌",
+    "해석과 시험을 대조한 표",
+    "조건과 가정을 적은 한 장"
+   ],
+   "others": [
+    "ROLE_DESIGN_V2",
+    "ROLE_RND_V2",
+    "ROLE_TEST_V2",
+    "ROLE_MFG_V2",
+    "ROLE_MAINT_V2",
+    "ROLE_QUALITY_V2",
+    "ROLE_PM_V2"
+   ],
+   "answered": [],
+   "not_yet": [
+    {
+     "domain": "TD02",
+     "axis": "J3"
+    },
+    {
+     "domain": "TD02",
+     "axis": "J4"
+    },
+    {
+     "domain": "TD02",
+     "axis": "J6"
+    },
+    {
+     "domain": "TD02",
+     "axis": "J5"
+    },
+    {
+     "domain": "TD03",
+     "axis": "J4"
+    },
+    {
+     "domain": "TD02",
+     "axis": "J8"
+    },
+    {
+     "domain": "TD04",
+     "axis": "J7"
+    }
+   ],
+   "overlap": [],
+   "domains": [
+    "TD02",
+    "TD03",
+    "TD04"
+   ]
+  },
+  "translation": null,
+  "common": {
+   "items": [
+    {
+     "item_id": "CJ_SCOPE",
+     "axis": "J1",
+     "block": "CORE-JUDGE",
+     "ownership": "NONE",
+     "owned": false,
+     "confirmed": false
+    },
+    {
+     "item_id": "CJ_REQUIRE",
+     "axis": "J2",
+     "block": "CORE-JUDGE",
+     "ownership": "NONE",
+     "owned": false,
+     "confirmed": false
+    },
+    {
+     "item_id": "CJ_METHOD",
+     "axis": "J4",
+     "block": "CORE-JUDGE",
+     "ownership": "NONE",
+     "owned": false,
+     "confirmed": false
+    },
+    {
+     "item_id": "CJ_COMPARE",
+     "axis": "J6",
+     "block": "CORE-JUDGE",
+     "ownership": "NONE",
+     "owned": false,
+     "confirmed": false
+    },
+    {
+     "item_id": "CJ_HANDOFF",
+     "axis": "J8",
+     "block": "CORE-JUDGE",
+     "ownership": "NONE",
+     "owned": false,
+     "confirmed": false
+    },
+    {
+     "item_id": "CJ_GIVEN_REV",
+     "axis": "J3",
+     "block": "CORE-JUDGE",
+     "ownership": "NONE",
+     "owned": false,
+     "confirmed": false
+    },
+    {
+     "item_id": "UG_SCOPE",
+     "axis": "J1",
+     "block": "UG-CORE",
+     "ownership": "NONE",
+     "owned": false,
+     "confirmed": false
+    },
+    {
+     "item_id": "UG_DECIDE",
+     "axis": "J3",
+     "block": "UG-CORE",
+     "ownership": "NONE",
+     "owned": false,
+     "confirmed": false
+    },
+    {
+     "item_id": "UG_OUTPUT",
+     "axis": "J5",
+     "block": "UG-CORE",
+     "ownership": "NONE",
+     "owned": false,
+     "confirmed": false
+    },
+    {
+     "item_id": "UG_CHECK",
+     "axis": "J6",
+     "block": "UG-CORE",
+     "ownership": "NONE",
+     "owned": false,
+     "confirmed": false
+    },
+    {
+     "item_id": "UG_FIX",
+     "axis": "J7",
+     "block": "UG-CORE",
+     "ownership": "NONE",
+     "owned": false,
+     "confirmed": false
+    },
+    {
+     "item_id": "UG_USED",
+     "axis": "J8",
+     "block": "UG-CORE",
+     "ownership": "NONE",
+     "owned": false,
+     "confirmed": false
+    }
+   ],
+   "axes": [
+    {
+     "axis": "J1",
+     "owned": false,
+     "confirmed": false,
+     "from": [
+      "CJ_SCOPE",
+      "UG_SCOPE"
+     ]
+    },
+    {
+     "axis": "J2",
+     "owned": false,
+     "confirmed": false,
+     "from": [
+      "CJ_REQUIRE"
+     ]
+    },
+    {
+     "axis": "J3",
+     "owned": false,
+     "confirmed": false,
+     "from": [
+      "CJ_GIVEN_REV",
+      "UG_DECIDE"
+     ]
+    },
+    {
+     "axis": "J4",
+     "owned": false,
+     "confirmed": false,
+     "from": [
+      "CJ_METHOD"
+     ]
+    },
+    {
+     "axis": "J5",
+     "owned": false,
+     "confirmed": false,
+     "from": [
+      "UG_OUTPUT"
+     ]
+    },
+    {
+     "axis": "J6",
+     "owned": false,
+     "confirmed": false,
+     "from": [
+      "CJ_COMPARE",
+      "UG_CHECK"
+     ]
+    },
+    {
+     "axis": "J7",
+     "owned": false,
+     "confirmed": false,
+     "from": [
+      "UG_FIX"
+     ]
+    },
+    {
+     "axis": "J8",
+     "owned": false,
+     "confirmed": false,
+     "from": [
+      "CJ_HANDOFF",
+      "UG_USED"
+     ]
+    }
+   ],
+   "blocks": [
+    "CORE-JUDGE",
+    "UG-CORE"
+   ]
+  },
+  "targets": {
+   "industries": [
+    "INDUSTRY_MOBILITY_V2"
+   ],
+   "roles": [
+    "ROLE_CAE_V2"
+   ],
+   "orgs": [],
+   "goal": {
+    "role": null,
+    "industry": null,
+    "org": null
+   }
+  },
+  "response_quality": {
+   "flag": "OK",
+   "reasons": []
+  }
+ }
+}

@@ -514,4 +514,7 @@ export const PHRASES_EN: Record<string, string> = {
     "The assessment is taken once. If someone's answers are recorded twice, there's no way to tell which result is theirs.",
   "다시 응시해야 할 사정이 있으면 학과 담당자에게 말씀해 주세요. 담당자가 열어 주면 바로 한 번 더 시작할 수 있습니다.":
     "If you have a reason to take it again, please contact us. Once it's reopened for you, you can start right away.",
+  "견본은 여기까지입니다": "That's the end of the sample",
+  "직접 검사를 보시면 내 답으로 이 화면이 만들어지고, PDF로도 받을 수 있습니다.": "When you take the assessment, this screen is built from your own answers, and you can download it as a PDF.",
+  "검사 시작하기": "Start the assessment",
 };

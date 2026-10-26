@@ -371,7 +371,7 @@
  *  결과의 할 일 문장으로 바꿔 읽지 않는다 — V64 */
 /** 홈 현재 상태 타일의 영어 세부 줄을 결과지와 같은 함수(`studentStateView`)가 정한다 — V65 */
 /** 홈 화면 설치 안내(설치할 수 있을 때만) · MAT 설정의 `이 기기로 알림 받기`(열쇠가 있을 때만) — V66 (PWA 1단계) */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V66";
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V67";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.

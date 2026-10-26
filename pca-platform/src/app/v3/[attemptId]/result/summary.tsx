@@ -42,7 +42,8 @@ export default function Summary({
   zones: SummaryZone[];
   evidence: SummaryEvidence[];
   steps: SummaryStep[];
-  pdfHref: string;
+  /** 종이 길. **견본이면 `null`** 이고, 그러면 작업공간 길도 세우지 않는다 */
+  pdfHref: string | null;
   keepAction: (() => Promise<void>) | null;
   kept: number;
   tierNote: string | null;
@@ -51,8 +52,8 @@ export default function Summary({
   /** 개인 응시가 더 넓힐 수 있으면 가격표. 학교 응시는 늘 PRO 라 없다 */
   upgradeHref?: string | null;
 }) {
-  /* 작업공간(`/me`)이 두 언어로 선다(영어판 2단계b) */
-  const ws = true;
+  /* 작업공간(`/me`)이 두 언어로 선다(영어판 2단계b). 견본에는 작업공간이 없다 */
+  const ws = pdfHref !== null;
   return (
     <div className="rsum">
       <section className="rsum-top">
@@ -136,7 +137,10 @@ export default function Summary({
           {/* **받지 않을 책을 약속하지 않는다.** 책은 PRO 만 뽑는다(`pdf/route.ts`).
               BASIC 에 `한 권으로 묶었습니다` 를 적으면 받은 사람이 A4 몇 장을 열고
               나머지를 찾는다 */}
-          {book ? (<>
+          {pdfHref === null ? (<>
+            <b>{tr("견본은 여기까지입니다")}</b>
+            <p>{tr("직접 검사를 보시면 내 답으로 이 화면이 만들어지고, PDF로도 받을 수 있습니다.")}</p>
+          </>) : book ? (<>
             <b>{tr("자세한 분석은 PDF에 있습니다")}</b>
             <p>{tr("영역별 해설, 산업·직무 연결, 지원서 문장, 지역 기업 자료를 한 권으로 묶었습니다.")}</p>
           </>) : (<>
@@ -148,7 +152,9 @@ export default function Summary({
         </div>
         <div className="rsum-end-a">
           {/* 종이 길은 `Link` 로 걸지 않는다: 미리 불러오면 종이가 만들어진다 */}
-          <a className="rsum-pdf" href={pdfHref}>{tr("PDF 받기")}</a>
+          {pdfHref === null
+            ? <Link className="rsum-pdf" href="/pricing">{tr("검사 시작하기")}</Link>
+            : <a className="rsum-pdf" href={pdfHref}>{tr("PDF 받기")}</a>}
           {upgradeHref ? <Link className="rsum-me" href={upgradeHref}>{tr("PRO로 넓히기")}</Link> : null}
           {ws ? <Link className="rsum-me" href="/me">{tr("내 CareerMatri")}</Link> : null}
         </div>

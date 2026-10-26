@@ -1984,3 +1984,24 @@ body:has(.stgmark) .cm-tabs { bottom: var(--stg-h) }
 
 /* 영어 화면의 달러 어림(`lib/fx.ts`). 원화 값 아래 한 줄, 값보다 옅게 */
 .pxprice .pxfx { display: block; margin-top: 4px; font-weight: 500; color: var(--sf-ink-3); }
+
+/* 견본 결과지 띠(`/sample`). **작게 두지 않는다**: 견본이라는 것이 작게 적혀
+   있으면 받은 사람이 자기 결과지로 읽는다. 쪽 맨 위에 붙어 따라 내려온다 */
+.smpbar {
+  background: var(--ui-text); color: #fff;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.smpbar-in {
+  max-width: 1040px; margin: 0 auto; padding-block: 12px;
+  display: flex; gap: 12px 20px; align-items: center; flex-wrap: wrap;
+}
+.smpbar-in p { flex: 1 1 320px; min-width: 0; margin: 0; font-size: 14px; line-height: 1.55 }
+.smpbar-in b { display: block; font-size: 16px; margin-bottom: 2px }
+.smpbar-in span { color: rgba(255, 255, 255, .86) }
+.smpbar-a { display: flex; gap: 8px; flex-wrap: wrap }
+.smpbar .sf-btn.ghost { color: #fff; border-color: rgba(255, 255, 255, .5); background: transparent }
+/* 손전화에서는 띠가 화면의 4분의 1을 먹어서 붙이지 않는다 */
+@media screen and (min-width: 720px) {
+  .smpbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30 }
+}

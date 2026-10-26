@@ -39,7 +39,7 @@ import {
 const FIX = "sites/pca-platform/assessment/ME_V3/personas.json";
 const SRC = [
   "src/lib/me-v3/result/text.ko.ts",
-  "src/app/v3/[attemptId]/result/page.tsx",
+  "src/app/v3/[attemptId]/result/body.tsx",
 ];
 
 let fail = 0, pass = 0;

@@ -179,7 +179,7 @@ console.log("\n── 8. 표시 ──");
 
   /* **자리로 정하는 코드가 남아 있지 않다.** 되돌려 넣으면 걸린다 */
   const strip = [
-    "src/app/v3/[attemptId]/result/page.tsx",
+    "src/app/v3/[attemptId]/result/body.tsx",
     "src/app/me/page.tsx",
   ].map(body).join("\n");
   ok("표시를 카드 차례로 고르지 않는다",
@@ -208,7 +208,7 @@ console.log("\n── 10. 한 사전을 읽는가 ──");
   /* R30: 두 화면이 `현재 상태` 를 **한 함수**(`studentStateView`)로 읽는다.
      어느 영역을 세우고 세부에 무엇을 적고 머리에 무엇을 적는지가 그 한
      자리에서 정해지고, 그 함수가 사전을 읽는다 */
-  const r = body("src/app/v3/[attemptId]/result/page.tsx");
+  const r = body("src/app/v3/[attemptId]/result/body.tsx");
   const m = body("src/app/me/page.tsx");
   const v = body("src/lib/me-v3/student/state.ts");
   ok("결과지가 학생 사전을 읽는다", /studentStateView/.test(r));
@@ -340,7 +340,7 @@ console.log("\n── 15. 공통 판단·학위 묶음의 이름이 Core 마다 
 {
   const tko = body("src/lib/me-v3/result/text.ko.ts");
   ok("결과 문장이 그 Core 의 벌을 읽는다", /commonItemKo\(core, id\)/.test(tko) && /COMMON_ITEM_KO: Record<string, string> = COMMON_ME/.test(tko));
-  ok("결과지가 Core 를 넘긴다", /commonKo\(model\.common, core\)/.test(body("src/app/v3/[attemptId]/result/page.tsx")));
+  ok("결과지가 Core 를 넘긴다", /commonKo\(model\.common, core\)/.test(body("src/app/v3/[attemptId]/result/body.tsx")));
   const ids = Object.keys(COMMON_ME);
   ok("기계공학 벌이 서른을 든다", ids.length === 30);
   ok("중립 벌이 같은 번호를 빠짐없이 든다", ids.every((k) => !!COMMON_NEUTRAL[k]) && Object.keys(COMMON_NEUTRAL).length === 30);

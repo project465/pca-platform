@@ -278,7 +278,7 @@ const PHRASE_FILES = [
   "src/app/v3/start/page.tsx", "src/app/v3/start/start-form.tsx",
   "src/app/v3/[attemptId]/page.tsx", "src/app/v3/[attemptId]/screen.tsx",
   "src/app/v3/[attemptId]/intro/page.tsx", "src/app/v3/[attemptId]/done/page.tsx",
-  "src/app/v3/[attemptId]/result/page.tsx", "src/app/v3/[attemptId]/result/summary.tsx",
+  "src/app/v3/[attemptId]/result/body.tsx", "src/app/v3/[attemptId]/result/summary.tsx",
   "src/app/v3/[attemptId]/result/charts.tsx",
 ];
 
