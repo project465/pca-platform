@@ -156,7 +156,7 @@ export function assemble(x: Inputs): { pages: Page[]; notes: string[]; region: s
     isEn() ? insideEn(c6.map((p) => p.title)) : [...new Set(c6.map((p) => p.title.replace(/ \d.*$/, "")))],
     DECO(200, 150, `<rect x="56" y="12" width="88" height="120" rx="8"/><path d="M72 38h56M72 56h48M72 74h52M72 92h36"/><path d="M118 112l10 10 22-26"/>`)), ...named([...c6, ...fill[N.c6] ?? []], N.c6));
 
-  const c7 = [...ch7.prioPages(x, d), ch7.ganttPage(x, d), ch7.longPage(x, d), ch7.researchPage(x, d), ch7.weeklyPage(x, d)];
+  const c7 = [...ch7.prioPages(x, d), ch7.ganttPage(x, d), ch7.longPage(x, d), ch7.researchPage(x, d), ch7.weeklyPage(x, d), ch7.matPage(x, d)];
   P.push(chapter("07", N.c7,
     T("가장 먼저 손댈 일에서 시작해 90일 계획, 6개월과 12개월 뒤의 모습까지 이어 두었어요. 대부분 내 응답으로 미리 채운 초안이니, 내 일정에 맞게 날짜와 할 일을 고쳐 써 보세요.",
       "It starts with the first thing to work on, then runs through a 90-day plan to where you could be in 6 and 12 months. Most of it is a draft filled in from your answers, so change the dates and tasks to fit your own schedule."),

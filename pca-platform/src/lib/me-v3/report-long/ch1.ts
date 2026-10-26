@@ -384,7 +384,7 @@ export function goalPage(x: Inputs, d: X): Page[] {
   ] : [
     overlap.length ? note("두 쪽 응답에서 모두 나온 판단", `<ul class="ls">${overlap.map((t) => `<li>${E(t)}</li>`).join("")}</ul><p class="mut sm">${E(x.major)} 영역 응답에서도, 이 직무 문항에서도 나온 판단입니다.</p>`) : "",
     requested.length ? note("이 직무와 산업이 더 보는 판단", `<ul class="ls">${requested.map((t) => `<li>${E(t)}</li>`).join("")}</ul>`, true) : "",
-    (() => { const xs = r.differs_from.filter((v) => okText(v.line)).slice(0, 3); return xs.length ? note("다른 직무와 다른 점", ul(xs.map((v) => `<b>${E(d.roleName(v.vs))}</b> ${E(polite(v.line))}`))) : ""; })(),
+    (() => { const xs = r.differs_from.filter((v) => okText(v.line)).slice(0, 2); return xs.length ? note("다른 직무와 다른 점", ul(xs.map((v) => `<b>${E(d.roleName(v.vs))}</b> ${E(polite(v.line))}`))) : ""; })(),
     ind ? (() => { const xs = ind.judgement_dimensions.filter((v) => okText(v.name)).slice(0, 4); return xs.length ? note(`${E(ind.name_ko)}에서 먼저 묻는 판단`, ul(xs.map((v) => `${E(askNoun(v.name))} <span class="mut">${E(d.name(v.domain))}</span> ${pip(d.level(v.domain, v.axis))}`)), true) : ""; })()
       : r.compare_with.length ? note("함께 비교해 볼 직무", chips(r.compare_with.map(d.roleName)), true) : "",
   ];
@@ -438,7 +438,7 @@ export function deptPage(x: Inputs, d: X): Page | null {
     T(`${E(name)} 쪽에서 보면`,
       "같은 전공 계열이라도 학과마다 먼저 보는 일과 손에 남기는 결과물이 다릅니다. 이 쪽은 그 학과라면 흔히 보는 것을 적은 안내이고, 앞 쪽의 결과는 검사 응답에서 나온 것입니다."),
     lead.length ? `${H("먼저 보는 영역")}${chips(lead)}` : "",
-    sv.scene.length ? `${H("자주 마주치는 장면")}${ul(sv.scene.slice(0, 4).map(E))}` : "",
+    sv.scene.length ? `${H("자주 하게 되는 일")}${ul(sv.scene.slice(0, 4).map(E))}` : "",
     sv.artifacts.length ? `${H("흔히 남기는 것", "하나라도 손에 있으면 03장의 근거로 옮겨 적을 수 있습니다")}${chips(sv.artifacts.slice(0, 8))}` : "",
     steps.length ? `${H("지금 할 수 있는 한 걸음")}${ul(steps.map(E))}` : "",
     sv.application.resume ? `${H("지원서에서 꺼내는 법")}<p>${E(sv.application.resume)}</p>` : "",

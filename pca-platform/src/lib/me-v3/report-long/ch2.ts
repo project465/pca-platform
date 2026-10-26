@@ -51,7 +51,9 @@ const aN = (s0: string) => {
   return `${/^[aeiou]/i.test(s) ? "an" : "a"} ${s}`;
 };
 const STRENGTH_EN: Record<string, string> = { 중심: "core", 있음: "also used", 드묾: "rare" };
-const strengthWord = (s: string) => (isEn() ? STRENGTH_EN[s] ?? s : s);
+/* 관계표의 값(중심 · 있음 · 드묾)은 표 안의 말이라, 괄호 안에 그대로 두면 ‘(있음)’ 처럼 뜻이 안 읽힌다 */
+const STRENGTH_KO: Record<string, string> = { 중심: "주로 씀", 있음: "함께 씀", 드묾: "드물게 씀" };
+const strengthWord = (s: string) => (isEn() ? STRENGTH_EN[s] ?? s : STRENGTH_KO[s] ?? s);
 /** 축 이름. 영어는 웹 결과 영어판과 같은 이름(`text.en.ts`) */
 const axName = (d: X) => (a: Axis) => (isEn() ? AXIS_EN[a] : d.axisName(a));
 
@@ -159,9 +161,9 @@ export function profileRead(x: Inputs, d: X): Page {
     if (high.length) paras.push(["Interest", `You said your interest is high in ${andEn(high.slice(0, 4))}, but this time we did not ask about judgments there. Do a short project in one of them and your next result will have something to go on.`]);
     if (!paras.length) paras.push(["Now", "This time no area was asked down to the judgment level. Do a short project in an area you care about, then take the assessment again."]);
   } else {
-    if (b3.length) paras.push(["강한 쪽", `${subj(b3)} 기준까지 직접 정했다고 답했고, 체크리스트에서도 그 장면을 고르셨어요. ${andJoin(where(b3))}에서 나온 판단이라 지원서에 ‘제가 정한 것’으로 앞에 내세울 만합니다.`]);
-    if (b2.length) paras.push(["다음 단계", `${subj(b2)} 직접 맡아 해 봤다고 답했어요. 다음 과제에서 그 판단의 기준까지 직접 정하고 그 장면을 체크리스트에서 하나 더 고르면 ‘${STEP_WORD[3].tag}’ 단계로 올라갑니다.`]);
-    if (low.length) paras.push(["더 해 볼 쪽", `${subj(low)} 물은 영역에서 아직 직접 해 본 단계까지 나오지 않았어요. 정말 해 본 적이 없을 수도 있고 검사하면서 그 장면이 떠오르지 않았을 수도 있으니, 수업이나 팀 과제에서 맡았던 때가 있었는지 한 번 더 떠올려 보세요.`]);
+    if (b3.length) paras.push(["강한 쪽", `${subj(b3)} 기준까지 직접 정했다고 답했고, 체크리스트에서도 그런 일을 고르셨어요. ${andJoin(where(b3))}에서 나온 판단이라 지원서에 ‘제가 정한 것’으로 앞에 내세울 만합니다.`]);
+    if (b2.length) paras.push(["다음 단계", `${subj(b2)} 직접 맡아 해 봤다고 답했어요. 다음 과제에서 그 판단의 기준까지 직접 정하고 그런 일을 체크리스트에서 하나 더 고르면 ‘${STEP_WORD[3].tag}’ 단계로 올라갑니다.`]);
+    if (low.length) paras.push(["더 해 볼 쪽", `${subj(low)} 물은 영역에서 아직 직접 해 본 단계까지 나오지 않았어요. 정말 해 본 적이 없을 수도 있고 검사하면서 그때 일이 떠오르지 않았을 수도 있으니, 수업이나 팀 과제에서 맡았던 때가 있었는지 한 번 더 떠올려 보세요.`]);
     if (un.length) paras.push(["묻지 않은 쪽", `${subj(un)} 이번 검사에서 묻지 않았어요.`]);
     if (high.length) paras.push(["관심", `${andJoin(high.slice(0, 4))}에 관심이 높다고 답했는데, 이번에는 판단 단계까지 묻지 않았어요. 그중 한 영역에서 짧은 과제를 해 보면 다음 결과에 근거로 들어갑니다.`]);
     if (!paras.length) paras.push(["지금", "이번 검사에서는 판단 단계를 물은 영역이 없어요. 관심 가는 영역에서 짧은 과제를 한 번 해 본 뒤 다시 검사해 보세요."]);
@@ -175,7 +177,14 @@ export function profileRead(x: Inputs, d: X): Page {
       if (sc && b.level === 1) return `“I ${lc(noDot(sc))}. Someone else set the conditions.”`;
       return b.level === 3 ? "“I set the criteria, and the result was used.”" : b.level === 2 ? "“I did it myself within the conditions I was given.”" : b.level === 1 ? "“I did it the way someone else set it up.”" : "“I haven't done this yet.”";
     }
-    if (sc && b.level === 3) return `“${polite(sc)} 그 기준도 제가 정했습니다”`;
+    /* 기준까지 정한 판단마다 같은 꼬리말을 붙이면 표 한 장에 같은 문장이 일곱 번 선다. 판단마다 정한 몫이 다르니 그 몫을 적는다 */
+    const OWN: Record<string, string> = {
+      J1: "어디까지 다룰지는 제가 정했습니다.", J2: "어떤 기준으로 옮길지는 제가 정했습니다.",
+      J3: "그 기준은 제가 직접 정했습니다.", J4: "어떤 방법을 쓸지는 제가 골랐습니다.",
+      J5: "무엇을 남길지도 제가 정했습니다.", J6: "무엇과 비교할지도 제가 정했습니다.",
+      J7: "어떻게 고칠지도 제가 정했습니다.", J8: "올릴 내용과 방향도 제가 정리했습니다.",
+    };
+    if (sc && b.level === 3) return `“${polite(sc)} ${OWN[b.axis] ?? "그 기준은 제가 정했습니다."}”`;
     if (sc && b.level === 2) return `“${polite(sc)}”`;
     if (sc && b.level === 1) return `“${polite(sc)} 조건은 다른 사람이 정했습니다”`;
     return b.level === 3 ? "“제가 기준을 정했고, 그 결과가 쓰였습니다”" : b.level === 2 ? "“주어진 조건 안에서 제가 직접 해 봤습니다”" : b.level === 1 ? "“다른 사람이 정한 대로 맡아 해 봤습니다”" : "“아직 해 보지 않았습니다”";
@@ -199,7 +208,7 @@ export function strengthPage(x: Inputs, d: X, k: number): Page {
   const def = d.def(s.code);
   const gap = x.m.gaps.find((g) => g.domain === s.code);
   const nm = d.name(s.code);
-  const roles = d.rolesOf(s.code).slice(0, en ? 2 : 4).map((r) => (en ? `${d.roleName(r.role)} (${strengthWord(r.strength)})` : `${d.roleName(r.role)}(${r.strength})`));
+  const roles = d.rolesOf(s.code).slice(0, en ? 2 : 4).map((r) => (en ? `${d.roleName(r.role)} (${strengthWord(r.strength)})` : `${d.roleName(r.role)}(${strengthWord(r.strength)})`));
   const indRow = d.goalInd ? x.rel.td_industry.find((r) => r.td === s.code && r.industry === d.goalInd!.code && r.strength !== "드묾") : null;
   /* 영어: 관계표의 `dimensions` 는 한국어 원고라, 같은 자리를 산업팩(영어 원고)의 판단 이름에서 읽는다 */
   const indDim = en && indRow ? d.goalInd!.judgement_dimensions?.find((v) => v.domain === s.code)?.name : null;
@@ -239,7 +248,8 @@ export function strengthPage(x: Inputs, d: X, k: number): Page {
       ev.artifacts[0] ? `I documented the result in ${aN(ev.artifacts[0])}${cmp0 ? ` and checked it against ${aN(cmp0)}.` : "."}` : cmp0 ? `I checked the result against ${aN(cmp0)}.` : "",
     ].filter(Boolean).join(" ")
     : [
-      pick ? `${d.name(s.code)} 과제를 하면서 ${polite(pick)}` : sc[0] ? `${d.name(s.code)} 과제를 하면서 ${polite(sc[0])}` : `${d.name(s.code)} 과제에서 ${j(andJoin(s.confirmed.slice(0, 2).map(d.axisName)), "을를")} 직접 맡았습니다.`,
+      /* 세 쪽의 초안이 같은 첫마디로 시작하지 않게 한다 */
+      pick ? `${[`${d.name(s.code)} 과제를 하면서`, `${d.name(s.code)} 쪽 일을 맡았을 때`, `${j(d.name(s.code), "을를")} 다룬 과제에서`][k % 3]} ${polite(pick)}` : sc[0] ? `${d.name(s.code)} 과제를 하면서 ${polite(sc[0])}` : `${d.name(s.code)} 과제에서 ${j(andJoin(s.confirmed.slice(0, 2).map(d.axisName)), "을를")} 직접 맡았습니다.`,
       /* 장면 둘에 결과 문장까지 붙으면 ‘…습니다.’ 가 세 번 이어진다. 결과가 있으면 둘째 장면을 뺀다 */
       !pick && sc[1] && !ev.artifacts[0] && !ev.comparisons[0] ? polite(sc[1]) : "",
       ev.artifacts[0] ? `결과는 ${j(ev.artifacts[0], "으로")} 남겼${ev.comparisons[0] ? `고, ${j(ev.comparisons[0], "과와")} 비교해 맞는지 확인했습니다.` : "습니다."}` : ev.comparisons[0] ? `${j(ev.comparisons[0], "과와")} 비교해 맞는지 확인했습니다.` : "",
@@ -251,7 +261,9 @@ export function strengthPage(x: Inputs, d: X, k: number): Page {
         `What did you compare your ${nm} results with to check they were right?`,
         `Who used the material you made on your ${nm} project, and where?`][k % 3])
     : pick
-      ? `${q(pick)}고 고르셨는데, 그때 무엇을 기준으로 정했고 다른 방법은 왜 쓰지 않았나요?`
+      ? [`${q(pick)}고 고르셨는데, 그때 무엇을 기준으로 정했고 다른 방법은 왜 쓰지 않았나요?`,
+        `${q(pick)}고 하셨는데, 그 일을 하면서 가장 오래 고민한 선택은 무엇이었나요?`,
+        `${q(pick)}고 하셨는데, 결과가 처음 예상과 달랐던 부분이 있었나요?`][k % 3]
       : [`${d.name(s.code)} 과제에서 결과가 기대와 달랐던 적이 있나요? 그때 무엇을 바꿨나요?`,
         `${d.name(s.code)} 과제에서 낸 결과가 맞는지 무엇과 비교해 확인했나요?`,
         `${d.name(s.code)} 과제에서 만든 자료는 누가, 어디에 썼나요?`][k % 3];
@@ -264,12 +276,20 @@ export function strengthPage(x: Inputs, d: X, k: number): Page {
       : ev.decisions.length ? "You have decisions to show, and one deliverable would add weight"
         : ev.artifacts.length ? "You have deliverables to show, and one recorded decision would add weight"
           : `You did ${nJ(s.confirmed.length)} yourself here`)
-    : ev.decisions.length && ev.artifacts.length ? `${j(d.name(s.code), "은는")} 직접 정한 일과 남긴 결과물을 함께 내세울 수 있습니다`
-      : ev.decisions.length ? `${j(d.name(s.code), "은는")} 직접 정한 일을 내세울 수 있고, 결과물 하나가 더 있으면 단단해집니다`
-        : ev.artifacts.length ? `${j(d.name(s.code), "은는")} 남긴 결과물이 있고, 직접 정한 일을 하나 더 적으면 단단해집니다`
+    /* 쪽마다 같은 제목이 서지 않게 순서에 따라 말을 바꾼다. 뜻은 같다 */
+    : ev.decisions.length && ev.artifacts.length ? [
+      `${d.name(s.code)}에서는 직접 정한 일과 남긴 결과물을 함께 보여 줄 수 있습니다`,
+      `${d.name(s.code)}에서 정한 기준과 그 결과물이 함께 남아 있습니다`,
+      `${j(d.name(s.code), "은는")} 정한 것과 남긴 것을 짝지어 말할 수 있는 영역입니다`][k % 3]
+      : ev.decisions.length ? `${d.name(s.code)}에서 직접 정한 일이 확인됐고, 결과물 하나만 더 남기면 됩니다`
+        : ev.artifacts.length ? `${d.name(s.code)}에서 남긴 결과물이 확인됐고, 직접 정한 일 하나만 더 적으면 됩니다`
           : `${d.name(s.code)}에서는 판단 ${s.confirmed.length}가지를 직접 해 봤습니다`;
-  return P(L(`강점 ${k + 1} · ${d.name(s.code)}`, `Strength ${k + 1} · ${nm}`),
-    `<p class="k">${L(`강점 ${k + 1}`, `Strength ${k + 1}`)} · ${E(d.name(s.code))}</p>` +
+  /* ‘강점’ 은 강점 영역에만 붙인다. 키워 가는 영역에 ‘강점 3’ 을 달면 앞 장의 분류와 어긋난다 */
+  const strong = s.zone === "Z1_EVIDENCE_ESTABLISHED";
+  /* 강점 번호와 섞여 ‘강점 1 · 강점 2 · 꺼내 쓸 경험 3’ 이 되지 않게 번호는 강점에만 붙인다 */
+  const tag = en ? `Strength ${k + 1}` : strong ? `강점 ${k + 1}` : "꺼내 쓸 경험";
+  return P(L(`${tag} · ${d.name(s.code)}`, `Strength ${k + 1} · ${nm}`),
+    `<p class="k">${E(tag)} · ${E(d.name(s.code))}</p>` +
     T(E(head), E(story)) +
     `<div class="two r64">
       <div>${ev.decisions.length ? H(L("직접 정한 것", "What you decided"), L("고른 근거", "Items you picked")) + ul(ev.decisions.slice(0, cap).map(E)) : ""}${ev.acts.length ? H(L("해 본 일", "What you did"), L("고른 근거", "Items you picked")) + ul(ev.acts.slice(0, cap).map(E)) : ""}
@@ -281,7 +301,10 @@ export function strengthPage(x: Inputs, d: X, k: number): Page {
       ${note(L("한 단계 더", "One step further"), E(next))}
       ${roles.length ? note(L("이어지는 직무", "Related roles"), `${E(roles.join(" · "))}${indLine ? `<br><span class="mut">${E(indLine)}</span>` : ""}`) : ""}
     </div>` +
-    note(L("30초 답변 초안", "A 30-second answer"), `<p>“${E(draft)}”</p><p class="mut sm">${L("여기에 그때 정한 기준 하나와 쓰지 않은 방법 하나를 덧붙여 말하면 30초 분량이 돼요.", "Add one criterion you set and one method you chose not to use, and you have about 30 seconds.")}</p>`) +
+    note(L("30초 답변 초안", "A 30-second answer"), `<p>“${E(draft)}”</p><p class="mut sm">${L([
+      "여기에 그때 정한 기준 하나와 쓰지 않은 방법 하나를 덧붙이면 30초 분량이 돼요.",
+      "말할 때는 결과 수치나 걸린 기간을 하나 넣어 보세요. 듣는 사람이 일의 크기를 바로 알 수 있어요.",
+      "그 결과를 누가 어디에 썼는지로 끝맺으면 답이 깔끔하게 마무리됩니다."][k % 3], "Add one criterion you set and one method you chose not to use, and you have about 30 seconds.")}</p>`) +
     band(L("면접에서 받을 질문", "A question you may get in an interview"), E(question)));
 }
 
@@ -298,7 +321,7 @@ export function commonPage(x: Inputs, d: X): Page {
   const st = STAGE_EN[x.m.stage];
   return P(L("영역을 가리지 않는 판단", "Judgments across every area"),
     T(rows.some((r) => r.lv === 3) ? L(`어떤 과제에서든 ${n3}가지 판단은 직접 정했다고 답했습니다`, `You said you make the call on ${nJ(n3)} in any project`) : L("영역과 관계없이 과제마다 되풀이되는 판단도 따로 물었습니다", "We also asked about judgments that come up in every project, whatever the area"),
-      L(`${E(STAGE[x.m.stage] ?? "학업")} 과정의 수업과 팀 과제 장면으로 물은 문항이라, 영역별 결과와는 따로 셌어요.`, `These questions used scenes from classes and team projects in your ${st ? `${st} ` : ""}studies, so they are counted apart from your area results.`)) +
+      L(`${E(STAGE[x.m.stage] ?? "학업")} 과정의 수업과 팀 과제 상황을 예로 들어 물은 문항이라, 영역별 결과와는 따로 셌어요.`, `These questions used scenes from classes and team projects in your ${st ? `${st} ` : ""}studies, so they are counted apart from your area results.`)) +
     fig(`<div class="wide-art">${hbars(rows.map((r) => ({ label: an(r.a), value: r.lv ?? 0, color: LVC[Math.max(1, r.lv ?? 0)], note: r.lv == null ? notAsked() : r.lv === 3 ? STEP_WORD[3].tag : r.lv === 2 ? STEP_WORD[2].tag : notYet })), { max: 3, width: 680, label: en ? 200 : 130, row: 30, valueText: (b) => String((b as { note?: string }).note ?? "") })}</div>`, howto([
       [L("막대 길이", "Bar length"), L(`그 판단을 어디까지 해 봤는지(끝까지 차면 ${E(STEP_WORD[3].tag)})`, `How far you have gone with that judgment (a full bar means “${E(STEP_WORD[3].tag)}”)`)],
       [LVC[3], E(STEP_WORD[3].tag)], [LVC[2], E(STEP_WORD[2].tag)],
@@ -310,7 +333,7 @@ export function commonPage(x: Inputs, d: X): Page {
       const ns = [own ? note(L("직접 정했다고 답한 판단", "Judgments you said you made the call on"), own) : "", conf ? note(L("해 봤다고 답한 판단", "Judgments you said you have done"), conf, true) : ""].filter(Boolean);
       return ns.length ? `<div class="two">${ns.join("")}</div>` : "";
     })() +
-    band(L("쓰는 법", "How to use this"), L("지원서의 ‘일하는 방식’ 문항에 이 판단을 쓰세요. 영역 근거와 같은 장면으로 쓰면 두 문항이 서로 뒷받침합니다.", "Use these judgments when an application asks how you work. If you describe them with the same scenes as your area evidence, the two answers back each other up.")));
+    band(L("쓰는 법", "How to use this"), L("지원서의 ‘일하는 방식’ 문항에 이 판단을 쓰세요. 영역 근거와 같은 경험으로 쓰면 두 문항이 서로 뒷받침합니다.", "Use these judgments when an application asks how you work. If you describe them with the same scenes as your area evidence, the two answers back each other up.")));
 }
 
 export function qualityPage(x: Inputs, d: X): Page {
@@ -336,7 +359,7 @@ export function qualityPage(x: Inputs, d: X): Page {
     : E(QUALITY_KO[f as keyof typeof QUALITY_KO] || "") || "검사는 모든 답을 같은 쪽으로 고르지 않았는지, 같은 경험을 두 번 물었을 때 답이 맞는지를 함께 봤어요.";
   const flow: [string, string][] = en
     ? [["Answer", "You said you set the criteria yourself"], ["Scene", "You picked that scene in the checklist"], ["One more piece", "You also picked a deliverable or a comparison"], ["Level", `Only then did we count it as “${STEP_WORD[3].tag}”`]]
-    : [["답", "‘기준을 내가 정했다’고 답했어요"], ["고른 장면", "체크리스트에서 그 장면을 골랐어요"], ["근거 하나 더", "남긴 결과물이나 비교한 대상까지 골라 근거가 둘 이상 모였어요"], ["단계", `이렇게 모였을 때만 ‘${STEP_WORD[3].tag}’으로 셌어요`]];
+    : [["답", "‘기준을 내가 정했다’고 답했어요"], ["고른 항목", "체크리스트에서 그 일을 골랐어요"], ["근거 하나 더", "남긴 결과물이나 비교한 대상까지 골라 근거가 둘 이상 모였어요"], ["단계", `이렇게 모였을 때만 ‘${STEP_WORD[3].tag}’으로 셌어요`]];
   return P(L("이 결과를 얼마나 믿어도 될까", "How far you can trust this result"),
     T(E(said[f] ?? said.REVIEW), qdek) +
     `<div class="kpis">

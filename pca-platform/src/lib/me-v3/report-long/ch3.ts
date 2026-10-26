@@ -72,7 +72,9 @@ const doesLineEn = (s0: string) => {
   return /^(Whether|Where|What|Which|How|When|Who|At|In)\b/.test(s) ? `This area asks ${lc(s)}.` : `Work in this area ${lc(s)}.`;
 };
 const STRENGTH_EN: Record<string, string> = { 중심: "core", 있음: "also used", 드묾: "rare" };
-const strengthWord = (s: string) => (isEn() ? STRENGTH_EN[s] ?? s : s);
+/* 관계표의 값(중심 · 있음 · 드묾)은 표 안의 말이라, 괄호 안에 그대로 두면 ‘(있음)’ 처럼 뜻이 안 읽힌다 */
+const STRENGTH_KO: Record<string, string> = { 중심: "주로 씀", 있음: "함께 씀", 드묾: "드물게 씀" };
+const strengthWord = (s: string) => (isEn() ? STRENGTH_EN[s] ?? s : STRENGTH_KO[s] ?? s);
 const axName = (d: X) => (a: Axis) => (isEn() ? AXIS_EN[a] : d.axisName(a));
 /** 축마다 할 일 문장에 넣는 이름씨 구(text.ts `AXIS_NEED` 의 영어) */
 const AXIS_NEED_EN: Record<Axis, string> = {
@@ -163,14 +165,36 @@ function domainHead(x: Inputs, d: X, z: ResultDomain): string {
     case "Z4_INSUFFICIENT_EVIDENCE":
       return `${nm}에는 관심이 높은데 직접 해 본 일은 아직 적어요. 수업 과제나 짧은 프로젝트에서 한 번 맡아 보면 나에게 맞는 일인지 금방 알 수 있습니다.`;
     default: {
+      /* 판단까지 묻지 않은 영역은 한 책에 아홉 곳까지 나온다. 같은 두 문장이 아홉 번 서지 않게 영역 차례에 따라 말을 바꾼다 */
+      const v = Math.max(0, x.m.domains.findIndex((w) => w.code === z.code)) % 3;
       if (z.experience === "NONE") {
-        return `${j(nm, "은는")} 아직 해 본 적이 없다고 답한 영역이에요. ${z.interest === "HIGH" ? "관심은 높게 답했으니 짧은 과제 하나로 먼저 겪어 보세요." : "지금은 다른 영역을 먼저 다지고, 필요해질 때 넓혀도 늦지 않습니다."}`;
+        const high = z.interest === "HIGH";
+        return [
+          `${j(nm, "은는")} 아직 해 본 적이 없다고 답한 영역이에요. ${high ? "관심은 높게 답했으니 짧은 과제 하나로 먼저 겪어 보세요." : "지금은 다른 영역을 먼저 다지고, 필요해질 때 넓혀도 늦지 않습니다."}`,
+          `${j(nm, "은는")} 아직 해 보지 않았다고 답했어요. ${high ? "관심이 높은 만큼 수업 과제나 동아리에서 작은 몫부터 맡아 보세요." : "급한 영역은 아니니 다른 영역을 먼저 챙겨도 괜찮아요."}`,
+          `${j(nm, "은는")} 아직 경험이 없는 영역입니다. ${high ? "관심이 높다고 답했으니 4주 정도의 짧은 과제로 먼저 해 보면 나에게 맞는지 알 수 있어요." : "관심도 높지 않다고 답해서, 지금은 뒤로 미뤄 둬도 됩니다."}`,
+        ][v];
       }
       const times = EXP_WORD[z.experience ?? ""];
-      return `이번 검사에서 ${j(nm, "은는")} 관심과 해 본 횟수까지만 물었어요. ${times ? `${times} 해 봤다고 답했으니` : "해 본 적이 있다고 답했으니"}, 그때 맡은 일을 경험 기록에 적어 두면 지원서에 쓸 경험이 하나 늘어납니다.`;
+      const did = times ? `${times} 해 봤다고` : "해 본 적이 있다고";
+      return [
+        `이번 검사에서 ${j(nm, "은는")} 관심과 해 본 횟수까지만 물었어요. ${did} 답했으니, 그때 맡은 일을 경험 기록에 적어 두면 지원서에 쓸 경험이 하나 늘어납니다.`,
+        `${j(nm, "은는")} ${did} 답했는데, 이번에는 그때 어떤 판단까지 했는지 묻지 않았어요. 무엇을 맡았는지 경험 기록에 적어 두면 내 CareerMatri의 현재 상태에 반영됩니다.`,
+        `${nm}에서 ${did} 답했어요. 판단 단계는 이번 검사에서 묻지 않았으니, 맡았던 몫을 경험 기록으로 남겨 두면 서류에 꺼내 쓸 수 있습니다.`,
+      ][v];
     }
   }
 }
+
+/**
+ * 일 흐름 여덟 칸의 이름. 영역 사전(잠긴 문항 은행)의 이름이 ‘문제가 들어오는 모양’ · ‘받는 입력’ 처럼
+ * 설계 문서 말이라, 책에 그릴 때만 학생이 읽는 말로 바꾼다. 사전 파일은 건드리지 않는다
+ */
+const WF_KO: Record<string, string> = {
+  "문제가 들어오는 모양": "일이 시작되는 계기", "받는 입력": "필요한 자료", "내놓는 산출물": "남기는 결과물",
+  "무엇과 비교하는가": "무엇과 비교하나", "틀렸을 때": "결과가 어긋날 때",
+};
+const wfName = (n: string) => (isEn() ? n : WF_KO[n] ?? n);
 
 export function domainPage(x: Inputs, d: X, z: ResultDomain, no: number): Page {
   const en = isEn();
@@ -205,8 +229,16 @@ export function domainPage(x: Inputs, d: X, z: ResultDomain, no: number): Page {
       : asked
         ? `${nm}에서는 지금 응답만으로 지원서 한 문단을 쓸 수 있어요. 결과 수치와 걸린 기간만 직접 채워 넣으면 됩니다.`
         : z.experience && z.experience !== "NONE"
-          ? `해 본 일 가운데 ${scene ? `${q(scene)}에 가까운 경우` : "기준 하나를 직접 정한 경우"}가 있었는지 떠올려 경험 기록에 적어 보세요. ${j(art0, "이가")} 남아 있다면 함께 올려 두세요.`
-          : `수업 과제나 동아리 활동에서 ${scene ? q(scene) : "기준 하나를 직접 정하는 일"} 정도의 몫을 한 번 맡아 보고, 끝나면 ${j(art0, "을를")} 남겨 두세요.`;
+          ? [
+            `해 본 일 가운데 ${scene ? `${q(scene)}에 가까운 경우` : "기준 하나를 직접 정한 경우"}가 있었는지 떠올려 경험 기록에 적어 보세요. ${j(art0, "이가")} 남아 있다면 함께 올려 두세요.`,
+            `${scene ? `${j(q(scene), "과와")} 비슷한 일을` : "기준 하나를 직접 정한 일을"} 해 본 적이 있다면 언제, 어떤 과제였는지 경험 기록에 한 줄 적어 두세요. ${j(art0, "을를")} 남겼다면 같이 올리면 됩니다.`,
+            `경험 기록에는 무엇을 맡았고 무엇을 정했는지 두 줄이면 충분해요. ${scene ? `${q(scene)} 같은 일이 있었는지 떠올려 보세요.` : "그때 직접 정한 기준 하나를 떠올려 보세요."}`,
+          ][no % 3]
+          : [
+            `수업 과제나 동아리 활동에서 ${scene ? q(scene) : "기준 하나를 직접 정하는 일"} 정도의 몫을 한 번 맡아 보고, 끝나면 ${j(art0, "을를")} 남겨 두세요.`,
+            `처음이라면 ${scene ? q(scene) : "기준 하나를 직접 정하는 일"} 정도의 작은 몫부터 맡아 보세요. 끝난 뒤 ${j(art0, "을를")} 하나 남겨 두면 다음 검사에서 ‘해 본 적 있다’로 답할 수 있습니다.`,
+            `팀 과제에서 이 영역의 일을 나눌 때 ${scene ? `${q(scene)} 같은 몫을` : "기준을 정하는 몫을"} 먼저 맡겠다고 해 보세요. ${j(art0, "이가")} 남으면 그대로 경험 기록에 올릴 수 있어요.`,
+          ][no % 3];
   const meta = [
     z.interest ? L(`관심 ${BAND_WORD[z.interest]}`, `Interest: ${lc(BAND_WORD[z.interest])}`) : "",
     z.experience ? (z.experience === "NONE" ? L("아직 해 보기 전", "Not tried yet") : L(`해 본 횟수 ${EXP_WORD[z.experience]}`, `Done: ${lc(EXP_WORD[z.experience])}`)) : "",
@@ -226,7 +258,7 @@ export function domainPage(x: Inputs, d: X, z: ResultDomain, no: number): Page {
     body: `<div style="display:flex;flex-direction:column;gap:4.2mm"><div class="dh"><span class="dh-n">${String(no).padStart(2, "0")}</span><div><p class="k">${L(E(x.domainWord), "Area")}</p><h1>${E(nm)}</h1></div><div class="dh-t">${zoneTag(z.zone)}${meta ? `<span class="mut">${meta}</span>` : ""}</div></div>
       <p class="dek">${E(domainHead(x, d, z))}${okText(tx?.owns) && !brief ? ` <span class="mut">${L(`이 영역은 ${E(doesLine(tx!.owns))}`, E(doesLineEn(tx!.owns)))}</span>` : ""}</p>
       ${tx?.subareas?.length && !brief ? chips(tx.subareas) : ""}</div>
-      ${wf.length ? `${H(L("현장에서 이 일은 이런 순서로 진행됩니다", "How this work runs on the job"), L("전공 사전", "General guide"))}<div class="wf2${asked && !en ? "" : " wf2s"}">${wf.map((w) => `<div class="wf2-i"><span>${w.step}</span><p><b>${E(w.name)}</b>${E(okOr(w.detail))}</p></div>`).join("")}</div>` : ""}
+      ${wf.length ? `${H(L("현장에서 이 일은 이런 순서로 진행됩니다", "How this work runs on the job"), L("전공 사전", "General guide"))}<div class="wf2${asked && !en ? "" : " wf2s"}">${wf.map((w) => `<div class="wf2-i"><span>${w.step}</span><p><b>${E(wfName(w.name))}</b>${E(okOr(w.detail))}</p></div>`).join("")}</div>` : ""}
       ${asked ? `${H(L("판단마다 어디까지 해 봤는지", "Your level on each judgment"), L("내 응답과 고른 항목 · ‘필수’는 이 영역 일에서 꼭 하게 되는 판단", "From your answers · “Required”: this work always needs it"))}<table class="tb tb-xs"><tbody>${rowsHtml}</tbody></table>` : ""}
       ${grid(notes)}` + band(gapA ? L("다음 할 일", "Next step") : asked ? L("지원서로 옮기기", "Into your application") : z.experience && z.experience !== "NONE" ? L("기록으로 남기기", "Put it on record") : L("처음 해 보기", "Try it for the first time"), E(nextLine)),
   };
@@ -251,7 +283,7 @@ export function ledgerPages(x: Inputs, d: X): Page[] {
     if (!n) return [];
     return paginate(hints, (h) => ("head" in h ? 2.2 : Math.max(1, rowsOf(h.l2, 62))), 38, 31).map((chunk, k) => ({
       part: "03", partName: PART3(x), title: L(`지원서 재료 찾기${k ? ` (${k + 1})` : ""}`, `Finding material for applications${k ? ` (${k + 1})` : ""}`),
-      body: (k === 0 ? T(L(`직접 해 봤다고 답한 판단이 ${n}가지 있습니다`, `You said you did ${nJ(n)} yourself`), L("다만 체크리스트에서는 그 장면을 아직 고르지 않으셨어요. 오른쪽 문장에 맞는 과제가 있었다면 경험 기록에 그 과제를 적고 같은 문장을 골라 주세요. 그러면 이 표가 자기소개서에 쓸 재료 목록이 됩니다.", "But you have not picked those scenes in the checklist yet. If a sentence on the right matches a project you did, add that project to your experience records and pick the same sentence. This table then becomes a list of material for your applications.")) : `<p class="k">${L("지원서 재료 찾기 (계속)", "Finding material for applications (continued)")}</p>`) +
+      body: (k === 0 ? T(L(`직접 해 봤다고 답한 판단이 ${n}가지 있습니다`, `You said you did ${nJ(n)} yourself`), L("다만 체크리스트에서는 그 일을 아직 고르지 않으셨어요. 오른쪽 문장에 맞는 과제가 있었다면 경험 기록에 그 과제를 적고 같은 문장을 골라 주세요. 그러면 이 표가 자기소개서에 쓸 재료 목록이 됩니다.", "But you have not picked those scenes in the checklist yet. If a sentence on the right matches a project you did, add that project to your experience records and pick the same sentence. This table then becomes a list of material for your applications.")) : `<p class="k">${L("지원서 재료 찾기 (계속)", "Finding material for applications (continued)")}</p>`) +
         `<table class="tb tb-xs"><tbody>${chunk.map((h) => "head" in h
           ? headRow(h.z)
           : `<tr><td class="w22">${E(an(h.a))} <span class="mut sm">${E(STEP_WORD[h.lv as 0 | 1 | 2 | 3].tag)}</span></td><td>${E(h.l2)}</td></tr>`).join("")}</tbody></table>` +
@@ -386,7 +418,7 @@ export function crossPage(x: Inputs, d: X): Page | null {
     body: T(L("검사 응답과 경험 기록이 같은 영역을 가리키는지 맞춰 봤습니다", "We checked whether your answers and your records point to the same areas"), L("두 자료가 같은 영역을 가리키면 면접에서 ‘언제, 어떤 과제에서 해 봤나요?’라는 질문에 바로 답할 수 있습니다. 한쪽에만 있는 영역은 나머지 한쪽을 채우면 됩니다.", "Where both point to the same area, you can answer “When, and on what project, did you do this?” in an interview right away. For areas that show up on only one side, fill in the other.")) +
       `<table class="tb tb-s"><thead><tr><th>${L("영역", "Area")}</th><th>${L("근거", "Evidence")}</th><th>${L("검사", "Assessment")}</th><th>${L("경험 기록", "Experience records")}</th></tr></thead><tbody>${rows.map((r) => `<tr><th>${E(d.name(r.z.code))}</th><td>${tag(en ? KIND_EN[r.kind!] : r.kind!, color[r.kind!])}</td><td>${E(r.test)}</td><td>${r.rec.length ? (en ? own(r.rec.map((e) => e.title).join(" / ")) : E(r.rec.map((e) => e.title).join(" / "))) : `<span class="mut">${L("‘경험 추가’에 적을 차례", "Next: add it under “Add an experience”")}</span>`}</td></tr>`).join("")}</tbody></table>` +
       `<div class="two">
-        ${note(L("검사·기록 모두", "In both"), L("그 기록을 면접 첫 답변의 장면으로 쓰세요. 기록에 적은 결과물과 체크리스트에서 고른 항목이 같은 일을 말하는지 한 번만 맞춰 보면 돼요.", "Use that record as the scene for your first interview answer. Just check once that the deliverable in the record and the items you picked in the checklist describe the same work."))}
+        ${note(L("검사·기록 모두", "In both"), L("그 기록을 면접 첫 답변의 사례로 쓰세요. 기록에 적은 결과물과 체크리스트에서 고른 항목이 같은 일을 말하는지 한 번만 맞춰 보면 돼요.", "Use that record as the scene for your first interview answer. Just check once that the deliverable in the record and the items you picked in the checklist describe the same work."))}
         ${note(L("한쪽에만 있는 영역", "Areas on one side only"), L("검사에만 있다면 그 과제를 경험 기록으로 남기고, 기록에만 있다면 다음 검사에서 그 영역을 ‘해 봤다’로 답할 수 있는지 따져 보세요.", "If it is only in the assessment, write that project up as an experience record. If it is only in your records, think about whether you can answer “done it” for that area next time."), true)}
       </div>`,
   };
@@ -429,7 +461,7 @@ export function translationPage(x: Inputs, d: X): Page | null {
     ch("TR_T1") && `첫 문장에서 어떤 문제였는지(${q(ch("TR_T1")!)}) 밝힙니다.`,
     ch("TR_T8") && ch("TR_T9") ? `가운데에는 직접 정한 것(${q(ch("TR_T8")!)})과 그 결과로 남은 것(${q(ch("TR_T9")!)})을 이어 씁니다.`
       : ch("TR_T8") ? `가운데에는 직접 정한 것(${q(ch("TR_T8")!)})을 씁니다.` : ch("TR_T9") ? `가운데에는 결과로 남은 것(${q(ch("TR_T9")!)})을 씁니다.` : "",
-    ch("TR_T6") && (/없/.test(ch("TR_T6")!) ? `비교한 대상을 묻는 줄에는 ${j(q(ch("TR_T6")!), "을를")} 고르셨어요. 다음에 같은 일을 할 때 기준값이나 이전 결과 하나와 비교해 두면 문단이 훨씬 단단해집니다.` : `비교한 대상(${q(ch("TR_T6")!)})은 결과 바로 뒤에 붙여 근거로 씁니다.`),
+    ch("TR_T6") && (/없/.test(ch("TR_T6")!) ? `비교한 대상을 묻는 줄에는 ${j(q(ch("TR_T6")!), "을를")} 고르셨어요. 다음에 같은 일을 할 때 기준값이나 이전 결과 하나와 비교해 두면 문단에 설득력이 생깁니다.` : `비교한 대상(${q(ch("TR_T6")!)})은 결과 바로 뒤에 붙여 근거로 씁니다.`),
     ch("TR_T10") && `마지막 문장은 그 결과가 쓰인 곳(${q(ch("TR_T10")!)})으로 마무리합니다.`,
   ]).filter(Boolean) as string[];
   const HINT = en ? TRANS_HINT_EN : TRANS_HINT;

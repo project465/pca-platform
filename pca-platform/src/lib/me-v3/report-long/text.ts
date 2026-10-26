@@ -113,11 +113,11 @@ const AXIS_DO_EN: Record<Axis, string> = {
 
 /** 영어 쪽도 끝 점 없이 둔다. 부르는 자리가 `${GAP_KIND[k]} · ${gapWhy(g)}` 처럼 잇는다 */
 export const GAP_KIND: Record<Gap["kind"], string> = byLang<Record<Gap["kind"], string>>({
-  REQUIRED_AXIS: "꼭 필요한 판단인데 해 본 장면이 아직 나오지 않았습니다",
+  REQUIRED_AXIS: "꼭 필요한 판단인데 아직 직접 해 봤다는 답이 없습니다",
   OUTPUT: "해 본 일을 보여 줄 결과물을 아직 고르지 않았습니다",
   OUTPUT_EVIDENCE: "결과물을 남겼다고 답했고, 어떤 결과물인지는 아직 고르지 않았습니다",
   VERIFICATION: "결과를 무엇과 맞춰 봤는지가 아직 적혀 있지 않습니다",
-  AXIS: "이 판단을 직접 해 본 장면이 아직 나오지 않았습니다",
+  AXIS: "이 판단은 아직 직접 해 봤다는 답이 없습니다",
   PARTIAL_EVIDENCE: "해 본 일은 보이고, 직접 정했다고 말하려면 근거가 하나 더 필요합니다",
 }, {
   REQUIRED_AXIS: "This decision is essential here, and your answers don't show you making it yet",

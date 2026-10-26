@@ -139,7 +139,7 @@ export function cover(x: Inputs, d: X): Page {
           ? `<div><span>Major</span><b>${E(major)}</b></div>`
           : `<div><span>참여자 · 전공</span><b>${E(x.person)} · ${E(major)}</b></div>`}
         ${goal ? `<div><span>${L("목표 직무 · 산업", "Target role · Industry")}</span><b>${E(goal)}</b></div>` : near ? `<div><span>${L("근거가 가장 많이 겹치는 직무", "Role your evidence overlaps with most")}</span><b>${E(near)}</b></div>` : ""}
-        <div><span>${L("이 리포트가 읽은 것", "What this report read")}</span><b>${E(got)}</b></div>
+        <div><span>${L("분석에 쓴 자료", "What this report read")}</span><b>${E(got)}</b></div>
       </div>
       <div class="cv-foot"><b>${L("먼저 할 일", "Start here")}</b>${E(first)}</div>`,
   };
@@ -168,11 +168,11 @@ export function about(x: Inputs, d: X): Page {
   }
   return {
     part: "", partName: "들어가며", title: "이 리포트에 대해",
-    body: T(`${E(x.person)} 님이 검사에서 고른 답으로 만든 리포트입니다`, "직접 해 봤다고 답한 일, 체크리스트에서 고른 항목, 남긴 결과물을 모아 읽었어요. 앞쪽은 지금 내세울 수 있는 경험을, 뒤쪽은 다음 학기에 해 볼 과제를 다룹니다.") +
+    body: T(`${E(x.person)} 님이 검사에서 고른 답으로 만든 리포트입니다`, "직접 해 봤다고 답한 일과 체크리스트에서 고른 항목, 남긴 결과물을 바탕으로 정리했어요. 앞쪽에는 지금 내세울 수 있는 경험이, 뒤쪽에는 다음 학기에 해 볼 과제가 있습니다.") +
       `<div class="g3">
         <div class="card"><p class="k">무엇을 살폈나</p><h4>일할 때 내리는 판단</h4><p>풀 문제를 정하는 일부터 결과가 다음 결정에 쓰이게 하는 일까지, ${E(x.major)} 일에서 되풀이되는 판단 ${AXES.length}가지를 ${E(x.domainWord)} ${n}곳마다 살폈어요.</p></div>
-        <div class="card"><p class="k">무엇을 읽었나</p><h4>답과 고른 항목</h4><p>검사 응답, 체크리스트에서 고른 항목, 플랫폼에 적어 둔 경험 기록을 읽었어요. 고른 문장은 고치지 않고 그대로 옮겼습니다.</p></div>
-        <div class="card"><p class="k">무엇이 남나</p><h4>할 일과 남길 결과물</h4><p>아직 덜 해 본 판단마다 어느 과제에서 무엇을 하고 무엇을 남길지 적었어요. 07장의 90일 계획과 06장의 지원서 재료로 이어집니다.</p></div>
+        <div class="card"><p class="k">무엇을 바탕으로 했나</p><h4>답과 고른 항목</h4><p>검사 응답과 체크리스트에서 고른 항목, 플랫폼에 적어 둔 경험 기록을 썼어요. 고른 문장은 고치지 않고 그대로 옮겼습니다.</p></div>
+        <div class="card"><p class="k">무엇을 얻나</p><h4>할 일과 남길 결과물</h4><p>아직 덜 해 본 판단마다 어느 과제에서 무엇을 하고 무엇을 남길지 적었어요. 07장의 90일 계획과 06장의 지원서 재료로 이어집니다.</p></div>
       </div>` +
       H("참여자 정보") +
       `<table class="tb"><tbody>

@@ -79,7 +79,7 @@ export function fillPages(x: Inputs, d: X, part3: string, region: { name: string
     return { a, n: all.length, ex: all[0] };
   }).filter((r) => r.n);
   if (pickRows.length) add(F("02", N.c2, L("판단마다 고른 체크리스트 항목", "Checklist items you picked for each decision"), L("고른 수와 그 가운데 하나", "How many you picked, with one example"),
-    lead(L("고른 항목은 자기소개서와 면접에서 그대로 꺼내 쓸 수 있는 장면이에요.", "Each item you picked is a scene you can use as it is in an application or an interview.")) +
+    lead(L("고른 항목은 자기소개서와 면접에서 그대로 꺼내 쓸 수 있는 경험이에요.", "Each item you picked is a scene you can use as it is in an application or an interview.")) +
     `<table class="tb tb-xs"><thead><tr><th class="w16">${L("판단", "Decision")}</th><th class="w12">${L("고른 수", "Picked")}</th><th>${L("고른 항목 하나", "One item you picked")}</th></tr></thead><tbody>${pickRows.map((r) => `<tr><td><b>${E(d.axisName(r.a))}</b></td><td>${L(`${r.n}개`, `${r.n}`)}</td><td>${r.ex ? `${E(r.ex.t)} <span class="mut">(${E(d.name(r.ex.z))})</span>` : ""}</td></tr>`).join("")}</tbody></table>`));
 
   /* 03 영역별 해설: 깊게 물은 영역에서 체크리스트에 있는데 고르지 않은 항목 */
@@ -93,7 +93,7 @@ export function fillPages(x: Inputs, d: X, part3: string, region: { name: string
       if (rows.length >= 10) break;
     }
     if (rows.length < 4) continue;
-    add(F("03", part3, L(`${d.name(z.code)}에서 아직 고르지 않은 장면`, `Scenes you haven't picked yet in ${d.name(z.code)}`), L("해 본 적이 있다면 경험 기록에 더해 보세요", "If you've done any of these, add them to your experience log"),
+    add(F("03", part3, L(`${d.name(z.code)}에서 아직 고르지 않은 일`, `Scenes you haven't picked yet in ${d.name(z.code)}`), L("해 본 적이 있다면 경험 기록에 더해 보세요", "If you've done any of these, add them to your experience log"),
       `<table class="tb tb-xs"><tbody>${rows.map((r) => `<tr><td class="w16"><b>${E(d.axisName(r.a))}</b></td><td>${E(r.t)}</td></tr>`).join("")}</tbody></table>`));
   }
 

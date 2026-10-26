@@ -186,12 +186,13 @@ function draftLines(d: X, s: Story, k = 0): [string, string][] {
   const where = s.record ? `${U(s.record)}${s.period ? ` (${E(s.period)})` : ""}` : null;
   const situ = where
     ? (v ? `${where}에 참여했을 때 제가 맡은 몫은 ${B()} 부분이었습니다.` : `${where}에서 저는 ${B()} 부분을 맡았습니다.`)
-    : `${B(30)} 과제에서 저는 ${E(nm)} 쪽 일 가운데 ${B()} 부분을 맡았습니다.`;
+    : `${B(30)} 과제에서 저는 ${E(nm)} 업무 가운데 ${B()} 부분을 맡았습니다.`;
 
   const did = s.did.slice(0, 2);
-  const after = v ? `이렇게 정할 때 기준으로 삼은 것은 ${B()} 쪽이었습니다.` : `그때 가장 먼저 따진 것은 ${B()} 쪽이었습니다.`;
+  /* 빈칸 뒤에는 받침을 가리지 않는 ‘입니다’ · ‘에서’ · ‘때문’ 만 붙인다. 전에는 ‘쪽이었습니다’ 로 피했는데 초안마다 ‘쪽’ 이 되풀이됐다 */
+  const after = v ? `이렇게 정할 때 기준으로 삼은 것은 ${B()}입니다.` : `그때 가장 먼저 따진 조건은 ${B()}입니다.`;
   let decided: string;
-  if (!did.length) decided = `이때 제가 직접 정한 것은 ${B(40)} 쪽이었고, 그렇게 정한 까닭은 ${B()} 때문이었습니다.`;
+  if (!did.length) decided = `이때 제가 직접 정한 것은 ${B(40)}입니다. 그렇게 정한 까닭은 ${B()} 때문이었습니다.`;
   else {
     const c1 = did.length === 2 ? conn(did[0], "고") : "";
     const c2 = conn(did[did.length - 1], "는데");
@@ -208,9 +209,9 @@ function draftLines(d: X, s: Story, k = 0): [string, string][] {
   const cmp = s.compared ? conn(s.compared, "는데") : null;
   const changed = v0
     ? (v ? `결과를 ${U(v0)}${josaOf(v0, "과와")} 나란히 놓아 보니 ${B()} 만큼 차이가 났고, 그 차이를 줄이려고 ${B()} 부분을 고쳤습니다.`
-      : `${U(v0)}${josaOf(v0, "과와")} 맞춰 보니 ${B()} 부분이 달랐는데, 그 까닭은 ${B()} 쪽에서 찾았습니다.`)
+      : `${U(v0)}${josaOf(v0, "과와")} 맞춰 보니 ${B()} 부분이 달랐고, 그 까닭은 ${B()} 때문이었습니다.`)
     : s.compared ? (cmp ? `${U(cmp)}, ${B()} 부분에서 차이가 났습니다.` : `${U(polite(s.compared))} 그 결과 ${B()} 부분이 달라졌습니다.`)
-    : `비교해 본 대상은 ${B()} 쪽이었고, 그 결과 ${B()} 부분이 달라졌습니다.`;
+    : `비교한 대상은 ${B()}입니다. 비교해 보니 ${B()} 부분이 달랐습니다.`;
 
   return [["상황", situ], ["정한 것", decided], ["남긴 것", made], ["달라진 것", changed]];
 }
@@ -243,7 +244,7 @@ export function storyPages(x: Inputs, d: X): Page[] {
   if (!ss.length) {
     const gg = goalGuide(x, d);
     return [P(L("자기소개서 초안", "Cover letter draft"),
-      T(L("자기소개서에 쓸 장면은 아직 나오지 않았습니다", "No scene for your cover letter has come up yet"), gg?.g
+      T(L("자기소개서에 쓸 경험은 아직 없습니다", "No scene for your cover letter has come up yet"), gg?.g
         ? L(`직접 해 봤다고 답한 판단이 없어서 경험 문단의 재료가 아직 없어요. 대신 목표 직무인 ${E(gg.r.name_ko)}의 첫 프로젝트를 끝낸 뒤 쓸 문단의 뼈대를 적어 두었으니, 끝낸 다음 실제로 한 대로 고쳐 쓰세요.`,
           `You did not say you had made any of these decisions yourself, so there is no material for an experience paragraph yet. Below is the outline of a paragraph to write once you finish the first project for your target role, ${E(gg.r.name_ko)}. When it is done, rewrite it to match what you actually did.`)
         : L("직접 해 봤다고 답한 판단이 없어서 경험 문단의 재료가 아직 없어요. 07장의 30일 할 일 하나를 끝내면 그 결과물로 첫 문단을 쓸 수 있습니다.",
@@ -262,7 +263,7 @@ export function storyPages(x: Inputs, d: X): Page[] {
         a === 0
           ? L(`밑줄 친 말은 ${fromPick ? "고르신 항목" : "검사에서 직접 해 봤다고 답하신 내용"}을 그대로 옮긴 것이고, 점선은 응답에 없어 비워 둔 자리예요. 실제와 다른 문장은 지우거나 고쳐 쓰세요.`,
             `Underlined words are copied straight from ${fromPick ? "the items you picked" : "what you said you had done yourself"}, and dotted lines mark details your answers did not cover. Delete or rewrite any sentence that does not match what really happened.`)
-          : L("이 가운데 쓸 만한 장면 하나를 골라 깊게 쓰면 됩니다.", "Pick the one scene worth telling and go into it properly.")) +
+          : L("이 가운데 쓸 만한 경험 하나를 골라 깊게 쓰면 됩니다.", "Pick the one scene worth telling and go into it properly.")) +
       st.map((s, i) => {
         const roles = d.rolesOf(s.domain).filter((r) => r.strength === "중심").slice(0, 3).map((r) => d.roleName(r.role)).filter(Boolean);
         const label = s.from === "answer" ? tag(L("응답으로 만든 초안", "Built from your answers"), C.teal) : s.ready ? tag(L("바로 쓸 수 있음", "Ready to use"), C.navy) : tag(L("보완하면 쓸 수 있음", "Needs a little more detail"), C.teal);
@@ -291,7 +292,7 @@ export function framePage(x: Inputs, d: X): Page {
   return P("자기소개서 문단",
     T(s ? "첫 번째 초안을 이으면 경험 한 단락이 됩니다" : "첫 프로젝트 뼈대를 이으면 경험 한 단락이 됩니다", s
       ? "상황, 정한 것, 남긴 것, 달라진 것 차례로 이어 붙였어요. 점선만 채워도 읽히는 글이 되니, 채운 다음 아래 줄에 내 말로 고쳐 써 보세요."
-      : "아직 쓸 장면이 없어 첫 프로젝트 뼈대를 이어 붙였어요. 프로젝트를 끝낸 뒤 실제로 한 대로 바꿔 쓰세요.") +
+      : "아직 쓸 경험이 없어 첫 프로젝트 뼈대를 이어 붙였어요. 프로젝트를 끝낸 뒤 실제로 한 대로 바꿔 쓰세요.") +
     (para ? `<div class="frame">${para}</div>` : "") +
     `<div class="two">
       ${note("잘 읽히는 단락", ul(["한 단락에는 판단 하나만 깊게", "주어는 ‘우리’보다 ‘제가’", "숫자 하나와 기간 하나 넣기"]))}
@@ -359,11 +360,11 @@ export function portfolioPage(x: Inputs, d: X): Page {
 const FOLLOW: Record<Axis, string> = byLang<Record<Axis, string>>({
   J1: `그때 다룰 범위는 ${B()} 까지로 잡았고, ${B()} 부분은 일부러 뺐습니다.`,
   J2: `받은 요구는 ${B()} 같은 수치로 옮겨 적었습니다.`,
-  J3: `기준은 ${B()} 하나로 잡았고, ${B()} 안은 그 기준에 못 미쳐 고르지 않았습니다.`,
+  J3: `기준은 ${B()} 하나로 잡았고, 그 기준에 맞지 않는 안은 뺐습니다.`,
   J4: `그 방법을 고른 것은 ${B()} 때문이었습니다.`,
-  J5: `그 결과물은 ${B()} 쪽에서 받아 썼습니다.`,
-  J6: `두 값은 ${B()} 정도 차이가 났고, 저는 그 까닭을 ${B()} 쪽에서 찾았습니다.`,
-  J7: `원인은 ${B()} 쪽에 있었고, 고친 뒤에는 ${B()} 방법으로 다시 확인했습니다.`,
+  J5: `그 결과물은 ${B()}에서 받아 썼습니다.`,
+  J6: `두 값은 ${B()} 정도 차이가 났고, 그 까닭은 ${B()} 때문이었습니다.`,
+  J7: `원인은 ${B()}에 있었고, 고친 뒤에는 ${B()} 방법으로 다시 확인했습니다.`,
   J8: `그 결과는 ${B()} 결정을 내릴 때 쓰였습니다.`,
 }, {
   J1: `I drew the scope at ${B()} and deliberately left out ${B()}.`,
@@ -489,7 +490,7 @@ function questions(x: Inputs, d: X): Qn[] {
     out.push({
       q: `${d.name(g.domain)}에서 ${q(pick)}고 하셨는데, 그 결과를 무엇과 비교해 확인했나요?`, why: asks(g.axis), material: pick,
       dir: "비교한 대상이 아직 없다면 다음 과제에서 비교표 한 장을 만들어 두고, 그 표를 들고 답하는 편이 나아요.",
-      draft: `“${isAct(pick) ? U(polite(pick)) : `${U(pick)}${josaOf(pick, "을를")} 맡았습니다.`} 그 결과를 ${B()}에 대어 보니 ${B()} 정도 차이가 났고, 그 까닭은 ${B()} 쪽에 있다고 봤습니다.”`,
+      draft: `“${isAct(pick) ? U(polite(pick)) : `${U(pick)}${josaOf(pick, "을를")} 맡았습니다.`} 그 결과를 ${B()}에 비춰 보니 ${B()} 정도 차이가 났고, 그 까닭은 ${B()} 때문이라고 봤습니다.”`,
     });
   }
   for (const g of d.gaps.slice(0, 3)) {
@@ -501,17 +502,17 @@ function questions(x: Inputs, d: X): Qn[] {
     if (g.kind === "PARTIAL_EVIDENCE") {
       out.push({
         q: `${d.name(g.domain)}에서 ${l2 ? `${q(l2)} 같은 일을 할 때` : `${AXIS_NEED[g.axis]}를 할 때`} 기준은 누가 정했나요?`,
-        why: `${asks(g.axis)} 이번 결과에서 해 본 일은 보였는데, 기준까지 직접 정한 장면은 아직 나오지 않았어요.`,
-        material: head ? `해 본 장면은 있어요. 직접 정한 몫은 07장 할 일 ${q(head)}에서 채워요.` : "해 본 장면은 있어요. 직접 정한 몫은 07장 할 일에서 채워요.",
-        dir: "해 본 장면을 먼저 말하고, 그때 정해져 있던 것과 내가 정한 것을 나눠 답해 보세요.",
-        draft: `“해 본 일은 맞습니다. 다만 그때 ${B()} 부분은 이미 정해져 있었고, 제가 직접 고른 것은 ${B()} 쪽이었습니다.”`,
+        why: `${asks(g.axis)} 이번 결과에서 해 본 일은 보였는데, 기준까지 직접 정했다는 답은 아직 없어요.`,
+        material: head ? `해 본 일은 있어요. 직접 정한 몫은 07장 할 일 ${q(head)}에서 채워요.` : "해 본 일은 있어요. 직접 정한 몫은 07장 할 일에서 채워요.",
+        dir: "해 본 일을 먼저 말하고, 그때 정해져 있던 것과 내가 정한 것을 나눠 답해 보세요.",
+        draft: `“해 본 일은 맞습니다. 다만 그때 ${B()} 부분은 이미 정해져 있었고, 제가 직접 고른 것은 ${B()}입니다.”`,
       });
       continue;
     }
     out.push({
       q: l2 ? `${d.name(g.domain)}에서 ${q(l2)} 같은 일을 직접 해 본 적이 있나요?` : `${d.name(g.domain)}에서 ${j(AXIS_NEED[g.axis], "을를")} 직접 맡아 본 적이 있나요?`,
-      why: `${asks(g.axis)} 이번 결과에서는 이 판단을 해 본 장면이 아직 나오지 않았어요.`,
-      material: head ? `아직 해 본 장면이 없어요. 07장 할 일 ${q(head)}에서 채워요.` : "아직 해 본 장면이 없어요. 07장 할 일에서 채워요.",
+      why: `${asks(g.axis)} 이번 결과에서는 이 판단을 직접 해 봤다는 답이 아직 없어요.`,
+      material: head ? `아직 해 본 적이 없어요. 07장 할 일 ${q(head)}에서 채워요.` : "아직 해 본 적이 없어요. 07장 할 일에서 채워요.",
       dir: "해 보지 않은 일을 해 봤다고 말하지는 마세요. 07장 할 일을 다음 과제로 잡아 두었다면 무엇을 준비하는지로 답하면 돼요.",
       draft: `“아직 혼자 맡아 본 적은 없습니다. 그래서 ${head ? `${U(head)}${josaOf(head, "을를")}` : `${B(30)} 과제를`} 다음 과제로 잡아 두었고, 해 보게 되면 ${B()} 기준부터 제 손으로 정해 볼 생각입니다.”`,
     });
@@ -546,7 +547,7 @@ export function roleQPage(x: Inputs, d: X): Page {
   const items = g ? g.interview.slice(0, 3).map((v) => ({ axis: v.axis, q: v.q, why: v.why })) : r.items.filter((it) => r.required_axes.includes(it.axis)).slice(0, 3).map((it) => ({ axis: it.axis, q: it.ask, why: en ? `${cap(low(d.axisWhat(it.axis)))}, in ${d.name(it.domain)}` : `${d.name(it.domain)}에서 ${d.axisWhat(it.axis)}` }));
   return P(L(`${r.name_ko} 직무 면접 질문`, `${r.name_ko} interview questions`),
     T(L(`${E(r.name_ko)} 직무 면접에서 자주 나오는 질문입니다`, `These questions come up often in ${E(r.name_ko)} interviews`), g
-      ? L("직무 안내에 실린 질문이고, 옆에 지금 어디까지 해 봤는지를 붙였어요. 해 본 판단은 그 장면으로 답하고, 아직인 판단은 연습 과제로 준비하면 됩니다.",
+      ? L("직무 안내에 실린 질문이고, 옆에 지금 어디까지 해 봤는지를 붙였어요. 해 본 판단은 그때 경험으로 답하고, 아직인 판단은 연습 과제로 준비하면 됩니다.",
         "They come from the role guide, with how far you have gone on each one next to it. Answer the decisions you have made with that scene, and prepare the others with the practice task.")
       : L("직무 자료에 실린 질문을 면접 질문으로 옮겼고, 옆에 지금 어디까지 해 봤는지를 붙였어요.",
         "They are taken from the role material, with how far you have gone on each one next to it.")) +
@@ -563,9 +564,9 @@ export function roleQPage(x: Inputs, d: X): Page {
           : `“I have not done this myself yet, and I am getting ready to try it for the first time in a ${B(30)} project.”`)
         : lv != null && lv >= 2 && td && l2
           ? `“${E(d.name(td))} 과제에서 ${U(polite(l2))} ${FOLLOW[v.axis]}”`
-          : pr ? `아직 장면이 없다면 이 연습부터 해 보세요. ${E(polite(pr.task))} 끝나면 ${U(pr.output)}${josaOf(pr.output, "이가")} 남고, 그것으로 답하면 돼요.`
+          : pr ? `아직 해 본 적이 없다면 이 연습부터 해 보세요. ${E(polite(pr.task))} 끝나면 ${U(pr.output)}${josaOf(pr.output, "이가")} 남고, 그것으로 답하면 돼요.`
           : `“아직 직접 해 본 적은 없고, ${B(30)} 과제에서 처음 해 보려고 준비하고 있습니다.”`;
-      return `<div class="qa"><div class="qa-q"><span>${E(d.axisName(v.axis))}</span><b>${E(v.q)}</b></div><div class="two qa-b"><div><p class="k">${L("왜 묻나", "Why they ask")}</p><p>${E(en ? stop(v.why) : polite(v.why))}</p></div><div><p class="k">${L("지금 단계", "Where you are now")}</p><p>${lv == null ? L("이번 검사에서 묻지 않았어요", "This assessment did not ask about it") : E(STEP_WORD[lv as 0 | 1 | 2 | 3].tag)}</p><p class="mut sm">${lv != null && lv >= 2 ? L("해 본 판단이에요. 답할 장면 하나를 미리 정해 두세요.", "You have made this decision. Pick the scene you will answer with ahead of time.") : L("아직 장면이 적은 판단이라 07장 30일 할 일과 이어져요.", "You have little to show here yet, so it links to your 30-day tasks.")}</p></div></div>${mine(lv != null && lv >= 2 ? L("답변 초안", "Draft answer") : L("준비 방법", "How to prepare"), draft)}</div>`;
+      return `<div class="qa"><div class="qa-q"><span>${E(d.axisName(v.axis))}</span><b>${E(v.q)}</b></div><div class="two qa-b"><div><p class="k">${L("왜 묻나", "Why they ask")}</p><p>${E(en ? stop(v.why) : polite(v.why))}</p></div><div><p class="k">${L("지금 단계", "Where you are now")}</p><p>${lv == null ? L("이번 검사에서 묻지 않았어요", "This assessment did not ask about it") : E(STEP_WORD[lv as 0 | 1 | 2 | 3].tag)}</p><p class="mut sm">${lv != null && lv >= 2 ? L("해 본 판단이에요. 답할 경험 하나를 미리 정해 두세요.", "You have made this decision. Pick the scene you will answer with ahead of time.") : L("아직 해 본 일이 적은 판단이라 07장 30일 할 일과 이어져요.", "You have little to show here yet, so it links to your 30-day tasks.")}</p></div></div>${mine(lv != null && lv >= 2 ? L("답변 초안", "Draft answer") : L("준비 방법", "How to prepare"), draft)}</div>`;
     }).join("") + band(L("연습", "Practice"), L("질문마다 30초 안에 소리 내어 답해 보고, 막힌 대목은 초안 옆에 적어 두세요.", "Answer each question out loud in under 30 seconds, and note where you got stuck next to the draft.")));
 }
 
@@ -579,7 +580,7 @@ export function checkPage(x: Inputs, d: X): Page {
   ] : [
     ["자기소개서", ["문단마다 ‘제가 정한 것’이 하나씩 들어 있다", "결과물 이름이 문장 안에 있다", "결과 수치와 기간을 직접 적었다", "공고의 담당 업무 표현을 그대로 썼다"]],
     ["포트폴리오", ["결과물마다 정한 것 한 줄과 비교한 대상 한 줄이 있다", "가진 결과물 가운데 셋을 골랐다", "새로 만들 결과물 하나의 마감일을 정했다"]],
-    ["면접", ["질문마다 답할 장면 하나를 정했다", "버린 안과 그 까닭을 말할 수 있다", "내 결과가 다음 결정에 쓰인 장면을 하나 준비했다"]],
+    ["면접", ["질문마다 답할 경험 하나를 정했다", "버린 안과 그 까닭을 말할 수 있다", "내 결과가 다음 결정에 쓰인 사례를 하나 준비했다"]],
     ["기관 조사", ["공시, 누리집, 채용 공고를 직접 열어 봤다", "한 장 정리 양식을 채웠다", "아직 확인하지 못한 것을 적어 두었다"]],
   ];
   /* 30초 자기소개 초안: 전공 · 가장 분명한 강점 하나(답한 말) · 목표 직무. 두 문장으로 끝낸다 */
@@ -598,8 +599,8 @@ export function checkPage(x: Inputs, d: X): Page {
     const did = strongLine ? conn(strongLine, "던") : null;
     const best = strongDom
       ? (did ? `${E(strongDom)} 과제에서 ${U(did)} 일` : `${E(strongDom)} 쪽 일`)
-      : `${B(30)} 쪽 일`;
-    intro = `“${E(j(x.major, "을를"))} 공부하는 ${E(x.person)}입니다. 가장 자신 있게 말씀드릴 수 있는 경험은 ${best}이고, 앞으로 ${goal ? `${U(goal)} 직무에서` : `${B(30)} 직무에서`} 이 경험을 이어 가려고 지금은 ${B(30)} 쪽을 준비하고 있습니다.”`;
+      : `${B(30)} 업무`;
+    intro = `“${E(j(x.major, "을를"))} 공부하는 ${E(x.person)}입니다. 가장 자신 있게 말씀드릴 수 있는 경험은 ${best}이고, 앞으로 ${goal ? `${U(goal)} 직무에서` : `${B(30)} 직무에서`} 이 경험을 살리려고 지금은 ${B(30)} 준비를 하고 있습니다.”`;
   }
   const mats = d.goalRole ? d.goalRole.application_material.slice(0, 3) : [];
   return P(L("제출 전 점검표", "Pre-submission checklist"),

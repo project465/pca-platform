@@ -124,6 +124,17 @@ export function packHeadThemes(p: IndustryPack): string[] {
 const GENERIC = /^(장비|전문|발주|개발|서비스|정보|관리|운영|일반|기업|산업|공공|시설)$/;
 export const tryOf = (key: string) => THEMES.find((t) => t.key === key)?.try ?? "";
 
+/** 전공마다 받을 업종 · 품목 낱말. 없는 전공은 거르지 않는다 */
+const SECTOR_MUST: Record<string, RegExp> = {
+  CS_CORE_V1: /소프트웨어|정보|데이터|프로그램|컴퓨터|통신|플랫폼|게임|인터넷|인공지능|AI|앱|애플리케이션|어플리케이션|솔루션|디지털|전자상거래|금융업|보안|클라우드|IT|웹|모바일/i,
+  EE_CORE_V1: /전기|전자|반도체|통신|장비|기계|계측|측정|제어|전력|에너지|로봇|자동차|디스플레이|광학|의료용 기기|정밀|배터리|전지|조명|소프트웨어|센서|회로/,
+};
+
+const SECTOR_NOISE = /전자부품, ?컴퓨터, ?영상, ?음향 및 통신장비 제조업/g;
+
+/** 묶음 이름의 낱말이 회사 이름에 다른 꼴로 적히는 경우(로봇 → 로보틱스) */
+const ALIAS: Record<string, string[]> = { 로봇: ["로보"] };
+
 /** 묶음의 회사들이 가장 많이 함께 가진 업종. 해 볼 것 한 줄을 그 업종에 맞춘다 */
 export function groupTheme(pack: IndustryPack, orgs: { sector: string; product: string; name: string }[]): string {
   const all = packThemes(pack);
@@ -254,7 +265,14 @@ export function regionView(x: Inputs, name: (td: string) => string): RegionView 
   /* 공기업은 따로 표를 세운다. 다만 이 전공에 공기업·발주청을 다루는 묶음이 있으면(경영 · 행정 ·
      토목) 그 묶음으로도 받는다. 그 학생에게 이 지역 공기업은 남의 전공 회사가 아니다 */
   const PUBLIC_PACK = /공기업|공기관|공공기관|발주청/;
+  /* **전공 밖 업종은 받지 않는다.** 묶음 낱말이 겹친다는 것만으로 받으면 컴퓨터 책의 ‘자동차·모빌리티 소프트웨어’ 에
+     연료전지 · 소재 회사가, 전기전자 책의 ‘자동차 전장’ 에 화학 회사가 들어갔다. 업종이나 주력 품목에 그 전공의
+     일이 적혀 있는 회사만 받는다. 경영처럼 어느 업종에서나 일하는 전공은 거르지 않는다 */
+  const must = SECTOR_MUST[x.coreCode];
   for (const o of all) {
+    /* 표준산업분류의 ‘전자부품, 컴퓨터, 영상, 음향 및 통신장비 제조업’ 은 낱말에 컴퓨터와 통신이 들어 있어
+       부품 · 소재 회사가 컴퓨터 책에 들어왔다. 그 업종명은 지우고 주력 품목과 나머지 업종으로만 본다 */
+    if (must && !must.test(`${o.sector} ${o.product}`.replace(SECTOR_NOISE, " "))) { unmatched++; continue; }
     const pub = publicOrgs.includes(o);
     if (pub && !packTh.some((t) => PUBLIC_PACK.test(packHead(t.p)))) continue;
     const text = `${o.sector} ${o.product} ${o.name}`;
@@ -270,7 +288,7 @@ export function regionView(x: Inputs, name: (td: string) => string): RegionView 
       const shared = th.filter((t) => pt.includes(t));
       if (!shared.length) continue;
       if (head.length && !shared.some((t) => head.includes(t))) continue;
-      const n = shared.reduce((a, t) => a + 1 / (themeUse.get(t) ?? 1), 0) + (tokens.some((k) => flat.includes(k)) ? 2 : 0);
+      const n = shared.reduce((a, t) => a + 1 / (themeUse.get(t) ?? 1), 0) + (tokens.some((k) => flat.includes(k) || (ALIAS[k] ?? []).some((v) => flat.includes(v))) ? 2 : 0);
       if (!best || n > best.n) best = { code: p.code, n };
     }
     if (!best) { unmatched++; continue; }
@@ -293,10 +311,12 @@ export function regionView(x: Inputs, name: (td: string) => string): RegionView 
   if (!all.length) return null;
   /* 사업의 개요는 이 전공의 묶음에 든 회사부터 싣는다. 생명공학 책 첫 장에 건설사가 오지 않게 */
   const mine = new Set(groups.flatMap((g) => g.orgs.map((o) => bare(o.name))));
-  overview.sort((a, b) => Number(mine.has(bare(b.name))) - Number(mine.has(bare(a.name))));
+  /* **이 전공의 묶음에 든 회사만 싣는다.** 앞으로 세우기만 하면, 묶음에 든 회사가 하나도 없는 책(반도체물리학
+     책에 백신 · 건설 회사)에서는 남의 전공 회사의 사업 개요가 그대로 실린다. 하나도 없으면 그 쪽을 세우지 않는다 */
+  const overviewMine = overview.filter((o) => mine.has(bare(o.name)));
   return {
     key: x.region, label: P.label, area: P.area, checkedOn, sources: [...new Set(sources)],
-    all, listed, groups, unmatched, neighbor, publicOrgs, big, overview,
+    all, listed, groups, unmatched, neighbor, publicOrgs, big, overview: overviewMine,
   };
 }
 
