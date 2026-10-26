@@ -20,6 +20,7 @@ import { WS_EN_RECOMPUTE } from "./ws-en/recompute";
 import { WS_EN_RESULTS } from "./ws-en/results";
 import { WS_EN_EXPLORE } from "./ws-en/explore";
 import { WS_EN_PREP } from "./ws-en/prep";
+import { WS_EN_TRACK_POSTING } from "./ws-en/track-posting";
 import { WS_EN_TRACK } from "./ws-en/track";
 import type { WsLang } from "./ws-lang";
 
@@ -31,6 +32,7 @@ const EN: Record<string, string> = {
   ...WS_EN_SHELL, ...WS_EN_HOME, ...WS_EN_STATE, ...WS_EN_NEXT,
   ...WS_EN_EXPERIENCE, ...WS_EN_RECOMPUTE, ...WS_EN_RESULTS,
   ...WS_EN_EXPLORE, ...WS_EN_PREP,
+  ...WS_EN_TRACK_POSTING,
 };
 
 function fill(s: string, vars?: Record<string, string | number>): string {

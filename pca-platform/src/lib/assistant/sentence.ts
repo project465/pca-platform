@@ -38,6 +38,22 @@ export const JOINS = [
 /** 조사. 받침에 따라 고른 것이라 이음말과 따로 센다 */
 export const JOSA = ["으로", "로", "과", "와", "을", "를"] as const;
 
+/**
+ * 영어 뼈대의 빈칸과 이음말. **원칙은 같다**: 문장에 들어가는 말은 경험 칸의
+ * 글 · 아래 이음말 · 빈칸뿐이고, 숫자와 성과를 지어 넣지 않는다.
+ */
+export const BLANK_EN = {
+  problem: "[the problem I set out to solve]",
+  decision: "[what I decided myself]",
+  artifact: "[what I produced]",
+  verify: "[how I checked it]",
+} as const;
+
+export const JOINS_EN = [
+  "In", "I worked on", "Along the way, I", "Along the way, I made the call on",
+  "I left", "as the result, and checked it against", "as the result, and checked it by", "I",
+] as const;
+
 const bare = (s: string) => s.replace(/\s+/g, " ").trim().replace(/[.。]+$/, "");
 const q = (s: string) => `‘${s}’`;
 /** `…다` 로 끝나는 칸은 그대로 문장이 된다(보기의 말이 `…정했다` 꼴이다) */
@@ -96,6 +112,42 @@ export function composeSentences(e: Experience, u = 0): { sentences: string[]; b
   return { sentences: [s1, s2, s3], blanks };
 }
 
+/** 영어 보기 문장(`Set a thickness …` · `Chose the fits …`)은 과거형 동사로 시작하는 마디다 */
+const isClauseEn = (s: string) =>
+  /^(?:[A-Z][a-z]+ed|Set|Chose|Made|Wrote|Built|Ran|Took|Led|Drew|Found|Split|Kept|Put|Cut|Laid|Sent|Gave|Held|Brought|Got|Did|Saw|Thought|Chose)\b/.test(s);
+const lowerFirst = (s: string) => (/^[A-Z][a-z]/.test(s) ? s[0].toLowerCase() + s.slice(1) : s);
+const qe = (s: string) => `“${s}”`;
+/** 셀 수 있는 이름 앞에 a/an. 복수(`calculations`)와 대문자 약어 뒤 복수는 그대로 둔다 */
+const withArticle = (s: string): string => {
+  if (/^(a|an|the|my|our)\s/i.test(s) || /s$/i.test(s) && !/(ss|is|us)$/i.test(s)) return s;
+  return /^[aeiou]/i.test(s) && !/^(u[bcfhjkqrstn][aeiou]|one)/i.test(s) ? `an ${s}` : `a ${s}`;
+};
+
+/** 영어 문장 셋. 한국어 `composeSentences` 와 같은 차례(문제 → 정한 것 → 남긴 것과 확인) */
+export function composeSentencesEn(e: Experience, u = 0): { sentences: string[]; blanks: string[] } {
+  const blanks: string[] = [];
+  const pick = (xs: string[] | undefined, blank: string) => {
+    const v = nth(xs, u);
+    if (!v) blanks.push(blank);
+    return v;
+  };
+  const title = bare(e.title);
+  const problem = pick(e.problems, BLANK_EN.problem);
+  const decision = pick(e.decisions, BLANK_EN.decision);
+  const artifact = pick(e.artifacts, BLANK_EN.artifact);
+  const verify = pick(e.verifications, BLANK_EN.verify);
+  const s1 = !problem ? `In ${qe(title)}, I ${BLANK_EN.problem}.`
+    : isClauseEn(problem) ? `In ${qe(title)}, I ${lowerFirst(problem)}.`
+      : `In ${qe(title)}, I worked on ${lowerFirst(problem)}.`;
+  const s2 = !decision ? `Along the way, I ${BLANK_EN.decision}.`
+    : isClauseEn(decision) ? `Along the way, I ${lowerFirst(decision)}.`
+      : `Along the way, I made the call on ${lowerFirst(decision)}.`;
+  const s3 = verify
+    ? `I left ${artifact ? withArticle(lowerFirst(artifact)) : BLANK_EN.artifact} as the result, and checked it against ${lowerFirst(verify)}.`
+    : `I left ${artifact ? withArticle(lowerFirst(artifact)) : BLANK_EN.artifact} as the result, and checked it by ${BLANK_EN.verify}.`;
+  return { sentences: [s1, s2, s3], blanks };
+}
+
 /**
  * 필수 항목 가운데 `설명할 경험 있음` · `정리가 덜 됨` 이고 그 영역에 적어 둔
  * 경험이 있는 줄마다 하나. 최대 여섯.
@@ -104,7 +156,7 @@ export function composeSentences(e: Experience, u = 0): { sentences: string[]; b
  * 칸이 없으면 이을 말이 없다. 화면이 그 수(`missing`)를 따로 적는다.
  */
 export function sentenceDrafts(
-  items: PostingItem[], exps: Experience[], max = 6,
+  items: PostingItem[], exps: Experience[], max = 6, lang: "ko" | "en" = "ko",
 ): { drafts: SentenceDraft[]; missing: number } {
   const used = new Map<string, number>();
   const drafts: SentenceDraft[] = [];
@@ -124,7 +176,7 @@ export function sentenceDrafts(
     }
     const u = used.get(best.id) ?? 0;
     used.set(best.id, u + 1);
-    const { sentences, blanks } = composeSentences(best, u);
+    const { sentences, blanks } = lang === "en" ? composeSentencesEn(best, u) : composeSentences(best, u);
     const same = drafts.find((d) => d.sentences.join(" ") === sentences.join(" "));
     if (same) { same.also.push(it.text); continue; }
     drafts.push({

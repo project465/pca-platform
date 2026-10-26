@@ -13,8 +13,8 @@ export const WS_EN_TRACK: Record<string, string> = {
 
   /* ── 검사 먼저 ─────────────────────────────────────────── */
   "먼저 무료 검사부터": "Start with the free test",
-  "MAT 은 검사 결과를 바탕으로 돕니다": "MAT works from your test result",
-  "이번 주 할 일, 공고 맞대기, 지원서 문장 뼈대가 모두 검사에서 확인된 내 경험과 비어 있는 자리를 읽습니다. 무료 검사는 12분 정도 걸리고, 끝나면 이 화면에서 바로 MAT 을 시작할 수 있습니다.":
+  "MAT 은 검사 결과에서 시작합니다": "MAT works from your test result",
+  "이번 주 할 일, 공고 맞대기, 지원서 문장 뼈대가 모두 검사에서 확인된 내 경험과 부족한 부분을 읽습니다. 무료 검사는 12분 정도 걸리고, 끝나면 이 화면에서 바로 MAT 을 시작할 수 있습니다.":
     "Your weekly task, posting checks and sentence outlines all build on what the test found in your experience "
     + "and where the gaps are. The free test takes about 12 minutes, and you can start MAT from this page as soon as you finish.",
   "무료 검사 시작": "Take the free test",
@@ -120,7 +120,7 @@ export const WS_EN_TRACK: Record<string, string> = {
   "메모를 한두 문장 더 적어 주세요. 무엇을 했고 무엇이 남았는지면 됩니다.":
     "Please add a sentence or two: what you did and what you produced.",
   "메모를 옮기지 못했습니다. 한 번 더 눌러 주세요.": "We couldn't move your note. Please try once more.",
-  "MAT 은 검사 결과를 바탕으로 돕니다. 무료 검사를 먼저 마쳐 주세요.":
+  "MAT 은 검사 결과에서 시작하므로 무료 검사를 먼저 마쳐 주세요.":
     "MAT works from your test result. Please finish the free test first.",
 
   /* ── 브리핑 판(`brief.tsx`) ─────────────────────────────── */

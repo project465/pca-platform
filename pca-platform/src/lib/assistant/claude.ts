@@ -115,6 +115,18 @@ export async function askStructured<S extends z.ZodType>(opts: {
 }
 
 /** 화면에 적을 한 줄. 왜 규칙으로 읽었는지를 사람의 말로 */
+/** 같은 까닭의 영어. 영어 작업공간의 공고 · 메모에 남는다 */
+export function aiFailEn(r: AiFail | "consent"): string {
+  switch (r) {
+    case "off": return "AI reading is off right now, so this was read with rules.";
+    case "consent": return "You haven't turned on AI reading, so this was read with rules.";
+    case "refusal": return "The AI didn't read this text, so it was read with rules.";
+    case "rate": return "Too many requests right now, so this was read with rules.";
+    case "timeout": return "The AI took too long, so this was read with rules.";
+    default: return "AI reading wasn't available, so this was read with rules.";
+  }
+}
+
 export function aiFailKo(r: AiFail | "consent"): string {
   switch (r) {
     case "off": return "지금은 AI 분석이 꺼져 있어 규칙으로 읽었습니다.";

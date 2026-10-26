@@ -43,12 +43,27 @@ function nextDay(d: string): string {
 }
 const stamp = (now: Date) => now.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
 
-export function buildIcs(rows: Row[], opts: { base?: string; now?: Date } = {}): string {
+/** 달력에 들어가는 글. 영어 작업공간이면 영어다 */
+const ICS_TEXT = {
+  ko: {
+    prod: "KO", cal: "MAT 공고 마감", due: (l: string) => `${l} 마감`,
+    desc: "CareerMatri MAT에 붙여 둔 공고의 마감일입니다. 지원은 공고를 낸 곳에서 직접 하시면 됩니다.",
+    alarm: "내일 공고 마감",
+  },
+  en: {
+    prod: "EN", cal: "MAT posting deadlines", due: (l: string) => `${l} closes`,
+    desc: "Deadline for a posting you saved in CareerMatri MAT. Apply directly with the employer.",
+    alarm: "Posting closes tomorrow",
+  },
+} as const;
+
+export function buildIcs(rows: Row[], opts: { base?: string; now?: Date; lang?: "ko" | "en" } = {}): string {
   const now = opts.now ?? new Date();
   const base = (opts.base ?? "").replace(/\/+$/, "");
+  const T = ICS_TEXT[opts.lang === "en" ? "en" : "ko"];
   const lines = [
-    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//CareerMatri//MAT//KO", "CALSCALE:GREGORIAN",
-    "METHOD:PUBLISH", "X-WR-CALNAME:MAT 공고 마감",
+    "BEGIN:VCALENDAR", "VERSION:2.0", `PRODID:-//CareerMatri//MAT//${T.prod}`, "CALSCALE:GREGORIAN",
+    "METHOD:PUBLISH", `X-WR-CALNAME:${T.cal}`,
   ];
   for (const r of rows) {
     const href = base ? `${base}/me/track/posting/${r.id}` : "";
@@ -58,11 +73,11 @@ export function buildIcs(rows: Row[], opts: { base?: string; now?: Date } = {}):
       `DTSTAMP:${stamp(now)}`,
       `DTSTART;VALUE=DATE:${ymd(r.deadline)}`,
       `DTEND;VALUE=DATE:${ymd(nextDay(r.deadline))}`,
-      `SUMMARY:${icsText(`${r.label} 마감`)}`,
-      `DESCRIPTION:${icsText("CareerMatri MAT에 붙여 둔 공고의 마감일입니다. 지원은 공고를 낸 곳에서 직접 하시면 됩니다.")}`,
+      `SUMMARY:${icsText(T.due(r.label))}`,
+      `DESCRIPTION:${icsText(T.desc)}`,
       ...(href ? [`URL:${href}`] : []),
       "TRANSP:TRANSPARENT",
-      "BEGIN:VALARM", "ACTION:DISPLAY", `DESCRIPTION:${icsText("내일 공고 마감")}`,
+      "BEGIN:VALARM", "ACTION:DISPLAY", `DESCRIPTION:${icsText(T.alarm)}`,
       "TRIGGER:-PT15H", "END:VALARM",
       "END:VEVENT",
     );

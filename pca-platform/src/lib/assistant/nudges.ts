@@ -4,7 +4,8 @@ import { enqueue } from "@/lib/outbox";
 import { pushReady, sendPush } from "@/lib/push";
 import { openActions } from "@/lib/me-v3/open-actions";
 import { coreIfAny } from "@/lib/me-v3/platform";
-import { PUSH_TEXT, buildBrief, weeklyNudgeText } from "./brief";
+import { PUSH_TEXT, PUSH_TEXT_EN, buildBrief, weeklyNudgeText, weeklyNudgeTextEn } from "./brief";
+import { wsLang } from "@/lib/me-v3/ws-lang";
 import { livePostingsOf } from "./posting";
 import { opFail, ref } from "@/lib/oplog";
 
@@ -77,13 +78,17 @@ export async function nudgeUser(userId: string, now = new Date()): Promise<{
   const wk = weekKey(now);
   let weekly = 0;
   let deadline = 0;
+  /* **알림 줄은 쌓을 때의 언어로 남는다.** 작업공간이 영어인 분에게 한국어 줄이
+     쌓이면 화면을 바꿔도 그 줄은 한국어로 남는다 */
+  const en = (await wsLang(userId).catch(() => "ko")) === "en";
   try {
     /* **전공을 아직 고르지 않은 분은 짐작으로 고르지 않는다.** 할 일이
        없으므로 검사를 시작하는 자리로 보낸다 */
     if (!(await coreIfAny(userId))) {
       if (await put(userId, {
-        kind: "weekly", title: "이번 주 할 일 하나",
-        body: "전공을 고르고 검사를 끝내면 할 일을 이 자리에 알려 드립니다.",
+        kind: "weekly", title: en ? "One task for this week" : "이번 주 할 일 하나",
+        body: en ? "Pick your major and finish the free assessment, and your weekly task will show up here."
+          : "전공을 고르고 검사를 끝내면 할 일을 이 자리에 알려 드립니다.",
         href: "/cores", key: `weekly:${wk}`,
       })) weekly += 1;
       throw null;
@@ -100,9 +105,9 @@ export async function nudgeUser(userId: string, now = new Date()): Promise<{
     const [open, live] = await Promise.all([openActions(userId), livePostingsOf(userId)]);
     const b = buildBrief({
       core: live.core, postings: live.rows, exps: live.exps,
-      actions: open.rows, fromResult: open.fromResult, now,
+      actions: open.rows, fromResult: open.fromResult, now, lang: en ? "en" : "ko",
     });
-    const text = weeklyNudgeText({
+    const text = (en ? weeklyNudgeTextEn : weeklyNudgeText)({
       task: Boolean(b.task),
       deadlines: b.deadlines.filter((d) => d.left <= 7).length,
       gaps: b.gaps.length,
@@ -127,8 +132,12 @@ export async function nudgeUser(userId: string, now = new Date()): Promise<{
     const step = p.left <= 1 ? "d1" : p.left <= 3 ? "d3" : "d7";
     if (await put(userId, {
       kind: "deadline",
-      title: p.left === 0 ? `'${p.label}' 오늘 마감` : `'${p.label}' 마감 ${p.left}일 전`,
-      body: "공고와 내 경험을 맞대어 본 표를 한 번 더 보고, 비어 있는 줄을 채워 두세요. 휴대폰 달력에 넣는 파일도 그 화면에 있습니다.",
+      title: en
+        ? (p.left === 0 ? `"${p.label}" closes today` : `"${p.label}" closes in ${p.left} day${p.left === 1 ? "" : "s"}`)
+        : p.left === 0 ? `'${p.label}' 오늘 마감` : `'${p.label}' 마감 ${p.left}일 전`,
+      body: en
+        ? "Take one more look at how your experience lines up with this posting and fill in what's still empty. The calendar file is on that page too."
+        : "공고와 내 경험을 맞대어 본 표를 한 번 더 보고, 비어 있는 줄을 채워 두세요. 휴대폰 달력에 넣는 파일도 그 화면에 있습니다.",
       href: `/me/track/posting/${p.id}`,
       key: `deadline:${p.id}:${step}`,
     })) deadline += 1;
@@ -156,13 +165,14 @@ export async function runAssistantTick(now = new Date()): Promise<{
   const wk = weekKey(now);
   for (const u of users) {
     const r = await nudgeUser(u.id, now);
+    const lang = await wsLang(u.id).catch(() => "ko" as const);
     weekly += r.weekly;
     deadline += r.deadline;
     /* 기기 알림(PWA). **새로 쌓인 알림이 있을 때만** 한 번 보낸다: 알림 줄이
        같은 주에 두 번 쌓이지 않으므로(`dedupe_key`) 알림도 두 번 뜨지 않는다.
        글에는 공고 이름도 할 일 문장도 적지 않는다(잠긴 화면에 그대로 뜬다) */
     if (r.weekly + r.deadline > 0 && pushReady()) {
-      await sendPush(u.id, { ...(r.deadline > 0 ? PUSH_TEXT.deadline : PUSH_TEXT.weekly) })
+      await sendPush(u.id, { ...(lang === "en" ? PUSH_TEXT_EN : PUSH_TEXT)[r.deadline > 0 ? "deadline" : "weekly"] })
         .catch(() => undefined);
     }
     if (u.email_digest && u.email && r.weekly + r.deadline > 0) {
@@ -170,6 +180,7 @@ export async function runAssistantTick(now = new Date()): Promise<{
         kind: "assistant_digest", userId: u.id,
         payload: { n: String(r.weekly + r.deadline), deadlines: String(r.deadline) },
         dedupeKey: `assistant_digest:${u.id}:${wk}:${r.deadline}`,
+        locale: lang,
       });
       mailed += 1;
     }

@@ -5,6 +5,7 @@ import { withJosa } from "@/lib/me-v3/result/josa";
 import type { Axis } from "@/lib/me-v3/scoring/types";
 import type { Experience } from "@/lib/me-v3/platform";
 import type { ItemStatus, PostingItem } from "./posting";
+import { axisName } from "./catalog";
 
 /**
  * 공고 한 건으로 면접을 준비하고, 비어 있는 요구를 이번 주 할 일로 바꾼다.
@@ -212,8 +213,9 @@ function taskIndex(items: PostingItem[], it: PostingItem): number {
  * 영역에 잇지 못한 줄(학력·자격 같은 조건)은 경험으로 답할 자리가 아니라 뺀다.
  */
 export function interviewPrep(
-  core: string, items: PostingItem[], exps: Experience[], max = 6,
+  core: string, items: PostingItem[], exps: Experience[], max = 6, lang: "ko" | "en" = "ko",
 ): InterviewPrep[] {
+  if (lang === "en") return interviewPrepEn(core, items, exps, max);
   const withDomain = items.filter((it): it is PostingItem & { domain: string } => !!it.domain);
   const picked = [
     ...withDomain.filter((it) => it.kind === "must"),
@@ -323,8 +325,9 @@ export type SmallTask = {
  * 않는다: 무엇을 만들지 모르는 할 일은 할 일이 아니다.
  */
 export function smallTasks(
-  core: string, items: PostingItem[], exps: Experience[],
+  core: string, items: PostingItem[], exps: Experience[], lang: "ko" | "en" = "ko",
 ): SmallTask[] {
+  if (lang === "en") return smallTasksEn(core, items, exps);
   const out: SmallTask[] = [];
   const seen = new Map<string, number>();
   for (const it of items) {
@@ -373,6 +376,222 @@ export function smallTasks(
 }
 
 /** 할 일 목록에 담을 문장. 어느 공고의 어느 요구에서 왔는지 끝에 붙인다 */
-export function taskBody(t: SmallTask, label: string): string {
+export function taskBody(t: SmallTask, label: string, lang: "ko" | "en" = "ko"): string {
+  if (lang === "en") return `${t.task} (from the posting “${quote(label, 30)}”: “${quote(t.text, 30)}”)`.slice(0, 400);
   return `${t.task} (${q(quote(label, 30))} 공고의 ${q(quote(t.text, 30))})`.slice(0, 400);
 }
+
+/* ── 영어 ──────────────────────────────────────────────────────
+   한국어와 같은 차례 · 같은 고르는 법이고 **글만 영어다.** 영역 사전은 그 Core
+   의 영어 원고를 읽고, 없으면 한국어 원고로 떨어진다(이름만 한국어가 된다) */
+
+const DICT_EN = new Map<string, Domain[]>();
+function dictEn(core: string): Domain[] {
+  let d = DICT_EN.get(core);
+  if (!d) {
+    try { d = coreFile<{ domains: Domain[] }>(core, "domains", undefined, "en").domains; }
+    catch { d = dict(core); }
+    DICT_EN.set(core, d);
+  }
+  return d;
+}
+const domainOfEn = (core: string, td: string) => dictEn(core).find((d) => d.code === td);
+const areaEn = (core: string, td: string) => domainOfEn(core, td)?.name ?? domainName(core, td);
+const qe = (s: string) => `“${s}”`;
+const lowerFirst = (s: string) => (/^[A-Z][a-z]/.test(s) ? s[0].toLowerCase() + s.slice(1) : s);
+/** 셀 수 있는 이름 앞에 a/an. 복수(`calculations`)와 대문자 약어 뒤 복수는 그대로 둔다 */
+const withArticle = (s: string): string => {
+  if (/^(a|an|the|my|our)\s/i.test(s) || /s$/i.test(s) && !/(ss|is|us)$/i.test(s)) return s;
+  return /^[aeiou]/i.test(s) && !/^(u[bcfhjkqrstn][aeiou]|one)/i.test(s) ? `an ${s}` : `a ${s}`;
+};
+const OFF_EN = /\b(pass|hire|hiring\s+decision|recommend\w*|rank\w*|score)\b/i;
+
+const ASK_EN: Record<Axis, [(req: string, area: string) => string, (req: string, area: string) => string]> = {
+  J1: [
+    (r) => `When you took on work like ${qe(r)}, how did you define the problem you had to solve?`,
+    (_, a) => `The first time you got a ${a} task, where did you draw the line on what was yours to solve?`,
+  ],
+  J2: [
+    (r) => `For ${qe(r)}, how did you turn what was asked into concrete conditions or criteria?`,
+    (_, a) => `In your ${a} work, when two requirements pulled against each other, which did you keep and why?`,
+  ],
+  J3: [
+    (r) => `In work related to ${qe(r)}, what did you decide yourself, and what was that decision based on?`,
+    (_, a) => `In your ${a} work, was there a moment you set the criteria yourself instead of following what you were given?`,
+  ],
+  J4: [
+    (r) => `For ${qe(r)}, which method or tool did you use, and why that one?`,
+    (_, a) => `Of the tools you used in ${a}, pick the one you know best and tell me what you actually did with it.`,
+  ],
+  J5: [
+    (r) => `For ${qe(r)}, walk me through one thing you built or wrote that someone else could use.`,
+    (_, a) => `Could someone else pick up what you produced in your ${a} work? What was written in it?`,
+  ],
+  J6: [
+    (r) => `For results related to ${qe(r)}, what did you compare them with to know they were right?`,
+    (_, a) => `In your ${a} work, what told you the result could be trusted?`,
+  ],
+  J7: [
+    (r) => `In work related to ${qe(r)}, did something not go to plan? What did you fix?`,
+    (_, a) => `In your ${a} work, when you found a mistake, how did you narrow down the cause?`,
+  ],
+  J8: [
+    (r) => `Where did the work you did for ${qe(r)} actually get used?`,
+    (_, a) => `When you handed off ${a} results to a person or team, what did you pass along with them?`,
+  ],
+};
+
+function frameLineEn(lead: PickKind, lv: string, second: PickKind | null, sv: string): string {
+  const D = qe(bare(lv)), A = lowerFirst(bare(lv));
+  const S = bare(sv);
+  if (lead === "decisions") {
+    if (second === "artifacts") return `Open with what you decided, ${D}, then end by showing ${withArticle(lowerFirst(S))} that came out of it.`;
+    if (second === "verifications") return `Open with what you decided, ${D}, then explain how you checked it against ${lowerFirst(S)}.`;
+    return `Open with what you decided, ${D}, then give one reason you decided it that way.`;
+  }
+  if (lead === "artifacts") {
+    if (second === "decisions") return `Start by showing ${withArticle(A)}, then point to the part you decided yourself: ${qe(S)}.`;
+    if (second === "verifications") return `Start by showing ${withArticle(A)}, then add how you checked it against ${lowerFirst(S)}.`;
+    return `Start by showing ${withArticle(A)}, then point out which part of it was yours.`;
+  }
+  if (second === "decisions") return `Start with how you checked your result against ${A}, then add what you had decided before that: ${qe(S)}.`;
+  if (second === "artifacts") return `Start with how you checked your result against ${A}, then show ${withArticle(lowerFirst(S))} you produced along the way.`;
+  return `Start with how you checked your result against ${A}, then add one thing the comparison taught you.`;
+}
+
+function artifactOfEn(core: string, td: string, i: number): string | null {
+  return rotate((domainOfEn(core, td)?.artifacts ?? []).filter((x) => !OFF_EN.test(x)), i);
+}
+function verifyOfEn(core: string, td: string, i: number): string | null {
+  return rotate((domainOfEn(core, td)?.verify_targets ?? []).filter((x) => !OFF_EN.test(x)), i);
+}
+
+function interviewPrepEn(core: string, items: PostingItem[], exps: Experience[], max: number): InterviewPrep[] {
+  const withDomain = items.filter((it): it is PostingItem & { domain: string } => !!it.domain);
+  const picked = [
+    ...withDomain.filter((it) => it.kind === "must"),
+    ...withDomain.filter((it) => it.kind !== "must"),
+  ].slice(0, max);
+  const usedTpl = new Set<string>();
+  const usedQ = new Set<string>();
+  const usedExp = new Set<string>();
+  const useN = new Map<string, number>();
+  const usedNear = new Set<string>();
+  let h = 0;
+  const out: InterviewPrep[] = [];
+  for (const it of picked) {
+    const d = domainOfEn(core, it.domain);
+    const area = areaEn(core, it.domain);
+    const req = quote(it.text, 60);
+    const prefer: Axis[] = [
+      ...(isAxis(it.axis) ? [it.axis] : []),
+      ...((d?.required_axes ?? []).filter(isAxis)),
+      ...FALLBACK,
+    ];
+    let axis: Axis = prefer[0];
+    let question = "";
+    outer: for (const ax of [...new Set(prefer)]) {
+      for (let v = 0; v < 2; v += 1) {
+        const k = `${ax}:${v}`;
+        const s = ASK_EN[ax][v](req, area.toLowerCase());
+        if (usedTpl.has(k) || usedQ.has(s)) continue;
+        usedTpl.add(k); usedQ.add(s);
+        axis = ax; question = s;
+        break outer;
+      }
+    }
+    if (!question) continue;
+    const mine = exps.filter((e) => e.td_codes.includes(it.domain));
+    const exp = pickExperience(mine, axis, usedExp);
+    let frame: string | null = null;
+    let honest: string | null = null;
+    if (exp) {
+      usedExp.add(exp.id);
+      const u = useN.get(exp.id) ?? 0;
+      useN.set(exp.id, u + 1);
+      const kinds = LEAD[axis].filter((k) => (exp[k] ?? []).length > 0);
+      if (kinds.length) {
+        const lv = rotate(exp[kinds[0]], u) ?? "";
+        const sk = kinds[1] ?? null;
+        frame = frameLineEn(kinds[0], lv, sk, sk ? rotate(exp[sk], u) ?? "" : "");
+      } else {
+        frame = "This experience doesn't have anything picked yet for what you decided, produced or compared. "
+          + "Fill in even one of those and you'll have something concrete to say.";
+      }
+    } else if (it.status === "empty") {
+      const art = artifactOfEn(core, it.domain, taskIndex(items, it));
+      const near = exps.find((e) => e.axis_codes.includes(axis) && !usedNear.has(e.id))
+        ?? exps.find((e) => e.axis_codes.includes(axis)) ?? null;
+      const any = rotate(exps, h);
+      if (near) usedNear.add(near.id);
+      const nearLine = near
+        ? `bring up ${qe(near.title)}, where you did the ${axisEn(axis).toLowerCase()} part in another area, as the closest thing`
+        : any
+          ? `pick the moment in ${qe(any.title)} closest to this question`
+          : "pick the closest thing you've done in a class or assignment";
+      const open = h % 2 === 0
+        ? "Start honestly: \"I haven't done this work directly yet.\""
+        : "Say plainly that you haven't done this exact work yet.";
+      const close = !art ? "If you're preparing something now, finish with that."
+        : h % 2 === 0
+          ? `If you've started on ${lowerFirst(art)} this week, finish with that.`
+          : `If you're working on ${lowerFirst(art)} now, finish with how far you've got.`;
+      honest = `${open} Then ${nearLine}. ${close}`;
+      h += 1;
+    } else {
+      honest = "Your assessment says you've done work in this area, but you haven't written it up as an experience yet. "
+        + "Add it, and we'll build an answer outline from its title and what you decided.";
+    }
+    out.push({
+      text: it.text, kind: it.kind, domain: it.domain, axis, status: it.status,
+      question, experience: exp ? { id: exp.id, title: exp.title } : null, frame, honest,
+    });
+  }
+  return out;
+}
+
+function smallTasksEn(core: string, items: PostingItem[], exps: Experience[]): SmallTask[] {
+  const out: SmallTask[] = [];
+  const seen = new Map<string, number>();
+  for (const it of items) {
+    if (it.kind !== "must" || !it.domain) continue;
+    if (it.status !== "empty" && it.status !== "partial") continue;
+    const n = seen.get(it.domain) ?? 0;
+    seen.set(it.domain, n + 1);
+    const art = artifactOfEn(core, it.domain, n);
+    const ver = verifyOfEn(core, it.domain, n);
+    if (!art || !ver) continue;
+    const area = areaEn(core, it.domain);
+    const A = lowerFirst(art);
+    const V = lowerFirst(ver);
+    const exp = exps.find((e) => e.td_codes.includes(it.domain!)
+      && (!it.evidence.length || it.evidence.includes(e.title))) ?? null;
+    let task: string;
+    let artifact = art;
+    if (it.status === "empty") {
+      task = `${area}: take one past assignment or class project and put together ${withArticle(A)} for it, then note whether it holds up against ${V}.`;
+    } else if (exp && !exp.artifacts.length) {
+      task = `${area}: from what ${qe(exp.title)} left you, put together ${withArticle(A)} and write one line on how it compares with ${V}.`;
+    } else if (exp && !exp.verifications.length) {
+      artifact = exp.artifacts[0];
+      task = `${area}: compare ${lowerFirst(artifact)} from ${qe(exp.title)} with ${V}, and write one line each on what matches and what doesn't.`;
+    } else if (exp) {
+      const dd = domainOfEn(core, it.domain);
+      const order = [...new Set([...(dd?.required_axes ?? []).filter(isAxis), ...FALLBACK])];
+      const ax = isAxis(it.axis) ? it.axis : rotate(order.filter((a) => !exp.axis_codes.includes(a)), n);
+      const l2 = ax ? dd?.axes?.[ax]?.l2 : undefined;
+      task = l2
+        ? `${area}: reopen ${qe(exp.title)} and look for anything that counts as ${qe(bare(l2))}. If you find it, write it up as ${withArticle(A)} and check it against ${V}.`
+        : `${area}: pick one thing you decided in ${qe(exp.title)}, write it up with your reasoning as ${withArticle(A)}, and check it against ${V}.`;
+    } else {
+      task = `${area}: write up one thing you said you'd done in the assessment as an experience, and attach ${withArticle(A)} from it, checked against ${V}.`;
+    }
+    out.push({
+      text: it.text, domain: it.domain, axis: isAxis(it.axis) ? it.axis : null,
+      status: it.status, task, artifact, verify: ver,
+    });
+  }
+  return out;
+}
+
+const axisEn = (a: Axis) => axisName(a, "en");

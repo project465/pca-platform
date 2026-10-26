@@ -4,7 +4,8 @@ import Link from "next/link";
 import { currentUser, requireUser } from "@/lib/session";
 import { activeMajorName } from "@/lib/me-v3/major-name";
 import { coreIfAny } from "@/lib/me-v3/platform";
-import { majorNameIn } from "@/lib/me-v3/runtime/session";
+import { domainName, majorNameIn } from "@/lib/me-v3/runtime/session";
+import { textFor } from "@/lib/me-v3/result/text";
 import { getProduct } from "@/lib/orders";
 import { formatMoney } from "@/lib/money";
 import {
@@ -78,7 +79,7 @@ const FAIL: Record<string, string> = {
   posting: "공고를 저장하지 못했습니다. 붙여 넣은 글은 그대로 두고 한 번 더 눌러 주세요.",
   memo: "메모를 한두 문장 더 적어 주세요. 무엇을 했고 무엇이 남았는지면 됩니다.",
   draft: "메모를 옮기지 못했습니다. 한 번 더 눌러 주세요.",
-  needtest: "MAT 은 검사 결과를 바탕으로 돕니다. 무료 검사를 먼저 마쳐 주세요.",
+  needtest: "MAT 은 검사 결과에서 시작하므로 무료 검사를 먼저 마쳐 주세요.",
 };
 
 export default async function Track({
@@ -121,8 +122,21 @@ export default async function Track({
   const postings = live.rows;
   const brief = state.on ? buildBrief({
     core: live.core, postings, exps: live.exps,
-    actions: open?.rows ?? [], fromResult: open?.fromResult ?? false,
+    actions: open?.rows ?? [], fromResult: open?.fromResult ?? false, lang,
   }) : null;
+  /* **이번 주 할 일을 그 사람의 말로 다시 읽는다.** 담긴 줄의 `body` 는 담을
+     때의 한국어 문장이다. 영어 작업공간에서는 `/me/next` 처럼 굳은 결과에서 같은
+     할 일을 찾아 영어 문장으로 적고, 못 찾으면 담긴 문장을 그대로 둔다 */
+  if (en && brief?.task && open?.model) {
+    const row = (open.rows ?? []).find((r) => r.body === brief.task!.body);
+    const model = open.model;
+    const x = row ? model.actions.find((a) =>
+      (a.domain ?? "") === (row.td_code ?? "") && (a.axis ?? "") === (row.axis_code ?? "")) : null;
+    if (x && core) {
+      brief.task.body = textFor("en").actionKo(
+        x, x.domain ? domainName(core, x.domain, "en") : "", model.stage).do;
+    }
+  }
   const sale = prods.filter((p): p is NonNullable<typeof p> => !!p);
   /* **값이 정해지지 않은 기간권은 사는 단추를 세우지 않는다.** 해외판이
      그렇다. 줄이 있다고 단추를 그리면 0원 결제로 보인다 */
@@ -160,8 +174,8 @@ export default async function Track({
           <div className="cm-panel is-one is-lead">
             <div className="cm-pane">
               <p className="cm-row">
-                <b>{t("MAT 은 검사 결과를 바탕으로 돕니다")}</b>
-                <span>{t("이번 주 할 일, 공고 맞대기, 지원서 문장 뼈대가 모두 검사에서 확인된 내 경험과 비어 있는 자리를 읽습니다. 무료 검사는 12분 정도 걸리고, 끝나면 이 화면에서 바로 MAT 을 시작할 수 있습니다.")}</span>
+                <b>{t("MAT 은 검사 결과에서 시작합니다")}</b>
+                <span>{t("이번 주 할 일, 공고 맞대기, 지원서 문장 뼈대가 모두 검사에서 확인된 내 경험과 부족한 부분을 읽습니다. 무료 검사는 12분 정도 걸리고, 끝나면 이 화면에서 바로 MAT 을 시작할 수 있습니다.")}</span>
               </p>
               <div className="cm-acts">
                 <Link className="cm-btn is-primary" href="/cores">{t("무료 검사 시작")}</Link>

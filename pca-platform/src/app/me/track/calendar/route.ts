@@ -17,23 +17,23 @@ const NO_STORE = { "cache-control": "no-store, private" };
  * 마감일이 없으면 404 다. 남의 번호와 없는 번호를 같은 답으로 돌려 있는지
  * 없는지도 알려 주지 않는다. 비밀번호를 바꿔야 하는 계정은 다른 화면처럼 막는다.
  *
- * 영어 작업공간에는 MAT 이 없으므로(`WS_KR_ONLY`) 이 자리도 없다.
+ * 글은 작업공간 언어를 따른다(달력 이름 · 일정 이름 · 알림).
  */
 export async function GET(req: Request) {
   const u = await currentUser();
   if (!u || u.mustResetPw) {
     return new NextResponse("로그인이 필요합니다.", { status: 401, headers: NO_STORE });
   }
-  if ((await wsLang(u.id)) === "en") {
-    return new NextResponse("Not found", { status: 404, headers: NO_STORE });
-  }
+  const lang = (await wsLang(u.id)) === "en" ? "en" : "ko";
   const id = new URL(req.url).searchParams.get("id") ?? undefined;
   const rows = await calendarRows(u.id, id);
   if (!rows.length) {
-    return new NextResponse(id ? "마감일이 적힌 공고를 찾지 못했습니다." : "마감일이 남은 공고가 없습니다.",
-      { status: 404, headers: NO_STORE });
+    const msg = lang === "en"
+      ? (id ? "We couldn't find a posting with a deadline." : "No saved postings have an upcoming deadline.")
+      : (id ? "마감일이 적힌 공고를 찾지 못했습니다." : "마감일이 남은 공고가 없습니다.");
+    return new NextResponse(msg, { status: 404, headers: NO_STORE });
   }
-  const body = buildIcs(rows, { base: process.env.PLATFORM_URL });
+  const body = buildIcs(rows, { base: process.env.PLATFORM_URL, lang });
   const name = id ? `mat-deadline-${rows[0].id}.ics` : "mat-deadlines.ics";
   return new NextResponse(body, {
     status: 200,

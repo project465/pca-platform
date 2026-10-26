@@ -1,8 +1,9 @@
 import * as z from "zod/v4";
 import { query, queryOne } from "@/lib/db";
-import { EXPERIENCE_KINDS, activeCoreOrPick } from "@/lib/me-v3/platform";
-import { aiFailKo, askStructured, type AiFail } from "./claude";
-import { catalog } from "./catalog";
+import { EXPERIENCE_KINDS, EXPERIENCE_KINDS_EN, activeCoreOrPick } from "@/lib/me-v3/platform";
+import { wsLang } from "@/lib/me-v3/ws-lang";
+import { aiFailEn, aiFailKo, askStructured, type AiFail } from "./claude";
+import { catalog, type MatLang } from "./catalog";
 import { draftByRules } from "./rules";
 import { aiConsented } from "./settings";
 
@@ -60,7 +61,29 @@ const SYSTEM =
   "성과를 만들지 않습니다.\n" +
   "5. ask 는 메모에 빠져 있어 학생에게 되물을 짧은 질문 최대 3개입니다. 존댓말로 적습니다.";
 
-export function menu(core: string): string {
+/** 영어 작업공간. 보기 문장은 영어 원고 그대로 옮겨 적게 한다(경험 추가 화면의 보기와 같은 글) */
+const SYSTEM_EN =
+  "You help university students organize their own experience. Read the student's informal " +
+  "note and pick only the options from the list below that match it.\n" +
+  "Rules:\n" +
+  "1. domains: up to 2 of the closest technical-area codes.\n" +
+  "2. problems, decisions, artifacts, verifications: copy option sentences from the chosen areas " +
+  "exactly as written. Do not pick an option the note gives no basis for. Empty is fine.\n" +
+  "3. kind: one kind code, or null if unclear.\n" +
+  "4. title: one line (under 60 characters) the student will recognize later. Do not invent " +
+  "numbers or results that are not in the note.\n" +
+  "5. ask: up to 3 short, polite questions about what the note leaves out.";
+
+export function menu(core: string, lang: MatLang = "ko"): string {
+  if (lang === "en") {
+    return catalog(core, "en").map((d) => [
+      `## ${d.code} ${d.name}`,
+      `Problem: ${d.checklist.J1.slice(0, 6).join(" | ")}`,
+      `Decision: ${d.checklist.J3.slice(0, 8).join(" | ")}`,
+      `Deliverable: ${d.artifacts.join(" | ")}`,
+      `Checked against: ${d.verify.join(" | ")}`,
+    ].join("\n")).join("\n\n");
+  }
   return catalog(core).map((d) => [
     `## ${d.code} ${d.name}`,
     `문제: ${d.checklist.J1.slice(0, 6).join(" | ")}`,
@@ -71,8 +94,8 @@ export function menu(core: string): string {
 }
 
 /** 목록에 있는 것만 남긴다. **Claude 가 고른 것을 그대로 믿지 않는다** */
-export function clamp(core: string, raw: z.infer<typeof Out>): DraftValue {
-  const cat = catalog(core);
+export function clamp(core: string, raw: z.infer<typeof Out>, lang: MatLang = "ko"): DraftValue {
+  const cat = catalog(core, lang);
   const td = raw.domains.filter((c) => cat.some((d) => d.code === c)).slice(0, 2);
   const ds = cat.filter((d) => td.includes(d.code));
   const keep = (xs: string[], pool: string[]) =>
@@ -93,8 +116,8 @@ export function clamp(core: string, raw: z.infer<typeof Out>): DraftValue {
  * 규칙으로 옮긴다. 읽는 법은 `rules.ts` 한 곳에 있다: 확신이 설 때만 보기를 켜고,
  * 정한 것이나 남은 것을 보기에 대지 못하면 그 사람이 쓴 말을 돌려주며 묻는다.
  */
-function byRules(core: string, note: string): DraftValue {
-  return draftByRules(core, note);
+function byRules(core: string, note: string, lang: MatLang = "ko"): DraftValue {
+  return draftByRules(core, note, lang);
 }
 
 export async function draftExperience(userId: string, note: string): Promise<{
@@ -106,17 +129,23 @@ export async function draftExperience(userId: string, note: string): Promise<{
   let by: "claude" | "rules" = "rules";
   let model: string | null = null;
   let reason: string | null = null;
+  const lang: MatLang = await wsLang(userId).catch(() => "ko" as const);
+  const failText = lang === "en" ? aiFailEn : aiFailKo;
   if (!(await aiConsented(userId))) {
-    value = byRules(core, text);
-    reason = aiFailKo("consent");
+    value = byRules(core, text, lang);
+    reason = failText("consent");
   } else {
-    const r = await askStructured({
+    const r = await askStructured(lang === "en" ? {
+      op: "assistant.draft", schema: Out, system: SYSTEM_EN,
+      user: `Kind codes: ${EXPERIENCE_KINDS.map((k) => `${k.code}(${EXPERIENCE_KINDS_EN[k.code].label})`).join(", ")}\n\n` +
+        `${menu(core, "en")}\n\n<note>\n${text}\n</note>`,
+    } : {
       op: "assistant.draft", schema: Out, system: SYSTEM,
       user: `종류 코드: ${EXPERIENCE_KINDS.map((k) => `${k.code}(${k.label})`).join(", ")}\n\n` +
         `${menu(core)}\n\n<메모>\n${text}\n</메모>`,
     });
-    if (r.ok) { value = clamp(core, r.value); by = "claude"; model = r.model; }
-    else { value = byRules(core, text); reason = aiFailKo(r.reason as AiFail); }
+    if (r.ok) { value = clamp(core, r.value, lang); by = "claude"; model = r.model; }
+    else { value = byRules(core, text, lang); reason = failText(r.reason as AiFail); }
   }
   const row = await queryOne<{ id: string }>(
     `INSERT INTO assistant_drafts (user_id, core_code, note_text, draft, drafted_by, model)

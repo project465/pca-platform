@@ -6,8 +6,9 @@ import {
 import type { Axis } from "@/lib/me-v3/scoring/types";
 import { AXIS_KO } from "@/lib/me-v3/result/text.ko";
 import { domainName } from "@/lib/me-v3/runtime/session";
-import { aiFailKo, askStructured, type AiFail } from "./claude";
-import { catalog, catalogPrompt, isAxis } from "./catalog";
+import { wsLang } from "@/lib/me-v3/ws-lang";
+import { aiFailEn, aiFailKo, askStructured, type AiFail } from "./claude";
+import { areaName, axisName, catalog, catalogPrompt, isAxis, type MatLang } from "./catalog";
 import { readPosting } from "./rules";
 import { aiConsented } from "./settings";
 
@@ -88,6 +89,21 @@ const SYSTEM =
   "5. 지원자를 평가하거나 합격 가능성을 말하지 않습니다.\n" +
   "6. 최대 12개까지만 뽑습니다.";
 
+/** 영어 작업공간. 요구 항목을 공고에 적힌 말(영어)로 돌려받는다 */
+const SYSTEM_EN =
+  "You help university students prepare for jobs. From a job posting the student found and " +
+  "pasted, extract the requirements and tag each with a technical-area code and a judgment-axis " +
+  "code from the lists below.\n" +
+  "Rules:\n" +
+  "1. Only extract requirements actually written in the posting. Shorten each to one line in " +
+  "English, keeping the posting's own words.\n" +
+  "2. Anything marked preferred, a plus, bonus or nice to have is kind=nice; everything else is must.\n" +
+  "3. Use only codes from the lists for domain and axis. If nothing fits, use null.\n" +
+  "4. Conditions such as degree, years of experience, language scores, licenses or work " +
+  "authorization get domain=null.\n" +
+  "5. Do not evaluate the applicant or say anything about their chances.\n" +
+  "6. Extract at most 12.";
+
 /**
  * 규칙으로 읽는다. 열쇠가 없거나 동의하지 않았거나 Claude 가 거절했을 때.
  * 읽는 법은 `rules.ts` 한 곳에 있고 `npm run mat:gold` 가 시험지 셋으로 잰다.
@@ -134,6 +150,9 @@ export async function analyzePosting(userId: string, input: {
   const st = await currentState(userId);
   const exps = await experiencesOf(userId, st.core);
   const text = input.text.slice(0, 12000);
+  /* 남기는 안내(`note`)와 Claude 가 돌려줄 말은 작업공간 언어를 따른다 */
+  const lang: MatLang = await wsLang(userId).catch(() => "ko" as const);
+  const failText = lang === "en" ? aiFailEn : aiFailKo;
   let read: ReadOut;
   let by: "claude" | "rules" = "rules";
   let model: string | null = null;
@@ -141,14 +160,16 @@ export async function analyzePosting(userId: string, input: {
   const consent = await aiConsented(userId);
   if (!consent) {
     read = readByRules(st.core, text);
-    note = aiFailKo("consent");
+    note = failText("consent");
   } else {
     const r = await askStructured({
-      op: "assistant.posting", schema: Read, system: SYSTEM,
-      user: `${catalogPrompt(st.core)}\n\n<공고>\n${text}\n</공고>`,
+      op: "assistant.posting", schema: Read, system: lang === "en" ? SYSTEM_EN : SYSTEM,
+      user: lang === "en"
+        ? `${catalogPrompt(st.core, "en")}\n\n<posting>\n${text}\n</posting>`
+        : `${catalogPrompt(st.core)}\n\n<공고>\n${text}\n</공고>`,
     });
     if (r.ok) { read = r.value; by = "claude"; model = r.model; }
-    else { read = readByRules(st.core, text); note = aiFailKo(r.reason as AiFail); }
+    else { read = readByRules(st.core, text); note = failText(r.reason as AiFail); }
   }
   const items = read.requirements.slice(0, 15).map((x) => judge(st, exps, x));
   const counts = countOf(items);
@@ -246,7 +267,12 @@ export async function setPostingState(userId: string, id: string, state: string)
     [userId, id, state]);
 }
 
-export function itemDomainKo(core: string, it: PostingItem): string {
+export function itemDomainKo(core: string, it: PostingItem, lang: MatLang = "ko"): string {
+  if (lang === "en") {
+    if (!it.domain) return it.reason === "unmatched" ? "No matching area" : "Not about experience";
+    const area = areaName(core, it.domain, "en");
+    return it.axis ? `${area} · ${axisName(it.axis, "en")}` : area;
+  }
   if (!it.domain) return it.reason === "unmatched" ? "영역을 찾지 못함" : "전공 밖 조건";
   return it.axis ? `${domainName(core, it.domain)} · ${AXIS_KO[it.axis]}`
     : domainName(core, it.domain);

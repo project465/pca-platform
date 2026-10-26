@@ -6,6 +6,7 @@ import { requireUser } from "@/lib/session";
 import { queryOne, tx } from "@/lib/db";
 import { activeCore, experiencesOf, importActions, markTrackInterest } from "@/lib/me-v3/platform";
 import { openActions } from "@/lib/me-v3/open-actions";
+import { wsLang } from "@/lib/me-v3/ws-lang";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { activeTrack, grantProTrialTx, proTrialClaimable } from "@/lib/track";
 import { analyzePosting, livePostingOf, setPostingState } from "@/lib/assistant/posting";
@@ -108,14 +109,16 @@ export async function takePostingTasks(form: FormData): Promise<void> {
   const own = await queryOne<{ core_code: string }>(
     `SELECT core_code FROM assistant_postings WHERE user_id = $1 AND id = $2`, [user.id, id]);
   if (own?.core_code !== core) redirect(`/me/track/posting/${id}?taken=x#tasks`);
-  const tasks = smallTasks(core, p.analysis.items, await experiencesOf(user.id, core));
+  /* 담기는 문장은 작업공간 언어로 적는다. 영어 응시자에게 한국어 할 일이 쌓이면 안 된다 */
+  const lang = await wsLang(user.id);
+  const tasks = smallTasks(core, p.analysis.items, await experiencesOf(user.id, core), lang);
   const open = await openActions(user.id);
   if (open.fromResult && open.rows.length) {
     await importActions(user.id, open.rows.map((r) => ({
       td: r.td_code, axis: r.axis_code, body: r.body, horizon: r.horizon })));
   }
   const n = await importActions(user.id, tasks.map((t) => ({
-    td: t.domain, axis: t.axis, body: taskBody(t, p.label), horizon: 30,
+    td: t.domain, axis: t.axis, body: taskBody(t, p.label, lang), horizon: 30,
   })), "manual");
   await mark("action_saved", user.id, { from: "posting", n });
   revalidatePath("/me/next");

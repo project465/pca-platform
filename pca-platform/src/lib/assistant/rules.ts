@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { CONTENT_DIR } from "@/lib/me-v3/core-registry";
 import { catalog, wordsOf, type CatalogDomain } from "./catalog";
+import { draftByRulesEn, looksEnglish, readPostingEn } from "./rules-en";
 
 /**
  * MAT이 **AI 없이** 공고와 메모를 읽는 규칙.
@@ -247,6 +248,8 @@ export function datesIn(line: string, today: Date): DateHit[] {
  * 읽으면 마감 알림이 보름 일찍 간다. `상시채용` · `채용 시 마감` 이면 비운다.
  */
 export function readPosting(core: string, raw: string, today = new Date()): ReadOut {
+  /* 영어 공고는 영어 규칙이 읽는다(`rules-en.ts`). 한국어 공고는 아래 그대로다 */
+  if (looksEnglish(raw)) return readPostingEn(core, raw, today);
   /* 한 줄로 붙여 넣은 공고: 괄호 머리말 앞에서 줄을 바꿔 준다 */
   const text = raw
     .replace(/\r\n?/g, "\n").replace(/ /g, " ")
@@ -535,7 +538,10 @@ function kindOf(note: string): string | null {
  * 말하는데 맞는 보기를 못 찾으면 그 마디를 그대로 돌려주며 골라 달라고 묻는다.
  * `시킨 대로 측정만 했다` 는 정한 것이 아니다.
  */
-export function draftByRules(core: string, note: string): RuleDraft {
+export function draftByRules(core: string, note: string, lang?: "ko" | "en"): RuleDraft {
+  /* 보기는 **경험 추가 화면의 말**과 같아야 켜진다. 그래서 부르는 쪽이 작업공간
+     언어를 알면 그것을 따르고, 모르면(시험) 글을 보고 고른다 */
+  if (lang ? lang === "en" : looksEnglish(note)) return draftByRulesEn(core, note);
   const cat = catalog(core);
   const hits = matchDomains(core, note);
   const td: string[] = [];

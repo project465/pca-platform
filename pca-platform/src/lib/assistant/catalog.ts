@@ -1,6 +1,10 @@
 import type { Axis } from "@/lib/me-v3/scoring/types";
 import { content, domainName, domainSub } from "@/lib/me-v3/runtime/session";
 import { AXIS_KO, AXIS_WHAT_KO } from "@/lib/me-v3/result/text.ko";
+import { AXIS_KO as AXIS_EN, AXIS_WHAT_KO as AXIS_WHAT_EN } from "@/lib/me-v3/result/text.en";
+
+/** MAT 이 읽고 쓰는 말. 영어 작업공간이면 영어다 */
+export type MatLang = "ko" | "en";
 
 /**
  * 한 Core 의 영역과 판단축을 Claude 와 규칙이 같이 읽는 꼴로 펴 둔다.
@@ -37,14 +41,21 @@ export function wordsOf(s: string): string[] {
     .filter((w) => w.length >= 2 && !STOP.has(w));
 }
 
-export function catalog(core: string): CatalogDomain[] {
-  const hit = CACHE.get(core);
+/**
+ * **언어가 열쇠의 반이다**(`core|lang`). 영어는 영어 원고가 있는 Core 만
+ * 있다(기계 · 전기전자 · 컴퓨터). 없으면 한국어 목록으로 떨어진다: 영역 코드는
+ * 두 원고가 같아서 판정은 그대로이고, 화면에 한국어 이름이 서는 것만 다르다.
+ */
+export function catalog(core: string, lang: MatLang = "ko"): CatalogDomain[] {
+  const key = lang === "ko" ? core : `${core}|${lang}`;
+  const hit = CACHE.get(key);
   if (hit) return hit;
-  const c = content(core);
+  if (lang !== "ko" && !hasLang(core, lang)) return catalog(core);
+  const c = content(core, lang);
   const lists = c.checklists.domains as Record<string, Record<string, { text: string }[]>>;
   const out: CatalogDomain[] = c.domains.domains.map((d) => {
-    const name = domainName(core, d.code);
-    const sub = domainSub(core, d.code, 80);
+    const name = domainName(core, d.code, lang);
+    const sub = domainSub(core, d.code, 80, lang);
     const checklist: Record<string, string[]> = {};
     for (const ax of AXES) checklist[ax] = (lists[d.code]?.[ax] ?? []).map((x) => x.text);
     return {
@@ -56,13 +67,33 @@ export function catalog(core: string): CatalogDomain[] {
       verify: d.verify_targets ?? [],
     };
   });
-  CACHE.set(core, out);
+  CACHE.set(key, out);
   return out;
 }
 
+/** 그 Core 에 그 언어 원고가 있는가. 없으면 `content()` 가 던진다 */
+export function hasLang(core: string, lang: MatLang): boolean {
+  if (lang === "ko") return true;
+  try { content(core, lang); return true; } catch { return false; }
+}
+
+/** 영역 이름. 그 언어 원고가 없으면 한국어 이름이다 */
+export function areaName(core: string, td: string, lang: MatLang = "ko"): string {
+  return domainName(core, td, hasLang(core, lang) ? lang : "ko");
+}
+
+/** 판단축 이름 */
+export function axisName(a: Axis, lang: MatLang = "ko"): string {
+  return (lang === "en" ? AXIS_EN : AXIS_KO)[a];
+}
+
 /** Claude 에게 보여 줄 목록. 코드와 이름과 세부만 적는다 */
-export function catalogPrompt(core: string): string {
-  const lines = catalog(core).map((d) => `- ${d.code}: ${d.name} (${d.sub})`);
+export function catalogPrompt(core: string, lang: MatLang = "ko"): string {
+  const lines = catalog(core, lang).map((d) => `- ${d.code}: ${d.name} (${d.sub})`);
+  if (lang === "en") {
+    const axes = AXES.map((a) => `- ${a}: ${AXIS_EN[a]}: ${AXIS_WHAT_EN[a]}`);
+    return `Technical areas:\n${lines.join("\n")}\n\nJudgment axes:\n${axes.join("\n")}`;
+  }
   const axes = AXES.map((a) => `- ${a}: ${AXIS_KO[a]} — ${AXIS_WHAT_KO[a]}`);
   return `기술영역:\n${lines.join("\n")}\n\n판단축:\n${axes.join("\n")}`;
 }
