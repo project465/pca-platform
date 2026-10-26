@@ -199,6 +199,7 @@
     "v3:freeze:core": "tsx scripts/v3-core-ui-freeze.ts",
     "pwa:icons": "node scripts/pwa-icons.mjs",
     "pwa:check": "tsx scripts/pwa-check.ts",
+    "app:shots": "tsx scripts/app-shots.ts",
     "push:keys": "node -e \"const c=require('crypto').createECDH('prime256v1');c.generateKeys();console.log('VAPID_PUBLIC_KEY='+c.getPublicKey('base64url'));console.log('VAPID_PRIVATE_KEY='+c.getPrivateKey('base64url'))\"",
     "v3:freeze:measure": "tsx scripts/v3-measurement-freeze.ts",
     "v3:product-loop": "tsx scripts/v3-product-loop.ts",
