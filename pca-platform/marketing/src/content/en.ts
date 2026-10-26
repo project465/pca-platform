@@ -19,7 +19,7 @@ export const en: SiteContent = {
   meta: {
     title: "CareerMatri | Major-based career assessment and career workspace",
     description:
-      "A major-based assessment shows what you have already done in your field. Your report and your CareerMatri workspace then take you to the next step. Universities and institutions can adopt it by department.",
+      "Take an assessment written for your major, see what you have already done in your field, and use your report and CareerMatri workspace to plan what comes next. Universities and institutions can adopt it department by department.",
     ogAlt: "CareerMatri major-based career assessment",
   },
 
@@ -27,7 +27,7 @@ export const en: SiteContent = {
     skip: "Skip to main content",
     menu: "Open menu",
     close: "Close menu",
-    mockTag: "Screen example",
+    mockTag: "Sample screen",
     copy: "Copy",
     copied: "Copied",
     external: "Opens the CareerMatri app",
@@ -53,25 +53,25 @@ export const en: SiteContent = {
       eyebrow: "Major-based assessment · Report · Career workspace",
       title: ["See where the work you've done", "in your major can lead"],
       lead:
-        "CareerMatri's major-based assessment looks at what you have done in classes, assignments and projects, and at the decisions you made yourself. After you receive your report, you keep adding experiences in your workspace and move on to your next step.",
+        "CareerMatri's assessment is written for your major. It asks what you did in classes, assignments and projects, and which decisions were yours. Once your report is ready, you can keep adding experiences in your workspace and work toward your next step.",
       primary: { label: "Start the assessment", href: "/cores" },
       secondary: { label: "Inquire for your institution", href: "/contact" },
       note: "Did your school give you an ID?",
       noteLink: { label: "Log in and start", href: "/login" },
     },
     mock: {
-      label: "Screen example",
+      label: "Sample screen",
       brandSub: "Mechanical Engineering",
       nav: ["Home", "Assessment", "Next step", "Current status", "Experiences", "Past results"],
       title: "My career",
       meta: "Mechanical Engineering · Last updated 2026-10-18",
       todoLabel: "Next step",
       todoTitle: "Write up one experience on a single page",
-      todoBody: "Write down the criterion you set yourself in one line, and you can use it as is in an interview.",
+      todoBody: "Sum up the criterion you set in a single line. You can take that line straight into an interview.",
       todoCta: "Write it up now",
       todoMore: "2 more tasks",
       stateLabel: "Current status",
-      stateSub: "Main areas you can explain right now",
+      stateSub: "Areas you can already explain",
       tiles: [
         { name: "Structural and durability analysis", sub: "Analysis model · Analysis report" },
         { name: "Materials, strength and failure", sub: "Analysis notes · Material specs" },
@@ -79,24 +79,24 @@ export const en: SiteContent = {
       ],
       changeLabel: "Recent changes",
       changes: [
-        { text: "Conditions and criteria you set yourself in product design were confirmed", date: "10-18" },
-        { text: "A new experience added evidence in testing and measurement", date: "10-05" },
+        { text: "Confirmed: the conditions and criteria you set in product design", date: "10-18" },
+        { text: "A new experience was added under testing and measurement", date: "10-05" },
       ],
     },
     how: {
       label: "How it works",
       title: "Start with the assessment, then keep going in your workspace",
       lead:
-        "It is not a one-time test. After you receive your report, every experience you add updates your current status and your next step.",
+        "Your report is where it starts. Each experience you add afterward updates your current status and your next step.",
       steps: [
         {
           no: "01",
           title: "Major-based assessment",
-          body: "Choose your major and answer questions about what you did in classes, assignments and projects, and what you decided yourself.",
+          body: "Choose your major and answer questions about what you did in classes, assignments and projects, and the decisions you made yourself.",
           points: [
             "Each major has its own questions, written around the real work of that field",
             "Answers are saved as you go, so you can close the page and pick up later",
-            "It does not ask about aptitude or personality types",
+            "There are no aptitude or personality-type questions",
           ],
         },
         {
@@ -106,16 +106,16 @@ export const en: SiteContent = {
           points: [
             "Read it on the web right away or download it as a PDF",
             "It shows which industries and roles your confirmed experiences connect to",
-            "It gathers material for sentences you can use in applications and interviews",
+            "It pulls together material you can draw on in applications and interviews",
           ],
         },
         {
           no: "03",
           title: "My CareerMatri workspace",
-          body: "When you add an experience, your current status is recalculated and your next step changes.",
+          body: "Add an experience and CareerMatri recalculates your current status and updates your next step.",
           points: [
-            "Add an experience, update your current status, then see your next step",
-            "Your original assessment result is stored separately and does not change",
+            "Add an experience, update your status and see what to do next",
+            "Your original assessment result is saved separately and never changes",
             "Log in any time to open your report again",
           ],
         },
@@ -125,24 +125,24 @@ export const en: SiteContent = {
       label: "Report",
       title: "What the report includes",
       lead:
-        "The report is built only from your answers. It is laid out in order so students can follow for themselves what was confirmed and what is still missing.",
+        "Everything in the report comes from your answers. It is laid out step by step, so you can see for yourself what was confirmed and what is still missing.",
       items: [
         { title: "Summary at a glance", body: "Confirmed experiences, the areas to look at first, and your next step, all on the first screen." },
-        { title: "Evidence you already have", body: "What you did, what you decided yourself, and the work you produced, shown together." },
+        { title: "What you can already show", body: "What you did, the decisions you made and the work you produced, side by side." },
         { title: "What to fill in next", body: "Gaps listed by area, with a short note on why each one matters." },
-        { title: "Industry and role links", body: "Where in industry and in which roles your confirmed experiences are used." },
-        { title: "Next steps", body: "A concrete task to write up next, and what you should have in hand when you finish." },
-        { title: "Application and interview drafts", body: "A basic outline for application sentences, built from the answers you chose." },
+        { title: "Industry and role links", body: "The industries and roles where your confirmed experience is put to use." },
+        { title: "Next steps", body: "A concrete task to write up next, and what you will have in hand once it is done." },
+        { title: "Application and interview drafts", body: "A basic outline for your applications, built from the answers you gave." },
       ],
       note:
-        "The report does not give aptitude labels, hiring predictions or rankings. The level of detail can differ by tier.",
+        "The report gives no aptitude labels, hiring predictions or rankings. How much detail you get depends on the tier.",
       mock: {
-        label: "Report example",
+        label: "Sample report",
         school: "Career analysis report",
         docTitle: "Business Administration · General Management",
         docMeta: "PRO · Answered 2026-10-16",
         headline: "You have experience in strategy and planning you can use in applications",
-        headlineSub: "What you did and what you decided yourself were both confirmed.",
+        headlineSub: "Both what you did and the decisions you made were confirmed.",
         cells: [
           {
             label: "Confirmed experience",
@@ -151,19 +151,19 @@ export const en: SiteContent = {
           },
           {
             label: "Next step",
-            title: "Write down what you decided yourself",
+            title: "Write down the decisions you made",
             body: "Write three lines on the conditions you set when you reworked the request you received.",
           },
-          { label: "Evidence you kept", title: "Goals and metrics table · Business plan", body: "You have material to bring into your applications." },
+          { label: "Material you kept", title: "Goals and metrics table · Business plan", body: "You have material to bring into your applications." },
           { label: "Still to fill in", title: "Data and decision-making", body: "You have not yet written down the criteria you set or the work you produced." },
         ],
       },
     },
     majors: {
       label: "Majors",
-      title: "Assessments for 20 majors, run through school and institution contracts",
+      title: "Assessments for 20 majors, offered through school and institution contracts",
       lead:
-        "Each major's questions are built on the work and decisions people in that field actually make. Even when department names differ between schools, we connect each department to the closest major assessment.",
+        "Each major's questions are based on the work and decisions people in that field actually face. Department names vary from school to school, so we match each department to the closest major assessment.",
       groups: [
         { name: "Engineering and technology", items: ["Mechanical Engineering", "Electrical and Electronic Engineering", "Computer Science and Software", "Architecture and Interior Architecture", "Civil and Railway Engineering"] },
         { name: "Life sciences and health", items: ["Biotechnology and Life Sciences", "Nursing", "Health and Healthcare Welfare", "Food", "Sports and Exercise Rehabilitation", "Horticulture, Forestry and Landscape"] },
@@ -171,14 +171,14 @@ export const en: SiteContent = {
         { name: "Humanities and arts", items: ["Korean Language, Linguistics and Literature", "Media, Advertising, PR and Performance", "Visual Arts and Design", "Fashion, Beauty and Styling"] },
       ],
       note:
-        "Which majors are open depends on the scope of each school or institution's contract. You can see the majors you can start now on the assessment start screen.",
+        "Which majors are available depends on each school's or institution's contract. The assessment start screen shows the majors you can start now.",
       cta: { label: "Find your major and start", href: "/cores" },
     },
     global: {
       label: "International",
       title: "Also in use outside Korea",
       lead:
-        "CareerMatri's assessment engine (PCA) has also been used outside Korea. The judgments a role calls for differ little from country to country, so we use the same questions translated into each language.",
+        "CareerMatri's assessment engine (PCA) has also been used outside Korea. The judgment calls a role demands vary little between countries, so we use the same questions, translated into each language.",
       legend: { done: "Completed", planned: "Planned" },
       countries: [
         { iso: "410", name: "South Korea", status: "done" },
@@ -305,7 +305,7 @@ export const en: SiteContent = {
       label: "Foundations",
       title: "What the assessment is built on",
       lead:
-        "The assessment framework is registered for copyright and was built with reference to Korean and international job and testing standards. We list what has been completed and what is still in progress separately.",
+        "The assessment framework is registered for copyright and was built with reference to Korean and international job and testing standards. Below, we keep what is finished separate from what is still in progress.",
       cards: [
         {
           title: "Copyright registration",
@@ -326,22 +326,22 @@ export const en: SiteContent = {
         },
         {
           title: "Registration and operating rules",
-          body: "We provide job information only. Students apply on their own.",
+          body: "We provide job information only, and students apply to jobs themselves.",
           items: [
             "Registered job information provider No. J1700020220007",
             "Individual answers and reports are not visible to school staff",
-            "In aggregate views, any group under 5 people is not shown as a number",
+            "In aggregate views, groups of fewer than 5 people are not shown as numbers",
           ],
         },
       ],
       verify: {
         title: "How we check the assessment",
-        lead: "Scores are calculated only by fixed rules. The same answers always give the same result, and school staff can trace the basis of each result.",
+        lead: "Scores come from fixed rules only. The same answers always produce the same result, and school staff can trace how each result was reached.",
         statusLabel: { done: "Done", doing: "In progress", next: "Planned" },
         steps: [
-          { status: "done", title: "Same items in three languages", body: "Korean, English and Turkish items are aligned one by one to mean the same thing." },
+          { status: "done", title: "Same items in three languages", body: "Each Korean, English and Turkish item is matched so that all three mean the same thing." },
           { status: "done", title: "Same answers, same result", body: "Every release is checked automatically to confirm that the same answers produce the same result." },
-          { status: "done", title: "Keeping item meaning intact", body: "When wording is edited, each item is compared to confirm that what it measures has not changed." },
+          { status: "done", title: "Keeping item meaning intact", body: "Whenever wording is edited, we compare each item to make sure it still measures the same thing." },
           { status: "doing", title: "Review by subject experts", body: "We have prepared review materials for each major and are working through reviews with experts in each field." },
           { status: "next", title: "Pilot and statistical analysis", body: "We will analyze reliability and validity using real response data." },
           { status: "next", title: "Comparison baseline", body: "Once enough students have taken the assessment, we will build a baseline for comparison within each major." },
@@ -350,19 +350,19 @@ export const en: SiteContent = {
       note: "Until a comparison baseline exists, reports do not show percentiles or rankings.",
       math: {
         title: "How scores are calculated",
-        lead: "Every score comes only from the formulas below. Weights and transformation matrices live in data tables, not in code, so they can be adjusted for a department or country while the calculation method stays the same.",
+        lead: "Every score comes from the formulas below and nothing else. Weights and transformation matrices are kept in data tables rather than in code, so they can be adjusted for a department or country without changing how scores are calculated.",
         steps: [
           {
             no: "01",
             title: "Area score",
             formula: "S<sub>a</sub> = 25 · ( x̄<sub>a</sub> − 1 ),&ensp; x̄<sub>a</sub> = <sup>1</sup>&frasl;<sub>n</sub> Σ<sub>i</sub> x<sub>i</sub>",
-            body: "The mean (1 to 5) of the items in one job area is stretched to 0 to 100. A 1 becomes 0, a 3 becomes 50 and a 5 becomes 100.",
+            body: "The average (1 to 5) of the items in a job area is rescaled to 0 to 100, so a 1 becomes 0, a 3 becomes 50 and a 5 becomes 100.",
           },
           {
             no: "02",
             title: "Measurement error",
             formula: "SE<sub>a</sub> = 25 · s<sub>a</sub> / √n",
-            body: "Error is measured from how spread out the answers within an area are. It is calculated for each person, not taken from a fixed value.",
+            body: "Error is estimated from how spread out the answers within an area are. It is calculated for each person rather than set as a fixed value.",
           },
           {
             no: "03",
@@ -378,9 +378,9 @@ export const en: SiteContent = {
           },
           {
             no: "05",
-            title: "Position within the person",
+            title: "Comparison within each person",
             formula: "z<sub>k</sub> = ( A<sub>k</sub> − Ā ) / s<sub>A</sub>,&ensp; |z<sub>k</sub>| ≤ 3",
-            body: "Axes draw on different numbers of areas. To remove that bias, each axis is expressed relative to the person's own other axes.",
+            body: "Because axes draw on different numbers of areas, each axis is expressed relative to the same person's other axes to remove that bias.",
           },
           {
             no: "06",
@@ -392,13 +392,13 @@ export const en: SiteContent = {
             no: "07",
             title: "Intervals and groups",
             formula: "F<sub>j</sub> ± SE(F<sub>j</sub>)&ensp;(about a 68% interval)",
-            body: "Jobs whose intervals overlap are not ranked. They are shown as one group, so first and second place are never separated by a difference smaller than the error.",
+            body: "Jobs with overlapping intervals are shown as one group instead of being ranked, so no job is placed above another by a margin smaller than the error.",
           },
           {
             no: "08",
             title: "Evidence check (major assessments)",
             formula: "evidence ⇔ |C| ≥ 4 ∧ R ⊆ C ∧ O ≥ 1",
-            body: "Major assessments do not add up points. An area counts as having evidence only when at least 4 judgment axes C are confirmed, all required axes R for that area are among them, and at least one piece of work O was produced.",
+            body: "Major assessments do not add up points. An area is backed by evidence only when at least 4 types of judgment C are confirmed, including every required type R for that area, and at least one piece of work O was produced.",
           },
           {
             no: "09",
@@ -410,7 +410,7 @@ export const en: SiteContent = {
         ],
         weights: {
           title: "Weight example",
-          lead: "Two areas taken from the actual weight table of the Mechanical Engineering assessment. The weights in each area add up to 1.",
+          lead: "Two areas from the actual weight table of the Mechanical Engineering assessment. In each area, the weights add up to 1.",
           areas: [
             {
               name: "Design and Development",
@@ -444,7 +444,7 @@ export const en: SiteContent = {
       points: [
         { title: "Assessments by department", body: "Each contracted department gets the assessment for its major." },
         { title: "Student accounts", body: "Issue IDs and passwords one at a time, or all at once from a CSV file." },
-        { title: "Progress and department totals", body: "See started and completed counts by department. Groups under 5 people are not shown." },
+        { title: "Progress and department totals", body: "See how many students have started and finished in each department. Groups of fewer than 5 are not shown." },
         { title: "CSV export", body: "Download rosters and progress as CSV for internal reports." },
       ],
       primary: { label: "See the university overview", href: "/universities" },
@@ -454,7 +454,7 @@ export const en: SiteContent = {
       label: "For individuals",
       title: "You can use it without a school account",
       lead:
-        "You can sign up as an individual. Please check the pricing screen in the CareerMatri app for assessment prices and the products currently available.",
+        "You can also sign up on your own. Assessment prices and current products are listed on the pricing screen in the CareerMatri app.",
       cards: [
         {
           tag: "Assessment and report",
@@ -473,7 +473,7 @@ export const en: SiteContent = {
           price: `30-day pass ${krw(TRACK_KR.month.price)} · 365-day pass ${krw(TRACK_KR.year.price)}`,
           priceNote: "No automatic renewal",
           points: [
-            "It ends on its own when the period is over and is not charged again",
+            "Your pass simply ends when the period is over, with no further charges",
             "Buy a PRO report and your first month is free",
           ],
           cta: { label: "Learn about MAT", href: "/assistant" },
@@ -491,7 +491,7 @@ export const en: SiteContent = {
         },
         {
           q: "Can individuals use it?",
-          a: "Yes. You can sign up as an individual. Please check the app's pricing screen for prices and the products currently available.",
+          a: "Yes. You can sign up on your own. Prices and current products are listed on the app's pricing screen.",
           link: { label: "See pricing", href: "/pricing" },
         },
         {
@@ -505,7 +505,7 @@ export const en: SiteContent = {
         { q: "Will I get a ranking or a hiring prediction?", a: "No. We show the experiences confirmed in your answers, what is still missing, and what to do next." },
         {
           q: "Has the assessment completed its validation studies?",
-          a: "Not yet. The pilot and cognitive interviews are still under way, so we make no claims about its statistical properties yet. Please use the results as one reference when making career decisions.",
+          a: "Not yet. The pilot and cognitive interviews are still under way, so we do not make any claims about its statistical properties yet. Treat the results as one input among others when making career decisions.",
         },
       ],
     },
@@ -532,7 +532,7 @@ export const en: SiteContent = {
       secondary: { label: "School staff login", href: "/login" },
     },
     mock: {
-      label: "Screen example · Fictional school and numbers",
+      label: "Sample screen · Fictional school and figures",
       title: "Major assessment summary",
       meta: "2026 academic year, fall semester",
       kpis: [
@@ -556,11 +556,11 @@ export const en: SiteContent = {
       title: "Six steps from setup to results",
       lead: "Everything from issuing student accounts to checking totals happens on the staff screen. There is nothing to install.",
       steps: [
-        { title: "Choose departments and numbers", body: "Decide which departments will take the assessment and how many students. Even if department names differ, we connect each one to the closest major assessment." },
+        { title: "Choose departments and student numbers", body: "Decide which departments will take part and how many students. If a department's name differs from ours, we link it to the closest major assessment." },
         { title: "Get staff accounts", body: "CareerMatri creates staff accounts for your school." },
         { title: "Issue student accounts", body: "On the staff screen, issue IDs and passwords one at a time, or all at once from a CSV file." },
-        { title: "Students sign in through the school address", body: "Students go to the school's own address, choose their department and take the assessment." },
-        { title: "Check progress and totals", body: "See started and completed counts and department totals on the staff screen." },
+        { title: "Students sign in at the school's address", body: "Students go to the school's own address, choose their department and take the assessment." },
+        { title: "Check progress and totals", body: "See how many students have started and finished, along with department totals, on the staff screen." },
         { title: "Export CSV", body: "Download rosters, progress and totals as CSV files." },
       ],
     },
@@ -572,11 +572,11 @@ export const en: SiteContent = {
         { title: "Reissue passwords", body: "Issue a new initial password to students who forgot theirs." },
         { title: "Pause and reopen accounts", body: "Pause accounts that are not in use, for example during a leave of absence or after graduation, and reopen them when needed." },
         { title: "Progress by student", body: "See whether each student has not started, is in progress, or has finished." },
-        { title: "Totals by department", body: "See eligible, started and completed counts by college and department." },
+        { title: "Totals by department", body: "See eligible, started and completed numbers by college and department." },
         { title: "List of students who have not started", body: "Download a CSV of only the students who have not started yet." },
         { title: "CSV export", body: "Download rosters, progress and totals as CSV for internal reports." },
-        { title: "Allowing a retake", body: "School assessments are taken once by default. Only students the staff allow can take it again." },
-        { title: "MAT school passes", body: "Within the number of students the school sets, staff can open MAT (the AI career assistant) to students for 6 months or 1 year. The cost is included in the adoption contract." },
+        { title: "Retakes", body: "Each student takes the school assessment once by default. Only students that staff approve can take it again." },
+        { title: "MAT school passes", body: "Staff can give students access to MAT (the AI career assistant) for 6 months or 1 year, up to the number of students the school sets. The cost is included in the adoption contract." },
       ],
     },
     access: {
@@ -593,7 +593,7 @@ export const en: SiteContent = {
       title: "What staff can and cannot see",
       items: [
         "Individual students' answers and reports do not appear on the staff screen.",
-        "In totals, any group under 5 people is not shown as a number.",
+        "In totals, groups of fewer than 5 people are not shown as numbers.",
         "CSV files include rosters, progress and totals only, not item-level answers.",
         "Initial passwords are shown once when issued and are not stored.",
       ],
@@ -608,22 +608,22 @@ export const en: SiteContent = {
         },
         {
           q: "What do we need to prepare?",
-          a: "Tell us which departments will take the assessment, roughly how many students, and a staff contact. The student roster is uploaded on the staff screen when you issue accounts.",
+          a: "Tell us which departments will take the assessment, roughly how many students, and a staff contact. You upload the student roster on the staff screen when you issue accounts.",
         },
         {
           q: "Can students see their results again later?",
           a: "Yes. Students can log in and open their web report and PDF at any time.",
         },
         {
-          q: "How is the cost set?",
+          q: "How is pricing set?",
           a: "It depends on the departments and number of students. Get in touch and we will explain the options that fit your school.",
           link: { label: "Request an introduction", href: "/contact" },
         },
       ],
     },
     closing: {
-      title: "We will walk you through the right setup for your school",
-      lead: "Send us your school name, departments and expected number of students, and we will get back to you after reviewing them.",
+      title: "We can help you find the right setup for your school",
+      lead: "Send us your school name, departments and expected number of students, and we will get back to you once we have reviewed them.",
       primary: { label: "Request an introduction", href: "/contact" },
       secondary: { label: "School staff login", href: "/login" },
     },
@@ -638,27 +638,27 @@ export const en: SiteContent = {
       eyebrow: "Subscription",
       title: ["Keep preparing after the assessment", "with MAT"],
       lead:
-        "MAT is the AI career assistant inside your CareerMatri workspace. It tells you about your weekly tasks and deadlines, helps turn your notes into experience records, and compares job postings you find with your experience.",
+        "MAT is the AI career assistant in your CareerMatri workspace. It reminds you of weekly tasks and deadlines, helps turn your notes into experience records, and compares job postings you find against your experience.",
       primary: { label: "Start MAT", href: "/me/track" },
       secondary: { label: "See pricing", href: "#plans" },
       note: "You need to log in. If you don't have an account, you can sign up as an individual on the login screen.",
     },
     features: {
       label: "What it does",
-      title: "Helps you keep your job preparation going week by week",
+      title: "Keep your job search moving, week by week",
       items: [
-        { title: "Weekly tasks and deadline reminders", body: "Inside the app, it tells you one task for the week and the deadlines coming up. If you like, you can also get one email a week." },
-        { title: "Notes into experience records", body: "Write down something you did recently in your own words, and it is turned into options for an experience record. You review it and save it yourself." },
+        { title: "Weekly tasks and deadline reminders", body: "Each week, the app shows you one task and your upcoming deadlines. You can also choose to get one email a week." },
+        { title: "Notes into experience records", body: "Describe something you did recently in your own words, and MAT suggests ways to write it up as an experience record. You review it and decide what to save." },
         { title: "Postings next to your experience", body: "Paste in a job posting you found yourself, and for each requirement it shows what you can explain from your experience and what is still missing." },
-        { title: "Compare again with a new industry or role", body: "Change the industry or role you are interested in, and your experience is compared again on that basis." },
+        { title: "Compare again with a new industry or role", body: "Switch to another industry or role you are interested in, and MAT compares your experience against it again." },
       ],
       planned: "Monthly change report · Coming soon",
-      plannedNote: "A report that collects what changed over the month is in preparation.",
+      plannedNote: "We are working on a report that sums up what changed over the month.",
     },
     plans: {
       label: "Pricing",
-      title: "Pick only the period you need",
-      lead: "There is no automatic renewal. Your pass ends on its own when the period is over and is not charged again.",
+      title: "Pay only for the time you need",
+      lead: "Passes do not renew automatically. Yours simply ends when the period is over, and you are not charged again.",
       items: [
         {
           name: "30-day pass",
@@ -677,8 +677,8 @@ export const en: SiteContent = {
         },
       ],
       notes: [
-        "There is no automatic renewal. Your pass ends on its own when the period is over.",
-        "Payment is made on the MAT screen in the CareerMatri app.",
+        "Passes do not renew automatically and end when the period is over.",
+        "You pay on the MAT screen in the CareerMatri app.",
       ],
       trial: "Buy a PRO report and you can use MAT free for the first month.",
     },
@@ -697,7 +697,7 @@ export const en: SiteContent = {
         },
         {
           q: "When will the monthly change report be available?",
-          a: "It is still in preparation, so we cannot promise a date. When it opens, we will let you know on the MAT screen first.",
+          a: "It is still in the works, so we cannot promise a date yet. When it is ready, we will announce it on the MAT screen first.",
         },
         {
           q: "How do refunds work?",
@@ -707,8 +707,8 @@ export const en: SiteContent = {
       ],
     },
     closing: {
-      title: "Start by sorting out this week's task",
-      lead: "Log in and you can start right away on the MAT screen. If you haven't taken the assessment yet, you can start there first.",
+      title: "Start with this week's task",
+      lead: "Log in to get started on the MAT screen. If you haven't taken the assessment yet, you can begin with that.",
       primary: { label: "Start MAT", href: "/me/track" },
       secondary: { label: "Take the assessment first", href: "/cores" },
     },
@@ -720,18 +720,18 @@ export const en: SiteContent = {
       description: "Questions about adoption and use for universities and institutions. Email hari_info@hari.re.kr, phone 044-867-7211.",
     },
     eyebrow: "Contact",
-    title: "Ask us about adoption and use",
+    title: "Talk to us about CareerMatri",
     lead:
-      "We take questions about adoption by universities and institutions, individual use and partnerships by email and phone. You can put your message together below and send it by email right away.",
+      "Email or call us about adoption for universities and institutions, individual use or partnerships. You can also draft your message below and send it from your email app.",
     direct: {
       title: "Contact us directly",
       emailLabel: "Email",
       telLabel: "Phone",
-      hoursNote: "If you can't reach us by phone, please send an email. We will reply after reviewing it.",
+      hoursNote: "If you can't reach us by phone, send us an email and we will get back to you.",
     },
     company: { title: "Company information" },
     form: {
-      title: "Put your email together",
+      title: "Draft your email",
       lead: "Fill in the fields and press the button. Your email app opens with the message filled in.",
       honest: "This page does not save or send anything for you. Your message is only sent when you press send in your email app.",
       fields: {
@@ -749,7 +749,7 @@ export const en: SiteContent = {
       },
       types: ["University or institution adoption", "Department-level adoption", "Individual use", "MAT (AI career assistant)", "Partnerships and other"],
       subject: "[CareerMatri inquiry]",
-      bodyIntro: "This inquiry was put together on the CareerMatri website.",
+      bodyIntro: "This inquiry was drafted on the CareerMatri website.",
       send: "Send with my email app",
       copy: "Copy message",
       opened:
@@ -761,12 +761,12 @@ export const en: SiteContent = {
       title: "After you contact us",
       items: [
         "We review your message and reply to the contact details you gave.",
-        "For universities and institutions, we explain an adoption setup that fits your departments and numbers.",
+        "For universities and institutions, we suggest a setup that fits your departments and student numbers.",
         "For individual use, we check your payment and account status before replying.",
       ],
     },
     others: {
-      title: "Go straight here if",
+      title: "Looking for something else?",
       items: [
         { label: "School staff login", href: "/login" },
         { label: "Support (orders, refunds, passwords)", href: "/support" },
@@ -778,7 +778,7 @@ export const en: SiteContent = {
 
   notFound: {
     title: "Page not found",
-    body: "This page has moved or no longer exists. Try again from the home page, or start the assessment right away.",
+    body: "This page may have moved or no longer exists. Head back to the home page, or start the assessment.",
     home: { label: "Home", href: "/" },
     start: { label: "Start the assessment", href: "/cores" },
   },
