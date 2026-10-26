@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
  *
  * 값은 `lib/prices.ts` 한 곳에서 온다. 결제는 앱에서 한다.
  */
-const FEATURE_ICON: IconName[] = ["bell", "pencil", "compare", "swap"];
+const FEATURE_ICON: IconName[] = ["bell", "pencil", "compare", "doc"];
 
 export default async function Assistant({ params }: PageParams) {
   const { lang } = await params;

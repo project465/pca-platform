@@ -647,10 +647,10 @@ export const en: SiteContent = {
       label: "What it does",
       title: "Keep your job search moving, week by week",
       items: [
-        { title: "Weekly tasks and deadline reminders", body: "Each week, the app shows you one task and your upcoming deadlines. You can also choose to get one email a week." },
+        { title: "Weekly briefing", body: "The top of the MAT screen gathers your nearest deadlines, one task for this week, and the areas that several of your saved postings ask for but your records do not cover yet. You can add deadlines to your phone calendar, and get the briefing by email once a week if you like." },
         { title: "Notes into experience records", body: "Describe something you did recently in your own words, and MAT suggests ways to write it up as an experience record. You review it and decide what to save." },
-        { title: "Postings next to your experience", body: "Paste in a job posting you found yourself, and for each requirement it shows what you can explain from your experience and what is still missing." },
-        { title: "Compare again with a new industry or role", body: "Switch to another industry or role you are interested in, and MAT compares your experience against it again." },
+        { title: "Postings next to your experience", body: "Paste in a job posting you found yourself, and for each requirement it shows what you can explain from your experience and what is still missing. Switch to another industry or role, and it compares again on that basis." },
+        { title: "Application sentence outlines", body: "For each required item in a posting, MAT builds a three-sentence outline from the experience you recorded. It never adds anything that is not in your records. Missing details stay as blanks for you to fill in." },
       ],
       planned: "Monthly change report · Coming soon",
       plannedNote: "We are working on a report that sums up what changed over the month.",
