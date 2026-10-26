@@ -99,6 +99,9 @@ const FILES = [
   "src/app/me/track/guide.tsx",
   /* 공고 확인 쪽. **목록에 없어서 쓰는 class 이름 대조가 이 쪽을 보지 않았다** */
   "src/app/me/track/posting/[id]/page.tsx",
+  /* MAT 브리핑 판과 복사 단추. 쓰는 class 이름이 CSS 에 있는지도 여기서 센다 */
+  "src/app/me/track/brief.tsx",
+  "src/app/me/track/copy-button.tsx",
   /* 계정 — 같은 껍데기를 쓰므로 같은 목록에 든다 */
   "src/app/my/layout.tsx",
   "src/app/my/page.tsx",

@@ -12,10 +12,13 @@ import { aiReady } from "@/lib/assistant/claude";
 import { settingsOf } from "@/lib/assistant/settings";
 import { pushKeys } from "@/lib/push";
 import { PushToggle } from "@/components/push-toggle";
-import { postingsOf } from "@/lib/assistant/posting";
+import { livePostingsOf } from "@/lib/assistant/posting";
 import { nudgeUser, nudgesOf } from "@/lib/assistant/nudges";
+import { buildBrief, daysLeft, kstToday } from "@/lib/assistant/brief";
+import { openActions } from "@/lib/me-v3/open-actions";
 import { CmShell, CmHead } from "../shell";
 import { AssistantGuide } from "./guide";
+import { BriefPanel } from "./brief";
 import { SectionHeader } from "../ui";
 import {
   addPosting, changeConsent, changeDigest, changeFileConsent, claimTrial, makeDraft, readAllNudges,
@@ -26,9 +29,10 @@ export const metadata = { title: "MAT · AI 취업비서" };
 /**
  * MAT · 내 구독.
  *
- * **하는 일은 셋이다.** 매주 할 일 하나를 먼저 알려 주고, 적어 주신 메모를
- * 경험 기록으로 옮겨 주고, 직접 찾아 붙여 넣은 공고를 내 경험과 맞대어
- * 준다. 셋 다 결과지가 이미 정한 판정 위에서 돌고 **점수를 새로 만들지
+ * **한 주를 끌고 가는 자리다.** 맨 위의 브리핑이 이번 주에 할 것을 한 판에
+ * 모은다(가까운 마감 · 할 일 하나 · 여러 공고가 함께 요구하는데 비어 있는 것).
+ * 그 아래 도구 셋(메모를 경험으로 옮기기 · 공고 맞대기 · 알림)이 그 판을
+ * 채운다. 넷 다 결과지가 이미 정한 판정 위에서 돌고 **점수를 새로 만들지
  * 않는다**(설계 원칙 6).
  *
  * **공고를 우리가 고르지 않는다.** 사용자가 찾은 공고를 붙여 넣고, 지원도
@@ -49,11 +53,8 @@ const short = (iso: string) =>
     timeZone: "Asia/Seoul", month: "numeric", day: "numeric",
   }).format(new Date(iso));
 
-/** 마감까지 남은 날. 한국 날짜로 센다 */
-function leftDays(deadline: string): number {
-  const today = new Date(new Date().getTime() + 9 * 3600_000).toISOString().slice(0, 10);
-  return Math.round((Date.parse(deadline) - Date.parse(today)) / 86400_000);
-}
+/** 마감까지 남은 날. 한국 날짜로 센다(브리핑과 같은 함수) */
+const leftDays = (deadline: string): number => daysLeft(deadline, kstToday());
 
 const NAME: Record<string, string> = {
   TRACK_30D: "30일권",
@@ -86,15 +87,23 @@ export default async function Track({
   /* 이번 주 한 줄이 아직 없으면 지금 만든다. **밤 당번을 기다리게 하지
      않는다**: 기간권을 막 산 사람이 빈 알림 칸을 본다 */
   if (state.on) await nudgeUser(user.id).catch(() => undefined);
-  const [major, history, claimable, prods, settings, postings, nudges] = await Promise.all([
+  const [major, history, claimable, prods, settings, live, nudges, open] = await Promise.all([
     activeMajorName(user.id),
     trackHistory(user.id),
     proTrialClaimable(user.id),
     Promise.all(TRACK_PRODUCTS.map((c) => getProduct(c))),
     settingsOf(user.id),
-    state.on ? postingsOf(user.id) : Promise.resolve([]),
+    /* 공고 목록과 브리핑이 **같은 값**을 읽는다: 붙여 넣은 뒤 적은 경험까지
+       넣어 상태를 다시 단 것이다(`refreshPosting`) */
+    state.on ? livePostingsOf(user.id) : Promise.resolve({ rows: [], core: null, exps: [] }),
     state.on ? nudgesOf(user.id, 6) : Promise.resolve([]),
+    state.on ? openActions(user.id).catch(() => null) : Promise.resolve(null),
   ]);
+  const postings = live.rows;
+  const brief = state.on ? buildBrief({
+    core: live.core, postings, exps: live.exps,
+    actions: open?.rows ?? [], fromResult: open?.fromResult ?? false,
+  }) : null;
   const sale = prods.filter((p): p is NonNullable<typeof p> => !!p);
   const p30 = sale.find((p) => p.code === "TRACK_30D");
   const p365 = sale.find((p) => p.code === "TRACK_365D");
@@ -110,9 +119,9 @@ export default async function Track({
       <CmHead
         kicker={state.on ? "AI 취업비서 · 이용 중" : "AI 취업비서"}
         title="MAT"
-        lead={"검사 결과를 받은 뒤 지원하는 동안 매주 옆에서 챙깁니다. "
-          + "이번 주 할 일을 먼저 알리고, 메모를 경험 기록으로 옮기고, "
-          + "직접 찾은 공고에서 내 경험이 비어 있는 부분을 짚어 줍니다. 자동으로 결제되지 않습니다."}
+        lead={"지원하는 동안 한 주씩 챙기는 취업비서입니다. "
+          + "매주 브리핑에 가까운 마감, 이번 주 할 일 하나, 여러 공고가 함께 요구하는데 아직 비어 있는 것을 모읍니다. "
+          + "공고마다 내 경험을 맞대 보고, 지원서 문장 뼈대를 내 기록으로 엮습니다. 지원은 직접 하시고, 자동으로 결제되지 않습니다."}
       />
 
       {sp.e && FAIL[sp.e] ? (
@@ -123,6 +132,8 @@ export default async function Track({
           {state.on ? "첫 1개월이 열렸습니다." : "이미 받으셨거나 받을 수 있는 결제가 없습니다."}
         </p>
       ) : null}
+
+      {brief ? <BriefPanel brief={brief} /> : null}
 
       <SectionHeader icon="clock" title="지금 상태" />
       <div className="cm-panel is-one">
@@ -217,6 +228,9 @@ export default async function Track({
                           {" · "}설명할 경험 {p.analysis.counts.ready} · 정리 필요 {p.analysis.counts.partial}
                           {" · "}아직 없음 {p.analysis.counts.empty}
                           {p.state === "applied" ? " · 지원함" : p.state === "closed" ? " · 닫음" : ""}
+                          {p.deadline && left !== null && left >= 0 ? (
+                            <>{" · "}<a href={`/me/track/calendar?id=${p.id}`} download>달력에 넣기</a></>
+                          ) : null}
                         </span>
                       </p>
                     );

@@ -371,7 +371,8 @@
  *  결과의 할 일 문장으로 바꿔 읽지 않는다 — V64 */
 /** 홈 현재 상태 타일의 영어 세부 줄을 결과지와 같은 함수(`studentStateView`)가 정한다 — V65 */
 /** 홈 화면 설치 안내(설치할 수 있을 때만) · MAT 설정의 `이 기기로 알림 받기`(열쇠가 있을 때만) — V66 (PWA 1단계) */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V66";
+/** MAT 맨 위의 이번 주 브리핑(가까운 마감 · 할 일 하나 · 여러 공고가 함께 요구하는 빈 줄) · 공고 쪽의 지원서 문장 뼈대와 마감일 달력 파일 — V67 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V67";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
