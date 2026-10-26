@@ -5,13 +5,15 @@ import { requireUser } from "@/lib/session";
 import { activeMajorName } from "@/lib/me-v3/major-name";
 import { activeCoreOrPick, experiencesOf } from "@/lib/me-v3/platform";
 import { activeTrack } from "@/lib/track";
-import { itemDomainKo, postingOf, type ItemStatus, type PostingItem } from "@/lib/assistant/posting";
+import { itemDomainKo, livePostingOf, type ItemStatus, type PostingItem } from "@/lib/assistant/posting";
 import { interviewPrep, smallTasks } from "@/lib/assistant/prep";
+import { sentenceDrafts } from "@/lib/assistant/sentence";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import { AXIS_KO } from "@/lib/me-v3/result/text.ko";
 import { CmShell, CmHead } from "../../../shell";
 import { SectionHeader } from "../../../ui";
 import { changePostingState, takePostingTasks } from "../../actions";
+import { CopyButton } from "../../copy-button";
 
 export const metadata = { title: "공고 확인 · MAT" };
 
@@ -23,7 +25,16 @@ export const metadata = { title: "공고 확인 · MAT" };
  * 적는 길을 붙인다.
  *
  * **남의 것은 열리지 않는다.** 번호와 로그인한 사람으로 함께 거른다.
+ *
+ * **상태는 지금 값이다.** 붙여 넣은 뒤 적은 경험까지 넣어 다시 단다
+ * (`livePostingOf`). 브리핑과 이 표가 같은 공고를 다르게 적지 않게 한다.
  */
+
+/** 문장 뼈대의 대괄호 칸을 눈에 띄게 칠한다. 글자는 그대로다 */
+function withBlanks(s: string) {
+  return s.split(/(\[[^\]]+\])/).map((x, i) => (/^\[[^\]]+\]$/.test(x)
+    ? <mark className="cm-blank" key={i}>{x}</mark> : x));
+}
 
 const STATUS: Record<ItemStatus, { label: string; why: string }> = {
   ready: { label: "설명할 경험 있음", why: "결과에서 근거가 선 영역입니다." },
@@ -52,7 +63,7 @@ export default async function Posting({ params, searchParams }: {
      있는 쪽이라, 번역해 세우면 해외 손님이 한국 자료를 자기 것으로 읽는다 */
   if ((await wsLang(user.id)) === "en") redirect("/me");
   const [p, major, core, state] = await Promise.all([
-    postingOf(user.id, id), activeMajorName(user.id), activeCoreOrPick(user.id),
+    livePostingOf(user.id, id), activeMajorName(user.id), activeCoreOrPick(user.id),
     activeTrack(user.id),
   ]);
   if (!p) notFound();
@@ -68,6 +79,9 @@ export default async function Posting({ params, searchParams }: {
   const exps = await experiencesOf(user.id, core);
   const prep = interviewPrep(core, a.items, exps);
   const tasks = smallTasks(core, a.items, exps);
+  /* 다른 전공으로 읽은 공고는 영역 코드가 이 전공의 것이 아니라 뼈대를 만들지 않는다 */
+  const sameCore = (p.core_code ?? core) === core;
+  const sd = sameCore ? sentenceDrafts(a.items, exps) : { drafts: [], missing: 0 };
   const taken = takenRaw === undefined ? null : takenRaw === "x" ? -1 : Number(takenRaw);
 
   return (
@@ -126,6 +140,44 @@ export default async function Posting({ params, searchParams }: {
       ) : (
         <p className="cm-none">요구 항목을 찾지 못했습니다. 자격 요건과 하는 일이 적힌 부분을 다시 붙여 넣어 주세요.</p>
       )}
+
+      <span id="sentences" />
+      <SectionHeader icon="doc" title="지원서 문장 뼈대"
+        sub="내 기록으로 만든 초안입니다. 필수 항목마다 적어 둔 경험의 칸에 있는 말만 이었고, 비어 있는 칸은 대괄호로 남겼습니다." />
+      {sd.drafts.length ? (
+        <div className="cm-panel is-one">
+          {sd.drafts.map((d, i) => {
+            const text = d.sentences.join(" ");
+            return (
+              <div className="cm-pane" key={i}>
+                <h3>{d.text}<em>필수 · {domainName(core, d.domain)} · {STATUS[d.status].label}</em></h3>
+                {d.also.length ? (
+                  <p className="cm-none">같은 초안으로 함께 설명할 수 있는 요구: {d.also.map((x) => `‘${x}’`).join(" · ")}</p>
+                ) : null}
+                <p className="cm-draft">{withBlanks(text)}</p>
+                <p className="cm-none">
+                  가져온 경험:{" "}
+                  <Link href={`/me/experience/${encodeURIComponent(d.experience.id)}/edit`}>{d.experience.title}</Link>
+                  {d.blanks.length ? ` · 채울 칸 ${d.blanks.length}개는 경험을 고쳐 적어 두면 다음에 채워져 나옵니다.` : ""}
+                </p>
+                <div className="cm-acts cm-copyrow">
+                  <CopyButton text={text} label="이 초안 복사" />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <p className="cm-none">
+          {!sameCore ? "지금 전공과 다른 전공으로 읽은 공고라 문장 뼈대를 만들지 않았습니다."
+            : sd.missing ? "필수 항목에 이을 경험이 아직 적혀 있지 않습니다. 위 표의 경험 적기에서 하나를 적으면 여기에 뼈대가 생깁니다."
+              : "설명할 경험이 있거나 정리가 덜 된 필수 항목이 없습니다."}
+        </p>
+      )}
+      {sd.drafts.length && sd.missing ? (
+        <p className="cm-none" style={{ marginTop: 10 }}>검사에서는 해 봤다고 답했지만 적어 둔 경험이 없는 필수 항목 {sd.missing}개는 뼈대를 만들지 않았습니다.</p>
+      ) : null}
+      <p className="cm-note">초안의 말은 내 경험 기록에 적힌 것만 썼습니다. 숫자나 결과는 직접 확인해 넣어 주세요.</p>
 
       <SectionHeader icon="users" title="이 공고로 면접을 본다면"
         sub="필수 항목에서 나올 법한 질문과, 내 기록 가운데 가져갈 경험입니다. 소리 내어 한 번 답해 보세요." />
@@ -202,6 +254,11 @@ export default async function Posting({ params, searchParams }: {
             <b>{p.state === "applied" ? "지원함" : p.state === "closed" ? "닫음" : "보고 있음"}</b>
             <span>보고 있는 공고는 마감 7일 · 3일 · 1일 전에 알림이 옵니다.</span>
           </p>
+          {p.deadline ? (
+            <div className="cm-acts">
+              <a className="cm-btn" href={`/me/track/calendar?id=${p.id}`} download>마감일 휴대폰 달력에 넣기</a>
+            </div>
+          ) : null}
           {state.on ? (
             <div className="cm-acts">
               {(["watching", "applied", "closed"] as const).filter((s) => s !== p.state).map((s) => (

@@ -4,6 +4,8 @@ import { enqueue } from "@/lib/outbox";
 import { pushReady, sendPush } from "@/lib/push";
 import { openActions } from "@/lib/me-v3/open-actions";
 import { coreIfAny } from "@/lib/me-v3/platform";
+import { PUSH_TEXT, buildBrief, weeklyNudgeText } from "./brief";
+import { livePostingsOf } from "./posting";
 import { opFail, ref } from "@/lib/oplog";
 
 /**
@@ -86,14 +88,28 @@ export async function nudgeUser(userId: string, now = new Date()): Promise<{
       })) weekly += 1;
       throw null;
     }
-    const open = await openActions(userId);
-    const first = open.rows.find((r) => r.state !== "done");
+    /* 이번 주 줄이 이미 있으면 브리핑을 다시 세지 않는다. 화면을 열 때마다
+       불리는 자리라, 줄이 있는데도 공고와 경험을 다 읽으면 그만큼 느려진다 */
+    const had = await query<{ id: string }>(
+      `SELECT id::text FROM assistant_nudges WHERE user_id = $1 AND dedupe_key = $2`,
+      [userId, `weekly:${wk}`]);
+    if (had.length) throw null;
+    /* **브리핑으로 보낸다.** 알림 줄에는 몇 가지가 모였는지만 적고, 할 일
+       문장과 공고 이름은 브리핑 판에서 읽는다. 같은 줄이 홈에도 서고 메일과
+       기기 알림의 근거도 되므로 이름이 들어갈 자리를 두지 않는다 */
+    const [open, live] = await Promise.all([openActions(userId), livePostingsOf(userId)]);
+    const b = buildBrief({
+      core: live.core, postings: live.rows, exps: live.exps,
+      actions: open.rows, fromResult: open.fromResult, now,
+    });
+    const text = weeklyNudgeText({
+      task: Boolean(b.task),
+      deadlines: b.deadlines.filter((d) => d.left <= 7).length,
+      gaps: b.gaps.length,
+    });
     if (await put(userId, {
-      kind: "weekly",
-      title: "이번 주 할 일 하나",
-      body: first ? first.body : "이번 주에 한 일 가운데 하나를 경험으로 적어 두세요.",
-      href: first ? "/me/next" : "/me/experience/new",
-      key: `weekly:${wk}`,
+      kind: "weekly", title: text.title, body: text.body,
+      href: "/me/track#brief", key: `weekly:${wk}`,
     })) weekly += 1;
   } catch (e) {
     /* 결과가 없거나 전공을 아직 고르지 않은 분. **알림 하나 때문에 다른
@@ -112,7 +128,7 @@ export async function nudgeUser(userId: string, now = new Date()): Promise<{
     if (await put(userId, {
       kind: "deadline",
       title: p.left === 0 ? `'${p.label}' 오늘 마감` : `'${p.label}' 마감 ${p.left}일 전`,
-      body: "공고와 내 경험을 맞대어 본 표를 한 번 더 보고, 비어 있는 줄을 채워 두세요.",
+      body: "공고와 내 경험을 맞대어 본 표를 한 번 더 보고, 비어 있는 줄을 채워 두세요. 휴대폰 달력에 넣는 파일도 그 화면에 있습니다.",
       href: `/me/track/posting/${p.id}`,
       key: `deadline:${p.id}:${step}`,
     })) deadline += 1;
@@ -146,10 +162,8 @@ export async function runAssistantTick(now = new Date()): Promise<{
        같은 주에 두 번 쌓이지 않으므로(`dedupe_key`) 알림도 두 번 뜨지 않는다.
        글에는 공고 이름도 할 일 문장도 적지 않는다(잠긴 화면에 그대로 뜬다) */
     if (r.weekly + r.deadline > 0 && pushReady()) {
-      await sendPush(u.id, r.deadline > 0
-        ? { title: "CareerMatri", body: "붙여 둔 공고의 마감이 다가옵니다.", url: "/me/track", tag: "mat-deadline" }
-        : { title: "CareerMatri", body: "이번 주 할 일이 하나 있습니다.", url: "/me/next", tag: "mat-weekly" },
-      ).catch(() => undefined);
+      await sendPush(u.id, { ...(r.deadline > 0 ? PUSH_TEXT.deadline : PUSH_TEXT.weekly) })
+        .catch(() => undefined);
     }
     if (u.email_digest && u.email && r.weekly + r.deadline > 0) {
       await enqueue({

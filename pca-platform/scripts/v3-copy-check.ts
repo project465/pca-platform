@@ -187,6 +187,12 @@ const FILES = [
   /* MAT 공고 확인 쪽과 그 쪽의 면접 준비·작은 일 문장 */
   "src/app/me/track/posting/[id]/page.tsx",
   "src/lib/assistant/prep.ts",
+  /* MAT 브리핑과 지원서 문장 뼈대. 판 · 단추 · 알림 줄 · 이음말 */
+  "src/app/me/track/brief.tsx",
+  "src/app/me/track/copy-button.tsx",
+  "src/lib/assistant/brief.ts",
+  "src/lib/assistant/sentence.ts",
+  "src/lib/assistant/calendar.ts",
   "src/app/me/gap/page.tsx",
   "src/app/me/apply/page.tsx",
   "src/app/me/recompute/page.tsx",

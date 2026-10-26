@@ -8,7 +8,7 @@ import { activeCore, experiencesOf, importActions, markTrackInterest } from "@/l
 import { openActions } from "@/lib/me-v3/open-actions";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { activeTrack, grantProTrialTx, proTrialClaimable } from "@/lib/track";
-import { analyzePosting, postingOf, setPostingState } from "@/lib/assistant/posting";
+import { analyzePosting, livePostingOf, setPostingState } from "@/lib/assistant/posting";
 import { smallTasks, taskBody } from "@/lib/assistant/prep";
 import { draftExperience } from "@/lib/assistant/draft";
 import { setAiConsent, setEmailDigest, setFileConsent } from "@/lib/assistant/settings";
@@ -100,7 +100,8 @@ export async function changePostingState(form: FormData): Promise<void> {
 export async function takePostingTasks(form: FormData): Promise<void> {
   const user = await requireTrack();
   const id = String(form.get("id") ?? "");
-  const p = await postingOf(user.id, id);
+  /* 화면과 같은 값(지금 상태로 다시 단 것)으로 줄을 만든다 */
+  const p = await livePostingOf(user.id, id);
   if (!p) redirect("/me/track");
   const core = await activeCore(user.id);
   /* 다른 전공으로 읽은 공고면 영역 코드가 이 전공의 것이 아니다 */

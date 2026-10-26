@@ -60,6 +60,8 @@ export type PostingRow = {
   id: string; label: string; deadline: string | null; state: string;
   analyzed_by: "claude" | "rules"; created_at: string;
   analysis: PostingAnalysis;
+  /** 그 공고를 읽은 전공. 영역 코드가 이 전공의 사전을 따른다 */
+  core_code?: string;
 };
 
 const Read = z.object({
@@ -95,24 +97,32 @@ function readByRules(core: string, text: string): ReadOut {
   return { role: r.role, deadline: r.deadline, requirements: r.requirements };
 }
 
+/**
+ * 영역 하나가 지금 어느 상태인가. 붙여 넣을 때와 다시 열 때가 **같은 줄**을
+ * 쓴다: 둘이 갈리면 경험을 적은 뒤에도 공고 쪽이 `아직 없음` 을 고집한다.
+ */
+type StatusInput = Pick<CurrentState, "zoneOf" | "gaps">;
+function statusFor(
+  st: StatusInput, exps: Experience[], domain: string, axis: Axis | null,
+): { status: ItemStatus; evidence: string[] } {
+  const evidence = exps.filter((e) => e.td_codes.includes(domain)).map((e) => e.title).slice(0, 3);
+  const zone = st.zoneOf[domain];
+  const gap = st.gaps.some((g) => g.domain === domain && (!axis || g.axis === axis));
+  if (zone === "Z1_EVIDENCE_ESTABLISHED" && !gap) return { status: "ready", evidence };
+  if (zone === "Z1_EVIDENCE_ESTABLISHED" || zone === "Z2_EVIDENCE_INCOMPLETE"
+    || evidence.length) return { status: "partial", evidence };
+  return { status: "empty", evidence };
+}
+
 /** 요구 항목 하나를 지금 상태에 댄다 */
 function judge(
   st: CurrentState, exps: Experience[], r: ReadOut["requirements"][number],
 ): PostingItem {
   const domain = r.domain && catalog(st.core).some((d) => d.code === r.domain) ? r.domain : null;
   const axis = isAxis(r.axis) ? r.axis : null;
-  const evidence = domain
-    ? exps.filter((e) => e.td_codes.includes(domain)).map((e) => e.title).slice(0, 3)
-    : [];
   let status: ItemStatus = "unmapped";
-  if (domain) {
-    const zone = st.zoneOf[domain];
-    const gap = st.gaps.some((g) => g.domain === domain && (!axis || g.axis === axis));
-    if (zone === "Z1_EVIDENCE_ESTABLISHED" && !gap) status = "ready";
-    else if (zone === "Z1_EVIDENCE_ESTABLISHED" || zone === "Z2_EVIDENCE_INCOMPLETE"
-      || evidence.length) status = "partial";
-    else status = "empty";
-  }
+  let evidence: string[] = [];
+  if (domain) ({ status, evidence } = statusFor(st, exps, domain, axis));
   /* 영역이 없으면 까닭을 남긴다. Claude 는 조건 줄만 비워 두라고 받았으므로 조건이다 */
   const reason = domain ? undefined : (r.reason ?? "condition");
   return { text: r.text.slice(0, 120), kind: r.kind, domain, axis, status, evidence, ...(reason ? { reason } : {}) };
@@ -141,8 +151,7 @@ export async function analyzePosting(userId: string, input: {
     else { read = readByRules(st.core, text); note = aiFailKo(r.reason as AiFail); }
   }
   const items = read.requirements.slice(0, 15).map((x) => judge(st, exps, x));
-  const counts = { ready: 0, partial: 0, empty: 0, unmapped: 0 } as Record<ItemStatus, number>;
-  for (const it of items) counts[it.status] += 1;
+  const counts = countOf(items);
   const analysis: PostingAnalysis = {
     schema: "assistant-posting.1",
     role: read.role ? read.role.slice(0, 60) : null,
@@ -161,9 +170,34 @@ export async function analyzePosting(userId: string, input: {
   return { id: row!.id, by };
 }
 
+export function countOf(items: PostingItem[]): Record<ItemStatus, number> {
+  const counts = { ready: 0, partial: 0, empty: 0, unmapped: 0 } as Record<ItemStatus, number>;
+  for (const it of items) counts[it.status] += 1;
+  return counts;
+}
+
+/**
+ * 붙여 넣은 뒤에 적은 경험까지 넣어 **상태만 다시 단다.** 요구 항목을 다시
+ * 끊지 않고(공고 문장 · 영역 · 판단축은 붙여 넣을 때 그대로) 넷 가운데 어느
+ * 것인지와 적어 둔 경험 제목만 지금 값으로 바꾼다. 판정은 `currentState()`
+ * 가 이미 낸 값을 읽을 뿐이라 새 산식이 없다.
+ *
+ * 다른 전공으로 읽은 공고는 영역 코드가 이 전공의 것이 아니라 그대로 둔다.
+ */
+export function refreshPosting(
+  row: PostingRow, core: string, st: StatusInput, exps: Experience[],
+): PostingRow {
+  if ((row.core_code ?? core) !== core) return row;
+  const items = row.analysis.items.map((it) => (it.domain
+    ? { ...it, ...statusFor(st, exps, it.domain, it.axis) } : it));
+  return { ...row, analysis: { ...row.analysis, items, counts: countOf(items) } };
+}
+
+const COLS = `id::text, label, deadline::text, state, analyzed_by, created_at::text, analysis, core_code`;
+
 export async function postingsOf(userId: string): Promise<PostingRow[]> {
   return query<PostingRow>(
-    `SELECT id::text, label, deadline::text, state, analyzed_by, created_at::text, analysis
+    `SELECT ${COLS}
        FROM assistant_postings WHERE user_id = $1
       ORDER BY (state = 'closed'), deadline NULLS LAST, created_at DESC LIMIT 30`,
     [userId]);
@@ -173,8 +207,37 @@ export async function postingsOf(userId: string): Promise<PostingRow[]> {
 export async function postingOf(userId: string, id: string): Promise<PostingRow | null> {
   if (!/^\d+$/.test(id)) return null;
   return queryOne<PostingRow>(
-    `SELECT id::text, label, deadline::text, state, analyzed_by, created_at::text, analysis
+    `SELECT ${COLS}
        FROM assistant_postings WHERE user_id = $1 AND id = $2`, [userId, id]);
+}
+
+/** 지금 상태와 적어 둔 경험. 못 읽으면(결과가 없는 등) 붙여 넣을 때의 값을 쓴다 */
+async function liveBasis(userId: string): Promise<{ st: CurrentState; exps: Experience[] } | null> {
+  try {
+    const st = await currentState(userId);
+    return { st, exps: await experiencesOf(userId, st.core) };
+  } catch {
+    return null;
+  }
+}
+
+/** 목록 전체를 지금 값으로. 브리핑과 MAT 목록이 같은 값을 읽는다 */
+export async function livePostingsOf(userId: string): Promise<{
+  rows: PostingRow[]; core: string | null; exps: Experience[];
+}> {
+  const [rows, base] = await Promise.all([postingsOf(userId), liveBasis(userId)]);
+  if (!base) return { rows, core: null, exps: [] };
+  return {
+    rows: rows.map((r) => refreshPosting(r, base.st.core, base.st, base.exps)),
+    core: base.st.core, exps: base.exps,
+  };
+}
+
+/** 한 건을 지금 값으로. 남의 것은 `postingOf` 에서 이미 걸러진다 */
+export async function livePostingOf(userId: string, id: string): Promise<PostingRow | null> {
+  const [row, base] = await Promise.all([postingOf(userId, id), liveBasis(userId)]);
+  if (!row || !base) return row;
+  return refreshPosting(row, base.st.core, base.st, base.exps);
 }
 
 export async function setPostingState(userId: string, id: string, state: string): Promise<void> {
