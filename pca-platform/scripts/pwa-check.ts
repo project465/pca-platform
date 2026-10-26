@@ -110,11 +110,13 @@ async function main() {
 
   const saved = { pub: process.env.VAPID_PUBLIC_KEY, priv: process.env.VAPID_PRIVATE_KEY };
   delete process.env.VAPID_PUBLIC_KEY; delete process.env.VAPID_PRIVATE_KEY;
-  ok("열쇠가 없으면 꺼져 있다", pushKeys() === null);
+  ok("열쇠가 없으면 꺼져 있다", pushKeys(new Date("2026-12-01T00:00:00+09:00")) === null);
   process.env.VAPID_PUBLIC_KEY = "abc"; process.env.VAPID_PRIVATE_KEY = keys.privateKey;
-  ok("꼴이 틀린 열쇠면 꺼져 있다", pushKeys() === null);
+  ok("꼴이 틀린 열쇠면 꺼져 있다", pushKeys(new Date("2026-12-01T00:00:00+09:00")) === null);
   process.env.VAPID_PUBLIC_KEY = keys.publicKey;
-  ok("두 열쇠가 맞으면 켜진다", pushKeys()?.publicKey === keys.publicKey);
+  ok("방침이 서기 전(11월 2일 전)에는 열쇠가 있어도 꺼져 있다", pushKeys(new Date("2026-11-01T23:59:00+09:00")) === null);
+  const AFTER = new Date("2026-11-02T00:00:01+09:00");
+  ok("두 열쇠가 맞으면 켜진다", pushKeys(AFTER)?.publicKey === keys.publicKey);
 
   console.log("\n── 4. 구독 ──");
   const mk = async (tag: string) => (await queryOne<{ id: string }>(
@@ -143,7 +145,7 @@ async function main() {
     got.push({ url, body: Buffer.from(init.body as Uint8Array), auth: String((init.headers as Record<string, string>).Authorization) });
     return new Response(null, { status: reply });
   }) as unknown as typeof fetch;
-  const r1 = await sendPush(B, { title: "CareerMatri", body: "이번 주 할 일이 하나 있습니다.", url: "/me/next" }, fake);
+  const r1 = await sendPush(B, { title: "CareerMatri", body: "이번 주 할 일이 하나 있습니다.", url: "/me/next" }, fake, AFTER);
   ok("기기마다 한 번씩 보낸다", r1.sent === 2 && got.length === 2);
   const one = got.find((g) => g.url === ep1)!;
   const plain = JSON.parse(decrypt(one.body, d1.ua, d1.auth).toString());
@@ -151,11 +153,11 @@ async function main() {
   ok("글에 이름 · 이메일 · 점수가 없다", Object.keys(plain).sort().join(",") === "body,tag,title,url"
     && !/시험|@|점/.test(JSON.stringify(plain)));
   ok("서명이 우리 열쇠다", verifyVapid(one.auth, keys.publicKey));
-  const r2 = await sendPush(B, { title: "x", body: "y", url: "https://evil.example/" }, fake);
+  const r2 = await sendPush(B, { title: "x", body: "y", url: "https://evil.example/" }, fake, AFTER);
   const last = JSON.parse(decrypt(got[got.length - 1].url === ep1 ? got[got.length - 1].body : got[got.length - 2].body, d1.ua, d1.auth).toString());
   ok("바깥 주소는 /me 로 바뀐다", r2.sent === 2 && last.url === "/me");
   reply = 410;
-  const r3 = await sendPush(B, { title: "x", body: "y", url: "/me" }, fake);
+  const r3 = await sendPush(B, { title: "x", body: "y", url: "/me" }, fake, AFTER);
   ok("기기에서 끈 구독(410)은 지운다", r3.dropped === 2 && (await cnt(B)) === 0);
 
   const er = readFileSync("src/lib/erasure.ts", "utf8");

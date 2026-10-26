@@ -27,7 +27,15 @@ const unb64u = (s: string): Buffer => Buffer.from(s, "base64url");
 export type PushKeys = { publicKey: string; privateKey: string; subject: string };
 
 /** 열쇠가 둘 다 꼴이 맞을 때만 켠다. 반쯤 들어간 값으로 보내면 푸시 서버가 거절하고 그 줄이 지워진다 */
-export function pushKeys(): PushKeys | null {
+/**
+ * 개인정보처리방침 1-6절(웹 알림)이 적용되는 때. **방침이 서기 전에는 열쇠를
+ * 넣어도 켜지지 않는다**: 방침은 바꾸기 7일 전부터 알려야 하고(11절), 그 전에
+ * 구독을 받으면 알리지 않은 항목을 받는 셈이 된다.
+ */
+export const PUSH_POLICY_FROM = new Date("2026-11-02T00:00:00+09:00");
+
+export function pushKeys(now: Date = new Date()): PushKeys | null {
+  if (now < PUSH_POLICY_FROM) return null;
   const pub = (process.env.VAPID_PUBLIC_KEY ?? "").trim();
   const priv = (process.env.VAPID_PRIVATE_KEY ?? "").trim();
   if (!pub || !priv) return null;
@@ -137,8 +145,10 @@ export async function subscriptionCount(userId: string): Promise<number> {
  * 때문에 밤 당번의 다른 일이 멈추면 안 된다. 404 · 410 은 기기에서 지운
  * 구독이라 줄을 지우고, 그 밖의 실패가 다섯 번 쌓이면 지운다.
  */
-export async function sendPush(userId: string, msg: PushMessage, send: typeof fetch = fetch): Promise<{ sent: number; dropped: number }> {
-  const keys = pushKeys();
+export async function sendPush(
+  userId: string, msg: PushMessage, send: typeof fetch = fetch, now: Date = new Date(),
+): Promise<{ sent: number; dropped: number }> {
+  const keys = pushKeys(now);
   if (!keys) return { sent: 0, dropped: 0 };
   const subs = await query<Sub>(
     `SELECT id::text, endpoint, p256dh, auth FROM push_subscriptions WHERE user_id = $1`, [userId]).catch(() => []);
