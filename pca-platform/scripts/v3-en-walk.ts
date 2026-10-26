@@ -303,12 +303,13 @@ async function entry(core: string): Promise<void> {
     /* ── 작업공간(영어판 2단계b). **화면마다 한글을 세고**, 경험을 하나 적어
        반영까지 간다. 한국 자료에 서 있는 쪽은 영어에서 홈으로 돌아가야 한다 */
     for (const path of ["/me", "/me/state", "/me/next", "/me/experience",
-      "/me/results", "/me/explore", "/me/prep", "/my"]) {
+      "/me/results", "/me/explore", "/me/prep", "/me/track", "/my"]) {
       await p.goto(`${BASE}${path}`, { waitUntil: "networkidle" });
       ok(`${path} 가 열린다`, new URL(p.url()).pathname === path, new URL(p.url()).pathname);
       await clean(`작업공간 ${path}`, `7-ws${path.replace(/\W+/g, "-")}`);
     }
-    for (const path of ["/me/region", "/me/jobs", "/me/apply", "/me/track"]) {
+    /* MAT(`/me/track`)은 2026-10-26 부터 영어로도 열린다. 위 목록에서 센다 */
+    for (const path of ["/me/region", "/me/jobs", "/me/apply"]) {
       await p.goto(`${BASE}${path}`, { waitUntil: "networkidle" });
       ok(`한국 전용 ${path} 는 홈으로 돌아간다`, new URL(p.url()).pathname === "/me",
         new URL(p.url()).pathname);

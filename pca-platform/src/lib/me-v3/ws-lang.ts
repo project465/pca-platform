@@ -24,11 +24,15 @@ export async function wsLang(userId: string): Promise<WsLang> {
 
 /**
  * 영어 작업공간에 세우지 않는 자리. **한국 자료에 서 있는 쪽이다**: 지역
- * 기관(한국 권역) · 공고(고용24) · 지원 기록(국내 공고와 이어진다) · AI
- * 취업비서(국내 결제 상품) · 파일 올려 경험 초안 만들기(국내 개인정보 동의로
- * 열었다). 번역해 두면 해외 손님이 한국 자료를 자기 것으로 읽는다.
+ * 기관(한국 권역) · 공고(고용24) · 지원 기록(국내 공고와 이어진다) · 파일
+ * 올려 경험 초안 만들기(국내 개인정보 동의로 열었다). 번역해 두면 해외
+ * 손님이 한국 자료를 자기 것으로 읽는다.
+ *
+ * **MAT(`/me/track`)은 빠졌다**(2026-10-26). 해외판 기간권과 영어 공고
+ * 읽기가 생겨서 영어 작업공간에서도 연다. 그 쪽 안에서 파일 올리기 · 지원
+ * 기록 · AI 동의처럼 국내에만 있는 줄은 여전히 감춘다.
  */
-export const WS_KR_ONLY = ["/me/region", "/me/jobs", "/me/apply", "/me/track"] as const;
+export const WS_KR_ONLY = ["/me/region", "/me/jobs", "/me/apply"] as const;
 
 export function wsKrOnly(path: string): boolean {
   return WS_KR_ONLY.some((p) => path === p || path.startsWith(`${p}/`));

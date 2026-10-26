@@ -741,12 +741,23 @@ export const UI = {
   ),
   prodTRACK_30D: d(
     "MAT 30일",
-    "Mat · 30 days",
+    "MAT · 30 days",
     "AI kariyer asistanı · 30 gün",
   ),
   prodTRACK_365D: d(
     "MAT 365일",
-    "Mat · 365 days",
+    "MAT · 365 days",
+    "AI kariyer asistanı · 365 gün",
+  ),
+  /* 해외판 기간권. 이름은 한국판과 같고 시장과 통화만 다르다 */
+  prodTRACK_30D_GL: d(
+    "MAT 30일 (해외)",
+    "MAT · 30 days",
+    "AI kariyer asistanı · 30 gün",
+  ),
+  prodTRACK_365D_GL: d(
+    "MAT 365일 (해외)",
+    "MAT · 365 days",
     "AI kariyer asistanı · 365 gün",
   ),
   prodHS_FREE: d(

@@ -373,7 +373,10 @@
 /** 홈 화면 설치 안내(설치할 수 있을 때만) · MAT 설정의 `이 기기로 알림 받기`(열쇠가 있을 때만) — V66 (PWA 1단계) */
 /** 견본 결과지 띠(surface.css) — V67 */
 /** MAT 맨 위의 이번 주 브리핑(가까운 마감 · 할 일 하나 · 여러 공고가 함께 요구하는 빈 줄) · 공고 쪽의 지원서 문장 뼈대와 마감일 달력 파일 — V68 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V68";
+/** MAT 영어판: 영어 작업공간에서 MAT 이 열린다(해외판 기간권 · 국내 전용 줄은 감춤 · AI 동의는 세우지 않음).
+ *  검사 결과가 없으면 사는 단추 대신 무료 검사로 가는 칸이 맨 위에 선다. 홈 `최근 기록` 에
+ *  결과가 있고 MAT 을 쓰지 않는 사람에게 `이 결과로 매주 챙기기 · MAT` 한 줄이 선다 — V69 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V69";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -425,7 +428,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V68";
 /** MAT 안내: AI 를 껐을 때 무엇이 어떻게 도는지 맞게 고쳤다 */
 /** 경험 적기 화면의 토막 문장 셋을 잇고 '당신의 말로' 를 걷었다 */
 /** MAT 공고 확인의 면접 준비 · 작은 일 문장과 담은 뒤 알림 세 줄 */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.47";
+/** MAT 영어 사전(`ws-en/track.ts`) · 무료 검사 먼저 안내 · 해외 요금 준비 중 · 홈의 MAT 한 줄 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.48";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

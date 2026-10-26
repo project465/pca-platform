@@ -16,6 +16,7 @@ import { openActions } from "@/lib/me-v3/open-actions";
 import { recentChangeKo } from "@/lib/me-v3/change-text.ko";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { majorNameOf } from "@/lib/me-v3/major-name";
+import { activeTrack } from "@/lib/track";
 import {
   FAMILY_LINE, NEUTRAL_LINE, studentStateView,
 } from "@/lib/me-v3/student";
@@ -63,9 +64,9 @@ export default async function Home() {
   /* **홈이 묻지 않는 것은 읽지도 않는다**(규격 §10). 고르신 산업과
      직무와 지역은 왼쪽 띠의 제 쪽이 들고, 결과 기록은 머리의 링크가
      보낸다. 쓰지 않는 값을 네 번 더 물으면 홈이 그만큼 늦어진다 */
-  const [st, exps, act, apps] = await Promise.all([
+  const [st, exps, act, apps, track] = await Promise.all([
     currentState(user.id), experiencesOf(user.id), openActions(user.id),
-    applicationsOf(user.id),
+    applicationsOf(user.id), activeTrack(user.id),
   ]);
   const actions = act.rows;
   /* 진행 중이면 몇 문항에 답했는지만 센다(Hero 한 줄). 전체 문항 수는
@@ -481,6 +482,16 @@ export default async function Home() {
                   </a>
                 </>
               } />
+            {/* **무료 검사 → MAT.** 결과를 받은 사람이 다음에 갈 자리다. MAT 을
+                이미 쓰는 사람에게는 세우지 않는다(띠에 이미 있다) */}
+            {!track.on ? (
+              <RecordRow icon="spark" tint="t-2"
+                title={t("이 결과로 매주 챙기기 · MAT")}
+                note={t("이번 주 할 일 하나 · 가까운 마감 · 공고와 내 경험 맞대기")}
+                actions={
+                  <Link className="cm-btn" href="/me/track">{t("MAT 보기")}</Link>
+                } />
+            ) : null}
             {exps.slice(0, HOME_RECENT).map((e) => (
               <RecordRow key={e.id} icon="layers" tint="t-4" title={e.title}
                 note={kindSay(t)[e.kind] ?? t("경험")}

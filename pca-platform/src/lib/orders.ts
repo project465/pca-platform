@@ -45,6 +45,8 @@ const NAMES: Record<string, string> = {
   REPORT_HS: "CareerMatri 진로 결과지 (고교)",
   TRACK_30D: "MAT 30일",
   TRACK_365D: "MAT 365일",
+  TRACK_30D_GL: "MAT 30 days",
+  TRACK_365D_GL: "MAT 365 days",
   CAMPUS_MAT_6M: "MAT 6개월 (학교)",
   CAMPUS_MAT_12M: "MAT 1년 (학교)",
 };
@@ -98,6 +100,15 @@ export async function startCheckout(
 ): Promise<{ order: Order; ticket: CheckoutTicket }> {
   const product = await getProduct(productCode);
   if (!product) throw new Error("판매하지 않는 상품입니다.");
+  /* **값이 승인되지 않은 상품은 주문을 만들지 않는다.** 0원으로 줄만 세워
+     둔 해외판 MAT 이 그렇다: 그대로 두면 0원 결제로 기간이 열린다 */
+  if (product.price_status !== "approved") throw new Error("아직 값이 정해지지 않은 상품입니다.");
+  if (product.kind === "track") {
+    const { hasV3Result } = await import("@/lib/track");
+    if (!(await hasV3Result(userId))) {
+      throw new Error("MAT 은 검사를 한 번 마친 뒤에 열 수 있습니다. 무료 검사를 먼저 해 주세요.");
+    }
+  }
 
   if (upgradesAttemptId) {
     const mine = await queryOne<{ id: string }>(

@@ -20,11 +20,14 @@ import { WS_EN_RECOMPUTE } from "./ws-en/recompute";
 import { WS_EN_RESULTS } from "./ws-en/results";
 import { WS_EN_EXPLORE } from "./ws-en/explore";
 import { WS_EN_PREP } from "./ws-en/prep";
+import { WS_EN_TRACK } from "./ws-en/track";
 import type { WsLang } from "./ws-lang";
 
 export type WsSay = (ko: string, vars?: Record<string, string | number>) => string;
 
 const EN: Record<string, string> = {
+  /* MAT 사전은 맨 앞에 둔다: 다른 쪽과 같은 열쇠가 있으면 먼저 있던 쪽이 이긴다 */
+  ...WS_EN_TRACK,
   ...WS_EN_SHELL, ...WS_EN_HOME, ...WS_EN_STATE, ...WS_EN_NEXT,
   ...WS_EN_EXPERIENCE, ...WS_EN_RECOMPUTE, ...WS_EN_RESULTS,
   ...WS_EN_EXPLORE, ...WS_EN_PREP,

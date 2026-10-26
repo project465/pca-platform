@@ -11,6 +11,8 @@
  */
 import Link from "next/link";
 import { SectionHeader } from "../ui";
+import { wsSay } from "@/lib/me-v3/ws-say";
+import type { WsLang } from "@/lib/me-v3/ws-lang";
 
 const FEATURES: {
   key: string; name: string; what: string; steps: string[];
@@ -97,21 +99,122 @@ const ASK: [string, string][] = [
  * @param on 기간권이 열려 있는가. 열려 있으면 바로 쓸 자리로 가는 링크를 단다
  * @param compact 이미 쓰는 사람에게는 접어서 둔다
  */
-export function AssistantGuide({ on, compact }: { on: boolean; compact?: boolean }) {
+/**
+ * 영어판. **번역하지 않고 다시 썼다**: 한국어 예시는 경영학 과제라, 그대로
+ * 옮기면 해외 공대생이 자기 이야기로 읽지 못한다. 영어판을 여는 전공이
+ * 기계 · 전기전자 · 컴퓨터라 예시도 그쪽에서 골랐다. 판정이나 약속은
+ * 한국어판과 같고, 하지 않는 일도 같다.
+ */
+const FEATURES_EN: typeof FEATURES = [
+  {
+    key: "brief",
+    name: "This week's briefing",
+    what: "One panel at the top of MAT that tells you what to do this week.",
+    steps: [
+      "Shows your nearest deadlines with the days left",
+      "Picks one task from your to-do list for this week",
+      "Lists what several of your saved postings ask for that your record doesn't show yet, starting with the one most postings ask for",
+    ],
+    input: "Nothing to type. MAT reads the postings you saved and the experiences you recorded.",
+    output: [
+      "Structural analysis · asked for by 3 of your 3 postings · nothing recorded yet",
+      "Small task this week: take one past assignment, write a one-page analysis note and compare it with a hand calculation",
+    ],
+    where: "#brief",
+  },
+  {
+    key: "draft",
+    name: "Turn a note into an experience",
+    what: "Write what you did in plain words. MAT moves it into the experience form for you to check.",
+    steps: [
+      "Write one or two sentences about what you did and what you produced",
+      "MAT picks the matching area and the options for what you decided and what you produced",
+      "Check the options, change anything that's off, and save it yourself (nothing is saved automatically)",
+    ],
+    input: "For my capstone I chose the bearing and shaft size for a small conveyor and checked the deflection by hand before we built the prototype.",
+    output: [
+      "Area: Machine design",
+      "What you decided: bearing and shaft size",
+      "What you produced: hand calculation sheet · prototype",
+    ],
+    where: "#draft",
+  },
+  {
+    key: "posting",
+    name: "Check a posting against your record",
+    what: "Paste a job posting you found. MAT splits it into requirements, shows which ones your record can back up, and drafts sentence outlines from your own experiences.",
+    steps: [
+      "Paste the responsibilities, requirements and preferred qualifications",
+      "Each requirement is marked as backed by your record, needs more detail, not recorded yet, or a general condition such as degree or visa",
+      "For required items you can back up, MAT drafts a sentence outline in your own words and leaves gaps in [brackets]",
+      "You can download the deadline as a calendar file",
+    ],
+    input: "[Responsibilities] Design brackets and housings in SolidWorks … [Preferred] FEA experience (ANSYS)",
+    output: [
+      "Design brackets and housings → backed by your record (capstone conveyor)",
+      "Sentence outline: In “Capstone conveyor” I [problem you were solving]. I decided the bearing and shaft size. The result was a hand calculation sheet, and I checked it by [how you verified it].",
+    ],
+    where: "#posting",
+  },
+];
+
+const WEEK_EN: [string, string][] = [
+  ["Monday", "Your briefing is refreshed. The task for the week is sized to take about 30 minutes."],
+  ["During the week", "When you finish an assignment or project, write a two-line note and turn it into an experience. The gaps in your briefing shrink as you go."],
+  ["When you find a posting", "Paste it and check the open requirements and the sentence outlines. You apply directly on the employer's site."],
+  ["Before a deadline", "MAT reminds you 7, 3 and 1 day before. Add it to your calendar and your phone will remind you too."],
+];
+
+const NOT_EN: [string, string][] = [
+  ["No scores and no predictions about getting hired", "Everything MAT shows comes from your test result and the experiences you recorded. It reads and sorts text, nothing more."],
+  ["MAT doesn't pick employers or apply for you", "You find the postings and you apply yourself."],
+  ["MAT doesn't write your cover letter", "It builds sentence outlines from your own records and never adds facts you didn't give it. Finishing the wording is up to you."],
+  ["Nothing renews automatically", "Each plan is a one-time payment and simply ends when the period is over."],
+];
+
+const ASK_EN: [string, string][] = [
+  ["Do I need to take the test first?",
+    "Yes. MAT works from your result, so start with the free test (about 12 minutes). Once you have a result you can open MAT right away."],
+  ["Where does the posting text go?",
+    "MAT reads it inside CareerMatri using rules for your major. It isn't sent to outside AI services. Saved posting text is deleted after a year and notes after 30 days."],
+  ["Can I use MAT for any major?",
+    "Right now the English version covers Mechanical, Electrical and Electronic, and Computer and Software Engineering."],
+];
+
+export function AssistantGuide({ on, compact, lang = "ko" }: { on: boolean; compact?: boolean; lang?: WsLang }) {
+  const t = wsSay(lang);
+  const en = lang === "en";
+  const features = en ? FEATURES_EN : FEATURES;
+  const week = en ? WEEK_EN : WEEK;
+  const not = en ? NOT_EN : NOT;
+  const ask = en ? ASK_EN : ASK;
   const body = (
     <div className="cm-aig">
-      <p className="cm-aig-lead">
-        검사 결과를 한 번 받고 끝내지 않도록, <b>지원하는 동안 한 주씩 챙기는 취업비서</b>입니다.
-        매주 내 결과와 적어 둔 경험, 붙여 둔 공고를 읽고 <b>이번 주에 할 일 · 가까운 마감 · 여러 공고가 함께 요구하는데 비어 있는 것</b>을 브리핑 한 판에 모읍니다.
-      </p>
+      {en ? (
+        <p className="cm-aig-lead">
+          So your result doesn't end on the day you get it, <b>MAT checks in with you every week while you apply</b>.
+          It reads your result, your recorded experiences and the postings you saved, then puts <b>this week's task, your nearest deadlines and what several postings ask for that you haven't shown yet</b> into one briefing.
+        </p>
+      ) : (
+        <p className="cm-aig-lead">
+          검사 결과를 한 번 받고 끝내지 않도록, <b>지원하는 동안 한 주씩 챙기는 취업비서</b>입니다.
+          매주 내 결과와 적어 둔 경험, 붙여 둔 공고를 읽고 <b>이번 주에 할 일 · 가까운 마감 · 여러 공고가 함께 요구하는데 비어 있는 것</b>을 브리핑 한 판에 모읍니다.
+        </p>
+      )}
       <ul className="cm-aig-for">
-        <li>검사 결과는 받았는데 다음에 무엇을 할지 막막한 분</li>
-        <li>한 일은 많은데 지원서에 쓸 말로 정리가 안 된 분</li>
-        <li>공고를 보고 내가 지원해도 되는지 판단이 안 서는 분</li>
+        {(en ? [
+          "You have your result but aren't sure what to do next",
+          "You've done a lot but can't put it into words for an application",
+          "You find a posting and can't tell whether you should apply",
+        ] : [
+          "검사 결과는 받았는데 다음에 무엇을 할지 막막한 분",
+          "한 일은 많은데 지원서에 쓸 말로 정리가 안 된 분",
+          "공고를 보고 내가 지원해도 되는지 판단이 안 서는 분",
+        ]).map((x) => <li key={x}>{x}</li>)}
       </ul>
 
       <div className="cm-aig-grid">
-        {FEATURES.map((f, i) => (
+        {features.map((f, i) => (
           <article key={f.key} className="cm-aig-card">
             <span className="cm-aig-no">{i + 1}</span>
             <h3>{f.name}</h3>
@@ -120,33 +223,33 @@ export function AssistantGuide({ on, compact }: { on: boolean; compact?: boolean
               {f.steps.map((s) => <li key={s}>{s}</li>)}
             </ol>
             <div className="cm-aig-ex">
-              <p className="cm-aig-ex-h">이렇게 넣으면</p>
+              <p className="cm-aig-ex-h">{t("이렇게 넣으면")}</p>
               <p className="cm-aig-in">{f.input}</p>
-              <p className="cm-aig-ex-h">이렇게 받습니다</p>
+              <p className="cm-aig-ex-h">{t("이렇게 받습니다")}</p>
               <ul className="cm-aig-out">
                 {f.output.map((o) => <li key={o}>{o}</li>)}
               </ul>
             </div>
-            {on ? <Link className="cm-aig-go" href={f.where}>지금 써 보기</Link> : null}
+            {on ? <Link className="cm-aig-go" href={f.where}>{t("지금 써 보기")}</Link> : null}
           </article>
         ))}
       </div>
 
-      <h3 className="cm-aig-h">한 주는 이렇게 씁니다</h3>
+      <h3 className="cm-aig-h">{t("한 주는 이렇게 씁니다")}</h3>
       <ol className="cm-aig-week">
-        {WEEK.map(([when, what]) => (
+        {week.map(([when, what]) => (
           <li key={when}><b>{when}</b><span>{what}</span></li>
         ))}
       </ol>
 
-      <h3 className="cm-aig-h">하지 않는 일</h3>
+      <h3 className="cm-aig-h">{t("하지 않는 일")}</h3>
       <ul className="cm-aig-not">
-        {NOT.map(([t, d]) => <li key={t}><b>{t}</b><span>{d}</span></li>)}
+        {not.map(([h, d]) => <li key={h}><b>{h}</b><span>{d}</span></li>)}
       </ul>
 
-      <h3 className="cm-aig-h">자주 묻는 것</h3>
+      <h3 className="cm-aig-h">{t("자주 묻는 것")}</h3>
       <div className="cm-aig-ask">
-        {ASK.map(([q, a]) => (
+        {ask.map(([q, a]) => (
           <details key={q}>
             <summary>{q}</summary>
             <p>{a}</p>
@@ -158,11 +261,11 @@ export function AssistantGuide({ on, compact }: { on: boolean; compact?: boolean
 
   return (
     <>
-      <SectionHeader icon="spark" title={compact ? "MAT 사용법" : "MAT이 해 드리는 일"}
-        sub={compact ? undefined : "브리핑이 한 주의 할 일을 정하고, 나머지 둘이 그 빈 줄을 채웁니다."} />
+      <SectionHeader icon="spark" title={compact ? t("MAT 사용법") : t("MAT이 해 드리는 일")}
+        sub={compact ? undefined : t("브리핑이 한 주의 할 일을 정하고, 나머지 둘이 그 빈 줄을 채웁니다.")} />
       {compact ? (
         <details className="cm-aig-fold">
-          <summary>무엇을 해 주는지 · 한 주 쓰는 법 · 하지 않는 일 보기</summary>
+          <summary>{t("무엇을 해 주는지 · 한 주 쓰는 법 · 하지 않는 일 보기")}</summary>
           {body}
         </details>
       ) : body}

@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/session";
 import { getProduct } from "@/lib/orders";
+import { hasV3Result } from "@/lib/track";
 import { globalChannelReady, paymentProvider } from "@/lib/payments";
 import { t, productName } from "@/lib/locale";
 import { formatMoney } from "@/lib/money";
@@ -33,6 +34,13 @@ export default async function CheckoutPage({
   const provider = paymentProvider().name;
   // mock 은 두 수단을 다 흉내 낸다. portone 은 채널이 있어야 연다
   const globalReady = provider === "mock" || globalChannelReady();
+
+  /* MAT 은 검사 결과가 있어야 돈다(`hasV3Result`). 결제창까지 와서 막히면
+     카드를 꺼낸 사람이 헛걸음한 것이 되므로 MAT 화면으로 돌려보내 무료
+     검사를 먼저 안내한다 */
+  if (product?.kind === "track" && !(await hasV3Result(user.id))) {
+    redirect("/me/track?e=needtest");
+  }
 
   if (!product) {
     return (

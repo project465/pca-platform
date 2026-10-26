@@ -19,6 +19,28 @@ import { query, queryOne } from "@/lib/db";
  */
 
 export const TRACK_PRODUCTS = ["TRACK_30D", "TRACK_365D"] as const;
+/** 해외판(영어 작업공간). 값이 승인되기 전에는 결제가 열리지 않는다(`startCheckout`) */
+export const TRACK_PRODUCTS_GL = ["TRACK_30D_GL", "TRACK_365D_GL"] as const;
+
+/** 그 사람이 살 수 있는 기간권. 작업공간 언어가 정한다(`wsLang`) */
+export function trackProductsFor(lang: "ko" | "en"): readonly string[] {
+  return lang === "en" ? TRACK_PRODUCTS_GL : TRACK_PRODUCTS;
+}
+
+/**
+ * **MAT 은 검사 결과 위에서 돈다.** 브리핑의 할 일 · 공고 맞대기 · 문장
+ * 뼈대가 전부 결과와 경험을 읽어서, 결과가 없는 사람에게 팔면 빈 화면을 산
+ * 것이 된다. 그래서 기간권은 무료 검사(BASIC)라도 한 번 끝낸 사람에게만
+ * 판다. 화면이 막고(`/me/track`) 결제를 여는 자리가 한 번 더 막는다.
+ */
+export async function hasV3Result(userId: string): Promise<boolean> {
+  const r = await queryOne<{ ok: boolean }>(
+    `SELECT EXISTS (
+       SELECT 1 FROM v3_snapshots s JOIN v3_attempts a ON a.id = s.attempt_id
+        WHERE a.user_id = $1 AND s.result_model IS NOT NULL) AS ok`,
+    [userId]).catch(() => null);
+  return Boolean(r?.ok);
+}
 export const TRACK_TRIAL = "TRACK_PRO_TRIAL";
 
 export type TrackState = {
@@ -159,13 +181,13 @@ export async function proTrialClaimable(userId: string): Promise<boolean> {
 }
 
 /**
- * 지금 파는 Track 기간권. **한국 시장만 판다**: 값이 원화로만 승인돼 있고,
- * 글로벌 가격을 지어내지 않는다.
+ * 지금 파는 Track 기간권. **승인된 값만 판다**: 해외판은 줄이 있어도
+ * 값이 승인되기 전에는 여기서 걸러져 가격표에 서지 않는다. 글로벌 가격을
+ * 지어내지 않는다.
  */
 export async function trackOffers(market: string): Promise<{
   code: string; amount: number; currency: string; days: number;
 }[]> {
-  if (market !== "KR") return [];
   return query<{ code: string; amount: number; currency: string; days: number }>(
     `SELECT code, amount, currency, duration_days AS days
        FROM products
