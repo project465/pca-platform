@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
+import { getRates, localize } from "@/lib/fx";
 import { notFound } from "next/navigation";
 import { getSite, type Lang } from "@/content";
 import { pageMeta, type PageParams } from "@/lib/seo";
 import { Shell } from "@/components/chrome";
 import { Button, Closing, FaqList, SectionHead } from "@/components/blocks";
 import { Icon, type IconName } from "@/components/icons";
+
+/* 환율(`lib/fx.ts`) 때문에 요청마다 그린다. 환율 자체는 fetch 저장분으로 한 시간에 한 번만 받는다.
+   미리 구워 두면 빌드할 때의 환율이 다음 배포까지 남는다 */
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
   const { lang } = await params;
@@ -27,6 +32,7 @@ const FEATURE_ICON: IconName[] = ["bell", "pencil", "compare", "swap"];
 
 export default async function Assistant({ params }: PageParams) {
   const { lang } = await params;
+  const fx = lang === "ko" ? null : await getRates();
   const site = getSite(lang);
   const a = site.assistant;
   if (!a) notFound();
@@ -97,10 +103,17 @@ export default async function Assistant({ params }: PageParams) {
             {a.plans.items.map((p) => (
               <article key={p.name} className={`card plan${p.featured ? " is-featured" : ""}`}>
                 <h3>{p.name}</h3>
-                <div className="plan-price">
-                  <b>{p.price}</b>
-                  <span>{p.unit}</span>
-                </div>
+                {(() => {
+                  /* 영어·일본어·중국어 판은 그 나라 통화로 어림한다(`lib/fx.ts`). 결제는 원화다 */
+                  const lp = localize(p.price, lang as Lang, fx);
+                  return (
+                    <div className="plan-price">
+                      <b>{lp.main}</b>
+                      <span>{p.unit}</span>
+                      {lp.note && <small className="fx-note">{lp.note}</small>}
+                    </div>
+                  );
+                })()}
                 <p>{p.body}</p>
                 <Button link={p.cta} kind={p.featured ? "primary" : "ghost"} arrow />
               </article>

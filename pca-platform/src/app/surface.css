@@ -1981,3 +1981,6 @@ body:has(.stgmark) .cm-tabs { bottom: var(--stg-h) }
 .sf-top { background: rgba(243, 246, 251, .9); border-bottom-color: transparent; }
 .pxtrack-f { margin: 12px 0; padding-left: 1.2em; display: grid; gap: 6px;
   font-size: var(--ui-t-sub); line-height: 1.6; color: var(--sf-ink-2); max-width: 62rem; }
+
+/* 영어 화면의 달러 어림(`lib/fx.ts`). 원화 값 아래 한 줄, 값보다 옅게 */
+.pxprice .pxfx { display: block; margin-top: 4px; font-weight: 500; color: var(--sf-ink-3); }

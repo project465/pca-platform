@@ -7,6 +7,11 @@ import { Icon, type IconName } from "@/components/icons";
 import { ReportMockView, WorkspaceMockView } from "@/components/mocks";
 import { WorldMap } from "@/components/world";
 import type { Metadata } from "next";
+import { getRates, localize } from "@/lib/fx";
+
+/* 환율(`lib/fx.ts`) 때문에 요청마다 그린다. 환율 자체는 fetch 저장분으로 한 시간에 한 번만 받는다.
+   미리 구워 두면 빌드할 때의 환율이 다음 배포까지 남는다 */
+export const dynamic = "force-dynamic";
 
 /**
  * 홈. 이 순서가 곧 설명의 순서다:
@@ -30,6 +35,7 @@ const TRUST_ICON: IconName[] = ["shield", "list", "building"];
 
 export default async function Home({ params }: PageParams) {
   const { lang } = await params;
+  const fx = lang === "ko" ? null : await getRates();
   const site = getSite(lang);
   const h = site.home;
 
@@ -366,12 +372,17 @@ export default async function Home({ params }: PageParams) {
                 <span className="tag">{c.tag}</span>
                 <h3>{c.title}</h3>
                 <p>{c.body}</p>
-                {c.price && (
-                  <div className="offer-price">
-                    <b>{c.price}</b>
-                    {c.priceNote && <span>{c.priceNote}</span>}
-                  </div>
-                )}
+                {c.price && (() => {
+                  /* 영어·일본어·중국어 판은 그 나라 통화로 어림하고, 실제 결제되는 원화를 작게 적는다(`lib/fx.ts`) */
+                  const lp = localize(c.price, lang as Lang, fx);
+                  return (
+                    <div className="offer-price">
+                      <b>{lp.main}</b>
+                      {c.priceNote && <span>{c.priceNote}</span>}
+                      {lp.note && <small className="fx-note">{lp.note}</small>}
+                    </div>
+                  );
+                })()}
                 <ul className="checks">
                   {c.points.map((p) => (
                     <li key={p}>

@@ -7,6 +7,7 @@ import {
   catalogFor, priceState, sellable, type CatalogItem,
 } from "@/lib/catalog";
 import { money, resolveMarket } from "@/lib/market";
+import { krwToUsd, usdApprox, usdNote, type UsdRate } from "@/lib/fx";
 import { entrySay } from "@/lib/entry-say";
 import { sellableCores } from "@/lib/me-v3/core-registry";
 import { openGrants } from "@/lib/me-v2/attempt";
@@ -67,6 +68,8 @@ export default async function PricingPage({
   const gate = await publicCommerceGate();
   if (!gate.open) return <NotOpen lang={L} />;
   const mk = await resolveMarket(sp.market);
+  /* 영어 화면에서 원화 상품은 달러로 어림해 함께 적는다(`lib/fx.ts`). 결제는 원화다 */
+  const fx = L === "en" ? await krwToUsd() : null;
   const [list, tracks] = await Promise.all([catalogFor(mk.market), trackOffers(mk.market)]);
   const t30 = tracks.find((t) => t.days === 30);
   const t365 = tracks.find((t) => t.days === 365);
@@ -189,7 +192,7 @@ export default async function PricingPage({
         {list.length ? (
           <div className="pxtiers">
             {list.map((p) => (
-              <TierCard key={p.code} p={p} lang={L} T={T}
+              <TierCard key={p.code} p={p} lang={L} T={T} fx={fx}
                 /* 전공이 둘 이상 열리면 등급마다 시간이 갈린다.
                    그때는 **적지 않는다**: 한 전공의 시간을 모두의 시간으로
                    적으면 다른 전공 학생이 그 수를 보고 시간을 비워 둔다 */
@@ -236,6 +239,7 @@ export default async function PricingPage({
                   <b>
                     {t.days === 365 ? T("pxTrack365") : T("pxTrack30")}
                     {" · "}{money(t.amount, t.currency, L)}
+                    {L === "en" && t.currency === "KRW" && usdApprox(t.amount, fx) ? ` (${usdApprox(t.amount, fx)})` : ""}
                   </b>
                   <span>
                     {t.days === 365 && t30 && t365 && t30.amount * 12 > t365.amount
@@ -293,11 +297,12 @@ export default async function PricingPage({
 }
 
 function TierCard({
-  p, lang, T, mins,
+  p, lang, T, mins, fx,
 }: {
   p: CatalogItem; lang: "ko" | "en"; T: ReturnType<typeof txer>;
-  mins: string;
+  mins: string; fx: UsdRate | null;
 }) {
+  const usd = lang === "en" && p.currency === "KRW" ? usdApprox(p.amount, fx) : null;
   const state = priceState(p);
   const label = money(p.amount, p.currency, lang);
   const ok = sellable(p);
@@ -321,6 +326,7 @@ function TierCard({
         <p className="pxprice">
           {label}
           <small>{p.currency === "KRW" ? T("pxOnceVat") : T("pxOnce")}</small>
+          {usd && fx ? <small className="pxfx">{usd} · {usdNote(fx)}</small> : null}
         </p>
       ) : state === "FREE_APPROVED" ? (
         <p className="pxprice">
