@@ -2,6 +2,7 @@ import type { Lang, SiteContent } from "@/content/model";
 import { HTML_LANG, LANGS, LANG_NAME, localePath } from "@/lib/i18n";
 import { BrandMark, Icon } from "./icons";
 import MobileMenu from "./mobile-menu";
+import { liveMailOrderNo } from "@/lib/business";
 
 /** 같은 쪽의 다른 언어 주소. 고르면 첫 화면이 아니라 보던 쪽으로 간다 */
 function langLinks(path: string) {
@@ -98,8 +99,10 @@ export function SiteHeader({ site, path }: { site: SiteContent; path: string }) 
   );
 }
 
-export function SiteFooter({ site }: { site: SiteContent }) {
+export async function SiteFooter({ site }: { site: SiteContent }) {
   const L = site.legal;
+  /* 신고번호는 앱의 운영 화면이 정본이다(`src/lib/business.ts`) */
+  const mailOrderNo = L.mailOrderNo || (await liveMailOrderNo());
   const unset = (v: string) => v || L.labels.unset;
   const rows: [string, string, boolean][] = [
     [L.labels.company, L.company, false],
@@ -108,7 +111,7 @@ export function SiteFooter({ site }: { site: SiteContent }) {
     [L.labels.tel, L.tel, false],
     [L.labels.email, L.email, false],
     [L.labels.bizNo, L.bizNo, false],
-    [L.labels.mailOrderNo, unset(L.mailOrderNo), !L.mailOrderNo],
+    [L.labels.mailOrderNo, unset(mailOrderNo), !mailOrderNo],
     [L.labels.jobInfoNo, L.jobInfoNo, false],
     [L.labels.privacyOfficer, L.privacyOfficer, false],
   ];

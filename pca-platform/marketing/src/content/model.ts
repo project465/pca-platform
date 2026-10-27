@@ -147,6 +147,19 @@ export type SiteContent = {
       noteLink: Link;
     };
     mock: WorkspaceMock;
+    /**
+     * 처음 온 사람이 첫 화면 바로 아래에서 **무슨 서비스인지** 읽는 자리.
+     * 고민 셋 → 한 줄 정의 → 기둥 셋. 대학 소개 자료(전주대·원광대)와 같은
+     * 순서다. 없는 원고는 이 절을 세우지 않는다
+     */
+    glance?: {
+      label: string;
+      painsTitle: string;
+      pains: string[];
+      answerLabel: string;
+      answer: string;
+      pillars: { title: string; body: string }[];
+    };
     how: {
       label: string;
       title: string;

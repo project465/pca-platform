@@ -36,7 +36,7 @@ export const en: SiteContent = {
 
   nav: {
     items: [
-      { label: "How it works", href: "/#how" },
+      { label: "How it works", href: "/#glance" },
       { label: "Universities", href: "/universities" },
       { label: "AI career assistant", href: "/assistant" },
       { label: "Pricing", href: "/pricing" },
@@ -81,6 +81,22 @@ export const en: SiteContent = {
       changes: [
         { text: "Confirmed: the conditions and criteria you set in product design", date: "10-18" },
         { text: "A new experience was added under testing and measurement", date: "10-05" },
+      ],
+    },
+    glance: {
+      label: "At a glance",
+      painsTitle: "Where students get stuck before applying",
+      pains: [
+        "Turning coursework and projects into lines for an application is hard",
+        "It is unclear which industries and roles a major actually leads to",
+        "Most assessments end with a single report and no next step",
+      ],
+      answerLabel: "CareerMatri is",
+      answer: "A major-based career assessment that records what you have done as evidence and uses it to set your next step",
+      pillars: [
+        { title: "Built per major", body: "Each major has its own questions, written from the work people in that field actually do." },
+        { title: "Evidence from experience", body: "We ask what you did and what you decided yourself, not your aptitude or personality type, and show it back in the report." },
+        { title: "A workspace that continues", body: "After the report, adding an experience updates your current status and your next steps." },
       ],
     },
     how: {
@@ -182,12 +198,12 @@ export const en: SiteContent = {
       legend: { done: "Completed", planned: "Planned" },
       countries: [
         { iso: "410", name: "South Korea", status: "done" },
-        { iso: "792", name: "Türkiye", status: "done", schools: ["Ankara Social Sciences University (ASBU)"] },
+        { iso: "792", name: "Türkiye", status: "done" },
         { iso: "276", name: "Germany", status: "done" },
         { iso: "840", name: "United States", status: "done" },
         { iso: "392", name: "Japan", status: "done" },
         { iso: "156", name: "China", status: "done" },
-        { iso: "398", name: "Kazakhstan", status: "planned" },
+        { iso: "398", name: "Kazakhstan", status: "done" },
         { iso: "250", name: "France", status: "planned" },
         { iso: "710", name: "South Africa", status: "planned" },
         { iso: "608", name: "Philippines", status: "planned" },
@@ -431,7 +447,7 @@ export const en: SiteContent = {
               ],
             },
           ],
-          note: "Weights are stored in a data table (job_area_axis_weights). When they change, we issue a new version so earlier results stay the same.",
+          note: "Weights are kept as data, not code. When they change, we issue a new version so earlier results stay the same.",
         },
         nextLabel: "Planned",
       },
@@ -808,7 +824,7 @@ export const en: SiteContent = {
       {
         title: "Service",
         links: [
-          { label: "How it works", href: "/#how" },
+          { label: "How it works", href: "/#glance" },
           { label: "Majors", href: "/#majors" },
           { label: "Universities", href: "/universities" },
           { label: "MAT · AI career assistant", href: "/assistant" },

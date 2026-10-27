@@ -35,7 +35,7 @@ export const zh: SiteContent = {
 
   nav: {
     items: [
-      { label: "服务介绍", href: "/#how" },
+      { label: "服务介绍", href: "/#glance" },
       { label: "高校与机构", href: "/universities" },
       { label: "AI求职助手", href: "/assistant" },
       { label: "价格", href: "/pricing" },
@@ -80,6 +80,22 @@ export const zh: SiteContent = {
       changes: [
         { text: "已确认你在机构·产品设计中自己定下的条件和标准", date: "10-18" },
         { text: "新补充的经历让试验·测量领域的依据更扎实了", date: "10-05" },
+      ],
+    },
+    glance: {
+      label: "一图看懂",
+      painsTitle: "求职前的学生常卡在这里",
+      pains: [
+        "很难把课程和项目中做过的事写成申请材料里的句子",
+        "看不清自己的专业能通向哪些行业和岗位",
+        "做完测评只拿到一份报告，之后不知道该做什么",
+      ],
+      answerLabel: "CareerMatri 是",
+      answer: "以专业中做过的事为依据，并据此确定下一步的职业诊断服务",
+      pillars: [
+        { title: "按专业设计", body: "每个专业的题目都依据该领域实际要做的工作单独编写。" },
+        { title: "以经历为依据", body: "不问能力倾向或性格类型，而是问您做过什么、当时自己决定了什么，并在报告中原样呈现。" },
+        { title: "持续使用的工作区", body: "拿到报告后继续添加经历，当前状态和下一步会重新整理。" },
       ],
     },
     how: {
@@ -181,12 +197,12 @@ export const zh: SiteContent = {
       legend: { done: "已开展的国家", planned: "计划开展" },
       countries: [
         { iso: "410", name: "韩国", status: "done" },
-        { iso: "792", name: "土耳其", status: "done", schools: ["安卡拉社会科学大学（ASBU）"] },
+        { iso: "792", name: "土耳其", status: "done" },
         { iso: "276", name: "德国", status: "done" },
         { iso: "840", name: "美国", status: "done" },
         { iso: "392", name: "日本", status: "done" },
         { iso: "156", name: "中国", status: "done" },
-        { iso: "398", name: "哈萨克斯坦", status: "planned" },
+        { iso: "398", name: "哈萨克斯坦", status: "done" },
         { iso: "250", name: "法国", status: "planned" },
         { iso: "710", name: "南非", status: "planned" },
         { iso: "608", name: "菲律宾", status: "planned" },
@@ -426,7 +442,7 @@ export const zh: SiteContent = {
               ],
             },
           ],
-          note: "权重存放在数据表（job_area_axis_weights）中。每次调整都会升级版本，此前作答者的结果不受影响。",
+          note: "权重以数据而非代码的形式管理。每次调整都会升级版本，此前作答者的结果不受影响。",
         },
         nextLabel: "计划中",
       },
@@ -809,7 +825,7 @@ export const zh: SiteContent = {
       {
         title: "服务",
         links: [
-          { label: "服务介绍", href: "/#how" },
+          { label: "服务介绍", href: "/#glance" },
           { label: "专业列表", href: "/#majors" },
           { label: "高校与机构", href: "/universities" },
           { label: "MAT · AI求职助手", href: "/assistant" },

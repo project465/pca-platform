@@ -48,7 +48,7 @@ export const kr: SiteContent = {
 
   nav: {
     items: [
-      { label: "서비스 소개", href: "/#how" },
+      { label: "서비스 소개", href: "/#glance" },
       { label: "대학·기관", href: "/universities" },
       { label: "AI 취업비서", href: "/assistant" },
       { label: "요금", href: "/pricing" },
@@ -93,6 +93,22 @@ export const kr: SiteContent = {
       changes: [
         { text: "기구·제품 설계에서 직접 정한 조건과 기준이 확인됐습니다", date: "10-18" },
         { text: "새 경험으로 시험·계측 영역의 근거가 늘었습니다", date: "10-05" },
+      ],
+    },
+    glance: {
+      label: "한눈에 보기",
+      painsTitle: "취업을 앞둔 전공생이 자주 막히는 자리",
+      pains: [
+        "수업과 프로젝트에서 한 일을 지원서 문장으로 옮기기 어렵습니다",
+        "내 전공이 어느 산업과 어느 직무로 이어지는지 잘 보이지 않습니다",
+        "검사를 받아도 결과지 한 장으로 끝나고 다음에 할 일이 남지 않습니다",
+      ],
+      answerLabel: "CareerMatri는",
+      answer: "전공에서 해 본 일을 근거로 남기고, 그 근거로 다음 할 일을 정하는 진로 진단 서비스입니다",
+      pillars: [
+        { title: "전공 기준", body: "전공마다 그 분야에서 실제로 하는 일로 문항을 따로 만들었습니다." },
+        { title: "경험 근거", body: "적성이나 성격 유형 대신 해 본 일과 그때 직접 정한 것을 묻고, 결과지에 그대로 돌려드립니다." },
+        { title: "이어지는 작업공간", body: "결과지를 받은 뒤에도 경험을 더하면 현재 상태와 다음 할 일이 다시 정리됩니다." },
       ],
     },
     how: {
@@ -164,7 +180,7 @@ export const kr: SiteContent = {
           {
             label: "지금 할 일",
             title: "그때 직접 정한 것을 적어 두기",
-            body: "받은 요청을 바꾼 조건을 세 줄로 적어 보세요.",
+            body: "요청을 받고 직접 바꾼 조건을 세 줄로 적어 보세요.",
           },
           { label: "남긴 근거", title: "목표와 지표 표 · 사업계획서", body: "지원서에 옮길 재료가 모였습니다." },
           { label: "더 채울 부분", title: "데이터·의사결정", body: "직접 정한 기준과 남은 결과물을 아직 적지 않으셨습니다." },
@@ -199,12 +215,12 @@ export const kr: SiteContent = {
       legend: { done: "진행한 나라", planned: "진행 예정" },
       countries: [
         { iso: "410", name: "한국", status: "done" },
-        { iso: "792", name: "튀르키예", status: "done", schools: ["앙카라 사회과학대학교(ASBU)"] },
+        { iso: "792", name: "튀르키예", status: "done" },
         { iso: "276", name: "독일", status: "done" },
         { iso: "840", name: "미국", status: "done" },
         { iso: "392", name: "일본", status: "done" },
         { iso: "156", name: "중국", status: "done" },
-        { iso: "398", name: "카자흐스탄", status: "planned" },
+        { iso: "398", name: "카자흐스탄", status: "done" },
         { iso: "250", name: "프랑스", status: "planned" },
         { iso: "710", name: "남아프리카공화국", status: "planned" },
         { iso: "608", name: "필리핀", status: "planned" },
@@ -326,7 +342,7 @@ export const kr: SiteContent = {
       label: "근거",
       title: "무엇을 근거로 만들었는지 공개합니다",
       lead:
-        "검사 체계는 저작권 등록을 마쳤고, 국내외 직무·검사 기준을 참고해 만들었습니다. 검증은 끝낸 것과 진행 중인 것을 나눠 적습니다.",
+        "검사 체계는 저작권 등록을 마쳤고, 국내외 직무·검사 기준을 참고해 만들었습니다. 검증은 끝난 것과 진행 중인 것을 구분해 두었습니다.",
       cards: [
         {
           title: "저작권 등록",
@@ -373,13 +389,13 @@ export const kr: SiteContent = {
             no: "01",
             title: "영역 점수",
             formula: "S<sub>a</sub> = 25 · ( x̄<sub>a</sub> − 1 ),&ensp; x̄<sub>a</sub> = <sup>1</sup>&frasl;<sub>n</sub> Σ<sub>i</sub> x<sub>i</sub>",
-            body: "한 직무 영역 문항들의 평균(1~5점)을 0~100으로 폅니다. 1점은 0, 3점은 50, 5점은 100입니다.",
+            body: "한 직무 영역 문항의 평균(1~5점)을 0~100점으로 바꿉니다. 1점은 0, 3점은 50, 5점은 100입니다.",
           },
           {
             no: "02",
             title: "측정 오차",
             formula: "SE<sub>a</sub> = 25 · s<sub>a</sub> / √n",
-            body: "같은 영역 안 응답이 얼마나 흩어졌는지로 오차를 잽니다. 고정값을 쓰지 않고 응답한 사람마다 따로 계산합니다.",
+            body: "같은 영역 안에서 응답이 흩어진 정도로 오차를 계산합니다. 고정값을 쓰지 않고 응답한 사람마다 따로 계산합니다.",
           },
           {
             no: "03",
@@ -397,7 +413,7 @@ export const kr: SiteContent = {
             no: "05",
             title: "개인 안에서의 위치",
             formula: "z<sub>k</sub> = ( A<sub>k</sub> − Ā ) / s<sub>A</sub>,&ensp; |z<sub>k</sub>| ≤ 3",
-            body: "축마다 묶인 영역 수가 달라 생기는 치우침을 없애려고, 그 사람의 여러 축 사이에서 높낮이로 바꿉니다.",
+            body: "축마다 묶인 영역 수가 달라 생기는 치우침을 줄이려고, 한 사람 안에서 축끼리 비교한 높낮이로 바꿉니다.",
           },
           {
             no: "06",
@@ -448,7 +464,7 @@ export const kr: SiteContent = {
               ],
             },
           ],
-          note: "가중치는 데이터 표(job_area_axis_weights)에 있고, 바뀌면 판본을 올려 이전 응시자의 결과가 달라지지 않게 합니다.",
+          note: "가중치는 코드가 아니라 데이터로 관리하고, 바뀌면 판본을 올려 이전 응시자의 결과가 달라지지 않게 합니다.",
         },
         nextLabel: "예정",
       },
@@ -837,7 +853,7 @@ export const kr: SiteContent = {
       {
         title: "서비스",
         links: [
-          { label: "서비스 소개", href: "/#how" },
+          { label: "서비스 소개", href: "/#glance" },
           { label: "전공 목록", href: "/#majors" },
           { label: "대학·기관", href: "/universities" },
           { label: "MAT · AI 취업비서", href: "/assistant" },

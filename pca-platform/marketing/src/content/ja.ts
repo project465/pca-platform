@@ -39,7 +39,7 @@ export const ja: SiteContent = {
 
   nav: {
     items: [
-      { label: "サービス紹介", href: "/#how" },
+      { label: "サービス紹介", href: "/#glance" },
       { label: "大学・機関", href: "/universities" },
       { label: "AI就活アシスタント", href: "/assistant" },
       { label: "料金", href: "/pricing" },
@@ -84,6 +84,22 @@ export const ja: SiteContent = {
       changes: [
         { text: "機構・製品設計で、自分で決めた条件と基準が確認されました", date: "10-18" },
         { text: "新しい経験で、試験・計測領域の根拠が増えました", date: "10-05" },
+      ],
+    },
+    glance: {
+      label: "ひと目でわかる",
+      painsTitle: "就職を前にした学生がつまずきやすいところ",
+      pains: [
+        "授業やプロジェクトでしたことを、応募書類の文章にまとめにくい",
+        "自分の専攻がどの産業・どの職種につながるのか見えにくい",
+        "検査を受けても結果シート1枚で終わり、次にすることが残らない",
+      ],
+      answerLabel: "CareerMatriは",
+      answer: "専攻でしてきたことを根拠として残し、その根拠から次の一歩を決める進路診断サービスです",
+      pillars: [
+        { title: "専攻ごとの基準", body: "専攻ごとに、その分野で実際に行う仕事をもとに設問を作っています。" },
+        { title: "経験にもとづく根拠", body: "適性や性格タイプではなく、したことと自分で決めたことを尋ね、結果シートにそのまま返します。" },
+        { title: "続けて使えるワークスペース", body: "結果を受け取った後も、経験を追加すると現在の状態と次にすることが整理し直されます。" },
       ],
     },
     how: {
@@ -155,7 +171,7 @@ export const ja: SiteContent = {
           {
             label: "いまやること",
             title: "そのとき自分で決めたことを書き留める",
-            body: "依頼の内容を変えることになった条件を、3行で書き出してみましょう。",
+            body: "依頼を受けて自分で変えた条件を、3行で書き出してみましょう。",
           },
           { label: "残した根拠", title: "目標と指標の表・事業計画書", body: "応募書類に使える材料がそろいました。" },
           { label: "さらに補う部分", title: "データ・意思決定", body: "自分で決めた基準と手元の成果物が、まだ書かれていません。" },
@@ -185,12 +201,12 @@ export const ja: SiteContent = {
       legend: { done: "実施した国", planned: "実施予定" },
       countries: [
         { iso: "410", name: "韓国", status: "done" },
-        { iso: "792", name: "トルコ", status: "done", schools: ["アンカラ社会科学大学（ASBU）"] },
+        { iso: "792", name: "トルコ", status: "done" },
         { iso: "276", name: "ドイツ", status: "done" },
         { iso: "840", name: "アメリカ", status: "done" },
         { iso: "392", name: "日本", status: "done" },
         { iso: "156", name: "中国", status: "done" },
-        { iso: "398", name: "カザフスタン", status: "planned" },
+        { iso: "398", name: "カザフスタン", status: "done" },
         { iso: "250", name: "フランス", status: "planned" },
         { iso: "710", name: "南アフリカ", status: "planned" },
         { iso: "608", name: "フィリピン", status: "planned" },
@@ -430,7 +446,7 @@ export const ja: SiteContent = {
               ],
             },
           ],
-          note: "重みはデータ表（job_area_axis_weights）で管理しています。変更時はバージョンを上げ、過去の受検者の結果が変わらないようにしています。",
+          note: "重みはコードではなくデータとして管理しています。変更時はバージョンを上げ、過去の受検者の結果が変わらないようにしています。",
         },
         nextLabel: "予定",
       },
@@ -813,7 +829,7 @@ export const ja: SiteContent = {
       {
         title: "サービス",
         links: [
-          { label: "サービス紹介", href: "/#how" },
+          { label: "サービス紹介", href: "/#glance" },
           { label: "専攻一覧", href: "/#majors" },
           { label: "大学・機関", href: "/universities" },
           { label: "MAT・AI就活アシスタント", href: "/assistant" },

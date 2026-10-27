@@ -23,6 +23,7 @@ export const dynamic = "force-dynamic";
  * 로그인 · 요금) 이 사이트의 다른 쪽으로 간다(대학·기관 · 문의).
  */
 const STEP_ICON: IconName[] = ["clipboard", "doc", "layers"];
+const GLANCE_ICON: IconName[] = ["cap", "pencil", "refresh"];
 const REPORT_ICON: IconName[] = ["target", "check", "pencil", "link", "calendar", "doc"];
 const CAMPUS_ICON: IconName[] = ["cap", "key", "chart", "download"];
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
@@ -71,6 +72,43 @@ export default async function Home({ params }: PageParams) {
           </div>
         </div>
       </section>
+
+      {/* ── 한눈에 보기 ─────────────────────────────────────── */}
+      {h.glance && (
+        <section className="section glance" id="glance" aria-labelledby="glance-answer">
+          <div className="wrap glance-grid">
+            <div className="glance-pains">
+              <span className="eyebrow">{h.glance.label}</span>
+              <h2>{h.glance.painsTitle}</h2>
+              <ol>
+                {h.glance.pains.map((p, i) => (
+                  <li key={p}>
+                    <span className="glance-no">{i + 1}</span>
+                    {p}
+                  </li>
+                ))}
+              </ol>
+            </div>
+            <div className="glance-answer">
+              <span className="glance-tag">{h.glance.answerLabel}</span>
+              <p id="glance-answer" className="glance-def">{h.glance.answer}</p>
+              <ul className="glance-pillars">
+                {h.glance.pillars.map((p, i) => (
+                  <li key={p.title}>
+                    <span className="step-ico">
+                      <Icon name={GLANCE_ICON[i] ?? "check"} size={20} />
+                    </span>
+                    <div>
+                      <h3>{p.title}</h3>
+                      <p>{p.body}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ── 어떻게 쓰나 ─────────────────────────────────────── */}
       <section className="section" id="how">
