@@ -376,7 +376,11 @@
 /** MAT 영어판: 영어 작업공간에서 MAT 이 열린다(해외판 기간권 · 국내 전용 줄은 감춤 · AI 동의는 세우지 않음).
  *  검사 결과가 없으면 사는 단추 대신 무료 검사로 가는 칸이 맨 위에 선다. 홈 `최근 기록` 에
  *  결과가 있고 MAT 을 쓰지 않는 사람에게 `이 결과로 매주 챙기기 · MAT` 한 줄이 선다 — V69 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V69";
+/** MAT 대학원생 자리: 공고 쪽 `연구 실적 요구` 표와 학위 연구 면접 질문, MAT 첫 화면의
+ *  `연구 경험을 직무 말로`, 안내의 대학원생 카드. 경험 추가가 `?kind=` 로 종류를 미리 고른다.
+ *  학교 학생은 검사 전에도 메뉴가 열리고(학과가 전공을 정한다), 개인 회원이 전공 고르기로
+ *  돌아갈 때는 까닭 한 줄이 선다 — V70 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V70";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -430,7 +434,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V69";
 /** MAT 공고 확인의 면접 준비 · 작은 일 문장과 담은 뒤 알림 세 줄 */
 /** MAT 영어 사전(`ws-en/track.ts`) · 무료 검사 먼저 안내 · 해외 요금 준비 중 · 홈의 MAT 한 줄 */
 /** 탭 제목을 그 사람의 언어로(`page-title.ts`) · 해외 MAT 30일권 $4.99 */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.49";
+/** 대학원생 문장(연구 실적 · 학위 단계별 한 줄 · 면접 질문) · 검사 전 메뉴 안내 한 줄 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.50";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

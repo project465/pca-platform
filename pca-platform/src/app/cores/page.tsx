@@ -42,7 +42,8 @@ const FAMILY_ORDER: [string, string, IconName, "b" | "c" | "v" | "w"][] = [
   ["HUMANITIES_SOCIAL", "인문 · 사회 · 교육", "users", "v"],
 ];
 
-export default async function Cores() {
+export default async function Cores({ searchParams }: { searchParams?: Promise<{ locked?: string }> }) {
+  const locked = (await searchParams?.catch(() => ({} as { locked?: string })))?.locked === "1";
   const user = await requireUser();
   const open = await currentAttempt(user.id);
   const grants = await v3Grants(user.id);
@@ -112,6 +113,13 @@ export default async function Cores() {
         읽고 결과 PDF 를 받는 데까지로 생각했다. 그 뒤에 무엇이 쌓이는지를
         네 줄로 적는다.
       */}
+      {/* 작업공간 메뉴를 눌렀는데 아직 전공이 정해지지 않은 사람이 여기로 온다.
+          말없이 돌려보내면 메뉴가 안 눌리는 것처럼 보인다(2026-10-27 신고) */}
+      {locked ? (
+        <p className="cm-none" role="status" style={{ marginBottom: 14 }}>
+          그 메뉴는 검사를 시작하면 열립니다. 먼저 아래에서 전공을 고르고 검사를 시작해 주세요.
+        </p>
+      ) : null}
       {open && !mine ? (
         <div className="cm-card is-wide" style={{ marginBottom: 18 }}>
           <h2>이어서 풀 응시가 있습니다 <em>{open.tier}</em></h2>

@@ -56,6 +56,18 @@ const DEFAULT_MARKET = "KR";
  *
  * 그 함수의 주석이 이미 답을 적어 두었다: `그 자리에서 고르게 해야 한다`.
  */
+/**
+ * 학교가 발급한 계정이면 **학교가 적어 준 학과의 Core.** 응시 전에도 그 학생의
+ * 전공은 정해져 있다. 이것을 안 보면 검사 전인 학교 학생이 작업공간 메뉴를 누를
+ * 때마다 전공 고르기(`/cores`)로 튕겨, 메뉴가 안 눌리는 것처럼 보였다
+ * (2026-10-27 신고). 학과가 여러 전공으로 갈리는 자리(Core 가 비어 있다)면 없다.
+ */
+async function campusCoreOf(userId: string): Promise<string | null> {
+  const { campusStudentContext } = await import("@/lib/campus/students");
+  const mine = await campusStudentContext(userId).catch(() => null);
+  return mine?.ctx.core_code || null;
+}
+
 export async function activeCoreOrPick(userId: string): Promise<string> {
   const row = await queryOne<{ core: string }>(
     `SELECT core_code AS core FROM v3_attempts
@@ -65,11 +77,13 @@ export async function activeCoreOrPick(userId: string): Promise<string> {
     `SELECT core_code AS core FROM career_profiles
       WHERE user_id = $1 ORDER BY recomputed_at DESC NULLS LAST LIMIT 1`, [userId]);
   if (prof?.core) return prof.core;
+  const campus = await campusCoreOf(userId);
+  if (campus) return campus;
   const open = sellableCores(DEFAULT_MARKET);
   if (open.length === 1) return open[0].code;
   /* 고를 것이 없으면 전공 목록으로 보낸다. 거기가 지금 무엇이 열려 있고
      무엇이 아직 아닌지를 적는 유일한 자리다 */
-  redirect("/cores");
+  redirect("/cores?locked=1");
 }
 
 export async function activeCore(userId: string): Promise<string> {
@@ -81,6 +95,8 @@ export async function activeCore(userId: string): Promise<string> {
     `SELECT core_code AS core FROM career_profiles
       WHERE user_id = $1 ORDER BY recomputed_at DESC NULLS LAST LIMIT 1`, [userId]);
   if (prof?.core) return prof.core;
+  const campus = await campusCoreOf(userId);
+  if (campus) return campus;
   const open = sellableCores(DEFAULT_MARKET);
   if (open.length === 1) return open[0].code;
   throw new Error("core 를 정할 수 없다: 응시도 지금 값도 없고 열린 core 가 하나가 아니다");
@@ -112,6 +128,8 @@ export async function coreIfAny(userId: string): Promise<string | null> {
     `SELECT core_code AS core FROM career_profiles
       WHERE user_id = $1 ORDER BY recomputed_at DESC NULLS LAST LIMIT 1`, [userId]);
   if (prof?.core) return prof.core;
+  const campus = await campusCoreOf(userId);
+  if (campus) return campus;
   const open = sellableCores(DEFAULT_MARKET);
   return open.length === 1 ? open[0].code : null;
 }
