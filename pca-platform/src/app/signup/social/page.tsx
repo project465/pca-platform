@@ -11,8 +11,13 @@ import { safeNext } from "@/lib/safe-next";
 import AuthBrand from "@/components/auth-brand";
 import PublicFooter from "@/components/sf/public-footer";
 import SocialSignupForm from "./social-form";
+import { pageTitle } from "@/lib/page-title";
 
-export const metadata = { title: "가입 마무리 · CareerMatri" };
+export async function generateMetadata(
+  { searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> },
+) {
+  return pageTitle("가입 마무리 · CareerMatri", searchParams);
+}
 
 /**
  * 소셜로 처음 들어온 사람의 **동의 한 걸음.**

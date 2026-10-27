@@ -14,8 +14,13 @@ import LangSelect from "@/components/sf/lang-select";
 import PublicFooter from "@/components/sf/public-footer";
 import { ResendVerify, RefundForm } from "./support-forms";
 import { withdrawAction } from "./actions";
+import { pageTitle } from "@/lib/page-title";
 
-export const metadata = { title: `문의 · ${BRAND.root}` };
+export async function generateMetadata(
+  { searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> },
+) {
+  return pageTitle("문의 · CareerMatri", searchParams);
+}
 
 /**
  * 지원 화면.

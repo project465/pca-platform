@@ -208,15 +208,24 @@ async function main() {
     loc.matchers.flatMap((x) => x.missing).slice(0, 3).join(" · "));
 
   /* ── 10. 결과지와 PDF 가 실제로 나간 적이 있는가 ─────────────────── */
-  const made = await queryOne<{ snaps: number; pdfs: number }>(
-    `SELECT count(*)::int AS snaps,
-            count(*) FILTER (WHERE pdf_path IS NOT NULL)::int AS pdfs
-       FROM report_snapshots`,
+  /* **지금 파는 검사(ME_V3)도 센다.** 전에는 옛 판본의 `report_snapshots`
+     만 세어서, V3 결과지를 수십 장 낸 DB 에서도 `나간 적이 없다` 로 걸렸다.
+     V3 의 PDF 는 내려받는 순간 만들어 저장하지 않으므로 파일 수로는 못 센다.
+     그래서 V3 쪽은 **굳은 결과가 있고 최근 7일 PDF 실패가 0 인가**로 본다
+     (실패는 `result/pdf/route.ts` 가 `job_failures` 에 적는다) */
+  const made = await queryOne<{ snaps: number; pdfs: number; v3: number; fails: number }>(
+    `SELECT (SELECT count(*)::int FROM report_snapshots) AS snaps,
+            (SELECT count(*)::int FROM report_snapshots WHERE pdf_path IS NOT NULL) AS pdfs,
+            (SELECT count(*)::int FROM v3_snapshots) AS v3,
+            (SELECT count(*)::int FROM job_failures
+              WHERE kind = 'pdf' AND trace_id LIKE 'v3-pdf-%' AND resolved_at IS NULL
+                AND created_at > now() - interval '7 days') AS fails`,
   ).catch(() => null);
-  ok("결과지가 실제로 나간 적이 있다", (made?.snaps ?? 0) > 0,
-    "npm run phase2:report 또는 global:check 를 한 번 돌립니다");
-  ok("PDF 가 실제로 나간 적이 있다", (made?.pdfs ?? 0) > 0,
-    "같음. PDF 는 머리 없는 브라우저가 만듭니다");
+  ok("결과지가 실제로 나간 적이 있다", (made?.snaps ?? 0) + (made?.v3 ?? 0) > 0,
+    `ME_V2 ${made?.snaps ?? 0}장 · ME_V3 ${made?.v3 ?? 0}장`);
+  ok("PDF 가 실제로 나간 적이 있다",
+    (made?.pdfs ?? 0) > 0 || ((made?.v3 ?? 0) > 0 && (made?.fails ?? 1) === 0),
+    `ME_V2 파일 ${made?.pdfs ?? 0}장 · ME_V3 최근 7일 PDF 실패 ${made?.fails ?? "?"}건`);
 
   /* 견본 결과지가 있는가. **사기 전에 보여 줄 것이 없으면 §7 이 빈다** */
   ok("견본 결과지가 두 언어로 떠 있다",

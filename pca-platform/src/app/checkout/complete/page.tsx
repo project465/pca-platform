@@ -7,8 +7,13 @@ import { paymentProvider } from "@/lib/payments";
 import { t } from "@/lib/locale";
 import { resolveLang } from "@/lib/locale-server";
 import { BRAND, toLang2, txer } from "@/lib/surface-text";
+import { pageTitle } from "@/lib/page-title";
 
-export const metadata = { title: "결제 결과 · CareerMatri" };
+export async function generateMetadata(
+  { searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> },
+) {
+  return pageTitle("결제 결과 · CareerMatri", searchParams);
+}
 
 /**
  * 결제창에서 돌아오는 자리.

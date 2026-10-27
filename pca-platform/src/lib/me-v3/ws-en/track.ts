@@ -96,6 +96,7 @@ export const WS_EN_TRACK: Record<string, string> = {
   "한 달만 써 보고 정해도 됩니다.": "Try it for a month and decide.",
   "이어서 사기": "Extend",
   "결제하기": "Buy",
+  "결제 준비 중": "Payment not open yet",
   "해외 요금을 준비하고 있습니다": "International pricing is coming soon",
   "한국 밖에서 결제하는 기간권은 곧 열립니다. 그동안 검사 결과와 내 CareerMatri 는 그대로 쓰실 수 있습니다.":
     "Plans for payment outside Korea will open soon. Your test result and My CareerMatri stay available in the meantime.",

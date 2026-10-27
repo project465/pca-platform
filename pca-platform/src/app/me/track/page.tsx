@@ -9,6 +9,7 @@ import { textFor } from "@/lib/me-v3/result/text";
 import { localizeResult } from "@/lib/me-v3/result/localize";
 import { getProduct } from "@/lib/orders";
 import { formatMoney } from "@/lib/money";
+import { payOpen } from "@/lib/payments";
 import {
   TRACK_TRIAL, activeTrack, hasV3Result, proTrialClaimable, trackHistory, trackProductsFor,
 } from "@/lib/track";
@@ -416,10 +417,16 @@ export default async function Track({
                         : t("한 달만 써 보고 정해도 됩니다.")}
                     </p>
                     <div className="cm-acts">
-                      <Link className={`cm-btn${p.duration_days === 365 ? " is-primary" : ""}`}
-                        href={`/checkout?product=${encodeURIComponent(p.code)}`}>
-                        {state.on ? t("이어서 사기") : t("결제하기")}
-                      </Link>
+                      {/* 가격표와 같은 물음이다(`payOpen`). 결제 대행사가 서기 전에는
+                          누를 수 없는 단추로 그 사실만 적는다 */}
+                      {payOpen(p.currency === "KRW" ? "KR" : "GLOBAL") ? (
+                        <Link className={`cm-btn${p.duration_days === 365 ? " is-primary" : ""}`}
+                          href={`/checkout?product=${encodeURIComponent(p.code)}`}>
+                          {state.on ? t("이어서 사기") : t("결제하기")}
+                        </Link>
+                      ) : (
+                        <span className="cm-btn" aria-disabled="true">{t("결제 준비 중")}</span>
+                      )}
                     </div>
                   </div>
                 </div>

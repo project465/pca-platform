@@ -9,8 +9,13 @@ import type { ResultModel } from "@/lib/me-v3/result/model";
 import { V3ResultBody } from "@/app/v3/[attemptId]/result/body";
 import SAMPLE from "@/lib/me-v3/sample/standard.json";
 import { SampleFrame } from "./sample-frame";
+import { pageTitle } from "@/lib/page-title";
 
-export const metadata = { title: `견본 결과지 · ${BRAND.root}` };
+export async function generateMetadata(
+  { searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> },
+) {
+  return pageTitle("견본 결과지 · CareerMatri", searchParams);
+}
 
 /**
  * 견본 결과지.

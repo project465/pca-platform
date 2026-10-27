@@ -517,4 +517,14 @@ export const PHRASES_EN: Record<string, string> = {
   "견본은 여기까지입니다": "That's the end of the sample",
   "직접 검사를 보시면 내 답으로 이 화면이 만들어지고, PDF로도 받을 수 있습니다.": "When you take the assessment, this screen is built from your own answers, and you can download it as a PDF.",
   "검사 시작하기": "Start the assessment",
+  /* 탭 제목(`src/lib/page-title.ts`) */
+  "가격 · CareerMatri": "Pricing · CareerMatri",
+  "결제 · CareerMatri": "Checkout · CareerMatri",
+  "결제 결과 · CareerMatri": "Payment result · CareerMatri",
+  "견본 결과지 · CareerMatri": "Sample report · CareerMatri",
+  "가입하고 시작 · CareerMatri": "Sign up · CareerMatri",
+  "가입 마무리 · CareerMatri": "Finish signing up · CareerMatri",
+  "문의 · CareerMatri": "Support · CareerMatri",
+  "비밀번호 변경 · CareerMatri": "Change password · CareerMatri",
+  "계정 · CareerMatri": "Account · CareerMatri",
 };

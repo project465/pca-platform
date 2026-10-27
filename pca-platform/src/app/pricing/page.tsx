@@ -25,8 +25,13 @@ import { publicCommerceGate } from "@/lib/public-gate";
 import CareerFlow from "@/components/sf/career-flow";
 import { trackOffers } from "@/lib/track";
 import { payOpen } from "@/lib/payments";
+import { pageTitle } from "@/lib/page-title";
 
-export const metadata = { title: `가격 · ${BRAND.root}` };
+export async function generateMetadata(
+  { searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> },
+) {
+  return pageTitle("가격 · CareerMatri", searchParams);
+}
 
 /**
  * 가격표.
@@ -246,11 +251,21 @@ export default async function PricingPage({
                       ? T("pxTrackSave")
                       : T("pxTrack30Why")}
                   </span>
-                  <Link href={`/checkout?product=${encodeURIComponent(t.code)}`}
-                    className={t.days === 365 ? "sf-btn accent sm" : "sf-btn ghost sm"}
-                    style={{ marginTop: 10, alignSelf: "flex-start" }}>
-                    {T("pxTrackBuy")}
-                  </Link>
+                  {/* **등급 카드와 같은 물음을 먼저 한다.** 결제 대행사가 서기
+                      전에 사는 단추를 세우면, 누른 사람이 결제를 받을 수 없는
+                      결제 화면에 떨어진다(운영에서 실제로 그랬다) */}
+                  {payOpen(t.currency === "KRW" ? "KR" : "GLOBAL") ? (
+                    <Link href={`/checkout?product=${encodeURIComponent(t.code)}`}
+                      className={t.days === 365 ? "sf-btn accent sm" : "sf-btn ghost sm"}
+                      style={{ marginTop: 10, alignSelf: "flex-start" }}>
+                      {T("pxTrackBuy")}
+                    </Link>
+                  ) : (
+                    <span className="sf-btn ghost sm" aria-disabled="true"
+                      style={{ marginTop: 10, alignSelf: "flex-start" }}>
+                      {T("pxPayNotReady")}
+                    </span>
+                  )}
                 </div>
               ))}
               <div className="pxband-i">

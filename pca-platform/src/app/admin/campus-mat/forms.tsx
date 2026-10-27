@@ -24,9 +24,11 @@ export function NewPool({ schools, until }: {
       </label>
       <label className="sf-field">
         <span>이용권</span>
+        {/* 값을 단추 글자에 적지 않는다. 학교 계약 단가는 계약서가 정하고,
+            여기 적어 두면 단가가 바뀐 날 이 화면만 옛 값으로 남는다 */}
         <select name="product" defaultValue="CAMPUS_MAT_12M">
-          <option value="CAMPUS_MAT_6M">MAT 6개월 (1인당 19,000원 계약)</option>
-          <option value="CAMPUS_MAT_12M">MAT 1년 (1인당 29,000원 계약)</option>
+          <option value="CAMPUS_MAT_6M">MAT 6개월</option>
+          <option value="CAMPUS_MAT_12M">MAT 1년</option>
         </select>
       </label>
       <label className="sf-field">

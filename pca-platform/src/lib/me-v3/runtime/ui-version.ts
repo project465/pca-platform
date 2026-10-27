@@ -191,7 +191,8 @@ export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V56";
 /* copy.37 — 개인이 산 등급으로 지난 응시를 넓힌다: 산 등급이 지난 응시보다 높으면 시작 화면이
    새 응시를 열지 않고 `/v3/upgrade` 로 보낸다(`upgrade.ts`). 등급 올리기에 쓴 이용권은 쓴 것으로
    센다(`v3Grants`). 문항 · routing · 판정은 그대로다 */
-export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.37";
+/** 탭 제목을 그 사람의 언어로(`src/lib/page-title.ts`). 문항과 보기는 그대로다 */
+export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.38";
 
 /*
  * `V19` · `copy.14` 로 올린 까닭. **경험 빈도의 화면 말을 공통으로

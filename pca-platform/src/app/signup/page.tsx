@@ -11,8 +11,13 @@ import { toLang2, txer } from "@/lib/surface-text";
 import EntryFrame from "@/components/sf/entry-frame";
 import PublicFooter from "@/components/sf/public-footer";
 import { formatMoney } from "@/lib/money";
+import { pageTitle } from "@/lib/page-title";
 
-export const metadata = { title: "가입하고 시작 · CareerMatri" };
+export async function generateMetadata(
+  { searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> },
+) {
+  return pageTitle("가입하고 시작 · CareerMatri", searchParams);
+}
 
 export default async function SignupPage({
   searchParams,

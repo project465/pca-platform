@@ -4,8 +4,11 @@ import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/session";
 import { queryOne } from "@/lib/db";
 import { explicitLang } from "@/lib/locale-server";
+import { pageTitle } from "@/lib/page-title";
 
-export const metadata = { title: "내 CareerMatri" };
+export async function generateMetadata() {
+  return pageTitle("내 CareerMatri");
+}
 
 /**
  * **영어를 고른 사람이 아직 응시가 없으면 전공 고르기로 보낸다.** 작업공간에

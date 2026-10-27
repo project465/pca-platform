@@ -429,7 +429,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V69";
 /** 경험 적기 화면의 토막 문장 셋을 잇고 '당신의 말로' 를 걷었다 */
 /** MAT 공고 확인의 면접 준비 · 작은 일 문장과 담은 뒤 알림 세 줄 */
 /** MAT 영어 사전(`ws-en/track.ts`) · 무료 검사 먼저 안내 · 해외 요금 준비 중 · 홈의 MAT 한 줄 */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.48";
+/** 탭 제목을 그 사람의 언어로(`page-title.ts`) · 해외 MAT 30일권 $4.99 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.49";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**
