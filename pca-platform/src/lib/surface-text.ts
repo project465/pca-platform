@@ -416,6 +416,11 @@ export const TX = {
 
   /* ── 결제가 끝난 뒤 ───────────────────────────────────────────── */
   okOrderNo: p("주문 번호", "Order number"),
+  payCheckingTitle: p("결제를 확인하고 있습니다", "We're confirming your payment"),
+  payCheckingBody: p(
+    "결제사 확인이 조금 늦어지고 있습니다. 결제가 되었다면 몇 분 안에 저절로 반영되니 다시 결제하지 마시고, 잠시 뒤 아래 단추를 눌러 주세요.",
+    "Confirmation from the payment company is taking a little longer. If you were charged, it will go through on its own within a few minutes, so please don't pay again. Press the button below in a moment."),
+  payCheckingAgain: p("다시 확인하기", "Check again"),
   okTier: p("산 등급", "Tier"),
   okNext: p("다음", "Next"),
   okStart: p("검사 시작하기", "Start the assessment"),

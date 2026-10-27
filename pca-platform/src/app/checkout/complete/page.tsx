@@ -6,7 +6,7 @@ import { settlePayment } from "@/lib/orders";
 import { paymentProvider } from "@/lib/payments";
 import { t } from "@/lib/locale";
 import { resolveLang } from "@/lib/locale-server";
-import { BRAND, toLang2, txer } from "@/lib/surface-text";
+import { BRAND, toLang2, tx, txer } from "@/lib/surface-text";
 import { pageTitle } from "@/lib/page-title";
 
 export async function generateMetadata(
@@ -173,6 +173,16 @@ export default async function CompletePage({
                 : (resumePathFor(result.ok ? result.assessmentVersion : null) ?? "/support")}
             >
               {result.upgradedAttemptId ? t("payGoReport", lang) : t("payGoTest", lang)}
+            </Link>
+          </>
+        ) : "checking" in result && result.checking ? (
+          /* **실패라고 적지 않는다.** 확인이 늦어진 것이고, 결제가 됐다면
+             웹훅이 곧 확정한다. 다시 결제하지 않게 그 사실을 먼저 적는다 */
+          <>
+            <h1>{tx("payCheckingTitle", toLang2(lang))}</h1>
+            <p className="paydone">{tx("payCheckingBody", toLang2(lang))}</p>
+            <Link className="act solid" href={`/checkout/complete?paymentId=${encodeURIComponent(key)}`}>
+              {tx("payCheckingAgain", toLang2(lang))}
             </Link>
           </>
         ) : (

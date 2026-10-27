@@ -46,6 +46,10 @@ function gateFails(req: NextRequest): NextResponse | null {
   const raw = (process.env.STAGING_BASIC_AUTH ?? "").trim();
   if (!raw.includes(":")) return null;
   if (req.nextUrl.pathname === "/api/health") return null;
+  /* **결제 웹훅도 뺀다.** 포트원 서버는 이 자물쇠의 열쇠를 모르므로 막으면
+     401 이 나고, 시험 서버에서 테스트 채널 결제가 확정되지 않는다. 이 길은
+     자물쇠 대신 웹훅 서명(Standard Webhooks)으로 막는다(`portone.ts`) */
+  if (req.nextUrl.pathname === "/api/payments/webhook") return null;
 
   const sent = req.headers.get("authorization") ?? "";
   if (sent.startsWith("Basic ")) {

@@ -71,8 +71,23 @@ export default function CheckoutForm({
         customData: ticket.orderNo,
         redirectUrl: ticket.redirectUrl,
       });
-      // 창을 닫거나 실패하면 code 가 온다. 성공은 redirectUrl 로 빠진다
-      if (res?.code) setSdkError(res.message ?? "결제가 취소되었습니다.");
+      // 창을 닫거나 실패하면 code 가 온다
+      if (res?.code) {
+        setSdkError(res.message ?? "결제가 취소되었습니다.");
+        setLaunching(false);
+        return;
+      }
+      /* **PC 에서는 성공해도 돌아오지 않을 수 있다.** 포트원 SDK 는
+         `redirectUrl` 이 있어도 `forceRedirect` 가 아니면 PC 결제창을
+         반환값 방식으로 끝낸다(포트원 V2 결제창 가이드). 그대로 두면 결제를
+         마친 손님이 결제 화면에 멈춰 선다. 완료 화면으로 직접 보내고,
+         거기서 서버가 PG 에 다시 물어 확정한다(값을 믿지 않는 것은 같다) */
+      if (res) {
+        const sep = ticket.redirectUrl.includes("?") ? "&" : "?";
+        window.location.assign(
+          `${ticket.redirectUrl}${sep}paymentId=${encodeURIComponent(ticket.providerPaymentId)}`);
+        return;
+      }
       setLaunching(false);
     })();
   }, [ticket, provider, launching]);

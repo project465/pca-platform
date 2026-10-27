@@ -10,6 +10,7 @@ import { track } from "@/lib/funnel";
 import { ref, swallow } from "@/lib/oplog";
 import { grantProTrialTx, grantTrackTx } from "@/lib/track";
 import { isCurrentEngine } from "@/lib/engine-entry";
+import { isStaging } from "@/lib/env";
 export type Product = {
   code: string;
   kind: string;
@@ -150,7 +151,12 @@ export async function startCheckout(
   const provider = paymentProvider();
   const { publicBase } = await import("@/lib/urls");
   const here = origin.replace(/\/$/, "");
-  const base = provider.name === "mock"
+  /* **공개 전 배포본도 지금 선 자리로 돌아온다.** 그 주소(`…staging…
+     .up.railway.app`)는 `appDomain()` 이 운영 주소로 받지 않아서, 그대로
+     두면 정규 주소(`careermatri.co.kr`)로 떨어진다. 그 도메인에는 지금 우리
+     앱이 없어서 포트원 테스트 채널로 결제를 마친 사람이 빈 쪽을 만났다
+     (2026-10-27 브라우저로 재현). 운영은 이 줄을 지나지 않는다 */
+  const base = provider.name === "mock" || isStaging()
     ? here
     /* **정규 주소를 못 읽으면 요청 호스트로 떨어진다.** 그 자체는
        맞는 되돌림이지만, 결제를 마친 사람이 **다른 도메인으로 돌아오는**
@@ -206,7 +212,13 @@ export type SettleResult =
        */
       kind: string | null;
     }
-  | { ok: false; reason: string };
+  /**
+   * `checking` 은 **아직 모른다**는 뜻이다: PG 조회가 잠깐 실패했거나 승인이
+   * 끝나지 않았다. 결제가 실패한 것과 가른다. 돈을 낸 사람에게 `결제가
+   * 완료되지 않았습니다` 를 적으면 다시 결제해서 두 번 낸다. 웹훅이 곧 같은
+   * 함수를 다시 부르므로 이 상태는 저절로 풀린다
+   */
+  | { ok: false; reason: string; checking?: true; lookupFailed?: true };
 
 /**
  * PG 에 직접 물어보고 주문을 확정한다.
@@ -222,7 +234,9 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
   try {
     fact = await provider.getPaymentStatus(providerPaymentId);
   } catch (e) {
-    return { ok: false, reason: e instanceof Error ? e.message : "결제 조회에 실패했습니다." };
+    /* `lookupFailed` 는 웹훅이 PG 에 **다시 보내 달라고** 할 때 쓴다 */
+    return { ok: false, checking: true, lookupFailed: true,
+      reason: e instanceof Error ? e.message : "결제 조회에 실패했습니다." };
   }
 
   const orderNo = fact.orderNo ?? providerPaymentId.replace(/^mock_/, "");
@@ -242,7 +256,8 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
       `UPDATE orders SET status = $2 WHERE id = $1 AND status = 'pending'`,
       [order.id, fact.status === "ready" ? "pending" : fact.status],
     );
-    return { ok: false, reason: `결제가 완료되지 않았습니다 (${fact.status}).` };
+    return { ok: false, reason: `결제가 완료되지 않았습니다 (${fact.status}).`,
+      ...(fact.status === "ready" ? { checking: true as const } : {}) };
   }
 
   /* 금액과 통화를 대조한다. **대조는 `payments/verify.ts` 한 곳이다** */
