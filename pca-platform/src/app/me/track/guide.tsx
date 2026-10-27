@@ -68,6 +68,22 @@ const FEATURES: {
     ],
     where: "#posting",
   },
+  {
+    key: "research",
+    name: "대학원생 · 연구 경험 정리",
+    what: "석사 · 박사 · 박사후연구원은 학위 연구를 회사가 읽는 말로 옮기고, 연구직 공고의 논문 · 특허 · 과제 요구를 내 기록과 따로 맞대 봅니다.",
+    steps: [
+      "공고의 ‘SCI 논문 · 특허 · 국책과제 수행 · 학회 발표 · 연구계획서 · 박사 학위’ 줄을 따로 모아 기록에 있는지 나눕니다",
+      "연구 · 논문 기록마다 지원서 문장 뼈대를 만들고, 학위 단계에 맞춰 먼저 적어 둘 한 줄을 붙입니다",
+      "학위 연구를 두고 자주 받는 질문을 단계마다 셋씩 내고, 답에 가져갈 내 기록을 붙입니다",
+    ],
+    input: "[자격 요건] 기계공학 박사 학위 소지자 · SCI(E)급 논문 제1저자 … [우대] 특허 출원 실적",
+    output: [
+      "SCI(E)급 논문 제1저자 → 기록은 있는데 덜 적힘 (남긴 것 칸에 게재지와 저자 순서를 적어 두기)",
+      "면접 질문: 학위 연구에서 지도교수가 정한 것과 본인이 정한 것을 나눠 설명해 주세요.",
+    ],
+    where: "/me/experience/new?kind=research",
+  },
 ];
 
 const WEEK: [string, string][] = [
@@ -91,6 +107,8 @@ const ASK: [string, string][] = [
     "브리핑과 문장 뼈대는 처음부터 AI 없이 만듭니다. 공고는 항목 제목과 전공별 도구 이름으로 읽고, 메모에서는 확실한 보기만 미리 고른 뒤 나머지는 메모 속 문장을 보여 드리며 여쭙니다. 밖으로 보내는 글은 없습니다."],
   ["붙여 넣은 글은 어디로 가나요?",
     "AI 분석을 켠 경우에만 Anthropic(미국)의 Claude가 읽습니다. 이름과 연락처는 보내지 않고, 공고 본문은 1년 · 메모는 30일 뒤 지웁니다."],
+  ["대학원생이나 박사후연구원도 쓸 수 있나요?",
+    "쓸 수 있습니다. 검사에서 답한 학위 단계를 읽어, 석사는 옮겨 갈 방법을, 박사는 직접 정한 것과 받은 것을, 박사후연구원은 맡아서 끌고 간 범위를 먼저 묻습니다. 학위가 높다고 판정이 저절로 올라가지는 않고, 판정은 적어 둔 기록에 결과물이 있는지로만 합니다."],
   ["학교에서 받은 계정도 쓸 수 있나요?",
     "PRO 결과를 받으셨다면 첫 1개월을 열 수 있습니다. 그 뒤로는 30일권이나 365일권을 고르시면 됩니다."],
 ];
@@ -156,6 +174,22 @@ const FEATURES_EN: typeof FEATURES = [
     ],
     where: "#posting",
   },
+  {
+    key: "research",
+    name: "Graduate students · research records",
+    what: "For master's students, PhD students and postdocs: MAT turns degree research into wording companies read, and checks a research posting's paper, patent and project requirements against your records separately.",
+    steps: [
+      "Gathers the posting's lines on journal papers, patents, funded projects, conference talks, proposals and degrees, and shows which ones your records have",
+      "Drafts application sentence frames from each research or paper record and adds one line to write down first for your degree stage",
+      "Gives three questions often asked about degree research at your stage, with the record to bring to each",
+    ],
+    input: "[Requirements] PhD in Mechanical Engineering · first-author journal papers … [Preferred] filed patents",
+    output: [
+      "First-author journal papers → recorded, details missing (add the venue and your author position)",
+      "Interview question: In your PhD research, what did your advisor decide and what did you decide yourself?",
+    ],
+    where: "/me/experience/new?kind=research",
+  },
 ];
 
 const WEEK_EN: [string, string][] = [
@@ -177,6 +211,8 @@ const ASK_EN: [string, string][] = [
     "Yes. MAT works from your result, so start with the free test (about 12 minutes). Once you have a result you can open MAT right away."],
   ["Where does the posting text go?",
     "MAT reads it inside CareerMatri using rules for your major. It isn't sent to outside AI services. Saved posting text is deleted after a year and notes after 30 days."],
+  ["Can graduate students and postdocs use MAT?",
+    "Yes. MAT reads the degree stage you gave in the assessment: it asks master's students about methods that carry over, PhD students about what they decided versus what was given, and postdocs about the scope they led. A higher degree never raises a status by itself; statuses only depend on whether your records show an output."],
   ["Can I use MAT for any major?",
     "Right now the English version covers Mechanical, Electrical and Electronic, and Computer and Software Engineering."],
 ];
@@ -206,10 +242,12 @@ export function AssistantGuide({ on, compact, lang = "ko" }: { on: boolean; comp
           "You have your result but aren't sure what to do next",
           "You've done a lot but can't put it into words for an application",
           "You find a posting and can't tell whether you should apply",
+          "You're a graduate student or postdoc and find it hard to put your research in terms companies read",
         ] : [
           "검사 결과는 받았는데 다음에 무엇을 할지 막막한 분",
           "한 일은 많은데 지원서에 쓸 말로 정리가 안 된 분",
           "공고를 보고 내가 지원해도 되는지 판단이 안 서는 분",
+          "학위 연구를 회사가 읽는 말로 옮기기 어려운 대학원생 · 박사후연구원",
         ]).map((x) => <li key={x}>{x}</li>)}
       </ul>
 
@@ -262,7 +300,7 @@ export function AssistantGuide({ on, compact, lang = "ko" }: { on: boolean; comp
   return (
     <>
       <SectionHeader icon="spark" title={compact ? t("MAT 사용법") : t("MAT이 해 드리는 일")}
-        sub={compact ? undefined : t("브리핑이 한 주의 할 일을 정하고, 나머지 둘이 그 빈 줄을 채웁니다.")} />
+        sub={compact ? undefined : t("브리핑이 한 주의 할 일을 정하고, 나머지 도구가 그 빈 줄을 채웁니다.")} />
       {compact ? (
         <details className="cm-aig-fold">
           <summary>{t("무엇을 해 주는지 · 한 주 쓰는 법 · 하지 않는 일 보기")}</summary>

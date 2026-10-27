@@ -87,7 +87,9 @@ const SYSTEM =
   "3. domain 과 axis 는 목록에 있는 코드만 씁니다. 맞는 것이 없으면 null 입니다.\n" +
   "4. 학력·연차·어학 점수·자격증 같은 조건은 domain=null 로 둡니다.\n" +
   "5. 지원자를 평가하거나 합격 가능성을 말하지 않습니다.\n" +
-  "6. 최대 12개까지만 뽑습니다.";
+  "6. 최대 12개까지만 뽑습니다.\n" +
+  "7. 논문·특허·연구 과제 수행·학회 발표·연구계획서·학위 같은 연구 실적 요구도 빠뜨리지 않고 " +
+  "한 줄씩 뽑습니다. 편수·등급 같은 기준은 공고에 적힌 그대로 둡니다.";
 
 /** 영어 작업공간. 요구 항목을 공고에 적힌 말(영어)로 돌려받는다 */
 const SYSTEM_EN =
@@ -102,7 +104,9 @@ const SYSTEM_EN =
   "4. Conditions such as degree, years of experience, language scores, licenses or work " +
   "authorization get domain=null.\n" +
   "5. Do not evaluate the applicant or say anything about their chances.\n" +
-  "6. Extract at most 12.";
+  "6. Extract at most 12.\n" +
+  "7. Do not skip research-record requirements such as papers, patents, funded research projects, " +
+  "conference talks, research proposals or degrees. Keep counts and ranks as written in the posting.";
 
 /**
  * 규칙으로 읽는다. 열쇠가 없거나 동의하지 않았거나 Claude 가 거절했을 때.

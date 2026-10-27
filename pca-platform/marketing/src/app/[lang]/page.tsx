@@ -24,6 +24,7 @@ export const dynamic = "force-dynamic";
  */
 const STEP_ICON: IconName[] = ["clipboard", "doc", "layers"];
 const GLANCE_ICON: IconName[] = ["cap", "pencil", "refresh"];
+const GRAD_ICON: IconName[] = ["doc", "swap", "users"];
 const REPORT_ICON: IconName[] = ["target", "check", "pencil", "link", "calendar", "doc"];
 const CAMPUS_ICON: IconName[] = ["cap", "key", "chart", "download"];
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
@@ -193,6 +194,51 @@ export default async function Home({ params }: PageParams) {
           </div>
         </div>
       </section>
+
+      {/* ── 대학원생 · 박사후연구원 ───────────────────────────── */}
+      {h.grad && (
+        <section className="section grad" id="grad">
+          <div className="wrap">
+            <SectionHead label={h.grad.label} title={h.grad.title} lead={h.grad.lead} />
+            <div className="grad-grid">
+              <div className="grad-stages">
+                <h3>{h.grad.stagesTitle}</h3>
+                <ol>
+                  {h.grad.stages.map((g, i) => (
+                    <li key={g.name}>
+                      <span className="grad-step">{i + 1}</span>
+                      <div>
+                        <b>{g.name}</b>
+                        <p>{g.asks}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+              <div className="grad-mat">
+                <h3>{h.grad.matTitle}</h3>
+                <ul>
+                  {h.grad.mat.map((m, i) => (
+                    <li key={m.title}>
+                      <span className="feature-ico">
+                        <Icon name={GRAD_ICON[i] ?? "check"} size={18} />
+                      </span>
+                      <div>
+                        <b>{m.title}</b>
+                        <p>{m.body}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            <div className="majors-foot">
+              <p>{h.grad.note}</p>
+              <Button link={h.grad.cta} arrow />
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ── 해외 ───────────────────────────────────────────── */}
       {h.global && (

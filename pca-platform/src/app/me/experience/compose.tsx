@@ -106,7 +106,7 @@ const kindGroups = (t: WsSay): { label: string; hint: string; codes: string[] }[
  * 갈리는 것은 셋뿐이다: 머리글 · 보내는 자리 · 되돌려 줄 값.
  */
 export default async function Compose(
-  { userId, value, e, td, draft, draftId }: {
+  { userId, value, e, td, kind, draft, draftId }: {
     userId: string;
     /** 고치는 자리면 적어 둔 기록. 없으면 새로 적는 자리다 */
     value?: Experience | null;
@@ -114,6 +114,8 @@ export default async function Compose(
     e?: string;
     /** 할 일에서 넘어왔을 때 미리 켜 둘 기술영역(규격 §10) */
     td?: string;
+    /** MAT 의 연구 실적 줄에서 넘어왔을 때 미리 골라 둘 종류(`paper` · `research`) */
+    kind?: string;
     /**
      * MAT이 메모에서 옮겨 둔 보기. **켜 두기만 하고 저장하지 않는다**:
      * 사람이 보고 고친 뒤 직접 저장한다. 고치는 자리에서는 쓰지 않는다
@@ -183,7 +185,9 @@ export default async function Compose(
     verifications: value?.verifications ?? d0?.verifications ?? [],
   };
   /* 1단의 두 칸도 초안에서 켜 둔다. 고치는 자리면 적어 둔 기록이 먼저다 */
-  const start = value ?? (d0 ? { kind: d0.kind ?? undefined, title: d0.title } : null);
+  const k0 = kind && EXPERIENCE_KINDS.some((k) => k.code === kind) ? kind : undefined;
+  const start = value ?? (d0 ? { kind: d0.kind ?? undefined, title: d0.title }
+    : k0 ? { kind: k0, title: "" } : null);
 
   return (
     <CmShell active="/me/experience" lang={lang}

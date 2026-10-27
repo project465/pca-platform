@@ -19,7 +19,7 @@ export const en: SiteContent = {
   meta: {
     title: "CareerMatri | Major-based career assessment and career workspace",
     description:
-      "Take an assessment written for your major, see what you have already done in your field, and use your report and CareerMatri workspace to plan what comes next. Universities and institutions can adopt it department by department.",
+      "Take an assessment written for your major, see what you have already done in your field, and use your report and CareerMatri workspace to plan what comes next. It works from undergraduates through master's, PhD and postdoc level, and universities can adopt it department by department.",
     ogAlt: "CareerMatri major-based career assessment",
   },
 
@@ -174,6 +174,27 @@ export const en: SiteContent = {
           { label: "Still to fill in", title: "Data and decision-making", body: "You have not yet written down the criteria you set or the work you produced." },
         ],
       },
+    },
+    grad: {
+      label: "Graduate students · Postdocs",
+      title: "One assessment from undergraduates to postdocs",
+      lead:
+        "Pick your degree stage on the first screen and the same major assessment asks about situations that fit that stage. From master's level up we also ask your field and undergraduate major, and use them to put your research into terms companies read.",
+      stagesTitle: "What each stage adds",
+      stages: [
+        { name: "Bachelor's", asks: "What you decided yourself in coursework, capstone projects and internships" },
+        { name: "Master's", asks: "Research problems, measurement conditions, how you checked results, and putting them in industry terms" },
+        { name: "PhD", asks: "How you framed the problem, assumptions and variables, uncertainty and the limits of your work" },
+        { name: "Postdoc", asks: "The scope you led, running projects, calls you made on your own, and turning results into work" },
+      ],
+      matTitle: "What MAT adds for graduate students",
+      mat: [
+        { title: "Research requirements, read separately", body: "Paper, patent, funded-project, conference and proposal requirements in research postings are gathered and checked against your records." },
+        { title: "Your research in job language", body: "Each research or paper record gets an application sentence frame plus one line worth writing down first at your degree stage." },
+        { title: "Interview questions on your research", body: "Three questions often asked at your stage, such as what your advisor decided versus what you decided, with the record to bring to each." },
+      ],
+      note: "A higher degree does not raise your result by itself. The same answers give master's and PhD students the same result; statuses depend only on what you did and what you produced.",
+      cta: { label: "Start the assessment", href: "/cores" },
     },
     majors: {
       label: "Majors",
@@ -518,6 +539,10 @@ export const en: SiteContent = {
           q: "How do I get my report?",
           a: "When you finish, you can read it on the web right away and download it as a PDF. Log in any time to open it again.",
         },
+        {
+          q: "Can graduate students and postdocs use it?",
+          a: "Yes. Choose your degree stage when you start and the assessment asks about situations at that stage. The report and MAT then focus on putting your research into job language. A higher degree does not raise your result.",
+        },
         { q: "Will I get a ranking or a hiring prediction?", a: "No. We show the experiences confirmed in your answers, what is still missing, and what to do next." },
         {
           q: "Has the assessment completed its validation studies?",
@@ -623,6 +648,10 @@ export const en: SiteContent = {
           a: "Yes. Students take the major assessment linked to their department. Departments that share a major assessment still get examples and guidance suited to that department.",
         },
         {
+          q: "Can graduate students take it?",
+          a: "Yes. Students choose their degree stage on the first screen and answer questions that fit master's, PhD or postdoc level. You can also run it for a graduate school.",
+        },
+        {
           q: "What do we need to prepare?",
           a: "Tell us which departments will take the assessment, roughly how many students, and a staff contact. You upload the student roster on the staff screen when you issue accounts.",
         },
@@ -667,6 +696,7 @@ export const en: SiteContent = {
         { title: "Notes into experience records", body: "Describe something you did recently in your own words, and MAT suggests ways to write it up as an experience record. You review it and decide what to save." },
         { title: "Postings next to your experience", body: "Paste in a job posting you found yourself, and for each requirement it shows what you can explain from your experience and what is still missing. Switch to another industry or role, and it compares again on that basis." },
         { title: "Application sentence outlines", body: "For each required item in a posting, MAT builds a three-sentence outline from the experience you recorded. It never adds anything that is not in your records. Missing details stay as blanks for you to fill in." },
+        { title: "Research records for graduate students", body: "Master's students, PhD students and postdocs can check a research posting's paper, patent and project requirements against their research records, and get interview questions often asked about degree research." },
       ],
       planned: "Monthly change report · Coming soon",
       plannedNote: "We are working on a report that sums up what changed over the month.",
@@ -695,6 +725,10 @@ export const en: SiteContent = {
       label: "FAQ",
       title: "Common questions about MAT",
       items: [
+        {
+          q: "Is MAT useful for graduate students?",
+          a: "MAT reads the degree stage from your assessment: methods that carry over for master's students, what you decided versus what was given for PhD students, and the scope you led for postdocs. For paper and patent requirements it shows whether your records have them, without judging counts.",
+        },
         {
           q: "Will I be charged automatically every month?",
           a: "No. The 30-day pass is paid once and ends on its own when the period is over.",

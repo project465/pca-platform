@@ -19,7 +19,7 @@ export async function generateMetadata() {
 }
 
 export default async function NewExperience(
-  { searchParams }: { searchParams: Promise<{ e?: string; td?: string; draft?: string }> },
+  { searchParams }: { searchParams: Promise<{ e?: string; td?: string; kind?: string; draft?: string }> },
 ) {
   const user = await requireUser();
   const sp = await searchParams;
@@ -31,6 +31,6 @@ export default async function NewExperience(
   /* **초안마다 폼을 새로 세운다.** 파일에서 옮긴 초안 목록은 같은 쪽 안의
      링크라, 열쇠가 같으면 React 가 칸을 재사용해 앞 초안의 선택(또는 빈
      칸)이 그대로 남고 `defaultChecked` 가 다시 걸리지 않는다 */
-  return <Compose key={sp.draft ?? "new"} userId={user.id} e={sp.e} td={sp.td}
+  return <Compose key={sp.draft ?? "new"} userId={user.id} e={sp.e} td={sp.td} kind={sp.kind}
     draft={d?.value ?? null} {...(d && sp.draft ? { draftId: sp.draft } : {})} />;
 }

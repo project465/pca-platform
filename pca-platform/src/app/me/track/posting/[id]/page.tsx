@@ -9,6 +9,8 @@ import { activeTrack } from "@/lib/track";
 import { itemDomainKo, livePostingOf, type ItemStatus, type PostingItem } from "@/lib/assistant/posting";
 import { interviewPrep, smallTasks } from "@/lib/assistant/prep";
 import { sentenceDrafts } from "@/lib/assistant/sentence";
+import { gradQuestions, isGrad, researchAsks, researchKindOf, type ResearchStatus } from "@/lib/assistant/research";
+import { stageOf } from "@/lib/assistant/stage";
 import { areaName, axisName } from "@/lib/assistant/catalog";
 import { CmShell, CmHead } from "../../../shell";
 import { SectionHeader } from "../../../ui";
@@ -53,12 +55,27 @@ const STATUS: Record<ItemStatus, { label: string; why: string }> = {
  * 조건` 으로 적으면 읽는 사람이 그것을 준비하지 않아도 되는 줄로 읽는다.
  */
 const UNMATCHED = { label: "영역 확인 필요", why: "이 전공의 업무 영역에 바로 잇지 못한 줄입니다. 어느 경험으로 설명할지 직접 정해 주세요." };
+/** 연구 실적 줄(논문 · 특허 · 과제 …)은 아래 따로 세운 표에서 기록과 맞댄다 */
+const RESEARCH = { label: "연구 실적 요구", why: "아래 ‘연구 실적 요구’ 표에서 내 기록과 맞대 봅니다." };
+const isResearchLine = (it: PostingItem) => it.status === "unmapped" && researchKindOf(it.text) !== null;
 const statusOf = (it: PostingItem, t: WsSay) => {
-  const s = it.status === "unmapped" && it.reason === "unmatched" ? UNMATCHED : STATUS[it.status];
+  const s = isResearchLine(it) ? RESEARCH
+    : it.status === "unmapped" && it.reason === "unmatched" ? UNMATCHED : STATUS[it.status];
   return { label: t(s.label), why: t(s.why) };
 };
 
 const ORDER: ItemStatus[] = ["empty", "partial", "ready", "unmapped"];
+
+/* 연구 실적 줄의 상태. 학위 조건(`info`)은 기록으로 판단하지 않는다 */
+const R_STATUS: Record<ResearchStatus, string> = {
+  ready: "적어 둔 기록 있음",
+  partial: "기록은 있는데 덜 적힘",
+  empty: "기록에 없음",
+  info: "학위 조건",
+};
+const R_KIND: Record<string, string> = {
+  paper: "논문", patent: "특허", project: "연구 과제", talk: "학회 발표", proposal: "연구계획서", degree: "학위",
+};
 
 export default async function Posting({ params, searchParams }: {
   params: Promise<{ id: string }>; searchParams: Promise<{ taken?: string }>;
@@ -71,9 +88,9 @@ export default async function Posting({ params, searchParams }: {
   const t = wsSay(lang);
   const en = lang === "en";
   const area = (td: string) => areaName(core, td, lang);
-  const [p, major, core, state] = await Promise.all([
+  const [p, major, core, state, stage] = await Promise.all([
     livePostingOf(user.id, id), activeMajorName(user.id), activeCoreOrPick(user.id),
-    activeTrack(user.id),
+    activeTrack(user.id), stageOf(user.id),
   ]);
   if (!p) notFound();
   const a = p.analysis;
@@ -82,7 +99,8 @@ export default async function Posting({ params, searchParams }: {
       || (x.kind === y.kind ? 0 : x.kind === "must" ? -1 : 1));
   const firstGap = items.find((it) => it.status === "empty" && it.domain)
     ?? items.find((it) => it.status === "partial" && it.domain);
-  const unmatched = items.filter((it) => it.status === "unmapped" && it.reason === "unmatched").length;
+  const unmatched = items.filter((it) => it.status === "unmapped" && it.reason === "unmatched" && !isResearchLine(it)).length;
+  const researchN = items.filter(isResearchLine).length;
   /* 면접 준비와 작은 일은 **분석 순서(공고에 적힌 차례)** 로 만든다. 표의 정렬은
      상태 차례라, 그것으로 고르면 필수 항목 여섯이 늘 `아직 없음` 쪽에서만 나온다 */
   const exps = await experiencesOf(user.id, core);
@@ -91,6 +109,9 @@ export default async function Posting({ params, searchParams }: {
   /* 다른 전공으로 읽은 공고는 영역 코드가 이 전공의 것이 아니라 뼈대를 만들지 않는다 */
   const sameCore = (p.core_code ?? core) === core;
   const sd = sameCore ? sentenceDrafts(a.items, exps, 6, lang) : { drafts: [], missing: 0 };
+  /* 연구 실적 줄은 학위와 관계없이 연구직 공고면 선다. 학위별 질문은 석사 이상에게만 */
+  const rAsks = researchAsks(a.items, exps, lang);
+  const gq = isGrad(stage) ? gradQuestions(stage, exps, lang) : [];
   const taken = takenRaw === undefined ? null : takenRaw === "x" ? -1 : Number(takenRaw);
 
   return (
@@ -104,8 +125,9 @@ export default async function Posting({ params, searchParams }: {
 
       <SectionHeader icon="check" title={t("한눈에")}
         sub={t("설명할 경험 {ready} · 정리가 덜 됨 {partial} · 아직 없음 {empty} · 전공 밖 조건 {cond}",
-          { ready: a.counts.ready, partial: a.counts.partial, empty: a.counts.empty, cond: a.counts.unmapped - unmatched })
-          + (unmatched ? t(" · 영역 확인 필요 {n}", { n: unmatched }) : "")} />
+          { ready: a.counts.ready, partial: a.counts.partial, empty: a.counts.empty, cond: a.counts.unmapped - unmatched - researchN })
+          + (unmatched ? t(" · 영역 확인 필요 {n}", { n: unmatched }) : "")
+          + (researchN ? t(" · 연구 실적 요구 {n}", { n: researchN }) : "")} />
       {firstGap?.domain ? (
         <div className="cm-panel is-one">
           <div className="cm-pane">
@@ -135,7 +157,7 @@ export default async function Posting({ params, searchParams }: {
                 <tr key={i}>
                   <td>{it.text}</td>
                   <td>{it.kind === "must" ? t("필수") : t("우대")}</td>
-                  <td>{itemDomainKo(core, it, lang)}</td>
+                  <td>{isResearchLine(it) ? t("연구 실적") : itemDomainKo(core, it, lang)}</td>
                   <td><b>{statusOf(it, t).label}</b><br /><small>{statusOf(it, t).why}</small></td>
                   <td>
                     {it.evidence.length ? it.evidence.join(" / ")
@@ -151,6 +173,42 @@ export default async function Posting({ params, searchParams }: {
       ) : (
         <p className="cm-none">{t("요구 항목을 찾지 못했습니다. 자격 요건과 하는 일이 적힌 부분을 다시 붙여 넣어 주세요.")}</p>
       )}
+
+      {rAsks.length ? (
+        <>
+          <span id="research" />
+          <SectionHeader icon="doc" title={t("연구 실적 요구")}
+            sub={t("논문 · 특허 · 연구 과제 · 학회 발표 · 연구계획서 · 학위처럼 연구직 공고에 자주 붙는 줄을 따로 모았습니다. 편수나 등급이 공고 기준에 맞는지는 판단하지 않고, 기록에 있는지만 봅니다.")} />
+          <div className="cm-tablewrap">
+            <table className="cm-table">
+              <thead>
+                <tr><th>{t("공고의 요구")}</th><th>{t("종류")}</th><th>{t("내 기록")}</th><th>{t("다음에 할 일")}</th></tr>
+              </thead>
+              <tbody>
+                {rAsks.map((r, i) => (
+                  <tr key={i}>
+                    <td>{r.text}<br /><small>{r.kind === "must" ? t("필수") : t("우대")}</small></td>
+                    <td>{t(R_KIND[r.research])}</td>
+                    <td>
+                      <b>{t(R_STATUS[r.status])}</b>
+                      {r.evidence.length ? (
+                        <><br /><small>{r.evidence.map((e, j) => (
+                          <span key={e.id}>{j ? " / " : ""}<Link href={`/me/experience/${encodeURIComponent(e.id)}/edit`}>{e.title}</Link></span>
+                        ))}</small></>
+                      ) : null}
+                    </td>
+                    <td>{r.next}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="cm-acts" style={{ marginTop: 10 }}>
+            <Link className="cm-btn" href="/me/experience/new?kind=paper">{t("논문·학회 기록 적기")}</Link>
+            <Link className="cm-btn" href="/me/experience/new?kind=research">{t("연구·실험 기록 적기")}</Link>
+          </div>
+        </>
+      ) : null}
 
       <span id="sentences" />
       <SectionHeader icon="doc" title={t("지원서 문장 뼈대")}
@@ -223,6 +281,27 @@ export default async function Posting({ params, searchParams }: {
       ) : (
         <p className="cm-none">{t("이 공고에서는 경험으로 답할 요구 항목을 찾지 못했습니다. 학력·자격 같은 조건만 적힌 공고일 수 있어요.")}</p>
       )}
+      {gq.length ? (
+        <>
+          <SectionHeader icon="users" title={t("학위 연구를 두고 자주 받는 질문")}
+            sub={t("검사에서 답한 학위 단계에 맞춘 질문과, 내 연구 기록에서 가져갈 재료입니다.")} />
+          <div className="cm-panel">
+            {gq.map((x, i) => (
+              <div className="cm-pane" key={i}>
+                <h3>{x.question}</h3>
+                <dl className="cm-dl">
+                  {x.experience ? (
+                    <div><dt>{t("가져갈 경험")}</dt><dd>
+                      <Link href={`/me/experience/${encodeURIComponent(x.experience.id)}/edit`}>{x.experience.title}</Link>
+                    </dd></div>
+                  ) : null}
+                  <div><dt>{t("답의 뼈대")}</dt><dd>{x.frame}</dd></div>
+                </dl>
+              </div>
+            ))}
+          </div>
+        </>
+      ) : null}
       <p className="cm-note">{t("질문은 공고 문장과 이 전공의 업무 영역으로 만든 예시입니다. 실제 면접에서 이대로 나온다는 뜻은 아니에요.")}</p>
 
       <SectionHeader icon="target" title={t("이번 주에 할 수 있는 작은 일")}

@@ -172,7 +172,22 @@ export const WS_EN_TRACK: Record<string, string> = {
   "자주 묻는 것": "Questions",
   "MAT 사용법": "How MAT works",
   "MAT이 해 드리는 일": "What MAT does for you",
-  "브리핑이 한 주의 할 일을 정하고, 나머지 둘이 그 빈 줄을 채웁니다.":
-    "The briefing sets your week, and the other two tools fill in what's missing.",
+  "브리핑이 한 주의 할 일을 정하고, 나머지 도구가 그 빈 줄을 채웁니다.":
+    "The briefing sets your week, and the other tools fill in what's missing.",
   "무엇을 해 주는지 · 한 주 쓰는 법 · 하지 않는 일 보기": "What it does · a typical week · what it doesn't do",
+
+  /* 대학원생 · 연구 경험을 직무 말로 */
+  "연구 경험을 직무 말로": "Your research in job language",
+  "검사에서 {stage} 단계로 답하셨습니다. 연구·논문 기록마다 지원서 문장 뼈대와, 이 단계에서 먼저 적어 둘 한 줄을 붙였습니다.":
+    "You answered the assessment as a {stage}. Each research or paper record gets an application sentence frame and one line worth writing down first at this stage.",
+  "석사": "master's student",
+  "박사": "PhD student",
+  "박사후연구원": "postdoc",
+  "대괄호 칸 {n}개는 기록을 고쳐 채우면 다음에 채워져 나옵니다.":
+    "Fill the {n|bracketed field|bracketed fields} in the record and they will appear filled next time.",
+  "연구 기록이 아직 없습니다": "No research records yet",
+  "학위 연구나 참여한 과제, 쓴 논문을 하나 적어 두면 여기서 지원서 문장 뼈대가 만들어집니다. 연구직 공고의 논문 · 특허 · 과제 요구도 이 기록과 맞대 봅니다.":
+    "Add your degree research, a project you worked on or a paper you wrote, and we'll turn it into application sentence frames here. Research postings' paper, patent and project requirements are matched against these records too.",
+  "연구·실험 기록 적기": "Add research or lab work",
+  "논문·학회 기록 적기": "Add a paper or talk",
 };

@@ -101,4 +101,30 @@ export const WS_EN_TRACK_POSTING: Record<string, string> = {
   "합격 가능성은 적지 않습니다. 이 표는 공고에 적힌 요구와 내 기록을 나란히 놓은 것입니다.":
     "We don't predict outcomes. This table just puts the posting's requirements next to your records.",
   "MAT으로": "Back to MAT",
+
+  /* 연구 실적 요구 · 학위 연구 질문 */
+  "연구 실적 요구": "Research record",
+  "아래 ‘연구 실적 요구’ 표에서 내 기록과 맞대 봅니다.": "Matched against your records in the Research record table below.",
+  " · 연구 실적 요구 {n}": " · Research record {n}",
+  "논문 · 특허 · 연구 과제 · 학회 발표 · 연구계획서 · 학위처럼 연구직 공고에 자주 붙는 줄을 따로 모았습니다. 편수나 등급이 공고 기준에 맞는지는 판단하지 않고, 기록에 있는지만 봅니다.":
+    "Lines that research postings often carry (papers, patents, research projects, conference talks, proposals, degrees) are gathered here. We don't judge whether counts or ranks meet the posting's bar, only whether your records have them.",
+  "종류": "Type",
+  "내 기록": "Your records",
+  "다음에 할 일": "Next step",
+  "논문": "Paper",
+  "특허": "Patent",
+  "연구 과제": "Research project",
+  "학회 발표": "Conference talk",
+  "연구계획서": "Proposal",
+  "학위": "Degree",
+  "적어 둔 기록 있음": "In your records",
+  "기록은 있는데 덜 적힘": "Recorded, details missing",
+  "기록에 없음": "Not in your records",
+  "학위 조건": "Degree condition",
+  "논문·학회 기록 적기": "Add a paper or talk",
+  "연구·실험 기록 적기": "Add research or lab work",
+  "학위 연구를 두고 자주 받는 질문": "Questions often asked about degree research",
+  "검사에서 답한 학위 단계에 맞춘 질문과, 내 연구 기록에서 가져갈 재료입니다.":
+    "Questions matched to the degree stage you gave in the assessment, with material from your research records.",
+  "연구 실적": "Research record",
 };

@@ -21,6 +21,8 @@ import { livePostingsOf } from "@/lib/assistant/posting";
 import { nudgeUser, nudgesOf } from "@/lib/assistant/nudges";
 import { buildBrief, daysLeft, kstToday } from "@/lib/assistant/brief";
 import { openActions } from "@/lib/me-v3/open-actions";
+import { gradWeekTask, isGrad, researchCards } from "@/lib/assistant/research";
+import { stageOf } from "@/lib/assistant/stage";
 import { CmShell, CmHead } from "../shell";
 import { AssistantGuide } from "./guide";
 import { BriefPanel } from "./brief";
@@ -107,7 +109,7 @@ export default async function Track({
   /* 이번 주 한 줄이 아직 없으면 지금 만든다. **밤 당번을 기다리게 하지
      않는다**: 기간권을 막 산 사람이 빈 알림 칸을 본다 */
   if (state.on) await nudgeUser(user.id).catch(() => undefined);
-  const [core, ready, history, claimable, prods, settings, live, nudges, open] = await Promise.all([
+  const [core, ready, history, claimable, prods, settings, live, nudges, open, stage] = await Promise.all([
     coreIfAny(user.id),
     hasV3Result(user.id),
     trackHistory(user.id),
@@ -119,6 +121,7 @@ export default async function Track({
     state.on ? livePostingsOf(user.id) : Promise.resolve({ rows: [], core: null, exps: [] }),
     state.on ? nudgesOf(user.id, 6) : Promise.resolve([]),
     state.on ? openActions(user.id).catch(() => null) : Promise.resolve(null),
+    stageOf(user.id),
   ]);
   const major = core ? (en ? majorNameIn(core, "en") : await activeMajorName(user.id)) : null;
   const postings = live.rows;
@@ -141,6 +144,14 @@ export default async function Track({
         x, x.domain ? domainName(core, x.domain, "en") : "", model.stage).do;
     }
   }
+  /* **대학원생은 할 일이 비어도 빈칸으로 두지 않는다.** 연구 기록이 하나도
+     없으면 학위 연구 하나를 적는 것이 이번 주 할 일이다 */
+  if (brief && !brief.task) {
+    const g = gradWeekTask(stage ?? "bachelor", live.exps, lang);
+    if (g) brief.task = { body: g, state: "open", saved: true };
+  }
+  const cards = state.on && isGrad(stage) ? researchCards(stage, live.exps, lang) : [];
+  const STAGE_KO: Record<string, string> = { master: "석사", phd: "박사", postdoc: "박사후연구원" };
   const sale = prods.filter((p): p is NonNullable<typeof p> => !!p);
   /* **값이 정해지지 않은 기간권은 사는 단추를 세우지 않는다.** 해외판이
      그렇다. 줄이 있다고 단추를 그리면 0원 결제로 보인다 */
@@ -321,6 +332,43 @@ export default async function Track({
               </form>
             </div>
           </div>
+
+          {isGrad(stage) ? (
+            <>
+              <span id="research" />
+              <SectionHeader icon="doc" title={t("연구 경험을 직무 말로")}
+                sub={t("검사에서 {stage} 단계로 답하셨습니다. 연구·논문 기록마다 지원서 문장 뼈대와, 이 단계에서 먼저 적어 둘 한 줄을 붙였습니다.", { stage: t(STAGE_KO[stage!] ?? "") })} />
+              {cards.length ? (
+                <div className="cm-panel">
+                  {cards.map((c) => (
+                    <div className="cm-pane" key={c.experience.id}>
+                      <h3>
+                        <Link href={`/me/experience/${encodeURIComponent(c.experience.id)}/edit`}>{c.experience.title}</Link>
+                      </h3>
+                      <p className="cm-draft">{c.sentences.join(" ")}</p>
+                      <p className="cm-none">{c.focus}</p>
+                      {c.blanks.length ? (
+                        <p className="cm-none">{t("대괄호 칸 {n}개는 기록을 고쳐 채우면 다음에 채워져 나옵니다.", { n: c.blanks.length })}</p>
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="cm-panel is-one">
+                  <div className="cm-pane">
+                    <p className="cm-row">
+                      <b>{t("연구 기록이 아직 없습니다")}</b>
+                      <span>{t("학위 연구나 참여한 과제, 쓴 논문을 하나 적어 두면 여기서 지원서 문장 뼈대가 만들어집니다. 연구직 공고의 논문 · 특허 · 과제 요구도 이 기록과 맞대 봅니다.")}</span>
+                    </p>
+                    <div className="cm-acts">
+                      <Link className="cm-btn is-primary" href="/me/experience/new?kind=research">{t("연구·실험 기록 적기")}</Link>
+                      <Link className="cm-btn" href="/me/experience/new?kind=paper">{t("논문·학회 기록 적기")}</Link>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
+          ) : null}
 
           <SectionHeader icon="box" title={t("함께 열리는 것")} />
           <div className="cm-panel is-one">

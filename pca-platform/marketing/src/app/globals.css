@@ -335,6 +335,23 @@ html:not(:lang(ko)) .header-staff { display: none; }
 .glance-pillars h3 { font-size: 16.5px; font-weight: 750; color: #fff; }
 .glance-pillars p { margin-top: 4px; font-size: 14.5px; line-height: 1.6; color: #c4d0e6; }
 
+/* 대학원생 · 박사후연구원: 학위 단계 사다리 + MAT 이 더하는 것 */
+.grad { border-top: 1px solid var(--line-2); }
+.grad-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
+.grad-stages, .grad-mat { min-width: 0; padding: 28px 28px 26px; border-radius: var(--r-lg); border: 1px solid var(--line); background: #fff; box-shadow: var(--sh-card); }
+.grad-stages h3, .grad-mat h3 { font-size: 17px; font-weight: 750; margin-bottom: 18px; }
+.grad-stages ol, .grad-mat ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+.grad-stages li, .grad-mat li { display: flex; gap: 14px; align-items: flex-start; }
+.grad-stages b, .grad-mat b { display: block; font-size: 15.5px; font-weight: 700; color: var(--ink); }
+.grad-stages p, .grad-mat p { margin-top: 3px; font-size: 14.5px; line-height: 1.6; color: var(--ink-2); }
+.grad-step {
+  flex: none; display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; border-radius: 50%; background: var(--blue-soft); color: var(--blue-ink);
+  font-size: 13.5px; font-weight: 750;
+}
+.grad-stages li:last-child .grad-step { background: var(--blue); color: #fff; }
+.grad .majors-foot { margin-top: 24px; }
+
 /* 이렇게 씁니다 */
 .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; counter-reset: s; }
 .step {
@@ -815,6 +832,7 @@ html[lang="en"] .company div { grid-template-columns: 140px minmax(0, 1fr); }
 @media (max-width: 1080px) {
   .hero-grid, .split, .campus-grid, .world-grid { grid-template-columns: minmax(0, 1fr); gap: 44px; }
   .glance-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .grad-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; }
   .samples { flex-direction: column; align-items: stretch; max-width: 640px; }
   .samples > .sample { flex-basis: auto; }
   .trust-cards, .verify-steps, .math-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -841,6 +859,7 @@ html[lang="en"] .company div { grid-template-columns: 140px minmax(0, 1fr); }
   .section { padding: 64px 0; }
   .glance { padding: 44px 0 52px; }
   .glance-answer { padding: 24px 20px 22px; }
+  .grad-stages, .grad-mat { padding: 22px 18px 20px; }
   .section-tight { padding: 24px 0 64px; }
   .section-tint + .closing-wrap { padding-top: 64px; }
   .sec-head { margin-bottom: 32px; }

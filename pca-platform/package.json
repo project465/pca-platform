@@ -166,6 +166,7 @@
     "mat:gold": "tsx scripts/mat-gold.ts",
     "mat:prep": "tsx scripts/mat-prep-check.ts",
     "mat:brief": "tsx scripts/mat-brief-check.ts",
+    "mat:grad": "tsx scripts/mat-grad-check.ts",
     "v3:recompute": "tsx scripts/v3-recompute-check.ts",
     "auth:check": "tsx scripts/auth-check.ts",
     "public:shots": "node scripts/public-shots.mjs",

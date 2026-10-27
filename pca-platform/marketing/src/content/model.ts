@@ -174,6 +174,22 @@ export type SiteContent = {
       note: string;
       mock: ReportMock;
     };
+    /**
+     * 대학원생 · 박사후연구원. 검사가 학위 단계마다 다른 장면으로 묻고, MAT 이
+     * 연구 실적을 따로 읽는다는 것까지만 적는다. **학위가 결과를 올린다고 쓰지
+     * 않는다**: 같은 답이면 학위와 관계없이 판정이 같다
+     */
+    grad?: {
+      label: string;
+      title: string;
+      lead: string;
+      stagesTitle: string;
+      stages: { name: string; asks: string }[];
+      matTitle: string;
+      mat: Titled[];
+      note: string;
+      cta: Link;
+    };
     majors: {
       label: string;
       title: string;
