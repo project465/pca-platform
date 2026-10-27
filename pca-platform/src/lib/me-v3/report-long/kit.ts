@@ -104,6 +104,7 @@ body{font-family:"CM Book Sans",Pretendard,"Noto Sans CJK KR","Noto Sans KR",san
 .ph h1{font-size:18.5pt;line-height:1.32;margin:0;color:${C.navy};font-weight:800;letter-spacing:-.015em;text-wrap:balance}
 .dek{font-size:10.4pt;color:${C.ink2};margin:2mm 0 0;line-height:1.62;text-wrap:pretty}
 .sh{font-size:11pt;color:${C.navy};margin:1mm 0 -1.5mm;font-weight:800;display:flex;align-items:baseline;gap:8px}.sh span{font-size:8.6pt;color:${C.ink3};font-weight:500}
+.evd>div>.sh+.ls,.evd>div>.sh+.chips{margin-top:1.4mm}.evd>div>.ls+.sh,.evd>div>.chips+.sh{margin-top:3.2mm}
 h4{font-size:10.8pt;margin:0 0 1.5mm;color:${C.ink};font-weight:700;line-height:1.4;text-wrap:balance}
 p{margin:0}p,li,td,dd{text-wrap:pretty}.nw{white-space:nowrap;font-style:normal}.k{font-size:8.4pt;color:${C.blue};font-weight:700;margin-bottom:1mm;letter-spacing:.01em}.mut{color:${C.ink3}}.sm{font-size:8.6pt}.big{font-size:10.8pt;line-height:1.65;color:${C.ink}}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:5mm}.two.r64{grid-template-columns:1.25fr 1fr}.two.r46{grid-template-columns:.85fr 1.15fr;align-items:center}

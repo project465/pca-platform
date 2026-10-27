@@ -269,7 +269,8 @@ export function strengthPage(x: Inputs, d: X, k: number): Page {
         `${d.name(s.code)} 과제에서 만든 자료는 누가, 어디에 썼나요?`][k % 3];
   const color = SERIES[k % 4];
   /* 영어 문장은 한국어보다 길어 목록을 셋까지만 싣는다. 고른 항목 전부는 03장 ‘체크리스트에서 고른 항목’ 에 있다 */
-  const cap = !en ? 5 : ev.decisions.length && ev.acts.length ? 2 : 3;
+  /* 두 목록이 다 있으면 넷씩. 머리와 목록 사이를 띄우고 나서 다섯씩이면 쪽을 넘었다 */
+  const cap = !en ? (ev.decisions.length && ev.acts.length ? 4 : 5) : ev.decisions.length && ev.acts.length ? 2 : 3;
   const head = en
     /* 영어 제목에는 영역 이름을 다시 적지 않는다(바로 위 머리말에 있다). 영역 이름이 길어 두 줄을 먹는다 */
     ? (ev.decisions.length && ev.artifacts.length ? "You have decisions and deliverables to show here"
@@ -291,7 +292,8 @@ export function strengthPage(x: Inputs, d: X, k: number): Page {
   return P(L(`${tag} · ${d.name(s.code)}`, `Strength ${k + 1} · ${nm}`),
     `<p class="k">${E(tag)} · ${E(d.name(s.code))}</p>` +
     T(E(head), E(story)) +
-    `<div class="two r64">
+    /* evd: 머리(직접 정한 것 · 해 본 일 · 남긴 것)와 목록 사이를 띄운다. 붙어 있어 읽기 어려웠다(2026-10-27) */
+    `<div class="two r64 evd">
       <div>${ev.decisions.length ? H(L("직접 정한 것", "What you decided"), L("고른 근거", "Items you picked")) + ul(ev.decisions.slice(0, cap).map(E)) : ""}${ev.acts.length ? H(L("해 본 일", "What you did"), L("고른 근거", "Items you picked")) + ul(ev.acts.slice(0, cap).map(E)) : ""}
         ${ev.artifacts.length ? H(L("남긴 것", "What you left behind")) + chips(ev.artifacts.slice(0, 6), "art") : ""}${ev.comparisons.length ? H(L("비교한 대상", "What you compared with")) + chips(ev.comparisons.slice(0, en ? 2 : 5)) : ""}</div>
       <div class="card cen">${radar(AXES.map((a) => an(a)), [{ name: d.name(s.code), levels: d.levels(s.code), color }], { size: en ? 250 : 290, label: 13, ring: false })}${zoneTag(s.zone)}${radarHow([{ name: d.name(s.code), color }], false)}</div>
@@ -370,7 +372,7 @@ export function qualityPage(x: Inputs, d: X): Page {
     H(L(`‘${STEP_WORD[3].tag}’은 이렇게 셌어요`, `How we counted “${STEP_WORD[3].tag}”`), L("답 하나만으로는 올리지 않아요", "One answer alone is not enough")) +
     `<div class="flow5 f4">${flow.map(([h, b]) => `<div class="f5"><b>${h}</b><p>${E(b)}</p></div>`).join("")}</div>` +
     (total ? H(L(`판단에 답한 ${total}칸은 이렇게 나뉘었어요`, `How your ${total} answered cells break down`), L(`물은 영역 ${asked.length}곳 × 판단 ${AXES.length}가지`, `${asked.length} areas asked × ${AXES.length} judgments`)) +
-      fig(hbars(dist, { max, width: 640, label: 150, row: en ? 26 : 30, valueText: (b) => L(`${b.value}칸`, String(b.value)) }), howto([[L("막대 길이", "Bar length"), L("그 단계로 나온 칸의 수", "Number of cells at that level")], ...dist.map((v) => [v.color, E(v.label)] as [string, string])],
+      fig(hbars(dist, { max, width: 640, label: 150, row: 24, valueText: (b) => L(`${b.value}칸`, String(b.value)) }), howto([[L("막대 길이", "Bar length"), L("그 단계로 나온 칸의 수", "Number of cells at that level")], ...dist.map((v) => [v.color, E(v.label)] as [string, string])],
         L("칸 하나는 한 영역에서 한 판단에 답한 것이에요. 위쪽 막대가 길수록 직접 정한 일이 많다는 뜻입니다.", "One cell is one judgment in one area. The longer the top bar, the more calls you made."))) : "") +
     (asked.length ? H(L("물은 영역마다 직접 해 본 판단", "Judgments you did yourself, area by area"), L(`판단 ${AXES.length}가지 가운데 몇 가지인지`, `How many of the ${AXES.length} judgments`)) +
       `<table class="tb tb-xs"><thead><tr><th>${L("영역", "Area")}</th><th>${L("지금 상태", "Status")}</th><th>${L("직접 해 본 판단", "Myself")}</th><th>${L("기준까지 정한 판단", "Decided")}</th><th>${L("다음에 맡아 볼 판단", "Take on next")}</th></tr></thead><tbody>${asked.map((z) => {

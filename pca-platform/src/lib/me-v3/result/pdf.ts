@@ -24,6 +24,8 @@ export type DrawOpts = {
   baseUrl: string;
   /** 부른 사람이 들고 온 쿠키 머리글 그대로 */
   cookie: string;
+  /** 담당자가 뽑는다. 결과 쪽이 담당자 로그인을 읽게 `?as=staff` 를 붙인다(`session.ts`) */
+  asStaff?: boolean;
   /**
    * 쪽마다 위에 적는 한 줄. 학교 진입이면 `학교 · 학과 · 리포트 이름` 이다.
    *
@@ -171,7 +173,7 @@ export async function drawResultPdf(opts: DrawOpts): Promise<Buffer> {
       }
     }
     const page = await ctx.newPage();
-    const url = `${base}/v3/${encodeURIComponent(opts.attemptId)}/result`;
+    const url = `${base}/v3/${encodeURIComponent(opts.attemptId)}/result${opts.asStaff ? "?as=staff" : ""}`;
     /* **`networkidle` 로 기다리지 않는다.** 결과 쪽에는 Next 가 화면에
        들어온 링크를 미리 불러오는 요청이 있어, 네트워크가 0.5초 조용해질
        때를 기다리면 멈추지 않는 날이 있다. 그러면 60초를 다 쓰고 시간

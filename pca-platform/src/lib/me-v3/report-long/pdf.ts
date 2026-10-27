@@ -16,6 +16,8 @@ export type BookDrawOpts = {
   attemptId: string;
   baseUrl: string;
   cookie: string;
+  /** 담당자가 뽑는다. 결과 쪽이 담당자 로그인을 읽게 `?as=staff` 를 붙인다(`session.ts`) */
+  asStaff?: boolean;
 };
 
 export async function drawBookPdf(opts: BookDrawOpts): Promise<Buffer> {
@@ -49,7 +51,7 @@ export async function drawBookPdf(opts: BookDrawOpts): Promise<Buffer> {
     }
     const page = await ctx.newPage();
     const path = `/v3/${encodeURIComponent(opts.attemptId)}/result/book`;
-    const url = `${base}${path}`;
+    const url = `${base}${path}${opts.asStaff ? "?as=staff" : ""}`;
     let res;
     try {
       res = await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45000 });

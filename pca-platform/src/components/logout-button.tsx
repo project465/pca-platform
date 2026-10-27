@@ -1,4 +1,5 @@
-import { signOut } from "@/lib/auth";
+import { signOut, staffSignOut } from "@/lib/auth";
+import { currentUser } from "@/lib/session";
 
 /**
  * 로그아웃.
@@ -19,7 +20,11 @@ export default function LogoutButton({
     <form
       action={async () => {
         "use server";
-        await signOut({ redirectTo: to });
+        /* **이 화면의 로그인만 지운다.** 담당자 화면에서 누르면 담당자
+           쿠키만, 학생 화면에서 누르면 학생 쿠키만 지운다. 같은 브라우저에
+           들어가 있는 다른 쪽은 그대로다(`auth.ts` 의 `staff`) */
+        const who = await currentUser();
+        await (who?.scope === "staff" ? staffSignOut : signOut)({ redirectTo: to });
       }}
     >
       <button type="submit" className={className}>{label}</button>

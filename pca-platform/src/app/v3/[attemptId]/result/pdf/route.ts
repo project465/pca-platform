@@ -126,7 +126,7 @@ export async function GET(
     const book = a.tier === "PRO" && (a.locale === "ko" || hasEdition(a.core_code, "en"));
     let pdf: Buffer;
     if (book) {
-      pdf = await drawBookPdf({ attemptId, baseUrl: base, cookie: h.get("cookie") ?? "" });
+      pdf = await drawBookPdf({ attemptId, baseUrl: base, cookie: onlyScope(h.get("cookie") ?? "", user.scope), asStaff: user.scope === "staff" });
     } else {
       const meta = await resultMeta(attemptId, a.core_code);
       const header = [meta.school, meta.department]
@@ -134,7 +134,7 @@ export async function GET(
         .concat(a.locale === "en" ? "CareerMatri Career Analysis Report" : "CareerMatri 진로 분석 리포트")
         .join(" · ");
       pdf = await drawResultPdf({
-        attemptId, baseUrl: base, cookie: h.get("cookie") ?? "", header,
+        attemptId, baseUrl: base, cookie: onlyScope(h.get("cookie") ?? "", user.scope), asStaff: user.scope === "staff", header,
       });
     }
     console.log(`[v3-pdf] done attempt=${attemptId} ${book ? "book " : ""}${pdf.length}바이트 `
@@ -192,4 +192,18 @@ export async function GET(
     }
     return sorryPage(attemptId, a.locale);
   }
+}
+
+/**
+ * 그리는 브라우저에 **누른 사람의 로그인만** 넘긴다. 담당자와 학생은 쿠키가
+ * 따로라(`auth.ts`) 둘 다 넘기면 결과 쪽이 학생 쿠키를 먼저 읽고, 같은
+ * 브라우저에 다른 학생이 들어가 있으면 남의 결과를 그리려다 막힌다.
+ */
+function onlyScope(header: string, scope: "staff" | "student" | undefined): string {
+  const staffCookie = (name: string) => /(^|-)cm-staff\./.test(name);
+  const studentCookie = (name: string) => /authjs\./.test(name);
+  return header.split(";").map((x) => x.trim()).filter((pair) => {
+    const name = pair.slice(0, Math.max(0, pair.indexOf("=")));
+    return scope === "staff" ? !studentCookie(name) : !staffCookie(name);
+  }).join("; ");
 }

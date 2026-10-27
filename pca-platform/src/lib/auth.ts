@@ -282,3 +282,50 @@ export const authConfig: NextAuthConfig = {
 };
 
 export const { handlers, signIn, signOut, auth } = NextAuth(authConfig);
+
+/**
+ * **담당자 · 운영자 세션은 쿠키를 따로 쓴다**(2026-10-27 사업주 지적).
+ *
+ * 한 브라우저에 로그인 쿠키가 하나뿐이라, 같은 브라우저에서 학생으로 들어가
+ * 보고 관리자 화면으로 돌아가면 **나중에 들어간 쪽이 앞의 로그인을 덮었고**,
+ * 어느 한쪽에서 로그아웃을 누르면 둘 다 나갔다. 담당자 화면(`/admin` ·
+ * `/org`)은 이 인스턴스의 쿠키만 먼저 보고, 학생 화면은 원래 쿠키를 먼저
+ * 본다(`session.ts`). 그래서 한쪽에서 나가도 다른 쪽은 그대로다.
+ *
+ * 학생끼리는 원래부터 서로를 내보내지 않는다: 세션은 각 브라우저가 들고 있는
+ * 쿠키(JWT)이고, 한 사람의 로그아웃은 **그 브라우저의 쿠키만** 지운다. 다만 같은 브라우저에서 두 학생 계정을 번갈아 쓰면 쿠키가 하나라
+ * 뒤에 들어간 사람이 앞사람을 덮는다(학생은 각자 기기에서 들어온다).
+ *
+ * 소셜 로그인은 싣지 않는다: 담당자 계정은 학교가 발급한 아이디·비밀번호다.
+ */
+const SECURE = /^https:/i.test(process.env.AUTH_URL ?? process.env.PLATFORM_URL ?? "");
+const STAFF_PREFIX = SECURE ? "__Secure-" : "";
+const staffCookie = (name: string, httpOnly = true) => ({
+  name: `${STAFF_PREFIX}cm-staff.${name}`,
+  options: { httpOnly, sameSite: "lax" as const, path: "/", secure: SECURE },
+});
+const staff = NextAuth({
+  ...authConfig,
+  basePath: "/api/auth-staff",
+  providers: authConfig.providers.filter((x) => typeof x !== "function" && x.type === "credentials"),
+  cookies: {
+    sessionToken: staffCookie("session-token"),
+    callbackUrl: staffCookie("callback-url"),
+    csrfToken: staffCookie("csrf-token"),
+  },
+});
+export const staffAuth = staff.auth;
+export const staffSignIn = staff.signIn;
+export const staffSignOut = staff.signOut;
+
+/**
+ * 이 아이디가 담당자 · 운영자 계정인가. 로그인할 때 **어느 쿠키에 담을지만**
+ * 정한다: 비밀번호 확인과 막는 일은 그대로 `authorize()` 가 한다.
+ */
+export async function staffRoleOf(identifier: string): Promise<Role | null> {
+  const u = await findUserByIdentifier(identifier).catch(() => null);
+  if (!u) return null;
+  const ms = await loadMemberships(u.id).catch(() => [] as Membership[]);
+  const r = highestRole(ms.map((m) => m.role));
+  return r === "student" ? null : r;
+}

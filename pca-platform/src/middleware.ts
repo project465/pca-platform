@@ -83,9 +83,15 @@ export function middleware(req: NextRequest) {
     && req.cookies.get(MARKET_COOKIE)?.value !== market;
   const needAnon = !req.cookies.get(ANON_COOKIE);
   const staging = isStaging();
-  if (!needLang && !needMarket && !needAnon && !staging) return NextResponse.next();
+  /* **어느 화면인가를 서버 컴포넌트에 넘긴다.** 담당자 화면과 학생 화면이
+     로그인 쿠키를 따로 쓰고(`auth.ts` 의 `staff`), 어느 쪽을 먼저 볼지는
+     주소가 정한다(`session.ts`). 밖에서 보낸 같은 이름의 머리는 덮어쓴다 */
+  const fwd = new Headers(req.headers);
+  fwd.set("x-cm-path", req.nextUrl.pathname + req.nextUrl.search);
+  const pass = () => NextResponse.next({ request: { headers: fwd } });
+  if (!needLang && !needMarket && !needAnon && !staging) return pass();
 
-  const res = NextResponse.next();
+  const res = pass();
   /* 공개 전 배포본은 색인하지 않는다 */
   if (staging) res.headers.set("X-Robots-Tag", "noindex, nofollow");
   if (needLang) {

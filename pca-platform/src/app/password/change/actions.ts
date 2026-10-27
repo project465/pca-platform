@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { query, queryOne } from "@/lib/db";
 import { hashPassword, verifyPassword } from "@/lib/password";
 import { requireUser } from "@/lib/session";
+import { homePathFor } from "@/lib/roles";
 import { passwordSchema } from "@/lib/validation";
 
 export type ChangeState = { error?: string };
@@ -49,5 +50,7 @@ export async function changePasswordAction(
     [user.id],
   );
 
-  redirect("/");
+  /* 담당자는 제 화면으로 바로 보낸다. `/` 는 학생 쿠키를 먼저 보므로,
+     같은 브라우저에 학생이 들어가 있으면 학생 화면으로 떨어진다 */
+  redirect(user.scope === "staff" ? homePathFor(user.role) : "/");
 }

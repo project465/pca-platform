@@ -169,6 +169,7 @@
     "mat:grad": "tsx scripts/mat-grad-check.ts",
     "nav:pretest": "tsx scripts/nav-pretest-check.ts",
     "v3:recompute": "tsx scripts/v3-recompute-check.ts",
+    "auth:scope": "tsx scripts/auth-scope-check.ts",
     "auth:check": "tsx scripts/auth-check.ts",
     "public:shots": "node scripts/public-shots.mjs",
     "secrets:check": "tsx scripts/secrets-check.ts",

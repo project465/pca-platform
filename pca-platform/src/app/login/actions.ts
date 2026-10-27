@@ -3,7 +3,8 @@
 import { AuthError } from "next-auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { inactiveReason, signIn } from "@/lib/auth";
+import { inactiveReason, signIn, staffRoleOf, staffSignIn } from "@/lib/auth";
+import { homePathFor } from "@/lib/roles";
 import { clientIpFrom, loginGate } from "@/lib/login-throttle";
 import { entrySay } from "@/lib/entry-say";
 
@@ -50,8 +51,11 @@ export async function loginAction(
     };
   }
 
+  /* **담당자와 학생은 로그인 쿠키를 따로 쓴다**(`auth.ts`). 그래서 같은
+     브라우저에서 학생으로 들어가 봐도 담당자 로그인이 덮이지 않는다 */
+  const staff = await staffRoleOf(identifier);
   try {
-    await signIn("credentials", { identifier, password, redirect: false });
+    await (staff ? staffSignIn : signIn)("credentials", { identifier, password, redirect: false });
   } catch (e) {
     if (e instanceof AuthError) {
       /**
@@ -86,5 +90,8 @@ export async function loginAction(
 
   // 원래 가려던 곳이 있으면 그리로. 없으면 "/" 가 역할을 보고 정한다.
   const next = String(formData.get("next") ?? "");
-  redirect(next.startsWith("/") && !next.startsWith("//") ? next : "/");
+  /* 담당자는 `/` 를 거치지 않는다. `/` 는 학생 쿠키를 먼저 보므로 같은
+     브라우저에 학생이 들어가 있으면 학생 화면으로 떨어진다 */
+  redirect(next.startsWith("/") && !next.startsWith("//") ? next : staff ? homePathFor(staff) : "/");
 }
+

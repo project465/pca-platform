@@ -189,8 +189,8 @@ export default async function V3PilotOne({
           {` 깊게 본 영역 ${a.opened_deep}개.`}
         </p>
         <p>
-          <Link className="act" href={`/v3/${attemptId}/result`}>결과 화면</Link>{" "}
-          <a className="act" href={`/v3/${attemptId}/result/pdf`}>종이</a>
+          <Link className="act" href={`/v3/${attemptId}/result?as=staff`}>결과 화면</Link>{" "}
+          <a className="act" href={`/v3/${attemptId}/result/pdf?as=staff`}>종이</a>
         </p>
       </section>
     </AdminShell>

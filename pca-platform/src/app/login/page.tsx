@@ -56,7 +56,11 @@ export default async function LoginPage({
   const { next, error } = await searchParams;
   /* 열린 리다이렉트를 막는 자리가 한 곳이다(`safe-next.ts`) */
   const nx = safeNext(next, "");
-  if (await currentUser()) redirect(nx || "/");
+  /* **담당자로만 들어와 있으면 폼을 연다.** 담당자와 학생은 로그인을 따로
+     들고 있어서(`auth.ts`), 같은 브라우저에서 학생 계정으로 들어가 볼 수
+     있어야 한다. 담당자 화면으로 가려던 길이면 그대로 보낸다 */
+  const who = await currentUser();
+  if (who && (who.scope !== "staff" || /^\/(admin|org)(\/|\?|$)/.test(nx))) redirect(nx || "/");
 
   const providers = enabledProviders();
   /* **들어온 화면의 언어로 선다**(영어판 2단계). 해외 개인이 영어 가입
