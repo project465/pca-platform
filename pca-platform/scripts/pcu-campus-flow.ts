@@ -16,6 +16,7 @@
  * **쓰는 검사라 로컬이 아닌 주소면 멈춘다**(`pcu:ops` 와 같은 까닭이다).
  * 만드는 것은 끝에서 치운다.
  */
+import { mkdirSync, writeFileSync } from "node:fs";
 import { chromium } from "playwright";
 import {
   BASE, assertFreshServer, gateCreds, loadEnv, login, makeStudent,
@@ -30,7 +31,7 @@ import {
 } from "../src/lib/campus/students";
 import { allLeaves, statusOf, university } from "../src/lib/campus/registry";
 import { majorNameOf } from "../src/lib/me-v3/major-name";
-import { registry } from "../src/lib/me-v3/core-registry";
+import { coreFile, registry } from "../src/lib/me-v3/core-registry";
 import { openAttempt } from "../src/lib/me-v3/runtime/session";
 import { campusV3 } from "../src/lib/me-v3/campus";
 import { currentState } from "../src/lib/me-v3/platform";
@@ -137,7 +138,9 @@ async function main(): Promise<void> {
        확인했고 여기서 세는 것은 **눌러서 그리로 가는가**다 */
     await a.goto(`${BASE}/campus/${code}/d/${seat.leaf.code}`,
       { waitUntil: "networkidle" });
-    const startBtn = a.locator('form button[type="submit"]').first();
+    /* **`main` 안에서 찾는다.** 머리띠에 로그아웃 폼이 들어온 뒤로 첫 폼 단추가
+       로그아웃이 됐고, 그것을 누르면 그 사람을 내보낸 채로 아래 줄을 잰다 */
+    const startBtn = a.locator('main form button[type="submit"]').first();
     for (let t = 0; t < 2 && new URL(a.url()).pathname !== `/campus/${code}/login`; t += 1) {
       await startBtn.click({ timeout: 5000 }).catch(() => undefined);
       await a.waitForURL((u) => new URL(u).pathname !== `/campus/${code}/d/${seat.leaf.code}`,
@@ -153,8 +156,9 @@ async function main(): Promise<void> {
     ok("학교 로그인 화면에 회원가입 CTA 가 없다", !/회원가입/.test(body));
     ok("학교 로그인 화면에 소셜 단추가 없다",
       !/구글|Google|애플|Apple/.test(body));
+    /* 진흥원은 학교가 아니라 `기관에서` 로 적는다(학교·기관 말 가르기) */
     ok("학교에서 받은 계정으로 들어오라고 적는다",
-      /학교에서 발급받은 계정/.test(body));
+      /(학교|기관)에서 발급받은 계정/.test(body));
     await anon.close();
 
     /**
@@ -193,7 +197,7 @@ async function main(): Promise<void> {
     }
     await b.goto(`${BASE}/campus/${code}/d/${seat.leaf.code}`,
       { waitUntil: "networkidle" });
-    const bBtn = b.locator('form button[type="submit"]').first();
+    const bBtn = b.locator('main form button[type="submit"]').first();
     for (let t = 0; t < 2 && new URL(b.url()).pathname !== `/campus/${code}/login`; t += 1) {
       await bBtn.click({ timeout: 5000 }).catch(() => undefined);
       await b.waitForURL((u) => new URL(u).pathname !== `/campus/${code}/d/${seat.leaf.code}`,
@@ -205,7 +209,7 @@ async function main(): Promise<void> {
       bland === `/campus/${code}/login`, bland);
     const bbody = (await b.locator("body").innerText()).replace(/\s+/g, " ");
     ok("다른 세션이 있어도 학교 로그인이 열린다",
-      /학교에서 발급받은 계정/.test(bbody)
+      /(학교|기관)에서 발급받은 계정/.test(bbody)
         && /다른 계정으로 로그인되어 있습니다/.test(bbody));
     /* 쿠키는 이미 심어졌다. 주소를 바로 쳐서 넘어가 본다 */
     await b.goto(`${BASE}/v3/start`, { waitUntil: "domcontentloaded" });
@@ -324,6 +328,14 @@ async function main(): Promise<void> {
       pdf.status() === 200
         && (pdf.headers()["content-type"] ?? "").includes("pdf"),
       `${pdf.status()} ${pdf.headers()["content-type"] ?? ""}`);
+    /* `SAVE_DIR` 를 주면 받은 종이와 결과 화면을 남긴다. 사람이 열어 볼 자리다 */
+    if (process.env.SAVE_DIR && pdf.status() === 200) {
+      const dir = process.env.SAVE_DIR;
+      mkdirSync(dir, { recursive: true });
+      writeFileSync(`${dir}/${UNI}-${seat.leaf.code}.pdf`, await pdf.body());
+      await p.screenshot({ path: `${dir}/${UNI}-${seat.leaf.code}-result.png`, fullPage: true });
+      say("남긴 종이", `${dir}/${UNI}-${seat.leaf.code}.pdf`);
+    }
 
     /**
      * 7. 작업공간 — **결과를 받은 그 사람이 돌아올 자리.**
@@ -340,6 +352,13 @@ async function main(): Promise<void> {
     const others = registry().cores.filter((x) => x.code !== seat.leaf.core_code)
       .map((x) => x.name_ko).filter((x): x is string => Boolean(x))
       .filter((x) => x !== major);
+    /* **두 글자 이름이 제 낱말 안에 들어 있는 자리는 빼고 센다.** `교육` Core 의
+       이름이 국어국문한국어교육학과의 영역 `한국어 교육 설계` 안에 있어서, 그
+       학생의 화면을 다른 전공으로 추정한 것으로 잘못 셌다 */
+    let ownWords = `${seat.leaf.name} ${seat.college.name} ${major}`;
+    try {
+      ownWords += JSON.stringify(coreFile(seat.leaf.core_code ?? "", "domains"));
+    } catch { /* 영역 파일이 없는 Core 는 이름만으로 센다 */ }
     for (const [name, at] of [
       ["작업공간 홈", "/me"],
       ["현재 상태", "/me/state"],
@@ -354,7 +373,8 @@ async function main(): Promise<void> {
       const broke = /화면을 불러오지 못했습니다|참조 번호/.test(t);
       ok(`${name} 가 선다`, r.status() === 200 && !broke,
         `${r.status()}${broke ? " · 오류 화면" : ""}`);
-      const stray = others.find((x) => t.includes(x)) ?? null;
+      const stray = others.filter((x) => !ownWords.includes(x))
+        .find((x) => t.includes(x)) ?? null;
       ok(`${name} 가 다른 전공을 추정하지 않는다`, !stray, stray ?? major);
     }
     /**
@@ -424,8 +444,15 @@ async function main(): Promise<void> {
     /* ── 5명을 넘기면 쪼갠 줄이 서는가 ───────────────────────
        브라우저로 다섯을 더 풀게 하지 않는다: 여기가 재는 것은 집계이고
        검사가 도는지는 위에서 이미 봤다 */
-    const seatB = open.find((r) => r.college.code !== seat.college.code)
-      ?? open.find((r) => r.leaf.code !== seat.leaf.code) ?? null;
+    /* **적은 쪽은 아직 선 아래인 학과에서 고른다.** 앞선 확인이 사람을 쌓아 둔
+       DB 에서는 고른 학과가 이미 열넷이라, 수를 내는 것이 맞는데 걸림으로 셌다 */
+    let seatB: (typeof open)[number] | null = null;
+    for (const r of open) {
+      if (r.leaf.code === seat.leaf.code) continue;
+      if (await dbCount(r.leaf.code) >= MIN_CELL) continue;
+      if (!seatB || (seatB.college.code === seat.college.code && r.college.code !== seat.college.code)) seatB = r;
+      if (seatB.college.code !== seat.college.code) break;
+    }
     const addA = Math.max(0, MIN_CELL + 1 - await dbCount(seat.leaf.code));
     for (let i = 0; i < addA; i += 1) {
       /* **구분자를 앞에 둔다.** `zzagg${Date.now()}${i}` 를 14자로 자르면
