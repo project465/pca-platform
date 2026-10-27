@@ -6,6 +6,7 @@ import { activeMajorName } from "@/lib/me-v3/major-name";
 import { coreIfAny } from "@/lib/me-v3/platform";
 import { domainName, majorNameIn } from "@/lib/me-v3/runtime/session";
 import { textFor } from "@/lib/me-v3/result/text";
+import { localizeResult } from "@/lib/me-v3/result/localize";
 import { getProduct } from "@/lib/orders";
 import { formatMoney } from "@/lib/money";
 import {
@@ -129,7 +130,9 @@ export default async function Track({
      할 일을 찾아 영어 문장으로 적고, 못 찾으면 담긴 문장을 그대로 둔다 */
   if (en && brief?.task && open?.model) {
     const row = (open.rows ?? []).find((r) => r.body === brief.task!.body);
-    const model = open.model;
+    /* 굳은 결과는 한국어 원고로 들어 있다. 할 일의 재료(결과물 이름 · 비교 대상)도
+       그래서 한국어라, `/me/next` 처럼 모델을 먼저 영어로 읽어 넘긴다 */
+    const model = core ? localizeResult(open.model, core, "en") : open.model;
     const x = row ? model.actions.find((a) =>
       (a.domain ?? "") === (row.td_code ?? "") && (a.axis ?? "") === (row.axis_code ?? "")) : null;
     if (x && core) {

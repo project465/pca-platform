@@ -103,6 +103,10 @@ export async function startCheckout(
   /* **값이 승인되지 않은 상품은 주문을 만들지 않는다.** 0원으로 줄만 세워
      둔 해외판 MAT 이 그렇다: 그대로 두면 0원 결제로 기간이 열린다 */
   if (product.price_status !== "approved") throw new Error("아직 값이 정해지지 않은 상품입니다.");
+  /* 원화가 아닌 상품은 해외 카드 채널로만 낸다. 국내 채널은 원화만 받는다 */
+  if (product.currency !== "KRW" && region !== "global") {
+    throw new Error("해외 카드로만 결제할 수 있는 상품입니다.");
+  }
   if (product.kind === "track") {
     const { hasV3Result } = await import("@/lib/track");
     if (!(await hasV3Result(userId))) {

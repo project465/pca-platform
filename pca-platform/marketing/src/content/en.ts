@@ -1,5 +1,5 @@
 import { PLATFORM_URL, HOME_DOMAIN } from "@/lib/domains";
-import { TRACK_KR, krw } from "@/lib/prices";
+import { TRACK_GL } from "@/lib/prices";
 import type { SiteContent } from "./model";
 
 /**
@@ -470,7 +470,7 @@ export const en: SiteContent = {
           tag: "Subscription",
           title: "MAT · AI career assistant",
           body: "After the assessment, it keeps track of your weekly tasks and deadlines and puts saved job postings side by side with your experience.",
-          price: `30-day pass ${krw(TRACK_KR.month.price)} · 365-day pass ${krw(TRACK_KR.year.price)}`,
+          price: `${TRACK_GL.month.name} ${TRACK_GL.month.price}`,
           priceNote: "No automatic renewal",
           points: [
             "Your pass simply ends when the period is over, with no further charges",
@@ -632,7 +632,7 @@ export const en: SiteContent = {
   assistant: {
     meta: {
       title: "MAT · AI career assistant | CareerMatri",
-      description: `MAT is CareerMatri's AI career assistant. After the assessment, it keeps track of your weekly tasks and deadlines and compares job postings you find with your own experience. 30-day pass ${krw(TRACK_KR.month.price)}, 365-day pass ${krw(TRACK_KR.year.price)}.`,
+      description: `MAT is CareerMatri's AI career assistant. After the assessment, it keeps track of your weekly tasks and deadlines and compares job postings you find with your own experience. ${TRACK_GL.month.name} ${TRACK_GL.month.price}.`,
     },
     hero: {
       eyebrow: "Subscription",
@@ -661,19 +661,12 @@ export const en: SiteContent = {
       lead: "Passes do not renew automatically. Yours simply ends when the period is over, and you are not charged again.",
       items: [
         {
-          name: "30-day pass",
-          price: krw(TRACK_KR.month.price),
+          name: TRACK_GL.month.name,
+          price: TRACK_GL.month.price,
           unit: "30 days of access",
-          body: "Try it for a month and then decide whether to continue.",
-          cta: { label: "Start with the 30-day pass", href: "/me/track" },
-        },
-        {
-          name: "365-day pass",
-          price: krw(TRACK_KR.year.price),
-          unit: "365 days of access",
-          body: "Costs less than buying the 30-day pass twelve times. A good fit if you want to keep preparing through a whole school year.",
+          body: "Try it for a month and then decide whether to continue. Start with the free assessment first, since MAT works from your result.",
           featured: true,
-          cta: { label: "Start with the 365-day pass", href: "/me/track" },
+          cta: { label: "Start with the 30-day pass", href: "/me/track" },
         },
       ],
       notes: [
@@ -688,7 +681,7 @@ export const en: SiteContent = {
       items: [
         {
           q: "Will I be charged automatically every month?",
-          a: "No. Both the 30-day and 365-day passes are paid once and end on their own when the period is over.",
+          a: "No. The 30-day pass is paid once and ends on its own when the period is over.",
         },
         {
           q: "I bought a PRO report. How do I get the free month?",

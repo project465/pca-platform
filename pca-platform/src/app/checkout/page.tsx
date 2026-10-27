@@ -94,6 +94,7 @@ export default async function CheckoutPage({
           upgradesAttemptId={attempt}
           provider={provider}
           globalReady={globalReady}
+          foreignOnly={product.currency !== "KRW"}
           lang={lang}
         />
       </div>

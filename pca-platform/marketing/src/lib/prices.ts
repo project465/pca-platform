@@ -54,6 +54,16 @@ export const TRACK_KR = {
   year: { name: "365일권", price: "39,000원" },
 } as const;
 
+/**
+ * 해외판 MAT(영어 작업공간). 정본은 `db/schema_track_global.sql` 의
+ * `TRACK_30D_GL` 이다(2026-10-27 사업주 결정 · 30일 4.99달러). 365일권은
+ * 해외 값이 정해지지 않아 영어 홈페이지에 적지 않는다. **환율로 어림하지
+ * 않는다**: 이 값은 달러로 실제 결제되는 값이다(`fx.ts` 는 `$` 를 건드리지 않는다)
+ */
+export const TRACK_GL = {
+  month: { name: "30-day pass", price: "$4.99" },
+} as const;
+
 /** 값을 한 줄로 늘어놓는다 (`무료 · 14,900원 · 21,900원`) */
 export function priceRange(tiers: TierPrice[]): string {
   return tiers.map((t) => t.price).join(" · ");

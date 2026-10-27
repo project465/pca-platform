@@ -117,9 +117,21 @@ async function main(): Promise<void> {
       const h = hangul(txt);
       ok(`[${name}] MAT 화면에 한글이 없다`, !h, h ?? "");
       ok(`[${name}] AI 동의 칸이 서지 않는다`, !/Anthropic/.test(txt));
-      ok(`[${name}] 0원 사는 단추가 없다`, (await p.locator('a[href^="/checkout?product=TRACK_"]').count()) === 0);
+      /* 해외판 30일권 $4.99(2026-10-27 사업주 결정). 365일권은 해외 값이 없어 서지 않는다 */
+      ok(`[${name}] 해외판 30일권만 $4.99 로 선다`,
+        (await p.locator('a[href="/checkout?product=TRACK_30D_GL"]').count()) === 1
+          && (await p.locator('a[href*="TRACK_365D_GL"], a[href="/checkout?product=TRACK_30D"]').count()) === 0
+          && /\$4\.99/.test(txt));
       ok(`[${name}] 가로 스크롤이 없다`, (await sx(p)) <= 0, String(await sx(p)));
       await p.screenshot({ path: `${OUT}/en-track__${name}.png`, fullPage: true });
+      if (name === "desktop") {
+        /* 결제 화면: 달러 상품은 해외 카드만 고를 수 있다 */
+        await p.goto(`${BASE}/checkout?product=TRACK_30D_GL`, { waitUntil: "networkidle" });
+        const dom = p.locator('input[name="region"][value="domestic"]');
+        ok("달러 상품은 국내 카드를 고를 수 없다", await dom.isDisabled());
+        ok("결제 화면에 $4.99 가 선다", /\$4\.99/.test(await p.locator("main").innerText()));
+        await p.screenshot({ path: `${OUT}/en-checkout__desktop.png`, fullPage: true });
+      }
       await ctx.close();
     }
 
