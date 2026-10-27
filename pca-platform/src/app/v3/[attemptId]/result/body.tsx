@@ -639,6 +639,9 @@ function Plan(
  * 번호가 그대로 화면과 종이에 나갔다(`TR_TAG_1`). 응시자에게 문항 번호를
  * 보여 줄 자리는 하나도 없어서, 여기서는 아예 줄을 만들지 않는다.
  */
+/** 보기를 골랐거나 한 줄을 적은 단계 */
+const said = (s: { choice: string | null; note?: string | null }) => !!s.choice || !!s.note?.trim();
+
 function Translation({ view, major }: { view: TranslationView; major: string }) {
   /* 열 단계만 세운다. 꼬리표(`TR_TAG_*`)는 이야기의 한 마디가 아니다 */
   const rows = TX().TRANS_ORDER
@@ -692,20 +695,28 @@ function Translation({ view, major }: { view: TranslationView; major: string }) 
       {/* **빈 표를 통째로 싣지 않는다.** 열 줄이 전부 `적지 않으셨습니다`
           이면 그 표는 한 쪽을 먹으면서 아무것도 말하지 않는다. 적어 주신
           줄만 세우고, 비어 있는 줄은 **수와 이름으로** 한 줄에 모은다 */}
-      {rows.some((s) => s.choice) ? (
+      {/* 덧붙인 한 줄도 적은 것이다. 보기 옆에 그 말을 따옴표로 세우고,
+          한 줄만 적은 단계는 그 말만 세운다. 전에는 종이에만 실리고 이
+          화면에서는 `아직 적지 않으신 단계` 로 세어졌다 */}
+      {rows.some(said) ? (
         <ol className="rs-steps">
-          {rows.filter((s) => s.choice).map((s) => (
+          {rows.filter(said).map((s) => (
             <li key={s.item_id}>
               <span>{TX().TRANS_STEP_KO[s.item_id]}</span>
-              <b>{s.choice}</b>
+              <b>
+                {s.choice ?? null}
+                {s.note?.trim() ? (
+                  <q className={s.choice ? "rs-said" : undefined}>{s.note.trim()}</q>
+                ) : null}
+              </b>
             </li>
           ))}
         </ol>
       ) : null}
-      {rows.some((s) => !s.choice) ? (
+      {rows.some((s) => !said(s)) ? (
         <p className="rs-note">
-          {tr("아직 적지 않으신 단계 {n}개 ·", { n: rows.filter((s) => !s.choice).length })}{" "}
-          {rows.filter((s) => !s.choice)
+          {tr("아직 적지 않으신 단계 {n}개 ·", { n: rows.filter((s) => !said(s)).length })}{" "}
+          {rows.filter((s) => !said(s))
             .map((s) => TX().TRANS_STEP_KO[s.item_id]).join(" · ")}
         </p>
       ) : null}
@@ -724,7 +735,7 @@ function Translation({ view, major }: { view: TranslationView; major: string }) 
             ))}
           </dl>
           <p className="rs-note">
-            {tr("네 칸은 고르신 보기 그대로입니다. 한 문단으로 잇는 것과 수치 · 기간 · 결과를 채우는 것은 직접 하셔야 하고, 여기에 없는 성과를 적지 않습니다.")}
+            {tr("네 칸은 고르신 보기와 직접 적어 주신 말(따옴표) 그대로입니다. 한 문단으로 잇는 것과 수치 · 기간 · 결과를 채우는 것은 직접 하셔야 하고, 여기에 없는 성과를 적지 않습니다.")}
           </p>
         </div>
       ) : null}
@@ -1438,7 +1449,12 @@ export async function V3ResultBody(
           /* 개인 응시만 넓히기를 권한다. 학교 응시는 늘 PRO 이고, 해외 시장은 유료
              등급을 아직 팔지 않는다 */
           upgradeHref={!meta.school && model.tier !== "PRO" && lang === "ko" && a.market_code !== "GLOBAL"
-            ? "/pricing?market=KR" : null} />
+            ? "/pricing?market=KR" : null}
+          said={(model.translation?.steps ?? [])
+            .filter((x) => x.note?.trim() && TX().TRANS_STEP_KO[x.item_id])
+            .sort((x, y) => (TX().TRANS_ORDER as readonly string[]).indexOf(x.item_id)
+              - (TX().TRANS_ORDER as readonly string[]).indexOf(y.item_id))
+            .map((x) => ({ label: TX().TRANS_STEP_KO[x.item_id], text: x.note!.trim() }))} />
         {/*
             ── 종이 표지 ── **화면에는 서지 않는다**(규격 §14).
 

@@ -1452,6 +1452,9 @@
   font-weight: var(--ui-w-sb); word-break: keep-all;
 }
 .rs-steps li > b { font-weight: var(--ui-w-md); color: var(--r-ink); }
+/* 직접 적어 주신 한 줄. 보기 뒤에 서면 한 줄 아래로, 혼자면 그 자리에 */
+.rs-steps li > b q { font-weight: 400; color: var(--r-ink); }
+.rs-steps li > b q.rs-said { display: block; margin-top: 2px; color: var(--r-ink-2); }
 
 /* **열 줄짜리 표를 한 문단으로 되돌려 준다.** 표는 빠진 자리를 보여주고,
    문단은 그 표를 지원서에 그대로 옮길 수 있게 만든다 */
@@ -2942,6 +2945,7 @@
 .rsum-names li { padding: 5px 12px; border-radius: 999px; background: var(--r-paper); font-size: 14px; font-weight: 600; border: 1px solid var(--r-line); }
 .rsum-ev { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
 .rsum-ev > li { border-radius: 16px; background: var(--r-sunk); padding: 16px; }
+.rsum-said { margin-top: 14px; }
 .rsum-ev-name { display: block; margin-bottom: 8px; font-size: 16px; }
 .rsum-ev dl { margin: 0; display: grid; grid-template-columns: 7.5em 1fr; gap: 6px 12px; font-size: 15px; line-height: 1.55; }
 .rsum-ev dt { color: var(--r-ink-3); }

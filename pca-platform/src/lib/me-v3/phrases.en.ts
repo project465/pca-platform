@@ -228,13 +228,14 @@ export const PHRASES_EN: Record<string, string> = {
   "지원서에서 이렇게 묶어볼 수 있습니다": "How you could put it together in an application",
   "작성 근거 자세히 보기": "See what this is based on",
   "대학원 경험을 어디에 걸칠지": "Where your graduate experience fits",
+  "경험 번역에서 직접 적어 주신 말": "In your own words, from the experience translation",
   "학부에서 {major}을(를) 하시고 대학원은 다른 분야를 하셨다고 답해주셨습니다. 대학원 경험은 {major} 영역 확인과 따로 보고, 아래 번역에서 읽었습니다.":
     "You told us you studied {major} as an undergraduate and a different field in graduate school. We kept your graduate experience separate from your {major} areas and read it in the translation below.",
   "아직 적지 않으신 단계 {n}개 ·": "{n} {n|step|steps} still to fill in ·",
   "지원서 문단의 뼈대: 역할 · 행동 · 판단 · 결과":
     "The frame of an application paragraph: role · action · decision · result",
-  "네 칸은 고르신 보기 그대로입니다. 한 문단으로 잇는 것과 수치 · 기간 · 결과를 채우는 것은 직접 하셔야 하고, 여기에 없는 성과를 적지 않습니다.":
-    "These four boxes are exactly what you picked. Turning them into a paragraph and adding numbers, dates and results is up to you. Don't add achievements that aren't here.",
+  "네 칸은 고르신 보기와 직접 적어 주신 말(따옴표) 그대로입니다. 한 문단으로 잇는 것과 수치 · 기간 · 결과를 채우는 것은 직접 하셔야 하고, 여기에 없는 성과를 적지 않습니다.":
+    "These four boxes are exactly what you picked and what you wrote (in quotes). Turning them into a paragraph and adding numbers, dates and results is up to you. Don't add achievements that aren't here.",
   "응답이 적어 다음 걸음까지 적지 못했습니다.": "There weren't enough answers to suggest a next step.",
   "{where}에서 해 본 일이 이어져요": "Builds on what you've done in {where}",
   "아직 이쪽으로 이어지는 경험은 보이지 않습니다": "None of your experience leads here yet",

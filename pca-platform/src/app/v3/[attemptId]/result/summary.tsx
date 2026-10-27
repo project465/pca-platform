@@ -34,7 +34,7 @@ export type SummaryStep = { head: string; body: string; why: string | null; href
 
 export default function Summary({
   title, lead, who, zones, evidence, steps, pdfHref, keepAction, kept, tierNote,
-  book = true, upgradeHref = null,
+  book = true, upgradeHref = null, said = [],
 }: {
   title: string;
   lead: string;
@@ -51,6 +51,8 @@ export default function Summary({
   book?: boolean;
   /** 개인 응시가 더 넓힐 수 있으면 가격표. 학교 응시는 늘 PRO 라 없다 */
   upgradeHref?: string | null;
+  /** 경험 번역에서 직접 적어 주신 한 줄들(단계 이름 · 그 말). 제출 때 굳힌 값이다 */
+  said?: { label: string; text: string }[];
 }) {
   /* 작업공간(`/me`)이 두 언어로 선다(영어판 2단계b). 견본에는 작업공간이 없다 */
   const ws = pdfHref !== null;
@@ -106,6 +108,22 @@ export default function Summary({
             {tr("이번 답에서는 아직 지원서에 바로 쓸 만큼 정리된 경험이 없습니다. 아래 할 일 하나를 해 보고 경험을 적으면 여기가 채워집니다.")}
           </p>
         )}
+        {/* **직접 적어 주신 말은 그대로 돌려준다.** 판정에는 들어가지 않고,
+            지원서 문장을 쓸 때 가장 먼저 꺼낼 재료라 이 칸에 둔다 */}
+        {said.length ? (
+          <ul className="rsum-ev rsum-said">
+            <li>
+              <b className="rsum-ev-name">{tr("경험 번역에서 직접 적어 주신 말")}</b>
+              <dl>
+                {said.map((x) => (
+                  <div key={x.label} className="rsum-ev-row">
+                    <dt>{x.label}</dt><dd>“{x.text}”</dd>
+                  </div>
+                ))}
+              </dl>
+            </li>
+          </ul>
+        ) : null}
       </section>
 
       <section className="rsum-sect" aria-labelledby="rsum-do">

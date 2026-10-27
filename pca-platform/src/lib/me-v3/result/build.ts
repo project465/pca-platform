@@ -427,6 +427,15 @@ export type ResultInput = {
   translation?: { item_id: string; choice: string | null; note?: string | null }[];
 };
 
+/** 번역 표에 세울 단계: 보기를 고른 단계 + 한 줄만 적은 단계. 차례는 화면이 정한다 */
+function translationIds(s: Snapshot, input: ResultInput): string[] {
+  const ids = [...s.context.translation_steps];
+  for (const t of input.translation ?? []) {
+    if (t.note?.trim() && !ids.includes(t.item_id)) ids.push(t.item_id);
+  }
+  return ids;
+}
+
 export function buildResult(
   s: Snapshot, loaded: Loaded, input: ResultInput = {},
 ): ResultModel {
@@ -549,9 +558,12 @@ export function buildResult(
     /* 타계열 맥락만 있고 열 단계가 없는 응시도 있다(BASIC 에서는 번역을
        묻지 않는다). 그때도 이 절을 세워야 적어 주신 것이 어디로 갔는지
        보인다 */
-    translation: (s.context.translation_steps.length || s.context.xfield.length)
+    /* 보기는 안 고르고 한 줄만 적은 단계도 싣는다. 스냅샷의 `translation_steps`
+       는 보기를 고른 단계만 들고 있어서(그것이 판정이다), 거기서만 세우면
+       적어 주신 한 줄이 결과지에 닿지 않는다. 판정은 그대로다 */
+    translation: (translationIds(s, input).length || s.context.xfield.length)
       ? ({
-          steps: s.context.translation_steps.map((id) => ({
+          steps: translationIds(s, input).map((id) => ({
             item_id: id,
             choice: input.translation?.find((t) => t.item_id === id)?.choice ?? null,
             note: input.translation?.find((t) => t.item_id === id)?.note ?? null,

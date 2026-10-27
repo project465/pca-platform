@@ -186,7 +186,8 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.7";
 /* copy.77 — 끝 칸이 받을 종이를 맞게 적는다: 책은 PRO 만이라 BASIC · STANDARD 에는 `한 권으로 묶었습니다` 를 적지 않고, 개인 응시에는 `PRO로 넓히기` 를 둔다. 판정과 결과 모델은 그대로다 */
 /* copy.78 — 세종 기업 절의 묶음 이름을 책과 같은 `한 걸음 더 채우면 맞는 곳` 으로(책의 `(계속)` 표시와 헷갈리지 않게). 판정과 결과 모델은 그대로다 */
 /* copy.79 — 영어 응시(기계 · 전기전자 · 컴퓨터)의 PRO 도 70쪽 책을 받는다. 끝 칸이 그 사실을 적는다. 판정과 결과 모델은 그대로다 */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.79";
+/* copy.80 — 경험 번역에 직접 적어 주신 한 줄이 웹 결과지(첫 화면 · 번역 절 · 지원서 뼈대)에 선다. 판정은 그대로다 */
+export const RESULT_COPY_VERSION = "me-v3-result-copy.80";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -492,7 +493,8 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.79";
 /** 결과지가 작업공간 한 벌로만 선다(ws 분기 정리). 세종·지역 절은 한국어에서만 — V87 */
 /** 현재 상태 타일의 영어 세부 줄을 `studentStateView` 한 자리에서 읽는다. 전에는 결과지가 남긴 것의
  *  한국어 이름을 영어 결과지에 그대로 세울 수 있었다 — V88 */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V89";
+/** 경험 번역의 한 줄을 첫 화면 근거 칸과 번역 절에 세운다. 한 줄만 적은 단계를 `아직 적지 않으신` 으로 세지 않는다 — V90 */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V90";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

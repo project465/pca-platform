@@ -856,11 +856,21 @@ export function draftKo(
   return out;
 }
 
+/** 고른 보기와 덧붙인 한 줄을 한 칸으로. 한 줄만 있으면 그 말만 따옴표로 */
+export function withNote(choice: string | null, note?: string | null): string | null {
+  const n = (note ?? "").trim();
+  if (choice && n) return `${choice} (“${n}”)`;
+  return choice ?? (n ? `“${n}”` : null);
+}
+
 export type DraftFrame = { label: string; hint: string; items: string[] }[];
 export function draftFrameKo(
-  steps: { item_id: string; choice: string | null }[],
+  steps: { item_id: string; choice: string | null; note?: string | null }[],
 ): DraftFrame {
-  const by = new Map(steps.filter((x) => x.choice).map((x) => [x.item_id, x.choice as string]));
+  /* The line the student added stands in the same slot, quoted */
+  const by = new Map(steps
+    .map((x) => [x.item_id, withNote(x.choice, x.note)] as const)
+    .filter((x): x is readonly [string, string] => !!x[1]));
   const pick = (ids: string[]) => ids.map((id) => by.get(id)).filter((v): v is string => !!v);
   return [
     { label: "Role and situation", hint: "What the problem was in your role, and why it mattered",

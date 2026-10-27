@@ -1481,11 +1481,23 @@ export function draftKo(
  * 나누어 돌려준다. 비어 있는 칸은 세우지 않고, 문장으로 잇는 일과 수치를
  * 채우는 일은 그 사람이 한다. 새 문장을 만들지 않는다.
  */
+/** 고른 보기와 덧붙인 한 줄을 한 칸으로. 한 줄만 있으면 그 말만 따옴표로 */
+export function withNote(choice: string | null, note?: string | null): string | null {
+  const n = (note ?? "").trim();
+  if (choice && n) return `${choice} (“${n}”)`;
+  return choice ?? (n ? `“${n}”` : null);
+}
+
 export type DraftFrame = { label: string; hint: string; items: string[] }[];
 export function draftFrameKo(
-  steps: { item_id: string; choice: string | null }[],
+  steps: { item_id: string; choice: string | null; note?: string | null }[],
 ): DraftFrame {
-  const by = new Map(steps.filter((x) => x.choice).map((x) => [x.item_id, x.choice as string]));
+  /* 덧붙인 한 줄도 그 칸에 같이 선다. 보기만 고른 칸은 보기, 한 줄만 적은
+     칸은 그 말을 따옴표로 둔다. 적어 주신 말이 종이에만 가고 화면에서
+     빠지면 받고 쓰지 않은 칸이 된다(2026-10-27 사업주 지적) */
+  const by = new Map(steps
+    .map((x) => [x.item_id, withNote(x.choice, x.note)] as const)
+    .filter((x): x is readonly [string, string] => !!x[1]));
   const pick = (ids: string[]) => ids.map((id) => by.get(id)).filter((v): v is string => !!v);
   return [
     { label: "역할·상황", hint: "맡은 역할에서 어떤 문제였고 왜 문제였는지",
