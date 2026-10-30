@@ -122,6 +122,7 @@ export const LEFT_AS_IS: Record<string, string> = {
   refund_requests: "환불 판정의 기록. 거래 기록과 함께 보존한다",
   v3_attempts: "사람과 이어지지 않는 응시. 학과 집계와 규준의 근거다",
   analytics_events: "방문 차례만 담고 이름·주소·글이 없다",
+  brand_touches: "어느 제휴 입구(잡인더스트리 등)로 들어왔는지만. 이름·주소·글이 없다",
   evidence_profiles: "칸을 비운다(SCRUB). 결과지 사본이 이 줄을 가리킨다",
   outbox: "칸을 비운다(SCRUB). 보낸 기록의 차례는 남긴다",
   v3_pilot_participants: "칸을 비운다(SCRUB). 파일럿 분석의 줄 수가 흔들리지 않게 한다",

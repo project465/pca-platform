@@ -382,7 +382,9 @@
  *  돌아갈 때는 까닭 한 줄이 선다 — V70 */
 /** MAT 기간권이 30일 · 90일 둘이 됐다(1년권 판매 종료). 결제가 안 열린 자리의 `결제 준비 중` 이
  *  `출시 알림 신청` 칸이 됐다(이메일 한 칸 · 동의 한 칸) — V71 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V71";
+/** 잡인더스트리 단추로 들어온 사람에게 MAT 머리 아래 한 줄(`잡인더스트리 AI취업지원도우미로
+ *  들어오셨습니다`)이 선다. 작업공간 틀이 그 입구를 센다(`lib/brand.ts`) — V72 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V72";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -438,7 +440,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V71";
 /** 탭 제목을 그 사람의 언어로(`page-title.ts`) · 해외 MAT 30일권 $4.99 */
 /** 대학원생 문장(연구 실적 · 학위 단계별 한 줄 · 면접 질문) · 검사 전 메뉴 안내 한 줄 */
 /** MAT 90일권 문장 · 남은 기간 뒤에 이어 붙는다는 한 줄 · 학교 이용권은 계약 기간으로 적는다 */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.51";
+/** 제휴 입구 한 줄 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.52";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

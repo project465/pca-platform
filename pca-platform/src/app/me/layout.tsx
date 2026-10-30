@@ -5,6 +5,7 @@ import { currentUser } from "@/lib/session";
 import { queryOne } from "@/lib/db";
 import { explicitLang } from "@/lib/locale-server";
 import { pageTitle } from "@/lib/page-title";
+import { partnerFromCookie, recordBrand } from "@/lib/brand";
 
 export async function generateMetadata() {
   return pageTitle("내 CareerMatri");
@@ -18,6 +19,9 @@ export async function generateMetadata() {
 export default async function MeLayout({ children }: { children: React.ReactNode }) {
   const u = await currentUser().catch(() => null);
   if (u) {
+    /* 제휴 입구(잡인더스트리)로 들어온 사람을 센다. 실패해도 화면은 선다 */
+    const partner = await partnerFromCookie();
+    if (partner) await recordBrand(u.id, partner);
     const last = await queryOne<{ id: string }>(
       `SELECT id::text FROM v3_attempts WHERE user_id = $1 LIMIT 1`, [u.id]).catch(() => null);
     if (!last && (await explicitLang(null).catch(() => null)) === "en") redirect("/cores");

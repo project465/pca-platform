@@ -23,7 +23,7 @@ const ERR_EN: Record<string, string> = {
 };
 
 export default function LaunchNotify({
-  product, lang, email, source, q, back, compact = false,
+  product, lang, email, source, q, back, brand, compact = false,
 }: {
   product: string;
   lang: "ko" | "en";
@@ -34,6 +34,8 @@ export default function LaunchNotify({
   q?: NotifyQuery;
   /** 돌아올 주소(이 화면) */
   back: string;
+  /** 제휴 입구로 들어왔으면 그 이름(`lib/brand.ts`). 명단에 함께 적는다 */
+  brand?: string | null;
   compact?: boolean;
 }) {
   const en = lang === "en";
@@ -57,6 +59,7 @@ export default function LaunchNotify({
       <input type="hidden" name="lang" value={lang} />
       <input type="hidden" name="source" value={source} />
       <input type="hidden" name="back" value={back} />
+      {brand ? <input type="hidden" name="brand" value={brand} /> : null}
       <input type="hidden" name="t" value={String(Date.now())} />
       {/* 사람에게는 보이지 않는 칸. 무엇이든 들어 있으면 봇이다 */}
       <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true"

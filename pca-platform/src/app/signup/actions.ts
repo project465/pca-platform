@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
+import { partnerFromCookie, recordBrand } from "@/lib/brand";
 import { queryOne } from "@/lib/db";
 import { ref, swallow } from "@/lib/oplog";
 import { hashPassword } from "@/lib/password";
@@ -80,6 +81,10 @@ export async function signupAction(_prev: SignupState, form: FormData): Promise<
       return { message: say(saved.reason) };
     }
   }
+
+  /* 잡인더스트리 같은 제휴 입구로 왔으면 센다. 실패해도 가입은 끝났다 */
+  const partner = await partnerFromCookie();
+  if (created && partner) await recordBrand(created.id, partner);
 
   // 인사 한 줄을 대기열에 적는다. 메일 서버를 여기서 기다리지 않는다.
   // 기다리면 메일이 느린 날 가입 버튼이 느려진다.
