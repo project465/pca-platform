@@ -39,8 +39,13 @@ async function sideOf(): Promise<"staff" | "student" | "shared"> {
  * 첫 화면 · 로그인 · 비밀번호처럼 함께 쓰는 자리는 학생 쪽을 먼저 보고 없으면
  * 담당자 쪽을 본다.
  *
- * 이 분리 전에 들어온 담당자는 학생 쿠키를 들고 있다. 그 사람이 다시 로그인하지
- * 않아도 되도록, 담당자 화면은 학생 쿠키에 **담당자 역할**이 들어 있으면 받는다.
+ * **학생 쿠키에 담당자 역할이 들어 있으면 어디서도 받지 않는다**(2026-10-30 사업주 지적).
+ * 분리 전(10-27)에 들어온 담당자는 학생 쿠키를 들고 있다. 그 사람이 다시 로그인하지
+ * 않아도 되게 담당자 화면이 그 쿠키를 받아 주었더니, 담당자 화면에서 로그아웃하면
+ * **학생 쿠키가 지워져** 같은 브라우저의 학생 화면까지 나갔다. 그래서 옛 로그인은
+ * 한 번 다시 들어오게 하고(그때 `login/actions.ts` 가 옛 쿠키도 치운다), 담당자는
+ * 담당자 쿠키에서만 읽는다. 학생 화면에서만 막으면 `/login` 과 `/admin` 이 서로를
+ * 가리키며 돈다.
  */
 export async function currentUser(): Promise<SessionUser | null> {
   const side = await sideOf();
@@ -48,14 +53,14 @@ export async function currentUser(): Promise<SessionUser | null> {
     const session = await fn();
     return session?.user?.id ? { ...(session.user as SessionUser), scope } : null;
   };
-  if (side === "staff") {
-    const st = await read(staffAuth, "staff");
-    if (st) return st;
-    const legacy = await read(auth, "student");
-    return legacy && legacy.role !== "student" ? legacy : null;
-  }
-  if (side === "student") return read(auth, "student");
-  return (await read(auth, "student")) ?? (await read(staffAuth, "staff"));
+  /* 학생 쿠키는 학생 역할일 때만 받는다(위 설명) */
+  const student = async () => {
+    const u = await read(auth, "student");
+    return u && u.role === "student" ? u : null;
+  };
+  if (side === "staff") return read(staffAuth, "staff");
+  if (side === "student") return student();
+  return (await student()) ?? (await read(staffAuth, "staff"));
 }
 
 /**

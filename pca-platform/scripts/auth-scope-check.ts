@@ -78,6 +78,51 @@ const inStudent = (p: Page) => /^\/(me|cores|v3)/.test(path(p));
   const pa2 = await open(ca, "/me");
   ok("⑩ 학생 A 는 나가 있다", !inStudent(pa2), path(pa2));
 
+  /* ── 운영자 화면(/admin). 2026-10-30 사업주 지적: "관리자페이지에서 로그아웃하니까
+     학생꺼도 로그아웃되더라". 위 ①~⑧ 은 학교 담당자(/org)만 보고 있었다 */
+  console.log("\n── 같은 브라우저에 운영자(/admin)와 학생");
+  const adm = await makeStudent("scope-check-admin");
+  const supOrg = await queryOne<{ id: string }>(
+    `SELECT org_id::text AS id FROM memberships WHERE role = 'superadmin' LIMIT 1`);
+  await query(`DELETE FROM memberships WHERE user_id = $1`, [adm.id]);
+  await query(`INSERT INTO memberships (user_id, org_id, role) VALUES ($1, $2, 'superadmin')`,
+    [adm.id, supOrg?.id ?? org?.id]);
+  const two = await br.newContext();
+  const m1 = await login(two, "scope-check-admin", adm.pw);
+  ok("⑪ 운영자는 운영자 화면으로 들어간다", /^\/admin/.test(path(m1)), path(m1));
+  await login(two, "scope-check-a", a.pw);
+  const m2 = await open(two, "/admin");
+  ok("⑫ 학생이 들어간 뒤에도 운영자 화면은 운영자로 선다", /^\/admin/.test(path(m2)), path(m2));
+  await logout(m2);
+  const t5 = await open(two, "/me");
+  ok("⑬ 운영자가 로그아웃해도 학생은 그대로다", inStudent(t5), path(t5));
+  const m3 = await open(two, "/admin");
+  ok("⑭ 로그아웃한 운영자 화면은 운영자로 서지 않는다", !/^\/admin/.test(path(m3)), path(m3));
+
+  /* ── 분리(10-27) 전에 들어온 운영자: 학생 쿠키에 운영자가 들어 있다. 그 쿠키를
+     운영자 화면이 받아 주던 것이 위 지적의 원인이었다 */
+  console.log("\n── 분리 전 옛 로그인(학생 쿠키에 운영자)");
+  const { encode } = await import("next-auth/jwt");
+  const secure = /^https:/i.test(BASE);
+  const legacyName = `${secure ? "__Secure-" : ""}authjs.session-token`;
+  const legacy = await encode({
+    token: { sub: adm.id }, secret: process.env.AUTH_SECRET ?? "", salt: legacyName,
+  });
+  const three = await br.newContext();
+  await three.addCookies([{ name: legacyName, value: legacy, url: BASE, httpOnly: true, sameSite: "Lax" }]);
+  const l1 = await open(three, "/admin");
+  ok("⑮ 옛 쿠키만으로는 운영자 화면이 열리지 않고 로그인 폼에서 멈춘다(돌지 않는다)",
+    path(l1) === "/login", path(l1));
+  const l2 = await login(three, "scope-check-admin", adm.pw);
+  const left = (await three.cookies()).some((c) => c.name === legacyName && c.value);
+  ok("⑯ 다시 로그인하면 운영자 화면이 열리고 옛 쿠키가 치워진다", /^\/admin/.test(path(l2)) && !left,
+    `${path(l2)} · 옛 쿠키 ${left ? "남음" : "치움"}`);
+  await login(three, "scope-check-a", a.pw);
+  const l3 = await open(three, "/admin");
+  await logout(l3);
+  const t6 = await open(three, "/me");
+  ok("⑰ 그 뒤로는 운영자가 로그아웃해도 학생은 그대로다", inStudent(t6), path(t6));
+
   await br.close();
   console.log(`\n로그인 분리 — 걸림 ${bad}`);
   process.exit(bad ? 1 : 0);
