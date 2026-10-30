@@ -3,32 +3,32 @@
  "note": "Core 화면 열넷의 묶음 동결. 측정 동결과 별개다. layout 대변경은 별도 STOP GATE 이고, 고쳤으면 그 화면의 판본을 올리고 세 동결을 다시 적은 다음 `CORE_UI_FREEZE=write npm run v3:freeze:core`",
  "label": "CAREERMATRI_CORE_UI_FREEZE_1",
  "locks": {
-  "assessment": "3bd1b1402c9fc958",
-  "result": "dd6d58d026b6dce7",
-  "workspace": "10f87c63f99361f1"
+  "assessment": "ca167bb1bdb8f712",
+  "result": "f1aa5d18531af14f",
+  "workspace": "2fbc0ab5135f4cce"
  },
  "versions": {
-  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V56",
-  "assessment_copy_version": "me-v3-2-assessment-copy.37",
-  "result_ui_version": "ME_V3_RESULT_UI_V89",
-  "result_copy_version": "me-v3-result-copy.79",
-  "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V68",
-  "workspace_copy_version": "careermatri-workspace-copy.47"
+  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V57",
+  "assessment_copy_version": "me-v3-2-assessment-copy.39",
+  "result_ui_version": "ME_V3_RESULT_UI_V91",
+  "result_copy_version": "me-v3-result-copy.80",
+  "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V71",
+  "workspace_copy_version": "careermatri-workspace-copy.51"
  },
  "screens": {
-  "Home": "workspace:9e91859236b0920b",
+  "Home": "workspace:73a74635810e2fe4",
   "Assessment Intro": "assessment:0521e361a2d777bd",
   "Assessment": "assessment:1d0b4645b79d79b9",
   "Completion Bridge": "assessment:3108d3edac4bbc86",
-  "Experience": "workspace:7f4b2e0b489a25c8",
+  "Experience": "workspace:c3610b6eb477e8f0",
   "Current State": "workspace:bbc4f06cb703c8f7",
   "Next Action": "workspace:24c5dee7b1264e0b",
-  "Result Summary": "result:f3fcb423178b2238",
-  "Result Detail": "result:f3fcb423178b2238",
+  "Result Summary": "result:0e8253385d6e8cc6",
+  "Result Detail": "result:0e8253385d6e8cc6",
   "Explore": "workspace:065a48617b704988",
   "Result History": "workspace:06051db4cf9143fd",
-  "New Experience": "workspace:7f4b2e0b489a25c8",
-  "Track": "workspace:ea709f503ba1129e",
+  "New Experience": "workspace:c3610b6eb477e8f0",
+  "Track": "workspace:418f09374ecce32e",
   "App Shell": "workspace:1da053d783dfa46a"
  }
 }

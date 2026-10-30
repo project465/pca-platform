@@ -24,6 +24,7 @@ import NotOpen from "@/components/sf/not-open";
 import { publicCommerceGate } from "@/lib/public-gate";
 import CareerFlow from "@/components/sf/career-flow";
 import { trackOffers } from "@/lib/track";
+import LaunchNotify, { type NotifyQuery } from "@/components/inquiry/launch-notify";
 import { payOpen } from "@/lib/payments";
 import { pageTitle } from "@/lib/page-title";
 
@@ -60,7 +61,7 @@ export async function generateMetadata(
 export default async function PricingPage({
   searchParams,
 }: {
-  searchParams: Promise<{ lang?: string; market?: string }>;
+  searchParams: Promise<{ lang?: string; market?: string; sent?: string; err?: string; for?: string }>;
 }) {
   const sp = await searchParams;
   const L = toLang2(await resolveLang(sp.lang));
@@ -77,7 +78,7 @@ export default async function PricingPage({
   const fx = L === "en" ? await krwToUsd() : null;
   const [list, tracks] = await Promise.all([catalogFor(mk.market), trackOffers(mk.market)]);
   const t30 = tracks.find((t) => t.days === 30);
-  const t365 = tracks.find((t) => t.days === 365);
+  const t90 = tracks.find((t) => t.days === 90);
   /* 걸리는 시간은 **실제 계획을 세워 센 값**이다. 시작 화면과 같은
      함수를 읽으므로 두 화면이 갈리지 않는다.
      **어느 전공으로 세는지를 글자로 박지 않는다**: 이 시장에서 지금
@@ -201,7 +202,8 @@ export default async function PricingPage({
                 /* 전공이 둘 이상 열리면 등급마다 시간이 갈린다.
                    그때는 **적지 않는다**: 한 전공의 시간을 모두의 시간으로
                    적으면 다른 전공 학생이 그 수를 보고 시간을 비워 둔다 */
-                mins={mins ? minutesLabel(mins[p.tier], L) : ""} />
+                mins={mins ? minutesLabel(mins[p.tier], L) : ""}
+                q={sp} back={`/pricing${sp.lang ? `?lang=${sp.lang}` : ""}`} />
             ))}
           </div>
         ) : (
@@ -242,29 +244,28 @@ export default async function PricingPage({
               {tracks.map((t) => (
                 <div key={t.code} className="pxband-i">
                   <b>
-                    {t.days === 365 ? T("pxTrack365") : T("pxTrack30")}
+                    {t.days === 90 ? T("pxTrack90") : T("pxTrack30")}
                     {" · "}{money(t.amount, t.currency, L)}
                     {L === "en" && t.currency === "KRW" && usdApprox(t.amount, fx) ? ` (${usdApprox(t.amount, fx)})` : ""}
                   </b>
                   <span>
-                    {t.days === 365 && t30 && t365 && t30.amount * 12 > t365.amount
-                      ? T("pxTrackSave")
-                      : T("pxTrack30Why")}
+                    {t.days === 90 ? T("pxTrack90Why") : T("pxTrack30Why")}
                   </span>
                   {/* **등급 카드와 같은 물음을 먼저 한다.** 결제 대행사가 서기
                       전에 사는 단추를 세우면, 누른 사람이 결제를 받을 수 없는
                       결제 화면에 떨어진다(운영에서 실제로 그랬다) */}
                   {payOpen(t.currency === "KRW" ? "KR" : "GLOBAL") ? (
                     <Link href={`/checkout?product=${encodeURIComponent(t.code)}`}
-                      className={t.days === 365 ? "sf-btn accent sm" : "sf-btn ghost sm"}
+                      className={t.days === 90 ? "sf-btn accent sm" : "sf-btn ghost sm"}
                       style={{ marginTop: 10, alignSelf: "flex-start" }}>
                       {T("pxTrackBuy")}
                     </Link>
                   ) : (
-                    <span className="sf-btn ghost sm" aria-disabled="true"
-                      style={{ marginTop: 10, alignSelf: "flex-start" }}>
-                      {T("pxPayNotReady")}
-                    </span>
+                    /* **결제가 열리기 전에는 알림 신청을 받는다**(2026-10-30). 누를 수
+                       없는 단추만 세우면 온 사람이 할 일 없이 돌아간다 */
+                    <LaunchNotify product={t.code} lang={L === "en" ? "en" : "ko"}
+                      source="app:/pricing" q={sp} compact
+                      back={`/pricing${sp.lang ? `?lang=${sp.lang}` : ""}#track`} />
                   )}
                 </div>
               ))}
@@ -312,10 +313,10 @@ export default async function PricingPage({
 }
 
 function TierCard({
-  p, lang, T, mins, fx,
+  p, lang, T, mins, fx, q, back = "/pricing",
 }: {
   p: CatalogItem; lang: "ko" | "en"; T: ReturnType<typeof txer>;
-  mins: string; fx: UsdRate | null;
+  mins: string; fx: UsdRate | null; q?: NotifyQuery; back?: string;
 }) {
   const usd = lang === "en" && p.currency === "KRW" ? usdApprox(p.amount, fx) : null;
   const state = priceState(p);
@@ -381,9 +382,13 @@ function TierCard({
         /* `sellable` 의 거절 이유는 한국어 한 줄이라 영어 화면에 그대로 쓰지
            않는다. 까닭은 위의 값 자리에 이미 적혀 있다 */
         <div className="pxcta">
-          <span className="sf-btn ghost wide" aria-disabled="true">
-            {ok.ok ? T("pxPayNotReady") : T("pxBuy")}
-          </span>
+          {ok.ok ? (
+            /* 값은 정해졌는데 결제가 아직 열리지 않았다. 누를 수 없는 단추 대신
+               알림 신청을 받는다(2026-10-30) */
+            <LaunchNotify product={p.code} lang={lang} source="app:/pricing" q={q} back={back} />
+          ) : (
+            <span className="sf-btn ghost wide" aria-disabled="true">{T("pxBuy")}</span>
+          )}
         </div>
       )}
 

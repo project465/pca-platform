@@ -30,7 +30,12 @@ export function platformStart(site: SiteContent, path = "/start"): string {
   /* **시장도 들고 간다.** 언어만 넘기면 앱은 시장을 모르는 채로 기본값(한국)을
      써서, 글로벌 사이트에서 누른 사람이 원화 가격표와 한국 전공 목록을
      만난다. 앱이 `?market=` 을 쿠키로 굳힌다(`middleware.ts`) */
-  const market = site.key === "kr" ? "KR" : "GLOBAL";
+  /* **시장은 원고 열쇠가 아니라 언어로 고른다**(2026-10-30). 일본어 · 중국어
+     원고는 한국판(`key: "kr"`)을 옮긴 것이라 열쇠가 `kr` 인데, 그대로 두면
+     일본어 쪽 `시작하기` 가 `lang=en&market=KR` 로 가서 영어 화면에 한국 시장
+     목록이 섰다. 한국어만 한국 시장이고 나머지는 해외 시장이다. MAT 값은 시장과
+     상관없이 원화 한 벌이다(`src/lib/track.ts` 의 `trackOffers`) */
+  const market = site.lang === "ko" ? "KR" : "GLOBAL";
   return platformUrl(site,
     `${base}${sep}lang=${encodeURIComponent(lang)}&market=${market}${hash ? `#${hash}` : ""}`);
 }

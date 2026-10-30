@@ -117,7 +117,7 @@ export default async function AccountHome({
           <p>
             {track.on && track.until
               ? `${new Intl.DateTimeFormat("ko-KR", { timeZone: "Asia/Seoul", year: "numeric", month: "long", day: "numeric" }).format(new Date(track.until))}까지 열려 있습니다. 자동으로 갱신되지 않습니다.`
-              : "열려 있지 않습니다. 30일권과 365일권이 있습니다."}
+              : "열려 있지 않습니다. 30일권과 90일권이 있습니다."}
           </p>
           <div className="cm-acts">
             <Link href="/me/track" className="cm-btn">{track.on ? "MAT 열기" : "MAT 보기"}</Link>

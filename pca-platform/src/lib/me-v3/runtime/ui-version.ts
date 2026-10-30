@@ -168,7 +168,8 @@
 /* V51 (2026-10-23) — 산업·직무 카드 설명도 Core 마다 따로 읽는다(`INDUSTRY_HINT[core]` · `ROLE_HINT[core]`): 팩 코드가 Core 사이에 겹쳐 간호 `간호계획 수립` 밑에 경영 문장이 섰다. 문항·보기 차례·저장 값·routing·채점은 그대로다 */
 /* V52 (2026-10-24) — 영어판 1단계: 화면이 응시 언어(`v3_attempts.locale`)를 받아 글을 고르고(`copyFor` · `tierText` · `phrase`), 영어 응시에는 작업공간(`/me`)으로 가는 길을 세우지 않는다. 한국어 화면은 글자까지 그대로다 */
 /* V53 — 영어 용어 풀이를 낱말 경계로 찾는다(`gain` 이 `again` 에서 걸리던 것) */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V56";
+/* V57 (2026-10-30) — 공용 `surface.css` 끝에 출시 알림 신청 칸(`.ln-*`)이 붙었다. 검사 화면이 쓰는 이름과 겹치지 않고, 문항·보기·routing·채점은 그대로다 */
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V57";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
 /* copy.15 — 받침 한 줄과 보기 넷의 예시가 화면에 서는 글자다 */

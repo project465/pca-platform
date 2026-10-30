@@ -1,5 +1,9 @@
 import { PLATFORM_URL, HOME_DOMAIN } from "@/lib/domains";
-import { TRACK_GL } from "@/lib/prices";
+import { TRACK_KR, krw } from "@/lib/prices";
+
+/* 2026-10-30 대표 결정: MAT 값은 원화 한 벌이다. 그 나라 통화는 화면이 옆에 참고로 붙인다(`fx.ts`) */
+const MONTH = "30-day pass";
+const QUARTER = "90-day pass";
 import type { SiteContent } from "./model";
 
 /**
@@ -507,7 +511,7 @@ export const en: SiteContent = {
           tag: "Subscription",
           title: "MAT · AI career assistant",
           body: "After the assessment, it keeps track of your weekly tasks and deadlines and puts saved job postings side by side with your experience.",
-          price: `${TRACK_GL.month.name} ${TRACK_GL.month.price}`,
+          price: `${MONTH} ${krw(TRACK_KR.month.price)} · ${QUARTER} ${krw(TRACK_KR.quarter.price)}`,
           priceNote: "No automatic renewal",
           points: [
             "Your pass simply ends when the period is over, with no further charges",
@@ -617,7 +621,7 @@ export const en: SiteContent = {
         { title: "List of students who have not started", body: "Download a CSV of only the students who have not started yet." },
         { title: "CSV export", body: "Download rosters, progress and totals as CSV for internal reports." },
         { title: "Retakes", body: "Each student takes the school assessment once by default. Only students that staff approve can take it again." },
-        { title: "MAT school passes", body: "Staff can give students access to MAT (the AI career assistant) for 6 months or 1 year, up to the number of students the school sets. The cost is included in the adoption contract." },
+        { title: "MAT school passes", body: "Staff can give students access to MAT (the AI career assistant) for the period agreed with the school, up to the number of students the school sets. School passes are arranged by institutional contract (tax invoice), not by online payment." },
       ],
     },
     access: {
@@ -677,7 +681,7 @@ export const en: SiteContent = {
   assistant: {
     meta: {
       title: "MAT · AI career assistant | CareerMatri",
-      description: `MAT is CareerMatri's AI career assistant. After the assessment, it keeps track of your weekly tasks and deadlines and compares job postings you find with your own experience. ${TRACK_GL.month.name} ${TRACK_GL.month.price}.`,
+      description: `MAT is CareerMatri's AI career assistant. After the assessment, it keeps track of your weekly tasks and deadlines and compares job postings you find with your own experience. ${MONTH} ${krw(TRACK_KR.month.price)}, ${QUARTER} ${krw(TRACK_KR.quarter.price)}.`,
     },
     hero: {
       eyebrow: "Subscription",
@@ -707,12 +711,19 @@ export const en: SiteContent = {
       lead: "Passes do not renew automatically. Yours simply ends when the period is over, and you are not charged again.",
       items: [
         {
-          name: TRACK_GL.month.name,
-          price: TRACK_GL.month.price,
+          name: MONTH,
+          price: krw(TRACK_KR.month.price),
           unit: "30 days of access",
           body: "Try it for a month and then decide whether to continue. Start with the free assessment first, since MAT works from your result.",
-          featured: true,
           cta: { label: "Start with the 30-day pass", href: "/me/track" },
+        },
+        {
+          name: QUARTER,
+          price: krw(TRACK_KR.quarter.price),
+          unit: "90 days of access",
+          body: "90 days of use. A good fit for preparing through one semester's application season.",
+          featured: true,
+          cta: { label: "Start with the 90-day pass", href: "/me/track" },
         },
       ],
       notes: [
@@ -731,7 +742,7 @@ export const en: SiteContent = {
         },
         {
           q: "Will I be charged automatically every month?",
-          a: "No. The 30-day pass is paid once and ends on its own when the period is over.",
+          a: "No. Both the 30-day and 90-day passes are paid once and end on their own when the period is over. If you buy again while time is left, the new period starts the day after the current one ends.",
         },
         {
           q: "I bought a PRO report. How do I get the free month?",

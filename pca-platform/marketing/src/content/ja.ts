@@ -8,7 +8,7 @@ import type { SiteContent } from "./model";
  */
 
 const MONTH = `30日パス`;
-const YEAR = `365日パス`;
+const QUARTER = `90日パス`;
 
 export const ja: SiteContent = {
   key: "kr",
@@ -506,7 +506,7 @@ export const ja: SiteContent = {
           tag: "期間パス",
           title: "MAT・AI就活アシスタント",
           body: "診断のあとも毎週の取り組みと締め切りを管理でき、保存した求人と自分の経験を並べて比べられます。",
-          price: `${MONTH} ${krw(TRACK_KR.month.price)}・${YEAR} ${krw(TRACK_KR.year.price)}`,
+          price: `${MONTH} ${krw(TRACK_KR.month.price)}・${QUARTER} ${krw(TRACK_KR.quarter.price)}`,
           priceNote: "自動更新なし",
           points: [
             "期間が終わると自動的に終了し、再度決済されることはありません",
@@ -616,7 +616,7 @@ export const ja: SiteContent = {
         { title: "未受検の学生リスト", body: "まだ始めていない学生だけをまとめて、CSVでダウンロードします。" },
         { title: "CSVエクスポート", body: "名簿と進捗状況、集計をCSVでダウンロードし、学内の報告に使えます。" },
         { title: "再受検の許可", body: "学校での受検は1回が基本で、担当者が許可した学生だけがもう一度受検できます。" },
-        { title: "MATの学校利用権", body: "学校が決めた人数の範囲で、担当者が学生にMAT（AI就活アシスタント）を6か月または1年間開放します。費用は導入契約に含まれます。" },
+        { title: "MATの学校利用権", body: "学校が決めた人数の範囲で、担当者が学生にMAT（AI就活アシスタント）を学校と決めた期間開放します。学校利用権はオンライン決済ではなく、機関契約（税金計算書）で進めます。" },
       ],
     },
     access: {
@@ -676,7 +676,7 @@ export const ja: SiteContent = {
   assistant: {
     meta: {
       title: "MAT・AI就活アシスタント | CareerMatri",
-      description: `MATは、診断のあとも毎週の取り組みと締め切りを管理し、自分で見つけた求人と自分の経験を照らし合わせる、CareerMatriのAI就活アシスタントです。${MONTH} ${krw(TRACK_KR.month.price)}、${YEAR} ${krw(TRACK_KR.year.price)}。`,
+      description: `MATは、診断のあとも毎週の取り組みと締め切りを管理し、自分で見つけた求人と自分の経験を照らし合わせる、CareerMatriのAI就活アシスタントです。${MONTH} ${krw(TRACK_KR.month.price)}、${QUARTER} ${krw(TRACK_KR.quarter.price)}。`,
     },
     hero: {
       eyebrow: "期間パス",
@@ -713,12 +713,12 @@ export const ja: SiteContent = {
           cta: { label: `${MONTH}ではじめる`, href: "/me/track" },
         },
         {
-          name: YEAR,
-          price: krw(TRACK_KR.year.price),
-          unit: "365日間利用",
-          body: "30日パスを12回購入するより、支払いが少なく済みます。1年を通して準備を続けたい方に向いています。",
+          name: QUARTER,
+          price: krw(TRACK_KR.quarter.price),
+          unit: "90日間利用",
+          body: "90日間利用できます。1学期分の応募シーズンを続けて準備するときに向いています。",
           featured: true,
-          cta: { label: `${YEAR}ではじめる`, href: "/me/track" },
+          cta: { label: `${QUARTER}ではじめる`, href: "/me/track" },
         },
       ],
       notes: [
@@ -737,7 +737,7 @@ export const ja: SiteContent = {
         },
         {
           q: "毎月自動で決済されますか？",
-          a: "いいえ。30日パスと365日パスはどちらも1回払いで、期間が終わると自動的に終了します。",
+          a: "いいえ。30日パスと90日パスはどちらも1回払いで、期間が終わると自動的に終了します。残りの期間があるときに再購入すると、終了日の翌日から続けて加算されます。",
         },
         {
           q: "PROの結果レポートを購入しました。無料の1か月はどうやって受け取れますか？",

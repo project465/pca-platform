@@ -18,13 +18,19 @@ import { query, queryOne } from "@/lib/db";
  * 읽는 쪽과 환불 쪽이 그것을 견뎌야 한다.
  */
 
-export const TRACK_PRODUCTS = ["TRACK_30D", "TRACK_365D"] as const;
-/** 해외판(영어 작업공간). 값이 승인되기 전에는 결제가 열리지 않는다(`startCheckout`) */
-export const TRACK_PRODUCTS_GL = ["TRACK_30D_GL", "TRACK_365D_GL"] as const;
+/**
+ * 파는 기간권. **한 번 결제로 여는 기간은 90일 이하다**(2026-10-30 대표 확정,
+ * KCP 반려 사유가 3개월 초과 상품이었다). 길게 쓰려면 다시 사서 이어 붙인다.
+ */
+export const TRACK_PRODUCTS = ["TRACK_30D", "TRACK_90D"] as const;
 
-/** 그 사람이 살 수 있는 기간권. 작업공간 언어가 정한다(`wsLang`) */
-export function trackProductsFor(lang: "ko" | "en"): readonly string[] {
-  return lang === "en" ? TRACK_PRODUCTS_GL : TRACK_PRODUCTS;
+/**
+ * 그 사람이 살 수 있는 기간권. **언어와 상관없이 원화 한 벌이다**(2026-10-30
+ * 대표 결정: 가격 표기를 원화로 통일). 결제가 원화로만 되므로 달러 상품을 따로
+ * 두면 화면과 청구액이 갈린다. 영어 화면은 원화 값 옆에 참고 환산만 붙인다.
+ */
+export function trackProductsFor(_lang: "ko" | "en"): readonly string[] {
+  return TRACK_PRODUCTS;
 }
 
 /**
@@ -188,12 +194,13 @@ export async function proTrialClaimable(userId: string): Promise<boolean> {
 export async function trackOffers(market: string): Promise<{
   code: string; amount: number; currency: string; days: number;
 }[]> {
+  /* 원화 한 벌이라 시장과 상관없이 한국 상품을 읽는다(위 `trackProductsFor`) */
+  void market;
   return query<{ code: string; amount: number; currency: string; days: number }>(
     `SELECT code, amount, currency, duration_days AS days
        FROM products
-      WHERE kind = 'track' AND active AND market = $1
+      WHERE kind = 'track' AND active AND market = 'KR' AND duration_days <= 90
         AND price_status = 'approved' AND amount > 0
       ORDER BY duration_days`,
-    [market],
   ).catch(() => []);
 }

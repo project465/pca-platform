@@ -65,14 +65,17 @@ export function approx(won: number, lang: Lang, fx: Rates | null): string | null
 }
 
 const NOTE: Partial<Record<Lang, (won: string, date: string) => string>> = {
-  en: (won, date) => `Approximate. Charged in Korean won (${won}); your card issuer converts it. Rate: ${date}.`,
-  ja: (won, date) => `目安の金額です。お支払いは韓国ウォン（${won}）で、カード会社の為替で換算されます。為替：${date}。`,
-  zh: (won, date) => `此为参考金额。实际以韩元（${won}）支付，由发卡机构按当日汇率换算。汇率日期：${date}。`,
+  en: (_won, date) => `Amounts in brackets are estimates. You are charged in Korean won, and your card issuer converts it. Rate: ${date}.`,
+  ja: (_won, date) => `括弧内は目安の金額です。お支払いは韓国ウォンで、カード会社の為替で換算されます。為替：${date}。`,
+  zh: (_won, date) => `括号内为参考金额。实际以韩元支付，由发卡机构按当日汇率换算。汇率日期：${date}。`,
 };
 
 /**
- * 값 글자 안의 원화를 전부 어림한 값으로 바꾸고, 원래 원화와 기준일을 한 줄로 돌려준다.
- * `30-day pass ₩4,900 · 365-day pass ₩39,000` → `30-day pass ≈ $3.55 · 365-day pass ≈ $28.27`
+ * 값 글자 안의 원화 옆에 그 나라 통화로 어림한 값을 붙이고, 기준일을 한 줄로 돌려준다.
+ * `30-day pass ₩4,900 · 90-day pass ₩12,900` → `30-day pass ₩4,900 (≈ $3.66) · 90-day pass ₩12,900 (≈ $9.63)`
+ *
+ * **원화를 지우지 않는다**(2026-10-30 대표 결정: 가격 표기는 원화 기준). 결제는
+ * 원화로만 되므로 어림한 값을 큰 글자로 세우면 화면과 청구액이 갈린다.
  */
 export function localize(text: string, lang: Lang, fx: Rates | null): { main: string; note: string | null } {
   if (!CURRENCY[lang] || !fx) return { main: text, note: null };
@@ -82,7 +85,7 @@ export function localize(text: string, lang: Lang, fx: Rates | null): { main: st
     const a = n ? approx(n, lang, fx) : null;
     if (!n || !a) return hit;
     wons.push(`₩${n.toLocaleString("en-US")}`);
-    return `≈ ${a}`;
+    return `₩${n.toLocaleString("en-US")} (≈ ${a})`;
   });
   if (!wons.length) return { main: text, note: null };
   return { main, note: NOTE[lang]!(wons.join(" · "), `${fx.date} (${fx.source})`) };

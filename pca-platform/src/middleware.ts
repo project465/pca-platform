@@ -50,6 +50,10 @@ function gateFails(req: NextRequest): NextResponse | null {
      401 이 나고, 시험 서버에서 테스트 채널 결제가 확정되지 않는다. 이 길은
      자물쇠 대신 웹훅 서명(Standard Webhooks)으로 막는다(`portone.ts`) */
   if (req.nextUrl.pathname === "/api/payments/webhook") return null;
+  /* **문의 접수도 뺀다.** 홈페이지는 다른 배포본이라 이 자물쇠의 열쇠를 모르고,
+     막으면 공개 전 홈페이지의 문의 폼이 401 로 끝난다. 이 길이 돌려주는 것은
+     되돌아갈 주소뿐이다 */
+  if (req.nextUrl.pathname === "/api/public/inquiry") return null;
 
   const sent = req.headers.get("authorization") ?? "";
   if (sent.startsWith("Basic ")) {

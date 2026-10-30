@@ -380,7 +380,9 @@
  *  `연구 경험을 직무 말로`, 안내의 대학원생 카드. 경험 추가가 `?kind=` 로 종류를 미리 고른다.
  *  학교 학생은 검사 전에도 메뉴가 열리고(학과가 전공을 정한다), 개인 회원이 전공 고르기로
  *  돌아갈 때는 까닭 한 줄이 선다 — V70 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V70";
+/** MAT 기간권이 30일 · 90일 둘이 됐다(1년권 판매 종료). 결제가 안 열린 자리의 `결제 준비 중` 이
+ *  `출시 알림 신청` 칸이 됐다(이메일 한 칸 · 동의 한 칸) — V71 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V71";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -435,7 +437,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V70";
 /** MAT 영어 사전(`ws-en/track.ts`) · 무료 검사 먼저 안내 · 해외 요금 준비 중 · 홈의 MAT 한 줄 */
 /** 탭 제목을 그 사람의 언어로(`page-title.ts`) · 해외 MAT 30일권 $4.99 */
 /** 대학원생 문장(연구 실적 · 학위 단계별 한 줄 · 면접 질문) · 검사 전 메뉴 안내 한 줄 */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.50";
+/** MAT 90일권 문장 · 남은 기간 뒤에 이어 붙는다는 한 줄 · 학교 이용권은 계약 기간으로 적는다 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.51";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

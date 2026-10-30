@@ -2005,3 +2005,15 @@ body:has(.stgmark) .cm-tabs { bottom: var(--stg-h) }
 @media screen and (min-width: 720px) {
   .smpbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30 }
 }
+
+/* 출시 알림 신청 (`components/inquiry/launch-notify.tsx`) */
+.ln-form { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; min-width: 0 }
+.ln-email { display: flex; flex-direction: column; gap: 4px; font-size: var(--t-meta); color: var(--sf-ink-3) }
+.ln-email input { min-height: 40px; padding: 8px 10px; border: 1px solid var(--sf-line); border-radius: 8px;
+  font: inherit; font-size: 15px; color: var(--sf-ink); background: var(--sf-surface, #fff); min-width: 0 }
+.ln-consent { display: flex; gap: 8px; align-items: flex-start; font-size: var(--t-meta); line-height: 1.55; color: var(--sf-ink-3) }
+.ln-consent input { margin-top: 3px; flex: none }
+.ln-form .sf-btn { align-self: flex-start }
+.ln-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0 }
+.ln-done { margin-top: 10px; font-size: var(--t-meta); color: var(--sf-ok, #1f7a4d); font-weight: 600 }
+.ln-err { margin: 0 0 8px; font-size: var(--t-meta); color: var(--sf-bad, #b42318); font-weight: 600 }

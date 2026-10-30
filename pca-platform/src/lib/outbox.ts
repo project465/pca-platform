@@ -499,3 +499,28 @@ export async function sendNow(opts: {
     return false;
   }
 }
+
+/**
+ * 담당자에게 가는 알림 한 통(도입 문의 접수 등).
+ *
+ * **대기열에 쌓지 않는다.** 문의 본문에는 이름과 연락처가 들어 있고,
+ * 그것은 이미 `inquiries` 표에 한 번 적혀 있다. 대기열에 또 적으면 지울
+ * 자리가 둘이 된다. 그 자리에서 보내고, 못 보냈으면 `false` 를 돌려줘
+ * 부른 쪽이 표에 `alerted_at` 을 비워 둔다(운영 화면이 그 줄을 센다).
+ */
+export async function sendStaffAlert(opts: {
+  to: string; subject: string; text: string; replyTo?: string | null;
+}): Promise<boolean> {
+  const tx = transport();
+  if (!tx) return false;
+  try {
+    await tx.sendMail({
+      from: process.env.MAIL_FROM, to: opts.to,
+      subject: opts.subject, text: opts.text,
+      ...(opts.replyTo ? { replyTo: opts.replyTo } : {}),
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}

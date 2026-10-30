@@ -224,9 +224,10 @@ export const TX = {
     "It never scores your chances, picks companies for you or applies on your behalf."),
   pxTrackMore: p("어떻게 쓰는지 자세히 보기", "See how it works"),
   pxTrack30: p("30일권", "30 days"),
-  pxTrack365: p("365일권", "365 days"),
+  pxTrack90: p("90일권", "90 days"),
   pxTrack30Why: p("한 달만 써 보고 정해도 됩니다.", "Try it for a month first."),
-  pxTrackSave: p("30일권을 열두 번 사는 것보다 적게 냅니다.", "Less than buying 30 days twelve times."),
+  pxTrack90Why: p("90일 동안 이용. 한 학기 지원 시즌을 이어서 준비할 때 알맞습니다.",
+    "90 days of use. A good fit for preparing through one semester's application season."),
   pxTrackTrial: p(
     "PRO 결과지를 사시면 MAT 첫 1개월이 함께 열립니다.",
     "Buying the PRO report opens your first month of the assistant.",

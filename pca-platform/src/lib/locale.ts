@@ -744,10 +744,16 @@ export const UI = {
     "MAT · 30 days",
     "AI kariyer asistanı · 30 gün",
   ),
+  prodTRACK_90D: d(
+    "MAT 90일",
+    "MAT · 90 days",
+    "AI kariyer asistanı · 90 gün",
+  ),
+  /* 판매 종료(2026-10-30). 이미 나간 주문의 이름으로만 남는다 */
   prodTRACK_365D: d(
-    "MAT 365일",
-    "MAT · 365 days",
-    "AI kariyer asistanı · 365 gün",
+    "MAT 기간권 (판매 종료)",
+    "MAT pass (discontinued)",
+    "AI kariyer asistanı (satış dışı)",
   ),
   /* 해외판 기간권. 이름은 한국판과 같고 시장과 통화만 다르다 */
   prodTRACK_30D_GL: d(
@@ -756,9 +762,9 @@ export const UI = {
     "AI kariyer asistanı · 30 gün",
   ),
   prodTRACK_365D_GL: d(
-    "MAT 365일 (해외)",
-    "MAT · 365 days",
-    "AI kariyer asistanı · 365 gün",
+    "MAT 기간권 (해외 · 판매 종료)",
+    "MAT pass (discontinued)",
+    "AI kariyer asistanı (satış dışı)",
   ),
   prodHS_FREE: d(
     "커리어메트리 플러스 무료 진단",

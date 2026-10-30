@@ -106,10 +106,13 @@ export const WS_EN_TRACK: Record<string, string> = {
   "끝": "End",
   "주문": "Order",
   "30일권": "30-day plan",
-  "365일권": "365-day plan",
+  "90일권": "90-day plan",
+  "이전 기간권": "Earlier plan",
+  "학교 제공 (계약 기간)": "From your school (contract period)",
+  "90일 동안 이용합니다. 30일권을 세 번 사는 것보다 {amount} 적습니다.": "90 days of use. {amount} less than buying the 30-day plan three times.",
+  "90일 동안 이용합니다. 한 학기 지원 시즌을 이어서 준비할 때 알맞습니다.": "90 days of use. A good fit for preparing through one semester's application season.",
   "PRO 구매 첫 1개월": "First month with PRO",
-  "학교 제공 6개월": "6 months from your school",
-  "학교 제공 1년": "1 year from your school",
+
 
   /* ── 안 된 까닭(주소 `?e=`) ────────────────────────────── */
   "기간권이 열려 있지 않아 저장하지 못했습니다. 아래에서 기간권을 고르시면 바로 열립니다.":

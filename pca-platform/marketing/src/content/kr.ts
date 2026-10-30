@@ -524,7 +524,7 @@ export const kr: SiteContent = {
           tag: "구독",
           title: "MAT · AI 취업비서",
           body: "검사 다음에도 매주 브리핑으로 마감과 할 일을 챙기고, 붙여 둔 공고와 내 경험을 비교해 지원서 문장의 뼈대까지 만들어 드립니다.",
-          price: `${TRACK_KR.month.name} ${TRACK_KR.month.price} · ${TRACK_KR.year.name} ${TRACK_KR.year.price}`,
+          price: `${TRACK_KR.month.name} ${TRACK_KR.month.price} · ${TRACK_KR.quarter.name} ${TRACK_KR.quarter.price}`,
           priceNote: "자동 갱신 없음",
           points: [
             "기간이 끝나면 저절로 종료되고 다시 결제되지 않습니다",
@@ -636,7 +636,7 @@ export const kr: SiteContent = {
         { title: "미응시 학생 명단", body: "아직 시작하지 않은 학생만 모아 CSV로 내려받습니다." },
         { title: "CSV 내보내기", body: "명단과 진행 상황, 집계를 CSV로 내려받아 학내 보고에 씁니다." },
         { title: "재응시 허용", body: "학교 응시는 한 번이 기본이고, 담당자가 허용한 학생만 다시 볼 수 있습니다." },
-        { title: "MAT 학교 이용권", body: "학교가 정한 인원 안에서 담당자가 학생에게 MAT(AI 취업비서)를 6개월 또는 1년 동안 열어 줍니다. 비용은 도입 계약에 함께 담습니다." },
+        { title: "MAT 학교 이용권", body: "학교가 정한 인원 안에서 담당자가 학생에게 MAT(AI 취업비서)를 학교와 정한 기간 동안 열어 줍니다. 학교 이용권은 온라인 결제가 아닌 기관 계약(세금계산서)으로 진행합니다." },
       ],
     },
     access: {
@@ -696,7 +696,7 @@ export const kr: SiteContent = {
   assistant: {
     meta: {
       title: "MAT · AI 취업비서 | CareerMatri",
-      description: `MAT는 검사 다음에도 매주 할 일과 마감을 챙기고, 직접 찾은 공고와 내 경험을 비교해 보는 CareerMatri의 AI 취업비서입니다. ${TRACK_KR.month.name} ${TRACK_KR.month.price}, ${TRACK_KR.year.name} ${TRACK_KR.year.price}.`,
+      description: `MAT는 검사 다음에도 매주 할 일과 마감을 챙기고, 직접 찾은 공고와 내 경험을 비교해 보는 CareerMatri의 AI 취업비서입니다. ${TRACK_KR.month.name} ${TRACK_KR.month.price}, ${TRACK_KR.quarter.name} ${TRACK_KR.quarter.price}.`,
     },
     hero: {
       eyebrow: "구독 상품",
@@ -733,12 +733,12 @@ export const kr: SiteContent = {
           cta: { label: `${TRACK_KR.month.name}으로 시작하기`, href: "/me/track" },
         },
         {
-          name: TRACK_KR.year.name,
-          price: TRACK_KR.year.price,
-          unit: "365일 동안 이용",
-          body: "30일권을 열두 번 사는 것보다 적게 냅니다. 한 학년 내내 준비를 이어 가실 때 알맞습니다.",
+          name: TRACK_KR.quarter.name,
+          price: TRACK_KR.quarter.price,
+          unit: "90일 동안 이용",
+          body: "90일 동안 이용. 한 학기 지원 시즌을 이어서 준비할 때 알맞습니다.",
           featured: true,
-          cta: { label: `${TRACK_KR.year.name}으로 시작하기`, href: "/me/track" },
+          cta: { label: `${TRACK_KR.quarter.name}으로 시작하기`, href: "/me/track" },
         },
       ],
       notes: [
@@ -757,7 +757,7 @@ export const kr: SiteContent = {
         },
         {
           q: "매달 자동으로 결제되나요?",
-          a: "그렇지 않습니다. 30일권과 365일권 모두 한 번 결제하고, 기간이 끝나면 저절로 종료됩니다.",
+          a: "그렇지 않습니다. 30일권과 90일권 모두 한 번 결제하고, 기간이 끝나면 저절로 종료됩니다. 남은 기간이 있을 때 다시 사시면 끝나는 날 다음 날부터 이어 붙습니다.",
         },
         {
           q: "PRO 결과지를 샀는데 무료 1개월은 어떻게 받나요?",

@@ -45,11 +45,13 @@ const NAMES: Record<string, string> = {
   REPORT_UNIV: "CareerMatri 진로 결과지 (대학)",
   REPORT_HS: "CareerMatri 진로 결과지 (고교)",
   TRACK_30D: "MAT 30일",
-  TRACK_365D: "MAT 365일",
+  TRACK_90D: "MAT 90일",
+  /* 판매 종료(2026-10-30). 이미 나간 주문의 이름으로만 남는다 */
+  TRACK_365D: "MAT 기간권 (판매 종료)",
   TRACK_30D_GL: "MAT 30 days",
-  TRACK_365D_GL: "MAT 365 days",
-  CAMPUS_MAT_6M: "MAT 6개월 (학교)",
-  CAMPUS_MAT_12M: "MAT 1년 (학교)",
+  TRACK_365D_GL: "MAT pass (discontinued)",
+  CAMPUS_MAT_6M: "MAT 학교 이용권 (계약 기간)",
+  CAMPUS_MAT_12M: "MAT 학교 이용권 (계약 기간)",
 };
 
 export function orderName(code: string): string {

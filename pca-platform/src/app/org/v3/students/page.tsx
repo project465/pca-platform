@@ -184,7 +184,7 @@ export default async function CampusStudents({
       {/* **MAT(AI 취업비서) 학교 단체 이용권.** 학교가 산 인원 안에서
           담당자가 학생에게 연다. 학생 화면은 개인 구매와 같은 MAT 쪽이 열린다 */}
       <Section title="MAT · AI 취업비서"
-        note="학교가 산 인원 안에서 학생에게 엽니다. 연 날부터 6개월 또는 1년입니다.">
+        note="학교가 산 인원 안에서 학생에게 엽니다. 연 날부터 학교와 정한 기간 동안 열립니다.">
         <MatPanel pools={matPools} total={total}
           filter={{ q: sp.q ?? "", department: sp.department ?? "",
             college: sp.college ?? "", state: state === "disabled" ? "all" : state }} />

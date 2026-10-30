@@ -8,6 +8,8 @@ import { domainName, majorNameIn } from "@/lib/me-v3/runtime/session";
 import { textFor } from "@/lib/me-v3/result/text";
 import { localizeResult } from "@/lib/me-v3/result/localize";
 import { getProduct } from "@/lib/orders";
+import { queryOne } from "@/lib/db";
+import LaunchNotify from "@/components/inquiry/launch-notify";
 import { formatMoney } from "@/lib/money";
 import { payOpen } from "@/lib/payments";
 import {
@@ -50,7 +52,8 @@ export async function generateMetadata() {
  * 그 사람이 직접 한다(CLAUDE.md 법적 범위). 그래서 이 화면에 `추천 기업`
  * 이 서지 않는다.
  *
- * **기간권이다.** 30일권과 365일권을 한 번씩 팔고 자동으로 갱신하지 않는다.
+ * **기간권이다.** 30일권과 90일권을 한 번씩 팔고 자동으로 갱신하지 않는다
+ * (한 번 결제로 여는 기간은 90일 이하, 2026-10-30).
  * 기간이 끝나면 저절로 닫히고 카드가 다시 긁히지 않는다.
  *
  * **검사 결과가 먼저다.** 결과가 없는 사람에게는 사는 단추 대신 무료 검사로
@@ -68,13 +71,15 @@ const leftDays = (deadline: string): number => daysLeft(deadline, kstToday());
 
 const NAME: Record<string, string> = {
   TRACK_30D: "30일권",
-  TRACK_365D: "365일권",
+  TRACK_90D: "90일권",
+  /* 판매를 닫은 옛 기간권. 이미 산 분의 기록에서만 이 이름이 선다 */
+  TRACK_365D: "이전 기간권",
   TRACK_30D_GL: "30일권",
-  TRACK_365D_GL: "365일권",
+  TRACK_365D_GL: "이전 기간권",
   [TRACK_TRIAL]: "PRO 구매 첫 1개월",
   /* 학교가 계약으로 산 이용권. 학생이 낸 돈이 없으므로 주문 칸은 비어 있다 */
-  CAMPUS_MAT_6M: "학교 제공 6개월",
-  CAMPUS_MAT_12M: "학교 제공 1년",
+  CAMPUS_MAT_6M: "학교 제공 (계약 기간)",
+  CAMPUS_MAT_12M: "학교 제공 (계약 기간)",
 };
 
 const FAIL: Record<string, string> = {
@@ -89,10 +94,16 @@ const FAIL: Record<string, string> = {
 export default async function Track({
   searchParams,
 }: {
-  searchParams: Promise<{ trial?: string; e?: string }>;
+  searchParams: Promise<{ trial?: string; e?: string; sent?: string; err?: string; for?: string }>;
 }) {
   const sp = await searchParams;
   const user = await requireUser();
+  /* 출시 알림 칸에 미리 채울 주소. **메일 꼴일 때만 채운다**: 학교 발급 계정은
+     이 칸에 로그인 아이디가 들어 있어서, 그대로 채우면 브라우저가 칸을 막아
+     신청 단추가 아무 일도 하지 않는다 */
+  const rawEmail = (await queryOne<{ email: string | null }>(
+    `SELECT email FROM users WHERE id = $1`, [user.id]).catch(() => null))?.email ?? null;
+  const myEmail = rawEmail && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(rawEmail) ? rawEmail : null;
   const lang = await wsLang(user.id);
   const t = wsSay(lang);
   const en = lang === "en";
@@ -157,10 +168,10 @@ export default async function Track({
      그렇다. 줄이 있다고 단추를 그리면 0원 결제로 보인다 */
   const priced = sale.filter((p) => p.price_status === "approved" && p.amount > 0);
   const p30 = priced.find((p) => p.duration_days === 30);
-  const p365 = priced.find((p) => p.duration_days === 365);
-  /* 1년치를 30일권으로 사면 얼마인지와 견준다. **지어낸 할인율이 아니고**
+  const p90 = priced.find((p) => p.duration_days === 90);
+  /* 90일치를 30일권으로 사면 얼마인지와 견준다. **지어낸 할인율이 아니고**
      두 상품의 값으로 그 자리에서 센 수다 */
-  const save = p30 && p365 ? p30.amount * 12 - p365.amount : 0;
+  const save = p30 && p90 ? p30.amount * 3 - p90.amount : 0;
   /* 영어 작업공간은 AI 로 보내지 않는다: 영문 개인정보처리방침이 아직 없다 */
   const ai = !en && aiReady() && Boolean(settings.ai_consent_at);
   const pushKey = pushKeys()?.publicKey ?? null;
@@ -459,21 +470,25 @@ export default async function Track({
                       <span>{formatMoney(p.amount, p.currency, en ? "en" : "ko") ?? "—"}{t(" · 한 번 결제 · 부가세 포함")}</span>
                     </p>
                     <p className="cm-none">
-                      {p.duration_days === 365 && save > 0
-                        ? t("30일권을 열두 번 사는 것보다 {amount} 적습니다.", {
-                          amount: formatMoney(save, p.currency, en ? "en" : "ko") ?? "" })
+                      {p.duration_days === 90
+                        ? save > 0
+                          ? t("90일 동안 이용합니다. 30일권을 세 번 사는 것보다 {amount} 적습니다.", {
+                            amount: formatMoney(save, p.currency, en ? "en" : "ko") ?? "" })
+                          : t("90일 동안 이용합니다. 한 학기 지원 시즌을 이어서 준비할 때 알맞습니다.")
                         : t("한 달만 써 보고 정해도 됩니다.")}
                     </p>
                     <div className="cm-acts">
                       {/* 가격표와 같은 물음이다(`payOpen`). 결제 대행사가 서기 전에는
                           누를 수 없는 단추로 그 사실만 적는다 */}
                       {payOpen(p.currency === "KRW" ? "KR" : "GLOBAL") ? (
-                        <Link className={`cm-btn${p.duration_days === 365 ? " is-primary" : ""}`}
+                        <Link className={`cm-btn${p.duration_days === 90 ? " is-primary" : ""}`}
                           href={`/checkout?product=${encodeURIComponent(p.code)}`}>
                           {state.on ? t("이어서 사기") : t("결제하기")}
                         </Link>
                       ) : (
-                        <span className="cm-btn" aria-disabled="true">{t("결제 준비 중")}</span>
+                        /* 결제가 열리기 전에는 알림 신청을 받는다(2026-10-30) */
+                        <LaunchNotify product={p.code} lang={en ? "en" : "ko"} source="app:/me/track"
+                          email={myEmail} q={sp} back="/me/track" compact />
                       )}
                     </div>
                   </div>

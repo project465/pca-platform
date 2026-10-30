@@ -494,7 +494,8 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.80";
 /** 현재 상태 타일의 영어 세부 줄을 `studentStateView` 한 자리에서 읽는다. 전에는 결과지가 남긴 것의
  *  한국어 이름을 영어 결과지에 그대로 세울 수 있었다 — V88 */
 /** 경험 번역의 한 줄을 첫 화면 근거 칸과 번역 절에 세운다. 한 줄만 적은 단계를 `아직 적지 않으신` 으로 세지 않는다 — V90 */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V90";
+/** 공용 `surface.css` 끝에 출시 알림 신청 칸(`.ln-*`)이 붙었다. 결과지가 쓰는 이름과 겹치지 않는다 — V91 */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V91";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

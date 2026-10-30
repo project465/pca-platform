@@ -16,9 +16,12 @@ INSERT INTO products
   (code, kind, amount, currency, seat_count, active, report_level,
    market, major_code, tier, assessment_version, price_status, duration_days)
 VALUES
-  ('TRACK_30D_GL',  'track', 499, 'USD', 0, true, 'full',
+  /* **2026-10-30 대표 결정: 가격 표기를 원화 하나로 맞춘다.** 결제가 원화로만
+     되므로(KCP) 달러 값을 따로 팔면 화면과 청구액이 갈린다. 해외 화면은 한국
+     상품(원화)에 참고 환산을 붙여 보여 준다. 두 줄 모두 판매를 닫고 지우지 않는다 */
+  ('TRACK_30D_GL',  'track', 499, 'USD', 0, false, 'full',
    'GLOBAL', NULL, NULL, NULL, 'approved',  30),
-  ('TRACK_365D_GL', 'track', 0, 'USD', 0, true, 'full',
+  ('TRACK_365D_GL', 'track', 0, 'USD', 0, false, 'full',
    'GLOBAL', NULL, NULL, NULL, 'not_approved', 365)
 ON CONFLICT (code) DO UPDATE
   SET kind = EXCLUDED.kind, seat_count = EXCLUDED.seat_count,

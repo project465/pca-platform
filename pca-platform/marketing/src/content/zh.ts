@@ -502,7 +502,7 @@ export const zh: SiteContent = {
           tag: "订阅",
           title: "MAT · AI求职助手",
           body: "测评结束后，MAT每周提醒你要做的事和截止日期，并把你收藏的招聘信息和你的经历放在一起对照。",
-          price: `30天通行证 ${krw(TRACK_KR.month.price)} · 365天通行证 ${krw(TRACK_KR.year.price)}`,
+          price: `30天通行证 ${krw(TRACK_KR.month.price)} · 90天通行证 ${krw(TRACK_KR.quarter.price)}`,
           priceNote: "不自动续费",
           points: [
             "到期后自动结束，不会再次扣费",
@@ -612,7 +612,7 @@ export const zh: SiteContent = {
         { title: "未作答学生名单", body: "筛选出尚未开始的学生，导出为CSV。" },
         { title: "导出CSV", body: "将名单、进度和统计导出为CSV，用于校内汇报。" },
         { title: "允许重新作答", body: "学校测评默认每人一次，经管理员允许的学生可以再做一次。" },
-        { title: "MAT学校使用权", body: "在学校确定的名额内，管理员可为学生开通6个月或1年的MAT（AI求职助手），费用包含在合作合同中。" },
+        { title: "MAT学校使用权", body: "在学校确定的名额内，管理员可在与学校约定的期间内为学生开通MAT（AI求职助手）。学校使用权通过机构合同（税务发票）办理，不使用线上支付。" },
       ],
     },
     access: {
@@ -672,7 +672,7 @@ export const zh: SiteContent = {
   assistant: {
     meta: {
       title: "MAT · AI求职助手 | CareerMatri",
-      description: `MAT是CareerMatri的AI求职助手。测评结束后，它每周提醒你要做的事和截止日期，并把你自己找到的招聘信息和你的经历放在一起对照。30天通行证 ${krw(TRACK_KR.month.price)}，365天通行证 ${krw(TRACK_KR.year.price)}。`,
+      description: `MAT是CareerMatri的AI求职助手。测评结束后，它每周提醒你要做的事和截止日期，并把你自己找到的招聘信息和你的经历放在一起对照。30天通行证 ${krw(TRACK_KR.month.price)}，90天通行证 ${krw(TRACK_KR.quarter.price)}。`,
     },
     hero: {
       eyebrow: "订阅产品",
@@ -709,12 +709,12 @@ export const zh: SiteContent = {
           cta: { label: "开通30天通行证", href: "/me/track" },
         },
         {
-          name: "365天通行证",
-          price: krw(TRACK_KR.year.price),
-          unit: "可使用365天",
-          body: "比连买十二次30天通行证更划算，适合用一整个学年持续准备。",
+          name: "90天通行证",
+          price: krw(TRACK_KR.quarter.price),
+          unit: "可使用90天",
+          body: "可使用90天，适合连续准备一个学期的求职季。",
           featured: true,
-          cta: { label: "开通365天通行证", href: "/me/track" },
+          cta: { label: "开通90天通行证", href: "/me/track" },
         },
       ],
       notes: [
@@ -733,7 +733,7 @@ export const zh: SiteContent = {
         },
         {
           q: "每个月会自动扣费吗？",
-          a: "不会。30天和365天通行证都是一次性付款，到期后自动结束。",
+          a: "不会。30天和90天通行证都是一次性付款，到期后自动结束。若在剩余期间内再次购买，将从当前到期日的次日起接续计算。",
         },
         {
           q: "买了PRO结果报告，免费的一个月怎么领？",
