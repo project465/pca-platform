@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import * as z from "zod/v4";
 import { query, queryOne } from "@/lib/db";
+import { isStaging } from "@/lib/env";
 import { activeCoreOrPick, EXPERIENCE_KINDS } from "@/lib/me-v3/platform";
 import { readOfficeText } from "@/lib/sheet-read";
 import { askStructured, aiReady, RESEARCH_MODEL, type AiBlock } from "./claude";
@@ -36,7 +37,8 @@ export const RESEARCH_MONTHLY_CAP = 10;
  * **그 전에는 읽지 않는다**: 알리지 않은 항목을 받는 셈이 된다(`push.ts` 와 같은 규칙)
  */
 export const RESEARCH_POLICY_FROM = new Date("2026-11-07T00:00:00+09:00");
-export const researchOpen = (now = new Date()) => now >= RESEARCH_POLICY_FROM;
+/* 공개 전 배포본(staging)은 손님을 받지 않으므로 날짜 전에도 연다: 사업주가 자기 논문으로 미리 본다 */
+export const researchOpen = (now = new Date()) => isStaging() || now >= RESEARCH_POLICY_FROM;
 
 export const DOC_TYPES = ["paper", "thesis", "slides", "report", "patent", "cv", "cover_letter", "portfolio", "other"] as const;
 export type DocType = (typeof DOC_TYPES)[number];
