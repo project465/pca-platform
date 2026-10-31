@@ -3383,6 +3383,9 @@ NHN KCP 가 "서비스 제공기간 3개월 초과 상품" 을 이유로 계약�
 한 줄 남는다(`src/lib/brand.ts`). **표를 따로 두고 쓰기 실패를 삼킨다**: `db:upgrade` 를 누르기 전의
 운영 DB 에서도 가입과 MAT 이 그대로 돌아야 해서다. 붙일 단추 코드는 `sites/jobindustry/`.
 `npm run partner:check` 가 실제 브라우저로 열아홉 가지를 센다(표가 없는 DB 에서도 돈다).
+**커리어피크도 같은 틀이고 이름은 MAT 그대로다**(2026-10-31 대표 결정): `/from/careerpeak` →
+`/partner/careerpeak`. 입구마다 다른 글(머리 문단 · `~로 들어오셨습니다` 앞말)은 `PARTNERS` 의
+`intro` · `via` · `does` 에 손으로 적는다. 조사가 이름 끝소리를 따라서 틀로 이어 붙이면 틀린다. 단추는 `sites/careerpeak/`.
 
 **해외 카드** (2026-09-11)
 

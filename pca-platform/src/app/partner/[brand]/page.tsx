@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ brand: st
  * 의 `pxTrack*`)과 같은 값(`trackOffers`)을 읽는다. 따로 적으면 어느 날
  * 잡인더스트리 쪽 값만 옛것으로 남는다.
  *
- * 한국어만 낸다. 잡인더스트리는 국내 이공계 석·박사 회원을 받는 곳이다.
+ * 한국어만 낸다. 두 곳 다 국내 이공계 석·박사 회원을 받는 곳이다.
  */
 export default async function PartnerPage({
   params, searchParams,
@@ -71,10 +71,7 @@ export default async function PartnerPage({
         <section className="pxhero">
           <div className="sf-eyebrow">{P.name} × CareerMatri</div>
           <h1>{P.name} {P.label}</h1>
-          <p>
-            {P.name}의 {P.label}는 CareerMatri의 MAT으로 운영합니다. 검사로 내 경험을 정리하고,
-            지원할 공고와 맞대어 이번 주에 할 일을 알려 드립니다.
-          </p>
+          <p>{P.intro}</p>
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 16, justifyContent: "center" }}>
             {user ? (
               <Link href="/me/track" className="sf-btn accent">MAT 열기</Link>
@@ -98,7 +95,7 @@ export default async function PartnerPage({
         </section>
 
         <section className="pxband" id="track">
-          <h2>{P.label}가 하는 일</h2>
+          <h2>{P.does}</h2>
           <ul className="pxtrack-f">
             <li>{T("pxTrackF1")}</li>
             <li>{T("pxTrackF2")}</li>

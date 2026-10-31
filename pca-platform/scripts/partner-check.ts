@@ -36,6 +36,14 @@ async function main(): Promise<void> {
   ok("/from/jobindustry 가 제휴 쪽으로 넘긴다", r1.status === 302
     && r1.headers.get("location") === "/partner/jobindustry", `${r1.status} ${r1.headers.get("location")}`);
   ok("입구 쿠키를 심는다", /cm_brand=jobindustry/.test(r1.headers.get("set-cookie") ?? ""));
+  /* 커리어피크도 같은 틀이다. 이름은 MAT 그대로 쓴다 */
+  const rc = await fetch(`${BASE}/from/careerpeak`, { redirect: "manual" });
+  ok("/from/careerpeak 가 제휴 쪽으로 넘긴다", rc.status === 302
+    && rc.headers.get("location") === "/partner/careerpeak"
+    && /cm_brand=careerpeak/.test(rc.headers.get("set-cookie") ?? ""), `${rc.status} ${rc.headers.get("location")}`);
+  const cp = await (await fetch(`${BASE}/partner/careerpeak`)).text();
+  ok("커리어피크 쪽 제목이 커리어피크 MAT 이고 '석·박사 자료' 를 말한다",
+    cp.includes("커리어피크 MAT") && cp.includes("논문") && cp.includes("MAT이 하는 일") && !cp.includes("AI취업지원도우미"));
   const r2 = await fetch(`${BASE}/from/nope`, { redirect: "manual" });
   ok("모르는 이름은 홈으로 보내고 쿠키를 심지 않는다", r2.status === 302
     && r2.headers.get("location") === "/" && !/cm_brand/.test(r2.headers.get("set-cookie") ?? ""));

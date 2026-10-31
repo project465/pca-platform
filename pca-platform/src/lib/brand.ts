@@ -17,7 +17,7 @@ import { query } from "@/lib/db";
 
 export const BRAND_COOKIE = "cm_brand";
 
-export type Partner = "jobindustry";
+export type Partner = "jobindustry" | "careerpeak";
 
 export const PARTNERS: Record<Partner, {
   /** 사람이 읽는 이름 */
@@ -26,11 +26,30 @@ export const PARTNERS: Record<Partner, {
   label: string;
   /** 돌아가는 곳 */
   home: string;
+  /** "~로 들어오셨습니다" 앞에 붙는 말. 조사가 이름 끝소리를 따르므로 손으로 적는다 */
+  via: string;
+  /** 소개 쪽 머리 문단 */
+  intro: string;
+  /** "하는 일" 절 제목 */
+  does: string;
 }> = {
   jobindustry: {
     name: "잡인더스트리",
     label: "AI취업지원도우미",
     home: "https://www.jobindustry.co.kr",
+    via: "잡인더스트리 AI취업지원도우미로",
+    intro: "잡인더스트리의 AI취업지원도우미는 CareerMatri의 MAT으로 운영합니다. 검사로 내 경험을 정리하고, 지원할 공고와 맞대어 이번 주에 할 일을 알려 드립니다.",
+    does: "AI취업지원도우미가 하는 일",
+  },
+  /* 커리어피크는 이름을 바꾸지 않고 MAT 그대로 쓴다(대표 결정 2026-10-31).
+     석·박사 회원이 많은 곳이라 연구 자료 읽기를 앞에 적는다 */
+  careerpeak: {
+    name: "커리어피크",
+    label: "MAT",
+    home: "https://www.careerpeak.co.kr",
+    via: "커리어피크 MAT으로",
+    intro: "커리어피크 회원은 CareerMatri의 MAT을 그대로 씁니다. 논문 · 발표 자료 · 이력서를 올리면 핵심과 쓴 방법을 정리하고, 겹치는 공고를 찾아 마감까지 챙겨 드립니다.",
+    does: "MAT이 하는 일",
   },
 };
 
