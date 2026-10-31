@@ -128,8 +128,13 @@ export async function requestConsult(opts: {
     "MAT 이 올린 자료를 읽고 정리한 것입니다. 원본 파일은 보내지 않으며 CareerMatri 도 저장하지 않습니다.",
     "이 메일의 개인정보는 상담 연결에만 쓰고, 상담이 끝난 뒤 1년이 지나면 지워 주세요(개인정보처리방침).",
   ].join("\n");
+  /* 받는 주소는 Railway 변수 `CAREERPEAK_CONSULT_EMAIL`(코드에 적지 않는다). 지금 알림 메일과
+     같은 길(`MAIL_*`)로 보내고, 보낸 사람 이름은 CareerMatri, 제목에 신청자 이름을 적는다 */
+  const who = opts.name.replace(/[\r\n]/g, " ").trim() || "이름 없음";
   const ok = await sendStaffAlert({
-    to, subject: `[커리어피크 상담 신청] CP-${row.id} · ${clip(opts.doc.title, 60)}`, text, replyTo: opts.email,
+    to, fromName: "CareerMatri",
+    subject: `[커리어피크 상담 신청] ${clip(who, 30)} · ${clip(opts.doc.title, 50)} (CP-${row.id})`,
+    text, replyTo: opts.email,
   });
   await query(
     `UPDATE careerpeak_consults SET status = $2, sent_at = CASE WHEN $2 = 'sent' THEN now() ELSE NULL END WHERE id = $1`,

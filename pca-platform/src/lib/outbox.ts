@@ -501,6 +501,16 @@ export async function sendNow(opts: {
 }
 
 /**
+ * `MAIL_FROM` 의 주소에 이름만 붙인다. `MAIL_FROM` 이 `이름 <주소>` 꼴이면 주소만
+ * 떼어 쓴다. 보내는 주소가 바뀌지 않으므로 SPF · DKIM 은 그대로 맞는다.
+ */
+export function namedFrom(name: string): { name: string; address: string } | string | undefined {
+  const raw = (process.env.MAIL_FROM ?? "").trim();
+  const address = (raw.match(/<([^>]+)>/)?.[1] ?? raw).trim();
+  return address ? { name: name.replace(/[\r\n"<>]/g, ""), address } : process.env.MAIL_FROM;
+}
+
+/**
  * 담당자에게 가는 알림 한 통(도입 문의 접수 등).
  *
  * **대기열에 쌓지 않는다.** 문의 본문에는 이름과 연락처가 들어 있고,
@@ -510,12 +520,14 @@ export async function sendNow(opts: {
  */
 export async function sendStaffAlert(opts: {
   to: string; subject: string; text: string; replyTo?: string | null;
+  /** 보낸 사람 이름. 주소는 늘 `MAIL_FROM` 의 것이고 이름만 바꾼다 */
+  fromName?: string;
 }): Promise<boolean> {
   const tx = transport();
   if (!tx) return false;
   try {
     await tx.sendMail({
-      from: process.env.MAIL_FROM, to: opts.to,
+      from: opts.fromName ? namedFrom(opts.fromName) : process.env.MAIL_FROM, to: opts.to,
       subject: opts.subject, text: opts.text,
       ...(opts.replyTo ? { replyTo: opts.replyTo } : {}),
     });

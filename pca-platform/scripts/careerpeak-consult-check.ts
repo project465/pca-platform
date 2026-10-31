@@ -51,6 +51,16 @@ async function main() {
   ok("본인 정리가 아니면(못 찾으면) 보내지 않는다", !r2.ok && r2.reason === "doc");
   const r4 = await requestConsult({ ...base, consent: true }).catch(() => ({ ok: false as const, reason: "threw" as const }));
   ok("동의 기록을 남기지 못하면(표가 없거나 DB 가 멈추면) 메일을 보내지 않는다", !r4.ok && r4.reason === "db");
+  /* 기록이 남는 경우(이 검사에서는 가짜 DB). 받는 곳 · 보낸 사람 이름 · 제목을 본다 */
+  const g = globalThis as { __dbOk?: boolean; __sent?: Record<string, string>[] };
+  g.__dbOk = true; g.__sent = [];
+  const r5 = await requestConsult({ ...base, name: "김연구", consent: true }).catch(() => ({ ok: false as const }));
+  const m = g.__sent[0] ?? {};
+  ok("받는 곳은 Railway 변수 CAREERPEAK_CONSULT_EMAIL 이다", r5.ok && m.to === "consult@example.test");
+  ok("보낸 사람 이름은 CareerMatri 다", m.fromName === "CareerMatri");
+  ok("제목에 '커리어피크 상담 신청' 과 신청자 이름이 보인다", /커리어피크 상담 신청/.test(m.subject ?? "") && (m.subject ?? "").includes("김연구"));
+  ok("답장은 신청자 메일로 간다", m.replyTo === "a@example.test");
+  g.__dbOk = false; g.__sent = undefined;
   env("APP_ENV", "production");
   if (CONSULT_POLICY_FROM === null) {
     const r3 = await requestConsult({ ...base, consent: true });
