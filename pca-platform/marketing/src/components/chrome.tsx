@@ -3,6 +3,7 @@ import { HTML_LANG, LANGS, LANG_NAME, localePath } from "@/lib/i18n";
 import { BrandMark, Icon } from "./icons";
 import MobileMenu from "./mobile-menu";
 import { liveMailOrderNo } from "@/lib/business";
+import NoticeBand from "./notice-band";
 
 /** 같은 쪽의 다른 언어 주소. 고르면 첫 화면이 아니라 보던 쪽으로 간다 */
 function langLinks(path: string) {
@@ -169,6 +170,8 @@ export function Shell({ site, path, children }: { site: SiteContent; path: strin
       <a className="skip" href="#main">
         {site.ui.skip}
       </a>
+      {/* 방침 개정 공지는 한국어판에만 선다. 해외판의 방침은 아직 이 개정과 무관하다 */}
+      {site.key === "kr" && site.lang === "ko" ? <NoticeBand href="https://app.careermatri.com/legal/privacy" /> : null}
       <SiteHeader site={site} path={path} />
       <main id="main">{children}</main>
       <SiteFooter site={site} />
