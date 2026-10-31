@@ -24,7 +24,7 @@ export async function uploadResearch(_prev: ResearchState, form: FormData): Prom
   if (!can.ok) {
     return { ok: false, msg: can.why === "needtest"
       ? "자료 읽기는 무료 검사를 마친 뒤에 열립니다."
-      : "무료로 읽어 볼 수 있는 자료 1건을 쓰셨습니다. MAT 기간권을 고르시면 한 달 10건까지 읽어 드립니다." };
+      : "무료 2번을 다 쓰셨습니다. MAT 기간권을 고르시면 한 달 10건까지 읽어 드립니다." };
   }
   if (String(form.get("consent") ?? "") === "1") await setFileConsent(user.id, true);
   const file = form.get("file");

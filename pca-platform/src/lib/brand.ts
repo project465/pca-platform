@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { query } from "@/lib/db";
+import { query, queryOne } from "@/lib/db";
 
 /**
  * 제휴 입구(2026-10-30). 잡인더스트리가 MAT 을 `AI취업지원도우미` 라는
@@ -41,6 +41,8 @@ export const PARTNERS: Record<Partner, {
   steps?: [string, string][];
   /** 로그인한 사람이 누르는 첫 단추가 가는 곳과 이름 */
   open?: { href: string; label: string };
+  /** 처음 온 사람의 첫 단추. 비우면 무료 검사부터 */
+  start?: { href: string; label: string };
   /** 잡인더스트리 공고 화면에서 넘어온 공고(`cm_job`)를 이어 받는가 */
   takesJob: boolean;
 }> = {
@@ -75,6 +77,9 @@ export const PARTNERS: Record<Partner, {
       ["커리어피크 상담으로 이어집니다", "원하시면 한 장 요약과 연락처를 커리어피크 상담가에게 보냅니다. 보낼 때마다 따로 동의를 받고, 원본 파일은 보내지 않습니다."],
     ],
     open: { href: "/me/track/research", label: "내 자료 올리기" },
+    /* 연구자는 자료 올리기부터(2026-10-31 대표 결정). 가입 때 입구 쿠키로 커리어피크
+       입구가 적히고(`brand_touches`), 그러면 검사 전에도 자료 읽기가 열린다(`mat-access.ts`) */
+    start: { href: "/signup?next=%2Fme%2Ftrack%2Fresearch", label: "자료 올리기로 시작하기" },
     takesJob: false,
   },
 };
@@ -100,4 +105,16 @@ export async function recordBrand(userId: string, brand: Partner): Promise<void>
      ON CONFLICT (user_id, brand) DO UPDATE SET last_seen_at = now()`,
     [userId, brand],
   ).catch(() => undefined);
+}
+
+/**
+ * 이 사람이 그 제휴 입구로 들어온 적이 있는가(`brand_touches`). 표가 없거나
+ * 읽지 못하면 아니라고 답한다: 이 값은 문을 **더 여는** 데만 쓰므로, 모를 때는
+ * 평소대로 닫힌 쪽이 맞다.
+ */
+export async function cameVia(userId: string, brand: Partner): Promise<boolean> {
+  const r = await queryOne<{ n: number }>(
+    `SELECT count(*)::int AS n FROM brand_touches WHERE user_id = $1 AND brand = $2`, [userId, brand],
+  ).catch(() => null);
+  return (r?.n ?? 0) > 0;
 }

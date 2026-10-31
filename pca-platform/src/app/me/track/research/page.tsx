@@ -52,12 +52,13 @@ export default async function ResearchPage() {
       <CmHead kicker="AI 취업비서 · MAT" title="내 자료 읽기"
         lead="논문·발표 자료·이력서·자기소개서를 올리면 무엇을 했고 무엇이 나왔는지 정리하고, 회사와 연구소가 읽는 직무의 말로 옮깁니다. 여기서 뽑은 낱말로 맞는 공고를 찾습니다." />
 
-      {!acc.ready && !acc.paid ? (
+      {/* 커리어피크로 들어온 연구자는 검사 전에도 자료부터 올린다(`researchFirst`) */}
+      {!acc.ready && !acc.paid && !acc.researchFirst ? (
         <div className="cm-panel is-one">
           <div className="cm-pane">
             <p className="cm-row">
               <b>먼저 무료 검사부터</b>
-              <span>MAT 은 검사 결과에서 시작합니다. 검사를 마치면 자료 한 건을 무료로 읽어 드립니다.</span>
+              <span>MAT 은 검사 결과에서 시작합니다. 검사를 마치면 아무 도구나 합쳐 2번 무료로 써 보실 수 있습니다.</span>
             </p>
             <div className="cm-acts"><Link className="cm-btn is-primary" href="/cores">무료 검사 시작</Link></div>
           </div>
@@ -72,7 +73,7 @@ export default async function ResearchPage() {
         <div className="cm-panel is-one">
           <div className="cm-pane">
             <p className="cm-row">
-              <b>무료로 읽어 볼 수 있는 자료 1건을 쓰셨습니다</b>
+              <b>무료 2번을 다 쓰셨습니다</b>
               <span>기간권을 고르시면 한 달 {RESEARCH_MONTHLY_CAP}건까지 읽고, 뽑은 낱말로 맞는 공고를 계속 찾아 드립니다.</span>
             </p>
             <div className="cm-acts"><Link className="cm-btn is-primary" href="/me/track#plans">기간권 보기</Link></div>

@@ -22,10 +22,10 @@ import { DOC_TYPE_KO, type ResearchDoc } from "@/lib/assistant/research-docs";
  */
 
 /**
- * 방침 적용일. **대표님이 날짜를 고르시면 채운다**(`docs/legal/privacy-careerpeak-consult-draft.md`
- * 를 `02-privacy.md` 에 옮기는 커밋과 같이). 비어 있는 동안 운영에서는 닫혀 있다.
+ * 방침 적용일(2026-10-31 대표 결정: 11월 7일, 그날로 7일 공지). `02-privacy.md` 의
+ * 1-5 · 2 · 4 · 8 · 11절과 같이 고친다. 그 전에는 운영에서 닫혀 있다.
  */
-export const CONSULT_POLICY_FROM: Date | null = null;
+export const CONSULT_POLICY_FROM: Date | null = new Date("2026-11-07T00:00:00+09:00");
 
 /** 동의 문구의 판. 아래 문구를 고치면 올린다. 기록에 이 값이 남는다 */
 export const CONSENT_VERSION = "cp-consult.1";

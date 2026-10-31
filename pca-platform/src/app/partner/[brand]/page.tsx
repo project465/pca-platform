@@ -13,7 +13,7 @@ import { publicCommerceGate } from "@/lib/public-gate";
 import { cookies } from "next/headers";
 import { JOB_COOKIE } from "@/lib/partner-job";
 import { RESEARCH_POLICY_FROM, researchOpen } from "@/lib/assistant/research-docs";
-import { consultOpen } from "@/lib/careerpeak-consult";
+import { CONSULT_POLICY_FROM, consultOpen } from "@/lib/careerpeak-consult";
 
 export const dynamic = "force-dynamic";
 
@@ -91,7 +91,7 @@ export default async function PartnerPage({
             {user ? (
               <Link href={open.href} className="sf-btn accent">{open.label}</Link>
             ) : (<>
-              <Link href="/signup?next=%2Fcores" className="sf-btn accent">무료 검사로 시작하기</Link>
+              <Link href={P.start?.href ?? "/signup?next=%2Fcores"} className="sf-btn accent">{P.start?.label ?? "무료 검사로 시작하기"}</Link>
               <Link href={`/login?next=${next}`} className="sf-btn ghost">이미 계정이 있어요</Link>
             </>)}
           </div>
@@ -120,7 +120,11 @@ export default async function PartnerPage({
               {!researchOpen()
                 ? `자료 읽기는 ${RESEARCH_POLICY_FROM.toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul", month: "long", day: "numeric" })}부터 열립니다. `
                 : ""}
-              {!consultOpen() ? "커리어피크 상담 신청은 개인정보처리방침에 이 목적을 더한 뒤 열립니다." : ""}
+              {!consultOpen()
+                ? (CONSULT_POLICY_FROM && Date.now() < CONSULT_POLICY_FROM.getTime()
+                  ? `커리어피크 상담 신청은 ${CONSULT_POLICY_FROM.toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul", month: "long", day: "numeric" })}부터 열립니다.`
+                  : "커리어피크 상담 신청은 준비 중입니다.")
+                : ""}
             </p>
           ) : null}
           <p className="pxwhat">{T("pxTrackNot")}</p>

@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import * as z from "zod/v4";
 import { query, queryOne } from "@/lib/db";
 import { isStaging } from "@/lib/env";
-import { activeCoreOrPick, EXPERIENCE_KINDS } from "@/lib/me-v3/platform";
+import { coreIfAny, EXPERIENCE_KINDS } from "@/lib/me-v3/platform";
 import { readOfficeText } from "@/lib/sheet-read";
 import { askStructured, aiReady, RESEARCH_MODEL, type AiBlock } from "./claude";
 import { clamp, menu, Out } from "./draft";
@@ -218,7 +218,10 @@ export async function readResearch(userId: string, bytes: Buffer): Promise<Resea
   if (prev) return { ok: true, id: prev.id, reused: true };
   if (await researchUsedThisMonth(userId) >= RESEARCH_MONTHLY_CAP) return { ok: false, reason: "cap" };
 
-  const core = await activeCoreOrPick(userId);
+  /* 전공은 경험 초안의 보기 목록을 고르는 데만 쓴다. **검사 전에 자료부터 올린 사람**
+     (커리어피크 연구자, `mat-access.ts` 의 researchFirst)은 전공이 없을 수 있다: 그때는
+     초안을 만들지 않고 정리만 한다. 전공 고르는 자리로 보내지 않는다(올리던 파일이 사라진다) */
+  const core = await coreIfAny(userId).catch(() => null);
   const fileKind: "pdf" | "docx" | "pptx" | "text" =
     sn.kind === "pdf" ? "pdf" : sn.kind === "hwpx" ? "text" : sn.kind;
   const blocks: AiBlock[] = sn.kind === "pdf"
@@ -229,7 +232,9 @@ export async function readResearch(userId: string, bytes: Buffer): Promise<Resea
     op: "assistant.research", schema: ResearchOut, system: SYSTEM, model: RESEARCH_MODEL,
     blocks, maxTokens: 8000, effort: "medium", timeoutMs: 240_000,
     user: `종류 코드: ${EXPERIENCE_KINDS.map((k) => `${k.code}(${k.label})`).join(", ")}\n\n` +
-      `경험 초안의 보기 목록(이 사람의 전공):\n${menu(core)}\n\n위 자료를 읽고 정리하세요.`,
+      (core
+        ? `경험 초안의 보기 목록(이 사람의 전공):\n${menu(core)}\n\n위 자료를 읽고 정리하세요.`
+        : "이 사람은 아직 전공을 고르지 않았습니다. items 는 빈 배열로 두고, 위 자료를 읽고 정리하세요."),
   });
   if (!r.ok) return { ok: false, reason: r.reason === "refusal" ? "refusal" : "error" };
   const v = r.value;
@@ -257,8 +262,9 @@ export async function readResearch(userId: string, bytes: Buffer): Promise<Resea
     ? await journalMetrics(doi, v.doc_type === "paper" ? venue : null) : null;
 
   /* 경험 초안은 그 사람 전공의 보기 문장만 남긴다(`clamp`) */
-  const items = v.items.slice(0, 3).map((it) => ({ ...clamp(core, it), from: "file" as const }))
-    .filter((x) => x.title.length > 0);
+  const items = core
+    ? v.items.slice(0, 3).map((it) => ({ ...clamp(core, it), from: "file" as const })).filter((x) => x.title.length > 0)
+    : [];
   const ids: string[] = [];
   for (const it of items) {
     const row = await queryOne<{ id: string }>(
@@ -274,7 +280,7 @@ export async function readResearch(userId: string, bytes: Buffer): Promise<Resea
      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11::jsonb,$12::text[],$13::jsonb,$14::bigint[],$15,$16,$17)
      ON CONFLICT (user_id, sha256) DO UPDATE SET purge_after = (now() + interval '1 year')::date
      RETURNING id::text`,
-    [userId, core, sha, fileKind, v.doc_type, v.lang, cut(v.title, 200), venue,
+    [userId, core ?? "none", sha, fileKind, v.doc_type, v.lang, cut(v.title, 200), venue,
      v.year && v.year >= 1950 && v.year <= 2100 ? v.year : null, doi,
      JSON.stringify(data), terms, metrics ? JSON.stringify(metrics) : null, ids,
      r.model, r.usage?.input ?? null, r.usage?.output ?? null]);

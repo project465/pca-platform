@@ -41,6 +41,8 @@ async function main() {
   env("MAIL_HOST", "smtp.example.test");
   env("APP_ENV", "production");
   ok("운영은 방침 적용일 전에는 닫힌다", CONSULT_POLICY_FROM === null ? !consultOpen() : consultOpen(new Date(CONSULT_POLICY_FROM.getTime() - 1)) === false);
+  ok("운영은 방침 적용일(2026-11-07 KST 0시)부터 열린다",
+    CONSULT_POLICY_FROM?.toISOString() === "2026-11-06T15:00:00.000Z" && consultOpen(CONSULT_POLICY_FROM));
 
   console.log("동의");
   env("APP_ENV", "staging");
@@ -62,7 +64,7 @@ async function main() {
   ok("답장은 신청자 메일로 간다", m.replyTo === "a@example.test");
   g.__dbOk = false; g.__sent = undefined;
   env("APP_ENV", "production");
-  if (CONSULT_POLICY_FROM === null) {
+  if (!consultOpen()) {
     const r3 = await requestConsult({ ...base, consent: true });
     ok("운영에서 닫혀 있으면 동의해도 보내지 않는다", !r3.ok && r3.reason === "closed");
   }

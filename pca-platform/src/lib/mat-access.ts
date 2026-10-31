@@ -1,5 +1,6 @@
 import { queryOne } from "@/lib/db";
 import { activeTrack, hasV3Result } from "@/lib/track";
+import { cameVia } from "@/lib/brand";
 
 /**
  * MAT 을 **무료로 한 번씩 써 보고 두 번째부터 기간권으로** 넘어가게 한다
@@ -41,6 +42,11 @@ export type MatAccess = {
   freeLeft: number;
   /** 도구를 화면에 세운다: 기간권이 있거나, 결과가 있어 무료로 써 볼 수 있다 */
   open: boolean;
+  /**
+   * 검사 결과 없이도 `내 자료 읽기` 를 쓸 수 있다(2026-10-31 대표 결정: 커리어피크로
+   * 들어온 연구자는 자료 올리기부터). **무료 횟수는 그대로 셈한다**(합쳐 2번)
+   */
+  researchFirst: boolean;
 };
 
 const COUNT: Record<MatUse, string> = {
@@ -71,7 +77,9 @@ export async function matAccess(userId: string): Promise<MatAccess> {
   const freeLeft = paid ? Infinity : Math.max(0, FREE_TOTAL - total);
   const left = {} as Record<MatUse, number>;
   for (const k of USES) left[k] = freeLeft;
-  return { paid, ready, used, left, freeLeft, open: paid || ready };
+  /* 결과가 없는 사람만 한 번 더 묻는다 */
+  const researchFirst = !paid && !ready && await cameVia(userId, "careerpeak");
+  return { paid, ready, used, left, freeLeft, open: paid || ready, researchFirst };
 }
 
 /** 이 사람이 지금 이 도구를 한 번 더 쓸 수 있는가와, 못 쓰면 그 까닭 */
@@ -80,6 +88,7 @@ export async function canUseMat(userId: string, use: MatUse): Promise<
 > {
   const a = await matAccess(userId);
   if (a.paid) return { ok: true, free: false };
-  if (!a.ready) return { ok: false, why: "needtest" };
+  /* 커리어피크로 들어온 사람은 자료 읽기만 검사 전에 연다. 다른 도구는 결과에서 시작한다 */
+  if (!a.ready && !(use === "research" && a.researchFirst)) return { ok: false, why: "needtest" };
   return a.left[use] > 0 ? { ok: true, free: true } : { ok: false, why: "free" };
 }
