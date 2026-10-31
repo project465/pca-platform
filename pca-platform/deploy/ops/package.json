@@ -18,6 +18,7 @@
     "pcu:diag": "node ops/pcu-diag.cjs",
     "staging:bootstrap": "node ops/staging-bootstrap.cjs",
     "staging:check": "node ops/staging-check.cjs",
-    "staging:reset-student": "node ops/staging-reset-student.cjs"
+    "staging:reset-student": "node ops/staging-reset-student.cjs",
+    "push:keys": "node -e \"const c=require('crypto').createECDH('prime256v1');c.generateKeys();console.log('VAPID_PUBLIC_KEY='+c.getPublicKey('base64url'));console.log('VAPID_PRIVATE_KEY='+c.getPrivateKey('base64url'))\""
   }
 }
