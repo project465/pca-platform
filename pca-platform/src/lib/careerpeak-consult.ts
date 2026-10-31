@@ -34,7 +34,7 @@ export const CONSULT_SENDS = ["한 장 요약(제목 · 요약 · 방법 · 핵�
 export const CONSULT_KEEPS = ["올린 원본 파일", "지원서 문장 뼈대 · 면접 질문", "검사 점수와 결과"];
 export const CONSENT_TEXT =
   "위 한 장 요약과 연락처를 커리어피크 상담 연결을 위해 커리어피크(주식회사 에이치에이연구원)에 보내는 데 동의합니다. " +
-  "상담이 끝난 뒤 1년이 지나면 지웁니다. 동의하지 않으셔도 MAT 은 그대로 쓰실 수 있습니다.";
+  "상담이 끝난 뒤 1년이 지나면 지웁니다. 동의하지 않으셔도 다른 기능은 그대로 쓰실 수 있습니다.";
 
 export function consultTo(): string | null {
   const t = (process.env.CAREERPEAK_CONSULT_EMAIL ?? "").trim();
@@ -114,7 +114,7 @@ export async function requestConsult(opts: {
   if (!row) return { ok: false, reason: "db" };
 
   const text = [
-    "CareerMatri MAT 에서 커리어피크 상담을 신청하셨습니다.",
+    "커리어피크 AI 취업 비서(CareerMatri)에서 상담 신청이 들어왔습니다.",
     "",
     `이름: ${opts.name || "(적지 않음)"}`,
     `메일: ${opts.email}`,
@@ -125,7 +125,7 @@ export async function requestConsult(opts: {
     onePager(opts.doc),
     "",
     "────────────────────────",
-    "MAT 이 올린 자료를 읽고 정리한 것입니다. 원본 파일은 보내지 않으며 CareerMatri 도 저장하지 않습니다.",
+    "AI 취업 비서가 올린 자료를 읽고 정리한 것입니다. 원본 파일은 보내지 않으며 CareerMatri 도 저장하지 않습니다.",
     "이 메일의 개인정보는 상담 연결에만 쓰고, 상담이 끝난 뒤 1년이 지나면 지워 주세요(개인정보처리방침).",
   ].join("\n");
   /* 받는 주소는 Railway 변수 `CAREERPEAK_CONSULT_EMAIL`(코드에 적지 않는다). 지금 알림 메일과
@@ -133,7 +133,7 @@ export async function requestConsult(opts: {
   const who = opts.name.replace(/[\r\n]/g, " ").trim() || "이름 없음";
   const ok = await sendStaffAlert({
     to, fromName: "CareerMatri",
-    subject: `[커리어피크 상담 신청] ${clip(who, 30)} · ${clip(opts.doc.title, 50)} (CP-${row.id})`,
+    subject: `[커리어피크 AI 취업 비서] 커리어피크 상담 신청 · ${clip(who, 30)} · ${clip(opts.doc.title, 50)} (CP-${row.id})`,
     text, replyTo: opts.email,
   });
   await query(

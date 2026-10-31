@@ -55,13 +55,13 @@ export default async function PartnerPage({
      **커리어피크 쪽에서는 보지 않는다**(`takesJob`): 잡인더스트리에서 남은 쿠키가
      있어도 "보던 공고" 안내가 뜨지 않는다 */
   const hasJob = P.takesJob && Boolean((await cookies()).get(JOB_COOKIE)?.value);
-  const open = hasJob ? { href: "/me/track/import", label: "보던 공고와 비교하기" } : (P.open ?? { href: "/me/track", label: "MAT 열기" });
+  const open = hasJob ? { href: "/me/track/import", label: "보던 공고와 비교하기" } : (P.open ?? { href: "/me/track", label: `${P.label} 열기` });
   const next = encodeURIComponent(open.href);
 
   const steps: [string, string][] = P.steps ?? [
     ["무료 검사로 시작합니다", "전공을 고르고 기본 검사를 풀면 내 경험이 어느 판단까지 설명되는지 결과로 나옵니다."],
     ["비어 있는 부분을 확인합니다", "결과에서 아직 근거가 없는 판단과, 그걸 채울 다음 할 일을 봅니다."],
-    ["MAT 이 한 주씩 챙깁니다", "공고를 붙여 두면 마감을 알려 드리고, 요구 항목마다 내 경험이 있는지 하나씩 짚어 드립니다."],
+    [`${P.label}가 한 주씩 챙깁니다`, "공고를 붙여 두면 마감을 알려 드리고, 요구 항목마다 내 경험이 있는지 하나씩 짚어 드립니다."],
   ];
 
   return (
@@ -140,7 +140,7 @@ export default async function PartnerPage({
                     <Link href={user ? `/checkout?product=${encodeURIComponent(t.code)}` : "/signup?next=%2Fme%2Ftrack"}
                       className={t.days === 90 ? "sf-btn accent sm" : "sf-btn ghost sm"}
                       style={{ marginTop: 10, alignSelf: "flex-start" }}>
-                      {T("pxTrackBuy")}
+                      {P.label} 시작하기
                     </Link>
                   ) : (
                     <LaunchNotify product={t.code} lang="ko" source={`app:/partner/${brand}`}

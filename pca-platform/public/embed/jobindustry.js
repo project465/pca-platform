@@ -1,5 +1,5 @@
 /*
- * 잡인더스트리 · AI취업지원도우미 떠 있는 단추 (CareerMatri MAT)
+ * 잡인더스트리 · AI 취업 도우미 떠 있는 단추 (CareerMatri MAT)
  *
  * 붙이는 법: 잡인더스트리 공통 하단(또는 머리) 코드 칸에 한 줄.
  *   <script src="https://app.careermatri.com/embed/jobindustry.js" defer></script>
@@ -18,7 +18,7 @@
   if (!me || me.hasAttribute("data-off") || document.getElementById("cm-mat-fab")) return;
   var base = "https://app.careermatri.com";
   try { base = new URL(me.src).origin; } catch (e) { /* 그대로 */ }
-  var label = me.getAttribute("data-label") || "AI취업지원도우미";
+  var label = me.getAttribute("data-label") || "AI 취업 도우미";
   var left = me.getAttribute("data-side") === "left";
 
   function mount() {

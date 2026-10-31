@@ -10,6 +10,15 @@ import { livePostingsOf } from "./posting";
 import { postingsForMe } from "./match";
 import { opFail, ref } from "@/lib/oplog";
 import { purgeConsults } from "@/lib/careerpeak-consult";
+import { brandOf, serviceName } from "@/lib/brand";
+
+/**
+ * 기기 알림 글의 `MAT` 을 그 사람이 들어온 입구의 이름으로 바꾼다(잡인더스트리
+ * `AI 취업 도우미`, 커리어피크 `AI 취업 비서`). 입구가 없으면 그대로다
+ */
+function named<T extends { body: string }>(t: T, svc: string): T {
+  return svc === "MAT" ? t : { ...t, body: t.body.replace(/MAT/g, svc) };
+}
 
 /**
  * MAT이 먼저 말을 거는 자리.
@@ -172,11 +181,12 @@ export async function autoNudges(userId: string, opts: { paid: boolean; now?: Da
     const e = end[0];
     if (e?.ends && e.left !== null && e.left <= 10) {
       const step = e.left <= 0 ? "d0" : e.left <= 3 ? "d3" : "d10";
+      const svc = serviceName(await brandOf(userId), en ? "en" : "ko");
       const ok = await put(userId, {
         kind: "renew",
         title: en
-          ? (e.left <= 0 ? "Your MAT pass ends today" : `Your MAT pass ends in ${e.left} day${e.left === 1 ? "" : "s"}`)
-          : e.left <= 0 ? "MAT 이용 기간이 오늘 끝납니다" : `MAT 이용 기간이 ${e.left}일 남았습니다`,
+          ? (e.left <= 0 ? `Your ${svc} pass ends today` : `Your ${svc} pass ends in ${e.left} day${e.left === 1 ? "" : "s"}`)
+          : e.left <= 0 ? `${svc} 이용 기간이 오늘 끝납니다` : `${svc} 이용 기간이 ${e.left}일 남았습니다`,
         body: en
           ? "Buy again before it ends and the new days start the day after. Your records and results stay either way."
           : "끝나기 전에 다시 사면 끝나는 날 다음 날부터 이어 붙습니다. 끝나도 적어 둔 경험과 결과는 그대로 남습니다.",
@@ -226,25 +236,30 @@ export async function runAssistantTick(now = new Date()): Promise<{
     const r = await nudgeUser(u.id, now);
     const a = await autoNudges(u.id, { paid: true, now }).catch(() => ({ renew: 0, match: 0 }));
     const lang = await wsLang(u.id).catch(() => "ko" as const);
+    const brand = await brandOf(u.id);
+    const svc = serviceName(brand, lang);
     weekly += r.weekly;
     deadline += r.deadline;
     renew += a.renew;
     match += a.match;
     if (a.renew + a.match > 0 && pushReady()) {
-      await sendPush(u.id, { ...(lang === "en" ? PUSH_TEXT_EN : PUSH_TEXT)[a.renew > 0 ? "renew" : "match"] })
+      await sendPush(u.id, named({ ...(lang === "en" ? PUSH_TEXT_EN : PUSH_TEXT)[a.renew > 0 ? "renew" : "match"] }, svc))
         .catch(() => undefined);
     }
     /* 기기 알림(PWA). **새로 쌓인 알림이 있을 때만** 한 번 보낸다: 알림 줄이
        같은 주에 두 번 쌓이지 않으므로(`dedupe_key`) 알림도 두 번 뜨지 않는다.
        글에는 공고 이름도 할 일 문장도 적지 않는다(잠긴 화면에 그대로 뜬다) */
     if (r.weekly + r.deadline > 0 && pushReady()) {
-      await sendPush(u.id, { ...(lang === "en" ? PUSH_TEXT_EN : PUSH_TEXT)[r.deadline > 0 ? "deadline" : "weekly"] })
+      await sendPush(u.id, named({ ...(lang === "en" ? PUSH_TEXT_EN : PUSH_TEXT)[r.deadline > 0 ? "deadline" : "weekly"] }, svc))
         .catch(() => undefined);
     }
     if (u.email_digest && u.email && r.weekly + r.deadline + a.renew + a.match > 0) {
       await enqueue({
         kind: "assistant_digest", userId: u.id,
-        payload: { n: String(r.weekly + r.deadline + a.renew + a.match), deadlines: String(r.deadline) },
+        payload: {
+          n: String(r.weekly + r.deadline + a.renew + a.match), deadlines: String(r.deadline),
+          ...(brand ? { svc } : {}),
+        },
         dedupeKey: `assistant_digest:${u.id}:${wk}:${r.deadline}`,
         locale: lang,
       });

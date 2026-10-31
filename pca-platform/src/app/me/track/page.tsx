@@ -191,9 +191,10 @@ export default async function Track({
     <CmShell active="/me/track" title="MAT" major={major ?? undefined} lang={lang}>
       <CmHead
         kicker={state.on ? t("AI 취업비서 · 이용 중") : t("AI 취업비서")}
-        title="MAT"
-        /* 잡인더스트리 단추로 들어온 사람에게는 그 이름을 남긴다. 같은 MAT 이다 */
-        meta={partner && !en ? `${PARTNERS[partner].via} 들어오셨습니다` : undefined}
+        /* 제휴 입구로 들어온 사람에게는 그 사이트의 이름을 쓴다(2026-10-31 대표 결정:
+           잡인더스트리 `AI 취업 도우미`, 커리어피크 `AI 취업 비서`). 같은 MAT 이다 */
+        title={partner ? (en ? PARTNERS[partner].labelEn : PARTNERS[partner].label) : "MAT"}
+        meta={partner ? (en ? PARTNERS[partner].viaEn : `${PARTNERS[partner].via} 들어오셨습니다`) : undefined}
         lead={t("지원하는 동안 한 주씩 챙기는 취업비서입니다. 매주 브리핑에 가까운 마감, 이번 주 할 일 하나, 여러 공고가 함께 요구하는데 아직 비어 있는 것을 모읍니다. 공고마다 내 경험을 비교해 보고, 지원서 문장 뼈대를 내 기록으로 엮습니다. 지원은 직접 하시고, 자동으로 결제되지 않습니다.")}
       />
 

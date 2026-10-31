@@ -42,8 +42,8 @@ async function main(): Promise<void> {
     && rc.headers.get("location") === "/partner/careerpeak"
     && /cm_brand=careerpeak/.test(rc.headers.get("set-cookie") ?? ""), `${rc.status} ${rc.headers.get("location")}`);
   const cp = await (await fetch(`${BASE}/partner/careerpeak`)).text();
-  ok("커리어피크 쪽 제목이 커리어피크 MAT 이고 '석·박사 자료' 를 말한다",
-    cp.includes("커리어피크 MAT") && cp.includes("논문") && cp.includes("MAT이 하는 일") && !cp.includes("AI취업지원도우미"));
+  ok("커리어피크 쪽 제목이 커리어피크 AI 취업 비서이고 '석·박사 자료' 를 말한다",
+    cp.includes("커리어피크 AI 취업 비서") && cp.includes("논문") && cp.includes("AI 취업 비서가 하는 일") && !cp.includes("AI 취업 도우미"));
   ok("커리어피크 쪽이 연구자 흐름(한 장 요약 → 연구직 · R&D 공고 → 커리어피크 상담)을 말한다",
     cp.includes("한 장 요약") && cp.includes("R&amp;D 공고") && cp.includes("커리어피크 상담으로 이어집니다")
     && cp.includes("자료 올리기로 시작하기") && cp.includes("next=%2Fme%2Ftrack%2Fresearch"));
@@ -67,7 +67,7 @@ async function main(): Promise<void> {
       await p.goto(`${BASE}/from/jobindustry`, { waitUntil: "networkidle" });
       ok(`[${name}] 단추를 누르면 제휴 쪽이 열린다`, p.url().endsWith("/partner/jobindustry"), p.url());
       const h1 = (await p.locator("h1").first().innerText().catch(() => "")).trim();
-      ok(`[${name}] 제목이 잡인더스트리 AI취업지원도우미다`, h1 === "잡인더스트리 AI취업지원도우미", h1);
+      ok(`[${name}] 제목이 잡인더스트리 AI 취업 도우미다`, h1 === "잡인더스트리 AI 취업 도우미", h1);
       const body = await p.locator("body").innerText();
       ok(`[${name}] 1년권·365 가 없다`, !/365|1년|연간|12개월|6개월/.test(body));
       ok(`[${name}] 합격을 약속하지 않는다`, !/합격 보장|합격을 보장|합격률/.test(body));
@@ -97,7 +97,7 @@ async function main(): Promise<void> {
       await p.goto(`${BASE}/me/track`, { waitUntil: "networkidle" });
       const t = await p.locator("body").innerText();
       ok("[desktop] MAT 이 열린다", /MAT/.test(t) && !/오류|문제가 생겼/.test(t));
-      ok("[desktop] MAT 머리에 잡인더스트리 한 줄이 선다", t.includes("잡인더스트리 AI취업지원도우미로 들어오셨습니다"));
+      ok("[desktop] MAT 머리에 잡인더스트리 한 줄이 선다", t.includes("잡인더스트리 AI 취업 도우미로 들어오셨습니다"));
       if (OUT) await p.screenshot({ path: `${OUT}/partner-mat__${name}.png`, fullPage: false });
       ok("[desktop] 브라우저 오류가 없다", errs.length === 0, errs[0] ?? "");
       await ctx.close();

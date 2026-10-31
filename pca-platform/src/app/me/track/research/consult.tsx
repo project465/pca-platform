@@ -35,7 +35,7 @@ export default function CareerpeakConsult({ docs, preview, name, email, sends, k
         <h3 style={{ marginTop: 4 }}>이 정리로 연구직 · R&amp;D 상담을 받아 보세요</h3>
         <p className="cm-none">
           커리어피크 상담가가 한 장 요약을 읽고, 맞는 연구직 · R&amp;D 자리와 지원 방향을 메일로 알려 드립니다.
-          신청하지 않아도 MAT 은 그대로 쓰실 수 있습니다.
+          신청하지 않아도 다른 기능은 그대로 쓰실 수 있습니다.
         </p>
 
         <form action={act} style={{ marginTop: 14 }}>

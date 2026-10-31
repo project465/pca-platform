@@ -390,7 +390,9 @@
 /** 제휴 입구 한 줄을 입구마다 손으로 적은 말(`PARTNERS.via`)로 낸다: 커리어피크 MAT 이 붙었다 — V75 */
 /** 잡인더스트리 공고 화면의 단추로 넘어온 공고를 `보던 공고 맞대 보기` 에서 가져와 맞대 본다(`partner-job.ts`) — V76 */
 /** `내 자료 읽기` 결과 아래 `커리어피크 상담 신청` 칸(보내는 것 · 보내지 않는 것 · 동의 칸 · 한 장 요약 펼쳐 보기) — V77 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V77";
+/** 제휴 입구로 온 사람의 MAT 머리 제목이 그 사이트의 이름이 된다(잡인더스트리 `AI 취업 도우미` ·
+ *  커리어피크 `AI 취업 비서`), 영어 작업공간에도 그 한 줄이 선다 — V78 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V78";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -451,7 +453,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V77";
 /** 내 자료로 찾기 안내 · 무료 남은 횟수에 자료 읽기 */
 /** MAT 무료가 `아무 도구나 합쳐 2번` 이 됐다(남은 횟수 한 줄 · 다 쓴 안내 · 보던 공고 화면) */
 /** `맞대 보기` 를 `비교하기` 로(2026-10-31 대표 지적: 너무 AI 같다). 영어 사전의 열쇠도 같이 고쳤다 */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.56";
+/** 제휴별 이름(잡인더스트리 AI 취업 도우미 · 커리어피크 AI 취업 비서)과 그 영어 이름 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.57";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

@@ -2,8 +2,10 @@ import { cookies } from "next/headers";
 import { query, queryOne } from "@/lib/db";
 
 /**
- * 제휴 입구(2026-10-30). 잡인더스트리가 MAT 을 `AI취업지원도우미` 라는
- * 이름으로 회원에게 붙인다.
+ * 제휴 입구(2026-10-30). 잡인더스트리와 커리어피크가 MAT 을 **각자의 이름으로**
+ * 회원에게 붙인다(2026-10-31 대표 결정): 잡인더스트리는 `AI 취업 도우미`,
+ * 커리어피크는 `AI 취업 비서`. 그 입구로 온 사람에게는 제휴 화면 · MAT 머리 ·
+ * 알림 · 메일이 그 이름을 쓴다(`serviceName`). 다른 사람에게는 지금 이름(MAT) 그대로다.
  *
  * **넘어오는 방식은 링크 하나다**(대표 결정 (가)). 잡인더스트리 사이트의
  * 단추가 `/from/jobindustry` 를 부르고, 그 자리가 쿠키를 심은 뒤 제휴 소개
@@ -22,8 +24,12 @@ export type Partner = "jobindustry" | "careerpeak";
 export const PARTNERS: Record<Partner, {
   /** 사람이 읽는 이름 */
   name: string;
-  /** 그 사이트에서 MAT 을 부르는 이름 */
+  /** 그 사이트에서 MAT 을 부르는 이름. 알림 · 메일에도 이 이름을 쓴다 */
   label: string;
+  /** 영어 작업공간에서 부르는 이름 */
+  labelEn: string;
+  /** 영어 작업공간의 "~로 들어오셨습니다" 한 줄 */
+  viaEn: string;
   /** 돌아가는 곳 */
   home: string;
   /** "~로 들어오셨습니다" 앞에 붙는 말. 조사가 이름 끝소리를 따르므로 손으로 적는다 */
@@ -48,24 +54,28 @@ export const PARTNERS: Record<Partner, {
 }> = {
   jobindustry: {
     name: "잡인더스트리",
-    label: "AI취업지원도우미",
+    label: "AI 취업 도우미",
+    labelEn: "AI Job Helper",
     home: "https://www.jobindustry.co.kr",
-    via: "잡인더스트리 AI취업지원도우미로",
-    intro: "잡인더스트리의 AI취업지원도우미는 CareerMatri의 MAT으로 운영합니다. 검사로 내 경험을 정리하고, 지원할 공고와 비교해 이번 주에 할 일을 알려 드립니다.",
-    does: "AI취업지원도우미가 하는 일",
+    via: "잡인더스트리 AI 취업 도우미로",
+    viaEn: "You came in through JobIndustry's AI Job Helper",
+    intro: "잡인더스트리의 AI 취업 도우미는 CareerMatri가 운영합니다. 검사로 내 경험을 정리하고, 지원할 공고와 비교해 이번 주에 할 일을 알려 드립니다.",
+    does: "AI 취업 도우미가 하는 일",
     takesJob: true,
   },
-  /* 커리어피크는 이름을 바꾸지 않고 MAT 그대로 쓴다(대표 결정 2026-10-31).
+  /* 커리어피크는 `AI 취업 비서` 라고 부른다(대표 결정 2026-10-31 17:55. 그 전에는 MAT).
      **연구자 · 대학원생 흐름이다**(같은 날 대표 결정): 논문 · 발표 자료 · 이력서를
      올리면 → 기업이 읽는 한 장 요약 → 연구직 · R&D 공고 → 커리어피크 상담.
      잡인더스트리의 "보던 공고" 안내는 이 쪽에 보이지 않는다(`takesJob`) */
   careerpeak: {
     name: "커리어피크",
-    label: "MAT",
+    label: "AI 취업 비서",
+    labelEn: "AI Career Assistant",
     home: "https://www.careerpeak.co.kr",
-    via: "커리어피크 MAT으로",
-    intro: "커리어피크 회원은 CareerMatri의 MAT을 그대로 씁니다. 논문 · 발표 자료 · 이력서를 올리면 기업이 읽는 한 장 요약으로 정리하고, 맞는 연구직 · R&D 공고를 찾아 드립니다. 원하시면 그 요약으로 커리어피크 상담을 받으실 수 있습니다.",
-    does: "MAT이 하는 일",
+    via: "커리어피크 AI 취업 비서로",
+    viaEn: "You came in through CareerPeak's AI Career Assistant",
+    intro: "커리어피크 회원은 CareerMatri가 운영하는 AI 취업 비서를 씁니다. 논문 · 발표 자료 · 이력서를 올리면 기업이 읽는 한 장 요약으로 정리하고, 맞는 연구직 · R&D 공고를 찾아 드립니다. 원하시면 그 요약으로 커리어피크 상담을 받으실 수 있습니다.",
+    does: "AI 취업 비서가 하는 일",
     doesList: [
       "자료 읽기 — 논문(영어 포함) · 학위논문 · 발표 자료 · 이력서를 읽고 무엇을 풀었는지, 어떤 방법을 썼는지, 무엇이 나왔는지 정리합니다. 수치는 자료에 적힌 그대로 옮깁니다.",
       "한 장 요약 — 연구 내용을 회사와 연구소가 읽는 직무의 말로 옮겨, 기업이 한 번에 읽을 수 있는 한 장으로 묶습니다.",
@@ -117,4 +127,21 @@ export async function cameVia(userId: string, brand: Partner): Promise<boolean> 
     `SELECT count(*)::int AS n FROM brand_touches WHERE user_id = $1 AND brand = $2`, [userId, brand],
   ).catch(() => null);
   return (r?.n ?? 0) > 0;
+}
+
+/** 이 사람이 마지막으로 들어온 제휴 입구. 없거나 읽지 못하면 null */
+export async function brandOf(userId: string): Promise<Partner | null> {
+  const r = await queryOne<{ brand: string }>(
+    `SELECT brand FROM brand_touches WHERE user_id = $1 ORDER BY last_seen_at DESC LIMIT 1`, [userId],
+  ).catch(() => null);
+  return isPartner(r?.brand) ? r!.brand as Partner : null;
+}
+
+/**
+ * 알림 · 메일에서 부르는 이름. 제휴 입구로 온 사람은 그 사이트의 이름
+ * (`AI 취업 도우미` · `AI 취업 비서`), 그 밖의 사람은 지금 이름 그대로(MAT).
+ */
+export function serviceName(brand: Partner | null, lang: "ko" | "en" = "ko"): string {
+  if (!brand) return "MAT";
+  return lang === "en" ? PARTNERS[brand].labelEn : PARTNERS[brand].label;
 }

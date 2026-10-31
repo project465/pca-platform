@@ -32,19 +32,19 @@ export default async function ImportPage({ searchParams }: { searchParams: Promi
 
   return (
     <CmShell active="/me/track" title="MAT">
-      <CmHead kicker="잡인더스트리 AI취업지원도우미" title="보던 공고와 비교하기"
+      <CmHead kicker="잡인더스트리 AI 취업 도우미" title="보던 공고와 비교하기"
         lead="잡인더스트리에서 보시던 공고를 읽고, 요구 항목마다 내 경험과 연구 기록이 있는지 하나씩 짚어 드립니다." />
       {sp.e && ERR[sp.e] ? <p className="cm-fail">{ERR[sp.e]}</p> : null}
       {!url ? (
         <div className="cm-panel is-one"><div className="cm-pane">
           <p className="cm-row"><b>기억해 둔 공고가 없습니다</b>
-            <span>잡인더스트리 공고 화면의 AI취업지원도우미 단추를 누르면 그 공고가 여기로 옵니다. 공고 본문을 직접 붙여 넣어도 됩니다.</span></p>
+            <span>잡인더스트리 공고 화면의 AI 취업 도우미 단추를 누르면 그 공고가 여기로 옵니다. 공고 본문을 직접 붙여 넣어도 됩니다.</span></p>
           <div className="cm-acts"><Link className="cm-btn is-primary" href="/me/track#posting">공고 붙여 넣기</Link></div>
         </div></div>
       ) : !acc.ready && !acc.paid ? (
         <div className="cm-panel is-one"><div className="cm-pane">
           <p className="cm-row"><b>먼저 무료 검사부터</b>
-            <span>MAT 은 검사 결과에서 시작합니다. 검사를 마치고 이 화면으로 돌아오시면 보던 공고와 바로 비교해 드립니다. 공고는 7일 동안 기억해 둡니다.</span></p>
+            <span>AI 취업 도우미는 검사 결과에서 시작합니다. 검사를 마치고 이 화면으로 돌아오시면 보던 공고와 바로 비교해 드립니다. 공고는 7일 동안 기억해 둡니다.</span></p>
           <div className="cm-acts"><Link className="cm-btn is-primary" href="/cores">무료 검사 시작</Link></div>
         </div></div>
       ) : (

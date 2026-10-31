@@ -1,4 +1,4 @@
-# 잡인더스트리 · AI취업지원도우미 단추
+# 잡인더스트리 · AI 취업 도우미 단추
 
 잡인더스트리(www.jobindustry.co.kr)에 붙이는 단추다. 누르면 같은 탭에서
 `https://app.careermatri.com/from/jobindustry` 로 가고, 거기서 잡인더스트리
@@ -31,5 +31,5 @@ https://app.careermatri.com/from/jobindustry
 
 ## 확인
 
-붙인 뒤 단추를 눌러 `잡인더스트리 AI취업지원도우미` 제목이 뜨면 된다.
+붙인 뒤 단추를 눌러 `잡인더스트리 AI 취업 도우미` 제목이 뜨면 된다.
 제목 대신 커리어매트리 홈이 뜨면 주소의 `jobindustry` 철자가 틀린 것이다.

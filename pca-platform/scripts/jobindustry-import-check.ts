@@ -77,7 +77,7 @@ async function main(): Promise<void> {
     await p0.goto(`http://${FAKE}/job/1`, { waitUntil: "load" });
     const fab = p0.locator("#cm-mat-fab");
     await fab.waitFor({ timeout: 8000 }).catch(() => undefined);
-    ok("잡인더스트리 화면에 떠 있는 단추가 선다", await fab.count() === 1 && (await fab.innerText()).includes("AI취업지원도우미"));
+    ok("잡인더스트리 화면에 떠 있는 단추가 선다", await fab.count() === 1 && (await fab.innerText()).includes("AI 취업 도우미"));
     const box = await fab.boundingBox();
     ok("단추는 누르기 넉넉하고 한 줄이다(44~60px)", (box?.height ?? 0) >= 44 && (box?.height ?? 0) <= 60, String(box?.height));
     await fab.click();
