@@ -4,7 +4,7 @@ import { matAccess } from "@/lib/mat-access";
 import { settingsOf } from "@/lib/assistant/settings";
 import { aiReady } from "@/lib/assistant/claude";
 import {
-  DOC_TYPE_KO, RESEARCH_MONTHLY_CAP, researchDocsOf, researchOpen, researchUsedThisMonth, type ResearchDoc,
+  DOC_TYPE_KO, RESEARCH_MONTHLY_CAP, researchDocsOf, researchOpen, touchResearch, researchUsedThisMonth, type ResearchDoc,
 } from "@/lib/assistant/research-docs";
 import { CmShell, CmHead } from "../../shell";
 import { SectionHeader } from "../../ui";
@@ -26,6 +26,7 @@ export async function generateMetadata() {
  */
 export default async function ResearchPage() {
   const user = await requireUser();
+  await touchResearch(user.id);
   const [acc, settings, used, docs] = await Promise.all([
     matAccess(user.id), settingsOf(user.id), researchUsedThisMonth(user.id), researchDocsOf(user.id),
   ]);

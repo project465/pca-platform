@@ -175,6 +175,7 @@
     "secrets:check": "tsx scripts/secrets-check.ts",
     "errors:check": "tsx scripts/errors-check.ts",
     "mat:research": "tsx scripts/research-check.ts",
+    "mat:auto": "tsx scripts/mat-auto-check.ts",
     "mat:free": "tsx scripts/mat-free-check.ts",
     "partner:check": "tsx scripts/partner-check.ts",
     "routes:check": "tsx scripts/routes-check.ts",

@@ -7,6 +7,7 @@ import { coreIfAny } from "@/lib/me-v3/platform";
 import { PUSH_TEXT, PUSH_TEXT_EN, buildBrief, weeklyNudgeText, weeklyNudgeTextEn } from "./brief";
 import { wsLang } from "@/lib/me-v3/ws-lang";
 import { livePostingsOf } from "./posting";
+import { postingsForMe } from "./match";
 import { opFail, ref } from "@/lib/oplog";
 
 /**
@@ -146,13 +147,70 @@ export async function nudgeUser(userId: string, now = new Date()): Promise<{
 }
 
 /**
+ * **기간권 끝을 미리 알리고, 새로 겹치는 공고를 알린다**(2026-10-31 · 100% 자동화).
+ *
+ * - renew: 기간권이 끝나기 10일 전 · 3일 전 · 끝나는 날 한 번씩. 이어 산 기간이 있으면 마지막
+ *   끝나는 날로 센다. 같은 끝날 · 같은 단계는 한 번만(`dedupe_key`)
+ * - match: 이번 주에 새로 모인 공고 가운데 내 자료와 겹치는 것이 있으면 주에 한 번
+ *
+ * **새 종류는 `db/schema_mat_auto.sql` 이 올라가야 쌓인다.** 그 전에는 줄 넣기가 실패하고,
+ * 그 실패는 여기서 삼킨다: 알림 하나 때문에 밤 당번이 멈추면 안 된다.
+ */
+export async function autoNudges(userId: string, opts: { paid: boolean; now?: Date }): Promise<{
+  renew: number; match: number;
+}> {
+  const now = opts.now ?? new Date();
+  const en = (await wsLang(userId).catch(() => "ko")) === "en";
+  let renew = 0, match = 0;
+  if (opts.paid) {
+    const end = await query<{ ends: string; left: number }>(
+      `SELECT max(ends_at)::text AS ends,
+              (max(ends_at) AT TIME ZONE 'Asia/Seoul')::date - (now() AT TIME ZONE 'Asia/Seoul')::date AS left
+         FROM entitlements WHERE user_id = $1 AND kind = 'track' AND status = 'active' AND ends_at > now()`,
+      [userId]).catch(() => []);
+    const e = end[0];
+    if (e?.ends && e.left !== null && e.left <= 10) {
+      const step = e.left <= 0 ? "d0" : e.left <= 3 ? "d3" : "d10";
+      const ok = await put(userId, {
+        kind: "renew",
+        title: en
+          ? (e.left <= 0 ? "Your MAT pass ends today" : `Your MAT pass ends in ${e.left} day${e.left === 1 ? "" : "s"}`)
+          : e.left <= 0 ? "MAT 이용 기간이 오늘 끝납니다" : `MAT 이용 기간이 ${e.left}일 남았습니다`,
+        body: en
+          ? "Buy again before it ends and the new days start the day after. Your records and results stay either way."
+          : "끝나기 전에 다시 사면 끝나는 날 다음 날부터 이어 붙습니다. 끝나도 적어 둔 경험과 결과는 그대로 남습니다.",
+        href: "/me/track#plans", key: `renew:${e.ends.slice(0, 10)}:${step}`,
+      }).catch(() => false);
+      if (ok) renew += 1;
+    }
+  }
+  /* 이번 주에 새로 모인 공고 가운데 겹치는 것 */
+  const m = await postingsForMe(userId, 500).catch(() => null);
+  const since = now.getTime() - 7 * 86_400_000;
+  const fresh = (m?.rows ?? []).filter((r) => Date.parse(r.captured_at) >= since).length;
+  if (fresh > 0) {
+    const ok = await put(userId, {
+      kind: "match",
+      title: en ? `${fresh} new posting${fresh === 1 ? "" : "s"} overlap with your documents`
+        : `내 자료와 겹치는 새 공고 ${fresh}건`,
+      body: en ? "See which words overlapped and check the originals."
+        : "무엇이 겹쳤는지 보고, 마음에 드는 공고는 원문에서 직접 확인하세요.",
+      href: "/me/track/jobs", key: `match:${weekKey(now)}`,
+    }).catch(() => false);
+    if (ok) match += 1;
+  }
+  return { renew, match };
+}
+
+/**
  * 밤 당번이 부른다. 열려 있는 사람마다 한 번.
  *
  * **붙여 넣은 글의 기한도 여기서 지킨다.** 공고 본문은 1년, 경험 메모 초안은
  * 30일이 지나면 본문만 비운다.
  */
 export async function runAssistantTick(now = new Date()): Promise<{
-  users: number; weekly: number; deadline: number; mailed: number; purged: number;
+  users: number; weekly: number; deadline: number; renew: number; match: number; free: number;
+  mailed: number; purged: number;
 }> {
   const users = await query<{ id: string; email_digest: boolean; email: string | null }>(
     `SELECT DISTINCT u.id::text, COALESCE(s.email_digest, false) AS email_digest, u.email
@@ -161,13 +219,20 @@ export async function runAssistantTick(now = new Date()): Promise<{
       WHERE e.kind = 'track' AND e.status = 'active'
         AND e.starts_at <= now() AND e.ends_at > now()
         AND u.status = 'active'`).catch(() => []);
-  let weekly = 0, deadline = 0, mailed = 0;
+  let weekly = 0, deadline = 0, mailed = 0, renew = 0, match = 0, free = 0;
   const wk = weekKey(now);
   for (const u of users) {
     const r = await nudgeUser(u.id, now);
+    const a = await autoNudges(u.id, { paid: true, now }).catch(() => ({ renew: 0, match: 0 }));
     const lang = await wsLang(u.id).catch(() => "ko" as const);
     weekly += r.weekly;
     deadline += r.deadline;
+    renew += a.renew;
+    match += a.match;
+    if (a.renew + a.match > 0 && pushReady()) {
+      await sendPush(u.id, { ...(lang === "en" ? PUSH_TEXT_EN : PUSH_TEXT)[a.renew > 0 ? "renew" : "match"] })
+        .catch(() => undefined);
+    }
     /* 기기 알림(PWA). **새로 쌓인 알림이 있을 때만** 한 번 보낸다: 알림 줄이
        같은 주에 두 번 쌓이지 않으므로(`dedupe_key`) 알림도 두 번 뜨지 않는다.
        글에는 공고 이름도 할 일 문장도 적지 않는다(잠긴 화면에 그대로 뜬다) */
@@ -175,10 +240,10 @@ export async function runAssistantTick(now = new Date()): Promise<{
       await sendPush(u.id, { ...(lang === "en" ? PUSH_TEXT_EN : PUSH_TEXT)[r.deadline > 0 ? "deadline" : "weekly"] })
         .catch(() => undefined);
     }
-    if (u.email_digest && u.email && r.weekly + r.deadline > 0) {
+    if (u.email_digest && u.email && r.weekly + r.deadline + a.renew + a.match > 0) {
       await enqueue({
         kind: "assistant_digest", userId: u.id,
-        payload: { n: String(r.weekly + r.deadline), deadlines: String(r.deadline) },
+        payload: { n: String(r.weekly + r.deadline + a.renew + a.match), deadlines: String(r.deadline) },
         dedupeKey: `assistant_digest:${u.id}:${wk}:${r.deadline}`,
         locale: lang,
       });
@@ -192,5 +257,28 @@ export async function runAssistantTick(now = new Date()): Promise<{
     `UPDATE assistant_drafts SET note_text = NULL
       WHERE note_text IS NOT NULL AND purge_after < now() RETURNING id::text`).catch(() => []);
   const p3 = await purgeUploads();
-  return { users: users.length, weekly, deadline, mailed, purged: p1.length + p2.length + p3 };
+  /* 기간권이 없는 분 가운데 자료를 올린 분에게도 새로 겹치는 공고를 알린다. 세 건까지는
+     무료로 보이고 나머지는 기간권에서 열린다(`/me/track/jobs`). 주에 한 번이다 */
+  const freeUsers = await query<{ id: string }>(
+    `SELECT DISTINCT r.user_id::text AS id FROM research_docs r JOIN users u ON u.id = r.user_id
+      WHERE u.status = 'active' AND NOT EXISTS (
+        SELECT 1 FROM entitlements e WHERE e.user_id = r.user_id AND e.kind = 'track'
+           AND e.status = 'active' AND e.starts_at <= now() AND e.ends_at > now())`).catch(() => []);
+  for (const u of freeUsers) {
+    const a = await autoNudges(u.id, { paid: false, now }).catch(() => ({ renew: 0, match: 0 }));
+    if (a.match > 0) {
+      free += 1;
+      if (pushReady()) {
+        const lang = await wsLang(u.id).catch(() => "ko" as const);
+        await sendPush(u.id, { ...(lang === "en" ? PUSH_TEXT_EN : PUSH_TEXT).match }).catch(() => undefined);
+      }
+    }
+  }
+  /* 내 자료 읽기 정리는 마지막으로 쓴 날부터 1년(개인정보처리방침 1-5) */
+  const p4 = await query<{ id: string }>(
+    `DELETE FROM research_docs WHERE purge_after < now() RETURNING id::text`).catch(() => []);
+  return {
+    users: users.length, weekly, deadline, renew, match, free, mailed,
+    purged: p1.length + p2.length + p3 + p4.length,
+  };
 }

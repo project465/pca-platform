@@ -287,6 +287,12 @@ export type ResearchDoc = {
   terms: string[]; metrics: JournalMetrics | null; draft_ids: string[]; created_at: string;
 };
 
+/** 열어 본 날을 마지막으로 쓴 날로 친다(보관 1년이 그날부터 다시 센다) */
+export async function touchResearch(userId: string): Promise<void> {
+  await query(`UPDATE research_docs SET purge_after = (now() + interval '1 year')::date WHERE user_id = $1`, [userId])
+    .catch(() => undefined);
+}
+
 export async function researchDocsOf(userId: string): Promise<ResearchDoc[]> {
   return query<ResearchDoc>(
     `SELECT id::text, doc_type, file_kind, lang, title, venue, year, doi, data, terms, metrics,

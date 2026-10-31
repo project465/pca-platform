@@ -23,6 +23,7 @@ export type MatchedPosting = {
   source: string;
   source_url: string | null;
   closes_on: string | null;
+  captured_at: string;
   region_code: string | null;
   requirements: string[];
   /** 겹친 낱말(자료에서 뽑은 것 그대로) */
@@ -48,10 +49,10 @@ export async function postingsForMe(userId: string, limit = 30): Promise<{
 }> {
   const me = await myMatchTerms(userId);
   const pool = await query<{
-    id: string; source: string; source_url: string | null; closes_on: string | null;
+    id: string; source: string; source_url: string | null; closes_on: string | null; captured_at: string;
     region_code: string | null; raw_requirements: string[]; required_td: Record<string, unknown>;
   }>(
-    `SELECT id::text, source, source_url, closes_on::text, region_code, raw_requirements, required_td
+    `SELECT id::text, source, source_url, closes_on::text, captured_at::text, region_code, raw_requirements, required_td
        FROM v3_job_postings
       WHERE captured_at > now() - interval '180 days'
         AND (closes_on IS NULL OR closes_on >= (now() AT TIME ZONE 'Asia/Seoul')::date)
@@ -66,7 +67,8 @@ export async function postingsForMe(userId: string, limit = 30): Promise<{
     const score = hits.length * 2 + tdHits.length;
     if (!score) continue;
     rows.push({
-      id: p.id, source: p.source, source_url: p.source_url, closes_on: p.closes_on, region_code: p.region_code,
+      id: p.id, source: p.source, source_url: p.source_url, closes_on: p.closes_on,
+      captured_at: p.captured_at, region_code: p.region_code,
       requirements: (p.raw_requirements ?? []).slice(0, 8), hits, tdHits, score,
     });
   }

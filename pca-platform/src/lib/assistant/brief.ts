@@ -210,10 +210,14 @@ export function weeklyNudgeText(n: { task: boolean; deadlines: number; gaps: num
 export const PUSH_TEXT = {
   weekly: { title: "CareerMatri", body: "이번 주 MAT 브리핑이 준비됐습니다.", url: "/me/track#brief", tag: "mat-weekly" },
   deadline: { title: "CareerMatri", body: "붙여 둔 공고의 마감이 다가옵니다.", url: "/me/track#brief", tag: "mat-deadline" },
+  renew: { title: "CareerMatri", body: "MAT 이용 기간이 곧 끝납니다.", url: "/me/track#plans", tag: "mat-renew" },
+  match: { title: "CareerMatri", body: "내 자료와 겹치는 공고가 새로 올라왔습니다.", url: "/me/track/jobs", tag: "mat-match" },
 } as const;
 
 /** 영어 작업공간의 기기 알림. 잠긴 화면에 뜨므로 수도 이름도 적지 않는다 */
 export const PUSH_TEXT_EN = {
   weekly: { title: "CareerMatri", body: "Your MAT briefing for this week is ready.", url: "/me/track#brief", tag: "mat-weekly" },
   deadline: { title: "CareerMatri", body: "A posting you saved closes soon.", url: "/me/track#brief", tag: "mat-deadline" },
+  renew: { title: "CareerMatri", body: "Your MAT pass ends soon.", url: "/me/track#plans", tag: "mat-renew" },
+  match: { title: "CareerMatri", body: "New postings overlap with your documents.", url: "/me/track/jobs", tag: "mat-match" },
 } as const;

@@ -250,7 +250,8 @@ console.log("\n── 4. 알림 문장\n");
     texts.every((t) => t.title === "이번 주 MAT 브리핑") && new Set(texts.map((t) => t.body.replace(/\d+/g, "#"))).size === combos.length);
   const push = Object.values(PUSH_TEXT);
   ok("기기 알림에는 숫자도 이름도 없다", push.every((p) => !/\d/.test(p.body) && p.title === "CareerMatri"
-    && p.url === "/me/track#brief"));
+    /* 가는 곳도 고정된 쪽이다: 공고 번호나 응시 번호가 주소에 붙으면 잠금 화면에 그 번호가 남는다 */
+    && ["/me/track#brief", "/me/track#plans", "/me/track/jobs"].includes(p.url)));
   const nsrc = readFileSync("src/lib/assistant/nudges.ts", "utf8");
   const call = /sendPush\(([\s\S]*?)\)\s*\.catch/.exec(nsrc)?.[1] ?? "";
   ok("밤 당번은 기기 알림을 PUSH_TEXT 로만 보낸다", call.includes("PUSH_TEXT") && !call.includes("${") && !call.includes("label"),
