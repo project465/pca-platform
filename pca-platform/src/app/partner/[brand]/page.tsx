@@ -60,12 +60,22 @@ export default async function PartnerPage({
   const open = hasJob ? { href: "/me/track/import", label: "보던 공고와 비교하기" } : (P.open ?? { href: "/me/track", label: `${P.label} 열기` });
   const next = encodeURIComponent(open.href);
 
-  const steps: [string, string][] = P.steps ?? [
-    ["무료 검사로 시작합니다", "전공을 고르고 기본 검사를 풀면 내 경험이 어느 판단까지 설명되는지 결과로 나옵니다."],
-    ["비어 있는 부분을 확인합니다", "결과에서 아직 근거가 없는 판단과, 그걸 채울 다음 할 일을 봅니다."],
-    [`${P.label}가 한 주씩 챙깁니다`, "공고를 붙여 두면 마감을 알려 드리고, 요구 항목마다 내 경험이 있는지 하나씩 짚어 드립니다."],
+  /* 아직 열리지 않은 것은 맨 아래 작은 글씨에만 적는다(열린 것처럼 적지 않는다) */
+  const day = (d: Date) => d.toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul", month: "long", day: "numeric" });
+  const fine = [
+    "무료로 2번 써 볼 수 있습니다.",
+    "기간권은 자동으로 갱신되지 않습니다.",
+    ...(P.fine ?? []),
+    ...(brand === "careerpeak" && !researchOpen() ? [`자료 올리기는 ${day(RESEARCH_POLICY_FROM)}부터 열립니다.`] : []),
+    ...(brand === "careerpeak" && !consultOpen() && CONSULT_POLICY_FROM && Date.now() < CONSULT_POLICY_FROM.getTime()
+      ? [`커리어피크 상담 신청은 ${day(CONSULT_POLICY_FROM)}부터 받습니다.`] : []),
   ];
 
+  /*
+   * **짧게 쓴다**(2026-10-31 대표 지시: "너무 AI 느낌"). 제목 한 줄 · 부제 한 줄 · 단추 하나,
+   * 세 단계, 값. 줄표로 이은 설명 · 칸마다 붙던 면책 문장 · 같은 말 되풀이를 걷고, 꼭 알릴
+   * 안내는 맨 아래 작은 글씨 한 곳에 모은다.
+   */
   return (
     <div className="pub">
       <header className="pubtop">
@@ -85,24 +95,18 @@ export default async function PartnerPage({
           <h1>{P.name} {P.label}</h1>
           <p>{P.intro}</p>
           {hasJob ? (
-            <p className="pxwhat" style={{ marginTop: 8 }}>
-              보시던 공고를 기억해 두었습니다. 로그인하시면 그 공고와 내 경험을 바로 비교해 드립니다(7일 동안 기억합니다).
-            </p>
+            <p style={{ marginTop: 8 }}>보시던 공고를 기억해 두었습니다. 로그인하면 바로 비교해 드립니다.</p>
           ) : null}
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 16, justifyContent: "center" }}>
-            {user ? (
-              <Link href={open.href} className="sf-btn accent">{open.label}</Link>
-            ) : (<>
-              <Link href={P.start?.href ?? "/signup?next=%2Fcores"} className="sf-btn accent">{P.start?.label ?? "무료 검사로 시작하기"}</Link>
-              <Link href={`/login?next=${next}`} className="sf-btn ghost">이미 계정이 있어요</Link>
-            </>)}
+            {user
+              ? <Link href={open.href} className="sf-btn accent">{open.label}</Link>
+              : <Link href={P.start?.href ?? "/signup?next=%2Fcores"} className="sf-btn accent">{P.start?.label ?? "무료로 시작하기"}</Link>}
           </div>
         </section>
 
         <section className="pxband">
-          <h2>이렇게 이어집니다</h2>
           <div className="pxband-g">
-            {steps.map(([t, b], i) => (
+            {P.steps.map(([t, b], i) => (
               <div key={t} className="pxband-i">
                 <b>{i + 1}. {t}</b>
                 <span>{b}</span>
@@ -111,28 +115,9 @@ export default async function PartnerPage({
           </div>
         </section>
 
-        <section className="pxband" id="track">
-          <h2>{P.does}</h2>
-          <ul className="pxtrack-f">
-            {(P.doesList ?? [T("pxTrackF1"), T("pxTrackF2"), T("pxTrackF3")]).map((x) => <li key={x}>{x}</li>)}
-          </ul>
-          {/* 아직 열리지 않은 것을 열린 것처럼 적지 않는다. 날짜가 지나면 이 줄이 사라진다 */}
-          {P.steps && (!researchOpen() || !consultOpen()) ? (
-            <p className="pxwhat" style={{ fontSize: 15, fontWeight: 500, minHeight: 0 }}>
-              {!researchOpen()
-                ? `자료 읽기는 ${RESEARCH_POLICY_FROM.toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul", month: "long", day: "numeric" })}부터 열립니다. `
-                : ""}
-              {!consultOpen()
-                ? (CONSULT_POLICY_FROM && Date.now() < CONSULT_POLICY_FROM.getTime()
-                  ? `커리어피크 상담 신청은 ${CONSULT_POLICY_FROM.toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul", month: "long", day: "numeric" })}부터 열립니다.`
-                  : "커리어피크 상담 신청은 준비 중입니다.")
-                : ""}
-            </p>
-          ) : null}
-          <p className="pxwhat">{T("pxTrackNot")}</p>
-          {/* 값과 사는 단추가 숨겨진 동안에도 무료 범위는 늘 보인다 */}
-          <p className="pxwhat"><b>{T("pxTrackFreeHead")}</b> {T("pxTrackFree")}</p>
-          {tracks.length ? (
+        {tracks.length ? (
+          <section className="pxband" id="track">
+            <h2>기간권</h2>
             <div className="pxband-g">
               {tracks.map((t) => (
                 <div key={t.code} className="pxband-i">
@@ -151,11 +136,13 @@ export default async function PartnerPage({
                 </div>
               ))}
             </div>
-          ) : null}
-          <p className="pxwhat">
-            자동으로 갱신되지 않고, 기간이 끝나면 저절로 닫힙니다. 남은 기간이 있을 때 다시 사면 끝나는 날 뒤에 이어 붙습니다.
-          </p>
-        </section>
+          </section>
+        ) : null}
+
+        <p style={{ margin: "32px auto 0", maxWidth: 640, textAlign: "center", fontSize: 13, lineHeight: 1.7,
+          color: "var(--sf-ink-3)", wordBreak: "keep-all" }}>
+          {fine.join(" ")}
+        </p>
       </div>
       <PublicFooter lang="ko" />
     </div>
