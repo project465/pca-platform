@@ -33,7 +33,7 @@ export default async function ResearchPage() {
   ]);
   const left = acc.paid
     ? `이번 달 남은 횟수 ${Math.max(0, RESEARCH_MONTHLY_CAP - used)}/${RESEARCH_MONTHLY_CAP}`
-    : `무료로 ${acc.left.research}건 남음`;
+    : `무료 ${acc.freeLeft}번 남음(아무 도구나)`;
 
   return (
     <CmShell active="/me/track" title="MAT">

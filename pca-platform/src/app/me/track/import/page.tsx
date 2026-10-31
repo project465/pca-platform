@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { requireUser } from "@/lib/session";
-import { matAccess } from "@/lib/mat-access";
+import { FREE_TOTAL, matAccess } from "@/lib/mat-access";
 import { JOB_COOKIE } from "@/lib/partner-job";
 import { CmShell, CmHead } from "../../shell";
 import { importJob } from "../actions";
@@ -52,8 +52,8 @@ export default async function ImportPage({ searchParams }: { searchParams: Promi
           <p className="cm-row"><b>보시던 공고</b><span>{where}</span></p>
           <p className="cm-none">
             {acc.paid ? "기간권으로 횟수 걱정 없이 맞대 봅니다." : acc.left.posting > 0
-              ? "무료로 맞대 볼 수 있는 공고 1건을 씁니다."
-              : "무료로 맞대 볼 수 있는 공고 1건을 이미 쓰셨습니다. 기간권을 고르시면 이어서 맞대 봅니다."}
+              ? `무료 ${acc.freeLeft}번 가운데 1번을 씁니다(아무 도구나 합쳐 ${FREE_TOTAL}번).`
+              : `무료 ${FREE_TOTAL}번을 이미 다 쓰셨습니다. 기간권을 고르시면 이어서 맞대 봅니다.`}
           </p>
           <div className="cm-acts">
             {acc.paid || acc.left.posting > 0 ? (

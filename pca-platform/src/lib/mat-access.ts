@@ -19,8 +19,15 @@ import { activeTrack, hasV3Result } from "@/lib/track";
  * 폼을 직접 보내도 `requireMat` 이 돌려보낸다.
  */
 
-export const FREE_LIMITS = { posting: 1, draft: 1, upload: 1, research: 1 } as const;
-export type MatUse = keyof typeof FREE_LIMITS;
+/**
+ * **아무 도구나 합쳐서 두 번**(2026-10-31 대표 결정 "아무 도구나 2번으로").
+ * 전에는 도구마다 한 번씩(넷이면 네 번)이었다. 무료 체험자의 AI 비용이 결제자 한
+ * 사람 몫의 절반을 넘어서 줄였다. 이미 도구마다 한 번씩 쓴 사람은 쓴 횟수를 합쳐
+ * 센다: 두 번 이상 썼으면 무료가 끝난다.
+ */
+export const FREE_TOTAL = 2;
+const USES = ["posting", "draft", "upload", "research"] as const;
+export type MatUse = (typeof USES)[number];
 
 export type MatAccess = {
   /** 기간권이 열려 있다 */
@@ -28,7 +35,10 @@ export type MatAccess = {
   /** 검사 결과가 있다(MAT 은 결과에서 시작한다) */
   ready: boolean;
   used: Record<MatUse, number>;
+  /** 도구마다 지금 쓸 수 있는 무료 횟수. 합친 남은 횟수와 같다 */
   left: Record<MatUse, number>;
+  /** 네 도구를 합쳐 남은 무료 횟수 */
+  freeLeft: number;
   /** 도구를 화면에 세운다: 기간권이 있거나, 결과가 있어 무료로 써 볼 수 있다 */
   open: boolean;
 };
@@ -57,11 +67,11 @@ export async function matAccess(userId: string): Promise<MatAccess> {
     activeTrack(userId), hasV3Result(userId).catch(() => false), freeUsed(userId),
   ]);
   const paid = state.on;
+  const total = USES.reduce((n, k) => n + used[k], 0);
+  const freeLeft = paid ? Infinity : Math.max(0, FREE_TOTAL - total);
   const left = {} as Record<MatUse, number>;
-  for (const k of Object.keys(FREE_LIMITS) as MatUse[]) {
-    left[k] = paid ? Infinity : Math.max(0, FREE_LIMITS[k] - used[k]);
-  }
-  return { paid, ready, used, left, open: paid || ready };
+  for (const k of USES) left[k] = freeLeft;
+  return { paid, ready, used, left, freeLeft, open: paid || ready };
 }
 
 /** 이 사람이 지금 이 도구를 한 번 더 쓸 수 있는가와, 못 쓰면 그 까닭 */

@@ -30,7 +30,7 @@ import { AssistantGuide } from "./guide";
 import { BriefPanel } from "./brief";
 import { SectionHeader } from "../ui";
 import { PARTNERS, partnerFromCookie } from "@/lib/brand";
-import { FREE_LIMITS, matAccess } from "@/lib/mat-access";
+import { FREE_TOTAL, matAccess } from "@/lib/mat-access";
 import {
   addPosting, changeConsent, changeDigest, changeFileConsent, claimTrial, makeDraft, readAllNudges,
 } from "./actions";
@@ -91,7 +91,7 @@ const FAIL: Record<string, string> = {
   memo: "메모를 한두 문장 더 적어 주세요. 무엇을 했고 무엇이 남았는지면 됩니다.",
   draft: "메모를 옮기지 못했습니다. 한 번 더 눌러 주세요.",
   needtest: "MAT 은 검사 결과에서 시작하므로 무료 검사를 먼저 마쳐 주세요.",
-  free: "무료 한 번을 이미 쓰셨습니다. 아래에서 기간권을 고르시면 바로 이어집니다.",
+  free: "무료 2번을 이미 다 쓰셨습니다. 아래에서 기간권을 고르시면 바로 이어집니다.",
 };
 
 export default async function Track({
@@ -235,7 +235,7 @@ export default async function Track({
           ) : (
             <p className="cm-row">
               <b>{t("열려 있지 않습니다")}</b>
-              <span>{ready ? t("공고 확인 · 경험 채우기 · 파일 읽기는 한 번씩 무료입니다. 두 번째부터는 아래 기간권으로 이어집니다.") : t("무료 검사를 마치면 기간권을 고를 수 있습니다.")}</span>
+              <span>{ready ? t("공고 확인 · 경험 채우기 · 파일 읽기 · 내 자료 읽기 가운데 아무 도구나 합쳐서 2번 무료입니다. 그다음부터는 아래 기간권으로 이어집니다.") : t("무료 검사를 마치면 기간권을 고를 수 있습니다.")}</span>
             </p>
           )}
           {claimable ? (
@@ -257,10 +257,7 @@ export default async function Track({
                 <p className="cm-row">
                   <b>{t("무료로 써 보는 중")}</b>
                   <span>
-                    {t("공고 확인 {a} · 경험 채우기 {b} · 파일 읽기 {c} · 내 자료 읽기 {d} 남았습니다.", {
-                      a: t("{n}번", { n: acc.left.posting }), b: t("{n}번", { n: acc.left.draft }),
-                      c: t("{n}번", { n: acc.left.upload }), d: t("{n}번", { n: acc.left.research }),
-                    })}{" "}
+                    {t("무료로 {n}번 남았습니다. 공고 확인 · 경험 채우기 · 파일 읽기 · 내 자료 읽기 가운데 아무 도구나 쓰시면 됩니다.", { n: acc.freeLeft })}{" "}
                     {t("매주 알림과 마감 알림, 무제한 공고 확인은 기간권에서 열립니다.")}
                   </span>
                 </p>
@@ -346,7 +343,7 @@ export default async function Track({
               </form>
               ) : (
                 <p className="cm-row">
-                  <b>{t("무료로 맞대 볼 수 있는 공고 {n}건을 쓰셨습니다", { n: FREE_LIMITS.posting })}</b>
+                  <b>{t("무료 {n}번을 다 쓰셨습니다", { n: FREE_TOTAL })}</b>
                   <span>{t("지원 시즌에는 공고마다 요구가 달라서 한 건으로는 모자랍니다. 기간권이 열리면 공고 수에 제한이 없고 마감 알림도 옵니다.")}{" "}
                     <a href="#plans">{t("기간권 보기")}</a></span>
                 </p>
@@ -384,7 +381,7 @@ export default async function Track({
             <p className="cm-none" style={{ marginBottom: 12 }}>
               성적증명서·수료증·상장 파일은{" "}
               <Link href="/me/experience/new#upload">경험 추가 화면</Link>에 끌어다 놓으면 옮겨 드립니다
-              {state.on ? "(한 달 10건)." : acc.left.upload > 0 ? "(무료로 1건)." : "(무료 1건을 쓰셨습니다. 기간권에서 한 달 10건)."}
+              {state.on ? "(한 달 10건)." : acc.left.upload > 0 ? `(무료 ${acc.freeLeft}번 가운데 1번을 씁니다).` : `(무료 ${FREE_TOTAL}번을 다 쓰셨습니다. 기간권에서 한 달 10건).`}
             </p>
           ) : null}
           <div className="cm-panel is-one" id="draft">
@@ -402,7 +399,7 @@ export default async function Track({
               </form>
               ) : (
                 <p className="cm-row">
-                  <b>{t("무료로 옮겨 볼 수 있는 메모 {n}건을 쓰셨습니다", { n: FREE_LIMITS.draft })}</b>
+                  <b>{t("무료 {n}번을 다 쓰셨습니다", { n: FREE_TOTAL })}</b>
                   <span>{t("경험 추가 화면에서 직접 적는 것은 계속 무료입니다. 메모를 옮겨 드리는 것은 기간권에서 이어집니다.")}{" "}
                     <a href="#plans">{t("기간권 보기")}</a></span>
                 </p>
