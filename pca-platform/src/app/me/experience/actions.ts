@@ -10,9 +10,9 @@ import { autoRecompute } from "@/lib/me-v3/recompute";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { opFail, ref } from "@/lib/oplog";
 import { markDraftUsed } from "@/lib/assistant/draft";
+import { canUseMat } from "@/lib/mat-access";
 import { readUpload, uploadFailKo, UPLOAD_MONTHLY_CAP, type UploadResult } from "@/lib/assistant/upload";
 import { setFileConsent } from "@/lib/assistant/settings";
-import { activeTrack } from "@/lib/track";
 
 /**
  * 경험 하나를 저장한다.
@@ -218,8 +218,12 @@ export type UploadState = {
 export async function uploadForDraft(_prev: UploadState, form: FormData): Promise<UploadState> {
   const user = await requireUser();
   const base = { drafts: [], cap: UPLOAD_MONTHLY_CAP };
-  if (!(await activeTrack(user.id)).on) {
-    return { ok: false, msg: "파일 읽기는 MAT 이용 중에만 열립니다.", used: 0, ...base };
+  /* 기간권이 없어도 한 번은 읽어 본다(`mat-access.ts`) */
+  const can = await canUseMat(user.id, "upload");
+  if (!can.ok) {
+    return { ok: false, msg: can.why === "needtest"
+      ? "파일 읽기는 무료 검사를 마친 뒤에 열립니다."
+      : "무료로 읽어 볼 수 있는 파일 1건을 쓰셨습니다. MAT 기간권을 고르시면 한 달 10건까지 읽어 드립니다.", used: 0, ...base };
   }
   if (String(form.get("consent") ?? "") === "1") await setFileConsent(user.id, true);
   const file = form.get("file");

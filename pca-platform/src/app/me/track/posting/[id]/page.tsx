@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { currentUser, requireUser } from "@/lib/session";
 import { activeMajorName } from "@/lib/me-v3/major-name";
 import { activeCoreOrPick, experiencesOf } from "@/lib/me-v3/platform";
-import { activeTrack } from "@/lib/track";
+import { matAccess } from "@/lib/mat-access";
 import { itemDomainKo, livePostingOf, type ItemStatus, type PostingItem } from "@/lib/assistant/posting";
 import { interviewPrep, smallTasks } from "@/lib/assistant/prep";
 import { sentenceDrafts } from "@/lib/assistant/sentence";
@@ -90,7 +90,9 @@ export default async function Posting({ params, searchParams }: {
   const area = (td: string) => areaName(core, td, lang);
   const [p, major, core, state, stage] = await Promise.all([
     livePostingOf(user.id, id), activeMajorName(user.id), activeCoreOrPick(user.id),
-    activeTrack(user.id), stageOf(user.id),
+    /* 무료로 맞대 본 공고도 끝까지 다룬다(`mat-access.ts`): 기간권이 없어도
+       결과가 있으면 할 일 담기와 상태 바꾸기를 연다 */
+    matAccess(user.id).then((x) => ({ on: x.open })), stageOf(user.id),
   ]);
   if (!p) notFound();
   const a = p.analysis;

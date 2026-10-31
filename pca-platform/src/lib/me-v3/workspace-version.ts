@@ -384,7 +384,9 @@
  *  `출시 알림 신청` 칸이 됐다(이메일 한 칸 · 동의 한 칸) — V71 */
 /** 잡인더스트리 단추로 들어온 사람에게 MAT 머리 아래 한 줄(`잡인더스트리 AI취업지원도우미로
  *  들어오셨습니다`)이 선다. 작업공간 틀이 그 입구를 센다(`lib/brand.ts`) — V72 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V72";
+/** MAT 을 무료로 한 번씩(공고 확인 · 경험 채우기 · 파일 읽기) 써 보고 두 번째부터 기간권으로 넘어간다.
+ *  기간권이 없어도 결과가 있으면 도구가 서고, 다 쓴 칸에는 기간권 안내가 선다(`mat-access.ts`) — V73 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V73";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -441,7 +443,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V72";
 /** 대학원생 문장(연구 실적 · 학위 단계별 한 줄 · 면접 질문) · 검사 전 메뉴 안내 한 줄 */
 /** MAT 90일권 문장 · 남은 기간 뒤에 이어 붙는다는 한 줄 · 학교 이용권은 계약 기간으로 적는다 */
 /** 제휴 입구 한 줄 */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.52";
+/** 무료로 써 보기 안내 문장 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.53";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

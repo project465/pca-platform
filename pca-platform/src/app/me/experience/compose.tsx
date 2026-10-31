@@ -16,7 +16,7 @@ import { saveExperience, editExperience } from "./actions";
 import Steps from "./steps";
 import UnsavedGuard from "../unsaved";
 import type { DraftValue } from "@/lib/assistant/draft";
-import { activeTrack } from "@/lib/track";
+import { matAccess } from "@/lib/mat-access";
 import { settingsOf } from "@/lib/assistant/settings";
 import { pendingFileDrafts, usedThisMonth, UPLOAD_MONTHLY_CAP } from "@/lib/assistant/upload";
 import FileDrop from "./upload";
@@ -170,8 +170,10 @@ export default async function Compose(
      않는다: 위에서 이미 무엇을 옮겨 왔는지 읽는 중이다 */
   /* **영어 작업공간에는 세우지 않는다**(`WS_KR_ONLY`): 파일 읽기는 국내 개인정보
      동의로 열었고 MAT 은 국내 상품이다 */
+  /* 기간권이 있거나, 무료로 읽어 볼 한 건이 남아 있으면 세운다(`mat-access.ts`) */
   const mat = lang !== "en" && !edit && !d0
-    ? await activeTrack(user.id).catch(() => ({ on: false })) : { on: false };
+    ? await matAccess(user.id).then((a) => ({ on: a.paid || (a.ready && a.left.upload > 0) }))
+      .catch(() => ({ on: false })) : { on: false };
   const drop = mat.on ? {
     consented: Boolean((await settingsOf(user.id)).file_consent_at),
     used: await usedThisMonth(user.id),

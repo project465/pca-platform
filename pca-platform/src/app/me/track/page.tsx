@@ -30,6 +30,7 @@ import { AssistantGuide } from "./guide";
 import { BriefPanel } from "./brief";
 import { SectionHeader } from "../ui";
 import { PARTNERS, partnerFromCookie } from "@/lib/brand";
+import { FREE_LIMITS, matAccess } from "@/lib/mat-access";
 import {
   addPosting, changeConsent, changeDigest, changeFileConsent, claimTrial, makeDraft, readAllNudges,
 } from "./actions";
@@ -90,6 +91,7 @@ const FAIL: Record<string, string> = {
   memo: "메모를 한두 문장 더 적어 주세요. 무엇을 했고 무엇이 남았는지면 됩니다.",
   draft: "메모를 옮기지 못했습니다. 한 번 더 눌러 주세요.",
   needtest: "MAT 은 검사 결과에서 시작하므로 무료 검사를 먼저 마쳐 주세요.",
+  free: "무료 한 번을 이미 쓰셨습니다. 아래에서 기간권을 고르시면 바로 이어집니다.",
 };
 
 export default async function Track({
@@ -119,6 +121,11 @@ export default async function Track({
     }).format(new Date(iso));
 
   const state = await activeTrack(user.id);
+  /* **기간권이 없어도 결과가 있으면 도구를 한 번씩 연다**(`mat-access.ts`).
+     `use` 가 도구를 세우는 기준이고, 알림과 설정의 기간 문구는 그대로 `state.on` 이다 */
+  const acc = await matAccess(user.id);
+  const use = acc.open;
+  const freeMode = use && !state.on;
   /* 이번 주 한 줄이 아직 없으면 지금 만든다. **밤 당번을 기다리게 하지
      않는다**: 기간권을 막 산 사람이 빈 알림 칸을 본다 */
   if (state.on) await nudgeUser(user.id).catch(() => undefined);
@@ -131,14 +138,14 @@ export default async function Track({
     settingsOf(user.id),
     /* 공고 목록과 브리핑이 **같은 값**을 읽는다: 붙여 넣은 뒤 적은 경험까지
        넣어 상태를 다시 단 것이다(`refreshPosting`) */
-    state.on ? livePostingsOf(user.id) : Promise.resolve({ rows: [], core: null, exps: [] }),
+    use ? livePostingsOf(user.id) : Promise.resolve({ rows: [], core: null, exps: [] }),
     state.on ? nudgesOf(user.id, 6) : Promise.resolve([]),
-    state.on ? openActions(user.id).catch(() => null) : Promise.resolve(null),
+    use ? openActions(user.id).catch(() => null) : Promise.resolve(null),
     stageOf(user.id),
   ]);
   const major = core ? (en ? majorNameIn(core, "en") : await activeMajorName(user.id)) : null;
   const postings = live.rows;
-  const brief = state.on ? buildBrief({
+  const brief = use ? buildBrief({
     core: live.core, postings, exps: live.exps,
     actions: open?.rows ?? [], fromResult: open?.fromResult ?? false, lang,
   }) : null;
@@ -163,7 +170,7 @@ export default async function Track({
     const g = gradWeekTask(stage ?? "bachelor", live.exps, lang);
     if (g) brief.task = { body: g, state: "open", saved: true };
   }
-  const cards = state.on && isGrad(stage) ? researchCards(stage, live.exps, lang) : [];
+  const cards = use && isGrad(stage) ? researchCards(stage, live.exps, lang) : [];
   const STAGE_KO: Record<string, string> = { master: "석사", phd: "박사", postdoc: "박사후연구원" };
   const sale = prods.filter((p): p is NonNullable<typeof p> => !!p);
   /* **값이 정해지지 않은 기간권은 사는 단추를 세우지 않는다.** 해외판이
@@ -228,7 +235,7 @@ export default async function Track({
           ) : (
             <p className="cm-row">
               <b>{t("열려 있지 않습니다")}</b>
-              <span>{ready ? t("아래에서 기간권을 고르시면 바로 열립니다.") : t("무료 검사를 마치면 기간권을 고를 수 있습니다.")}</span>
+              <span>{ready ? t("공고 확인 · 경험 채우기 · 파일 읽기는 한 번씩 무료입니다. 두 번째부터는 아래 기간권으로 이어집니다.") : t("무료 검사를 마치면 기간권을 고를 수 있습니다.")}</span>
             </p>
           )}
           {claimable ? (
@@ -242,8 +249,27 @@ export default async function Track({
 
       {state.on ? <AssistantGuide on compact lang={lang} /> : <AssistantGuide on={false} lang={lang} />}
 
-      {state.on ? (
+      {use ? (
         <>
+          {freeMode ? (
+            <div className="cm-panel is-one">
+              <div className="cm-pane">
+                <p className="cm-row">
+                  <b>{t("무료로 써 보는 중")}</b>
+                  <span>
+                    {t("공고 확인 {a} · 경험 채우기 {b} · 파일 읽기 {c} 남았습니다.", {
+                      a: t("{n}번", { n: acc.left.posting }), b: t("{n}번", { n: acc.left.draft }), c: t("{n}번", { n: acc.left.upload }),
+                    })}{" "}
+                    {t("매주 알림과 마감 알림, 무제한 공고 확인은 기간권에서 열립니다.")}
+                  </span>
+                </p>
+                <div className="cm-acts">
+                  <a className="cm-btn" href="#plans">{t("기간권 보기")}</a>
+                </div>
+              </div>
+            </div>
+          ) : null}
+          {state.on ? (<>
           <span id="nudge" />
           <SectionHeader icon="spark" title={t("이번 주 알림")}
             sub={unread ? t("읽지 않은 알림 {n}개", { n: unread }) : t("새로 온 알림이 없습니다.")} />
@@ -268,11 +294,13 @@ export default async function Track({
               ) : null}
             </div>
           </div>
+          </>) : null}
 
           <SectionHeader icon="log" title={t("공고 확인")}
             sub={t("직접 찾은 채용 공고를 붙여 넣으면 요구 항목마다 내 경험이 있는지 나눠 보여 줍니다.")} />
           <div className="cm-panel is-one" id="posting">
             <div className="cm-pane">
+              {acc.left.posting > 0 ? (
               <form action={addPosting} className="cm-compose">
                 <label className="cm-field">
                   <span>{t("공고 이름")}</span>
@@ -298,6 +326,13 @@ export default async function Track({
                   <button className="cm-btn is-primary" type="submit">{t("공고와 내 경험 맞대 보기")}</button>
                 </div>
               </form>
+              ) : (
+                <p className="cm-row">
+                  <b>{t("무료로 맞대 볼 수 있는 공고 {n}건을 쓰셨습니다", { n: FREE_LIMITS.posting })}</b>
+                  <span>{t("지원 시즌에는 공고마다 요구가 달라서 한 건으로는 모자랍니다. 기간권이 열리면 공고 수에 제한이 없고 마감 알림도 옵니다.")}{" "}
+                    <a href="#plans">{t("기간권 보기")}</a></span>
+                </p>
+              )}
               {postings.length ? (
                 <div className="cm-rows" style={{ marginTop: 16 }}>
                   {postings.map((p) => {
@@ -330,11 +365,13 @@ export default async function Track({
           {!en ? (
             <p className="cm-none" style={{ marginBottom: 12 }}>
               성적증명서·수료증·상장 파일은{" "}
-              <Link href="/me/experience/new#upload">경험 추가 화면</Link>에 끌어다 놓으면 옮겨 드립니다(한 달 10건).
+              <Link href="/me/experience/new#upload">경험 추가 화면</Link>에 끌어다 놓으면 옮겨 드립니다
+              {state.on ? "(한 달 10건)." : acc.left.upload > 0 ? "(무료로 1건)." : "(무료 1건을 쓰셨습니다. 기간권에서 한 달 10건)."}
             </p>
           ) : null}
           <div className="cm-panel is-one" id="draft">
             <div className="cm-pane">
+              {acc.left.draft > 0 ? (
               <form action={makeDraft} className="cm-compose">
                 <label className="cm-field">
                   <span>{t("메모")}</span>
@@ -345,6 +382,13 @@ export default async function Track({
                   <button className="cm-btn is-primary" type="submit">{t("경험 기록으로 옮기기")}</button>
                 </div>
               </form>
+              ) : (
+                <p className="cm-row">
+                  <b>{t("무료로 옮겨 볼 수 있는 메모 {n}건을 쓰셨습니다", { n: FREE_LIMITS.draft })}</b>
+                  <span>{t("경험 추가 화면에서 직접 적는 것은 계속 무료입니다. 메모를 옮겨 드리는 것은 기간권에서 이어집니다.")}{" "}
+                    <a href="#plans">{t("기간권 보기")}</a></span>
+                </p>
+              )}
             </div>
           </div>
 
@@ -463,6 +507,7 @@ export default async function Track({
       {ready || state.on ? (
         priced.length ? (
           <>
+            <span id="plans" />
             <SectionHeader icon="box" title={state.on ? t("기간 늘리기") : t("기간권 고르기")}
               sub={state.on ? t("지금 기간이 끝나는 날에서 이어 붙습니다.") : t("PRO 결과지를 사시면 첫 1개월이 함께 열립니다.")} />
             <div className="cm-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))" }}>

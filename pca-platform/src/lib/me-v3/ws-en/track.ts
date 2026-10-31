@@ -13,6 +13,21 @@ export const WS_EN_TRACK: Record<string, string> = {
 
   /* ── 검사 먼저 ─────────────────────────────────────────── */
   "먼저 무료 검사부터": "Start with the free test",
+  "공고 확인 · 경험 채우기 · 파일 읽기는 한 번씩 무료입니다. 두 번째부터는 아래 기간권으로 이어집니다.":
+    "You can try posting check, memo-to-record and file reading once each for free. From the second time on, pick a pass below.",
+  "무료로 써 보는 중": "Free trial",
+  "공고 확인 {a} · 경험 채우기 {b} · 파일 읽기 {c} 남았습니다.": "Left: posting check {a} · memo-to-record {b} · file reading {c}.",
+  "{n}번": "{n}",
+  "매주 알림과 마감 알림, 무제한 공고 확인은 기간권에서 열립니다.": "Weekly reminders, deadline alerts and unlimited posting checks open with a pass.",
+  "기간권 보기": "See passes",
+  "무료로 맞대 볼 수 있는 공고 {n}건을 쓰셨습니다": "You have used your {n} free posting check",
+  "지원 시즌에는 공고마다 요구가 달라서 한 건으로는 모자랍니다. 기간권이 열리면 공고 수에 제한이 없고 마감 알림도 옵니다.":
+    "Every posting asks for something different, so one check rarely covers a season. With a pass you can add as many postings as you like and get deadline alerts.",
+  "무료로 옮겨 볼 수 있는 메모 {n}건을 쓰셨습니다": "You have used your {n} free memo",
+  "경험 추가 화면에서 직접 적는 것은 계속 무료입니다. 메모를 옮겨 드리는 것은 기간권에서 이어집니다.":
+    "Writing records yourself on the Add experience page stays free. Turning memos into records continues with a pass.",
+  "무료 한 번을 이미 쓰셨습니다. 아래에서 기간권을 고르시면 바로 이어집니다.":
+    "You have already used your free try. Pick a pass below to keep going right away.",
   "MAT 은 검사 결과에서 시작합니다": "MAT works from your test result",
   "이번 주 할 일, 공고 맞대기, 지원서 문장 뼈대가 모두 검사에서 확인된 내 경험과 부족한 부분을 읽습니다. 무료 검사는 12분 정도 걸리고, 끝나면 이 화면에서 바로 MAT 을 시작할 수 있습니다.":
     "Your weekly task, posting checks and sentence outlines all build on what the test found in your experience "

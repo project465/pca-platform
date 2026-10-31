@@ -9,6 +9,7 @@ import { openActions } from "@/lib/me-v3/open-actions";
 import { wsLang } from "@/lib/me-v3/ws-lang";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { activeTrack, grantProTrialTx, proTrialClaimable } from "@/lib/track";
+import { canUseMat, matAccess, type MatUse } from "@/lib/mat-access";
 import { analyzePosting, livePostingOf, setPostingState } from "@/lib/assistant/posting";
 import { smallTasks, taskBody } from "@/lib/assistant/prep";
 import { draftExperience } from "@/lib/assistant/draft";
@@ -52,15 +53,23 @@ export async function claimTrial(): Promise<void> {
  * **열려 있는지는 서버가 본다.** 화면이 폼을 꺼 두는 것은 안내이고, 기간이
  * 끝난 사람이 폼을 직접 보내도 여기서 돌아간다.
  */
-async function requireTrack(): Promise<{ id: string }> {
+async function requireTrack(use?: MatUse): Promise<{ id: string }> {
   const user = await requireUser();
-  if (!(await activeTrack(user.id)).on) redirect("/me/track?e=off");
+  /* **무료 한 번**(`mat-access.ts`). 새로 만드는 일(공고 · 메모)은 남은 무료가
+     있어야 하고, 이미 만든 공고를 다루는 일(상태 바꾸기 · 할 일 담기)은 결과가
+     있으면 된다: 무료로 맞대 본 공고 하나를 끝까지 다뤄 볼 수 있어야 한다 */
+  if (use) {
+    const r = await canUseMat(user.id, use);
+    if (!r.ok) redirect(r.why === "needtest" ? "/me/track?e=needtest" : "/me/track?e=free#plans");
+    return user;
+  }
+  if (!(await matAccess(user.id)).open) redirect("/me/track?e=off");
   return user;
 }
 
 /** 붙여 넣은 공고 하나를 읽고 결과 쪽으로 보낸다 */
 export async function addPosting(form: FormData): Promise<void> {
-  const user = await requireTrack();
+  const user = await requireTrack("posting");
   const text = String(form.get("text") ?? "").trim();
   const label = String(form.get("label") ?? "").trim() || "이름 없는 공고";
   const deadline = String(form.get("deadline") ?? "").trim();
@@ -128,7 +137,7 @@ export async function takePostingTasks(form: FormData): Promise<void> {
 
 /** 메모를 경험 추가 폼의 보기로 옮기고, 그 폼을 켜 둔 채로 연다 */
 export async function makeDraft(form: FormData): Promise<void> {
-  const user = await requireTrack();
+  const user = await requireTrack("draft");
   const note = String(form.get("note") ?? "").trim();
   if (note.length < 10) redirect("/me/track?e=memo#draft");
   let id = "";

@@ -57,8 +57,8 @@ export const GLOBAL_TIERS: TierPrice[] = [
  * 없는 값을 홈페이지에서 보게 된다. 개인 요금은 앱 `/pricing` 으로 보낸다.
  */
 export const TRACK_KR = {
-  month: { name: "30일권", price: "4,900원" },
-  quarter: { name: "90일권", price: "12,900원" },
+  month: { name: "30일권", price: "6,900원" },
+  quarter: { name: "90일권", price: "15,900원" },
 } as const;
 
 /** 값을 한 줄로 늘어놓는다 (`무료 · 14,900원 · 21,900원`) */

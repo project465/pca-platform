@@ -21,13 +21,14 @@ INSERT INTO products
   (code, kind, amount, currency, seat_count, active, report_level,
    market, major_code, tier, assessment_version, price_status, duration_days)
 VALUES
-  ('TRACK_30D',  'track',  4900, 'KRW', 0, true, 'full',
+  /* **30일권 6,900원 · 90일권 15,900원(2026-10-31 대표 확정).** 전에는 4,900 · 12,900 이었다 */
+  ('TRACK_30D',  'track',  6900, 'KRW', 0, true, 'full',
    'KR', NULL, NULL, NULL, 'approved',  30),
-  /* **90일권(2026-10-30 대표 확정 12,900원).** NHN KCP 가 2026-10-28 에
+  /* **90일권.** NHN KCP 가 2026-10-28 에
      "서비스 제공기간 3개월 초과 상품" 으로 반려해서, 한 번 결제로 여는 기간을
      **90일 이하**로만 판다. 길게 쓰려면 다시 사서 이어 붙인다(`grantTrackTx` 가
      남은 기간 뒤에 붙인다). 자동 갱신은 없다 */
-  ('TRACK_90D',  'track', 12900, 'KRW', 0, true, 'full',
+  ('TRACK_90D',  'track', 15900, 'KRW', 0, true, 'full',
    'KR', NULL, NULL, NULL, 'approved',  90),
   /* **판매 종료.** 지우지 않는다: 이미 나간 주문과 이용권이 이 줄을 가리킨다.
      `active = false` 라 가격표와 결제창에 서지 않는다 */
