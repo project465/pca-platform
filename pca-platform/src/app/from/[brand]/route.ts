@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { BRAND_COOKIE, isPartner } from "@/lib/brand";
+import { JOB_COOKIE, JOB_COOKIE_DAYS, safeJobUrl } from "@/lib/partner-job";
+import { currentUser } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
 
@@ -16,10 +18,20 @@ export const dynamic = "force-dynamic";
     요청 주소가 안쪽 주소일 수 있고, 그 주소로 보내면 손님이 닿지 못한다 */
 const go = (path: string) => new NextResponse(null, { status: 302, headers: { Location: path } });
 
-export async function GET(_req: Request, { params }: { params: Promise<{ brand: string }> }) {
+export async function GET(req: Request, { params }: { params: Promise<{ brand: string }> }) {
   const { brand } = await params;
   if (!isPartner(brand)) return go("/");
-  const res = go(`/partner/${brand}`);
+  /* **잡인더스트리 공고 화면에서 눌렀으면 그 공고를 기억한다**(`partner-job.ts`).
+     허용된 주소가 아니면 조용히 버리고 평소처럼 소개 쪽으로 간다 */
+  const job = brand === "jobindustry" ? safeJobUrl(new URL(req.url).searchParams.get("job")) : null;
+  const user = job ? await currentUser().catch(() => null) : null;
+  const res = go(job && user ? "/me/track/import" : `/partner/${brand}`);
+  if (job) {
+    res.cookies.set(JOB_COOKIE, job, {
+      path: "/", maxAge: 60 * 60 * 24 * JOB_COOKIE_DAYS, sameSite: "lax", httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    });
+  }
   res.cookies.set(BRAND_COOKIE, brand, {
     path: "/",
     maxAge: 60 * 60 * 24 * 90,

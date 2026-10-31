@@ -10,6 +10,8 @@ import { payOpen } from "@/lib/payments";
 import { txer } from "@/lib/surface-text";
 import { PARTNERS, isPartner, recordBrand } from "@/lib/brand";
 import { publicCommerceGate } from "@/lib/public-gate";
+import { cookies } from "next/headers";
+import { JOB_COOKIE } from "@/lib/partner-job";
 
 export const dynamic = "force-dynamic";
 
@@ -47,6 +49,9 @@ export default async function PartnerPage({
   const gate = await publicCommerceGate().catch(() => ({ open: false }));
   const tracks = gate.open ? await trackOffers("KR").catch(() => []) : [];
   const back = `/partner/${brand}`;
+  /* 잡인더스트리 공고 화면에서 넘어왔으면 그 공고를 로그인 뒤에 바로 맞대 본다 */
+  const hasJob = Boolean((await cookies()).get(JOB_COOKIE)?.value);
+  const next = encodeURIComponent(hasJob ? "/me/track/import" : "/me/track");
 
   const steps: [string, string][] = [
     ["무료 검사로 시작합니다", "전공을 고르고 기본 검사를 풀면 내 경험이 어느 판단까지 설명되는지 결과로 나옵니다."],
@@ -61,7 +66,7 @@ export default async function PartnerPage({
         <div className="pubtop-r">
           {/* 같은 탭으로 돌아간다. 새 탭으로 열면 뒤로 가기가 끊긴다 */}
           <a href={P.home} className="sf-btn ghost sm">{P.name}로 돌아가기</a>
-          <Link href={user ? "/me" : "/login?next=%2Fme%2Ftrack"} className="sf-btn ghost sm">
+          <Link href={user ? "/me" : `/login?next=${next}`} className="sf-btn ghost sm">
             {user ? "내 CareerMatri" : "로그인"}
           </Link>
         </div>
@@ -72,12 +77,19 @@ export default async function PartnerPage({
           <div className="sf-eyebrow">{P.name} × CareerMatri</div>
           <h1>{P.name} {P.label}</h1>
           <p>{P.intro}</p>
+          {hasJob ? (
+            <p className="pxwhat" style={{ marginTop: 8 }}>
+              보시던 공고를 기억해 두었습니다. 로그인하시면 그 공고를 내 경험과 바로 맞대 봅니다(7일 동안 기억합니다).
+            </p>
+          ) : null}
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 16, justifyContent: "center" }}>
             {user ? (
-              <Link href="/me/track" className="sf-btn accent">MAT 열기</Link>
+              <Link href={hasJob ? "/me/track/import" : "/me/track"} className="sf-btn accent">
+                {hasJob ? "보던 공고 맞대 보기" : "MAT 열기"}
+              </Link>
             ) : (<>
               <Link href="/signup?next=%2Fcores" className="sf-btn accent">무료 검사로 시작하기</Link>
-              <Link href="/login?next=%2Fme%2Ftrack" className="sf-btn ghost">이미 계정이 있어요</Link>
+              <Link href={`/login?next=${next}`} className="sf-btn ghost">이미 계정이 있어요</Link>
             </>)}
           </div>
         </section>

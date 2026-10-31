@@ -16,6 +16,8 @@ import { draftExperience } from "@/lib/assistant/draft";
 import { setAiConsent, setEmailDigest, setFileConsent } from "@/lib/assistant/settings";
 import { markNudgesRead } from "@/lib/assistant/nudges";
 import { opFail, ref } from "@/lib/oplog";
+import { cookies } from "next/headers";
+import { JOB_COOKIE, fetchJobPage } from "@/lib/partner-job";
 
 /**
  * 준비 중인 기능이 켜지면 알려 달라는 표시.
@@ -83,6 +85,33 @@ export async function addPosting(form: FormData): Promise<void> {
     opFail({ operation: "assistant.posting", ref: ref("user", user.id), step: "save", category: "db" }, e);
   }
   if (!id) redirect("/me/track?e=posting#posting");
+  revalidatePath("/me/track");
+  redirect(`/me/track/posting/${id}`);
+}
+
+/**
+ * 잡인더스트리에서 보던 공고를 가져와 맞대 본다(`partner-job.ts`).
+ *
+ * **누를 때만 가져온다.** 주소를 여는 순간(GET) 남의 화면을 읽어 공고를 만들면
+ * 링크 미리보기만으로도 무료 한 번이 쓰인다. 붙여 넣기와 같은 무료 칸을 쓴다.
+ */
+export async function importJob(): Promise<void> {
+  const user = await requireTrack("posting");
+  const jar = await cookies();
+  const url = jar.get(JOB_COOKIE)?.value ?? "";
+  if (!url) redirect("/me/track#posting");
+  const got = await fetchJobPage(url);
+  if (!got.ok) redirect(`/me/track/import?e=${got.why}`);
+  let id = "";
+  try {
+    id = (await analyzePosting(user.id, {
+      label: (got.title || "잡인더스트리 공고").slice(0, 120), text: got.text, deadline: null,
+    })).id;
+  } catch (e) {
+    opFail({ operation: "assistant.posting", ref: ref("user", user.id), step: "import", category: "db" }, e);
+  }
+  if (!id) redirect("/me/track/import?e=save");
+  jar.delete(JOB_COOKIE);
   revalidatePath("/me/track");
   redirect(`/me/track/posting/${id}`);
 }

@@ -3398,6 +3398,13 @@ NHN KCP 가 "서비스 제공기간 3개월 초과 상품" 을 이유로 계약�
 한 줄 남는다(`src/lib/brand.ts`). **표를 따로 두고 쓰기 실패를 삼킨다**: `db:upgrade` 를 누르기 전의
 운영 DB 에서도 가입과 MAT 이 그대로 돌아야 해서다. 붙일 단추 코드는 `sites/jobindustry/`.
 `npm run partner:check` 가 실제 브라우저로 열아홉 가지를 센다(표가 없는 DB 에서도 돈다).
+**잡인더스트리 공고 화면에서 바로 MAT 으로**(2026-10-31). 잡인더스트리에 한 줄
+(`<script src="https://app.careermatri.com/embed/jobindustry.js" defer>`)을 붙이면 모든 화면에 떠 있는
+단추가 서고, 누르면 그 화면 주소가 `/from/jobindustry?job=` 로 넘어온다. 주소는 `cm_job` 쿠키(7일)에
+기억했다가 로그인 뒤 `/me/track/import` 에서 **누를 때만** 서버가 열어 읽는다(`partner-job.ts`).
+**잡인더스트리 호스트 · https 만 열고, 넘겨받는 주소도 한 번씩 다시 본다**(남의 주소를 대신 여는 자리는
+안쪽망을 두드리는 통로가 된다). 시험 호스트는 운영이 아닐 때 `JOBINDUSTRY_TEST_HOSTS` 로만 더한다.
+설치 순서는 `sites/jobindustry/INSTALL.md`, 검사는 `npm run partner:job`(가짜 잡인더스트리를 띄운다).
 **커리어피크도 같은 틀이고 이름은 MAT 그대로다**(2026-10-31 대표 결정): `/from/careerpeak` →
 `/partner/careerpeak`. 입구마다 다른 글(머리 문단 · `~로 들어오셨습니다` 앞말)은 `PARTNERS` 의
 `intro` · `via` · `does` 에 손으로 적는다. 조사가 이름 끝소리를 따라서 틀로 이어 붙이면 틀린다. 단추는 `sites/careerpeak/`.

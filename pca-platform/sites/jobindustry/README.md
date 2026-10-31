@@ -12,6 +12,15 @@
 
 ## 붙이는 법
 
+**설치 순서 전체는 `INSTALL.md`** 에 있다. 가장 효과가 큰 것은 모든 화면에 떠 있는 단추
+한 줄이다(공고 화면에서 누르면 그 공고를 MAT 이 바로 맞대 본다):
+
+```html
+<script src="https://app.careermatri.com/embed/jobindustry.js" defer></script>
+```
+
+### 카드 하나만 붙일 때
+
 잡인더스트리 사이트 편집기에서 HTML(코드) 블록을 하나 만들고
 `mat-button.html` 내용을 그대로 붙인다. 메뉴에 글자 링크로만 걸 때는 주소만
 쓰면 된다.
