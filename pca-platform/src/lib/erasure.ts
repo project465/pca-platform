@@ -48,6 +48,7 @@ const REMOVE: { table: string; why: string }[] = [
   { table: "jd_match_scores", why: "어떤 공고에 얼마나 맞았는지는 개인 이력이다" },
   { table: "memberships", why: "어느 학과 소속이었는지" },
   { table: "v3_prep_answers", why: "본인이 적은 지원서·면접 답" },
+  { table: "research_docs", why: "올린 논문·이력서·자소서에서 읽어 낸 요약. 본인의 연구와 이력이다" },
   /* ── 지금 검사(ME_V3)와 작업공간 ─────────────────────────────
      **이 묶음이 한동안 빠져 있었다.** 파기 목록이 옛 검사의 표만 들고
      있어서, 지금 검사로 적은 경험·지원 기록·MAT 메모가 탈퇴한
@@ -182,6 +183,10 @@ export async function anonymizeUser(
           AND attempt_id IN (SELECT id FROM attempts WHERE user_id = $1)`, [userId]);
     pdfFiles.push(...pdfs.rows.map((r) => r.p));
     for (const { table } of REMOVE) {
+      /* **아직 올라가지 않은 표는 건너뛴다.** 새 표는 코드가 먼저 서고 `db:upgrade` 가
+         나중에 온다. 그 사이에 없는 표를 지우려다 멈추면 탈퇴 전체가 되돌아간다 */
+      const has = await c.query<{ t: string | null }>(`SELECT to_regclass($1)::text AS t`, [`public.${table}`]);
+      if (!has.rows[0]?.t) continue;
       // 표 이름은 이 파일 안의 상수 목록에서만 온다. 밖에서 들어오지 않는다.
       const res = await c.query(`DELETE FROM ${table} WHERE user_id = $1`, [userId]);
       if (res.rowCount) removed[table] = res.rowCount;
@@ -285,11 +290,11 @@ export const ERASE_GROUPS: {
   {
     ko: "지원서·면접 준비와 MAT", en: "Application prep and AI assistant",
     detail: {
-      ko: "적어 두신 지원서·면접 답 · 붙여 넣은 공고 · 메모 · 알림 설정 · 알림을 받던 기기",
-      en: "Your application and interview answers, pasted postings, notes, notification settings, devices that received notifications",
+      ko: "적어 두신 지원서·면접 답 · 붙여 넣은 공고 · 메모 · 올린 논문·이력서·자소서의 요약 · 알림 설정 · 알림을 받던 기기",
+      en: "Your application and interview answers, pasted postings, notes, summaries of the papers, CVs and cover letters you uploaded, notification settings, devices that received notifications",
     },
     tables: ["v3_prep_answers", "assistant_drafts", "assistant_postings",
-      "assistant_nudges", "assistant_settings", "assistant_uploads", "push_subscriptions"],
+      "assistant_nudges", "assistant_settings", "assistant_uploads", "push_subscriptions", "research_docs"],
   },
   {
     ko: "지원 준비 자료", en: "Application material",

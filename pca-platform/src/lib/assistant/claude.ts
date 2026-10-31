@@ -32,6 +32,12 @@ export const ASSISTANT_MODEL = "claude-opus-5-5";
  * **서버 쪽 대체 모델이 없다**: 이 모델에는 `fallbacks` 를 보내지 않는다.
  */
 export const UPLOAD_MODEL = "claude-haiku-5-5";
+/**
+ * 논문 · 학위논문 · 발표 자료 · 이력서 · 자기소개서를 읽는 모델(2026-10-31).
+ * 영어 논문을 끝까지 읽고 방법 · 결과 · 기여를 직무 말로 옮겨야 해서 성적증명서
+ * 읽기보다 한 단계 위를 쓴다. `MAT_RESEARCH_MODEL` 로 바꿀 수 있다(배포 없이).
+ */
+export const RESEARCH_MODEL = process.env.MAT_RESEARCH_MODEL?.trim() || "claude-sonnet-5-5";
 
 /** 문서·그림 블록. 올린 파일을 그대로 넘길 때만 쓴다 */
 export type AiBlock =
@@ -74,6 +80,10 @@ export async function askStructured<S extends z.ZodType>(opts: {
   /** 기본은 `ASSISTANT_MODEL`. 파일 읽기는 `UPLOAD_MODEL` */
   model?: string;
   maxTokens?: number;
+  /** 기본 `low`. 논문처럼 끝까지 읽고 이어 생각해야 하는 일은 `medium` */
+  effort?: "low" | "medium" | "high";
+  /** 기본 60초. 긴 논문은 읽는 데 그보다 오래 걸린다 */
+  timeoutMs?: number;
 }): Promise<AiResult<z.infer<S>>> {
   if (!aiReady()) return { ok: false, reason: "off" };
   const model = opts.model ?? ASSISTANT_MODEL;
@@ -93,8 +103,8 @@ export async function askStructured<S extends z.ZodType>(opts: {
           ? [...opts.blocks, { type: "text" as const, text: opts.user }]
           : opts.user,
       }],
-      output_config: { effort: "low", format: betaZodOutputFormat(opts.schema) },
-    });
+      output_config: { effort: opts.effort ?? "low", format: betaZodOutputFormat(opts.schema) },
+    }, opts.timeoutMs ? { timeout: opts.timeoutMs } : undefined);
     if (res.stop_reason === "refusal") return { ok: false, reason: "refusal" };
     if (res.parsed_output == null) return { ok: false, reason: "parse" };
     return {

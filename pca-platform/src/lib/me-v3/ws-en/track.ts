@@ -16,7 +16,7 @@ export const WS_EN_TRACK: Record<string, string> = {
   "공고 확인 · 경험 채우기 · 파일 읽기는 한 번씩 무료입니다. 두 번째부터는 아래 기간권으로 이어집니다.":
     "You can try posting check, memo-to-record and file reading once each for free. From the second time on, pick a pass below.",
   "무료로 써 보는 중": "Free trial",
-  "공고 확인 {a} · 경험 채우기 {b} · 파일 읽기 {c} 남았습니다.": "Left: posting check {a} · memo-to-record {b} · file reading {c}.",
+  "공고 확인 {a} · 경험 채우기 {b} · 파일 읽기 {c} · 내 자료 읽기 {d} 남았습니다.": "Left: posting check {a} · memo-to-record {b} · file reading {c} · document reading {d}.",
   "{n}번": "{n}",
   "매주 알림과 마감 알림, 무제한 공고 확인은 기간권에서 열립니다.": "Weekly reminders, deadline alerts and unlimited posting checks open with a pass.",
   "기간권 보기": "See passes",

@@ -257,8 +257,9 @@ export default async function Track({
                 <p className="cm-row">
                   <b>{t("무료로 써 보는 중")}</b>
                   <span>
-                    {t("공고 확인 {a} · 경험 채우기 {b} · 파일 읽기 {c} 남았습니다.", {
-                      a: t("{n}번", { n: acc.left.posting }), b: t("{n}번", { n: acc.left.draft }), c: t("{n}번", { n: acc.left.upload }),
+                    {t("공고 확인 {a} · 경험 채우기 {b} · 파일 읽기 {c} · 내 자료 읽기 {d} 남았습니다.", {
+                      a: t("{n}번", { n: acc.left.posting }), b: t("{n}번", { n: acc.left.draft }),
+                      c: t("{n}번", { n: acc.left.upload }), d: t("{n}번", { n: acc.left.research }),
                     })}{" "}
                     {t("매주 알림과 마감 알림, 무제한 공고 확인은 기간권에서 열립니다.")}
                   </span>
@@ -295,6 +296,23 @@ export default async function Track({
             </div>
           </div>
           </>) : null}
+
+          {/* 논문 · 발표 자료 · 이력서 · 자기소개서를 읽고 그 낱말로 공고를 찾는다(2026-10-31).
+              자료 읽기는 국내 개인정보 동의로 열었다. 영어판에는 세우지 않는다 */}
+          {!en ? (
+            <>
+              <SectionHeader icon="doc" title="내 자료로 찾기"
+                sub="논문·발표 자료·이력서·자기소개서를 올리면 정리해서 직무의 말로 옮기고, 그 낱말로 겹치는 공고를 찾습니다." />
+              <div className="cm-panel is-one">
+                <div className="cm-pane">
+                  <div className="cm-acts">
+                    <Link className="cm-btn is-primary" href="/me/track/research">내 자료 읽기</Link>
+                    <Link className="cm-btn" href="/me/track/jobs">내 자료로 공고 찾기</Link>
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : null}
 
           <SectionHeader icon="log" title={t("공고 확인")}
             sub={t("직접 찾은 채용 공고를 붙여 넣으면 요구 항목마다 내 경험이 있는지 나눠 보여 줍니다.")} />

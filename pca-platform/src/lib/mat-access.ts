@@ -19,7 +19,7 @@ import { activeTrack, hasV3Result } from "@/lib/track";
  * 폼을 직접 보내도 `requireMat` 이 돌려보낸다.
  */
 
-export const FREE_LIMITS = { posting: 1, draft: 1, upload: 1 } as const;
+export const FREE_LIMITS = { posting: 1, draft: 1, upload: 1, research: 1 } as const;
 export type MatUse = keyof typeof FREE_LIMITS;
 
 export type MatAccess = {
@@ -35,13 +35,17 @@ export type MatAccess = {
 
 const COUNT: Record<MatUse, string> = {
   posting: `SELECT count(*)::int AS n FROM assistant_postings WHERE user_id = $1`,
-  draft: `SELECT count(*)::int AS n FROM assistant_drafts WHERE user_id = $1`,
+  /* 메모로 만든 초안만 센다. 파일 · 연구 자료에서 나온 초안은 `note_text` 가 비어 있고
+     그쪽 한 번(upload · research)에서 이미 셌다 */
+  draft: `SELECT count(*)::int AS n FROM assistant_drafts WHERE user_id = $1 AND note_text IS NOT NULL`,
   /* 실패한 읽기는 세지 않는다(`upload.ts` 의 한도와 같은 규칙) */
   upload: `SELECT count(*)::int AS n FROM assistant_uploads WHERE user_id = $1 AND status IN ('read', 'empty')`,
+  /* 논문 · PPT · 이력서 읽기(`research-docs.ts`). 표가 아직 없으면 0 으로 센다 */
+  research: `SELECT count(*)::int AS n FROM research_docs WHERE user_id = $1`,
 };
 
 export async function freeUsed(userId: string): Promise<Record<MatUse, number>> {
-  const out = { posting: 0, draft: 0, upload: 0 } as Record<MatUse, number>;
+  const out = { posting: 0, draft: 0, upload: 0, research: 0 } as Record<MatUse, number>;
   await Promise.all((Object.keys(COUNT) as MatUse[]).map(async (k) => {
     out[k] = (await queryOne<{ n: number }>(COUNT[k], [userId]).catch(() => null))?.n ?? 0;
   }));
