@@ -164,6 +164,7 @@
     "db:migration": "tsx scripts/db-migration-check.ts",
     "v3:smoke": "node scripts/v3-smoke.mjs",
     "mat:gold": "tsx scripts/mat-gold.ts",
+    "mat:steel": "tsx scripts/mat-steel-check.ts",
     "mat:prep": "tsx scripts/mat-prep-check.ts",
     "mat:brief": "tsx scripts/mat-brief-check.ts",
     "mat:grad": "tsx scripts/mat-grad-check.ts",

@@ -55,6 +55,15 @@ function terms(core: string): { code: string; term: string; latin: RegExp | null
   return out;
 }
 
+/**
+ * 그 영역들의 사전 이름(세 글자 이상). 공고 줄에 바로 이어진 경험이 없을 때,
+ * 경험 기록의 글(제목 · 정한 것 · 남긴 것 · 비교해 확인한 것)에 이 이름이 있으면
+ * `가까운 경험` 으로 잇는다(`posting.ts`)
+ */
+export function domainTerms(core: string, codes: string[]): string[] {
+  return [...new Set(terms(core).filter((t) => codes.includes(t.code) && t.term.length >= 3).map((t) => t.term))];
+}
+
 /** 사전 표를 새로 읽게 한다(시험에서 표를 바꿔 넣을 때) */
 export function resetTerms(): void { TERMS = null; }
 
@@ -124,6 +133,11 @@ export type ReadItem = {
   axis: string | null;
   /** 영역이 없을 때 그 까닭. 학력·연차·면허 같은 조건인가, 이을 영역을 못 찾았는가 */
   reason?: "condition" | "unmatched";
+  /**
+   * 그 줄에 사전 이름이 함께 걸린 다른 영역(3점 이상). `기계적 특성 평가 및 물성 보증
+   * 시험` 은 재료와 시험 둘 다다. 경험을 이을 때 주 영역에 없으면 여기서 찾는다(`posting.ts`)
+   */
+  alt?: string[];
 };
 export type ReadOut = { role: string | null; deadline: string | null; requirements: ReadItem[] };
 
@@ -135,9 +149,9 @@ type Section = "none" | "duty" | "req" | "nice" | "skip";
  * 요구 항목이다.
  */
 const HEADS: [Section, RegExp][] = [
-  ["nice", /^(우대하는\s*분|우대\s*사항|우대\s*조건|우대\s*요건|우대\s*역량|우대|가산점|가점\s*사항|이런 분이면 더 좋아요|플러스\s*포인트)$/],
+  ["nice", /^(우대하는\s*분|우대\s*사항|우대\s*자격|우대\s*조건|우대\s*요건|우대\s*역량|우대|가산점|가점\s*사항|이런 분이면 더 좋아요|플러스\s*포인트)$/],
   ["duty", /^(담당\s*업무|주요\s*업무|업무\s*내용|하는\s*일|직무\s*내용|수행\s*업무|업무\s*소개|직무\s*소개|이런 일을 해요|합류하면 하는 일|주요\s*직무|담당\s*직무|직무\s*수행\s*내용)$/],
-  ["req", /^(자격\s*조건|필요\s*자격|자격\s*요건|지원\s*자격|응시\s*자격|필수\s*요건|필수\s*사항|필수\s*역량|자격\s*사항|필수|요구\s*사항|이런 분을 찾아요|필요\s*지식|필요\s*기술|필요\s*역량|직무\s*수행\s*태도|지원\s*요건)$/],
+  ["req", /^(자격\s*조건|필요\s*자격|자격\s*요건|지원\s*자격|응시\s*자격|필수\s*요건|필수\s*사항|필수\s*역량|자격\s*사항|필수|요구\s*사항|이런 분을 찾아요|필요\s*지식|필요\s*기술|필요\s*역량|직무\s*수행\s*태도|지원\s*요건|필수\s*자격|기본\s*자격|공통\s*자격|자격)$/],
   ["skip", /^(근무\s*조건|근무\s*형태|근무\s*지역|근무지|근무\s*시간|근무\s*장소|고용\s*형태|채용\s*형태|급여|연봉|처우|복리\s*후생|복지|혜택|전형\s*절차|채용\s*절차|전형\s*방법|접수\s*방법|지원\s*방법|제출\s*서류|문의|기타|기타\s*사항|회사\s*소개|기업\s*소개|모집\s*부문|모집\s*분야|모집\s*직무|모집\s*인원|채용\s*인원|채용\s*분야|근무\s*예정지|근무\s*부서|근무\s*환경|근무\s*기간|선발\s*방법|인원|지원|접수|접수\s*마감|전형|모집\s*요강|센터\s*소개|함께하면\s*받는\s*것들?|합류\s*여정|채용\s*여정|채용\s*과정|전형\s*과정|일하는\s*방식|근무\s*방식|채용\s*직무|포지션|직무|접수\s*기간|모집\s*기간|지원\s*기간|마감|마감일|유의\s*사항|직무\s*기술서|채용\s*개요|모집\s*요강)$/],
 ];
 
@@ -204,6 +218,8 @@ const EDU_COND = /(제출\s*필수|필수\s*제출|학사|석사|박사|학위|�
 const AVAIL_COND = /(가능한\s*(자|분)|가능자|교대\s*근무|교대근무|주말\s*근무|야간\s*근무|출장\s*가능|소지자)/;
 const COND = /(학사|석사|박사|학위|졸업|전공자|관련\s*전공|전공\s*무관|전공\s*제한|학력|경력|신입|년\s*이상|개월\s*이상|토익|TOEIC|토스|OPIc|오픽|JLPT|HSK|어학|자격증|면허|병역|군필|결격|국가\s*유공자|장애인|취업\s*지원\s*대상|해외\s*여행|거주자|출퇴근|입사\s*가능|근무\s*가능|연령|나이)/i;
 const SOFT = /(책임감|성실|적극|열정|의사소통|커뮤니케이션|소통\s*능력|팀워크|협조|태도|인성|꼼꼼|윤리|준법|안전\s*수칙|글로벌\s*마인드|도전|주도적|자기\s*주도)/;
+/** 괄호 하나에 싼 짧은 머리줄. 뒤에 글이 이어지면 머리줄이 아니다 */
+const BRACKET_ONLY = /^[[【〔<]\s*[^\]】〕>]{1,16}?\s*[\]】〕>]$/;
 const ROLE_HEAD = /^(모집\s*부문|모집\s*분야|모집\s*직무|채용\s*직무|채용\s*분야|포지션|직무)$/;
 const NICE_INLINE = /(우대|가산|가점|선호|플러스|있으면\s*좋)/;
 const DATE_WORD = /(마감|접수|모집\s*기간|지원\s*기간|기한|까지|~|∼|〜)/;
@@ -287,6 +303,18 @@ export function readPosting(core: string, raw: string, today = new Date()): Read
       continue;
     }
     const h0 = header(line0);
+    /* **괄호에 싼 머리줄은 요구 항목이 아니다**(`[필수 자격]` · `【지원 대상】`). 아는
+       머리말이 아니어도 그 줄만으로 끝나면 머리말로 보고, 낱말로 갈래를 짐작한다.
+       짐작이 안 서면 지금 갈래를 그대로 둔다 */
+    if (!h0 && BRACKET_ONLY.test(line0)) {
+      const w = line0;
+      sawHeader = true;
+      if (/우대|가점|가산/.test(w)) sec = "nice";
+      else if (/자격|요건|필수|조건|역량/.test(w)) sec = "req";
+      else if (/업무|직무|하는\s*일|담당/.test(w)) sec = "duty";
+      else if (/근무|복리|급여|전형|절차|접수|서류|문의|혜택|처우/.test(w)) sec = "skip";
+      continue;
+    }
     if (h0) dueSection = /(접수|마감|지원\s*방법|지원\s*기간|모집\s*기간)/.test(h0.head);
 
     /* 날짜가 든 줄은 요구 항목이 아니다. 마감 후보로만 쓴다 */
@@ -363,9 +391,10 @@ export function readPosting(core: string, raw: string, today = new Date()): Read
        어느 줄에나 있다. 사전의 이름 하나나 이름 낱말 둘은 있어야 한다 */
     else if (best && best.score >= 2) domain = best.code;
     else reason = "unmatched";
+    const alt = domain ? hits.filter((h) => h.code !== domain && h.score >= 3).map((h) => h.code).slice(0, 2) : [];
     reqs.push({
       text: line.length > 120 ? `${line.slice(0, 118)}…` : line,
-      kind, domain, axis: null, ...(reason ? { reason } : {}),
+      kind, domain, axis: null, ...(reason ? { reason } : {}), ...(alt.length ? { alt } : {}),
     });
   }
 

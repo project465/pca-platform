@@ -47,8 +47,19 @@ const STATUS: Record<ItemStatus, { label: string; why: string }> = {
   ready: { label: "설명할 경험 있음", why: "결과에서 근거가 선 영역입니다." },
   partial: { label: "정리가 덜 됨", why: "해 본 일은 있는데 직접 정한 것이나 남긴 것이 아직 적혀 있지 않습니다." },
   empty: { label: "아직 없음", why: "이 영역의 경험이 아직 기록에 없습니다." },
-  unmapped: { label: "전공 밖 조건", why: "학력·자격·근무 여건·태도처럼 경험 기록으로 판단하지 않는 조건입니다." },
+  /* `전공 밖 조건` 이라고 적었더니 회원 전공이 목록에 든 전공 요건까지 `전공 밖` 으로 읽혔다
+     (2026-10-31 대표 시험). 경험이 아니라 지원 자격으로 보는 줄이라는 뜻을 그대로 적는다 */
+  unmapped: { label: "자격 조건", why: "학력·전공·경력·근무 여건처럼 경험 기록이 아니라 지원 자격으로 보는 조건입니다." },
 };
+
+/** 전공 요건 줄에 회원 전공이 들어 있으면 그렇다고 적는다. 판정이 아니라 읽은 사실이다 */
+const MAJOR_OK = { label: "전공 맞음", why: "회원님 전공이 이 조건의 전공 목록에 들어 있습니다." };
+/** 가까운 경험으로 이은 줄(`posting.ts` 의 near) */
+const NEAR = { label: "정리가 덜 됨", why: "가까운 경험이 있습니다. 이 일에 맞게 정한 것과 남긴 것을 경험 기록에 더 적어 주세요." };
+/** `기계공학` → `기계`. 전공 요건 줄(`전공: 기계, 화공, 금속…`)과 맞대 본다 */
+const majorStem = (m: string | null) => (m ?? "").replace(/\s+/g, "").replace(/(공학과|공학부|공학|학과|학부|전공|과)$/, "");
+const majorFits = (it: PostingItem, stem: string) =>
+  stem.length >= 2 && it.status === "unmapped" && it.reason !== "unmatched" && /전공/.test(it.text) && it.text.includes(stem);
 
 /**
  * 영역에 잇지 못한 줄은 조건과 따로 적는다. `Git 협업 경험` 같은 줄을 `전공 밖
@@ -58,8 +69,10 @@ const UNMATCHED = { label: "영역 확인 필요", why: "이 전공의 업무 �
 /** 연구 실적 줄(논문 · 특허 · 과제 …)은 아래 따로 세운 표에서 기록과 맞댄다 */
 const RESEARCH = { label: "연구 실적 요구", why: "아래 ‘연구 실적 요구’ 표에서 내 기록과 비교해 드립니다." };
 const isResearchLine = (it: PostingItem) => it.status === "unmapped" && researchKindOf(it.text) !== null;
-const statusOf = (it: PostingItem, t: WsSay) => {
+const statusOf = (it: PostingItem, t: WsSay, stem = "") => {
   const s = isResearchLine(it) ? RESEARCH
+    : majorFits(it, stem) ? MAJOR_OK
+    : it.near ? NEAR
     : it.status === "unmapped" && it.reason === "unmatched" ? UNMATCHED : STATUS[it.status];
   return { label: t(s.label), why: t(s.why) };
 };
@@ -95,6 +108,7 @@ export default async function Posting({ params, searchParams }: {
     matAccess(user.id).then((x) => ({ on: x.open })), stageOf(user.id),
   ]);
   if (!p) notFound();
+  const stem = en ? "" : majorStem(major);
   const a = p.analysis;
   const items = [...a.items].sort(
     (x, y) => ORDER.indexOf(x.status) - ORDER.indexOf(y.status)
@@ -126,7 +140,7 @@ export default async function Posting({ params, searchParams }: {
       {a.note ? <p className="cm-none" role="status">{a.note}</p> : null}
 
       <SectionHeader icon="check" title={t("한눈에")}
-        sub={t("설명할 경험 {ready} · 정리가 덜 됨 {partial} · 아직 없음 {empty} · 전공 밖 조건 {cond}",
+        sub={t("설명할 경험 {ready} · 정리가 덜 됨 {partial} · 아직 없음 {empty} · 자격 조건 {cond}",
           { ready: a.counts.ready, partial: a.counts.partial, empty: a.counts.empty, cond: a.counts.unmapped - unmatched - researchN })
           + (unmatched ? t(" · 영역 확인 필요 {n}", { n: unmatched }) : "")
           + (researchN ? t(" · 연구 실적 요구 {n}", { n: researchN }) : "")} />
@@ -160,9 +174,9 @@ export default async function Posting({ params, searchParams }: {
                   <td>{it.text}</td>
                   <td>{it.kind === "must" ? t("필수") : t("우대")}</td>
                   <td>{isResearchLine(it) ? t("연구 실적") : itemDomainKo(core, it, lang)}</td>
-                  <td><b>{statusOf(it, t).label}</b><br /><small>{statusOf(it, t).why}</small></td>
+                  <td><b>{statusOf(it, t, stem).label}</b><br /><small>{statusOf(it, t, stem).why}</small></td>
                   <td>
-                    {it.evidence.length ? it.evidence.join(" / ")
+                    {it.evidence.length ? `${it.near ? t("가까운 경험: ") : ""}${it.evidence.join(" / ")}`
                       : it.domain && it.status !== "ready" ? (
                         <Link href={`/me/experience/new?td=${encodeURIComponent(it.domain)}`}>{t("경험 적기")}</Link>
                       ) : "—"}

@@ -393,7 +393,8 @@
 /** 제휴 입구로 온 사람의 MAT 머리 제목이 그 사이트의 이름이 된다(잡인더스트리 `AI 취업 도우미` ·
  *  커리어피크 `AI 취업 비서`), 영어 작업공간에도 그 한 줄이 선다 — V78 */
 /** 제휴를 내려 둔 동안(`PARTNERS_PUBLIC`) MAT 머리의 입구 이름 · 한 줄은 운영자에게만 선다 — V79 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V79";
+/** MAT 공고 확인: `가까운 경험` 으로 이은 줄과 `전공 맞음` 을 적는다. 글을 못 읽은 공고에는 비교 단추를 세우지 않는다 — V80 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V80";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -455,7 +456,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V79";
 /** MAT 무료가 `아무 도구나 합쳐 2번` 이 됐다(남은 횟수 한 줄 · 다 쓴 안내 · 보던 공고 화면) */
 /** `맞대 보기` 를 `비교하기` 로(2026-10-31 대표 지적: 너무 AI 같다). 영어 사전의 열쇠도 같이 고쳤다 */
 /** 제휴별 이름(잡인더스트리 AI 취업 도우미 · 커리어피크 AI 취업 비서)과 그 영어 이름 */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.57";
+/** `전공 밖 조건` 을 `자격 조건` 으로(2026-10-31 대표 시험: 회원 전공이 든 전공 요건이 `전공 밖` 으로 읽혔다) · 전공 맞음 · 가까운 경험 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.58";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

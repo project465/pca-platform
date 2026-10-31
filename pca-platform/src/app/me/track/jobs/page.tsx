@@ -116,15 +116,21 @@ function PostingCard({ p }: { p: MatchedPosting }) {
           <dl className="cm-dl">
             <div><dt>공고의 요구</dt><dd>{p.requirements.map((r, i) => <span key={i} style={{ display: "block" }}>· {r}</span>)}</dd></div>
           </dl>
-        ) : null}
+        ) : (
+          /* 본문이 통이미지인 공고(잡인더스트리에 흔하다)는 글자를 얻지 못한다. 누를 수 있는데
+             안 되는 단추를 세우지 않고, 원문을 열어 보도록 적는다 */
+          <p className="cm-none">이 공고는 본문이 그림이라 요구 항목을 글로 읽지 못했습니다. 원문을 열어 확인해 주세요.</p>
+        )}
         <div className="cm-acts" style={{ marginTop: 10 }}>
           {p.source_url ? <a className="cm-btn" href={p.source_url} target="_blank" rel="noopener noreferrer">공고 원문 보기</a> : null}
-          <form action={addPosting}>
-            <input type="hidden" name="label" value={`${SOURCE_KO[p.source] ?? p.source} 공고 ${p.id}`} />
-            <input type="hidden" name="deadline" value={p.closes_on ?? ""} />
-            <input type="hidden" name="text" value={p.requirements.join("\n")} />
-            <button className="cm-btn is-primary" type="submit">내 경험과 비교하기</button>
-          </form>
+          {p.requirements.length ? (
+            <form action={addPosting}>
+              <input type="hidden" name="label" value={`${SOURCE_KO[p.source] ?? p.source} 공고 ${p.id}`} />
+              <input type="hidden" name="deadline" value={p.closes_on ?? ""} />
+              <input type="hidden" name="text" value={p.requirements.join("\n")} />
+              <button className="cm-btn is-primary" type="submit">내 경험과 비교하기</button>
+            </form>
+          ) : null}
         </div>
       </div>
     </div>

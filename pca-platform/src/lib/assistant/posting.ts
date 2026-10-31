@@ -9,7 +9,7 @@ import { domainName } from "@/lib/me-v3/runtime/session";
 import { wsLang } from "@/lib/me-v3/ws-lang";
 import { aiFailEn, aiFailKo, askStructured, type AiFail } from "./claude";
 import { areaName, axisName, catalog, catalogPrompt, isAxis, type MatLang } from "./catalog";
-import { readPosting } from "./rules";
+import { domainTerms, readPosting } from "./rules";
 import { aiConsented } from "./settings";
 
 /**
@@ -46,6 +46,13 @@ export type PostingItem = {
    * 옛 분석 줄에는 없다(그때는 조건으로 읽는다).
    */
   reason?: "condition" | "unmatched";
+  /** 그 줄에 함께 걸린 다른 영역(규칙으로 읽었을 때만). 가까운 경험을 찾는 데 쓴다 */
+  alt?: string[];
+  /**
+   * 적어 둔 경험이 이 줄의 영역에 바로 있지 않고 **가까운 경험**(함께 걸린 영역이거나,
+   * 경험 글에 이 영역의 이름이 들어 있다)으로 이어졌다. 그때 상태는 `정리가 덜 됨` 이다
+   */
+  near?: boolean;
 };
 
 export type PostingAnalysis = {
@@ -76,7 +83,10 @@ const Read = z.object({
     reason: z.enum(["condition", "unmatched"]).optional(),
   })),
 });
-type ReadOut = z.infer<typeof Read>;
+/* 규칙으로 읽은 줄에는 함께 걸린 영역(`alt`)이 붙는다. Claude 에게 주는 틀(`Read`)은 그대로 둔다 */
+type ReadOut = Omit<z.infer<typeof Read>, "requirements"> & {
+  requirements: (z.infer<typeof Read>["requirements"][number] & { alt?: string[] })[];
+};
 
 const SYSTEM =
   "당신은 대학생의 취업 준비를 돕는 진로 상담사입니다. 학생이 직접 찾아 붙여 넣은 " +
@@ -134,6 +144,27 @@ function statusFor(
   return { status: "empty", evidence };
 }
 
+/**
+ * 바로 이어진 경험이 없을 때 **가까운 경험**을 찾는다(2026-10-31 대표 시험: `수명 예측값을
+ * 시험 결과와 비교` 한 구조·내구 해석 경험이 `기계적 특성 평가 및 물성 보증 시험` 에 잇지
+ * 못했다). 함께 걸린 영역의 경험이거나, 경험 글에 이 줄의 영역 이름이 들어 있으면 잇는다.
+ * **꾸미지 않는다**: `설명할 경험 있음` 이 아니라 `정리가 덜 됨` 으로만 세운다
+ */
+function withNear(
+  core: string, st: StatusInput, exps: Experience[], domain: string, alt: string[] | undefined, axis: Axis | null,
+): { status: ItemStatus; evidence: string[]; near?: boolean } {
+  const base = statusFor(st, exps, domain, axis);
+  if (base.status !== "empty") return base;
+  const codes = [domain, ...(alt ?? [])];
+  const words = domainTerms(core, codes).map((w) => w.toLowerCase());
+  const near = exps.filter((e) => !e.td_codes.includes(domain) && (
+    e.td_codes.some((c) => (alt ?? []).includes(c))
+    || [e.title, ...e.decisions, ...e.artifacts, ...e.verifications].join(" \n ").toLowerCase()
+      .split(" \n ").some((x) => words.some((w) => x.includes(w)))
+  )).map((e) => e.title).slice(0, 3);
+  return near.length ? { status: "partial", evidence: near, near: true } : base;
+}
+
 /** 요구 항목 하나를 지금 상태에 댄다 */
 function judge(
   st: CurrentState, exps: Experience[], r: ReadOut["requirements"][number],
@@ -142,10 +173,15 @@ function judge(
   const axis = isAxis(r.axis) ? r.axis : null;
   let status: ItemStatus = "unmapped";
   let evidence: string[] = [];
-  if (domain) ({ status, evidence } = statusFor(st, exps, domain, axis));
+  let near: boolean | undefined;
+  const alt = (r.alt ?? []).filter((c) => catalog(st.core).some((d) => d.code === c));
+  if (domain) ({ status, evidence, near } = withNear(st.core, st, exps, domain, alt, axis));
   /* 영역이 없으면 까닭을 남긴다. Claude 는 조건 줄만 비워 두라고 받았으므로 조건이다 */
   const reason = domain ? undefined : (r.reason ?? "condition");
-  return { text: r.text.slice(0, 120), kind: r.kind, domain, axis, status, evidence, ...(reason ? { reason } : {}) };
+  return {
+    text: r.text.slice(0, 120), kind: r.kind, domain, axis, status, evidence,
+    ...(reason ? { reason } : {}), ...(alt.length ? { alt } : {}), ...(near ? { near } : {}),
+  };
 }
 
 export async function analyzePosting(userId: string, input: {
@@ -213,8 +249,11 @@ export function refreshPosting(
   row: PostingRow, core: string, st: StatusInput, exps: Experience[],
 ): PostingRow {
   if ((row.core_code ?? core) !== core) return row;
-  const items = row.analysis.items.map((it) => (it.domain
-    ? { ...it, ...statusFor(st, exps, it.domain, it.axis) } : it));
+  const items = row.analysis.items.map((it) => {
+    if (!it.domain) return it;
+    const { near: _old, ...rest } = it;
+    return { ...rest, ...withNear(core, st, exps, it.domain, it.alt, it.axis) };
+  });
   return { ...row, analysis: { ...row.analysis, items, counts: countOf(items) } };
 }
 

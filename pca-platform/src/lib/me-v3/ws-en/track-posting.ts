@@ -15,16 +15,21 @@ export const WS_EN_TRACK_POSTING: Record<string, string> = {
     "You've done this kind of work, but what you decided or produced isn't written down yet.",
   "아직 없음": "Not yet",
   "이 영역의 경험이 아직 기록에 없습니다.": "There's no experience in this area in your records yet.",
-  "전공 밖 조건": "Not about experience",
-  "학력·자격·근무 여건·태도처럼 경험 기록으로 판단하지 않는 조건입니다.":
-    "A condition like a degree, license, work arrangement or attitude. Your experience records don't cover these.",
+  "자격 조건": "Eligibility",
+  "학력·전공·경력·근무 여건처럼 경험 기록이 아니라 지원 자격으로 보는 조건입니다.":
+    "A condition like a degree, major, years of experience or work arrangement. It's about eligibility, not your experience records.",
+  "전공 맞음": "Major fits",
+  "회원님 전공이 이 조건의 전공 목록에 들어 있습니다.": "Your major is on this line's list of majors.",
+  "가까운 경험이 있습니다. 이 일에 맞게 정한 것과 남긴 것을 경험 기록에 더 적어 주세요.":
+    "You have a close experience. Add what you decided and produced for this kind of work to your record.",
+  "가까운 경험: ": "Close experience: ",
   "영역 확인 필요": "Area to confirm",
   "이 전공의 업무 영역에 바로 잇지 못한 줄입니다. 어느 경험으로 설명할지 직접 정해 주세요.":
     "We couldn't tie this line to one of your major's work areas. Decide which experience you'd use to explain it.",
 
   "한눈에": "At a glance",
-  "설명할 경험 {ready} · 정리가 덜 됨 {partial} · 아직 없음 {empty} · 전공 밖 조건 {cond}":
-    "Can explain {ready} · Needs writing up {partial} · Not yet {empty} · Not about experience {cond}",
+  "설명할 경험 {ready} · 정리가 덜 됨 {partial} · 아직 없음 {empty} · 자격 조건 {cond}":
+    "Can explain {ready} · Needs writing up {partial} · Not yet {empty} · Eligibility {cond}",
   " · 영역 확인 필요 {n}": " · Area to confirm {n}",
   "먼저 채울 줄: {text}": "Start with: {text}",
   "{area} 쪽 경험 하나를 적어 두면 이 줄을 설명할 재료가 생깁니다.":
