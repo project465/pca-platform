@@ -16,6 +16,7 @@ import { createServer } from "node:http";
 import { chromium } from "playwright";
 import { queryOne } from "../src/lib/db";
 import { fetchJobPage, htmlToText, safeJobUrl } from "../src/lib/partner-job";
+import { PARTNERS_PUBLIC } from "../src/lib/brand";
 
 let bad = 0;
 const ok = (n: string, c: boolean, d = "") => {
@@ -36,6 +37,12 @@ const POSTING = `<!doctype html><html><head><title>[한국재료연구원] 이�
 <script src="http://${"127.0.0.1:3151"}/embed/jobindustry.js" defer></script></body></html>`;
 
 async function main(): Promise<void> {
+  /* 제휴를 내려 둔 동안(`PARTNERS_PUBLIC`)에는 단추와 입구가 닫혀 있어 브라우저 단계는 돌지 않는다.
+     닫힌 상태는 `partner:check` 가 센다 */
+  if (!PARTNERS_PUBLIC) {
+    console.log("제휴를 내려 둔 동안이라 건너뜁니다(src/lib/brand.ts PARTNERS_PUBLIC). 닫힌 상태는 npm run partner:check 가 셉니다.");
+    process.exit(0);
+  }
   /* 1 — 받는 주소 */
   ok("잡인더스트리 https 주소는 받는다", safeJobUrl("https://www.jobindustry.co.kr/job/view?id=12#top") === "https://www.jobindustry.co.kr/job/view?id=12");
   ok("잡인더스트리라도 http 는 받지 않는다", safeJobUrl("http://www.jobindustry.co.kr/job/1") === null);

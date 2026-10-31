@@ -90,3 +90,18 @@ export function roleInOrg(user: SessionUser, orgId: string): Role | null {
   if (user.role === "superadmin") return "superadmin";
   return user.memberships.find((m) => m.orgId === orgId)?.role ?? null;
 }
+
+/**
+ * 이 브라우저에 **운영자(superadmin)** 가 담당자 쿠키로 들어와 있는가. 화면 쪽(학생 · 담당자 ·
+ * 함께)과 상관없이 담당자 쿠키만 본다: 가려 둔 제휴 화면을 대표님이 학생 화면에서도
+ * 확인할 수 있게 한다(`brand.ts` 의 `partnerVisible`). 모르면 아니라고 답한다.
+ */
+export async function isSuperadmin(): Promise<boolean> {
+  try {
+    const s = await staffAuth();
+    const u = s?.user as SessionUser | undefined;
+    return Boolean(u?.id && u.role === "superadmin" && !u.mustResetPw);
+  } catch {
+    return false;
+  }
+}

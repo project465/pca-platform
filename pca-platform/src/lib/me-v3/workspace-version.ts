@@ -392,7 +392,8 @@
 /** `내 자료 읽기` 결과 아래 `커리어피크 상담 신청` 칸(보내는 것 · 보내지 않는 것 · 동의 칸 · 한 장 요약 펼쳐 보기) — V77 */
 /** 제휴 입구로 온 사람의 MAT 머리 제목이 그 사이트의 이름이 된다(잡인더스트리 `AI 취업 도우미` ·
  *  커리어피크 `AI 취업 비서`), 영어 작업공간에도 그 한 줄이 선다 — V78 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V78";
+/** 제휴를 내려 둔 동안(`PARTNERS_PUBLIC`) MAT 머리의 입구 이름 · 한 줄은 운영자에게만 선다 — V79 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V79";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.

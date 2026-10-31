@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import BrandHome from "@/components/sf/brand-home";
 import PublicFooter from "@/components/sf/public-footer";
 import LaunchNotify, { type NotifyQuery } from "@/components/inquiry/launch-notify";
@@ -8,7 +8,7 @@ import { money } from "@/lib/market";
 import { trackOffers } from "@/lib/track";
 import { payOpen } from "@/lib/payments";
 import { txer } from "@/lib/surface-text";
-import { PARTNERS, isPartner, recordBrand } from "@/lib/brand";
+import { PARTNERS, isPartner, partnerVisible, recordBrand } from "@/lib/brand";
 import { publicCommerceGate } from "@/lib/public-gate";
 import { cookies } from "next/headers";
 import { JOB_COOKIE } from "@/lib/partner-job";
@@ -42,6 +42,8 @@ export default async function PartnerPage({
   const [{ brand }, sp] = await Promise.all([params, searchParams]);
   if (!isPartner(brand)) notFound();
   const P = PARTNERS[brand];
+  /* 내려 둔 동안에는 운영자만 본다. 그 밖의 사람은 제휴 사이트 첫 화면으로 돌아간다 */
+  if (!(await partnerVisible())) redirect(P.home);
   const T = txer("ko");
   const user = await currentUser().catch(() => null);
   if (user) await recordBrand(user.id, brand);

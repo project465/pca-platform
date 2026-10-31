@@ -29,7 +29,7 @@ import { CmShell, CmHead } from "../shell";
 import { AssistantGuide } from "./guide";
 import { BriefPanel } from "./brief";
 import { SectionHeader } from "../ui";
-import { PARTNERS, partnerFromCookie } from "@/lib/brand";
+import { PARTNERS, partnerFromCookie, partnerVisible } from "@/lib/brand";
 import { FREE_TOTAL, matAccess } from "@/lib/mat-access";
 import {
   addPosting, changeConsent, changeDigest, changeFileConsent, claimTrial, makeDraft, readAllNudges,
@@ -106,7 +106,8 @@ export default async function Track({
      신청 단추가 아무 일도 하지 않는다 */
   const rawEmail = (await queryOne<{ email: string | null }>(
     `SELECT email FROM users WHERE id = $1`, [user.id]).catch(() => null))?.email ?? null;
-  const partner = await partnerFromCookie();
+  /* 제휴를 내려 둔 동안 입구 이름은 운영자에게만 보인다(`PARTNERS_PUBLIC`) */
+  const partner = (await partnerVisible()) ? await partnerFromCookie() : null;
   const myEmail = rawEmail && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(rawEmail) ? rawEmail : null;
   const lang = await wsLang(user.id);
   const t = wsSay(lang);

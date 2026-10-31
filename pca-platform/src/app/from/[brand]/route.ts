@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { BRAND_COOKIE, isPartner } from "@/lib/brand";
+import { BRAND_COOKIE, PARTNERS, isPartner, partnerVisible } from "@/lib/brand";
 import { JOB_COOKIE, JOB_COOKIE_DAYS, safeJobUrl } from "@/lib/partner-job";
 import { currentUser } from "@/lib/session";
 
@@ -21,6 +21,8 @@ const go = (path: string) => new NextResponse(null, { status: 302, headers: { Lo
 export async function GET(req: Request, { params }: { params: Promise<{ brand: string }> }) {
   const { brand } = await params;
   if (!isPartner(brand)) return go("/");
+  /* 제휴를 내려 둔 동안에는 운영자만 지나간다. 그 밖의 사람은 쿠키 없이 제휴 사이트로 돌아간다 */
+  if (!(await partnerVisible())) return go(PARTNERS[brand].home);
   /* **잡인더스트리 공고 화면에서 눌렀으면 그 공고를 기억한다**(`partner-job.ts`).
      허용된 주소가 아니면 조용히 버리고 평소처럼 소개 쪽으로 간다 */
   const job = brand === "jobindustry" ? safeJobUrl(new URL(req.url).searchParams.get("job")) : null;

@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { query, queryOne } from "@/lib/db";
+import { isSuperadmin } from "@/lib/session";
 
 /**
  * 제휴 입구(2026-10-30). 잡인더스트리와 커리어피크가 MAT 을 **각자의 이름으로**
@@ -94,6 +95,19 @@ export const PARTNERS: Record<Partner, {
   },
 };
 
+/**
+ * **제휴 화면을 내려 둔다**(2026-10-31 대표 지시: "너무 AI 느낌이라 우선 내린다").
+ * 이 값이 false 인 동안 `/partner/*` · `/from/*` 는 운영자에게만 열리고, 그 밖의 사람은
+ * 제휴 사이트 첫 화면으로 돌아간다. MAT 머리의 입구 이름과 알림 · 메일의 입구 이름도
+ * 운영자가 아니면 쓰지 않는다. 다시 열 때는 이 한 줄만 true 로 바꾼다.
+ */
+export const PARTNERS_PUBLIC = false;
+
+/** 지금 이 사람에게 제휴 화면 · 입구 이름을 보여도 되는가 */
+export async function partnerVisible(): Promise<boolean> {
+  return PARTNERS_PUBLIC || await isSuperadmin();
+}
+
 export function isPartner(x: unknown): x is Partner {
   return typeof x === "string" && Object.prototype.hasOwnProperty.call(PARTNERS, x);
 }
@@ -131,6 +145,8 @@ export async function cameVia(userId: string, brand: Partner): Promise<boolean> 
 
 /** 이 사람이 마지막으로 들어온 제휴 입구. 없거나 읽지 못하면 null */
 export async function brandOf(userId: string): Promise<Partner | null> {
+  /* 제휴를 내려 둔 동안에는 알림 · 메일에 입구 이름을 쓰지 않는다(`PARTNERS_PUBLIC`) */
+  if (!PARTNERS_PUBLIC) return null;
   const r = await queryOne<{ brand: string }>(
     `SELECT brand FROM brand_touches WHERE user_id = $1 ORDER BY last_seen_at DESC LIMIT 1`, [userId],
   ).catch(() => null);

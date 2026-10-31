@@ -17,6 +17,7 @@ for (const line of (() => { try { return readFileSync(".env.local", "utf8").spli
 /* eslint-disable import/first */
 import { chromium } from "playwright";
 import { query, queryOne } from "../src/lib/db";
+import { PARTNERS_PUBLIC } from "../src/lib/brand";
 
 const BASE = process.env.PARTNER_BASE ?? "http://127.0.0.1:3150";
 const OUT = process.env.PARTNER_SHOTS ?? "";
@@ -27,6 +28,19 @@ const ok = (n: string, c: boolean, d = "") => {
 };
 
 async function main(): Promise<void> {
+  /* 제휴를 내려 둔 동안(`PARTNERS_PUBLIC`)에는 닫혀 있는지만 센다. 로그인하지 않은 손님은
+     제휴 사이트 첫 화면으로 돌아가고, 입구 쿠키가 심기지 않아야 한다 */
+  if (!PARTNERS_PUBLIC) {
+    for (const [b, home] of [["jobindustry", "https://www.jobindustry.co.kr"], ["careerpeak", "https://www.careerpeak.co.kr"]] as const) {
+      const f = await fetch(`${BASE}/from/${b}`, { redirect: "manual" });
+      ok(`[닫힘] /from/${b} 는 ${home} 로 돌려보낸다`, f.status === 302 && f.headers.get("location") === home, `${f.status} ${f.headers.get("location")}`);
+      ok(`[닫힘] /from/${b} 는 입구 쿠키를 심지 않는다`, !/cm_brand/.test(f.headers.get("set-cookie") ?? ""));
+      const p = await fetch(`${BASE}/partner/${b}`, { redirect: "manual" });
+      ok(`[닫힘] /partner/${b} 는 ${home} 로 돌려보낸다`, [302, 303, 307, 308].includes(p.status) && (p.headers.get("location") ?? "").startsWith(home), `${p.status} ${p.headers.get("location")}`);
+    }
+    console.log(bad ? `\n걸림 ${bad}` : "\n제휴 화면 닫힘 OK");
+    process.exit(bad ? 1 : 0);
+  }
   const hasTable = Boolean((await queryOne<{ t: string | null }>(
     `SELECT to_regclass('public.brand_touches')::text AS t`, []))?.t);
   console.log(`  DB: brand_touches 표 ${hasTable ? "있음 (올린 뒤)" : "없음 (올리기 전)"}`);

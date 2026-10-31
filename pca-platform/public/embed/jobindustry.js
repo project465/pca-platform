@@ -12,10 +12,25 @@
  * - 끄려면: 단추를 붙인 <script> 에 data-off 를 달거나 줄을 지운다.
  *   글자를 바꾸려면: data-label="AI 취업 도우미"
  *   왼쪽에 두려면: data-side="left"
+ *
+ * **지금은 숨겨 둔다**(2026-10-31 대표 지시: 제휴 화면을 다시 쓸 때까지 내린다).
+ * 잡인더스트리 주소 끝에 `?cm_preview=1` 을 붙여 열면 그 탭에서만 단추가 보인다
+ * (탭을 닫을 때까지 기억한다. `?cm_preview=0` 으로 끈다). 다시 열 때는 아래 PUBLIC 을 true 로.
  */
 (function () {
+  var PUBLIC = false;
   var me = document.currentScript;
   if (!me || me.hasAttribute("data-off") || document.getElementById("cm-mat-fab")) return;
+  if (!PUBLIC) {
+    var preview = false;
+    try {
+      var q = new URLSearchParams(location.search).get("cm_preview");
+      if (q === "1") sessionStorage.setItem("cm_preview", "1");
+      if (q === "0") sessionStorage.removeItem("cm_preview");
+      preview = sessionStorage.getItem("cm_preview") === "1";
+    } catch (e) { preview = /[?&]cm_preview=1(&|$)/.test(location.search); }
+    if (!preview) return;
+  }
   var base = "https://app.careermatri.com";
   try { base = new URL(me.src).origin; } catch (e) { /* 그대로 */ }
   var label = me.getAttribute("data-label") || "AI 취업 도우미";
