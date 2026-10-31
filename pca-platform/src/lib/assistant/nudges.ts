@@ -11,6 +11,7 @@ import { postingsForMe } from "./match";
 import { opFail, ref } from "@/lib/oplog";
 import { purgeConsults } from "@/lib/careerpeak-consult";
 import { brandOf, serviceName } from "@/lib/brand";
+import { MAT_PUBLIC } from "@/lib/mat-switch";
 
 /**
  * 기기 알림 글의 `MAT` 을 그 사람이 들어온 입구의 이름으로 바꾼다(잡인더스트리
@@ -275,7 +276,9 @@ export async function runAssistantTick(now = new Date()): Promise<{
   const p3 = await purgeUploads();
   /* 기간권이 없는 분 가운데 자료를 올린 분에게도 새로 겹치는 공고를 알린다. 세 건까지는
      무료로 보이고 나머지는 기간권에서 열린다(`/me/track/jobs`). 주에 한 번이다 */
-  const freeUsers = await query<{ id: string }>(
+  /* MAT 을 가려 둔 동안(`lib/mat-switch.ts`)에는 기간권이 없는 분에게 알림을 쌓지 않는다.
+     그분들은 MAT 화면에 들어올 수 없어서, 알림이 와도 누르면 홈으로 돌아간다 */
+  const freeUsers = !MAT_PUBLIC ? [] : await query<{ id: string }>(
     `SELECT DISTINCT r.user_id::text AS id FROM research_docs r JOIN users u ON u.id = r.user_id
       WHERE u.status = 'active' AND NOT EXISTS (
         SELECT 1 FROM entitlements e WHERE e.user_id = r.user_id AND e.kind = 'track'

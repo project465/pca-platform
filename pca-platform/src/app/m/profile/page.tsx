@@ -57,7 +57,10 @@ export default async function Profile() {
           ) : null}
         </Section>
 
-        <Section title="알림">
+        {/* 알림은 MAT 이 쌓는다. MAT 을 가려 둔 동안 이용 기간이 없는 사람에게는 이 칸을
+            세우지 않는다: 11월 2일 뒤 기기 알림 열쇠가 서면 MAT 과 상관없이 켜기 단추가
+            보였다(`lib/mat-switch.ts`) */}
+        {MAT_PUBLIC || track.on ? <Section title="알림">
           <span id="settings" />
           <div className="ma-card">
             {pushKey ? <PushToggle publicKey={pushKey} /> : (
@@ -72,7 +75,7 @@ export default async function Profile() {
               </form>
             ) : null}
           </div>
-        </Section>
+        </Section> : null}
 
         <Section title="계정">
           <div className="ma-list">
