@@ -93,6 +93,8 @@ export const NAV_ADMIN: NavItem[] = [
   { href: "/admin/business", label: "navBusiness", icon: "building", group: "navGroupLaunch" },
 
   { href: "/admin/funnel", label: "navFunnel", icon: "spark", group: "navGroupCustomers" },
+  /* 알림 켠 사람(아이폰/안드로이드). 스토어 앱을 만들지 이 숫자로 정한다 */
+  { href: "/admin/push", label: "navPush", icon: "bell", group: "navGroupCustomers" },
   /* 본 파일럿을 보는 자리. **거대한 관리 시스템을 새로 짓지 않는다** —
      참가자와 응시와 의견을 한 표로 본다 */
   { href: "/admin/v3-pilot", label: "navV3Pilot", icon: "clipboard", group: "navGroupCustomers" },
