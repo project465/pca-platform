@@ -114,6 +114,8 @@ export default async function PartnerPage({
             <li>{T("pxTrackF3")}</li>
           </ul>
           <p className="pxwhat">{T("pxTrackNot")}</p>
+          {/* 값과 사는 단추가 숨겨진 동안에도 무료 범위는 늘 보인다 */}
+          <p className="pxwhat"><b>{T("pxTrackFreeHead")}</b> {T("pxTrackFree")}</p>
           {tracks.length ? (
             <div className="pxband-g">
               {tracks.map((t) => (

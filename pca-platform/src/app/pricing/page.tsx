@@ -241,6 +241,11 @@ export default async function PricingPage({
             </ul>
             <p className="pxwhat">{T("pxTrackNot")} <Link href="/me/track">{T("pxTrackMore")}</Link></p>
             <div className="pxband-g">
+              {/* 무료 범위를 값보다 먼저 둔다: 사기 전에 써 볼 수 있다는 것이 첫 칸이다 */}
+              <div className="pxband-i">
+                <b>{T("pxTrackFreeHead")}</b>
+                <span>{T("pxTrackFree")}</span>
+              </div>
               {tracks.map((t) => (
                 <div key={t.code} className="pxband-i">
                   <b>
