@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import { matAccess } from "@/lib/mat-access";
-import { postingsForMe } from "@/lib/assistant/match";
+import { postingsForMe, type MatchedPosting } from "@/lib/assistant/match";
+import { RESEARCH_POLICY_FROM, researchOpen } from "@/lib/assistant/research-docs";
 import { CmShell, CmHead } from "../../shell";
 import { SectionHeader } from "../../ui";
 import { addPosting } from "../actions";
@@ -29,8 +30,6 @@ export default async function JobsForMe() {
   const [acc, m] = await Promise.all([matAccess(user.id), postingsForMe(user.id)]);
   const shown = acc.paid ? m.rows : m.rows.slice(0, FREE_SHOW);
   const hidden = m.rows.length - shown.length;
-  const today = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }));
-  const leftDays = (d: string) => Math.round((new Date(`${d}T00:00:00+09:00`).getTime() - today.getTime()) / 86_400_000);
 
   return (
     <CmShell active="/me/track" title="MAT">
@@ -40,11 +39,24 @@ export default async function JobsForMe() {
       {!m.terms.length ? (
         <div className="cm-panel is-one">
           <div className="cm-pane">
-            <p className="cm-row">
-              <b>먼저 자료를 올려 주세요</b>
-              <span>논문·발표 자료·이력서·자기소개서를 하나 올리면 그 안의 분야·방법·장비 낱말로 공고를 찾습니다.</span>
-            </p>
-            <div className="cm-acts"><Link className="cm-btn is-primary" href="/me/track/research">내 자료 올리기</Link></div>
+            {/* 아직 열리지 않은 기능으로 보내지 않는다. 열리기 전에는 지금 되는 일로 안내한다 */}
+            {researchOpen() ? (<>
+              <p className="cm-row">
+                <b>자료를 하나 올리면 나에게 맞는 공고부터 세웁니다</b>
+                <span>논문·발표 자료·이력서·자기소개서를 올리면 그 안의 분야·방법·장비 낱말로 공고를 찾습니다. 그 전에는 아래 새로 들어온 공고를 보실 수 있습니다.</span>
+              </p>
+              <div className="cm-acts"><Link className="cm-btn is-primary" href="/me/track/research">내 자료 올리기</Link></div>
+            </>) : (<>
+              <p className="cm-row">
+                <b>자료 올리기는 {RESEARCH_POLICY_FROM.toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul", month: "long", day: "numeric" })}부터 열립니다</b>
+                <span>그 전에는 아래 새로 들어온 공고를 보시고, 마음에 드는 공고를 내 경험과 비교해 보세요{acc.ready || acc.paid ? ". 지원할 공고를 직접 붙여 넣으셔도 됩니다." : "(비교는 무료 검사를 마친 뒤에 열립니다)."}</span>
+              </p>
+              <div className="cm-acts">
+                {acc.ready || acc.paid
+                  ? <Link className="cm-btn is-primary" href="/me/track#posting">공고 붙여 넣기</Link>
+                  : <Link className="cm-btn is-primary" href="/cores">무료 검사로 시작</Link>}
+              </div>
+            </>)}
           </div>
         </div>
       ) : (
@@ -52,40 +64,18 @@ export default async function JobsForMe() {
       )}
 
       <SectionHeader icon="log" title="겹치는 공고"
-        sub={m.pool ? `마감 전 공고 ${m.pool}건 가운데 ${m.rows.length}건이 겹칩니다` : "아직 모아 둔 공고가 없습니다"} />
+        sub={!m.pool ? "아직 모아 둔 공고가 없습니다"
+          : m.terms.length || m.rows.length ? `마감 전 공고 ${m.pool}건 가운데 ${m.rows.length}건이 겹칩니다`
+          : `마감 전 공고 ${m.pool}건을 모아 두었습니다. 자료를 올리면 겹치는 공고부터 세웁니다`} />
       {!m.pool ? (
-        <p className="cm-none">공고를 모으는 중입니다. 잡인더스트리 공고가 이어지면 이 자리가 채워집니다. 그 전에는 직접 찾은 공고를 MAT 첫 화면에 붙여 비교해 보실 수 있습니다.</p>
+        <p className="cm-none">공고를 모으는 중입니다. 잡인더스트리 공고를 10분마다 받아 와 이 자리를 채웁니다. 그 전에는 직접 찾은 공고를 MAT 첫 화면에 붙여 비교해 보실 수 있습니다.</p>
       ) : null}
-      {shown.map((p) => {
-        const left = p.closes_on ? leftDays(p.closes_on) : null;
-        return (
-          <div className="cm-panel is-one" key={p.id} style={{ marginBottom: 12 }}>
-            <div className="cm-pane">
-              <p className="cm-kicker">
-                {SOURCE_KO[p.source] ?? p.source}
-                {p.region_code ? ` · ${REGION_KO[p.region_code] ?? "그 밖"}` : ""}
-                {left === null ? " · 마감 미기재" : left === 0 ? " · 오늘 마감" : ` · 마감 ${left}일 전`}
-              </p>
-              <p className="cm-row"><b>겹친 낱말 {p.hits.length}개{p.tdHits.length ? ` · 겹친 기술영역 ${p.tdHits.length}개` : ""}</b>
-                <span>{p.hits.join(" · ")}</span></p>
-              {p.requirements.length ? (
-                <dl className="cm-dl">
-                  <div><dt>공고의 요구</dt><dd>{p.requirements.map((r, i) => <span key={i} style={{ display: "block" }}>· {r}</span>)}</dd></div>
-                </dl>
-              ) : null}
-              <div className="cm-acts" style={{ marginTop: 10 }}>
-                {p.source_url ? <a className="cm-btn" href={p.source_url} target="_blank" rel="noopener noreferrer">공고 원문 보기</a> : null}
-                <form action={addPosting}>
-                  <input type="hidden" name="label" value={`${SOURCE_KO[p.source] ?? p.source} 공고 ${p.id}`} />
-                  <input type="hidden" name="deadline" value={p.closes_on ?? ""} />
-                  <input type="hidden" name="text" value={p.requirements.join("\n")} />
-                  <button className="cm-btn is-primary" type="submit">내 경험과 비교하기</button>
-                </form>
-              </div>
-            </div>
-          </div>
-        );
-      })}
+      {shown.map((p) => <PostingCard key={p.id} p={p} />)}
+      {/* 겹치는 공고가 없으면 빈 칸 대신 새로 들어온 공고를 보여 준다. 누구나 들어오자마자 볼 것이 있다 */}
+      {!m.rows.length && m.recent.length ? (<>
+        <SectionHeader icon="log" title="새로 들어온 공고" sub="겹침과 상관없이 최근에 모은 차례입니다" />
+        {m.recent.map((p) => <PostingCard key={p.id} p={p} />)}
+      </>) : null}
       {hidden > 0 ? (
         <div className="cm-panel is-one">
           <div className="cm-pane">
@@ -98,5 +88,45 @@ export default async function JobsForMe() {
         </div>
       ) : null}
     </CmShell>
+  );
+}
+
+/**
+ * 공고 한 장. 겹치는 공고와 새로 들어온 공고가 같은 모양을 쓴다. 새로 들어온 공고는
+ * 겹친 낱말이 없으므로 그 줄을 세우지 않는다.
+ */
+function PostingCard({ p }: { p: MatchedPosting }) {
+  const today = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }));
+  const left = p.closes_on
+    ? Math.round((new Date(`${p.closes_on}T00:00:00+09:00`).getTime() - today.getTime()) / 86_400_000)
+    : null;
+  return (
+    <div className="cm-panel is-one" style={{ marginBottom: 12 }}>
+      <div className="cm-pane">
+        <p className="cm-kicker">
+          {SOURCE_KO[p.source] ?? p.source}
+          {p.region_code ? ` · ${REGION_KO[p.region_code] ?? "그 밖"}` : ""}
+          {left === null ? " · 마감 미기재" : left === 0 ? " · 오늘 마감" : ` · 마감 ${left}일 전`}
+        </p>
+        {p.hits.length || p.tdHits.length ? (
+          <p className="cm-row"><b>겹친 낱말 {p.hits.length}개{p.tdHits.length ? ` · 겹친 기술영역 ${p.tdHits.length}개` : ""}</b>
+            <span>{p.hits.join(" · ")}</span></p>
+        ) : null}
+        {p.requirements.length ? (
+          <dl className="cm-dl">
+            <div><dt>공고의 요구</dt><dd>{p.requirements.map((r, i) => <span key={i} style={{ display: "block" }}>· {r}</span>)}</dd></div>
+          </dl>
+        ) : null}
+        <div className="cm-acts" style={{ marginTop: 10 }}>
+          {p.source_url ? <a className="cm-btn" href={p.source_url} target="_blank" rel="noopener noreferrer">공고 원문 보기</a> : null}
+          <form action={addPosting}>
+            <input type="hidden" name="label" value={`${SOURCE_KO[p.source] ?? p.source} 공고 ${p.id}`} />
+            <input type="hidden" name="deadline" value={p.closes_on ?? ""} />
+            <input type="hidden" name="text" value={p.requirements.join("\n")} />
+            <button className="cm-btn is-primary" type="submit">내 경험과 비교하기</button>
+          </form>
+        </div>
+      </div>
+    </div>
   );
 }

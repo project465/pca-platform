@@ -30,7 +30,7 @@ export type Demand =
     regions: { region: string; postings: number | null }[];
   };
 
-const SOURCE_KO: Record<string, string> = { work24: "고용24", csv: "직접 가져온 공고" };
+const SOURCE_KO: Record<string, string> = { work24: "고용24", jobindustry: "잡인더스트리", csv: "직접 가져온 공고" };
 export const sourceKo = (s: string) => SOURCE_KO[s] ?? s;
 
 export async function demandOf(core: string, opts: { region?: string | null } = {}): Promise<Demand> {

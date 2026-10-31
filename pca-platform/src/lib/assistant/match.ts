@@ -46,6 +46,12 @@ export async function myMatchTerms(userId: string): Promise<{ terms: string[]; r
 /** 마감이 지나지 않았고 최근 180일에 모은 공고 가운데 겹치는 것 */
 export async function postingsForMe(userId: string, limit = 30): Promise<{
   rows: MatchedPosting[]; terms: string[]; pool: number;
+  /**
+   * 새로 들어온 공고(겹침과 상관없이 최근 것부터). 아직 자료가 없거나 겹치는 공고가
+   * 없을 때 빈 화면 대신 보여 준다: **누구나 들어오자마자 볼 것이 있어야 한다**
+   * (2026-10-31 대표 방향 "누구나 하나씩 갖는 AI 취업 비서")
+   */
+  recent: MatchedPosting[];
 }> {
   const me = await myMatchTerms(userId);
   const pool = await query<{
@@ -57,7 +63,12 @@ export async function postingsForMe(userId: string, limit = 30): Promise<{
       WHERE captured_at > now() - interval '180 days'
         AND (closes_on IS NULL OR closes_on >= (now() AT TIME ZONE 'Asia/Seoul')::date)
       ORDER BY captured_at DESC LIMIT 3000`, []).catch(() => []);
-  if (!me.terms.length && !me.tds.length) return { rows: [], terms: [], pool: pool.length };
+  const recent: MatchedPosting[] = pool.slice(0, 8).map((p) => ({
+    id: p.id, source: p.source, source_url: p.source_url, closes_on: p.closes_on,
+    captured_at: p.captured_at, region_code: p.region_code,
+    requirements: (p.raw_requirements ?? []).slice(0, 8), hits: [], tdHits: [],
+  }));
+  if (!me.terms.length && !me.tds.length) return { rows: [], terms: [], pool: pool.length, recent };
   const lower = me.terms.map((t) => [t, t.toLowerCase()] as const);
   const rows: (MatchedPosting & { score: number })[] = [];
   for (const p of pool) {
@@ -74,5 +85,5 @@ export async function postingsForMe(userId: string, limit = 30): Promise<{
   }
   rows.sort((a, b) => b.score - a.score
     || (a.closes_on ?? "9999").localeCompare(b.closes_on ?? "9999"));
-  return { rows: rows.slice(0, limit).map(({ score: _s, ...r }) => r), terms: me.terms, pool: pool.length };
+  return { rows: rows.slice(0, limit).map(({ score: _s, ...r }) => r), terms: me.terms, pool: pool.length, recent };
 }

@@ -65,7 +65,28 @@ export default async function ResearchPage() {
         </div>
       ) : acc.paid || acc.left.research > 0 ? (
         !researchOpen()
-          ? <p className="cm-none">내 자료 읽기는 2026년 11월 7일부터 열립니다. 개인정보처리방침에 이 항목을 더해 7일 전부터 알리고 있습니다.</p>
+          ? (
+            /* 열리기 전에는 막다른 곳이 되지 않게 지금 되는 일로 이어 준다 */
+            <div className="cm-panel is-one">
+              <div className="cm-pane">
+                <p className="cm-row">
+                  <b>자료 올리기는 11월 7일부터 열립니다</b>
+                  <span>
+                    개인정보처리방침에 이 항목을 더해 7일 전부터 알리고 있습니다. 그 전에는 새로 들어온 연구직 · R&amp;D 공고를 먼저 보세요.
+                    {acc.ready || acc.paid
+                      ? " 지원할 공고를 붙여 넣으면 요구 항목을 정리하고 마감을 알려 드립니다."
+                      : " 무료 검사를 마치시면 지원할 공고를 붙여 넣어 요구 항목 정리와 마감 알림을 받으실 수 있습니다."}
+                  </span>
+                </p>
+                <div className="cm-acts">
+                  <Link className="cm-btn is-primary" href="/me/track/jobs">새로 들어온 공고 보기</Link>
+                  {acc.ready || acc.paid
+                    ? <Link className="cm-btn" href="/me/track#posting">공고 붙여 넣기</Link>
+                    : <Link className="cm-btn" href="/cores">무료 검사로 시작</Link>}
+                </div>
+              </div>
+            </div>
+          )
           : aiReady()
             ? <ResearchUpload consented={Boolean(settings.file_consent_at)} left={left} />
             : <p className="cm-fail">지금은 자료 읽기가 꺼져 있습니다. 잠시 뒤 다시 와 주세요.</p>
