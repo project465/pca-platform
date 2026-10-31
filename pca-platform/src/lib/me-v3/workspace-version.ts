@@ -395,7 +395,8 @@
 /** 제휴를 내려 둔 동안(`PARTNERS_PUBLIC`) MAT 머리의 입구 이름 · 한 줄은 운영자에게만 선다 — V79 */
 /** MAT 공고 확인: `가까운 경험` 으로 이은 줄과 `전공 맞음` 을 적는다. 글을 못 읽은 공고에는 비교 단추를 세우지 않는다 — V80 */
 /** 공고 확인의 `한눈에` 를 숫자 칸으로, 요구 항목 상태를 배지로, 손전화에서는 줄마다 카드로(대표 승인 시안) — V81 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V81";
+/** MAT 첫 화면의 공고 줄 · 내 자료 읽기 결과를 같은 원칙(배지 · 숫자 칸)으로 — V82 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V82";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -459,7 +460,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V81";
 /** 제휴별 이름(잡인더스트리 AI 취업 도우미 · 커리어피크 AI 취업 비서)과 그 영어 이름 */
 /** `전공 밖 조건` 을 `자격 조건` 으로(2026-10-31 대표 시험: 회원 전공이 든 전공 요건이 `전공 밖` 으로 읽혔다) · 전공 맞음 · 가까운 경험 */
 /** 공고 확인 숫자 칸의 단위 `줄` */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.59";
+/** `직무의 말` 을 `회사에서 쓸 역량` 으로 · 내 자료로 찾기 한 줄을 짧게 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.60";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

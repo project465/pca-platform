@@ -301,7 +301,7 @@ export default async function Track({
           {!en ? (
             <>
               <SectionHeader icon="doc" title="내 자료로 찾기"
-                sub="논문·발표 자료·이력서·자기소개서를 올리면 정리해서 직무의 말로 옮기고, 그 낱말로 겹치는 공고를 찾습니다." />
+                sub="논문 · 발표 자료 · 이력서를 올리면 한 장으로 정리하고, 맞는 공고를 찾아 드립니다." />
               <div className="cm-panel is-one">
                 <div className="cm-pane">
                   <div className="cm-acts">
@@ -355,20 +355,24 @@ export default async function Track({
                   {postings.map((p) => {
                     const left = p.deadline ? leftDays(p.deadline) : null;
                     return (
-                      <p className="cm-row" key={p.id}>
+                      /* 마감과 상태를 배지로 세운다(공고 확인 화면과 같은 색 · 앱 공용 sf-pill) */
+                      <div className="cm-row" key={p.id} style={{ flexDirection: "column", gap: 2, paddingBottom: 10, borderBottom: "1px solid var(--sf-line-2)" }}>
                         <b><Link href={`/me/track/posting/${p.id}`}>{p.label}</Link></b>
-                        <span>
-                          {left === null ? t("마감 미입력") : left < 0 ? t("마감 지남")
-                            : left === 0 ? t("오늘 마감") : t("마감 {n}일 전", { n: left })}
-                          {" · "}{t("설명할 경험 {n}", { n: p.analysis.counts.ready })}
-                          {" · "}{t("정리 필요 {n}", { n: p.analysis.counts.partial })}
-                          {" · "}{t("아직 없음 {n}", { n: p.analysis.counts.empty })}
-                          {p.state === "applied" ? t(" · 지원함") : p.state === "closed" ? t(" · 닫음") : ""}
+                        <span style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center", marginTop: 4 }}>
+                          <span className={`sf-pill ${left !== null && left >= 0 && left <= 3 ? "warn" : ""}`}>
+                            {left === null ? t("마감 미입력") : left < 0 ? t("마감 지남")
+                              : left === 0 ? t("오늘 마감") : t("마감 {n}일 전", { n: left })}
+                          </span>
+                          <span className="sf-pill ok">{t("설명할 경험 {n}", { n: p.analysis.counts.ready })}</span>
+                          <span className="sf-pill part">{t("정리 필요 {n}", { n: p.analysis.counts.partial })}</span>
+                          <span className="sf-pill warn">{t("아직 없음 {n}", { n: p.analysis.counts.empty })}</span>
+                          {p.state === "applied" ? <span className="sf-pill accent">{t("지원함")}</span>
+                            : p.state === "closed" ? <span className="sf-pill">{t("닫음")}</span> : null}
                           {p.deadline && left !== null && left >= 0 ? (
-                            <>{" · "}<a href={`/me/track/calendar?id=${p.id}`} download>{t("달력에 넣기")}</a></>
+                            <a href={`/me/track/calendar?id=${p.id}`} download>{t("달력에 넣기")}</a>
                           ) : null}
                         </span>
-                      </p>
+                      </div>
                     );
                   })}
                 </div>

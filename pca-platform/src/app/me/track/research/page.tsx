@@ -50,7 +50,7 @@ export default async function ResearchPage() {
   return (
     <CmShell active="/me/track" title="MAT">
       <CmHead kicker="AI 취업비서 · MAT" title="내 자료 읽기"
-        lead="논문·발표 자료·이력서·자기소개서를 올리면 무엇을 했고 무엇이 나왔는지 정리하고, 회사와 연구소가 읽는 직무의 말로 옮깁니다. 여기서 뽑은 낱말로 맞는 공고를 찾습니다." />
+        lead="논문 · 발표 자료 · 이력서를 올리면 기업이 읽기 좋은 한 장으로 정리하고, 맞는 공고를 찾아 드립니다." />
 
       {/* 커리어피크로 들어온 연구자는 검사 전에도 자료부터 올린다(`researchFirst`) */}
       {!acc.ready && !acc.paid && !acc.researchFirst ? (
@@ -149,10 +149,27 @@ function DocCard({ d, fb }: { d: ResearchDoc; fb: Partial<Record<Part, Verdict>>
   return (
     <div className="cm-panel is-one" style={{ marginBottom: 16 }}>
       <div className="cm-pane">
-        <p className="cm-kicker">{DOC_TYPE_KO[d.doc_type] ?? "자료"}{d.lang === "en" ? " · 영어" : ""}</p>
-        <h3 style={{ marginTop: 4 }}>{d.title}</h3>
+        {/* 자료 종류는 배지, 정리한 양은 숫자 칸(공고 확인 화면과 같은 원칙 · 앱 공용 sf-pill · sf-kpi) */}
+        <p style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+          <span className="sf-pill accent">{DOC_TYPE_KO[d.doc_type] ?? "자료"}</span>
+          {d.lang === "en" ? <span className="sf-pill">영어 자료</span> : null}
+        </p>
+        <h3 style={{ marginTop: 8 }}>{d.title}</h3>
         {d.venue || d.year ? <p className="cm-none">{[d.venue, d.year].filter(Boolean).join(" · ")}</p> : null}
         <Metrics d={d} />
+        <div className="sf-grid sf-g4 cm-kpis" style={{ marginTop: 14 }}>
+          {[
+            { k: "accent", label: "방법 · 도구", n: x.methods?.length ?? 0 },
+            { k: "ok", label: "핵심 결과", n: x.findings?.length ?? 0 },
+            { k: "", label: "회사에서 쓸 역량", n: x.job_language?.length ?? 0 },
+            { k: "", label: "맞는 직무", n: x.roles?.length ?? 0 },
+          ].map((c) => (
+            <div key={c.label} className={`sf-kpi${c.k ? ` is-${c.k}` : ""}`}>
+              <span className="sf-kpi-l">{c.label}</span>
+              <span className="sf-kpi-v">{c.n}<small>개</small></span>
+            </div>
+          ))}
+        </div>
         {x.summary ? <p className="cm-draft">{x.summary}</p> : null}
         <dl className="cm-dl">
           {x.question ? <div><dt>무엇을 풀려 했나</dt><dd>{x.question}</dd></div> : null}
@@ -162,13 +179,18 @@ function DocCard({ d, fb }: { d: ResearchDoc; fb: Partial<Record<Part, Verdict>>
         </dl>
         {x.job_language?.length ? (
           <>
-            <p className="cm-sub-h">직무의 말로 옮기면</p>
+            <p className="cm-sub-h">회사에서 쓸 역량</p>
             <dl className="cm-dl">
               {x.job_language.map((j, i) => <div key={i}><dt>{j.skill}</dt><dd>근거: {j.evidence}</dd></div>)}
             </dl>
           </>
         ) : null}
-        {x.roles?.length ? <p className="cm-none">이 자료가 근거가 되는 직무: {x.roles.join(" · ")}</p> : null}
+        {x.roles?.length ? (
+          <p style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 10 }}>
+            <span className="cm-none" style={{ marginRight: 4 }}>맞는 직무</span>
+            {x.roles.map((r) => <span key={r} className="sf-pill ok">{r}</span>)}
+          </p>
+        ) : null}
         {x.sentences?.length ? (
           <>
             <p className="cm-sub-h">지원서 문장 뼈대</p>

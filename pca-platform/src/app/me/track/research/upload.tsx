@@ -23,7 +23,7 @@ export default function ResearchUpload({ consented, left }: {
       <div className="cm-pane">
         <p className="cm-none" style={{ marginBottom: 12 }}>
           논문(영어 포함) · 학위논문 · 발표 자료 · 연구 보고서 · 특허 · 이력서 · 자기소개서를 올리시면
-          무엇을 했고 무엇이 나왔는지 정리하고, 직무의 말로 옮기고, 공고를 찾을 낱말을 뽑습니다.
+          무엇을 했고 무엇이 나왔는지 한 장으로 정리하고, 맞는 공고를 찾습니다.
           PDF · docx · pptx · hwpx · txt, 7MB · 60쪽까지 · {left}
         </p>
         <form ref={form} action={act}>

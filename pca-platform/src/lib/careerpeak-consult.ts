@@ -30,7 +30,7 @@ export const CONSULT_POLICY_FROM: Date | null = new Date("2026-11-07T00:00:00+09
 /** 동의 문구의 판. 아래 문구를 고치면 올린다. 기록에 이 값이 남는다 */
 export const CONSENT_VERSION = "cp-consult.1";
 
-export const CONSULT_SENDS = ["한 장 요약(제목 · 요약 · 방법 · 핵심 결과 · 직무의 말 · 맞는 직무)", "이름", "메일 주소", "전화번호(적으신 경우)"];
+export const CONSULT_SENDS = ["한 장 요약(제목 · 요약 · 방법 · 핵심 결과 · 회사에서 쓸 역량 · 맞는 직무)", "이름", "메일 주소", "전화번호(적으신 경우)"];
 export const CONSULT_KEEPS = ["올린 원본 파일", "지원서 문장 뼈대 · 면접 질문", "검사 점수와 결과"];
 export const CONSENT_TEXT =
   "위 한 장 요약과 연락처를 커리어피크 상담 연결을 위해 커리어피크(주식회사 에이치에이연구원)에 보내는 데 동의합니다. " +
@@ -83,7 +83,7 @@ export function onePager(d: ResearchDoc): string {
   if (x.findings?.length) lines.push("핵심 결과", ...x.findings.slice(0, 6).map((f) => `- ${clip(f, 300)}`), "");
   if (x.contribution?.length) lines.push("새로 보인 것", ...x.contribution.slice(0, 4).map((c) => `- ${clip(c, 300)}`), "");
   if (x.job_language?.length) {
-    lines.push("직무의 말로 옮기면", ...x.job_language.slice(0, 8).map((j) => `- ${j.skill}: ${clip(j.evidence, 240)}`), "");
+    lines.push("회사에서 쓸 역량", ...x.job_language.slice(0, 8).map((j) => `- ${j.skill}: ${clip(j.evidence, 240)}`), "");
   }
   if (x.roles?.length) lines.push(`맞는 직무: ${x.roles.slice(0, 8).join(" · ")}`);
   return lines.join("\n").replace(/\n{3,}/g, "\n\n").trim();
