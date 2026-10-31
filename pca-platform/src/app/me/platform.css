@@ -1057,6 +1057,39 @@ a.cm-feed-row:hover, .cm-feed > li:hover { background: #fafcfe; }
 .cm-table th { color: var(--sf-ink-3); font-weight: var(--ui-w-sb); font-size: var(--ui-t-cap); }
 .cm-table td b { color: var(--sf-ink); }
 
+/* ── 공고 확인의 숫자 칸 · 요구 항목 카드(me/track/posting/[id]) ──
+   숫자 칸과 배지는 앱 공용(`sf-kpi` · `sf-pill`)이다. 여기서는 색 갈래만 단다.
+   손전화(900px 아래)에서는 표를 줄마다 카드로 세운다: 다섯 칸 표가 375px 에서
+   옆으로 밀리지 않게 한다 */
+.cm-kpis { margin-bottom: var(--cm-gap-section, 24px); }
+/* 공용 숫자 칸은 자리 차례로 색을 돌린다(`surface.css` 의 nth-child). 여기서는 색이 **상태**를
+   뜻하므로 그 돌림을 끄고 배지와 같은 색을 입힌다 */
+.cm-kpis.sf-grid > .sf-kpi { border-radius: 20px; border-color: var(--sf-line); background: var(--sf-surface); }
+.cm-kpis.sf-grid > .sf-kpi.is-ok { border-color: var(--sf-ok-line); background: var(--sf-ok-soft); }
+.cm-kpis.sf-grid > .sf-kpi.is-part { border-color: var(--sf-part-line); background: var(--sf-part-soft); }
+.cm-kpis.sf-grid > .sf-kpi.is-warn { border-color: var(--sf-warn-line); background: var(--sf-warn-soft); }
+.cm-kpis.sf-grid > .sf-kpi.is-accent { border-color: var(--sf-accent-line); background: var(--sf-accent-soft); }
+.cm-kpis.sf-grid > .sf-kpi .sf-kpi-v { color: var(--sf-ink); }
+.cm-kpis.sf-grid > .sf-kpi.is-ok .sf-kpi-v { color: var(--sf-ok); }
+.cm-kpis.sf-grid > .sf-kpi.is-part .sf-kpi-v { color: var(--sf-part); }
+.cm-kpis.sf-grid > .sf-kpi.is-warn .sf-kpi-v { color: var(--sf-warn); }
+.cm-kpis.sf-grid > .sf-kpi.is-accent .sf-kpi-v { color: var(--sf-accent-ink); }
+.cm-table .sf-pill { margin-bottom: 4px; }
+@media (max-width: 900px) {
+  .cm-table.is-cards thead { display: none; }
+  .cm-table.is-cards, .cm-table.is-cards tbody, .cm-table.is-cards tr, .cm-table.is-cards td { display: block; width: 100%; min-width: 0; }
+  .cm-table.is-cards tr {
+    margin: 0 0 12px; padding: 14px 16px; border: 1px solid var(--sf-line);
+    border-radius: 20px; background: var(--sf-surface);
+  }
+  .cm-table.is-cards td { border: 0; padding: 4px 0; }
+  .cm-table.is-cards td[data-label]::before {
+    content: attr(data-label); display: block; margin-bottom: 2px;
+    font-size: var(--ui-t-cap); font-weight: var(--ui-w-sb); color: var(--sf-ink-3);
+  }
+  .cm-table.is-cards td:first-child::before { display: none; }
+}
+
 /* ── 고르는 칸 ────────────────────────────────────────────────────── */
 
 /* **`fieldset` 의 기본 테두리를 지운다.** 묶음마다 상자가 그려지면

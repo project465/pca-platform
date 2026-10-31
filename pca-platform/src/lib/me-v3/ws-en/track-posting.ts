@@ -28,6 +28,7 @@ export const WS_EN_TRACK_POSTING: Record<string, string> = {
     "We couldn't tie this line to one of your major's work areas. Decide which experience you'd use to explain it.",
 
   "한눈에": "At a glance",
+  "줄": "lines",
   "설명할 경험 {ready} · 정리가 덜 됨 {partial} · 아직 없음 {empty} · 자격 조건 {cond}":
     "Can explain {ready} · Needs writing up {partial} · Not yet {empty} · Eligibility {cond}",
   " · 영역 확인 필요 {n}": " · Area to confirm {n}",

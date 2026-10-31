@@ -79,6 +79,13 @@ const statusOf = (it: PostingItem, t: WsSay, stem = "") => {
 
 const ORDER: ItemStatus[] = ["empty", "partial", "ready", "unmapped"];
 
+/** 상태 배지의 색. 앱의 `sf-pill` 갈래(ok · part · warn · accent)를 그대로 쓴다 */
+const toneOf = (it: PostingItem, stem: string): string =>
+  majorFits(it, stem) || it.status === "ready" ? "ok"
+    : it.status === "partial" ? "part"
+    : it.status === "empty" ? "warn"
+    : isResearchLine(it) || it.reason !== "unmatched" ? "accent" : "";
+
 /* 연구 실적 줄의 상태. 학위 조건(`info`)은 기록으로 판단하지 않는다 */
 const R_STATUS: Record<ResearchStatus, string> = {
   ready: "적어 둔 기록 있음",
@@ -139,11 +146,24 @@ export default async function Posting({ params, searchParams }: {
       />
       {a.note ? <p className="cm-none" role="status">{a.note}</p> : null}
 
-      <SectionHeader icon="check" title={t("한눈에")}
-        sub={t("설명할 경험 {ready} · 정리가 덜 됨 {partial} · 아직 없음 {empty} · 자격 조건 {cond}",
-          { ready: a.counts.ready, partial: a.counts.partial, empty: a.counts.empty, cond: a.counts.unmapped - unmatched - researchN })
-          + (unmatched ? t(" · 영역 확인 필요 {n}", { n: unmatched }) : "")
-          + (researchN ? t(" · 연구 실적 요구 {n}", { n: researchN }) : "")} />
+      <SectionHeader icon="check" title={t("한눈에")} />
+      {/* **숫자 칸으로 보인다**(2026-10-31 대표 승인 시안). 앱의 숫자 칸(`sf-kpi`)과
+          상태 배지(`sf-pill`)를 그대로 쓴다. 숫자를 더해 점수 하나로 만들지 않는다 */}
+      <div className="sf-grid sf-g4 cm-kpis">
+        {[
+          { k: "ok", label: "설명할 경험 있음", n: a.counts.ready },
+          { k: "part", label: "정리가 덜 됨", n: a.counts.partial },
+          { k: "warn", label: "아직 없음", n: a.counts.empty },
+          { k: "accent", label: "자격 조건", n: a.counts.unmapped - unmatched - researchN },
+          ...(unmatched ? [{ k: "", label: "영역 확인 필요", n: unmatched }] : []),
+          ...(researchN ? [{ k: "", label: "연구 실적 요구", n: researchN }] : []),
+        ].map((c) => (
+          <div key={c.label} className={`sf-kpi${c.k ? ` is-${c.k}` : ""}`}>
+            <span className="sf-kpi-l">{t(c.label)}</span>
+            <span className="sf-kpi-v">{c.n}<small>{t("줄")}</small></span>
+          </div>
+        ))}
+      </div>
       {firstGap?.domain ? (
         <div className="cm-panel is-one">
           <div className="cm-pane">
@@ -164,18 +184,21 @@ export default async function Posting({ params, searchParams }: {
       <SectionHeader icon="log" title={t("요구 항목")} />
       {items.length ? (
         <div className="cm-tablewrap">
-          <table className="cm-table">
+          <table className="cm-table is-cards">
             <thead>
               <tr><th>{t("공고의 요구")}</th><th>{t("구분")}</th><th>{t("이어지는 영역")}</th><th>{t("지금 내 상태")}</th><th>{t("적어 둔 경험")}</th></tr>
             </thead>
             <tbody>
               {items.map((it, i) => (
                 <tr key={i}>
-                  <td>{it.text}</td>
-                  <td>{it.kind === "must" ? t("필수") : t("우대")}</td>
-                  <td>{isResearchLine(it) ? t("연구 실적") : itemDomainKo(core, it, lang)}</td>
-                  <td><b>{statusOf(it, t, stem).label}</b><br /><small>{statusOf(it, t, stem).why}</small></td>
-                  <td>
+                  <td data-label={t("공고의 요구")}><b>{it.text}</b></td>
+                  <td data-label={t("구분")}>{it.kind === "must" ? t("필수") : t("우대")}</td>
+                  <td data-label={t("이어지는 영역")}>{isResearchLine(it) ? t("연구 실적") : itemDomainKo(core, it, lang)}</td>
+                  <td data-label={t("지금 내 상태")}>
+                    <span className={`sf-pill ${toneOf(it, stem)}`}>{statusOf(it, t, stem).label}</span>
+                    <br /><small>{statusOf(it, t, stem).why}</small>
+                  </td>
+                  <td data-label={t("적어 둔 경험")}>
                     {it.evidence.length ? `${it.near ? t("가까운 경험: ") : ""}${it.evidence.join(" / ")}`
                       : it.domain && it.status !== "ready" ? (
                         <Link href={`/me/experience/new?td=${encodeURIComponent(it.domain)}`}>{t("경험 적기")}</Link>
