@@ -38,7 +38,7 @@ export const PARTNERS: Record<Partner, {
     label: "AI취업지원도우미",
     home: "https://www.jobindustry.co.kr",
     via: "잡인더스트리 AI취업지원도우미로",
-    intro: "잡인더스트리의 AI취업지원도우미는 CareerMatri의 MAT으로 운영합니다. 검사로 내 경험을 정리하고, 지원할 공고와 맞대어 이번 주에 할 일을 알려 드립니다.",
+    intro: "잡인더스트리의 AI취업지원도우미는 CareerMatri의 MAT으로 운영합니다. 검사로 내 경험을 정리하고, 지원할 공고와 비교해 이번 주에 할 일을 알려 드립니다.",
     does: "AI취업지원도우미가 하는 일",
   },
   /* 커리어피크는 이름을 바꾸지 않고 MAT 그대로 쓴다(대표 결정 2026-10-31).

@@ -24,7 +24,7 @@ export async function generateMetadata() {
 }
 
 /**
- * 붙여 넣은 공고 하나와 내 경험을 맞대 본 결과.
+ * 붙여 넣은 공고 하나와 내 경험을 비교한 결과.
  *
  * **합격 가능성을 적지 않는다.** 요구 항목마다 넷 가운데 하나를 적고 그
  * 수를 더해 점수 하나로 만들지 않는다. 비어 있는 줄에는 그 영역의 경험을
@@ -56,7 +56,7 @@ const STATUS: Record<ItemStatus, { label: string; why: string }> = {
  */
 const UNMATCHED = { label: "영역 확인 필요", why: "이 전공의 업무 영역에 바로 잇지 못한 줄입니다. 어느 경험으로 설명할지 직접 정해 주세요." };
 /** 연구 실적 줄(논문 · 특허 · 과제 …)은 아래 따로 세운 표에서 기록과 맞댄다 */
-const RESEARCH = { label: "연구 실적 요구", why: "아래 ‘연구 실적 요구’ 표에서 내 기록과 맞대 봅니다." };
+const RESEARCH = { label: "연구 실적 요구", why: "아래 ‘연구 실적 요구’ 표에서 내 기록과 비교해 드립니다." };
 const isResearchLine = (it: PostingItem) => it.status === "unmapped" && researchKindOf(it.text) !== null;
 const statusOf = (it: PostingItem, t: WsSay) => {
   const s = isResearchLine(it) ? RESEARCH
@@ -90,7 +90,7 @@ export default async function Posting({ params, searchParams }: {
   const area = (td: string) => areaName(core, td, lang);
   const [p, major, core, state, stage] = await Promise.all([
     livePostingOf(user.id, id), activeMajorName(user.id), activeCoreOrPick(user.id),
-    /* 무료로 맞대 본 공고도 끝까지 다룬다(`mat-access.ts`): 기간권이 없어도
+    /* 무료로 비교한 공고도 끝까지 다룬다(`mat-access.ts`): 기간권이 없어도
        결과가 있으면 할 일 담기와 상태 바꾸기를 연다 */
     matAccess(user.id).then((x) => ({ on: x.open })), stageOf(user.id),
   ]);
@@ -121,7 +121,7 @@ export default async function Posting({ params, searchParams }: {
       <CmHead
         kicker={p.deadline ? t("마감 {date}", { date: p.deadline }) : t("마감 미입력")}
         title={p.label}
-        lead={a.role ? t("공고가 뽑는 자리: {role}", { role: a.role }) : t("공고의 요구 항목을 내 경험과 맞대 봤습니다.")}
+        lead={a.role ? t("공고가 뽑는 자리: {role}", { role: a.role }) : t("공고의 요구 항목을 내 경험과 비교했습니다.")}
       />
       {a.note ? <p className="cm-none" role="status">{a.note}</p> : null}
 

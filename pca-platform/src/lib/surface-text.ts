@@ -211,14 +211,14 @@ export const TX = {
   /* ── MAT (기간권 · 코드 이름은 Track) ───────────────────────────────── */
   pxTrackTitle: p("MAT", "MAT, AI career assistant"),
   pxTrackLead: p(
-    "매주 할 일 하나를 먼저 알려 드리고, 메모를 경험 기록으로 옮기고, 직접 찾은 공고를 내 경험과 맞대어 드립니다. 자동으로 갱신되지 않고 기간이 끝나면 저절로 닫힙니다.",
+    "매주 할 일 하나를 먼저 알려 드리고, 메모를 경험 기록으로 옮기고, 직접 찾은 공고를 내 경험과 비교해 드립니다. 자동으로 갱신되지 않고 기간이 끝나면 저절로 닫힙니다.",
     "It tells you one thing to do each week, turns your notes into experience records, and lines up postings you found against your experience. It does not renew on its own and simply closes when the period ends.",
   ),
   pxTrackF1: p("매주 할 일 알림 — 검사 결과에서 먼저 채울 부분을 이번 주 할 일 하나로 알려 드립니다. 적어 둔 공고는 마감 7·3·1일 전에 다시 알려 드립니다.",
     "Weekly to-do: one task a week from the gaps in your result, plus reminders 7, 3 and 1 days before deadlines you saved."),
   pxTrackF2: p("메모로 경험 채우기 — 한두 문장 메모를 경험 기록 화면의 보기로 옮겨 드립니다. 확인하고 직접 저장합니다.",
     "Notes to experience: a one-line note becomes a pre-filled experience record you check and save yourself."),
-  pxTrackF3: p("공고와 내 경험 맞대 보기 — 직접 찾은 공고를 붙여 넣으면 요구 항목마다 설명할 경험이 있는지, 비어 있는지 나눠 보여 드립니다.",
+  pxTrackF3: p("공고 요구 사항과 내 경험 비교 — 직접 찾은 공고를 붙여 넣으면 요구 항목마다 설명할 경험이 있는지, 비어 있는지 나눠 보여 드립니다.",
     "Posting check: paste a posting you found and see, item by item, where you already have experience and where you don't."),
   pxTrackNot: p("점수나 합격 가능성을 만들지 않고, 기업을 대신 고르거나 지원하지 않습니다.",
     "It never scores your chances, picks companies for you or applies on your behalf."),

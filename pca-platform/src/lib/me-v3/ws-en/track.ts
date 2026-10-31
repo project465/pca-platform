@@ -4,7 +4,7 @@ export const WS_EN_TRACK: Record<string, string> = {
   "MAT · AI 취업비서": "MAT · AI career assistant",
   "AI 취업비서 · 이용 중": "AI career assistant · active",
   "AI 취업비서": "AI career assistant",
-  "지원하는 동안 한 주씩 챙기는 취업비서입니다. 매주 브리핑에 가까운 마감, 이번 주 할 일 하나, 여러 공고가 함께 요구하는데 아직 비어 있는 것을 모읍니다. 공고마다 내 경험을 맞대 보고, 지원서 문장 뼈대를 내 기록으로 엮습니다. 지원은 직접 하시고, 자동으로 결제되지 않습니다.":
+  "지원하는 동안 한 주씩 챙기는 취업비서입니다. 매주 브리핑에 가까운 마감, 이번 주 할 일 하나, 여러 공고가 함께 요구하는데 아직 비어 있는 것을 모읍니다. 공고마다 내 경험을 비교해 보고, 지원서 문장 뼈대를 내 기록으로 엮습니다. 지원은 직접 하시고, 자동으로 결제되지 않습니다.":
     "Your weekly assistant while you apply. Each briefing collects your nearest deadlines, one task for the week, "
     + "and what several postings ask for that your record doesn't show yet. Check any posting against your own "
     + "experience and get sentence outlines built from your record. You apply yourself, and nothing renews automatically.",
@@ -28,7 +28,7 @@ export const WS_EN_TRACK: Record<string, string> = {
   "무료 2번을 이미 다 쓰셨습니다. 아래에서 기간권을 고르시면 바로 이어집니다.":
     "You have already used both free tries. Pick a pass below to keep going right away.",
   "MAT 은 검사 결과에서 시작합니다": "MAT works from your test result",
-  "이번 주 할 일, 공고 맞대기, 지원서 문장 뼈대가 모두 검사에서 확인된 내 경험과 부족한 부분을 읽습니다. 무료 검사는 12분 정도 걸리고, 끝나면 이 화면에서 바로 MAT 을 시작할 수 있습니다.":
+  "이번 주 할 일, 공고 비교, 지원서 문장 뼈대가 모두 검사에서 확인된 내 경험과 부족한 부분을 읽습니다. 무료 검사는 12분 정도 걸리고, 끝나면 이 화면에서 바로 MAT 을 시작할 수 있습니다.":
     "Your weekly task, posting checks and sentence outlines all build on what the test found in your experience "
     + "and where the gaps are. The free test takes about 12 minutes, and you can start MAT from this page as soon as you finish.",
   "무료 검사 시작": "Take the free test",
@@ -63,7 +63,7 @@ export const WS_EN_TRACK: Record<string, string> = {
   "전공별 규칙으로 요구 항목을 뽑고, 판정은 내 결과와 경험으로 합니다.":
     "MAT pulls out the requirements using rules for your major and checks them against your result and experiences.",
   "지원은 공고를 낸 곳에서 직접 하시면 됩니다.": "You apply directly on the employer's site.",
-  "공고와 내 경험 맞대 보기": "Check it against my record",
+  "공고 요구 사항과 내 경험 비교": "Check it against my record",
   "마감 미입력": "No deadline",
   "마감 지남": "Deadline passed",
   "오늘 마감": "Closes today",
@@ -176,7 +176,7 @@ export const WS_EN_TRACK: Record<string, string> = {
 
   /* ── 홈의 한 줄(`/me`) ─────────────────────────────────── */
   "이 결과로 매주 챙기기 · MAT": "Keep this result moving every week · MAT",
-  "이번 주 할 일 하나 · 가까운 마감 · 공고와 내 경험 맞대기":
+  "이번 주 할 일 하나 · 가까운 마감 · 공고와 내 경험 비교":
     "One task a week · nearest deadlines · check postings against your record",
   "MAT 보기": "See MAT",
 
@@ -203,7 +203,7 @@ export const WS_EN_TRACK: Record<string, string> = {
   "대괄호 칸 {n}개는 기록을 고쳐 채우면 다음에 채워져 나옵니다.":
     "Fill the {n|bracketed field|bracketed fields} in the record and they will appear filled next time.",
   "연구 기록이 아직 없습니다": "No research records yet",
-  "학위 연구나 참여한 과제, 쓴 논문을 하나 적어 두면 여기서 지원서 문장 뼈대가 만들어집니다. 연구직 공고의 논문 · 특허 · 과제 요구도 이 기록과 맞대 봅니다.":
+  "학위 연구나 참여한 과제, 쓴 논문을 하나 적어 두면 여기서 지원서 문장 뼈대가 만들어집니다. 연구직 공고의 논문 · 특허 · 과제 요구도 이 기록과 비교해 드립니다.":
     "Add your degree research, a project you worked on or a paper you wrote, and we'll turn it into application sentence frames here. Research postings' paper, patent and project requirements are matched against these records too.",
   "연구·실험 기록 적기": "Add research or lab work",
   "논문·학회 기록 적기": "Add a paper or talk",

@@ -13,7 +13,7 @@
 ## 붙이는 법
 
 **설치 순서 전체는 `INSTALL.md`** 에 있다. 가장 효과가 큰 것은 모든 화면에 떠 있는 단추
-한 줄이다(공고 화면에서 누르면 그 공고를 MAT 이 바로 맞대 본다):
+한 줄이다(공고 화면에서 누르면 그 공고를 MAT 이 바로 비교한다):
 
 ```html
 <script src="https://app.careermatri.com/embed/jobindustry.js" defer></script>

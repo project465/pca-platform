@@ -97,10 +97,10 @@ async function main(): Promise<void> {
     const c1 = await br.newContext({ viewport: { width: 390, height: 844 } });
     const p1 = await login(c1, "zz-ji-job", s.pw);
     await p1.goto(`${BASE}/from/jobindustry?job=${encodeURIComponent(`http://${FAKE}/job/1`)}`, { waitUntil: "networkidle" });
-    ok("로그인했으면 바로 맞대 보기 쪽으로 간다", p1.url().endsWith("/me/track/import"), p1.url());
+    ok("로그인했으면 바로 비교하기 쪽으로 간다", p1.url().endsWith("/me/track/import"), p1.url());
     const t1 = await p1.locator("body").innerText();
-    ok("어느 공고인지 적는다", t1.includes(`${FAKE}/job/1`) && t1.includes("무료로 맞대 볼 수 있는 공고 1건"));
-    await p1.locator("button", { hasText: "이 공고 맞대 보기" }).click();
+    ok("어느 공고인지 적는다", t1.includes(`${FAKE}/job/1`) && t1.includes("무료로 비교할 수 있는 공고 1건"));
+    await p1.locator("button", { hasText: "이 공고와 비교하기" }).click();
     await p1.waitForURL(/\/me\/track\/posting\/\d+/, { timeout: 30000 }).catch(() => undefined);
     ok("누르면 공고 쪽이 선다", /\/me\/track\/posting\/\d+/.test(p1.url()), p1.url());
     const row = await queryOne<{ label: string }>(

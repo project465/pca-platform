@@ -487,7 +487,7 @@ export default async function Home() {
             {!track.on ? (
               <RecordRow icon="spark" tint="t-2"
                 title={t("이 결과로 매주 챙기기 · MAT")}
-                note={t("이번 주 할 일 하나 · 가까운 마감 · 공고와 내 경험 맞대기")}
+                note={t("이번 주 할 일 하나 · 가까운 마감 · 공고와 내 경험 비교")}
                 actions={
                   <Link className="cm-btn" href="/me/track">{t("MAT 보기")}</Link>
                 } />

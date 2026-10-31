@@ -138,7 +138,7 @@ export async function nudgeUser(userId: string, now = new Date()): Promise<{
         : p.left === 0 ? `'${p.label}' 오늘 마감` : `'${p.label}' 마감 ${p.left}일 전`,
       body: en
         ? "Take one more look at how your experience lines up with this posting and fill in what's still empty. The calendar file is on that page too."
-        : "공고와 내 경험을 맞대어 본 표를 한 번 더 보고, 비어 있는 줄을 채워 두세요. 휴대폰 달력에 넣는 파일도 그 화면에 있습니다.",
+        : "공고와 내 경험을 비교한 표를 한 번 더 보고, 비어 있는 줄을 채워 두세요. 휴대폰 달력에 넣는 파일도 그 화면에 있습니다.",
       href: `/me/track/posting/${p.id}`,
       key: `deadline:${p.id}:${step}`,
     })) deadline += 1;

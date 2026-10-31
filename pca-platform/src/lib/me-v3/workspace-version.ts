@@ -449,7 +449,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V76";
 /** 무료로 써 보기 안내 문장 */
 /** 내 자료로 찾기 안내 · 무료 남은 횟수에 자료 읽기 */
 /** MAT 무료가 `아무 도구나 합쳐 2번` 이 됐다(남은 횟수 한 줄 · 다 쓴 안내 · 보던 공고 화면) */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.55";
+/** `맞대 보기` 를 `비교하기` 로(2026-10-31 대표 지적: 너무 AI 같다). 영어 사전의 열쇠도 같이 고쳤다 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.56";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

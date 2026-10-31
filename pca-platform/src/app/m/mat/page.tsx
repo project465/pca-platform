@@ -38,7 +38,7 @@ export default async function Mat() {
           <Section title="MAT가 하는 일">
             <div className="ma-list">
               <Row href="/me/track" icon="check" title="이번 주 할 일 하나" sub="끝냈다고 표시하면 다음 할 일이 이어서 나옵니다" />
-              <Row href="/me/track" icon="send" title="공고와 내 기록 맞대기" sub="요구 항목마다 설명할 수 있는 것과 빈칸을 나눠 봅니다" />
+              <Row href="/me/track" icon="send" title="공고와 내 기록 비교" sub="요구 항목마다 설명할 수 있는 것과 빈칸을 나눠 봅니다" />
               <Row href="/me/track" icon="doc" title="지원서 문장 뼈대" sub="내 기록으로 세 줄 뼈대까지만 만들고, 없는 내용은 지어 넣지 않습니다" />
               <Row href="/me/track" icon="clock" title="마감 챙기기" sub="D-day로 보여 주고 휴대전화 달력에 넣을 수 있습니다" />
             </div>
@@ -101,7 +101,7 @@ export default async function Mat() {
             </div>
           ) : (
             <Empty title="붙여 둔 공고가 없어요" cta={{ href: "/me/track#posting", label: "공고 붙여 넣기" }}>
-              직접 찾은 공고 본문을 붙여 넣으면 요구 항목마다 내 기록과 맞대 봅니다.
+              직접 찾은 공고 본문을 붙여 넣으면 요구 항목마다 내 기록과 비교해 드립니다.
             </Empty>
           )}
         </Section>

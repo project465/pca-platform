@@ -54,7 +54,7 @@ export default async function JobsForMe() {
       <SectionHeader icon="log" title="겹치는 공고"
         sub={m.pool ? `마감 전 공고 ${m.pool}건 가운데 ${m.rows.length}건이 겹칩니다` : "아직 모아 둔 공고가 없습니다"} />
       {!m.pool ? (
-        <p className="cm-none">공고를 모으는 중입니다. 잡인더스트리 공고가 이어지면 이 자리가 채워집니다. 그 전에는 직접 찾은 공고를 MAT 첫 화면에 붙여 맞대 보실 수 있습니다.</p>
+        <p className="cm-none">공고를 모으는 중입니다. 잡인더스트리 공고가 이어지면 이 자리가 채워집니다. 그 전에는 직접 찾은 공고를 MAT 첫 화면에 붙여 비교해 보실 수 있습니다.</p>
       ) : null}
       {shown.map((p) => {
         const left = p.closes_on ? leftDays(p.closes_on) : null;
@@ -79,7 +79,7 @@ export default async function JobsForMe() {
                   <input type="hidden" name="label" value={`${SOURCE_KO[p.source] ?? p.source} 공고 ${p.id}`} />
                   <input type="hidden" name="deadline" value={p.closes_on ?? ""} />
                   <input type="hidden" name="text" value={p.requirements.join("\n")} />
-                  <button className="cm-btn is-primary" type="submit">내 경험과 맞대 보기</button>
+                  <button className="cm-btn is-primary" type="submit">내 경험과 비교하기</button>
                 </form>
               </div>
             </div>

@@ -59,7 +59,7 @@ async function requireTrack(use?: MatUse): Promise<{ id: string }> {
   const user = await requireUser();
   /* **무료 한 번**(`mat-access.ts`). 새로 만드는 일(공고 · 메모)은 남은 무료가
      있어야 하고, 이미 만든 공고를 다루는 일(상태 바꾸기 · 할 일 담기)은 결과가
-     있으면 된다: 무료로 맞대 본 공고 하나를 끝까지 다뤄 볼 수 있어야 한다 */
+     있으면 된다: 무료로 비교한 공고 하나를 끝까지 다뤄 볼 수 있어야 한다 */
   if (use) {
     const r = await canUseMat(user.id, use);
     if (!r.ok) redirect(r.why === "needtest" ? "/me/track?e=needtest" : "/me/track?e=free#plans");
@@ -90,7 +90,7 @@ export async function addPosting(form: FormData): Promise<void> {
 }
 
 /**
- * 잡인더스트리에서 보던 공고를 가져와 맞대 본다(`partner-job.ts`).
+ * 잡인더스트리에서 보던 공고를 가져와 비교한다(`partner-job.ts`).
  *
  * **누를 때만 가져온다.** 주소를 여는 순간(GET) 남의 화면을 읽어 공고를 만들면
  * 링크 미리보기만으로도 무료 한 번이 쓰인다. 붙여 넣기와 같은 무료 칸을 쓴다.

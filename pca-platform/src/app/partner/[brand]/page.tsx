@@ -49,14 +49,14 @@ export default async function PartnerPage({
   const gate = await publicCommerceGate().catch(() => ({ open: false }));
   const tracks = gate.open ? await trackOffers("KR").catch(() => []) : [];
   const back = `/partner/${brand}`;
-  /* 잡인더스트리 공고 화면에서 넘어왔으면 그 공고를 로그인 뒤에 바로 맞대 본다 */
+  /* 잡인더스트리 공고 화면에서 넘어왔으면 그 공고를 로그인 뒤에 바로 비교한다 */
   const hasJob = Boolean((await cookies()).get(JOB_COOKIE)?.value);
   const next = encodeURIComponent(hasJob ? "/me/track/import" : "/me/track");
 
   const steps: [string, string][] = [
     ["무료 검사로 시작합니다", "전공을 고르고 기본 검사를 풀면 내 경험이 어느 판단까지 설명되는지 결과로 나옵니다."],
     ["비어 있는 부분을 확인합니다", "결과에서 아직 근거가 없는 판단과, 그걸 채울 다음 할 일을 봅니다."],
-    ["MAT 이 한 주씩 챙깁니다", "공고를 붙여 두면 마감을 알려 드리고, 요구 항목마다 내 경험이 있는지 맞대어 보여 드립니다."],
+    ["MAT 이 한 주씩 챙깁니다", "공고를 붙여 두면 마감을 알려 드리고, 요구 항목마다 내 경험이 있는지 하나씩 짚어 드립니다."],
   ];
 
   return (
@@ -79,13 +79,13 @@ export default async function PartnerPage({
           <p>{P.intro}</p>
           {hasJob ? (
             <p className="pxwhat" style={{ marginTop: 8 }}>
-              보시던 공고를 기억해 두었습니다. 로그인하시면 그 공고를 내 경험과 바로 맞대 봅니다(7일 동안 기억합니다).
+              보시던 공고를 기억해 두었습니다. 로그인하시면 그 공고와 내 경험을 바로 비교해 드립니다(7일 동안 기억합니다).
             </p>
           ) : null}
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 16, justifyContent: "center" }}>
             {user ? (
               <Link href={hasJob ? "/me/track/import" : "/me/track"} className="sf-btn accent">
-                {hasJob ? "보던 공고 맞대 보기" : "MAT 열기"}
+                {hasJob ? "보던 공고와 비교하기" : "MAT 열기"}
               </Link>
             ) : (<>
               <Link href="/signup?next=%2Fcores" className="sf-btn accent">무료 검사로 시작하기</Link>

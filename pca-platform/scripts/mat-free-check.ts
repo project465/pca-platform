@@ -47,8 +47,8 @@ async function main(): Promise<void> {
     await p.fill('input[name="label"]', "무료 시험 공고");
     await p.fill('textarea[name="text"]', POSTING);
     await Promise.all([p.waitForURL(/\/me\/track\/posting\//, { timeout: 60000 }),
-      p.getByRole("button", { name: "공고와 내 경험 맞대 보기" }).click()]);
-    ok("첫 공고는 무료로 맞대 본다", /\/me\/track\/posting\//.test(p.url()), p.url());
+      p.getByRole("button", { name: "공고 요구 사항과 내 경험 비교" }).click()]);
+    ok("첫 공고는 무료로 비교한다", /\/me\/track\/posting\//.test(p.url()), p.url());
     const t1 = await p.locator("body").innerText();
     ok("무료로 본 공고도 상태를 바꿀 수 있다", t1.includes("지원했어요"));
 
@@ -60,7 +60,7 @@ async function main(): Promise<void> {
     await p.fill('input[name="label"]', "무료 시험 공고 2");
     await p.fill('textarea[name="text"]', POSTING);
     await Promise.all([p.waitForURL(/\/me\/track\/posting\//, { timeout: 60000 }),
-      p.getByRole("button", { name: "공고와 내 경험 맞대 보기" }).click()]);
+      p.getByRole("button", { name: "공고 요구 사항과 내 경험 비교" }).click()]);
     ok("두 번째 공고도 무료로 본다", /\/me\/track\/posting\//.test(p.url()), p.url());
 
     /* 2b — 세 번째는 기간권 안내 */

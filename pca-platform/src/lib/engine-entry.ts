@@ -175,13 +175,13 @@ export const ROUTE_TABLE: RouteRow[] = [
   { route: "/me/explore", newUser: "산업·직무 탐색", oldUser: "같음", cls: "CURRENT" },
   { route: "/me/region", newUser: "지역과 기관", oldUser: "같음", cls: "CURRENT" },
   { route: "/me/track", newUser: "Track", oldUser: "같음", cls: "CURRENT" },
-  { route: "/me/track/posting/[id]", newUser: "MAT · 붙여 넣은 공고 맞대 보기",
+  { route: "/me/track/posting/[id]", newUser: "MAT · 붙여 넣은 공고와 비교하기",
     oldUser: "같음", cls: "CURRENT" },
   /* 논문·PPT·이력서 읽기와 채점표, 그 낱말로 공고 찾기(2026-10-31) */
   { route: "/me/track/research", newUser: "MAT · 내 자료 읽기", oldUser: "같음", cls: "CURRENT" },
   { route: "/me/track/jobs", newUser: "MAT · 내 자료로 공고 찾기", oldUser: "같음", cls: "CURRENT" },
-  /* 잡인더스트리 공고 화면의 단추에서 넘어온 공고를 맞대 보는 자리 */
-  { route: "/me/track/import", newUser: "MAT · 보던 공고 맞대 보기", oldUser: "같음", cls: "CURRENT" },
+  /* 잡인더스트리 공고 화면의 단추에서 넘어온 공고를 비교하는 자리 */
+  { route: "/me/track/import", newUser: "MAT · 보던 공고와 비교하기", oldUser: "같음", cls: "CURRENT" },
   { route: "/me/jobs", newUser: "Track 안의 공고 목록", oldUser: "같음", cls: "CURRENT" },
   { route: "/me/prep", newUser: "지원서·면접 준비", oldUser: "같음", cls: "CURRENT" },
   { route: "/me/apply", newUser: "지원 준비", oldUser: "같음", cls: "CURRENT" },

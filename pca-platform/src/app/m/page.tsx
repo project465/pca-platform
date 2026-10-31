@@ -118,7 +118,7 @@ export default async function AppHome() {
             </Link>
             <Link href="/me/track#posting">
               <span className="ma-quick-ic"><Icon name="send" size={18} /></span>
-              <span><b>공고 붙여 넣기</b><small>내 기록과 맞대 보기</small></span>
+              <span><b>공고 붙여 넣기</b><small>내 기록과 비교하기</small></span>
             </Link>
             <Link href={lastResult?.attempt_id ? `/v3/${lastResult.attempt_id}/result` : "/m/profile#results"}>
               <span className="ma-quick-ic"><Icon name="report" size={18} /></span>

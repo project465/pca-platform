@@ -46,7 +46,7 @@ export async function generateMetadata() {
  *
  * **한 주를 끌고 가는 자리다.** 맨 위의 브리핑이 이번 주에 할 것을 한 판에
  * 모은다(가까운 마감 · 할 일 하나 · 여러 공고가 함께 요구하는데 비어 있는 것).
- * 그 아래 도구 셋(메모를 경험으로 옮기기 · 공고 맞대기 · 알림)이 그 판을
+ * 그 아래 도구 셋(메모를 경험으로 옮기기 · 공고 비교 · 알림)이 그 판을
  * 채운다. 넷 다 결과지가 이미 정한 판정 위에서 돌고 **점수를 새로 만들지
  * 않는다**(설계 원칙 6).
  *
@@ -59,7 +59,7 @@ export async function generateMetadata() {
  * 기간이 끝나면 저절로 닫히고 카드가 다시 긁히지 않는다.
  *
  * **검사 결과가 먼저다.** 결과가 없는 사람에게는 사는 단추 대신 무료 검사로
- * 가는 길을 세운다. 결과 없이 열면 브리핑이 비고 공고 맞대기는 전공을 모른
+ * 가는 길을 세운다. 결과 없이 열면 브리핑이 비고 공고 비교는 전공을 모른
  * 채로 돈다(`hasV3Result`, 결제를 여는 자리도 한 번 더 막는다).
  *
  * **영어 작업공간도 같은 화면이다.** 다른 점은 셋이다: 해외판 기간권
@@ -194,7 +194,7 @@ export default async function Track({
         title="MAT"
         /* 잡인더스트리 단추로 들어온 사람에게는 그 이름을 남긴다. 같은 MAT 이다 */
         meta={partner && !en ? `${PARTNERS[partner].via} 들어오셨습니다` : undefined}
-        lead={t("지원하는 동안 한 주씩 챙기는 취업비서입니다. 매주 브리핑에 가까운 마감, 이번 주 할 일 하나, 여러 공고가 함께 요구하는데 아직 비어 있는 것을 모읍니다. 공고마다 내 경험을 맞대 보고, 지원서 문장 뼈대를 내 기록으로 엮습니다. 지원은 직접 하시고, 자동으로 결제되지 않습니다.")}
+        lead={t("지원하는 동안 한 주씩 챙기는 취업비서입니다. 매주 브리핑에 가까운 마감, 이번 주 할 일 하나, 여러 공고가 함께 요구하는데 아직 비어 있는 것을 모읍니다. 공고마다 내 경험을 비교해 보고, 지원서 문장 뼈대를 내 기록으로 엮습니다. 지원은 직접 하시고, 자동으로 결제되지 않습니다.")}
       />
 
       {fail ? <p className="cm-fail" role="alert">{fail}</p> : null}
@@ -212,7 +212,7 @@ export default async function Track({
             <div className="cm-pane">
               <p className="cm-row">
                 <b>{t("MAT 은 검사 결과에서 시작합니다")}</b>
-                <span>{t("이번 주 할 일, 공고 맞대기, 지원서 문장 뼈대가 모두 검사에서 확인된 내 경험과 부족한 부분을 읽습니다. 무료 검사는 12분 정도 걸리고, 끝나면 이 화면에서 바로 MAT 을 시작할 수 있습니다.")}</span>
+                <span>{t("이번 주 할 일, 공고 비교, 지원서 문장 뼈대가 모두 검사에서 확인된 내 경험과 부족한 부분을 읽습니다. 무료 검사는 12분 정도 걸리고, 끝나면 이 화면에서 바로 MAT 을 시작할 수 있습니다.")}</span>
               </p>
               <div className="cm-acts">
                 <Link className="cm-btn is-primary" href="/cores">{t("무료 검사 시작")}</Link>
@@ -338,7 +338,7 @@ export default async function Track({
                   {" "}{t("지원은 공고를 낸 곳에서 직접 하시면 됩니다.")}
                 </p>
                 <div className="cm-acts">
-                  <button className="cm-btn is-primary" type="submit">{t("공고와 내 경험 맞대 보기")}</button>
+                  <button className="cm-btn is-primary" type="submit">{t("공고 요구 사항과 내 경험 비교")}</button>
                 </div>
               </form>
               ) : (
@@ -432,7 +432,7 @@ export default async function Track({
                   <div className="cm-pane">
                     <p className="cm-row">
                       <b>{t("연구 기록이 아직 없습니다")}</b>
-                      <span>{t("학위 연구나 참여한 과제, 쓴 논문을 하나 적어 두면 여기서 지원서 문장 뼈대가 만들어집니다. 연구직 공고의 논문 · 특허 · 과제 요구도 이 기록과 맞대 봅니다.")}</span>
+                      <span>{t("학위 연구나 참여한 과제, 쓴 논문을 하나 적어 두면 여기서 지원서 문장 뼈대가 만들어집니다. 연구직 공고의 논문 · 특허 · 과제 요구도 이 기록과 비교해 드립니다.")}</span>
                     </p>
                     <div className="cm-acts">
                       <Link className="cm-btn is-primary" href="/me/experience/new?kind=research">{t("연구·실험 기록 적기")}</Link>

@@ -74,7 +74,7 @@ ok("④ 영어 공고 줄도 같은 종류로 읽는다",
     && researchKindOf("Experience writing grant proposals") === "proposal"
     && researchKindOf("Filed patents are a plus") === "patent");
 
-console.log("\n── 기록과 맞대기");
+console.log("\n── 기록과 비교");
 const none: Experience[] = [];
 const thin = [exp("research", "박사 학위 연구: 복합재 브래킷 피로 수명")];
 const full = [

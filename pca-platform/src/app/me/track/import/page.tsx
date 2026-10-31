@@ -8,7 +8,7 @@ import { importJob } from "../actions";
 
 export const dynamic = "force-dynamic";
 export async function generateMetadata() {
-  return { title: "보던 공고 맞대 보기 · MAT · CareerMatri" };
+  return { title: "보던 공고와 비교하기 · MAT · CareerMatri" };
 }
 
 const ERR: Record<string, string> = {
@@ -20,7 +20,7 @@ const ERR: Record<string, string> = {
 };
 
 /**
- * 잡인더스트리 공고 화면에서 넘어온 사람이 그 공고를 MAT 으로 맞대 보는 자리
+ * 잡인더스트리 공고 화면에서 넘어온 사람이 그 공고를 MAT 으로 비교하는 자리
  * (`partner-job.ts`). **여기 들어온다고 가져오지 않는다**: 단추를 눌러야 열고 읽는다.
  */
 export default async function ImportPage({ searchParams }: { searchParams: Promise<{ e?: string }> }) {
@@ -32,8 +32,8 @@ export default async function ImportPage({ searchParams }: { searchParams: Promi
 
   return (
     <CmShell active="/me/track" title="MAT">
-      <CmHead kicker="잡인더스트리 AI취업지원도우미" title="보던 공고 맞대 보기"
-        lead="잡인더스트리에서 보시던 공고를 읽고, 요구 항목마다 내 경험과 연구 기록이 있는지 맞대어 보여 드립니다." />
+      <CmHead kicker="잡인더스트리 AI취업지원도우미" title="보던 공고와 비교하기"
+        lead="잡인더스트리에서 보시던 공고를 읽고, 요구 항목마다 내 경험과 연구 기록이 있는지 하나씩 짚어 드립니다." />
       {sp.e && ERR[sp.e] ? <p className="cm-fail">{ERR[sp.e]}</p> : null}
       {!url ? (
         <div className="cm-panel is-one"><div className="cm-pane">
@@ -44,20 +44,20 @@ export default async function ImportPage({ searchParams }: { searchParams: Promi
       ) : !acc.ready && !acc.paid ? (
         <div className="cm-panel is-one"><div className="cm-pane">
           <p className="cm-row"><b>먼저 무료 검사부터</b>
-            <span>MAT 은 검사 결과에서 시작합니다. 검사를 마치고 이 화면으로 돌아오시면 보던 공고를 바로 맞대 봅니다. 공고는 7일 동안 기억해 둡니다.</span></p>
+            <span>MAT 은 검사 결과에서 시작합니다. 검사를 마치고 이 화면으로 돌아오시면 보던 공고와 바로 비교해 드립니다. 공고는 7일 동안 기억해 둡니다.</span></p>
           <div className="cm-acts"><Link className="cm-btn is-primary" href="/cores">무료 검사 시작</Link></div>
         </div></div>
       ) : (
         <div className="cm-panel is-one"><div className="cm-pane">
           <p className="cm-row"><b>보시던 공고</b><span>{where}</span></p>
           <p className="cm-none">
-            {acc.paid ? "기간권으로 횟수 걱정 없이 맞대 봅니다." : acc.left.posting > 0
+            {acc.paid ? "기간권으로 횟수 걱정 없이 비교해 드립니다." : acc.left.posting > 0
               ? `무료 ${acc.freeLeft}번 가운데 1번을 씁니다(아무 도구나 합쳐 ${FREE_TOTAL}번).`
-              : `무료 ${FREE_TOTAL}번을 이미 다 쓰셨습니다. 기간권을 고르시면 이어서 맞대 봅니다.`}
+              : `무료 ${FREE_TOTAL}번을 이미 다 쓰셨습니다. 기간권을 고르시면 이어서 비교해 드립니다.`}
           </p>
           <div className="cm-acts">
             {acc.paid || acc.left.posting > 0 ? (
-              <form action={importJob}><button className="cm-btn is-primary" type="submit">이 공고 맞대 보기</button></form>
+              <form action={importJob}><button className="cm-btn is-primary" type="submit">이 공고와 비교하기</button></form>
             ) : (
               <Link className="cm-btn is-primary" href="/me/track#plans">기간권 보기</Link>
             )}

@@ -5,7 +5,7 @@ export const WS_EN_TRACK_POSTING: Record<string, string> = {
   "마감 {date}": "Closes {date}",
   "마감 미입력": "No deadline entered",
   "공고가 뽑는 자리: {role}": "Role: {role}",
-  "공고의 요구 항목을 내 경험과 맞대 봤습니다.": "Here's how each requirement in the posting lines up with your experience.",
+  "공고의 요구 항목을 내 경험과 비교했습니다.": "Here's how each requirement in the posting lines up with your experience.",
 
   /* 상태 넷 + 영역 확인 필요 */
   "설명할 경험 있음": "You can explain this",
@@ -104,7 +104,7 @@ export const WS_EN_TRACK_POSTING: Record<string, string> = {
 
   /* 연구 실적 요구 · 학위 연구 질문 */
   "연구 실적 요구": "Research record",
-  "아래 ‘연구 실적 요구’ 표에서 내 기록과 맞대 봅니다.": "Matched against your records in the Research record table below.",
+  "아래 ‘연구 실적 요구’ 표에서 내 기록과 비교해 드립니다.": "Matched against your records in the Research record table below.",
   " · 연구 실적 요구 {n}": " · Research record {n}",
   "논문 · 특허 · 연구 과제 · 학회 발표 · 연구계획서 · 학위처럼 연구직 공고에 자주 붙는 줄을 따로 모았습니다. 편수나 등급이 공고 기준에 맞는지는 판단하지 않고, 기록에 있는지만 봅니다.":
     "Lines that research postings often carry (papers, patents, research projects, conference talks, proposals, degrees) are gathered here. We don't judge whether counts or ranks meet the posting's bar, only whether your records have them.",
