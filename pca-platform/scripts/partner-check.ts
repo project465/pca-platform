@@ -59,7 +59,7 @@ async function main(): Promise<void> {
   ok("커리어피크 쪽 제목이 커리어피크 AI 취업 비서이고 '석·박사 자료' 를 말한다",
     cp.includes("커리어피크 AI 취업 비서") && cp.includes("논문") && !cp.includes("AI 취업 도우미"));
   ok("커리어피크 쪽이 연구자 흐름(한 장 요약 → 연구직 · R&D 공고 → 커리어피크 상담)을 말한다",
-    cp.includes("한 장 요약") && cp.includes("공고와 상담") && cp.includes("next=%2Fme%2Ftrack%2Fresearch"));
+    cp.includes("한 장") && cp.includes("상담 신청") && cp.includes("예시") && cp.includes("next=%2Fme%2Ftrack%2Fresearch"));
   /* 잡인더스트리에서 남은 `cm_job` 쿠키가 있어도 커리어피크 쪽은 "보던 공고" 를 말하지 않는다 */
   const cpJob = await (await fetch(`${BASE}/partner/careerpeak`, {
     headers: { cookie: "cm_job=https%3A%2F%2Fwww.jobindustry.co.kr%2F487%2F%3Fbmode%3Dview%26idx%3D1" },

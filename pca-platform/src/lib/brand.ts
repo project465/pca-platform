@@ -35,15 +35,7 @@ export const PARTNERS: Record<Partner, {
   home: string;
   /** "~로 들어오셨습니다" 앞에 붙는 말. 조사가 이름 끝소리를 따르므로 손으로 적는다 */
   via: string;
-  /**
-   * 소개 쪽 부제 **한 줄**. 2026-10-31 대표 지시("너무 AI 느낌")로 긴 설명 문단을 걷고
-   * 사람이 쓰는 마케팅 문장 하나로 줄였다
-   */
-  intro: string;
-  /** 세 단계. 제목은 두세 낱말, 설명은 짧은 한 문장 */
-  steps: [string, string][];
-  /** 소개 쪽 맨 아래 작은 글씨에 더할 그 입구만의 안내 */
-  fine?: string[];
+  /* 소개 쪽의 글은 `partner-landing.ts` 에 있다(2026-10-31 대표 승인 시안) */
   /** 로그인한 사람이 누르는 첫 단추가 가는 곳과 이름 */
   open?: { href: string; label: string };
   /** 처음 온 사람의 첫 단추. 비우면 무료 검사부터 */
@@ -58,12 +50,7 @@ export const PARTNERS: Record<Partner, {
     home: "https://www.jobindustry.co.kr",
     via: "잡인더스트리 AI 취업 도우미로",
     viaEn: "You came in through JobIndustry's AI Job Helper",
-    intro: "지원할 공고에 맞춰 이번 주 할 일을 알려 드립니다.",
-    steps: [
-      ["무료 검사", "전공을 고르고 기본 검사를 풉니다."],
-      ["공고 붙이기", "지원할 공고를 붙여 넣습니다."],
-      ["이번 주 할 일", "부족한 부분과 마감을 챙겨 드립니다."],
-    ],
+    open: { href: "/me/track", label: "공고 비교하기" },
     start: { href: "/signup?next=%2Fcores", label: "무료로 시작하기" },
     takesJob: true,
   },
@@ -78,13 +65,6 @@ export const PARTNERS: Record<Partner, {
     home: "https://www.careerpeak.co.kr",
     via: "커리어피크 AI 취업 비서로",
     viaEn: "You came in through CareerPeak's AI Career Assistant",
-    intro: "논문과 이력서로 나에게 맞는 연구직을 찾아보세요.",
-    steps: [
-      ["자료 올리기", "논문, 발표 자료, 이력서를 올립니다."],
-      ["한 장 요약", "기업이 읽기 좋게 한 장으로 정리합니다."],
-      ["공고와 상담", "맞는 연구직 공고를 찾고, 원하면 커리어피크 상담을 받습니다."],
-    ],
-    fine: ["올린 파일은 저장하지 않습니다."],
     open: { href: "/me/track/research", label: "내 자료 올리기" },
     /* 연구자는 자료 올리기부터(2026-10-31 대표 결정). 가입 때 입구 쿠키로 커리어피크
        입구가 적히고(`brand_touches`), 그러면 검사 전에도 자료 읽기가 열린다(`mat-access.ts`) */
