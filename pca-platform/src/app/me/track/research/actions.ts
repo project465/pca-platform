@@ -7,6 +7,7 @@ import { canUseMat } from "@/lib/mat-access";
 import { setFileConsent } from "@/lib/assistant/settings";
 import { deleteResearchDoc, readResearch, researchFailKo, type ResearchResult } from "@/lib/assistant/research-docs";
 import { opFail, ref } from "@/lib/oplog";
+import { saveFeedback } from "@/lib/assistant/research-eval";
 
 export type ResearchState = { ok: boolean; msg: string; id?: string } | null;
 
@@ -46,4 +47,11 @@ export async function removeResearch(form: FormData): Promise<void> {
   if (/^\d+$/.test(id)) await deleteResearchDoc(user.id, id);
   revalidatePath("/me/track/research");
   redirect("/me/track/research");
+}
+
+/** 채점표 한 칸. 본인 자료에만 적히고(`saveFeedback`), 같은 칸을 다시 누르면 바뀐다 */
+export async function gradeResearch(form: FormData): Promise<void> {
+  const user = await requireUser();
+  await saveFeedback(user.id, String(form.get("id") ?? ""), String(form.get("part") ?? ""), String(form.get("verdict") ?? ""));
+  revalidatePath("/me/track/research");
 }

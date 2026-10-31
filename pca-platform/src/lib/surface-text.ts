@@ -468,6 +468,7 @@ export const TX = {
   navRefunds: p("환불 요청", "Refund requests"),
   navFunnel: p("퍼널", "Funnel"),
   navPush: p("알림 켠 사람", "Push sign-ups"),
+  navResearchEval: p("논문 읽기 채점표", "Paper reading scores"),
   navV3Pilot: p("V3 파일럿", "V3 pilot"),
   navBusiness: p("사업자 표시", "Business details"),
   rpPdf: p("PDF 받기", "Download PDF"),

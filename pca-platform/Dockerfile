@@ -14,6 +14,11 @@ RUN npm ci --ignore-scripts || npm install --ignore-scripts
 COPY . .
 # 빌드 때는 DB 에 붙지 않는다. 붙어야 하는 화면은 전부 동적 렌더다
 ENV NEXT_TELEMETRY_DISABLED=1
+# **빌드 힙을 4GB 로 연다.** 기본값(약 2GB)에서 `next build` 가 한계에 닿아
+# 같은 코드가 어떤 때는 통과하고 어떤 때는 `heap out of memory` 로 죽는다
+# (2026-10-31 운영 빌드 실패 메일 · 같은 날 로컬에서 2GB 에 걸리고 4GB 에 통과).
+# 돌리는 이미지에는 들어가지 않는다: 이 층의 ENV 는 빌드 층에만 산다
+ENV NODE_OPTIONS=--max-old-space-size=4096
 RUN npm run build
 
 # **운영에서 사람이 쳐야 하는 셋만 한 덩이로 묶는다.**

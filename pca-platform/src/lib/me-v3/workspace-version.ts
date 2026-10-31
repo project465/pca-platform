@@ -387,7 +387,8 @@
 /** MAT 을 무료로 한 번씩(공고 확인 · 경험 채우기 · 파일 읽기) 써 보고 두 번째부터 기간권으로 넘어간다.
  *  기간권이 없어도 결과가 있으면 도구가 서고, 다 쓴 칸에는 기간권 안내가 선다(`mat-access.ts`) — V73 */
 /** MAT 첫 화면에 `내 자료로 찾기`(논문·PPT·이력서·자소서 읽기 · 그 낱말로 공고 찾기)가 선다 — V74 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V74";
+/** 제휴 입구 한 줄을 입구마다 손으로 적은 말(`PARTNERS.via`)로 낸다: 커리어피크 MAT 이 붙었다 — V75 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V75";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.

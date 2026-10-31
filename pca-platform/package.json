@@ -177,6 +177,7 @@
     "mat:research": "tsx scripts/research-check.ts",
     "mat:auto": "tsx scripts/mat-auto-check.ts",
     "mat:free": "tsx scripts/mat-free-check.ts",
+    "mat:eval": "tsx scripts/research-eval-check.ts",
     "partner:check": "tsx scripts/partner-check.ts",
     "routes:check": "tsx scripts/routes-check.ts",
     "campus:check": "tsx scripts/campus-check.ts",
