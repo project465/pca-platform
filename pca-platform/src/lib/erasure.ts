@@ -124,6 +124,7 @@ export const LEFT_AS_IS: Record<string, string> = {
   v3_attempts: "사람과 이어지지 않는 응시. 학과 집계와 규준의 근거다",
   analytics_events: "방문 차례만 담고 이름·주소·글이 없다",
   brand_touches: "어느 제휴 입구(잡인더스트리 등)로 들어왔는지만. 이름·주소·글이 없다",
+  careerpeak_consults: "커리어피크 상담에 동의했다는 증명. 누가·언제·무엇(항목 이름)만 있고 글·주소가 없다. 상담 종료 후 1년에 지운다",
   evidence_profiles: "칸을 비운다(SCRUB). 결과지 사본이 이 줄을 가리킨다",
   outbox: "칸을 비운다(SCRUB). 보낸 기록의 차례는 남긴다",
   v3_pilot_participants: "칸을 비운다(SCRUB). 파일럿 분석의 줄 수가 흔들리지 않게 한다",

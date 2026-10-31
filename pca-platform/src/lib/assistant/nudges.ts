@@ -9,6 +9,7 @@ import { wsLang } from "@/lib/me-v3/ws-lang";
 import { livePostingsOf } from "./posting";
 import { postingsForMe } from "./match";
 import { opFail, ref } from "@/lib/oplog";
+import { purgeConsults } from "@/lib/careerpeak-consult";
 
 /**
  * MAT이 먼저 말을 거는 자리.
@@ -277,8 +278,10 @@ export async function runAssistantTick(now = new Date()): Promise<{
   /* 내 자료 읽기 정리는 마지막으로 쓴 날부터 1년(개인정보처리방침 1-5) */
   const p4 = await query<{ id: string }>(
     `DELETE FROM research_docs WHERE purge_after < now() RETURNING id::text`).catch(() => []);
+  /* 커리어피크 상담 신청 기록은 상담 종료 후 1년(`careerpeak-consult.ts`) */
+  const p5 = await purgeConsults();
   return {
     users: users.length, weekly, deadline, renew, match, free, mailed,
-    purged: p1.length + p2.length + p3 + p4.length,
+    purged: p1.length + p2.length + p3 + p4.length + p5,
   };
 }

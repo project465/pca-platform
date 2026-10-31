@@ -5,7 +5,8 @@ import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/session";
 import { canUseMat } from "@/lib/mat-access";
 import { setFileConsent } from "@/lib/assistant/settings";
-import { deleteResearchDoc, readResearch, researchFailKo, type ResearchResult } from "@/lib/assistant/research-docs";
+import { deleteResearchDoc, readResearch, researchDocsOf, researchFailKo, type ResearchResult } from "@/lib/assistant/research-docs";
+import { consultFailKo, requestConsult } from "@/lib/careerpeak-consult";
 import { opFail, ref } from "@/lib/oplog";
 import { saveFeedback } from "@/lib/assistant/research-eval";
 
@@ -54,4 +55,32 @@ export async function gradeResearch(form: FormData): Promise<void> {
   const user = await requireUser();
   await saveFeedback(user.id, String(form.get("id") ?? ""), String(form.get("part") ?? ""), String(form.get("verdict") ?? ""));
   revalidatePath("/me/track/research");
+}
+
+export type ConsultState = { ok: boolean; msg: string } | null;
+
+/**
+ * 커리어피크 상담 신청(`careerpeak-consult.ts`). **동의 칸이 꺼져 있으면 아무것도
+ * 보내지 않는다**: 화면의 단추가 막혀 있어도 서버가 다시 본다. 보낼 정리는 본인
+ * 것만 고른다(`researchDocsOf` 가 그 사람 것만 읽는다).
+ */
+export async function requestCareerpeak(_prev: ConsultState, form: FormData): Promise<ConsultState> {
+  const user = await requireUser();
+  const docId = String(form.get("doc") ?? "");
+  const docs = await researchDocsOf(user.id);
+  const doc = docs.find((d) => d.id === docId) ?? null;
+  const email = String(form.get("email") ?? "").trim().slice(0, 200);
+  const phone = String(form.get("phone") ?? "").trim().slice(0, 40);
+  const name = String(form.get("name") ?? "").trim().slice(0, 60);
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { ok: false, msg: "답을 받으실 메일 주소를 적어 주세요." };
+  if (phone && !/^[0-9+\-() ]{8,20}$/.test(phone)) return { ok: false, msg: "전화번호는 숫자와 - 만 적어 주세요. 비워 두셔도 됩니다." };
+  const r = await requestConsult({
+    userId: user.id, doc, consent: String(form.get("consent") ?? "") === "1", name, email, phone,
+  }).catch((e) => {
+    opFail({ operation: "careerpeak.consult", ref: ref("user", user.id), step: "send", category: "db" }, e);
+    return { ok: false as const, reason: "db" as const };
+  });
+  if (!r.ok) return { ok: false, msg: consultFailKo(r.reason) };
+  revalidatePath("/me/track/research");
+  return { ok: true, msg: "보냈습니다. 커리어피크에서 적어 주신 메일로 연락드립니다." };
 }

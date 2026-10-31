@@ -9,6 +9,11 @@ import {
 import { CmShell, CmHead } from "../../shell";
 import { SectionHeader } from "../../ui";
 import ResearchUpload from "./upload";
+import CareerpeakConsult from "./consult";
+import {
+  CONSENT_TEXT, CONSULT_KEEPS, CONSULT_SENDS, consultOpen, consultsOf, onePager,
+} from "@/lib/careerpeak-consult";
+import { queryOne } from "@/lib/db";
 import { gradeResearch, removeResearch } from "./actions";
 import { GRADE_PARTS, VERDICT_KO, feedbackOf, type Part, type Verdict } from "@/lib/assistant/research-eval";
 
@@ -31,6 +36,13 @@ export default async function ResearchPage() {
   const [acc, settings, used, docs, fb] = await Promise.all([
     matAccess(user.id), settingsOf(user.id), researchUsedThisMonth(user.id), researchDocsOf(user.id), feedbackOf(user.id),
   ]);
+  /* 커리어피크 상담 칸은 받을 주소 · 메일 · 방침 적용일이 다 갖춰졌을 때만 그린다 */
+  const cp = docs.length && consultOpen()
+    ? await Promise.all([
+      consultsOf(user.id),
+      queryOne<{ email: string | null }>(`SELECT email FROM users WHERE id = $1`, [user.id]).catch(() => null),
+    ])
+    : null;
   const left = acc.paid
     ? `이번 달 남은 횟수 ${Math.max(0, RESEARCH_MONTHLY_CAP - used)}/${RESEARCH_MONTHLY_CAP}`
     : `무료 ${acc.freeLeft}번 남음(아무 도구나)`;
@@ -73,9 +85,18 @@ export default async function ResearchPage() {
       {docs.length ? (
         <div className="cm-acts" style={{ marginBottom: 12 }}>
           <Link className="cm-btn is-primary" href="/me/track/jobs">내 자료로 공고 찾기</Link>
+          {cp ? <a className="cm-btn" href="#careerpeak">커리어피크 상담 신청</a> : null}
         </div>
       ) : null}
       {docs.map((d) => <DocCard key={d.id} d={d} fb={fb[d.id] ?? {}} />)}
+      {cp ? (
+        <CareerpeakConsult
+          docs={docs.map((d) => ({ id: d.id, title: d.title }))}
+          preview={Object.fromEntries(docs.map((d) => [d.id, onePager(d)]))}
+          name={user.name ?? ""} email={cp[1]?.email ?? ""}
+          sends={CONSULT_SENDS} keeps={CONSULT_KEEPS} consentText={CONSENT_TEXT}
+          sent={cp[0].filter((c) => c.doc_id && Date.now() - new Date(c.sent_at).getTime() < 86_400_000).map((c) => c.doc_id!)} />
+      ) : null}
     </CmShell>
   );
 }

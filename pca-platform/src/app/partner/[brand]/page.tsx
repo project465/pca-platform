@@ -12,6 +12,8 @@ import { PARTNERS, isPartner, recordBrand } from "@/lib/brand";
 import { publicCommerceGate } from "@/lib/public-gate";
 import { cookies } from "next/headers";
 import { JOB_COOKIE } from "@/lib/partner-job";
+import { RESEARCH_POLICY_FROM, researchOpen } from "@/lib/assistant/research-docs";
+import { consultOpen } from "@/lib/careerpeak-consult";
 
 export const dynamic = "force-dynamic";
 
@@ -49,11 +51,14 @@ export default async function PartnerPage({
   const gate = await publicCommerceGate().catch(() => ({ open: false }));
   const tracks = gate.open ? await trackOffers("KR").catch(() => []) : [];
   const back = `/partner/${brand}`;
-  /* 잡인더스트리 공고 화면에서 넘어왔으면 그 공고를 로그인 뒤에 바로 비교한다 */
-  const hasJob = Boolean((await cookies()).get(JOB_COOKIE)?.value);
-  const next = encodeURIComponent(hasJob ? "/me/track/import" : "/me/track");
+  /* 잡인더스트리 공고 화면에서 넘어왔으면 그 공고를 로그인 뒤에 바로 비교한다.
+     **커리어피크 쪽에서는 보지 않는다**(`takesJob`): 잡인더스트리에서 남은 쿠키가
+     있어도 "보던 공고" 안내가 뜨지 않는다 */
+  const hasJob = P.takesJob && Boolean((await cookies()).get(JOB_COOKIE)?.value);
+  const open = hasJob ? { href: "/me/track/import", label: "보던 공고와 비교하기" } : (P.open ?? { href: "/me/track", label: "MAT 열기" });
+  const next = encodeURIComponent(open.href);
 
-  const steps: [string, string][] = [
+  const steps: [string, string][] = P.steps ?? [
     ["무료 검사로 시작합니다", "전공을 고르고 기본 검사를 풀면 내 경험이 어느 판단까지 설명되는지 결과로 나옵니다."],
     ["비어 있는 부분을 확인합니다", "결과에서 아직 근거가 없는 판단과, 그걸 채울 다음 할 일을 봅니다."],
     ["MAT 이 한 주씩 챙깁니다", "공고를 붙여 두면 마감을 알려 드리고, 요구 항목마다 내 경험이 있는지 하나씩 짚어 드립니다."],
@@ -84,9 +89,7 @@ export default async function PartnerPage({
           ) : null}
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 16, justifyContent: "center" }}>
             {user ? (
-              <Link href={hasJob ? "/me/track/import" : "/me/track"} className="sf-btn accent">
-                {hasJob ? "보던 공고와 비교하기" : "MAT 열기"}
-              </Link>
+              <Link href={open.href} className="sf-btn accent">{open.label}</Link>
             ) : (<>
               <Link href="/signup?next=%2Fcores" className="sf-btn accent">무료 검사로 시작하기</Link>
               <Link href={`/login?next=${next}`} className="sf-btn ghost">이미 계정이 있어요</Link>
@@ -109,10 +112,17 @@ export default async function PartnerPage({
         <section className="pxband" id="track">
           <h2>{P.does}</h2>
           <ul className="pxtrack-f">
-            <li>{T("pxTrackF1")}</li>
-            <li>{T("pxTrackF2")}</li>
-            <li>{T("pxTrackF3")}</li>
+            {(P.doesList ?? [T("pxTrackF1"), T("pxTrackF2"), T("pxTrackF3")]).map((x) => <li key={x}>{x}</li>)}
           </ul>
+          {/* 아직 열리지 않은 것을 열린 것처럼 적지 않는다. 날짜가 지나면 이 줄이 사라진다 */}
+          {P.steps && (!researchOpen() || !consultOpen()) ? (
+            <p className="pxwhat" style={{ fontSize: 15, fontWeight: 500, minHeight: 0 }}>
+              {!researchOpen()
+                ? `자료 읽기는 ${RESEARCH_POLICY_FROM.toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul", month: "long", day: "numeric" })}부터 열립니다. `
+                : ""}
+              {!consultOpen() ? "커리어피크 상담 신청은 개인정보처리방침에 이 목적을 더한 뒤 열립니다." : ""}
+            </p>
+          ) : null}
           <p className="pxwhat">{T("pxTrackNot")}</p>
           {/* 값과 사는 단추가 숨겨진 동안에도 무료 범위는 늘 보인다 */}
           <p className="pxwhat"><b>{T("pxTrackFreeHead")}</b> {T("pxTrackFree")}</p>

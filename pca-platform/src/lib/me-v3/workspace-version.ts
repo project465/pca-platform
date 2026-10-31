@@ -389,7 +389,8 @@
 /** MAT 첫 화면에 `내 자료로 찾기`(논문·PPT·이력서·자소서 읽기 · 그 낱말로 공고 찾기)가 선다 — V74 */
 /** 제휴 입구 한 줄을 입구마다 손으로 적은 말(`PARTNERS.via`)로 낸다: 커리어피크 MAT 이 붙었다 — V75 */
 /** 잡인더스트리 공고 화면의 단추로 넘어온 공고를 `보던 공고 맞대 보기` 에서 가져와 맞대 본다(`partner-job.ts`) — V76 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V76";
+/** `내 자료 읽기` 결과 아래 `커리어피크 상담 신청` 칸(보내는 것 · 보내지 않는 것 · 동의 칸 · 한 장 요약 펼쳐 보기) — V77 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V77";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
