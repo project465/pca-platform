@@ -14,6 +14,7 @@ import { Icon } from "@/components/sf/icon";
 import { PickCard, PickGrid, SectionHeader } from "../ui";
 import { activeTrack } from "@/lib/track";
 import { changeTargets } from "./actions";
+import { MAT_PUBLIC } from "@/lib/mat-switch";
 
 export async function generateMetadata() {
   const user = await requireUser();
@@ -256,7 +257,7 @@ export default async function Explore({
             </div>
           </form>
         </details>
-      ) : lang === "en" ? null : (
+      ) : lang === "en" || !MAT_PUBLIC ? null : (
         /* Track 은 한국 상품이다(`WS_KR_ONLY`). 영어 작업공간에는 그리로 가는 길을 두지 않는다 */
         <p className="cm-soon" style={{ marginBottom: 18 }}>
           <b>관심 산업·직무를 바꿔 다시 비교하는 일은 Track 에서 열립니다.</b>{" "}

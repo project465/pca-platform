@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import { PLATFORM_URL } from "./src/lib/domains";
+import { MAT_PUBLIC } from "./src/lib/mat-public";
 
 /**
  * 홈페이지(`HOME_DOMAIN`, src/lib/domains.ts). 코드는 하나고 빌드할 때 `SITE` 로 원고를 고른다.
@@ -52,6 +53,12 @@ const nextConfig: NextConfig = {
       { source: "/about", destination: "/contact", statusCode: 301 },
       { source: "/partnership", destination: "/contact", statusCode: 301 },
       { source: "/localisation", destination: "/", statusCode: 301 },
+      /* MAT 을 가려 둔 동안(`lib/mat-public.ts`) 소개 쪽으로 오면 첫 화면으로 돌려보낸다.
+         다시 열 것이라 잠시 옮김(302)이다: 영구 이동으로 적으면 브라우저가 기억한다 */
+      ...(MAT_PUBLIC ? [] : [
+        { source: "/assistant", destination: "/", statusCode: 302 as const },
+        { source: "/:lang(en|ja|zh)/assistant", destination: "/:lang", statusCode: 302 as const },
+      ]),
     ];
   },
   async headers() {

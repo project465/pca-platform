@@ -14,6 +14,7 @@ import { orgTypes, regionLayer } from "@/lib/me-v3/region";
 import { CmShell, CmHead } from "../shell";
 import { EmptyState, SectionHeader } from "../ui";
 import { dropApplication, moveApplication, saveApplication } from "./actions";
+import { MAT_PUBLIC } from "@/lib/mat-switch";
 
 export const metadata = { title: "지원한 곳 · 내 CareerMatri" };
 
@@ -223,7 +224,7 @@ export default async function Apply() {
         </div>
       )}
 
-      {!track.on && rows.some((r) => r.role_code) ? (
+      {!track.on && MAT_PUBLIC && rows.some((r) => r.role_code) ? (
         <p className="cm-soon" style={{ marginTop: 18 }}>
           <b>지원한 직무와 내 근거를 나란히 보는 일은 Track 에서 열립니다.</b>{" "}
           <Link href="/me/track">Track 보기</Link>

@@ -7,6 +7,7 @@ import { kr } from "./kr";
 import { en } from "./en";
 import { ja } from "./ja";
 import { zh } from "./zh";
+import { MAT_PUBLIC, withoutMat } from "@/lib/mat-public";
 
 /**
  * 어느 원고를 실을지는 빌드할 때 `SITE` 가, 어느 언어로 그릴지는 주소가
@@ -44,7 +45,9 @@ export function getSite(lang: string = DEFAULT_LANG): SiteContent {
   /* **앱이 맡은 길은 앱으로 보낸다.** 원고에는 `/cores` · `/login` 처럼
      상대 주소로 적혀 있고, 여기서 한 번 돌린다(`lib/platform.ts`). 남은
      이 사이트 안의 주소에는 그 언어의 앞머리를 붙인다 */
-  return withLangLinks(lang, withAppLinks(site, site));
+  /* MAT 을 가려 둔 동안에는 원고에서 MAT 을 걷어 낸 사본을 쓴다(`lib/mat-public.ts`) */
+  const shown = MAT_PUBLIC ? site : withoutMat(site);
+  return withLangLinks(lang, withAppLinks(shown, shown));
 }
 
 export type { SiteContent, SiteKey, Lang, Link, Titled, Faq } from "./model";

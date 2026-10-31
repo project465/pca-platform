@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { MAT_PUBLIC } from "@/lib/mat-switch";
 
 /**
  * `홈 화면에 설치` 안내 한 칸(PWA 1단계).
@@ -15,7 +16,10 @@ type Prompt = Event & { prompt: () => Promise<void>; userChoice: Promise<{ outco
 const T = {
   ko: {
     title: "홈 화면에 CareerMatri 설치",
-    body: "앱처럼 아이콘으로 열고, MAT 할 일 알림을 휴대전화로 받을 수 있습니다. 스토어를 거치지 않고 저장 공간도 거의 쓰지 않습니다.",
+    /* MAT 을 가려 둔 동안에는 MAT 이름을 쓰지 않는다(`lib/mat-switch.ts`) */
+    body: MAT_PUBLIC
+      ? "앱처럼 아이콘으로 열고, MAT 할 일 알림을 휴대전화로 받을 수 있습니다. 스토어를 거치지 않고 저장 공간도 거의 쓰지 않습니다."
+      : "앱처럼 아이콘으로 열 수 있습니다. 스토어를 거치지 않고 저장 공간도 거의 쓰지 않습니다.",
     ios: "사파리 아래쪽 공유 단추를 누르고 '홈 화면에 추가'를 고르세요.",
     btn: "설치하기",
     done: "설치했습니다. 홈 화면 아이콘으로 열어 주세요.",

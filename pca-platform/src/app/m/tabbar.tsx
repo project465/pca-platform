@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Icon, type IconName } from "@/components/sf/icon";
+import { MAT_PUBLIC } from "@/lib/mat-switch";
 
 /**
  * 아래 띠 다섯 칸. **차례가 하루의 차례다**: 오늘 볼 것 → 할 일 → 쌓아 둔
@@ -15,7 +16,8 @@ const TABS: { href: string; label: string; icon: IconName }[] = [
   { href: "/m", label: "홈", icon: "home" },
   { href: "/m/todo", label: "할 일", icon: "check" },
   { href: "/m/experience", label: "경험", icon: "layers" },
-  { href: "/m/mat", label: "MAT", icon: "spark" },
+  /* MAT 을 가려 둔 동안 띠에서 뺀다(`lib/mat-switch.ts`) */
+  ...(MAT_PUBLIC ? [{ href: "/m/mat", label: "MAT", icon: "spark" as IconName }] : []),
   { href: "/m/profile", label: "내 정보", icon: "user" },
 ];
 

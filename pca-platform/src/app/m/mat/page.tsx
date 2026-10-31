@@ -5,6 +5,8 @@ import { buildBrief, daysLeft, kstToday } from "@/lib/assistant/brief";
 import { openActions } from "@/lib/me-v3/open-actions";
 import { appUser } from "../user";
 import { AppHead, Dday, Empty, Row, Section } from "../ui";
+import { matVisible } from "@/lib/mat-public";
+import { redirect } from "next/navigation";
 
 export const metadata = { title: "MAT · CareerMatri" };
 
@@ -22,6 +24,8 @@ const fmt = (iso: string) =>
 
 export default async function Mat() {
   const user = await appUser();
+  /* MAT 을 가려 둔 동안에는 운영자와 이용 기간이 있는 사람만(`lib/mat-public.ts`) */
+  if (!(await matVisible(user.id))) redirect("/m");
   const track = await activeTrack(user.id);
 
   if (!track.on) {

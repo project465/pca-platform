@@ -200,7 +200,7 @@ export default async function Home({ params }: PageParams) {
         <section className="section grad" id="grad">
           <div className="wrap">
             <SectionHead label={h.grad.label} title={h.grad.title} lead={h.grad.lead} />
-            <div className="grad-grid">
+            <div className="grad-grid" style={h.grad.mat?.length ? undefined : { gridTemplateColumns: "minmax(0, 1fr)" }}>
               <div className="grad-stages">
                 <h3>{h.grad.stagesTitle}</h3>
                 <ol>
@@ -215,7 +215,8 @@ export default async function Home({ params }: PageParams) {
                   ))}
                 </ol>
               </div>
-              <div className="grad-mat">
+              {/* MAT 을 가려 둔 동안에는 이 칸이 비어 온다(`lib/mat-public.ts`) */}
+              {h.grad.mat?.length ? <div className="grad-mat">
                 <h3>{h.grad.matTitle}</h3>
                 <ul>
                   {h.grad.mat.map((m, i) => (
@@ -230,7 +231,7 @@ export default async function Home({ params }: PageParams) {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </div> : null}
             </div>
             <div className="majors-foot">
               <p>{h.grad.note}</p>

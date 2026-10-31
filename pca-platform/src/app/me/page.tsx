@@ -29,6 +29,7 @@ import {
 } from "./ui";
 import { continueAssessment } from "./actions";
 import { queryOne } from "@/lib/db";
+import { MAT_PUBLIC } from "@/lib/mat-switch";
 
 export async function generateMetadata() {
   const u = await currentUser().catch(() => null);
@@ -484,7 +485,7 @@ export default async function Home() {
               } />
             {/* **무료 검사 → MAT.** 결과를 받은 사람이 다음에 갈 자리다. MAT 을
                 이미 쓰는 사람에게는 세우지 않는다(띠에 이미 있다) */}
-            {!track.on ? (
+            {!track.on && MAT_PUBLIC ? (
               <RecordRow icon="spark" tint="t-2"
                 title={t("이 결과로 매주 챙기기 · MAT")}
                 note={t("이번 주 할 일 하나 · 가까운 마감 · 공고와 내 경험 비교")}

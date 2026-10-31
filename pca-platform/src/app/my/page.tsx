@@ -14,6 +14,7 @@ import LoginMethods from "./login-methods";
 import { isProvider, PROVIDER_LABEL } from "@/lib/auth-accounts";
 import { queryOne } from "@/lib/db";
 import { activeTrack } from "@/lib/track";
+import { MAT_PUBLIC } from "@/lib/mat-switch";
 
 export async function generateMetadata() {
   const en = (await resolveLang().catch(() => "ko")) === "en";
@@ -112,7 +113,7 @@ export default async function AccountHome({
 
         {/* ── MAT ── 기간이 언제 끝나는지는 이 계정에서 찾는 사람이 많다.
             **영어 화면에는 세우지 않는다**: 국내 결제 상품이다(`WS_KR_ONLY`) */}
-        {en ? null : <section className="cm-card">
+        {en || (!MAT_PUBLIC && !track.on) ? null : <section className="cm-card">
           <h2><Icon name="clock" size={17} />MAT</h2>
           <p>
             {track.on && track.until

@@ -21,6 +21,7 @@ import { settingsOf } from "@/lib/assistant/settings";
 import { pendingFileDrafts, usedThisMonth, UPLOAD_MONTHLY_CAP } from "@/lib/assistant/upload";
 import FileDrop from "./upload";
 import Link from "next/link";
+import { MAT_PUBLIC } from "@/lib/mat-switch";
 
 /**
  * 그 결과가 어디로 갔는가.
@@ -229,7 +230,7 @@ export default async function Compose(
       {drop ? (
         <FileDrop consented={drop.consented} used={drop.used}
           cap={UPLOAD_MONTHLY_CAP} pending={drop.pending} />
-      ) : !edit && !d0 && lang !== "en" ? (
+      ) : !edit && !d0 && lang !== "en" && MAT_PUBLIC ? (
         <p className="cm-none" style={{ marginBottom: 12 }}>
           MAT을 쓰시면 성적증명서·수료증 파일을 올려 이 칸을 채울 수 있습니다.{" "}
           <Link href="/me/track">MAT 알아보기</Link>

@@ -12,6 +12,7 @@ import { Icon } from "@/components/sf/icon";
 import { appUser } from "./user";
 import { AppHead, Dday, Row, Section } from "./ui";
 import { appMoveAction } from "./actions";
+import { MAT_PUBLIC } from "@/lib/mat-switch";
 
 export const metadata = { title: "홈 · CareerMatri" };
 
@@ -94,7 +95,7 @@ export default async function AppHome() {
           </div>
         )}
 
-        {deadlines.length ? (
+        {deadlines.length && MAT_PUBLIC ? (
           <Section title="다가오는 마감" more={{ href: "/m/mat", label: "MAT" }}>
             <div className="ma-list">
               {deadlines.map((d) => (
@@ -112,14 +113,14 @@ export default async function AppHome() {
               <span className="ma-quick-ic"><Icon name="layers" size={18} /></span>
               <span><b>경험 적기</b><small>수업·프로젝트·실습 하나</small></span>
             </Link>
-            <Link href="/m/capture">
+            {MAT_PUBLIC ? <Link href="/m/capture">
               <span className="ma-quick-ic"><Icon name="doc" size={18} /></span>
               <span><b>사진으로 옮기기</b><small>수료증·성적증명서</small></span>
-            </Link>
-            <Link href="/me/track#posting">
+            </Link> : null}
+            {MAT_PUBLIC ? <Link href="/me/track#posting">
               <span className="ma-quick-ic"><Icon name="send" size={18} /></span>
               <span><b>공고 붙여 넣기</b><small>내 기록과 비교하기</small></span>
-            </Link>
+            </Link> : null}
             <Link href={lastResult?.attempt_id ? `/v3/${lastResult.attempt_id}/result` : "/m/profile#results"}>
               <span className="ma-quick-ic"><Icon name="report" size={18} /></span>
               <span><b>결과지 보기</b><small>{lastResult?.at ? `${lastResult.at} 검사` : "검사를 마치면 열립니다"}</small></span>

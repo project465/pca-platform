@@ -396,7 +396,8 @@
 /** MAT 공고 확인: `가까운 경험` 으로 이은 줄과 `전공 맞음` 을 적는다. 글을 못 읽은 공고에는 비교 단추를 세우지 않는다 — V80 */
 /** 공고 확인의 `한눈에` 를 숫자 칸으로, 요구 항목 상태를 배지로, 손전화에서는 줄마다 카드로(대표 승인 시안) — V81 */
 /** MAT 첫 화면의 공고 줄 · 내 자료 읽기 결과를 같은 원칙(배지 · 숫자 칸)으로 — V82 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V82";
+/** MAT 을 가려 둔 동안(`lib/mat-switch.ts`) 띠 · 홈 · 계정 · 탐색 · 지원 기록 · 경험 적기의 MAT 길을 세우지 않는다 — V83 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V83";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.

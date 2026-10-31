@@ -28,6 +28,7 @@ import { CM_GROUPS, CM_TABS, type CmNavItem, navOn } from "./nav";
 import { CmFind, type FindItem } from "./find";
 import { wsSay } from "@/lib/me-v3/ws-say";
 import { wsKrOnly, type WsLang } from "@/lib/me-v3/ws-lang";
+import { MAT_PUBLIC } from "@/lib/mat-switch";
 
 /**
  * 지금 어느 전공인가. **쪽이 넘겨 준다.**
@@ -58,6 +59,9 @@ function groupsFor(lang: WsLang) {
     title: t(g.title),
     items: g.items
       .filter((it) => lang !== "en" || !wsKrOnly(it.href))
+      /* MAT 을 가려 둔 동안 띠와 찾기에서 뺀다(`lib/mat-switch.ts`). 표(`nav.ts`)에는 남겨
+         별칭과 `active` 검사가 그대로 선다 */
+      .filter((it) => MAT_PUBLIC || it.href !== "/me/track")
       .map((it) => ({ ...it, label: t(it.label), tabLabel: it.tabLabel ? t(it.tabLabel) : undefined })),
   })).filter((g) => g.items.length);
 }
@@ -112,7 +116,7 @@ async function CmBell({ lang = "ko" }: { lang?: WsLang }) {
     if (u) n = await unreadCount(u.id);
   } catch { n = 0; }
   /* 알림은 AI 취업비서가 쌓는다. 영어 작업공간에는 그 자리가 없다 */
-  return n > 0 && lang !== "en" ? (
+  return n > 0 && lang !== "en" && MAT_PUBLIC ? (
     <Link className="cm-util-bell" href="/me/track" aria-label={`읽지 않은 알림 ${n}개`}>
       <Icon name="bell" size={17} />
       <span className="cm-util-dot" aria-hidden>{n > 9 ? "9+" : n}</span>

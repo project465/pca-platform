@@ -9,6 +9,7 @@ import LogoutButton from "@/components/logout-button";
 import { appUser } from "../user";
 import { AppHead, Empty, Row, Section } from "../ui";
 import { appDigest } from "../actions";
+import { MAT_PUBLIC } from "@/lib/mat-switch";
 
 export const metadata = { title: "내 정보 · CareerMatri" };
 
@@ -75,7 +76,7 @@ export default async function Profile() {
 
         <Section title="계정">
           <div className="ma-list">
-            <Row href="/m/mat" icon="spark" title="MAT 이용" sub={track.on && track.until ? `${Number(track.until.slice(5, 7))}월 ${Number(track.until.slice(8, 10))}일까지 이용 중` : "이용하지 않음"} />
+            {MAT_PUBLIC || track.on ? <Row href="/m/mat" icon="spark" title="MAT 이용" sub={track.on && track.until ? `${Number(track.until.slice(5, 7))}월 ${Number(track.until.slice(8, 10))}일까지 이용 중` : "이용하지 않음"} /> : null}
             <Row href="/my" icon="user" title="계정 · 주문 · 탈퇴" />
             <Row href="/me" icon="window" title="웹 화면으로 보기" sub="넓은 화면에서 전체 메뉴로" />
             <Row href="/support" icon="alert" title="도움이 필요할 때" />

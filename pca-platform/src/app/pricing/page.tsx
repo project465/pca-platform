@@ -27,6 +27,7 @@ import { trackOffers } from "@/lib/track";
 import LaunchNotify, { type NotifyQuery } from "@/components/inquiry/launch-notify";
 import { payOpen } from "@/lib/payments";
 import { pageTitle } from "@/lib/page-title";
+import { MAT_PUBLIC } from "@/lib/mat-switch";
 
 export async function generateMetadata(
   { searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> },
@@ -230,7 +231,8 @@ export default async function PricingPage({
          * **값은 `products` 에서 읽는다.** 화면에 적힌 값과 결제되는 값이
          * 갈리지 않게 한다. 한국 시장에서만 선다.
          */}
-        {tracks.length ? (
+        {/* MAT 을 가려 둔 동안 요금 화면에서 뺀다(`lib/mat-switch.ts`) */}
+        {tracks.length && MAT_PUBLIC ? (
           <section className="pxband" id="track">
             <h2>{T("pxTrackTitle")}</h2>
             <p className="pxwhat">{T("pxTrackLead")}</p>

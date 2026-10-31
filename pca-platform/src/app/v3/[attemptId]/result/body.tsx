@@ -52,6 +52,7 @@ import Fold from "./fold";
 import SaveAction from "./save";
 import Track from "./track";
 import Summary, { type SummaryEvidence, type SummaryStep, type SummaryZone } from "./summary";
+import { MAT_PUBLIC } from "@/lib/mat-switch";
 
 
 /*
@@ -2927,9 +2928,10 @@ export async function V3ResultBody(
               <li><a href={`/v3/${attemptId}/result/pdf`}>{tr("PDF 저장")}</a></li>
             </ul>
             {/* **카드로 세우지 않는다**(규격 §7). 한 줄 링크로 둔다 */}
-            <p className="rs-end-note">
+            {/* MAT 을 가려 둔 동안 이 줄을 세우지 않는다(`lib/mat-switch.ts`) */}
+            {MAT_PUBLIC ? <p className="rs-end-note">
               {tr("매주 할 일과 공고 확인은")} <Link href="/me/track">MAT</Link>{tr("에서 이어집니다.")}
-            </p>
+            </p> : null}
           </div>
         </section>
         )}
