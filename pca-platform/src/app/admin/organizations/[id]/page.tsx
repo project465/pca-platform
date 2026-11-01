@@ -7,6 +7,7 @@ import { query, queryOne } from "@/lib/db";
 import { nameOf } from "@/lib/i18n";
 import { university } from "@/lib/campus/registry";
 import { campusV3 } from "@/lib/me-v3/campus";
+import { orgTypeKo } from "@/lib/org-type";
 import StaffPanel from "./staff-panel";
 
 export const metadata = { title: "기관 · CareerMatri" };
@@ -97,7 +98,6 @@ export default async function OrgDetail({ params }: { params: Promise<{ id: stri
     ? await campusV3({ orgIds: [Number(org.id)], universityCode: org.code }).catch(() => null)
     : null;
 
-  const TYPE: Record<string, string> = { university: "대학", department: "학과", company: "기업" };
 
   return (
     <AdminShell user={user} current="/admin/organizations">
@@ -114,7 +114,7 @@ export default async function OrgDetail({ params }: { params: Promise<{ id: stri
         </div>
       </div>
       <p className="page-sub">
-        {TYPE[org.org_type] ?? org.org_type} · {org.country}
+        {orgTypeKo(org.org_type)} · {org.country}
         {parent ? ` · ${parent} 소속` : ""}
         {v3
           ? ` · 대상자 ${v3.target}명(명단 ${v3.roster}명 + 학교 진입 ${v3.target - v3.roster}명, 기관 화면과 같은 수)`

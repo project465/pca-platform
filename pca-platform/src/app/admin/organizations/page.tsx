@@ -3,6 +3,7 @@ import { requireRole } from "@/lib/session";
 import { resolveLang } from "@/lib/locale-server";
 import { orgRows, orgSummary } from "@/lib/admin-overview";
 import { namesOf } from "@/lib/i18n";
+import { orgTypeKo } from "@/lib/org-type";
 import { ROLE_LABEL } from "@/lib/roles";
 import { BRAND, toLang2, txer } from "@/lib/surface-text";
 import { Shell, PageHead, Section } from "@/components/sf/shell";
@@ -12,10 +13,6 @@ import LangSelect from "@/components/sf/lang-select";
 
 export const metadata = { title: `기관 · ${BRAND.admin}` };
 
-const TYPE_KO: Record<string, string> = {
-  university: "대학", department: "학과", company: "기업",
-  school: "학교", public: "공공", 미지정: "미지정",
-};
 
 /**
  * 기관 목록.
@@ -75,7 +72,7 @@ export default async function AdminOrganizations({
             <BarList
               hiddenLabel={T("privacyHidden")}
               rows={sum.types.map((t) => ({
-                label: TYPE_KO[t.label] ?? t.label, value: t.n, suffix: "곳",
+                label: orgTypeKo(t.label), value: t.n, suffix: "곳",
               }))}
               emptyLabel="아직 기관이 없습니다."
             />
@@ -120,7 +117,7 @@ export default async function AdminOrganizations({
                         </Link>
                         <div className="sf-code">{r.code}</div>
                       </td>
-                      <td>{TYPE_KO[r.org_type ?? ""] ?? r.org_type ?? "—"}</td>
+                      <td>{orgTypeKo(r.org_type)}</td>
                       <td>{r.country ?? "—"}</td>
                       <td>
                         {r.active_contract

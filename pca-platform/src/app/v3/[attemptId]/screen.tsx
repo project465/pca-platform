@@ -194,7 +194,8 @@ export default function Screen({
        채운 순간** 넘어간다. 켜진 것을 잠깐 보여 준 뒤에 옮긴다 */
     const done = s.fields.every((g) => g.itemId === f.itemId || !empty(g));
     if (s.nextIndex !== null && (s.auto && s.fields.length === 1 || autoAll && done)) {
-      setMoving(true);
+      /* `다음` 을 끄지 않는다(2026-11-01 전주대 시험: 답을 고른 뒤 0.5~0.8초 눌리지 않았다).
+         먼저 누르면 그 자리에서 넘어가고, 늦게 오는 자동 넘김은 `leaving` 이 막는다 */
       window.setTimeout(() => { void go(s.nextIndex); }, AUTO_MS);
     }
   };
@@ -363,7 +364,8 @@ export default function Screen({
       return;
     }
     router.push(`/v3/${s.attemptId}?s=${to}`);
-    window.setTimeout(() => setMoving(false), MOVE_TIMEOUT_MS);
+    /* 옮겨 가지 못했을 때의 그물. 다시 누를 수 있게 둘 다 푼다 */
+    window.setTimeout(() => { leaving.current = false; setMoving(false); }, MOVE_TIMEOUT_MS);
   };
 
   const next = async () => {
@@ -450,7 +452,7 @@ export default function Screen({
                 {t("저장 실패 · 다시 시도")}
               </button>
             ) : (
-              <small className="qs-save">
+              <small className="qs-save" title={t("답은 고를 때마다 저장됩니다. 창을 닫아도 이어서 풀 수 있습니다.")}>
                 {saving > 0 ? t("저장 중…") : sent ? t("저장됨") : t("자동 저장")}
               </small>
             )}
@@ -497,7 +499,7 @@ export default function Screen({
         {/* 완료 화면의 머리글은 제출 전과 뒤가 다르다. **다 푼 사람에게
             `준비가 됐습니다` 를 그대로 두면** 아직 할 일이 남은 줄 안다 */}
         {s.question ? (
-          <h1 className="qs-q">
+          <h1 className="qs-q" id="qs-q">
             {s.kind === "done" && s.done ? t("내 CareerMatri가 만들어졌습니다") : s.question}
           </h1>
         ) : null}
@@ -735,8 +737,10 @@ export default function Screen({
                 ? t("두 개까지 고를 수 있습니다. 다시 누르면 선택이 풀립니다")
                 : t("고르지 않고 넘어가셔도 됩니다")}</span>
             </p>
-            <fieldset className="qs-opts" style={{ margin: 0, border: 0, padding: 0 }}>
-              <legend>{s.question}</legend>
+            {/* 묶음의 이름은 머리글(`qs-q`)을 가리킨다. 같은 글을 숨은 legend 로 한 번 더 적으면
+                화면 글을 읽는 도구에는 질문이 두 번 선다(2026-11-01 전주대 시험) */}
+            <fieldset className="qs-opts" style={{ margin: 0, border: 0, padding: 0 }}
+              aria-labelledby={s.question ? "qs-q" : undefined}>
               <div className="qs-cards">
                 {s.packs.map((p) => {
                   const on = many.includes(p.code);
@@ -854,36 +858,17 @@ export default function Screen({
             ) : null}
           </>
         ) : null}
-        {/* **답안 현황**(화면 시안 2026-10-20). 지금 묶음의 칸을 번호로
-            늘어놓고 지난 칸은 채우고 지금 칸은 테를 두른다. 묶음 안에서만
-            세는 까닭은 `progress.ts` 와 같다: 전체 분모는 routing 으로
-            늘어날 수 있어서 거꾸로 가는 것처럼 읽힌다 */}
-        {!mid && prog.inStage.total > 1 ? (
-          <aside className="qs-omr" aria-label={t("이번 문항 그룹 답안 현황")}>
-            <p className="qs-omr-h">{t("답안 현황")}</p>
-            <p className="qs-omr-sum">
-              <b>{prog.now}</b> {prog.inStage.index} / {prog.inStage.total}
-            </p>
-            <ol className="qs-omr-grid">
-              {Array.from({ length: prog.inStage.total }, (_, i) => (
-                <li key={i}
-                  className={i + 1 < prog.inStage.index ? "is-done"
-                    : i + 1 === prog.inStage.index ? "is-now" : undefined}
-                  aria-current={i + 1 === prog.inStage.index ? "step" : undefined}>
-                  {i + 1}
-                </li>
-              ))}
-            </ol>
-            <p className="qs-omr-note">{t("답은 고를 때마다 저장됩니다. 창을 닫아도 이어서 풀 수 있습니다.")}</p>
-          </aside>
-        ) : null}
+        {/* **답안 현황 칸을 두지 않는다**(2026-11-01 대표 지적 "이건뭐야? 왜이렇게 되어있어?").
+            번호만 적힌 큰 칸이 문항보다 크게 서서 화면의 주인이 바뀌었고, 무엇을 뜻하는지도
+            적혀 있지 않았다. 진행은 머리띠의 막대 · 단계 이름 · 몇째 · 백분율이 이미 든다.
+            `답은 고를 때마다 저장됩니다` 는 머리띠 `저장됨` 의 풀이로 옮겼다 */}
       </main>
 
       <nav className="qs-nav" aria-label={t("화면 이동")}>
         <div className="qs-nav-in">
           {s.prevIndex !== null ? (
             <button type="button" className="qs-btn qs-btn-ghost"
-              onClick={() => go(s.prevIndex)} disabled={moving}>{t("이전")}</button>
+              onClick={() => go(s.prevIndex)}>{t("이전")}</button>
           ) : null}
           <span className="qs-grow" />
           {/* 전환과 완료에는 저장할 것이 없다. 거기 띄우면 뜻 없는 글자가
@@ -915,7 +900,8 @@ export default function Screen({
                고른 경우는 끄지 않는다: 그때는 끄는 것보다 왜 못 넘어가는지
                한 줄 적는 쪽이 낫다 */
             <button type="button" className="qs-btn qs-btn-main"
-              onClick={next} disabled={moving || s.nextIndex === null || offCore}>
+              onClick={next} aria-busy={moving || undefined}
+              disabled={s.nextIndex === null || offCore}>
               {s.kind === "transition" ? t("계속") : t("다음")}
             </button>
           )}
