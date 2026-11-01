@@ -1,8 +1,10 @@
 import { isProduction } from "@/lib/env";
 import { opFail, ref } from "@/lib/oplog";
+import { query } from "@/lib/db";
 import { ingest, knownRefs, type RawPosting } from "./ingest";
+import { needsVision, readPostingImages, visionEnabled, visionMax } from "./jobindustry-vision";
 import { JI_API_READY, fromApi, jiApiKey, listApi, type JiApiPosting } from "./jobindustry-api";
-import { JI_BOARDS, hasPage, listRefs, parseView } from "./jobindustry-parse";
+import { JI_BOARDS, closesOf, hasPage, listRefs, parseView } from "./jobindustry-parse";
 
 /**
  * 잡인더스트리 공고를 MAT 공고로 받아 온다(2026-10-31 대표 지시: "공고는 잡인더꺼로").
@@ -60,8 +62,71 @@ export function jiSource(): "api" | "page" {
 }
 
 type JiRun = {
-  ok: boolean; via: "api" | "page"; listed: number; fresh: number; ingested: number; mapped: number; failed: number; error?: string;
+  ok: boolean; via: "api" | "page"; listed: number; fresh: number; ingested: number; mapped: number; failed: number;
+  /** 그림을 읽은 공고 수(새 공고 + 다시 읽은 옛 공고) */
+  vision?: number;
+  error?: string;
 };
+
+/**
+ * 상세 한 쪽을 받아 저장 꼴로. 본문이 그림뿐이면 남은 몫 안에서 그림을 한 번 읽는다
+ * (`jobindustry-vision.ts`). 읽었으면 `mapping_note` 에 `vision:read`, 읽을 글이 없었으면
+ * `vision:none` 을 남겨 **같은 공고를 다시 읽지 않는다**(돈이 드는 일이라).
+ */
+async function detailRow(base: string, board: string, idx: string, budget: { left: number; used: number }): Promise<RawPosting | null> {
+  const v = parseView(await get(`${base}/${board}/?bmode=view&idx=${idx}`));
+  let body = v.body;
+  let note: string | null = null;
+  if (budget.left > 0 && needsVision(v.body, v.images)) {
+    budget.left -= 1;
+    budget.used += 1;
+    const read = await readPostingImages(idx, v.title, v.images);
+    note = read ? "vision:read" : "vision:none";
+    if (read) body = [v.body, read].filter(Boolean).join("\n");
+  }
+  if (!v.title && !body) return null;
+  return {
+    source: JI_SOURCE, sourceRef: idx, url: `${PROD_BASE}/${board}/?bmode=view&idx=${idx}`,
+    title: v.title, body, address: null, postedOn: null, closesOn: v.closes || closesOf(body) || null, note,
+  };
+}
+
+/**
+ * 그림 읽기를 붙이기 전에 들어온 그림 공고를 다시 읽는다. 요구를 하나도 못 읽었고, 아직
+ * 마감 전이고, 그림을 읽어 본 적 없는 공고만. 새 공고에 쓰고 남은 몫까지만 쓴다.
+ */
+async function rereadThin(base: string, budget: { left: number; used: number }): Promise<{ rows: RawPosting[]; failed: number }> {
+  if (budget.left <= 0) return { rows: [], failed: 0 };
+  const old = await query<{ source_ref: string; source_url: string | null }>(
+    `SELECT source_ref, source_url FROM v3_job_postings
+      WHERE source = $1 AND cardinality(raw_requirements) = 0
+        AND (closes_on IS NULL OR closes_on >= current_date)
+        AND coalesce(mapping_note, '') NOT LIKE '%vision:%'
+      ORDER BY captured_at DESC LIMIT $2`,
+    [JI_SOURCE, budget.left]).catch(() => []);
+  const rows: RawPosting[] = [];
+  let failed = 0;
+  for (const o of old) {
+    const board = (o.source_url ?? "").match(/jobindustry\.co\.kr\/(\d+)\//)?.[1];
+    if (!board) continue;
+    try {
+      const r = await detailRow(base, board, o.source_ref, budget);
+      /* 그림이 없던 공고도 표를 남겨 다음에 다시 부르지 않는다 */
+      if (r) rows.push(r.note ? r : { ...r, note: "vision:none" });
+      /* 못 읽는 쪽(내려간 공고)도 표만 남긴다. 남기지 않으면 같은 공고가 줄 앞을 계속 막는다 */
+      else {
+        await query(
+          `UPDATE v3_job_postings SET mapping_note = coalesce(mapping_note, '') || ' vision:none'
+            WHERE source = $1 AND source_ref = $2`, [JI_SOURCE, o.source_ref]).catch(() => undefined);
+      }
+    } catch (e) {
+      failed += 1;
+      opFail({ operation: "jobs.jobindustry", ref: ref("posting", o.source_ref), step: "reread", category: "upstream" }, e);
+    }
+    if (budget.left <= 0) break;
+  }
+  return { rows, failed };
+}
 
 export async function runJobindustry(opts: { firstFill?: boolean } = {}): Promise<JiRun> {
   return jiSource() === "api" ? runApi(opts) : runPages(opts);
@@ -112,20 +177,20 @@ async function runPages(opts: { firstFill?: boolean }): Promise<JiRun> {
   const known = await knownRefs(JI_SOURCE, found.map((f) => f.idx));
   const fresh = found.filter((f) => !known.has(f.idx)).slice(0, maxDetail);
   const rows: RawPosting[] = [];
+  const budget = { left: visionEnabled() ? visionMax() : 0, used: 0 };
   for (const f of fresh) {
-    const url = `${PROD_BASE}/${f.board}/?bmode=view&idx=${f.idx}`;
     try {
-      const v = parseView(await get(`${base}/${f.board}/?bmode=view&idx=${f.idx}`));
-      if (!v.title && !v.body) { failed += 1; continue; }
-      rows.push({
-        source: JI_SOURCE, sourceRef: f.idx, url, title: v.title, body: v.body,
-        address: null, postedOn: null, closesOn: v.closes || null,
-      });
+      const row = await detailRow(base, f.board, f.idx, budget);
+      if (!row) { failed += 1; continue; }
+      rows.push(row);
     } catch (e) {
       failed += 1;
       opFail({ operation: "jobs.jobindustry", ref: ref("posting", f.idx), step: "detail", category: "upstream" }, e);
     }
   }
+  const again = await rereadThin(base, budget);
+  rows.push(...again.rows);
+  failed += again.failed;
   const r = await ingest(rows);
-  return { ok: true, via: "page", listed: found.length, fresh: fresh.length, ingested: r.seen, mapped: r.mapped, failed };
+  return { ok: true, via: "page", listed: found.length, fresh: fresh.length, ingested: r.seen, mapped: r.mapped, failed, vision: budget.used };
 }

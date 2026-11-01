@@ -22,6 +22,8 @@ export type RawPosting = {
   address?: string | null;
   postedOn?: string | null;
   closesOn?: string | null;
+  /** `mapping_note` 꼬리에 붙는 한 마디(예: `vision:read` · 그림을 읽었는지). 없으면 그대로 */
+  note?: string | null;
 };
 
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
@@ -66,7 +68,7 @@ export async function ingest(rows: RawPosting[]): Promise<{
       [r.source.slice(0, 40), r.sourceRef.slice(0, 80), r.url ?? null,
         isoDate(r.postedOn), isoDate(r.closesOn), regionOf(r.address),
         m.core, m.role, m.requirements, JSON.stringify(m.td),
-        `rules:${m.how}`],
+        `rules:${m.how}${r.note ? ` ${r.note.slice(0, 40)}` : ""}`],
     );
   }
   return { seen: rows.length, mapped, unmapped };

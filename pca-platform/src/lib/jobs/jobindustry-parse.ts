@@ -103,7 +103,25 @@ export function closesOf(text: string): string {
   return m ? m[1].replace(/\s+/g, "") : "";
 }
 
-export type JiView = { title: string; body: string; closes: string };
+export type JiView = { title: string; body: string; closes: string; images: string[] };
+
+/**
+ * 본문 안의 그림 주소(2026-11-01, 통이미지 공고 읽기). 공고를 그림 한 장으로 올린 글이
+ * 많아 본문 글자가 비면 요구 항목을 못 읽는다. **아임웹 · 잡인더스트리 주소의 https 그림만**
+ * 모은다: 남의 서버 그림은 부르지 않는다. 같은 그림은 한 번만.
+ */
+export function imagesOf(bodyHtml: string, base = "https://www.jobindustry.co.kr"): string[] {
+  const out: string[] = [];
+  for (const m of bodyHtml.matchAll(/<img\b[^>]*?\bsrc\s*=\s*["']([^"']+)["']/gi)) {
+    let u: URL;
+    try { u = new URL(decode(m[1]), base); } catch { continue; }
+    const host = u.hostname.toLowerCase();
+    if (u.protocol !== "https:") continue;
+    if (!(host === "jobindustry.co.kr" || host.endsWith(".jobindustry.co.kr") || host === "imweb.me" || host.endsWith(".imweb.me"))) continue;
+    if (!out.includes(u.href)) out.push(u.href);
+  }
+  return out;
+}
 
 /** 상세 한 쪽. 제목은 `og:title` 의 `게시판 이름` 꼬리를 떼고, 없으면 `.view_tit` 에서 */
 export function parseView(raw: string): JiView {
@@ -113,6 +131,7 @@ export function parseView(raw: string): JiView {
   const cut = title.lastIndexOf(" : ");
   if (cut > 0) title = title.slice(0, cut).trim();
   if (!title) title = textOf(innerOf(html, "view_tit")).replace(/\n/g, " ");
-  const body = textOf(innerOf(html, "board_txt_area"));
-  return { title, body, closes: closesOf(body) };
+  const area = innerOf(html, "board_txt_area");
+  const body = textOf(area);
+  return { title, body, closes: closesOf(body), images: imagesOf(area) };
 }
