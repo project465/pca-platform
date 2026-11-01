@@ -797,7 +797,11 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
         items: list.map((i) => i.item_id),
       });
     }
-    const target = byModule("TARGET");
+    /* **가고 싶은 산업을 두 번 묻지 않는다**(2026-11-01 전주대 시험: 첫 화면 `관심 산업` 과 목표
+       화면이 같은 산업 목록을 다시 물었다). 첫 화면에서 산업을 골랐으면 목표 화면에서 그 줄을
+       빼고, 고른 첫 산업을 목표 산업으로 적는다(`savePicks3`). 아무것도 고르지 않았으면 그대로 묻는다 */
+    const target = byModule("TARGET").filter((i) =>
+      !(i.item_id === "TG_INDUSTRY" && input.industryInterest.length));
     if (target.length) {
       add({
         id: "target", stage: "TRANSLATE", kind: "group",

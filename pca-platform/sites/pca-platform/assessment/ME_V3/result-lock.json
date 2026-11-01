@@ -3,7 +3,7 @@
  "note": "결과지 화면 1차 동결. 문장만 고치면 `RESULT_COPY_VERSION` 만 올리고, 칸이나 절이 바뀌면 `RESULT_MODEL_VERSION`, 화면 구조가 바뀌면 `RESULT_UI_VERSION` 을 올린다. 채점 판본은 이 가운데 무엇으로도 올리지 않는다",
  "versions": {
   "result_ui_version": "ME_V3_RESULT_UI_V92",
-  "result_copy_version": "me-v3-result-copy.81",
+  "result_copy_version": "me-v3-result-copy.82",
   "result_model_version": "me-v3-result-model.7",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.9",
   "scoring_version": "me-v3-scoring.5"
@@ -29,10 +29,10 @@
   "src/app/v3/[attemptId]/result/save.tsx": "17e047ae27df85fc1fd501d7031d322d4a02414d15b1d91302133e3bd505d197",
   "src/app/v3/[attemptId]/result/track.tsx": "6136c271ee7df7323f029912182c7496a8633fdf7479b6080697a6f4a217787c",
   "src/app/v3/[attemptId]/result/second.tsx": "e8a349b8123837b375937192ef00529a16d150e39ed27d579c0b546c600260c8",
-  "src/lib/me-v3/result/text.ko.ts": "621ef312c117368c272cf3bc7bbb25e4a5b7091c2be0787d12f8a67fb83ef44f",
+  "src/lib/me-v3/result/text.ko.ts": "8d14374c82461a44f9d9ae9751907eb3174e0faad3cba2c9cd1dda295df6526b",
   "src/lib/me-v3/result/say.ts": "1ca895cbeb84b08c5579fc3fcaaf4f8c89b766e131f277bcd92bba74abcebc95",
   "src/lib/me-v3/result/josa.ts": "152cd30c2af136172618c14fa6fb4175b97cf16350db631e3e2e6c72fd7dd4af",
-  "src/lib/me-v3/result/version.ts": "1b33bba756c318f823a2987dadd7e4a1064a9a4c2e55f317ba439a2090098f5d",
+  "src/lib/me-v3/result/version.ts": "0cc54e159b6ec6350ff3013131735eb59ffb333c9fb5261527a3031fc4cdfd47",
   "src/lib/me-v3/result/tile-sub.ts": "8e51d0087d789341b20679e15503c7d31d62b36c943998cea70d992539c2d785",
   "src/lib/me-v3/student/copy.ts": "3c5f96455be8222018a30f1d5423aee1608e436ec11c49d681b208956ef60a1a",
   "src/lib/me-v3/student/icon.ts": "65836ae7a141a7dcdf844e5d5b4bcdbcc558dad0a3890a4a67384a3b17c7aea2",
@@ -55,6 +55,6 @@
   "src/lib/me-v3/result/reason.en.ts": "73344ae1fd4095c3ff84ee0c4a8f6d410f44dd998c940883a898842becedb34e",
   "src/lib/me-v3/result/common.en.ts": "62f3147aaab12f0a2761b0f5a125b66e69d3560f5ecadac93e17c704783f2b6c",
   "src/lib/me-v3/phrase.ts": "2f093ec0d6eecd54201c9f0fff3a3c121ae6b39f9b04f5d1c178aa9466f72a22",
-  "src/lib/me-v3/phrases.en.ts": "c1dee93a0d6eaef7a7f41f1dda7460b0c608bda4f1221a34884e8636eb79ab38"
+  "src/lib/me-v3/phrases.en.ts": "6c72a5f23ef6150eade8cd22322ad15bf852b2ad31244cf5d9f14cca802d4c43"
  }
 }

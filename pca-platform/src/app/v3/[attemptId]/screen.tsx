@@ -779,7 +779,7 @@ export default function Screen({
                   </li>
                 ) : null}
                 <li>
-                  <span>{t("실제 판단 질문")}</span>
+                  <span>{t("해 본 일 질문")}</span>
                   <b>{t("{n}개", { n: s.summary.judged })}</b>
                 </li>
                 <li>

@@ -64,7 +64,7 @@ export const undergradGloss = (major: string, examples: string): Record<string, 
  */
 export const UNDERGRAD_ASK = "학부 전공";
 export const UNDERGRAD_HELP =
-  "대학원 전공과 따로 여쭙습니다. 결과에서 두 전공을 함께 보여 드립니다.";
+  "대학원 전공은 따로 묻습니다. 결과에서 두 전공을 함께 보여 드립니다.";
 
 /**
  * 보기 넷을 화면에 적는 말.

@@ -37,7 +37,7 @@ export const PHRASES_EN: Record<string, string> = {
   "아직 잘 모르겠습니다": "I'm not sure yet",
   "살펴본 업무 영역": "Work areas covered",
   "자세히 본 영역": "Areas you went deeper on",
-  "실제 판단 질문": "Real-decision questions",
+  "해 본 일 질문": "Questions about work you did",
   "응답과 선택": "Your answers",
   "답한 문항 {n}개": "{n} {n|question|questions} answered",
   "고른 항목 {n}개": "{n} {n|item|items} picked",
@@ -99,7 +99,7 @@ export const PHRASES_EN: Record<string, string> = {
     "Just pick from the options. On the first quick-scan screens, it's fine to choose “Not sure” for anything unfamiliar.",
   "얼마나 걸리나요": "How long it takes",
   "내 전공과 경험을 정리합니다": "Let's map your major and your experience",
-  "{major} 분야에서 해 본 일과 그때 직접 정한 것을 여쭙고, 내세울 수 있는 경험과 더 채울 부분을 정리해 드립니다.":
+  "{major} 분야에서 해 본 일과 그때 직접 정한 것을 묻고, 내세울 수 있는 경험과 더 채울 부분을 정리해 드립니다.":
     "We'll ask what you've done in {major} and what you decided yourself, then show what you can talk about and what to build next.",
   "약 {mins}분 걸립니다. 답할 때마다 저장되니 중간에 닫아도 이어서 하시면 됩니다.":
     "About {mins} minutes. Every answer saves, so you can stop and come back anytime.",
@@ -107,7 +107,7 @@ export const PHRASES_EN: Record<string, string> = {
   "나중에 하기": "Maybe later",
   "검사에 대해 더 알아보기": "More about this assessment",
   "{major} 전공자가 자주 하는 일": "Common work in {major}",
-  "이런 일에서 무엇을 직접 정해 봤는지 여쭙니다. 해 본 적 없는 일은 ‘해 본 적 없음’을 고르시면 됩니다.":
+  "이런 일에서 무엇을 직접 정해 봤는지 묻습니다. 해 본 적 없는 일은 ‘해 본 적 없음’을 고르시면 됩니다.":
     "We'll ask what you decided yourself in work like this. If you haven't done something, choose “Never done it.”",
   "이런 차례로 묻습니다": "What we'll ask, in order",
   "문항": "Questions",
@@ -149,7 +149,7 @@ export const PHRASES_EN: Record<string, string> = {
   "적성이나 성격 검사가 아닙니다. {major}의 여러 업무 영역에서 무엇을 해 봤고 무엇을 직접 정했는지, 어디가 아직 부족한지 알려 드립니다.":
     "This isn't an aptitude or personality test. It shows what you've done across {major} work areas, what you decided yourself, and where you still have gaps.",
   "무엇을 해 봤는지": "What you've done",
-  "영역마다 해 본 일을 여쭙니다": "We ask about your work in each area",
+  "영역마다 해 본 일을 물어봅니다": "We ask about your work in each area",
   "무엇을 직접 정했는지": "What you decided",
   "같은 일이라도 시킨 대로 한 것과 내가 정한 것을 구분합니다":
     "Following instructions and making the call yourself count differently",
@@ -160,11 +160,11 @@ export const PHRASES_EN: Record<string, string> = {
   "분#unit": " min",
   "문항#unit": " questions",
   "묻는 순서": "What we'll ask",
-  "업무 영역마다 관심이 있는지, 해 봤는지, 배우고 싶은지 여쭙니다":
+  "업무 영역마다 관심이 있는지, 해 봤는지, 배우고 싶은지 물어봅니다":
     "For each work area: your interest, whether you've done it, and whether you'd like to learn it",
-  "해 본 일이 있는 영역은 조금 더 자세히 여쭙니다":
+  "해 본 일이 있는 영역은 조금 더 자세히 물어봅니다":
     "A few more questions about areas you've worked in",
-  "그 가운데 몇 영역은 범위·방법·결과·활용까지 나눠서 여쭙니다":
+  "그 가운데 몇 영역은 범위·방법·결과·활용까지 나눠서 물어봅니다":
     "For some of those areas, a closer look at scope, method, results and use",
   "과제나 프로젝트 하나를 골라 지원서에 쓸 말로 정리하고, 관심 산업과 직무를 하나씩 더 자세히 봅니다":
     "Turning one project into words for your applications, plus a closer look at one industry and one role",

@@ -38,7 +38,7 @@ export default async function ImportPage({
       {sayTree(<>
       <PageHead
         eyebrow="CAREERMATRI CAMPUS"
-        title="CSV 로 학생 등록"
+        title="CSV로 학생 등록"
         sub="올리고 → 미리 보고 → 적용합니다. 미리 보기에서는 아무것도 저장하지 않습니다."
         actions={<Link className="sf-btn ghost" href="/org/v3/students">학생 목록</Link>}
       />
