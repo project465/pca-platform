@@ -623,7 +623,7 @@ export default function Screen({
 
         {/* ── 보기 하나를 고르는 화면 ── */}
         {s.kind !== "sweep" && s.fields.length === 1 ? (
-          <One f={s.fields[0]} value={vals[s.fields[0].itemId]} guide={s.guide}
+          <One f={s.fields[0]} value={vals[s.fields[0].itemId]} guide={s.guide} title={s.question}
             onPick={setAnswer} notes={notes} onNote={setNote} onNoteDone={flushNote} />
         ) : null}
 
@@ -894,9 +894,11 @@ export default function Screen({
 /* ── 보기 하나를 고르는 자리 ───────────────────────────────────────── */
 
 function One({
-  f, value, onPick, notes, onNote, onNoteDone, guide,
+  f, value, onPick, notes, onNote, onNoteDone, guide, title,
 }: {
   f: Field; value: number | string | null;
+  /** 화면 머리글. 질문 줄과 글이 같으면 보기 위에 다시 세우지 않는다 */
+  title?: string;
   /** 보기 둘째와 넷째를 가르는 한 줄. 이 응시에서 **처음 만나는 사다리
    *  문항에만** 선다(`ScreenModel.guide`) */
   guide?: string;
@@ -997,7 +999,10 @@ function One({
       </>
     );
   }
+  /* 한 화면에 질문이 하나면 머리글(`qs-q`)이 이미 그 질문이다. 보기 위에 또 세우지 않는다
+     (2026-11-01 고려대 세종 시험: 같은 문항이 두 번 보였다) */
   return <Row f={f} value={value} onPick={onPick}
+    solo={Boolean(title && f.label && title.trim() === f.label.trim())}
     notes={notes} onNote={onNote} onNoteDone={onNoteDone} />;
 }
 
@@ -1126,9 +1131,11 @@ function Sum({
 }
 
 function Row({
-  f, value, onPick, n, of, miss, notes, onNote, onNoteDone, guide,
+  f, value, onPick, n, of, miss, notes, onNote, onNoteDone, guide, solo,
 }: {
   f: Field; value: number | string | null;
+  /** 화면의 하나뿐인 질문. 머리글이 이미 질문이라 보이는 줄을 다시 세우지 않는다 */
+  solo?: boolean;
   /** 이 화면에서 읽는 법 한 줄을 받는 질문인가 (첫 사다리 하나뿐) */
   guide?: string;
   /** 이 화면의 몇째 질문인가. 둘 이상일 때만 적는다 */
@@ -1149,7 +1156,7 @@ function Row({
     return (
       <fieldset className={`qs-row qs-opts${miss ? " is-miss" : ""}`}>
         <legend>{f.label ?? t("척도")}</legend>
-        {f.label ? <span aria-hidden>{f.label}</span> : null}
+        {f.label && !solo ? <span aria-hidden>{f.label}</span> : null}
         {miss ? <span className="qs-miss">{t("아직 답하지 않았습니다")}</span> : null}
         <div className="qs-scale">
           {labels.map((label, i) => {
@@ -1177,7 +1184,7 @@ function Row({
        한 번 받으므로 여기서는 `aria-hidden` 으로 되풀이를 막는다 */
     return (
       <div className={`qs-row${miss ? " is-miss" : ""}`} data-n={n ?? 1}>
-        {f.label ? (
+        {f.label && !solo ? (
           <span aria-hidden>
             {of && of > 1 ? <i className="qs-n">{n} / {of}</i> : null}
             {f.label}

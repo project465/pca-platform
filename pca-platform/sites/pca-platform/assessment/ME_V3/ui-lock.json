@@ -2,7 +2,7 @@
  "schema_version": "me-v3-ui-lock.1",
  "note": "검사 화면 1차 동결. 결과지 작업 중에는 명백한 버그와 접근성 오류만 고치고, 고쳤으면 `ui-version.ts` 의 판본을 올린 뒤 `FREEZE=update npm run v3:freeze` 로 지문을 다시 적는다",
  "versions": {
-  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V58",
+  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V59",
   "assessment_copy_version": "me-v3-2-assessment-copy.40",
   "assessment_version": "ME_V3_2",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.9",
@@ -11,7 +11,7 @@
  "files": {
   "src/app/v3/layout.tsx": "4dafcb9bb16fc70e7ffd2baf7f16b72d757d0bbc95e2630ee179423683b9f59f",
   "src/app/surface.css": "d49ad60dd6a99c5e6896d0434284c0bb1577fcf896377ad5df88e32cecd541e1",
-  "src/app/v3/assessment.css": "855fc1d451393c251964d06a67b374146092bb985c77797a783715ccb04a915d",
+  "src/app/v3/assessment.css": "dea630a76cdb7b65e52e534e1a3ee9c4aedf4216638175e757f53ae088144308",
   "src/app/v3/tier-text.ts": "b60712f61fcb5daad6fbfc76afa795bac62b1f674c19906bba8054ba694949c8",
   "src/app/v3/start/page.tsx": "58b4fc0390b75f488ee8bc86d8724f4d6b0ed1b2f3d29f28c3b6fe815be22a1d",
   "src/app/v3/start/start-form.tsx": "045cbe27ad13c8318f40a800097fb2aa60f637c00dc4733dcb73e9974f98c04c",
@@ -19,7 +19,7 @@
   "src/app/v3/[attemptId]/page.tsx": "2216cd62dce180ebf51a9d96282be108fb3024979bac6075967f3d7295cefe93",
   "src/app/v3/[attemptId]/intro/page.tsx": "0521e361a2d777bd93c5c4e0a3a9889dbcf809f25d0f44f5a132cc410464739b",
   "src/app/v3/[attemptId]/done/page.tsx": "3108d3edac4bbc8674d74fe9015eaa2dd6f341a109c4fb473302ff0d31867f24",
-  "src/app/v3/[attemptId]/screen.tsx": "ca5b8760d845c512a8acda5c30e850cd8eddb97d6799bd12be531f062f1bada0",
+  "src/app/v3/[attemptId]/screen.tsx": "6b66a87398a2b4a552b243ea683ddc62001a14b602a3c8702967672797bc0dc0",
   "src/app/v3/[attemptId]/model.ts": "7f240758934e5ef647dffb868f14a4ce58b06f931c769d0be823c8fc5c520845",
   "src/app/v3/[attemptId]/actions.ts": "cff4d6b883de9d3465dbcb84eea618643e4254eeb7d8a195a743f173e2f60c70",
   "src/lib/me-v3/runtime/blocks.ts": "acca33d294476c81c75c41bf873dcb3ae522246cf2f9aac3814766b36492afed",
