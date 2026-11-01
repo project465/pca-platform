@@ -220,6 +220,12 @@ export async function rotateStudentPassword(
   const pw = initialPassword();
   await query(`UPDATE users SET password_hash = $2 WHERE id = $1::bigint`,
     [userId, await hashPassword(pw)]);
+  /* 살아 있던 재설정 링크를 같이 끊는다(`org.ts` 의 reissuePassword 와 같다). 담당자가
+     새 비밀번호를 건넸는데 옛 링크로 또 바뀌면 건넨 값이 조용히 무력해진다 */
+  await query(
+    `UPDATE password_reset_tokens SET used_at = now()
+      WHERE user_id = $1::bigint AND used_at IS NULL`,
+    [userId]);
   /* **평문을 감사 기록에 적지 않는다.** 누가 언제 누구의 열쇠를 다시
      냈는지까지가 남을 것이고, 그 값 자체는 화면에서 한 번 보이고 끝난다 */
   await audit({
