@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireRole } from "@/lib/session";
 import { resolveLang } from "@/lib/locale-server";
 import { orgRows, orgSummary } from "@/lib/admin-overview";
+import { namesOf } from "@/lib/i18n";
 import { ROLE_LABEL } from "@/lib/roles";
 import { BRAND, toLang2, txer } from "@/lib/surface-text";
 import { Shell, PageHead, Section } from "@/components/sf/shell";
@@ -31,7 +32,15 @@ export default async function AdminOrganizations({
   const L = toLang2(await resolveLang(sp.lang));
   const T = txer(L);
 
-  const [sum, rows] = await Promise.all([orgSummary(), orgRows()]);
+  const [sum, raw] = await Promise.all([orgSummary(), orgRows()]);
+  /* **이름은 상세 화면과 같은 자리에서 읽는다**(2026-11-01 전주대 등록: 목록에만 `JJU` 가
+     섰다). 등록 화면은 이름을 번역 표에 적고, 목록은 기관 표의 이름 칸을 읽고 있었다 */
+  const names = await namesOf("organizations", raw.map((r) => r.id), L === "en" ? "en" : "ko")
+    .catch(() => new Map<string, string>());
+  const ko = L === "en"
+    ? await namesOf("organizations", raw.map((r) => r.id), "ko").catch(() => new Map<string, string>())
+    : names;
+  const rows = raw.map((r) => ({ ...r, name: names.get(r.id) ?? ko.get(r.id) ?? r.name ?? r.code }));
   const q = (sp.q ?? "").trim().toLowerCase();
   const shown = q
     ? rows.filter((r) =>

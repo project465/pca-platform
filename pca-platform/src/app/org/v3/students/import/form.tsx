@@ -4,6 +4,7 @@ import { campusSay } from "@/lib/campus/words";
 import Link from "next/link";
 import { useActionState } from "react";
 import { applyAction, previewAction, type ImportState } from "../actions";
+import IssuedCard from "../issued";
 
 const EMPTY: ImportState = {};
 
@@ -119,20 +120,7 @@ export default function ImportForm({ agency = false }: { agency?: boolean }) {
               {" "}거절 {state.done.rejected.length}
             </span>
           </div>
-          {state.issued?.length ? (
-            <div className="sf-issued">
-              <b>새 비밀번호 — 이 화면에서만 보입니다</b>
-              <p>지금 복사해 두세요. 이 화면을 벗어나면 다시 볼 수 없고,
-                그때는 {t("학생마다")} 한 번 더 발급해야 합니다.</p>
-              <ul>
-                {state.issued.map((x) => (
-                  <li key={x.login_id}>
-                    <span>{x.login_id}</span><code>{x.password}</code>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
+          {state.issued?.length ? <IssuedCard issued={state.issued} /> : null}
           {state.done.rejected.length ? (
             <div className="sf-tw">
               <table className="sf-table">

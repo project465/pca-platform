@@ -6,6 +6,7 @@ import {
   matAction, retakeAction, rotateAction, setStatusAction, type ManageState,
 } from "./actions";
 import type { StudentRow } from "@/lib/campus/manage";
+import IssuedCard from "./issued";
 
 const EMPTY: ManageState = {};
 
@@ -62,20 +63,7 @@ export default function StudentRows(
       {state.ok ? <p className="sf-note is-ok" role="status">{state.ok}</p> : null}
       {/* **한 번만 보여 주는 자리.** 이 화면을 벗어나면 다시 볼 수 없고,
           DB 에는 해시만 남는다 */}
-      {state.issued?.length ? (
-        <div className="sf-issued">
-          <b>새 비밀번호 (이 화면에서만 보입니다)</b>
-          <ul>
-            {state.issued.map((x) => (
-              <li key={x.login_id}>
-                <span>{x.login_id}</span>
-                <code>{x.password}</code>
-              </li>
-            ))}
-          </ul>
-          <small>{t("학생에게")} 전한 뒤 이 화면을 닫아 주세요. 다시 보려면 한 번 더 발급해야 합니다.</small>
-        </div>
-      ) : null}
+      {state.issued?.length ? <IssuedCard issued={state.issued} title={t("새로 낸 비밀번호")} /> : null}
 
       <div className="sf-tw">
         <table className="sf-table">

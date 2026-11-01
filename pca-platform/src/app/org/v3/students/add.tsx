@@ -1,7 +1,8 @@
 "use client";
 
 import { campusSay } from "@/lib/campus/words";
-import { useActionState } from "react";
+import { startTransition, useActionState, useEffect, useRef } from "react";
+import IssuedCard from "./issued";
 import { addAction, type ManageState } from "./actions";
 
 const EMPTY: ManageState = {};
@@ -23,22 +24,22 @@ export default function AddStudent(
 ) {
   const t = campusSay(agency ? { org_kind: "agency" } : null);
   const [state, run, pending] = useActionState(addAction, EMPTY);
+  /* **적은 값을 오류 때 지우지 않는다**(2026-11-01 시험: 제출하면 값이 사라졌다). `action` 으로
+     넘기면 React 가 결과가 오면 폼을 비운다. 직접 보내고, **만들어졌을 때만** 비운다 */
+  const form = useRef<HTMLFormElement>(null);
+  useEffect(() => { if (state.issued?.length) form.current?.reset(); }, [state]);
   return (
     <details className="sf-fold">
       <summary>{t("학생 한 명 추가")}</summary>
-      <form action={run} className="sf-form">
+      <form ref={form} className="sf-form"
+        onSubmit={(e) => {
+          e.preventDefault();
+          const fd = new FormData(e.currentTarget);
+          startTransition(() => run(fd));
+        }}>
         {state.err ? <p className="sf-note is-bad" role="alert">{state.err}</p> : null}
         {state.ok ? <p className="sf-note is-ok" role="status">{state.ok}</p> : null}
-        {state.issued?.length ? (
-          <div className="sf-issued">
-            <b>새 비밀번호 (이 화면에서만 보입니다)</b>
-            <ul>
-              {state.issued.map((x) => (
-                <li key={x.login_id}><span>{x.login_id}</span><code>{x.password}</code></li>
-              ))}
-            </ul>
-          </div>
-        ) : null}
+        {state.issued?.length ? <IssuedCard issued={state.issued} /> : null}
         <label className="sf-field">
           <span>{t("학번")}</span>
           <input name="student_id" required />

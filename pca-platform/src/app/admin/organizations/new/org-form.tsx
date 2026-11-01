@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState, useState } from "react";
+import { startTransition, useActionState, useState } from "react";
 import { createOrgAction, type OrgState } from "./actions";
 
 const initial: OrgState = {};
@@ -14,7 +14,15 @@ export default function OrgForm({ parents }: { parents: ParentOption[] }) {
   const err = state.errors ?? {};
 
   return (
-    <form action={formAction} className="form" style={{ maxWidth: 520 }}>
+    /* **적은 값을 지우지 않는다**(2026-11-01 전주대 등록: 유형을 바꾸자 코드와 이름이
+       사라졌다). `action` 으로 넘기면 React 가 결과가 돌아올 때 폼을 비우는데, 오류가 돌아와도
+       비워서 다시 적어야 했다. 직접 보내고, 성공하면 다음 화면으로 넘어간다(redirect) */
+    <form className="form" style={{ maxWidth: 520 }}
+      onSubmit={(e) => {
+        e.preventDefault();
+        const fd = new FormData(e.currentTarget);
+        startTransition(() => formAction(fd));
+      }}>
       <div className="field">
         <label htmlFor="orgType">유형</label>
         <select
