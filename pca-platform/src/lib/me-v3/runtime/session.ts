@@ -629,6 +629,9 @@ export async function openAttempt(args: {
      영어 응시로 열면 머리띠와 결과지 첫 줄에 한글이 선다(영어판 1단계 범위 밖) */
   const locale = campus ? "ko" as const
     : localeFor({ core: coreCode, market, override: args.lang ?? null });
+  /* **학업 단계를 두 번 묻지 않는다**(2026-11-01 배재대 운영 시험). 시작 화면(`/v3/start`)이
+     이미 단계를 받아 여기로 넘기므로, 응시는 기본 정보 다음 화면(관심 산업)에서 연다.
+     기본 정보 화면은 `이전` 으로 돌아가 고칠 수 있게 그대로 둔다 */
   const row = await queryOne<{ id: string }>(
     `INSERT INTO v3_attempts
        (user_id, entitlement_id, tier, market_code, education_stage, grad_field,
@@ -636,7 +639,7 @@ export async function openAttempt(args: {
         item_bank_version, scoring_version, current_screen,
         core_code, university_code, college_code, department_code,
         specialization_code, locale)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,'profile',
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,'pick-industry',
              $11,$12,$13,$14,$15,$16)
      RETURNING id::text`,
     [args.userId, args.entitlementId ?? null, tier, market,

@@ -28,12 +28,14 @@ const round5 = (raw: number): number => Math.max(5, Math.ceil(raw / 5) * 5);
 export function tierMinutes(core: string): Record<Tier, { low: number; high: number }> {
   const low = estimate(core, "bachelor", null);
   const high = estimate(core, "master", "BUSINESS");
-  const pick = (e: ReturnType<typeof estimate>, tier: Tier) =>
+  /* 긴 쪽은 영역 넷을 깊게 묻는 계획이다(시작 화면과 같은 기준, 2026-11-01) */
+  const pick = (e: ReturnType<typeof estimate>, tier: Tier, long: boolean) =>
     tier === "BASIC" ? e.minutes.basic
-      : tier === "STANDARD" ? e.minutes.standardFresh : e.minutes.proFresh;
+      : tier === "STANDARD" ? (long ? e.minutes.standardFourth : e.minutes.standardFresh)
+        : (long ? e.minutes.proFourth : e.minutes.proFresh);
   const out = {} as Record<Tier, { low: number; high: number }>;
   for (const t of ["BASIC", "STANDARD", "PRO"] as Tier[]) {
-    out[t] = { low: round5(pick(low, t)), high: round5(pick(high, t)) };
+    out[t] = { low: round5(pick(low, t, false)), high: round5(pick(high, t, true)) };
   }
   return out;
 }

@@ -36,7 +36,67 @@ type Checklists = {
 type Item = {
   item_id: string; technical_domain?: string | null;
   evidence_axis?: string | null; response_scale?: string | null;
+  /** 한국어 문항 글. 예시를 고르는 데 쓴다(`closest`) */
+  wording?: string | null;
+  industry_pack?: string | null;
 };
+
+/** 두 글자 묶음. 띄어쓰기 · 문장부호를 걷고 센다 */
+function bigrams(s: string): Set<string> {
+  const t = s.replace(/[\s.,·'"‘’“”?!()~\-]/g, "");
+  const out = new Set<string>();
+  for (let i = 0; i < t.length - 1; i++) out.add(t.slice(i, i + 2));
+  return out;
+}
+
+/**
+ * **문항과 가장 겹치는 줄을 고른다**(2026-11-01 배재대 운영 시험: 데이터·의사결정의
+ * `넣을 자료와 뺄 자료를 정해 봤나요?` 아래에 `빠진 값과 튀는 값을 어떻게 처리할지
+ * 정했다` 가, 다음 문항 아래에 그 반대가 섰다). 전에는 같은 축의 줄 가운데 문항 번호로
+ * 아무 줄이나 골라, 같은 축의 두 문항이 서로의 예시를 받을 수 있었다. 겹치는 글자가
+ * 하나도 없을 때만 전처럼 번호로 고른다. 돌려주는 것은 줄의 차례다: 다른 언어 원고도
+ * 같은 차례에 같은 뜻이 있다.
+ */
+/** 문항 은행은 한 번만 읽는다. 문항마다 큰 파일을 다시 읽지 않게 */
+const banks = new Map<string, Item[]>();
+
+function overlap(a: string, b: string): number {
+  const w = bigrams(a), x = bigrams(b);
+  let n = 0;
+  for (const g of x) if (w.has(g)) n += 1;
+  return x.size ? n / x.size : 0;
+}
+
+/**
+ * 같은 영역 · 같은 축의 문항들에게 줄을 나눠 준다. 겹치는 정도가 큰 짝부터 묶고,
+ * **한 줄을 두 문항에 주지 않는다**(줄이 문항보다 적을 때만 다시 쓴다). 돌려주는 것은
+ * 이 문항의 줄 차례이고, 겹치는 글자가 없으면 -1 이다.
+ */
+function closest(list: { text: string }[], me: Item, siblings: Item[]): number {
+  const group = siblings.some((x) => x.item_id === me.item_id) ? siblings : [...siblings, me];
+  const pairs: { i: number; j: number; s: number }[] = [];
+  group.forEach((it, i) => list.forEach((x, j) => {
+    const sc = it.wording ? overlap(it.wording, x.text) : 0;
+    if (sc > 0) pairs.push({ i, j, s: sc });
+  }));
+  pairs.sort((a, b) => b.s - a.s || a.i - b.i || a.j - b.j);
+  const got = new Map<number, number>();
+  const used = new Set<number>();
+  for (const p of pairs) {
+    if (got.has(p.i) || used.has(p.j)) continue;
+    got.set(p.i, p.j);
+    used.add(p.j);
+  }
+  /* 남은 문항에는 아직 아무도 받지 않은 줄을 먼저 준다. 그래도 남으면 가장 겹치는 줄을 다시 쓴다 */
+  group.forEach((_, i) => {
+    if (got.has(i)) return;
+    const free = list.findIndex((__, j) => !used.has(j));
+    if (free >= 0) { got.set(i, free); used.add(free); return; }
+    const p = pairs.find((x) => x.i === i);
+    if (p) got.set(i, p.j);
+  });
+  return got.get(group.findIndex((x) => x.item_id === me.item_id)) ?? -1;
+}
 
 let scenes: Record<string, string[]> | null = null;
 
@@ -98,14 +158,26 @@ export function exampleOf(
 
   /* 고르는 자리가 언어와 무관하다: 두 원고는 길이와 차례가 같아서, 같은 문항이면
      두 언어에서 같은 줄(같은 뜻)이 선다 */
-  const cl = coreFile<Checklists>(core, "checklists", dir, lang);
   const axis = it.evidence_axis ?? null;
   if (!axis) return null;
-  const list = it.technical_domain
-    ? cl.domains[it.technical_domain]?.[axis] ?? []
-    : cl.common[axis] ?? [];
+  const rows = (l: string) => {
+    const cl = coreFile<Checklists>(core, "checklists", dir, l);
+    return it.technical_domain
+      ? cl.domains[it.technical_domain]?.[axis] ?? []
+      : cl.common[axis] ?? [];
+  };
+  const list = rows(lang);
   if (!list.length) return null;
-  return pick(list, it.item_id).text;
+  /* 고르는 것은 한국어 문항과 한국어 원고로 한다. 차례가 같아 다른 언어에도 그대로 쓴다 */
+  const ko = lang === "ko" ? list : rows("ko");
+  const key = `${dir}|${core}`;
+  let bank = banks.get(key);
+  if (!bank) { bank = coreFile<{ items: Item[] }>(core, "items", dir, "ko").items ?? []; banks.set(key, bank); }
+  /* 산업팩 문항은 제 풀이 줄(gloss)을 쓰므로 나눠 받는 데 넣지 않는다 */
+  const siblings = bank.filter((x) => x.response_scale === "L0~L3" && !x.industry_pack
+    && x.evidence_axis === axis && (x.technical_domain ?? null) === (it.technical_domain ?? null));
+  const at = closest(ko.length === list.length ? ko : list, it, siblings);
+  return (at >= 0 ? list[at] : pick(list, it.item_id)).text;
 }
 
 /**

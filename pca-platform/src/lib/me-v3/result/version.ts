@@ -187,7 +187,8 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.7";
 /* copy.78 — 세종 기업 절의 묶음 이름을 책과 같은 `한 걸음 더 채우면 맞는 곳` 으로(책의 `(계속)` 표시와 헷갈리지 않게). 판정과 결과 모델은 그대로다 */
 /* copy.79 — 영어 응시(기계 · 전기전자 · 컴퓨터)의 PRO 도 70쪽 책을 받는다. 끝 칸이 그 사실을 적는다. 판정과 결과 모델은 그대로다 */
 /* copy.80 — 경험 번역에 직접 적어 주신 한 줄이 웹 결과지(첫 화면 · 번역 절 · 지원서 뼈대)에 선다. 판정은 그대로다 */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.80";
+/* copy.81 — 끝 화면의 `실제 경험을 물은 문항` 을 진행 막대와 같은 `실제 판단 질문` 으로(영어 사전 한 줄). 판정은 그대로다 */
+export const RESULT_COPY_VERSION = "me-v3-result-copy.81";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**

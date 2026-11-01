@@ -13,6 +13,8 @@ import { appUser } from "./user";
 import { AppHead, Dday, Row, Section } from "./ui";
 import { appMoveAction } from "./actions";
 import { MAT_PUBLIC } from "@/lib/mat-switch";
+import { minutesLabel, tierMinutes } from "@/lib/tier-minutes";
+import { campusStudentContext } from "@/lib/campus/students";
 
 export const metadata = { title: "홈 · CareerMatri" };
 
@@ -41,6 +43,13 @@ export default async function AppHome() {
   const half = zones("Z2_EVIDENCE_INCOMPLETE");
   const gap = st.gaps[0] ?? null;
   const major = st.model ? majorNameOf(st.core) : "";
+  /* 걸리는 시간은 시작 화면과 같은 함수로(2026-11-01). 학교 학생은 PRO, 개인은 무료 BASIC */
+  const minutes = st.stage === "NO_ASSESSMENT" && st.core
+    ? await (async () => {
+      const m = tierMinutes(st.core as string);
+      return minutesLabel((await campusStudentContext(user.id).catch(() => null)) ? m.PRO : m.BASIC, "ko");
+    })().catch(() => null)
+    : null;
 
   return (
     <>
@@ -59,7 +68,7 @@ export default async function AppHome() {
           <div className="ma-card ma-hero">
             <p className="ma-kicker">시작하기</p>
             <h3>전공에서 해 본 일부터 확인해 볼까요?</h3>
-            <p>가장 짧은 검사는 12분 정도 걸립니다. 끝나면 할 일과 경험 기록이 이 화면에 모입니다.</p>
+            <p>{minutes ? `검사는 ${minutes} 걸립니다. ` : ""}끝나면 할 일과 경험 기록이 이 화면에 모입니다.</p>
             <Link className="ma-btn is-block" href="/cores">검사 시작</Link>
           </div>
         ) : st.stage === "IN_PROGRESS" && st.open ? (

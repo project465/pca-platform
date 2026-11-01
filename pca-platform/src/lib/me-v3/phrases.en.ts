@@ -37,7 +37,7 @@ export const PHRASES_EN: Record<string, string> = {
   "아직 잘 모르겠습니다": "I'm not sure yet",
   "살펴본 업무 영역": "Work areas covered",
   "자세히 본 영역": "Areas you went deeper on",
-  "실제 경험을 물은 문항": "Questions about real experience",
+  "실제 판단 질문": "Real-decision questions",
   "응답과 선택": "Your answers",
   "답한 문항 {n}개": "{n} {n|question|questions} answered",
   "고른 항목 {n}개": "{n} {n|item|items} picked",

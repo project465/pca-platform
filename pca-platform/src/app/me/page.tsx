@@ -30,6 +30,8 @@ import {
 import { continueAssessment } from "./actions";
 import { queryOne } from "@/lib/db";
 import { MAT_PUBLIC } from "@/lib/mat-switch";
+import { minutesLabel, tierMinutes } from "@/lib/tier-minutes";
+import { campusStudentContext } from "@/lib/campus/students";
 
 export async function generateMetadata() {
   const u = await currentUser().catch(() => null);
@@ -209,6 +211,16 @@ export default async function Home() {
       ? { href: st.open ? `/v3/${st.open.id}` : "/cores", label: t("검사 이어하기") }
       : { href: "/me/next", label: t("지금 할 일") };
   const head = headSay(t);
+  /* **걸리는 시간은 시작 화면과 같은 함수로 센다**(2026-11-01 배재대 운영 시험: 여기는
+     `12분`, 시작 화면은 `약 35분`이었다). 학교 학생은 늘 PRO 이고 개인은 무료 BASIC 이다 */
+  const minutes = st.stage === "NO_ASSESSMENT" && core
+    ? await (async () => {
+      const m = tierMinutes(core);
+      const campus = await campusStudentContext(user.id).catch(() => null);
+      const label = minutesLabel(campus ? m.PRO : m.BASIC, en ? "en" : "ko");
+      return en ? label.toLowerCase() : label;
+    })().catch(() => null)
+    : null;
 
   return (
     <CmShell active="/me" title={t("홈")} who={user.name} lang={lang}
@@ -262,7 +274,7 @@ export default async function Home() {
               ? (answered
                 ? t("지금까지 {n}문항에 답했습니다. 마지막으로 답한 문항에서 이어집니다.", { n: answered })
                 : t("답한 것은 문항마다 저장되어, 마지막으로 답한 문항에서 이어집니다."))
-              : t("적성이나 성격은 묻지 않습니다. 해 본 일에서 직접 판단한 경험을 찾습니다. 12분 안팎입니다.")}
+              : t("적성이나 성격은 묻지 않습니다. 해 본 일에서 직접 판단한 경험을 찾습니다. {time} 걸립니다.", { time: minutes ?? "" })}
             action={st.stage === "IN_PROGRESS" ? (
               /* 이어하기만 폼이다. 누른 것을 세려면 누르는 자리에서 센다 */
               <form action={continueAssessment}>

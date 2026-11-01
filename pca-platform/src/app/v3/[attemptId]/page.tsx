@@ -349,7 +349,10 @@ export default async function V3Screen({
  * **관심과 경험을 훑은 수와 섞지 않는다.** 섞으면 쉰 몇 개짜리 설문으로
  * 읽히고, 그것이 V1 에서 응시자가 읽기를 멈춘 자리였다.
  */
-function judgedCount(screens: { kind: string; items: string[] }[]): number {
-  return screens.filter((x) => x.kind === "single")
-    .reduce((n, x) => n + x.items.length, 0);
+function judgedCount(screens: { kind: string; stage: string; items: string[] }[]): number {
+  /* **진행 막대와 같은 것을 센다**(2026-11-01 배재대 운영 시험: 검사 중에는 `실제 판단
+     19 / 22`, 끝 화면에는 `19개` 였다). 막대는 `실제 판단` 단계의 질문 화면 수를 세고
+     있었고 여기는 다른 단계까지 섞인 한 문항 화면의 문항 수를 셌다. 이제 둘 다
+     `실제 판단` 단계의 질문 수다 */
+  return screens.filter((x) => x.stage === "JUDGE").length;
 }

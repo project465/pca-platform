@@ -136,13 +136,17 @@ export default async function V3Start({
      값을 센다 */
   const low = estimate(core, "bachelor", null);
   const high = estimate(core, "master", "BUSINESS");
-  const n = (k: string) => low.responses[k] === high.responses[k]
-    ? `${low.responses[k]}` : `${low.responses[k]}~${high.responses[k]}`;
+  /* **긴 쪽은 영역 넷을 깊게 묻는 계획까지 센다**(2026-11-01 배재대 운영 시험: `110~114문항`
+     으로 적었는데 실제로 122문항을 받았다). 깊게 묻는 영역 수는 답에 따라 셋 또는 넷이고,
+     앞 판본은 셋인 경우만 셌다. 짧은 쪽은 셋 · 학부, 긴 쪽은 넷 · 타계열 대학원이다 */
+  const n = (k: string, k4: string = k) => low.responses[k] === high.responses[k4]
+    ? `${low.responses[k]}` : `${low.responses[k]}~${high.responses[k4]}`;
 
   const items = tier === "BASIC" ? n("BASIC")
-    : tier === "STANDARD" ? n("STANDARD") : n("PRO");
-  const raw = tier === "BASIC" ? low.minutes.basic
-    : tier === "STANDARD" ? low.minutes.standardFresh : low.minutes.proFresh;
+    : tier === "STANDARD" ? n("STANDARD", "STANDARD4") : n("PRO", "PRO4");
+  /* 시간은 긴 쪽으로 적는다. 짧게 적으면 그만큼만 비워 둔 사람이 중간에 끊는다 */
+  const raw = tier === "BASIC" ? high.minutes.basic
+    : tier === "STANDARD" ? high.minutes.standardFourth : high.minutes.proFourth;
   /* **추정 시간을 분 단위로 못 박지 않는다.** 9분이라고 적으면 재어 본
      값처럼 읽힌다. 다섯 단위로 적는다.
      **반올림하지 않고 올린다**: 12분을 10분으로 적으면 적게 말한 쪽으로

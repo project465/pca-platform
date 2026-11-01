@@ -169,7 +169,8 @@
 /* V52 (2026-10-24) — 영어판 1단계: 화면이 응시 언어(`v3_attempts.locale`)를 받아 글을 고르고(`copyFor` · `tierText` · `phrase`), 영어 응시에는 작업공간(`/me`)으로 가는 길을 세우지 않는다. 한국어 화면은 글자까지 그대로다 */
 /* V53 — 영어 용어 풀이를 낱말 경계로 찾는다(`gain` 이 `again` 에서 걸리던 것) */
 /* V57 (2026-10-30) — 공용 `surface.css` 끝에 출시 알림 신청 칸(`.ln-*`)이 붙었다. 검사 화면이 쓰는 이름과 겹치지 않고, 문항·보기·routing·채점은 그대로다 */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V57";
+/** 학업 단계를 시작 화면에서만 묻는다(응시는 관심 산업에서 연다) · 문항 아래 예시를 문항 글과 맞춰 고른다 · 끝 화면 수를 진행 막대와 같게(2026-11-01 배재대 운영 시험) — V58 */
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V58";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
 /* copy.15 — 받침 한 줄과 보기 넷의 예시가 화면에 서는 글자다 */
@@ -194,7 +195,8 @@ export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V57";
    센다(`v3Grants`). 문항 · routing · 판정은 그대로다 */
 /** 탭 제목을 그 사람의 언어로(`src/lib/page-title.ts`). 문항과 보기는 그대로다 */
 /** 공용 영어 사전(`phrases.en.ts`)에 결과지 문구 둘이 바뀌었다. 검사 화면 글과 문항은 그대로다 */
-export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.39";
+/** 시작 화면 문항 수 · 시간을 영역 넷 계획까지 센다(`110~127`) · `실제 판단 질문` */
+export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.40";
 
 /*
  * `V19` · `copy.14` 로 올린 까닭. **경험 빈도의 화면 말을 공통으로

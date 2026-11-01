@@ -25,8 +25,8 @@ export const WS_EN_HOME: Record<string, string> = {
     "Questions answered so far: {n}. You'll pick up from the last one you answered.",
   "답한 것은 문항마다 저장되어, 마지막으로 답한 문항에서 이어집니다.":
     "Each answer is saved as you go, so you'll pick up from the last question you answered.",
-  "적성이나 성격은 묻지 않습니다. 해 본 일에서 직접 판단한 경험을 찾습니다. 12분 안팎입니다.":
-    "It doesn't ask about aptitude or personality. It looks for decisions you made yourself in work you've done. It takes about 12 minutes.",
+  "적성이나 성격은 묻지 않습니다. 해 본 일에서 직접 판단한 경험을 찾습니다. {time} 걸립니다.":
+    "It doesn't ask about aptitude or personality. It looks for decisions you made yourself in work you've done. It takes {time}.",
   "검사를 끝내면 열리는 곳": "What opens when you finish",
   "결과가 나오면 아래 자리마다 내 결과가 채워집니다.":
     "Once your results are ready, each of these fills in with your own results.",
