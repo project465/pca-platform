@@ -1,5 +1,5 @@
 /**
- * 05 지역에서 찾아보기. 공시로 확인한 자료가 있는 지역에서만 선다.
+ * 지역 기업 살펴보기(한국어 책은 PART 01, `index.ts` 의 regionFirst). 공시로 확인한 자료가 있는 지역에서만 선다.
  *
  * 회사를 골라 보내지 않는다. 회사의 업종을 이 전공의 산업 묶음에 대고, 그 산업이
  * 쓰는 영역과 참여자의 묶음을 나란히 놓는다. `추천` 이라는 말을 쓰지 않는다.
@@ -45,7 +45,7 @@ function themeTry(g: FitGroup): string {
 }
 
 export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
-  const part = (title: string, body: string): Page => ({ part: "05", partName: `${r.area}에서 찾아보기`, title, body });
+  const part = (title: string, body: string): Page => ({ part: "05", partName: `${r.label} 기업 살펴보기`, title, body });
   const out: Page[] = [];
   const matched = r.groups.reduce((a, g) => a + g.orgs.length, 0);
   const cnt = (t: Tier) => r.groups.filter((g) => g.tier === t).reduce((a, g) => a + g.orgs.length, 0);
@@ -54,7 +54,7 @@ export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
   const venture = r.all.filter((o) => o.source !== "dart").length;
   const dart = r.all.filter((o) => o.source !== "venture").length;
 
-  out.push(chapter("05", `${r.area}에서 찾아보기`,
+  out.push(chapter("05", `${r.label} 기업 살펴보기`,
     `공시(OpenDART)와 공개 명단에서 확인한 ${E(r.label)} 기업 ${r.all.length}곳을 ${E(x.major)} 전공자가 일하는 산업별로 모으고, 그 산업이 쓰는 영역이 내 결과와 얼마나 맞는지에 따라 세 곳으로 나눠 실었습니다.`,
     [`${r.label} 기업과 내 결과`, ...tiers.map((t) => TIER[t].head), r.listed.length ? `${r.label} 본점 상장사의 공시 숫자` : "", "기관 한 곳을 조사하는 법"].filter(Boolean),
     `<svg viewBox="0 0 200 200" width="100%" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="150" r="46" fill="none" stroke="#3c5a96" stroke-width="2"/><circle cx="100" cy="150" r="26" fill="none" stroke="#3c5a96" stroke-width="2"/><path d="M100 30c-26 0-44 19-44 43 0 32 44 77 44 77s44-45 44-77c0-24-18-43-44-43z" fill="#c9a227"/><circle cx="100" cy="73" r="16" fill="#14264d"/></svg>`));

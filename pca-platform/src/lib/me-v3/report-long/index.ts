@@ -61,7 +61,7 @@ export function assemble(x: Inputs): { pages: Page[]; notes: string[]; region: s
   /* 장 이름. 쪽 모으기와 차례가 이 이름으로 같은 장을 알아본다. 다른 파일이 세운 쪽도 아래에서 이 이름으로 맞춘다 */
   const N = partNames();
   const N3 = T(PART3(x), N.c3en);
-  const N5 = rv ? T(`${rv.area}에서 찾아보기`, `Around ${rv.area}`) : "";
+  const N5 = rv ? T(`${rv.label} 기업 살펴보기`, `Around ${rv.area}`) : "";
   const named = (ps: Page[], name: string) => { for (const p of ps) if (p.kind !== "outer" && p.kind !== "cover") p.partName = name; return ps; };
   /* 장마다 붙는 채움 쪽. 쪽 모으기가 남은 자리가 넓은 쪽에만 싣는다 */
   const fill = fillPages(x, d, N3, rv ? { name: N5, sources: rv.sources, groups: rv.groups, neighbor: rv.neighbor, listed: rv.listed, label: rv.label } : null);
