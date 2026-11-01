@@ -124,6 +124,9 @@ export function Shell({
             {who.href ? (
               <Link href={who.href} className="sf-btn ghost sm">{T("account")}</Link>
             ) : null}
+            {/* 담당자가 제 비밀번호를 바꾸는 길(2026-11-01 요청). 전에는 첫 로그인에 강제로만
+                열렸다. `as=staff` 를 달아야 담당자 쿠키로 읽는다(`session.ts` 의 sideOf) */}
+            <Link href="/password/change?as=staff" className="sf-btn ghost sm">{T("changePassword")}</Link>
             <LogoutButton className="sf-btn ghost sm" label={T("signOut")} />
           </div>
         </header>

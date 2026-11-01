@@ -81,6 +81,7 @@ export default async function Profile() {
           <div className="ma-list">
             {MAT_PUBLIC || track.on ? <Row href="/m/mat" icon="spark" title="MAT 이용" sub={track.on && track.until ? `${Number(track.until.slice(5, 7))}월 ${Number(track.until.slice(8, 10))}일까지 이용 중` : "이용하지 않음"} /> : null}
             <Row href="/my" icon="user" title="계정 · 주문 · 탈퇴" />
+            <Row href="/password/change" icon="lock" title="비밀번호 바꾸기" />
             <Row href="/me" icon="window" title="웹 화면으로 보기" sub="넓은 화면에서 전체 메뉴로" />
             <Row href="/support" icon="alert" title="도움이 필요할 때" />
           </div>

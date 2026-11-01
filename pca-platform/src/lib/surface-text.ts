@@ -31,6 +31,7 @@ export const TX = {
   /* ── 공통 ─────────────────────────────────────────────────────── */
   signOut: p("로그아웃", "Sign out"),
   account: p("계정", "Account"),
+  changePassword: p("비밀번호 바꾸기", "Change password"),
   search: p("검색", "Search"),
   filterAll: p("전체", "All"),
   sortBy: p("정렬", "Sort"),

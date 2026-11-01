@@ -108,6 +108,8 @@ export default async function AccountHome({
           </dl>
           <div className="cm-acts">
             <Link href="/my/account" className="cm-btn">{en ? "Account settings and deletion" : "계정 설정과 탈퇴"}</Link>
+            {/* 로그인한 사람이 제 비밀번호를 바꾸는 길(2026-11-01 요청). 화면은 전부터 있었다 */}
+            <Link href="/password/change" className="cm-btn">{en ? "Change password" : "비밀번호 바꾸기"}</Link>
           </div>
         </section>
 
