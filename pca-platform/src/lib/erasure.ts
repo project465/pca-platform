@@ -48,6 +48,8 @@ const REMOVE: { table: string; why: string }[] = [
   { table: "jd_match_scores", why: "어떤 공고에 얼마나 맞았는지는 개인 이력이다" },
   { table: "memberships", why: "어느 학과 소속이었는지" },
   { table: "v3_prep_answers", why: "본인이 적은 지원서·면접 답" },
+  { table: "partner_links", why: "제휴 사이트의 회원 번호와 이 계정을 잇는 줄이다. 남기면 제휴 쪽에서 사람을 되짚을 수 있다" },
+  { table: "partner_handoffs", why: "넘겨받은 이력서 요약이 남아 있을 수 있는 줄이다" },
   { table: "research_docs", why: "올린 논문·이력서·자소서에서 읽어 낸 요약. 본인의 연구와 이력이다" },
   /* ── 지금 검사(ME_V3)와 작업공간 ─────────────────────────────
      **이 묶음이 한동안 빠져 있었다.** 파기 목록이 옛 검사의 표만 들고
@@ -316,10 +318,10 @@ export const ERASE_GROUPS: {
   {
     ko: "인증과 재설정 정보", en: "Sign-in and reset material",
     detail: {
-      ko: "비밀번호 재설정 링크 · 주소 확인 링크 · 구글·애플 계정 연결",
-      en: "Password-reset links, address-verification links, Google and Apple sign-in links",
+      ko: "비밀번호 재설정 링크 · 주소 확인 링크 · 구글·애플 계정 연결 · 잡인더스트리 등 제휴 사이트 계정 연결",
+      en: "Password-reset links, address-verification links, Google and Apple sign-in links, links to partner-site accounts",
     },
-    tables: ["password_reset_tokens", "email_verify_tokens", "auth_accounts"],
+    tables: ["password_reset_tokens", "email_verify_tokens", "auth_accounts", "partner_links", "partner_handoffs"],
   },
 ];
 
