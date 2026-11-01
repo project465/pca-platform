@@ -1,0 +1,107 @@
+import { requireUser } from "@/lib/session";
+import { activeTrack, trackOffers } from "@/lib/track";
+import { payOpen } from "@/lib/payments";
+import { university } from "@/lib/campus/registry";
+import { campusStudentContext } from "@/lib/campus/students";
+import { withJosa } from "@/lib/me-v3/result/josa";
+
+export const metadata = { title: "이용권 · MAT" };
+
+/**
+ * 이용권(예상 화면 6번, 2026-11-01 대표 결정: 하나의 MAT, 두 가지 이용권).
+ *
+ * - **학교 칸이 먼저다.** 학교 좌석이 열려 있으면 결제 없이 쓴다는 것과 언제까지인지. 학교 코드를
+ *   적는 칸은 두지 않는다(대표 결정 사-3: 코드만 알면 남이 좌석을 쓸 수 있다). 학교에서 받은
+ *   계정으로 로그인하면 이어진다
+ * - 개인 이용권은 30 · 90일, 90일이 기본. 값은 `products` 에서 읽는다(화면과 결제 값이 갈리지 않게)
+ * - **결제가 열리기 전에는 사는 단추를 끈다**(`payOpen`). 누를 수 없는 결제 화면으로 보내지 않는다
+ * - 들어 있는 것은 **지금 되는 것만 된다고 적는다.** 아직 만들고 있는 것은 `준비 중`
+ */
+export default async function MatPass() {
+  const user = await requireUser();
+  const [state, offers, campus] = await Promise.all([
+    activeTrack(user.id),
+    trackOffers("KR"),
+    campusStudentContext(user.id).catch(() => null),
+  ]);
+  const open = payOpen("KR");
+  const day = (s: string) => s.slice(0, 10);
+  const school = state.source?.kind === "school"
+    ? (university(state.source.university)?.university_name ?? "학교")
+    : null;
+  const o30 = offers.find((o) => o.days === 30) ?? null;
+  const o90 = offers.find((o) => o.days === 90) ?? null;
+  const won = (n: number) => `₩${n.toLocaleString("ko-KR")}`;
+
+  return (
+    <main>
+      <div className="mt-top"><span className="mt-week">이용권</span></div>
+      <h1 className="mt-h1">이용권</h1>
+
+      {state.on && state.until ? (
+        <p className="mt-lead">
+          {school ? `${school} 제공` : "개인 이용권"} · {day(state.until)}까지 쓸 수 있습니다
+          {state.queued ? " · 이어서 산 기간 포함" : ""}
+        </p>
+      ) : null}
+
+      <section className={`mt-box is-school`}>
+        <h3>학교에서 검사를 받았나요?</h3>
+        {school && state.source?.kind === "school" ? (
+          <p>{withJosa(school, "이가")} 연 좌석으로 쓰고 있습니다. 학교 제공 기간은 {day(state.source.until)}까지이고, 끝난 뒤에도 개인 이용권으로 이어 쓸 수 있습니다. 쓰던 자료는 그대로 남습니다.</p>
+        ) : campus ? (
+          <p>{campus.university_name} 계정으로 로그인해 있습니다. 학교가 MAT 좌석을 열면 결제 없이 바로 쓸 수 있고, 따로 할 일은 없습니다.</p>
+        ) : (
+          <ul>
+            <li>학교가 좌석을 열면 결제 없이 씁니다.</li>
+            <li>학교에서 받은 계정으로 로그인하면 자동으로 이어집니다.</li>
+          </ul>
+        )}
+      </section>
+
+      <h2 className="mt-h2">개인으로 쓰기</h2>
+      {o30 || o90 ? (
+        <form action="/checkout" method="get">
+          <fieldset className="mt-opts">
+            <legend className="mt-meta" style={{ marginBottom: 8 }}>기간을 고르세요. 자동으로 연장되지 않고, 기간이 끝나면 닫힙니다.</legend>
+            {o30 ? (
+              <label className="mt-opt">
+                <input type="radio" name="product" value={o30.code} />
+                <span><b>30일</b>한 번 지원해 볼 때</span>
+                <span className="mt-price">{won(o30.amount)}</span>
+              </label>
+            ) : null}
+            {o90 ? (
+              <label className="mt-opt">
+                <input type="radio" name="product" value={o90.code} defaultChecked />
+                <span><b>90일</b>한 학기 · 한 달 {won(Math.round(o90.amount / 3 / 100) * 100)}꼴</span>
+                <span className="mt-price">{won(o90.amount)}</span>
+              </label>
+            ) : null}
+          </fieldset>
+          <div style={{ marginTop: 12 }}>
+            {open ? (
+              <button type="submit" className="mt-btn is-main is-block">이 기간으로 결제하기</button>
+            ) : (
+              <button type="button" className="mt-btn is-block" disabled aria-disabled="true">결제 준비 중</button>
+            )}
+          </div>
+          {state.on && open ? (
+            <p className="mt-note">지금 쓰는 기간이 끝나는 다음 날부터 이어 붙습니다. 겹쳐서 결제되지 않습니다.</p>
+          ) : null}
+        </form>
+      ) : (
+        <p className="mt-empty">지금 살 수 있는 개인 이용권이 없습니다.</p>
+      )}
+
+      <h2 className="mt-h2">들어 있는 것</h2>
+      <ul className="mt-incl">
+        <li>맞는 공고<span>내 경험과 겹치는 공고 · 마감순</span></li>
+        <li>지원서 초안 · 면접 질문<span>준비 중</span></li>
+        <li>주간 브리핑 · 마감 알림<span>메일 · 웹 알림</span></li>
+        <li>경험 즉시 반영<span>적으면 할 일과 공고가 바로 바뀜</span></li>
+        <li>커리어피크 상담 연결<span>11월 7일부터</span></li>
+      </ul>
+    </main>
+  );
+}
