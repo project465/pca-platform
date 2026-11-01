@@ -184,7 +184,7 @@ export default async function V3Start({
         <ul className="qs-three">
           <li>
             <b>{say("무엇을 해 봤는지")}</b>
-            <span>{say("영역마다 해 본 일을 여쭙니다")}</span>
+            <span>{say("영역마다 해 본 일을 물어봅니다")}</span>
           </li>
           <li>
             <b>{say("무엇을 직접 정했는지")}</b>
@@ -209,10 +209,10 @@ export default async function V3Start({
         <section className="qs-sect">
           <h2>{say("묻는 순서")}</h2>
           <ul className="qs-steps">
-            <li>{say("업무 영역마다 관심이 있는지, 해 봤는지, 배우고 싶은지 여쭙니다")}</li>
-            <li>{say("해 본 일이 있는 영역은 조금 더 자세히 여쭙니다")}</li>
+            <li>{say("업무 영역마다 관심이 있는지, 해 봤는지, 배우고 싶은지 물어봅니다")}</li>
+            <li>{say("해 본 일이 있는 영역은 조금 더 자세히 물어봅니다")}</li>
             {tier !== "BASIC" ? (
-              <li>{say("그 가운데 몇 영역은 범위·방법·결과·활용까지 나눠서 여쭙니다")}</li>
+              <li>{say("그 가운데 몇 영역은 범위·방법·결과·활용까지 나눠서 물어봅니다")}</li>
             ) : null}
             {tier === "PRO" ? (
               <li>{say("과제나 프로젝트 하나를 골라 지원서에 쓸 말로 정리하고, 관심 산업과 직무를 하나씩 더 자세히 봅니다")}</li>

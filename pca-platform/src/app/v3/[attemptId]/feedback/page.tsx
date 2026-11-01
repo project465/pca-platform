@@ -98,7 +98,7 @@ export default async function Feedback({
       <main className="rs-main" style={{ maxWidth: 760 }}>
         <section className="rs-hero">
           <p className="rs-kicker">파일럿 의견</p>
-          <h1 className="rs-h1">읽어 보신 것을 여쭙습니다</h1>
+          <h1 className="rs-h1">결과지를 읽어 본 느낌을 알려 주세요</h1>
           <p className="rs-lead">
             검사와 결과지를 고치는 데만 씁니다. 답하기 어려운 문항은 비워
             두셔도 되고, 비워 두셔도 결과는 그대로 보실 수 있습니다.

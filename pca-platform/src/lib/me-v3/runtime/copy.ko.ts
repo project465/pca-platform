@@ -19,22 +19,22 @@ export const COPY_KO: RuntimeCopy = {
   stages: {
     PROFILE: "기본 정보",
     FIELD: "관심 산업",
-    EXPLORE: "영역 훑기",
-    JUDGE: "실제 판단",
-    DEEP: "경험 심화",
-    EVIDENCE: "근거 고르기",
+    EXPLORE: "관심 분야",
+    JUDGE: "해 본 일",
+    DEEP: "더 자세히",
+    EVIDENCE: "남긴 것",
     PACK: "산업과 직무",
-    TRANSLATE: "경험 번역",
+    TRANSLATE: "지원서 문장",
     DONE: "완료",
   },
   stageLead: {
     PROFILE: "먼저 지금 학업 단계부터 확인할게요.",
     FIELD: "관심 있는 산업을 고르면, 그 산업에서 전공자가 하는 일을 보여 드립니다.",
     EXPLORE: "어떤 일을 해 보고 싶은지, 해 본 적은 있는지 가볍게 훑어보겠습니다.",
-    JUDGE: "이제 실제로 해 본 일을 여쭙겠습니다.",
-    DEEP: "해 보신 일을 조금 더 자세히 여쭙겠습니다.",
+    JUDGE: "이제 직접 해 본 일을 물어볼게요.",
+    DEEP: "해 본 일 가운데 몇 가지는 조금 더 자세히 물어볼게요.",
     EVIDENCE: "해 봤다고 답한 일을 영역마다 짚어 보겠습니다.",
-    PACK: "고르신 직무와 산업에서 자주 하는 일을 여쭙겠습니다.",
+    PACK: "고른 직무와 산업에서 자주 하는 일을 물어볼게요.",
     TRANSLATE: "경험 하나를 골라 지원서에 쓸 수 있게 정리해 봅니다.",
     DONE: "",
   },
@@ -102,7 +102,7 @@ export const COPY_KO: RuntimeCopy = {
     sweepLearning: {
       eyebrow: "배우고 싶은 정도",
       question: "지금 시간을 내서 배워 보고 싶은 정도를 골라 주세요",
-      help: "앞의 답을 보고 몇 가지만 다시 여쭙니다.",
+      help: "앞에서 고른 일 가운데 몇 가지만 다시 물어볼게요.",
     },
     sweepPage: (eyebrow, k, n) => `${eyebrow} ${k} / ${n}`,
     force: {
@@ -117,7 +117,7 @@ export const COPY_KO: RuntimeCopy = {
     },
     forceFallback: {
       eyebrow: "한 가지만 더",
-      help: "두 일에 비슷하게 답하셔서 하나만 더 여쭙겠습니다.",
+      help: "두 일에 비슷하게 답해서 하나만 더 물어볼게요.",
     },
     judge: {
       eyebrow: "공통 질문",
@@ -125,8 +125,8 @@ export const COPY_KO: RuntimeCopy = {
     },
     xfield: {
       eyebrow: "대학원 경험",
-      question: "대학원에서 한 일을 몇 가지 더 여쭙겠습니다",
-      help: (major) => `대학원 전공이 달라도 ${major} 쪽 경험과 이어 볼 수 있도록 여쭙는 질문입니다.`,
+      question: "대학원에서 한 일을 몇 가지 더 물어볼게요",
+      help: (major) => `대학원 전공이 달라도 ${major} 쪽 경험과 이어 볼 수 있게 묻는 질문입니다.`,
       chips: (major) => ["다룬 분야", "가져다 쓸 수 있는 방법", `마지막으로 ${major} 일을 한 때`,
         "학부 때 가장 깊이 해 본 활동"],
       itemHelp: "고르신 내용은 경험을 지원서 표현으로 정리할 때 씁니다.",
@@ -134,7 +134,7 @@ export const COPY_KO: RuntimeCopy = {
     judgeStrip: (count, names, many) =>
       `답하신 내용을 보고 ${count} 가지 일을 골랐습니다: `
       + `${names.join(", ")}. `
-      + `${many ? "이 일들을" : "이 일을"} 실제로 해 봤는지 하나씩 여쭙겠습니다.`,
+      + `${many ? "이 일들을" : "이 일을"} 실제로 해 봤는지 하나씩 물어볼게요.`,
     pairFallback: "해 본 일",
     checklist: {
       eyebrow: "실제로 한 일",
@@ -145,8 +145,8 @@ export const COPY_KO: RuntimeCopy = {
       eyebrow: "조금만 더",
       j3Postdoc: "맡은 과제와 다른 기관 일에서 각각 기준을 정해 본 적이 있나요?",
       j3: "학교 안과 밖에서 각각 기준을 정해 본 적이 있나요?",
-      j5: "만든 결과물에 대해 두 가지만 더 여쭙겠습니다",
-      other: "같은 일을 두 상황으로 나눠 여쭙겠습니다",
+      j5: "만든 결과물에 대해 두 가지만 더 물어볼게요",
+      other: "같은 일을 두 상황으로 나눠 물어볼게요",
     },
     pickRole: {
       eyebrow: "관심 직무",
@@ -159,16 +159,16 @@ export const COPY_KO: RuntimeCopy = {
       help: "두 개까지 고를 수 있습니다. 결과를 보여 드리는 순서에만 씁니다.",
     },
     industry: {
-      strip: (name) => `이제 ${name ?? "고르신 산업"}에서 자주 하는 일을 여쭙겠습니다.`
+      strip: (name) => `이제 ${name ?? "고르신 산업"}에서 자주 하는 일을 물어볼게요.`
         + ` 낯선 말은 질문 아래에 쉽게 풀어 두었습니다.`,
       eyebrowFallback: "산업 판단",
     },
     trans: {
-      eyebrow: "경험 번역",
+      eyebrow: "지원서 문장",
       question: (grad) => (grad
         ? "연구나 프로젝트 하나를 떠올려 주세요"
         : "과제나 프로젝트, 활동 하나를 떠올려 주세요"),
-      help: "그 경험 하나를 네 번에 나눠 여쭙겠습니다. 모두 같은 경험으로 답해 주세요.",
+      help: "그 경험 하나를 네 번에 나눠 물어볼게요. 모두 같은 경험으로 답해 주세요.",
       chips: ["풀려던 문제", "쓴 방법", "남은 결과물", "쓰인 곳"],
     },
     target: {

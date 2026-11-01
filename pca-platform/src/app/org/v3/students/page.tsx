@@ -138,10 +138,10 @@ export default async function CampusStudents({
       <PageHead
         eyebrow="CAREERMATRI CAMPUS"
         title="학생 관리"
-        sub="학교가 발급한 계정입니다. 학생이 적은 답과 결과는 여기 서지 않습니다."
+        sub="학교가 발급한 계정입니다. 학생이 적은 답과 결과는 여기에서 보이지 않습니다."
         actions={
           <Link className="sf-btn" href="/org/v3/students/import">
-            CSV 로 한꺼번에 등록
+            CSV로 한꺼번에 등록
           </Link>
         }
       />
@@ -218,7 +218,7 @@ export default async function CampusStudents({
         ) : (
           <Empty icon="users" title="이 조건에 맞는 학생이 없습니다"
             body={"조건을 지우고 다시 보시거나, 아래에서 학생을 한 명 추가하거나"
-              + " CSV 로 한꺼번에 등록할 수 있습니다."} />
+              + " CSV로 한꺼번에 등록할 수 있습니다."} />
         )}
       </Section>
 

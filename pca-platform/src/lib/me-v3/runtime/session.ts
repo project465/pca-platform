@@ -832,6 +832,11 @@ export async function savePicks3(
       `UPDATE v3_attempts SET industry_interest=$2, industry_pack=$3,
               last_saved_at=now() WHERE id=$1 AND status='in_progress' RETURNING id::text`,
       [attemptId, clean, clean[0] ?? null]);
+    /* 목표 화면은 산업을 다시 묻지 않으므로(blocks.ts) 고른 첫 산업을 목표 산업 답으로 적는다.
+       판정에는 들어가지 않는 맥락 값이다(engine `target`) */
+    if (r.length && clean[0]) {
+      await saveAnswer(attemptId, "TG_INDUSTRY", { kind: "choice", value: clean[0] }).catch(() => false);
+    }
     return r.length > 0;
   }
   if (kind === "role") {

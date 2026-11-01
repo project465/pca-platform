@@ -160,7 +160,7 @@ export default async function V3Intro({
             스물여섯 자쯤이라 쉰 자를 넘으면 세 줄이 되고, 그러면 제목과
             카드 사이에 읽을거리가 한 덩이 더 선다 */}
         <p className="qs-lead">
-          {say("{major} 분야에서 해 본 일과 그때 직접 정한 것을 여쭙고, 내세울 수 있는 경험과 더 채울 부분을 정리해 드립니다.", { major: coreName })}
+          {say("{major} 분야에서 해 본 일과 그때 직접 정한 것을 묻고, 내세울 수 있는 경험과 더 채울 부분을 정리해 드립니다.", { major: coreName })}
         </p>
 
         <ul className="qs-three">
@@ -202,7 +202,7 @@ export default async function V3Intro({
             <section className="qs-major">
               <h2>{say("{major} 전공자가 자주 하는 일", { major: coreName })}</h2>
               <p>
-                {say("이런 일에서 무엇을 직접 정해 봤는지 여쭙니다. 해 본 적 없는 일은 ‘해 본 적 없음’을 고르시면 됩니다.")}
+                {say("이런 일에서 무엇을 직접 정해 봤는지 묻습니다. 해 본 적 없는 일은 ‘해 본 적 없음’을 고르시면 됩니다.")}
               </p>
               <ul>
                 {sv.scene.slice(0, 3).map((t) => <li key={t}>{t}</li>)}

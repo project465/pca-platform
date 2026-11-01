@@ -1001,8 +1001,7 @@ export function actionBriefKo(
  */
 const ACTION_WHY_KO: Record<ActionCode, string> = {
   WRITE_UP: "한 쪽으로 묶어 두면 면접에서 설명하기 쉬워요.",
-  DEEPEN_OWNERSHIP: "세 줄만 적어 두면 지원서에서 어떤 기준으로 정했는지를"
-    + " 그대로 옮겨 쓸 수 있어요.",
+  DEEPEN_OWNERSHIP: "무슨 기준으로 정했는지 적어 두면 지원서에 그대로 쓸 수 있어요.",
   BUILD_OUTPUT: "남겨 둔 것이 있으면 그 일을 무엇으로 보여줄지 말할 수 있습니다.",
   ADD_VERIFICATION: "비교해 둔 표가 있으면 그 값을 어떻게 확인했는지 말할 수 있어요.",
   FILL_AXIS: "까닭이 한 줄 적혀 있으면 그 과제에서 무엇을 정했는지 말할 수 있습니다.",
@@ -1012,6 +1011,20 @@ const ACTION_WHY_KO: Record<ActionCode, string> = {
   RECHECK_DIRECTION: "먼저 정해 두면 다음에 무엇을 쌓을지가 또렷해집니다.",
 };
 
+/**
+ * 축마다 다른 이유 한 줄(2026-11-01 시험: `세 줄만 적어 두면 지원서에서 ~ 그대로 적을 수 있어요` 가
+ * 축 이름만 바꿔 홈에서 되풀이됐다). 같은 틀을 쓰지 않고, 그 축을 적어 두면 어디에 쓰는지를 짧게.
+ */
+const OWN_WHY_KO: Partial<Record<Axis, string>> = {
+  J1: "어떤 문제를 풀려 했는지 한 줄 적어 두면 면접 첫 질문에 바로 답할 수 있어요.",
+  J2: "받은 요구를 어떤 숫자와 조건으로 바꿨는지 적어 두면 지원서 문장이 구체적이 됩니다.",
+  J4: "그 방법을 왜 골랐는지 적어 두면 꼬리 질문이 이어져도 답할 수 있어요.",
+  J5: "결과물을 파일이나 사진으로 남겨 두면 포트폴리오에 바로 넣을 수 있어요.",
+  J6: "무엇과 비교했는지 적어 두면 결과를 믿을 근거가 생깁니다.",
+  J7: "안 됐을 때 무엇을 고쳤는지 적어 두면 문제 해결 질문에 쓸 수 있어요.",
+  J8: "결과가 어디에 쓰였는지 적어 두면 지원서에 성과로 쓸 수 있어요.",
+};
+
 /** 할 일 칸의 **이유 한 줄**. 할 일이 없으면 적지 않는다 */
 export function actionWhyKo(a: Action): string {
   /* **축이 있으면 그 축의 말로**(R30). `직접 정한 것을 적어 두기` 의 까닭이
@@ -1019,7 +1032,7 @@ export function actionWhyKo(a: Action): string {
      옮긴 조건(J2)이나 쓴 방법(J4)을 적으라는 할 일 아래에 그 줄이 서면
      머리와 까닭이 서로 다른 것을 말한다 */
   if (a.code === "DEEPEN_OWNERSHIP" && a.axis && a.axis !== "J3") {
-    return `세 줄만 적어 두면 지원서에서 ${needWithJosa(AXIS_NEED_KO[a.axis])} 그대로 적을 수 있어요.`;
+    return OWN_WHY_KO[a.axis] ?? ACTION_WHY_KO.DEEPEN_OWNERSHIP;
   }
   return ACTION_WHY_KO[a.code];
 }
