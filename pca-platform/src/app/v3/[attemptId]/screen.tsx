@@ -6,10 +6,13 @@ import { useRouter } from "next/navigation";
 import { UNKNOWN, type Answer } from "@/lib/me-v3/scoring/types";
 import type { GradField, Stage, UndergradCore } from "@/lib/me-v3/scoring/types";
 import { eligible } from "@/lib/me-v3/runtime/routing";
-import {
-  answerAction, cursorAction, finishAction, noteAction, picksAction,
-  picksAction3, profileAction,
-} from "./actions";
+import { finishAction, picksAction3, profileAction } from "./actions";
+
+/** `/api/v3/save` 로 묶어 보내는 저장 하나 */
+type SaveOp =
+  | { op: "answer"; itemId: string; answer: Answer }
+  | { op: "note"; itemId: string; text: string }
+  | { op: "picks"; domain: string; slot: string; items: string[] };
 import { tierText } from "../tier-text.i18n";
 import { phrase, type Say } from "@/lib/me-v3/phrase";
 import type { Field, ProgressModel, ScreenModel } from "./model";
@@ -119,6 +122,7 @@ export default function Screen({
    */
   const [openAt, setOpenAt] = useState<number | null>(null);
   const queue = useRef<Promise<unknown>>(Promise.resolve());
+  const leaving = useRef(false);
 
   /** 읽는 법 한 줄이 붙을 질문. **첫 사다리 하나뿐이다**: 화면마다 깔면
    *  같은 네 줄이 스물여덟 번 서고, 질문보다 센 설명문이 된다 */
@@ -146,6 +150,34 @@ export default function Screen({
     return queue.current;
   }, []);
 
+  /**
+   * 답 · 덧붙인 줄 · 고른 항목은 **묶어서** 서버 액션 밖의 길(`/api/v3/save`)로 보낸다
+   * (2026-11-01 대표 지시 "페이지 전환이 느린 이유 찾아서 고쳐"). 서버 액션은 화면 이동과
+   * 한 줄로 서서, 보기마다 나가던 저장 약 200ms 가 `다음` 의 화면 요청을 그만큼 늦췄다.
+   * 보내는 중에 쌓인 것은 다음 한 번에 같이 간다. 실패하면 쌓인 자리로 되돌려
+   * `다시 저장` 이 그대로 다시 보낸다.
+   */
+  const outbox = useRef<SaveOp[]>([]);
+  const send = useCallback((op: SaveOp) => {
+    outbox.current.push(op);
+    return push(async () => {
+      const ops = outbox.current.splice(0);
+      if (!ops.length) return { ok: true };
+      try {
+        const res = await fetch("/api/v3/save", {
+          method: "POST", headers: { "content-type": "application/json" },
+          body: JSON.stringify({ attemptId: s.attemptId, ops }), keepalive: true,
+        });
+        const out = res.ok ? await res.json() as { ok?: boolean } : { ok: false };
+        if (!out.ok) outbox.current.unshift(...ops);
+        return { ok: Boolean(out.ok) };
+      } catch (e) {
+        outbox.current.unshift(...ops);
+        throw e;
+      }
+    });
+  }, [push, s.attemptId]);
+
   /** 실패한 저장을 다시 보낸다. 같은 호출을 그대로 쓴다 */
   const retrySave = useCallback(() => {
     const run = lastRun.current;
@@ -156,7 +188,7 @@ export default function Screen({
   const setAnswer = (f: Field, raw: number | string, a: Answer) => {
     setVals((v) => ({ ...v, [f.itemId]: raw }));
     setWarn(false);
-    push(() => answerAction(s.attemptId, f.itemId, a));
+    send({ op: "answer", itemId: f.itemId, answer: a });
     /* **누르면 저장하고 넘어간다**(전 기관·전 학과 공통). 한 선택으로
        끝나는 화면은 그 자리에서, 질문이 여럿인 화면은 **마지막 빈 칸을
        채운 순간** 넘어간다. 켜진 것을 잠깐 보여 준 뒤에 옮긴다 */
@@ -171,7 +203,7 @@ export default function Screen({
     setNotes((n) => ({ ...n, [f.itemId]: text }));
   };
   const flushNote = (f: Field) => {
-    push(() => noteAction(s.attemptId, f.itemId, notes[f.itemId] ?? ""));
+    send({ op: "note", itemId: f.itemId, text: notes[f.itemId] ?? "" });
   };
 
   const toggle = (slot: string, item: string) => {
@@ -179,7 +211,7 @@ export default function Screen({
     const next = now.includes(item) ? now.filter((x) => x !== item) : [...now, item];
     setPicks((p) => ({ ...p, [slot]: next }));
     /* 영역은 화면이 들고 있다. 묶음 이름으로 영역을 짐작하지 않는다 */
-    if (s.domain) push(() => picksAction(s.attemptId, s.domain as string, slot, next));
+    if (s.domain) send({ op: "picks", domain: s.domain, slot, items: next });
   };
 
   /**
@@ -315,15 +347,18 @@ export default function Screen({
    * 컴포넌트가 이미 사라졌으니 아무 일도 하지 않는다.
    */
   const go = async (to: number | null) => {
-    if (to === null) return;
+    if (to === null || leaving.current) return;
+    /* **한 번 떠나면 다시 떠나지 않는다.** 자동 넘김과 `다음` 이 겹치면 같은 이동이 두 번
+       나가, 화면이 두 칸 넘어가는 것처럼 보였다(2026-11-01 고려대 세종 시험) */
+    leaving.current = true;
     setMoving(true);
     try {
+      /* 다음 화면이 앞 답으로 정해지는 자리가 있어 **답 저장은 기다린다.** 이어보기 자리는
+         따로 적지 않는다: 화면이 `?s=` 를 받으면 서버가 그 자리를 적는다(page.tsx) */
       await queue.current;
-      const r = await cursorAction(s.attemptId, to);
-      if (!r.ok) { setMoving(false); setWarn(true); return; }
+      if (outbox.current.length) { leaving.current = false; setMoving(false); return; }
     } catch {
-      lastRun.current = () => cursorAction(s.attemptId, to);
-      setFailed(true);
+      leaving.current = false;
       setMoving(false);
       return;
     }
