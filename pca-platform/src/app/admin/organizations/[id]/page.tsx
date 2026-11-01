@@ -5,6 +5,8 @@ import { ROLE_LABEL } from "@/lib/roles";
 import { requireRole } from "@/lib/session";
 import { query, queryOne } from "@/lib/db";
 import { nameOf } from "@/lib/i18n";
+import { university } from "@/lib/campus/registry";
+import { campusV3 } from "@/lib/me-v3/campus";
 import StaffPanel from "./staff-panel";
 
 export const metadata = { title: "기관 · CareerMatri" };
@@ -85,6 +87,16 @@ export default async function OrgDetail({ params }: { params: Promise<{ id: stri
     [id],
   );
 
+  /**
+   * **기관 화면과 같은 수를 보인다**(2026-11-01 배재대 운영 시험: 여기는 "학생 3명", 기관
+   * 화면은 "대상자 2명"이었다). 위 `students` 는 이 기관에 붙은 학생 계정 전부(시연 · 끈
+   * 계정 포함)이고, 기관 화면의 대상자는 `campusV3` 가 세는 명단 ∪ 학교 진입이다.
+   * 학교 등록부의 기관이면 그 수를 같은 함수로 받아 함께 적고, 무엇을 센 수인지 적는다.
+   */
+  const v3 = org.code && university(org.code)
+    ? await campusV3({ orgIds: [Number(org.id)], universityCode: org.code }).catch(() => null)
+    : null;
+
   const TYPE: Record<string, string> = { university: "대학", department: "학과", company: "기업" };
 
   return (
@@ -103,7 +115,11 @@ export default async function OrgDetail({ params }: { params: Promise<{ id: stri
       </div>
       <p className="page-sub">
         {TYPE[org.org_type] ?? org.org_type} · {org.country}
-        {parent ? ` · ${parent} 소속` : ""} · 학생 {students?.n ?? 0}명
+        {parent ? ` · ${parent} 소속` : ""}
+        {v3
+          ? ` · 대상자 ${v3.target}명(명단 ${v3.roster}명 + 학교 진입 ${v3.target - v3.roster}명, 기관 화면과 같은 수)`
+          : ""}
+        {` · 학생 계정 ${students?.n ?? 0}개(시연 · 끈 계정 포함)`}
       </p>
 
       <StaffPanel orgId={org.id} staff={staff} />

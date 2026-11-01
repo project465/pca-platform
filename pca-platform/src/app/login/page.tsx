@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/session";
+import { ROLE_LABEL, homePathFor } from "@/lib/roles";
 import LoginForm from "./login-form";
 import OauthButtons from "./oauth-buttons";
 import EntryFrame from "@/components/sf/entry-frame";
@@ -51,16 +52,18 @@ const ERRORS: Record<string, string> = {
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ next?: string; error?: string }>;
+  searchParams: Promise<{ next?: string; error?: string; switch?: string }>;
 }) {
-  const { next, error } = await searchParams;
+  const { next, error, switch: sw } = await searchParams;
   /* 열린 리다이렉트를 막는 자리가 한 곳이다(`safe-next.ts`) */
   const nx = safeNext(next, "");
   /* **담당자로만 들어와 있으면 폼을 연다.** 담당자와 학생은 로그인을 따로
      들고 있어서(`auth.ts`), 같은 브라우저에서 학생 계정으로 들어가 볼 수
      있어야 한다. 담당자 화면으로 가려던 길이면 그대로 보낸다 */
   const who = await currentUser();
-  if (who && (who.scope !== "staff" || /^\/(admin|org)(\/|\?|$)/.test(nx))) redirect(nx || "/");
+  /* `switch=1`(`/denied` 의 "다른 계정으로 로그인")이면 들어와 있어도 폼을 연다. 아니면
+     담당자 화면으로 가려던 길이 다시 그 계정으로 돌아가 폼에 닿지 못한다 */
+  if (who && sw !== "1" && (who.scope !== "staff" || /^\/(admin|org)(\/|\?|$)/.test(nx))) redirect(nx || "/");
 
   const providers = enabledProviders();
   /* **들어온 화면의 언어로 선다**(영어판 2단계). 해외 개인이 영어 가입
@@ -80,6 +83,18 @@ export default async function LoginPage({
           </p>
 
           {msg ? <p className="notice error" role="alert">{msg}</p> : null}
+
+          {/* **이미 들어와 있으면 그 사실을 먼저 적는다**(2026-11-01 배재대 운영 시험). 한
+              브라우저의 담당자 로그인은 하나라, 여기서 다른 담당자로 들어가면 다른 탭의
+              최고 관리자 화면도 그 계정으로 바뀐다 */}
+          {who ? (
+            <p className="notice" role="status">
+              {lang === "en"
+                ? <>You are signed in as <b>{who.name}</b>. Signing in with another {who.scope === "staff" ? "staff " : ""}account here replaces it in this browser, other tabs included. </>
+                : <>지금 <b>{who.name}</b> ({ROLE_LABEL[who.role]}) 계정으로 로그인돼 있습니다. 여기서 다른 {who.scope === "staff" ? "담당자 " : ""}계정으로 들어가면 이 브라우저의 로그인이 그 계정으로 바뀝니다(다른 탭 포함). </>}
+              <Link href={homePathFor(who.role)}>{lang === "en" ? "Continue as this account" : "이 계정으로 계속"}</Link>
+            </p>
+          ) : null}
 
           {/* **소셜을 위에 둔다.** 누르는 수가 적은 쪽이 위다. 다만
               단추를 광고처럼 키우지 않는다: 학교 계정으로 들어오는 분이
