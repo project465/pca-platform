@@ -181,8 +181,39 @@ export function assemble(x: Inputs): { pages: Page[]; notes: string[]; region: s
       }
     }
   }
+  /* **한국어 책은 지역 장을 맨 앞(PART 01)으로**(2026-11-01 대표 결정: "지역이 결과지에서 1이나
+     2로", "한국꺼만 그런거야. 외국은 아니다잉"). 판정 · 채점과 각 장의 쪽은 그대로이고 차례와
+     번호만 바뀐다. 영어 책과 지역 자료가 없는 책은 그대로다 */
+  if (rv && !isEn()) regionFirst(P, N5, N.intro, N, N3);
   P.splice(2, 0, toc(P));
   return { pages: P, notes, region: rv?.key ?? null };
+}
+
+/**
+ * 지역 장을 `들어가며` 바로 뒤로 옮기고 장 번호를 다시 매긴다. 01~04 는 하나씩 밀리고(02~05),
+ * 지역(05)은 01, 06 · 07 은 그대로다. 쪽 머리의 장 번호(`part`) · 장 첫 쪽의 큰 번호 · 본문의
+ * `NN장` 과 `NN 장이름` 참조를 **한 번에** 바꾼다(차례로 바꾸면 02 가 03 이 되고 다시 04 가 된다).
+ */
+export function regionFirst(P: Page[], regionName: string, introName: string,
+  N: { c1: string; c2: string; c4: string; c6: string; c7: string }, part3?: string): void {
+  const MAP: Record<string, string> = { "01": "02", "02": "03", "03": "04", "04": "05", "05": "01" };
+  const names = [N.c1, N.c2, part3, N.c4, regionName, N.c6, N.c7].filter((n): n is string => Boolean(n))
+    .map((n) => n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  const ref = new RegExp(`(<span class="ch-no">)(0[1-5])(</span>)|(?<![0-9])(0[1-5])(장)|(?<![0-9])(0[1-5])( (?:${names.join("|")}))`, "g");
+  const move = (s: string) => s.replace(ref, (all, a1, n1, a3, n2, b2, n3, c2) =>
+    n1 ? `${a1}${MAP[n1]}${a3}` : n2 ? `${MAP[n2]}${b2}` : n3 ? `${MAP[n3]}${c2}` : all);
+  for (const p of P) {
+    if (MAP[p.part]) p.part = MAP[p.part];
+    p.body = move(p.body);
+    p.title = move(p.title);
+  }
+  const region = P.filter((p) => p.partName === regionName);
+  if (!region.length) return;
+  const rest = P.filter((p) => p.partName !== regionName);
+  let at = -1;
+  rest.forEach((p, i) => { if (p.partName === introName) at = i; });
+  rest.splice(at + 1, 0, ...region);
+  P.splice(0, P.length, ...rest);
 }
 
 export function renderHtml(x: Inputs, pages: Page[], fontBase = "/fonts/cm-book/"): string {
