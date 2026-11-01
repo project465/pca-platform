@@ -284,6 +284,21 @@ export default async function PricingPage({
           </section>
         ) : null}
 
+        {/* **학교 · 기관용**(2026-11-01 대표 결정). 개인 MAT 과 같은 스위치로 연다: MAT 을 가려 둔
+            동안에는 세우지 않는다. 값은 계약으로 정하므로 적지 않고 견적 문의로 보낸다 */}
+        {tracks.length && MAT_PUBLIC ? (
+          <section className="pxband" id="org">
+            <h2>{T("pxOrgTitle")}</h2>
+            <p className="pxwhat">{T("pxOrgLead")}</p>
+            <div className="pxband-g">
+              <div className="pxband-i"><b>{T("pxOrgSeatsHead")}</b><span>{T("pxOrgSeats")}</span></div>
+              <div className="pxband-i"><b>{T("pxOrgSeeHead")}</b><span>{T("pxOrgSee")}</span></div>
+              <div className="pxband-i"><b>{T("pxOrgAfterHead")}</b><span>{T("pxOrgAfter")}</span></div>
+            </div>
+            <p className="pxwhat"><Link href={`/support${q}`} className="sf-btn ghost sm">{T("pxOrgAsk")}</Link></p>
+          </section>
+        ) : null}
+
         {freeOnly ? null : (<>
         <section className="pxband">
           <h2>{T("pxCommon")}</h2>

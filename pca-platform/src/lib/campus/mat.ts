@@ -45,7 +45,7 @@ export type MatPool = {
 
 const POOL_SQL = `
   SELECT p.id::text, p.university_code, p.product_code, p.seats,
-         (SELECT count(*) FROM entitlements e WHERE e.campus_pool_id = p.id)::int AS used,
+         (SELECT count(*) FROM entitlements e WHERE e.campus_pool_id = p.id AND e.status = 'active')::int AS used,
          p.grant_until::text, p.status, p.memo, p.created_at::text,
          (p.status = 'active'
           AND p.grant_until >= (now() AT TIME ZONE 'Asia/Seoul')::date) AS live
@@ -179,7 +179,8 @@ export async function grantMat(
     const mine = await c.query<{ user_id: string; has: boolean }>(
       `SELECT cs.user_id::text,
               EXISTS (SELECT 1 FROM entitlements e
-                       WHERE e.user_id = cs.user_id AND e.campus_pool_id = $3::bigint) AS has
+                       WHERE e.user_id = cs.user_id AND e.campus_pool_id = $3::bigint
+                         AND e.status = 'active') AS has
          FROM campus_students cs JOIN users u ON u.id = cs.user_id
         WHERE cs.university_code = $1 AND cs.user_id = ANY($2::bigint[])
           AND u.status = 'active'`,
@@ -189,7 +190,8 @@ export async function grantMat(
     const want = mine.rows.filter((r) => !r.has).map((r) => r.user_id);
 
     const used = await c.query<{ n: number }>(
-      `SELECT count(*)::int AS n FROM entitlements WHERE campus_pool_id = $1::bigint`, [poolId]);
+      `SELECT count(*)::int AS n FROM entitlements
+        WHERE campus_pool_id = $1::bigint AND status = 'active'`, [poolId]);
     const left = Math.max(p.seats - (used.rows[0]?.n ?? 0), 0);
     const go = want.slice(0, left);
     const short = want.length - go.length;
@@ -206,7 +208,10 @@ export async function grantMat(
            FROM entitlements e
           WHERE e.user_id = $1::bigint AND e.kind = 'track' AND e.status = 'active'
             AND e.ends_at > now()
-         ON CONFLICT DO NOTHING`,
+         /* 닫았던 학생을 같은 묶음으로 다시 열면 그 줄을 되살린다(한 묶음 한 사람 한 줄) */
+         ON CONFLICT (user_id, campus_pool_id) WHERE campus_pool_id IS NOT NULL
+         DO UPDATE SET status = 'active', starts_at = EXCLUDED.starts_at, ends_at = EXCLUDED.ends_at
+           WHERE entitlements.status <> 'active'`,
         [uid, p.product_code, String(p.days), poolId]);
       opened += r.rowCount ?? 0;
     }
@@ -239,4 +244,77 @@ export async function matUntilOf(userIds: string[]): Promise<Record<string, stri
       GROUP BY user_id`,
     [userIds]);
   return Object.fromEntries(rows.map((r) => [r.user_id, r.until]));
+}
+
+/**
+ * 담당자가 학생의 MAT 을 닫는다(2026-11-01 대표 지시: 학생 관리에서 MAT 열기/닫기).
+ *
+ * **이 학교가 연 기간만 닫는다.** 그 학생이 개인으로 산 기간은 건드리지 않는다. 닫은 줄은
+ * `revoked` 로 남기고 지우지 않는다(감사 기록 · 다시 열 때 같은 줄을 되살린다). 닫으면
+ * **좌석이 돌아온다**: 남은 좌석은 `active` 인 줄만 센다. 학생이 MAT 에 남긴 자료는 그대로다.
+ */
+export async function revokeMat(
+  universityCode: string, userIds: string[], actor: ManageActor,
+): Promise<{ ok: boolean; closed: number; why?: string }> {
+  const ids = [...new Set(userIds.map((x) => String(x).trim()).filter((x) => /^\d+$/.test(x)))];
+  if (!ids.length) return { ok: false, closed: 0, why: "닫을 학생을 골라 주세요" };
+  const rows = await query<{ id: string }>(
+    `UPDATE entitlements e SET status = 'revoked'
+       FROM campus_mat_pools p
+      WHERE e.campus_pool_id = p.id AND p.university_code = $1
+        AND e.user_id = ANY($2::bigint[]) AND e.status = 'active'
+      RETURNING e.id::text`,
+    [universityCode, ids]);
+  if (rows.length) {
+    await audit({
+      actorId: Number(actor.userId), actorRole: actor.role,
+      action: "campus.mat.revoke", targetKind: "campus_university",
+      targetId: universityCode, orgId: actor.orgId,
+      detail: { university: universityCode, closed: rows.length },
+    });
+  }
+  return { ok: true, closed: rows.length };
+}
+
+/**
+ * 학교 담당자가 보는 MAT 사용 현황(2026-11-01 대표 결정: 집계만, 개인 내용은 보이지 않게).
+ *
+ * 세는 것은 셋뿐이다: 학교가 연 사람 · 최근 30일에 MAT 을 쓴 사람(공고 비교 · 문장 뼈대 · 파일을
+ * 남긴 사람) · 커리어피크 상담을 보낸 사람. **누가 무엇을 했는지는 돌려주지 않는다.** 다섯 명이 안 되는 칸은 수 대신 null 이다
+ * (학교 집계의 5명 규칙과 같다): 네 명 안에서는 누구인지 짐작된다.
+ */
+export async function matUsageOf(universityCode: string): Promise<{
+  opened: number; active30: number | null; consults: number | null;
+}> {
+  const r = await queryOne<{ opened: number; active30: number; consults: number }>(
+    `WITH g AS (
+       SELECT DISTINCT e.user_id FROM entitlements e
+         JOIN campus_mat_pools p ON p.id = e.campus_pool_id
+        WHERE p.university_code = $1 AND e.status = 'active' AND e.ends_at > now()
+     )
+     SELECT (SELECT count(*) FROM g)::int AS opened,
+            /* MAT 을 쓴 흔적: 공고 비교 · 문장 뼈대 · 올린 파일. 무엇을 했는지는 세지 않고 사람만 센다 */
+            (SELECT count(DISTINCT x.user_id) FROM (
+               SELECT user_id, created_at FROM assistant_postings
+               UNION ALL SELECT user_id, created_at FROM assistant_drafts
+               UNION ALL SELECT user_id, created_at FROM assistant_uploads
+             ) x
+              WHERE x.user_id IN (SELECT user_id FROM g) AND x.created_at > now() - interval '30 days')::int AS active30,
+            (SELECT count(DISTINCT c.user_id) FROM careerpeak_consults c
+              WHERE c.user_id IN (SELECT user_id FROM g) AND c.status = 'sent')::int AS consults`,
+    [universityCode]).catch(() => null);
+  const hide = (n: number | undefined) => (n == null ? null : n > 0 && n < 5 ? null : n);
+  return { opened: r?.opened ?? 0, active30: hide(r?.active30), consults: hide(r?.consults) };
+}
+
+/** 이 학교 좌석으로 지금 열려 있는 학생. 명단의 `MAT 닫기` 단추를 세울 줄을 고른다 */
+export async function schoolMatOf(universityCode: string, userIds: string[]): Promise<string[]> {
+  if (!userIds.length) return [];
+  const r = await query<{ user_id: string }>(
+    `SELECT DISTINCT e.user_id::text FROM entitlements e
+       JOIN campus_mat_pools p ON p.id = e.campus_pool_id
+      WHERE p.university_code = $1 AND e.user_id = ANY($2::bigint[])
+        AND e.status = 'active' AND e.ends_at > now()`,
+    [universityCode, userIds]).catch(() => []);
+  return r.map((x) => x.user_id);
 }

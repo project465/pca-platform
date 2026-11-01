@@ -210,6 +210,24 @@ export const TX = {
      `시작하기` 를 적지 않는다** */
   pxPayNotReady: p("결제 준비 중", "Payment coming soon"),
   /* ── MAT (기간권 · 코드 이름은 Track) ───────────────────────────────── */
+  /* ── 학교 · 기관용(2026-11-01 대표 결정: 하나의 MAT, 개인 구독과 학교 단체) ── */
+  pxOrgTitle: p("학교 · 기관용", "For schools and institutions"),
+  pxOrgLead: p(
+    "검사부터 MAT 까지 학생 수만큼 계약합니다. 개인 이용권과 같은 MAT 이고, 학교가 좌석을 열어 준다는 것만 다릅니다.",
+    "Schools contract for the assessment and MAT by number of students. It is the same MAT as a personal pass; the school simply opens the seats."),
+  pxOrgSeatsHead: p("좌석 × 기간", "Seats × period"),
+  pxOrgSeats: p(
+    "MAT 6개월 또는 1년. 담당자가 학생 관리 화면에서 학생마다 열고 닫습니다. 닫으면 좌석이 돌아옵니다.",
+    "MAT for 6 months or 1 year. Staff open and close it per student from the student list; closing returns the seat."),
+  pxOrgSeeHead: p("담당자가 보는 것", "What staff see"),
+  pxOrgSee: p(
+    "검사 집계와 MAT 사용 현황(연 학생 · 최근 30일 쓴 학생 · 상담 신청 수)만 봅니다. 학생의 자료 · 공고 · 상담 내용은 보이지 않습니다.",
+    "Assessment totals and MAT usage only (students opened, active in the last 30 days, consultation requests). Students' files, postings and consultations stay private."),
+  pxOrgAfterHead: p("계약이 끝나면", "When the contract ends"),
+  pxOrgAfter: p(
+    "학생에게 미리 알리고, 원하면 개인 이용권으로 이어 쓸 수 있습니다. 쓰던 자료는 그대로 남습니다.",
+    "Students are told in advance and can continue with a personal pass. Their saved work stays."),
+  pxOrgAsk: p("견적 문의", "Ask for a quote"),
   pxTrackTitle: p("MAT", "MAT, AI career assistant"),
   pxTrackLead: p(
     "매주 할 일 하나를 먼저 알려 드리고, 메모를 경험 기록으로 옮기고, 직접 찾은 공고를 내 경험과 비교해 드립니다. 자동으로 갱신되지 않고 기간이 끝나면 저절로 닫힙니다.",

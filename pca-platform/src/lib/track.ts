@@ -58,9 +58,14 @@ export type TrackState = {
   product: string | null;
   /** 앞으로 이어 붙어 있는 줄이 있는가(미리 산 기간) */
   queued: boolean;
+  /**
+   * 지금 줄이 어디서 왔나(2026-11-01 대표 결정: 하나의 MAT, 두 가지 이용권). 화면에 한 줄로
+   * 적는다: `배재대학교 제공 · 2027-02-28까지` 또는 개인 이용권. 기능은 출처와 상관없이 같다
+   */
+  source?: { kind: "school"; university: string; until: string } | { kind: "personal" } | null;
 };
 
-const OFF: TrackState = { on: false, until: null, product: null, queued: false };
+const OFF: TrackState = { on: false, until: null, product: null, queued: false, source: null };
 
 /**
  * 지금 Track 이 열려 있는가.
@@ -73,13 +78,15 @@ const OFF: TrackState = { on: false, until: null, product: null, queued: false }
 export async function activeTrack(userId: string): Promise<TrackState> {
   const rows = await query<{
     product_code: string; starts_at: string; ends_at: string; live: boolean;
+    university: string | null;
   }>(
-    `SELECT product_code, starts_at::text, ends_at::text,
-            (starts_at <= now()) AS live
-       FROM entitlements
-      WHERE user_id = $1 AND kind = 'track' AND status = 'active'
-        AND ends_at > now()
-      ORDER BY starts_at`,
+    `SELECT e.product_code, e.starts_at::text, e.ends_at::text,
+            (e.starts_at <= now()) AS live, p.university_code AS university
+       FROM entitlements e
+       LEFT JOIN campus_mat_pools p ON p.id = e.campus_pool_id
+      WHERE e.user_id = $1 AND e.kind = 'track' AND e.status = 'active'
+        AND e.ends_at > now()
+      ORDER BY e.starts_at`,
     [userId],
   ).catch(() => null);
   if (!rows || !rows.length) return OFF;
@@ -94,6 +101,9 @@ export async function activeTrack(userId: string): Promise<TrackState> {
     until: rows[rows.length - 1].ends_at,
     product: now.product_code,
     queued: rows.length > 1,
+    source: now.university
+      ? { kind: "school", university: now.university, until: now.ends_at }
+      : { kind: "personal" },
   };
 }
 

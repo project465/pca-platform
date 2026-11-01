@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { Kpi } from "@/components/sf/parts";
 import { matAction, type ManageState } from "./actions";
 
 const EMPTY: ManageState = {};
@@ -28,9 +29,11 @@ export type MatPoolView = {
  * 하려는 것이기도 하다.
  */
 export default function MatPanel({
-  pools, filter, total,
+  pools, filter, total, usage,
 }: {
   pools: MatPoolView[];
+  /** 집계만(누가 무엇을 했는지는 오지 않는다). 5명이 안 되는 칸은 null */
+  usage?: { opened: number; active30: number | null; consults: number | null };
   /** 지금 명단의 조건. 그대로 보내 서버가 같은 조건으로 다시 읽는다 */
   filter: { q: string; department: string; college: string; state: string };
   /** 지금 조건에 맞는 학생 수 */
@@ -44,6 +47,18 @@ export default function MatPanel({
       {state.err ? <p className="sf-note is-bad" role="alert">{state.err}</p> : null}
       {state.ok ? <p className="sf-note is-ok" role="status">{state.ok}</p> : null}
 
+      {/* **사용 현황은 집계만**(2026-11-01 대표 결정). 학생의 자료 · 공고 · 상담 내용은
+          이 화면에 오지 않는다. 5명이 안 되는 칸은 수 대신 `5명 미만` 이다 */}
+      {usage && usage.opened ? (
+        <div className="sf-grid sf-g3" style={{ marginBottom: 14 }}>
+          <Kpi label="지금 열린 학생" value={usage.opened} unit="명" />
+          <Kpi label="최근 30일 MAT 을 쓴 학생" value={usage.active30 ?? "5명 미만"}
+            unit={usage.active30 == null ? undefined : "명"} />
+          <Kpi label="커리어피크 상담 신청" value={usage.consults ?? "5명 미만"}
+            unit={usage.consults == null ? undefined : "명"} />
+        </div>
+      ) : null}
+
       {pools.length ? (
         <div className="sf-tw">
           <table className="sf-table">
@@ -51,7 +66,7 @@ export default function MatPanel({
               <tr>
                 <th scope="col">이용권</th>
                 <th scope="col">연 학생</th>
-                <th scope="col">남은 인원</th>
+                <th scope="col">남은 좌석</th>
                 <th scope="col">열 수 있는 날</th>
                 <th scope="col">상태</th>
               </tr>
@@ -65,7 +80,7 @@ export default function MatPanel({
                   <td>{p.grant_until}까지</td>
                   <td>
                     <span className={`sf-pill${p.open ? "" : " is-off"}`}>
-                      {p.closed ? "닫힘" : p.open ? "열 수 있음" : p.left ? "기간 지남" : "인원 다 씀"}
+                      {p.closed ? "닫힘" : p.open ? "열 수 있음" : p.left ? "기간 지남" : "좌석 다 씀"}
                     </span>
                   </td>
                 </tr>
@@ -75,8 +90,8 @@ export default function MatPanel({
         </div>
       ) : (
         <p className="sf-note">
-          학교가 산 MAT 인원이 아직 없습니다. 계약을 맺으면 운영팀이 학교와 정한 기간으로
-          인원을 넣어 드리고, 그때부터 이 화면에서 학생에게 열 수 있습니다.
+          MAT 좌석이 아직 없습니다. 계약하면 운영팀이 좌석 수와 기간을 넣어 드리고, 그 뒤 여기서
+          학생에게 열 수 있습니다.
         </p>
       )}
 
@@ -99,8 +114,8 @@ export default function MatPanel({
             onClick={(e) => {
               if (!confirm(
                 `지금 조건에 맞는 학생 ${total}명에게 MAT 을 엽니다.\n`
-                + "이미 열린 학생과 멈춘 계정은 건너뛰고, 남은 인원까지만 엽니다.\n"
-                + "연 인원은 되돌릴 수 없습니다.",
+                + "이미 열린 학생과 멈춘 계정은 건너뛰고, 남은 좌석까지만 엽니다.\n"
+                + "학생 줄의 'MAT 닫기' 로 닫으면 좌석이 돌아옵니다.",
               )) e.preventDefault();
             }}>
             {pending ? "여는 중…" : `지금 조건의 학생 ${total}명에게 열기`}

@@ -399,7 +399,8 @@
 /** MAT 을 가려 둔 동안(`lib/mat-switch.ts`) 띠 · 홈 · 계정 · 탐색 · 지원 기록 · 경험 적기의 MAT 길을 세우지 않는다 — V83 */
 /** 계정 화면에 `비밀번호 바꾸기` 단추(2026-11-01 요청. 화면은 전부터 있었다) — V84 */
 /** 홈 · 앱 홈의 걸리는 시간을 시작 화면과 같은 함수로(학교 학생 PRO · 개인 BASIC, 2026-11-01 배재대 운영 시험) — V85 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V85";
+/** MAT 지금 상태에 이용권 출처 한 줄(학교 제공 · 언제까지 · 개인으로 이어 쓰기, 2026-11-01 대표 결정) — V86 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V86";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -467,7 +468,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V85";
 /** `비밀번호 바꾸기` */
 /** `12분 안팎입니다` 를 `{time} 걸립니다` 로 */
 /** 홈 인사를 `{name}님, 안녕하세요` 로(기관 참여자 · 개인에게 `학생` 을 붙이지 않는다) · 검사 고르기의 학교 칸을 기관 낱말로(`campusSay`) */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.63";
+/** `{school} 제공` · 학교 제공 기간 안내 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.64";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

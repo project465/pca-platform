@@ -1,5 +1,8 @@
 /** 작업공간 영어 사전: MAT(`/me/track` · 브리핑 · 사용법). 열쇠는 한국어 원문이다(`../ws-say.ts`) */
 export const WS_EN_TRACK: Record<string, string> = {
+  "{school} 제공": "Provided by {school}",
+  "학교 제공 기간은 {date}까지입니다. 끝난 뒤에도 개인 이용권으로 이어 쓸 수 있고, 쓰던 자료는 그대로 남습니다.":
+    "Your school's access runs until {date}. After that you can continue with a personal pass, and everything you saved stays.",
   /* ── 머리 ─────────────────────────────────────────────── */
   "MAT · AI 취업비서": "MAT · AI career assistant",
   "AI 취업비서 · 이용 중": "AI career assistant · active",

@@ -34,6 +34,7 @@ import { FREE_TOTAL, matAccess } from "@/lib/mat-access";
 import {
   addPosting, changeConsent, changeDigest, changeFileConsent, claimTrial, makeDraft, readAllNudges,
 } from "./actions";
+import { university } from "@/lib/campus/registry";
 
 export async function generateMetadata() {
   const u = await currentUser().catch(() => null);
@@ -70,6 +71,11 @@ export async function generateMetadata() {
 
 /** 마감까지 남은 날. 한국 날짜로 센다(브리핑과 같은 함수) */
 const leftDays = (deadline: string): number => daysLeft(deadline, kstToday());
+
+/** 학교 코드 → 이름. 등록부에 없으면 `학교` */
+function schoolName(code: string): string {
+  try { return university(code)?.university_name ?? "학교"; } catch { return "학교"; }
+}
 
 const NAME: Record<string, string> = {
   TRACK_30D: "30일권",
@@ -240,6 +246,15 @@ export default async function Track({
               <span>{ready ? t("공고 확인 · 경험 채우기 · 파일 읽기 · 내 자료 읽기 가운데 아무 도구나 합쳐서 2번 무료입니다. 그다음부터는 아래 기간권으로 이어집니다.") : t("무료 검사를 마치면 기간권을 고를 수 있습니다.")}</span>
             </p>
           )}
+          {/* **어디서 온 이용권인지 한 줄**(2026-11-01 대표 결정: 하나의 MAT, 두 가지 이용권).
+              학교 좌석이면 학교 이름과 학교 기간이 끝나는 날을 적고, 그 뒤에 개인으로 이어 쓸 수
+              있다는 것을 같이 적는다. 쓰던 자료는 그대로 남는다 */}
+          {state.on && state.source?.kind === "school" ? (
+            <p className="cm-row">
+              <b>{t("{school} 제공", { school: schoolName(state.source.university) })}</b>
+              <span>{t("학교 제공 기간은 {date}까지입니다. 끝난 뒤에도 개인 이용권으로 이어 쓸 수 있고, 쓰던 자료는 그대로 남습니다.", { date: day(state.source.until) })}</span>
+            </p>
+          ) : null}
           {claimable ? (
             <form action={claimTrial} className="cm-acts">
               <span className="cm-none">{t("PRO 결과지를 사셨습니다. 첫 1개월을 받으실 수 있습니다.")}</span>

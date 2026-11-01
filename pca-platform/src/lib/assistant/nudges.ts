@@ -174,10 +174,14 @@ export async function autoNudges(userId: string, opts: { paid: boolean; now?: Da
   const en = (await wsLang(userId).catch(() => "ko")) === "en";
   let renew = 0, match = 0;
   if (opts.paid) {
-    const end = await query<{ ends: string; left: number }>(
-      `SELECT max(ends_at)::text AS ends,
-              (max(ends_at) AT TIME ZONE 'Asia/Seoul')::date - (now() AT TIME ZONE 'Asia/Seoul')::date AS left
-         FROM entitlements WHERE user_id = $1 AND kind = 'track' AND status = 'active' AND ends_at > now()`,
+    /* 마지막으로 끝나는 줄이 학교 좌석인지도 함께 읽는다(2026-11-01 대표 결정: 학교 기간이 끝나면
+       개인 이용권으로 이어 쓸 수 있게 미리 알린다) */
+    const end = await query<{ ends: string; left: number; school: boolean }>(
+      `SELECT ends_at::text AS ends,
+              (ends_at AT TIME ZONE 'Asia/Seoul')::date - (now() AT TIME ZONE 'Asia/Seoul')::date AS left,
+              (campus_pool_id IS NOT NULL) AS school
+         FROM entitlements WHERE user_id = $1 AND kind = 'track' AND status = 'active' AND ends_at > now()
+        ORDER BY ends_at DESC LIMIT 1`,
       [userId]).catch(() => []);
     const e = end[0];
     if (e?.ends && e.left !== null && e.left <= 10) {
@@ -185,12 +189,20 @@ export async function autoNudges(userId: string, opts: { paid: boolean; now?: Da
       const svc = serviceName(await brandOf(userId), en ? "en" : "ko");
       const ok = await put(userId, {
         kind: "renew",
-        title: en
-          ? (e.left <= 0 ? `Your ${svc} pass ends today` : `Your ${svc} pass ends in ${e.left} day${e.left === 1 ? "" : "s"}`)
-          : e.left <= 0 ? `${svc} 이용 기간이 오늘 끝납니다` : `${svc} 이용 기간이 ${e.left}일 남았습니다`,
-        body: en
-          ? "Buy again before it ends and the new days start the day after. Your records and results stay either way."
-          : "끝나기 전에 다시 사면 끝나는 날 다음 날부터 이어 붙습니다. 끝나도 적어 둔 경험과 결과는 그대로 남습니다.",
+        title: e.school
+          ? (en
+            ? (e.left <= 0 ? `Your school's ${svc} access ends today` : `Your school's ${svc} access ends in ${e.left} day${e.left === 1 ? "" : "s"}`)
+            : e.left <= 0 ? `학교 제공 ${svc} 기간이 오늘 끝납니다` : `학교 제공 ${svc} 기간이 ${e.left}일 남았습니다`)
+          : en
+            ? (e.left <= 0 ? `Your ${svc} pass ends today` : `Your ${svc} pass ends in ${e.left} day${e.left === 1 ? "" : "s"}`)
+            : e.left <= 0 ? `${svc} 이용 기간이 오늘 끝납니다` : `${svc} 이용 기간이 ${e.left}일 남았습니다`,
+        body: e.school
+          ? (en
+            ? "You can keep going with a personal pass after it ends. Everything you saved stays."
+            : "끝난 뒤에도 개인 이용권으로 이어 쓸 수 있습니다. 쓰던 자료와 결과는 그대로 남습니다.")
+          : en
+            ? "Buy again before it ends and the new days start the day after. Your records and results stay either way."
+            : "끝나기 전에 다시 사면 끝나는 날 다음 날부터 이어 붙습니다. 끝나도 적어 둔 경험과 결과는 그대로 남습니다.",
         href: "/me/track#plans", key: `renew:${e.ends.slice(0, 10)}:${step}`,
       }).catch(() => false);
       if (ok) renew += 1;

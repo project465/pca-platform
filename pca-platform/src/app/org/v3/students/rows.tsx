@@ -3,7 +3,7 @@
 import { campusSay } from "@/lib/campus/words";
 import { useActionState } from "react";
 import {
-  matAction, retakeAction, rotateAction, setStatusAction, type ManageState,
+  matAction, matCloseAction, retakeAction, rotateAction, setStatusAction, type ManageState,
 } from "./actions";
 import type { StudentRow } from "@/lib/campus/manage";
 import IssuedCard from "./issued";
@@ -25,10 +25,12 @@ const ATTEMPT_KO: Record<StudentRow["attempt"], string> = {
  * 학생이 들고 있던 열쇠가 그 자리에서 죽는다.
  */
 export default function StudentRows(
-  { rows, deptNames, agency = false, matUntil = {}, matPool = null }: {
+  { rows, deptNames, agency = false, matUntil = {}, matPool = null, matSchool = [] }: {
     rows: StudentRow[];
     /** 학생마다 MAT 이 열려 있는 마지막 날. 없으면 칸이 비어 있다 */
     matUntil?: Record<string, string>;
+    /** 이 학교 좌석으로 지금 열려 있는 학생. 이 줄에만 `MAT 닫기` 를 세운다 */
+    matSchool?: string[];
     /**
      * 줄마다 붙는 `MAT 열기` 가 쓰는 이용권. 지금 열 수 있는 것 가운데
      * 첫째다. 없으면 단추가 서지 않는다(여러 묶음 가운데 고르는 일은 위
@@ -54,6 +56,7 @@ export default function StudentRows(
       if (kind === "rotate") return rotateAction(prev, form);
       if (kind === "retake") return retakeAction(prev, form);
       if (kind === "mat") return matAction(prev, form);
+      if (kind === "mat_close") return matCloseAction(prev, form);
       return setStatusAction(prev, form);
     }, EMPTY);
 
@@ -131,9 +134,22 @@ export default function StudentRows(
                         onClick={(e) => {
                           if (!confirm(
                             `${r.name} ${t("학생")}에게 ${matPool.name} 을 엽니다.\n`
-                            + "학교가 산 인원에서 한 명이 줄고, 되돌릴 수 없습니다.",
+                            + "좌석이 하나 줄어듭니다. 닫으면 좌석이 돌아옵니다.",
                           )) e.preventDefault();
                         }}>MAT 열기</button>
+                    </form>
+                  ) : null}
+                  {matSchool.includes(r.user_id) ? (
+                    <form action={run}>
+                      <input type="hidden" name="kind" value="mat_close" />
+                      <input type="hidden" name="user_id" value={r.user_id} />
+                      <button type="submit" className="sf-mini" disabled={pending}
+                        onClick={(e) => {
+                          if (!confirm(
+                            `${r.name} ${t("학생")}의 MAT 을 닫습니다.\n`
+                            + "바로 쓸 수 없게 되고 좌석이 하나 돌아옵니다. 학생이 남긴 자료는 지우지 않습니다.",
+                          )) e.preventDefault();
+                        }}>MAT 닫기</button>
                     </form>
                   ) : null}
                   {r.attempt === "scored" ? (

@@ -17,7 +17,7 @@ import LangSelect from "@/components/sf/lang-select";
 import StudentRows from "./rows";
 import AddStudent from "./add";
 import MatPanel from "./mat";
-import { CAMPUS_MAT_NAME, matUntilOf, poolsOf } from "@/lib/campus/mat";
+import { CAMPUS_MAT_NAME, matUntilOf, matUsageOf, poolsOf, schoolMatOf } from "@/lib/campus/mat";
 
 export const metadata = { title: `학생 관리 · ${BRAND.campus}` };
 
@@ -108,7 +108,11 @@ export default async function CampusStudents({
     studentCounts(filter),
     poolsOf(uni),
   ]);
-  const matUntil = await matUntilOf(rows.map((r) => r.user_id));
+  const [matUntil, matSchool, matUsage] = await Promise.all([
+    matUntilOf(rows.map((r) => r.user_id)),
+    schoolMatOf(uni, rows.map((r) => r.user_id)),
+    matUsageOf(uni),
+  ]);
   const matPools = pools.map((p) => ({
     id: p.id, name: CAMPUS_MAT_NAME[p.product_code], seats: p.seats, used: p.used,
     left: p.left, grant_until: p.grant_until, open: p.open, closed: p.status === "closed",
@@ -184,8 +188,8 @@ export default async function CampusStudents({
       {/* **MAT(AI 취업비서) 학교 단체 이용권.** 학교가 산 인원 안에서
           담당자가 학생에게 연다. 학생 화면은 개인 구매와 같은 MAT 쪽이 열린다 */}
       <Section title="MAT · AI 취업비서"
-        note="학교가 산 인원 안에서 학생에게 엽니다. 연 날부터 학교와 정한 기간 동안 열립니다.">
-        <MatPanel pools={matPools} total={total}
+        note="계약한 좌석 안에서 학생에게 엽니다. 연 날부터 계약 기간 동안 쓸 수 있습니다.">
+        <MatPanel pools={matPools} total={total} usage={matUsage}
           filter={{ q: sp.q ?? "", department: sp.department ?? "",
             college: sp.college ?? "", state: state === "disabled" ? "all" : state }} />
       </Section>
@@ -199,7 +203,7 @@ export default async function CampusStudents({
                 없었다). 쪽은 열리는 것으로 보이는 다른 검사들이 이 쪽을
                 한 번도 열지 않아 몇 회차 동안 조용했다. 읽는 자리는 그대로
                 등록부 하나이고, 넘기는 것은 **그 줄에 쓸 이름뿐**이다 */}
-            <StudentRows rows={rows} agency={agency} matUntil={matUntil}
+            <StudentRows rows={rows} agency={agency} matUntil={matUntil} matSchool={matSchool}
               matPool={firstOpen ? { id: firstOpen.id, name: firstOpen.name } : null}
               deptNames={Object.fromEntries(
                 rows.map((r) => [r.department_code, deptName(r.department_code)]))} />

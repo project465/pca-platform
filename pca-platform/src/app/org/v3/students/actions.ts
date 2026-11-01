@@ -198,3 +198,18 @@ export async function matAction(
   if (!r.opened) return { err: bits.join(" ") || "새로 연 학생이 없습니다." };
   return { ok: bits.join(" ") };
 }
+
+/** 학생 한 명의 MAT 을 닫는다. 이 학교 좌석으로 연 기간만 닫고, 좌석이 돌아온다 */
+export async function matCloseAction(
+  _prev: ManageState, form: FormData,
+): Promise<ManageState> {
+  const sc = await scope();
+  if (!sc) return { err: "학교 등록부에 연결된 기관이 아닙니다." };
+  const { revokeMat } = await import("@/lib/campus/mat");
+  const r = await revokeMat(sc.uni, [String(form.get("user_id") ?? "")], sc.actor);
+  revalidatePath("/org/v3/students");
+  if (!r.ok) return { err: r.why };
+  return r.closed
+    ? { ok: "MAT 을 닫았습니다. 좌석 하나가 돌아왔습니다. 학생이 남긴 자료는 그대로 있습니다." }
+    : { err: "이 학교 좌석으로 열린 MAT 이 없습니다." };
+}
