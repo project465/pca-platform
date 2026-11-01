@@ -1,6 +1,7 @@
 import { isProduction } from "@/lib/env";
 import { opFail, ref } from "@/lib/oplog";
 import { ingest, knownRefs, type RawPosting } from "./ingest";
+import { JI_API_READY, fromApi, jiApiKey, listApi, type JiApiPosting } from "./jobindustry-api";
 import { JI_BOARDS, hasPage, listRefs, parseView } from "./jobindustry-parse";
 
 /**
@@ -50,9 +51,40 @@ async function get(url: string): Promise<string> {
   return res.text();
 }
 
-export async function runJobindustry(opts: { firstFill?: boolean } = {}): Promise<{
-  ok: boolean; listed: number; fresh: number; ingested: number; mapped: number; failed: number; error?: string;
-}> {
+/**
+ * 어느 길로 받나(2026-11-01). **API 는 열쇠가 있고 그 자리가 채워졌을 때만**이다
+ * (`jobindustry-api.ts` 의 `JI_API_READY`). 열쇠가 먼저 들어와도 그 전에는 화면을 읽는다
+ */
+export function jiSource(): "api" | "page" {
+  return JI_API_READY && jiApiKey() ? "api" : "page";
+}
+
+type JiRun = {
+  ok: boolean; via: "api" | "page"; listed: number; fresh: number; ingested: number; mapped: number; failed: number; error?: string;
+};
+
+export async function runJobindustry(opts: { firstFill?: boolean } = {}): Promise<JiRun> {
+  return jiSource() === "api" ? runApi(opts) : runPages(opts);
+}
+
+/** API 로 받는다. 이미 받은 공고는 다시 넣지 않는다(화면으로 받은 것과 같은 번호) */
+async function runApi(opts: { firstFill?: boolean }): Promise<JiRun> {
+  let items: JiApiPosting[];
+  try {
+    items = await listApi({ firstFill: Boolean(opts.firstFill) });
+  } catch (e) {
+    opFail({ operation: "jobs.jobindustry", step: "api", category: "upstream" }, e);
+    return { ok: false, via: "api", listed: 0, fresh: 0, ingested: 0, mapped: 0, failed: 1, error: "api" };
+  }
+  const known = await knownRefs(JI_SOURCE, items.map((p) => p.id));
+  const fresh = items.filter((p) => !known.has(p.id));
+  const rows = fresh.map((p) => fromApi(p, JI_SOURCE)).filter((r): r is RawPosting => r !== null);
+  const r = await ingest(rows);
+  return { ok: true, via: "api", listed: items.length, fresh: fresh.length, ingested: r.seen, mapped: r.mapped, failed: fresh.length - rows.length };
+}
+
+/** 공개 목록과 상세 화면을 읽는다(2026-10-31 부터 운영에서 쓰는 길) */
+async function runPages(opts: { firstFill?: boolean }): Promise<JiRun> {
   const base = jiBase();
   const pages = opts.firstFill ? Number(process.env.JOBINDUSTRY_BACKFILL_PAGES ?? 5) : 1;
   const maxDetail = Number(process.env.JOBINDUSTRY_MAX_DETAIL ?? 40);
@@ -75,7 +107,7 @@ export async function runJobindustry(opts: { firstFill?: boolean } = {}): Promis
     }
   }
   if (!found.length) {
-    return { ok: failed === 0, listed: 0, fresh: 0, ingested: 0, mapped: 0, failed, error: failed ? "list" : undefined };
+    return { ok: failed === 0, via: "page", listed: 0, fresh: 0, ingested: 0, mapped: 0, failed, error: failed ? "list" : undefined };
   }
   const known = await knownRefs(JI_SOURCE, found.map((f) => f.idx));
   const fresh = found.filter((f) => !known.has(f.idx)).slice(0, maxDetail);
@@ -95,5 +127,5 @@ export async function runJobindustry(opts: { firstFill?: boolean } = {}): Promis
     }
   }
   const r = await ingest(rows);
-  return { ok: true, listed: found.length, fresh: fresh.length, ingested: r.seen, mapped: r.mapped, failed };
+  return { ok: true, via: "page", listed: found.length, fresh: fresh.length, ingested: r.seen, mapped: r.mapped, failed };
 }
