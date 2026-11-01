@@ -29,6 +29,8 @@ export const AUDITED = [
   /* MAT 학교 단체 이용권. 운영자가 인원을 적고 담당자가 학생에게 연다.
      돈이 계약으로 오가는 자리라 누가 몇 명을 열었는지 되짚을 수 있어야 한다 */
   "campus.mat.pool.create", "campus.mat.pool.close", "campus.mat.grant",
+  /* 담당자가 한 학생의 학교 MAT 을 닫은 일. 연 일과 짝을 이뤄야 좌석이 어디로 갔는지 맞는다 */
+  "campus.mat.revoke",
 ] as const;
 export type AuditAction = (typeof AUDITED)[number];
 
