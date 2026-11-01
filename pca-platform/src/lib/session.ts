@@ -79,9 +79,24 @@ export async function requireUser(
   return user;
 }
 
+/**
+ * 역할이 맞지 않으면 **말 없이 첫 화면으로 보내지 않는다**(2026-11-01 배재대 운영 시험:
+ * 최고 관리자 탭의 `/admin` 이 안내 없이 `/org/v3` 로 넘어갔다. 같은 브라우저에서 다른
+ * 담당자로 로그인해 담당자 로그인이 바뀐 것이었는데, 화면은 그 사실을 알려 주지 않았다).
+ * `/denied` 가 지금 누구로 들어와 있는지와 갈 길을 적는다.
+ */
 export async function requireRole(allowed: Role[]): Promise<SessionUser> {
   const user = await requireUser();
-  if (!allowed.includes(user.role)) redirect("/");
+  if (!allowed.includes(user.role)) {
+    let path = "";
+    try { path = (await headers()).get("x-cm-path") ?? ""; } catch { path = ""; }
+    const from = path.startsWith("/") && !path.startsWith("//") ? path.slice(0, 300) : "";
+    const qs = new URLSearchParams();
+    if (user.scope === "staff") qs.set("as", "staff");
+    if (from) qs.set("from", from);
+    const q = qs.toString();
+    redirect(`/denied${q ? `?${q}` : ""}`);
+  }
   return user;
 }
 

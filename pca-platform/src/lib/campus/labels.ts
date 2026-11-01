@@ -8,8 +8,27 @@
  * **등록부 하나에서 읽는다**(`campus-universities.json`).
  */
 import {
-  allLeaves, facultyOf, retiredCodeOf, university,
+  allLeaves, facultyOf, retiredCodeOf, university, type CampusUniversity,
 } from "@/lib/campus/registry";
+
+/**
+ * 학과 코드 → 담당자가 읽는 이름. **이름이 겹치면 교육과정 연도를 붙인다**(2026-11-01
+ * 배재대 운영 시험: `간호학과` 가 PCU26_NURSING 과 PCU27_NURSING 두 줄로 나와 고를 수
+ * 없었다). 코드는 학년도마다 다른 자리라 하나로 묶지 않는다: 학생 줄에 적힌 코드가
+ * 그대로 읽혀야 한다. 겹치지 않는 이름은 그대로 둔다.
+ */
+function leafLabels(u: CampusUniversity): Map<string, string> {
+  const base = new Map<string, { name: string; year: number }>();
+  for (const r of allLeaves(u)) {
+    if (base.has(r.leaf.code)) continue;
+    const f = facultyOf(u, r.leaf.code);
+    base.set(r.leaf.code, { name: f ? `${f.name} · ${r.leaf.name}` : r.leaf.name, year: r.catalog.catalog_year });
+  }
+  const count = new Map<string, number>();
+  for (const v of base.values()) count.set(v.name, (count.get(v.name) ?? 0) + 1);
+  return new Map([...base].map(([code, v]) =>
+    [code, (count.get(v.name) ?? 0) > 1 ? `${v.name} (${v.year} 교육과정)` : v.name]));
+}
 
 export type CampusNames = {
   college: (code: string) => string;
@@ -25,10 +44,7 @@ export function campusNames(universityCode: string | null): CampusNames {
     c.colleges.map((x) => [x.code, x.name] as [string, string])));
   /* **학부가 있으면 함께 적는다**(규격 §12). 같은 이름의 전공이 다른
      학부에 설 수 있고, 집계에서 그 둘이 한 줄로 보이면 안 된다 */
-  const dep = new Map(allLeaves(u).map((r) => {
-    const f = facultyOf(u, r.leaf.code);
-    return [r.leaf.code, f ? `${f.name} · ${r.leaf.name}` : r.leaf.name];
-  }));
+  const dep = leafLabels(u);
   return {
     college: (k: string) => col.get(k) ?? k,
     /* **내려놓은 코드를 학과 이름으로 읽지 않는다.** 그 코드가 무엇이었는지
@@ -55,16 +71,12 @@ export function leafChoices(universityCode: string | null): {
   const u = universityCode ? university(universityCode) : null;
   if (!u) return [];
   const seen = new Set<string>();
+  const label = leafLabels(u);
   const out: { code: string; name: string; college: string }[] = [];
   for (const r of allLeaves(u)) {
     if (seen.has(r.leaf.code)) continue;
     seen.add(r.leaf.code);
-    const f = facultyOf(u, r.leaf.code);
-    out.push({
-      code: r.leaf.code,
-      name: f ? `${f.name} · ${r.leaf.name}` : r.leaf.name,
-      college: r.college.code,
-    });
+    out.push({ code: r.leaf.code, name: label.get(r.leaf.code) ?? r.leaf.name, college: r.college.code });
   }
   return out.sort((a, b) => a.name.localeCompare(b.name, "ko"));
 }
