@@ -4,6 +4,8 @@ import { coresForMarket } from "@/lib/me-v3/core-registry";
 import { currentAttempt, v3Grants } from "@/lib/me-v3/runtime/session";
 import { campusAttemptState } from "@/lib/campus/attempt-state";
 import { campusStudentContext } from "@/lib/campus/students";
+import { campusSay } from "@/lib/campus/words";
+import { university } from "@/lib/campus/registry";
 import "../surface.css";
 import "../me/platform.css";
 import { CmShell, CmHead } from "../me/shell";
@@ -91,6 +93,8 @@ export default async function Cores({ searchParams }: { searchParams?: Promise<{
   /* 학교 학생의 단추는 그 학생의 응시 상태가 정한다: 결과를 받은
      학생에게 `시작하기` 를 세우지 않는다(누르면 지난 결과로 돌아간다) */
   const st = mine ? await campusAttemptState(user.id) : null;
+  /* **기관 참여자에게 학교 낱말을 쓰지 않는다**(2026-11-01 세종일자리 시험) */
+  const say = campusSay(mine ? university(mine.row.university_code) : null);
 
   return (
     /* **로그아웃이 이 쪽에도 선다.** 학교 학생이 로그인하면 처음 닿는 자리가
@@ -139,21 +143,21 @@ export default async function Cores({ searchParams }: { searchParams?: Promise<{
               파란 Hero 가 학교·학과와 시작 단추 하나를 들고, 아래 칸이
               검사를 끝내면 열리는 자리를 보여 준다 */}
           <PrimaryActionHero
-            tag="학교 계약 · 내 학과"
+            tag={say("학교 등록 · 내 학과")}
             tagIcon="building"
             title={`${mine.university_name} ${mine.department_name}`}
             why={open
               ? "풀던 검사가 있습니다. 마지막으로 답한 문항에서 이어집니다."
-              : "학교가 적어 준 학과로 검사를 시작합니다. 결과는 그 학과 담당자의 집계에 들어갑니다."
-                + " 적힌 학과가 다르면 학과 담당자에게 알려 주세요."}
+              : say("학교에 등록된 학과로 검사를 시작합니다. 결과는 학과 담당자 집계에 들어갑니다."
+                + " 학과가 다르게 적혀 있으면 학과 담당자에게 알려 주세요.")}
             action={
               <Link className="cm-btn is-primary"
                 href={open ? `/v3/${open.id}`
                   : st?.kind === "result" ? `/v3/${st.attemptId}/result`
                   : `/campus/${mine.row.university_code.toLowerCase()}/start`}>
                 {open ? "이어하기 →" : st?.kind === "result" ? "결과 보기 →"
-                  : st?.kind === "retake" ? "학과 확인하고 다시 시작하기 →"
-                  : "학과 확인하고 시작하기 →"}
+                  : st?.kind === "retake" ? say("학과 확인하고 다시 시작하기 →")
+                  : say("학과 확인하고 시작하기 →")}
               </Link>
             }
           />

@@ -412,7 +412,7 @@ export default async function CampusV3({
             미만 칸은 수가 비어 있습니다
           </li>
           <li>
-            <a href={`/org/v3/report.pdf${qs}`}>대학 운영 요약 PDF</a>{" · "}
+            <a href={`/org/v3/report.pdf${qs}`}>운영 요약 PDF</a>{" · "}
             <Link href={`/org/v3/report${qs}`}>미리 보기</Link>{" "}
             · 개인 응답은 들어 있지 않습니다
           </li>
@@ -601,7 +601,7 @@ export default async function CampusV3({
             않는다. 답하지 않는다는 것을 먼저 적는다 */}
         <ul className="sf-list">
           <li>학생끼리 줄을 세우지 않습니다. 등수도 백분위도 내지 않습니다.</li>
-          <li>종합 점수나 대학 KPI 를 만들지 않습니다.</li>
+          <li>종합 점수나 순위를 매기지 않습니다.</li>
           <li>합격 가능성이나 취업 확률을 내지 않습니다.</li>
           <li>개인 결과지는 본인 동의와 계약에 적힌 범위 안에서만 열립니다.</li>
         </ul>

@@ -83,6 +83,9 @@ export default function StudentRows(
             <tr>
               <th scope="col">이름</th>
               <th scope="col">{t("학번")}</th>
+              {/* **로그인 아이디를 따로 적는다**(2026-11-01 세종일자리 시험: 배재대는 학번이 곧
+                  아이디라 보였고, 앞머리가 붙는 기관은 아이디를 볼 자리가 없었다) */}
+              <th scope="col">아이디</th>
               <th scope="col">{t("학과")}</th>
               <th scope="col">계정</th>
               <th scope="col">응시</th>
@@ -96,6 +99,7 @@ export default function StudentRows(
               <tr key={r.user_id}>
                 <th scope="row" className="sf-strong">{r.name}</th>
                 <td>{r.student_id}</td>
+                <td className="mono">{r.login_id || "—"}</td>
                 <td>{deptNames[r.department_code] ?? r.department_code}</td>
                 <td>
                   <span className={`sf-pill${r.account === "active" ? "" : " is-off"}`}>

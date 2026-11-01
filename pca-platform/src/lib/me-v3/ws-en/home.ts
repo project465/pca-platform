@@ -1,7 +1,7 @@
 /** 작업공간 영어 사전: home. 열쇠는 한국어 원문이다(`../ws-say.ts`) */
 export const WS_EN_HOME: Record<string, string> = {
   /* 머리 */
-  "{name} 학생, 안녕하세요": "Hello, {name}",
+  "{name}님, 안녕하세요": "Hello, {name}",
   " · 최근 업데이트 {at}": " · Last updated {at}",
   "전공 진로 검사": "Career assessment for your major",
   "풀던 검사가 있습니다": "You have an assessment in progress",

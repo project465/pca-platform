@@ -245,7 +245,7 @@ export default async function Home() {
            어느 단계인지는 제목 위 한 줄로 옮겼다. 다른 쪽은 그대로 쪽
            이름이 제목이다 */
         kicker={head[st.stage]}
-        title={t("{name} 학생, 안녕하세요", { name: user.name })}
+        title={t("{name}님, 안녕하세요", { name: user.name })}
         /* 제목 아래 한 줄(규격 §4) */
         meta={`${major ?? t("전공 진단")}${st.result_at ? t(" · 최근 업데이트 {at}", { at: day(st.result_at) ?? "" }) : ""}`}
         /* **설명 문단과 단추를 머리에 두지 않는다**(규격 §9 · §19). 바로

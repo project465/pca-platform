@@ -466,7 +466,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V85";
 /** `직무의 말` 을 `회사에서 쓸 역량` 으로 · 내 자료로 찾기 한 줄을 짧게 */
 /** `비밀번호 바꾸기` */
 /** `12분 안팎입니다` 를 `{time} 걸립니다` 로 */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.62";
+/** 홈 인사를 `{name}님, 안녕하세요` 로(기관 참여자 · 개인에게 `학생` 을 붙이지 않는다) · 검사 고르기의 학교 칸을 기관 낱말로(`campusSay`) */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.63";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**
