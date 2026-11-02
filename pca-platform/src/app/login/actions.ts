@@ -4,14 +4,24 @@ import { AuthError } from "next-auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { opFail } from "@/lib/oplog";
-import { auth, inactiveReason, signIn, signOut, staffRoleOf, staffSignIn } from "@/lib/auth";
+import { auth, inactiveReason, resolveLoginId, signIn, signOut, staffRoleOf, staffSignIn } from "@/lib/auth";
 import { homePathFor } from "@/lib/roles";
 import { clientIpFrom, loginGate } from "@/lib/login-throttle";
 import { entrySay } from "@/lib/entry-say";
-import { university } from "@/lib/campus/registry";
+import { university, universities } from "@/lib/campus/registry";
 import { campusLoginId } from "@/lib/campus/students";
 
-export type LoginState = { error?: string };
+/** `schools` = 학교 로그인 화면으로 가는 길(학교 코드 · 이름). 학교 계정 안내에 붙는다 */
+export type LoginState = { error?: string; schools?: { code: string; name: string }[] };
+
+/** 학번 · 휴대전화 번호 꼴인가(숫자와 붙임표만, 4~13자) */
+const NUMERIC_ID = /^[0-9-]{4,13}$/;
+
+function schoolLinks(codes?: string[]): { code: string; name: string }[] {
+  return universities()
+    .filter((u) => !codes || codes.includes(u.university_code))
+    .map((u) => ({ code: u.university_code.toLowerCase(), name: u.university_name }));
+}
 
 /**
  * 기다리라는 말을 분으로 적는다.
@@ -32,7 +42,7 @@ export async function loginAction(
   /* 학교 · 기관 로그인 화면은 학번 · 전화번호만 받는다. 그 학교의 아이디 꼴(머리 · 숫자만)로 바꿔 묻는다 */
   const org = university(String(formData.get("org") ?? ""));
   const raw = String(formData.get("identifier") ?? "").trim();
-  const identifier = org && raw ? campusLoginId(org, raw) : raw;
+  let identifier = org && raw ? campusLoginId(org, raw) : raw;
   const password = String(formData.get("password") ?? "");
   /* 폼이 그 화면의 언어를 들고 온다. 화면 문구만 고르고 판단에는 쓰지 않는다 */
   const say = entrySay(formData.get("lang") === "en" ? "en" : "ko");
@@ -55,6 +65,20 @@ export async function loginAction(
       error: say("로그인 시도가 너무 많습니다. {wait} 뒤에 다시 시도해주세요.",
         { wait: waitKo(gate.retryAfterSec, say) }),
     };
+  }
+
+  /* **공통 화면에 학번 · 휴대전화 번호만 넣었으면** 학교 머리를 붙인 아이디까지 대어 본다(`resolveLoginId`).
+     막힌 시도 셈(`loginGate`)은 위에서 넣은 값으로 이미 했다 */
+  const numeric = !org && NUMERIC_ID.test(raw);
+  if (numeric && password) {
+    const unis = universities();
+    const r = await resolveLoginId(raw, password, unis.map((u) => campusLoginId(u, raw)))
+      .catch((e) => { opFail({ operation: "login.resolve", step: "lookup", category: "db" }, e); return { id: raw }; });
+    if ("many" in r) {
+      const codes = unis.filter((u) => r.many.includes(campusLoginId(u, raw))).map((u) => u.university_code);
+      return { error: say("같은 번호로 된 계정이 여러 학교에 있습니다. 다니는 학교를 골라 그 학교 화면에서 들어와 주세요."), schools: schoolLinks(codes) };
+    }
+    identifier = r.id;
   }
 
   /* **담당자와 학생은 로그인 쿠키를 따로 쓴다**(`auth.ts`). 그래서 같은
@@ -96,6 +120,8 @@ export async function loginAction(
         error: say("아이디 또는 비밀번호가 올바르지 않습니다."
           + " 학교에서 받은 비밀번호가 기억나지 않으면 학과 담당자가"
           + " 다시 발급해 드립니다."),
+        /* 학번 · 전화번호로 넣었으면 학교 화면으로 가는 길을 함께 준다 */
+        ...(numeric ? { schools: schoolLinks() } : {}),
       };
     }
     throw e;

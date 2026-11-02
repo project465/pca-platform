@@ -91,7 +91,10 @@ export default async function LoginPage({
             <p className="notice" role="status">
               {lang === "en"
                 ? <>You are signed in as <b>{who.name}</b>. Signing in with another {who.scope === "staff" ? "staff " : ""}account here replaces it in this browser, other tabs included. </>
-                : <>지금 <b>{who.name}</b> ({ROLE_LABEL[who.role]}) 계정으로 로그인돼 있습니다. 여기서 다른 {who.scope === "staff" ? "담당자 " : ""}계정으로 들어가면 이 브라우저의 로그인이 그 계정으로 바뀝니다(다른 탭 포함). </>}
+                : who.scope === "staff"
+                  /* 담당자와 학생은 로그인을 따로 든다. 학생 계정으로 들어가도 담당자 로그인은 남는다(2026-11-02 운영 시험) */
+                  ? <>이 브라우저에는 담당자 계정 <b>{who.name}</b> ({ROLE_LABEL[who.role]})도 로그인돼 있습니다. 학생 계정으로 들어가도 담당자 로그인은 그대로 남고, 다른 담당자 계정으로 들어가면 그 계정으로 바뀝니다(다른 탭 포함). </>
+                  : <>지금 <b>{who.name}</b> ({ROLE_LABEL[who.role]}) 계정으로 로그인돼 있습니다. 여기서 다른 계정으로 들어가면 이 브라우저의 로그인이 그 계정으로 바뀝니다(다른 탭 포함). </>}
               <Link href={homePathFor(who.role)}>{lang === "en" ? "Continue as this account" : "이 계정으로 계속"}</Link>
             </p>
           ) : null}
