@@ -301,7 +301,8 @@ console.log("\n── 13. Human Review 결함이 닫혔는가 ──");
   /* (d) 반쯤 선 축의 말이 머리글과 부딪히지 않는다 */
   const t = body("src/lib/me-v3/result/text.ko.ts");
   ok("반쯤 선 축이 `아직 없습니다` 로 적히지 않는다",
-    !/어디까지 직접 정했는지가 아직 없습니다/.test(t) && /직접 정한 것은 보이고/.test(t));
+    !/어디까지 직접 정했는지가 아직 없습니다/.test(t) && /직접 해 본 것은 보이고/.test(t));
+  /* 2026-11-02: `직접 정한 것은 보이고` 는 요약의 `직접 정한 것 0` 과 부딪혀 `직접 해 본 것은 보이고` 로 고쳤다(K5) */
   /* (e) 홈 영역 칸의 거드는 줄이 한 줄 말줄임이 아니다 */
   const css = body("src/app/me/platform.css");
   const small = css.slice(css.indexOf(".cm-tile-txt small {"), css.indexOf("}", css.indexOf(".cm-tile-txt small {")));

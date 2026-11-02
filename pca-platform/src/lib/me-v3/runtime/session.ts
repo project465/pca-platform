@@ -939,7 +939,11 @@ export async function recomputeRouting(a: V3Attempt): Promise<V3Attempt> {
   const tds = content(a.core_code).domains.domains.map((d) => d.code);
   const answers = await answersOf(a.id);
   const grid = gridOf(answers, tds);
-  const filled = tds.filter((td) => grid[td].interest !== null).length;
+  /* **`모르겠다` 도 답이다**(2026-11-02 전주대 기계 v3/24 실제 응시 P0). 관심 칸의 `모르겠다` 는 값이 없는 답(`choice:
+     UNKNOWN`)으로 저장되는데, 값이 있는 칸만 세면 한 칸만 `모르겠다` 여도 격자가 끝나지 않은 것으로 읽혀 **영역 심화가
+     하나도 열리지 않았다**: 판단 문항을 묻지 않고 직무 문항으로 건너가, 결과가 열두 영역 모두 `묻지 않음` 이 됐다.
+     그래서 답이 들어왔는지(값 유무와 상관없이)로 센다. 고르는 순서에서 `모르겠다` 는 관심 0 으로 읽힌다(`routing.ts`) */
+  const filled = tds.filter((td) => answers[`G_${td}_INT`] !== undefined).length;
   if (filled < tds.length) return a;
   const pick = pickDomains(grid, a.tier, tds);
   await query(
