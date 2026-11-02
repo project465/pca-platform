@@ -8,6 +8,9 @@ import { industryChoices, roleChoices } from "@/lib/me-v3/runtime/session";
 import { CmShell, CmHead } from "../shell";
 import { EmptyState, PickCard, PickGrid, SectionHeader } from "../ui";
 import { pickRegion } from "./actions";
+import { currentState } from "@/lib/me-v3/platform";
+import { latestRegionView } from "@/lib/me-v3/report-long/web-region";
+import RegionSection from "@/app/v3/[attemptId]/result/region";
 
 export const metadata = { title: "지역과 기관 · 내 CareerMatri" };
 
@@ -40,6 +43,10 @@ export default async function Region() {
   const gaps = regionGaps();
   /* 확인된 줄만 선다. 출처 없는 줄은 DB 가 거절하므로 걸러낼 일이 없다 */
   const orgs = await regionOrganizations(profile?.home_region ?? null, [], 6);
+  /* 학교 · 기관 응시면 결과 화면 · 책 01장과 같은 지역 회사 묶음을 여기에도 세운다(2026-11-02 대표 기준 `지역 기업이 먼저`) */
+  const [lr, st] = await Promise.all([latestRegionView(user.id), currentState(user.id)]);
+  const goalRole = st.model?.targets.goal?.role ?? null;
+  const chosenInd = st.model ? [st.model.targets.goal?.industry, ...st.model.targets.industries].filter((c): c is string => !!c) : [];
 
   return (
     <CmShell active="/me/region" title="지역과 기관" major={major}>
@@ -113,11 +120,12 @@ export default async function Region() {
       <SectionHeader icon="target" title="지금 고른 것" />
       <div className="cm-chips cm-mb">
         {[
-          ["권역", L.regions.find((r) => r.code === profile?.home_region)?.name],
+          ["권역", L.regions.find((r) => r.code === profile?.home_region)?.name ?? (lr ? `${lr.rv.area} (학교 · 기관 소재지 기준)` : undefined)],
           ["기관 유형", orgNames.join(" · ")],
           ["산업", (profile?.target_industry ?? []).map((c) =>
             industryChoices(core).find((x) => x.code === c)?.name ?? c).join(" · ")],
-          ["직무", (profile?.target_role ?? []).map((c) =>
+          /* 목표 직무가 먼저다(결과 화면 · 준비 화면과 같은 기준) */
+          ["직무", [...new Set([...(goalRole ? [goalRole] : []), ...(profile?.target_role ?? [])])].map((c) =>
             roleChoices(core).find((x) => x.code === c)?.name ?? c).join(" · ")],
         ].map(([k, v]) => (
           <span className="cm-chip" key={k as string}>
@@ -131,7 +139,7 @@ export default async function Region() {
           법적·자료 설명은 아래 작은 자리로 내린다 */}
       <SectionHeader icon="building" tone="c" title="이 지역에서 함께 볼 곳"
         sub="채용 여부나 합격 가능성과는 관계가 없습니다." />
-      {orgs.length ? (
+      {lr ? <RegionSection v={lr.rv} chosen={chosenInd} /> : orgs.length ? (
         <PickGrid>
           {orgs.map((o) => (
             <PickCard key={o.organization_id} href={o.homepage_url}
@@ -180,16 +188,8 @@ export default async function Region() {
 
       {/* **긴 방어문을 첫 화면에 크게 세우지 않는다**(규격 §9). 자료가
           왜 비어 있는지는 눌러서 읽는 자리로 내린다 */}
-      <details className="cm-fold">
-        <summary>기업·기관 자료가 아직 비어 있는 까닭</summary>
-        <ul className="cm-bul">
-          {gaps.map((g) => <li key={g.table}>{g.why}</li>)}
-        </ul>
-        <p className="cm-note">
-          기관 수를 짐작으로 채우지 않습니다. 그 수가 근거처럼 읽히고, 그걸
-          믿고 움직이는 사람이 생깁니다.
-        </p>
-      </details>
+      {/* 자료를 어떻게 채울지에 대한 개발 메모(`why_empty`)는 학생에게 보이지 않는다(2026-11-02 진흥원 시험) */}
+      {gaps.length ? <p className="cm-note">이 지역 기업·기관 자료를 채우는 중입니다.</p> : null}
     </CmShell>
   );
 }

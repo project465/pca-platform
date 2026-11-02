@@ -17,3 +17,14 @@ export async function webRegionView(attemptId: string): Promise<RegionView | nul
     return null;
   }
 }
+
+/** 이 사람의 가장 최근 굳은 결과로 본 지역 회사 묶음(`/me/region`). 없으면 `null` */
+export async function latestRegionView(userId: string): Promise<{ attemptId: string; rv: RegionView } | null> {
+  const { queryOne } = await import("@/lib/db");
+  const a = await queryOne<{ id: string }>(
+    `SELECT a.id::text FROM v3_attempts a JOIN v3_snapshots s ON s.attempt_id = a.id
+      WHERE a.user_id = $1 AND s.result_model IS NOT NULL ORDER BY s.created_at DESC, s.id DESC LIMIT 1`, [userId]).catch(() => null);
+  if (!a) return null;
+  const rv = await webRegionView(a.id);
+  return rv ? { attemptId: a.id, rv } : null;
+}

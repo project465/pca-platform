@@ -3,7 +3,7 @@ import Link from "next/link";
 import { currentUser, requireUser } from "@/lib/session";
 import { majorNameOf } from "@/lib/me-v3/major-name";
 import { currentState, resultHistory, activeCoreOrPick } from "@/lib/me-v3/platform";
-import { domainName, majorNameIn } from "@/lib/me-v3/runtime/session";
+import { domainName, industryChoices, majorNameIn, roleChoices } from "@/lib/me-v3/runtime/session";
 import { wsLang, type WsLang } from "@/lib/me-v3/ws-lang";
 import { wsSay, type WsSay } from "@/lib/me-v3/ws-say";
 import { recentChangeKo } from "@/lib/me-v3/change-text.ko";
@@ -149,7 +149,7 @@ export default async function Results() {
             <div className="cm-rows">
               {Object.entries(st.model?.provenance.module_versions ?? {}).map(([k, v]) => (
                 <p className="cm-row" key={k}><b>{verKo(t)[k] ?? k}</b>
-                  <span>{v === null ? t("없음") : verSay(k, String(v), lang)}</span></p>
+                  <span>{v === null ? t("없음") : verSay(k, String(v), lang, st.core)}</span></p>
               ))}
             </div>
           </details>
@@ -170,11 +170,23 @@ export default async function Results() {
  * 나머지 판본 글자는 그대로 둔다. 이 묶음이 접혀 있는 까닭이 그것이다:
  * **되짚어 보실 자리라** 고객지원에 적어 보낼 수 있는 값이어야 한다.
  */
-function verSay(key: string, value: string, lang: WsLang = "ko"): string {
-  if (key !== "core_version") return value;
-  const hit = registry().cores.find((c) => c.code === value);
-  if (!hit) return value;
-  return lang === "en" ? (hit.name_en || hit.name_ko) : hit.name_ko;
+function verSay(key: string, value: string, lang: WsLang = "ko", core?: string): string {
+  if (key === "core_version") {
+    const hit = registry().cores.find((c) => c.code === value);
+    if (!hit) return value;
+    return lang === "en" ? (hit.name_en || hit.name_ko) : hit.name_ko;
+  }
+  /* **내부 코드를 그대로 적지 않는다**(2026-11-02 진흥원 시험: `ROLE_CAE_V2.v2` · `me-v3-scoring.5`). 산업 · 직무는
+     이름과 판 번호로, 나머지는 판 번호만 적는다. 번호를 못 찾으면 그대로 둔다(고객지원에 적어 보낼 값) */
+  const n = /(?:[._-]v|\.|_V)(\d+(?:\.\d+)?)$/i.exec(value)?.[1] ?? /(\d+(?:\.\d+)?)$/.exec(value)?.[1];
+  const nth = n ? (lang === "en" ? `v${n}` : `${n}판`) : "";
+  if ((key === "industry_pack_version" || key === "role_pack_version") && core) {
+    const code = value.replace(/\.v\d+$/i, "");
+    const list = key === "industry_pack_version" ? industryChoices(core) : roleChoices(core);
+    const name = list.find((x) => x.code === code)?.name;
+    if (name) return nth ? `${name} · ${nth}` : name;
+  }
+  return nth || value;
 }
 
 /** 판본 칸 이름을 사람 말로. **내부 열쇠를 그대로 적지 않는다** */

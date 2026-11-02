@@ -405,7 +405,8 @@
 /** 메모로 만든 경험 초안은 메모 원문을 보완 설명 칸에 미리 채워 펼쳐 둔다 — V89 */
 /** 공고 · 메모 안내에서 `규칙으로 읽습니다` 같은 내부 말을 뺀다(2026-11-02 대표) — V90 */
 /** 홈 할 일 수를 `내 할 일 목록에 n개 더` 로(결과 화면의 `이 결과에서 이어지는 할 일` 과 다른 목록) — V91 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V91";
+/** 지역 화면에 결과와 같은 지역 회사 묶음 · 학교 소재 권역 · 개발 메모 숨김, 상태 · 지역의 직무는 목표 직무 먼저, 판본은 이름과 번호로, 경험 0건이면 반영 변화 없음 — V92 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V92";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -476,7 +477,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V91";
 /** `{school} 제공` · 학교 제공 기간 안내 */
 /** 공고 · AI 설정 안내 문장에서 `규칙으로` 를 뺀다 — copy.65 */
 /** `그 밖에 할 일 n개` → `내 할 일 목록에 n개 더` — copy.66 */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.66";
+/** `이 지역 기업·기관 자료를 채우는 중입니다` 한 줄 — copy.67 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.67";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

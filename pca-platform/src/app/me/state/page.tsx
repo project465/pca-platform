@@ -1,3 +1,4 @@
+import { roleForGoal } from "@/lib/me-v3/result/goal-role";
 import Link from "next/link";
 import { currentUser, requireUser } from "@/lib/session";
 import { majorNameOf } from "@/lib/me-v3/major-name";
@@ -122,7 +123,9 @@ export default async function State(
 
   /* 굳은 결과의 원고 글자(고른 항목 · 결과물 이름)를 그 언어로 읽는다.
      판정 칸은 글자가 아니라 그대로 간다 */
-  const m = localizeResult(st.model, coreOf(st.model), lang);
+  const m0 = localizeResult(st.model, coreOf(st.model), lang);
+  /* 목표 직무가 따로 있으면 그 직무를 첫째로(결과 화면 · 준비 화면과 같은 기준, `goal-role.ts`) */
+  const m = { ...m0, role_context: roleForGoal(coreOf(st.model), m0) };
   const raisedSet = new Set(st.raised.map((r) => `${r.domain}.${r.axis}`));
   /* **이름을 못 찾은 코드는 버린다.** 코드를 그대로 적으면 화면에 `OC1`
      이 선다 */

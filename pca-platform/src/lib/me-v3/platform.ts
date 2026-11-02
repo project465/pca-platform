@@ -239,6 +239,10 @@ export async function currentState(userId: string): Promise<CurrentState> {
          FROM career_profiles WHERE user_id = $1 AND core_code = $2`, [userId, core]),
     pendingRecompute(userId),
   ]);
+  /* 경험을 하나도 적지 않았으면 `반영` 은 없다(2026-11-02 진흥원 시험: 경험 0건인데 홈이 "최근 추가한 경험으로 … 옮겨
+     갔습니다"). 지난 응시 답으로 다시 센 반영이 남아 있어도 지금 결과와 다르게 읽히지 않게 한다 */
+  const hasExp = !!(await queryOne<{ n: number }>(
+    `SELECT count(*)::int AS n FROM v3_experiences WHERE user_id = $1 AND core_code = $2`, [userId, core]).catch(() => null))?.n;
 
   const model = snap?.model ?? null;
   const base: Record<string, Zone> = {};
@@ -249,7 +253,7 @@ export async function currentState(userId: string): Promise<CurrentState> {
   /* **재응시 뒤에는 지난 반영을 덮지 않는다**(2026-11-02 운영 시험: 재응시 뒤에도 "최근 추가한 경험으로 … 변화" 가 남았다).
      반영은 그때 굳은 결과에 경험을 얹은 값이라, 그보다 새 결과가 굳었으면 새 결과가 지금 상태다. 경험은 다음 반영 때 다시 얹힌다 */
   const stale = !!(prof?.rts && snap?.ts && Date.parse(prof.rts) < Date.parse(snap.ts));
-  const applied = prof?.applied === true && !stale;
+  const applied = prof?.applied === true && !stale && hasExp;
   const zoneOf = { ...base };
   const raised: CurrentState["raised"] = [];
   const zoneMoved: CurrentState["zoneMoved"] = [];
