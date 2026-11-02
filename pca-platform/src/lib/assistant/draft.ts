@@ -35,6 +35,11 @@ export type DraftValue = {
   ask: string[];
   /** 어디서 옮겨 왔나. 비어 있으면 메모다 */
   from?: "memo" | "file";
+  /**
+   * 메모 원문(400자까지). 경험 적기의 "보완 설명" 칸에 미리 채운다(2026-11-02 운영 시험: 메모의 절반이 버려지고
+   * 원문이 남지 않았다). 숫자 결과(1.2초 → 0.3초)처럼 보기에 없는 말도 여기에 남는다
+   */
+  note?: string;
 };
 
 export const KINDS = EXPERIENCE_KINDS.map((k) => k.code) as [string, ...string[]];
@@ -147,6 +152,7 @@ export async function draftExperience(userId: string, note: string): Promise<{
     if (r.ok) { value = clamp(core, r.value, lang); by = "claude"; model = r.model; }
     else { value = byRules(core, text, lang); reason = failText(r.reason as AiFail); }
   }
+  value = { ...value, note: text.replace(/\s+/g, " ").trim().slice(0, 400) };
   const row = await queryOne<{ id: string }>(
     `INSERT INTO assistant_drafts (user_id, core_code, note_text, draft, drafted_by, model)
      VALUES ($1,$2,$3,$4::jsonb,$5,$6) RETURNING id::text`,

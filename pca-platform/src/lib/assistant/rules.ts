@@ -423,7 +423,7 @@ export type RuleDraft = {
  * 직접 정한 것을 말하는 꼬리. `시킨 대로` · `받은 대로` 가 같은 마디에 있으면
  * 정한 것이 아니다.
  */
-const DECIDE = /(정했|정함|정하고|정해서|결정|골랐|고름|골라서|선정|선택했|설계했|짰|짜고|맡았|맡아|맡음|잡았|잡음|잡자고|바꿨|바꿈|바꿔서|바꾸니|바꾸고|고쳤|수정했|개선했|도입|제안했|제안함|막았|정의했|세웠|나눴|배치했|배분|조정했|산정|계산해서|계산해 |계산하고|미뤘|미룸|미루고|빼기로|빼고|뺐|기로\s*(함|했|정|결정)|쓰기로|하기로|자고\s*(내가|제가)|우김|우겼|밀어붙|제안해|결국\s*.{0,12}(로|으로)\s*(감|갔|함|했)|골라서|골라\s*씀)/;
+const DECIDE = /(정했|정함|정하고|정해서|정해(?=\s|$)|결정|골랐|고름|골라서|선정|선택했|설계했|짰|짜고|맡았|맡아|맡음|잡았|잡음|잡자고|바꿨|바꿈|바꿔서|바꾸니|바꾸고|고쳤|수정했|개선했|도입|제안했|제안함|막았|정의했|세웠|나눴|배치했|배분|조정했|산정|계산해서|계산해 |계산하고|미뤘|미룸|미루고|빼기로|빼고|뺐|기로\s*(함|했|정|결정)|쓰기로|하기로|자고\s*(내가|제가)|우김|우겼|밀어붙|제안해|결국\s*.{0,12}(로|으로)\s*(감|갔|함|했)|골라서|골라\s*씀)/;
 /**
  * 남이 정한 것을 따라 한 문장. 이 문장 안의 것은 그 사람이 정한 것도, 그 사람이
  * 남긴 것도 아니다(`선배가 짜준 코드 돌려보는 수준`).
@@ -575,7 +575,8 @@ export function draftByRules(core: string, note: string, lang?: "ko" | "en"): Ru
   const hits = matchDomains(core, note);
   const td: string[] = [];
   if (hits[0]) td.push(hits[0].code);
-  if (hits[1] && hits[1].score >= 2 && hits[1].score * 2 >= hits[0].score) td.push(hits[1].code);
+  /* 둘째 영역은 메모에 그 영역 사전 낱말이 또렷이 있으면 붙인다(2026-11-02 운영 시험: 서버와 함께 적은 표 · 색인 · 쿼리를 버렸다) */
+  if (hits[1] && hits[1].score >= 2 && hits[1].score * 3 >= hits[0].score) td.push(hits[1].code);
   const ds = cat.filter((d) => td.includes(d.code));
 
   /* 남이 정한 것을 따라 한 문장은 정한 것도 남긴 것도 아니다. 영역과 종류는
@@ -702,7 +703,7 @@ function artifactMentions(note: string): string[] {
  * `설계했다 · 맡았다` 보다 먼저고, `제가 · 내가 · 직접` 이 붙으면 더 먼저다.
  * 되물을 때 가장 또렷한 마디를 돌려줘야 그 사람이 무엇을 고를지 안다.
  */
-const DECIDE_STRONG = /(정했|정함|정하고|정해서|결정|골랐|고름|골라서|선정|선택했)/;
+const DECIDE_STRONG = /(정했|정함|정하고|정해서|정해(?=\s|$)|결정|골랐|고름|골라서|선정|선택했)/;
 function rankDecided(cls: string[]): string[] {
   const score = (c: string) => (DECIDE_STRONG.test(c) ? 2 : 0) + (/(제가|내가|직접|스스로)/.test(c) ? 1 : 0);
   return cls.filter((c) => (DECIDE.test(c) || ESCALATE.test(c)) && !FOLLOWED.test(c))

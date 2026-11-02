@@ -356,7 +356,7 @@ export default async function Compose(
 
               {/* 나머지 둘은 더 접는다. 적으면 좋지만 없어도 저장되는 값이고,
                   저장한 뒤에도 고칠 수 있다 */}
-              <details className="cm-why is-fields">
+              <details className="cm-why is-fields" open={Boolean(d0?.note) || undefined}>
                 <summary>{t("더 적을 것이 있으면 (선택)")}</summary>
 
                 <MonthPick
@@ -370,7 +370,7 @@ export default async function Compose(
                   <em>{t("결과에는 들어가지 않고, 결과를 내 말로 풀어 적을 때만 읽으며"
                     + " 1년이 지나면 지웁니다.")}</em>
                   <textarea className="cm-textarea" name="note" maxLength={400}
-                    defaultValue={value?.note_text ?? ""}
+                    defaultValue={value?.note_text ?? d0?.note ?? ""}
                     placeholder={t("예: 하중 조건을 직접 정하고 시험값과 10% 안에서 맞췄습니다")} />
                 </label>
               </details>

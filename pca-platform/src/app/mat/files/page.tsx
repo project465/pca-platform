@@ -34,7 +34,7 @@ export default async function MatFiles({ searchParams }: { searchParams: Promise
       <label className="mt-field">
         <span>메모로 적기</span>
         <textarea name="note" rows={5} required minLength={10} maxLength={4000}
-          placeholder="예: 2학기 회계원리 팀 과제에서 거래 30건을 분개해 시산표를 만들고, 틀린 3건을 찾아 고쳤다" />
+          placeholder="예: 언제 · 어떤 수업이나 활동에서 · 내가 맡은 일 · 직접 정한 기준 · 남긴 결과물 · 전후 수치(예: 1.2초 → 0.3초)를 적어 주세요" />
       </label>
       <button type="submit" className="mt-btn is-main is-block">경험 초안 만들기</button>
       <p className="mt-note">{ready && set.ai_consent_at ? "AI 분석을 켜 두셔서 Anthropic(미국)의 Claude로 읽어요." : "이 메모는 밖으로 보내지 않고 규칙으로 옮겨요."} 확인하고 저장한 것만 기록돼요.</p>
