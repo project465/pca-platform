@@ -1,4 +1,4 @@
-import { roleForGoal } from "@/lib/me-v3/result/goal-role";
+import { centerFirst, roleForGoal } from "@/lib/me-v3/result/goal-role";
 import Link from "next/link";
 import { currentUser, requireUser } from "@/lib/session";
 import { majorNameOf } from "@/lib/me-v3/major-name";
@@ -542,8 +542,8 @@ export default async function State(
           <summary>{t("보고 있는 산업과 직무")}</summary>
           <div className="cm-grid">
             {([
-              [m.industry_context, indName(m.industry_context?.code ?? ""), "산업"],
-              [m.role_context, roleName(core, m.role_context?.code ?? "", lang), "직무"],
+              [centerFirst(core, m.industry_context), indName(m.industry_context?.code ?? ""), "산업"],
+              [centerFirst(core, m.role_context), roleName(core, m.role_context?.code ?? "", lang), "직무"],
             ] as const).map(([pack, nm, kind]) => pack ? (
               <div className="cm-card" key={kind}>
                 <h2>{nm} <em>{kind === "산업" ? t("산업#kind") : t("직무#kind")}</em></h2>

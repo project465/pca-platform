@@ -1,4 +1,4 @@
-import { packs as readPacks } from "../core-registry";
+import { coreFile, packs as readPacks } from "../core-registry";
 import type { Axis } from "../scoring/types";
 import type { PackView, ResultModel } from "./model";
 
@@ -38,4 +38,25 @@ export function roleForGoal(core: string, m: ResultModel): ResultModel["role_con
     answered: [], not_yet: [], overlap: [], domains: [...p.core_ref.td],
   } as PackView;
   return view as ResultModel["role_context"];
+}
+
+/**
+ * **모자란 것을 그 산업 · 직무의 중심 영역부터**(2026-11-02 진흥원 시험 N7 · PB4). 엔진의 `requested` 는 영역 코드
+ * 차례라, 웹이 첫 줄로 고르는 영역이 그 산업이 `있음` 으로만 쓰는 영역일 수 있었다(책은 `주로 중심 영역 쪽 일` 이라고
+ * 적는다). 판정 값은 그대로 두고 **읽는 차례만** 관계표의 `중심 → 있음 → 나머지` 로 바꾼다
+ */
+export function centerFirst<P extends PackView | null | undefined>(core: string, pack: P): P {
+  if (!pack) return pack;
+  let rel: { td_industry: { industry: string; td: string; strength: string }[]; td_role: { role: string; td: string; strength: string }[] };
+  try { rel = coreFile(core, "relations"); } catch { return pack; }
+  const rows = pack.code.startsWith("ROLE_")
+    ? rel.td_role.filter((r) => r.role === pack.code)
+    : rel.td_industry.filter((r) => r.industry === pack.code);
+  const rank = (td: string) => {
+    const s = rows.find((r) => r.td === td)?.strength;
+    return s === "중심" ? 0 : s === "있음" ? 1 : 2;
+  };
+  const requested = pack.requested.map((r, i) => ({ r, i }))
+    .sort((a, b) => rank(a.r.domain) - rank(b.r.domain) || a.i - b.i).map((v) => v.r);
+  return { ...pack, requested };
 }

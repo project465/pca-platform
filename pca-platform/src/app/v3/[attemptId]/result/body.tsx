@@ -34,7 +34,7 @@ import { sayKo, thingKo } from "@/lib/me-v3/result/say";
 import { resultMeta, type ResultMeta } from "@/lib/me-v3/result/meta";
 import { leadFirst, specView } from "@/lib/me-v3/result/spec-view";
 import { webRegionView } from "@/lib/me-v3/report-long/web-region";
-import { roleForGoal } from "@/lib/me-v3/result/goal-role";
+import { centerFirst, roleForGoal } from "@/lib/me-v3/result/goal-role";
 import { TRANS_NOTE_KO } from "@/lib/me-v3/result/text.ko";
 import RegionSection from "./region";
 import { participantOf, savedActions } from "@/lib/me-v3/pilot/store";
@@ -1330,11 +1330,11 @@ export async function V3ResultBody(
    * 줄은 그대로 선다.
    */
   const indBridge = model.industry_context
-    ? TX().bridgeKo(model.industry_context, industryName(model.industry_context.code),
+    ? TX().bridgeKo(centerFirst(core, model.industry_context), industryName(model.industry_context.code),
       (td: string) => domainName(core, td, L()), null, model.stage)
     : [];
   const roleBridge = roleCtx
-    ? TX().bridgeKo(roleCtx, roleName(roleCtx.code),
+    ? TX().bridgeKo(centerFirst(core, roleCtx), roleName(roleCtx.code),
       (td: string) => domainName(core, td, L()), null, model.stage)
       .filter((l) => !indBridge.includes(l))
     : [];

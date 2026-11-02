@@ -510,7 +510,8 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.85";
 /** 지원서 문항 답은 영역별 `남긴 것` 에 세지 않는다는 한 줄 · `이 결과에서 이어지는 할 일` — V96 */
 /** 지역 회사 절 아래 빈 자리는 `공공기관 · 연구기관 목록` 이라고 적는다 — V97 */
 /** 경험 덧말을 그 칸이 물은 이름(쓰지 않은 방법 · 바꾸지 않은 것)으로 · `없다` 답은 문단 재료에서 뺌 — V98 */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V98";
+/** 산업 · 직무 다리 문장의 모자란 영역을 관계표의 중심 영역부터(N7 · PB4, 판정 그대로) — V99 */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V99";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX
