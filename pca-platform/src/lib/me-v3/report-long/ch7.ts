@@ -59,7 +59,11 @@ function goalGuide(x: Inputs, d: X) {
 const PRIO_C = { goal: C.navy, now: C.blue, act: C.teal, out: C.amber };
 
 export function prioPages(x: Inputs, d: X): Page[] {
-  const gs = d.gaps.slice(0, 6);
+  /* **`급한 것부터` 라고 적었으니 끝낼 때 차례로 놓는다**(2026-11-02 v3/23 시험: 90→30→90→30→90→60일).
+     같은 때 안에서는 결과 모델의 순위 그대로다 */
+  const H: Record<string, number> = { NOW: 0, NEXT: 1, LATER: 2 };
+  const gs = d.gaps.slice(0, 6).map((g, i) => ({ g, i, h: H[d.actionOf(g)?.horizon ?? "LATER"] ?? 3 }))
+    .sort((a, b) => a.h - b.h || a.i - b.i).map((v) => v.g);
   const { role, fp } = goalGuide(x, d);
   if (!gs.length) {
     const acts = x.m.actions.slice(0, 3);
