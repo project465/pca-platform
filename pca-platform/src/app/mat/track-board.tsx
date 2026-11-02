@@ -36,7 +36,7 @@ export function TrackBoard({ apps, postings }: { apps: Application[]; postings: 
                   const step = nextStep(a, p?.deadline ?? null, p?.id ?? null);
                   return (
                     <div key={a.id} className="mt-card">
-                      <p>{a.note_text ?? a.role_label ?? "이름 없는 지원"}{a.state === "offer" ? " · 합격" : a.state === "closed" ? " · 끝남" : ""}</p>
+                      <p>{p?.name ?? a.note_text ?? a.role_label ?? "이름 없는 지원"}{a.state === "offer" ? " · 합격" : a.state === "closed" ? " · 끝남" : ""}</p>
                       {step.href ? <Link className="mt-link" href={step.href}>{step.text}</Link> : <small>{step.text}</small>}
                       <div className="mt-acts">
                         {NEXT[a.state].map((n) => (
@@ -48,7 +48,7 @@ export function TrackBoard({ apps, postings }: { apps: Application[]; postings: 
                         ))}
                         <form action={matDropApp}>
                           <input type="hidden" name="id" value={a.id} />
-                          <button type="submit" className="mt-link mt-linkbtn" aria-label={`지우기: ${a.note_text ?? ""}`}>지우기</button>
+                          <button type="submit" className="mt-link mt-linkbtn" aria-label={`지우기: ${p?.name ?? a.note_text ?? ""}`}>지우기</button>
                         </form>
                       </div>
                     </div>

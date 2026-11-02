@@ -40,13 +40,12 @@ export default async function MatHome() {
     postingsOf(user.id).catch(() => []),
     applicationsOf(user.id).catch(() => []),
   ]);
-  const weekAgo = Date.now() - 7 * 86_400_000;
   const since = await queryOne<{ s: string | null }>(
     `SELECT min(starts_at)::text AS s FROM entitlements WHERE user_id = $1 AND kind = 'track'`, [user.id]).catch(() => null);
   const tips = headsUp({
     matSince: since?.s ?? null,
     postings: mine, apps,
-    freshMatches: jobs.main.filter((r) => r.hits.length && Date.parse(r.captured_at) >= weekAgo).length,
+    freshMatches: jobs.fresh,
     zoneMoved: st.zoneMoved.length,
   });
   const name = (td: string) => domainName(st.core, td);

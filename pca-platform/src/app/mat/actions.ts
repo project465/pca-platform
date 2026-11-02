@@ -8,10 +8,10 @@ import { activeCore, addApplication, applicationsOf, experiencesOf, importAction
 import { openActions } from "@/lib/me-v3/open-actions";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { canUseMat, matAccess } from "@/lib/mat-access";
-import { analyzePosting, livePostingOf } from "@/lib/assistant/posting";
+import { analyzePosting, livePostingOf, reanalyzePosting, type PostingAnalysis, type PostingHint } from "@/lib/assistant/posting";
 import { smallTasks, taskBody } from "@/lib/assistant/prep";
 import { SOURCE_KO } from "@/lib/mat/stage";
-import { setEmailDigest } from "@/lib/assistant/settings";
+import { setAiConsent, setEmailDigest } from "@/lib/assistant/settings";
 import { opFail, ref } from "@/lib/oplog";
 import { moveAction } from "../me/next/actions";
 
@@ -31,6 +31,12 @@ async function canAnalyze(userId: string): Promise<void> {
   if (!r.ok) redirect(r.why === "needtest" ? "/mat?e=needtest" : "/mat/pass?e=free");
 }
 
+/** 이미 센 분석을 다시 읽는 것은 무료 횟수를 새로 쓰지 않는다. 검사를 마치지 않은 사람만 막는다 */
+async function canReread(userId: string): Promise<void> {
+  const r = await canUseMat(userId, "posting");
+  if (!r.ok && r.why === "needtest") redirect("/mat?e=needtest");
+}
+
 /**
  * 모아 둔 공고 하나를 `바로 분석`.
  *
@@ -47,18 +53,58 @@ export async function matAnalyzeJob(form: FormData): Promise<void> {
   ).catch(() => null);
   if (!p || !(p.req ?? []).length) redirect("/mat/jobs?e=noread");
   const label = `${SOURCE_KO[p.source] ?? p.source} 공고 ${job}`;
-  const had = await queryOne<{ id: string }>(
-    `SELECT id::text FROM assistant_postings WHERE user_id = $1 AND label = $2 ORDER BY id DESC LIMIT 1`,
+  const hint = await hintOf(job);
+  const had = await queryOne<{ id: string; analysis: PostingAnalysis }>(
+    `SELECT id::text, analysis FROM assistant_postings WHERE user_id = $1 AND label = $2 ORDER BY id DESC LIMIT 1`,
     [user.id, label]).catch(() => null);
-  if (had) redirect(`/mat/jobs/${had.id}`);
+  if (had) {
+    /* 전에 읽은 결과에 경험 영역이 하나도 이어지지 않았으면 같은 줄에서 다시 읽는다(직무 이름으로 본 영역을 더한다) */
+    if (!had.analysis.items.some((i) => i.domain)) {
+      await canReread(user.id);
+      await reanalyzePosting(user.id, had.id, hint ?? undefined).catch((e) =>
+        opFail({ operation: "assistant.posting", ref: ref("user", user.id), step: "mat.job.reread", category: "db" }, e));
+      revalidatePath("/mat");
+    }
+    redirect(`/mat/jobs/${had.id}`);
+  }
   await canAnalyze(user.id);
   let id = "";
   try {
-    id = (await analyzePosting(user.id, { label, text: p.req.join("\n"), deadline: p.closes_on })).id;
+    id = (await analyzePosting(user.id, { label, text: p.req.join("\n"), deadline: p.closes_on, hint: hint ?? undefined })).id;
   } catch (e) {
     opFail({ operation: "assistant.posting", ref: ref("user", user.id), step: "mat.job", category: "db" }, e);
   }
   if (!id) redirect("/mat/jobs?e=save");
+  revalidatePath("/mat");
+  redirect(`/mat/jobs/${id}`);
+}
+
+/** 모을 때 단 전공 · 영역(많이 걸린 차례) · 직무 이름 */
+async function hintOf(job: string): Promise<PostingHint | null> {
+  const h = await queryOne<{ core: string | null; td: Record<string, number> | null; role: string | null }>(
+    `SELECT core_code AS core, required_td AS td, role_code AS role FROM v3_job_postings WHERE id = $1`, [job],
+  ).catch(() => null);
+  if (!h) return null;
+  const td = Object.entries(h.td ?? {}).sort((a, b) => Number(b[1]) - Number(a[1])).map(([k]) => k);
+  return { core: h.core, td, role: h.role };
+}
+
+/**
+ * MAT 공고 화면에서 **AI 분석을 켜고 그 공고를 다시 읽는다**(2026-11-02 운영 시험: 켜는 곳이 이 화면에 없었다).
+ * 동의 문구는 화면의 단추 바로 위에 있다. 켠 뒤에는 `/me/track` 설정에서 끌 수 있다
+ */
+export async function matAiOn(form: FormData): Promise<void> {
+  const user = await requireUser();
+  const id = String(form.get("id") ?? "");
+  if (!/^\d{1,18}$/.test(id)) redirect("/mat/jobs");
+  await canReread(user.id);
+  await setAiConsent(user.id, true);
+  const row = await queryOne<{ label: string }>(
+    `SELECT label FROM assistant_postings WHERE user_id = $1 AND id = $2`, [user.id, id]).catch(() => null);
+  if (!row) redirect("/mat/jobs");
+  const jobNo = /^(잡인더스트리|고용24) 공고 (\d{1,18})$/.exec(row.label)?.[2] ?? null;
+  await reanalyzePosting(user.id, id, jobNo ? (await hintOf(jobNo)) ?? undefined : undefined).catch((e) =>
+    opFail({ operation: "assistant.posting", ref: ref("user", user.id), step: "mat.job.ai", category: "db" }, e));
   revalidatePath("/mat");
   redirect(`/mat/jobs/${id}`);
 }

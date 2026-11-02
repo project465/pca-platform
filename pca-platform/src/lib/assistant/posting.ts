@@ -9,8 +9,9 @@ import { domainName } from "@/lib/me-v3/runtime/session";
 import { wsLang } from "@/lib/me-v3/ws-lang";
 import { aiFailEn, aiFailKo, askStructured, type AiFail } from "./claude";
 import { areaName, axisName, catalog, catalogPrompt, isAxis, type MatLang } from "./catalog";
-import { domainTerms, readPosting } from "./rules";
+import { domainTerms, matchDomains, readPosting } from "./rules";
 import { aiConsented } from "./settings";
+import { cleanTitle, jobTitle } from "@/lib/mat/job-title";
 
 /**
  * 붙여 넣은 공고 하나를 읽고 지금 상태와 나란히 놓는다.
@@ -53,7 +54,15 @@ export type PostingItem = {
    * 경험 글에 이 영역의 이름이 들어 있다)으로 이어졌다. 그때 상태는 `정리가 덜 됨` 이다
    */
   near?: boolean;
+  /**
+   * 공고 글에서 읽은 줄이 아니라 **모을 때 단 직무 이름으로 본 영역**이다(2026-11-02 운영 시험:
+   * 본문이 짧은 모은 공고는 자격 조건 두 줄만 읽혀 맞는 점 · 채울 것이 비었다). 화면은 그렇다고 적는다
+   */
+  from?: "role" | "words";
 };
+
+/** 모은 공고를 분석할 때 넘기는 것: 모을 때 단 전공 · 영역 · 직무 이름(`v3_job_postings`) */
+export type PostingHint = { core: string | null; td: string[]; role: string | null };
 
 export type PostingAnalysis = {
   schema: "assistant-posting.1";
@@ -70,6 +79,12 @@ export type PostingRow = {
   analysis: PostingAnalysis;
   /** 그 공고를 읽은 전공. 영역 코드가 이 전공의 사전을 따른다 */
   core_code?: string;
+  /**
+   * 화면에 보일 이름. 모은 공고는 저장 이름이 `잡인더스트리 공고 99` 라 무슨 공고인지 모른다
+   * (2026-11-02 운영 시험). 읽은 직무 → 모을 때 단 직무 · 제목 줄 차례로 짓는다. `label` 은 지원 현황과
+   * 잇는 열쇠라 그대로 둔다
+   */
+  name?: string;
 };
 
 const Read = z.object({
@@ -184,12 +199,20 @@ function judge(
   };
 }
 
-export async function analyzePosting(userId: string, input: {
-  label: string; text: string; deadline: string | null;
-}): Promise<{ id: string; by: "claude" | "rules" }> {
+/**
+ * 공고 글을 읽어 요구 항목을 지금 상태에 댄다. 새로 저장할 때와 같은 공고를 다시 읽을 때가 함께 쓴다.
+ *
+ * 글에서 경험 영역에 이어진 줄이 **하나도 없고** 모을 때 같은 전공의 직무로 단 공고면, 그 직무가
+ * 보는 영역(셋까지)을 `from: "role"` 로 덧붙인다. 공고 글에 없던 요구를 지어내지 않고, 화면이
+ * "직무 이름으로 본 영역" 이라고 따로 적는다.
+ */
+async function readAndJudge(userId: string, text0: string, hint?: PostingHint): Promise<{
+  st: CurrentState; analysis: PostingAnalysis; by: "claude" | "rules"; model: string | null;
+  readDeadline: string | null;
+}> {
   const st = await currentState(userId);
   const exps = await experiencesOf(userId, st.core);
-  const text = input.text.slice(0, 12000);
+  const text = text0.slice(0, 12000);
   /* 남기는 안내(`note`)와 Claude 가 돌려줄 말은 작업공간 언어를 따른다 */
   const lang: MatLang = await wsLang(userId).catch(() => "ko" as const);
   const failText = lang === "en" ? aiFailEn : aiFailKo;
@@ -212,15 +235,43 @@ export async function analyzePosting(userId: string, input: {
     else { read = readByRules(st.core, text); note = failText(r.reason as AiFail); }
   }
   const items = read.requirements.slice(0, 15).map((x) => judge(st, exps, x));
-  const counts = countOf(items);
+  if (!items.some((i) => i.domain) && hint && hint.core === st.core) {
+    const codes = hint.td.filter((c) => catalog(st.core).some((d) => d.code === c)).slice(0, 3);
+    for (const code of codes) {
+      items.push({
+        /* 글은 영역 이름만. 어디서 왔는지는 화면의 칩(`직무 이름으로 본 영역`)이 적는다 */
+        text: domainName(st.core, code).slice(0, 120),
+        kind: "nice", domain: code, axis: null, from: "role",
+        ...withNear(st.core, st, exps, code, undefined, null),
+      });
+    }
+  }
+  /* 그래도 없으면 공고 글 어디엔가 나온 이 전공의 사전 낱말(예: `AI Engineer` · `PyTorch`)로 본 영역 */
+  if (!items.some((i) => i.domain)) {
+    for (const h of matchDomains(st.core, text).filter((x) => x.score >= 3).slice(0, 3)) {
+      items.push({
+        text: `${domainName(st.core, h.code)} (공고의 ‘${h.terms[0]}’)`.slice(0, 120),
+        kind: "nice", domain: h.code, axis: null, from: "words",
+        ...withNear(st.core, st, exps, h.code, undefined, null),
+      });
+    }
+  }
   const analysis: PostingAnalysis = {
     schema: "assistant-posting.1",
-    role: read.role ? read.role.slice(0, 60) : null,
-    items, counts, note,
+    role: read.role ? read.role.slice(0, 60) : hint?.role ?? null,
+    items, counts: countOf(items), note,
   };
+  const readDeadline = read.deadline && /^\d{4}-\d{2}-\d{2}$/.test(read.deadline) ? read.deadline : null;
+  return { st, analysis, by, model, readDeadline };
+}
+
+export async function analyzePosting(userId: string, input: {
+  label: string; text: string; deadline: string | null; hint?: PostingHint;
+}): Promise<{ id: string; by: "claude" | "rules" }> {
+  const text = input.text.slice(0, 12000);
+  const { st, analysis, by, model, readDeadline } = await readAndJudge(userId, text, input.hint);
   /* 사용자가 적은 마감이 먼저다. 비었으면 공고에서 읽은 날짜를 쓴다 */
-  const dl = input.deadline || (read.deadline && /^\d{4}-\d{2}-\d{2}$/.test(read.deadline)
-    ? read.deadline : null);
+  const dl = input.deadline || readDeadline;
   const row = await queryOne<{ id: string }>(
     `INSERT INTO assistant_postings
        (user_id, core_code, label, deadline, raw_text, analysis, analyzed_by, model)
@@ -229,6 +280,24 @@ export async function analyzePosting(userId: string, input: {
       JSON.stringify(analysis), by, model],
   );
   return { id: row!.id, by };
+}
+
+/**
+ * 저장해 둔 공고를 **같은 줄에서 다시 읽는다**(AI 분석을 켠 뒤, 또는 전에 읽은 결과에 경험 영역이
+ * 하나도 이어지지 않았을 때). 새 줄을 만들지 않아 `분석한 공고` 목록에 같은 공고가 둘 서지 않는다.
+ * 남의 것은 고치지 않는다: 번호와 로그인한 사람으로 함께 거른다.
+ */
+export async function reanalyzePosting(userId: string, id: string, hint?: PostingHint): Promise<boolean> {
+  if (!/^\d+$/.test(id)) return false;
+  const row = await queryOne<{ raw_text: string }>(
+    `SELECT raw_text FROM assistant_postings WHERE user_id = $1 AND id = $2`, [userId, id]);
+  if (!row?.raw_text) return false;
+  const { st, analysis, by, model } = await readAndJudge(userId, row.raw_text, hint);
+  await query(
+    `UPDATE assistant_postings SET core_code = $3, analysis = $4::jsonb, analyzed_by = $5, model = $6
+      WHERE user_id = $1 AND id = $2`,
+    [userId, id, st.core, JSON.stringify(analysis), by, model]);
+  return true;
 }
 
 export function countOf(items: PostingItem[]): Record<ItemStatus, number> {
@@ -259,20 +328,41 @@ export function refreshPosting(
 
 const COLS = `id::text, label, deadline::text, state, analyzed_by, created_at::text, analysis, core_code`;
 
+/** 모은 공고의 저장 이름(`잡인더스트리 공고 99`)에서 공고 번호 */
+export function jobNoOf(label: string): string | null {
+  return /^(잡인더스트리|고용24) 공고 (\d{1,18})$/.exec(label)?.[2] ?? null;
+}
+
+async function withNames(rows: PostingRow[]): Promise<PostingRow[]> {
+  const nos = [...new Set(rows.map((r) => jobNoOf(r.label)).filter((x): x is string => Boolean(x)))];
+  const jobs = nos.length ? await query<{ id: string; req: string[]; role: string | null }>(
+    `SELECT id::text, raw_requirements AS req, role_code AS role FROM v3_job_postings WHERE id = ANY($1::bigint[])`,
+    [nos]).catch(() => []) : [];
+  const by = new Map(jobs.map((j) => [j.id, j]));
+  return rows.map((r) => {
+    const no = jobNoOf(r.label);
+    if (!no) return { ...r, name: r.label };
+    const j = by.get(no);
+    const t = (r.analysis?.role ? cleanTitle(r.analysis.role) : "") || (j ? jobTitle(j.req ?? [], j.role).title : null);
+    return { ...r, name: t ? (t.length > 40 ? `${t.slice(0, 39)}…` : t) : r.label };
+  });
+}
+
 export async function postingsOf(userId: string): Promise<PostingRow[]> {
-  return query<PostingRow>(
+  return withNames(await query<PostingRow>(
     `SELECT ${COLS}
        FROM assistant_postings WHERE user_id = $1
       ORDER BY (state = 'closed'), deadline NULLS LAST, created_at DESC LIMIT 30`,
-    [userId]);
+    [userId]));
 }
 
 /** 한 건. **남의 것은 열리지 않는다**: 주소의 번호와 로그인한 사람으로 거른다 */
 export async function postingOf(userId: string, id: string): Promise<PostingRow | null> {
   if (!/^\d+$/.test(id)) return null;
-  return queryOne<PostingRow>(
+  const row = await queryOne<PostingRow>(
     `SELECT ${COLS}
        FROM assistant_postings WHERE user_id = $1 AND id = $2`, [userId, id]);
+  return row ? (await withNames([row]))[0] : null;
 }
 
 /** 지금 상태와 적어 둔 경험. 못 읽으면(결과가 없는 등) 붙여 넣을 때의 값을 쓴다 */

@@ -36,6 +36,8 @@ export async function enterAction(_prev: EnterState, form: FormData): Promise<En
   if (!userId && mode === "link") {
     const me = await currentUser();
     if (!me) redirect(`/login?next=${encodeURIComponent(`/from/${partner}/enter?t=${t}`)}`);
+    /* 로그인한 계정에 잇는 것은 넘겨받는 항목에 대한 동의 칸을 체크했을 때만(화면이 막지만 서버도 본다) */
+    if (String(form.get("link_ok") ?? "") !== "1") return { message: "넘겨받는 항목을 잇는 데 동의해 주세요." };
     userId = me.id;
   }
   if (!userId && mode === "new") {

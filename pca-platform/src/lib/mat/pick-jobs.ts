@@ -3,6 +3,8 @@ import { postingsForMe, type MatchedPosting } from "@/lib/assistant/match";
 import { activeMajorName } from "@/lib/me-v3/major-name";
 import { isGrad } from "@/lib/assistant/research";
 import { stageOf } from "@/lib/assistant/stage";
+import { activeCoreOrPick } from "@/lib/me-v3/platform";
+import { isEntryJob } from "./job-title";
 
 /**
  * MAT 이 보여 줄 공고를 고른다(2026-11-02 운영 시험: 인공지능학과 학생에게 대학원 연구실 모집 8건만 보였다).
@@ -10,28 +12,38 @@ import { stageOf } from "@/lib/assistant/stage";
  * - **학부생에게는 대학원 · 연구실 모집을 따로 묶는다.** 잡인더스트리 `대학원생`(488) · `교원 임용`(439) 게시판과
  *   요구에 대학원 · 연구실 · 석박사 과정 말이 든 공고. 석사 이상이면 묶지 않는다(그 사람에게는 맞는 공고다)
  * - 위에 오는 차례: 내 자료 · 경험과 겹친 낱말 수(`postingsForMe`) + **전공 이름이 요구에 있음** + **신입 · 인턴 공고**
+ * - **다른 전공 공고는 따로 묶는다**(2026-11-02 운영 시험: 인공지능학과 학생에게 화학시험보조 · 임상개발이 섞였다).
+ *   모을 때 다른 전공으로 단 공고, 전공을 못 단 공고 가운데 내 자료 · 전공 이름과 겹치는 것이 없는 공고
  * - 점수를 화면에 내지 않는다. 왜 위에 왔는지는 칩(겹친 낱말 · 전공 · 신입)으로 보인다
  * - 회사 이름은 다루지 않는다(표에 없다)
  */
 const GRAD_BOARD = /jobindustry\.co\.kr\/(488|439)\//;
 const GRAD_TEXT = /대학원|연구실|석사|박사|석·박사|포닥|postdoc|학위\s?과정|대학원생|교수\s?(초빙|임용)|lab\b/i;
-const ENTRY = /신입|인턴|채용\s?연계|졸업\s?예정|경력\s?무관|학사\s?(이상|졸업)/;
 
 const stem = (m: string | null) => (m ?? "").replace(/\s+/g, "").replace(/(공학과|공학부|학과|학부|전공|과)$/, "");
 
-export type PickedJobs = { main: MatchedPosting[]; grad: MatchedPosting[]; matched: boolean };
+export type PickedJobs = {
+  main: MatchedPosting[]; grad: MatchedPosting[]; other: MatchedPosting[]; matched: boolean;
+  /**
+   * 이번 주(7일)에 들어온 공고 가운데 **내 자료 · 경험 · 전공 이름과 실제로 겹친** 것의 수. 홈 알림과 브리핑이
+   * 이 한 값을 읽는다(2026-11-02 운영 시험: 홈은 "새로 맞는 공고가 있어요", 브리핑은 "아직 없어요"였다.
+   * 홈은 `신입 · 인턴` 칩까지 겹침으로 셌다)
+   */
+  fresh: number;
+};
 
 export async function pickJobs(userId: string, limit = 20): Promise<PickedJobs> {
-  const [mine, major, stage] = await Promise.all([
+  const [mine, major, stage, core] = await Promise.all([
     postingsForMe(userId, 300).catch(() => null),
     activeMajorName(userId).catch(() => null),
     stageOf(userId).catch(() => null),
+    activeCoreOrPick(userId).catch(() => null),
   ]);
   const pool = await query<{
     id: string; source: string; source_url: string | null; closes_on: string | null; captured_at: string;
-    region_code: string | null; raw_requirements: string[];
+    region_code: string | null; raw_requirements: string[]; core_code: string | null; role_code: string | null;
   }>(
-    `SELECT id::text, source, source_url, closes_on::text, captured_at::text, region_code, raw_requirements
+    `SELECT id::text, source, source_url, closes_on::text, captured_at::text, region_code, raw_requirements, core_code, role_code
        FROM v3_job_postings
       WHERE captured_at > now() - interval '180 days'
         AND (closes_on IS NULL OR closes_on >= (now() AT TIME ZONE 'Asia/Seoul')::date)
@@ -45,23 +57,32 @@ export async function pickJobs(userId: string, limit = 20): Promise<PickedJobs> 
     const m = hitsOf.get(p.id);
     const hits = [...(m?.hits ?? [])];
     let score = (m?.hits.length ?? 0) + (m?.tdHits.length ?? 0);
-    if (st.length >= 2 && text.includes(st)) { score += 3; if (!hits.includes(st)) hits.unshift(st); }
-    const entry = ENTRY.test(text);
+    const majorHit = st.length >= 2 && text.includes(st);
+    if (majorHit) { score += 3; if (!hits.includes(st)) hits.unshift(st); }
+    /* 내 전공으로 단 공고이거나, 전공을 못 단 공고 가운데 내 자료 · 전공 이름과 겹치는 것 */
+    const mineField = p.core_code ? p.core_code === core : (m?.hits.length ?? 0) > 0 || majorHit;
+    const entry = isEntryJob(text);
     if (entry) { score += 2; if (!hits.includes("신입 · 인턴")) hits.push("신입 · 인턴"); }
     const research = GRAD_BOARD.test(p.source_url ?? "") || GRAD_TEXT.test(text);
     const row: MatchedPosting = {
       id: p.id, source: p.source, source_url: p.source_url, closes_on: p.closes_on, captured_at: p.captured_at,
       region_code: p.region_code, requirements: (p.raw_requirements ?? []).slice(0, 8), hits, tdHits: m?.tdHits ?? [],
+      role: p.role_code,
     };
-    return { row, score, research };
+    const real = (m?.hits.length ?? 0) + (m?.tdHits.length ?? 0) > 0 || majorHit;
+    return { row, score, research, mineField, real };
   });
   const order = (a: typeof scored[number], b: typeof scored[number]) =>
     b.score - a.score || (a.row.closes_on ?? "9999").localeCompare(b.row.closes_on ?? "9999");
-  const main = scored.filter((x) => grad || !x.research).sort(order);
-  const gradRows = grad ? [] : scored.filter((x) => x.research).sort(order);
+  const main = scored.filter((x) => (grad || !x.research) && x.mineField).sort(order);
+  const gradRows = grad ? [] : scored.filter((x) => x.research && x.mineField).sort(order);
+  /* 다른 전공 공고는 지운 것이 아니라 접어 둔다: 전공을 바꿔 보려는 사람도 있다. 새 공고 차례로 */
+  const other = scored.filter((x) => !x.mineField && (grad || !x.research)).slice(0, 10);
   return {
     main: main.slice(0, limit).map((x) => x.row),
     grad: gradRows.slice(0, 10).map((x) => x.row),
+    other: other.map((x) => x.row),
     matched: main.some((x) => x.score > 0),
+    fresh: main.filter((x) => x.real && Date.parse(x.row.captured_at) >= Date.now() - 7 * 86_400_000).length,
   };
 }

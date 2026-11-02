@@ -254,6 +254,20 @@ export async function campusStudentOf(
   return mine && mine.row.university_code === universityCode ? mine : null;
 }
 
+/**
+ * 그 학교의 발급 계정 줄이 **있기는 한가**(학과가 등록부와 맞는지는 보지 않는다).
+ *
+ * `campusStudentOf` 는 학과가 등록부와 맞지 않으면 비어 돌아온다. 그 학생을 로그인 화면이
+ * "다른 계정으로 로그인되어 있습니다" 로 되돌려 보내면 같은 계정으로 몇 번을 넣어도 제자리다
+ * (2026-11-02 운영 시험). 그런 학생은 시작 화면이 "학과 확인이 필요합니다" 로 까닭을 적는다.
+ */
+export async function hasCampusRow(userId: string, universityCode: string): Promise<boolean> {
+  const r = await queryOne<{ ok: boolean }>(
+    `SELECT TRUE AS ok FROM campus_students WHERE user_id = $1::bigint AND university_code = $2`,
+    [userId, universityCode]);
+  return Boolean(r?.ok);
+}
+
 /** 그 학교의 학생 계정이 몇 줄인가. 담당자 화면과 발급 보고가 읽는다 */
 export async function campusStudentCount(
   universityCode: string,

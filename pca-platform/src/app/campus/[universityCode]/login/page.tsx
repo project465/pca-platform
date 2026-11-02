@@ -3,7 +3,7 @@ import "../../../surface.css";
 import "../../campus.css";
 import { campusSay, university } from "@/lib/campus/registry";
 import { currentUser } from "@/lib/session";
-import { campusStudentOf, loginPrefixOf } from "@/lib/campus/students";
+import { campusStudentOf, hasCampusRow, loginPrefixOf } from "@/lib/campus/students";
 import { safeNext } from "@/lib/safe-next";
 import { BrandMark } from "@/components/sf/brand-mark";
 import { CampusShell } from "../../shell";
@@ -56,6 +56,8 @@ export default async function CampusLogin({ params, searchParams }: Params) {
   const who = await currentUser();
   const mine = who ? await campusStudentOf(who.id, u.university_code) : null;
   if (mine) redirect(nx);
+  /* 이 학교의 발급 계정인데 학과만 등록부와 맞지 않으면 "다른 계정" 이 아니다. 시작 화면이 까닭을 적는다 */
+  if (who && await hasCampusRow(who.id, u.university_code)) redirect(`/campus/${code}/start`);
 
   return (
     <CampusShell u={u}>

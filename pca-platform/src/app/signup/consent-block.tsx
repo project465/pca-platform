@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export type ConsentItem = {
   id: string;
@@ -33,10 +33,16 @@ export type ConsentLabels = {
  * (`consent.record()` 가 필수 항목이 빠지면 거절한다).
  */
 export default function ConsentBlock({
-  items, labels,
-}: { items: ConsentItem[]; labels: ConsentLabels }) {
+  items, labels, onReady,
+}: {
+  items: ConsentItem[]; labels: ConsentLabels;
+  /** 필수 항목이 다 체크됐는지 알려 준다(제휴 연결 화면이 그때까지 단추를 막는다) */
+  onReady?: (ok: boolean) => void;
+}) {
   const [on, setOn] = useState<Record<string, boolean>>({});
   const all = items.length > 0 && items.every((i) => on[i.id]);
+  const ready = items.filter((i) => i.required).every((i) => on[i.id]);
+  useEffect(() => { onReady?.(ready); }, [ready, onReady]);
 
   const toggleAll = (v: boolean) => {
     const next: Record<string, boolean> = {};

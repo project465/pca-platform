@@ -30,6 +30,8 @@ export type MatchedPosting = {
   hits: string[];
   /** 겹친 기술영역 코드 */
   tdHits: string[];
+  /** 모을 때 단 직무 이름(제목 줄을 못 읽었을 때 대신 쓴다) */
+  role?: string | null;
 };
 
 const STOP = new Set(["연구", "분석", "개발", "경험", "업무", "관련", "이상", "가능", "우대", "research", "analysis", "development"]);
@@ -37,10 +39,14 @@ const STOP = new Set(["연구", "분석", "개발", "경험", "업무", "관련"
 export async function myMatchTerms(userId: string): Promise<{ terms: string[]; roles: string[]; tds: string[] }> {
   const [r, ex] = await Promise.all([
     researchTermsOf(userId),
-    query<{ td: string[] }>(`SELECT td_codes AS td FROM v3_experiences WHERE user_id = $1`, [userId]).catch(() => []),
+    query<{ core: string; td: string[] }>(
+      `SELECT core_code AS core, td_codes AS td FROM v3_experiences WHERE user_id = $1`, [userId]).catch(() => []),
   ]);
   const terms = [...new Set([...r.terms, ...r.roles].map((t) => t.trim()).filter((t) => t.length >= 2 && !STOP.has(t.toLowerCase())))];
-  return { terms, roles: r.roles, tds: [...new Set(ex.flatMap((e) => e.td ?? []))] };
+  /* **영역 코드는 전공마다 뜻이 다르다**(컴퓨터 TD01 설계·구조 ↔ 생명 TD01 분자생물 실험).
+     전공을 붙여 `CORE:TD01` 로 세어야 다른 전공 공고와 엉뚱하게 겹치지 않는다
+     (2026-11-02 운영 시험: 인공지능학과 학생에게 화학시험보조 · 임상개발 공고가 섞였다) */
+  return { terms, roles: r.roles, tds: [...new Set(ex.flatMap((e) => (e.td ?? []).map((t) => `${e.core}:${t}`)))] };
 }
 
 /** 마감이 지나지 않았고 최근 180일에 모은 공고 가운데 겹치는 것 */
@@ -56,9 +62,9 @@ export async function postingsForMe(userId: string, limit = 30): Promise<{
   const me = await myMatchTerms(userId);
   const pool = await query<{
     id: string; source: string; source_url: string | null; closes_on: string | null; captured_at: string;
-    region_code: string | null; raw_requirements: string[]; required_td: Record<string, unknown>;
+    region_code: string | null; raw_requirements: string[]; required_td: Record<string, unknown>; core_code: string | null;
   }>(
-    `SELECT id::text, source, source_url, closes_on::text, captured_at::text, region_code, raw_requirements, required_td
+    `SELECT id::text, source, source_url, closes_on::text, captured_at::text, region_code, raw_requirements, required_td, core_code
        FROM v3_job_postings
       WHERE captured_at > now() - interval '180 days'
         AND (closes_on IS NULL OR closes_on >= (now() AT TIME ZONE 'Asia/Seoul')::date)
@@ -74,7 +80,7 @@ export async function postingsForMe(userId: string, limit = 30): Promise<{
   for (const p of pool) {
     const hay = (p.raw_requirements ?? []).join(" \n ").toLowerCase();
     const hits = lower.filter(([, l]) => hay.includes(l)).map(([t]) => t);
-    const tdHits = Object.keys(p.required_td ?? {}).filter((k) => me.tds.includes(k));
+    const tdHits = p.core_code ? Object.keys(p.required_td ?? {}).filter((k) => me.tds.includes(`${p.core_code}:${k}`)) : [];
     const score = hits.length * 2 + tdHits.length;
     if (!score) continue;
     rows.push({

@@ -3,7 +3,7 @@ import { matTitle } from "@/lib/mat/title";
 import { requireUser } from "@/lib/session";
 import { livePostingsOf } from "@/lib/assistant/posting";
 import { buildBrief } from "@/lib/assistant/brief";
-import { postingsForMe } from "@/lib/assistant/match";
+import { pickJobs } from "@/lib/mat/pick-jobs";
 import { settingsOf } from "@/lib/assistant/settings";
 import { openActions } from "@/lib/me-v3/open-actions";
 import { monthWeekKo } from "@/lib/mat/stage";
@@ -23,14 +23,15 @@ export default async function MatBrief() {
   const user = await requireUser();
   const [live, open, pool, set] = await Promise.all([
     livePostingsOf(user.id), openActions(user.id).catch(() => null),
-    postingsForMe(user.id, 200).catch(() => null), settingsOf(user.id),
+    pickJobs(user.id, 1).catch(() => null), settingsOf(user.id),
   ]);
   const brief = buildBrief({
     core: live.core, postings: live.rows, exps: live.exps,
     actions: open?.rows ?? [], fromResult: open?.fromResult ?? false, lang: "ko",
   });
-  const weekAgo = Date.now() - 7 * 86_400_000;
-  const fresh = (pool?.rows ?? []).filter((r) => Date.parse(r.captured_at) >= weekAgo).length;
+  /* 홈 알림과 같은 값(`pickJobs().fresh`) */
+  const fresh = pool?.fresh ?? 0;
+  const nameOf = new Map(live.rows.map((r) => [r.id, r.name ?? r.label]));
 
   return (
     <main>
@@ -49,7 +50,7 @@ export default async function MatBrief() {
           {brief.deadlines.map((d) => (
             <Link key={d.id} href={`/mat/jobs/${d.id}`} className="mt-row mt-row-link">
               <div className="mt-row-b">
-                <div className="mt-job-h"><p>{d.label}</p>
+                <div className="mt-job-h"><p>{nameOf.get(d.id) ?? d.label}</p>
                   <span className={`mt-dday${d.left <= 7 ? "" : " is-quiet"}`}>{d.left <= 0 ? "오늘 마감" : `D-${d.left}`}</span></div>
                 <small>마감 {d.deadline}</small>
               </div>

@@ -7,7 +7,9 @@ import { activeMajorName } from "@/lib/me-v3/major-name";
 import { matAccess } from "@/lib/mat-access";
 import { itemDomainKo, livePostingOf, type PostingItem } from "@/lib/assistant/posting";
 import { interviewPrep, smallTasks } from "@/lib/assistant/prep";
-import { matTakeTasks, matTrackApp } from "../../actions";
+import { matAiOn, matTakeTasks, matTrackApp } from "../../actions";
+import { aiConsented } from "@/lib/assistant/settings";
+import { aiReady } from "@/lib/assistant/claude";
 import { queryOne } from "@/lib/db";
 import { outLink } from "@/lib/mat/out-link";
 import { SOURCE_KO } from "@/lib/mat/stage";
@@ -36,14 +38,18 @@ export default async function MatJob({ params, searchParams }: {
   const takenRaw = (await searchParams).taken;
   const user = await requireUser();
   const core = await activeCoreOrPick(user.id);
-  const [p, major, access, exps] = await Promise.all([
+  const [p, major, access, exps, consent] = await Promise.all([
     livePostingOf(user.id, id), activeMajorName(user.id), matAccess(user.id), experiencesOf(user.id, core),
+    aiConsented(user.id).catch(() => false),
   ]);
   if (!p) notFound();
   const a = p.analysis;
   const stem = majorStem(major);
   const area = (it: PostingItem) => itemDomainKo(core, it, "ko");
-  const need = (it: PostingItem) => (it.kind === "must" ? "필수" : "우대");
+  /* 직무 이름으로 본 영역은 공고 글의 요구가 아니다. 칩이 그렇다고 적는다 */
+  const need = (it: PostingItem) => (it.from === "role" ? "직무 이름으로 본 영역" : it.from === "words" ? "공고 낱말로 본 영역"
+    : it.kind === "must" ? "필수" : "우대");
+  const byRole = a.items.some((i) => i.from);
 
   const fit: Row[] = [];
   const gap: Row[] = [];
@@ -90,7 +96,7 @@ export default async function MatJob({ params, searchParams }: {
   return (
     <main>
       <p className="mt-week"><Link href="/mat/jobs">← 공고</Link>{p.deadline ? ` · 마감 ${p.deadline}` : ""}</p>
-      <h1 className="mt-h1">{p.label}</h1>
+      <h1 className="mt-h1">{p.name ?? p.label}</h1>
       {/* 숫자를 늘어놓지 않고 먼저 할 일 한 줄(2026-11-02 대표 "AI같아"). 처리 방식 안내는 화면 위가 아니라 맨 아래 작은 글씨 */}
       <section className="mt-diag" aria-label="먼저 할 일">
         {a.role ? <div className="mt-diag-k"><span>뽑는 자리</span><b>{a.role}</b></div> : null}
@@ -193,7 +199,25 @@ export default async function MatJob({ params, searchParams }: {
           <p className="mt-note"><Link href={`/mat/draft?p=${p.id}`}>면접 연습</Link> · 사람과 연습은 <Link href="/mat/consult">상담</Link></p>
         </>
       ) : null}
-      {a.note ? <p className="mt-note" style={{ marginTop: 24 }}>{a.note}</p> : null}
+      {byRole ? (
+        <p className="mt-note" style={{ marginTop: 24 }}>공고 글에 기술 요건 줄이 없어, 직무 이름과 공고에 나온 낱말로 본 영역에 내 경험을 이었어요.</p>
+      ) : null}
+      {/* 읽은 방법은 맨 아래 작은 글씨로. 저장된 안내 문장(`a.note`) 대신 지금 상태로 적는다(말투를 MAT 에 맞춘다) */}
+      {p.analyzed_by === "claude" ? (
+        <p className="mt-note" style={{ marginTop: 12 }}>공고 글은 Anthropic(미국)의 Claude로 읽었어요.</p>
+      ) : consent || !aiReady() ? (
+        <p className="mt-note" style={{ marginTop: 12 }}>{consent ? "이번에는 규칙으로 읽었어요. 잠시 뒤 다시 열어 보세요." : "규칙으로 읽었어요."}</p>
+      ) : (
+        <div className="mt-box" style={{ marginTop: 24 }}>
+          <h3>AI로 더 자세히 읽기</h3>
+          <p>지금은 AI 분석을 켜지 않아 규칙으로 읽었어요. 켜면 이 공고 글이 Anthropic(미국)의 Claude로 보내져 읽혀요.
+            이름과 연락처는 보내지 않아요. 끄는 곳은 <Link href="/me/track#settings">설정</Link>이에요.</p>
+          <form action={matAiOn} style={{ marginTop: 12 }}>
+            <input type="hidden" name="id" value={p.id} />
+            <button type="submit" className="mt-btn is-block">동의하고 AI로 다시 읽기</button>
+          </form>
+        </div>
+      )}
     </main>
   );
 }

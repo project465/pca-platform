@@ -10,6 +10,8 @@ import Link from "next/link";
 import { queryOne } from "@/lib/db";
 import type { MatchedPosting } from "@/lib/assistant/match";
 import { SOURCE_KO } from "@/lib/mat/stage";
+import { aiConsented } from "@/lib/assistant/settings";
+import { aiReady } from "@/lib/assistant/claude";
 
 export const generateMetadata = () => matTitle("공고");
 
@@ -38,13 +40,15 @@ export default async function MatJobs({ searchParams }: { searchParams: Promise<
       `SELECT id::text, source, source_url, closes_on::text, captured_at::text, region_code, raw_requirements
          FROM v3_job_postings WHERE id = $1`, [sp.from]).catch(() => null)
     : null;
-  const [jobs, mine, apps] = await Promise.all([
+  const [jobs, mine, apps, agreed] = await Promise.all([
     pickJobs(user.id, 20),
     postingsOf(user.id).catch(() => []),
     applicationsOf(user.id).catch(() => []),
+    aiConsented(user.id).catch(() => false),
   ]);
+  const consent = agreed && aiReady();
   const list = jobs.main;
-  const fromJi = [...list, ...jobs.grad].some((p) => p.source === "jobindustry");
+  const fromJi = [...list, ...jobs.grad, ...jobs.other].some((p) => p.source === "jobindustry");
 
   return (
     <main>
@@ -66,7 +70,7 @@ export default async function MatJobs({ searchParams }: { searchParams: Promise<
       {list.length ? (
         <div className="mt-list">{list.slice(0, 20).map((p) => <JobCard key={p.id} p={p} />)}</div>
       ) : (
-        <p className="mt-empty">모아 둔 공고가 아직 없어요.</p>
+        <p className="mt-empty">{jobs.other.length ? "전공에 맞는 공고가 아직 없어요. 경험을 적으면 더 찾아 드려요." : "모아 둔 공고가 아직 없어요."}</p>
       )}
       {jobs.grad.length ? (
         <details className="mt-more">
@@ -74,8 +78,13 @@ export default async function MatJobs({ searchParams }: { searchParams: Promise<
           <div className="mt-list">{jobs.grad.map((p) => <JobCard key={p.id} p={p} />)}</div>
         </details>
       ) : null}
+      {jobs.other.length ? (
+        <details className="mt-more">
+          <summary>다른 전공 공고 {jobs.other.length}건</summary>
+          <div className="mt-list">{jobs.other.map((p) => <JobCard key={p.id} p={p} />)}</div>
+        </details>
+      ) : null}
       {fromJi ? <p className="mt-src">공고 출처 잡인더스트리 · 회사 이름은 원문에서</p> : null}
-      <p className="mt-note">맞춰 보기는 AI 분석을 켠 경우 Anthropic(미국)의 Claude로 읽어요.</p>
 
       {mine.length ? (
         <>
@@ -84,7 +93,7 @@ export default async function MatJobs({ searchParams }: { searchParams: Promise<
             {mine.slice(0, 10).map((m) => (
               <Link key={m.id} href={`/mat/jobs/${m.id}`} className="mt-row mt-row-link">
                 <div className="mt-row-b">
-                  <p>{m.label}</p>
+                  <p>{m.name ?? m.label}</p>
                   <small>{m.deadline ? `마감 ${m.deadline}` : "마감 미기재"}</small>
                 </div>
               </Link>
@@ -107,7 +116,8 @@ export default async function MatJobs({ searchParams }: { searchParams: Promise<
             placeholder="자격 요건 · 우대 사항 · 담당 업무" />
         </label>
         <button type="submit" className="mt-btn is-main is-block">내 경험과 맞춰 보기</button>
-        <p className="mt-note">회사 이름은 저장하지 않아요. AI 분석을 켠 경우 Anthropic(미국)의 Claude로 읽어요.</p>
+        {/* 처리 안내는 한 화면에 한 번만(2026-11-02 운영 시험 "AI 느낌"). AI 분석을 켠 사람에게만, 보내는 자리 바로 아래에 */}
+        <p className="mt-note">회사 이름은 저장하지 않아요.{consent ? " 이 글은 Anthropic(미국)의 Claude로 읽어요." : ""}</p>
       </form>
     </main>
   );

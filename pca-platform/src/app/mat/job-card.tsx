@@ -2,6 +2,7 @@ import type { MatchedPosting } from "@/lib/assistant/match";
 import { daysLeft, REGION_KO, SOURCE_KO } from "@/lib/mat/stage";
 import { outLink } from "@/lib/mat/out-link";
 import { matAnalyzeJob } from "./actions";
+import { jobTitle } from "@/lib/mat/job-title";
 
 /**
  * 공고 한 줄(홈 · 공고 화면이 같이 쓴다).
@@ -13,7 +14,9 @@ import { matAnalyzeJob } from "./actions";
  */
 export function JobCard({ p, analyze = true }: { p: MatchedPosting; analyze?: boolean }) {
   const left = daysLeft(p.closes_on);
-  const title = p.requirements[0] ?? null;
+  /* 첫 줄이 `고용 형태: …` 같은 항목 줄이면 건너뛴다(`jobTitle`) */
+  const { title } = jobTitle(p.requirements, p.role);
+  const readable = p.requirements.length > 0;
   const link = outLink(p.source_url, p.source);
   return (
     <div className="mt-row">
@@ -26,7 +29,7 @@ export function JobCard({ p, analyze = true }: { p: MatchedPosting; analyze?: bo
             {left === null ? "상시" : left <= 0 ? "오늘 마감" : `D-${left}`}
           </span>
         </div>
-        <p style={{ marginTop: 6 }}>{title ?? "요건을 글로 읽지 못한 공고 · 원문에서 확인"}</p>
+        <p style={{ marginTop: 6 }}>{title ?? (readable ? "제목을 읽지 못한 공고 · 원문에서 확인" : "요건을 글로 읽지 못한 공고 · 원문에서 확인")}</p>
         {p.hits.length ? (
           <div className="mt-chips" aria-label="겹친 낱말">
             {p.hits.slice(0, 4).map((h) => <span key={h} className="mt-chip">{h}</span>)}
@@ -34,7 +37,7 @@ export function JobCard({ p, analyze = true }: { p: MatchedPosting; analyze?: bo
           </div>
         ) : null}
         <div className="mt-acts">
-          {analyze && title ? (
+          {analyze && readable ? (
             <form action={matAnalyzeJob}>
               <input type="hidden" name="job" value={p.id} />
               <button type="submit" className="mt-btn is-small">내 경험과 맞춰 보기</button>

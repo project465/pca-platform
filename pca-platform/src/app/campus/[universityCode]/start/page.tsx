@@ -6,7 +6,7 @@ import {
   campusSay,
   coreOf, findLeaf, pickRequired, specializationName, statusOf, university,
 } from "@/lib/campus/registry";
-import { campusStudentOf } from "@/lib/campus/students";
+import { campusStudentOf, hasCampusRow } from "@/lib/campus/students";
 import { CAMPUS_CTA_KO, campusAttemptState } from "@/lib/campus/attempt-state";
 import { currentUser } from "@/lib/session";
 import { CampusShell } from "../../shell";
@@ -51,6 +51,10 @@ export default async function CampusStart({ params }: Params) {
      계정으로 바꿀 자리가 거기다. 개인으로 가입해 들어온 사람은 그 쪽에서
      개인 홈으로 나갈 수 있다 */
   if (!mine) {
+    /* 이 학교의 발급 계정인데 학과가 등록부와 맞지 않으면 로그인으로 돌리지 않고 까닭을 적는다 */
+    if (await hasCampusRow(user.id, u.university_code)) {
+      return <Blocked u={u} why="계정의 학과가 학교 등록부와 맞지 않습니다" />;
+    }
     redirect(`/campus/${code}/login?next=${
       encodeURIComponent(`/campus/${code}/start`)}`);
   }

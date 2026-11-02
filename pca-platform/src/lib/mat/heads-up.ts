@@ -38,7 +38,7 @@ export function headsUp(opts: {
     const miss = p.analysis.items.filter((i) => i.kind === "must" && (i.status === "empty" || i.status === "partial")).length;
     out.push({
       key: `due:${p.id}`, href: `/mat/jobs/${p.id}`, label: "공고 보기",
-      title: left === 0 ? `‘${p.label}’ 오늘 마감` : `‘${p.label}’ 마감 ${left}일 전`,
+      title: left === 0 ? `‘${p.name ?? p.label}’ 오늘 마감` : `‘${p.name ?? p.label}’ 마감 ${left}일 전`,
       body: miss ? "채울 것 하나만 적어도 지원서 문장이 생겨요." : "문장 뼈대를 다듬어 지원해 보세요.",
     });
   }

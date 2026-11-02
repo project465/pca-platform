@@ -48,7 +48,7 @@ export default async function MatDraft({ searchParams }: { searchParams: Promise
         <div className="mt-chips" aria-label="공고 고르기" style={{ marginBottom: 14 }}>
           {mine.slice(0, 6).map((m) => (
             <Link key={m.id} href={`/mat/draft?p=${m.id}`} className={`mt-chip mt-chip-btn${m.id === pickId ? " is-on" : ""}`}
-              aria-current={m.id === pickId ? "true" : undefined}>{m.label}</Link>
+              aria-current={m.id === pickId ? "true" : undefined}>{m.name ?? m.label}</Link>
           ))}
         </div>
       ) : (
