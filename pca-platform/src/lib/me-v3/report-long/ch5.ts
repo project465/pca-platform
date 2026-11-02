@@ -172,7 +172,7 @@ export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
   const l2 = st ? (st.confirmed.map((a) => d.def(st.code)?.axes?.[a]?.l2).find(Boolean) ?? null) : null;
   const draft = (s: string) => `<span class="mut sm">초안 · ${s}</span>`;
   const roleRow = goal ? draft(E(`${goal.name_ko}${gd?.responsibilities?.[0] ? `: ${gd.responsibilities[0]}` : ""}. 공고에 적힌 담당 업무로 바꿔 쓰세요.`)) : "";
-  const expRow = rec || st ? draft(E([rec ? rec.title : "", st ? `${d.name(st.code)}에서 ${ev?.decisions[0] ? polite(ev.decisions[0]) : l2 ? polite(l2) : "해 본 일이 확인됐습니다."}` : ""].filter(Boolean).join(" · "))) : "";
+  const expRow = rec || st ? draft(E([rec ? rec.title : "", st ? `${d.name(st.code)}에서 ${ev?.decisions[0] ? polite(ev.decisions[0]) : "해 본 일이 확인됐습니다."}${!ev?.decisions[0] && l2 ? ` (예: ${l2.replace(/[.]$/, "")})` : ""}` : ""].filter(Boolean).join(" · "))) : "";
   /* 정한 것은 위 줄이 이미 옮겼으면 다시 쓰지 않는다 */
   const madeRow = ev?.artifacts[0] ? draft(E(`남긴 것: ${ev.artifacts.slice(0, 2).join(", ")}`)) : "";
   /* 한 쪽으로 읽는 안내라 나누지 않는다. 나누면 미리 옮긴 줄만 다음 쪽에 혼자 남는다 */
@@ -185,10 +185,11 @@ export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
     ].map(([h, t], i) => `<div class="card"><p class="k">${i + 1}단계</p><h4>${h}</h4><p>${t}</p></div>`).join("")}</div>` +
     (() => {
       /* 세 단계를 바로 해 볼 수 있게, 가장 잘 이어지는 묶음의 회사 몇 곳을 명단 값 그대로 붙인다 */
-      const g0 = [...r.groups].sort((a, b) => "ABC".indexOf(a.tier) - "ABC".indexOf(b.tier))[0];
+      /* 고른 산업이 있으면 그 묶음이 먼저다(N5 · 01장 첫 산업과 같은 기준) */
+      const g0 = r.groups.find((g) => chosen.has(g.pack.code)) ?? [...r.groups].sort((a, b) => "ABC".indexOf(a.tier) - "ABC".indexOf(b.tier))[0];
       const os = g0 ? [...g0.orgs].sort((a, b) => Number(!!b.url) - Number(!!a.url)).slice(0, 3) : [];
       return os.length ? H(`이 순서로 먼저 알아보기 좋은 곳`, `${E(g0.pack.name_ko)} 쪽 회사 · 명단과 공시에 적힌 그대로`) +
-        `<table class="tb tb-xs"><thead><tr><th>회사</th><th>업종</th><th>주력 품목</th><th>누리집</th></tr></thead><tbody>${os.map((o) => `<tr><td><b>${E(o.name)}</b>${o.listed ? ` <span class="mut sm">${E(o.listed)}</span>` : ""}</td><td>${E(o.sector)}</td><td class="mut">${E((o.product || "").length > 30 ? `${(o.product || "").slice(0, 29)}…` : o.product || "")}</td><td class="mut sm">${E((o.url ?? "").replace(/^https?:\/\//, "").replace(/\/$/, ""))}</td></tr>`).join("")}</tbody></table>` : "";
+        `<table class="tb tb-xs"><thead><tr><th>회사</th><th>업종</th><th>주력 품목</th>${os.some((o) => o.url) ? "<th>누리집</th>" : ""}</tr></thead><tbody>${os.map((o) => `<tr><td><b>${E(o.name)}</b>${o.listed ? ` <span class="mut sm">${E(o.listed)}</span>` : ""}</td><td>${E(o.sector)}</td><td class="mut">${E((o.product || "").length > 30 ? `${(o.product || "").slice(0, 29)}…` : o.product || "")}</td>${os.some((v) => v.url) ? `<td class="mut sm">${E((o.url ?? "").replace(/^https?:\/\//, "").replace(/\/$/, ""))}</td>` : ""}</tr>`).join("")}</tbody></table>` : "";
     })() +
     (roleRow || expRow || madeRow ? note("내 결과에서 미리 옮겨 둔 것", ul([roleRow && `지원할 직무 · ${roleRow}`, expRow && `이어지는 경험 · ${expRow}`, madeRow].filter(Boolean) as string[])) : "") +
     band("함께 찾아볼 곳", `알아본 내용을 들고 ${E(x.issuer)} 진로·취업 상담을 찾으면, 지역 일자리와 지원 사업을 같이 찾아볼 수 있어요.`)) });

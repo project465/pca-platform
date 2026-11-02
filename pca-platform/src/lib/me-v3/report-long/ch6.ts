@@ -115,9 +115,9 @@ function stories(x: Inputs, d: X): Story[] {
     out.push({
       domain: g.domain, axis: g.axis, did,
       artifacts: [...z.artifacts, ...rc.artifacts].filter((v, i, a) => a.indexOf(v) === i),
-      made: confirmed(g.domain, "J5") ? l2(g.domain, "J5") : null,
+      made: null,
       verifications: [...z.verifications, ...rc.verifications].filter((v, i, a) => a.indexOf(v) === i),
-      compared: confirmed(g.domain, "J6") ? l2(g.domain, "J6") : null,
+      compared: null,
       record: rc.record, period: rc.period, ready: g.ready, from: "pick",
     });
     if (out.length >= 4) break;
@@ -131,9 +131,10 @@ function stories(x: Inputs, d: X): Story[] {
     if (!axes.length && !z.confirmed.includes("J5")) continue;
     const rc = recordOf(x, z.code);
     out.push({
-      domain: z.code, axis: axes[0] ?? "J5", did: [...axes.slice(0, 2).map((a) => l2(z.code, a)!), ...rc.decisions].slice(0, 3),
-      artifacts: rc.artifacts, made: z.confirmed.includes("J5") ? l2(z.code, "J5") : null,
-      verifications: rc.verifications, compared: z.confirmed.includes("J6") ? l2(z.code, "J6") : null,
+      /* 고른 항목이 없는 판단: 경험 기록에 적은 것만 싣고, 사전 예시는 학생 말로 옮기지 않는다(초안은 빈칸) */
+      domain: z.code, axis: axes[0] ?? "J5", did: [...rc.decisions].slice(0, 3),
+      artifacts: rc.artifacts, made: null,
+      verifications: rc.verifications, compared: null,
       record: rc.record, period: rc.period, ready: false, from: "answer",
     });
     if (out.length >= 4) break;
@@ -321,7 +322,7 @@ export function portfolioPage(x: Inputs, d: X): Page {
   const z = pick?.td ? d.dom(pick.td) : undefined;
   const ev = z ? d.evidenceOf(z) : null;
   const where = pick ? x.exps.find((e) => e.artifacts.includes(pick.title))?.title ?? null : null;
-  const decided = ev?.decisions[0] ?? (z && z.confirmed.includes("J3") ? d.def(z.code)?.axes?.J3?.l2 : null) ?? null;
+  const decided = ev?.decisions[0] ?? null;
   const iq = gg?.g?.interview.find((v) => v.axis === "J5") ?? gg?.g?.interview[0];
   const sheet: [string, string][] = !pick ? [] : en ? [
     ["Deliverable", `${U(pick.title)}${pick.td ? ` · ${E(d.name(pick.td))}` : ""}${pick.status === "새로 만들기" ? " · still to make" : ""}`],
@@ -565,7 +566,10 @@ export function roleQPage(x: Inputs, d: X): Page {
       const b = best(v.axis);
       const lv = b?.level ?? null;
       const td = b?.where[0];
-      const l2 = td ? d.def(td)?.axes?.[v.axis]?.l2 : null;
+      /* 학생이 고른 항목만 학생 말로. 없으면 사전 예시는 `예:` 로 따옴표 밖에 둔다 */
+      const pk = b ? b.where.map((w) => d.picks(w, v.axis)[0]).find(Boolean) ?? null : null;
+      const l2 = pk;
+      const ex = td ? d.def(td)?.axes?.[v.axis]?.l2 ?? null : null;
       const pr = g?.practice?.[v.axis];
       const draft = en
         ? (lv != null && lv >= 2 && td && l2
@@ -574,6 +578,8 @@ export function roleQPage(x: Inputs, d: X): Page {
           : `“I have not done this myself yet, and I am getting ready to try it for the first time in a ${B(30)} project.”`)
         : lv != null && lv >= 2 && td && l2
           ? `“${E(d.name(td))} 과제에서 ${U(polite(l2))} ${FOLLOW[v.axis]}”`
+          : lv != null && lv >= 2 && td
+          ? `“${E(d.name(td))} 과제에서 ${B()} ${FOLLOW[v.axis]}”${ex ? ` (예: ${E(ex.replace(/[.]$/, ""))})` : ""}`
           : pr ? `아직 해 본 적이 없다면 이 연습부터 해 보세요. ${E(polite(pr.task))} 끝나면 ${U(pr.output)}${josaOf(pr.output, "이가")} 남고, 그것으로 답하면 돼요.`
           : `“아직 직접 해 본 적은 없고, ${B(30)} 과제에서 처음 해 보려고 준비하고 있습니다.”`;
       return `<div class="qa"><div class="qa-q"><span>${E(d.axisName(v.axis))}</span><b>${E(v.q)}</b></div><div class="two qa-b"><div><p class="k">${L("왜 묻나", "Why they ask")}</p><p>${E(en ? stop(v.why) : polite(v.why))}</p></div><div><p class="k">${L("지금 단계", "Where you are now")}</p><p>${lv == null ? L("이번 검사에서 묻지 않았어요", "This assessment did not ask about it") : E(STEP_WORD[lv as 0 | 1 | 2 | 3].tag)}</p><p class="mut sm">${lv != null && lv >= 2 ? L("해 본 판단이에요. 답할 경험 하나를 미리 정해 두세요.", "You have made this decision. Pick the scene you will answer with ahead of time.") : L("아직 해 본 일이 적은 판단이라 07장 30일 할 일과 이어져요.", "You have little to show here yet, so it links to your 30-day tasks.")}</p></div></div>${mine(lv != null && lv >= 2 ? L("답변 초안", "Draft answer") : L("준비 방법", "How to prepare"), draft)}</div>`;
@@ -596,7 +602,7 @@ export function checkPage(x: Inputs, d: X): Page {
   /* 30초 자기소개 초안: 전공 · 가장 분명한 강점 하나(답한 말) · 목표 직무. 두 문장으로 끝낸다 */
   const st = d.strengths[0];
   const s0 = stories(x, d)[0];
-  const strongLine = s0?.did[0] ?? (st ? st.confirmed.map((a) => d.def(st.code)?.axes?.[a]?.l2).find(Boolean) : null) ?? null;
+  const strongLine = s0?.did[0] ?? null;
   const strongDom = s0 ? d.name(s0.domain) : st ? d.name(st.code) : null;
   const goal = d.goalRole?.name_ko ?? null;
   let intro: string;

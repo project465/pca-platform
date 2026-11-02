@@ -274,12 +274,13 @@ export function regionView(x: Inputs, name: (td: string) => string): RegionView 
      연료전지 · 소재 회사가, 전기전자 책의 ‘자동차 전장’ 에 화학 회사가 들어갔다. 업종이나 주력 품목에 그 전공의
      일이 적혀 있는 회사만 받는다. 경영처럼 어느 업종에서나 일하는 전공은 거르지 않는다 */
   const must = SECTOR_MUST[x.coreCode];
-  for (const o of all) {
+  /* 회사 하나를 이 전공의 산업 묶음 하나에 넣는다. `skip` = 공기업이라 따로 다룬다 · null = 넣지 않는다 */
+  const place = (o: ROrg): string | null => {
     /* 표준산업분류의 ‘전자부품, 컴퓨터, 영상, 음향 및 통신장비 제조업’ 은 낱말에 컴퓨터와 통신이 들어 있어
        부품 · 소재 회사가 컴퓨터 책에 들어왔다. 그 업종명은 지우고 주력 품목과 나머지 업종으로만 본다 */
-    if (must && !must.test(`${o.sector} ${o.product}`.replace(SECTOR_NOISE, " "))) { unmatched++; continue; }
+    if (must && !must.test(`${o.sector} ${o.product}`.replace(SECTOR_NOISE, " "))) return null;
     const pub = publicOrgs.includes(o);
-    if (pub && !packTh.some((t) => PUBLIC_PACK.test(packHead(t.p)))) continue;
+    if (pub && !packTh.some((t) => PUBLIC_PACK.test(packHead(t.p)))) return "skip";
     const text = `${o.sector} ${o.product} ${o.name}`;
     /* `제조·일반기업` 은 **마지막 자리**다. 제 업종(식료품 · 의약 · 전자)으로 먼저 묶음을 찾고, 그 업종을 받는
        묶음이 이 전공에 없을 때만 업종명의 `제조업` 으로 `기업간 거래` 같은 묶음에 넣는다(2026-11-02 배재대 시험:
@@ -313,9 +314,16 @@ export function regionView(x: Inputs, name: (td: string) => string): RegionView 
     };
     const specific = th0.filter((t) => t !== "제조·일반기업");
     const best = (specific.length ? pick(specific) : null) ?? (th0.includes("제조·일반기업") ? pick(["제조·일반기업"]) : null);
-    if (!best) { unmatched++; continue; }
-    const g = byPack.get(best.code) ?? []; g.push(o); byPack.set(best.code, g);
+    return best?.code ?? null;
+  };
+  for (const o of all) {
+    const c = place(o);
+    if (c === "skip") continue;
+    if (!c) { unmatched++; continue; }
+    const g = byPack.get(c) ?? []; g.push(o); byPack.set(c, g);
   }
+  /* 생활권이 겹치는 이웃 지역 상장사도 **이 전공의 산업에 드는 회사만** 싣는다(2026-11-02 진흥원 시험 N6: 기계 결과에 바이오 · 백신 · 건설사) */
+  const neighborMine = neighbor.filter((o) => { const c = place(o); return !!c && c !== "skip"; });
   const groups: FitGroup[] = [];
   for (const p of x.inds) {
     const orgs = byPack.get(p.code);
@@ -341,7 +349,7 @@ export function regionView(x: Inputs, name: (td: string) => string): RegionView 
   const listed = listedAll.filter((o) => mine.has(bare(o.name)));
   return {
     key: x.region, label: P.label, area: P.area, checkedOn, sources: [...new Set(sources)],
-    all, listed, groups, unmatched, neighbor, publicOrgs, big, overview: overviewMine,
+    all, listed, groups, unmatched, neighbor: neighborMine, publicOrgs, big, overview: overviewMine,
   };
 }
 

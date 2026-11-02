@@ -15,6 +15,7 @@
 import { MAT_PUBLIC } from "@/lib/mat-switch";
 import type { Action, Gap } from "../result/model";
 import type { Inputs } from "./types";
+import { PART3 } from "./ch3";
 import { AXES, STEP_WORD, ZONE_WORD, type X } from "./derive";
 import { C, chain, gantt } from "./charts";
 import { E, H, PAL, T, ZC, band, card, howto, note, paginate, rowsOf, ul, type Page } from "./kit";
@@ -354,7 +355,9 @@ export function tracePages(x: Inputs, d: X): Page[] {
   /* 영어 책은 장 번호 없이 장 이름만 적는다(번호가 당겨지는 바꿈이 한국어만 본다) */
   const SEC = isEn()
     ? { area: "Area by area", road: "Action plan", job: "Job exploration", rec: "Experience records" }
-    : { area: "03 영역별 해설", road: "07 실행 로드맵", job: "04 직무 탐색", rec: "03 경험 기록" };
+    /* `NN장` 꼴로 적어야 지역 장을 앞에 둘 때 번호가 함께 밀린다(`regionFirst`). `03 영역별 해설` 은 장 이름이 전공마다
+       달라(`기술영역별 해설`) 안 밀리고 남았다(2026-11-02 진흥원 시험 N4) */
+    : { area: `03장 ${PART3(x)}`, road: "07장 실행 로드맵", job: "04장 직무 탐색", rec: "03장 경험 기록" };
   for (const z of x.m.domains.filter((v) => v.zone !== "NOT_EXPLORED")) {
     const ev = d.evidenceOf(z);
     rows.push({ sec: SEC.area, claim: `${d.name(z.code)}: ${ZONE_WORD[z.zone as keyof typeof ZONE_WORD]?.tag ?? ""}`, ev: [...ev.decisions, ...ev.artifacts, ...ev.comparisons].slice(0, 4).join(" · ") || L(`확인된 판단 ${z.confirmed.length}가지 (응답)`, `${pl(z.confirmed.length, "decision", "decisions")} confirmed (from your answers)`) });

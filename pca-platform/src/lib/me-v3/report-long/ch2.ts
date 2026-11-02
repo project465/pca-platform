@@ -168,14 +168,20 @@ export function profileRead(x: Inputs, d: X): Page {
     if (high.length) paras.push(["관심", `${andJoin(high.slice(0, 4))}에 관심이 높다고 답했는데, 이번에는 판단 단계까지 묻지 않았어요. 그중 한 영역에서 짧은 과제를 해 보면 다음 결과에 근거로 들어갑니다.`]);
     if (!paras.length) paras.push(["지금", "이번 검사에서는 판단 단계를 물은 영역이 없어요. 관심 가는 영역에서 짧은 과제를 한 번 해 본 뒤 다시 검사해 보세요."]);
   }
-  const sceneOf = (b: (typeof d.best)[number]) => { const td = b.where[0] ?? d.radarDoms[0]?.code; return td ? d.def(td)?.axes?.[b.axis]?.l2 ?? "" : ""; };
+  /* **학생 말로 옮기는 것은 학생이 고른 문장뿐이다**(2026-11-02 진흥원 시험 N1: 고르지 않은 사전 예시 `주어진 사양으로
+     설계 범위를 적었습니다` 가 학생 말로 들어갔고, 실제로 고른 것은 반대였다). 고른 것이 없으면 따옴표 밖에 `예:` 로만 단다 */
+  const sceneOf = (b: (typeof d.best)[number]) => {
+    for (const td of b.where) { const p = d.picks(td, b.axis)[0]; if (p) return p; }
+    return "";
+  };
+  const exOf = (b: (typeof d.best)[number]) => { const td = b.where[0] ?? d.radarDoms[0]?.code; const l2 = td ? d.def(td)?.axes?.[b.axis]?.l2 ?? "" : ""; return l2 ? L(` (예: ${noDot(l2)})`, ` (e.g. ${noDot(l2)})`) : ""; };
   const say = (b: (typeof d.best)[number]) => {
     const sc = sceneOf(b);
     if (isEn()) {
       if (sc && b.level === 3) return `“I ${lc(noDot(sc))}, and I set the criteria myself.”`;
       if (sc && b.level === 2) return `“I ${lc(noDot(sc))}.”`;
       if (sc && b.level === 1) return `“I ${lc(noDot(sc))}. Someone else set the conditions.”`;
-      return b.level === 3 ? "“I set the criteria, and the result was used.”" : b.level === 2 ? "“I did it myself within the conditions I was given.”" : b.level === 1 ? "“I did it the way someone else set it up.”" : "“I haven't done this yet.”";
+      return (b.level === 3 ? "“I set the criteria, and the result was used.”" : b.level === 2 ? "“I did it myself within the conditions I was given.”" : b.level === 1 ? "“I did it the way someone else set it up.”" : "“I haven't done this yet.”") + (b.level ? exOf(b) : "");
     }
     /* 기준까지 정한 판단마다 같은 꼬리말을 붙이면 표 한 장에 같은 문장이 일곱 번 선다. 판단마다 정한 몫이 다르니 그 몫을 적는다 */
     const OWN: Record<string, string> = {
@@ -187,7 +193,7 @@ export function profileRead(x: Inputs, d: X): Page {
     if (sc && b.level === 3) return `“${polite(sc)} ${OWN[b.axis] ?? "그 기준은 제가 정했습니다."}”`;
     if (sc && b.level === 2) return `“${polite(sc)}”`;
     if (sc && b.level === 1) return `“${polite(sc)} 조건은 다른 사람이 정했습니다”`;
-    return b.level === 3 ? "“제가 기준을 정했고, 그 결과가 쓰였습니다”" : b.level === 2 ? "“주어진 조건 안에서 제가 직접 해 봤습니다”" : b.level === 1 ? "“다른 사람이 정한 대로 맡아 해 봤습니다”" : "“아직 해 보지 않았습니다”";
+    return (b.level === 3 ? "“제가 기준을 정했고, 그 결과가 쓰였습니다”" : b.level === 2 ? "“주어진 조건 안에서 제가 직접 해 봤습니다”" : b.level === 1 ? "“다른 사람이 정한 대로 맡아 해 봤습니다”" : "“아직 해 보지 않았습니다”") + (b.level ? exOf(b) : "");
   };
   const sayRows = d.best.filter((b) => b.level !== null);
   const head = isEn()
@@ -246,8 +252,7 @@ export function strengthPage(x: Inputs, d: X, k: number): Page {
   const sc = [...new Set(s.confirmed.map((a) => def?.axes?.[a]?.l2 ?? "").filter(Boolean))];
   const draft = en
     ? [
-      pick ? `On one ${nm} project, I ${lc(noDot(pick))}.` : sc[0] ? `On one ${nm} project, I ${lc(noDot(sc[0]))}.` : `On one ${nm} project, I took on ${andEn(s.confirmed.slice(0, 2).map((a) => lc(an(a))))} myself.`,
-      !pick && sc[1] && !ev.artifacts[0] && !ev.comparisons[0] ? `I also ${lc(noDot(sc[1]))}.` : "",
+      pick ? `On one ${nm} project, I ${lc(noDot(pick))}.` : `On one ${nm} project, I took on ${andEn(s.confirmed.slice(0, 2).map((a) => lc(an(a))))} myself.${sc[0] ? ` (e.g. ${lc(noDot(sc[0]))})` : ""}`,
       ev.artifacts[0] ? `I documented the result in ${aN(ev.artifacts[0])}${cmp0 ? ` and checked it against ${aN(cmp0)}.` : "."}` : cmp0 ? `I checked the result against ${aN(cmp0)}.` : "",
     ].filter(Boolean).join(" ")
     : [

@@ -28,7 +28,7 @@ import { AXES, BAND_WORD, ZONES, ZONE_WORD } from "./derive";
 import { C, LEVEL_KO, radar, ring } from "./charts";
 import { j } from "./text";
 import type { Inputs, RegionKey } from "./types";
-import { forAgency } from "./agency";
+import { forAgency, tidyKo } from "./agency";
 import { university } from "@/lib/campus/registry";
 
 export type LongReport = {
@@ -122,9 +122,10 @@ export function assemble(x0: Inputs): { pages: Page[]; notes: string[]; region: 
     ringHow(true, T("영역 번호. 03장에서 같은 번호로 펴 볼 수 있어요", "Area number. Chapter 03 uses the same numbers")).replace("</ul></div>", `</ul><p class="ch-keyp">${domKey}</p></div>`)), ...named([...c1, ...fill[N.c1] ?? []], N.c1));
 
   const c2 = ch2Pages(x, d);
-  const radarSeries = d.radarDoms.map((v, i) => ({ name: v.code, levels: d.levels(v.code), color: [PAL.blue, PAL.coral, PAL.teal, PAL.violet][i] }));
+  /* 선 이름은 영역 이름이다(그림의 `값이 모두 같아` 안내가 이 이름을 그대로 쓴다. 코드를 넣으면 `TD01 · TD05` 가 찍힌다 · N3) */
+  const radarSeries = d.radarDoms.map((v, i) => ({ code: v.code, name: d.name(v.code), levels: d.levels(v.code), color: [PAL.blue, PAL.coral, PAL.teal, PAL.violet][i] }));
   const radarHow = () => howto([
-    ...radarSeries.map((v): [string, string] => [v.color, E(d.name(v.name))]),
+    ...radarSeries.map((v): [string, string] => [v.color, E(v.name)]),
     [T("가운데", "Center"), LEVEL_KO[0]],
     [T("고리", "Rings"), T(`안쪽부터 ${LEVEL_KO[1]} · ${LEVEL_KO[2]} · ${LEVEL_KO[3]}`, `From the inside: ${LEVEL_KO[1]} · ${LEVEL_KO[2]} · ${LEVEL_KO[3]}`)],
     ...(radarSeries.some((v) => v.levels.some((l) => l == null)) ? [[T("점이 없는 꼭짓점", "Points without a dot"), T("이번 검사에서 묻지 않은 판단이라 가운데에 두었어요", "This decision wasn't asked in this assessment, so the line stays at the center")] as [string, string]] : []),
@@ -196,6 +197,7 @@ export function assemble(x0: Inputs): { pages: Page[]; notes: string[]; region: 
   if (x.issuerCode && university(x.issuerCode)?.org_kind === "agency") {
     for (const pg of P) { pg.body = forAgency(pg.body); pg.title = forAgency(pg.title); }
   }
+  if (!isEn()) for (const pg of P) pg.body = tidyKo(pg.body);
   return { pages: P, notes, region: rv?.key ?? null };
 }
 

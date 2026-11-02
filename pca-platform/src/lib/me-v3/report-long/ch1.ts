@@ -234,6 +234,8 @@ export function dash(x: Inputs, d: X): Page {
   const zoneParts = ZONES.map((z) => ({ label: ZONE_WORD[z].tag, value: x.m.domains.filter((v) => v.zone === z).length, color: ZC[z] })).filter((p) => p.value);
   const ints = (["HIGH", "MID", "LOW"] as const).map((v) => ({ label: L(`관심 ${BAND_WORD[v]}`, `${BAND_WORD[v]} interest`), value: x.m.domains.filter((z) => z.interest === v).length, color: IC[v] }));
   const noAns = x.m.domains.filter((z) => !z.interest).length;
+  /* 관심은 높은데 해 본 일이 적은 영역(근거가 아직 부족한 묶음) */
+  const gapHigh = x.m.domains.filter((z) => z.interest === "HIGH" && (z.zone === "Z4_INSUFFICIENT_EVIDENCE" || z.zone === "NOT_EXPLORED")).length;
   if (noAns) ints.push({ label: L("관심 응답 없음", "No interest answer"), value: noAns, color: "#d7dbe3" });
   /* 영어 칸은 단위(개 · 건 · 곳)를 따로 달지 않는다. 이름이 이미 무엇을 센 것인지 말한다 */
   const all: [string, number, string, string][] = en ? [
@@ -268,7 +270,11 @@ export function dash(x: Inputs, d: X): Page {
     ]) +
     band(L("다음 과제는", "Your next project"), en
       ? `Your interest came out high in ${nEn(ints[0].value, "area")}, and your work shows in ${shown}. Pick your next project from the areas where your interest is high but you have not done much yet.`
-      : `관심이 높은 영역은 ${ints[0].value}곳, 해 본 일이 나온 영역은 ${shown}곳입니다. 관심은 높은데 아직 해 본 일이 적은 영역에서 다음 과제를 고르면 됩니다.`));
+      /* 관심은 높은데 해 본 일이 적은 영역이 0곳이면 그 말로 고르라고 하지 않는다(2026-11-02 진흥원 시험 N9) */
+      : `관심이 높은 영역은 ${ints[0].value}곳, 해 본 일이 나온 영역은 ${shown}곳입니다. ${gapHigh
+        ? `관심은 높은데 아직 해 본 일이 적은 영역이 ${gapHigh}곳 있어요. 그 가운데서 다음 과제를 고르면 됩니다.`
+        : ints[0].value ? "관심이 높은 영역은 모두 해 본 일이 있어요. 다음 과제는 그 영역에서 결과물이나 비교 기록을 하나 더 남기는 쪽으로 고르면 됩니다."
+        : "관심이 높다고 답한 영역은 아직 없어요. 해 본 일이 있는 영역에서 결과물이나 비교 기록을 하나 더 남기는 쪽으로 다음 과제를 고르면 됩니다."}`));
 }
 
 export function ringPage(x: Inputs, d: X): Page {
