@@ -319,14 +319,25 @@ export function commonPage(x: Inputs, d: X): Page {
   const STAGE: Record<string, string> = { bachelor: "학부", master: "석사", phd: "박사", postdoc: "박사후연구원" };
   const STAGE_EN: Record<string, string> = { bachelor: "undergraduate", master: "master's", phd: "doctoral", postdoc: "postdoctoral" };
   const axes = x.m.common.axes;
-  const rows = AXES.map((a) => { const v = axes.find((z) => z.axis === a); return { a, lv: !v ? null : v.owned ? 3 : v.confirmed ? 2 : (v.from.length ? 0 : null) } as { a: Axis; lv: Level | null }; });
+  /* 문항별 답(`items`)이 있으면 그 가운데 가장 높은 단계를 쓴다. 축 불린만 보면 `시킨 대로`(RECEIVED)가
+     `해 본 적 없음` 과 같은 0 으로 접혀 "아직 해 봤다고 나오지 않음" 이 됐다(2026-11-02 v3/23 시험) */
+  const OWN_LV: Record<string, Level> = { NONE: 0, RECEIVED: 1, DID: 2, DECIDED_USED: 3 };
+  const itemLv = (a: Axis): Level | null => {
+    const its = (x.m.common.items ?? []).filter((i) => i.axis === a);
+    return its.length ? (Math.max(...its.map((i) => OWN_LV[i.ownership] ?? 0)) as Level) : null;
+  };
+  const rows = AXES.map((a) => {
+    const v = axes.find((z) => z.axis === a);
+    const fromItems = itemLv(a);
+    return { a, lv: fromItems != null ? fromItems : !v ? null : v.owned ? 3 : v.confirmed ? 2 : (v.from.length ? 0 : null) } as { a: Axis; lv: Level | null };
+  });
   const notYet = L("아직 해 봤다고 나오지 않음", "Not done yourself yet");
   const n3 = rows.filter((r) => r.lv === 3).length;
   const st = STAGE_EN[x.m.stage];
   return P(L("영역을 가리지 않는 판단", "Judgments across every area"),
     T(rows.some((r) => r.lv === 3) ? L(`어떤 과제에서든 ${n3}가지 판단은 직접 정했다고 답했습니다`, `You said you make the call on ${nJ(n3)} in any project`) : L("영역과 관계없이 과제마다 되풀이되는 판단도 따로 물었습니다", "We also asked about judgments that come up in every project, whatever the area"),
       L(`${E(STAGE[x.m.stage] ?? "학업")} 과정의 수업과 팀 과제 상황을 예로 들어 물은 문항이라, 영역별 결과와는 따로 셌어요.`, `These questions used scenes from classes and team projects in your ${st ? `${st} ` : ""}studies, so they are counted apart from your area results.`)) +
-    fig(`<div class="wide-art">${hbars(rows.map((r) => ({ label: an(r.a), value: r.lv ?? 0, color: LVC[Math.max(1, r.lv ?? 0)], note: r.lv == null ? notAsked() : r.lv === 3 ? STEP_WORD[3].tag : r.lv === 2 ? STEP_WORD[2].tag : notYet })), { max: 3, width: 680, label: en ? 200 : 130, row: 30, valueText: (b) => String((b as { note?: string }).note ?? "") })}</div>`, howto([
+    fig(`<div class="wide-art">${hbars(rows.map((r) => ({ label: an(r.a), value: r.lv ?? 0, color: LVC[Math.max(1, r.lv ?? 0)], note: r.lv == null ? notAsked() : r.lv >= 1 ? STEP_WORD[r.lv].tag : notYet })), { max: 3, width: 680, label: en ? 200 : 130, row: 30, valueText: (b) => String((b as { note?: string }).note ?? "") })}</div>`, howto([
       [L("막대 길이", "Bar length"), L(`그 판단을 어디까지 해 봤는지(끝까지 차면 ${E(STEP_WORD[3].tag)})`, `How far you have gone with that judgment (a full bar means “${E(STEP_WORD[3].tag)}”)`)],
       [LVC[3], E(STEP_WORD[3].tag)], [LVC[2], E(STEP_WORD[2].tag)],
       [L("빈 막대", "Empty bar"), L(`${notYet} 또는 ${notAsked()}(막대 끝 글자로 구분)`, `“${notYet}” or “${notAsked()}” (the label at the end of the bar tells you which)`)],

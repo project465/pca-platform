@@ -444,7 +444,10 @@ function questionsEn(x: Inputs, d: X): Qn[] {
     const dn = d.name(g.domain);
     const work = l2 ? `work like “${low(l2)}”` : low(AXIS_NEED[g.axis]);
     /* 반쯤 선 판단은 해 본 장면이 있다. 없다고 답하게 하면 01·02장과 어긋난다 */
-    if (g.kind === "PARTIAL_EVIDENCE") {
+    /* `시킨 대로` · `직접 해 봄` 으로 답한 축도 해 본 장면이 있다(2026-11-02 시험: 8축 모두 `직접 해 봄` 인데 면접 재료가
+       "아직 해 본 적이 없어요"). `해 본 적 없음` 은 그 축을 정말 해 본 적 없다고 답했을 때만 쓴다 */
+    const lv = d.level(g.domain, g.axis);
+    if (g.kind === "PARTIAL_EVIDENCE" || (lv != null && lv >= 1)) {
       out.push({
         q: `In ${dn}, when you did ${work}, who set the criteria?`,
         why: `${asks(g.axis)} Your results show you have done this work, but not yet a scene where you set the criteria yourself.`,
@@ -502,11 +505,14 @@ function questions(x: Inputs, d: X): Qn[] {
     const act = d.actionOf(g);
     const head = act ? actionHead(act, d.name(g.domain)) : "";
     /* 반쯤 선 판단은 해 본 장면이 있다. 없다고 답하게 하면 01·02장과 어긋난다 */
-    if (g.kind === "PARTIAL_EVIDENCE") {
+    /* `시킨 대로` · `직접 해 봄` 으로 답한 축도 해 본 장면이 있다(2026-11-02 시험: 8축 모두 `직접 해 봄` 인데 면접 재료가
+       "아직 해 본 적이 없어요"). `해 본 적 없음` 은 그 축을 정말 해 본 적 없다고 답했을 때만 쓴다 */
+    const lv = d.level(g.domain, g.axis);
+    if (g.kind === "PARTIAL_EVIDENCE" || (lv != null && lv >= 1)) {
       out.push({
         q: `${d.name(g.domain)}에서 ${l2 ? `${q(l2)} 같은 일을 할 때` : `${AXIS_NEED[g.axis]}를 할 때`} 기준은 누가 정했나요?`,
         why: `${asks(g.axis)} 이번 결과에서 해 본 일은 보였는데, 기준까지 직접 정했다는 답은 아직 없어요.`,
-        material: head ? `해 본 일은 있어요. 직접 정한 몫은 07장 할 일 ${q(head)}에서 채워요.` : "해 본 일은 있어요. 직접 정한 몫은 07장 할 일에서 채워요.",
+        material: `${lv != null && lv >= 1 ? `‘${STEP_WORD[lv].tag}’으로 답했어요.` : "해 본 일은 있어요."} ${head ? `직접 정한 몫은 07장 할 일 ${q(head)}에서 채워요.` : "직접 정한 몫은 07장 할 일에서 채워요."}`,
         dir: "해 본 일을 먼저 말하고, 그때 정해져 있던 것과 내가 정한 것을 나눠 답해 보세요.",
         draft: `“해 본 일은 맞습니다. 다만 그때 ${B()} 부분은 이미 정해져 있었고, 제가 직접 고른 것은 ${B()}입니다.”`,
       });
@@ -515,7 +521,8 @@ function questions(x: Inputs, d: X): Qn[] {
     out.push({
       q: l2 ? `${d.name(g.domain)}에서 ${q(l2)} 같은 일을 직접 해 본 적이 있나요?` : `${d.name(g.domain)}에서 ${j(AXIS_NEED[g.axis], "을를")} 직접 맡아 본 적이 있나요?`,
       why: `${asks(g.axis)} 이번 결과에서는 이 판단을 직접 해 봤다는 답이 아직 없어요.`,
-      material: head ? `아직 해 본 적이 없어요. 07장 할 일 ${q(head)}에서 채워요.` : "아직 해 본 적이 없어요. 07장 할 일에서 채워요.",
+      /* 묻지 않은 축(`lv == null`)을 `해 본 적 없음` 으로 적지 않는다 */
+      material: `${lv == null ? "이번 검사에서 자세히 묻지 않았어요." : "아직 해 본 적이 없다고 답했어요."} ${head ? `07장 할 일 ${q(head)}에서 채워요.` : "07장 할 일에서 채워요."}`,
       dir: "해 보지 않은 일을 해 봤다고 말하지는 마세요. 07장 할 일을 다음 과제로 잡아 두었다면 무엇을 준비하는지로 답하면 돼요.",
       draft: `“아직 혼자 맡아 본 적은 없습니다. 그래서 ${head ? `${U(head)}${josaOf(head, "을를")}` : `${B(30)} 과제를`} 다음 과제로 잡아 두었고, 해 보게 되면 ${B()} 기준부터 제 손으로 정해 볼 생각입니다.”`,
     });

@@ -81,7 +81,7 @@ const THEMES: { key: string; org: RegExp; pack?: RegExp; try: string }[] = [
   { key: "반도체", org: /반도체|웨이퍼|디스플레이|증착|식각|클린룸/, try: "주력 제품이나 장비가 반도체 공정의 어느 단계에 들어가는지 누리집에서 찾아 한 줄로 적어 보세요" },
   { key: "기계·장비", org: /기계|장비|설비|기구|구동|금형|자동화|로봇|자동차|트레일러|운송장비|조선|플랜트|발사체|항공기|무기|총포|방산|우주/, pack: /기계|(?<!시약·)장비|설비|구동|금형|자동화|로봇|자동차|조선|플랜트|발사체|항공|방산|우주/, try: "주력 장비 하나를 골라 어떤 부품과 구동 방식으로 움직일지 먼저 짐작해 적고, 누리집 자료와 맞춰 보세요" },
   { key: "전기·전자", org: /전기|전자(?!상거래)|회로|전력|제어|센서|계측|통신|무선|임베디드|전지|배터리|충전|태양광|연료전지/, try: "주력 제품의 사양표에서 전압, 전류, 통신 방식 같은 값을 찾아 수업에서 다뤄 본 값 옆에 적어 보세요" },
-  { key: "소재·화학", org: /소재|화학|재료|고분자|코팅|필름|합성|도료|접착|세라믹|플라스틱|유리|금속|종이|펄프/, try: "주력 소재가 어느 제품에 들어가는지, 그 소재에서 따지는 물성이 무엇인지 하나만 찾아 적어 보세요" },
+  { key: "소재·화학", org: /소재|화학|재료|고분자|코팅|필름|합성|도료|접착|세라믹|플라스틱|유리|금속|철강|비철|종이|펄프/, try: "주력 소재가 어느 제품에 들어가는지, 그 소재에서 따지는 물성이 무엇인지 하나만 찾아 적어 보세요" },
   { key: "소프트웨어·데이터", org: /소프트웨어|데이터|정보|플랫폼|인공지능|보안|클라우드|프로그램|전산|시스템 통합|(^|[^a-z])ai([^a-z]|$)/i, pack: /소프트웨어|플랫폼|인공지능|클라우드|전산|정보화|정보 ?시스템|개발자|서비스 기획|앱|웹 서비스/, try: "그 회사 서비스를 직접 써 본 뒤, 고치고 싶은 기능 하나와 그렇게 생각한 근거를 적어 보세요" },
   { key: "의약·바이오", org: /바이오|의약|진단|생명|제약|백신|시약|의료용 물질|건강기능/, pack: /바이오|의약|생명과학|제약|백신|시약|건강기능|체외진단|진단 ?키트/, try: "주력 제품 하나의 허가 기준이나 품질 기준을 찾아, 실험이나 실습에서 지켜 본 기준 옆에 적어 보세요" },
   /* 묶음 쪽은 `소비재` 도 받는다: 경영의 `소비재·유통` 에 식품 회사(로쏘 · 성심당)가 들어가야 한다(2026-11-02 시험) */
@@ -163,7 +163,9 @@ function finOf(f: DartRaw["financials"]): Fin | null {
 }
 const CLS: Record<string, string> = { Y: "유가증권", K: "코스닥", N: "코넥스", 코스닥: "코스닥", 유가증권시장: "유가증권" };
 const bare = (n: string) => n.replace(/주식회사|\(주\)|㈜|\s/g, "");
-const tidyName = (n: string) => n.replace(/\s+/g, " ").trim();
+/** 명단에 HTML 엔티티가 그대로 들어 있는 줄이 있다(`앱서비스 &apos;툭&apos;`). 화면 · 책에 그대로 찍히지 않게 푼다 */
+const unent = (t: string) => t.replace(/&apos;|&#0?39;/g, "'").replace(/&quot;|&#0?34;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
+const tidyName = (n: string) => unent(n).replace(/\s+/g, " ").trim();
 function staffOf(s: DartRaw["staff"]): number | null {
   if (!s) return null;
   if (typeof s.total === "number") return s.total;
@@ -220,7 +222,7 @@ export function regionView(x: Inputs, name: (td: string) => string): RegionView 
         name: tidyName(o.name), source: "venture", sector: "", product: "", listed: null, adres: o.adres ?? null,
         est: null, url: null, fin: null, staff: null, segments: [], report: null,
       };
-      all.push({ ...base, name: tidyName(o.name), source: src, sector: o.sector || base.sector, product: (o.product ?? "").replace(/[\s　]+/g, " ").trim(), listed: o.listed ?? base.listed });
+      all.push({ ...base, name: tidyName(o.name), source: src, sector: o.sector || base.sector, product: unent(o.product ?? "").replace(/[\s　]+/g, " ").trim(), listed: o.listed ?? base.listed });
     }
     sources.push(...Object.values(dir.sources));
     checkedOn = dir.built_on;
@@ -282,8 +284,13 @@ export function regionView(x: Inputs, name: (td: string) => string): RegionView 
     /* `제조·일반기업` 은 **마지막 자리**다. 제 업종(식료품 · 의약 · 전자)으로 먼저 묶음을 찾고, 그 업종을 받는
        묶음이 이 전공에 없을 때만 업종명의 `제조업` 으로 `기업간 거래` 같은 묶음에 넣는다(2026-11-02 배재대 시험:
        로쏘(성심당)가 `소비재·유통` 대신 `기업간 거래` 에 들었다) */
-    const th0 = themesOrg(text);
-    const flat = text.replace(/\s/g, "");
+    /* **업종(표준산업분류 · 명단의 업종명)이 먼저다**(2026-11-02 세종 시험: 철강 회사가 주력 품목 낱말로 `출판·편집`,
+       소프트웨어 회사가 품목의 `교육` 으로 `한국어교육` 에 들었다). 업종에서 업종이 걸리면 그것만 쓰고, 업종이
+       비었거나 `제조업` 뿐일 때만 주력 품목을 더 본다. **회사 이름으로는 업종을 정하지 않는다**(묶음 이름 가점만) */
+    const secTh = themesOrg(o.sector);
+    const th0 = secTh.some((t) => t !== "제조·일반기업") ? secTh : [...new Set([...secTh, ...themesOrg(o.product)])];
+    /* 묶음 이름 낱말은 업종 · 품목에서만 찾는다(회사 이름으로 업종을 정하지 않는다) */
+    const flat = `${o.sector} ${o.product}`.replace(/\s/g, "");
     const pick = (th: string[]): { code: string; n: number } | null => {
       let best: { code: string; n: number } | null = null;
       for (const { p, th: pt, head, tokens } of packTh) {
@@ -295,7 +302,11 @@ export function regionView(x: Inputs, name: (td: string) => string): RegionView 
         const shared = th.filter((t) => pt.includes(t));
         if (!shared.length) continue;
         if (head.length && !shared.some((t) => head.includes(t))) continue;
-        const n = shared.reduce((a, t) => a + 1 / (themeUse.get(t) ?? 1), 0) + (tokens.some((k) => flat.includes(k) || (ALIAS[k] ?? []).some((v) => flat.includes(v))) ? 2 : 0);
+        const hit = tokens.some((k) => flat.includes(k) || (ALIAS[k] ?? []).some((v) => flat.includes(v)));
+        /* 여러 묶음이 함께 가진 업종(`콘텐츠·디자인` 처럼)만 걸렸으면, 묶음 이름의 낱말이 업종이나 품목에 있어야
+           받는다. 광고 대행사가 `출판·편집` 에 들던 것을 막는다(2026-11-02 세종 시험). 애매하면 넣지 않는다 */
+        if (!hit && shared.every((t) => (themeUse.get(t) ?? 1) > 1)) continue;
+        const n = shared.reduce((a, t) => a + 1 / (themeUse.get(t) ?? 1), 0) + (hit ? 2 : 0);
         if (!best || n > best.n) best = { code: p.code, n };
       }
       return best;
