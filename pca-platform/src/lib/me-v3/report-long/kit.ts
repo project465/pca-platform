@@ -11,6 +11,11 @@ export type Page = {
   kind?: "outer" | "cover" | "chapter" | "plain" | "sheet" | "fill";
   /** 한 장으로 읽어야 하는 쪽. 쪽 모으기가 나누지 않고 통째로만 옮긴다 */
   keep?: boolean;
+  /**
+   * 채움 쪽이 붙을 자리. 이 글자로 시작하는 제목의 쪽 뒤에만 들어간다(N10 · JA8: 직무 A 의 옆 칸이 직무 B 절에 붙던 것).
+   * 앞 쪽으로 끌어 올린 쪽이 있으면 그 쪽의 마지막 절 제목으로 본다
+   */
+  near?: string;
 };
 
 /** 꺾쇠를 막고 대시를 쉼표로 푼다. 사전 자료에 섞인 대시가 종이에 나가지 않게 한다 */
@@ -198,7 +203,7 @@ const own = (t: string) => `<em class="nw" data-own>${E(t)}</em>`;
 
 /** 쪽 하나를 틀에 담는다 */
 export function shell(p: Page, i: number, total: number, ctx: { issuer: string; major: string; tier: string; person: string; answeredOn: string }): string {
-  const attrs = (k: string) => `data-title="${E(p.title)}" data-kind="${k}" data-part="${E(p.partName)}" data-base="${E(p.title.replace(/ \(\d+\)$/, "").replace(/ \(계속\)$/, "").replace(/ \(cont\.\)$/, ""))}"${p.keep ? ` data-keep="1"` : ""}`;
+  const attrs = (k: string) => `data-title="${E(p.title)}" data-kind="${k}" data-part="${E(p.partName)}" data-base="${E(p.title.replace(/ \(\d+\)$/, "").replace(/ \(계속\)$/, "").replace(/ \(cont\.\)$/, ""))}"${p.keep ? ` data-keep="1"` : ""}${p.near ? ` data-near="${E(p.near)}"` : ""}`;
   if (p.kind === "outer") return `<section class="pg outer" ${attrs("outer")}>${p.body}</section>`;
   if (p.kind === "cover") return `<section class="pg cover" ${attrs("cover")}>${p.body}</section>`;
   const head = p.kind === "chapter" ? "" : `<header class="rh"><span class="rh-n">${p.part ? `PART ${p.part}` : ""}</span><span class="rh-t">${E(p.partName)}</span><span class="rh-r">${isEn() ? `${own(ctx.issuer)} · Career Analysis Report` : `${E(ctx.issuer)} · 진로 분석 리포트`}</span></header>`;
@@ -281,13 +286,15 @@ export const PACK_JS = String.raw`(function () {
     return true;
   }
   /* 다음 쪽의 앞 덩이를 cur 로 끌어 올린다. 다 옮겼으면 true */
+  /* 끌어 올린 쪽의 제목을 그 쪽의 마지막 절로 적어 둔다(붙을 자리가 정해진 채움이 읽는다) */
+  function mark(cur, nx) { cur.setAttribute("data-last", nx.getAttribute("data-last") || nx.getAttribute("data-title") || ""); }
   function pull(cur, nx) {
     var keep = nx.getAttribute("data-keep") === "1";
     var bd = bdOf(cur);
     while (segs(nx).length) {
       var s = segs(nx)[0];
       bd.appendChild(s);
-      if (fits(cur)) continue;
+      if (fits(cur)) { mark(cur, nx); continue; }
       bdOf(nx).insertBefore(s, bdOf(nx).firstChild);
       if (keep) return false;
       var ns = document.createElement("div"); ns.className = s.className; bd.appendChild(ns);
@@ -298,9 +305,9 @@ export const PACK_JS = String.raw`(function () {
            맨 위에 혼자 서서, 무엇을 읽는 법인지 모르게 된다 */
         var hw = s.firstElementChild && s.firstElementChild.matches(".howto") ? s.firstElementChild : null;
         if (hw) ns.appendChild(hw);
-        if (fits(cur)) { moved++; continue; }
+        if (fits(cur)) { moved++; mark(cur, nx); continue; }
         if (hw) { s.insertBefore(hw, s.firstElementChild); }
-        else if (shrink(c, cur)) { moved++; continue; }
+        else if (shrink(c, cur)) { moved++; mark(cur, nx); continue; }
         s.insertBefore(c, s.firstElementChild);
         if (c.tagName === "TABLE" && splitTable(c, ns, cur)) moved++;
         else if (c.matches(".g2,.g3") && splitGrid(c, ns, cur)) moved++;
@@ -326,7 +333,7 @@ export const PACK_JS = String.raw`(function () {
   function whole(cur, q) {
     var bd = bdOf(cur); var moved = segs(q);
     moved.forEach(function (s) { bd.appendChild(s); });
-    if (fits(cur)) return true;
+    if (fits(cur)) { if (q.getAttribute("data-kind") !== "fill") mark(cur, q); return true; }
     moved.forEach(function (s) { bdOf(q).appendChild(s); });
     return false;
   }
@@ -365,6 +372,9 @@ export const PACK_JS = String.raw`(function () {
       var part = pg.getAttribute("data-part");
       for (var k = 0; k < fills.length && gap(pg) > 0.2; k++) {
         var f = fills[k]; if (!f.parentNode || f.getAttribute("data-part") !== part) continue;
+        /* 붙을 자리가 정해진 채움은 그 절이 끝나는 쪽에만 */
+        var near = f.getAttribute("data-near");
+        if (near && (pg.getAttribute("data-last") || pg.getAttribute("data-title") || "").indexOf(near) !== 0) continue;
         if (whole(pg, f)) { f.parentNode.removeChild(f); }
       }
     });

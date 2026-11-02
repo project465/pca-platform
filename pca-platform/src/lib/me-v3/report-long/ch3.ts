@@ -139,9 +139,14 @@ function domainHead(x: Inputs, d: X, z: ResultDomain): string {
       case "Z3_EVIDENCE_LOW_INTEREST":
         return `You have done work in ${nm}, but you said your interest is low for now. It still shows your fundamentals when you apply for other roles, so keep the record at least.`;
       case "Z4_INSUFFICIENT_EVIDENCE":
-        return `Your interest in ${nm} is high, but you have not done much of it yourself yet. Take it on once in a class or a short project, and you will soon know whether it suits you.`;
+        return z.interest === "HIGH"
+          ? `Your interest in ${nm} is high, but you have not done much of it yourself yet. Take it on once in a class or a short project, and you will soon know whether it suits you.`
+          : z.interest
+            ? `We asked about your decisions in ${nm}, but few answers showed you making them yourself yet. You said your interest is not high either, so you can build up other areas first.`
+            : `We asked about your decisions in ${nm}, but few answers showed you making them yourself yet, and you said you were not sure about your interest. Try one short project to see whether it suits you.`;
       default: {
         if (z.experience === "NONE") {
+          if (!z.interest) return `You said you have not done ${nm} yet and are not sure about your interest. Try one short project first, then decide how interested you are.`;
           return `You said you have not done ${nm} yet. ${z.interest === "HIGH" ? "Your interest is high, so try it first with one short project." : "For now, build up other areas first. You can widen out later when you need to."}`;
         }
         const times = EXP_WORD[z.experience ?? ""];
@@ -163,12 +168,25 @@ function domainHead(x: Inputs, d: X, z: ResultDomain): string {
     case "Z3_EVIDENCE_LOW_INTEREST":
       return `${nm}에서는 해 본 일이 있는데 지금 관심은 낮다고 답했어요. 다른 직무에 지원할 때도 기본기를 보여 주는 경험이 되니, 기록만큼은 정리해 두세요.`;
     case "Z4_INSUFFICIENT_EVIDENCE":
-      return `${nm}에는 관심이 높은데 직접 해 본 일은 아직 적어요. 수업 과제나 짧은 프로젝트에서 한 번 맡아 보면 나에게 맞는 일인지 금방 알 수 있습니다.`;
+      /* Z4 는 관심과 상관없이 `확인된 판단 0` 이다. 관심 응답대로 말한다 */
+      return z.interest === "HIGH"
+        ? `${nm}에는 관심이 높은데 직접 해 본 일은 아직 적어요. 수업 과제나 짧은 프로젝트에서 한 번 맡아 보면 나에게 맞는 일인지 금방 알 수 있습니다.`
+        : z.interest
+          ? `${nm}에서는 판단까지 물었는데 직접 해 봤다는 답이 아직 적어요. 관심도 높지 않다고 답했으니 지금은 다른 영역을 먼저 다져도 됩니다.`
+          : `${nm}에서는 판단까지 물었는데 직접 해 봤다는 답이 아직 적고, 관심은 모르겠다고 답했어요. 짧은 과제 하나로 나에게 맞는지부터 확인해 보세요.`;
     default: {
       /* 판단까지 묻지 않은 영역은 한 책에 아홉 곳까지 나온다. 같은 두 문장이 아홉 번 서지 않게 영역 차례에 따라 말을 바꾼다 */
       const v = Math.max(0, x.m.domains.findIndex((w) => w.code === z.code)) % 3;
       if (z.experience === "NONE") {
         const high = z.interest === "HIGH";
+        /* 관심을 `모르겠다` 로 답한 영역(값 없음)을 `관심이 높지 않다` 로 읽지 않는다(2026-11-02 전주대 v3/24 JA7) */
+        if (!z.interest) {
+          return [
+            `${j(nm, "은는")} 아직 해 본 적이 없고, 관심은 아직 모르겠다고 답한 영역이에요. 짧은 과제 하나로 나에게 맞는지부터 확인해 보세요.`,
+            `${j(nm, "은는")} 아직 해 보지 않았고 관심도 아직 정하지 못했다고 답했어요. 수업에서 이 영역을 다루는 과제가 나오면 작은 몫을 맡아 보고 판단해도 늦지 않아요.`,
+            `${j(nm, "은는")} 아직 경험이 없고, 관심은 모르겠다고 답한 영역입니다. 한 번 겪어 본 뒤에 관심을 다시 정해 보세요.`,
+          ][v];
+        }
         return [
           `${j(nm, "은는")} 아직 해 본 적이 없다고 답한 영역이에요. ${high ? "관심은 높게 답했으니 짧은 과제 하나로 먼저 겪어 보세요." : "지금은 다른 영역을 먼저 다지고, 필요해질 때 넓혀도 늦지 않습니다."}`,
           `${j(nm, "은는")} 아직 해 보지 않았다고 답했어요. ${high ? "관심이 높은 만큼 수업 과제나 동아리에서 작은 몫부터 맡아 보세요." : "급한 영역은 아니니 다른 영역을 먼저 챙겨도 괜찮아요."}`,

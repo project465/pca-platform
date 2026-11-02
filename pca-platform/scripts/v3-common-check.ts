@@ -8,6 +8,7 @@
  *   npx tsx scripts/v3-common-check.ts                 전부(UNIS=PCU,KUS,JJU,SJEPA · SETS=A,B,C)
  *   UNIS=JJU SETS=C npx tsx scripts/v3-common-check.ts
  *   OUT=var/common-check                               표(md · csv)와 응시 번호를 적는 자리
+ *   REJUDGE=var/common-check OUT=var/common-check-2    세운 응시를 다시 세우지 않고 판정만 다시(고친 뒤 같은 답으로)
  *
  * 답안 세 벌(제품 화면을 그대로 지난다: 격자 → 실제 영역 고르기 → 판단 · 체크리스트 · 지원서 문장 단계):
  *   A = 관심 높음 · 해 봄 여러 번 · 모든 판단 `기준까지 직접 정함` · 체크리스트 · 결과물 · 비교 대상 채움
@@ -25,9 +26,13 @@
  *   f  결과물을 고른 영역에 `결과물을 아직 고르지 않았습니다`(PB3)
  *   g  관심이 모두 낮은데 `관심이 높은 · 보통 이상인 영역 · 관심 있는 쪽` 을 권함(PB1)
  *   h  `없다` 는 답이 06 · 07장 문단 재료로 들어감(PK2)
+ *   i  관심이 높지 않은 영역에 `관심이 높은데`(엔진의 Z4 는 관심과 상관없이 `확인된 판단 0`)
+ *   j  관심을 `모르겠다` 로 답한 영역에 `관심도 높지 않다`(JA7)
+ *   l  이미 직접 해 본(2단계 이상) 판단을 `직접 해 봤다는 답이 없다` 로 적음(PB2)
+ *   m  해 본 일이 나온 영역 수가 쪽마다 다름(PB6)
  *   k  준비 중 학과로 응시가 열림(KM1) — 기관마다 한 줄
  */
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { universities, university, allLeaves, statusOf } from "../src/lib/campus/registry";
 import { coreFile } from "../src/lib/me-v3/core-registry";
@@ -250,6 +255,34 @@ async function judge(attemptId: string, core: string): Promise<Verdict> {
     if (m) fail("g", `관심 모두 낮은데 '${m[0]}'`);
   }
 
+  /* i · j: 관심 응답과 다른 관심 말(엔진의 Z4 는 관심과 상관없다 · `모르겠다` 는 낮음이 아니다) */
+  for (const z of x.m.domains) {
+    const nm = d.name(z.code);
+    if (z.interest !== "HIGH" && (all.includes(`${nm}에는 관심이 높은데`) || all.includes(`${nm}에 관심이 높다고 답했`))) fail("i", `${nm} 관심 ${z.interest ?? "모르겠다"}인데 '관심이 높은데'`);
+    if (!z.interest && new RegExp(`${nm.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}[^.]{0,80}\\. 관심도 높지 않다고`).test(all)) fail("j", `${nm} 관심 '모르겠다'인데 '관심도 높지 않다'`);
+  }
+
+  /* l: 이미 직접 해 본(응답 2단계 이상) 판단을 `직접 해 봤다는 답이 없다` 로 적음(PB2) */
+  for (const g of d.gaps) {
+    if (!g.axis || (maxLv.get(`${g.domain}:${g.axis}`) ?? -1) < 2) continue;
+    const nm = d.name(g.domain);
+    for (const [part, txt] of [["06", ch6], ["07", ch7]] as const) {
+      let at = txt.indexOf(nm);
+      while (at >= 0) {
+        const win = txt.slice(at, at + 220);
+        if (/직접 해 봤다는 답이 (아직 )?없/.test(win) && win.includes(d.axisName(g.axis))) {
+          fail("l", `${nm} ${g.axis} 응답 ${maxLv.get(`${g.domain}:${g.axis}`)}단계인데 ${part}장 '직접 해 봤다는 답이 없다'`);
+          break;
+        }
+        at = txt.indexOf(nm, at + nm.length);
+      }
+    }
+  }
+
+  /* m: 해 본 일이 나온 영역 수가 쪽마다 다름(PB6) */
+  const nums = new Set([...all.matchAll(/해 본 일이 (?:나온|확인된) 영역(?:은| 수[^0-9]{0,30})\s*(\d+)곳/g)].map((v) => v[1]));
+  if (nums.size > 1) fail("m", `해 본 영역 수 ${[...nums].join(" · ")}`);
+
   /* h: `없다` 는 답이 문단 재료로 */
   const chosen = await query<{ t: string }>(
     `SELECT value_text AS t FROM v3_responses WHERE attempt_id = $1 AND kind = 'choice' AND value_text IS NOT NULL`, [attemptId]);
@@ -286,13 +319,32 @@ async function km1(): Promise<string[][]> {
   return lines;
 }
 
+const HEAD = ["기관", "Core", "갈래", "대표 학과", "답안", "선별/심화", "걸림", "자세히", "응시"];
+
+/** 이미 세운 응시를 다시 판정만 한다(고친 뒤 같은 답으로 다시 보기). `REJUDGE=<앞 실행의 OUT>` */
+async function rejudge(from: string): Promise<string[][]> {
+  const csv = readFileSync(path.join(from, "공통점검.csv"), "utf8").replace(/^\ufeff/, "").split("\n").slice(1);
+  const lines: string[][] = [];
+  for (const row of csv) {
+    const c = [...row.matchAll(/"((?:[^"]|"")*)"/g)].map((m) => m[1].replace(/""/g, '"'));
+    if (c.length < 9 || !c[8]) { if (c.length >= 9) lines.push(c); continue; }
+    const core = `${c[1]}_CORE_V1`;
+    const real = (await queryOne<{ core_code: string }>(`SELECT core_code FROM v3_attempts WHERE id = $1`, [c[8]]))?.core_code ?? core;
+    try {
+      const v = await judge(c[8], real);
+      lines.push([...c.slice(0, 5), `${v.opened}/${v.deep}`, v.fails.join(",") || "통과", v.detail.slice(0, 3).join(" / "), c[8]]);
+    } catch (e) { lines.push([...c.slice(0, 6), "오류", String((e as Error).message).slice(0, 140), c[8]]); }
+  }
+  return lines;
+}
+
 async function main(): Promise<void> {
   mkdirSync(OUT, { recursive: true });
   const rs = combos();
-  const head = ["기관", "Core", "갈래", "대표 학과", "답안", "선별/심화", "걸림", "자세히", "응시"];
-  const lines: string[][] = [];
+  const head = HEAD;
+  const lines: string[][] = process.env.REJUDGE ? await rejudge(path.resolve(process.env.REJUDGE)) : [];
   let i = 0;
-  for (const r of rs) {
+  if (!process.env.REJUDGE) for (const r of rs) {
     for (const set of SETS) {
       i += 1;
       let attempt = "", v: Verdict | null = null, err = "";
@@ -310,11 +362,11 @@ async function main(): Promise<void> {
       process.stdout.write(`\r${i}/${rs.length * SETS.length}`);
     }
   }
-  const k = await km1();
+  const k = process.env.REJUDGE ? [] : await km1();
   const pass = lines.filter((l) => l[6] === "통과").length;
   const tally = (key: string) => lines.filter((l) => l[6].split(",").includes(key)).length;
   const sum = `세운 응시 ${lines.length} · 통과 ${pass} · 오류 ${lines.filter((l) => l[6] === "오류").length} · ` +
-    ["a", "b", "c", "d", "e", "f", "g", "h"].map((x) => `${x} ${tally(x)}`).join(" · ");
+    ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "l", "m"].map((x) => `${x} ${tally(x)}`).join(" · ");
   const md = (h: string[], ls: string[][]) => [`| ${h.join(" | ")} |`, `|${h.map(() => "---").join("|")}|`, ...ls.map((l) => `| ${l.map((c) => c.replace(/\|/g, "/")).join(" | ")} |`)].join("\n");
   writeFileSync(path.join(OUT, "공통점검.md"), `# 공통 자동 점검\n\n${sum}\n\n${md(head, lines)}\n\n## 준비 중 학과 응시(KM1)\n\n${md(["기관", "준비 중 학과", "열린 응시", "열린 학과(앞 6)"], k)}\n`);
   writeFileSync(path.join(OUT, "공통점검.csv"), "﻿" + [head, ...lines].map((l) => l.map((c) => `"${c.replace(/"/g, '""')}"`).join(",")).join("\n"));

@@ -25,13 +25,15 @@ export const ZONE_WORD: Record<ZoneKey, { tag: string; said: string }> = byLang<
   Z1_EVIDENCE_ESTABLISHED: { tag: "강점 영역", said: "직접 정한 일과 남긴 결과물이 둘 다 있는 영역" },
   Z2_EVIDENCE_INCOMPLETE: { tag: "키워 가는 영역", said: "해 본 일은 있는데 결과물이나 비교한 기록이 아직 적은 영역" },
   Z3_EVIDENCE_LOW_INTEREST: { tag: "해 봤지만 관심이 낮은 영역", said: "해 본 일은 있는데 지금은 관심이 낮다고 답한 영역" },
-  Z4_INSUFFICIENT_EVIDENCE: { tag: "관심은 높고 경험이 적은 영역", said: "관심은 높은데 아직 해 본 일이 적은 영역" },
+  /* 엔진의 Z4 는 관심과 상관없이 `확인된 판단 0` 이다(scoring/zones.ts). 관심이 낮은 영역도 들어오므로 `관심은 높고` 라고
+     적지 않는다(2026-11-03 공통 점검: Z4 가운데 관심 LOW 80칸). 웹 결과의 이름(`아직 해 본 일이 적은 영역`)과 맞춘다 */
+  Z4_INSUFFICIENT_EVIDENCE: { tag: "아직 해 본 일이 적은 영역", said: "판단까지 물었는데 직접 해 봤다는 답이 아직 적은 영역" },
   NOT_EXPLORED: { tag: "관심·경험만 본 영역", said: "관심과 해 본 횟수까지만 물어본 영역" },
 }, {
   Z1_EVIDENCE_ESTABLISHED: { tag: "Strength area", said: "you made decisions yourself here and left a deliverable" },
   Z2_EVIDENCE_INCOMPLETE: { tag: "Growing area", said: "you have done work here, but few deliverables or comparisons are on record yet" },
   Z3_EVIDENCE_LOW_INTEREST: { tag: "Done, less interested", said: "you have done work here but said your interest is low for now" },
-  Z4_INSUFFICIENT_EVIDENCE: { tag: "High interest, little experience", said: "your interest is high but you have not done much here yet" },
+  Z4_INSUFFICIENT_EVIDENCE: { tag: "Little hands-on work yet", said: "we asked about your decisions here, but few answers showed you making them yourself yet" },
   NOT_EXPLORED: { tag: "Interest and exposure only", said: "we only asked about your interest and how often you had done it" },
 });
 /** 학생에게 보이는 단계 이름. 검사 화면의 보기(시킨 대로 함 · 내가 직접 함 · 내가 정함)와 같은 말을 쓴다 */

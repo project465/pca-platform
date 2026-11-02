@@ -110,8 +110,8 @@ export function fillPages(x: Inputs, d: X, part3: string, region: { name: string
     const g = x.guide.roles[r.code] as unknown as { lens?: Record<string, { why?: string }> } | undefined;
     const lens = Object.entries(g?.lens ?? {}).filter(([, v]) => v?.why);
     if (lens.length < 2) continue;
-    add(F("04", N.c4, L(`${r.name_ko} 쪽이 눈여겨보는 ${j(x.domainWord, "과와")} 그 까닭`, `Areas that matter in ${r.name_ko}, and why`), L("직무 안내", "Role guide"),
-      `<table class="tb tb-xs"><tbody>${lens.slice(0, 6).map(([td, v]) => `<tr><td class="w22"><b>${E(d.name(td))}</b></td><td>${E(politePara(v.why ?? ""))}</td></tr>`).join("")}</tbody></table>`));
+    add({ ...F("04", N.c4, L(`${r.name_ko} 쪽이 눈여겨보는 ${j(x.domainWord, "과와")} 그 까닭`, `Areas that matter in ${r.name_ko}, and why`), L("직무 안내", "Role guide"),
+      `<table class="tb tb-xs"><tbody>${lens.slice(0, 6).map(([td, v]) => `<tr><td class="w22"><b>${E(d.name(td))}</b></td><td>${E(politePara(v.why ?? ""))}</td></tr>`).join("")}</tbody></table>`), near: `${r.name_ko} · ` });
   }
 
   /* 04 직무 탐색: 깊게 다루지 않은 직무의 공고 읽기와 알아 둘 것(직무 안내) */
