@@ -4,7 +4,7 @@ import { query, queryOne } from "@/lib/db";
 import { isStaging } from "@/lib/env";
 import { coreIfAny, EXPERIENCE_KINDS } from "@/lib/me-v3/platform";
 import { readOfficeText } from "@/lib/sheet-read";
-import { askStructured, aiReady, RESEARCH_MODEL, type AiBlock } from "./claude";
+import { askStructured, aiReady, type AiBlock } from "./claude";
 import { clamp, menu, Out } from "./draft";
 import { settingsOf } from "./settings";
 import { pdfPages } from "./upload";
@@ -229,7 +229,7 @@ export async function readResearch(userId: string, bytes: Buffer): Promise<Resea
     : [{ type: "text", text: `[올린 자료 · ${sn.kind}]\n${sn.text.slice(0, MAX_CHARS)}${sn.text.length > MAX_CHARS ? "\n(뒷부분은 길어서 잘랐습니다)" : ""}` }];
 
   const r = await askStructured({
-    op: "assistant.research", schema: ResearchOut, system: SYSTEM, model: RESEARCH_MODEL,
+    op: "assistant.research", schema: ResearchOut, system: SYSTEM,
     blocks, maxTokens: 8000, effort: "medium", timeoutMs: 240_000, userId,
     user: `종류 코드: ${EXPERIENCE_KINDS.map((k) => `${k.code}(${k.label})`).join(", ")}\n\n` +
       (core

@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import * as z from "zod/v4";
 import { query, queryOne } from "@/lib/db";
 import { activeCoreOrPick, EXPERIENCE_KINDS } from "@/lib/me-v3/platform";
-import { askStructured, aiReady, UPLOAD_MODEL, type AiBlock } from "./claude";
+import { askStructured, aiReady, type AiBlock } from "./claude";
 import { clamp, menu, Out, type DraftValue } from "./draft";
 import { settingsOf } from "./settings";
 
@@ -156,7 +156,7 @@ export async function readUpload(userId: string, bytes: Buffer): Promise<UploadR
   const fileKind = kind === "pdf" ? "pdf" : "image";
 
   const r = await askStructured({
-    op: "assistant.upload", schema: FileOut, system: SYSTEM, model: UPLOAD_MODEL,
+    op: "assistant.upload", schema: FileOut, system: SYSTEM,
     blocks: [block], maxTokens: 6000, effort: "low", userId,
     user: `종류 코드: ${EXPERIENCE_KINDS.map((k) => `${k.code}(${k.label})`).join(", ")}\n\n${menu(core)}\n\n` +
       "위 문서에서 진로 경험으로 적을 만한 것을 고르세요.",

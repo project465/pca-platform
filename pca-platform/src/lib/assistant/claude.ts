@@ -25,24 +25,46 @@ import { aiAllowance, recordAiCall, type AiUsage } from "./ai-budget";
  * 거절이 생기면 Anthropic 이 권하는 모델로 한 번 더 해 본다.
  */
 
-export const ASSISTANT_MODEL = "claude-opus-5-5";
 /*
- * **2026-11-02 대표 결정: 모든 기능이 한 모델(`claude-opus-5-5`)을 쓴다.** 비용은 모델을 내리지 않고
- * 기능마다 `effort` 로 조절한다(시킨 대로 · 직접 · 내가 정함을 가르는 일이 핵심이라서). 한 모델이면
- * 캐시도 한 곳에 모인다. 아래 두 이름은 부르는 쪽을 바꾸지 않으려고 남긴다.
- *
- * (전) 올린 파일(성적증명서·수료증·상장)을 읽는 모델. 하는 일이 문서에서 과목과
- * 활동 이름을 뽑아 정해진 보기로 옮기는 것이라 가장 싼 모델로 충분하다.
- * 월 9,900원 안에서 한 사람이 열 건을 올려도 남도록 고른 값이다.
- * **서버 쪽 대체 모델이 없다**: 이 모델에는 `fallbacks` 를 보내지 않는다.
+ * **기능마다 모델을 고른다**(2026-11-02 대표 "1로 진행해").
+ * - `claude-sonnet-5-5`: 공고 나누기 · 파일 뽑기 · 메모 초안 · 공고와 근거 맞춰 보기 · 할 일 · 브리핑 · 자유 질문
+ * - `claude-opus-5-5`: 지원서 문장 만들기 · 고치기, 면접 질문 · 답 돌려주기
+ * 한 기능만 바꾸려면 배포 없이 `MAT_AI_MODELS` 한 줄로(예: `posting=claude-opus-5-5,draft=claude-opus-5-5`).
+ * 두 값 밖의 모델 이름은 받지 않는다(날짜 꼬리표를 붙인 이름도).
  */
-export const UPLOAD_MODEL = ASSISTANT_MODEL;
-/**
- * 논문 · 학위논문 · 발표 자료 · 이력서 · 자기소개서를 읽는 모델(2026-10-31).
- * 영어 논문을 끝까지 읽고 방법 · 결과 · 기여를 직무 말로 옮겨야 해서 성적증명서
- * 읽기보다 한 단계 위를 쓴다. `MAT_RESEARCH_MODEL` 로 바꿀 수 있다(배포 없이).
- */
-export const RESEARCH_MODEL = ASSISTANT_MODEL;
+export const SONNET = "claude-sonnet-5-5";
+export const OPUS = "claude-opus-5-5";
+export const ASSISTANT_MODEL = OPUS;
+const MODELS = new Set([SONNET, OPUS]);
+
+/** `op` 이름의 앞부분(가장 긴 것부터 맞춘다) → 기본 모델 */
+const DEFAULT_MODEL: Record<string, string> = {
+  "assistant.posting": SONNET,
+  "assistant.draft": SONNET,
+  "assistant.upload": SONNET,
+  "assistant.research": SONNET,
+  "mat.brief": SONNET,
+  "mat.ask": SONNET,
+  "mat.ask.draft": OPUS,
+  "mat.ask.interview": OPUS,
+};
+
+function overrides(): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const kv of (process.env.MAT_AI_MODELS ?? "").split(",")) {
+    const [k, v] = kv.split("=").map((x) => x?.trim() ?? "");
+    if (!k || !MODELS.has(v)) continue;
+    out[k.startsWith("assistant.") || k.startsWith("mat.") ? k : k === "ask" || k.startsWith("ask.") ? `mat.${k}` : `assistant.${k}`] = v;
+  }
+  return out;
+}
+
+/** 이 기능이 쓸 모델. 설정값이 먼저, 없으면 위 기본 */
+export function modelFor(op: string): string {
+  const table = { ...DEFAULT_MODEL, ...overrides() };
+  const key = Object.keys(table).filter((k) => op === k || op.startsWith(`${k}.`)).sort((x, y) => y.length - x.length)[0];
+  return key ? table[key] : SONNET;
+}
 
 /** 문서·그림 블록. 올린 파일을 그대로 넘길 때만 쓴다 */
 export type AiBlock =
@@ -107,7 +129,7 @@ export async function askStructured<S extends z.ZodType>(opts: {
   user: string;
   /** 올린 파일. 글보다 먼저 둔다(문서를 먼저 읽고 지시를 읽는 차례) */
   blocks?: AiBlock[];
-  /** 기본은 `ASSISTANT_MODEL` */
+  /** 기본은 `modelFor(op)`. 시험 때만 넘긴다 */
   model?: string;
   maxTokens?: number;
   /**
@@ -128,16 +150,17 @@ export async function askStructured<S extends z.ZodType>(opts: {
   if (!aiReady()) return { ok: false, reason: "off" };
   const g = await gate(opts.userId, opts.op);
   if (!g.ok) return g;
-  const model = opts.model ?? ASSISTANT_MODEL;
+  const model = opts.model ?? modelFor(opts.op);
   const rec = (outcome: string, usage?: AiUsage) =>
     recordAiCall({ userId: opts.userId, op: opts.op, model, effort: opts.effort, outcome, usage });
-  /* 거절이 나면 서버 쪽 대체 모델로 한 번 더(Opus 5.5 는 `default` 를 받는다) */
+  /* 거절이 나면 서버 쪽 대체 모델로 한 번 더(Sonnet 5.5 · Opus 5.5 모두 `default` 를 받는다) */
   const fallback = { betas: ["server-side-fallback-2026-07-01"], fallbacks: "default" as const };
   try {
     const res = await client().beta.messages.parse({
       model,
       max_tokens: opts.maxTokens ?? 4000,
       ...fallback,
+      thinking: { type: "adaptive" },
       system: systemBlocks(opts.system),
       messages: [{
         role: "user",
@@ -192,7 +215,7 @@ export async function* askStream(opts: {
   if (!aiReady()) return { ok: false, reason: "off" };
   const g = await gate(opts.userId, opts.op);
   if (!g.ok) return g;
-  const model = opts.model ?? ASSISTANT_MODEL;
+  const model = opts.model ?? modelFor(opts.op);
   const rec = (outcome: string, usage?: AiUsage) =>
     recordAiCall({ userId: opts.userId, op: opts.op, model, effort: opts.effort, outcome, usage });
   const fallback = { betas: ["server-side-fallback-2026-07-01"], fallbacks: "default" as const };
@@ -201,6 +224,7 @@ export async function* askStream(opts: {
       model,
       max_tokens: opts.maxTokens ?? 2000,
       ...fallback,
+      thinking: { type: "adaptive" },
       system: systemBlocks(opts.system),
       messages: [{
         role: "user",
