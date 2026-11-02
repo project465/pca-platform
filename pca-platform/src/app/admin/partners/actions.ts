@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { requireRole } from "@/lib/session";
 import { audit } from "@/lib/audit";
 import { isPartner } from "@/lib/brand";
-import { issueKey, revokeKey } from "@/lib/partner/link";
+import { issueKey, revokeKey, setAllowlist } from "@/lib/partner/link";
 import { query } from "@/lib/db";
 
 export type KeyState = { key?: string; err?: string; ok?: string };
@@ -29,8 +29,10 @@ export async function revokeKeyAction(form: FormData): Promise<void> {
   const partner = String(form.get("partner") ?? "");
   const id = String(form.get("id") ?? "");
   if (!isPartner(partner) || !/^\d{1,18}$/.test(id)) return;
-  await revokeKey(partner, id);
-  await audit({ actorId: Number(user.id), actorRole: user.role, action: "partner.key.revoke", targetKind: "partner", targetId: partner, orgId: null, detail: { key_id: id } });
+  /* 키 교체: `24시간 뒤 폐기` 를 고르면 그동안 옛 키도 받는다 */
+  const grace = String(form.get("grace") ?? "") === "24" ? 24 : 0;
+  await revokeKey(partner, id, grace);
+  await audit({ actorId: Number(user.id), actorRole: user.role, action: "partner.key.revoke", targetKind: "partner", targetId: partner, orgId: null, detail: { key_id: id, grace_hours: grace } });
   revalidatePath("/admin/partners");
 }
 
@@ -70,5 +72,36 @@ export async function removePreviewAction(form: FormData): Promise<void> {
   if (!/^\d{1,18}$/.test(id)) return;
   await query(`DELETE FROM mat_preview_users WHERE user_id = $1`, [id]);
   await audit({ actorId: Number(user.id), actorRole: user.role, action: "mat.preview.remove", targetKind: "user", targetId: id, orgId: null, detail: {} });
+  revalidatePath("/admin/partners");
+}
+
+/** 허용 IP. 비우면 제한 없이 받고(호출 기록에 IP 를 남긴다), 제휴가 IP 를 주면 여기에 적는다 */
+export async function setAllowlistAction(_p: KeyState, form: FormData): Promise<KeyState> {
+  const user = await requireRole(["superadmin"]);
+  const partner = String(form.get("partner") ?? "");
+  if (!isPartner(partner)) return { err: "모르는 제휴입니다." };
+  const r = await setAllowlist(partner, String(form.get("ips") ?? ""), user.id);
+  if (!r.ok) return { err: `IP 꼴이 아닙니다: ${r.bad}` };
+  await audit({ actorId: Number(user.id), actorRole: user.role, action: "partner.ip", targetKind: "partner", targetId: partner, orgId: null, detail: { count: r.n } });
+  revalidatePath("/admin/partners");
+  return { ok: r.n ? `허용 IP ${r.n}개를 적었습니다. 이제 목록 밖에서 온 호출은 거절합니다.` : "허용 IP 를 비웠습니다. 제한 없이 받고 IP 만 기록합니다." };
+}
+
+/**
+ * 시험 계정에 이용권을 넣는다(2026-11-02 대표 결정: 시험 중 결제는 운영자가 이용권을 넣는다).
+ * **미리보기 계정에만** 넣는다. 주문 없이 30일 한 줄이고, 감사 기록에 남는다. 정산 · 매출에 잡히지 않는다(주문이 없다).
+ */
+export async function grantTestPassAction(form: FormData): Promise<void> {
+  const user = await requireRole(["superadmin"]);
+  const id = String(form.get("id") ?? "");
+  if (!/^\d{1,18}$/.test(id)) return;
+  const r = await query<{ ends_at: string }>(
+    `INSERT INTO entitlements (user_id, product_code, kind, status, starts_at, ends_at)
+     SELECT p.user_id, 'TRACK_30D', 'track', 'active', now(), now() + interval '30 days'
+       FROM mat_preview_users p WHERE p.user_id = $1
+     RETURNING ends_at::text`, [id]).catch(() => []);
+  if (r.length) {
+    await audit({ actorId: Number(user.id), actorRole: user.role, action: "mat.preview.pass", targetKind: "user", targetId: id, orgId: null, detail: { days: 30 } });
+  }
   revalidatePath("/admin/partners");
 }

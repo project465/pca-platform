@@ -70,7 +70,7 @@ export default async function MatHome() {
     <main>
       <div className="mt-top">
         <span className="mt-week">W{isoWeek()} · {monthWeekKo()}</span>
-        <span className="mt-week">{s.stage} {s.index + 1}/4</span>
+        <Link href="/mat/brief" className="mt-week">주간 브리핑 →</Link>
       </div>
       <h1 className="mt-h1">{user.name}님, 이번 주는<br />이것부터 하세요</h1>
 
@@ -133,6 +133,9 @@ export default async function MatHome() {
       ) : (
         <p className="mt-empty">아직 모아 둔 공고가 없습니다.</p>
       )}
+      <Link href="/mat/files" className="mt-row mt-row-link" style={{ border: "1px solid var(--mt-line)", borderRadius: 14, marginTop: 20 }}>
+        <div className="mt-row-b"><p>경험 파일 올리기</p><small>성적증명서 · 수료증 · 자격증 · 학교 활동 확인서를 올리면 경험 초안으로 옮깁니다</small></div>
+      </Link>
       {fromJi ? <p className="mt-src">공고 출처 잡인더스트리 · 10분마다 새로 모읍니다 · 회사 이름은 원문에서 확인하세요</p> : null}
       {ask.ok ? <MatAsk /> : null}
     </main>

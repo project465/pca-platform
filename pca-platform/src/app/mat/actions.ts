@@ -11,6 +11,7 @@ import { canUseMat, matAccess } from "@/lib/mat-access";
 import { analyzePosting, livePostingOf } from "@/lib/assistant/posting";
 import { smallTasks, taskBody } from "@/lib/assistant/prep";
 import { SOURCE_KO } from "@/lib/mat/stage";
+import { setEmailDigest } from "@/lib/assistant/settings";
 import { opFail, ref } from "@/lib/oplog";
 import { moveAction } from "../me/next/actions";
 
@@ -149,4 +150,12 @@ export async function matDropApp(form: FormData): Promise<void> {
   if (/^\d{1,18}$/.test(id)) await removeApplication(user.id, id);
   revalidatePath("/mat/jobs");
   redirect("/mat/jobs#track");
+}
+
+/** 주간 브리핑 메일 켜고 끄기(웹 작업공간과 같은 칸) */
+export async function matDigestAction(form: FormData): Promise<void> {
+  const user = await requireUser();
+  await setEmailDigest(user.id, String(form.get("on") ?? "") === "1");
+  revalidatePath("/mat/brief");
+  redirect("/mat/brief");
 }

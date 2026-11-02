@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { addPreviewAction, issueKeyAction, type KeyState } from "./actions";
+import { addPreviewAction, issueKeyAction, setAllowlistAction, type KeyState } from "./actions";
 
 /** 키 만들기. 만든 키는 이 칸에 한 번만 보이고, 새로 고치면 사라진다 */
 export function IssueKey({ partner }: { partner: string }) {
@@ -35,6 +35,20 @@ export function AddPreview() {
       <label className="sf-field"><span>아이디 또는 이메일</span><input name="who" required maxLength={120} /></label>
       <label className="sf-field"><span>메모</span><input name="note" maxLength={120} placeholder="예: 테스트 세션 1" /></label>
       <button type="submit" className="sf-btn" disabled={pending}>{pending ? "넣는 중…" : "미리보기에 넣기"}</button>
+      {state.err ? <p className="sf-note is-bad" role="alert">{state.err}</p> : null}
+      {state.ok ? <p className="sf-note is-ok" role="status">{state.ok}</p> : null}
+    </form>
+  );
+}
+
+export function Allowlist({ partner, current }: { partner: string; current: string[] }) {
+  const [state, run, pending] = useActionState<KeyState, FormData>(setAllowlistAction, {});
+  return (
+    <form className="sf-filters" action={run}>
+      <input type="hidden" name="partner" value={partner} />
+      <label className="sf-field" style={{ minWidth: 260 }}><span>허용 IP (쉼표로 나눔, 비우면 제한 없음)</span>
+        <input name="ips" defaultValue={current.join(", ")} placeholder="예: 203.0.113.10, 198.51.100.0/24" /></label>
+      <button type="submit" className="sf-btn ghost" disabled={pending}>IP 적기</button>
       {state.err ? <p className="sf-note is-bad" role="alert">{state.err}</p> : null}
       {state.ok ? <p className="sf-note is-ok" role="status">{state.ok}</p> : null}
     </form>

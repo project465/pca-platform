@@ -39,8 +39,14 @@ export async function issueKey(partner: string, env: "test" | "live", byUserId: 
   return { key: `cmk_${env}_${prefix}_${secret}`, id: row!.id };
 }
 
-export async function revokeKey(partner: string, id: string): Promise<void> {
-  await query(`UPDATE partner_keys SET revoked_at = now() WHERE id = $1 AND partner = $2 AND revoked_at IS NULL`, [id, partner]);
+/**
+ * 키를 폐기한다. `graceHours` 가 있으면 그 시간 뒤에 폐기된다(키 교체: 새 키를 반영하는 동안 옛 키도 받는다).
+ * 이미 예약된 키를 `지금 폐기` 하면 앞당긴다.
+ */
+export async function revokeKey(partner: string, id: string, graceHours = 0): Promise<void> {
+  await query(
+    `UPDATE partner_keys SET revoked_at = now() + make_interval(hours => $3)
+      WHERE id = $1 AND partner = $2 AND (revoked_at IS NULL OR revoked_at > now())`, [id, partner, graceHours]);
 }
 
 export type KeyRow = { id: string; env: string; key_prefix: string; created_at: string; revoked_at: string | null };
@@ -55,7 +61,7 @@ export async function verifyKey(partner: string, raw: string): Promise<{ id: str
   if (!m) return null;
   const row = await queryOne<{ id: string; env: "test" | "live"; key_hash: string }>(
     `SELECT id::text, env, key_hash FROM partner_keys
-      WHERE partner = $1 AND key_prefix = $2 AND revoked_at IS NULL`, [partner, m[2]]).catch(() => null);
+      WHERE partner = $1 AND key_prefix = $2 AND (revoked_at IS NULL OR revoked_at > now())`, [partner, m[2]]).catch(() => null);
   const want = Buffer.from(row?.key_hash ?? "0".repeat(64), "hex");
   const got = Buffer.from(sha(m[3]), "hex");
   const same = want.length === got.length && timingSafeEqual(want, got);
@@ -187,4 +193,16 @@ export async function purgeHandoffs(): Promise<number> {
     `DELETE FROM partner_handoffs WHERE (used_at IS NULL AND expires_at < now() - interval '1 hour')
         OR (used_at IS NOT NULL AND used_at < now() - interval '30 days') RETURNING id::text`, []).catch(() => []);
   return r.length;
+}
+
+/** 허용 IP 를 바꾼다. 쉼표 · 줄바꿈으로 나눈 IP 나 CIDR. 비우면 제한 없이 받고 호출 기록에 IP 만 남긴다 */
+export async function setAllowlist(partner: string, raw: string, byUserId: string): Promise<{ ok: true; n: number } | { ok: false; bad: string }> {
+  const list = raw.split(/[\s,]+/).map((x) => x.trim()).filter(Boolean).slice(0, 20);
+  for (const ip of list) {
+    const ok = await queryOne<{ ok: boolean }>(`SELECT ($1::cidr IS NOT NULL) AS ok`, [ip]).catch(() => null);
+    if (!ok) return { ok: false, bad: ip };
+  }
+  await query(`UPDATE partner_configs SET ip_allowlist = $2::cidr[], updated_at = now(), updated_by = $3 WHERE partner = $1`,
+    [partner, list, byUserId]);
+  return { ok: true, n: list.length };
 }

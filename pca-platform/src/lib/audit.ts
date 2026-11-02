@@ -34,7 +34,7 @@ export const AUDITED = [
   /* 제휴 연결 키 · 받기 상태. 키 값은 적지 않고 키 번호만 */
   "partner.key.issue", "partner.key.revoke", "partner.status",
   /* 공개 전 MAT 미리보기 계정을 넣고 뺀 일 */
-  "mat.preview.add", "mat.preview.remove",
+  "mat.preview.add", "mat.preview.remove", "mat.preview.pass", "partner.ip",
 ] as const;
 export type AuditAction = (typeof AUDITED)[number];
 

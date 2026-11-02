@@ -46,15 +46,15 @@ ALTER TABLE partner_configs ADD COLUMN IF NOT EXISTS button_label TEXT NOT NULL 
 COMMENT ON TABLE partner_configs IS
   '제휴 한 곳에 한 줄: 받는지 · 정산 비율 · 넘겨받는 항목 · 허용 IP';
 
--- 결정(2026-11-01 · 11-02): 잡인더스트리 20% · 최소 항목. 커리어피크는 같은 API 키 방식 · 같은 최소 항목,
--- 정산 비율은 미정(NULL). 둘 다 꺼 둔 채로 들어간다(켜는 것은 운영자 화면에서, 대표 승인 뒤).
+-- 결정(2026-11-01 · 11-02): 잡인더스트리 · 커리어피크 모두 20%(계약서로 바뀔 수 있어 값으로 둔다) · 같은
+-- API 키 방식 · 같은 최소 항목. 둘 다 꺼 둔 채로 들어간다(켜는 것은 운영자 화면에서, 대표 승인 뒤).
 -- **이미 있는 줄은 고치지 않는다**(운영자가 화면에서 바꾼 값을 파일이 덮지 않게)
 INSERT INTO partner_configs (partner, status, settlement_bps, share_fields, button_label)
 VALUES
   ('jobindustry', 'off', 2000,
    ARRAY['display_name', 'interest_jobs', 'interest_regions', 'education', 'certificates', 'career_summary'],
    'AI 취업비서 MAT로 이 공고 분석'),
-  ('careerpeak', 'off', NULL,
+  ('careerpeak', 'off', 2000,
    ARRAY['display_name', 'interest_jobs', 'interest_regions', 'education', 'certificates', 'career_summary'],
    'AI 취업비서 MAT 시작')
 ON CONFLICT (partner) DO NOTHING;
@@ -64,6 +64,8 @@ ON CONFLICT (partner) DO NOTHING;
 UPDATE partner_configs SET share_fields =
   ARRAY['display_name', 'interest_jobs', 'interest_regions', 'education', 'certificates', 'career_summary']
  WHERE partner = 'careerpeak' AND share_fields = '{}' AND updated_by IS NULL;
+UPDATE partner_configs SET settlement_bps = 2000
+ WHERE partner = 'careerpeak' AND settlement_bps IS NULL AND updated_by IS NULL;
 UPDATE partner_configs SET button_label = CASE partner
     WHEN 'jobindustry' THEN 'AI 취업비서 MAT로 이 공고 분석' ELSE 'AI 취업비서 MAT 시작' END
  WHERE button_label = 'AI 취업비서 MAT' AND updated_by IS NULL;
@@ -78,13 +80,14 @@ CREATE TABLE IF NOT EXISTS partner_keys (
   key_hash     TEXT NOT NULL,
   created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
   created_by   BIGINT REFERENCES users(id) ON DELETE SET NULL,
+  -- 폐기 시각. **앞날이면 그때까지 함께 받는다**(키 교체 때 새 키를 반영하는 동안 옛 키도 받는 기간)
   revoked_at   TIMESTAMPTZ
 );
 
 CREATE INDEX IF NOT EXISTS partner_keys_live_idx ON partner_keys(partner) WHERE revoked_at IS NULL;
 
 COMMENT ON TABLE partner_keys IS
-  '제휴 API 키. 해시만 둔다. 교체는 새 키를 만들고 옛 키에 revoked_at 을 적는다';
+  '제휴 API 키. 해시만 둔다. 교체는 새 키를 만들고 옛 키에 revoked_at(지금 또는 24시간 뒤)을 적는다';
 
 CREATE TABLE IF NOT EXISTS partner_links (
   partner           TEXT NOT NULL REFERENCES partner_configs(partner),

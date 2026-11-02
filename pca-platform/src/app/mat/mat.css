@@ -152,3 +152,10 @@ a.mt-chip-btn { text-decoration: none; color: var(--mt-ink); }
 .mt-card p { margin: 0; font-weight: 600; }
 .mt-card small { display: block; color: var(--mt-sub); margin-top: 4px; }
 .mt-linkbtn { background: none; border: 0; padding: 0 4px; cursor: pointer; font: inherit; font-size: 14px; color: var(--mt-sub); }
+
+/* 경험 파일(8 · 9번) */
+.mt-agree { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--mt-sub); }
+.mt-agree input { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--mt-ink); flex: none; }
+.mt-drop { display: grid; gap: 6px; place-items: center; text-align: center; padding: 28px 16px; border: 1.5px dashed var(--mt-ink); border-radius: var(--mt-r); cursor: pointer; min-height: 120px; }
+.mt-drop b { font-size: 16px; } .mt-drop span { font-size: 13px; color: var(--mt-sub); }
+.mt-drop.is-off { border-color: var(--mt-line); color: var(--mt-sub); cursor: default; }
