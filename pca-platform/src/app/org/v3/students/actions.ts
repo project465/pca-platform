@@ -76,7 +76,7 @@ export async function retakeAction(
   if (!sc) return { err: "학교 등록부에 연결된 기관이 아닙니다." };
   const r = await allowRetake(sc.uni, String(form.get("user_id") ?? ""), sc.actor);
   revalidatePath("/org/v3/students");
-  return r.ok ? { ok: "이 학생이 한 번 더 응시할 수 있습니다." } : { err: r.why };
+  return r.ok ? { ok: "재응시를 열었습니다. 학생이 다음에 로그인하면 한 번 더 응시할 수 있고, 명단에 \"재응시 열림\" 으로 보입니다." } : { err: r.why };
 }
 
 /** 한 명 추가 */
@@ -210,6 +210,6 @@ export async function matCloseAction(
   revalidatePath("/org/v3/students");
   if (!r.ok) return { err: r.why };
   return r.closed
-    ? { ok: "MAT 을 닫았습니다. 좌석 하나가 돌아왔습니다. 학생이 남긴 자료는 그대로 있습니다." }
-    : { err: "이 학교 좌석으로 열린 MAT 이 없습니다." };
+    ? { ok: "MAT 을 닫았습니다. 이용 인원 한 명이 돌아왔습니다. 학생이 남긴 자료는 그대로 있습니다." }
+    : { err: "이 학교 이용 인원으로 열린 MAT 이 없습니다." };
 }

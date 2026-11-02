@@ -65,7 +65,14 @@ export function campusNames(universityCode: string | null): CampusNames {
  * **지난 코드는 넣지 않는다**: 고르는 칸에 내려놓은 자리를 세우면 담당자가
  * 지금 없는 학과로 좁혀 보고 빈 표를 받는다.
  */
-export function leafChoices(universityCode: string | null): {
+export function leafChoices(universityCode: string | null, opts?: {
+  /**
+   * 이 학년도까지의 교육과정만(학생을 새로 넣는 자리). 아직 오지 않은 학년도(예: 2026년에 2027 교육과정)의
+   * 학과로 지금 학생을 넣지 않게 한다(2026-11-02 운영 시험: "경영학과 (2027 교육과정)" 학생이 생겼다).
+   * 거르는 자리(명단 · 집계 조건)는 이미 넣은 학생을 찾아야 하므로 모두 보인다
+   */
+  uptoYear?: number;
+}): {
   code: string; name: string; college: string;
 }[] {
   const u = universityCode ? university(universityCode) : null;
@@ -75,6 +82,7 @@ export function leafChoices(universityCode: string | null): {
   const out: { code: string; name: string; college: string }[] = [];
   for (const r of allLeaves(u)) {
     if (seen.has(r.leaf.code)) continue;
+    if (opts?.uptoYear && r.catalog.catalog_year > opts.uptoYear) continue;
     seen.add(r.leaf.code);
     out.push({ code: r.leaf.code, name: label.get(r.leaf.code) ?? r.leaf.name, college: r.college.code });
   }

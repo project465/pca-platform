@@ -50,12 +50,12 @@ export default async function MatPass() {
       <section className={`mt-box is-school`}>
         <h3>학교에서 검사를 받았나요?</h3>
         {school && state.source?.kind === "school" ? (
-          <p>{withJosa(school, "이가")} 연 좌석으로 쓰고 있어요. {day(state.source.until)}까지이고, 끝나도 개인 이용권으로 이어 쓸 수 있어요. 자료는 그대로 남아요.</p>
+          <p>{withJosa(school, "이가")} 열어 준 MAT으로 쓰고 있어요. {day(state.source.until)}까지이고, 끝나도 개인 이용권으로 이어 쓸 수 있어요. 자료는 그대로 남아요.</p>
         ) : campus ? (
-          <p>{campus.university_name} 계정이에요. 학교가 MAT 좌석을 열면 결제 없이 바로 쓸 수 있어요.</p>
+          <p>{campus.university_name} 계정이에요. 학교가 MAT을 열어 주면 결제 없이 바로 쓸 수 있어요.</p>
         ) : (
           <ul>
-            <li>학교가 좌석을 열면 결제 없이 써요.</li>
+            <li>학교가 MAT을 열어 주면 결제 없이 써요.</li>
             <li>학교에서 받은 계정으로 로그인하면 이어져요.</li>
           </ul>
         )}

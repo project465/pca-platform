@@ -1,5 +1,7 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { currentUser } from "@/lib/session";
+import { hasCampusRow } from "@/lib/campus/students";
 import "../../surface.css";
 import "../campus.css";
 import {
@@ -83,6 +85,10 @@ export default async function CampusEntry({ params, searchParams }: Params) {
   const u = university(universityCode);
   if (!u) notFound();
   const t = campusSay(u);
+  /* **로그인한 이 학교 학생은 소개 화면에 두지 않는다**(2026-11-02 운영 시험: 로그인했는데 "학교 계정으로 로그인"
+     단추가 그대로 보였다). 시작 화면이 학과 · 응시 상태에 맞는 단추를 세운다. 등록부 · 학교가 늘어도 같은 판단이다 */
+  const who = await currentUser().catch(() => null);
+  if (who && await hasCampusRow(who.id, u.university_code)) redirect(`/campus/${u.university_code.toLowerCase()}/start`);
   const { y } = await searchParams;
   const cat = await pickCatalog(u, y);
   const code = u.university_code.toLowerCase();

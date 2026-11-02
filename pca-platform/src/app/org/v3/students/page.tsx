@@ -188,7 +188,7 @@ export default async function CampusStudents({
       {/* **MAT(AI 취업비서) 학교 단체 이용권.** 학교가 산 인원 안에서
           담당자가 학생에게 연다. 학생 화면은 개인 구매와 같은 MAT 쪽이 열린다 */}
       <Section title="MAT · AI 취업비서"
-        note="계약한 좌석 안에서 학생에게 엽니다. 연 날부터 계약 기간 동안 쓸 수 있습니다.">
+        note="계약한 이용 인원 안에서 학생에게 엽니다. 연 날부터 계약 기간 동안 쓸 수 있습니다.">
         <MatPanel pools={matPools} total={total} usage={matUsage} agency={agency}
           filter={{ q: sp.q ?? "", department: sp.department ?? "",
             college: sp.college ?? "", state: state === "disabled" ? "all" : state }} />
@@ -222,7 +222,8 @@ export default async function CampusStudents({
         )}
       </Section>
 
-      <AddStudent leaves={leaves.map((r) => ({ code: r.code, name: r.name }))}
+      <AddStudent leaves={leafChoices(uni, { uptoYear: Number(new Date(Date.now() + 9 * 3_600_000).toISOString().slice(0, 4)) })
+        .map((r) => ({ code: r.code, name: r.name }))}
         prefix={reg ? loginPrefixOf(reg) : ""} agency={agency} />
     </>,
   );

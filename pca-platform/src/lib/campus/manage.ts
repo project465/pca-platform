@@ -39,6 +39,11 @@ export type StudentRow = {
   attempt: "none" | "in_progress" | "scored";
   /** 결과를 받은 날. 아직이면 `null` */
   completed_at: string | null;
+  /**
+   * 담당자가 연 재응시를 아직 쓰지 않았다(`allowRetake` 가 넣은 줄이 남아 있다). 명단이 `재응시 열림` 으로
+   * 적는다(2026-11-02 운영 시험: 눌러도 같은 단추가 그대로 남아 열렸는지 알 수 없었다)
+   */
+  retake_open?: boolean;
 };
 
 export type StudentState = "all" | "none" | "in_progress" | "scored" | "disabled";
@@ -115,7 +120,12 @@ export async function listStudents(
             CASE WHEN att.scored THEN 'scored'
                  WHEN att.open   THEN 'in_progress'
                  ELSE 'none' END AS attempt,
-            att.done_at AS completed_at
+            att.done_at AS completed_at,
+            (att.scored AND EXISTS (
+              SELECT 1 FROM entitlements e
+               WHERE e.user_id = cs.user_id AND e.assessment_version = '${ASSESSMENT_VERSION.replace(/'/g, "''")}'
+                 AND e.status = 'active'
+                 AND NOT EXISTS (SELECT 1 FROM v3_attempts ea WHERE ea.entitlement_id = e.id))) AS retake_open
        FROM campus_students cs
        JOIN users u ON u.id = cs.user_id
        ${ATTEMPT}

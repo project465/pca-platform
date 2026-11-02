@@ -134,7 +134,7 @@ export default function StudentRows(
                         onClick={(e) => {
                           if (!confirm(
                             `${r.name} ${t("학생")}에게 ${matPool.name} 을 엽니다.\n`
-                            + "좌석이 하나 줄어듭니다. 닫으면 좌석이 돌아옵니다.",
+                            + "남은 이용 인원이 한 명 줄어듭니다. 닫으면 돌아옵니다.",
                           )) e.preventDefault();
                         }}>MAT 열기</button>
                     </form>
@@ -147,12 +147,14 @@ export default function StudentRows(
                         onClick={(e) => {
                           if (!confirm(
                             `${r.name} ${t("학생")}의 MAT 을 닫습니다.\n`
-                            + "바로 쓸 수 없게 되고 좌석이 하나 돌아옵니다. 학생이 남긴 자료는 지우지 않습니다.",
+                            + "바로 쓸 수 없게 되고 이용 인원 한 명이 돌아옵니다. 학생이 남긴 자료는 지우지 않습니다.",
                           )) e.preventDefault();
                         }}>MAT 닫기</button>
                     </form>
                   ) : null}
-                  {r.attempt === "scored" ? (
+                  {r.attempt === "scored" && r.retake_open ? (
+                    <span className="sf-pill">재응시 열림</span>
+                  ) : r.attempt === "scored" ? (
                     <form action={run}>
                       <input type="hidden" name="kind" value="retake" />
                       <input type="hidden" name="user_id" value={r.user_id} />
