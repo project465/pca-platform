@@ -46,7 +46,7 @@ export function headsUp(opts: {
     out.push({
       key: "fresh", href: "/mat/jobs", label: "겹친 공고 보기",
       title: "이번 주 새로 맞는 공고가 있어요",
-      body: "마음에 드는 공고를 바로 분석해 보세요.",
+      body: "마음에 드는 공고를 내 경험과 맞춰 보세요.",
     });
   }
   const twoWeeks = now.getTime() - 14 * 86_400_000;

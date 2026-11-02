@@ -37,7 +37,7 @@ export function JobCard({ p, analyze = true }: { p: MatchedPosting; analyze?: bo
           {analyze && title ? (
             <form action={matAnalyzeJob}>
               <input type="hidden" name="job" value={p.id} />
-              <button type="submit" className="mt-btn is-small">바로 분석</button>
+              <button type="submit" className="mt-btn is-small">내 경험과 맞춰 보기</button>
             </form>
           ) : null}
           {link ? (

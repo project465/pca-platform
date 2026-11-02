@@ -59,7 +59,7 @@ export default async function MatJobs({ searchParams }: { searchParams: Promise<
           <div className="mt-list" style={{ marginBottom: 8 }}>
             <JobCard p={{ ...carried, requirements: (carried.raw_requirements ?? []).slice(0, 8), hits: [], tdHits: [] }} />
           </div>
-          <p className="mt-note">바로 분석에서 내 경험과 맞춰 보세요.</p>
+          <p className="mt-note">‘내 경험과 맞춰 보기’를 눌러 보세요.</p>
         </>
       ) : null}
 
@@ -75,7 +75,7 @@ export default async function MatJobs({ searchParams }: { searchParams: Promise<
         </details>
       ) : null}
       {fromJi ? <p className="mt-src">공고 출처 잡인더스트리 · 회사 이름은 원문에서</p> : null}
-      <p className="mt-note">바로 분석은 AI 분석을 켠 경우 Anthropic(미국)의 Claude로 읽고, 꺼 두면 규칙으로 읽어요.</p>
+      <p className="mt-note">맞춰 보기는 AI 분석을 켠 경우 Anthropic(미국)의 Claude로 읽어요.</p>
 
       {mine.length ? (
         <>
@@ -106,8 +106,8 @@ export default async function MatJobs({ searchParams }: { searchParams: Promise<
           <textarea name="text" rows={6} required minLength={30} maxLength={12000}
             placeholder="자격 요건 · 우대 사항 · 담당 업무" />
         </label>
-        <button type="submit" className="mt-btn is-main is-block">분석</button>
-        <p className="mt-note">회사 이름은 저장하지 않아요. AI 분석을 켠 경우 Anthropic(미국)의 Claude로 읽고, 꺼 두면 규칙으로 읽어요.</p>
+        <button type="submit" className="mt-btn is-main is-block">내 경험과 맞춰 보기</button>
+        <p className="mt-note">회사 이름은 저장하지 않아요. AI 분석을 켠 경우 Anthropic(미국)의 Claude로 읽어요.</p>
       </form>
     </main>
   );

@@ -13,7 +13,7 @@ import { outLink } from "@/lib/mat/out-link";
 import { SOURCE_KO } from "@/lib/mat/stage";
 import { taskLine } from "@/lib/mat/short";
 
-export const generateMetadata = () => matTitle("공고 분석");
+export const generateMetadata = () => matTitle("내 경험과 맞춰 보기");
 
 /**
  * 공고 바로 분석(예상 화면 2번의 안쪽). **맞는 점 · 보완할 점 · 마감 전 할 일** 세 덩이.

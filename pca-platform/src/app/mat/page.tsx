@@ -5,7 +5,7 @@ import { queryOne } from "@/lib/db";
 import { activeCoreOrPick, currentState } from "@/lib/me-v3/platform";
 import { openActions } from "@/lib/me-v3/open-actions";
 import { domainName } from "@/lib/me-v3/runtime/session";
-import { MAT_STAGES, matStage, monthWeekKo } from "@/lib/mat/stage";
+import { matStage, monthWeekKo } from "@/lib/mat/stage";
 import { pickJobs } from "@/lib/mat/pick-jobs";
 import { oneLine } from "@/lib/mat/short";
 import { withJosa } from "@/lib/me-v3/result/josa";
@@ -52,7 +52,9 @@ export default async function MatHome() {
   const name = (td: string) => domainName(st.core, td);
   const owned = (st.model?.domains ?? []).filter((d) => d.owned.length > 0).map((d) => d.code);
   const s = matStage(st.zoneOf, owned);
-  const gap = st.gaps[0] ?? null;
+  /* 비어 있는 곳은 **근거를 갖춘 영역을 빼고** 고른다(2026-11-02 운영 시험: 같은 영역이 "근거를 갖췄어요" 와
+     "이번엔 ○○을 채워 봐요" 에 함께 섰다. 갭은 축 · 결과물 단위라 근거를 갖춘 영역에도 남을 수 있다) */
+  const gap = st.gaps.find((g) => !s.established.includes(g.domain)) ?? null;
 
   /* 상담사가 말하듯 한두 마디(2026-11-02 대표 "AI같아"). 숫자 · 판정어를 늘어놓지 않는다 */
   const diag = !st.model
@@ -76,18 +78,15 @@ export default async function MatHome() {
       </div>
       <h1 className="mt-h1">{user.name}님, 이번 주 할 일</h1>
 
+      {/* 단계 막대는 점수판처럼 읽혀 걷었다(2026-11-02 대표 "AI느낌 안나게"). 글 한 줄로 */}
       <section className="mt-stage" aria-label="지금 단계">
-        <div className="mt-stage-h"><span>지금 단계</span><b>{s.stage}</b></div>
-        <div className="mt-steps" role="img" aria-label={`${MAT_STAGES.length}단계 가운데 ${s.index + 1}번째`}>
-          {MAT_STAGES.map((x, i) => <span key={x} className={i <= s.index ? "is-on" : undefined} title={x} />)}
-        </div>
-        <p>{diag}</p>
+        <p style={{ marginTop: 0 }}>지금은 <b>{s.stage}</b> 단계예요. {diag}</p>
         {st.model ? <Link className="mt-link" href="/me/results">결과지 보기</Link> : <Link className="mt-link" href="/cores">검사 시작</Link>}
       </section>
 
       {tips.length ? (
         <>
-          <h2 className="mt-h2">먼저 볼 것</h2>
+          <h2 className="mt-h2">이번 주 확인할 것</h2>
           <div className="mt-list">
             {tips.map((t) => (
               <Link key={t.key} href={t.href} className="mt-row mt-row-link">

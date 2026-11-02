@@ -823,6 +823,21 @@ const OWN_KO: Record<Axis, (d: string, m: Mat) => string> = {
 };
 
 /**
+ * 할 일 한 줄(축마다). 사람이 말하듯 짧게: `서버·API 과제 하나 골라, 왜 그렇게 정했는지 요청 시험 코드에 세 줄 적기`.
+ * **남길 곳은 남긴다**(Gate §6: 할 일이 무엇을 남기고 끝나는지 · §16: 전공마다 문장이 갈린다).
+ */
+const OWN_SHORT_KO: Record<Axis, (d: string, m: Mat) => string> = {
+  J1: (d, m) => `${d} 과제 하나 골라, 무엇을 문제로 봤는지 ${keep(m, 0, "정리한 문서")}에 세 줄 적기`,
+  J2: (d, m) => `${d} 과제 하나 골라, 받은 요구가 어떤 조건이 됐는지 ${keep(m, 1, "정리한 문서")}에 세 줄 적기`,
+  J3: (d, m) => `${d} 과제 하나 골라, 왜 그렇게 정했는지 ${keep(m, 2, "정리한 문서")}에 세 줄 적기`,
+  J4: (d, m) => `${d} 과제 하나 골라, 왜 그 방법을 골랐는지 ${keep(m, 3, "정리한 문서")}에 세 줄 적기`,
+  J5: (d, m) => `${d} 과제 하나 골라, ${m.artifacts.length ? `${orList(m.artifacts)}의` : "남긴 결과물의"} 가정과 한계 세 줄 적기`,
+  J6: (d, m) => `${d} 과제 하나 골라, ${m.verify_targets.length ? `${withJosa(m.verify_targets[0], "과와")} 비교한 것을` : "결과를 무엇과 비교했는지"} ${keep(m, 1, "정리한 문서")}에 세 줄 적기`,
+  J7: (d, m) => `${d} 과제 하나 골라, 안 됐을 때 무엇을 바꿨는지 ${keep(m, 4, "정리한 문서")}에 세 줄 적기`,
+  J8: (d, m) => `${d} 과제 하나 골라, 결과가 어디에 쓰였는지 ${keep(m, 5, "정리한 문서")}에 세 줄 적기`,
+};
+
+/**
  * 영역 사전의 목록을 **둘까지만** 적는다(R2 §16·§22).
  *
  * 영역마다 방법과 정할 것의 수가 달라서(`지표 정의, 자료 정리, 집단
@@ -1138,7 +1153,11 @@ export function actionKo(
     };
   }
   if (a.code === "DEEPEN_OWNERSHIP" && a.axis) {
-    return { do: OWN_KO[a.axis](domainName, a.material), note: depth };
+    /* **할 일 줄은 짧게, 재료는 펼침으로**(2026-11-02 대표 "MAT이 너무 AI느낌 안나게해"). 한 문장에 재료 ·
+       남길 곳 · 까닭이 다 들어 기계 번역처럼 읽혔다. 줄은 `과제 하나 골라, 무엇을 세 줄 적기` 로 끝내고,
+       영역 사전의 재료가 든 원래 문장은 `guide` 로 내려 결과 화면의 펼침에 둔다 */
+    const full = OWN_KO[a.axis](domainName, a.material);
+    return { do: OWN_SHORT_KO[a.axis](domainName, a.material), note: depth, guide: full.replace(`${bring(domainName)} `, "") };
   }
   if (a.code === "EXPLORE_BROADLY") {
     /* **판정을 할 일 자리에 적지 않는다**(규격 §9). `어느 영역이 앞선다고
