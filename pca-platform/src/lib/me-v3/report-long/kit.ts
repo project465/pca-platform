@@ -379,6 +379,18 @@ export const PACK_JS = String.raw`(function () {
       }
     });
     fills.forEach(function (f) { if (f.parentNode) f.parentNode.removeChild(f); });
+    /* 같은 쪽에 같은 이름의 '(계속)' 머리가 두 번 서지 않게(2026-11-02 전주대 v3/24 JA10). 같은 차례의 (2) · (3) 쪽이
+       한 쪽으로 모이면 쪽마다 들고 온 '(계속)' 이 겹친다. 그 쪽 앞에 원래 머리나 같은 '(계속)' 이 이미 있으면 뒤엣것을 뺀다 */
+    Array.prototype.slice.call(document.querySelectorAll("section.pg")).forEach(function (pg) {
+      if (!plain(pg)) return;
+      var seen = {};
+      Array.prototype.slice.call(bdOf(pg).querySelectorAll("p.k, p.cont, h3, h4")).forEach(function (e) {
+        var t = (e.textContent || "").replace(/\s+/g, " ").trim();
+        var m = /^(.*?)\s*\((?:계속|cont\.)\)$/.exec(t);
+        if (m && (seen[m[1]] || seen[t])) { e.parentNode.removeChild(e); return; }
+        seen[t] = 1; if (m) seen[m[1]] = 1;
+      });
+    });
     /* 쓰는 칸 표(.ws)가 있는 쪽은 남은 자리를 그 표의 쓰는 줄에 나눠 준다(줄마다 20mm 까지) */
     Array.prototype.slice.call(document.querySelectorAll("section.pg")).forEach(function (pg) {
       if (!plain(pg)) return;
