@@ -59,6 +59,10 @@ const EN: Record<string, string> = {
     "This account is paused. Ask your department administrator to reopen it.",
   "이 계정은 파기 처리되어 더 쓰실 수 없습니다. 다시 쓰시려면 학과 담당자에게 말씀해 주세요.":
     "This account has been deleted and can't be used. Contact your department administrator to use it again.",
+  "같은 번호로 된 계정이 여러 학교에 있습니다. 다니는 학교를 골라 그 학교 화면에서 들어와 주세요.":
+    "Accounts with this number exist at more than one school. Pick your school and sign in on its page.",
+  "학교에서 받은 계정이면 학교 로그인 화면에서 들어오세요:":
+    "If your school gave you this account, sign in on your school's page:",
   "아이디 또는 비밀번호가 올바르지 않습니다. 학교에서 받은 비밀번호가 기억나지 않으면 학과 담당자가 다시 발급해 드립니다.":
     "That ID or password isn't right. If you signed up with an email, you can reset your password below.",
   "로그인 정보를 다 받지 못했습니다. 다시 눌러 보시고, 그래도 안 되면 아래 이메일 로그인을 쓰실 수 있습니다.":

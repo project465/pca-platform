@@ -26,9 +26,17 @@ export default function LoginForm({ next = "", lang = "ko" }: { next?: string; l
       <input type="hidden" name="next" value={next} />
       <input type="hidden" name="lang" value={lang} />
       {state.error ? (
-        <p className="notice error" role="alert">
-          {state.error}
-        </p>
+        <div className="notice error" role="alert">
+          <p style={{ margin: 0 }}>{state.error}</p>
+          {state.schools?.length ? (
+            <p style={{ margin: "8px 0 0" }}>
+              {say("학교에서 받은 계정이면 학교 로그인 화면에서 들어오세요:")}{" "}
+              {state.schools.map((s, i) => (
+                <span key={s.code}>{i ? " · " : ""}<a href={`/campus/${s.code}/login`}>{s.name}</a></span>
+              ))}
+            </p>
+          ) : null}
+        </div>
       ) : null}
 
       <div className="field">

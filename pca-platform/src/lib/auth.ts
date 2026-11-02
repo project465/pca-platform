@@ -50,6 +50,33 @@ async function findUserByIdentifier(identifier: string): Promise<UserRow | null>
 }
 
 /**
+ * **공통 로그인 화면에 숫자만 넣었을 때 어느 계정인가**(2026-11-02 운영 시험: 고려대 세종 학번
+ * `20141112` 가 공통 화면에서 막혔다. 아이디는 `kus-20141112` 다).
+ *
+ * 학교 아이디는 학교 머리(`kus-` · `jju-` · `sjepa-`)가 붙는다. 학교 화면은 머리를 붙여 주지만
+ * 학생은 대부분 공통 주소로 온다. 그래서 넣은 값 그대로와, 학교마다 머리를 붙인 값을 모두 대어
+ * 보고 **비밀번호까지 맞는 열린 계정**만 센다.
+ * - 하나면 그 아이디로 들어간다
+ * - 둘 이상이면 `many`: 화면이 학교를 고르게 한다
+ * - 없으면 넣은 값 그대로 돌려준다(늘 하던 실패 문구)
+ *
+ * **계정이 있는지 알려 주지 않는다**: 비밀번호가 맞은 계정만 세므로, 비밀번호를 모르는 쪽에서는
+ * 응답이 전과 같다.
+ */
+export async function resolveLoginId(
+  raw: string, password: string, candidates: string[],
+): Promise<{ id: string } | { many: string[] }> {
+  const hits: string[] = [];
+  for (const c of [...new Set([raw, ...candidates])]) {
+    const user = await findUserByIdentifier(c);
+    if (!user?.password_hash || user.status !== "active") continue;
+    if (await verifyPassword(password, user.password_hash)) hits.push(c);
+  }
+  if (hits.length > 1) return { many: hits };
+  return { id: hits[0] ?? raw };
+}
+
+/**
  * 비밀번호는 맞는데 계정이 열려 있지 않은가(규격 §4).
  *
  * **왜 따로 묻는가.** `authorize()` 는 어느 까닭으로 막히든 `null` 을
