@@ -6,7 +6,7 @@
  * 대신하고, PC 결제창처럼 **돌아오지 않고 값만 돌려준다**(리다이렉트 없음).
  *
  *   PORTONE_API_BASE=http://127.0.0.1:3199 APP_ENV=staging \
- *   STAGING_BASIC_AUTH=probe:probe-pass PAYMENTS_PROVIDER=portone \
+ *   STAGING_BASIC_AUTH=probe:<자물쇠> PAYMENTS_PROVIDER=portone \
  *   PORTONE_STORE_ID=store-e2e PORTONE_CHANNEL_KEY=channel-key-e2e \
  *   PORTONE_API_SECRET=x PORTONE_WEBHOOK_SECRET=whsec_ZTJlZTJlZTJlZTJlZTJl \
  *     bash scripts/stage-serve.sh 3152
@@ -21,7 +21,7 @@
  *   ⑥ 포트원 조회가 실패하면 웹훅이 503 을 돌려 다시 보내게 한다
  *   ⑦ 승인 전이면 `실패` 가 아니라 `확인 중` 이라고 적는다
  */
-import { loadEnv, BASE, login } from "./_loop-fixture";
+import { loadEnv, BASE, gateCreds, login } from "./_loop-fixture";
 loadEnv();
 /* eslint-disable import/first */
 import { createServer } from "node:http";
@@ -81,9 +81,9 @@ async function buy(who: string, status: "PAID" | "READY") {
   const s = await seedMatStudent(who);
   await query(`DELETE FROM entitlements WHERE user_id = $1 AND kind = 'track'`, [s.id]);
   const br = await chromium.launch();
-  const ctx = await br.newContext({
-    httpCredentials: { username: "probe", password: "probe-pass" },
-  });
+  /* 자물쇠는 서버를 띄운 그 값(`STAGING_BASIC_AUTH`)을 읽는다. 글자로 적어 두지 않는다 */
+  const gate = gateCreds();
+  const ctx = await br.newContext(gate ? { httpCredentials: gate } : {});
   /* 포트원 SDK 대신. PC 결제창처럼 성공해도 돌아오지 않고 값만 돌려준다 */
   await ctx.route("https://cdn.portone.io/**", (r) => r.fulfill({
     status: 200, contentType: "application/javascript",

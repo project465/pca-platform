@@ -7,6 +7,7 @@ import { auth, inactiveReason, signIn, signOut, staffRoleOf, staffSignIn } from 
 import { homePathFor } from "@/lib/roles";
 import { clientIpFrom, loginGate } from "@/lib/login-throttle";
 import { entrySay } from "@/lib/entry-say";
+import { opFail } from "@/lib/oplog";
 
 export type LoginState = { error?: string };
 
@@ -53,7 +54,15 @@ export async function loginAction(
 
   /* **담당자와 학생은 로그인 쿠키를 따로 쓴다**(`auth.ts`). 그래서 같은
      브라우저에서 학생으로 들어가 봐도 담당자 로그인이 덮이지 않는다 */
-  const staff = await staffRoleOf(identifier);
+  /* **어느 쿠키인지 묻지 못하면 로그인을 멈춘다.** 학생 쿠키로 넘겨 버리면
+     담당자가 학생 화면에 떨어진다. 아이디는 로그에 적지 않는다(개인정보) */
+  let staff: Awaited<ReturnType<typeof staffRoleOf>>;
+  try {
+    staff = await staffRoleOf(identifier);
+  } catch (e) {
+    opFail({ operation: "auth.login", step: "staff_role", category: "db" }, e);
+    return { error: say("지금 로그인을 처리하지 못했습니다. 잠시 뒤에 다시 시도해주세요.") };
+  }
   try {
     await (staff ? staffSignIn : signIn)("credentials", { identifier, password, redirect: false });
   } catch (e) {

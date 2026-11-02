@@ -51,6 +51,8 @@ const EN: Record<string, string> = {
   "아이디와 비밀번호를 모두 입력하세요.": "Enter both your ID and your password.",
   "로그인 시도가 너무 많습니다. {wait} 뒤에 다시 시도해주세요.":
     "Too many sign-in attempts. Try again in {wait}.",
+  "지금 로그인을 처리하지 못했습니다. 잠시 뒤에 다시 시도해주세요.":
+    "We couldn't process your sign-in just now. Please try again in a moment.",
   "약 1분": "about a minute",
   "약 {n}분": "about {n} minutes",
   "이 계정은 지금 이용이 멈춰 있습니다. 학과 담당자에게 계정을 다시 열어 달라고 말씀해 주세요.":

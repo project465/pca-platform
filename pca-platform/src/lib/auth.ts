@@ -321,11 +321,16 @@ export const staffSignOut = staff.signOut;
 /**
  * 이 아이디가 담당자 · 운영자 계정인가. 로그인할 때 **어느 쿠키에 담을지만**
  * 정한다: 비밀번호 확인과 막는 일은 그대로 `authorize()` 가 한다.
+ *
+ * **DB 오류를 `null` 로 바꾸지 않고 던진다**(MUST FAIL 자리). 삼키면 DB 가
+ * 잠깐 흔들린 순간 담당자가 학생 쿠키로 들어가고, 그 사람은 학생 화면에
+ * 떨어진 까닭을 모른다. `null` 은 "담당자가 아니다" 라는 답일 때만 돌려주고,
+ * 묻지 못한 것은 부르는 쪽(`login/actions.ts`)이 로그인 실패로 받는다.
  */
 export async function staffRoleOf(identifier: string): Promise<Role | null> {
-  const u = await findUserByIdentifier(identifier).catch(() => null);
+  const u = await findUserByIdentifier(identifier);
   if (!u) return null;
-  const ms = await loadMemberships(u.id).catch(() => [] as Membership[]);
+  const ms = await loadMemberships(u.id);
   const r = highestRole(ms.map((m) => m.role));
   return r === "student" ? null : r;
 }
