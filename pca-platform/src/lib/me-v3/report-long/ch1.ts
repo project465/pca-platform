@@ -64,11 +64,13 @@ export function glance(x: Inputs, d: X): Page {
       label: s0.zone === "Z1_EVIDENCE_ESTABLISHED" ? "가장 분명한 강점" : "가장 많이 해 본 영역",
       meaning: ev.artifacts.length
         ? `${nm}에서는 일을 직접 맡아 했고, 그 결과를 ${j(ev.artifacts[0], "으로")} 남겼습니다.`
-        : `${nm}에서 직접 해 본 판단이 ${s0.confirmed.length}가지 나왔어요. 그 일을 보여 줄 결과물은 아직 고르지 않았습니다.`,
+        : `${nm}에서 직접 해 본 판단이 ${s0.confirmed.length}가지 나왔어요. 그 일을 보여 줄 결과물은 체크리스트에서 아직 고르지 않았습니다.`,
       fact: said.length ? `고른 항목: ${list3(said)}` : `직접 해 본 판단: ${axes}${s0.confirmed.length > 4 ? ` 외 ${s0.confirmed.length - 4}가지` : ""}`,
       action: s0.zone === "Z1_EVIDENCE_ESTABLISHED"
         ? "06장 자기소개서 재료로 옮겨 한 문단을 써 보세요."
-        : `다음 ${nm} 과제에서는 ${j(art ?? "결과 문서", "을를")} 남겨 두세요.`,
+        : (d.levels(s0.code)[4] ?? 0) >= 2
+          ? "결과물을 직접 만들어 봤다고 답했어요. 그 결과물의 이름을 경험 기록에 적어 두세요."
+          : `다음 ${nm} 과제에서는 ${j(art ?? "결과 문서", "을를")} 남겨 두세요.`,
     });
   }
   const g0 = d.gaps[0];

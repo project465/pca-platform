@@ -231,7 +231,10 @@ export function strengthPage(x: Inputs, d: X, k: number): Page {
       : `On your next ${nm} project, keep ${aN(def?.artifacts[0] ?? "result document")}. It becomes the first deliverable you can attach to an application.`)
     : ev.artifacts.length
       ? `${j(ev.artifacts[0], "을를")} 결과물로 내보이면 됩니다.${ev.comparisons.length ? ` ${j(ev.comparisons[0], "과와")} 비교한 내용도 함께 붙이세요.` : " 무엇과 비교해 확인했는지 한 줄 적어 두면 면접에서 바로 쓸 수 있어요."}`
-      : `다음 ${d.name(s.code)} 과제에서 ${j(def?.artifacts[0] ?? "결과 문서", "을를")} 남겨 두세요. 서류에 붙일 첫 결과물이 됩니다.`;
+      /* 산출물을 이미 직접 만들어 봤다고 답했으면 "남겨 두세요" 라고 권하지 않는다(2026-11-02 운영 시험: 답한 일을 다음 과제로 권했다) */
+      : (d.levels(s.code)[4] ?? 0) >= 2
+        ? `결과물을 직접 만들어 봤다고 답했어요. 그 결과물의 이름을 경험 기록에 적어 두면 서류에 바로 붙일 수 있어요.`
+        : `다음 ${d.name(s.code)} 과제에서 ${j(def?.artifacts[0] ?? "결과 문서", "을를")} 남겨 두세요. 서류에 붙일 첫 결과물이 됩니다.`;
   const next = en
     ? (gap?.axis
       ? `${gap.kind === "PARTIAL_EVIDENCE" ? `On your next project, set the criteria for ${qe(lc(an(gap.axis)))} yourself.` : `On your next project, take on ${qe(lc(an(gap.axis)))} yourself.`}${def?.axes?.[gap.axis]?.l2 ? ` For example: ${qe(def.axes[gap.axis].l2)}.` : ""}`
@@ -359,13 +362,15 @@ export function qualityPage(x: Inputs, d: X): Page {
     ? E(QUALITY_EN[f as keyof typeof QUALITY_EN] || "") || "We checked for lopsided answers and for mismatches on repeated questions."
     : E(QUALITY_KO[f as keyof typeof QUALITY_KO] || "") || "검사는 모든 답을 같은 쪽으로 고르지 않았는지, 같은 경험을 두 번 물었을 때 답이 맞는지를 함께 봤어요.";
   const flow: [string, string][] = en
-    ? [["Answer", "You said you set the criteria yourself"], ["Scene", "You picked that scene in the checklist"], ["One more piece", "You also picked a deliverable or a comparison"], ["Level", `Only then did we count it as “${STEP_WORD[3].tag}”`]]
-    : [["답", "‘기준을 내가 정했다’고 답했어요"], ["고른 항목", "체크리스트에서 그 일을 골랐어요"], ["근거 하나 더", "남긴 결과물이나 비교한 대상까지 골라 근거가 둘 이상 모였어요"], ["단계", `이렇게 모였을 때만 ‘${STEP_WORD[3].tag}’으로 셌어요`]];
+    /* **실제로 세는 방식대로 적는다**(2026-11-02 운영 시험: 카드는 "결과물 · 비교까지 골라야" 라고 했는데 실제 규칙은
+       "내가 정함 + 같은 판단 칸에서 고른 항목" 이다. 판정은 그대로 두고 카드 글만 맞춘다) */
+    ? [["Answer", "You answered “I decided” for that judgment"], ["Picked", "You also picked that work under the same judgment in the checklist"], ["Level", `Only then did we count it as “${STEP_WORD[3].tag}”`]]
+    : [["답", "그 판단에 ‘내가 정함’이라고 답했어요"], ["고른 항목", "같은 판단 칸의 체크리스트에서 그 일을 골랐어요"], ["단계", `둘이 함께 있을 때만 ‘${STEP_WORD[3].tag}’으로 셌어요`]];
   return P(L("이 결과를 얼마나 믿어도 될까", "How far you can trust this result"),
     T(E(said[f] ?? said.REVIEW), qdek) +
     `<div class="kpis">
       <div class="kpi"><p>${L("응답 점검", "Answer check")}</p><b>${f === "OK" ? L("이상 없음", "No issues") : L("다시 볼 곳 있음", "Some to recheck")}</b><span>${L("한쪽으로 몰린 답 · 앞뒤가 다른 답", "Lopsided or mismatched answers")}</span></div>
-      <div class="kpi"><p>${L("기준까지 직접 정한 판단", "Calls you made")}</p><b>${d.counts.owned}${L("<small>개</small>", "")}</b><span>${L("체크리스트 근거가 둘 이상인 것만 셌어요", "Two or more pieces of evidence")}</span></div>
+      <div class="kpi"><p>${L("기준까지 직접 정한 판단", "Calls you made")}</p><b>${d.counts.owned}${L("<small>개</small>", "")}</b><span>${L("‘내가 정함’ 답과 같은 칸 체크리스트가 함께 있는 것만", "“I decided” plus a pick in the same checklist section")}</span></div>
       <div class="kpi"><p>${L("판단까지 물은 영역", "Areas asked in depth")}</p><b>${asked.length}${L("<small>곳</small>", "")}</b><span>${L(`${d.counts.domains}가지 ${E(x.domainWord)} 가운데`, `Out of ${d.counts.domains} areas`)}</span></div>
     </div>` +
     H(L(`‘${STEP_WORD[3].tag}’은 이렇게 셌어요`, `How we counted “${STEP_WORD[3].tag}”`), L("답 하나만으로는 올리지 않아요", "One answer alone is not enough")) +

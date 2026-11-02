@@ -67,12 +67,20 @@ export type Bucket = "A" | "B" | "C" | "D";
  */
 export function withTranslation(x: Inputs): Inputs {
   const t = x.m.translation;
-  const td = t?.domains?.[0];
-  if (!t || !td) return x;
+  if (!t) return x;
   const pick = (id: string) => (t.steps.find((s) => s.item_id === id)?.choice ?? "").trim();
-  const art = pick("TR_T9");
-  const cmp = pick("TR_T6");
-  const noCmp = !cmp || /비교하지\s*않|비교한\s*것이\s*없|없었|didn't compare|did not compare|nothing/i.test(cmp);
+  /* **그 경험이 닿은 영역은 학생이 고른 영역(TR_TAG_1)이다**(2026-11-02 운영 시험: 영역을 고르지 않은 답을 첫 영역에 기계적으로
+     붙였다). 고르지 않았으면 어느 영역에도 붙이지 않는다 */
+  const tag = pick("TR_TAG_1").replace(/\s+/g, "");
+  const td = tag ? x.defs.find((d) => d.name.replace(/\s+/g, "") === tag)?.code
+    ?? x.tax.technical_domains.find((d) => d.name.replace(/\s+/g, "") === tag)?.code : undefined;
+  if (!td) return x;
+  /* 고른 답은 `~했다` 문장이다. 이름 자리에 그대로 넣으면 조사가 깨진다("…남았다를 남겼다고"). 따옴표로 묶어 이름으로 쓴다 */
+  const named = (s: string, noun: string) => (!s ? "" : /다\.?$/.test(s) ? `‘${s.replace(/\.$/, "")}’고 답한 ${noun}` : s);
+  const art = named(pick("TR_T9"), "결과물");
+  const cmp0 = pick("TR_T6");
+  const noCmp = !cmp0 || /비교하지\s*않|비교한\s*것이\s*없|없었|didn't compare|did not compare|nothing/i.test(cmp0);
+  const cmp = named(cmp0, "대상");
   if (!art && noCmp) return x;
   const uniq = (xs: string[]) => xs.filter((v, i, a) => v && a.indexOf(v) === i);
   const domains = x.m.domains.map((d) => (d.code !== td ? d : {
@@ -139,7 +147,8 @@ export function derive(x: Inputs) {
     z4: zoneCount("Z4_INSUFFICIENT_EVIDENCE"), ne: zoneCount("NOT_EXPLORED"),
     confirmed: m.overview.counts.confirmed_axes, owned: m.overview.counts.owned_axes, items: m.overview.counts.evidence_items,
     gaps: m.gaps.length, actions: m.actions.length, records: x.exps.length,
-    artifacts: [...new Set(doms.flatMap((d) => d.artifacts))].length,
+    /* 체크리스트에서 고른 결과물만 센다. 지원서 문장 단계의 답(‘…’고 답한 결과물)은 고른 항목 수에 들어가지 않는다 */
+    artifacts: [...new Set(doms.flatMap((d) => d.artifacts))].filter((a) => !a.startsWith("‘")).length,
     highInterest: doms.filter((d) => d.interest === "HIGH").length,
   };
 

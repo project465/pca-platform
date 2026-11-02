@@ -386,7 +386,7 @@ export function sourcesPage(x: Inputs, d: X, regionSources: string[]): Page {
   }
   const gs = x.guide.status === "OK" ? "직무 여덟 개의 일반 안내" : x.guide.status === "PARTIAL" ? `직무 ${Object.keys(x.guide.roles).length}개의 일반 안내(나머지 직무는 직무 자료만 실음)` : "안내 준비 중(직무 자료만 실음)";
   return A("출처와 확인 범위",
-    T("이 결과지에 쓴 자료와 쓰지 않은 자료", "결과는 내 응답과 경험 기록, 전공 안내 자료으로만 만들었고, 일반 안내와 공개 자료는 읽을거리로만 붙였어요.") +
+    T("이 결과지에 쓴 자료와 쓰지 않은 자료", "결과는 내 응답과 경험 기록, 전공 안내 자료로만 만들었고, 일반 안내와 공개 자료는 읽을거리로만 붙였어요.") +
     `<table class="tb tb-s"><thead><tr><th>자료</th><th>무엇에 썼나</th><th>기준</th></tr></thead><tbody>
       <tr><td><b>CareerMatri 검사 응답 · 결과</b></td><td>판단 단계, 영역 나눔(강점 영역 등), 비어 있는 판단, 할 일</td><td>${E(x.answeredOn)} 응답, 그날 저장된 결과</td></tr>
       <tr><td><b>내 경험 기록</b></td><td>경험 시간표, 응답과 맞춰 보기, 자기소개서 재료</td><td>결과가 나온 ${E(x.builtOn)}까지 저장된 기록 ${x.exps.length}건</td></tr>
