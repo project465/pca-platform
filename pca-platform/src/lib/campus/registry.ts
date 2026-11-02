@@ -455,6 +455,15 @@ export function coreOf(leaf: CampusUnit, dir = CONTENT_DIR): CoreEntry | null {
  * 적어 두면 갈래를 쓴 날 이 파일을 같이 고쳐야 하고, 안 고치면 **작성된
  * 갈래를 가리키며 아직 필요하다고 적는다.**
  */
+/**
+ * **전용 기준이 설 때까지 열지 않는 갈래**(2026-11-02 대표 결정 "전용 기준 만들 때까지 막기").
+ *
+ * 외국어문 · 지역학(영어 · 독일어 · 불어 · 중국어 · 러시아어 · 스페인어 · 일본어 · 영미 · 독일 · 중국 · 일본학)이 국어 · 언어 · 문학
+ * 사전으로 검사되어, 독일학 학생에게 한국어 교육 설계 · 말뭉치가 나왔다(고려대 세종 운영 시험). 학교가 늘어도
+ * 같은 갈래면 같은 판단이다: 학과 이름이 아니라 갈래 코드로 막는다. 전용 사전(언어별 산업 · 기업 묶음)이 서면 뺀다
+ */
+export const HELD_SPECIALIZATIONS = new Set(["SPEC_LANG_FOREIGN", "SPEC_LANG_JAPAN"]);
+
 export function mappingStatusOf(
   leaf: CampusUnit, dir = CONTENT_DIR,
 ): MappingStatus {
@@ -462,6 +471,7 @@ export function mappingStatusOf(
   if (!leaf.core_code) return "CORE_REQUIRED";
   if (!coreOf(leaf, dir)) return "CORE_REQUIRED";
   if (leaf.specialization_required) return "SPECIALIZATION_REQUIRED";
+  if (leaf.specialization && HELD_SPECIALIZATIONS.has(leaf.specialization)) return "SPECIALIZATION_REQUIRED";
   if (!leaf.specialization) return "EXACT";
   return specializationAuthored(leaf.core_code, leaf.specialization, dir)
     ? "EXACT" : "SPECIALIZATION_REQUIRED";

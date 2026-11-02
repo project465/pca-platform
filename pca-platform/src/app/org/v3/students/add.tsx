@@ -17,7 +17,7 @@ const EMPTY: ManageState = {};
  */
 export default function AddStudent(
   { leaves, prefix = "", agency = false }: {
-    leaves: { code: string; name: string }[]; prefix?: string;
+    leaves: { code: string; name: string; ready?: boolean }[]; prefix?: string;
     /** 기관(진흥원 등)이면 학생 · 학번 · 학과를 기관 낱말로 적는다 */
     agency?: boolean;
   },
@@ -52,7 +52,8 @@ export default function AddStudent(
           <span>{t("학과")}</span>
           <select name="department_code" required defaultValue="">
             <option value="" disabled>고르세요</option>
-            {leaves.map((l) => <option key={l.code} value={l.code}>{l.name}</option>)}
+            {/* **응시할 수 없는 학과는 고르는 순간 알린다**(2026-11-02 운영 시험: 담당자는 등록했는데 학생은 응시를 못 했다) */}
+            {leaves.map((l) => <option key={l.code} value={l.code}>{l.name}{l.ready === false ? t(" · 아직 응시 준비 중") : ""}</option>)}
           </select>
         </label>
         <label className="sf-field">

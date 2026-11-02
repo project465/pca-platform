@@ -223,7 +223,7 @@ export default async function CampusStudents({
       </Section>
 
       <AddStudent leaves={leafChoices(uni, { uptoYear: Number(new Date(Date.now() + 9 * 3_600_000).toISOString().slice(0, 4)) })
-        .map((r) => ({ code: r.code, name: r.name }))}
+        .map((r) => ({ code: r.code, name: r.name, ready: r.ready }))}
         prefix={reg ? loginPrefixOf(reg) : ""} agency={agency} />
     </>,
   );

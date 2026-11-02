@@ -249,9 +249,8 @@ export function strengthPage(x: Inputs, d: X, k: number): Page {
     ].filter(Boolean).join(" ")
     : [
       /* 세 쪽의 초안이 같은 첫마디로 시작하지 않게 한다 */
-      pick ? `${[`${d.name(s.code)} 과제를 하면서`, `${d.name(s.code)} 쪽 일을 맡았을 때`, `${j(d.name(s.code), "을를")} 다룬 과제에서`][k % 3]} ${polite(pick)}` : sc[0] ? `${d.name(s.code)} 과제를 하면서 ${polite(sc[0])}` : `${d.name(s.code)} 과제에서 ${j(andJoin(s.confirmed.slice(0, 2).map(d.axisName)), "을를")} 직접 맡았습니다.`,
-      /* 장면 둘에 결과 문장까지 붙으면 ‘…습니다.’ 가 세 번 이어진다. 결과가 있으면 둘째 장면을 뺀다 */
-      !pick && sc[1] && !ev.artifacts[0] && !ev.comparisons[0] ? polite(sc[1]) : "",
+      /* 고른 항목이 없으면 사전 장면을 내가 한 일로 적지 않는다(2026-11-02 운영 시험). 답한 판단 이름만 쓰고 장면은 예로 */
+      pick ? `${[`${d.name(s.code)} 과제를 하면서`, `${d.name(s.code)} 쪽 일을 맡았을 때`, `${j(d.name(s.code), "을를")} 다룬 과제에서`][k % 3]} ${polite(pick)}` : `${d.name(s.code)} 과제에서 ${j(andJoin(s.confirmed.slice(0, 2).map(d.axisName)), "을를")} 직접 맡았습니다.${sc[0] ? ` (예: ${noDot(sc[0])} 같은 일)` : ""}`,
       ev.artifacts[0] ? `결과는 ${j(ev.artifacts[0], "으로")} 남겼${ev.comparisons[0] ? `고, ${j(ev.comparisons[0], "과와")} 비교해 맞는지 확인했습니다.` : "습니다."}` : ev.comparisons[0] ? `${j(ev.comparisons[0], "과와")} 비교해 맞는지 확인했습니다.` : "",
     ].filter(Boolean).join(" ");
   const question = en

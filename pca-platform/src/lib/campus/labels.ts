@@ -8,7 +8,7 @@
  * **등록부 하나에서 읽는다**(`campus-universities.json`).
  */
 import {
-  allLeaves, facultyOf, retiredCodeOf, university, type CampusUniversity,
+  allLeaves, facultyOf, retiredCodeOf, statusOf, university, type CampusUniversity,
 } from "@/lib/campus/registry";
 
 /**
@@ -74,17 +74,19 @@ export function leafChoices(universityCode: string | null, opts?: {
   uptoYear?: number;
 }): {
   code: string; name: string; college: string;
+  /** 지금 학생이 응시할 수 있는 학과인가(`statusOf`). 담당자 화면이 아니면 경고를 단다 */
+  ready: boolean;
 }[] {
   const u = universityCode ? university(universityCode) : null;
   if (!u) return [];
   const seen = new Set<string>();
   const label = leafLabels(u);
-  const out: { code: string; name: string; college: string }[] = [];
+  const out: { code: string; name: string; college: string; ready: boolean }[] = [];
   for (const r of allLeaves(u)) {
     if (seen.has(r.leaf.code)) continue;
     if (opts?.uptoYear && r.catalog.catalog_year > opts.uptoYear) continue;
     seen.add(r.leaf.code);
-    out.push({ code: r.leaf.code, name: label.get(r.leaf.code) ?? r.leaf.name, college: r.college.code });
+    out.push({ code: r.leaf.code, name: label.get(r.leaf.code) ?? r.leaf.name, college: r.college.code, ready: statusOf(u, r) === "READY" });
   }
   return out.sort((a, b) => a.name.localeCompare(b.name, "ko"));
 }

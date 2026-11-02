@@ -72,12 +72,60 @@ function overlap(a: string, b: string): number {
  * **한 줄을 두 문항에 주지 않는다**(줄이 문항보다 적을 때만 다시 쓴다). 돌려주는 것은
  * 이 문항의 줄 차례이고, 겹치는 글자가 없으면 -1 이다.
  */
+/**
+ * **이만큼은 겹쳐야 예시로 세운다**(2026-11-02 대표 지시 "질문과 보기 문장 짝 맞추기"). 전에는 겹치는 줄이 없으면
+ * 아무도 받지 않은 줄을 대신 주어, `처음 주어진 조건을 근거를 들어 바꿔 봤나요?` 아래에 `여러 안 가운데 하나를
+ * 골라 그 까닭을 적었다` 가 섰다. 맞는 줄이 없으면 예시를 세우지 않는다: 틀린 예시가 없는 예시보다 나쁘다.
+ * 값은 전 Core 전수 검사(`npm run v3:example-pairs`)로 정했다
+ */
+export const MIN_EXAMPLE_MATCH = 0.3;
+
+let overrides: Record<string, Record<string, string | null>> | null = null;
+/**
+ * 사람이 정한 예시(`me-v3-example-overrides.json`). `null` 은 세우지 않음, 글자는 그 줄. 없으면 `undefined`.
+ * 겹침 자로 못 거르는 짝(겹침은 높은데 뜻이 다른 줄 · 겹침은 낮은데 같은 일을 말하는 줄)을 여기서 바로잡는다
+ */
+export function exampleOverride(core: string, itemId: string, dir = CONTENT_DIR): string | null | undefined {
+  if (!overrides) {
+    try {
+      overrides = (JSON.parse(readFileSync(`${dir}/me-v3-example-overrides.json`, "utf8")) as { cores: Record<string, Record<string, string | null>> }).cores;
+    } catch { overrides = {}; }
+  }
+  const c = overrides[core];
+  return c && itemId in c ? c[itemId] : undefined;
+}
+
+/** 문항 하나와 고른 줄, 겹친 정도. 검사가 읽는다 */
+export function exampleMatch(
+  core: string, it: Item, dir = CONTENT_DIR,
+): { text: string; score: number } | null {
+  if (it.response_scale !== "L0~L3") return null;
+  const axis = it.evidence_axis ?? null;
+  if (!axis) return null;
+  const cl = coreFile<Checklists>(core, "checklists", dir, "ko");
+  const list = it.technical_domain ? cl.domains[it.technical_domain]?.[axis] ?? [] : cl.common[axis] ?? [];
+  if (!list.length) return null;
+  const key = `${dir}|${core}`;
+  let bank = banks.get(key);
+  if (!bank) { bank = coreFile<{ items: Item[] }>(core, "items", dir, "ko").items ?? []; banks.set(key, bank); }
+  const siblings = bank.filter((x) => x.response_scale === "L0~L3" && !x.industry_pack
+    && x.evidence_axis === axis && (x.technical_domain ?? null) === (it.technical_domain ?? null));
+  const ov = exampleOverride(core, it.item_id, dir);
+  if (ov === null) return null;
+  if (typeof ov === "string") {
+    const j = list.findIndex((x) => x.text === ov);
+    if (j >= 0) return { text: list[j].text, score: 1 };
+  }
+  const at = closest(list, it, siblings);
+  return at >= 0 ? { text: list[at].text, score: it.wording ? overlap(it.wording, list[at].text) : 0 } : null;
+}
+
 function closest(list: { text: string }[], me: Item, siblings: Item[]): number {
   const group = siblings.some((x) => x.item_id === me.item_id) ? siblings : [...siblings, me];
   const pairs: { i: number; j: number; s: number }[] = [];
   group.forEach((it, i) => list.forEach((x, j) => {
     const sc = it.wording ? overlap(it.wording, x.text) : 0;
-    if (sc > 0) pairs.push({ i, j, s: sc });
+    if (sc >= MIN_EXAMPLE_MATCH) pairs.push({ i, j, s: sc });
   }));
   pairs.sort((a, b) => b.s - a.s || a.i - b.i || a.j - b.j);
   const got = new Map<number, number>();
@@ -87,11 +135,9 @@ function closest(list: { text: string }[], me: Item, siblings: Item[]): number {
     got.set(p.i, p.j);
     used.add(p.j);
   }
-  /* 남은 문항에는 아직 아무도 받지 않은 줄을 먼저 준다. 그래도 남으면 가장 겹치는 줄을 다시 쓴다 */
+  /* 남은 문항에는 **아무 줄이나 주지 않는다**. 충분히 겹치는 줄이 다른 문항에 갔으면 그 줄을 함께 쓴다 */
   group.forEach((_, i) => {
     if (got.has(i)) return;
-    const free = list.findIndex((__, j) => !used.has(j));
-    if (free >= 0) { got.set(i, free); used.add(free); return; }
     const p = pairs.find((x) => x.i === i);
     if (p) got.set(i, p.j);
   });
@@ -176,8 +222,16 @@ export function exampleOf(
   /* 산업팩 문항은 제 풀이 줄(gloss)을 쓰므로 나눠 받는 데 넣지 않는다 */
   const siblings = bank.filter((x) => x.response_scale === "L0~L3" && !x.industry_pack
     && x.evidence_axis === axis && (x.technical_domain ?? null) === (it.technical_domain ?? null));
+  /* 사람이 정한 짝이 먼저다. 다른 언어는 한국어 원고의 같은 차례 줄을 쓴다 */
+  const ov = exampleOverride(core, it.item_id, dir);
+  if (ov === null) return null;
+  if (typeof ov === "string") {
+    const j = ko.findIndex((x) => x.text === ov);
+    if (j >= 0 && list[j]) return list[j].text;
+  }
   const at = closest(ko.length === list.length ? ko : list, it, siblings);
-  return (at >= 0 ? list[at] : pick(list, it.item_id)).text;
+  /* 맞는 줄이 없으면 세우지 않는다(번호로 아무 줄이나 고르지 않는다) */
+  return at >= 0 ? list[at].text : null;
 }
 
 /**

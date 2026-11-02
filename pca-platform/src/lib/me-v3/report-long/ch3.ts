@@ -211,7 +211,9 @@ export function domainPage(x: Inputs, d: X, z: ResultDomain, no: number): Page {
     const pk = d.picks(z.code, a);
     /* 영어 문장은 길어 한 줄만 싣는다. 고른 항목 전부는 ‘체크리스트에서 고른 항목’ 쪽에 있다 */
     const show = en ? 1 : 2;
-    const what = pk.length ? pk.slice(0, show).map(E).join(" · ") + (pk.length > show ? ` <span class="mut">${L(`외 ${pk.length - 2}개`, `+${pk.length - show} more`)}</span>` : "") : `<span class="mut">${E(okOr(def?.axes?.[a]?.l2))}</span>`;
+    const what = pk.length ? pk.slice(0, show).map(E).join(" · ") + (pk.length > show ? ` <span class="mut">${L(`외 ${pk.length - 2}개`, `+${pk.length - show} more`)}</span>` : "")
+      /* 고른 것이 없으면 사전 문장을 **예로만** 적는다(2026-11-02 운영 시험: 고르지 않은 예시문이 "내 응답과 고른 항목" 칸에 고른 것처럼 섰다) */
+      : `<span class="mut">${L("고른 항목 없음", "Nothing picked")}${def?.axes?.[a]?.l2 ? ` · ${L("예", "e.g.")}: ${E(def.axes[a].l2)}` : ""}</span>`;
     return `<tr><td class="w22"><b>${E(an(a))}</b>${(def?.required_axes ?? []).includes(a) ? ` <span class="mut sm">${L("필수", "Required")}</span>` : ""}</td><td class="w22">${pip(lv[k])}</td><td>${what}</td></tr>`;
   }).join("");
   const scene = def?.axes?.J3?.l2 ?? def?.workflow?.[2]?.detail;
@@ -259,7 +261,7 @@ export function domainPage(x: Inputs, d: X, z: ResultDomain, no: number): Page {
       <p class="dek">${E(domainHead(x, d, z))}${okText(tx?.owns) && !brief ? ` <span class="mut">${L(`이 영역은 ${E(doesLine(tx!.owns))}`, E(doesLineEn(tx!.owns)))}</span>` : ""}</p>
       ${tx?.subareas?.length && !brief ? chips(tx.subareas) : ""}</div>
       ${wf.length ? `${H(L("현장에서 이 일은 이런 순서로 진행됩니다", "How this work runs on the job"), L("전공 사전", "General guide"))}<div class="wf2${asked && !en ? "" : " wf2s"}">${wf.map((w) => `<div class="wf2-i"><span>${w.step}</span><p><b>${E(wfName(w.name))}</b>${E(okOr(w.detail))}</p></div>`).join("")}</div>` : ""}
-      ${asked ? `${H(L("판단마다 어디까지 해 봤는지", "Your level on each judgment"), L("내 응답과 고른 항목 · ‘필수’는 이 영역 일에서 꼭 하게 되는 판단", "From your answers · “Required”: this work always needs it"))}<table class="tb tb-xs"><tbody>${rowsHtml}</tbody></table>` : ""}
+      ${asked ? `${H(L("판단마다 어디까지 해 봤는지", "Your level on each judgment"), L("고른 항목은 그대로, 고르지 않은 칸은 ‘예’로 이 판단이 어떤 일인지만 적었어요 · ‘필수’는 이 영역 일에서 꼭 하게 되는 판단", "Your picks as you made them; where you picked nothing, an example shows what the judgment means · “Required”: this work always needs it"))}<table class="tb tb-xs"><tbody>${rowsHtml}</tbody></table>` : ""}
       ${grid(notes)}` + band(gapA ? L("다음 할 일", "Next step") : asked ? L("지원서로 옮기기", "Into your application") : z.experience && z.experience !== "NONE" ? L("기록으로 남기기", "Put it on record") : L("처음 해 보기", "Try it for the first time"), E(nextLine)),
   };
 }

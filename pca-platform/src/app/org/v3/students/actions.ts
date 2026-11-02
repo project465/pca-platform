@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { requireRole } from "@/lib/session";
 import { orgsOf } from "@/lib/org";
 import { university } from "@/lib/campus/registry";
+import { leafChoices } from "@/lib/campus/labels";
 import {
   addStudentAccount, allowRetake, applyImport, previewImport,
   rotateStudentPassword, setAccountStatus,
@@ -95,12 +96,16 @@ export async function addAction(
   }, sc.actor);
   revalidatePath("/org/v3/students");
   if (!r.ok) return { err: r.why };
+  /* 응시할 수 없는 학과면 만든 그 자리에서 알린다. 거절하지는 않는다(학과가 열리면 바로 응시한다) */
+  const dep = String(form.get("department_code") ?? "");
+  const held = leafChoices(sc.uni).find((l) => l.code === dep)?.ready === false;
+  const warn = held ? " 이 학과는 아직 응시 준비 중이라, 열릴 때까지 학생이 검사를 시작할 수 없습니다." : "";
   return r.password
     ? {
-      ok: "계정을 만들었습니다. 비밀번호는 이 화면에서만 보입니다.",
+      ok: `계정을 만들었습니다. 비밀번호는 이 화면에서만 보입니다.${warn}`,
       issued: [{ login_id: r.login_id ?? "", password: r.password }],
     }
-    : { ok: "이미 있는 학생이라 학과만 맞췄습니다. 비밀번호는 그대로입니다." };
+    : { ok: `이미 있는 학생이라 학과만 맞췄습니다. 비밀번호는 그대로입니다.${warn}` };
 }
 
 /* ── CSV ───────────────────────────────────────────────────────────── */
