@@ -121,3 +121,18 @@
 .mt-field input, .mt-field textarea { font: inherit; font-size: 16px; color: var(--mt-ink); background: #fff; border: 1px solid var(--mt-line); border-radius: var(--mt-rb); padding: 12px 14px; min-height: 48px; width: 100%; }
 .mt-field textarea { resize: vertical; line-height: 1.55; }
 .mt-field input:focus-visible, .mt-field textarea:focus-visible { outline: 2px solid var(--mt-ink); outline-offset: 1px; border-color: var(--mt-ink); }
+
+/* 질문 입력창. 홈에는 이미 라임이 진행 막대 · 급한 D-n 에 있어 묻기 단추는 검정으로 둔다 */
+.mt-btn.is-ink { background: var(--mt-ink); border-color: var(--mt-ink); color: #fff; }
+.mt-btn.is-ink:disabled { background: var(--mt-soft); border-color: var(--mt-line); color: var(--mt-sub); }
+.mt-chip-btn { cursor: pointer; font: inherit; font-size: 14px; min-height: 36px; padding: 4px 12px; background: #fff; }
+.mt-askbar { display: flex; gap: 8px; align-items: flex-end; }
+.mt-askbar textarea { flex: 1; min-height: 48px; max-height: 160px; resize: none; font: inherit; font-size: 16px; color: var(--mt-ink); border: 1px solid var(--mt-ink); border-radius: var(--mt-rb); padding: 12px 14px; background: #fff; field-sizing: content; }
+.mt-askbar textarea:focus-visible { outline: 2px solid var(--mt-ink); outline-offset: 1px; }
+.mt-thread { display: grid; gap: 14px; margin-bottom: 12px; }
+.mt-q { margin: 0 0 6px auto; max-width: 85%; width: fit-content; padding: 10px 14px; border-radius: 14px 14px 4px 14px; background: var(--mt-ink); color: #fff; font-size: 15px; }
+.mt-a { padding: 12px 14px; border: 1px solid var(--mt-line); border-radius: 14px 14px 14px 4px; background: #fff; font-size: 15px; }
+.mt-a p { margin: 0 0 6px; } .mt-a p:last-child { margin: 0; }
+.mt-a .mt-chip { margin: 0 2px; vertical-align: baseline; min-height: 22px; font-size: 12px; }
+.mt-a.is-fail { border-style: dashed; color: var(--mt-sub); }
+.mt-typing { letter-spacing: .2em; color: var(--mt-sub); }

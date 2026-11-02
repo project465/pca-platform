@@ -8,6 +8,8 @@ import { MAT_STAGES, isoWeek, matStage, monthWeekKo } from "@/lib/mat/stage";
 import { withJosa } from "@/lib/me-v3/result/josa";
 import { matMoveAction } from "./actions";
 import { JobCard } from "./job-card";
+import { MatAsk } from "./ask";
+import { askOpenFor } from "@/lib/mat/ask-open";
 
 export const metadata = { title: "MAT 홈 · CareerMatri" };
 
@@ -25,10 +27,11 @@ export default async function MatHome() {
   /* /me 와 같은 문: 검사도 학교 학과도 없어 전공을 정할 수 없으면 전공 목록으로 보낸다.
      먼저 막지 않으면 아래 `currentState` 가 던져 화면이 500 이 된다(로컬 확인 11-01) */
   await activeCoreOrPick(user.id);
-  const [st, act, jobs] = await Promise.all([
+  const [st, act, jobs, ask] = await Promise.all([
     currentState(user.id),
     openActions(user.id),
     postingsForMe(user.id, 40).catch(() => null),
+    askOpenFor(user.id),
   ]);
   const name = (td: string) => domainName(st.core, td);
   const owned = (st.model?.domains ?? []).filter((d) => d.owned.length > 0).map((d) => d.code);
@@ -107,6 +110,7 @@ export default async function MatHome() {
         <p className="mt-empty">아직 모아 둔 공고가 없습니다.</p>
       )}
       {fromJi ? <p className="mt-src">공고 출처 잡인더스트리 · 10분마다 새로 모읍니다 · 회사 이름은 원문에서 확인하세요</p> : null}
+      {ask.ok ? <MatAsk /> : null}
     </main>
   );
 }

@@ -124,6 +124,51 @@ export async function askStructured<S extends z.ZodType>(opts: {
   }
 }
 
+/**
+ * 글로 답하고, 쓰는 대로 흘려 보낸다(2026-11-02 MAT 질문 입력창).
+ *
+ * 글 조각을 하나씩 내고, 끝나면 어떻게 끝났는지를 돌려준다. **거절이면 그때까지 낸 글을
+ * 버리라고 알린다**(`refusal`): 부르는 쪽은 화면에서 지운다. 열쇠가 없으면 아무것도
+ * 내지 않고 `off` 로 끝난다. 기록에는 까닭만 남고 묻는 글과 답은 남기지 않는다.
+ */
+export async function* askStream(opts: {
+  op: string;
+  system: string;
+  user: string;
+  model?: string;
+  maxTokens?: number;
+  effort?: "low" | "medium" | "high";
+}): AsyncGenerator<string, { ok: true } | { ok: false; reason: AiFail }> {
+  if (!aiReady()) return { ok: false, reason: "off" };
+  const model = opts.model ?? ASSISTANT_MODEL;
+  const fallback = model === ASSISTANT_MODEL
+    ? { betas: ["server-side-fallback-2026-07-01"], fallbacks: "default" as const }
+    : {};
+  try {
+    const stream = client().beta.messages.stream({
+      model,
+      max_tokens: opts.maxTokens ?? 2000,
+      ...fallback,
+      system: opts.system,
+      messages: [{ role: "user", content: opts.user }],
+      output_config: { effort: opts.effort ?? "low" },
+    });
+    for await (const ev of stream) {
+      if (ev.type === "content_block_delta" && ev.delta.type === "text_delta") yield ev.delta.text;
+    }
+    const fin = await stream.finalMessage();
+    if (fin.stop_reason === "refusal") return { ok: false, reason: "refusal" };
+    return { ok: true };
+  } catch (e) {
+    const reason: AiFail =
+      e instanceof Anthropic.RateLimitError ? "rate"
+        : e instanceof Anthropic.APIConnectionTimeoutError ? "timeout"
+          : "error";
+    opFail({ operation: opts.op, step: "claude", category: "upstream" }, e);
+    return { ok: false, reason };
+  }
+}
+
 /** 화면에 적을 한 줄. 왜 규칙으로 읽었는지를 사람의 말로 */
 /** 같은 까닭의 영어. 영어 작업공간의 공고 · 메모에 남는다 */
 export function aiFailEn(r: AiFail | "consent"): string {
