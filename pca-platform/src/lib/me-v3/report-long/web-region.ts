@@ -11,8 +11,9 @@ export async function webRegionView(attemptId: string): Promise<RegionView | nul
   try {
     const x = await loadInputs(attemptId);
     if (!x.region) return null;
-    const rv = regionView(x, derive(x).name);
-    return rv && rv.groups.length ? rv : null;
+    /* 이어지는 회사가 없어도 지역(권역 기본값)은 돌려준다. 화면이 `이 전공 산업과 이어지는 회사를 찾지 못했다` 고 적는다
+       (2026-11-02 전 학과 점검: 배재대 42줄에 `아직 담지 않았습니다` 가 남았다) */
+    return regionView(x, derive(x).name);
   } catch {
     return null;
   }

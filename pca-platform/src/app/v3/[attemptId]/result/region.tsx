@@ -40,6 +40,17 @@ export default function RegionSection({ v, chosen }: { v: RegionView; chosen: st
       ))}
     </div>
   ) : null);
+  if (!v.groups.length) {
+    return (
+      <section className="rs-sect" id="region-orgs">
+        <h2>{v.label}에서 이 경험을 이어 볼 기업</h2>
+        <p className="rs-note">
+          공시(OpenDART)와 공개 명단에서 확인한 {v.label} 기업 {v.all.length}곳 가운데, 업종으로 이 전공의 산업에 이어지는
+          곳을 아직 찾지 못했습니다. 짐작으로 채우지 않고, 공공기관 · 연구기관 명단을 더하면 이 절이 채워집니다.
+        </p>
+      </section>
+    );
+  }
   return (
     <section className="rs-sect" id="region-orgs">
       <h2>{v.label}에서 이 경험을 이어 볼 기업</h2>
