@@ -90,7 +90,7 @@ export default async function MatJobs({ searchParams }: { searchParams: Promise<
           <div className="mt-list">{jobs.other.map((p) => <JobCard key={p.id} p={p} />)}</div>
         </details>
       ) : null}
-      {fromJi ? <p className="mt-src">공고 출처 잡인더스트리 · 회사 이름은 원문에서</p> : null}
+      {fromJi ? <p className="mt-src">공고 출처 잡인더스트리</p> : null}
 
       {mine.length ? (
         <>

@@ -146,7 +146,7 @@ export default async function MatHome() {
       ) : (
         <p className="mt-empty">모아 둔 공고가 아직 없어요.</p>
       )}
-      {fromJi ? <p className="mt-src">공고 출처 잡인더스트리 · 회사 이름은 원문에서</p> : null}
+      {fromJi ? <p className="mt-src">공고 출처 잡인더스트리</p> : null}
       {ask.ok ? <MatAsk /> : null}
     </main>
   );

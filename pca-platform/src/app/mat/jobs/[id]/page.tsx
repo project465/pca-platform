@@ -30,6 +30,8 @@ export const generateMetadata = () => matTitle("내 경험과 맞춰 보기");
 const majorStem = (m: string | null) => (m ?? "").replace(/\s+/g, "").replace(/(공학과|공학부|공학|학과|학부|전공|과)$/, "");
 
 type Row = { it: PostingItem; mark: "맞음" | "덜 됨" | "없음"; why: string; chips: string[] };
+/** 전에 저장한 분석에 남은 꼬리 "(공고의 ‘…’)" 를 걷는다(지금은 칩으로 적는다) */
+const clean = (t: string) => t.replace(/\s*\(공고의 ‘[^’]*’\)$/, "");
 
 export default async function MatJob({ params, searchParams }: {
   params: Promise<{ id: string }>; searchParams: Promise<{ taken?: string }>;
@@ -47,7 +49,7 @@ export default async function MatJob({ params, searchParams }: {
   const stem = majorStem(major);
   const area = (it: PostingItem) => itemDomainKo(core, it, "ko");
   /* 직무 이름으로 본 영역은 공고 글의 요구가 아니다. 칩이 그렇다고 적는다 */
-  const need = (it: PostingItem) => (it.from === "role" ? "직무 이름으로 본 영역" : it.from === "words" ? "공고 낱말로 본 영역"
+  const need = (it: PostingItem) => (it.from === "role" ? "직무 이름과 이어짐" : it.from === "words" ? `공고에 나온 말: ${it.term ?? ""}`
     : it.kind === "must" ? "필수" : "우대");
   const byRole = a.items.some((i) => i.from);
 
@@ -63,9 +65,12 @@ export default async function MatJob({ params, searchParams }: {
     } else if (it.status === "partial") {
       gap.push({
         it, mark: "덜 됨",
+        /* 검사에서 해 봤다고 답했지만 체크리스트 · 경험 기록에 근거가 없는 자리다. 그 사실대로 적는다(2026-11-02 운영 시험) */
         why: it.near
           ? "비슷한 경험이 있어요. 직접 정한 것 한 줄을 더 적어 보세요."
-          : "해 본 일은 있어요. 직접 정한 것과 남긴 것을 적어 보세요.",
+          : it.evidence.length
+            ? "해 본 일은 있어요. 직접 정한 것과 남긴 것을 적어 보세요."
+            : "검사에서 해 봤다고 답했어요. 그때 직접 정한 기준이나 남긴 결과물을 경험으로 적으면 ‘맞음’이 돼요.",
         chips: [...it.evidence.slice(0, 2).map((t) => `경험: ${t}`), `공고: ${need(it)}`],
       });
     } else if (it.status === "empty") {
@@ -102,7 +107,7 @@ export default async function MatJob({ params, searchParams }: {
         {a.role ? <div className="mt-diag-k"><span>뽑는 자리</span><b>{a.role}</b></div> : null}
         <p>{!a.items.length
           ? "이 공고는 요건을 거의 읽지 못했어요. 원문을 열어 요건 부분을 붙여 넣어 주세요."
-          : gap[0] ? `‘${gap[0].it.text}’부터 채워 봐요.`
+          : gap[0] ? `‘${clean(gap[0].it.text)}’부터 채워 봐요.`
           : fit.length ? "필수 요건에 댈 경험이 있어요. 문장 뼈대로 지원서를 써 보세요." : "공고 원문에서 자격 조건부터 확인해 보세요."}</p>
         {!a.items.length ? <Link href="/mat/jobs#paste">공고 글 붙여 넣기</Link>
           : gap[0]?.it.domain ? <Link href={`/me/experience/new?td=${encodeURIComponent(gap[0].it.domain)}`}>경험 적기</Link>
@@ -110,7 +115,7 @@ export default async function MatJob({ params, searchParams }: {
       </section>
       {link ? (
         <p className="mt-src">
-          출처 {SOURCE_KO[src!.source] ?? src!.source} · 회사 이름과 지원은 원문에서 ·{" "}
+          출처 {SOURCE_KO[src!.source] ?? src!.source} · 지원은 원문에서 ·{" "}
           <a className="mt-link" href={link} target="_blank" rel="noopener noreferrer">공고 원문 보기</a>
         </p>
       ) : null}
@@ -126,7 +131,7 @@ export default async function MatJob({ params, searchParams }: {
           {fit.map((r, i) => (
             <div key={i} className="mt-row">
               <span className="mt-mark is-ok" aria-hidden>✓</span>
-              <div className="mt-row-b"><p><span className="mt-sr">맞음: </span>{r.it.text}</p><small>{r.why}</small>{chipRow(r.chips)}</div>
+              <div className="mt-row-b"><p><span className="mt-sr">맞음: </span>{clean(r.it.text)}</p><small>{r.why}</small>{chipRow(r.chips)}</div>
             </div>
           ))}
         </div>
@@ -139,7 +144,7 @@ export default async function MatJob({ params, searchParams }: {
             <div key={i} className="mt-row">
               <span className={`mt-mark${r.mark === "없음" ? " is-none" : " is-part"}`} aria-hidden>{r.mark === "없음" ? "✕" : "△"}</span>
               <div className="mt-row-b">
-                <p><span className="mt-sr">{r.mark}: </span>{r.it.text}</p>
+                <p><span className="mt-sr">{r.mark}: </span>{clean(r.it.text)}</p>
                 <small>{r.why}</small>
                 {chipRow(r.chips)}
                 {r.it.domain ? (
@@ -200,13 +205,13 @@ export default async function MatJob({ params, searchParams }: {
         </>
       ) : null}
       {byRole ? (
-        <p className="mt-note" style={{ marginTop: 24 }}>공고 글에 기술 요건 줄이 없어, 직무 이름과 공고에 나온 낱말로 본 영역에 내 경험을 이었어요.</p>
+        <p className="mt-note" style={{ marginTop: 24 }}>공고 글에 기술 요건이 따로 적혀 있지 않아, 직무 이름과 공고에 나온 말로 내 경험을 이었어요.</p>
       ) : null}
       {/* 읽은 방법은 맨 아래 작은 글씨로. 저장된 안내 문장(`a.note`) 대신 지금 상태로 적는다(말투를 MAT 에 맞춘다) */}
       {p.analyzed_by === "claude" ? (
         <p className="mt-note" style={{ marginTop: 12 }}>공고 글은 Anthropic(미국)의 Claude로 읽었어요.</p>
       ) : consent || !aiReady() ? (
-        <p className="mt-note" style={{ marginTop: 12 }}>{consent ? "이번에는 규칙으로 읽었어요. 잠시 뒤 다시 열어 보세요." : "규칙으로 읽었어요."}</p>
+        consent ? <p className="mt-note" style={{ marginTop: 12 }}>AI로 읽지 못해 기본 방식으로 읽었어요. 잠시 뒤 다시 열어 보세요.</p> : null
       ) : (
         <div className="mt-box" style={{ marginTop: 24 }}>
           <h3>AI로 더 자세히 읽기</h3>

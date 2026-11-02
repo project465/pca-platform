@@ -242,6 +242,7 @@
     "pcu:signoff": "tsx scripts/pcu-signoff-shots.ts",
     "campus:mat": "tsx scripts/campus-mat-check.ts",
     "campus:mapping": "tsx scripts/campus-mapping-table.ts",
+    "mat:jobs-coverage": "tsx scripts/mat-jobs-coverage.ts",
     "campus:login-migrate": "tsx scripts/campus-login-migrate.ts",
     "db:campus:mat": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 --single-transaction -f db/schema_campus_mat.sql"
   },

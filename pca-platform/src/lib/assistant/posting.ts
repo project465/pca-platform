@@ -59,6 +59,8 @@ export type PostingItem = {
    * 본문이 짧은 모은 공고는 자격 조건 두 줄만 읽혀 맞는 점 · 채울 것이 비었다). 화면은 그렇다고 적는다
    */
   from?: "role" | "words";
+  /** `from: "words"` 일 때 공고에 나온 낱말. 화면은 글에 끼우지 않고 칩으로 적는다 */
+  term?: string;
 };
 
 /** 모은 공고를 분석할 때 넘기는 것: 모을 때 단 전공 · 영역 · 직무 이름(`v3_job_postings`) */
@@ -250,8 +252,8 @@ async function readAndJudge(userId: string, text0: string, hint?: PostingHint): 
   if (!items.some((i) => i.domain)) {
     for (const h of matchDomains(st.core, text).filter((x) => x.score >= 3).slice(0, 3)) {
       items.push({
-        text: `${domainName(st.core, h.code)} (공고의 ‘${h.terms[0]}’)`.slice(0, 120),
-        kind: "nice", domain: h.code, axis: null, from: "words",
+        text: domainName(st.core, h.code).slice(0, 120),
+        kind: "nice", domain: h.code, axis: null, from: "words", term: h.terms[0],
         ...withNear(st.core, st, exps, h.code, undefined, null),
       });
     }
