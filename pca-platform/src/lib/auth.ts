@@ -343,11 +343,15 @@ export const staffSignOut = staff.signOut;
 /**
  * 이 아이디가 담당자 · 운영자 계정인가. 로그인할 때 **어느 쿠키에 담을지만**
  * 정한다: 비밀번호 확인과 막는 일은 그대로 `authorize()` 가 한다.
+ *
+ * **DB 를 읽다 실패하면 던진다**(2026-11-02). 전에는 실패를 삼켜 `학생` 으로
+ * 답했고, 그러면 담당자가 학생 쿠키로 들어가 담당자 화면이 막혔다. 부르는 쪽
+ * (`login/actions.ts`)이 받아 "지금 로그인을 처리하지 못했습니다" 를 보인다.
  */
 export async function staffRoleOf(identifier: string): Promise<Role | null> {
-  const u = await findUserByIdentifier(identifier).catch(() => null);
+  const u = await findUserByIdentifier(identifier);
   if (!u) return null;
-  const ms = await loadMemberships(u.id).catch(() => [] as Membership[]);
+  const ms = await loadMemberships(u.id);
   const r = highestRole(ms.map((m) => m.role));
   return r === "student" ? null : r;
 }

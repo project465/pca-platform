@@ -3,6 +3,7 @@
 import { AuthError } from "next-auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { opFail } from "@/lib/oplog";
 import { auth, inactiveReason, signIn, signOut, staffRoleOf, staffSignIn } from "@/lib/auth";
 import { homePathFor } from "@/lib/roles";
 import { clientIpFrom, loginGate } from "@/lib/login-throttle";
@@ -53,7 +54,14 @@ export async function loginAction(
 
   /* **담당자와 학생은 로그인 쿠키를 따로 쓴다**(`auth.ts`). 그래서 같은
      브라우저에서 학생으로 들어가 봐도 담당자 로그인이 덮이지 않는다 */
-  const staff = await staffRoleOf(identifier);
+  let staff: Awaited<ReturnType<typeof staffRoleOf>>;
+  try {
+    staff = await staffRoleOf(identifier);
+  } catch (e) {
+    /* 담당자인지 모르는 채로 학생 쿠키에 담지 않는다. 까닭은 고치는 사람이 읽는 자리에 남긴다 */
+    opFail({ operation: "login.staff-role", step: "lookup", category: "db" }, e);
+    return { error: say("지금 로그인을 처리하지 못했습니다. 잠시 뒤에 다시 시도해주세요.") };
+  }
   try {
     await (staff ? staffSignIn : signIn)("credentials", { identifier, password, redirect: false });
   } catch (e) {
