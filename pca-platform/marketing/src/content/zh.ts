@@ -679,7 +679,7 @@ export const zh: SiteContent = {
       title: ["测评之后的求职准备", "让MAT帮你接着推进"],
       lead:
         "MAT是在「我的CareerMatri」工作区里使用的AI求职助手。它会提醒你每周要做的事和截止日期，把你随手记下的内容整理成经历记录，还会把你自己找到的招聘信息和你的经历放在一起对照。",
-      primary: { label: "开始使用MAT", href: "/me/track" },
+      primary: { label: "开始使用MAT", href: "/mat/start?from=www" },
       secondary: { label: "查看价格", href: "#plans" },
       note: "需要登录。没有账号的话，可以在登录页面以个人身份注册。",
     },
@@ -706,7 +706,7 @@ export const zh: SiteContent = {
           price: krw(TRACK_KR.month.price),
           unit: "可使用30天",
           body: "先用一个月，再决定要不要继续。",
-          cta: { label: "开通30天通行证", href: "/me/track" },
+          cta: { label: "开通30天通行证", href: "/mat/start?from=www" },
         },
         {
           name: "90天通行证",
@@ -714,7 +714,7 @@ export const zh: SiteContent = {
           unit: "可使用90天",
           body: "可使用90天，适合连续准备一个学期的求职季。",
           featured: true,
-          cta: { label: "开通90天通行证", href: "/me/track" },
+          cta: { label: "开通90天通行证", href: "/mat/start?from=www" },
         },
       ],
       notes: [
@@ -738,7 +738,7 @@ export const zh: SiteContent = {
         {
           q: "买了PRO结果报告，免费的一个月怎么领？",
           a: "登录后在MAT页面即可领取免费的一个月。每人限领一次。",
-          link: { label: "打开MAT页面", href: "/me/track" },
+          link: { label: "打开MAT页面", href: "/mat/start?from=www" },
         },
         {
           q: "什么时候能收到月度变化报告？",
@@ -754,7 +754,7 @@ export const zh: SiteContent = {
     closing: {
       title: "先把本周要做的事理一理",
       lead: "登录后在MAT页面即可开始。还没做测评的话，也可以先做测评。",
-      primary: { label: "开始使用MAT", href: "/me/track" },
+      primary: { label: "开始使用MAT", href: "/mat/start?from=www" },
       secondary: { label: "先做测评", href: "/cores" },
     },
   },

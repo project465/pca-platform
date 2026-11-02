@@ -1,5 +1,6 @@
 import { isSuperadmin } from "@/lib/session";
 import { activeTrack } from "@/lib/track";
+import { queryOne } from "@/lib/db";
 
 /**
  * **MAT(AI 취업비서)을 고객에게 보일지 정하는 스위치 하나**(2026-10-31 대표 지시: "가려",
@@ -24,5 +25,17 @@ export async function matVisible(userId?: string | null): Promise<boolean> {
   if (await isSuperadmin()) return true;
   if (!userId) return false;
   const t = await activeTrack(userId).catch(() => null);
-  return Boolean(t?.on);
+  if (t?.on) return true;
+  return matPreview(userId);
+}
+
+/**
+ * **공개 전 시험 계정**(2026-11-02 대표 결정 "테스트 후 공개"). 운영자가 `/admin/partners` 에서 넣은
+ * 계정과, 시험 상태의 제휴 링크로 만든 계정. 표가 없으면(DB 반영 전) 아니라고 답한다: 이 값은 문을
+ * **더 여는** 데만 쓰므로 모를 때는 닫힌 쪽이 맞다.
+ */
+export async function matPreview(userId: string): Promise<boolean> {
+  const r = await queryOne<{ ok: boolean }>(
+    `SELECT true AS ok FROM mat_preview_users WHERE user_id = $1`, [userId]).catch(() => null);
+  return Boolean(r?.ok);
 }

@@ -20,6 +20,8 @@
 --    뒤에만 잇는다(남의 계정을 가져가는 길을 막는다). 그래서 표에 메일 칸이 없다
 --  - 회사 이름 · 연락처 · 주소 · 사진 · 생년월일은 받지 않는다(받는 항목은 `share_fields`)
 --
+--  이 파일은 MAT 미리보기 계정 표와 홈페이지 유입 표시도 함께 세운다(맨 아래).
+--
 --  **표를 따로 둔다**(`schema_brand.sql` 과 같은 까닭): 이 파일을 올리기 전에도 가입 ·
 --  MAT 이 그대로 돈다. 쓰는 쪽은 표가 없으면 제휴 연결만 닫힌다.
 -- ============================================================
@@ -34,21 +36,37 @@ CREATE TABLE IF NOT EXISTS partner_configs (
   share_fields    TEXT[] NOT NULL DEFAULT '{}',
   -- 허용 IP(비어 있으면 IP 로 막지 않는다)
   ip_allowlist    CIDR[] NOT NULL DEFAULT '{}',
+  -- 제휴 사이트의 MAT 단추 글자(제휴 키트가 읽는다)
+  button_label    TEXT NOT NULL DEFAULT 'AI 취업비서 MAT',
   updated_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_by      BIGINT REFERENCES users(id) ON DELETE SET NULL
 );
+ALTER TABLE partner_configs ADD COLUMN IF NOT EXISTS button_label TEXT NOT NULL DEFAULT 'AI 취업비서 MAT';
 
 COMMENT ON TABLE partner_configs IS
   '제휴 한 곳에 한 줄: 받는지 · 정산 비율 · 넘겨받는 항목 · 허용 IP';
 
--- 결정(2026-11-01): 잡인더스트리 20% · 최소 항목. 커리어피크는 방식 · 비율 미정이라 꺼 둔다.
+-- 결정(2026-11-01 · 11-02): 잡인더스트리 20% · 최소 항목. 커리어피크는 같은 API 키 방식 · 같은 최소 항목,
+-- 정산 비율은 미정(NULL). 둘 다 꺼 둔 채로 들어간다(켜는 것은 운영자 화면에서, 대표 승인 뒤).
 -- **이미 있는 줄은 고치지 않는다**(운영자가 화면에서 바꾼 값을 파일이 덮지 않게)
-INSERT INTO partner_configs (partner, status, settlement_bps, share_fields)
+INSERT INTO partner_configs (partner, status, settlement_bps, share_fields, button_label)
 VALUES
   ('jobindustry', 'off', 2000,
-   ARRAY['display_name', 'interest_jobs', 'interest_regions', 'education', 'certificates', 'career_summary']),
-  ('careerpeak', 'off', NULL, '{}')
+   ARRAY['display_name', 'interest_jobs', 'interest_regions', 'education', 'certificates', 'career_summary'],
+   'AI 취업비서 MAT로 이 공고 분석'),
+  ('careerpeak', 'off', NULL,
+   ARRAY['display_name', 'interest_jobs', 'interest_regions', 'education', 'certificates', 'career_summary'],
+   'AI 취업비서 MAT 시작')
 ON CONFLICT (partner) DO NOTHING;
+
+-- 앞 판(커리어피크 항목 없음 · 단추 글자 기본값)으로 먼저 선 줄을 이번 결정으로 맞춘다.
+-- **운영자가 화면에서 한 번이라도 고친 줄(updated_by 있음)은 건드리지 않는다**
+UPDATE partner_configs SET share_fields =
+  ARRAY['display_name', 'interest_jobs', 'interest_regions', 'education', 'certificates', 'career_summary']
+ WHERE partner = 'careerpeak' AND share_fields = '{}' AND updated_by IS NULL;
+UPDATE partner_configs SET button_label = CASE partner
+    WHEN 'jobindustry' THEN 'AI 취업비서 MAT로 이 공고 분석' ELSE 'AI 취업비서 MAT 시작' END
+ WHERE button_label = 'AI 취업비서 MAT' AND updated_by IS NULL;
 
 CREATE TABLE IF NOT EXISTS partner_keys (
   id           BIGSERIAL PRIMARY KEY,
@@ -135,3 +153,24 @@ CREATE TABLE IF NOT EXISTS partner_calls (
 );
 
 CREATE INDEX IF NOT EXISTS partner_calls_at_idx ON partner_calls(partner, at DESC);
+
+-- ============================================================
+--  MAT 미리보기 계정(2026-11-02 대표 결정 "테스트 후 공개")
+--
+--  MAT_PUBLIC · PARTNERS_PUBLIC 을 끈 채로 운영에서 시험하려면 시험 계정만 MAT 을 볼 수 있어야 한다.
+--  운영자가 화면(/admin/partners)에서 계정을 넣고 뺀다. 제휴 연동이 `시험` 상태일 때 그 제휴 링크로
+--  만든 계정은 저절로 들어간다(시험 키로만 만들 수 있는 계정이다). 공개하면 이 표는 쓰이지 않는다.
+-- ============================================================
+CREATE TABLE IF NOT EXISTS mat_preview_users (
+  user_id    BIGINT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+  note       TEXT CHECK (note IS NULL OR length(note) <= 120),
+  added_by   BIGINT REFERENCES users(id) ON DELETE SET NULL,
+  added_at   TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- ============================================================
+--  유입 경로에 홈페이지(www)를 더한다(캔버스 10번: www / jobindustry / careerpeak 을 따로 센다)
+-- ============================================================
+ALTER TABLE brand_touches DROP CONSTRAINT IF EXISTS brand_touches_brand_check;
+ALTER TABLE brand_touches ADD CONSTRAINT brand_touches_brand_check
+  CHECK (brand IN ('jobindustry', 'careerpeak', 'www'));

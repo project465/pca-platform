@@ -44,3 +44,31 @@ export async function setStatusAction(form: FormData): Promise<void> {
   await audit({ actorId: Number(user.id), actorRole: user.role, action: "partner.status", targetKind: "partner", targetId: partner, orgId: null, detail: { status } });
   revalidatePath("/admin/partners");
 }
+
+/**
+ * MAT 미리보기 계정(공개 전 시험). 아이디 또는 이메일로 넣는다. 넣고 빼는 일은 감사 기록에 남는다.
+ * 공개(MAT_PUBLIC=true) 뒤에는 쓰이지 않는다.
+ */
+export async function addPreviewAction(_p: KeyState, form: FormData): Promise<KeyState> {
+  const user = await requireRole(["superadmin"]);
+  const who = String(form.get("who") ?? "").trim();
+  const note = String(form.get("note") ?? "").trim().slice(0, 120) || null;
+  if (!who) return { err: "아이디나 이메일을 적어 주세요." };
+  const rows = await query<{ id: string }>(
+    `SELECT id::text FROM users WHERE (lower(login_id) = lower($1) OR lower(email) = lower($1)) AND status = 'active' LIMIT 2`, [who]);
+  if (rows.length !== 1) return { err: "그 아이디·이메일의 계정을 찾지 못했습니다." };
+  await query(`INSERT INTO mat_preview_users (user_id, note, added_by) VALUES ($1, $2, $3)
+               ON CONFLICT (user_id) DO UPDATE SET note = EXCLUDED.note`, [rows[0].id, note, user.id]);
+  await audit({ actorId: Number(user.id), actorRole: user.role, action: "mat.preview.add", targetKind: "user", targetId: rows[0].id, orgId: null, detail: {} });
+  revalidatePath("/admin/partners");
+  return { ok: "미리보기 계정에 넣었습니다." };
+}
+
+export async function removePreviewAction(form: FormData): Promise<void> {
+  const user = await requireRole(["superadmin"]);
+  const id = String(form.get("id") ?? "");
+  if (!/^\d{1,18}$/.test(id)) return;
+  await query(`DELETE FROM mat_preview_users WHERE user_id = $1`, [id]);
+  await audit({ actorId: Number(user.id), actorRole: user.role, action: "mat.preview.remove", targetKind: "user", targetId: id, orgId: null, detail: {} });
+  revalidatePath("/admin/partners");
+}

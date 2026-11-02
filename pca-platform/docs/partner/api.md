@@ -1,6 +1,6 @@
-# CareerMatri MAT 연동 안내 (제휴사 개발 담당자용) · 초안 v0.1 (2026-11-02)
+# CareerMatri MAT 연동 API (제휴사 개발 담당자용) · 초안 v0.2 (2026-11-02)
 
-잡인더스트리 화면의 **MAT 단추**를 누른 회원이 다시 가입하거나 다시 입력하지 않고
+제휴 사이트(잡인더스트리 · 커리어피크)의 **MAT 단추**를 누른 회원이 다시 가입하거나 다시 입력하지 않고
 CareerMatri MAT(AI 취업비서)으로 넘어오게 하는 연동입니다. 제휴사 서버가 CareerMatri 서버를 한 번 부르고,
 돌려받은 **한 번 쓰는 링크**로 회원을 보내면 됩니다.
 
@@ -11,7 +11,7 @@ CareerMatri MAT(AI 취업비서)으로 넘어오게 하는 연동입니다. 제�
 
 ```
 회원 ──(MAT 단추 클릭)──▶ 제휴사 서버
-제휴사 서버 ──POST /api/partner/jobindustry/session (API 키)──▶ CareerMatri
+제휴사 서버 ──POST /api/partner/{partner}/session (API 키)──▶ CareerMatri
 CareerMatri ──201 { url, expires_at }──▶ 제휴사 서버
 제휴사 서버 ──302 Location: url──▶ 회원 브라우저 ──▶ CareerMatri 동의 화면 ──▶ MAT
 ```
@@ -23,7 +23,9 @@ CareerMatri ──201 { url, expires_at }──▶ 제휴사 서버
 
 ## 2. API
 
-`POST https://app.careermatri.com/api/partner/jobindustry/session`
+`POST https://app.careermatri.com/api/partner/{partner}/session`
+
+`{partner}` 는 제휴마다 정해진 이름입니다: 잡인더스트리 `jobindustry` · 커리어피크 `careerpeak`.
 
 ### 머리글(헤더)
 
@@ -38,7 +40,7 @@ CareerMatri ──201 { url, expires_at }──▶ 제휴사 서버
 
 ```json
 {
-  "member_id": "잡인더 회원 고유번호",
+  "member_id": "제휴사 회원 고유번호",
   "posting_id": "회원이 보고 있던 공고 번호(게시판 idx). 없으면 생략",
   "profile": {
     "display_name": "이름 또는 별명",
@@ -60,7 +62,7 @@ CareerMatri ──201 { url, expires_at }──▶ 제휴사 서버
 `201 Created`
 
 ```json
-{ "url": "https://app.careermatri.com/from/jobindustry/enter?t=…", "expires_at": "…", "expires_in": 300 }
+{ "url": "https://app.careermatri.com/from/{partner}/enter?t=…", "expires_at": "…", "expires_in": 300 }
 ```
 
 - `url` 은 **5분 동안 한 번만** 쓸 수 있습니다. 미리 만들어 두지 말고 단추를 누른 순간 받아 주세요.
@@ -138,12 +140,14 @@ if (r.status === 201) res.redirect(302, (await r.json()).url);
 
 ## 5. 돌아가는 링크
 
-MAT 의 공고 카드에서 `공고 원문 보기`를 누르면 잡인더스트리 공고 화면으로 갑니다. 주소에
+MAT 의 공고 카드에서 `공고 원문 보기`를 누르면 원문 공고 화면(잡인더스트리)으로 갑니다. 주소에
 `utm_source=careermatri&utm_medium=mat` 이 붙습니다(사람을 가리키는 값은 없습니다). 유입 통계에 써 주세요.
 
 ## 6. 정해진 것 · 정할 것
 
-- 결제는 CareerMatri 에서 받습니다(개인 이용권 30일 ₩9,900 · 90일 ₩24,900). 잡인더스트리 유입 회원의 결제액 20% 정산(계약서로 확정), 월별 정산 내역은 2단계에서 드립니다.
-- 넘겨받는 이력서 항목은 위 여섯 칸으로 한정합니다.
+- 결제는 CareerMatri 에서 받습니다(개인 이용권 30일 ₩9,900 · 90일 ₩24,900). 어느 길로 와도 같은 이용권 기록을 씁니다.
+- 정산: 잡인더스트리 유입 회원 결제액의 20%(계약서로 확정) · 커리어피크 [정산 비율]. 월별 정산 내역은 2단계에서 드립니다.
+- 넘겨받는 이력서 항목은 위 여섯 칸으로 한정합니다(두 제휴 같음).
 - 공고 수집용 잡인더스트리 API 문서 · 키를 받으면 지금의 공개 화면 수집을 그쪽으로 바꿉니다.
+- 사이트별 단추 · 붙일 자리: `jobindustry.md` · `careerpeak.md`. 단추 모양: `button.html`.
 - 문의: CareerMatri 운영(hari_info@hari.re.kr)

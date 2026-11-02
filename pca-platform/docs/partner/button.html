@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MAT 단추</title>
+<!--
+  CareerMatri MAT 단추(흑백 + 라임). 제휴 사이트에 그대로 붙입니다.
+  - 아래 <style> 의 .cm-mat 묶음과 <a class="cm-mat …"> 하나만 옮기면 됩니다. 글꼴은 사이트 글꼴을 따릅니다.
+  - href 는 **제휴사 서버의 내 주소**(예: /mat-start)입니다. 그 주소가 CareerMatri API 를 불러 한 번 쓰는 링크로 보냅니다.
+    단추에 CareerMatri 주소나 API 키를 직접 넣지 마세요.
+  - 라임(#c6f432)은 'MAT' 표시 한 곳에만 쓰고, 라임 위 글자는 검정입니다. 그림자 · 그라데이션 없음.
+-->
+<style>
+  .cm-mat { box-sizing: border-box; max-width: 100%; display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 18px 0 10px;
+    border-radius: 10px; background: #0f0f0f; color: #fff; font-weight: 700; font-size: 15px; line-height: 1.2;
+    text-decoration: none; word-break: keep-all; border: 1px solid #0f0f0f; }
+  .cm-mat:hover { background: #262626; }
+  .cm-mat:focus-visible { outline: 2px solid #0f0f0f; outline-offset: 2px; }
+  .cm-mat b { display: inline-grid; place-items: center; min-width: 40px; height: 28px; padding: 0 8px; border-radius: 7px;
+    background: #c6f432; color: #0f0f0f; font-size: 13px; font-weight: 800; letter-spacing: .02em; }
+  .cm-mat small { display: block; font-weight: 500; font-size: 12px; color: #bdbdbd; margin-top: 2px; }
+  /* 손전화 공고 화면 아래 고정 바에 둘 때 */
+  .cm-mat.is-block { display: flex; width: 100%; justify-content: flex-start; }
+  /* 흰 바탕 위 보조 단추(마이페이지 카드 안 등) */
+  .cm-mat.is-line { background: #fff; color: #0f0f0f; }
+  .cm-mat.is-line small { color: #6b6b6b; }
+</style>
+</head>
+<body style="font-family: Pretendard, -apple-system, sans-serif; padding: 24px; max-width: 420px; display: grid; gap: 16px;">
+  <!-- 잡인더스트리 · 공고 화면 -->
+  <a class="cm-mat" href="/mat-start?posting=12345"><b>MAT</b><span>이 공고와 내 경험 비교<small>AI 취업비서 · CareerMatri</small></span></a>
+  <!-- 잡인더스트리 · 손전화 공고 화면 아래 고정 -->
+  <a class="cm-mat is-block" href="/mat-start?posting=12345"><b>MAT</b><span>AI 취업비서 MAT로 이 공고 분석</span></a>
+  <!-- 마이페이지 · 커리어피크 첫 화면 -->
+  <a class="cm-mat is-line" href="/mat-start"><b>MAT</b><span>AI 취업비서 MAT 시작<small>맞는 공고 · 지원서 · 면접 준비</small></span></a>
+</body>
+</html>

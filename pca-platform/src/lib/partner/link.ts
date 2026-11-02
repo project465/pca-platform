@@ -17,7 +17,7 @@ import { query, queryOne } from "@/lib/db";
  */
 export type PartnerConfig = {
   partner: string; status: "off" | "test" | "live";
-  settlement_bps: number | null; share_fields: string[]; ip_allowlist: string[];
+  settlement_bps: number | null; share_fields: string[]; ip_allowlist: string[]; button_label: string;
 };
 
 const sha = (s: string) => createHash("sha256").update(s).digest("hex");
@@ -25,7 +25,7 @@ const b64u = (n: number) => randomBytes(n).toString("base64url");
 
 export async function partnerConfig(partner: string): Promise<PartnerConfig | null> {
   return queryOne<PartnerConfig>(
-    `SELECT partner, status, settlement_bps, share_fields, ip_allowlist::text[] AS ip_allowlist
+    `SELECT partner, status, settlement_bps, share_fields, ip_allowlist::text[] AS ip_allowlist, button_label
        FROM partner_configs WHERE partner = $1`, [partner]).catch(() => null);
 }
 

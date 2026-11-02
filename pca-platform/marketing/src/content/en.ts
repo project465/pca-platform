@@ -688,7 +688,7 @@ export const en: SiteContent = {
       title: ["Keep preparing after the assessment", "with MAT"],
       lead:
         "MAT is the AI career assistant in your CareerMatri workspace. It reminds you of weekly tasks and deadlines, helps turn your notes into experience records, and compares job postings you find against your experience.",
-      primary: { label: "Start MAT", href: "/me/track" },
+      primary: { label: "Start MAT", href: "/mat/start?from=www" },
       secondary: { label: "See pricing", href: "#plans" },
       note: "You need to log in. If you don't have an account, you can sign up as an individual on the login screen.",
     },
@@ -715,7 +715,7 @@ export const en: SiteContent = {
           price: krw(TRACK_KR.month.price),
           unit: "30 days of access",
           body: "Try it for a month and then decide whether to continue. Start with the free assessment first, since MAT works from your result.",
-          cta: { label: "Start with the 30-day pass", href: "/me/track" },
+          cta: { label: "Start with the 30-day pass", href: "/mat/start?from=www" },
         },
         {
           name: QUARTER,
@@ -723,7 +723,7 @@ export const en: SiteContent = {
           unit: "90 days of access",
           body: "90 days of use. A good fit for preparing through one semester's application season.",
           featured: true,
-          cta: { label: "Start with the 90-day pass", href: "/me/track" },
+          cta: { label: "Start with the 90-day pass", href: "/mat/start?from=www" },
         },
       ],
       notes: [
@@ -747,7 +747,7 @@ export const en: SiteContent = {
         {
           q: "I bought a PRO report. How do I get the free month?",
           a: "Log in and claim the free month on the MAT screen. Each person can claim it once.",
-          link: { label: "Open the MAT screen", href: "/me/track" },
+          link: { label: "Open the MAT screen", href: "/mat/start?from=www" },
         },
         {
           q: "When will the monthly change report be available?",
@@ -763,7 +763,7 @@ export const en: SiteContent = {
     closing: {
       title: "Start with this week's task",
       lead: "Log in to get started on the MAT screen. If you haven't taken the assessment yet, you can begin with that.",
-      primary: { label: "Start MAT", href: "/me/track" },
+      primary: { label: "Start MAT", href: "/mat/start?from=www" },
       secondary: { label: "Take the assessment first", href: "/cores" },
     },
   },

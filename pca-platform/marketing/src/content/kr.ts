@@ -703,7 +703,7 @@ export const kr: SiteContent = {
       title: ["검사가 끝난 뒤의 준비는", "MAT와 함께 하세요"],
       lead:
         "MAT는 내 CareerMatri 작업공간에서 쓰는 AI 취업비서입니다. 매주 브리핑으로 마감과 할 일을 챙겨 드리고, 직접 찾은 공고와 내 경험을 비교해 지원서 문장의 뼈대까지 만들어 드립니다. 적어 둔 메모를 경험 기록으로 옮기는 일도 돕습니다.",
-      primary: { label: "MAT 시작하기", href: "/me/track" },
+      primary: { label: "MAT 시작하기", href: "/mat/start?from=www" },
       secondary: { label: "요금 보기", href: "#plans" },
       note: "로그인이 필요합니다. 계정이 없으면 로그인 화면에서 개인으로 가입할 수 있습니다.",
     },
@@ -730,7 +730,7 @@ export const kr: SiteContent = {
           price: TRACK_KR.month.price,
           unit: "30일 동안 이용",
           body: "한 달 써 보고 계속할지 정하실 수 있습니다.",
-          cta: { label: `${TRACK_KR.month.name}으로 시작하기`, href: "/me/track" },
+          cta: { label: `${TRACK_KR.month.name}으로 시작하기`, href: "/mat/start?from=www" },
         },
         {
           name: TRACK_KR.quarter.name,
@@ -738,7 +738,7 @@ export const kr: SiteContent = {
           unit: "90일 동안 이용",
           body: "90일 동안 이용. 한 학기 지원 시즌을 이어서 준비할 때 알맞습니다.",
           featured: true,
-          cta: { label: `${TRACK_KR.quarter.name}으로 시작하기`, href: "/me/track" },
+          cta: { label: `${TRACK_KR.quarter.name}으로 시작하기`, href: "/mat/start?from=www" },
         },
       ],
       notes: [
@@ -762,7 +762,7 @@ export const kr: SiteContent = {
         {
           q: "PRO 결과지를 샀는데 무료 1개월은 어떻게 받나요?",
           a: "로그인한 뒤 MAT 화면에서 무료 1개월을 받을 수 있습니다. 한 사람당 한 번 받을 수 있습니다.",
-          link: { label: "MAT 화면 열기", href: "/me/track" },
+          link: { label: "MAT 화면 열기", href: "/mat/start?from=www" },
         },
         {
           q: "월간 변화 리포트는 언제 받을 수 있나요?",
@@ -778,7 +778,7 @@ export const kr: SiteContent = {
     closing: {
       title: "이번 주에 할 일부터 정리해 보세요",
       lead: "로그인하면 MAT 화면에서 바로 시작할 수 있습니다. 검사를 아직 보지 않으셨다면 검사부터 시작해도 좋습니다.",
-      primary: { label: "MAT 시작하기", href: "/me/track" },
+      primary: { label: "MAT 시작하기", href: "/mat/start?from=www" },
       secondary: { label: "검사 먼저 보기", href: "/cores" },
     },
   },

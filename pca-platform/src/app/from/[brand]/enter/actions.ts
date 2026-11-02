@@ -10,7 +10,7 @@ import { hashPassword } from "@/lib/password";
 import { record as consentRecord } from "@/lib/consent";
 import { isPartner, PARTNERS, recordBrand } from "@/lib/brand";
 import { matVisible } from "@/lib/mat-public";
-import { bindHandoff, openHandoff } from "@/lib/partner/link";
+import { bindHandoff, openHandoff, partnerConfig } from "@/lib/partner/link";
 import { ref, swallow } from "@/lib/oplog";
 
 export type EnterState = { message?: string };
@@ -65,6 +65,11 @@ export async function enterAction(_prev: EnterState, form: FormData): Promise<En
     return { message: `이 ${PARTNERS[partner].name} 계정은 다른 CareerMatri 계정과 이미 이어져 있습니다. 그 계정으로 들어오시거나 고객센터에 알려 주세요.` };
   }
   await recordBrand(userId, partner).catch(() => null);
+  /* 연동이 `시험` 상태면(시험 키로만 링크가 나온다) 이 계정을 공개 전 시험 계정으로 둔다 */
+  if ((await partnerConfig(partner))?.status === "test") {
+    await query(`INSERT INTO mat_preview_users (user_id, note) VALUES ($1, $2) ON CONFLICT (user_id) DO NOTHING`,
+      [userId, `${partner} 시험 연결`]).catch(() => null);
+  }
 
   /* 보던 공고가 모아 둔 공고에 있으면 그 공고부터 보인다 */
   let dest = (await matVisible(userId)) ? "/mat" : "/me/track";

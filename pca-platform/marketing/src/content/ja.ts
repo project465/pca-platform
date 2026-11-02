@@ -683,7 +683,7 @@ export const ja: SiteContent = {
       title: ["診断のあとの準備を", "MATと続けましょう"],
       lead:
         "MATは、マイCareerMatriのワークスペースで使うAI就活アシスタントです。毎週の取り組みと締め切りをお知らせするほか、書き留めたメモを経験の記録に整理したり、自分で見つけた求人と経験を照らし合わせたりできます。",
-      primary: { label: "MATをはじめる", href: "/me/track" },
+      primary: { label: "MATをはじめる", href: "/mat/start?from=www" },
       secondary: { label: "料金を見る", href: "#plans" },
       note: "ログインが必要です。アカウントがない場合は、ログイン画面から個人として登録できます。",
     },
@@ -710,7 +710,7 @@ export const ja: SiteContent = {
           price: krw(TRACK_KR.month.price),
           unit: "30日間利用",
           body: "1か月使ってみてから、続けるかどうかを決められます。",
-          cta: { label: `${MONTH}ではじめる`, href: "/me/track" },
+          cta: { label: `${MONTH}ではじめる`, href: "/mat/start?from=www" },
         },
         {
           name: QUARTER,
@@ -718,7 +718,7 @@ export const ja: SiteContent = {
           unit: "90日間利用",
           body: "90日間利用できます。1学期分の応募シーズンを続けて準備するときに向いています。",
           featured: true,
-          cta: { label: `${QUARTER}ではじめる`, href: "/me/track" },
+          cta: { label: `${QUARTER}ではじめる`, href: "/mat/start?from=www" },
         },
       ],
       notes: [
@@ -742,7 +742,7 @@ export const ja: SiteContent = {
         {
           q: "PROの結果レポートを購入しました。無料の1か月はどうやって受け取れますか？",
           a: "ログイン後、MAT画面から無料の1か月を受け取れます。受け取りはお一人様1回までです。",
-          link: { label: "MAT画面を開く", href: "/me/track" },
+          link: { label: "MAT画面を開く", href: "/mat/start?from=www" },
         },
         {
           q: "月次の変化レポートは、いつ受け取れますか？",
@@ -758,7 +758,7 @@ export const ja: SiteContent = {
     closing: {
       title: "まずは今週の取り組みから整理しましょう",
       lead: "ログインすれば、MAT画面からすぐに始められます。まだ診断を受けていない方は、先に診断から始めることもできます。",
-      primary: { label: "MATをはじめる", href: "/me/track" },
+      primary: { label: "MATをはじめる", href: "/mat/start?from=www" },
       secondary: { label: "先に診断を受ける", href: "/cores" },
     },
   },

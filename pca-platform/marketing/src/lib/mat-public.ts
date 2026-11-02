@@ -15,7 +15,7 @@ export const MAT_PUBLIC = false;
 
 /** MAT 을 가리키는 말. 원고의 배열 항목에서 이 말이나 MAT 주소가 보이면 그 항목을 뺀다 */
 const MAT_WORDS = /\bMAT\b|AI\s?취업\s?비서|AI career assistant|AI就活アシスタント|AI求职助手/;
-const MAT_HREF = /^(\/[a-z]{2})?\/(assistant|me\/track)(\/|#|\?|$)|\/me\/track/;
+const MAT_HREF = /^(\/[a-z]{2})?\/(assistant|me\/track|mat)(\/|#|\?|$)|\/me\/track|\/mat\/start/;
 
 function mentionsMat(x: unknown): boolean {
   if (typeof x === "string") return MAT_WORDS.test(x) || MAT_HREF.test(x);
