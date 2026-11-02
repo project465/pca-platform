@@ -503,7 +503,8 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.83";
  * 동안 세우지 않는다(2026-10-31 대표 지시, `lib/mat-switch.ts`). 판단 · 문장 · 모델은 그대로다.
  */
 /** 처음 비밀번호(학번 · 전화번호)를 아직 바꾸지 않았으면 결과지 대신 비밀번호 바꾸기로(2026-11-02 대표 결정) — V93 */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V93";
+/** 산업 · 직무 절의 확인된 경험은 이번 응시에서 확인된 영역만(산업 문항 답은 따로), 고른 항목은 검사 칸 이름 그대로, 직접 정한 것 수에 까닭 한 줄 — V94 */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V94";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

@@ -1,5 +1,7 @@
 import { hasEdition } from "@/lib/me-v3/i18n";
 import Link from "next/link";
+import { Fragment } from "react";
+import { copyFor } from "@/lib/me-v3/runtime/copy";
 import { BrandMark } from "@/components/sf/brand-mark";
 import { notFound, redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
@@ -120,15 +122,24 @@ function PackBody(
         <div>
           <dt>{tr("여기서도 쓸 수 있는 경험")}</dt>
           <dd>
+            {/* **이번 응시에서 묻고 확인된 영역만 적는다**(2026-11-02 운영 시험: 산업 문항에 답한 것을 영역 이름으로 적어,
+                묻지 않은 서버 · API 구현 같은 영역이 "확인된 경험" 으로 섰다). 산업 문항에 답한 것은 아래 줄에 따로 적는다 */}
             <Picks own max={6} items={uniq([
               ...v.overlap.map((o) => cell(o.domain, o.axis)),
-              ...v.answered.map((a) => cell(a.domain, a.axis)),
               ...v.established.map((e) =>
                 `${dn(e.domain)} · ${e.axes.slice(0, 3).map((x) => TX().AXIS_KO[x]).join(", ")}`
                 + `${e.axes.length > 3 ? tr(" 외") : ""}`),
             ]).slice(0, 12)} />
           </dd>
         </div>
+        {v.answered.length ? (
+          <div>
+            <dt>{tr("이 쪽 질문에 해 봤다고 답한 것")}</dt>
+            <dd>
+              <Picks max={6} items={uniq(v.answered.map((a) => (a.axis ? TX().AXIS_KO[a.axis] : tr("이 직무에서 맡는 범위"))))} />
+            </dd>
+          </div>
+        ) : null}
         {/* **`없다` 로 답하신 자리와 안 물어본 자리를 가른다.** 한 칸에
             담으면 묻지 않은 것이 `없다` 로 적힌다 */}
         <div>
@@ -260,6 +271,24 @@ function Basic({ core, d }: { core: string; d: ResultDomain }) {
  * **판정에 닿지 않는다**: 결과 모델의 `decided` 와 `artifacts` 는 그대로고
  * 여기서 고르는 것은 어느 줄에 적을지뿐이다.
  */
+/**
+ * 고른 항목을 **검사 화면의 칸 이름**(`범위를 정할 때` · `요구를 구체적인 조건으로 바꿀 때` …)으로 묶는다. 결과물 · 비교 대상은
+ * 제 줄이 따로 적으므로 뺀다. 판정을 바꾸지 않는다: 이름표만 학생이 본 말을 쓴다
+ */
+function bySection(d: ResultDomain): { label: string; items: string[] }[] {
+  const ask = copyFor(L()).axisAsk as Record<string, string>;
+  const named = new Set([...d.artifacts, ...d.verifications]);
+  const seen = new Set<string>();
+  const out: { label: string; items: string[] }[] = [];
+  for (const a of d.axes) {
+    if (a.axis === "J5" || a.axis === "J6") continue;
+    const items = a.picks.filter((x) => !named.has(x) && !seen.has(x));
+    items.forEach((x) => seen.add(x));
+    if (items.length) out.push({ label: tr("{s}에서 고른 것", { s: ask[a.axis] ?? TX().AXIS_KO[a.axis] }), items });
+  }
+  return out;
+}
+
 function evidenceRows(d: ResultDomain): { decided: string[]; did: string[] } {
   /* **결과물 이름을 `직접 정한 것` 으로 적지 않는다**(R34 §2). 결과 모델의
      `decided` 는 소유로 선 축의 고른 항목 전부라, 산출물 축(J5)이 소유로
@@ -302,20 +331,14 @@ function Why({ d }: { d: ResultDomain }) {
   return (
     <div className="rs-why">
       <dl>
-        {decided.length ? (
-          <>
-            <dt>{tr("직접 정했다고 고른 것")}</dt>
-            <dd><Picks items={decided} own /></dd>
-          </>
-        ) : null}
-        {/* 모두 직접 정한 것으로 확인된 사람에게 빈 칸을 띄우지 않는다.
-            없는 문제를 만들어 보이게 된다 */}
-        {did.length || !decided.length ? (
-          <>
-            <dt>{tr("해 봤다고 고른 것")}</dt>
-            <dd><Picks items={did} /></dd>
-          </>
-        ) : null}
+        {/* **학생이 고른 칸 이름 그대로 적는다**(2026-11-02 운영 시험: `범위를 정할 때` 에서 고른 것이 어느 영역에서는
+            `직접 정했다고 고른 것`, 어느 영역에서는 `해 봤다고 고른 것` 으로 섰다. 이름표가 판정 상태를 따랐기 때문이다) */}
+        {bySection(d).map((g) => (
+          <Fragment key={g.label}>
+            <dt>{g.label}</dt>
+            <dd><Picks items={g.items} /></dd>
+          </Fragment>
+        ))}
         {d.artifacts.length ? (<>
           <dt>{tr("남겼다고 고른 결과물")}</dt>
           <dd><Picks items={d.artifacts} max={6} /></dd>
@@ -323,10 +346,6 @@ function Why({ d }: { d: ResultDomain }) {
         {d.verifications.length ? (<>
           <dt>{tr("비교했다고 고른 대상")}</dt>
           <dd><Picks items={d.verifications} max={6} /></dd>
-        </>) : null}
-        {unconfirmed.length ? (<>
-          <dt>{tr("골랐지만 응답으로는 아직 확인되지 않은 것")}</dt>
-          <dd><Picks items={unconfirmed} max={6} /></dd>
         </>) : null}
       </dl>
       {empty.length ? (
@@ -408,7 +427,10 @@ function DomainPanel(
         <Fold label={tr("상세 근거 보기")}>
           <Why d={d} />
           <p className="rs-meta">
-            {tr("확인된 판단 {a} · 직접 정한 것 {b}", { a: d.confirmed.length, b: d.owned.length })}
+            {tr("해 봤다고 확인된 판단 {a}가지 · 그 가운데 직접 정한 것으로 센 판단 {b}가지", { a: d.confirmed.length, b: d.owned.length })}
+            {/* '내가 정함' 이라고 답해도 그 일을 체크리스트에서 고르지 않으면 직접 정한 것으로 세지 않는다. 그 사실을 적는다(2026-11-02 운영 시험) */}
+            {d.confirmed.length > d.owned.length
+              ? <> · {tr("‘내가 정함’으로 답한 판단은 그 일을 ‘직접 정한 것’ 칸에서 골라야 직접 정한 것으로 셉니다")}</> : null}
           </p>
           <Axes d={d} />
         </Fold>
@@ -448,9 +470,9 @@ function Strongest({ d }: { d: ResultDomain }) {
   };
   /* **이름표를 줄마다 되풀이하지 않는다**(규격 §11). 묶음 머리에 한 번
      적고 아래에는 행동만 선다 */
+  /* 고른 칸 이름 그대로(`bySection`). 칸 둘과 결과물까지 */
   const groups = [
-    /* 산출물 이름은 아래 줄이 제 이름으로 적는다(`evidenceRows`) */
-    { label: tr("직접 정했다고 고른 것"), items: take(evidenceRows(d).decided) },
+    ...bySection(d).slice(0, 2).map((g) => ({ label: g.label, items: take(g.items) })),
     { label: tr("남겼다고 고른 결과물"), items: take(d.artifacts) },
   ].filter((g) => g.items.length);
   if (!groups.length) {

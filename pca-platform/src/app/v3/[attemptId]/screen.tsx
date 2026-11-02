@@ -347,8 +347,21 @@ export default function Screen({
    * 끝의 시간 재기는 **옮겨 가지 못한 경우의 그물**이다. 옮겨 갔으면 이
    * 컴포넌트가 이미 사라졌으니 아무 일도 하지 않는다.
    */
+  /**
+   * **적은 줄은 떠날 때 한 번 더 보낸다**(2026-11-02 운영 시험: 지원서 문장 칸에 적은 말이 결과에 없었다). 적은 줄은 칸을
+   * 떠날 때(blur) 보내는데, 손전화에서 `다음` 을 바로 누르면 그 순서가 보장되지 않는다. 화면에 들고 있는 값과 받은 값이
+   * 다르면 이동 · 제출 전에 보낸다(같은 저장 줄에 실려 이동이 기다린다)
+   */
+  const flushNotes = () => {
+    for (const f of s.fields) {
+      const now = notes[f.itemId] ?? "";
+      if (now !== (f.note ?? "") && now.trim().length) send({ op: "note", itemId: f.itemId, text: now });
+    }
+  };
+
   const go = async (to: number | null) => {
     if (to === null || leaving.current) return;
+    flushNotes();
     /* **한 번 떠나면 다시 떠나지 않는다.** 자동 넘김과 `다음` 이 겹치면 같은 이동이 두 번
        나가, 화면이 두 칸 넘어가는 것처럼 보였다(2026-11-01 고려대 세종 시험) */
     leaving.current = true;
@@ -383,6 +396,7 @@ export default function Screen({
   };
 
   const finish = async () => {
+    flushNotes();
     setMoving(true);
     let r: { ok: boolean };
     try {
