@@ -211,7 +211,7 @@ export function howToRead(x: Inputs): Page {
         <tr><td>${tag("응답", C.navy)}</td><td>검사 문항에 답한 단계</td><td>‘직접 맡아 해 봤다’고 답함</td></tr>
         <tr><td>${tag("고른 근거", C.blue)}</td><td>체크리스트에서 직접 고른 항목(해 본 일, 남긴 결과물)</td><td>고른 문장을 그대로 옮김</td></tr>
         <tr><td>${tag("경험 기록", C.teal)}</td><td>내가 플랫폼에 적어 둔 활동</td><td>수업 과제 · 캡스톤 · 실습</td></tr>
-        <tr><td>${tag("전공 사전", C.amber)}</td><td>${E(x.major)} 일에 대한 일반 안내(내 결과가 아님)</td><td>영역의 일 흐름 · 직무가 맡는 일</td></tr>
+        <tr><td>${tag("전공 안내 자료", C.amber)}</td><td>${E(x.major)} 일에 대한 일반 안내(내 결과가 아님)</td><td>영역의 일 흐름 · 직무가 맡는 일</td></tr>
         <tr><td>${tag("공시", "#6b7486")}</td><td>OpenDART 기업개황과 사업보고서</td><td>본점 주소 · 매출액 · 직원 수</td></tr>
       </tbody></table>` +
       H("먼저 알아 두실 것") +

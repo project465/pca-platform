@@ -44,7 +44,7 @@ export function fillPages(x: Inputs, d: X, part3: string, region: { name: string
 
   /* 들어가며 */
   const ne = d.counts.domains - d.counts.asked;
-  add(F("", N.intro, L("이 책이 읽은 내 응답", "The answers this report reads"), L("응답에서 센 수", "Counts from your answers"),
+  add(F("", N.intro, L("이 결과지가 읽은 내 응답", "The answers this report reads"), L("응답에서 센 수", "Counts from your answers"),
     lead(L(`뒤의 모든 쪽은 아래 응답에서 나왔어요. 수가 적은 줄이 있다면 경험 기록을 더한 뒤 다시 받아 보세요.`,
       "Every page after this one comes from the answers counted below. If a count looks low, add to your experience log and get the report again.")) +
     `<table class="tb tb-xs"><tbody>${[
@@ -101,7 +101,7 @@ export function fillPages(x: Inputs, d: X, part3: string, region: { name: string
   for (const z of x.m.domains.filter((v) => !d.asked(v)).slice(0, 8)) {
     const def = d.def(z.code);
     if (!def?.axes) continue;
-    add(F("03", part3, L(`${d.name(z.code)}에서 일하며 내리는 판단`, `Decisions you make when working in ${d.name(z.code)}`), L(`${ZONE_WORD.NOT_EXPLORED.tag} · 전공 사전의 예`, `${ZONE_WORD.NOT_EXPLORED.tag} · examples from the area guide`),
+    add(F("03", part3, L(`${d.name(z.code)}에서 일하며 내리는 판단`, `Decisions you make when working in ${d.name(z.code)}`), L(`${ZONE_WORD.NOT_EXPLORED.tag} · 전공 안내 자료의 예`, `${ZONE_WORD.NOT_EXPLORED.tag} · examples from the area guide`),
       `<table class="tb tb-xs ax2"><tbody>${[0, 2, 4, 6].map((k) => `<tr>${[AXES[k], AXES[k + 1]].map((a) => `<td class="w16"><b>${E(d.axisName(a))}</b></td><td>${E(def.axes?.[a]?.l2 ?? "")}</td>`).join("")}</tr>`).join("")}</tbody></table>`));
   }
 
@@ -218,7 +218,7 @@ export function fillPages(x: Inputs, d: X, part3: string, region: { name: string
     `<table class="tb tb-xs"><tbody>${x.roles.map((r) => `<tr><td class="w22"><b>${E(r.name_ko)}</b></td><td>${E(politePara(x.guide.roles[r.code]?.summary ?? r.owns))}</td></tr>`).join("")}</tbody></table>`));
 
   /* 부록: 영역의 세부 이름(사전) */
-  add(F("", N.app, L(`${x.domainWord}의 세부 이름`, `Other names for each ${x.domainWord}`), L("전공 사전 · 공고와 수업에서는 이 이름으로도 부릅니다", "Area guide · job postings and courses also use these names"),
+  add(F("", N.app, L(`${x.domainWord}의 세부 이름`, `Other names for each ${x.domainWord}`), L("전공 안내 자료 · 공고와 수업에서는 이 이름으로도 부릅니다", "Area guide · job postings and courses also use these names"),
     `<table class="tb tb-xs"><tbody>${x.tax.technical_domains.map((t) => `<tr><td class="w22"><b>${E(t.name)}</b></td><td>${E((t.subareas ?? []).join(" · "))}</td></tr>`).join("")}</tbody></table>`));
   return out;
 }

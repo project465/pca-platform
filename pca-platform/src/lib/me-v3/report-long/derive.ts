@@ -51,7 +51,7 @@ export const STEP_WORD: Record<Level, { tag: string; said: string }> = byLang<Re
  * 묻지 않음` · `이번에 묻지 않음` · `이번에 깊게 묻지 않음` 이 따로 적혀 있었고, 같은 표에
  * 열 번씩 서면 기계가 쓴 글처럼 읽힌다. 뜻은 `읽는 법` 쪽에서 한 번 풀어 준다
  */
-export const notAsked = (): string => T("물어보지 않음", "Not asked");
+export const notAsked = (): string => T("이번 검사에서 묻지 않음", "Not asked");
 export const BAND_WORD: Record<string, string> = byLang<Record<string, string>>({ HIGH: "높음", MID: "보통", LOW: "낮음" }, { HIGH: "High", MID: "Medium", LOW: "Low" });
 export const EXP_WORD: Record<string, string> = byLang<Record<string, string>>({ NONE: "없음", ONCE_OR_TWICE: "한두 번", SEVERAL: "여러 번" }, { NONE: "None", ONCE_OR_TWICE: "Once or twice", SEVERAL: "Several times" });
 
@@ -81,6 +81,21 @@ export function withTranslation(x: Inputs): Inputs {
     verifications: uniq([...(noCmp ? [] : [cmp]), ...d.verifications]),
   }));
   return { ...x, m: { ...x.m, domains } };
+}
+
+/**
+ * **책의 30 · 60 · 90일은 실제로 나눠 싣는다**(2026-11-02 운영 시험: 제목은 30 · 60 · 90일로 나눈다는데 막대 여덟이
+ * 모두 61~90일 칸에 있었고, "한 기간에 결과물 두 개까지" 라면서 넷을 잡았다). 결과 모델의 차례(급한 것 먼저)는 그대로 두고,
+ * 책 안에서만 앞에서부터 두 개씩 30일 · 60일 · 90일에 싣는다. 판정 · 할 일 내용은 바뀌지 않는다
+ */
+export function withPlan(x: Inputs): Inputs {
+  const acts = x.m.actions;
+  if (!acts.length) return x;
+  const H = ["NOW", "NEXT", "LATER"] as const;
+  const per = (h: string) => acts.filter((a) => a.horizon === h).length;
+  if (H.every((h) => per(h) <= 2) && new Set(acts.map((a) => a.horizon)).size > 1) return x;
+  const actions = acts.map((a, i) => ({ ...a, horizon: H[Math.min(Math.floor(i / 2), 2)] }));
+  return { ...x, m: { ...x.m, actions } };
 }
 
 export function derive(x: Inputs) {
@@ -138,9 +153,12 @@ export function derive(x: Inputs) {
 
   /** 강점: 근거 갖춤 → 근거 일부 → 관심 낮음 차례, 같은 묶음 안에서는 직접 정한 판단 수와 확인된 판단 수로 */
   const ZO = ["Z1_EVIDENCE_ESTABLISHED", "Z2_EVIDENCE_INCOMPLETE", "Z3_EVIDENCE_LOW_INTEREST"];
-  const strengths = doms.filter((d) => ZO.includes(d.zone) && d.confirmed.length)
-    .sort((a, b) => ZO.indexOf(a.zone) - ZO.indexOf(b.zone) || b.owned.length - a.owned.length || b.confirmed.length - a.confirmed.length)
-    .slice(0, 3);
+  /* 셋에서 자르되, **셋째와 값이 같은 영역은 함께 싣는다**(2026-11-02 운영 시험: 네 영역 값이 같은데 재무 · 투자 판단만
+     여러 쪽에서 빠졌다). 같은 값을 차례로만 가르면 빠진 영역이 왜 빠졌는지 책이 말하지 못한다. 넷까지만 */
+  const ranked = doms.filter((d) => ZO.includes(d.zone) && d.confirmed.length)
+    .sort((a, b) => ZO.indexOf(a.zone) - ZO.indexOf(b.zone) || b.owned.length - a.owned.length || b.confirmed.length - a.confirmed.length);
+  const tieWith = (a: ResultDomain, b: ResultDomain) => a.zone === b.zone && a.owned.length === b.owned.length && a.confirmed.length === b.confirmed.length;
+  const strengths = ranked.filter((d, i) => i < 3 || (i < 4 && ranked[2] && tieWith(d, ranked[2])));
 
   /** 고른 항목을 네 갈래로: 결과물과 비교 대상이 `한 일` 목록에 섞여 들어와 있다 */
   const evidenceOf = (d: ResultDomain) => {

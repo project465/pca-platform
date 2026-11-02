@@ -55,7 +55,23 @@ export type RadarSeries = { name: string; levels: (number | null)[]; color: stri
  * 판단 여덟 가지의 방사형 그래프. 바깥 고리가 '기준까지 직접 정함'(3), 가운데가 '해 본 적 없음'(0)이다.
  * 묻지 않은 판단(null)은 꼭짓점을 찍지 않고 그 자리를 비운다: 0 으로 그리면 안 물어본 것이 '없다' 로 읽힌다.
  */
-export function radar(labels: string[], series: RadarSeries[], o: { size?: number; label?: number; ring?: boolean } = {}): string {
+/**
+ * **값이 모두 같은 그림은 그리지 않거나 하나로 줄인다**(2026-11-02 운영 시험: 방사형 네 선이 겹쳐 한 색만 보였고, 막대 여덟이
+ * 같은 길이 · 같은 이름표였고, 점 열둘이 한 칸에 몰렸다). 그림 대신 한 줄로 그렇다고 적는다
+ */
+const sameNote = (t: string) => `<p class="mut sm" style="margin:2mm 0 0">${t}</p>`;
+
+export function radar(labels: string[], series0: RadarSeries[], o: { size?: number; label?: number; ring?: boolean } = {}): string {
+  const key = (x: RadarSeries) => JSON.stringify(x.levels);
+  const allSame = series0.length > 1 && series0.every((x) => key(x) === key(series0[0]));
+  if (allSame) {
+    return radarDraw(labels, [{ ...series0[0], name: series0.map((x) => x.name).join(" · ") }], o)
+      + sameNote(tx(`${series0.map((x) => x.name).join(" · ")}의 값이 모두 같아 선 하나로 그렸어요.`, `${series0.map((x) => x.name).join(", ")} have the same values, so they are drawn as one line.`));
+  }
+  return radarDraw(labels, series0, o);
+}
+
+function radarDraw(labels: string[], series: RadarSeries[], o: { size?: number; label?: number; ring?: boolean } = {}): string {
   const S = o.size ?? 420, cx = S / 2, cy = S / 2, R = S * 0.33, n = labels.length;
   const pt = (i: number, v: number) => {
     const a = -Math.PI / 2 + (i * 2 * Math.PI) / n;
@@ -134,6 +150,11 @@ export type Bar = { label: string; value: number; color?: string; note?: string;
 
 /** 가로 막대. max 는 축의 끝값이고, ticks 가 있으면 그 이름을 눈금에 둔다(예: 단계 이름) */
 export function hbars(rows: Bar[], o: { max: number; width?: number; label?: number; ticks?: string[]; row?: number; valueText?: (b: Bar) => string } = { max: 3 }): string {
+  /* 셋 넘는 막대가 모두 같은 길이면 그림이 아무것도 말하지 않는다 */
+  if (rows.length > 3 && rows.every((b) => b.value === rows[0].value)) {
+    const v = o.valueText ? o.valueText(rows[0]) : String(rows[0].value);
+    return sameNote(tx(`${rows.map((b) => b.label).join(" · ")} 모두 같은 값(${v})이라 막대 대신 한 줄로 적었어요.`, `${rows.map((b) => b.label).join(", ")} all have the same value (${v}), so they are listed here instead of drawn.`));
+  }
   const W = o.width ?? 640, L = o.label ?? 190, rh = o.row ?? 34, top = o.ticks ? 26 : 6, H = top + rows.length * rh + 6;
   const x = (v: number) => L + ((W - L - 70) * v) / o.max;
   const grid = (o.ticks ?? []).map((t, k) => {
@@ -189,6 +210,11 @@ export type Dot = { label: string; x: number; y: number; color: string; n?: numb
  * 축은 이름이 붙은 단계이고 연속값이 아니다.
  */
 export function quadrant(dots: Dot[], o: { width?: number; xNames: string[]; yNames: string[]; zones?: [string, string, string, string] }): string {
+  /* 점이 모두 한 칸이면 그 칸 이름 한 줄로 */
+  if (dots.length > 3 && dots.every((d) => d.x === dots[0].x && d.y === dots[0].y)) {
+    return sameNote(tx(`${dots.length}개 영역이 모두 같은 자리(관심 ${o.xNames[dots[0].x] ?? ""} · 해 본 정도 ${o.yNames[dots[0].y] ?? ""})에 있어 그림 대신 한 줄로 적었어요.`,
+      `All ${dots.length} areas sit in the same place (interest: ${o.xNames[dots[0].x] ?? ""}, experience: ${o.yNames[dots[0].y] ?? ""}), so this line replaces the chart.`));
+  }
   const W = o.width ?? 640, H = W * 0.74, L = 104, B = 54, T = 16, R = 14;
   const nx = o.xNames.length, ny = o.yNames.length;
   const cw = (W - L - R) / nx, ch = (H - T - B) / ny;

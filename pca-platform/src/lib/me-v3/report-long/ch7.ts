@@ -12,6 +12,7 @@
  * 쓰지 않는다. 장 번호를 적지 않는다(지역 장이 빠지면 번호가 당겨지는데 그 바꿈은 한국어만 본다).
  * 한국 공시 자료(OpenDART · 사업보고서)와 지역 자료는 영어 책에 서지 않으므로 풀이와 출처에서도 뺀다.
  */
+import { MAT_PUBLIC } from "@/lib/mat-switch";
 import type { Action, Gap } from "../result/model";
 import type { Inputs } from "./types";
 import { AXES, STEP_WORD, ZONE_WORD, type X } from "./derive";
@@ -148,8 +149,11 @@ export function ganttPage(x: Inputs, d: X): Page {
     T(acts.length ? L(`90일 동안 할 일 ${acts.length}가지를 달력에 올렸습니다`, `Your ${pl(acts.length, "task", "tasks")} for the next 90 days, on a calendar`) : L("90일 계획 초안입니다", "A draft plan for the next 90 days"), dek) +
     (bars.length ? `<div class="wide-art">${gantt(bars, { width: 710, label: 250 })}</div>${howto(marks, L("줄마다 할 일 하나이고, 왼쪽 이름이 그 일이에요.", "Each row is one task, named on the left."))}` : "") +
     (rows.length ? `<table class="tb tb-xs"><thead><tr><th>${L("기간", "When")}</th><th>${L("할 일", "Task")}</th><th>${L("남길 것", "Deliverable")}</th></tr></thead><tbody>${rows.map((r, i) => `<tr><td class="w18">${E(r.when)}${r.draft ? `<br>${draft()}` : ""}</td><td><b>${E(r.head)}</b>${(en ? rows.length > 4 : rows.length > 5 && i >= 4) ? "" : `<br><span class="mut">${E(r.line)}</span>`}</td><td class="w22">${E(r.out)}</td></tr>`).join("")}</tbody></table>` : "") +
-    band(L("한 기간에", "Per period"), L("결과물은 두 개까지만 잡아야 끝까지 가기 쉬워요. 끝낸 일은 내 CareerMatri 경험 기록에 올려 두세요.",
-      "Plan two deliverables at most per period, and log each finished task in My CareerMatri.")));
+    (["NOW", "NEXT", "LATER"].every((h) => x.m.actions.filter((a) => a.horizon === h).length <= 2)
+      ? band(L("한 기간에", "Per period"), L("결과물은 두 개까지만 잡아야 끝까지 가기 쉬워요. 끝낸 일은 내 CareerMatri 경험 기록에 올려 두세요.",
+        "Plan two deliverables at most per period, and log each finished task in My CareerMatri."))
+      : band(L("끝낸 일은", "When you finish"), L("내 CareerMatri 경험 기록에 올려 두세요. 한 기간에 너무 많으면 뒤로 미뤄도 돼요.",
+        "Log it in My CareerMatri. If one period is too full, move a task later."))));
 }
 
 export function longPage(x: Inputs, d: X): Page {
@@ -227,11 +231,11 @@ export function researchPage(x: Inputs, d: X): Page {
       <li><b>Ask someone in the job</b><span>Ask a senior student or your career services office how much of that work a new hire actually takes on.</span></li>
     </ol>` + table);
   return P("공고로 직무 알아보기",
-    T("관심 직무는 공고의 ‘담당 업무’ 문장으로 알아보는 편이 빠릅니다", `${E(role.name_ko)} 쪽 공고를 찾을 때 쓸 순서예요. 검색어는 이 전공 사전에 실린 공고 이름에서 골랐습니다.`) +
+    T("관심 직무는 공고의 ‘담당 업무’ 문장으로 알아보는 편이 빠릅니다", `${E(role.name_ko)} 쪽 공고를 찾을 때 쓸 순서예요. 검색어는 이 전공 안내 자료에 실린 공고 이름에서 골랐습니다.`) +
     `<ol class="lo big">
       <li><b>공고 다섯 건 모으기</b><span>${aliases.length ? `‘${E(aliases.join("’ · ‘"))}’ 같은 이름으로 찾아보세요.` : "직무 이름으로 찾아보세요."} 회사는 서로 달라도 괜찮아요.</span></li>
       <li><b>담당 업무 문장 옮기기</b><span>다섯 건 가운데 두 번 이상 나온 업무 문장만 따로 적어 두세요.</span></li>
-      <li><b>내 근거 붙이기</b><span>업무 문장마다 이 책에서 확인된 경험이나 경험 기록 하나를 붙여 보세요. 붙일 만한 것을 아래 표에 먼저 골라 두었어요.</span></li>
+      <li><b>내 근거 붙이기</b><span>업무 문장마다 이 결과지에서 확인된 경험이나 경험 기록 하나를 붙여 보세요. 붙일 만한 것을 아래 표에 먼저 골라 두었어요.</span></li>
       <li><b>근거가 없는 줄 고르기</b><span>근거를 못 붙인 업무 문장 가운데 하나를 07장 할 일에 더해 보세요.</span></li>
       <li><b>현직자에게 묻기</b><span>학과 선배나 학교 취업지원 부서에 부탁해, 그 업무에서 신입이 실제로 어디까지 맡는지 물어보세요.</span></li>
     </ol>` + table);
@@ -314,19 +318,19 @@ export function matPage(x: Inputs, d: X): Page {
   ] : [
     ["이번 주 브리핑", head0 ? `07장 먼저 손댈 일: ‘${head0}’` : "07장 먼저 손댈 일", "MAT 화면 맨 위에 이번 주 할 일 하나로 올라옵니다. 끝냈다고 표시하면 다음 할 일이 이어서 나와요.", "책에 적은 계획을 그대로 두지 않고 한 주에 하나씩 끝낼 수 있어요."],
     ["공고 비교", goal ? `목표 직무: ${goal}` : "관심 직무", `직접 찾은 ${goal ? `${goal} ` : ""}공고를 붙여 넣으면 요구 항목마다 내 경험으로 설명할 수 있는 것과 아직 비어 있는 것을 나눠 보여 줍니다.`, "무엇부터 채워야 하는지 그 공고의 문장으로 바로 확인할 수 있어요."],
-    ["반복되는 빈칸", gapName ? `이 책에서 비어 있던 판단: ${gapName}` : "이 책에서 비어 있던 판단", "붙여 둔 공고 여러 곳이 함께 요구하는데 아직 기록이 없는 영역을 모아 보여 주고, 이번 주에 할 작은 일 하나를 붙여 줍니다.", "여러 공고에서 되풀이되는 요구부터 채울 수 있어요."],
+    ["반복되는 빈칸", gapName ? `이 결과지에서 비어 있던 판단: ${gapName}` : "이 결과지에서 비어 있던 판단", "붙여 둔 공고 여러 곳이 함께 요구하는데 아직 기록이 없는 영역을 모아 보여 주고, 이번 주에 할 작은 일 하나를 붙여 줍니다.", "여러 공고에서 되풀이되는 요구부터 채울 수 있어요."],
     ["지원서 문장 뼈대", "06장 자기소개서 초안", `공고의 필수 항목마다 내 경험 기록${expT ? `(‘${expT}’ 등)` : ""}으로 지원서 문장 세 줄의 뼈대를 만들어 줍니다. 기록에 없는 내용은 지어 넣지 않고 빈칸으로 남겨요.`, "공고마다 처음부터 다시 쓰지 않아도 되고, 사실과 다른 문장이 섞이지 않아요."],
     ["메모를 경험 기록으로", nExp ? `지금 적어 둔 경험 ${nExp}건` : "경험 기록", "수업이나 활동을 마치고 메모를 편하게 적으면 경험 기록 양식(한 일 · 직접 정한 것 · 남긴 것)으로 옮겨 줍니다. 저장은 직접 확인한 뒤에 해요.", "기록이 쌓이면 현재 상태와 다음 할 일도 그 기록에 맞게 바뀝니다."],
     ["마감 챙기기", "지원하려는 공고", "붙여 둔 공고의 마감을 D-day로 보여 주고, 휴대폰 달력에 한 번에 넣을 수 있어요. 한 주에 한 번 메일로 브리핑을 받을 수도 있습니다.", "마감을 놓쳐 지원 기회를 잃는 일을 줄여 줍니다."],
   ];
-  const tbl = `<table class="tb tb-xs"><thead><tr><th style="width:15%">${L("하는 일", "What it does")}</th><th style="width:22%">${L("이 책과 이어지는 곳", "Where it connects in this book")}</th><th>${L("MAT에서는", "In MAT")}</th><th style="width:24%">${L("좋은 점", "Why it helps")}</th></tr></thead><tbody>${rows.map(([a, b, c, e]) => `<tr><td><b>${E(a)}</b></td><td class="mut">${E(b)}</td><td>${E(c)}</td><td>${E(e)}</td></tr>`).join("")}</tbody></table>`;
+  const tbl = `<table class="tb tb-xs"><thead><tr><th style="width:15%">${L("하는 일", "What it does")}</th><th style="width:22%">${L("이 결과지와 이어지는 곳", "Where it connects in this book")}</th><th>${L("MAT에서는", "In MAT")}</th><th style="width:24%">${L("좋은 점", "Why it helps")}</th></tr></thead><tbody>${rows.map(([a, b, c, e]) => `<tr><td><b>${E(a)}</b></td><td class="mut">${E(b)}</td><td>${E(c)}</td><td>${E(e)}</td></tr>`).join("")}</tbody></table>`;
   return { keep: true, ...P(L("MAT와 이어 가기", "Keep going with MAT"),
     T(L("이 계획은 AI 취업비서 MAT에서 매주 이어서 챙길 수 있습니다", "You can follow this plan week by week with MAT, the AI career assistant"),
-      L("MAT는 내 CareerMatri 안에 있는 AI 취업비서예요. 이 책에서 정한 할 일과 적어 둔 경험 기록을 그대로 이어받아, 매주 무엇을 할지와 공고 마감을 챙겨 줍니다.",
+      L("MAT는 내 CareerMatri 안에 있는 AI 취업비서예요. 이 결과지에서 정한 할 일과 적어 둔 경험 기록을 그대로 이어받아, 매주 무엇을 할지와 공고 마감을 챙겨 줍니다.",
         "MAT is the AI career assistant inside My CareerMatri. It picks up the tasks set in this book and the experience records you have saved, and keeps track of what to do each week and when postings close.")) +
     tbl +
     /* 브리핑이 실제로 어떻게 서는지 그 사람의 결과로 채워 보여 준다. 공고는 아직 붙이지 않았으므로 마감 칸은 비워 둔다 */
-    `${H(L("이번 주 브리핑은 이렇게 보입니다", "What your weekly briefing looks like"), L("예시 · 이 책의 결과로 채움", "Example · filled from this book"))}<div class="g3">
+    `${H(L("이번 주 브리핑은 이렇게 보입니다", "What your weekly briefing looks like"), L("예시 · 이 결과지의 결과로 채움", "Example · filled from this book"))}<div class="g3">
       ${note(L("가까운 마감", "Upcoming deadlines"), L("공고를 붙여 두면 마감이 가까운 순서로 D-day와 함께 여기에 나옵니다.", "Once you save postings, their deadlines appear here with D-day, nearest first."))}
       ${note(L("이번 주 할 일 하나", "One task this week"), E(head0 ?? L("검사 결과에서 나온 할 일 가운데 하나", "One task from your results")))}
       ${note(L("여러 공고가 함께 요구하는 빈칸", "Gaps several postings share"), E(gapName ? L(`예: ${gapName}`, `e.g. ${gapName}`) : L("공고를 둘 이상 붙이면 여기에 모입니다", "Appears once you save two or more postings")), true)}
@@ -382,17 +386,17 @@ export function sourcesPage(x: Inputs, d: X, regionSources: string[]): Page {
   }
   const gs = x.guide.status === "OK" ? "직무 여덟 개의 일반 안내" : x.guide.status === "PARTIAL" ? `직무 ${Object.keys(x.guide.roles).length}개의 일반 안내(나머지 직무는 직무 자료만 실음)` : "안내 준비 중(직무 자료만 실음)";
   return A("출처와 확인 범위",
-    T("이 책에 쓴 자료와 쓰지 않은 자료", "결과는 내 응답과 경험 기록, 전공 사전으로만 만들었고, 일반 안내와 공개 자료는 읽을거리로만 붙였어요.") +
+    T("이 결과지에 쓴 자료와 쓰지 않은 자료", "결과는 내 응답과 경험 기록, 전공 안내 자료으로만 만들었고, 일반 안내와 공개 자료는 읽을거리로만 붙였어요.") +
     `<table class="tb tb-s"><thead><tr><th>자료</th><th>무엇에 썼나</th><th>기준</th></tr></thead><tbody>
-      <tr><td><b>CareerMatri 검사 응답 · 결과</b></td><td>판단 단계, 영역 나눔(강점 영역 등), 비어 있는 판단, 할 일</td><td>${E(x.answeredOn)} 응답, 고정된 결과</td></tr>
+      <tr><td><b>CareerMatri 검사 응답 · 결과</b></td><td>판단 단계, 영역 나눔(강점 영역 등), 비어 있는 판단, 할 일</td><td>${E(x.answeredOn)} 응답, 그날 저장된 결과</td></tr>
       <tr><td><b>내 경험 기록</b></td><td>경험 시간표, 응답과 맞춰 보기, 자기소개서 재료</td><td>결과가 나온 ${E(x.builtOn)}까지 저장된 기록 ${x.exps.length}건</td></tr>
-      <tr><td><b>${E(x.major)} 전공 사전</b></td><td>영역의 일 흐름, 결과물, 공고 이름, 경계, 조직 유형</td><td>결과와 함께 저장된 판본</td></tr>
-      <tr><td><b>${E(x.major)} 직무 · 산업 자료</b></td><td>직무와 산업이 쓰는 영역, 묻는 판단</td><td>결과와 함께 저장된 판본</td></tr>
+      <tr><td><b>${E(x.major)} 전공 안내 자료</b></td><td>영역의 일 흐름, 결과물, 공고 이름, 경계, 조직 유형</td><td>결과와 함께 저장된 자료</td></tr>
+      <tr><td><b>${E(x.major)} 직무 · 산업 자료</b></td><td>직무와 산업이 쓰는 영역, 묻는 판단</td><td>결과와 함께 저장된 자료</td></tr>
       <tr><td><b>직무 일반 안내</b></td><td>${E(gs)}</td><td>검사와 결과 계산에는 쓰지 않음</td></tr>
       ${regionSources.map((s) => `<tr><td><b>지역 자료</b></td><td>${E(s)}</td><td>공개 자료</td></tr>`).join("")}
     </tbody></table>` +
     H("싣지 않은 것") + `<div class="two"><div>${ul(["제3자 기업정보 서비스의 신용·재무 자료", "채용 계획, 채용 인원, 근무지", "보도로만 확인한 사업장"])}</div><div>${ul(["내 학번과 연락처", "임금과 연봉 정보"])}</div></div>` +
-    band("판본", "검사지, 판단 규칙, 결과 판본이 이 결과와 함께 저장되어 있어서 같은 응답을 넣으면 언제든 같은 결과가 다시 나옵니다."));
+    band("판본", "검사지, 판단 기준, 결과 버전이 이 결과와 함께 저장되어 있어서 같은 응답을 넣으면 언제든 같은 결과가 다시 나옵니다."));
 }
 
 /** 결과가 만들어지는 길 그림의 색. 그림과 읽는 법이 같은 값을 쓴다 */
@@ -433,8 +437,8 @@ export function methodPage(x: Inputs, d: X): Page {
     </div>` +
     H("결과가 만들어지는 길") + chain(steps.map((s, i) => ({ ...s, color: PATH_C[i] })), { width: 700, height: 118 }) +
     howto([["상자 머리", "걸음 이름"], ["상자 안 글", "그 걸음에서 하는 일"], ["화살표", "앞 걸음의 결과를 받아 다음 걸음으로 넘어가는 차례"]],
-      "왼쪽 내 응답에서 시작해 오른쪽 할 일까지, 이 책의 결과가 만들어지는 차례예요. 색은 걸음을 구분하려고 칠했고 따로 뜻은 없어요.") +
-    H("검증 상태") + `<p>문항 설계와 판정 규칙의 내부 점검은 마쳤고, 지금은 전공자 검토와 실제 학생을 대상으로 한 시범 운영을 하고 있습니다. 시범 운영 결과가 나오면 판본 정보와 함께 공개할 예정이며, 그 전까지는 이 검사를 ‘검증된 검사’로 소개하지 않습니다.</p>`);
+      "왼쪽 내 응답에서 시작해 오른쪽 할 일까지, 이 결과지의 결과가 만들어지는 차례예요. 색은 걸음을 구분하려고 칠했고 따로 뜻은 없어요.") +
+    H("검증 상태") + `<p>문항 설계와 판단 기준의 내부 점검은 마쳤고, 지금은 전공자 검토와 실제 학생을 대상으로 한 시범 운영을 하고 있습니다. 시범 운영 결과가 나오면 버전 정보와 함께 공개할 예정이며, 그 전까지는 시범 운영 중인 검사입니다.</p>`);
 }
 
 export function wordsPage(x: Inputs, d: X): Page {
@@ -477,7 +481,7 @@ export function wordsPage(x: Inputs, d: X): Page {
     ["매출액 · 영업이익", "매출액은 판 금액의 합, 영업이익은 본업에서 남긴 돈. 공시 숫자는 억 원 단위로 반올림했어요."],
     ["다시 검사", "같은 검사를 다시 보아 지난 결과와 영역별로 나란히 놓고 보는 일. 지난 결과는 그대로 남아요."],
   ];
-  return A("용어 풀이", T("이 책에서 처음 보는 말을 풀었습니다") + `<dl class="dl">${ws.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join("")}</dl>`);
+  return A("용어 풀이", T("이 결과지에서 처음 보는 말을 풀었습니다") + `<dl class="dl">${ws.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join("")}</dl>`);
 }
 
 export function closePage(x: Inputs, d: X): Page {
@@ -500,12 +504,12 @@ export function closePage(x: Inputs, d: X): Page {
       L("가장 먼저 끝낼 할 일과 그때 남길 결과물을 다시 모았어요. 하나 끝낼 때마다 내 CareerMatri 경험 기록에 올려 두면, 지금 상태가 어떻게 달라졌는지 바로 볼 수 있습니다.",
         "Here are the first tasks to finish and the deliverables they leave you with. Each time you finish one, add it to your experience records in My CareerMatri, and you can see right away how your current state has changed.")) +
     (acts.length ? `<table class="tb tb-s"><thead><tr><th style="width:11%">${L("때", "When")}</th><th>${L("할 일", "Task")}</th><th style="width:30%">${L("남길 것", "Deliverable")}</th></tr></thead><tbody>${acts.map((a) => `<tr><td>${E(HORIZON_DAYS[a.horizon])}</td><td><b>${E(actionHead(a, actDn(a, d)))}</b></td><td>${E(actionOutput(a, actDef(a, d)))}</td></tr>`).join("")}</tbody></table>` : "") +
-    (recap.length ? H(L("이 책에서 가져갈 것", "What to take from this report")) + `<div class="${recap.length === 3 ? "g3" : recap.length === 2 ? "g2" : ""}">${recap.join("")}</div>` : "") +
+    (recap.length ? H(L("이 결과지에서 가져갈 것", "What to take from this report")) + `<div class="${recap.length === 3 ? "g3" : recap.length === 2 ? "g2" : ""}">${recap.join("")}</div>` : "") +
     (en
       ? `<div class="close-box"><p class="k">${issuer}</p><h3>${E(x.person)}, these results come to you first</h3><p>An organization receives your individual result only if you agree. Otherwise it sees only totals for groups of five or more people.</p></div>` +
         `<div class="two">${note("Look at again in a month", ul(["The deliverable from your 30-day task", "The weekly check-in sheet you filled in", "One new experience record"]))}${note("Keep going on the platform", ul(["Add deliverables to your experience records", "See which decisions changed in My CareerMatri", "Take the same assessment again in 12 months"]), true)}</div>`
       : `<div class="close-box"><p class="k">${issuer}</p><h3>결과는 ${E(x.person)} 님이 먼저 받습니다</h3><p>기관에는 내가 동의한 경우에만 개인 결과가 가고, 그 밖에는 다섯 명 이상이 모인 집계만 가요.</p></div>` +
-        `<div class="two">${note("한 달 뒤에 다시 볼 것", ul(["30일 할 일로 남긴 결과물", "적어 둔 주간 점검표", "새로 적은 경험 기록 한 건"]))}${note("플랫폼에서 이어 하기", ul(["경험 기록에 결과물 올리기", "MAT 이번 주 브리핑에서 할 일과 마감 확인하기", "내 CareerMatri에서 바뀐 판단 확인하기", "12개월 뒤 같은 검사로 다시 보기"]), true)}</div>`)) };
+        `<div class="two">${note("한 달 뒤에 다시 볼 것", ul(["30일 할 일로 남긴 결과물", "적어 둔 주간 점검표", "새로 적은 경험 기록 한 건"]))}${note("플랫폼에서 이어 하기", ul(["경험 기록에 결과물 올리기", ...(MAT_PUBLIC ? ["MAT 이번 주 브리핑에서 할 일과 마감 확인하기"] : []), "내 CareerMatri에서 바뀐 판단 확인하기", "12개월 뒤 같은 검사로 다시 보기"]), true)}</div>`)) };
 }
 
 export const ch7 = { prioPages, ganttPage, longPage, researchPage, weeklyPage, matPage };

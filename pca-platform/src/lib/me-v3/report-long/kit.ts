@@ -31,12 +31,14 @@ export const ZC: Record<string, string> = {
   Z1_EVIDENCE_ESTABLISHED: PAL.blue, Z2_EVIDENCE_INCOMPLETE: PAL.teal, Z3_EVIDENCE_LOW_INTEREST: PAL.violet,
   Z4_INSUFFICIENT_EVIDENCE: PAL.amber, NOT_EXPLORED: "#cfd5df",
 };
-export const IC: Record<string, string> = { HIGH: PAL.coral, MID: "#f5a8b6", LOW: "#e9ecf2" };
+/* 관심 낮음 띠가 흰 바탕에 보이지 않던 것을 회색으로(2026-11-02 운영 시험) */
+export const IC: Record<string, string> = { HIGH: PAL.coral, MID: "#f5a8b6", LOW: "#aab4c5" };
 
 export const T = (title: string, dek?: string) => `<div class="ph"><h1>${title}</h1>${dek ? `<p class="dek">${dek}</p>` : ""}</div>`;
 export const H = (t: string, sub?: string) => `<h3 class="sh">${t}${sub ? `<span>${sub}</span>` : ""}</h3>`;
 export const band = (label: string, text: string) => `<div class="band"><b>${label}</b><span>${text}</span></div>`;
-export const tag = (t: string, color?: string) => `<span class="tag" style="${color ? `background:${color}` : ""}">${E(t)}</span>`;
+/* 색 바탕 이름표는 글자를 흰색으로(2026-11-02 운영 시험: 초록 바탕에 초록 글씨라 읽히지 않았다) */
+export const tag = (t: string, color?: string) => `<span class="tag" style="${color ? `background:${color};color:#fff` : ""}">${E(t)}</span>`;
 export const zoneTag = (z: string) => `<span class="ztag" style="--z:${ZC[z] ?? "#c9ced8"}">${E(ZONE_WORD[z as ZoneKey]?.tag ?? "")}</span>`;
 export const pip = (lv: Level | null) => lv == null
   ? `<span class="pp na">${notAsked()}</span>`
