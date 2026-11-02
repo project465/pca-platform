@@ -9,7 +9,9 @@ import { uploadForDraft, type UploadState } from "../../me/experience/actions";
  * 원본을 두지 않고, 읽은 것은 저장되지 않은 초안이며, 학생이 열어 확인하고 저장해야 기록이 된다.
  * 동의 칸을 켜야 고르는 칸이 열린다(파일에는 이름 · 학번 · 생년월일이 찍혀 있다).
  */
-export function MatFileDrop({ consented, used, cap, pending }: {
+export function MatFileDrop({ ready = true, consented, used, cap, pending }: {
+  /** 서비스 쪽에서 파일 읽기가 열려 있는가(키). 꺼져 있으면 동의 칸 · 고르는 칸을 막는다 */
+  ready?: boolean;
   consented: boolean; used: number; cap: number; pending: { id: string; title: string }[];
 }) {
   const [state, act, busy] = useActionState<UploadState, FormData>(uploadForDraft, null);
@@ -17,21 +19,25 @@ export function MatFileDrop({ consented, used, cap, pending }: {
   const form = useRef<HTMLFormElement>(null);
   const left = Math.max(0, cap - (state?.used ?? used));
   const list = state?.ok ? state.drafts : pending;
+  const on = ready && agree;
   return (
     <>
+      {/* 동의 칸은 폼 **밖**에 둔다: 올린 뒤 폼이 다시 그려져도 체크가 풀리지 않는다(2026-11-02 운영 시험).
+          서버로는 아래 숨은 칸이 간다 */}
+      {ready && !consented ? (
+        <label className="mt-agree">
+          <input type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} />
+          <span>파일 내용(이름 · 학번 · 생년월일 포함)을 Anthropic(미국)의 Claude가 읽는 데 동의해요. 원본은 저장하지 않아요.</span>
+        </label>
+      ) : null}
       <form ref={form} action={act} className="mt-form">
-        {!consented ? (
-          <label className="mt-agree">
-            <input type="checkbox" name="consent" value="1" checked={agree} onChange={(e) => setAgree(e.target.checked)} />
-            <span>파일 내용(이름 · 학번 · 생년월일 포함)을 Anthropic(미국)의 Claude가 읽는 데 동의해요. 원본은 저장하지 않아요.</span>
-          </label>
-        ) : null}
-        <label className={`mt-drop${agree ? "" : " is-off"}`}>
-          <input type="file" name="file" hidden disabled={!agree || busy}
+        <input type="hidden" name="consent" value={agree ? "1" : ""} />
+        <label className={`mt-drop${on ? "" : " is-off"}`} aria-disabled={!on}>
+          <input type="file" name="file" hidden disabled={!on || busy}
             accept="application/pdf,image/jpeg,image/png,image/webp"
             onChange={(e) => { if (e.target.files?.length) form.current?.requestSubmit(); }} />
-          <b>{busy ? "읽는 중 · 10~30초" : agree ? "파일 고르기" : "동의하면 열려요"}</b>
-          <span>성적증명서 · 수료증 · 자격증 · 상장 · PDF · JPG · PNG · 이번 달 {left}번 남음</span>
+          <b>{!ready ? "파일 읽기는 준비 중이에요" : busy ? "읽는 중 · 10~30초" : agree ? "파일 고르기" : "동의하면 열려요"}</b>
+          <span>{ready ? `성적증명서 · 수료증 · 자격증 · 상장 · PDF · JPG · PNG · 이번 달 ${left}번 남음` : "위 메모 칸에 적어 주시면 같은 초안이 만들어져요"}</span>
         </label>
       </form>
       {state && !state.ok ? <p className="mt-alert" role="alert">{state.msg}</p> : null}

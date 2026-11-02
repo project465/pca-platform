@@ -27,6 +27,23 @@
 .mt a { color: inherit; }
 .mt-frame { max-width: 480px; margin: 0 auto; padding: 20px 16px calc(88px + env(safe-area-inset-bottom)); }
 
+/* ── CareerMatri 느낌(2026-11-02 대표 "MAT도 커리어매트리 느낌"): 로그인 화면과 같은 남색 머리띠 · 연한 바탕 위
+      흰 둥근 카드 · 파랑/초록/보라 색 카드 · 큰 파란 단추. 말투(사람 말)와 앱 색(남색 글씨 · 파랑)은 그대로 ── */
+.mt { background: #f3f6fb; }
+.mt-head { background: #1e2a3e; color: #fff; padding-top: env(safe-area-inset-top); }
+.mt-head-in { max-width: 480px; margin: 0 auto; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.mt .mt-brand { display: inline-flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-size: 19px; font-weight: 800; letter-spacing: -.02em; min-height: 44px; }
+.mt .mt-brand .sf-brand-mark { width: 30px; height: 30px; }
+.mt .mt-zone { display: inline-flex; align-items: center; min-height: 32px; padding: 0 12px; border-radius: 999px; background: rgba(255,255,255,.12); color: #dfe6f2; font-size: 13px; font-weight: 700; letter-spacing: .04em; text-decoration: none; }
+.mt-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 16px 0 4px; }
+.mt .mt-tile { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-height: 104px; padding: 12px; border-radius: 16px; color: #fff; text-decoration: none; background: linear-gradient(160deg, #3d7bff, #1f55e0); box-shadow: 0 8px 20px rgba(31, 85, 224, .18); }
+.mt .mt-tile.is-green { background: linear-gradient(160deg, #17a884, #0b7f66); box-shadow: 0 8px 20px rgba(11, 127, 102, .18); }
+.mt .mt-tile.is-violet { background: linear-gradient(160deg, #8c6cf5, #6544de); box-shadow: 0 8px 20px rgba(101, 68, 222, .18); }
+.mt-tile-ico { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; background: rgba(255,255,255,.2); }
+.mt .mt-tile b { color: #fff; font-size: 14.5px; font-weight: 700; letter-spacing: -.01em; }
+.mt .mt-tile small { display: block; font-size: 12px; line-height: 1.4; color: rgba(255,255,255,.92); }
+.mt .mt-tile:focus-visible { outline: 3px solid #2f6bff; outline-offset: 3px; }
+
 /* 머리 */
 .mt-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 4px 0 14px; }
 .mt-week { font-size: 14px; color: var(--mt-sub); text-decoration: none; }
@@ -167,3 +184,11 @@ a.mt-chip-btn { text-decoration: none; color: var(--mt-ink); }
 .mt-more { margin-top: 14px; border: 1px solid var(--mt-line); border-radius: var(--mt-rb); }
 .mt-more > summary { cursor: pointer; padding: 12px 16px; font-size: 15px; color: var(--mt-body); min-height: 44px; }
 .mt-more > .mt-list { border: 0; border-top: 1px solid var(--mt-line); border-radius: 0; }
+
+/* 흰 둥근 카드: 목록 · 상자 · 요약은 연한 바탕 위에 흰 카드로 선다 */
+.mt-list, .mt-box, .mt-stage, .mt-diag, .mt-box-link { background: #fff; border-color: #e6ebf3; border-radius: 16px; box-shadow: 0 1px 2px rgba(17, 30, 60, .04), 0 6px 18px rgba(17, 30, 60, .05); }
+.mt-empty { background: #fff; border-radius: 16px; }
+/* 큰 파란 단추: 주 단추는 꽉 찬 파랑, 높이 52 */
+.mt-btn.is-main { min-height: 52px; border-radius: 12px; background: #2f6bff; border-color: #2f6bff; font-weight: 700; }
+.mt-btn.is-main:hover { background: #1f55e0; border-color: #1f55e0; }
+.mt-btn { border-radius: 12px; }

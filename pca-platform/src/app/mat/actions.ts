@@ -12,6 +12,7 @@ import { analyzePosting, livePostingOf, reanalyzePosting, type PostingAnalysis, 
 import { smallTasks, taskBody } from "@/lib/assistant/prep";
 import { SOURCE_KO } from "@/lib/mat/stage";
 import { setAiConsent, setEmailDigest } from "@/lib/assistant/settings";
+import { draftExperience } from "@/lib/assistant/draft";
 import { opFail, ref } from "@/lib/oplog";
 import { moveAction } from "../me/next/actions";
 
@@ -77,6 +78,26 @@ export async function matAnalyzeJob(form: FormData): Promise<void> {
   if (!id) redirect("/mat/jobs?e=save");
   revalidatePath("/mat");
   redirect(`/mat/jobs/${id}`);
+}
+
+/**
+ * 파일 대신 **메모로 경험 초안 만들기**(MAT 경험 파일 화면). 파일 읽기가 꺼져 있을 때 같은 화면에서 쓴다
+ * (2026-11-02 운영 시험: "메모로 적어 주세요" 라는데 메모 칸이 없었다). 웹 작업공간의 메모와 같은 동작
+ */
+export async function matMemoDraft(form: FormData): Promise<void> {
+  const user = await requireUser();
+  const r = await canUseMat(user.id, "draft");
+  if (!r.ok) redirect(r.why === "needtest" ? "/mat?e=needtest" : "/mat/pass?e=free");
+  const note = String(form.get("note") ?? "").trim().slice(0, 4000);
+  if (note.length < 10) redirect("/mat/files?e=memo#memo");
+  let id = "";
+  try {
+    id = (await draftExperience(user.id, note)).id;
+  } catch (e) {
+    opFail({ operation: "assistant.draft", ref: ref("user", user.id), step: "mat.memo", category: "db" }, e);
+  }
+  if (!id) redirect("/mat/files?e=save#memo");
+  redirect(`/me/experience/new?draft=${id}`);
 }
 
 /** 모을 때 단 전공 · 영역(많이 걸린 차례) · 직무 이름 */

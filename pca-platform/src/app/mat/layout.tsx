@@ -4,6 +4,23 @@ import { notFound, redirect } from "next/navigation";
 import { currentUser } from "@/lib/session";
 import { matVisible } from "@/lib/mat-public";
 import { MatTabs } from "./tabs";
+import Link from "next/link";
+import { BrandMark } from "@/components/sf/brand-mark";
+
+/**
+ * CareerMatri 머리띠(2026-11-02 대표 "MAT도 커리어매트리 느낌 나도록"): 로그인 화면과 같은 남색 띠 ·
+ * 파란 M 로고 · CareerMatri 글자. MAT 은 그 아래 구역 이름으로만 작게 선다
+ */
+function MatHead() {
+  return (
+    <header className="mt-head">
+      <div className="mt-head-in">
+        <Link href="/me" className="mt-brand"><BrandMark size={28} className="sf-brand-mark" /><span>CareerMatri</span></Link>
+        <Link href="/mat" className="mt-zone">MAT</Link>
+      </div>
+    </header>
+  );
+}
 
 /**
  * MAT 화면(`/mat`, 2026-11-01 대표 결정: 예상 화면 7장 · CareerMatri 앱과 같은 색 · AI 느낌 금지).
@@ -30,7 +47,7 @@ export default async function MatLayout({ children }: { children: React.ReactNod
      넘기고, 그 화면은 담당자 로그인을 받지 않아 로그인으로 돌아갔다(2026-11-02 운영 시험). 안내를 세운다 */
   if (user.scope === "staff") {
     return (
-      <div className="mt"><div className="mt-frame">
+      <div className="mt"><MatHead /><div className="mt-frame">
         <h1 className="mt-h1">MAT은 학생 · 개인 계정 화면입니다</h1>
         <p className="mt-lead">지금은 운영자(담당자) 계정으로 들어와 있습니다. MAT은 검사 결과가 있는 학생 · 개인 계정으로 봅니다.
           공개 전 확인은 운영자 화면에서 넣은 미리보기 계정으로 로그인해 주세요.</p>
@@ -41,6 +58,7 @@ export default async function MatLayout({ children }: { children: React.ReactNod
   }
   return (
     <div className="mt">
+      <MatHead />
       <div className="mt-frame">
         {children}
         <MatTabs />

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Icon } from "@/components/sf/icon";
 import { matTitle } from "@/lib/mat/title";
 import { requireUser } from "@/lib/session";
 import { queryOne } from "@/lib/db";
@@ -83,6 +84,22 @@ export default async function MatHome() {
         {st.model ? <Link className="mt-link" href="/me/results">결과지 보기</Link> : <Link className="mt-link" href="/cores">검사 시작</Link>}
       </section>
 
+      {/* 주요 묶음 셋. 로그인 화면의 색 카드(파랑 · 초록 · 보라)와 같은 말씨 */}
+      <nav className="mt-tiles" aria-label="MAT 바로 가기">
+        <Link href="/mat/jobs" className="mt-tile is-blue">
+          <span className="mt-tile-ico"><Icon name="search" size={18} /></span>
+          <b>공고</b><small>전공에 맞는 공고와 맞춰 보기</small>
+        </Link>
+        <Link href="/mat/files" className="mt-tile is-green">
+          <span className="mt-tile-ico"><Icon name="doc" size={18} /></span>
+          <b>경험 · 파일</b><small>경험 적기 · 증명서 올리기</small>
+        </Link>
+        <Link href="/mat/draft" className="mt-tile is-violet">
+          <span className="mt-tile-ico"><Icon name="send" size={18} /></span>
+          <b>지원서 · 상담</b><small>문장 뼈대 · 면접 연습 · 상담</small>
+        </Link>
+      </nav>
+
       {tips.length ? (
         <>
           <h2 className="mt-h2">이번 주 확인할 것</h2>
@@ -127,9 +144,6 @@ export default async function MatHome() {
       ) : (
         <p className="mt-empty">모아 둔 공고가 아직 없어요.</p>
       )}
-      <Link href="/mat/files" className="mt-row mt-row-link mt-box-link">
-        <div className="mt-row-b"><p>경험 파일 올리기</p><small>성적증명서 · 수료증 · 자격증</small></div>
-      </Link>
       {fromJi ? <p className="mt-src">공고 출처 잡인더스트리 · 회사 이름은 원문에서</p> : null}
       {ask.ok ? <MatAsk /> : null}
     </main>
