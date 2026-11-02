@@ -94,7 +94,7 @@ export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
         ? `<tr><td colspan="3" class="mut">같은 산업에 ${rw.n}곳이 더 있습니다. ${E(rw.g.orgs.slice(CAP).map((o) => short(o.name)).slice(0, 14).join(" · "))}${rw.n > 14 ? " 등" : ""}</td></tr>`
         : rw.kind === "g"
         ? `<tr class="sj-g"><td colspan="3"><b>${E(rw.g.pack.name_ko)} · ${rw.g.orgs.length}곳</b><span>${E(why(x, rw.g))}</span><em>해 볼 것: ${E(themeTry(rw.g))}</em></td></tr>`
-        : `<tr><td><b>${E(rw.o.name)}</b>${rw.o.listed ? ` <span class="sj-l">${E(rw.o.listed)}</span>` : ""}</td><td>${E(cut(sector(rw.o.sector), 22))}</td><td class="mut">${E(cut(okOr(rw.o.product) || (rw.o.listed ? "사업보고서 ‘사업의 개요’에서 확인" : "명단에 품목이 적혀 있지 않음"), 34))}</td></tr>`).join("")}</tbody></table>` +
+        : `<tr><td><b>${E(rw.o.name)}</b>${rw.o.listed ? ` <span class="sj-l">${E(rw.o.listed)}</span>` : ""}</td><td>${E(cut(sector(rw.o.sector), 22))}</td><td class="mut">${E(cut(okOr(rw.o.product) || (rw.o.listed ? "" : "명단에 품목이 적혀 있지 않음"), 34))}</td></tr>`).join("")}</tbody></table>` +
       (k === all.length - 1 && rest.length ? `<p class="mut sm">나머지 ${rest.length}개 산업(${E(rest.map((g) => `${g.pack.name_ko} ${g.orgs.length}곳`).join(" · "))})은 이 장 첫 쪽 그래프에 회사 수만 적었습니다.</p>` : ""))));
   }
   const cg = r.groups.filter((g) => g.tier === "C");

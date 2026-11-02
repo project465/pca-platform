@@ -84,7 +84,8 @@ const THEMES: { key: string; org: RegExp; pack?: RegExp; try: string }[] = [
   { key: "소재·화학", org: /소재|화학|재료|고분자|코팅|필름|합성|도료|접착|세라믹|플라스틱|유리|금속|종이|펄프/, try: "주력 소재가 어느 제품에 들어가는지, 그 소재에서 따지는 물성이 무엇인지 하나만 찾아 적어 보세요" },
   { key: "소프트웨어·데이터", org: /소프트웨어|데이터|정보|플랫폼|인공지능|보안|클라우드|프로그램|전산|시스템 통합|(^|[^a-z])ai([^a-z]|$)/i, pack: /소프트웨어|플랫폼|인공지능|클라우드|전산|정보화|정보 ?시스템|개발자|서비스 기획|앱|웹 서비스/, try: "그 회사 서비스를 직접 써 본 뒤, 고치고 싶은 기능 하나와 그렇게 생각한 근거를 적어 보세요" },
   { key: "의약·바이오", org: /바이오|의약|진단|생명|제약|백신|시약|의료용 물질|건강기능/, pack: /바이오|의약|생명과학|제약|백신|시약|건강기능|체외진단|진단 ?키트/, try: "주력 제품 하나의 허가 기준이나 품질 기준을 찾아, 실험이나 실습에서 지켜 본 기준 옆에 적어 보세요" },
-  { key: "식품", org: /식품|식료품|음료|제과|빵|육가공|급식|조리|발효|농산물/, try: "주력 제품 하나의 원료와 표시 사항을 찾아, 실습에서 다뤄 본 공정 옆에 적어 보세요" },
+  /* 묶음 쪽은 `소비재` 도 받는다: 경영의 `소비재·유통` 에 식품 회사(로쏘 · 성심당)가 들어가야 한다(2026-11-02 시험) */
+  { key: "식품", org: /식품|식료품|음료|제과|빵|육가공|급식|조리|발효|농산물/, pack: /식품|식료품|음료|제과|소비재|생활용품/, try: "주력 제품 하나의 원료와 표시 사항을 찾아, 실습에서 다뤄 본 공정 옆에 적어 보세요" },
   { key: "화장품·뷰티", org: /화장품|미용|뷰티|네일|헤어|피부/, try: "주력 제품 하나를 골라 성분 표시와 누구를 위한 제품인지 찾아 정리해 보세요" },
   { key: "패션·섬유", org: /의류|의복|섬유|봉제|패션|직물|원단/, try: "주력 상품 하나가 어떤 소재로 어떻게 만들어지는지 찾아 한 줄로 적어 보세요" },
   { key: "의료기기", org: /의료(용)? ?기기|의료·정밀|광학기기|정밀기기/, try: "주력 기기 하나가 무엇을 재는지, 병원이나 현장에서 누가 쓰는지 찾아 적어 보세요" },
@@ -252,7 +253,9 @@ export function regionView(x: Inputs, name: (td: string) => string): RegionView 
   const overview = (ov?.orgs ?? []).filter((o) => ovNames.has(bare(o.name))).map((o) => ({ name: o.name, report: o.report, dt: o.rcept_dt, url: o.url, excerpt: o.excerpt }));
 
   const publicOrgs = all.filter((o) => /공사|공단/.test(o.name) && !o.listed);
-  const listed = all.filter((o) => o.listed && o.fin);
+  /* 상장사 표 · 매출 막대에 싣는 회사. **이 장의 묶음에 넣은 회사만**(아래 `mine`)이다: "나머지 n곳은 싣지
+     않았습니다" 라고 적고 표에 그 회사를 세우던 것을 막는다(2026-11-02 배재대 시험: 계룡건설 · 리가켐) */
+  const listedAll = all.filter((o) => o.listed && o.fin);
 
   /* 회사 → 이 전공의 산업 묶음 하나 */
   const packTh = x.inds.map((p) => ({ p, th: packThemes(p), head: packHeadThemes(p), tokens: p.name_ko.split(/[·\s/]+/).filter((k) => k.length >= 2 && !GENERIC.test(k)) }));
@@ -276,21 +279,29 @@ export function regionView(x: Inputs, name: (td: string) => string): RegionView 
     const pub = publicOrgs.includes(o);
     if (pub && !packTh.some((t) => PUBLIC_PACK.test(packHead(t.p)))) continue;
     const text = `${o.sector} ${o.product} ${o.name}`;
-    const th = themesOrg(text);
-    let best: { code: string; n: number } | null = null;
+    /* `제조·일반기업` 은 **마지막 자리**다. 제 업종(식료품 · 의약 · 전자)으로 먼저 묶음을 찾고, 그 업종을 받는
+       묶음이 이 전공에 없을 때만 업종명의 `제조업` 으로 `기업간 거래` 같은 묶음에 넣는다(2026-11-02 배재대 시험:
+       로쏘(성심당)가 `소비재·유통` 대신 `기업간 거래` 에 들었다) */
+    const th0 = themesOrg(text);
     const flat = text.replace(/\s/g, "");
-    for (const { p, th: pt, head, tokens } of packTh) {
-      /* 공기업은 공기업·발주청을 다루는 묶음으로만 받는다. `공공` 한 낱말로 수도 공사가 학교 묶음에 들던 것을 막는다 */
-      if (pub && !PUBLIC_PACK.test(packHead(p))) continue;
-      /* 여러 묶음이 함께 가진 업종은 가볍게, 묶음 이름의 낱말이 업종에 그대로 있으면 무겁게 센다.
-         **이름에 걸린 업종이 있는 묶음은 그 업종으로만 받는다**: 시설원예 묶음이 용어의 `센서`
-         두 번으로 전자부품 회사를 받으면 그 학생에게 전압·전류를 읽어 보라는 할 일이 나간다 */
-      const shared = th.filter((t) => pt.includes(t));
-      if (!shared.length) continue;
-      if (head.length && !shared.some((t) => head.includes(t))) continue;
-      const n = shared.reduce((a, t) => a + 1 / (themeUse.get(t) ?? 1), 0) + (tokens.some((k) => flat.includes(k) || (ALIAS[k] ?? []).some((v) => flat.includes(v))) ? 2 : 0);
-      if (!best || n > best.n) best = { code: p.code, n };
-    }
+    const pick = (th: string[]): { code: string; n: number } | null => {
+      let best: { code: string; n: number } | null = null;
+      for (const { p, th: pt, head, tokens } of packTh) {
+        /* 공기업은 공기업·발주청을 다루는 묶음으로만 받는다. `공공` 한 낱말로 수도 공사가 학교 묶음에 들던 것을 막는다 */
+        if (pub && !PUBLIC_PACK.test(packHead(p))) continue;
+        /* 여러 묶음이 함께 가진 업종은 가볍게, 묶음 이름의 낱말이 업종에 그대로 있으면 무겁게 센다.
+           **이름에 걸린 업종이 있는 묶음은 그 업종으로만 받는다**: 시설원예 묶음이 용어의 `센서`
+           두 번으로 전자부품 회사를 받으면 그 학생에게 전압·전류를 읽어 보라는 할 일이 나간다 */
+        const shared = th.filter((t) => pt.includes(t));
+        if (!shared.length) continue;
+        if (head.length && !shared.some((t) => head.includes(t))) continue;
+        const n = shared.reduce((a, t) => a + 1 / (themeUse.get(t) ?? 1), 0) + (tokens.some((k) => flat.includes(k) || (ALIAS[k] ?? []).some((v) => flat.includes(v))) ? 2 : 0);
+        if (!best || n > best.n) best = { code: p.code, n };
+      }
+      return best;
+    };
+    const specific = th0.filter((t) => t !== "제조·일반기업");
+    const best = (specific.length ? pick(specific) : null) ?? (th0.includes("제조·일반기업") ? pick(["제조·일반기업"]) : null);
     if (!best) { unmatched++; continue; }
     const g = byPack.get(best.code) ?? []; g.push(o); byPack.set(best.code, g);
   }
@@ -314,6 +325,7 @@ export function regionView(x: Inputs, name: (td: string) => string): RegionView 
   /* **이 전공의 묶음에 든 회사만 싣는다.** 앞으로 세우기만 하면, 묶음에 든 회사가 하나도 없는 책(반도체물리학
      책에 백신 · 건설 회사)에서는 남의 전공 회사의 사업 개요가 그대로 실린다. 하나도 없으면 그 쪽을 세우지 않는다 */
   const overviewMine = overview.filter((o) => mine.has(bare(o.name)));
+  const listed = listedAll.filter((o) => mine.has(bare(o.name)));
   return {
     key: x.region, label: P.label, area: P.area, checkedOn, sources: [...new Set(sources)],
     all, listed, groups, unmatched, neighbor, publicOrgs, big, overview: overviewMine,

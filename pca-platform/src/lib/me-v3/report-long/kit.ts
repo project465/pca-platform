@@ -56,7 +56,7 @@ export const note = (title: string, body: string, warm = false) => `<div class="
  */
 export const howto = (marks: [string, string][], lead?: string) =>
   `<div class="howto"><b>${L("그래프 읽는 법", "How to read this chart")}</b>${lead ? `<p>${lead}</p>` : ""}<ul>${marks.map(([k, v]) =>
-    `<li>${/^#[0-9a-f]{3,8}$/i.test(k) ? `<i style="background:${k}"></i>` : `<em>${E(k)}</em>`}<span>${v}</span></li>`).join("")}</ul></div>`;
+    `<li>${/^#[0-9a-f]{3,8}$/i.test(k) ? `<i style="background:${k}"></i>` : `<em>${E(k)}</em> `}<span>${v}</span></li>`).join("")}</ul></div>`;
 export const chips = (xs: string[], cls = "") => (xs.length ? `<div class="chips ${cls}">${xs.map((t) => `<span>${E(t)}</span>`).join("")}</div>` : "");
 
 /** 줄 묶음을 쪽 높이에 맞춰 나눈다. 무게는 줄마다 대략의 높이(1 = 한 줄)다 */

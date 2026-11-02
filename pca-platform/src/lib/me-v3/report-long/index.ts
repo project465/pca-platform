@@ -140,7 +140,7 @@ export function assemble(x0: Inputs): { pages: Page[]; notes: string[]; region: 
     T(`${d.counts.domains}개 ${E(j(x.domainWord, "을를"))} 하나씩 열어, 그 일이 어떤 순서로 흘러가는지와 그 안에서 내가 어디까지 해 봤는지 적었어요. 관심 가는 영역부터 펴 보고, 해 본 일인데 빠진 것이 있으면 경험 기록에 더해 보세요.`,
       `Each of the ${d.counts.domains} ${E(x.domainWord)}s is opened up here: how the work usually runs, and how far you have gone in it. Start with the areas you care about, and if something you have done is missing, add it to your experience log.`),
     isEn() ? insideEn(c3.map((p) => p.title)) : [`영역 01~${String(d.counts.domains).padStart(2, "0")}`, ...[...new Set(c3.filter((p) => !p.title.startsWith("영역 ")).map((p) => p.title.replace(/ \(\d+\)$/, "").replace(/^경험 기록 · .*/, "경험 기록 해설")))]],
-    ringArt(false), ringHow(false, T("이 장의 ‘영역 01’부터 이어지는 쪽 번호", "Matches the area numbers used in this chapter"))), ...named([...c3, ...fill[N3] ?? []], N3));
+    ringArt(false), ringHow(false, T("영역 번호. 이 장의 ‘영역 01’부터 같은 번호로 이어져요", "Matches the area numbers used in this chapter"))), ...named([...c3, ...fill[N3] ?? []], N3));
 
   const c4 = ch4Pages(x, d, !rv);
   P.push(chapter("04", N.c4,

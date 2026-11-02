@@ -286,7 +286,7 @@ export function toc(pages: Page[]): Page {
   });
   return {
     part: "", partName: PART0(), title: L("차례", "Contents"),
-    body: T(L("차례", "Contents"), L("장마다 처음 나오는 쪽 이름을 몇 개씩 적었어요. 오른쪽 숫자는 그 장이 시작하는 쪽입니다. 처음이라면 01장 한눈에 보기부터 읽어 보세요.", "For each chapter, we list the first few page titles. The number on the right is the page where the chapter starts. If this is your first time, begin with Chapter 01, At a glance.")) +
+    body: T(L("차례", "Contents"), L("장마다 처음 나오는 쪽 이름을 몇 개씩 적었어요. 오른쪽 숫자는 그 장이 시작하는 쪽입니다. 처음이라면 ‘한눈에 보기’ 장부터 읽어 보세요.", "For each chapter, we list the first few page titles. The number on the right is the page where the chapter starts. If this is your first time, begin with the At a glance chapter.")) +
       `<div class="toc">${starts.map((s) => `<div class="toc-r"><span class="toc-n">${s.no || "··"}</span><div class="toc-b"><b>${E(s.name)}</b><span>${s.titles.map(E).join(" · ")}</span></div><span class="toc-p" data-toc-part="${E(s.name)}">${s.at}</span></div>`).join("")}</div>`,
   };
 }
