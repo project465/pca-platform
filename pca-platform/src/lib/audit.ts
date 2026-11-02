@@ -31,6 +31,8 @@ export const AUDITED = [
   "campus.mat.pool.create", "campus.mat.pool.close", "campus.mat.grant",
   /* 담당자가 한 학생의 학교 MAT 을 닫은 일. 연 일과 짝을 이뤄야 좌석이 어디로 갔는지 맞는다 */
   "campus.mat.revoke",
+  /* 제휴 연결 키 · 받기 상태. 키 값은 적지 않고 키 번호만 */
+  "partner.key.issue", "partner.key.revoke", "partner.status",
 ] as const;
 export type AuditAction = (typeof AUDITED)[number];
 

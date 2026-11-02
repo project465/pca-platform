@@ -153,6 +153,28 @@ export const authConfig: NextAuthConfig = {
         return { id: user.id, name: user.display_name };
       },
     }),
+    /**
+     * **제휴 사이트에서 넘어온 사람의 한 번 로그인**(`lib/partner/link.ts`).
+     *
+     * 받는 것은 한 번 쓰는 링크의 토큰 하나다. 그 링크가 동의 화면을 거쳐 사람이 정해졌을 때만
+     * 통과하고(`user_id` 가 적힌 링크), 통과하는 순간 링크를 쓴 것으로 적는다: 같은 링크로 두 번
+     * 들어오지 못한다. 비밀번호 로그인과 따로 서 있어 위 `Credentials` 의 조건과 섞이지 않는다.
+     */
+    Credentials({
+      id: "partner",
+      name: "partner",
+      credentials: { t: { label: "링크" } },
+      async authorize(raw) {
+        const { consumeHandoff } = await import("@/lib/partner/link");
+        const r = await consumeHandoff(String(raw?.t ?? ""));
+        if (!r) return null;
+        const u = await queryOne<{ id: string; display_name: string; status: string }>(
+          `SELECT id::text, display_name, status FROM users WHERE id = $1`, [r.userId]);
+        if (!u || u.status !== "active") return null;
+        await query(`UPDATE users SET last_login_at = now() WHERE id = $1`, [u.id]);
+        return { id: u.id, name: u.display_name };
+      },
+    }),
   ],
   callbacks: {
     /**

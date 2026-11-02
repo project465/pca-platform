@@ -236,6 +236,8 @@ export async function runAssistantTick(now = new Date()): Promise<{
   users: number; weekly: number; deadline: number; renew: number; match: number; free: number;
   mailed: number; purged: number;
 }> {
+  /* 제휴 링크 가운데 쓰지 않고 만료된 것(넘겨받은 요약이 남아 있을 수 있다)을 지운다. 표가 없으면 0 */
+  await (await import("@/lib/partner/link")).purgeHandoffs().catch(() => 0);
   const users = await query<{ id: string; email_digest: boolean; email: string | null }>(
     `SELECT DISTINCT u.id::text, COALESCE(s.email_digest, false) AS email_digest, u.email
        FROM entitlements e JOIN users u ON u.id = e.user_id

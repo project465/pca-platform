@@ -6,6 +6,9 @@ import { matPasteJob } from "../actions";
 import { TrackBoard } from "../track-board";
 import { applicationsOf } from "@/lib/me-v3/platform";
 import Link from "next/link";
+import { queryOne } from "@/lib/db";
+import type { MatchedPosting } from "@/lib/assistant/match";
+import { SOURCE_KO } from "@/lib/mat/stage";
 
 export const metadata = { title: "공고 · MAT" };
 
@@ -24,9 +27,16 @@ const ERR: Record<string, string> = {
  *
  * "추천" · 합격 가능성 · 점수를 쓰지 않는다. 무엇이 겹쳤는지를 그대로 보인다.
  */
-export default async function MatJobs({ searchParams }: { searchParams: Promise<{ e?: string }> }) {
+export default async function MatJobs({ searchParams }: { searchParams: Promise<{ e?: string; from?: string }> }) {
   const user = await requireUser();
-  const e = (await searchParams).e;
+  const sp = await searchParams;
+  const e = sp.e;
+  /* 제휴 사이트에서 보던 공고를 들고 들어왔으면(`/from/{partner}/enter`) 그 공고를 맨 위에 */
+  const carried = sp.from && /^\d{1,18}$/.test(sp.from)
+    ? await queryOne<MatchedPosting & { raw_requirements: string[] }>(
+      `SELECT id::text, source, source_url, closes_on::text, captured_at::text, region_code, raw_requirements
+         FROM v3_job_postings WHERE id = $1`, [sp.from]).catch(() => null)
+    : null;
   const [jobs, mine, apps] = await Promise.all([
     postingsForMe(user.id, 40).catch(() => null),
     postingsOf(user.id).catch(() => []),
@@ -45,6 +55,15 @@ export default async function MatJobs({ searchParams }: { searchParams: Promise<
           : "아직 겹치는 공고가 없어 새로 들어온 공고부터 보여 드립니다. 경험을 적을수록 겹치는 공고가 생깁니다."}
       </p>
       {e && ERR[e] ? <p className="mt-alert" role="alert">{ERR[e]}</p> : null}
+      {carried ? (
+        <>
+          <h2 className="mt-h2">{SOURCE_KO[carried.source] ?? carried.source}에서 보던 공고</h2>
+          <div className="mt-list" style={{ marginBottom: 8 }}>
+            <JobCard p={{ ...carried, requirements: (carried.raw_requirements ?? []).slice(0, 8), hits: [], tdHits: [] }} />
+          </div>
+          <p className="mt-note">바로 분석을 누르면 이 공고와 내 경험이 얼마나 맞는지부터 보여 드립니다.</p>
+        </>
+      ) : null}
 
       {list.length ? (
         <div className="mt-list">{list.slice(0, 20).map((p) => <JobCard key={p.id} p={p} />)}</div>
