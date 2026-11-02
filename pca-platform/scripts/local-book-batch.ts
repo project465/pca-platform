@@ -134,7 +134,8 @@ async function table(): Promise<void> {
       publicN: (/공공·공기관 · (\d+)곳/.exec(chapter)?.[1]) ?? "0",
       chosenFirst: firstGroup ? `예(${firstGroup[1]})` : goalIndName ? `아니오 · 고른 산업 ${goalIndName} 회사 없음` : "고른 산업 없음",
       goalFirst: rv?.code === m.goalRole ? "예" : "아니오",
-      never: (txt.match(/아직 해 본 적이 없(어요|다고)/g) ?? []).length,
+      /* 면접 재료 칸의 `해 본 적 없음` 만 센다(그 영역 경험을 `없음` 으로 답한 영역 소개 문장은 사실이라 세지 않는다) */
+      never: (txt.match(/아직 해 본 적이 없(어요|다고 답했어요)/g) ?? []).length,
       more: `${evMore("ready")}/${evMore("partial")}`,
       ent: /&(apos|amp|quot|lt|gt|#\d+);/.test(txt) ? "있음" : "없음",
       pages: pagesOf.get(m.attempt)?.pages ?? (txt ? (txt.match(/\f/g) ?? []).length : 0),
@@ -143,7 +144,7 @@ async function table(): Promise<void> {
   };
   const byKey = new Map<string, Awaited<ReturnType<typeof metric>>>();
   for (const m of made) byKey.set(m.key, m.error ? null : await metric(m));
-  const head = ["기관", "학과", "Core", "답안", "영역 수", "01장 지역", "01장 산업별 회사 수", "공공기관 수", "고른 산업이 첫 산업", "목표 직무가 첫째", "'해 본 적 없' 횟수", "이 밖에 N(ready/partial)", "HTML 엔티티", "쪽수", "오류"];
+  const head = ["기관", "학과", "Core", "답안", "영역 수", "01장 지역", "01장 산업별 회사 수", "공공기관 수", "고른 산업이 첫 산업", "목표 직무가 첫째", "면접 재료 '해 본 적 없음' 횟수", "이 밖에 N(ready/partial)", "HTML 엔티티", "쪽수", "오류"];
   const lines: string[][] = [];
   for (const r of rs) for (const style of ["A", "B"] as const) {
     const m = made.find((x) => x.key === `${r.uni}:${r.core}:${style}`);
