@@ -188,11 +188,13 @@ function draftLines(d: X, s: Story, k = 0): [string, string][] {
     ? (v ? `${where}에 참여했을 때 제가 맡은 몫은 ${B()} 부분이었습니다.` : `${where}에서 저는 ${B()} 부분을 맡았습니다.`)
     : `${B(30)} 과제에서 저는 ${E(nm)} 업무 가운데 ${B()} 부분을 맡았습니다.`;
 
-  const did = s.did.slice(0, 2);
+  const eg = (t: string | null) => (t ? ` <span class="mut sm">(예: ${E(t.replace(/[.。]$/, ""))})</span>` : "");
+  /* 검사 답(확인된 판단)으로 지은 장면의 `정한 것` 은 사전 문장이다. 고른 말처럼 밑줄을 긋지 않고 예로만 둔다 */
+  const did = s.from === "answer" ? [] : s.did.slice(0, 2);
   /* 빈칸 뒤에는 받침을 가리지 않는 ‘입니다’ · ‘에서’ · ‘때문’ 만 붙인다. 전에는 ‘쪽이었습니다’ 로 피했는데 초안마다 ‘쪽’ 이 되풀이됐다 */
   const after = v ? `이렇게 정할 때 기준으로 삼은 것은 ${B()}입니다.` : `그때 가장 먼저 따진 조건은 ${B()}입니다.`;
   let decided: string;
-  if (!did.length) decided = `이때 제가 직접 정한 것은 ${B(40)}입니다. 그렇게 정한 까닭은 ${B()} 때문이었습니다.`;
+  if (!did.length) decided = `이때 제가 직접 정한 것은 ${B(40)}입니다. 그렇게 정한 까닭은 ${B()} 때문이었습니다.${s.from === "answer" ? eg(s.did[0] ?? null) : ""}`;
   else {
     const c1 = did.length === 2 ? conn(did[0], "고") : "";
     const c2 = conn(did[did.length - 1], "는데");
@@ -201,17 +203,18 @@ function draftLines(d: X, s: Story, k = 0): [string, string][] {
       : `${did.map((t) => U(polite(t))).join(" ")} ${after}`;
   }
 
+  /* **사전 문장은 학생의 말이 아니다**(2026-11-02 운영 시험: 고르지 않은 "사업계획이나 기획안을 문서로 남겼습니다" 에
+     밑줄이 붙어 고른 말처럼 읽혔다). 밑줄은 고른 항목 · 적은 기록에만 붙이고, 사전 문장은 빈칸 옆 `예:` 로만 둔다 */
   const made = s.artifacts.length
     ? (v ? `결과물로는 ${joinU(s.artifacts, "을를")} 남겼습니다.` : `그렇게 해서 ${joinU(s.artifacts, "을를")} 만들어 남겼습니다.`)
-    : s.made ? U(polite(s.made)) : `남긴 결과물로는 ${B(30)} 같은 문서가 있습니다.`;
+    : `남긴 결과물로는 ${B(30)} 같은 문서가 있습니다.${eg(s.made)}`;
 
   const v0 = s.verifications[0];
   const cmp = s.compared ? conn(s.compared, "는데") : null;
   const changed = v0
     ? (v ? `결과를 ${U(v0)}${josaOf(v0, "과와")} 나란히 놓아 보니 ${B()} 만큼 차이가 났고, 그 차이를 줄이려고 ${B()} 부분을 고쳤습니다.`
       : `${U(v0)}${josaOf(v0, "과와")} 맞춰 보니 ${B()} 부분이 달랐고, 그 까닭은 ${B()} 때문이었습니다.`)
-    : s.compared ? (cmp ? `${U(cmp)}, ${B()} 부분에서 차이가 났습니다.` : `${U(polite(s.compared))} 그 결과 ${B()} 부분이 달라졌습니다.`)
-    : `비교한 대상은 ${B()}입니다. 비교해 보니 ${B()} 부분이 달랐습니다.`;
+    : `비교한 대상은 ${B()}입니다. 비교해 보니 ${B()} 부분이 달랐습니다.${eg(s.compared)}`;
 
   return [["상황", situ], ["정한 것", decided], ["남긴 것", made], ["달라진 것", changed]];
 }

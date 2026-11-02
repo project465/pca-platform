@@ -116,7 +116,15 @@ export function glance(x: Inputs, d: X): Page {
     [L("목표 직무 · 산업", "Target role · Industry"), E(goal)],
     [L("응답", "Your answers"), m.response_quality.flag === "OK" ? L("고르게 답했어요", "No issues found in how you answered") : L("다시 볼 응답이 있어요(02장 끝에서 설명)", "Some answers are worth a second look (explained at the end of Chapter 02)")],
   ] as [string, string][]).filter(([, b]) => b);
-  const head = s0
+  /* **근거 없이 하나를 고르지 않는다**(2026-11-02 운영 시험: 네 영역 값이 같은데 "가장 자신 있게" 가 한 곳을 골랐다).
+     묶음 · 직접 정한 판단 · 확인된 판단이 같은 영역이 둘 이상이면 함께 적고, 강점 영역(근거 갖춤)이 아니면 "해 본 일이
+     가장 많이 나온" 으로만 적는다 */
+  const tie = s0 ? d.strengths.filter((z) => z.zone === s0.zone && z.owned.length === s0.owned.length && z.confirmed.length === s0.confirmed.length) : [];
+  const head = s0 && tie.length > 1
+    ? L(`${tie.map((z) => d.name(z.code)).join(" · ")}에서 해 본 일이 비슷하게 나왔어요`, `Your experience came out about the same in ${tie.map((z) => d.name(z.code)).join(", ")}`)
+    : s0 && s0.zone !== "Z1_EVIDENCE_ESTABLISHED"
+      ? L(`지금 해 본 일이 가장 많이 나온 영역은 ${d.name(s0.code)}입니다`, `${d.name(s0.code)} is where most of your experience showed up`)
+    : s0
     ? L(`지금 가장 자신 있게 말할 수 있는 영역은 ${d.name(s0.code)}입니다`, `${d.name(s0.code)} is the area you can speak about most confidently right now`)
     : L("지금은 어디서부터 경험을 쌓을지 정할 때입니다", "Now is the time to decide where to start building experience");
   const firstA = g0 ? d.actionOf(g0) : undefined;

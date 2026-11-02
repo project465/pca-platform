@@ -12,7 +12,7 @@ import { isEn, setBookLang, T } from "./lang";
 import { loadInputs } from "./data";
 import { loadGuide } from "./guide";
 import { fillPages, partNames } from "./fill";
-import { derive } from "./derive";
+import { derive, withTranslation } from "./derive";
 import { regionView } from "./region";
 import { E, IC, PAL, ZC, chapter, css, howto, packJs, shell, type Page } from "./kit";
 import { about, cover, howToRead, outer, toc } from "./front";
@@ -49,8 +49,10 @@ export type BuildOpts = {
   guide?: "off";
 };
 
-export function assemble(x: Inputs): { pages: Page[]; notes: string[]; region: string | null } {
-  setBookLang(x.lang);
+export function assemble(x0: Inputs): { pages: Page[]; notes: string[]; region: string | null } {
+  setBookLang(x0.lang);
+  /* 지원서 문장 단계의 결과물 · 비교 대상 답을 모든 장이 같은 사실로 읽게 먼저 합친다 */
+  const x = withTranslation(x0);
   const d = derive(x);
   const notes: string[] = [];
   if (x.guide.status !== "OK") notes.push(`직무 안내 ${x.guide.status}${x.guide.note ? `: ${x.guide.note}` : ""}`);

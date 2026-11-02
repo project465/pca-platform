@@ -57,6 +57,32 @@ export const EXP_WORD: Record<string, string> = byLang<Record<string, string>>({
 
 export type Bucket = "A" | "B" | "C" | "D";
 
+/**
+ * **지원서 문장 단계에서 고른 답을 영역 근거에 합친다**(2026-11-02 운영 시험: 학생이 "분석 보고나 결산 자료" 와
+ * "지난 실적과 비교" 를 골랐는데 책 여러 곳이 "결과물은 아직 고르지 않았습니다" · "비교한 대상이 없다면" 이라고
+ * 적었다). 그 답은 03장 한 쪽에서만 읽혔다. 책을 짓기 전에 한 번 합쳐 모든 장이 같은 사실을 읽게 한다.
+ *
+ * 합치는 곳은 그 경험이 닿은 영역(`translation.domains[0]`) 하나다. 측정 · 판정 값(축 상태 · 묶음)은 건드리지
+ * 않는다: 결과물 · 비교 대상 **이름**만 더한다. `비교하지 않았다` 같은 답은 비교 대상으로 넣지 않는다
+ */
+export function withTranslation(x: Inputs): Inputs {
+  const t = x.m.translation;
+  const td = t?.domains?.[0];
+  if (!t || !td) return x;
+  const pick = (id: string) => (t.steps.find((s) => s.item_id === id)?.choice ?? "").trim();
+  const art = pick("TR_T9");
+  const cmp = pick("TR_T6");
+  const noCmp = !cmp || /비교하지\s*않|비교한\s*것이\s*없|없었|didn't compare|did not compare|nothing/i.test(cmp);
+  if (!art && noCmp) return x;
+  const uniq = (xs: string[]) => xs.filter((v, i, a) => v && a.indexOf(v) === i);
+  const domains = x.m.domains.map((d) => (d.code !== td ? d : {
+    ...d,
+    artifacts: uniq([...(art ? [art] : []), ...d.artifacts]),
+    verifications: uniq([...(noCmp ? [] : [cmp]), ...d.verifications]),
+  }));
+  return { ...x, m: { ...x.m, domains } };
+}
+
 export function derive(x: Inputs) {
   const { m } = x;
   const byCode = new Map(m.domains.map((d) => [d.code, d]));

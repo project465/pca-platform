@@ -489,7 +489,8 @@ export function closePage(x: Inputs, d: X): Page {
   const gp = d.gaps.slice(0, 3).map((g) => `${d.name(g.domain)}${g.axis ? ` · ${d.axisName(g.axis)}` : ""}`);
   const goal = [d.goalRole ? L(`${d.goalRole.name_ko} 직무`, `${d.goalRole.name_ko} role`) : "", d.goalInd ? L(`${d.goalInd.name_ko} 산업`, `${d.goalInd.name_ko} industry`) : ""].filter(Boolean);
   const recap = [
-    st.length ? card(`<p class="k">${E(ZONE_WORD.Z1_EVIDENCE_ESTABLISHED.tag)}</p><h4>${E(st[0])}</h4>${st.length > 1 ? `<p class="sm mut">${L("함께 볼 영역", "Also look at")}: ${E(st.slice(1).join(", "))}</p>` : ""}<p class="sm">${L("지원서와 면접에서 먼저 꺼낼 경험이 이 영역에 있어요.", "The experience to lead with in applications and interviews is in this area.")}</p>`) : "",
+    /* 이름표는 그 영역의 실제 묶음을 따른다(2026-11-02 운영 시험: 강점 영역 0곳인데 맺음 장에 "강점 영역" 이 섰다) */
+    st.length ? card(`<p class="k">${E((ZONE_WORD[d.strengths[0].zone as keyof typeof ZONE_WORD] ?? ZONE_WORD.Z2_EVIDENCE_INCOMPLETE).tag)}</p><h4>${E(st[0])}</h4>${st.length > 1 ? `<p class="sm mut">${L("함께 볼 영역", "Also look at")}: ${E(st.slice(1).join(", "))}</p>` : ""}<p class="sm">${L("지원서와 면접에서 먼저 꺼낼 경험이 이 영역에 있어요.", "The experience to lead with in applications and interviews is in this area.")}</p>`) : "",
     gp.length ? card(`<p class="k">${L("먼저 손댈 자리", "Where to start")}</p><h4>${E(gp[0])}</h4>${gp.length > 1 ? `<p class="sm mut">${L("그다음", "Then")}: ${E(gp.slice(1).join(", "))}</p>` : ""}<p class="sm">${L("07장 맨 앞의 할 일이 이 자리를 채우는 일이에요.", "The first task in your action plan fills this gap.")}</p>`) : "",
     goal.length ? card(`<p class="k">${L("목표로 적은 것", "Your target")}</p><h4>${E(goal.join(" · "))}</h4><p class="sm">${L("12개월 뒤 다시 볼 때도 이 목표를 기준으로 달라진 점을 봐요.", "When you look again in 12 months, measure what changed against this target.")}</p>`) : "",
   ].filter(Boolean);
