@@ -72,9 +72,14 @@ export function prioPages(x: Inputs, d: X): Page[] {
       ? card(`<p class="k">${L(`${E(role.name_ko)} 쪽 첫 프로젝트 · 초안`, `First project for ${E(role.name_ko)} · draft`)}</p><h4>${E(fp.title)}</h4>${okText(say(fp.goal)) ? `<p>${E(say(fp.goal))}</p>` : ""}<p class="mut sm">${L("남길 것", "Deliverable")}: ${E(fp.output)}</p>`)
       : "";
     return [P(L("먼저 손댈 일", "Start here"),
-      T(L("지금 바로 메워야 할 판단은 나오지 않았습니다", "No decision needs filling in right away"),
+      /* 판단까지 물은 영역이 없으면 `빈 판단 없음` 이 아니라 `묻지 않았다` 다(2026-11-02 전주대 v3/24 JA3) */
+      (x.m.domains.some((z) => d.asked(z))
+        ? T(L("지금 바로 메워야 할 판단은 나오지 않았습니다", "No decision needs filling in right away"),
         L("이번 응답에서는 비어 있다고 나온 판단이 없었어요. 이럴 때는 이미 해 본 일을 다른 사람이 읽을 수 있는 문서로 옮겨 두는 것부터 해 보세요.",
-          "Your answers did not show any decision as a gap. In that case, start by turning work you have already done into a document someone else can read.")) +
+          "Your answers did not show any decision as a gap. In that case, start by turning work you have already done into a document someone else can read."))
+        : T(L("이번 검사에서는 판단까지 자세히 물은 영역이 없었습니다", "This assessment did not ask about decisions in any area"),
+          L("그래서 어느 판단이 비어 있는지 가리지 못했어요. 아래 할 일은 관심과 경험 응답으로 정한 것이니, 해 본 일을 경험 기록에 적어 두면 다음 결과에서 판단까지 이어집니다.",
+            "So we could not tell which decisions are missing. The tasks below come from your interest and experience answers; record what you have done and it will connect to decisions next time."))) +
       acts.map((a) => card(`<p class="k">${E(HORIZON_DAYS[a.horizon])}</p><h4>${E(actionHead(a, actDn(a, d)))}</h4><p>${E(actionLine(a, actDn(a, d), actDef(a, d)))}</p>`)).join("") + fpCard)];
   }
   const en = isEn();
@@ -190,7 +195,7 @@ export function longPage(x: Inputs, d: X): Page {
     { when: "9개월", what: next ? `관심이 높게 나온 ${d.name(next.code)}에서 두 번째 과제 해 보기` : "다른 영역 하나에서 두 번째 과제 해 보기", out: "두 번째 영역의 결과물",
       check: vt ? `결과를 ${j(vt, "과와")} 비교한 기록이 남았는지` : "결과를 무엇과 비교했는지 적혀 있는지" },
     { when: "12개월", what: "같은 검사를 다시 보고 이번 결과와 영역별로 나란히 놓아 보기", out: "두 결과의 비교",
-      check: g0 ? `처음에 비어 있던 ${d.name(g0.domain)}${g0.axis ? ` ${d.axisName(g0.axis)}` : ""} 자리가 채워졌는지` : `${j(ZONE_WORD.Z1_EVIDENCE_ESTABLISHED.tag, "으로")} 바뀐 영역이 생겼는지` },
+      check: g0 ? `처음에 근거가 모자랐던 ${d.name(g0.domain)}${g0.axis ? ` ${d.axisName(g0.axis)}` : ""} 자리가 채워졌는지` : `${j(ZONE_WORD.Z1_EVIDENCE_ESTABLISHED.tag, "으로")} 바뀐 영역이 생겼는지` },
   ];
   return P(L("6개월 · 12개월 계획", "6- and 12-month plan"),
     T(fp

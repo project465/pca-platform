@@ -581,6 +581,14 @@ export async function openAttempt(args: {
    */
   const campus = args.campus && sellableCores(market)
     .some((c) => c.code === args.campus?.core_code) ? args.campus : null;
+  /* **마지막 막이: `준비 중` 학과의 학교 응시는 열지 않는다**(KM1). 시작 화면 · 시작 문(`start-gate.ts`)이 먼저 막고,
+     여기는 다른 길로 들어와도 남의 묶음으로 응시가 서지 않게 한다 */
+  if (campus) {
+    const { departmentReady } = await import("@/lib/campus/start-gate");
+    if (!departmentReady(campus.university_code, campus.department_code)) {
+      throw new Error("이 학과는 아직 준비 중이라 검사를 열 수 없습니다.");
+    }
+  }
   /**
    * 이 응시가 읽을 Core 와 그 Core 의 판본.
    *

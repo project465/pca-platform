@@ -8,7 +8,7 @@ import type { Inputs } from "./types";
 import { AXES, STEP_WORD, ZONE_WORD, ZONES, type X, notAsked } from "./derive";
 import { C, LEVEL_KO, radar } from "./charts";
 import { E, H, LVC, MARK, PAL, T, ZC, band, howto, lineArt, tag, ul, type Page } from "./kit";
-import { actionLine, andJoin, andJoinEn, j, nEn } from "./text";
+import { actionLine, andJoin, andJoinEn, j, nEn, pickAreaKo } from "./text";
 import { isEn, T as L } from "./lang";
 import { partNames } from "./fill";
 
@@ -62,11 +62,11 @@ export function leadOf(x: Inputs, d: X): string {
     case "EVIDENCE_PARTIAL":
       return `${andJoin(z2)}에서 직접 해 본 일이 여럿 보여요. 그 일을 보여 줄 결과물이나 비교한 기록은 아직 적으니, 같은 종류의 과제를 한 번 더 할 때 남길 것부터 챙겨 보세요.`;
     case "EVIDENCE_LOW_INTEREST":
-      return `${andJoin(z3)}에서 해 본 일이 있는데, 지금 마음은 다른 쪽에 가 있어요. 해 둔 경험은 어디에 쓸지 정해 두고, 관심 있는 쪽은 짧은 과제로 먼저 겪어 보세요.`;
+      return `${andJoin(z3)}에서 해 본 일이 있는데, 지금 마음은 다른 쪽에 가 있어요. 해 둔 경험은 어디에 쓸지 정해 두고${x.m.domains.some((z) => z.interest === "HIGH" || z.interest === "MID") ? ", 관심 있는 쪽은 짧은 과제로 먼저 겪어 보세요." : ", 그 가운데 계속 해 볼 만한 쪽을 하나 골라 보세요."}`;
     case "EXPLORING":
       return `${high.length ? `${andJoin(high.slice(0, 3))}에 관심이 높다고 답했어요. ` : ""}직접 해 본 일은 아직 많지 않으니, 수업이나 동아리에서 4주 안에 끝나는 과제 하나로 먼저 겪어 보세요.`;
     default:
-      return "아직 직접 해 본 일이 많지 않아요. 관심 가는 영역 하나를 골라 작은 과제부터 해 보고, 그때 무엇을 정했는지 적어 두세요.";
+      return `아직 직접 해 본 일이 많지 않아요. ${pickAreaKo(x.m)} 작은 과제부터 해 보고, 그때 무엇을 정했는지 적어 두세요.`;
   }
 }
 
@@ -111,7 +111,7 @@ export function cover(x: Inputs, d: X): Page {
     : [k.confirmed && `직접 해 본 판단 ${k.confirmed}개`, k.items && `고른 항목 ${k.items}개`, k.artifacts && `결과물 ${k.artifacts}개`, k.records && `경험 기록 ${k.records}건`]).filter(Boolean).join(" · ")
     || L(`${k.domains}개 ${x.domainWord}의 관심과 해 본 횟수`, `Your interest and experience in ${nEn(k.domains, x.domainWord)}`);
   const g0 = d.gaps[0], a0 = g0 ? d.actionOf(g0) : undefined;
-  const first = a0 && g0 ? actionLine(a0, d.name(g0.domain), d.def(g0.domain)) : L("관심 가는 영역 하나를 골라 4주짜리 과제로 먼저 겪어 보세요.", "Pick one area that interests you and try it first as a four-week project.");
+  const first = a0 && g0 ? actionLine(a0, d.name(g0.domain), d.def(g0.domain)) : L(`${pickAreaKo(x.m)} 4주짜리 과제로 먼저 겪어 보세요.`, "Pick one area that interests you and try it first as a four-week project.");
   const holes = series.some((s) => s.levels.some((v) => v == null));
   /* 그림을 조금 줄여 읽는 법이 들어갈 자리를 만든다(아래 칸이 쪽 끝에 붙은 '먼저 할 일' 띠와 겹치지 않게) */
   const art = series.length ? radar(d.best.map((b) => d.axisName(b.axis)), series, { size: 420, ring: false }).replace("<svg ", `<svg style="width:112mm" `) : "";

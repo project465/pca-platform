@@ -246,7 +246,10 @@ export function strengthPage(x: Inputs, d: X, k: number): Page {
       ? `${gap.kind === "PARTIAL_EVIDENCE" ? `On your next project, set the criteria for ${qe(lc(an(gap.axis)))} yourself.` : `On your next project, take on ${qe(lc(an(gap.axis)))} yourself.`}${def?.axes?.[gap.axis]?.l2 ? ` For example: ${qe(def.axes[gap.axis].l2)}.` : ""}`
       : "What you have now is enough for one paragraph in an application. Just fill in the result figures and how long it took.")
     : gap?.axis
-      ? `${gap.kind === "PARTIAL_EVIDENCE" ? `다음 과제에서는 ${q(d.axisName(gap.axis))}의 기준까지 직접 정해 보세요.` : `다음 과제에서는 ${j(q(d.axisName(gap.axis)), "을를")} 맡아서 해 보세요.`}${def?.axes?.[gap.axis]?.l2 ? ` 예를 들면 ${q(def.axes[gap.axis].l2)} 같은 일이에요.` : ""}`
+      ? `${gap.kind === "PARTIAL_EVIDENCE" ? `다음 과제에서는 ${q(d.axisName(gap.axis))}의 기준까지 직접 정해 보세요.` : (d.level(gap.domain, gap.axis) ?? 0) >= 1
+        /* 이미 해 본 판단이면 `맡아서 해 보라` 가 아니라 근거를 남기라고 한다(PB2) */
+        ? `${q(d.axisName(gap.axis))}${j(d.axisName(gap.axis), "은는").slice(-1)} 이미 해 봤어요. 다음 과제에서는 그 결과를 결과물이나 비교 기록으로 남겨 두세요.`
+        : `다음 과제에서는 ${j(q(d.axisName(gap.axis)), "을를")} 맡아서 해 보세요.`}${def?.axes?.[gap.axis]?.l2 ? ` 예를 들면 ${q(def.axes[gap.axis].l2)} 같은 일이에요.` : ""}`
       : "지금 근거로도 지원서 문단 하나를 쓸 수 있어요. 결과 수치와 기간만 직접 채워 넣으면 됩니다.";
   /* 고른 항목이 없으면 그 영역에서 해 봤다고 답한 판단의 문항 장면(l2)으로 잇는다. 지어낸 장면을 쓰지 않는다 */
   const sc = [...new Set(s.confirmed.map((a) => def?.axes?.[a]?.l2 ?? "").filter(Boolean))];

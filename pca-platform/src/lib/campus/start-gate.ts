@@ -23,6 +23,15 @@
 import { queryOne } from "@/lib/db";
 import { readCampusEntry } from "@/lib/campus/entry";
 import { campusStudentOf } from "@/lib/campus/students";
+import { findLeaf, statusOf, university } from "@/lib/campus/registry";
+
+/** 그 학과가 지금 응시할 수 있는가(전공을 고르는 자리는 고른 뒤 다시 본다) */
+export function departmentReady(universityCode: string, departmentCode: string): boolean {
+  const u = university(universityCode);
+  const f = u ? findLeaf(u, departmentCode) : null;
+  if (!u || !f) return false;
+  return f.leaf.routing_only ? true : statusOf(u, f) === "READY";
+}
 import { v3Grants } from "@/lib/me-v3/runtime/session";
 import type { Tier } from "@/lib/me-v3/scoring/types";
 
@@ -62,6 +71,11 @@ export async function startGate(userId: string): Promise<StartGate> {
 
   const entry = await readCampusEntry();
   const mine = entry ? await campusStudentOf(userId, entry.university_code) : null;
+  /* **등록 학과가 `준비 중` 이면 학교 응시를 열지 않는다**(2026-11-02 고려대 시험 KM1: 독일학 학생이 국어국문 묶음으로
+     응시했다). 학교 시작 화면으로 보내면 그 화면이 `학과 준비 중` 을 적는다 */
+  if (entry && mine && !departmentReady(mine.row.university_code, mine.row.department_code)) {
+    return { kind: "school_only", school: mine.row.university_code, to: `/campus/${mine.row.university_code.toLowerCase()}/start` };
+  }
   if (entry && mine) return { kind: "campus", entry, mine, grants: campusGrants };
 
   const school = await schoolOf(userId);

@@ -8,7 +8,7 @@ import type { Inputs } from "./types";
 import { AXES, BAND_WORD, EXP_WORD, STEP_WORD, ZONE_WORD, ZONES, type Bucket, type X, notAsked } from "./derive";
 import { C, LEVEL_KO, donut, hbars, quadrant, ring } from "./charts";
 import { DC, E, H, IC, LVC, PAL, T, ZC, band, chips, howto, note, pip, ul, zoneTag, type Page } from "./kit";
-import { GAP_KIND, gapWhy, actionHead, actionLine, andJoin, askNoun, j, lcEn, list3, nEn, okText, polite, sentenceEn } from "./text";
+import { GAP_KIND, gapWhy, actionHead, actionLine, andJoin, askNoun, j, lcEn, list3, nEn, okText, pickAreaKo, polite, sentenceEn } from "./text";
 import { byLang, isEn, T as L } from "./lang";
 import { partNames } from "./fill";
 import { andNamesEn } from "./front";
@@ -77,7 +77,7 @@ export function glance(x: Inputs, d: X): Page {
   if (g0) {
     const a = d.actionOf(g0);
     points.push({
-      label: L("먼저 채울 판단", "The first decision to fill in"),
+      label: L("먼저 근거를 더할 판단", "The first decision to back up"),
       meaning: en
         ? `${d.name(g0.domain)}${g0.axis ? ` · ${d.axisName(g0.axis)}` : ""}: ${lcEn(GAP_KIND[g0.kind])}.`
         : `${d.name(g0.domain)}${g0.axis ? `의 ${d.axisName(g0.axis)}` : ""}: ${GAP_KIND[g0.kind]}.`,
@@ -223,7 +223,7 @@ export function tree(x: Inputs, d: X): Page {
         const try1 = c ? `pick one of the ${nEn(c, "area")} under ‘${E(BUCKET.C.head)}’, such as ${E(groups.C[0])}, and try it as a four-week project.` : "pick one area that interests you and start with a four-week project.";
         return ab ? `${ab === 1 ? "One area already has" : `${ab} areas already have`} work you can turn into evidence for applications. On top of that, ${try1}` : sentenceEn(try1);
       }
-      const try1 = c ? `${E(groups.C[0])}처럼 ‘${E(BUCKET.C.head)}’에 든 ${c}곳 가운데 하나를 4주 과제로 골라 보세요.` : "관심 가는 영역 하나를 골라 4주 과제로 시작해 보세요.";
+      const try1 = c ? `${E(groups.C[0])}처럼 ‘${E(BUCKET.C.head)}’에 든 ${c}곳 가운데 하나를 4주 과제로 골라 보세요.` : `${pickAreaKo(x.m)} 4주 과제로 시작해 보세요.`;
       return ab ? `${ab}곳은 이미 해 본 일을 지원서 근거로 정리하면 되는 영역이에요. 여기에 더해 ${try1}` : try1;
     })()));
 }
@@ -245,7 +245,7 @@ export function dash(x: Inputs, d: X): Page {
   ] : [
     ["기준까지 직접 정한 판단", k.owned, "개", "물은 영역 전체에서"], ["직접 해 본 판단", k.confirmed, "개", "기준까지 정한 것 포함"],
     ["고른 항목", k.items, "개", k.artifacts ? `그중 결과물 ${k.artifacts}개` : "해 본 일과 남긴 것"], ["경험 기록", k.records, "건", "플랫폼에 적어 둔 활동"],
-    [ZONE_WORD.Z1_EVIDENCE_ESTABLISHED.tag, k.z1, "곳", `${x.domainWord} ${k.domains}곳 가운데`], ["먼저 채울 판단", k.gaps, "곳", "영역마다 판단 하나씩 센 수"],
+    [ZONE_WORD.Z1_EVIDENCE_ESTABLISHED.tag, k.z1, "곳", `${x.domainWord} ${k.domains}곳 가운데`], ["먼저 근거를 더할 판단", k.gaps, "곳", "해 본 판단이라도 결과물 · 비교 기록이 모자란 자리"],
   ];
   const tiles = all.filter((t) => t[1] > 0);
   if (!tiles.length) tiles.push(all[1]);
@@ -337,7 +337,7 @@ export function quad(x: Inputs, d: X): Page {
         : hiDid.length ? `Start by writing up your work in ${E(hiDid[0])} as one paragraph for your applications.` : "Pick one area where your interest is medium or higher and try it in a short project.")
       : (hiNot.length
         ? `${E(hiNot[0])}처럼 관심은 높은데 아직 안 해 본 영역에서 이번 학기 과제를 하나 찾아보세요. 한 번 해 보면 다음 검사에서는 ‘해 본 적 있다’로 답할 수 있습니다.`
-        : hiDid.length ? `${E(hiDid[0])}에서 해 본 일을 지원서 한 문단으로 먼저 정리해 보세요.` : "관심이 보통 이상인 영역 하나를 골라 짧은 과제로 겪어 보세요.")));
+        : hiDid.length ? `${E(hiDid[0])}에서 해 본 일을 지원서 한 문단으로 먼저 정리해 보세요.` : x.m.domains.some((z) => z.interest === "HIGH" || z.interest === "MID") ? "관심이 보통 이상인 영역 하나를 골라 짧은 과제로 겪어 보세요." : "해 본 일이 있는 영역 하나를 골라 그 일을 지원서 한 문단으로 정리해 보세요.")));
 }
 
 export function bestPage(x: Inputs, d: X): Page {

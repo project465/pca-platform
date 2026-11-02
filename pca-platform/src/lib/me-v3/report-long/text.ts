@@ -433,3 +433,13 @@ export function cutQuote(s: string, max: number): string | null {
   }
   return t.length >= 60 ? t : null;
 }
+
+/**
+ * **관심이 모두 낮을 때 `관심 가는 영역을 고르라` 고 하지 않는다**(2026-11-02 배재대 시험 PB1: 12곳 모두 관심 낮음인데
+ * "관심 가는 영역 하나를 골라"). 관심이 보통 이상인 영역이 하나라도 있으면 원래 말, 없으면 해 본 일이 있는 영역으로
+ */
+export function pickAreaKo(m: { domains: { interest?: string | null; zone?: string }[] }): string {
+  const anyInt = m.domains.some((z) => z.interest === "HIGH" || z.interest === "MID");
+  if (anyInt) return "관심 가는 영역 하나를 골라";
+  return "해 본 일이 있는 영역 하나를 골라";
+}
