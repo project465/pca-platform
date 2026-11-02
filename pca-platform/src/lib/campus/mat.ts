@@ -233,6 +233,10 @@ export async function grantMat(
  * 학생마다 지금 MAT 이 언제까지 열려 있는가. 담당자 명단의 한 칸.
  * **개인으로 산 기간도 함께 센다**: 담당자가 묻는 것은 `이 학생이 지금
  * 쓸 수 있는가` 이고, 누가 샀는지는 그 다음이다.
+ *
+ * **운영자가 넣은 시험 이용권은 세지 않는다**(2026-11-02 운영 시험: 좌석이 없는 학교의 명단에
+ * "12-02까지" 가 섰다). 주문도 학교 좌석도 없는 줄이 그것이다. PRO 첫 달 혜택(`TRACK_PRO_TRIAL`)도
+ * 주문이 없지만 학생이 받은 실제 기간이라 센다.
  */
 export async function matUntilOf(userIds: string[]): Promise<Record<string, string>> {
   if (!userIds.length) return {};
@@ -241,6 +245,7 @@ export async function matUntilOf(userIds: string[]): Promise<Record<string, stri
        FROM entitlements
       WHERE user_id = ANY($1::bigint[]) AND kind = 'track' AND status = 'active'
         AND ends_at > now()
+        AND NOT (order_id IS NULL AND campus_pool_id IS NULL AND product_code <> 'TRACK_PRO_TRIAL')
       GROUP BY user_id`,
     [userIds]);
   return Object.fromEntries(rows.map((r) => [r.user_id, r.until]));
