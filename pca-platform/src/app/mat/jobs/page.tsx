@@ -3,6 +3,8 @@ import { postingsForMe } from "@/lib/assistant/match";
 import { postingsOf } from "@/lib/assistant/posting";
 import { JobCard } from "../job-card";
 import { matPasteJob } from "../actions";
+import { TrackBoard } from "../track-board";
+import { applicationsOf } from "@/lib/me-v3/platform";
 import Link from "next/link";
 
 export const metadata = { title: "공고 · MAT" };
@@ -25,9 +27,10 @@ const ERR: Record<string, string> = {
 export default async function MatJobs({ searchParams }: { searchParams: Promise<{ e?: string }> }) {
   const user = await requireUser();
   const e = (await searchParams).e;
-  const [jobs, mine] = await Promise.all([
+  const [jobs, mine, apps] = await Promise.all([
     postingsForMe(user.id, 40).catch(() => null),
     postingsOf(user.id).catch(() => []),
+    applicationsOf(user.id).catch(() => []),
   ]);
   const list = jobs ? (jobs.rows.length ? jobs.rows : jobs.recent) : [];
   const matched = Boolean(jobs?.rows.length);
@@ -68,6 +71,8 @@ export default async function MatJobs({ searchParams }: { searchParams: Promise<
           </div>
         </>
       ) : null}
+
+      <TrackBoard apps={apps} postings={mine} />
 
       <h2 className="mt-h2" id="paste">다른 공고 붙여 넣기</h2>
       <form action={matPasteJob} className="mt-form">

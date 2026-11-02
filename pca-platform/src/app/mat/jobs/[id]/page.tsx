@@ -6,7 +6,7 @@ import { activeMajorName } from "@/lib/me-v3/major-name";
 import { matAccess } from "@/lib/mat-access";
 import { itemDomainKo, livePostingOf, type PostingItem } from "@/lib/assistant/posting";
 import { interviewPrep, smallTasks } from "@/lib/assistant/prep";
-import { matTakeTasks } from "../../actions";
+import { matTakeTasks, matTrackApp } from "../../actions";
 import { queryOne } from "@/lib/db";
 import { outLink } from "@/lib/mat/out-link";
 import { SOURCE_KO } from "@/lib/mat/stage";
@@ -104,6 +104,11 @@ export default async function MatJob({ params, searchParams }: {
           <a className="mt-link" href={link} target="_blank" rel="noopener noreferrer">공고 원문 보기</a>
         </p>
       ) : null}
+
+      <form action={matTrackApp} style={{ margin: "12px 0 0" }}>
+        <input type="hidden" name="id" value={p.id} />
+        <button type="submit" className="mt-btn is-block">지원 현황에 담기</button>
+      </form>
 
       <h2 className="mt-h2">맞는 점 <small>{fit.length}줄</small></h2>
       {fit.length ? (

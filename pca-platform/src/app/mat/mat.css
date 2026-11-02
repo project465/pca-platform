@@ -141,3 +141,14 @@
 a.mt-chip-btn { text-decoration: none; color: var(--mt-ink); }
 .mt-qpick { display: grid; gap: 8px; }
 .mt-qpick .mt-chip-btn { white-space: normal; text-align: left; border-radius: 12px; padding: 10px 14px; line-height: 1.5; min-height: 44px; }
+
+/* 지원 현황: 390px 에서는 네 칸을 세로로, 넓으면 둘씩 */
+.mt-board { display: grid; gap: 10px; }
+@media (min-width: 560px) { .mt-board { grid-template-columns: 1fr 1fr; } }
+.mt-col { border: 1px solid var(--mt-line); border-radius: var(--mt-r); padding: 12px; background: var(--mt-soft); }
+.mt-col-h { display: flex; justify-content: space-between; margin: 0 0 8px; font-size: 14px; }
+.mt-col-h span { font-family: var(--mt-mono); color: var(--mt-sub); }
+.mt-card { background: #fff; border: 1px solid var(--mt-line); border-radius: var(--mt-rb); padding: 10px 12px; margin-top: 8px; }
+.mt-card p { margin: 0; font-weight: 600; }
+.mt-card small { display: block; color: var(--mt-sub); margin-top: 4px; }
+.mt-linkbtn { background: none; border: 0; padding: 0 4px; cursor: pointer; font: inherit; font-size: 14px; color: var(--mt-sub); }

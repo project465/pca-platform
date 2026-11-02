@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { queryOne } from "@/lib/db";
-import { activeCore, experiencesOf, importActions } from "@/lib/me-v3/platform";
+import { activeCore, addApplication, applicationsOf, experiencesOf, importActions, removeApplication, setApplicationState } from "@/lib/me-v3/platform";
 import { openActions } from "@/lib/me-v3/open-actions";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { canUseMat, matAccess } from "@/lib/mat-access";
@@ -105,4 +105,48 @@ export async function matTakeTasks(form: FormData): Promise<void> {
   await mark("action_saved", user.id, { from: "mat.posting", n });
   revalidatePath("/mat");
   redirect(`/mat/jobs/${id}?taken=${n}#tasks`);
+}
+
+/**
+ * 분석한 공고를 지원 현황(관심 칸)에 담는다.
+ *
+ * **회사 이름을 받지 않는다.** 공고 이름(사람이 붙인 이름이나 `출처 공고 번호`)만 메모 칸에 둔다.
+ * 같은 공고는 두 번 담지 않는다. 메모는 기존 지원 기록과 같이 1년 뒤 지운다(`addApplication`).
+ */
+export async function matTrackApp(form: FormData): Promise<void> {
+  const user = await requireUser();
+  const id = String(form.get("id") ?? "");
+  const p = await livePostingOf(user.id, id);
+  if (!p) redirect("/mat/jobs");
+  const has = (await applicationsOf(user.id)).some((a) => a.note_text === p.label);
+  if (!has) await addApplication(user.id, { state: "watching", note_text: p.label });
+  revalidatePath("/mat");
+  revalidatePath("/mat/jobs");
+  redirect("/mat/jobs#track");
+}
+
+const STATES = new Set(["watching", "applied", "interview", "offer", "closed"]);
+
+/** 지원 현황의 칸을 옮긴다. 지원 칸으로 처음 옮길 때 그날을 지원한 날로 적는다 */
+export async function matMoveApp(form: FormData): Promise<void> {
+  const user = await requireUser();
+  const id = String(form.get("id") ?? "");
+  const state = String(form.get("state") ?? "");
+  if (!/^\d{1,18}$/.test(id) || !STATES.has(state)) redirect("/mat/jobs#track");
+  await setApplicationState(user.id, id, state);
+  if (state === "applied") {
+    await queryOne(`UPDATE v3_applications SET applied_on = coalesce(applied_on, (now() AT TIME ZONE 'Asia/Seoul')::date)
+                     WHERE id = $1 AND user_id = $2 RETURNING id`, [id, user.id]).catch(() => null);
+  }
+  revalidatePath("/mat");
+  revalidatePath("/mat/jobs");
+  redirect("/mat/jobs#track");
+}
+
+export async function matDropApp(form: FormData): Promise<void> {
+  const user = await requireUser();
+  const id = String(form.get("id") ?? "");
+  if (/^\d{1,18}$/.test(id)) await removeApplication(user.id, id);
+  revalidatePath("/mat/jobs");
+  redirect("/mat/jobs#track");
 }

@@ -10,6 +10,9 @@ import { matMoveAction } from "./actions";
 import { JobCard } from "./job-card";
 import { MatAsk } from "./ask";
 import { askOpenFor } from "@/lib/mat/ask-open";
+import { headsUp } from "@/lib/mat/heads-up";
+import { postingsOf } from "@/lib/assistant/posting";
+import { applicationsOf } from "@/lib/me-v3/platform";
 
 export const metadata = { title: "MAT 홈 · CareerMatri" };
 
@@ -27,12 +30,20 @@ export default async function MatHome() {
   /* /me 와 같은 문: 검사도 학교 학과도 없어 전공을 정할 수 없으면 전공 목록으로 보낸다.
      먼저 막지 않으면 아래 `currentState` 가 던져 화면이 500 이 된다(로컬 확인 11-01) */
   await activeCoreOrPick(user.id);
-  const [st, act, jobs, ask] = await Promise.all([
+  const [st, act, jobs, ask, mine, apps] = await Promise.all([
     currentState(user.id),
     openActions(user.id),
     postingsForMe(user.id, 40).catch(() => null),
     askOpenFor(user.id),
+    postingsOf(user.id).catch(() => []),
+    applicationsOf(user.id).catch(() => []),
   ]);
+  const weekAgo = Date.now() - 7 * 86_400_000;
+  const tips = headsUp({
+    postings: mine, apps,
+    freshMatches: (jobs?.rows ?? []).filter((r) => Date.parse(r.captured_at) >= weekAgo).length,
+    zoneMoved: st.zoneMoved.length,
+  });
   const name = (td: string) => domainName(st.core, td);
   const owned = (st.model?.domains ?? []).filter((d) => d.owned.length > 0).map((d) => d.code);
   const s = matStage(st.zoneOf, owned);
@@ -74,6 +85,19 @@ export default async function MatHome() {
         <p>{diag}</p>
         {st.model ? <Link href="/me/results">결과지 전체 보기</Link> : <Link href="/cores">검사 시작하기</Link>}
       </section>
+
+      {tips.length ? (
+        <>
+          <h2 className="mt-h2">MAT이 먼저 알려요</h2>
+          <div className="mt-list">
+            {tips.map((t) => (
+              <Link key={t.key} href={t.href} className="mt-row mt-row-link">
+                <div className="mt-row-b"><p>{t.title}</p><small>{t.body}</small><span className="mt-link" style={{ minHeight: 32 }}>{t.label} →</span></div>
+              </Link>
+            ))}
+          </div>
+        </>
+      ) : null}
 
       <h2 className="mt-h2">이번 주 할 일 <small>{week.length ? `남은 일 ${open.length}개 · 끝낸 일 ${doneN}개` : ""}</small></h2>
       {week.length ? (
