@@ -95,3 +95,29 @@
 .mt-tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; display: grid; grid-template-columns: repeat(5, 1fr); max-width: 480px; margin: 0 auto; background: #fff; border-top: 1px solid var(--mt-line); padding-bottom: env(safe-area-inset-bottom); }
 .mt-tabs a { display: grid; place-items: center; min-height: 56px; font-size: 14px; color: var(--mt-sub); text-decoration: none; }
 .mt-tabs a.is-on { color: var(--mt-ink); font-weight: 750; box-shadow: inset 0 2px 0 var(--mt-ink); }
+
+/* 근거 칩 · 줄 앞 표시(2번 공고 분석). 맞고 안 맞음은 색만이 아니라 글자(✓ · △ · ✕ · 읽는 이용 글)로도 가른다 */
+.mt-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.mt-chip { display: inline-flex; align-items: center; min-height: 26px; padding: 2px 9px; border-radius: 999px; border: 1px solid var(--mt-line); background: var(--mt-soft); font-size: 13px; color: var(--mt-ink); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mt-chip.is-none { background: #fff; border-style: dashed; color: var(--mt-sub); }
+.mt-chip.is-more { color: var(--mt-sub); }
+.mt-mark { flex: none; width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; font-weight: 800; font-size: 15px; border: 1.5px solid var(--mt-ink); }
+.mt-mark.is-ok { background: var(--mt-ink); color: #fff; }
+.mt-mark.is-part { background: #fff; color: var(--mt-ink); }
+.mt-mark.is-none { background: #fff; color: var(--mt-sub); border-color: var(--mt-sub); border-style: dashed; }
+.mt-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.mt-diag-note { font-size: 14px !important; color: #bdbdbd; margin-top: 8px !important; }
+
+/* 줄 안의 작은 동작 */
+.mt-acts { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin-top: 8px; }
+.mt-link { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; color: var(--mt-ink); text-decoration: underline; text-underline-offset: 3px; }
+.mt-btn.is-small { min-height: 44px; padding: 0 14px; font-size: 14px; }
+.mt-row-link { text-decoration: none; color: inherit; }
+.mt-alert { margin: 0 0 14px; padding: 12px 14px; border: 1px solid var(--mt-ink); border-radius: var(--mt-rb); font-size: 15px; }
+
+/* 입력 */
+.mt-form { display: grid; gap: 12px; }
+.mt-field { display: grid; gap: 6px; font-size: 14px; color: var(--mt-sub); }
+.mt-field input, .mt-field textarea { font: inherit; font-size: 16px; color: var(--mt-ink); background: #fff; border: 1px solid var(--mt-line); border-radius: var(--mt-rb); padding: 12px 14px; min-height: 48px; width: 100%; }
+.mt-field textarea { resize: vertical; line-height: 1.55; }
+.mt-field input:focus-visible, .mt-field textarea:focus-visible { outline: 2px solid var(--mt-ink); outline-offset: 1px; border-color: var(--mt-ink); }

@@ -4,9 +4,10 @@ import { activeCoreOrPick, currentState } from "@/lib/me-v3/platform";
 import { openActions } from "@/lib/me-v3/open-actions";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import { postingsForMe } from "@/lib/assistant/match";
-import { MAT_STAGES, daysLeft, isoWeek, matStage, monthWeekKo, REGION_KO, SOURCE_KO } from "@/lib/mat/stage";
+import { MAT_STAGES, isoWeek, matStage, monthWeekKo } from "@/lib/mat/stage";
 import { withJosa } from "@/lib/me-v3/result/josa";
 import { matMoveAction } from "./actions";
+import { JobCard } from "./job-card";
 
 export const metadata = { title: "MAT 홈 · CareerMatri" };
 
@@ -101,34 +102,7 @@ export default async function MatHome() {
 
       <h2 className="mt-h2">{matched ? "내 경험과 겹치는 공고" : "새로 들어온 공고"} <Link href="/mat/jobs" className="mt-meta">전체 보기</Link></h2>
       {shown.length ? (
-        <div className="mt-list">
-          {shown.map((p) => {
-            const left = daysLeft(p.closes_on);
-            const title = p.requirements[0] ?? "요구 항목을 글로 읽지 못한 공고(원문에서 확인)";
-            return (
-              <div key={p.id} className="mt-row">
-                <div className="mt-row-b">
-                  <div className="mt-job-h">
-                    <span className="mt-meta">
-                      {SOURCE_KO[p.source] ?? p.source}{p.region_code ? ` · ${REGION_KO[p.region_code] ?? "그 밖"}` : ""}
-                    </span>
-                    <span className={`mt-dday${left !== null && left <= 7 ? "" : " is-quiet"}`}>
-                      {left === null ? "상시" : left <= 0 ? "오늘 마감" : `D-${left}`}
-                    </span>
-                  </div>
-                  <p style={{ marginTop: 6 }}>{title}</p>
-                  {p.hits.length ? (
-                    <p className="mt-fit">겹치는 일 {p.hits.length}개 · {p.hits.slice(0, 3).join(", ")}</p>
-                  ) : null}
-                  {p.source_url ? (
-                    <a className="mt-meta" href={p.source_url} target="_blank" rel="noopener noreferrer"
-                      style={{ display: "inline-flex", minHeight: 44, alignItems: "center" }}>공고 원문 보기</a>
-                  ) : null}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        <div className="mt-list">{shown.map((p) => <JobCard key={p.id} p={p} />)}</div>
       ) : (
         <p className="mt-empty">아직 모아 둔 공고가 없습니다.</p>
       )}
