@@ -96,6 +96,11 @@ function usageOf(u: {
   };
 }
 
+function billingError(e: unknown): boolean {
+  const status = e instanceof Anthropic.APIError ? e.status : undefined;
+  return status === 402 || /billing|credit balance|spend limit|usage limit/i.test(e instanceof Error ? e.message : "");
+}
+
 /** 부르기 전 상한. 넘었으면 실패 까닭으로 돌려준다 */
 async function gate(userId: string | undefined, op: string): Promise<{ ok: true } | { ok: false; reason: AiFail; reopen?: string }> {
   const a = await aiAllowance(userId, op);
@@ -185,7 +190,9 @@ export async function askStructured<S extends z.ZodType>(opts: {
       e instanceof Anthropic.RateLimitError ? "rate"
         : e instanceof Anthropic.APIConnectionTimeoutError ? "timeout"
           : "error";
-    await rec(reason);
+    /* 결제 · 크레딧 · 콘솔 월 한도 거절(402, 또는 billing · credit 말이 든 오류)은 따로 적는다.
+       화면은 어느 쪽이든 규칙으로 읽는다 */
+    await rec(billingError(e) ? "billing" : reason);
     /* **까닭을 삼키지 않는다.** 화면은 규칙으로 읽은 결과를 보여 주고,
        왜 Claude 쪽이 안 됐는지는 고치는 사람이 읽는 자리에 한 줄 남긴다.
        열쇠와 붙여 넣은 글은 적지 않는다 */
@@ -248,7 +255,9 @@ export async function* askStream(opts: {
       e instanceof Anthropic.RateLimitError ? "rate"
         : e instanceof Anthropic.APIConnectionTimeoutError ? "timeout"
           : "error";
-    await rec(reason);
+    /* 결제 · 크레딧 · 콘솔 월 한도 거절(402, 또는 billing · credit 말이 든 오류)은 따로 적는다.
+       화면은 어느 쪽이든 규칙으로 읽는다 */
+    await rec(billingError(e) ? "billing" : reason);
     opFail({ operation: opts.op, step: "claude", category: "upstream" }, e);
     return { ok: false, reason };
   }

@@ -19,7 +19,8 @@ CREATE TABLE IF NOT EXISTS assistant_ai_calls (
   op                 TEXT NOT NULL,
   model              TEXT NOT NULL,
   effort             TEXT,
-  outcome            TEXT NOT NULL CHECK (outcome IN ('ok', 'refusal', 'rate', 'timeout', 'error', 'parse')),
+  /* billing = 결제 · 크레딧 · 콘솔 월 한도로 거절(402 등) */
+  outcome            TEXT NOT NULL CHECK (outcome IN ('ok', 'refusal', 'rate', 'timeout', 'error', 'parse', 'billing')),
   input_tokens       INTEGER NOT NULL DEFAULT 0,
   output_tokens      INTEGER NOT NULL DEFAULT 0,
   cache_read_tokens  INTEGER NOT NULL DEFAULT 0,

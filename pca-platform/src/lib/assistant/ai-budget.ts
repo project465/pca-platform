@@ -1,5 +1,6 @@
 import type { PoolClient } from "pg";
 import { query, queryOne } from "@/lib/db";
+import { ref } from "@/lib/oplog";
 
 /**
  * MAT 이 Claude 를 부르기 전에 보는 두 가지 상한과, 부른 뒤 남기는 한 줄(2026-11-02 대표 결정:
@@ -171,6 +172,12 @@ export async function recordAiCall(row: {
   userId?: string; op: string; model: string; effort: string; outcome: string; usage?: AiUsage;
 }): Promise<void> {
   const u = row.usage ?? { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 };
+  /* 표가 없어도 남도록 운영 로그에도 한 줄(2026-11-02 대표: 요청마다 usage). 글 · 이름은 적지 않는다 */
+  console.log([
+    `[ai] ${row.op}`, row.userId ? `ref=${ref("user", row.userId)}` : "", `model=${row.model}`, `effort=${row.effort}`,
+    `outcome=${row.outcome}`, `in=${u.input}`, `out=${u.output}`, `cache_read=${u.cacheRead}`, `cache_write=${u.cacheWrite}`,
+    `usd=${costUsd(u, row.model).toFixed(5)}`, `at=${new Date().toISOString()}`,
+  ].filter(Boolean).join(" "));
   await query(
     `INSERT INTO assistant_ai_calls (user_id, op, model, effort, outcome, input_tokens, output_tokens,
        cache_read_tokens, cache_write_tokens, cost_usd)
