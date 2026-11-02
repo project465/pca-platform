@@ -9,7 +9,7 @@ import {
 import { pickCatalog } from "@/lib/campus/pick";
 import { rememberCatalog } from "../../actions";
 import { CampusShell } from "../../shell";
-import { domainNames } from "../../domains";
+import { leadDomainNames } from "../../domains";
 
 type Params = {
   params: Promise<{ universityCode: string }>;
@@ -39,8 +39,8 @@ const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
  */
 function subOf(u: CampusUniversity, row: CampusLeaf): string | undefined {
   if (statusOf(u, row) === "READY" && row.leaf.core_code) {
-    const d = domainNames(row.leaf.core_code);
-    if (d.length) return d.slice(0, 3).join(" · ");
+    const d = leadDomainNames(row.leaf.core_code, row.leaf.specialization);
+    if (d.length) return d.join(" · ");
     return undefined;
   }
   /* **자율전공을 `준비 중` 으로 적지 않는다**(규격 §20). 그 자리는 우리가

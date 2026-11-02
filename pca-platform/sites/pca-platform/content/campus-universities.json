@@ -2812,7 +2812,7 @@
          "name": "기계자동차공학과",
          "kind": "department",
          "core_code": "ME_CORE_V3",
-         "specialization": null
+         "specialization": "SPEC_ME_GENERAL"
         },
         {
          "code": "JJU26_EE",
@@ -2848,7 +2848,7 @@
          "name": "토목환경공학과",
          "kind": "department",
          "core_code": "CIV_CORE_V1",
-         "specialization": null
+         "specialization": "SPEC_CIV_GENERAL"
         },
         {
          "code": "JJU26_MATCHEM",
