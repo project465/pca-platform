@@ -7,7 +7,10 @@
  *
  *   UNI=JJU npm run campus:login-migrate              읽기만(한 기관)
  *   npm run campus:login-migrate                      읽기만(전부)
- *   APPLY=1 IDS=12,34 UNI=JJU npm run campus:login-migrate   고른 계정만 바꿈
+ *   APPLY=1 IDS=12,34 UNI=JJU npm run campus:login-migrate   고른 계정만 바꿈(내부 번호)
+ *   LOGINS=test_jju_user,20141114 npm run campus:login-migrate          지금 아이디로 고른 계정만 보기
+ *   LOGINS=sj-old SIDS=sj-old:01000000001 APPLY=1 npm run campus:login-migrate
+ *                                                     새 학번 · 전화번호를 정해 주고 바꿈(지금 학번 칸이 그 꼴이 아닐 때)
  *
  * 바꾸는 것(계정마다): 학번 칸을 그 기관 꼴로(전화번호는 숫자만) · 아이디 = 머리 + 학번 · 비밀번호 = 학번 · must_reset_pw = TRUE.
  * 다른 계정이 이미 그 아이디를 쓰면 건너뛰고 적는다. **IDS 없이 APPLY=1 을 주면 멈춘다**(전부를 한꺼번에 바꾸지 않는다).
@@ -20,7 +23,12 @@ import { loginModeOf, loginPrefixOf, normalizeLoginValue } from "../src/lib/camp
 const want = (process.env.UNI ?? "").toUpperCase();
 const apply = process.env.APPLY === "1";
 const ids = new Set((process.env.IDS ?? "").split(",").map((s) => s.trim()).filter(Boolean));
-if (apply && !ids.size) { console.error("APPLY=1 에는 IDS=… 로 바꿀 계정을 적어야 합니다"); process.exit(2); }
+/* 지금 아이디로 고른다(운영 내부 번호를 몰라도 된다). 테스트 계정만 옮길 때 쓴다(2026-11-02 대표 결정 "테스트 계정만") */
+const logins = new Set((process.env.LOGINS ?? "").split(",").map((s) => s.trim()).filter(Boolean));
+/* 지금 학번 칸이 학번 · 전화번호 꼴이 아닐 때 새 값을 정해 준다: "지금아이디:새값,…" */
+const sids = new Map((process.env.SIDS ?? "").split(",").map((s) => s.trim()).filter(Boolean)
+  .map((kv) => [kv.slice(0, kv.lastIndexOf(":")), kv.slice(kv.lastIndexOf(":") + 1)] as [string, string]));
+if (apply && !ids.size && !logins.size) { console.error("APPLY=1 에는 IDS=… 나 LOGINS=… 로 바꿀 계정을 적어야 합니다"); process.exit(2); }
 
 async function main(): Promise<void> {
 let n = 0, changed = 0, skipped = 0;
@@ -32,13 +40,14 @@ for (const u of universities()) {
        FROM campus_students cs JOIN users u ON u.id = cs.user_id
       WHERE cs.university_code = $1 AND u.status <> 'erased' ORDER BY cs.student_id`, [u.university_code]);
   for (const r of rows) {
-    const sid = normalizeLoginValue(mode, r.sid);
+    if (logins.size && !logins.has(r.login_id ?? "")) continue;
+    const sid = normalizeLoginValue(mode, sids.get(r.login_id ?? "") ?? r.sid);
     const badPhone = mode === "phone" && !/^01\d{8,9}$/.test(sid);
     const expect = `${prefix}${sid}`;
-    if (r.login_id === expect && !badPhone) continue;
+    if (r.login_id === expect && !badPhone && !logins.size) continue;
     n += 1;
     console.log(`${u.university_code}\t#${r.id}\t${r.name}\t학번칸 ${r.sid}\t아이디 ${r.login_id ?? "—"}\t→ ${expect}${badPhone ? "\t(전화번호 꼴이 아님: 학번 칸에 휴대전화 번호를 먼저 적어야 함)" : ""}`);
-    if (!apply || !ids.has(r.id) || badPhone) continue;
+    if (!apply || !(ids.has(r.id) || logins.has(r.login_id ?? "")) || badPhone) continue;
     const taken = await queryOne<{ id: string }>(`SELECT id::text FROM users WHERE login_id = $1 AND id <> $2::bigint`, [expect, r.id]);
     if (taken) { skipped += 1; console.log(`  건너뜀  #${r.id}: 아이디 ${expect} 를 다른 계정(#${taken.id})이 씁니다`); continue; }
     await query(`UPDATE campus_students SET student_id = $2 WHERE user_id = $1::bigint`, [r.id, sid]);

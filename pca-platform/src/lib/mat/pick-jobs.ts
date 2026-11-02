@@ -4,7 +4,7 @@ import { activeMajorName } from "@/lib/me-v3/major-name";
 import { isGrad } from "@/lib/assistant/research";
 import { stageOf } from "@/lib/assistant/stage";
 import { activeCoreOrPick } from "@/lib/me-v3/platform";
-import { isEntryJob } from "./job-title";
+import { isEntryJob, jobTitle } from "./job-title";
 import { matchDomains } from "@/lib/assistant/rules";
 
 /**
@@ -67,11 +67,16 @@ export async function pickJobs(userId: string, limit = 20): Promise<PickedJobs> 
     if (majorHit) { score += 3; if (!hits.includes(st)) hits.unshift(st); }
     /* 내 전공으로 단 공고이거나, 전공을 못 단 공고 가운데 내 자료 · 전공 이름과 겹치는 것 */
     const mineField = p.core_code ? p.core_code === core : (m?.hits.length ?? 0) > 0 || majorHit;
-    /* **전공 관련도가 먼저다**: 내 전공 사전의 낱말(예: 딥러닝 · PyTorch · AI 엔지니어)이 공고에 몇 개 나오는가 */
-    const dict = core ? matchDomains(core, text).filter((x) => x.score >= 3) : [];
-    const rel = dict.reduce((n, x) => n + x.terms.length, 0);
-    score += rel * 3;
-    for (const x of dict) for (const t of x.terms) if (hits.length < 6 && !hits.includes(t)) hits.push(t);
+    /* **전공 관련도가 먼저다**: 내 전공 사전의 낱말(예: 딥러닝 · PyTorch · AI 엔지니어)이 **제목 · 모집 분야**에 나오는가.
+       본문에 한 번 나온 것만으로는 맞춤으로 치지 않고 순위만 조금 올린다(2026-11-02 운영 시험: 본문의 "인공지능" 한 번으로
+       "과제계약직" 공고가 인공지능학과의 첫 줄에 섰다) */
+    const head = [jobTitle(p.raw_requirements ?? [], p.role_code).title ?? "", p.role_code ?? ""].join(" ");
+    const dictHead = core ? matchDomains(core, head).filter((x) => x.score >= 3) : [];
+    const dictBody = core ? matchDomains(core, text).filter((x) => x.score >= 3) : [];
+    const rel = dictHead.reduce((n, x) => n + x.terms.length, 0);
+    const relBody = dictBody.reduce((n, x) => n + x.terms.length, 0);
+    score += rel * 4 + Math.min(relBody, 2);
+    for (const x of dictHead) for (const t of x.terms) if (hits.length < 6 && !hits.includes(t)) hits.push(t);
     const entry = isEntryJob(text);
     if (entry) { score += 2; if (!hits.includes("신입 · 인턴")) hits.push("신입 · 인턴"); }
     const research = GRAD_BOARD.test(p.source_url ?? "") || GRAD_TEXT.test(text);

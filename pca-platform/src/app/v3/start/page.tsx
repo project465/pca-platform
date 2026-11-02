@@ -224,7 +224,7 @@ export default async function V3Start({
           <h2>{say("시작하기 전에")}</h2>
           <ul className="qs-steps">
             <li>{say("해 본 적 없는 일은 ‘해 본 적 없음’을 고르시면 됩니다. 그 답도 결과에 들어갑니다")}</li>
-            <li>{say("학위가 높다고 결과가 좋아지지 않습니다. 질문에 나오는 상황 설명만 달라집니다")}</li>
+            {campus ? null : <li>{say("학위가 높다고 결과가 좋아지지 않습니다. 질문에 나오는 상황 설명만 달라집니다")}</li>}
             <li>{say("창을 닫아도 보던 위치에서 이어집니다. 이전으로 돌아가 수정할 수 있습니다")}</li>
           </ul>
         </section>
@@ -232,7 +232,7 @@ export default async function V3Start({
 
         <div className="qs-sect">
           <StartForm error={e} core={campus ? undefined : (picked ?? undefined)}
-            lang={lang} chosen={chosen ?? undefined} />
+            lang={lang} chosen={chosen ?? undefined} fixedStage={campus ? "bachelor" : undefined} />
         </div>
 
         <p className="qs-fine">

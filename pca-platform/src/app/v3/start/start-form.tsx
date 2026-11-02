@@ -12,8 +12,13 @@ import { phrase } from "@/lib/me-v3/phrase";
  * 칸이 하나 서고, 그 칸이 비어 있는 것을 응시자가 자기 잘못으로 읽는다.
  * 묻는 장면만 달라지고 판정 기준은 같다는 것을 한 줄로 적어 둔다.
  */
-export default function StartForm({ error, core, lang, chosen }: {
+export default function StartForm({ error, core, lang, chosen, fixedStage }: {
   error?: string; core?: string;
+  /**
+   * 학교 · 기관 계정은 학업 단계를 묻지 않는다(2026-11-02 운영 시험: 학부생 시작 화면에 석사 · 박사 · 박사후 보기가 섰다).
+   * 학적이 정하는 값이라 숨은 칸으로 보낸다
+   */
+  fixedStage?: "bachelor";
   /** 열릴 응시의 언어. 화면 글만 고른다 */
   lang?: string;
   /** 사람이 주소(`?lang=`)로 고른 언어. 서버가 응시 언어를 정할 때 다시 본다 */
@@ -41,6 +46,7 @@ export default function StartForm({ error, core, lang, chosen }: {
           쿠키의 학과가 정하므로 이 칸을 세우지 않는다 */}
       {core ? <input type="hidden" name="core" value={core} /> : null}
       {chosen ? <input type="hidden" name="lang" value={chosen} /> : null}
+      {fixedStage ? <input type="hidden" name="stage" value={fixedStage} /> : (
       <fieldset className="qs-opts">
         <legend>{t("현재 학업 단계")}</legend>
         <h2 className="qs-eyebrow" aria-hidden>{t("현재 학업 단계")}</h2>
@@ -55,8 +61,9 @@ export default function StartForm({ error, core, lang, chosen }: {
           ))}
         </div>
       </fieldset>
+      )}
 
-      {grad ? (
+      {grad && !fixedStage ? (
         <fieldset className="qs-opts">
           <legend>{t("대학원 전공계열")}</legend>
           <h2 className="qs-eyebrow" aria-hidden>{t("대학원 전공계열")}</h2>
