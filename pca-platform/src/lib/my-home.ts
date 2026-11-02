@@ -46,7 +46,7 @@ const num = (v: unknown) => Number(v ?? 0);
 export async function myState(userId: string, lang: string): Promise<MyState> {
   /* 끝난 응시가 있으면 그것이 가장 쓸모 있는 상태다 */
   const done = await queryOne<{ id: string; scored_at: string | null }>(
-    `SELECT id, to_char(scored_at, 'YYYY-MM-DD') AS scored_at
+    `SELECT id, to_char(scored_at AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD') AS scored_at
        FROM attempts WHERE user_id = $1 AND status = 'scored'
       ORDER BY id DESC LIMIT 1`,
     [userId],

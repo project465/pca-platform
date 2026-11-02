@@ -45,8 +45,8 @@ export default async function MyAssessments({
     version: string | null; tier: string | null;
   }>(
     `SELECT a.id, a.status,
-            to_char(a.started_at, 'YYYY-MM-DD') AS started,
-            to_char(a.submitted_at, 'YYYY-MM-DD') AS submitted,
+            to_char(a.started_at AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD') AS started,
+            to_char(a.submitted_at AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD') AS submitted,
             a.assessment_version AS version, a.tier,
             CASE WHEN a.assessment_version = 'ME_V2'
                  THEN (SELECT count(*) FROM v2_responses vr WHERE vr.attempt_id = a.id)::int

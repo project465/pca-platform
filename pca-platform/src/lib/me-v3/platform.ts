@@ -208,7 +208,7 @@ export async function currentState(userId: string): Promise<CurrentState> {
         WHERE user_id = $1 AND status = 'in_progress'
         ORDER BY started_at DESC LIMIT 1`, [userId]),
     queryOne<{ model: ResultModel | null; at: string | null; ts: string | null }>(
-      `SELECT s.result_model AS model, to_char(s.created_at, 'YYYY-MM-DD') AS at, s.created_at::text AS ts
+      `SELECT s.result_model AS model, to_char(s.created_at AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD') AS at, s.created_at::text AS ts
          FROM v3_snapshots s JOIN v3_attempts a ON a.id = s.attempt_id
         WHERE a.user_id = $1 AND s.result_model IS NOT NULL
         ORDER BY s.created_at DESC, s.id DESC LIMIT 1`, [userId]),
@@ -235,7 +235,7 @@ export async function currentState(userId: string): Promise<CurrentState> {
       `SELECT axis_levels::text AS levels, zones::text AS zones, gaps::text AS gaps,
               (jsonb_typeof(gaps) = 'array') AS applied, recomputed_at::text AS rts,
               CASE WHEN jsonb_typeof(gaps) = 'array'
-                   THEN to_char(recomputed_at, 'YYYY-MM-DD') END AS at
+                   THEN to_char(recomputed_at AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD') END AS at
          FROM career_profiles WHERE user_id = $1 AND core_code = $2`, [userId, core]),
     pendingRecompute(userId),
   ]);
@@ -882,7 +882,7 @@ export async function resultHistory(userId: string): Promise<ResultHistoryRow[]>
        묶음이 `근거가 확인된 영역` 인 줄을 세면 **그 기록으로 지원서에서
        설명할 수 있는 자리가 몇 곳인지**가 나온다 */
     `SELECT s.attempt_id::text AS attempt_id, a.tier,
-            to_char(s.created_at, 'YYYY-MM-DD') AS at,
+            to_char(s.created_at AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD') AS at,
             (s.result_model -> 'overview' -> 'counts' -> 'confirmed_axes')::int AS confirmed,
             (SELECT count(*) FROM jsonb_array_elements(
                       coalesce(s.result_model -> 'domains', '[]'::jsonb)) d
@@ -891,7 +891,7 @@ export async function resultHistory(userId: string): Promise<ResultHistoryRow[]>
       WHERE a.user_id = $1 AND s.result_model IS NOT NULL
       ORDER BY s.created_at DESC, s.id DESC LIMIT 10`, [userId]);
   const now = await queryOne<{ at: string | null }>(
-    `SELECT to_char(recomputed_at, 'YYYY-MM-DD') AS at FROM career_profiles
+    `SELECT to_char(recomputed_at AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD') AS at FROM career_profiles
       WHERE user_id = $1 AND core_code = $2`, [userId, await activeCore(userId)]);
   const rows: ResultHistoryRow[] = snaps.map((r) => ({
     kind: "SNAPSHOT" as const, attempt_id: r.attempt_id, tier: r.tier,

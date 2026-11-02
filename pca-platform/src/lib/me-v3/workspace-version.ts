@@ -478,7 +478,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V92";
 /** 공고 · AI 설정 안내 문장에서 `규칙으로` 를 뺀다 — copy.65 */
 /** `그 밖에 할 일 n개` → `내 할 일 목록에 n개 더` — copy.66 */
 /** `이 지역 기업·기관 자료를 채우는 중입니다` 한 줄 — copy.67 */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.67";
+/** MAT 첫 화면 '드립니다' 되풀이 줄이기(찾습니다 · 옮겨 둡니다) — copy.68 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.68";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

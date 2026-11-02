@@ -28,7 +28,7 @@ import { AXES, BAND_WORD, ZONES, ZONE_WORD } from "./derive";
 import { C, LEVEL_KO, radar, ring } from "./charts";
 import { j } from "./text";
 import type { Inputs, RegionKey } from "./types";
-import { forAgency, tidyKo } from "./agency";
+import { forAgency, oneTest, tidyKo } from "./agency";
 import { university } from "@/lib/campus/registry";
 
 export type LongReport = {
@@ -197,7 +197,7 @@ export function assemble(x0: Inputs): { pages: Page[]; notes: string[]; region: 
   if (x.issuerCode && university(x.issuerCode)?.org_kind === "agency") {
     for (const pg of P) { pg.body = forAgency(pg.body); pg.title = forAgency(pg.title); }
   }
-  if (!isEn()) for (const pg of P) pg.body = tidyKo(pg.body);
+  if (!isEn()) for (const pg of P) { pg.body = oneTest(tidyKo(pg.body)); pg.title = oneTest(pg.title); }
   return { pages: P, notes, region: rv?.key ?? null };
 }
 

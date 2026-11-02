@@ -316,7 +316,7 @@ export default async function Track({
           {!en ? (
             <>
               <SectionHeader icon="doc" title="내 자료로 찾기"
-                sub="논문 · 발표 자료 · 이력서를 올리면 한 장으로 정리하고, 맞는 공고를 찾아 드립니다." />
+                sub="논문 · 발표 자료 · 이력서를 올리면 한 장으로 정리하고, 맞는 공고를 찾습니다." />
               <div className="cm-panel is-one">
                 <div className="cm-pane">
                   <div className="cm-acts">
@@ -401,7 +401,7 @@ export default async function Track({
           {!en ? (
             <p className="cm-none" style={{ marginBottom: 12 }}>
               성적증명서·수료증·상장 파일은{" "}
-              <Link href="/me/experience/new#upload">경험 추가 화면</Link>에 끌어다 놓으면 옮겨 드립니다
+              <Link href="/me/experience/new#upload">경험 추가 화면</Link>에 끌어다 놓으면 옮겨 둡니다
               {state.on ? "(한 달 10건)." : acc.left.upload > 0 ? `(무료 ${acc.freeLeft}번 가운데 1번을 씁니다).` : `(무료 ${FREE_TOTAL}번을 다 쓰셨습니다. 기간권에서 한 달 10건).`}
             </p>
           ) : null}

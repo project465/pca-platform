@@ -308,7 +308,7 @@ export type PrepAnswer = {
 export async function prepAnswersOf(userId: string, core: string): Promise<PrepAnswer[]> {
   return query<PrepAnswer>(
     `SELECT kind, prompt_key, prompt_text, answer_text, saves,
-            to_char(updated_at, 'YYYY-MM-DD') AS updated_at
+            to_char(updated_at AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD') AS updated_at
        FROM v3_prep_answers
       WHERE user_id = $1 AND core_code = $2
       ORDER BY updated_at DESC`, [userId, core]);

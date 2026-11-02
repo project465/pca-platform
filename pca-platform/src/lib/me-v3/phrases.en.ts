@@ -48,8 +48,8 @@ export const PHRASES_EN: Record<string, string> = {
   "답해야 하는 문항을 모두 채우셨습니다.": "You've answered every required question.",
   "나중에 경험을 더 넣으시면 결과를 다시 정리해 드립니다.":
     "Add more experience later, and we'll update your results.",
-  "지금까지 답하신 것으로 결과를 정리합니다. 만든 뒤에도 이전으로 돌아가 고칠 수 있습니다.":
-    "We'll build your results from your answers so far. You can still go back and change answers afterward.",
+  "지금까지 답하신 것으로 결과를 만듭니다. 만들기 전에는 이전으로 돌아가 고칠 수 있고, 만든 결과는 그대로 보관됩니다.":
+    "We'll build your results from your answers so far. You can go back and change answers before that; once built, your results are kept as they are.",
   "결과 보기": "See results",
   "내 경험을 업무 영역, 산업, 직무와 이어서 보여 드립니다":
     "Your experience, linked to work areas, industries and roles",

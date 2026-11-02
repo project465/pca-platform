@@ -44,7 +44,7 @@ export async function resultMeta(
 ): Promise<ResultMeta> {
   const row = await queryOne<Row>(
     `SELECT a.university_code, a.department_code, a.specialization_code,
-            to_char(coalesce(a.submitted_at, s.created_at), 'YYYY-MM-DD') AS answered
+            to_char(coalesce(a.submitted_at, s.created_at) AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD') AS answered
        FROM v3_attempts a
        LEFT JOIN LATERAL (
          SELECT created_at FROM v3_snapshots

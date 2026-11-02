@@ -26,9 +26,9 @@ export default async function MyResults({
     id: string; scored: string | null; tier: string | null; version: string | null;
     made: string | null;
   }>(
-    `SELECT a.id, to_char(a.scored_at, 'YYYY-MM-DD') AS scored,
+    `SELECT a.id, to_char(a.scored_at AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD') AS scored,
             a.tier, a.assessment_version AS version,
-            to_char(max(rs.generated_at), 'YYYY-MM-DD') AS made
+            to_char(max(rs.generated_at) AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD') AS made
        FROM attempts a
        LEFT JOIN report_snapshots rs ON rs.attempt_id = a.id
       WHERE a.user_id = $1 AND a.status = 'scored'

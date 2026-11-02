@@ -56,3 +56,26 @@ export function tidyKo(html: string): string {
   return html.split(/(<[^>]+>)/).map((part) => (part.startsWith("<") ? part
     : part.replace(/([A-Za-z0-9)]) (으로|로|를|을|와|과)(?=[\s,.·)’”]|$)/g, "$1$2"))).join("");
 }
+
+/**
+ * **검사는 한 번 본다**(2026-11-02 전주대 시험 JA6). `다시 검사 · 다음 검사` 를 권하지 않는다. 결과 뒤에 더한 경험은
+ * 경험 기록에 적으면 내 CareerMatri 의 `현재 상태` 에 반영되므로 그쪽으로 이끈다. 재응시는 학교 담당자가 열 때만이다
+ */
+const ONE_TEST: [RegExp, string][] = [
+  [/다음 검사 리포트/g, "경험 기록을 더한 현재 상태"],
+  [/다음 검사에서는/g, "경험 기록에 더하면"],
+  [/다음 검사에서/g, "경험 기록에 더하면"],
+  [/다시 검사할 때/g, "경험 기록을 더할 때"],
+  [/다시 검사해 보세요/g, "경험 기록에 적어 보세요"],
+  [/같은 검사를 다시 보고/g, "경험 기록을 더한 현재 상태를 보고"],
+  [/같은 검사를 다시 보아/g, "경험 기록을 더해"],
+  [/다시 검사/g, "현재 상태 다시 보기"],
+];
+export function oneTest(html: string): string {
+  return html.split(/(<[^>]+>)/).map((part) => {
+    if (part.startsWith("<")) return part;
+    let t = part;
+    for (const [re, to] of ONE_TEST) t = t.replace(re, to);
+    return t;
+  }).join("");
+}

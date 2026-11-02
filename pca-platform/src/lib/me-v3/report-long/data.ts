@@ -94,7 +94,7 @@ export async function loadInputs(attemptId: string, expScope: "snapshot" | "all"
 
   /* 지역 자료는 한국 공시와 명단이라 영어 책에는 싣지 않는다 */
   const region = lang === "en" ? null : issuerCode ? REGION_BY_ORG[issuerCode] ?? null : null;
-  const today = (await queryOne<{ d: string }>(`SELECT to_char(now(), 'YYYY-MM-DD') AS d`))?.d ?? "";
+  const today = (await queryOne<{ d: string }>(`SELECT to_char(now() AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD') AS d`))?.d ?? "";
   return {
     attemptId, tier: row.tier, userId: row.user_id,
     lang,
