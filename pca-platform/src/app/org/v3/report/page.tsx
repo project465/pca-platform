@@ -23,7 +23,12 @@ import {
 } from "@/lib/campus/viewer";
 import "../report.css";
 
-export const metadata = { title: "대학 운영 요약 · CareerMatri Campus" };
+/* 기관(진흥원 등)이면 `대학` 이 아니라 `기관` 운영 요약(2026-11-02 운영 시험). `sayTree` 는 `대학` 을 바꾸지 않는다 */
+export async function generateMetadata() {
+  const { uni } = await campusViewer();
+  const agency = uni ? university(uni)?.org_kind === "agency" : false;
+  return { title: `${agency ? "기관" : "대학"} 운영 요약 · CareerMatri Campus` };
+}
 
 function num(n: number | null): React.ReactNode {
   return n === null
@@ -65,7 +70,7 @@ export default async function OrgReport({
           자료에 붙이고, 한 장만 떨어져 나와도 그 장이 어느 학교의 어느
           기간 자료인지 스스로 적어야 한다 */}
       <header className="og-cover">
-        <p className="og-kicker">CareerMatri Campus · 대학 운영 요약</p>
+        <p className="og-kicker">CareerMatri Campus · {reg?.org_kind === "agency" ? "기관" : "대학"} 운영 요약</p>
         <h1>{org ? org.name : "기관"} 진로 진단 운영 현황</h1>
         <p className="og-meta">
           <b>범위</b> {campusQueryKo(q, name)} · <b>뽑은 날</b> {now}

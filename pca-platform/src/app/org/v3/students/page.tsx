@@ -189,7 +189,7 @@ export default async function CampusStudents({
           담당자가 학생에게 연다. 학생 화면은 개인 구매와 같은 MAT 쪽이 열린다 */}
       <Section title="MAT · AI 취업비서"
         note="계약한 좌석 안에서 학생에게 엽니다. 연 날부터 계약 기간 동안 쓸 수 있습니다.">
-        <MatPanel pools={matPools} total={total} usage={matUsage}
+        <MatPanel pools={matPools} total={total} usage={matUsage} agency={agency}
           filter={{ q: sp.q ?? "", department: sp.department ?? "",
             college: sp.college ?? "", state: state === "disabled" ? "all" : state }} />
       </Section>

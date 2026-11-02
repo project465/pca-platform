@@ -7,8 +7,9 @@
  * 드러난다.
  */
 import { campusNames } from "@/lib/campus/labels";
+import { campusSay, university } from "@/lib/campus/registry";
 import { campusViewer, campusQuery, campusQueryKo } from "@/lib/campus/viewer";
-import { csvResponse, departmentCsv } from "@/lib/campus/export";
+import { csvResponse, departmentCsv, kstToday } from "@/lib/campus/export";
 import { auditExport } from "@/lib/campus/export-audit";
 
 export async function GET(req: Request): Promise<Response> {
@@ -30,8 +31,10 @@ export async function GET(req: Request): Promise<Response> {
     },
     name.dept, name.college,
     campusQueryKo(q, name),
+    /* 기관(진흥원 등)이면 칸 이름을 기관 낱말로 */
+    campusSay(university(v.uni)),
   );
   await auditExport(v, "campus.export.departments", q, { demo: sp.demo === "1" });
   return csvResponse(
-    `careermatri-departments-${new Date().toISOString().slice(0, 10)}.csv`, body);
+    `careermatri-departments-${kstToday()}.csv`, body);
 }

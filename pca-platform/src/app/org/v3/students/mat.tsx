@@ -3,6 +3,8 @@
 import { useActionState } from "react";
 import { Kpi } from "@/components/sf/parts";
 import { matAction, type ManageState } from "./actions";
+import { campusSay } from "@/lib/campus/words";
+import { sayTree } from "@/lib/campus/say-tree";
 
 const EMPTY: ManageState = {};
 
@@ -29,7 +31,7 @@ export type MatPoolView = {
  * 하려는 것이기도 하다.
  */
 export default function MatPanel({
-  pools, filter, total, usage,
+  pools, filter, total, usage, agency = false,
 }: {
   pools: MatPoolView[];
   /** 집계만(누가 무엇을 했는지는 오지 않는다). 5명이 안 되는 칸은 null */
@@ -38,11 +40,14 @@ export default function MatPanel({
   filter: { q: string; department: string; college: string; state: string };
   /** 지금 조건에 맞는 학생 수 */
   total: number;
+  /** 기관(진흥원 등)이면 `학생` 을 `참여자` 로(2026-11-02 운영 시험). 이 덩이는 쪽의 `sayTree` 가 닿지 않는다 */
+  agency?: boolean;
 }) {
   const [state, run, pending] = useActionState(matAction, EMPTY);
+  const say = campusSay(agency ? { org_kind: "agency" } : null);
   const open = pools.filter((p) => p.open);
 
-  return (
+  return sayTree(
     <div>
       {state.err ? <p className="sf-note is-bad" role="alert">{state.err}</p> : null}
       {state.ok ? <p className="sf-note is-ok" role="status">{state.ok}</p> : null}
@@ -112,16 +117,17 @@ export default function MatPanel({
           </label>
           <button type="submit" className="sf-btn accent" disabled={pending || !total}
             onClick={(e) => {
-              if (!confirm(
+              if (!confirm(say(
                 `지금 조건에 맞는 학생 ${total}명에게 MAT 을 엽니다.\n`
                 + "이미 열린 학생과 멈춘 계정은 건너뛰고, 남은 좌석까지만 엽니다.\n"
                 + "학생 줄의 'MAT 닫기' 로 닫으면 좌석이 돌아옵니다.",
-              )) e.preventDefault();
+              ))) e.preventDefault();
             }}>
             {pending ? "여는 중…" : `지금 조건의 학생 ${total}명에게 열기`}
           </button>
         </form>
       ) : null}
-    </div>
+    </div>,
+    say, agency,
   );
 }

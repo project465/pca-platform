@@ -10,8 +10,9 @@
  * 기능이 없는데 만들면 담당자가 보낸 줄로 읽는다).
  */
 import { campusNames } from "@/lib/campus/labels";
+import { campusSay, university } from "@/lib/campus/registry";
 import { campusViewer, campusQuery, campusQueryKo } from "@/lib/campus/viewer";
-import { csvResponse, studentStatusCsv } from "@/lib/campus/export";
+import { csvResponse, kstToday, studentStatusCsv } from "@/lib/campus/export";
 import { auditExport } from "@/lib/campus/export-audit";
 import type { StudentState } from "@/lib/campus/manage";
 
@@ -42,12 +43,10 @@ export async function GET(req: Request): Promise<Response> {
     },
     name.dept,
     campusQueryKo(q, name),
+    /* 기관(진흥원 등)이면 칸 이름을 기관 낱말로 */
+    campusSay(university(v.uni)),
   );
   /* 기록이 안 되면 내보내지 않는다: 접근 기록 없는 명단 반출을 남기지 않는다 */
   await auditExport(v, "campus.export.students", q, { state, demo: sp.demo === "1" });
-  return csvResponse(`careermatri-students-${state}-${today()}.csv`, body);
-}
-
-function today(): string {
-  return new Date().toISOString().slice(0, 10);
+  return csvResponse(`careermatri-students-${state}-${kstToday()}.csv`, body);
 }

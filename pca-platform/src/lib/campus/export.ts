@@ -48,17 +48,33 @@ const ACCOUNT_KO: Record<string, string> = {
   active: "사용 중", disabled: "멈춤", erased: "파기됨",
 };
 
+/** 기관(진흥원 등)이면 칸 이름의 학교 낱말을 기관 낱말로(`campusSay`). 학교면 그대로 */
+type Say = (s: string) => string;
+const same: Say = (s) => s;
+
+/**
+ * **뽑은 때는 한국 시간으로 적는다**(2026-11-02 운영 시험: UTC 로 적혀 아홉 시간이 어긋나 보였다).
+ * 담당자는 파일의 시각을 자기 시계와 맞춰 본다.
+ */
+export function kstNow(d: Date = new Date()): string {
+  return new Date(d.getTime() + 9 * 3_600_000).toISOString().slice(0, 16).replace("T", " ");
+}
+
+/** 파일 이름에 붙는 날짜도 한국 날짜로(밤 9시 뒤에 받으면 UTC 로는 하루 앞이다) */
+export function kstToday(d: Date = new Date()): string {
+  return kstNow(d).slice(0, 10);
+}
+
 /**
  * 내려받은 자료가 **어느 조건으로 뽑힌 것인지** 스스로 말한다.
  *
  * 담당자는 같은 이름의 파일을 여러 번 내려받아 보고서에 붙인다. 조건이
  * 적혀 있지 않으면 **지난 학기 것을 이번 학기 표로 붙이는 날**이 온다.
  */
-function head(title: string, scopeKo: string, uni: string): unknown[][] {
-  const now = new Date().toISOString().slice(0, 16).replace("T", " ");
+function head(title: string, scopeKo: string, uni: string, say: Say): unknown[][] {
   return [
-    [`CareerMatri · ${title}`],
-    ["학교", uni], ["조건", scopeKo], ["뽑은 때", `${now} UTC`],
+    [`CareerMatri · ${say(title)}`],
+    [say("학교"), uni], ["조건", say(scopeKo)], ["뽑은 때", `${kstNow()} KST`],
     ["담은 것", "계정 상태와 응시 여부와 집계입니다. 개별 답변은 들어 있지 않습니다."],
     [],
   ];
@@ -71,13 +87,13 @@ function head(title: string, scopeKo: string, uni: string): unknown[][] {
  * 값이다. 리마인드 대상은 같은 함수에 상태만 좁혀 부른다(규격 §17).
  */
 export async function studentStatusCsv(
-  f: StudentFilter, deptName: (c: string) => string, scopeKo: string,
+  f: StudentFilter, deptName: (c: string) => string, scopeKo: string, say: Say = same,
 ): Promise<string> {
   const { rows } = await listStudents({ ...f, limit: 5000, offset: 0 });
   const title = f.state && f.state !== "all"
     ? `학생 응시 상태 (${STATE_KO[f.state] ?? f.state})`
     : "학생 응시 상태";
-  const cols = ["학번", "이름", "아이디", "학과", "계정 상태", "응시 상태", "완료일"];
+  const cols = ["학번", "이름", "아이디", "학과", "계정 상태", "응시 상태", "완료일"].map(say);
   const body = rows.map((r) => [
     r.student_id, r.name, r.login_id, deptName(r.department_code),
     ACCOUNT_KO[r.account] ?? r.account,
@@ -85,7 +101,7 @@ export async function studentStatusCsv(
     r.completed_at ?? "",
   ]);
   return toCsv([
-    ...head(title, scopeKo, f.universityCode),
+    ...head(title, scopeKo, f.universityCode, say),
     cols, ...body,
     [], [`줄 ${rows.length}개`],
   ]);
@@ -104,7 +120,7 @@ const STATE_KO: Record<string, string> = {
  */
 export async function departmentCsv(
   scope: CampusScope, deptName: (c: string) => string,
-  collegeName: (c: string) => string, scopeKo: string,
+  collegeName: (c: string) => string, scopeKo: string, say: Say = same,
 ): Promise<string> {
   const v = await campusV3(scope);
   const uni = scope.universityCode ?? "";
@@ -118,24 +134,24 @@ export async function departmentCsv(
    * 내려받기가 깨진 줄로 읽고 다시 누른다. 왜 비었는지를 파일이 적는다.
    */
   const why = v.too_few
-    ? [[`이 범위에 든 학생이 ${MIN_CELL}명이 안 되어 아래 칸을 만들지 `
-        + `않았습니다. 좁히는 조건을 넓혀 보십시오.`], []]
+    ? [[say(`이 범위에 든 학생이 ${MIN_CELL}명이 안 되어 아래 칸을 만들지 `
+        + `않았습니다. 좁히는 조건을 넓혀 보십시오.`)], []]
     : [];
   return toCsv([
-    ...head("학과별 집계", scopeKo, uni),
+    ...head("학과별 집계", scopeKo, uni, say),
     ...why,
     ["대상자", v.target],
-    ["검사를 시작한 학생", v.started],
-    ["결과를 받은 학생", v.scored],
+    [say("검사를 시작한 학생"), v.started],
+    [say("결과를 받은 학생"), v.scored],
     ["완료율(%)", v.completion ?? ""],
     [],
-    ["단과대학", "대상자", "시작", "완료", "완료율(%)", "비고"],
+    ["단과대학", "대상자", "시작", "완료", "완료율(%)", "비고"].map(say),
     ...v.college_rows.map((r) => [
       collegeName(r.code), r.target ?? "", r.started ?? "",
       r.scored ?? "", r.rate ?? "", note(r.started),
     ]),
     [],
-    ["학과", "검사를 시작한 학생", "비고"],
+    ["학과", "검사를 시작한 학생", "비고"].map(say),
     ...v.by_department.map((c) => [
       deptName(c.key), c.n ?? "", note(c.n),
     ]),

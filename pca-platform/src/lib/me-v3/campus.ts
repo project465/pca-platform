@@ -233,6 +233,11 @@ export async function campusV3(scope: CampusScope): Promise<CampusV3> {
       WHERE (m.org_id IS NOT NULL
              OR ($2::text IS NOT NULL AND a.university_code = $2))
         AND ${live("a.user_id")}
+        /* **명단과 같은 기준으로 센다**(2026-11-02 배재대 운영 시험: 집계 대상 3 · 시작 3 · 결과 2 인데 명단은
+           전체 2 · 진행 1 · 완료 1). 명단의 진행 · 완료는 이용 중인 계정만 세고 담당자는 명단에 없다.
+           그래서 응시 쪽도 정지 · 파기 계정과 담당자 · 운영자 계정의 응시를 세지 않는다 */
+        AND EXISTS (SELECT 1 FROM users su WHERE su.id = a.user_id AND su.status = 'active')
+        AND NOT EXISTS (SELECT 1 FROM memberships sm WHERE sm.user_id = a.user_id AND sm.role <> 'student')
         ${P.from ? `AND a.started_at >= $${P.from}::date` : ""}
         ${P.to ? `AND a.started_at < ($${P.to}::date + 1)` : ""}
         ${P.college ? `AND a.college_code = $${P.college}` : ""}
