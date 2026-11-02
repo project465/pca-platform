@@ -1,5 +1,5 @@
 import { requireUser } from "@/lib/session";
-import { postingsForMe } from "@/lib/assistant/match";
+import { pickJobs } from "@/lib/mat/pick-jobs";
 import { postingsOf } from "@/lib/assistant/posting";
 import { JobCard } from "../job-card";
 import { matPasteJob } from "../actions";
@@ -13,9 +13,9 @@ import { SOURCE_KO } from "@/lib/mat/stage";
 export const metadata = { title: "공고 · MAT" };
 
 const ERR: Record<string, string> = {
-  noread: "이 공고는 요구 항목을 글로 읽지 못해 분석할 수 없습니다. 원문을 열어 글을 붙여 넣어 주세요.",
-  short: "공고 글이 너무 짧습니다. 자격 요건과 우대 사항이 들어간 부분을 붙여 넣어 주세요.",
-  save: "분석을 저장하지 못했습니다. 잠시 뒤 다시 눌러 주세요.",
+  noread: "이 공고는 요건을 글로 읽지 못했어요. 원문을 열어 요건 부분을 아래에 붙여 넣어 주세요.",
+  short: "공고 글이 너무 짧아요. 자격 요건 · 우대 사항 부분을 붙여 넣어 주세요.",
+  save: "저장하지 못했어요. 잠시 뒤 다시 눌러 주세요.",
 };
 
 /**
@@ -38,21 +38,18 @@ export default async function MatJobs({ searchParams }: { searchParams: Promise<
          FROM v3_job_postings WHERE id = $1`, [sp.from]).catch(() => null)
     : null;
   const [jobs, mine, apps] = await Promise.all([
-    postingsForMe(user.id, 40).catch(() => null),
+    pickJobs(user.id, 20),
     postingsOf(user.id).catch(() => []),
     applicationsOf(user.id).catch(() => []),
   ]);
-  const list = jobs ? (jobs.rows.length ? jobs.rows : jobs.recent) : [];
-  const matched = Boolean(jobs?.rows.length);
-  const fromJi = list.some((p) => p.source === "jobindustry");
+  const list = jobs.main;
+  const fromJi = [...list, ...jobs.grad].some((p) => p.source === "jobindustry");
 
   return (
     <main>
       <h1 className="mt-h1">공고</h1>
       <p className="mt-lead">
-        {matched
-          ? `내 경험 · 자료와 겹치는 공고 ${list.length}건입니다. 겹친 낱말이 많은 차례입니다.`
-          : "아직 겹치는 공고가 없어 새로 들어온 공고부터 보여 드립니다. 경험을 적을수록 겹치는 공고가 생깁니다."}
+        {jobs.matched ? "전공 · 경험과 겹치는 공고부터 보여 드려요." : "새 공고부터 보여 드려요. 경험을 적으면 맞는 공고가 위로 와요."}
       </p>
       {e && ERR[e] ? <p className="mt-alert" role="alert">{ERR[e]}</p> : null}
       {carried ? (
@@ -61,29 +58,33 @@ export default async function MatJobs({ searchParams }: { searchParams: Promise<
           <div className="mt-list" style={{ marginBottom: 8 }}>
             <JobCard p={{ ...carried, requirements: (carried.raw_requirements ?? []).slice(0, 8), hits: [], tdHits: [] }} />
           </div>
-          <p className="mt-note">바로 분석을 누르면 이 공고와 내 경험이 얼마나 맞는지부터 보여 드립니다.</p>
+          <p className="mt-note">바로 분석에서 내 경험과 맞춰 보세요.</p>
         </>
       ) : null}
 
       {list.length ? (
         <div className="mt-list">{list.slice(0, 20).map((p) => <JobCard key={p.id} p={p} />)}</div>
       ) : (
-        <p className="mt-empty">아직 모아 둔 공고가 없습니다.</p>
+        <p className="mt-empty">모아 둔 공고가 아직 없어요.</p>
       )}
-      {fromJi ? <p className="mt-src">공고 출처 잡인더스트리 · 10분마다 새로 모읍니다 · 회사 이름은 원문에서 확인하세요</p> : null}
+      {jobs.grad.length ? (
+        <details className="mt-more">
+          <summary>대학원 · 연구실 모집 {jobs.grad.length}건</summary>
+          <div className="mt-list">{jobs.grad.map((p) => <JobCard key={p.id} p={p} />)}</div>
+        </details>
+      ) : null}
+      {fromJi ? <p className="mt-src">공고 출처 잡인더스트리 · 회사 이름은 원문에서</p> : null}
+      <p className="mt-note">바로 분석은 AI 분석을 켠 경우 Anthropic(미국)의 Claude로 읽고, 꺼 두면 규칙으로 읽어요.</p>
 
       {mine.length ? (
         <>
-          <h2 className="mt-h2">분석한 공고 <small>{mine.length}건</small></h2>
+          <h2 className="mt-h2">분석한 공고</h2>
           <div className="mt-list">
             {mine.slice(0, 10).map((m) => (
               <Link key={m.id} href={`/mat/jobs/${m.id}`} className="mt-row mt-row-link">
                 <div className="mt-row-b">
                   <p>{m.label}</p>
-                  <small>
-                    설명할 경험 있음 {m.analysis.counts.ready} · 덜 됨 {m.analysis.counts.partial} · 없음 {m.analysis.counts.empty}
-                    {m.deadline ? ` · 마감 ${m.deadline}` : ""}
-                  </small>
+                  <small>{m.deadline ? `마감 ${m.deadline}` : "마감 미기재"}</small>
                 </div>
               </Link>
             ))}
@@ -96,16 +97,16 @@ export default async function MatJobs({ searchParams }: { searchParams: Promise<
       <h2 className="mt-h2" id="paste">다른 공고 붙여 넣기</h2>
       <form action={matPasteJob} className="mt-form">
         <label className="mt-field">
-          <span>공고 이름(나만 봅니다)</span>
+          <span>공고 이름 (나만 봐요)</span>
           <input name="label" maxLength={80} placeholder="예: 품질관리 신입" />
         </label>
         <label className="mt-field">
           <span>공고 글</span>
           <textarea name="text" rows={6} required minLength={30} maxLength={12000}
-            placeholder="자격 요건 · 우대 사항 · 담당 업무 부분을 붙여 넣으세요" />
+            placeholder="자격 요건 · 우대 사항 · 담당 업무" />
         </label>
-        <button type="submit" className="mt-btn is-block">분석하기</button>
-        <p className="mt-note">회사 이름은 저장하지 않습니다. AI 분석을 켜 둔 경우에만 글이 Anthropic(미국)의 Claude로 보내져 읽히고, 꺼 두면 규칙으로 읽습니다.</p>
+        <button type="submit" className="mt-btn is-main is-block">분석</button>
+        <p className="mt-note">회사 이름은 저장하지 않아요. AI 분석을 켠 경우 Anthropic(미국)의 Claude로 읽고, 꺼 두면 규칙으로 읽어요.</p>
       </form>
     </main>
   );

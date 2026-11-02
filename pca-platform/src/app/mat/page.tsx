@@ -3,8 +3,9 @@ import { requireUser } from "@/lib/session";
 import { activeCoreOrPick, currentState } from "@/lib/me-v3/platform";
 import { openActions } from "@/lib/me-v3/open-actions";
 import { domainName } from "@/lib/me-v3/runtime/session";
-import { postingsForMe } from "@/lib/assistant/match";
-import { MAT_STAGES, isoWeek, matStage, monthWeekKo } from "@/lib/mat/stage";
+import { MAT_STAGES, matStage, monthWeekKo } from "@/lib/mat/stage";
+import { pickJobs } from "@/lib/mat/pick-jobs";
+import { oneLine } from "@/lib/mat/short";
 import { withJosa } from "@/lib/me-v3/result/josa";
 import { matMoveAction } from "./actions";
 import { JobCard } from "./job-card";
@@ -27,13 +28,12 @@ export const metadata = { title: "MAT 홈 · CareerMatri" };
  */
 export default async function MatHome() {
   const user = await requireUser();
-  /* /me 와 같은 문: 검사도 학교 학과도 없어 전공을 정할 수 없으면 전공 목록으로 보낸다.
-     먼저 막지 않으면 아래 `currentState` 가 던져 화면이 500 이 된다(로컬 확인 11-01) */
+  /* /me 와 같은 문: 검사도 학교 학과도 없어 전공을 정할 수 없으면 전공 목록으로 보낸다 */
   await activeCoreOrPick(user.id);
   const [st, act, jobs, ask, mine, apps] = await Promise.all([
     currentState(user.id),
     openActions(user.id),
-    postingsForMe(user.id, 40).catch(() => null),
+    pickJobs(user.id, 6),
     askOpenFor(user.id),
     postingsOf(user.id).catch(() => []),
     applicationsOf(user.id).catch(() => []),
@@ -41,7 +41,7 @@ export default async function MatHome() {
   const weekAgo = Date.now() - 7 * 86_400_000;
   const tips = headsUp({
     postings: mine, apps,
-    freshMatches: (jobs?.rows ?? []).filter((r) => Date.parse(r.captured_at) >= weekAgo).length,
+    freshMatches: jobs.main.filter((r) => r.hits.length && Date.parse(r.captured_at) >= weekAgo).length,
     zoneMoved: st.zoneMoved.length,
   });
   const name = (td: string) => domainName(st.core, td);
@@ -49,57 +49,51 @@ export default async function MatHome() {
   const s = matStage(st.zoneOf, owned);
   const gap = st.gaps[0] ?? null;
 
+  /* 상담사가 말하듯 한두 마디(2026-11-02 대표 "AI같아"). 숫자 · 판정어를 늘어놓지 않는다 */
   const diag = !st.model
-    ? "아직 검사 결과가 없습니다. 검사를 마치면 여기 진단과 할 일이 채워집니다."
+    ? "검사를 마치면 이번 주 할 일을 골라 드릴게요."
     : s.established.length
-      ? `${withJosa(s.established.slice(0, 2).map(name).join(" · "), "은는")} 근거를 갖췄습니다.${gap ? ` 지금 비어 있는 곳은 ${name(gap.domain)}입니다.` : ""}`
+      ? `${withJosa(s.established.slice(0, 2).map(name).join(" · "), "은는")} 근거가 있어요.${gap ? ` 이번엔 ${withJosa(name(gap.domain), "을를")} 채워 봐요.` : ""}`
       : gap
-        ? `아직 근거를 갖춘 영역이 없습니다. ${name(gap.domain)}부터 하나씩 채우면 됩니다.`
-        : "아직 근거를 갖춘 영역이 없습니다.";
+        ? `${name(gap.domain)}부터 하나씩 채워 봐요.`
+        : "적어 둔 경험이 늘면 다음 단계가 보여요.";
 
   const open = act.rows.filter((r) => r.state !== "done" && r.state !== "dropped");
   const week = open.slice(0, 3);
-  const doneN = act.rows.filter((r) => r.state === "done").length;
-
-  const list = jobs ? (jobs.rows.length ? jobs.rows : jobs.recent) : [];
-  const matched = Boolean(jobs?.rows.length);
-  const shown = list.slice(0, 2);
-  const fromJi = list.some((p) => p.source === "jobindustry");
+  const shown = jobs.main.slice(0, 2);
+  const fromJi = shown.some((p) => p.source === "jobindustry");
 
   return (
     <main>
       <div className="mt-top">
-        <span className="mt-week">W{isoWeek()} · {monthWeekKo()}</span>
-        <Link href="/mat/brief" className="mt-week">주간 브리핑 →</Link>
+        <span className="mt-week">{monthWeekKo()}</span>
+        <Link href="/mat/brief" className="mt-week">이번 주 브리핑</Link>
       </div>
-      <h1 className="mt-h1">{user.name}님, 이번 주는<br />이것부터 하세요</h1>
+      <h1 className="mt-h1">{user.name}님, 이번 주 할 일</h1>
 
-      <section className="mt-diag" aria-label="지금 단계">
-        <div className="mt-diag-k"><span>지금 단계</span><b>{s.stage}</b></div>
-        <div className="mt-steps" aria-hidden>
-          {MAT_STAGES.map((x, i) => <span key={x} className={i <= s.index ? "is-on" : undefined} />)}
-        </div>
-        <div className="mt-steps-l">
-          {MAT_STAGES.map((x, i) => <span key={x} className={i === s.index ? "is-now" : undefined}>{x}</span>)}
+      <section className="mt-stage" aria-label="지금 단계">
+        <div className="mt-stage-h"><span>지금 단계</span><b>{s.stage}</b></div>
+        <div className="mt-steps" role="img" aria-label={`${MAT_STAGES.length}단계 가운데 ${s.index + 1}번째`}>
+          {MAT_STAGES.map((x, i) => <span key={x} className={i <= s.index ? "is-on" : undefined} title={x} />)}
         </div>
         <p>{diag}</p>
-        {st.model ? <Link href="/me/results">결과지 전체 보기</Link> : <Link href="/cores">검사 시작하기</Link>}
+        {st.model ? <Link className="mt-link" href="/me/results">결과지 보기</Link> : <Link className="mt-link" href="/cores">검사 시작</Link>}
       </section>
 
       {tips.length ? (
         <>
-          <h2 className="mt-h2">MAT이 먼저 알려요</h2>
+          <h2 className="mt-h2">먼저 볼 것</h2>
           <div className="mt-list">
             {tips.map((t) => (
               <Link key={t.key} href={t.href} className="mt-row mt-row-link">
-                <div className="mt-row-b"><p>{t.title}</p><small>{t.body}</small><span className="mt-link" style={{ minHeight: 32 }}>{t.label} →</span></div>
+                <div className="mt-row-b"><p>{t.title}</p><small>{t.body}</small></div>
               </Link>
             ))}
           </div>
         </>
       ) : null}
 
-      <h2 className="mt-h2">이번 주 할 일 <small>{week.length ? `남은 일 ${open.length}개 · 끝낸 일 ${doneN}개` : ""}</small></h2>
+      <h2 className="mt-h2">이번 주 할 일</h2>
       {week.length ? (
         <div className="mt-list">
           {week.map((r) => (
@@ -109,34 +103,31 @@ export default async function MatHome() {
                 <input type="hidden" name="state" value="done" />
                 <input type="hidden" name="body" value={r.body} />
                 <input type="hidden" name="td" value={r.td_code ?? ""} />
-                <button type="submit" className="mt-check" aria-label={`끝냈어요: ${r.body}`}><i /></button>
+                <button type="submit" className="mt-check" aria-label={`끝냄: ${r.body}`}><i /></button>
               </form>
               <div className="mt-row-b">
-                <p>{r.body}</p>
-                <small>
-                  {r.td_code ? `${name(r.td_code)} · ` : ""}
-                  {r.horizon <= 30 ? "이번 달 안" : r.horizon <= 90 ? "석 달 안" : "올해 안"}
-                </small>
+                <p>{oneLine(r.body)}</p>
+                <small>{r.td_code ? name(r.td_code) : ""}</small>
               </div>
             </div>
           ))}
         </div>
       ) : (
         <p className="mt-empty">
-          {st.model ? "지금 열린 할 일이 없습니다. 경험을 하나 더 적으면 새 할 일이 생깁니다." : "검사를 마치면 할 일이 여기 섭니다."}
+          {st.model ? <>열린 할 일이 없어요. <Link href="/mat/jobs">공고 하나 분석하기</Link></> : <Link href="/cores">검사 시작</Link>}
         </p>
       )}
 
-      <h2 className="mt-h2">{matched ? "내 경험과 겹치는 공고" : "새로 들어온 공고"} <Link href="/mat/jobs" className="mt-meta">전체 보기</Link></h2>
+      <h2 className="mt-h2">{jobs.matched ? "맞는 공고" : "새 공고"} <Link href="/mat/jobs" className="mt-meta">전체</Link></h2>
       {shown.length ? (
         <div className="mt-list">{shown.map((p) => <JobCard key={p.id} p={p} />)}</div>
       ) : (
-        <p className="mt-empty">아직 모아 둔 공고가 없습니다.</p>
+        <p className="mt-empty">모아 둔 공고가 아직 없어요.</p>
       )}
-      <Link href="/mat/files" className="mt-row mt-row-link" style={{ border: "1px solid var(--mt-line)", borderRadius: 14, marginTop: 20 }}>
-        <div className="mt-row-b"><p>경험 파일 올리기</p><small>성적증명서 · 수료증 · 자격증 · 학교 활동 확인서를 올리면 경험 초안으로 옮깁니다</small></div>
+      <Link href="/mat/files" className="mt-row mt-row-link mt-box-link">
+        <div className="mt-row-b"><p>경험 파일 올리기</p><small>성적증명서 · 수료증 · 자격증</small></div>
       </Link>
-      {fromJi ? <p className="mt-src">공고 출처 잡인더스트리 · 10분마다 새로 모읍니다 · 회사 이름은 원문에서 확인하세요</p> : null}
+      {fromJi ? <p className="mt-src">공고 출처 잡인더스트리 · 회사 이름은 원문에서</p> : null}
       {ask.ok ? <MatAsk /> : null}
     </main>
   );

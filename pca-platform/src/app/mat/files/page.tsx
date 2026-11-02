@@ -21,7 +21,7 @@ export default async function MatFiles() {
   return (
     <main>
       <h1 className="mt-h1">경험 파일</h1>
-      <p className="mt-lead">올린 파일에서 경험으로 적을 만한 것을 골라 초안으로 옮깁니다. 확인하고 저장한 것만 기록이 됩니다.</p>
+      <p className="mt-lead">파일을 올리면 경험 초안으로 옮겨 드려요. 확인하고 저장한 것만 기록돼요.</p>
       <MatFileDrop consented={Boolean(set.file_consent_at)} used={used} cap={UPLOAD_MONTHLY_CAP} pending={pending} />
     </main>
   );

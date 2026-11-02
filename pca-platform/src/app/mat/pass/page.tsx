@@ -4,6 +4,7 @@ import { payOpen } from "@/lib/payments";
 import { university } from "@/lib/campus/registry";
 import { campusStudentContext } from "@/lib/campus/students";
 import { withJosa } from "@/lib/me-v3/result/josa";
+import { CONSULT_OPENS_KO } from "@/lib/mat/open-dates";
 
 export const metadata = { title: "이용권 · MAT" };
 
@@ -40,7 +41,7 @@ export default async function MatPass() {
 
       {state.on && state.until ? (
         <p className="mt-lead">
-          {school ? `${school} 제공` : "개인 이용권"} · {day(state.until)}까지 쓸 수 있습니다
+          {school ? `${school} 제공` : "개인 이용권"} · {day(state.until)}까지
           {state.queued ? " · 이어서 산 기간 포함" : ""}
         </p>
       ) : null}
@@ -48,13 +49,13 @@ export default async function MatPass() {
       <section className={`mt-box is-school`}>
         <h3>학교에서 검사를 받았나요?</h3>
         {school && state.source?.kind === "school" ? (
-          <p>{withJosa(school, "이가")} 연 좌석으로 쓰고 있습니다. 학교 제공 기간은 {day(state.source.until)}까지이고, 끝난 뒤에도 개인 이용권으로 이어 쓸 수 있습니다. 쓰던 자료는 그대로 남습니다.</p>
+          <p>{withJosa(school, "이가")} 연 좌석으로 쓰고 있어요. {day(state.source.until)}까지이고, 끝나도 개인 이용권으로 이어 쓸 수 있어요. 자료는 그대로 남아요.</p>
         ) : campus ? (
-          <p>{campus.university_name} 계정으로 로그인해 있습니다. 학교가 MAT 좌석을 열면 결제 없이 바로 쓸 수 있고, 따로 할 일은 없습니다.</p>
+          <p>{campus.university_name} 계정이에요. 학교가 MAT 좌석을 열면 결제 없이 바로 쓸 수 있어요.</p>
         ) : (
           <ul>
-            <li>학교가 좌석을 열면 결제 없이 씁니다.</li>
-            <li>학교에서 받은 계정으로 로그인하면 자동으로 이어집니다.</li>
+            <li>학교가 좌석을 열면 결제 없이 써요.</li>
+            <li>학교에서 받은 계정으로 로그인하면 이어져요.</li>
           </ul>
         )}
       </section>
@@ -63,7 +64,7 @@ export default async function MatPass() {
       {o30 || o90 ? (
         <form action="/checkout" method="get">
           <fieldset className="mt-opts">
-            <legend className="mt-meta" style={{ marginBottom: 8 }}>기간을 고르세요. 자동으로 연장되지 않고, 기간이 끝나면 닫힙니다.</legend>
+            <legend className="mt-meta" style={{ marginBottom: 8 }}>자동 연장 없음 · 기간이 끝나면 닫혀요</legend>
             {o30 ? (
               <label className="mt-opt">
                 <input type="radio" name="product" value={o30.code} />
@@ -87,11 +88,11 @@ export default async function MatPass() {
             )}
           </div>
           {state.on && open ? (
-            <p className="mt-note">지금 쓰는 기간이 끝나는 다음 날부터 이어 붙습니다. 겹쳐서 결제되지 않습니다.</p>
+            <p className="mt-note">지금 기간이 끝난 다음 날부터 이어져요.</p>
           ) : null}
         </form>
       ) : (
-        <p className="mt-empty">지금 살 수 있는 개인 이용권이 없습니다.</p>
+        <p className="mt-empty">지금 살 수 있는 이용권이 없어요.</p>
       )}
 
       <h2 className="mt-h2">들어 있는 것</h2>
@@ -100,7 +101,7 @@ export default async function MatPass() {
         <li>지원서 초안 · 면접 질문<span>준비 중</span></li>
         <li>주간 브리핑 · 마감 알림<span>메일 · 웹 알림</span></li>
         <li>경험 즉시 반영<span>적으면 할 일과 공고가 바로 바뀜</span></li>
-        <li>커리어피크 상담 연결<span>11월 7일부터</span></li>
+        <li>커리어피크 상담 연결<span>{CONSULT_OPENS_KO}부터</span></li>
       </ul>
     </main>
   );

@@ -14,8 +14,8 @@ import { splitChips } from "@/lib/mat/chips";
 export type AskMode = "free" | "draft" | "interview";
 const MODES: Record<AskMode, { title: string; examples: string[]; holder: string; prefix: string; max: number }> = {
   free: {
-    title: "MAT에게 묻기", examples: ["이번 주 뭐 하면 돼?", "분석한 공고 중 어디부터 준비할까?", "면접 질문 하나 내 줘"],
-    holder: "공고 · 할 일 · 지원서 문장 · 면접, 무엇이든 물어보세요", prefix: "", max: 600,
+    title: "물어보기", examples: ["이번 주 뭐 하면 돼?", "어느 공고부터 준비할까?", "면접 질문 하나 내 줘"],
+    holder: "공고 · 할 일 · 지원서 · 면접", prefix: "", max: 600,
   },
   draft: {
     title: "문장 고치기", examples: [],
@@ -27,11 +27,11 @@ const MODES: Record<AskMode, { title: string; examples: string[]; holder: string
   },
 };
 const FAIL: Record<string, string> = {
-  off: "지금은 답을 만들 수 없습니다. 잠시 뒤 다시 물어봐 주세요.",
-  refusal: "이 질문에는 답하지 않았습니다. 취업 준비에 관한 질문으로 다시 물어봐 주세요.",
-  rate: "묻는 사람이 많아 잠시 막혔습니다. 1분 뒤 다시 물어봐 주세요.",
-  timeout: "답이 늦어져 멈췄습니다. 질문을 짧게 나눠 다시 물어봐 주세요.",
-  error: "답을 만들지 못했습니다. 잠시 뒤 다시 물어봐 주세요.",
+  off: "지금은 답할 수 없어요. 잠시 뒤 다시 물어봐 주세요.",
+  refusal: "취업 준비에 관한 질문으로 다시 물어봐 주세요.",
+  rate: "지금 묻는 사람이 많아요. 1분 뒤 다시 물어봐 주세요.",
+  timeout: "답이 늦어졌어요. 질문을 짧게 나눠 다시 물어봐 주세요.",
+  error: "답하지 못했어요. 잠시 뒤 다시 물어봐 주세요.",
 };
 
 type Turn = { q: string; a: string; allowed: string[]; state: "run" | "done" | "fail" };
@@ -125,7 +125,7 @@ export function MatAsk({ mode = "free", examples }: { mode?: AskMode; examples?:
           onKeyDown={(e) => { if (mode !== "draft" && e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); void ask(q); } }} />
         <button type="submit" className="mt-btn is-ink" disabled={busy || q.trim().length < 2}>{busy ? "답하는 중" : "묻기"}</button>
       </form>
-      <p className="mt-note">답은 내 검사 결과 · 경험 기록 · 공고만 근거로 씁니다. 질문과 답은 저장하지 않고, 학교와 제휴사는 볼 수 없습니다.</p>
+      <p className="mt-note">내 검사 결과 · 경험 · 공고만 근거로 답해요. 질문과 답은 저장하지 않아요. AI 분석을 켠 경우 Anthropic(미국)의 Claude가 읽어요.</p>
     </section>
   );
 }

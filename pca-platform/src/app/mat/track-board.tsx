@@ -23,7 +23,7 @@ export function TrackBoard({ apps, postings }: { apps: Application[]; postings: 
   const byLabel = new Map(postings.map((p) => [p.label, p]));
   return (
     <section id="track" aria-label="지원 현황">
-      <h2 className="mt-h2">지원 현황 <small>{apps.length ? `${apps.length}건` : ""}</small></h2>
+      <h2 className="mt-h2">지원 현황</h2>
       {apps.length ? (
         <div className="mt-board">
           {TRACK_COLS.map((c) => {
@@ -59,7 +59,7 @@ export function TrackBoard({ apps, postings }: { apps: Application[]; postings: 
           })}
         </div>
       ) : (
-        <p className="mt-empty">공고를 분석한 뒤 ‘지원 현황에 담기’를 누르면 여기서 마감과 다음 할 일을 챙깁니다.</p>
+        <p className="mt-empty">분석한 공고를 담으면 마감과 다음 할 일을 챙겨 드려요.</p>
       )}
     </section>
   );

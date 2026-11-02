@@ -7,6 +7,7 @@ import { sentenceDrafts } from "@/lib/assistant/sentence";
 import { askOpenFor } from "@/lib/mat/ask-open";
 import { CopyButton } from "../../me/track/copy-button";
 import { MatAsk } from "../ask";
+import { AI_TOOLS_OPEN_KO } from "@/lib/mat/open-dates";
 
 export const metadata = { title: "지원서 · MAT" };
 
@@ -40,7 +41,7 @@ export default async function MatDraft({ searchParams }: { searchParams: Promise
   return (
     <main>
       <h1 className="mt-h1">지원서</h1>
-      <p className="mt-lead">분석한 공고의 요구마다 내 경험으로 문장 뼈대를 짓습니다. 빈 칸은 직접 채우세요.</p>
+      <p className="mt-lead">공고 요건마다 내 경험으로 문장 뼈대를 만들어 드려요. 빈 칸만 채우면 돼요.</p>
 
       {mine.length ? (
         <div className="mt-chips" aria-label="공고 고르기" style={{ marginBottom: 14 }}>
@@ -50,12 +51,12 @@ export default async function MatDraft({ searchParams }: { searchParams: Promise
           ))}
         </div>
       ) : (
-        <p className="mt-empty">아직 분석한 공고가 없습니다. <Link href="/mat/jobs">공고</Link>에서 하나를 바로 분석하면 여기서 문장 뼈대가 생깁니다.</p>
+        <p className="mt-empty"><Link href="/mat/jobs">공고 하나 분석하기</Link></p>
       )}
 
       {p ? (
         <>
-          <h2 className="mt-h2">문장 뼈대 <small>{sd.drafts.length}개</small></h2>
+          <h2 className="mt-h2">문장 뼈대</h2>
           {sd.drafts.length ? (
             <div className="mt-list">
               {sd.drafts.map((d, i) => {
@@ -66,16 +67,16 @@ export default async function MatDraft({ searchParams }: { searchParams: Promise
                       <small>공고 요구 · {d.text}</small>
                       <p style={{ marginTop: 6, fontWeight: 500 }}>{withBlanks(text)}</p>
                       <div className="mt-chips"><span className="mt-chip">경험: {d.experience.title}</span>
-                        {d.blanks.length ? <span className="mt-chip is-none">빈 칸 {d.blanks.length}개</span> : null}</div>
+                        </div>
                       <div className="mt-acts"><CopyButton text={text} label="문장 복사" /></div>
                     </div>
                   </div>
                 );
               })}
             </div>
-          ) : <p className="mt-empty">{same ? "필수 요구에 이을 경험이 아직 적혀 있지 않습니다." : "다른 전공으로 읽은 공고라 뼈대를 짓지 않았습니다."}</p>}
+          ) : <p className="mt-empty">{same ? "필수 요건에 댈 경험을 먼저 적어 보세요." : "다른 전공으로 읽은 공고예요."}</p>}
           {sd.missing ? (
-            <p className="mt-note">경험 기록이 없어 뼈대를 못 지은 필수 요구 {sd.missing}줄 — <Link href={`/mat/jobs/${p.id}`}>보완할 점</Link>에서 경험을 적으면 생깁니다.</p>
+            <p className="mt-note">경험을 더 적으면 뼈대가 늘어요 — <Link href={`/mat/jobs/${p.id}`}>채울 것 보기</Link></p>
           ) : null}
         </>
       ) : null}
@@ -86,13 +87,13 @@ export default async function MatDraft({ searchParams }: { searchParams: Promise
           {asks.length ? <MatAsk mode="interview" examples={asks.map((a) => a.question)} /> : null}
         </>
       ) : (
-        <p className="mt-note" style={{ marginTop: 24 }}>문장 고치기와 면접 연습은 11월 10일부터 열립니다.</p>
+        <p className="mt-note" style={{ marginTop: 24 }}>문장 고치기 · 면접 연습은 {AI_TOOLS_OPEN_KO}부터</p>
       )}
 
       <div className="mt-box" style={{ marginTop: 24 }}>
         <h3>사람과 연습하기</h3>
-        <p>지원서 첨삭과 모의면접 상담은 커리어피크로 이어집니다. 보낼 내용은 보내기 전에 직접 고릅니다.</p>
-        <Link className="mt-btn is-block" href="/mat/consult" style={{ marginTop: 12 }}>상담 알아보기</Link>
+        <p>지원서 첨삭 · 모의면접은 커리어피크 상담사와 할 수 있어요.</p>
+        <Link className="mt-btn is-block" href="/mat/consult" style={{ marginTop: 12 }}>상담</Link>
       </div>
     </main>
   );

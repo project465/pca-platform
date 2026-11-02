@@ -26,7 +26,7 @@ export function JobCard({ p, analyze = true }: { p: MatchedPosting; analyze?: bo
             {left === null ? "상시" : left <= 0 ? "오늘 마감" : `D-${left}`}
           </span>
         </div>
-        <p style={{ marginTop: 6 }}>{title ?? "본문이 그림이라 요구 항목을 글로 읽지 못한 공고"}</p>
+        <p style={{ marginTop: 6 }}>{title ?? "요건을 글로 읽지 못한 공고 · 원문에서 확인"}</p>
         {p.hits.length ? (
           <div className="mt-chips" aria-label="겹친 낱말">
             {p.hits.slice(0, 4).map((h) => <span key={h} className="mt-chip">{h}</span>)}

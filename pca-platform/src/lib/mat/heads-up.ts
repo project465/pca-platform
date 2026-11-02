@@ -37,14 +37,14 @@ export function headsUp(opts: {
     out.push({
       key: `due:${p.id}`, href: `/mat/jobs/${p.id}`, label: "공고 보기",
       title: left === 0 ? `‘${p.label}’ 오늘 마감` : `‘${p.label}’ 마감 ${left}일 전`,
-      body: miss ? `보완할 필수 요구가 ${miss}줄 남아 있습니다. 하나만 채워도 지원서에 쓸 문장이 생깁니다.` : "필수 요구에 댈 경험이 모두 있습니다. 문장 뼈대를 다듬어 지원하세요.",
+      body: miss ? "채울 것 하나만 적어도 지원서 문장이 생겨요." : "문장 뼈대를 다듬어 지원해 보세요.",
     });
   }
   if (opts.freshMatches > 0) {
     out.push({
       key: "fresh", href: "/mat/jobs", label: "겹친 공고 보기",
-      title: `이번 주 새로 겹치는 공고 ${opts.freshMatches}건`,
-      body: "무엇이 겹쳤는지 보고, 마음에 드는 공고는 바로 분석해 보세요.",
+      title: "이번 주 새로 맞는 공고가 있어요",
+      body: "마음에 드는 공고를 바로 분석해 보세요.",
     });
   }
   const twoWeeks = now.getTime() - 14 * 86_400_000;
@@ -52,15 +52,15 @@ export function headsUp(opts: {
   if (opts.postings.length && !recentApp) {
     out.push({
       key: "idle", href: "/mat/jobs#track", label: "지원 현황",
-      title: "2주째 지원 기록이 없습니다",
-      body: "분석한 공고 가운데 하나를 골라 지원하고, 지원 현황에 옮겨 두세요. 다음 할 일이 자동으로 섭니다.",
+      title: "2주째 지원이 없어요",
+      body: "분석한 공고 하나를 골라 지원해 보세요.",
     });
   }
   if (opts.zoneMoved > 0) {
     out.push({
       key: "moved", href: "/me/results", label: "결과 보기",
-      title: "적어 둔 경험이 반영되어 결과가 바뀌었습니다",
-      body: `영역 ${opts.zoneMoved}곳의 단계가 달라졌습니다. 할 일과 겹치는 공고도 새로 계산했습니다.`,
+      title: "적은 경험이 결과에 반영됐어요",
+      body: "바뀐 단계와 할 일을 확인해 보세요.",
     });
   }
   return out.slice(0, 3);

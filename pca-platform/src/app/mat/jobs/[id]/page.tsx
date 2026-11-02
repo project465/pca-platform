@@ -10,6 +10,7 @@ import { matTakeTasks, matTrackApp } from "../../actions";
 import { queryOne } from "@/lib/db";
 import { outLink } from "@/lib/mat/out-link";
 import { SOURCE_KO } from "@/lib/mat/stage";
+import { taskLine } from "@/lib/mat/short";
 
 export const metadata = { title: "공고 분석 · MAT" };
 
@@ -49,21 +50,21 @@ export default async function MatJob({ params, searchParams }: {
   for (const it of a.items) {
     if (it.status === "ready") {
       fit.push({
-        it, mark: "맞음", why: `${area(it)} 쪽에 설명할 경험이 있습니다.`,
+        it, mark: "맞음", why: `${area(it)} 경험이 있어요.`,
         chips: [...it.evidence.slice(0, 2).map((t) => `경험: ${t}`), ...(it.evidence.length ? [] : [`검사: ${area(it)}`]), `공고: ${need(it)}`],
       });
     } else if (it.status === "partial") {
       gap.push({
         it, mark: "덜 됨",
         why: it.near
-          ? "가까운 경험이 있습니다. 이 일에 맞게 직접 정한 것과 남긴 것을 더 적어 주세요."
-          : "해 본 일은 있는데 직접 정한 것이나 남긴 것이 아직 적혀 있지 않습니다.",
+          ? "비슷한 경험이 있어요. 직접 정한 것 한 줄을 더 적어 보세요."
+          : "해 본 일은 있어요. 직접 정한 것과 남긴 것을 적어 보세요.",
         chips: [...it.evidence.slice(0, 2).map((t) => `경험: ${t}`), `공고: ${need(it)}`],
       });
     } else if (it.status === "empty") {
-      gap.push({ it, mark: "없음", why: `${area(it)} 쪽 경험이 아직 기록에 없습니다.`, chips: ["기록 없음", `공고: ${need(it)}`] });
+      gap.push({ it, mark: "없음", why: `${area(it)} 경험 한 줄부터 적어 보세요.`, chips: ["기록 없음", `공고: ${need(it)}`] });
     } else if (stem.length >= 2 && it.reason !== "unmatched" && /전공/.test(it.text) && it.text.includes(stem)) {
-      fit.push({ it, mark: "맞음", why: "회원님 전공이 이 조건의 전공 목록에 들어 있습니다.", chips: [`전공: ${major}`, `공고: ${need(it)}`] });
+      fit.push({ it, mark: "맞음", why: "전공 조건에 맞아요.", chips: [`전공: ${major}`, `공고: ${need(it)}`] });
     } else {
       cond.push(it);
     }
@@ -89,14 +90,16 @@ export default async function MatJob({ params, searchParams }: {
     <main>
       <p className="mt-week"><Link href="/mat/jobs">← 공고</Link>{p.deadline ? ` · 마감 ${p.deadline}` : ""}</p>
       <h1 className="mt-h1">{p.label}</h1>
-      <section className="mt-diag" aria-label="한 줄 요약">
-        <div className="mt-diag-k"><span>{a.role ? `뽑는 자리 · ${a.role}` : "공고 요구 항목"}</span><b>{a.items.length}줄</b></div>
-        <p>
-          필수 {must}줄 가운데 설명할 경험이 있는 줄 {fit.filter((r) => r.it.kind === "must").length}개,
-          보완할 줄 {gap.filter((r) => r.it.kind === "must").length}개입니다.
-          {gap[0] ? ` 먼저 ‘${gap[0].it.text}’부터 채우세요.` : ""}
-        </p>
-        {a.note ? <p className="mt-diag-note">{a.note}</p> : null}
+      {/* 숫자를 늘어놓지 않고 먼저 할 일 한 줄(2026-11-02 대표 "AI같아"). 처리 방식 안내는 화면 위가 아니라 맨 아래 작은 글씨 */}
+      <section className="mt-diag" aria-label="먼저 할 일">
+        {a.role ? <div className="mt-diag-k"><span>뽑는 자리</span><b>{a.role}</b></div> : null}
+        <p>{!a.items.length
+          ? "이 공고는 요건을 거의 읽지 못했어요. 원문을 열어 요건 부분을 붙여 넣어 주세요."
+          : gap[0] ? `‘${gap[0].it.text}’부터 채워 봐요.`
+          : fit.length ? "필수 요건에 댈 경험이 있어요. 문장 뼈대로 지원서를 써 보세요." : "공고 원문에서 자격 조건부터 확인해 보세요."}</p>
+        {!a.items.length ? <Link href="/mat/jobs#paste">공고 글 붙여 넣기</Link>
+          : gap[0]?.it.domain ? <Link href={`/me/experience/new?td=${encodeURIComponent(gap[0].it.domain)}`}>경험 적기</Link>
+          : <Link href={`/mat/draft?p=${p.id}`}>지원서 쓰기</Link>}
       </section>
       {link ? (
         <p className="mt-src">
@@ -110,8 +113,8 @@ export default async function MatJob({ params, searchParams }: {
         <button type="submit" className="mt-btn is-block">지원 현황에 담기</button>
       </form>
 
-      <h2 className="mt-h2">맞는 점 <small>{fit.length}줄</small></h2>
-      {fit.length ? (
+      {fit.length ? (<>
+      <h2 className="mt-h2">맞는 점</h2>
         <div className="mt-list">
           {fit.map((r, i) => (
             <div key={i} className="mt-row">
@@ -120,10 +123,10 @@ export default async function MatJob({ params, searchParams }: {
             </div>
           ))}
         </div>
-      ) : <p className="mt-empty">아직 이 공고에 바로 댈 경험이 없습니다. 아래 보완할 점부터 채우세요.</p>}
+      </>) : null}
 
-      <h2 className="mt-h2">보완할 점 <small>{gap.length}줄</small></h2>
-      {gap.length ? (
+      {gap.length ? (<>
+      <h2 className="mt-h2">채울 것</h2>
         <div className="mt-list">
           {gap.map((r, i) => (
             <div key={i} className="mt-row">
@@ -133,35 +136,35 @@ export default async function MatJob({ params, searchParams }: {
                 <small>{r.why}</small>
                 {chipRow(r.chips)}
                 {r.it.domain ? (
-                  <Link className="mt-link" href={`/me/experience/new?td=${encodeURIComponent(r.it.domain)}`}>이 영역 경험 적기</Link>
+                  <Link className="mt-link" href={`/me/experience/new?td=${encodeURIComponent(r.it.domain)}`}>경험 적기</Link>
                 ) : null}
               </div>
             </div>
           ))}
         </div>
-      ) : <p className="mt-empty">보완할 줄이 없습니다.</p>}
+      </>) : null}
 
       {cond.length ? (
         <>
-          <h2 className="mt-h2">자격 조건 <small>경험으로 판단하지 않음</small></h2>
-          <ul className="mt-incl">{cond.map((c, i) => <li key={i}>{c.text}<span>{c.reason === "unmatched" ? "어느 경험으로 설명할지 직접 정하기" : "공고 원문에서 확인"}</span></li>)}</ul>
+          <h2 className="mt-h2">자격 조건</h2>
+          <ul className="mt-incl">{cond.map((c, i) => <li key={i}>{c.text}<span>{c.reason === "unmatched" ? "댈 경험 고르기" : "원문 확인"}</span></li>)}</ul>
         </>
       ) : null}
 
-      <h2 className="mt-h2" id="tasks">마감 전 할 일 <small>{tasks.length ? `${tasks.length}개` : ""}</small></h2>
+      <h2 className="mt-h2" id="tasks">마감 전 할 일</h2>
       {tasks.length ? (
         <>
           <div className="mt-list">
             {tasks.map((t, i) => (
               <div key={i} className="mt-row">
-                <div className="mt-row-b"><p>{t.task}</p>{chipRow([`공고: ${t.text.slice(0, 24)}`])}</div>
+                <div className="mt-row-b"><p>{taskLine(t.artifact, t.verify)}</p><small>{t.text}</small></div>
               </div>
             ))}
           </div>
           {taken !== null ? (
             <p className="mt-note" role="status">
-              {taken === -1 ? "다른 전공으로 읽은 공고라 할 일에 담지 않았습니다."
-                : taken > 0 ? `이번 주 할 일에 ${taken}개를 담았습니다.` : "이미 담겨 있는 할 일입니다."}
+              {taken === -1 ? "다른 전공으로 읽은 공고라 담지 않았어요."
+                : taken > 0 ? "이번 주 할 일에 담았어요." : "이미 담겨 있어요."}
             </p>
           ) : null}
           {access.open ? (
@@ -169,13 +172,13 @@ export default async function MatJob({ params, searchParams }: {
               <input type="hidden" name="id" value={p.id} />
               <button type="submit" className="mt-btn is-main is-block">이번 주 할 일에 담기</button>
             </form>
-          ) : <Link className="mt-btn is-block" href="/mat/pass" style={{ marginTop: 12 }}>이용권으로 할 일 담기</Link>}
+          ) : <Link className="mt-btn is-block" href="/mat/pass" style={{ marginTop: 12 }}>이용권 보기</Link>}
         </>
-      ) : <p className="mt-empty">{sameCore ? "필수 항목 가운데 지금 만들 결과물이 정해진 줄이 없습니다." : "다른 전공으로 읽은 공고라 할 일을 만들지 않았습니다."}</p>}
+      ) : <p className="mt-empty">{sameCore ? "지금은 따로 만들 결과물이 없어요. 문장 뼈대로 지원서를 써 보세요." : "다른 전공으로 읽은 공고예요."}</p>}
 
       {asks.length ? (
         <>
-          <h2 className="mt-h2">이 공고에서 나올 질문</h2>
+          <h2 className="mt-h2">나올 질문</h2>
           <div className="mt-list">
             {asks.map((q, i) => (
               <div key={i} className="mt-row">
@@ -186,9 +189,10 @@ export default async function MatJob({ params, searchParams }: {
               </div>
             ))}
           </div>
-          <p className="mt-note">답 연습과 상담은 <Link href="/mat/consult">상담</Link>에서 커리어피크로 이어집니다.</p>
+          <p className="mt-note"><Link href={`/mat/draft?p=${p.id}`}>면접 연습</Link> · 사람과 연습은 <Link href="/mat/consult">상담</Link></p>
         </>
       ) : null}
+      {a.note ? <p className="mt-note" style={{ marginTop: 24 }}>{a.note}</p> : null}
     </main>
   );
 }
