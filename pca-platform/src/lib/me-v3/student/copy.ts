@@ -606,6 +606,34 @@ const STYLE: Record<string, StudentDomain> = {
   TD12: { activity: "권할 것과 안 권할 것 나누기", evidence: "고객 상담 기록", family: "talk" },
 };
 
+/* ── 인공지능 ───────────────────────────────────────────────────────── */
+const AI: Record<string, StudentDomain> = {
+  /* 문제 정의·지표 선택 */
+  TD01: { activity: "맞힐 것과 잴 지표 정하기", evidence: "문제 정의서", family: "plan" },
+  /* 데이터 수집·라벨링 기준 */
+  TD02: { activity: "정답 표시 기준 세우기", evidence: "라벨링 안내서", family: "rule" },
+  /* 데이터 정제·분할 */
+  TD03: { activity: "뺄 자료와 나눌 기준 정하기", evidence: "분할 명세", family: "data" },
+  /* 모델 선택·학습 설계 */
+  TD04: { activity: "모델 고르고 학습 조건 잡기", evidence: "모델 비교표", family: "compare" },
+  /* 평가·오류 분석 */
+  TD05: { activity: "틀린 사례 모아 까닭 찾기", evidence: "오류 사례 묶음", family: "verify" },
+  /* 자연어·생성 모델 */
+  TD06: { activity: "지시문 고치며 답 맞춰 보기", evidence: "평가 질문 묶음", family: "talk" },
+  /* 비전(이미지·영상) */
+  TD07: { activity: "사진 넣는 방식과 증강 정하기", evidence: "틀린 장면 모음", family: "structure" },
+  /* 피지컬 AI(로봇·센서·임베디드) */
+  TD08: { activity: "센서 읽고 기기 움직여 보기", evidence: "시험 주행 기록", family: "site" },
+  /* 서비스 배포·MLOps */
+  TD09: { activity: "모델 올리고 지표 지켜보기", evidence: "배포 설정 기록", family: "build" },
+  /* 경량화·추론 비용 */
+  TD10: { activity: "모델 줄이고 속도 재어 보기", evidence: "경량화 비교표", family: "cost" },
+  /* 수학·통계 근거 */
+  TD11: { activity: "차이가 진짜인지 따져 보기", evidence: "검정 결과 기록", family: "decide" },
+  /* AI 윤리·안전·권리 */
+  TD12: { activity: "써도 되는 자료인지 확인하기", evidence: "모델 설명서", family: "rule" },
+};
+
 export const STUDENT_COPY: Record<string, Record<string, StudentDomain>> = {
   BIZ_CORE_V1: BIZ,
   NURSING_CORE_V1: NURSING,
@@ -627,6 +655,7 @@ export const STUDENT_COPY: Record<string, Record<string, StudentDomain>> = {
   AGRI_CORE_V1: AGRI,
   VISUAL_CORE_V1: VISUAL,
   STYLE_CORE_V1: STYLE,
+  AI_CORE_V1: AI,
 };
 
 /**
@@ -660,6 +689,7 @@ export const EXPERIENCE_EXAMPLE: Record<string, string> = {
   AGRI_CORE_V1: "예: 실습포에서 작물을 길러 생육을 기록했던 경험",
   VISUAL_CORE_V1: "예: 팀 과제에서 포스터 시안을 여러 벌 만들었던 경험",
   STYLE_CORE_V1: "예: 실습 수업에서 패턴을 뜨고 가봉했던 경험",
+  AI_CORE_V1: "예: 팀 프로젝트에서 이미지 분류 모델을 학습시켰던 경험",
 };
 
 /** 아직 사전을 적지 않은 Core 가 드는 예시. **전공을 가리키지 않는다** */
@@ -768,6 +798,10 @@ export const EXPERIENCE_FLOW: Record<string, ExperienceFlow> = {
   STYLE_CORE_V1: {
     step2: "제작 판단", domainWord: "스타일 영역",
     problemQ: "어떤 사람이나 과제였나요", decidedQ: "무엇을 직접 정했나요",
+  },
+  AI_CORE_V1: {
+    step2: "모델 판단", domainWord: "AI 영역",
+    problemQ: "어떤 문제를 풀었나요", decidedQ: "무엇을 직접 정했나요",
   },
 };
 

@@ -37,7 +37,7 @@
   "src/app/me/experience/page.tsx": "600e8ba2eeae81b6ff34d1a21b9b8a7792f431606e99c90738dd48968ca828dd",
   "src/app/me/experience/new/page.tsx": "c3610b6eb477e8f00b8d119e8e6ed35dde9ab2bd8b93238623b1554bf67f3bf1",
   "src/app/me/experience/compose.tsx": "b14621098b3462c0dad4cad1d3548e448abd350415eba231c1b6bbc8e02f7af4",
-  "src/lib/me-v3/student/copy.ts": "3c5f96455be8222018a30f1d5423aee1608e436ec11c49d681b208956ef60a1a",
+  "src/lib/me-v3/student/copy.ts": "8cb4905b287e287cc6564e3e27e8293051a80161924d785753e2c4484bd77180",
   "src/lib/me-v3/student/icon.ts": "65836ae7a141a7dcdf844e5d5b4bcdbcc558dad0a3890a4a67384a3b17c7aea2",
   "src/lib/me-v3/student/index.ts": "909ca63ece9cac62f1bbf734dc924a043108676ad1211972f23909a73025dc12",
   "src/lib/me-v3/student/state.ts": "adc64248c6ffcbb850b2a609ab08594be66acaa5fc2aed2e91b8629a9e61d34f",
