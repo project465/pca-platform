@@ -218,6 +218,10 @@ export const PHRASES_EN: Record<string, string> = {
   "아직 고르지 않음 · {list}": "Not picked yet · {list}",
   "상세 근거 보기": "See the detailed evidence",
   "확인된 판단 {a} · 직접 정한 것 {b}": "Confirmed {a} · Decided yourself {b}",
+  "기술영역에서 확인된 판단 {a} · 직접 정한 것 {b}": "Judgments confirmed in your areas {a} · decided yourself {b}",
+  "영역을 가리지 않는 공통 판단에서 직접 정한 것 {n}": "Decided yourself in judgments across every area {n}",
+  "‘직접 해 봄’은 스스로 맡아 해 본 것이고, ‘직접 정한 것’은 기준까지 직접 정하고 그 근거를 고른 것입니다.":
+    "“Did it myself” means you took the work on; “decided yourself” means you also set the criteria and picked the evidence for it.",
   "검사에서 해 봤다고 답했고, 근거 항목(판단 · 결과물 · 비교 대상)은 고르지 않았습니다":
     "You said you've done this, but didn't pick any evidence (a decision, an output or a comparison)",
   "고른 항목": "What you picked",

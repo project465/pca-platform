@@ -33,8 +33,9 @@ import { openActions } from "@/lib/me-v3/open-actions";
 import { sayKo, thingKo } from "@/lib/me-v3/result/say";
 import { resultMeta, type ResultMeta } from "@/lib/me-v3/result/meta";
 import { leadFirst, specView } from "@/lib/me-v3/result/spec-view";
-import { sejongView } from "@/lib/me-v3/result/sejong";
-import SejongSection from "./sejong";
+import { webRegionView } from "@/lib/me-v3/report-long/web-region";
+import { roleForGoal } from "@/lib/me-v3/result/goal-role";
+import RegionSection from "./region";
 import { participantOf, savedActions } from "@/lib/me-v3/pilot/store";
 import { takeActionsFromResult } from "@/app/me/next/actions";
 import {
@@ -822,9 +823,12 @@ export async function V3ResultBody(
      아니라 이 절이 그 권역 기준으로 읽힌다 */
   const profile = userId ? await profileOf(userId) : null;
   const regionCode = profile?.home_region ?? null;
+  /* **학교 · 기관 응시는 그 기관 소재지의 지역 회사를 먼저 보여 준다**(2026-11-02 대표 기준 `지역 기업이 먼저`).
+     책 01장과 같은 묶음이다. 학생이 희망 지역을 고르면 그 값이 권역 칸에 먼저 선다 */
+  const rv = attemptId ? await webRegionView(attemptId) : null;
   const regionPicked = profile?.home_region
     ? regionLayer().regions.find((r) => r.code === profile.home_region)?.name ?? null
-    : null;
+    : rv ? `${rv.area} (학교 · 기관 소재지 기준)` : null;
 
   /* **결과를 열었다는 것만 센다.** 어느 절을 얼마나 읽었는지는 재지
      않는다. 그것을 재려면 화면에 코드를 심어야 하고, 그러면 파일럿
@@ -837,6 +841,8 @@ export async function V3ResultBody(
      core** 를 읽어야 한다. 전공을 바꿔 다시 응시한 사람의 옛 결과지가
      새 전공 이름으로 그려지면 그 종이는 거짓이 된다 */
   const core = coreOf(model);
+  /* 목표 직무가 따로 있으면 그 직무를 첫째로 잇는다(`goal-role.ts`). 판정은 굳은 그대로다 */
+  const roleCtx = roleForGoal(core, model);
   /**
    * 작업공간 쪽 자료. **결과지가 Workspace 의 입구이기 때문이다**(R19 §10).
    *
@@ -963,17 +969,6 @@ export async function V3ResultBody(
   const industryName = (c: string) =>
     industryChoices(core, L()).find((x) => x.code === c)?.name ?? c;
   const roleName = (c: string) => roleChoices(core, L()).find((x) => x.code === c)?.name ?? c;
-  /* **세종에서 이어 볼 기업**(고려대 세종 · 세종일자리경제진흥원). 학교
-     등록부의 첫 도시에 명단 파일이 있을 때만 선다. 새 점수를 만들지 않고
-     업종과 확인된 영역이 같은 분야인지만 나란히 놓는다 */
-  const sejong = sejongView({
-    universityCode: meta.universityCode,
-    domains: model.domains.map((d) => ({
-      name: domainName(core, d.code, L()), zone: d.zone, confirmed: d.confirmed.length,
-    })),
-    linked: [...revIndustry.map((r) => industryName(r.code)), ...revRole.map((r) => roleName(r.code))],
-    labels: [meta.specialization, meta.major].filter((x): x is string => !!x),
-  });
   /**
    * 넓게 살펴보라는 할 일이 **어느 영역에서**인가(규격 §16).
    *
@@ -983,7 +978,7 @@ export async function V3ResultBody(
    */
   const exploreWhere = (): string[] => [
     ...(model.industry_context?.domains ?? []),
-    ...(model.role_context?.domains ?? []),
+    ...(roleCtx?.domains ?? []),
     ...model.domains.map((d) => d.code),
   ].filter((c, i, xs) => xs.indexOf(c) === i).slice(0, 2).map((c) => domainName(core, c, L()));
   const say = (x: Action) => TX().actionKo(
@@ -1226,11 +1221,11 @@ export async function V3ResultBody(
    */
   const linkNames = [
     model.industry_context ? industryName(model.industry_context.code) : null,
-    model.role_context ? roleName(model.role_context.code) : null,
+    roleCtx ? roleName(roleCtx.code) : null,
   ].filter((x): x is string => Boolean(x));
   const linkReady = [
     ...(model.industry_context?.established ?? []),
-    ...(model.role_context?.established ?? []),
+    ...(roleCtx?.established ?? []),
   ].map((e) => domainName(core, e.domain, L()));
   /* **상담 자리에서 그대로 말할 수 있는 문장만 쓴다**(COMMERCIAL FINAL §4).
      전에는 `지금 확인된 것으로는 아직 이어지는 영역이 없습니다` 였다.
@@ -1317,7 +1312,7 @@ export async function V3ResultBody(
   /* 할 일이 있을 때만 적는다. 없는 자리에 이유를 적으면 그 줄이 거짓이 된다 */
   const doWhy = shownAction ? TX().actionWhyKo(shownAction) : null;
   const indAction = packAction(model.industry_context, [shownAction]);
-  const roleAction = packAction(model.role_context, [shownAction, indAction]);
+  const roleAction = packAction(roleCtx, [shownAction, indAction]);
 
   /**
    * **산업 절과 직무 절이 같은 문장으로 열지 않는다**(규격 §10).
@@ -1332,8 +1327,8 @@ export async function V3ResultBody(
     ? TX().bridgeKo(model.industry_context, industryName(model.industry_context.code),
       (td: string) => domainName(core, td, L()), null, model.stage)
     : [];
-  const roleBridge = model.role_context
-    ? TX().bridgeKo(model.role_context, roleName(model.role_context.code),
+  const roleBridge = roleCtx
+    ? TX().bridgeKo(roleCtx, roleName(roleCtx.code),
       (td: string) => domainName(core, td, L()), null, model.stage)
       .filter((l) => !indBridge.includes(l))
     : [];
@@ -1361,7 +1356,7 @@ export async function V3ResultBody(
   const exploreKey: [string, string][] = [
     [tr("산업"), model.industry_context ? industryName(model.industry_context.code)
       : (model.targets.industries.map(industryName).join(" · ") || tr("아직 없음"))],
-    [tr("직무"), model.role_context ? roleName(model.role_context.code)
+    [tr("직무"), roleCtx ? roleName(roleCtx.code)
       : (model.targets.roles.map(roleName).join(" · ") || tr("아직 없음"))],
     [tr("권역"), regionPicked ?? tr("아직 고르지 않으셨습니다")],
     [tr("기관 유형"), orgKinds.join(" · ") || tr("아직 고르지 않으셨습니다")],
@@ -1947,9 +1942,11 @@ export async function V3ResultBody(
                       axis={e.axis} state={e.state} picks={e.picks} own />
                   ))}
                   <EvidenceNone core={core} rows={model.evidence.ready} />
-                  {model.evidence.ready.length > 6 ? (
+                  {/* 위에 여섯까지 선 것은 고른 근거가 있는 줄뿐이다. 근거 없는 줄은 `EvidenceNone` 이 다 적으므로
+                      `이 밖에` 수에 넣지 않는다(2026-11-02 시험: 28개를 다 보여 준 뒤 "이 밖에 26가지") */}
+                  {model.evidence.ready.filter((e) => e.picks.length).length > 6 ? (
                     <p className="rs-none rs-evmore">
-                      {tr("이 밖에 {n}가지가 더 확인됐고, 위의 영역별 설명에서 보실 수 있어요.", { n: model.evidence.ready.length - 6 })}
+                      {tr("이 밖에 {n}가지가 더 확인됐고, 위의 영역별 설명에서 보실 수 있어요.", { n: model.evidence.ready.filter((e) => e.picks.length).length - 6 })}
                     </p>
                   ) : null}
                 {/* **`아직 없습니다` 로 끝내지 않는다**(COMMERCIAL GOLD
@@ -1970,9 +1967,11 @@ export async function V3ResultBody(
                       axis={e.axis} state={e.state} picks={e.picks} />
                   ))}
                   <EvidenceNone core={core} rows={model.evidence.partial} />
-                  {model.evidence.partial.length > 6 ? (
+                  {/* 위에 여섯까지 선 것은 고른 근거가 있는 줄뿐이다. 근거 없는 줄은 `EvidenceNone` 이 다 적으므로
+                      `이 밖에` 수에 넣지 않는다(2026-11-02 시험: 28개를 다 보여 준 뒤 "이 밖에 26가지") */}
+                  {model.evidence.partial.filter((e) => e.picks.length).length > 6 ? (
                     <p className="rs-none rs-evmore">
-                      {tr("이 밖에 {n}가지가 더 있어요.", { n: model.evidence.partial.length - 6 })}
+                      {tr("이 밖에 {n}가지가 더 있어요.", { n: model.evidence.partial.filter((e) => e.picks.length).length - 6 })}
                     </p>
                   ) : null}
                 </>) : (
@@ -2168,28 +2167,28 @@ export async function V3ResultBody(
           </section>
         ) : null}
 
-        {model.role_context ? (
+        {roleCtx ? (
           <section className="rs-sect" id="role">
-            <h2>{tr("{x} 직무에 연결하면", { x: roleName(model.role_context.code) })}</h2>
+            <h2>{tr("{x} 직무에 연결하면", { x: roleName(roleCtx.code) })}</h2>
             {roleBridge.length
               ? <p className="rs-bridge">{roleBridge.join(" ")}</p> : null}
             <p className="rs-note">
-              {tr("같은 경험을 {x}에서 먼저 읽는 차례로 놓았습니다. 기술영역 결과는 그대로입니다.", { x: roleName(model.role_context.code) })}
+              {tr("같은 경험을 {x}에서 먼저 읽는 차례로 놓았습니다. 기술영역 결과는 그대로입니다.", { x: roleName(roleCtx.code) })}
             </p>
-            <PackBody v={model.role_context}
-              name={roleName(model.role_context.code)}
+            <PackBody v={roleCtx}
+              name={roleName(roleCtx.code)}
               domainName={(td: string) => domainName(core, td, L())} say={say}
               action={roleAction} />
-            {model.role_context.compare_with.length ? (
+            {roleCtx.compare_with.length ? (
               <p className="rs-others">
-                {tr("같이 놓고 보실 직무 {x}", { x: model.role_context.compare_with
+                {tr("같이 놓고 보실 직무 {x}", { x: roleCtx.compare_with
                   .map((c) => roleName(c)).join(" · ") })}
               </p>
             ) : null}
           </section>
         ) : null}
-        {/* 세종 지역 자료는 한국어판 전용이다 */}
-        {sejong && kr ? <SejongSection v={sejong} /> : null}
+        {/* 지역 회사는 한국어판 전용이다. 책 01장과 같은 묶음(`webRegionView`) */}
+        {rv && kr ? <RegionSection v={rv} chosen={[model.targets.goal?.industry, ...model.targets.industries].filter((c): c is string => !!c)} /> : null}
         {/* ══ 부록 ══
             **다섯 장면에 들지 않는 것은 전부 여기다**(R18 §6).
             먼저 볼 영역과 비어 있는 자리와 전체 기술영역과 지역은
@@ -2706,7 +2705,8 @@ export async function V3ResultBody(
               ))}
             </dl>
             <p className="rs-others">
-              {tr("기관 수와 기업 목록은 아직 담지 않았습니다. 공개 통계를 붙이기 전까지 짐작으로 채우지 않습니다.")}
+              {rv ? `${rv.label} 기업 목록은 위 ‘${rv.label}에서 이 경험을 이어 볼 기업’에 있습니다. 다른 권역의 기업 목록은 공개 자료로 확인한 뒤에 담습니다.`
+                : tr("기관 수와 기업 목록은 아직 담지 않았습니다. 공개 통계를 붙이기 전까지 짐작으로 채우지 않습니다.")}
             </p>
           </div>
           <div className="rs-pack" id="fourkeys">
@@ -2850,8 +2850,13 @@ export async function V3ResultBody(
                  마지막 쪽에 홀로 서면 숫자 한 줄이 결과의 마지막 인상이
                  된다. 같은 수는 영역마다 제자리에 적혀 있다 */
               <p className="rs-note rs-webonly">
-                {tr("확인된 판단 {a} · 직접 정한 것 {b}", { a: counts.confirmed_axes, b: counts.owned_axes })}
+                {tr("기술영역에서 확인된 판단 {a} · 직접 정한 것 {b}", { a: counts.confirmed_axes, b: counts.owned_axes })}
                 {" · "}{tr("고르신 근거 {n}", { n: counts.evidence_items })}
+                {/* 공통 판단은 영역 수에 들지 않는다. 따로 적지 않으면 "직접 정한 것 0" 옆의 공통 판단 "직접 정한 것으로 확인" 과
+                    어긋나 보인다(2026-11-02 고려대 세종 시험) */}
+                {cm.owned.length ? <>{" · "}{tr("영역을 가리지 않는 공통 판단에서 직접 정한 것 {n}", { n: cm.owned.length })}</> : null}
+                <br />
+                {tr("‘직접 해 봄’은 스스로 맡아 해 본 것이고, ‘직접 정한 것’은 기준까지 직접 정하고 그 근거를 고른 것입니다.")}
               </p>
             ) : null}
           </Disclose>
