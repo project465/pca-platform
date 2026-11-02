@@ -211,7 +211,13 @@ export function longPage(x: Inputs, d: X): Page {
 export function researchPage(x: Inputs, d: X): Page {
   const role = d.goalRole ?? d.roleOrder[0];
   const en = isEn();
-  const aliases = x.tax.job_aliases.filter((a) => a.td.some((t) => role.core_ref.td.includes(t))).slice(0, 6).map((a) => a.posting_name);
+  /* 직무 이름의 낱말(`선행개발`)이 든 공고 이름과 직무 팩의 공고 이름을 먼저 둔다(2026-11-02 진흥원 시험 N12: `선행개발 엔지니어` 가 빠졌다) */
+  const toks = role.name_ko.split(/[·\s/]+/).filter((t) => t.length >= 2);
+  const own = ((role as { job_aliases?: string[] }).job_aliases ?? []);
+  const fromTax = x.tax.job_aliases.filter((a) => a.td.some((t) => role.core_ref.td.includes(t)) || toks.some((t) => a.posting_name.includes(t)))
+    .sort((a, b) => Number(toks.some((t) => b.posting_name.includes(t))) - Number(toks.some((t) => a.posting_name.includes(t))))
+    .map((a) => a.posting_name);
+  const aliases = [...new Set([...own, ...fromTax])].slice(0, 6);
   /* 그 직무가 쓰는 영역마다: 공고에서 나오는 모습 · 지금 붙일 수 있는 근거(없으면 그 영역의 할 일).
      관계표의 `appears_as` 는 한국어 한 벌뿐이라, 영어 책은 그 직무가 그 영역에서 보는 판단 이름을 적는다 */
   const rows = x.rel.td_role.filter((r) => r.role === role.code && r.strength !== "드묾").map((r) => {

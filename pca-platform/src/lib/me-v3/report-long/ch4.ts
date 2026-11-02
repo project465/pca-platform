@@ -356,14 +356,15 @@ export function boundaryPages(x: Inputs, d: X): Page[] {
   const bs = x.tax.boundaries.filter((b) => [b.a_question, b.b_question, ...[b.shared, b.a_difference, b.b_difference].map(polite)].every(okText))
     .map((b, i) => ({ b, i, w: rel(b.a.td) + rel(b.b.td) })).sort((p, q0) => q0.w - p.w || p.i - q0.i).slice(0, 6).map((v) => v.b);
   if (!bs.length) return [];
-  const side = (td: string, diff: string, ques: string) => `<div class="b4" style="--c:${sideColor(d.dom(td)?.zone ?? "NOT_EXPLORED")}"><b>${E(d.name(td))}</b><p>${E(say(diff))}</p><p class="mut">${isEn() ? `Ask yourself: ${E(askEn(ques))}` : `스스로 묻기: ${E(ques)}?`}</p></div>`;
+  /* 두 칸이 같은 영역이면(같은 영역 안 다른 일 · 2026-11-02 진흥원 시험 N11: `기구·제품 설계` 두 번) 짝 이름의 앞뒤를 칸 이름으로 쓴다 */
+  const side = (td: string, diff: string, ques: string, label?: string) => `<div class="b4" style="--c:${sideColor(d.dom(td)?.zone ?? "NOT_EXPLORED")}"><b>${E(label ?? d.name(td))}</b><p>${E(say(diff))}</p><p class="mut">${isEn() ? `Ask yourself: ${E(askEn(ques))}` : `스스로 묻기: ${E(ques)}?`}</p></div>`;
   const name = L("가까운 두 일의 경계", "Where two close areas meet");
   return paginate(bs, () => 1, 4, 4).map((chunk, k) => P(`${name}${k ? ` (${k + 1})` : ""}`,
     (k ? cont(name) : T(L("가까운 두 영역 가운데 내가 더 자신 있는 쪽을 질문 하나로 가려 보세요", "Use one question to tell which of two close areas you are more confident in"),
       L("같은 일을 나눠 맡는 두 영역을 나란히 놓았어요. 칸마다 아래 질문에 ‘예’라고 답할 수 있으면, 그쪽이 지금 면접에서 더 자신 있게 이야기할 수 있는 영역입니다.",
         "Each card puts side by side two areas that share the same work. If you can answer ‘yes’ to the question in a box, that is the area you can talk about with more confidence in an interview right now.")) +
       zoneLegend(L("칸 위 띠", "Strip on top of each box"), sideColor)) +
-    chunk.map((b) => `<div class="card"><p class="k">${E(b.pair)}</p><p class="sm">${L("함께 하는 일", "Shared work")}: ${E(say(b.shared))}</p><div class="two" style="margin-top:2mm">${side(b.a.td, b.a_difference, b.a_question)}${side(b.b.td, b.b_difference, b.b_question)}</div></div>`).join("")));
+    chunk.map((b) => `<div class="card"><p class="k">${E(b.pair)}</p><p class="sm">${L("함께 하는 일", "Shared work")}: ${E(say(b.shared))}</p><div class="two" style="margin-top:2mm">${side(b.a.td, b.a_difference, b.a_question, b.a.td === b.b.td ? `${b.pair.split(/ 대 | vs\.? /)[0]} · ${d.name(b.a.td)}` : undefined)}${side(b.b.td, b.b_difference, b.b_question, b.a.td === b.b.td ? `${b.pair.split(/ 대 | vs\.? /)[1] ?? ""} · ${d.name(b.b.td)}` : undefined)}</div></div>`).join("")));
 }
 
 export function industryDeep(x: Inputs, d: X): Page[] {
