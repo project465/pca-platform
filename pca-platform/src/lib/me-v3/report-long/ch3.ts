@@ -11,7 +11,7 @@
  */
 import type { Axis } from "../scoring/types";
 import type { Action, ResultDomain } from "../result/model";
-import { TRANS_STEP_KO } from "../result/text.ko";
+import { TRANS_STEP_KO , TRANS_NOTE_KO, isNoneChoice } from "../result/text.ko";
 import { TRANS_STEP_KO as TRANS_STEP_EN } from "../result/text.en";
 import { localizer } from "../result/localize";
 import { kindLabel, type Experience } from "../platform";
@@ -451,7 +451,8 @@ export function translationPage(x: Inputs, d: X): Page | null {
   const answered = steps.some((s) => s.choice || s.note);
   /* 답하지 않은 열 단계를 빈 표로 내지 않는다. 쓰는 칸만 남은 쪽은 빈칸으로 읽힌다 */
   if (!answered) return null;
-  const ch = (id: string) => steps.find((s) => s.item_id === id)?.choice ?? null;
+  /* 문단 재료에서는 `없다` 답을 뺀다(PK2). 표에는 고른 그대로 둔다 */
+  const ch = (id: string) => { const c = steps.find((s) => s.item_id === id)?.choice ?? null; return id !== "TR_T6" && isNoneChoice(c) ? null : c; };
   /* 고른 보기로 문단 순서를 미리 짜 둔다(빈 줄을 두지 않는다) */
   const draft = (en ? [
     ch("TR_T1") && `In the first sentence, say what the problem was (${qe(ch("TR_T1")!)}).`,
@@ -473,7 +474,7 @@ export function translationPage(x: Inputs, d: X): Page | null {
     body: (answered
       ? T(L("검사에서 고른 경험 하나를 열 단계로 풀어 봤습니다", "One experience from your assessment, broken into ten steps"), L("검사 끝부분에서 경험 하나를 골라 문제부터 쓰임새까지 차례로 답하셨어요. 고르신 보기를 그대로 옮겼으니 지원서 문단의 뼈대로 쓰면 됩니다.", "At the end of the assessment you picked one experience and answered step by step, from the problem to where the result was used. Your choices are copied as they are, so use them as the frame for a paragraph in an application."))
       : T(L("경험 하나를 열 단계로 풀어 써 보세요", "Break one experience into ten steps"), L("검사에서 자세히 본 영역의 경험 하나를 떠올려 아래 질문에 한 줄씩 답해 보세요. 오른쪽에 무엇을 적으면 되는지 짧게 적어 두었으니, 답이 모이면 그대로 지원서 문단의 뼈대가 됩니다.", "Think of one experience from an area the assessment looked at closely, and answer each question below in one line. The right column says briefly what to write. Once the answers are in, they are the frame for a paragraph in an application."))) +
-      `<table class="tb tb-s${answered ? "" : " trs"}"><tbody>${steps.map((s) => `<tr><th class="w30">${E(STEP[s.item_id])}</th><td>${s.choice ? E(s.choice) : s.note ? "" : `<span class="mut">${E(HINT[s.item_id] ?? "")}</span>`}${s.note ? (en ? `<span class="tr-note" data-own="1">“${E(s.note)}”</span>` : `<span class="tr-note">“${E(s.note)}”</span>`) : ""}</td></tr>`).join("")}</tbody></table>` +
+      `<table class="tb tb-s${answered ? "" : " trs"}"><tbody>${steps.map((s) => `<tr><th class="w30">${E(STEP[s.item_id])}</th><td>${s.choice ? E(s.choice) : s.note ? "" : `<span class="mut">${E(HINT[s.item_id] ?? "")}</span>`}${s.note ? (en ? `<span class="tr-note" data-own="1">“${E(s.note)}”</span>` : `<span class="tr-note">${TRANS_NOTE_KO[s.item_id] ? `${E(TRANS_NOTE_KO[s.item_id])}: ` : ""}“${E(s.note)}”</span>`) : ""}</td></tr>`).join("")}</tbody></table>` +
       (t.domains.length ? `<p class="sm">${L("이 경험이 닿은 영역", "Areas this experience touched")}: ${E(t.domains.map(d.name).join(" · "))}</p>` : "") +
       (draft.length ? note(L("이 열 줄로 문단을 짜는 순서", "How to build a paragraph from these lines"), ul(draft.map(E))) : "") +
       band(L("쓰는 법", "How to use this"), L("‘무엇을 직접 정했나’에 대한 답은 면접에서 30초 안에 말할 수 있게 소리 내어 연습해 두세요.", `Practice your answer to “${TRANS_STEP_EN.TR_T8}” out loud, so you can say it in 30 seconds in an interview.`)),

@@ -191,7 +191,8 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.7";
 /* copy.82 — 할 일 이유 한 줄을 축마다 다른 문장으로(`세 줄만 적어 두면 ~` 되풀이를 없앰) · 끝 화면 `해 본 일 질문` · 결과지 의견 쪽 머리. 판정은 그대로다 */
 /* copy.83 — `더 깊이` 할 일 한 줄을 짧게(`○○ 과제 하나 골라, 왜 그렇게 정했는지 ○○에 세 줄 적기`), 영역 재료가 든 원래 문장은 펼침(guide)으로(2026-11-02 대표 "AI느낌 안나게"). 판정은 그대로다 */
 /** `PARTIAL_EVIDENCE` 를 `직접 해 본 것은 보이고` 로 — copy.84 */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.84";
+/** 덧말 이름표 · `없다` 답 거르기 — copy.85 */
+export const RESULT_COPY_VERSION = "me-v3-result-copy.85";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -508,7 +509,8 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.84";
 /** 지역 회사는 책 01장과 같은 묶음(고른 산업 먼저, 회사 하나를 크게 띄우지 않음) · 학교 소재 권역 기본값 · 목표 직무를 첫째로 · `이 밖에 N가지` 는 숨긴 줄만 · 공통 판단의 직접 정한 것 따로 — V95 */
 /** 지원서 문항 답은 영역별 `남긴 것` 에 세지 않는다는 한 줄 · `이 결과에서 이어지는 할 일` — V96 */
 /** 지역 회사 절 아래 빈 자리는 `공공기관 · 연구기관 목록` 이라고 적는다 — V97 */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V97";
+/** 경험 덧말을 그 칸이 물은 이름(쓰지 않은 방법 · 바꾸지 않은 것)으로 · `없다` 답은 문단 재료에서 뺌 — V98 */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V98";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

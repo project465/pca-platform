@@ -35,6 +35,7 @@ import { resultMeta, type ResultMeta } from "@/lib/me-v3/result/meta";
 import { leadFirst, specView } from "@/lib/me-v3/result/spec-view";
 import { webRegionView } from "@/lib/me-v3/report-long/web-region";
 import { roleForGoal } from "@/lib/me-v3/result/goal-role";
+import { TRANS_NOTE_KO } from "@/lib/me-v3/result/text.ko";
 import RegionSection from "./region";
 import { participantOf, savedActions } from "@/lib/me-v3/pilot/store";
 import { takeActionsFromResult } from "@/app/me/next/actions";
@@ -1477,7 +1478,8 @@ export async function V3ResultBody(
             .filter((x) => x.note?.trim() && TX().TRANS_STEP_KO[x.item_id])
             .sort((x, y) => (TX().TRANS_ORDER as readonly string[]).indexOf(x.item_id)
               - (TX().TRANS_ORDER as readonly string[]).indexOf(y.item_id))
-            .map((x) => ({ label: TX().TRANS_STEP_KO[x.item_id], text: x.note!.trim() }))} />
+            /* 덧말은 그 칸이 물은 것(쓰지 않은 방법 · 바꾸지 않은 것)으로 이름을 단다(JA4) */
+            .map((x) => ({ label: TRANS_NOTE_KO[x.item_id] ?? TX().TRANS_STEP_KO[x.item_id], text: x.note!.trim() }))} />
         {/*
             ── 종이 표지 ── **화면에는 서지 않는다**(규격 §14).
 

@@ -780,6 +780,20 @@ export const TIER_NOTE_KO = {
     + " You'll also see how it reads in the industry and role you picked.",
 } as const;
 
+/** 단계 덧말이 답한 것(`text.ko.ts` 와 같은 열쇠 · JA4) */
+export const TRANS_NOTE_KO: Record<string, string> = {
+  TR_T1: "The problem in a line or two",
+  TR_T2: "What the problem was",
+  TR_T3: "A method you considered but did not use",
+  TR_T4: "Something you deliberately kept unchanged",
+  TR_T5: "How many times",
+  TR_T10: "Who can use it",
+};
+
+/** `None` 류 답(`text.ko.ts` 와 같은 자리) */
+export const isNoneChoice = (c: string | null | undefined): boolean =>
+  !!c && /^(none|nothing|no one|n\/a)\b|\bnothing\b|did not (decide|compare)|didn't (decide|compare)/i.test(c.trim());
+
 export const TRANS_STEP_KO: Record<string, string> = {
   TR_TAG_1: "Area this project touched",
   TR_TAG_2: "Other areas it touched",

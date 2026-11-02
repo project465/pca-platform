@@ -1384,6 +1384,24 @@ export const TIER_NOTE_KO = {
  * 문항 문면은 길다(`그 과제에서 가장 먼저 푼 문제는 무엇이었습니까`).
  * 결과지의 표에서는 **왼쪽 칸이 짧아야** 오른쪽의 그 사람 답이 읽힌다.
  */
+/**
+ * **단계마다 덧붙인 한 줄이 무엇을 답한 것인가**(2026-11-02 전주대 시험 JA4). 덧말 칸의 물음은 단계 이름과 다르다:
+ * `어떤 방법으로 봤나` 의 덧말은 `검토했지만 쓰지 않은 방법`, `무엇을 바꿨나` 의 덧말은 `끝까지 바꾸지 않은 것` 이다.
+ * 단계 이름 아래 그대로 붙이면 쓰지 않은 방법이 쓴 방법으로, 바꾸지 않은 것이 바꾼 것으로 읽힌다
+ */
+export const TRANS_NOTE_KO: Record<string, string> = {
+  TR_T1: "문제를 한두 줄로",
+  TR_T2: "무엇이 문제였나",
+  TR_T3: "검토했지만 쓰지 않은 방법",
+  TR_T4: "끝까지 바꾸지 않은 것",
+  TR_T5: "몇 번 했나",
+  TR_T10: "누가 활용할 수 있나",
+};
+
+/** 고른 보기가 `없다` 는 답인가(`내가 정한 것은 없다` · `비교한 것이 없다`). 문단 재료로 쓰지 않는다(PK2) */
+export const isNoneChoice = (c: string | null | undefined): boolean =>
+  !!c && /(것은|것이|일은|일이)\s*없(다|었다|음)\.?$|^없(다|음)\.?$|해당\s*없/.test(c.trim());
+
 export const TRANS_STEP_KO: Record<string, string> = {
   /* **이름이 없는 단계를 문항 번호로 적지 않는다.** `TR_TAG_1` 이 그대로
      화면과 종이에 나갔다. 여기 없는 단계는 화면이 아예 세우지 않는다 */
@@ -1529,8 +1547,15 @@ export function draftFrameKo(
   /* 덧붙인 한 줄도 그 칸에 같이 선다. 보기만 고른 칸은 보기, 한 줄만 적은
      칸은 그 말을 따옴표로 둔다. 적어 주신 말이 종이에만 가고 화면에서
      빠지면 받고 쓰지 않은 칸이 된다(2026-10-27 사업주 지적) */
+  /* 덧말은 그 칸이 물은 것으로 이름을 달고(`끝까지 바꾸지 않은 것: “…”` · JA4), `없다` 답은 재료로 쓰지 않는다(PK2) */
+  const frameOf = (x: { item_id: string; choice: string | null; note?: string | null }): string | null => {
+    const c = isNoneChoice(x.choice) ? null : x.choice;
+    const n = (x.note ?? "").trim();
+    const nl = n ? `${TRANS_NOTE_KO[x.item_id] ? `${TRANS_NOTE_KO[x.item_id]}: ` : ""}“${n}”` : "";
+    return c && nl ? `${c} · ${nl}` : c ?? (nl || null);
+  };
   const by = new Map(steps
-    .map((x) => [x.item_id, withNote(x.choice, x.note)] as const)
+    .map((x) => [x.item_id, frameOf(x)] as const)
     .filter((x): x is readonly [string, string] => !!x[1]));
   const pick = (ids: string[]) => ids.map((id) => by.get(id)).filter((v): v is string => !!v);
   return [

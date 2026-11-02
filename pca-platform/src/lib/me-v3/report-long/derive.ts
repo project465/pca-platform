@@ -77,7 +77,8 @@ export function withTranslation(x: Inputs): Inputs {
   if (!td) return x;
   /* 고른 답은 `~했다` 문장이다. 이름 자리에 그대로 넣으면 조사가 깨진다("…남았다를 남겼다고"). 따옴표로 묶어 이름으로 쓴다 */
   const named = (s: string, noun: string) => (!s ? "" : /다\.?$/.test(s) ? `‘${s.replace(/\.$/, "")}’고 답한 ${noun}` : s);
-  const art = named(pick("TR_T9"), "결과물");
+  /* `남은 것이 없다` 같은 답은 결과물이 아니다(PK2) */
+  const art = /없(다|었다|음)\.?$/.test(pick("TR_T9")) ? "" : named(pick("TR_T9"), "결과물");
   const cmp0 = pick("TR_T6");
   const noCmp = !cmp0 || /비교하지\s*않|비교한\s*것이\s*없|없었|didn't compare|did not compare|nothing/i.test(cmp0);
   const cmp = named(cmp0, "대상");
