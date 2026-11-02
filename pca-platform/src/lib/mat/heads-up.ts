@@ -10,7 +10,7 @@ import { daysLeft } from "./stage";
  * 넷 가운데 걸리는 것만, 급한 차례로 셋까지:
  * 1. 분석한 공고의 마감이 3일 안이고 아직 지원으로 옮기지 않았다
  * 2. 이번 주에 새로 모인 공고 가운데 내 자료와 겹치는 것이 있다
- * 3. 분석한 공고는 있는데 2주째 지원 기록이 없다
+ * 3. 분석한 공고는 있는데 2주째 지원 기록이 없다(MAT 을 쓴 지 2주가 지난 사람만)
  * 4. 적어 둔 경험이 반영되어 결과의 영역 묶음이 바뀌었다
  *
  * 문장은 사실만 적는다. 재촉 · 칭찬 · 합격 가능성 말이 없다.
@@ -22,6 +22,8 @@ export function headsUp(opts: {
   apps: Application[];
   freshMatches: number;
   zoneMoved: number;
+  /** MAT 을 쓰기 시작한 날(처음 열린 이용 기간의 시작). 없으면 오늘로 본다 */
+  matSince?: string | null;
   now?: Date;
 }): HeadsUp[] {
   const now = opts.now ?? new Date();
@@ -49,7 +51,9 @@ export function headsUp(opts: {
   }
   const twoWeeks = now.getTime() - 14 * 86_400_000;
   const recentApp = opts.apps.some((a) => a.state !== "watching" && Date.parse(a.applied_on ?? a.created_at) >= twoWeeks);
-  if (opts.postings.length && !recentApp) {
+  /* **MAT 을 쓴 지 2주가 지나야 센다**(2026-11-02 운영 시험: 오늘 이용권을 받은 계정에 "2주째" 가 섰다) */
+  const since = opts.matSince ? Date.parse(opts.matSince) : now.getTime();
+  if (opts.postings.length && !recentApp && since <= twoWeeks) {
     out.push({
       key: "idle", href: "/mat/jobs#track", label: "지원 현황",
       title: "2주째 지원이 없어요",

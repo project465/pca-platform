@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { matTitle } from "@/lib/mat/title";
 import { requireUser } from "@/lib/session";
+import { queryOne } from "@/lib/db";
 import { activeCoreOrPick, currentState } from "@/lib/me-v3/platform";
 import { openActions } from "@/lib/me-v3/open-actions";
 import { domainName } from "@/lib/me-v3/runtime/session";
@@ -15,7 +17,7 @@ import { headsUp } from "@/lib/mat/heads-up";
 import { postingsOf } from "@/lib/assistant/posting";
 import { applicationsOf } from "@/lib/me-v3/platform";
 
-export const metadata = { title: "MAT 홈 · CareerMatri" };
+export const generateMetadata = () => matTitle("홈");
 
 /**
  * MAT 홈(예상 화면 1번). **실제 자료가 먼저 선다**: 진단 한 줄 · 이번 주 할 일 · 새로 겹치는 공고.
@@ -39,7 +41,10 @@ export default async function MatHome() {
     applicationsOf(user.id).catch(() => []),
   ]);
   const weekAgo = Date.now() - 7 * 86_400_000;
+  const since = await queryOne<{ s: string | null }>(
+    `SELECT min(starts_at)::text AS s FROM entitlements WHERE user_id = $1 AND kind = 'track'`, [user.id]).catch(() => null);
   const tips = headsUp({
+    matSince: since?.s ?? null,
     postings: mine, apps,
     freshMatches: jobs.main.filter((r) => r.hits.length && Date.parse(r.captured_at) >= weekAgo).length,
     zoneMoved: st.zoneMoved.length,

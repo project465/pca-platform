@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { matTitle } from "@/lib/mat/title";
 import { requireUser } from "@/lib/session";
 import { activeCoreOrPick, experiencesOf } from "@/lib/me-v3/platform";
 import { livePostingOf, postingsOf } from "@/lib/assistant/posting";
@@ -9,7 +10,7 @@ import { CopyButton } from "../../me/track/copy-button";
 import { MatAsk } from "../ask";
 import { AI_TOOLS_OPEN_KO } from "@/lib/mat/open-dates";
 
-export const metadata = { title: "지원서 · MAT" };
+export const generateMetadata = () => matTitle("지원서");
 
 /** 뼈대의 [칸] 을 눈에 띄게. 글자는 그대로다 */
 function withBlanks(s: string) {

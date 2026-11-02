@@ -1,9 +1,10 @@
 import Link from "next/link";
+import { matTitle } from "@/lib/mat/title";
 import { requireUser } from "@/lib/session";
 import { CONSULT_KEEPS, CONSULT_SENDS, consultOpen, consultsOf } from "@/lib/careerpeak-consult";
 import { CONSULT_OPENS_KO } from "@/lib/mat/open-dates";
 
-export const metadata = { title: "상담 · MAT" };
+export const generateMetadata = () => matTitle("상담");
 
 /**
  * MAT 상담(예상 화면 5번). **지원서 첨삭 · 모의면접 상담은 커리어피크로**(2026-11-01 대표 결정).

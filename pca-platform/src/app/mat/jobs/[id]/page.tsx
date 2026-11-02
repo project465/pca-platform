@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { matTitle } from "@/lib/mat/title";
 import { notFound } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { activeCoreOrPick, experiencesOf } from "@/lib/me-v3/platform";
@@ -12,7 +13,7 @@ import { outLink } from "@/lib/mat/out-link";
 import { SOURCE_KO } from "@/lib/mat/stage";
 import { taskLine } from "@/lib/mat/short";
 
-export const metadata = { title: "공고 분석 · MAT" };
+export const generateMetadata = () => matTitle("공고 분석");
 
 /**
  * 공고 바로 분석(예상 화면 2번의 안쪽). **맞는 점 · 보완할 점 · 마감 전 할 일** 세 덩이.

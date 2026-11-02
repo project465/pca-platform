@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { matTitle } from "@/lib/mat/title";
 import { requireUser } from "@/lib/session";
 import { livePostingsOf } from "@/lib/assistant/posting";
 import { buildBrief } from "@/lib/assistant/brief";
@@ -9,7 +10,7 @@ import { monthWeekKo } from "@/lib/mat/stage";
 import { oneLine } from "@/lib/mat/short";
 import { matDigestAction } from "../actions";
 
-export const metadata = { title: "주간 브리핑 · MAT" };
+export const generateMetadata = () => matTitle("주간 브리핑");
 
 /**
  * MAT 주간 브리핑(예상 화면 4번). 웹 작업공간의 브리핑과 **같은 계산**(`buildBrief`)을 MAT 꼴로 보인다.

@@ -1,9 +1,10 @@
 import { requireUser } from "@/lib/session";
+import { matTitle } from "@/lib/mat/title";
 import { settingsOf } from "@/lib/assistant/settings";
 import { pendingFileDrafts, UPLOAD_MONTHLY_CAP, usedThisMonth } from "@/lib/assistant/upload";
 import { MatFileDrop } from "./drop";
 
-export const metadata = { title: "경험 파일 · MAT" };
+export const generateMetadata = () => matTitle("경험 파일");
 
 /**
  * 경험 파일 올리기 · 확인(예상 화면 8 · 9번).

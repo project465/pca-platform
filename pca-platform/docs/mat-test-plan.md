@@ -37,6 +37,17 @@ MAT_PUBLIC · PARTNERS_PUBLIC 을 **끈 채로** 운영에서 확인합니다. �
 
 `docs/partner/api.md` 의 curl 예시로 시험 키를 써서 부른다(`member_id` 는 시험용 값, `posting_id` 는 모아 둔 잡인더스트리 공고 번호 하나).
 
+| 무엇 | 주소 |
+|---|---|
+| 링크 받기(서버끼리) | `POST https://app.careermatri.com/api/partner/jobindustry/session` |
+| 머리글 | `Authorization: Bearer <시험 키>` · `Content-Type: application/json` · `X-CM-Timestamp: <유닉스 초>` · `X-CM-Nonce: <16~64자, 매번 새 값>` |
+| 본문 예 | `{"member_id":"ji-test-1","posting_id":"<공고 번호>"}` |
+| 돌아오는 링크 꼴 | `https://app.careermatri.com/from/jobindustry/enter?t=…` (5분 · 한 번) |
+| 커리어피크 | 위 주소의 `jobindustry` 를 `careerpeak` 로 |
+
+연동이 `꺼짐` 이면 키와 상관없이 `403 partner_off` 가 맞다(지금 운영 상태). `시험` 으로 켠 뒤에 아래 표를 돌린다.
+※ `/partner/jobindustry` 는 제휴 소개 화면이고 연동 링크가 아니다. 연동 링크는 `/from/{제휴}/enter?t=…` 다.
+
 | 단계 | 할 일 | 통과 기준 |
 |---|---|---|
 | 3-1 | API 호출 | `201` 과 `url` · `expires_in: 300` |

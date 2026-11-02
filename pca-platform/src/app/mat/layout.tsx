@@ -16,7 +16,6 @@ import { MatTabs } from "./tabs";
  * 색을 따른다.
  */
 export const metadata: Metadata = {
-  title: "MAT · CareerMatri",
   robots: { index: false, follow: false, nocache: true },
 };
 

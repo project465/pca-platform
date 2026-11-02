@@ -1,4 +1,5 @@
 import { requireUser } from "@/lib/session";
+import { matTitle } from "@/lib/mat/title";
 import { activeTrack, trackOffers } from "@/lib/track";
 import { payOpen } from "@/lib/payments";
 import { university } from "@/lib/campus/registry";
@@ -6,7 +7,7 @@ import { campusStudentContext } from "@/lib/campus/students";
 import { withJosa } from "@/lib/me-v3/result/josa";
 import { CONSULT_OPENS_KO } from "@/lib/mat/open-dates";
 
-export const metadata = { title: "이용권 · MAT" };
+export const generateMetadata = () => matTitle("이용권");
 
 /**
  * 이용권(예상 화면 6번, 2026-11-01 대표 결정: 하나의 MAT, 두 가지 이용권).

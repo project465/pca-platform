@@ -1,4 +1,5 @@
 import { requireUser } from "@/lib/session";
+import { matTitle } from "@/lib/mat/title";
 import { pickJobs } from "@/lib/mat/pick-jobs";
 import { postingsOf } from "@/lib/assistant/posting";
 import { JobCard } from "../job-card";
@@ -10,7 +11,7 @@ import { queryOne } from "@/lib/db";
 import type { MatchedPosting } from "@/lib/assistant/match";
 import { SOURCE_KO } from "@/lib/mat/stage";
 
-export const metadata = { title: "공고 · MAT" };
+export const generateMetadata = () => matTitle("공고");
 
 const ERR: Record<string, string> = {
   noread: "이 공고는 요건을 글로 읽지 못했어요. 원문을 열어 요건 부분을 아래에 붙여 넣어 주세요.",
