@@ -350,8 +350,8 @@ export default async function Track({
                 </label>
                 <p className="cm-none">
                   {en ? t("전공별 규칙으로 요구 항목을 뽑고, 판정은 내 결과와 경험으로 합니다.")
-                    : ai ? "AI가 요구 항목을 뽑고, 판정은 내 결과와 경험으로 합니다."
-                    : "지금은 규칙으로 요구 항목을 뽑습니다. 아래 설정에서 AI 분석을 켤 수 있습니다."}
+                    : ai ? "요구 항목을 뽑고, 판정은 내 결과와 경험으로 합니다."
+                    : "요구 항목을 뽑고, 판정은 내 결과와 경험으로 합니다. 아래 설정에서 AI 분석을 켜면 더 자세히 읽습니다."}
                   {" "}{t("지원은 공고를 낸 곳에서 직접 하시면 됩니다.")}
                 </p>
                 <div className="cm-acts">
@@ -493,8 +493,8 @@ export default async function Track({
                     <b>AI 분석 {settings.ai_consent_at ? "켜짐" : "꺼짐"}</b>
                     <span>
                       켜면 붙여 넣은 공고와 메모가 Anthropic(미국)의 Claude로 보내져 읽힙니다.
-                      이름과 연락처는 보내지 않습니다. 끄면 규칙으로만 읽고 밖으로 보내지 않습니다.
-                      {aiReady() ? "" : " 지금은 서비스 쪽 설정이 끝나지 않아 켜도 규칙으로 읽습니다."}
+                      이름과 연락처는 보내지 않습니다. 끄면 이 서비스 안에서만 읽고 밖으로 보내지 않습니다.
+                      {aiReady() ? "" : " 지금은 준비 중이라 켜 두어도 이 서비스 안에서 읽습니다."}
                     </span>
                   </p>
                   <form action={changeConsent} className="cm-acts">

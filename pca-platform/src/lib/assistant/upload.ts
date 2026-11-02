@@ -157,7 +157,7 @@ export async function readUpload(userId: string, bytes: Buffer): Promise<UploadR
 
   const r = await askStructured({
     op: "assistant.upload", schema: FileOut, system: SYSTEM, model: UPLOAD_MODEL,
-    blocks: [block], maxTokens: 6000,
+    blocks: [block], maxTokens: 6000, effort: "low", userId,
     user: `종류 코드: ${EXPERIENCE_KINDS.map((k) => `${k.code}(${k.label})`).join(", ")}\n\n${menu(core)}\n\n` +
       "위 문서에서 진로 경험으로 적을 만한 것을 고르세요.",
   });

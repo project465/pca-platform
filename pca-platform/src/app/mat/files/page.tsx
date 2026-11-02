@@ -37,7 +37,7 @@ export default async function MatFiles({ searchParams }: { searchParams: Promise
           placeholder="예: 언제 · 어떤 수업이나 활동에서 · 내가 맡은 일 · 직접 정한 기준 · 남긴 결과물 · 전후 수치(예: 1.2초 → 0.3초)를 적어 주세요" />
       </label>
       <button type="submit" className="mt-btn is-main is-block">경험 초안 만들기</button>
-      <p className="mt-note">{ready && set.ai_consent_at ? "AI 분석을 켜 두셔서 Anthropic(미국)의 Claude로 읽어요." : "이 메모는 밖으로 보내지 않고 규칙으로 옮겨요."} 확인하고 저장한 것만 기록돼요.</p>
+      <p className="mt-note">{ready && set.ai_consent_at ? "AI 분석을 켜 두셔서 Anthropic(미국)의 Claude로 읽어요." : "이 메모는 밖으로 보내지 않고 이 서비스 안에서 옮겨요."} 확인하고 저장한 것만 기록돼요.</p>
     </form>
   );
   return (

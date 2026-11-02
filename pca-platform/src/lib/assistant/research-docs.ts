@@ -230,7 +230,7 @@ export async function readResearch(userId: string, bytes: Buffer): Promise<Resea
 
   const r = await askStructured({
     op: "assistant.research", schema: ResearchOut, system: SYSTEM, model: RESEARCH_MODEL,
-    blocks, maxTokens: 8000, effort: "medium", timeoutMs: 240_000,
+    blocks, maxTokens: 8000, effort: "medium", timeoutMs: 240_000, userId,
     user: `종류 코드: ${EXPERIENCE_KINDS.map((k) => `${k.code}(${k.label})`).join(", ")}\n\n` +
       (core
         ? `경험 초안의 보기 목록(이 사람의 전공):\n${menu(core)}\n\n위 자료를 읽고 정리하세요.`

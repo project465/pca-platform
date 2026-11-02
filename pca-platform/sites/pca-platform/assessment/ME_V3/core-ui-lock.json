@@ -5,15 +5,15 @@
  "locks": {
   "assessment": "a2e48cb856d58149",
   "result": "6080a5cfb299e47e",
-  "workspace": "d284b24d6bedb941"
+  "workspace": "e5f37cff36da1458"
  },
  "versions": {
   "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V65",
   "assessment_copy_version": "me-v3-2-assessment-copy.41",
   "result_ui_version": "ME_V3_RESULT_UI_V94",
   "result_copy_version": "me-v3-result-copy.83",
-  "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V89",
-  "workspace_copy_version": "careermatri-workspace-copy.64"
+  "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V90",
+  "workspace_copy_version": "careermatri-workspace-copy.65"
  },
  "screens": {
   "Home": "workspace:3d07edbf5e29dd25",
@@ -28,7 +28,7 @@
   "Explore": "workspace:b918d2109e6b7d43",
   "Result History": "workspace:f57d746fc18fba67",
   "New Experience": "workspace:c3610b6eb477e8f0",
-  "Track": "workspace:3189415ca4973f4e",
+  "Track": "workspace:f697a0d2718eb7ad",
   "App Shell": "workspace:18663bc196759d9c"
  }
 }

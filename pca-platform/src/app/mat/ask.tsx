@@ -32,6 +32,8 @@ const FAIL: Record<string, string> = {
   rate: "지금 묻는 사람이 많아요. 1분 뒤 다시 물어봐 주세요.",
   timeout: "답이 늦어졌어요. 질문을 짧게 나눠 다시 물어봐 주세요.",
   error: "답하지 못했어요. 잠시 뒤 다시 물어봐 주세요.",
+  cap: "이번 기간에 쓸 수 있는 횟수를 다 썼어요.",
+  day: "오늘은 질문을 더 받지 못해요. 내일 다시 물어봐 주세요.",
 };
 
 type Turn = { q: string; a: string; allowed: string[]; state: "run" | "done" | "fail" };

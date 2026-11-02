@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import type * as z from "zod/v4";
 import { opFail } from "@/lib/oplog";
+import { aiAllowance, recordAiCall, type AiUsage } from "./ai-budget";
 
 /**
  * MAT이 Claude 를 부르는 유일한 자리.
@@ -25,19 +26,23 @@ import { opFail } from "@/lib/oplog";
  */
 
 export const ASSISTANT_MODEL = "claude-opus-5-5";
-/**
- * 올린 파일(성적증명서·수료증·상장)을 읽는 모델. 하는 일이 문서에서 과목과
+/*
+ * **2026-11-02 대표 결정: 모든 기능이 한 모델(`claude-opus-5-5`)을 쓴다.** 비용은 모델을 내리지 않고
+ * 기능마다 `effort` 로 조절한다(시킨 대로 · 직접 · 내가 정함을 가르는 일이 핵심이라서). 한 모델이면
+ * 캐시도 한 곳에 모인다. 아래 두 이름은 부르는 쪽을 바꾸지 않으려고 남긴다.
+ *
+ * (전) 올린 파일(성적증명서·수료증·상장)을 읽는 모델. 하는 일이 문서에서 과목과
  * 활동 이름을 뽑아 정해진 보기로 옮기는 것이라 가장 싼 모델로 충분하다.
  * 월 9,900원 안에서 한 사람이 열 건을 올려도 남도록 고른 값이다.
  * **서버 쪽 대체 모델이 없다**: 이 모델에는 `fallbacks` 를 보내지 않는다.
  */
-export const UPLOAD_MODEL = "claude-haiku-5-5";
+export const UPLOAD_MODEL = ASSISTANT_MODEL;
 /**
  * 논문 · 학위논문 · 발표 자료 · 이력서 · 자기소개서를 읽는 모델(2026-10-31).
  * 영어 논문을 끝까지 읽고 방법 · 결과 · 기여를 직무 말로 옮겨야 해서 성적증명서
  * 읽기보다 한 단계 위를 쓴다. `MAT_RESEARCH_MODEL` 로 바꿀 수 있다(배포 없이).
  */
-export const RESEARCH_MODEL = process.env.MAT_RESEARCH_MODEL?.trim() || "claude-sonnet-5-5";
+export const RESEARCH_MODEL = ASSISTANT_MODEL;
 
 /** 문서·그림 블록. 올린 파일을 그대로 넘길 때만 쓴다 */
 export type AiBlock =
@@ -45,11 +50,36 @@ export type AiBlock =
   | { type: "document"; source: { type: "base64"; media_type: "application/pdf"; data: string } }
   | { type: "image"; source: { type: "base64"; media_type: "image/jpeg" | "image/png" | "image/webp"; data: string } };
 
-export type AiFail = "off" | "refusal" | "rate" | "timeout" | "error" | "parse";
+/** `cap` = 기간권 한 장의 횟수를 다 씀(`reopen` 에 다시 열리는 날) · `day` = 서버 하루 총액을 넘음 */
+export type AiFail = "off" | "refusal" | "rate" | "timeout" | "error" | "parse" | "cap" | "day";
 
 export type AiResult<T> =
   | { ok: true; value: T; model: string; usage?: { input: number; output: number } }
-  | { ok: false; reason: AiFail };
+  | { ok: false; reason: AiFail; reopen?: string };
+
+export type Effort = "low" | "medium" | "high";
+
+/** 시스템 글에 캐시 표시를 단다. 같은 기능의 다음 부름은 이 앞부분을 다시 읽지 않는다 */
+function systemBlocks(system: string) {
+  return [{ type: "text" as const, text: system, cache_control: { type: "ephemeral" as const } }];
+}
+
+function usageOf(u: {
+  input_tokens: number; output_tokens: number;
+  cache_read_input_tokens?: number | null; cache_creation_input_tokens?: number | null;
+}): AiUsage {
+  return {
+    input: u.input_tokens, output: u.output_tokens,
+    cacheRead: u.cache_read_input_tokens ?? 0, cacheWrite: u.cache_creation_input_tokens ?? 0,
+  };
+}
+
+/** 부르기 전 상한. 넘었으면 실패 까닭으로 돌려준다 */
+async function gate(userId: string | undefined, op: string): Promise<{ ok: true } | { ok: false; reason: AiFail; reopen?: string }> {
+  const a = await aiAllowance(userId, op);
+  if (a.ok) return { ok: true };
+  return a.why === "cap" ? { ok: false, reason: "cap", reopen: a.reopen } : { ok: false, reason: "day" };
+}
 
 export function aiReady(): boolean {
   return Boolean(process.env.ANTHROPIC_API_KEY?.trim());
@@ -77,45 +107,62 @@ export async function askStructured<S extends z.ZodType>(opts: {
   user: string;
   /** 올린 파일. 글보다 먼저 둔다(문서를 먼저 읽고 지시를 읽는 차례) */
   blocks?: AiBlock[];
-  /** 기본은 `ASSISTANT_MODEL`. 파일 읽기는 `UPLOAD_MODEL` */
+  /** 기본은 `ASSISTANT_MODEL` */
   model?: string;
   maxTokens?: number;
-  /** 기본 `low`. 논문처럼 끝까지 읽고 이어 생각해야 하는 일은 `medium` */
-  effort?: "low" | "medium" | "high";
+  /**
+   * **기능마다 적는다**(Opus 5.5 의 기본은 medium). low = 글을 나누고 칸을 채우는 일,
+   * medium = 근거를 찾아 대는 일, high = 문장을 고치고 답을 돌려주는 일
+   */
+  effort: Effort;
+  /** 원가 기록과 기간권 상한을 세는 사람 */
+  userId?: string;
+  /**
+   * 바뀌지 않는 앞부분(전공 보기 목록 · 학생 묶음). 캐시 표시를 달아 `user` 앞에 둔다.
+   * 날짜 · 요청 번호처럼 바뀌는 값은 넣지 않는다
+   */
+  prefix?: string;
   /** 기본 60초. 긴 논문은 읽는 데 그보다 오래 걸린다 */
   timeoutMs?: number;
 }): Promise<AiResult<z.infer<S>>> {
   if (!aiReady()) return { ok: false, reason: "off" };
+  const g = await gate(opts.userId, opts.op);
+  if (!g.ok) return g;
   const model = opts.model ?? ASSISTANT_MODEL;
-  /* 대체 모델은 Opus 쪽에만 있다. Haiku 에 보내면 400 이다 */
-  const fallback = model === ASSISTANT_MODEL
-    ? { betas: ["server-side-fallback-2026-07-01"], fallbacks: "default" as const }
-    : {};
+  const rec = (outcome: string, usage?: AiUsage) =>
+    recordAiCall({ userId: opts.userId, op: opts.op, model, effort: opts.effort, outcome, usage });
+  /* 거절이 나면 서버 쪽 대체 모델로 한 번 더(Opus 5.5 는 `default` 를 받는다) */
+  const fallback = { betas: ["server-side-fallback-2026-07-01"], fallbacks: "default" as const };
   try {
     const res = await client().beta.messages.parse({
       model,
       max_tokens: opts.maxTokens ?? 4000,
       ...fallback,
-      system: opts.system,
+      system: systemBlocks(opts.system),
       messages: [{
         role: "user",
-        content: opts.blocks?.length
-          ? [...opts.blocks, { type: "text" as const, text: opts.user }]
-          : opts.user,
+        content: [
+          ...(opts.blocks ?? []),
+          ...(opts.prefix ? [{ type: "text" as const, text: opts.prefix, cache_control: { type: "ephemeral" as const } }] : []),
+          { type: "text" as const, text: opts.user },
+        ],
       }],
-      output_config: { effort: opts.effort ?? "low", format: betaZodOutputFormat(opts.schema) },
+      output_config: { effort: opts.effort, format: betaZodOutputFormat(opts.schema) },
     }, opts.timeoutMs ? { timeout: opts.timeoutMs } : undefined);
-    if (res.stop_reason === "refusal") return { ok: false, reason: "refusal" };
-    if (res.parsed_output == null) return { ok: false, reason: "parse" };
+    const usage = usageOf(res.usage);
+    if (res.stop_reason === "refusal") { await rec("refusal", usage); return { ok: false, reason: "refusal" }; }
+    if (res.parsed_output == null) { await rec("parse", usage); return { ok: false, reason: "parse" }; }
+    await rec("ok", usage);
     return {
       ok: true, value: res.parsed_output as z.infer<S>, model: res.model,
-      usage: { input: res.usage.input_tokens, output: res.usage.output_tokens },
+      usage: { input: usage.input, output: usage.output },
     };
   } catch (e) {
     const reason: AiFail =
       e instanceof Anthropic.RateLimitError ? "rate"
         : e instanceof Anthropic.APIConnectionTimeoutError ? "timeout"
           : "error";
+    await rec(reason);
     /* **까닭을 삼키지 않는다.** 화면은 규칙으로 읽은 결과를 보여 주고,
        왜 Claude 쪽이 안 됐는지는 고치는 사람이 읽는 자리에 한 줄 남긴다.
        열쇠와 붙여 넣은 글은 적지 않는다 */
@@ -137,58 +184,48 @@ export async function* askStream(opts: {
   user: string;
   model?: string;
   maxTokens?: number;
-  effort?: "low" | "medium" | "high";
-}): AsyncGenerator<string, { ok: true } | { ok: false; reason: AiFail }> {
+  effort: Effort;
+  userId?: string;
+  /** 바뀌지 않는 앞부분(학생 묶음). 캐시 표시를 단다 */
+  prefix?: string;
+}): AsyncGenerator<string, { ok: true } | { ok: false; reason: AiFail; reopen?: string }> {
   if (!aiReady()) return { ok: false, reason: "off" };
+  const g = await gate(opts.userId, opts.op);
+  if (!g.ok) return g;
   const model = opts.model ?? ASSISTANT_MODEL;
-  const fallback = model === ASSISTANT_MODEL
-    ? { betas: ["server-side-fallback-2026-07-01"], fallbacks: "default" as const }
-    : {};
+  const rec = (outcome: string, usage?: AiUsage) =>
+    recordAiCall({ userId: opts.userId, op: opts.op, model, effort: opts.effort, outcome, usage });
+  const fallback = { betas: ["server-side-fallback-2026-07-01"], fallbacks: "default" as const };
   try {
     const stream = client().beta.messages.stream({
       model,
       max_tokens: opts.maxTokens ?? 2000,
       ...fallback,
-      system: opts.system,
-      messages: [{ role: "user", content: opts.user }],
-      output_config: { effort: opts.effort ?? "low" },
+      system: systemBlocks(opts.system),
+      messages: [{
+        role: "user",
+        content: [
+          ...(opts.prefix ? [{ type: "text" as const, text: opts.prefix, cache_control: { type: "ephemeral" as const } }] : []),
+          { type: "text" as const, text: opts.user },
+        ],
+      }],
+      output_config: { effort: opts.effort },
     });
     for await (const ev of stream) {
       if (ev.type === "content_block_delta" && ev.delta.type === "text_delta") yield ev.delta.text;
     }
     const fin = await stream.finalMessage();
-    if (fin.stop_reason === "refusal") return { ok: false, reason: "refusal" };
+    const usage = usageOf(fin.usage);
+    if (fin.stop_reason === "refusal") { await rec("refusal", usage); return { ok: false, reason: "refusal" }; }
+    await rec("ok", usage);
     return { ok: true };
   } catch (e) {
     const reason: AiFail =
       e instanceof Anthropic.RateLimitError ? "rate"
         : e instanceof Anthropic.APIConnectionTimeoutError ? "timeout"
           : "error";
+    await rec(reason);
     opFail({ operation: opts.op, step: "claude", category: "upstream" }, e);
     return { ok: false, reason };
-  }
-}
-
-/** 화면에 적을 한 줄. 왜 규칙으로 읽었는지를 사람의 말로 */
-/** 같은 까닭의 영어. 영어 작업공간의 공고 · 메모에 남는다 */
-export function aiFailEn(r: AiFail | "consent"): string {
-  switch (r) {
-    case "off": return "AI reading is off right now, so this was read with rules.";
-    case "consent": return "You haven't turned on AI reading, so this was read with rules.";
-    case "refusal": return "The AI didn't read this text, so it was read with rules.";
-    case "rate": return "Too many requests right now, so this was read with rules.";
-    case "timeout": return "The AI took too long, so this was read with rules.";
-    default: return "AI reading wasn't available, so this was read with rules.";
-  }
-}
-
-export function aiFailKo(r: AiFail | "consent"): string {
-  switch (r) {
-    case "off": return "지금은 AI 분석이 꺼져 있어 규칙으로 읽었습니다.";
-    case "consent": return "AI 분석에 동의하지 않으셔서 규칙으로 읽었습니다.";
-    case "refusal": return "AI가 이 글을 읽지 않아 규칙으로 읽었습니다.";
-    case "rate": return "요청이 몰려 이번에는 규칙으로 읽었습니다.";
-    case "timeout": return "응답이 늦어 이번에는 규칙으로 읽었습니다.";
-    default: return "AI 분석이 잠시 되지 않아 규칙으로 읽었습니다.";
   }
 }

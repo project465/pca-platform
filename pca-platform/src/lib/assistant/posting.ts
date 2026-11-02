@@ -7,7 +7,8 @@ import type { Axis } from "@/lib/me-v3/scoring/types";
 import { AXIS_KO } from "@/lib/me-v3/result/text.ko";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import { wsLang } from "@/lib/me-v3/ws-lang";
-import { aiFailEn, aiFailKo, askStructured, type AiFail } from "./claude";
+import { askStructured } from "./claude";
+import { capLine } from "./ai-budget";
 import { areaName, axisName, catalog, catalogPrompt, isAxis, type MatLang } from "./catalog";
 import { domainTerms, matchDomains, readPosting } from "./rules";
 import { aiConsented } from "./settings";
@@ -219,24 +220,27 @@ async function readAndJudge(userId: string, text0: string, hint?: PostingHint): 
   const text = text0.slice(0, 12000);
   /* 남기는 안내(`note`)와 Claude 가 돌려줄 말은 작업공간 언어를 따른다 */
   const lang: MatLang = await wsLang(userId).catch(() => "ko" as const);
-  const failText = lang === "en" ? aiFailEn : aiFailKo;
   let read: ReadOut;
   let by: "claude" | "rules" = "rules";
   let model: string | null = null;
   let note: string | null = null;
   const consent = await aiConsented(userId);
+  /* 규칙으로 읽었다는 말은 화면에 남기지 않는다(2026-11-02 대표: 내부 말 금지). 기간권 횟수를
+     다 쓴 때만 다시 열리는 날을 적는다 */
   if (!consent) {
     read = readByRules(st.core, text);
-    note = failText("consent");
   } else {
+    /* 전공 보기 목록은 같은 전공이면 같다: 캐시 앞부분에 두고 공고 글만 뒤에 붙인다 */
     const r = await askStructured({
       op: "assistant.posting", schema: Read, system: lang === "en" ? SYSTEM_EN : SYSTEM,
-      user: lang === "en"
-        ? `${catalogPrompt(st.core, "en")}\n\n<posting>\n${text}\n</posting>`
-        : `${catalogPrompt(st.core)}\n\n<공고>\n${text}\n</공고>`,
+      effort: "low", userId, prefix: catalogPrompt(st.core, lang === "en" ? "en" : undefined),
+      user: lang === "en" ? `<posting>\n${text}\n</posting>` : `<공고>\n${text}\n</공고>`,
     });
     if (r.ok) { read = r.value; by = "claude"; model = r.model; }
-    else { read = readByRules(st.core, text); note = failText(r.reason as AiFail); }
+    else {
+      read = readByRules(st.core, text);
+      if (r.reason === "cap" && r.reopen) note = capLine(r.reopen, lang === "en" ? "en" : "ko");
+    }
   }
   const items = read.requirements.slice(0, 15).map((x) => judge(st, exps, x));
   if (!items.some((i) => i.domain) && hint && hint.core === st.core) {

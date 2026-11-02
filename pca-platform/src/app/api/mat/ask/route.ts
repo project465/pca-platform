@@ -3,6 +3,7 @@ import { matVisible } from "@/lib/mat-public";
 import { askOpenFor } from "@/lib/mat/ask-open";
 import { aiConsented } from "@/lib/assistant/settings";
 import { askStream } from "@/lib/assistant/claude";
+import { aiAllowance, capLine } from "@/lib/assistant/ai-budget";
 import { askContextOf } from "@/lib/mat/ask-context";
 
 export const dynamic = "force-dynamic";
@@ -70,13 +71,21 @@ export async function POST(req: Request) {
   const u = used.get(user.id);
   const n = u && u.day === day ? u.n : 0;
   if (n >= DAILY) return say(`오늘 질문 ${DAILY}번을 다 썼습니다. 내일 다시 물어봐 주세요.`, 429);
+  /* 기간권 한 장의 횟수 · 서버 하루 총액(`ai-budget.ts`). 넘었으면 부르지 않고 다시 열리는 날을 적는다 */
+  const allow = await aiAllowance(user.id, "mat.ask");
+  if (!allow.ok) {
+    return say(allow.why === "cap" ? capLine(allow.reopen) : "오늘은 질문을 더 받지 못해요. 내일 다시 물어봐 주세요.", 429);
+  }
   used.set(user.id, { day, n: n + 1 });
 
   const ctx = await askContextOf(user.id);
   const gen = askStream({
-    op: "mat.ask", system: SYSTEM,
-    user: `<자료>\n${ctx.text}\n</자료>\n\n<질문>\n${q}\n</질문>`,
-    maxTokens: 1500, effort: "low",
+    op: "mat.ask", system: SYSTEM, userId: user.id,
+    /* 학생 묶음은 같은 사람이 이어 물으면 같다: 캐시 앞부분. 질문만 뒤에 붙인다 */
+    prefix: `<자료>\n${ctx.text}\n</자료>`,
+    user: `<질문>\n${q}\n</질문>`,
+    /* 문장 고치기 · 면접 답 돌려주기가 섞여 들어온다: 근거를 대는 일의 깊이(medium) */
+    maxTokens: 1500, effort: "medium",
   });
   const enc = new TextEncoder();
   const body = new ReadableStream<Uint8Array>({

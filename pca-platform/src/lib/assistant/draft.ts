@@ -2,7 +2,8 @@ import * as z from "zod/v4";
 import { query, queryOne } from "@/lib/db";
 import { EXPERIENCE_KINDS, EXPERIENCE_KINDS_EN, activeCoreOrPick } from "@/lib/me-v3/platform";
 import { wsLang } from "@/lib/me-v3/ws-lang";
-import { aiFailEn, aiFailKo, askStructured, type AiFail } from "./claude";
+import { askStructured } from "./claude";
+import { capLine } from "./ai-budget";
 import { catalog, type MatLang } from "./catalog";
 import { draftByRules } from "./rules";
 import { aiConsented } from "./settings";
@@ -135,22 +136,27 @@ export async function draftExperience(userId: string, note: string): Promise<{
   let model: string | null = null;
   let reason: string | null = null;
   const lang: MatLang = await wsLang(userId).catch(() => "ko" as const);
-  const failText = lang === "en" ? aiFailEn : aiFailKo;
+  /* 규칙으로 만들었다는 말은 화면에 남기지 않는다(2026-11-02 대표: 내부 말 금지). 기간권
+     횟수를 다 쓴 때만 다시 열리는 날을 적는다 */
   if (!(await aiConsented(userId))) {
     value = byRules(core, text, lang);
-    reason = failText("consent");
   } else {
+    /* 보기 목록은 전공마다 같다: 캐시 앞부분(prefix)에 두고, 메모만 뒤에 붙인다 */
     const r = await askStructured(lang === "en" ? {
-      op: "assistant.draft", schema: Out, system: SYSTEM_EN,
-      user: `Kind codes: ${EXPERIENCE_KINDS.map((k) => `${k.code}(${EXPERIENCE_KINDS_EN[k.code].label})`).join(", ")}\n\n` +
-        `${menu(core, "en")}\n\n<note>\n${text}\n</note>`,
+      op: "assistant.draft", schema: Out, system: SYSTEM_EN, effort: "low", userId,
+      prefix: `Kind codes: ${EXPERIENCE_KINDS.map((k) => `${k.code}(${EXPERIENCE_KINDS_EN[k.code].label})`).join(", ")}\n\n` +
+        menu(core, "en"),
+      user: `<note>\n${text}\n</note>`,
     } : {
-      op: "assistant.draft", schema: Out, system: SYSTEM,
-      user: `종류 코드: ${EXPERIENCE_KINDS.map((k) => `${k.code}(${k.label})`).join(", ")}\n\n` +
-        `${menu(core)}\n\n<메모>\n${text}\n</메모>`,
+      op: "assistant.draft", schema: Out, system: SYSTEM, effort: "low", userId,
+      prefix: `종류 코드: ${EXPERIENCE_KINDS.map((k) => `${k.code}(${k.label})`).join(", ")}\n\n${menu(core)}`,
+      user: `<메모>\n${text}\n</메모>`,
     });
     if (r.ok) { value = clamp(core, r.value, lang); by = "claude"; model = r.model; }
-    else { value = byRules(core, text, lang); reason = failText(r.reason as AiFail); }
+    else {
+      value = byRules(core, text, lang);
+      if (r.reason === "cap" && r.reopen) reason = capLine(r.reopen, lang);
+    }
   }
   value = { ...value, note: text.replace(/\s+/g, " ").trim().slice(0, 400) };
   const row = await queryOne<{ id: string }>(

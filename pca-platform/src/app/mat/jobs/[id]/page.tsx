@@ -207,15 +207,14 @@ export default async function MatJob({ params, searchParams }: {
       {byRole ? (
         <p className="mt-note" style={{ marginTop: 24 }}>공고 글에 기술 요건이 따로 적혀 있지 않아, 직무 이름과 공고에 나온 말로 내 경험을 이었어요.</p>
       ) : null}
-      {/* 읽은 방법은 맨 아래 작은 글씨로. 저장된 안내 문장(`a.note`) 대신 지금 상태로 적는다(말투를 MAT 에 맞춘다) */}
-      {p.analyzed_by === "claude" ? (
-        <p className="mt-note" style={{ marginTop: 12 }}>공고 글은 Anthropic(미국)의 Claude로 읽었어요.</p>
-      ) : consent || !aiReady() ? (
-        consent ? <p className="mt-note" style={{ marginTop: 12 }}>AI로 읽지 못해 기본 방식으로 읽었어요. 잠시 뒤 다시 열어 보세요.</p> : null
+      {/* 읽은 방법은 화면에 적지 않는다(2026-11-02 대표: "AI가 썼어요" · "규칙으로 읽었어요" 같은 말 금지).
+          기간권 횟수를 다 쓴 때만 다시 열리는 날을 적는다. 옛 분석의 안내 문장은 보이지 않는다 */}
+      {p.analyzed_by === "claude" ? null : consent || !aiReady() ? (
+        a.note?.startsWith("이번 기간에") ? <p className="mt-note" style={{ marginTop: 12 }}>{a.note}</p> : null
       ) : (
         <div className="mt-box" style={{ marginTop: 24 }}>
           <h3>AI로 더 자세히 읽기</h3>
-          <p>지금은 AI 분석을 켜지 않아 규칙으로 읽었어요. 켜면 이 공고 글이 Anthropic(미국)의 Claude로 보내져 읽혀요.
+          <p>켜면 이 공고 글이 Anthropic(미국)의 Claude로 보내져 담당 업무 · 자격 요건 · 우대 사항을 더 자세히 나눠 읽어요.
             이름과 연락처는 보내지 않아요. 끄는 곳은 <Link href="/me/track#settings">설정</Link>이에요.</p>
           <form action={matAiOn} style={{ marginTop: 12 }}>
             <input type="hidden" name="id" value={p.id} />
