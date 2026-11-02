@@ -156,7 +156,9 @@ function statusFor(
   const zone = st.zoneOf[domain];
   const gap = st.gaps.some((g) => g.domain === domain && (!axis || g.axis === axis));
   if (zone === "Z1_EVIDENCE_ESTABLISHED" && !gap) return { status: "ready", evidence };
-  if (zone === "Z1_EVIDENCE_ESTABLISHED" || zone === "Z2_EVIDENCE_INCOMPLETE"
+  /* `Z3_EVIDENCE_LOW_INTEREST` 는 **해 본 영역**이다(관심만 낮다). `아직 없음` 으로 두면 학생이 해 봤다고
+     답한 일을 공고 쪽이 지운다(2026-11-02 v3/23 시험: CI/CD · 장애 대응이 `없음`) */
+  if (zone === "Z1_EVIDENCE_ESTABLISHED" || zone === "Z2_EVIDENCE_INCOMPLETE" || zone === "Z3_EVIDENCE_LOW_INTEREST"
     || evidence.length) return { status: "partial", evidence };
   return { status: "empty", evidence };
 }
