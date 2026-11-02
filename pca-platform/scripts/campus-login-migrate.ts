@@ -12,6 +12,12 @@
  *   LOGINS=sj-old SIDS=sj-old:01000000001 APPLY=1 npm run campus:login-migrate
  *                                                     새 학번 · 전화번호를 정해 주고 바꿈(지금 학번 칸이 그 꼴이 아닐 때)
  *
+ *   AUDIT=1 npm run campus:login-migrate      읽기만: 기관마다 학번 꼴이 아닌 계정 수 · 아이디 ≠ 머리+학번 계정 수(이름 없이 수만)
+ *   운영 이미지: node ops/campus-login-migrate.cjs (같은 환경 변수)
+ *
+ * **LOGINS 로 고를 때는 학번 칸을 믿지 않는다**(2026-11-02 운영 시험: 시험 계정의 학번 칸이 아이디와 바뀌어 있거나 학번 꼴이
+ * 아니었다). 고른 계정마다 SIDS 로 새 학번 · 전화번호를 **반드시** 적어야 하고, 없으면 건너뛴다.
+ *
  * 바꾸는 것(계정마다): 학번 칸을 그 기관 꼴로(전화번호는 숫자만) · 아이디 = 머리 + 학번 · 비밀번호 = 학번 · must_reset_pw = TRUE.
  * 다른 계정이 이미 그 아이디를 쓰면 건너뛰고 적는다. **IDS 없이 APPLY=1 을 주면 멈춘다**(전부를 한꺼번에 바꾸지 않는다).
  */
@@ -32,6 +38,20 @@ if (apply && !ids.size && !logins.size) { console.error("APPLY=1 에는 IDS=… 
 
 async function main(): Promise<void> {
 let n = 0, changed = 0, skipped = 0;
+if (process.env.AUDIT === "1") {
+  /* 이름 · 아이디는 적지 않는다. 수만 센다 */
+  for (const u of universities()) {
+    if (want && u.university_code !== want) continue;
+    const mode = loginModeOf(u), prefix = loginPrefixOf(u);
+    const rows = await query<{ login_id: string | null; sid: string }>(
+      `SELECT u.login_id, cs.student_id AS sid FROM campus_students cs JOIN users u ON u.id = cs.user_id
+        WHERE cs.university_code = $1 AND u.status <> 'erased'`, [u.university_code]);
+    const shapeBad = rows.filter((r) => mode === "phone" ? !/^01\d{8,9}$/.test(normalizeLoginValue(mode, r.sid)) : !/^\d{8,10}$/.test(r.sid.trim())).length;
+    const idBad = rows.filter((r) => r.login_id !== `${prefix}${normalizeLoginValue(mode, r.sid)}`).length;
+    console.log(`${u.university_code}\t계정 ${rows.length}\t${mode === "phone" ? "전화번호" : "학번"} 꼴이 아님 ${shapeBad}\t아이디 ≠ 머리+${mode === "phone" ? "전화번호" : "학번"} ${idBad}`);
+  }
+  return;
+}
 for (const u of universities()) {
   if (want && u.university_code !== want) continue;
   const mode = loginModeOf(u), prefix = loginPrefixOf(u);
@@ -41,6 +61,11 @@ for (const u of universities()) {
       WHERE cs.university_code = $1 AND u.status <> 'erased' ORDER BY cs.student_id`, [u.university_code]);
   for (const r of rows) {
     if (logins.size && !logins.has(r.login_id ?? "")) continue;
+    if (logins.size && !sids.has(r.login_id ?? "")) {
+      n += 1; skipped += 1;
+      console.log(`${u.university_code}\t#${r.id}\t${r.name}\t아이디 ${r.login_id}\t건너뜀: SIDS 에 새 ${mode === "phone" ? "전화번호" : "학번"}을 적지 않았습니다(학번 칸을 그대로 믿지 않음)`);
+      continue;
+    }
     const sid = normalizeLoginValue(mode, sids.get(r.login_id ?? "") ?? r.sid);
     const badPhone = mode === "phone" && !/^01\d{8,9}$/.test(sid);
     const expect = `${prefix}${sid}`;

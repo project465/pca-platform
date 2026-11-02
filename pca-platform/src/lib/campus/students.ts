@@ -64,6 +64,10 @@ export function checkStudent(
   const mode = loginModeOf(u);
   const sid = normalizeLoginValue(mode, row.student_id);
   if (!sid) return { ok: false, why: mode === "phone" ? "휴대전화 번호가 비어 있습니다" : "학번이 비어 있습니다" };
+  /* **학번은 숫자만**(2026-11-02 운영 시험: 학번 칸에 아이디 · 영문이 들어가 학번으로 로그인할 수 없는 계정이 생겼다) */
+  if (mode === "student_id" && !/^\d{4,12}$/.test(sid)) {
+    return { ok: false, why: `학번은 숫자만 적어 주세요(4~12자리): ${row.student_id.trim()}` };
+  }
   if (mode === "phone" && !/^01\d{8,9}$/.test(sid)) {
     return { ok: false, why: `휴대전화 번호 꼴이 아닙니다(숫자 10~11자리, 010으로 시작): ${row.student_id.trim()}` };
   }
