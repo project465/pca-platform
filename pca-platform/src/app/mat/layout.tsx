@@ -27,6 +27,19 @@ export default async function MatLayout({ children }: { children: React.ReactNod
   if (!user) redirect("/login?next=/mat");
   if (user.mustResetPw) redirect("/password/change");
   if (!(await matVisible(user.id))) notFound();
+  /* **운영자(담당자 로그인)는 MAT 을 쓰는 사람이 아니다.** 검사 결과 · 전공이 없어 홈이 학생 화면으로
+     넘기고, 그 화면은 담당자 로그인을 받지 않아 로그인으로 돌아갔다(2026-11-02 운영 시험). 안내를 세운다 */
+  if (user.scope === "staff") {
+    return (
+      <div className="mt"><div className="mt-frame">
+        <h1 className="mt-h1">MAT은 학생 · 개인 계정 화면입니다</h1>
+        <p className="mt-lead">지금은 운영자(담당자) 계정으로 들어와 있습니다. MAT은 검사 결과가 있는 학생 · 개인 계정으로 봅니다.
+          공개 전 확인은 운영자 화면에서 넣은 미리보기 계정으로 로그인해 주세요.</p>
+        <a className="mt-btn is-block" href="/login?switch=1&next=/mat" style={{ marginTop: 12 }}>미리보기 계정으로 로그인</a>
+        <a className="mt-btn is-block" href="/admin/partners" style={{ marginTop: 10 }}>미리보기 계정 · 제휴 연결 관리</a>
+      </div></div>
+    );
+  }
   return (
     <div className="mt">
       <div className="mt-frame">

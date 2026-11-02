@@ -72,7 +72,14 @@ export async function requireUser(
   opts: { skipPasswordGate?: boolean } = {},
 ): Promise<SessionUser> {
   const user = await currentUser();
-  if (!user) redirect("/login");
+  if (!user) {
+    /* **돌아갈 주소를 들고 간다**(2026-11-02 운영 시험: 운영자로 /mat → /cores → 로그인에서 next 가 빠졌다).
+       같은 사이트 안의 길만 싣는다 */
+    let path = "";
+    try { path = (await headers()).get("x-cm-path") ?? ""; } catch { path = ""; }
+    const safe = path.startsWith("/") && !path.startsWith("//") && !path.startsWith("/login") ? path.slice(0, 300) : "";
+    redirect(safe ? `/login?next=${encodeURIComponent(safe)}` : "/login");
+  }
   if (user.mustResetPw && !opts.skipPasswordGate) {
     redirect(user.scope === "staff" ? "/password/change?as=staff" : "/password/change");
   }
