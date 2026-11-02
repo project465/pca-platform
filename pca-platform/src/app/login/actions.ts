@@ -8,6 +8,8 @@ import { auth, inactiveReason, signIn, signOut, staffRoleOf, staffSignIn } from 
 import { homePathFor } from "@/lib/roles";
 import { clientIpFrom, loginGate } from "@/lib/login-throttle";
 import { entrySay } from "@/lib/entry-say";
+import { university } from "@/lib/campus/registry";
+import { campusLoginId } from "@/lib/campus/students";
 
 export type LoginState = { error?: string };
 
@@ -27,7 +29,10 @@ export async function loginAction(
   _prev: LoginState,
   formData: FormData,
 ): Promise<LoginState> {
-  const identifier = String(formData.get("identifier") ?? "").trim();
+  /* 학교 · 기관 로그인 화면은 학번 · 전화번호만 받는다. 그 학교의 아이디 꼴(머리 · 숫자만)로 바꿔 묻는다 */
+  const org = university(String(formData.get("org") ?? ""));
+  const raw = String(formData.get("identifier") ?? "").trim();
+  const identifier = org && raw ? campusLoginId(org, raw) : raw;
   const password = String(formData.get("password") ?? "");
   /* 폼이 그 화면의 언어를 들고 온다. 화면 문구만 고르고 판단에는 쓰지 않는다 */
   const say = entrySay(formData.get("lang") === "en" ? "en" : "ko");

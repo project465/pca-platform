@@ -502,7 +502,8 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.83";
  * V92 · 결과지 끝의 `매주 할 일과 공고 확인은 MAT 에서 이어집니다` 한 줄을 MAT 을 가려 둔
  * 동안 세우지 않는다(2026-10-31 대표 지시, `lib/mat-switch.ts`). 판단 · 문장 · 모델은 그대로다.
  */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V92";
+/** 처음 비밀번호(학번 · 전화번호)를 아직 바꾸지 않았으면 결과지 대신 비밀번호 바꾸기로(2026-11-02 대표 결정) — V93 */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V93";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

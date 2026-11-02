@@ -194,6 +194,11 @@ export type CampusUniversity = {
    */
   login_prefix?: string | null;
   /**
+   * 학생 · 참여자가 로그인할 때 적는 값(2026-11-02 대표 결정). `student_id` 는 학번, `phone` 은 휴대전화 번호(숫자만).
+   * 처음 비밀번호도 같은 값이고 첫 로그인 때 바꾼다. 없으면 기관(`agency`)은 `phone`, 학교는 `student_id` 다
+   */
+  login_mode?: "student_id" | "phone";
+  /**
    * **학교인가 기관인가.** `agency` 면 화면이 `학생 · 학과 · 학번` 대신
    * `참여자 · 전공 계열 · 아이디` 로 적는다(`campusWords`). 없으면 학교다.
    */

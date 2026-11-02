@@ -3,7 +3,7 @@ import "../../../surface.css";
 import "../../campus.css";
 import { campusSay, university } from "@/lib/campus/registry";
 import { currentUser } from "@/lib/session";
-import { campusStudentOf, hasCampusRow, loginPrefixOf } from "@/lib/campus/students";
+import { campusStudentOf, hasCampusRow, loginModeOf } from "@/lib/campus/students";
 import { safeNext } from "@/lib/safe-next";
 import { BrandMark } from "@/components/sf/brand-mark";
 import { CampusShell } from "../../shell";
@@ -39,7 +39,7 @@ export default async function CampusLogin({ params, searchParams }: Params) {
   const u = university(universityCode);
   if (!u) notFound();
   const t = campusSay(u);
-  const prefix = loginPrefixOf(u);
+  const mode = loginModeOf(u);
   const code = u.university_code.toLowerCase();
   /* 열린 리다이렉트를 막는 자리가 한 곳이다(`safe-next.ts`) */
   const nx = safeNext(next, `/campus/${code}/start`);
@@ -90,15 +90,16 @@ export default async function CampusLogin({ params, searchParams }: Params) {
           </p>
         ) : null}
 
-        <CampusLoginForm next={nx} />
+        <CampusLoginForm next={nx} org={u.university_code}
+          idLabel={mode === "phone" ? "휴대전화 번호" : t("학번")}
+          idHint={mode === "phone" ? "숫자만, 예: 01012345678" : undefined} />
       </div>
 
       <p className="cm-cmp-note" style={{ textAlign: "center" }}>
-        {u.org_kind === "agency"
-          ? "아이디는 기관에서 받은 아이디입니다."
-          : prefix
-            ? `아이디는 ${prefix} 뒤에 학번을 붙인 것입니다(예: ${prefix}20260001).`
-            : "아이디는 학번입니다."}{" "}
+        {/* 기관 설정(`login_mode`)에서 문구를 짓는다. 학교가 늘어도 손으로 고치지 않는다 */}
+        {mode === "phone"
+          ? "아이디와 처음 비밀번호는 휴대전화 번호입니다(숫자만). 처음 로그인하면 비밀번호를 새로 정해요."
+          : `아이디와 처음 비밀번호는 ${t("학번")}입니다. 처음 로그인하면 비밀번호를 새로 정해요.`}{" "}
         비밀번호를 잊으셨으면 {t("학과 담당자")}에게 알려 주십시오.
       </p>
     </CampusShell>

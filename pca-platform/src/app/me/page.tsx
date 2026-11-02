@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import { currentUser, requireUser } from "@/lib/session";
 import {
@@ -35,6 +36,8 @@ import { campusStudentContext } from "@/lib/campus/students";
 
 export async function generateMetadata() {
   const u = await currentUser().catch(() => null);
+  /* 처음 비밀번호(학번 · 전화번호)를 아직 안 바꿨으면 바꾸는 화면만(2026-11-02 대표 결정 "첫 로그인 때 꼭 바꾸게") */
+  if (u?.mustResetPw) redirect("/password/change");
   const t = wsSay(u ? await wsLang(u.id) : "ko");
   return { title: `${t("홈")} · CareerMatri` };
 }

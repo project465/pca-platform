@@ -69,6 +69,12 @@ export default async function MatJobs({ searchParams }: { searchParams: Promise<
 
       {list.length ? (
         <div className="mt-list">{list.slice(0, 20).map((p) => <JobCard key={p.id} p={p} />)}</div>
+      ) : jobs.broad.length ? (
+        <>
+          <p className="mt-note">전공과 딱 맞는 공고가 아직 없어 조건을 넓힌 공고를 보여 드려요.</p>
+          <h2 className="mt-h2">조건을 넓힌 공고</h2>
+          <div className="mt-list">{jobs.broad.slice(0, 10).map((p) => <JobCard key={p.id} p={p} />)}</div>
+        </>
       ) : (
         <p className="mt-empty">{jobs.other.length ? "전공에 맞는 공고가 아직 없어요. 경험을 적으면 더 찾아 드려요." : "모아 둔 공고가 아직 없어요."}</p>
       )}

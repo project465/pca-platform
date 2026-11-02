@@ -13,20 +13,28 @@ const initial: LoginState = {};
  * 자리에 있어야 둘의 판단이 갈리지 않는다(설계 원칙 10). 갈리는 것은
  * 화면에 서는 글자와 들어간 뒤에 가는 자리뿐이다.
  */
-export default function CampusLoginForm({ next }: { next: string }) {
+export default function CampusLoginForm({ next, org, idLabel = "아이디", idHint }: {
+  next: string;
+  /** 학교 코드. 서버가 적은 학번 · 전화번호를 그 학교의 아이디 꼴로 바꾼다 */
+  org?: string;
+  idLabel?: string;
+  idHint?: string;
+}) {
   const [state, formAction, pending] = useActionState(loginAction, initial);
 
   return (
     <form action={formAction} className="form">
       <input type="hidden" name="next" value={next} />
+      {org ? <input type="hidden" name="org" value={org} /> : null}
       {state.error ? (
         <p className="notice error" role="alert">{state.error}</p>
       ) : null}
 
       <div className="field">
-        <label htmlFor="identifier">아이디</label>
+        <label htmlFor="identifier">{idLabel}</label>
         <input
-          id="identifier" name="identifier" type="text"
+          id="identifier" name="identifier" type="text" placeholder={idHint}
+          inputMode={idLabel.includes("전화") ? "tel" : undefined}
           autoComplete="username" autoCapitalize="none" spellCheck={false}
           required aria-invalid={state.error ? true : undefined}
         />

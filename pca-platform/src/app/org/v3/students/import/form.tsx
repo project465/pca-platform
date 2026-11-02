@@ -18,7 +18,13 @@ const EMPTY: ImportState = {};
  * **오류 줄에서 멈추지 않는다.** 한 줄이 틀렸다고 전부를 되돌리면 그
  * 파일을 몇 번이고 다시 올린다.
  */
-export default function ImportForm({ agency = false }: { agency?: boolean }) {
+export default function ImportForm({ agency = false, phone = false, example = "" }: {
+  agency?: boolean;
+  /** 아이디가 휴대전화 번호인 기관인가(`login_mode`) */
+  phone?: boolean;
+  /** 이 기관 등록부의 실제 학과 코드 하나(붙여 넣기 예시) */
+  example?: string;
+}) {
   /* 기관(진흥원 등)이면 학생 · 학번 · 학과를 기관 낱말로 적는다 */
   const t = campusSay(agency ? { org_kind: "agency" } : null);
   const [state, run, pending] = useActionState(
@@ -46,13 +52,14 @@ export default function ImportForm({ agency = false }: { agency?: boolean }) {
           <label className="sf-field">
             <span>또는 내용을 붙여 넣기</span>
             <textarea name="csv" rows={5}
-              placeholder={"student_id,name,department_code\n20250001,홍길동,PCU26_BIZ_MGMT"} />
+              placeholder={phone ? `이름,휴대전화 번호,전공 계열 코드\n홍길동,010-1234-5678,${example}` : `학번,이름,학과 코드\n20260001,홍길동,${example}`} />
           </label>
           <p className="sf-meta">
-            머리글에 <code>student_id</code> · <code>name</code> ·
-            {" "}<code>department_code</code> 가 있어야 합니다.
-            {" "}<code>email</code> 과 <code>login_id</code> 와
-            {" "}<code>college_code</code> 는 있으면 함께 읽습니다.
+            <a href="/org/v3/students/import/template.csv">양식 파일 내려받기</a>{" · "}
+            {phone
+              ? "머리글은 이름 · 휴대전화 번호 · 전공 계열 코드입니다. 아이디와 처음 비밀번호는 휴대전화 번호(숫자만)가 됩니다."
+              : `머리글은 ${t("학번")} · 이름 · ${t("학과")} 코드입니다. 아이디와 처음 비밀번호는 ${t("학번")}이 됩니다.`}
+            {" "}{t("학과")} 칸에는 코드 대신 이름을 적어도 됩니다. 메일은 있으면 함께 읽습니다. 아래 표에서 코드를 찾을 수 있어요.
           </p>
           <button className="sf-btn" type="submit" disabled={pending}>
             {pending ? "읽는 중…" : "미리 보기"}

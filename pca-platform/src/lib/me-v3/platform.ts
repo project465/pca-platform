@@ -207,8 +207,8 @@ export async function currentState(userId: string): Promise<CurrentState> {
       `SELECT id::text, tier FROM v3_attempts
         WHERE user_id = $1 AND status = 'in_progress'
         ORDER BY started_at DESC LIMIT 1`, [userId]),
-    queryOne<{ model: ResultModel | null; at: string | null }>(
-      `SELECT s.result_model AS model, to_char(s.created_at, 'YYYY-MM-DD') AS at
+    queryOne<{ model: ResultModel | null; at: string | null; ts: string | null }>(
+      `SELECT s.result_model AS model, to_char(s.created_at, 'YYYY-MM-DD') AS at, s.created_at::text AS ts
          FROM v3_snapshots s JOIN v3_attempts a ON a.id = s.attempt_id
         WHERE a.user_id = $1 AND s.result_model IS NOT NULL
         ORDER BY s.created_at DESC, s.id DESC LIMIT 1`, [userId]),
@@ -231,9 +231,9 @@ export async function currentState(userId: string): Promise<CurrentState> {
      * 내놓는다: 아직 반영하지 않은 사람에게 제출 시각을 `최근 반영` 으로
      * 적으면 그 화면이 거짓을 적는다.
      */
-    queryOne<ProfileRow>(
+    queryOne<ProfileRow & { rts: string | null }>(
       `SELECT axis_levels::text AS levels, zones::text AS zones, gaps::text AS gaps,
-              (jsonb_typeof(gaps) = 'array') AS applied,
+              (jsonb_typeof(gaps) = 'array') AS applied, recomputed_at::text AS rts,
               CASE WHEN jsonb_typeof(gaps) = 'array'
                    THEN to_char(recomputed_at, 'YYYY-MM-DD') END AS at
          FROM career_profiles WHERE user_id = $1 AND core_code = $2`, [userId, core]),
@@ -246,7 +246,10 @@ export async function currentState(userId: string): Promise<CurrentState> {
 
   /* 반영한 적이 없으면 굳은 결과가 곧 지금 상태다. 두 줄로 적으면
      사용자가 같은 값을 두 번 읽는다 */
-  const applied = prof?.applied === true;
+  /* **재응시 뒤에는 지난 반영을 덮지 않는다**(2026-11-02 운영 시험: 재응시 뒤에도 "최근 추가한 경험으로 … 변화" 가 남았다).
+     반영은 그때 굳은 결과에 경험을 얹은 값이라, 그보다 새 결과가 굳었으면 새 결과가 지금 상태다. 경험은 다음 반영 때 다시 얹힌다 */
+  const stale = !!(prof?.rts && snap?.ts && Date.parse(prof.rts) < Date.parse(snap.ts));
+  const applied = prof?.applied === true && !stale;
   const zoneOf = { ...base };
   const raised: CurrentState["raised"] = [];
   const zoneMoved: CurrentState["zoneMoved"] = [];

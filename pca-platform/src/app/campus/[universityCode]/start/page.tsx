@@ -43,6 +43,7 @@ export default async function CampusStart({ params }: Params) {
      학생이 계약과 무관한 개인 계정을 만들게 된다 */
   const user = await currentUser();
   if (!user) redirect(`/campus/${code}/login`);
+  if (user.mustResetPw) redirect("/password/change");
 
   const mine = await campusStudentOf(user.id, u.university_code);
 

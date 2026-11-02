@@ -1,6 +1,6 @@
 "use client";
 
-import { campusSay } from "@/lib/campus/words";
+import { campusSay, maskPhone } from "@/lib/campus/words";
 import { useActionState } from "react";
 import {
   matAction, matCloseAction, retakeAction, rotateAction, setStatusAction, type ManageState,
@@ -89,8 +89,8 @@ export default function StudentRows(
             {rows.map((r) => (
               <tr key={r.user_id}>
                 <th scope="row" className="sf-strong">{r.name}</th>
-                <td>{r.student_id}</td>
-                <td className="mono">{r.login_id || "—"}</td>
+                <td>{agency ? maskPhone(r.student_id) : r.student_id}</td>
+                <td className="mono">{(agency ? maskPhone(r.login_id) : r.login_id) || "—"}</td>
                 <td>{deptNames[r.department_code] ?? r.department_code}</td>
                 <td>
                   <span className={`sf-pill${r.account === "active" ? "" : " is-off"}`}>

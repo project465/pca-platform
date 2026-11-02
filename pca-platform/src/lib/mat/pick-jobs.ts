@@ -5,6 +5,7 @@ import { isGrad } from "@/lib/assistant/research";
 import { stageOf } from "@/lib/assistant/stage";
 import { activeCoreOrPick } from "@/lib/me-v3/platform";
 import { isEntryJob } from "./job-title";
+import { matchDomains } from "@/lib/assistant/rules";
 
 /**
  * MAT 이 보여 줄 공고를 고른다(2026-11-02 운영 시험: 인공지능학과 학생에게 대학원 연구실 모집 8건만 보였다).
@@ -24,6 +25,11 @@ const stem = (m: string | null) => (m ?? "").replace(/\s+/g, "").replace(/(공�
 
 export type PickedJobs = {
   main: MatchedPosting[]; grad: MatchedPosting[]; other: MatchedPosting[]; matched: boolean;
+  /**
+   * 내 전공으로 단 공고지만 전공 사전 낱말 · 내 자료와 겹치는 것이 없는 공고(2026-11-02 운영 시험: 인공지능학과에
+   * "과제계약직" · "육아휴직 대체인력" 이 맞는 공고로 섰다). 맞는 공고가 없을 때만 "조건을 넓힌 공고" 로 밝혀 보인다
+   */
+  broad: MatchedPosting[];
   /**
    * 이번 주(7일)에 들어온 공고 가운데 **내 자료 · 경험 · 전공 이름과 실제로 겹친** 것의 수. 홈 알림과 브리핑이
    * 이 한 값을 읽는다(2026-11-02 운영 시험: 홈은 "새로 맞는 공고가 있어요", 브리핑은 "아직 없어요"였다.
@@ -61,6 +67,11 @@ export async function pickJobs(userId: string, limit = 20): Promise<PickedJobs> 
     if (majorHit) { score += 3; if (!hits.includes(st)) hits.unshift(st); }
     /* 내 전공으로 단 공고이거나, 전공을 못 단 공고 가운데 내 자료 · 전공 이름과 겹치는 것 */
     const mineField = p.core_code ? p.core_code === core : (m?.hits.length ?? 0) > 0 || majorHit;
+    /* **전공 관련도가 먼저다**: 내 전공 사전의 낱말(예: 딥러닝 · PyTorch · AI 엔지니어)이 공고에 몇 개 나오는가 */
+    const dict = core ? matchDomains(core, text).filter((x) => x.score >= 3) : [];
+    const rel = dict.reduce((n, x) => n + x.terms.length, 0);
+    score += rel * 3;
+    for (const x of dict) for (const t of x.terms) if (hits.length < 6 && !hits.includes(t)) hits.push(t);
     const entry = isEntryJob(text);
     if (entry) { score += 2; if (!hits.includes("신입 · 인턴")) hits.push("신입 · 인턴"); }
     const research = GRAD_BOARD.test(p.source_url ?? "") || GRAD_TEXT.test(text);
@@ -69,17 +80,20 @@ export async function pickJobs(userId: string, limit = 20): Promise<PickedJobs> 
       region_code: p.region_code, requirements: (p.raw_requirements ?? []).slice(0, 8), hits, tdHits: m?.tdHits ?? [],
       role: p.role_code,
     };
-    const real = (m?.hits.length ?? 0) + (m?.tdHits.length ?? 0) > 0 || majorHit;
+    const real = (m?.hits.length ?? 0) + (m?.tdHits.length ?? 0) > 0 || majorHit || rel > 0;
     return { row, score, research, mineField, real };
   });
   const order = (a: typeof scored[number], b: typeof scored[number]) =>
     b.score - a.score || (a.row.closes_on ?? "9999").localeCompare(b.row.closes_on ?? "9999");
-  const main = scored.filter((x) => (grad || !x.research) && x.mineField).sort(order);
+  const field = scored.filter((x) => (grad || !x.research) && x.mineField);
+  const main = field.filter((x) => x.real).sort(order);
+  const broad = field.filter((x) => !x.real).sort(order);
   const gradRows = grad ? [] : scored.filter((x) => x.research && x.mineField).sort(order);
   /* 다른 전공 공고는 지운 것이 아니라 접어 둔다: 전공을 바꿔 보려는 사람도 있다. 새 공고 차례로 */
   const other = scored.filter((x) => !x.mineField && (grad || !x.research)).slice(0, 10);
   return {
     main: main.slice(0, limit).map((x) => x.row),
+    broad: main.length ? [] : broad.slice(0, limit).map((x) => x.row),
     grad: gradRows.slice(0, 10).map((x) => x.row),
     other: other.map((x) => x.row),
     matched: main.some((x) => x.score > 0),

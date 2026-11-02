@@ -31,6 +31,16 @@ export function campusSay(
   return (s) => rules.reduce((acc, [re, to]) => acc.replace(re, to), s);
 }
 
+/**
+ * **휴대전화 번호는 가운데를 가린다**(2026-11-02 대표 지시: 진흥원 명단 · CSV 에서 010-****-5678). 아이디가 전화번호인
+ * 기관에서 담당자 화면 · 내려받는 파일에 번호 전체를 늘어놓지 않는다. 머리(`sjepa-`)가 붙어 있어도 번호 부분만 가린다.
+ * 전화번호 꼴이 아니면 그대로 돌려준다
+ */
+export function maskPhone(v: string | null | undefined): string {
+  const s = v ?? "";
+  return s.replace(/(01\d)-?(\d{3,4})-?(\d{4})/, (_m, a: string, _b: string, c: string) => `${a}-****-${c}`);
+}
+
 /** 기관 종류에 맞는 낱말. 화면은 이 함수 하나로 고른다 */
 export function campusWords(u: { org_kind?: "university" | "agency" } | null | undefined) {
   const agency = u?.org_kind === "agency";

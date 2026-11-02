@@ -35,6 +35,15 @@ export async function changePasswordAction(
   if (await verifyPassword(next, row.password_hash)) {
     return { error: "지금 쓰는 비밀번호와 다른 것으로 정해주세요." };
   }
+  /* **아이디(학번 · 전화번호)와 같은 비밀번호는 받지 않는다**(2026-11-02 대표 결정). 학번 · 전화번호는 남이 알기 쉽다 */
+  const ids = await queryOne<{ login_id: string | null; sid: string | null }>(
+    `SELECT u.login_id, cs.student_id AS sid FROM users u LEFT JOIN campus_students cs ON cs.user_id = u.id WHERE u.id = $1`,
+    [user.id]);
+  const plain = (s: string | null | undefined) => (s ?? "").replace(/[^0-9A-Za-z]/g, "").toLowerCase();
+  const bad = [ids?.login_id, ids?.sid, (ids?.login_id ?? "").replace(/^[a-z]+-/i, "")].map(plain).filter(Boolean);
+  if (bad.includes(plain(next))) {
+    return { error: "아이디(학번 · 전화번호)와 다른 비밀번호로 정해주세요." };
+  }
 
   /* `pw_login` 을 같이 올린다 — 재설정 쪽과 같은 까닭이다 */
   await query(

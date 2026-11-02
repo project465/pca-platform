@@ -20,7 +20,8 @@ import { randomBytes } from "node:crypto";
 import { query, queryOne } from "@/lib/db";
 import { hashPassword } from "@/lib/password";
 import {
-  contextOf, findLeaf, routingContextOf, university, type CampusContext,
+  allLeaves, contextOf, findLeaf, routingContextOf, university, type CampusContext,
+  type CampusUniversity,
 } from "./registry";
 
 export type CampusStudentRow = {
@@ -58,16 +59,26 @@ export type Checked = {
 export function checkStudent(
   universityCode: string, row: CampusStudentInput,
 ): { ok: true; value: Checked } | { ok: false; why: string } {
-  const sid = row.student_id.trim();
-  if (!sid) return { ok: false, why: "학번이 비어 있습니다" };
-  if (!row.name.trim()) return { ok: false, why: "이름이 비어 있습니다" };
   const u = university(universityCode);
   if (!u) return { ok: false, why: `등록부에 ${universityCode} 가 없습니다` };
-  const dc = (row.department_code ?? "").trim();
-  if (!dc) return { ok: false, why: "학과 코드가 비어 있습니다" };
+  const mode = loginModeOf(u);
+  const sid = normalizeLoginValue(mode, row.student_id);
+  if (!sid) return { ok: false, why: mode === "phone" ? "휴대전화 번호가 비어 있습니다" : "학번이 비어 있습니다" };
+  if (mode === "phone" && !/^01\d{8,9}$/.test(sid)) {
+    return { ok: false, why: `휴대전화 번호 꼴이 아닙니다(숫자 10~11자리, 010으로 시작): ${row.student_id.trim()}` };
+  }
+  if (!row.name.trim()) return { ok: false, why: "이름이 비어 있습니다" };
+  const dc0 = (row.department_code ?? "").trim();
+  if (!dc0) return { ok: false, why: `${u.org_kind === "agency" ? "전공 계열" : "학과"} 코드가 비어 있습니다` };
+  /* 코드 대신 이름(`경영학과`)을 적어도 받는다. 같은 이름이 학년도마다 있으면 가장 최근의 지난 학년도 것 */
+  const thisYear = Number(new Date(Date.now() + 9 * 3_600_000).toISOString().slice(0, 4));
+  const byName = findLeaf(u, dc0) ? null : allLeaves(u)
+    .filter((r) => r.leaf.name.replace(/\s+/g, "") === dc0.replace(/\s+/g, "") && r.catalog.catalog_year <= thisYear)
+    .sort((a, b) => b.catalog.catalog_year - a.catalog.catalog_year)[0] ?? null;
+  const dc = byName ? byName.leaf.code : dc0;
   const found = findLeaf(u, dc);
   if (!found) {
-    return { ok: false, why: `등록부에 없는 학과 코드입니다: ${dc}` };
+    return { ok: false, why: `등록부에 없는 ${u.org_kind === "agency" ? "전공 계열" : "학과"} 코드입니다: ${dc}` };
   }
   if (row.college_code && row.college_code.trim() !== found.college.code) {
     return {
@@ -94,8 +105,10 @@ export function checkStudent(
       why: `어느 전공 검사로 이을지 아직 정해지지 않은 전공입니다: ${found.leaf.name}`,
     };
   }
-  const loginId = (row.login_id ?? "").trim() || `${loginPrefixOf(u)}${sid}`;
-  return { ok: true, value: { input: { ...row, student_id: sid }, loginId, ctx } };
+  /* **아이디는 학번 · 전화번호다**(대표 결정). 따로 적은 아이디는 받지 않는다: 둘이 갈리면 학생이 무엇으로 들어오는지
+     담당자도 모른다(2026-11-02 운영 시험: 학번 201411112 · 아이디 20141112) */
+  const loginId = `${loginPrefixOf(u)}${sid}`;
+  return { ok: true, value: { input: { ...row, student_id: sid, department_code: dc }, loginId, ctx } };
 }
 
 /**
@@ -107,6 +120,33 @@ export function checkStudent(
  * `login_prefix` 를 적으면 그것을 쓰고(배재대는 머리 없이 발급해 왔으므로
  * 빈 글자다), 없으면 학교 코드를 소문자로 쓴다.
  */
+/**
+ * **학생 · 참여자가 적는 아이디가 무엇인가**(2026-11-02 대표 결정: 학교는 학번, 일자리 기관은 휴대전화 번호.
+ * 처음 비밀번호도 같은 값이고 첫 로그인 때 반드시 바꾼다). 기관 설정(`login_mode`)이 정하고, 없으면 기관 종류로 정한다.
+ * 학교가 늘어도 같은 판단이다
+ */
+export type LoginMode = "student_id" | "phone";
+export function loginModeOf(u: { login_mode?: LoginMode; org_kind?: "university" | "agency" }): LoginMode {
+  return u.login_mode ?? (u.org_kind === "agency" ? "phone" : "student_id");
+}
+
+/** 적은 값을 아이디 꼴로. 전화번호는 하이픈 · 공백을 걷어 숫자만(010-1234-5678 = 01012345678) */
+export function normalizeLoginValue(mode: LoginMode, raw: string): string {
+  const t = raw.trim();
+  return mode === "phone" ? t.replace(/[^0-9]/g, "") : t.replace(/\s+/g, "");
+}
+
+/**
+ * 학교 로그인 화면에서 적은 값을 실제 아이디로. **학생은 학번 · 전화번호만 적는다**: 아이디는 전체에서 하나라
+ * 학교마다 머리(`jju-` 등)를 붙여 두는데, 그것까지 외우게 하지 않는다. 이미 머리를 붙여 적었으면 그대로 둔다
+ */
+export function campusLoginId(u: CampusUniversity, raw: string): string {
+  const prefix = loginPrefixOf(u);
+  const t = raw.trim();
+  if (prefix && t.toLowerCase().startsWith(prefix.toLowerCase())) return t;
+  return `${prefix}${normalizeLoginValue(loginModeOf(u), t)}`;
+}
+
 export function loginPrefixOf(u: { university_code: string; login_prefix?: string | null }): string {
   if (typeof u.login_prefix === "string") return u.login_prefix;
   return `${u.university_code.toLowerCase()}-`;
@@ -164,14 +204,17 @@ export async function provisionStudent(
     return { created: false, password: null, userId: had.id };
   }
 
-  const pw = initialPassword();
+  /* **처음 비밀번호는 학번 · 전화번호이고, 첫 로그인 때 반드시 바꾼다**(2026-11-02 대표 결정 "첫 로그인 때 꼭 바꾸게").
+     학번 · 전화번호는 남이 알기 쉬운 값이라 must_reset_pw 로 막는다: 바꾸기 전에는 검사 · 결과 · MAT 에 들어가지 못한다 */
+  const pw = input.student_id;
   const user = await queryOne<{ id: string; is_demo: boolean }>(
     `INSERT INTO users (login_id, email, display_name, password_hash,
                         status, locale, must_reset_pw)
-     VALUES ($1, $2, $3, $4, 'active', 'ko', FALSE)
+     VALUES ($1, $2, $3, $4, 'active', 'ko', TRUE)
      ON CONFLICT (login_id) DO UPDATE
        SET password_hash = EXCLUDED.password_hash,
-           display_name  = EXCLUDED.display_name
+           display_name  = EXCLUDED.display_name,
+           must_reset_pw = TRUE
      RETURNING id::text, is_demo`,
     [loginId, input.email?.trim() || null, input.name.trim(),
       await hashPassword(pw)],

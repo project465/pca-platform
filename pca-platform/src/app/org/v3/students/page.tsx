@@ -10,7 +10,7 @@ import { BRAND, toLang2 } from "@/lib/surface-text";
 import { Shell, PageHead, Section } from "@/components/sf/shell";
 import { campusSay, university } from "@/lib/campus/registry";
 import { sayTree } from "@/lib/campus/say-tree";
-import { loginPrefixOf } from "@/lib/campus/students";
+import { loginModeOf } from "@/lib/campus/students";
 import { campusNav } from "@/lib/campus/org-mode";
 import { Empty } from "@/components/sf/parts";
 import LangSelect from "@/components/sf/lang-select";
@@ -224,7 +224,7 @@ export default async function CampusStudents({
 
       <AddStudent leaves={leafChoices(uni, { uptoYear: Number(new Date(Date.now() + 9 * 3_600_000).toISOString().slice(0, 4)) })
         .map((r) => ({ code: r.code, name: r.name, ready: r.ready }))}
-        prefix={reg ? loginPrefixOf(reg) : ""} agency={agency} />
+        agency={agency} phone={!!reg && loginModeOf(reg) === "phone"} />
     </>,
   );
 }

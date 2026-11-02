@@ -16,8 +16,10 @@ const EMPTY: ManageState = {};
  * **비밀번호는 한 번만 보여 준다.** DB 에는 해시만 남는다.
  */
 export default function AddStudent(
-  { leaves, prefix = "", agency = false }: {
+  { leaves, agency = false, phone = false }: {
     leaves: { code: string; name: string; ready?: boolean }[]; prefix?: string;
+    /** 아이디가 휴대전화 번호인 기관인가(`login_mode`) */
+    phone?: boolean;
     /** 기관(진흥원 등)이면 학생 · 학번 · 학과를 기관 낱말로 적는다 */
     agency?: boolean;
   },
@@ -41,8 +43,8 @@ export default function AddStudent(
         {state.ok ? <p className="sf-note is-ok" role="status">{state.ok}</p> : null}
         {state.issued?.length ? <IssuedCard issued={state.issued} /> : null}
         <label className="sf-field">
-          <span>{t("학번")}</span>
-          <input name="student_id" required />
+          <span>{phone ? "휴대전화 번호" : t("학번")} <em>(아이디와 처음 비밀번호가 됩니다)</em></span>
+          <input name="student_id" required inputMode={phone ? "tel" : undefined} placeholder={phone ? "010-1234-5678" : undefined} />
         </label>
         <label className="sf-field">
           <span>이름</span>
@@ -60,12 +62,8 @@ export default function AddStudent(
           <span>메일 주소 <em>(없어도 됩니다)</em></span>
           <input name="email" type="email" />
         </label>
-        {/* **아이디를 비워 두면 학번이 아이디다**(학교 코드 머리가 붙는 학교는
-            `ku-학번`). 학교가 학번을 아이디로 못 쓰게 하는 날에만 따로 적는다 */}
-        <label className="sf-field">
-          <span>로그인 아이디 <em>(비우면 {prefix ? `${prefix}${t("학번")}` : t("학번")})</em></span>
-          <input name="login_id" />
-        </label>
+        {/* **아이디는 학번 · 전화번호다**(2026-11-02 대표 결정). 따로 적는 칸을 두지 않는다: 둘이 갈리면 학생이
+            무엇으로 들어오는지 담당자도 모른다. 학생은 첫 로그인 때 비밀번호를 바꾼다 */}
         <button className="sf-btn" type="submit" disabled={pending}>
           {pending ? "만드는 중…" : "계정 만들기"}
         </button>

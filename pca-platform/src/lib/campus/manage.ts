@@ -227,8 +227,11 @@ export async function rotateStudentPassword(
   if (got.status === "erased") {
     return { ok: false, why: "파기된 계정의 열쇠는 다시 내지 않습니다" };
   }
-  const pw = initialPassword();
-  await query(`UPDATE users SET password_hash = $2 WHERE id = $1::bigint`,
+  /* **처음 비밀번호(학번 · 전화번호)로 되돌리고 다음 로그인 때 다시 바꾸게 한다**(2026-11-02 대표 결정) */
+  const sid = await queryOne<{ s: string }>(
+    `SELECT student_id AS s FROM campus_students WHERE user_id = $1::bigint AND university_code = $2`, [userId, universityCode]);
+  const pw = sid?.s?.trim() || initialPassword();
+  await query(`UPDATE users SET password_hash = $2, must_reset_pw = TRUE WHERE id = $1::bigint`,
     [userId, await hashPassword(pw)]);
   /* 살아 있던 재설정 링크를 같이 끊는다(`org.ts` 의 reissuePassword 와 같다). 담당자가
      새 비밀번호를 건넸는데 옛 링크로 또 바뀌면 건넨 값이 조용히 무력해진다 */
@@ -294,17 +297,26 @@ export function parseStudentCsv(text: string): {
 } {
   const lines = text.split(/\r?\n/).filter((l) => l.trim().length);
   if (!lines.length) return { ok: false, why: "빈 파일입니다", rows: [] };
-  const head = lines[0].split(",").map((c) => c.trim().toLowerCase());
-  const at = (n: string) => head.indexOf(n);
+  /* **한글 머리글을 받는다**(2026-11-02 운영 시험: 영어 머리글뿐이었다). 양식 파일(`template.csv`)과 같은 말이고,
+     전에 쓰던 영어 머리글도 그대로 읽는다. 띄어쓰기 · BOM 은 걷고 비교한다 */
+  const head = lines[0].replace(/^\uFEFF/, "").split(",").map((c) => c.trim().toLowerCase().replace(/\s+/g, ""));
+  const ALIAS: Record<string, string[]> = {
+    student_id: ["student_id", "학번", "참여번호", "휴대전화번호", "휴대전화", "전화번호", "휴대폰번호", "휴대폰"],
+    name: ["name", "이름", "성명"],
+    department_code: ["department_code", "학과코드", "학과", "전공계열코드", "전공계열"],
+    email: ["email", "메일", "이메일", "메일주소"],
+    college_code: ["college_code", "단과대학코드", "계열구분코드"],
+  };
+  const at = (n: string) => head.findIndex((h) => ALIAS[n].includes(h));
   const iSid = at("student_id"); const iName = at("name"); const iDep = at("department_code");
   if (iSid < 0 || iName < 0) {
     return {
       ok: false, rows: [],
-      why: `머리글에 student_id 와 name 이 있어야 합니다 (읽은 머리글: ${head.join(" ")})`,
+      why: `머리글에 학번(또는 휴대전화 번호)과 이름이 있어야 합니다. 양식 파일을 내려받아 쓰세요 (읽은 머리글: ${head.join(" ")})`,
     };
   }
-  if (iDep < 0) return { ok: false, why: "머리글에 department_code 가 없습니다", rows: [] };
-  const iMail = at("email"); const iCol = at("college_code"); const iLogin = at("login_id");
+  if (iDep < 0) return { ok: false, why: "머리글에 학과 코드(전공 계열 코드)가 없습니다. 양식 파일을 내려받아 쓰세요", rows: [] };
+  const iMail = at("email"); const iCol = at("college_code");
   const cell = (c: string[], i: number) => (i >= 0 ? (c[i] ?? "").trim() : "");
   return {
     ok: true,
@@ -314,7 +326,8 @@ export function parseStudentCsv(text: string): {
         line: n + 2,
         input: {
           student_id: cell(c, iSid), name: cell(c, iName),
-          email: cell(c, iMail) || null, login_id: cell(c, iLogin) || null,
+          /* 아이디는 학번 · 전화번호로 정해진다(`checkStudent`). 따로 적은 아이디 칸은 읽지 않는다 */
+          email: cell(c, iMail) || null, login_id: null,
           college_code: cell(c, iCol) || null, department_code: cell(c, iDep),
         },
       };

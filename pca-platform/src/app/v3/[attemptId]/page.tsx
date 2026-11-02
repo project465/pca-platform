@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { currentUser, requireUser } from "@/lib/session";
 import { majorExamplesOf, majorNameOf } from "@/lib/me-v3/major-name";
 import { resultMeta } from "@/lib/me-v3/result/meta";
@@ -26,6 +26,8 @@ export async function generateMetadata(
 ) {
   const { attemptId } = await params;
   const u = await currentUser();
+  /* 처음 비밀번호(학번 · 전화번호)를 아직 안 바꿨으면 바꾸는 화면만(2026-11-02 대표 결정 "첫 로그인 때 꼭 바꾸게") */
+  if (u?.mustResetPw) redirect("/password/change");
   const a = u ? await attemptOf(attemptId, u.id).catch(() => null) : null;
   return { title: phrase(a?.locale)("검사 · CareerMatri") };
 }

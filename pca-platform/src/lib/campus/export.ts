@@ -12,6 +12,7 @@
 import { listStudents, type StudentFilter } from "@/lib/campus/manage";
 import { campusV3, type CampusScope } from "@/lib/me-v3/campus";
 import { MIN_CELL } from "@/lib/org";
+import { maskPhone } from "@/lib/campus/words";
 
 /**
  * 한 칸을 CSV 로 적는다.
@@ -94,8 +95,10 @@ export async function studentStatusCsv(
     ? `학생 응시 상태 (${STATE_KO[f.state] ?? f.state})`
     : "학생 응시 상태";
   const cols = ["학번", "이름", "아이디", "학과", "계정 상태", "응시 상태", "완료일"].map(say);
+  /* 아이디가 전화번호인 기관이면 번호 가운데를 가린다(`maskPhone`) */
+  const agency = say("학생") !== "학생";
   const body = rows.map((r) => [
-    r.student_id, r.name, r.login_id, deptName(r.department_code),
+    agency ? maskPhone(r.student_id) : r.student_id, r.name, agency ? maskPhone(r.login_id) : r.login_id, deptName(r.department_code),
     ACCOUNT_KO[r.account] ?? r.account,
     ATTEMPT_KO[r.attempt] ?? r.attempt,
     r.completed_at ?? "",

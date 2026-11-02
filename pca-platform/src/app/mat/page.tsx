@@ -67,7 +67,9 @@ export default async function MatHome() {
 
   const open = act.rows.filter((r) => r.state !== "done" && r.state !== "dropped");
   const week = open.slice(0, 3);
-  const shown = jobs.main.slice(0, 2);
+  /* 맞는 공고가 없으면 조건을 넓힌 공고를 그렇다고 밝혀 보인다(0건으로 비우지 않는다) */
+  const broadOnly = !jobs.main.length && jobs.broad.length > 0;
+  const shown = (broadOnly ? jobs.broad : jobs.main).slice(0, 2);
   const fromJi = shown.some((p) => p.source === "jobindustry");
 
   return (
@@ -138,7 +140,7 @@ export default async function MatHome() {
         </p>
       )}
 
-      <h2 className="mt-h2">{jobs.matched ? "맞는 공고" : "새 공고"} <Link href="/mat/jobs" className="mt-meta">전체</Link></h2>
+      <h2 className="mt-h2">{broadOnly ? "조건을 넓힌 공고" : jobs.matched ? "맞는 공고" : "새 공고"} <Link href="/mat/jobs" className="mt-meta">전체</Link></h2>
       {shown.length ? (
         <div className="mt-list">{shown.map((p) => <JobCard key={p.id} p={p} />)}</div>
       ) : (
