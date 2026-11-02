@@ -1,4 +1,4 @@
-/* 로컬 점검용: 지어낸 응시자 한 명을 엔진에 돌려 굳은 결과 한 벌을 로컬 DB 에 세운다 */
+/* 로컬 점검용(운영 · 미리보기 DB 에 쓰지 않는다): 지어낸 응시자 한 명을 엔진에 돌려 굳은 결과 한 벌을 로컬 DB 에 세운다. CORE= UNI= PERSONA= npx tsx scripts/local-book-fixture.ts */
 import { readFileSync } from "node:fs";
 import { core as coreEntry } from "../src/lib/me-v3/core-registry";
 import { load, score } from "../src/lib/me-v3/scoring/engine";
