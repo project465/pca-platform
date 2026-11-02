@@ -10,7 +10,22 @@ import { splitChips } from "@/lib/mat/chips";
  * - **대화를 저장하지 않는다.** 이 화면 안에만 있고, 새로 고치면 사라진다
  * - 거절 · 실패면 그때까지 쓴 글을 지우고 한 줄로 알린다
  */
-const EXAMPLES = ["이번 주 뭐 하면 돼?", "분석한 공고 중 어디부터 준비할까?", "면접 질문 하나 내 줘"];
+/** 입력창의 쓰임. 지원서 화면은 `draft`(문장 첨삭) · `interview`(면접 연습)로 같은 길을 쓴다 */
+export type AskMode = "free" | "draft" | "interview";
+const MODES: Record<AskMode, { title: string; examples: string[]; holder: string; prefix: string; max: number }> = {
+  free: {
+    title: "MAT에게 묻기", examples: ["이번 주 뭐 하면 돼?", "분석한 공고 중 어디부터 준비할까?", "면접 질문 하나 내 줘"],
+    holder: "공고 · 할 일 · 지원서 문장 · 면접, 무엇이든 물어보세요", prefix: "", max: 600,
+  },
+  draft: {
+    title: "문장 고치기", examples: [],
+    holder: "고칠 지원서 문장을 붙여 넣으세요(한 번에 1,500자까지)", prefix: "[지원서 문장 첨삭] 문장마다 고칠 점 한 줄과 고친 문장을 주세요. 내 기록에 없는 경험은 넣지 마세요.\n", max: 1500,
+  },
+  interview: {
+    title: "면접 연습", examples: [],
+    holder: "질문을 고르거나, 고른 질문에 대한 내 답을 적으세요", prefix: "[면접 연습] ", max: 1200,
+  },
+};
 const FAIL: Record<string, string> = {
   off: "지금은 답을 만들 수 없습니다. 잠시 뒤 다시 물어봐 주세요.",
   refusal: "이 질문에는 답하지 않았습니다. 취업 준비에 관한 질문으로 다시 물어봐 주세요.",
@@ -21,9 +36,13 @@ const FAIL: Record<string, string> = {
 
 type Turn = { q: string; a: string; allowed: string[]; state: "run" | "done" | "fail" };
 
-export function MatAsk() {
+export function MatAsk({ mode = "free", examples }: { mode?: AskMode; examples?: string[] }) {
+  const M = MODES[mode];
+  const ex = examples ?? M.examples;
   const [turns, setTurns] = useState<Turn[]>([]);
   const [q, setQ] = useState("");
+  /* 면접 연습: 고른 질문을 들고 있다가 답과 함께 보낸다(대화를 저장하지 않으므로 매번 같이 보낸다) */
+  const [picked, setPicked] = useState<string | null>(null);
   const busy = turns.some((t) => t.state === "run");
   const box = useRef<HTMLTextAreaElement>(null);
 
@@ -36,7 +55,9 @@ export function MatAsk() {
     const put = (f: (t: Turn) => Turn) => setTurns((x) => x.map((t, k) => (k === i ? f(t) : t)));
     try {
       const res = await fetch("/api/mat/ask", {
-        method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ q: question }),
+        method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ q: mode === "interview" && picked
+          ? `${M.prefix}질문: ${picked}\n내 답: ${question}\n구체성 · 근거 · 길이 셋으로 짧게 돌려주고, 더 나은 답의 뼈대 한 줄을 주세요.`
+          : M.prefix + question }),
       });
       if (!res.ok || !res.body) {
         const msg = (await res.text().catch(() => "")) || FAIL.error;
@@ -66,8 +87,8 @@ export function MatAsk() {
   };
 
   return (
-    <section className="mt-ask" aria-label="MAT에게 묻기">
-      <h2 className="mt-h2">MAT에게 묻기</h2>
+    <section className="mt-ask" aria-label={M.title}>
+      <h2 className="mt-h2">{M.title}</h2>
       {turns.length ? (
         <div className="mt-thread" aria-live="polite">
           {turns.map((t, k) => (
@@ -87,18 +108,21 @@ export function MatAsk() {
             </div>
           ))}
         </div>
-      ) : (
-        <div className="mt-chips" style={{ marginBottom: 10 }}>
-          {EXAMPLES.map((e) => (
-            <button key={e} type="button" className="mt-chip mt-chip-btn" onClick={() => void ask(e)}>{e}</button>
+      ) : null}
+      {ex.length && (!turns.length || mode === "interview") ? (
+        <div className={`mt-chips${mode === "interview" ? " mt-qpick" : ""}`} style={{ marginBottom: 10 }}>
+          {ex.map((e) => (
+            <button key={e} type="button" className={`mt-chip mt-chip-btn${picked === e ? " is-on" : ""}`}
+              onClick={() => (mode === "interview" ? (setPicked(e), box.current?.focus()) : void ask(e))}>{e}</button>
           ))}
         </div>
-      )}
+      ) : null}
+      {mode === "interview" ? <p className="mt-note" style={{ margin: "0 0 8px" }}>{picked ? `고른 질문: ${picked}` : "위에서 질문을 하나 고른 뒤 답을 적으세요."}</p> : null}
       <form className="mt-askbar" onSubmit={(e) => { e.preventDefault(); void ask(q); }}>
-        <label className="mt-sr" htmlFor="mt-ask-q">질문</label>
-        <textarea id="mt-ask-q" ref={box} rows={1} maxLength={600} value={q} placeholder="공고 · 할 일 · 지원서 문장 · 면접, 무엇이든 물어보세요"
+        <label className="mt-sr" htmlFor={`mt-ask-${mode}`}>{M.title}</label>
+        <textarea id={`mt-ask-${mode}`} ref={box} rows={mode === "draft" ? 4 : 1} maxLength={M.max} value={q} placeholder={M.holder}
           onChange={(e) => setQ(e.target.value)}
-          onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); void ask(q); } }} />
+          onKeyDown={(e) => { if (mode !== "draft" && e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); void ask(q); } }} />
         <button type="submit" className="mt-btn is-ink" disabled={busy || q.trim().length < 2}>{busy ? "답하는 중" : "묻기"}</button>
       </form>
       <p className="mt-note">답은 내 검사 결과 · 경험 기록 · 공고만 근거로 씁니다. 질문과 답은 저장하지 않고, 학교와 제휴사는 볼 수 없습니다.</p>

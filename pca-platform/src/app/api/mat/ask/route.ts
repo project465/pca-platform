@@ -57,7 +57,7 @@ export async function POST(req: Request) {
 
   let q = "";
   try { q = String(((await req.json()) as { q?: unknown }).q ?? "").trim(); } catch { return say("", 400); }
-  if (q.length < 2 || q.length > 600) return say("질문은 2자 이상 600자 이하로 적어 주세요.", 400);
+  if (q.length < 2 || q.length > 1700) return say("질문은 2자 이상 1,500자 이하로 적어 주세요.", 400);
 
   const open = await askOpenFor(user.id);
   if (!open.ok) {

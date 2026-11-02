@@ -136,3 +136,8 @@
 .mt-a .mt-chip { margin: 0 2px; vertical-align: baseline; min-height: 22px; font-size: 12px; }
 .mt-a.is-fail { border-style: dashed; color: var(--mt-sub); }
 .mt-typing { letter-spacing: .2em; color: var(--mt-sub); }
+.mt-chip-btn.is-on { background: var(--mt-ink); color: #fff; border-color: var(--mt-ink); }
+.mt-blank { background: var(--mt-soft); color: var(--mt-ink); border-bottom: 1.5px dashed var(--mt-ink); padding: 0 2px; }
+a.mt-chip-btn { text-decoration: none; color: var(--mt-ink); }
+.mt-qpick { display: grid; gap: 8px; }
+.mt-qpick .mt-chip-btn { white-space: normal; text-align: left; border-radius: 12px; padding: 10px 14px; line-height: 1.5; min-height: 44px; }
