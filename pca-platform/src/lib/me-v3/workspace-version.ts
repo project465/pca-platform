@@ -404,7 +404,8 @@
 /** 재응시 뒤에는 지난 반영(경험으로 바뀐 묶음)을 새 결과 위에 덮지 않는다 — V88 */
 /** 메모로 만든 경험 초안은 메모 원문을 보완 설명 칸에 미리 채워 펼쳐 둔다 — V89 */
 /** 공고 · 메모 안내에서 `규칙으로 읽습니다` 같은 내부 말을 뺀다(2026-11-02 대표) — V90 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V90";
+/** 홈 할 일 수를 `내 할 일 목록에 n개 더` 로(결과 화면의 `이 결과에서 이어지는 할 일` 과 다른 목록) — V91 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V91";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -474,7 +475,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V90";
 /** 홈 인사를 `{name}님, 안녕하세요` 로(기관 참여자 · 개인에게 `학생` 을 붙이지 않는다) · 검사 고르기의 학교 칸을 기관 낱말로(`campusSay`) */
 /** `{school} 제공` · 학교 제공 기간 안내 */
 /** 공고 · AI 설정 안내 문장에서 `규칙으로` 를 뺀다 — copy.65 */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.65";
+/** `그 밖에 할 일 n개` → `내 할 일 목록에 n개 더` — copy.66 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.66";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

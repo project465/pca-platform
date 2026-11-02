@@ -295,6 +295,9 @@ export const PHRASES_EN: Record<string, string> = {
   "지금 할 일": "Next step",
   "지금 적어두기": "Write it down now",
   "그 밖에 할 일 {n}개 ∨": "{n} more {n|step|steps} ∨",
+  "이 결과에서 이어지는 할 일 {n}개 ∨": "{n} more {n|step|steps} from this result ∨",
+  "여기 답은 어느 영역의 일인지 묻지 않은 지원서 문항이라, 위의 영역별 ‘남긴 것’에는 세지 않았습니다. 이 과제를 경험 기록에 영역과 함께 적으면 그 영역의 근거로 들어갑니다.":
+    "These answers came from application questions that did not ask which area the work belonged to, so they are not counted in “What you left behind” for each area above. Record this project with its area in your experience log and it will count as evidence there.",
   "할 일에 담아두기": "Save to my to-do list",
   "이미 담아 둔 할 일 {n}개 ·": "{n} already saved ·",
   "보실 산업과 직무를 아직 고르지 않으셨어요.": "You haven't picked an industry or role to look at yet.",

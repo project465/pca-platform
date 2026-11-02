@@ -685,6 +685,11 @@ function Translation({ view, major }: { view: TranslationView; major: string }) 
       <p className="rs-note">
         {tr("적어주신 과제를 지원서와 면접에서 말하는 차례로 나눴습니다.")}
       </p>
+      {/* 이 절의 답(무엇이 남았나 등)은 영역을 묻지 않은 지원서 문항이라 영역별 근거표의 `남긴 것` 에 세지 않는다.
+          그 사실을 적지 않으면 같은 화면에서 "분석 보고로 남았다" 와 "남긴 것 아직" 이 부딪힌다(2026-11-02 배재대 시험 P4) */}
+      <p className="rs-note">
+        {tr("여기 답은 어느 영역의 일인지 묻지 않은 지원서 문항이라, 위의 영역별 ‘남긴 것’에는 세지 않았습니다. 이 과제를 경험 기록에 영역과 함께 적으면 그 영역의 근거로 들어갑니다.")}
+      </p>
       {/* **긴 문단을 기본 화면의 큰 박스로 두지 않는다**(규격 §5).
           전에는 열 단계 목록과 이어 붙인 문단이 함께 펼쳐져 이 절 하나가
           쪽에서 둘째로 큰 덩이였다. 기본으로 보이는 것은 **첫 문장 한
@@ -1676,7 +1681,7 @@ export async function V3ResultBody(
               ) : null}
               {alsoActions.length ? (
                 <a className="rs-do1-m" href="#plan">
-                  {tr("그 밖에 할 일 {n}개 ∨", { n: alsoActions.length })}
+                  {tr("이 결과에서 이어지는 할 일 {n}개 ∨", { n: alsoActions.length })}
                 </a>
               ) : null}
             </div>

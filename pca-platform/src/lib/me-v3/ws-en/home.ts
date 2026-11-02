@@ -55,6 +55,7 @@ export const WS_EN_HOME: Record<string, string> = {
   "지금 정리하기 →": "Write it up now →",
   "경험 추가 →": "Add an experience →",
   "그 밖에 할 일 {n}개": "Other steps ({n})",
+  "내 할 일 목록에 {n}개 더": "{n} more in your step list",
   "새 경험을 적으면 현재 상태가 다시 서고 그다음 할 일이 나옵니다.":
     "When you write down a new experience, your current state is updated and your next steps follow from it.",
   "전체 보기 →": "See all →",

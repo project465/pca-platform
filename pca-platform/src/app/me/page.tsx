@@ -387,7 +387,7 @@ export default async function Home() {
             }
             more={first && open.length > 1 ? (
               <Link className="cm-hero-more" href="/me/next">
-                {t("그 밖에 할 일 {n}개", { n: open.length - 1 })}
+                {t("내 할 일 목록에 {n}개 더", { n: open.length - 1 })}
                 <Icon name="chev" size={14} />
               </Link>
             ) : null}
