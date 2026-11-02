@@ -28,6 +28,8 @@ import { AXES, BAND_WORD, ZONES, ZONE_WORD } from "./derive";
 import { C, LEVEL_KO, radar, ring } from "./charts";
 import { j } from "./text";
 import type { Inputs, RegionKey } from "./types";
+import { forAgency } from "./agency";
+import { university } from "@/lib/campus/registry";
 
 export type LongReport = {
   html: string;
@@ -190,6 +192,10 @@ export function assemble(x0: Inputs): { pages: Page[]; notes: string[]; region: 
      번호만 바뀐다. 영어 책과 지역 자료가 없는 책은 그대로다 */
   if (rv && !isEn()) regionFirst(P, N5, N.intro, N, N3);
   P.splice(2, 0, toc(P));
+  /* 일자리 기관 참여자의 책은 학교에만 맞는 말을 현장 · 훈련 말로 바꾼다(`agency.ts`) */
+  if (x.issuerCode && university(x.issuerCode)?.org_kind === "agency") {
+    for (const pg of P) { pg.body = forAgency(pg.body); pg.title = forAgency(pg.title); }
+  }
   return { pages: P, notes, region: rv?.key ?? null };
 }
 

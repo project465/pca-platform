@@ -79,30 +79,42 @@ export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
     (r.unmatched ? `<p class="mut sm">나머지 ${r.unmatched}곳은 업종명만으로는 ${E(x.major)} 전공의 어느 산업에 넣을지 정하기 어려워 이 장에 싣지 않았습니다.</p>` : "") +
     band("알아 두실 점", REGION_LAW)));
 
-  for (const t of ["A", "B"] as Tier[]) {
-    /* 표에 싣는 묶음은 여섯까지. 나머지 묶음은 첫 쪽의 그래프에 수로 나와 있다 */
-    const gs = r.groups.filter((g) => g.tier === t).slice(0, 6);
-    const rest = r.groups.filter((g) => g.tier === t).slice(6);
-    if (!gs.length) continue;
-    type Row = { kind: "g"; g: FitGroup } | { kind: "o"; o: ROrg };
-    const CAP = 3;
-    type Row2 = Row | { kind: "m"; n: number; g: FitGroup };
+  /* **학생이 고른 산업이 먼저다**(2026-11-02 시험: 목표 산업 `방산·항공` 이 맨 끝 `넓혀 볼 곳` 한 줄에만 나왔다).
+     고른 산업의 묶음은 경험이 덜 맞아도 회사 표를 맨 앞에 세우고, 아래 세 곳 표에서는 뺀다 */
+  const chosen = new Set([x.m.targets.goal?.industry, ...x.m.targets.industries].filter(Boolean) as string[]);
+  const picked = r.groups.filter((g) => chosen.has(g.pack.code));
+  const notPicked = (g: FitGroup) => !chosen.has(g.pack.code);
+  type Row = { kind: "g"; g: FitGroup } | { kind: "o"; o: ROrg };
+  const CAP = 3;
+  type Row2 = Row | { kind: "m"; n: number; g: FitGroup };
+  const tablePages = (head: string, first: string, gs: FitGroup[], rest: FitGroup[]) => {
     const rows: Row2[] = gs.flatMap((g) => [{ kind: "g" as const, g }, ...g.orgs.slice(0, CAP).map((o) => ({ kind: "o" as const, o })), ...(g.orgs.length > CAP ? [{ kind: "m" as const, n: g.orgs.length - CAP, g }] : [])]);
-    paginate(rows, (rw) => (rw.kind === "g" ? 4.8 : rw.kind === "m" ? 1.2 : Math.max(1, rowsOf(rw.o.product || "", 26), rowsOf(rw.o.name, 15))), 34, 27).forEach((chunk, k, all) => out.push(part(`${TIER[t].head}${k ? ` (${k + 1})` : ""}`,
-      (k === 0 ? T(`${TIER[t].head} ${cnt(t)}곳`, `${E(TIER[t].rule)}이에요. ${E(TIER[t].next)} 산업마다 상장사를 먼저, 나머지는 가나다순으로 적었습니다.`) : `<p class="k">${E(TIER[t].head)} (계속)</p>`) +
+    paginate(rows, (rw) => (rw.kind === "g" ? 4.8 : rw.kind === "m" ? 1.2 : Math.max(1, rowsOf(rw.o.product || "", 26), rowsOf(rw.o.name, 15))), 34, 27).forEach((chunk, k, all) => out.push(part(`${head}${k ? ` (${k + 1})` : ""}`,
+      (k === 0 ? first : `<p class="k">${E(head)} (계속)</p>`) +
       `<table class="tb tb-xs sj"><thead><tr><th class="w30">회사</th><th class="w30">업종</th><th>주력 품목</th></tr></thead><tbody>${chunk.map((rw) => rw.kind === "m"
         ? `<tr><td colspan="3" class="mut">같은 산업에 ${rw.n}곳이 더 있습니다. ${E(rw.g.orgs.slice(CAP).map((o) => short(o.name)).slice(0, 14).join(" · "))}${rw.n > 14 ? " 등" : ""}</td></tr>`
         : rw.kind === "g"
         ? `<tr class="sj-g"><td colspan="3"><b>${E(rw.g.pack.name_ko)} · ${rw.g.orgs.length}곳</b><span>${E(why(x, rw.g))}</span><em>해 볼 것: ${E(themeTry(rw.g))}</em></td></tr>`
         : `<tr><td><b>${E(rw.o.name)}</b>${rw.o.listed ? ` <span class="sj-l">${E(rw.o.listed)}</span>` : ""}</td><td>${E(cut(sector(rw.o.sector), 22))}</td><td class="mut">${E(cut(okOr(rw.o.product) || (rw.o.listed ? "" : "명단에 품목이 적혀 있지 않음"), 34))}</td></tr>`).join("")}</tbody></table>` +
       (k === all.length - 1 && rest.length ? `<p class="mut sm">나머지 ${rest.length}개 산업(${E(rest.map((g) => `${g.pack.name_ko} ${g.orgs.length}곳`).join(" · "))})은 이 장 첫 쪽 그래프에 회사 수만 적었습니다.</p>` : ""))));
+  };
+  if (picked.length) {
+    tablePages(`내가 고른 산업`, T(`고르신 산업 ${E(picked.map((g) => g.pack.name_ko).join(" · "))}의 ${E(r.label)} 회사 ${picked.reduce((a, g) => a + g.orgs.length, 0)}곳`,
+      "검사에서 고르신 산업이라 경험이 맞는 정도와 상관없이 먼저 실었어요. 산업마다 상장사를 먼저, 나머지는 가나다순으로 적었습니다."), picked, []);
   }
-  const cg = r.groups.filter((g) => g.tier === "C");
+  for (const t of ["A", "B"] as Tier[]) {
+    /* 표에 싣는 묶음은 여섯까지. 나머지 묶음은 첫 쪽의 그래프에 수로 나와 있다 */
+    const all = r.groups.filter((g) => g.tier === t && notPicked(g));
+    const gs = all.slice(0, 6);
+    if (!gs.length) continue;
+    tablePages(TIER[t].head, T(`${TIER[t].head} ${cnt(t)}곳`, `${E(TIER[t].rule)}이에요. ${E(TIER[t].next)} 산업마다 상장사를 먼저, 나머지는 가나다순으로 적었습니다.`), gs, all.slice(6));
+  }
+  const cg = r.groups.filter((g) => g.tier === "C" && notPicked(g));
   if (cg.length) {
     const blocks = cg.map((g) => ({ g, h: 2 + Math.ceil(g.orgs.map((o) => short(o.name)).join(" · ").length / 95) }));
     paginate(blocks, (b) => b.h, 30).forEach((chunk, k) => out.push(part(`${TIER.C.head}${k ? ` (${k + 1})` : ""}`,
       (k === 0 ? T(`${TIER.C.head} ${cnt("C")}곳`, `${E(TIER.C.rule)}이에요. ${E(TIER.C.next)}`) : `<p class="k">${E(TIER.C.head)} (계속)</p>`) +
-      chunk.map(({ g }) => `<div class="sj-c"><p class="sj-ch"><b>${E(g.pack.name_ko)} · ${g.orgs.length}곳</b><span>${E(why(x, g))}</span></p><p class="sj-cl">${g.orgs.map((o) => `${E(short(o.name))}${o.listed ? "<sup>상장</sup>" : ""}`).join(" · ")}</p></div>`).join("") +
+      chunk.map(({ g }) => `<div class="sj-c"><p class="sj-ch"><b>${E(g.pack.name_ko)} · ${g.orgs.length}곳</b><span>${E(why(x, g))}</span></p><p class="sj-cl">${g.orgs.map((o) => `${E(short(o.name))}${o.listed ? " <sup>(상장)</sup>" : ""}`).join(" · ")}</p></div>`).join("") +
       (k === 0 ? `<div class="two" style="margin-top:3mm">${note("넓혀 보려면", `관심 가는 회사 한 곳의 주력 품목을 골라, ${E(andJoin(cg[0].core.slice(0, 2)))} 쪽에서 어떤 판단이 필요할지 짐작해 적어 보세요. 맞았는지는 그 회사 누리집과 공고에서 확인하면 됩니다.`)}${note("다음 검사에서", `그 영역의 짧은 과제를 하나 해서 경험 기록에 더하면, 이 회사들이 ${E(j(`‘${TIER.B.head}’`, "으로"))} 옮겨 올 수 있어요.`, true)}</div>` : ""))));
   }
 

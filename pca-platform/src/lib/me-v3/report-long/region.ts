@@ -329,7 +329,9 @@ export function regionView(x: Inputs, name: (td: string) => string): RegionView 
     orgs.sort((a, b) => Number(!!b.listed) - Number(!!a.listed) || bare(a.name).localeCompare(bare(b.name), "ko"));
     groups.push({ pack: p, tier, uses: uses.map(name), core: core.map(name), z1: z1.map(name), z2: z2.map(name), orgs });
   }
-  groups.sort((a, b) => a.tier.localeCompare(b.tier) || b.orgs.length - a.orgs.length);
+  /* 학생이 고른 산업이 먼저, 그다음 맞는 정도와 회사 수 */
+  const chosen = new Set([x.m.targets.goal?.industry, ...x.m.targets.industries].filter(Boolean) as string[]);
+  groups.sort((a, b) => Number(chosen.has(b.pack.code)) - Number(chosen.has(a.pack.code)) || a.tier.localeCompare(b.tier) || b.orgs.length - a.orgs.length);
   if (!all.length) return null;
   /* 사업의 개요는 이 전공의 묶음에 든 회사부터 싣는다. 생명공학 책 첫 장에 건설사가 오지 않게 */
   const mine = new Set(groups.flatMap((g) => g.orgs.map((o) => bare(o.name))));
