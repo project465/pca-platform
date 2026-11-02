@@ -50,6 +50,7 @@ const NAMES: Record<string, string> = {
   TRACK_365D: "MAT 기간권 (판매 종료)",
   TRACK_30D_GL: "MAT 30 days",
   TRACK_365D_GL: "MAT pass (discontinued)",
+  MAT_REFILL: "MAT 추가 이용권",
   CAMPUS_MAT_6M: "MAT 학교 이용권 (계약 기간)",
   CAMPUS_MAT_12M: "MAT 학교 이용권 (계약 기간)",
 };
@@ -114,6 +115,15 @@ export async function startCheckout(
     const { hasV3Result } = await import("@/lib/track");
     if (!(await hasV3Result(userId))) {
       throw new Error("MAT 은 검사를 한 번 마친 뒤에 열 수 있습니다. 무료 검사를 먼저 해 주세요.");
+    }
+  }
+  /* **추가 이용권은 개인 이용권을 쓰는 동안에만 판다**(2026-11-02 대표). 이용권이 없거나 학교
+     좌석으로 쓰는 사람에게 팔면 쓸 기간이 없는 횟수를 산 셈이 된다 */
+  if (product.kind === "track_refill") {
+    const { activeTrack } = await import("@/lib/track");
+    const st = await activeTrack(userId);
+    if (!st.on || st.source?.kind !== "personal") {
+      throw new Error("추가 이용권은 개인 MAT 이용권을 쓰는 동안에만 살 수 있습니다.");
     }
   }
 
@@ -330,6 +340,10 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
          ON CONFLICT (attempt_id) DO NOTHING`,
         [attemptId, order.id],
       );
+    } else if (product?.kind === "track_refill") {
+      /* 추가 이용권. 기간을 늘리지 않고 횟수만 더한다(`ai-budget.ts`) */
+      const { grantRefillTx } = await import("@/lib/assistant/ai-budget");
+      await grantRefillTx(c, { userId: order.user_id, orderId: order.id });
     } else if (product?.kind === "track") {
       /**
        * Track 기간권. **좌석도 검사 이용권도 주지 않는다.**

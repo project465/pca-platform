@@ -1,3 +1,4 @@
+import type { PoolClient } from "pg";
 import { query, queryOne } from "@/lib/db";
 
 /**
@@ -31,6 +32,66 @@ export type AiOp = keyof typeof AI_OPS;
 export const PASS_CAPS: Record<AiOp, number> = {
   posting: 20, sentence: 10, interview: 24, upload: 10, draft: 10, research: 10, ask: 40,
 };
+
+/**
+ * **추가 이용권 한 장이 더하는 횟수**(4,900원, 2026-11-02 대표). 공고 10 · 문장 5 · 면접 1번(8턴) · 파일 5.
+ * 표에 없는 칸(메모 초안 · 자료 · 자유 질문)은 더하지 않는다
+ */
+export const REFILL_ADDS: Partial<Record<AiOp, number>> = { posting: 10, sentence: 5, interview: 8, upload: 5 };
+export const REFILL_PRODUCT = "MAT_REFILL";
+
+/** 버튼 글자. 'AI' 를 쓰지 않는다 */
+export const REFILL_LABEL = "모두 다시 채우기 · 4,900원";
+export const REFILL_HREF = `/checkout?product=${REFILL_PRODUCT}`;
+
+/** 추가 이용권을 살 수 있는가: 개인 이용권을 쓰는 중이어야 한다(학교 좌석에는 팔지 않는다) */
+export async function canBuyRefill(userId: string): Promise<boolean> {
+  const { activeTrack } = await import("@/lib/track");
+  const st = await activeTrack(userId);
+  return st.on && st.source?.kind === "personal";
+}
+
+/** 지금 살아 있는 추가 이용권 수. 표가 없으면 0 */
+export async function activeRefills(userId: string): Promise<number> {
+  const r = await queryOne<{ n: number }>(
+    `SELECT count(*)::int AS n FROM mat_refills WHERE user_id = $1 AND status = 'active' AND ends_at > now()`,
+    [userId]).catch(() => null);
+  return r?.n ?? 0;
+}
+
+/**
+ * 결제를 확정하는 거래 안에서 추가 이용권 한 줄을 세운다(`settlePayment`).
+ * **끝나는 날은 지금 쓰는 개인 기간권의 끝**이다(기간은 늘지 않는다). 그 사이 기간권이 끝났으면
+ * 지금으로 적어 쓸 수 없는 줄이 되고, 운영자가 환불한다(`refund.ts` 가 7일 안 전액)
+ */
+export async function grantRefillTx(c: PoolClient, o: { userId: string; orderId: string }): Promise<string | null> {
+  const r = await c.query<{ ends_at: string }>(
+    `INSERT INTO mat_refills (user_id, order_id, ends_at)
+     SELECT $1, $2, COALESCE((
+       SELECT e.ends_at FROM entitlements e
+        WHERE e.user_id = $1 AND e.kind = 'track' AND e.status = 'active'
+          AND e.campus_pool_id IS NULL AND e.starts_at <= now() AND e.ends_at > now()
+        ORDER BY e.starts_at LIMIT 1), now())
+     ON CONFLICT (order_id) DO NOTHING
+     RETURNING ends_at::text`, [o.userId, o.orderId]);
+  return r.rows[0]?.ends_at ?? null;
+}
+
+/**
+ * 추가 이용권으로 더한 횟수를 이미 쓰기 시작했는가. 어느 칸이든 기간권 몫을 넘겨 썼으면 그렇다.
+ * 환불 판단에 쓴다: 쓰기 전이면 7일 안 전액, 쓰기 시작했으면 환불하지 않는다
+ */
+export async function refillTouched(userId: string): Promise<boolean> {
+  const w = await windowOf(userId);
+  for (const g of Object.keys(REFILL_ADDS) as AiOp[]) {
+    const r = await queryOne<{ n: number }>(
+      `SELECT count(*)::int AS n FROM assistant_ai_calls
+        WHERE user_id = $1 AND op LIKE $2 AND outcome = 'ok' AND created_at >= $3`,
+      [userId, `${AI_OPS[g]}%`, w.from]).catch(() => null);
+    if ((r?.n ?? 0) > PASS_CAPS[g] * w.units) return true;
+  }
+  return false;
+}
 
 /** `op` 이름 → 칸. 브리핑(`mat.brief`)처럼 칸이 없는 기능은 세지 않는다(하루 총액만 본다) */
 export function opGroup(op: string): AiOp | null {
@@ -100,7 +161,8 @@ export async function aiAllowance(userId: string | undefined, op: string): Promi
     [userId, `${AI_OPS[g]}%`, w.from],
   ).catch(() => null);
   if (!r) return { ok: true };
-  if (r.n < PASS_CAPS[g] * w.units) return { ok: true };
+  const extra = (REFILL_ADDS[g] ?? 0) * (await activeRefills(userId));
+  if (r.n < PASS_CAPS[g] * w.units + extra) return { ok: true };
   return { ok: false, why: "cap", reopen: w.to.toISOString() };
 }
 

@@ -23,6 +23,7 @@ const DENY: Record<string, string> = {
   already: "이미 환불됨",
   started: "응시를 시작함",
   viewed: "넓어진 결과지를 열어 봄",
+  refill_used: "추가 이용권 횟수를 쓰기 시작함",
   expired_window: "기간이 지남",
 };
 

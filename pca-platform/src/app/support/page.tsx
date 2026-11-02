@@ -266,6 +266,7 @@ export default async function SupportPage({
                 why: {
                   started: S.refundWhyStarted[L],
                   viewed: S.refundWhyViewed[L],
+                  refill_used: S.refundWhyRefillUsed[L],
                   expired_window: S.refundWhyWindow[L],
                   not_paid: S.refundWhyNotPaid[L],
                   already: S.refundWhyAlready[L],

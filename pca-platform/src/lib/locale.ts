@@ -749,6 +749,12 @@ export const UI = {
     "MAT · 90 days",
     "AI kariyer asistanı · 90 gün",
   ),
+  /* 추가 이용권(2026-11-02). 기간은 늘지 않고 횟수만 다시 채운다 */
+  prodMAT_REFILL: d(
+    "MAT 추가 이용권",
+    "MAT · refill",
+    "AI kariyer asistanı · ek kullanım",
+  ),
   /* 판매 종료(2026-10-30). 이미 나간 주문의 이름으로만 남는다 */
   prodTRACK_365D: d(
     "MAT 기간권 (판매 종료)",

@@ -389,6 +389,10 @@ export const SUPPORT = {
     "넓어진 결과지를 이미 열어 보셨습니다.",
     "You have already opened the expanded report.",
   ),
+  refundWhyRefillUsed: p(
+    "추가 이용권으로 더한 횟수를 이미 쓰기 시작하셨습니다.",
+    "You have already started using the uses this add-on gave you.",
+  ),
   refundWhyWindow: p("기간이 지났습니다.", "The window has passed."),
   refundWhyNotPaid: p(
     "결제가 아직 확정되지 않았습니다.",

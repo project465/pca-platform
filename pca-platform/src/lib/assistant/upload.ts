@@ -143,7 +143,9 @@ export async function readUpload(userId: string, bytes: Buffer): Promise<UploadR
     return { ok: true, reused: true, used,
       drafts: prev.map((p) => ({ id: p.id, title: p.draft.title, kind: p.draft.kind })) };
   }
-  if (used >= UPLOAD_MONTHLY_CAP) return { ok: false, reason: "cap", used };
+  /* 추가 이용권 한 장마다 5건을 더한다(`ai-budget.ts`) */
+  const { activeRefills, REFILL_ADDS } = await import("./ai-budget");
+  if (used >= UPLOAD_MONTHLY_CAP + (REFILL_ADDS.upload ?? 0) * await activeRefills(userId)) return { ok: false, reason: "cap", used };
 
   let block: AiBlock;
   if (kind === "pdf") {

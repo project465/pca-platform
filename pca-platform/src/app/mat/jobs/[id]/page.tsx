@@ -10,6 +10,7 @@ import { interviewPrep, smallTasks } from "@/lib/assistant/prep";
 import { matAiOn, matTakeTasks, matTrackApp } from "../../actions";
 import { aiConsented } from "@/lib/assistant/settings";
 import { aiReady } from "@/lib/assistant/claude";
+import { canBuyRefill, REFILL_HREF, REFILL_LABEL } from "@/lib/assistant/ai-budget";
 import { queryOne } from "@/lib/db";
 import { outLink } from "@/lib/mat/out-link";
 import { SOURCE_KO } from "@/lib/mat/stage";
@@ -210,7 +211,13 @@ export default async function MatJob({ params, searchParams }: {
       {/* 읽은 방법은 화면에 적지 않는다(2026-11-02 대표: "AI가 썼어요" · "규칙으로 읽었어요" 같은 말 금지).
           기간권 횟수를 다 쓴 때만 다시 열리는 날을 적는다. 옛 분석의 안내 문장은 보이지 않는다 */}
       {p.analyzed_by === "claude" ? null : consent || !aiReady() ? (
-        a.note?.startsWith("이번 기간에") ? <p className="mt-note" style={{ marginTop: 12 }}>{a.note}</p> : null
+        a.note?.startsWith("이번 기간") ? (
+          <>
+            <p className="mt-note" style={{ marginTop: 12 }}>{a.note}</p>
+            {await canBuyRefill(user.id)
+              ? <Link className="mt-btn is-block" href={REFILL_HREF} style={{ marginTop: 8 }}>{REFILL_LABEL}</Link> : null}
+          </>
+        ) : null
       ) : (
         <div className="mt-box" style={{ marginTop: 24 }}>
           <h3>AI로 더 자세히 읽기</h3>

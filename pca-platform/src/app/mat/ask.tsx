@@ -36,7 +36,7 @@ const FAIL: Record<string, string> = {
   day: "오늘은 질문을 더 받지 못해요. 내일 다시 물어봐 주세요.",
 };
 
-type Turn = { q: string; a: string; allowed: string[]; state: "run" | "done" | "fail" };
+type Turn = { q: string; a: string; allowed: string[]; state: "run" | "done" | "fail"; refill?: boolean };
 
 export function MatAsk({ mode = "free", examples }: { mode?: AskMode; examples?: string[] }) {
   const M = MODES[mode];
@@ -63,7 +63,7 @@ export function MatAsk({ mode = "free", examples }: { mode?: AskMode; examples?:
       });
       if (!res.ok || !res.body) {
         const msg = (await res.text().catch(() => "")) || FAIL.error;
-        put((t) => ({ ...t, a: msg, state: "fail" }));
+        put((t) => ({ ...t, a: msg, state: "fail", refill: res.headers.get("x-mat-refill") === "1" }));
         return;
       }
       let allowed: string[] = [];
@@ -98,7 +98,7 @@ export function MatAsk({ mode = "free", examples }: { mode?: AskMode; examples?:
               <p className="mt-q">{t.q}</p>
               <div className={`mt-a${t.state === "fail" ? " is-fail" : ""}`}>
                 {t.state === "fail"
-                  ? <p>{t.a}</p>
+                  ? <><p>{t.a}</p>{t.refill ? <a className="mt-btn is-block" href="/checkout?product=MAT_REFILL" style={{ marginTop: 8 }}>모두 다시 채우기 · 4,900원</a> : null}</>
                   : t.a
                     ? t.a.split(/\n+/).map((line, j) => (
                       <p key={j}>{splitChips(line, new Set(t.allowed)).map((p, n) => ("chip" in p

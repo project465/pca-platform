@@ -3,7 +3,7 @@ import { matVisible } from "@/lib/mat-public";
 import { askOpenFor } from "@/lib/mat/ask-open";
 import { aiConsented } from "@/lib/assistant/settings";
 import { askStream } from "@/lib/assistant/claude";
-import { aiAllowance, capLine } from "@/lib/assistant/ai-budget";
+import { aiAllowance, canBuyRefill, capLine } from "@/lib/assistant/ai-budget";
 import { askContextOf } from "@/lib/mat/ask-context";
 
 export const dynamic = "force-dynamic";
@@ -77,7 +77,12 @@ export async function POST(req: Request) {
   const op = `mat.ask.${kind}`;
   const allow = await aiAllowance(user.id, op);
   if (!allow.ok) {
-    return say(allow.why === "cap" ? capLine(allow.reopen) : "오늘은 질문을 더 받지 못해요. 내일 다시 물어봐 주세요.", 429);
+    if (allow.why !== "cap") return say("오늘은 질문을 더 받지 못해요. 내일 다시 물어봐 주세요.", 429);
+    /* 개인 이용권이면 화면이 `모두 다시 채우기` 단추를 단다(학교 좌석에는 팔지 않는다) */
+    return new Response(capLine(allow.reopen), { status: 429, headers: {
+      "content-type": "text/plain; charset=utf-8", "cache-control": "no-store",
+      ...((await canBuyRefill(user.id)) ? { "x-mat-refill": "1" } : {}),
+    } });
   }
   used.set(user.id, { day, n: n + 1 });
 

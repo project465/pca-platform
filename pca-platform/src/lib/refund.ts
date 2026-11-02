@@ -23,6 +23,7 @@ export type DenyReason =
   | "already"         // 이미 환불했다
   | "started"         // 응시를 시작했다
   | "viewed"          // 넓어진 결과지를 열어 봤다
+  | "refill_used"     // 추가 이용권으로 더한 횟수를 쓰기 시작했다
   | "expired_window"; // 기간이 지났다
 
 export type Verdict =
@@ -80,6 +81,14 @@ export async function refundable(orderId: string): Promise<Verdict> {
   // 돈을 낸 사람이 그 문장을 보면 결제 자체를 의심하게 된다
   if (o.refunded > 0 || o.status === "refunded") return { ok: false, deny: "already" };
   if (o.status !== "paid" || !o.paid_at) return { ok: false, deny: "not_paid" };
+
+  // ── 추가 이용권: 더한 횟수를 쓰기 전이면 7일 안 전액, 쓰기 시작했으면 환불하지 않는다 ──
+  if (o.kind === "track_refill") {
+    if (daysSince(o.paid_at) > WINDOW_DAYS) return { ok: false, deny: "expired_window" };
+    const { refillTouched } = await import("@/lib/assistant/ai-budget");
+    if (await refillTouched(o.user_id)) return { ok: false, deny: "refill_used" };
+    return { ok: true, amount: o.amount, reason: "before_start" };
+  }
 
   // ── 기간권: 가분적이라 남은 기간을 돌려준다(계속거래) ────────────
   //    Track 도 같다: 30일권·365일권은 남은 날만큼 일할로 돌려준다
@@ -166,6 +175,10 @@ export async function recordRefund(
       [orderId, v.amount, reason, note],
     );
     await c.query(`UPDATE orders SET status = 'refunded' WHERE id = $1`, [orderId]);
+    /* 추가 이용권이면 그 줄을 닫는다(표가 없으면 없는 줄이라 넘어간다) */
+    await c.query(`SAVEPOINT refill`);
+    await c.query(`UPDATE mat_refills SET status = 'refunded' WHERE order_id = $1`, [orderId])
+      .then(() => c.query(`RELEASE SAVEPOINT refill`), () => c.query(`ROLLBACK TO SAVEPOINT refill`));
     // 아직 응시로 바뀌지 않은 좌석만 회수한다
     await c.query(
       `DELETE FROM seats s
