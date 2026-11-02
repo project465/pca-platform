@@ -6,7 +6,7 @@
  * 대신하고, PC 결제창처럼 **돌아오지 않고 값만 돌려준다**(리다이렉트 없음).
  *
  *   PORTONE_API_BASE=http://127.0.0.1:3199 APP_ENV=staging \
- *   STAGING_BASIC_AUTH=probe:probe-pass PAYMENTS_PROVIDER=portone \
+ *   STAGING_BASIC_AUTH=probe:<자물쇠> PAYMENTS_PROVIDER=portone \
  *   PORTONE_STORE_ID=store-e2e PORTONE_CHANNEL_KEY=channel-key-e2e \
  *   PORTONE_API_SECRET=x PORTONE_WEBHOOK_SECRET=whsec_ZTJlZTJlZTJlZTJlZTJl \
  *     bash scripts/stage-serve.sh 3152
