@@ -9,6 +9,10 @@
  *   PROGRAM=… FILE=/tmp/명단.csv node ops/featured-enroll.cjs            # 미리 보기
  *   PROGRAM=… FILE=/tmp/명단.csv APPLY=1 node ops/featured-enroll.cjs    # 넣기
  *   … FILE=- node ops/featured-enroll.cjs < 명단.csv                       # 표준입력으로 받기
+ *   PROGRAM=… IDS="sjepa-01012345678, 01087654321" APPLY=1 node ops/featured-enroll.cjs  # 아이디만 붙여 넣기
+ *
+ * `IDS` 는 콘솔에 바로 붙여 넣는 길이다(파일을 옮기지 않는다). 쉼표 · 공백 · 줄바꿈으로 나눈 아이디 또는 학번 · 휴대전화
+ * 번호를 받는다. 학교 머리(`kus-` · `sjepa-`)가 붙은 아이디도, 머리 없는 번호도 같은 계정으로 찾는다.
  *
  * CSV 는 계정 일괄 발급에 쓴 명단을 그대로 써도 된다. 머리글에서 아이디 · 학번 · 휴대전화 번호 칸 하나를
  * 찾아 읽고 나머지 칸(이름 · 학과)은 읽지 않는다. 휴대전화 번호는 하이픈을 떼고 숫자로 맞춘다(발급할 때와 같다).
@@ -50,12 +54,15 @@ const SID_HEADS = ["학번", "student_id", "studentid", "참여자번호", "참�
 async function main() {
   const prog = programs().find((p) => p.code === (process.env.PROGRAM ?? "")) ?? null;
   if (!prog) throw new Error(`PROGRAM 을 featured-programs.v1.json 의 code 로 적으십시오: ${programs().map((p) => p.code).join(", ")}`);
+  const ids = (process.env.IDS ?? "").split(/[\s,;]+/).map((x) => x.trim()).filter(Boolean);
   const file = process.env.FILE ?? "";
-  if (!file) throw new Error("FILE 에 명단 CSV 를 적으십시오(표준입력이면 FILE=-)");
-  if (file !== "-" && path.resolve(file).startsWith(path.resolve("."))) throw new Error("명단은 저장소 · 앱 폴더 밖에 두십시오(개인정보)");
+  if (!file && !ids.length) throw new Error("IDS 에 아이디를 붙여 넣거나, FILE 에 명단 CSV 를 적으십시오(표준입력이면 FILE=-)");
+  if (file && file !== "-" && path.resolve(file).startsWith(path.resolve("."))) throw new Error("명단은 저장소 · 앱 폴더 밖에 두십시오(개인정보)");
   const apply = process.env.APPLY === "1";
 
-  const text = file === "-" ? readFileSync(0, "utf8") : readFileSync(file, "utf8");
+  /* 아이디만 받으면 머리글 하나짜리 명단으로 바꿔 같은 길로 찾는다 */
+  const text = ids.length ? ["아이디", ...ids].join("\n")
+    : file === "-" ? readFileSync(0, "utf8") : readFileSync(file, "utf8");
   const rows = text.replace(/^﻿/, "").split(/\r?\n/).filter((l) => l.trim())
     .map((l) => l.split(",").map((c) => c.trim().replace(/^"|"$/g, "")));
   if (rows.length < 2) throw new Error("명단에 머리글 아래 줄이 없습니다");
@@ -72,7 +79,9 @@ async function main() {
   const found: string[] = []; const miss: number[] = [];
   for (let i = 1; i < rows.length; i += 1) {
     const login = col >= 0 ? rows[i][col] ?? "" : "";
-    const sid = scol >= 0 ? digits(rows[i][scol] ?? "") : "";
+    /* 아이디 칸에 머리 없는 번호(01012345678 · 20261234)를 적었으면 학번 · 번호로도 찾는다 */
+    const sid = scol >= 0 ? digits(rows[i][scol] ?? "")
+      : /^[\d\s-]+$/.test(login) ? digits(login) : login.replace(/^[a-z]+-/i, "");
     const u = await queryOne<{ id: string }>(
       `SELECT u.id::text FROM users u JOIN memberships m ON m.user_id = u.id AND m.org_id = $1::bigint
         LEFT JOIN campus_students cs ON cs.user_id = u.id
