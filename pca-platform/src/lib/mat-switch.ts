@@ -3,4 +3,4 @@
  * 들이지 않는 파일로 둔다: 띠(`me/nav.ts`)와 손전화 아래 띠(`m/tabbar.tsx`)처럼
  * 브라우저 쪽에서도 읽는 자리가 있어서다.
  */
-export const MAT_PUBLIC = false;
+export const MAT_PUBLIC = true;
