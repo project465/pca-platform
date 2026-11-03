@@ -139,6 +139,20 @@ export default async function V3Start({
     redirect("/cores");
   }
   const lang = campus ? "ko" : localeFor({ core, market, override: chosen });
+  /* **영어로 들어온 사람이 영어 원고가 없는 전공을 고르면 조용히 한국어로 열지 않는다**(2026-11-03 영어 화면).
+     영어로 `한국어로 응시할 수 있다` 고 적고, 한국어로 열지 다른 전공을 고를지 고르게 한다. 검토 전 영어 초안은 내놓지 않는다 */
+  if (!campus && chosen === "en" && lang === "ko" && wantLang !== "ko") {
+    return (
+      <div className="qs is-explore" lang="en">
+        <main className="qs-intro" data-ko-only={core}>
+          <h1 className="qs-h1">This major&apos;s test is available in Korean</h1>
+          <p className="qs-lead">The English version of this test is not ready yet. You can take it in Korean, or choose a major with an English test.</p>
+          <p className="qs-lead"><a className="sf-btn" href={`/v3/start?core=${encodeURIComponent(core)}&lang=ko`} lang="ko">한국어로 응시하기 (Take it in Korean)</a></p>
+          <p className="qs-lead"><a href="/cores">Choose another major</a></p>
+        </main>
+      </div>
+    );
+  }
   const say = phrase(lang);
   const coreName = (() => {
     if (lang !== "ko") return majorNameIn(core, lang);

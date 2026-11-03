@@ -10,6 +10,7 @@ import { ddayLabel, monthWeek } from "@/lib/mat/stage";
 import { matLang } from "@/lib/mat/lang";
 import { sayOf } from "@/lib/mat/copy";
 import { BRIEF_TEXT as B, TITLE_TEXT } from "../mat-text";
+import { actionLine } from "@/lib/mat/action-line";
 import { oneLine } from "@/lib/mat/short";
 import { matDigestAction } from "../actions";
 
@@ -36,6 +37,10 @@ export default async function MatBrief() {
   });
   /* 홈 알림과 같은 값(`pickJobs().fresh`) */
   const fresh = pool?.fresh ?? 0;
+  /* 이번 주 할 일 한 줄을 화면 언어로(`weekTask` 와 같은 줄을 고른다) */
+  const openRows = (open?.rows ?? []).filter((r) => r.state !== "done" && r.state !== "dropped");
+  const weekRow = openRows.find((r) => r.horizon <= 30) ?? openRows[0] ?? null;
+  const taskText = weekRow ? actionLine(weekRow, open?.model, lang) : brief.task?.body ?? "";
   const nameOf = new Map(live.rows.map((r) => [r.id, r.name ?? r.label]));
 
   return (
@@ -45,7 +50,7 @@ export default async function MatBrief() {
 
       <section className="mt-diag" aria-label={t(B.task)}>
         <div className="mt-diag-k"><span>{t(B.task)}</span><b>{brief.task ? (brief.task.state === "doing" ? t(B.doing) : t(B.todo)) : ""}</b></div>
-        <p>{brief.task ? oneLine(brief.task.body) : t(B.noTask)}</p>
+        <p>{brief.task ? oneLine(taskText) : t(B.noTask)}</p>
         <Link href="/mat">{t(B.home)}</Link>
       </section>
 

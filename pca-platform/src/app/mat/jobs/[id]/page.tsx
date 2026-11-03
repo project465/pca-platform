@@ -146,7 +146,12 @@ export default async function MatJob({ params, searchParams }: {
         {a.role ? <div className="mt-diag-k"><span>{t(J.role)}</span><b lang={lineLang(a.role)}>{a.role}</b></div> : null}
         <p>{!a.items.length
           ? t(J.readNone)
-          : gap[0] ? t(J.fillFirst, { text: clean(gap[0].it.text) })
+          : gap[0] ? (() => {
+            /* 공고 줄은 원문 그대로다(한국어 공고면 한국어). 그 자리만 lang 을 단다 */
+            const [pre, post] = t(J.fillFirst).split("{text}");
+            const x = clean(gap[0].it.text);
+            return <>{pre}<span lang={lineLang(x)}>{x}</span>{post ?? ""}</>;
+          })()
           : fit.length ? t(J.haveMust) : t(J.checkCond)}</p>
         {!a.items.length ? <Link href="/mat/jobs#paste">{t(J.pasteLink)}</Link>
           /* 채울 것이 있어도 지원서 화면으로 가는 길을 둔다(MAT 시험 M2: 분석 결과에서 지원서로 돌아오는 길이 없었다) */

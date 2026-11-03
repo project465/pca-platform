@@ -27,7 +27,7 @@ const accountLang = cache(async (): Promise<Lang | null> => {
   try {
     const { currentUser } = await import("@/lib/session");
     const u = await currentUser();
-    if (!u || u.scope === "staff") return null;
+    if (!u) return null;
     const { queryOne } = await import("@/lib/db");
     const r = await queryOne<{ locale: string | null }>(`SELECT trim(locale) AS locale FROM users WHERE id = $1`, [u.id]);
     return offered(r?.locale) ? (r!.locale as Lang) : null;

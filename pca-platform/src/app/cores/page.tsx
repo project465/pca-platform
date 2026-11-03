@@ -84,11 +84,15 @@ export default async function Cores({ searchParams }: { searchParams?: Promise<{
           minutes: m.low === m.high ? String(m.low) : `${m.low}–${m.high}`,
         };
       });
+    /* 영어 원고가 없는 전공은 숨기지 않고 `한국어로 응시할 수 있다` 고 영어로 적는다(검토 전 영어 초안은 내놓지 않는다) */
+    const koOnly = sellableCores(market)
+      .filter((c) => localeFor({ core: c.code, market, override: "en" }) !== "en")
+      .map((c) => ({ code: c.code, name: c.name_en || c.name_ko }));
     const last = open ? null : await queryOne<{ id: string }>(
       `SELECT id::text FROM v3_attempts
         WHERE user_id = $1 AND status <> 'in_progress'
         ORDER BY started_at DESC LIMIT 1`, [user.id]).catch(() => null);
-    return <CoresEn cores={choices} openId={open?.id ?? null} resultId={last?.id ?? null} />;
+    return <CoresEn cores={choices} koOnly={koOnly} openId={open?.id ?? null} resultId={last?.id ?? null} />;
   }
   /* 학교 학생의 단추는 그 학생의 응시 상태가 정한다: 결과를 받은
      학생에게 `시작하기` 를 세우지 않는다(누르면 지난 결과로 돌아간다) */

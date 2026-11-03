@@ -61,7 +61,7 @@ export function JobCard({ p, analyze = true, lang = "ko", en }: {
         {sub ? <small lang={isEn ? "ko" : undefined}>{sub}</small> : null}
         {p.hits.length ? (
           <div className="mt-chips" aria-label={t(C.hitsAria)}>
-            {p.hits.slice(0, 4).map((h) => <span key={h} className="mt-chip">{h}</span>)}
+            {p.hits.slice(0, 4).map((h) => <span key={h} className="mt-chip" lang={isEn && /[가-힣]/.test(h) ? "ko" : undefined}>{h}</span>)}
             {p.hits.length > 4 ? <span className="mt-chip is-more">+{p.hits.length - 4}</span> : null}
           </div>
         ) : null}

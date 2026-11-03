@@ -21,9 +21,11 @@ export type CoreChoice = { code: string; name: string; minutes: string };
  * 열린다(`localeFor`). 고르는 자리에서부터 빼 둔다.
  */
 export default function CoresEn({
-  cores, openId, resultId,
+  cores, koOnly = [], openId, resultId,
 }: {
   cores: CoreChoice[];
+  /** 영어 원고가 아직 없는 전공(한국어로만 응시). 영어 검토본이 들어오기 전까지 영어로 열지 않는다 */
+  koOnly?: { code: string; name: string }[];
   openId: string | null;
   resultId: string | null;
 }) {
@@ -78,6 +80,24 @@ export default function CoresEn({
             ))
           )}
         </ul>
+
+        {!openId && !resultId && koOnly.length ? (
+          <section className="en-koonly" aria-label="Majors available in Korean" data-ko-only={koOnly.length}>
+            <h2 className="en-kicker" style={{ marginTop: 24 }}>Other majors</h2>
+            <p className="en-sub">This major&apos;s test is available in Korean. The English version is not ready yet.</p>
+            <ul className="en-doors">
+              {koOnly.map((c) => (
+                <li key={c.code}>
+                  <a href={`/v3/start?core=${c.code}&lang=ko`} className="en-door" lang="en">
+                    <span className="en-door-ico"><Icon name="doc" size={24} /></span>
+                    <span className="en-door-txt"><b>{c.name}</b><span>This major&apos;s test is available in Korean · Take it in Korean</span></span>
+                    <span className="en-door-go"><Icon name="chev" size={20} /></span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
 
         {!openId && !resultId ? (
           <p className="en-foot">{say("유료 등급(Standard · Pro)은 아직 한국 밖에서 결제할 수 없습니다.")}</p>

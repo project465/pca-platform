@@ -28,6 +28,7 @@ import { sayOf } from "@/lib/mat/copy";
 import { areaName } from "@/lib/assistant/catalog";
 import { enSummaries } from "@/lib/mat/posting-en";
 import { HOME_TEXT as H, TITLE_TEXT } from "./mat-text";
+import { actionLine } from "@/lib/mat/action-line";
 
 export const generateMetadata = () => matTitle(TITLE_TEXT.home);
 
@@ -153,10 +154,10 @@ export default async function MatHome() {
                 <input type="hidden" name="state" value="done" />
                 <input type="hidden" name="body" value={r.body} />
                 <input type="hidden" name="td" value={r.td_code ?? ""} />
-                <button type="submit" className="mt-check" aria-label={t(H.done, { body: r.body })}><i /></button>
+                <button type="submit" className="mt-check" aria-label={t(H.done, { body: actionLine(r, act.model, lang) })}><i /></button>
               </form>
               <div className="mt-row-b">
-                <p>{oneLine(r.body)}</p>
+                <p>{oneLine(actionLine(r, act.model, lang))}</p>
                 <small>{[wi === 0 ? t(H.weekNow) : t(H.weekLater), r.td_code ? name(r.td_code) : ""].filter(Boolean).join(" · ")}</small>
               </div>
             </div>

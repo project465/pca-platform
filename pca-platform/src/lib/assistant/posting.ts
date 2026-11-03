@@ -249,7 +249,7 @@ async function readAndJudge(userId: string, text0: string, hint?: PostingHint, o
     for (const code of codes) {
       items.push({
         /* 글은 영역 이름만. 어디서 왔는지는 화면의 칩(`직무 이름으로 본 영역`)이 적는다 */
-        text: domainName(st.core, code).slice(0, 120),
+        text: areaName(st.core, code, lang).slice(0, 120),
         kind: "nice", domain: code, axis: null, from: "role",
         ...withNear(st.core, st, exps, code, undefined, null),
       });
@@ -259,7 +259,7 @@ async function readAndJudge(userId: string, text0: string, hint?: PostingHint, o
   if (!items.some((i) => i.domain)) {
     for (const h of matchDomains(st.core, text).filter((x) => x.score >= 3).slice(0, 3)) {
       items.push({
-        text: domainName(st.core, h.code).slice(0, 120),
+        text: areaName(st.core, h.code, lang).slice(0, 120),
         kind: "nice", domain: h.code, axis: null, from: "words", term: h.terms[0],
         ...withNear(st.core, st, exps, h.code, undefined, null),
       });

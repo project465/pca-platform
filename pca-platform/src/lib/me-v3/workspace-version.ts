@@ -419,7 +419,8 @@
 /** 한국어 홈을 시안대로: 인사 줄 + MAT 열기 · 내 취업 준비 5단계 · 이번 주 할 일 · 맞는 공고 — V103 */
 /** MAT 줄의 이름과 `AI 취업비서` 꼬리표 사이를 띄운다(`a.cm-nav > span` 이 flex 를 덮었다) — V104 */
 /** 내 정보의 MAT 칸을 `이용권` 으로 · 정기결제 한 줄과 해지 단추(정기결제 운영규정 4조) · /me/track 공고 분석이 무료 칸을 같이 잡음 — V105 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V105";
+/** 영어 전공 고르기에 영어 원고가 없는 전공을 `This major's test is available in Korean` 으로 함께 세움(영어 검토본은 내놓지 않음) — V106 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V106";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.

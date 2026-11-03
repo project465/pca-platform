@@ -11,6 +11,7 @@ import { enSummaries } from "@/lib/mat/posting-en";
 import { PRICING_HREF } from "@/lib/pricing/config";
 import type { MatAccess } from "@/lib/mat-access";
 import { JobCard } from "./job-card";
+import { actionLine } from "@/lib/mat/action-line";
 import { matPickCore } from "./actions";
 
 /**
@@ -92,7 +93,7 @@ export async function NoTestHome({ userId, acc, lang = "ko" }: { userId: string;
           <h2 className="mt-h2">{NOTEST.weekTitle}</h2>
           <div className="mt-list">
             {week.map((r) => (
-              <div key={r.id} className="mt-row"><div className="mt-row-b"><p>{oneLine(r.body)}</p></div></div>
+              <div key={r.id} className="mt-row"><div className="mt-row-b"><p>{oneLine(actionLine(r, act?.model, lang))}</p></div></div>
             ))}
           </div>
           {open.length > week.length ? <p className="mt-note">{NOTEST.weekLocked(open.length - week.length)} <Link href={PRICING_HREF}>{NOTEST.passLink}</Link></p> : null}

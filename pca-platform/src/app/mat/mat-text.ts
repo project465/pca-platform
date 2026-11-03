@@ -190,7 +190,7 @@ export const DRAFT_TEXT = {
   title: { ko: "지원서", en: "Application" },
   needFirst: { ko: "필수 요건에 맞는 경험을 먼저 적어 보세요.", en: "First write experience that fits the required items." },
   lead: { ko: "공고 요건마다 내 경험으로 초안 문장을 만들어요. 빈칸을 채우면 지원서 문장이 돼요.", en: "MAT makes draft sentences from your experience for each requirement. Fill in the blanks to get application sentences." },
-  leadEn: { ko: "", en: "Korean companies ask for a Korean self-introduction (자기소개서). Each draft shows the Korean sentence and the English version side by side." },
+  leadEn: { ko: "", en: "Korean companies ask for a self-introduction letter in Korean. Each draft shows the Korean sentence and the English version side by side." },
   pickAria: { ko: "공고 고르기", en: "Pick a posting" },
   draftTitle: { ko: "초안 문장", en: "Draft sentences" },
   need: { ko: "공고 요구 · {text}", en: "Requirement · {text}" },

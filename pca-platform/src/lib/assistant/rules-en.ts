@@ -213,7 +213,9 @@ const looksLikeTitle = (s: string) =>
 export function readPostingEn(core: string, raw: string, today = new Date()): ReadOut {
   const text = raw.replace(/\r\n?/g, "\n").replace(/ /g, " ")
     /* 한 줄에 `• a • b • c` 로 이어 적은 꼴 */
-    .replace(/\s+[•●▪]\s+/g, "\n• ");
+    .replace(/\s+[•●▪]\s+/g, "\n• ")
+    /* 한 줄에 `Requirements: … Preferred: …` 로 이어 붙인 공고(한국어 쪽의 `자격요건: … 우대사항: …` 과 같은 손질) */
+    .replace(/\s+(?=(?:(?:Minimum|Basic|Required|Preferred|Desired|Key)\s+)?(?:Requirements|Qualifications|Responsibilities|Duties|Preferred|Nice to have|Skills|Benefits)\s*:)/g, "\n");
   const lines = text.split("\n").map((s) => s.replace(/\s+/g, " ").trim()).filter(Boolean);
   const hasHeaders = lines.some((l) => header(stripBullet(l)));
 

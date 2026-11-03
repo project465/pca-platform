@@ -34,8 +34,8 @@ export function MatCopyButton({ text, label, lang = "ko" }: { text: string; labe
   };
   return (
     <>
-      <button className="cm-btn" type="button" onClick={copy}>{label ?? t(C.copy)}</button>
-      <span className="cm-none" role="status" aria-live="polite">
+      <button className="mt-btn is-small" type="button" onClick={copy}>{label ?? t(C.copy)}</button>
+      <span className="mt-note" role="status" aria-live="polite" style={{ marginLeft: 8 }}>
         {s === "ok" ? t(C.ok) : s === "fail" ? t(C.fail) : ""}
       </span>
     </>

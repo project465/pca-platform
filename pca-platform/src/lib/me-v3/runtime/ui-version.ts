@@ -186,7 +186,8 @@
 /** 시작 화면 한 줄로(부정 설명 · 카드 셋 · 절차 목록 빼기) · 첫 문항 앞 안내 쪽 없이 바로 문항 · 학교 시작은 공통 시작 화면을 건넘 — V72 */
 /** 분야를 직접 고르는 기관의 첫 응시는 이 주소를 바로 쳐도 고르는 쪽(`/campus/{기관}/start`)으로 보냄 — V73 */
 /** 공유 문구 사전(phrases.en.ts)에 결과지 끝 MAT 무료 분석 줄의 영어 두 줄을 더함. 검사 화면 글자는 그대로 — V74 */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V74";
+/** 영어로 고른 전공에 영어 원고가 없으면 시작 화면이 조용히 한국어로 열지 않고 영어로 `This major's test is available in Korean` · 한국어로 응시 · 다른 전공 고르기 — V75 */
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V75";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
 /* copy.15 — 받침 한 줄과 보기 넷의 예시가 화면에 서는 글자다 */
