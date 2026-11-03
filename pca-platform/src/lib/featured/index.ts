@@ -188,7 +188,8 @@ export function featuredView(x: Inputs, d: X, rv: RegionView | null, prog: Progr
   return {
     program: { code: prog.code, title: prog.title, audience: prog.audience },
     company: co, link, prep, onsite, onsiteSrc: prog.onsite_src,
-    lead: tx.lead(co, link, x.major),
+    /* 응시한 학과(기관은 계열) 이름. 학교 진입이 아니면 Core 이름 */
+    lead: tx.lead(co, link, x.department ?? x.major),
     sourceLine: `출처: ${co.sources.join(" · ")}${factOn.length ? ` · 숫자마다 출처와 기준일을 옆에 적었습니다` : ""}`,
   };
 }
