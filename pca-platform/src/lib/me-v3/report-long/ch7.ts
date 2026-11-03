@@ -73,7 +73,12 @@ export function prioPages(x: Inputs, d: X): Page[] {
       : "";
     return [P(L("먼저 손댈 일", "Start here"),
       /* 판단까지 물은 영역이 없으면 `빈 판단 없음` 이 아니라 `묻지 않았다` 다(2026-11-02 전주대 v3/24 JA3) */
-      (x.m.domains.some((z) => d.asked(z))
+      /* 판단은 물었는데 직접 해 본 판단이 하나도 없으면 `빈 판단 없음` 이 아니다(2026-11-03 견본 B 공통 P0-2: 32칸 모두 `시킨 대로`) */
+      (x.m.domains.some((z) => d.asked(z)) && d.counts.confirmed === 0
+        ? T(L(`아직 ‘${STEP_WORD[2].tag}’ 이상으로 답한 판단이 없습니다`, "None of your answers reached doing a decision yourself yet"),
+          L("이번 응답에서는 판단을 모두 정해진 대로 해 봤다고 답하셨어요. 아래 할 일로 다음 과제에서 기준 하나를 직접 정해 보는 것부터 시작해 보세요.",
+            "In this assessment you answered that you followed set instructions for every decision. Start with the tasks below and set one criterion yourself in your next project."))
+        : x.m.domains.some((z) => d.asked(z))
         ? T(L("지금 바로 메워야 할 판단은 나오지 않았습니다", "No decision needs filling in right away"),
         L("이번 응답에서는 비어 있다고 나온 판단이 없었어요. 이럴 때는 이미 해 본 일을 다른 사람이 읽을 수 있는 문서로 옮겨 두는 것부터 해 보세요.",
           "Your answers did not show any decision as a gap. In that case, start by turning work you have already done into a document someone else can read."))

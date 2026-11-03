@@ -225,7 +225,7 @@ export default async function State(
           ].filter(Boolean).join(" ")
           : realChange
             ? t("변화는 생겼지만 아직 설명할 수 있는 기준까지는 올라오지 않았습니다. 무엇이 올라갔는지는 아래 `최근 달라진 것` 에 적혀 있습니다.")
-            : t("관심이 높은 영역에서 짧게 한 번 해 보고 그것을 경험으로 적으면 여기에 나옵니다.")}
+            : t("검사에서 다룬 영역 하나를 짧게 해 보고 그것을 경험으로 적으면 여기에 나옵니다.")}
         action={Object.keys(st.zoneOf).length > ready.length ? (
           <Link className="cm-btn" href="#domains">{t("전체 기술영역 보기")}</Link>
         ) : undefined}
@@ -385,7 +385,10 @@ export default async function State(
         <div className="cm-panel is-one is-soft">
           <div className="cm-pane">
             <p>
-              {t("지금 바로 보완할 부분은 없습니다. 남은 일은 가진 근거를 지원서에서 설명할 문장으로 만드는 것입니다.")}
+              {/* 직접 해 본 판단이 하나도 없으면 `보완할 부분 없음` 이 아니다(2026-11-03 견본 B 공통 P0-2) */}
+              {(m.overview?.counts?.confirmed_axes ?? 0) === 0
+                ? t("아직 직접 해 본 판단이 나오지 않았습니다. 다음 과제에서 기준 하나를 직접 정해 보는 것부터 시작해 보세요.")
+                : t("지금 바로 보완할 부분은 없습니다. 남은 일은 가진 근거를 지원서에서 설명할 문장으로 만드는 것입니다.")}
             </p>
           </div>
         </div>
@@ -521,7 +524,7 @@ export default async function State(
         ) : (
           <div className="cm-soon">
             <b>{t("지원서에서 설명할 수 있는 근거가 아직 없습니다.")}</b>{" "}
-            {t("관심이 높은 영역에서 짧게 한 번 해 보고 그것을 적으면 여기에 그 경험이 쌓입니다.")}
+            {t("검사에서 다룬 영역 하나를 짧게 해 보고 그것을 적으면 여기에 그 경험이 쌓입니다.")}
           </div>
         )}
         {m.evidence.partial.length ? (

@@ -257,7 +257,10 @@ export function domainPage(x: Inputs, d: X, z: ResultDomain, no: number): Page {
     : gapA
       ? actionLine(gapA, nm, def)
       : asked
-        ? `${nm}에서는 지금 응답만으로 지원서 한 문단을 쓸 수 있어요. 결과 수치와 걸린 기간만 직접 채워 넣으면 됩니다.`
+        ? ((d.depth(z.code) ?? 0) >= 2
+          ? `${nm}에서는 지금 응답만으로 지원서 한 문단을 쓸 수 있어요. 결과 수치와 걸린 기간만 직접 채워 넣으면 됩니다.`
+          /* 직접 해 본 판단이 없으면 문단을 쓸 수 있다고 하지 않는다(견본 B 공통 P0-3) */
+          : `${nm}에서는 판단을 물었는데 아직 ‘${STEP_WORD[2].tag}’ 이상으로 답한 판단이 없어요. 다음 과제에서 기준 하나를 직접 정해 보면 그 일이 지원서 문단의 재료가 됩니다.`)
         : z.experience && z.experience !== "NONE"
           ? [
             `해 본 일 가운데 ${scene ? `${q(scene)}에 가까운 경우` : "기준 하나를 직접 정한 경우"}가 있었는지 떠올려 경험 기록에 적어 보세요. ${j(art0, "이가")} 남아 있다면 함께 올려 두세요.`,
@@ -509,7 +512,7 @@ export function translationPage(x: Inputs, d: X): Page | null {
       `<table class="tb tb-s${answered ? "" : " trs"}"><tbody>${steps.map((s) => `<tr><th class="w30">${E(STEP[s.item_id])}</th><td>${s.choice ? E(s.choice) : s.note ? "" : `<span class="mut">${E(HINT[s.item_id] ?? "")}</span>`}${s.note ? (en ? `<span class="tr-note" data-own="1">“${E(s.note)}”</span>` : `<span class="tr-note">${TRANS_NOTE_KO[s.item_id] ? `${E(TRANS_NOTE_KO[s.item_id])}: ` : ""}“${E(s.note)}”</span>`) : ""}</td></tr>`).join("")}</tbody></table>` +
       (t.domains.length ? `<p class="sm">${L("이 경험이 닿은 영역", "Areas this experience touched")}: ${E(t.domains.map(d.name).join(" · "))}</p>` : "") +
       (draft.length ? note(L("이 열 줄로 문단을 짜는 순서", "How to build a paragraph from these lines"), ul(draft.map(E))) : "") +
-      band(L("쓰는 법", "How to use this"), L("‘무엇을 직접 정했나’에 대한 답은 면접에서 30초 안에 말할 수 있게 소리 내어 연습해 두세요.", `Practice your answer to “${TRANS_STEP_EN.TR_T8}” out loud, so you can say it in 30 seconds in an interview.`)),
+      band(L("쓰는 법", "How to use this"), isNoneChoice(steps.find((s) => s.item_id === "TR_T8")?.choice) ? L("‘무엇을 직접 정했나’에는 정한 것이 없다고 답하셨어요. 다음 과제에서 직접 정한 것 하나가 생기면 그때 30초로 말하는 연습을 해 보세요.", "You answered that you did not decide anything yourself. Once you decide one thing in your next project, practise saying it in 30 seconds.") : L("‘무엇을 직접 정했나’에 대한 답은 면접에서 30초 안에 말할 수 있게 소리 내어 연습해 두세요.", `Practice your answer to “${TRANS_STEP_EN.TR_T8}” out loud, so you can say it in 30 seconds in an interview.`)),
   };
 }
 

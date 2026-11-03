@@ -60,7 +60,7 @@ export const WS_EN_HOME: Record<string, string> = {
     "When you write down a new experience, your current state is updated and your next steps follow from it.",
   "전체 보기 →": "See all →",
   "{lead}입니다.": "{lead}.",
-  "지원서에서 설명할 만한 경험이 아직 없습니다. 관심이 높은 영역에서 짧게 한 번 해 보는 것이 다음 걸음입니다.":
+  "지원서에서 설명할 만한 경험이 아직 없습니다. 검사에서 다룬 영역 하나를 짧게 해 보는 것이 다음 걸음입니다.":
     "You don't have experience to explain in an application yet. A good next step is to try something short in an area you're interested in.",
   "모두 보기 →": "See all →",
   "최근 추가한 경험으로 다음과 같은 변화가 생겼습니다.":

@@ -569,7 +569,9 @@ export function roleQPage(x: Inputs, d: X): Page {
       const roleTds = x.rel.td_role.filter((w) => w.role === r.code && w.strength !== "드묾").sort((a2, b2) => rank(a2.strength) - rank(b2.strength)).map((w) => w.td);
       const fit = roleTds.find((t) => (d.level(t, v.axis) ?? -1) >= 2) ?? null;
       const b = roleTds.length ? (fit ? { level: d.level(fit, v.axis), where: [fit] } : null) : best(v.axis);
-      const lv = b?.level ?? (roleTds.length ? Math.max(-1, ...roleTds.map((t) => d.level(t, v.axis) ?? -1)) : null);
+      const lv0 = b?.level ?? (roleTds.length ? Math.max(-1, ...roleTds.map((t) => d.level(t, v.axis) ?? -1)) : null);
+      /* 그 직무 영역을 하나도 묻지 않았으면 -1 이 나온다. `묻지 않음` 으로 둔다(단계 이름표가 없어 멈췄다) */
+      const lv = lv0 == null || lv0 < 0 ? null : lv0;
       const td = b?.where[0];
       /* 학생이 고른 항목만 학생 말로. 없으면 사전 예시는 `예:` 로 따옴표 밖에 둔다 */
       const pk = b ? b.where.map((w) => d.picks(w, v.axis)[0]).find(Boolean) ?? null : null;

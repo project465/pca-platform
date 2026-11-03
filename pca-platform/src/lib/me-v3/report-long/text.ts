@@ -174,7 +174,7 @@ export function actionHead(a: Action, dn: string): string {
     case "TRY_SHORT_EXPERIENCE": return `${dn} 짧게 해 보기`;
     case "STUDY_NEXT": return `${dn} 수업 하나 듣고 써 보기`;
     case "RECHECK_DIRECTION": return `${j(dn, "을를")} 계속할지 정하기`;
-    case "EXPLORE_BROADLY": return "관심 영역 하나 짧게 해 보기";
+    case "EXPLORE_BROADLY": return "영역 하나 짧게 해 보기";
     case "WRITE_UP": return `${dn} 경험 한 쪽으로 정리하기`;
   }
 }
@@ -218,7 +218,8 @@ export function actionLine(a: Action, dn: string, def: DomainDef | undefined): s
     case "RECHECK_DIRECTION":
       return `${j(dn, "을를")} 앞으로도 진로로 둘지 정하고, 그 까닭을 한 줄 적어 보세요.`;
     case "EXPLORE_BROADLY":
-      return "관심이 높게 나온 영역 하나를 골라 수업이나 교내 과제로 짧게 해 보고, 무엇을 했고 무엇을 정했는지 다섯 줄로 적어 보세요.";
+      /* 관심이 높은 영역이 없는 사람도 이 할 일을 받는다. `관심이 높게 나온` 이라고 쓰지 않는다(2026-11-03 견본 B 공통 P0-1) */
+      return "검사에서 다룬 영역 가운데 하나를 골라 수업이나 짧은 과제로 해 보고, 무엇을 했고 무엇을 정했는지 다섯 줄로 적어 보세요.";
     case "WRITE_UP": {
       const ch = mt.chain ?? [];
       return ch.length
@@ -464,5 +465,7 @@ export function cutQuote(s: string, max: number): string | null {
 export function pickAreaKo(m: { domains: { interest?: string | null; zone?: string }[] }): string {
   const anyInt = m.domains.some((z) => z.interest === "HIGH" || z.interest === "MID");
   if (anyInt) return "관심 가는 영역 하나를 골라";
-  return "해 본 일이 있는 영역 하나를 골라";
+  /* 해 본 영역도 없으면 그렇게 쓰지 않는다(견본 B: 해 본 영역 0곳인데 `해 본 일이 있는 영역 하나를 골라`) */
+  if (m.domains.some((z) => (z as { experience?: string | null }).experience && (z as { experience?: string | null }).experience !== "NONE")) return "해 본 일이 있는 영역 하나를 골라";
+  return "검사에서 다룬 영역 가운데 하나를 골라";
 }

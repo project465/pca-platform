@@ -573,8 +573,7 @@ const noActionWhy = (t: WsSay) => t("새 경험을 적으면 현재 상태가 �
   + " 나옵니다.");
 
 /** 설명할 수 있는 영역이 아직 없을 때 묶음 머리 아래에 서는 줄 */
-const readyNone = (t: WsSay) => t("지원서에서 설명할 만한 경험이 아직 없습니다. 관심이 높은"
-  + " 영역에서 짧게 한 번 해 보는 것이 다음 걸음입니다.");
+const readyNone = (t: WsSay) => t("지원서에서 설명할 만한 경험이 아직 없습니다. 검사에서 다룬 영역 하나를 짧게 해 보는 것이 다음 걸음입니다.");
 
 /** 날짜. 한국어는 받은 글자(`YYYY-MM-DD`) 그대로이고 영어는 `Oct 24, 2026` 이다 */
 function daySay(s: string | null | undefined, lang: WsLang): string | null {

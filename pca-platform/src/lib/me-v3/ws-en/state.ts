@@ -31,7 +31,7 @@ export const WS_EN_STATE: Record<string, string> = {
   "정리만 남은 영역이 {n}개 더 있습니다.": "{n} more areas just need writing up.",
   "변화는 생겼지만 아직 설명할 수 있는 기준까지는 올라오지 않았습니다. 무엇이 올라갔는지는 아래 `최근 달라진 것` 에 적혀 있습니다.":
     "Something changed, but not enough yet to give you an area you can explain. See “Recent changes” below for what moved up.",
-  "관심이 높은 영역에서 짧게 한 번 해 보고 그것을 경험으로 적으면 여기에 나옵니다.":
+  "검사에서 다룬 영역 하나를 짧게 해 보고 그것을 경험으로 적으면 여기에 나옵니다.":
     "Try something short in an area you're interested in and add it as an experience. It will show up here.",
   "전체 기술영역 보기": "See all technical areas",
   "정리만 남은 영역": "Just needs writing up",
@@ -57,6 +57,8 @@ export const WS_EN_STATE: Record<string, string> = {
     "There's {n} more. The three most pressing are listed above.",
   "그 밖에 {n}곳이 더 있습니다. 급한 차례대로 위에 셋을 적었습니다.":
     "There are {n} more. The three most pressing are listed above.",
+  "아직 직접 해 본 판단이 나오지 않았습니다. 다음 과제에서 기준 하나를 직접 정해 보는 것부터 시작해 보세요.":
+    "No decision you made yourself has shown up yet. Start by setting one criterion yourself in your next project.",
   "지금 바로 보완할 부분은 없습니다. 남은 일은 가진 근거를 지원서에서 설명할 문장으로 만드는 것입니다.":
     "Nothing needs filling in right now. What's left is turning your evidence into sentences you can use in applications.",
 
@@ -92,7 +94,7 @@ export const WS_EN_STATE: Record<string, string> = {
   "설명할 수 있는 경험을 영역별로 보기": "See experience you can explain, by area",
   "그 영역에서 직접 정한 것이 확인됐습니다.": "We confirmed decisions you made yourself in this area.",
   "지원서에서 설명할 수 있는 근거가 아직 없습니다.": "You don't have evidence to explain in applications yet.",
-  "관심이 높은 영역에서 짧게 한 번 해 보고 그것을 적으면 여기에 그 경험이 쌓입니다.":
+  "검사에서 다룬 영역 하나를 짧게 해 보고 그것을 적으면 여기에 그 경험이 쌓입니다.":
     "Try something short in an area you're interested in and write it up. That experience will build up here.",
   "해 본 것은 확인됐습니다. 여기서 무엇을 직접 정했는지까지 적으면 지원서에서 쓸 수 있습니다.":
     "We confirmed you've done this. Add what you decided yourself, and you can use it in applications.",

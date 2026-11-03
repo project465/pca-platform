@@ -345,7 +345,7 @@ export function quad(x: Inputs, d: X): Page {
         : hiDid.length ? `Start by writing up your work in ${E(hiDid[0])} as one paragraph for your applications.` : "Pick one area where your interest is medium or higher and try it in a short project.")
       : (hiNot.length
         ? `${E(hiNot[0])}처럼 관심은 높은데 아직 안 해 본 영역에서 이번 학기 과제를 하나 찾아보세요. 한 번 해 보면 다음 검사에서는 ‘해 본 적 있다’로 답할 수 있습니다.`
-        : hiDid.length ? `${E(hiDid[0])}에서 해 본 일을 지원서 한 문단으로 먼저 정리해 보세요.` : x.m.domains.some((z) => z.interest === "HIGH" || z.interest === "MID") ? "관심이 보통 이상인 영역 하나를 골라 짧은 과제로 겪어 보세요." : "해 본 일이 있는 영역 하나를 골라 그 일을 지원서 한 문단으로 정리해 보세요.")));
+        : hiDid.length ? `${E(hiDid[0])}에서 해 본 일을 지원서 한 문단으로 먼저 정리해 보세요.` : x.m.domains.some((z) => z.interest === "HIGH" || z.interest === "MID") ? "관심이 보통 이상인 영역 하나를 골라 짧은 과제로 겪어 보세요." : x.m.domains.some((z) => z.experience && z.experience !== "NONE") ? "해 본 일이 있는 영역 하나를 골라 그 일을 지원서 한 문단으로 정리해 보세요." : "검사에서 다룬 영역 가운데 하나를 골라 짧은 과제로 먼저 해 보세요. 한 일과 직접 정한 것을 다섯 줄로 적어 두면 첫 경험 기록이 됩니다.")));
 }
 
 export function bestPage(x: Inputs, d: X): Page {

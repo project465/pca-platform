@@ -324,6 +324,23 @@ async function judge(attemptId: string, core: string): Promise<Verdict> {
     if (new RegExp(`${esc(nm)}[^.]{0,10} 관심과 해 본 횟수까지만 물었어요`).test(all)) fail("p", `${nm} 판단을 물었는데 '횟수까지만 물었어요'`);
   }
 
+  /* q: 테스트 방 정독에서 나온 문장 꼴(2026-11-03). 사실과 부딪치는 안내 */
+  const anyHigh = x.m.domains.some((z) => z.interest === "HIGH");
+  if (!anyHigh && /관심이 높게 나온 영역/.test(all)) fail("q", "관심 높음 0곳인데 '관심이 높게 나온 영역'");
+  if ((x.m.overview?.counts?.confirmed_axes ?? 0) === 0 && /메워야 할 판단은 나오지 않았|비어 있다고 나온 판단이 없었어요/.test(all)) fail("q", "직접 판단 0개인데 '메워야 할 판단 없음'");
+  const anyPick = x.m.domains.some((z) => z.axes.some((v) => (v.picks ?? []).length));
+  const anyOwn = (x.m.overview?.counts?.confirmed_axes ?? 0) > 0;
+  if (!anyPick && !anyOwn && /지금 응답만으로 지원서 한 문단/.test(all)) fail("q", "고른 항목 · 직접 판단 0인데 '지금 응답만으로 지원서 한 문단'");
+  const lvAll = x.m.domains.filter((z) => d.asked(z)).flatMap((z) => d.levels(z.code)).filter((v) => v != null);
+  if (lvAll.length >= 8 && new Set(lvAll).size === 1 && /한쪽으로 몰리지 않고/.test(all)) fail("q", "모든 칸 같은 답인데 '한쪽으로 몰리지 않고'");
+  if (/(?<!다른 길도 보고 싶다면 · )\S+ 쪽으로 갈 때 배울 순서/.test(ch7)) fail("q", "목표 로드맵 안에 다른 직무 '배울 순서'");
+  if (/관심 관심/.test(all)) fail("q", "'관심 관심'");
+  if (x.issuerCode === "SJEPA") {
+    const outside = all.replace(/“[^”]*”/g, "").replace(/(점검|견본) (학생|참여자)/g, "");
+    const m3 = /동아리|학생회|교내|학과마다|그 학과라면|학기|(?<![대재휴])학생(?![회증])/.exec(outside);
+    if (m3) fail("q", `진흥원 결과지에 학교 말 '${m3[0]}'`);
+  }
+
   /* h: `없다` 는 답이 문단 재료로 */
   const chosen = await query<{ t: string }>(
     `SELECT value_text AS t FROM v3_responses WHERE attempt_id = $1 AND kind = 'choice' AND value_text IS NOT NULL`, [attemptId]);
@@ -407,7 +424,7 @@ async function main(): Promise<void> {
   const pass = lines.filter((l) => l[6] === "통과").length;
   const tally = (key: string) => lines.filter((l) => l[6].split(",").includes(key)).length;
   const sum = `세운 응시 ${lines.length} · 통과 ${pass} · 오류 ${lines.filter((l) => l[6] === "오류").length} · ` +
-    ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "l", "m", "n", "o", "p"].map((x) => `${x} ${tally(x)}`).join(" · ");
+    ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "l", "m", "n", "o", "p", "q"].map((x) => `${x} ${tally(x)}`).join(" · ");
   const md = (h: string[], ls: string[][]) => [`| ${h.join(" | ")} |`, `|${h.map(() => "---").join("|")}|`, ...ls.map((l) => `| ${l.map((c) => c.replace(/\|/g, "/")).join(" | ")} |`)].join("\n");
   writeFileSync(path.join(OUT, "공통점검.md"), `# 공통 자동 점검\n\n${sum}\n\n${md(head, lines)}\n\n## 준비 중 학과 응시(KM1)\n\n${md(["기관", "준비 중 학과", "열린 응시", "열린 학과(앞 6)"], k)}\n`);
   writeFileSync(path.join(OUT, "공통점검.csv"), "﻿" + [head, ...lines].map((l) => l.map((c) => `"${c.replace(/"/g, '""')}"`).join(",")).join("\n"));

@@ -377,6 +377,8 @@ export function qualityPage(x: Inputs, d: X): Page {
   const dist = ([3, 2, 1, 0] as const).map((k) => ({ label: STEP_WORD[k].tag, value: asked.reduce((a, z) => a + d.levels(z.code).filter((v) => v === k).length, 0), color: k ? LVC[k] : NONE_BAR }));
   const max = Math.max(4, ...dist.map((v) => v.value));
   const total = dist.reduce((a, v) => a + v.value, 0);
+  const lvAll = x.m.domains.filter((z) => d.asked(z)).flatMap((z) => d.levels(z.code)).filter((v) => v != null);
+  const sameAll = lvAll.length >= 8 && new Set(lvAll).size === 1;
   const qdek = en
     ? E(QUALITY_EN[f as keyof typeof QUALITY_EN] || "") || "We checked for lopsided answers and for mismatches on repeated questions."
     : E(QUALITY_KO[f as keyof typeof QUALITY_KO] || "") || "검사는 모든 답을 같은 쪽으로 고르지 않았는지, 같은 경험을 두 번 물었을 때 답이 맞는지를 함께 봤어요.";
@@ -386,7 +388,8 @@ export function qualityPage(x: Inputs, d: X): Page {
     ? [["Answer", "You answered “I decided” for that judgment"], ["Picked", "You also picked that work under the same judgment in the checklist"], ["Level", `Only then did we count it as “${STEP_WORD[3].tag}”`]]
     : [["답", "그 판단에 ‘내가 정함’이라고 답했어요"], ["고른 항목", "같은 판단 칸의 체크리스트에서 그 일을 골랐어요"], ["단계", `둘이 함께 있을 때만 ‘${STEP_WORD[3].tag}’으로 셌어요`]];
   return P(L("이 결과를 얼마나 믿어도 될까", "How far you can trust this result"),
-    T(E(said[f] ?? said.REVIEW), qdek) +
+    /* 엔진이 OK 로 둔 응답이어도 판단 칸이 모두 같은 답이면 `몰리지 않고` 라고 쓰지 않는다(견본 B 공통 P0-4) */
+    T(E(f === "OK" && sameAll ? L("판단 칸에 모두 같은 단계로 답하셨어요. 실제로 그랬다면 결과를 그대로 읽어도 되고, 서둘러 고른 칸이 있었다면 그 영역은 경험 기록으로 다시 확인해 보세요", "You gave the same step on every judgment. If that is accurate, read the results as they are; if you rushed some, check those areas again with experience records") : said[f] ?? said.REVIEW), qdek) +
     `<div class="kpis">
       <div class="kpi"><p>${L("응답 점검", "Answer check")}</p><b>${f === "OK" ? L("이상 없음", "No issues") : L("다시 볼 곳 있음", "Some to recheck")}</b><span>${L("한쪽으로 몰린 답 · 앞뒤가 다른 답", "Lopsided or mismatched answers")}</span></div>
       <div class="kpi"><p>${L("기준까지 직접 정한 판단", "Calls you made")}</p><b>${d.counts.owned}${L("<small>개</small>", "")}</b><span>${L("‘내가 정함’ 답과 같은 칸 체크리스트가 함께 있는 것만", "“I decided” plus a pick in the same checklist section")}</span></div>
