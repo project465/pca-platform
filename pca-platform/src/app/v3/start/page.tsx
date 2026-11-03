@@ -195,6 +195,15 @@ export default async function V3Start({
             <span>{say("부족한 부분과 다음에 준비하면 좋을 것을 정리합니다")}</span>
           </li>
         </ul>
+        {/* **결과지를 먼저 보여 준다.** 무엇을 받는지 모르고 35분을 쓰게 하지 않는다. 견본은
+            지어낸 기계공학 응시자 한 사람의 것이라(`/sample`) 그렇다고 함께 적는다.
+            **학교 · 기관 응시에는 걸지 않는다**: 견본 쪽에 가격표 단추가 있고, 학교 화면은 가격표와
+            결제를 가리키지 않는다(`campus:check`) */}
+        {campus ? null : (
+          <p className="qs-sample">
+            <a href="/sample" target="_blank" rel="noopener noreferrer">{say("결과지 견본 보기 (기계공학 전공 예시)")}</a>
+          </p>
+        )}
 
         <ul className="qs-facts">
           <li><b>{items}</b>{say("문항#unit")}</li>

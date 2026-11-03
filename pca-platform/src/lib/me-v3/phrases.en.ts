@@ -156,6 +156,7 @@ export const PHRASES_EN: Record<string, string> = {
   "어떤 경험이 아직 부족한지": "What's still missing",
   "부족한 부분과 다음에 준비하면 좋을 것을 정리합니다":
     "Your gaps, and what to work on next",
+  "결과지 견본 보기 (기계공학 전공 예시)": "See a sample result (mechanical engineering example)",
   "약": "About",
   "분#unit": " min",
   "문항#unit": " questions",

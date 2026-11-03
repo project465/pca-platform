@@ -1257,6 +1257,8 @@
   font-size: var(--q-t-opt); font-weight: var(--ui-w-sb); color: var(--q-ink);
   letter-spacing: -.015em;
 }
+.qs-sample { margin: var(--q-s3) 0 0; font-size: var(--q-t-gloss); }
+.qs-sample a { color: var(--q-ink); font-weight: var(--ui-w-sb); text-decoration: underline; text-underline-offset: 3px; }
 .qs-three span {
   display: block; font-size: var(--q-t-gloss); color: var(--q-ink-3); line-height: 1.55;
 }

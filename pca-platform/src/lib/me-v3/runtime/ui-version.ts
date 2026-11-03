@@ -180,7 +180,8 @@
 /** 관심 칸의 `모르겠다` 도 답으로 세어 영역 심화가 열린다(전주대 v3/24 P0) — V66 */
 /** `준비 중` 학과의 학교 응시는 열지 않는다(KM1) — V67 */
 /** 끝 화면: 만든 결과는 그대로 보관(1회 응시) — V68 */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V68";
+/** 시작 화면에 결과지 견본 링크(기계공학 전공 예시) — V69 */
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V69";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
 /* copy.15 — 받침 한 줄과 보기 넷의 예시가 화면에 서는 글자다 */
@@ -208,7 +209,8 @@ export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V68";
 /** 시작 화면 문항 수 · 시간을 영역 넷 계획까지 센다(`110~127`) · `실제 판단 질문` */
 /** `여쭙니다` 말투를 `물어볼게요 · 묻습니다` 로, 단계 이름을 학생 말로(관심 분야 · 해 본 일 · 더 자세히 · 남긴 것 · 지원서 문장) */
 /** 끝 화면 보관 안내 — copy.42 */
-export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.42";
+/** 시작 화면 `결과지 견본 보기` 한 줄 — copy.43 */
+export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.43";
 
 /*
  * `V19` · `copy.14` 로 올린 까닭. **경험 빈도의 화면 말을 공통으로
