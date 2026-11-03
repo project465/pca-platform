@@ -57,7 +57,7 @@ export default function MatPanel({
       {usage && usage.opened ? (
         <div className="sf-grid sf-g3" style={{ marginBottom: 14 }}>
           <Kpi label="지금 열린 학생" value={usage.opened} unit="명" />
-          <Kpi label="최근 30일 MAT 을 쓴 학생" value={usage.active30 ?? "5명 미만"}
+          <Kpi label="최근 30일 MAT을 쓴 학생" value={usage.active30 ?? "5명 미만"}
             unit={usage.active30 == null ? undefined : "명"} />
           <Kpi label="커리어피크 상담 신청" value={usage.consults ?? "5명 미만"}
             unit={usage.consults == null ? undefined : "명"} />
@@ -118,9 +118,9 @@ export default function MatPanel({
           <button type="submit" className="sf-btn accent" disabled={pending || !total}
             onClick={(e) => {
               if (!confirm(say(
-                `지금 조건에 맞는 학생 ${total}명에게 MAT 을 엽니다.\n`
+                `지금 조건에 맞는 학생 ${total}명에게 MAT을 엽니다.\n`
                 + "이미 열린 학생과 멈춘 계정은 건너뛰고, 남은 인원까지만 엽니다.\n"
-                + "학생 줄의 'MAT 닫기' 로 닫으면 인원이 돌아옵니다.",
+                + "학생 줄의 'MAT 닫기'로 닫으면 인원이 돌아옵니다.",
               ))) e.preventDefault();
             }}>
             {pending ? "여는 중…" : `지금 조건의 학생 ${total}명에게 열기`}

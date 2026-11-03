@@ -1,5 +1,6 @@
 "use client";
 
+import { withJosa } from "@/lib/me-v3/result/josa";
 import { adminSay, campusSay, maskPhone } from "@/lib/campus/words";
 import { useActionState } from "react";
 import {
@@ -136,7 +137,9 @@ export default function StudentRows(
                       <button type="submit" className="sf-mini" disabled={pending}
                         onClick={(e) => {
                           if (!confirm(
-                            `${r.name} ${t("학생")}에게 ${matPool.name} 을 엽니다.\n`
+                            /* 이름이 이미 `○○ 참여자` 꼴이면 역할 낱말을 한 번 더 붙이지 않는다. 이용권 이름도 기관 낱말로
+                               (`(학교)` → `(기관)`), 조사는 붙여 쓴다(2026-11-03 진흥원 확인창) */
+                            `${r.name.endsWith(t("학생")) ? r.name : `${r.name} ${t("학생")}`}에게 ${withJosa(t(matPool.name), "을를")} 엽니다.\n`
                             + "남은 이용 인원이 한 명 줄어듭니다. 닫으면 돌아옵니다.",
                           )) e.preventDefault();
                         }}>MAT 열기</button>
@@ -149,7 +152,7 @@ export default function StudentRows(
                       <button type="submit" className="sf-mini" disabled={pending}
                         onClick={(e) => {
                           if (!confirm(
-                            `${r.name} ${t("학생")}의 MAT 을 닫습니다.\n`
+                            `${r.name.endsWith(t("학생")) ? r.name : `${r.name} ${t("학생")}`}의 MAT을 닫습니다.\n`
                             + "바로 쓸 수 없게 되고 이용 인원 한 명이 돌아옵니다. 학생이 남긴 자료는 지우지 않습니다.",
                           )) e.preventDefault();
                         }}>MAT 닫기</button>
