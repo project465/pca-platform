@@ -473,6 +473,8 @@ export const PHRASES_EN: Record<string, string> = {
   "산업·직무": "Industries and roles",
   "매주 할 일과 공고 확인은": "Weekly to-dos and job postings continue in",
   "에서 이어집니다.": ".",
+  "내 결과에 맞는 공고는": "You can analyze a posting that fits your result for free once in",
+  "에서 무료로 한 번 분석할 수 있습니다.": ".",
   "영역별로 보면": "By area",
   "지원서에 꺼내 쓸 경험": "Experience for your applications",
   "직접 정함": "Decided",

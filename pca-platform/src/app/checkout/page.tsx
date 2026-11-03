@@ -2,7 +2,6 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/session";
 import { getProduct } from "@/lib/orders";
-import { hasV3Result } from "@/lib/track";
 import { globalChannelReady, payOpen, paymentProvider } from "@/lib/payments";
 import { t, productName } from "@/lib/locale";
 import { formatMoney } from "@/lib/money";
@@ -38,12 +37,7 @@ export default async function CheckoutPage({
   if (user.mustResetPw) redirect("/password/change");
   const product = await getProduct(code);
 
-  /* MAT 은 검사 결과가 있어야 돈다(`hasV3Result`). 결제창까지 와서 막히면
-     카드를 꺼낸 사람이 헛걸음한 것이 되므로 MAT 화면으로 돌려보내 무료
-     검사를 먼저 안내한다 */
-  if (product?.kind === "track" && !(await hasV3Result(user.id))) {
-    redirect("/me/track?e=needtest");
-  }
+  /* 검사 없이도 MAT 기간권을 산다(2026-11-03 대표 결정). 전공은 MAT 홈에서 고른다 */
 
   if (!product) {
     return (

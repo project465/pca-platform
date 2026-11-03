@@ -111,12 +111,8 @@ export async function startCheckout(
   if (product.currency !== "KRW" && region !== "global") {
     throw new Error("해외 카드로만 결제할 수 있는 상품입니다.");
   }
-  if (product.kind === "track") {
-    const { hasV3Result } = await import("@/lib/track");
-    if (!(await hasV3Result(userId))) {
-      throw new Error("MAT 은 검사를 한 번 마친 뒤에 열 수 있습니다. 무료 검사를 먼저 해 주세요.");
-    }
-  }
+  /* 검사 결과가 없어도 MAT 기간권을 판다(2026-11-03 대표 결정 "개인은 검사 없이 가입해 MAT 바로 사용").
+     전공은 MAT 홈에서 하나 고른다(`matPickCore`) */
   /* **추가 이용권은 개인 이용권을 쓰는 동안에만 판다**(2026-11-02 대표). 이용권이 없거나 학교
      좌석으로 쓰는 사람에게 팔면 쓸 기간이 없는 횟수를 산 셈이 된다 */
   if (product.kind === "track_refill") {

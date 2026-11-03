@@ -8,6 +8,7 @@ import { campusSay, university } from "@/lib/campus/registry";
 import { campusStudentContext } from "@/lib/campus/students";
 import { withJosa } from "@/lib/me-v3/result/josa";
 import { CONSULT_OPENS_KO } from "@/lib/mat/open-dates";
+import { SchoolEnding } from "../paywall";
 
 export const generateMetadata = () => matTitle("이용권");
 
@@ -51,6 +52,8 @@ export default async function MatPass() {
           {state.queued ? " · 이어서 산 기간 포함" : ""}
         </p>
       ) : null}
+
+      <SchoolEnding userId={user.id} />
 
       <section className={`mt-box is-school`}>
         <h3>{say("학교에서 검사를 받았나요?")}</h3>

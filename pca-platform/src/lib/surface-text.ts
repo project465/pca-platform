@@ -245,12 +245,12 @@ export const TX = {
   pxTrack30Why: p("한 달만 써 보고 정해도 됩니다.", "Try it for a month first."),
   pxTrack90Why: p("90일 동안 이용. 한 학기 지원 시즌을 이어서 준비할 때 알맞습니다.",
     "90 days of use. A good fit for preparing through one semester's application season."),
-  /* MAT 무료 범위. **수를 바꾸는 날 이 두 줄도 같이 고친다**: 무료 횟수의 정본은
-     `src/lib/mat-access.ts` 의 FREE_TOTAL(지금 2)이고, 여기 적힌 '2번' 은 그 값을 옮긴 것이다 */
-  pxTrackFreeHead: p("무료로 2번 써 볼 수 있습니다", "Try it free twice."),
+  /* MAT 무료 범위(2026-11-03). **수를 바꾸는 날 이 두 줄도 같이 고친다**: 무료 횟수의 정본은
+     `src/lib/mat-access.ts` 의 FREE_SCOPE(검사 전 1 · 검사 후 1)이고, 여기 적힌 수는 그 값을 옮긴 것이다 */
+  pxTrackFreeHead: p("공고 분석 1번은 검사 없이 무료입니다", "One posting analysis is free, no test needed."),
   pxTrackFree: p(
-    "무료 검사를 마치면 공고 확인 · 경험 채우기 · 파일 읽기 · 내 자료 읽기 가운데 아무 도구나 합쳐서 2번 무료입니다. 그다음부터는 기간권으로 이어집니다.",
-    "After the free test, any two uses of posting check, memo-to-record, file reading or document reading are free in total. After that, a pass continues it.",
+    "검사를 마치면 공고 분석 1번이 더 무료입니다. 맞는 공고 목록과 이번 주 할 일 하나도 무료로 봅니다. 그다음부터는 이용권으로 이어집니다.",
+    "Finish the test and you get one more free analysis. The matching posting list and one task for the week are free too. After that, a pass continues it.",
   ),
   pxTrackTrial: p(
     "PRO 결과지를 사시면 MAT 첫 1개월이 함께 열립니다.",

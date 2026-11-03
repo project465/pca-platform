@@ -2976,6 +2976,10 @@ export async function V3ResultBody(
             {MAT_PUBLIC ? <p className="rs-end-note">
               {tr("매주 할 일과 공고 확인은")} <Link href="/me/track">MAT</Link>{tr("에서 이어집니다.")}
             </p> : null}
+            {/* 결제 입구 하나(2026-11-03 수익화): 결과에 맞는 공고를 MAT 에서 무료로 한 번 분석한다. 그 뒤가 이용권이다 */}
+            {MAT_PUBLIC ? <p className="rs-end-note">
+              {tr("내 결과에 맞는 공고는")} <Link href="/mat/jobs">MAT</Link>{tr("에서 무료로 한 번 분석할 수 있습니다.")}
+            </p> : null}
           </div>
         </section>
         )}

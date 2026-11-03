@@ -15,6 +15,11 @@ import { queryOne } from "@/lib/db";
 import { outLink } from "@/lib/mat/out-link";
 import { SOURCE_KO } from "@/lib/mat/stage";
 import { taskLine } from "@/lib/mat/short";
+import { Paywall } from "../../paywall";
+import { AiConsent } from "../../ai-consent";
+import { CONSENT } from "@/lib/mat/consent-text";
+import { PRICING_HREF } from "@/lib/pricing/config";
+import { postingsOf } from "@/lib/assistant/posting";
 
 export const generateMetadata = () => matTitle("내 경험과 맞춰 보기");
 
@@ -97,7 +102,10 @@ export default async function MatJob({ params, searchParams }: {
   /* 필수 먼저, 없음이 덜 됨보다 먼저 */
   gap.sort((x, y) => (x.it.kind === y.it.kind ? 0 : x.it.kind === "must" ? -1 : 1) || (x.mark === y.mark ? 0 : x.mark === "없음" ? -1 : 1));
   const sameCore = (p.core_code ?? core) === core;
-  const tasks = sameCore ? smallTasks(core, a.items, exps, "ko") : [];
+  const allTasks = sameCore ? smallTasks(core, a.items, exps, "ko") : [];
+  /* 무료는 할 일 하나(`FREE_SCOPE.weekTasks`) */
+  const tasks = access.paid ? allTasks : allTasks.slice(0, access.weekTasks);
+  const analyzed = access.paid ? 0 : (await postingsOf(user.id).catch(() => [])).length;
   const asks = sameCore ? interviewPrep(core, a.items, exps, 3, "ko") : [];
   const must = a.items.filter((x) => x.kind === "must").length;
   const taken = takenRaw === undefined ? null : takenRaw === "x" ? -1 : Number(takenRaw);
@@ -170,6 +178,9 @@ export default async function MatJob({ params, searchParams }: {
         </div>
       </>) : null}
 
+      {/* 결제 입구: 무료 분석 결과 바로 아래(시안 Paywall). 기간권이 있으면 그리지 않는다 */}
+      {!access.paid ? <Paywall userId={user.id} analyzed={analyzed} /> : null}
+
       {cond.length ? (
         <>
           {/* 학력 · 연차 · 면허 같은 조건과, 이 전공 영역에 잇지 못한 업무 · 우대 줄을 한 이름(자격 조건)으로 묶지 않는다(MAT 시험 P1) */}
@@ -206,7 +217,7 @@ export default async function MatJob({ params, searchParams }: {
               <input type="hidden" name="id" value={p.id} />
               <button type="submit" className="mt-btn is-main is-block">이번 주 할 일에 담기</button>
             </form>
-          ) : <Link className="mt-btn is-block" href="/mat/pass" style={{ marginTop: 12 }}>이용권 보기</Link>}
+          ) : <Link className="mt-btn is-block" href={PRICING_HREF} style={{ marginTop: 12 }}>이용권 보기</Link>}
         </>
       ) : <p className="mt-empty">{sameCore ? <>지금은 따로 만들 결과물이 없어요. <Link href={`/mat/draft?p=${id}`}>이 공고로 문장 뼈대 보기</Link></> : "다른 전공으로 읽은 공고예요."}</p>}
 
@@ -241,12 +252,11 @@ export default async function MatJob({ params, searchParams }: {
         ) : null
       ) : (
         <div className="mt-box" style={{ marginTop: 24 }}>
-          <h3>AI로 더 자세히 읽기</h3>
-          <p>켜면 이 공고 글이 Anthropic(미국)의 Claude로 보내져 읽혀요. <Link href="/mat/settings">설정</Link></p>
-          <form action={matAiOn} style={{ marginTop: 12 }}>
-            <input type="hidden" name="id" value={p.id} />
-            <button type="submit" className="mt-btn is-block">동의하고 AI로 다시 읽기</button>
-          </form>
+          <h3>{CONSENT.open}</h3>
+          {/* 무엇을 보내는지는 여는 창에서 한 번만 적는다(시안 Consent · '다음부터 묻지 않기' 는 꺼짐) */}
+          <div style={{ marginTop: 12 }}>
+            <AiConsent action={matAiOn} id={p.id} title={p.name ?? p.label} sub={a.role} label={CONSENT.open} />
+          </div>
         </div>
       )}
     </main>

@@ -361,9 +361,17 @@ export function matPage(x: Inputs, d: X): Page {
     </div>` +
     `<div class="two">${note(L("시작하는 법", "How to start"), en
       ? "Log in and open the MAT screen in My CareerMatri. If your school has opened MAT for you, you can use it right away. Otherwise you can choose a period on the MAT screen."
-      : "로그인한 뒤 내 CareerMatri에서 MAT 화면을 열면 됩니다. 학교에서 MAT 이용권을 열어 준 경우 바로 쓸 수 있고, 그렇지 않으면 MAT 화면에서 이용 기간을 골라 시작할 수 있어요.")}${note(L("MAT가 하지 않는 일", "What MAT does not do"), ul(en
+      : "로그인한 뒤 내 CareerMatri에서 MAT 화면을 열면 됩니다. 학교에서 MAT 이용권을 열어 준 경우 바로 쓸 수 있고, 그렇지 않으면 MAT 화면에서 이용 기간을 골라 시작할 수 있어요.")}${
+      /* 종이에서 바로 칠 수 있는 주소 한 줄(2026-11-03 수익화: PDF 마지막 장의 결제 입구) */
+      `<p class="mut">${E(L("MAT 바로 가기", "Open MAT"))}: <b>${E(matUrl())}</b> · ${E(L("공고 분석 1회 무료", "One free posting analysis"))}</p>`}${note(L("MAT가 하지 않는 일", "What MAT does not do"), ul(en
       ? ["It does not calculate your chances of being hired or rank you", "It does not write your application for you. It only builds an outline from your records", "It does not apply on your behalf. You apply yourself"]
       : ["지원 결과를 예측하거나 순위를 매기지 않습니다", "자기소개서를 대신 써 주지 않고, 내 기록으로 문장의 뼈대까지만 만듭니다", "지원을 대신하지 않습니다. 지원은 본인이 직접 합니다"]), true)}</div>`) };
+}
+
+/** PDF 에 적는 MAT 주소. 정규 주소(`PLATFORM_URL`)가 있으면 그 호스트, 없으면 국내 정규 도메인 */
+function matUrl(): string {
+  const host = (process.env.PLATFORM_URL ?? "").replace(/^https?:\/\//, "").replace(/\/.*$/, "") || "careermatri.co.kr";
+  return `${host}/mat`;
 }
 
 /* ── 부록 ── */
