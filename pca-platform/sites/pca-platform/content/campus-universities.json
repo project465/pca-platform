@@ -2832,9 +2832,9 @@
          "code": "JJU26_AI",
          "name": "인공지능학과",
          "kind": "department",
-         "core_code": "CS_CORE_V1",
-         "specialization": "SPEC_CS_AI",
-         "note": "사업주가 이름을 불러 준 자리다(2026-10-20 `인공지능학부` · 2026-10-21 `인공지능학과` 로 고쳐 불러 주었다). 컴퓨터·소프트웨어 Core 의 `인공지능·데이터` 갈래로 잰다. 정확한 이름과 소속 단과대학은 `open_questions` 에 적어 두었다"
+         "core_code": "AI_CORE_V1",
+         "specialization": "SPEC_AI_DATA",
+         "note": "사업주가 이름을 불러 준 자리다(2026-10-21 `인공지능학과`). **2026-11-03 사업주 \"다 진행해\"로 인공지능 Core(`AI_CORE_V1`)의 머신러닝·데이터 갈래로 옮겼다.** 그 전에는 컴퓨터·소프트웨어 Core 의 `인공지능·데이터` 갈래로 쟀고, 그때 응시한 결과는 그대로 둔다. 정확한 이름과 소속 단과대학은 `open_questions` 에 적어 두었다"
         },
         {
          "code": "JJU26_ARCH",
