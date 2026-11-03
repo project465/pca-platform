@@ -199,7 +199,10 @@ type Overview = { checked_on: string; orgs: { id: string; name: string; report: 
 const PROFILE: Record<RegionKey, { label: string; area: string; addr: RegExp; listed?: string; directory?: string; big?: string; checks: boolean; overview: boolean }> = {
   sejong: { label: "세종", area: "세종·충청", addr: /세종/, listed: "data/region/dart-sejong.v1.json", directory: "sites/pca-platform/content/sejong-orgs.v1.json", checks: true, overview: true },
   jeonbuk: { label: "전북", area: "전주·익산·전북", addr: /전북|전라북도/, listed: "data/region/dart-jeonbuk.v1.json", directory: "data/region/jeonbuk-orgs.v1.json", big: "data/region/jeonbuk-big.v1.json", checks: false, overview: false },
-  chungcheong: { label: "대전·충청", area: "대전·세종·충청", addr: /대전|세종|충청/, checks: true, overview: true },
+  /* 권역 이름은 하나다(2026-11-03 배재대 화면: 권역 줄 ‘대전·세종·충청’ 과 머리 ‘대전·충청에서 이 경험을 이어 볼 기업’ 이
+     한 화면에 섰다). 세종은 따로 `sejong` 이다. 명단(`chungcheong-orgs.v1.json`)은 공개 명단을 받아 만든 뒤에야 생기고,
+     없으면 전처럼 공시로 대어 본 회사만 읽는다 */
+  chungcheong: { label: "대전·충청", area: "대전·충청", addr: /대전|세종|충청/, directory: "data/region/chungcheong-orgs.v1.json", checks: true, overview: true },
 };
 
 const ZONE_A = new Set(["Z1_EVIDENCE_ESTABLISHED"]);

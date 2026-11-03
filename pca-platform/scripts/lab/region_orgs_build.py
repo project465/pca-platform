@@ -11,12 +11,19 @@
 
     REGION=jeonbuk python3 -I scripts/lab/region_orgs_build.py
     → data/region/jeonbuk-orgs.v1.json
+    REGION=chungcheong python3 -I scripts/lab/region_orgs_build.py <대전·충남·충북 수집본.json>
+    → data/region/chungcheong-orgs.v1.json (배재대: 소재지 대전 · 충남 · 충북. 세종은 따로 `sejong`)
+    그다음 늘 python3 -I scripts/lab/region_orgs_tidy.py <나온 파일> → python3 -I scripts/lab/region_text_check.py
+
+대전·충청은 공시 상장사를 이 스크립트에서 붙이지 않는다: `region.ts` 가 `dart-checks.v1.json` 의
+공시 칸으로 따로 붙인다. 그래서 `dart-chungcheong.v1.json` 이 없어도 돈다.
 """
 import datetime, json, re, sys
 
 import os
 REGION = os.environ.get("REGION", "jeonbuk")
-LABEL = {"jeonbuk": "전북특별자치도", "sejong": "세종특별자치시"}[REGION]
+LABELS = {"jeonbuk": ["전북특별자치도"], "sejong": ["세종특별자치시"], "chungcheong": ["대전광역시", "충청남도", "충청북도"]}[REGION]
+LABEL = " · ".join(LABELS)
 BASE = sys.argv[1] if len(sys.argv) > 1 else f"/home/user/pca-line/_RISE_전국데이터_백업/pca-rise-section9/data/companies_{REGION}_base.json"
 DART = f"data/region/dart-{REGION}.v1.json"
 OUT = f"data/region/{REGION}-orgs.v1.json"
@@ -61,7 +68,7 @@ def norm(n):
 
 def main():
     base = json.load(open(BASE))
-    pat = re.compile(LABEL + r" (.+?) 분야의 기업(?:으로, 주력 품목은 (.+?)이다|이다)$")
+    pat = re.compile("(?:" + "|".join(map(re.escape, LABELS)) + r") (.+?) 분야의 기업(?:으로, 주력 품목은 (.+?)이다|이다)$")
     orgs = {}
     for x in base:
         if x.get("src") != "venture":
@@ -77,7 +84,7 @@ def main():
             "name": x["name"], "source": "venture", "sector": sector,
             "product": product, "group": group_of(sector), "venture_id": x.get("srcid"),
         }
-    dart = json.load(open(DART))
+    dart = json.load(open(DART)) if os.path.exists(DART) else {"orgs": [], "checked_on": None}
     for o in dart["orgs"]:
         code = str(o.get("induty_code") or "")
         sector = KSIC2.get(code[:2], "")
@@ -98,7 +105,7 @@ def main():
         "built_on": datetime.date.today().isoformat(),
         "sources": {
             "venture": f"중소벤처기업부 벤처기업 확인 명단(공개 CSV) 가운데 소재지 {LABEL} · 업종명과 주생산품은 명단 값",
-            "dart": f"OpenDART 기업개황 · 본점 주소 {LABEL} · 확인일 {dart.get('checked_on')}",
+            **({"dart": f"OpenDART 기업개황 · 본점 주소 {LABEL} · 확인일 {dart.get('checked_on')}"} if dart["orgs"] else {}),
         },
         "groups": [{"code": c, "name": n} for c, n, _ in GROUPS],
         "rule": "공개 명단의 값만 옮겼다. 채용 여부·근무 조건은 확인하지 않았다",
