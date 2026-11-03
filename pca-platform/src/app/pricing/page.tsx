@@ -241,7 +241,7 @@ export default async function PricingPage({
               <li>{T("pxTrackF2")}</li>
               <li>{T("pxTrackF3")}</li>
             </ul>
-            <p className="pxwhat">{T("pxTrackNot")} <Link href="/me/track">{T("pxTrackMore")}</Link></p>
+            <p className="pxwhat"><Link href="/me/track">{T("pxTrackMore")}</Link></p>
             <div className="pxband-g">
               {/* 무료 범위를 값보다 먼저 둔다: 사기 전에 써 볼 수 있다는 것이 첫 칸이다 */}
               <div className="pxband-i">

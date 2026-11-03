@@ -239,8 +239,6 @@ export const TX = {
     "Notes to experience: a one-line note becomes a pre-filled experience record you check and save yourself."),
   pxTrackF3: p("공고 요구 사항과 내 경험 비교 — 직접 찾은 공고를 붙여 넣으면 요구 항목마다 설명할 경험이 있는지, 비어 있는지 나눠 보여 드립니다.",
     "Posting check: paste a posting you found and see, item by item, where you already have experience and where you don't."),
-  pxTrackNot: p("점수나 합격 가능성을 만들지 않고, 기업을 대신 고르거나 지원하지 않습니다.",
-    "It never scores your chances, picks companies for you or applies on your behalf."),
   pxTrackMore: p("어떻게 쓰는지 자세히 보기", "See how it works"),
   pxTrack30: p("30일권", "30 days"),
   pxTrack90: p("90일권", "90 days"),
