@@ -48,6 +48,9 @@ export default async function AccountHome({
   const agencyMember = !!(await queryOne<{ ok: boolean }>(
     `SELECT true AS ok FROM campus_students WHERE user_id = $1 AND university_code = ANY($2::text[]) LIMIT 1`,
     [user.id, universities().filter((u) => u.org_kind === "agency").map((u) => u.university_code)]).catch(() => null));
+  /* 학교 · 기관이 발급한 계정인가. 그 계정은 소셜 로그인과 결제를 쓰지 않아 그 줄을 세우지 않는다(2026-11-03 대표 "AI느낌") */
+  const issued = !!(await queryOne<{ ok: boolean }>(
+    `SELECT true AS ok FROM campus_students WHERE user_id = $1 LIMIT 1`, [user.id]).catch(() => null));
   const { lang: q, linked: justLinked, link: linkErr } = await searchParams;
   const lang = await resolveLang(q);
   const L = toLang2(lang);
@@ -81,41 +84,28 @@ export default async function AccountHome({
     activeTrack(user.id),
   ]);
   const hasOld = held?.old ?? true;
-  const hasOrders = held?.orders ?? true;
+  const hasOrders = !issued && (held?.orders ?? true);
 
   return (
-    <CmShell active="/my" title={L === "en" ? "Account" : "계정"} lang={L === "en" ? "en" : "ko"}>
-      <CmHead title={L === "en" ? "Account" : "계정"} lead={T("acLead")}
-        /* **나가는 길이 한 자리에는 있어야 한다.** 계정 쪽이 작업공간
-           껍데기로 옮겨 오면서 로그아웃이 **어느 손님 화면에도 없는
-           상태**가 됐다(`components/sf/shell` 에만 남아 있었고 그쪽은
-           Campus 와 Admin 이 쓴다). 학교 실습실처럼 한 PC 를 여럿이
-           쓰는 자리에서는 앞사람의 계정이 그대로 열려 있게 된다.
-           머리띠의 계정 한 자리가 이 쪽으로 보내므로 길은 두 번이다 */
-        actions={<LogoutButton className="cm-btn" label={T("signOut")} />} />
+    <CmShell active="/my" title={L === "en" ? "Account" : "계정"} lang={L === "en" ? "en" : "ko"} agency={agencyMember}>
+      {/* 제목 하나. 이 쪽이 무엇을 모았는지 부제로 풀지 않는다(2026-11-03 대표 "AI느낌") */}
+      <CmHead title={L === "en" ? "Account" : "계정"} />
 
       <div className="cm-grid">
         <section className="cm-card">
           <h2><Icon name="user" size={17} />{en ? "Your account" : "계정 정보"}</h2>
-          <dl className="cm-dl">
-            <div>
-              <dt>{en ? "Name" : "이름"}</dt>
-              <dd>{user.name}</dd>
-            </div>
-            {/* 역할 이름은 한국어 사전뿐이다. 영어 화면에 서는 계정은 늘 개인
-                회원이라 그 줄이 말해 줄 것이 없다 */}
-            {en ? null : (
-              <div>
-                <dt>구분</dt>
-                {/* 일자리 기관 참여자는 `학생` 이 아니다(2026-11-03 진흥원 실제 화면 S2) */}
-                <dd>{agencyMember && user.role === "student" ? "참여자" : ROLE_LABEL[user.role] ?? ""}</dd>
-              </div>
-            )}
-          </dl>
-          <div className="cm-acts">
-            <Link href="/my/account" className="cm-btn">{en ? "Account settings and deletion" : "계정 설정과 탈퇴"}</Link>
-            {/* 로그인한 사람이 제 비밀번호를 바꾸는 길(2026-11-01 요청). 화면은 전부터 있었다 */}
-            <Link href="/password/change" className="cm-btn">{en ? "Change password" : "비밀번호 바꾸기"}</Link>
+          {/* 이름과 구분을 한 줄로, 단추는 오른쪽에(2026-11-03 대표). 역할 이름은 한국어 사전뿐이다.
+              일자리 기관 참여자는 `학생` 이 아니다(진흥원 실제 화면 S2) */}
+          <div className="cm-item-row">
+            <span className="cm-item-t">
+              <b>{user.name}</b>
+              {en ? null : <em>{agencyMember && user.role === "student" ? "참여자" : ROLE_LABEL[user.role] ?? ""}</em>}
+            </span>
+            <span className="cm-item-meta">
+              {/* 로그인한 사람이 제 비밀번호를 바꾸는 길(2026-11-01 요청) */}
+              <Link href="/password/change" className="cm-btn">{en ? "Change password" : "비밀번호 바꾸기"}</Link>
+              <Link href="/my/account" className="cm-btn">{en ? "Account settings" : "계정 설정"}</Link>
+            </span>
           </div>
         </section>
 
@@ -125,8 +115,8 @@ export default async function AccountHome({
           <h2><Icon name="clock" size={17} />MAT</h2>
           <p>
             {track.on && track.until
-              ? `${new Intl.DateTimeFormat("ko-KR", { timeZone: "Asia/Seoul", year: "numeric", month: "long", day: "numeric" }).format(new Date(track.until))}까지 열려 있습니다. 자동으로 갱신되지 않습니다.`
-              : "열려 있지 않습니다. 30일권과 90일권이 있습니다."}
+              ? `${new Intl.DateTimeFormat("ko-KR", { timeZone: "Asia/Seoul", year: "numeric", month: "long", day: "numeric" }).format(new Date(track.until))}까지 · 자동 갱신 없음`
+              : "미사용 · 30일권 · 90일권"}
           </p>
           <div className="cm-acts">
             <Link href="/me/track" className="cm-btn">{track.on ? "MAT 열기" : "MAT 보기"}</Link>
@@ -149,6 +139,7 @@ export default async function AccountHome({
             모른 채 기다린다 */}
         <LoginMethods
             userId={user.id}
+            issued={issued}
             lang={L === "en" ? "en" : "ko"}
             notice={
               isProvider(justLinked ?? "")
@@ -159,15 +150,13 @@ export default async function AccountHome({
                     : "그 계정은 이미 다른 CareerMatri 계정에 연결돼 있습니다.")
                   : linkErr === "off"
                     ? (L === "en" ? "That sign-in option isn't available right now."
-                      : "그 로그인 방법은 지금 켜져 있지 않습니다.")
+                      : "사용할 수 없는 로그인 방법")
                     : undefined
             }
           />
 
         <section className="cm-card">
           <h2><Icon name="globe" size={17} />{L === "en" ? "Language" : "언어"}</h2>
-          <p>{L === "en" ? "Changes right away and stays the same next time you sign in."
-            : "고르면 바로 바뀌고 다음에 들어올 때도 그대로입니다."}</p>
           <div className="cm-acts">
             <LangSelect current={L} />
           </div>
@@ -214,6 +203,12 @@ export default async function AccountHome({
             </div>
           </section>
         ) : null}
+      </div>
+
+      {/* **나가는 길은 쪽 맨 아래에 둔다**(2026-11-03 대표). 학교 실습실처럼 한 PC 를 여럿이 쓰는 자리에서
+          앞사람의 계정이 열려 있지 않게, 머리띠의 계정 한 자리와 여기 두 번이다 */}
+      <div className="cm-acts" style={{ marginTop: 24 }}>
+        <LogoutButton className="cm-btn" label={T("signOut")} />
       </div>
     </CmShell>
   );

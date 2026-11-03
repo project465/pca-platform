@@ -169,7 +169,7 @@ function PackBody(
 
 /** 고른 항목. **스무 개를 한 줄에 깔면 그 가운데 무엇도 안 읽힌다** */
 function Picks(
-  { items, own, max = 8, none = tr("아직 고른 것이 없습니다") }:
+  { items, own, max = 8, none = tr("고른 항목 없음") }:
   { items: string[]; own?: boolean; max?: number; none?: string },
 ) {
   if (!items.length) return <span className="rs-none">{none}</span>;
@@ -351,7 +351,7 @@ function Why({ d }: { d: ResultDomain }) {
         </>) : null}
       </dl>
       {empty.length ? (
-        <p className="rs-dnone">{tr("아직 고르지 않음 · {list}", { list: empty.join(" · ") })}</p>
+        <p className="rs-dnone">{tr("미선택 · {list}", { list: empty.join(" · ") })}</p>
       ) : null}
     </div>
   );
@@ -750,7 +750,7 @@ function Translation({ view, major }: { view: TranslationView; major: string }) 
       ) : null}
       {rows.some((s) => !said(s)) ? (
         <p className="rs-note">
-          {tr("아직 적지 않으신 단계 {n}개 ·", { n: rows.filter((s) => !said(s)).length })}{" "}
+          {tr("미작성 단계 {n}개 ·", { n: rows.filter((s) => !said(s)).length })}{" "}
           {rows.filter((s) => !said(s))
             .map((s) => TX().TRANS_STEP_KO[s.item_id]).join(" · ")}
         </p>
@@ -1244,7 +1244,7 @@ export async function V3ResultBody(
   const linkText = linkNames.length
     ? (linkReady.length
       ? tr("{where}에서 해 본 일이 이어져요", { where: [...new Set(linkReady)].slice(0, 2).join(" · ") })
-      : tr("아직 이쪽으로 이어지는 경험은 보이지 않습니다"))
+      : tr("이어지는 경험 없음"))
     : "";
 
   /**
@@ -1371,11 +1371,11 @@ export async function V3ResultBody(
      무엇이 모이면 답이 나오는지 알아야 비어 있는 것이 아직으로 읽힌다 */
   const exploreKey: [string, string][] = [
     [tr("산업"), model.industry_context ? industryName(model.industry_context.code)
-      : (model.targets.industries.map(industryName).join(" · ") || tr("아직 없음"))],
+      : (model.targets.industries.map(industryName).join(" · ") || tr("미선택"))],
     [tr("직무"), roleCtx ? roleName(roleCtx.code)
-      : (model.targets.roles.map(roleName).join(" · ") || tr("아직 없음"))],
-    [tr("권역"), regionPicked ?? tr("아직 고르지 않으셨습니다")],
-    [tr("기관 유형"), orgKinds.join(" · ") || tr("아직 고르지 않으셨습니다")],
+      : (model.targets.roles.map(roleName).join(" · ") || tr("미선택"))],
+    [tr("권역"), regionPicked ?? tr("미선택")],
+    [tr("기관 유형"), orgKinds.join(" · ") || tr("미선택")],
   ];
 
   /* ── 웹 화면 한 장(`summary.tsx`). 종이는 아래 원래 절들을 그대로 쓴다 ── */
@@ -1440,7 +1440,9 @@ export async function V3ResultBody(
   const sumWho = [meta.school,
     [meta.department, meta.specialization].filter(Boolean).join(" · "),
     meta.answeredOn ? tr("{date} 응답", { date: meta.answeredOn }) : null,
-    meta.school ? null : model.tier]
+    meta.school ? null : model.tier,
+    /* 가까운 묶음으로 본 학과는 머리 줄 끝에 이름표로(본문 위 안내 문단을 두지 않는다) */
+    meta.provisional]
     .filter(Boolean).join(" · ");
 
   return (
@@ -1472,8 +1474,6 @@ export async function V3ResultBody(
       </header>
 
       <main className="rs-main">
-        {/* 가까운 묶음으로 본 학과(2026-11-03 대표 결정). 묶음 · 갈래 이름을 한 줄로 */}
-        {meta.provisional ? <p className="cm-none rs-prov" style={{ margin: "0 0 12px" }}>{meta.provisional}</p> : null}
         <Summary
           title={h.title} lead={h.lead} who={sumWho}
           zones={sumZones} evidence={sumEvidence} steps={sumSteps}
@@ -1584,7 +1584,7 @@ export async function V3ResultBody(
               <li>{tr("이 결과를 읽는 기준")}</li>
             </ol>
             <p className="rs-cover-foot">
-              {tr("이 리포트는 응답한 내용만으로 만들어집니다. 적성이나 합격 가능성을 내지 않고, 순위도 매기지 않습니다.")}
+              {tr("응답 기준 리포트 · 적성·합격 가능성·순위 미산출")}
             </p>
           </section>
         ) : null}
@@ -1723,7 +1723,7 @@ export async function V3ResultBody(
             {linkNames.map((x) => <b key={x}>{x}</b>)}
             <span>{linkText}</span>
           </>) : (
-            <span>{tr("보실 산업과 직무를 아직 고르지 않으셨어요.")}</span>
+            <span>{tr("산업·직무 미선택")}</span>
           )}
         </p>
 
@@ -1807,7 +1807,7 @@ export async function V3ResultBody(
                     이 줄을 할 일로 보고 결과지 마흔 벌에서 걸었다. 여기서
                     남길 것을 적을 수는 없다: 어느 영역인지가 아직 없다 */}
                 <p className="rs-note">
-                  {tr("지원서로 옮길 만큼 확인된 경험은 아직 없어요. 아래 ‘적을 과제 고르기’부터 보시면 돼요.")}
+                  {tr("지원서용 확인 경험 0 · 아래 ‘적을 과제 고르기’부터")}
                 </p>
                 {/* **그 학과 학생이 낼 수 있는 근거를 적는다**(갈래 계약의
                     `examples.evidence`). 아직 아무것도 확인되지 않은 사람에게
@@ -1973,7 +1973,7 @@ export async function V3ResultBody(
                     하면 채워지는지로 잇는다 */}
                 </>) : (
                   <p>
-                    {tr("지원서로 옮길 영역은 아직 없습니다. 아래 ‘적을 과제 고르기’ 가운데 하나를 끝내면 이 칸이 먼저 채워집니다.")}
+                    {tr("지원서용 영역 0 · 아래 ‘적을 과제 고르기’ 하나를 끝내면 표시")}
                   </p>
                 )}
               </section>
@@ -2172,7 +2172,7 @@ export async function V3ResultBody(
                 문단이 맡는 것은 확인된 것과 이 산업에서 모자란 것까지다 */}
             <p className="rs-bridge">{indBridge.join(" ")}</p>
             <p className="rs-note">
-              {tr("같은 경험을 {x}에서 쓰는 표현으로 놓았습니다. 맞는다거나 맞지 않는다고 판정하지 않습니다.", { x: industryName(model.industry_context.code) })}
+              {tr("같은 경험을 {x}에서 쓰는 표현으로 옮긴 것", { x: industryName(model.industry_context.code) })}
             </p>
             <PackBody v={model.industry_context}
               name={industryName(model.industry_context.code)}
@@ -2180,7 +2180,7 @@ export async function V3ResultBody(
               action={indAction} />
             {model.industry_context.others.length ? (
               <p className="rs-others">
-                {tr("다른 산업에서 보시려면 다시 응시하지 않아도 됩니다. 기술영역 결과는 산업을 바꿔도 그대로입니다.")}
+                {tr("산업 변경 시 재응시 불필요 · 기술영역 결과 동일")}
               </p>
             ) : null}
           </section>
@@ -2474,7 +2474,7 @@ export async function V3ResultBody(
                     (COMMERCIAL FINAL §4·§5). 사람이 학생에게 하는 말은
                     `어느 영역에서 한 일인지까지는 묻지 않았습니다` 다 */}
                 <p>
-                  {tr("어느 기술영역에서 한 일인지까지는 묻지 않았습니다. 그래서 위의 영역별 결과에는 들어가지 않습니다.")}
+                  {tr("영역 미지정 · 영역별 결과 미포함")}
                 </p>
                 <dl>
                   {cm.owned.length ? (
@@ -2649,7 +2649,7 @@ export async function V3ResultBody(
                 </dl>
               ) : null}
               <p className="rs-others">
-                {tr("순위가 아닙니다. 같은 수가 나온 항목은 순서를 매기지 않습니다.")}
+                {tr("순위 아님 · 같은 수는 순서 없음")}
               </p>
             </div>
           ) : null}
@@ -2677,7 +2677,7 @@ export async function V3ResultBody(
                       <br />
                       {o.related_majors.length
                         ? tr("{majors} 전공에서 이어 볼 수 있습니다", { majors: o.related_majors.join(" · ") })
-                        : tr("전공 연결은 아직 적히지 않았습니다")}
+                        : tr("전공 연결 미기재")}
                     </dd>
                   </div>
                 ))}
@@ -2688,21 +2688,12 @@ export async function V3ResultBody(
                 </p>
               ) : null}
             </div>
-          ) : regionPicked ? (
-            <div className="rs-pack">
-              {/* 위 회사 목록(공시 · 벤처 명단)과 다른 자리다: 공공기관 · 연구기관 명단이 비어 있다(2026-11-02 시험 N14) */}
-              {/* `채우는 중` 은 만드는 쪽 말이다. 학생에게는 지금 있는 것만 적는다(2026-11-03 실제 화면 S5) */}
-              <h3>{tr("이 지역의 공공기관 · 연구기관은 이 결과에 아직 싣지 않았습니다")}</h3>
-              <p className="rs-others">
-                {tr("기관은 공식 홈페이지와 공공데이터에서 확인한 것만 적습니다. 확인되기 전까지 짐작으로 채우지 않습니다.")}
-              </p>
-            </div>
-          ) : null}
+          ) : null /* 공공기관 · 연구기관 명단이 없는 동안은 그 자리를 세우지 않는다(2026-11-03 대표 "시스템 안내 · 해명조") */}
 
           <p className="rs-note">
             {regionPicked
-              ? tr("지금 {region} 기준으로 보고 계십니다. 이 선택은 기술영역 결과를 바꾸지 않습니다.", { region: regionPicked })
-              : tr("희망 지역을 고르면 산업과 직무를 읽는 순서가 그 권역 기준으로 바뀝니다. 기술영역 결과는 그대로입니다.")}
+              ? tr("{region} 기준 · 기술영역 결과에 영향 없음", { region: regionPicked })
+              : tr("희망 지역을 고르면 산업·직무 순서가 그 권역 기준으로 바뀝니다.")}
           </p>
           {/* **참고 자료를 기본으로 펼치지 않는다**(규격 §3 B · §4).
               권역 다섯과 조합 넷과 고르신 자리를 한꺼번에 펼치면 이 절
@@ -2726,8 +2717,7 @@ export async function V3ResultBody(
               ))}
             </dl>
             <p className="rs-others">
-              {rv ? `${rv.label} 기업 목록은 위 ‘${rv.label}에서 이 경험을 이어 볼 기업’에 있습니다. 다른 권역의 기업 목록은 공개 자료로 확인한 뒤에 담습니다.`
-                : tr("기관 수와 기업 목록은 아직 담지 않았습니다. 공개 통계를 붙이기 전까지 짐작으로 채우지 않습니다.")}
+              {rv ? `${rv.label} 기업 목록: 위 ‘${rv.label}에서 이 경험을 이어 볼 기업’` : null}
             </p>
           </div>
           <div className="rs-pack" id="fourkeys">
@@ -2738,7 +2728,7 @@ export async function V3ResultBody(
               ))}
             </dl>
             <p className="rs-others">
-              {tr("지금은 물어볼 자료가 없어서 답을 내지 않습니다. 고르신 넷은 내 CareerMatri에 남아 있고, 공고와 기관 자료가 들어오면 그 조합부터 보여드립니다.")}
+              {tr("고른 넷은 내 CareerMatri에 저장됩니다.")}
             </p>
           </div>
           </Disclose>
@@ -2850,9 +2840,9 @@ export async function V3ResultBody(
                   </dd>
                 </div>
                 <div>
-                  <dt>{tr("고정되어 있습니다")}</dt>
+                  <dt>{tr("검사 시점 기준")}</dt>
                   <dd>
-                    {tr("응시하신 시점의 문항과 기준으로 고정되어 있습니다. 나중에 기준이 바뀌어도 이 결과는 달라지지 않습니다.")}
+                    {tr("검사 시점의 문항과 기준")}
                   </dd>
                 </div>
               </dl>

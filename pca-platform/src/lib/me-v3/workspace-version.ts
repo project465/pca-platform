@@ -411,7 +411,8 @@
 /** 경험 0건 반영 줄 숨김 · 지역 기준 · 조사 · 기관 참여자 말 — V95 */
 /** /me 할 일 차례 · /me/next 칸 말 — V96 */
 /** /me/region 회사 목록 카드 · 경험 추가 조사 받침 — V97 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V97";
+/** 회사 카드 주력 품목 칩 · 더 보기, 결과 기록 현재 상태 한 줄 + 경험 추가, 기관 참여자 경험 말 · 분야 선택, 계정 쪽 한 줄 · 상태 이름표 · 로그아웃 맨 아래 · 발급 계정은 소셜 로그인과 주문 숨김 — V98 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V98";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -488,7 +489,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V97";
 /** 실제 화면 P3 · S4 · S5 · S2 문구 — copy.70 */
 /** /me/next 칸 말 — copy.71 */
 /** 경험 추가 `{word}을` → 받침으로 고른 조사 — copy.72 */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.72";
+/** 학생 화면 해명 · 부정문 나열을 짧은 이름표로(2026-11-03 대표 "AI스럽다") — copy.73 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.73";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

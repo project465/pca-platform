@@ -14,12 +14,14 @@ import { uploadForDraft, type UploadState } from "./actions";
  * **원본을 남기지 않는다는 것을 놓는 자리에 적는다.** 성적증명서를 올리는
  * 사람이 가장 먼저 묻는 것이 그것이다.
  */
-export default function FileDrop({ consented, used, cap, pending }: {
+export default function FileDrop({ consented, used, cap, pending, agency = false }: {
   consented: boolean;
   used: number;
   cap: number;
   /** 전에 옮겨 두고 아직 적지 않은 초안 */
   pending: { id: string; title: string }[];
+  /** 기관 참여자면 `학번` 대신 `참여 번호` */
+  agency?: boolean;
 }) {
   const [state, act, busy] = useActionState<UploadState, FormData>(uploadForDraft, null);
   const [agree, setAgree] = useState(consented);
@@ -51,7 +53,7 @@ export default function FileDrop({ consented, used, cap, pending }: {
               <input type="checkbox" name="consent" value="1" checked={agree}
                 onChange={(e) => setAgree(e.target.checked)} />
               <span>
-                파일 내용(파일에 적힌 이름·학번·생년월일 포함)이 Anthropic(미국)의 Claude로 보내져
+                파일 내용(파일에 적힌 이름·{agency ? "참여 번호" : "학번"}·생년월일 포함)이 Anthropic(미국)의 Claude로 보내져
                 읽히는 데 동의합니다. 원본 파일은 읽은 뒤 바로 버리고 저장하지 않습니다.
                 가리고 싶은 정보는 가린 뒤 올려 주세요.
               </span>

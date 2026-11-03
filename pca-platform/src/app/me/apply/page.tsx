@@ -173,13 +173,13 @@ export default async function Apply() {
                     <b>이 직무가 가장 많이 보는 영역</b>
                     <ul>
                       <li>
-                        지금 설명할 수 있는 것 ·{" "}
-                        {cmp.have.length ? cmp.have.join(" / ") : "아직 없습니다"}
+                        설명 가능 ·{" "}
+                        {cmp.have.length ? cmp.have.join(" / ") : "없음"}
                       </li>
                       <li>
-                        아직 비어 있는 것 ·{" "}
-                        {cmp.lack.length ? cmp.lack.join(" / ") : "없습니다"}
-                        {cmp.lack.length ? <em>면접에서 물을 수 있는 부분입니다</em> : null}
+                        부족한 부분 ·{" "}
+                        {cmp.lack.length ? cmp.lack.join(" / ") : "없음"}
+                        {cmp.lack.length ? <em>면접 예상 질문</em> : null}
                       </li>
                     </ul>
                   </div>

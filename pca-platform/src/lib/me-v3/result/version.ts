@@ -195,7 +195,8 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.7";
 /** NO_EVIDENCE 첫 줄 — copy.86 */
 /** 실제 화면 S3 · S6 · S2 문구 — copy.87 */
 /** P6 문장 — copy.88 */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.88";
+/** 해명 · `아직 ~` 줄을 짧은 이름표로, 지역 묶음 설명 한 줄씩(2026-11-03 대표 "AI스럽다"). 판정은 그대로다 — copy.89 */
+export const RESULT_COPY_VERSION = "me-v3-result-copy.89";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -519,7 +520,8 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.88";
 /** 지역 기준 문구 · 기관 목록 문구 · 다리 문장 · 반쯤 선 자리 까닭 — V102 */
 /** 지금 할 일 차례 · 여러 영역 할 일 문장 — V103 */
 /** 가까운 묶음 학과 안내 한 줄을 화면에서도 보이게 — V104 */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V104";
+/** 가까운 묶음 학과는 머리 줄 이름표(`문항: ○○ 공통`)로 · 비어 있는 기관 명단 자리를 세우지 않음 — V105 */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V105";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

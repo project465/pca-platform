@@ -37,13 +37,11 @@ export const WS_EN_NEXT: Record<string, string> = {
     "We saved {n} next step from your results. You can start with it below.",
   "결과에서 할 일 {n}가지를 담았습니다. 아래 첫 줄부터 하시면 됩니다.":
     "We saved {n} next steps from your results. Start with the first one below.",
-  "결과의 할 일은 이미 담겨 있습니다 · 같은 일이 두 번 쌓이지 않습니다.":
-    "The next steps from your results are already saved · The same step is never added twice.",
+  "결과의 할 일 담기 완료": "Result steps already added",
 
   /* 비어 있을 때 */
-  "아직 완료한 검사가 없습니다.": "You haven't finished an assessment yet.",
-  "할 일은 검사 결과의 비어 있는 부분에서 나옵니다.":
-    "Next steps come from what's still missing in your assessment results.",
+  "완료한 검사 0건": "No completed assessments",
+  "검사를 마치면 할 일이 표시됩니다.": "Steps appear after you finish the assessment.",
   "검사 시작하기": "Start an assessment",
   "없음": "None",
   "할 일을 모두 치우셨습니다. 새 경험을 더하면 다음 할 일이 생길 수 있습니다.":
@@ -61,8 +59,8 @@ export const WS_EN_NEXT: Record<string, string> = {
   /* 지금 할 한 가지 */
   "어떻게 적으면 되나요": "How to write it up",
   "어느 부분": "Which part",
-  "{name} · 지금 부족한 부분은 없습니다": "{name} · Nothing missing right now",
-  "영역을 가리지 않는 할 일입니다": "This step applies to any area",
+  "{name} · 부족한 부분 없음": "{name} · no gaps",
+  "전 영역 공통": "All areas",
   "어떤 경험으로": "How to fill it",
   "{list} 가운데 하나를 남기면 그 부분이 채워집니다.":
     "Come away with {list}, and that part is filled in.",

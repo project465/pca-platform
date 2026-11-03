@@ -51,12 +51,11 @@ export default async function Region() {
     <CmShell active="/me/region" title="지역과 기관" major={major}>
       <CmHead
         title="어디에서 일하고 싶은지"
-        lead={"이 선택은 기술영역 결과를 바꾸지 않습니다. "
-          + "산업과 직무를 읽는 순서와 탐색 화면만 달라집니다."}
+        lead="선택은 산업·직무 탐색 순서에만 반영"
       />
 
       {!open ? (
-        <div className="cm-soon">이 시장에서는 지역 층을 켜지 않았습니다.</div>
+        <div className="cm-soon">이 시장: 지역 정보 미제공</div>
       ) : (
         <form action={pickRegion}>
           <fieldset className="cm-field">
@@ -128,7 +127,7 @@ export default async function Region() {
             roleChoices(core).find((x) => x.code === c)?.name ?? c).join(" · ")],
         ].map(([k, v]) => (
           <span className="cm-chip" key={k as string}>
-            {k}<b style={{ marginLeft: 6 }}>{v || "아직"}</b>
+            {k}<b style={{ marginLeft: 6 }}>{v || "미선택"}</b>
           </span>
         ))}
       </div>
@@ -137,7 +136,7 @@ export default async function Region() {
           **지어내지 않는다**(규격 §9). 자료가 없으면 EmptyState 하나이고,
           법적·자료 설명은 아래 작은 자리로 내린다 */}
       <SectionHeader icon="building" tone="c" title="이 지역에서 함께 볼 곳"
-        sub="채용 여부나 합격 가능성과는 관계가 없습니다." />
+        sub="채용·합격 가능성과 무관" />
       {lr ? <RegionCards v={lr.rv} chosen={chosenInd} /> : orgs.length ? (
         <PickGrid>
           {orgs.map((o) => (

@@ -54,7 +54,7 @@ const INTERNAL: RegExp[] = [
   /\b(TD|RF|OC|ORG)\d{1,2}\b/,
   /\b(NOT_OBSERVED|PARTICIPATED|CONFIRMED|OWNED)\b/,
   /\bZ[1-4]_[A-Z_]+\b/, /\bNOT_EXPLORED\b/,
-  /* **판본 글자는 세지 않는다.** `당시 판본 보기` 가 일부러 그 값을
+  /* **판본 글자는 세지 않는다.** `검사 버전 정보` 가 일부러 그 값을
      보여 주는 자리라, 세면 고객지원에 적어 보낼 값을 지우라고 요구하게
      된다. 뜻이 없는 전공 코드만 막는다 */
   /\bME_CORE_V3\b/,
@@ -423,7 +423,7 @@ async function main(): Promise<void> {
       at5.every((i) => i >= 0) && at5.every((v, i) => i === 0 || v > at5[i - 1]),
       sects.join(" / "));
     /* 규격 §6. 비어 있는 자리 전부와 전체 기술영역은 그 셋 **아래**다 */
-    const below = ["아직 부족한 것", "전체 기술영역"]
+    const below = ["부족한 부분", "전체 기술영역"]
       .map((h) => sects.findIndex((t) => t === h));
     ok("세부는 첫 화면 아래에 있다",
       below.every((i) => i > Math.max(...at5)),

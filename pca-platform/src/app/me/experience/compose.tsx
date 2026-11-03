@@ -1,6 +1,6 @@
 import { activeMajorName } from "@/lib/me-v3/major-name";
 import {
-  EXPERIENCE_KINDS, activeCoreOrPick, kindLabel, latestResult, type Experience,
+  EXPERIENCE_KINDS, activeCoreOrPick, isAgencyUser, kindLabel, latestResult, type Experience,
 } from "@/lib/me-v3/platform";
 import { content, domainName, domainSub, majorNameIn } from "@/lib/me-v3/runtime/session";
 import {
@@ -14,6 +14,7 @@ import { CmShell, CmHead } from "../shell";
 import { MonthPick } from "../ui";
 import { saveExperience, editExperience } from "./actions";
 import Steps from "./steps";
+import { agencySay, agencyWord } from "@/lib/me-v3/agency-words";
 import UnsavedGuard from "../unsaved";
 import type { DraftValue } from "@/lib/assistant/draft";
 import { matAccess } from "@/lib/mat-access";
@@ -127,7 +128,9 @@ export default async function Compose(
 ) {
   const user = { id: userId };
   const lang = await wsLang(user.id);
-  const t = wsSay(lang);
+  /* 기관 참여자에게는 `학번 · 수업 · 캡스톤` 을 기관 말로(2026-11-03 진흥원 실화면) */
+  const agency = lang !== "en" && await isAgencyUser(user.id);
+  const t = agencySay(wsSay(lang), agency, lang);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
   const core = await activeCoreOrPick(user.id);
   const cl = contentLang(core, lang);
@@ -229,7 +232,7 @@ export default async function Compose(
 
       {drop ? (
         <FileDrop consented={drop.consented} used={drop.used}
-          cap={UPLOAD_MONTHLY_CAP} pending={drop.pending} />
+          cap={UPLOAD_MONTHLY_CAP} pending={drop.pending} agency={agency} />
       ) : !edit && !d0 && lang !== "en" && MAT_PUBLIC ? (
         <p className="cm-none" style={{ marginBottom: 12 }}>
           MAT을 쓰시면 성적증명서·수료증 파일을 올려 이 칸을 채울 수 있습니다.{" "}
@@ -262,6 +265,7 @@ export default async function Compose(
         {d0 && draftId ? <input type="hidden" name="draft" value={draftId} /> : null}
         <Steps
           lang={lang}
+          agency={agency}
           value={picked}
           flow={flow}
           {...(edit ? { saveLabel: t("고친 내용 저장") } : {})}
@@ -299,7 +303,7 @@ export default async function Compose(
                           <label className="cm-pick" key={k.code}>
                             <input type="radio" name="kind" value={k.code} required
                               defaultChecked={start?.kind === k.code} />
-                            {kindLabel(k.code, lang) ?? k.label}
+                            {agency ? agencyWord(kindLabel(k.code, lang) ?? k.label) : kindLabel(k.code, lang) ?? k.label}
                           </label>
                         ))}
                       </div>

@@ -2,13 +2,13 @@ import Link from "next/link";
 import { currentUser, requireUser } from "@/lib/session";
 import { activeMajorName } from "@/lib/me-v3/major-name";
 import {
-  experiencesOf, kindLabel, reflectedExperiences, activeCoreOrPick } from "@/lib/me-v3/platform";
+  experiencesOf, isAgencyUser, kindLabel, reflectedExperiences, activeCoreOrPick } from "@/lib/me-v3/platform";
+import { agencySay, agencyWord } from "@/lib/me-v3/agency-words";
 import { experienceFlow } from "@/lib/me-v3/student";
 import { recomputeStatus } from "@/lib/me-v3/recompute";
 import { domainName, majorNameIn } from "@/lib/me-v3/runtime/session";
 import { wsLang } from "@/lib/me-v3/ws-lang";
 import { wsSay } from "@/lib/me-v3/ws-say";
-import { josaOf } from "@/lib/me-v3/result/josa";
 import { CmShell, CmHead } from "../shell";
 import { EmptyState } from "../ui";
 import { dropExperience } from "./actions";
@@ -46,7 +46,8 @@ function monthAt(d: string, lang: string): string {
 export default async function Experiences() {
   const user = await requireUser();
   const lang = await wsLang(user.id);
-  const t = wsSay(lang);
+  const agency = lang !== "en" && await isAgencyUser(user.id);
+  const t = agencySay(wsSay(lang), agency, lang);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
   const core = await activeCoreOrPick(user.id);
   const cl = contentLang(core, lang);
@@ -78,14 +79,14 @@ export default async function Experiences() {
         /* **화면을 덮는 큰 빨간 상자를 두지 않는다**(규격 §14). 저장은
            끝났고 더하기만 남은 상태라, 한 줄과 다시 할 길이면 된다 */
         <div className="cm-state is-warn" role="alert" style={{ marginBottom: 18 }}>
-          {t("경험 {n}건이 아직 현재 상태에 들어가지 못했습니다.", { n: st.pending })}
+          {t("더하지 못한 경험 {n}건", { n: st.pending })}
           {" "}<Link href="/me/recompute?e=recompute">{t("다시 시도")}</Link>
         </div>
       ) : null}
 
       {rows.length === 0 ? (
         <EmptyState>
-          <b>{t("아직 적어 둔 경험이 없습니다.")}</b> {t("새로 겪은 일을 쌓으면 현재 상태에 더할 수 있습니다.")}
+          <b>{t("추가한 경험 0건")}</b> {t("추가한 경험은 현재 상태에 더할 수 있습니다.")}
           <p style={{ marginTop: 10 }}>
             <Link href="/me/experience/new">{t("첫 경험 추가")}</Link>
           </p>
@@ -123,13 +124,13 @@ export default async function Experiences() {
                     <summary>
                       <span className="cm-item-t">
                         <b>{e.title}</b>
-                        <em>{kindLabel(e.kind, lang) ?? t("경험")}</em>
+                        <em>{agency ? agencyWord(kindLabel(e.kind, lang) ?? "경험") : kindLabel(e.kind, lang) ?? t("경험")}</em>
                       </span>
                       <span className="cm-item-meta">
                         {/* **반영 여부가 이 줄에서 가장 쓸모 있는 값이다**:
                             더하지 않은 경험은 현재 상태에 아직 없다 */}
                         <span className={`cm-dot${on ? " is-on" : ""}`}>
-                          {on ? t("현재 상태에 더함") : t("아직 더하지 않음")}
+                          {on ? t("더함") : t("더하기 전")}
                         </span>
                         <time dateTime={at}>{monthAt(at, lang)}</time>
                       </span>
@@ -138,8 +139,7 @@ export default async function Experiences() {
                       <span className="cm-item-sub">
                         {tds.length
                           ? tds.join(" · ")
-                          : t("{word}{eul} 고르지 않으셔서 아직 어느 판단으로도 가지 않았습니다",
-                            { word: flow.domainWord, eul: josaOf(flow.domainWord, "을를") })}
+                          : t("{word} 미선택 · 판단에 안 들어감", { word: flow.domainWord })}
                         {e.started_on ? "" : t(" · 날짜는 적어 둔 날입니다")}
                       </span>
                     </summary>

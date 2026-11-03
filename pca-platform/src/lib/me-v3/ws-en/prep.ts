@@ -3,12 +3,10 @@ export const WS_EN_PREP: Record<string, string> = {
   /* ── 쪽(`/me/prep`) ─────────────────────────────────────────── */
   "지원서·면접 준비 · 내 CareerMatri": "Applications and interviews · My CareerMatri",
   "지원서·면접 준비": "Application and interview prep",
-  "검사 결과에서 지원서 문항의 재료와 예상 면접 질문을 꺼내고, 답을 직접 적어 연습하는 곳입니다.":
-    "This is where your assessment results become material for application essays and likely "
+  "지원서 재료와 예상 면접 질문 · 답 연습": "Application material and likely interview questions · answer practice"
     + "interview questions, and where you write and practice your own answers.",
-  "아직 검사 결과가 없습니다.": "You don't have assessment results yet.",
-  "질문과 재료는 내 결과에서만 만들기 때문에, 검사를 마치면 여기에 섭니다.":
-    "Questions and material come only from your own results, so they'll appear here once you finish the assessment.",
+  "검사 결과 없음": "No assessment result",
+  "검사를 마치면 표시됩니다.": "Shown after you finish the assessment.",
   "검사하러 가기": "Take the assessment",
   "{date} 검사 결과 기준 · 적어 둔 답 {done} / {total}":
     "Based on your assessment from {date} · {done} of {total} answered",
@@ -27,9 +25,8 @@ export const WS_EN_PREP: Record<string, string> = {
     + "Answer out loud, then note your key points.",
   "왜 나오나요": "Why it comes up",
   "떠올릴 것": "Things to recall",
-  "아직 질문을 만들 재료가 없습니다.": "There isn't enough material for questions yet.",
-  "경험을 하나 적어 두면 그 경험에서 나올 질문이 여기에 섭니다.":
-    "Add one experience and the questions it could lead to will appear here.",
+  "질문 재료 없음": "No material for questions",
+  "경험을 추가하면 질문이 표시됩니다.": "Add an experience to see questions.",
   "전에 적어 둔 답": "Earlier answers",
   "결과가 바뀌어 지금은 서지 않는 질문에 적었던 답입니다. 그대로 두었습니다.":
     "Answers to questions that no longer appear because your results changed. We've kept them as they were.",
@@ -39,7 +36,7 @@ export const WS_EN_PREP: Record<string, string> = {
     + "team sizes or figures. If you put something on an application that didn't actually happen, "
     + "that's the line most likely to fall apart in an interview. Only you can see your answers.",
   "적어 둠 · {n}자": "Saved · {n|character|characters}",
-  "아직 안 적음": "Not written yet",
+  "미작성": "Not written",
   "내 답": "Your answer",
   "답의 요점": "Key points",
   "저장했습니다.#prep": "Saved.",

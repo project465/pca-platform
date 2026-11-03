@@ -333,6 +333,22 @@ export const EXPERIENCE_KINDS_EN: Record<ExperienceKind, { label: string; hint: 
 };
 
 /** 종류 이름. 모르는 코드면 `undefined` 다(부르는 쪽이 `경험` 으로 떨어진다) */
+/**
+ * 이 사람이 기관(진흥원 등) 진입으로 검사를 받았는가. 가장 최근의 학교 · 기관 응시 하나로 본다.
+ * 경험 화면이 학교 말(`학번 · 수업 · 캡스톤`)을 기관 말로 바꿀 때만 쓴다(`agency-words.ts`)
+ */
+export async function isAgencyUser(userId: string): Promise<boolean> {
+  try {
+    const r = await queryOne<{ university_code: string | null }>(
+      `SELECT university_code FROM v3_attempts
+        WHERE user_id = $1 AND university_code IS NOT NULL
+        ORDER BY started_at DESC LIMIT 1`, [userId]);
+    if (!r?.university_code) return false;
+    const { university } = await import("@/lib/campus/registry");
+    return university(r.university_code)?.org_kind === "agency";
+  } catch { return false; }
+}
+
 export function kindLabel(code: string, lang: "ko" | "en" = "ko"): string | undefined {
   if (lang === "en") return (EXPERIENCE_KINDS_EN as Record<string, { label: string }>)[code]?.label;
   return EXPERIENCE_KINDS.find((k) => k.code === code)?.label;

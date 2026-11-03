@@ -2207,6 +2207,12 @@ a.cm-nav.is-on { border-radius: 12px; }
 }
 .cm-rg-co b { font-size: var(--ui-t-sub); font-weight: var(--ui-w-bd); color: var(--sf-ink); line-height: 1.4; }
 .cm-rg-co small { font-size: var(--ui-t-cap); line-height: 1.6; color: var(--sf-ink-3); }
+.cm-rg-co .cm-rg-sec { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cm-rg-pd { display: flex; flex-wrap: wrap; gap: 6px; max-width: 100%; }
+.cm-rg-pd .cm-chip { max-width: 100%; overflow-wrap: anywhere; }
+.cm-rg-pdx { width: 100%; }
+.cm-rg-pdx summary { cursor: pointer; font-size: var(--ui-t-cap); color: var(--sf-ink-3); min-height: 24px; display: inline-flex; align-items: center; }
+.cm-rg-pdx[open] summary { margin-bottom: 6px; }
 .cm-rg-badge {
   display: inline-flex; padding: 1px 8px; border-radius: 999px;
   border: 1px solid var(--sf-line); background: var(--sf-surface-2);

@@ -48,10 +48,10 @@ export default async function Prep({
     return (
       <CmShell active="/me/prep" title={t("지원서·면접")} major={major} lang={lang}>
         <CmHead title={t("지원서·면접 준비")}
-          lead={t("검사 결과에서 지원서 문항의 재료와 예상 면접 질문을 꺼내고, 답을 직접 적어 연습하는 곳입니다.")} />
+          lead={t("지원서 재료와 예상 면접 질문 · 답 연습")} />
         <EmptyState>
-          <b>{t("아직 검사 결과가 없습니다.")}</b>
-          {" " + t("질문과 재료는 내 결과에서만 만들기 때문에, 검사를 마치면 여기에 섭니다.")}
+          <b>{t("검사 결과 없음")}</b>
+          {" " + t("검사를 마치면 표시됩니다.")}
           <p style={{ marginTop: 10 }}><Link href="/cores">{t("검사하러 가기")}</Link></p>
         </EmptyState>
       </CmShell>
@@ -144,8 +144,8 @@ export default async function Prep({
           </ul>
         ) : (
           <EmptyState>
-            <b>{t("아직 질문을 만들 재료가 없습니다.")}</b>
-            {" " + t("경험을 하나 적어 두면 그 경험에서 나올 질문이 여기에 섭니다.")}
+            <b>{t("질문 재료 없음")}</b>
+            {" " + t("경험을 추가하면 질문이 표시됩니다.")}
           </EmptyState>
         )}
       </section>
@@ -165,9 +165,7 @@ export default async function Prep({
 
       <p className="cm-soon" style={{ marginTop: 24 }}>
         <b>{t("성과와 숫자는 직접 적어 주세요.")}</b>
-        {" " + t("여기 재료는 검사에서 고르신 답이라 기간·인원·수치가 들어 있지 않습니다. "
-          + "실제로 없었던 내용을 지원서에 적으면 면접에서 그 한 줄이 가장 먼저 흔들립니다. "
-          + "적은 답은 본인에게만 보입니다.")}
+        {" " + t("기간·인원·수치는 실제 값으로. 적은 답은 본인만 봅니다.")}
       </p>
     </CmShell>
   );
@@ -191,7 +189,7 @@ function PrepItem({
             <span className={`cm-dot${answer ? " is-on" : ""}`}>
               {answer
                 ? t("적어 둠 · {n}자", { n: answer.answer_text.length })
-                : t("아직 안 적음")}
+                : t("미작성")}
             </span>
             {answer ? <time dateTime={answer.updated_at}>{answer.updated_at}</time> : null}
           </span>

@@ -420,7 +420,7 @@ async function main(): Promise<void> {
      */
     const me = await ctx3.request.get(`${B}/me/results`, { timeout: 60_000 });
     const html = await me.text();
-    const frozen = html.includes("검사 당시 결과") && html.includes("고정됨");
+    const frozen = html.includes("검사 당시 결과") && html.includes("검사 시점");
     const live = html.includes("현재 상태") && html.includes("경험을 더하면 바뀝니다");
     /* **생김새 이름을 옛것으로 세지 않는다.** 굳은 결과는 한동안
        `.cm-snap` 카드였는데 줄(`.cm-item` + `.cm-lockmark`)로 바뀌었고,

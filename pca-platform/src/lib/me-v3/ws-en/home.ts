@@ -25,8 +25,7 @@ export const WS_EN_HOME: Record<string, string> = {
     "Questions answered so far: {n}. You'll pick up from the last one you answered.",
   "답한 것은 문항마다 저장되어, 마지막으로 답한 문항에서 이어집니다.":
     "Each answer is saved as you go, so you'll pick up from the last question you answered.",
-  "적성이나 성격은 묻지 않습니다. 해 본 일에서 직접 판단한 경험을 찾습니다. {time} 걸립니다.":
-    "It doesn't ask about aptitude or personality. It looks for decisions you made yourself in work you've done. It takes {time}.",
+  "해 본 일에서 직접 판단한 경험을 찾는 검사 · {time}": "Finds decisions you made in work you have done · {time}",
   "검사를 끝내면 열리는 곳": "What opens when you finish",
   "결과가 나오면 아래 자리마다 내 결과가 채워집니다.":
     "Once your results are ready, each of these fills in with your own results.",
@@ -51,7 +50,7 @@ export const WS_EN_HOME: Record<string, string> = {
   "경험 전체 보기": "See all experiences",
 
   /* 결과가 있는 홈 */
-  "지금 꼭 해야 하는 일은 없습니다.": "There's nothing you need to do right now.",
+  "급한 할 일 없음": "Nothing urgent",
   "지금 정리하기 →": "Write it up now →",
   "경험 추가 →": "Add an experience →",
   "그 밖에 할 일 {n}개": "Other steps ({n})",
@@ -60,15 +59,14 @@ export const WS_EN_HOME: Record<string, string> = {
     "When you write down a new experience, your current state is updated and your next steps follow from it.",
   "전체 보기 →": "See all →",
   "{lead}입니다.": "{lead}.",
-  "지원서에서 설명할 만한 경험이 아직 없습니다. 검사에서 다룬 영역 하나를 짧게 해 보는 것이 다음 걸음입니다.":
-    "You don't have experience to explain in an application yet. A good next step is to try something short in an area you're interested in.",
+  "다음 걸음: 검사에서 다룬 영역 하나를 짧게 해 보기": "Next: try one area from the assessment briefly",
   "모두 보기 →": "See all →",
   "최근 추가한 경험으로 다음과 같은 변화가 생겼습니다.":
     "The experience you added recently led to these changes.",
   "그 밖에 {n}가지가 더 달라졌습니다.": "Plus {n} more.",
   "적어 두신 경험이 어느 판단으로 가는지 먼저 보고 더합니다. 더해도 검사 당시 결과는 그대로 남습니다.":
     "We check which judgment each experience supports before adding it. Adding it doesn't change your results at the time of the assessment.",
-  "아직 더하지 않은 경험 {n}건": "Experiences not yet reflected: {n}",
+  "더하기 전 경험 {n}건": "Experiences not yet added: {n}",
   "최근 검사 결과와 경험을 확인할 수 있습니다.": "See your latest assessment results and experiences.",
   "진로진단": "Career assessment",
   "{major} 결과 ({tier})": "{major} results ({tier})",
@@ -88,4 +86,6 @@ export const WS_EN_HOME: Record<string, string> = {
   "개인·동아리 프로젝트": "Personal or club project",
   "직장 경험": "Work experience",
   "자격·교육 이수": "Certification or training",
+  "더하기 전에 어느 판단으로 가는지 먼저 보여 드립니다.": "Before adding, we show which decisions each experience goes to.",
+  "경험을 추가하면 다음 할 일이 표시됩니다.": "Add an experience to see the next step.",
 };

@@ -108,10 +108,10 @@ export default async function State(
     return (
       <CmShell active="/me/state" title={t("현재 상태")} major={major} lang={lang}
       bar={<Link className="cm-btn" href="/me/experience/new">{t("+ 경험 추가")}</Link>}>
-        <CmHead title={t("아직 볼 것이 없습니다")}
-          lead={t("검사를 한 번 끝내면 확인된 근거와 아직 부족한 부분이 여기에 나옵니다.")} />
+        <CmHead title={t("현재 상태")}
+          lead={t("검사를 마치면 표시됩니다.")} />
         <div className="cm-soon">
-          <b>{t("완료한 검사가 없습니다.")}</b>
+          <b>{t("완료한 검사 0건")}</b>
           <p style={{ marginTop: 10 }}>
             {st.open
               ? <Link href={`/v3/${st.open.id}`}>{t("풀던 검사 이어하기")}</Link>
@@ -164,11 +164,11 @@ export default async function State(
       <CmHead
         kicker={st.recomputed_at
           ? t("{at} 기준", { at: day(st.recomputed_at) })
-          : t("검사 {at} 기준 · 아직 더한 경험 없음", { at: day(st.result_at) })}
+          : t("검사 {at} 기준 · 추가한 경험 0건", { at: day(st.result_at) })}
         title={t("현재 상태")}
         lead={st.recomputed_at
           ? t("검사 {at} 결과에 그 뒤의 경험을 얹은 값입니다.", { at: day(st.result_at) })
-          : t("아직 새 경험을 더한 적이 없어 검사 당시 결과와 같습니다.")}
+          : t("검사 결과와 같음")}
         /* **짙은 단추는 쪽에 하나다**(규격 §19). 아래 `지금 할 일` 칸이
            `경험에 추가` 를 들고 있으므로 머리에는 아무것도 세우지 않는다.
            전에는 둘이 서서 같은 화면의 짙은 단추가 둘이었고, 둘이 **서로
@@ -179,7 +179,7 @@ export default async function State(
         <p className="cm-done" role="status">
           {realChange
             ? t("새 경험을 더했습니다. 아래 `최근 달라진 것` 에 무엇이 달라졌는지 적혀 있습니다.")
-            : t("새 경험을 더했습니다. 달라진 것은 없습니다 · 같은 영역의 근거가 둘이 되면 그때 올라갑니다.")}
+            : t("경험 더함 · 변동 없음 (같은 영역 근거 2개부터 올라감)")}
         </p>
       ) : null}
 
@@ -226,8 +226,8 @@ export default async function State(
               : "",
           ].filter(Boolean).join(" ")
           : realChange
-            ? t("변화는 생겼지만 아직 설명할 수 있는 기준까지는 올라오지 않았습니다. 무엇이 올라갔는지는 아래 `최근 달라진 것` 에 적혀 있습니다.")
-            : t("검사에서 다룬 영역 하나를 짧게 해 보고 그것을 경험으로 적으면 여기에 나옵니다.")}
+            ? t("변동 있음 · 설명 가능 기준 미달 (아래 `최근 달라진 것`)")
+            : t("검사 영역 하나를 해 보고 경험으로 추가하면 표시됩니다.")}
         action={Object.keys(st.zoneOf).length > ready.length ? (
           <Link className="cm-btn" href="#domains">{t("전체 기술영역 보기")}</Link>
         ) : undefined}
@@ -278,7 +278,7 @@ export default async function State(
             </p>
           ) : (
             <p>
-              {t("지금 꼭 해야 하는 일은 없습니다. 새 경험을 적어 현재 상태를 다시 세우면 그다음 할 일이 나옵니다.")}
+              {t("급한 할 일 없음 · 경험을 추가하면 다음 할 일이 표시됩니다.")}
             </p>
           )}
           {/* **읽는 쪽으로 보내지 않는다**(규격 §7). 할 일이 적는 일이면
@@ -329,7 +329,7 @@ export default async function State(
       <p className="cm-more-mark"><span>{t("여기부터 자세한 내용")}</span></p>
 
       {/* 아직 부족한 것 ── 하나에 늘 셋이 붙는다 */}
-      <h2 className="cm-sub-h" id="gaps">{t("아직 부족한 것")}</h2>
+      <h2 className="cm-sub-h" id="gaps">{t("부족한 부분")}</h2>
       {gaps.length ? (
         <>
           {/* **같은 말을 세 번 적지 않는다**(규격 §14).
@@ -389,8 +389,8 @@ export default async function State(
             <p>
               {/* 직접 해 본 판단이 하나도 없으면 `보완할 부분 없음` 이 아니다(2026-11-03 견본 B 공통 P0-2) */}
               {(m.overview?.counts?.confirmed_axes ?? 0) === 0
-                ? t("아직 직접 해 본 판단이 나오지 않았습니다. 다음 과제에서 기준 하나를 직접 정해 보는 것부터 시작해 보세요.")
-                : t("지금 바로 보완할 부분은 없습니다. 남은 일은 가진 근거를 지원서에서 설명할 문장으로 만드는 것입니다.")}
+                ? t("직접 정한 판단 0 · 다음 과제에서 기준 하나를 직접 정해 보세요.")
+                : t("보완할 곳 없음 · 남은 일: 가진 근거를 지원서 문장으로 만들기")}
             </p>
           </div>
         </div>
@@ -434,9 +434,9 @@ export default async function State(
       <h2 className="cm-sub-h">{t("검사 당시 결과와 지금")}</h2>
       <div className="cm-panel">
         <div className="cm-pane">
-          <h3>{t("검사 당시 결과")} <span className="cm-lockmark">{t("고정됨")}</span></h3>
+          <h3>{t("검사 당시 결과")} <span className="cm-lockmark">{t("검사 시점")}</span></h3>
           <p>
-            {t("{at} · {tier} · 그날의 문항과 기준으로 고정되어 있습니다. 경험을 더해도 이 줄은 한 글자도 달라지지 않습니다.", {
+            {t("{at} · {tier} · 검사 시점 기준", {
               at: day(st.result_at),
               tier: lang === "en"
                 ? m.tier.charAt(0) + m.tier.slice(1).toLowerCase()
@@ -451,8 +451,8 @@ export default async function State(
           <h3>{t("현재 상태")}</h3>
           <p>
             {st.recomputed_at
-              ? t("{at} 기준 · 그 결과 위에 새 경험을 얹은 값입니다.", { at: day(st.recomputed_at) })
-              : t("아직 새 경험을 더한 적이 없어 왼쪽과 같습니다.")}
+              ? t("{at} 기준 · 검사 결과 + 추가한 경험", { at: day(st.recomputed_at) })
+              : t("검사 결과와 같음")}
           </p>
           {st.zoneMoved.length ? (
             <div className="cm-chips">
@@ -466,7 +466,7 @@ export default async function State(
         </div>
       </div>
       <p className="cm-lead" style={{ marginTop: 10 }}>
-        {t("두 값은 서로를 덮지 않습니다. 지원서에 적을 때는 검사 당시 결과를 근거로 쓰고, 다음에 무엇을 할지는 현재 상태를 보시면 됩니다.")}
+        {t("지원서에는 검사 결과, 다음 할 일은 현재 상태 기준.")}
       </p>
 
       {/* ── 여기부터가 세부다 ──
@@ -525,8 +525,8 @@ export default async function State(
           </div>
         ) : (
           <div className="cm-soon">
-            <b>{t("지원서에서 설명할 수 있는 근거가 아직 없습니다.")}</b>{" "}
-            {t("검사에서 다룬 영역 하나를 짧게 해 보고 그것을 적으면 여기에 그 경험이 쌓입니다.")}
+            <b>{t("설명할 수 있는 근거 0")}</b>{" "}
+            {t("검사 영역 하나를 해 보고 경험으로 추가하세요.")}
           </div>
         )}
         {m.evidence.partial.length ? (
@@ -559,7 +559,7 @@ export default async function State(
             ) : null)}
           </div>
           <p className="cm-lead" style={{ marginTop: 12 }}>
-            {t("산업과 직무는 같은 근거를 그쪽 말로 다시 읽어 주는 곳입니다. 고른 산업이나 직무가 기술영역 결과를 바꾸지는 않습니다.")}
+            {t("산업·직무 선택은 기술영역 결과에 영향 없음")}
           </p>
         </details>
       ) : null}

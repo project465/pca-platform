@@ -234,15 +234,15 @@ export default async function Next(
             ? (taken === 1
               ? t("결과에서 할 일 {n}가지를 담았습니다. 아래 첫 줄부터 하시면 됩니다.#one", { n: taken })
               : t("결과에서 할 일 {n}가지를 담았습니다. 아래 첫 줄부터 하시면 됩니다.", { n: taken }))
-            : t("결과의 할 일은 이미 담겨 있습니다 · 같은 일이 두 번 쌓이지 않습니다.")}
+            : t("결과의 할 일 담기 완료")}
         </p>
       ) : null}
 
       {!st.model ? (
         <EmptyState>
-          <b>{t("아직 완료한 검사가 없습니다.")}</b> {t("할 일은 검사 결과의 비어 있는 부분에서 나옵니다.")}
+          <b>{t("완료한 검사 0건")}</b> {t("검사를 마치면 할 일이 표시됩니다.")}
           <p style={{ marginTop: 10 }}>
-            <Link href="/cores">{t("검사 시작하기")}</Link>
+            <Link href="/cores">{t("검사 시작")}</Link>
           </p>
         </EmptyState>
       ) : actions.length === 0 ? (
@@ -324,8 +324,8 @@ export default async function Next(
                     <p>
                       <b>{t("어느 부분")}</b>{" "}
                       {first.td_code
-                        ? t("{name} · 지금 부족한 부분은 없습니다", { name: dn(first.td_code) })
-                        : t("영역을 가리지 않는 할 일입니다")}
+                        ? t("{name} · 부족한 부분 없음", { name: dn(first.td_code) })
+                        : t("전 영역 공통")}
                     </p>
                   )}
                   {how.length ? (

@@ -4,6 +4,7 @@ import { useRef, useState, type ReactNode } from "react";
 import type { ExperienceFlow } from "@/lib/me-v3/student";
 import type { WsLang } from "@/lib/me-v3/ws-lang";
 import { wsSay } from "@/lib/me-v3/ws-say";
+import { agencySay } from "@/lib/me-v3/agency-words";
 import { josaOf } from "@/lib/me-v3/result/josa";
 
 export type Dom = {
@@ -74,10 +75,12 @@ function Guide({ n, title, body }: { n: number; title: string; body: ReactNode }
  * 먼저 본다: 지나왔으면 채워져 있으므로 마지막 저장에서 걸릴 것이 없다.
  */
 export default function Steps(
-  { domains, one, three, value, saveLabel, flow, fromAction, suggest, lang = "ko" }: {
+  { domains, one, three, value, saveLabel, flow, fromAction, suggest, lang = "ko", agency = false }: {
     domains: Dom[]; one: ReactNode; three: ReactNode; value?: Picked;
     /** 작업공간 언어(`wsLang()`). 함수는 서버에서 넘길 수 없어 여기서 `wsSay` 를 부른다 */
     lang?: WsLang;
+    /** 기관 참여자면 학교 말을 기관 말로(`agency-words.ts`) */
+    agency?: boolean;
     /**
      * 걸음 어디서나 저장할 수 있게 한다. **고치는 자리에서만 켠다.**
      *
@@ -102,7 +105,7 @@ export default function Steps(
     suggest?: string[];
   },
 ) {
-  const t = wsSay(lang);
+  const t = agencySay(wsSay(lang), agency, lang);
   const [step, setStep] = useState(1);
   /* 고쳐 적는 자리는 **적어 둔 영역이 켜진 채로** 선다. 그래야 그 영역의
      판단과 결과물 칸이 처음부터 보인다 */

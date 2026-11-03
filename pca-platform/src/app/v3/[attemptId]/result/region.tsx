@@ -22,10 +22,10 @@ export function regionBlocks(v: RegionView, chosen: string[]): { key: string; ti
   const picked = v.groups.filter((g) => chosen.includes(g.pack.code));
   const rest = v.groups.filter((g) => !chosen.includes(g.pack.code));
   return [
-    { key: "picked", title: "고르신 산업", note: "검사에서 고르신 산업이라 경험이 맞는 정도와 상관없이 먼저 보여 드려요.", groups: picked },
-    { key: "A", title: HEAD.A, note: "그 산업이 쓰는 영역 가운데 근거가 확인된 영역이 있는 곳입니다.", groups: rest.filter((g) => g.tier === "A") },
-    { key: "B", title: HEAD.B, note: "그 산업이 쓰는 영역에서 해 본 일은 확인됐지만 아직 정리가 덜 된 곳입니다.", groups: rest.filter((g) => g.tier === "B") },
-    { key: "C", title: HEAD.C, note: "이번 검사에서 그 산업이 쓰는 영역의 판단을 아직 확인하지 못한 곳입니다.", groups: rest.filter((g) => g.tier === "C") },
+    { key: "picked", title: "고르신 산업", note: "검사에서 고른 산업 · 먼저 표시", groups: picked },
+    { key: "A", title: HEAD.A, note: "근거가 확인된 영역이 있는 산업", groups: rest.filter((g) => g.tier === "A") },
+    { key: "B", title: HEAD.B, note: "해 본 일 확인 · 정리 전", groups: rest.filter((g) => g.tier === "B") },
+    { key: "C", title: HEAD.C, note: "해당 영역 판단 미확인", groups: rest.filter((g) => g.tier === "C") },
   ].filter((b) => b.groups.length);
 }
 

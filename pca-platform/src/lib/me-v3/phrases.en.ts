@@ -197,7 +197,7 @@ export const PHRASES_EN: Record<string, string> = {
   " 외": " and more",
   "여기서 한 번 더 보는 것": "What gets a closer look here",
   "다음에 만들 근거": "Evidence to build next",
-  "아직 고른 것이 없습니다": "Nothing picked yet",
+  "고른 항목 없음": "Nothing picked",
   "외 {n}개": "+{n} more",
   "높음": "High",
   "보통": "Medium",
@@ -216,7 +216,7 @@ export const PHRASES_EN: Record<string, string> = {
   "비교했다고 고른 대상": "What you said you compared against",
   "직접 정했다고 고른 것": "What you said you decided yourself",
   "골랐지만 응답으로는 아직 확인되지 않은 것": "Picked, but not yet backed by your answers",
-  "아직 고르지 않음 · {list}": "Not picked yet · {list}",
+  "미선택 · {list}": "Not picked · {list}",
   "상세 근거 보기": "See the detailed evidence",
   "확인된 판단 {a} · 직접 정한 것 {b}": "Confirmed {a} · Decided yourself {b}",
   "기술영역에서 확인된 판단 {a} · 직접 정한 것 {b}": "Judgments confirmed in your areas {a} · decided yourself {b}",
@@ -240,20 +240,20 @@ export const PHRASES_EN: Record<string, string> = {
   "경험 번역에서 직접 적어 주신 말": "In your own words, from the experience translation",
   "학부에서 {major}을(를) 하시고 대학원은 다른 분야를 하셨다고 답해주셨습니다. 대학원 경험은 {major} 영역 확인과 따로 보고, 아래 번역에서 읽었습니다.":
     "You told us you studied {major} as an undergraduate and a different field in graduate school. We kept your graduate experience separate from your {major} areas and read it in the translation below.",
-  "아직 적지 않으신 단계 {n}개 ·": "{n} {n|step|steps} still to fill in ·",
+  "미작성 단계 {n}개 ·": "Steps not written: {n} ·",
   "지원서 문단의 뼈대: 역할 · 행동 · 판단 · 결과":
     "The frame of an application paragraph: role · action · decision · result",
   "네 칸은 고르신 보기와 직접 적어 주신 말(따옴표) 그대로입니다. 한 문단으로 잇는 것과 수치 · 기간 · 결과를 채우는 것은 직접 하셔야 하고, 여기에 없는 성과를 적지 않습니다.":
     "These four boxes are exactly what you picked and what you wrote (in quotes). Turning them into a paragraph and adding numbers, dates and results is up to you. Don't add achievements that aren't here.",
   "응답이 적어 다음 걸음까지 적지 못했습니다.": "There weren't enough answers to suggest a next step.",
   "{where}에서 해 본 일이 이어져요": "Builds on what you've done in {where}",
-  "아직 이쪽으로 이어지는 경험은 보이지 않습니다": "None of your experience leads here yet",
+  "이어지는 경험 없음": "No linked experience",
   "먼저 적어 두기": "Write it down first",
   "산업": "Industry",
   "아직 없음": "None yet",
   "직무": "Role",
   "권역": "Region",
-  "아직 고르지 않으셨습니다": "Not chosen yet",
+  "미선택": "Not chosen",
   "기관 유형": "Type of organization",
   /* 기관 유형 일곱(`region-layer.json` 의 `org_types`). 이름표만 옮긴다 */
   "대기업": "Large company",
@@ -289,8 +289,7 @@ export const PHRASES_EN: Record<string, string> = {
   "이 경험을 쓸 곳": "Where this experience fits",
   "검사에서 고르신 목표": "Goals you picked in the assessment",
   "이 결과를 읽는 기준": "How to read these results",
-  "이 리포트는 응답한 내용만으로 만들어집니다. 적성이나 합격 가능성을 내지 않고, 순위도 매기지 않습니다.":
-    "This report is built only from your answers. It doesn't measure aptitude, predict hiring outcomes or rank you.",
+  "응답 기준 리포트 · 적성·합격 가능성·순위 미산출": "Based on your answers only · no aptitude, hiring odds or ranking",
   "현재 상태": "Where you are now",
   "전체 보기 →": "See everything →",
   "지금 할 일": "Next step",
@@ -301,7 +300,7 @@ export const PHRASES_EN: Record<string, string> = {
     "These answers came from application questions that did not ask which area the work belonged to, so they are not counted in “What you left behind” for each area above. Record this project with its area in your experience log and it will count as evidence there.",
   "할 일에 담아두기": "Save to my to-do list",
   "이미 담아 둔 할 일 {n}개 ·": "{n} already saved ·",
-  "보실 산업과 직무를 아직 고르지 않으셨어요.": "You haven't picked an industry or role to look at yet.",
+  "산업·직무 미선택": "No industry or role chosen",
   "지원서에서 꺼내 쓸 경험은 무엇인가": "Which experience can you use in applications?",
   "다음 할 일 →": "Next steps →",
   "아래 항목은 전부 검사에서 스스로 고른 답입니다. 네 층으로 적습니다: 해 봤다고 고른 것 → 직접 정했다고 고른 것 → 남겼다고 고른 결과물 → 비교했다고 고른 대상. 파일이나 평가처럼 밖에서 확인한 기록은 아니고, 그룹 표시와 상태 문장만 검사가 정한 것입니다. 권하는 행동은 ‘적을 과제 고르기’ 에 따로 적습니다.":
@@ -311,8 +310,7 @@ export const PHRASES_EN: Record<string, string> = {
   "남긴 것 확인 필요": "Output still to confirm",
   "수치와 기간, 결과는 여기 없으니 지원서에 옮길 때 직접 적어 주세요.":
     "Numbers, dates and results aren't included here. Add them yourself when you write your application.",
-  "지원서로 옮길 만큼 확인된 경험은 아직 없어요. 아래 ‘적을 과제 고르기’부터 보시면 돼요.":
-    "You don't have experience that's ready for applications yet. Start with ‘Pick something to write up’ below.",
+  "지원서용 확인 경험 0 · 아래 ‘적을 과제 고르기’부터": "Experiences ready for applications: 0 · start with “Pick a project to write up” below",
   "이런 걸 해보면 여기에 적혀요.": "Try something like this and it will show up here.",
   "먼저 써볼 경험": "Experience to start with",
   "지원서": "Application",
@@ -329,8 +327,7 @@ export const PHRASES_EN: Record<string, string> = {
     "Areas where you decided things yourself and picked evidence to back it up.",
   "이 밖에 {n}가지가 더 확인됐고, 위의 영역별 설명에서 보실 수 있어요.":
     "{n} more {n|was|were} confirmed. You'll find {n|it|them} in the area notes above.",
-  "지원서로 옮길 영역은 아직 없습니다. 아래 ‘적을 과제 고르기’ 가운데 하나를 끝내면 이 칸이 먼저 채워집니다.":
-    "No areas are ready for applications yet. Finish one item under ‘Pick something to write up’ below, and this is the first place it shows.",
+  "지원서용 영역 0 · 아래 ‘적을 과제 고르기’ 하나를 끝내면 표시": "Areas ready for applications: 0 · finish one item in “Pick a project to write up” below",
   "경험은 있지만 설명 근거를 더 붙일 부분": "Experience that needs more to back it up",
   "해 본 것은 확인됐고, 어디까지 직접 정했는지가 덜 적힌 영역입니다.":
     "Areas where you've done the work, but it's less clear what you decided yourself.",
@@ -351,10 +348,8 @@ export const PHRASES_EN: Record<string, string> = {
   "면접에서 같은 구조로 다시 묻는 질문": "Interview questions that follow the same structure",
   "이 경험이 어느 산업으로 이어지는가": "Which industries this experience leads to",
   "{x} 쪽에 연결하면": "Linking it to {x}",
-  "같은 경험을 {x}에서 쓰는 표현으로 놓았습니다. 맞는다거나 맞지 않는다고 판정하지 않습니다.":
-    "We've put the same experience in the terms {x} uses. This isn't a judgment of whether you fit.",
-  "다른 산업에서 보시려면 다시 응시하지 않아도 됩니다. 기술영역 결과는 산업을 바꿔도 그대로입니다.":
-    "You don't need to retake the assessment to look at another industry. Your technical area results stay the same whichever industry you pick.",
+  "같은 경험을 {x}에서 쓰는 표현으로 옮긴 것": "The same experience, in the words {x} uses",
+  "산업 변경 시 재응시 불필요 · 기술영역 결과 동일": "Switch industries without retaking · area results stay the same",
   "{x} 직무에 연결하면": "Linking it to the {x} role",
   "같은 경험을 {x}에서 먼저 읽는 차례로 놓았습니다. 기술영역 결과는 그대로입니다.":
     "We've reordered the same experience the way a {x} role would read it. Your technical area results don't change.",
@@ -393,8 +388,7 @@ export const PHRASES_EN: Record<string, string> = {
     "You gave two areas the same answer in the quick scan and chose {x}. ",
   "위의 그룹은 그 선택과 상관없이 응답에서 나온 것입니다.": "The groups above come from your answers, not from that choice.",
   "여러 영역에서 공통으로 확인된 판단": "Judgments confirmed across areas",
-  "어느 기술영역에서 한 일인지까지는 묻지 않았습니다. 그래서 위의 영역별 결과에는 들어가지 않습니다.":
-    "We didn't ask which technical area these came from, so they aren't part of the area results above.",
+  "영역 미지정 · 영역별 결과 미포함": "No area specified · not included in area results",
   "직접 정한 것으로 확인": "Confirmed as your own call",
   "해 본 것으로 확인": "Confirmed as done",
   "고르신 판단 모두 보기": "See all the judgments you picked",
@@ -415,29 +409,25 @@ export const PHRASES_EN: Record<string, string> = {
     "This shows which industries and roles often use the technical areas confirmed in your answers. It isn't a measure of fit or hiring chances. It points to places worth exploring.",
   " · 이 산업이 중심으로 보는 영역 {n}곳": " · {n} core {n|area|areas} for this industry",
   " · 이 직무가 중심으로 쓰는 영역 {n}곳": " · {n} core {n|area|areas} for this role",
-  "순위가 아닙니다. 같은 수가 나온 항목은 순서를 매기지 않습니다.":
-    "This isn't a ranking. Items with the same count aren't put in order.",
+  "순위 아님 · 같은 수는 순서 없음": "Not a ranking · equal counts have no order",
   "이 지역에서 함께 볼 곳": "Places to look at in this region",
   "{region} 기준으로 함께 탐색해 볼 수 있는 기관입니다. 채용 여부나 합격 가능성과는 관계가 없습니다.":
     "Organizations worth exploring in {region}. This says nothing about hiring or your chances.",
   "{majors} 전공에서 이어 볼 수 있습니다": "Related majors: {majors}",
-  "전공 연결은 아직 적히지 않았습니다": "No related majors listed yet",
+  "전공 연결 미기재": "Major link not recorded",
   "지역 기업·기관 더 보기 →": "See more local organizations →",
   "이 지역의 기관 목록은 아직 비어 있습니다": "No organizations are listed for this region yet",
   "이 지역의 공공기관 · 연구기관은 이 결과에 아직 싣지 않았습니다": "Public and research organizations for this region are not in this result yet",
   "기관은 공식 홈페이지와 공공데이터에서 확인한 것만 적습니다. 확인되기 전까지 짐작으로 채우지 않습니다.":
     "We only list organizations confirmed through official websites and public data. Until then, we don't guess.",
-  "지금 {region} 기준으로 보고 계십니다. 이 선택은 기술영역 결과를 바꾸지 않습니다.":
-    "You're viewing this for {region}. This choice doesn't change your technical area results.",
-  "희망 지역을 고르면 산업과 직무를 읽는 순서가 그 권역 기준으로 바뀝니다. 기술영역 결과는 그대로입니다.":
-    "Choose a preferred region and industries and roles will be ordered for that region. Your technical area results stay the same.",
+  "{region} 기준 · 기술영역 결과에 영향 없음": "Viewing by {region} · area results unaffected",
+  "희망 지역을 고르면 산업·직무 순서가 그 권역 기준으로 바뀝니다.": "Pick a region to order industries and roles by that region.",
   "권역과 고르신 것 보기": "See regions and your choices",
   "권역마다 일자리의 성격이 다릅니다": "Jobs differ from region to region",
   "기관 수와 기업 목록은 아직 담지 않았습니다. 공개 통계를 붙이기 전까지 짐작으로 채우지 않습니다.":
     "Organization counts and company lists aren't included yet. We won't fill them in with guesses before public statistics are added.",
   "이 넷이 모이면 그 조합을 물어볼 수 있습니다": "With these four, you can ask about that combination",
-  "지금은 물어볼 자료가 없어서 답을 내지 않습니다. 고르신 넷은 내 CareerMatri에 남아 있고, 공고와 기관 자료가 들어오면 그 조합부터 보여드립니다.":
-    "There's no data to answer with yet, so we don't give an answer. Your four choices are saved in My CareerMatri, and once job postings and organization data come in, we'll show that combination first.",
+  "고른 넷은 내 CareerMatri에 저장됩니다.": "Your four picks are saved in My CareerMatri.",
   "희망 지역 고르기": "Choose a preferred region",
   "결과 읽는 기준과 고르신 목표": "How to read your results, and the goals you picked",
   "응시하면서 고르신 것입니다. 기술영역 결과에는 들어가지 않고, 산업과 직무를 읽는 순서에만 쓰입니다.":
@@ -457,9 +447,8 @@ export const PHRASES_EN: Record<string, string> = {
   "‘아직’의 뜻": "What ‘not yet’ means",
   "못 한다는 뜻이 아닙니다. 지금 응답에서 그 직무의 근거를 찾지 못했다는 뜻이고, 경험을 하나 적으면 달라집니다.":
     "It doesn't mean you can't. It means we didn't find evidence for it in your answers this time. Add one experience and that can change.",
-  "고정되어 있습니다": "This result is locked in",
-  "응시하신 시점의 문항과 기준으로 고정되어 있습니다. 나중에 기준이 바뀌어도 이 결과는 달라지지 않습니다.":
-    "It uses the questions and criteria from when you took the assessment. If the criteria change later, this result stays the same.",
+  "검사 시점 기준": "As of the assessment",
+  "검사 시점의 문항과 기준": "Questions and criteria as of the assessment",
   "고르신 근거 {n}": "Evidence picked {n}",
   "파일럿 의견 적기": "Share pilot feedback",
   "남긴 기록": "Your records",
@@ -486,8 +475,7 @@ export const PHRASES_EN: Record<string, string> = {
   "지원서에 꺼내 쓸 경험": "Experience for your applications",
   "직접 정함": "Decided",
   "남은 결과물": "Outputs",
-  "이번 답에서는 아직 지원서에 바로 쓸 만큼 정리된 경험이 없습니다. 아래 할 일 하나를 해 보고 경험을 적으면 여기가 채워집니다.":
-    "None of your experience is ready to use in an application yet. Try one of the steps below, write up what you did, and this will fill in.",
+  "지원서용 정리 경험 0 · 아래 할 일 하나를 해 보고 경험을 추가하면 표시": "Experiences ready for applications: 0 · do one step below and add it as an experience",
   "다음에 할 일": "What to do next",
   "해 본 일 적기": "Write up what you did",
   "지금 답으로는 따로 적을 할 일이 없습니다.": "There's nothing specific to suggest from these answers.",

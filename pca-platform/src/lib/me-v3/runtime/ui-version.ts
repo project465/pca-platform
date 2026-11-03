@@ -211,7 +211,8 @@ export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V70";
 /** `여쭙니다` 말투를 `물어볼게요 · 묻습니다` 로, 단계 이름을 학생 말로(관심 분야 · 해 본 일 · 더 자세히 · 남긴 것 · 지원서 문장) */
 /** 끝 화면 보관 안내 — copy.42 */
 /** 시작 화면 `결과지 견본 보기` 한 줄 — copy.43 */
-export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.43";
+/** 공용 영어 사전(`phrases.en.ts`)에서 결과지 문구 열쇠만 바뀌었다. 검사 화면 글과 문항은 그대로다 — copy.44 */
+export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.44";
 
 /*
  * `V19` · `copy.14` 로 올린 까닭. **경험 빈도의 화면 말을 공통으로

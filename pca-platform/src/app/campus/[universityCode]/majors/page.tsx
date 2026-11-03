@@ -23,7 +23,8 @@ type Params = {
 export async function generateMetadata({ params }: Params) {
   const { universityCode } = await params;
   const u = university(universityCode);
-  return { title: u ? `${campusSay(u)("학과")} 선택 · ${u.university_name}` : "CareerMatri" };
+  /* 기관이면 탭 제목을 `분야 선택` 으로(2026-11-03 진흥원 실화면: `전공 계열 선택`). 기관 종류 설정으로 정해져 새 기관에도 걸린다 */
+  return { title: u ? `${u.org_kind === "agency" ? "분야" : "학과"} 선택 · ${u.university_name}` : "CareerMatri" };
 }
 
 const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
