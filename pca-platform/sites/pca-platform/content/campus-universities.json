@@ -603,7 +603,7 @@
          "kind": "department",
          "core_code": "EE_CORE_V1",
          "specialization": "SPEC_EE_ROBOT",
-         "note": "구동과 센서와 제어와 전원이 전기전자 영역 안에 이미 있다. 판단 Domain 자체가 다르다는 것이 전공자 검토에서 확인되면 그때 따로 만든다"
+         "note": "구동과 센서와 제어와 전원이 전기전자 영역 안에 이미 있다. 판단 Domain 자체가 다르다는 것이 전공자 검토에서 확인되면 그때 따로 만든다 **2026-11-03 다시 견주고 그대로 둔다(사업주 검토 7번)**: 전기전자 Core 의 드론·로봇 갈래는 제어·자동화 · 임베디드·펌웨어 · 신호처리 · 전력전자 · 통신·네트워크 · 계측·시험 여섯 영역으로 비행 제어기와 센서와 모터 구동과 기체 통신을 덮는다. 인공지능 Core 의 피지컬 AI 갈래는 그 판단이 영역 하나(피지컬 AI·로봇)이고 나머지가 자료 · 학습 · 배포라 기체를 다루는 학생에게 빈칸이 많고, 기계 Core 는 구동·동역학은 있으나 임베디드와 제어 영역이 없다. 학습한 모델로 기체를 움직이는 과목이 이 학과의 중심이 되면 그때 피지컬 AI 갈래를 다시 본다"
         },
         {
          "code": "PCU26_RAIL",
@@ -1254,7 +1254,7 @@
            "kind": "major",
            "core_code": "EE_CORE_V1",
            "specialization": "SPEC_EE_ROBOT",
-           "note": "구동과 센서와 제어와 전원이 전기전자 영역 안에 이미 있다. 판단 Domain 자체가 다르다는 것이 전공자 검토에서 확인되면 그때 따로 만든다"
+           "note": "구동과 센서와 제어와 전원이 전기전자 영역 안에 이미 있다. 판단 Domain 자체가 다르다는 것이 전공자 검토에서 확인되면 그때 따로 만든다 **2026-11-03 다시 견주고 그대로 둔다(사업주 검토 7번)**: 전기전자 Core 의 드론·로봇 갈래는 제어·자동화 · 임베디드·펌웨어 · 신호처리 · 전력전자 · 통신·네트워크 · 계측·시험 여섯 영역으로 비행 제어기와 센서와 모터 구동과 기체 통신을 덮는다. 인공지능 Core 의 피지컬 AI 갈래는 그 판단이 영역 하나(피지컬 AI·로봇)이고 나머지가 자료 · 학습 · 배포라 기체를 다루는 학생에게 빈칸이 많고, 기계 Core 는 구동·동역학은 있으나 임베디드와 제어 영역이 없다. 학습한 모델로 기체를 움직이는 과목이 이 학과의 중심이 되면 그때 피지컬 AI 갈래를 다시 본다"
           },
           {
            "code": "PCU27_PHYSAI_ELEC",
@@ -1453,9 +1453,9 @@
            "name": "사회복지상담전공",
            "kind": "major",
            "core_code": "HEALTH_CORE_V1",
-           "specialization": "SPEC_HEALTH_SOCIALWELFARE",
+           "specialization": "SPEC_HEALTH_SOCIALWORK",
            "audience": "ADULT_LEARNER",
-           "mapping_note": "사회복지·상담 갈래로 간다. 묻는 것이 여러 기관의 결정을 한 계획으로 묶는 쪽이다. **심리상담학과와 가르는 선**은 재고 판정하고 개입하는 쪽이 PSY Core 이고 제도와 자원을 잇는 쪽이 이 Core 라는 것이다. **학과 이름 쪽은 아직 갈라 두었다**: 전공군 `사회복지학과` 는 `SOC_CORE_V1` 이 들고 있고 옮기는 판단은 두 Core 를 다 아는 분이 한다. 이 자리를 HEALTH 로 보낸 까닭은 사정과 연계와 자원 조정이 이 Core 안에 있고 저쪽은 아직 내용이 없어서다"
+           "mapping_note": "사회복지실천 갈래로 간다. 묻는 것이 여러 기관의 결정을 한 계획으로 묶는 쪽이다. **심리상담학과와 가르는 선**은 재고 판정하고 개입하는 쪽이 PSY Core 이고 제도와 자원을 잇는 쪽이 이 Core 라는 것이다. **학과 이름 쪽은 아직 갈라 두었다**: 전공군 `사회복지학과` 는 `SOC_CORE_V1` 이 들고 있고 옮기는 판단은 두 Core 를 다 아는 분이 한다. 이 자리를 HEALTH 로 보낸 까닭은 사정과 연계와 자원 조정이 이 Core 안에 있고 저쪽은 아직 내용이 없어서다. **2026-11-03 사회복지실천 갈래(`SPEC_HEALTH_SOCIALWORK`)로 옮겼다**: 사례관리 · 프로그램 기획·평가 · 지역자원 연계 · 상담을 가운데에 둔다. 그 전에 응시한 결과는 그때의 갈래(사회복지·상담) 그대로 둔다"
           },
           {
            "code": "PCU27_LIFE_AGRIBIZ",
@@ -2799,7 +2799,8 @@
          "name": "외식산업학과",
          "kind": "department",
          "core_code": "FOOD_CORE_V1",
-         "specialization": "SPEC_FOOD_CULINARY"
+         "specialization": "SPEC_FOOD_FOODSERVICE_MGMT",
+         "note": "식품 Core 의 외식경영 갈래로 잰다. 묻는 것이 점포 한 곳의 원가율과 발주와 사람 배치와 메뉴 출시 판정이다. **2026-11-03 외식조리 갈래에서 옮겼다**: 그 전에 응시한 결과는 그때의 갈래(외식조리) 그대로 둔다. 경영 Core 로 보내지 않은 까닭은 그 Core 의 영역과 산업팩에 외식 점포의 판단이 없어서다"
         }
        ]
       },
@@ -3049,7 +3050,8 @@
          "name": "사회복지학과",
          "kind": "department",
          "core_code": "HEALTH_CORE_V1",
-         "specialization": "SPEC_HEALTH_SOCIALWELFARE"
+         "specialization": "SPEC_HEALTH_SOCIALWORK",
+         "note": "보건·의료복지 Core 의 사회복지실천 갈래로 잰다. **2026-11-03 사회복지실천 갈래(`SPEC_HEALTH_SOCIALWORK`)로 옮겼다**: 사례관리 · 프로그램 기획·평가 · 지역자원 연계 · 상담을 가운데에 둔다. 그 전에 응시한 결과는 그때의 갈래(사회복지·상담) 그대로 둔다"
         },
         {
          "code": "JJU26_COUNSEL",
@@ -3329,7 +3331,8 @@
          "name": "사회복지",
          "kind": "department",
          "core_code": "HEALTH_CORE_V1",
-         "specialization": "SPEC_HEALTH_SOCIALWELFARE"
+         "specialization": "SPEC_HEALTH_SOCIALWORK",
+         "note": "보건·의료복지 Core 의 사회복지실천 갈래로 잰다. **2026-11-03 사회복지실천 갈래(`SPEC_HEALTH_SOCIALWORK`)로 옮겼다**: 사례관리 · 프로그램 기획·평가 · 지역자원 연계 · 상담을 가운데에 둔다. 그 전에 응시한 결과는 그때의 갈래(사회복지·상담) 그대로 둔다"
         },
         {
          "code": "SJEPA26_PSY",
