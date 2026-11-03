@@ -1,5 +1,6 @@
 import { query } from "@/lib/db";
 import { researchTermsOf } from "./research-docs";
+import { LISTED_SQL } from "@/lib/jobs/meta";
 
 /**
  * 내 자료와 겹치는 공고(2026-10-31 대표 지시).
@@ -32,6 +33,14 @@ export type MatchedPosting = {
   tdHits: string[];
   /** 모을 때 단 직무 이름(제목 줄을 못 읽었을 때 대신 쓴다) */
   role?: string | null;
+  /** 카드 칸(`db/schema_jobs_meta.sql`). 칸이 없는 DB 이거나 못 읽었으면 비어 있다 */
+  title?: string | null;
+  category?: string | null;
+  field?: string | null;
+  degree_label?: string | null;
+  region_label?: string | null;
+  abroad?: boolean | null;
+  posting_kind?: string | null;
 };
 
 const STOP = new Set(["연구", "분석", "개발", "경험", "업무", "관련", "이상", "가능", "우대", "research", "analysis", "development"]);
@@ -64,11 +73,21 @@ export async function postingsForMe(userId: string, limit = 30): Promise<{
     id: string; source: string; source_url: string | null; closes_on: string | null; captured_at: string;
     region_code: string | null; raw_requirements: string[]; required_td: Record<string, unknown>; core_code: string | null;
   }>(
+    /* 연구비 · 평가위원 · 교육은 채용 공고가 아니다. 겹침 · 알림에 세지 않는다. 그 칸이 없는 DB 에서는 거르지 않는다 */
     `SELECT id::text, source, source_url, closes_on::text, captured_at::text, region_code, raw_requirements, required_td, core_code
        FROM v3_job_postings
       WHERE captured_at > now() - interval '180 days'
         AND (closes_on IS NULL OR closes_on >= (now() AT TIME ZONE 'Asia/Seoul')::date)
-      ORDER BY captured_at DESC LIMIT 3000`, []).catch(() => []);
+        AND ${LISTED_SQL}
+      ORDER BY captured_at DESC LIMIT 3000`, []).catch(() => query<{
+    id: string; source: string; source_url: string | null; closes_on: string | null; captured_at: string;
+    region_code: string | null; raw_requirements: string[]; required_td: Record<string, unknown>; core_code: string | null;
+  }>(
+    `SELECT id::text, source, source_url, closes_on::text, captured_at::text, region_code, raw_requirements, required_td, core_code
+       FROM v3_job_postings
+      WHERE captured_at > now() - interval '180 days'
+        AND (closes_on IS NULL OR closes_on >= (now() AT TIME ZONE 'Asia/Seoul')::date)
+      ORDER BY captured_at DESC LIMIT 3000`, [])).catch(() => []);
   const recent: MatchedPosting[] = pool.slice(0, 8).map((p) => ({
     id: p.id, source: p.source, source_url: p.source_url, closes_on: p.closes_on,
     captured_at: p.captured_at, region_code: p.region_code,

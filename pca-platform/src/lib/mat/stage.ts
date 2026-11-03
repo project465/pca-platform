@@ -52,4 +52,4 @@ export function daysLeft(closesOn: string | null, now = new Date()): number | nu
 export const REGION_KO: Record<string, string> = {
   "KR-CAPITAL": "수도권", "KR-CHUNGCHEONG": "충청권", "KR-YEONGNAM": "영남권", "KR-HONAM": "호남권", "KR-ETC": "그 밖",
 };
-export const SOURCE_KO: Record<string, string> = { work24: "고용24", jobindustry: "잡인더스트리" };
+export const SOURCE_KO: Record<string, string> = { work24: "고용24", jobindustry: "잡인더스트리", careerpeak: "커리어피크" };

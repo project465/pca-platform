@@ -1,3 +1,5 @@
+import type { PostingKind } from "./meta";
+
 /**
  * 잡인더스트리(아임웹 게시판) 화면을 읽는다. **네트워크 없이 시험할 수 있게
  * 따로 둔다**(`jobindustry:feed` 가 꼴을 흉내 낸 HTML 로 돌린다).
@@ -13,13 +15,24 @@
  * 채우지 않는다: 그 공고는 제목 없이 들어가거나 빠진다.
  */
 
-/** 공고 게시판. 학회소식 · 교육은 공고가 아니라 넣지 않는다 */
-export const JI_BOARDS: { path: string; label: string }[] = [
-  { path: "430", label: "출연연" },
-  { path: "439", label: "교원 임용" },
-  { path: "486", label: "공공기관" },
-  { path: "487", label: "기업 R&D" },
-  { path: "488", label: "대학원생" },
+/**
+ * 공고 게시판(2026-11-03 시험 세션이 브라우저로 확인: 채용 다섯 곳 합계 약 725건, 한 쪽 20건, 서버 HTML 에 들어 있다).
+ *
+ * - `label` 은 카드의 분류다. `kind` 는 게시판이 정하는 종류다(`meta.ts` 의 `kindOf`)
+ * - **채용 다섯 곳만 MAT 공고 목록에 선다.** 연구비 · 평가위원 · 교육은 채용이 아니라 따로 저장만 하고
+ *   연구자 플랜 묶음(`RESEARCH_EXTRA_KINDS`)으로만 꺼낸다. `/506` 은 `/research-funding` 과 같은 목록이라 읽지 않는다
+ * - **`/job-normal` 은 읽지 않는다.** 위 다섯 곳을 브라우저 스크립트로 모아 보이는 화면이라 서버 HTML 에 공고가 없다
+ * - 학회소식은 공고가 아니라 넣지 않는다
+ */
+export const JI_BOARDS: { path: string; label: string; kind: PostingKind }[] = [
+  { path: "430", label: "출연연", kind: "job" },
+  { path: "439", label: "교원 임용", kind: "faculty" },
+  { path: "486", label: "공공기관", kind: "job" },
+  { path: "487", label: "기업 R&D", kind: "job" },
+  { path: "488", label: "대학원", kind: "grad" },
+  { path: "research-funding", label: "연구비", kind: "funding" },
+  { path: "evaluator-recruitment", label: "평가위원", kind: "evaluator" },
+  { path: "505", label: "교육", kind: "education" },
 ];
 
 const ENT: Record<string, string> = {
@@ -99,20 +112,166 @@ function meta(html: string, prop: string): string {
  * 날짜 꼴은 `ingest` 의 `isoDate` 가 고르게 맞춘다.
  */
 export function closesOf(text: string): string {
-  const m = text.match(/마감[^\n\d]{0,24}((?:20)?\d{2}\s*[.\-/년]\s*\d{1,2}\s*[.\-/월]\s*\d{1,2})/);
+  const D = "((?:20)?\\d{2}\\s*[.\\-/년]\\s*\\d{1,2}\\s*[.\\-/월]\\s*\\d{1,2})";
+  const m = text.match(new RegExp(`마감[^\\n\\d]{0,24}${D}`))
+    /* `마감` 말이 없고 `접수 기간: 11.01 ~ 11.20` 처럼 기간만 적은 공고는 물결 뒤 날짜가 마감이다 */
+    ?? text.match(new RegExp(`(?:접수|모집|지원|공고|신청)\\s?(?:기간|일정)[^\\n~]{0,40}~\\s*${D}`));
   return m ? m[1].replace(/\s+/g, "") : "";
 }
 
-export type JiView = { title: string; body: string; closes: string };
+/*
+ * 표(tag) 글이 들 만한 아임웹 class 이름. **실제 목록 카드 HTML 은 아직 못 봤다**(2026-11-03, 이 컨테이너에서
+ * 사이트가 막혀 있다). 흔한 이름을 넓게 받되 이 글에 기대지 않는다: 없으면 게시판 · 제목 · 본문으로 정한다.
+ * 운영에서 `npm run jobs:probe` 로 실제로 무엇이 잡히는지 본다.
+ */
+const TAG_CLASS = /\b(cate|category|list_category|board_category|badge|label|tag|tags|hash_tag|hashtag|chip|keyword)\b/i;
 
-/** 상세 한 쪽. 제목은 `og:title` 의 `게시판 이름` 꼬리를 떼고, 없으면 `.view_tit` 에서 */
-export function parseView(raw: string): JiView {
+/** 한 덩어리 HTML 안의 표 글들. 같은 글은 한 번만, 짧은 글(1~30자)만 */
+export function tagsOf(html: string): string[] {
+  const out: string[] = [];
+  const re = /<([a-z0-9]+)\b[^>]*class\s*=\s*["']([^"']*)["'][^>]*>/gi;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(html))) {
+    if (!TAG_CLASS.test(m[2])) continue;
+    const inner = innerOf(html.slice(m.index), m[2].split(/\s+/).find((c) => TAG_CLASS.test(c)) ?? "");
+    /* 표 글을 묶는 바깥 요소(`.tags` 안의 `.tag` 들)는 건너뛴다. 안쪽 표가 하나씩 따로 잡힌다 */
+    if (/class\s*=\s*["'][^"']*\b(cate|category|badge|label|tag|hash_tag|hashtag|chip|keyword)\b/i.test(inner)) continue;
+    const t = textOf(inner).replace(/\n/g, " ").trim();
+    for (const part of t.split(/\s*[#,|]\s*/)) {
+      const x = part.trim();
+      if (x.length >= 1 && x.length <= 30 && !out.includes(x)) out.push(x);
+    }
+  }
+  return out;
+}
+
+/*
+ * 카드를 감싸는 요소(`post_link_wrap` 이 아닌 게시판에서만 쓴다). `<li>` · `<tr>` · `<article>` 을 먼저 보고,
+ * 없을 때만 class 에 item · card 가 든 `<div>`. **링크에 가장 가까운 것부터 거꾸로 본다**: 목록 화면에는 메뉴
+ * `<li>` 가 수백 개라 앞에서부터 짝을 맞추면 느리다. 짝을 맞추는 길이도 `CARD_MAX` 로 자른다.
+ */
+const CARD_TAG = /<(li|tr|article)\b[^>]*>/gi;
+const CARD_DIV = /<div\b[^>]*class\s*=\s*["'][^"']*\b(item|card|list_item|board_item|li_body)\b[^"']*["'][^>]*>/gi;
+const CARD_MAX = 20_000;
+
+function enclosing(html: string, at: number, open: RegExp, tagOf: (m: RegExpExecArray) => string): string {
+  const from = Math.max(0, at - CARD_MAX);
+  const opens: RegExpExecArray[] = [];
+  open.lastIndex = from;
+  let m: RegExpExecArray | null;
+  while ((m = open.exec(html)) && m.index < at) opens.push(m);
+  for (let i = opens.length - 1; i >= 0; i -= 1) {
+    const o = opens[i];
+    const tag = tagOf(o);
+    const start = o.index + o[0].length;
+    const re = new RegExp(`<(/?)${tag}\\b[^>]*>`, "gi");
+    re.lastIndex = start;
+    let depth = 1;
+    let t: RegExpExecArray | null;
+    while ((t = re.exec(html)) && t.index < start + CARD_MAX) {
+      depth += t[1] ? -1 : 1;
+      if (depth === 0) break;
+    }
+    if (t && depth === 0 && t.index > at) return html.slice(start, t.index);
+  }
+  return "";
+}
+
+function cardAround(html: string, at: number): string {
+  return enclosing(html, at, CARD_TAG, (m) => m[1].toLowerCase()) || enclosing(html, at, CARD_DIV, () => "div");
+}
+
+/** `notice`: `.title em` 에 `공지` 가 있는 카드(게시판 안내 글). 공고가 아니라 상세를 부르지 않는다 */
+export type ListCard = { idx: string; title: string; tags: string[]; notice?: boolean };
+
+/*
+ * 목록 카드는 `a.post_link_wrap`(href 에 idx)이고, 그 안 `.title em` 이 아임웹 게시판 분류다(예: `IT/AI/빅데이터/블록체인`).
+ * `공지` em 은 분류가 아니다. **화면에 보이는 `대학원 · IT·AI·데이터` 배지(class `jxbc-…`)는 브라우저 스크립트가
+ * 나중에 붙인 것이라 서버 HTML 에 없다. 읽지 않는다.** 연구비 · 평가위원 · 교육 게시판은 카드 class 가 달라서,
+ * `post_link_wrap` 이 아니면 둘레 요소(`cardAround`)에서 같은 것을 찾아본다.
+ */
+function emsOf(html: string): string[] {
+  const out: string[] = [];
+  for (const m of html.matchAll(/<em\b[^>]*>([\s\S]*?)<\/em>/gi)) {
+    const t = textOf(m[1]).replace(/\n/g, " ").trim();
+    if (t && t !== "공지" && t.length <= 40 && !out.includes(t)) out.push(t);
+  }
+  return out;
+}
+
+/** 분류 글을 뗀 제목. 분류가 `[…]` 로 싸였든, 띄어쓰기 없이 바로 붙었든 뗀다 */
+export function stripCategory(title: string, cats: string[] = []): string {
+  let t = (title ?? "").replace(/\s+/g, " ").trim();
+  for (const c of cats) {
+    for (const form of [`[${c}]`, c]) {
+      if (c && t.startsWith(form)) { t = t.slice(form.length).trim(); break; }
+    }
+  }
+  /* 분류를 모르면 `[A/B/C]` 꼴만 뗀다(대괄호가 없으면 어디까지가 분류인지 알 수 없다) */
+  t = t.replace(/^\[[^\]]{1,40}\/[^\]]{1,40}\]\s*/, "");
+  return t.trim();
+}
+
+/**
+ * 목록 한 쪽의 카드. 번호(`listRefs` 와 같은 차례)와, 카드에서 읽히면 제목 · 분류(`.title em`).
+ * 제목은 덤이다: 저장할 제목은 상세에서 다시 읽는다.
+ */
+export function listCards(raw: string, board: string): ListCard[] {
+  const html = raw.replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, " ");
+  const out: ListCard[] = [];
+  /* 채용 게시판처럼 카드가 `post_link_wrap` 이면 **그 링크만** 센다: 머리 메뉴 · 옆 위젯의 같은 게시판 글을 섞지 않는다 */
+  const wrapOnly = /\bpost_link_wrap\b/.test(html);
+  const re = /href\s*=\s*["']([^"']*bmode=view[^"']*)["']/gi;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(html))) {
+    const href = decode(m[1]);
+    const path = href.match(/^(?:https?:\/\/[^/]+)?\/([^/?#]+)\/?\?/);
+    if (!path || path[1] !== board) continue;
+    const idx = href.match(/[?&]idx=(\d{1,12})(?:&|$)/)?.[1];
+    if (!idx || out.some((c) => c.idx === idx)) continue;
+    /* 링크를 연 `<a …>` 가 `post_link_wrap` 이면 그 안쪽이 카드다 */
+    const tagAt = html.lastIndexOf("<", m.index);
+    const opener = html.slice(tagAt, html.indexOf(">", m.index) + 1);
+    const wrapped = /^<a\b/i.test(opener) && /\bpost_link_wrap\b/.test(opener);
+    if (wrapOnly && !wrapped) continue;
+    const card = wrapped ? innerOf(html.slice(tagAt), "post_link_wrap") : cardAround(html, m.index);
+    const head = card ? innerOf(card, "title") || innerOf(card, "list_text_title") || innerOf(card, "tit") : "";
+    const tags = head ? emsOf(head) : [];
+    const notice = /<em\b[^>]*>\s*공지\s*<\/em>/i.test(head);
+    const title = stripCategory(textOf(head.replace(/<em\b[\s\S]*?<\/em>/gi, " ")).replace(/\n/g, " "), tags);
+    out.push({ idx, title, tags, ...(notice ? { notice } : {}) });
+  }
+  return out;
+}
+
+export type JiView = { title: string; body: string; closes: string; tags: string[] };
+
+/* og:title 이 글 제목이 아니라 사이트 · 게시판 이름일 때가 있다(글마다 og 를 못 단 화면). 그건 제목이 아니다 */
+const NOT_TITLE = /^(잡인더스트리|JOB\s?INDUSTRY|커리어피크|CAREER\s?PEAK|출연연|교원\s?임용|공공기관|기업\s?R&D|기업\s?연구소|대학원생?|채용(공고)?|연구비|평가위원|교육)$/i;
+
+/**
+ * 상세 한 쪽. 제목은 `og:title` 의 `게시판 이름` 꼬리를 떼고, 없으면 `.view_tit` 에서.
+ * `.view_tit` 앞에는 분류 글이 띄어쓰기 없이 붙어 있다(`IT/AI/빅데이터/블록체인리빌더에이아이 …`,
+ * `[기계/모빌리티/로봇/조선]한국과학기술연구원…`). 분류 요소(`em` · class 에 cate 가 든 것)는 걷고,
+ * 글로 붙은 분류는 `cats`(목록 카드에서 읽은 분류)로 뗀다.
+ */
+export function parseView(raw: string, cats: string[] = []): JiView {
   /* 스크립트 안의 글자에 같은 class 이름이 들어 있는 일이 있다. 먼저 걷는다 */
   const html = raw.replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, " ");
+  const head = innerOf(html, "view_tit");
+  const tags = [...new Set([...(head ? emsOf(head) : []), ...(head ? tagsOf(head) : [])])];
+  const known = [...new Set([...cats, ...tags])].sort((a, b) => b.length - a.length);
   let title = meta(html, "og:title");
   const cut = title.lastIndexOf(" : ");
   if (cut > 0) title = title.slice(0, cut).trim();
-  if (!title) title = textOf(innerOf(html, "view_tit")).replace(/\n/g, " ");
+  if (!title || NOT_TITLE.test(title)) {
+    title = textOf(head
+      .replace(/<em\b[\s\S]*?<\/em>/gi, " ")
+      .replace(/<([a-z0-9]+)\b[^>]*class\s*=\s*["'][^"']*\b(cate|category|badge|label|tag)\b[^"']*["'][^>]*>[\s\S]*?<\/\1>/gi, " "))
+      .replace(/\n/g, " ").trim();
+  }
+  title = stripCategory(title, known);
+  if (NOT_TITLE.test(title)) title = "";
   const body = textOf(innerOf(html, "board_txt_area"));
-  return { title, body, closes: closesOf(body) };
+  return { title, body, closes: closesOf(body), tags };
 }
