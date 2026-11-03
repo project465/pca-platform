@@ -111,7 +111,8 @@ export default async function MatJob({ params, searchParams }: {
           : gap[0] ? `‘${clean(gap[0].it.text)}’부터 채워 봐요.`
           : fit.length ? "필수 요건에 댈 경험이 있어요. 문장 뼈대로 지원서를 써 보세요." : "공고 원문에서 자격 조건부터 확인해 보세요."}</p>
         {!a.items.length ? <Link href="/mat/jobs#paste">공고 글 붙여 넣기</Link>
-          : gap[0]?.it.domain ? <Link href={`/me/experience/new?td=${encodeURIComponent(gap[0].it.domain)}`}>경험 적기</Link>
+          /* 채울 것이 있어도 지원서 화면으로 가는 길을 둔다(MAT 시험 M2: 분석 결과에서 지원서로 돌아오는 길이 없었다) */
+          : gap[0]?.it.domain ? <><Link href={`/me/experience/new?td=${encodeURIComponent(gap[0].it.domain)}`}>경험 적기</Link>{" · "}<Link href={`/mat/draft?p=${p.id}`}>지원서 문장 뼈대 보기</Link></>
           : <Link href={`/mat/draft?p=${p.id}`}>지원서 쓰기</Link>}
       </section>
       {link ? (
@@ -187,7 +188,7 @@ export default async function MatJob({ params, searchParams }: {
             </form>
           ) : <Link className="mt-btn is-block" href="/mat/pass" style={{ marginTop: 12 }}>이용권 보기</Link>}
         </>
-      ) : <p className="mt-empty">{sameCore ? "지금은 따로 만들 결과물이 없어요. 문장 뼈대로 지원서를 써 보세요." : "다른 전공으로 읽은 공고예요."}</p>}
+      ) : <p className="mt-empty">{sameCore ? <>지금은 따로 만들 결과물이 없어요. <Link href={`/mat/draft?p=${id}`}>이 공고로 문장 뼈대 보기</Link></> : "다른 전공으로 읽은 공고예요."}</p>}
 
       {asks.length ? (
         <>

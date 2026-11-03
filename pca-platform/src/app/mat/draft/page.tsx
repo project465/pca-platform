@@ -52,7 +52,11 @@ export default async function MatDraft({ searchParams }: { searchParams: Promise
           ))}
         </div>
       ) : (
-        <p className="mt-empty"><Link href="/mat/jobs">공고 하나 분석하기</Link></p>
+        /* 공고를 하나도 분석하지 않았으면 무엇을 하면 뼈대가 생기는지 적는다(2026-11-03 MAT 시험 M2: 링크 하나만 있는 빈 화면) */
+        <p className="mt-empty">
+          공고를 하나 분석하면 그 공고의 필수 요건마다 내 경험으로 지원서 문장 뼈대가 여기에 생겨요.{" "}
+          <Link href="/mat/jobs">공고 하나 분석하기</Link>
+        </p>
       )}
 
       {p ? (

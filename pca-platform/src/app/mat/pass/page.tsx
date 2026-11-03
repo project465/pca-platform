@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { AI_TOOLS_OPEN_KO } from "@/lib/mat/open-dates";
 import { requireUser } from "@/lib/session";
 import { matTitle } from "@/lib/mat/title";
 import { activeTrack, trackOffers } from "@/lib/track";
@@ -76,7 +78,7 @@ export default async function MatPass() {
             {o90 ? (
               <label className="mt-opt">
                 <input type="radio" name="product" value={o90.code} defaultChecked />
-                <span><b>90일</b>한 학기 · 한 달 {won(Math.round(o90.amount / 3 / 100) * 100)}꼴</span>
+                <span><b>90일</b>약 석 달 · 한 달 {won(Math.round(o90.amount / 3 / 100) * 100)}꼴</span>
                 <span className="mt-price">{won(o90.amount)}</span>
               </label>
             ) : null}
@@ -91,6 +93,10 @@ export default async function MatPass() {
           {state.on && open ? (
             <p className="mt-note">지금 기간이 끝난 다음 날부터 이어져요.</p>
           ) : null}
+          {/* 결제 단추 곁에 청약철회 · 환불 조건이 있는 자리를 둔다(전자상거래법 제13조 제2항, 2026-11-03 MAT 시험 M3) */}
+          <p className="mt-note">
+            결제 전에 <Link href="/legal/refund">환불정책</Link>(청약철회 · 환불 조건)과 <Link href="/legal/terms">이용약관</Link>을 확인해 주세요.
+          </p>
         </form>
       ) : (
         <p className="mt-empty">지금 살 수 있는 이용권이 없어요.</p>
@@ -99,7 +105,9 @@ export default async function MatPass() {
       <h2 className="mt-h2">들어 있는 것</h2>
       <ul className="mt-incl">
         <li>맞는 공고<span>내 경험과 겹치는 공고 · 마감순</span></li>
-        <li>지원서 초안 · 면접 질문<span>준비 중</span></li>
+        {/* 지금 되는 것만 된다고 적는다(2026-11-03 MAT 시험 M1: 이 줄은 '준비 중', 지원서 화면은 '만들어 드려요') */}
+        <li>지원서 문장 뼈대 · 나올 면접 질문<span>분석한 공고의 필수 요건마다 내 경험으로</span></li>
+        <li>문장 고치기 · 면접 연습 · 질문하기<span>{AI_TOOLS_OPEN_KO}부터 · 한 달 문장 10번 · 면접 연습 3번(번마다 8턴)</span></li>
         <li>주간 브리핑 · 마감 알림<span>메일 · 웹 알림</span></li>
         <li>경험 즉시 반영<span>적으면 할 일과 공고가 바로 바뀜</span></li>
         <li>커리어피크 상담 연결<span>{CONSULT_OPENS_KO}부터</span></li>

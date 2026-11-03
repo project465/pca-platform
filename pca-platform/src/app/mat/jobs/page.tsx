@@ -123,7 +123,8 @@ export default async function MatJobs({ searchParams }: { searchParams: Promise<
         </label>
         <button type="submit" className="mt-btn is-main is-block">내 경험과 맞춰 보기</button>
         {/* 처리 안내는 한 화면에 한 번만(2026-11-02 운영 시험 "AI 느낌"). AI 분석을 켠 사람에게만, 보내는 자리 바로 아래에 */}
-        <p className="mt-note">회사 이름은 저장하지 않아요.{consent ? " 이 글은 Anthropic(미국)의 Claude로 읽어요." : ""}</p>
+        {/* 붙여 넣은 공고 글은 다시 읽기에 쓰려고 그대로 저장된다(raw_text). 회사 이름이 든 글이므로 `저장하지 않는다` 고 쓰지 않는다(MAT 시험 M4) */}
+        <p className="mt-note">붙여 넣은 공고 글은 다시 읽을 수 있게 내 계정에 저장돼요. 공고 이름은 나만 봐요.{consent ? " 이 글은 Anthropic(미국)의 Claude로 읽어요." : ""}</p>
       </form>
     </main>
   );
