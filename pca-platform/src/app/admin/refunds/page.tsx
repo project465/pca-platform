@@ -2,7 +2,7 @@ import { requireRole } from "@/lib/session";
 import AdminShell from "@/components/admin-shell";
 import { listRequests, REASON_LABEL } from "@/lib/refund-requests";
 import { Pill } from "@/components/sf/parts";
-import { decideAction } from "./actions";
+import { decideAction, retryRefundAction } from "./actions";
 
 export const metadata = { title: "환불 요청 · CareerMatri" };
 export const dynamic = "force-dynamic";
@@ -31,6 +31,8 @@ export default async function RefundsPage() {
   const user = await requireRole(["superadmin"]);
   const all = await listRequests({ limit: 100 });
   const open = all.filter((r) => r.status === "requested");
+  /* 승인했는데 결제대행사가 아직 취소를 확인하지 않은 요청. 돈이 돌아가지 않았으므로 메일도 나가지 않았다 */
+  const stuck = all.filter((r) => r.status === "approved");
 
   return (
     <AdminShell user={user} current="/admin/refunds">
@@ -88,9 +90,35 @@ export default async function RefundsPage() {
         )}
       </section>
 
+      {stuck.length ? (
+        <section className="panel" style={{ marginBottom: 20 }}>
+          <h2>승인했지만 대행사 취소가 끝나지 않은 요청</h2>
+          <div className="sf-tw">
+            <table className="sf-table">
+              <thead><tr><th>주문</th><th className="num">금액</th><th>대행사 답</th><th /></tr></thead>
+              <tbody>
+                {stuck.map((r) => (
+                  <tr key={r.id}>
+                    <td className="sf-strong">{r.orderNo}</td>
+                    <td className="num">{r.verdictAmount.toLocaleString()}</td>
+                    <td>{r.providerError ?? "-"}</td>
+                    <td>
+                      <form action={retryRefundAction}>
+                        <input type="hidden" name="id" value={r.id} />
+                        <button className="sf-btn ghost sm">다시 시도</button>
+                      </form>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      ) : null}
+
       <section className="panel">
         <h2>지난 요청</h2>
-        {all.length === open.length ? (
+        {all.length === open.length + stuck.length ? (
           <p className="sub">없습니다.</p>
         ) : (
           <div className="sf-tw">
@@ -99,7 +127,7 @@ export default async function RefundsPage() {
                 <tr><th>주문</th><th>사유</th><th>상태</th><th>결정</th></tr>
               </thead>
               <tbody>
-                {all.filter((r) => r.status !== "requested").map((r) => (
+                {all.filter((r) => r.status !== "requested" && r.status !== "approved").map((r) => (
                   <tr key={r.id}>
                     <td className="sf-strong">{r.orderNo}</td>
                     <td>{REASON_LABEL[r.reason].ko}</td>

@@ -180,6 +180,7 @@
     "mat:research": "tsx scripts/research-check.ts",
     "mat:auto": "tsx scripts/mat-auto-check.ts",
     "mat:free": "tsx scripts/mat-free-check.ts",
+    "pay:refund": "tsx scripts/refund-exec-check.ts",
     "mat:eval": "tsx scripts/research-eval-check.ts",
     "partner:check": "tsx scripts/partner-check.ts",
     "careerpeak:check": "tsx scripts/careerpeak-consult-check.ts",

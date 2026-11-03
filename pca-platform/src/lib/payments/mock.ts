@@ -23,6 +23,39 @@ export async function markMockPaid(fact: PaymentFact) {
   );
 }
 
+/**
+ * 대행사 쪽에서 취소가 난 것처럼 적는다(시험용). 웹훅이 `getPaymentStatus` 로 다시 물으면 취소 합계가 보인다.
+ * `n` 은 같은 결제의 몇 번째 취소인가다(부분 취소를 두 번 할 수 있다)
+ */
+export async function markMockCancel(providerPaymentId: string, amount: number, n = 1): Promise<void> {
+  await query(
+    `INSERT INTO payment_events (provider, event_id, kind, payload)
+     VALUES ('mock', $1, 'mock_cancel', $2)
+     ON CONFLICT (provider, event_id) DO NOTHING`,
+    [`cancel:${providerPaymentId}:${n}`, JSON.stringify({ providerPaymentId, amount })],
+  );
+}
+
+/** 다음 환불 요청을 대행사가 거절한 것처럼 둔다(시험용). 한 결제에 한 번 */
+export async function markMockRefundFail(providerPaymentId: string): Promise<void> {
+  await query(
+    `INSERT INTO payment_events (provider, event_id, kind, payload)
+     VALUES ('mock', $1, 'mock_refund_fail', '{}'::jsonb)
+     ON CONFLICT (provider, event_id) DO NOTHING`,
+    [`refund_fail:${providerPaymentId}`],
+  );
+}
+
+async function mockCancelled(providerPaymentId: string): Promise<number> {
+  const r = await queryOne<{ n: string | null }>(
+    `SELECT sum((payload->>'amount')::int)::text AS n FROM payment_events
+      WHERE provider = 'mock' AND kind IN ('mock_cancel', 'mock_refund')
+        AND payload->>'providerPaymentId' = $1`,
+    [providerPaymentId],
+  ).catch(() => null);
+  return Number(r?.n ?? 0) || 0;
+}
+
 export const mockProvider: PaymentProvider = {
   name: "mock",
   /* 가짜라서 두 시장을 다 흉내 낸다. 흉내라는 것은 `checkoutReady()` 가
@@ -48,7 +81,13 @@ export const mockProvider: PaymentProvider = {
         WHERE provider = 'mock' AND kind = 'mock_paid' AND event_id = $1`,
       [providerPaymentId],
     );
-    if (row?.payload) return row.payload;
+    if (row?.payload) {
+      /* 취소가 있으면 대행사처럼 상태와 취소 합계를 함께 돌려준다 */
+      const cancelled = await mockCancelled(providerPaymentId);
+      return cancelled > 0
+        ? { ...row.payload, status: "cancelled", cancelledAmount: cancelled }
+        : row.payload;
+    }
 
     return {
       providerPaymentId,
@@ -76,9 +115,29 @@ export const mockProvider: PaymentProvider = {
     }
   },
 
-  /* 가짜는 돈을 움직이지 않는다. **집행했다고 적지 않는다**: 적으면
-     검사가 환불을 통과시키고, 운영에서 돈이 안 돌아간 것을 아무도 모른다 */
-  async refundPayment({ amount }): Promise<RefundResult> {
-    return { ok: true, providerRefundId: null, amount };
+  /* 가짜는 돈을 움직이지 않는다. 운영에서는 `paymentProvider()` 가 mock 을 막는다(APP_ENV).
+     시험이 집행 순서(대행사 확인 → 장부 → 메일)를 볼 수 있게 취소 한 줄을 남기고, 거절 표시가 있으면 거절한다 */
+  async refundPayment({ providerPaymentId, amount }): Promise<RefundResult> {
+    const fail = await queryOne<{ id: string }>(
+      `SELECT id::text FROM payment_events WHERE provider = 'mock' AND kind = 'mock_refund_fail' AND event_id = $1`,
+      [`refund_fail:${providerPaymentId}`]).catch(() => null);
+    const done = await queryOne<{ n: number }>(
+      `SELECT count(*)::int AS n FROM payment_events WHERE provider = 'mock' AND kind = 'mock_refund'
+          AND payload->>'providerPaymentId' = $1`, [providerPaymentId]).catch(() => null);
+    /* 거절 표시는 첫 요청 한 번만 쓴다. 운영자가 다시 누르면 통과한다 */
+    if (fail) {
+      const first = await query(
+        `INSERT INTO payment_events (provider, event_id, kind, payload) VALUES ('mock', $1, 'mock_refund_try', $2)
+         ON CONFLICT (provider, event_id) DO NOTHING RETURNING id`,
+        [`refund_try:${providerPaymentId}`, JSON.stringify({ providerPaymentId })]).catch(() => []);
+      if (first.length) return { ok: false, reason: "mock: 대행사가 취소를 거절했습니다" };
+    }
+    const id = `mock_refund_${providerPaymentId}_${(done?.n ?? 0) + 1}`;
+    await query(
+      `INSERT INTO payment_events (provider, event_id, kind, payload) VALUES ('mock', $1, 'mock_refund', $2)
+       ON CONFLICT (provider, event_id) DO NOTHING`,
+      [id, JSON.stringify({ providerPaymentId, amount })],
+    );
+    return { ok: true, providerRefundId: id, amount };
   },
 };

@@ -142,6 +142,8 @@ export type RefundRequestRow = {
   verdictAmount: number;
   status: string;
   decidedAt: string | null;
+  /** 승인했는데 대행사가 거절한 까닭. 다시 시도하면 비워진다 */
+  providerError: string | null;
 };
 
 export async function openRequests(limit = 50): Promise<RefundRequestRow[]> {
@@ -162,12 +164,12 @@ export async function listRequests(
     currency: string; requested_at: string; reason_code: string;
     attempt_state: string | null; report_state: string | null;
     verdict_ok: boolean; verdict_code: string; verdict_amount: number;
-    status: string; decided_at: string | null;
+    status: string; decided_at: string | null; provider_error: string | null;
   }>(
     `SELECT r.id::text, o.order_no, o.product_code, o.amount, o.currency,
             r.requested_at::text, r.reason_code, r.attempt_state, r.report_state,
             r.verdict_ok, r.verdict_code, r.verdict_amount, r.status,
-            r.decided_at::text
+            r.decided_at::text, r.provider_error
        FROM refund_requests r JOIN orders o ON o.id = r.order_id
       ${where.length ? `WHERE ${where.join(" AND ")}` : ""}
       ORDER BY r.requested_at DESC
@@ -183,6 +185,7 @@ export async function listRequests(
     verdictOk: r.verdict_ok, verdictCode: r.verdict_code,
     verdictAmount: r.verdict_amount, status: r.status,
     decidedAt: r.decided_at?.slice(0, 16) ?? null,
+    providerError: r.provider_error ?? null,
   }));
 }
 
@@ -198,7 +201,7 @@ export async function decide(opts: {
   requestId: string;
   by: string;
   action: "approve" | "deny";
-}): Promise<{ ok: boolean; reason?: string }> {
+}): Promise<{ ok: boolean; reason?: string; refunded?: boolean }> {
   const r = await queryOne<{ order_id: string; status: string }>(
     `SELECT order_id::text, status FROM refund_requests WHERE id = $1`,
     [opts.requestId],
@@ -216,10 +219,70 @@ export async function decide(opts: {
   }
 
   /* 승인. **판정을 지금 다시 본다**: 요청 뒤에 응시를 시작했을 수 있다 */
-  const v = await recordRefund(r.order_id);
+  const v = await refundable(r.order_id);
   if (!v.ok) {
     return { ok: false, reason: `지금은 돌려줄 수 없습니다 (${v.deny}).` };
   }
+  /* 돌려주기로 정했다는 것을 먼저 적는다. 대행사가 거절해도 이 결정은 남고, 운영자가 다시 누른다 */
+  await query(
+    `UPDATE refund_requests SET status = 'approved', decided_at = now(), decided_by = $2
+      WHERE id = $1 AND status = 'requested'`,
+    [opts.requestId, opts.by],
+  );
+  return executeRefund(opts.requestId, v);
+}
+
+/**
+ * 승인한 요청을 **대행사에 실제로 요청한다**(2026-11-03 수익화 E-1. 전에는 승인하면 메일만 나가고 돈이 돌아가지 않았다).
+ *
+ * 차례가 곧 규칙이다.
+ *   1. 대행사에 취소를 요청한다. 결제를 받은 대행사로 보낸다(`payments.provider`)
+ *   2. **대행사가 확인한 뒤에만** 장부에 적고 기간을 끊는다(`recordRefund`)
+ *   3. 요청을 `refunded` 로 닫는다. 메일(`refund_done`)은 부르는 쪽이 이 값을 보고 보낸다
+ *
+ * 대행사가 거절하면 요청은 `approved` 로 남고 까닭을 적는다. 기간도 장부도 그대로다.
+ * 1 은 됐는데 2 가 실패하면(장부 쪽 장애) 돈은 이미 돌아갔으므로, 대행사의 취소 웹훅이 같은 금액을
+ * 장부에 옮긴다(`applyProviderCancel`, 합계로 대조해 두 번 적지 않는다).
+ *
+ * 결제 줄이 없는 주문(0원 · 운영자가 만든 주문)은 대행사에 보낼 것이 없어 장부만 적는다.
+ */
+export async function executeRefund(
+  requestId: string, verdict?: Verdict,
+): Promise<{ ok: boolean; reason?: string; refunded?: boolean }> {
+  const r = await queryOne<{ order_id: string; status: string }>(
+    `SELECT order_id::text, status FROM refund_requests WHERE id = $1`, [requestId]).catch(() => null);
+  if (!r) return { ok: false, reason: "없는 요청입니다." };
+  if (r.status === "refunded") return { ok: true, refunded: true };
+  if (r.status !== "approved") return { ok: false, reason: "승인한 요청이 아닙니다." };
+  const v = verdict ?? await refundable(r.order_id);
+  if (!v.ok) return { ok: false, reason: `지금은 돌려줄 수 없습니다 (${v.deny}).` };
+
+  const pay = await queryOne<{ provider: string; pid: string }>(
+    `SELECT provider, provider_payment_id AS pid FROM payments
+      WHERE order_id = $1 AND status = 'paid' ORDER BY id DESC LIMIT 1`, [r.order_id]).catch(() => null);
+
+  let exec: { provider: string; refundId: string | null; amount: number } | undefined;
+  if (pay && v.amount > 0) {
+    await query(`UPDATE refund_requests SET exec_attempts = exec_attempts + 1 WHERE id = $1`, [requestId]);
+    const { providerByName } = await import("./payments");
+    let res: Awaited<ReturnType<ReturnType<typeof providerByName>["refundPayment"]>>;
+    try {
+      res = await providerByName(pay.provider).refundPayment({
+        providerPaymentId: pay.pid, amount: v.amount, reason: `refund_request:${requestId}`,
+      });
+    } catch (e) {
+      res = { ok: false, reason: e instanceof Error ? e.message : "대행사 요청 실패" };
+    }
+    if (!res.ok) {
+      await query(`UPDATE refund_requests SET provider_error = $2 WHERE id = $1`,
+        [requestId, res.reason.slice(0, 300)]);
+      return { ok: false, reason: `결제대행사가 취소를 받지 않았습니다. 다시 시도해 주세요. (${res.reason.slice(0, 120)})` };
+    }
+    exec = { provider: pay.provider, refundId: res.providerRefundId, amount: res.amount };
+  }
+
+  const done = await recordRefund(r.order_id, { verdict: v, exec });
+  if (!done.ok) return { ok: false, reason: `장부에 적지 못했습니다 (${done.deny}).` };
   const refundRow = await queryOne<{ id: string }>(
     `SELECT id::text FROM refunds WHERE order_id = $1 ORDER BY id DESC LIMIT 1`,
     [r.order_id],
@@ -227,11 +290,24 @@ export async function decide(opts: {
 
   await query(
     `UPDATE refund_requests
-        SET status = 'approved', decided_at = now(), decided_by = $2, refund_id = $3
+        SET status = 'refunded', refund_id = $2, provider_refund_id = $3,
+            provider_error = NULL, executed_at = now()
       WHERE id = $1`,
-    [opts.requestId, opts.by, refundRow?.id ?? null],
+    [requestId, refundRow?.id ?? null, exec?.refundId ?? null],
   );
-  return { ok: true };
+  /* 처리됐다는 것을 알린다. **대행사가 확인한 뒤에만** 여기 온다. 처리 기간은 약속하지 않는다:
+     카드사에 반영되는 시점은 카드사마다 다르다 */
+  const who = await queryOne<{ user_id: string; order_no: string; locale: string | null }>(
+    `SELECT rr.user_id::text, o.order_no, u.locale
+       FROM refund_requests rr JOIN orders o ON o.id = rr.order_id JOIN users u ON u.id = rr.user_id
+      WHERE rr.id = $1`, [requestId]).catch(() => null);
+  if (who) {
+    await enqueue({
+      kind: "refund_done", userId: who.user_id, payload: { orderNo: who.order_no },
+      dedupeKey: `refund_done:${requestId}`, locale: who.locale,
+    });
+  }
+  return { ok: true, refunded: true };
 }
 
 /** 요청한 사람이 스스로 거둔다 */

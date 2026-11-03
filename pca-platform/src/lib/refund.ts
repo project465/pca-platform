@@ -1,3 +1,4 @@
+import type { PoolClient } from "pg";
 import { query, queryOne, tx } from "./db";
 
 /**
@@ -159,68 +160,154 @@ export async function refundable(orderId: string): Promise<Verdict> {
  */
 export async function recordRefund(
   orderId: string,
-  opts: { note?: string; operatorOverride?: { amount: number; note: string } } = {},
+  opts: {
+    note?: string;
+    operatorOverride?: { amount: number; note: string };
+    /** 대행사가 이미 돌려보낸 취소. 있으면 장부에 그 번호를 함께 적는다(`refund-requests.ts` 의 승인) */
+    exec?: { provider: string; refundId: string | null; amount?: number };
+    /** 판정을 이미 했으면 그 값. 대행사에 보낸 금액과 장부 금액이 갈리지 않게 같은 판정을 쓴다 */
+    verdict?: Verdict;
+  } = {},
 ): Promise<Verdict> {
-  const v = opts.operatorOverride
-    ? ({ ok: true, amount: opts.operatorOverride.amount, reason: "before_start" } as const)
-    : await refundable(orderId);
+  const v = opts.verdict
+    ?? (opts.operatorOverride
+      ? ({ ok: true, amount: opts.operatorOverride.amount, reason: "before_start" } as const)
+      : await refundable(orderId));
   if (!v.ok) return v;
 
   const reason = opts.operatorOverride ? "operator" : v.reason;
   const note = opts.operatorOverride?.note ?? opts.note ?? null;
+  const amount = opts.exec?.amount ?? v.amount;
 
   await tx(async (c) => {
     await c.query(
-      `INSERT INTO refunds (order_id, amount, reason, note) VALUES ($1,$2,$3,$4)`,
-      [orderId, v.amount, reason, note],
+      `INSERT INTO refunds (order_id, amount, reason, note, provider, provider_refund_id, source)
+       VALUES ($1,$2,$3,$4,$5,$6,$7)`,
+      [orderId, amount, reason, note, opts.exec?.provider ?? null, opts.exec?.refundId ?? null,
+        opts.exec ? "approval" : null],
     );
-    await c.query(`UPDATE orders SET status = 'refunded' WHERE id = $1`, [orderId]);
-    /* 추가 이용권이면 그 줄을 닫는다(표가 없으면 없는 줄이라 넘어간다) */
-    await c.query(`SAVEPOINT refill`);
-    await c.query(`UPDATE mat_refills SET status = 'refunded' WHERE order_id = $1`, [orderId])
-      .then(() => c.query(`RELEASE SAVEPOINT refill`), () => c.query(`ROLLBACK TO SAVEPOINT refill`));
-    // 아직 응시로 바뀌지 않은 좌석만 회수한다
-    await c.query(
-      `DELETE FROM seats s
-        WHERE s.order_id = $1
-          AND NOT EXISTS (SELECT 1 FROM attempts a WHERE a.seat_id = s.id)`,
-      [orderId],
-    );
-    /**
-     * 기간권이면 남은 기간을 지금으로 끊는다. 이미 본 결과지는 건드리지 않는다.
-     *
-     * **아직 시작하지 않은 줄도 끊는다.** 이어 붙인 줄은 `starts_at` 이
-     * 미래라 `ends_at = now()` 만 쓰면 `ends_at > starts_at` 제약이 그 자리에서
-     * 거절하고 환불 전체가 되돌아간다. 시작을 지금보다 1초 앞으로 당긴다.
-     */
-    const cut = await c.query<{ user_id: string; kind: string; removed: string; old_end: string }>(
-      `UPDATE entitlements e
-          SET starts_at = LEAST(e.starts_at, now() - interval '1 second'),
-              ends_at   = now()
-         FROM (SELECT id, ends_at AS old_end,
-                      ends_at - GREATEST(now(), starts_at) AS removed
-                 FROM entitlements WHERE order_id = $1 AND ends_at > now()) old
-        WHERE e.id = old.id
-        RETURNING e.user_id::text, e.kind, old.removed::text, old.old_end::text`,
-      [orderId],
-    );
-    /**
-     * **뒤에 이어 붙어 있던 줄을 당긴다.** 30일권 뒤에 365일권을 미리 산
-     * 사람이 30일권만 환불하면, 당기지 않은 365일권은 30일 뒤에야 시작해서
-     * **돈을 낸 기간 한가운데 빈 달이 생긴다.** 끊어 낸 만큼 앞으로 옮긴다.
-     */
-    for (const r of cut.rows) {
-      await c.query(
-        `UPDATE entitlements
-            SET starts_at = starts_at - $3::interval,
-                ends_at   = ends_at   - $3::interval
-          WHERE user_id = $1 AND kind = $2 AND status = 'active'
-            AND starts_at >= $4::timestamptz`,
-        [r.user_id, r.kind, r.removed, r.old_end],
-      );
-    }
+    await closeOrderTx(c, orderId);
   });
-  return v;
+  return { ...v, amount };
+}
+
+/**
+ * 환불이 끝난 주문을 닫는다. 기간을 끊고, 좌석 · 추가 이용권을 회수한다. **거래 안에서** 부른다.
+ * 운영자 승인(`recordRefund`)과 대행사 웹훅의 전액 취소(`applyProviderCancel`)가 같은 줄을 쓴다
+ */
+async function closeOrderTx(c: PoolClient, orderId: string): Promise<void> {
+  await c.query(`UPDATE orders SET status = 'refunded' WHERE id = $1`, [orderId]);
+  /* 추가 이용권이면 그 줄을 닫는다(표가 없으면 없는 줄이라 넘어간다) */
+  await c.query(`SAVEPOINT refill`);
+  await c.query(`UPDATE mat_refills SET status = 'refunded' WHERE order_id = $1`, [orderId])
+    .then(() => c.query(`RELEASE SAVEPOINT refill`), () => c.query(`ROLLBACK TO SAVEPOINT refill`));
+  // 아직 응시로 바뀌지 않은 좌석만 회수한다
+  await c.query(
+    `DELETE FROM seats s
+      WHERE s.order_id = $1
+        AND NOT EXISTS (SELECT 1 FROM attempts a WHERE a.seat_id = s.id)`,
+    [orderId],
+  );
+  /**
+   * 기간권이면 남은 기간을 지금으로 끊는다. 이미 본 결과지는 건드리지 않는다.
+   *
+   * **아직 시작하지 않은 줄도 끊는다.** 이어 붙인 줄은 `starts_at` 이
+   * 미래라 `ends_at = now()` 만 쓰면 `ends_at > starts_at` 제약이 그 자리에서
+   * 거절하고 환불 전체가 되돌아간다. 시작을 지금보다 1초 앞으로 당긴다.
+   */
+  const cut = await c.query<{ user_id: string; kind: string; removed: string; old_end: string }>(
+    `UPDATE entitlements e
+        SET starts_at = LEAST(e.starts_at, now() - interval '1 second'),
+            ends_at   = now()
+       FROM (SELECT id, ends_at AS old_end,
+                    ends_at - GREATEST(now(), starts_at) AS removed
+               FROM entitlements WHERE order_id = $1 AND ends_at > now()) old
+      WHERE e.id = old.id
+      RETURNING e.user_id::text, e.kind, old.removed::text, old.old_end::text`,
+    [orderId],
+  );
+  await pullForwardTx(c, cut.rows);
+}
+
+/**
+ * **뒤에 이어 붙어 있던 줄을 당긴다.** 30일권 뒤에 90일권을 미리 산
+ * 사람이 30일권만 환불하면, 당기지 않은 90일권은 30일 뒤에야 시작해서
+ * **돈을 낸 기간 한가운데 빈 달이 생긴다.** 끊어 낸 만큼 앞으로 옮긴다.
+ */
+async function pullForwardTx(
+  c: PoolClient, rows: { user_id: string; kind: string; removed: string; old_end: string }[],
+): Promise<void> {
+  for (const r of rows) {
+    await c.query(
+      `UPDATE entitlements
+          SET starts_at = starts_at - $3::interval,
+              ends_at   = ends_at   - $3::interval
+        WHERE user_id = $1 AND kind = $2 AND status = 'active'
+          AND starts_at >= $4::timestamptz`,
+      [r.user_id, r.kind, r.removed, r.old_end],
+    );
+  }
+}
+
+export type CancelApplied =
+  | { applied: false; why: "no_order" | "no_change" | "not_paid" }
+  | { applied: true; delta: number; full: boolean };
+
+/**
+ * **대행사 쪽에서 난 취소를 장부와 기간에 옮긴다**(웹훅 · 결제 조회에서 `cancelled` 를 받았을 때).
+ *
+ * 대행사 관리자 화면에서 직접 취소했거나 카드사가 되돌린 결제는 우리 승인을 거치지 않는다. 그대로 두면
+ * 돈은 돌아갔는데 기간이 남는다.
+ *
+ * **몇 번 불려도 같다.** 대행사가 알려 준 취소 합계와 우리 장부(`refunds`)의 합을 대조해 **모자란 만큼만**
+ * 적는다. 우리 승인으로 이미 적은 환불은 합이 같아 아무것도 하지 않는다. 주문 줄을 잠그고 보므로
+ * 같은 웹훅이 동시에 두 번 들어와도 한 번만 적는다.
+ *
+ * - 취소 합계가 결제 금액 이상이면 **전액**: 주문을 닫고 기간을 끊는다(`closeOrderTx`)
+ * - 그보다 작으면 **부분**: 기간 길이를 남은 금액 비율로 줄인다. 시작 시각과 상품 일수로 다시 재므로
+ *   두 번째 부분 취소도 처음 길이에서 잰다(줄인 길이를 다시 줄이지 않는다)
+ */
+export async function applyProviderCancel(
+  orderId: string, cancelledTotal: number, provider: string,
+): Promise<CancelApplied> {
+  return tx(async (c) => {
+    const o = await c.query<{ amount: number; status: string; duration_days: number | null }>(
+      `SELECT o.amount, o.status, p.duration_days
+         FROM orders o JOIN products p ON p.code = o.product_code
+        WHERE o.id = $1 FOR UPDATE OF o`, [orderId]);
+    const row = o.rows[0];
+    if (!row) return { applied: false, why: "no_order" } as const;
+    if (row.status !== "paid" && row.status !== "refunded") return { applied: false, why: "not_paid" } as const;
+    const had = await c.query<{ n: string | null }>(
+      `SELECT sum(amount)::text AS n FROM refunds WHERE order_id = $1`, [orderId]);
+    const recorded = Number(had.rows[0]?.n ?? 0) || 0;
+    const total = Math.min(cancelledTotal, row.amount);
+    const delta = total - recorded;
+    if (delta <= 0) return { applied: false, why: "no_change" } as const;
+    await c.query(
+      `INSERT INTO refunds (order_id, amount, reason, note, provider, source)
+       VALUES ($1, $2, 'operator', '대행사 쪽 취소', $3, 'pg_cancel')`,
+      [orderId, delta, provider],
+    );
+    const full = total >= row.amount;
+    if (full) {
+      await closeOrderTx(c, orderId);
+    } else if (row.duration_days) {
+      /* 남은 금액 비율만큼만 기간을 둔다. 지금보다 앞이면 지금으로 끊는다 */
+      const keep = (row.amount - total) / row.amount;
+      const cut = await c.query<{ user_id: string; kind: string; removed: string; old_end: string }>(
+        `UPDATE entitlements e
+            SET ends_at = GREATEST(e.starts_at + interval '1 second',
+                                   LEAST(old.old_end, e.starts_at + ($2::float8 * $3::int) * interval '1 day'))
+           FROM (SELECT id, ends_at AS old_end FROM entitlements WHERE order_id = $1) old
+          WHERE e.id = old.id
+          RETURNING e.user_id::text, e.kind, (old.old_end - e.ends_at)::text AS removed, old.old_end::text`,
+        [orderId, keep, row.duration_days],
+      );
+      await pullForwardTx(c, cut.rows.filter((r) => r.removed !== "00:00:00"));
+    }
+    return { applied: true, delta, full } as const;
+  });
 }
 
 /**

@@ -263,6 +263,15 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
   );
   if (!order) return { ok: false, reason: "주문을 찾을 수 없습니다." };
 
+  /* **대행사 쪽 취소를 기간에 옮긴다**(웹훅 · 다시 조회). 이미 확정된 주문만이다.
+     합계로 대조하므로 우리 승인으로 이미 적은 환불은 다시 적지 않는다(`applyProviderCancel`) */
+  if (fact.status === "cancelled" && (order.status === "paid" || order.status === "refunded")) {
+    const { applyProviderCancel } = await import("@/lib/refund");
+    const total = fact.cancelledAmount ?? order.amount;
+    const r = await applyProviderCancel(order.id, total, provider.name);
+    return { ok: false, reason: r.applied ? `대행사 취소를 반영했습니다 (${r.delta}).` : "이미 반영된 취소입니다." };
+  }
+
   if (fact.status !== "paid") {
     await query(
       `UPDATE orders SET status = $2 WHERE id = $1 AND status = 'pending'`,
