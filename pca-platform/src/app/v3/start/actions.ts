@@ -98,7 +98,10 @@ export async function startV3(form: FormData): Promise<void> {
   const retake = await retakeState(user.id);
   const target = gate.kind === "campus" ? campusTargetOf(gate.entry, gate.mine) : null;
   const deptState = target
-    ? await campusAttemptState(user.id, { universityCode: target.university_code, code: target.department_code }) : null;
+    ? await campusAttemptState(user.id, {
+      universityCode: target.university_code, code: target.department_code,
+      core: pickRequired(target) ? gate.kind === "campus" ? gate.entry?.core_code ?? null : null : null,
+    }) : null;
   if (target && deptState?.kind === "result") {
     redirect(`/campus/${target.university_code.toLowerCase()}/d/${encodeURIComponent(target.department_code)}`);
   }

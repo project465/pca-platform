@@ -72,7 +72,12 @@ export function checkStudent(
     return { ok: false, why: `휴대전화 번호 꼴이 아닙니다(숫자 10~11자리, 010으로 시작): ${row.student_id.trim()}` };
   }
   if (!row.name.trim()) return { ok: false, why: "이름이 비어 있습니다" };
-  const dc0 = (row.department_code ?? "").trim();
+  /* **기관은 계열 칸을 비워도 받는다**(2026-11-03 진흥원 기업탐방 참여자: 명단에 이름 · 휴대전화만 있다). 비우면 그 기관의
+     `계열을 고르는 자리`(routing_only)로 적고, 참여자가 첫 응시 때 계열을 직접 고른다. 대학은 학과가 늘 명단에 있어 그대로 묻는다 */
+  const routingSeat = u.org_kind === "agency"
+    ? allLeaves(u).filter((r) => r.leaf.routing_only).sort((a, b) => b.catalog.catalog_year - a.catalog.catalog_year)[0] ?? null
+    : null;
+  const dc0 = (row.department_code ?? "").trim() || (routingSeat ? routingSeat.leaf.code : "");
   if (!dc0) return { ok: false, why: `${u.org_kind === "agency" ? "전공 계열" : "학과"} 코드가 비어 있습니다` };
   /* 코드 대신 이름(`경영학과`)을 적어도 받는다. 같은 이름이 학년도마다 있으면 가장 최근의 지난 학년도 것 */
   const thisYear = Number(new Date(Date.now() + 9 * 3_600_000).toISOString().slice(0, 4));

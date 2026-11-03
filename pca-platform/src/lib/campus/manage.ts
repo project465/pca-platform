@@ -22,6 +22,7 @@ import {
 } from "@/lib/campus/students";
 import { ASSESSMENT_VERSION } from "@/lib/me-v3/runtime/session";
 import { findLeaf, university } from "@/lib/campus/registry";
+import { core as coreEntry } from "@/lib/me-v3/core-registry";
 
 /* ── 학생 한 줄 ────────────────────────────────────────────────────── */
 
@@ -125,6 +126,8 @@ export async function listStudents(
             (SELECT array_agg(DISTINCT a.department_code) FROM v3_attempts a
               WHERE a.user_id = cs.user_id AND a.university_code = cs.university_code
                 AND a.department_code IS NOT NULL AND a.department_code <> cs.department_code) AS other_codes,
+            (SELECT array_agg(DISTINCT a.core_code) FROM v3_attempts a
+              WHERE a.user_id = cs.user_id AND a.university_code = cs.university_code) AS tested_cores,
             u.status AS account,
             CASE WHEN att.scored THEN 'scored'
                  WHEN att.open   THEN 'in_progress'
@@ -149,8 +152,18 @@ export async function listStudents(
       WHERE ${w.sql}`, w.args);
   /* 다른 학과로 낸 응시를 학과 이름으로 바꾼다. 학년도 판만 다른 같은 학과(이름 · 단과대학이 같음)는 빼고 */
   const uni = university(f.universityCode);
-  for (const r of rows as (StudentRow & { other_codes?: string[] | null })[]) {
+  for (const r of rows as (StudentRow & { other_codes?: string[] | null; tested_cores?: string[] | null })[]) {
     const mine = uni ? findLeaf(uni, r.department_code) : null;
+    /* **전공을 고르는 자리**(자율전공 · 학부대학 · 진흥원 '계열 미정')의 학생은 응시 줄의 학과가 그 자리 그대로다(아직 안 고른
+       학생을 셀 자리, `pcu:routing`). 그래서 `검사 학과` 칸에는 고른 전공(Core)의 이름을 적는다 */
+    if (mine?.leaf.routing_only) {
+      r.other_departments = [...new Set((r.tested_cores ?? []).map((c) => {
+        try { return coreEntry(c).name_ko; } catch { return null; }
+      }).filter((x): x is string => !!x))];
+      delete r.other_codes; delete r.tested_cores;
+      continue;
+    }
+    delete r.tested_cores;
     r.other_departments = [...new Set((r.other_codes ?? []).map((c) => (uni ? findLeaf(uni, c) : null))
       .filter((x): x is NonNullable<typeof x> => !!x)
       .filter((x) => !(mine && x.leaf.name === mine.leaf.name && x.college.code === mine.college.code))

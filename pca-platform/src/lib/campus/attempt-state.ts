@@ -73,17 +73,19 @@ export function campusTargetOf(
  * 푸는 중인 응시는 학과와 상관없이 하나다(이어보기가 먼저: `openAttempt`).
  */
 export async function campusAttemptState(
-  userId: string, department?: { universityCode: string; code: string } | null,
+  userId: string, department?: { universityCode: string; code: string; core?: string | null } | null,
 ): Promise<CampusAttemptState> {
   const open = await queryOne<{ id: string | null }>(
     `SELECT max(id)::text AS id FROM v3_attempts WHERE user_id = $1::bigint AND status = 'in_progress'`, [userId]);
   if (open?.id) return { kind: "resume", attemptId: open.id };
-  const rows = await query<{ id: string; university_code: string | null; department_code: string | null }>(
-    `SELECT id::text, university_code, department_code FROM v3_attempts
+  const rows = await query<{ id: string; university_code: string | null; department_code: string | null; core_code: string }>(
+    `SELECT id::text, university_code, department_code, core_code FROM v3_attempts
       WHERE user_id = $1::bigint AND status = 'scored' ORDER BY id DESC`, [userId]);
   const mine = department
     ? rows.filter((x) => x.university_code === department.universityCode
-        && sameDepartment(department.universityCode, x.department_code, department.code))
+        && sameDepartment(department.universityCode, x.department_code, department.code)
+        /* 전공을 고르는 자리(자율전공 · 계열 미정)는 응시 줄의 학과가 그 자리 그대로라, 고른 전공(Core)으로 가른다 */
+        && (!department.core || x.core_code === department.core))
     : rows;
   const r = { last: mine[0]?.id ?? null };
   if (!r.last) return { kind: "start" };

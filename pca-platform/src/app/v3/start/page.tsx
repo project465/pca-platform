@@ -6,6 +6,7 @@ import { upgradeTarget } from "@/lib/me-v3/upgrade";
 import { currentAttempt, estimate } from "@/lib/me-v3/runtime/session";
 import { core as coreEntry, sellableCores } from "@/lib/me-v3/core-registry";
 import { startGate } from "@/lib/campus/start-gate";
+import { pickRequired } from "@/lib/campus/registry";
 import { campusAttemptState, campusTargetOf } from "@/lib/campus/attempt-state";
 import type { Tier } from "@/lib/me-v3/scoring/types";
 import { tierText } from "../tier-text.i18n";
@@ -70,7 +71,10 @@ export default async function V3Start({
   const retake = await retakeState(user.id);
   const target = gate.kind === "campus" ? campusTargetOf(gate.entry, gate.mine) : null;
   const deptState = target
-    ? await campusAttemptState(user.id, { universityCode: target.university_code, code: target.department_code }) : null;
+    ? await campusAttemptState(user.id, {
+      universityCode: target.university_code, code: target.department_code,
+      core: pickRequired(target) ? gate.kind === "campus" ? gate.entry?.core_code ?? null : null : null,
+    }) : null;
   if (target && deptState?.kind === "result") {
     redirect(`/campus/${target.university_code.toLowerCase()}/d/${encodeURIComponent(target.department_code)}`);
   }

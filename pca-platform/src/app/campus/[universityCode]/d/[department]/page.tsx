@@ -87,7 +87,10 @@ export default async function CampusDepartment({ params }: Params) {
   const other = mine && !pickRequired(mine.ctx) && !sameDept && !crossYear ? mine : null;
   /* **다른 학과도 검사할 수 있다**(2026-11-03 대표 결정 "다른 학과도 검사"). 상태는 이 학과로 낸 응시만 센다 */
   const st = mine ? await campusAttemptState(who!.id, {
-    universityCode: u.university_code, code: crossYear ? String(mine.row.department_code) : leaf.code,
+    universityCode: u.university_code,
+    /* 전공을 고르는 자리 학생은 등록 자리 + 이 쪽 전공(Core)으로 센다(응시 줄의 학과가 등록 자리 그대로다) */
+    code: crossYear || pickRequired(mine.ctx) ? String(mine.row.department_code) : leaf.code,
+    core: pickRequired(mine.ctx) ? leaf.core_code ?? null : null,
   }) : null;
 
   return (
