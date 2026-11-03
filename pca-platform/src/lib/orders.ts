@@ -269,6 +269,10 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
     const { applyProviderCancel } = await import("@/lib/refund");
     const total = fact.cancelledAmount ?? order.amount;
     const r = await applyProviderCancel(order.id, total, provider.name);
+    if (r.applied) {
+      const { matStep } = await import("@/lib/funnel-v3");
+      await matStep("cancel", order.user_id);
+    }
     return { ok: false, reason: r.applied ? `대행사 취소를 반영했습니다 (${r.delta}).` : "이미 반영된 취소입니다." };
   }
 
@@ -430,6 +434,9 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
       dedupeKey: `purchase_done:${order.id}`,
       locale: order.locale ?? null,
     });
+    /* MAT 수치(가입 → … → 결제). 유입 경로는 그 사람에게 적힌 것을 읽는다 */
+    const { matStep } = await import("@/lib/funnel-v3");
+    await matStep("purchase", order.user_id);
     /* 퍼널. **결제가 확정된 순간만 센다**: 결제창을 연 것은 따로 센다 */
     await track("purchase", {
       userId: order.user_id,

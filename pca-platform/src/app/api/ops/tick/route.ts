@@ -4,6 +4,7 @@ import { flushOutbox, checkCodeStock } from "@/lib/outbox";
 import { runAssistantTick } from "@/lib/assistant/nudges";
 import { runJobsTick } from "@/lib/jobs/tick";
 import { retryStuck } from "@/lib/me-v3/recompute";
+import { syncAssessmentComplete } from "@/lib/funnel-v3";
 
 export const dynamic = "force-dynamic";
 
@@ -41,8 +42,10 @@ export async function POST(req: Request) {
   const jobs = await runJobsTick().catch(() => null);
   /* 경험을 저장한 뒤 반영이 틀어진 사람을 다시 집는다. 다시 들어오지 않아도 지금 상태가 맞게 선다 */
   const recompute = await retryStuck().catch(() => null);
+  /* MAT 수치: 채점된 V3 응시를 `검사 완료` 로 옮겨 센다(검사 코드는 동결이라 거기서 적지 않는다) */
+  const funnel = await syncAssessmentComplete().catch(() => null);
   return NextResponse.json(
-    { ok: true, ...mail, lowStock: low.length, assistant, jobs, recompute },
+    { ok: true, ...mail, lowStock: low.length, assistant, jobs, recompute, funnel },
     { headers: { "cache-control": "no-store" } },
   );
 }

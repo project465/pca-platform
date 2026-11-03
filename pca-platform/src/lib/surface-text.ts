@@ -491,6 +491,7 @@ export const TX = {
   navIncidents: p("사고", "Incidents"),
   navRefunds: p("환불 요청", "Refund requests"),
   navFunnel: p("퍼널", "Funnel"),
+  navMatFunnel: p("MAT 수치", "MAT numbers"),
   navPush: p("알림 켠 사람", "Push sign-ups"),
   navResearchEval: p("논문 읽기 채점표", "Paper reading scores"),
   navV3Pilot: p("V3 파일럿", "V3 pilot"),

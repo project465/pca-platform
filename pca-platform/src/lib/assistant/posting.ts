@@ -287,6 +287,9 @@ export async function analyzePosting(userId: string, input: {
     [userId, st.core, input.label.slice(0, 80), dl, text,
       JSON.stringify(analysis), by, model],
   );
+  /* 근거 수만 남긴다(검사 전 · 후). 사람과 글은 적지 않는다(`funnel-v3.ts`) */
+  const { recordEvidenceCount } = await import("@/lib/funnel-v3");
+  await recordEvidenceCount({ withAssessment: !!st.model, items: analysis.items, by });
   return { id: row!.id, by };
 }
 

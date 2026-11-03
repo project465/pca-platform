@@ -17,6 +17,7 @@ import { askOpenFor } from "@/lib/mat/ask-open";
 import { headsUp } from "@/lib/mat/heads-up";
 import { postingsOf } from "@/lib/assistant/posting";
 import { applicationsOf } from "@/lib/me-v3/platform";
+import { matStep } from "@/lib/funnel-v3";
 
 export const generateMetadata = () => matTitle("홈");
 
@@ -31,6 +32,7 @@ export const generateMetadata = () => matTitle("홈");
  */
 export default async function MatHome() {
   const user = await requireUser();
+  await matStep("mat_open", user.id);
   /* /me 와 같은 문: 검사도 학교 학과도 없어 전공을 정할 수 없으면 전공 목록으로 보낸다 */
   await activeCoreOrPick(user.id);
   const [st, act, jobs, ask, mine, apps] = await Promise.all([
