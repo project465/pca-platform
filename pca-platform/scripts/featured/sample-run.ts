@@ -11,7 +11,7 @@
  */
 import { chromium, type Page } from "playwright";
 import { execFileSync } from "node:child_process";
-import { appendFileSync, mkdirSync, writeFileSync } from "node:fs";
+import { appendFileSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { BASE, assertFreshServer, gateCreds, loadEnv } from "../_loop-fixture";
 import { walk } from "../_v3-walk";
@@ -32,6 +32,33 @@ const RUNS = (process.env.RUNS ?? [
   "SJEPA:SJEPA26_MECH:SJEPA26_JOBTALK11_TOUR",
   "KUS:KUS26_EIE:none",
 ].join(",")).split(",").map((s) => { const [uni, leaf, prog] = s.split(":"); return { uni, leaf, prog }; });
+
+/**
+ * `RECHECK=<accounts.csv>`: 이미 풀어 둔 견본 계정으로 들어가 결과 쪽만 다시 본다(빌드를 고친 뒤).
+ * 비밀번호는 첫 로그인에서 바꾼 값(`<임시>A1x`)이다. 검사를 다시 풀지 않는다
+ */
+const RECHECK = process.env.RECHECK ?? "";
+async function recheck(browser: import("playwright").Browser) {
+  const rows = readFileSync(RECHECK, "utf8").trim().split("\n").slice(1).map((l) => l.split(","));
+  for (const [uni, leaf, progCode, id, pw] of rows) {
+    const prog = progCode === "none" ? null : programByCode(progCode);
+    lines.push(`\n## 다시 보기 · ${uni} · ${leaf} · ${prog ? prog.title : "프로그램 없음(대조군)"}`);
+    console.log(`\n── 다시 보기 · ${uni} · ${leaf} · ${progCode}`);
+    const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    if (gateCreds()) await ctx.setHTTPCredentials(gateCreds()!);
+    const p = await ctx.newPage();
+    await p.goto(`${BASE}/campus/${uni.toLowerCase()}/login`, { waitUntil: "domcontentloaded" });
+    await p.fill('input[name="identifier"]', id);
+    await p.fill('input[name="password"]', `${pw}A1x`);
+    await p.click('button[type="submit"]');
+    await p.waitForURL((x) => !new URL(x).pathname.endsWith("/login"), { timeout: 30000 }).catch(() => undefined);
+    const att = (await (await p.request.get(`${BASE}/me`)).text()).match(/\/v3\/(\d+)\/result/)?.[1] ?? "";
+    if (!ok("로그인하고 굳은 결과를 찾았다", !!att, `응시 ${att}`)) { await ctx.close(); continue; }
+    const dir = path.join(OUT, `${uni}-${leaf}-${progCode}-${att}`); mkdirSync(dir, { recursive: true });
+    await checkResult(p, att, prog, dir).catch((e) => ok("다시 보기", false, String(e).slice(0, 200)));
+    await ctx.close();
+  }
+}
 
 /** 검사 전에 적는 경험(지어낸 예시). `kind` 는 경험 종류 보기 차례, `tds` 는 영역 보기 차례 */
 const EXPS: Record<string, { kind: number; title: string; tds: number[] }[]> = {
@@ -165,6 +192,12 @@ async function one(run: { uni: string; leaf: string; prog: string }, browser: im
   ok("끝까지 풀었다", w.done, `화면 ${w.screens}개`);
 
   const dir = path.join(OUT, `${run.uni}-${run.leaf}-${run.prog}-${att}`); mkdirSync(dir, { recursive: true });
+  await checkResult(p, att, prog, dir);
+  await ctx.close();
+}
+
+/** 결과 쪽 셋(웹 화면 · /me/region · PDF)에서 카드 자리와 글자를 본다. 다시 보기(`RECHECK`)도 이것을 쓴다 */
+async function checkResult(p: Page, att: string, prog: ReturnType<typeof programByCode>, dir: string) {
   await p.goto(`${BASE}/v3/${att}/result`, { waitUntil: "domcontentloaded" });
   await p.waitForLoadState("networkidle").catch(() => undefined);
   const web = await cardAtTop(p, "#region-screen");
@@ -204,21 +237,21 @@ async function one(run: { uni: string; leaf: string; prog: string }, browser: im
       ok("PDF: 지역 장 맨 앞(장 표지 바로 다음)에 회사 쪽", chap >= 0 && feat === chap + 1 && (firstRegion < 0 || feat < firstRegion), `장 표지 ${chap + 1}쪽 · 회사 쪽 ${feat + 1}쪽 · 장 다음 쪽 ${firstRegion + 1}쪽`);
       const fp = feat >= 0 ? pages[feat] : "";
       /* 한 쪽에 다 들어갔는가: 마지막 줄(출처)까지 같은 쪽에 있다 */
-      ok("PDF: 준비 · 현장 · 출처가 한 쪽에", ["방문 전에 준비할 것", "현장에서 확인할 것", "출처:"].every((k) => fp.replace(/\s+/g, " ").includes(k)));
+      ok("PDF: 준비 · 현장 · 출처가 한 쪽에", ["방문 전에 준비할 것", "현장에서 확인할 것", "출처와 기준일"].every((k) => fp.replace(/\s+/g, " ").includes(k)));
       if (prog.audience === "agency") ok("PDF: 학교 말 없음(기관)", !SCHOOL_WORDS.test(fp), (fp.match(SCHOOL_WORDS) ?? []).join(" "));
       if (feat >= 0) execFileSync("pdftoppm", ["-r", "70", "-png", "-f", String(feat + 1), "-l", String(feat + 1), pdfPath, path.join(dir, "pdf-card")]);
     } else ok("PDF 대조군: 회사 쪽 없음", feat < 0);
   }
-  await ctx.close();
 }
 
 async function main() {
   assertFreshServer();
   mkdirSync(OUT, { recursive: true });
-  writeFileSync(path.join(OUT, "accounts.csv"), "기관,학과,프로그램,아이디,비밀번호\n");
+  if (!RECHECK) writeFileSync(path.join(OUT, "accounts.csv"), "기관,학과,프로그램,아이디,비밀번호\n");
   const browser = await chromium.launch({ args: ["--no-sandbox"], ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}) });
   try {
-    for (const r of RUNS) await one(r, browser).catch((e) => ok(`${r.uni} ${r.leaf} 진행`, false, String(e).slice(0, 300)));
+    if (RECHECK) await recheck(browser);
+    else for (const r of RUNS) await one(r, browser).catch((e) => ok(`${r.uni} ${r.leaf} 진행`, false, String(e).slice(0, 300)));
   } finally { await browser.close(); }
   writeFileSync(path.join(OUT, "RUN.md"), `# 중점 기업 카드 견본 (${new Date().toISOString()})\n${lines.join("\n")}\n`);
   process.exit(lines.some((l) => l.includes("실패")) ? 1 : 0);

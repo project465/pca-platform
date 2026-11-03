@@ -12984,3 +12984,26 @@ npm run v3:sample:check   # 견본이 지금 엔진과 같은가
 적는다**(어림을 지어내지 않는다). 그래서 홈페이지 두 쪽(`/[lang]` · `/assistant`)이
 `force-dynamic` 이다: 미리 구우면 빌드할 때의 환율이 다음 배포까지 남는다.
 시험할 때는 `FX_FIXTURE='{"date":"…","USD":…,"JPY":…,"CNY":…}'`.
+
+**기관 프로그램의 중점 기업 카드.** (2026-11-03)
+
+기업탐방 같은 기관 프로그램에 든 참여자에게만, 결과 **지역 부분 맨 위**에 그 회사를
+카드로 세운다(대표 지시: 고려대 세종 · 세종일자리경제진흥원의 비전세미콘). 회사 하나를
+모든 결과에 크게 띄우던 옛 자리(`result/sejong.ts` 의 focus)와 다르다: 프로그램에 든
+사람에게만 선다. 자세한 것은 `docs/metri/featured-company.md`.
+
+- 프로그램과 회사 사실은 데이터다(`content/featured-programs.v1.json` ·
+  `featured-companies.v1.json`). **숫자마다 출처와 기준일**이 붙고, 공식이 아닌 칸은
+  `review` 에 대조할 일을 적는다. 대표자 이름 · 연락처를 싣지 않는다
+- **누가 드는지는 기수가 정한다**(`cohorts.program_code` → `cohort_members`). 명단은
+  저장소에 두지 않고 `npm run featured:enroll` 로 넣는다(미리 보기가 기본)
+- 잇는 규칙은 지역 절과 같다: `regionView` 가 가른 산업 묶음 · 관계표의 중심/있음 ·
+  굳은 결과의 영역 묶음. 점수를 만들지 않는다
+- 일자리 기관(`audience: agency`) 문장에는 학과 · 학번 · 수업 같은 학교 말을 쓰지 않는다
+- 웹 결과 화면은 요약 다섯 덩어리라 지역 절이 없다. **프로그램에 든 사람에게만** 요약
+  화면에 지역 부분 하나를 더 세우고 그 맨 위에 카드를 둔다(`summary.tsx` 의 `region`)
+
+```bash
+npm run featured:check    # 데이터 · 문구(서버 없이)
+npm run featured:sample   # 실제 브라우저로 웹 · /me/region · PDF 글자 확인
+```

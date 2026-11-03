@@ -9,6 +9,11 @@ import type { Company, FeaturedLink } from "./index";
 export type Audience = "school" | "agency";
 
 const and = (xs: string[]) => xs.join(" · ");
+/** 끝의 괄호 풀이는 빼고 조사를 고른다(`장비 제어 소프트웨어(C# · C++)` → `…)가`) */
+const jo = (word: string, pair: Parameters<typeof withJosa>[1]) => {
+  const base = word.replace(/\s*\([^)]*\)$/, "");
+  return word + withJosa(base, pair).slice(base.length);
+};
 
 export function featuredText(aud: Audience) {
   /** 전공을 부르는 말. 기관 참여자에게는 `분야` */
@@ -25,18 +30,18 @@ export function featuredText(aud: Audience) {
     prepStrong: (dom: string, pick: string | null) =>
       `${dom}에서 해 본 일${pick ? `(‘${pick}’)` : ""}을 장비 회사의 일과 이어 말할 수 있게 한 줄로 적어 가세요.`,
     prepUses: (dom: string) =>
-      `${withJosa(dom, "이가")} 장비 회사에서 어떤 일로 나타나는지 채용 공고의 담당 업무에서 한 줄 찾아 가세요.`,
+      `${jo(dom, "이가")} 장비 회사에서 어떤 일로 나타나는지 채용 공고의 담당 업무에서 한 줄 찾아 가세요.`,
     prepJob: (job: string) =>
       `채용 공고의 ${job} 자격 요건을 읽고 내 경험과 겹치는 줄에 표시해 가세요.`,
     lead: (co: Company, l: FeaturedLink, major: string): string => {
       const head = l.pack
-        ? `${withJosa(co.short, "은는")} ${major} ${field}이 일하는 산업 가운데 ‘${l.pack}’에 듭니다.`
+        ? `${withJosa(co.short, "은는")} ${aud === "agency" ? `${major} 분야의 산업` : `${major} 전공자가 일하는 산업`} 가운데 ‘${l.pack}’에 듭니다.`
         : `${co.short}의 업종은 ${co.sector}입니다.`;
       if (l.z1.length) return `${head} 이 결과에서 근거가 선 ${withJosa(and(l.z1.map((z) => z.name)), "이가")} 그 산업이 주로 쓰는 영역입니다.`;
       if (l.z2.length) return `${head} 이 결과에서 해 본 일이 확인된 ${withJosa(and(l.z2.map((z) => z.name)), "이가")} 그 산업이 쓰는 영역입니다.`;
       if (l.pack && l.uses.length) return `${head} 그 산업은 주로 ${and(l.uses.slice(0, 2))} 쪽 판단을 씁니다. 방문에서 그 일이 실제로 어떤 모습인지 보고 오세요.`;
       const jb = l.jobs.find((x) => !x.cores.includes("*"));
-      if (jb) return `${head} 이 회사가 뽑는 일 가운데 ${withJosa(jb.name, "이가")} ${major} ${field}과 가장 가깝습니다.`;
+      if (jb) return `${head} 이 회사가 뽑는 일 가운데 ${jo(jb.name, "이가")} ${withJosa(`${major} ${field}`, "과와")} 가장 가깝습니다.`;
       return `${head} 채용 공고에서 확인한 직무는 ${and(co.jobs.map((x) => x.name))}입니다. 내 경험을 어느 직무와 이어 말할지 정해 가면 방문이 쓸모 있습니다.`;
     },
     /** 이어지는 영역 칸의 줄 */

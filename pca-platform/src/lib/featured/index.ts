@@ -22,7 +22,7 @@ import path from "node:path";
 import { CONTENT_DIR } from "@/lib/me-v3/core-registry";
 import type { Inputs } from "@/lib/me-v3/report-long/types";
 import type { X } from "@/lib/me-v3/report-long/derive";
-import { packHeadThemes, packThemes, type RegionView } from "@/lib/me-v3/report-long/region";
+import { packHeadThemes, type RegionView } from "@/lib/me-v3/report-long/region";
 import { featuredText, type Audience } from "./text";
 
 export type Fact = {
@@ -130,10 +130,13 @@ export function featuredView(x: Inputs, d: X, rv: RegionView | null, prog: Progr
   /* 1) 회사가 든 산업 묶음. 지역 절이 이미 가른 묶음이 먼저다(같은 규칙) */
   const g = rv?.groups.find((gr) => gr.orgs.some((o) => bare(o.name).includes(co.match_name)));
   let packCode: string | null = g?.pack.code ?? null;
-  if (!packCode) {
-    /* 지역 명단에 없거나 그 규칙으로 갈리지 않았으면, 같은 업종 낱말표로 묶음 이름에 걸린 곳만 본다 */
-    const hit = x.inds.find((p) => packHeadThemes(p).some((t) => co.themes.includes(t)))
-      ?? x.inds.find((p) => packThemes(p).includes(co.themes[0]));
+  /* 회사가 지역 명단에 있는데 묶음에 없으면, 지역 규칙이 `이 전공의 산업이 아니다` 라고 본 것이다.
+     그 판단을 따른다(2026-11-03 견본: 보조 규칙이 컴퓨터 전공에서 이 회사를 `자동차·모빌리티
+     소프트웨어` 에 붙였다. 묶음 이름의 `자동차` 가 `기계·장비` 낱말이라서다) */
+  const inList = !!rv?.all.some((o) => bare(o.name).includes(co.match_name));
+  if (!packCode && !inList) {
+    /* 지역 명단에 없는 회사만: 회사의 첫 업종(`themes[0]`)이 묶음 이름에 걸린 곳 */
+    const hit = x.inds.find((p) => packHeadThemes(p).includes(co.themes[0]));
     packCode = hit?.code ?? null;
   }
   const pack = packCode ? x.inds.find((p) => p.code === packCode) ?? null : null;
@@ -203,7 +206,7 @@ export const factSrc = (f: Fact): string =>
 export function factRows(co: Company): { label: string; value: string; src: string }[] {
   const by = (keys: string[]) => co.facts.filter((fc) => keys.includes(fc.key));
   const join = (label: string, fs: Fact[]) => (fs.length
-    ? [{ label, value: fs.map((fc) => `${fc.label} ${factLine(fc)}`).join(" · "), src: [...new Set(fs.map(factSrc))].join(" · ") }] : []);
+    ? [{ label, value: fs.map((fc) => `${fc.label} ${factLine(fc)}`).join(" · "), src: [...new Set(fs.flatMap((fc) => factSrc(fc).split(" · ")))].join(" · ") }] : []);
   const grouped = new Set(["industry", "location", "sales", "op", "staff"]);
   return [
     ...co.facts.filter((fc) => !grouped.has(fc.key)).map((fc) => ({ label: fc.label, value: factLine(fc), src: factSrc(fc) })),

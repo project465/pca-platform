@@ -62,6 +62,22 @@ for (const [key, c] of Object.entries(cs)) {
     ok(`${key}: 지역 명단에서 같은 이름으로 찾힌다`, names.some((n) => n.includes(c.match_name)), c.match_name);
   } catch { ok(`${key}: 지역 명단을 읽었다`, false, dir); }
 }
+/* 조사: 받는 사람마다 `전공` · `분야` 가 바뀌어도 조사가 맞는가(2026-11-03 견본: `분야이` · `분야과`) */
+{
+  const co = Object.values(cs)[0];
+  for (const aud of ["school", "agency"] as const) {
+    const tx = featuredText(aud);
+    const base = { pack: null, viaRegion: false, chosen: false, uses: [], z1: [], z2: [], jobs: co.jobs };
+    const leads = [
+      tx.lead(co, { ...base, pack: "반도체", uses: ["설계"] }, "기계공학"),
+      tx.lead(co, { ...base }, "컴퓨터·소프트웨어"),
+      tx.lead(co, { ...base, jobs: co.jobs.filter((j) => j.cores.includes("*")) }, "경영"),
+    ].join(" ");
+    const bad = leads.match(/분야(이|과|은|을)\s|전공(가|와|는|를)\s|\)(이|과|은|을)\s/g) ?? [];
+    ok(`${aud}: 머리 문장 조사`, !bad.length, bad.join(" "));
+    if (aud === "agency") ok("agency: 머리 문장에 학교 말 없음", !SCHOOL_WORDS.test(leads), (leads.match(SCHOOL_WORDS) ?? []).join(" "));
+  }
+}
 /* 문장 틀의 기계 문체 */
 for (const aud of ["school", "agency"] as const) {
   const tx = featuredText(aud);
