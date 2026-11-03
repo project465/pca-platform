@@ -64,7 +64,8 @@ function Row({ u, code, row, my }: {
      들어가면 `등록된 학과로 가기` 였다). 응시는 명단이 적어 준 학과로만 열리므로, 등록 학과가 있는 학생에게 다른 학과는
      `학과 안내` 다. 로그인하지 않았으면 그 학과 검사가 열려 있는지를 그대로 적는다 */
   const own = !!my && row.leaf.name === my.name && row.college.code === my.college;
-  const chip = !ready ? null : !my ? "검사 가능" : own ? "내 학과 · 검사 가능" : "학과 안내";
+  const say = campusSay(u);
+  const chip = !ready ? null : !my ? "검사 가능" : say(own ? "내 학과 · 검사 가능" : "학과 안내");
   /* 고르는 자리. **검사를 자동으로 정해 주지 않는다**(규격 §20): 누르면
      전공 목록으로 가고, 어느 전공으로 재는지는 학생이 고른다 */
   const routing = Boolean(row.leaf.routing_only);
