@@ -1,7 +1,8 @@
 import { isProduction } from "@/lib/env";
-import { opFail, ref } from "@/lib/oplog";
-import { ingest, knownRefs, type RawPosting } from "./ingest";
-import { JI_BOARDS, hasPage, listRefs, parseView } from "./jobindustry-parse";
+import type { RawPosting } from "./ingest";
+import { JI_BOARDS, parseView, type ListCard } from "./jobindustry-parse";
+import { envInt, newImwebState, runImweb, viewUrl, type ImwebConfig, type ImwebResult } from "./imweb";
+import { degreeOf, employmentOf, fieldOf, kindOf, periodEnd, regionLabelOf, splitFields } from "./meta";
 
 /**
  * 잡인더스트리 공고를 MAT 공고로 받아 온다(2026-10-31 대표 지시: "공고는 잡인더꺼로").
@@ -12,13 +13,15 @@ import { JI_BOARDS, hasPage, listRefs, parseView } from "./jobindustry-parse";
  * **그 사이트 주소만 연다.** 바탕 주소는 코드에 고정이고, 시험용 바탕은 운영이
  * 아닌 배포본에서 `JOBINDUSTRY_BASE` 로만 바꾼다(`partner-job.ts` 와 같은 까닭).
  *
- * **새 공고만 상세를 부른다.** 목록은 게시판마다 첫 쪽만 본다. 이 소스로 들어온
- * 공고가 하나도 없을 때만 `JOBINDUSTRY_BACKFILL_PAGES`(기본 5) 쪽까지 거슬러 간다.
- * 한 번에 부르는 상세는 `JOBINDUSTRY_MAX_DETAIL`(기본 40)까지다.
+ * **모든 게시판 · 모든 쪽을 여러 당번에 나눠 읽는다**(2026-11-03, `imweb.ts`). 첫 쪽은 당번마다,
+ * 나머지 쪽은 게시판마다 `JOBINDUSTRY_PAGES_PER_TICK`(기본 3)쪽씩 `JOBINDUSTRY_MAX_PAGES`(기본 40)쪽까지.
+ * 상세는 당번 한 번에 `JOBINDUSTRY_MAX_DETAIL`(기본 40)개까지 부르고 나머지는 다음 당번이 이어 부른다.
+ * 부를 때마다 `JOBINDUSTRY_DELAY_MS`(기본 800)만큼 쉰다. 한 바퀴가 끝나면 `JOBINDUSTRY_REWALK_HOURS`
+ * (기본 24)시간 뒤에 다시 돈다. 전의 `JOBINDUSTRY_BACKFILL_PAGES` 는 이제 읽지 않는다.
  *
- * **저장하는 것은 늘 하던 대로다**(`ingest`): 원문 링크 · 마감일 · 읽어 낸 요구.
- * 제목과 본문은 요구를 읽는 데만 쓰고 표에 담지 않는다. 학생은 원문 링크로 그
- * 공고에 직접 지원한다.
+ * **저장하는 것**(`ingest`): 원문 링크 · 마감일 · 읽어 낸 요구, 그리고 카드 칸(제목 · 분류 · 분야 ·
+ * 학위 표시 · 지역 · 종류 · 고용 형태 · 본문 칸). 본문은 요구를 읽는 데만 쓰고 담지 않는다. 제목을 담는 까닭은 `ingest.ts`
+ * 머리말에 있다. 학생은 원문 링크로 그 공고에 직접 지원한다.
  */
 
 export const JI_SOURCE = "jobindustry";
@@ -40,7 +43,7 @@ export function jiEnabled(): boolean {
   return (process.env.JOBINDUSTRY_SYNC ?? "").trim().toLowerCase() !== "off";
 }
 
-async function get(url: string): Promise<string> {
+export async function get(url: string): Promise<string> {
   const res = await fetch(url, {
     signal: AbortSignal.timeout(20_000),
     redirect: "error",
@@ -50,50 +53,51 @@ async function get(url: string): Promise<string> {
   return res.text();
 }
 
-export async function runJobindustry(opts: { firstFill?: boolean } = {}): Promise<{
-  ok: boolean; listed: number; fresh: number; ingested: number; mapped: number; failed: number; error?: string;
-}> {
-  const base = jiBase();
-  const pages = opts.firstFill ? Number(process.env.JOBINDUSTRY_BACKFILL_PAGES ?? 5) : 1;
-  const maxDetail = Number(process.env.JOBINDUSTRY_MAX_DETAIL ?? 40);
-  const found: { idx: string; board: string }[] = [];
-  let failed = 0;
-  for (const b of JI_BOARDS) {
-    for (let p = 1; p <= pages; p += 1) {
-      try {
-        const html = await get(`${base}/${b.path}/${p > 1 ? `?page=${p}` : ""}`);
-        for (const idx of listRefs(html, b.path)) {
-          if (!found.some((f) => f.idx === idx)) found.push({ idx, board: b.path });
-        }
-        if (!hasPage(html, b.path, p + 1)) break;
-      } catch (e) {
-        /* 한 게시판이 실패해도 나머지는 받는다 */
-        failed += 1;
-        opFail({ operation: "jobs.jobindustry", ref: ref("board", b.path), step: "list", category: "upstream" }, e);
-        break;
-      }
-    }
-  }
-  if (!found.length) {
-    return { ok: failed === 0, listed: 0, fresh: 0, ingested: 0, mapped: 0, failed, error: failed ? "list" : undefined };
-  }
-  const known = await knownRefs(JI_SOURCE, found.map((f) => f.idx));
-  const fresh = found.filter((f) => !known.has(f.idx)).slice(0, maxDetail);
-  const rows: RawPosting[] = [];
-  for (const f of fresh) {
-    const url = `${PROD_BASE}/${f.board}/?bmode=view&idx=${f.idx}`;
-    try {
-      const v = parseView(await get(`${base}/${f.board}/?bmode=view&idx=${f.idx}`));
-      if (!v.title && !v.body) { failed += 1; continue; }
-      rows.push({
-        source: JI_SOURCE, sourceRef: f.idx, url, title: v.title, body: v.body,
-        address: null, postedOn: null, closesOn: v.closes || null,
-      });
-    } catch (e) {
-      failed += 1;
-      opFail({ operation: "jobs.jobindustry", ref: ref("posting", f.idx), step: "detail", category: "upstream" }, e);
-    }
-  }
-  const r = await ingest(rows);
-  return { ok: true, listed: found.length, fresh: fresh.length, ingested: r.seen, mapped: r.mapped, failed };
+type JiBoard = (typeof JI_BOARDS)[number];
+
+/**
+ * 상세 한 쪽을 담을 꼴로. 본문은 `모집 분야 · 지원 자격 · 고용 형태 · 근무지 · 접수 기간` 칸으로 나눠 읽는다
+ * (`splitFields`, 연구비 · 평가위원 게시판의 `소관 부처` · `모집 인원` 같은 칸도 같이 받는다).
+ *
+ * - 제목: 상세에서 읽은 것이 먼저, 없으면 목록 카드의 제목. 둘 다 없으면 빈 제목으로 넘기고 `ingest` 가 뺀다
+ * - 학위: 지원 자격 칸(없으면 본문 전체). 지역: 근무지 칸. 마감: 접수 기간의 끝 날짜(`상시 모집` 은 비운다)
+ * - 분야: 목록 카드 · 상세 머리의 아임웹 분류(`IT/AI/빅데이터/블록체인`)를 그대로. 없으면 낱말 표(`fieldOf`)
+ * - 종류: 게시판으로 정하고, 488 공고라도 고용 형태가 정규직 · 계약직이면 채용(`kindOf`)
+ */
+export function jiRow(b: JiBoard, idx: string, html: string, card?: ListCard): RawPosting {
+  const v = parseView(html, card?.tags ?? []);
+  /* 제목 · 본문을 다 못 읽어도 줄을 넘긴다. `ingest` 가 제목 없음으로 빼고 번호를 적어 다시 부르지 않는다 */
+  const title = v.title || card?.title || "";
+  const tags = [...new Set([...(card?.tags ?? []), ...v.tags])];
+  const f = splitFields(v.body);
+  const deg = degreeOf(f.지원자격 ?? `${title}\n${v.body}`);
+  const reg = regionLabelOf(title, v.body, [], f.근무지);
+  const employment = employmentOf(f.고용형태);
+  /* 접수 기간 칸이 있으면 그 끝 날짜가 마감이다(`상시 모집` 이면 비운다). 칸이 없으면 본문의 `마감` 말에서 */
+  const closes = f.접수기간 !== undefined ? periodEnd(f.접수기간) : v.closes;
+  return {
+    source: JI_SOURCE, sourceRef: idx, url: viewUrl(PROD_BASE, b.path, idx), title, body: v.body,
+    address: null, postedOn: null, closesOn: closes || null,
+    meta: {
+      category: b.label, field: tags[0] ?? fieldOf(title, v.body),
+      degreeLabel: deg.label, degreeMin: deg.min, kind: kindOf(b.kind, employment),
+      regionLabel: reg.label, abroad: reg.abroad, employmentType: employment,
+      fields: Object.keys(f).length ? f : null,
+    },
+  };
+}
+
+/* 이어 읽는 자리. 이 프로세스 안에만 있다(`imweb.ts` 머리말) */
+const STATE = newImwebState();
+
+export async function runJobindustry(opts: { get?: (url: string) => Promise<string>; state?: typeof STATE; test?: Pick<ImwebConfig<{ path: string }>, "known" | "save"> } = {}): Promise<ImwebResult> {
+  return runImweb({
+    source: JI_SOURCE, operation: "jobs.jobindustry", base: jiBase(), boards: JI_BOARDS,
+    ...opts.test, get: opts.get ?? get, toRow: jiRow,
+    maxPages: envInt("JOBINDUSTRY_MAX_PAGES", 40, 1, 200),
+    pagesPerTick: envInt("JOBINDUSTRY_PAGES_PER_TICK", 3, 0, 40),
+    maxDetail: envInt("JOBINDUSTRY_MAX_DETAIL", 40, 1, 400),
+    delayMs: envInt("JOBINDUSTRY_DELAY_MS", 800, 0, 10_000),
+    rewalkMs: envInt("JOBINDUSTRY_REWALK_HOURS", 24, 1, 24 * 30) * 3600_000,
+  }, opts.state ?? STATE);
 }

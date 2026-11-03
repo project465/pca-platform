@@ -1,6 +1,7 @@
 import { queryOne } from "@/lib/db";
 import { runWork24, work24Ready } from "./work24";
-import { JI_SOURCE, jiEnabled, jiIntervalMs, runJobindustry } from "./jobindustry";
+import { jiEnabled, jiIntervalMs, runJobindustry } from "./jobindustry";
+import { cpDue, cpEnabled, runCareerpeak } from "./careerpeak";
 
 async function lastCapture(source: string): Promise<number | null> {
   const r = await queryOne<{ at: string | null }>(
@@ -16,19 +17,26 @@ async function lastCapture(source: string): Promise<number | null> {
  *   먹는다. 마지막으로 받아 온 때가 스무 시간 안이면 건너뛴다.
  * - 잡인더스트리: **10분마다**(`JOBINDUSTRY_INTERVAL_MIN`). 우리 사이트라 한도가
  *   없고, 새 공고가 MAT 에 늦게 뜨지 않게 한다. 당번 자체가 그보다 드물게 돌면
- *   그 간격이 실제 간격이다.
+ *   그 간격이 실제 간격이다. 한 번에 다 읽지 않고 쪽 · 상세를 나눠 이어 읽는다(`imweb.ts`)
+ * - 커리어피크 정출연 채용 캘린더: **매일 아침 7시 뒤 첫 당번**(`CAREERPEAK_HOUR`)에 공개 JSON 한 번.
+ *   끄려면 `CAREERPEAK_SYNC=off`
  */
 export async function runJobsTick(now = new Date()): Promise<unknown> {
   const out: Record<string, unknown> = {};
 
   if (!jiEnabled()) out.jobindustry = { skipped: "off" };
   else {
-    const last = await lastCapture(JI_SOURCE).catch(() => null);
     if (jiRanAt && now.getTime() - jiRanAt < jiIntervalMs()) out.jobindustry = { skipped: "recent" };
     else {
       jiRanAt = now.getTime();
-      out.jobindustry = await runJobindustry({ firstFill: last === null }).catch((e) => ({ ok: false, error: String((e as Error)?.message ?? e).slice(0, 120) }));
+      out.jobindustry = await runJobindustry().catch((e) => ({ ok: false, error: String((e as Error)?.message ?? e).slice(0, 120) }));
     }
+  }
+
+  if (!cpEnabled()) out.careerpeak = { skipped: "off" };
+  else if (!cpDue(now)) out.careerpeak = { skipped: "not-due" };
+  else {
+    out.careerpeak = await runCareerpeak({ now }).catch((e) => ({ ok: false, error: String((e as Error)?.message ?? e).slice(0, 120) }));
   }
 
   if (!work24Ready()) out.work24 = { skipped: "no-key" };
