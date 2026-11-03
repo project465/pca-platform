@@ -32,6 +32,11 @@ export type ResultMeta = {
   universityCode: string | null;
   /** 응답을 끝낸 날. 없으면 결과를 굳힌 날 */
   answeredOn: string | null;
+  /**
+   * 이 학과 전용 문항이 없어 가까운 묶음으로 본 응시의 안내 한 줄(2026-11-03 대표 결정 "모든 학과 다 가능하도록").
+   * 묶음 이름 · 갈래 이름을 함께 적어, 화면마다 이름이 달라 보이던 것(고려대 독일학 N2)을 한 줄로 풀어 둔다
+   */
+  provisional: string | null;
 };
 
 type Row = {
@@ -60,6 +65,7 @@ export async function resultMeta(
   }
 
   let school: string | null = null;
+  let provisional = false;
   let department: string | null = null;
   let specialization: string | null = null;
   const u = row?.university_code ? university(row.university_code) : null;
@@ -70,6 +76,7 @@ export async function resultMeta(
       if (found) {
         /* **학부가 있으면 함께 적는다.** 같은 이름의 전공이 다른 학부에
            설 수 있고, 종이에서 그 둘이 한 줄로 보이면 안 된다 */
+        provisional = !!found.leaf.provisional;
         const f = facultyOf(u, found.leaf.code);
         department = f ? `${f.name} · ${found.leaf.name}` : found.leaf.name;
       }
@@ -86,5 +93,10 @@ export async function resultMeta(
     specializationCode: row?.specialization_code ?? null,
     universityCode: u ? row?.university_code ?? null : null,
     answeredOn: row?.answered ?? null,
+    provisional: provisional && major
+      ? (lang === "ko"
+        ? `이 학과 전용 문항은 준비 중이라 ‘${major}’ 묶음${specialization ? `의 ‘${specialization}’ 갈래` : ""}로 봤습니다. 학과에 맞는 문항이 나오면 그때부터 새 응시에 씁니다.`
+        : `Questions for this department are still being prepared, so this result uses the ‘${major}’ set${specialization ? ` (${specialization})` : ""}.`)
+      : null,
   };
 }

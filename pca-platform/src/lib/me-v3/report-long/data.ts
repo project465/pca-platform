@@ -102,6 +102,7 @@ export async function loadInputs(attemptId: string, expScope: "snapshot" | "all"
     coreCode, core, major: lang === "en" ? majorNameIn(coreCode, "en") : core.name_ko,
     department: meta.department, school: meta.school,
     specialization: meta.specialization,
+    provisional: meta.provisional,
     spec: specView(coreCode, meta.specializationCode),
     issuer: issuer ?? "CareerMatri", issuerCode: issuerCode ?? null,
     answeredOn: meta.answeredOn ?? today,

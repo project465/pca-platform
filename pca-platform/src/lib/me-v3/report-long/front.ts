@@ -152,6 +152,7 @@ export function about(x: Inputs, d: X): Page {
     return {
       part: "", partName: PART0(), title: "About this report",
       body: T("This report is built from your own answers", "We read the work you said you did yourself, the checklist items you picked and the deliverables you named. The first half covers what you can point to now. The second half covers projects to try next term.") +
+        (x.provisional ? `<p class="mut sm" style="margin:0 0 3mm">${E(x.provisional)}</p>` : "") +
         `<div class="g3">
           <div class="card"><p class="k">What we looked at</p><h4>Decisions you make at work</h4><p>From choosing which problem to solve to making sure the result feeds the next decision, we looked at the ${AXES.length} decisions that come up again and again in ${E(x.major)} work, in each of your ${nEn(n, E(x.domainWord))}.</p></div>
           <div class="card"><p class="k">What we read</p><h4>Your answers and picks</h4><p>Your assessment answers, the checklist items you picked and the experience records you saved on the platform. Anything you picked is quoted word for word.</p></div>
@@ -169,6 +170,7 @@ export function about(x: Inputs, d: X): Page {
   return {
     part: "", partName: "들어가며", title: "이 리포트에 대해",
     body: T(`${E(x.person)} 님이 검사에서 고른 답으로 만든 리포트입니다`, "직접 해 봤다고 답한 일과 체크리스트에서 고른 항목, 남긴 결과물을 바탕으로 정리했어요. 앞쪽에는 지금 내세울 수 있는 경험이, 뒤쪽에는 다음 학기에 해 볼 과제가 있습니다.") +
+      (x.provisional ? `<p class="mut sm" style="margin:0 0 3mm">${E(x.provisional)}</p>` : "") +
       `<div class="g3">
         <div class="card"><p class="k">무엇을 살폈나</p><h4>일할 때 내리는 판단</h4><p>풀 문제를 정하는 일부터 결과가 다음 결정에 쓰이게 하는 일까지, ${E(x.major)} 일에서 되풀이되는 판단 ${AXES.length}가지를 ${E(x.domainWord)} ${n}곳마다 살폈어요.</p></div>
         <div class="card"><p class="k">무엇을 바탕으로 했나</p><h4>답과 고른 항목</h4><p>검사 응답과 체크리스트에서 고른 항목, 플랫폼에 적어 둔 경험 기록을 썼어요. 고른 문장은 고치지 않고 그대로 옮겼습니다.</p></div>

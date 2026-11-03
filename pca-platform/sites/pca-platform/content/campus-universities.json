@@ -404,9 +404,10 @@
          "code": "PCU26_JAPAN",
          "name": "일본학과",
          "kind": "department",
+         "note": "일본지역학 갈래로 간다",
          "core_code": "LANG_CORE_V1",
          "specialization": "SPEC_LANG_JAPAN",
-         "note": "일본지역학 갈래로 간다"
+         "provisional": true
         },
         {
          "code": "PCU26_POLICE_LAW",
@@ -999,9 +1000,10 @@
          "code": "PCU27_JAPAN",
          "name": "일본학과",
          "kind": "department",
+         "note": "일본지역학 갈래로 간다",
          "core_code": "LANG_CORE_V1",
          "specialization": "SPEC_LANG_JAPAN",
-         "note": "일본지역학 갈래로 간다"
+         "provisional": true
         },
         {
          "code": "PCU27_POLICE_LAW",
@@ -2287,7 +2289,13 @@
      "KUS26_CHINAST",
      "KUS26_ENGST",
      "KUS26_GERMANST",
-     "KUS26_BIGDATA"
+     "KUS26_BIGDATA",
+     "KUS26_ENVSYS",
+     "KUS26_PUBSOCIO",
+     "KUS26_UNIDIPLO",
+     "KUS26_ECONPOL",
+     "KUS26_PHARM",
+     "KUS26_SMARTCITY"
     ],
     "note": "**사업주 지시로 Core 가 열린 자리를 전부 연다(2026-10-20).** 경영 · 기계에 더해 컴퓨터·소프트웨어 · 전기전자 · 언어 · 시각디자인 · 미디어 · 패션뷰티 · 체육 · 법·경찰 · 행정 · 식품 · 원예조경 · 보건 · 건축 · 심리 · 교육 · 바이오 · 간호 · 토목 Core 를 가리키고 매핑이 EXACT 인 자리다. Core 가 없는 자리(`core_code: null`)와 전공을 고르는 자리(routing)는 들지 않는다. 한 자리라도 운영에서 걸리면 그 자리만 이 목록에서 뺀다"
    },
@@ -2380,9 +2388,10 @@
          "code": "KUS26_ENVSYS",
          "name": "환경시스템공학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "환경공학 Core(`ENV_CORE_V1`)는 아직 계획 단계라 파일이 없다. 그 Core 가 서면 그때 잇는다"
+         "mapping_note": "환경공학 Core(`ENV_CORE_V1`)는 아직 계획 단계라 파일이 없다. 그 Core 가 서면 그때 잇는다",
+         "core_code": "CIV_CORE_V1",
+         "specialization": "SPEC_CIV_GENERAL",
+         "provisional": true
         },
         {
          "code": "KUS26_SEMIPHYS",
@@ -2462,25 +2471,28 @@
            "code": "KUS26_CHINAST",
            "name": "중국학전공",
            "kind": "major",
+           "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다",
            "core_code": "LANG_CORE_V1",
            "specialization": "SPEC_LANG_FOREIGN",
-           "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
+           "provisional": true
           },
           {
            "code": "KUS26_ENGST",
            "name": "영미학전공",
            "kind": "major",
+           "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다",
            "core_code": "LANG_CORE_V1",
            "specialization": "SPEC_LANG_FOREIGN",
-           "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
+           "provisional": true
           },
           {
            "code": "KUS26_GERMANST",
            "name": "독일학전공",
            "kind": "major",
+           "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다",
            "core_code": "LANG_CORE_V1",
            "specialization": "SPEC_LANG_FOREIGN",
-           "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
+           "provisional": true
           }
          ]
         }
@@ -2508,17 +2520,19 @@
            "code": "KUS26_PUBSOCIO",
            "name": "공공사회학전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null,
-           "mapping_note": "사회학 Core(`SOC_CORE_V1`)가 아직 계획 단계다. 그 Core 가 서면 그때 잇는다"
+           "mapping_note": "사회학 Core(`SOC_CORE_V1`)가 아직 계획 단계다. 그 Core 가 서면 그때 잇는다",
+           "core_code": "PUBADM_CORE_V1",
+           "specialization": "SPEC_PUBADM_GENERAL",
+           "provisional": true
           },
           {
            "code": "KUS26_UNIDIPLO",
            "name": "통일외교안보전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null,
-           "mapping_note": "정치외교·정책 Core(`POL_CORE_V1`)가 아직 계획 단계다. 그 Core 가 서면 그때 잇는다"
+           "mapping_note": "정치외교·정책 Core(`POL_CORE_V1`)가 아직 계획 단계다. 그 Core 가 서면 그때 잇는다",
+           "core_code": "PUBADM_CORE_V1",
+           "specialization": "SPEC_PUBADM_GENERAL",
+           "provisional": true
           }
          ]
         },
@@ -2533,9 +2547,10 @@
            "code": "KUS26_ECONPOL",
            "name": "경제정책학전공",
            "kind": "major",
-           "core_code": null,
-           "specialization": null,
-           "mapping_note": "경제학 Core(`ECON_CORE_V1`)가 아직 계획 단계다. 그 Core 가 서면 그때 잇는다"
+           "mapping_note": "경제학 Core(`ECON_CORE_V1`)가 아직 계획 단계다. 그 Core 가 서면 그때 잇는다",
+           "core_code": "PUBADM_CORE_V1",
+           "specialization": "SPEC_PUBADM_GENERAL",
+           "provisional": true
           },
           {
            "code": "KUS26_BIGDATA",
@@ -2610,9 +2625,10 @@
          "code": "KUS26_PHARM",
          "name": "약학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "약학을 맡을 Major Core 가 없다. 면허 과정이라 그 전공을 아는 분이 따로 세워야 한다"
+         "mapping_note": "약학을 맡을 Major Core 가 없다. 면허 과정이라 그 전공을 아는 분이 따로 세워야 한다",
+         "core_code": "HEALTH_CORE_V1",
+         "specialization": "SPEC_HEALTH_GENERAL",
+         "provisional": true
         }
        ]
       },
@@ -2624,9 +2640,10 @@
          "code": "KUS26_SMARTCITY",
          "name": "스마트도시학부",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "도시 계획 · 데이터 · 인프라가 섞인 학부라 지금 있는 Core 하나로 잴 수 없다. 맡을 Core 를 정하면 그때 잇는다"
+         "mapping_note": "도시 계획 · 데이터 · 인프라가 섞인 학부라 지금 있는 Core 하나로 잴 수 없다. 맡을 Core 를 정하면 그때 잇는다",
+         "core_code": "CIV_CORE_V1",
+         "specialization": "SPEC_CIV_GENERAL",
+         "provisional": true
         }
        ]
       }
@@ -2678,7 +2695,21 @@
      "JJU26_WELFARE",
      "JJU26_COUNSEL",
      "JJU26_LOCALVENTURE_MAIN",
-     "JJU26_BOOTCAMP_AI"
+     "JJU26_BOOTCAMP_AI",
+     "JJU26_ACCT",
+     "JJU26_FININS",
+     "JJU26_MATCHEM",
+     "JJU26_FIRESAFE",
+     "JJU26_PT",
+     "JJU26_RADIO",
+     "JJU26_OT",
+     "JJU26_ENGEDU",
+     "JJU26_MATHEDU",
+     "JJU26_HISTEDU",
+     "JJU26_ENGCULT",
+     "JJU26_HISTCONT",
+     "JJU26_ECOCAR",
+     "JJU26_PETPLANT"
     ],
     "note": "**사업주 지시로 Core 가 열린 자리를 전부 연다(2026-10-20).** 경영 · 기계에 더해 컴퓨터·소프트웨어 · 전기전자 · 언어 · 시각디자인 · 미디어 · 패션뷰티 · 체육 · 법·경찰 · 행정 · 식품 · 원예조경 · 보건 · 건축 · 심리 · 교육 · 바이오 · 간호 · 토목 Core 를 가리키고 매핑이 EXACT 인 자리다. Core 가 없는 자리(`core_code: null`)와 전공을 고르는 자리(routing)는 들지 않는다. 한 자리라도 운영에서 걸리면 그 자리만 이 목록에서 뺀다"
    },
@@ -2747,17 +2778,19 @@
          "code": "JJU26_ACCT",
          "name": "회계세무학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다",
+         "core_code": "BIZ_CORE_V1",
+         "specialization": "SPEC_BIZ_FINACC",
+         "provisional": true
         },
         {
          "code": "JJU26_FININS",
          "name": "금융보험학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다",
+         "core_code": "BIZ_CORE_V1",
+         "specialization": "SPEC_BIZ_FINACC",
+         "provisional": true
         },
         {
          "code": "JJU26_LOGISTICS",
@@ -2855,17 +2888,19 @@
          "code": "JJU26_MATCHEM",
          "name": "신소재화학공학과",
          "kind": "department",
-         "core_code": null,
+         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다",
+         "core_code": "BT_CORE_V1",
          "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "provisional": true
         },
         {
          "code": "JJU26_FIRESAFE",
          "name": "소방안전공학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다",
+         "core_code": "PUBADM_CORE_V1",
+         "specialization": "SPEC_PUBADM_FIRE",
+         "provisional": true
         }
        ]
       },
@@ -2884,25 +2919,28 @@
          "code": "JJU26_PT",
          "name": "물리치료학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다",
+         "core_code": "SPORTS_CORE_V1",
+         "specialization": "SPORTS_REHAB",
+         "provisional": true
         },
         {
          "code": "JJU26_RADIO",
          "name": "방사선학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다",
+         "core_code": "HEALTH_CORE_V1",
+         "specialization": "SPEC_HEALTH_GENERAL",
+         "provisional": true
         },
         {
          "code": "JJU26_OT",
          "name": "작업치료학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다",
+         "core_code": "SPORTS_CORE_V1",
+         "specialization": "SPORTS_REHAB",
+         "provisional": true
         },
         {
          "code": "JJU26_FOODNUTR",
@@ -2928,25 +2966,28 @@
          "code": "JJU26_ENGEDU",
          "name": "영어교육과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다",
+         "core_code": "EDU_CORE_V1",
+         "specialization": "SPEC_EDU_GENERAL",
+         "provisional": true
         },
         {
          "code": "JJU26_MATHEDU",
          "name": "수학교육과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다",
+         "core_code": "EDU_CORE_V1",
+         "specialization": "SPEC_EDU_GENERAL",
+         "provisional": true
         },
         {
          "code": "JJU26_HISTEDU",
          "name": "역사교육과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다",
+         "core_code": "EDU_CORE_V1",
+         "specialization": "SPEC_EDU_GENERAL",
+         "provisional": true
         },
         {
          "code": "JJU26_EARLYCHILD",
@@ -2979,17 +3020,19 @@
          "code": "JJU26_ENGCULT",
          "name": "영미언어문화학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다",
+         "core_code": "LANG_CORE_V1",
+         "specialization": "SPEC_LANG_FOREIGN",
+         "provisional": true
         },
         {
          "code": "JJU26_HISTCONT",
          "name": "역사문화콘텐츠학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다",
+         "core_code": "MEDIA_CORE_V1",
+         "specialization": "SPEC_MEDIA_CONTENT",
+         "provisional": true
         },
         {
          "code": "JJU26_WEBTOON",
@@ -3086,19 +3129,21 @@
          "code": "JJU26_ECOCAR",
          "name": "친환경자동차학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
          "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다",
-         "audience": "ADULT_LEARNER"
+         "audience": "ADULT_LEARNER",
+         "core_code": "ME_CORE_V3",
+         "specialization": "SPEC_ME_GENERAL",
+         "provisional": true
         },
         {
          "code": "JJU26_PETPLANT",
          "name": "반려동식물학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
          "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다",
-         "audience": "ADULT_LEARNER"
+         "audience": "ADULT_LEARNER",
+         "core_code": "AGRI_CORE_V1",
+         "specialization": "SPEC_AGRI_HORTIFOREST",
+         "provisional": true
         },
         {
          "code": "JJU26_MINERVA",

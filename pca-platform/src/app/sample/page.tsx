@@ -105,7 +105,7 @@ export default async function SamplePage({
         meta: {
           major: (lang === "en" ? c.name_en : c.name_ko) ?? null,
           school: null, department: null, specialization: null,
-          specializationCode: null, universityCode: null, answeredOn: null,
+          specializationCode: null, universityCode: null, answeredOn: null, provisional: null,
         },
       }} />
       <PublicFooter lang={L} />

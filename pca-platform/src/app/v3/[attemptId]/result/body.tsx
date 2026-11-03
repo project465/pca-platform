@@ -1462,6 +1462,8 @@ export async function V3ResultBody(
       </header>
 
       <main className="rs-main">
+        {/* 가까운 묶음으로 본 학과(2026-11-03 대표 결정). 묶음 · 갈래 이름을 한 줄로 */}
+        {meta.provisional ? <p className="cm-none" style={{ margin: "0 0 12px" }}>{meta.provisional}</p> : null}
         <Summary
           title={h.title} lead={h.lead} who={sumWho}
           zones={sumZones} evidence={sumEvidence} steps={sumSteps}

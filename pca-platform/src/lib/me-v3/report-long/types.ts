@@ -98,6 +98,8 @@ export type Inputs = {
   department: string | null;
   /** 학과의 갈래 이름(`국어국문·한국어교육`). 학교 진입이 아니면 비어 있다 */
   specialization: string | null;
+  /** 가까운 묶음으로 본 학과의 안내 한 줄(`result/meta.ts`). 없으면 null */
+  provisional?: string | null;
   /**
    * 그 학과라면 먼저 보는 영역 · 남기는 것 · 한 걸음 · 지원서와 면접에서 꺼내는 법
    * (`result/spec-view.ts`). 웹 결과가 읽는 것과 같은 자리에서 읽는다

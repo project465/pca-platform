@@ -513,7 +513,8 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.86";
 /** 경험 덧말을 그 칸이 물은 이름(쓰지 않은 방법 · 바꾸지 않은 것)으로 · `없다` 답은 문단 재료에서 뺌 — V98 */
 /** 산업 · 직무 다리 문장의 모자란 영역을 관계표의 중심 영역부터(N7 · PB4, 판정 그대로) — V99 */
 /** 시킨 대로만 답한 결과의 첫 줄(해 본 영역이 없을 때) — V100 */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V100";
+/** 가까운 묶음으로 본 학과 안내 한 줄 — V101 */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V101";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

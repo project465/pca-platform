@@ -58,6 +58,8 @@ export type CatalogStatus = "ACTIVE" | "FUTURE" | "RETIRED";
 export type CampusUnit = {
   code: string;
   name: string;
+  /** 이 학과 전용 문항이 없어 가까운 묶음에 임시로 이었다. 결과 화면 · 책이 그 사실을 한 줄로 적는다 */
+  provisional?: boolean;
   kind: "department" | "faculty" | "major" | "track";
   core_code?: string | null;
   specialization?: string | null;
@@ -476,7 +478,8 @@ export function mappingStatusOf(
   if (!leaf.core_code) return "CORE_REQUIRED";
   if (!coreOf(leaf, dir)) return "CORE_REQUIRED";
   if (leaf.specialization_required) return "SPECIALIZATION_REQUIRED";
-  if (leaf.specialization && HELD_SPECIALIZATIONS.has(leaf.specialization)) return "SPECIALIZATION_REQUIRED";
+  /* 임시 연결(`provisional`)은 묶어 둔 갈래라도 연다(2026-11-03 대표 결정 "모든 학과 다 가능하도록"). 결과 · 책에 안내 한 줄이 선다 */
+  if (leaf.specialization && HELD_SPECIALIZATIONS.has(leaf.specialization) && !leaf.provisional) return "SPECIALIZATION_REQUIRED";
   if (!leaf.specialization) return "EXACT";
   return specializationAuthored(leaf.core_code, leaf.specialization, dir)
     ? "EXACT" : "SPECIALIZATION_REQUIRED";
