@@ -2236,7 +2236,7 @@ a.cm-nav.is-big {
   background: #2563eb; color: #fff;
 }
 a.cm-nav.is-big:hover { background: #1d4ed8; color: #fff; }
-.cm-nav-big-h { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+a.cm-nav > .cm-nav-big-h { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .cm-nav-big-h > b { font-size: 20px; font-weight: 800; letter-spacing: -.01em; }
 .cm-nav-big-h > em {
   font-style: normal; font-size: 12px; font-weight: 600; line-height: 1.5;

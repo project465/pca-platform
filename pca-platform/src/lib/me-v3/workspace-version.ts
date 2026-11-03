@@ -417,7 +417,8 @@
 /** /me/region 맨 위에 기관 프로그램의 중점 기업 카드(지역 화면을 카드로 바꾸며 빠졌던 자리) — V101 */
 /** 메뉴: MAT 이 첫 줄 · 가장 크게, 홈 · 검사 결과, 바닥에 내 정보 · 이용권. 검사 결과 안에 작은 탭. 공고 · 지원 기록은 MAT 으로 — V102 */
 /** 한국어 홈을 시안대로: 인사 줄 + MAT 열기 · 내 취업 준비 5단계 · 이번 주 할 일 · 맞는 공고 — V103 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V103";
+/** MAT 줄의 이름과 `AI 취업비서` 꼬리표 사이를 띄운다(`a.cm-nav > span` 이 flex 를 덮었다) — V104 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V104";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.

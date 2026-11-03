@@ -5,14 +5,14 @@
  "locks": {
   "assessment": "34427ac1331c6c5e",
   "result": "ffcfa6c4e0b09e86",
-  "workspace": "a8c6465833e9e2d4"
+  "workspace": "a1a849773cf1e8cc"
  },
  "versions": {
   "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V73",
   "assessment_copy_version": "me-v3-2-assessment-copy.46",
   "result_ui_version": "ME_V3_RESULT_UI_V107",
   "result_copy_version": "me-v3-result-copy.91",
-  "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V103",
+  "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V104",
   "workspace_copy_version": "careermatri-workspace-copy.76"
  },
  "screens": {
