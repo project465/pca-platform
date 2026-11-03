@@ -3,10 +3,12 @@ import { notFound } from "next/navigation";
 import "../../../surface.css";
 import "../../campus.css";
 import {
-  campusSay, leavesOf, offered, otherCatalogs, statusOf, university,
+  campusSay, findLeaf, leavesOf, offered, otherCatalogs, pickRequired, statusOf, university,
   type CampusCatalog, type CampusLeaf, type CampusUniversity,
 } from "@/lib/campus/registry";
 import { pickCatalog } from "@/lib/campus/pick";
+import { currentUser } from "@/lib/session";
+import { campusStudentOf } from "@/lib/campus/students";
 import { rememberCatalog } from "../../actions";
 import { CampusShell } from "../../shell";
 import { leadDomainNames } from "../../domains";
@@ -51,10 +53,18 @@ function subOf(u: CampusUniversity, row: CampusLeaf): string | undefined {
   return undefined;
 }
 
-function Row({ u, code, row }: {
-  u: CampusUniversity; code: string; row: CampusLeaf;
+/** 로그인한 그 학교 학생의 등록 학과(이름 · 단과대학). 전공을 고르는 자리 학생이거나 아니면 null */
+type MyDept = { name: string; college: string } | null;
+
+function Row({ u, code, row, my }: {
+  u: CampusUniversity; code: string; row: CampusLeaf; my: MyDept;
 }) {
   const ready = statusOf(u, row) === "READY";
+  /* **배지가 그 학생이 할 수 있는 일을 말한다**(2026-11-03 배재대 실제 화면: 모든 학과에 `검사 가능` 이 붙었는데 눌러
+     들어가면 `등록된 학과로 가기` 였다). 응시는 명단이 적어 준 학과로만 열리므로, 등록 학과가 있는 학생에게 다른 학과는
+     `학과 안내` 다. 로그인하지 않았으면 그 학과 검사가 열려 있는지를 그대로 적는다 */
+  const own = !!my && row.leaf.name === my.name && row.college.code === my.college;
+  const chip = !ready ? null : !my ? "검사 가능" : own ? "내 학과 · 검사 가능" : "학과 안내";
   /* 고르는 자리. **검사를 자동으로 정해 주지 않는다**(규격 §20): 누르면
      전공 목록으로 가고, 어느 전공으로 재는지는 학생이 고른다 */
   const routing = Boolean(row.leaf.routing_only);
@@ -66,7 +76,7 @@ function Row({ u, code, row }: {
         {sub ? <span className="cm-cmp-row-sub">{sub}</span> : null}
       </span>
       <span className={`cm-cmp-chip${ready || routing ? "" : " is-wait"}`}>
-        {ready ? "검사 가능" : routing ? "전공 선택" : "준비 중"}
+        {chip ?? (routing ? "전공 선택" : "준비 중")}
       </span>
       {ready || routing
         ? <span className="cm-cmp-arrow" aria-hidden="true">›</span> : null}
@@ -112,6 +122,10 @@ export default async function CampusMajors({ params, searchParams }: Params) {
   const u = university(universityCode);
   if (!u) notFound();
   const t = campusSay(u);
+  const who = await currentUser();
+  const stu = who ? await campusStudentOf(who.id, u.university_code) : null;
+  const reg = stu && !pickRequired(stu.ctx) ? findLeaf(u, String(stu.row.department_code ?? "")) : null;
+  const my: MyDept = reg ? { name: reg.leaf.name, college: reg.college.code } : null;
   const { y, c, pick } = await searchParams;
   /* 자율전공 자리에서 넘어왔는가(규격 §20). 넘어온 사람에게는 **지금 무엇을
      하는 걸음인지**를 적는다: 목록만 다시 보여 주면 왜 돌아왔는지 모른다 */
@@ -189,7 +203,7 @@ export default async function CampusMajors({ params, searchParams }: Params) {
 
       {plain.length ? (
         <div className="cm-cmp-list">
-          {plain.map((r) => <Row key={r.leaf.code} u={u} code={code} row={r} />)}
+          {plain.map((r) => <Row key={r.leaf.code} u={u} code={code} row={r} my={my} />)}
         </div>
       ) : null}
 
@@ -201,7 +215,7 @@ export default async function CampusMajors({ params, searchParams }: Params) {
             {/* 학부 이름은 묶음 머리로 서고, 고르는 자리는 그 아래 전공이다 */}
             <h3 className="cm-cmp-sub-h">{f.name}</h3>
             <div className="cm-cmp-list">
-              {kids.map((r) => <Row key={r.leaf.code} u={u} code={code} row={r} />)}
+              {kids.map((r) => <Row key={r.leaf.code} u={u} code={code} row={r} my={my} />)}
             </div>
           </section>
         );
