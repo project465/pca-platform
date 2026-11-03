@@ -118,6 +118,8 @@ export async function cursorAction(
 export async function finishAction(attemptId: string): Promise<{ ok: boolean }> {
   const at = await mine(attemptId);
   if (!at) return { ok: false };
-  await submit(at);
+  /* 관심 칸이 비어 있으면 굳히지 않는다. 화면을 새로 그리면 빈 칸이 있는 관심 화면으로 돌아간다(`viewOf`) */
+  try { await submit(at); }
+  catch (e) { if ((e as Error)?.message === "V3_SCREENING_INCOMPLETE") return { ok: false }; throw e; }
   return { ok: true };
 }

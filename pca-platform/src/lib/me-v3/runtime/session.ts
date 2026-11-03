@@ -1124,6 +1124,18 @@ export type View = {
  * 주소창에 서면 응시자가 보게 된다. 이어보기 자리는 DB 에 이름으로
  * 남는다(몇째인가는 routing 이 바뀌면 다른 자리를 가리킨다).
  */
+/** 비어 있는 관심 칸이 든 첫 화면의 차례. 다 찼으면 null(`viewOf` · `submit`) */
+function interestGate(
+  screens: { items: unknown[] }[], answers: Record<string, unknown>, core: string,
+): number | null {
+  const tds = content(core).domains.domains.map((d) => d.code);
+  const need = new Set(tds.map((td) => `G_${td}_INT`).filter((id) => answers[id] === undefined));
+  if (!need.size) return null;
+  const idOf = (x: unknown) => typeof x === "string" ? x : (x as { item_id?: string })?.item_id;
+  const i = screens.findIndex((sc) => sc.items.some((x) => need.has(idOf(x) ?? "")));
+  return i >= 0 ? i : null;
+}
+
 export async function viewOf(
   a0: V3Attempt, want?: string | null, wantIndex?: number | null,
 ): Promise<View> {
@@ -1135,9 +1147,14 @@ export async function viewOf(
   const ids = plan.screens.map((s) => s.id);
   const byIndex = typeof wantIndex === "number" && wantIndex >= 0 && wantIndex < ids.length
     ? ids[wantIndex] : null;
-  const target = byIndex ?? (want && ids.includes(want) ? want
+  const want0 = byIndex ?? (want && ids.includes(want) ? want
     : a.current_screen && ids.includes(a.current_screen) ? a.current_screen
       : ids[0]);
+  /* **관심 격자가 비어 있으면 그 뒤로 보내지 않는다**(2026-11-03 J1 전주대 v3/24 재점검). 관심 칸이 하나라도 비면
+     `recomputeRouting` 이 영역을 정하지 않아, 주소의 `?s=` 로 건너뛰면 판단 문항 없이 끝까지 가서 결과가 열두 영역
+     모두 `묻지 않음` 이 됐다. 빈 칸이 있는 첫 관심 화면으로 되돌린다 */
+  const gate = interestGate(plan.screens, answers, a.core_code);
+  const target = gate !== null && ids.indexOf(want0) > gate ? ids[gate] : want0;
   const at = ids.indexOf(target);
   return {
     attempt: a, plan, screen: plan.screens[at],
@@ -1280,6 +1297,13 @@ export async function submissionOf(a: V3Attempt, db?: Reader): Promise<Submissio
  * 제출하면 새 줄이 생기고, 앞 줄은 그때의 판본과 함께 남는다.
  */
 export async function submit(a: V3Attempt): Promise<{ snapshot: Snapshot; id: string }> {
+  /* 관심 격자가 비어 있으면 영역이 정해지지 않아 열두 영역 모두 `묻지 않음` 으로 굳는다. 굳히지 않는다(`viewOf` 의 J1 설명) */
+  if (a.status === "in_progress") {
+    const ans = await answersOf(a.id);
+    if (interestGate((await planFor(a)).screens, ans, a.core_code) !== null) {
+      throw new Error("V3_SCREENING_INCOMPLETE");
+    }
+  }
   const claimed = await tx(async (c) => {
     const lock = await c.query<{ status: string }>(
       `SELECT status FROM v3_attempts WHERE id = $1 FOR UPDATE`, [a.id]);
