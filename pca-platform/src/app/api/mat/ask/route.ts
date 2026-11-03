@@ -1,3 +1,4 @@
+import { AI_TOOLS_OPEN_KO } from "@/lib/mat/open-dates";
 import { currentUser } from "@/lib/session";
 import { matVisible } from "@/lib/mat-public";
 import { askOpenFor } from "@/lib/mat/ask-open";
@@ -62,7 +63,10 @@ export async function POST(req: Request) {
 
   const open = await askOpenFor(user.id);
   if (!open.ok) {
-    return say(open.why === "date" ? "질문하기는 11월 10일부터 열립니다." : "질문하기는 이용권이 있을 때 쓸 수 있습니다.", 403);
+    /* 다른 화면과 같은 말투로, 지금 쓸 수 있는 것을 함께 알린다(MAT 시험 P2) */
+    return say(open.why === "date"
+      ? `질문하기는 ${AI_TOOLS_OPEN_KO}부터 열려요. 그 전에는 공고 맞춰 보기 · 문장 뼈대 · 이번 주 브리핑을 쓸 수 있어요.`
+      : "질문하기는 이용권이 있을 때 쓸 수 있어요.", 403);
   }
   if (!(await aiConsented(user.id))) {
     return say("질문하기는 AI 분석을 켜야 쓸 수 있습니다. 켜면 질문과 필요한 내 기록 요약이 Anthropic(미국)의 Claude로 보내져 읽힙니다. MAT 설정에서 켤 수 있습니다.", 403);

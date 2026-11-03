@@ -30,7 +30,11 @@ export const generateMetadata = () => matTitle("내 경험과 맞춰 보기");
  */
 const majorStem = (m: string | null) => (m ?? "").replace(/\s+/g, "").replace(/(공학과|공학부|공학|학과|학부|전공|과)$/, "");
 
-type Row = { it: PostingItem; mark: "맞음" | "덜 됨" | "없음"; why: string; chips: string[] };
+type Row = { it: PostingItem; mark: "맞음" | "덜 됨" | "없음" | "확인 필요"; why: string; chips: string[] };
+/* 공고가 이름을 든 도구(CATIA · ANSYS · CAD · Python …). 검사 답만으로는 그 도구를 써 봤는지 알 수 없다(MAT 시험 P1) */
+const NOT_TOOL = /^(AI|IT|PM|PL|PO|MD|QA|QC|HR|CS|R|D|B2B|B2C|KPI|OKR|ESG|UI|UX|SW|HW|PC|OA|MOU|TOEIC|OPIC)$/;
+const toolOf = (t: string): string | null =>
+  [...t.matchAll(/[A-Za-z][A-Za-z0-9+#]{1,}/g)].map((m) => m[0]).find((w) => /[A-Z]/.test(w[0]) && !NOT_TOOL.test(w)) ?? null;
 /** 전에 저장한 분석에 남은 꼬리 "(공고의 ‘…’)" 를 걷는다(지금은 칩으로 적는다) */
 const clean = (t: string) => t.replace(/\s*\(공고의 ‘[^’]*’\)$/, "");
 
@@ -57,7 +61,15 @@ export default async function MatJob({ params, searchParams }: {
   const fit: Row[] = [];
   const gap: Row[] = [];
   const cond: PostingItem[] = [];
+  const expText = exps.map((e) => [e.title, ...e.decisions, ...e.artifacts, ...e.verifications].join(" ")).join(" \n ").toLowerCase();
   for (const it of a.items) {
+    const tool = toolOf(it.text);
+    if (tool && (it.status === "ready" || it.status === "unmapped") && !expText.includes(tool.toLowerCase())) {
+      gap.push({ it, mark: "확인 필요",
+        why: `공고가 이름을 든 도구나 자격(${tool})은 검사 답만으로 확인할 수 없어요. 써 보거나 갖춘 적이 있으면 경험에 그 이름을 적어 두세요.`,
+        chips: [`이름: ${tool}`, `공고: ${need(it)}`] });
+      continue;
+    }
     if (it.status === "ready") {
       fit.push({
         it, mark: "맞음", why: `${area(it)} 경험이 있어요.`,
@@ -160,12 +172,20 @@ export default async function MatJob({ params, searchParams }: {
 
       {cond.length ? (
         <>
-          <h2 className="mt-h2">자격 조건</h2>
-          <ul className="mt-incl">{cond.map((c, i) => <li key={i}>{c.text}<span>{c.reason === "unmatched" ? "댈 경험 고르기" : "원문 확인"}</span></li>)}</ul>
+          {/* 학력 · 연차 · 면허 같은 조건과, 이 전공 영역에 잇지 못한 업무 · 우대 줄을 한 이름(자격 조건)으로 묶지 않는다(MAT 시험 P1) */}
+          {cond.some((c) => c.reason !== "unmatched") ? (<>
+            <h2 className="mt-h2">자격 조건</h2>
+            <ul className="mt-incl">{cond.filter((c) => c.reason !== "unmatched").map((c, i) => <li key={i}>{c.text}<span>원문 확인</span></li>)}</ul>
+          </>) : null}
+          {cond.some((c) => c.reason === "unmatched") ? (<>
+            <h2 className="mt-h2">전공 영역에 잇지 못한 요건</h2>
+            <ul className="mt-incl">{cond.filter((c) => c.reason === "unmatched").map((c, i) => <li key={i}>{c.text}<span>{c.kind === "must" ? "필수 · 경험에 직접 적기" : "우대 · 경험에 직접 적기"}</span></li>)}</ul>
+          </>) : null}
         </>
       ) : null}
 
-      <h2 className="mt-h2" id="tasks">마감 전 할 일</h2>
+      {/* 마감일을 모르면 `마감 전` 이라고 쓰지 않는다(MAT 시험 P1: 마감을 넣는 칸이 없는데 `마감 전 할 일`) */}
+      <h2 className="mt-h2" id="tasks">{p.deadline ? "마감 전 할 일" : "지원 전에 할 일"}</h2>
       {tasks.length ? (
         <>
           <div className="mt-list">

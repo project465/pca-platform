@@ -17,5 +17,5 @@ export function oneLine(s: string, max = 56): string {
 
 /** 공고 분석의 `마감 전 할 일`: 결과물 하나 만들고 무엇과 맞대 볼지 한 줄 */
 export function taskLine(artifact: string, verify: string): string {
-  return `${artifact} 하나 만들고, ${withJosa(verify, "과와")} 맞대 보기`;
+  return `${artifact} 하나 만들고, ${withJosa(verify, "과와")} 비교해 보기`;
 }
