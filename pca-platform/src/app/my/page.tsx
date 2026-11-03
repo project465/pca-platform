@@ -14,7 +14,7 @@ import LogoutButton from "@/components/logout-button";
 import LoginMethods from "./login-methods";
 import { isProvider, PROVIDER_LABEL } from "@/lib/auth-accounts";
 import { queryOne } from "@/lib/db";
-import { activeTrack } from "@/lib/track";
+import { activeTrack, lastDayKst } from "@/lib/track";
 import { MAT_PUBLIC } from "@/lib/mat-switch";
 
 export async function generateMetadata() {
@@ -115,7 +115,7 @@ export default async function AccountHome({
           <h2><Icon name="clock" size={17} />MAT</h2>
           <p>
             {track.on && track.until
-              ? `${new Intl.DateTimeFormat("ko-KR", { timeZone: "Asia/Seoul", year: "numeric", month: "long", day: "numeric" }).format(new Date(track.until))}까지 · 자동 갱신 없음`
+              ? `${lastDayKst(track.until)}까지 · 자동 갱신 없음`
               : "미사용 · 30일권 · 90일권"}
           </p>
           <div className="cm-acts">

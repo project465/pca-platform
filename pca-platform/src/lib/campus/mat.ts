@@ -241,7 +241,8 @@ export async function grantMat(
 export async function matUntilOf(userIds: string[]): Promise<Record<string, string>> {
   if (!userIds.length) return {};
   const rows = await query<{ user_id: string; until: string }>(
-    `SELECT user_id::text, (max(ends_at) AT TIME ZONE 'Asia/Seoul')::date::text AS until
+    /* 쓸 수 있는 마지막 날(끝나는 순간의 1밀리초 앞, `lastDayKst` 와 같은 자) */
+    `SELECT user_id::text, ((max(ends_at) - interval '1 millisecond') AT TIME ZONE 'Asia/Seoul')::date::text AS until
        FROM entitlements
       WHERE user_id = ANY($1::bigint[]) AND kind = 'track' AND status = 'active'
         AND ends_at > now()

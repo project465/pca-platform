@@ -182,23 +182,23 @@ export async function makeDraft(form: FormData): Promise<void> {
 export async function changeConsent(form: FormData): Promise<void> {
   const user = await requireUser();
   await setAiConsent(user.id, String(form.get("on") ?? "") === "1");
-  revalidatePath("/me/track");
-  redirect("/me/track#settings");
+  revalidatePath("/mat/settings");
+  redirect("/mat/settings");
 }
 
 /** 파일 읽기 동의. 끄면 그 뒤로 올린 파일을 읽지 않는다 */
 export async function changeFileConsent(form: FormData): Promise<void> {
   const user = await requireUser();
   await setFileConsent(user.id, String(form.get("on") ?? "") === "1");
-  revalidatePath("/me/track");
-  redirect("/me/track#settings");
+  revalidatePath("/mat/settings");
+  redirect("/mat/settings");
 }
 
 export async function changeDigest(form: FormData): Promise<void> {
   const user = await requireUser();
   await setEmailDigest(user.id, String(form.get("on") ?? "") === "1");
-  revalidatePath("/me/track");
-  redirect("/me/track#settings");
+  revalidatePath("/mat/settings");
+  redirect("/mat/settings");
 }
 
 export async function readAllNudges(): Promise<void> {

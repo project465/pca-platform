@@ -13,6 +13,7 @@ const TABS = [
   { href: "/mat/draft", label: "지원서" },
   { href: "/mat/consult", label: "상담" },
   { href: "/mat/pass", label: "이용권" },
+  { href: "/mat/settings", label: "설정" },
 ];
 
 export function MatTabs() {

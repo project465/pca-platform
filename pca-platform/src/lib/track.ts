@@ -214,3 +214,13 @@ export async function trackOffers(market: string): Promise<{
       ORDER BY duration_days`,
   ).catch(() => []);
 }
+
+/**
+ * **쓸 수 있는 마지막 날**(한국 시각, `YYYY-MM-DD`). 기간은 끝나는 순간(`ends_at`)으로 적혀 있고, 그 순간이 자정이면
+ * 그날은 이미 못 쓴다. 그래서 1밀리초 앞의 날짜를 `~까지` 로 적는다(2026-11-03 테스트: 담당자 화면 · 옛 MAT 화면은
+ * 끝나는 날, 이용권 화면은 UTC 날짜를 적어 하루가 갈렸다). 화면마다 이 함수 하나만 쓴다
+ */
+export function lastDayKst(endsAt: string): string {
+  const d = new Date(new Date(endsAt).getTime() - 1);
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Seoul", year: "numeric", month: "2-digit", day: "2-digit" }).format(d);
+}

@@ -242,8 +242,7 @@ export default async function MatJob({ params, searchParams }: {
       ) : (
         <div className="mt-box" style={{ marginTop: 24 }}>
           <h3>AI로 더 자세히 읽기</h3>
-          <p>켜면 이 공고 글이 Anthropic(미국)의 Claude로 보내져 담당 업무 · 자격 요건 · 우대 사항을 더 자세히 나눠 읽어요.
-            이름과 연락처는 보내지 않아요. 끄는 곳은 <Link href="/me/track#settings">설정</Link>이에요.</p>
+          <p>켜면 이 공고 글이 Anthropic(미국)의 Claude로 보내져 읽혀요. <Link href="/mat/settings">설정</Link></p>
           <form action={matAiOn} style={{ marginTop: 12 }}>
             <input type="hidden" name="id" value={p.id} />
             <button type="submit" className="mt-btn is-block">동의하고 AI로 다시 읽기</button>

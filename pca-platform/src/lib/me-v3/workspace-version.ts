@@ -413,7 +413,8 @@
 /** /me/region 회사 목록 카드 · 경험 추가 조사 받침 — V97 */
 /** 회사 카드 주력 품목 칩 · 더 보기, 결과 기록 현재 상태 한 줄 + 경험 추가, 기관 참여자 경험 말 · 분야 선택, 계정 쪽 한 줄 · 상태 이름표 · 로그아웃 맨 아래 · 발급 계정은 소셜 로그인과 주문 숨김 — V98 */
 /** 결과 기록 카드의 수를 `해 본 일이 있는 영역`(근거 확인 · 정리 덜 됨 · 관심 낮음)으로 — V99 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V99";
+/** 메뉴 `AI 취업비서` 는 `/mat` 으로 · 홈 위쪽 · 홈에 MAT 줄(학교 · 기관이 연 학생도) — V100 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V100";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.

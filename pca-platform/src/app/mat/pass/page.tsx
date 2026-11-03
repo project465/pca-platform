@@ -2,7 +2,7 @@ import Link from "next/link";
 import { AI_TOOLS_OPEN_KO } from "@/lib/mat/open-dates";
 import { requireUser } from "@/lib/session";
 import { matTitle } from "@/lib/mat/title";
-import { activeTrack, trackOffers } from "@/lib/track";
+import { activeTrack, lastDayKst, trackOffers } from "@/lib/track";
 import { payOpen } from "@/lib/payments";
 import { campusSay, university } from "@/lib/campus/registry";
 import { campusStudentContext } from "@/lib/campus/students";
@@ -31,7 +31,7 @@ export default async function MatPass() {
   /* 기관(진흥원) 참여자에게는 `학교` 대신 `기관` 으로 적는다(기관 말 바꾸기) */
   const say = campusSay(campus ? university(campus.row.university_code) : null);
   const open = payOpen("KR");
-  const day = (s: string) => s.slice(0, 10);
+  const day = (s: string) => lastDayKst(s);
   const school = state.source?.kind === "school"
     ? (university(state.source.university)?.university_name ?? "학교")
     : null;
@@ -60,7 +60,7 @@ export default async function MatPass() {
           <p>{campus.university_name} 계정이에요. {say("학교가 MAT을 열어 주면 결제 없이 바로 쓸 수 있어요.")}</p>
         ) : (
           <ul>
-            <li>학교가 MAT을 열어 주면 결제 없이 써요.</li>
+            <li>{say("학교가 MAT을 열어 주면 결제 없이 써요.")}</li>
             <li>학교에서 받은 계정으로 로그인하면 이어져요.</li>
           </ul>
         )}

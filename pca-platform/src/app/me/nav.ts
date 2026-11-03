@@ -62,6 +62,8 @@ export const CM_GROUPS: CmNavGroup[] = [
        * 메뉴에서 다시 찾을 때 지나가는 줄이 되었다.
        */
       { href: "/me/next", label: "지금 할 일", icon: "spark" },
+      /* MAT 은 홈 가까이(2026-11-03 테스트: 맨 아래 '기타' 에만 있어 학교가 열어 준 학생도 못 찾았다) */
+      { href: "/mat", label: "AI 취업비서", icon: "globe" },
     ],
   },
   {
@@ -96,7 +98,6 @@ export const CM_GROUPS: CmNavGroup[] = [
       /* **띠에는 아이콘과 이름만 둔다**(규격 §20). `준비 중` 을 여기
          적어 두면 아직 없는 것이 메뉴에서 한 줄을 더 먹고, 그 사실은
          들어가면 쪽이 첫 줄에 적는다 */
-      { href: "/me/track", label: "AI 취업비서", icon: "globe" },
       { href: "/my", label: "계정", icon: "user" },
     ],
   },
@@ -121,7 +122,7 @@ export const CM_TABS: CmNavItem[] = CM_NAV.filter((x) => x.tab);
 const SAME: Record<string, string> = {
   "/me/experience/new": "/me/experience",
   "/me/recompute": "/me/experience",
-  "/me/jobs": "/me/track",
+  "/me/jobs": "/mat",
   "/me/gap": "/me/state",
   "/v3/start": "/cores",
 };

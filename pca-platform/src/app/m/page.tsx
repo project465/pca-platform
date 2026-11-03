@@ -108,7 +108,7 @@ export default async function AppHome() {
           <Section title="다가오는 마감" more={{ href: "/m/mat", label: "MAT" }}>
             <div className="ma-list">
               {deadlines.map((d) => (
-                <Row key={d.id} href="/me/track#brief" icon="clock" title={d.label}
+                <Row key={d.id} href="/mat/brief" icon="clock" title={d.label}
                   sub={`${Number(d.deadline.slice(5, 7))}월 ${Number(d.deadline.slice(8, 10))}일 마감`}
                   tail={<Dday left={d.left} />} />
               ))}
@@ -126,7 +126,7 @@ export default async function AppHome() {
               <span className="ma-quick-ic"><Icon name="doc" size={18} /></span>
               <span><b>사진으로 옮기기</b><small>수료증·성적증명서</small></span>
             </Link> : null}
-            {MAT_PUBLIC ? <Link href="/me/track#posting">
+            {MAT_PUBLIC ? <Link href="/mat/jobs">
               <span className="ma-quick-ic"><Icon name="send" size={18} /></span>
               <span><b>공고 붙여 넣기</b><small>내 기록과 비교하기</small></span>
             </Link> : null}

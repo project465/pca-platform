@@ -142,12 +142,13 @@ export default async function MatHome() {
         </p>
       )}
 
-      <h2 className="mt-h2">{broadOnly ? "조건을 넓힌 공고" : jobs.matched ? "맞는 공고" : "새 공고"} <Link href="/mat/jobs" className="mt-meta">전체</Link></h2>
+      {/* 빈 칸은 칸째 숨긴다(2026-11-03 대표 "AI 느낌") */}
       {shown.length ? (
-        <div className="mt-list">{shown.map((p) => <JobCard key={p.id} p={p} />)}</div>
-      ) : (
-        <p className="mt-empty">모아 둔 공고가 아직 없어요.</p>
-      )}
+        <>
+          <h2 className="mt-h2">{broadOnly ? "조건을 넓힌 공고" : jobs.matched ? "맞는 공고" : "새 공고"} <Link href="/mat/jobs" className="mt-meta">전체</Link></h2>
+          <div className="mt-list">{shown.map((p) => <JobCard key={p.id} p={p} />)}</div>
+        </>
+      ) : null}
       {fromJi ? <p className="mt-src">공고 출처 잡인더스트리</p> : null}
       {ask.ok ? <MatAsk /> : null}
     </main>

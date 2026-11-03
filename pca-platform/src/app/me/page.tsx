@@ -17,7 +17,7 @@ import { openActions } from "@/lib/me-v3/open-actions";
 import { recentChangeKo } from "@/lib/me-v3/change-text.ko";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { majorNameOf } from "@/lib/me-v3/major-name";
-import { activeTrack } from "@/lib/track";
+import { activeTrack, lastDayKst } from "@/lib/track";
 import {
   FAMILY_LINE, NEUTRAL_LINE, studentStateView,
 } from "@/lib/me-v3/student";
@@ -499,12 +499,18 @@ export default async function Home() {
               } />
             {/* **무료 검사 → MAT.** 결과를 받은 사람이 다음에 갈 자리다. MAT 을
                 이미 쓰는 사람에게는 세우지 않는다(띠에 이미 있다) */}
-            {!track.on && MAT_PUBLIC ? (
+            {/* 학교 · 기관이 열어 준 학생도 홈에서 바로 MAT 으로 간다(2026-11-03 테스트: 메뉴 맨 아래에만 있었다) */}
+            {track.on ? (
+              <RecordRow icon="spark" tint="t-2"
+                title="AI 취업비서 · MAT"
+                note={track.until ? `${lastDayKst(track.until)}까지` : undefined}
+                actions={<Link className="cm-btn" href="/mat">{t("MAT 보기")}</Link>} />
+            ) : MAT_PUBLIC ? (
               <RecordRow icon="spark" tint="t-2"
                 title={t("이 결과로 매주 챙기기 · MAT")}
                 note={t("이번 주 할 일 하나 · 가까운 마감 · 공고와 내 경험 비교")}
                 actions={
-                  <Link className="cm-btn" href="/me/track">{t("MAT 보기")}</Link>
+                  <Link className="cm-btn" href="/mat">{t("MAT 보기")}</Link>
                 } />
             ) : null}
             {exps.slice(0, HOME_RECENT).map((e) => (

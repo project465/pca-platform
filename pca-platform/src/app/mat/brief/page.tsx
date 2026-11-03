@@ -44,8 +44,9 @@ export default async function MatBrief() {
         <Link href="/mat">홈으로</Link>
       </section>
 
-      <h2 className="mt-h2">마감 가까운 공고</h2>
-      {brief.deadlines.length ? (
+      {/* 빈 칸은 칸째 숨긴다(2026-11-03 대표 "AI 느낌") */}
+      {brief.deadlines.length ? (<>
+        <h2 className="mt-h2">마감 가까운 공고</h2>
         <div className="mt-list">
           {brief.deadlines.map((d) => (
             <Link key={d.id} href={`/mat/jobs/${d.id}`} className="mt-row mt-row-link">
@@ -57,10 +58,10 @@ export default async function MatBrief() {
             </Link>
           ))}
         </div>
-      ) : <p className="mt-empty">2주 안에 마감되는 공고는 없어요.</p>}
+      </>) : null}
 
-      <h2 className="mt-h2">여러 공고가 원하는 것</h2>
-      {brief.gaps.length ? (
+      {brief.gaps.length ? (<>
+        <h2 className="mt-h2">여러 공고가 원하는 것</h2>
         <div className="mt-list">
           {brief.gaps.map((g) => (
             <div key={g.domain} className="mt-row">
@@ -73,12 +74,12 @@ export default async function MatBrief() {
             </div>
           ))}
         </div>
-      ) : <p className="mt-empty">공고를 두 개 넘게 분석하면 여기 모여요.</p>}
+      </>) : null}
 
-      <h2 className="mt-h2">새로 맞는 공고</h2>
-      <p className="mt-empty" style={{ borderStyle: "solid" }}>
-        {fresh ? <Link href="/mat/jobs">이번 주에 새로 맞는 공고 보기</Link> : "이번 주에는 아직 없어요."}
-      </p>
+      {fresh ? (<>
+        <h2 className="mt-h2">새로 맞는 공고</h2>
+        <p className="mt-empty" style={{ borderStyle: "solid" }}><Link href="/mat/jobs">이번 주에 새로 맞는 공고 보기</Link></p>
+      </>) : null}
 
       <h2 className="mt-h2">알림</h2>
       <ul className="mt-incl">
@@ -87,7 +88,7 @@ export default async function MatBrief() {
             <input type="hidden" name="on" value={set.email_digest ? "0" : "1"} />
             <button type="submit" className="mt-link mt-linkbtn">{set.email_digest ? "끄기" : "켜기"}</button>
           </form></span></li>
-        <li>웹 알림<span><Link href="/me/track">설정</Link></span></li>
+        <li>웹 알림<span><Link href="/mat/settings">설정</Link></span></li>
         <li>카카오 알림톡<span>준비 중</span></li>
       </ul>
     </main>

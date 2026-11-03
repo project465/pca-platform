@@ -36,10 +36,10 @@ export default async function MatConsult() {
       {/* 상담을 신청하면 이름 · 연락처 · 한 장 요약이 커리어피크 상담사에게 간다. `제휴사는 볼 수 없다` 는 사실과 다르다(MAT 시험 M4) */}
       <p className="mt-note">보낸 내용은 상담을 맡은 커리어피크 상담사만 봐요. 학교는 볼 수 없어요. 상담이 끝나고 1년 뒤 지워요.</p>
 
-      <h2 className="mt-h2">보낸 신청</h2>
-      {sent.length ? (
+      {sent.length ? (<>
+        <h2 className="mt-h2">보낸 신청</h2>
         <ul className="mt-incl">{sent.slice(0, 10).map((s, i) => <li key={i}>상담 신청<span>{s.sent_at.slice(0, 10)}</span></li>)}</ul>
-      ) : <p className="mt-empty">아직 없어요.</p>}
+      </>) : null}
     </main>
   );
 }

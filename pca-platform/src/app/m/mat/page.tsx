@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { activeTrack } from "@/lib/track";
+import { activeTrack, lastDayKst } from "@/lib/track";
 import { livePostingsOf } from "@/lib/assistant/posting";
 import { buildBrief, daysLeft, kstToday } from "@/lib/assistant/brief";
 import { openActions } from "@/lib/me-v3/open-actions";
@@ -18,9 +18,11 @@ export const metadata = { title: "MAT · CareerMatri" };
  * 결제 규칙을 받는다(`APP_OPTIONS.md` 3절). 이용하지 않는 분께는 무엇을
  * 하는지만 적고 시작은 웹 MAT 화면으로 보낸다. 앱을 낼 때 이 자리를 정한다.
  */
-const fmt = (iso: string) =>
-  new Intl.DateTimeFormat("ko-KR", { timeZone: "Asia/Seoul", month: "long", day: "numeric" })
-    .format(new Date(iso));
+/* 쓸 수 있는 마지막 날(`lastDayKst`) */
+const fmt = (iso: string) => {
+  const d = lastDayKst(iso);
+  return `${Number(d.slice(5, 7))}월 ${Number(d.slice(8, 10))}일`;
+};
 
 export default async function Mat() {
   const user = await appUser();
@@ -37,14 +39,14 @@ export default async function Mat() {
             <p className="ma-kicker">매주 한 판으로</p>
             <h3>할 일 하나, 다가오는 마감, 여러 공고가 함께 묻는 빈칸</h3>
             <p>결과지에서 정한 할 일과 적어 둔 경험을 이어받아 이번 주에 할 것을 모아 줍니다.</p>
-            <Link className="ma-btn is-block" href="/me/track">MAT 알아보기</Link>
+            <Link className="ma-btn is-block" href="/mat">MAT 알아보기</Link>
           </div>
           <Section title="MAT가 하는 일">
             <div className="ma-list">
-              <Row href="/me/track" icon="check" title="이번 주 할 일 하나" sub="끝냈다고 표시하면 다음 할 일이 이어서 나옵니다" />
-              <Row href="/me/track" icon="send" title="공고와 내 기록 비교" sub="요구 항목마다 설명할 수 있는 것과 빈칸을 나눠 봅니다" />
-              <Row href="/me/track" icon="doc" title="지원서 문장 뼈대" sub="내 기록으로 세 줄 뼈대까지만 만들고, 없는 내용은 지어 넣지 않습니다" />
-              <Row href="/me/track" icon="clock" title="마감 챙기기" sub="D-day로 보여 주고 휴대전화 달력에 넣을 수 있습니다" />
+              <Row href="/mat" icon="check" title="이번 주 할 일 하나" sub="끝냈다고 표시하면 다음 할 일이 이어서 나옵니다" />
+              <Row href="/mat" icon="send" title="공고와 내 기록 비교" sub="요구 항목마다 설명할 수 있는 것과 빈칸을 나눠 봅니다" />
+              <Row href="/mat" icon="doc" title="지원서 문장 뼈대" sub="내 기록으로 세 줄 뼈대까지만 만들고, 없는 내용은 지어 넣지 않습니다" />
+              <Row href="/mat" icon="clock" title="마감 챙기기" sub="D-day로 보여 주고 휴대전화 달력에 넣을 수 있습니다" />
             </div>
           </Section>
           <p className="ma-note">학교에서 MAT 이용권을 열어 준 경우 바로 쓸 수 있습니다.</p>
@@ -97,7 +99,7 @@ export default async function Mat() {
               {watching.map((p) => {
                 const left = p.deadline ? daysLeft(p.deadline, today) : null;
                 return (
-                  <Row key={p.id} href="/me/track#posting" icon="send" title={p.label}
+                  <Row key={p.id} href="/mat/jobs" icon="send" title={p.label}
                     sub={p.deadline ? `${fmt(p.deadline)} 마감` : "마감일 없음"}
                     tail={left !== null && left >= 0 ? <Dday left={left} /> : undefined} />
                 );
@@ -112,7 +114,7 @@ export default async function Mat() {
 
         <Section title="도구">
           <div className="ma-list">
-            <Row href="/me/track#draft" icon="spark" title="메모를 경험으로" sub="편하게 적으면 경험 양식으로 옮깁니다" />
+            <Row href="/mat/files" icon="spark" title="메모를 경험으로" sub="편하게 적으면 경험 양식으로 옮깁니다" />
             <Row href="/m/capture" icon="doc" title="사진으로 옮기기" sub="수료증·성적증명서를 찍어 초안으로" />
             <Row plain href="/me/track/calendar" icon="clock" title="마감을 달력에 넣기" sub="휴대전화 달력으로 한 번에" />
             <Row href="/m/profile#settings" icon="bell" title="알림 설정" sub="기기 알림과 메일 브리핑" />
