@@ -7,6 +7,7 @@ import { latestResult, savedJobCount, activeCoreOrPick } from "@/lib/me-v3/platf
 import { demandOf, MIN_CELL } from "@/lib/jobs/stats";
 import { domainName } from "@/lib/me-v3/runtime/session";
 import { CmShell, CmHead } from "../shell";
+import { MAT_PUBLIC } from "@/lib/mat-switch";
 
 export const metadata = { title: "공고 · 내 CareerMatri" };
 
@@ -32,6 +33,8 @@ export default async function Jobs() {
   /* **영어 작업공간에는 이 자리가 없다**(`WS_KR_ONLY`). 한국 자료에 서
      있는 쪽이라, 번역해 세우면 해외 손님이 한국 자료를 자기 것으로 읽는다 */
   if ((await wsLang(user.id)) === "en") redirect("/me");
+  /* **MAT 의 공고 탭으로 옮겼다**(2026-11-03 메뉴). MAT 을 가려 둔 동안만 이 쪽이 선다 */
+  if (MAT_PUBLIC) redirect("/mat/jobs");
   const major = await activeMajorName(user.id);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
   const core = await activeCoreOrPick(user.id);

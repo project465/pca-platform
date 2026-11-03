@@ -2228,3 +2228,43 @@ a.cm-nav.is-on { border-radius: 12px; }
 @media (max-width: 640px) {
   .cm-rg-grid { grid-template-columns: 1fr; }
 }
+
+/* ── 메뉴: MAT 이 첫 줄이고 가장 크다(2026-11-03 시안 `Main.dc.html`) ── */
+a.cm-nav.is-big {
+  flex-direction: column; align-items: flex-start; justify-content: center; gap: 4px;
+  padding: 14px 16px; border-radius: 14px; min-height: 0;
+  background: #2563eb; color: #fff;
+}
+a.cm-nav.is-big:hover { background: #1d4ed8; color: #fff; }
+.cm-nav-big-h { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.cm-nav-big-h > b { font-size: 20px; font-weight: 800; letter-spacing: -.01em; }
+.cm-nav-big-h > em {
+  font-style: normal; font-size: 12px; font-weight: 600; line-height: 1.5;
+  padding: 1px 8px; border-radius: 999px; background: rgba(255, 255, 255, .18); color: #fff;
+}
+a.cm-nav.is-big small { font-size: 13px; color: #dce7ff; opacity: 1; margin-top: 0; }
+/* 내 정보 · 이용권은 띠 바닥 */
+.cm-group.is-foot { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--cm-rail-line); }
+.cm-sheet .cm-group.is-foot { margin-top: 0; border-top-color: var(--sf-line); }
+.cm-sheet a.cm-nav.is-big { background: #2563eb; color: #fff; }
+.cm-sheet a.cm-nav.is-big:hover { background: #1d4ed8; color: #fff; }
+.cm-sheet a.cm-nav.is-big small { color: #dce7ff; }
+@media (max-width: 900px) {
+  /* 아래 띠의 MAT 칸. 색과 굵기로 먼저 읽힌다 */
+  .cm-tabs a.is-big { color: #2563eb; font-weight: var(--ui-w-bd); }
+  .cm-tabs a.is-big svg { stroke-width: 2.1; }
+}
+
+/* 검사 결과 안의 작은 탭. 넘치면 이 줄 안에서만 옆으로 민다(쪽은 밀리지 않는다) */
+.cm-subtabs {
+  display: flex; gap: 6px; overflow-x: auto; margin: 0 0 18px; padding: 2px 0 4px;
+  scrollbar-width: none; max-width: 100%;
+}
+.cm-subtabs::-webkit-scrollbar { display: none; }
+.cm-subtabs > a {
+  flex: 0 0 auto; white-space: nowrap; text-decoration: none;
+  padding: 7px 13px; border-radius: 999px; border: 1px solid var(--sf-line);
+  font-size: 14px; font-weight: var(--ui-w-md); color: var(--sf-ink-2); background: var(--sf-surface);
+}
+.cm-subtabs > a:hover { border-color: #c7d7fe; color: #1d4ed8; }
+.cm-subtabs > a.is-on { background: #eef4ff; border-color: #c7d7fe; color: #1d4ed8; font-weight: var(--ui-w-bd); }

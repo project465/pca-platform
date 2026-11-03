@@ -415,7 +415,8 @@
 /** 결과 기록 카드의 수를 `해 본 일이 있는 영역`(근거 확인 · 정리 덜 됨 · 관심 낮음)으로 — V99 */
 /** 메뉴 `AI 취업비서` 는 `/mat` 으로 · 홈 위쪽 · 홈에 MAT 줄(학교 · 기관이 연 학생도) — V100 */
 /** /me/region 맨 위에 기관 프로그램의 중점 기업 카드(지역 화면을 카드로 바꾸며 빠졌던 자리) — V101 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V101";
+/** 메뉴: MAT 이 첫 줄 · 가장 크게, 홈 · 검사 결과, 바닥에 내 정보 · 이용권. 검사 결과 안에 작은 탭. 공고 · 지원 기록은 MAT 으로 — V102 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V102";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.

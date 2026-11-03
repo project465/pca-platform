@@ -251,6 +251,9 @@
   font-size: 11.5px; font-weight: 600;
 }
 .ma-tab.is-on { color: var(--ui-accent); }
+/* MAT 칸(첫 칸). 파란 글자와 굵기로 먼저 읽힌다 */
+.ma-tab.is-big { color: #2563eb; font-weight: 800; }
+.ma-tab.is-big > svg { stroke-width: 2.2; }
 
 /* ── 첫 화면 ──────────────────────────────────────────── */
 .ma-welcome {

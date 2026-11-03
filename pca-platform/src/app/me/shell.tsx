@@ -24,7 +24,8 @@ import type { ReactNode } from "react";
 import { Icon } from "@/components/sf/icon";
 import { BrandMark } from "@/components/sf/brand-mark";
 import LogoutButton from "@/components/logout-button";
-import { CM_GROUPS, CM_TABS, type CmNavItem, navOn } from "./nav";
+import { CM_GROUPS, CM_TABS, RESULT_TABS, type CmNavItem, navOn, resultTabOf } from "./nav";
+import { NAV_TEXT } from "./me-text";
 import { CmFind, type FindItem } from "./find";
 import { wsSay } from "@/lib/me-v3/ws-say";
 import { wsKrOnly, type WsLang } from "@/lib/me-v3/ws-lang";
@@ -56,13 +57,17 @@ const MAJOR_FALLBACK = "전공 진단";
 function groupsFor(lang: WsLang) {
   const t = wsSay(lang);
   return CM_GROUPS.map((g) => ({
-    title: t(g.title),
+    title: g.title ? t(g.title) : "",
+    foot: g.foot ?? false,
     items: g.items
       .filter((it) => lang !== "en" || !wsKrOnly(it.href))
       /* MAT 을 가려 둔 동안 띠와 찾기에서 뺀다(`lib/mat-switch.ts`). 표(`nav.ts`)에는 남겨
          별칭과 `active` 검사가 그대로 선다 */
-      .filter((it) => MAT_PUBLIC || it.href !== "/mat")
-      .map((it) => ({ ...it, label: t(it.label), tabLabel: it.tabLabel ? t(it.tabLabel) : undefined })),
+      .filter((it) => MAT_PUBLIC || !(it.href === "/mat" || it.href.startsWith("/mat/")))
+      .map((it) => ({
+        ...it, label: t(it.label), tabLabel: it.tabLabel ? t(it.tabLabel) : undefined,
+        hint: it.hint ? t(it.hint) : undefined, tag: it.tag ? t(it.tag) : undefined,
+      })),
   })).filter((g) => g.items.length);
 }
 
@@ -70,15 +75,52 @@ function findBase(lang: WsLang): FindItem[] {
   const t = wsSay(lang);
   return [
     ...groupsFor(lang).flatMap((g) =>
-      g.items.map((it) => ({ label: it.label, sub: g.title, href: it.href }))),
-    { label: t("경험 추가"), sub: t("내 커리어"), href: "/me/experience/new" },
-    { label: t("새 경험 더하기"), sub: t("내 커리어"), href: "/me/recompute" },
-    { label: t("부족한 부분"), sub: t("내 커리어"), href: "/me/state#gaps" },
+      g.items.map((it) => ({ label: it.label, sub: g.title || t(NAV_TEXT.results.ko), href: it.href }))),
+    /* 검사 결과 안의 작은 탭도 찾는다. 띠에서 뺀 쪽이라 찾는 사람은 그 이름으로 찾는다 */
+    ...resultTabsFor(lang).map((x) => ({ label: x.label, sub: t(NAV_TEXT.results.ko), href: x.href })),
+    { label: t("경험 추가"), sub: t(NAV_TEXT.results.ko), href: "/me/experience/new" },
+    { label: t("새 경험 더하기"), sub: t(NAV_TEXT.results.ko), href: "/me/recompute" },
+    { label: t("부족한 부분"), sub: t(NAV_TEXT.results.ko), href: "/me/state#gaps" },
   ];
+}
+
+/** 그 언어의 작은 탭. 영어에서는 한국 자료에 서 있는 쪽(지역 · 기관)을 뺀다 */
+function resultTabsFor(lang: WsLang) {
+  const t = wsSay(lang);
+  return RESULT_TABS
+    .filter((x) => lang !== "en" || !wsKrOnly(x.href))
+    .map((x) => ({ ...x, label: t(x.label) }));
+}
+
+/** 검사 결과 묶음 안에서만 서는 작은 탭 줄. 넘치면 그 줄 안에서만 옆으로 민다 */
+function ResultTabs({ active, lang }: { active: string; lang: WsLang }) {
+  const on = resultTabOf(active);
+  if (!on) return null;
+  const t = wsSay(lang);
+  return (
+    <nav className="cm-subtabs" aria-label={t(NAV_TEXT.subNav.ko)}>
+      {resultTabsFor(lang).map((x) => (
+        <Link key={x.href} href={x.href} className={x.href === on ? "is-on" : undefined}
+          aria-current={x.href === on ? "page" : undefined}>{x.label}</Link>
+      ))}
+    </nav>
+  );
 }
 
 function NavRow({ it, active }: { it: CmNavItem; active: string }) {
   const on = navOn(it.href, active);
+  /* MAT 줄은 띠에서 가장 크게 선다(시안). 이름 · 꼬리표 · 한 줄 설명 */
+  if (it.big) {
+    return (
+      <Link href={it.href} className={`cm-nav is-big${on ? " is-on" : ""}`}
+        aria-current={on ? "page" : undefined}>
+        <span className="cm-nav-big-h">
+          <b>{it.label}</b>{it.tag ? <em>{it.tag}</em> : null}
+        </span>
+        {it.hint ? <small>{it.hint}</small> : null}
+      </Link>
+    );
+  }
   return (
     <Link href={it.href}
       className={`cm-nav${on ? " is-on" : ""}`}
@@ -190,7 +232,9 @@ export function CmShell({
 }) {
   const t = wsSay(lang);
   const groups = groupsFor(lang);
-  const tabs = CM_TABS.map((it) => ({ ...it, label: t(it.label), tabLabel: it.tabLabel ? t(it.tabLabel) : undefined }));
+  const tabs = CM_TABS
+    .filter((it) => MAT_PUBLIC || !(it.href === "/mat" || it.href.startsWith("/mat/")))
+    .map((it) => ({ ...it, label: t(it.label), tabLabel: it.tabLabel ? t(it.tabLabel) : undefined }));
   const fallback = agency && lang !== "en" ? "진로 진단" : t(MAJOR_FALLBACK);
   return (
     <div className="cm">
@@ -238,9 +282,9 @@ export function CmShell({
           </Link>
 
           <div className="cm-rail-scroll">
-            {groups.map((g) => (
-              <section className="cm-group" key={g.title}>
-                <h2>{g.title}</h2>
+            {groups.map((g, gi) => (
+              <section className={`cm-group${g.foot ? " is-foot" : ""}`} key={g.title || gi}>
+                {g.title ? <h2>{g.title}</h2> : null}
                 {g.items.map((it) => <NavRow key={it.href} it={it} active={active} />)}
               </section>
             ))}
@@ -274,6 +318,7 @@ export function CmShell({
                   {who ? <LogoutButton className="cm-util-out" label={t("로그아웃")} /> : null}
                 </div>
               ) : null}
+              <ResultTabs active={active} lang={lang} />
               {children}
             </div>
           </div>
@@ -288,8 +333,8 @@ export function CmShell({
       <nav className="cm-tabs" aria-label={t("아래 메뉴")}>
         {tabs.map((it) => (
           <Link key={it.href} href={it.href}
-            className={navOn(it.href, active) ? "is-on" : ""}
-            aria-label={it.label}
+            className={`${navOn(it.href, active) ? "is-on" : ""}${it.big ? " is-big" : ""}`.trim()}
+            aria-label={it.tag ? `${it.label} · ${it.tag}` : it.label}
             aria-current={navOn(it.href, active) ? "page" : undefined}>
             <Icon name={it.icon} />
             <span>{it.tabLabel ?? it.label}</span>
@@ -302,9 +347,9 @@ export function CmShell({
           </summary>
           <div className="cm-sheet">
             <p className="cm-sheet-head">CareerMatri · {major ?? fallback}</p>
-            {groups.map((g) => (
-              <section className="cm-group" key={g.title}>
-                <h2>{g.title}</h2>
+            {groups.map((g, gi) => (
+              <section className={`cm-group${g.foot ? " is-foot" : ""}`} key={g.title || gi}>
+                {g.title ? <h2>{g.title}</h2> : null}
                 {g.items.map((it) => <NavRow key={it.href} it={it} active={active} />)}
               </section>
             ))}

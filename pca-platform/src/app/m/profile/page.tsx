@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { M_TAB_TEXT } from "../m-text";
 import { currentState, resultHistory } from "@/lib/me-v3/platform";
 import { majorNameOf } from "@/lib/me-v3/major-name";
 import { activeTrack, lastDayKst } from "@/lib/track";
@@ -80,6 +81,7 @@ export default async function Profile() {
         <Section title="계정">
           <div className="ma-list">
             {MAT_PUBLIC || track.on ? <Row href="/m/mat" icon="spark" title="MAT 이용" sub={track.on && track.until ? `${Number(lastDayKst(track.until).slice(5, 7))}월 ${Number(lastDayKst(track.until).slice(8, 10))}일까지 이용 중` : "이용하지 않음"} /> : null}
+            {MAT_PUBLIC ? <Row href="/mat/pass" icon="contract" title={M_TAB_TEXT.pass.ko} /> : null}
             <Row href="/my" icon="user" title="계정 · 주문 · 탈퇴" />
             <Row href="/password/change" icon="lock" title="비밀번호 바꾸기" />
             <Row href="/me" icon="window" title="웹 화면으로 보기" sub="넓은 화면에서 전체 메뉴로" />

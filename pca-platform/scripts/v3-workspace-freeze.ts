@@ -57,6 +57,8 @@ const FILES = [
   /* 적다 만 것을 들고 나가지 않게 막는 자리(규격 §4) */
   "src/app/me/unsaved.tsx",
   "src/app/me/nav.ts",
+  /* 작업공간 문구 파일(화면 문구 규칙 8) */
+  "src/app/me/me-text.ts",
   "src/app/me/layout.tsx",
   "src/app/me/actions.ts",
   /* 지금 */

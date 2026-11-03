@@ -24,4 +24,15 @@ export const WS_EN_SHELL: Record<string, string> = {
   "메뉴 전체 보기": "Show the full menu",
   "더보기": "More",
   "로그아웃": "Sign out",
+  /* 2026-11-03 메뉴(MAT 첫 줄 · 검사 결과 안의 작은 탭) */
+  "공고 분석 · 지원서 · 면접": "Job analysis · Applications · Interviews",
+  "검사 결과": "Results",
+  "결과": "Results",
+  "내 정보": "My info",
+  "이용권": "Pass",
+  "결과지": "Report",
+  "할 일": "To-dos",
+  "지역·기관": "Regions",
+  "지원서·면접 준비": "Application prep",
+  "검사 결과 메뉴": "Results menu",
 };

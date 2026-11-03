@@ -33,6 +33,9 @@ export default async function Apply() {
   /* **영어 작업공간에는 이 자리가 없다**(`WS_KR_ONLY`). 한국 자료에 서
      있는 쪽이라, 번역해 세우면 해외 손님이 한국 자료를 자기 것으로 읽는다 */
   if ((await wsLang(user.id)) === "en") redirect("/me");
+  /* **MAT 의 지원 현황으로 옮겼다**(2026-11-03 메뉴: MAT 탭과 겹치는 쪽은 MAT 으로). 같은 표
+     (`applicationsOf`)를 읽는다. MAT 을 가려 둔 동안만 이 쪽이 선다 */
+  if (MAT_PUBLIC) redirect("/mat/jobs#track");
   const major = await activeMajorName(user.id);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
   const core = await activeCoreOrPick(user.id);
