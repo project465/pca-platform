@@ -132,7 +132,7 @@ export default async function MatJob({ params, searchParams }: {
   const lineLang = (x: string) => (isEn && /[가-힣]{2}/.test(x) ? "ko" : undefined);
 
   const chipRow = (chips: string[]) => (
-    <div className="mt-chips">{chips.map((c) => <span key={c} className={`mt-chip${c === t(J.chipNone) ? " is-none" : ""}`}>{c}</span>)}</div>
+    <div className="mt-chips">{chips.map((c) => <span key={c} lang={lineLang(c)} className={`mt-chip${c === t(J.chipNone) ? " is-none" : ""}`}>{c}</span>)}</div>
   );
 
   return (
