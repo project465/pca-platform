@@ -8,6 +8,11 @@ import { campusSay, university } from "@/lib/campus/registry";
 import { campusStudentContext } from "@/lib/campus/students";
 import { withJosa } from "@/lib/me-v3/result/josa";
 import { CONSULT_OPENS_KO } from "@/lib/mat/open-dates";
+import { SchoolEnding } from "../paywall";
+import { SubStatus } from "../sub-status";
+import { subscriptionsOpen } from "@/lib/subscriptions/open";
+import { PASS_TEXT } from "@/lib/mat/money-text";
+import { PRICING_HREF } from "@/lib/pricing/config";
 
 export const generateMetadata = () => matTitle("이용권");
 
@@ -21,8 +26,9 @@ export const generateMetadata = () => matTitle("이용권");
  * - **결제가 열리기 전에는 사는 단추를 끈다**(`payOpen`). 누를 수 없는 결제 화면으로 보내지 않는다
  * - 들어 있는 것은 **지금 되는 것만 된다고 적는다.** 아직 만들고 있는 것은 `준비 중`
  */
-export default async function MatPass() {
+export default async function MatPass({ searchParams }: { searchParams: Promise<{ sub?: string }> }) {
   const user = await requireUser();
+  const subMsg = PASS_TEXT.msg[(await searchParams).sub ?? ""] ?? null;
   const [state, offers, campus] = await Promise.all([
     activeTrack(user.id),
     trackOffers("KR"),
@@ -52,6 +58,10 @@ export default async function MatPass() {
         </p>
       ) : null}
 
+      {subMsg ? <p className="mt-note" role="status">{subMsg}</p> : null}
+      <SubStatus userId={user.id} />
+      <SchoolEnding userId={user.id} />
+
       <section className={`mt-box is-school`}>
         <h3>{say("학교에서 검사를 받았나요?")}</h3>
         {school && state.source?.kind === "school" ? (
@@ -67,6 +77,7 @@ export default async function MatPass() {
       </section>
 
       <h2 className="mt-h2">개인으로 쓰기</h2>
+      {subscriptionsOpen() ? <p className="mt-note"><Link href={PRICING_HREF}>{PASS_TEXT.subLink}</Link></p> : null}
       {o30 || o90 ? (
         <form action="/checkout" method="get">
           <fieldset className="mt-opts">

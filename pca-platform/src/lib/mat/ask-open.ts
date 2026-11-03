@@ -13,6 +13,7 @@ export const ASK_OPEN_FROM = Date.parse("2026-11-10T00:00:00+09:00");
 export async function askOpenFor(userId: string): Promise<{ ok: true } | { ok: false; why: "date" | "pass" }> {
   if (await isSuperadmin()) return { ok: true };
   if (Date.now() < ASK_OPEN_FROM) return { ok: false, why: "date" };
-  if (!(await matAccess(userId)).open) return { ok: false, why: "pass" };
+  /* 자유 질문 · 면접 연습은 유료다(2026-11-03 무료 범위). 학교 · 기관 이용권도 기간권으로 센다 */
+  if (!(await matAccess(userId)).paid) return { ok: false, why: "pass" };
   return { ok: true };
 }

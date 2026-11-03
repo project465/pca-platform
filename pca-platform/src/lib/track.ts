@@ -211,7 +211,9 @@ export async function trackOffers(market: string): Promise<{
        FROM products
       WHERE kind = 'track' AND active AND market = 'KR' AND duration_days <= 90
         AND price_status = 'approved' AND amount > 0
-      ORDER BY duration_days`,
+        /* 1회 결제 기간권은 기본 플랜 둘뿐이다. 연구자 상품(RESEARCH_*)은 정기결제로만 판다 */
+        AND code = ANY($1::text[])
+      ORDER BY duration_days`, [TRACK_PRODUCTS as unknown as string[]],
   ).catch(() => []);
 }
 

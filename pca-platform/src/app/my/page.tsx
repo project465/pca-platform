@@ -16,6 +16,7 @@ import { isProvider, PROVIDER_LABEL } from "@/lib/auth-accounts";
 import { queryOne } from "@/lib/db";
 import { activeTrack, lastDayKst } from "@/lib/track";
 import { MAT_PUBLIC } from "@/lib/mat-switch";
+import { SubStatusCm, hasLiveSub } from "@/app/mat/sub-status";
 
 export async function generateMetadata() {
   const en = (await resolveLang().catch(() => "ko")) === "en";
@@ -85,6 +86,7 @@ export default async function AccountHome({
   ]);
   const hasOld = held?.old ?? true;
   const hasOrders = !issued && (held?.orders ?? true);
+  const live = await hasLiveSub(user.id).catch(() => false);
 
   return (
     <CmShell active="/my" title={L === "en" ? "Account" : "계정"} lang={L === "en" ? "en" : "ko"} agency={agencyMember}>
@@ -111,15 +113,17 @@ export default async function AccountHome({
 
         {/* ── MAT ── 기간이 언제 끝나는지는 이 계정에서 찾는 사람이 많다.
             **영어 화면에는 세우지 않는다**: 국내 결제 상품이다(`WS_KR_ONLY`) */}
-        {en || (!MAT_PUBLIC && !track.on) ? null : <section className="cm-card">
-          <h2><Icon name="clock" size={17} />MAT</h2>
+        {/* ── 이용권 ── 정기결제 운영규정 4조의 [내 정보 › 이용권]: 해지 단추 하나가 여기 있다(`SubStatusCm`) */}
+        {en || (!MAT_PUBLIC && !track.on) ? null : <section className="cm-card" id="pass">
+          <h2><Icon name="clock" size={17} />이용권</h2>
           <p>
             {track.on && track.until
-              ? `${lastDayKst(track.until)}까지 · 자동 갱신 없음`
+              ? `MAT ${lastDayKst(track.until)}까지${live ? "" : " · 자동 갱신 없음"}`
               : "미사용 · 30일권 · 90일권"}
           </p>
+          <SubStatusCm userId={user.id} />
           <div className="cm-acts">
-            <Link href="/me/track" className="cm-btn">{track.on ? "MAT 열기" : "MAT 보기"}</Link>
+            <Link href="/mat" className="cm-btn">{track.on ? "MAT 열기" : "MAT 보기"}</Link>
           </div>
         </section>}
 

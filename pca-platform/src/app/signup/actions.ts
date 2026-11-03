@@ -85,6 +85,13 @@ export async function signupAction(_prev: SignupState, form: FormData): Promise<
   /* 잡인더스트리 같은 제휴 입구로 왔으면 센다. 실패해도 가입은 끝났다 */
   const partner = await partnerFromCookie();
   if (created && partner) await recordBrand(created.id, partner);
+  if (created) {
+    /* 유입 경로 · 들어온 공고 · 접속 국가를 사람에 적는다(주문 · 정기결제가 베껴 간다) */
+    const { recordSignupAttribution } = await import("@/lib/attribution");
+    const source = await recordSignupAttribution(created.id);
+    const { matStep } = await import("@/lib/funnel-v3");
+    await matStep("signup", created.id, { source });
+  }
 
   // 인사 한 줄을 대기열에 적는다. 메일 서버를 여기서 기다리지 않는다.
   // 기다리면 메일이 느린 날 가입 버튼이 느려진다.

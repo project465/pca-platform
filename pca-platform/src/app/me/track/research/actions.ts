@@ -22,9 +22,9 @@ export async function uploadResearch(_prev: ResearchState, form: FormData): Prom
   const user = await requireUser();
   const can = await canUseMat(user.id, "research");
   if (!can.ok) {
-    return { ok: false, msg: can.why === "needtest"
-      ? "자료 읽기는 무료 검사를 마친 뒤에 열립니다."
-      : "무료 2번을 다 쓰셨습니다. MAT 기간권을 고르시면 한 달 10건까지 읽어 드립니다." };
+    return { ok: false, msg: can.why === "free"
+      ? "자료 읽기는 MAT 이용권으로 씁니다. 이용권을 고르시면 한 달 10건까지 읽어 드립니다."
+      : "먼저 전공을 골라 주세요." };
   }
   if (String(form.get("consent") ?? "") === "1") await setFileConsent(user.id, true);
   const file = form.get("file");

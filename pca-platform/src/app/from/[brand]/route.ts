@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { BRAND_COOKIE, PARTNERS, isPartner, partnerVisible } from "@/lib/brand";
 import { JOB_COOKIE, JOB_COOKIE_DAYS, safeJobUrl } from "@/lib/partner-job";
 import { currentUser } from "@/lib/session";
+import { JI_POST_COOKIE, jiPost, recordAttribution } from "@/lib/attribution";
 
 export const dynamic = "force-dynamic";
 
@@ -21,6 +22,22 @@ const go = (path: string) => new NextResponse(null, { status: 302, headers: { Lo
 export async function GET(req: Request, { params }: { params: Promise<{ brand: string }> }) {
   const { brand } = await params;
   if (!isPartner(brand)) return go("/");
+  /* **잡인더스트리 공고 입구**(2026-11-03 대표 결정, 아임웹 편집으로 붙인다): `?board=<게시판>&idx=<공고 idx>`.
+     상세 주소는 서버가 만든다(허용 게시판만). 비회원은 검사 없이 가입 → 그 공고 무료 분석 → 결제 입구.
+     우리 회사 사이트라 제휴 소개 쪽을 거치지 않는다. 옛 `?job=<주소>` 꼴은 아래에서 그대로 돈다 */
+  if (brand === "jobindustry") {
+    const sp = new URL(req.url).searchParams;
+    const post = jiPost(sp.get("board"), sp.get("idx"));
+    if (post) {
+      const user = await currentUser().catch(() => null);
+      if (user) await recordAttribution(user.id, { source: "jobindustry", board: post.board, idx: post.idx });
+      const res = go(user ? "/mat/from-ji" : `/signup?next=${encodeURIComponent("/mat/from-ji")}`);
+      const opt = { path: "/", sameSite: "lax" as const, httpOnly: true, secure: process.env.NODE_ENV === "production" };
+      res.cookies.set(JI_POST_COOKIE, `${post.board}:${post.idx}`, { ...opt, maxAge: 60 * 60 * 24 * JOB_COOKIE_DAYS });
+      res.cookies.set(BRAND_COOKIE, brand, { ...opt, maxAge: 60 * 60 * 24 * 90 });
+      return res;
+    }
+  }
   /* 제휴를 내려 둔 동안에는 운영자만 지나간다. 그 밖의 사람은 쿠키 없이 제휴 사이트로 돌아간다 */
   if (!(await partnerVisible())) return go(PARTNERS[brand].home);
   /* **잡인더스트리 공고 화면에서 눌렀으면 그 공고를 기억한다**(`partner-job.ts`).

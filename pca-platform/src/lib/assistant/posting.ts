@@ -211,7 +211,7 @@ function judge(
  * 보는 영역(셋까지)을 `from: "role"` 로 덧붙인다. 공고 글에 없던 요구를 지어내지 않고, 화면이
  * "직무 이름으로 본 영역" 이라고 따로 적는다.
  */
-async function readAndJudge(userId: string, text0: string, hint?: PostingHint): Promise<{
+async function readAndJudge(userId: string, text0: string, hint?: PostingHint, once = false): Promise<{
   st: CurrentState; analysis: PostingAnalysis; by: "claude" | "rules"; model: string | null;
   readDeadline: string | null;
 }> {
@@ -224,7 +224,8 @@ async function readAndJudge(userId: string, text0: string, hint?: PostingHint): 
   let by: "claude" | "rules" = "rules";
   let model: string | null = null;
   let note: string | null = null;
-  const consent = await aiConsented(userId);
+  /* `once` = 이번 한 번만 동의(동의 창에서 '다음부터 묻지 않기' 를 켜지 않았다). 저장한 동의는 바꾸지 않는다 */
+  const consent = once || await aiConsented(userId);
   /* 규칙으로 읽었다는 말은 화면에 남기지 않는다(2026-11-02 대표: 내부 말 금지). 기간권 횟수를
      다 쓴 때만 다시 열리는 날을 적는다 */
   if (!consent) {
@@ -287,6 +288,9 @@ export async function analyzePosting(userId: string, input: {
     [userId, st.core, input.label.slice(0, 80), dl, text,
       JSON.stringify(analysis), by, model],
   );
+  /* 근거 수만 남긴다(검사 전 · 후). 사람과 글은 적지 않는다(`funnel-v3.ts`) */
+  const { recordEvidenceCount } = await import("@/lib/funnel-v3");
+  await recordEvidenceCount({ withAssessment: !!st.model, items: analysis.items, by });
   return { id: row!.id, by };
 }
 
@@ -295,12 +299,12 @@ export async function analyzePosting(userId: string, input: {
  * 하나도 이어지지 않았을 때). 새 줄을 만들지 않아 `분석한 공고` 목록에 같은 공고가 둘 서지 않는다.
  * 남의 것은 고치지 않는다: 번호와 로그인한 사람으로 함께 거른다.
  */
-export async function reanalyzePosting(userId: string, id: string, hint?: PostingHint): Promise<boolean> {
+export async function reanalyzePosting(userId: string, id: string, hint?: PostingHint, once = false): Promise<boolean> {
   if (!/^\d+$/.test(id)) return false;
   const row = await queryOne<{ raw_text: string }>(
     `SELECT raw_text FROM assistant_postings WHERE user_id = $1 AND id = $2`, [userId, id]);
   if (!row?.raw_text) return false;
-  const { st, analysis, by, model } = await readAndJudge(userId, row.raw_text, hint);
+  const { st, analysis, by, model } = await readAndJudge(userId, row.raw_text, hint, once);
   await query(
     `UPDATE assistant_postings SET core_code = $3, analysis = $4::jsonb, analyzed_by = $5, model = $6
       WHERE user_id = $1 AND id = $2`,

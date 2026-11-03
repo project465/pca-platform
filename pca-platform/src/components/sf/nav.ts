@@ -93,6 +93,8 @@ export const NAV_ADMIN: NavItem[] = [
   { href: "/admin/business", label: "navBusiness", icon: "building", group: "navGroupLaunch" },
 
   { href: "/admin/funnel", label: "navFunnel", icon: "spark", group: "navGroupCustomers" },
+  /* MAT 수익화 수치: 가입 → 검사 → 무료 분석 → 결제 → 갱신 · 해지, 유입 경로별 사람 수 */
+  { href: "/admin/mat-funnel", label: "navMatFunnel", icon: "spark", group: "navGroupCustomers" },
   /* 알림 켠 사람(아이폰/안드로이드). 스토어 앱을 만들지 이 숫자로 정한다 */
   { href: "/admin/push", label: "navPush", icon: "bell", group: "navGroupCustomers" },
   /* 논문 읽기 채점표. 석·박사 자료를 MAT 이 바르게 읽는지 본인 채점으로 센다 */

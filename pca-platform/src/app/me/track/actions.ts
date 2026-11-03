@@ -9,7 +9,7 @@ import { openActions } from "@/lib/me-v3/open-actions";
 import { wsLang } from "@/lib/me-v3/ws-lang";
 import { mark } from "@/lib/me-v3/workspace-events";
 import { activeTrack, grantProTrialTx, proTrialClaimable } from "@/lib/track";
-import { canUseMat, matAccess, type MatUse } from "@/lib/mat-access";
+import { canUseMat, matAccess, runAnalysis, type MatUse } from "@/lib/mat-access";
 import { analyzePosting, livePostingOf, setPostingState } from "@/lib/assistant/posting";
 import { smallTasks, taskBody } from "@/lib/assistant/prep";
 import { draftExperience } from "@/lib/assistant/draft";
@@ -62,7 +62,7 @@ async function requireTrack(use?: MatUse): Promise<{ id: string }> {
      있으면 된다: 무료로 비교한 공고 하나를 끝까지 다뤄 볼 수 있어야 한다 */
   if (use) {
     const r = await canUseMat(user.id, use);
-    if (!r.ok) redirect(r.why === "needtest" ? "/me/track?e=needtest" : "/me/track?e=free#plans");
+    if (!r.ok) redirect(r.why === "free" ? "/me/track?e=free#plans" : "/me/track?e=needtest");
     return user;
   }
   if (!(await matAccess(user.id)).open) redirect("/me/track?e=off");
@@ -76,15 +76,20 @@ export async function addPosting(form: FormData): Promise<void> {
   const label = String(form.get("label") ?? "").trim() || "이름 없는 공고";
   const deadline = String(form.get("deadline") ?? "").trim();
   if (text.length < 30) redirect("/me/track?e=short#posting");
-  let id = "";
-  try {
-    id = (await analyzePosting(user.id, {
-      label, text, deadline: /^\d{4}-\d{2}-\d{2}$/.test(deadline) ? deadline : null,
-    })).id;
-  } catch (e) {
-    opFail({ operation: "assistant.posting", ref: ref("user", user.id), step: "save", category: "db" }, e);
-  }
-  if (!id) redirect("/me/track?e=posting#posting");
+  /* 무료 칸은 `/mat` 과 같은 자리에서 잡는다(`runAnalysis`) */
+  const r = await runAnalysis(user.id, async () => {
+    try {
+      return (await analyzePosting(user.id, {
+        label, text, deadline: /^\d{4}-\d{2}-\d{2}$/.test(deadline) ? deadline : null,
+      })).id;
+    } catch (e) {
+      opFail({ operation: "assistant.posting", ref: ref("user", user.id), step: "save", category: "db" }, e);
+      return "";
+    }
+  });
+  if ("blocked" in r) redirect(r.blocked === "free" ? "/me/track?e=free#plans" : "/me/track?e=needtest");
+  if ("failed" in r) redirect("/me/track?e=posting#posting");
+  const id = r.id;
   revalidatePath("/me/track");
   redirect(`/me/track/posting/${id}`);
 }
@@ -102,15 +107,19 @@ export async function importJob(): Promise<void> {
   if (!url) redirect("/me/track#posting");
   const got = await fetchJobPage(url);
   if (!got.ok) redirect(`/me/track/import?e=${got.why}`);
-  let id = "";
-  try {
-    id = (await analyzePosting(user.id, {
-      label: (got.title || "잡인더스트리 공고").slice(0, 120), text: got.text, deadline: null,
-    })).id;
-  } catch (e) {
-    opFail({ operation: "assistant.posting", ref: ref("user", user.id), step: "import", category: "db" }, e);
-  }
-  if (!id) redirect("/me/track/import?e=save");
+  const r = await runAnalysis(user.id, async () => {
+    try {
+      return (await analyzePosting(user.id, {
+        label: (got.title || "잡인더스트리 공고").slice(0, 120), text: got.text, deadline: null,
+      })).id;
+    } catch (e) {
+      opFail({ operation: "assistant.posting", ref: ref("user", user.id), step: "import", category: "db" }, e);
+      return "";
+    }
+  });
+  if ("blocked" in r) redirect(r.blocked === "free" ? "/me/track?e=free#plans" : "/me/track?e=needtest");
+  if ("failed" in r) redirect("/me/track/import?e=save");
+  const id = r.id;
   jar.delete(JOB_COOKIE);
   revalidatePath("/me/track");
   redirect(`/me/track/posting/${id}`);

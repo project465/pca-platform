@@ -25,6 +25,11 @@ export type PaymentFact = {
   method?: string;
   /** 주문번호. 결제를 주문에 붙일 때 쓴다 */
   orderNo?: string;
+  /**
+   * 대행사가 지금까지 취소한 합계(최소 단위 정수). 부분 취소면 결제 금액보다 작다.
+   * 웹훅이 이 값과 우리 장부(`refunds`)의 합을 대조해 남은 만큼만 기간을 줄인다(`refund.ts` 의 `applyProviderCancel`)
+   */
+  cancelledAmount?: number;
   raw: unknown;
 };
 

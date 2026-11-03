@@ -45,7 +45,7 @@ export default async function ResearchPage() {
     : null;
   const left = acc.paid
     ? `이번 달 남은 횟수 ${Math.max(0, RESEARCH_MONTHLY_CAP - used)}/${RESEARCH_MONTHLY_CAP}`
-    : `무료 ${acc.freeLeft}번 남음(아무 도구나)`;
+    : "MAT 이용권으로 씁니다";
 
   return (
     <CmShell active="/me/track" title="MAT">
@@ -58,7 +58,7 @@ export default async function ResearchPage() {
           <div className="cm-pane">
             <p className="cm-row">
               <b>먼저 무료 검사부터</b>
-              <span>MAT 은 검사 결과에서 시작합니다. 검사를 마치면 아무 도구나 합쳐 2번 무료로 써 보실 수 있습니다.</span>
+              <span>자료 읽기는 MAT 이용권으로 씁니다. 공고 분석은 검사 없이 1번 무료이고, 검사를 마치면 1번 더 무료입니다.</span>
             </p>
             <div className="cm-acts"><Link className="cm-btn is-primary" href="/cores">무료 검사 시작</Link></div>
           </div>
@@ -94,7 +94,7 @@ export default async function ResearchPage() {
         <div className="cm-panel is-one">
           <div className="cm-pane">
             <p className="cm-row">
-              <b>무료 2번을 다 쓰셨습니다</b>
+              <b>자료 읽기는 MAT 이용권으로 씁니다</b>
               <span>기간권을 고르시면 한 달 {RESEARCH_MONTHLY_CAP}건까지 읽고, 뽑은 낱말로 맞는 공고를 계속 찾아 드립니다.</span>
             </p>
             <div className="cm-acts"><Link className="cm-btn is-primary" href="/me/track#plans">기간권 보기</Link></div>

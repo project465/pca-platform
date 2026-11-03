@@ -101,6 +101,12 @@ export async function createSocialAccount(
   /* 잡인더스트리 같은 제휴 입구로 왔으면 센다. 실패해도 가입은 끝났다 */
   const partner = await partnerFromCookie();
   if (partner) await recordBrand(created.id, partner);
+  {
+    const { recordSignupAttribution } = await import("@/lib/attribution");
+    const source = await recordSignupAttribution(created.id);
+    const { matStep } = await import("@/lib/funnel-v3");
+    await matStep("signup", created.id, { source });
+  }
 
   /* 인사 한 줄. **메일 서버를 여기서 기다리지 않는다** */
   if (id.email) {

@@ -17,6 +17,12 @@ import { askOpenFor } from "@/lib/mat/ask-open";
 import { headsUp } from "@/lib/mat/heads-up";
 import { postingsOf } from "@/lib/assistant/posting";
 import { applicationsOf } from "@/lib/me-v3/platform";
+import { matStep } from "@/lib/funnel-v3";
+import { matAccess } from "@/lib/mat-access";
+import { NoTestHome } from "./no-test";
+import { SchoolEnding } from "./paywall";
+import { NOTEST } from "@/lib/mat/money-text";
+import { PRICING_HREF } from "@/lib/pricing/config";
 
 export const generateMetadata = () => matTitle("홈");
 
@@ -31,6 +37,10 @@ export const generateMetadata = () => matTitle("홈");
  */
 export default async function MatHome() {
   const user = await requireUser();
+  await matStep("mat_open", user.id);
+  /* 검사 결과도 기간권도 없으면 검사 없이 시작하는 홈(시안 NoTest). 전공이 없어도 여기서 고른다 */
+  const acc = await matAccess(user.id);
+  if (!acc.paid && !acc.ready) return <NoTestHome userId={user.id} acc={acc} />;
   /* /me 와 같은 문: 검사도 학교 학과도 없어 전공을 정할 수 없으면 전공 목록으로 보낸다 */
   await activeCoreOrPick(user.id);
   const [st, act, jobs, ask, mine, apps] = await Promise.all([
@@ -66,7 +76,8 @@ export default async function MatHome() {
         : "적어 둔 경험이 늘면 다음 단계가 보여요.";
 
   const open = act.rows.filter((r) => r.state !== "done" && r.state !== "dropped");
-  const week = open.slice(0, 3);
+  /* 무료는 이번 주 할 일 하나(`FREE_SCOPE.weekTasks`). 학교 · 기관 · 개인 이용권은 셋까지 */
+  const week = open.slice(0, acc.paid ? 3 : Math.min(3, acc.weekTasks));
   /* 맞는 공고가 없으면 조건을 넓힌 공고를 그렇다고 밝혀 보인다(0건으로 비우지 않는다) */
   const broadOnly = !jobs.main.length && jobs.broad.length > 0;
   const shown = (broadOnly ? jobs.broad : jobs.main).slice(0, 2);
@@ -85,6 +96,8 @@ export default async function MatHome() {
         <p style={{ marginTop: 0 }}>지금은 <b>{s.stage}</b> 단계예요. {diag}</p>
         {st.model ? <Link className="mt-link" href="/me/results">결과지 보기</Link> : <Link className="mt-link" href="/cores">검사 시작</Link>}
       </section>
+
+      <SchoolEnding userId={user.id} />
 
       {/* 주요 묶음 셋. 로그인 화면의 색 카드(파랑 · 초록 · 보라)와 같은 말씨 */}
       <nav className="mt-tiles" aria-label="MAT 바로 가기">
@@ -141,6 +154,10 @@ export default async function MatHome() {
           {st.model ? <>열린 할 일이 없어요. <Link href="/mat/jobs">공고 하나 분석하기</Link></> : <Link href="/cores">검사 시작</Link>}
         </p>
       )}
+
+      {!acc.paid && open.length > week.length ? (
+        <p className="mt-note">{NOTEST.weekLocked(open.length - week.length)} <Link href={PRICING_HREF}>{NOTEST.passLink}</Link></p>
+      ) : null}
 
       {/* 빈 칸은 칸째 숨긴다(2026-11-03 대표 "AI 느낌") */}
       {shown.length ? (

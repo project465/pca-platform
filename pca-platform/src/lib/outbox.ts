@@ -129,6 +129,11 @@ let cached: Transporter | null = null;
 export function resetMailTransport(): void {
   cached = null;
 }
+/** 정기결제 안내(`subscriptions/notices.ts`)가 같은 연결을 쓴다. 자격증명이 없으면 `null` */
+export function mailTransport(): Transporter | null {
+  return transport();
+}
+
 function transport(): Transporter | null {
   if (!mailReady()) return null;
   if (cached) return cached;

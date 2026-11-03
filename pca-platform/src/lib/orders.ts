@@ -46,6 +46,7 @@ const NAMES: Record<string, string> = {
   REPORT_HS: "CareerMatri 진로 결과지 (고교)",
   TRACK_30D: "MAT 30일",
   TRACK_90D: "MAT 90일",
+  RESEARCH_30D: "MAT 연구자 30일",
   /* 판매 종료(2026-10-30). 이미 나간 주문의 이름으로만 남는다 */
   TRACK_365D: "MAT 기간권 (판매 종료)",
   TRACK_30D_GL: "MAT 30 days",
@@ -111,12 +112,8 @@ export async function startCheckout(
   if (product.currency !== "KRW" && region !== "global") {
     throw new Error("해외 카드로만 결제할 수 있는 상품입니다.");
   }
-  if (product.kind === "track") {
-    const { hasV3Result } = await import("@/lib/track");
-    if (!(await hasV3Result(userId))) {
-      throw new Error("MAT 은 검사를 한 번 마친 뒤에 열 수 있습니다. 무료 검사를 먼저 해 주세요.");
-    }
-  }
+  /* 검사 결과가 없어도 MAT 기간권을 판다(2026-11-03 대표 결정 "개인은 검사 없이 가입해 MAT 바로 사용").
+     전공은 MAT 홈에서 하나 고른다(`matPickCore`) */
   /* **추가 이용권은 개인 이용권을 쓰는 동안에만 판다**(2026-11-02 대표). 이용권이 없거나 학교
      좌석으로 쓰는 사람에게 팔면 쓸 기간이 없는 횟수를 산 셈이 된다 */
   if (product.kind === "track_refill") {
@@ -145,6 +142,10 @@ export async function startCheckout(
     [orderNo, userId, product.code, product.amount, product.currency, upgradesAttemptId ?? null],
   );
   if (!order) throw new Error("주문을 만들지 못했습니다.");
+  /* 유입 경로 · 들어온 공고를 주문에 베낀다(잡인더스트리 경로 정산 · 사이트별 전환). 칸이 없는 DB 면 넘어간다 */
+  await query(
+    `UPDATE orders o SET source = a.source, posting_idx = a.posting_idx FROM user_attribution a
+      WHERE o.id = $1 AND a.user_id = o.user_id`, [order.id]).catch(() => undefined);
 
   /**
    * 되돌아오는 주소.
@@ -262,6 +263,19 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
     [orderNo],
   );
   if (!order) return { ok: false, reason: "주문을 찾을 수 없습니다." };
+
+  /* **대행사 쪽 취소를 기간에 옮긴다**(웹훅 · 다시 조회). 이미 확정된 주문만이다.
+     합계로 대조하므로 우리 승인으로 이미 적은 환불은 다시 적지 않는다(`applyProviderCancel`) */
+  if (fact.status === "cancelled" && (order.status === "paid" || order.status === "refunded")) {
+    const { applyProviderCancel } = await import("@/lib/refund");
+    const total = fact.cancelledAmount ?? order.amount;
+    const r = await applyProviderCancel(order.id, total, provider.name);
+    if (r.applied) {
+      const { matStep } = await import("@/lib/funnel-v3");
+      await matStep("cancel", order.user_id);
+    }
+    return { ok: false, reason: r.applied ? `대행사 취소를 반영했습니다 (${r.delta}).` : "이미 반영된 취소입니다." };
+  }
 
   if (fact.status !== "paid") {
     await query(
@@ -421,6 +435,9 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
       dedupeKey: `purchase_done:${order.id}`,
       locale: order.locale ?? null,
     });
+    /* MAT 수치(가입 → … → 결제). 유입 경로는 그 사람에게 적힌 것을 읽는다 */
+    const { matStep } = await import("@/lib/funnel-v3");
+    await matStep("purchase", order.user_id);
     /* 퍼널. **결제가 확정된 순간만 센다**: 결제창을 연 것은 따로 센다 */
     await track("purchase", {
       userId: order.user_id,

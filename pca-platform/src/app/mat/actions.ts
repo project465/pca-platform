@@ -7,7 +7,7 @@ import { queryOne } from "@/lib/db";
 import { activeCore, addApplication, applicationsOf, experiencesOf, importActions, removeApplication, setApplicationState } from "@/lib/me-v3/platform";
 import { openActions } from "@/lib/me-v3/open-actions";
 import { mark } from "@/lib/me-v3/workspace-events";
-import { canUseMat, matAccess } from "@/lib/mat-access";
+import { canUseMat, matAccess, runAnalysis } from "@/lib/mat-access";
 import { analyzePosting, livePostingOf, reanalyzePosting, type PostingAnalysis, type PostingHint } from "@/lib/assistant/posting";
 import { smallTasks, taskBody } from "@/lib/assistant/prep";
 import { SOURCE_KO } from "@/lib/mat/stage";
@@ -15,6 +15,23 @@ import { setAiConsent, setEmailDigest } from "@/lib/assistant/settings";
 import { draftExperience } from "@/lib/assistant/draft";
 import { opFail, ref } from "@/lib/oplog";
 import { moveAction } from "../me/next/actions";
+
+/**
+ * 검사 없이 시작한 사람이 **전공 하나를 고른다**(공고 목록과 요건 사전이 전공 단위다). 지금 값 줄
+ * (`career_profiles`)을 빈 칸으로 하나 세운다: 제출 뒤 `syncProfile` 이 세우는 줄과 같은 모양이라
+ * 검사를 마치면 그대로 이어진다. 고를 수 있는 전공만 받는다
+ */
+export async function matPickCore(form: FormData): Promise<void> {
+  const user = await requireUser();
+  const code = String(form.get("core") ?? "");
+  const { sellableCores } = await import("@/lib/me-v3/core-registry");
+  if (!sellableCores("KR").some((c) => c.code === code)) redirect("/mat?e=needcore");
+  await queryOne(
+    `INSERT INTO career_profiles (user_id, core_code, market_code) VALUES ($1, $2, 'KR')
+     ON CONFLICT (user_id, core_code) DO NOTHING RETURNING id`, [user.id, code]).catch(() => null);
+  revalidatePath("/mat");
+  redirect("/mat");
+}
 
 /** 할 일 한 줄을 끝내거나 되돌린다(웹 작업공간과 같은 함수). 끝나면 MAT 홈으로 */
 export async function matMoveAction(form: FormData): Promise<void> {
@@ -24,18 +41,20 @@ export async function matMoveAction(form: FormData): Promise<void> {
 }
 
 /**
- * 새 분석을 만들 수 있는가. 기간권이면 바로, 아니면 무료 남은 횟수(`mat-access.ts`).
- * **서버가 본다**: 화면이 단추를 꺼 두는 것은 안내일 뿐이다.
+ * 새 분석 하나를 무료 칸과 함께 만든다(`runAnalysis`). 기간권이면 바로, 아니면 무료 칸을 먼저 잡는다.
+ * **서버가 본다**: 화면이 단추를 꺼 두는 것은 안내일 뿐이다. 무료를 다 썼으면 요금 화면으로
  */
-async function canAnalyze(userId: string): Promise<void> {
-  const r = await canUseMat(userId, "posting");
-  if (!r.ok) redirect(r.why === "needtest" ? "/mat?e=needtest" : "/mat/pass?e=free");
+async function analyzeOrPay(userId: string, make: () => Promise<string>, back: string): Promise<string> {
+  const r = await runAnalysis(userId, make);
+  if ("blocked" in r) redirect(r.blocked === "needcore" ? "/mat?e=needcore" : "/mat/pricing?from=free");
+  if ("failed" in r) redirect(back);
+  return r.id;
 }
 
-/** 이미 센 분석을 다시 읽는 것은 무료 횟수를 새로 쓰지 않는다. 검사를 마치지 않은 사람만 막는다 */
+/** 이미 센 분석을 다시 읽는 것은 무료 횟수를 새로 쓰지 않는다. 전공을 못 정한 사람만 막는다 */
 async function canReread(userId: string): Promise<void> {
   const r = await canUseMat(userId, "posting");
-  if (!r.ok && r.why === "needtest") redirect("/mat?e=needtest");
+  if (!r.ok && r.why === "needcore") redirect("/mat?e=needcore");
 }
 
 /**
@@ -68,14 +87,14 @@ export async function matAnalyzeJob(form: FormData): Promise<void> {
     }
     redirect(`/mat/jobs/${had.id}`);
   }
-  await canAnalyze(user.id);
-  let id = "";
-  try {
-    id = (await analyzePosting(user.id, { label, text: p.req.join("\n"), deadline: p.closes_on, hint: hint ?? undefined })).id;
-  } catch (e) {
-    opFail({ operation: "assistant.posting", ref: ref("user", user.id), step: "mat.job", category: "db" }, e);
-  }
-  if (!id) redirect("/mat/jobs?e=save");
+  const id = await analyzeOrPay(user.id, async () => {
+    try {
+      return (await analyzePosting(user.id, { label, text: p.req.join("\n"), deadline: p.closes_on, hint: hint ?? undefined })).id;
+    } catch (e) {
+      opFail({ operation: "assistant.posting", ref: ref("user", user.id), step: "mat.job", category: "db" }, e);
+      return "";
+    }
+  }, "/mat/jobs?e=save");
   revalidatePath("/mat");
   redirect(`/mat/jobs/${id}`);
 }
@@ -87,7 +106,7 @@ export async function matAnalyzeJob(form: FormData): Promise<void> {
 export async function matMemoDraft(form: FormData): Promise<void> {
   const user = await requireUser();
   const r = await canUseMat(user.id, "draft");
-  if (!r.ok) redirect(r.why === "needtest" ? "/mat?e=needtest" : "/mat/pass?e=free");
+  if (!r.ok) redirect(r.why === "needcore" ? "/mat?e=needcore" : "/mat/pricing?from=draft");
   const note = String(form.get("note") ?? "").trim().slice(0, 4000);
   if (note.length < 10) redirect("/mat/files?e=memo#memo");
   let id = "";
@@ -119,12 +138,15 @@ export async function matAiOn(form: FormData): Promise<void> {
   const id = String(form.get("id") ?? "");
   if (!/^\d{1,18}$/.test(id)) redirect("/mat/jobs");
   await canReread(user.id);
-  await setAiConsent(user.id, true);
+  /* 동의 창(시안 Consent)의 '다음부터 묻지 않기' 는 **기본이 꺼짐**이다. 켠 사람만 동의를 저장하고,
+     끈 사람은 이번 한 번만 Claude 로 읽는다 */
+  const remember = String(form.get("remember") ?? "") === "1";
+  if (remember) await setAiConsent(user.id, true);
   const row = await queryOne<{ label: string }>(
     `SELECT label FROM assistant_postings WHERE user_id = $1 AND id = $2`, [user.id, id]).catch(() => null);
   if (!row) redirect("/mat/jobs");
   const jobNo = /^(잡인더스트리|고용24) 공고 (\d{1,18})$/.exec(row.label)?.[2] ?? null;
-  await reanalyzePosting(user.id, id, jobNo ? (await hintOf(jobNo)) ?? undefined : undefined).catch((e) =>
+  await reanalyzePosting(user.id, id, jobNo ? (await hintOf(jobNo)) ?? undefined : undefined, !remember).catch((e) =>
     opFail({ operation: "assistant.posting", ref: ref("user", user.id), step: "mat.job.ai", category: "db" }, e));
   revalidatePath("/mat");
   redirect(`/mat/jobs/${id}`);
@@ -136,14 +158,14 @@ export async function matPasteJob(form: FormData): Promise<void> {
   const text = String(form.get("text") ?? "").trim();
   const label = String(form.get("label") ?? "").trim().slice(0, 80) || "붙여 넣은 공고";
   if (text.length < 30) redirect("/mat/jobs?e=short#paste");
-  await canAnalyze(user.id);
-  let id = "";
-  try {
-    id = (await analyzePosting(user.id, { label, text, deadline: null })).id;
-  } catch (e) {
-    opFail({ operation: "assistant.posting", ref: ref("user", user.id), step: "mat.paste", category: "db" }, e);
-  }
-  if (!id) redirect("/mat/jobs?e=save#paste");
+  const id = await analyzeOrPay(user.id, async () => {
+    try {
+      return (await analyzePosting(user.id, { label, text, deadline: null })).id;
+    } catch (e) {
+      opFail({ operation: "assistant.posting", ref: ref("user", user.id), step: "mat.paste", category: "db" }, e);
+      return "";
+    }
+  }, "/mat/jobs?e=save#paste");
   revalidatePath("/mat");
   redirect(`/mat/jobs/${id}`);
 }
@@ -155,7 +177,8 @@ export async function matPasteJob(form: FormData): Promise<void> {
  */
 export async function matTakeTasks(form: FormData): Promise<void> {
   const user = await requireUser();
-  if (!(await matAccess(user.id)).open) redirect("/mat/pass");
+  const acc = await matAccess(user.id);
+  if (!acc.open) redirect("/mat/pricing");
   const id = String(form.get("id") ?? "");
   const p = await livePostingOf(user.id, id);
   if (!p) redirect("/mat/jobs");
@@ -167,7 +190,8 @@ export async function matTakeTasks(form: FormData): Promise<void> {
     await importActions(user.id, open.rows.map((r) => ({
       td: r.td_code, axis: r.axis_code, body: r.body, horizon: r.horizon })));
   }
-  const n = await importActions(user.id, tasks.map((t) => ({
+  /* 무료는 이번 주 할 일 1개(`FREE_SCOPE.weekTasks`). 나머지는 기간권으로 */
+  const n = await importActions(user.id, tasks.slice(0, acc.paid ? tasks.length : acc.weekTasks).map((t) => ({
     td: t.domain, axis: t.axis, body: taskBody(t, p.label, "ko"), horizon: 30,
   })), "manual");
   await mark("action_saved", user.id, { from: "mat.posting", n });

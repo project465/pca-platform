@@ -192,3 +192,39 @@ a.mt-chip-btn { text-decoration: none; color: var(--mt-ink); }
 .mt-btn.is-main { min-height: 52px; border-radius: 12px; background: #2f6bff; border-color: #2f6bff; font-weight: 700; }
 .mt-btn.is-main:hover { background: #1f55e0; border-color: #1f55e0; }
 .mt-btn { border-radius: 12px; }
+
+/* 결제 입구(시안 Paywall) · 검사 전 후 비교(시안 NoTest) · 요금(시안 Pricing) · 결제 동의(시안 Consent) */
+.mt-pay { margin-top: 24px; border: 1px solid var(--mt-line); border-radius: var(--mt-r); padding: 18px 16px; background: var(--mt-soft); }
+.mt-pay h3 { margin: 0 0 6px; font-size: 17px; }
+.mt-pay p { margin: 0 0 12px; color: var(--mt-body); font-size: 15px; line-height: 1.55; }
+.mt-pay .mt-pay-sub { margin: 8px 0 0; text-align: center; color: var(--mt-sub); font-size: 13px; }
+.mt-pay .mt-pay-foot { margin: 12px 0 0; color: var(--mt-sub); font-size: 13px; }
+.mt-cmp { margin-top: 20px; }
+.mt-cmp dl { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
+.mt-cmp dl div { border: 1px solid var(--mt-line); border-radius: var(--mt-rb); padding: 10px 12px; background: var(--mt-bg); }
+.mt-cmp dl div.is-after { border-color: var(--mt-accent); background: var(--mt-accent-soft); }
+.mt-cmp dt { font-size: 13px; color: var(--mt-sub); font-weight: 700; }
+.mt-cmp dd { margin: 4px 0 0; font-size: 14px; line-height: 1.5; }
+.mt-cmp ul { margin: 0 0 10px; padding-left: 18px; font-size: 14px; color: var(--mt-body); }
+.mt-cmp .mt-cmp-more { font-weight: 700; color: var(--mt-accent-ink); margin: 0 0 10px; }
+.mt-seg { display: inline-flex; border: 1px solid var(--mt-line); border-radius: 999px; padding: 3px; gap: 2px; margin-bottom: 14px; }
+.mt-seg a { padding: 8px 16px; border-radius: 999px; text-decoration: none; color: var(--mt-ink); font-size: 14px; min-height: 36px; display: inline-flex; align-items: center; }
+.mt-seg a.is-on { background: var(--mt-ink); color: var(--mt-bg); font-weight: 700; }
+.mt-plans { display: grid; gap: 12px; }
+@media (min-width: 720px) { .mt-plans { grid-template-columns: 1fr 1fr; } }
+.mt-plan { border: 1px solid var(--mt-line); border-radius: var(--mt-r); padding: 18px 16px; background: var(--mt-bg); }
+.mt-plan.is-main { border-color: var(--mt-accent); }
+.mt-plan h3 { margin: 0; font-size: 18px; }
+.mt-plan .mt-plan-for { color: var(--mt-sub); font-size: 13px; margin: 2px 0 10px; }
+.mt-plan .mt-plan-price { font-size: 26px; font-weight: 800; margin: 0 0 10px; font-variant-numeric: tabular-nums; }
+.mt-plan .mt-plan-price small { font-size: 14px; font-weight: 500; color: var(--mt-sub); margin-left: 4px; }
+.mt-plan ul { margin: 0 0 14px; padding-left: 18px; font-size: 14px; line-height: 1.7; color: var(--mt-body); }
+.mt-consent { display: flex; gap: 10px; align-items: flex-start; margin: 14px 0; font-size: 14px; line-height: 1.5; }
+.mt-consent input { width: 20px; height: 20px; flex: none; margin-top: 1px; }
+.mt-dl { display: grid; gap: 8px; margin: 12px 0; }
+.mt-dl div { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--mt-line); padding-bottom: 8px; font-size: 15px; }
+.mt-dl dt { color: var(--mt-sub); }
+.mt-dl dd { margin: 0; font-weight: 700; text-align: right; }
+.mt-dialog { border: 1px solid var(--mt-line); border-radius: var(--mt-r); padding: 20px 18px; max-width: 420px; width: calc(100% - 32px); background: var(--mt-bg); color: var(--mt-ink); }
+.mt-dialog::backdrop { background: rgba(10, 20, 40, 0.45); }
+.mt-dialog h3 { margin: 4px 0 8px; font-size: 18px; }

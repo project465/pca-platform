@@ -78,7 +78,8 @@ type PortOnePayment = {
   id: string;
   status: string;
   orderName?: string;
-  amount?: { total?: number };
+  amount?: { total?: number; cancelled?: number };
+  cancellations?: { totalAmount?: number; status?: string }[];
   currency?: string;
   method?: { type?: string };
   customData?: string;
@@ -123,11 +124,16 @@ export const portoneProvider: PaymentProvider = {
       throw new Error(`PortOne 결제 조회 실패 (${res.status})`);
     }
     const body = (await res.json()) as PortOnePayment;
+    /* 취소 합계. `amount.cancelled` 가 먼저이고, 없으면 끝난 취소 줄을 더한다 */
+    const cancelled = body.amount?.cancelled
+      ?? (body.cancellations ?? []).filter((c) => !c.status || c.status === "SUCCEEDED")
+        .reduce((n, c) => n + (c.totalAmount ?? 0), 0);
 
     return {
       providerPaymentId: body.id ?? providerPaymentId,
       status: toStatus(body.status ?? ""),
       amount: body.amount?.total ?? 0,
+      cancelledAmount: cancelled || undefined,
       currency: body.currency ?? "KRW",
       method: body.method?.type,
       orderNo: body.customData ?? body.id,

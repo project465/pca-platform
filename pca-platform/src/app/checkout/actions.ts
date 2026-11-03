@@ -6,6 +6,7 @@ import { startCheckout } from "@/lib/orders";
 import { markMockPaid, paymentProvider } from "@/lib/payments";
 import type { CheckoutTicket, PayRegion } from "@/lib/payments";
 import { step } from "@/lib/funnel-server";
+import { matStep } from "@/lib/funnel-v3";
 
 export type CheckoutState = { error?: string; ticket?: CheckoutTicket };
 
@@ -39,6 +40,7 @@ export async function createOrderAction(
       userId: user.id,
       props: { product: productCode, market: region === "global" ? "GLOBAL" : "KR" },
     });
+    await matStep("checkout_start", user.id);
     return { ticket };
   } catch (e) {
     /* **실패도 센다.** 결제창을 못 띄운 것과 띄웠는데 안 낸 것은 다른

@@ -5,7 +5,7 @@ import { portoneProvider } from "./portone";
 
 export * from "./types";
 export { matchesOrder } from "./verify";
-export { markMockPaid } from "./mock";
+export { markMockPaid, markMockCancel, markMockRefundFail } from "./mock";
 export { globalChannelReady } from "./portone";
 
 /**
@@ -40,6 +40,37 @@ export function paymentProvider(): PaymentProvider {
 
   throw new Error(`알 수 없는 PAYMENTS_PROVIDER: ${name}`);
 }
+
+/**
+ * 결제를 **받은** 대행사로 환불한다. 지금 설정(`PAYMENTS_PROVIDER`)이 바뀌었어도 그 결제는 그 대행사에 있다.
+ * 운영에서 mock 결제가 남아 있을 수는 없지만(받을 수 없었다), 그런 줄이면 mock 을 돌려주지 않고 던진다
+ */
+export function providerByName(name: string): PaymentProvider {
+  if (name === "portone") return portoneProvider;
+  if (name === "paddle") return paddleRefunds;
+  if (name === "mock") {
+    if (!mockPaymentsAllowed()) throw new Error("운영에서 mock 결제를 환불할 수 없습니다.");
+    return mockProvider;
+  }
+  throw new Error(`알 수 없는 결제 대행사: ${name}`);
+}
+
+/**
+ * Paddle 정기결제 회차의 환불만 하는 대행사(결제는 Paddle 결제창 · 웹훅이 맡는다). 판정은 `refund.ts`
+ */
+const paddleRefunds: PaymentProvider = {
+  name: "paddle",
+  markets: ["global"],
+  async createCheckout() { throw new Error("Paddle 결제는 /mat/subscribe 에서 엽니다"); },
+  async getPaymentStatus() { throw new Error("Paddle 결제 상태는 웹훅으로 받습니다"); },
+  async verifyPayment() { return { ok: false as const, reason: "Paddle 은 웹훅으로 확정합니다" }; },
+  async handleWebhook() { return { ok: false as const, reason: "Paddle 웹훅은 /api/payments/paddle 로 받습니다" }; },
+  async refundPayment({ providerPaymentId, amount, reason }) {
+    const { paddleRefund } = await import("@/lib/subscriptions/paddle");
+    const r = await paddleRefund(providerPaymentId, amount, reason);
+    return r.ok ? { ok: true, providerRefundId: r.id, amount } : { ok: false, reason: r.reason };
+  },
+};
 
 /** 시장과 그 시장의 결제를 받을 준비가 얼마나 됐는가 */
 export type MarketReadiness = {

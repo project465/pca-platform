@@ -527,7 +527,8 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.91";
 /** 다른 학과 검사 머리 줄과 중점 기업 카드를 한 판으로 합침 — V106 */
 /** 가까운 묶음 학과는 머리 줄 이름표(`문항: ○○ 공통`)로 · 비어 있는 기관 명단 자리를 세우지 않음 — V105(Common Core 갈래) */
 /** 다른 학과 검사 · 중점 기업 카드 · Common Core 문구를 한 판으로 합침 — V107 */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V107";
+/** 결과지 끝에 MAT 무료 공고 분석 한 줄(수익화 결제 입구, /mat/jobs) — V108 */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V108";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX
