@@ -67,7 +67,11 @@ export function assemble(x0: Inputs): { pages: Page[]; notes: string[]; region: 
   /* 장 이름. 쪽 모으기와 차례가 이 이름으로 같은 장을 알아본다. 다른 파일이 세운 쪽도 아래에서 이 이름으로 맞춘다 */
   const N = partNames();
   const N3 = T(PART3(x), N.c3en);
-  const N5 = rv ? T(`${rv.label} 기업 살펴보기`, `Around ${rv.area}`) : "";
+  /* 기관 프로그램 회사 쪽만 있는 장(이 전공의 산업과 이어지는 지역 회사는 없지만 프로그램에는 들었다).
+     2026-11-03 견본: 진흥원 법·경찰 참여자 책에서 지역 장이 빠지며 비전세미콘 쪽도 함께 빠졌다 */
+  const fpOnly = !rv && rv0 && x.featured ? featuredPage(x, d, rv0) : null;
+  const rvName = rv ?? (fpOnly ? rv0 : null);
+  const N5 = rvName ? T(`${rvName.label} 기업 살펴보기`, `Around ${rvName.area}`) : "";
   const named = (ps: Page[], name: string) => { for (const p of ps) if (p.kind !== "outer" && p.kind !== "cover") p.partName = name; return ps; };
   /* 장마다 붙는 채움 쪽. 쪽 모으기가 남은 자리가 넓은 쪽에만 싣는다 */
   const fill = fillPages(x, d, N3, rv ? { name: N5, sources: rv.sources, groups: rv.groups, neighbor: rv.neighbor, listed: rv.listed, label: rv.label } : null);
@@ -160,6 +164,12 @@ export function assemble(x0: Inputs): { pages: Page[]; notes: string[]; region: 
     if (fp) rp.splice(1, 0, fp);
     P.push(...named([...rp, ...fill[N5] ?? []], N5));
   }
+  else if (fpOnly && rv0) {
+    P.push(...named([chapter("05", `${rv0.label} 기업 살펴보기`,
+      `참여하신 프로그램에서 방문하는 회사를 내 검사 결과와 나란히 놓았습니다. ${E(rv0.label)} 기업 가운데 이 전공의 산업과 이어지는 회사는 공개 명단에서 찾지 못해 회사 목록은 싣지 않았습니다.`,
+      [fpOnly.title], DECO(200, 140, `<rect x="40" y="40" width="120" height="80" rx="8"/><path d="M60 70h80M60 90h50"/>`)), fpOnly], N5));
+    notes.push(`지역 자료(${x.region})에 이 전공의 산업과 이어지는 회사가 없어 05장에는 프로그램 회사 쪽만 실었습니다`);
+  }
   else notes.push(!x.region ? "소속 기관에 맞는 지역 자료가 없어 05장을 뺐습니다" : rv0 ? `지역 자료(${x.region})에 이 전공의 산업과 이어지는 회사가 없어 05장을 뺐습니다` : `지역 자료(${x.region})를 읽지 못해 05장을 뺐습니다`);
 
   const c6 = ch6Pages(x, d);
@@ -198,7 +208,7 @@ export function assemble(x0: Inputs): { pages: Page[]; notes: string[]; region: 
   /* **한국어 책은 지역 장을 맨 앞(PART 01)으로**(2026-11-01 대표 결정: "지역이 결과지에서 1이나
      2로", "한국꺼만 그런거야. 외국은 아니다잉"). 판정 · 채점과 각 장의 쪽은 그대로이고 차례와
      번호만 바뀐다. 영어 책과 지역 자료가 없는 책은 그대로다 */
-  if (rv && !isEn()) regionFirst(P, N5, N.intro, N, N3);
+  if (rvName && !isEn()) regionFirst(P, N5, N.intro, N, N3);
   P.splice(2, 0, toc(P));
   /* 일자리 기관 참여자의 책은 학교에만 맞는 말을 현장 · 훈련 말로 바꾼다(`agency.ts`) */
   if (x.issuerCode && university(x.issuerCode)?.org_kind === "agency") {
