@@ -1,0 +1,1386 @@
+{
+ "schema_version": "biz-v1-domains.1",
+ "assessment_version": "BIZ_V1",
+ "note": "For each domain: the eight steps of the workflow and the performing and ownership conditions for the eight judgment axes. Items, the results report and experience input all read this one file. `verify_targets` and `artifacts` are what the results report's action steps draw on, so they must be concrete here to avoid vague wording",
+ "workflow_steps": [
+  "How the problem arrives",
+  "Inputs received",
+  "What gets decided first",
+  "Methods used",
+  "Tools used",
+  "Deliverables produced",
+  "What it is compared against",
+  "When it goes wrong"
+ ],
+ "domains": [
+  {
+   "code": "TD01",
+   "name": "Business Strategy and Planning",
+   "required_axes": [
+    "J2",
+    "J3"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "The work people want to do arrives as a goal or a task"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Company-wide goals, available budget and people, deadline, competitive situation"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "What not to do this time and what to do first"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Turning goals into indicators, comparing options, dividing resources, making a schedule"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Spreadsheet tools, presentation tools, meeting notes, indicator definition tables"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "A full business plan, a goals and indicators table, reasons for priorities, an action schedule"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Company-wide goals, results of past periods, similar cases, achievement rate after the end"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If a goal is not achieved, separate whether the goal was too high or resources were not enough"
+    }
+   ],
+   "tools": [
+    "Spreadsheet tools",
+    "Presentation tools",
+    "Indicator definition table",
+    "Meeting notes",
+    "Schedule"
+   ],
+   "artifacts": [
+    "Business plan",
+    "Goals and indicators table",
+    "Reasons for setting priorities",
+    "Action schedule",
+    "Decision record"
+   ],
+   "verify_targets": [
+    "Goals of the whole company or organization",
+    "Results of past periods",
+    "Similar cases",
+    "Actual achievement rate after the end",
+    "Review comments"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down the scope to cover this time among the given goals",
+     "l3": "The scope I defined became the business scope as is"
+    },
+    "J2": {
+     "l2": "Turned the goal into indicators that measure it with numbers",
+     "l3": "The indicators I set were used as evaluation criteria"
+    },
+    "J3": {
+     "l2": "Chose one of several options and allocated resources",
+     "l3": "The budget or people moved according to the allocation I decided"
+    },
+    "J4": {
+     "l2": "Chose and used a planning framework or an analysis method",
+     "l3": "The framework I chose was also used in the next planning"
+    },
+    "J5": {
+     "l2": "Kept a business plan or plan proposal as a document",
+     "l3": "Another person read the plan proposal I left and carried it out"
+    },
+    "J6": {
+     "l2": "Compared two options with the same criteria",
+     "l3": "Changed the plan based on the comparison results"
+    },
+    "J7": {
+     "l2": "Narrowed the reason for a missed goal down to the goal or the resources",
+     "l3": "Confirmed that the same gap became smaller in the next plan"
+    },
+    "J8": {
+     "l2": "Presented the plan proposal in a meeting, explained it, and received agreement",
+     "l3": "My plan led to the placement of budget or people"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "A plan that comes back as sales and market share",
+    "OC2": "An order plan that fits the needs of a client company",
+    "OC3": "A plan that separates profit by channel",
+    "OC4": "A business plan that fits the rules and the set forms",
+    "OC5": "A project proposal and an execution plan",
+    "OC6": "Planning reasons that can show the standards are met",
+    "OC7": "A plan that picks what to check before the funds run out"
+   }
+  },
+  {
+   "code": "TD02",
+   "name": "Marketing and Markets",
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "A product or activity to promote arrives"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Customer data, records of past responses, available budget, deadline"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Which customers to focus on and which channels to use"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Dividing customers, writing messages, allocating channels, measuring responses"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Survey tools, statistics tools, channel management screens, post management tools"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Campaign plan, comparison table of results by channel, criteria for customer groups, draft messages"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Responses to past campaigns, target indicators, competitor cases, conversion rate after the campaign"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If there is no response, narrow the reason down to the customer groups, the message or the channel"
+    }
+   ],
+   "tools": [
+    "Survey tools",
+    "Statistics tools",
+    "Channel management screen",
+    "Post management tools",
+    "Spreadsheet tools"
+   ],
+   "artifacts": [
+    "Campaign plan",
+    "Comparison table of results by channel",
+    "Criteria for customer groups",
+    "Draft messages",
+    "Survey results"
+   ],
+   "verify_targets": [
+    "Responses to past campaigns",
+    "Target indicators",
+    "Conversion rate after the campaign",
+    "Competitor cases",
+    "Customer opinions"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down the customers and the scope this campaign will cover",
+     "l3": "The scope I defined became the campaign scope as is"
+    },
+    "J2": {
+     "l2": "Turned what to communicate into indicators such as conversion rate or reach",
+     "l3": "The indicators I set became the evaluation criteria of the campaign"
+    },
+    "J3": {
+     "l2": "Chose and decided the customer groups and the channel allocation",
+     "l3": "The budget was spent according to the channel allocation I chose"
+    },
+    "J4": {
+     "l2": "Chose and used a research method or a measurement method",
+     "l3": "The research method I chose became the team's standard"
+    },
+    "J5": {
+     "l2": "Kept a campaign plan and draft messages as documents",
+     "l3": "Another person ran the campaign according to the plan I left"
+    },
+    "J6": {
+     "l2": "Compared the responses to two channels or two messages with the same criteria",
+     "l3": "Changed the campaign based on the comparison results"
+    },
+    "J7": {
+     "l2": "Narrowed the reason for no response down to the message or the channel",
+     "l3": "Confirmed that the response changed after the change"
+    },
+    "J8": {
+     "l2": "Presented the campaign results in a meeting and explained them",
+     "l3": "My analysis was used for the next budget allocation"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Activities that come back as brand indicators and sales",
+    "OC2": "Activities that reach the person in charge at a client company",
+    "OC3": "Activities that directly divide sales by channel",
+    "OC4": "Activities that inform the target group of a policy",
+    "OC5": "Activities whose output is research design and a report",
+    "OC6": "Activities that must follow labeling and advertising rules",
+    "OC7": "Activities that check the response first with a small budget"
+   }
+  },
+  {
+   "code": "TD03",
+   "name": "Sales and Business Development",
+   "required_axes": [
+    "J3",
+    "J5"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Something to sell or a joint project arrives as a business opportunity"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Customer needs and budget, our unit price and delivery time, competitive situation"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The price and delivery date to offer, and the terms not to give up"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Listening to customer needs, writing proposals, calculating price quotes, agreeing on terms"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Proposal formats, price quote tables, customer management screens, meeting notes"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Proposal, price quote, record of agreed terms, list of deals in progress"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Our cost and unit price criteria, terms of past deals, competing proposals, whether the deal closed"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If a deal falls through, narrow the reason down to price, delivery or trust"
+    }
+   ],
+   "tools": [
+    "Proposal format",
+    "Price quote table",
+    "Customer management screen",
+    "Meeting notes",
+    "Spreadsheet tools"
+   ],
+   "artifacts": [
+    "Proposal",
+    "Price quote",
+    "Record of agreed terms",
+    "List of deals in progress",
+    "Summary of customer needs"
+   ],
+   "verify_targets": [
+    "Our unit price criteria",
+    "Terms of past deals",
+    "Whether the deal closed",
+    "Competing proposals",
+    "Customer replies"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down the scope to cover in this deal and what not to include",
+     "l3": "The scope I defined became the contract scope as is"
+    },
+    "J2": {
+     "l2": "Turned the customer's spoken needs into quantities and deadlines",
+     "l3": "The conditions I wrote became the basis of the proposal"
+    },
+    "J3": {
+     "l2": "Chose and decided the price and delivery terms to offer",
+     "l3": "The deal closed with the terms I decided"
+    },
+    "J4": {
+     "l2": "Chose and used a format or a quoting method for making proposals",
+     "l3": "The format I chose became the team's standard"
+    },
+    "J5": {
+     "l2": "Kept a proposal and a price quote as documents",
+     "l3": "Another person continued the sales talks with the proposal I left"
+    },
+    "J6": {
+     "l2": "Compared two proposals by cost and by the chance of success",
+     "l3": "Changed the terms based on the comparison and proposed again"
+    },
+    "J7": {
+     "l2": "Narrowed the reason a deal fell through down to price or terms",
+     "l3": "Confirmed that the success rate changed after the terms changed"
+    },
+    "J8": {
+     "l2": "Explained the agreed terms inside the organization and received approval",
+     "l3": "The terms I brought in were used in a production or operations plan"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Deals made within a brand's pricing policy",
+    "OC2": "Deals where the needs of one client company are the standard",
+    "OC3": "Deals that involve channel terms and fees",
+    "OC4": "Deals that follow rules and bidding procedures",
+    "OC5": "Deals in the form of project cooperation",
+    "OC6": "Deals where reviews and terms and conditions set the conditions",
+    "OC7": "Deals where the terms are made on the spot"
+   }
+  },
+  {
+   "code": "TD04",
+   "name": "Financial and Investment Decisions",
+   "required_axes": [
+    "J4",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Work that costs money arrives as something to decide"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Money coming in and going out, available funds, deadline, assumptions such as the discount rate"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The assumptions for the estimate and the criteria for whether to go ahead"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Estimating cash flow, calculating the payback period, checking sensitivity, comparing options"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Spreadsheet tools, estimate forms, financial statements, interest rate data"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Estimated financial statements, reasons for the investment decision, sensitivity table, funding plan"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Past results, industry data, the gap between estimate and actual, review comments"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If an estimate does not match the results, narrow the reason down to the assumptions or the data"
+    }
+   ],
+   "tools": [
+    "Spreadsheet tools",
+    "Estimate form",
+    "Financial statements",
+    "Interest rate data",
+    "Accounting data"
+   ],
+   "artifacts": [
+    "Estimated financial statements",
+    "Reasons for the investment decision",
+    "Sensitivity table",
+    "Funding plan",
+    "Profit and loss estimate table"
+   ],
+   "verify_targets": [
+    "Past results",
+    "Industry data",
+    "Gap between estimate and actual",
+    "Review comments",
+    "Estimates made with a different method"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down the period and the scope to look at in this decision",
+     "l3": "The scope I defined became the review scope as is"
+    },
+    "J2": {
+     "l2": "Turned the goal into criteria such as payback period or profit rate",
+     "l3": "The criteria I set became the pass line for the decision"
+    },
+    "J3": {
+     "l2": "Decided and wrote down the assumptions for an estimate",
+     "l3": "A decision was made with the assumptions I set"
+    },
+    "J4": {
+     "l2": "Chose and used an estimation method and a calculation framework",
+     "l3": "The method I chose was also used in the next review"
+    },
+    "J5": {
+     "l2": "Kept an estimate table and the reasons for the decision as documents",
+     "l3": "Another person read the estimate table I left and made a decision"
+    },
+    "J6": {
+     "l2": "Compared two options with the same criteria",
+     "l3": "Checked the estimate against actual results and wrote down the gap"
+    },
+    "J7": {
+     "l2": "Narrowed the reason an estimate was wrong down to the assumptions or the data",
+     "l3": "Confirmed that the estimate came closer to the results after the assumptions changed"
+    },
+    "J8": {
+     "l2": "Presented the reasons for the decision in a review or a meeting and explained them",
+     "l3": "My estimate was used for a budget or investment decision"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Decisions that come back as operating profit and return on investment",
+    "OC2": "Decisions that involve order unit prices and working capital",
+    "OC3": "Decisions that involve inventory turnover and channel profit",
+    "OC4": "Decisions that are checked by spending rate and audits",
+    "OC5": "Decisions made within a project budget",
+    "OC6": "Decisions that must pass soundness standards and reviews",
+    "OC7": "Decisions viewed by how long it takes until the funds run out"
+   }
+  },
+  {
+   "code": "TD05",
+   "name": "Accounting and Cost",
+   "required_axes": [
+    "J5",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Work where money changed hands arrives with its proof"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Proof such as receipts and contracts, the standards that apply, closing deadline"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Which account to use and which period to put it in"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Classifying transactions, recording in the books, checking records against each other, allocating costs, closing adjustments"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Accounting software, spreadsheet tools, a storage place for proof, reference standards"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Closing data, reconciliation sheet, cost calculation sheet, proof check records"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Original proof, the standards that apply, numbers of past periods, external review comments"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If the numbers do not match, narrow the reason down to classification, period or proof"
+    }
+   ],
+   "tools": [
+    "Accounting software",
+    "Spreadsheet tools",
+    "Storage place for proof",
+    "Reference standards",
+    "Reconciliation form"
+   ],
+   "artifacts": [
+    "Closing data",
+    "Reconciliation sheet",
+    "Cost calculation sheet",
+    "Proof check records",
+    "Account classification criteria"
+   ],
+   "verify_targets": [
+    "Original proof",
+    "The standards that apply",
+    "Numbers of past periods",
+    "External review comments",
+    "Values calculated again by another person"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down the range of transactions to cover in this closing",
+     "l3": "The scope I defined became the closing scope as is"
+    },
+    "J2": {
+     "l2": "Wrote down the standards that apply and the closing conditions that must be met",
+     "l3": "The standards I organized became the team's applied standards"
+    },
+    "J3": {
+     "l2": "Decided which account and which period to use",
+     "l3": "The classification I decided stayed in the books as is"
+    },
+    "J4": {
+     "l2": "Chose and used a cost allocation method or a reconciliation method",
+     "l3": "The allocation method I chose was also used in the next period"
+    },
+    "J5": {
+     "l2": "Kept closing data and a reconciliation sheet as documents",
+     "l3": "The closing data I left was used in a report or a review"
+    },
+    "J6": {
+     "l2": "Checked the numbers in the books against the proof one by one",
+     "l3": "Adjusted the differences found in the check and recorded them"
+    },
+    "J7": {
+     "l2": "Narrowed the reason the numbers did not match down to classification or period",
+     "l3": "Changed the recording procedure so that the same error would not happen again"
+    },
+    "J8": {
+     "l2": "Reported the closing results and received approval",
+     "l3": "The cost numbers I produced were used in a price or budget decision"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Closing that produces operating profit",
+    "OC2": "Closing that separates the cost of each order",
+    "OC3": "Closing that separates profit by channel",
+    "OC4": "Closing that is checked by spending rate and audits",
+    "OC5": "Closing as project settlement data",
+    "OC6": "Closing that must show the standards are met",
+    "OC7": "Closing that shows when cash will run out"
+   }
+  },
+  {
+   "code": "TD06",
+   "name": "Human Resources and Organization",
+   "required_axes": [
+    "J2",
+    "J3"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "A shortage of people or a change in work arrives"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "List of tasks, available people and budget, rules, deadline"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "What to look at, and who takes which work"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Breaking work into tasks, setting criteria, designing interviews, designing training, evaluating"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Application management screens, survey tools, spreadsheet tools, rule documents"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Job criteria, interview questions and evaluation sheets, training design, evaluation criteria"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "List of tasks, rules, past evaluation results, turnover rate after placement"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If a selected person does not fit, narrow the reason down to the criteria or the interview method"
+    }
+   ],
+   "tools": [
+    "Application management screen",
+    "Survey tools",
+    "Spreadsheet tools",
+    "Rule documents",
+    "Training materials"
+   ],
+   "artifacts": [
+    "Job criteria",
+    "Interview questions and evaluation sheet",
+    "Training design",
+    "Evaluation criteria",
+    "Placement plan"
+   ],
+   "verify_targets": [
+    "List of tasks",
+    "Rules",
+    "Past evaluation results",
+    "Share of people who quit after placement",
+    "Opinions of the person and the manager"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately the positions to fill this time and the positions not to fill",
+     "l3": "The scope I defined became the hiring scope as is"
+    },
+    "J2": {
+     "l2": "Turned the needed person into the work they must be able to do",
+     "l3": "The job criteria I organized became the basis of the job posting and the evaluation"
+    },
+    "J3": {
+     "l2": "Chose and decided the criteria to look at and the placement",
+     "l3": "People were selected or placed with the criteria I set"
+    },
+    "J4": {
+     "l2": "Chose and used an interview or evaluation method",
+     "l3": "The method I chose was also used in the next hiring"
+    },
+    "J5": {
+     "l2": "Kept job criteria and an evaluation sheet as documents",
+     "l3": "Another interviewer used the evaluation sheet I left as it was"
+    },
+    "J6": {
+     "l2": "Compared two applicants or two options with the same criteria",
+     "l3": "Checked selection results against work results and fixed the criteria"
+    },
+    "J7": {
+     "l2": "Narrowed the reason for a poor fit down to the criteria or the method",
+     "l3": "Confirmed that more people fit after the criteria changed"
+    },
+    "J8": {
+     "l2": "Presented a draft of the criteria in a meeting and received agreement",
+     "l3": "The criteria I made were used as the organization's evaluation system"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Organizations with established performance evaluation and promotion systems",
+    "OC2": "Staff placement that fits the needs of a client company",
+    "OC3": "Organizations where on-site staff change often",
+    "OC4": "Organizations where rules and fairness standards come first",
+    "OC5": "Organizations that look at project staff and research ability",
+    "OC6": "Organizations that involve qualification and suitability reviews",
+    "OC7": "Organizations where one person takes on several jobs at once"
+   }
+  },
+  {
+   "code": "TD07",
+   "name": "Operations and Processes",
+   "required_axes": [
+    "J3",
+    "J7"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Work to be done arrives with a deadline"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "List of tasks, available people, equipment and time, rules to follow"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The order of the work, and who does what and when"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Drawing procedures, making schedules, dividing roles, measuring processing time, finding bottlenecks"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Schedule management tools, spreadsheet tools, work procedure documents, checklists"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Work procedure documents, schedule and role assignment tables, processing time records, before and after comparisons"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Deadline, past processing times, rules and checklists, error rate after improvement"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If work is late or wrong, narrow the reason down to the procedure, the people or the inputs"
+    }
+   ],
+   "tools": [
+    "Schedule management tool",
+    "Spreadsheet tools",
+    "Work procedure document",
+    "Inspection checklist",
+    "On-site records"
+   ],
+   "artifacts": [
+    "Work procedure document",
+    "Schedule and role assignment table",
+    "Processing time records",
+    "Comparison before and after improvement",
+    "Inspection checklist"
+   ],
+   "verify_targets": [
+    "Deadline",
+    "Past processing times",
+    "Rules and checklists",
+    "Error rate after improvement",
+    "Confirmation by the person in charge"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down the scope of work to cover this time and what not to touch",
+     "l3": "The scope I defined became the improvement scope as is"
+    },
+    "J2": {
+     "l2": "Turned requests into conditions such as processing time or error rate",
+     "l3": "The conditions I set became the operating standard"
+    },
+    "J3": {
+     "l2": "Chose and decided the order of the work and the role assignment",
+     "l3": "Work ran according to the procedure I set"
+    },
+    "J4": {
+     "l2": "Chose and used a method to draw procedures or measure time",
+     "l3": "The method I chose became the team's standard"
+    },
+    "J5": {
+     "l2": "Kept a work procedure document and an assignment table as documents",
+     "l3": "Another person worked by reading the procedure document I left"
+    },
+    "J6": {
+     "l2": "Compared processing time before and after a change under the same conditions",
+     "l3": "Changed the procedure further based on the comparison results"
+    },
+    "J7": {
+     "l2": "Narrowed the reason for a delay down to the procedure or the people",
+     "l3": "Changed the procedure so that the same delay would not happen again"
+    },
+    "J8": {
+     "l2": "Explained the changed procedure and received agreement",
+     "l3": "The procedure I made became the organization's standard procedure"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Operations that keep production volume and delivery dates",
+    "OC2": "Operations that meet a client company's delivery dates and pass its inspection",
+    "OC3": "Operations that look at turnover rate and out-of-stock rate",
+    "OC4": "Operations that follow rules and spending procedures",
+    "OC5": "Operations that match a project's schedule and outputs",
+    "OC6": "Operations that can be traced through records",
+    "OC7": "Operations where the procedure is made while working"
+   }
+  },
+  {
+   "code": "TD08",
+   "name": "Data and Decision-making",
+   "required_axes": [
+    "J4",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "A question arrives where no one knows which option is better"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Collected data and its quality, available tools, deadline"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "What to look at as an indicator and what to compare it with"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Defining indicators, preparing data, dividing groups, comparing, writing conclusions"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Spreadsheet tools, statistics tools, query screens, charting tools"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Indicator definition tables, analysis reports, comparison results, data preparation procedures"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Values of past periods, values of other groups, human judgment, results after the decision"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If a conclusion is reversed, narrow the reason down to the indicator definition or the data quality"
+    }
+   ],
+   "tools": [
+    "Spreadsheet tools",
+    "Statistics tools",
+    "Query screen",
+    "Charting tool",
+    "Survey tools"
+   ],
+   "artifacts": [
+    "Indicator definition table",
+    "Analysis report",
+    "Comparison results",
+    "Data preparation procedure",
+    "Dashboard"
+   ],
+   "verify_targets": [
+    "Values of past periods",
+    "Values of other groups",
+    "Judgment of the person in charge",
+    "Actual results after the decision",
+    "Other analysis methods"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Narrowed the question down to a size that the data can answer",
+     "l3": "The question I narrowed became the analysis scope as is"
+    },
+    "J2": {
+     "l2": "Turned the question into an indicator that can be counted",
+     "l3": "The indicator definition I set became the team's standard"
+    },
+    "J3": {
+     "l2": "Decided what to include and leave out, and the criteria for dividing groups",
+     "l3": "A conclusion was reached with the criteria I set"
+    },
+    "J4": {
+     "l2": "Chose and used an analysis method and tool",
+     "l3": "The method I chose was also used in the next analysis"
+    },
+    "J5": {
+     "l2": "Kept an indicator definition table and an analysis report as documents",
+     "l3": "Another person read the report I left and made a decision"
+    },
+    "J6": {
+     "l2": "Compared two groups under the same conditions",
+     "l3": "Checked a conclusion again with a different method"
+    },
+    "J7": {
+     "l2": "Narrowed the reason a conclusion was reversed down to the indicator or the data",
+     "l3": "Confirmed that the conclusion became stable after the data was fixed"
+    },
+    "J8": {
+     "l2": "Presented the analysis results in a meeting and explained them",
+     "l3": "My analysis was used in an actual decision"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Analysis judged by sales and customer indicators",
+    "OC2": "Analysis judged by a client company's delivery dates and quality",
+    "OC3": "Analysis judged by turnover rate and channel profit",
+    "OC4": "Analysis judged by policy effects and spending",
+    "OC5": "Analysis where the person must establish that the method is valid",
+    "OC6": "Analysis that involves meeting standards and being traceable",
+    "OC7": "Analysis that looks at the direction first with little data"
+   }
+  },
+  {
+   "code": "TD09",
+   "name": "Customer and Service Operations",
+   "required_axes": [
+    "J3",
+    "J7"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "A problem customers face or a service to run arrives"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Customer needs and complaint records, available people and authority, rules and terms and conditions"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "How far to solve on the spot and what to pass up"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Drawing the customer journey, writing service criteria, setting the range of exceptions, measuring quality"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Customer inquiry management screens, survey tools, service guidelines, checklists"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Service procedures, service criteria, complaint handling records, quality measurement results"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Terms and conditions and rules, promised processing time, return visit rate, customer opinions"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If the same complaint keeps coming, narrow the reason down to the procedure, the criteria or the authority"
+    }
+   ],
+   "tools": [
+    "Customer inquiry management screen",
+    "Survey tools",
+    "Service guidelines",
+    "Inspection checklist",
+    "Spreadsheet tools"
+   ],
+   "artifacts": [
+    "Service procedure",
+    "Service criteria",
+    "Complaint handling records",
+    "Quality measurement results",
+    "Diagram of the steps customers go through"
+   ],
+   "verify_targets": [
+    "Terms and conditions and rules",
+    "Promised processing time",
+    "Return visit rate",
+    "Customer opinions",
+    "On-site check results"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately the customer touchpoints to cover this time and the ones not to cover",
+     "l3": "The scope I defined became the service scope as is"
+    },
+    "J2": {
+     "l2": "Turned the level to promise into processing time or satisfaction indicators",
+     "l3": "The level I set became the service standard"
+    },
+    "J3": {
+     "l2": "Decided service criteria and the range of exceptions to handle on the spot",
+     "l3": "Staff on site served customers by the criteria I set"
+    },
+    "J4": {
+     "l2": "Chose and used a method to draw the customer journey or measure satisfaction",
+     "l3": "The method I chose became the team's standard"
+    },
+    "J5": {
+     "l2": "Kept a service procedure and service criteria as documents",
+     "l3": "Another person served customers by reading the criteria I left"
+    },
+    "J6": {
+     "l2": "Compared processing time or satisfaction before and after a change under the same conditions",
+     "l3": "Checked actual service against the terms and conditions or the rules"
+    },
+    "J7": {
+     "l2": "Narrowed the reason for a repeated complaint down to the procedure or the authority",
+     "l3": "Changed the criteria so that the same complaint would not come again"
+    },
+    "J8": {
+     "l2": "Explained the changed criteria and received agreement",
+     "l3": "The service criteria I made became the organization's guidelines"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Service that comes back as brand experience and return visits",
+    "OC2": "Service for the person in charge at a client company",
+    "OC3": "Service on site at stores and channels",
+    "OC4": "Service that follows the procedure for civil complaints",
+    "OC5": "Service for participants and course students",
+    "OC6": "Service that works only within terms and conditions and rules",
+    "OC7": "Service where the service criteria are made while working"
+   }
+  },
+  {
+   "code": "TD10",
+   "name": "Demand, Reservation and Price Management",
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "A situation arrives where the quantity to sell is fixed and the deadline is near"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Remaining quantity, remaining time, sales pattern in the same period before, cost and lower limit"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "When to open how many at what price, and where to allocate them"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Estimating demand, dividing into ranges, adjusting prices, allocating, checking predictions against results"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Spreadsheet tools, reservation management screens, sales records, price lists"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Demand estimate tables, price and allocation criteria, sales pattern records, prediction and result comparisons"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "The same period before, the lowest price based on cost, competitor prices, sales rate after the deadline"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If there is too much or too little, narrow the reason down to the estimate, the price or the allocation"
+    }
+   ],
+   "tools": [
+    "Spreadsheet tools",
+    "Reservation management screen",
+    "Sales records",
+    "Price list",
+    "Statistics tools"
+   ],
+   "artifacts": [
+    "Demand estimate table",
+    "Price and allocation criteria",
+    "Sales pattern records",
+    "Comparison of predictions and results",
+    "Discount records"
+   ],
+   "verify_targets": [
+    "The same period before",
+    "Lowest price based on cost",
+    "Competitor prices",
+    "Sales rate after the deadline",
+    "Confirmation by the person in charge on site"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down the period and the range of products to cover this time",
+     "l3": "The scope I defined became the management scope as is"
+    },
+    "J2": {
+     "l2": "Turned the goal into indicators such as sales rate or profit per unit",
+     "l3": "The indicators I set became the management standard"
+    },
+    "J3": {
+     "l2": "Decided when to open how many at what price, and the allocation",
+     "l3": "Actual sales were made with the prices and allocation I decided"
+    },
+    "J4": {
+     "l2": "Chose and used a method to estimate demand",
+     "l3": "The estimation method I chose was also used in the next period"
+    },
+    "J5": {
+     "l2": "Kept a demand estimate table and the price and allocation criteria as documents",
+     "l3": "Another person ran operations by reading the criteria I left"
+    },
+    "J6": {
+     "l2": "Checked estimates against actual sales under the same conditions",
+     "l3": "Changed the estimation method or the price based on the check results"
+    },
+    "J7": {
+     "l2": "Narrowed the reason for too much or too little down to the estimate or the price",
+     "l3": "Confirmed that the sales rate changed after the change"
+    },
+    "J8": {
+     "l2": "Submitted a plan for prices or allocation and received approval",
+     "l3": "My estimate was used in a purchasing or operations plan"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Management within a brand's pricing policy",
+    "OC2": "Management within a unit price contract with a client company",
+    "OC3": "Management that looks at turnover rate and out-of-stock rate together",
+    "OC4": "Management that follows fee rules and public standards",
+    "OC5": "Management that matches participant limits and budget",
+    "OC6": "Management that involves fee reviews and public disclosure",
+    "OC7": "Management that changes prices and watches the response"
+   }
+  },
+  {
+   "code": "TD11",
+   "name": "Global Business",
+   "required_axes": [
+    "J2",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Selling abroad or bringing goods in from abroad arrives as work"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Rules and customs duties of the other country, exchange rates, logistics conditions, local competition"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The rules that apply, the set of documents, and how far to adapt to the local market"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Finding rules, putting documents together, reflecting cost and exchange rates, local research"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Trade forms, customs tariff data, exchange rate data, spreadsheet tools"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "A full set of export and import documents, a market entry plan, an exchange rate risk plan, a localization scope table"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Rules of the other country, customs clearance results, profit and loss after exchange rate changes, confirmation by local staff"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If customs clearance or a deal is blocked, narrow the reason down to the documents or the reading of the rules"
+    }
+   ],
+   "tools": [
+    "Trade forms",
+    "Customs tariff data",
+    "Exchange rate data",
+    "Spreadsheet tools",
+    "Local research data"
+   ],
+   "artifacts": [
+    "Set of export and import documents",
+    "Market entry plan",
+    "Exchange rate risk plan",
+    "Table of the scope to adapt to the local market",
+    "Summary of rules"
+   ],
+   "verify_targets": [
+    "Rules of the other country",
+    "Customs clearance results",
+    "Profit and loss after exchange rate changes",
+    "Confirmation by local staff",
+    "Records of past deals"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately the markets to enter this time and the markets not to enter",
+     "l3": "The scope I defined became the market entry scope as is"
+    },
+    "J2": {
+     "l2": "Turned the rules and conditions of the other country into requirements to meet",
+     "l3": "The requirements I organized became the basis of documents and contracts"
+    },
+    "J3": {
+     "l2": "Chose and decided the rules that apply and the set of documents",
+     "l3": "Customs clearance or a deal went ahead with the set I chose"
+    },
+    "J4": {
+     "l2": "Chose and used a method to handle exchange rate risk or a local research method",
+     "l3": "The method I chose was also used in the next deal"
+    },
+    "J5": {
+     "l2": "Kept export and import documents and an entry plan as documents",
+     "l3": "Another person used the set of documents I left as it was"
+    },
+    "J6": {
+     "l2": "Checked our documents one by one against the rules of the other country",
+     "l3": "Calculated profit and loss again with the exchange rate and compared them"
+    },
+    "J7": {
+     "l2": "Narrowed the reason for a block down to the documents or the reading of the rules",
+     "l3": "Changed the set of documents so that the same return would not happen again"
+    },
+    "J8": {
+     "l2": "Submitted an entry plan and received approval",
+     "l3": "The requirements I organized were used in contract terms"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Deals that adapt a brand to each country",
+    "OC2": "Deals that must pass a client company's specifications and inspection",
+    "OC3": "Deals that bring in imported goods and sell them",
+    "OC4": "Deals that follow government programs and rules",
+    "OC5": "Deals in the form of international joint projects",
+    "OC6": "Deals that involve sanctions and reviews",
+    "OC7": "Deals that start small and test the market first"
+   }
+  },
+  {
+   "code": "TD12",
+   "name": "Information Systems and Business Requirements",
+   "required_axes": [
+    "J2",
+    "J3"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Work done by hand or a system to change arrives as a task"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "The current workflow, data and forms in use, available tools and budget, deadline"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Which work people do and which work the system does"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Drawing workflows, writing requirement lists, comparing tools, checking after introduction"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Workflow tools, spreadsheet tools, survey tools, requirement forms"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Workflow diagrams, requirements documents, tool comparison tables, before and after comparisons"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "The current workflow, requirements documents, processing time after introduction, user opinions"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If it is not used, narrow the reason down to the requirements or the scope of introduction"
+    }
+   ],
+   "tools": [
+    "Workflow tool",
+    "Spreadsheet tools",
+    "Survey tools",
+    "Requirement form",
+    "Office automation tools"
+   ],
+   "artifacts": [
+    "Workflow chart",
+    "Requirements document",
+    "Tool comparison table",
+    "Comparison before and after introduction",
+    "User guide"
+   ],
+   "verify_targets": [
+    "The current workflow",
+    "Requirements document",
+    "Processing time after introduction",
+    "User opinions",
+    "Confirmation by the person in charge"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately the work to move to the system this time and the work to keep",
+     "l3": "The scope I defined became the introduction scope as is"
+    },
+    "J2": {
+     "l2": "Turned the spoken requests of the person in charge into a list of tasks",
+     "l3": "The requirement list I wrote became the basis of the introduction"
+    },
+    "J3": {
+     "l2": "Decided which work people do and which work the system does",
+     "l3": "The system was used along the boundary I set"
+    },
+    "J4": {
+     "l2": "Chose and used a method to draw workflows or compare tools",
+     "l3": "The method I chose became the team's standard"
+    },
+    "J5": {
+     "l2": "Kept a workflow diagram and a requirements document as documents",
+     "l3": "Another person set up or developed the system by reading the document I left"
+    },
+    "J6": {
+     "l2": "Compared two tools with the same criteria",
+     "l3": "Checked processing time before and after introduction under the same conditions"
+    },
+    "J7": {
+     "l2": "Narrowed the reason it is not used down to the requirements or the scope of introduction",
+     "l3": "Confirmed that it is actually used after the scope changed"
+    },
+    "J8": {
+     "l2": "Submitted an introduction plan and received approval",
+     "l3": "The requirement list I wrote became the contract or development scope"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Systems that support internal work for a long time",
+    "OC2": "Systems installed to fit a client company's work",
+    "OC3": "Systems that connect stores and inventory",
+    "OC4": "Systems that must include rules and set forms",
+    "OC5": "Systems that handle research data",
+    "OC6": "Systems whose records must be traceable",
+    "OC7": "Systems built by connecting existing tools"
+   }
+  }
+ ],
+ "review_note": "In business majors, roles that produce numbers, roles that check numbers and roles that deal with people sit in one file. What keeps them apart is `required_axes`: planning, human resources, global business and information systems depend on interpreting requirements; operations and customer service depend on failure and correction; finance, accounting, data and demand depend on comparison and verification. So even if six axes are confirmed, the evidence does not hold when a required axis of that domain is empty"
+}

@@ -1,0 +1,1075 @@
+{
+ "schema_version": "biz-v1-taxonomy.1",
+ "assessment_version": "BIZ_V1",
+ "major_id": "BIZ",
+ "note": "Three axes: technical domain x role function x organizational context. Job titles are aliases for combinations, and none of the axes produces a ranking. This file is where changes are made. The eight axes, two scales and four levels use the same values as the Mechanical Engineering Core: results from two majors can only be compared on the same ruler, and building a new ruler for each major would break comparison within a university",
+ "axes": {
+  "J1": {
+   "name": "Problem definition",
+   "question": "Who decided what to work on?"
+  },
+  "J2": {
+   "name": "Requirements interpretation",
+   "question": "Did you turn the requirements into numbers and constraints?"
+  },
+  "J3": {
+   "name": "Technical decisions",
+   "question": "Which items did you decide yourself?"
+  },
+  "J4": {
+   "name": "Methods and tools",
+   "question": "What did you use, and how?"
+  },
+  "J5": {
+   "name": "Deliverables",
+   "question": "What output remained?"
+  },
+  "J6": {
+   "name": "Comparison and verification",
+   "question": "What did you compare it against?"
+  },
+  "J7": {
+   "name": "Failure and correction",
+   "question": "How did you narrow down what went wrong?"
+  },
+  "J8": {
+   "name": "Organizational use",
+   "question": "Who used it, and for what?"
+  }
+ },
+ "scales": {
+  "S4": {
+   "axes": [
+    "J3",
+    "J5",
+    "J6",
+    "J7"
+   ],
+   "note": "Screening scale. The four axes asked at BASIC. Organizational use is left out of screening because it puts undergraduates at a structural disadvantage: whether your work was used by an organization can only be answered if you were placed in one, and someone who has only done classes and a capstone will have that cell empty even if they made decisions. Organizational use is asked only in the in-depth stage"
+  },
+  "S8": {
+   "axes": [
+    "J1",
+    "J2",
+    "J3",
+    "J4",
+    "J5",
+    "J6",
+    "J7",
+    "J8"
+   ],
+   "note": "Full scale. STANDARD and above. Do not use S8 as the denominator for S4. What the in-depth stage newly opens are the four axes not in screening (problem definition, requirements interpretation, methods and tools, organizational use)"
+  }
+ },
+ "levels": {
+  "L0": "Never",
+  "L1": "Exposed. Watched or reused what someone else did",
+  "L2": "Performed. Did the work myself",
+  "L3": "Owned. Decided it myself, and the result was used"
+ },
+ "technical_domains": [
+  {
+   "code": "TD01",
+   "name": "Business Strategy and Planning",
+   "owns": "Decides where to use resources and where not to use them",
+   "subareas": [
+    "Setting goals and indicators",
+    "Setting priorities",
+    "Allocating resources",
+    "Query plan"
+   ],
+   "required_axes": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "code": "TD02",
+   "name": "Marketing and Markets",
+   "owns": "Decides what to tell to whom and through which channel",
+   "subareas": [
+    "Dividing customers into groups",
+    "Deciding messages",
+    "Choosing channels",
+    "Measuring responses"
+   ],
+   "required_axes": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD03",
+   "name": "Sales and Business Development",
+   "owns": "Offers and agrees on the terms of each deal and keeps a record",
+   "subareas": [
+    "Finding customers",
+    "Making proposals",
+    "Agreeing on terms",
+    "Managing deals"
+   ],
+   "required_axes": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "code": "TD04",
+   "name": "Financial and Investment Decisions",
+   "owns": "Decides where to get money, where to put it, and the reasons",
+   "subareas": [
+    "Funding plan",
+    "Estimating profit and loss",
+    "Investment decisions",
+    "Looking at risk"
+   ],
+   "required_axes": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD05",
+   "name": "Accounting and Cost",
+   "owns": "Records transactions by the standards and confirms them against the proof",
+   "subareas": [
+    "Classifying transactions",
+    "Closing the books",
+    "Calculating cost",
+    "Checking against proof"
+   ],
+   "required_axes": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD06",
+   "name": "Human Resources and Organization",
+   "owns": "Decides the criteria for selecting, placing and evaluating people",
+   "subareas": [
+    "Organizing the tasks",
+    "Selection criteria",
+    "Placement and training",
+    "Evaluation criteria"
+   ],
+   "required_axes": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "code": "TD07",
+   "name": "Operations and Processes",
+   "owns": "Decides the procedures that keep work running and the allocation of resources",
+   "subareas": [
+    "Drawing procedures",
+    "Schedule and role assignment",
+    "Finding bottlenecks",
+    "Measuring improvement"
+   ],
+   "required_axes": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "code": "TD08",
+   "name": "Data and Decision-making",
+   "owns": "Defines indicators and builds a basis for decisions from data",
+   "subareas": [
+    "Defining indicators",
+    "Collecting and selecting data",
+    "Setting comparison conditions",
+    "Reaching conclusions"
+   ],
+   "required_axes": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD09",
+   "name": "Customer and Service Operations",
+   "owns": "Decides the steps customers go through, the service criteria and the range of exceptions",
+   "subareas": [
+    "Looking at the customer journey",
+    "Service criteria",
+    "Handling problems on site",
+    "Measuring quality"
+   ],
+   "required_axes": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "code": "TD10",
+   "name": "Demand, Reservation and Price Management",
+   "owns": "Looks at the remaining quantity and time, and decides prices and allocation",
+   "subareas": [
+    "Looking at demand",
+    "Allocating inventory and seats",
+    "Changing prices",
+    "Checking predictions against results"
+   ],
+   "required_axes": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD11",
+   "name": "Global Business",
+   "owns": "Decides the rules, documents and exchange rate risk response for deals across borders",
+   "subareas": [
+    "Choosing markets",
+    "Rules and documents",
+    "Handling exchange rate risk",
+    "Scope of localization"
+   ],
+   "required_axes": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD12",
+   "name": "Information Systems and Business Requirements",
+   "owns": "Turns work needs into tasks for a system and decides the scope of introduction",
+   "subareas": [
+    "Organizing workflows",
+    "Writing requirements",
+    "Setting the scope of introduction",
+    "Checking after introduction"
+   ],
+   "required_axes": [
+    "J2",
+    "J3"
+   ]
+  }
+ ],
+ "role_functions": [
+  {
+   "code": "RF1",
+   "name": "Planning and Design",
+   "one_line": "Decides what to do",
+   "output_kind": "Business plan · Goals and indicators table · Reasons for priorities",
+   "success": "One plan that fits the resources and can be checked with indicators"
+  },
+  {
+   "code": "RF2",
+   "name": "Analysis and Forecasting",
+   "one_line": "Looks ahead with numbers before a decision",
+   "output_kind": "Demand estimate · Profit and loss estimate · Indicator analysis report",
+   "success": "A basis that matches the results and changed a decision"
+  },
+  {
+   "code": "RF3",
+   "name": "Verification and Audit",
+   "one_line": "Checks whether what was done is right",
+   "output_kind": "Reconciliation sheet · Proof check · Closing data",
+   "success": "A result where the numbers match the proof and the covered scope is written down"
+  },
+  {
+   "code": "RF4",
+   "name": "Execution and Implementation",
+   "one_line": "Keeps work running again and again",
+   "output_kind": "Work procedure document · Schedule and role assignment · Spending records",
+   "success": "The same input gives the same result, and it can be reversed"
+  },
+  {
+   "code": "RF5",
+   "name": "Customer Operations",
+   "one_line": "Keeps the customer side from stopping",
+   "output_kind": "Service criteria · Service quality measurement · Complaint handling records",
+   "success": "Within the promised level, and the same complaint does not come back"
+  },
+  {
+   "code": "RF6",
+   "name": "Coordination and Negotiation",
+   "one_line": "Ties many people's decisions into one",
+   "output_kind": "Proposal · Agreed terms · Change records",
+   "success": "Rate of meeting the terms, and deadlines"
+  },
+  {
+   "code": "RF7",
+   "name": "Market Exploration",
+   "one_line": "Narrows down things that have no answer yet",
+   "output_kind": "Research design · Market report · Test sales results",
+   "success": "The question is narrowed and a method remains"
+  },
+  {
+   "code": "RF8",
+   "name": "People and Systems Management",
+   "one_line": "Makes sure standards are kept all the time",
+   "output_kind": "Job criteria · Evaluation criteria · Rule check records",
+   "success": "The same problem does not come back, and the basis of decisions can be traced"
+  }
+ ],
+ "role_functions_note": "There are eight, and they use **the same codes** as the Mechanical Engineering Core. Role functions are a layer above the major, so they are not created again for each major. All names were changed into business terms: `Design and Development` and `Test and Verification` are words for making things, so a student who does planning or accounting cannot find their place. The meaning of the work is kept the same, so the axes do not split; what differs is the kind of output: business plans, closing data and work procedure documents take the place of drawings",
+ "org_contexts": [
+  {
+   "code": "OC1",
+   "name": "Finished Product and Brand Companies",
+   "performance": "Sales and market share · Brand indicators · Operating profit",
+   "differs": "My decisions come back right away as numbers in the market"
+  },
+  {
+   "code": "OC2",
+   "name": "Business-to-Business and Parts Companies",
+   "performance": "Orders and on-time delivery · Unit price · Repeat orders",
+   "differs": "The needs of one client company set the standard"
+  },
+  {
+   "code": "OC3",
+   "name": "Retail and Sales Channels",
+   "performance": "Turnover and inventory · Profit by channel · Out-of-stock rate",
+   "differs": "Looks at how fast things sell and how much stock is left, together"
+  },
+  {
+   "code": "OC4",
+   "name": "Public Institutions and Public Corporations",
+   "performance": "Program goal achievement · Spending rate · Audit response",
+   "differs": "Rules and set forms decide the schedule and the scope"
+  },
+  {
+   "code": "OC5",
+   "name": "Universities and Research Institutes",
+   "performance": "Project performance · Report quality · Academic contribution",
+   "differs": "You must show on your own that the method is right"
+  },
+  {
+   "code": "OC6",
+   "name": "Finance and Regulated Industries",
+   "performance": "Soundness and meeting standards · Passing reviews · Audit records",
+   "differs": "The traceability of the judgment is the output"
+  },
+  {
+   "code": "OC7",
+   "name": "Startups and small teams",
+   "performance": "Sales and repeat purchases before the funds run out",
+   "differs": "One person takes on several roles at once"
+  }
+ ],
+ "job_aliases": [
+  {
+   "posting_name": "Business Planning",
+   "td": [
+    "TD01",
+    "TD08"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC4"
+   ],
+   "distinguisher": "Decides alone where to put more resources and proposes it"
+  },
+  {
+   "posting_name": "Strategic Planning and New Business",
+   "td": [
+    "TD01",
+    "TD03"
+   ],
+   "rf": [
+    "RF1",
+    "RF7"
+   ],
+   "oc": [
+    "OC1",
+    "OC7"
+   ],
+   "distinguisher": "Narrows down alone the scope of a business that does not exist yet"
+  },
+  {
+   "posting_name": "Business Management and Project Management Office (PMO)",
+   "td": [
+    "TD07",
+    "TD01"
+   ],
+   "rf": [
+    "RF4",
+    "RF6"
+   ],
+   "oc": [
+    "OC2",
+    "OC4"
+   ],
+   "distinguisher": "Decides alone the allocation of schedule, roles and resources"
+  },
+  {
+   "posting_name": "Marketing Planning",
+   "td": [
+    "TD02"
+   ],
+   "rf": [
+    "RF1",
+    "RF7"
+   ],
+   "oc": [
+    "OC1",
+    "OC3",
+    "OC7"
+   ],
+   "distinguisher": "Chooses alone what to tell to whom, and the channel"
+  },
+  {
+   "posting_name": "Brand and Advertising",
+   "td": [
+    "TD02"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC3"
+   ],
+   "distinguisher": "Decides alone the words a brand will use and the words it will not use"
+  },
+  {
+   "posting_name": "Product Planning and Merchandising (MD)",
+   "td": [
+    "TD02",
+    "TD10"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC3"
+   ],
+   "distinguisher": "Decides alone what to bring in, at what price, and how many to keep"
+  },
+  {
+   "posting_name": "Digital Marketing",
+   "td": [
+    "TD02",
+    "TD08"
+   ],
+   "rf": [
+    "RF2",
+    "RF7"
+   ],
+   "oc": [
+    "OC1",
+    "OC3",
+    "OC7"
+   ],
+   "distinguisher": "Measures results by channel and changes the budget allocation alone"
+  },
+  {
+   "posting_name": "Market Research",
+   "td": [
+    "TD02",
+    "TD08"
+   ],
+   "rf": [
+    "RF7"
+   ],
+   "oc": [
+    "OC1",
+    "OC5"
+   ],
+   "distinguisher": "Designs alone what to ask and what to find out"
+  },
+  {
+   "posting_name": "Domestic Sales",
+   "td": [
+    "TD03"
+   ],
+   "rf": [
+    "RF6"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC3"
+   ],
+   "distinguisher": "Offers and agrees on deal terms alone"
+  },
+  {
+   "posting_name": "Business-to-Business Sales and Technical Sales",
+   "td": [
+    "TD03",
+    "TD12"
+   ],
+   "rf": [
+    "RF6"
+   ],
+   "oc": [
+    "OC2"
+   ],
+   "distinguisher": "Turns a customer's work needs into terms and makes a proposal"
+  },
+  {
+   "posting_name": "Business Development and Partnerships",
+   "td": [
+    "TD03",
+    "TD01"
+   ],
+   "rf": [
+    "RF6",
+    "RF7"
+   ],
+   "oc": [
+    "OC1",
+    "OC7"
+   ],
+   "distinguisher": "Designs alone a new deal structure and gets agreement"
+  },
+  {
+   "posting_name": "Overseas Sales and Trade",
+   "td": [
+    "TD03",
+    "TD11"
+   ],
+   "rf": [
+    "RF6"
+   ],
+   "oc": [
+    "OC2",
+    "OC1"
+   ],
+   "distinguisher": "Handles alone the terms and documents that cross borders"
+  },
+  {
+   "posting_name": "Purchasing and Sourcing",
+   "td": [
+    "TD07",
+    "TD03"
+   ],
+   "rf": [
+    "RF6",
+    "RF4"
+   ],
+   "oc": [
+    "OC2",
+    "OC3"
+   ],
+   "distinguisher": "Decides alone the supplier, unit price and delivery terms"
+  },
+  {
+   "posting_name": "Finance and Treasury",
+   "td": [
+    "TD04"
+   ],
+   "rf": [
+    "RF2",
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC6"
+   ],
+   "distinguisher": "Matches alone the timing of money coming in and going out"
+  },
+  {
+   "posting_name": "Investment and Credit Review",
+   "td": [
+    "TD04",
+    "TD08"
+   ],
+   "rf": [
+    "RF2",
+    "RF3"
+   ],
+   "oc": [
+    "OC6",
+    "OC5"
+   ],
+   "distinguisher": "Builds alone the basis for deciding whether to invest"
+  },
+  {
+   "posting_name": "Accounting and Closing",
+   "td": [
+    "TD05"
+   ],
+   "rf": [
+    "RF3"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC4"
+   ],
+   "distinguisher": "Judges in their own name whether the numbers match the proof"
+  },
+  {
+   "posting_name": "Tax",
+   "td": [
+    "TD05",
+    "TD11"
+   ],
+   "rf": [
+    "RF3"
+   ],
+   "oc": [
+    "OC1",
+    "OC6"
+   ],
+   "distinguisher": "Chooses alone the rules that apply and their basis"
+  },
+  {
+   "posting_name": "Cost and Management Accounting",
+   "td": [
+    "TD05",
+    "TD07"
+   ],
+   "rf": [
+    "RF2",
+    "RF3"
+   ],
+   "oc": [
+    "OC2",
+    "OC1"
+   ],
+   "distinguisher": "Decides alone the criteria for what goes into cost"
+  },
+  {
+   "posting_name": "Internal Audit and Compliance",
+   "td": [
+    "TD05",
+    "TD06"
+   ],
+   "rf": [
+    "RF3",
+    "RF8"
+   ],
+   "oc": [
+    "OC4",
+    "OC6"
+   ],
+   "distinguisher": "Finds and writes down alone the places that go outside the standards"
+  },
+  {
+   "posting_name": "Human Resources and Recruiting",
+   "td": [
+    "TD06"
+   ],
+   "rf": [
+    "RF8"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC4"
+   ],
+   "distinguisher": "Decides alone the selection criteria and what to look at"
+  },
+  {
+   "posting_name": "Training and Organizational Development",
+   "td": [
+    "TD06"
+   ],
+   "rf": [
+    "RF8",
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC4",
+    "OC5"
+   ],
+   "distinguisher": "Designs alone what to develop and how to measure it"
+  },
+  {
+   "posting_name": "Labor Relations and Payroll",
+   "td": [
+    "TD06"
+   ],
+   "rf": [
+    "RF8",
+    "RF4"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Matches alone how the rules apply and their basis"
+  },
+  {
+   "posting_name": "Production and Operations Management",
+   "td": [
+    "TD07"
+   ],
+   "rf": [
+    "RF4"
+   ],
+   "oc": [
+    "OC2",
+    "OC1"
+   ],
+   "distinguisher": "Has the authority to change procedures and resource allocation alone"
+  },
+  {
+   "posting_name": "Logistics and Supply Chain",
+   "td": [
+    "TD07",
+    "TD10"
+   ],
+   "rf": [
+    "RF4",
+    "RF2"
+   ],
+   "oc": [
+    "OC3",
+    "OC2"
+   ],
+   "distinguisher": "Decides alone where to keep stock and how much"
+  },
+  {
+   "posting_name": "Quality and Service Quality",
+   "td": [
+    "TD07",
+    "TD09"
+   ],
+   "rf": [
+    "RF8"
+   ],
+   "oc": [
+    "OC2",
+    "OC1"
+   ],
+   "distinguisher": "Decides alone the criteria that separate pass from hold"
+  },
+  {
+   "posting_name": "Data Analysis and Business Analysis",
+   "td": [
+    "TD08"
+   ],
+   "rf": [
+    "RF2"
+   ],
+   "oc": [
+    "OC1",
+    "OC3",
+    "OC6"
+   ],
+   "distinguisher": "Decides metric definitions and comparison conditions"
+  },
+  {
+   "posting_name": "Management Information and Information Systems",
+   "td": [
+    "TD12",
+    "TD08"
+   ],
+   "rf": [
+    "RF1",
+    "RF4"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC4"
+   ],
+   "distinguisher": "Turns work needs into system requirements"
+  },
+  {
+   "posting_name": "Work Automation and Process Improvement",
+   "td": [
+    "TD12",
+    "TD07"
+   ],
+   "rf": [
+    "RF4"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Separates which work people do and which work the system does"
+  },
+  {
+   "posting_name": "Customer Service Operations",
+   "td": [
+    "TD09"
+   ],
+   "rf": [
+    "RF5"
+   ],
+   "oc": [
+    "OC1",
+    "OC3",
+    "OC7"
+   ],
+   "distinguisher": "Decides alone the service criteria and the range of exceptions"
+  },
+  {
+   "posting_name": "Hotel and Lodging Operations",
+   "td": [
+    "TD09",
+    "TD10"
+   ],
+   "rf": [
+    "RF5",
+    "RF4"
+   ],
+   "oc": [
+    "OC1",
+    "OC3"
+   ],
+   "distinguisher": "Handles alone room inventory and on-site procedures"
+  },
+  {
+   "posting_name": "Tourism and Travel Product Planning",
+   "td": [
+    "TD02",
+    "TD10"
+   ],
+   "rf": [
+    "RF1",
+    "RF7"
+   ],
+   "oc": [
+    "OC1",
+    "OC7"
+   ],
+   "distinguisher": "Builds a product alone by combining schedule, cost and price"
+  },
+  {
+   "posting_name": "Air Transport Services",
+   "td": [
+    "TD09",
+    "TD07"
+   ],
+   "rf": [
+    "RF5"
+   ],
+   "oc": [
+    "OC1",
+    "OC6"
+   ],
+   "distinguisher": "Makes on-site judgments alone within the rules"
+  },
+  {
+   "posting_name": "Revenue Management and Pricing",
+   "td": [
+    "TD10"
+   ],
+   "rf": [
+    "RF2",
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC3"
+   ],
+   "distinguisher": "Changes prices alone by looking at the remaining stock and time"
+  },
+  {
+   "posting_name": "Trade and Commerce Administration",
+   "td": [
+    "TD11"
+   ],
+   "rf": [
+    "RF4",
+    "RF3"
+   ],
+   "oc": [
+    "OC2",
+    "OC4"
+   ],
+   "distinguisher": "Chooses alone the rules that apply and the set of documents"
+  },
+  {
+   "posting_name": "Overseas Business and Localization",
+   "td": [
+    "TD11",
+    "TD01"
+   ],
+   "rf": [
+    "RF1",
+    "RF7"
+   ],
+   "oc": [
+    "OC1",
+    "OC7"
+   ],
+   "distinguisher": "Decides alone what to change and what to keep in each country"
+  },
+  {
+   "posting_name": "Public Programs and Policy Implementation",
+   "td": [
+    "TD07",
+    "TD01"
+   ],
+   "rf": [
+    "RF4",
+    "RF1"
+   ],
+   "oc": [
+    "OC4"
+   ],
+   "distinguisher": "Decides alone the scope and order of implementation within the rules"
+  }
+ ],
+ "boundaries": [
+  {
+   "pair": "Business Planning vs Data Analysis",
+   "a": {
+    "td": "TD01",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD08",
+    "rf": "RF2"
+   },
+   "shared": "Both are in roles that suggest a direction based on numbers",
+   "a_difference": "Decides where to use resources and takes responsibility for it",
+   "b_difference": "Is responsible for the indicators and comparison conditions that support that decision",
+   "a_question": "Have you decided a budget or staff allocation yourself?",
+   "b_question": "Have you set the definition of an indicator and the comparison conditions yourself?"
+  },
+  {
+   "pair": "Marketing vs Sales",
+   "a": {
+    "td": "TD02",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD03",
+    "rf": "RF6"
+   },
+   "shared": "Meets customers and creates sales",
+   "a_difference": "Decides in groups what to tell to whom",
+   "b_difference": "Sits face to face and agrees on the terms of each deal",
+   "a_question": "Have you chosen segments and channels yourself?",
+   "b_question": "Have you offered deal terms such as a discount or a delivery date yourself?"
+  },
+  {
+   "pair": "Finance vs Accounting",
+   "a": {
+    "td": "TD04",
+    "rf": "RF2"
+   },
+   "b": {
+    "td": "TD05",
+    "rf": "RF3"
+   },
+   "shared": "Handles the numbers of money",
+   "a_difference": "Estimates future money coming in and going out, and makes decisions",
+   "b_difference": "Records what has already happened and matches it with the proof",
+   "a_question": "Have you made an investment payback period or a funding plan yourself?",
+   "b_question": "Have you checked yourself whether the numbers match the proof?"
+  },
+  {
+   "pair": "Operations and Processes vs Customer Service",
+   "a": {
+    "td": "TD07",
+    "rf": "RF4"
+   },
+   "b": {
+    "td": "TD09",
+    "rf": "RF5"
+   },
+   "shared": "Makes the work run",
+   "a_difference": "Handles throughput and errors through procedures and resource allocation",
+   "b_difference": "Handles the customer's experience and the service criteria",
+   "a_question": "Have you changed a procedure to reduce processing time?",
+   "b_question": "Have you set the service criteria or the range of exceptions yourself?"
+  },
+  {
+   "pair": "Demand and Pricing vs Marketing",
+   "a": {
+    "td": "TD10",
+    "rf": "RF2"
+   },
+   "b": {
+    "td": "TD02",
+    "rf": "RF1"
+   },
+   "shared": "Handles at what price to sell",
+   "a_difference": "Changes prices by looking at the remaining stock and time",
+   "b_difference": "Decides what message to give to whom",
+   "a_question": "Have you looked at the remaining quantity and changed prices or allocation?",
+   "b_question": "Have you changed messages and channels and compared the responses?"
+  },
+  {
+   "pair": "Human Resources vs Organizational Operations",
+   "a": {
+    "td": "TD06",
+    "rf": "RF8"
+   },
+   "b": {
+    "td": "TD07",
+    "rf": "RF4"
+   },
+   "shared": "Handles the conditions in which people work",
+   "a_difference": "Sets the criteria for selecting, developing and evaluating people",
+   "b_difference": "Allocates the order and amount of work those people do",
+   "a_question": "Have you set evaluation or hiring criteria yourself?",
+   "b_question": "Have you divided schedules and roles yourself?"
+  },
+  {
+   "pair": "Information Systems vs Data Analysis",
+   "a": {
+    "td": "TD12",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD08",
+    "rf": "RF2"
+   },
+   "shared": "Handles systems and data together",
+   "a_difference": "Turns work needs into tasks for a system",
+   "b_difference": "Builds a basis for decisions from collected data",
+   "a_question": "Have you turned work needs into a list of features?",
+   "b_question": "Have you defined an indicator and extracted it from data?"
+  },
+  {
+   "pair": "Global Business vs Sales",
+   "a": {
+    "td": "TD11",
+    "rf": "RF4"
+   },
+   "b": {
+    "td": "TD03",
+    "rf": "RF6"
+   },
+   "shared": "Handles deals across borders",
+   "a_difference": "Meets conditions such as rules, documents and exchange rate risk",
+   "b_difference": "Agrees on terms with the other side and makes the deal",
+   "a_question": "Have you chosen the rules that apply and the set of documents yourself?",
+   "b_question": "Have you agreed on price and delivery terms yourself?"
+  },
+  {
+   "pair": "Accounting vs Cost and Operations",
+   "a": {
+    "td": "TD05",
+    "rf": "RF3"
+   },
+   "b": {
+    "td": "TD07",
+    "rf": "RF2"
+   },
+   "shared": "Handles the numbers of costs",
+   "a_difference": "Records by the standards and closes the books",
+   "b_difference": "Narrows down which activity the cost comes from",
+   "a_question": "Have you done account classification and closing adjustments yourself?",
+   "b_question": "Have you found and narrowed down yourself the activity where cost increased?"
+  },
+  {
+   "pair": "Customer Service vs Quality Management",
+   "a": {
+    "td": "TD09",
+    "rf": "RF5"
+   },
+   "b": {
+    "td": "TD07",
+    "rf": "RF8"
+   },
+   "shared": "Works to keep the promised level",
+   "a_difference": "Solves the customer's problem on the spot",
+   "b_difference": "Changes the criteria so that the same problem does not come again",
+   "a_question": "Have you judged and handled an exception on site yourself?",
+   "b_question": "Have you changed the criteria or procedure to prevent the problem from coming back yourself?"
+  }
+ ]
+}

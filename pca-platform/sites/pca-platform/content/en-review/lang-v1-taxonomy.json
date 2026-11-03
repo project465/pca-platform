@@ -1,0 +1,892 @@
+{
+ "schema_version": "lang-v1-taxonomy.1",
+ "assessment_version": "LANG_V1",
+ "major_id": "LANG",
+ "note": "Three axes: technical domain x role function x organizational context. Job titles are aliases for combinations, and none of the axes produces a ranking. This file is where changes are made. The eight axes, two scales and four levels use the same values as the Mechanical Engineering Core: results from two majors can only be compared on the same ruler, and building a new ruler for each major would break comparison within a university",
+ "axes": {
+  "J1": {
+   "name": "Problem definition",
+   "question": "Who decided what to work on?"
+  },
+  "J2": {
+   "name": "Requirements interpretation",
+   "question": "Did you turn the requirements into numbers and constraints?"
+  },
+  "J3": {
+   "name": "Technical decisions",
+   "question": "Which items did you decide yourself?"
+  },
+  "J4": {
+   "name": "Methods and tools",
+   "question": "What did you use, and how?"
+  },
+  "J5": {
+   "name": "Deliverables",
+   "question": "What output remained?"
+  },
+  "J6": {
+   "name": "Comparison and verification",
+   "question": "What did you compare it against?"
+  },
+  "J7": {
+   "name": "Failure and correction",
+   "question": "How did you narrow down what went wrong?"
+  },
+  "J8": {
+   "name": "Organizational use",
+   "question": "Who used it, and for what?"
+  }
+ },
+ "scales": {
+  "S4": {
+   "axes": [
+    "J3",
+    "J5",
+    "J6",
+    "J7"
+   ],
+   "note": "Screening scale. The four axes asked at BASIC. Organizational use is left out of screening because it puts undergraduates at a structural disadvantage: whether your work was used by an organization can only be answered if you were placed in one, and someone who has only done classes and a capstone will have that cell empty even if they made decisions. Organizational use is asked only in the in-depth stage"
+  },
+  "S8": {
+   "axes": [
+    "J1",
+    "J2",
+    "J3",
+    "J4",
+    "J5",
+    "J6",
+    "J7",
+    "J8"
+   ],
+   "note": "Full scale. STANDARD and above. Do not use S8 as the denominator for S4. What the in-depth stage newly opens are the four axes not in screening (problem definition, requirements interpretation, methods and tools, organizational use)"
+  }
+ },
+ "levels": {
+  "L0": "Never",
+  "L1": "Exposed. Watched or reused what someone else did",
+  "L2": "Performed. Did the work myself",
+  "L3": "Owned. Decided it myself, and the result was used"
+ },
+ "technical_domains": [
+  {
+   "code": "TD01",
+   "name": "Literature and Source Research",
+   "owns": "Decides the range to search and the materials to use",
+   "subareas": [
+    "Search words and range",
+    "Reliability of materials",
+    "Materials to filter out",
+    "Organizing and quoting"
+   ],
+   "required_axes": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD02",
+   "name": "Text Analysis and Interpretation",
+   "owns": "Decides the reading framework and the range of evidence",
+   "subareas": [
+    "Reading framework",
+    "Passages to use as evidence",
+    "Comparing with other readings",
+    "Limits of the interpretation"
+   ],
+   "required_axes": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD03",
+   "name": "Language Structure Analysis",
+   "owns": "Decides which units to divide language into for description",
+   "subareas": [
+    "Units of analysis",
+    "Examples and counterexamples",
+    "Way of description",
+    "Spelling and terms"
+   ],
+   "required_axes": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD04",
+   "name": "Corpus and Language Data",
+   "owns": "Decides the data to collect and the annotation criteria",
+   "subareas": [
+    "Collection range",
+    "Annotation criteria",
+    "Quality review",
+    "Making it countable"
+   ],
+   "required_axes": [
+    "J2",
+    "J4"
+   ]
+  },
+  {
+   "code": "TD05",
+   "name": "Translation and Interpreting",
+   "owns": "Decides the unit of translation and what to keep",
+   "subareas": [
+    "Unit of translation",
+    "Terms and spelling",
+    "What to keep and what to drop",
+    "Rereading and review"
+   ],
+   "required_axes": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "code": "TD06",
+   "name": "Writing and Editing",
+   "owns": "Decides the range to revise with the readers in mind",
+   "subareas": [
+    "Readers and length",
+    "Structure and order",
+    "Range to revise",
+    "Spelling and fact checks"
+   ],
+   "required_axes": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "code": "TD07",
+   "name": "Korean Language Education Design",
+   "owns": "Decides the learners' level, the goals and the range to cover",
+   "subareas": [
+    "Learners' level",
+    "Learning goals",
+    "Range of vocabulary and grammar",
+    "Materials and tasks"
+   ],
+   "required_axes": [
+    "J2",
+    "J5"
+   ]
+  },
+  {
+   "code": "TD08",
+   "name": "Class Management and Assessment",
+   "owns": "Decides the criteria for running classes and judging how much learning happened",
+   "subareas": [
+    "Running classes",
+    "Assessment items",
+    "Scoring criteria",
+    "Giving feedback"
+   ],
+   "required_axes": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD09",
+   "name": "Creative Writing and Structure",
+   "owns": "Decides what to write and what structure to build",
+   "subareas": [
+    "Material and theme",
+    "Characters and events",
+    "Structure and order",
+    "Rewriting"
+   ],
+   "required_axes": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "code": "TD10",
+   "name": "Culture and Area Studies",
+   "owns": "Reads the context of that society and decides how far to apply it",
+   "subareas": [
+    "Reading the context",
+    "Words that work and words that do not",
+    "Local norms",
+    "Range of application"
+   ],
+   "required_axes": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD11",
+   "name": "Research and Interview Design",
+   "owns": "Decides whom to ask what, and how",
+   "subareas": [
+    "People to ask",
+    "Questions and order",
+    "Recording and transcription",
+    "Reading answers in groups"
+   ],
+   "required_axes": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD12",
+   "name": "Content Planning and Distribution",
+   "owns": "Decides where and in what format to publish",
+   "subareas": [
+    "Audience and place",
+    "Format and length",
+    "Order of publishing",
+    "Watching responses"
+   ],
+   "required_axes": [
+    "J2",
+    "J5"
+   ]
+  }
+ ],
+ "role_functions": [
+  {
+   "code": "RF1",
+   "name": "Planning and Design",
+   "one_line": "Decides what to do",
+   "output_kind": "Plan · Writing guidelines · Curriculum design",
+   "success": "One design where the range and order are written down and other people can use it as it is"
+  },
+  {
+   "code": "RF2",
+   "name": "Analysis and Interpretation",
+   "one_line": "Reads the materials before reaching a conclusion",
+   "output_kind": "Analysis report · Text interpretation · Language description",
+   "success": "An interpretation whose evidence is in the materials and that changed a decision"
+  },
+  {
+   "code": "RF3",
+   "name": "Review and Assessment",
+   "one_line": "Checks whether what was done is right",
+   "output_kind": "Review comments · Assessment rubric · Grading results",
+   "success": "A result where the judgment matches the criteria and the reviewed range is written down"
+  },
+  {
+   "code": "RF4",
+   "name": "Production and Editing",
+   "one_line": "Edits the decided manuscript so that it comes out in the same form",
+   "output_kind": "Manuscript · Textbook · Editing guidelines",
+   "success": "The same guidelines give the same quality, and it can be reversed"
+  },
+  {
+   "code": "RF5",
+   "name": "Operations and Management",
+   "one_line": "Keeps courses and classes running properly",
+   "output_kind": "Operations log · Enrollment management · Course report",
+   "success": "Few interruptions, and records of recovery remain"
+  },
+  {
+   "code": "RF6",
+   "name": "Integration and coordination",
+   "one_line": "Ties many people's decisions into one",
+   "output_kind": "Project plan · Schedule and role assignment · Change records",
+   "success": "Rate of meeting requirements, and deadlines"
+  },
+  {
+   "code": "RF7",
+   "name": "Exploration and research",
+   "one_line": "Narrows down things that have no answer yet",
+   "output_kind": "Research proposal · Preliminary research results · Paper",
+   "success": "The question is narrowed and a method remains"
+  },
+  {
+   "code": "RF8",
+   "name": "Writing Standards and Norms",
+   "one_line": "Makes sure standards are kept all the time",
+   "output_kind": "Writing guidelines · Glossary · Error records",
+   "success": "The same errors do not come back, and the basis of decisions can be traced"
+  }
+ ],
+ "role_functions_note": "There are eight, and they use **the same codes** as the Mechanical Engineering Core. Role functions are a layer above the major, so they are not created again for each major. The names were changed into the words of language and literature majors. The meaning of the work is kept the same, so the axes do not split; what differs is the kind of output: manuscripts, lesson plans and review comments take the place of drawings",
+ "org_contexts": [
+  {
+   "code": "OC1",
+   "name": "Publishing and Media Companies",
+   "performance": "Sales and views · Deadlines · Contract renewal",
+   "differs": "My manuscript becomes a product right away"
+  },
+  {
+   "code": "OC2",
+   "name": "Contract Translation and Service Companies",
+   "performance": "Meeting client specifications · Delivery dates · Repeat requests",
+   "differs": "The guidelines of one client set the standard"
+  },
+  {
+   "code": "OC3",
+   "name": "Education Service Companies",
+   "performance": "Learning results · Course retention · Re-enrollment",
+   "differs": "Whether learners come back next month is the evaluation"
+  },
+  {
+   "code": "OC4",
+   "name": "Public Cultural and Language Institutions",
+   "performance": "Project performance · Interim evaluation · Public value",
+   "differs": "Work moves by projects, and evaluations set the schedule"
+  },
+  {
+   "code": "OC5",
+   "name": "Universities and Research Institutes",
+   "performance": "Papers and degrees · Research ethics · Winning research projects",
+   "differs": "You check on your own whether the method is right and leave it as a paper"
+  },
+  {
+   "code": "OC6",
+   "name": "Assessment and Certification Institutions",
+   "performance": "Judging whether standards are met · Throughput · Records",
+   "differs": "The traceability of the judgment is the output"
+  },
+  {
+   "code": "OC7",
+   "name": "Small Studios and Freelance Work",
+   "performance": "Manuscript fees and the next job",
+   "differs": "One person takes on planning, writing and editing at the same time"
+  }
+ ],
+ "job_aliases": [
+  {
+   "posting_name": "Korean Language Instructor",
+   "td": [
+    "TD07",
+    "TD08"
+   ],
+   "rf": [
+    "RF1",
+    "RF5"
+   ],
+   "oc": [
+    "OC3",
+    "OC4"
+   ],
+   "distinguisher": "Decides alone the learning goals and the order of lessons"
+  },
+  {
+   "posting_name": "Korean Language Textbook Development",
+   "td": [
+    "TD07",
+    "TD06"
+   ],
+   "rf": [
+    "RF1",
+    "RF4"
+   ],
+   "oc": [
+    "OC1",
+    "OC3"
+   ],
+   "distinguisher": "Chooses alone the unit structure and the range of vocabulary"
+  },
+  {
+   "posting_name": "Editor",
+   "td": [
+    "TD06"
+   ],
+   "rf": [
+    "RF4",
+    "RF3"
+   ],
+   "oc": [
+    "OC1",
+    "OC7"
+   ],
+   "distinguisher": "Separates alone the range to change from the range to keep"
+  },
+  {
+   "posting_name": "Proofreading and Copyediting",
+   "td": [
+    "TD06",
+    "TD03"
+   ],
+   "rf": [
+    "RF8",
+    "RF3"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Decides alone how far to apply the writing standards"
+  },
+  {
+   "posting_name": "Translator",
+   "td": [
+    "TD05"
+   ],
+   "rf": [
+    "RF4",
+    "RF2"
+   ],
+   "oc": [
+    "OC2",
+    "OC7"
+   ],
+   "distinguisher": "Chooses alone the unit of translation and what to keep"
+  },
+  {
+   "posting_name": "Localization Specialist",
+   "td": [
+    "TD05",
+    "TD10"
+   ],
+   "rf": [
+    "RF4",
+    "RF8"
+   ],
+   "oc": [
+    "OC2",
+    "OC1"
+   ],
+   "distinguisher": "Decides alone how far to change the words into words that work in that region"
+  },
+  {
+   "posting_name": "Interpreter",
+   "td": [
+    "TD05",
+    "TD10"
+   ],
+   "rf": [
+    "RF5",
+    "RF2"
+   ],
+   "oc": [
+    "OC2",
+    "OC4"
+   ],
+   "distinguisher": "Decides alone, on the spot, what to shorten and what to keep"
+  },
+  {
+   "posting_name": "Corpus Building and Language Data",
+   "td": [
+    "TD04",
+    "TD03"
+   ],
+   "rf": [
+    "RF4",
+    "RF8"
+   ],
+   "oc": [
+    "OC5",
+    "OC2"
+   ],
+   "distinguisher": "Decides alone the annotation criteria and the data to filter out"
+  },
+  {
+   "posting_name": "Language Data Review",
+   "td": [
+    "TD04"
+   ],
+   "rf": [
+    "RF3",
+    "RF8"
+   ],
+   "oc": [
+    "OC2",
+    "OC6"
+   ],
+   "distinguisher": "Applies alone the line between pass and return"
+  },
+  {
+   "posting_name": "Dictionary and Terminology Compilation",
+   "td": [
+    "TD03",
+    "TD06"
+   ],
+   "rf": [
+    "RF4",
+    "RF8"
+   ],
+   "oc": [
+    "OC1",
+    "OC5"
+   ],
+   "distinguisher": "Decides alone which words to include and the range of definitions"
+  },
+  {
+   "posting_name": "Writer and Creative Writing",
+   "td": [
+    "TD09"
+   ],
+   "rf": [
+    "RF1",
+    "RF4"
+   ],
+   "oc": [
+    "OC1",
+    "OC7"
+   ],
+   "distinguisher": "Builds alone what to write and its structure"
+  },
+  {
+   "posting_name": "Webtoon and Drama Story Writing",
+   "td": [
+    "TD09",
+    "TD12"
+   ],
+   "rf": [
+    "RF1",
+    "RF6"
+   ],
+   "oc": [
+    "OC1",
+    "OC7"
+   ],
+   "distinguisher": "Decides alone the structure of episodes and the choices of characters"
+  },
+  {
+   "posting_name": "Content Planning",
+   "td": [
+    "TD12",
+    "TD09"
+   ],
+   "rf": [
+    "RF1",
+    "RF6"
+   ],
+   "oc": [
+    "OC1",
+    "OC3"
+   ],
+   "distinguisher": "Chooses alone where and in what format to publish"
+  },
+  {
+   "posting_name": "Corporate Communication",
+   "td": [
+    "TD06",
+    "TD12"
+   ],
+   "rf": [
+    "RF4",
+    "RF6"
+   ],
+   "oc": [
+    "OC1",
+    "OC4"
+   ],
+   "distinguisher": "Decides alone the range and the wording of messages that go outside"
+  },
+  {
+   "posting_name": "Literature Research and Data Organization",
+   "td": [
+    "TD01"
+   ],
+   "rf": [
+    "RF2",
+    "RF7"
+   ],
+   "oc": [
+    "OC4",
+    "OC5"
+   ],
+   "distinguisher": "Chooses alone the range to search and the materials to use"
+  },
+  {
+   "posting_name": "Text Analysis Research",
+   "td": [
+    "TD02",
+    "TD01"
+   ],
+   "rf": [
+    "RF2",
+    "RF7"
+   ],
+   "oc": [
+    "OC5"
+   ],
+   "distinguisher": "Builds alone the reading framework and the range of evidence"
+  },
+  {
+   "posting_name": "Korean Linguistics and Language Research",
+   "td": [
+    "TD03",
+    "TD04"
+   ],
+   "rf": [
+    "RF7",
+    "RF2"
+   ],
+   "oc": [
+    "OC5"
+   ],
+   "distinguisher": "Decides alone the units to describe and the range of examples"
+  },
+  {
+   "posting_name": "Assessment Item Development",
+   "td": [
+    "TD08",
+    "TD03"
+   ],
+   "rf": [
+    "RF1",
+    "RF3"
+   ],
+   "oc": [
+    "OC6",
+    "OC3"
+   ],
+   "distinguisher": "Decides alone what to measure and where the line for the correct answer is"
+  },
+  {
+   "posting_name": "Grading and Assessment Operations",
+   "td": [
+    "TD08"
+   ],
+   "rf": [
+    "RF3",
+    "RF5"
+   ],
+   "oc": [
+    "OC6"
+   ],
+   "distinguisher": "Decides alone how to apply scoring criteria to each case"
+  },
+  {
+   "posting_name": "Regional and Cultural Research",
+   "td": [
+    "TD10",
+    "TD11"
+   ],
+   "rf": [
+    "RF2",
+    "RF7"
+   ],
+   "oc": [
+    "OC4",
+    "OC5"
+   ],
+   "distinguisher": "Decides alone what to ask and what to compare it with"
+  },
+  {
+   "posting_name": "Oral History and Interview Research",
+   "td": [
+    "TD11"
+   ],
+   "rf": [
+    "RF1",
+    "RF5"
+   ],
+   "oc": [
+    "OC4",
+    "OC5"
+   ],
+   "distinguisher": "Chooses alone whom to ask what"
+  },
+  {
+   "posting_name": "Cultural Project Planning",
+   "td": [
+    "TD12",
+    "TD10"
+   ],
+   "rf": [
+    "RF6",
+    "RF1"
+   ],
+   "oc": [
+    "OC4"
+   ],
+   "distinguisher": "Decides alone the target and the scope of a project"
+  },
+  {
+   "posting_name": "Library and Records Management",
+   "td": [
+    "TD01",
+    "TD04"
+   ],
+   "rf": [
+    "RF5",
+    "RF8"
+   ],
+   "oc": [
+    "OC4",
+    "OC6"
+   ],
+   "distinguisher": "Applies alone the classification and the range of preservation"
+  },
+  {
+   "posting_name": "International Exchange and International Student Support",
+   "td": [
+    "TD07",
+    "TD10"
+   ],
+   "rf": [
+    "RF5",
+    "RF6"
+   ],
+   "oc": [
+    "OC4",
+    "OC5"
+   ],
+   "distinguisher": "Decides alone the range of guidance and support"
+  }
+ ],
+ "boundaries": [
+  {
+   "pair": "Literature Research vs Text Interpretation",
+   "a": {
+    "td": "TD01",
+    "rf": "RF2"
+   },
+   "b": {
+    "td": "TD02",
+    "rf": "RF2"
+   },
+   "shared": "Reads texts and builds evidence",
+   "a_difference": "Collects and sorts which materials to use",
+   "b_difference": "Builds a framework and reads the meaning of those materials",
+   "a_question": "Have you chosen the range to search and the materials to use yourself?",
+   "b_question": "Have you built a reading framework and interpreted with evidence?"
+  },
+  {
+   "pair": "Language Structure Analysis vs Corpus Data",
+   "a": {
+    "td": "TD03",
+    "rf": "RF2"
+   },
+   "b": {
+    "td": "TD04",
+    "rf": "RF4"
+   },
+   "shared": "Handles language as data",
+   "a_difference": "Breaks one phenomenon into units and describes it",
+   "b_difference": "Collects a lot of data, processes it, and makes it countable",
+   "a_question": "Have you divided units of sound, form or sentence structure yourself?",
+   "b_question": "Have you set annotation criteria or the data to filter out yourself?"
+  },
+  {
+   "pair": "Translation vs Writing and Editing",
+   "a": {
+    "td": "TD05",
+    "rf": "RF4"
+   },
+   "b": {
+    "td": "TD06",
+    "rf": "RF4"
+   },
+   "shared": "Turns things into readable text",
+   "a_difference": "Carries over meaning written in another language",
+   "b_difference": "Revises and publishes text written in this language",
+   "a_question": "Have you chosen the unit of translation and what to keep yourself?",
+   "b_question": "Have you separated the range to change from the range to keep yourself?"
+  },
+  {
+   "pair": "Education Design vs Class Management and Assessment",
+   "a": {
+    "td": "TD07",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD08",
+    "rf": "RF5"
+   },
+   "shared": "Builds teaching work",
+   "a_difference": "Decides what to teach and in what order",
+   "b_difference": "Runs that class and judges how much was achieved",
+   "a_question": "Have you set learning goals and the order of units yourself?",
+   "b_question": "Have you set scoring criteria yourself and applied them?"
+  },
+  {
+   "pair": "Creative Writing vs Content Planning",
+   "a": {
+    "td": "TD09",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD12",
+    "rf": "RF6"
+   },
+   "shared": "Produces something that did not exist",
+   "a_difference": "Builds the story to write and its structure",
+   "b_difference": "Puts together where and in what format to publish",
+   "a_question": "Have you built what to write and its structure yourself?",
+   "b_question": "Have you chosen the place and format to publish in yourself?"
+  },
+  {
+   "pair": "Culture and Area Studies vs Research Design",
+   "a": {
+    "td": "TD10",
+    "rf": "RF2"
+   },
+   "b": {
+    "td": "TD11",
+    "rf": "RF1"
+   },
+   "shared": "Reads that society",
+   "a_difference": "Reads the existing context and applies it",
+   "b_difference": "Creates new data from people when there is none",
+   "a_question": "Have you changed a judgment based on the context of that region?",
+   "b_question": "Have you decided yourself whom to ask what?"
+  },
+  {
+   "pair": "Writing Standards vs Editing",
+   "a": {
+    "td": "TD03",
+    "rf": "RF8"
+   },
+   "b": {
+    "td": "TD06",
+    "rf": "RF4"
+   },
+   "shared": "Makes the form of a text consistent",
+   "a_difference": "Sets standards for spelling and terms and makes people follow them",
+   "b_difference": "Revises text to make it readable and publishes it",
+   "a_question": "Have you set writing standards or terms yourself?",
+   "b_question": "Have you revised sentences yourself with the readers in mind?"
+  },
+  {
+   "pair": "Korean Language Education vs Translation",
+   "a": {
+    "td": "TD07",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD05",
+    "rf": "RF2"
+   },
+   "shared": "Works between two languages",
+   "a_difference": "Makes the language usable for learners",
+   "b_difference": "Carries over something already written into another language",
+   "a_question": "Have you set the range of vocabulary yourself to fit the learners' level?",
+   "b_question": "When translating, have you separated yourself what to keep and what to drop?"
+  },
+  {
+   "pair": "Assessment Items vs Text Interpretation",
+   "a": {
+    "td": "TD08",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD02",
+    "rf": "RF2"
+   },
+   "shared": "Makes judgments about a text",
+   "a_difference": "Decides what to measure and where the line for the correct answer is",
+   "b_difference": "Reads what that text says, based on evidence",
+   "a_question": "Have you decided yourself what an item measures and where the line for the correct answer is?",
+   "b_question": "When the same text could be read in two ways, have you decided based on evidence?"
+  },
+  {
+   "pair": "Research Design vs Literature Research",
+   "a": {
+    "td": "TD11",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD01",
+    "rf": "RF5"
+   },
+   "shared": "Collects data",
+   "a_difference": "Creates new data by asking people",
+   "b_difference": "Finds and selects what already exists",
+   "a_question": "Have you decided yourself whom to ask and the order of questions?",
+   "b_question": "Have you set the search words and the materials to filter out yourself?"
+  }
+ ]
+}

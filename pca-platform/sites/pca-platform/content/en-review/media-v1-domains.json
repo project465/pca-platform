@@ -1,0 +1,1386 @@
+{
+ "schema_version": "media-v1-domains.1",
+ "assessment_version": "MEDIA_V1",
+ "note": "For each domain: the eight steps of the workflow and the performing and ownership conditions for the eight judgment axes. Items, the results report and experience input all read this one file. `verify_targets` and `artifacts` are what the results report's action steps draw on, so they must be concrete here to avoid vague wording",
+ "workflow_steps": [
+  "How the problem arrives",
+  "Inputs received",
+  "What gets decided first",
+  "Methods used",
+  "Tools used",
+  "Deliverables produced",
+  "What it is compared against",
+  "When it goes wrong"
+ ],
+ "domains": [
+  {
+   "code": "TD01",
+   "name": "Planning and Brief Definition",
+   "required_axes": [
+    "J1",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Work arrives that must first answer what to make and whom to show it to"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "What the advertiser or planner said, audience data, records of past episodes, available time and money"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "What to communicate, the audience, and the range of cases to look at"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Asking and collecting, grouping, narrowing down, and narrowing again if it was wrong"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Audience research forms, case storage tools, records of past episodes, media data, interview question lists"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "A plan, one page about the audience, a case summary, dropped topics and the reasons"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "What the audience says, similar cases, what the advertiser wants, the response after release"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If the plan is called off the point, separate whether the message was chosen wrongly or the audience was read wrongly"
+    }
+   ],
+   "tools": [
+    "Audience research form",
+    "Case storage tool",
+    "Records of past episodes",
+    "Media data",
+    "Interview question list"
+   ],
+   "artifacts": [
+    "Plan",
+    "Notes on the audience",
+    "Summary of reference cases",
+    "Dropped topics and the reasons",
+    "Research records"
+   ],
+   "verify_targets": [
+    "Opinions of viewers or consumers",
+    "Similar cases",
+    "What the advertiser wants",
+    "Response after release",
+    "Review by other people"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately what to communicate this time and what not to communicate",
+     "l3": "The range I set became the scope of that task"
+    },
+    "J2": {
+     "l2": "Turned what the advertiser said into items that can be checked",
+     "l3": "The items I wrote became the agreed criteria of that task"
+    },
+    "J3": {
+     "l2": "When there were several audiences, decided myself which one to look at first",
+     "l3": "The plan settled in the direction I decided"
+    },
+    "J4": {
+     "l2": "Chose and applied a research method and a range of data to collect",
+     "l3": "The method I chose became the team's basic research"
+    },
+    "J5": {
+     "l2": "Kept a plan and research records",
+     "l3": "Another person started production with the plan I left"
+    },
+    "J6": {
+     "l2": "Checked the plan against what the audience said or similar cases",
+     "l3": "Changed the message or the audience based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason it was called off the point down to the message or the audience",
+     "l3": "Changed the plan and confirmed an improvement in the next episode"
+    },
+    "J8": {
+     "l2": "The planning method I built became the team's starting template",
+     "l3": "My research results were used in the advertiser's decision"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Research before an agency proposal",
+    "OC2": "Planning a broadcast program",
+    "OC3": "Choosing works for a performance",
+    "OC4": "Defining tasks for corporate public relations",
+    "OC5": "Setting the problem for research",
+    "OC6": "Planning platform content",
+    "OC7": "Small jobs taken alone"
+   }
+  },
+  {
+   "code": "TD02",
+   "name": "Message and Concept",
+   "required_axes": [
+    "J1",
+    "J5"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Work arrives that must decide how to say this task in one line"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "The plan and research results, the impression the advertiser wants, the words the brand already uses, time and people"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The one line to say, what to keep and what to drop"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Writing several options, having people read them, narrowing to one, explaining and fixing"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Message templates, collections of example copy, presentation tools, copy review forms, reading response records"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "One line of message, one page on the tone, what to keep and drop, dropped messages and the reasons"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "The plan, the words the brand already uses, readers' responses, results after release"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If the copy is called ordinary, separate whether the message is too broad or has no evidence"
+    }
+   ],
+   "tools": [
+    "Message template",
+    "Collection of example copy",
+    "Presentation tools",
+    "Copy review form",
+    "Reading response records"
+   ],
+   "artifacts": [
+    "One line of key message",
+    "Notes on the tone",
+    "List of expressions to use and expressions to avoid",
+    "Dropped messages and the reasons",
+    "Records of explanations"
+   ],
+   "verify_targets": [
+    "Plan",
+    "Words the brand usually uses",
+    "Readers' responses",
+    "Results after release",
+    "Review by other people"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately what to say this time and what not to say",
+     "l3": "The message I chose became the one line of that task"
+    },
+    "J2": {
+     "l2": "Turned the impression the advertiser described into what to keep and what to drop",
+     "l3": "The list I wrote became the judgment criteria of that task"
+    },
+    "J3": {
+     "l2": "When there were two or more messages, decided myself which one to go with",
+     "l3": "The task went ahead with the one line I decided"
+    },
+    "J4": {
+     "l2": "Chose and applied a way and a set to show the message",
+     "l3": "The method I chose became the team's way of proposing"
+    },
+    "J5": {
+     "l2": "Kept one line of message and what to keep and drop",
+     "l3": "Another person produced work with the one line I left"
+    },
+    "J6": {
+     "l2": "Checked the message against the plan or the words the brand uses",
+     "l3": "Narrowed or changed the message based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason it was called ordinary down to the message or the evidence",
+     "l3": "Changed the evidence and confirmed that the next line became different"
+    },
+    "J8": {
+     "l2": "The line I set became the words that brand uses",
+     "l3": "My proposal was used in the advertiser's decision"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Proposal messages of an agency",
+    "OC2": "The one line of a program",
+    "OC3": "Promotion lines for a performance",
+    "OC4": "Words a company uses",
+    "OC5": "Message experiments in research",
+    "OC6": "Content titles and descriptions",
+    "OC7": "The one line of small jobs done alone"
+   }
+  },
+  {
+   "code": "TD03",
+   "name": "Media and Channel Planning",
+   "required_axes": [
+    "J2",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Work arrives that must decide where and how much to put this out"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "The message and the audience, available money and time, unit prices and reach data of each media channel, results of past episodes"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The media channels to use, the amount and timing, and what to change for each channel"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Choosing media channels, dividing the amount, releasing, looking at numbers and dividing again"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Media unit prices and reach data, run plan templates, indicator counting tools, material specification tables, records of past episodes"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "A media run plan, reasons for choosing media channels, specifications and changes for each channel, dropped channels and the reasons"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Reach data for each media channel, results of past episodes, available money, numbers after release"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If it is said not to reach people, separate whether the media channel, the amount or the material is the cause"
+    }
+   ],
+   "tools": [
+    "Media unit prices and reach data",
+    "Run plan template",
+    "Indicator counting tool",
+    "Material specification table",
+    "Records of past episodes"
+   ],
+   "artifacts": [
+    "Run plan for each media channel",
+    "Reasons for choosing media channels",
+    "Specifications of each channel and changes made",
+    "Dropped media channels and the reasons",
+    "Summary of run results"
+   ],
+   "verify_targets": [
+    "Reach data for each media channel",
+    "Previous results",
+    "Available budget",
+    "Numbers after release",
+    "Review by other people"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately the range of media channels to use this time and the channels not to use",
+     "l3": "The range I set became the scope of that run"
+    },
+    "J2": {
+     "l2": "Turned the audience and budget into conditions for media channels and amounts",
+     "l3": "The conditions I wrote became the criteria of that run"
+    },
+    "J3": {
+     "l2": "When money was short, decided myself which media channel to drop",
+     "l3": "The run changed in the direction I decided"
+    },
+    "J4": {
+     "l2": "Chose and applied indicators to use and a counting method",
+     "l3": "The method I chose became the team's basic counting"
+    },
+    "J5": {
+     "l2": "Kept a media run plan and the reasons for the choices",
+     "l3": "The run went ahead with the plan I left"
+    },
+    "J6": {
+     "l2": "Checked the plan against reach data for each media channel or past episodes",
+     "l3": "Changed media channels or amounts based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason it did not reach people down to the media channel, the amount or the material",
+     "l3": "Changed one thing and confirmed that the numbers changed"
+    },
+    "J8": {
+     "l2": "The run method I planned became the brand's default",
+     "l3": "My plan was used in a budget decision"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Media runs of an agency",
+    "OC2": "Broadcast scheduling and promotion",
+    "OC3": "Ticket promotion for a performance",
+    "OC4": "Channel management for corporate public relations",
+    "OC5": "Media comparison in research",
+    "OC6": "Upload plans for a platform",
+    "OC7": "A small channel run alone"
+   }
+  },
+  {
+   "code": "TD04",
+   "name": "Cinematography and Lighting Design",
+   "required_axes": [
+    "J4",
+    "J5"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Work arrives that must decide how to shoot this"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "An outline or storyboard, the place and time to shoot, available equipment and people, the post-production to follow"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The angles and lenses to use, and the position and strength of light"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Looking at the location, setting up light, test shooting, watching on a monitor and fixing"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Cameras and lenses, lighting equipment, exposure and color temperature meters, monitors and waveform tools, shooting plan templates"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "A shooting plan, one page of angles and lighting, exposure and color temperature records"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Monitors and waveforms, room for post-production work later, the picture in similar cases"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If a scene must be shot again, separate whether exposure, focus or light is the cause"
+    }
+   ],
+   "tools": [
+    "Cameras and lenses",
+    "Lighting equipment",
+    "Exposure and color temperature meters",
+    "Monitors and waveform tools",
+    "Shooting plan template"
+   ],
+   "artifacts": [
+    "Shooting plan",
+    "Notes on camera angles and lighting",
+    "Brightness and color temperature records",
+    "Settings not used and the reasons",
+    "Shooting records"
+   ],
+   "verify_targets": [
+    "Monitors and waveforms",
+    "Room to fix things in editing",
+    "The picture in reference videos",
+    "Shooting results",
+    "Review by other people"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately what to shoot this time and what not to shoot",
+     "l3": "The list I set became the shooting scope for that day"
+    },
+    "J2": {
+     "l2": "Turned the scenes the outline wants into conditions for angles and light",
+     "l3": "The conditions I wrote became the criteria of that shoot"
+    },
+    "J3": {
+     "l2": "When time was short, decided myself which scenes to drop",
+     "l3": "The shoot that day ran in the direction I decided"
+    },
+    "J4": {
+     "l2": "Chose and applied the lenses and the lighting method",
+     "l3": "The method I chose became the team's basic setting"
+    },
+    "J5": {
+     "l2": "Wrote down and kept the shooting plan, angles and lighting",
+     "l3": "The next episode was shot in the same way with the records I left"
+    },
+    "J6": {
+     "l2": "Checked the footage against monitors and waveforms or similar cases",
+     "l3": "Changed exposure or color temperature based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason a scene had to be shot again down to exposure, focus or light",
+     "l3": "Changed one thing and confirmed an improvement"
+    },
+    "J8": {
+     "l2": "The shooting settings I set became the default of that work",
+     "l3": "My shooting records were used as the basis of post-production"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Settings for an ad shoot",
+    "OC2": "Settings for a broadcast shoot",
+    "OC3": "Recording shoots of performances",
+    "OC4": "Corporate promotion shoots",
+    "OC5": "Video records for research",
+    "OC6": "Specifications for content shooting",
+    "OC7": "Small shoots done alone"
+   }
+  },
+  {
+   "code": "TD05",
+   "name": "Sound and Audio",
+   "required_axes": [
+    "J4",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Work arrives that must decide how this should sound"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "A script or cue sheet, noise and echo at the recording place, available microphones and consoles, the sound specifications of the media channel"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The microphones to use, their positions, and the reference loudness for mixing"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Setting up microphones, test recording, listening and fixing positions, mixing to the standard"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Microphones and stands, recorders and consoles, loudness meters, monitor headphones and speakers, sound editing tools"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "One page on microphone placement, recording notes and a track list, the mix and its loudness values"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "The loudness standard required by the media channel, noise levels measured on site, the sound of similar works"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If it is hard to hear, separate whether microphone position, noise or mixing is the cause"
+    }
+   ],
+   "tools": [
+    "Microphones and stands",
+    "Recorders and consoles",
+    "Loudness meter",
+    "Monitor headphones and speakers",
+    "Sound editing tool"
+   ],
+   "artifacts": [
+    "Microphone placement diagram",
+    "Recording notes and track list",
+    "Final mix and loudness values",
+    "Dropped sounds and the reasons",
+    "Noise processing records"
+   ],
+   "verify_targets": [
+    "Loudness standard of the upload site",
+    "Noise levels measured on site",
+    "Sound of similar works",
+    "Listening results",
+    "Opinions of other listeners"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately the sounds to include this time and the sounds to remove",
+     "l3": "The criteria I set became the sound direction of that work"
+    },
+    "J2": {
+     "l2": "Turned the sound specifications of the media channel into conditions for recording and mixing",
+     "l3": "The conditions I wrote became the team's sound standard"
+    },
+    "J3": {
+     "l2": "In a place with strong echo, decided myself where to put the microphones",
+     "l3": "Recording went ahead with the positions I decided"
+    },
+    "J4": {
+     "l2": "Chose and applied the microphone type and the mixing method",
+     "l3": "The method I chose became the team's basic setting"
+    },
+    "J5": {
+     "l2": "Kept the microphone placement and recording notes",
+     "l3": "Another person made the same sound again with the records I left"
+    },
+    "J6": {
+     "l2": "Measured the mix and checked it against the loudness standard of the media channel",
+     "l3": "Changed the loudness or balance based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason it was hard to hear down to microphone position, noise or mixing",
+     "l3": "Changed one thing and confirmed that it could be heard"
+    },
+    "J8": {
+     "l2": "The sound standard I set became the organization's recording method",
+     "l3": "My placement records were used as the basis at other sites"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Sound and narration for ads",
+    "OC2": "Audio for broadcast programs",
+    "OC3": "Sound operation at performance venues",
+    "OC4": "Sound for internal company videos",
+    "OC5": "Measuring sound perception and effects",
+    "OC6": "Meeting sound specifications for platform videos",
+    "OC7": "Small recording and mixing jobs done alone"
+   }
+  },
+  {
+   "code": "TD06",
+   "name": "Directing, Structure and Script",
+   "required_axes": [
+    "J3",
+    "J5"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Work arrives that must decide in what order to show this"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "The plan and the message, available time and length, the people who will appear and the places available, reference cases"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The first scene, the last scene and the order that connects them"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Planning the order, writing the script, reading and timing it, changing scenes that do not work"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Outline templates, script templates, storyboard tools, timing tables, collections of reference cases"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "A full outline, a script, a storyboard, a table of scene lengths"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Time measured while reading, whether the message remains, the structure of similar cases"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If it is called boring, separate whether the order, the lines or the length is the cause"
+    }
+   ],
+   "tools": [
+    "Outline template",
+    "Script template",
+    "Storyboard tool",
+    "Timing table",
+    "Collection of reference cases"
+   ],
+   "artifacts": [
+    "Outline",
+    "Script",
+    "Storyboard",
+    "Dropped scenes and the reasons",
+    "Table of scene lengths"
+   ],
+   "verify_targets": [
+    "Time measured while reading",
+    "Whether the message remains",
+    "Structure of similar works",
+    "Readers' responses",
+    "Review by other people"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately the scenes to show this time and the scenes to leave out",
+     "l3": "The order I set became the structure of that work"
+    },
+    "J2": {
+     "l2": "Turned the message of the plan into conditions for scenes",
+     "l3": "The conditions I wrote became the criteria of the script"
+    },
+    "J3": {
+     "l2": "When time was short, decided myself which scenes to drop",
+     "l3": "Shooting went ahead in the order I decided"
+    },
+    "J4": {
+     "l2": "Chose and applied a structure and a way of writing scripts",
+     "l3": "The method I chose became the team's basic structure"
+    },
+    "J5": {
+     "l2": "Kept an outline and a script",
+     "l3": "Another person shot and edited with the script I left"
+    },
+    "J6": {
+     "l2": "Checked the structure against the time measured while reading",
+     "l3": "Shortened or lengthened scenes based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason it was called boring down to the order, the lines or the length",
+     "l3": "Changed one thing and confirmed an improvement"
+    },
+    "J8": {
+     "l2": "The structure I set became the organization's frame",
+     "l3": "My script template was used as the basis by other people"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "The structure of one ad",
+    "OC2": "The structure and script of a broadcast program",
+    "OC3": "The flow and script of a performance",
+    "OC4": "The structure of internal presentation videos",
+    "OC5": "Research on the effects of message structure",
+    "OC6": "Structure rules for series",
+    "OC7": "Short videos planned and written alone"
+   }
+  },
+  {
+   "code": "TD07",
+   "name": "Editing and Post-production",
+   "required_axes": [
+    "J4",
+    "J7"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Work arrives that must turn the footage into one version to release"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "The footage and outline, available time, specifications and length limits of the release place, received revision comments"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The scenes to use and drop, and the order of joining them"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Organizing footage, rough cut, showing and getting comments, adding color and subtitles, exporting to specifications"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Editing tools, color grading tools, subtitle and graphics tools, export specification tables, version management lists"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "An edit, a list of scenes used and dropped, a subtitle script, exported files and their specifications"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Specifications of the release place, the length the outline wanted, received revision comments"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If it is said not to connect, separate whether the scenes, the order or the length is the cause"
+    }
+   ],
+   "tools": [
+    "Editing tool",
+    "Color grading tool",
+    "Subtitle and graphics tool",
+    "Export specification table",
+    "Version management list"
+   ],
+   "artifacts": [
+    "Edit",
+    "List of scenes used and dropped",
+    "Subtitle script",
+    "Finished file and its specifications",
+    "Revision records by version"
+   ],
+   "verify_targets": [
+    "Specifications of the upload site",
+    "Length set in the outline",
+    "Received revision comments",
+    "Reactions at a preview screening",
+    "Review by other people"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately the scenes to keep and drop in this edit",
+     "l3": "The list I set became the editing direction of that work"
+    },
+    "J2": {
+     "l2": "Turned the specifications and length limits of the release place into editing conditions",
+     "l3": "The conditions I wrote became the team's export standard"
+    },
+    "J3": {
+     "l2": "When the order of joining split into two options, decided myself which way to go",
+     "l3": "The order I decided went out as it was"
+    },
+    "J4": {
+     "l2": "Chose and applied an editing method and a color grading method",
+     "l3": "The method I chose became the team's basic post-production"
+    },
+    "J5": {
+     "l2": "Kept an edit and a list of scenes used",
+     "l3": "Another person continued the work with the version records I left"
+    },
+    "J6": {
+     "l2": "Checked the exported file against the specifications of the release place",
+     "l3": "Changed the length or specifications based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason it did not connect down to the scenes, the order or the length",
+     "l3": "Changed one thing and confirmed an improvement"
+    },
+    "J8": {
+     "l2": "The post-production method I set became the organization's default",
+     "l3": "My version management method was used as the basis for other work"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Post-production of ad materials",
+    "OC2": "Editing of broadcast programs",
+    "OC3": "Editing of performance record videos",
+    "OC4": "Editing of internal company videos",
+    "OC5": "Organizing video of experiment data",
+    "OC6": "Editing series and matching specifications",
+    "OC7": "Shooting and editing alone"
+   }
+  },
+  {
+   "code": "TD08",
+   "name": "Performance and On-site Operations",
+   "required_axes": [
+    "J3",
+    "J7"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Work arrives that must run to the end on a set day at that place"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "The outline and cast list, the size and facilities of the place, the expected audience size, the safety standards to follow"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The running order, the positions of people and the signals for moving on"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Making a cue sheet, rehearsing in advance, running with signals, fixing problems on the spot"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Cue sheet templates, stage and seating plans, communication equipment, running time records, safety checklists"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "A cue sheet, a placement chart of people and equipment, running time records, safety check records"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "The planned running time, the safety standards to follow, rehearsal results"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If the flow breaks, separate whether the signals, the people or the equipment is the cause"
+    }
+   ],
+   "tools": [
+    "Cue sheet template",
+    "Stage and seating plan",
+    "Communication equipment",
+    "Running time record sheet",
+    "Safety checklist"
+   ],
+   "artifacts": [
+    "Cue sheet",
+    "Placement chart of people and equipment",
+    "Running time records",
+    "Changes in running that day and the reasons",
+    "Safety check records"
+   ],
+   "verify_targets": [
+    "Planned running time",
+    "Safety standards to follow",
+    "Rehearsal results",
+    "Actual time taken",
+    "Opinions of people who ran it together"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately what to do and what to leave out in this performance",
+     "l3": "The criteria I set became the running scope for that day"
+    },
+    "J2": {
+     "l2": "Turned the size and facilities of the place into running conditions",
+     "l3": "The conditions I wrote became the team's on-site standard"
+    },
+    "J3": {
+     "l2": "When an earlier part ran late, decided myself on the spot what to cut",
+     "l3": "The remaining parts ran as I decided"
+    },
+    "J4": {
+     "l2": "Chose and applied a running method and a way of giving signals",
+     "l3": "The method I chose became the team's basic running"
+    },
+    "J5": {
+     "l2": "Kept a cue sheet and a placement chart",
+     "l3": "Another person ran the same performance with the cue sheet I left"
+    },
+    "J6": {
+     "l2": "Checked the time taken that day against the planned running time",
+     "l3": "Changed the order of the next show based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason the flow broke down to the signals, the people or the equipment",
+     "l3": "Changed one thing and confirmed that the next show did not break"
+    },
+    "J8": {
+     "l2": "The running method I set became the organization's default",
+     "l3": "My safety checklist was used at other sites"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Running a shooting site",
+    "OC2": "Running a live broadcast",
+    "OC3": "Operations on the day of a performance",
+    "OC4": "Running an internal company event",
+    "OC5": "Running an experiment or survey site",
+    "OC6": "Operating live streaming episodes",
+    "OC7": "Small events set up and run alone"
+   }
+  },
+  {
+   "code": "TD09",
+   "name": "Directing Performers, Acting and Music",
+   "required_axes": [
+    "J3",
+    "J5"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Work arrives that must draw the wanted acting or playing from performers"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "The script and outline, the experience and range of the people taking part, available rehearsal time and place, reference cases"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Who takes which part, and in what style to speak and move"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Reading together, trying positions, repeating and fixing, choosing the take to use"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Scripts and rehearsal schedules, audio and video recording tools, voice and sound tuning tools, rehearsal record templates, collections of reference cases"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Rehearsal records, one page of directions for each person, fixed parts and the reasons, a list of takes to use that day"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "The style the script wants, results of repeated tries, acting and playing in similar cases, listeners' responses"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If it is called flat, separate whether speech, movement or position is the cause"
+    }
+   ],
+   "tools": [
+    "Script and rehearsal schedule",
+    "Audio and video recording tools",
+    "Voice and sound tuning tools",
+    "Rehearsal record template",
+    "Collection of reference cases"
+   ],
+   "artifacts": [
+    "Rehearsal records",
+    "Notes on what each person needs to improve",
+    "Changed parts and the reasons",
+    "List of versions to use in the performance",
+    "Role assignment chart"
+   ],
+   "verify_targets": [
+    "Mood of the script",
+    "Results of several rehearsals",
+    "Acting and playing in similar performances",
+    "Audience reactions",
+    "Review by other people"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately what to work on this time and what to leave as it is",
+     "l3": "The criteria I set became the direction of that rehearsal"
+    },
+    "J2": {
+     "l2": "Turned the style the script wants into conditions for speech and movement",
+     "l3": "The conditions I wrote became the team's rehearsal standard"
+    },
+    "J3": {
+     "l2": "Chose myself the take to use that day among several takes",
+     "l3": "The take I chose went out as it was"
+    },
+    "J4": {
+     "l2": "Chose and applied a rehearsal method and a way of improving",
+     "l3": "The method I chose became the team's basic rehearsal"
+    },
+    "J5": {
+     "l2": "Kept rehearsal records and directions for each person",
+     "l3": "Another person continued leading rehearsals with the records I left"
+    },
+    "J6": {
+     "l2": "Checked rehearsal results against the style the script wants",
+     "l3": "Changed the directions based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason it was called flat down to speech, movement or position",
+     "l3": "Changed one thing and confirmed an improvement"
+    },
+    "J8": {
+     "l2": "The rehearsal method I set became the organization's default",
+     "l3": "My direction template was used in other works"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Choosing and directing people who will appear in ads",
+    "OC2": "Matching the speech and flow of broadcast performers",
+    "OC3": "Directing rehearsals of performers",
+    "OC4": "Presentation practice for employees",
+    "OC5": "Guiding experiment participants through tasks",
+    "OC6": "Matching the speaking style of series performers",
+    "OC7": "Appearing and practicing alone"
+   }
+  },
+  {
+   "code": "TD10",
+   "name": "Results and Response Measurement",
+   "required_axes": [
+    "J6",
+    "J7"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Work arrives that must measure and report what happened after release"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "The release time and media channel, the range of data available, goals set earlier, numbers of past episodes to compare"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "What to count, which period to look at, and what to compare with"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Setting indicators, receiving and organizing data, comparing with past episodes, writing and handing over the reading"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Statistics screens of each media channel, spreadsheet tools, survey and interview forms, indicator definition tables, report templates"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "An indicator definition table, a table of organized data, comparison results with past episodes, a report of the reading"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Goals set earlier, numbers of past episodes, the average of the same media channel, what people said in surveys"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If the numbers drop, separate whether the material, the media channel or the posting time is the cause"
+    }
+   ],
+   "tools": [
+    "Statistics screen of each media channel",
+    "Spreadsheet tools",
+    "Survey and interview forms",
+    "Indicator definition table",
+    "Report template"
+   ],
+   "artifacts": [
+    "Indicator explanation table",
+    "Data organization table",
+    "Results compared with last time",
+    "Results interpretation report",
+    "List of things to change next time"
+   ],
+   "verify_targets": [
+    "Goals set in advance",
+    "Previous numbers",
+    "Average of the same media channel",
+    "Survey answers",
+    "Other people's interpretations"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately what to count this time and what not to count",
+     "l3": "The indicators I chose became the organization's standard"
+    },
+    "J2": {
+     "l2": "Turned the goals set earlier into countable indicators",
+     "l3": "The results of that task were reported with the indicators I wrote"
+    },
+    "J3": {
+     "l2": "When indicators said different things, decided myself which one to use",
+     "l3": "The report went out with the indicator I decided"
+    },
+    "J4": {
+     "l2": "Chose and applied a data collection method and a way to compare",
+     "l3": "The method I chose became the team's basic measurement"
+    },
+    "J5": {
+     "l2": "Kept indicator definitions and the organized table",
+     "l3": "Another person counted again in the same way with the definitions I left"
+    },
+    "J6": {
+     "l2": "Compared the numbers with the goals set earlier or past episodes",
+     "l3": "Changed the material or media channel of the next episode based on the comparison"
+    },
+    "J7": {
+     "l2": "Narrowed the reason the numbers dropped down to the material, the media channel or the posting time",
+     "l3": "Changed one thing and confirmed that the numbers rose"
+    },
+    "J8": {
+     "l2": "The indicator definitions I set became the organization's standard",
+     "l3": "My measurement method was used as the basis for other tasks"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Results reports after an ad run",
+    "OC2": "Reading viewing and view numbers",
+    "OC3": "Reading seat occupancy and audience reactions",
+    "OC4": "Press reactions and internal evaluation",
+    "OC5": "Designing measurement of message effects",
+    "OC6": "Indicators and retention for each episode",
+    "OC7": "Measuring alone and improving the next episode"
+   }
+  },
+  {
+   "code": "TD11",
+   "name": "Public Relations, Press and Crisis Response",
+   "required_axes": [
+    "J2",
+    "J5"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Work arrives that must decide the words that go outside"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Facts confirmed inside, received questions and their sources, the range of promises that can be kept, places blocked by laws and rules"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The sentence to release and the places not to speak about"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Checking facts, writing sentences, aligning inside, releasing and answering incoming questions"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Press release templates, question and answer sets, media contact lists, pre-release checklists, response record templates"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "A press release, a question and answer set, pre-release check records, response records and the answer range decided that day"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Facts confirmed inside, places blocked by laws and rules, other materials released earlier, incoming questions"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If the words are read differently, separate whether the sentence, a missing fact or the release timing is the cause"
+    }
+   ],
+   "tools": [
+    "Press release template",
+    "Question and answer set",
+    "Media contact list",
+    "Pre-release checklist",
+    "Response record template"
+   ],
+   "artifacts": [
+    "Press release",
+    "Expected questions and answers",
+    "Pre-release check records",
+    "Question response records",
+    "List of content not to reveal"
+   ],
+   "verify_targets": [
+    "Facts confirmed inside",
+    "Laws and rules",
+    "Materials released earlier",
+    "Incoming questions",
+    "Opinions of people who reviewed it together"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately what to say this time and what not to say",
+     "l3": "The line I drew became the organization's response range"
+    },
+    "J2": {
+     "l2": "Turned the facts confirmed inside and the blocking rules into conditions for sentences",
+     "l3": "The conditions I wrote became the team's disclosure standard"
+    },
+    "J3": {
+     "l2": "When the line of what can be answered was unclear, decided myself how far to speak",
+     "l3": "Answers went out along the line I decided"
+    },
+    "J4": {
+     "l2": "Chose and applied a distribution method and a way to receive questions",
+     "l3": "The method I chose became the organization's default"
+    },
+    "J5": {
+     "l2": "Kept a press release and a question and answer set",
+     "l3": "Another person answered along the same line with the set I left"
+    },
+    "J6": {
+     "l2": "Checked the sentences against confirmed facts and blocking rules",
+     "l3": "Changed sentences or the disclosure range based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason the words were read differently down to the sentence, a missing fact or the timing",
+     "l3": "Changed one thing, released again and confirmed that things calmed down"
+    },
+    "J8": {
+     "l2": "The disclosure criteria I set became the organization's line",
+     "l3": "My question and answer set was used in other departments"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Handling an advertiser's public materials",
+    "OC2": "Responding to press about broadcasts",
+    "OC3": "Responding to performance cancellations and accidents",
+    "OC4": "Company press releases and crisis response",
+    "OC5": "Public materials on research results",
+    "OC6": "Platform user inquiries and notices",
+    "OC7": "Writing and answering alone"
+   }
+  },
+  {
+   "code": "TD12",
+   "name": "Rights, Review and Records",
+   "required_axes": [
+    "J5",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Work arrives that must check whether this is ready to release"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Sources of the music, images and text used, whether performers gave consent, the review standards and specifications of the media channel, the scope of signed contracts"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The material that can be used, the parts to change and the consent to get"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Checking sources, checking against standards, handling consent and contracts, keeping versions and their basis"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Rights checklists, review standard sets, consent and contract templates, version management lists, transmission specification tables"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Rights check records, a list of consent forms and contract copies, review response records, versions and their basis"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Review standards of the media channel, the scope of signed contracts, license conditions of the material, cases that passed before"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If it cannot be released, separate whether the material, the consent or the specifications is the cause"
+    }
+   ],
+   "tools": [
+    "Rights checklist",
+    "Review standard set",
+    "Consent and contract templates",
+    "Version management list",
+    "Transmission specification table"
+   ],
+   "artifacts": [
+    "Copyright check records",
+    "List of consent forms and contract copies",
+    "Review response records",
+    "Final version and the reasons",
+    "List of parts to fix"
+   ],
+   "verify_targets": [
+    "Review standards of the release media channel",
+    "Contract scope",
+    "License conditions of the material",
+    "Cases that passed before",
+    "Checks by other people"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately the range to check this time and the range not to check",
+     "l3": "The range I set became the organization's checking standard"
+    },
+    "J2": {
+     "l2": "Turned review standards and contract scope into items to check",
+     "l3": "The items I wrote became the team's checklist"
+    },
+    "J3": {
+     "l2": "For material where use was unclear, decided myself whether to use it or change it",
+     "l3": "The material was changed and released as I decided"
+    },
+    "J4": {
+     "l2": "Chose and applied a checking method and a version management method",
+     "l3": "The method I chose became the organization's default"
+    },
+    "J5": {
+     "l2": "Kept rights check records and the basis for each version",
+     "l3": "A person who joined later traced the work with the records I left"
+    },
+    "J6": {
+     "l2": "Checked what was confirmed against review standards and the contract scope",
+     "l3": "Changed material or subtitles based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason it could not be released down to the material, the consent or the specifications",
+     "l3": "Changed one thing and confirmed that it passed"
+    },
+    "J8": {
+     "l2": "The checklist I set became the organization's procedure",
+     "l3": "My version management method was used as the basis for other works"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Rights and review of ad materials",
+    "OC2": "Checks before broadcast transmission",
+    "OC3": "Rights to performance music and scripts",
+    "OC4": "Quotations and consent in internal company materials",
+    "OC5": "Consent and ethics review of research data",
+    "OC6": "Checks before uploading to a platform",
+    "OC7": "Checking the sources of material used alone"
+   }
+  }
+ ],
+ "review_note": "Media, advertising and performance majors release work at a set place on a set day, so **if no record remains, the judgments of that day disappear.** What keeps the domains apart is `required_axes`. Message, shooting, directing, directing performers, public relations and crisis, and rights and review depend on outputs: a one-page concept, a shooting plan, a script, directions, a press release and check records must remain so that the next person can take over. Planning, media, sound, and rights and review depend on comparison and verification: the task set, the media chosen, the sound mixed and the rights checked are **not evidence until they are checked against standards, past episodes or review specifications.** Editing, on-site work and results measurement depend on failure and correction: it is common for things not to connect or fit at first, and narrowing down the reason is the work. Media and public relations and crisis depend on interpreting requirements: if the given goals and confirmed facts are not turned into conditions, nothing can be released. So even if six axes are confirmed, the evidence does not hold when a required axis of that domain is empty"
+}

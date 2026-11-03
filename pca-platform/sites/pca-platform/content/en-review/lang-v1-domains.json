@@ -1,0 +1,1386 @@
+{
+ "schema_version": "lang-v1-domains.1",
+ "assessment_version": "LANG_V1",
+ "note": "For each domain: the eight steps of the workflow and the performing and ownership conditions for the eight judgment axes. Items, the results report and experience input all read this one file. `verify_targets` and `artifacts` are what the results report's action steps draw on, so they must be concrete here to avoid vague wording",
+ "workflow_steps": [
+  "How the problem arrives",
+  "Inputs received",
+  "What gets decided first",
+  "Methods used",
+  "Tools used",
+  "Deliverables produced",
+  "What it is compared against",
+  "When it goes wrong"
+ ],
+ "domains": [
+  {
+   "code": "TD01",
+   "name": "Literature and Source Research",
+   "required_axes": [
+    "J1",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "A topic to look into arrives as an assignment or a request"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Available databases and library holdings, deadline, existing earlier research"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The search words and range to look at, and the line for materials not to use"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Building search words, making lists, checking originals, organizing and quoting"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Academic databases, library catalogs, reference management tools, citation styles"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Material lists, summary cards, a manuscript with matching citation format, a record of the search paths"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Originals, other editions, citations in earlier research, primary and secondary sources"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If nothing comes up, separate whether the search words are the problem or the material does not exist"
+    }
+   ],
+   "tools": [
+    "Academic databases",
+    "Library catalog",
+    "Reference management tool",
+    "Citation style",
+    "Access to original texts"
+   ],
+   "artifacts": [
+    "Material list",
+    "Summary cards",
+    "Manuscript with matching citation format",
+    "Record of search paths",
+    "Summary of earlier research"
+   ],
+   "verify_targets": [
+    "Original text",
+    "Other editions",
+    "Citations in earlier research",
+    "Primary sources",
+    "Records of the holding institution"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately the range to search this time and the range not to search",
+     "l3": "The range I set became the research scope of that assignment"
+    },
+    "J2": {
+     "l2": "Turned what to find out into search words, years and categories",
+     "l3": "The search conditions I wrote became the standard conditions for that place"
+    },
+    "J3": {
+     "l2": "Chose myself the materials to use and the materials to filter out",
+     "l3": "The list I chose became the bibliography as it was"
+    },
+    "J4": {
+     "l2": "Chose a database or organizing tool and adjusted it for use",
+     "l3": "Another person used the organizing method I set up as it was"
+    },
+    "J5": {
+     "l2": "Kept a material list and summaries",
+     "l3": "Another person read the list I left and continued the search"
+    },
+    "J6": {
+     "l2": "Checked quoted content against the original or other editions",
+     "l3": "Changed the material chosen for use based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason for no results down to the search words or whether the material exists",
+     "l3": "Changed the search method and confirmed that fewer materials were missed"
+    },
+    "J8": {
+     "l2": "Materials I organized were used in another person's writing",
+     "l3": "My list became the bibliography of a project report or a paper"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Material research submitted to a planning meeting",
+    "OC2": "Supporting materials requested by a client",
+    "OC3": "Source checks for a textbook",
+    "OC4": "Reference literature for a project report",
+    "OC5": "Summary of earlier research for a paper",
+    "OC6": "Checking precedents that become the basis for a judgment",
+    "OC7": "Background materials for writing done alone"
+   }
+  },
+  {
+   "code": "TD02",
+   "name": "Text Analysis and Interpretation",
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "A text or work to read arrives as an assignment"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "The original and its editions, earlier interpretations, available theoretical frameworks, deadline"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Which framework to read with, and the passages to use as evidence"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Reading through, picking passages, reading by a framework, comparing with other interpretations"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Originals and annotated editions, citation tools, reading notes, a list of earlier interpretations"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "An analysis, a list of passages used as evidence, one page on the limits of the interpretation"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Other passages of the original, earlier interpretations, other writings by the same author, materials from the same period"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If the evidence is weak, separate whether the framework does not fit or there are not enough passages"
+    }
+   ],
+   "tools": [
+    "Originals and annotated editions",
+    "Citation tool",
+    "Reading notes",
+    "List of earlier interpretations",
+    "Dictionaries and collections of usage examples"
+   ],
+   "artifacts": [
+    "Analysis text",
+    "List of passages used as evidence",
+    "Notes on the limits of the interpretation",
+    "Reading notes",
+    "Presentation materials"
+   ],
+   "verify_targets": [
+    "Other passages of the original",
+    "Earlier interpretations",
+    "Other writings by the same author",
+    "Materials from the same period",
+    "Results of reading from a different point of view"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately the passages to read this time and the passages not to cover",
+     "l3": "The passages I chose became the analysis scope of that text"
+    },
+    "J2": {
+     "l2": "Turned what I want to know into a question that can be checked",
+     "l3": "The question I wrote became the topic of that presentation"
+    },
+    "J3": {
+     "l2": "Chose myself the reading framework and the passages to use as evidence",
+     "l3": "The reading I built became the basis of that class or text"
+    },
+    "J4": {
+     "l2": "Chose a theoretical framework or reading method and adjusted it for use",
+     "l3": "Another person used the reading method I used as it was"
+    },
+    "J5": {
+     "l2": "Kept an analysis text and a list of evidence passages",
+     "l3": "Another person quoted the analysis I left"
+    },
+    "J6": {
+     "l2": "Compared my reading with earlier interpretations or other passages",
+     "l3": "Changed the interpretation based on the comparison"
+    },
+    "J7": {
+     "l2": "Narrowed the reason for weak evidence down to the framework or the passages",
+     "l3": "Changed the framework and confirmed that a passage I could not explain was explained"
+    },
+    "J8": {
+     "l2": "My interpretation was used in discussion in a class or presentation",
+     "l3": "My analysis was quoted in a paper or a critique"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "The basis of commentary and recommendation writing",
+    "OC2": "An analysis report requested by a client",
+    "OC3": "Reading materials used in class",
+    "OC4": "Commentary text for an exhibition or a project",
+    "OC5": "The analysis chapter of a paper",
+    "OC6": "The basis for the correct answer of a test item",
+    "OC7": "Critiques and reviews written alone"
+   }
+  },
+  {
+   "code": "TD03",
+   "name": "Language Structure Analysis",
+   "required_axes": [
+    "J4",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "A language phenomenon to explain arrives as an assignment or a question"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Collected example sentences, descriptions in dictionaries and grammar books, available analysis frameworks, native speaker intuition"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Which units to divide into, and how far to look at counterexamples"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Collecting example sentences, dividing units, writing rules, checking counterexamples"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Dictionaries and collections of usage examples, grammar books, example cards, writing guidelines, transcription symbols"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Analysis descriptions, lists of examples and counterexamples, rule summaries, term definitions"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Descriptions in dictionaries and grammar books, examples from other dialects or periods, judgments of native speakers"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If something cannot be explained, separate whether the units are wrong or there are not enough examples"
+    }
+   ],
+   "tools": [
+    "Dictionaries and collections of usage examples",
+    "Grammar books",
+    "Example cards",
+    "Writing guidelines",
+    "Transcription symbols"
+   ],
+   "artifacts": [
+    "Summary of the analysis",
+    "List of examples and of examples that break the rules",
+    "Rule summary",
+    "Term definitions",
+    "Writing guidelines"
+   ],
+   "verify_targets": [
+    "Explanations in dictionaries and grammar books",
+    "Examples from other dialects",
+    "Examples from other periods",
+    "Judgment of people who speak that language as their native language",
+    "Example sentences that break the rules"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately the phenomena to explain this time and the phenomena to leave for later",
+     "l3": "The range I set became the subject of that description"
+    },
+    "J2": {
+     "l2": "Turned what to explain into conditions that can be checked",
+     "l3": "The conditions I wrote became the range where that rule applies"
+    },
+    "J3": {
+     "l2": "Decided myself the units to divide into and the range of counterexamples to look at",
+     "l3": "The units I set became the way of description in that place"
+    },
+    "J4": {
+     "l2": "Chose an analysis framework or a transcription method and adjusted it for use",
+     "l3": "Another person used the transcription method I set up as it was"
+    },
+    "J5": {
+     "l2": "Kept an analysis description and a list of examples",
+     "l3": "Another person used the rule summary I left"
+    },
+    "J6": {
+     "l2": "Checked my description against the explanation in a dictionary or a grammar book",
+     "l3": "Changed the units or rules based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason something could not be explained down to the units or the examples",
+     "l3": "Changed the units and confirmed that there were fewer counterexamples"
+    },
+    "J8": {
+     "l2": "My description went into a textbook or a dictionary as an explanation",
+     "l3": "My rule summary became the basis of another person's analysis"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Explanations in textbooks and dictionaries",
+    "OC2": "A language description requested by a client",
+    "OC3": "Grammar explanations used in class",
+    "OC4": "The basis of public language guidelines",
+    "OC5": "The description chapter of a paper",
+    "OC6": "Rules that become the basis for the correct answer of a test item",
+    "OC7": "Writing standards for texts written alone"
+   }
+  },
+  {
+   "code": "TD04",
+   "name": "Corpus and Language Data",
+   "required_axes": [
+    "J2",
+    "J4"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "The intended use of language data to collect arrives as an assignment or a request"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Available raw data and the scope of copyright, workers and deadline, the required size"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The range to collect, the annotation criteria, and the pass line"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Collecting, cleaning, annotating, reviewing, producing statistics"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Annotation tools, spreadsheets, scripts, work guidelines, review forms"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Annotation guidelines, annotated data, review records, frequency tables"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Definitions in the guidelines, the agreement rate between two annotators, re-review of samples, dictionary meanings"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If the agreement rate is low, separate whether the guidelines are unclear or the workers differ"
+    }
+   ],
+   "tools": [
+    "Annotation tool",
+    "Spreadsheet",
+    "Scripts",
+    "Work guidelines",
+    "Review form"
+   ],
+   "artifacts": [
+    "Tagging guidelines",
+    "Tagged data",
+    "Review records",
+    "Frequency table",
+    "Work log"
+   ],
+   "verify_targets": [
+    "Definitions in the guidelines",
+    "Rate of agreement between the tags of two people",
+    "Results of re-reviewing a part",
+    "Dictionary meanings",
+    "Results of the previous work"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately the data to collect this time and the data to leave out",
+     "l3": "The range I set became the collection scope of that data"
+    },
+    "J2": {
+     "l2": "Turned the intended use into annotation items and a pass line",
+     "l3": "The criteria I wrote became the guidelines of that work"
+    },
+    "J3": {
+     "l2": "Decided myself how to annotate unclear cases",
+     "l3": "My judgment went into the guidelines as an example"
+    },
+    "J4": {
+     "l2": "Chose an annotation tool or processing method and adjusted it for use",
+     "l3": "Other workers followed the processing method I made as it was"
+    },
+    "J5": {
+     "l2": "Kept annotation guidelines and review records",
+     "l3": "Other people annotated in the same way using the guidelines I left"
+    },
+    "J6": {
+     "l2": "Checked my annotations against another person's results or the definitions in the guidelines",
+     "l3": "Fixed the guidelines based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason for a low agreement rate down to the guidelines or the workers",
+     "l3": "Fixed the guidelines and confirmed that disagreements became fewer"
+    },
+    "J8": {
+     "l2": "Data I made was used in another person's analysis",
+     "l3": "My guidelines became the organization's work standard"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "The frequency basis for dictionaries and textbooks",
+    "OC2": "Annotated data that meets the client's specifications",
+    "OC3": "The basis for choosing vocabulary for learners",
+    "OC4": "A part of building public language data",
+    "OC5": "A corpus used in a paper",
+    "OC6": "The vocabulary basis for test items",
+    "OC7": "Collections of usage examples for writing done alone"
+   }
+  },
+  {
+   "code": "TD05",
+   "name": "Translation and Interpreting",
+   "required_axes": [
+    "J3",
+    "J7"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "A text or speech to translate arrives as a request"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "The original, its use and readers, the client's guidelines, a glossary, deadline"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The unit of translation and the terms, and what to keep and what to drop"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "First draft translation, matching terms, polishing, reading again, applying review comments"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Glossaries, translation memories, dictionaries, client guidelines, reviewer comments"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "The translation, a terminology table, notes on difficult parts, a record of applied review comments"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "The meaning of the original, client guidelines, glossaries, usage in that field"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If it sounds unnatural, separate whether understanding of the original or the wording is the problem"
+    }
+   ],
+   "tools": [
+    "Glossary",
+    "Translation memory",
+    "Dictionary",
+    "Client guidelines",
+    "Reviewer comments"
+   ],
+   "artifacts": [
+    "Translation",
+    "Terminology table",
+    "Notes on parts that were hard to translate",
+    "Record of applied review comments",
+    "Record of rereading and corrections"
+   ],
+   "verify_targets": [
+    "Meaning of the original",
+    "Client guidelines",
+    "Glossary",
+    "Usage in that field",
+    "Reviewer's opinion"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately the range to translate this time and the range not to touch",
+     "l3": "The range I set became the work scope of that request"
+    },
+    "J2": {
+     "l2": "Turned the use and the readers into conditions to follow",
+     "l3": "The conditions I wrote became the guidelines of that work"
+    },
+    "J3": {
+     "l2": "Chose myself the unit of translation and the terms to use",
+     "l3": "The terms I chose became the terminology table for that place"
+    },
+    "J4": {
+     "l2": "Chose a dictionary or translation memory and adjusted it for use",
+     "l3": "Other translators followed the term matches I made as they were"
+    },
+    "J5": {
+     "l2": "Kept a translation and a terminology table",
+     "l3": "Another person continued using the table I left"
+    },
+    "J6": {
+     "l2": "Checked the translation against the meaning of the original or the usage in that field",
+     "l3": "Changed terms or sentences based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason for unnatural wording down to understanding of the original or the wording",
+     "l3": "Fixed terms and confirmed that the same comments became fewer"
+    },
+    "J8": {
+     "l2": "My translation was published or released as it was",
+     "l3": "My term matches were used as the organization's standard"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Published translated books and subtitles",
+    "OC2": "Delivered translations that follow client guidelines",
+    "OC3": "Parallel translations for textbooks and learning materials",
+    "OC4": "Foreign-language versions of institutional materials",
+    "OC5": "Translations of papers and research materials",
+    "OC6": "Translations used for notarization and reviews",
+    "OC7": "Requests taken and finished alone"
+   }
+  },
+  {
+   "code": "TD06",
+   "name": "Writing and Editing",
+   "required_axes": [
+    "J5",
+    "J7"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "A text to write or a manuscript to revise arrives"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "The readers and where it will appear, length and deadline, the writing guidelines to follow"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The structure and table of contents, and the range to change and the range to keep"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Planning the structure, first draft, revising, matching writing standards, checking facts"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Writing guidelines, proofreading marks, dictionaries, fact-check lists, editing tools"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "The final manuscript, changed parts and the reasons, a record of applied writing standards, a fact-check record"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Writing guidelines, dictionaries and Korean language standards, facts in the original sources, earlier editions"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If it is hard to read, separate whether the structure or the sentences are the problem"
+    }
+   ],
+   "tools": [
+    "Writing guidelines",
+    "Proofreading marks",
+    "Dictionary",
+    "Fact-check list",
+    "Editing tool"
+   ],
+   "artifacts": [
+    "Final manuscript",
+    "Changed parts and the reasons",
+    "Record of applying writing guidelines",
+    "Fact-check record",
+    "Proofreading history"
+   ],
+   "verify_targets": [
+    "Writing guidelines",
+    "Dictionaries and Korean language standards",
+    "Facts in the original sources",
+    "Readers' responses",
+    "Earlier manuscripts"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately the range to write this time and what not to include",
+     "l3": "The range I set became the shape of that text"
+    },
+    "J2": {
+     "l2": "Turned the readers and the place into length and level",
+     "l3": "The criteria I wrote became the principles of that publication"
+    },
+    "J3": {
+     "l2": "Separated myself the range to change from the range to keep",
+     "l3": "The line I drew became the editing policy of that manuscript"
+    },
+    "J4": {
+     "l2": "Chose writing guidelines or an editing tool and adjusted them for use",
+     "l3": "Other editors followed the method I set up as it was"
+    },
+    "J5": {
+     "l2": "Kept the final manuscript and the reasons for the changes",
+     "l3": "The manuscript I left was published as it was"
+    },
+    "J6": {
+     "l2": "Checked the revised text against the writing guidelines or the facts in the original sources",
+     "l3": "Changed sentences or expressions based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason it was hard to read down to the structure or the sentences",
+     "l3": "Fixed the structure and confirmed that the same comments became fewer"
+    },
+    "J8": {
+     "l2": "My manuscript was used as another person's material",
+     "l3": "My editing policy became the standard for that publication"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Manuscripts published as books and articles",
+    "OC2": "Manuscripts that a client receives and uses",
+    "OC3": "Main text of textbooks and learning materials",
+    "OC4": "Press releases and publications of an institution",
+    "OC5": "Main text of papers and reports",
+    "OC6": "Written parts of review materials",
+    "OC7": "Texts planned and written alone"
+   }
+  },
+  {
+   "code": "TD07",
+   "name": "Korean Language Education Design",
+   "required_axes": [
+    "J2",
+    "J5"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "The learners and the period to teach arrive as the opening of a course"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Learners' level and purpose, class time and number of learners, available textbooks and classrooms"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The learning goals and the range of vocabulary and grammar to cover"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Checking needs, setting goals, planning units, making materials, setting tasks"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Curriculum reference standards, textbooks, vocabulary lists, lesson plan forms, learning material tools"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "A curriculum plan, lesson plans, learning materials, a vocabulary and grammar scope table"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "The levels of the reference standard, learners' placement assessment, past results of the same course"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If learners cannot follow, separate whether the level or the materials are the problem"
+    }
+   ],
+   "tools": [
+    "Curriculum reference standards",
+    "Textbooks",
+    "Vocabulary list",
+    "Lesson plan form",
+    "Learning material tools"
+   ],
+   "artifacts": [
+    "Curriculum plan",
+    "Lesson plan",
+    "Learning materials",
+    "Task and activity design",
+    "Vocabulary and grammar scope table"
+   ],
+   "verify_targets": [
+    "Korean proficiency level criteria",
+    "Learners' placement assessment",
+    "Past results of the same course",
+    "Textbook levels",
+    "Review by fellow teachers"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately what to cover in this course and what not to cover",
+     "l3": "The range I set became the content of that course"
+    },
+    "J2": {
+     "l2": "Turned the learners' purpose into what they will be able to do",
+     "l3": "The goals I wrote became the assessment criteria of that course"
+    },
+    "J3": {
+     "l2": "Decided myself the range of vocabulary and grammar to cover",
+     "l3": "The range I set became the standard for that level"
+    },
+    "J4": {
+     "l2": "Chose textbooks or activity types and adjusted them for use",
+     "l3": "Another teacher used an activity I made as it was"
+    },
+    "J5": {
+     "l2": "Kept lesson plans and learning materials",
+     "l3": "Another teacher taught the same class with the plan I left"
+    },
+    "J6": {
+     "l2": "Checked the goals against the levels of the reference standard or the placement assessment",
+     "l3": "Changed the range based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason learners could not follow down to the level or the materials",
+     "l3": "Fixed the range and confirmed that fewer learners dropped out"
+    },
+    "J8": {
+     "l2": "My course design was also used in other classes",
+     "l3": "My materials went into the institution's textbook"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Units of published textbooks",
+    "OC2": "Course design requested by a client",
+    "OC3": "Regular courses at a language school",
+    "OC4": "Free Korean language courses of an institution",
+    "OC5": "Language courses run by a university",
+    "OC6": "Courses linked to assessment standards",
+    "OC7": "Classes opened and taught alone"
+   }
+  },
+  {
+   "code": "TD08",
+   "name": "Class Management and Assessment",
+   "required_axes": [
+    "J2",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Planned lessons and an assessment schedule arrive as a semester or course"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Number of learners and attendance, class time, number of assessments, past grade distribution"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "What to measure and where to draw the pass line"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Running classes, giving tasks, making assessments, grading, giving feedback"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Assessment item forms, scoring rubrics, attendance and grade management, feedback forms"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Assessment items, scoring rubrics, grading results and distribution, feedback records"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Scoring rubrics, another grader's results, past grade distribution, learning goals"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If scores are all at one end, separate whether the items or the teaching are the problem"
+    }
+   ],
+   "tools": [
+    "Assessment item form",
+    "Scoring rubric",
+    "Attendance and grade management",
+    "Feedback form",
+    "Audio and video recordings"
+   ],
+   "artifacts": [
+    "Assessment items",
+    "Scoring rubric",
+    "Grading results and distribution",
+    "Feedback records",
+    "Class log"
+   ],
+   "verify_targets": [
+    "Scoring rubric",
+    "Another grader's results",
+    "Past grade distribution",
+    "Learning goals",
+    "Results of grading some answers again"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately what to check in this assessment and what not to check",
+     "l3": "The range I set became the test scope of that assessment"
+    },
+    "J2": {
+     "l2": "Turned learning goals into assessment items and points",
+     "l3": "The points I wrote became the standard of that course"
+    },
+    "J3": {
+     "l2": "Decided myself how to judge an unclear answer",
+     "l3": "My judgment went into the scoring criteria as an example"
+    },
+    "J4": {
+     "l2": "Chose an assessment method or a class activity and adjusted it for use",
+     "l3": "Another teacher used items I made as they were"
+    },
+    "J5": {
+     "l2": "Kept assessment items and a scoring rubric",
+     "l3": "Other people graded in the same way using the rubric I left"
+    },
+    "J6": {
+     "l2": "Checked grading results against the rubric or another grader's results",
+     "l3": "Fixed the criteria or points based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason scores were all at one end down to the items or the teaching",
+     "l3": "Fixed the items and confirmed that they separate learners better"
+    },
+    "J8": {
+     "l2": "My assessment results were used as the basis for course completion or placement",
+     "l3": "My scoring criteria became the institution's standard"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Assessment materials that come with a textbook",
+    "OC2": "Assessment results requested by a client",
+    "OC3": "The basis for course completion and class placement",
+    "OC4": "Performance reports of an institution's course",
+    "OC5": "Supporting data for improving classes",
+    "OC6": "Grading records of an official test",
+    "OC7": "Assessments made and graded alone"
+   }
+  },
+  {
+   "code": "TD09",
+   "name": "Creative Writing and Structure",
+   "required_axes": [
+    "J1",
+    "J5"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Something you want to write or a given topic arrives"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Available length and deadline, readers, reference materials and things to research"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The material and theme, and what structure to build"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Planning, making an outline, first draft, rewriting, applying critique comments"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Outline forms, research notes, critique records, reference materials, writing tools"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "A finished work, an outline and structure chart, a revision history, research notes"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Readers' responses, structures of similar works, the first outline, critique comments"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If it is hard to read, separate whether the structure or the characters are the problem"
+    }
+   ],
+   "tools": [
+    "Outline form",
+    "Research notes",
+    "Critique records",
+    "Reference materials",
+    "Writing tools"
+   ],
+   "artifacts": [
+    "Finished work",
+    "Outline and structure chart",
+    "Revision records",
+    "Research notes",
+    "Record of applied critique comments"
+   ],
+   "verify_targets": [
+    "Readers' responses",
+    "Structures of similar works",
+    "The first outline",
+    "Critique comments",
+    "The manuscript before revision"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately the material to write about this time and the material not to use",
+     "l3": "The material I chose became the scope of that work"
+    },
+    "J2": {
+     "l2": "Turned what to write into a form that fits the length and the readers",
+     "l3": "The criteria I wrote became the frame of that series"
+    },
+    "J3": {
+     "l2": "Decided myself the choice of characters and events",
+     "l3": "The structure I set remained as the shape of that work"
+    },
+    "J4": {
+     "l2": "Chose a structure or point of view and adjusted it for use",
+     "l3": "Another person used the method I used"
+    },
+    "J5": {
+     "l2": "Kept a finished work and its outline",
+     "l3": "A work I wrote was published or performed as it was"
+    },
+    "J6": {
+     "l2": "Compared what I wrote with the first outline or critique comments",
+     "l3": "Changed the structure based on the comparison"
+    },
+    "J7": {
+     "l2": "Narrowed the reason it was hard to read down to the structure or the characters",
+     "l3": "Fixed the structure and confirmed that the same comments became fewer"
+    },
+    "J8": {
+     "l2": "My work was adapted into a different form",
+     "l3": "My structure became the basis of the team's work"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Works that are serialized and published",
+    "OC2": "A structure plan requested by a client",
+    "OC3": "Stories that go into learning materials",
+    "OC4": "Creative outputs of an institution's project",
+    "OC5": "Subjects of creative writing research and criticism",
+    "OC6": "Works submitted to competitions and reviews",
+    "OC7": "Works planned and written to the end alone"
+   }
+  },
+  {
+   "code": "TD10",
+   "name": "Culture and Area Studies",
+   "required_axes": [
+    "J2",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Work dealing with that region or group arrives as a task"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Local materials and statistics, earlier cases, what people said, available time"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "What to see as the context of that society, and how far to apply it"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Reading materials, collecting cases, checking locally, trying it out"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Local media and statistics, case collections, contacts with local staff, lists of terms and forms of address"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "A context summary, a list of expressions that work and expressions to avoid, notes on the range of application"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Confirmation by local staff, results of earlier cases, usage in local media, statistics"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If it does not work, separate whether the materials are out of date or the group is different"
+    }
+   ],
+   "tools": [
+    "Local media and statistics",
+    "Case collections",
+    "Contacts with local staff",
+    "Lists of terms and forms of address",
+    "Translation reference materials"
+   ],
+   "artifacts": [
+    "Summary of cultural background",
+    "List of expressions that work and expressions to avoid",
+    "Notes on the range to adapt to local conditions",
+    "Case comparison table",
+    "Local check records"
+   ],
+   "verify_targets": [
+    "Confirmation by local staff",
+    "Results of earlier cases",
+    "Usage in local media",
+    "Statistics",
+    "Reactions of local people"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately the regions or groups to look at this time and the range not to look at",
+     "l3": "The range I set became the subject of that task"
+    },
+    "J2": {
+     "l2": "Turned what must be known into items that can be checked",
+     "l3": "The items I wrote became the checklist of that project"
+    },
+    "J3": {
+     "l2": "Separated myself the expressions that work from the expressions to avoid",
+     "l3": "The criteria I set became the guidelines for that place"
+    },
+    "J4": {
+     "l2": "Chose local materials or ways to check and adjusted them for use",
+     "l3": "Another person used the way to check that I made as it was"
+    },
+    "J5": {
+     "l2": "Kept a context summary and a list of expressions",
+     "l3": "Another person used the list I left"
+    },
+    "J6": {
+     "l2": "Checked my judgment against confirmation by local staff or earlier cases",
+     "l3": "Changed the range of application based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason it did not work down to the age of the materials or the difference in groups",
+     "l3": "Fixed the way to check and confirmed that the same mismatches became fewer"
+    },
+    "J8": {
+     "l2": "My summary was used as the basis for decisions in that project",
+     "l3": "My list of expressions became the organization's guidelines"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "The basis for planning a local version",
+    "OC2": "A local review requested by a client",
+    "OC3": "Criteria for looking at learners' backgrounds",
+    "OC4": "The basis of an international exchange project",
+    "OC5": "Data for area studies",
+    "OC6": "Local checks used in reviews",
+    "OC7": "Local deals handled alone"
+   }
+  },
+  {
+   "code": "TD11",
+   "name": "Research and Interview Design",
+   "required_axes": [
+    "J2",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Something you want to know but have no data on arrives as a task"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "People who can be reached and the time available, the range of consent and ethics, available equipment"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Whom to ask, the order of questions, and the recording method"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Making a question list, getting consent, interviews or surveys, transcription, reading answers in groups"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Question list forms, recorders, transcription tools, consent forms, classification tables"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "A question list, transcripts, classified and grouped summaries, records of consent and handling"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "What other respondents said, existing data, asking again, field observation"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If there are no answers, separate whether the questions are the problem or the people are different"
+    }
+   ],
+   "tools": [
+    "Question list form",
+    "Recorder",
+    "Transcription tool",
+    "Consent form",
+    "Classification table"
+   ],
+   "artifacts": [
+    "Question list",
+    "Transcripts",
+    "Classified summary of answers",
+    "Research report",
+    "Records of consent and handling"
+   ],
+   "verify_targets": [
+    "What other respondents said",
+    "Existing data",
+    "Answers confirmed by asking again",
+    "Field observation",
+    "Results classified separately by two people"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately the range to ask this time and what not to ask",
+     "l3": "The range I set became the subject of that research"
+    },
+    "J2": {
+     "l2": "Turned what I want to know into question items",
+     "l3": "The items I wrote became the question list of that research"
+    },
+    "J3": {
+     "l2": "Decided myself whom to ask and the order of questions",
+     "l3": "The order I set became the method of that research"
+    },
+    "J4": {
+     "l2": "Chose a recording method or transcription rules and adjusted them for use",
+     "l3": "Another person followed the transcription rules I made as they were"
+    },
+    "J5": {
+     "l2": "Kept a question list and transcripts",
+     "l3": "Another person took the transcripts I left and analyzed them"
+    },
+    "J6": {
+     "l2": "Checked what I heard against what other respondents said or existing data",
+     "l3": "Changed the questions based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason there were no answers down to the questions or the people",
+     "l3": "Fixed the questions and confirmed that there were fewer blank answers"
+    },
+    "J8": {
+     "l2": "My research results were used in a decision about a project or a course",
+     "l3": "My question list became the organization's form"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "The research basis of articles and books",
+    "OC2": "A research report requested by a client",
+    "OC3": "Research on learners' needs",
+    "OC4": "Demand research for an institution's project",
+    "OC5": "Data collection for a paper",
+    "OC6": "Field checks used in reviews",
+    "OC7": "Data collected by going out alone"
+   }
+  },
+  {
+   "code": "TD12",
+   "name": "Content Planning and Distribution",
+   "required_axes": [
+    "J2",
+    "J5"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Something to announce or sell arrives as a plan"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "The audience and available channels, budget and deadline, data on earlier responses"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Where and in what format to publish, and the order of publishing"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Planning, matching formats, producing, publishing, watching responses"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Channel statistics, plan forms, schedules, production tools, response reports"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "A plan, format guidelines for each channel, schedule and role assignment, a response summary"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Responses to earlier plans, channel statistics, similar cases, target numbers"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If there is no response, separate whether the content or the place is the problem"
+    }
+   ],
+   "tools": [
+    "Channel statistics",
+    "Plan form",
+    "Schedule",
+    "Production tools",
+    "Response report"
+   ],
+   "artifacts": [
+    "Plan",
+    "Format guidelines for each channel",
+    "Schedule and role assignment",
+    "Response summary",
+    "Proposal for the next plan"
+   ],
+   "verify_targets": [
+    "Responses to past content",
+    "Channel statistics",
+    "Similar cases",
+    "Opinions of the audience",
+    "Target numbers"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately what to publish this time and what not to publish",
+     "l3": "The range I set became the shape of that plan"
+    },
+    "J2": {
+     "l2": "Turned what to announce into the audience, the format and the length",
+     "l3": "The criteria I wrote became the principles of that channel"
+    },
+    "J3": {
+     "l2": "Chose myself the place and the format to publish in",
+     "l3": "The method I chose became the organization's basic format"
+    },
+    "J4": {
+     "l2": "Chose a channel or production method and adjusted it for use",
+     "l3": "Another person used the format I set up as it was"
+    },
+    "J5": {
+     "l2": "Kept a plan and format guidelines",
+     "l3": "The plan I submitted was carried out as it was"
+    },
+    "J6": {
+     "l2": "Checked responses against earlier plans or target numbers",
+     "l3": "Changed the format or the order based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason for no response down to the content or the place",
+     "l3": "Changed the place and confirmed that responses increased"
+    },
+    "J8": {
+     "l2": "My plan went into another department's schedule",
+     "l3": "My format guidelines became the organization's standard"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Planning for series and publication",
+    "OC2": "Plans that a client receives and carries out",
+    "OC3": "Course recruitment and promotion",
+    "OC4": "Promotion and distribution of an institution's project",
+    "OC5": "Releasing research results",
+    "OC6": "Distribution of announcements and notices",
+    "OC7": "Work planned and published alone"
+   }
+  }
+ ],
+ "review_note": "In language and literature majors, roles that read texts, roles that make texts and roles that teach sit in one file. What keeps them apart is `required_axes`: translation and editing depend on failure and correction, because half of that work is receiving comments and fixing. Education, creative writing and content depend on outputs: if nothing remains, you cannot say you taught or wrote. Literature research, interpretation, assessment, area studies and research design depend on comparison and verification. So even if six axes are confirmed, the evidence does not hold when a required axis of that domain is empty"
+}

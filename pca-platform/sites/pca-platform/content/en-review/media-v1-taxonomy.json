@@ -1,0 +1,885 @@
+{
+ "schema_version": "media-v1-taxonomy.1",
+ "assessment_version": "MEDIA_V1",
+ "major_id": "MEDIA",
+ "note": "Three axes: technical domain x role function x organizational context. Job titles are aliases for combinations, and none of the axes produces a ranking. This file is where changes are made. The eight axes, two scales and four levels use the same values as the Mechanical Engineering Core: results from two majors can only be compared on the same ruler, and building a new ruler for each major would break comparison within a university",
+ "axes": {
+  "J1": {
+   "name": "Problem definition",
+   "question": "Who decided what to work on?"
+  },
+  "J2": {
+   "name": "Requirements interpretation",
+   "question": "Did you turn the requirements into numbers and constraints?"
+  },
+  "J3": {
+   "name": "Technical decisions",
+   "question": "Which items did you decide yourself?"
+  },
+  "J4": {
+   "name": "Methods and tools",
+   "question": "What did you use, and how?"
+  },
+  "J5": {
+   "name": "Deliverables",
+   "question": "What output remained?"
+  },
+  "J6": {
+   "name": "Comparison and verification",
+   "question": "What did you compare it against?"
+  },
+  "J7": {
+   "name": "Failure and correction",
+   "question": "How did you narrow down what went wrong?"
+  },
+  "J8": {
+   "name": "Organizational use",
+   "question": "Who used it, and for what?"
+  }
+ },
+ "scales": {
+  "S4": {
+   "axes": [
+    "J3",
+    "J5",
+    "J6",
+    "J7"
+   ],
+   "note": "Screening scale. The four axes asked at BASIC. Organizational use is left out of screening because it puts undergraduates at a structural disadvantage: whether your work was used by an organization can only be answered if you were placed in one, and someone who has only done classes and a capstone will have that cell empty even if they made decisions. Organizational use is asked only in the in-depth stage"
+  },
+  "S8": {
+   "axes": [
+    "J1",
+    "J2",
+    "J3",
+    "J4",
+    "J5",
+    "J6",
+    "J7",
+    "J8"
+   ],
+   "note": "Full scale. STANDARD and above. Do not use S8 as the denominator for S4. What the in-depth stage newly opens are the four axes not in screening (problem definition, requirements interpretation, methods and tools, organizational use)"
+  }
+ },
+ "levels": {
+  "L0": "Never",
+  "L1": "Exposed. Watched or reused what someone else did",
+  "L2": "Performed. Did the work myself",
+  "L3": "Owned. Decided it myself, and the result was used"
+ },
+ "technical_domains": [
+  {
+   "code": "TD01",
+   "name": "Planning and Brief Definition",
+   "owns": "Decides what to communicate to whom",
+   "subareas": [
+    "What to communicate",
+    "Audience",
+    "Range of cases to look at",
+    "Dropped topics and the reasons"
+   ],
+   "required_axes": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD02",
+   "name": "Message and Concept",
+   "owns": "Decides what to say in one line",
+   "subareas": [
+    "Message written in one line",
+    "Tone of voice",
+    "What to keep and what to drop",
+    "Dropped messages and the reasons"
+   ],
+   "required_axes": [
+    "J1",
+    "J5"
+   ]
+  },
+  {
+   "code": "TD03",
+   "name": "Media and Channel Planning",
+   "owns": "Decides where, how much and how to release",
+   "subareas": [
+    "Media channels to use",
+    "Amount and timing of release",
+    "What to change for each channel",
+    "Dropped channels and the reasons"
+   ],
+   "required_axes": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD04",
+   "name": "Cinematography and Lighting Design",
+   "owns": "Decides what to capture with which light and angle",
+   "subareas": [
+    "Angles and lenses",
+    "Position and strength of light",
+    "What to capture and what to drop",
+    "Dropped settings and the reasons"
+   ],
+   "required_axes": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "code": "TD05",
+   "name": "Sound and Audio",
+   "owns": "Decides the sound that is heard",
+   "subareas": [
+    "Choosing and placing microphones",
+    "On-site recording",
+    "Mixing and matching loudness",
+    "Dropped sounds and the reasons"
+   ],
+   "required_axes": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD06",
+   "name": "Directing, Structure and Script",
+   "owns": "Decides in what order to show things",
+   "subareas": [
+    "Order of the story",
+    "Scenes and lines",
+    "Length and where to cut",
+    "Dropped scenes and the reasons"
+   ],
+   "required_axes": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "code": "TD07",
+   "name": "Editing and Post-production",
+   "owns": "Turns the footage into one version to release",
+   "subareas": [
+    "Choosing scenes to use",
+    "Order and length of joining",
+    "Color, subtitles and effects",
+    "Exporting to release specifications"
+   ],
+   "required_axes": [
+    "J4",
+    "J7"
+   ]
+  },
+  {
+   "code": "TD08",
+   "name": "Performance and On-site Operations",
+   "owns": "Makes the curtain rise that day and run to the end",
+   "subareas": [
+    "Cue sheet and running",
+    "Placement of people and equipment",
+    "Audience and safety",
+    "What was changed that day and the reasons"
+   ],
+   "required_axes": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "code": "TD09",
+   "name": "Directing Performers, Acting and Music",
+   "owns": "Draws the wanted acting or playing from performers",
+   "subareas": [
+    "Choosing who takes which part",
+    "Matching speech and movement",
+    "Repeated rehearsal and fixing",
+    "Choosing the version to use that day"
+   ],
+   "required_axes": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "code": "TD10",
+   "name": "Results and Response Measurement",
+   "owns": "Measures and reports what happened after release",
+   "subareas": [
+    "Deciding what to count",
+    "Collecting data",
+    "Reading by comparison",
+    "Reflecting it in the next episode"
+   ],
+   "required_axes": [
+    "J6",
+    "J7"
+   ]
+  },
+  {
+   "code": "TD11",
+   "name": "Public Relations, Press and Crisis Response",
+   "owns": "Decides the one sentence that goes outside",
+   "subareas": [
+    "Choosing the words to release",
+    "Writing and distributing materials",
+    "The line for answering questions",
+    "When something goes wrong"
+   ],
+   "required_axes": [
+    "J2",
+    "J5"
+   ]
+  },
+  {
+   "code": "TD12",
+   "name": "Rights, Review and Records",
+   "owns": "Checks whether work is ready to release and keeps a record",
+   "subareas": [
+    "Checking whether material can be used",
+    "Meeting review standards and specifications",
+    "Handling consent and contracts",
+    "Keeping versions and their basis"
+   ],
+   "required_axes": [
+    "J5",
+    "J6"
+   ]
+  }
+ ],
+ "role_functions": [
+  {
+   "code": "RF1",
+   "name": "Planning and Structure",
+   "one_line": "Decides what to make and how",
+   "output_kind": "Plan · Outline · Script",
+   "success": "One complete set that states what to say to whom and that other people can produce as it is"
+  },
+  {
+   "code": "RF2",
+   "name": "Research and Analysis",
+   "one_line": "Finds out what can be known before making something",
+   "output_kind": "Audience research records · Media data · Case analysis",
+   "success": "A record that states the range looked at and the data used, so the next person can look at it again in the same way"
+  },
+  {
+   "code": "RF3",
+   "name": "Judgment and Review Response",
+   "one_line": "Checks whether work can be released",
+   "output_kind": "Review opinion · Inspection records · Transmission check records",
+   "success": "A result where the judgment fits review standards and specifications and the range looked at is written down"
+  },
+  {
+   "code": "RF4",
+   "name": "Records and Standards Management",
+   "one_line": "Leaves records and standards so that anyone gets the same result",
+   "output_kind": "Production manual · Material list and versions · Transmission specification table",
+   "success": "The same specifications give the same result, and it is possible to go back to any version"
+  },
+  {
+   "code": "RF5",
+   "name": "Production Site",
+   "one_line": "Makes the output come out on the spot",
+   "output_kind": "Shooting records · Cue sheet · What was changed that day and the reasons",
+   "success": "It runs to the end that day, and changes remain in the records"
+  },
+  {
+   "code": "RF6",
+   "name": "Operations and Coordination",
+   "one_line": "Ties many people's decisions into one",
+   "output_kind": "Schedule · Booking and contract records · Change records",
+   "success": "Meeting deadlines, successful bookings and the number of breaks"
+  },
+  {
+   "code": "RF7",
+   "name": "Survey and Research",
+   "one_line": "Narrows down things that have no answer yet",
+   "output_kind": "Effect measurement design and data · Case studies · Indicator definitions",
+   "success": "The question is narrowed down, and a record remains that allows the work to be done again"
+  },
+  {
+   "code": "RF8",
+   "name": "Rights and Regulation Management",
+   "one_line": "Makes sure standards are kept all the time",
+   "output_kind": "Rights check records · Review response records · Safety plan",
+   "success": "The same disputes and accidents do not come back, and the basis of decisions can be traced"
+  }
+ ],
+ "role_functions_note": "There are eight, and they use **the same codes** as the Mechanical Engineering Core. Role functions are a layer above the major, so they are not created again for each major. The names were changed into the words of media, advertising and performance majors. The meaning of the work is kept the same, so the axes do not split; what differs is the kind of output: outlines, cue sheets and transmission specifications take the place of mechanical drawings",
+ "org_contexts": [
+  {
+   "code": "OC1",
+   "name": "Advertising Agencies and Production Companies",
+   "performance": "Proposal adoption · Run deadlines · Advertiser approval",
+   "differs": "If the advertiser does not choose an option, it does not survive"
+  },
+  {
+   "code": "OC2",
+   "name": "Broadcasters and Production Studios",
+   "performance": "Scheduled air time · Viewing and views · Review",
+   "differs": "Scheduled air time cannot be delayed"
+  },
+  {
+   "code": "OC3",
+   "name": "Performance Agencies and Theaters",
+   "performance": "Performance day · Seat occupancy · Safety",
+   "differs": "Once the curtain rises, nothing can be undone"
+  },
+  {
+   "code": "OC4",
+   "name": "Corporate Public Relations and Communication Teams",
+   "performance": "Press reactions · Crisis response · Internal agreement",
+   "differs": "One sentence becomes the company's words"
+  },
+  {
+   "code": "OC5",
+   "name": "Universities and Research Institutes",
+   "performance": "Papers and projects · Effect measurement",
+   "differs": "You check on your own whether the method is right and keep it as a record"
+  },
+  {
+   "code": "OC6",
+   "name": "Platform and Content Operators",
+   "performance": "Indicators and retention · Upload schedule",
+   "differs": "The numbers after posting decide the next episode"
+  },
+  {
+   "code": "OC7",
+   "name": "Freelance and Solo Production",
+   "performance": "The next job",
+   "differs": "One person plans, shoots, edits and delivers"
+  }
+ ],
+ "job_aliases": [
+  {
+   "posting_name": "Advertising Planner",
+   "td": [
+    "TD01",
+    "TD02"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC4"
+   ],
+   "distinguisher": "Decides alone what to say"
+  },
+  {
+   "posting_name": "Media Planner",
+   "td": [
+    "TD03",
+    "TD10"
+   ],
+   "rf": [
+    "RF1",
+    "RF2"
+   ],
+   "oc": [
+    "OC1",
+    "OC6"
+   ],
+   "distinguisher": "Decides alone where and how much to release"
+  },
+  {
+   "posting_name": "Advertising Photographer",
+   "td": [
+    "TD04",
+    "TD02"
+   ],
+   "rf": [
+    "RF5"
+   ],
+   "oc": [
+    "OC1",
+    "OC7"
+   ],
+   "distinguisher": "Decides alone how to shoot"
+  },
+  {
+   "posting_name": "Video Camera Operator",
+   "td": [
+    "TD04",
+    "TD06"
+   ],
+   "rf": [
+    "RF5"
+   ],
+   "oc": [
+    "OC2",
+    "OC7"
+   ],
+   "distinguisher": "Decides alone the angles and lighting"
+  },
+  {
+   "posting_name": "Lighting Technician",
+   "td": [
+    "TD04",
+    "TD08"
+   ],
+   "rf": [
+    "RF5"
+   ],
+   "oc": [
+    "OC2",
+    "OC3"
+   ],
+   "distinguisher": "Decides alone what to light and what to leave dark"
+  },
+  {
+   "posting_name": "Sound Engineer",
+   "td": [
+    "TD05",
+    "TD08"
+   ],
+   "rf": [
+    "RF5"
+   ],
+   "oc": [
+    "OC3",
+    "OC2"
+   ],
+   "distinguisher": "Decides alone what to make heard"
+  },
+  {
+   "posting_name": "Recording and Mixing Engineer",
+   "td": [
+    "TD05",
+    "TD07"
+   ],
+   "rf": [
+    "RF5",
+    "RF4"
+   ],
+   "oc": [
+    "OC2",
+    "OC7"
+   ],
+   "distinguisher": "Balances the sound alone"
+  },
+  {
+   "posting_name": "Director",
+   "td": [
+    "TD06",
+    "TD09"
+   ],
+   "rf": [
+    "RF1",
+    "RF5"
+   ],
+   "oc": [
+    "OC2",
+    "OC3"
+   ],
+   "distinguisher": "Decides alone in what order to show things"
+  },
+  {
+   "posting_name": "Structure Writer and Scriptwriter",
+   "td": [
+    "TD06",
+    "TD02"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC2",
+    "OC7"
+   ],
+   "distinguisher": "Plans the flow of the script alone"
+  },
+  {
+   "posting_name": "Editor",
+   "td": [
+    "TD07",
+    "TD06"
+   ],
+   "rf": [
+    "RF5"
+   ],
+   "oc": [
+    "OC2",
+    "OC7"
+   ],
+   "distinguisher": "Decides alone what to join and what to drop"
+  },
+  {
+   "posting_name": "Color Grading and Post-production",
+   "td": [
+    "TD07",
+    "TD04"
+   ],
+   "rf": [
+    "RF5",
+    "RF4"
+   ],
+   "oc": [
+    "OC2",
+    "OC1"
+   ],
+   "distinguisher": "Sets the look of the final picture alone"
+  },
+  {
+   "posting_name": "Performance Planner",
+   "td": [
+    "TD08",
+    "TD01"
+   ],
+   "rf": [
+    "RF1",
+    "RF6"
+   ],
+   "oc": [
+    "OC3"
+   ],
+   "distinguisher": "Decides alone what to stage and when"
+  },
+  {
+   "posting_name": "Stage Manager",
+   "td": [
+    "TD08",
+    "TD09"
+   ],
+   "rf": [
+    "RF5",
+    "RF6"
+   ],
+   "oc": [
+    "OC3"
+   ],
+   "distinguisher": "Gives the cues of the day alone"
+  },
+  {
+   "posting_name": "Performer and Musician",
+   "td": [
+    "TD09",
+    "TD05"
+   ],
+   "rf": [
+    "RF5"
+   ],
+   "oc": [
+    "OC3",
+    "OC7"
+   ],
+   "distinguisher": "Decides alone the sound to make on the spot"
+  },
+  {
+   "posting_name": "Acting and Performer Coach",
+   "td": [
+    "TD09",
+    "TD06"
+   ],
+   "rf": [
+    "RF1",
+    "RF5"
+   ],
+   "oc": [
+    "OC3",
+    "OC2"
+   ],
+   "distinguisher": "Decides alone what to draw from people"
+  },
+  {
+   "posting_name": "Content Operations",
+   "td": [
+    "TD10",
+    "TD03"
+   ],
+   "rf": [
+    "RF6",
+    "RF2"
+   ],
+   "oc": [
+    "OC6"
+   ],
+   "distinguisher": "Decides alone what to change in the next episode"
+  },
+  {
+   "posting_name": "Performance Analyst",
+   "td": [
+    "TD10",
+    "TD03"
+   ],
+   "rf": [
+    "RF7"
+   ],
+   "oc": [
+    "OC1",
+    "OC6"
+   ],
+   "distinguisher": "Decides alone what to count"
+  },
+  {
+   "posting_name": "Public Relations Officer",
+   "td": [
+    "TD11",
+    "TD02"
+   ],
+   "rf": [
+    "RF1",
+    "RF6"
+   ],
+   "oc": [
+    "OC4"
+   ],
+   "distinguisher": "Decides alone what to say and what not to say"
+  },
+  {
+   "posting_name": "Press Release Writer",
+   "td": [
+    "TD11",
+    "TD12"
+   ],
+   "rf": [
+    "RF1",
+    "RF3"
+   ],
+   "oc": [
+    "OC4"
+   ],
+   "distinguisher": "Confirms alone the sentences that go outside"
+  },
+  {
+   "posting_name": "Crisis Response Officer",
+   "td": [
+    "TD11",
+    "TD10"
+   ],
+   "rf": [
+    "RF6",
+    "RF8"
+   ],
+   "oc": [
+    "OC4"
+   ],
+   "distinguisher": "Decides alone whether to release now or delay"
+  },
+  {
+   "posting_name": "Review and Legal Response",
+   "td": [
+    "TD12",
+    "TD11"
+   ],
+   "rf": [
+    "RF3",
+    "RF8"
+   ],
+   "oc": [
+    "OC2",
+    "OC1"
+   ],
+   "distinguisher": "Judges in their own name whether work can be released"
+  },
+  {
+   "posting_name": "Copyright and Music Rights",
+   "td": [
+    "TD12",
+    "TD05"
+   ],
+   "rf": [
+    "RF8"
+   ],
+   "oc": [
+    "OC2",
+    "OC6"
+   ],
+   "distinguisher": "Decides alone the range in which material can be used"
+  },
+  {
+   "posting_name": "Transmission and Delivery",
+   "td": [
+    "TD12",
+    "TD07"
+   ],
+   "rf": [
+    "RF4",
+    "RF3"
+   ],
+   "oc": [
+    "OC2",
+    "OC6"
+   ],
+   "distinguisher": "Checks alone whether work meets the specifications"
+  },
+  {
+   "posting_name": "Media Researcher",
+   "td": [
+    "TD10",
+    "TD01"
+   ],
+   "rf": [
+    "RF7"
+   ],
+   "oc": [
+    "OC5"
+   ],
+   "distinguisher": "Narrows down alone the question to study"
+  }
+ ],
+ "boundaries": [
+  {
+   "pair": "Planning vs Message",
+   "a": {
+    "td": "TD01",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD02",
+    "rf": "RF1"
+   },
+   "shared": "Decides what will be built",
+   "a_difference": "Decides what to communicate to whom",
+   "b_difference": "Decides how to say it in one line",
+   "a_question": "Have you narrowed down the audience and what to communicate yourself?",
+   "b_question": "Have you decided yourself what to say in one line?"
+  },
+  {
+   "pair": "Message vs Media Planning",
+   "a": {
+    "td": "TD02",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD03",
+    "rf": "RF1"
+   },
+   "shared": "Makes things reach people",
+   "a_difference": "Decides what to say",
+   "b_difference": "Decides where and how much to release",
+   "a_question": "Have you decided yourself what to say?",
+   "b_question": "Have you chosen the media channels and amount to release yourself?"
+  },
+  {
+   "pair": "Cinematography vs Sound",
+   "a": {
+    "td": "TD04",
+    "rf": "RF5"
+   },
+   "b": {
+    "td": "TD05",
+    "rf": "RF5"
+   },
+   "shared": "Captures things",
+   "a_difference": "Makes things seen with light and angle",
+   "b_difference": "Makes things heard with sound",
+   "a_question": "Have you decided the angles and lighting yourself?",
+   "b_question": "Have you set the microphones and balance yourself?"
+  },
+  {
+   "pair": "Directing vs Editing",
+   "a": {
+    "td": "TD06",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD07",
+    "rf": "RF5"
+   },
+   "shared": "Builds the flow",
+   "a_difference": "Decides the order and scenes before shooting",
+   "b_difference": "Decides what to join from the footage",
+   "a_question": "Have you decided the order of scenes yourself?",
+   "b_question": "Have you chosen yourself the cuts to drop?"
+  },
+  {
+   "pair": "Performance Operations vs Directing Performers",
+   "a": {
+    "td": "TD08",
+    "rf": "RF5"
+   },
+   "b": {
+    "td": "TD09",
+    "rf": "RF5"
+   },
+   "shared": "Puts on the stage",
+   "a_difference": "Keeps the order and cues of the day running",
+   "b_difference": "Draws out what people on stage will give",
+   "a_question": "Have you given the cues and the order yourself?",
+   "b_question": "Have you decided yourself what to draw from people?"
+  },
+  {
+   "pair": "Results Measurement vs Media Planning",
+   "a": {
+    "td": "TD10",
+    "rf": "RF7"
+   },
+   "b": {
+    "td": "TD03",
+    "rf": "RF1"
+   },
+   "shared": "Looks at numbers",
+   "a_difference": "Measures and answers whether it reached people",
+   "b_difference": "Decides in advance where to release",
+   "a_question": "Have you set the indicators and criteria to look at yourself?",
+   "b_question": "Have you chosen the media channels and amount to release yourself?"
+  },
+  {
+   "pair": "Public Relations vs Review",
+   "a": {
+    "td": "TD11",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD12",
+    "rf": "RF3"
+   },
+   "shared": "Sends things outside",
+   "a_difference": "Decides what to say and what not to say",
+   "b_difference": "Decides whether it can be released",
+   "a_question": "Have you decided yourself what not to say?",
+   "b_question": "Have you judged yourself whether something can be released?"
+  },
+  {
+   "pair": "Rights vs Sound",
+   "a": {
+    "td": "TD12",
+    "rf": "RF8"
+   },
+   "b": {
+    "td": "TD05",
+    "rf": "RF5"
+   },
+   "shared": "Uses sound",
+   "a_difference": "Decides the range in which it can be used",
+   "b_difference": "Decides how that sound should be heard",
+   "a_question": "Have you judged yourself whether a music source can be used?",
+   "b_question": "Have you set the balance and loudness yourself?"
+  },
+  {
+   "pair": "Production Site vs Operations Coordination",
+   "a": {
+    "td": "TD08",
+    "rf": "RF5"
+   },
+   "b": {
+    "td": "TD08",
+    "rf": "RF6"
+   },
+   "shared": "Runs the site",
+   "a_difference": "Gives cues on the spot and goes to the end",
+   "b_difference": "Brings together the incoming order and bookings",
+   "a_question": "Have you changed the order of the day yourself?",
+   "b_question": "Have you coordinated bookings and schedules yourself?"
+  },
+  {
+   "pair": "Survey and Research vs Results Measurement",
+   "a": {
+    "td": "TD10",
+    "rf": "RF7"
+   },
+   "b": {
+    "td": "TD10",
+    "rf": "RF3"
+   },
+   "shared": "Measures and answers",
+   "a_difference": "Narrows down questions that have no answer yet",
+   "b_difference": "Decides whether this episode reached the standard",
+   "a_question": "Have you narrowed down the question and comparison conditions yourself?",
+   "b_question": "Have you judged yourself whether this episode passed?"
+  }
+ ]
+}
