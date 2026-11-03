@@ -333,7 +333,9 @@ async function judge(attemptId: string, core: string): Promise<Verdict> {
   if (!anyPick && !anyOwn && /지금 응답만으로 지원서 한 문단/.test(all)) fail("q", "고른 항목 · 직접 판단 0인데 '지금 응답만으로 지원서 한 문단'");
   const lvAll = x.m.domains.filter((z) => d.asked(z)).flatMap((z) => d.levels(z.code)).filter((v) => v != null);
   if (lvAll.length >= 8 && new Set(lvAll).size === 1 && /한쪽으로 몰리지 않고/.test(all)) fail("q", "모든 칸 같은 답인데 '한쪽으로 몰리지 않고'");
-  if (/(?<!다른 길도 보고 싶다면 · )\S+ 쪽으로 갈 때 배울 순서/.test(ch7)) fail("q", "목표 로드맵 안에 다른 직무 '배울 순서'");
+  for (const m4 of ch7.matchAll(/쪽으로 갈 때 배울 순서/g)) {
+    if (!ch7.slice(Math.max(0, (m4.index ?? 0) - 40), m4.index).includes("다른 길도 보고 싶다면")) { fail("q", "목표 로드맵 안에 다른 직무 '배울 순서'"); break; }
+  }
   if (/관심 관심/.test(all)) fail("q", "'관심 관심'");
   if (x.issuerCode === "SJEPA") {
     const outside = all.replace(/“[^”]*”/g, "").replace(/(점검|견본) (학생|참여자)/g, "");
