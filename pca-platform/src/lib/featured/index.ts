@@ -31,6 +31,9 @@ export type Fact = {
 };
 export type Company = {
   name: string; short: string; match_name: string; sector: string; product: string;
+  /** 카드에 적는 산업 이름 하나(2026-11-03 견본: 같은 회사가 `반도체·디스플레이` · `반도체` 로 갈렸다).
+      회사가 든 묶음 이름에 이 낱말이 있을 때만 그 묶음을 회사의 산업으로 적는다 */
+  industry_label?: string;
   themes: string[]; region: string; listed: string | null;
   facts: Fact[]; process: string; process_src: string;
   jobs: { name: string; cores: string[]; what: string; src: string; on: string }[];
@@ -90,6 +93,8 @@ const Z2 = new Set(["Z2_EVIDENCE_INCOMPLETE", "Z3_EVIDENCE_LOW_INTEREST"]);
 export type FeaturedLink = {
   /** 이 전공의 산업 묶음 가운데 회사가 든 곳. 없으면 null */
   pack: string | null;
+  /** 회사가 든 묶음이 있지만 회사의 산업 낱말이 아니라 이름을 적지 않은 경우(`일반기업·기업간 거래` 같은 내부 분류) */
+  otherPack?: boolean;
   /** 지역 절의 회사 목록에서 그 묶음으로 갈렸는가(아니면 업종 낱말로 찾은 묶음) */
   viaRegion: boolean;
   /** 검사에서 고른 산업인가 */
@@ -154,8 +159,11 @@ export function featuredView(x: Inputs, d: X, rv: RegionView | null, prog: Progr
   const z2c = useCodes.filter((c) => Z2.has(zoneOf(c)) || (zoneOf(c) !== Z1 && (d.dom(c)?.confirmed.length ?? 0) > 0));
   const chosenSet = new Set([x.m.targets.goal?.industry, ...x.m.targets.industries].filter(Boolean) as string[]);
   const jobs = [...co.jobs.filter((jb) => jb.cores.includes(x.coreCode)), ...co.jobs.filter((jb) => jb.cores.includes("*"))];
+  /* **내부 분류 이름은 내놓지 않는다**(2026-11-03 견본: 경영 쪽에 `일반기업·기업간 거래` 가 섰다).
+     회사의 산업 낱말(`industry_label`)이 든 묶음만 그 낱말 하나로 적고, 아닌 묶음은 이름 없이 둔다 */
+  const ownPack = pack && (!co.industry_label || pack.name_ko.includes(co.industry_label)) ? (co.industry_label ?? pack.name_ko) : null;
   const link: FeaturedLink = {
-    pack: pack?.name_ko ?? null, viaRegion: !!g, chosen: !!pack && chosenSet.has(pack.code),
+    pack: ownPack, otherPack: !!pack && !ownPack, viaRegion: !!g, chosen: !!ownPack && chosenSet.has(pack!.code),
     uses: useCodes.slice(0, 4).map(d.name),
     z1: z1c.slice(0, 2).map((c) => ({ name: d.name(c), picks: picksOf(c) })),
     z2: z2c.slice(0, 2).map((c) => ({ name: d.name(c), picks: picksOf(c) })),
@@ -173,7 +181,8 @@ export function featuredView(x: Inputs, d: X, rv: RegionView | null, prog: Progr
       : tried ? tx.prepTried(tried.name)
       : strong ? tx.prepStrong(strong.name, strong.picks[0] ?? null)
       : link.uses[0] ? tx.prepUses(link.uses[0])
-      : null,
+      /* 내 결과 쪽 근거가 없어도 셋을 채운다(2026-11-03 견본: 심리 · 교육 · 식품 카드가 둘이었다) */
+      : tx.prepAny(),
     jobs[0] ? tx.prepJob(jobs[0].name) : null,
   ].filter((s): s is string => !!s).slice(0, 3);
 
@@ -182,16 +191,19 @@ export function featuredView(x: Inputs, d: X, rv: RegionView | null, prog: Progr
     || (w === "z1" && anyZ1.length > 0) || (w === "no_z1" && !anyZ1.length)
     || (w === "school" && prog.audience === "school")
     || (w.startsWith("core:") && w.slice(5) === x.coreCode);
+  /* 부르는 이름: 학교는 학과, 기관은 `○○ 계열`(2026-11-03 견본: `기계·자동차에서` → `기계·자동차 계열에서`) */
+  const base = x.department ?? x.major;
+  const who = prog.audience === "agency" && !/(계열|분야)$/.test(base) ? `${base} 계열` : base;
   /* `{학과}` 는 응시한 학과(기관은 계열) 이름으로 바꾼다(2026-11-03 견본: 반도체물리학부 카드에 '전자공학 학사로' 가 섰다) */
   const onsite = prog.onsite.filter((t) => ok(t.when)).slice(0, 3)
-    .map((t) => t.ask.replaceAll("{학과}", x.department ?? x.major));
+    .map((t) => t.ask.replaceAll("{학과}", who));
 
   const factOn = [...new Set(co.facts.map((f) => f.on))];
   return {
     program: { code: prog.code, title: prog.title, audience: prog.audience },
     company: co, link, prep, onsite, onsiteSrc: prog.onsite_src,
     /* 응시한 학과(기관은 계열) 이름. 학교 진입이 아니면 Core 이름 */
-    lead: tx.lead(co, link, x.department ?? x.major),
+    lead: tx.lead(co, link, who),
     sourceLine: `출처: ${co.sources.join(" · ")}${factOn.length ? ` · 숫자마다 출처와 기준일을 옆에 적었습니다` : ""}`,
   };
 }
