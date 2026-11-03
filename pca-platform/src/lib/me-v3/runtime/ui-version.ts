@@ -183,7 +183,8 @@
 /** 시작 화면에 결과지 견본 링크(기계공학 전공 예시) — V69 */
 /** 관심 칸이 비어 있으면 그 뒤 화면 · 제출로 가지 않는다(J1 전주대 v3/24 재점검) — V70 */
 /** 학교 응시는 학과마다 한 번 · 고른 학과로 잰다(다른 학과도 검사) — V71 */
-export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V71";
+/** 시작 화면 한 줄로(부정 설명 · 카드 셋 · 절차 목록 빼기) · 첫 문항 앞 안내 쪽 없이 바로 문항 · 학교 시작은 공통 시작 화면을 건넘 — V72 */
+export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V72";
 
 /** 화면에 나가는 한국어. 안내문·설명문·단추·전환·머리글이 바뀌면 올린다 */
 /* copy.15 — 받침 한 줄과 보기 넷의 예시가 화면에 서는 글자다 */
@@ -213,7 +214,8 @@ export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V71";
 /** 끝 화면 보관 안내 — copy.42 */
 /** 시작 화면 `결과지 견본 보기` 한 줄 — copy.43 */
 /** 공용 영어 사전(`phrases.en.ts`)에서 결과지 문구 열쇠만 바뀌었다. 검사 화면 글과 문항은 그대로다 — copy.44 */
-export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.44";
+/** 시작 화면 `{n}문항 · 약 {mins}분 · 답할 때마다 저장됩니다` · `해 본 적 없음` 한 줄 — copy.45 */
+export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.45";
 
 /*
  * `V19` · `copy.14` 로 올린 까닭. **경험 빈도의 화면 말을 공통으로

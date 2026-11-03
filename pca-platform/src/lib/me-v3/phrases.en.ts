@@ -157,6 +157,8 @@ export const PHRASES_EN: Record<string, string> = {
   "부족한 부분과 다음에 준비하면 좋을 것을 정리합니다":
     "Your gaps, and what to work on next",
   "결과지 견본 보기 (기계공학 전공 예시)": "See a sample result (mechanical engineering example)",
+  "{n}문항 · 약 {mins}분 · 답할 때마다 저장됩니다": "{n} questions · about {mins} min · saved as you go",
+  "해 본 적 없는 일은 ‘해 본 적 없음’을 고르시면 됩니다": "If you haven't done something, choose ‘Never done it’.",
   "약": "About",
   "분#unit": " min",
   "문항#unit": " questions",

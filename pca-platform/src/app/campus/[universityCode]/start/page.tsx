@@ -9,6 +9,7 @@ import {
 import { campusStudentOf, hasCampusRow } from "@/lib/campus/students";
 import { CAMPUS_CTA_KO, campusAttemptState } from "@/lib/campus/attempt-state";
 import { currentUser } from "@/lib/session";
+import { estimate } from "@/lib/me-v3/runtime/session";
 import { CampusShell } from "../../shell";
 import { startFromCampus } from "../../actions";
 
@@ -84,6 +85,13 @@ export default async function CampusStart({ params }: Params) {
    */
   /* 학과마다 한 번이다(2026-11-03 "다른 학과도 검사"). 이 쪽은 등록 학과의 상태다 */
   const st = await campusAttemptState(user.id, { universityCode: u.university_code, code: found.leaf.code });
+  /* 걸리는 시간(공통 시작 화면과 같은 셈: 영역 넷까지 깊게 묻는 PRO, 다섯 단위로 올림) */
+  const mins = (() => {
+    try {
+      const raw = estimate(found.leaf.core_code ?? "", "bachelor", null).minutes.proFourth;
+      return Math.max(5, Math.ceil(raw / 5) * 5);
+    } catch { return 35; }
+  })();
   const cta = CAMPUS_CTA_KO[st.kind];
 
   /**
@@ -190,7 +198,7 @@ export default async function CampusStart({ params }: Params) {
           : picking
             ? "고른 전공은 이 응시에만 적용되고 학과 소속은 그대로 남습니다."
             : ready
-              ? cta.note
+              ? `약 ${mins}분 · 답할 때마다 저장됩니다. 해 본 적 없는 일은 ‘해 본 적 없음’을 고르시면 됩니다.`
               : "학과 담당자에게 알려 주시면 학교와 함께 확인해 드립니다.")}
       </p>
     </CampusShell>

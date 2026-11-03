@@ -26,15 +26,17 @@ export default function FeaturedCard({ f }: { f: FeaturedView }) {
         {l.z1.length || l.z2.length ? (
           <div>
             <dt>내 결과에서 이어지는 영역{l.pack ? ` · ${l.pack}` : ""}</dt>
-            <dd><span>
-              {[...l.z1.map((z) => tx.linkZ1(z.name, z.picks)), ...l.z2.map((z) => tx.linkZ2(z.name, z.picks))].join(" / ")}
-              {l.chosen ? ` ${tx.chosen}` : ""}
-            </span></dd>
+            {/* 영역마다 한 줄, 고른 산업은 그 아래 따로 한 줄 */}
+            {[...l.z1.map((z) => tx.linkZ1(z.name, z.picks)), ...l.z2.map((z) => tx.linkZ2(z.name, z.picks))].map((line, i) => (
+              <dd key={i}><span>{line}</span></dd>
+            ))}
+            {l.chosen ? <dd><span>{tx.chosen(l.pack)}</span></dd> : null}
           </div>
         ) : l.pack && l.uses.length ? (
           <div>
             <dt>{l.pack} 산업이 주로 쓰는 영역</dt>
-            <dd><span>{l.uses.join(" · ")}{l.chosen ? ` ${tx.chosen}` : ""}</span></dd>
+            <dd><span>{l.uses.join(" · ")}</span></dd>
+            {l.chosen ? <dd><span>{tx.chosen(l.pack)}</span></dd> : null}
           </div>
         ) : null}
         <div>

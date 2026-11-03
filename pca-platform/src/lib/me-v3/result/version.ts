@@ -196,7 +196,8 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.7";
 /** 실제 화면 S3 · S6 · S2 문구 — copy.87 */
 /** P6 문장 — copy.88 */
 /** 해명 · `아직 ~` 줄을 짧은 이름표로, 지역 묶음 설명 한 줄씩(2026-11-03 대표 "AI스럽다"). 판정은 그대로다 — copy.89 */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.89";
+/* copy.90 — 할 일 짧은 줄: 틀 셋을 영역마다 돌려 쓰고 결과물은 `함께 두는 것`으로(`검증 벤치에 적기` 고침) */
+export const RESULT_COPY_VERSION = "me-v3-result-copy.90";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**

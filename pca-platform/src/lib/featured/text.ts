@@ -47,7 +47,8 @@ export function featuredText(aud: Audience) {
     /** 이어지는 영역 칸의 줄 */
     linkZ1: (name: string, picks: string[]) => `${name}: 근거가 선 영역${picks.length ? ` · 고른 항목 ${picks.map((p) => `‘${p}’`).join(", ")}` : ""}`,
     linkZ2: (name: string, picks: string[]) => `${name}: 해 본 일이 확인된 영역${picks.length ? ` · ${picks.map((p) => `‘${p}’`).join(", ")}` : ""}`,
-    chosen: "검사에서 고르신 산업입니다.",
+    /** 고른 산업이면 그 산업 이름을 주어로 한 줄 따로(2026-11-03: 앞 줄에 이어 붙어 `… 검사에서 고르신 산업입니다` 로 읽혔다) */
+    chosen: (pack: string | null) => (pack ? `${withJosa(pack, "은는")} 검사에서 고르신 산업입니다.` : "검사에서 고르신 산업입니다."),
     law: "회사의 업종과 내 검사 결과를 나란히 놓은 직업 정보입니다. 채용 여부와 근무 조건은 확인하지 않았고, 지원은 회사의 공식 채용 경로로 직접 하시면 됩니다. CareerMatri는 직업소개나 알선을 하지 않습니다.",
   };
 }

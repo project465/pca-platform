@@ -2,8 +2,8 @@
  "schema_version": "me-v3-ui-lock.1",
  "note": "검사 화면 1차 동결. 결과지 작업 중에는 명백한 버그와 접근성 오류만 고치고, 고쳤으면 `ui-version.ts` 의 판본을 올린 뒤 `FREEZE=update npm run v3:freeze` 로 지문을 다시 적는다",
  "versions": {
-  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V71",
-  "assessment_copy_version": "me-v3-2-assessment-copy.44",
+  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V72",
+  "assessment_copy_version": "me-v3-2-assessment-copy.45",
   "assessment_version": "ME_V3_2",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.9",
   "scoring_version": "me-v3-scoring.5"
@@ -13,11 +13,11 @@
   "src/app/surface.css": "d49ad60dd6a99c5e6896d0434284c0bb1577fcf896377ad5df88e32cecd541e1",
   "src/app/v3/assessment.css": "d45143ecd7deb79728d96b6c821fb6426ddc04a602f6ad6a3267ce5770553ba5",
   "src/app/v3/tier-text.ts": "b3fdbf6a846b17a14c4273a36bf0b34ccfe871b3ecdda558e9830447893681fe",
-  "src/app/v3/start/page.tsx": "4a1cf4ce61ad782afb1a1e3b2978337d150c37e3c62aec6870cf97cb3f1f44ea",
+  "src/app/v3/start/page.tsx": "a3d79da01d7fc9a106eab9b6e662668c186921f2ea10ffdddb5864255fa30283",
   "src/app/v3/start/start-form.tsx": "b00b5ff715be79dab80d02b1fe03190ce74b0f4014b3c04a84f4eb0690dde195",
-  "src/app/v3/start/actions.ts": "8542d52f7321e4f38cfa50e5462da661101c5f33338686aaf95c6187adf3a064",
+  "src/app/v3/start/actions.ts": "7f811cc2d93d102d1a503903e9dd21c407d7697d956c0b8d1cadbf4e8d795220",
   "src/app/v3/[attemptId]/page.tsx": "8a58e4678fef9bcf95409bf930ab3cebd70c242a6983ac4dcef5fb1bb525d616",
-  "src/app/v3/[attemptId]/intro/page.tsx": "23642c56f4fc170867d650aa9fc1ad487aaa80c260c6fbbeb3df0cfd55b925d6",
+  "src/app/v3/[attemptId]/intro/page.tsx": "6edcdfd23d42e9edd99c8d47c9ae8229b8f0908a7458865db45b62fa0b3a2802",
   "src/app/v3/[attemptId]/done/page.tsx": "8d6aea88026b667139832c72863e0d18d4723c0c44afc2ecfe0ee693415cf6f9",
   "src/app/v3/[attemptId]/screen.tsx": "0635f76fa79bcb1418828e40c2867e15255b68c43af006030bab537c85128aec",
   "src/app/v3/[attemptId]/model.ts": "7f240758934e5ef647dffb868f14a4ce58b06f931c769d0be823c8fc5c520845",
@@ -37,6 +37,6 @@
   "src/app/v3/tier-text.en.ts": "90b81086116933d2c931b40299e686e545d14f91b2266a995a20df3e17bfd985",
   "src/app/v3/tier-text.i18n.ts": "9437e0afdfa209e3a40ff7dd2726f48728bdb4e161aff878dfea9d42057d9bf6",
   "src/lib/me-v3/phrase.ts": "2f093ec0d6eecd54201c9f0fff3a3c121ae6b39f9b04f5d1c178aa9466f72a22",
-  "src/lib/me-v3/phrases.en.ts": "831234043c43b2965cb59e5a6e3ebb30d0ba11e1a670cfcb125fe13ba01c0c40"
+  "src/lib/me-v3/phrases.en.ts": "6f755d945d9e7b5ed50f98889c9add3fcaa7dad1131fcaa29ed48cbf2d9a2057"
  }
 }

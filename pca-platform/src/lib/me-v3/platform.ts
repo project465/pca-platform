@@ -903,7 +903,9 @@ export async function resultHistory(userId: string): Promise<ResultHistoryRow[]>
             (s.result_model -> 'overview' -> 'counts' -> 'confirmed_axes')::int AS confirmed,
             (SELECT count(*) FROM jsonb_array_elements(
                       coalesce(s.result_model -> 'domains', '[]'::jsonb)) d
-              WHERE d ->> 'zone' = 'Z1_EVIDENCE_ESTABLISHED')::int AS domains
+              /* 해 본 일이 나온 영역 전부(2026-11-03 테스트: '근거 확인' 만 세면 해 봤고 정리가 덜 된 영역 셋이 있는
+                 결과가 '0' 으로 읽혔다) */
+              WHERE d ->> 'zone' IN ('Z1_EVIDENCE_ESTABLISHED', 'Z2_EVIDENCE_INCOMPLETE', 'Z3_EVIDENCE_LOW_INTEREST'))::int AS domains
        FROM v3_snapshots s JOIN v3_attempts a ON a.id = s.attempt_id
       WHERE a.user_id = $1 AND s.result_model IS NOT NULL
       ORDER BY s.created_at DESC, s.id DESC LIMIT 10`, [userId]);

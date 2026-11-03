@@ -23,7 +23,7 @@ export const WS_EN_RESULTS: Record<string, string> = {
   "검사 당시 결과": "Results at the time of the assessment",
   "{n}건#count": "{n}",
   "검사 시점": "At assessment",
-  "확인된 영역 {n}": "Confirmed areas {n}",
+  "해 본 일이 있는 영역 {n}": "Areas with work {n}",
   "그날의 응답 그대로 고정되어 있습니다": "Locked to your answers from that day",
   "결과 보기": "View results",
 

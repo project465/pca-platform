@@ -832,15 +832,25 @@ const OWN_KO: Record<Axis, (d: string, m: Mat) => string> = {
  * 할 일 한 줄(축마다). 사람이 말하듯 짧게: `서버·API 과제 하나 골라, 왜 그렇게 정했는지 요청 시험 코드에 세 줄 적기`.
  * **남길 곳은 남긴다**(Gate §6: 할 일이 무엇을 남기고 끝나는지 · §16: 전공마다 문장이 갈린다).
  */
+/* **같은 틀을 세 번 되풀이하지 않는다**(2026-11-03 테스트: 할 일 셋이 모두 `○○ 과제 하나 골라, 왜 그렇게 정했는지
+   ○○에 세 줄 적기` 였고 `검증 벤치에 적기` 처럼 결과물에 글을 적으라는 말이 됐다). 결과물은 **적는 자리가 아니라 함께
+   두는 것**으로 적고, 영역 이름으로 틀 셋 가운데 하나를 고른다(같은 영역은 늘 같은 틀) */
+const FRAMES: ((d: string, what: string, art: string) => string)[] = [
+  (d, what, art) => `${d} 과제 하나를 떠올려 ${what} 세 줄로 적고, ${withJosa(art, "과와")} 함께 두기`,
+  (d, what, art) => `최근 ${d} 과제에서 ${what} 세 줄 메모로 남겨 ${art}에 붙이기`,
+  (d, what, art) => `${d} 과제 하나를 골라 ${what} 세 줄로 정리해 ${art} 옆에 두기`,
+];
+const frameOf = (d: string) => FRAMES[[...d].reduce((a, c) => a + c.charCodeAt(0), 0) % FRAMES.length];
 const OWN_SHORT_KO: Record<Axis, (d: string, m: Mat) => string> = {
-  J1: (d, m) => `${d} 과제 하나 골라, 무엇을 문제로 봤는지 ${keep(m, 0, "정리한 문서")}에 세 줄 적기`,
-  J2: (d, m) => `${d} 과제 하나 골라, 받은 요구가 어떤 조건이 됐는지 ${keep(m, 1, "정리한 문서")}에 세 줄 적기`,
-  J3: (d, m) => `${d} 과제 하나 골라, 왜 그렇게 정했는지 ${keep(m, 2, "정리한 문서")}에 세 줄 적기`,
-  J4: (d, m) => `${d} 과제 하나 골라, 왜 그 방법을 골랐는지 ${keep(m, 3, "정리한 문서")}에 세 줄 적기`,
-  J5: (d, m) => `${d} 과제 하나 골라, ${m.artifacts.length ? `${orList(m.artifacts)}의` : "남긴 결과물의"} 가정과 한계 세 줄 적기`,
-  J6: (d, m) => `${d} 과제 하나 골라, ${m.verify_targets.length ? `${withJosa(m.verify_targets[0], "과와")} 비교한 것을` : "결과를 무엇과 비교했는지"} ${keep(m, 1, "정리한 문서")}에 세 줄 적기`,
-  J7: (d, m) => `${d} 과제 하나 골라, 안 됐을 때 무엇을 바꿨는지 ${keep(m, 4, "정리한 문서")}에 세 줄 적기`,
-  J8: (d, m) => `${d} 과제 하나 골라, 결과가 어디에 쓰였는지 ${keep(m, 5, "정리한 문서")}에 세 줄 적기`,
+  J1: (d, m) => frameOf(d)(d, "무엇을 문제로 봤는지", keep(m, 0, "정리한 문서")),
+  J2: (d, m) => frameOf(d)(d, "받은 요구가 어떤 조건이 됐는지", keep(m, 1, "정리한 문서")),
+  J3: (d, m) => frameOf(d)(d, "왜 그렇게 정했는지", keep(m, 2, "정리한 문서")),
+  J4: (d, m) => frameOf(d)(d, "왜 그 방법을 골랐는지", keep(m, 3, "정리한 문서")),
+  J5: (d, m) => frameOf(d)(d, "가정과 한계를", m.artifacts.length ? orList(m.artifacts) : "남긴 결과물"),
+  J6: (d, m) => frameOf(d)(d, m.verify_targets.length ? `${withJosa(m.verify_targets[0], "과와")} 비교한 것을` : "결과를 무엇과 비교했는지",
+    keep(m, 1, "정리한 문서")),
+  J7: (d, m) => frameOf(d)(d, "안 됐을 때 무엇을 바꿨는지", keep(m, 4, "정리한 문서")),
+  J8: (d, m) => frameOf(d)(d, "결과가 어디에 쓰였는지", keep(m, 5, "정리한 문서")),
 };
 
 /**

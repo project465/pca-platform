@@ -24,7 +24,7 @@ export function featuredPage(x: Inputs, d: X, rv: RegionView): Page | null {
     ...l.z1.map((z) => E(tx.linkZ1(z.name, z.picks.slice(0, 1)))),
     ...l.z2.map((z) => E(tx.linkZ2(z.name, z.picks.slice(0, 1)))),
     ...(!l.z1.length && !l.z2.length && l.pack && l.uses.length ? [E(`${l.pack} 산업이 주로 쓰는 영역: ${l.uses.join(" · ")}`)] : []),
-    ...(l.chosen ? [E(tx.chosen)] : []),
+    ...(l.chosen ? [E(tx.chosen(l.pack))] : []),
   ];
   const body =
     `<p class="k">${E(f.program.title)}</p>` +

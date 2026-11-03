@@ -98,13 +98,17 @@ async function startAttempt(page: Page, path: string, userId: string): Promise<{
     await page.waitForURL(/\/start$/, { timeout: 30000 });
     await page.waitForLoadState("networkidle");
   }
-  await page.getByRole("button", { name: "검사 시작하기" }).click();
-  await page.waitForURL(/\/v3\/start/, { timeout: 30000 });
+  /* 학교 시작 단추는 응시를 바로 연다(2026-11-03 "절차가 많다": `/v3/start` 를 건너뛴다). 전처럼 `/v3/start` 에
+     서면 거기서 한 번 더 누른다 */
+  await page.getByRole("button", { name: /검사 시작하기|이 학과로 검사하기/ }).first().click();
+  await page.waitForURL(/\/v3\/(start|\d+)/, { timeout: 30000 });
   await page.waitForLoadState("networkidle");
-  /* 학교 · 기관 계정은 시작 화면에서 학업 단계를 묻지 않는다(V64). 있으면 고른다 */
-  { const stg = page.getByText("학부", { exact: true }); if (await stg.count()) await stg.click(); }
-  await page.getByRole("button", { name: "검사 시작" }).click();
-  await page.waitForURL(/\/v3\/\d+/, { timeout: 30000 });
+  if (/\/v3\/start/.test(page.url())) {
+    /* 학교 · 기관 계정은 시작 화면에서 학업 단계를 묻지 않는다(V64). 있으면 고른다 */
+    { const stg = page.getByText("학부", { exact: true }); if (await stg.count()) await stg.click(); }
+    await page.getByRole("button", { name: "검사 시작" }).click();
+    await page.waitForURL(/\/v3\/\d+/, { timeout: 30000 });
+  }
   return queryOne(`SELECT core_code, university_code, college_code,
                           department_code, specialization_code
                      FROM v3_attempts WHERE user_id = $1
@@ -212,22 +216,13 @@ async function main(): Promise<void> {
     await page.screenshot({
       path: "docs/metri/shots/campus/desktop/04-ready-detail.png", fullPage: true });
 
+    /* **학교 시작 단추는 첫 문항을 바로 연다**(2026-11-03 대표 "절차가 많다" · "여기 ai티 난다"). 안내 쪽을 따로 두지 않는다 */
     await page.getByRole("button", { name: "검사 시작하기" }).click();
-    await page.waitForURL(/\/v3\/start/, { timeout: 30000 });
+    await page.waitForURL(/\/v3\/\d+/, { timeout: 30000 });
     await page.waitForLoadState("networkidle");
-    const start = await page.evaluate(() => document.body.innerText);
-    ok("공통 검사 시작 화면으로 간다", /\/v3\/start/.test(page.url()), page.url());
-    ok("시작 화면이 학교와 학과를 적는다",
-      start.includes("확인용 대학") && start.includes(CUR_NAME),
-      start.slice(0, 160));
+    ok("학교 시작 단추가 공통 시작 화면을 건너 첫 문항을 연다", /\/v3\/\d+$/.test(new URL(page.url()).pathname), page.url());
     await page.screenshot({
       path: "docs/metri/shots/campus/desktop/05-ready-start.png", fullPage: true });
-
-    /* 학업 단계를 고르고 시작한다. **공통 폼 그대로다** */
-    /* 학교 · 기관 계정은 시작 화면에서 학업 단계를 묻지 않는다(V64). 있으면 고른다 */
-    { const stg = page.getByText("학부", { exact: true }); if (await stg.count()) await stg.click(); }
-    await page.getByRole("button", { name: "검사 시작" }).click();
-    await page.waitForURL(/\/v3\/\d+/, { timeout: 30000 });
     ok("응시가 열린다", /\/v3\/\d+/.test(page.url()), page.url());
 
     const row = await queryOne<{
@@ -246,8 +241,9 @@ async function main(): Promise<void> {
        줄도 없어서 화면이 넘긴 등급은 `BASIC` 이다. 그래도 PRO 로 적혀야
        같은 학과 학생의 결과를 한 표에서 읽을 수 있다 */
     ok("학교 응시는 이용권 없이도 PRO 로 열린다", row?.tier === "PRO", row?.tier);
-    ok("시작 화면이 학생에게 등급을 적지 않는다",
-      !/\bBASIC\b|\bSTANDARD\b|\bPRO\b/.test(start), start.slice(0, 200));
+    { const intro = await page.evaluate(() => document.body.innerText);
+      ok("첫 안내 쪽이 학생에게 등급을 적지 않는다",
+        !/\bBASIC\b|\bSTANDARD\b|\bPRO\b/.test(intro), intro.slice(0, 200)); }
 
     /* **쿠키를 더 들고 있지 않는다.** 다음 응시에 묻어 들어가면 그 사람이
        고르지 않은 학과로 검사가 시작된다 */
@@ -359,7 +355,15 @@ async function main(): Promise<void> {
       await page.goto(`${BASE}/campus/zztest/d/${encodeURIComponent("ZZ26_ME")}`,
         { waitUntil: "networkidle" });
       await page.getByRole("button", { name: "검사 시작하기" }).click();
-      await page.waitForURL(/\/v3\/start/, { timeout: 30000 });
+      await page.waitForURL(/\/v3\/(start|\d+)/, { timeout: 30000 });
+      /* 학교 시작은 응시를 바로 연다(폼이 없다). 그 응시가 PRO 인지만 보고, 열린 응시는 치운다 */
+      if (/\/v3\/\d+/.test(page.url())) {
+        const row = await queryOne<{ tier: string }>(
+          `SELECT tier FROM v3_attempts WHERE user_id = $1 ORDER BY started_at DESC LIMIT 1`, [who.id]);
+        ok(`학교 시작으로 바로 연 응시는 PRO 다(${t} 를 넣을 폼이 없다)`, row?.tier === "PRO", row?.tier ?? "없다");
+        await query(`DELETE FROM v3_attempts WHERE user_id = $1`, [who.id]);
+        continue;
+      }
       /* 주소에 등급을 붙인다 */
       await page.goto(`${BASE}/v3/start?tier=${t}&upgrade=${t}`,
         { waitUntil: "networkidle" });

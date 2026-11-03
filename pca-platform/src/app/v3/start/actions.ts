@@ -185,5 +185,6 @@ export async function startV3(form: FormData): Promise<void> {
    * 이미 `/v3/{id}` 로 갔으므로, 이 쪽을 보는 것은 지금 막 응시를 연
    * 사람뿐이다. 나가도 응답은 그대로 남는다.
    */
-  redirect(`/v3/${a.id}/intro`);
+  /* 안내는 시작 화면 한 번이다(2026-11-03 대표 "절차가 많다"). 첫 문항으로 바로 간다 */
+  redirect(`/v3/${a.id}`);
 }

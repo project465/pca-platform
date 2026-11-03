@@ -1,5 +1,7 @@
 "use server";
 
+import { startV3 } from "@/app/v3/start/actions";
+
 import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/session";
 import { setCampusEntry, setCatalogChoice } from "@/lib/campus/entry";
@@ -67,7 +69,12 @@ export async function startFromCampus(form: FormData): Promise<void> {
     redirect(`/campus/${code}/login?next=${
       encodeURIComponent(`/campus/${code}/start`)}`);
   }
-  redirect("/v3/start");
+  /* **시작 안내를 두 번 세우지 않는다**(2026-11-03 대표 "절차가 많다"). 학교 학생에게 `/v3/start` 는 묻는 것이 없다
+     (학업 단계는 학적이 정한다: `fixedStage`). 그 쪽을 건너 바로 응시를 열고, 안내는 첫 문항 앞 한 쪽(`/v3/{id}/intro`)만
+     남긴다. 막는 자리(학과마다 한 번 · 이어보기 · 준비 중 학과)는 `startV3` 가 그대로 본다 */
+  const fd = new FormData();
+  fd.set("stage", "bachelor");
+  await startV3(fd);
 }
 
 /**

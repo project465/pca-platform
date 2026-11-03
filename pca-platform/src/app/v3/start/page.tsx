@@ -179,85 +179,22 @@ export default async function V3Start({
       </header>
 
       <main className="qs-intro">
-        <p className="qs-kicker">
-          {campus
-            ? `${campus.university_name} ${campus.department_name} · ${coreName} 진로 진단`
-            : say("{major} 진로 진단", { major: coreName })}
-        </p>
-        <h1 className="qs-h1">{say("해 본 일 가운데 직접 정해 본 경험을 찾아 드립니다")}</h1>
-        {/* **`기술영역` 을 적지 않는다.** 기계공학 Core 의 말이 스무 Core 의
-            시작 화면에 그대로 섰다. 경영 학생은 자기 일을 그렇게 부르지 않는다 */}
-        <p className="qs-lead">
-          {say("적성이나 성격 검사가 아닙니다. {major}의 여러 업무 영역에서 무엇을 해 봤고 무엇을 직접 정했는지, 어디가 아직 부족한지 알려 드립니다.", { major: coreName })}
-        </p>
-
-        {/* 무엇을 보는 검사인지 먼저. 분량은 아래로 내린다 */}
-        <ul className="qs-three">
-          <li>
-            <b>{say("무엇을 해 봤는지")}</b>
-            <span>{say("영역마다 해 본 일을 물어봅니다")}</span>
-          </li>
-          <li>
-            <b>{say("무엇을 직접 정했는지")}</b>
-            <span>{say("같은 일이라도 시킨 대로 한 것과 내가 정한 것을 구분합니다")}</span>
-          </li>
-          <li>
-            <b>{say("어떤 경험이 아직 부족한지")}</b>
-            <span>{say("부족한 부분과 다음에 준비하면 좋을 것을 정리합니다")}</span>
-          </li>
-        </ul>
-        {/* **결과지를 먼저 보여 준다.** 무엇을 받는지 모르고 35분을 쓰게 하지 않는다. 견본은
-            지어낸 기계공학 응시자 한 사람의 것이라(`/sample`) 그렇다고 함께 적는다.
-            **학교 · 기관 응시에는 걸지 않는다**: 견본 쪽에 가격표 단추가 있고, 학교 화면은 가격표와
-            결제를 가리키지 않는다(`campus:check`) */}
+        {/* **설명을 쌓지 않는다**(2026-11-03 대표 "여기 ai티 난다"). 부정 설명 · 제목을 되풀이하는 카드 셋 · 절차 목록을
+            빼고, 무엇을 얼마나 하는지 한 줄과 막히는 자리 한 줄, 단추만 둔다. 같은 안내를 첫 문항 앞에서 다시 하지 않는다 */}
+        {campus ? <p className="qs-kicker">{`${campus.university_name} ${campus.department_name}`}</p> : null}
+        <h1 className="qs-h1">{say("{major} 진로 진단", { major: coreName })}</h1>
+        <p className="qs-lead">{say("{n}문항 · 약 {mins}분 · 답할 때마다 저장됩니다", { n: items, mins })}</p>
+        <p className="qs-lead">{say("해 본 적 없는 일은 ‘해 본 적 없음’을 고르시면 됩니다")}</p>
+        {/* 견본은 개인 응시에만(견본 쪽에 가격표 단추가 있다: `campus:check`) */}
         {campus ? null : (
           <p className="qs-sample">
             <a href="/sample" target="_blank" rel="noopener noreferrer">{say("결과지 견본 보기 (기계공학 전공 예시)")}</a>
           </p>
         )}
-
-        <ul className="qs-facts">
-          <li><b>{items}</b>{say("문항#unit")}</li>
-          <li>{say("약")} <b>{mins}</b>{say("분#unit")}</li>
-          {campus ? null : <li><b>{tier}</b>{t.label}</li>}
-          <li>{say("자동 저장")}</li>
-        </ul>
-
-        {/* 둘 다 읽히기는 해야 하지만 둘 다 주인공은 아니다. 가로로 벌려
-            세로 길이를 줄이면 시작 단추가 한 화면 안에 들어온다 */}
-        <div className="qs-two">
-        <section className="qs-sect">
-          <h2>{say("묻는 순서")}</h2>
-          <ul className="qs-steps">
-            <li>{say("업무 영역마다 관심이 있는지, 해 봤는지, 배우고 싶은지 물어봅니다")}</li>
-            <li>{say("해 본 일이 있는 영역은 조금 더 자세히 물어봅니다")}</li>
-            {tier !== "BASIC" ? (
-              <li>{say("그 가운데 몇 영역은 범위·방법·결과·활용까지 나눠서 물어봅니다")}</li>
-            ) : null}
-            {tier === "PRO" ? (
-              <li>{say("과제나 프로젝트 하나를 골라 지원서에 쓸 말로 정리하고, 관심 산업과 직무를 하나씩 더 자세히 봅니다")}</li>
-            ) : null}
-          </ul>
-        </section>
-
-        <section className="qs-sect">
-          <h2>{say("시작하기 전에")}</h2>
-          <ul className="qs-steps">
-            <li>{say("해 본 적 없는 일은 ‘해 본 적 없음’을 고르시면 됩니다. 그 답도 결과에 들어갑니다")}</li>
-            {campus ? null : <li>{say("학위가 높다고 결과가 좋아지지 않습니다. 질문에 나오는 상황 설명만 달라집니다")}</li>}
-            <li>{say("창을 닫아도 보던 위치에서 이어집니다. 이전으로 돌아가 수정할 수 있습니다")}</li>
-          </ul>
-        </section>
-        </div>
-
         <div className="qs-sect">
           <StartForm error={e} core={campus ? undefined : (picked ?? undefined)}
             lang={lang} chosen={chosen ?? undefined} fixedStage={campus ? "bachelor" : undefined} />
         </div>
-
-        <p className="qs-fine">
-          {say("낯선 용어에는 질문 바로 아래에 쉬운 풀이를 붙였습니다. 용어를 몰라도 결과에 불리하지 않습니다.")}
-        </p>
       </main>
     </div>
   );

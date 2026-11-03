@@ -123,7 +123,7 @@ export default async function Results() {
                     {/* **고르는 데 쓰이는 수 하나다**(규격 §15). 축의
                         개수는 이 줄에서 할 일을 정해 주지 않는다 */}
                     <span>
-                      {r.domains !== null ? t("확인된 영역 {n}", { n: r.domains }) : null}
+                      {r.domains !== null ? t("해 본 일이 있는 영역 {n}", { n: r.domains }) : null}
                     </span>
                     <Link className="cm-btn" href={`/v3/${r.attempt_id}/result`}>
                       {t("결과 보기")}
