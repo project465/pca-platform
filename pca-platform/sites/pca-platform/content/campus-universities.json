@@ -2348,7 +2348,9 @@
      "KUS26_UNIDIPLO",
      "KUS26_ECONPOL",
      "KUS26_PHARM",
-     "KUS26_SMARTCITY"
+     "KUS26_SMARTCITY",
+     "KUS26_INTSEMI",
+     "KUS26_MATCHEM"
     ],
     "note": "**사업주 지시로 Core 가 열린 자리를 전부 연다(2026-10-20).** 경영 · 기계에 더해 컴퓨터·소프트웨어 · 전기전자 · 언어 · 시각디자인 · 미디어 · 패션뷰티 · 체육 · 법·경찰 · 행정 · 식품 · 원예조경 · 보건 · 건축 · 심리 · 교육 · 바이오 · 간호 · 토목 Core 를 가리키고 매핑이 EXACT 인 자리다. Core 가 없는 자리(`core_code: null`)와 전공을 고르는 자리(routing)는 들지 않는다. 한 자리라도 운영에서 걸리면 그 자리만 이 목록에서 뺀다"
    },
@@ -2455,6 +2457,18 @@
          "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
         },
         {
+         "code": "KUS26_INTSEMI",
+         "name": "지능형반도체공학과",
+         "aliases": [
+          "지능형반도체공학부"
+         ],
+         "kind": "department",
+         "core_code": "EE_CORE_V1",
+         "specialization": "SPEC_EE_SEMI",
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\"). 반도체물리학부 · 전자및정보공학과와 같은 줄(반도체 소자·공정 · 회로 · 계측)이라 전기전자 반도체 갈래로 잰다. 명단에 '지능형반도체공학부' 로 적힌 줄이 있어 별칭으로 받는다(공식 이름은 학과)"
+        },
+        {
          "code": "KUS26_BIOINFO",
          "name": "생명정보공학과",
          "kind": "department",
@@ -2467,6 +2481,15 @@
          "kind": "department",
          "core_code": "FOOD_CORE_V1",
          "specialization": "SPEC_FOOD_FOODTECH"
+        },
+        {
+         "code": "KUS26_MATCHEM",
+         "name": "신소재화학과",
+         "kind": "department",
+         "core_code": "ME_CORE_V3",
+         "specialization": "SPEC_ME_GENERAL",
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\"). 신소재 · 화학 Core 가 아직 계획 단계라, 재료·강도·파손 · 시험·계측 · 생산·공정기술 영역을 가진 기계공학 일반으로 잰다"
         },
         {
          "code": "KUS26_DATACOMP",
