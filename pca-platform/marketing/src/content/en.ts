@@ -892,6 +892,7 @@ export const en: SiteContent = {
           { label: "Terms of Service", href: "/legal/terms" },
           { label: "Privacy Policy", href: "/legal/privacy" },
           { label: "Refund Policy", href: "/legal/refund" },
+          { label: "Subscription Policy", href: "/legal/subscription" },
         ],
       },
     ],

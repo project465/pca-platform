@@ -46,6 +46,7 @@ export default async function PublicFooter({
       <Link href="/legal/terms">{L === "en" ? "Terms of service" : "이용약관"}</Link>
       <Link href="/legal/privacy">{L === "en" ? "Privacy policy" : "개인정보처리방침"}</Link>
       <Link href="/legal/refund">{L === "en" ? "Refund policy" : "환불정책"}</Link>
+      <Link href="/legal/subscription">{L === "en" ? "Subscription policy" : "정기결제 운영규정"}</Link>
       <Link href="/support">{L === "en" ? "Support" : "고객지원"}</Link>
     </nav>
   );

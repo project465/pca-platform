@@ -39,6 +39,11 @@ const STANDALONE: Record<string, { path: string; ko: string; en: string }> = {
     path: "sites/careermetri/legal/03-refund.md",
     ko: "환불정책", en: "Refund policy",
   },
+  /* 정기결제(자동 갱신) 운영 규정(2026-11-03 NHN KCP 정기결제 심사: "정기과금 운영규정 상세내용 확인 가능한 경로") */
+  subscription: {
+    path: "sites/careermetri/legal/04-subscription.md",
+    ko: "MAT 정기결제 운영 규정", en: "MAT subscription (auto-renewal) policy",
+  },
 };
 
 export default async function LegalPage({
