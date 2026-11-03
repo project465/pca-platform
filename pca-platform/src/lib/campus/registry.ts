@@ -58,6 +58,11 @@ export type CatalogStatus = "ACTIVE" | "FUTURE" | "RETIRED";
 export type CampusUnit = {
   code: string;
   name: string;
+  /**
+   * 명단에 적혀 오는 다른 이름(`지능형반도체공학부` → `지능형반도체공학과`). **CSV 명단에서 이름을 코드로 바꿀 때만 쓴다**:
+   * 화면 · 내보내기 · 집계는 공식 이름(`name`) 하나만 적는다
+   */
+  aliases?: string[];
   /** 이 학과 전용 문항이 없어 가까운 묶음에 임시로 이었다. 결과 화면 · 책이 그 사실을 한 줄로 적는다 */
   provisional?: boolean;
   kind: "department" | "faculty" | "major" | "track";

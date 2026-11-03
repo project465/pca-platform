@@ -79,11 +79,17 @@ export function checkStudent(
     : null;
   const dc0 = (row.department_code ?? "").trim() || (routingSeat ? routingSeat.leaf.code : "");
   if (!dc0) return { ok: false, why: `${u.org_kind === "agency" ? "전공 계열" : "학과"} 코드가 비어 있습니다` };
-  /* 코드 대신 이름(`경영학과`)을 적어도 받는다. 같은 이름이 학년도마다 있으면 가장 최근의 지난 학년도 것 */
+  /* 코드 대신 이름(`경영학과`)을 적어도 받는다. 같은 이름이 학년도마다 있으면 가장 최근의 지난 학년도 것.
+     **등록부의 별칭(`aliases`)도 받는다**(2026-11-03: 명단에 `지능형반도체공학부` 로 적혀 온 줄). 공식 이름이 먼저다 */
   const thisYear = Number(new Date(Date.now() + 9 * 3_600_000).toISOString().slice(0, 4));
-  const byName = findLeaf(u, dc0) ? null : allLeaves(u)
-    .filter((r) => r.leaf.name.replace(/\s+/g, "") === dc0.replace(/\s+/g, "") && r.catalog.catalog_year <= thisYear)
+  const squash = (v: string) => v.replace(/\s+/g, "");
+  const want = squash(dc0);
+  const pick = (hit: (r: ReturnType<typeof allLeaves>[number]) => boolean) => allLeaves(u)
+    .filter((r) => hit(r) && r.catalog.catalog_year <= thisYear)
     .sort((a, b) => b.catalog.catalog_year - a.catalog.catalog_year)[0] ?? null;
+  const byName = findLeaf(u, dc0) ? null
+    : pick((r) => squash(r.leaf.name) === want)
+      ?? pick((r) => (r.leaf.aliases ?? []).some((a) => squash(a) === want));
   const dc = byName ? byName.leaf.code : dc0;
   const found = findLeaf(u, dc);
   if (!found) {
