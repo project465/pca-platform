@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { rememberLang } from "@/lib/lang-actions";
 import { LANG_COOKIE, LANG_LABEL, OFFERED_LANGS, type Lang } from "@/lib/locale";
 
 /**
@@ -13,7 +14,8 @@ export default function LangSwitch({ current }: { current: Lang }) {
   if (OFFERED_LANGS.length < 2) return null;
   const pick = (l: Lang) => {
     document.cookie = `${LANG_COOKIE}=${l}; path=/; max-age=${60 * 60 * 24 * 365}; samesite=lax`;
-    router.refresh();
+    /* 로그인했으면 계정 언어도 바꾼다(다른 기기 · 메일이 따라온다). 못 적어도 화면은 바뀐다 */
+    rememberLang(l).catch(() => undefined).finally(() => router.refresh());
   };
   return (
     <div className="langsw" role="group" aria-label="Language">

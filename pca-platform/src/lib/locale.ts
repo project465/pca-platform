@@ -58,6 +58,30 @@ export const OFFERED_LANGS: readonly Lang[] = (() => {
   return picked.length ? (picked as Lang[]) : SOLD_LANGS;
 })();
 
+/**
+ * **번역을 기다리는 자리.** 일본어(`ja`)는 문구 파일(`{ ko, en?, ja? }`)에 칸만 있고 내놓지 않는다
+ * (2026-11-03 대표 결정: 영어 → 일본어). 검수된 번역이 들어오는 날 `SOLD_LANGS` 와 `LANGS` 에 더한다
+ */
+export const PLANNED_LANGS = ["ja"] as const;
+export type UiLang = "ko" | "en" | "ja";
+
+/**
+ * 브라우저 언어(`Accept-Language`)에서 **내놓는 언어 가운데 가장 앞선 것**. 없으면 `null`.
+ * 고른 적이 없는 사람의 기본값으로만 쓴다(쿠키 · 계정의 언어가 먼저다). `en-US;q=0.9` 처럼
+ * 꼬리가 붙은 값은 앞의 두 글자로 읽고, q 값이 높은 차례로 본다
+ */
+export function pickAcceptLanguage(header: string | null | undefined, offered: readonly Lang[] = OFFERED_LANGS): Lang | null {
+  if (!header) return null;
+  const tags = header.split(",").map((part, i) => {
+    const [tag, ...params] = part.trim().split(";");
+    const q = params.map((x) => x.trim()).find((x) => x.startsWith("q="));
+    const w = q ? Number(q.slice(2)) : 1;
+    return { lang: tag.trim().slice(0, 2).toLowerCase(), w: Number.isFinite(w) ? w : 0, i };
+  }).filter((x) => x.lang && x.w > 0).sort((a, b) => b.w - a.w || a.i - b.i);
+  for (const t of tags) if (isLang(t.lang) && offered.includes(t.lang)) return t.lang;
+  return null;
+}
+
 /** 골라 둔 것이 없을 때 쓸 언어. 내놓는 언어 중 첫 번째다. */
 export const DEFAULT_LANG: Lang = OFFERED_LANGS[0];
 
