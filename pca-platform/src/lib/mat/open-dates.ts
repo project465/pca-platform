@@ -19,3 +19,12 @@ export function kstDayKo(d: Date | number | null): string {
 
 export const CONSULT_OPENS_KO = kstDayKo(CONSULT_POLICY_FROM);
 export const AI_TOOLS_OPEN_KO = kstDayKo(ASK_OPEN_FROM);
+
+/** 영어 화면: `Nov 10` */
+export function kstDayEn(d: Date | number | null): string {
+  if (d === null) return "soon";
+  const k = new Date((typeof d === "number" ? d : d.getTime()) + 9 * 3_600_000);
+  return `${k.toLocaleString("en-US", { month: "short", timeZone: "UTC" })} ${k.getUTCDate()}`;
+}
+export const openDay = (which: "consult" | "tools", lang: "ko" | "en" = "ko") =>
+  lang === "en" ? kstDayEn(which === "consult" ? CONSULT_POLICY_FROM : ASK_OPEN_FROM) : which === "consult" ? CONSULT_OPENS_KO : AI_TOOLS_OPEN_KO;

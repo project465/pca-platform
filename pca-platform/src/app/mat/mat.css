@@ -228,3 +228,14 @@ a.mt-chip-btn { text-decoration: none; color: var(--mt-ink); }
 .mt-dialog { border: 1px solid var(--mt-line); border-radius: var(--mt-r); padding: 20px 18px; max-width: 420px; width: calc(100% - 32px); background: var(--mt-bg); color: var(--mt-ink); }
 .mt-dialog::backdrop { background: rgba(10, 20, 40, 0.45); }
 .mt-dialog h3 { margin: 4px 0 8px; font-size: 18px; }
+
+/* 언어 고르기(2026-11-03 영어 화면). 남색 띠 위라 흰 글씨 */
+.mt .mt-head .mt-zone { margin-left: auto; }
+.mt .mt-lang .langsw { border-color: rgba(255,255,255,.38); border-radius: 999px; overflow: hidden; }
+.mt .mt-lang .langsw button { color: rgba(255,255,255,.78); border-left-color: rgba(255,255,255,.38); font-size: 12px; padding: 5px 9px; min-height: 28px; }
+.mt .mt-lang .langsw button.on { background: #fff; color: #0b1f3a; }
+/* 한국어 자기소개서 + 영어 대조본 */
+.mt .mt-bi { display: grid; gap: 10px; margin-top: 8px; }
+.mt .mt-bi > div { border: 1px solid var(--mt-line, #e3e8ef); border-radius: 10px; padding: 10px 12px; }
+.mt .mt-bi h4 { margin: 0 0 6px; font-size: 12px; font-weight: 700; color: var(--mt-sub, #5b6675); }
+.mt .mt-bi p { margin: 0; }

@@ -2,7 +2,9 @@ import Link from "next/link";
 import { headers } from "next/headers";
 import { requireUser } from "@/lib/session";
 import { matTitle } from "@/lib/mat/title";
-import { PRICING } from "@/lib/mat/money-text";
+import { moneyText } from "@/lib/mat/money-text";
+import { matLang } from "@/lib/mat/lang";
+import { TITLE_TEXT } from "../mat-text";
 import { ADDON, krwPrice, priceLabel, usdPrice, type Period, type Plan } from "@/lib/pricing/config";
 import { INTERVIEW_TURNS, PASS_CAPS, canBuyRefill, REFILL_HREF } from "@/lib/assistant/ai-budget";
 import { RESEARCH_LIMITS } from "@/lib/pricing/config";
@@ -11,7 +13,7 @@ import { ipCountryFrom, routeForUser } from "@/lib/subscriptions/route";
 import { productFor } from "@/lib/plans";
 import { payOpen } from "@/lib/payments";
 
-export const generateMetadata = () => matTitle("요금");
+export const generateMetadata = () => matTitle(TITLE_TEXT.pricing);
 
 /**
  * MAT 요금(시안 Pricing, 2026-11-03 대표 결정). 30일 · 90일 고르기, 기본 · 연구자 두 카드.
@@ -23,6 +25,8 @@ export const generateMetadata = () => matTitle("요금");
  */
 export default async function MatPricing({ searchParams }: { searchParams: Promise<{ p?: string; from?: string }> }) {
   const user = await requireUser();
+  const lang = await matLang();
+  const PRICING = moneyText(lang).PRICING;
   const sp = await searchParams;
   const period: Period = sp.p === "90" ? 90 : 30;
   const route = await routeForUser(user.id, ipCountryFrom(await headers()));
@@ -89,12 +93,12 @@ export default async function MatPricing({ searchParams }: { searchParams: Promi
       <p className="mt-note" style={{ marginTop: 14 }}>
         {subs ? <>{PRICING.auto(period)}<br />{PRICING.keep}</> : PRICING.oneTime}
       </p>
-      {route.currency === "USD" ? <p className="mt-note">{PRICING.usd}</p> : null}
+      {route.currency === "USD" ? <p className="mt-note" data-currency="USD">{PRICING.usd}</p> : <span hidden data-currency="KRW" />}
       {refill ? (
         <p className="mt-note">{PRICING.addon} {addon} · {PRICING.addonNote} · <Link href={REFILL_HREF}>{PRICING.addon}</Link></p>
       ) : null}
       <p className="mt-note">
-        <Link href="/legal/subscription">{PRICING.legal}</Link> · <Link href="/legal/refund">{PRICING.refund}</Link>
+        <Link href={lang === "en" ? "/legal/subscription?lang=en" : "/legal/subscription"}>{PRICING.legal}</Link> · <Link href={lang === "en" ? "/legal/refund?lang=en" : "/legal/refund"}>{PRICING.refund}</Link>
       </p>
     </main>
   );

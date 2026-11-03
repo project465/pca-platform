@@ -3,11 +3,13 @@ import { requireUser } from "@/lib/session";
 import { matTitle } from "@/lib/mat/title";
 import { jiPostFromCookie } from "@/lib/attribution";
 import { matAccess } from "@/lib/mat-access";
-import { JI_TEXT } from "@/lib/mat/money-text";
+import { moneyText } from "@/lib/mat/money-text";
+import { matLang } from "@/lib/mat/lang";
+import { TITLE_TEXT } from "../mat-text";
 import { jiPosting } from "@/lib/mat/ji-posting";
 import { matJiAnalyze } from "./actions";
 
-export const generateMetadata = () => matTitle("잡인더스트리 공고");
+export const generateMetadata = () => matTitle(TITLE_TEXT.fromJi);
 
 /**
  * 잡인더스트리 공고 입구의 도착 자리(`/from/jobindustry?board=…&idx=…` 다음).
@@ -17,6 +19,7 @@ export const generateMetadata = () => matTitle("잡인더스트리 공고");
  */
 export default async function FromJi() {
   const user = await requireUser();
+  const JI_TEXT = moneyText(await matLang()).JI_TEXT;
   const post = await jiPostFromCookie();
   const [acc, row] = await Promise.all([matAccess(user.id), post ? jiPosting(post.idx) : Promise.resolve(null)]);
   return (

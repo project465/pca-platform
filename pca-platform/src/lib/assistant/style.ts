@@ -29,7 +29,11 @@ export const STYLE_EN = [
   "- Call the same thing by the same word throughout.",
 ].join("\n");
 
-/** 시스템 글의 언어에 맞는 규칙을 끝에 붙인다(한글이 있으면 한국어 규칙) */
-export function withStyle(system: string): string {
-  return `${system}\n\n${/[가-힣]/.test(system) ? STYLE_KO : STYLE_EN}`;
+/**
+ * 시스템 글의 언어에 맞는 규칙을 끝에 붙인다(한글이 있으면 한국어 규칙). **답의 언어를 따로 정한 부름**
+ * (`style`)은 그 언어의 규칙이다: 한국어 지시로 영어 답을 받는 자료 정리(`research-docs.ts`)가 그렇다
+ */
+export function withStyle(system: string, style?: "ko" | "en"): string {
+  const ko = style ? style === "ko" : /[가-힣]/.test(system);
+  return `${system}\n\n${ko ? STYLE_KO : STYLE_EN}`;
 }

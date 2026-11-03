@@ -81,8 +81,7 @@ const SYSTEM =
   "정리합니다.\n규칙:\n" +
   "1. 문서에 없는 사실은 적지 않습니다. 수치·표본 수·성능은 문서에 적힌 값 그대로 적고, 어디에 " +
   "있는지(표·그림·쪽·슬라이드 번호)를 evidence 에 함께 적습니다.\n" +
-  "2. 자료가 영어여도 summary·findings·job_language·sentences·interview·ask 는 한국어로 씁니다. " +
-  "전문 용어는 처음 한 번 원어를 괄호로 붙입니다.\n" +
+  "2. {LANG_RULE}\n" +
   "3. 저자가 여럿이면 사용자가 그중 누구이고 무엇을 맡았는지 문서만으로는 모릅니다. 기여를 " +
   "단정하지 말고, sentences 에서는 [맡은 부분] 같은 대괄호 칸으로 두고, ask 에 되물을 질문을 " +
   "넣습니다.\n" +
@@ -105,6 +104,17 @@ const SYSTEM =
   "14. items 는 경험 기록으로 옮길 초안 0~3개입니다. 아래 보기 목록에서 글자 그대로 고르고, 근거가 " +
   "없으면 비웁니다.\n" +
   "15. 읽을 수 없는 파일이면 doc_type 을 unreadable 로 두고 나머지를 비웁니다.";
+
+/**
+ * 답의 언어 규칙(2026-11-03 "AI 답은 사용자 언어로"). 기본은 한국어다. 영어 화면이면 영어로 적게 한다:
+ * 영어 화면의 유학생이 한국어 정리를 받으면 자기 자료를 못 읽는다. 찾는 낱말(`terms_ko` · `terms_en`)은
+ * 한국 공고를 찾는 데 쓰므로 두 언어 그대로다
+ */
+const LANG_RULE = {
+  ko: "자료가 영어여도 summary·findings·job_language·sentences·interview·ask 는 한국어로 씁니다. 전문 용어는 처음 한 번 원어를 괄호로 붙입니다.",
+  en: "summary·findings·job_language·sentences·interview·ask 는 영어(English)로 씁니다. 자료가 한국어여도 영어로 씁니다. 한국어 전문 용어는 처음 한 번 한국어 원어를 괄호로 붙입니다.",
+} as const;
+const systemFor = (lang: "ko" | "en") => SYSTEM.replace("{LANG_RULE}", LANG_RULE[lang]);
 
 /** 바이트로 종류를 정한다. 보낸 쪽이 적은 확장자를 믿지 않는다 */
 function sniffDoc(b: Buffer): { kind: "pdf" } | { kind: "docx" | "pptx" | "hwpx"; text: string } | { kind: "text"; text: string } | null {
@@ -202,8 +212,10 @@ export async function journalMetrics(doi: string | null, venue: string | null): 
 const cut = (s: string | null | undefined, n: number) => (s ?? "").replace(/\s+/g, " ").trim().slice(0, n);
 const list = (xs: string[], n: number, len = 300) => xs.map((x) => cut(x, len)).filter(Boolean).slice(0, n);
 
-export async function readResearch(userId: string, bytes: Buffer): Promise<ResearchResult> {
+export async function readResearch(userId: string, bytes: Buffer, langIn?: "ko" | "en"): Promise<ResearchResult> {
   if (!researchOpen()) return { ok: false, reason: "policy" };
+  /* 답의 언어: 부른 쪽이 정하지 않으면 그 사람의 화면 언어(쿠키 → 계정 → 브라우저). 못 읽으면 한국어 */
+  const lang = langIn ?? await (await import("@/lib/mat/lang")).matLang().catch(() => "ko" as const);
   if (!aiReady()) return { ok: false, reason: "off" };
   if (!(await settingsOf(userId)).file_consent_at) return { ok: false, reason: "consent" };
   if (bytes.length === 0 || bytes.length > RESEARCH_MAX_BYTES) return { ok: false, reason: "size" };
@@ -236,7 +248,7 @@ export async function readResearch(userId: string, bytes: Buffer): Promise<Resea
     : [{ type: "text", text: `[올린 자료 · ${sn.kind}]\n${sn.text.slice(0, MAX_CHARS)}${sn.text.length > MAX_CHARS ? "\n(뒷부분은 길어서 잘랐습니다)" : ""}` }];
 
   const r = await askStructured({
-    op: "assistant.research", schema: ResearchOut, system: SYSTEM,
+    op: "assistant.research", schema: ResearchOut, system: systemFor(lang), style: lang,
     blocks, maxTokens: 8000, effort: "medium", timeoutMs: 240_000, userId,
     user: `종류 코드: ${EXPERIENCE_KINDS.map((k) => `${k.code}(${k.label})`).join(", ")}\n\n` +
       (core

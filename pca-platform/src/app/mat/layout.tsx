@@ -6,17 +6,23 @@ import { matVisible } from "@/lib/mat-public";
 import { MatTabs } from "./tabs";
 import Link from "next/link";
 import { BrandMark } from "@/components/sf/brand-mark";
+import LangSwitch from "@/components/lang-switch";
+import { matLang } from "@/lib/mat/lang";
+import { sayOf } from "@/lib/mat/copy";
+import { SHELL_TEXT as T } from "./mat-text";
 
 /**
  * CareerMatri 머리띠(2026-11-02 대표 "MAT도 커리어매트리 느낌 나도록"): 로그인 화면과 같은 남색 띠 ·
  * 파란 M 로고 · CareerMatri 글자. MAT 은 그 아래 구역 이름으로만 작게 선다
  */
-function MatHead() {
+function MatHead({ lang }: { lang: "ko" | "en" }) {
   return (
     <header className="mt-head">
       <div className="mt-head-in">
         <Link href="/me" className="mt-brand"><BrandMark size={28} className="sf-brand-mark" /><span>CareerMatri</span></Link>
         <Link href="/mat" className="mt-zone">MAT</Link>
+        {/* 언어 고르기(2026-11-03 영어 화면). 고르면 계정 언어도 바뀐다 */}
+        <span className="mt-lang"><LangSwitch current={lang} /></span>
       </div>
     </header>
   );
@@ -43,25 +49,26 @@ export default async function MatLayout({ children }: { children: React.ReactNod
   if (!user) redirect("/login?next=/mat");
   if (user.mustResetPw) redirect("/password/change");
   if (!(await matVisible(user.id))) notFound();
+  const lang = await matLang();
+  const t = sayOf(lang);
   /* **운영자(담당자 로그인)는 MAT 을 쓰는 사람이 아니다.** 검사 결과 · 전공이 없어 홈이 학생 화면으로
      넘기고, 그 화면은 담당자 로그인을 받지 않아 로그인으로 돌아갔다(2026-11-02 운영 시험). 안내를 세운다 */
   if (user.scope === "staff") {
     return (
-      <div className="mt"><MatHead /><div className="mt-frame">
-        <h1 className="mt-h1">MAT은 학생 · 개인 계정 화면입니다</h1>
-        <p className="mt-lead">지금은 운영자(담당자) 계정으로 들어와 있습니다. MAT은 검사 결과가 있는 학생 · 개인 계정으로 봅니다.
-          공개 전 확인은 운영자 화면에서 넣은 미리보기 계정으로 로그인해 주세요.</p>
-        <a className="mt-btn is-block" href="/login?switch=1&next=/mat" style={{ marginTop: 12 }}>미리보기 계정으로 로그인</a>
-        <a className="mt-btn is-block" href="/admin/partners" style={{ marginTop: 10 }}>미리보기 계정 · 제휴 연결 관리</a>
+      <div className="mt"><MatHead lang={lang} /><div className="mt-frame">
+        <h1 className="mt-h1">{t(T.staffTitle)}</h1>
+        <p className="mt-lead">{t(T.staffLead)}</p>
+        <a className="mt-btn is-block" href="/login?switch=1&next=/mat" style={{ marginTop: 12 }}>{t(T.staffLogin)}</a>
+        <a className="mt-btn is-block" href="/admin/partners" style={{ marginTop: 10 }}>{t(T.staffPartners)}</a>
       </div></div>
     );
   }
   return (
-    <div className="mt">
-      <MatHead />
+    <div className="mt" lang={lang}>
+      <MatHead lang={lang} />
       <div className="mt-frame">
         {children}
-        <MatTabs />
+        <MatTabs labels={[t(T.tabHome), t(T.tabJobs), t(T.tabDraft), t(T.tabConsult), t(T.tabPass), t(T.tabSettings)]} aria={t(T.menu)} />
       </div>
     </div>
   );

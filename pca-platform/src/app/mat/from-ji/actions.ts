@@ -1,5 +1,6 @@
 "use server";
 
+import { matLang } from "@/lib/mat/lang";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/session";
@@ -42,7 +43,7 @@ export async function matJiAnalyze(): Promise<void> {
   if (!got.ok) redirect("/mat/jobs?e=noread#paste");
   const r = await runAnalysis(user.id, async () => {
     try {
-      return (await analyzePosting(user.id, { label: `잡인더스트리 공고 idx ${post.idx}`.slice(0, 80), text: got.text, deadline: null })).id;
+      return (await analyzePosting(user.id, { label: `잡인더스트리 공고 idx ${post.idx}`.slice(0, 80), text: got.text, deadline: null, lang: await matLang() })).id;
     } catch (e) {
       opFail({ operation: "assistant.posting", ref: ref("user", user.id), step: "mat.ji", category: "db" }, e);
       return "";

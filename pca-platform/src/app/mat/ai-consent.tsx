@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { CONSENT } from "@/lib/mat/consent-text";
+import { consentText } from "@/lib/mat/consent-text";
 
 /**
  * AI 로 읽기 전에 묻는 창(시안 Consent). **'다음부터 묻지 않기' 는 꺼진 채로 연다**(2026-11-03 시안 고침):
@@ -10,8 +10,10 @@ import { CONSENT } from "@/lib/mat/consent-text";
  * 보이는 것은 무엇을 보내고 무엇을 보내지 않는가 두 줄과 단추 둘뿐이다(화면 문구 규칙 7).
  */
 export function AiConsent({
-  action, id, title, sub, label,
+  action, id, title, sub, label, lang = "ko",
 }: {
+  /** 화면 언어 */
+  lang?: "ko" | "en";
   action: (form: FormData) => Promise<void>;
   /** 다시 읽을 분석 번호 */
   id: string;
@@ -23,6 +25,7 @@ export function AiConsent({
   label: string;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
+  const CONSENT = consentText(lang);
   return (
     <>
       <button type="button" className="mt-btn is-block" onClick={() => ref.current?.showModal()}>{label}</button>

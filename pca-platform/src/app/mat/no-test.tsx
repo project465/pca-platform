@@ -5,7 +5,9 @@ import { openActions } from "@/lib/me-v3/open-actions";
 import { pickJobs } from "@/lib/mat/pick-jobs";
 import { oneLine } from "@/lib/mat/short";
 import { minutesLabel, tierMinutes } from "@/lib/tier-minutes";
-import { NOTEST } from "@/lib/mat/money-text";
+import { moneyText } from "@/lib/mat/money-text";
+import type { MatUiLang } from "@/lib/mat/copy";
+import { enSummaries } from "@/lib/mat/posting-en";
 import { PRICING_HREF } from "@/lib/pricing/config";
 import type { MatAccess } from "@/lib/mat-access";
 import { JobCard } from "./job-card";
@@ -19,7 +21,8 @@ import { matPickCore } from "./actions";
  * - 검사 전 · 후 비교는 **달라지는 것만** 적는다. 숫자(00% 더)를 쓰지 않는다
  * - 맞는 공고는 갯수와 위 세 개, 이번 주 할 일은 하나(무료 범위)
  */
-export async function NoTestHome({ userId, acc }: { userId: string; acc: MatAccess }) {
+export async function NoTestHome({ userId, acc, lang = "ko" }: { userId: string; acc: MatAccess; lang?: MatUiLang }) {
+  const NOTEST = moneyText(lang).NOTEST;
   if (!acc.core) {
     const cores = sellableCores("KR");
     return (
@@ -32,7 +35,7 @@ export async function NoTestHome({ userId, acc }: { userId: string; acc: MatAcce
             <span>{NOTEST.pickCore}</span>
             <select name="core" required defaultValue="">
               <option value="" disabled>-</option>
-              {cores.map((c) => <option key={c.code} value={c.code}>{c.name_ko}</option>)}
+              {cores.map((c) => <option key={c.code} value={c.code}>{lang === "en" ? c.name_en ?? c.name_ko : c.name_ko}</option>)}
             </select>
           </label>
           <button type="submit" className="mt-btn is-main is-block">{NOTEST.pickCoreGo}</button>
@@ -49,7 +52,8 @@ export async function NoTestHome({ userId, acc }: { userId: string; acc: MatAcce
   const list = jobs ? (jobs.main.length ? jobs.main : jobs.broad) : [];
   const open = (act?.rows ?? []).filter((r) => r.state !== "done" && r.state !== "dropped");
   const week = open.slice(0, acc.weekTasks);
-  const m = (() => { try { return minutesLabel(tierMinutes(core).BASIC, "ko"); } catch { return null; } })();
+  const m = (() => { try { return minutesLabel(tierMinutes(core).BASIC, lang); } catch { return null; } })();
+  const en = lang === "en" ? await enSummaries(list.slice(0, 3).map((p) => p.id)) : undefined;
 
   return (
     <main>
@@ -79,7 +83,7 @@ export async function NoTestHome({ userId, acc }: { userId: string; acc: MatAcce
       {list.length ? (
         <>
           <h2 className="mt-h2">{NOTEST.jobsTitle} <small>{NOTEST.jobsCount(list.length)}</small> <Link href="/mat/jobs" className="mt-meta">{NOTEST.all}</Link></h2>
-          <div className="mt-list">{list.slice(0, 3).map((p) => <JobCard key={p.id} p={p} />)}</div>
+          <div className="mt-list">{list.slice(0, 3).map((p) => <JobCard key={p.id} p={p} lang={lang} en={en?.get(p.id)} />)}</div>
         </>
       ) : null}
 

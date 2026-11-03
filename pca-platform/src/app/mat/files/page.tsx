@@ -5,13 +5,13 @@ import { pendingFileDrafts, UPLOAD_MONTHLY_CAP, usedThisMonth } from "@/lib/assi
 import { MatFileDrop } from "./drop";
 import { aiReady } from "@/lib/assistant/claude";
 import { matMemoDraft } from "../actions";
+import { matLang } from "@/lib/mat/lang";
+import { sayOf } from "@/lib/mat/copy";
+import { FILES_TEXT as F, TITLE_TEXT } from "../mat-text";
 
-const ERR: Record<string, string> = {
-  memo: "열 자 넘게 적어 주세요. 언제 · 무엇을 · 어떻게 했는지 한두 줄이면 돼요.",
-  save: "저장하지 못했어요. 잠시 뒤 다시 눌러 주세요.",
-};
+const ERR = { memo: F.errMemo, save: F.errSave } as const;
 
-export const generateMetadata = () => matTitle("경험 파일");
+export const generateMetadata = () => matTitle(TITLE_TEXT.files);
 
 /**
  * 경험 파일 올리기 · 확인(예상 화면 8 · 9번).
@@ -23,6 +23,8 @@ export const generateMetadata = () => matTitle("경험 파일");
  */
 export default async function MatFiles({ searchParams }: { searchParams: Promise<{ e?: string }> }) {
   const user = await requireUser();
+  const lang = await matLang();
+  const t = sayOf(lang);
   const e = (await searchParams).e;
   /* 서비스 쪽에서 파일 읽기가 꺼져 있으면(키가 없다) 고르는 칸 · 동의 칸을 막고 메모 칸을 먼저 세운다 */
   const ready = aiReady();
@@ -32,23 +34,22 @@ export default async function MatFiles({ searchParams }: { searchParams: Promise
   const memo = (
     <form action={matMemoDraft} className="mt-form" id="memo">
       <label className="mt-field">
-        <span>메모로 적기</span>
+        <span>{t(F.memo)}</span>
         <textarea name="note" rows={5} required minLength={10} maxLength={4000}
-          placeholder="예: 언제 · 어떤 수업이나 활동에서 · 내가 맡은 일 · 직접 정한 기준 · 남긴 결과물 · 전후 수치(예: 1.2초 → 0.3초)를 적어 주세요" />
+          placeholder={t(F.memoHolder)} />
       </label>
-      <button type="submit" className="mt-btn is-main is-block">경험 초안 만들기</button>
-      <p className="mt-note">{ready && set.ai_consent_at ? "AI 분석을 켜 두셔서 Anthropic(미국)의 Claude로 읽어요." : "이 메모는 밖으로 보내지 않고 이 서비스 안에서 옮겨요."} 확인하고 저장한 것만 기록돼요.</p>
+      <button type="submit" className="mt-btn is-main is-block">{t(F.memoGo)}</button>
+      <p className="mt-note">{ready && set.ai_consent_at ? t(F.memoAi) : t(F.memoLocal)}{t(F.memoSaved)}</p>
     </form>
   );
   return (
     <main>
-      <h1 className="mt-h1">경험 파일</h1>
-      <p className="mt-lead">{ready ? "파일을 올리면 경험 초안으로 옮겨 드려요. 확인하고 저장한 것만 기록돼요."
-        : "지금은 파일 읽기가 열리지 않았어요. 파일에 적힌 내용을 메모로 적어 주시면 경험 초안으로 옮겨 드려요."}</p>
-      {e && ERR[e] ? <p className="mt-alert" role="alert">{ERR[e]}</p> : null}
+      <h1 className="mt-h1">{t(F.title)}</h1>
+      <p className="mt-lead">{ready ? t(F.leadReady) : t(F.leadOff)}</p>
+      {e && e in ERR ? <p className="mt-alert" role="alert">{t(ERR[e as keyof typeof ERR])}</p> : null}
       {ready ? null : memo}
-      <MatFileDrop ready={ready} consented={Boolean(set.file_consent_at)} used={used} cap={UPLOAD_MONTHLY_CAP} pending={pending} />
-      {ready ? <><h2 className="mt-h2">파일 대신 메모로</h2>{memo}</> : null}
+      <MatFileDrop ready={ready} consented={Boolean(set.file_consent_at)} used={used} cap={UPLOAD_MONTHLY_CAP} pending={pending} lang={lang} />
+      {ready ? <><h2 className="mt-h2">{t(F.memoInstead)}</h2>{memo}</> : null}
     </main>
   );
 }

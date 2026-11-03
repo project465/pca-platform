@@ -126,7 +126,7 @@ function byRules(core: string, note: string, lang: MatLang = "ko"): DraftValue {
   return draftByRules(core, note, lang);
 }
 
-export async function draftExperience(userId: string, note: string): Promise<{
+export async function draftExperience(userId: string, note: string, langIn?: MatLang): Promise<{
   id: string; by: "claude" | "rules"; reason: string | null;
 }> {
   const core = await activeCoreOrPick(userId);
@@ -135,7 +135,8 @@ export async function draftExperience(userId: string, note: string): Promise<{
   let by: "claude" | "rules" = "rules";
   let model: string | null = null;
   let reason: string | null = null;
-  const lang: MatLang = await wsLang(userId).catch(() => "ko" as const);
+  /* 부른 화면의 언어(MAT 은 화면 언어), 없으면 작업공간 언어 */
+  const lang: MatLang = langIn ?? await wsLang(userId).catch(() => "ko" as const);
   /* 규칙으로 만들었다는 말은 화면에 남기지 않는다(2026-11-02 대표: 내부 말 금지). 기간권
      횟수를 다 쓴 때만 다시 열리는 날을 적는다 */
   if (!(await aiConsented(userId))) {

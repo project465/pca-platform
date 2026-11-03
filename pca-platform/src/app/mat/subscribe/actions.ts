@@ -14,7 +14,8 @@ import { paddleClientConfig, paddleCreateCheckout } from "@/lib/subscriptions/pa
 import { orderName } from "@/lib/orders";
 import { productFor } from "@/lib/plans";
 import { matStep } from "@/lib/funnel-v3";
-import { CHECKOUT_SUB } from "@/lib/mat/money-text";
+import { moneyText } from "@/lib/mat/money-text";
+import { matLang } from "@/lib/mat/lang";
 
 export type SubscribeState = {
   error?: string;
@@ -38,6 +39,7 @@ async function origin(): Promise<string> {
  */
 export async function subscribeAction(_prev: SubscribeState, form: FormData): Promise<SubscribeState> {
   const user = await requireUser();
+  const CHECKOUT_SUB = moneyText(await matLang()).CHECKOUT_SUB;
   const plan = String(form.get("plan") ?? "");
   const period = Number(form.get("period") ?? 0);
   if (!isPlan(plan) || !isPeriod(period)) return { error: CHECKOUT_SUB.consentNeed };

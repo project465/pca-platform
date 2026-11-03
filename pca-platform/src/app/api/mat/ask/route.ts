@@ -6,6 +6,9 @@ import { aiConsented } from "@/lib/assistant/settings";
 import { askStream } from "@/lib/assistant/claude";
 import { aiAllowance, canBuyRefill, capLine } from "@/lib/assistant/ai-budget";
 import { askContextOf } from "@/lib/mat/ask-context";
+import { matLang } from "@/lib/mat/lang";
+import { kstDayEn } from "@/lib/mat/open-dates";
+import { ASK_OPEN_FROM } from "@/lib/mat/ask-open";
 
 export const dynamic = "force-dynamic";
 
@@ -47,6 +50,29 @@ const SYSTEM = [
   "자료 밖의 일(법률 · 의료 · 개인 신상)이나 취업과 무관한 요청은 한 문장으로 사양한다.",
 ].join("\n");
 
+/**
+ * 영어 답(2026-11-03 "AI 답은 사용자 언어로"). 규칙은 위와 같다. 자료(`<자료>`)는 한국어 이름표로 적혀 있고,
+ * 칩은 **자료에 적힌 글자 그대로** 옮긴다(화면이 칩 목록과 글자로 맞춰 본다. 화면이 머리말만 영어로 바꿔 그린다)
+ */
+const SYSTEM_EN = [
+  "You are MAT, the job-search assistant of CareerMatri. Answer in English. Be short and concrete.",
+  "Answer in 4 to 6 sentences or a list of up to 3 short items. No greetings, praise, exaggeration or promises.",
+  "Use only what is in <자료> (the user's data, written with Korean labels) as evidence. To cite evidence, copy a chip in square brackets exactly as written in the data, including its Korean label (for example [경험: Field trip]).",
+  "Do not invent facts that are not in the data. If there is no record, write [기록 없음]. If the posting does not say it, write [공고에 없음].",
+  "Do not talk about the chance of passing, scores or probabilities. Do not guess or write company names.",
+  "When you suggest a task, give one output the user can finish this week and one way to check it.",
+  "If the user asks to edit application sentences, give one line on what to fix and the fixed sentence for each sentence. Do not add experience the user did not write.",
+  "If the user asks for a Korean self-introduction (자기소개서) sentence, write the sentence in Korean and add the English meaning on the next line.",
+  "For interview practice, ask one question. When an answer comes, give short feedback on specificity, evidence and length.",
+  "Decline in one sentence any request outside the data (law, medicine, personal matters) or unrelated to job search.",
+].join("\n");
+
+/** 면접 연습을 한국어로 고른 영어 화면 사용자 · 그 반대: 답의 언어만 바꾼다 */
+const ANSWER_IN = {
+  ko: "이번 답은 한국어로 한다. 면접 질문과 돌려주는 말 모두 한국어다.",
+  en: "Answer in English this time. The interview question and the feedback are both in English.",
+} as const;
+
 const say = (text: string, status = 200) =>
   new Response(text, { status, headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "no-store" } });
 
@@ -58,32 +84,47 @@ export async function POST(req: Request) {
   if (!(await matVisible(user.id))) return say("", 404);
 
   let q = "";
-  try { q = String(((await req.json()) as { q?: unknown }).q ?? "").trim(); } catch { return say("", 400); }
-  if (q.length < 2 || q.length > 1700) return say("질문은 2자 이상 1,500자 이하로 적어 주세요.", 400);
+  let want: unknown = null;
+  try {
+    const body = (await req.json()) as { q?: unknown; lang?: unknown };
+    q = String(body.q ?? "").trim();
+    want = body.lang;
+  } catch { return say("", 400); }
+  /* 화면 언어(쿠키 → 계정 → 브라우저, 기본 한국어). 면접 연습은 고른 언어(`lang`)로 답한다 */
+  const ui = await matLang();
+  const answer: "ko" | "en" = want === "en" || want === "ko" ? want : ui;
+  const en = ui === "en";
+  if (q.length < 2 || q.length > 1700) return say(en ? "Write a question of 2 to 1,500 characters." : "질문은 2자 이상 1,500자 이하로 적어 주세요.", 400);
 
   const open = await askOpenFor(user.id);
   if (!open.ok) {
     /* 다른 화면과 같은 말투로, 지금 쓸 수 있는 것을 함께 알린다(MAT 시험 P2) */
-    return say(open.why === "date"
-      ? `질문하기는 ${AI_TOOLS_OPEN_KO}부터 열려요. 그 전에는 공고 맞춰 보기 · 문장 뼈대 · 이번 주 브리핑을 쓸 수 있어요.`
-      : "질문하기는 이용권이 있을 때 쓸 수 있어요.", 403);
+    return say(en
+      ? (open.why === "date"
+        ? `Questions open on ${kstDayEn(ASK_OPEN_FROM)}. Until then, you can use posting comparison, the sentence outline and the weekly briefing.`
+        : "Questions are available with a pass.")
+      : open.why === "date"
+        ? `질문하기는 ${AI_TOOLS_OPEN_KO}부터 열려요. 그 전에는 공고 맞춰 보기 · 문장 뼈대 · 이번 주 브리핑을 쓸 수 있어요.`
+        : "질문하기는 이용권이 있을 때 쓸 수 있어요.", 403);
   }
   if (!(await aiConsented(user.id))) {
-    return say("질문하기는 AI 분석을 켜야 쓸 수 있습니다. 켜면 질문과 필요한 내 기록 요약이 Anthropic(미국)의 Claude로 보내져 읽힙니다. MAT 설정에서 켤 수 있습니다.", 403);
+    return say(en
+      ? "Turn on AI reading to ask questions. Then your question and a short summary of your records are sent to Claude by Anthropic (USA). You can turn it on in MAT settings."
+      : "질문하기는 AI 분석을 켜야 쓸 수 있습니다. 켜면 질문과 필요한 내 기록 요약이 Anthropic(미국)의 Claude로 보내져 읽힙니다. MAT 설정에서 켤 수 있습니다.", 403);
   }
   const day = new Date().toISOString().slice(0, 10);
   const u = used.get(user.id);
   const n = u && u.day === day ? u.n : 0;
-  if (n >= DAILY) return say(`오늘 질문 ${DAILY}번을 다 썼습니다. 내일 다시 물어봐 주세요.`, 429);
+  if (n >= DAILY) return say(en ? `You used all ${DAILY} questions for today. Ask again tomorrow.` : `오늘 질문 ${DAILY}번을 다 썼습니다. 내일 다시 물어봐 주세요.`, 429);
   /* 기간권 한 장의 횟수 · 서버 하루 총액(`ai-budget.ts`). 넘었으면 부르지 않고 다시 열리는 날을 적는다 */
   /* 화면이 붙인 머리말로 칸을 가른다: 지원서 문장 · 면접 연습은 Opus(high), 나머지는 Sonnet(medium) */
   const kind = q.startsWith("[지원서 문장 첨삭]") ? "draft" : q.startsWith("[면접 연습]") ? "interview" : "free";
   const op = `mat.ask.${kind}`;
   const allow = await aiAllowance(user.id, op);
   if (!allow.ok) {
-    if (allow.why !== "cap") return say("오늘은 질문을 더 받지 못해요. 내일 다시 물어봐 주세요.", 429);
+    if (allow.why !== "cap") return say(en ? "No more questions today. Ask again tomorrow." : "오늘은 질문을 더 받지 못해요. 내일 다시 물어봐 주세요.", 429);
     /* 개인 이용권이면 화면이 `모두 다시 채우기` 단추를 단다(학교 좌석에는 팔지 않는다) */
-    return new Response(capLine(allow.reopen), { status: 429, headers: {
+    return new Response(capLine(allow.reopen, ui), { status: 429, headers: {
       "content-type": "text/plain; charset=utf-8", "cache-control": "no-store",
       ...((await canBuyRefill(user.id)) ? { "x-mat-refill": "1" } : {}),
     } });
@@ -91,8 +132,10 @@ export async function POST(req: Request) {
   used.set(user.id, { day, n: n + 1 });
 
   const ctx = await askContextOf(user.id);
+  /* 한국어가 기본이다. 영어 화면이면 영어 규칙, 면접 연습에서 고른 언어가 화면과 다르면 그 언어로 답하라고 한 줄 더 */
+  const system = (answer === "en" ? SYSTEM_EN : SYSTEM) + (answer !== ui || kind === "interview" ? `\n${ANSWER_IN[answer]}` : "");
   const gen = askStream({
-    op, system: SYSTEM, userId: user.id,
+    op, system, userId: user.id, style: answer,
     /* 학생 묶음은 같은 사람이 이어 물으면 같다: 캐시 앞부분. 질문만 뒤에 붙인다 */
     prefix: `<자료>\n${ctx.text}\n</자료>`,
     user: `<질문>\n${q}\n</질문>`,

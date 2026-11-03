@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { money, subscriptionOf } from "@/lib/subscriptions/engine";
 import { lastDayKst } from "@/lib/track";
-import { SUB_STATE } from "@/lib/mat/money-text";
+import { moneyText, SUB_STATE } from "@/lib/mat/money-text";
+import type { MatUiLang } from "@/lib/mat/copy";
 import { PRICING_HREF } from "@/lib/pricing/config";
 import { cancelSubAction, reconsentAction, resumeMockAction } from "./subscribe/actions";
 
@@ -10,7 +11,8 @@ import { cancelSubAction, reconsentAction, resumeMockAction } from "./subscribe/
  * MAT 이용권 화면(`/mat/pass`)과 내 정보(`/my`)가 같은 조각을 쓴다. 해지해도 이미 낸 기간은 그대로다.
  * 확인은 단추를 누르는 순간의 창 한 번(화면 문구 규칙 7)
  */
-export async function SubStatus({ userId, back = "/mat/pass", className = "mt-box" }: { userId: string; back?: string; className?: string }) {
+export async function SubStatus({ userId, back = "/mat/pass", className = "mt-box", lang = "ko" }: { userId: string; back?: string; className?: string; lang?: MatUiLang }) {
+  const SUB_STATE = moneyText(lang).SUB_STATE;
   const s = await subscriptionOf(userId);
   if (!s || s.status === "pending") return null;
   const day = (iso: string | null) => (iso ? lastDayKst(iso) : "");

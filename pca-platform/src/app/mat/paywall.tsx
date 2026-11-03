@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { matAccess } from "@/lib/mat-access";
 import { pickJobs } from "@/lib/mat/pick-jobs";
-import { PAYWALL } from "@/lib/mat/money-text";
-import { krwPrice, priceLabel, PRICING_HREF } from "@/lib/pricing/config";
+import { moneyText } from "@/lib/mat/money-text";
+import type { MatUiLang } from "@/lib/mat/copy";
+import { headers } from "next/headers";
+import { ipCountryFrom, routeForUser } from "@/lib/subscriptions/route";
+import { krwPrice, priceLabel, PRICING_HREF, usdPrice } from "@/lib/pricing/config";
 import { subscriptionsOpen } from "@/lib/subscriptions/open";
 
 /**
@@ -12,13 +15,18 @@ import { subscriptionsOpen } from "@/lib/subscriptions/open";
  * - 값은 설정(`pricing/config.ts`)에서 읽는다. 30일 값이 비어 있으면 값 없이 요금 화면으로만 보낸다
  * - `언제든 해지` 는 정기결제가 열려 있을 때만 적는다. 1회 결제 기간권에는 해지할 것이 없다
  */
-export async function Paywall({ userId, analyzed = 0 }: { userId: string; analyzed?: number }) {
+export async function Paywall({ userId, analyzed = 0, lang = "ko" }: { userId: string; analyzed?: number; lang?: MatUiLang }) {
+  const PAYWALL = moneyText(lang).PAYWALL;
   const acc = await matAccess(userId);
   if (acc.paid) return null;
   const jobs = await pickJobs(userId, 60).catch(() => null);
   const total = jobs ? (jobs.main.length || jobs.broad.length) : 0;
   const rest = Math.max(0, total - analyzed);
-  const price = priceLabel(krwPrice("basic", 30), "KRW");
+  /* 값은 요금 화면과 같은 결제 길로 고른다(해외 카드면 달러) */
+  const route = await routeForUser(userId, ipCountryFrom(await headers())).catch(() => null);
+  const price = route?.currency === "USD"
+    ? priceLabel(usdPrice("basic", 30, route.country), "USD")
+    : priceLabel(krwPrice("basic", 30), "KRW");
   return (
     <section className="mt-pay" aria-label={PAYWALL.body}>
       <h3>{rest > 0 ? PAYWALL.more(rest) : PAYWALL.moreNone}</h3>
@@ -41,7 +49,8 @@ export async function Paywall({ userId, analyzed = 0 }: { userId: string; analyz
  * 학생 본인의 MAT 화면에만 선다. 기관 화면 · 기관 집계에는 개인 결제 여부가 보이지 않는다(이 칸은 기관 쪽에서 부르지 않는다).
  * 뒤에 개인 이용권이 이어 붙어 있으면 세우지 않는다
  */
-export async function SchoolEnding({ userId }: { userId: string }) {
+export async function SchoolEnding({ userId, lang = "ko" }: { userId: string; lang?: MatUiLang }) {
+  const PAYWALL = moneyText(lang).PAYWALL;
   const { activeTrack, lastDayKst } = await import("@/lib/track");
   const st = await activeTrack(userId);
   if (!st.on || st.source?.kind !== "school") return null;

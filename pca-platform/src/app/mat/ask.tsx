@@ -2,6 +2,8 @@
 
 import { useRef, useState } from "react";
 import { splitChips } from "@/lib/mat/chips";
+import { sayOf, type MatUiLang } from "@/lib/mat/copy";
+import { ASK_TEXT as A, CHIP_HEAD_EN } from "./mat-text";
 
 /**
  * MAT 홈 아래의 질문 입력창.
@@ -12,34 +14,41 @@ import { splitChips } from "@/lib/mat/chips";
  */
 /** 입력창의 쓰임. 지원서 화면은 `draft`(문장 첨삭) · `interview`(면접 연습)로 같은 길을 쓴다 */
 export type AskMode = "free" | "draft" | "interview";
-const MODES: Record<AskMode, { title: string; examples: string[]; holder: string; prefix: string; max: number }> = {
+/** 머리말(`prefix`)은 서버가 칸을 가르는 열쇠라 한국어 그대로 둔다. 화면 글자와 답의 언어는 `lang` 이 정한다 */
+const modesOf = (t: ReturnType<typeof sayOf>): Record<AskMode, { title: string; examples: string[]; holder: string; prefix: string; max: number }> => ({
   free: {
-    title: "물어보기", examples: ["이번 주 뭐 하면 돼?", "어느 공고부터 준비할까?", "면접 질문 하나 내 줘"],
-    holder: "공고 · 할 일 · 지원서 · 면접", prefix: "", max: 600,
+    title: t(A.freeTitle), examples: [t(A.freeEx1), t(A.freeEx2), t(A.freeEx3)],
+    holder: t(A.freeHolder), prefix: "", max: 600,
   },
   draft: {
-    title: "문장 고치기", examples: [],
-    holder: "고칠 지원서 문장을 붙여 넣으세요(한 번에 1,500자까지)", prefix: "[지원서 문장 첨삭] 문장마다 고칠 점 한 줄과 고친 문장을 주세요. 내 기록에 없는 경험은 넣지 마세요.\n", max: 1500,
+    title: t(A.draftTitle), examples: [],
+    holder: t(A.draftHolder), prefix: "[지원서 문장 첨삭] 문장마다 고칠 점 한 줄과 고친 문장을 주세요. 내 기록에 없는 경험은 넣지 마세요.\n", max: 1500,
   },
   interview: {
-    title: "면접 연습", examples: [],
-    holder: "질문을 고르거나, 고른 질문에 대한 내 답을 적으세요", prefix: "[면접 연습] ", max: 1200,
+    title: t(A.ivTitle), examples: [],
+    holder: t(A.ivHolder), prefix: "[면접 연습] ", max: 1200,
   },
-};
-const FAIL: Record<string, string> = {
-  off: "지금은 답할 수 없어요. 잠시 뒤 다시 물어봐 주세요.",
-  refusal: "취업 준비에 관한 질문으로 다시 물어봐 주세요.",
-  rate: "지금 묻는 사람이 많아요. 1분 뒤 다시 물어봐 주세요.",
-  timeout: "답이 늦어졌어요. 질문을 짧게 나눠 다시 물어봐 주세요.",
-  error: "답하지 못했어요. 잠시 뒤 다시 물어봐 주세요.",
-  cap: "이번 기간 횟수를 다 썼어요.",
-  day: "오늘은 질문을 더 받지 못해요. 내일 다시 물어봐 주세요.",
-};
+});
+const failOf = (t: ReturnType<typeof sayOf>): Record<string, string> => ({
+  off: t(A.failOff), refusal: t(A.failRefusal), rate: t(A.failRate), timeout: t(A.failTimeout),
+  error: t(A.failError), cap: t(A.failCap), day: t(A.failDay),
+});
 
 type Turn = { q: string; a: string; allowed: string[]; state: "run" | "done" | "fail"; refill?: boolean };
 
-export function MatAsk({ mode = "free", examples }: { mode?: AskMode; examples?: string[] }) {
-  const M = MODES[mode];
+export function MatAsk({ mode = "free", examples, lang = "ko", answerLang }: {
+  mode?: AskMode; examples?: string[];
+  /** 화면 언어 */
+  lang?: MatUiLang;
+  /** 답의 언어(면접 연습에서 고른 언어). 비우면 화면 언어 */
+  answerLang?: MatUiLang;
+}) {
+  const tx = sayOf(lang);
+  const M = modesOf(tx)[mode];
+  const FAIL = failOf(tx);
+  const said = answerLang ?? lang;
+  /* 칩 머리말은 화면에만 그 언어로(칩 열쇠는 한국어 그대로) */
+  const chipLabel = (c: string) => (lang === "en" ? c.replace(/^(검사|경험|할 일|공고|기록 없음|공고에 없음)/, (h) => CHIP_HEAD_EN[h] ?? h) : c);
   const ex = examples ?? M.examples;
   const [turns, setTurns] = useState<Turn[]>([]);
   const [q, setQ] = useState("");
@@ -57,8 +66,10 @@ export function MatAsk({ mode = "free", examples }: { mode?: AskMode; examples?:
     const put = (f: (t: Turn) => Turn) => setTurns((x) => x.map((t, k) => (k === i ? f(t) : t)));
     try {
       const res = await fetch("/api/mat/ask", {
-        method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ q: mode === "interview" && picked
-          ? `${M.prefix}질문: ${picked}\n내 답: ${question}\n구체성 · 근거 · 길이 셋으로 짧게 돌려주고, 더 나은 답의 뼈대 한 줄을 주세요.`
+        method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ lang: said, q: mode === "interview" && picked
+          ? (said === "en"
+            ? `${M.prefix}Question: ${picked}\nMy answer: ${question}\nGive short feedback on specificity, evidence and length. Then give one line that outlines a better answer.`
+            : `${M.prefix}질문: ${picked}\n내 답: ${question}\n구체성 · 근거 · 길이 셋으로 짧게 돌려주고, 더 나은 답의 뼈대 한 줄을 주세요.`)
           : M.prefix + question }),
       });
       if (!res.ok || !res.body) {
@@ -98,14 +109,14 @@ export function MatAsk({ mode = "free", examples }: { mode?: AskMode; examples?:
               <p className="mt-q">{t.q}</p>
               <div className={`mt-a${t.state === "fail" ? " is-fail" : ""}`}>
                 {t.state === "fail"
-                  ? <><p>{t.a}</p>{t.refill ? <a className="mt-btn is-block" href="/checkout?product=MAT_REFILL" style={{ marginTop: 8 }}>모두 다시 채우기 · 4,900원</a> : null}</>
+                  ? <><p>{t.a}</p>{t.refill ? <a className="mt-btn is-block" href="/checkout?product=MAT_REFILL" style={{ marginTop: 8 }}>{tx(A.refill)}</a> : null}</>
                   : t.a
                     ? t.a.split(/\n+/).map((line, j) => (
                       <p key={j}>{splitChips(line, new Set(t.allowed)).map((p, n) => ("chip" in p
-                        ? <span key={n} className={`mt-chip${p.none ? " is-none" : ""}`}>{p.chip}</span>
+                        ? <span key={n} className={`mt-chip${p.none ? " is-none" : ""}`}>{chipLabel(p.chip)}</span>
                         : <span key={n}>{p.text}</span>))}</p>
                     ))
-                    : <p className="mt-typing" aria-label="답을 쓰는 중">···</p>}
+                    : <p className="mt-typing" aria-label={tx(A.typing)}>···</p>}
               </div>
             </div>
           ))}
@@ -119,15 +130,15 @@ export function MatAsk({ mode = "free", examples }: { mode?: AskMode; examples?:
           ))}
         </div>
       ) : null}
-      {mode === "interview" ? <p className="mt-note" style={{ margin: "0 0 8px" }}>{picked ? `고른 질문: ${picked}` : "위에서 질문을 하나 고른 뒤 답을 적으세요."}</p> : null}
+      {mode === "interview" ? <p className="mt-note" style={{ margin: "0 0 8px" }}>{picked ? tx(A.picked, { q: picked }) : tx(A.pickFirst)}</p> : null}
       <form className="mt-askbar" onSubmit={(e) => { e.preventDefault(); void ask(q); }}>
         <label className="mt-sr" htmlFor={`mt-ask-${mode}`}>{M.title}</label>
         <textarea id={`mt-ask-${mode}`} ref={box} rows={mode === "draft" ? 4 : 1} maxLength={M.max} value={q} placeholder={M.holder}
           onChange={(e) => setQ(e.target.value)}
           onKeyDown={(e) => { if (mode !== "draft" && e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); void ask(q); } }} />
-        <button type="submit" className="mt-btn is-ink" disabled={busy || q.trim().length < 2}>{busy ? "답하는 중" : "묻기"}</button>
+        <button type="submit" className="mt-btn is-ink" disabled={busy || q.trim().length < 2}>{busy ? tx(A.busy) : tx(A.go)}</button>
       </form>
-      <p className="mt-note">답의 근거는 내 검사 결과 · 경험 · 공고예요. 질문과 답은 화면을 닫으면 지워져요. AI 분석을 켜면 Anthropic(미국)의 Claude가 읽어요.</p>
+      <p className="mt-note">{tx(A.note)}</p>
     </section>
   );
 }

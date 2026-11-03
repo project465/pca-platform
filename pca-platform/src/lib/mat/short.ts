@@ -8,7 +8,8 @@ import { withJosa } from "@/lib/me-v3/result/josa";
  */
 export function oneLine(s: string, max = 56): string {
   const t = s.replace(/\s+/g, " ").trim();
-  const first = (t.match(/^.*?(다|요)\.(?=\s|$)/)?.[0] ?? t).trim();
+  /* 영어 문장은 마침표에서 끊는다 */
+  const first = (t.match(/^.*?(다|요)\.(?=\s|$)/)?.[0] ?? (/[가-힣]/.test(t) ? t : t.match(/^.*?[a-z0-9)]\.(?=\s|$)/)?.[0] ?? t)).trim();
   if (first.length <= max) return first;
   const cut = first.slice(0, max);
   const at = Math.max(cut.lastIndexOf(", "), cut.lastIndexOf(" · "));
@@ -16,6 +17,7 @@ export function oneLine(s: string, max = 56): string {
 }
 
 /** 공고 분석의 `마감 전 할 일`: 결과물 하나 만들고 무엇과 맞대 볼지 한 줄 */
-export function taskLine(artifact: string, verify: string): string {
+export function taskLine(artifact: string, verify: string, lang: "ko" | "en" = "ko"): string {
+  if (lang === "en") return `Make one ${artifact} and compare it with ${verify}`;
   return `${artifact} 하나 만들고, ${withJosa(verify, "과와")} 비교해 보기`;
 }

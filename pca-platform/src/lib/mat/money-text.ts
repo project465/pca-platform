@@ -6,6 +6,8 @@
  * **근거 없는 숫자를 쓰지 않는다**(표시광고법). 검사 전 · 후는 무엇이 달라지는지만 적는다.
  * 높임은 MAT 화면과 같은 `-요` 꼴 하나다.
  */
+import { copyOf, type CopySet, type MatUiLang, type Widen } from "./copy";
+
 export const NOTEST = {
   kicker: "MAT",
   hello: "반갑습니다",
@@ -143,3 +145,163 @@ export const JI_TEXT = {
   none: "들고 온 공고가 없어요.",
   jobs: "공고 보기",
 } as const;
+
+/* ── 영어(2026-11-03 영어 화면). 열쇠는 위 한국어 벌과 같다. 일본어 벌은 번역이 들어오는 날 `ja` 에 ── */
+
+const NOTEST_EN: Widen<typeof NOTEST> = {
+  kicker: "MAT",
+  hello: "Welcome",
+  lead: "Start with a job posting you like.",
+  analyzeFree: "Analyze a posting · 1 free",
+  analyzeUsed: "You used your 1 free analysis",
+  pickCore: "Which major's postings do you want to see?",
+  pickCoreNote: "Pick one major. MAT uses its postings and its requirement list. A test result changes it later.",
+  pickCoreGo: "Start with this major",
+  testTitle: "The test makes the analysis fit you",
+  before: "Before the test",
+  beforeBody: "Compares the posting with the experience you wrote",
+  after: "After the test",
+  afterBody: "Also uses your major strengths and gaps as evidence",
+  afterMore: ["Matching postings are sorted by your strengths", "Your application draft uses sentences from your experience"],
+  oneMore: "Finish the test to get 1 more free analysis",
+  testGo: "Start the test",
+  testFree: "Free",
+  testResume: "You can close it and continue later",
+  jobsTitle: "Postings for your major",
+  jobsCount: (n: number) => `${n}`,
+  weekTitle: "This week's task",
+  weekLocked: (n: number) => `${n} more ${n === 1 ? "task" : "tasks"}. A MAT pass shows all of them.`,
+  passLink: "MAT pass",
+  all: "All",
+};
+
+const PAYWALL_EN: Widen<typeof PAYWALL> = {
+  more: (n: number) => `${n} more matching ${n === 1 ? "posting" : "postings"}`,
+  moreNone: "You can analyze other postings too",
+  body: "Analyze other postings the same way. Then write an application draft and practice interviews.",
+  analyzeRest: (n: number) => `Analyze the other ${n} ${n === 1 ? "posting" : "postings"}`,
+  start: (price: string) => `Start MAT · 30 days ${price}`,
+  cancelAny: "Cancel at any time",
+  usedFree: "You used your 1 free analysis",
+  usedAll: "You used all free analyses",
+  testForMore: "Finish the test to get 1 more free analysis",
+  resultBox: (n: number) => `${n} ${n === 1 ? "posting matches" : "postings match"} your result`,
+  resultBoxGo: "Analyze postings in MAT",
+  schoolEnds: (date: string) => `Your school or institution MAT pass ends on ${date}`,
+  schoolEndsBody: "After that, you can continue with a personal pass. Your records stay.",
+  schoolEndsGo: "See personal passes",
+};
+
+const PRICING_EN: Widen<typeof PRICING> = {
+  title: "MAT pass",
+  t30: "30 days",
+  t90: "90 days",
+  t90note: "Discount",
+  basic: "Basic",
+  basicFor: "Job search",
+  research: "Researcher",
+  researchFor: "Master's · PhD · Postdoc",
+  per: (days: number) => `/ ${days} days`,
+  startBasic: "Start Basic",
+  startResearch: "Start Researcher",
+  researchAll: "Everything in Basic",
+  researchPdf: "Papers and long PDFs (by page)",
+  researchDocs: "Research proposal · research career statement · English CV",
+  researchJobs: "Research institute and PhD-level postings in one list",
+  notOnSale: "This period is not on sale yet",
+  auto: (days: number) => `Renews every ${days} days · We tell you before each payment`,
+  keep: "If you cancel, you keep the rest of the period",
+  oneTime: "No auto-renewal · Closes at the end of the period",
+  addon: "Extra pass",
+  addonNote: "One-time payment · Adds uses to your current period",
+  legal: "Subscription policy",
+  refund: "Refund policy",
+  payNotReady: "Payment not open yet",
+  countUnit: { posting: "Posting analyses", sentence: "Application sentences", interview: "Interview practice", upload: "File reads" },
+  interviewTurns: (turns: number) => `${turns} turns each`,
+  perMonth: (n: number, unit: string) => `${unit}: ${n}`,
+  pages: (n: number) => `File reads up to ${n} pages`,
+  usd: "Price for overseas cards (USD)",
+};
+
+const CHECKOUT_SUB_EN: Widen<typeof CHECKOUT_SUB> = {
+  title: "Check before you pay",
+  plan: "Pass",
+  today: "Paid today",
+  next: "Next automatic payment",
+  nextLine: (date: string, price: string) => `${date} · ${price}`,
+  consent: "I checked the terms above (automatic payment, notice 7 days before payment, how to cancel). I agree to the subscription.",
+  consentNeed: "Tick the consent box to pay",
+  pay: "Agree and pay",
+  testMode: "This is a test payment. No money leaves your card.",
+  routeKr: "Korean card · NHN KCP · KRW",
+  routeGlobal: "Overseas card · Paddle · USD",
+  cancelHow: "To cancel, use the one button in [My info › Pass]",
+  sdkFail: "The payment window did not load. Refresh the page and try again",
+  liveSub: "You already have an active subscription",
+  closed: "Payment is not available now",
+  failed: "The payment did not go through",
+};
+
+const SUB_STATE_EN: Widen<typeof SUB_STATE> = {
+  title: "Subscription",
+  active: (date: string, price: string) => `Next payment ${date} · ${price}`,
+  canceled: (date: string) => `Canceled. You can use it until ${date}`,
+  pastDue: "The payment failed. We try again once a day",
+  paused: "The payment failed, so the pass is paused. Change the card to continue at once",
+  cancel: "Cancel subscription",
+  cancelConfirm: "You can use the rest of the period. Payments stop from the next one.",
+  resume: "Change card and continue",
+  reconsent: (price: string, date: string) => `From ${date}, the price changes to ${price}. Agree to keep automatic payment`,
+  reconsentGo: "Agree to the new price",
+  none: "No subscription",
+};
+
+const JOBS_TEXT_EN: Widen<typeof JOBS_TEXT> = {
+  research: "Research institute and PhD-level postings",
+  count: (n: number) => `${n}`,
+};
+
+const PASS_TEXT_EN: Widen<typeof PASS_TEXT> = {
+  subLink: "See subscription prices (Basic · Researcher)",
+  msg: {
+    ok: "Payment done. You can use it now.",
+    fail: "The payment did not go through. Check the card and try again.",
+    pending: "We are checking the payment. Refresh in a moment.",
+    canceled: "Canceled. You can use the rest of the period.",
+    reconsent: "You agreed to the new price.",
+    resumed: "The card was changed and the pass continues.",
+  },
+};
+
+const JI_TEXT_EN: Widen<typeof JI_TEXT> = {
+  kicker: "Posting from JobIndustry",
+  title: "Compare this posting with your experience?",
+  lead: "MAT compares each requirement of the posting with your experience. You do not need the test.",
+  goFree: "Compare this posting with my experience · 1 free",
+  go: "Compare this posting with my experience",
+  goPay: "Analyze this posting · MAT pass",
+  source: "Original posting on JobIndustry",
+  none: "No posting came with you.",
+  jobs: "See postings",
+};
+
+const MONEY = {
+  NOTEST: { ko: NOTEST, en: NOTEST_EN } as CopySet<typeof NOTEST>,
+  PAYWALL: { ko: PAYWALL, en: PAYWALL_EN } as CopySet<typeof PAYWALL>,
+  PRICING: { ko: PRICING, en: PRICING_EN } as CopySet<typeof PRICING>,
+  CHECKOUT_SUB: { ko: CHECKOUT_SUB, en: CHECKOUT_SUB_EN } as CopySet<typeof CHECKOUT_SUB>,
+  SUB_STATE: { ko: SUB_STATE, en: SUB_STATE_EN } as CopySet<typeof SUB_STATE>,
+  JOBS_TEXT: { ko: JOBS_TEXT, en: JOBS_TEXT_EN } as CopySet<typeof JOBS_TEXT>,
+  PASS_TEXT: { ko: PASS_TEXT, en: PASS_TEXT_EN } as CopySet<typeof PASS_TEXT>,
+  JI_TEXT: { ko: JI_TEXT, en: JI_TEXT_EN } as CopySet<typeof JI_TEXT>,
+};
+
+/** 그 언어의 수익화 문구 한 묶음(`moneyText("en").PRICING`) */
+export function moneyText(lang: MatUiLang) {
+  return {
+    NOTEST: copyOf(MONEY.NOTEST, lang), PAYWALL: copyOf(MONEY.PAYWALL, lang), PRICING: copyOf(MONEY.PRICING, lang),
+    CHECKOUT_SUB: copyOf(MONEY.CHECKOUT_SUB, lang), SUB_STATE: copyOf(MONEY.SUB_STATE, lang),
+    JOBS_TEXT: copyOf(MONEY.JOBS_TEXT, lang), PASS_TEXT: copyOf(MONEY.PASS_TEXT, lang), JI_TEXT: copyOf(MONEY.JI_TEXT, lang),
+  };
+}

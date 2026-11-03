@@ -211,15 +211,15 @@ function judge(
  * 보는 영역(셋까지)을 `from: "role"` 로 덧붙인다. 공고 글에 없던 요구를 지어내지 않고, 화면이
  * "직무 이름으로 본 영역" 이라고 따로 적는다.
  */
-async function readAndJudge(userId: string, text0: string, hint?: PostingHint, once = false): Promise<{
+async function readAndJudge(userId: string, text0: string, hint?: PostingHint, once = false, langIn?: MatLang): Promise<{
   st: CurrentState; analysis: PostingAnalysis; by: "claude" | "rules"; model: string | null;
-  readDeadline: string | null;
+  readDeadline: string | null; lang: MatLang;
 }> {
   const st = await currentState(userId);
   const exps = await experiencesOf(userId, st.core);
   const text = text0.slice(0, 12000);
-  /* 남기는 안내(`note`)와 Claude 가 돌려줄 말은 작업공간 언어를 따른다 */
-  const lang: MatLang = await wsLang(userId).catch(() => "ko" as const);
+  /* 남기는 안내(`note`)와 Claude 가 돌려줄 말은 부른 화면의 언어(MAT 은 화면 언어), 없으면 작업공간 언어를 따른다 */
+  const lang: MatLang = langIn ?? await wsLang(userId).catch(() => "ko" as const);
   let read: ReadOut;
   let by: "claude" | "rules" = "rules";
   let model: string | null = null;
@@ -271,14 +271,32 @@ async function readAndJudge(userId: string, text0: string, hint?: PostingHint, o
     items, counts: countOf(items), note,
   };
   const readDeadline = read.deadline && /^\d{4}-\d{2}-\d{2}$/.test(read.deadline) ? read.deadline : null;
-  return { st, analysis, by, model, readDeadline };
+  return { st, analysis, by, model, readDeadline, lang };
+}
+
+/**
+ * 모은 한국어 공고를 **영어로 AI 가 읽었으면** 그 공고의 영어 요약으로 담는다(`job_posting_en`).
+ * 규칙으로 읽은 줄은 공고 글(한국어) 그대로라 담지 않는다
+ */
+async function keepEnSummary(label: string, r: { analysis: PostingAnalysis; by: "claude" | "rules"; model: string | null; lang: MatLang }) {
+  const no = jobNoOf(label);
+  if (!no || r.lang !== "en" || r.by !== "claude") return;
+  const lines = r.analysis.items.filter((i) => !i.from).map((i) => `${i.kind === "must" ? "Required" : "Preferred"}: ${i.text}`);
+  const title = r.analysis.role ?? "";
+  if (!title) return;
+  const { saveEnSummary } = await import("@/lib/mat/posting-en");
+  await saveEnSummary(no, { title, lines }, r.model);
 }
 
 export async function analyzePosting(userId: string, input: {
   label: string; text: string; deadline: string | null; hint?: PostingHint;
+  /** 화면 언어(MAT). 비우면 작업공간 언어 */
+  lang?: MatLang;
 }): Promise<{ id: string; by: "claude" | "rules" }> {
   const text = input.text.slice(0, 12000);
-  const { st, analysis, by, model, readDeadline } = await readAndJudge(userId, text, input.hint);
+  const read = await readAndJudge(userId, text, input.hint, false, input.lang);
+  const { st, analysis, by, model, readDeadline } = read;
+  await keepEnSummary(input.label, read);
   /* 사용자가 적은 마감이 먼저다. 비었으면 공고에서 읽은 날짜를 쓴다 */
   const dl = input.deadline || readDeadline;
   const row = await queryOne<{ id: string }>(
@@ -299,12 +317,14 @@ export async function analyzePosting(userId: string, input: {
  * 하나도 이어지지 않았을 때). 새 줄을 만들지 않아 `분석한 공고` 목록에 같은 공고가 둘 서지 않는다.
  * 남의 것은 고치지 않는다: 번호와 로그인한 사람으로 함께 거른다.
  */
-export async function reanalyzePosting(userId: string, id: string, hint?: PostingHint, once = false): Promise<boolean> {
+export async function reanalyzePosting(userId: string, id: string, hint?: PostingHint, once = false, lang?: MatLang): Promise<boolean> {
   if (!/^\d+$/.test(id)) return false;
-  const row = await queryOne<{ raw_text: string }>(
-    `SELECT raw_text FROM assistant_postings WHERE user_id = $1 AND id = $2`, [userId, id]);
+  const row = await queryOne<{ raw_text: string; label: string }>(
+    `SELECT raw_text, label FROM assistant_postings WHERE user_id = $1 AND id = $2`, [userId, id]);
   if (!row?.raw_text) return false;
-  const { st, analysis, by, model } = await readAndJudge(userId, row.raw_text, hint, once);
+  const read = await readAndJudge(userId, row.raw_text, hint, once, lang);
+  const { st, analysis, by, model } = read;
+  await keepEnSummary(row.label, read);
   await query(
     `UPDATE assistant_postings SET core_code = $3, analysis = $4::jsonb, analyzed_by = $5, model = $6
       WHERE user_id = $1 AND id = $2`,

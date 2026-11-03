@@ -1,7 +1,8 @@
 "use client";
 
 import { useActionState, useEffect, useState } from "react";
-import { CHECKOUT_SUB } from "@/lib/mat/money-text";
+import { moneyText } from "@/lib/mat/money-text";
+import type { MatUiLang } from "@/lib/mat/copy";
 import { kcpBillingDone, subscribeAction, type SubscribeState } from "./actions";
 
 declare global {
@@ -25,7 +26,8 @@ const loadScript = (src: string) => new Promise<void>((ok, bad) => {
  * 동의 칸 + 결제 단추. **동의 칸은 비어 있는 채로 연다.** 체크해야 단추가 켜진다(서버도 다시 본다).
  * KCP 면 PortOne 카드 등록 창을, Paddle 이면 Paddle 결제창(sandbox)을 연다
  */
-export function SubscribeForm({ plan, period }: { plan: string; period: number }) {
+export function SubscribeForm({ plan, period, lang = "ko" }: { plan: string; period: number; lang?: MatUiLang }) {
+  const CHECKOUT_SUB = moneyText(lang).CHECKOUT_SUB;
   const [state, action, pending] = useActionState<SubscribeState, FormData>(subscribeAction, {});
   const [agree, setAgree] = useState(false);
   const [err, setErr] = useState<string | null>(null);

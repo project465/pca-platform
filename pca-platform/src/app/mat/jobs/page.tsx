@@ -9,19 +9,19 @@ import { applicationsOf } from "@/lib/me-v3/platform";
 import Link from "next/link";
 import { queryOne } from "@/lib/db";
 import type { MatchedPosting } from "@/lib/assistant/match";
-import { SOURCE_KO } from "@/lib/mat/stage";
+import { sourceName } from "@/lib/mat/stage";
 import { aiConsented } from "@/lib/assistant/settings";
 import { aiReady } from "@/lib/assistant/claude";
 import { planOf, researchJobs } from "@/lib/plans";
-import { JOBS_TEXT } from "@/lib/mat/money-text";
+import { moneyText } from "@/lib/mat/money-text";
+import { matLang } from "@/lib/mat/lang";
+import { sayOf } from "@/lib/mat/copy";
+import { enSummaries } from "@/lib/mat/posting-en";
+import { JOBLIST_TEXT as J, TITLE_TEXT } from "../mat-text";
 
-export const generateMetadata = () => matTitle("공고");
+export const generateMetadata = () => matTitle(TITLE_TEXT.jobs);
 
-const ERR: Record<string, string> = {
-  noread: "이 공고는 요건을 글로 읽지 못했어요. 원문을 열어 요건 부분을 아래에 붙여 넣어 주세요.",
-  short: "공고 글이 너무 짧아요. 자격 요건 · 우대 사항 부분을 붙여 넣어 주세요.",
-  save: "저장하지 못했어요. 잠시 뒤 다시 눌러 주세요.",
-};
+const ERR = { noread: J.errNoread, short: J.errShort, save: J.errSave } as const;
 
 /**
  * MAT 공고(예상 화면 2번).
@@ -34,6 +34,9 @@ const ERR: Record<string, string> = {
  */
 export default async function MatJobs({ searchParams }: { searchParams: Promise<{ e?: string; from?: string }> }) {
   const user = await requireUser();
+  const lang = await matLang();
+  const t = sayOf(lang);
+  const JOBS_TEXT = moneyText(lang).JOBS_TEXT;
   const sp = await searchParams;
   const e = sp.e;
   /* 제휴 사이트에서 보던 공고를 들고 들어왔으면(`/from/{partner}/enter`) 그 공고를 맨 위에 */
@@ -53,64 +56,69 @@ export default async function MatJobs({ searchParams }: { searchParams: Promise<
   const research = (await planOf(user.id)) === "research" ? await researchJobs(20) : [];
   const list = jobs.main;
   const fromJi = [...list, ...jobs.grad, ...jobs.other].some((p) => p.source === "jobindustry");
+  /* 영어 화면: 한국어 공고마다 저장해 둔 영어 요약(없으면 카드가 `Korean posting` 표시만 단다) */
+  const en = lang === "en"
+    ? await enSummaries([...(carried ? [carried.id] : []), ...[...research, ...list, ...jobs.broad, ...jobs.grad, ...jobs.other].map((p) => p.id)])
+    : undefined;
+  const card = (p: MatchedPosting) => <JobCard key={p.id} p={p} lang={lang} en={en?.get(p.id)} />;
 
   return (
     <main>
-      <h1 className="mt-h1">공고</h1>
+      <h1 className="mt-h1">{t(J.title)}</h1>
       <p className="mt-lead">
-        {jobs.matched ? "전공 · 경험과 겹치는 공고부터 보여 드려요." : "새 공고부터 보여 드려요. 경험을 적으면 맞는 공고가 위로 와요."}
+        {jobs.matched ? t(J.leadMatched) : t(J.leadNew)}
       </p>
-      {e && ERR[e] ? <p className="mt-alert" role="alert">{ERR[e]}</p> : null}
+      {e && e in ERR ? <p className="mt-alert" role="alert">{t(ERR[e as keyof typeof ERR])}</p> : null}
       {carried ? (
         <>
-          <h2 className="mt-h2">{SOURCE_KO[carried.source] ?? carried.source}에서 보던 공고</h2>
+          <h2 className="mt-h2">{t(J.carried, { src: sourceName(carried.source, lang) })}</h2>
           <div className="mt-list" style={{ marginBottom: 8 }}>
-            <JobCard p={{ ...carried, requirements: (carried.raw_requirements ?? []).slice(0, 8), hits: [], tdHits: [] }} />
+            {card({ ...carried, requirements: (carried.raw_requirements ?? []).slice(0, 8), hits: [], tdHits: [] })}
           </div>
-          <p className="mt-note">‘내 경험과 맞춰 보기’를 눌러 보세요.</p>
+          <p className="mt-note">{t(J.carriedNote)}</p>
         </>
       ) : null}
 
       {research.length ? (
         <>
           <h2 className="mt-h2">{JOBS_TEXT.research} <small>{JOBS_TEXT.count(research.length)}</small></h2>
-          <div className="mt-list" style={{ marginBottom: 16 }}>{research.map((p) => <JobCard key={p.id} p={p} />)}</div>
+          <div className="mt-list" style={{ marginBottom: 16 }}>{research.map(card)}</div>
         </>
       ) : null}
       {list.length ? (
-        <div className="mt-list">{list.slice(0, 20).map((p) => <JobCard key={p.id} p={p} />)}</div>
+        <div className="mt-list">{list.slice(0, 20).map(card)}</div>
       ) : jobs.broad.length ? (
         <>
-          <p className="mt-note">전공과 딱 맞는 공고가 아직 없어 조건을 넓힌 공고를 보여 드려요.</p>
-          <h2 className="mt-h2">조건을 넓힌 공고</h2>
-          <div className="mt-list">{jobs.broad.slice(0, 10).map((p) => <JobCard key={p.id} p={p} />)}</div>
+          <p className="mt-note">{t(J.broadNote)}</p>
+          <h2 className="mt-h2">{t(J.broadTitle)}</h2>
+          <div className="mt-list">{jobs.broad.slice(0, 10).map(card)}</div>
         </>
       ) : (
-        <p className="mt-empty">{jobs.other.length ? "전공에 맞는 공고가 아직 없어요. 경험을 적으면 더 찾아 드려요." : "모아 둔 공고가 아직 없어요."}</p>
+        <p className="mt-empty">{jobs.other.length ? t(J.emptyOther) : t(J.empty)}</p>
       )}
       {jobs.grad.length ? (
         <details className="mt-more">
-          <summary>대학원 · 연구실 모집 {jobs.grad.length}건</summary>
-          <div className="mt-list">{jobs.grad.map((p) => <JobCard key={p.id} p={p} />)}</div>
+          <summary>{t(J.grad, { n: jobs.grad.length })}</summary>
+          <div className="mt-list">{jobs.grad.map(card)}</div>
         </details>
       ) : null}
       {jobs.other.length ? (
         <details className="mt-more">
-          <summary>다른 전공 공고 {jobs.other.length}건</summary>
-          <div className="mt-list">{jobs.other.map((p) => <JobCard key={p.id} p={p} />)}</div>
+          <summary>{t(J.other, { n: jobs.other.length })}</summary>
+          <div className="mt-list">{jobs.other.map(card)}</div>
         </details>
       ) : null}
-      {fromJi ? <p className="mt-src">공고 출처 잡인더스트리</p> : null}
+      {fromJi ? <p className="mt-src">{t(J.srcJi)}</p> : null}
 
       {mine.length ? (
         <>
-          <h2 className="mt-h2">분석한 공고</h2>
+          <h2 className="mt-h2">{t(J.mine)}</h2>
           <div className="mt-list">
             {mine.slice(0, 10).map((m) => (
               <Link key={m.id} href={`/mat/jobs/${m.id}`} className="mt-row mt-row-link">
                 <div className="mt-row-b">
                   <p>{m.name ?? m.label}</p>
-                  <small>{m.deadline ? `마감 ${m.deadline}` : "마감 미기재"}</small>
+                  <small>{m.deadline ? t(J.deadline, { d: m.deadline }) : t(J.noDeadline)}</small>
                 </div>
               </Link>
             ))}
@@ -118,23 +126,23 @@ export default async function MatJobs({ searchParams }: { searchParams: Promise<
         </>
       ) : null}
 
-      <TrackBoard apps={apps} postings={mine} />
+      <TrackBoard apps={apps} postings={mine} lang={lang} />
 
-      <h2 className="mt-h2" id="paste">다른 공고 붙여 넣기</h2>
+      <h2 className="mt-h2" id="paste">{t(J.pasteTitle)}</h2>
       <form action={matPasteJob} className="mt-form">
         <label className="mt-field">
-          <span>공고 이름 (나만 봐요)</span>
-          <input name="label" maxLength={80} placeholder="예: 품질관리 신입" />
+          <span>{t(J.pasteName)}</span>
+          <input name="label" maxLength={80} placeholder={t(J.pasteNameHolder)} />
         </label>
         <label className="mt-field">
-          <span>공고 글</span>
+          <span>{t(J.pasteText)}</span>
           <textarea name="text" rows={6} required minLength={30} maxLength={12000}
-            placeholder="자격 요건 · 우대 사항 · 담당 업무" />
+            placeholder={t(J.pasteTextHolder)} />
         </label>
-        <button type="submit" className="mt-btn is-main is-block">내 경험과 맞춰 보기</button>
+        <button type="submit" className="mt-btn is-main is-block">{t(J.pasteGo)}</button>
         {/* 처리 안내는 한 화면에 한 번만(2026-11-02 운영 시험 "AI 느낌"). AI 분석을 켠 사람에게만, 보내는 자리 바로 아래에 */}
         {/* 붙여 넣은 공고 글은 다시 읽기에 쓰려고 그대로 저장된다(raw_text). 회사 이름이 든 글이므로 `저장하지 않는다` 고 쓰지 않는다(MAT 시험 M4) */}
-        <p className="mt-note">붙여 넣은 공고 글은 다시 읽을 수 있게 내 계정에 저장돼요. 공고 이름은 나만 봐요.{consent ? " 이 글은 Anthropic(미국)의 Claude로 읽어요." : ""}</p>
+        <p className="mt-note">{t(J.pasteNote)}{consent ? t(J.pasteAi) : ""}</p>
       </form>
     </main>
   );

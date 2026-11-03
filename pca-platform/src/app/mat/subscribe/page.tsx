@@ -3,7 +3,9 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { matTitle } from "@/lib/mat/title";
-import { CHECKOUT_SUB, PRICING } from "@/lib/mat/money-text";
+import { moneyText } from "@/lib/mat/money-text";
+import { matLang } from "@/lib/mat/lang";
+import { TITLE_TEXT } from "../mat-text";
 import { isPlan, priceLabel, PRICING_HREF, type Period } from "@/lib/pricing/config";
 import { subscriptionsOpen } from "@/lib/subscriptions/open";
 import { ipCountryFrom, routeForUser } from "@/lib/subscriptions/route";
@@ -11,7 +13,7 @@ import { priceFor, providerFor } from "@/lib/subscriptions/engine";
 import { lastDayKst } from "@/lib/track";
 import { SubscribeForm } from "./subscribe-form";
 
-export const generateMetadata = () => matTitle("정기결제");
+export const generateMetadata = () => matTitle(TITLE_TEXT.subscribe);
 
 /**
  * 정기결제 결제 화면(/legal/subscription 2조 3항: 다음 결제일 · 금액을 먼저 보이고 동의한 뒤 결제).
@@ -20,6 +22,8 @@ export const generateMetadata = () => matTitle("정기결제");
 export default async function MatSubscribe({ searchParams }: { searchParams: Promise<{ plan?: string; p?: string }> }) {
   const user = await requireUser();
   if (!subscriptionsOpen()) redirect(PRICING_HREF);
+  const lang = await matLang();
+  const { CHECKOUT_SUB, PRICING } = moneyText(lang);
   const sp = await searchParams;
   const plan = isPlan(sp.plan) ? sp.plan : "basic";
   const period: Period = sp.p === "90" ? 90 : 30;
@@ -43,7 +47,7 @@ export default async function MatSubscribe({ searchParams }: { searchParams: Pro
       <p className="mt-note">{CHECKOUT_SUB.cancelHow}</p>
       <p className="mt-note">{route.provider === "kcp" ? CHECKOUT_SUB.routeKr : CHECKOUT_SUB.routeGlobal}</p>
       {provider === "mock" ? <p className="mt-alert">{CHECKOUT_SUB.testMode}</p> : null}
-      <SubscribeForm plan={plan} period={period} />
+      <SubscribeForm plan={plan} period={period} lang={lang} />
       <p className="mt-note">
         <Link href="/legal/subscription">{PRICING.legal}</Link> · <Link href="/legal/refund">{PRICING.refund}</Link>
       </p>

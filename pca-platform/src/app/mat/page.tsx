@@ -6,7 +6,7 @@ import { queryOne } from "@/lib/db";
 import { activeCoreOrPick, currentState } from "@/lib/me-v3/platform";
 import { openActions } from "@/lib/me-v3/open-actions";
 import { domainName } from "@/lib/me-v3/runtime/session";
-import { matStage, monthWeekKo } from "@/lib/mat/stage";
+import { matStage, monthWeek, MAT_STAGES_EN } from "@/lib/mat/stage";
 import { pickJobs } from "@/lib/mat/pick-jobs";
 import { oneLine } from "@/lib/mat/short";
 import { withJosa } from "@/lib/me-v3/result/josa";
@@ -21,10 +21,15 @@ import { matStep } from "@/lib/funnel-v3";
 import { matAccess } from "@/lib/mat-access";
 import { NoTestHome } from "./no-test";
 import { SchoolEnding } from "./paywall";
-import { NOTEST } from "@/lib/mat/money-text";
 import { PRICING_HREF } from "@/lib/pricing/config";
+import { moneyText } from "@/lib/mat/money-text";
+import { matLang } from "@/lib/mat/lang";
+import { sayOf } from "@/lib/mat/copy";
+import { areaName } from "@/lib/assistant/catalog";
+import { enSummaries } from "@/lib/mat/posting-en";
+import { HOME_TEXT as H, TITLE_TEXT } from "./mat-text";
 
-export const generateMetadata = () => matTitle("홈");
+export const generateMetadata = () => matTitle(TITLE_TEXT.home);
 
 /**
  * MAT 홈(예상 화면 1번). **실제 자료가 먼저 선다**: 진단 한 줄 · 이번 주 할 일 · 새로 겹치는 공고.
@@ -38,9 +43,12 @@ export const generateMetadata = () => matTitle("홈");
 export default async function MatHome() {
   const user = await requireUser();
   await matStep("mat_open", user.id);
+  const lang = await matLang();
+  const t = sayOf(lang);
+  const NOTEST = moneyText(lang).NOTEST;
   /* 검사 결과도 기간권도 없으면 검사 없이 시작하는 홈(시안 NoTest). 전공이 없어도 여기서 고른다 */
   const acc = await matAccess(user.id);
-  if (!acc.paid && !acc.ready) return <NoTestHome userId={user.id} acc={acc} />;
+  if (!acc.paid && !acc.ready) return <NoTestHome userId={user.id} acc={acc} lang={lang} />;
   /* /me 와 같은 문: 검사도 학교 학과도 없어 전공을 정할 수 없으면 전공 목록으로 보낸다 */
   await activeCoreOrPick(user.id);
   const [st, act, jobs, ask, mine, apps] = await Promise.all([
@@ -58,8 +66,9 @@ export default async function MatHome() {
     postings: mine, apps,
     freshMatches: jobs.fresh,
     zoneMoved: st.zoneMoved.length,
+    lang,
   });
-  const name = (td: string) => domainName(st.core, td);
+  const name = (td: string) => (lang === "en" ? areaName(st.core, td, "en") : domainName(st.core, td));
   const owned = (st.model?.domains ?? []).filter((d) => d.owned.length > 0).map((d) => d.code);
   const s = matStage(st.zoneOf, owned);
   /* 비어 있는 곳은 **근거를 갖춘 영역을 빼고** 고른다(2026-11-02 운영 시험: 같은 영역이 "근거를 갖췄어요" 와
@@ -67,13 +76,15 @@ export default async function MatHome() {
   const gap = st.gaps.find((g) => !s.established.includes(g.domain)) ?? null;
 
   /* 상담사가 말하듯 한두 마디(2026-11-02 대표 "AI같아"). 숫자 · 판정어를 늘어놓지 않는다 */
+  const ko = lang !== "en";
   const diag = !st.model
-    ? "검사를 마치면 이번 주 할 일을 골라 드릴게요."
+    ? t(H.diagNoTest)
     : s.established.length
-      ? `${withJosa(s.established.slice(0, 2).map(name).join(" · "), "은는")} 근거가 있어요.${gap ? ` 이번엔 ${withJosa(name(gap.domain), "을를")} 채워 봐요.` : ""}`
+      ? t(H.diagHave, { areas: ko ? withJosa(s.established.slice(0, 2).map(name).join(" · "), "은는") : s.established.slice(0, 2).map(name).join(" and ") })
+        + (gap ? t(H.diagFill, { area: ko ? withJosa(name(gap.domain), "을를") : name(gap.domain) }) : "")
       : gap
-        ? `${name(gap.domain)}부터 하나씩 채워 봐요.`
-        : "적어 둔 경험이 늘면 다음 단계가 보여요.";
+        ? t(H.diagFrom, { area: name(gap.domain) })
+        : t(H.diagMore);
 
   const open = act.rows.filter((r) => r.state !== "done" && r.state !== "dropped");
   /* 무료는 이번 주 할 일 하나(`FREE_SCOPE.weekTasks`). 학교 · 기관 · 개인 이용권은 셋까지 */
@@ -82,42 +93,44 @@ export default async function MatHome() {
   const broadOnly = !jobs.main.length && jobs.broad.length > 0;
   const shown = (broadOnly ? jobs.broad : jobs.main).slice(0, 2);
   const fromJi = shown.some((p) => p.source === "jobindustry");
+  /* 영어 화면: 한국어 공고의 영어 요약(공고 분석이 영어로 만든 것을 공고마다 저장해 둔다) */
+  const en = lang === "en" ? await enSummaries(shown.map((p) => p.id)) : undefined;
 
   return (
     <main>
       <div className="mt-top">
-        <span className="mt-week">{monthWeekKo()}</span>
-        <Link href="/mat/brief" className="mt-week">이번 주 브리핑</Link>
+        <span className="mt-week">{monthWeek(lang)}</span>
+        <Link href="/mat/brief" className="mt-week">{t(H.briefLink)}</Link>
       </div>
-      <h1 className="mt-h1">{user.name}님, 이번 주 할 일</h1>
+      <h1 className="mt-h1">{t(H.hello, { name: user.name })}</h1>
 
       {/* 단계 막대는 점수판처럼 읽혀 걷었다(2026-11-02 대표 "AI느낌 안나게"). 글 한 줄로 */}
-      <section className="mt-stage" aria-label="지금 단계">
-        <p style={{ marginTop: 0 }}>지금은 <b>{s.stage}</b> 단계예요. {diag}</p>
-        {st.model ? <Link className="mt-link" href="/me/results">결과지 보기</Link> : <Link className="mt-link" href="/cores">검사 시작</Link>}
+      <section className="mt-stage" aria-label={t(H.stageAria)}>
+        <p style={{ marginTop: 0 }}>{t(H.stageLine, { stage: ko ? s.stage : MAT_STAGES_EN[s.stage] })} {diag}</p>
+        {st.model ? <Link className="mt-link" href="/me/results">{t(H.resultLink)}</Link> : <Link className="mt-link" href="/cores">{t(H.testLink)}</Link>}
       </section>
 
-      <SchoolEnding userId={user.id} />
+      <SchoolEnding userId={user.id} lang={lang} />
 
       {/* 주요 묶음 셋. 로그인 화면의 색 카드(파랑 · 초록 · 보라)와 같은 말씨 */}
-      <nav className="mt-tiles" aria-label="MAT 바로 가기">
+      <nav className="mt-tiles" aria-label={t(H.tilesAria)}>
         <Link href="/mat/jobs" className="mt-tile is-blue">
           <span className="mt-tile-ico"><Icon name="search" size={18} /></span>
-          <b>공고</b><small>전공에 맞는 공고와 맞춰 보기</small>
+          <b>{t(H.tileJobs)}</b><small>{t(H.tileJobsSub)}</small>
         </Link>
         <Link href="/mat/files" className="mt-tile is-green">
           <span className="mt-tile-ico"><Icon name="doc" size={18} /></span>
-          <b>경험 · 파일</b><small>경험 적기 · 증명서 올리기</small>
+          <b>{t(H.tileFiles)}</b><small>{t(H.tileFilesSub)}</small>
         </Link>
         <Link href="/mat/draft" className="mt-tile is-violet">
           <span className="mt-tile-ico"><Icon name="send" size={18} /></span>
-          <b>지원서 · 상담</b><small>문장 뼈대 · 면접 연습 · 상담</small>
+          <b>{t(H.tileDraft)}</b><small>{t(H.tileDraftSub)}</small>
         </Link>
       </nav>
 
       {tips.length ? (
         <>
-          <h2 className="mt-h2">이번 주 확인할 것</h2>
+          <h2 className="mt-h2">{t(H.checkTitle)}</h2>
           <div className="mt-list">
             {tips.map((t) => (
               <Link key={t.key} href={t.href} className="mt-row mt-row-link">
@@ -130,7 +143,7 @@ export default async function MatHome() {
 
       {/* 브리핑은 이번 주 할 일 하나를 든다. 홈도 첫 줄만 `이번 주`, 나머지는 `그다음` 으로 적어 두 화면의 수가 어긋나지 않게 한다
          (2026-11-03 MAT 시험 P1: 브리핑 1개 · 홈 3개) */}
-      <h2 className="mt-h2">이번 주 할 일{week.length > 1 ? " · 그다음" : ""}</h2>
+      <h2 className="mt-h2">{t(H.weekTitle)}{week.length > 1 ? t(H.weekThen) : ""}</h2>
       {week.length ? (
         <div className="mt-list">
           {week.map((r, wi) => (
@@ -140,18 +153,18 @@ export default async function MatHome() {
                 <input type="hidden" name="state" value="done" />
                 <input type="hidden" name="body" value={r.body} />
                 <input type="hidden" name="td" value={r.td_code ?? ""} />
-                <button type="submit" className="mt-check" aria-label={`끝냄: ${r.body}`}><i /></button>
+                <button type="submit" className="mt-check" aria-label={t(H.done, { body: r.body })}><i /></button>
               </form>
               <div className="mt-row-b">
                 <p>{oneLine(r.body)}</p>
-                <small>{[wi === 0 ? "이번 주" : "그다음", r.td_code ? name(r.td_code) : ""].filter(Boolean).join(" · ")}</small>
+                <small>{[wi === 0 ? t(H.weekNow) : t(H.weekLater), r.td_code ? name(r.td_code) : ""].filter(Boolean).join(" · ")}</small>
               </div>
             </div>
           ))}
         </div>
       ) : (
         <p className="mt-empty">
-          {st.model ? <>열린 할 일이 없어요. <Link href="/mat/jobs">공고 하나 분석하기</Link></> : <Link href="/cores">검사 시작</Link>}
+          {st.model ? <>{t(H.noOpen)} <Link href="/mat/jobs">{t(H.analyzeOne)}</Link></> : <Link href="/cores">{t(H.testLink)}</Link>}
         </p>
       )}
 
@@ -162,12 +175,12 @@ export default async function MatHome() {
       {/* 빈 칸은 칸째 숨긴다(2026-11-03 대표 "AI 느낌") */}
       {shown.length ? (
         <>
-          <h2 className="mt-h2">{broadOnly ? "조건을 넓힌 공고" : jobs.matched ? "맞는 공고" : "새 공고"} <Link href="/mat/jobs" className="mt-meta">전체</Link></h2>
-          <div className="mt-list">{shown.map((p) => <JobCard key={p.id} p={p} />)}</div>
+          <h2 className="mt-h2">{broadOnly ? t(H.broadTitle) : jobs.matched ? t(H.matchTitle) : t(H.newTitle)} <Link href="/mat/jobs" className="mt-meta">{t(H.all)}</Link></h2>
+          <div className="mt-list">{shown.map((p) => <JobCard key={p.id} p={p} lang={lang} en={en?.get(p.id)} />)}</div>
         </>
       ) : null}
-      {fromJi ? <p className="mt-src">공고 출처 잡인더스트리</p> : null}
-      {ask.ok ? <MatAsk /> : null}
+      {fromJi ? <p className="mt-src">{t(H.srcJi)}</p> : null}
+      {ask.ok ? <MatAsk lang={lang} /> : null}
     </main>
   );
 }

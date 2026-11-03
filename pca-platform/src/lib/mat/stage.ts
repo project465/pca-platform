@@ -53,3 +53,29 @@ export const REGION_KO: Record<string, string> = {
   "KR-CAPITAL": "수도권", "KR-CHUNGCHEONG": "충청권", "KR-YEONGNAM": "영남권", "KR-HONAM": "호남권", "KR-ETC": "그 밖",
 };
 export const SOURCE_KO: Record<string, string> = { work24: "고용24", jobindustry: "잡인더스트리", careerpeak: "커리어피크" };
+
+/* ── 영어 화면(2026-11-03). 한국어 이름 표와 같은 열쇠 ── */
+export const MAT_STAGES_EN: Record<MatStage, string> = { 탐색: "Explore", 준비: "Prepare", 실행: "Act", 도약: "Advance" };
+export const REGION_EN: Record<string, string> = {
+  "KR-CAPITAL": "Seoul area", "KR-CHUNGCHEONG": "Chungcheong", "KR-YEONGNAM": "Yeongnam", "KR-HONAM": "Honam", "KR-ETC": "Other",
+};
+export const SOURCE_EN: Record<string, string> = { work24: "Work24", jobindustry: "JobIndustry", careerpeak: "CareerPeak" };
+
+/** 출처 이름 · 지역 이름을 그 언어로 */
+export const sourceName = (src: string, lang: "ko" | "en" = "ko") => (lang === "en" ? SOURCE_EN : SOURCE_KO)[src] ?? src;
+export const regionName = (code: string, lang: "ko" | "en" = "ko") =>
+  (lang === "en" ? REGION_EN[code] ?? "Other" : REGION_KO[code] ?? "그 밖");
+
+/** `Week 1 of November` */
+export function monthWeek(lang: "ko" | "en", d = new Date()): string {
+  if (lang !== "en") return monthWeekKo(d);
+  const kst = new Date(d.toLocaleString("en-US", { timeZone: "Asia/Seoul" }));
+  const nth = Math.floor((kst.getDate() - 1) / 7) + 1;
+  return `Week ${nth} of ${kst.toLocaleString("en-US", { month: "long" })}`;
+}
+
+/** 마감 표시(`D-3` · `오늘 마감` · `상시`) */
+export function ddayLabel(left: number | null, lang: "ko" | "en" = "ko"): string {
+  if (lang === "en") return left === null ? "Open" : left <= 0 ? "Closes today" : `D-${left}`;
+  return left === null ? "상시" : left <= 0 ? "오늘 마감" : `D-${left}`;
+}

@@ -83,9 +83,9 @@ export type AiResult<T> =
 export type Effort = "low" | "medium" | "high";
 
 /** 시스템 글에 캐시 표시를 단다. 같은 기능의 다음 부름은 이 앞부분을 다시 읽지 않는다 */
-function systemBlocks(system: string) {
+function systemBlocks(system: string, style?: "ko" | "en") {
   /* 글쓰기 규칙(짧은 문장 · AI 말투 금지)을 모든 부름에 같이 붙인다(`style.ts`) */
-  return [{ type: "text" as const, text: withStyle(system), cache_control: { type: "ephemeral" as const } }];
+  return [{ type: "text" as const, text: withStyle(system, style), cache_control: { type: "ephemeral" as const } }];
 }
 
 function usageOf(u: {
@@ -153,6 +153,8 @@ export async function askStructured<S extends z.ZodType>(opts: {
   prefix?: string;
   /** 기본 60초. 긴 논문은 읽는 데 그보다 오래 걸린다 */
   timeoutMs?: number;
+  /** 답의 언어(글쓰기 규칙을 고른다). 비우면 시스템 글의 언어 */
+  style?: "ko" | "en";
 }): Promise<AiResult<z.infer<S>>> {
   if (!aiReady()) return { ok: false, reason: "off" };
   const g = await gate(opts.userId, opts.op);
@@ -168,7 +170,7 @@ export async function askStructured<S extends z.ZodType>(opts: {
       max_tokens: opts.maxTokens ?? 4000,
       ...fallback,
       thinking: { type: "adaptive" },
-      system: systemBlocks(opts.system),
+      system: systemBlocks(opts.system, opts.style),
       messages: [{
         role: "user",
         content: [
@@ -220,6 +222,8 @@ export async function* askStream(opts: {
   userId?: string;
   /** 바뀌지 않는 앞부분(학생 묶음). 캐시 표시를 단다 */
   prefix?: string;
+  /** 답의 언어(글쓰기 규칙을 고른다). 비우면 시스템 글의 언어 */
+  style?: "ko" | "en";
 }): AsyncGenerator<string, { ok: true } | { ok: false; reason: AiFail; reopen?: string }> {
   if (!aiReady()) return { ok: false, reason: "off" };
   const g = await gate(opts.userId, opts.op);
@@ -234,7 +238,7 @@ export async function* askStream(opts: {
       max_tokens: opts.maxTokens ?? 2000,
       ...fallback,
       thinking: { type: "adaptive" },
-      system: systemBlocks(opts.system),
+      system: systemBlocks(opts.system, opts.style),
       messages: [{
         role: "user",
         content: [
