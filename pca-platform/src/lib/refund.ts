@@ -50,18 +50,20 @@ type OrderRow = {
   kind: string;
   duration_days: number | null;
   refunded: number;
+  /** 정기결제 회차면 그 정기결제 번호. 칸이 없는 DB 면 늘 null */
+  subscription_id: string | null;
 };
 
 async function loadOrder(orderId: string): Promise<OrderRow | null> {
-  return queryOne<OrderRow>(
-    `SELECT o.id, o.user_id, o.product_code, o.amount, o.status, o.paid_at::text AS paid_at,
+  const sql = (sub: string) => `SELECT o.id, o.user_id, o.product_code, o.amount, o.status, o.paid_at::text AS paid_at,
             o.upgrades_attempt_id::text AS upgrades_attempt_id,
-            p.kind, p.duration_days,
+            p.kind, p.duration_days, ${sub} AS subscription_id,
             (SELECT count(*)::int FROM refunds r WHERE r.order_id = o.id) AS refunded
        FROM orders o JOIN products p ON p.code = o.product_code
-      WHERE o.id = $1`,
-    [orderId],
-  );
+      WHERE o.id = $1`;
+  /* 정기결제 칸(`schema_subscriptions.sql`)을 올리기 전 DB 에서도 돈다 */
+  return queryOne<OrderRow>(sql("o.subscription_id::text"), [orderId])
+    .catch(() => queryOne<OrderRow>(sql("NULL::text"), [orderId]));
 }
 
 function daysSince(iso: string): number {
@@ -89,6 +91,26 @@ export async function refundable(orderId: string): Promise<Verdict> {
     const { refillTouched } = await import("@/lib/assistant/ai-budget");
     if (await refillTouched(o.user_id)) return { ok: false, deny: "refill_used" };
     return { ok: true, amount: o.amount, reason: "before_start" };
+  }
+
+  // ── 정기결제 회차(/legal/subscription 5조) ─────────────────────────
+  //    결제 후 7일 안 + 그 회차에 유료 기능을 쓰지 않음 → 전액. 그 밖 → 결제 금액 ÷ 기간 일수 × 남은 일수(원 미만 버림).
+  //    회사 사유 전액은 운영자 판단(`operatorOverride`)이다
+  if (o.subscription_id && o.kind === "track") {
+    const ent = await queryOne<{ starts_at: string; ends_at: string }>(
+      `SELECT starts_at::text, ends_at::text FROM entitlements WHERE order_id = $1 ORDER BY id DESC LIMIT 1`, [o.id]);
+    if (!ent) return { ok: false, deny: "not_found" };
+    const st = new Date(ent.starts_at).getTime();
+    const en = new Date(ent.ends_at).getTime();
+    const left = en - Math.max(Date.now(), st);
+    if (left <= 0) return { ok: false, deny: "expired_window" };
+    if (daysSince(o.paid_at) <= WINDOW_DAYS && !(await usedPaidFeature(o.user_id, new Date(Math.min(st, Date.parse(o.paid_at))).toISOString()))) {
+      return { ok: true, amount: o.amount, reason: "before_start", note: "7일 안 · 유료 기능 안 씀" };
+    }
+    const days = o.duration_days ?? Math.round((en - st) / 86_400_000);
+    const leftDays = Math.min(days, Math.ceil(left / 86_400_000));
+    const amount = Math.min(o.amount, Math.floor((o.amount / days) * leftDays));
+    return { ok: true, amount, reason: "pass_remaining", note: `잔여 ${leftDays}일 · 일할` };
   }
 
   // ── 기간권: 가분적이라 남은 기간을 돌려준다(계속거래) ────────────
@@ -151,6 +173,22 @@ export async function refundable(orderId: string): Promise<Verdict> {
 }
 
 /**
+ * 그 회차에 **유료 기능**을 썼는가(/legal/subscription 5조 1항: 공고 분석(무료 1회 제외) · 지원서 초안 · 면접 연습 ·
+ * 파일 반영). 무료 칸으로 만든 분석은 빼고 센다. 표가 없으면 쓰지 않은 것으로 본다(덜 주는 쪽으로 틀리지 않는다)
+ */
+async function usedPaidFeature(userId: string, sinceIso: string): Promise<boolean> {
+  const n = async (sql: string) => (await queryOne<{ n: number }>(sql, [userId, sinceIso]).catch(() => null))?.n ?? 0;
+  const postings = await n(`SELECT count(*)::int AS n FROM assistant_postings p WHERE p.user_id = $1 AND p.created_at >= $2
+      AND NOT EXISTS (SELECT 1 FROM mat_free_claims c WHERE c.posting_id = p.id)`);
+  if (postings > 0) return true;
+  if (await n(`SELECT count(*)::int AS n FROM assistant_drafts WHERE user_id = $1 AND created_at >= $2`) > 0) return true;
+  if (await n(`SELECT count(*)::int AS n FROM assistant_uploads WHERE user_id = $1 AND created_at >= $2 AND status IN ('read','empty')`) > 0) return true;
+  if (await n(`SELECT count(*)::int AS n FROM research_docs WHERE user_id = $1 AND created_at >= $2`) > 0) return true;
+  return await n(`SELECT count(*)::int AS n FROM assistant_ai_calls WHERE user_id = $1 AND created_at >= $2 AND outcome = 'ok'
+      AND (op LIKE 'mat.ask.draft%' OR op LIKE 'mat.ask.interview%')`) > 0;
+}
+
+/**
  * 환불을 기록한다. **돈을 보내지는 않는다**: PG 가 붙기 전이라 집행할
  * 길이 없고, 학교 계약과 쇼핑몰 판매는 애초에 이쪽에서 보내지 않는다.
  *
@@ -197,6 +235,13 @@ export async function recordRefund(
  */
 async function closeOrderTx(c: PoolClient, orderId: string): Promise<void> {
   await c.query(`UPDATE orders SET status = 'refunded' WHERE id = $1`, [orderId]);
+  /* 정기결제 회차를 돌려주면 다음 자동 결제도 멈춘다(돌려받은 뒤 다시 청구되면 안 된다). 칸이 없는 DB 면 넘어간다 */
+  await c.query(`SAVEPOINT sub`);
+  await c.query(
+    `UPDATE subscriptions s SET status = 'canceled', cancel_reason = 'refunded', canceled_at = now(), next_charge_at = NULL,
+            current_period_end = now(), updated_at = now()
+       FROM orders o WHERE o.id = $1 AND s.id = o.subscription_id AND s.status IN ('active','past_due','paused')`, [orderId])
+    .then(() => c.query(`RELEASE SAVEPOINT sub`), () => c.query(`ROLLBACK TO SAVEPOINT sub`));
   /* 추가 이용권이면 그 줄을 닫는다(표가 없으면 없는 줄이라 넘어간다) */
   await c.query(`SAVEPOINT refill`);
   await c.query(`UPDATE mat_refills SET status = 'refunded' WHERE order_id = $1`, [orderId])

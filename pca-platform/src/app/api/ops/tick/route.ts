@@ -5,6 +5,8 @@ import { runAssistantTick } from "@/lib/assistant/nudges";
 import { runJobsTick } from "@/lib/jobs/tick";
 import { retryStuck } from "@/lib/me-v3/recompute";
 import { syncAssessmentComplete } from "@/lib/funnel-v3";
+import { runSubscriptionTick } from "@/lib/subscriptions/engine";
+import { flushSubscriptionNotices } from "@/lib/subscriptions/notices";
 
 export const dynamic = "force-dynamic";
 
@@ -34,6 +36,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false }, { status: 401, headers: { "cache-control": "no-store" } });
   }
   const low = await checkCodeStock();
+  /* 정기결제: 7일 전 안내 · 결제일 청구 · 하루 한 번 다시 시도 · 멈춤 · 금액 변경 안내 · 학교 이용권 끝 안내.
+     **실패해도 메일 내보내기를 막지 않는다** */
+  const subscriptions = await runSubscriptionTick().catch(() => null);
+  const subNotices = await flushSubscriptionNotices().catch(() => null);
   /* MAT 알림을 먼저 쌓는다. 그래야 같은 당번이 그 메일까지 내보낸다.
      **실패해도 메일 내보내기를 막지 않는다** */
   const assistant = await runAssistantTick().catch(() => null);
@@ -45,7 +51,7 @@ export async function POST(req: Request) {
   /* MAT 수치: 채점된 V3 응시를 `검사 완료` 로 옮겨 센다(검사 코드는 동결이라 거기서 적지 않는다) */
   const funnel = await syncAssessmentComplete().catch(() => null);
   return NextResponse.json(
-    { ok: true, ...mail, lowStock: low.length, assistant, jobs, recompute, funnel },
+    { ok: true, ...mail, lowStock: low.length, assistant, jobs, recompute, funnel, subscriptions, subNotices },
     { headers: { "cache-control": "no-store" } },
   );
 }

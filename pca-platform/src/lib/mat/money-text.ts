@@ -95,6 +95,10 @@ export const CHECKOUT_SUB = {
   routeKr: "국내 카드 · NHN KCP · 원화",
   routeGlobal: "해외 카드 · Paddle · 달러",
   cancelHow: "해지는 [내 정보 › 이용권]에서 버튼 하나로 해요",
+  sdkFail: "결제 모듈을 불러오지 못했어요. 새로고침한 뒤 다시 눌러 주세요",
+  liveSub: "이미 쓰는 정기결제가 있어요",
+  closed: "지금은 결제할 수 없어요",
+  failed: "결제가 되지 않았어요",
 } as const;
 
 export const SUB_STATE = {
@@ -114,4 +118,28 @@ export const SUB_STATE = {
 export const JOBS_TEXT = {
   research: "연구소 · 박사급 공고",
   count: (n: number) => `${n}개`,
+} as const;
+
+export const PASS_TEXT = {
+  subLink: "정기결제(기본 · 연구자) 요금 보기",
+  msg: {
+    ok: "결제됐어요. 지금부터 쓸 수 있어요.",
+    fail: "결제가 되지 않았어요. 카드를 확인하고 다시 해 주세요.",
+    pending: "결제를 확인하고 있어요. 잠시 뒤 새로고침해 주세요.",
+    canceled: "해지했어요. 남은 기간은 끝까지 쓸 수 있어요.",
+    reconsent: "바뀐 금액에 동의했어요.",
+    resumed: "카드를 바꿔 다시 이어졌어요.",
+  } as Record<string, string>,
+} as const;
+
+export const JI_TEXT = {
+  kicker: "잡인더스트리에서 온 공고",
+  title: "이 공고, 내 경험과 맞춰 볼까요?",
+  lead: "공고의 요건과 내 경험을 줄마다 맞춰 봐요. 검사를 하지 않아도 돼요.",
+  goFree: "이 공고, 내 경험과 맞춰 보기 · 무료 1회",
+  go: "이 공고, 내 경험과 맞춰 보기",
+  goPay: "이 공고 분석하기 · MAT 이용권",
+  source: "잡인더스트리 공고 원문",
+  none: "들고 온 공고가 없어요.",
+  jobs: "공고 보기",
 } as const;
