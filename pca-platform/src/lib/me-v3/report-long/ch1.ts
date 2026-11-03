@@ -64,7 +64,10 @@ export function glance(x: Inputs, d: X): Page {
       label: s0.zone === "Z1_EVIDENCE_ESTABLISHED" ? "가장 분명한 강점" : "가장 많이 해 본 영역",
       meaning: ev.artifacts.length
         ? `${nm}에서는 일을 직접 맡아 했고, 그 결과를 ${j(ev.artifacts[0], "으로")} 남겼습니다.`
-        : `${nm}에서 직접 해 본 판단이 ${s0.confirmed.length}가지 나왔어요. 그 일을 보여 줄 결과물은 체크리스트에서 아직 고르지 않았습니다.`,
+        /* 결과물이 기록에 있으면 `아직 고르지 않았다` 고 쓰지 않는다(2026-11-03 고려대 실제 화면 N1: 다음 줄들과 부딪쳤다) */
+        : d.hasArtifact(s0.code)
+          ? `${nm}에서 직접 해 본 판단이 ${s0.confirmed.length}가지 나왔어요. 결과물은 경험 기록에 있으니, 검사의 체크리스트에서도 그 결과물을 골라 두면 이 영역이 더 분명해져요.`
+          : `${nm}에서 직접 해 본 판단이 ${s0.confirmed.length}가지 나왔어요. 그 일을 보여 줄 결과물은 아직 이 결과에 이름이 담기지 않았어요. 남긴 결과물이 있다면 경험 기록에 그 이름을 적어 두세요.`,
       fact: said.length ? `고른 항목: ${list3(said)}` : `직접 해 본 판단: ${axes}${s0.confirmed.length > 4 ? ` 외 ${s0.confirmed.length - 4}가지` : ""}`,
       action: s0.zone === "Z1_EVIDENCE_ESTABLISHED"
         ? "06장 자기소개서 재료로 옮겨 한 문단을 써 보세요."
