@@ -910,6 +910,7 @@ export const kr: SiteContent = {
           { label: "이용약관", href: "/legal/terms" },
           { label: "개인정보처리방침", href: "/legal/privacy" },
           { label: "환불정책", href: "/legal/refund" },
+          { label: "정기결제 운영규정", href: "/legal/subscription" },
         ],
       },
     ],

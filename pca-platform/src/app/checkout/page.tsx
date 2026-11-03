@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/session";
 import { getProduct } from "@/lib/orders";
@@ -93,6 +94,12 @@ export default async function CheckoutPage({
             <li>{tx("payTrackNote1", toLang2(lang))}</li>
             <li>{tx("payTrackNote2", toLang2(lang))}</li>
             <li>{tx("payTrackNote3", toLang2(lang))}</li>
+            {/* 결제 화면에서 청약철회 · 정기결제 규정을 바로 연다(2026-11-03 NHN KCP 정기결제 심사) */}
+            <li>
+              <Link href="/legal/refund">{lang === "en" ? "Refund policy" : "환불정책"}</Link>
+              {" · "}
+              <Link href="/legal/subscription">{lang === "en" ? "Subscription policy" : "정기결제 운영규정"}</Link>
+            </li>
           </ul>
         ) : (
           <ul className="paynote">

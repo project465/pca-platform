@@ -55,4 +55,5 @@ export const LEGAL_FILES = [
   "sites/careermetri/legal/01-terms.md",
   "sites/careermetri/legal/02-privacy.md",
   "sites/careermetri/legal/03-refund.md",
+  "sites/careermetri/legal/04-subscription.md",
 ] as const;

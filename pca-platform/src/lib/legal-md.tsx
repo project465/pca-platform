@@ -115,17 +115,20 @@ function parse(src: string): Block[] {
   return out;
 }
 
-/** 굵게(`**`)와 코드(`` ` ``)만 읽는다. 짝이 없는 기호는 글자로 남는다 */
+/** 굵게(`**`) · 코드(`` ` ``) · 이 사이트 안 링크(`[글](/legal/…)`)만 읽는다. 짝이 없는 기호는 글자로 남는다.
+    링크는 `/` 로 시작하는 주소만 걸린다(밖으로 나가는 주소는 글자로 남는다) */
 function inline(text: string, key: string): ReactNode[] {
   const out: ReactNode[] = [];
-  const re = /\*\*(.+?)\*\*|`([^`]+)`/g;
+  const re = /\*\*(.+?)\*\*|`([^`]+)`|\[([^\]]+)\]\((\/[^)\s]*)\)/g;
   let at = 0;
   let n = 0;
   for (let m = re.exec(text); m; m = re.exec(text)) {
     if (m.index > at) out.push(text.slice(at, m.index));
     out.push(m[1] !== undefined
       ? <strong key={`${key}-${n++}`}>{inline(m[1], `${key}-${n}`)}</strong>
-      : <code key={`${key}-${n++}`}>{m[2]}</code>);
+      : m[2] !== undefined
+        ? <code key={`${key}-${n++}`}>{m[2]}</code>
+        : <a key={`${key}-${n++}`} href={m[4]}>{m[3]}</a>);
     at = m.index + m[0].length;
   }
   if (at < text.length) out.push(text.slice(at));

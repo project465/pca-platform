@@ -47,6 +47,7 @@ const nextConfig: NextConfig = {
       { source: "/terms", destination: app("/legal/terms"), statusCode: 301 },
       { source: "/privacy", destination: app("/legal/privacy"), statusCode: 301 },
       { source: "/refund", destination: app("/legal/refund"), statusCode: 301 },
+      { source: "/subscription", destination: app("/legal/subscription"), statusCode: 301 },
       /* 2026-10-21 에 접은 옛 쪽들. 같은 이야기를 하는 새 쪽으로 넘긴다 */
       { source: "/adopt", destination: "/universities", statusCode: 301 },
       { source: "/anchor", destination: "/universities", statusCode: 301 },

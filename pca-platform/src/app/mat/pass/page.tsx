@@ -98,7 +98,7 @@ export default async function MatPass() {
           ) : null}
           {/* 결제 단추 곁에 청약철회 · 환불 조건이 있는 자리를 둔다(전자상거래법 제13조 제2항, 2026-11-03 MAT 시험 M3) */}
           <p className="mt-note">
-            결제 전에 <Link href="/legal/refund">환불정책</Link>(청약철회 · 환불 조건)과 <Link href="/legal/terms">이용약관</Link>을 확인해 주세요.
+            결제 전에 <Link href="/legal/refund">환불정책</Link>(청약철회 · 환불 조건), <Link href="/legal/subscription">정기결제 운영규정</Link>, <Link href="/legal/terms">이용약관</Link>을 확인해 주세요.
           </p>
         </form>
       ) : (
