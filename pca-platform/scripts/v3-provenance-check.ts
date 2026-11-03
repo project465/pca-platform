@@ -257,11 +257,14 @@ async function main(): Promise<void> {
         === createHash("sha256").update(kept).digest("hex"));
     /* **등록부가 정하는 학생 공개 상태를 `{ preview: false }` 로 묻는다.**
        미리보기를 거쳐 물으면 이 줄이 아무것도 세지 않는다 */
-    ok("학생에게는 전기전자가 여전히 닫혀 있다",
-      !sellableCores("KR", undefined, { preview: false })
-        .some((c) => c.code === "EE_CORE_V1"),
-      sellableCores("KR", undefined, { preview: false })
-        .map((c) => c.code).join(" ") || "열린 Core 없음");
+    /* 2026-10 사업주 결정으로 Core 를 학생에게 열었다. 그래서 `전기전자가 닫혀 있다` 를
+       세지 않고, **등록부가 `open_to_students: false` 로 닫은 것이 새지 않는지**를 센다 */
+    const openNow = sellableCores("KR", undefined, { preview: false }).map((c) => c.code);
+    const closed = new Set((JSON.parse(readFileSync(REG, "utf8")).cores as { code: string; open_to_students?: boolean }[])
+      .filter((c) => c.open_to_students === false).map((c) => c.code));
+    ok("등록부가 닫은 Core 는 학생에게 열리지 않는다",
+      !openNow.some((c) => closed.has(c)),
+      openNow.join(" ") || "열린 Core 없음");
     /* 치운다. 남겨 두면 다음 사람이 이 줄을 손님 자료로 읽는다 */
     for (const id of made) {
       await query("DELETE FROM v3_attempts WHERE user_id=$1", [id]);

@@ -127,3 +127,17 @@ export function checkoutReady(): boolean {
   // mock 은 개발·검증에서만 결제창을 흉내 낸다
   return name === "mock" && process.env.NODE_ENV !== "production";
 }
+
+/**
+ * 가격표가 **유료 단추를 그려도 되는가.** 던지지 않는다.
+ *
+ * 상품이 켜져 있어도 결제 대행사 설정이 비어 있으면 누른 사람이 예외
+ * 화면을 만난다. `marketReadiness()` 의 mock 판정은 `NODE_ENV` 를 보는데,
+ * 공개 전 배포본도 production 으로 빌드되므로 그 값으로는 staging 의 가짜
+ * 결제가 닫힌 것으로 읽힌다. mock 은 `mockPaymentsAllowed()`(APP_ENV)로 본다.
+ */
+export function payOpen(market: "KR" | "GLOBAL"): boolean {
+  const name = process.env.PAYMENTS_PROVIDER ?? "mock";
+  if (name === "mock") return mockPaymentsAllowed();
+  return marketReadiness(market).ready;
+}

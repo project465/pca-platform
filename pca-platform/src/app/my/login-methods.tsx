@@ -19,8 +19,9 @@ const ALL: Provider[] = ["google", "apple"];
  * 두고 끊기는 고객지원으로 보낸다.
  */
 export default async function LoginMethods({
-  userId, notice,
-}: { userId: string; notice?: string }) {
+  userId, notice, lang = "ko",
+}: { userId: string; notice?: string; lang?: "ko" | "en" }) {
+  const en = lang === "en";
   const [linked, pw] = await Promise.all([
     accountsOf(userId), hasPasswordLogin(userId),
   ]);
@@ -29,27 +30,28 @@ export default async function LoginMethods({
 
   const rows = [
     {
-      k: "이메일 · 학번 로그인",
-      v: pw ? "쓰고 있습니다" : "쓰지 않습니다",
+      k: en ? "Email or student ID" : "이메일 · 학번 로그인",
+      v: pw ? (en ? "In use" : "쓰고 있습니다") : (en ? "Not in use" : "쓰지 않습니다"),
     },
     ...ALL.map((p) => ({
-      k: `${PROVIDER_LABEL[p]} 로그인`,
+      k: en ? PROVIDER_LABEL[p] : `${PROVIDER_LABEL[p]} 로그인`,
       v: have.has(p)
-        ? `연결됨${(() => {
+        ? `${en ? "Connected" : "연결됨"}${(() => {
           const row = linked.find((l) => l.provider === p);
           if (!row?.email) return "";
           /* 애플이 가려 준 주소라는 것을 적는다. 적지 않으면 모르는
              주소를 보고 자기 계정이 아니라고 읽는다 */
           return isPrivateRelay(row.email)
-            ? " · 애플이 가려 준 주소" : ` · ${row.email}`;
+            ? (en ? " · address hidden by Apple" : " · 애플이 가려 준 주소") : ` · ${row.email}`;
         })()}`
-        : on.includes(p) ? "연결 안 됨" : "지금 켜져 있지 않습니다",
+        : on.includes(p) ? (en ? "Not connected" : "연결 안 됨")
+        : (en ? "Not available right now" : "지금 켜져 있지 않습니다"),
     })),
   ];
 
   return (
     <section className="cm-card is-wide">
-      <h2>로그인 방법</h2>
+      <h2>{en ? "Sign-in methods" : "로그인 방법"}</h2>
       {notice ? <p className="cm-note">{notice}</p> : null}
       <dl className="cm-dl">
         {rows.map((r) => (
@@ -67,7 +69,7 @@ export default async function LoginMethods({
           <form key={p} action={linkProvider}>
             <input type="hidden" name="provider" value={p} />
             <button className="cm-btn" type="submit">
-              {PROVIDER_LABEL[p]} 연결하기
+              {en ? `Connect ${PROVIDER_LABEL[p]}` : `${PROVIDER_LABEL[p]} 연결하기`}
             </button>
           </form>
         ))}
@@ -75,13 +77,13 @@ export default async function LoginMethods({
 
       {!pw && linked.length === 1 ? (
         <p className="cm-none">
-          지금 들어오는 길이 하나입니다. 하나를 더 연결해 두시면 그 길이
-          막히는 날에도 들어오실 수 있습니다.
+          {en ? "You have one way to sign in. Connect another so you can still get in if that one stops working."
+            : "지금 들어오는 길이 하나입니다. 하나를 더 연결해 두시면 그 길이 막히는 날에도 들어오실 수 있습니다."}
         </p>
       ) : null}
       <p className="cm-none">
-        연결을 끊어야 하신다면 고객지원으로 알려 주십시오. 마지막 하나가
-        끊기면 계정에 들어오실 수 없어서 화면에 두지 않았습니다.
+        {en ? "To disconnect a sign-in method, contact support. If the last one is removed you can't get into your account, so that option isn't on this page."
+          : "연결을 끊어야 하신다면 고객지원으로 알려 주십시오. 마지막 하나가 끊기면 계정에 들어오실 수 없어서 화면에 두지 않았습니다."}
       </p>
     </section>
   );

@@ -39,6 +39,17 @@ const FIELDS: { key: string; env: string; ko: string; en: string }[] = [
 
 import { get, getAll, sourceOf } from "./settings";
 
+/**
+ * 영문 상호. **일곱 칸에 들지 않는다**: 법이 요구하는 것은 등록증의 상호이고
+ * 영문 상호는 영어 화면에서 읽히게 하는 덧붙임이다. 비어 있어도 런칭을 막지
+ * 않고, 있으면 영어 꼬리말이 `영문 상호 (등록 상호)` 로 적는다. **등록 상호를
+ * 영문 상호로 갈아 끼우지 않는다** — 2026-10-06 에 법정 문서의 영문 상호를
+ * 등록 상호로 바로잡은 까닭이 그것이다.
+ */
+export async function businessNameEn(): Promise<string | null> {
+  return get("name_en", "BUSINESS_NAME_EN");
+}
+
 export type BusinessInfo = {
   fields: BusinessField[];
   /** 아직 비어 있는 칸의 이름 */

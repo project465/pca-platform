@@ -41,7 +41,7 @@ const FIELD_AXIS: { field: keyof Experience & string; axis: Axis; what: string }
   { field: "problems", axis: "J1", what: "어떤 문제였나" },
   { field: "decisions", axis: "J3", what: "직접 정한 것" },
   { field: "artifacts", axis: "J5", what: "남긴 것" },
-  { field: "verifications", axis: "J6", what: "견주어 확인한 것" },
+  { field: "verifications", axis: "J6", what: "비교해 확인한 것" },
   { field: "used_where", axis: "J8", what: "쓰인 곳" },
 ];
 
@@ -411,6 +411,41 @@ export async function autoRecompute(userId: string): Promise<AutoOutcome> {
     }
     return { state: "failed" };
   }
+}
+
+/**
+ * 밤 당번이 **멈춘 반영을 다시 집는다.**
+ *
+ * 저장 뒤에 도는 반영이 틀어지면 그 줄은 `failed` 로 서고, 전에는 그 사람이 다음에
+ * 경험을 저장하거나 `다시 시도` 를 눌러야만 다시 돌았다. 다시 들어오지 않는 사람은
+ * 지금 상태가 옛것으로 남는다. 그래서 당번이 몇 분마다 그런 사람을 찾아
+ * **사람이 누를 때와 같은 자리**(`autoRecompute`)를 부른다.
+ *
+ * - 막 쌓인 줄은 건드리지 않는다(10분). 저장한 쪽이 지금 돌리고 있을 수 있다.
+ * - 다섯 번 넘게 틀어진 줄은 집지 않는다. 고칠 것이 코드에 있으니 사람이 봐야 하고,
+ *   몇 분마다 같은 실패를 쌓으면 운영 표가 그 줄로만 찬다.
+ * - 한 번에 `limit` 명까지. 당번 한 번이 반영으로 오래 붙들리지 않게 한다.
+ */
+export async function retryStuck(limit = 20): Promise<{ users: number; done: number; failed: number }> {
+  const rows = await query<{ user_id: string }>(
+    `SELECT DISTINCT user_id::text FROM career_events
+      WHERE user_id IS NOT NULL AND attempts_n < 5
+        AND ((status IN ('queued','failed') AND created_at < now() - interval '10 minutes')
+             OR (status = 'running' AND started_at < now() - interval '5 minutes'))
+      LIMIT $1`, [limit]);
+  let done = 0; let failed = 0;
+  for (const r of rows) {
+    /* 한 사람이 던져도 다음 사람은 집는다. **조용히 넘기지 않는다**: 남겨야 운영 표에 선다 */
+    try {
+      const o = await autoRecompute(r.user_id);
+      if (o.state === "done") done += 1;
+      if (o.state === "failed") failed += 1;
+    } catch (e) {
+      failed += 1;
+      opFail({ operation: "recompute.retry", ref: ref("user", r.user_id), step: "auto", category: "db" }, e);
+    }
+  }
+  return { users: rows.length, done, failed };
 }
 
 /**

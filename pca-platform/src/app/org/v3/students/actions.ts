@@ -153,3 +153,48 @@ export async function applyAction(
     issued: r.created,
   };
 }
+
+/* ── MAT 학교 단체 이용권 ─────────────────────────────────────────── */
+
+/**
+ * 담당자가 학생에게 MAT 을 연다. 한 명이든 여러 명이든 같은 길이다.
+ *
+ * **인원과 학교를 이 함수가 세지 않는다.** 세고 막는 자리는
+ * `campus/mat.ts` 의 `grantMat` 하나이고(설계 원칙 10), 여기는 범위를
+ * 정하고 결과를 사람의 말로 옮긴다.
+ */
+export async function matAction(
+  _prev: ManageState, form: FormData,
+): Promise<ManageState> {
+  const sc = await scope();
+  if (!sc) return { err: "학교 등록부에 연결된 기관이 아닙니다." };
+  const { grantMat } = await import("@/lib/campus/mat");
+  let ids = form.getAll("user_id").map(String).filter(Boolean);
+  /* **지금 조건에 맞는 학생 전체.** 화면은 50줄씩 넘기므로 화면에 보이는
+     줄만 모으면 담당자가 고른 범위와 실제로 열린 범위가 갈린다. 같은
+     조건으로 명단을 다시 읽는다(명단 화면과 같은 함수) */
+  if (String(form.get("scope") ?? "") === "filter") {
+    const { listStudents } = await import("@/lib/campus/manage");
+    const st = String(form.get("state") ?? "all");
+    const { rows } = await listStudents({
+      universityCode: sc.uni,
+      q: String(form.get("q") ?? ""),
+      department: String(form.get("department") ?? ""),
+      college: String(form.get("college") ?? ""),
+      state: (["all", "none", "in_progress", "scored"].includes(st) ? st : "all") as
+        "all" | "none" | "in_progress" | "scored",
+      limit: 5000,
+    });
+    ids = rows.filter((r) => r.account === "active").map((r) => r.user_id);
+  }
+  const r = await grantMat(sc.uni, String(form.get("pool_id") ?? ""), ids, sc.actor);
+  revalidatePath("/org/v3/students");
+  if (!r.ok) return { err: r.why };
+  const bits: string[] = [];
+  if (r.opened) bits.push(`${r.opened}명에게 MAT 을 열었습니다.`);
+  if (r.already) bits.push(`${r.already}명은 이 묶음으로 이미 열려 있습니다.`);
+  if (r.short) bits.push(`남은 인원이 모자라 ${r.short}명은 열지 못했습니다.`);
+  if (r.foreign) bits.push(`${r.foreign}명은 이 학교의 사용 중인 계정이 아니라 건너뛰었습니다.`);
+  if (!r.opened) return { err: bits.join(" ") || "새로 연 학생이 없습니다." };
+  return { ok: bits.join(" ") };
+}

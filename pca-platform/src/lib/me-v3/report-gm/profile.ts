@@ -148,13 +148,13 @@ export function reading(m: ResultModel, exps: Experience[]): Reading {
   const vers = m.domains.reduce((n, d) => n + d.verifications.length, 0);
   const evidence = picks === 0 && exps.length === 0
     ? "체크리스트에서 고른 근거와 적어 둔 경험 기록이 모두 없습니다. 아래 판단은 응답 문항만으로 읽은 것입니다."
-    : `체크리스트에서 고른 근거 ${picks}개(그중 결과물 ${arts}개 · 견준 대상 ${vers}개)와 적어 둔 경험 기록 ${exps.length}건을 함께 읽었습니다.${arts === 0 ? " 남긴 결과물이 하나도 고르지 않아, 지원서에서 ‘무엇을 만들었는가’에 답할 자리가 비어 있습니다." : ""}`;
+    : `체크리스트에서 고른 근거 ${picks}개(그중 결과물 ${arts}개 · 비교 대상 ${vers}개)와 적어 둔 경험 기록 ${exps.length}건을 함께 읽었습니다.${arts === 0 ? " 남긴 결과물을 하나도 고르지 않아, 지원서에서 ‘무엇을 만들었는가’에 답할 내용이 비어 있습니다." : ""}`;
 
   const q = m.response_quality;
   const caution = q.reasons.includes("CHECKLIST_MISMATCH_HIGH")
     ? "‘내가 정했고 그 결과가 쓰였다’고 답한 판단이 많은데, 그 판단을 받쳐 줄 체크리스트 근거를 고르지 않았습니다. 그래서 그 판단들은 ‘직접 해 봄’까지만 적었습니다. 면접에서 같은 질문을 받으면 장면 하나를 들어 설명할 수 있는지 먼저 확인해 보세요."
     : q.reasons.includes("CHECKLIST_MISMATCH_LOW")
-      ? "‘해 본 적 없다’고 답한 판단에 체크리스트 근거를 고른 자리가 있습니다. 응답 쪽을 따랐습니다."
+      ? "‘해 본 적 없다’고 답한 판단에 체크리스트 근거를 고른 경우가 있습니다. 응답 쪽을 따랐습니다."
       : q.reasons.includes("LOW_VARIANCE_GRID")
         ? "열두 영역에 거의 같은 값으로 답하셔서 관심만으로는 영역 사이 차이를 읽기 어렵습니다."
         : null;
@@ -162,7 +162,7 @@ export function reading(m: ResultModel, exps: Experience[]): Reading {
   const P: string[] = [];
   if (strong.length) {
     const s = strong.slice(0, 2);
-    P.push(`가장 높게 나온 판단은 ${s.map((x) => `‘${x.label}’(${x.where.join(" · ")})`).join("과 ")}입니다. 이 단계는 ‘${s[0].scene}’ 같은 일을 직접 기준을 정해 했다고 답하고, 같은 장면을 체크리스트에서도 둘 이상 고른 경우에만 섭니다.`);
+    P.push(`가장 높게 나온 판단은 ${s.map((x) => `‘${x.label}’(${x.where.join(" · ")})`).join("과 ")}입니다. 이 단계는 ‘${s[0].scene}’ 같은 일을 직접 기준을 정해 했다고 답하고, 같은 장면을 체크리스트에서도 둘 이상 고른 경우에만 나옵니다.`);
   } else if (hi) {
     P.push("‘직접 기준을 정함’ 단계까지 올라간 판단은 아직 없습니다. 직접 해 본 판단은 있으므로, 다음 과제에서는 그 가운데 하나를 골라 기준을 내가 정하고 그 근거를 남기는 쪽이 한 단계를 올리는 가장 짧은 길입니다.");
   }
@@ -185,7 +185,7 @@ export function reading(m: ResultModel, exps: Experience[]): Reading {
   if (use.length) ML.push(`꺼내 쓸 강점 칸에 선 영역은 ${use.join(" · ")}입니다. 관심과 근거가 같은 쪽을 가리키므로 지원서의 중심 경험으로 둘 수 있습니다.`);
   if (base.length) ML.push(`${withJosa(base.join(" · "), "은는")} 해 본 근거는 있지만 관심이 높지 않았습니다. 주력 경험으로 내세우기보다, 팀 과제에서 맡은 기본기로 짧게 쓰는 편이 자연스럽습니다.`);
   if (tryIt.length) ML.push(`${withJosa(tryIt.join(" · "), "은는")} 관심이 높은데 근거가 아직 적어 ‘먼저 겪어 볼 영역’에 섰습니다. 짧게 끝나는 과제 하나가 이 칸을 위로 올립니다.`);
-  if (later.length) ML.push(`${later.join(" · ")}에도 관심을 높게 답했지만 이번 검사에서는 그 영역의 판단을 깊게 묻지 않았습니다.${laterRec.length ? ` 그중 ${laterRec.join(" · ")}은 경험 기록이 있어 다음 검사에서 확인할 첫 후보입니다.` : " 지도에서 아래 줄에 선 것은 근거가 없어서가 아니라 묻지 않아서입니다."}`);
+  if (later.length) ML.push(`${later.join(" · ")}에도 관심을 높게 답했지만 이번 검사에서는 그 영역의 판단을 깊게 묻지 않았습니다.${laterRec.length ? ` 그중 ${laterRec.join(" · ")}은 경험 기록이 있어 다음 검사에서 확인할 첫 후보입니다.` : " 지도에서 아래 줄에 놓인 것은 묻지 않았기 때문이고, 근거가 없다는 뜻은 아닙니다."}`);
   return { strong, weak, unasked, balance, evidence, caution, paragraphs: P, mapLines: ML };
 }
 
@@ -224,7 +224,7 @@ export function cross(m: ResultModel, exps: Experience[]): { domains: DomainCros
     const strongTest = d.confirmed.length > 0;
     if (has && strongTest) {
       const e = recOf(d.code)!;
-      const miss = [!e.artifacts.length && "남은 결과물", !e.verifications.length && "견준 대상", !e.decisions.length && "직접 정한 것"]
+      const miss = [!e.artifacts.length && "남은 결과물", !e.verifications.length && "비교 대상", !e.decisions.length && "직접 정한 것"]
         .filter((x): x is string => !!x);
       const fromTest = d.verifications[0] ?? d.artifacts[0];
       out.push({ code: d.code, name: nm(d.code), kind: "BOTH",
@@ -267,14 +267,14 @@ export function cross(m: ResultModel, exps: Experience[]): { domains: DomainCros
     const jobs = roles.filter((r) => (r.core_ref?.td ?? []).some((td) => e.td_codes.includes(td))).map((r) => r.name_ko).slice(0, 3);
     const needs: string[] = [];
     if (!e.artifacts.length) needs.push("남은 결과물(문서·표·발표 자료)이 무엇인지");
-    if (!e.verifications.length) needs.push("결과를 무엇과 견줬는지(목표 · 지난 실적 · 다른 안)");
+    if (!e.verifications.length) needs.push("결과를 무엇과 비교했는지(목표 · 지난 실적 · 다른 안)");
     if (!e.decisions.length) needs.push("그 안에서 내가 직접 정한 것 하나");
     needs.push("기간과 내가 맡은 범위, 결과 수치(직접 기입)");
     const period = [e.started_on?.slice(0, 7), e.ended_on?.slice(0, 7) ?? "진행 중"].filter(Boolean).join(" ~ ");
     const use = e.decisions.length && e.artifacts.length
       ? `지원서에서는 ‘${e.decisions[0]}’를 첫 문장에 두고, ${withJosa(e.artifacts[0], "을를")} 그 판단의 결과로 붙이면 한 문단이 됩니다.`
       : e.decisions.length
-        ? `‘${e.decisions[0]}’는 면접 답변의 첫 장면이 될 수 있습니다. 남은 결과물을 함께 적어야 지원서 문단으로 섭니다.`
+        ? `‘${e.decisions[0]}’는 면접 답변의 첫 장면이 될 수 있습니다. 남은 결과물을 함께 적어야 지원서 문단이 됩니다.`
         : "지금 기록만으로는 수업을 들었다는 사실까지 말할 수 있습니다. 그 수업에서 내가 정한 것 하나를 찾아 적으면 서류에서 쓸 수 있는 경험이 됩니다.";
     return {
       title: e.title, kind: EXP_KIND[e.kind] ?? e.kind, period,
@@ -312,7 +312,7 @@ export function strengths(m: ResultModel): Strength[] {
     const art = d.artifacts[0];
     const ver = d.verifications[0];
     const howShow = art
-      ? `${withJosa(art, "을를")} 결과로 보여 주고${ver ? `, ${withJosa(ver, "과와")} 견준 기록을 근거로 붙입니다` : ", 무엇과 견줬는지는 아직 비어 있어 면접 전에 채워 두어야 합니다"}.`
+      ? `${withJosa(art, "을를")} 결과로 보여 주고${ver ? `, ${withJosa(ver, "과와")} 비교한 기록을 근거로 붙입니다` : ", 무엇과 비교했는지는 아직 비어 있어 면접 전에 채워 두어야 합니다"}.`
       : `이 영역은 남긴 결과물을 고르지 않았습니다. ${domainDef(core, d.code)?.artifacts[0] ?? "결과물"} 같은 형태로 한 장을 남기면 서류에서 보여 줄 것이 생깁니다.`;
     return {
       code: d.code, name: nm, zone: d.zone,
@@ -334,7 +334,7 @@ export function strengths(m: ResultModel): Strength[] {
 const LEARN: Record<string, string> = {
   DEEPEN_OWNERSHIP: "진행 중인 과제에서 기준을 내가 정하고 근거를 남기는 실습",
   BUILD_OUTPUT: "결과물 한 장을 직접 만들어 보는 작업",
-  ADD_VERIFICATION: "끝난 과제를 목표·지난 실적·다른 안과 견주어 보는 검토",
+  ADD_VERIFICATION: "끝난 과제를 목표·지난 실적·다른 안과 비교해 보는 검토",
   TRY_SHORT_EXPERIENCE: "짧게 끝나는 실전 경험(공모전·학회 과제·현장실습)",
   STUDY_NEXT: "수업·온라인 강의로 기본기 채우기",
   FILL_AXIS: "다음 과제에서 그 판단 한 가지를 맡아 보는 연습",
@@ -366,18 +366,18 @@ export function priorities(m: ResultModel): Priority[] {
     if (g.kind === "REQUIRED_AXIS") { w += 1; why.push("이 영역에서 꼭 있어야 하는 판단입니다"); }
     if (g.kind === "PARTIAL_EVIDENCE") why.push("해 본 것은 확인됐고 어디까지 직접 정했는지가 아직입니다");
     if (g.kind === "OUTPUT" || g.kind === "OUTPUT_EVIDENCE") why.push("남은 결과물이 확인되지 않아 경험을 서류로 보여 줄 수 없습니다");
-    if (g.kind === "VERIFICATION") why.push("결과를 무엇과 견줬는지가 없어 성과를 말하기 어렵습니다");
+    if (g.kind === "VERIFICATION") why.push("결과를 무엇과 비교했는지가 없어 성과를 말하기 어렵습니다");
     const a: Action | undefined = g.action_id ? actById.get(g.action_id) : undefined;
     const ver = a?.material.verify_targets[0] ?? domainDef(core, g.domain)?.verify_targets[0];
     return {
       order: 0, w: w * 100 - g.rank,
       domain: domainName(core, g.domain),
       what: g.axis ? axisWord(core, g.axis) : "결과물 근거",
-      why: why.length ? why : ["결과 모델이 채울 자리로 고른 판단입니다"],
+      why: why.length ? why : ["결과 모델이 먼저 채울 것으로 고른 판단입니다"],
       jobs: roles.filter((r) => (r.core_ref?.td ?? []).includes(g.domain) && (!g.axis || r.required_axes?.includes(g.axis))).map((r) => r.name_ko),
       method: a ? actionKo(a, domainName(core, g.domain), m.stage).do : (domainDef(core, g.domain)?.axes[g.axis!]?.l2 ?? ""),
       learn: a ? (LEARN[a.code] ?? "") : "",
-      check: ver ? `끝난 뒤 ${withJosa(ver, "과와")} 견준 기록이 남았는지` : "검토한 사람의 의견이 남았는지",
+      check: ver ? `끝난 뒤 ${withJosa(ver, "과와")} 비교한 기록이 남았는지` : "검토한 사람의 의견이 남았는지",
       when: a ? H[a.horizon] : "",
       keep: a?.material.artifacts[0] ?? a?.material.workflow?.output ?? domainDef(core, g.domain)?.artifacts[0] ?? "정리한 문서",
     };

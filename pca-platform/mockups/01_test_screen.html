@@ -3,226 +3,415 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PCA 검사 응시 — 기계공학</title>
+<title>검사 응시 | 커리어매트리</title>
 <style>
 :root{
-  --field:#EBEEF0; --paper:#FFFFFF; --ink:#16232E; --rule:#C9D2D8;
-  --muted:#61717D; --met:#1B6B57; --gap:#C0392B;
+  --bg:#F3F6FB; --paper:#FFFFFF; --ink:#1A2233; --sub:#4A5568; --muted:#8A94A6;
+  --line:#E3E8F0; --soft:#F6F8FC;
+  --primary:#2F6BFF; --primary-dark:#1F4FD1; --primary-soft:#EAF0FF; --navy:#1E2A3E;
+  --c2:#12A27E; --c2-soft:#E6F6F1; --c3:#7B5CF0; --c3-soft:#F0ECFE;
+  --warn:#E58A00; --warn-soft:#FEF4E2; --ok:#12A27E; --ok-soft:#E6F6F1;
+  --r-lg:18px; --r:12px;
+  --shadow:0 1px 2px rgba(17,30,60,.04),0 6px 20px rgba(17,30,60,.06);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
-  background:var(--field);color:var(--ink);
+  background:var(--bg);color:var(--ink);
   font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,-apple-system,sans-serif;
-  font-size:16px;line-height:1.6;font-variant-numeric:tabular-nums;
-  min-height:100vh;padding:0 20px 60px;
+  font-size:15px;line-height:1.6;letter-spacing:-0.01em;font-variant-numeric:tabular-nums;
+  min-height:100vh;
 }
-.wrap{max-width:720px;margin:0 auto}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid rgba(47,107,255,.45);outline-offset:2px}
 
-/* fixed progress header */
-.bar{position:sticky;top:0;background:var(--field);padding:20px 0 14px;z-index:5}
-.bar .row{display:flex;align-items:baseline;gap:12px;margin-bottom:10px}
-.bar .who{font-size:13.5px;color:var(--muted)}
-.bar .count{margin-left:auto;font-size:13.5px;font-weight:700}
-.bar .count em{font-style:normal;color:var(--muted);font-weight:400}
-.rail{height:4px;background:var(--rule);position:relative;overflow:hidden}
-.rail i{position:absolute;left:0;top:0;bottom:0;background:var(--ink);width:0;transition:width .25s ease}
+/* 상단 바 */
+.top{position:sticky;top:0;z-index:10;background:var(--paper);border-bottom:1px solid var(--line)}
+.top .in{max-width:1120px;margin:0 auto;height:64px;padding:0 24px;display:flex;align-items:center;gap:14px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:16px;letter-spacing:-0.03em}
+.mark{width:30px;height:30px;border-radius:9px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center}
+.top .title{padding-left:14px;border-left:1px solid var(--line);font-size:14.5px;font-weight:700;color:var(--sub)}
+.top .right{margin-left:auto;display:flex;align-items:center;gap:10px;font-size:13.5px}
+.chip{display:flex;align-items:center;gap:8px;background:var(--soft);border-radius:999px;padding:5px 12px 5px 5px}
+.avatar{width:26px;height:26px;border-radius:50%;background:var(--primary-soft);color:var(--primary);font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center}
+.chip small{color:var(--muted);font-size:12.5px}
+.saved{display:flex;align-items:center;gap:6px;color:var(--ok);font-weight:600;font-size:13px;
+  background:var(--ok-soft);border-radius:999px;padding:5px 11px}
+.saved.flash{animation:flash .6s}
+@keyframes flash{0%{transform:scale(1)}40%{transform:scale(1.06)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.saved.flash{animation:none}}
+
+.wrap{max-width:1120px;margin:0 auto;padding:24px 24px 60px}
+
+/* 진행률 */
+.progress{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.progress .lab{font-size:13.5px;font-weight:700;color:var(--sub);white-space:nowrap}
+.progress .lab b{color:var(--primary);font-size:15px}
+.rail{flex:1;height:8px;border-radius:999px;background:#E1E7F1;overflow:hidden}
+.rail i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#4D86FF,var(--primary));transition:width .3s ease}
 @media (prefers-reduced-motion:reduce){.rail i{transition:none}}
-.saved{font-size:12.5px;color:var(--met);margin-top:8px;height:18px;opacity:0;transition:opacity .2s}
-.saved.on{opacity:1}
+.progress .pct{font-size:13.5px;font-weight:700;color:var(--primary);width:44px;text-align:right}
 
-/* card */
-.card{background:var(--paper);border:1px solid var(--rule);padding:38px 40px 32px;margin-top:8px}
-.qno{font-size:13px;color:var(--muted);margin-bottom:10px}
-.qtext{font-size:22px;font-weight:700;letter-spacing:-0.025em;line-height:1.45;margin-bottom:28px}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start}
 
-.opts{display:flex;flex-direction:column;gap:9px}
+/* 문항 카드 */
+.card{background:var(--paper);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:32px 36px 28px}
+.qhead{display:flex;align-items:center;gap:8px;margin-bottom:16px}
+.pill{font-size:12.5px;font-weight:700;border-radius:999px;padding:3px 11px}
+.pill.no{background:var(--primary);color:#fff}
+.pill.k1{background:var(--c3-soft);color:var(--c3)}
+.pill.k2{background:var(--c2-soft);color:var(--c2)}
+.qhead .later{margin-left:auto;font-size:12.5px;font-weight:700;color:var(--warn);background:var(--warn-soft);border-radius:999px;padding:3px 10px}
+.qtext{font-size:22px;font-weight:700;letter-spacing:-0.03em;line-height:1.5;margin-bottom:26px}
+
+/* 리커트: 가로 다섯 칸 */
+.likert{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.likert .opt{flex-direction:column;justify-content:center;text-align:center;gap:10px;padding:18px 8px;min-height:112px}
+.likert .opt .txt{font-size:14px}
+.scale-ends{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);margin-top:8px;padding:0 4px}
+
+/* 선다형: 세로 목록 */
+.choices{display:flex;flex-direction:column;gap:10px}
+.choices .opt{padding:15px 16px}
+
 .opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;
-  background:var(--paper);border:1px solid var(--rule);padding:14px 16px;
-  font:inherit;color:inherit;cursor:pointer}
-.opt:hover{border-color:var(--muted)}
-.opt:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-.opt .dot{width:16px;height:16px;border:1px solid var(--muted);border-radius:50%;flex:none}
-.opt[aria-pressed="true"]{border-color:var(--ink);background:#F4F7F8}
-.opt[aria-pressed="true"] .dot{background:var(--ink);border-color:var(--ink);
-  box-shadow:inset 0 0 0 3px var(--paper)}
-.opt .txt{font-size:15.5px}
+  background:var(--paper);border:1.5px solid var(--line);border-radius:var(--r);cursor:pointer;
+  transition:border-color .12s,background .12s}
+.opt:hover{border-color:#B9C8E6;background:#FAFBFF}
+.opt .n{flex:none;width:30px;height:30px;border-radius:50%;border:1.5px solid #C5CFE0;color:var(--sub);
+  font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.opt .txt{font-size:15.5px;font-weight:500}
+.opt[aria-pressed="true"]{border-color:var(--primary);background:var(--primary-soft)}
+.opt[aria-pressed="true"] .n{background:var(--primary);border-color:var(--primary);color:#fff}
+.opt[aria-pressed="true"] .txt{color:var(--primary-dark);font-weight:700}
 
-.nav{display:flex;gap:10px;margin-top:26px;padding-top:22px;border-top:1px solid var(--rule)}
-button.act{font:inherit;font-size:15px;padding:11px 22px;border:1px solid var(--ink);
-  background:var(--paper);color:var(--ink);cursor:pointer}
-button.act:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-button.act.solid{background:var(--ink);color:#fff}
-button.act[disabled]{opacity:.35;cursor:default}
+.nav{display:flex;gap:10px;margin-top:28px;padding-top:22px;border-top:1px solid var(--line);align-items:center}
 .nav .right{margin-left:auto;display:flex;gap:10px}
+.kbd{font-size:12.5px;color:var(--muted)}
+.kbd b{display:inline-block;min-width:20px;text-align:center;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:0 4px;margin:0 1px;color:var(--sub);font-weight:600}
+.act{font-size:15px;font-weight:600;padding:11px 20px;border:1px solid var(--line);border-radius:var(--r);background:var(--paper);cursor:pointer}
+.act:hover{background:var(--soft)}
+.act.solid{background:var(--primary);border-color:var(--primary);color:#fff}
+.act.solid:hover{background:var(--primary-dark)}
+.act[disabled]{opacity:.45;cursor:default}
 
-/* intro & done */
-.panel{background:var(--paper);border:1px solid var(--rule);padding:44px 40px;margin-top:8px}
-.panel h1{font-size:26px;font-weight:800;letter-spacing:-0.03em;margin-bottom:14px}
-.panel p{color:var(--muted);font-size:15px;max-width:58ch;margin-bottom:10px}
-.panel ul{margin:18px 0 26px;padding-left:0;list-style:none}
-.panel li{font-size:15px;padding:9px 0;border-top:1px solid var(--rule)}
-.panel li b{font-weight:700}
-.hint{font-size:13.5px;color:var(--muted);margin-top:16px}
-.foot{color:var(--muted);font-size:12.5px;margin-top:22px;text-align:center}
-.hidden{display:none}
+/* 오른쪽 답안 현황 */
+.sheet{background:var(--paper);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:22px;position:sticky;top:84px}
+.sheet h2{font-size:16px;font-weight:800;letter-spacing:-0.02em;margin-bottom:4px}
+.sheet .sum{font-size:13px;color:var(--sub);margin-bottom:14px}
+.sheet .sum b{color:var(--primary)}
+.omr{display:grid;grid-template-columns:repeat(6,1fr);gap:7px}
+.omr button{aspect-ratio:1;border-radius:9px;border:1.5px solid var(--line);background:var(--paper);
+  font-size:13.5px;font-weight:700;color:var(--muted);cursor:pointer}
+.omr button.done{background:var(--primary);border-color:var(--primary);color:#fff}
+.omr button.later{background:var(--warn-soft);border-color:#F4C979;color:var(--warn)}
+.omr button.cur{box-shadow:0 0 0 3px rgba(47,107,255,.3);border-color:var(--primary);color:var(--primary)}
+.omr button.cur.done{color:#fff}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin:14px 0 16px;font-size:12.5px;color:var(--sub)}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:4px;border:1.5px solid var(--line)}
+.legend i.done{background:var(--primary);border-color:var(--primary)}
+.legend i.later{background:var(--warn-soft);border-color:#F4C979}
+.sheet .act{width:100%}
+.sheet .note{margin-top:14px;padding:12px 13px;border-radius:var(--r);background:var(--soft);font-size:12.5px;color:var(--sub);line-height:1.55}
 
-@media (max-width:600px){
-  .card,.panel{padding:26px 20px}
+/* 시작·완료 */
+.hero{background:var(--paper);border-radius:22px;box-shadow:var(--shadow);overflow:hidden;max-width:760px;margin:16px auto 0}
+.hero .band{background:linear-gradient(135deg,#2F6BFF 0%,#1F4FD1 60%,#1E2A3E 100%);color:#fff;padding:30px 34px}
+.hero .band .eyebrow{display:inline-block;font-size:12.5px;font-weight:700;background:rgba(255,255,255,.18);border-radius:999px;padding:3px 11px;margin-bottom:12px}
+.hero .band h1{font-size:26px;font-weight:800;letter-spacing:-0.035em;line-height:1.35}
+.hero .band p{color:rgba(255,255,255,.8);font-size:14.5px;margin-top:6px}
+.hero .body{padding:26px 34px 30px}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px}
+.fact{background:var(--soft);border-radius:var(--r);padding:14px}
+.fact span{display:block;font-size:12.5px;color:var(--sub)}
+.fact b{font-size:20px;font-weight:800;letter-spacing:-0.03em}
+.fact b small{font-size:13px;font-weight:700;margin-left:1px}
+.hero .ctas{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.tip{display:flex;gap:10px;align-items:flex-start;margin-top:20px;padding:14px 16px;border-radius:var(--r);background:var(--c2-soft);color:#0B6F57;font-size:14px}
+.donecheck{width:56px;height:56px;border-radius:50%;background:var(--ok-soft);color:var(--ok);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.hero.done .band{background:linear-gradient(135deg,#17A884 0%,#0B7F66 100%)}
+.rows{border-top:1px solid var(--line);margin-bottom:22px}
+.rows div{display:flex;padding:12px 2px;border-bottom:1px solid var(--line);font-size:14.5px}
+.rows div span{width:110px;color:var(--sub)}
+.rows div b{font-weight:700}
+
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);opacity:0;
+  background:var(--navy);color:#fff;font-size:14px;border-radius:999px;padding:11px 20px;transition:.2s;pointer-events:none}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.foot{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
+.hidden{display:none !important}
+
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr}
+  .sheet{position:static}
+  .omr{grid-template-columns:repeat(12,1fr)}
+  .top .title{display:none}
+}
+@media (max-width:640px){
+  .top .in,.wrap{padding-left:16px;padding-right:16px}
+  .chip{display:none}
+  .card{padding:24px 18px 20px}
   .qtext{font-size:19px}
-  .nav{flex-wrap:wrap}
-  .nav .right{width:100%;margin-left:0}
-  .nav .right button{flex:1}
+  .likert{grid-template-columns:1fr}
+  .likert .opt{flex-direction:row;justify-content:flex-start;text-align:left;min-height:0;padding:13px 14px}
+  .scale-ends,.kbd{display:none}
+  .nav .right{flex:1;margin-left:0}
+  .nav .act{padding-left:12px;padding-right:12px}
+  .nav .right .act{flex:1}
+  .omr{grid-template-columns:repeat(6,1fr)}
+  .facts{grid-template-columns:repeat(2,1fr)}
+  .hero .band,.hero .body{padding-left:20px;padding-right:20px}
 }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <!-- 진행 바 -->
-  <div class="bar hidden" id="bar">
-    <div class="row">
-      <span class="who">기계공학 진로지표 검사 · 김도현</span>
-      <span class="count"><span id="cur">1</span><em> / <span id="tot">12</span></em></span>
-    </div>
-    <div class="rail"><i id="fill"></i></div>
-    <div class="saved" id="saved">응답이 저장되었습니다</div>
+<header class="top">
+  <div class="in">
+    <span class="brand"><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19V5l7 8 7-8v14"/></svg></span>커리어매트리</span>
+    <span class="title">기계공학 진로지표 검사</span>
+    <span class="right">
+      <span class="saved hidden" id="saved"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17l9-10"/></svg><span id="savedAt">자동 저장됨</span></span>
+      <span class="chip"><span class="avatar">김</span>김도현 <small>3학년</small></span>
+    </span>
   </div>
+</header>
+
+<main class="wrap">
 
   <!-- 시작 화면 -->
-  <div class="panel" id="intro">
-    <h1>이어서 응시하시겠어요?</h1>
-    <p>지난 접속에서 4번 문항까지 응답하셨습니다. 이어서 5번 문항부터 시작합니다.</p>
-    <ul>
-      <li><b>문항 수</b> 12개 · 남은 문항 8개</li>
-      <li><b>예상 소요 시간</b> 약 7분</li>
-      <li><b>중간에 창을 닫아도</b> 응답은 그대로 남습니다</li>
-      <li><b>결과 공개</b> 학과 담당 교수 확인 후 열립니다</li>
-    </ul>
-    <button class="act solid" id="start">5번 문항부터 이어하기</button>
-    <p class="hint">정답이 있는 검사가 아닙니다. 지금 상태를 그대로 고르시면 됩니다.</p>
-  </div>
+  <section class="hero" id="intro">
+    <div class="band">
+      <span class="eyebrow">2026-1학기 기계공학과 3학년</span>
+      <h1>지난번에 4번까지 답했어요.<br>5번부터 이어서 풀까요?</h1>
+      <p>응답은 문항마다 서버에 저장돼 있습니다.</p>
+    </div>
+    <div class="body">
+      <div class="facts">
+        <div class="fact"><span>전체 문항</span><b>12<small>개</small></b></div>
+        <div class="fact"><span>남은 문항</span><b>8<small>개</small></b></div>
+        <div class="fact"><span>예상 소요</span><b>약 7<small>분</small></b></div>
+        <div class="fact"><span>응시 마감</span><b>3.20<small>(금)</small></b></div>
+      </div>
+      <div class="ctas">
+        <button class="act solid" id="start">5번 문항부터 이어서 풀기</button>
+        <button class="act" id="restart">1번부터 다시 보기</button>
+      </div>
+      <div class="tip">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px"><path d="M5 12.5 10 17l9-10"/></svg>
+        <span>정답이 있는 검사가 아니에요. 오래 고민하기보다 지금 내 모습에 가까운 쪽을 고르면 됩니다.</span>
+      </div>
+    </div>
+  </section>
 
   <!-- 문항 화면 -->
-  <div class="card hidden" id="card">
-    <div class="qno" id="qno">문항 5</div>
-    <p class="qtext" id="qtext"></p>
-    <div class="opts" id="opts"></div>
-    <div class="nav">
-      <button class="act" id="prev">이전</button>
-      <span class="right">
-        <button class="act" id="skip">나중에 답하기</button>
-        <button class="act solid" id="next">다음</button>
-      </span>
+  <div class="hidden" id="test">
+    <div class="progress">
+      <span class="lab"><b id="cur">5</b> / <span id="tot">12</span> 문항</span>
+      <div class="rail"><i id="fill"></i></div>
+      <span class="pct" id="pct">0%</span>
+    </div>
+
+    <div class="layout">
+      <section class="card" aria-live="polite">
+        <div class="qhead">
+          <span class="pill no" id="qno">문항 05</span>
+          <span class="pill" id="qkind">성향</span>
+          <span class="later hidden" id="qlater">나중에 답하기로 표시함</span>
+        </div>
+        <p class="qtext" id="qtext"></p>
+        <div id="opts"></div>
+        <div class="scale-ends" id="ends"><span>← 나와 다르다</span><span>나와 같다 →</span></div>
+
+        <div class="nav">
+          <button class="act" id="prev">이전</button>
+          <span class="kbd" id="kbd">키보드 <b>1</b>~<b>5</b> 로도 고를 수 있어요</span>
+          <span class="right">
+            <button class="act" id="skip">나중에 답하기</button>
+            <button class="act solid" id="next">다음</button>
+          </span>
+        </div>
+      </section>
+
+      <aside class="sheet">
+        <h2>답안 현황</h2>
+        <p class="sum">응답 <b id="nDone">0</b>개 · 남은 문항 <span id="nLeft">0</span>개</p>
+        <div class="omr" id="omr"></div>
+        <div class="legend">
+          <span><i class="done"></i>응답</span>
+          <span><i class="later"></i>나중에</span>
+          <span><i></i>미응답</span>
+        </div>
+        <button class="act solid" id="submit" disabled>제출하기</button>
+        <p class="note">번호를 누르면 그 문항으로 이동합니다. 창을 닫아도 응답은 그대로 남아요.</p>
+      </aside>
     </div>
   </div>
 
   <!-- 완료 화면 -->
-  <div class="panel hidden" id="done">
-    <h1>응답이 모두 제출되었습니다</h1>
-    <p>12개 문항에 모두 답하셨습니다. 결과는 학과 담당 교수가 확인한 뒤 공개되며,
-       공개되면 등록하신 이메일로 알려드립니다.</p>
-    <ul>
-      <li><b>제출 시각</b> 2026년 3월 12일 14:22</li>
-      <li><b>응시 회차</b> 2026-1학기 기계공학과 3학년</li>
-    </ul>
-    <button class="act" id="again">처음부터 다시 보기</button>
-  </div>
+  <section class="hero done hidden" id="done">
+    <div class="band">
+      <span class="eyebrow">제출 완료</span>
+      <h1>수고했어요, 김도현 학생!<br>응답 12개가 모두 제출됐습니다.</h1>
+      <p>결과지는 학과 담당 교수가 확인한 뒤 공개됩니다.</p>
+    </div>
+    <div class="body">
+      <div class="rows">
+        <div><span>제출 시각</span><b>2026.03.12 (목) 14:22</b></div>
+        <div><span>응시 회차</span><b>2026-1학기 기계공학과 3학년</b></div>
+        <div><span>결과 공개</span><b>공개되면 등록한 이메일로 알려드려요</b></div>
+      </div>
+      <div class="ctas">
+        <button class="act solid">홈으로</button>
+        <button class="act" id="again">응답 다시 보기</button>
+      </div>
+    </div>
+  </section>
 
   <p class="foot">화면 시안입니다. 문항과 응시자 정보는 예시 데이터입니다.</p>
-</div>
+</main>
+
+<div class="toast" id="toast"></div>
 
 <script>
 const LIKERT = ["전혀 아니다","아니다","보통이다","그렇다","매우 그렇다"];
+const K1 = "성향", K2 = "경험 수준";
 
 const Q = [
-  {t:"수식으로 표현된 물리 현상을 직접 계산해 확인해보는 일이 즐겁다.", o:LIKERT},
-  {t:"완성된 도면보다, 아직 형상이 정해지지 않은 아이디어 단계가 더 흥미롭다.", o:LIKERT},
-  {t:"실험 결과가 이론값과 다를 때 원인을 끝까지 추적하는 편이다.", o:LIKERT},
-  {t:"규격서나 기준 문서를 읽고 정리하는 일이 크게 부담스럽지 않다.", o:LIKERT},
-  {t:"3D 모델링 도구를 사용해 본 경험은 어느 정도인가요?",
+  {k:K1, t:"수식으로 표현된 물리 현상을 직접 계산해 확인해보는 일이 즐겁다.", o:LIKERT},
+  {k:K1, t:"완성된 도면보다, 아직 형상이 정해지지 않은 아이디어 단계가 더 흥미롭다.", o:LIKERT},
+  {k:K1, t:"실험 결과가 이론값과 다를 때 원인을 끝까지 추적하는 편이다.", o:LIKERT},
+  {k:K1, t:"규격서나 기준 문서를 읽고 정리하는 일이 크게 부담스럽지 않다.", o:LIKERT},
+  {k:K2, t:"3D 모델링 도구를 사용해 본 경험은 어느 정도인가요?",
    o:["써본 적 없다","수업에서 따라 해봤다","과제 부품을 직접 그려봤다","조립체까지 설계해봤다"]},
-  {t:"설비가 멈춘 상황이라면, 현장에 직접 가서 확인하는 쪽이 나에게 맞다.", o:LIKERT},
-  {t:"반복되는 계산을 코드로 자동화해 본 경험은 어느 정도인가요?",
+  {k:K1, t:"설비가 멈춘 상황이라면, 현장에 직접 가서 확인하는 쪽이 나에게 맞다.", o:LIKERT},
+  {k:K2, t:"반복되는 계산을 코드로 자동화해 본 경험은 어느 정도인가요?",
    o:["없다","예제를 실행해봤다","과제에 직접 작성해 썼다","반복 작업용 도구를 만들어봤다"]},
-  {t:"하나의 주제를 오래 파고드는 편이다.", o:LIKERT},
-  {t:"유한요소해석을 수업이나 스터디에서 접해본 적이 있나요?",
+  {k:K1, t:"하나의 주제를 오래 파고드는 편이다.", o:LIKERT},
+  {k:K2, t:"유한요소해석을 수업이나 스터디에서 접해본 적이 있나요?",
    o:["들어본 적 없다","이름만 안다","수업에서 다뤄봤다","직접 해석을 돌려봤다"]},
-  {t:"도면에 표기된 공차의 의미를 읽을 수 있다.", o:LIKERT},
-  {t:"팀 과제에서 결과 정리와 발표를 맡는 경우가 많다.", o:LIKERT},
-  {t:"졸업 후 대학원 진학을 고려하고 있다.", o:LIKERT}
+  {k:K1, t:"도면에 표기된 공차의 의미를 읽을 수 있다.", o:LIKERT},
+  {k:K1, t:"팀 과제에서 결과 정리와 발표를 맡는 경우가 많다.", o:LIKERT},
+  {k:K1, t:"졸업 후 대학원 진학을 고려하고 있다.", o:LIKERT}
 ];
 
-const RESUME = 4;                 // 지난 접속에서 4번까지 응답
+const RESUME = 4;                       // 지난 접속에서 4번까지 응답
 const ans = new Array(Q.length).fill(null);
-for (let i = 0; i < RESUME; i++) ans[i] = 2;   // 이전 응답 예시
+const later = new Set();
+for (let j = 0; j < RESUME; j++) ans[j] = [3,2,4,3][j];   // 이전 응답 예시
 let i = RESUME;
 
 const $ = id => document.getElementById(id);
-let savedTimer;
+const pad = n => String(n).padStart(2, "0");
+const answered = () => ans.filter(a => a !== null).length;
 
-function flashSaved(){
-  $("saved").classList.add("on");
-  clearTimeout(savedTimer);
-  savedTimer = setTimeout(() => $("saved").classList.remove("on"), 1400);
+function saved(){
+  const d = new Date();
+  $("savedAt").textContent = `자동 저장됨 ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  $("saved").classList.remove("hidden","flash");
+  void $("saved").offsetWidth;
+  $("saved").classList.add("flash");
+}
+
+let toastTimer;
+function toast(msg){
+  $("toast").textContent = msg;
+  $("toast").classList.add("on");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => $("toast").classList.remove("on"), 2200);
+}
+
+function pick(k){
+  ans[i] = k;
+  later.delete(i);
+  saved();
+  render();
+  setTimeout(advance, 240);
 }
 
 function render(){
-  const q = Q[i];
-  $("qno").textContent = "문항 " + (i + 1);
+  const q = Q[i], likert = q.o === LIKERT;
+  $("qno").textContent = "문항 " + pad(i + 1);
+  $("qkind").textContent = q.k;
+  $("qkind").className = "pill " + (q.k === K1 ? "k1" : "k2");
+  $("qlater").classList.toggle("hidden", !later.has(i));
   $("qtext").textContent = q.t;
   $("cur").textContent = i + 1;
   $("tot").textContent = Q.length;
-  $("fill").style.width = ((i) / Q.length * 100) + "%";
+  const pct = Math.round(answered() / Q.length * 100);
+  $("fill").style.width = pct + "%";
+  $("pct").textContent = pct + "%";
 
   const box = $("opts");
+  box.className = likert ? "likert" : "choices";
   box.innerHTML = "";
   q.o.forEach((label, k) => {
     const b = document.createElement("button");
-    b.className = "opt";
-    b.type = "button";
+    b.className = "opt"; b.type = "button";
     b.setAttribute("aria-pressed", ans[i] === k ? "true" : "false");
-    b.innerHTML = '<span class="dot"></span><span class="txt"></span>';
+    b.innerHTML = '<span class="n"></span><span class="txt"></span>';
+    b.querySelector(".n").textContent = k + 1;
     b.querySelector(".txt").textContent = label;
-    b.addEventListener("click", () => {
-      ans[i] = k;
-      flashSaved();
-      render();
-      setTimeout(advance, 220);
-    });
+    b.addEventListener("click", () => pick(k));
     box.appendChild(b);
   });
+  $("ends").classList.toggle("hidden", !likert);
+  $("kbd").innerHTML = `키보드 <b>1</b>~<b>${q.o.length}</b> 로도 고를 수 있어요`;
 
   $("prev").disabled = i === 0;
-  $("next").textContent = i === Q.length - 1 ? "제출하기" : "다음";
-  $("next").disabled = ans[i] === null;
+  $("next").textContent = i === Q.length - 1 ? "마지막 문항" : "다음";
+  $("next").disabled = i === Q.length - 1;
+
+  const omr = $("omr");
+  omr.innerHTML = "";
+  Q.forEach((_, j) => {
+    const c = document.createElement("button");
+    c.type = "button";
+    c.textContent = j + 1;
+    c.className = [ans[j] !== null ? "done" : later.has(j) ? "later" : "", j === i ? "cur" : ""].join(" ").trim();
+    c.setAttribute("aria-label", `${j + 1}번 문항` + (ans[j] !== null ? " 응답함" : ""));
+    c.addEventListener("click", () => { i = j; render(); });
+    omr.appendChild(c);
+  });
+  $("nDone").textContent = answered();
+  $("nLeft").textContent = Q.length - answered();
+  $("submit").disabled = answered() !== Q.length;
+  $("submit").textContent = answered() === Q.length ? "제출하기" : `제출하기 (남은 ${Q.length - answered()}개)`;
 }
+
+function firstOpen(){ return ans.findIndex(a => a === null); }
 
 function advance(){
-  if (i === Q.length - 1){ finish(); return; }
-  i++; render();
+  if (i < Q.length - 1){ i++; render(); return; }
+  const open = firstOpen();
+  if (open === -1){ toast("모든 문항에 답했어요. 오른쪽에서 제출해 주세요."); return; }
+  i = open; render();
+  toast(`아직 답하지 않은 문항이 ${Q.length - answered()}개 있어요. ${open + 1}번으로 이동했습니다.`);
 }
 
-function finish(){
-  $("card").classList.add("hidden");
-  $("bar").classList.add("hidden");
-  $("done").classList.remove("hidden");
+function show(id){
+  ["intro","test","done"].forEach(x => $(x).classList.toggle("hidden", x !== id));
+  window.scrollTo(0, 0);
 }
 
-$("start").addEventListener("click", () => {
-  $("intro").classList.add("hidden");
-  $("card").classList.remove("hidden");
-  $("bar").classList.remove("hidden");
-  render();
-});
+$("start").addEventListener("click", () => { show("test"); render(); });
+$("restart").addEventListener("click", () => { i = 0; show("test"); render(); });
 $("next").addEventListener("click", advance);
 $("prev").addEventListener("click", () => { if (i > 0){ i--; render(); } });
-$("skip").addEventListener("click", () => { if (i < Q.length - 1){ i++; render(); } });
-$("again").addEventListener("click", () => {
-  i = RESUME;
-  $("done").classList.add("hidden");
-  $("card").classList.remove("hidden");
-  $("bar").classList.remove("hidden");
-  render();
+$("skip").addEventListener("click", () => {
+  if (ans[i] === null) later.add(i);
+  advance();
+});
+$("submit").addEventListener("click", () => show("done"));
+$("again").addEventListener("click", () => { i = 0; show("test"); render(); });
+
+document.addEventListener("keydown", e => {
+  if ($("test").classList.contains("hidden")) return;
+  const n = Number(e.key);
+  if (n >= 1 && n <= Q[i].o.length){ pick(n - 1); }
+  else if (e.key === "ArrowLeft" && i > 0){ i--; render(); }
+  else if (e.key === "ArrowRight" && i < Q.length - 1){ i++; render(); }
 });
 </script>
 </body>

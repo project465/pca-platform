@@ -12,7 +12,8 @@ import { useState } from "react";
  * 눌린 상태는 서버가 들고 있다. 이 단추는 파일럿 참가자에게만 선다.
  */
 export default function SaveAction(
-  { attemptId, actionId, saved }: { attemptId: string; actionId: string; saved: boolean },
+  { attemptId, actionId, saved, lang = "ko" }:
+    { attemptId: string; actionId: string; saved: boolean; lang?: "ko" | "en" },
 ) {
   const [on, setOn] = useState(saved);
   const [busy, setBusy] = useState(false);
@@ -42,7 +43,7 @@ export default function SaveAction(
   return (
     <button type="button" className={`rs-save${on ? " on" : ""}`}
       aria-pressed={on} onClick={toggle}>
-      {on ? "담음" : "담아두기"}
+      {lang === "en" ? (on ? "Saved" : "Save") : (on ? "담음" : "담아두기")}
     </button>
   );
 }

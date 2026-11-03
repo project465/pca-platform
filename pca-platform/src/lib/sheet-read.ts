@@ -337,3 +337,45 @@ export function readTable(filename: string, buf: Buffer): string[][] {
   }
   throw new Error("엑셀(.xlsx) 또는 CSV 파일을 올려 주세요.");
 }
+
+/* ── Office 글 (2026-10-31, MAT 연구 자료 읽기) ─────────────────── */
+
+const xmlText = (xml: string, tag: string): string =>
+  xml.replace(new RegExp(`</(?:[a-z]+:)?(?:p|tr)>`, "gi"), "\n")
+    .replace(new RegExp(`<(?:[a-z]+:)?(?:br|tab)\\b[^>]*/>`, "gi"), " ")
+    .replace(new RegExp(`<(?!/?(?:[a-z]+:)?${tag}\\b)[^>]+>`, "gi"), "")
+    .replace(new RegExp(`</?(?:[a-z]+:)?${tag}\\b[^>]*>`, "gi"), "")
+    .replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "\"").replace(/&apos;/g, "'")
+    .replace(/&amp;/g, "&")
+    .replace(/[ \t]+/g, " ").replace(/\n\s*\n+/g, "\n").trim();
+
+/**
+ * 워드(.docx) · 파워포인트(.pptx) 안의 글만 꺼낸다. **서식도 그림도 보지 않는다**:
+ * 모델에 넘길 것은 글이고, 그림 속 글자는 PDF 로 저장해 올리면 읽힌다.
+ * 슬라이드는 번호 차례로, 발표자 노트는 그 슬라이드 바로 뒤에 붙인다.
+ */
+export function readOfficeText(buf: Buffer): { kind: "docx" | "pptx" | "hwpx"; text: string } | null {
+  let entries: Entry[];
+  try { entries = centralDirectory(buf); } catch { return null; }
+  const byName = new Map(entries.map((e) => [e.name, e]));
+  const doc = byName.get("word/document.xml");
+  if (doc) return { kind: "docx", text: xmlText(readEntry(buf, doc), "t") };
+  /* 한글(.hwpx) 은 ZIP 안에 구역마다 XML 이 하나씩 있다. 옛 .hwp(이진)는 읽지 않는다 */
+  const sections = entries
+    .map((e) => ({ e, n: Number(/^Contents\/section(\d+)\.xml$/.exec(e.name)?.[1] ?? NaN) }))
+    .filter((x) => Number.isFinite(x.n)).sort((a, b) => a.n - b.n);
+  if (sections.length) {
+    return { kind: "hwpx", text: sections.map(({ e }) => xmlText(readEntry(buf, e), "t")).join("\n\n") };
+  }
+  const slides = entries
+    .map((e) => ({ e, n: Number(/^ppt\/slides\/slide(\d+)\.xml$/.exec(e.name)?.[1] ?? NaN) }))
+    .filter((x) => Number.isFinite(x.n)).sort((a, b) => a.n - b.n);
+  if (!slides.length) return null;
+  const parts = slides.map(({ e, n }) => {
+    const body = xmlText(readEntry(buf, e), "t");
+    const note = byName.get(`ppt/notesSlides/notesSlide${n}.xml`);
+    const notes = note ? xmlText(readEntry(buf, note), "t") : "";
+    return `[슬라이드 ${n}]\n${body}${notes ? `\n(발표자 노트) ${notes}` : ""}`;
+  });
+  return { kind: "pptx", text: parts.join("\n\n") };
+}

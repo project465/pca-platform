@@ -1,0 +1,110 @@
+/*
+ * 입구 쪽들의 틀(`components/sf/entry-frame.tsx`).
+ *
+ * 색은 **학생 작업공간 홈과 같은 값**이다: 왼쪽 판은 작업공간 왼쪽 띠의
+ * 남색(#1e2a3e), 주된 문은 홈 Hero 의 청록→파랑 기울기, 왼쪽 판의 칸
+ * 셋은 홈 영역 타일의 파랑·초록·보라다. 값을 여기서 새로 고르지 않는다:
+ * 고르면 로그인 전과 후의 파랑이 서로 다른 파랑이 된다.
+ */
+.en {
+  min-height: calc(100vh - var(--stg-h, 0px));
+  display: grid; grid-template-columns: minmax(300px, 420px) 1fr;
+  background: #f4f7fc;
+}
+.en-side {
+  background: #1e2a3e; color: #c5cedd;
+  padding-block: 36px 32px;
+  padding-left: max(32px, env(safe-area-inset-left, 0px)); padding-right: 32px;
+  display: flex; flex-direction: column; gap: 22px;
+}
+.en-side .sf-brand { padding: 0; text-decoration: none; gap: 12px; }
+.en-side .sf-brand-name { color: #fff; font-size: 22px; font-weight: 800; letter-spacing: -.02em; }
+.en-side .sf-brand-mark { width: 38px; height: 38px; }
+.en-tag { margin: 0; font-size: 15px; line-height: 1.6; color: #c5cedd; }
+.en-steps { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 12px; }
+.en-steps li {
+  display: flex; gap: 14px; align-items: center;
+  padding: 16px 18px; border-radius: 16px; color: #fff;
+  background: linear-gradient(160deg, #3d7bff, #1f55e0);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .18);
+}
+.en-steps li:nth-child(2) { background: linear-gradient(160deg, #17a884, #0b7f66); }
+.en-steps li:nth-child(3) { background: linear-gradient(160deg, #8c6cf5, #6544de); }
+.en-step-ico {
+  flex: none; display: grid; place-items: center; width: 40px; height: 40px;
+  border-radius: 12px; background: rgba(255, 255, 255, .18);
+}
+.en-step-txt { display: grid; gap: 3px; min-width: 0; }
+.en-step-txt b { font-size: 15.5px; font-weight: 700; }
+.en-step-txt small { font-size: 13px; line-height: 1.45; color: rgba(255, 255, 255, .86); }
+.en-note { margin: auto 0 0; font-size: 12.5px; color: #8e9bb0; line-height: 1.6; }
+
+.en-main {
+  min-width: 0; display: flex; flex-direction: column;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.en-top { display: flex; justify-content: flex-end; padding-top: 18px; }
+.en-body {
+  flex: 1; width: 100%; max-width: 640px; margin: 0 auto;
+  padding-block: clamp(32px, 7vh, 88px) 40px;
+  display: grid; align-content: start; gap: 18px;
+}
+
+/* ── 문 고르기(/start) ── */
+.en-kicker { margin: 0; font-size: 13px; font-weight: 700; letter-spacing: .04em; color: #1f55e0; }
+.en-h1 {
+  margin: 0; font-size: clamp(26px, 2.4vw, 34px); line-height: 1.28;
+  font-weight: 800; letter-spacing: -.025em; color: #142033; text-wrap: balance;
+}
+.en-sub { margin: 0; font-size: 15.5px; line-height: 1.7; color: #4a5872; }
+.en-doors { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 14px; }
+.en-door {
+  display: flex; align-items: center; gap: 18px;
+  padding: 24px 24px; border-radius: 18px; text-decoration: none;
+  background: #fff; color: #142033; border: 1px solid #e3e9f3;
+  box-shadow: 0 1px 2px rgba(17, 30, 60, .04), 0 8px 22px rgba(17, 30, 60, .06);
+  transition: box-shadow .15s, transform .15s;
+}
+.en-door:hover { transform: translateY(-1px); box-shadow: 0 2px 4px rgba(17, 30, 60, .06), 0 14px 32px rgba(17, 30, 60, .12); }
+.en-door:focus-visible { outline: 3px solid #2f6bff; outline-offset: 3px; }
+.en-door-ico {
+  flex: none; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 15px;
+  background: linear-gradient(160deg, #e9f3fe 0%, #d8e9fd 100%); color: #1a6fd0;
+}
+.en-door-txt { display: grid; gap: 6px; flex: 1; min-width: 0; }
+.en-door-txt b { font-size: 18px; font-weight: 800; letter-spacing: -.02em; }
+.en-door-txt span { font-size: 14px; line-height: 1.55; color: #4a5872; }
+.en-door-go { flex: none; color: #1f55e0; }
+/* 주된 문은 홈 Hero 와 같은 면이다 */
+.en-door.is-primary {
+  border: 0; color: #fff;
+  background: linear-gradient(135deg, #0f8f7a 0%, #1679b8 60%, #2f6bff 100%);
+  box-shadow: 0 2px 4px rgba(17, 30, 60, .08), 0 16px 34px rgba(22, 121, 184, .28);
+}
+.en-door.is-primary .en-door-ico { background: rgba(255, 255, 255, .2); color: #fff; }
+.en-door.is-primary .en-door-txt span { color: rgba(255, 255, 255, .9); }
+.en-door.is-primary .en-door-go { color: #fff; }
+.en-foot { margin: 6px 0 0; font-size: 14px; color: #4a5872; }
+.en-foot a { color: #1f55e0; font-weight: 600; }
+
+/* ── 로그인 · 가입 카드 ── */
+.en-body .panel.narrow, .en-body .authwrap .panel { max-width: none; border-radius: 20px; }
+.en-body .authwrap { max-width: none; }
+
+@media (max-width: 860px) {
+  .en { grid-template-columns: 1fr; }
+  .en-side {
+    padding-block: 20px 18px; padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); gap: 12px;
+  }
+  .en-side .sf-brand-name { font-size: 19px; }
+  .en-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 2px; }
+  .en-steps li { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px; border-radius: 14px; }
+  .en-step-ico { width: 32px; height: 32px; border-radius: 10px; }
+  .en-step-txt b { font-size: 13.5px; }
+  .en-step-txt small, .en-note { display: none; }
+  .en-body { padding-block: 24px 32px; }
+  .en-door { padding: 18px; gap: 14px; }
+  .en-door-ico { width: 44px; height: 44px; }
+}

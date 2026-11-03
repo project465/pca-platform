@@ -1,9 +1,9 @@
 import { notFound, redirect } from "next/navigation";
 import "../../../surface.css";
 import "../../campus.css";
-import { university } from "@/lib/campus/registry";
+import { campusSay, university } from "@/lib/campus/registry";
 import { currentUser } from "@/lib/session";
-import { campusStudentOf } from "@/lib/campus/students";
+import { campusStudentOf, loginPrefixOf } from "@/lib/campus/students";
 import { safeNext } from "@/lib/safe-next";
 import { BrandMark } from "@/components/sf/brand-mark";
 import { CampusShell } from "../../shell";
@@ -38,6 +38,8 @@ export default async function CampusLogin({ params, searchParams }: Params) {
   const { next } = await searchParams;
   const u = university(universityCode);
   if (!u) notFound();
+  const t = campusSay(u);
+  const prefix = loginPrefixOf(u);
   const code = u.university_code.toLowerCase();
   /* 열린 리다이렉트를 막는 자리가 한 곳이다(`safe-next.ts`) */
   const nx = safeNext(next, `/campus/${code}/start`);
@@ -71,9 +73,9 @@ export default async function CampusLogin({ params, searchParams }: Params) {
             style={{ background: "var(--pcu-line)" }} />
           <span><BrandMark size={18} /> CareerMatri</span>
         </div>
-        <h1>{u.university_name} 학생 전용 검사</h1>
+        <h1>{u.university_name} {t("학생")} 전용 검사</h1>
         <p className="cm-cmp-auth-lead">
-          학교에서 발급받은 계정으로 로그인하세요.
+          {t("학교") === "학교" ? "학교에서" : "기관에서"} 발급받은 계정으로 로그인하세요.
         </p>
 
         {who ? (
@@ -81,8 +83,8 @@ export default async function CampusLogin({ params, searchParams }: Params) {
              로그인 화면이 왜 또 떴는지 알 수 없고, 그대로 누른
              `검사 시작` 이 남의 응시를 연다. 누구인지는 적지 않는다 */
           <p className="cm-cmp-warn" role="status">
-            지금 다른 계정으로 로그인되어 있습니다. 학교에서 받은 계정으로
-            다시 로그인해주세요.
+            지금 다른 계정으로 로그인되어 있습니다. {u.org_kind === "agency" ? "기관" : "학교"}에서
+            받은 계정으로 다시 로그인해주세요.
           </p>
         ) : null}
 
@@ -90,8 +92,12 @@ export default async function CampusLogin({ params, searchParams }: Params) {
       </div>
 
       <p className="cm-cmp-note" style={{ textAlign: "center" }}>
-        아이디는 학번입니다. 비밀번호를 잊으셨으면 학과 담당자에게 알려
-        주십시오.
+        {u.org_kind === "agency"
+          ? "아이디는 기관에서 받은 아이디입니다."
+          : prefix
+            ? `아이디는 ${prefix} 뒤에 학번을 붙인 것입니다(예: ${prefix}20260001).`
+            : "아이디는 학번입니다."}{" "}
+        비밀번호를 잊으셨으면 {t("학과 담당자")}에게 알려 주십시오.
       </p>
     </CampusShell>
   );

@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { queryOne, tx } from "@/lib/db";
 import { hashPassword, hashToken } from "@/lib/password";
 import { passwordSchema } from "@/lib/validation";
+import { entrySay } from "@/lib/entry-say";
 
 export type ResetState = { error?: string };
 
@@ -14,10 +15,11 @@ export async function resetAction(
   const token = String(formData.get("token") ?? "");
   const next = String(formData.get("next") ?? "");
   const confirm = String(formData.get("confirm") ?? "");
+  const say = entrySay(formData.get("lang") === "en" ? "en" : "ko");
 
   const parsed = passwordSchema.safeParse(next);
-  if (!parsed.success) return { error: parsed.error.issues[0].message };
-  if (next !== confirm) return { error: "새 비밀번호가 서로 다릅니다." };
+  if (!parsed.success) return { error: say(parsed.error.issues[0].message) };
+  if (next !== confirm) return { error: say("새 비밀번호가 서로 다릅니다.") };
 
   const row = await queryOne<{ id: string; user_id: string }>(
     `SELECT id, user_id FROM password_reset_tokens
@@ -25,7 +27,7 @@ export async function resetAction(
     [hashToken(token)],
   );
   if (!row) {
-    return { error: "링크가 만료되었거나 이미 사용되었습니다. 다시 발급받으세요." };
+    return { error: say("링크가 만료되었거나 이미 사용되었습니다. 다시 발급받으세요.") };
   }
 
   const hash = await hashPassword(next);

@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { timingSafeEqual } from "node:crypto";
 import { flushOutbox, checkCodeStock } from "@/lib/outbox";
+import { runAssistantTick } from "@/lib/assistant/nudges";
+import { runJobsTick } from "@/lib/jobs/tick";
+import { retryStuck } from "@/lib/me-v3/recompute";
 
 export const dynamic = "force-dynamic";
 
@@ -30,9 +33,16 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false }, { status: 401, headers: { "cache-control": "no-store" } });
   }
   const low = await checkCodeStock();
+  /* MAT 알림을 먼저 쌓는다. 그래야 같은 당번이 그 메일까지 내보낸다.
+     **실패해도 메일 내보내기를 막지 않는다** */
+  const assistant = await runAssistantTick().catch(() => null);
   const mail = await flushOutbox(200);
+  /* 공고는 맨 뒤다. 남의 서버를 기다리는 일이라 메일을 붙들지 않게 한다 */
+  const jobs = await runJobsTick().catch(() => null);
+  /* 경험을 저장한 뒤 반영이 틀어진 사람을 다시 집는다. 다시 들어오지 않아도 지금 상태가 맞게 선다 */
+  const recompute = await retryStuck().catch(() => null);
   return NextResponse.json(
-    { ok: true, ...mail, lowStock: low.length },
+    { ok: true, ...mail, lowStock: low.length, assistant, jobs, recompute },
     { headers: { "cache-control": "no-store" } },
   );
 }

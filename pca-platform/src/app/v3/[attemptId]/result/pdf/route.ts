@@ -14,6 +14,8 @@ import { query } from "@/lib/db";
 import { attemptOf, latestResult } from "@/lib/me-v3/runtime/session";
 import { resultMeta } from "@/lib/me-v3/result/meta";
 import { drawResultPdf, PdfFailed, resolveChromium } from "@/lib/me-v3/result/pdf";
+import { drawBookPdf } from "@/lib/me-v3/report-long/pdf";
+import { hasEdition } from "@/lib/me-v3/i18n";
 import { participantOf, record } from "@/lib/me-v3/pilot/store";
 import { mark } from "@/lib/me-v3/pilot/funnel";
 
@@ -25,10 +27,22 @@ import { mark } from "@/lib/me-v3/pilot/funnel";
  * 사실도 모른다. 상태 코드는 503 그대로 두고(화면이 다른 길을 안내할 수
  * 있게) 사람이 읽는 문장과 나갈 길을 함께 준다.
  */
-function sorryPage(attemptId: string): Response {
-  const html = `<!doctype html><html lang="ko"><head><meta charset="utf-8">
+/* 영어 응시가 받는 같은 쪽의 글. 한국어 쪽은 아래 본문 그대로다 */
+const SORRY_EN = {
+  title: "Results PDF · CareerMatri",
+  h1: "We couldn't create your PDF",
+  p1: "Your web results are still available, with the same content as the PDF.",
+  p2: "You can try again in a moment. If it still doesn't work, let our support team know."
+    + " The problem is already in our logs, so we can look into it right away.",
+  retry: "Try again", web: "View web results", support: "Support",
+};
+
+function sorryPage(attemptId: string, lang: string = "ko"): Response {
+  const en = lang === "en";
+  const id = encodeURIComponent(attemptId);
+  const html = `<!doctype html><html lang="${en ? "en" : "ko"}"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>결과지 PDF · CareerMatri</title>
+<title>${en ? SORRY_EN.title : "결과지 PDF · CareerMatri"}</title>
 <style>
  :root { color-scheme: light }
  body { margin:0; background:#f6f7f9; color:#1e2838;
@@ -43,15 +57,22 @@ function sorryPage(attemptId: string): Response {
  .main { background:#1c5fb0; color:#fff }
  .ghost { border:1px solid #e3e7ee; color:#1e2838 }
 </style></head><body><main>
- <h1>PDF를 만들지 못했습니다</h1>
+ ${en ? `<h1>${SORRY_EN.h1}</h1>
+ <p>${SORRY_EN.p1}</p>
+ <p>${SORRY_EN.p2}</p>
+ <div class="acts">
+  <a class="main" href="/v3/${id}/result/pdf">${SORRY_EN.retry}</a>
+  <a class="ghost" href="/v3/${id}/result">${SORRY_EN.web}</a>
+  <a class="ghost" href="/support">${SORRY_EN.support}</a>
+ </div>` : `<h1>PDF를 만들지 못했습니다</h1>
  <p>웹 결과는 그대로 볼 수 있습니다. 담긴 내용은 종이와 같습니다.</p>
  <p>잠시 뒤에 다시 눌러 보셔도 됩니다. 계속 안 되면 고객지원으로 알려
     주세요. 저희 쪽 기록에 남아 있어 바로 확인할 수 있습니다.</p>
  <div class="acts">
-  <a class="main" href="/v3/${encodeURIComponent(attemptId)}/result/pdf">다시 시도</a>
-  <a class="ghost" href="/v3/${encodeURIComponent(attemptId)}/result">웹 결과 보기</a>
+  <a class="main" href="/v3/${id}/result/pdf">다시 시도</a>
+  <a class="ghost" href="/v3/${id}/result">웹 결과 보기</a>
   <a class="ghost" href="/support">고객지원</a>
- </div>
+ </div>`}
 </main></body></html>`;
   return new Response(html, {
     status: 503,
@@ -94,13 +115,29 @@ export async function GET(
   try {
     /* 쪽머리 한 줄. **값을 여기서 만들지 않는다**: 결과지 머리와 같은
        자리를 읽어(`resultMeta`) 종이와 화면이 다른 학과를 적지 않게 한다 */
-    const meta = await resultMeta(attemptId, a.core_code);
-    const header = [meta.school, meta.department]
-      .filter(Boolean).concat("CareerMatri 진로 분석 리포트").join(" · ");
-    const pdf = await drawResultPdf({
-      attemptId, baseUrl: base, cookie: h.get("cookie") ?? "", header,
-    });
-    console.log(`[v3-pdf] done attempt=${attemptId} ${pdf.length}바이트 `
+    /* PRO 는 긴 결과지(책자)를 뽑는다. 책자 웹 쪽(`/result/book`)을 그대로
+       인쇄하므로 웹과 종이가 같다. 쪽머리와 쪽번호는 책자가 스스로 그린다.
+       BASIC 과 STANDARD 는 지금의 결과지를 그대로 뽑는다 */
+    /* **영어 응시의 PRO 는 책자를 뽑지 않는다**(영어판 1단계,
+       `docs/metri/GLOBAL_EN_PLAN.md`). 책자(`report-long/`)는 한국어로만
+       쓰여 있어 영어 응시에 뽑으면 한국어 70쪽이 나간다. 1단계 동안은 웹
+       결과 종이판을 그대로 내고, 책자 번역은 2단계에서 한다 */
+    /* 영어 응시도 영어 원고가 다 갖춰진 전공(기계 · 전기전자 · 컴퓨터)은 책을 뽑는다(영어판 2단계) */
+    const book = a.tier === "PRO" && (a.locale === "ko" || hasEdition(a.core_code, "en"));
+    let pdf: Buffer;
+    if (book) {
+      pdf = await drawBookPdf({ attemptId, baseUrl: base, cookie: onlyScope(h.get("cookie") ?? "", user.scope), asStaff: user.scope === "staff" });
+    } else {
+      const meta = await resultMeta(attemptId, a.core_code);
+      const header = [meta.school, meta.department]
+        .filter(Boolean)
+        .concat(a.locale === "en" ? "CareerMatri Career Analysis Report" : "CareerMatri 진로 분석 리포트")
+        .join(" · ");
+      pdf = await drawResultPdf({
+        attemptId, baseUrl: base, cookie: onlyScope(h.get("cookie") ?? "", user.scope), asStaff: user.scope === "staff", header,
+      });
+    }
+    console.log(`[v3-pdf] done attempt=${attemptId} ${book ? "book " : ""}${pdf.length}바이트 `
       + `${Date.now() - t0}ms`);
     const p = await participantOf(user.id);
     if (p) {
@@ -132,7 +169,7 @@ export async function GET(
      */
     const step = e instanceof PdfFailed ? e.step : "unknown";
     const why = String((e as Error)?.message ?? e).split("\n")[0].slice(0, 300);
-    const line = `[v3-pdf] attempt=${attemptId} tier=${a.tier} step=${step} `
+    const line = `[v3-pdf] attempt=${attemptId} tier=${a.tier}${a.tier === "PRO" ? " book?" : ""} step=${step} `
       + `base=${base} chromium=${got.bin ?? "(없음)"} tried=${got.tried.length} `
       + `${Date.now() - t0}ms :: ${why}`;
     console.error(line);
@@ -153,6 +190,20 @@ export async function GET(
     if (await participantOf(user.id)) {
       await record(attemptId, "pdf_fail", []).catch(() => undefined);
     }
-    return sorryPage(attemptId);
+    return sorryPage(attemptId, a.locale);
   }
+}
+
+/**
+ * 그리는 브라우저에 **누른 사람의 로그인만** 넘긴다. 담당자와 학생은 쿠키가
+ * 따로라(`auth.ts`) 둘 다 넘기면 결과 쪽이 학생 쿠키를 먼저 읽고, 같은
+ * 브라우저에 다른 학생이 들어가 있으면 남의 결과를 그리려다 막힌다.
+ */
+function onlyScope(header: string, scope: "staff" | "student" | undefined): string {
+  const staffCookie = (name: string) => /(^|-)cm-staff\./.test(name);
+  const studentCookie = (name: string) => /authjs\./.test(name);
+  return header.split(";").map((x) => x.trim()).filter((pair) => {
+    const name = pair.slice(0, Math.max(0, pair.indexOf("=")));
+    return scope === "staff" ? !studentCookie(name) : !staffCookie(name);
+  }).join("; ");
 }

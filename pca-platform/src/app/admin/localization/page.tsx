@@ -64,7 +64,7 @@ export default async function LocalizationPage() {
       <h1>지역화 덮임</h1>
       <p className="sub">
         터미널의 <code>npm run i18n:coverage</code> 와 같은 값을 읽습니다.
-        {r.ok ? " 지금은 다 덮였습니다." : " 아직 빈 자리가 있습니다."}
+        {r.ok ? " 지금은 다 덮였습니다." : " 아직 빈칸이 있습니다."}
       </p>
 
       <section className="panel" style={{ marginBottom: 20 }}>

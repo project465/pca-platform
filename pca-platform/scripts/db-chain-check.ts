@@ -169,5 +169,40 @@ const RUNNERS = [
        : `runtime-needs.json 에 ${CHAIN} 이 없다 — 컨테이너에서 db:upgrade 가 멈춘다`);
 }
 
+/* ── 7. 같은 제약을 다시 세우는 파일이 값을 좁히지 않는다 ────────── */
+{
+  /* `db:upgrade` 는 배포마다 목록의 **첫 파일부터 다시** 돈다. 앞 파일이
+     `kind IN ('pass','report')` 로 제약을 다시 세우면, 뒤 파일이 더한
+     `track` 줄이 하나라도 있는 DB 에서 그 줄이 거절되고 뒤 파일이 하나도
+     올라가지 않는다. 2026-10-27 에 `entitlements_kind_check` 와
+     `outbox_kind_check` 두 곳에서 실제로 멈췄다. 그래서 같은 이름의
+     제약은 **모든 파일이 같은 값 목록**을 적어야 한다 */
+  const strip = (s: string): string =>
+    s.replace(/--[^\n]*/g, "").replace(/\/\*[\s\S]*?\*\//g, "");
+  const defs = new Map<string, { file: string; vals: Set<string> }[]>();
+  for (const f of all) {
+    const src = strip(readFileSync(f, "utf8"));
+    for (const m of src.matchAll(/ADD\s+CONSTRAINT\s+(\w+)\s+CHECK\s*\(([\s\S]*?)\)\s*;/gi)) {
+      if (!/\bIN\s*\(/i.test(m[2])) continue;
+      const vals = new Set([...m[2].matchAll(/'([^']*)'/g)].map((x) => x[1]));
+      if (!vals.size) continue;
+      defs.set(m[1], [...(defs.get(m[1]) ?? []), { file: f, vals }]);
+    }
+  }
+  const bad: string[] = [];
+  let shared = 0;
+  for (const [name, ds] of defs) {
+    if (ds.length < 2) continue;
+    shared += 1;
+    const union = new Set(ds.flatMap((d) => [...d.vals]));
+    for (const d of ds) {
+      const miss = [...union].filter((v) => !d.vals.has(v));
+      if (miss.length) bad.push(`${name} @ ${d.file}: ${miss.join(",")} 빠짐`);
+    }
+  }
+  ok("다시 세우는 제약이 뒤 파일이 더한 값까지 받는다", bad.length === 0,
+     bad.length ? bad.join(" / ") : `여러 파일이 세우는 제약 ${shared}개`);
+}
+
 console.log(`\n확인 ${pass + fail}가지 — 통과 ${pass} · 걸림 ${fail}`);
 process.exitCode = fail ? 1 : 0;

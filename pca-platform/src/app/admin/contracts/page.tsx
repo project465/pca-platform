@@ -91,7 +91,7 @@ export default async function AdminContracts({
           </Card>
         ) : (
           <Empty icon="contract" title="아직 계약이 없습니다."
-            body="계약을 등록하면 그 자리에서 좌석이 만들어지고 기관이 명단을 올릴 수 있습니다."
+            body="계약을 등록하면 바로 좌석이 만들어지고 기관이 명단을 올릴 수 있습니다."
             cta={{ href: "/admin/contracts/new", label: "계약 등록" }} />
         )}
       </div>

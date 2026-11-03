@@ -69,6 +69,17 @@ if [ "${v3:-0}" -lt 5 ]; then
   echo "실패 ME_V3 표가 모자랍니다. npm run db:upgrade 로 올립니다." >&2
   bad=$((bad + 1))
 fi
+# **응시 언어 칸.** 응시를 여는 INSERT 가 이 칸을 적으므로 빠지면
+# `/v3/start` 가 500 이다(`schema_v3_locale.sql`)
+if [ "${v3:-0}" -ge 5 ]; then
+  lc=$(q "SELECT count(*) FROM information_schema.columns
+           WHERE table_schema='public' AND table_name='v3_attempts'
+             AND column_name='locale'")
+  if [ "${lc:-0}" -lt 1 ]; then
+    echo "실패 v3_attempts.locale 이 없습니다. npm run db:upgrade 로 올립니다." >&2
+    bad=$((bad + 1))
+  fi
+fi
 
 # **`career_profiles` 는 세는 것으로 끝내지 않는다.** `/me` 가 그 표의
 # 어느 칸을 읽는지까지 맞아야 열린다. 표가 선 날 칸이 빠져 있으면

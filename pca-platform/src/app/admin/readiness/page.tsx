@@ -163,7 +163,7 @@ export default async function ReadinessPage() {
         </table></div>
         <p className="sub">
           철자가 {r.oneSpelling ? "하나로 모여 있습니다" : "두 가지가 섞여 있습니다"}.
-          도메인이 사는 자리는 이 표 한 곳이고, 소개 사이트 쪽은
+          도메인을 적는 곳은 이 표 하나이고, 소개 사이트 쪽은
           <code> marketing/src/lib/domains.ts</code> 한 곳입니다.
         </p>
       </section>

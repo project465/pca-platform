@@ -278,7 +278,11 @@ EXCEPTION WHEN undefined_object THEN NULL; END $$;
 DO $$ BEGIN
   ALTER TABLE outbox ADD CONSTRAINT outbox_kind_check
     CHECK (kind IN ('signup', 'report_ready', 'upgrade_done', 'code_low',
-                    'purchase_done', 'refund_requested', 'refund_done'));
+                    'purchase_done', 'refund_requested', 'refund_done',
+                    /* 뒤 파일(`schema_assistant.sql`)이 더한 종류도 여기 적는다.
+                       이 파일이 배포마다 먼저 다시 돌아서, 빼 두면 MAT 소식
+                       메일이 한 통이라도 쌓인 DB 에서 이 줄이 거절된다 */
+                    'assistant_digest'));
 EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
 COMMENT ON COLUMN outbox.kind IS

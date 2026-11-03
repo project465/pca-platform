@@ -46,7 +46,7 @@ export async function retakeState(userId: string): Promise<RetakeState> {
 export const RETAKE_BLOCKED_KO = {
   title: "이미 결과를 받으셨습니다",
   body: "검사는 한 번만 응시합니다. 같은 사람의 응답이 두 벌 쌓이면"
-    + " 결과를 어느 쪽으로 읽어야 하는지가 갈립니다.",
+    + " 어느 쪽 결과를 봐야 하는지 알 수 없게 됩니다.",
   how: "다시 응시해야 할 사정이 있으면 학과 담당자에게 말씀해 주세요."
-    + " 담당자가 열어 주면 그 자리에서 한 번 더 시작할 수 있습니다.",
+    + " 담당자가 열어 주면 바로 한 번 더 시작할 수 있습니다.",
 } as const;

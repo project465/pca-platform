@@ -4,6 +4,8 @@ import { resolveLang } from "@/lib/locale-server";
 import { MIN_CELL } from "@/lib/org";
 import { campusV3, type Cell } from "@/lib/me-v3/campus";
 import { core as coreEntry, registry } from "@/lib/me-v3/core-registry";
+import { campusSay, university } from "@/lib/campus/registry";
+import { sayTree } from "@/lib/campus/say-tree";
 import { industryChoices, roleChoices } from "@/lib/me-v3/runtime/session";
 import { campusNames, collegeChoices, leafChoices } from "@/lib/campus/labels";
 import {
@@ -15,6 +17,7 @@ import { Shell, PageHead, Section } from "@/components/sf/shell";
 import { campusNav } from "@/lib/campus/org-mode";
 import { BarList, Empty, Kpi } from "@/components/sf/parts";
 import LangSelect from "@/components/sf/lang-select";
+import { ColorBars, CollegeStack, Progress, StatusDonut } from "./charts";
 
 export const metadata = { title: `전공 진단 집계 · ${BRAND.campus}` };
 
@@ -163,14 +166,18 @@ export default async function CampusV3({
     : null;
 
   const nav = await campusNav(user.id);
+  /* 기관(진흥원 등)이면 화면 글자를 기관 낱말로 바꾼다(`sayTree`) */
+  const reg = uni ? university(uni) : null;
+  const say = campusSay(reg);
+  const agency = reg?.org_kind === "agency";
   const shell = (children: React.ReactNode) => (
     <Shell
       surface="campus" lang={L} nav={nav} active="/org/v3"
-      who={{ name: user.name, role: ROLE_LABEL[user.role] ?? "" }}
+      who={{ name: user.name, role: say(ROLE_LABEL[user.role] ?? "") }}
       topTitle={org ? org.name : BRAND.campus}
       topRight={<LangSelect current={L} />}
     >
-      {children}
+      {sayTree(children, say, agency)}
     </Shell>
   );
 
@@ -178,7 +185,7 @@ export default async function CampusV3({
     return shell(
       <>
         <PageHead eyebrow={BRAND.campus} title="전공 진단 집계"
-          sub="기관이 연결되면 이 자리에 학생 집계가 섭니다." />
+          sub="기관이 연결되면 여기에 학생 집계가 나옵니다." />
         <Section>
           <Empty icon="group" title="연결된 기관이 없습니다"
             body="계약이 열리면 학생이 친 검사가 여기에 모입니다." />
@@ -189,9 +196,11 @@ export default async function CampusV3({
 
   return shell(
     <>
+      {/* **첫 화면은 인사로 연다**(화면 시안 2026-10-20). 이 쪽이 무엇인지는
+          제목 위 한 줄(`전공 진단 집계`)이 든다 */}
       <PageHead
-        eyebrow={BRAND.campus}
-        title="전공 진단 집계"
+        eyebrow={`${BRAND.campus} · 전공 진단 집계`}
+        title={`${user.name} ${user.role === "instructor" ? "교수님" : "담당자님"}, 안녕하세요`}
         sub={"지금 쓰는 검사를 친 학생의 집계입니다. "
           + `사람이 ${MIN_CELL}명이 안 되는 칸은 숫자를 내지 않습니다.`}
       />
@@ -252,7 +261,7 @@ export default async function CampusV3({
         </form>
         {narrowed ? (
           <p className="sf-meta" style={{ marginTop: 8 }}>
-            지금 보는 범위 — {scopeKo} · <Link href="/org/v3">전체로 돌아가기</Link>
+            지금 보는 범위: {scopeKo} · <Link href="/org/v3">전체로 돌아가기</Link>
           </p>
         ) : null}
       </Section>
@@ -311,6 +320,29 @@ export default async function CampusV3({
         ) : null}
       </Section>
 
+      {/* ── 한눈에(그림) ── 위 넷과 같은 수를 모양으로 다시 그린다. 새 값은 없다 */}
+      <Section title="한눈에 보기" note="대상자 가운데 몇 명이 시작했고 몇 명이 결과를 받았는지입니다">
+        <div className="cvx-row">
+          <div className="cvx-card">
+            <h3>진행 단계</h3>
+            <p className="cvx-note">막대 길이는 대상자에 대한 몫입니다</p>
+            <Progress target={v3.target} started={v3.started} scored={v3.scored} />
+          </div>
+          {counts ? (
+            <div className="cvx-card">
+              <h3>명단 학생의 응시 상태</h3>
+              <p className="cvx-note">학교가 계정을 발급한 학생 기준입니다</p>
+              <StatusDonut parts={[
+                { label: "결과 받음", n: counts.scored, color: "#14907f" },
+                { label: "푸는 중", n: counts.in_progress, color: "#7aa2ff" },
+                { label: "시작 전", n: counts.none, color: "#f0b44c" },
+                { label: "이용 멈춤", n: counts.disabled, color: "#c3cad6" },
+              ]} />
+            </div>
+          ) : null}
+        </div>
+      </Section>
+
       {/* ── 미응시 · 진행중 · 완료(규격 §17) ──
           **메일이나 문자를 여기서 보내지 않는다.** 그 기능이 이 제품에
           없는데 단추를 만들면 누른 담당자가 보낸 줄로 읽고, 학생은 아무
@@ -318,7 +350,7 @@ export default async function CampusV3({
           **리마인드 대상 명단을 CSV 로 받기** */}
       {counts ? (
         <Section title="응시 상태별 학생"
-          note="명단에 올라온 학생을 상태로 가른 수입니다. 눌러서 그 목록으로 갑니다">
+          note="명단에 올라온 학생을 상태별로 나눈 수입니다. 눌러서 그 목록으로 갑니다">
           <ul className="sf-list">
             <li>
               <b>아직 시작하지 않은 학생 {counts.none}명</b>{" "}
@@ -371,18 +403,18 @@ export default async function CampusV3({
           <li>
             <a href={`/org/v3/export/students.csv${qs}`}>
               학생 응시 상태 CSV
-            </a>{" "}— 학번 · 이름 · 학과 · 계정 상태 · 응시 상태 · 완료일
+            </a>{" "}(학번 · 이름 · 학과 · 계정 상태 · 응시 상태 · 완료일)
           </li>
           <li>
             <a href={`/org/v3/export/departments.csv${qs}`}>
               학과별 집계 CSV
-            </a>{" "}— 단과대학과 학과별 대상자 · 시작 · 완료. {MIN_CELL}명
+            </a>: 단과대학과 학과별 대상자 · 시작 · 완료. {MIN_CELL}명
             미만 칸은 수가 비어 있습니다
           </li>
           <li>
             <a href={`/org/v3/report.pdf${qs}`}>대학 운영 요약 PDF</a>{" · "}
             <Link href={`/org/v3/report${qs}`}>미리 보기</Link>{" "}
-            — 개인 응답은 들어 있지 않습니다
+            · 개인 응답은 들어 있지 않습니다
           </li>
         </ul>
       </Section>
@@ -419,7 +451,14 @@ export default async function CampusV3({
               적지 않는다. 다섯이 안 되는 칸은 수를 내지 않는다 */}
           {v3.college_rows.length ? (
             <Section title="단과대학별 응시 현황"
-              note="학교 전용 진입으로 들어온 응시입니다">
+              note="학교 전용 진입으로 들어온 응시입니다. 막대는 대상자 안에서 결과 받음 · 푸는 중을 쌓은 것입니다">
+              <div className="cvx-card">
+                <CollegeStack minCell={MIN_CELL} rows={v3.college_rows.map((r) => ({
+                  name: name.college(r.code), target: r.target, started: r.started, scored: r.scored, rate: r.rate,
+                }))} />
+              </div>
+              <details className="sf-fold" style={{ marginTop: 10 }}>
+              <summary>표로 보기</summary>
               <div className="sf-tw">
                 <table className="sf-table">
                   <thead>
@@ -447,6 +486,7 @@ export default async function CampusV3({
                   </tbody>
                 </table>
               </div>
+              </details>
             </Section>
           ) : null}
 
@@ -470,7 +510,7 @@ export default async function CampusV3({
               <ul className="sf-list">
                 {v3.attention.slice(0, 6).map((r) => (
                   <li key={r.code}>
-                    <b>{name.dept(r.code)}</b> — 시작 {r.started}명 가운데
+                    <b>{name.dept(r.code)}</b>: 시작 {r.started}명 가운데
                     {" "}{r.open}명이 아직 결과를 받지 않았습니다
                   </li>
                 ))}
@@ -491,7 +531,7 @@ export default async function CampusV3({
             <ul className="sf-list">
               {v3.recent.slice(-7).map((d) => (
                 <li key={d.day}>
-                  <b>{d.day}</b> — 시작 {d.started === null ? "5명 미만" : `${d.started}명`}
+                  <b>{d.day}</b>: 시작 {d.started === null ? "5명 미만" : `${d.started}명`}
                   {" · "}결과 {d.scored === null ? "5명 미만" : `${d.scored}명`}
                 </li>
               ))}
@@ -501,6 +541,19 @@ export default async function CampusV3({
           {/* **긴 목록을 첫 화면에 펼치지 않는다**(규격 §22). 담당자가 이
               화면을 여는 까닭은 위의 여섯이고, 아래 다섯은 되짚어 보실
               자리다. 담긴 것은 그대로다 */}
+          {/* ── 학생 관심 분포 ── 고른 산업 · 고른 직무 · 영역 묶음. 적합도도 추천도
+              아니다: 학생이 응시 중에 고른 것과 결과의 묶음을 센 것이다 */}
+          <Section title="학생들이 고른 것" note="응시 중에 깊게 보기로 고른 산업과 직무, 결과에서 영역이 놓인 자리입니다">
+            <div className="cvx-tri">
+              <ColorBars title="고른 산업" note="적합도가 아닙니다" minCell={MIN_CELL}
+                rows={v3.by_industry.map((r) => ({ label: packKo(r.key), n: r.n }))} />
+              <ColorBars title="고른 직무" note="추천이 아닙니다" minCell={MIN_CELL}
+                rows={v3.by_role.map((r) => ({ label: packKo(r.key), n: r.n }))} />
+              <ColorBars title="기술영역의 자리" note="(학생 × 영역) 칸 수입니다" minCell={MIN_CELL}
+                rows={v3.zone_cells.map((r) => ({ label: r.label, n: r.n }))} />
+            </div>
+          </Section>
+
           <details className="sf-fold">
             <summary>전공 · 학위 · 산업 · 직무 · 영역 분포 보기</summary>
 
@@ -511,7 +564,7 @@ export default async function CampusV3({
           </Section>
 
           <Section title="학위 단계"
-            note="묻는 장면이 단계마다 갈립니다">
+            note="묻는 장면이 단계마다 다릅니다">
             <BarList rows={bars(v3.by_stage)}
               hiddenLabel={`${MIN_CELL}명 미만`} emptyLabel="아직 없습니다" />
           </Section>
@@ -530,8 +583,8 @@ export default async function CampusV3({
 
           <Section
             title="기술영역이 지금 어디에 있는가"
-            note={"사람 수가 아니라 (학생 × 기술영역) 칸 수입니다. "
-              + "학생 한 명이 영역 열둘을 들고 있습니다"}
+            note={"(학생 × 기술영역) 칸 수이고, 사람 수는 아닙니다. "
+              + "학생 한 명에 영역이 열둘씩 있습니다"}
           >
             {/* 묶음 이름은 집계 쪽이 이미 사람의 말로 적어 준다
                 (`campus.ts` 의 `zoneKo`). 여기서 코드를 다시 적지 않는다 */}

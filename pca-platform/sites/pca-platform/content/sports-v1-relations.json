@@ -68,14 +68,14 @@
    "industry": "INDUSTRY_SENIOR_V1",
    "industry_name": "노인·건강증진",
    "strength": "중심",
-   "appears_as": "노인·건강증진 에서는 넘어질 위험을 재어 가르는가 · 기준표와 견주는가 로 나타납니다",
+   "appears_as": "노인·건강증진 에서는 넘어질 위험을 재어 가르는가 · 기준표와 비교하는가 로 나타납니다",
    "axes_watched": [
     "J3",
     "J6"
    ],
    "dimensions": [
     "넘어질 위험을 재어 가르는가",
-    "기준표와 견주는가"
+    "기준표와 비교하는가"
    ]
   },
   {
@@ -442,7 +442,7 @@
    "industry": "INDUSTRY_REHAB_V1",
    "industry_name": "병원·재활센터",
    "strength": "중심",
-   "appears_as": "병원·재활센터 에서는 소견을 올리는 조건으로 옮기는가 · 좌우를 견주어 판정하는가 · 조건을 못 채웠을 때 가르는가 로 나타납니다",
+   "appears_as": "병원·재활센터 에서는 소견을 올리는 조건으로 옮기는가 · 좌우를 비교해 판정하는가 · 조건을 못 채웠을 때 가르는가 로 나타납니다",
    "axes_watched": [
     "J2",
     "J3",
@@ -450,7 +450,7 @@
    ],
    "dimensions": [
     "소견을 올리는 조건으로 옮기는가",
-    "좌우를 견주어 판정하는가",
+    "좌우를 비교해 판정하는가",
     "조건을 못 채웠을 때 가르는가"
    ]
   },
@@ -908,12 +908,12 @@
    "industry": "INDUSTRY_FACILITY_V1",
    "industry_name": "시설 운영·행정",
    "strength": "있음",
-   "appears_as": "시설 운영·행정 에서는 사용률을 지난해와 견주는가 로 나타납니다",
+   "appears_as": "시설 운영·행정 에서는 사용률을 지난해와 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "사용률을 지난해와 견주는가"
+    "사용률을 지난해와 비교하는가"
    ]
   },
   {
@@ -942,12 +942,12 @@
    "industry": "INDUSTRY_FITNESS_V1",
    "industry_name": "체육관·피트니스",
    "strength": "있음",
-   "appears_as": "체육관·피트니스 에서는 재등록을 지난달과 견주는가 로 나타납니다",
+   "appears_as": "체육관·피트니스 에서는 재등록을 지난달과 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "재등록을 지난달과 견주는가"
+    "재등록을 지난달과 비교하는가"
    ]
   },
   {
@@ -956,12 +956,12 @@
    "industry": "INDUSTRY_SCHOOL_V1",
    "industry_name": "학교·유소년",
    "strength": "있음",
-   "appears_as": "학교·유소년 에서는 학기 종목을 지난해와 견주는가 로 나타납니다",
+   "appears_as": "학교·유소년 에서는 학기 종목을 지난해와 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "학기 종목을 지난해와 견주는가"
+    "학기 종목을 지난해와 비교하는가"
    ]
   },
   {
@@ -986,12 +986,12 @@
    "industry": "INDUSTRY_EVENT_V1",
    "industry_name": "대회·경기 운영",
    "strength": "있음",
-   "appears_as": "대회·경기 운영 에서는 참가 집계를 지난 대회와 견주는가 로 나타납니다",
+   "appears_as": "대회·경기 운영 에서는 참가 집계를 지난 대회와 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "참가 집계를 지난 대회와 견주는가"
+    "참가 집계를 지난 대회와 비교하는가"
    ]
   },
   {
@@ -1240,7 +1240,7 @@
    "role": "ROLE_MEASURE_V1",
    "role_name": "측정·평가",
    "strength": "중심",
-   "appears_as": "측정·평가 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "측정·평가 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J4",
@@ -1266,7 +1266,7 @@
    "role": "ROLE_RECORDS_V1",
    "role_name": "기록·표준 관리",
    "strength": "중심",
-   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3"
    ]
@@ -1301,7 +1301,7 @@
    "role": "ROLE_RESEARCH_V1",
    "role_name": "조사·연구",
    "strength": "중심",
-   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J5"
@@ -1325,7 +1325,7 @@
    "role": "ROLE_PROGRAM_V1",
    "role_name": "프로그램 설계",
    "strength": "중심",
-   "appears_as": "프로그램 설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "프로그램 설계 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J3",
@@ -1471,7 +1471,7 @@
    "role": "ROLE_COACH_V1",
    "role_name": "현장 지도",
    "strength": "중심",
-   "appears_as": "현장 지도 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "현장 지도 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J3",
@@ -1509,7 +1509,7 @@
    "role": "ROLE_SAFETY_V1",
    "role_name": "안전·규정 관리",
    "strength": "중심",
-   "appears_as": "안전·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "안전·규정 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2"
    ]
@@ -1544,7 +1544,7 @@
    "role": "ROLE_RETURN_V1",
    "role_name": "복귀·적합 판정",
    "strength": "중심",
-   "appears_as": "복귀·적합 판정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "복귀·적합 판정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J7"
@@ -1568,7 +1568,7 @@
    "role": "ROLE_COACH_V1",
    "role_name": "현장 지도",
    "strength": "중심",
-   "appears_as": "현장 지도 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "현장 지도 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5"
@@ -1640,7 +1640,7 @@
    "role": "ROLE_RETURN_V1",
    "role_name": "복귀·적합 판정",
    "strength": "중심",
-   "appears_as": "복귀·적합 판정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "복귀·적합 판정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J5",
@@ -1726,7 +1726,7 @@
    "role": "ROLE_MEASURE_V1",
    "role_name": "측정·평가",
    "strength": "중심",
-   "appears_as": "측정·평가 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "측정·평가 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J5",
     "J7"
@@ -1750,7 +1750,7 @@
    "role": "ROLE_RECORDS_V1",
    "role_name": "기록·표준 관리",
    "strength": "중심",
-   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4",
     "J5",
@@ -1789,7 +1789,7 @@
    "role": "ROLE_RESEARCH_V1",
    "role_name": "조사·연구",
    "strength": "중심",
-   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3"
    ]
@@ -1812,7 +1812,7 @@
    "role": "ROLE_PROGRAM_V1",
    "role_name": "프로그램 설계",
    "strength": "중심",
-   "appears_as": "프로그램 설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "프로그램 설계 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4",
     "J6"
@@ -1860,7 +1860,7 @@
    "role": "ROLE_COACH_V1",
    "role_name": "현장 지도",
    "strength": "중심",
-   "appears_as": "현장 지도 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "현장 지도 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2"
    ]
@@ -1967,7 +1967,7 @@
    "role": "ROLE_OPS_V1",
    "role_name": "운영·조정",
    "strength": "중심",
-   "appears_as": "운영·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "운영·조정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2"
    ]
@@ -1990,7 +1990,7 @@
    "role": "ROLE_SAFETY_V1",
    "role_name": "안전·규정 관리",
    "strength": "중심",
-   "appears_as": "안전·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "안전·규정 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -2040,7 +2040,7 @@
    "role": "ROLE_RECORDS_V1",
    "role_name": "기록·표준 관리",
    "strength": "중심",
-   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "기록·표준 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2"
    ]
@@ -2063,7 +2063,7 @@
    "role": "ROLE_OPS_V1",
    "role_name": "운영·조정",
    "strength": "중심",
-   "appears_as": "운영·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "운영·조정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -2101,7 +2101,7 @@
    "role": "ROLE_PROGRAM_V1",
    "role_name": "프로그램 설계",
    "strength": "중심",
-   "appears_as": "프로그램 설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "프로그램 설계 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2"
    ]
@@ -2160,7 +2160,7 @@
    "role": "ROLE_OPS_V1",
    "role_name": "운영·조정",
    "strength": "중심",
-   "appears_as": "운영·조정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "운영·조정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J6"
@@ -2208,7 +2208,7 @@
    "role": "ROLE_MEASURE_V1",
    "role_name": "측정·평가",
    "strength": "중심",
-   "appears_as": "측정·평가 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "측정·평가 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2"
    ]
@@ -2267,7 +2267,7 @@
    "role": "ROLE_RESEARCH_V1",
    "role_name": "조사·연구",
    "strength": "중심",
-   "appears_as": "조사·연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "조사·연구 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J4",
@@ -2317,7 +2317,7 @@
    "role": "ROLE_RETURN_V1",
    "role_name": "복귀·적합 판정",
    "strength": "중심",
-   "appears_as": "복귀·적합 판정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "복귀·적합 판정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1"
    ]
@@ -2376,7 +2376,7 @@
    "role": "ROLE_SAFETY_V1",
    "role_name": "안전·규정 관리",
    "strength": "중심",
-   "appears_as": "안전·규정 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "안전·규정 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J6"

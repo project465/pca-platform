@@ -41,7 +41,7 @@ export const TX = {
   language: p("언어", "Language"),
   notOpenTitle: p("이 화면은 아직 열려 있지 않습니다", "This screen is not open yet"),
   notOpenBody: p(
-    "자리는 잡아 두었습니다. 뒤에 붙을 자료가 실제로 쌓이면 이 화면이 열립니다. 없는 숫자를 미리 보여 드리지 않습니다.",
+    "화면은 만들어 두었습니다. 뒤에 붙을 자료가 실제로 쌓이면 이 화면이 열립니다. 없는 숫자를 미리 보여 드리지 않습니다.",
     "The space is reserved. This screen opens once the data behind it actually exists. We do not show numbers that are not there yet.",
   ),
   privacyHidden: p("표시하지 않음", "Withheld"),
@@ -89,7 +89,7 @@ export const TX = {
   acOldExperience: p("내 경험으로 가기", "Go to my experience"),
   acOldNone: p("전에 보신 검사가 없습니다", "No earlier assessments"),
   acOldNoneBody: p(
-    "이 자리는 지금 검사보다 전에 보신 검사의 기록이 서는 곳입니다. 지금 검사는 내 CareerMatri 에서 시작합니다.",
+    "이곳에는 지금 검사보다 전에 보신 검사의 기록이 나옵니다. 지금 검사는 내 CareerMatri 에서 시작합니다.",
     "This page lists assessments taken before the current one. The current assessment starts in My CareerMatri.",
   ),
 
@@ -116,7 +116,7 @@ export const TX = {
   ),
   myEvidenceIntro: p("경험과 증거", "Evidence profile"),
   myEvidenceIntroBody: p(
-    "적어 주신 프로젝트와 도구가 어디까지 설명할 수 있는 근거가 되는지 봅니다. 해봤다에서 그치는지, 결과와 그 쓰임까지 남았는지를 가릅니다.",
+    "적어 주신 프로젝트와 도구가 어디까지 설명할 수 있는 근거가 되는지 봅니다. 해봤다에서 그치는지, 결과와 그 쓰임까지 남았는지를 구분합니다.",
     "We check how far your projects and tools are confirmed as evidence, across six rungs from activity to repeatability.",
   ),
   myInProgress: p("응시 중", "In progress"),
@@ -152,7 +152,7 @@ export const TX = {
   asNotAll: p("남은 문항이 있습니다", "Some questions are unanswered"),
   /* **어디에 몇 개가 남았는지 적는다.** '남은 문항이 있습니다' 만 적으면
      누른 사람은 어느 묶음으로 돌아가야 하는지 모른 채 처음부터 다시 훑는다 */
-  asMissingHead: p("아직 못 고르신 문항이 있습니다. 눌러서 그 자리로 갑니다.",
+  asMissingHead: p("아직 못 고르신 문항이 있습니다. 눌러서 그 문항으로 갑니다.",
                    "Some questions are still unanswered. Tap one to jump there."),
   asMissingLeft: p("남음", "left"),
   asGone: p("이 응시를 찾을 수 없습니다.", "This attempt could not be found."),
@@ -191,18 +191,70 @@ export const TX = {
   secContext: p("진로 맥락", "Career context"),
 
   /* ── 상품 ─────────────────────────────────────────────────────── */
-  pxTitle: p("기계공학 진로 진단", "Mechanical Engineering career diagnostic"),
+  /* 전공이 스무 개 열렸다. **한 전공 이름을 가격표 머리에 두지 않는다**:
+     경영학 학생이 `기계공학 진로 진단` 을 보고 자기 것이 아닌 줄 안다 */
+  pxTitle: p("전공별 진로 진단", "Career diagnostic by major"),
   pxBody: p(
     "전공과 경험을 실제 직무 선택으로 잇습니다. 먼저 볼 직무와 지금 비어 있는 증거, 다음에 만들 경험 하나를 정리해 드립니다.",
     "We connect your major and experience to an actual role decision: which roles to look at first, which evidence is missing, and the one experience to build next.",
   ),
   pxBasic: p("먼저 볼 직무와 다음 할 일", "Where to look first, and what to do next"),
-  pxStandard: p("직무 견주기와 비어 있는 증거, 조직 비교", "Role comparison, evidence gaps, organization comparison"),
+  pxStandard: p("직무 비교와 비어 있는 증거, 조직 비교", "Role comparison, evidence gaps, organization comparison"),
   pxPro: p(
-    "직무 셋을 하나씩 파고들어, 내 경험이 그 직무에서 어떻게 읽히는지와 다음에 무엇을 만들지까지 적습니다",
+    "직무 셋을 하나씩 파고들어, 내 경험이 그 직무에서 어떻게 보이는지와 다음에 무엇을 만들지까지 적습니다",
     "Evidence architecture, research ownership, organization value, next evidence project, 30/90/365 plan",
   ),
   pxBuy: p("시작하기", "Get started"),
+  /* 상품은 켜졌는데 결제 대행사 설정이 아직인 때. **누를 수 없는 단추에
+     `시작하기` 를 적지 않는다** */
+  pxPayNotReady: p("결제 준비 중", "Payment coming soon"),
+  /* ── MAT (기간권 · 코드 이름은 Track) ───────────────────────────────── */
+  pxTrackTitle: p("MAT", "MAT, AI career assistant"),
+  pxTrackLead: p(
+    "매주 할 일 하나를 먼저 알려 드리고, 메모를 경험 기록으로 옮기고, 직접 찾은 공고를 내 경험과 맞대어 드립니다. 자동으로 갱신되지 않고 기간이 끝나면 저절로 닫힙니다.",
+    "It tells you one thing to do each week, turns your notes into experience records, and lines up postings you found against your experience. It does not renew on its own and simply closes when the period ends.",
+  ),
+  pxTrackF1: p("매주 할 일 알림 — 검사 결과에서 먼저 채울 부분을 이번 주 할 일 하나로 알려 드립니다. 적어 둔 공고는 마감 7·3·1일 전에 다시 알려 드립니다.",
+    "Weekly to-do: one task a week from the gaps in your result, plus reminders 7, 3 and 1 days before deadlines you saved."),
+  pxTrackF2: p("메모로 경험 채우기 — 한두 문장 메모를 경험 기록 화면의 보기로 옮겨 드립니다. 확인하고 직접 저장합니다.",
+    "Notes to experience: a one-line note becomes a pre-filled experience record you check and save yourself."),
+  pxTrackF3: p("공고와 내 경험 맞대 보기 — 직접 찾은 공고를 붙여 넣으면 요구 항목마다 설명할 경험이 있는지, 비어 있는지 나눠 보여 드립니다.",
+    "Posting check: paste a posting you found and see, item by item, where you already have experience and where you don't."),
+  pxTrackNot: p("점수나 합격 가능성을 만들지 않고, 기업을 대신 고르거나 지원하지 않습니다.",
+    "It never scores your chances, picks companies for you or applies on your behalf."),
+  pxTrackMore: p("어떻게 쓰는지 자세히 보기", "See how it works"),
+  pxTrack30: p("30일권", "30 days"),
+  pxTrack90: p("90일권", "90 days"),
+  pxTrack30Why: p("한 달만 써 보고 정해도 됩니다.", "Try it for a month first."),
+  pxTrack90Why: p("90일 동안 이용. 한 학기 지원 시즌을 이어서 준비할 때 알맞습니다.",
+    "90 days of use. A good fit for preparing through one semester's application season."),
+  pxTrackTrial: p(
+    "PRO 결과지를 사시면 MAT 첫 1개월이 함께 열립니다.",
+    "Buying the PRO report opens your first month of the assistant.",
+  ),
+  pxTrackSoon: p(
+    "공고 자동 수집은 준비 중입니다. 지금은 직접 찾은 공고를 붙여 넣어 확인합니다.",
+    "Automatic posting collection is on the way. For now you paste postings you found.",
+  ),
+  pxTrackBuy: p("MAT 시작하기", "Start the assistant"),
+  payTrackNote1: p(
+    "결제하면 바로 MAT이 열립니다. 검사 응시권은 생기지 않습니다.",
+    "The assistant opens as soon as you pay. It does not add an assessment credit.",
+  ),
+  payTrackNote2: p(
+    "자동으로 갱신되지 않습니다. 기간이 끝나면 저절로 닫힙니다.",
+    "It does not renew. It closes on its own when the period ends.",
+  ),
+  payTrackNote3: p(
+    "남은 기간은 일할로 환불을 요청할 수 있습니다.",
+    "You can ask for a pro-rated refund of the days left.",
+  ),
+  okTrackTitle: p("MAT이 열렸습니다.", "Your assistant is on."),
+  okTrackBody: p(
+    "기간이 끝나면 저절로 닫히고 다시 결제되지 않습니다.",
+    "It closes on its own when the period ends and is not charged again.",
+  ),
+  okTrackGo: p("MAT 열기", "Open the assistant"),
 
   /* ── 동의 ───────────────────────────────────────────────────────
      **`locale.ts` 에 넣지 않는다.** 저쪽은 세 언어를 한 줄에 쓰게 묶여
@@ -239,7 +291,7 @@ export const TX = {
     "Price not approved yet",
   ),
   pxPriceNotApprovedWhy: p(
-    "정해지면 이 자리에 적습니다. 지어낸 값을 띄우지 않습니다.",
+    "정해지면 여기에 적습니다. 지어낸 값을 띄우지 않습니다.",
     "It will appear here once it is set. We do not display an invented figure.",
   ),
   pxFreeTier: p("무료", "Free"),
@@ -297,7 +349,7 @@ export const TX = {
   /* 머리글 아래에 **같은 말을 다시 적지 않는다.** 머리글이 무엇을 하는지
      말했으면 여기서는 무엇을 받는지 적는다 */
   pxLeadSub: p(
-    "어느 기술영역부터 볼지, 해 보신 일이 어디까지 설명되는지, 아직 비어 있는 판단이 무엇인지를 한 장에 정리해 드립니다.",
+    "어느 업무 영역부터 볼지, 해 보신 일이 어디까지 설명되는지, 아직 비어 있는 판단이 무엇인지를 한 장에 정리해 드립니다.",
     "One document: which technical domain to start with, how far what you have done already explains itself, and which judgements are still empty.",
   ),
   pxTrust1: p("결제하면 바로 시작합니다", "Start the moment you pay"),
@@ -318,14 +370,14 @@ export const TX = {
   ),
   pxCommon3: p("담당자 승인이 필요 없습니다", "No approval step"),
   pxCommon3b: p(
-    "결제가 끝나면 그 자리에서 응시가 열립니다.",
+    "결제가 끝나면 바로 응시가 열립니다.",
     "The assessment opens as soon as payment goes through.",
   ),
   pxCommon4: p("중간에 닫아도 이어집니다", "Close it and pick up where you left off"),
   /* **걸리는 시간을 여기 적지 않는다.** 등급마다 다르고, 가격 카드가
      `estimate()` 로 센 값을 적는다. 두 곳에 적으면 갈린다 */
   pxCommon4b: p(
-    "답한 것은 문항마다 저장되어 다른 기기에서도 그 자리로 돌아옵니다.",
+    "답한 것은 문항마다 저장되어 다른 기기에서도 같은 문항으로 돌아옵니다.",
     "Every answer is saved as you go, so another device picks up at the same place.",
   ),
   pxAsk: p("사기 전에 묻는 것", "Before you buy"),
@@ -343,7 +395,7 @@ export const TX = {
   flow1b: p("무엇을 배우셨는가", "What you studied"),
   flow2: p("경험", "Experience"),
   flow2b: p("무엇을 해보셨는가", "What you have done"),
-  flow3: p("기술영역 묶음", "Domain groups"),
+  flow3: p("영역 그룹", "Domain groups"),
   flow3b: p("어디부터 볼 것인가", "Where to start"),
   flow4: p("아직 비어 있는 근거", "Evidence gap"),
   flow4b: p("무엇이 비어 있는가", "What is still missing"),
@@ -365,6 +417,11 @@ export const TX = {
 
   /* ── 결제가 끝난 뒤 ───────────────────────────────────────────── */
   okOrderNo: p("주문 번호", "Order number"),
+  payCheckingTitle: p("결제를 확인하고 있습니다", "We're confirming your payment"),
+  payCheckingBody: p(
+    "결제사 확인이 조금 늦어지고 있습니다. 결제가 되었다면 몇 분 안에 저절로 반영되니 다시 결제하지 마시고, 잠시 뒤 아래 단추를 눌러 주세요.",
+    "Confirmation from the payment company is taking a little longer. If you were charged, it will go through on its own within a few minutes, so please don't pay again. Press the button below in a moment."),
+  payCheckingAgain: p("다시 확인하기", "Check again"),
   okTier: p("산 등급", "Tier"),
   okNext: p("다음", "Next"),
   okStart: p("검사 시작하기", "Start the assessment"),
@@ -383,7 +440,7 @@ export const TX = {
      까지다. 그 값은 `/me/results` 의 `당시 판본 보기` 가 들고 있다 */
   rpOlder: p("이전 검사 결과", "Earlier assessment"),
   rpOlderNote: p(
-    "그때 응답으로 굳어 있는 결과입니다. 지금 검사의 결과와 기준이 다릅니다.",
+    "그때 응답으로 고정된 결과입니다. 지금 검사의 결과와 기준이 다릅니다.",
     "This result is fixed to the answers given that day. It uses a different " +
       "basis from the current assessment.",
   ),
@@ -410,6 +467,8 @@ export const TX = {
   navIncidents: p("사고", "Incidents"),
   navRefunds: p("환불 요청", "Refund requests"),
   navFunnel: p("퍼널", "Funnel"),
+  navPush: p("알림 켠 사람", "Push sign-ups"),
+  navResearchEval: p("논문 읽기 채점표", "Paper reading scores"),
   navV3Pilot: p("V3 파일럿", "V3 pilot"),
   navBusiness: p("사업자 표시", "Business details"),
   rpPdf: p("PDF 받기", "Download PDF"),
@@ -440,11 +499,11 @@ export const TX = {
     "experience first fills in the evidence ladder and role coverage.",
   ),
   rpBareTitle: p(
-    "경험을 적지 않으셔서 비어 있는 자리가 있습니다.",
+    "경험을 적지 않으셔서 비어 있는 칸이 있습니다.",
     "Some sections are empty because no experience was recorded.",
   ),
   rpBareBody: p(
-    "직무마다 무엇이 확인되는지를 적는 자리가 빈 양식으로 나갑니다. 못 한다는 뜻이 " +
+    "직무마다 무엇이 확인되는지를 적는 칸이 빈 양식으로 나갑니다. 못 한다는 뜻이 " +
     "아니라 지금 적어 주신 것으로는 확인되지 않는다는 뜻입니다.",
     "The evidence ladder and role coverage come out as blank forms. That does not " +
     "mean you cannot do these things; it means nothing you recorded confirms them yet.",
@@ -461,7 +520,7 @@ export const TX = {
   v2Grants: p("쓸 수 있는 이용권", "Available entitlements"),
   v2ResumeTitle: p("이어서 하시면 됩니다.", "Pick up where you left off."),
   v2ResumeBody: p(
-    "안 찬 묶음으로 바로 갑니다. 처음부터 다시 풀지 않습니다.",
+    "아직 다 풀지 않은 곳으로 바로 갑니다. 처음부터 다시 풀지 않습니다.",
     "You go straight back to the section you had not finished. You never start over.",
   ),
   v2EvidenceTitle: p("응시가 끝났습니다.", "Your assessment is complete."),
@@ -471,7 +530,7 @@ export const TX = {
   ),
   v2StuckTitle: p("결과지를 만들다 막혔습니다.", "Report generation got stuck."),
   v2StuckBody: p(
-    "운영 쪽에 기록이 남았습니다. 다시 눌러 보실 수 있고, 같은 자리에서 또 막히면 " +
+    "운영 쪽에 기록이 남았습니다. 다시 눌러 보실 수 있고, 같은 곳에서 또 막히면 " +
     "저희가 고치는 동안 기다리지 않으셔도 됩니다.",
     "Operations has a record of it. You can try again; if it stops at the same place, " +
     "you do not have to wait around while we fix it.",
@@ -491,6 +550,7 @@ export const TX = {
   navLicenses: p("좌석", "Licenses"),
   navV3Insights: p("전공 진단 집계", "Major Insights"),
   navV3Students: p("학생 관리", "Students"),
+  navV3Participants: p("참여자 관리", "Participants"),
   navCareerInsights: p("직무 집계", "Career Insights"),
   navEvidenceInsights: p("증거 집계", "Evidence Insights"),
   navReports: p("보고", "Reports"),
@@ -552,6 +612,7 @@ export const TX = {
   navUsers: p("사용자", "Users"),
   navOrganizations: p("기관", "Organizations"),
   navContracts: p("계약", "Contracts"),
+  navCampusMat: p("MAT 학교 이용권", "MAT school passes"),
   navProducts: p("상품", "Products"),
   navOrders: p("주문", "Orders"),
   navCountries: p("국가", "Countries"),
@@ -608,7 +669,7 @@ export const TX = {
   adminColStatus: p("상태", "Status"),
   adminColUpdated: p("갱신", "Updated"),
   adminSitesTitle: p("사이트", "Sites"),
-  adminCountryPacks: p("국가 묶음", "Country packs"),
+  adminCountryPacks: p("국가 팩", "Country packs"),
   adminColLocalization: p("현지화", "Localization"),
   adminColTaxonomy: p("직무 분류", "Job taxonomy"),
   adminColReportL10n: p("결과지 현지화", "Report localization"),
@@ -618,17 +679,17 @@ export const TX = {
     "확인된 국가 자료가 없어서 기준 자료로 돌립니다. 나라 이름만 띄우지 않습니다.",
     "No verified country data, so this falls back to the global reference set. We do not show a country label with nothing behind it.",
   ),
-  adminNoCountryPacks: p("아직 확인된 국가 묶음이 없습니다.", "No verified country packs yet."),
+  adminNoCountryPacks: p("아직 확인된 국가 팩이 없습니다.", "No verified country packs yet."),
   adminActive: p("사용", "Active"),
   adminBlocked: p("사람이 손봐야 하는 것", "Needs a person"),
   adminBlockedKind: p("갈래", "Kind"),
   adminBlockedWhen: p("때", "When"),
   adminBlockedWhat: p("무엇이", "What"),
-  adminBlockedTrace: p("되짚을 번호", "Trace"),
+  adminBlockedTrace: p("추적 번호", "Trace"),
   adminBlockedRecent: p("최근에 막힌 것", "Recent failures"),
   adminBlockedNoneTitle: p("지금 막힌 것이 없습니다.", "Nothing is stuck right now."),
   adminBlockedNoneBody: p(
-    "결과지 생성 · PDF · 결제 · 알림에서 사람이 봐야 하는 실패가 쌓이면 여기 섭니다. " +
+    "결과지 생성 · PDF · 결제 · 알림에서 사람이 봐야 하는 실패가 쌓이면 여기 나옵니다. " +
     "비어 있는 것과 검사하지 않는 것은 다릅니다: 이 줄은 표를 실제로 세고 있습니다.",
     "Failures in report generation, PDF, payment and email that need a person show up here. " +
     "Empty is not the same as unchecked: this really counts the table.",

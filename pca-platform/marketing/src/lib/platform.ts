@@ -1,4 +1,6 @@
-import type { SiteContent } from "@/content";
+import type { SiteContent } from "@/content/model";
+import type { Lang } from "@/content/model";
+import { appLang, localePath } from "./i18n";
 
 /**
  * 플랫폼으로 들어가는 주소.
@@ -19,16 +21,30 @@ export function platformUrl(site: SiteContent, path = "/"): string {
  * 거기서 끝난다. 플랫폼은 ?lang= 을 쿠키로 굳히므로 한 번만 붙이면 된다.
  */
 export function platformStart(site: SiteContent, path = "/start"): string {
-  // 카자흐어 화면은 플랫폼에 아직 없다. 영어로 보낸다.
-  const lang = site.lang === "kk" ? "en" : site.lang;
-  return platformUrl(site, `${path}?lang=${encodeURIComponent(lang)}`);
+  /* 앱이 내놓지 않는 언어(일본어 · 중국어 · 카자흐어)는 영어로 보낸다 */
+  const lang = appLang(site.lang);
+  /* 주소에 이미 물음표나 해시가 있으면 그 사이에 끼운다. `?` 를 두 번 붙이면
+     앱이 언어를 못 읽고 기본 언어로 연다 */
+  const [base, hash = ""] = path.split("#");
+  const sep = base.includes("?") ? "&" : "?";
+  /* **시장도 들고 간다.** 언어만 넘기면 앱은 시장을 모르는 채로 기본값(한국)을
+     써서, 글로벌 사이트에서 누른 사람이 원화 가격표와 한국 전공 목록을
+     만난다. 앱이 `?market=` 을 쿠키로 굳힌다(`middleware.ts`) */
+  /* **시장은 원고 열쇠가 아니라 언어로 고른다**(2026-10-30). 일본어 · 중국어
+     원고는 한국판(`key: "kr"`)을 옮긴 것이라 열쇠가 `kr` 인데, 그대로 두면
+     일본어 쪽 `시작하기` 가 `lang=en&market=KR` 로 가서 영어 화면에 한국 시장
+     목록이 섰다. 한국어만 한국 시장이고 나머지는 해외 시장이다. MAT 값은 시장과
+     상관없이 원화 한 벌이다(`src/lib/track.ts` 의 `trackOffers`) */
+  const market = site.lang === "ko" ? "KR" : "GLOBAL";
+  return platformUrl(site,
+    `${base}${sep}lang=${encodeURIComponent(lang)}&market=${market}${hash ? `#${hash}` : ""}`);
 }
 
 /**
  * 앱이 맡은 길은 앱으로 보낸다.
  *
- * **홈페이지와 앱은 하는 일이 다르다.** `careermatri.com` 은 서비스를
- * 설명하고, 가입·로그인·결제·검사·결과는 전부 `app.careermatri.com` 이
+ * **홈페이지와 앱은 하는 일이 다르다.** 홈페이지(`HOME_DOMAIN`)는 서비스를
+ * 설명하고, 가입·로그인·결제·검사·결과는 전부 앱(`PLATFORM_URL`)이
  * 한다. 그런데 원고의 단추가 `/pricing` · `/login` 처럼 **상대 주소**로
  * 적혀 있어서 눌리면 홈페이지 안에서 끝났다. 값을 두 곳에 적어 두면
  * 어느 날 갈리고, 갈린 날 사는 쪽은 둘 중 하나를 보고 결제한다.
@@ -41,13 +57,25 @@ const APP_PATHS = new Set([
   /* 공개 샘플 결과지도 앱 하나다. 홈페이지가 결과지를 따로 들고 있으면
      절 수와 구성이 두 곳에서 따로 자란다 */
   "/sample",
+  /* 검사 시작은 전공 고르기부터다. 로그인하지 않았으면 앱이 로그인으로
+     돌려보낸다 */
+  "/cores",
 ]);
+
+/**
+ * 앞머리로 가르는 앱의 길. 작업공간(`/me/…`)과 학교 전용 주소
+ * (`/campus/…`)와 약관(`/legal/…`)은 한 줄씩 적으면 반드시 하나가 빠진다.
+ *
+ * **약관은 앱 것 하나를 가리킨다.** 홈페이지에 약관 본문을 따로 두면 결제할
+ * 때 동의하는 글과 홈페이지의 글이 어느 날 달라진다.
+ */
+const APP_PREFIXES = ["/me/", "/campus/", "/legal/"];
 
 /** 앱이 맡은 길이면 플랫폼 주소로, 아니면 그대로 */
 export function appHref(site: SiteContent, href: string): string {
   if (!href.startsWith("/")) return href;
   const path = href.split(/[?#]/)[0];
-  if (!APP_PATHS.has(path)) return href;
+  if (!APP_PATHS.has(path) && !APP_PREFIXES.some((p) => path.startsWith(p))) return href;
   /* 언어를 들고 간다. 튀르키예어 화면에서 누른 사람이 한국어 가격표를
      만나면 거기서 끝난다 */
   return platformStart(site, href);
@@ -76,11 +104,34 @@ export function withAppLinks<T>(site: SiteContent, node: T): T {
  * 주소에서 작은 글씨 이름표를 뽑는다 (`/anchor` → `anchor`).
  *
  * **`href.replace("/", "")` 로는 안 된다.** 앞 글자 하나만 떼기 때문에
- * 앱으로 돌린 주소에서는 `https:/app.careermatri.com/pricing?lang=ko` 가
+ * 앱으로 돌린 주소에서는 `https:/app.<도메인>/pricing?lang=ko` 가
  * 그대로 띠 위에 찍힌다. 이름표 자리에 주소가 보이면 읽는 사람은
  * 고장으로 본다. 마지막 칸만 쓰고 물음표 뒤는 버린다.
  */
 export function hrefSlug(href: string): string {
   const path = href.split(/[?#]/)[0].replace(/\/+$/, "");
   return path.split("/").pop() ?? "";
+}
+
+/**
+ * 이 사이트 안의 주소에 그 언어의 앞머리를 붙인다(`/universities` →
+ * `/en/universities`). 앱으로 돌린 주소는 이미 `https://` 라 건드리지 않는다.
+ *
+ * **원고는 언어마다 같은 주소를 적는다.** 일본어 원고에 `/ja/contact` 를 적어
+ * 두면 쪽 이름을 바꾸는 날 네 벌을 고쳐야 하고, 한 벌이 옛 주소로 남는다.
+ */
+export function withLangLinks<T>(lang: Lang, node: T): T {
+  if (typeof node === "string") return node as T;
+  if (Array.isArray(node)) return node.map((x) => withLangLinks(lang, x)) as T;
+  if (node && typeof node === "object") {
+    const out: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(node as Record<string, unknown>)) {
+      out[k] =
+        k === "href" && typeof v === "string" && v.startsWith("/") && !v.startsWith("//")
+          ? localePath(lang, v)
+          : withLangLinks(lang, v);
+    }
+    return out as T;
+  }
+  return node;
 }

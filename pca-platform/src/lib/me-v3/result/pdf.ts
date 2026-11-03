@@ -24,6 +24,8 @@ export type DrawOpts = {
   baseUrl: string;
   /** 부른 사람이 들고 온 쿠키 머리글 그대로 */
   cookie: string;
+  /** 담당자가 뽑는다. 결과 쪽이 담당자 로그인을 읽게 `?as=staff` 를 붙인다(`session.ts`) */
+  asStaff?: boolean;
   /**
    * 쪽마다 위에 적는 한 줄. 학교 진입이면 `학교 · 학과 · 리포트 이름` 이다.
    *
@@ -101,7 +103,7 @@ export function resolveChromium(): { bin: string | null; tried: string[] } {
  * 로컬은 http 라 이름에 접두사가 붙지 않는다. 그래서 이 탈은 **운영에서만**
  * 나고, 로그에는 `step=render` 시간 초과로만 남았다.
  */
-function cookiesFor(header: string, url: string) {
+export function cookiesFor(header: string, url: string) {
   const origin = new URL(url).origin;
   return header.split(";").map((x) => x.trim()).filter(Boolean).map((pair) => {
     const i = pair.indexOf("=");
@@ -110,6 +112,24 @@ function cookiesFor(header: string, url: string) {
 }
 
 /** 쪽머리에 넣기 전에 꺾쇠를 막는다. 학교 이름에 `&` 가 들어갈 수 있다 */
+/* 쪽머리와 쪽번호(화면 시안 2026-10-20). 쪽머리 앞에 파란 M 상표를 두고
+   지금 쪽 번호를 파랑으로 적는다. 상표 그림은
+   `public/brand/careermatri/mark.svg` 와 같은 모양이다 */
+const MARK_SVG = '<svg width="10" height="10" viewBox="0 0 120 120">'
+  + '<rect width="120" height="120" rx="34" fill="#2F6BFF"/>'
+  + '<path transform="translate(60 60) scale(2.9) translate(-12 -12)" d="M5 19V5l7 8 7-8v14"'
+  + ' fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"'
+  + ' stroke-linejoin="round"/></svg>';
+function headerTemplate(header: string | undefined): string {
+  return '<div style="font-size:8pt;color:#3d4757;width:100%;padding:0 14mm;'
+    + 'font-family:sans-serif;display:flex;align-items:center;gap:5px">'
+    + MARK_SVG + '<span>' + escapeHtml(header ?? "CareerMatri") + '</span></div>';
+}
+const FOOTER_TEMPLATE = '<div style="font-size:8pt;color:#3d4757;width:100%;'
+  + 'padding:0 14mm;text-align:right;font-family:sans-serif">'
+  + '<span class="pageNumber" style="color:#2f6bff;font-weight:700"></span>'
+  + ' / <span class="totalPages"></span></div>';
+
 function escapeHtml(t: string): string {
   return t.replace(/[&<>"]/g, (c) =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c] ?? c));
@@ -127,7 +147,7 @@ export async function drawResultPdf(opts: DrawOpts): Promise<Buffer> {
     });
   } catch (e) {
     throw new PdfFailed("browser",
-      `${(e as Error).message.split("\n")[0]} / 찾아본 자리: ${tried.join(" ")}`);
+      `${(e as Error).message.split("\n")[0]} / 찾아본 경로: ${tried.join(" ")}`);
   }
   try {
     const gate = stagingGate();
@@ -153,7 +173,7 @@ export async function drawResultPdf(opts: DrawOpts): Promise<Buffer> {
       }
     }
     const page = await ctx.newPage();
-    const url = `${base}/v3/${encodeURIComponent(opts.attemptId)}/result`;
+    const url = `${base}/v3/${encodeURIComponent(opts.attemptId)}/result${opts.asStaff ? "?as=staff" : ""}`;
     /* **`networkidle` 로 기다리지 않는다.** 결과 쪽에는 Next 가 화면에
        들어온 링크를 미리 불러오는 요청이 있어, 네트워크가 0.5초 조용해질
        때를 기다리면 멈추지 않는 날이 있다. 그러면 60초를 다 쓰고 시간
@@ -208,12 +228,8 @@ export async function drawResultPdf(opts: DrawOpts): Promise<Buffer> {
          둔다: 줄을 더 길게 하면 종이에서 읽는 속도가 떨어진다 */
       margin: { top: "14mm", bottom: "14mm", left: "14mm", right: "14mm" },
       displayHeaderFooter: true,
-      headerTemplate: '<div style="font-size:7pt;color:#5f6e86;width:100%;'
-        + 'padding:0 14mm;font-family:sans-serif">'
-        + escapeHtml(opts.header ?? "CareerMatri") + '</div>',
-      footerTemplate: '<div style="font-size:7pt;color:#5f6e86;width:100%;'
-        + 'padding:0 14mm;text-align:right;font-family:sans-serif">'
-        + '<span class="pageNumber"></span> / <span class="totalPages"></span></div>',
+      headerTemplate: headerTemplate(opts.header),
+      footerTemplate: FOOTER_TEMPLATE,
     };
     const first = await page.pdf(pdfOpts);
     /* **여기서 기다린다.** `return fitTail(...)` 로 두면 아래 `finally` 가
@@ -303,7 +319,7 @@ export async function drawPagePdf(opts: PageDrawOpts): Promise<Buffer> {
     });
   } catch (e) {
     throw new PdfFailed("browser",
-      `${(e as Error).message.split("\n")[0]} / 찾아본 자리: ${tried.join(" ")}`);
+      `${(e as Error).message.split("\n")[0]} / 찾아본 경로: ${tried.join(" ")}`);
   }
   try {
     const gate = stagingGate();
@@ -359,12 +375,8 @@ export async function drawPagePdf(opts: PageDrawOpts): Promise<Buffer> {
       format: "A4", printBackground: true, landscape: Boolean(opts.landscape),
       margin: { top: "14mm", bottom: "14mm", left: "14mm", right: "14mm" },
       displayHeaderFooter: true,
-      headerTemplate: '<div style="font-size:7pt;color:#5f6e86;width:100%;'
-        + 'padding:0 14mm;font-family:sans-serif">'
-        + escapeHtml(opts.header ?? "CareerMatri") + '</div>',
-      footerTemplate: '<div style="font-size:7pt;color:#5f6e86;width:100%;'
-        + 'padding:0 14mm;text-align:right;font-family:sans-serif">'
-        + '<span class="pageNumber"></span> / <span class="totalPages"></span></div>',
+      headerTemplate: headerTemplate(opts.header),
+      footerTemplate: FOOTER_TEMPLATE,
     });
     return pdf;
   } catch (e) {

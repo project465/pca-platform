@@ -2,14 +2,26 @@ import { redirect } from "next/navigation";
 import { BrandMark } from "@/components/sf/brand-mark";
 import { requireUser } from "@/lib/session";
 import { retakeState } from "@/lib/me-v3/retake";
+import { upgradeTarget } from "@/lib/me-v3/upgrade";
 import { currentAttempt, estimate } from "@/lib/me-v3/runtime/session";
 import { core as coreEntry, sellableCores } from "@/lib/me-v3/core-registry";
 import { startGate } from "@/lib/campus/start-gate";
 import type { Tier } from "@/lib/me-v3/scoring/types";
-import { TIER_WHAT } from "../tier-text";
+import { tierText } from "../tier-text.i18n";
+import { phrase } from "@/lib/me-v3/phrase";
+import { localeFor } from "@/lib/me-v3/i18n";
+import { majorNameIn } from "@/lib/me-v3/runtime/session";
+import { explicitLang } from "@/lib/locale-server";
+import { resolveMarket } from "@/lib/market";
 import StartForm from "./start-form";
 
-export const metadata = { title: "검사 시작 · CareerMatri" };
+/* 탭 제목은 고른 언어를 따른다. 아직 응시가 없어서 응시 언어를 읽을 수 없다 */
+export async function generateMetadata(
+  { searchParams }: { searchParams: Promise<{ lang?: string }> },
+) {
+  const { lang } = await searchParams;
+  return { title: phrase(await explicitLang(lang ?? null))("검사 시작 · CareerMatri") };
+}
 
 /**
  * 검사 시작.
@@ -22,9 +34,9 @@ export const metadata = { title: "검사 시작 · CareerMatri" };
  */
 export default async function V3Start({
   searchParams,
-}: { searchParams: Promise<{ e?: string; core?: string }> }) {
+}: { searchParams: Promise<{ e?: string; core?: string; lang?: string }> }) {
   const user = await requireUser();
-  const { e, core: want } = await searchParams;
+  const { e, core: want, lang: wantLang } = await searchParams;
 
   const open = await currentAttempt(user.id);
   if (open) redirect(`/v3/${open.id}`);
@@ -48,6 +60,10 @@ export default async function V3Start({
    * **지난 결과를 지우지 않는다**: 막는 것은 새 줄을 만드는 일이다.
    * 다시 여는 권한은 **그 길의 이용권만** 센다(`startGate`).
    */
+  /* **산 등급이 지난 응시보다 높으면 새로 열지 않고 넓힌다**(`upgrade.ts`).
+     새로 열면 같은 사람의 응답이 두 벌 쌓이고 앞에서 답한 것을 다시 푼다 */
+  if (gate.kind !== "campus" && (await upgradeTarget(user.id))) redirect("/v3/upgrade");
+
   const retake = await retakeState(user.id);
   if (retake.done > 0 && !gate.grants.length && retake.lastAttemptId) {
     redirect(gate.kind === "campus"
@@ -87,10 +103,32 @@ export default async function V3Start({
   const core = campus?.core_code ?? picked ?? sellableCores("KR")[0]?.code ?? null;
   if (!core) redirect("/cores");
   /* 쪽 머리에 전공 이름을 적는다. **안쪽 코드를 적지 않는다** */
+  /**
+   * **이 쪽은 열릴 응시의 언어로 선다.** 응시 언어를 정하는 자리는
+   * `openAttempt()` 하나이고(`localeFor`) 여기서는 같은 함수로 미리 읽는다:
+   * 시작 화면이 한국어인데 첫 문항이 영어로 열리면 같은 흐름이 두 언어가 된다.
+   */
+  const mk = (await resolveMarket().catch(() => null))?.market ?? "KR";
+  const market = campus ? "KR"
+    : picked && !sellableCores(mk).some((c) => c.code === picked) ? "KR" : mk;
+  const chosen = campus ? null : await explicitLang(wantLang ?? null);
+  /**
+   * **글로벌 시장의 개인은 전공 고르기를 거쳐 온다**(영어판 2단계). 전공 없이
+   * 이 주소로 오면 기본 전공이 한국 시장 목록의 첫째라, 영어 원고가 없는
+   * 전공으로 한국어 응시가 열릴 수 있다. 고른 전공에 영어 원고가 없을 때도
+   * 같다. 한국어를 직접 고른 사람은 그대로 둔다.
+   */
+  if (!campus && mk === "GLOBAL" && chosen !== "ko"
+    && (!picked || localeFor({ core: picked, market: "GLOBAL", override: "en" }) !== "en")) {
+    redirect("/cores");
+  }
+  const lang = campus ? "ko" : localeFor({ core, market, override: chosen });
+  const say = phrase(lang);
   const coreName = (() => {
+    if (lang !== "ko") return majorNameIn(core, lang);
     try { return coreEntry(core).name_ko; } catch { return "전공"; }
   })();
-  const t = TIER_WHAT[tier];
+  const t = tierText(lang).TIER_WHAT[tier];
   void t.what;
   /* **가장 짧은 경우와 가장 긴 경우를 범위로 적는다.** 긴 쪽은 타계열
      대학원으로, 번역 맥락 묶음이 더 붙는 자리다. 두 값은 `estimate()` 가
@@ -129,71 +167,72 @@ export default async function V3Start({
         <p className="qs-kicker">
           {campus
             ? `${campus.university_name} ${campus.department_name} · ${coreName} 진로 진단`
-            : `${coreName} 진로 진단`}
+            : say("{major} 진로 진단", { major: coreName })}
         </p>
-        <h1 className="qs-h1">해 본 일에서 직접 판단한 경험을 찾습니다</h1>
+        <h1 className="qs-h1">{say("해 본 일 가운데 직접 정해 본 경험을 찾아 드립니다")}</h1>
+        {/* **`기술영역` 을 적지 않는다.** 기계공학 Core 의 말이 스무 Core 의
+            시작 화면에 그대로 섰다. 경영 학생은 자기 일을 그렇게 부르지 않는다 */}
         <p className="qs-lead">
-          적성이나 성격은 묻지 않습니다. {coreName}의 기술영역마다 무엇을 해 봤고
-          무엇을 직접 정했는지, 아직 부족한 곳은 어디인지 알려드립니다.
+          {say("적성이나 성격 검사가 아닙니다. {major}의 여러 업무 영역에서 무엇을 해 봤고 무엇을 직접 정했는지, 어디가 아직 부족한지 알려 드립니다.", { major: coreName })}
         </p>
 
         {/* 무엇을 보는 검사인지 먼저. 분량은 아래로 내린다 */}
         <ul className="qs-three">
           <li>
-            <b>무엇을 해 봤는지</b>
-            <span>기술영역마다 해 본 일을 하나씩 묻습니다</span>
+            <b>{say("무엇을 해 봤는지")}</b>
+            <span>{say("영역마다 해 본 일을 여쭙니다")}</span>
           </li>
           <li>
-            <b>무엇을 직접 판단했는지</b>
-            <span>같은 일이라도 주어진 조건대로 한 것과 직접 정한 것을 갈라 묻습니다</span>
+            <b>{say("무엇을 직접 정했는지")}</b>
+            <span>{say("같은 일이라도 시킨 대로 한 것과 내가 정한 것을 구분합니다")}</span>
           </li>
           <li>
-            <b>어떤 경험이 아직 부족한지</b>
-            <span>부족한 부분과 다음에 준비하면 좋을 것을 정리합니다</span>
+            <b>{say("어떤 경험이 아직 부족한지")}</b>
+            <span>{say("부족한 부분과 다음에 준비하면 좋을 것을 정리합니다")}</span>
           </li>
         </ul>
 
         <ul className="qs-facts">
-          <li><b>{items}</b>문항</li>
-          <li>약 <b>{mins}</b>분</li>
+          <li><b>{items}</b>{say("문항#unit")}</li>
+          <li>{say("약")} <b>{mins}</b>{say("분#unit")}</li>
           {campus ? null : <li><b>{tier}</b>{t.label}</li>}
-          <li>자동 저장</li>
+          <li>{say("자동 저장")}</li>
         </ul>
 
         {/* 둘 다 읽히기는 해야 하지만 둘 다 주인공은 아니다. 가로로 벌려
             세로 길이를 줄이면 시작 단추가 한 화면 안에 들어온다 */}
         <div className="qs-two">
         <section className="qs-sect">
-          <h2>묻는 순서</h2>
+          <h2>{say("묻는 순서")}</h2>
           <ul className="qs-steps">
-            <li>기술영역을 하나씩 보며 관심과 해 본 적과 배울 뜻을 묻습니다</li>
-            <li>경험이 있는 영역은 조금 더 자세히 질문합니다</li>
+            <li>{say("업무 영역마다 관심이 있는지, 해 봤는지, 배우고 싶은지 여쭙니다")}</li>
+            <li>{say("해 본 일이 있는 영역은 조금 더 자세히 여쭙니다")}</li>
             {tier !== "BASIC" ? (
-              <li>경험이 있는 영역은 여덟 가지 관점으로 나누어 묻습니다</li>
+              <li>{say("그 가운데 몇 영역은 범위·방법·결과·활용까지 나눠서 여쭙니다")}</li>
             ) : null}
             {tier === "PRO" ? (
-              <li>연구나 프로젝트 하나를 직무 언어로 바꾸고, 산업과 역할을 하나씩 자세히 살펴봅니다</li>
+              <li>{say("과제나 프로젝트 하나를 골라 지원서에 쓸 말로 정리하고, 관심 산업과 직무를 하나씩 더 자세히 봅니다")}</li>
             ) : null}
           </ul>
         </section>
 
         <section className="qs-sect">
-          <h2>시작하기 전에</h2>
+          <h2>{say("시작하기 전에")}</h2>
           <ul className="qs-steps">
-            <li>경험이 없는 영역은 없다고 답해주세요. 그 답변도 결과에 쓰입니다</li>
-            <li>학위가 높다고 결과가 좋아지지 않습니다. 질문에 나오는 상황 설명만 달라집니다</li>
-            <li>창을 닫아도 보던 위치에서 이어집니다. 이전으로 돌아가 수정할 수 있습니다</li>
+            <li>{say("해 본 적 없는 일은 ‘해 본 적 없음’을 고르시면 됩니다. 그 답도 결과에 들어갑니다")}</li>
+            <li>{say("학위가 높다고 결과가 좋아지지 않습니다. 질문에 나오는 상황 설명만 달라집니다")}</li>
+            <li>{say("창을 닫아도 보던 위치에서 이어집니다. 이전으로 돌아가 수정할 수 있습니다")}</li>
           </ul>
         </section>
         </div>
 
         <div className="qs-sect">
-          <StartForm error={e} core={campus ? undefined : (picked ?? undefined)} />
+          <StartForm error={e} core={campus ? undefined : (picked ?? undefined)}
+            lang={lang} chosen={chosen ?? undefined} />
         </div>
 
         <p className="qs-fine">
-          모르는 용어가 나오면 보기 아래에 쉬운 설명이 함께 나옵니다. 용어를
-          몰라도 결과가 낮아지지 않습니다.
+          {say("낯선 용어에는 질문 바로 아래에 쉬운 풀이를 붙였습니다. 용어를 몰라도 결과에 불리하지 않습니다.")}
         </p>
       </main>
     </div>

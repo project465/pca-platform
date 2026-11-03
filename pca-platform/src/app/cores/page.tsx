@@ -7,10 +7,21 @@ import { campusStudentContext } from "@/lib/campus/students";
 import "../surface.css";
 import "../me/platform.css";
 import { CmShell, CmHead } from "../me/shell";
-import { PickCard, PickGrid, SectionHeader } from "../me/ui";
+import { DomainTile, PickCard, PickGrid, PrimaryActionHero, SectionHeader } from "../me/ui";
 import type { IconName } from "@/components/sf/icon";
+import { queryOne } from "@/lib/db";
+import { explicitLang } from "@/lib/locale-server";
+import { resolveMarket } from "@/lib/market";
+import { localeFor } from "@/lib/me-v3/i18n";
+import { majorNameIn } from "@/lib/me-v3/runtime/session";
+import { sellableCores } from "@/lib/me-v3/core-registry";
+import { tierMinutes } from "@/lib/tier-minutes";
+import CoresEn from "./cores-en";
 
-export const metadata = { title: "전공 Core · CareerMatri" };
+export async function generateMetadata() {
+  const en = (await explicitLang(null).catch(() => null)) === "en";
+  return { title: en ? "Choose your major · CareerMatri" : "전공 Core · CareerMatri" };
+}
 
 /**
  * 전공 Core 고르기.
@@ -31,7 +42,8 @@ const FAMILY_ORDER: [string, string, IconName, "b" | "c" | "v" | "w"][] = [
   ["HUMANITIES_SOCIAL", "인문 · 사회 · 교육", "users", "v"],
 ];
 
-export default async function Cores() {
+export default async function Cores({ searchParams }: { searchParams?: Promise<{ locked?: string }> }) {
+  const locked = (await searchParams?.catch(() => ({} as { locked?: string })))?.locked === "1";
   const user = await requireUser();
   const open = await currentAttempt(user.id);
   const grants = await v3Grants(user.id);
@@ -51,19 +63,48 @@ export default async function Cores() {
    * `openAttempt()` 하나다(설계 원칙 10).
    */
   const mine = await campusStudentContext(user.id);
+
+  /**
+   * **영어로 들어온 개인은 영어 화면으로 고른다**(영어판 2단계). 학교 학생은
+   * 늘 한국어 학교 경로다. 영어를 직접 골랐거나 글로벌 시장이면 영어이고,
+   * 고를 수 있는 전공은 그 시장에서 **영어 원고까지 다 있는** Core 뿐이다.
+   */
+  const mk = (await resolveMarket().catch(() => null))?.market ?? "KR";
+  const chosen = await explicitLang(null).catch(() => null);
+  if (!mine && (chosen === "en" || (mk === "GLOBAL" && chosen !== "ko"))) {
+    const market = mk === "GLOBAL" ? "GLOBAL" : "KR";
+    const choices = sellableCores(market)
+      .filter((c) => localeFor({ core: c.code, market, override: "en" }) === "en")
+      .map((c) => {
+        const m = tierMinutes(c.code).BASIC;
+        return {
+          code: c.code, name: majorNameIn(c.code, "en"),
+          minutes: m.low === m.high ? String(m.low) : `${m.low}–${m.high}`,
+        };
+      });
+    const last = open ? null : await queryOne<{ id: string }>(
+      `SELECT id::text FROM v3_attempts
+        WHERE user_id = $1 AND status <> 'in_progress'
+        ORDER BY started_at DESC LIMIT 1`, [user.id]).catch(() => null);
+    return <CoresEn cores={choices} openId={open?.id ?? null} resultId={last?.id ?? null} />;
+  }
   /* 학교 학생의 단추는 그 학생의 응시 상태가 정한다: 결과를 받은
      학생에게 `시작하기` 를 세우지 않는다(누르면 지난 결과로 돌아간다) */
   const st = mine ? await campusAttemptState(user.id) : null;
 
   return (
-    <CmShell active="/cores" title="검사">
+    /* **로그아웃이 이 쪽에도 선다.** 학교 학생이 로그인하면 처음 닿는 자리가
+       여기인데, 실용 줄이 없어 나가는 길이 계정 쪽에만 있었다 */
+    <CmShell active="/cores" title="검사" who={user.name}>
       {/* **구조를 설명하지 않는다.** `Core` 와 `엔진` 과 `판단축` 은
           우리가 안쪽에서 쓰는 말이고, 고르는 사람에게 필요한 것은
           전공에 따라 무엇이 달라지는가 한 줄이다 */}
       <CmHead
         kicker="검사 시작"
-        title="전공을 선택해주세요"
-        lead="전공에 따라 살펴보는 경험과 기술 분야가 달라집니다."
+        /* 학교 계정은 학과가 정해져 있어 고를 것이 없다. 고르라는 제목을
+           세우면 학생이 어디서 학과를 바꾸는지 찾는다 */
+        title={mine ? `${user.name} 학생, 안녕하세요` : "전공을 선택해주세요"}
+        lead={mine ? undefined : "전공에 따라 살펴보는 경험과 기술 분야가 달라집니다."}
       />
 
       {/*
@@ -72,11 +113,18 @@ export default async function Cores() {
         읽고 결과 PDF 를 받는 데까지로 생각했다. 그 뒤에 무엇이 쌓이는지를
         네 줄로 적는다.
       */}
-      {open ? (
+      {/* 작업공간 메뉴를 눌렀는데 아직 전공이 정해지지 않은 사람이 여기로 온다.
+          말없이 돌려보내면 메뉴가 안 눌리는 것처럼 보인다(2026-10-27 신고) */}
+      {locked ? (
+        <p className="cm-none" role="status" style={{ marginBottom: 14 }}>
+          그 메뉴는 검사를 시작하면 열립니다. 먼저 아래에서 전공을 고르고 검사를 시작해 주세요.
+        </p>
+      ) : null}
+      {open && !mine ? (
         <div className="cm-card is-wide" style={{ marginBottom: 18 }}>
           <h2>이어서 풀 응시가 있습니다 <em>{open.tier}</em></h2>
           <p>
-            마지막으로 답한 자리에서 이어집니다. 다시 시작하면 앞 응답이
+            마지막으로 답한 문항에서 이어집니다. 다시 시작하면 앞 응답이
             두 벌 쌓이므로 이어하기로만 들어갑니다.
           </p>
           <div className="cm-acts">
@@ -87,24 +135,35 @@ export default async function Cores() {
 
       {mine ? (
         <>
-          <SectionHeader icon="clipboard" title="학교에서 받은 계정입니다" />
-          <PickGrid cols={1}>
-            <PickCard
-              href={open ? `/v3/${open.id}`
-                : st?.kind === "result" ? `/v3/${st.attemptId}/result`
-                : `/campus/${mine.row.university_code.toLowerCase()}/start`}
-              icon="compass"
-              title={`${mine.university_name} ${mine.department_name}`}
-              tag="학교 계약"
-              lead={"학교가 적어 준 학과로 검사를 시작합니다. 결과는 그 학과 "
-                + "담당자의 집계에 들어갑니다."}
-              meta="적힌 학과가 다르면 학과 담당자에게 알려 주세요."
-              cta={open ? "이어하기" : st?.kind === "result" ? "결과 보기"
-                : st?.kind === "retake" ? "학과 확인하고 다시 시작하기"
-                : "학과 확인하고 시작하기"}
-              strong
-            />
-          </PickGrid>
+          {/* **학생 홈과 같은 면으로 연다**(전주대·원광대에 보인 화면).
+              파란 Hero 가 학교·학과와 시작 단추 하나를 들고, 아래 칸이
+              검사를 끝내면 열리는 자리를 보여 준다 */}
+          <PrimaryActionHero
+            tag="학교 계약 · 내 학과"
+            tagIcon="building"
+            title={`${mine.university_name} ${mine.department_name}`}
+            why={open
+              ? "풀던 검사가 있습니다. 마지막으로 답한 문항에서 이어집니다."
+              : "학교가 적어 준 학과로 검사를 시작합니다. 결과는 그 학과 담당자의 집계에 들어갑니다."
+                + " 적힌 학과가 다르면 학과 담당자에게 알려 주세요."}
+            action={
+              <Link className="cm-btn is-primary"
+                href={open ? `/v3/${open.id}`
+                  : st?.kind === "result" ? `/v3/${st.attemptId}/result`
+                  : `/campus/${mine.row.university_code.toLowerCase()}/start`}>
+                {open ? "이어하기 →" : st?.kind === "result" ? "결과 보기 →"
+                  : st?.kind === "retake" ? "학과 확인하고 다시 시작하기 →"
+                  : "학과 확인하고 시작하기 →"}
+              </Link>
+            }
+          />
+          <SectionHeader icon="chart" title="검사를 끝내면 열리는 곳"
+            sub="결과가 나오면 아래 자리마다 내 결과가 채워집니다." />
+          <div className="cm-tiles">
+            <DomainTile href="/me/state" icon="chart" title="현재 상태" sub="설명할 수 있는 영역" />
+            <DomainTile href="/me/next" icon="target" title="지금 할 일" sub="부족한 부분 메우기" />
+            <DomainTile href="/me/results" icon="report" title="결과 기록" sub="결과지와 PDF" />
+          </div>
         </>
       ) : (
       <>
@@ -144,6 +203,10 @@ export default async function Cores() {
       {/* **서른한 개를 pill 로 늘어놓지 않는다**(규격 §6). 계열마다 칸
           하나를 세우고 대표 전공 서넛만 적는다. 전부 펼치면 `준비 중` 이
           메뉴처럼 보이고, 그 순간 검사 가능한 것으로 읽힌다 */}
+      {/* 학교 계정에는 세우지 않는다. 학과가 이미 정해져 있어 읽을 까닭이
+          없고, `반도체공학 · 준비 중` 이 반도체 학과 학생에게 자기 검사가
+          막힌 것으로 읽힌다 */}
+      {mine ? null : (<>
       <SectionHeader icon="layers" tone="c" title="준비 중인 전공"
         sub="문항과 산업 자료를 그 전공을 아는 분이 써야 열립니다. 지금은 응시할 수 없습니다." />
       <PickGrid cols={3}>
@@ -164,6 +227,7 @@ export default async function Cores() {
           );
         })}
       </PickGrid>
+      </>)}
 
       {/* **긴 설명은 첫 화면에서 내린다**(규격 §9 · §15). 고르는 자리에
           필요한 것은 무엇이 달라지는가 한 줄이고, 그 뒤에 쌓이는 것은
@@ -181,11 +245,11 @@ export default async function Cores() {
           </div>
           <div>
             <dt>등급 차이</dt>
-            <dd>문항 수가 아니라 판단의 종류가 다릅니다</dd>
+            <dd>문항 수보다 판단의 종류가 다릅니다</dd>
           </div>
           <div>
             <dt>중간에 멈춰도</dt>
-            <dd>답한 것은 문항마다 저장되어 멈춘 자리에서 이어집니다</dd>
+            <dd>답한 것은 문항마다 저장되어 멈춘 곳에서 이어집니다</dd>
           </div>
         </dl>
       </details>

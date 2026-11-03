@@ -52,7 +52,7 @@ export function pdfVolume(): PdfVolume {
     return {
       dir: null, persistent: false, writable: null,
       detail: "REPORT_PDF_DIR 이 비어 있어 결과지 PDF 가 어디에 쌓이는지 정해져 " +
-        "있지 않습니다. 이미지 안쪽 임시 자리에 떨어지고 재배포에 사라집니다.",
+        "있지 않습니다. 이미지 안쪽 임시 공간에 떨어지고 재배포에 사라집니다.",
       how: null,
     };
   }
@@ -61,7 +61,7 @@ export function pdfVolume(): PdfVolume {
       ? { dir, persistent: false, writable: false,
         detail: `${dir} 가 없습니다. 첫 PDF 에서 쓰기가 실패합니다.`, how: null }
       : { dir, persistent: null, writable: null,
-        detail: `REPORT_PDF_DIR=${dir} 인데 이 자리에 그 폴더가 없습니다. 배포본이 아닙니다.`,
+        detail: `REPORT_PDF_DIR=${dir} 인데 이 경로에 그 폴더가 없습니다. 배포본이 아닙니다.`,
         how: "운영 컨테이너에서 돌립니다." };
   }
 
@@ -95,7 +95,7 @@ export function pdfVolume(): PdfVolume {
   if (!writable) {
     return { dir, persistent: null, writable: false,
       detail: `${dir} 에 쓸 수 없습니다. 결제를 마친 손님이 내려받기를 누른 ` +
-        `자리에서 멈춥니다. 붙여 준 디스크의 주인이 root 면 ` +
+        `순간 멈춥니다. 붙여 준 디스크의 주인이 root 면 ` +
         `deploy/entrypoint.sh 가 고쳐 줍니다.`,
       how: null };
   }
@@ -132,7 +132,7 @@ export function pdfVolume(): PdfVolume {
     kept = files.length;
     if (files.length) {
       const one = readFileSync(path.join(dir, files[0]));
-      readable = one.subarray(0, 5).toString() === "%PDF-" ? "읽힙니다" : "앞머리가 PDF 가 아닙니다";
+      readable = one.subarray(0, 5).toString() === "%PDF-" ? "읽을 수 있습니다" : "앞머리가 PDF 가 아닙니다";
     }
   } catch { /* 못 세도 아래 판정은 선다 */ }
   const held = kept

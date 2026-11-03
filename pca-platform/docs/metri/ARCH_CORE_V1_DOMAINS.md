@@ -1,4 +1,4 @@
-# 건축·실내건축 Core 영역별 검토표 (ARCH_V1 · ARCH_V1_ITEM_BANK_V1)
+# 건축·실내건축 Core 영역별 검토표 (ARCH_V1 · ARCH_V1_ITEM_BANK_V1.4)
 
 이 파일은 **생성물이다**. 고칠 곳은 `arch-v1-items.json` 와 `arch-v1-domains.json` 이고, 고친 뒤 `CORE=ARCH_CORE_V1 npm run core:qa` 를 돌린다.
 

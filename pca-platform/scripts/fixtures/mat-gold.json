@@ -1,0 +1,133 @@
+{
+  "_note": "MAT 규칙 읽기의 개발용 시험지. 정답은 규칙을 고치기 전에 적었다. 고칠 때 보는 시험지라 이것만 통과하면 과적합일 수 있어서, 따로 쓴 시험지(숨겨 둔 것)로 한 번 더 잰다. 회사 이름은 지어낸 것이다.",
+  "today": "2026-10-24",
+  "postings": [
+    {
+      "id": "p01", "core": "CS_CORE_V1",
+      "text": "[신입] 백엔드 개발자 채용\n[담당업무]\nㆍ자사 커머스 플랫폼 백엔드 개발 (Java/Spring)\nㆍREST API 설계 및 개발\nㆍMySQL 기반 데이터 모델링, 쿼리 튜닝\n[자격요건]\nㆍ학사 이상 (컴퓨터공학 등 관련 전공)\nㆍJava, Spring Boot 개발 경험\nㆍGit 을 활용한 협업 경험\n[우대사항]\nㆍAWS 환경에서 서비스 운영 경험\nㆍDocker, Kubernetes 사용 경험\nㆍ대용량 트래픽 처리 경험\n[근무조건]\nㆍ정규직 (수습 3개월)\nㆍ서울 성동구\n접수기간: 2026.11.20 ~ 2026.12.05",
+      "deadline": "2026-12-05",
+      "items": [
+        { "snippet": "자사 커머스 플랫폼 백엔드 개발", "kind": "must", "domain": "TD03" },
+        { "snippet": "REST API 설계 및 개발", "kind": "must", "domain": "TD03" },
+        { "snippet": "MySQL 기반 데이터 모델링", "kind": "must", "domain": "TD04" },
+        { "snippet": "학사 이상 (컴퓨터공학", "kind": "must", "domain": null },
+        { "snippet": "Java, Spring Boot 개발 경험", "kind": "must", "domain": "TD03" },
+        { "snippet": "Git 을 활용한 협업 경험", "kind": "must", "domain": "TD10" },
+        { "snippet": "AWS 환경에서 서비스 운영 경험", "kind": "nice", "domain": "TD10", "alt": ["TD07"] },
+        { "snippet": "Docker, Kubernetes 사용 경험", "kind": "nice", "domain": "TD10", "alt": ["TD07"] },
+        { "snippet": "대용량 트래픽 처리 경험", "kind": "nice", "domain": "TD07", "alt": ["TD03"] }
+      ],
+      "not_items": ["[신입] 백엔드 개발자 채용", "[담당업무]", "[자격요건]", "[우대사항]", "정규직 (수습 3개월)", "서울 성동구", "접수기간"]
+    },
+    {
+      "id": "p02", "core": "ME_CORE_V3",
+      "text": "■ 주요업무\n1. 자동차 부품(브라켓, 하우징) 3D 모델링 및 2D 도면 작성\n2. CATIA 기반 설계 변경 관리\n3. 구조해석(CAE) 결과 검토 및 설계 반영\n■ 자격요건\n1. 기계공학 전공 학사 이상\n2. CATIA V5 또는 NX 사용 가능자\n3. GD&T 이해\n■ 우대사항\n1. 사출/프레스 금형 이해\n2. 자동차 부품사 인턴 경험\n■ 전형절차\n서류전형 > 면접 > 최종합격\n마감일 2026-11-28",
+      "deadline": "2026-11-28",
+      "items": [
+        { "snippet": "3D 모델링 및 2D 도면 작성", "kind": "must", "domain": "TD01" },
+        { "snippet": "CATIA 기반 설계 변경 관리", "kind": "must", "domain": "TD01" },
+        { "snippet": "구조해석(CAE) 결과 검토", "kind": "must", "domain": "TD02" },
+        { "snippet": "기계공학 전공 학사 이상", "kind": "must", "domain": null },
+        { "snippet": "CATIA V5 또는 NX 사용 가능자", "kind": "must", "domain": "TD01" },
+        { "snippet": "GD&T 이해", "kind": "must", "domain": "TD01", "alt": ["TD10"] },
+        { "snippet": "사출/프레스 금형 이해", "kind": "nice", "domain": "TD01", "alt": ["TD08"] },
+        { "snippet": "자동차 부품사 인턴 경험", "kind": "nice", "domain": null }
+      ],
+      "not_items": ["■ 주요업무", "■ 자격요건", "■ 우대사항", "■ 전형절차", "서류전형 > 면접", "마감일 2026-11-28"]
+    },
+    {
+      "id": "p03", "core": "BIZ_CORE_V1",
+      "text": "<모집부문> 마케팅 신입\n- 브랜드 SNS 채널(인스타그램, 유튜브) 콘텐츠 기획 및 운영\n- 온라인 광고 집행 및 성과 분석 (GA4, 메타 광고)\n- 신제품 출시 프로모션 기획\n<지원자격>\n- 4년제 대학 졸업(예정)자\n- 엑셀 활용 가능자\n<우대사항>\n- 마케팅 공모전 수상 경험\n- 데이터 분석 역량 보유자\n서류마감 2026년 11월 30일",
+      "deadline": "2026-11-30",
+      "items": [
+        { "snippet": "브랜드 SNS 채널", "kind": "must", "domain": "TD02" },
+        { "snippet": "온라인 광고 집행 및 성과 분석", "kind": "must", "domain": "TD02", "alt": ["TD08"] },
+        { "snippet": "신제품 출시 프로모션 기획", "kind": "must", "domain": "TD02" },
+        { "snippet": "4년제 대학 졸업(예정)자", "kind": "must", "domain": null },
+        { "snippet": "엑셀 활용 가능자", "kind": "must", "domain": null, "alt": ["TD08"] },
+        { "snippet": "마케팅 공모전 수상 경험", "kind": "nice", "domain": "TD02" },
+        { "snippet": "데이터 분석 역량 보유자", "kind": "nice", "domain": "TD08" }
+      ],
+      "not_items": ["<모집부문> 마케팅 신입", "<지원자격>", "<우대사항>", "서류마감 2026년 11월 30일"]
+    },
+    {
+      "id": "p04", "core": "BIZ_CORE_V1",
+      "text": "[담당 업무] 브랜드 SNS 채널 운영, 캠페인 성과 분석 [자격 요건] 마케팅 관련 업무 이해 [우대] 데이터 분석 경험",
+      "deadline": null,
+      "items": [
+        { "snippet": "브랜드 SNS 채널 운영, 캠페인 성과 분석", "kind": "must", "domain": "TD02" },
+        { "snippet": "마케팅 관련 업무 이해", "kind": "must", "domain": "TD02" },
+        { "snippet": "데이터 분석 경험", "kind": "nice", "domain": "TD08" }
+      ],
+      "not_items": []
+    },
+    {
+      "id": "p05", "core": "EE_CORE_V1",
+      "text": "OO에너지공사 2026년 하반기 신입사원 채용 (전기직)\n\n○ 직무기술서\n- 필요지식 : 전력계통, 송배전 설비, 보호계전 원리\n- 필요기술 : 변전설비 점검 및 유지보수, 전력설비 도면 해독, PLC 기초 프로그래밍\n- 직무수행태도 : 안전수칙 준수, 책임감, 원활한 의사소통\n○ 응시자격\n- 학력·전공 제한 없음\n- 전기기사 자격증 소지자 가점\n○ 접수기간 : 2026. 11. 3.(월) ~ 2026. 11. 14.(금) 18:00\n○ 문의 : 인사팀 02-000-0000",
+      "deadline": "2026-11-14",
+      "items": [
+        { "snippet": "전력계통, 송배전 설비, 보호계전 원리", "kind": "must", "domain": "TD09" },
+        { "snippet": "변전설비 점검 및 유지보수", "kind": "must", "domain": "TD09" },
+        { "snippet": "안전수칙 준수, 책임감", "kind": "must", "domain": null },
+        { "snippet": "학력·전공 제한 없음", "kind": "must", "domain": null },
+        { "snippet": "전기기사 자격증 소지자 가점", "kind": "nice", "domain": null }
+      ],
+      "not_items": ["신입사원 채용 (전기직)", "○ 직무기술서", "○ 응시자격", "접수기간", "문의 : 인사팀"]
+    },
+    {
+      "id": "p06", "core": "NURSING_CORE_V1",
+      "text": "OO대학교병원 2027년 신규간호사 채용 공고\n\n1. 모집분야 : 간호사(병동, 중환자실)\n2. 지원자격\n  가. 간호사 면허 소지자 또는 2027년 2월 취득 예정자\n  나. 남자의 경우 병역필 또는 면제자\n3. 주요 업무\n  가. 입원 환자 활력징후 측정 및 간호 기록\n  나. 처방에 따른 투약 및 주사\n  다. 환자 상태 변화 시 의료진 보고\n  라. 감염관리 지침 준수\n4. 우대사항 : 중환자실 실습 경험자\n5. 접수기간 : 2026. 11. 10 ~ 2026. 11. 21\n6. 제출서류 : 이력서, 자기소개서, 성적증명서",
+      "deadline": "2026-11-21",
+      "items": [
+        { "snippet": "간호사 면허 소지자", "kind": "must", "domain": null },
+        { "snippet": "병역필 또는 면제자", "kind": "must", "domain": null },
+        { "snippet": "활력징후 측정 및 간호 기록", "kind": "must", "domain": "TD06", "alt": ["TD01", "TD04"] },
+        { "snippet": "처방에 따른 투약 및 주사", "kind": "must", "domain": "TD03" },
+        { "snippet": "환자 상태 변화 시 의료진 보고", "kind": "must", "domain": "TD04" },
+        { "snippet": "감염관리 지침 준수", "kind": "must", "domain": "TD07" },
+        { "snippet": "중환자실 실습 경험자", "kind": "nice", "domain": null, "alt": ["TD04", "TD10"] }
+      ],
+      "not_items": ["신규간호사 채용 공고", "모집분야 : 간호사", "2. 지원자격", "3. 주요 업무", "접수기간", "제출서류"]
+    },
+    {
+      "id": "p07", "core": "FOOD_CORE_V1",
+      "text": "(주)오름푸드 품질관리 신입 상시채용\n\n하는 일\n• 원료 입고 검사 및 완제품 규격 판정\n• HACCP 기준 운영 및 기록 관리\n• 미생물 시험(일반세균, 대장균군)\n이런 분을 찾아요\n• 식품공학, 식품영양 관련 전공\n• HACCP 교육 이수자 우대\n• 운전면허 소지자\n복지\n• 4대보험, 중식 제공\n채용 시 마감",
+      "deadline": null,
+      "items": [
+        { "snippet": "원료 입고 검사 및 완제품 규격 판정", "kind": "must", "domain": "TD03" },
+        { "snippet": "HACCP 기준 운영 및 기록 관리", "kind": "must", "domain": "TD04" },
+        { "snippet": "미생물 시험(일반세균", "kind": "must", "domain": "TD05" },
+        { "snippet": "식품공학, 식품영양 관련 전공", "kind": "must", "domain": null },
+        { "snippet": "HACCP 교육 이수자 우대", "kind": "nice", "domain": "TD04", "alt": [null] },
+        { "snippet": "운전면허 소지자", "kind": "must", "domain": null }
+      ],
+      "not_items": ["품질관리 신입 상시채용", "4대보험, 중식 제공", "채용 시 마감"]
+    }
+  ],
+  "memos": [
+    { "id": "m01", "core": "CS_CORE_V1", "text": "캡스톤에서 스프링으로 동아리 예약 웹을 만들었다. 내가 DB 테이블 설계를 맡았고 예약이 겹치는 문제를 락으로 막았다. 발표하고 깃허브에 올렸다.", "kind": "capstone", "domains": ["TD04", "TD06", "TD03"], "has_decision": true, "has_artifact": true },
+    { "id": "m02", "core": "ME_CORE_V3", "text": "기계요소설계 과목에서 기어박스 감속기를 설계했다. 토크 계산해서 모듈이랑 축 지름 정했고 솔리드웍스로 조립도 그렸다. 교수님 피드백 받고 베어링 수명 다시 계산함.", "kind": "course", "domains": ["TD05", "TD01"], "has_decision": true, "has_artifact": true },
+    { "id": "m03", "core": "BIZ_CORE_V1", "text": "마케팅원론 팀 과제에서 20대 대상 설문 문항을 짰고, 응답 120개를 엑셀로 정리해 발표했다.", "kind": "assignment", "domains": ["TD02", "TD08"], "has_decision": true, "has_artifact": true },
+    { "id": "m04", "core": "EE_CORE_V1", "text": "전자회로실험 수업에서 OP앰프 반전증폭기 만들고 오실로스코프로 파형 확인함. 조교님이 시킨 대로 측정만 했음", "kind": "course", "domains": ["TD01", "TD12"], "has_decision": false, "has_artifact": false },
+    { "id": "m05", "core": "NURSING_CORE_V1", "text": "성인간호학 실습 때 담당 환자 활력징후를 4시간마다 재고 간호기록에 남겼다. 혈압이 떨어져서 바로 담당 선생님께 보고했다.", "kind": "internship", "domains": ["TD04", "TD06"], "has_decision": true, "has_artifact": true },
+    { "id": "m06", "core": "CS_CORE_V1", "text": "해커톤 나가서 리액트로 화면 만들었어요. 버튼 배치랑 화면 흐름은 제가 정했고 피그마 시안도 같이 그렸습니다.", "kind": "project", "domains": ["TD05"], "has_decision": true, "has_artifact": true },
+    { "id": "m07", "core": "FOOD_CORE_V1", "text": "식품가공 실습에서 잼 당도를 굴절계로 재가면서 설탕 비율을 65%로 정했다. 실습 보고서 냄", "kind": "course", "domains": ["TD01", "TD02"], "has_decision": true, "has_artifact": true },
+    { "id": "m08", "core": "PUBADM_CORE_V1", "text": "구청 행정인턴 하면서 민원 접수 대장 정리하고 자주 묻는 질문 목록 만들었음", "kind": "internship", "domains": ["TD04"], "has_decision": false, "has_artifact": true },
+    { "id": "m09", "core": "ME_CORE_V3", "text": "연구실에서 열전달 실험 보조. 열전대 붙이고 온도 데이터 받아서 엑셀로 정리함", "kind": "research", "domains": ["TD07", "TD03"], "has_decision": false, "has_artifact": true },
+    { "id": "m10", "core": "MEDIA_CORE_V1", "text": "학과 홍보영상 팀플에서 콘티 짜고 프리미어로 편집했어요. 컷 길이랑 BGM은 제가 골랐습니다.", "kind": "project", "domains": ["TD07", "TD06"], "has_decision": true, "has_artifact": true }
+  ],
+  "thresholds": {
+    "posting_item_recall": 0.85,
+    "posting_kind_accuracy": 0.9,
+    "posting_domain_accuracy": 0.75,
+    "posting_junk_max": 1,
+    "deadline_accuracy": 0.85,
+    "memo_domain_hit": 0.8,
+    "memo_kind_accuracy": 0.8,
+    "memo_decision_quoted": 0.85,
+    "memo_false_decision_max": 0,
+    "memo_artifact_hit": 0.8,
+    "memo_false_artifact_max": 0,
+    "memo_title_clean": 1.0
+  }
+}

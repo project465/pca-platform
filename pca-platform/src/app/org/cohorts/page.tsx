@@ -62,7 +62,7 @@ export default async function CampusCohorts({
       <PageHead
         eyebrow={org?.name}
         title={T("navCohorts")}
-        sub="기수는 누구 묶음인가이고, 회차는 언제 열고 닫는가입니다. 둘은 다른 축입니다."
+        sub="기수는 누구를 묶었는가이고, 회차는 언제 열고 닫는가입니다. 둘은 다른 축입니다."
       />
 
       {rows.length ? (
@@ -100,7 +100,7 @@ export default async function CampusCohorts({
         <Empty
           icon="group"
           title="아직 기수가 없습니다."
-          body="기수를 만들면 참여자를 묶어서 진행 상태와 집계를 견주어 보실 수 있습니다."
+          body="기수를 만들면 참여자를 묶어서 진행 상태와 집계를 비교해 보실 수 있습니다."
           cta={{ href: "/org/sessions/new", label: "회차 열기" }}
         />
       )}

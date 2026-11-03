@@ -371,7 +371,7 @@ export async function choiceSpread(
  */
 export const VERSION_KO: Record<string, string> = {
   core_version: "전공 Core",
-  core_code: "전공 Core (고른 자리)",
+  core_code: "전공 Core (고른 것)",
   specialization: "갈래",
   item_bank_version: "문항 은행 (결과에 닿는다)",
   scoring_version: "판단 규칙 (결과에 닿는다)",

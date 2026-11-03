@@ -155,7 +155,7 @@ ok("측정 층 파일의 지문이 그대로다", fdiff.length === 0 && gone.len
 /* ── 3. 소유 네 단계 ─────────────────────────────────────────────── */
 const lv = loaded.bank.level_options;
 ok("보기 넷의 문면과 수가 그대로다",
-   lv.length === 4 && lv[0] === "없다" && lv[3] === "내가 정하고 그 결과가 쓰였다",
+   lv.length === 4 && lv[0] === "해 본 적 없다" && lv[3] === "내가 정했고, 그 결정대로 다음 일이 진행됐다",
    lv.join(" / "));
 
 /* ── 4. 보기 자리 번호의 뜻 ──────────────────────────────────────── */
@@ -282,6 +282,7 @@ ok("코드가 글자로 적은 문항 번호가 전부 은행에 있다", bad.le
  */
 const RESULT_ROUTES = [
   "src/app/v3/[attemptId]/result/page.tsx",
+  "src/app/v3/[attemptId]/result/body.tsx",
   "src/app/me/results/page.tsx",
 ].filter((p) => existsSync(p));
 const recompute = RESULT_ROUTES.filter((p) =>

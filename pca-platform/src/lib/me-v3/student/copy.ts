@@ -61,7 +61,7 @@ const BIZ: Record<string, StudentDomain> = {
   /* 운영·프로세스 */
   TD07: { activity: "일하는 순서를 바꿔 보기", evidence: "업무 절차서", family: "site" },
   /* 데이터·의사결정 */
-  TD08: { activity: "숫자를 견주어 결론 내기", evidence: "분석 보고서", family: "decide" },
+  TD08: { activity: "숫자를 비교해 결론 내기", evidence: "분석 보고서", family: "decide" },
   /* 고객·서비스 운영 */
   TD09: { activity: "응대 기준을 세우고 지키기", evidence: "응대 기준표", family: "rule" },
   /* 수요·예약·가격 관리 */
@@ -85,15 +85,15 @@ const NURSING: Record<string, StudentDomain> = {
   /* 처치·술기 수행 */
   TD05: { activity: "처치 방법을 골라 해 보기", evidence: "수행 기록", family: "build" },
   /* 기록·인계 */
-  TD06: { activity: "남길 것과 넘길 것 가르기", evidence: "인계 노트", family: "data" },
+  TD06: { activity: "남길 것과 넘길 것 나누기", evidence: "인계 노트", family: "data" },
   /* 감염관리·무균술 */
   TD07: { activity: "옮는 길을 끊어 두기", evidence: "점검 기록", family: "rule" },
   /* 환자안전·사고 예방 */
-  TD08: { activity: "넘어질 자리를 미리 막기", evidence: "위험 평가 기록", family: "site" },
+  TD08: { activity: "넘어질 곳을 미리 막기", evidence: "위험 평가 기록", family: "site" },
   /* 환자·가족 교육·상담 */
   TD09: { activity: "환자가 알아듣게 설명하기", evidence: "교육 기록", family: "talk" },
   /* 중증도 분류·우선 배정 */
-  TD10: { activity: "누구를 먼저 볼지 가르기", evidence: "분류 기록", family: "decide" },
+  TD10: { activity: "누구를 먼저 볼지 정하기", evidence: "분류 기록", family: "decide" },
   /* 간호 인력·근무 운영 */
   TD11: { activity: "사람을 배치하고 범위 정하기", evidence: "근무표", family: "structure" },
   /* 간호 윤리·법규·동의 */
@@ -109,19 +109,19 @@ const PUBADM: Record<string, StudentDomain> = {
   /* 예산 편성·집행 */
   TD03: { activity: "필요한 돈을 셈해 나누기", evidence: "예산안", family: "cost" },
   /* 행정 절차·민원 처리 */
-  TD04: { activity: "요건을 보고 처리 여부 가르기", evidence: "처리 기록", family: "decide" },
+  TD04: { activity: "요건을 보고 처리 여부 정하기", evidence: "처리 기록", family: "decide" },
   /* 인사·조직 운영 */
-  TD05: { activity: "자리를 나누고 기준 정하기", evidence: "직무 기준", family: "people" },
+  TD05: { activity: "직무를 나누고 기준 정하기", evidence: "직무 기준", family: "people" },
   /* 성과 관리·평가 */
   TD06: { activity: "무엇을 셀지 정하고 재 보기", evidence: "성과 보고서", family: "compare" },
   /* 공공데이터·통계 분석 */
-  TD07: { activity: "자료를 모아 견주어 읽기", evidence: "분석 보고", family: "data" },
+  TD07: { activity: "자료를 모아 비교해 읽기", evidence: "분석 보고", family: "data" },
   /* 회계·감사 */
   TD08: { activity: "쓴 돈이 규정에 맞는지 보기", evidence: "감사 조서", family: "verify" },
   /* 주민 참여·협력 */
   TD09: { activity: "의견을 듣고 반영 범위 정하기", evidence: "의견 분류표", family: "talk" },
   /* 재난·안전 관리 */
-  TD10: { activity: "위험한 자리를 찾아 손보기", evidence: "점검 조서", family: "site" },
+  TD10: { activity: "위험한 곳을 찾아 손보기", evidence: "점검 조서", family: "site" },
   /* 공공사업 관리·조달 */
   TD11: { activity: "맡길 일을 적고 결과 받기", evidence: "과업지시서", family: "structure" },
   /* 디지털 행정·정보 공개 */
@@ -145,11 +145,11 @@ const CS: Record<string, StudentDomain> = {
   /* 네트워크·분산 시스템 */
   TD07: { activity: "끊겨도 다시 붙게 해 두기", evidence: "통신 설정표", family: "compare" },
   /* 정보보안 */
-  TD08: { activity: "뚫릴 자리를 찾아 막기", evidence: "권한 설계표", family: "rule" },
+  TD08: { activity: "뚫릴 곳을 찾아 막기", evidence: "권한 설계표", family: "rule" },
   /* 기계학습·데이터 분석 */
   TD09: { activity: "자료로 모형을 만들고 재 보기", evidence: "평가 결과표", family: "decide" },
   /* 테스트·품질·배포 운영 */
-  TD10: { activity: "고장 날 곳을 미리 시험하기", evidence: "시험 묶음", family: "verify" },
+  TD10: { activity: "고장 날 곳을 미리 시험하기", evidence: "테스트 모음", family: "verify" },
   /* 실시간 그래픽스·게임 구현 */
   TD11: { activity: "끊기지 않게 그려 내기", evidence: "프레임 시간 기록", family: "cost" },
 };
@@ -249,25 +249,25 @@ const ARCH: Record<string, StudentDomain> = {
   /* 공간 계획·평면 설계 */
   TD02: { activity: "실을 나누고 동선 잇기", evidence: "평면도", family: "plan" },
   /* 형태·입면 설계 */
-  TD03: { activity: "덩어리 비례와 창 자리 잡기", evidence: "입면도", family: "decide" },
+  TD03: { activity: "덩어리 비례와 창 위치 잡기", evidence: "입면도", family: "decide" },
   /* 구조 개념·안전 검토 */
   TD04: { activity: "기둥과 보의 틀 잡아 보기", evidence: "구조 개념도", family: "structure" },
   /* 설비·환경 성능 */
   TD05: { activity: "빛과 열 성능을 돌려 보기", evidence: "성능 검토서", family: "verify" },
   /* 재료·마감 선정 */
-  TD06: { activity: "마감 재료를 견주어 고르기", evidence: "마감 일람표", family: "compare" },
+  TD06: { activity: "마감 재료를 비교해 고르기", evidence: "마감 일람표", family: "compare" },
   /* 실내 공간·동선 설계 */
   TD07: { activity: "가구 놓고 지나는 폭 맞추기", evidence: "실내 전개도", family: "people" },
   /* 도면·시공 상세 */
-  TD08: { activity: "상세를 그리고 도면 맞추기", evidence: "상세도 묶음", family: "data" },
+  TD08: { activity: "상세를 그리고 도면 맞추기", evidence: "상세도 세트", family: "data" },
   /* 공사비·수량 산출 */
   TD09: { activity: "수량 세고 공사비 뽑기", evidence: "수량 산출서", family: "cost" },
   /* 시공 관리·감리 */
-  TD10: { activity: "현장을 돌며 맞는지 가르기", evidence: "검사 조서", family: "site" },
+  TD10: { activity: "현장을 돌며 맞는지 판정하기", evidence: "검사 조서", family: "site" },
   /* 인허가·협의 */
   TD11: { activity: "서류 갖춰 협의하고 보완하기", evidence: "인허가 서류", family: "talk" },
   /* 안전·유지 관리 */
-  TD12: { activity: "위험한 곳을 짚고 닫기", evidence: "안전 점검표", family: "rule" },
+  TD12: { activity: "위험한 곳을 찾고 닫기", evidence: "안전 점검표", family: "rule" },
 };
 
 /* ── 토목·철도건설 ────────────────────────────────────────────────────── */
@@ -291,7 +291,7 @@ const CIV: Record<string, StudentDomain> = {
   /* 현장 시공 관리 */
   TD09: { activity: "그날 작업 지시하고 맞추기", evidence: "작업 일지", family: "people" },
   /* 품질·시험 판정 */
-  TD10: { activity: "시료 뽑아 기준과 견주기", evidence: "검측 기록", family: "rule" },
+  TD10: { activity: "시료 뽑아 기준과 비교하기", evidence: "검측 기록", family: "rule" },
   /* 안전·환경 관리 */
   TD11: { activity: "위험한 작업을 막아 두기", evidence: "위험성 평가표", family: "rule" },
   /* 유지관리·점검 */
@@ -315,11 +315,11 @@ const BT: Record<string, StudentDomain> = {
   /* 생물정보·데이터 */
   TD07: { activity: "서열 자료를 걸러 비교하기", evidence: "분석 스크립트", family: "build" },
   /* 면역·진단 */
-  TD08: { activity: "양성과 음성 가르는 선 정하기", evidence: "검출계 설계", family: "decide" },
+  TD08: { activity: "양성과 음성 판정 기준 정하기", evidence: "검출계 설계", family: "decide" },
   /* 생물공정·스케일업 */
   TD09: { activity: "배양 규모를 키워 수율 보기", evidence: "배치 기록", family: "site" },
   /* 품질관리·규격 */
-  TD10: { activity: "기준대로 재고 합격 가르기", evidence: "표준작업절차", family: "rule" },
+  TD10: { activity: "기준대로 재고 합격 판정하기", evidence: "표준작업절차", family: "rule" },
   /* 연구 설계·통계 */
   TD11: { activity: "대조군을 두고 반복 수 정하기", evidence: "연구 계획서", family: "plan" },
   /* 생물안전·규제 */
@@ -335,7 +335,7 @@ const SPORTS: Record<string, StudentDomain> = {
   /* 운동 지도·수업 운영 */
   TD03: { activity: "시범 보이고 동작 고쳐 주기", evidence: "수업 기록", family: "people" },
   /* 손상 평가·현장 응급 */
-  TD04: { activity: "다친 자리를 보고 멈추게 하기", evidence: "응급 조치 기록", family: "decide" },
+  TD04: { activity: "다친 부위를 보고 멈추게 하기", evidence: "응급 조치 기록", family: "decide" },
   /* 재활 단계 설정·복귀 판정 */
   TD05: { activity: "회복 단계를 올리고 되돌리기", evidence: "복귀 단계 기록", family: "compare" },
   /* 자세·동작 분석 */
@@ -359,7 +359,7 @@ const HEALTH: Record<string, StudentDomain> = {
   /* 보건사업 기획 */
   TD01: { activity: "먼저 할 보건사업 고르기", evidence: "보건사업 계획서", family: "plan" },
   /* 건강 자료 분석 */
-  TD02: { activity: "건강 지표를 셈해 견주기", evidence: "지표 산출표", family: "compare" },
+  TD02: { activity: "건강 지표를 계산해 비교하기", evidence: "지표 산출표", family: "compare" },
   /* 건강 교육·캠페인 운영 */
   TD03: { activity: "캠페인을 열고 반응 보기", evidence: "캠페인 진행 기록", family: "talk" },
   /* 의료기관 원무·행정 */
@@ -377,7 +377,7 @@ const HEALTH: Record<string, StudentDomain> = {
   /* 감염·안전 관리 */
   TD10: { activity: "감염 길목을 끊고 점검하기", evidence: "감염 점검표", family: "rule" },
   /* 질 관리·인증 평가 */
-  TD11: { activity: "인증 기준에 맞춰 증빙 모으기", evidence: "증빙 묶음", family: "verify" },
+  TD11: { activity: "인증 기준에 맞춰 증빙 모으기", evidence: "증빙 자료", family: "verify" },
   /* 법규·기록·윤리 */
   TD12: { activity: "알릴 범위와 동의 챙기기", evidence: "보고 기록", family: "rule" },
 };
@@ -389,7 +389,7 @@ const FOOD: Record<string, StudentDomain> = {
   /* 가공·공정 설계 */
   TD02: { activity: "공정 온도와 시간 정하기", evidence: "공정 흐름도", family: "structure" },
   /* 품질관리·규격 판정 */
-  TD03: { activity: "검사값 읽고 합격 가르기", evidence: "검사 성적서", family: "verify" },
+  TD03: { activity: "검사값 읽고 합격 판정하기", evidence: "검사 성적서", family: "verify" },
   /* 위생·안전관리 */
   TD04: { activity: "위해요소 끊을 지점 두기", evidence: "위해요소 목록", family: "rule" },
   /* 이화학·미생물 분석 */
@@ -405,7 +405,7 @@ const FOOD: Record<string, StudentDomain> = {
   /* 조리 공정 표준화 */
   TD10: { activity: "레시피 분량과 차례 맞추기", evidence: "표준 레시피", family: "rule" },
   /* 관능 평가·출시 판정 */
-  TD11: { activity: "맛을 견주어 출시 가리기", evidence: "관능 평가표", family: "decide" },
+  TD11: { activity: "맛을 비교해 출시 정하기", evidence: "관능 평가표", family: "decide" },
   /* 표시·인증·법규 */
   TD12: { activity: "표시 문구와 값 정리하기", evidence: "표시 문안", family: "rule" },
 };
@@ -435,7 +435,7 @@ const PSY: Record<string, StudentDomain> = {
   /* 사용자·소비자 조사 */
   TD11: { activity: "써 보는 모습 보고 막힘 찾기", evidence: "막힘 목록", family: "people" },
   /* 윤리·기록·수퍼비전 */
-  TD12: { activity: "알릴 범위 가르고 기록 남기기", evidence: "고지 기록", family: "rule" },
+  TD12: { activity: "알릴 범위 정하고 기록 남기기", evidence: "고지 기록", family: "rule" },
 };
 
 /* ── 국어·언어·문학 ───────────────────────────────────────────────────── */
@@ -457,9 +457,9 @@ const LANG: Record<string, StudentDomain> = {
   /* 수업 운영·평가 */
   TD08: { activity: "평가 문항과 채점 기준 세우기", evidence: "채점 기준표", family: "decide" },
   /* 창작·구성 */
-  TD09: { activity: "소재 고르고 구조 세워 쓰기", evidence: "창작 개요", family: "plan" },
+  TD09: { activity: "소재 고르고 구조 잡아 쓰기", evidence: "창작 개요", family: "plan" },
   /* 문화·지역 이해 */
-  TD10: { activity: "그 사회의 맥락 찾아 견주기", evidence: "맥락 정리", family: "people" },
+  TD10: { activity: "그 사회의 맥락 찾아 비교하기", evidence: "맥락 정리", family: "people" },
   /* 조사·면담 설계 */
   TD11: { activity: "질문지 짜고 면담 옮겨 적기", evidence: "전사 자료", family: "talk" },
   /* 콘텐츠 기획·유통 */
@@ -477,7 +477,7 @@ const LAW: Record<string, StudentDomain> = {
   /* 서면 작성 */
   TD04: { activity: "주장마다 근거 붙여 쓰기", evidence: "준비서면", family: "rule" },
   /* 계약·문서 검토 */
-  TD05: { activity: "위험한 조항 짚고 고쳐 쓰기", evidence: "계약 수정안", family: "compare" },
+  TD05: { activity: "위험한 조항 찾아 고쳐 쓰기", evidence: "계약 수정안", family: "compare" },
   /* 분쟁 대응·협상 */
   TD06: { activity: "양보할 선 정하고 합의하기", evidence: "합의문", family: "talk" },
   /* 규제·준법 점검 */
@@ -489,7 +489,7 @@ const LAW: Record<string, StudentDomain> = {
   /* 피해자·민원 상담 */
   TD10: { activity: "민원 듣고 갈 곳 이어 주기", evidence: "민원 상담 기록", family: "people" },
   /* 범죄·안전 자료 분석 */
-  TD11: { activity: "사건 자료 세어 지표로 견주기", evidence: "범죄 집계표", family: "compare" },
+  TD11: { activity: "사건 자료로 지표 비교하기", evidence: "범죄 집계표", family: "compare" },
   /* 입법·내부규정 설계 */
   TD12: { activity: "규정 조문 쓰고 상위법 대기", evidence: "규정안", family: "rule" },
 };
@@ -497,7 +497,7 @@ const LAW: Record<string, StudentDomain> = {
 /* ── 교육 ─────────────────────────────────────────────────────────── */
 const EDU: Record<string, StudentDomain> = {
   /* 교육과정 설계 */
-  TD01: { activity: "넣을 것과 뺄 것 가르기", evidence: "교육과정 편성표", family: "plan" },
+  TD01: { activity: "넣을 것과 뺄 것 정하기", evidence: "교육과정 편성표", family: "plan" },
   /* 수업 설계 */
   TD02: { activity: "차시 목표 적고 활동 고르기", evidence: "교안", family: "structure" },
   /* 수업 운영 */
@@ -505,7 +505,7 @@ const EDU: Record<string, StudentDomain> = {
   /* 평가 설계·채점 */
   TD04: { activity: "문항 만들고 채점 기준 적기", evidence: "평가 도구", family: "verify" },
   /* 학습자 진단·개별화 */
-  TD05: { activity: "막힌 자리 찾아 보충하기", evidence: "개별 지도 계획", family: "decide" },
+  TD05: { activity: "막힌 부분 찾아 보충하기", evidence: "개별 지도 계획", family: "decide" },
   /* 생활지도·행동지원 */
   TD06: { activity: "행동 까닭을 좁혀 약속 정하기", evidence: "행동 관찰지", family: "data" },
   /* 상담·보호자 소통 */
@@ -517,7 +517,7 @@ const EDU: Record<string, StudentDomain> = {
   /* 교육 프로그램·사업 운영 */
   TD10: { activity: "모집하고 강사 배정하기", evidence: "강사 배정표", family: "site" },
   /* 교육 자료 분석 */
-  TD11: { activity: "성적 자료로 집단 견주기", evidence: "집계 보고서", family: "compare" },
+  TD11: { activity: "성적 자료로 집단 비교하기", evidence: "집계 보고서", family: "compare" },
   /* 안전·기록·규정 */
   TD12: { activity: "안전 항목 점검하고 적기", evidence: "학교 안전 점검표", family: "rule" },
 };
@@ -535,11 +535,11 @@ const AGRI: Record<string, StudentDomain> = {
   /* 번식·육묘 */
   TD05: { activity: "모를 길러 낼 것 고르기", evidence: "육묘 기록", family: "compare" },
   /* 수확·수확 후 관리 */
-  TD06: { activity: "익은 때 보고 등급 가르기", evidence: "선별 기록", family: "verify" },
+  TD06: { activity: "익은 때 보고 등급 나누기", evidence: "선별 기록", family: "verify" },
   /* 시설·관수 환경 제어 */
   TD07: { activity: "온실 설정값 잡고 지켜보기", evidence: "환경 설정 기록", family: "build" },
   /* 조경 설계·식재 계획 */
-  TD08: { activity: "자리마다 맞는 나무 고르기", evidence: "식재 설계도", family: "structure" },
+  TD08: { activity: "위치마다 맞는 나무 고르기", evidence: "식재 설계도", family: "structure" },
   /* 녹지·수목 유지 관리 */
   TD09: { activity: "자를 가지 정해 손보기", evidence: "수목 작업 기록", family: "site" },
   /* 산림 자원 조사·경영 */
@@ -557,11 +557,11 @@ const VISUAL: Record<string, StudentDomain> = {
   /* 콘셉트·방향 설정 */
   TD02: { activity: "갈 방향을 한 줄로 고르기", evidence: "콘셉트 보드", family: "decide" },
   /* 조형·레이아웃 */
-  TD03: { activity: "격자 세우고 자리 올려 보기", evidence: "레이아웃 시안", family: "structure" },
+  TD03: { activity: "격자 잡고 요소 배치해 보기", evidence: "레이아웃 시안", family: "structure" },
   /* 타이포그래피 */
   TD04: { activity: "글꼴 고르고 크기 위계 잡기", evidence: "조판 규칙", family: "rule" },
   /* 색과 재질 */
-  TD05: { activity: "색 묶음 뽑아 매체에 맞추기", evidence: "색 묶음", family: "compare" },
+  TD05: { activity: "색 조합 뽑아 매체에 맞추기", evidence: "색 조합표", family: "compare" },
   /* 캐릭터·세계관 설정 */
   TD06: { activity: "인물과 세계 규칙 짜기", evidence: "설정집", family: "people" },
   /* 서사·연출·콘티 */
@@ -593,7 +593,7 @@ const STYLE: Record<string, StudentDomain> = {
   /* 색채·톤 판단 */
   TD06: { activity: "빛 아래서 색 섞어 맞추기", evidence: "색 배합표", family: "data" },
   /* 스타일링·연출 */
-  TD07: { activity: "입히는 차례와 묶음 짜기", evidence: "스타일링 목록", family: "plan" },
+  TD07: { activity: "입히는 차례와 조합 짜기", evidence: "스타일링 목록", family: "plan" },
   /* 두피·피부 상태 판단 */
   TD08: { activity: "두피와 피부 상태 재어 보기", evidence: "상태 등급 기록", family: "decide" },
   /* 시술 설계·수행 */
@@ -601,9 +601,9 @@ const STYLE: Record<string, StudentDomain> = {
   /* 위생·안전 관리 */
   TD10: { activity: "소독 주기 정해 돌아보기", evidence: "위생 점검표", family: "rule" },
   /* 상품 구성·진열 */
-  TD11: { activity: "들일 품목과 진열 자리 짜기", evidence: "진열 도면", family: "cost" },
+  TD11: { activity: "들일 품목과 진열 위치 짜기", evidence: "진열 도면", family: "cost" },
   /* 고객 상담·기록 */
-  TD12: { activity: "권할 것과 안 권할 것 가르기", evidence: "고객 상담 기록", family: "talk" },
+  TD12: { activity: "권할 것과 안 권할 것 나누기", evidence: "고객 상담 기록", family: "talk" },
 };
 
 export const STUDENT_COPY: Record<string, Record<string, StudentDomain>> = {

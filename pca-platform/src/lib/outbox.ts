@@ -18,7 +18,9 @@ export type OutboxKind =
   | "purchase_done"
   | "refund_requested"
   | "refund_done"
-  | "code_low";
+  | "code_low"
+  /** MAT 주간 정리. **본문을 담지 않는다**: 몇 가지가 쌓였는지만 */
+  | "assistant_digest";
 
 /**
  * **열쇠가 들어가는 메일은 대기열에 쌓지 않는다.**
@@ -201,6 +203,15 @@ const MAIL = {
         `주문 번호 ${p.orderNo ?? "-"}\n\n` +
         `카드사에 반영되는 시점은 카드사마다 다릅니다.\n${base}/support\n`,
     }),
+    /* **무엇이 쌓였는지 적지 않는다.** 할 일과 공고 이름은 로그인해서
+       보시게 한다. 메일은 전달 과정에서 남의 눈에 띌 수 있다 */
+    assistant_digest: (n: string, base: string, p: Record<string, string>) => ({
+      subject: "이번 주 MAT 알림이 왔습니다",
+      text: `${n}님, 이번 주 알림 ${p.n ?? "1"}개가 쌓였습니다.` +
+        `${Number(p.deadlines ?? 0) > 0 ? ` 마감이 다가온 공고가 ${p.deadlines}개 있습니다.` : ""}\n\n` +
+        `로그인하시면 MAT에서 보실 수 있습니다.\n${base}/me/track\n\n` +
+        `이 메일을 그만 받으시려면 MAT 화면에서 메일 받기를 끄시면 됩니다.\n`,
+    }),
     password_reset: (n: string, _base: string, p: Record<string, string>) => ({
       subject: "비밀번호를 다시 정하실 수 있습니다",
       text: `${n}님, 아래 링크에서 비밀번호를 다시 정하실 수 있습니다.\n\n` +
@@ -251,6 +262,13 @@ const MAIL = {
         `When it appears on your statement is up to your card issuer.\n` +
         `${base}/support\n`,
     }),
+    assistant_digest: (n: string, base: string, p: Record<string, string>) => ({
+      subject: "New notes from your AI career assistant",
+      text: `${n}, ${p.n ?? "1"} new note(s) are waiting for you this week.` +
+        `${Number(p.deadlines ?? 0) > 0 ? ` ${p.deadlines} saved posting(s) close soon.` : ""}\n\n` +
+        `Sign in to see them.\n${base}/me/track\n\n` +
+        `You can turn these emails off on the assistant page.\n`,
+    }),
     password_reset: (n: string, _base: string, p: Record<string, string>) => ({
       subject: "Set a new password",
       text: `${n}, you can set a new password here.\n\n${p.link ?? ""}\n\n` +
@@ -291,6 +309,8 @@ function compose(r: Row, base = ""): { subject: string; text: string } | null {
       return M.refund_requested(name, base, r.payload);
     case "refund_done":
       return M.refund_done(name, base, r.payload);
+    case "assistant_digest":
+      return M.assistant_digest(name, base, r.payload);
     /* 운영 경보는 **한국어만이다.** 받는 사람이 우리 쪽 운영자이고,
        두 언어로 두면 고칠 곳만 늘고 읽는 사람은 그대로다 */
     case "code_low":
@@ -473,6 +493,31 @@ export async function sendNow(opts: {
     await tx.sendMail({
       from: process.env.MAIL_FROM, to: u.email,
       subject: msg.subject, text: msg.text,
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * 담당자에게 가는 알림 한 통(도입 문의 접수 등).
+ *
+ * **대기열에 쌓지 않는다.** 문의 본문에는 이름과 연락처가 들어 있고,
+ * 그것은 이미 `inquiries` 표에 한 번 적혀 있다. 대기열에 또 적으면 지울
+ * 자리가 둘이 된다. 그 자리에서 보내고, 못 보냈으면 `false` 를 돌려줘
+ * 부른 쪽이 표에 `alerted_at` 을 비워 둔다(운영 화면이 그 줄을 센다).
+ */
+export async function sendStaffAlert(opts: {
+  to: string; subject: string; text: string; replyTo?: string | null;
+}): Promise<boolean> {
+  const tx = transport();
+  if (!tx) return false;
+  try {
+    await tx.sendMail({
+      from: process.env.MAIL_FROM, to: opts.to,
+      subject: opts.subject, text: opts.text,
+      ...(opts.replyTo ? { replyTo: opts.replyTo } : {}),
     });
     return true;
   } catch {

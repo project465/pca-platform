@@ -140,26 +140,43 @@ if (LOGIN) {
      **그 쪽이 제 머리글과 제 본문을 그렸는지**를 본다. 자리표를 한
      모양으로 못 박지 않는 까닭은 상태마다 그리는 것이 갈리기 때문이다
      (검사 전은 `.cm-soon`, 끝낸 뒤는 `.cm-card`, 반영한 뒤는 `.cm-live`).
-     어느 쪽이든 **질의가 돌아야만** 그 가운데 하나가 선다. */
+     어느 쪽이든 **질의가 돌아야만** 그 가운데 하나가 선다.
+
+     홈은 화면 시안(2026-10-20) 뒤로 큰 칸(`.cm-hero`)과 타일(`.cm-tiles`)로
+     서고, 지금 상태는 머리 칸(`.cm-stat`)으로 선다. 옛 이름만 찾으면 멀쩡히
+     그려진 쪽이 `자리표 없음` 으로 걸린다(staging 에서 실제로 그랬다).
+
+     **검사 전인 학교 계정은 `/cores` 로 넘어간다**(전공 고르기가 먼저다).
+     그 계정으로는 이 세 자리의 자료 경로를 밟을 수 없으므로 `못 봄` 으로
+     적고 초록으로도 빨강으로도 세지 않는다. 결과를 받은 계정을 넘기십시오 */
   const DATA = [
     ["/me", "내 CareerMatri 홈이 지금 상태를 읽는다",
-     [RAIL, ".cm-h1", ".cm-grid, .cm-card, .cm-soon"]],
+     [RAIL, ".cm-h1", ".cm-hero, .cm-tiles, .cm-grid, .cm-card, .cm-soon"]],
     ["/me/state", "지금 상태가 career_profiles 와 굳은 결과를 읽는다",
-     [RAIL, ".cm-h1", ".cm-card, .cm-soon"]],
+     [RAIL, ".cm-h1", ".cm-stat, .cm-card, .cm-soon"]],
     ["/me/results", "결과 기록이 스냅샷 이력을 읽는다",
      [RAIL, ".cm-h1", ".cm-card, .cm-soon, .cm-live"]],
   ];
-  let dataOk = true;
+  let dataOk = true, unseen = 0;
   for (const [path, what, need] of DATA) {
     const r = await hit(path, need);
+    if (r.code === 200 && r.at === "/cores") {
+      unseen += 1;
+      console.log(`  못 봄  ${what} — 검사 전 계정이라 전공 고르기(/cores)로 넘어갔다`);
+      continue;
+    }
     const good = r.code === 200 && !r.at.startsWith("/login")
       && r.errs.length === 0 && r.missing.length === 0;
     if (!good) { dataOk = false; bad.push(`${path} 자료 경로`); }
     ok(what, good,
        `${r.code}${r.missing.length ? ` · 자리표 없음 ${r.missing.join(" ")}` : " · 그려졌다"}`);
   }
-  ok("career_profiles 를 읽는 세 자리가 전부 돈다", dataOk,
-     dataOk ? "표가 없으면 이 줄이 먼저 걸린다" : "위 줄을 보십시오");
+  if (unseen === DATA.length) {
+    console.log("  못 봄  career_profiles 를 읽는 세 자리 — 결과를 받은 계정으로 다시 돌리십시오");
+  } else {
+    ok("career_profiles 를 읽는 세 자리가 전부 돈다", dataOk,
+       dataOk ? "표가 없으면 이 줄이 먼저 걸린다" : "위 줄을 보십시오");
+  }
 } else {
   /* **못 본 것을 초록으로 적지 않는다.** 로그인 열쇠가 없으면 뒤쪽 열한
      자리는 보지 못한 것이고, 그 사실을 적는다 */

@@ -58,8 +58,8 @@ const SCREENS: [string, string][] = [
   ["Next Action", "src/app/me/next/page.tsx"],
   /* Result Summary 와 Result Detail 은 한 쪽이다. 요약이 접힌 기본 상태이고
      상세는 그 안에서 펼치는 자리라, 둘을 가르는 것은 파일이 아니라 상태다 */
-  ["Result Summary", "src/app/v3/[attemptId]/result/page.tsx"],
-  ["Result Detail", "src/app/v3/[attemptId]/result/page.tsx"],
+  ["Result Summary", "src/app/v3/[attemptId]/result/body.tsx"],
+  ["Result Detail", "src/app/v3/[attemptId]/result/body.tsx"],
   ["Explore", "src/app/me/explore/page.tsx"],
   /* 작업공간 제품화 회차에서 더한 넷. **새 동결 종류를 만들지 않는다**:
      이 묶음이 이미 세 동결을 묶고 있으므로, 얼린 화면이 늘면 목록이 는다 */

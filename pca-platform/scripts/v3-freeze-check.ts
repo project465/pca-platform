@@ -52,6 +52,18 @@ const FILES = [
      읽힌다. 표와 그것을 읽는 자리를 함께 적는다 */
   "src/lib/me-v3/runtime/terms.ts",
   "sites/pca-platform/content/me-v3-terms.json",
+  /* 영어판 1단계(2026-10-24). 화면 글을 언어별 사전으로 뺐다. **여기 없으면
+     영어 글은 아무 때나 바뀐다**: 한국어 파일을 한 줄도 안 고치고 영어
+     응시자가 읽는 글을 바꿀 수 있다. 화면 글 사전은 결과지와 함께 쓰므로
+     두 동결이 함께 덮는다(`surface.css` 와 같은 자리다) */
+  "src/lib/me-v3/i18n.ts",
+  "src/lib/me-v3/runtime/copy.ts",
+  "src/lib/me-v3/runtime/copy.ko.ts",
+  "src/lib/me-v3/runtime/copy.en.ts",
+  "src/app/v3/tier-text.en.ts",
+  "src/app/v3/tier-text.i18n.ts",
+  "src/lib/me-v3/phrase.ts",
+  "src/lib/me-v3/phrases.en.ts",
 ];
 
 const sha = (p: string) => createHash("sha256").update(readFileSync(p)).digest("hex");

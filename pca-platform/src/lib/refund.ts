@@ -82,19 +82,26 @@ export async function refundable(orderId: string): Promise<Verdict> {
   if (o.status !== "paid" || !o.paid_at) return { ok: false, deny: "not_paid" };
 
   // ── 기간권: 가분적이라 남은 기간을 돌려준다(계속거래) ────────────
-  if (o.kind === "pass") {
+  //    Track 도 같다: 30일권·365일권은 남은 날만큼 일할로 돌려준다
+  if (o.kind === "pass" || o.kind === "track") {
     const ent = await queryOne<{ starts_at: string; ends_at: string }>(
       `SELECT starts_at::text, ends_at::text FROM entitlements
         WHERE order_id = $1 ORDER BY id DESC LIMIT 1`,
       [o.id],
     );
     if (!ent) return { ok: false, deny: "not_found" };
-    const total = new Date(ent.ends_at).getTime() - new Date(ent.starts_at).getTime();
-    const left = new Date(ent.ends_at).getTime() - Date.now();
+    const st = new Date(ent.starts_at).getTime();
+    const en = new Date(ent.ends_at).getTime();
+    const total = en - st;
+    /* **이어 붙인 기간은 아직 시작하지 않았다.** 앞 줄의 끝에서 시작하므로
+       `starts_at` 이 미래일 수 있고, 그때 `ends_at - 지금` 으로 재면 남은
+       기간이 산 기간보다 길어져 **낸 돈보다 많이 돌려준다.** 남은 기간은
+       시작한 때와 지금 가운데 늦은 쪽부터 잰다 */
+    const left = en - Math.max(Date.now(), st);
     if (left <= 0) return { ok: false, deny: "expired_window" };
     // 일할 계산. **위약금을 떼지 않는다**: 계속거래의 위약금 상한을 계산해
     // 다투느니 안 떼는 쪽이 싸고, 분쟁이 없다
-    const amount = Math.floor((o.amount * left) / total);
+    const amount = Math.floor((o.amount * Math.min(left, total)) / total);
     return { ok: true, amount, reason: "pass_remaining", note: `잔여 ${Math.ceil(left / 86_400_000)}일` };
   }
 
@@ -166,11 +173,39 @@ export async function recordRefund(
           AND NOT EXISTS (SELECT 1 FROM attempts a WHERE a.seat_id = s.id)`,
       [orderId],
     );
-    // 기간권이면 남은 기간을 지금으로 끊는다. 이미 본 결과지는 건드리지 않는다
-    await c.query(
-      `UPDATE entitlements SET ends_at = now() WHERE order_id = $1 AND ends_at > now()`,
+    /**
+     * 기간권이면 남은 기간을 지금으로 끊는다. 이미 본 결과지는 건드리지 않는다.
+     *
+     * **아직 시작하지 않은 줄도 끊는다.** 이어 붙인 줄은 `starts_at` 이
+     * 미래라 `ends_at = now()` 만 쓰면 `ends_at > starts_at` 제약이 그 자리에서
+     * 거절하고 환불 전체가 되돌아간다. 시작을 지금보다 1초 앞으로 당긴다.
+     */
+    const cut = await c.query<{ user_id: string; kind: string; removed: string; old_end: string }>(
+      `UPDATE entitlements e
+          SET starts_at = LEAST(e.starts_at, now() - interval '1 second'),
+              ends_at   = now()
+         FROM (SELECT id, ends_at AS old_end,
+                      ends_at - GREATEST(now(), starts_at) AS removed
+                 FROM entitlements WHERE order_id = $1 AND ends_at > now()) old
+        WHERE e.id = old.id
+        RETURNING e.user_id::text, e.kind, old.removed::text, old.old_end::text`,
       [orderId],
     );
+    /**
+     * **뒤에 이어 붙어 있던 줄을 당긴다.** 30일권 뒤에 365일권을 미리 산
+     * 사람이 30일권만 환불하면, 당기지 않은 365일권은 30일 뒤에야 시작해서
+     * **돈을 낸 기간 한가운데 빈 달이 생긴다.** 끊어 낸 만큼 앞으로 옮긴다.
+     */
+    for (const r of cut.rows) {
+      await c.query(
+        `UPDATE entitlements
+            SET starts_at = starts_at - $3::interval,
+                ends_at   = ends_at   - $3::interval
+          WHERE user_id = $1 AND kind = $2 AND status = 'active'
+            AND starts_at >= $4::timestamptz`,
+        [r.user_id, r.kind, r.removed, r.old_end],
+      );
+    }
   });
   return v;
 }

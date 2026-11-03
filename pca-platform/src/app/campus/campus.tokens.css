@@ -18,9 +18,9 @@
 
 .cm-cmp {
   /* ── 학교의 자리: 어두운 면 ───────────────────────────────────── */
-  --pcu-navy: #081a33;
-  --pcu-navy-2: #0f2b4e;
-  --pcu-navy-3: #17396a;
+  --pcu-navy: #1e2a3e;
+  --pcu-navy-2: #2a3850;
+  --pcu-navy-3: #34445f;
   /* 어두운 면 위의 글자. 흰 글자는 7:1 보다 훨씬 위이고, 거드는 글은
      #a9bdd8 로 약 8.9:1 이다. **색만 옅게 하고 대비를 잃지 않는다** */
   --pcu-on-navy: #ffffff;
@@ -30,22 +30,22 @@
 
   /* ── 지금 할 수 있는 것: electric blue ────────────────────────── */
   /* 밝은 면 위에서는 흰 글자가 4.5:1 을 넘는 값만 쓴다 */
-  --pcu-blue: #1557c7;
-  --pcu-blue-ink: #10459f;
+  --pcu-blue: #2f6bff;
+  --pcu-blue-ink: #1f4fd1;
   /* 어두운 면 위에서만 쓰는 밝은 쪽. 흰 바탕에 올리면 대비가 모자라므로
      **navy 위 글자와 선에만** 쓴다 */
   --pcu-blue-lit: #6fb3ff;
-  --pcu-blue-soft: #eaf1fd;
-  --pcu-blue-line: #c7dafa;
+  --pcu-blue-soft: #eaf0ff;
+  --pcu-blue-line: #c9d6ff;
 
   /* ── 글과 면 ──────────────────────────────────────────────────── */
-  --pcu-ink: #0a1a30;
-  --pcu-ink-2: #3d4d66;
+  --pcu-ink: #1a2233;
+  --pcu-ink-2: #4a5568;
   --pcu-ink-3: #5f6e86;
-  --pcu-bg: #f3f6fc;
+  --pcu-bg: #f3f6fb;
   --pcu-surface: #ffffff;
   --pcu-surface-2: #f6f8fc;
-  --pcu-line: #e1e7f0;
+  --pcu-line: #e3e8f0;
   --pcu-line-2: #eef2f8;
 
   /* ── 자리와 폭 ────────────────────────────────────────────────── */
@@ -56,8 +56,8 @@
   /* ── 둥글기와 그림자 ──────────────────────────────────────────── */
   --pcu-r-sm: 10px;
   --pcu-r: 14px;
-  --pcu-r-lg: 20px;
-  --pcu-sh: 0 1px 2px rgba(8, 26, 51, .05);
+  --pcu-r-lg: 18px;
+  --pcu-sh: 0 1px 2px rgba(17, 30, 60, .04), 0 6px 20px rgba(17, 30, 60, .06);
   --pcu-sh-lift: 0 1px 2px rgba(8, 26, 51, .05), 0 12px 30px rgba(8, 26, 51, .07);
 
   /* ── 활자 ─────────────────────────────────────────────────────── */

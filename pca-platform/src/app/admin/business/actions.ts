@@ -17,7 +17,7 @@ import { audit } from "@/lib/audit";
  */
 export async function saveBusinessAction(form: FormData): Promise<void> {
   const user = await requireRole(["superadmin"]);
-  const keys = [...businessFields().map((f) => f.key), "jobinfo_license", "support_hours"];
+  const keys = [...businessFields().map((f) => f.key), "name_en", "jobinfo_license", "support_hours"];
   const changed: string[] = [];
   for (const k of keys) {
     const v = form.get(k);

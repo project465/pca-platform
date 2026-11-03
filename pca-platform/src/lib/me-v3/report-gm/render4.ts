@@ -150,7 +150,7 @@ export function p2(r: Report3): string {
     <figure class="p2-fig">${radar(r)}
       <ol class="rd-scale">${([1, 2, 3] as Level[]).map((lv) => `<li><i class="rs${lv}"></i>${lv === 1 ? "안쪽" : lv === 2 ? "가운데" : "바깥"} 고리 · ${esc(STEP[lv].tag)}</li>`).join("")}</ol>
       <div class="lg">${r.radar.series.map((s, k) => `<span><i class="sw" style="background:${SER[k]}"></i>${esc(s.name)}${s.deep ? "" : " · 핵심 판단만"}</span>`).join("")}</div>
-      <figcaption>바깥 고리로 갈수록 그 판단을 더 깊이 해 봤다고 답한 것입니다. 점수가 아니며 다른 학생과 견준 값도 아닙니다.</figcaption></figure>
+      <figcaption>바깥 고리로 갈수록 그 판단을 더 깊이 해 봤다고 답한 것입니다. 점수가 아니며 다른 학생과 비교한 값도 아닙니다.</figcaption></figure>
     <div class="p2-side">
       <h3 class="eyebrow">여덟 가지 판단, 가장 깊게 답한 단계</h3>
       ${stat(n3.length, "기준까지 직접 정한 판단", n3)}
@@ -174,7 +174,7 @@ export function p3(r: Report3, pick?: DomainRead): string {
     ["직접 정한 것", d.decisions, "기준을 내가 정했다고 고른 장면"],
     ["해 본 일", d.acts, "맡아서 해 봤다고 고른 장면"],
     ["남긴 결과물", d.artifacts, "남겼다고 고른 문서·표"],
-    ["비교한 대상", d.comparisons, "결과를 견준 기준"],
+    ["비교한 대상", d.comparisons, "결과를 비교한 기준"],
   ];
   const strong = d.flow.filter((f) => f.cover === "strong").length;
   return frame(r, 3, "03 영역별 심층 해설", `

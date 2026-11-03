@@ -255,9 +255,14 @@ export function EmptyState({
  * (`monthOf()`), 저장되는 꼴은 `asDate()` 가 정한다. 그래서 **전에 적어 둔
  * 기록의 값이 한 줄도 바뀌지 않는다.**
  */
+const MONTHS_EN = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
 export function MonthPick({
-  name, label, hint, ongoing, years = 20, value, on,
+  name, label, hint, ongoing, years = 20, value, on, lang = "ko",
 }: {
+  /** 작업공간 언어. 영어면 달을 이름으로 적는다(`Mar`) */
+  lang?: "ko" | "en";
   /** 보내는 이름. 실제로는 `<name>_y` 와 `<name>_m` 둘이 간다 */
   name: string;
   label: string;
@@ -285,24 +290,25 @@ export function MonthPick({
   /* `03` 이 아니라 `3` 으로 적는다: 보기의 값이 `1`~`12` 라 `03` 은
      어느 보기와도 맞지 않아 **고른 달이 비어 보인다** */
   const mNow = m ? String(Number(m[2])) : "";
+  const en = lang === "en";
   return (
     <fieldset className="cm-field is-month">
       <legend><span>{label}</span></legend>
       {hint ? <em>{hint}</em> : null}
       <div className="cm-month">
         <label className="cm-month-c">
-          <span>연도</span>
+          <span>{en ? "Year" : "연도"}</span>
           <select className="cm-select" name={`${name}_y`} defaultValue={yNow}>
-            <option value="">선택</option>
-            {ys.map((y) => <option key={y} value={y}>{y}년</option>)}
+            <option value="">{en ? "Select" : "선택"}</option>
+            {ys.map((y) => <option key={y} value={y}>{en ? y : `${y}년`}</option>)}
           </select>
         </label>
         <label className="cm-month-c">
-          <span>월</span>
+          <span>{en ? "Month" : "월"}</span>
           <select className="cm-select" name={`${name}_m`} defaultValue={mNow}>
-            <option value="">선택</option>
+            <option value="">{en ? "Select" : "선택"}</option>
             {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
-              <option key={m} value={m}>{m}월</option>
+              <option key={m} value={m}>{en ? MONTHS_EN[m - 1] : `${m}월`}</option>
             ))}
           </select>
         </label>

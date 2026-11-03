@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>단체 리포트 인쇄본 | 커리어매트리</title>
+<style>
+/* 70쪽 인쇄본 시안 — 대표 페이지 10장. 나머지 쪽은 같은 틀을 반복한다. */
+:root{
+  --bg:#E9EDF3; --paper:#FFFFFF; --ink:#1A2233; --sub:#4A5568; --muted:#8A94A6;
+  --line:#E3E8F0; --soft:#F6F8FC;
+  --primary:#2F6BFF; --primary-dark:#1F4FD1; --primary-soft:#EAF0FF; --navy:#1E2A3E;
+  --c1:#2F6BFF; --c1-soft:#EAF0FF; --c2:#12A27E; --c2-soft:#E6F6F1; --c3:#7B5CF0; --c3-soft:#F0ECFE;
+  --c4:#F59E0B; --c4-soft:#FEF4E2; --c5:#E8497A; --c5-soft:#FDECF2; --c6:#0EA5C6; --c6-soft:#E4F6FA;
+  --ok:#12A27E; --ok-soft:#E6F6F1; --warn:#E58A00; --warn-soft:#FEF4E2; --bad:#E5484D; --bad-soft:#FDECEC;
+}
+@page{size:A4;margin:0}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
+  font-size:11pt;line-height:1.6;letter-spacing:-0.01em;font-variant-numeric:tabular-nums;
+  padding:24px 0;
+}
+.page{
+  width:210mm;height:297mm;margin:0 auto 24px;background:var(--paper);
+  box-shadow:0 4px 24px rgba(17,30,60,.12);
+  position:relative;overflow:hidden;display:flex;flex-direction:column;
+}
+@media print{
+  body{background:#fff;padding:0}
+  .page{margin:0;box-shadow:none;break-after:page}
+}
+
+/* 쪽 머리·꼬리 */
+.ph{display:flex;align-items:center;gap:10px;padding:14mm 16mm 0;font-size:8.5pt;color:var(--muted)}
+.ph .mk{width:18px;height:18px;border-radius:5px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center}
+.ph b{color:var(--sub);font-weight:700}
+.ph .sec{margin-left:auto;font-weight:700;color:var(--primary);background:var(--primary-soft);border-radius:999px;padding:1px 9px}
+.body{flex:1;padding:9mm 16mm 8mm;display:flex;flex-direction:column;gap:6.5mm;min-height:0}
+.body > .read:last-child,.body > .push{margin-top:auto}
+.pf{display:flex;align-items:center;padding:0 16mm 10mm;font-size:8pt;color:var(--muted)}
+.pf .no{margin-left:auto;font-weight:800;color:var(--ink);font-size:9pt}
+.pf .no small{color:var(--muted);font-weight:500}
+
+/* 공통 블록 */
+.t1{font-size:21pt;font-weight:800;letter-spacing:-0.04em;line-height:1.3}
+.t1 em{font-style:normal;color:var(--primary)}
+.lead{font-size:10.5pt;color:var(--sub);line-height:1.65}
+.h{display:flex;align-items:center;gap:7px;font-size:12pt;font-weight:800;letter-spacing:-0.025em;margin-bottom:3mm}
+.h::before{content:"";width:4px;height:13px;border-radius:2px;background:var(--primary)}
+.box{background:var(--soft);border-radius:12px;padding:6mm}
+.box.line{background:#fff;border:1px solid var(--line)}
+.row{display:grid;gap:4mm}
+.c2{grid-template-columns:1fr 1fr}.c3{grid-template-columns:repeat(3,1fr)}.c4{grid-template-columns:repeat(4,1fr)}.c5{grid-template-columns:repeat(5,1fr)}
+.kpi{border-radius:12px;padding:5mm;background:var(--c1-soft)}
+.kpi span{display:block;font-size:8.5pt;font-weight:700;color:var(--sub)}
+.kpi b{font-size:20pt;font-weight:800;letter-spacing:-0.04em;line-height:1.25;color:var(--c1)}
+.kpi b small{font-size:10pt;margin-left:1px}
+.kpi i{display:block;font-style:normal;font-size:8pt;color:var(--sub)}
+.read{border-left:3px solid var(--primary);background:var(--primary-soft);border-radius:0 10px 10px 0;padding:4mm 5mm;font-size:9.5pt;color:#24345A;line-height:1.65}
+.read b{display:block;color:var(--primary-dark);margin-bottom:1mm;font-size:9.5pt}
+.note{font-size:8pt;color:var(--muted)}
+.pill{display:inline-block;font-size:8pt;font-weight:700;border-radius:999px;padding:0 8px;white-space:nowrap;line-height:1.8}
+.p-bad{background:var(--bad-soft);color:var(--bad)}.p-warn{background:var(--warn-soft);color:#B86A00}.p-ok{background:var(--ok-soft);color:#0B7A5E}
+.p-blue{background:var(--primary-soft);color:var(--primary)}.p-vio{background:var(--c3-soft);color:var(--c3)}
+
+/* 가로 막대 */
+.hb{display:grid;grid-template-columns:26mm 1fr 14mm;gap:3mm;align-items:center;padding:2.3mm 0;font-size:9.5pt}
+.hb .l{color:var(--sub);text-align:right}
+.hb .t{height:14px;background:#EEF1F6;border-radius:999px;overflow:hidden}
+.hb .t i{display:block;height:100%;border-radius:999px}
+.hb .v{font-weight:800}
+
+/* 표 */
+table{width:100%;border-collapse:collapse;font-size:9pt}
+th{font-size:8pt;color:var(--muted);font-weight:700;text-align:left;padding:2.2mm 2mm;border-bottom:1.5px solid var(--ink);white-space:nowrap}
+td{padding:3mm 2mm;border-bottom:1px solid var(--line);vertical-align:top}
+td.n,th.n{text-align:right}td.c,th.c{text-align:center}
+tbody tr:nth-child(even) td{background:#FAFBFD}
+
+/* ---------- 1. 표지 ---------- */
+.cover{background:linear-gradient(160deg,#2F6BFF 0%,#1F4FD1 52%,#1E2A3E 100%);color:#fff;padding:20mm 18mm 16mm}
+.cover .top{display:flex;align-items:center;gap:10px;font-weight:800;font-size:12pt}
+.cover .top .mk{width:28px;height:28px;border-radius:8px;background:#fff;color:var(--primary);display:flex;align-items:center;justify-content:center}
+.cover .top span{margin-left:auto;font-size:9pt;font-weight:600;opacity:.75}
+.cover .ttl{margin-top:58mm}
+.cover .ttl .eb{display:inline-block;font-size:10pt;font-weight:700;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 12px;margin-bottom:6mm}
+.cover h1{font-size:34pt;font-weight:800;letter-spacing:-0.045em;line-height:1.22}
+.cover .ttl p{font-size:12pt;opacity:.82;margin-top:5mm}
+.cover .facts{margin-top:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:4mm}
+.cover .facts div{background:rgba(255,255,255,.12);border-radius:12px;padding:4mm}
+.cover .facts span{display:block;font-size:8.5pt;opacity:.75}
+.cover .facts b{font-size:16pt;font-weight:800;letter-spacing:-0.03em}
+.cover .bottom{display:flex;justify-content:space-between;margin-top:8mm;font-size:8.5pt;opacity:.7}
+.cover .rings{position:absolute;right:-40mm;top:40mm;width:150mm;height:150mm;border-radius:50%;border:24mm solid rgba(255,255,255,.06)}
+
+/* ---------- 2. 목차 ---------- */
+.toc{display:grid;grid-template-columns:1fr 1fr;gap:4mm 6mm}
+.toc .part{border-radius:12px;padding:4mm 5mm;background:var(--soft)}
+.toc .part .pn{display:flex;align-items:baseline;gap:8px;margin-bottom:1.5mm}
+.toc .part .pn b{font-size:15pt;font-weight:800;color:var(--pc,var(--primary));letter-spacing:-0.03em}
+.toc .part .pn strong{font-size:11pt;font-weight:800}
+.toc .part .pn span{margin-left:auto;font-size:8.5pt;font-weight:700;color:var(--muted)}
+.toc .part li{list-style:none;display:flex;font-size:8.8pt;color:var(--sub);padding:.6mm 0;border-bottom:1px dotted #D7DEE8}
+.toc .part li:last-child{border-bottom:0}
+.toc .part li span{margin-left:auto;color:var(--muted)}
+
+/* ---------- 4. 간지 ---------- */
+.divider{padding:0}
+.divider .band{height:120mm;background:linear-gradient(150deg,var(--c2) 0%,#0B7F66 100%);color:#fff;padding:20mm 18mm;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden}
+.divider .band .num{position:absolute;right:12mm;top:4mm;font-size:120pt;font-weight:800;letter-spacing:-0.06em;opacity:.16;line-height:1}
+.divider .band .eb{font-size:10pt;font-weight:700;opacity:.8}
+.divider .band h2{font-size:30pt;font-weight:800;letter-spacing:-0.045em;line-height:1.25;margin-top:2mm}
+.divider .in{padding:12mm 18mm;display:flex;flex-direction:column;gap:6mm;flex:1}
+.divider .q{font-size:13pt;font-weight:700;line-height:1.6;letter-spacing:-0.025em}
+.divider ol{list-style:none;display:flex;flex-direction:column;gap:2.5mm}
+.divider ol li{display:flex;gap:4mm;align-items:center;background:var(--soft);border-radius:10px;padding:3.2mm 4mm;font-size:10pt}
+.divider ol li b{width:9mm;font-weight:800;color:var(--c2)}
+.divider ol li span{margin-left:auto;color:var(--muted);font-size:9pt}
+
+/* 히스토그램 */
+.hist{display:flex;align-items:flex-end;gap:3mm;height:40mm;border-bottom:1px solid var(--line);padding:0 2mm}
+.hist div{flex:1;border-radius:6px 6px 2px 2px;background:var(--c1);color:#fff;font-size:8.5pt;font-weight:800;display:flex;align-items:flex-start;justify-content:center;padding-top:1mm}
+.hist-lab{display:flex;gap:3mm;padding:1mm 2mm 0}
+.hist-lab span{flex:1;text-align:center;font-size:8pt;color:var(--muted)}
+
+/* 도넛 */
+.donut{display:flex;align-items:center;gap:6mm}
+.donut svg{flex:none}
+.legend{display:flex;flex-direction:column;gap:1.8mm;font-size:9pt}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:9px;height:9px;border-radius:3px;flex:none}
+.legend em{font-style:normal;margin-left:auto;font-weight:800;padding-left:6mm}
+
+/* 단계 분포 막대 */
+.lvl{display:flex;height:22px;border-radius:999px;overflow:hidden;font-size:8pt;font-weight:800;color:#fff}
+.lvl div{display:flex;align-items:center;justify-content:center}
+
+/* 지역 */
+.tier{display:grid;grid-template-columns:repeat(3,1fr);gap:4mm}
+.tier div{border-radius:12px;padding:4mm;border:1.5px solid var(--tc);background:var(--ts)}
+.tier span{display:block;font-size:9pt;font-weight:700}
+.tier b{font-size:22pt;font-weight:800;color:var(--tc);letter-spacing:-0.04em}
+.tier b small{font-size:10pt}
+</style>
+</head>
+<body>
+
+<!-- ================= p.1 표지 ================= -->
+<section class="page cover">
+  <div class="rings"></div>
+  <div class="top"><span class="mk"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19V5l7 8 7-8v14"/></svg></span>커리어매트리<span>대외비 · 학과 내부 검토용</span></div>
+  <div class="ttl">
+    <span class="eb">2026-1학기 · 3학년 회차</span>
+    <h1>기계공학과<br>진로지표 단체 리포트</h1>
+    <p>학생 38명의 직무 적합도 · 업무 성향 · 역량 갭과<br>커리큘럼 · 지역 연계 검토</p>
+  </div>
+  <div class="facts">
+    <div><span>대상</span><b>40명</b></div>
+    <div><span>응시</span><b>38명</b></div>
+    <div><span>응시율</span><b>95%</b></div>
+    <div><span>분량</span><b>70쪽</b></div>
+  </div>
+  <div class="bottom"><span>응시 기간 2026.03.04 – 03.20 · 발행 2026.03.24</span><span>화면 시안 · 예시 데이터</span></div>
+</section>
+
+<!-- ================= p.3 목차 ================= -->
+<section class="page">
+  <div class="ph"><span class="mk"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19V5l7 8 7-8v14"/></svg></span><b>기계공학과 단체 리포트</b><span class="sec">목차</span></div>
+  <div class="body">
+    <div>
+      <h2 class="t1">목차</h2>
+      <p class="lead">바쁘시면 <b>1부 핵심 요약(4쪽)</b>만 읽으셔도 됩니다. 2부부터는 근거와 상세입니다.</p>
+    </div>
+    <div class="toc">
+      <div class="part" style="--pc:var(--c1)"><div class="pn"><b>01</b><strong>핵심 요약</strong><span>5–8</span></div>
+        <ul><li>한 장 요약<span>5</span></li><li>주요 발견 다섯 가지<span>6</span></li><li>학과에 권하는 것<span>7</span></li><li>지난 회차와 비교<span>8</span></li></ul></div>
+      <div class="part" style="--pc:var(--c6)"><div class="pn"><b>02</b><strong>응시 현황</strong><span>9–12</span></div>
+        <ul><li>응시율과 일자별 추이<span>9</span></li><li>응시 소요 시간<span>10</span></li><li>응답 신뢰도 점검<span>11</span></li><li>미응시자와 남은 응시권<span>12</span></li></ul></div>
+      <div class="part" style="--pc:var(--c2)"><div class="pn"><b>03</b><strong>직무 적합도</strong><span>13–24</span></div>
+        <ul><li>간지<span>13</span></li><li>학생들이 몰린 직무<span>14</span></li><li>점수 분포와 2순위 직무<span>15</span></li><li>직무별 상세 (5개 × 2쪽)<span>16–24</span></li></ul></div>
+      <div class="part" style="--pc:var(--c3)"><div class="pn"><b>04</b><strong>업무 성향</strong><span>25–32</span></div>
+        <ul><li>간지<span>25</span></li><li>6가지 성향 분포<span>26</span></li><li>성향 × 직무 교차<span>27</span></li><li>성향별 상세 (6개)<span>28–32</span></li></ul></div>
+      <div class="part" style="--pc:var(--bad)"><div class="pn"><b>05</b><strong>역량 갭</strong><span>33–46</span></div>
+        <ul><li>간지 · 전체 충족률<span>33</span></li><li>역량별 상세 (6개 × 2쪽)<span>34–45</span></li><li>역량 간 상관<span>46</span></li></ul></div>
+      <div class="part" style="--pc:var(--c4)"><div class="pn"><b>06</b><strong>커리큘럼 처방</strong><span>47–56</span></div>
+        <ul><li>간지 · 검토가 필요한 과목<span>47–48</span></li><li>과목별 상세 (6과목)<span>49–54</span></li><li>개설 학기 제안표<span>55–56</span></li></ul></div>
+      <div class="part" style="--pc:var(--c2)"><div class="pn"><b>07</b><strong>지역 연계 · 정주</strong><span>57–62</span></div>
+        <ul><li>간지 · 대전 소재 기관 184곳<span>57–58</span></li><li>직무별 지역 기업 매칭<span>59–60</span></li><li>정주 관심과 과정 데이터<span>61–62</span></li></ul></div>
+      <div class="part" style="--pc:var(--muted)"><div class="pn"><b>부록</b><strong>근거 자료</strong><span>63–70</span></div>
+        <ul><li>학생별 요약표 (익명)<span>63–66</span></li><li>검사 구성과 산출 방법<span>67–68</span></li><li>용어 · 준거 체계<span>69–70</span></li></ul></div>
+    </div>
+  </div>
+  <div class="pf"><span>기계공학과 · 2026-1학기</span><span class="no">3 <small>/ 70</small></span></div>
+</section>
+
+<!-- ================= p.5 한 장 요약 ================= -->
+<section class="page">
+  <div class="ph"><span class="mk"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19V5l7 8 7-8v14"/></svg></span><b>기계공학과 단체 리포트</b><span class="sec">01 핵심 요약</span></div>
+  <div class="body">
+    <div>
+      <h2 class="t1">한 장 요약</h2>
+      <p class="lead">38명 중 <b>23명(61%)이 설계·해석</b>으로 몰렸고, 그 두 직무가 공통으로 요구하는 <b>해석 도구 역량이 가장 비어</b> 있습니다.</p>
+    </div>
+    <div class="row c4">
+      <div class="kpi"><span>응시</span><b>38<small>명</small></b><i>대상 40명 · 95%</i></div>
+      <div class="kpi" style="background:var(--c2-soft)"><span>최다 직무</span><b style="color:var(--c2);font-size:15pt">기계설계</b><i>14명 · 평균 71점</i></div>
+      <div class="kpi" style="background:var(--bad-soft)"><span>가장 빈 역량</span><b style="color:var(--bad);font-size:15pt">ANSYS</b><i>충족 16% · 6명</i></div>
+      <div class="kpi" style="background:var(--c4-soft)"><span>검토 과목</span><b style="color:#C77700">3<small>과목</small></b><i>미개설 1 · 저수강 1</i></div>
+    </div>
+    <div class="row c2">
+      <div class="box line">
+        <div class="h">직무별 인원</div>
+        <div id="sumJobs"></div>
+      </div>
+      <div class="box line">
+        <div class="h">역량 충족률</div>
+        <div id="sumComp"></div>
+      </div>
+    </div>
+    <div class="row c2">
+      <div class="box">
+        <div class="h">주요 발견</div>
+        <ol style="padding-left:5mm;font-size:10pt;display:flex;flex-direction:column;gap:3mm">
+          <li><b>설계·해석 쏠림</b> — 61%가 두 직무. 생산·품질은 10명</li>
+          <li><b>도구 역량 공백</b> — ANSYS·유한요소법 충족률 30% 미만</li>
+          <li><b>기하공차</b> — 과목은 있으나 수강 8명</li>
+          <li><b>품질중시형 성향 최다</b> — 9명(24%)</li>
+          <li><b>지역 매칭</b> — 대전 기관 144곳이 적합도 높음</li>
+        </ol>
+      </div>
+      <div class="box" style="background:var(--primary-soft)">
+        <div class="h">학과에 권하는 것</div>
+        <ol style="padding-left:5mm;font-size:10pt;display:flex;flex-direction:column;gap:3mm;color:#24345A">
+          <li><b>유한요소해석</b> 다음 학기 개설 검토 — 22명 해당 <span class="note">→ 49쪽</span></li>
+          <li><b>기하공차와 측정</b> 수강 안내 — 25명 해당 <span class="note">→ 50쪽</span></li>
+          <li>설계·해석 외 직무 <b>현장 연계 프로그램</b> 소개 <span class="note">→ 59쪽</span></li>
+        </ol>
+      </div>
+    </div>
+    <div class="box line push" style="display:grid;grid-template-columns:repeat(4,1fr);gap:4mm;font-size:9pt">
+      <div><span class="note">응시 기간</span><br><b>03.04 – 03.20</b></div>
+      <div><span class="note">평균 소요</span><br><b>약 7분</b></div>
+      <div><span class="note">결과 공개</span><br><b>학과 확인 후</b></div>
+      <div><span class="note">다음 회차</span><br><b>2026-2학기 예정</b></div>
+    </div>
+  </div>
+  <div class="pf"><span>기계공학과 · 2026-1학기</span><span class="no">5 <small>/ 70</small></span></div>
+</section>
+
+<!-- ================= p.13 간지 ================= -->
+<section class="page divider">
+  <div class="band">
+    <span class="num">03</span>
+    <span class="eb">PART 03 · 13–24쪽</span>
+    <h2>직무 적합도</h2>
+  </div>
+  <div class="in">
+    <p class="q">“우리 학과 학생들은 어떤 직무에 가깝고,<br>한쪽으로 몰려 있지는 않은가?”</p>
+    <ol>
+      <li><b>14</b>학생들이 몰린 직무<span>5개 직무 인원과 비율</span></li>
+      <li><b>15</b>점수 분포와 2순위 직무<span>1·2순위 점수 차</span></li>
+      <li><b>16</b>기계설계 상세<span>14명 · 2쪽</span></li>
+      <li><b>18</b>구조·유동 해석 상세<span>9명 · 2쪽</span></li>
+      <li><b>20</b>생산기술 상세<span>7명 · 2쪽</span></li>
+      <li><b>22</b>연구개발 상세<span>5명 · 2쪽</span></li>
+      <li><b>24</b>품질보증 상세<span>3명 · 1쪽</span></li>
+    </ol>
+    <div class="read" style="margin-top:auto;border-left-color:var(--c2);background:var(--c2-soft);color:#0B5E4A"><b style="color:#0B7A5E">이 부를 읽는 법</b>적합도 점수는 각 직무가 요구하는 지표와 학생 응답을 대조한 값입니다(0–100). 학생 사이 순위가 아니라 <b style="display:inline;color:inherit">직무와 얼마나 가까운지</b>를 나타냅니다.</div>
+  </div>
+  <div class="pf"><span>기계공학과 · 2026-1학기</span><span class="no">13 <small>/ 70</small></span></div>
+</section>
+
+<!-- ================= p.16 직무 상세 ================= -->
+<section class="page">
+  <div class="ph"><span class="mk"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19V5l7 8 7-8v14"/></svg></span><b>기계공학과 단체 리포트</b><span class="sec">03 직무 적합도</span></div>
+  <div class="body">
+    <div>
+      <span class="pill p-blue">직무 1 / 5</span>
+      <h2 class="t1" style="margin-top:2mm"><em>기계설계</em> — 14명</h2>
+      <p class="lead">가장 많은 학생이 최적합으로 받은 직무입니다. 평균 71점으로 다섯 직무 중 가장 높지만, 요구 역량 중 기하공차가 크게 비어 있습니다.</p>
+    </div>
+    <div class="row c4">
+      <div class="kpi"><span>인원</span><b>14<small>명</small></b><i>응시자의 36.8%</i></div>
+      <div class="kpi"><span>평균 점수</span><b>71<small>점</small></b><i>학과 전체 66점</i></div>
+      <div class="kpi"><span>최고 · 최저</span><b>86<small> · 57</small></b><i>점수 폭 29점</i></div>
+      <div class="kpi" style="background:var(--c3-soft)"><span>2순위 최다</span><b style="color:var(--c3);font-size:14pt">구조·유동 해석</b><i>14명 중 8명</i></div>
+    </div>
+    <div class="row c2">
+      <div class="box line">
+        <div class="h">점수 분포</div>
+        <div class="hist"><div style="height:17%">1</div><div style="height:67%">4</div><div style="height:100%">6</div><div style="height:50%">3</div></div>
+        <div class="hist-lab"><span>50점대</span><span>60점대</span><span>70점대</span><span>80점대</span></div>
+      </div>
+      <div class="box line">
+        <div class="h">요구 역량 충족 (14명 중)</div>
+        <div class="hb"><span class="l">열역학</span><span class="t"><i style="width:86%;background:var(--ok)"></i></span><span class="v" style="color:var(--ok)">12명</span></div>
+        <div class="hb"><span class="l">MATLAB</span><span class="t"><i style="width:71%;background:var(--warn)"></i></span><span class="v" style="color:var(--warn)">10명</span></div>
+        <div class="hb"><span class="l">재료역학</span><span class="t"><i style="width:64%;background:var(--warn)"></i></span><span class="v" style="color:var(--warn)">9명</span></div>
+        <div class="hb"><span class="l">기하공차</span><span class="t"><i style="width:21%;background:var(--bad)"></i></span><span class="v" style="color:var(--bad)">3명</span></div>
+      </div>
+    </div>
+    <div class="box line">
+      <div class="h">이 직무로 나온 학생들의 특징</div>
+      <table>
+        <thead><tr><th>구분</th><th>내용</th><th class="n">해당</th></tr></thead>
+        <tbody>
+          <tr><td>많이 고른 응답</td><td>“완성된 도면보다 아이디어 단계가 더 흥미롭다”에 그렇다 이상</td><td class="n">11명</td></tr>
+          <tr><td>주된 업무 성향</td><td>품질중시형 · 협력형</td><td class="n">5 · 4명</td></tr>
+          <tr><td>3D 모델링 경험</td><td>“과제 부품을 직접 그려봤다” 이상</td><td class="n">9명</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="read"><b>해석</b>설계 직무 학생 14명 중 11명이 기하공차 과목을 듣지 않았습니다. 이 과목은 이미 개설돼 있어, 수강 안내만으로 충족률을 크게 올릴 수 있습니다. 과목 상세는 50쪽에 있습니다.</div>
+  </div>
+  <div class="pf"><span>기계공학과 · 2026-1학기</span><span class="no">16 <small>/ 70</small></span></div>
+</section>
+
+<!-- ================= p.26 성향 분포 ================= -->
+<section class="page">
+  <div class="ph"><span class="mk"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19V5l7 8 7-8v14"/></svg></span><b>기계공학과 단체 리포트</b><span class="sec">04 업무 성향</span></div>
+  <div class="body">
+    <div>
+      <h2 class="t1">6가지 <em>업무 성향</em> 분포</h2>
+      <p class="lead">학생마다 가장 강하게 나온 성향 하나를 기준으로 셌습니다. 성향은 직무 적합도와 별개로, <b>같은 직무 안에서 어떤 방식으로 일하는 사람인지</b>를 보여줍니다.</p>
+    </div>
+    <div class="box line">
+      <div class="donut">
+        <svg id="donut" width="200" height="200" viewBox="0 0 200 200" role="img" aria-label="업무 성향 분포"></svg>
+        <div class="legend" id="donutLeg" style="flex:1"></div>
+      </div>
+    </div>
+    <div class="row c3" id="typeCards"></div>
+    <div class="read" style="border-left-color:var(--c3);background:var(--c3-soft);color:#3E2C8F"><b style="color:var(--c3)">해석</b>품질중시형과 협력형이 절반 가까이(45%)입니다. 정해진 기준을 지키며 팀으로 일하는 데 익숙한 학생이 많다는 뜻으로, 도전형·속도중시형은 8명에 그칩니다. 성향 × 직무 교차표는 27쪽에 있습니다.</div>
+  </div>
+  <div class="pf"><span>기계공학과 · 2026-1학기</span><span class="no">26 <small>/ 70</small></span></div>
+</section>
+
+<!-- ================= p.34 역량 상세 ================= -->
+<section class="page">
+  <div class="ph"><span class="mk"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19V5l7 8 7-8v14"/></svg></span><b>기계공학과 단체 리포트</b><span class="sec">05 역량 갭</span></div>
+  <div class="body">
+    <div>
+      <span class="pill p-bad">충족률 최하위</span>
+      <h2 class="t1" style="margin-top:2mm"><em style="color:var(--bad)">ANSYS</em> — 38명 중 6명 충족</h2>
+      <p class="lead">해석 소프트웨어 역량입니다. 해석·연구개발 직무에서 요구 수준이 가장 높고, 설계 직무에서도 3단계 이상을 요구합니다.</p>
+    </div>
+    <div class="row c3">
+      <div class="kpi" style="background:var(--bad-soft)"><span>충족률</span><b style="color:var(--bad)">16<small>%</small></b><i>6개 역량 중 6위</i></div>
+      <div class="kpi"><span>평균 보유 수준</span><b>2.2<small> / 5</small></b><i>평균 요구 수준 3.9</i></div>
+      <div class="kpi" style="background:var(--c4-soft)"><span>평균 부족</span><b style="color:#C77700">1.7<small>단계</small></b><i>부족한 32명 기준</i></div>
+    </div>
+    <div class="box line">
+      <div class="h">보유 수준 분포</div>
+      <div class="lvl">
+        <div style="width:31.6%;background:#E5484D">1단계 12명</div>
+        <div style="width:36.8%;background:#F07A3E">2단계 14명</div>
+        <div style="width:15.8%;background:#F59E0B">3단계 6명</div>
+        <div style="width:10.5%;background:#4FB896">4 · 4명</div>
+        <div style="width:5.3%;background:#12A27E">5</div>
+      </div>
+      <p class="note" style="margin-top:2mm">1단계 써본 적 없음 · 2단계 수업에서 따라 해봄 · 3단계 과제에 직접 사용 · 4단계 해석 결과를 해석 · 5단계 모델 검증까지</p>
+    </div>
+    <div class="row c2">
+      <div class="box line">
+        <div class="h">직무별 충족</div>
+        <div class="hb"><span class="l">구조·유동 해석</span><span class="t"><i style="width:22%;background:var(--c2)"></i></span><span class="v">2/9</span></div>
+        <div class="hb"><span class="l">연구개발</span><span class="t"><i style="width:40%;background:var(--c3)"></i></span><span class="v">2/5</span></div>
+        <div class="hb"><span class="l">기계설계</span><span class="t"><i style="width:7%;background:var(--c1)"></i></span><span class="v">1/14</span></div>
+        <div class="hb"><span class="l">생산기술</span><span class="t"><i style="width:14%;background:var(--c4)"></i></span><span class="v">1/7</span></div>
+        <div class="hb"><span class="l">품질보증</span><span class="t"><i style="width:0%;background:var(--c5)"></i></span><span class="v">0/3</span></div>
+      </div>
+      <div class="box line">
+        <div class="h">이 역량을 채우는 과목</div>
+        <table>
+          <thead><tr><th>과목</th><th class="c">현황</th><th class="n">해당</th></tr></thead>
+          <tbody>
+            <tr><td><b>유한요소해석</b></td><td class="c"><span class="pill p-bad">미개설</span></td><td class="n">22명</td></tr>
+            <tr><td><b>전산유체역학</b></td><td class="c"><span class="pill p-ok">개설</span></td><td class="n">9명</td></tr>
+            <tr><td>CAE 실습 (비교과)</td><td class="c"><span class="pill p-warn">검토</span></td><td class="n">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="read"><b>해석</b>부족한 32명 중 26명이 2단계 이하, 즉 수업에서 따라 해 본 수준입니다. 과제에 직접 써 보는 경험이 없다는 뜻이므로, 이론 과목보다 <b style="display:inline;color:inherit">실습 비중이 높은 과목</b>이 효과적입니다.</div>
+  </div>
+  <div class="pf"><span>기계공학과 · 2026-1학기</span><span class="no">34 <small>/ 70</small></span></div>
+</section>
+
+<!-- ================= p.48 과목 처방 ================= -->
+<section class="page">
+  <div class="ph"><span class="mk"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19V5l7 8 7-8v14"/></svg></span><b>기계공학과 단체 리포트</b><span class="sec">06 커리큘럼 처방</span></div>
+  <div class="body">
+    <div>
+      <h2 class="t1">검토가 필요한 <em>과목</em></h2>
+      <p class="lead">비어 있는 역량을 채우는 과목을 학과 개설 현황과 대조했습니다. 위에서부터 영향받는 학생이 많은 순서입니다.</p>
+    </div>
+    <table>
+      <thead><tr><th>#</th><th>과목</th><th class="c">현황</th><th class="n">해당 학생</th><th>채우는 역량</th><th>권고</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><b>기하공차와 측정</b><br><span class="note">ME305 · 3학년 2학기</span></td><td class="c"><span class="pill p-warn">수강 8명</span></td><td class="n"><b>25명</b></td><td><span class="pill p-vio">기하공차</span></td><td>설계 직무 학생 대상 수강 안내</td></tr>
+        <tr><td>2</td><td><b>유한요소해석</b><br><span class="note">ME401 · 4학년 1학기</span></td><td class="c"><span class="pill p-bad">미개설</span></td><td class="n"><b>22명</b></td><td><span class="pill p-vio">ANSYS</span> <span class="pill p-vio">유한요소법</span></td><td>다음 학기 개설 검토</td></tr>
+        <tr><td>3</td><td><b>재료역학 2</b><br><span class="note">ME302 · 3학년 2학기</span></td><td class="c"><span class="pill p-ok">개설</span></td><td class="n"><b>16명</b></td><td><span class="pill p-vio">재료역학</span></td><td>선수과목 이수자 안내</td></tr>
+        <tr><td>4</td><td><b>수치해석</b><br><span class="note">ME311 · 3학년 1학기</span></td><td class="c"><span class="pill p-ok">개설</span></td><td class="n"><b>12명</b></td><td><span class="pill p-vio">MATLAB</span></td><td>현행 유지</td></tr>
+        <tr><td>5</td><td><b>전산유체역학</b><br><span class="note">ME412 · 4학년 1학기</span></td><td class="c"><span class="pill p-ok">개설</span></td><td class="n"><b>9명</b></td><td><span class="pill p-vio">ANSYS</span></td><td>유한요소해석 뒤로 순서 조정</td></tr>
+        <tr><td>6</td><td><b>열유체 실험</b><br><span class="note">ME320 · 3학년 2학기</span></td><td class="c"><span class="pill p-ok">개설</span></td><td class="n"><b>7명</b></td><td><span class="pill p-vio">열역학</span></td><td>현행 유지</td></tr>
+      </tbody>
+    </table>
+    <div class="box line">
+      <div class="h">과목을 들으면 충족률이 어떻게 바뀌나</div>
+      <p class="note" style="margin-bottom:2mm">해당 학생이 모두 수강해 요구 수준을 채운다고 가정한 상한입니다.</p>
+      <div class="hb"><span class="l">ANSYS</span><span class="t" style="position:relative"><i style="width:74%;background:#C9D6FF;position:absolute;left:0;top:0;bottom:0"></i><i style="width:16%;background:var(--bad);position:relative"></i></span><span class="v">16→74%</span></div>
+      <div class="hb"><span class="l">유한요소법</span><span class="t" style="position:relative"><i style="width:87%;background:#C9D6FF;position:absolute;left:0;top:0;bottom:0"></i><i style="width:29%;background:var(--bad);position:relative"></i></span><span class="v">29→87%</span></div>
+      <div class="hb"><span class="l">기하공차</span><span class="t" style="position:relative"><i style="width:100%;background:#C9D6FF;position:absolute;left:0;top:0;bottom:0"></i><i style="width:34%;background:var(--bad);position:relative"></i></span><span class="v">34→100%</span></div>
+    </div>
+  </div>
+  <div class="pf"><span>기계공학과 · 2026-1학기</span><span class="no">48 <small>/ 70</small></span></div>
+</section>
+
+<!-- ================= p.58 지역 연계 ================= -->
+<section class="page">
+  <div class="ph"><span class="mk"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19V5l7 8 7-8v14"/></svg></span><b>기계공학과 단체 리포트</b><span class="sec">07 지역 연계 · 정주</span></div>
+  <div class="body">
+    <div>
+      <h2 class="t1">대전 소재 기관 <em>184곳</em>과의 적합도</h2>
+      <p class="lead">대전에 있는 기관·기업 184곳을 학생들의 최적합 직무와 대조해 세 단계로 나눴습니다.</p>
+    </div>
+    <div class="tier">
+      <div style="--tc:var(--ok);--ts:var(--ok-soft)"><span>적합도 높음</span><b>144<small>곳</small></b></div>
+      <div style="--tc:var(--warn);--ts:var(--warn-soft)"><span>보통</span><b>40<small>곳</small></b></div>
+      <div style="--tc:var(--muted);--ts:var(--soft)"><span>낮음</span><b>0<small>곳</small></b></div>
+    </div>
+    <div class="row c2">
+      <div class="box line">
+        <div class="h">직무별 적합 기관 수</div>
+        <div class="hb"><span class="l">기계설계</span><span class="t"><i style="width:82%;background:var(--c1)"></i></span><span class="v">52곳</span></div>
+        <div class="hb"><span class="l">생산기술</span><span class="t"><i style="width:65%;background:var(--c4)"></i></span><span class="v">41곳</span></div>
+        <div class="hb"><span class="l">구조·유동 해석</span><span class="t"><i style="width:44%;background:var(--c2)"></i></span><span class="v">28곳</span></div>
+        <div class="hb"><span class="l">품질보증</span><span class="t"><i style="width:22%;background:var(--c5)"></i></span><span class="v">14곳</span></div>
+        <div class="hb"><span class="l">연구개발</span><span class="t"><i style="width:14%;background:var(--c3)"></i></span><span class="v">9곳</span></div>
+      </div>
+      <div class="box line">
+        <div class="h">지역특화 연계</div>
+        <p style="font-size:30pt;font-weight:800;letter-spacing:-0.04em;color:var(--c2);line-height:1.2">101<small style="font-size:12pt">곳</small></p>
+        <p class="lead" style="font-size:9.5pt">적합도 높음·보통 184곳 중 대전광역시 특화산업과 직접 이어지는 곳입니다.</p>
+        <div class="lvl" style="margin-top:3mm"><div style="width:55%;background:var(--c2)">특화 101</div><div style="width:45%;background:#C7D0DC;color:#4A5568">일반 83</div></div>
+      </div>
+    </div>
+    <div class="box">
+      <div class="h">정주 관심 (응답 기준)</div>
+      <div class="row c3">
+        <div><p style="font-size:18pt;font-weight:800;color:var(--primary)">15<small style="font-size:10pt">명</small></p><p class="note">대전 내 취업을 1순위로 희망</p></div>
+        <div><p style="font-size:18pt;font-weight:800;color:var(--primary)">11<small style="font-size:10pt">명</small></p><p class="note">그중 적합도 높은 지역 기관이 10곳 이상</p></div>
+        <div><p style="font-size:18pt;font-weight:800;color:var(--primary)">9<small style="font-size:10pt">명</small></p><p class="note">조건에 따라 고려</p></div>
+      </div>
+    </div>
+    <div class="read"><b>이 쪽의 수치가 말하지 않는 것</b>정주 관심은 응시 시점의 응답입니다. 졸업 후 실제 지역 내 취업률은 취업 통계로만 확정되므로, 이 리포트는 그 값을 산출하지 않습니다.</div>
+  </div>
+  <div class="pf"><span>기계공학과 · 2026-1학기</span><span class="no">58 <small>/ 70</small></span></div>
+</section>
+
+<!-- ================= p.63 부록 표 ================= -->
+<section class="page">
+  <div class="ph"><span class="mk"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19V5l7 8 7-8v14"/></svg></span><b>기계공학과 단체 리포트</b><span class="sec">부록</span></div>
+  <div class="body">
+    <div>
+      <h2 class="t1">학생별 요약표 <span style="font-size:12pt;color:var(--muted);font-weight:700">1 / 2</span></h2>
+      <p class="lead">익명 번호로 표기합니다. 이름 대조표는 학과 담당자 화면에서만 열람할 수 있습니다.</p>
+    </div>
+    <table>
+      <thead><tr><th>번호</th><th>최적합 직무</th><th class="n">점수</th><th>2순위</th><th>업무 성향</th><th class="c">부족 역량</th><th>가장 큰 부족</th></tr></thead>
+      <tbody id="roster"></tbody>
+    </table>
+  </div>
+  <div class="pf"><span>기계공학과 · 2026-1학기</span><span class="no">63 <small>/ 70</small></span></div>
+</section>
+
+<script>
+/* 예시 데이터 — 화면 시안용 */
+const JOBS = [
+  {n:"기계설계", cnt:14, c:"--c1"}, {n:"구조·유동 해석", cnt:9, c:"--c2"},
+  {n:"생산기술", cnt:7, c:"--c4"}, {n:"연구개발", cnt:5, c:"--c3"}, {n:"품질보증", cnt:3, c:"--c5"},
+];
+const COMP = [["ANSYS",6],["유한요소법",11],["기하공차",13],["재료역학",22],["MATLAB",26],["열역학",31]];
+const TYPES = [
+  {n:"품질중시형", cnt:9, c:"#2F6BFF", d:"기준과 정확도를 먼저 챙긴다"},
+  {n:"협력형",     cnt:8, c:"#12A27E", d:"함께 맞춰 가며 성과를 낸다"},
+  {n:"안정형",     cnt:7, c:"#0EA5C6", d:"예측 가능한 환경에서 강하다"},
+  {n:"독립형",     cnt:6, c:"#7B5CF0", d:"혼자 깊게 파고든다"},
+  {n:"도전형",     cnt:5, c:"#F59E0B", d:"새로운 문제에 먼저 뛰어든다"},
+  {n:"속도중시형", cnt:3, c:"#E8497A", d:"빠르게 결론을 낸다"},
+];
+const $ = id => document.getElementById(id);
+
+$("sumJobs").innerHTML = JOBS.map(j => `<div class="hb"><span class="l">${j.n}</span>
+  <span class="t"><i style="width:${j.cnt/14*100}%;background:var(${j.c})"></i></span><span class="v">${j.cnt}명</span></div>`).join("");
+$("sumComp").innerHTML = COMP.map(([n,ok]) => { const p = Math.round(ok/38*100);
+  const c = p < 40 ? "var(--bad)" : p < 70 ? "var(--warn)" : "var(--ok)";
+  return `<div class="hb"><span class="l">${n}</span><span class="t"><i style="width:${p}%;background:${c}"></i></span><span class="v" style="color:${c}">${p}%</span></div>`; }).join("");
+
+// 도넛
+(function(){
+  const svg = $("donut"), NS = "http://www.w3.org/2000/svg", R = 70, C = 2 * Math.PI * R;
+  let off = 0;
+  TYPES.forEach(t => {
+    const len = t.cnt / 38 * C, e = document.createElementNS(NS, "circle");
+    Object.entries({cx:100, cy:100, r:R, fill:"none", stroke:t.c, "stroke-width":30,
+      "stroke-dasharray":`${len - 2} ${C - len + 2}`, "stroke-dashoffset":-off, transform:"rotate(-90 100 100)"})
+      .forEach(([k, v]) => e.setAttribute(k, v));
+    svg.appendChild(e); off += len;
+  });
+  const tx = document.createElementNS(NS, "text");
+  tx.setAttribute("x", 100); tx.setAttribute("y", 106); tx.setAttribute("text-anchor", "middle");
+  tx.setAttribute("style", "font-size:20px;font-weight:800;fill:#1A2233;font-family:inherit");
+  tx.textContent = "38명"; svg.appendChild(tx);
+  $("donutLeg").innerHTML = TYPES.map(t => `<span><i style="background:${t.c}"></i>${t.n}<em>${t.cnt}명 · ${Math.round(t.cnt/38*100)}%</em></span>`).join("");
+  $("typeCards").innerHTML = TYPES.map(t => `<div class="kpi" style="background:${t.c}14">
+    <span>${t.n}</span><b style="color:${t.c}">${t.cnt}<small>명</small></b><i>${t.d}</i></div>`).join("");
+})();
+
+// 부록 표 — 고정 시드로 만든 예시 행
+(function(){
+  let s = 7; const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+  const jobs = JOBS.flatMap(j => Array(j.cnt).fill(j.n));
+  const comps = ["ANSYS","유한요소법","기하공차","재료역학","MATLAB"];
+  const rows = [];
+  for (let k = 0; k < 19; k++){
+    const job = jobs[Math.floor(rnd() * jobs.length)];
+    const second = JOBS.map(j => j.n).filter(n => n !== job)[Math.floor(rnd() * 4)];
+    const type = TYPES[Math.floor(rnd() * TYPES.length)].n;
+    const score = 55 + Math.floor(rnd() * 32), gaps = Math.floor(rnd() * 4);
+    const worst = gaps ? comps[Math.floor(rnd() * comps.length)] : "—";
+    const pill = gaps >= 3 ? "p-bad" : gaps === 2 ? "p-warn" : "p-ok";
+    rows.push(`<tr><td class="mono">S${String(k + 1).padStart(2, "0")}</td><td><b>${job}</b></td><td class="n">${score}</td>
+      <td>${second}</td><td>${type}</td><td class="c"><span class="pill ${pill}">${gaps}개</span></td><td>${worst}</td></tr>`);
+  }
+  $("roster").innerHTML = rows.join("");
+})();
+</script>
+</body>
+</html>

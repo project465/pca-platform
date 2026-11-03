@@ -56,6 +56,18 @@ const DEFAULT_MARKET = "KR";
  *
  * 그 함수의 주석이 이미 답을 적어 두었다: `그 자리에서 고르게 해야 한다`.
  */
+/**
+ * 학교가 발급한 계정이면 **학교가 적어 준 학과의 Core.** 응시 전에도 그 학생의
+ * 전공은 정해져 있다. 이것을 안 보면 검사 전인 학교 학생이 작업공간 메뉴를 누를
+ * 때마다 전공 고르기(`/cores`)로 튕겨, 메뉴가 안 눌리는 것처럼 보였다
+ * (2026-10-27 신고). 학과가 여러 전공으로 갈리는 자리(Core 가 비어 있다)면 없다.
+ */
+async function campusCoreOf(userId: string): Promise<string | null> {
+  const { campusStudentContext } = await import("@/lib/campus/students");
+  const mine = await campusStudentContext(userId).catch(() => null);
+  return mine?.ctx.core_code || null;
+}
+
 export async function activeCoreOrPick(userId: string): Promise<string> {
   const row = await queryOne<{ core: string }>(
     `SELECT core_code AS core FROM v3_attempts
@@ -65,11 +77,13 @@ export async function activeCoreOrPick(userId: string): Promise<string> {
     `SELECT core_code AS core FROM career_profiles
       WHERE user_id = $1 ORDER BY recomputed_at DESC NULLS LAST LIMIT 1`, [userId]);
   if (prof?.core) return prof.core;
+  const campus = await campusCoreOf(userId);
+  if (campus) return campus;
   const open = sellableCores(DEFAULT_MARKET);
   if (open.length === 1) return open[0].code;
   /* 고를 것이 없으면 전공 목록으로 보낸다. 거기가 지금 무엇이 열려 있고
      무엇이 아직 아닌지를 적는 유일한 자리다 */
-  redirect("/cores");
+  redirect("/cores?locked=1");
 }
 
 export async function activeCore(userId: string): Promise<string> {
@@ -81,6 +95,8 @@ export async function activeCore(userId: string): Promise<string> {
     `SELECT core_code AS core FROM career_profiles
       WHERE user_id = $1 ORDER BY recomputed_at DESC NULLS LAST LIMIT 1`, [userId]);
   if (prof?.core) return prof.core;
+  const campus = await campusCoreOf(userId);
+  if (campus) return campus;
   const open = sellableCores(DEFAULT_MARKET);
   if (open.length === 1) return open[0].code;
   throw new Error("core 를 정할 수 없다: 응시도 지금 값도 없고 열린 core 가 하나가 아니다");
@@ -112,6 +128,8 @@ export async function coreIfAny(userId: string): Promise<string | null> {
     `SELECT core_code AS core FROM career_profiles
       WHERE user_id = $1 ORDER BY recomputed_at DESC NULLS LAST LIMIT 1`, [userId]);
   if (prof?.core) return prof.core;
+  const campus = await campusCoreOf(userId);
+  if (campus) return campus;
   const open = sellableCores(DEFAULT_MARKET);
   return open.length === 1 ? open[0].code : null;
 }
@@ -288,6 +306,29 @@ export const EXPERIENCE_KINDS = [
 ] as const;
 
 export type ExperienceKind = typeof EXPERIENCE_KINDS[number]["code"];
+
+/**
+ * 같은 아홉 종류의 영어(작업공간 영어판). **코드와 차례는 위와 같다**: 저장되는
+ * 값은 코드이고 이 표는 화면에 적는 이름뿐이다. 한국어를 부르는 자리는 위의
+ * `EXPERIENCE_KINDS` 를 그대로 읽는다.
+ */
+export const EXPERIENCE_KINDS_EN: Record<ExperienceKind, { label: string; hint: string }> = {
+  course: { label: "Course", hint: "Something you worked out or decided yourself in a class" },
+  assignment: { label: "Assignment", hint: "An assignment or report you turned in" },
+  capstone: { label: "Capstone or design project", hint: "A design you carried for a semester or more" },
+  research: { label: "Research or lab work", hint: "An experiment or analysis you ran in a lab" },
+  paper: { label: "Paper or conference", hint: "A paper you wrote or a talk you gave" },
+  internship: { label: "Internship or co-op", hint: "Work you took on at a company or organization" },
+  project: { label: "Personal or club project", hint: "A competition entry, a build, or something you made on your own" },
+  work: { label: "Work experience", hint: "Work you took on and saw through" },
+  credential: { label: "Certification or training", hint: "A certification you earned or training you completed" },
+};
+
+/** 종류 이름. 모르는 코드면 `undefined` 다(부르는 쪽이 `경험` 으로 떨어진다) */
+export function kindLabel(code: string, lang: "ko" | "en" = "ko"): string | undefined {
+  if (lang === "en") return (EXPERIENCE_KINDS_EN as Record<string, { label: string }>)[code]?.label;
+  return EXPERIENCE_KINDS.find((k) => k.code === code)?.label;
+}
 
 export type Experience = {
   id: string;
@@ -624,21 +665,28 @@ export async function setActionState(
  * **같은 할 일을 두 번 쌓지 않는다.** 결과를 두 번 열어도 줄이 늘지 않게
  * 영역과 축과 문장으로 본다.
  */
+/*
+ * `source` 는 어디서 온 줄인가다. 결과지가 낸 것이 기본이고, 학생이 공고
+ * 화면에서 직접 고른 줄은 `manual` 로 담는다(표의 CHECK 가 허락하는 셋 가운데).
+ * **결과지 줄로 담으면** 할 일 쪽이 영역과 축이 같은 결과의 할 일을 찾아
+ * 그 문장으로 바꿔 적어서, 학생이 고른 줄이 화면에서 사라진다.
+ */
 export async function importActions(
   userId: string, rows: { td: string | null; axis: string | null;
                           body: string; horizon: number }[],
+  source: "result" | "manual" = "result",
 ): Promise<number> {
   let n = 0;
   for (const r of rows) {
     const got = await queryOne<{ id: string }>(
       `INSERT INTO v3_actions (user_id, core_code, source, td_code, axis_code, body, horizon)
-       SELECT $1,$2,'result',$3,$4,$5,$6
+       SELECT $1,$2,$7::text,$3,$4,$5,$6
         WHERE NOT EXISTS (
           SELECT 1 FROM v3_actions
            WHERE user_id=$1 AND core_code=$2 AND body=$5
              AND coalesce(td_code,'')=coalesce($3,''))
        RETURNING id::text`,
-      [userId, await activeCore(userId), r.td, r.axis, r.body.slice(0, 400), r.horizon]);
+      [userId, await activeCore(userId), r.td, r.axis, r.body.slice(0, 400), r.horizon, source]);
     if (got) n += 1;
   }
   return n;

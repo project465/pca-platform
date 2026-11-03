@@ -83,3 +83,40 @@
   .og-kpis { break-inside: avoid; }
   .og-noprint { display: none !important; }
 }
+
+/* ── 겉모양(화면 시안 2026-10-20) ──
+ * 표지는 파란 기울기 띠, 한눈에 네 칸은 관리자 화면과 같은 파랑·초록·보라·
+ * 주황 칸, 절 제목은 파란 막대, 표 머리는 옅은 파랑이다. 숫자와 글은 그대로다.
+ */
+.og { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.og-cover {
+  border-bottom: 0; padding: 22px 24px; border-radius: 18px; color: #fff;
+  background: linear-gradient(135deg, #2f6bff 0%, #1f55e0 55%, #1e2a3e 100%);
+}
+.og-cover .og-kicker { color: rgba(255,255,255,.82); }
+.og-cover .og-meta { color: rgba(255,255,255,.88); }
+.og-cover .og-meta b { color: #fff; }
+.og-sect > h2 { border-top: 0; padding-top: 0; display: flex; align-items: center; gap: 8px; }
+.og-sect > h2::before {
+  content: ""; flex: 0 0 4px; height: 1em; border-radius: 2px; background: #2f6bff;
+}
+.og-kpi { border-radius: 14px; border-width: 1.5px; }
+.og-kpi:nth-child(4n+1) { background: #eaf0ff; border-color: #2f6bff; }
+.og-kpi:nth-child(4n+1) b { color: #1f4fd1; }
+.og-kpi:nth-child(4n+2) { background: #e7f6f1; border-color: #17a884; }
+.og-kpi:nth-child(4n+2) b { color: #0b7f66; }
+.og-kpi:nth-child(4n+3) { background: #f0ebfe; border-color: #8c6cf5; }
+.og-kpi:nth-child(4n+3) b { color: #6544de; }
+.og-kpi:nth-child(4n+4) { background: #fff6e6; border-color: #f0a91b; }
+.og-kpi:nth-child(4n+4) b { color: #b86e00; }
+.og-table { border-collapse: separate; border-spacing: 0; }
+.og-table thead th { background: #eaf0ff; color: #1f4fd1; border-bottom: 0; }
+.og-table thead th:first-child { border-radius: 8px 0 0 8px; }
+.og-table thead th:last-child { border-radius: 0 8px 8px 0; }
+.og-table tbody th { background: transparent; }
+.og-list li::marker { color: #2f6bff; }
+@media print {
+  html, body { background: #fff !important; }
+  .og-cover { padding: 6mm 7mm; border-radius: 4mm; }
+  .og-kpi { border-radius: 3mm; }
+}

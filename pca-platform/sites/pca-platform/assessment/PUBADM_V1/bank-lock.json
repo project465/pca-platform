@@ -1,20 +1,20 @@
 {
  "schema_version": "pubadm-v1-bank-lock.1",
  "core": "PUBADM_CORE_V1",
- "item_bank_version": "PUBADM_V1_ITEM_BANK_V1.3",
+ "item_bank_version": "PUBADM_V1_ITEM_BANK_V1.7",
  "note": "행정 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=PUBADM_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
-  "pubadm-industry-packs.json": "ac781fe49407846c09b042509fc2225257a4c368893440b71a39f660ebcaf2d3",
-  "pubadm-role-packs.json": "3a40499f25ee5e815248b75bacbeb389300831e843c45ceb41e80f3a34521bb9",
-  "pubadm-v1-checklist-additions.json": "b105ca024785b7d2b171746b157ab06a843722a942c85570f4f6d2512ccefe0a",
-  "pubadm-v1-checklists.json": "a3abdb25aa4d4a3ea9d9d31b5057440f43a53a8beb10474b7875895400b2425d",
-  "pubadm-v1-common-additions.json": "1a53dfe080ecd37969f8a37c34a136faa1f8edd83245b89f5b6b6f89cd0829ea",
-  "pubadm-v1-constructs.json": "5f48ea81a299282be19028c879a3ef0ca66e3d60d178ab3cd591f14b64184900",
-  "pubadm-v1-domains.json": "087593fa7edfce7844b2a1509e03cbd10c7e9ab36045eddbb4bde6df9bceec62",
+  "pubadm-industry-packs.json": "566b3d4e3efbc4846c32e131c152680703f906635a8c37ee767285f074e30c6b",
+  "pubadm-role-packs.json": "e7b3aa4e19586141a4f20b26012a91e6e2c94cfb4ec235303eac39cef1266058",
+  "pubadm-v1-checklist-additions.json": "1a3575d63205097c0888505b3d2d602416bba751cedb3b38ee30aef14103565b",
+  "pubadm-v1-checklists.json": "80e7ac43871cc348439543975d9a6a387454ef7793c34cdf5de36059f79f04f1",
+  "pubadm-v1-common-additions.json": "955156a4770a52a9f19958514b9df17733678d12f2a488f1a44a90c1a11304f7",
+  "pubadm-v1-constructs.json": "82cb4a714ea8dc26a05f2da1f338e18ffbd11e5af02ec12bb392191bb92cf628",
+  "pubadm-v1-domains.json": "ce147aa58e4c5083c4ad6c028959b77b44b650a65c0e3572c9cd8451ab07b563",
   "pubadm-v1-items-blueprint.json": "1a6a3febae46f42f5f658049be7c51c5bbbf0a9631bc3258288d71567b99302d",
-  "pubadm-v1-items.json": "10de4f1c3b04cc59c8079612a05192687cbb02d1d9c1071ea7496953d708739d",
-  "pubadm-v1-relations.json": "89aeaa89d589701a08a4c37435960a374b03d62e202f2d225862fa1833597ed2",
-  "pubadm-v1-taxonomy.json": "0eae5fcbe270b0538c1ee026479e9822206e0e9737adfc161e3d9e54ca4ecd2d"
+  "pubadm-v1-items.json": "2474588da548dfc899aa8a32af8cdfa34122d2c96099728a5f9c4c5162a650d0",
+  "pubadm-v1-relations.json": "52ca154ba81d8c4f1e9f40c91904c0145709ebafbe0ed4400e8866ac2fce762d",
+  "pubadm-v1-taxonomy.json": "085c0e9eb99670a4edd5d696975425918ce2b161f0adbe1a7b5d4912147e6556"
  },
  "scoring_version": "me-v3-scoring.5"
 }

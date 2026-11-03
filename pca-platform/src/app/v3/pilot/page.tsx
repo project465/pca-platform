@@ -96,8 +96,8 @@ export default async function PilotJoin({
           <section className="rs-sect">
             <h2>초대 링크가 필요합니다</h2>
             <p className="rs-note">
-              받으신 주소를 그대로 눌러 주세요. 주소 끝에 붙은 열쇠가 자리를
-              엽니다.
+              받으신 주소를 그대로 눌러 주세요. 주소 끝에 붙은 열쇠로 참여 화면이
+              열립니다.
             </p>
             <div className="rs-fine">
               <p><Link href="/me">내 CareerMatri 로</Link></p>
@@ -170,7 +170,7 @@ export default async function PilotJoin({
                 </select>
               </label>
               <label>
-                <span>가고 싶은 자리</span>
+                <span>가고 싶은 직무</span>
                 <input type="text" name="career_interest" maxLength={120}
                   defaultValue={mine?.career_interest ?? ""}
                   placeholder="예) 완성차 구조해석" />
@@ -209,7 +209,7 @@ export default async function PilotJoin({
           <div className="rs-fine">
             <p>
               전공은 학위·계열과 함께 놓으면 개인이 좁혀지는 항목이라, 받는
-              자리에서 지우는 날을 함께 정해 둡니다. 다섯 명이 안 되는 묶음은
+              쪽에서 지우는 날을 함께 정해 둡니다. 다섯 명이 안 되는 그룹은
               평균을 내지 않습니다. 이 결과는 합격 가능성을 뜻하지 않습니다.
             </p>
             <form action={leavePilot}>

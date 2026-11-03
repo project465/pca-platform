@@ -45,7 +45,7 @@ export default async function LaunchPage() {
         <div className="sf-tw">
           <table className="sf-table">
             <thead>
-              <tr><th>갈래</th><th>상태</th><th>막혀 있는 자리</th></tr>
+              <tr><th>갈래</th><th>상태</th><th>막혀 있는 항목</th></tr>
             </thead>
             <tbody>
               {r.areas.map((a) => (
@@ -75,9 +75,9 @@ export default async function LaunchPage() {
             {/* 막는 것을 먼저 센다. 이 화면을 여는 이유가 그것이다 */}
             <p className="sub">
               {blocked.length
-                ? `지금 켜면 사고가 나는 자리 ${blocked.length}가지: ` +
+                ? `지금 켜면 사고가 나는 항목 ${blocked.length}가지: ` +
                   blocked.map((x) => x.label).join(" · ")
-                : "켜는 것을 막는 자리는 없습니다."}
+                : "켜는 것을 막는 항목은 없습니다."}
             </p>
 
             <div className="sf-tw">
@@ -183,7 +183,7 @@ function TodoCard({ rows }: { rows: { key: string; label: string; detail: string
         <p className="sf-meta" style={{ marginTop: 14 }}>
           밖에서 끝나는 일{" "}
           {[...outside].map(([who, n]) => `${who} ${n}가지`).join(" · ")}.
-          {" "}이 자리에서는 못 끝내므로 단추를 달지 않았습니다.
+          {" "}이 화면에서는 못 끝내므로 단추를 달지 않았습니다.
         </p>
       ) : null}
     </div>

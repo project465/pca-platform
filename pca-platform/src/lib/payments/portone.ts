@@ -10,6 +10,7 @@ import type {
 } from "./types";
 import { matchesOrder } from "./verify";
 import { ref, swallow } from "../oplog";
+import { appEnv } from "../env";
 
 /**
  * PortOne V2.
@@ -27,7 +28,12 @@ import { ref, swallow } from "../oplog";
  * 채널을 둘 두는 이유: 국내 PG 의 일반 카드결제로는 해외 발급 Visa·Mastercard 가
  * 승인되지 않는다. 해외카드는 해외결제 채널(Eximbay·Paypal·Stripe 등)로 나가야 한다.
  */
-const API = "https://api.portone.io";
+/* **운영에서는 바꿀 수 없다.** 시험에서만 `PORTONE_API_BASE` 로 가짜 포트원을
+   가리켜 결제 → 확정 → 이용권까지 끝까지 돌려 본다. 운영에서 이 값을 받으면
+   결제 검증을 남의 서버에 물을 수 있게 되므로 `APP_ENV=production` 이면
+   읽지 않는다 */
+const API = (appEnv() !== "production" && process.env.PORTONE_API_BASE)
+  || "https://api.portone.io";
 
 function env(name: string): string {
   const v = process.env[name];
@@ -103,7 +109,12 @@ export const portoneProvider: PaymentProvider = {
   },
 
   async getPaymentStatus(providerPaymentId): Promise<PaymentFact> {
-    const res = await fetch(`${API}/payments/${encodeURIComponent(providerPaymentId)}`, {
+    /* **상점 아이디를 늘 붙인다.** 빼면 API 키에 담긴 상점으로 찾는데, 키가
+       상위 계정 것이고 결제가 하위 상점(커리어매트리)에서 났으면 다른 상점에서
+       찾다가 404 가 난다(포트원 V2 OpenAPI: `storeId` 미입력시 인증 정보의
+       상점 아이디를 사용). 결제는 됐는데 이용권이 안 나가는 자리다 */
+    const res = await fetch(`${API}/payments/${encodeURIComponent(providerPaymentId)}`
+      + `?storeId=${encodeURIComponent(env("PORTONE_STORE_ID"))}`, {
       headers: { Authorization: `PortOne ${env("PORTONE_API_SECRET")}` },
       cache: "no-store",
     });
@@ -155,7 +166,8 @@ export const portoneProvider: PaymentProvider = {
           Authorization: `PortOne ${env("PORTONE_API_SECRET")}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ amount, reason }),
+        /* 조회와 같은 까닭으로 상점 아이디를 같이 보낸다 */
+        body: JSON.stringify({ storeId: env("PORTONE_STORE_ID"), amount, reason }),
         cache: "no-store",
       },
     );

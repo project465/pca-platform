@@ -1,58 +1,67 @@
-import path from "node:path";
 import type { NextConfig } from "next";
+import { PLATFORM_URL } from "./src/lib/domains";
 
 /**
- * 마케팅 사이트는 나라마다 따로 배포한다. 코드는 하나고, 빌드할 때
- * SITE 환경변수로 어느 나라 원고를 실을지 고른다.
+ * 홈페이지(`HOME_DOMAIN`, src/lib/domains.ts). 코드는 하나고 빌드할 때 `SITE` 로 원고를 고른다.
  *
+ *   SITE=kr     npm run build   →  한국어판 (기본값)
  *   SITE=global npm run build   →  영어판
- *   SITE=kr     npm run build   →  한국어판
+ *
+ * **기본값이 한국어판이다.** 한 주소가 두 시장을 다 받고(2026-10-06), 지금
+ * 파는 시장이 한국이라 값을 빠뜨린 배포가 한국어로 서는 쪽이 덜 다친다.
  *
  * STATIC=1 을 같이 주면 서버 없이 열리는 정적 파일로 내보낸다(미리보기용).
- * 서버가 없으므로 문의 폼의 server action 을 정적 대체본으로 바꿔 끼운다.
+ * 정적 내보내기에는 아래 리디렉션이 없다.
  */
 const isStatic = process.env.STATIC === "1";
+const site = process.env.SITE ?? "kr";
 
 /**
- * 가격은 앱 한 곳에만 있다.
+ * 앱 한 곳에 있는 것은 앱으로 넘긴다.
  *
- * 홈페이지에도 요금 페이지가 서 있었다. 같은 값을 두 곳에 적어 두면 어느
- * 날 갈리고, **갈린 날 사는 쪽은 둘 중 하나를 보고 결제한다.** 그래서
- * 쪽을 지우고 들어오던 주소는 앱 가격표로 넘긴다: 명함이나 메일에 적혀
- * 나간 주소가 404 로 끝나면 그 사람은 가격을 못 보고 닫는다.
- *
- * 301 이라 검색엔진이 옛 주소의 평가를 새 주소로 옮기고 다시 묻지 않는다.
- * 앱 쪽 언어는 빌드한 나라가 정한다 — 카자흐어 화면은 앱에 아직 없어서
- * 영어로 보낸다.
+ * **가격·견본 결과지·약관을 홈페이지가 따로 들고 있지 않는다.** 같은 것을
+ * 두 곳에 두면 어느 날 갈리고, 갈린 날 사는 쪽은 둘 중 하나를 보고
+ * 결제하거나 동의한다. 들어오던 주소는 301 로 넘긴다: 명함과 메일에 적혀
+ * 나간 주소가 404 로 끝나면 그 사람은 거기서 닫는다.
  */
-const APP_URL = "https://app.careermatri.com";
-const APP_LANG: Record<string, string> = { kr: "ko", global: "en", tr: "tr", kz: "en" };
-const lang = APP_LANG[process.env.SITE ?? "global"] ?? "en";
+/* 도메인은 src/lib/domains.ts 한 곳에만 적는다 */
+const APP_URL = PLATFORM_URL;
+const APP_LANG: Record<string, string> = { kr: "ko", global: "en" };
+const lang = APP_LANG[site] ?? "ko";
+const app = (path: string) => `${APP_URL}${path}?lang=${lang}`;
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  env: { SITE: process.env.SITE ?? "global", STATIC: isStatic ? "1" : "" },
+  poweredByHeader: false,
+  env: { SITE: site, STATIC: isStatic ? "1" : "" },
   ...(isStatic
     ? { output: "export" as const, distDir: `.next-static`, images: { unoptimized: true } }
     : {}),
-  /* 정적 내보내기(STATIC=1)는 서버가 없어서 이 표를 쓰지 못한다. 미리보기용
-     이고 운영 배포는 서버 빌드다 */
   async redirects() {
     return [
-      { source: "/pricing", destination: `${APP_URL}/pricing?lang=${lang}`, statusCode: 301 },
-      /* 옛 결과지 뷰어. 머리띠에 있던 주소라 밖에 적혀 나갔을 수 있다.
-         공개 샘플은 앱 `/sample` 하나다 */
-      { source: "/pca", destination: `${APP_URL}/sample?lang=${lang}`, statusCode: 301 },
+      { source: "/pricing", destination: app("/pricing"), statusCode: 301 },
+      /* 옛 결과지 뷰어. 공개 견본은 앱 `/sample` 하나다 */
+      { source: "/pca", destination: app("/sample"), statusCode: 301 },
+      /* 약관은 결제할 때 동의하는 글 하나만 둔다(앱 `/legal/*`) */
+      { source: "/terms", destination: app("/legal/terms"), statusCode: 301 },
+      { source: "/privacy", destination: app("/legal/privacy"), statusCode: 301 },
+      { source: "/refund", destination: app("/legal/refund"), statusCode: 301 },
+      /* 2026-10-21 에 접은 옛 쪽들. 같은 이야기를 하는 새 쪽으로 넘긴다 */
+      { source: "/adopt", destination: "/universities", statusCode: 301 },
+      { source: "/anchor", destination: "/universities", statusCode: 301 },
+      { source: "/about", destination: "/contact", statusCode: 301 },
+      { source: "/partnership", destination: "/contact", statusCode: 301 },
+      { source: "/localisation", destination: "/", statusCode: 301 },
     ];
   },
-  webpack: (config) => {
-    if (isStatic) {
-      config.resolve.alias = {
-        ...config.resolve.alias,
-        "@/lib/actions": path.resolve(process.cwd(), "src/lib/actions-static.ts"),
-      };
-    }
-    return config;
+  async headers() {
+    return [
+      {
+        /* 활자와 상표는 바뀌면 파일 이름을 바꾸지 않으므로 하루만 묶어 둔다 */
+        source: "/(fonts|brand)/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=86400" }],
+      },
+    ];
   },
 };
 

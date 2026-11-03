@@ -20,7 +20,8 @@ import { useState } from "react";
  * (`.rs-open > [hidden] { display: block !important }`).
  */
 export default function SecondStory(
-  { name, children }: { name: string; children: React.ReactNode },
+  { name, children, lang = "ko" }:
+    { name: string; children: React.ReactNode; lang?: "ko" | "en" },
 ) {
   const [open, setOpen] = useState(false);
   return (
@@ -31,8 +32,11 @@ export default function SecondStory(
           든다 */}
       <button type="button" className="rs-ev3-tr" aria-expanded={open}
         onClick={() => setOpen((v) => !v)}>
-        <span><b>{name}</b>에서도 꺼내 쓸 경험이 있어요</span>
-        <i aria-hidden>{open ? "접기" : "보기"}</i>
+        {/* 영어는 이름 앞에 말이 붙는다. 한국어 줄은 그대로 둔다 */}
+        {lang === "en"
+          ? <span>You also have experience to draw on in <b>{name}</b></span>
+          : <span><b>{name}</b>에서도 꺼내 쓸 경험이 있어요</span>}
+        <i aria-hidden>{open ? (lang === "en" ? "Hide" : "접기") : (lang === "en" ? "Show" : "보기")}</i>
       </button>
       <div hidden={!open}>{children}</div>
     </div>

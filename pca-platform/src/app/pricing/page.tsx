@@ -7,6 +7,8 @@ import {
   catalogFor, priceState, sellable, type CatalogItem,
 } from "@/lib/catalog";
 import { money, resolveMarket } from "@/lib/market";
+import { krwToUsd, usdApprox, usdNote, type UsdRate } from "@/lib/fx";
+import { entrySay } from "@/lib/entry-say";
 import { sellableCores } from "@/lib/me-v3/core-registry";
 import { openGrants } from "@/lib/me-v2/attempt";
 import { resumePathFor } from "@/lib/engine-entry";
@@ -21,8 +23,16 @@ import LangSelect from "@/components/sf/lang-select";
 import NotOpen from "@/components/sf/not-open";
 import { publicCommerceGate } from "@/lib/public-gate";
 import CareerFlow from "@/components/sf/career-flow";
+import { trackOffers } from "@/lib/track";
+import LaunchNotify, { type NotifyQuery } from "@/components/inquiry/launch-notify";
+import { payOpen } from "@/lib/payments";
+import { pageTitle } from "@/lib/page-title";
 
-export const metadata = { title: `가격 · ${BRAND.root}` };
+export async function generateMetadata(
+  { searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> },
+) {
+  return pageTitle("가격 · CareerMatri", searchParams);
+}
 
 /**
  * 가격표.
@@ -51,7 +61,7 @@ export const metadata = { title: `가격 · ${BRAND.root}` };
 export default async function PricingPage({
   searchParams,
 }: {
-  searchParams: Promise<{ lang?: string; market?: string }>;
+  searchParams: Promise<{ lang?: string; market?: string; sent?: string; err?: string; for?: string }>;
 }) {
   const sp = await searchParams;
   const L = toLang2(await resolveLang(sp.lang));
@@ -64,7 +74,11 @@ export default async function PricingPage({
   const gate = await publicCommerceGate();
   if (!gate.open) return <NotOpen lang={L} />;
   const mk = await resolveMarket(sp.market);
-  const list = await catalogFor(mk.market);
+  /* 영어 화면에서 원화 상품은 달러로 어림해 함께 적는다(`lib/fx.ts`). 결제는 원화다 */
+  const fx = L === "en" ? await krwToUsd() : null;
+  const [list, tracks] = await Promise.all([catalogFor(mk.market), trackOffers(mk.market)]);
+  const t30 = tracks.find((t) => t.days === 30);
+  const t90 = tracks.find((t) => t.days === 90);
   /* 걸리는 시간은 **실제 계획을 세워 센 값**이다. 시작 화면과 같은
      함수를 읽으므로 두 화면이 갈리지 않는다.
      **어느 전공으로 세는지를 글자로 박지 않는다**: 이 시장에서 지금
@@ -83,6 +97,15 @@ export default async function PricingPage({
     userId: user?.id ?? null,
     props: { market: mk.market, locale: L },
   });
+
+  /**
+   * **파는 등급이 없는 글로벌 시장에서는 결제 이야기를 하지 않는다**(영어판
+   * 2단계). 무료 기본 검사만 열린 자리에 `결제하는 즉시 시작` · `세 등급
+   * 모두에` · `사기 전에(환불)` 를 세우면 살 수 없는 것을 사는 법을 읽게 된다.
+   * 머리말도 기계공학 한 전공이 아니라 열린 이공계 전공 전부를 가리킨다.
+   */
+  const freeOnly = mk.market === "GLOBAL" && !list.length;
+  const say = entrySay(L);
 
   const qs = (m: string) => `/pricing?market=${m}${sp.lang ? `&lang=${sp.lang}` : ""}`;
   /* **링크가 시장을 떨어뜨리지 않게 들고 다닌다** */
@@ -127,7 +150,7 @@ export default async function PricingPage({
 
       <div className="pubwrap">
         <section className="pxhero">
-          <div className="sf-eyebrow">{T("pxTitle")}</div>
+          <div className="sf-eyebrow">{freeOnly ? say("이공계 진로 진단") : T("pxTitle")}</div>
           <h1>{T("pxLead")}</h1>
           <p>{T("pxLeadSub")}</p>
           <nav className="pxmkt" aria-label={T("pxMarketKR")}>
@@ -140,11 +163,19 @@ export default async function PricingPage({
           </nav>
           {/* 사기 전에 가장 많이 걸리는 셋을 머리에 둔다. **지키지 못할 말을
               적지 않는다**: 셋 다 지금 코드가 실제로 하는 일이다 */}
-          <ul className="pxtrust">
-            <li>{T("pxTrust1")}</li>
-            <li>{T("pxTrust2")}</li>
-            <li>{T("pxTrust3")}</li>
-          </ul>
+          {freeOnly ? (
+            <ul className="pxtrust">
+              <li>{say("무료 기본 검사")}</li>
+              <li>{say("웹 결과와 A4 PDF")}</li>
+              <li>{say("답할 때마다 저장되어 이어서 풉니다")}</li>
+            </ul>
+          ) : (
+            <ul className="pxtrust">
+              <li>{T("pxTrust1")}</li>
+              <li>{T("pxTrust2")}</li>
+              <li>{T("pxTrust3")}</li>
+            </ul>
+          )}
         </section>
 
         {/* 제품의 사고 순서. **가격을 보기 전에 무엇을 사는지 보인다** */}
@@ -167,19 +198,86 @@ export default async function PricingPage({
         {list.length ? (
           <div className="pxtiers">
             {list.map((p) => (
-              <TierCard key={p.code} p={p} lang={L} T={T}
+              <TierCard key={p.code} p={p} lang={L} T={T} fx={fx}
                 /* 전공이 둘 이상 열리면 등급마다 시간이 갈린다.
                    그때는 **적지 않는다**: 한 전공의 시간을 모두의 시간으로
                    적으면 다른 전공 학생이 그 수를 보고 시간을 비워 둔다 */
-                mins={mins ? minutesLabel(mins[p.tier], L) : ""} />
+                mins={mins ? minutesLabel(mins[p.tier], L) : ""}
+                q={sp} back={`/pricing${sp.lang ? `?lang=${sp.lang}` : ""}`} />
             ))}
           </div>
         ) : (
           <div className="sf-section">
-            <Empty icon="box" title={T("pxEmpty")} body={T("pxEmptyBody")} />
+            {/* **글로벌 시장에서 빈 가격표로 끝내지 않는다**(영어판 2단계). 파는
+                등급은 없어도 무료 기본 검사는 열려 있고, 그 길을 모르면 해외
+                개인은 여기서 나간다 */}
+            {mk.market === "GLOBAL" ? (
+              <Empty icon="box" title={say("해외에서는 무료 기본 검사가 열려 있습니다")}
+                body={say("유료 등급(Standard · Pro)은 아직 한국 밖에서 결제할 수 없습니다.")}
+                cta={{ href: user ? "/cores" : "/signup?next=%2Fcores",
+                  label: say("무료 기본 검사 시작하기") }} />
+            ) : (
+              <Empty icon="box" title={T("pxEmpty")} body={T("pxEmptyBody")} />
+            )}
           </div>
         )}
 
+        {/**
+         * CareerMatri Track. **검사 등급과 한 줄에 세우지 않는다.** 등급은
+         * 한 번 사는 결과지이고 Track 은 그 뒤에 쓰는 기간권이라, 같은 카드
+         * 꼴로 나란히 두면 넷째 등급으로 읽힌다. 아래에 따로 둔다.
+         *
+         * **값은 `products` 에서 읽는다.** 화면에 적힌 값과 결제되는 값이
+         * 갈리지 않게 한다. 한국 시장에서만 선다.
+         */}
+        {tracks.length ? (
+          <section className="pxband" id="track">
+            <h2>{T("pxTrackTitle")}</h2>
+            <p className="pxwhat">{T("pxTrackLead")}</p>
+            <ul className="pxtrack-f">
+              <li>{T("pxTrackF1")}</li>
+              <li>{T("pxTrackF2")}</li>
+              <li>{T("pxTrackF3")}</li>
+            </ul>
+            <p className="pxwhat">{T("pxTrackNot")} <Link href="/me/track">{T("pxTrackMore")}</Link></p>
+            <div className="pxband-g">
+              {tracks.map((t) => (
+                <div key={t.code} className="pxband-i">
+                  <b>
+                    {t.days === 90 ? T("pxTrack90") : T("pxTrack30")}
+                    {" · "}{money(t.amount, t.currency, L)}
+                    {L === "en" && t.currency === "KRW" && usdApprox(t.amount, fx) ? ` (${usdApprox(t.amount, fx)})` : ""}
+                  </b>
+                  <span>
+                    {t.days === 90 ? T("pxTrack90Why") : T("pxTrack30Why")}
+                  </span>
+                  {/* **등급 카드와 같은 물음을 먼저 한다.** 결제 대행사가 서기
+                      전에 사는 단추를 세우면, 누른 사람이 결제를 받을 수 없는
+                      결제 화면에 떨어진다(운영에서 실제로 그랬다) */}
+                  {payOpen(t.currency === "KRW" ? "KR" : "GLOBAL") ? (
+                    <Link href={`/checkout?product=${encodeURIComponent(t.code)}`}
+                      className={t.days === 90 ? "sf-btn accent sm" : "sf-btn ghost sm"}
+                      style={{ marginTop: 10, alignSelf: "flex-start" }}>
+                      {T("pxTrackBuy")}
+                    </Link>
+                  ) : (
+                    /* **결제가 열리기 전에는 알림 신청을 받는다**(2026-10-30). 누를 수
+                       없는 단추만 세우면 온 사람이 할 일 없이 돌아간다 */
+                    <LaunchNotify product={t.code} lang={L === "en" ? "en" : "ko"}
+                      source="app:/pricing" q={sp} compact
+                      back={`/pricing${sp.lang ? `?lang=${sp.lang}` : ""}#track`} />
+                  )}
+                </div>
+              ))}
+              <div className="pxband-i">
+                <b>{T("pxTrackTrial")}</b>
+                <span>{T("pxTrackSoon")}</span>
+              </div>
+            </div>
+          </section>
+        ) : null}
+
+        {freeOnly ? null : (<>
         <section className="pxband">
           <h2>{T("pxCommon")}</h2>
           <div className="pxband-g">
@@ -206,6 +304,7 @@ export default async function PricingPage({
             <Link href={`/product${q}`}>{T("pxMore")}</Link>
           </p>
         </section>
+        </>)}
       </div>
 
       <PublicFooter lang={L} />
@@ -214,11 +313,12 @@ export default async function PricingPage({
 }
 
 function TierCard({
-  p, lang, T, mins,
+  p, lang, T, mins, fx, q, back = "/pricing",
 }: {
   p: CatalogItem; lang: "ko" | "en"; T: ReturnType<typeof txer>;
-  mins: string;
+  mins: string; fx: UsdRate | null; q?: NotifyQuery; back?: string;
 }) {
+  const usd = lang === "en" && p.currency === "KRW" ? usdApprox(p.amount, fx) : null;
   const state = priceState(p);
   const label = money(p.amount, p.currency, lang);
   const ok = sellable(p);
@@ -242,6 +342,7 @@ function TierCard({
         <p className="pxprice">
           {label}
           <small>{p.currency === "KRW" ? T("pxOnceVat") : T("pxOnce")}</small>
+          {usd && fx ? <small className="pxfx">{usd} · {usdNote(fx)}</small> : null}
         </p>
       ) : state === "FREE_APPROVED" ? (
         <p className="pxprice">
@@ -270,7 +371,7 @@ function TierCard({
           <input type="hidden" name="product" value={p.code} />
           <button className="sf-btn ghost wide">{T("pxStartFree")}</button>
         </form>
-      ) : ok.ok ? (
+      ) : ok.ok && payOpen(p.market === "GLOBAL" ? "GLOBAL" : "KR") ? (
         <div className="pxcta">
           <Link href={`/checkout?product=${encodeURIComponent(p.code)}`}
             className={mid ? "sf-btn accent wide" : "sf-btn ghost wide"}>
@@ -281,7 +382,13 @@ function TierCard({
         /* `sellable` 의 거절 이유는 한국어 한 줄이라 영어 화면에 그대로 쓰지
            않는다. 까닭은 위의 값 자리에 이미 적혀 있다 */
         <div className="pxcta">
-          <span className="sf-btn ghost wide" aria-disabled="true">{T("pxBuy")}</span>
+          {ok.ok ? (
+            /* 값은 정해졌는데 결제가 아직 열리지 않았다. 누를 수 없는 단추 대신
+               알림 신청을 받는다(2026-10-30) */
+            <LaunchNotify product={p.code} lang={lang} source="app:/pricing" q={q} back={back} />
+          ) : (
+            <span className="sf-btn ghost wide" aria-disabled="true">{T("pxBuy")}</span>
+          )}
         </div>
       )}
 

@@ -1,6 +1,8 @@
 "use client";
 
 import { useFormStatus } from "react-dom";
+import type { WsLang } from "@/lib/me-v3/ws-lang";
+import { wsSay } from "@/lib/me-v3/ws-say";
 
 /**
  * 현재 상태에 더하는 단추(규격 §21).
@@ -11,13 +13,14 @@ import { useFormStatus } from "react-dom";
  * `경험을 저장했습니다.` · `현재 상태를 다시 확인하고 있습니다.` ·
  * `경험은 저장했지만 현재 상태를 갱신하지 못했습니다.`
  */
-export default function ApplyButton({ retry }: { retry: boolean }) {
+export default function ApplyButton({ retry, lang = "ko" }: { retry: boolean; lang?: WsLang }) {
   const { pending } = useFormStatus();
+  const t = wsSay(lang);
   return (
     <button className="cm-btn is-primary" type="submit" disabled={pending}>
       {pending
-        ? "현재 상태를 다시 확인하고 있습니다…"
-        : retry ? "다시 시도" : "현재 상태에 더하기"}
+        ? t("현재 상태를 다시 확인하고 있습니다…")
+        : retry ? t("다시 시도") : t("현재 상태에 더하기")}
     </button>
   );
 }

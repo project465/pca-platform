@@ -170,7 +170,7 @@ function mapPage(e: Ed): string {
 <table class="mx" style="margin:5mm 0 7mm"><thead><tr><th></th>${cols.map(([, l]) => `<th>${l}</th>`).join("")}</tr></thead><tbody>
 ${rows.map(([l, pred], i) => `<tr${i === 4 ? ' style="border-top:1pt dashed var(--rule)"' : ""}><td class="rowh">${l}</td>${cols.map(([c]) => cell(pred, c, i === 4)).join("")}</tr>`).join("")}
 </tbody></table>
-<p class="lab">이 지도에서 읽히는 것</p>${lines(e.map.notes)}`;
+<p class="lab">이 지도에서 보이는 것</p>${lines(e.map.notes)}`;
 }
 
 function first(e: Ed): string {
@@ -206,7 +206,7 @@ function dnaDomain(d: DnaDomain, firstOne: boolean): string {
   return `<p class="kick">일하는 방식 · ${h(d.name)}</p><h2>${h(d.name)}의 일 여덟 단계에서 내가 맡은 곳</h2>
 <div class="flow" style="margin:4mm 0 8mm">${d.flow.map((f) => `<div><span class="c ${h(f.cover)}">${COVER[f.cover] ?? ""}</span><b>${f.step}. ${h(f.name)}</b>${h(f.detail)}</div>`).join("")}</div>
 <div class="g3">${col("직접 정했다고 고른 것", d.decided, "고른 문장이 없습니다.")}${col("해 봤다고 고른 것", d.did, "고른 문장이 없습니다.")}${col("남긴 결과물", d.left, "고른 결과물이 없습니다.")}</div>
-<div class="g2" style="margin-top:7mm"><div><p class="lab">견준 대상</p><p class="sm">${d.compared.length ? d.compared.map(h).join(", ") : "고르지 않았습니다. 성과를 말하려면 비교 대상이 하나는 있어야 합니다."}</p></div>
+<div class="g2" style="margin-top:7mm"><div><p class="lab">비교 대상</p><p class="sm">${d.compared.length ? d.compared.map(h).join(", ") : "고르지 않았습니다. 성과를 말하려면 비교 대상이 하나는 있어야 합니다."}</p></div>
 <div><p class="lab">아직 지시받은 범위까지인 판단</p><p class="sm">${d.open.length ? d.open.map(h).join(", ") : "없습니다."}</p></div></div>
 <p class="note" style="margin-top:6mm">${firstOne ? "위 문장은 모두 학생이 검사에서 고른 체크리스트 항목입니다. 단계 표시(해 봄·일부·아직)는 그 단계의 판단에 대한 응답에서 왔습니다." : ""} 응답 확인.</p>`;
 }
@@ -311,7 +311,7 @@ function story(e: Ed): string {
   return `<p class="kick">지원서</p><h2>한 문단의 뼈대: ${h(s.from)}</h2>
 <p class="sm" style="max-width:150mm;margin-bottom:5mm">채워진 칸은 검사 응답과 경험 기록에서 그대로 옮겼습니다. 빈 칸은 지어 넣지 않았습니다. 상황과 맡은 몫, 결과 수치는 직접 적습니다.</p>
 <div class="story" style="border-top:1pt solid var(--ink2)">${s.parts.map((p) => `<div class="row"><div class="k">${h(p.label)}</div><div class="v${p.filled ? "" : " blank"}">${p.filled ? h(p.text) : "직접 적습니다"}</div></div>`).join("")}</div>
-<div class="g2" style="margin-top:8mm"><div><p class="lab">쓰는 순서</p><p class="sm">1. 상황과 내 몫을 한 줄로<br>2. 내가 정한 것과 그 까닭<br>3. 남긴 결과물<br>4. 무엇과 견줬고 무엇이 달라졌는지(수치)</p></div>
+<div class="g2" style="margin-top:8mm"><div><p class="lab">쓰는 순서</p><p class="sm">1. 상황과 내 몫을 한 줄로<br>2. 내가 정한 것과 그 까닭<br>3. 남긴 결과물<br>4. 무엇과 비교했고 무엇이 달라졌는지(수치)</p></div>
 <div><p class="lab">쓰지 않는 것</p><p class="sm">해 보지 않은 일, 기록에 없는 성과, 확인하지 않은 수치. 면접에서 한 번만 되물어도 무너집니다.</p></div></div>`;
 }
 
@@ -328,7 +328,7 @@ function plan(e: Ed): string {
 <p class="sm" style="max-width:150mm;margin-bottom:6mm">기간마다 남길 결과물과 다 됐는지 보는 기준을 적었습니다. 결과물이 남으면 지원서와 면접에서 꺼낼 장면이 하나 생깁니다.</p>
 <div class="board">${e.plan.map((c, i) => `<div class="col${i === 0 ? " now" : ""}"><p class="wh">${h(c.when)}</p>${c.items.length ? c.items.map((it) => `<div class="it"><b>${h(it.title)}</b><p class="sm" style="margin:0">${h(it.where)} ${h(it.task)}</p><p class="o"><em>남길 것</em> ${h(it.output)}<br><em>확인</em> ${h(it.check)}</p></div>`).join("") : `<p class="sm" style="color:var(--mute)">앞 기간의 결과물을 다듬습니다.</p>`}</div>`).join("")}</div>
 <p class="note" style="margin-top:5mm">분석 제안. 응답에서 비어 있는 판단 가운데 목표 직무에 걸리는 것부터 차례를 정했습니다.</p>
-${e.plan.flatMap((c) => c.items).length > 3 ? `<p class="sm" style="margin-top:6mm"><b>90일 뒤</b> 결과물을 6장 양식의 □ 질문으로 검토하고, 7장 면접표의 ‘아직 장면 없음’ 칸과 지원서 빈 칸을 채웁니다.</p>` : `<div class="blk n" style="margin-top:9mm"><p class="lab" style="border:0;padding:0;margin:0 0 2mm">90일 뒤에 할 일</p><p class="sm">1. 만든 결과물을 6장 양식의 □ 질문으로 다시 검토합니다.<br>2. 7장 면접표에서 ‘아직 장면 없음’ 칸을 새 결과물로 채웁니다.<br>3. 지원서 한 문단의 빈 칸(상황·맡은 몫·결과 수치)을 채워 다시 씁니다.<br>4. 같은 검사를 다시 보면, 이번에 비어 있던 판단이 어디까지 왔는지 견줄 수 있습니다.</p></div>`}`;
+${e.plan.flatMap((c) => c.items).length > 3 ? `<p class="sm" style="margin-top:6mm"><b>90일 뒤</b> 결과물을 6장 양식의 □ 질문으로 검토하고, 7장 면접표의 ‘아직 장면 없음’ 칸과 지원서 빈 칸을 채웁니다.</p>` : `<div class="blk n" style="margin-top:9mm"><p class="lab" style="border:0;padding:0;margin:0 0 2mm">90일 뒤에 할 일</p><p class="sm">1. 만든 결과물을 6장 양식의 □ 질문으로 다시 검토합니다.<br>2. 7장 면접표에서 ‘아직 장면 없음’ 칸을 새 결과물로 채웁니다.<br>3. 지원서 한 문단의 빈 칸(상황·맡은 몫·결과 수치)을 채워 다시 씁니다.<br>4. 같은 검사를 다시 보면, 이번에 비어 있던 판단이 어디까지 왔는지 비교할 수 있습니다.</p></div>`}`;
 }
 
 function methods(e: Ed): string {

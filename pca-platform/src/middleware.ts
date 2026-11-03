@@ -46,6 +46,14 @@ function gateFails(req: NextRequest): NextResponse | null {
   const raw = (process.env.STAGING_BASIC_AUTH ?? "").trim();
   if (!raw.includes(":")) return null;
   if (req.nextUrl.pathname === "/api/health") return null;
+  /* **결제 웹훅도 뺀다.** 포트원 서버는 이 자물쇠의 열쇠를 모르므로 막으면
+     401 이 나고, 시험 서버에서 테스트 채널 결제가 확정되지 않는다. 이 길은
+     자물쇠 대신 웹훅 서명(Standard Webhooks)으로 막는다(`portone.ts`) */
+  if (req.nextUrl.pathname === "/api/payments/webhook") return null;
+  /* **문의 접수도 뺀다.** 홈페이지는 다른 배포본이라 이 자물쇠의 열쇠를 모르고,
+     막으면 공개 전 홈페이지의 문의 폼이 401 로 끝난다. 이 길이 돌려주는 것은
+     되돌아갈 주소뿐이다 */
+  if (req.nextUrl.pathname === "/api/public/inquiry") return null;
 
   const sent = req.headers.get("authorization") ?? "";
   if (sent.startsWith("Basic ")) {
@@ -79,9 +87,15 @@ export function middleware(req: NextRequest) {
     && req.cookies.get(MARKET_COOKIE)?.value !== market;
   const needAnon = !req.cookies.get(ANON_COOKIE);
   const staging = isStaging();
-  if (!needLang && !needMarket && !needAnon && !staging) return NextResponse.next();
+  /* **어느 화면인가를 서버 컴포넌트에 넘긴다.** 담당자 화면과 학생 화면이
+     로그인 쿠키를 따로 쓰고(`auth.ts` 의 `staff`), 어느 쪽을 먼저 볼지는
+     주소가 정한다(`session.ts`). 밖에서 보낸 같은 이름의 머리는 덮어쓴다 */
+  const fwd = new Headers(req.headers);
+  fwd.set("x-cm-path", req.nextUrl.pathname + req.nextUrl.search);
+  const pass = () => NextResponse.next({ request: { headers: fwd } });
+  if (!needLang && !needMarket && !needAnon && !staging) return pass();
 
-  const res = NextResponse.next();
+  const res = pass();
   /* 공개 전 배포본은 색인하지 않는다 */
   if (staging) res.headers.set("X-Robots-Tag", "noindex, nofollow");
   if (needLang) {
@@ -104,6 +118,8 @@ export function middleware(req: NextRequest) {
       maxAge: 60 * 60 * 24 * 180,
       sameSite: "lax",
       httpOnly: true,
+      /* 학교 입구 쿠키(`campus/entry.ts`)와 같은 기준이다. 운영 크롤러가 이것만 secure 가 빠진 것을 찾았다 */
+      secure: process.env.NODE_ENV === "production",
     });
   }
   return res;

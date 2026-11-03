@@ -1,4 +1,5 @@
 import "./assessment.css";
+import { pageTitle } from "@/lib/page-title";
 
 /**
  * ME_V3 응시 화면의 바깥.
@@ -7,7 +8,9 @@ import "./assessment.css";
  * 먼저 들어오면 안 되고, 꼬리말의 사업자 표시는 **사는 자리**에 둘
  * 것이다(여기는 이미 산 사람이 들어온 자리다).
  */
-export const metadata = { title: "검사 · CareerMatri" };
+export async function generateMetadata() {
+  return pageTitle("검사 · CareerMatri");
+}
 
 export default function V3Layout({ children }: { children: React.ReactNode }) {
   return children;

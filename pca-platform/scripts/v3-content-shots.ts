@@ -125,7 +125,7 @@ async function main(): Promise<void> {
       await p.waitForTimeout(500);
       await p.screenshot({ path: `${OUT}/${tag}-assessment.png` });
       const seen = await p.locator("body").innerText();
-      if (gloss && !seen.includes(gloss.split(" — ")[0])) {
+      if (gloss && !seen.includes(gloss.split(/ — |: /)[0])) {
         problems.push("받침이 화면에 서지 않는다");
       }
 
@@ -149,7 +149,7 @@ async function main(): Promise<void> {
       }
       await ctx.close();
       rows.push(`  ${core.padEnd(18)} ${problems.length ? `걸림 ${problems.join(" / ")}` : "다섯 장"}`
-        + (gloss ? ` · 받침 ${gloss.split(" — ")[0]}` : ""));
+        + (gloss ? ` · 받침 ${gloss.split(/ — |: /)[0]}` : ""));
       console.log(rows[rows.length - 1]);
     }
   } finally {

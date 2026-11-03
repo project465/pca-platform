@@ -25,7 +25,7 @@ export default async function IncidentsPage() {
     <AdminShell user={user} current="/admin/incidents">
       <h1>사고</h1>
       <p className="sub">
-        막혀 있는 것 {r.total}가지. 되짚을 번호를 함께 적습니다.
+        막혀 있는 것 {r.total}가지. 추적할 번호를 함께 적습니다.
       </p>
 
       {/* 1. 돈은 들어왔는데 문이 안 열린 주문. **가장 비싼 사고다** */}
@@ -37,7 +37,7 @@ export default async function IncidentsPage() {
           <>
             <p className="sub">
               산 사람이 들어와서 아무것도 못 하는 상태입니다. 웹훅이 한 번
-              빠졌거나 확정이 되돌아간 자리입니다.
+              빠졌거나 확정이 되돌아간 경우입니다.
             </p>
             <div className="sf-tw">
               <table className="sf-table">

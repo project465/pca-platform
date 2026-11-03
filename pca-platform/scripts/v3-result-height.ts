@@ -299,7 +299,7 @@ async function run(browser: Browser): Promise<void> {
  * 벌이 된다.
  */
 function separation(): void {
-  const v3 = readFileSync("src/app/v3/[attemptId]/result/page.tsx", "utf8");
+  const v3 = readFileSync("src/app/v3/[attemptId]/result/body.tsx", "utf8");
   const lg = readFileSync("src/app/assessment/[attemptId]/report/page.tsx", "utf8");
   ok("E V3 결과 쪽이 옛 결과지 틀을 들여오지 않는다",
     !/report-host|ReportFrame|me-v2\//.test(code(v3)));

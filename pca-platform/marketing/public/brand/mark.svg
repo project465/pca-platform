@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120"
+     role="img" aria-label="CareerMatri">
+  <title>CareerMatri</title>
+  <!--
+    CareerMatri 공식 Primary Logo Mark: 파란 둥근 네모 안의 흰 M.
+
+    이 파일 하나가 유일한 출처다. 왼쪽 띠, 손전화 머리띠, 로그인,
+    검사, 결과지, 계정, 탭 표시가 전부 이 주소
+    (`/brand/careermatri/mark.svg`)를 읽는다. 다른 자리에서 모양을 다시
+    그리지 않는다.
+
+    모양을 정한 값(viewBox 120, 가운데 60,60):
+      바탕은 120 네모에 둥글기 34. 화면 시안의 30px 네모(둥글기 9)를
+      네 배로 키운 비율이다.
+      M 은 24 칸 위에 그린 획(5,19 > 5,5 > 12,13 > 19,5 > 19,19)을
+      2.9 배로 키워 가운데에 둔다. 획 굵기는 2.6 이라 24px 에서도
+      두 다리와 가운데 골이 따로 읽힌다.
+
+    색은 시안의 주색 #2F6BFF 하나와 흰색이다. 테두리와 그림자는 두지 않는다.
+  -->
+  <rect width="120" height="120" rx="34" fill="#2F6BFF"/>
+  <g transform="translate(60 60) scale(2.9) translate(-12 -12)">
+    <path d="M5 19V5l7 8 7-8v14" fill="none" stroke="#FFFFFF" stroke-width="2.6"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

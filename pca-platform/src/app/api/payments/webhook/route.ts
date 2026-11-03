@@ -43,6 +43,14 @@ export async function POST(req: Request) {
 
   const settled = await settlePayment(result.providerPaymentId);
 
+  /* **PG 조회가 실패했으면 다시 보내 달라고 한다.** 200 을 주면 포트원이
+     재전송을 멈추고, 그 결제는 손님이 완료 화면을 다시 열기 전까지 확정되지
+     않는다. 승인 전 상태(`Transaction.Ready`)는 조회가 된 것이라 여기 오지
+     않는다 */
+  if (!settled.ok && "lookupFailed" in settled && settled.lookupFailed) {
+    return NextResponse.json({ ok: false, reason: settled.reason }, { status: 503 });
+  }
+
   // 확정에 실패해도 200 을 준다. 아직 승인 전인 상태 변경 알림일 수 있고,
   // 그걸 4xx 로 돌려주면 PG 가 무한히 재전송한다.
   return NextResponse.json({ ok: settled.ok, reason: settled.ok ? undefined : settled.reason });

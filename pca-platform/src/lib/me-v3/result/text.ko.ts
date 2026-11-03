@@ -54,7 +54,7 @@ export const AXIS_DID_KO: Record<Axis, string> = {
   J3: "기준을 직접 세워본",
   J4: "방법을 골라 끝까지 해본",
   J5: "남길 결과물을 만들어본",
-  J6: "여러 안을 견주어 골라본",
+  J6: "여러 안을 비교해 골라본",
   J7: "안 되는 데를 찾아 고쳐본",
   J8: "그 결과가 쓰이게 해본",
 };
@@ -813,8 +813,8 @@ const OWN_KO: Record<Axis, (d: string, m: Mat) => string> = {
     ? `그때 남긴 ${orList(m.artifacts)}에`
     : "그때 손에 남은 것에"} 가정과 한계를 한 줄씩 덧붙입니다.`,
   J6: (d, m) => `${bring(d)} ${m.verify_targets.length
-    ? `${orList(m.verify_targets)} 가운데 무엇과 견줬는지`
-    : "그 결과를 무엇과 견줬는지"} 적고,`
+    ? `${orList(m.verify_targets)} 가운데 무엇과 비교했는지`
+    : "그 결과를 무엇과 비교했는지"} 적고,`
     + ` 그 차이를 ${keep(m, 1, "정리한 문서")}에 남깁니다.`,
   J7: (d, m) => `${bring(d)} 안 됐을 때 무엇을 바꿨는지 차례대로`
     + ` ${keep(m, 4, "정리한 문서")}에 덧붙입니다.`,
@@ -843,7 +843,7 @@ const FILL_KO: Record<Axis, (d: string, m: Mat) => string> = {
   J1: (d, m) => `${bringNext(d)} 무엇을 문제로 잡을지 직접 정하고,`
     + ` 그 범위를 ${keep(m, 0, "정리한 문서")} 맨 앞에 한 줄 적습니다.`,
   J2: (d, m) => `${bringNext(d)} 받은 요구를 숫자로 옮기는 일을 맡고,`
-    + ` 그 조건을 ${keep(m, 1, "정리한 문서")}로 남깁니다.`,
+    + ` 그 조건을 ${withJosa(keep(m, 1, "정리한 문서"), "으로")} 남깁니다.`,
   J3: (d, m) => `${bringNext(d)} 기준이 되는 값을 직접 정하고,`
     + ` 왜 그 값인지 ${keep(m, 2, "정리한 문서")}에 함께 적습니다.`,
   J4: (d, m) => `${bringNext(d)} 쓸 방법을 직접 고르고,`
@@ -926,7 +926,7 @@ export function actionHeadKo(a: Action, domainName?: string): string {
     case "BUILD_OUTPUT": return `${d} 과제에서 손에 남는 결과물 하나 만들기`;
     case "ADD_VERIFICATION": return `${d}에서 낸 결과를 한 번 비교해 보기`;
     case "FILL_AXIS":
-      return need ? `다음 ${d} 과제에서 ${need} 직접 정하기`
+      return need ? `다음 ${d} 과제에서 ${need.replace(/^직접 정한 /, "")} 직접 정하기`
         : `다음 ${d} 과제에서 한 가지를 직접 정하기`;
     case "TRY_SHORT_EXPERIENCE": return `${d}에서 한 가지를 짧게 해 보기`;
     case "STUDY_NEXT": return `${d} 수업에서 배운 것을 작은 과제에 써 보기`;
@@ -1004,11 +1004,11 @@ const ACTION_WHY_KO: Record<ActionCode, string> = {
   DEEPEN_OWNERSHIP: "세 줄만 적어 두면 지원서에서 어떤 기준으로 정했는지를"
     + " 그대로 옮겨 쓸 수 있어요.",
   BUILD_OUTPUT: "남겨 둔 것이 있으면 그 일을 무엇으로 보여줄지 말할 수 있습니다.",
-  ADD_VERIFICATION: "견줘 둔 표가 있으면 그 값을 어떻게 확인했는지 말할 수 있어요.",
+  ADD_VERIFICATION: "비교해 둔 표가 있으면 그 값을 어떻게 확인했는지 말할 수 있어요.",
   FILL_AXIS: "까닭이 한 줄 적혀 있으면 그 과제에서 무엇을 정했는지 말할 수 있습니다.",
   TRY_SHORT_EXPERIENCE: "짧게라도 한 번 해 두면 다음에 적을 이야기가 생겨요.",
-  EXPLORE_BROADLY: "한 가지를 겪어 보면 나머지와 견줄 기준이 생깁니다.",
-  STUDY_NEXT: "들은 것을 과제 하나에 써 보면 그 자리에 기록이 남습니다.",
+  EXPLORE_BROADLY: "한 가지를 겪어 보면 나머지와 비교할 기준이 생깁니다.",
+  STUDY_NEXT: "들은 것을 과제 하나에 써 보면 그 과제가 기록으로 남습니다.",
   RECHECK_DIRECTION: "먼저 정해 두면 다음에 무엇을 쌓을지가 또렷해집니다.",
 };
 
@@ -1155,7 +1155,7 @@ export function actionKo(
   if (a.code === "ADD_VERIFICATION") {
     const target = vt || "기준값";
     return {
-      do: `${bringNext(domainName)} 낸 결과를 ${withJosa(target, "과와")} 견주고,`
+      do: `${bringNext(domainName)} 낸 결과를 ${withJosa(target, "과와")} 비교하고,`
         + " 두 값의 차이와 그 까닭을 표 한 장으로 남겨 두세요.",
       note: w?.on_fail ? `어긋났을 때는 ${w.on_fail}` : undefined,
     };
@@ -1341,7 +1341,7 @@ export const TIER_NOTE_KO = {
   STANDARD: "경험이 확인된 영역과 아직 부족한 부분까지 적었습니다.",
   /* **행동과 활용을 한 문장에 담지 않는다**(PRODUCT POLISH §2) */
   PRO: "연구나 프로젝트 하나를 직무 언어로 바꿔 적었습니다."
-    + " 고르신 산업과 역할에서 같은 경험이 어떻게 읽히는지까지 담았습니다.",
+    + " 고르신 산업과 역할에서 같은 경험이 어떻게 보이는지까지 담았습니다.",
 } as const;
 
 /**
@@ -1420,7 +1420,7 @@ export const QUALITY_KO = {
   OK: "",
   REVIEW: "일부 답변이 서로 달라, 겹쳐 확인된 내용만 결과에 담았습니다.",
   LOW_VARIANCE: "영역 사이에 차이가 거의 생기지 않아, 먼저 볼 영역을 좁히지"
-    + " 못했습니다. 더 끌리는 쪽과 덜 끌리는 쪽을 갈라 답하시면 또렷해집니다.",
+    + " 못했습니다. 더 끌리는 쪽과 덜 끌리는 쪽을 나눠 답하시면 또렷해집니다.",
   INCONSISTENT: "같은 경험을 묻는 두 문항의 답이 달라, 낮은 쪽으로 읽었습니다.",
 } as const;
 
@@ -1481,18 +1481,30 @@ export function draftKo(
  * 나누어 돌려준다. 비어 있는 칸은 세우지 않고, 문장으로 잇는 일과 수치를
  * 채우는 일은 그 사람이 한다. 새 문장을 만들지 않는다.
  */
+/** 고른 보기와 덧붙인 한 줄을 한 칸으로. 한 줄만 있으면 그 말만 따옴표로 */
+export function withNote(choice: string | null, note?: string | null): string | null {
+  const n = (note ?? "").trim();
+  if (choice && n) return `${choice} (“${n}”)`;
+  return choice ?? (n ? `“${n}”` : null);
+}
+
 export type DraftFrame = { label: string; hint: string; items: string[] }[];
 export function draftFrameKo(
-  steps: { item_id: string; choice: string | null }[],
+  steps: { item_id: string; choice: string | null; note?: string | null }[],
 ): DraftFrame {
-  const by = new Map(steps.filter((x) => x.choice).map((x) => [x.item_id, x.choice as string]));
+  /* 덧붙인 한 줄도 그 칸에 같이 선다. 보기만 고른 칸은 보기, 한 줄만 적은
+     칸은 그 말을 따옴표로 둔다. 적어 주신 말이 종이에만 가고 화면에서
+     빠지면 받고 쓰지 않은 칸이 된다(2026-10-27 사업주 지적) */
+  const by = new Map(steps
+    .map((x) => [x.item_id, withNote(x.choice, x.note)] as const)
+    .filter((x): x is readonly [string, string] => !!x[1]));
   const pick = (ids: string[]) => ids.map((id) => by.get(id)).filter((v): v is string => !!v);
   return [
-    { label: "역할·상황", hint: "맡은 자리에서 어떤 문제였고 왜 문제였는지",
+    { label: "역할·상황", hint: "맡은 역할에서 어떤 문제였고 왜 문제였는지",
       items: pick(["TR_T1", "TR_T2"]) },
     { label: "행동", hint: "무엇을 바꿨고 어떤 방법으로 몇 번 돌렸는지",
       items: pick(["TR_T4", "TR_T3", "TR_T5"]) },
-    { label: "판단", hint: "무엇을 직접 정했고 무엇과 견줬고 안 됐을 때 무엇을 고쳤는지",
+    { label: "판단", hint: "무엇을 직접 정했고 무엇과 비교했고 안 됐을 때 무엇을 고쳤는지",
       items: pick(["TR_T8", "TR_T6", "TR_T7"]) },
     { label: "결과", hint: "무엇이 남았고 어디에 쓰였는지 · 수치와 기간은 직접 적는다",
       items: pick(["TR_T9", "TR_T10"]) },
@@ -1580,7 +1592,7 @@ export const COMMON_ITEM_KO: Record<string, string> = COMMON_ME;
  * 판단이었는지를 되돌려 준다. 둘 가운데 하나만 두면 읽는 사람이 자기 답을
  * 알아보지 못하거나(축만) 전체가 안 보인다(문항만).
  */
-export function commonKo(v: CommonView, core = "ME_CORE_V3"): {
+export function commonKo(v: CommonView, core: string): {
   owned: string[]; confirmed: string[];
   didOwn: string[]; didConfirm: string[];
 } {

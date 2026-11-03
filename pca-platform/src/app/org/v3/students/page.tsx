@@ -8,11 +8,16 @@ import { campusNames, leafChoices } from "@/lib/campus/labels";
 import { campusViewer } from "@/lib/campus/viewer";
 import { BRAND, toLang2 } from "@/lib/surface-text";
 import { Shell, PageHead, Section } from "@/components/sf/shell";
+import { campusSay, university } from "@/lib/campus/registry";
+import { sayTree } from "@/lib/campus/say-tree";
+import { loginPrefixOf } from "@/lib/campus/students";
 import { campusNav } from "@/lib/campus/org-mode";
 import { Empty } from "@/components/sf/parts";
 import LangSelect from "@/components/sf/lang-select";
 import StudentRows from "./rows";
 import AddStudent from "./add";
+import MatPanel from "./mat";
+import { CAMPUS_MAT_NAME, matUntilOf, poolsOf } from "@/lib/campus/mat";
 
 export const metadata = { title: `학생 관리 · ${BRAND.campus}` };
 
@@ -54,14 +59,18 @@ export default async function CampusStudents({
   const withDemo = sp.demo === "1";
 
   const nav = await campusNav(user.id);
+  /* 기관(진흥원 등)이면 화면 글자를 기관 낱말로 바꾼다(`sayTree`) */
+  const reg = uni ? university(uni) : null;
+  const say = campusSay(reg);
+  const agency = reg?.org_kind === "agency";
   const shell = (children: React.ReactNode) => (
     <Shell
       surface="campus" lang={L} nav={nav} active="/org/v3/students"
-      who={{ name: user.name, role: ROLE_LABEL[user.role] ?? "" }}
+      who={{ name: user.name, role: say(ROLE_LABEL[user.role] ?? "") }}
       topTitle={org ? org.name : BRAND.campus}
       topRight={<LangSelect current={L} />}
     >
-      {children}
+      {sayTree(children, say, agency)}
     </Shell>
   );
 
@@ -94,10 +103,17 @@ export default async function CampusStudents({
     universityCode: uni, q: sp.q ?? "", withDemo,
     department: sp.department ?? "", college: sp.college ?? "",
   };
-  const [{ rows, total }, counts] = await Promise.all([
+  const [{ rows, total }, counts, pools] = await Promise.all([
     listStudents({ ...filter, state, limit: LIMIT, offset: (page - 1) * LIMIT }),
     studentCounts(filter),
+    poolsOf(uni),
   ]);
+  const matUntil = await matUntilOf(rows.map((r) => r.user_id));
+  const matPools = pools.map((p) => ({
+    id: p.id, name: CAMPUS_MAT_NAME[p.product_code], seats: p.seats, used: p.used,
+    left: p.left, grant_until: p.grant_until, open: p.open, closed: p.status === "closed",
+  }));
+  const firstOpen = matPools.find((p) => p.open) ?? null;
   const pages = Math.max(Math.ceil(total / LIMIT), 1);
   const link = (over: Record<string, string>): string => {
     const p = new URLSearchParams();
@@ -165,6 +181,15 @@ export default async function CampusStudents({
         </nav>
       </Section>
 
+      {/* **MAT(AI 취업비서) 학교 단체 이용권.** 학교가 산 인원 안에서
+          담당자가 학생에게 연다. 학생 화면은 개인 구매와 같은 MAT 쪽이 열린다 */}
+      <Section title="MAT · AI 취업비서"
+        note="학교가 산 인원 안에서 학생에게 엽니다. 연 날부터 학교와 정한 기간 동안 열립니다.">
+        <MatPanel pools={matPools} total={total}
+          filter={{ q: sp.q ?? "", department: sp.department ?? "",
+            college: sp.college ?? "", state: state === "disabled" ? "all" : state }} />
+      </Section>
+
       <Section title="학생" note={`${total}명 · ${page} / ${pages}쪽`}>
         {rows.length ? (
           <>
@@ -174,7 +199,8 @@ export default async function CampusStudents({
                 없었다). 쪽은 열리는 것으로 보이는 다른 검사들이 이 쪽을
                 한 번도 열지 않아 몇 회차 동안 조용했다. 읽는 자리는 그대로
                 등록부 하나이고, 넘기는 것은 **그 줄에 쓸 이름뿐**이다 */}
-            <StudentRows rows={rows}
+            <StudentRows rows={rows} agency={agency} matUntil={matUntil}
+              matPool={firstOpen ? { id: firstOpen.id, name: firstOpen.name } : null}
               deptNames={Object.fromEntries(
                 rows.map((r) => [r.department_code, deptName(r.department_code)]))} />
             {pages > 1 ? (
@@ -192,7 +218,8 @@ export default async function CampusStudents({
         )}
       </Section>
 
-      <AddStudent leaves={leaves.map((r) => ({ code: r.code, name: r.name }))} />
+      <AddStudent leaves={leaves.map((r) => ({ code: r.code, name: r.name }))}
+        prefix={reg ? loginPrefixOf(reg) : ""} agency={agency} />
     </>,
   );
 }

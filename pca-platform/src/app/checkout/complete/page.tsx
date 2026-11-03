@@ -1,13 +1,19 @@
 import Link from "next/link";
 import { resumePathFor, startPathFor } from "@/lib/engine-entry";
 import { requireUser } from "@/lib/session";
+import { upgradeTarget } from "@/lib/me-v3/upgrade";
 import { settlePayment } from "@/lib/orders";
 import { paymentProvider } from "@/lib/payments";
 import { t } from "@/lib/locale";
 import { resolveLang } from "@/lib/locale-server";
-import { BRAND, toLang2, txer } from "@/lib/surface-text";
+import { BRAND, toLang2, tx, txer } from "@/lib/surface-text";
+import { pageTitle } from "@/lib/page-title";
 
-export const metadata = { title: "결제 결과 · CareerMatri" };
+export async function generateMetadata(
+  { searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> },
+) {
+  return pageTitle("결제 결과 · CareerMatri", searchParams);
+}
 
 /**
  * 결제창에서 돌아오는 자리.
@@ -26,7 +32,7 @@ export default async function CompletePage({
     lang?: string;
   }>;
 }) {
-  await requireUser();
+  const user = await requireUser();
   const sp = await searchParams;
   const lang = await resolveLang(sp.lang);
 
@@ -74,7 +80,40 @@ export default async function CompletePage({
    * 지원으로 보내는 쪽이 덜 틀린다. 그리고 공개 가격표가 이미 지금
    * 판본만 내놓으므로 이 자리에 옛 판본이 올 일은 없다.
    */
-  const startAt = startPathFor(result.ok ? result.assessmentVersion : null);
+  /**
+   * Track 기간권이면 **검사로 보내지 않는다.** 산 것은 응시가 아니라 기간이고,
+   * 검사 시작 단추를 세우면 이미 응시를 끝낸 사람이 같은 검사를 또 연다.
+   * 내 구독 화면으로 보낸다. 끝나는 날은 거기서 이용권을 읽어 적는다.
+   */
+  if (result.ok && result.kind === "track") {
+    const T = txer(toLang2(lang));
+    return (
+      <div className="pub">
+        <div className="pubwrap">
+          <div className="asdone">
+            <div className="sf-eyebrow">MAT</div>
+            <h1 className="sf-h1" style={{ marginTop: 10 }}>{T("okTrackTitle")}</h1>
+            <p className="sf-sub">{T("okTrackBody")}</p>
+            <dl className="sf-defs" style={{ marginTop: 20 }}>
+              <div className="sf-def">
+                <dt>{T("okOrderNo")}</dt>
+                <dd>{result.orderNo}</dd>
+              </div>
+            </dl>
+            <Link href="/me/track" className="sf-btn accent" style={{ marginTop: 24 }}>
+              {T("okTrackGo")}
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  /* **무료로 먼저 풀어 본 분은 그 응시를 넓히는 자리로 보낸다**(`upgrade.ts`).
+     전공 고르기로 보내면 다른 전공을 누를 수 있고, 그러면 산 등급이 앞에서
+     푼 응시가 아닌 곳으로 가는 것처럼 보인다 */
+  const base = startPathFor(result.ok ? result.assessmentVersion : null);
+  const startAt = base && result.ok && (await upgradeTarget(user.id)) ? "/v3/upgrade" : base;
   if (result.ok && startAt && !result.upgradedAttemptId) {
     const L = toLang2(lang);
     const T = txer(L);
@@ -134,6 +173,16 @@ export default async function CompletePage({
                 : (resumePathFor(result.ok ? result.assessmentVersion : null) ?? "/support")}
             >
               {result.upgradedAttemptId ? t("payGoReport", lang) : t("payGoTest", lang)}
+            </Link>
+          </>
+        ) : "checking" in result && result.checking ? (
+          /* **실패라고 적지 않는다.** 확인이 늦어진 것이고, 결제가 됐다면
+             웹훅이 곧 확정한다. 다시 결제하지 않게 그 사실을 먼저 적는다 */
+          <>
+            <h1>{tx("payCheckingTitle", toLang2(lang))}</h1>
+            <p className="paydone">{tx("payCheckingBody", toLang2(lang))}</p>
+            <Link className="act solid" href={`/checkout/complete?paymentId=${encodeURIComponent(key)}`}>
+              {tx("payCheckingAgain", toLang2(lang))}
             </Link>
           </>
         ) : (

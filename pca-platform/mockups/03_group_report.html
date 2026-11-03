@@ -3,193 +3,296 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>단체 리포트 — 기계공학과 2026-1학기</title>
+<title>단체 리포트 | 커리어매트리</title>
 <style>
 :root{
-  --field:#EBEEF0; --paper:#FFFFFF; --ink:#16232E; --rule:#C9D2D8;
-  --muted:#61717D; --met:#1B6B57; --partial:#C08A0B; --gap:#C0392B;
-  --s1:#16232E; --s2:#3B4E5C; --s3:#61717D; --s4:#8D9AA4; --s5:#B9C3CA;
+  --bg:#F3F6FB; --paper:#FFFFFF; --ink:#1A2233; --sub:#4A5568; --muted:#8A94A6;
+  --line:#E3E8F0; --soft:#F6F8FC;
+  --primary:#2F6BFF; --primary-dark:#1F4FD1; --primary-soft:#EAF0FF; --navy:#1E2A3E;
+  --c1:#2F6BFF; --c1-soft:#EAF0FF; --c2:#12A27E; --c2-soft:#E6F6F1; --c3:#7B5CF0; --c3-soft:#F0ECFE;
+  --c4:#F59E0B; --c4-soft:#FEF4E2; --c5:#E8497A; --c5-soft:#FDECF2;
+  --ok:#12A27E; --ok-soft:#E6F6F1; --warn:#E58A00; --warn-soft:#FEF4E2; --bad:#E5484D; --bad-soft:#FDECEC;
+  --r-lg:18px; --r:12px;
+  --shadow:0 1px 2px rgba(17,30,60,.04),0 6px 20px rgba(17,30,60,.06);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
-  background:var(--field);color:var(--ink);
+  background:var(--bg);color:var(--ink);
   font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,-apple-system,sans-serif;
-  font-size:16px;line-height:1.6;font-variant-numeric:tabular-nums;
-  padding:32px 20px 80px;
+  font-size:15px;line-height:1.6;letter-spacing:-0.01em;font-variant-numeric:tabular-nums;
 }
-.sheet{max-width:940px;margin:0 auto;background:var(--paper);border:1px solid var(--rule)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid rgba(47,107,255,.45);outline-offset:2px}
 
-.top{display:flex;flex-wrap:wrap;gap:14px 28px;align-items:center;
-  padding:22px 40px;border-bottom:2px solid var(--ink)}
-.top h1{font-size:15px;font-weight:700}
-.top .meta{color:var(--muted);font-size:13.5px;display:flex;gap:18px;flex-wrap:wrap}
-.top .act{margin-left:auto;display:flex;align-items:center;gap:14px}
-.badge{font-size:12.5px;font-weight:700;padding:3px 9px;border:1px solid var(--partial);color:var(--partial)}
-.badge.open{border-color:var(--met);color:var(--met)}
-button.pub{font:inherit;font-size:14px;padding:9px 18px;border:1px solid var(--ink);
-  background:var(--ink);color:#fff;cursor:pointer}
-button.pub:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-button.pub[disabled]{background:var(--paper);color:var(--muted);border-color:var(--rule);cursor:default}
+.top{background:linear-gradient(90deg,#1F4FD1,#2F6BFF);color:#fff}
+.top .in{max-width:1180px;margin:0 auto;height:64px;padding:0 24px;display:flex;align-items:center;gap:14px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:16px;letter-spacing:-0.03em}
+.mark{width:30px;height:30px;border-radius:9px;background:#fff;color:var(--primary);display:flex;align-items:center;justify-content:center}
+.top nav{margin-left:auto;display:flex;gap:6px}
+.top nav a{color:rgba(255,255,255,.8);text-decoration:none;font-size:14px;font-weight:600;padding:7px 14px;border-radius:9px}
+.top nav a[aria-current="page"]{background:rgba(255,255,255,.2);color:#fff}
 
-section{padding:36px 40px;border-bottom:1px solid var(--rule)}
-section:last-of-type{border-bottom:0}
-h2{font-size:14px;font-weight:700;color:var(--muted);margin-bottom:8px}
-.sub{font-size:14px;color:var(--muted);max-width:64ch;margin-bottom:26px}
+.wrap{max-width:1180px;margin:0 auto;padding:24px 24px 60px}
 
-/* 분포 밴드 */
-.band{display:flex;height:64px;border:1px solid var(--ink)}
-.band div{display:flex;align-items:center;justify-content:center;color:#fff;
-  font-size:15px;font-weight:700}
-.band div:nth-child(4),.band div:nth-child(5){color:var(--ink)}
-.legend{display:flex;flex-wrap:wrap;gap:8px 26px;margin-top:16px}
-.legend span{display:flex;align-items:center;gap:8px;font-size:14px}
-.legend i{width:12px;height:12px;flex:none}
-.legend em{font-style:normal;color:var(--muted);font-size:13.5px}
+/* 머리 배너 */
+.banner{display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  background:linear-gradient(90deg,#EAF0FF,#F3F7FF);border:1px solid #D6E2FF;border-radius:var(--r-lg);padding:20px 24px;margin-bottom:18px}
+.banner .ico{width:52px;height:52px;border-radius:14px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+.banner h1{font-size:23px;font-weight:800;letter-spacing:-0.035em;color:var(--primary-dark)}
+.banner p{font-size:14px;color:var(--sub)}
+.banner .act{margin-left:auto;display:flex;align-items:center;gap:10px}
+.badge{font-size:12.5px;font-weight:700;border-radius:999px;padding:4px 11px;background:var(--warn-soft);color:#B86A00}
+.badge.open{background:var(--ok-soft);color:#0B7A5E}
+button.pub{font-size:14.5px;font-weight:700;padding:10px 18px;border:0;border-radius:var(--r);background:var(--primary);color:#fff;cursor:pointer}
+button.pub:hover{background:var(--primary-dark)}
+button.pub[disabled]{background:#C9D3E6;cursor:default}
 
-/* 역량 갭 */
-.cg{display:grid;grid-template-columns:150px 1fr 84px;gap:0 16px;align-items:center;padding:12px 0}
-.cg + .cg{border-top:1px solid var(--rule)}
-.cg .lab{font-size:14.5px;font-weight:500}
-.cg .lab small{display:block;font-size:12px;color:var(--muted);font-weight:400}
-.meter{height:14px;background:#E4E9EC;position:relative}
-.meter i{position:absolute;left:0;top:0;bottom:0}
-.meter i.low{background:var(--gap)}
-.meter i.mid{background:var(--partial)}
-.meter i.high{background:var(--met)}
-.cg .pct{text-align:right;font-size:14px;font-weight:700}
-.cg .pct em{font-style:normal;font-weight:400;color:var(--muted);font-size:12.5px;display:block}
+.card{background:var(--paper);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:22px}
+.card-h{display:flex;align-items:flex-start;gap:10px;margin-bottom:16px}
+.card-h h2{font-size:17px;font-weight:800;letter-spacing:-0.025em;display:flex;align-items:center;gap:8px}
+.card-h h2 .dot{width:16px;height:16px;border-radius:50%;border:4px solid var(--c2-soft);background:var(--c2);box-sizing:content-box}
+.card-h p{font-size:13.5px;color:var(--sub);margin-top:2px}
+.card-h .right{margin-left:auto}
 
-/* 과목 제안 */
-.course{display:grid;grid-template-columns:1fr auto;gap:4px 20px;padding:16px 0}
-.course + .course{border-top:1px solid var(--rule)}
-.course h3{font-size:16.5px;font-weight:700;letter-spacing:-0.015em}
-.course .need{font-size:14px;font-weight:700;white-space:nowrap}
-.course p{grid-column:1/-1;font-size:13.5px;color:var(--muted);max-width:66ch}
-.flag{display:inline-block;font-size:12px;font-weight:600;padding:1px 7px;
-  border:1px solid var(--gap);color:var(--gap);margin-left:8px;vertical-align:1px}
+/* 요약 숫자 */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.kpi{background:var(--paper);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:18px 20px;display:flex;gap:14px;align-items:center}
+.kpi .i{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:none}
+.kpi span{display:block;font-size:13px;color:var(--sub);font-weight:600}
+.kpi b{font-size:24px;font-weight:800;letter-spacing:-0.03em;line-height:1.25}
+.kpi b small{font-size:14px;font-weight:700;color:var(--muted);margin-left:2px}
 
-/* 미응시 */
-.miss{display:flex;flex-wrap:wrap;gap:10px 28px;align-items:center;font-size:14.5px}
-.miss b{font-weight:700}
-.miss span{color:var(--muted)}
+/* 직무 카드 (색 테두리) */
+.jobs{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px}
+.job{border:1.5px solid var(--c);background:var(--cs);border-radius:var(--r);padding:14px 16px}
+.job .k{display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:700}
+.job .k i{width:9px;height:9px;border-radius:50%;background:var(--c)}
+.job .v{font-size:26px;font-weight:800;letter-spacing:-0.035em;color:var(--c);line-height:1.3;margin-top:4px}
+.job .v small{font-size:14px;margin-left:1px}
+.job .n{font-size:12.5px;color:var(--sub)}
 
-.foot{padding:20px 40px;color:var(--muted);font-size:12.5px;background:#F7F9FA}
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+.box{border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.box h3{font-size:14px;font-weight:700;color:var(--sub);margin-bottom:14px}
 
-@media (max-width:680px){
-  body{padding:0 0 40px}
-  .sheet{border-left:0;border-right:0}
-  .top,section,.foot{padding-left:20px;padding-right:20px}
-  .top .act{margin-left:0;width:100%}
-  .band{height:52px}
-  .band div{font-size:13px}
-  .cg{grid-template-columns:110px 1fr 64px}
+/* 가로 막대 */
+.hb{display:grid;grid-template-columns:96px 1fr 44px;gap:10px;align-items:center;padding:6px 0}
+.hb .l{font-size:13px;color:var(--sub);text-align:right}
+.hb .t{height:24px;background:repeating-linear-gradient(90deg,transparent 0 calc(25% - 1px),#E9EDF4 calc(25% - 1px) 25%);border-left:1px solid #C9D2DE}
+.hb .t i{display:block;height:100%;border-radius:0 6px 6px 0}
+.hb .v{font-size:13.5px;font-weight:800}
+.axis{display:grid;grid-template-columns:96px 1fr 44px;gap:10px;margin-top:4px}
+.axis span:nth-child(2){display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted)}
+
+/* 충족률 */
+.cg{display:grid;grid-template-columns:110px 1fr 70px;gap:10px;align-items:center;padding:8px 0}
+.cg + .cg{border-top:1px dashed var(--line)}
+.cg .l{font-size:13.5px;font-weight:700}
+.cg .l small{display:block;font-size:11.5px;color:var(--muted);font-weight:500}
+.cg .m{height:12px;border-radius:999px;background:#EEF1F6;overflow:hidden}
+.cg .m i{display:block;height:100%;border-radius:999px}
+.cg .p{text-align:right;font-size:14px;font-weight:800}
+.cg .p em{display:block;font-style:normal;font-size:11.5px;font-weight:500;color:var(--muted)}
+
+/* 표 */
+table{width:100%;border-collapse:collapse;min-width:720px}
+.tbl{overflow-x:auto}
+th,td{padding:14px 12px;border-bottom:1px solid var(--line);font-size:14px;text-align:left;vertical-align:top}
+th{font-size:13px;color:var(--muted);font-weight:700;white-space:nowrap}
+td.c,th.c{text-align:center}
+tbody tr:last-child td{border-bottom:0}
+td b{font-weight:800}
+td .s{display:block;font-size:12.5px;color:var(--sub);margin-top:3px;max-width:52ch;line-height:1.5}
+.pill{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:2px 10px;white-space:nowrap}
+.pill.no{background:var(--bad-soft);color:var(--bad)}
+.pill.low{background:var(--warn-soft);color:#B86A00}
+.pill.ok{background:var(--ok-soft);color:#0B7A5E}
+.pill.need{background:var(--primary-soft);color:var(--primary)}
+.pill.c{background:var(--c3-soft);color:var(--c3);margin:0 4px 4px 0}
+
+.miss{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:18px}
+.miss .big{font-size:22px;font-weight:800;color:var(--bad)}
+.miss span{color:var(--sub);font-size:14px}
+
+.foot{color:var(--muted);font-size:12.5px;margin-top:22px;text-align:center}
+
+@media (max-width:1080px){
+  .jobs{grid-template-columns:repeat(3,1fr)}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .charts{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .top .in,.wrap{padding-left:16px;padding-right:16px}
+  .top nav{display:none}
+  .banner .act{margin-left:0;width:100%}
+  .jobs{grid-template-columns:repeat(2,1fr)}
+  .kpis{grid-template-columns:1fr 1fr}
+  .kpi{flex-direction:column;align-items:flex-start;gap:8px}
+  .hb,.axis{grid-template-columns:76px 1fr 36px}
+  .cg{grid-template-columns:86px 1fr 56px}
 }
 </style>
 </head>
 <body>
-<div class="sheet">
 
-  <div class="top">
-    <h1>기계공학과 단체 리포트</h1>
-    <div class="meta"><span>2026-1학기 3학년</span><span>대상 40명 · 응시 38명</span></div>
+<header class="top">
+  <div class="in">
+    <span class="brand"><span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19V5l7 8 7-8v14"/></svg></span>커리어매트리</span>
+    <nav>
+      <a href="#">회차 관리</a>
+      <a href="#">응시 현황</a>
+      <a href="#" aria-current="page">단체 리포트</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div class="banner">
+    <span class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>
+    <div>
+      <h1>기계공학과 단체 리포트</h1>
+      <p>2026-1학기 3학년 회차 · 응시 기간 2026.03.04 ~ 03.20</p>
+    </div>
     <div class="act">
       <span class="badge" id="badge">학생 미공개</span>
       <button class="pub" id="pub">학생에게 결과 공개</button>
     </div>
   </div>
 
-  <section>
-    <h2>학생들이 몰린 직무</h2>
-    <p class="sub">각 학생에게 가장 높게 나온 직무를 기준으로 38명을 나눈 결과입니다.
-      한쪽으로 몰려 있다면 학과 커리큘럼이 그 방향에 치우쳐 있다는 뜻일 수 있습니다.</p>
-    <div class="band">
-      <div style="width:36.8%;background:var(--s1)">14명</div>
-      <div style="width:23.7%;background:var(--s2)">9명</div>
-      <div style="width:18.4%;background:var(--s3)">7명</div>
-      <div style="width:13.2%;background:var(--s4)">5명</div>
-      <div style="width:7.9%;background:var(--s5)">3명</div>
+  <div class="kpis">
+    <div class="kpi"><span class="i" style="background:var(--c1-soft);color:var(--c1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 19v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1M9.5 10a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/></svg></span>
+      <div><span>대상 학생</span><b>40<small>명</small></b></div></div>
+    <div class="kpi"><span class="i" style="background:var(--c2-soft);color:var(--c2)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17l9-10"/></svg></span>
+      <div><span>응시 완료</span><b>38<small>명 · 95%</small></b></div></div>
+    <div class="kpi"><span class="i" style="background:var(--bad-soft);color:var(--bad)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v6M12 17h.01"/></svg></span>
+      <div><span>미응시</span><b>2<small>명</small></b></div></div>
+    <div class="kpi"><span class="i" style="background:var(--c4-soft);color:#C77700"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l5 5v13H7zM14 3v5h5"/></svg></span>
+      <div><span>남은 응시권</span><b>2<small>개</small></b></div></div>
+  </div>
+
+  <section class="card" style="margin-bottom:18px">
+    <div class="card-h">
+      <div>
+        <h2><span class="dot"></span>학생들이 몰린 직무</h2>
+        <p>학생마다 가장 높게 나온 직무를 기준으로 38명을 나눴습니다. 한쪽으로 몰려 있다면 커리큘럼이 그 방향에 치우쳐 있다는 뜻일 수 있습니다.</p>
+      </div>
     </div>
-    <div class="legend">
-      <span><i style="background:var(--s1)"></i>기계설계 <em>평균 71점</em></span>
-      <span><i style="background:var(--s2)"></i>구조·유동 해석 <em>평균 68점</em></span>
-      <span><i style="background:var(--s3)"></i>생산기술 <em>평균 63점</em></span>
-      <span><i style="background:var(--s4)"></i>연구개발 <em>평균 60점</em></span>
-      <span><i style="background:var(--s5)"></i>품질보증 <em>평균 54점</em></span>
+
+    <div class="jobs" id="jobs"></div>
+
+    <div class="charts">
+      <div class="box">
+        <h3>직무별 인원</h3>
+        <div id="hbars"></div>
+        <div class="axis"><span></span><span><em>0</em><em>4</em><em>8</em><em>12</em><em>16</em></span><span></span></div>
+      </div>
+      <div class="box">
+        <h3>학과 전체 역량 충족률 <span style="font-weight:500;color:var(--muted)">· 낮을수록 학과 차원에서 손볼 역량</span></h3>
+        <div id="cgs"></div>
+      </div>
     </div>
   </section>
 
-  <section>
-    <h2>학과 전체에서 비어 있는 역량</h2>
-    <p class="sub">각 학생이 자기 최적합 직무에서 요구하는 수준을 채웠는지를 세었습니다.
-      충족률이 낮을수록 학과 차원에서 손을 대야 하는 역량입니다.</p>
+  <section class="card">
+    <div class="card-h">
+      <div>
+        <h2><span class="dot"></span>커리큘럼 검토가 필요한 과목</h2>
+        <p>비어 있는 역량을 채워주는 과목을 학과 개설 현황과 대조했습니다.</p>
+      </div>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead>
+          <tr><th>과목</th><th class="c">개설 현황</th><th class="c">필요한 학생</th><th>채우는 역량</th><th>검토 의견</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>유한요소해석</b></td>
+            <td class="c"><span class="pill no">미개설</span></td>
+            <td class="c"><span class="pill need">22명</span></td>
+            <td><span class="pill c">ANSYS</span><span class="pill c">유한요소법</span></td>
+            <td><span class="s">이번 학기 개설 목록에 없습니다. 해석 직무로 나온 9명 전원이 이 과목을 필요로 합니다.</span></td>
+          </tr>
+          <tr>
+            <td><b>기하공차와 측정</b></td>
+            <td class="c"><span class="pill low">수강 8명</span></td>
+            <td class="c"><span class="pill need">25명</span></td>
+            <td><span class="pill c">기하공차</span></td>
+            <td><span class="s">개설돼 있지만 설계 직무로 나온 14명 중 11명이 미수강입니다. 수강 안내만으로도 충족률이 크게 오릅니다.</span></td>
+          </tr>
+          <tr>
+            <td><b>전산유체역학</b></td>
+            <td class="c"><span class="pill ok">개설</span></td>
+            <td class="c"><span class="pill need">9명</span></td>
+            <td><span class="pill c">ANSYS</span></td>
+            <td><span class="s">유동 방향 해석 학생에게 필요합니다. 유한요소해석을 먼저 듣는 순서라 두 과목의 개설 학기를 함께 보셔야 합니다.</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-    <div class="cg">
-      <span class="lab">ANSYS<small>소프트웨어</small></span>
-      <span class="meter"><i class="low" style="width:16%"></i></span>
-      <span class="pct">16%<em>38명 중 6명</em></span>
-    </div>
-    <div class="cg">
-      <span class="lab">유한요소법<small>이론</small></span>
-      <span class="meter"><i class="low" style="width:29%"></i></span>
-      <span class="pct">29%<em>38명 중 11명</em></span>
-    </div>
-    <div class="cg">
-      <span class="lab">기하공차<small>이론</small></span>
-      <span class="meter"><i class="low" style="width:34%"></i></span>
-      <span class="pct">34%<em>38명 중 13명</em></span>
-    </div>
-    <div class="cg">
-      <span class="lab">재료역학<small>이론</small></span>
-      <span class="meter"><i class="mid" style="width:58%"></i></span>
-      <span class="pct">58%<em>38명 중 22명</em></span>
-    </div>
-    <div class="cg">
-      <span class="lab">MATLAB<small>소프트웨어</small></span>
-      <span class="meter"><i class="mid" style="width:68%"></i></span>
-      <span class="pct">68%<em>38명 중 26명</em></span>
-    </div>
-    <div class="cg">
-      <span class="lab">열역학<small>이론</small></span>
-      <span class="meter"><i class="high" style="width:82%"></i></span>
-      <span class="pct">82%<em>38명 중 31명</em></span>
+    <div class="miss">
+      <span class="pill no">미응시</span>
+      <span class="big">2명</span>
+      <span>응시 마감 2026.03.20 (금) · 남은 응시권 2개</span>
     </div>
   </section>
 
-  <section>
-    <h2>커리큘럼 검토가 필요한 과목</h2>
-    <p class="sub">비어 있는 역량을 채워주는 과목을 학과 개설 현황과 대조했습니다.</p>
-
-    <div class="course">
-      <h3>유한요소해석 <span class="flag">미개설</span></h3>
-      <span class="need">22명에게 필요</span>
-      <p>ANSYS와 유한요소법을 함께 메우는 과목인데 이번 학기 개설 목록에 없습니다.
-        해석 직무를 최적합으로 받은 9명 전원이 이 과목을 필요로 합니다.</p>
-    </div>
-    <div class="course">
-      <h3>기하공차와 측정</h3>
-      <span class="need">25명에게 필요</span>
-      <p>개설되어 있으나 이 학년 수강 인원이 8명입니다. 설계 직무로 나온 14명 중 11명이
-        미수강 상태라 수강 안내만으로도 충족률이 크게 올라갑니다.</p>
-    </div>
-    <div class="course">
-      <h3>전산유체역학</h3>
-      <span class="need">9명에게 필요</span>
-      <p>해석 직무 중 유동 방향 학생에게 필요합니다. 유한요소해석을 먼저 듣는 순서를
-        권장하므로 두 과목의 개설 학기를 함께 검토하시는 편이 좋습니다.</p>
-    </div>
-  </section>
-
-  <section>
-    <h2>미응시</h2>
-    <p class="miss"><b>2명</b> <span>응시 기간 종료 2026.03.20 · 남은 응시권 2개</span></p>
-  </section>
-
-  <div class="foot">화면 시안입니다. 표시된 인원과 수치는 예시 데이터입니다.</div>
-</div>
+  <p class="foot">화면 시안입니다. 표시된 인원과 수치는 예시 데이터입니다.</p>
+</main>
 
 <script>
-const pub = document.getElementById("pub");
-const badge = document.getElementById("badge");
+/* 예시 데이터 */
+const JOBS = [
+  {n:"기계설계",       cnt:14, avg:71, c:"--c1"},
+  {n:"구조·유동 해석", cnt:9,  avg:68, c:"--c2"},
+  {n:"생산기술",       cnt:7,  avg:63, c:"--c4"},
+  {n:"연구개발",       cnt:5,  avg:60, c:"--c3"},
+  {n:"품질보증",       cnt:3,  avg:54, c:"--c5"},
+];
+const CG = [
+  {n:"ANSYS",      k:"소프트웨어", ok:6},
+  {n:"유한요소법", k:"이론",       ok:11},
+  {n:"기하공차",   k:"이론",       ok:13},
+  {n:"재료역학",   k:"이론",       ok:22},
+  {n:"MATLAB",     k:"소프트웨어", ok:26},
+  {n:"열역학",     k:"이론",       ok:31},
+];
+const TOTAL = 38, MAX = 16;
+
+const jobs = document.getElementById("jobs"), hb = document.getElementById("hbars");
+JOBS.forEach(j => {
+  const d = document.createElement("div");
+  d.className = "job";
+  d.style.setProperty("--c", `var(${j.c})`);
+  d.style.setProperty("--cs", `var(${j.c}-soft)`);
+  d.innerHTML = `<div class="k"><i></i>${j.n}</div>
+    <div class="v">${j.cnt}<small>명</small></div>
+    <div class="n">${(j.cnt / TOTAL * 100).toFixed(1)}% · 평균 ${j.avg}점</div>`;
+  jobs.appendChild(d);
+
+  const r = document.createElement("div");
+  r.className = "hb";
+  r.innerHTML = `<span class="l">${j.n}</span>
+    <span class="t"><i style="width:${j.cnt / MAX * 100}%;background:var(${j.c})"></i></span>
+    <span class="v">${j.cnt}명</span>`;
+  hb.appendChild(r);
+});
+
+const cgs = document.getElementById("cgs");
+CG.forEach(c => {
+  const p = Math.round(c.ok / TOTAL * 100);
+  const col = p < 40 ? "var(--bad)" : p < 70 ? "var(--warn)" : "var(--ok)";
+  const r = document.createElement("div");
+  r.className = "cg";
+  r.innerHTML = `<span class="l">${c.n}<small>${c.k}</small></span>
+    <span class="m"><i style="width:${p}%;background:${col}"></i></span>
+    <span class="p" style="color:${col}">${p}%<em>${TOTAL}명 중 ${c.ok}명</em></span>`;
+  cgs.appendChild(r);
+});
+
+const pub = document.getElementById("pub"), badge = document.getElementById("badge");
 pub.addEventListener("click", () => {
   badge.textContent = "학생 공개됨 · 2026.03.21";
   badge.classList.add("open");

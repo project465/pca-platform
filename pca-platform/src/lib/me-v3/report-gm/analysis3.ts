@@ -133,13 +133,13 @@ export function domainRead(m: ResultModel, d: ResultDomain, exps: Experience[]):
       break;
     default:
       headline = `${j(name, "은는")} 이번 검사에서 자세히 묻지 않은 영역입니다.`;
-      meaning.push(`${interest ? `${interest} 답했고 ` : ""}${freq ? `경험은 ${freq} 답했습니다. ` : ""}이 영역의 판단은 자세히 묻지 않았기 때문에, 판단 그림과 표에서 이 영역이 비어 있는 것은 경험이 없어서가 아니라 질문하지 않았기 때문입니다.`);
+      meaning.push(`${interest ? `${interest} 답했고 ` : ""}${freq ? `경험은 ${freq} 답했습니다. ` : ""}이 영역의 판단은 자세히 묻지 않았기 때문에, 판단 그림과 표에서 이 영역이 비어 있는 것은 질문하지 않았기 때문이고, 경험이 없다는 뜻은 아닙니다.`);
   }
   if (d.zone !== "NOT_EXPLORED") {
     limits.push("이 해설은 학생이 고른 응답과 체크리스트 항목으로 만든 것입니다. 결과물의 완성도나 실제 성과(수치·기간)는 확인하지 않았습니다.");
     if (lowNames.length && d.zone !== "Z4_INSUFFICIENT_EVIDENCE") limits.push(`${j(join(lowNames, ", "), "은는")} 아직 응답에서 스스로 해 봤다고 확인되지 않았습니다. 해 보지 않았다는 뜻일 수도 있고, 그 경험을 이번에 떠올리지 못했다는 뜻일 수도 있습니다.`);
     if (ev.comparisons.length === 1) limits.push(`결과를 비교한 대상은 ${quoted(ev.comparisons[0])} 하나만 골랐습니다. 성과를 말할 때 비교 근거가 한 가지뿐이라는 점을 기억해 두세요.`);
-    if (askedHow === "PROBE") limits.push("이 영역은 핵심 판단 넷만 물었습니다. 나머지 판단은 비어 있는 것이 아니라 묻지 않은 것입니다.");
+    if (askedHow === "PROBE") limits.push("이 영역은 핵심 판단 넷만 물었습니다. 나머지 판단은 이번에 묻지 않았습니다.");
   }
   if (recs.length) limits.push(`경험 기록 ${list3(recs)}도 이 영역을 가리킵니다. 기록과 응답을 함께 읽은 결과는 다음 장에 있습니다.`);
 
@@ -165,7 +165,7 @@ function devOf(core: string, d: ResultDomain, g: Gap, def?: DomainDef): DomainRe
   const l2 = def?.axes?.[ax]?.l2 ?? "";
   const how: Record<Axis, string> = {
     J1: `과제를 받으면 이번에 다룰 것과 다루지 않을 것을 먼저 한 줄씩 적고 시작하기`,
-    J2: `목표를 ${j(def?.verify_targets[0] ?? "기준", "과와")} 견줄 수 있는 숫자 조건으로 바꿔 적기`,
+    J2: `목표를 ${j(def?.verify_targets[0] ?? "기준", "과와")} 비교할 수 있는 숫자 조건으로 바꿔 적기`,
     // 체크리스트 문장(‘~정했다’)을 잘라 관형형으로 만들지 않는다: 문장 그대로 인용하고 ‘에 해당하는 일’로 받는다
     J3: `${l2 ? `다음 팀 과제에서 ‘${l2}’에 해당하는 일을` : "다음 팀 과제에서 기준을 정하는 일을"} 직접 맡고, 고른 까닭을 한 줄 남기기`,
     J4: `조사·분석 방법을 둘 이상 놓고 하나를 고른 까닭을 적기`,
@@ -388,13 +388,13 @@ export function asTodo(s: string): string {
 }
 /** 영역 사전의 행동 문장(‘~를 정했다’)을 ‘~를 정하는 일’ 로 */
 const L2_TO: [RegExp, string][] = [
-  [/적어 두었다$/, "적어 두는 일"], [/견주었다$/, "견주는 일"], [/좁혔다$/, "좁히는 일"], [/남겼다$/, "남기는 일"],
+  [/적어 두었다$/, "적어 두는 일"], [/견주었다$/, "비교하는 일"], [/좁혔다$/, "좁히는 일"], [/남겼다$/, "남기는 일"],
   [/옮겼다$/, "옮기는 일"], [/적었다$/, "적는 일"], [/썼다$/, "쓰는 일"], [/받았다$/, "받는 일"], [/정했다$/, "정하는 일"], [/했다$/, "하는 일"],
 ];
 export function l2Work(s: string): string { for (const [re, to] of L2_TO) if (re.test(s)) return s.replace(re, to); return s; }
 /** 같은 문장을 행 제목으로: ‘~를 정했다’ → ‘~를 정하기’ */
 const L2_TITLE: [RegExp, string][] = [
-  [/적어 두었다$/, "적어 두기"], [/견주었다$/, "견주기"], [/좁혔다$/, "좁히기"], [/남겼다$/, "남기기"],
+  [/적어 두었다$/, "적어 두기"], [/견주었다$/, "비교하기"], [/좁혔다$/, "좁히기"], [/남겼다$/, "남기기"],
   [/옮겼다$/, "옮기기"], [/적었다$/, "적기"], [/썼다$/, "쓰기"], [/받았다$/, "받기"], [/정했다$/, "정하기"], [/했다$/, "하기"],
 ];
 export function l2Title(s: string): string { for (const [re, to] of L2_TITLE) if (re.test(s)) return s.replace(re, to); return s; }
@@ -743,7 +743,7 @@ export function growth(m: ResultModel): Growth | null {
     research: [
       { step: "직무 이름으로 공고 모으기", how: `채용 사이트에서 ‘${role.name_ko}’ 신입 공고 다섯 건을 모아 담당 업무 문장만 따로 옮겨 적습니다.` },
       { step: "공통 업무 찾기", how: "다섯 공고에 두 번 이상 나오는 업무를 표시합니다. 그것이 이 직무의 실제 중심입니다." },
-      { step: "산업별 차이 보기", how: `${ind ? `목표 산업인 ${ind.name_ko}과` : "관심 산업과"} 다른 산업의 공고를 견주어, 같은 직무 이름이 산업마다 어떻게 다른지 적습니다.` },
+      { step: "산업별 차이 보기", how: `${ind ? `목표 산업인 ${ind.name_ko}과` : "관심 산업과"} 다른 산업의 공고를 비교해, 같은 직무 이름이 산업마다 어떻게 다른지 적습니다.` },
       { step: "기업 한 곳 깊게 보기", how: "이 보고서의 진로 탐색 기업 가운데 하나를 골라, 사업보고서나 홈페이지에서 제품·고객·사업 구조를 한 장으로 정리합니다." },
       { step: "현직자 이야기 듣기", how: "학교 취업지원센터의 직무 특강·멘토링이나 졸업생 연결 프로그램으로 실제 하루의 일을 들어 봅니다." },
     ],

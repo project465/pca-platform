@@ -21,12 +21,15 @@ import { useEffect } from "react";
  * 창을 닫거나 새로고침하는 길은 브라우저의 표준 물음(`beforeunload`)이
  * 맡는다. 앱 안의 이동은 그 물음이 울지 않아서 따로 받는다.
  */
-const ASK = "적던 내용이 아직 저장되지 않았습니다. 이 화면을 떠날까요?";
+const ASK = {
+  ko: "적던 내용이 아직 저장되지 않았습니다. 이 화면을 떠날까요?",
+  en: "What you've written isn't saved yet. Leave this page?",
+};
 
 /** 실수로 눌리는 자리. 띠의 링크들 */
 const BARS = "nav.cm-tabs a, nav.cm-rail a, .cm-sheet a, header.cm-topbar a";
 
-export default function UnsavedGuard() {
+export default function UnsavedGuard({ lang = "ko" }: { lang?: "ko" | "en" }) {
   useEffect(() => {
     const form = document.querySelector("form");
     if (!form) return;
@@ -52,7 +55,7 @@ export default function UnsavedGuard() {
       const t = e.target as Element | null;
       const a = t?.closest?.(BARS) as HTMLAnchorElement | null;
       if (!a) return;
-      if (window.confirm(ASK)) { dirty = false; return; }
+      if (window.confirm(ASK[lang])) { dirty = false; return; }
       e.preventDefault();
       e.stopPropagation();
     };

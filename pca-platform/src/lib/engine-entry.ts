@@ -119,6 +119,9 @@ export const ROUTE_TABLE: RouteRow[] = [
   /* ── 지금 검사 ─────────────────────────────────────────── */
   { route: "/cores", newUser: "여기로 들어온다", oldUser: "같음", cls: "CURRENT" },
   { route: "/v3/start", newUser: "`/cores` 가 보낸다", oldUser: "같음", cls: "CURRENT" },
+  /* 결제를 마친 개인이 산 등급으로 **같은 응시를 올리는** 자리(`upgradeTier`).
+     새 응시를 열지 않는다: 좌석 하나 = 응시 하나다 */
+  { route: "/v3/upgrade", newUser: "결제 뒤 등급을 올린다", oldUser: "같음", cls: "CURRENT" },
   { route: "/v3/[attemptId]", newUser: "응시", oldUser: "이어하기", cls: "CURRENT" },
   /* 들어가는 자리와 끝나는 자리. **응답도 routing 도 받지 않는다**: 앞은
      응시를 연 직후 한 번 서고 뒤는 제출과 결과지 사이에 선다. 표에 적지
@@ -160,7 +163,7 @@ export const ROUTE_TABLE: RouteRow[] = [
   /* ── 작업공간 ──────────────────────────────────────────── */
   { route: "/me", newUser: "로그인 뒤 첫 화면", oldUser: "같음", cls: "CURRENT" },
   { route: "/me/results", newUser: "결과 이력", oldUser: "같음", cls: "CURRENT" },
-  { route: "/me/state", newUser: "지금 상태·비어 있는 자리", oldUser: "같음",
+  { route: "/me/state", newUser: "지금 상태·비어 있는 칸", oldUser: "같음",
     cls: "CURRENT" },
   { route: "/me/next", newUser: "다음 할 일", oldUser: "같음", cls: "CURRENT" },
   { route: "/me/experience", newUser: "경험 목록", oldUser: "같음", cls: "CURRENT" },
@@ -172,7 +175,15 @@ export const ROUTE_TABLE: RouteRow[] = [
   { route: "/me/explore", newUser: "산업·직무 탐색", oldUser: "같음", cls: "CURRENT" },
   { route: "/me/region", newUser: "지역과 기관", oldUser: "같음", cls: "CURRENT" },
   { route: "/me/track", newUser: "Track", oldUser: "같음", cls: "CURRENT" },
-  { route: "/me/jobs", newUser: "Track 안의 공고 자리", oldUser: "같음", cls: "CURRENT" },
+  { route: "/me/track/posting/[id]", newUser: "MAT · 붙여 넣은 공고 맞대 보기",
+    oldUser: "같음", cls: "CURRENT" },
+  /* 논문·PPT·이력서 읽기와 채점표, 그 낱말로 공고 찾기(2026-10-31) */
+  { route: "/me/track/research", newUser: "MAT · 내 자료 읽기", oldUser: "같음", cls: "CURRENT" },
+  { route: "/me/track/jobs", newUser: "MAT · 내 자료로 공고 찾기", oldUser: "같음", cls: "CURRENT" },
+  /* 잡인더스트리 공고 화면의 단추에서 넘어온 공고를 맞대 보는 자리 */
+  { route: "/me/track/import", newUser: "MAT · 보던 공고 맞대 보기", oldUser: "같음", cls: "CURRENT" },
+  { route: "/me/jobs", newUser: "Track 안의 공고 목록", oldUser: "같음", cls: "CURRENT" },
+  { route: "/me/prep", newUser: "지원서·면접 준비", oldUser: "같음", cls: "CURRENT" },
   { route: "/me/apply", newUser: "지원 준비", oldUser: "같음", cls: "CURRENT" },
 
   /* ── 계정 ──────────────────────────────────────────────── */

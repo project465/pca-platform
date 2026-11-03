@@ -8,6 +8,9 @@ import { enqueue } from "@/lib/outbox";
 import { track } from "@/lib/funnel";
 
 import { ref, swallow } from "@/lib/oplog";
+import { grantProTrialTx, grantTrackTx } from "@/lib/track";
+import { isCurrentEngine } from "@/lib/engine-entry";
+import { isStaging } from "@/lib/env";
 export type Product = {
   code: string;
   kind: string;
@@ -24,6 +27,8 @@ export type Product = {
   market: string | null;
   /** 값이 승인됐는가. **금액만 보고 무료로 열지 않는다** */
   price_status: "approved" | "not_approved";
+  /** 기간권(Track · PASS)이 여는 날 수. 검사 이용권은 NULL */
+  duration_days: number | null;
 };
 
 export type Order = {
@@ -39,16 +44,38 @@ export type Order = {
 const NAMES: Record<string, string> = {
   REPORT_UNIV: "CareerMatri 진로 결과지 (대학)",
   REPORT_HS: "CareerMatri 진로 결과지 (고교)",
+  TRACK_30D: "MAT 30일",
+  TRACK_90D: "MAT 90일",
+  /* 판매 종료(2026-10-30). 이미 나간 주문의 이름으로만 남는다 */
+  TRACK_365D: "MAT 기간권 (판매 종료)",
+  TRACK_30D_GL: "MAT 30 days",
+  TRACK_365D_GL: "MAT pass (discontinued)",
+  CAMPUS_MAT_6M: "MAT 학교 이용권 (계약 기간)",
+  CAMPUS_MAT_12M: "MAT 학교 이용권 (계약 기간)",
 };
 
 export function orderName(code: string): string {
   return NAMES[code] ?? "CareerMatri 진로 결과지";
 }
 
+/**
+ * **이용권으로 문을 여는 판본인가.** ME_V2 와 지금 판본(ME_V3_2)이 그렇다.
+ *
+ * 전에는 `=== "ME_V2"` 한 줄이라, 지금 판본 상품을 사면 맨 아래 좌석
+ * 쪽으로 떨어졌다. 좌석은 V3 응시가 보지 않으므로 **값을 내고 검사가 안
+ * 열리는** 자리였다(`v3Grants` 는 이용권만 센다). 판본은 상품이 적은
+ * 값을 그대로 이용권에 옮긴다: `ME_V2` 를 박아 두면 V3 이용권이 옛 판본
+ * 이용권이 된다.
+ */
+function grantsReport(v: string | null | undefined): boolean {
+  return v === "ME_V2" || isCurrentEngine(v);
+}
+
 export async function getProduct(code: string): Promise<Product | null> {
   return queryOne<Product>(
     `SELECT code, kind, amount, currency, seat_count, report_level,
-            assessment_version, tier, major_code, market, price_status
+            assessment_version, tier, major_code, market, price_status,
+            duration_days
        FROM products WHERE code = $1 AND active`,
     [code],
   );
@@ -76,6 +103,19 @@ export async function startCheckout(
 ): Promise<{ order: Order; ticket: CheckoutTicket }> {
   const product = await getProduct(productCode);
   if (!product) throw new Error("판매하지 않는 상품입니다.");
+  /* **값이 승인되지 않은 상품은 주문을 만들지 않는다.** 0원으로 줄만 세워
+     둔 해외판 MAT 이 그렇다: 그대로 두면 0원 결제로 기간이 열린다 */
+  if (product.price_status !== "approved") throw new Error("아직 값이 정해지지 않은 상품입니다.");
+  /* 원화가 아닌 상품은 해외 카드 채널로만 낸다. 국내 채널은 원화만 받는다 */
+  if (product.currency !== "KRW" && region !== "global") {
+    throw new Error("해외 카드로만 결제할 수 있는 상품입니다.");
+  }
+  if (product.kind === "track") {
+    const { hasV3Result } = await import("@/lib/track");
+    if (!(await hasV3Result(userId))) {
+      throw new Error("MAT 은 검사를 한 번 마친 뒤에 열 수 있습니다. 무료 검사를 먼저 해 주세요.");
+    }
+  }
 
   if (upgradesAttemptId) {
     const mine = await queryOne<{ id: string }>(
@@ -113,7 +153,12 @@ export async function startCheckout(
   const provider = paymentProvider();
   const { publicBase } = await import("@/lib/urls");
   const here = origin.replace(/\/$/, "");
-  const base = provider.name === "mock"
+  /* **공개 전 배포본도 지금 선 자리로 돌아온다.** 그 주소(`…staging…
+     .up.railway.app`)는 `appDomain()` 이 운영 주소로 받지 않아서, 그대로
+     두면 정규 주소(`careermatri.co.kr`)로 떨어진다. 그 도메인에는 지금 우리
+     앱이 없어서 포트원 테스트 채널로 결제를 마친 사람이 빈 쪽을 만났다
+     (2026-10-27 브라우저로 재현). 운영은 이 줄을 지나지 않는다 */
+  const base = provider.name === "mock" || isStaging()
     ? here
     /* **정규 주소를 못 읽으면 요청 호스트로 떨어진다.** 그 자체는
        맞는 되돌림이지만, 결제를 마친 사람이 **다른 도메인으로 돌아오는**
@@ -162,8 +207,20 @@ export type SettleResult =
       assessmentVersion: string | null;
       /** 산 등급. 완료 화면이 적기만 한다 */
       tier: string | null;
+      /**
+       * 상품의 종류. Track 이면 완료 화면이 검사 대신 `내 구독` 으로
+       * 보낸다. **상품 코드를 보고 짐작하지 않는다**(위 `assessmentVersion`
+       * 과 같은 까닭이다)
+       */
+      kind: string | null;
     }
-  | { ok: false; reason: string };
+  /**
+   * `checking` 은 **아직 모른다**는 뜻이다: PG 조회가 잠깐 실패했거나 승인이
+   * 끝나지 않았다. 결제가 실패한 것과 가른다. 돈을 낸 사람에게 `결제가
+   * 완료되지 않았습니다` 를 적으면 다시 결제해서 두 번 낸다. 웹훅이 곧 같은
+   * 함수를 다시 부르므로 이 상태는 저절로 풀린다
+   */
+  | { ok: false; reason: string; checking?: true; lookupFailed?: true };
 
 /**
  * PG 에 직접 물어보고 주문을 확정한다.
@@ -179,7 +236,9 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
   try {
     fact = await provider.getPaymentStatus(providerPaymentId);
   } catch (e) {
-    return { ok: false, reason: e instanceof Error ? e.message : "결제 조회에 실패했습니다." };
+    /* `lookupFailed` 는 웹훅이 PG 에 **다시 보내 달라고** 할 때 쓴다 */
+    return { ok: false, checking: true, lookupFailed: true,
+      reason: e instanceof Error ? e.message : "결제 조회에 실패했습니다." };
   }
 
   const orderNo = fact.orderNo ?? providerPaymentId.replace(/^mock_/, "");
@@ -199,7 +258,8 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
       `UPDATE orders SET status = $2 WHERE id = $1 AND status = 'pending'`,
       [order.id, fact.status === "ready" ? "pending" : fact.status],
     );
-    return { ok: false, reason: `결제가 완료되지 않았습니다 (${fact.status}).` };
+    return { ok: false, reason: `결제가 완료되지 않았습니다 (${fact.status}).`,
+      ...(fact.status === "ready" ? { checking: true as const } : {}) };
   }
 
   /* 금액과 통화를 대조한다. **대조는 `payments/verify.ts` 한 곳이다** */
@@ -246,6 +306,7 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
         upgradedAttemptId: isUpgrade ? attemptId : null,
         assessmentVersion: product?.assessment_version ?? null,
         tier: product?.tier ?? null,
+        kind: product?.kind ?? null,
       };
     }
 
@@ -269,7 +330,21 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
          ON CONFLICT (attempt_id) DO NOTHING`,
         [attemptId, order.id],
       );
-    } else if (product?.assessment_version === "ME_V2") {
+    } else if (product?.kind === "track") {
+      /**
+       * Track 기간권. **좌석도 검사 이용권도 주지 않는다.**
+       *
+       * 이 분기가 좌석 쪽(맨 아래 else)으로 떨어지면 30일권을 산 사람에게
+       * 검사 좌석이 생기고, 같은 사람의 응답이 두 벌 쌓여 규준이
+       * 오염된다. `seat_count` 가 0 이라 지금은 좌석이 안 생기지만, 그 값
+       * 하나에 기대어 두지 않고 분기를 따로 둔다.
+       */
+      if (!product.duration_days) throw new Error("기간이 정해지지 않은 Track 상품입니다.");
+      await grantTrackTx(c, {
+        userId: order.user_id, orderId: order.id,
+        productCode: order.product_code, days: product.duration_days,
+      });
+    } else if (product && grantsReport(product.assessment_version)) {
       /**
        * ME_V2 는 좌석 대신 **이용권**이 문을 연다.
        *
@@ -285,11 +360,15 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
         `INSERT INTO entitlements
            (user_id, order_id, product_code, kind, tier, major_code,
             assessment_version, status, starts_at)
-         VALUES ($1, $2, $3, 'report', $4, $5, 'ME_V2', 'active', now())
+         VALUES ($1, $2, $3, 'report', $4, $5, $6, 'active', now())
          ON CONFLICT (order_id) WHERE order_id IS NOT NULL DO NOTHING`,
         [order.user_id, order.id, order.product_code,
-         product.tier ?? "BASIC", product.major_code ?? "ME"],
+         product.tier ?? "BASIC", product.major_code ?? "ME", product.assessment_version],
       );
+      /* **PRO 를 산 분께 Track 첫 한 달.** 같은 거래 안에서 붙인다: 결과지
+         이용권은 서고 이 줄만 빠지면 약속한 한 달이 조용히 사라진다.
+         사람마다 한 번이고 그 판단은 `grantProTrialTx` 가 한다 */
+      if (product.tier === "PRO" && order.amount > 0) await grantProTrialTx(c, order.user_id);
     } else {
       // 좌석 발급. 계약 없이 주문에 붙는다
       for (let i = 0; i < seatCount; i++) {
@@ -309,6 +388,7 @@ export async function settlePayment(providerPaymentId: string): Promise<SettleRe
       upgradedAttemptId: isUpgrade ? attemptId : null,
       assessmentVersion: product?.assessment_version ?? null,
       tier: product?.tier ?? null,
+      kind: product?.kind ?? null,
     };
   });
 
@@ -405,7 +485,7 @@ export async function openFreeOrder(
     if (!o.rows[0]) return null;
     const id = o.rows[0].id;
 
-    if (product.assessment_version === "ME_V2") {
+    if (grantsReport(product.assessment_version)) {
       /**
        * ME_V2 는 좌석이 아니라 **이용권**이 문을 연다.
        *
@@ -417,9 +497,10 @@ export async function openFreeOrder(
         `INSERT INTO entitlements
            (user_id, order_id, product_code, kind, tier, major_code,
             assessment_version, status, starts_at)
-         VALUES ($1, $2, $3, 'report', $4, $5, 'ME_V2', 'active', now())
+         VALUES ($1, $2, $3, 'report', $4, $5, $6, 'active', now())
          ON CONFLICT (order_id) WHERE order_id IS NOT NULL DO NOTHING`,
-        [userId, id, product.code, product.tier ?? "BASIC", product.major_code ?? "ME"],
+        [userId, id, product.code, product.tier ?? "BASIC", product.major_code ?? "ME",
+         product.assessment_version],
       );
     } else {
       for (let i = 0; i < product.seat_count; i++) {

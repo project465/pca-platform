@@ -3,13 +3,17 @@ import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/session";
 import LoginForm from "./login-form";
 import OauthButtons from "./oauth-buttons";
-import AuthBrand from "@/components/auth-brand";
+import EntryFrame from "@/components/sf/entry-frame";
 import PublicFooter from "@/components/sf/public-footer";
-import { BRAND } from "@/lib/surface-text";
 import { enabledProviders } from "@/lib/auth-oauth";
 import { safeNext } from "@/lib/safe-next";
+import { resolveLang } from "@/lib/locale-server";
+import { entrySay } from "@/lib/entry-say";
 
-export const metadata = { title: "로그인 · CareerMatri" };
+export async function generateMetadata() {
+  const say = entrySay(await resolveLang().catch(() => "ko"));
+  return { title: say("로그인 · CareerMatri") };
+}
 
 /**
  * 소셜 로그인이 끊긴 자리마다 **사람이 읽을 수 있는 한 줄.**
@@ -52,19 +56,27 @@ export default async function LoginPage({
   const { next, error } = await searchParams;
   /* 열린 리다이렉트를 막는 자리가 한 곳이다(`safe-next.ts`) */
   const nx = safeNext(next, "");
-  if (await currentUser()) redirect(nx || "/");
+  /* **담당자로만 들어와 있으면 폼을 연다.** 담당자와 학생은 로그인을 따로
+     들고 있어서(`auth.ts`), 같은 브라우저에서 학생 계정으로 들어가 볼 수
+     있어야 한다. 담당자 화면으로 가려던 길이면 그대로 보낸다 */
+  const who = await currentUser();
+  if (who && (who.scope !== "staff" || /^\/(admin|org)(\/|\?|$)/.test(nx))) redirect(nx || "/");
 
   const providers = enabledProviders();
-  const msg = error ? (ERRORS[error] ?? ERRORS.OAuthCallback) : null;
+  /* **들어온 화면의 언어로 선다**(영어판 2단계). 해외 개인이 영어 가입
+     화면에서 `로그인` 을 누르면 여기로 온다 */
+  const lang = (await resolveLang().catch(() => "ko")) === "en" ? "en" : "ko";
+  const say = entrySay(lang);
+  const msg = error ? say(ERRORS[error] ?? ERRORS.OAuthCallback) : null;
 
   return (
-    <main className="center-wrap">
+    /* **작업공간 홈과 같은 톤으로 연다**(EntryFrame) */
+    <EntryFrame lang={lang}>
       <div className="authwrap">
-        <AuthBrand name={BRAND.root} />
         <div className="panel narrow">
-          <h1>다시 오셨군요</h1>
+          <h1>{say("다시 오셨군요")}</h1>
           <p className="sub">
-            학교에서 받은 아이디나, 개인으로 가입하신 이메일로 들어오세요.
+            {say("학교에서 받은 아이디나, 개인으로 가입하신 이메일로 들어오세요.")}
           </p>
 
           {msg ? <p className="notice error" role="alert">{msg}</p> : null}
@@ -74,25 +86,25 @@ export default async function LoginPage({
               아직 대부분이고, 그분들에게는 아래 칸이 유일한 길이다 */}
           {providers.length ? (
             <>
-              <OauthButtons providers={providers} next={nx} lang="ko" />
-              <div className="orline"><span>또는</span></div>
+              <OauthButtons providers={providers} next={nx} lang={lang} />
+              <div className="orline"><span>{say("또는")}</span></div>
             </>
           ) : null}
 
-          <LoginForm next={nx} />
+          <LoginForm next={nx} lang={lang} />
 
           <div className="foot-links">
-            <Link href="/password/forgot">비밀번호를 잊으셨나요?</Link>
+            <Link href="/password/forgot">{say("비밀번호를 잊으셨나요?")}</Link>
             <Link href={`/signup${nx ? `?next=${encodeURIComponent(nx)}` : ""}`}>
-              개인으로 가입하기
+              {say("개인으로 가입하기")}
             </Link>
           </div>
         </div>
 
         {/* 한 가지만 하는 쪽이라 법적 표시 전체는 두지 않는다. 약관과
             고객지원으로 가는 길만 남긴다 */}
-        <PublicFooter lang="ko" compact />
+        <PublicFooter lang={lang} compact />
       </div>
-    </main>
+    </EntryFrame>
   );
 }

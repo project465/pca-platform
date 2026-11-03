@@ -14,7 +14,7 @@
  */
 import { contractsOf, orgsOf } from "@/lib/org";
 import { university } from "@/lib/campus/registry";
-import { NAV_CAMPUS, NAV_CAMPUS_V3 } from "@/components/sf/nav";
+import { NAV_CAMPUS, NAV_CAMPUS_V3, NAV_CAMPUS_V3_AGENCY } from "@/components/sf/nav";
 import type { NavItem } from "@/components/sf/shell";
 
 export async function campusV3Only(userId: string): Promise<boolean> {
@@ -25,5 +25,9 @@ export async function campusV3Only(userId: string): Promise<boolean> {
 }
 
 export async function campusNav(userId: string): Promise<NavItem[]> {
-  return (await campusV3Only(userId)) ? NAV_CAMPUS_V3 : NAV_CAMPUS;
+  if (!(await campusV3Only(userId))) return NAV_CAMPUS;
+  /* 기관(진흥원 등)이면 `학생 관리` 대신 `참여자 관리` 로 적는다 */
+  const orgs = await orgsOf(userId);
+  const agency = orgs.some((o) => o.code && university(o.code)?.org_kind === "agency");
+  return agency ? NAV_CAMPUS_V3_AGENCY : NAV_CAMPUS_V3;
 }

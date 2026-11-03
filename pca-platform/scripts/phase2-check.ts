@@ -11,6 +11,7 @@
 import { query, queryOne } from "../src/lib/db";
 import { hashPassword } from "../src/lib/password";
 import { catalogFor, priceState, productByCode, sellable, siteForMarket } from "../src/lib/catalog";
+import { CURRENT_ASSESSMENT } from "../src/lib/engine-entry";
 import { settlePayment, startCheckout } from "../src/lib/orders";
 import {
   answersOf, attemptOf, currentV2, openGrants, openV2Attempt,
@@ -76,13 +77,13 @@ async function main() {
   const kr = await catalogFor("KR");
   const gl = await catalogFor("GLOBAL");
   ok("상품 KR 세 등급", kr.length === 3, kr.map((p) => p.tier).join(" "));
-  ok("상품 GLOBAL 세 등급", gl.length === 3, gl.map((p) => p.tier).join(" "));
-  ok("시장마다 통화가 다르다",
-    kr.every((p) => p.currency === "KRW") && gl.every((p) => p.currency === "USD"),
-    `${kr[0]?.currency} / ${gl[0]?.currency}`);
+  /* 가격표는 **지금 판본**(`CURRENT_ASSESSMENT`)의 상품만 판다. 글로벌은 해외
+     결제 대행사가 정해지지 않아 유료 등급을 아직 팔지 않는다(`schema_v3_sale.sql`).
+     옛 판본(ME_V2) 상품은 가격표에서 빠졌고, 아래 흐름은 상품 코드로 직접 연다 */
+  ok("상품 GLOBAL 은 아직 팔지 않는다", gl.length === 0, gl.map((p) => p.tier).join(" ") || "없음");
+  ok("시장마다 통화가 맞다", kr.every((p) => p.currency === "KRW"), `${kr[0]?.currency}`);
   ok("한 검사 엔진을 쓴다",
-    [...kr, ...gl].every((p) => p.assessment_version === "ME_V2"),
-    "ME_V2_KR 과 ME_V2_GLOBAL 로 가르지 않았다");
+    kr.every((p) => p.assessment_version === CURRENT_ASSESSMENT), CURRENT_ASSESSMENT);
 
   /* P5. 값을 지어내지 않았고, 운영 결제가 켜지면 **미승인 가격**을 거절한다.
      **표에서 아무 상품이나 집어 오지 않는다.** 전에는 `kr[0]` 을 썼는데

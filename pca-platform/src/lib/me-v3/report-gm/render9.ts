@@ -40,7 +40,7 @@ const CAVEAT = "실제 결과물의 품질과 수치는 확인하지 않았습�
 const tag = (n: number | null) => (n === null ? UNASKED : STEP[n as 0 | 1 | 2 | 3].tag);
 const strip = (s: string) => s.replace(/^[^:]+:\s*/, "");
 /** 다른 쪽을 가리키는 말을 이 쪽 안에서 끝나게 */
-const selfRef = (s: string) => s.replace("기록과 응답이 다르므로 아래 확인 방법을 참고하세요.", "응답과 기록이 이 지점에서 갈립니다.");
+const selfRef = (s: string) => s.replace("기록과 응답이 다르므로 아래 확인 방법을 참고하세요.", "응답과 기록이 이 지점에서 다릅니다.");
 /** ‘~했다’ 문장을 따옴표 안에 그대로 둔다 */
 const quote = (s: string) => `‘${s}’`;
 
@@ -420,10 +420,10 @@ function case4(e: Ed8): string {
 /** RICH: 확인된 근거 → 아직 모르는 것 → 쓰는 곳(면접 질문 · 문장) */
 const UNKNOWN_AX: Record<string, string> = {
   J1: "무엇을 뺐고 왜 뺐는지는 기록에 없습니다.", J2: "목표값을 어떻게 정했는지는 기록에 없습니다.", J3: "버린 안과 그 까닭은 기록에 없습니다.",
-  J4: "다른 방법과 견준 기록은 없습니다.", J5: "그 문서를 누가 받아 썼는지는 기록에 없습니다.", J6: "같은 조건으로 견줬는지는 기록에 없습니다.",
+  J4: "다른 방법과 비교한 기록은 없습니다.", J5: "그 문서를 누가 받아 썼는지는 기록에 없습니다.", J6: "같은 조건으로 비교했는지는 기록에 없습니다.",
   J7: "까닭을 좁힌 근거는 기록에 없습니다.", J8: "결정에 실제로 쓰였는지는 확인하지 않았습니다.",
 };
-const TITLE_AX: Record<string, string> = { "일의 범위를 먼저 자릅니다": "J1", "목표를 숫자로 바꿉니다": "J2", "기준을 세우고 고릅니다": "J3", "방법을 골라 분석합니다": "J4", "판단을 문서로 남깁니다": "J5", "대안과 같은 조건으로 견줍니다": "J6", "틀린 까닭을 좁힙니다": "J7", "결과를 결정에 씁니다": "J8" };
+const TITLE_AX: Record<string, string> = { "일의 범위를 먼저 자릅니다": "J1", "목표를 숫자로 바꿉니다": "J2", "기준을 세우고 고릅니다": "J3", "방법을 골라 분석합니다": "J4", "판단을 문서로 남깁니다": "J5", "대안과 같은 조건으로 비교합니다": "J6", "틀린 까닭을 좁힙니다": "J7", "결과를 결정에 씁니다": "J8" };
 /** RICH: 확인된 근거 → 기록으로 채울 것 → 쓰는 곳(자기소개서 첫 문장 · 면접 질문) */
 function case4Rich(e: Ed8): string {
   const rows = e.strengths.slice(0, 3).map((s) => {
@@ -482,10 +482,10 @@ function case4Contra(e: Ed8): string {
   const conflict = selfRef(ch?.tests?.[0] ?? "");
   const ASK = ["이 일을 맡아 끝까지 해 보고 싶은가?", "이 판단을 매주 해도 지치지 않을 것 같은가?", "이렇게 정한 까닭을 다른 사람에게 설명할 수 있겠는가?"];
   const items = e.plan.flatMap((p) => p.items);
-  const qs = e.versus.a.guide.situations.slice(0, 3).map((s, i) => `<div class="r"><div class="no">${i + 1}</div><div class="tx"><span class="sm">◇ ${h(s.when)} — ${h(s.decide)}</span><b>${h(ASK[i])}</b><span class="sm">→ 해 볼 자리: ${h(items[i]?.where ?? e.first.where)} · 남길 것 ${h(items[i]?.output ?? e.first.output)}</span></div><div class="ys"><span><span class="chk"></span>예</span><span><span class="chk"></span>아니오</span><span><span class="chk"></span>아직</span></div></div>`).join("");
+  const qs = e.versus.a.guide.situations.slice(0, 3).map((s, i) => `<div class="r"><div class="no">${i + 1}</div><div class="tx"><span class="sm">◇ ${h(s.when)} — ${h(s.decide)}</span><b>${h(ASK[i])}</b><span class="sm">→ 해 볼 곳: ${h(items[i]?.where ?? e.first.where)} · 남길 것 ${h(items[i]?.output ?? e.first.output)}</span></div><div class="ys"><span><span class="chk"></span>예</span><span><span class="chk"></span>아니오</span><span><span class="chk"></span>아직</span></div></div>`).join("");
   return `<div class="eye">어긋나는 곳 → 가리는 질문</div>
 <h1>해 본 일은 ${h(m.closer)} 쪽에 있고, 가려는 일은 ${h(m.target)}입니다</h1>
-<p class="lead">어느 쪽이 맞다고 이 리포트가 정하지 않습니다. 응답과 기록이 어디서 갈리는지 보이고, 학생이 직접 답할 질문 셋으로 가립니다.</p>
+<p class="lead">어느 쪽이 맞다고 이 리포트가 정하지 않습니다. 응답과 기록이 어디서 다른지 보이고, 학생이 직접 답할 질문 셋으로 가립니다.</p>
 <div class="cf">
   <div class="side"><div class="lab">● 해 본 일 — 응답</div><div class="ttl">${h(m.did.length)}개 영역</div><ul>${did}</ul></div>
   <div class="mid"><div class="lab" style="text-align:center">○ 사이에 걸친 기록</div><div class="br"><p class="sm" style="margin:0;text-align:center"><b>${h(ch?.title ?? "")}</b><br>${h(m.overlap ? strip(m.overlap) : "")}</p></div>
@@ -500,9 +500,9 @@ function case4Contra(e: Ed8): string {
 
 function judgments(e: Ed8): string {
   const rows = e.style.map((s) => `<div class="r"><div class="nm">${h(s.name)}<span class="pl">${h(JUDGE[s.axis as keyof typeof JUDGE]?.scene ?? "")}</span></div><div class="sc">${[0, 1, 2, 3].map((i) => `<span class="${s.best !== null && i === s.best ? (i === 3 ? "on top" : "on") : ""}"><i></i></span>`).join("")}</div><div class="wh">${s.best === null ? UNASKED : h(s.where)}</div></div>`).join("");
-  return `<div class="eye">여덟 판단 · 가장 깊이 응답한 자리</div>
+  return `<div class="eye">여덟 판단 · 가장 깊이 응답한 단계</div>
 <h1>${h(e.kind === "EARLY" ? "여덟 판단 모두 아직 정해진 조건 안의 응답입니다" : e.kind === "MIXED" ? "여러 판단을 스스로 해 봤다고 응답했지만, 목표 직무의 영역 밖입니다" : "기준까지 직접 정했다고 응답한 판단이 넷입니다")}</h1>
-<p class="lead">${h(e.kind === "EARLY" ? "점 하나가 그 판단에서 가장 깊이 응답한 자리입니다. 하나라도 오른쪽으로 옮기는 것이 첫 목표입니다." : "점 하나가 그 판단에서 가장 깊이 응답한 자리입니다. 응답한 깊이이고, 실력을 잰 값은 아닙니다.")}</p>
+<p class="lead">${h(e.kind === "EARLY" ? "점 하나가 그 판단에서 가장 깊이 응답한 단계입니다. 하나라도 오른쪽으로 옮기는 것이 첫 목표입니다." : "점 하나가 그 판단에서 가장 깊이 응답한 단계입니다. 응답한 깊이이고, 실력을 잰 값은 아닙니다.")}</p>
 <div class="dp">${rows}
   <div class="ax"><div class="k"><span>해 본 적 없음</span><span>지시받아 수행</span><span>직접 수행</span><span>기준까지 직접 결정</span></div></div>
 </div>
@@ -515,7 +515,7 @@ function flow(e: Ed8): string {
   const st = g.cycle.slice(0, 5).map((c) => `<div class="st"><div class="ph">${h(c.phase)}</div><div class="sc2">${h(c.scene)}</div><div class="io"><b>받는 것</b>${h(c.input)}</div><div class="io"><b>정하는 것</b>${h(c.decide)}</div><div class="io"><b>남기는 것</b>${h(c.output)}</div></div>`).join("");
   return `<div class="eye">◇ ${h(g.name)}의 한 주기 · 직무 일반 안내</div>
 <h1>${h(g.name)}은 다섯 걸음으로 돌아갑니다. 걸음마다 정하는 것이 다릅니다</h1>
-<p class="lead">${h(g.line)} 아래는 특정 기업이 아니라 직무 일반의 장면입니다.</p>
+<p class="lead">${h(g.line)} 아래는 직무 일반의 장면이고, 특정 기업의 사례는 아닙니다.</p>
 <div class="pf">${st}</div>
 <div class="sp"></div>
 <div class="g12 rule"><div class="s4"><div class="lab">판단이 필요한 순간</div></div>${g.situations.map((s) => `<div class="s8" style="grid-column:span 8"><p class="sm" style="margin:0 0 1.6mm"><b>${h(s.when)}</b> — ${h(s.decide)}</p></div><div class="s4"></div>`).join("").replace(/<div class="s4"><\/div>$/, "")}</div>`;
@@ -524,7 +524,7 @@ function flow(e: Ed8): string {
 function timeline(e: Ed8): string {
   const rows = e.chains.map((c) => `<div class="r"><div class="when"><b>${h(c.period)}</b>${h(c.kind)}</div><div class="main"><h2 style="margin:0">${mk("학생 자기기록")}${h(c.title)}</h2>
     <div class="rows">${c.rows.map((r) => `<div class="${r.items.length ? "" : "empty"}"><small>${h(r.label)}</small>${r.items.length ? h(r.items.join(" · ")) : h(r.empty)}</div>`).join("")}</div>
-    <div class="lab" style="margin-top:3mm">응답과 기록을 견주면</div><ul class="ln">${c.tests.map((t) => `<li>${h(selfRef(t))}</li>`).join("")}</ul></div></div>`).join("");
+    <div class="lab" style="margin-top:3mm">응답과 기록을 비교하면</div><ul class="ln">${c.tests.map((t) => `<li>${h(selfRef(t))}</li>`).join("")}</ul></div></div>`).join("");
   const empty = e.chains.reduce((n, c) => n + c.rows.filter((r) => !r.items.length).length, 0);
   return `<div class="eye">○ 경험 타임라인 · 학생이 적은 기록</div>
 <h1>적어 둔 경험 ${e.chains.length}개, 아직 빈 칸 ${empty}개</h1>

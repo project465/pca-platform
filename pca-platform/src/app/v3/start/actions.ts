@@ -3,12 +3,16 @@
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";
 import { retakeState } from "@/lib/me-v3/retake";
+import { upgradeTarget } from "@/lib/me-v3/upgrade";
 import { clearCampusEntry } from "@/lib/campus/entry";
 import { pickRequired } from "@/lib/campus/registry";
 import { startGate } from "@/lib/campus/start-gate";
 import {
   currentAttempt, openAttempt, setProfile,
 } from "@/lib/me-v3/runtime/session";
+import { sellableCores } from "@/lib/me-v3/core-registry";
+import { explicitLang } from "@/lib/locale-server";
+import { resolveMarket } from "@/lib/market";
 import type { GradField, Stage, Tier } from "@/lib/me-v3/scoring/types";
 
 const STAGES: Stage[] = ["bachelor", "master", "phd", "postdoc"];
@@ -33,7 +37,9 @@ export async function startV3(form: FormData): Promise<void> {
   /* **고른 전공을 돌려보낼 때도 들고 간다.** 빠뜨리면 학업 단계를 고르지
      않아 돌아온 사람이 그 다음에 **기본 전공으로** 시작한다 */
   const picked = String(form.get("core") ?? "").trim();
-  const back = picked ? `&core=${encodeURIComponent(picked)}` : "";
+  const langQ = String(form.get("lang") ?? "").trim();
+  const back = (picked ? `&core=${encodeURIComponent(picked)}` : "")
+    + (langQ ? `&lang=${encodeURIComponent(langQ)}` : "");
   if (!STAGES.includes(stage as Stage)) redirect(`/v3/start?e=stage${back}`);
   const gradField = stage === "bachelor" ? null
     : FIELDS.includes(field as GradField) ? (field as GradField) : null;
@@ -82,6 +88,10 @@ export async function startV3(form: FormData): Promise<void> {
      보내는 길이 남아 있으면 끝낸 사람의 응시가 하나 더 생긴다. **다시 여는
      권한은 그 길의 이용권만 센다**: 학교 응시를 한 번 끝낸 학생이 산 개인
      이용권으로 학교 응시를 하나 더 여는 길이 없다 */
+  /* **산 등급이 지난 응시보다 높으면 새로 열지 않고 넓힌다**(`upgrade.ts`).
+     새로 열면 같은 사람의 응답이 두 벌 쌓이고 앞에서 답한 것을 다시 푼다 */
+  if (gate.kind !== "campus" && (await upgradeTarget(user.id))) redirect("/v3/upgrade");
+
   const retake = await retakeState(user.id);
   if (retake.done > 0 && !gate.grants.length && retake.lastAttemptId) {
     redirect(gate.kind === "campus"
@@ -135,11 +145,26 @@ export async function startV3(form: FormData): Promise<void> {
   /* **고른 전공을 그 응시에 적는다**(규격 §20). 폼이 들고 온 값이고,
      믿는 자리는 `openAttempt()` 하나다: 그 시장에서 응시할 수 있는 Core
      가 아니면 거기서 버리고 기본 전공으로 연다(학교 맥락이 늘 먼저다) */
+  /**
+   * **시장과 언어를 응시에 넘긴다**(영어판 1차). 학교 진입은 늘 한국 시장이다.
+   *
+   * 고른 전공이 그 시장에서 응시할 수 없으면 한국 시장으로 연다: 전에는 시장이
+   * 늘 한국이었고, 글로벌 쿠키를 가진 사람이 한국 전용 전공을 골랐을 때 그
+   * 전공이 조용히 기본 전공으로 바뀌면 고른 것과 다른 자로 재게 된다.
+   * 언어는 사람이 **직접 고른 것만** 넘긴다(`explicitLang`): 고른 적이 없으면
+   * 시장의 기본 언어가 정한다.
+   */
+  const mk = (await resolveMarket().catch(() => null))?.market ?? "KR";
+  const market = campus ? "KR"
+    : picked && !sellableCores(mk).some((c) => c.code === picked) ? "KR" : mk;
+  const lang = campus ? null : await explicitLang(langQ || null);
   const a = await openAttempt({
     userId: user.id, tier, stage: stage as Stage, gradField,
     entitlementId: grants[0]?.entitlement_id ?? null,
     campus,
     core: picked || null,
+    market,
+    lang,
   });
   /* 응시 줄에 적혔으므로 쿠키는 더 들고 있지 않는다 */
   await clearCampusEntry();

@@ -43,8 +43,8 @@ export async function campusAttemptState(
 
 /** 단추와 그 아래 한 줄. **누르면 일어나는 일 그대로 적는다** */
 export const CAMPUS_CTA_KO = {
-  start: { label: "검사 시작하기", note: "문항마다 저장되어 창을 닫아도 보던 자리에서 이어집니다." },
-  resume: { label: "이어하기", note: "마지막으로 답한 자리에서 이어집니다. 앞에 답한 것은 그대로 남아 있습니다." },
+  start: { label: "검사 시작하기", note: "문항마다 저장되어 창을 닫아도 보던 문항에서 이어집니다." },
+  resume: { label: "이어하기", note: "마지막으로 답한 문항에서 이어집니다. 앞에 답한 것은 그대로 남아 있습니다." },
   result: { label: "결과 보기", note: "검사는 한 번 응시합니다. 다시 응시해야 할 사정이 있으면 학과 담당자에게 말씀해 주세요." },
   retake: { label: "다시 검사 시작하기", note: "지난 결과는 지워지지 않고 그대로 남습니다. 새로 응시한 결과는 따로 한 번 더 쌓입니다." },
 } as const;

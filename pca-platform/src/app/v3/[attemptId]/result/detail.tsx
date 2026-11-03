@@ -19,14 +19,15 @@ import { useState } from "react";
  * 실제로 여덟 축이 사라진 종이가 뽑혔다.
  */
 export default function Detail(
-  { label, note, children }: { label: string; note?: string; children: React.ReactNode },
+  { label, note, children, lang = "ko" }:
+    { label: string; note?: string; children: React.ReactNode; lang?: "ko" | "en" },
 ) {
   const [open, setOpen] = useState(false);
   return (
     <div className={`rs-open${open ? " is-on" : ""}`}>
       <button type="button" className="rs-openbtn" aria-expanded={open}
         onClick={() => setOpen((v) => !v)}>
-        <b>{open ? "자세한 내용 접기" : label}</b>
+        <b>{open ? (lang === "en" ? "Hide details" : "자세한 내용 접기") : label}</b>
         {note && !open ? <small>{note}</small> : null}
         <i aria-hidden>{open ? "▴" : "▾"}</i>
       </button>

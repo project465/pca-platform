@@ -13,8 +13,12 @@ import LogoutButton from "@/components/logout-button";
 import LoginMethods from "./login-methods";
 import { isProvider, PROVIDER_LABEL } from "@/lib/auth-accounts";
 import { queryOne } from "@/lib/db";
+import { activeTrack } from "@/lib/track";
 
-export const metadata = { title: `계정 · ${BRAND.root}` };
+export async function generateMetadata() {
+  const en = (await resolveLang().catch(() => "ko")) === "en";
+  return { title: `${en ? "Account" : "계정"} · ${BRAND.root}` };
+}
 
 /**
  * 계정.
@@ -42,6 +46,7 @@ export default async function AccountHome({
   const lang = await resolveLang(q);
   const L = toLang2(lang);
   const T = txer(L);
+  const en = L === "en";
 
   /* 지금 검사와 옛 검사를 같은 칸에 섞지 않는다. 여기서 보는 것은
      `그쪽에 결과가 있는가` 하나뿐이다 */
@@ -55,7 +60,7 @@ export default async function AccountHome({
    * 들어온 학생이 `계정` 을 누르는 순간 500 을 받았다. 모르면 묻지 않는다.
    */
   const core = await coreIfAny(user.id);
-  const [v3, v2, held] = await Promise.all([
+  const [v3, v2, held, track] = await Promise.all([
     core ? currentState(user.id) : Promise.resolve(null),
     v2State(user.id),
     /* **없는 기록으로 가는 길을 세우지 않는다.** 학교가 발급한 계정은 옛
@@ -67,13 +72,14 @@ export default async function AccountHome({
            OR EXISTS (SELECT 1 FROM evidence_profiles WHERE user_id = $1) AS old,
               EXISTS (SELECT 1 FROM orders WHERE user_id = $1) AS orders`,
       [user.id]).catch(() => ({ old: true, orders: true })),
+    activeTrack(user.id),
   ]);
   const hasOld = held?.old ?? true;
   const hasOrders = held?.orders ?? true;
 
   return (
-    <CmShell active="/my" title="계정">
-      <CmHead title="계정" lead={T("acLead")}
+    <CmShell active="/my" title={L === "en" ? "Account" : "계정"} lang={L === "en" ? "en" : "ko"}>
+      <CmHead title={L === "en" ? "Account" : "계정"} lead={T("acLead")}
         /* **나가는 길이 한 자리에는 있어야 한다.** 계정 쪽이 작업공간
            껍데기로 옮겨 오면서 로그아웃이 **어느 손님 화면에도 없는
            상태**가 됐다(`components/sf/shell` 에만 남아 있었고 그쪽은
@@ -84,28 +90,46 @@ export default async function AccountHome({
 
       <div className="cm-grid">
         <section className="cm-card">
-          <h2><Icon name="user" size={17} />계정 정보</h2>
+          <h2><Icon name="user" size={17} />{en ? "Your account" : "계정 정보"}</h2>
           <dl className="cm-dl">
             <div>
-              <dt>이름</dt>
+              <dt>{en ? "Name" : "이름"}</dt>
               <dd>{user.name}</dd>
             </div>
-            <div>
-              <dt>구분</dt>
-              <dd>{ROLE_LABEL[user.role] ?? ""}</dd>
-            </div>
+            {/* 역할 이름은 한국어 사전뿐이다. 영어 화면에 서는 계정은 늘 개인
+                회원이라 그 줄이 말해 줄 것이 없다 */}
+            {en ? null : (
+              <div>
+                <dt>구분</dt>
+                <dd>{ROLE_LABEL[user.role] ?? ""}</dd>
+              </div>
+            )}
           </dl>
           <div className="cm-acts">
-            <Link href="/my/account" className="cm-btn">계정 설정과 탈퇴</Link>
+            <Link href="/my/account" className="cm-btn">{en ? "Account settings and deletion" : "계정 설정과 탈퇴"}</Link>
           </div>
         </section>
 
+        {/* ── MAT ── 기간이 언제 끝나는지는 이 계정에서 찾는 사람이 많다.
+            **영어 화면에는 세우지 않는다**: 국내 결제 상품이다(`WS_KR_ONLY`) */}
+        {en ? null : <section className="cm-card">
+          <h2><Icon name="clock" size={17} />MAT</h2>
+          <p>
+            {track.on && track.until
+              ? `${new Intl.DateTimeFormat("ko-KR", { timeZone: "Asia/Seoul", year: "numeric", month: "long", day: "numeric" }).format(new Date(track.until))}까지 열려 있습니다. 자동으로 갱신되지 않습니다.`
+              : "열려 있지 않습니다. 30일권과 90일권이 있습니다."}
+          </p>
+          <div className="cm-acts">
+            <Link href="/me/track" className="cm-btn">{track.on ? "MAT 열기" : "MAT 보기"}</Link>
+          </div>
+        </section>}
+
         {hasOrders ? (
           <section className="cm-card">
-            <h2><Icon name="cart" size={17} />주문과 결제</h2>
+            <h2><Icon name="cart" size={17} />{en ? "Orders and payments" : "주문과 결제"}</h2>
             <p>{T("acOrdersBody")}</p>
             <div className="cm-acts">
-              <Link href="/support" className="cm-btn">문의하기</Link>
+              <Link href="/support" className="cm-btn">{en ? "Contact support" : "문의하기"}</Link>
             </div>
           </section>
         ) : null}
@@ -116,20 +140,25 @@ export default async function AccountHome({
             모른 채 기다린다 */}
         <LoginMethods
             userId={user.id}
+            lang={L === "en" ? "en" : "ko"}
             notice={
               isProvider(justLinked ?? "")
-                ? `${PROVIDER_LABEL[justLinked as "google" | "apple"]} 를 연결했습니다.`
+                ? (L === "en" ? `${PROVIDER_LABEL[justLinked as "google" | "apple"]} is connected.`
+                  : `${PROVIDER_LABEL[justLinked as "google" | "apple"]} 를 연결했습니다.`)
                 : linkErr === "taken"
-                  ? "그 계정은 이미 다른 CareerMatri 계정에 연결돼 있습니다."
+                  ? (L === "en" ? "That account is already connected to a different CareerMatri account."
+                    : "그 계정은 이미 다른 CareerMatri 계정에 연결돼 있습니다.")
                   : linkErr === "off"
-                    ? "그 로그인 방법은 지금 켜져 있지 않습니다."
+                    ? (L === "en" ? "That sign-in option isn't available right now."
+                      : "그 로그인 방법은 지금 켜져 있지 않습니다.")
                     : undefined
             }
           />
 
         <section className="cm-card">
-          <h2><Icon name="globe" size={17} />언어</h2>
-          <p>고르면 바로 바뀌고 다음에 들어올 때도 그대로입니다.</p>
+          <h2><Icon name="globe" size={17} />{L === "en" ? "Language" : "언어"}</h2>
+          <p>{L === "en" ? "Changes right away and stays the same next time you sign in."
+            : "고르면 바로 바뀌고 다음에 들어올 때도 그대로입니다."}</p>
           <div className="cm-acts">
             <LangSelect current={L} />
           </div>

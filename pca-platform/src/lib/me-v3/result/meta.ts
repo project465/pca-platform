@@ -9,7 +9,7 @@
  * 등록부, 날짜는 응시 줄이 들고 있는 것을 그대로 읽는다.
  */
 import { queryOne } from "@/lib/db";
-import { core as coreEntry, specializationOf } from "@/lib/me-v3/core-registry";
+import { core as coreEntry, sharedFile, specializationOf } from "@/lib/me-v3/core-registry";
 import { facultyOf, findLeaf, university } from "@/lib/campus/registry";
 
 export type ResultMeta = {
@@ -28,6 +28,8 @@ export type ResultMeta = {
    * 같은 갈래가 Core 둘에 설 수 있다.
    */
   specializationCode: string | null;
+  /** 학교 코드. **화면에 적지 않는다**: 그 학교 지역의 기업 명단을 고를 때만 쓴다 */
+  universityCode: string | null;
   /** 응답을 끝낸 날. 없으면 결과를 굳힌 날 */
   answeredOn: string | null;
 };
@@ -37,7 +39,9 @@ type Row = {
   specialization_code: string | null; answered: string | null;
 };
 
-export async function resultMeta(attemptId: string, core: string): Promise<ResultMeta> {
+export async function resultMeta(
+  attemptId: string, core: string, lang = "ko",
+): Promise<ResultMeta> {
   const row = await queryOne<Row>(
     `SELECT a.university_code, a.department_code, a.specialization_code,
             to_char(coalesce(a.submitted_at, s.created_at), 'YYYY-MM-DD') AS answered
@@ -49,6 +53,11 @@ export async function resultMeta(attemptId: string, core: string): Promise<Resul
 
   let major: string | null = null;
   try { major = coreEntry(core).name_ko ?? null; } catch { major = null; }
+  /* 다른 언어의 전공 이름은 공용 원고가 든다. 없으면 등록부의 영어 이름이다 */
+  if (lang !== "ko") {
+    try { major = sharedFile(core, lang).core_name || coreEntry(core).name_en; }
+    catch { try { major = coreEntry(core).name_en; } catch { major = null; } }
+  }
 
   let school: string | null = null;
   let department: string | null = null;
@@ -68,13 +77,14 @@ export async function resultMeta(attemptId: string, core: string): Promise<Resul
   }
   /* 갈래 이름은 **Core 등록부**가 정본이다. 응시 줄에 적힌 코드를 그대로
      찍지 않는다: 손님 화면에 안쪽 코드가 서면 읽는 사람이 고장으로 본다 */
-  if (row?.specialization_code) {
+  if (row?.specialization_code && lang === "ko") {
     specialization = specializationOf(core, row.specialization_code)?.name_ko ?? null;
   }
 
   return {
     major, school, department, specialization,
     specializationCode: row?.specialization_code ?? null,
+    universityCode: u ? row?.university_code ?? null : null,
     answeredOn: row?.answered ?? null,
   };
 }

@@ -27,6 +27,7 @@ export default function CheckoutForm({
   upgradesAttemptId,
   provider,
   globalReady,
+  foreignOnly = false,
   lang,
 }: {
   productCode: string;
@@ -35,6 +36,12 @@ export default function CheckoutForm({
   provider: string;
   /** 해외 카드 채널이 설정돼 있는가. 없으면 선택지를 열지 않는다 */
   globalReady: boolean;
+  /**
+   * 원화가 아닌 상품(해외판 MAT, 달러). **국내 카드로는 낼 수 없다**: 국내 채널은
+   * 원화만 받아서, 그쪽으로 보내면 결제창에서 실패한다. 해외 카드만 열고, 그
+   * 채널이 아직 없으면 결제 단추를 끈다(`payGlobalOff` 가 까닭을 적는다)
+   */
+  foreignOnly?: boolean;
   lang: Lang;
 }) {
   const [state, action, pending] = useActionState<CheckoutState, FormData>(createOrderAction, {});
@@ -64,8 +71,23 @@ export default function CheckoutForm({
         customData: ticket.orderNo,
         redirectUrl: ticket.redirectUrl,
       });
-      // 창을 닫거나 실패하면 code 가 온다. 성공은 redirectUrl 로 빠진다
-      if (res?.code) setSdkError(res.message ?? "결제가 취소되었습니다.");
+      // 창을 닫거나 실패하면 code 가 온다
+      if (res?.code) {
+        setSdkError(res.message ?? "결제가 취소되었습니다.");
+        setLaunching(false);
+        return;
+      }
+      /* **PC 에서는 성공해도 돌아오지 않을 수 있다.** 포트원 SDK 는
+         `redirectUrl` 이 있어도 `forceRedirect` 가 아니면 PC 결제창을
+         반환값 방식으로 끝낸다(포트원 V2 결제창 가이드). 그대로 두면 결제를
+         마친 손님이 결제 화면에 멈춰 선다. 완료 화면으로 직접 보내고,
+         거기서 서버가 PG 에 다시 물어 확정한다(값을 믿지 않는 것은 같다) */
+      if (res) {
+        const sep = ticket.redirectUrl.includes("?") ? "&" : "?";
+        window.location.assign(
+          `${ticket.redirectUrl}${sep}paymentId=${encodeURIComponent(ticket.providerPaymentId)}`);
+        return;
+      }
       setLaunching(false);
     })();
   }, [ticket, provider, launching]);
@@ -116,14 +138,16 @@ export default function CheckoutForm({
       <fieldset className="paymethod">
         <legend>{t("payMethodLabel", lang)}</legend>
         <label>
-          <input type="radio" name="region" value="domestic" defaultChecked />
+          <input type="radio" name="region" value="domestic"
+            defaultChecked={!foreignOnly} disabled={foreignOnly} />
           <span>
             <b>{t("payDomestic", lang)}</b>
             <em>{t("payDomesticNote", lang)}</em>
           </span>
         </label>
         <label className={globalReady ? undefined : "off"}>
-          <input type="radio" name="region" value="global" disabled={!globalReady} />
+          <input type="radio" name="region" value="global" disabled={!globalReady}
+            defaultChecked={foreignOnly && globalReady} />
           <span>
             <b>{t("payGlobal", lang)}</b>
             <em>{globalReady ? t("payGlobalNote", lang) : t("payGlobalOff", lang)}</em>
@@ -133,7 +157,8 @@ export default function CheckoutForm({
 
       {state.error ? <p className="err">{state.error}</p> : null}
       {sdkError ? <p className="err">{sdkError}</p> : null}
-      <button className="act solid full" type="submit" disabled={pending || launching}>
+      <button className="act solid full" type="submit"
+        disabled={pending || launching || (foreignOnly && !globalReady)}>
         {pending || launching ? t("payOpening", lang) : t("payGo", lang)}
       </button>
     </form>

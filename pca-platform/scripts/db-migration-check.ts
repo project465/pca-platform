@@ -76,7 +76,13 @@ function initFiles(ref: string | null): string[] {
     return [...c.base, ...c.upgrade];
   }
   const at = (p: string) => sh("git", ["show", `${ref}:./${p}`]);
-  const pkg = JSON.parse(at("package.json")) as { scripts: Record<string, string> };
+  /* 운영 갈래처럼 그 판본에 이미 `db-chain.json` 이 있으면 그것을 읽는다.
+     예전 방식으로 읽으면 목록이 비어 옛 DB 가 빈 채로 서고, 그러면
+     `이 DB 는 비어 있습니다` 로 끝나 아무것도 묻지 않는 검사가 된다 */
+  let chain: { base: string[]; upgrade: string[] } | null = null;
+  try { chain = JSON.parse(at(CHAIN)); } catch { chain = null; }
+  if (chain) return [...chain.base, ...chain.upgrade];
+  const pkg =JSON.parse(at("package.json")) as { scripts: Record<string, string> };
   const fileOf = (name: string): string[] => {
     const s = pkg.scripts[name];
     if (!s) return [];
@@ -191,6 +197,13 @@ function codeRefs(tables: Set<string>): Map<string, Set<string>> {
         .filter((t) => tables.has(t));
       if (named.length !== 1) continue;
       const only = named[0];
+      /* **`AS 이름` 으로 지은 이름은 칸이 아니다.** 학교 집계가 안쪽 질의에서
+         `'a'::text AS src` 로 이름을 짓고 바깥에서 `WHERE src = 'a'` 로
+         읽는데, 글자로 적힌 표가 `campus_students` 하나뿐이라 `src` 가 그
+         표의 칸으로 세어져 **없는 칸** 으로 걸렸다. 질의는 멀쩡했고 이
+         검사만 오래 빨갰다. 같은 글 안에서 지은 이름은 세지 않는다 */
+      const aliases = new Set([...sql.matchAll(/\bAS\s+([a-z][a-z0-9_]*)/gi)]
+        .map((x) => x[1].toLowerCase()));
       /* **`IN` 과 `IS` 에 낱말 경계를 붙인다.** 안 붙이면 `i` 깃발 때문에
          `straightline_run` 한가운데의 `in` 이 연산자로 잡혀서, 칸 이름이
          `straightl` 로 잘린 채 `없는 칸` 으로 걸린다. 멀쩡한 칸 스물한
@@ -205,6 +218,7 @@ function codeRefs(tables: Set<string>): Map<string, Set<string>> {
         /(?:\bWHERE\b|\bAND\b|\bOR\b|\bSET\b|,)\s*([a-z][a-z0-9_]{2,})\s*(?:=|<>|>=|<=|>|<|\bIS\b|\bIN\b)/gi)) {
         const c = m[1].toLowerCase();
         if (["and", "or", "not", "null", "true", "false", "select", "where", "set"].includes(c)) continue;
+        if (aliases.has(c)) continue;
         add(only, c);
       }
     }

@@ -9,8 +9,11 @@
  */
 import "../surface.css";
 import "../me/platform.css";
+import { pageTitle } from "@/lib/page-title";
 
-export const metadata = { title: "계정 · CareerMatri" };
+export async function generateMetadata() {
+  return pageTitle("계정 · CareerMatri");
+}
 
 export default function MyLayout({ children }: { children: React.ReactNode }) {
   return children;

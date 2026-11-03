@@ -1220,7 +1220,7 @@
    "role": "ROLE_ANALYSIS_V1",
    "role_name": "분석·해석",
    "strength": "중심",
-   "appears_as": "분석·해석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "분석·해석 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J7"
    ]
@@ -1279,7 +1279,7 @@
    "role": "ROLE_RESEARCH_V1",
    "role_name": "연구",
    "strength": "중심",
-   "appears_as": "연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "연구 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J2",
@@ -1328,7 +1328,7 @@
    "role": "ROLE_ASSESS_V1",
    "role_name": "평가·판정",
    "strength": "중심",
-   "appears_as": "평가·판정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "평가·판정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J7"
    ]
@@ -1339,7 +1339,7 @@
    "role": "ROLE_TOOLBUILD_V1",
    "role_name": "도구·콘텐츠 제작",
    "strength": "중심",
-   "appears_as": "도구·콘텐츠 제작 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "도구·콘텐츠 제작 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J4",
@@ -1390,7 +1390,7 @@
    "role": "ROLE_QUALITY_V1",
    "role_name": "윤리·품질 관리",
    "strength": "중심",
-   "appears_as": "윤리·품질 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "윤리·품질 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4"
    ]
@@ -1437,7 +1437,7 @@
    "role": "ROLE_TOOLBUILD_V1",
    "role_name": "도구·콘텐츠 제작",
    "strength": "중심",
-   "appears_as": "도구·콘텐츠 제작 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "도구·콘텐츠 제작 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J7"
    ]
@@ -1472,7 +1472,7 @@
    "role": "ROLE_RESEARCH_V1",
    "role_name": "연구",
    "strength": "중심",
-   "appears_as": "연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "연구 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J5"
    ]
@@ -1483,7 +1483,7 @@
    "role": "ROLE_QUALITY_V1",
    "role_name": "윤리·품질 관리",
    "strength": "중심",
-   "appears_as": "윤리·품질 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "윤리·품질 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3"
    ]
@@ -1506,7 +1506,7 @@
    "role": "ROLE_ANALYSIS_V1",
    "role_name": "분석·해석",
    "strength": "중심",
-   "appears_as": "분석·해석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "분석·해석 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J4",
@@ -1568,7 +1568,7 @@
    "role": "ROLE_RESEARCH_V1",
    "role_name": "연구",
    "strength": "중심",
-   "appears_as": "연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "연구 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4",
     "J7",
@@ -1617,7 +1617,7 @@
    "role": "ROLE_ASSESS_V1",
    "role_name": "평가·판정",
    "strength": "중심",
-   "appears_as": "평가·판정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "평가·판정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -1739,7 +1739,7 @@
    "role": "ROLE_PRACTICE_V1",
    "role_name": "현장 운영",
    "strength": "중심",
-   "appears_as": "현장 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "현장 운영 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J6"
    ]
@@ -1750,7 +1750,7 @@
    "role": "ROLE_CASEMGMT_V1",
    "role_name": "사례·과제 관리",
    "strength": "중심",
-   "appears_as": "사례·과제 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "사례·과제 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J8"
@@ -1834,7 +1834,7 @@
    "role": "ROLE_PRACTICE_V1",
    "role_name": "현장 운영",
    "strength": "중심",
-   "appears_as": "현장 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "현장 운영 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -1932,7 +1932,7 @@
    "role": "ROLE_PRACTICE_V1",
    "role_name": "현장 운영",
    "strength": "중심",
-   "appears_as": "현장 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "현장 운영 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5"
@@ -1944,7 +1944,7 @@
    "role": "ROLE_CASEMGMT_V1",
    "role_name": "사례·과제 관리",
    "strength": "중심",
-   "appears_as": "사례·과제 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "사례·과제 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J6"
@@ -1980,7 +1980,7 @@
    "role": "ROLE_PROGRAM_V1",
    "role_name": "프로그램·제도 설계",
    "strength": "중심",
-   "appears_as": "프로그램·제도 설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "프로그램·제도 설계 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J3",
@@ -2018,7 +2018,7 @@
    "role": "ROLE_TOOLBUILD_V1",
    "role_name": "도구·콘텐츠 제작",
    "strength": "중심",
-   "appears_as": "도구·콘텐츠 제작 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "도구·콘텐츠 제작 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J5"
    ]
@@ -2077,7 +2077,7 @@
    "role": "ROLE_PROGRAM_V1",
    "role_name": "프로그램·제도 설계",
    "strength": "중심",
-   "appears_as": "프로그램·제도 설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "프로그램·제도 설계 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J6"
    ]
@@ -2100,7 +2100,7 @@
    "role": "ROLE_ASSESS_V1",
    "role_name": "평가·판정",
    "strength": "중심",
-   "appears_as": "평가·판정 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "평가·판정 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J3"
@@ -2184,7 +2184,7 @@
    "role": "ROLE_ANALYSIS_V1",
    "role_name": "분석·해석",
    "strength": "중심",
-   "appears_as": "분석·해석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "분석·해석 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J8"
@@ -2268,7 +2268,7 @@
    "role": "ROLE_PROGRAM_V1",
    "role_name": "프로그램·제도 설계",
    "strength": "중심",
-   "appears_as": "프로그램·제도 설계 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "프로그램·제도 설계 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J1",
     "J8"
@@ -2328,7 +2328,7 @@
    "role": "ROLE_CASEMGMT_V1",
    "role_name": "사례·과제 관리",
    "strength": "중심",
-   "appears_as": "사례·과제 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "사례·과제 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J4",
     "J5",
@@ -2353,7 +2353,7 @@
    "role": "ROLE_QUALITY_V1",
    "role_name": "윤리·품질 관리",
    "strength": "중심",
-   "appears_as": "윤리·품질 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "윤리·품질 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J5",

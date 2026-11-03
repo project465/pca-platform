@@ -92,7 +92,7 @@ PORTONE_WEBHOOK_SECRET=...
 | 배포 | **코드는 됐다** | `docker compose up -d` 한 줄. `docs/metri/23_operations.md` |
 | 밤 당번 | **됐다** | `tick` 컨테이너가 5분마다 `/api/ops/tick` 을 두드린다 |
 | 아침 브리핑 | **됐다** | `npm run metri:ops`: 막힌 것과 사람이 할 일이 한 장 |
-| 도메인 | **이름 확정, 미구매** | `careermatri.co.kr`(한국 소개) · `careermatri.com`(글로벌) · `app.careermatri.com`(플랫폼). DNS 는 조용하지만 등록 여부는 대행자에서 확인하고 산다 |
+| 도메인 | **`careermatri.com` 구매 완료** · 나머지 확인 필요 | `careermatri.com`(글로벌) — **2026-10-02 구매·DNS 연결 완료**. 루트 A `216.198.79.1` · `www`·`kr`·`kz` CNAME 전부 Vercel Valid Configuration. 단, 지금 루트가 가리키는 것은 단체 플랫폼 `pca-web` 이다 — 소개 사이트를 루트에 올릴 때 Vercel 프로젝트를 바꾸고 플랫폼은 `app.careermatri.com` 으로 내린다. `app.careermatri.com`(플랫폼)은 소유 도메인의 하위라 Vercel 도메인 한 줄 + CNAME 한 줄이면 되지만 **아직 안 붙였다**. `careermatri.co.kr`(한국 소개)은 **확인 필요** — 등록 여부 미확인이다 |
 | HTTPS | 필수 | 쿠키가 세션이므로 없으면 안 된다 |
 | `AUTH_SECRET` | 필수 | `openssl rand -base64 32`. 개발용 값을 그대로 쓰지 말 것 |
 | 웹훅 주소 | 필수 | PortOne 콘솔에 `https://.../api/payments/webhook` 등록 |

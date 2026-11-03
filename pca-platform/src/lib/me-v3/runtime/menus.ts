@@ -12,8 +12,11 @@
  * 출처이고(네 단계의 뜻이 판정 규칙과 묶여 있다), 여기서는 그것을 읽어
  * 그대로 내놓는다. 다른 말로 바꿔 적으면 같은 응답이 다른 뜻이 된다.
  */
-import { levelOptions } from "./session";
+import { itemOf, levelOptions } from "./session";
 import { translateMenu } from "../student/translate";
+import type { V3Lang } from "../i18n";
+import { COPY_KO } from "./copy.ko";
+import { copyFor } from "./copy";
 
 export type Control =
   /** 보기 넷(L0~L3). 고른 자리가 `index` */
@@ -51,7 +54,7 @@ export type Control =
       note?: { label: string; placeholder: string } };
 
 /** 다섯 칸의 말. 문면이 "…하고 싶다" 꼴이라 동의 정도로 받는다 */
-export const SCALE5 = ["전혀 아니다", "아니다", "보통이다", "그렇다", "매우 그렇다"];
+export const SCALE5 = COPY_KO.menus.scale5;
 /**
  * 격자의 경험 칸. **횟수를 묻고 수준을 묻지 않는다.**
  *
@@ -66,10 +69,10 @@ export const SCALE5 = ["전혀 아니다", "아니다", "보통이다", "그렇�
  * 응답의 뜻이 그대로다. 자리는 `option_values` 가 정한다: 낱말을 차례로
  * 늘어놓으면 은행의 보기 차례가 바뀌는 날 뜻이 어긋난다.
  */
-export const EXPOSURE = ["없음", "1~2회", "3회 이상"];
+export const EXPOSURE = COPY_KO.menus.exposure;
 
-/** 척도 밖. **값이 비어 있다는 뜻이지 관심이 낮다는 뜻이 아니다** */
-const SHORT_UNKNOWN = "모르겠다";
+/* 척도 밖(`모르겠다`). **값이 비어 있다는 뜻이지 관심이 낮다는 뜻이 아니다**.
+   글은 언어마다 `copy.*.ts` 의 `menus.unknown` 이 든다 */
 
 /**
  * 척도 다섯 칸의 **밝혀 적는 말**. 재는 것마다 갈린다(규격 §10).
@@ -89,16 +92,7 @@ const SHORT_UNKNOWN = "모르겠다";
  * 은행의 `options`(`전혀 관심 없다` …)와 `option_values`(1~5·null)가
  * 그대로이고, 이 표는 화면이 그것을 어떻게 적는가일 뿐이다.
  */
-const FULL_SCALE5: Record<string, Record<number, string>> = {
-  interest: {
-    1: "전혀 관심 없음", 2: "관심 적음", 3: "보통",
-    4: "관심 있음", 5: "매우 관심 있음",
-  },
-  learning_intent: {
-    1: "전혀 배우고 싶지 않음", 2: "별로 배우고 싶지 않음", 3: "보통",
-    4: "배우고 싶음", 5: "매우 배우고 싶음",
-  },
-};
+/* 표는 언어마다 `copy.*.ts` 의 `menus.fullScale5` 가 든다 */
 
 /**
  * 밝혀 적는 말. **번호를 앞에 붙인다**(규격 §10).
@@ -111,10 +105,13 @@ const FULL_SCALE5: Record<string, Record<number, string>> = {
  * 단계이고, 번호를 붙이면 `1점 · 2점 · 3점 · 4점` 으로 읽힌다. 여기는
  * 정도를 묻는 척도라 번호가 그 뜻과 어긋나지 않는다.
  */
-export function fullOf(axis: string, value: number | null, label: string): string {
+export function fullOf(
+  axis: string, value: number | null, label: string, lang?: V3Lang,
+): string {
+  const M = copyFor(lang).menus;
   if (value === null) return label;
-  if (axis === "exposure") return EXPOSURE[value] ?? label;
-  const t = FULL_SCALE5[axis];
+  if (axis === "exposure") return M.exposure[value] ?? label;
+  const t = M.fullScale5[axis];
   return t?.[value] ? `${value} ${t[value]}` : `${value} ${label}`;
 }
 
@@ -126,17 +123,25 @@ export function fullOf(axis: string, value: number | null, label: string): strin
  * **재는 축의 말 그대로** 돌려준다: 줄여 적은 말을 따로 들고 있으면
  * 머리와 칸이 다른 말을 하게 되고, 그 어긋남이 좁은 화면에서만 드러난다.
  */
-export function shortOf(axis: string, value: number | null, label: string): string {
-  if (value === null) return SHORT_UNKNOWN;
+export function shortOf(
+  axis: string, value: number | null, label: string, lang?: V3Lang,
+): string {
+  const M = copyFor(lang).menus;
+  if (value === null) return M.unknown;
   /* 경험은 세 칸이고 말이 이미 짧다 */
-  if (axis === "exposure") return EXPOSURE[value] ?? label;
-  return FULL_SCALE5[axis]?.[value] ?? label;
+  if (axis === "exposure") return M.exposure[value] ?? label;
+  return M.fullScale5[axis]?.[value] ?? label;
 }
 
 /** 보기를 응시 중에 정하는 문항이 읽는 것 */
 export type MenuContext = {
   /** 어느 Major Core 의 보기인가. 보기 넷의 문면이 core 의 은행에 있다 */
   core: string;
+  /**
+   * 보기 **글**의 언어. 비어 있으면 한국어다. **저장되는 값은 언어와 무관하다**:
+   * 코드거나 자리 번호거나, 글자가 값인 보기는 원본(한국어) 글자가 값이다.
+   */
+  lang?: V3Lang;
   /** 격자에서 묶인 영역 둘. 강제 선택의 보기가 된다 */
   tiedPair: { code: string; name: string }[];
   domains: { code: string; name: string }[];
@@ -159,15 +164,7 @@ export type MenuContext = {
  * 일곱을 **짧은 이름으로** 세워야 서로 견줄 수 있다. 순서는 문항
  * `PO_OC1`~`PO_OC7` 과 같다.
  */
-const ORG_TYPES = [
-  "완성품을 만드는 회사",
-  "부품·장비·소재 회사",
-  "엔지니어링 용역",
-  "국가 과제 수행 기관",
-  "대학 연구실",
-  "공공·인증 기관",
-  "소규모 조직",
-];
+/* 이름은 언어마다 `copy.*.ts` 의 `menus.orgTypes` 가 든다 */
 
 type Item = {
   item_id: string; module: string; response_scale: string | null;
@@ -184,9 +181,11 @@ type Item = {
  */
 export function controlOf(item: Item, ctx: MenuContext): Control {
   const sc = item.response_scale ?? "";
+  const lang = ctx.lang ?? "ko";
+  const M = copyFor(lang).menus;
 
   if (sc === "L0~L3" || sc === "4보기") {
-    return { kind: "level", options: levelOptions(ctx.core), guide: "" };
+    return { kind: "level", options: levelOptions(ctx.core, lang), guide: "" };
   }
   if ((sc === "5보기" || sc === "3보기")
       && item.options?.length && item.option_values?.length) {
@@ -200,14 +199,14 @@ export function controlOf(item: Item, ctx: MenuContext): Control {
         const value = (item.option_values as (number | null)[])[i] ?? null;
         return {
           value, label,
-          short: shortOf(axis, value, label),
-          full: fullOf(axis, value, label),
+          short: shortOf(axis, value, label, lang),
+          full: fullOf(axis, value, label, lang),
         };
       }),
     };
   }
-  if (sc === "5점") return { kind: "scale5", labels: SCALE5 };
-  if (sc.startsWith("없음")) return { kind: "exposure", options: EXPOSURE };
+  if (sc === "5점") return { kind: "scale5", labels: M.scale5 };
+  if (sc.startsWith("없음")) return { kind: "exposure", options: M.exposure };
 
   if (item.module === "CORE-FORCE") {
     return {
@@ -235,10 +234,10 @@ export function controlOf(item: Item, ctx: MenuContext): Control {
       kind: "choice",
       options: ctx.orgs.length
         ? ctx.orgs.map((o) => ({ value: o.code, label: o.name }))
-        : ORG_TYPES.map((label, i) => ({ value: `OC${i + 1}`, label })),
+        : M.orgTypes.map((label, i) => ({ value: `OC${i + 1}`, label })),
     };
   }
-  const t = translateMenu(ctx.core, item.item_id);
+  const t = translateMenu(ctx.core, item.item_id, lang);
   if (t) {
     return {
       kind: "choice",
@@ -247,7 +246,15 @@ export function controlOf(item: Item, ctx: MenuContext): Control {
     };
   }
   if (item.options?.length) {
-    return { kind: "choice", options: item.options.map((label) => ({ value: label, label })) };
+    /* **글자가 값인 보기는 원본 글자가 값이다.** 영어 글자를 값으로 저장하면
+       같은 답이 언어에 따라 다른 응답이 되고, 결과 모델이 그 글자를 굳힌다.
+       보이는 글만 그 언어다. 두 원고는 보기 개수와 차례가 같다 */
+    const ko = lang === "ko" ? item : (itemOf(ctx.core, item.item_id, "ko") ?? item);
+    const values = ko.options?.length === item.options.length ? ko.options : item.options;
+    return {
+      kind: "choice",
+      options: item.options.map((label, i) => ({ value: values[i], label })),
+    };
   }
   /* 여기 오면 보기가 없는 문항을 화면에 세운 것이다. 조용히 빈 보기를
      그리면 응시자는 눌리지 않는 화면을 본다 */

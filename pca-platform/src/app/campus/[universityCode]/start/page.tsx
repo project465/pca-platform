@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import "../../../surface.css";
 import "../../campus.css";
 import {
+  campusSay,
   coreOf, findLeaf, pickRequired, specializationName, statusOf, university,
 } from "@/lib/campus/registry";
 import { campusStudentOf } from "@/lib/campus/students";
@@ -35,6 +36,7 @@ export default async function CampusStart({ params }: Params) {
   const { universityCode } = await params;
   const u = university(universityCode);
   if (!u) notFound();
+  const t = campusSay(u);
   const code = u.university_code.toLowerCase();
   /* **개인 로그인으로 보내지 않는다.** `requireUser()` 는 `/login` 으로
      보내는데, 그 쪽에는 소셜 단추와 `회원가입` 링크가 있어 학교 계약
@@ -94,7 +96,7 @@ export default async function CampusStart({ params }: Params) {
         <p className="cm-cmp-eyebrow">{u.university_name} · {found.college.name}</p>
         <h1 className="cm-cmp-title">{found.leaf.name}</h1>
         <p className="cm-cmp-lead">
-          {st.kind === "resume"
+          {t(st.kind === "resume"
             ? "푸는 중인 검사가 있습니다. 이어서 답하시면 됩니다."
             : st.kind === "result"
               ? "이 학과 기준의 결과가 나와 있습니다."
@@ -104,7 +106,7 @@ export default async function CampusStart({ params }: Params) {
                   ? "관심 있는 전공을 고르면 그 전공 기준으로 검사를 시작합니다."
                   : ready
                     ? "학교에 등록된 학과입니다. 이 학과 기준으로 검사를 시작합니다."
-                    : "이 학과는 아직 검사를 시작할 수 없습니다."}
+                    : "이 학과는 아직 검사를 시작할 수 없습니다.")}
         </p>
         {st.kind === "resume" || st.kind === "result" ? (
           <div className="cm-cmp-cta-row">
@@ -160,9 +162,9 @@ export default async function CampusStart({ params }: Params) {
       {/* **학과를 다시 고르게 하지 않는다**(규격 §7). 학교가 적어 준 것을
           확인시키는 자리라, 서는 것은 고르는 칸이 아니라 읽는 줄 셋이다 */}
       <dl className="cm-cmp-facts">
-        <div><dt>학번</dt><dd>{mine.row.student_id}</dd></div>
+        <div><dt>{t("학번")}</dt><dd>{mine.row.student_id}</dd></div>
         <div><dt>이름</dt><dd>{user.name ?? "-"}</dd></div>
-        <div><dt>학과</dt><dd>{found.leaf.name}</dd></div>
+        <div><dt>{t("학과")}</dt><dd>{found.leaf.name}</dd></div>
         {picking ? (
           <div>
             <dt>검사</dt>
@@ -177,13 +179,13 @@ export default async function CampusStart({ params }: Params) {
       </dl>
 
       <p className="cm-cmp-note">
-        {st.kind !== "start"
+        {t(st.kind !== "start"
           ? cta.note
           : picking
             ? "고른 전공은 이 응시에만 적용되고 학과 소속은 그대로 남습니다."
             : ready
               ? cta.note
-              : "학과 담당자에게 알려 주시면 학교와 함께 확인해 드립니다."}
+              : "학과 담당자에게 알려 주시면 학교와 함께 확인해 드립니다.")}
       </p>
     </CampusShell>
   );
@@ -196,17 +198,18 @@ export default async function CampusStart({ params }: Params) {
  * 적어 두면 읽는 사람이 자기가 무엇을 잘못한 줄 안다.
  */
 function Blocked({ u, why }: { u: ReturnType<typeof university> & {}; why: string }) {
+  const t = campusSay(u);
   return (
     <CampusShell u={u}>
       <section className="cm-cmp-hero">
         <p className="cm-cmp-eyebrow">{u.university_name} · CareerMatri</p>
-        <h1 className="cm-cmp-title">학과 확인이 필요합니다</h1>
+        <h1 className="cm-cmp-title">{t("학과 확인이 필요합니다")}</h1>
         <p className="cm-cmp-lead">
-          등록된 학과를 확인하지 못해 검사를 시작할 수 없습니다. 학과
-          담당자에게 알려 주시면 학교와 함께 확인해 드립니다.
+          {t("등록된 학과를 확인하지 못해 검사를 시작할 수 없습니다. 학과 담당자에게"
+            + " 알려 주시면 학교와 함께 확인해 드립니다.")}
         </p>
       </section>
-      <p className="cm-cmp-note">{why}</p>
+      <p className="cm-cmp-note">{t(why)}</p>
     </CampusShell>
   );
 }

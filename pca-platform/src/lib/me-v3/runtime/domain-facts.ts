@@ -15,10 +15,12 @@ import { coreFile } from "../core-registry";
 type Domain = { code: string; artifacts?: string[]; verify_targets?: string[] };
 type Domains = { domains: Domain[] };
 
+/* 열쇠가 `core|lang` 이다: 다른 언어의 사전은 같은 이름 · 같은 구조로 따로 있다 */
 const cache = new Map<string, Domains>();
-function domains(core: string): Domain[] {
-  let d = cache.get(core);
-  if (!d) { d = coreFile<Domains>(core, "domains"); cache.set(core, d); }
+function domains(core: string, lang = "ko"): Domain[] {
+  const key = `${core}|${lang}`;
+  let d = cache.get(key);
+  if (!d) { d = coreFile<Domains>(core, "domains", undefined, lang); cache.set(key, d); }
   return d.domains;
 }
 
@@ -29,6 +31,6 @@ function domains(core: string): Domain[] {
  * 쪽부터 보라는 말만으로는 무엇을 향해 가는지 알 수 없고, 남길 것이
  * 보이면 짧은 과제 하나도 겨냥할 자리가 생긴다.
  */
-export function domainArtifacts(core: string, td: string): string[] {
-  return (domains(core).find((d) => d.code === td)?.artifacts ?? []).slice(0, 4);
+export function domainArtifacts(core: string, td: string, lang = "ko"): string[] {
+  return (domains(core, lang).find((d) => d.code === td)?.artifacts ?? []).slice(0, 4);
 }

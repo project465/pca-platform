@@ -333,7 +333,8 @@ export async function fillExperience(
     .click({ timeout: 3000 }).catch(() => undefined);
   if (hooks?.onStep) await hooks.onStep(1);
 
-  const next = p.locator('.cm-wiz-nav button:has-text("다음")');
+  /* 단추 글자는 작업공간 언어를 따른다(영어판에서는 `Next`) */
+  const next = p.locator('.cm-wiz-nav button').filter({ hasText: /다음|Next/ });
   await next.click({ timeout: 5000 });
   const tds = p.locator('.cm-pick:has(input[name="td"]):visible');
   const nTd = await tds.count();

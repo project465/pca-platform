@@ -188,8 +188,20 @@ export type CampusUniversity = {
   retired_codes?: { code: string; was: string; was_year: number; why: string }[];
   /** 개편 계보로 짐작되는 짝. **확정한 적 없는 후보다** */
   lineage_candidates?: string[];
+  /**
+   * 학번 앞에 붙는 아이디 머리. 없으면 학교 코드 소문자 + `-` 다
+   * (`loginPrefixOf`). 배재대는 머리 없이 학번 그대로 발급해 와서 빈 글자다.
+   */
+  login_prefix?: string | null;
+  /**
+   * **학교인가 기관인가.** `agency` 면 화면이 `학생 · 학과 · 학번` 대신
+   * `참여자 · 전공 계열 · 아이디` 로 적는다(`campusWords`). 없으면 학교다.
+   */
+  org_kind?: "university" | "agency";
   catalogs: CampusCatalog[];
 };
+
+export { campusSay, campusWords } from "./words";
 
 export type CampusRegistry = {
   schema_version: string;

@@ -42,6 +42,7 @@ const FILES = [
      결과지와 작업공간이 **같이** 바뀌므로 판본도 셋이 같이 올라야 한다 */
   "src/app/surface.css",
   "src/app/v3/[attemptId]/result/page.tsx",
+  "src/app/v3/[attemptId]/result/body.tsx",
   "src/app/v3/[attemptId]/result/fold.tsx",
   "src/app/v3/[attemptId]/result/disclose.tsx",
   "src/app/v3/[attemptId]/result/save.tsx",
@@ -84,6 +85,20 @@ const FILES = [
      짚어 세 자리를 고칠 때까지 고쳐도 아무 기록이 흔들리지 않았다
      (PCU HUMAN REVIEW FINAL CORRECTION §4) */
   "src/lib/me-v3/result/chains.ts",
+  /* 세종에서 이어 볼 기업(고려대 세종 · 세종일자리경제진흥원). **판정에
+     닿지 않지만** 학생이 읽는 회사 줄과 묶음을 고르므로 이 동결이 덮는다 */
+  "src/lib/me-v3/result/sejong.ts",
+  "src/app/v3/[attemptId]/result/sejong.tsx",
+  /* 영어판 1단계(2026-10-24). 결과 문장의 영어 벌과 그것을 고르는 자리,
+     원고 사전. **판정에 닿지 않지만** 영어 응시자가 읽는 글을 고른다 */
+  "src/lib/me-v3/result/text.ts",
+  "src/lib/me-v3/result/text.en.ts",
+  "src/lib/me-v3/result/localize.ts",
+  "src/lib/me-v3/result/render-lang.ts",
+  "src/lib/me-v3/result/reason.en.ts",
+  "src/lib/me-v3/result/common.en.ts",
+  "src/lib/me-v3/phrase.ts",
+  "src/lib/me-v3/phrases.en.ts",
 ];
 
 /** 동결 조건과 그것을 지키는 검사 */

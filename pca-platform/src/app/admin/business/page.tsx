@@ -1,7 +1,7 @@
 import { requireRole } from "@/lib/session";
 import AdminShell from "@/components/admin-shell";
 import { PageHead, Section } from "@/components/sf/shell";
-import { businessInfo, businessFields, jobInfoLicense } from "@/lib/business";
+import { businessInfo, businessFields, businessNameEn, jobInfoLicense } from "@/lib/business";
 import { get, sourceOf } from "@/lib/settings";
 import { Pill } from "@/components/sf/parts";
 import { BRAND } from "@/lib/surface-text";
@@ -34,6 +34,8 @@ export default async function BusinessPage() {
   const fields = businessFields();
   const license = await jobInfoLicense();
   const hours = await get("support_hours", "SUPPORT_HOURS");
+  const nameEn = await businessNameEn();
+  const nameEnFrom = await sourceOf("name_en", "BUSINESS_NAME_EN");
   const licenseFrom = await sourceOf("jobinfo_license", "JOBINFO_LICENSE_NO");
 
   const byKey = Object.fromEntries(info.fields.map((f) => [f.key, f]));
@@ -48,7 +50,7 @@ export default async function BusinessPage() {
       keys: ["name", "ceo", "reg", "mailorder"],
     },
     {
-      title: "손님이 연락하는 자리",
+      title: "손님이 연락하는 곳",
       why: "상품 쪽 푸터와 결제 화면에 그대로 나갑니다. 주소는 사업장 주소이고, 메일은 문의가 실제로 도착하는 주소여야 합니다.",
       keys: ["address", "phone", "email"],
       wide: ["address"],
@@ -85,7 +87,7 @@ export default async function BusinessPage() {
               </p>
             ) : (
               <p className="sf-meta" style={{ marginTop: 10 }}>
-                일곱 칸이 다 찼습니다. 이 묶음은 더 이상 런칭을 막지 않습니다.
+                일곱 칸이 다 찼습니다. 이 항목들은 더 이상 런칭을 막지 않습니다.
               </p>
             )}
           </div>
@@ -116,6 +118,27 @@ export default async function BusinessPage() {
               </div>
             </section>
           ))}
+
+          <section className="sfm-sec">
+            <div className="sfm-sec-h">
+              <h2>영어 화면</h2>
+              <p>
+                해외 손님이 보는 영어 화면의 꼬리말에 등록 상호와 함께
+                적힙니다. 등록 상호를 대신하지 않습니다. 비워 두시면 등록
+                상호만 나갑니다.
+              </p>
+            </div>
+            <div className="sfm-sec-b">
+              <Field
+                name="name_en"
+                ko="영문 상호"
+                env="BUSINESS_NAME_EN"
+                value={nameEn ?? ""}
+                from={nameEnFrom}
+                help="영문 계약서나 해외 거래에 쓰시는 이름을 그대로 적습니다."
+              />
+            </div>
+          </section>
 
           <section className="sfm-sec">
             <div className="sfm-sec-h">

@@ -214,7 +214,7 @@ function c04(r: Report3, c: Chapter): string {
         <div><dt>쓰인 곳</dt><dd>${esc(x.usedWhere.join(" · ") || "적지 않음")}</dd></div></dl>
       </div>
       <div class="rc-r">
-        <h4 class="sub">${tag("분석적 해석", "read")} 검사 응답과 견주면</h4>${x.testSays.map((t) => `<p><b>${esc(t.domain)}</b> — ${esc(t.text)}</p>`).join("")}
+        <h4 class="sub">${tag("분석적 해석", "read")} 검사 응답과 비교하면</h4>${x.testSays.map((t) => `<p><b>${esc(t.domain)}</b> — ${esc(t.text)}</p>`).join("")}
         <h4 class="sub">이어지는 직무</h4>${ul(x.jobs.map((jb) => jb.why), "ul tight")}
         <h4 class="sub">취업 서류에서 쓰는 법</h4>${p(x.application)}
         <h4 class="sub">${tag("추가 확인 필요", "need")} 채워 둘 것</h4>${ul(x.check, "ul tight")}
@@ -228,7 +228,7 @@ function c04(r: Report3, c: Chapter): string {
     <h4 class="sub">확인 순서</h4><ol class="steps">${r.verify.steps.map((s) => `<li>${esc(s)}</li>`).join("")}</ol></div>` : "";
   const key = r.verify
     ? "판단을 묻는 질문의 응답과 체크리스트에서 고른 항목이 서로 다른 방향을 가리키는 영역이 있습니다. 이 장은 어느 쪽이 틀렸다고 정하지 않고, 학생 스스로 확인하는 방법을 적었습니다."
-    : r.records.length ? `적어 둔 경험 기록 ${r.records.length}건을 하나씩 나눠 읽고, 검사 응답과 같은 쪽을 가리키는지 견줬습니다.` : "적어 둔 경험 기록이 없어, 검사 응답만으로 영역을 읽었습니다.";
+    : r.records.length ? `적어 둔 경험 기록 ${r.records.length}건을 하나씩 나눠 읽고, 검사 응답과 같은 쪽을 가리키는지 비교했습니다.` : "적어 둔 경험 기록이 없어, 검사 응답만으로 영역을 읽었습니다.";
   return chapter(c, key, (r.verify ? vt : "") + (recs || `<div class="box-need">${p("경험 기록이 없습니다. 내 CareerMatri의 ‘경험 추가’에서 최근 과제 하나를 남기면 다음 보고서부터 이 장에 경험별 해설이 들어갑니다.")}</div>`) + tb);
 }
 
@@ -267,7 +267,7 @@ function c05g(g: Growth, c: Chapter): string {
 function c06(r: Report3, c: Chapter): string {
   const role = r.strategy.roleName;
   const key = r.priorities[0]
-    ? `${role}을 목표로 고른 응답에서 거꾸로 세운 실행 전략입니다. 과제는 모두 ${role}의 업무 영역이나 핵심 판단에서 골랐고, 먼저 할 일은 ${r.priorities[0].domain}의 ‘${r.priorities[0].title}’입니다.`
+    ? `${role}을 목표로 고른 응답에서 거꾸로 짠 실행 전략입니다. 과제는 모두 ${role}의 업무 영역이나 핵심 판단에서 골랐고, 먼저 할 일은 ${r.priorities[0].domain}의 ‘${r.priorities[0].title}’입니다.`
     : "지금 응답에서 먼저 채울 판단이 잡히지 않았습니다.";
   // 사슬 한 줄: 목표 → 지금 응답 → 직무 요구 → 과제 → 산출물. 행마다 같은 다섯 칸이라 읽는 사람이 연결을 직접 따라간다
   const chainRow = (x: Report3["priorities"][number]) => `<ol class="chain">

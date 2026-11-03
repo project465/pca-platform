@@ -14,6 +14,11 @@ RUN npm ci --ignore-scripts || npm install --ignore-scripts
 COPY . .
 # 빌드 때는 DB 에 붙지 않는다. 붙어야 하는 화면은 전부 동적 렌더다
 ENV NEXT_TELEMETRY_DISABLED=1
+# **빌드 힙을 4GB 로 연다.** 기본값(약 2GB)에서 `next build` 가 한계에 닿아
+# 같은 코드가 어떤 때는 통과하고 어떤 때는 `heap out of memory` 로 죽는다
+# (2026-10-31 운영 빌드 실패 메일 · 같은 날 로컬에서 2GB 에 걸리고 4GB 에 통과).
+# 돌리는 이미지에는 들어가지 않는다: 이 층의 ENV 는 빌드 층에만 산다
+ENV NODE_OPTIONS=--max-old-space-size=4096
 RUN npm run build
 
 # **운영에서 사람이 쳐야 하는 셋만 한 덩이로 묶는다.**
@@ -60,7 +65,10 @@ RUN npx esbuild scripts/make-admin.ts \
       --external:pg --outfile=ops-build/staging-bootstrap.cjs \
  && npx esbuild scripts/staging-check.ts \
       --bundle --platform=node --format=cjs --target=node22 \
-      --external:pg --outfile=ops-build/staging-check.cjs
+      --external:pg --outfile=ops-build/staging-check.cjs \
+ && npx esbuild scripts/staging-reset-student.ts \
+      --bundle --platform=node --format=cjs --target=node22 \
+      --external:pg --outfile=ops-build/staging-reset-student.cjs
 
 FROM node:22-alpine AS run
 WORKDIR /app
@@ -105,6 +113,10 @@ COPY --from=build --chown=metri:nodejs /app/db ./db
 # 안 돈다.
 COPY --from=build --chown=metri:nodejs /app/ops-build ./ops
 COPY --from=build --chown=metri:nodejs /app/data/metri/items_pca_me_v1.json ./data/metri/
+# 긴 결과지(PRO 책자): 직무 안내와 지역 자료. 지역은 OpenDART·벤처기업 확인 명단에서 온 것만 싣는다
+COPY --from=build --chown=metri:nodejs /app/data/report-gm/biz-role-guide.json ./data/report-gm/
+COPY --from=build --chown=metri:nodejs /app/data/report-gm/role-guide ./data/report-gm/role-guide
+COPY --from=build --chown=metri:nodejs /app/data/region/dart-sejong.v1.json /app/data/region/dart-jeonbuk.v1.json /app/data/region/dart-checks.v1.json /app/data/region/dart-overview.v1.json /app/data/region/jeonbuk-orgs.v1.json /app/data/region/jeonbuk-big.v1.json ./data/region/
 COPY --chown=metri:nodejs deploy/ops/db-init.sh deploy/ops/db-upgrade.sh deploy/ops/db-verify.sh ./ops/
 # `ops:check` 가 "이 자리가 이미지 안에 실제로 있는가" 를 셀 때 읽는 목록.
 # `image:check` 가 배포 전에 읽는 것과 **같은 파일**이다

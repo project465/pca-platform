@@ -840,41 +840,6 @@
       "response_type": "OWNERSHIP_4"
     },
     {
-      "item_id": "ROLE_DATA_V1_R1",
-      "primary": "OWNERSHIP",
-      "response_type": "OWNERSHIP_4"
-    },
-    {
-      "item_id": "ROLE_DATA_V1_R2",
-      "primary": "VERIFICATION",
-      "response_type": "OWNERSHIP_4"
-    },
-    {
-      "item_id": "ROLE_DATA_V1_R3",
-      "primary": "OWNERSHIP",
-      "response_type": "OWNERSHIP_4"
-    },
-    {
-      "item_id": "ROLE_DATA_V1_R4",
-      "primary": "OWNERSHIP",
-      "response_type": "OWNERSHIP_4"
-    },
-    {
-      "item_id": "ROLE_DATA_V1_R5",
-      "primary": "OUTPUT",
-      "response_type": "OWNERSHIP_4"
-    },
-    {
-      "item_id": "ROLE_DATA_V1_R6",
-      "primary": "VERIFICATION",
-      "response_type": "OWNERSHIP_4"
-    },
-    {
-      "item_id": "ROLE_DATA_V1_R7",
-      "primary": "OWNERSHIP",
-      "response_type": "OWNERSHIP_4"
-    },
-    {
       "item_id": "ROLE_HR_V1_R1",
       "primary": "OWNERSHIP",
       "response_type": "OWNERSHIP_4"
@@ -906,41 +871,6 @@
     },
     {
       "item_id": "ROLE_HR_V1_R7",
-      "primary": "OWNERSHIP",
-      "response_type": "OWNERSHIP_4"
-    },
-    {
-      "item_id": "ROLE_LEGAL_V1_R1",
-      "primary": "OWNERSHIP",
-      "response_type": "OWNERSHIP_4"
-    },
-    {
-      "item_id": "ROLE_LEGAL_V1_R2",
-      "primary": "VERIFICATION",
-      "response_type": "OWNERSHIP_4"
-    },
-    {
-      "item_id": "ROLE_LEGAL_V1_R3",
-      "primary": "OWNERSHIP",
-      "response_type": "OWNERSHIP_4"
-    },
-    {
-      "item_id": "ROLE_LEGAL_V1_R4",
-      "primary": "OWNERSHIP",
-      "response_type": "OWNERSHIP_4"
-    },
-    {
-      "item_id": "ROLE_LEGAL_V1_R5",
-      "primary": "OUTPUT",
-      "response_type": "OWNERSHIP_4"
-    },
-    {
-      "item_id": "ROLE_LEGAL_V1_R6",
-      "primary": "OWNERSHIP",
-      "response_type": "OWNERSHIP_4"
-    },
-    {
-      "item_id": "ROLE_LEGAL_V1_R7",
       "primary": "OWNERSHIP",
       "response_type": "OWNERSHIP_4"
     },

@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
 import { randomBytes } from "node:crypto";
 import { query, queryOne } from "@/lib/db";
+import { partnerFromCookie, recordBrand } from "@/lib/brand";
 import { ref, swallow } from "@/lib/oplog";
 import { hashPassword } from "@/lib/password";
 import { signIn } from "@/lib/auth";
@@ -96,6 +97,10 @@ export async function createSocialAccount(
       }));
     redirect(`/login/link?p=${id.provider}`);
   }
+
+  /* 잡인더스트리 같은 제휴 입구로 왔으면 센다. 실패해도 가입은 끝났다 */
+  const partner = await partnerFromCookie();
+  if (partner) await recordBrand(created.id, partner);
 
   /* 인사 한 줄. **메일 서버를 여기서 기다리지 않는다** */
   if (id.email) {

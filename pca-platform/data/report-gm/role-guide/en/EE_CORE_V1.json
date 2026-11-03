@@ -1,0 +1,1500 @@
+{
+ "schema": "role-guide.v1",
+ "core": "EE_CORE_V1",
+ "status": "DRAFT_FOR_REVIEW",
+ "note": "A general description of electrical and electronic engineering roles. It is not a job description or hiring requirement from any company and is not used for measurement or scoring.",
+ "roles": {
+  "ROLE_DESIGN_V1": {
+   "summary": "Taking a requirement specification, choosing the circuit topology and component values, and getting a real board built from that schematic",
+   "practiceWhere": "in an electronic circuits lab course or your capstone design",
+   "lens": {
+    "TD01": {
+     "why": "Turning a specification into gain, bandwidth and noise figures and setting component values and operating points is the foundation of circuit design.",
+     "mode": "domain",
+     "ctx": "in an electronic circuits lab or a sensor signal amplification project",
+     "out": {
+      "J3": "Component value calculation",
+      "J5": "Schematic and component selection table"
+     }
+    },
+    "TD08": {
+     "why": "Choosing the converter topology and switching devices for the power stage matters because almost every board needs a power supply design.",
+     "mode": "domain",
+     "ctx": "in a power electronics lab or when you own the power stage in your capstone",
+     "out": {
+      "J3": "Loss and thermal calculation",
+      "J6": "Calculated versus measured efficiency table"
+     }
+    },
+    "TD02": {
+     "why": "Setting state machines and timing for digital blocks is where design decisions get made at the boundary with the analogue section.",
+     "mode": "role",
+     "ctx": "in a digital logic design course or FPGA lab",
+     "out": {
+      "J2": "Timing constraints table",
+      "J6": "Simulated versus measured waveform comparison"
+     }
+    }
+   },
+   "practice": {
+    "J1": {
+     "task": "Next to the block diagram, write what the board you own in your capstone will and will not do (for example, power comes from an external adapter).",
+     "output": "Block diagram with a scope note",
+     "check": "Does it say which functions are left to other blocks?"
+    },
+    "J2": {
+     "task": "Turn a requirement such as amplify the sensor signal properly into figures for gain, bandwidth, allowable noise and supply current.",
+     "output": "Design specification table",
+     "check": "Does every item have a target value and a tolerance?"
+    },
+    "J3": {
+     "task": "Calculate the resistor and capacitor values for an amplifier stage or filter by hand, and note the difference introduced when you round to standard values.",
+     "output": "Component value calculation",
+     "check": "Are the calculated values and the standard values you picked shown side by side?"
+    },
+    "J4": {
+     "task": "Check the same circuit two ways, by hand calculation and in a circuit simulator, and decide which result to treat as the reference.",
+     "output": "Note comparing hand calculation and simulation",
+     "check": "Where the two values differ, did you write why?"
+    },
+    "J5": {
+     "task": "Tidy the schematic and parts list so someone else could order the parts and solder the board straight away.",
+     "output": "Schematic and parts list as one set",
+     "check": "Does every part have its value, rating and package?"
+    },
+    "J6": {
+     "task": "Measure the prototype board and compare it with simulation under the same input, load and temperature.",
+     "output": "Design versus measured comparison table",
+     "check": "Are the comparison conditions written in the table?"
+    },
+    "J7": {
+     "task": "Take one problem you hit, such as oscillation, saturation or excess noise, narrow it down to component values, layout or power, fix it and measure again.",
+     "output": "Problem cause and fix record",
+     "check": "Are the measurements before and after the fix both there?"
+    },
+    "J8": {
+     "task": "If a teammate built a board or wrote firmware from your schematic, record the questions they asked and what you changed.",
+     "output": "Design review record",
+     "check": "Does it say who used your schematic and at which stage?"
+    }
+   },
+   "responsibilities": [
+    "Turning requirements into circuit specifications and choosing the block structure",
+    "Drawing schematics, selecting components and writing design calculations",
+    "Measuring prototype boards and revising the design",
+    "Reviewing PCB layout and handing design data to test and production"
+   ],
+   "process": [
+    {
+     "step": "Receive the specification",
+     "what": "Input and output conditions and performance targets arrive from product planning or the system level above."
+    },
+    {
+     "step": "Choose the topology",
+     "what": "You pick the circuit topology and key components, and decide which competing performance target to protect first."
+    },
+    {
+     "step": "Detailed design",
+     "what": "You calculate component values and use simulation to check operating points and frequency response."
+    },
+    {
+     "step": "Build the prototype",
+     "what": "You release the schematic and parts list and a prototype board is built."
+    },
+    {
+     "step": "Measure and revise",
+     "what": "You compare measurements with design values and fix component values or layout where they disagree."
+    },
+    {
+     "step": "Hand over the design",
+     "what": "You pass the final schematic and calculations to test and production and answer their questions."
+    }
+   ],
+   "knowledge": [
+    "Circuit theory",
+    "Electronic circuits (amplifiers, filters, oscillators)",
+    "Digital logic",
+    "Basic power electronics (DC-DC converters)",
+    "Signals and systems"
+   ],
+   "tools": [
+    "Circuit simulators (SPICE family)",
+    "PCB design tools (schematic capture and layout)",
+    "Oscilloscope, function generator and DC power supply",
+    "How to read component datasheets"
+   ],
+   "experiences": [
+    "Designing a circuit yourself from target figures and building it as a board",
+    "Finding and fixing the cause when simulation and measurement disagreed",
+    "Having someone else carry on work from your schematic"
+   ],
+   "entry": [
+    "In your electronics lab reports, put hand calculation, simulation and measurement side by side",
+    "Take on the power stage or a sensor interface circuit in your capstone design",
+    "Get the schematic of an open-source development board and summarise on one page what each block does"
+   ],
+   "learnOrder": [
+    {
+     "step": "Reading datasheets",
+     "why": "Component selection starts with reading ratings and absolute limits."
+    },
+    {
+     "step": "Hand calculation, then simulation",
+     "why": "A simulation run without a hand calculation is hard to catch when it is wrong."
+    },
+    {
+     "step": "Using test equipment",
+     "why": "You only know whether a design works once you measure the board."
+    },
+    {
+     "step": "PCB layout basics",
+     "why": "The same schematic can have different noise and heating depending on the layout."
+    }
+   ],
+   "firstProject": {
+    "title": "Design one sensor signal amplifier board",
+    "goal": "Design a circuit that scales the small output of a temperature or light sensor to the input range of a microcontroller, and take it through to measurement",
+    "steps": [
+     "Write down the sensor output range and the ADC input range, and set the gain and bandwidth you need",
+     "Calculate the op-amp circuit component values by hand and check them in a simulator",
+     "Build the board on stripboard or a small PCB and measure the output while varying the input",
+     "Put the design, simulated and measured values in one table and write down why they differ"
+    ],
+    "output": "Design specification table, schematic and parts list, and a one-page three-way comparison table",
+    "check": "Do the measured values fall within the specification, and if not, can you explain why?"
+   },
+   "portfolio": [
+    "A schematic with a component selection table",
+    "A design calculation that sets the component values",
+    "A comparison table of design values against measured values"
+   ],
+   "interview": [
+    {
+     "axis": "J3",
+     "q": "How did you set the component values? How did you handle the difference when you rounded to standard values?",
+     "why": "It shows both whether you did the calculation yourself and whether you can carry it into real hardware."
+    },
+    {
+     "axis": "J7",
+     "q": "Has a circuit ever not worked the way you expected? How did you narrow down the cause?",
+     "why": "A large part of design work is fixing prototype boards."
+    },
+    {
+     "axis": "J5",
+     "q": "Has anyone else worked from a schematic you drew?",
+     "why": "A schematic only counts as a deliverable when someone else can read it and build from it."
+    }
+   ],
+   "postingCheck": [
+    "Whether hardware design here centres on analogue and power circuits or on digital and board design",
+    "Which product line the circuits are for (power supplies, sensors, motor drives, communication modules and so on)",
+    "Whether specific design tools or test equipment are listed as a plus"
+   ],
+   "watch": "Circuit design postings vary a lot with the product. Under the same title, such as Hardware Engineer or Electronics Design Engineer, check first whether the work is closer to power circuits, analogue signals or high-speed digital boards, and pick the experience you put in your application to match."
+  },
+  "ROLE_ANALYSIS_V1": {
+   "summary": "Predicting performance with an analysis model before anything is built, and stating how far that prediction can be trusted",
+   "practiceWhere": "in electromagnetics or signal processing coursework or simulation work in a research lab",
+   "lens": {
+    "TD06": {
+     "why": "Predicting how antennas, transmission lines and RF circuits behave with an electromagnetic field solver is where analysis roles are used most.",
+     "mode": "domain",
+     "ctx": "in electromagnetics, antenna or microwave course projects",
+     "out": {
+      "J4": "Note on the simulation model and boundary conditions",
+      "J6": "Simulated versus measured return loss table"
+     }
+    },
+    "TD04": {
+     "why": "Handling signals and noise with numerical models lets you estimate how well a processing method will perform before you measure anything.",
+     "mode": "domain",
+     "ctx": "in numerical assignments in a signal processing course",
+     "out": {
+      "J3": "Note on model simplifying assumptions",
+      "J6": "Theoretical versus computed values table"
+     }
+    },
+    "TD08": {
+     "why": "Calculating losses and heating in power circuits ahead of time produces results that become the basis for design changes.",
+     "mode": "role",
+     "ctx": "when you simulate a converter circuit in a power electronics course",
+     "out": {
+      "J6": "Calculated loss versus measured efficiency table"
+     }
+    }
+   },
+   "practice": {
+    "J1": {
+     "task": "Before you start, write one question this analysis will answer (for example, is this antenna matched in the target band) and the effects you will leave out.",
+     "output": "Analysis purpose note",
+     "check": "Is the question written as a single sentence?"
+    },
+    "J2": {
+     "task": "Turn that question into analysis conditions, writing the frequency range, input conditions and the metrics you will judge by (return loss, gain, losses and so on) as numbers.",
+     "output": "Analysis conditions table",
+     "check": "Does every metric have a target value?"
+    },
+    "J3": {
+     "task": "Decide yourself how far to simplify the model, and for each structure or effect you remove, write one line on how it affects the result.",
+     "output": "List of simplifying assumptions",
+     "check": "Does each removed item have a reason why removing it is acceptable?"
+    },
+    "J4": {
+     "task": "Run the model at two or three mesh sizes or time steps, and use the setting beyond which the result stops changing.",
+     "output": "Mesh convergence record",
+     "check": "Did you record how much the result changed with the mesh?"
+    },
+    "J5": {
+     "task": "Put the model files, analysis conditions and tool versions in one document so the next person can get the same result.",
+     "output": "Analysis report and model files",
+     "check": "Could someone rerun the same analysis from the report alone?"
+    },
+    "J6": {
+     "task": "Compare your results with lab measurements or textbook formulas under the same conditions.",
+     "output": "Simulation versus measurement comparison table",
+     "check": "Are the ranges that differ and the likely reasons written down?"
+    },
+    "J7": {
+     "task": "When simulation and measurement differ a lot, check the model, boundary conditions and measurement one at a time, find where they part ways and reset the conditions.",
+     "output": "Record of reset conditions",
+     "check": "Are the order of checks and the conditions you changed written down?"
+    },
+    "J8": {
+     "task": "If your team changed dimensions or component values based on your results, record what changed and why.",
+     "output": "Record of how the analysis was used",
+     "check": "Does it say which result was used for which design change?"
+    }
+   },
+   "responsibilities": [
+    "Predicting the electrical, electromagnetic and thermal behaviour of proposed designs",
+    "Building analysis models and conditions and documenting simplifying assumptions",
+    "Comparing analysis with test measurements and calibrating models",
+    "Writing analysis reports and providing the basis for design changes"
+   ],
+   "process": [
+    {
+     "step": "Take the question",
+     "what": "Design asks questions such as whether this structure can hit the band, or how hot this power supply will get."
+    },
+    {
+     "step": "Build the model",
+     "what": "You enter the geometry and material properties and set the boundary conditions and how far to simplify."
+    },
+    {
+     "step": "Check the settings",
+     "what": "You vary the mesh or time step to find where the result settles."
+    },
+    {
+     "step": "Run and judge",
+     "what": "You run the analysis, judge whether it meets the target metrics, and look at how each design variable affects the result."
+    },
+    {
+     "step": "Measure and compare",
+     "what": "When prototype measurements come in, you compare them with the analysis and calibrate the model."
+    },
+    {
+     "step": "Report",
+     "what": "You hand the results to design together with the range over which they can be trusted."
+    }
+   ],
+   "knowledge": [
+    "Electromagnetics",
+    "Circuit theory and electronic circuits",
+    "Signals and systems",
+    "Basic numerical methods",
+    "Engineering mathematics (differential equations, linear algebra)"
+   ],
+   "tools": [
+    "Circuit simulators (SPICE family)",
+    "Electromagnetic solvers (finite element and time-domain methods)",
+    "Numerical computing tools (MATLAB or Python)",
+    "How to read vector network analyser measurements"
+   ],
+   "experiences": [
+    "Matching simulation results with measurements",
+    "Simplifying a model and working out the effect of doing so",
+    "Documenting analysis settings so someone else could rerun them"
+   ],
+   "entry": [
+    "Solve electromagnetics or antenna coursework with a simulation tool and compare with the textbook formulas",
+    "Join a simulation-focused lab as an undergraduate research assistant and take on one model",
+    "In your capstone, produce predicted values by simulation before the prototype is built"
+   ],
+   "learnOrder": [
+    {
+     "step": "Estimating the answer from theory",
+     "why": "If you know the rough answer, you notice when a simulation result looks wrong."
+    },
+    {
+     "step": "Learning one tool in depth",
+     "why": "Each tool sets up conditions differently, and knowing one well makes it easier to move to another."
+    },
+    {
+     "step": "Mesh convergence and boundary conditions",
+     "why": "Whether you can trust a simulation comes down to these two."
+    },
+    {
+     "step": "Comparing with measurements",
+     "why": "An analysis that has never been checked against measurement is hard to use as evidence."
+    }
+   ],
+   "firstProject": {
+    "title": "Simulate a patch antenna and match it to measurements",
+    "goal": "Design a patch antenna for a target frequency from the formulas, and explain the difference in resonant frequency between simulation and measurement",
+    "steps": [
+     "Choose a target frequency and calculate the patch dimensions with the textbook formulas",
+     "Build the model in an electromagnetic solver and vary the mesh until the return loss settles",
+     "Make the board in the lab and measure it with a vector network analyser, or if you cannot measure, run the simulation two different ways and compare them",
+     "Summarise on one page the resonant frequency from formula, simulation and measurement, and why they differ"
+    ],
+    "output": "Analysis conditions table, mesh convergence record and a one-page three-way comparison table",
+    "check": "Can you explain which model assumption accounts for the gap between simulation and measurement?"
+   },
+   "portfolio": [
+    "A report setting out the analysis model and conditions",
+    "A table comparing simulated and measured values",
+    "One page on the range over which you trust the results and their limits"
+   ],
+   "interview": [
+    {
+     "axis": "J4",
+     "q": "How did you choose the mesh and boundary conditions? How did you confirm they were right?",
+     "why": "How you set the conditions shows whether you understand the analysis better than the result does."
+    },
+    {
+     "axis": "J6",
+     "q": "Have your simulation and measurement ever disagreed? How did you explain the difference?",
+     "why": "An analysis role is accountable for whether the predictions hold."
+    },
+    {
+     "axis": "J3",
+     "q": "What did you deliberately leave out of the model, and why did you think that was acceptable?",
+     "why": "What you choose to simplify decides the quality of an analysis."
+    }
+   ],
+   "postingCheck": [
+    "Whether the analysis is electromagnetic, circuit or thermal",
+    "Whether experience with a specific tool is required or only preferred",
+    "Whether the job is analysis only or includes design or test"
+   ],
+   "watch": "Dedicated analysis roles, often titled Simulation Engineer, RF Simulation Engineer or Signal Integrity Engineer, tend to sit in research centres and large development organisations, and many postings ask for a master's degree. If you are graduating with a bachelor's degree, it is realistic to also look at design or test roles that include analysis work."
+  },
+  "ROLE_TEST_V1": {
+   "summary": "Setting up test procedures to measure whether a product or module meets its specifications and standards, and making sure the verdict comes out the same when the test is repeated",
+   "practiceWhere": "in electronic circuits or instrumentation labs or when evaluating your capstone prototype",
+   "lens": {
+    "TD12": {
+     "why": "Turning the test items in a standard into measurement conditions and acceptance criteria, and working out measurement uncertainty, is the core of a test role.",
+     "mode": "domain",
+     "ctx": "in an instrumentation lab or a prototype performance evaluation",
+     "out": {
+      "J2": "Test items and conditions table",
+      "J6": "Repeat measurement distribution table"
+     }
+    },
+    "TD02": {
+     "why": "Confirming with a testbench that digital logic works in every case is a separate job in chip and FPGA development, with dedicated verification engineers.",
+     "mode": "domain",
+     "ctx": "in a digital design course or FPGA lab",
+     "out": {
+      "J4": "Testbench and list of test cases",
+      "J6": "Results checked against a reference model"
+     }
+    },
+    "TD05": {
+     "why": "Measuring the data rate and error rate of a communication module on a test network and judging them against the limits in the standard.",
+     "mode": "role",
+     "ctx": "in a communications lab or a project that uses a wireless module",
+     "out": {
+      "J6": "Measurement table against the standard's limits"
+     }
+    }
+   },
+   "practice": {
+    "J1": {
+     "task": "At the top of the test plan, write what is being tested and what this test will not cover (for example, long-term life).",
+     "output": "Test scope definition",
+     "check": "Are the excluded items listed with the reason for excluding them?"
+    },
+    "J2": {
+     "task": "Turn the requirements in the project specification or datasheet into test items, measurement conditions (input, load, temperature) and acceptance criteria.",
+     "output": "Test items table",
+     "check": "Does every item have its conditions and limit value together?"
+    },
+    "J3": {
+     "task": "Set the limit that separates pass from fail yourself, and write how much allowance for measurement error you built into the specified value.",
+     "output": "Pass and fail criteria note",
+     "check": "Can you explain why you put the limit where you did?"
+    },
+    "J4": {
+     "task": "Check the resolution and accuracy of your instruments, measure the same item with two instruments or methods, and decide which to use.",
+     "output": "Instrument selection note",
+     "check": "Are the limits of the instrument you chose written down?"
+    },
+    "J5": {
+     "task": "Write a test procedure with the connection diagram, instrument settings and measurement order so a teammate following it gets the same values.",
+     "output": "Test procedure",
+     "check": "Did someone else reproduce the test from the procedure alone?"
+    },
+    "J6": {
+     "task": "Measure the same item several times, calculate the spread, and make the pass or fail call looking at both the mean and the spread.",
+     "output": "Repeat measurement results and verdict table",
+     "check": "Did the verdict take the spread into account?"
+    },
+    "J7": {
+     "task": "When measurements are unstable, work out whether the sample, the instrument or the procedure is the cause, decide the conditions for remeasuring and retest.",
+     "output": "Retest record",
+     "check": "Is the reason for changing the retest conditions written down?"
+    },
+    "J8": {
+     "task": "Record what design fixed after seeing your test results, or whether they moved on to the next stage.",
+     "output": "Record of how verdicts were used",
+     "check": "Does it say which decision the test results fed into?"
+    }
+   },
+   "responsibilities": [
+    "Writing test plans and setting test items and acceptance criteria",
+    "Writing test procedures and setting up the test environment",
+    "Running performance, environmental and EMC tests and writing test reports",
+    "Supporting root cause analysis of failed items and retesting"
+   ],
+   "process": [
+    {
+     "step": "Check the standards",
+     "what": "The product specification, the standards that apply and customer requirements arrive along with the item to test."
+    },
+    {
+     "step": "Plan",
+     "what": "You set the test items, measurement conditions, acceptance criteria and number of samples."
+    },
+    {
+     "step": "Set up",
+     "what": "You choose instruments, check their calibration, and set up connections and settings."
+    },
+    {
+     "step": "Run the test",
+     "what": "You measure by the procedure and record the spread of repeat measurements alongside."
+    },
+    {
+     "step": "Verdict and report",
+     "what": "You compare the results with the criteria, make the call and issue the test report."
+    },
+    {
+     "step": "Handle failures",
+     "what": "You narrow down the cause of failed items with design and test again after the fix."
+    }
+   ],
+   "knowledge": [
+    "Electronic measurement (error and uncertainty)",
+    "Circuit theory and electronic circuits",
+    "Digital logic",
+    "Basic communications engineering",
+    "Probability and statistics"
+   ],
+   "tools": [
+    "Oscilloscope, spectrum analyser and digital multimeter",
+    "Measurement automation scripts (Python and similar)",
+    "HDL simulators and testbenches",
+    "How to read EMC standards (the IEC 61000 series and CISPR standards)"
+   ],
+   "experiences": [
+    "Writing a test procedure that someone else reproduced",
+    "Making a pass or fail call from repeat measurement results",
+    "Finding the cause of unstable measurements and retesting"
+   ],
+   "entry": [
+    "In your circuits and instrumentation lab reports, include repeat measurement results with their spread",
+    "Take on prototype performance evaluation and the test plan in your capstone team",
+    "Pick the datasheet of a part you are interested in and tabulate the conditions under which each specification was measured"
+   ],
+   "learnOrder": [
+    {
+     "step": "Understanding instruments and error",
+     "why": "If you do not know an instrument's limits, you cannot justify a verdict."
+    },
+    {
+     "step": "Turning specifications into test conditions",
+     "why": "The first job in a test plan is turning requirements into conditions you can measure."
+    },
+    {
+     "step": "Basics of measurement uncertainty",
+     "why": "Calls near the limit can only be made if you know the uncertainty."
+    },
+    {
+     "step": "Measurement automation",
+     "why": "To run the same test the same way many times, a script beats doing it by hand."
+    }
+   ],
+   "firstProject": {
+    "title": "Verify the output specifications of one DC power module yourself",
+    "goal": "Measure the output voltage, ripple and efficiency listed in the datasheet of an off-the-shelf DC-DC converter module and judge whether it meets them",
+    "steps": [
+     "Find the output specification items and their measurement conditions in the datasheet and put them in a test items table",
+     "Write a procedure with the measurement order and instrument settings for several load steps",
+     "Measure each item several times and calculate the mean and spread",
+     "Compare with the specification, make the call, and for items near the limit set retest conditions and measure again"
+    ],
+    "output": "Test items table, test procedure, verdict table and retest record",
+    "check": "Could someone else reach the same verdict from your procedure alone?"
+   },
+   "portfolio": [
+    "A test plan and test report as one set",
+    "A verdict table that accounts for the spread of repeat measurements",
+    "One page on which conditions you retested under and why"
+   ],
+   "interview": [
+    {
+     "axis": "J6",
+     "q": "Have you measured the same thing several times and got different values? How did you decide pass or fail?",
+     "why": "Testing means making a call from values that scatter."
+    },
+    {
+     "axis": "J5",
+     "q": "Have you written down a test procedure for someone else to follow?",
+     "why": "A test report is only evidence if the verdict can be reproduced."
+    },
+    {
+     "axis": "J7",
+     "q": "Have you remeasured because readings were unstable? What did you change?",
+     "why": "How you set retest conditions shows whether you habitually isolate causes."
+    }
+   ],
+   "postingCheck": [
+    "Whether you would test at chip, board or finished product level",
+    "Whether the focus is performance testing or certification testing such as EMC and reliability",
+    "For digital verification roles, whether the posting names the hardware description language and verification methods it expects"
+   ],
+   "watch": "The same word, verification, means checking logic in code in chip development and measuring performance with instruments for finished products. A Design Verification Engineer and a Test Engineer do very different work, so read the duties and preferred skills in the posting and work out which one it is first."
+  },
+  "ROLE_PROCESS_V1": {
+   "summary": "Setting process conditions and control criteria so what design specified comes out the same however many are made, and steadily reducing defects",
+   "practiceWhere": "in a semiconductor process lab or a project that involves PCB fabrication and assembly",
+   "lens": {
+    "TD07": {
+     "why": "Setting the process sequence and conditions that achieve the device characteristics and watching the yield is the core of a process role.",
+     "mode": "domain",
+     "ctx": "in a semiconductor engineering course or a process lab",
+     "out": {
+      "J3": "Process conditions sheet",
+      "J6": "Characteristics before and after a condition change"
+     }
+    },
+    "TD12": {
+     "why": "Deciding what to inspect in production and how many is where you confirm in numbers that process conditions are being held.",
+     "mode": "role",
+     "ctx": "when you gather lab data and plot it on a control chart",
+     "out": {
+      "J2": "Control limits definition table",
+      "J4": "Diagram of the inspection data flow"
+     }
+    },
+    "TD02": {
+     "why": "At the boundary where chip design data is handed to the process, you check that the design rules and process capability match.",
+     "mode": "role",
+     "ctx": "when you look at synthesis and place-and-route results in a digital design course"
+    }
+   },
+   "practice": {
+    "J1": {
+     "task": "Write the target characteristics of the samples you will make in the lab, and separate the process variables you will change this time from those you will hold fixed.",
+     "output": "Experiment scope note",
+     "check": "Does it list which variables you held fixed?"
+    },
+    "J2": {
+     "task": "Turn the target characteristics (film thickness, sheet resistance, threshold voltage and so on) into control criteria with upper and lower limits.",
+     "output": "Control criteria table",
+     "check": "Does every item have a target value and upper and lower limits?"
+    },
+    "J3": {
+     "task": "Set one condition yourself, such as deposition time, anneal temperature or soldering temperature, and write why you chose that value and rejected the others.",
+     "output": "Condition decision note",
+     "check": "Is the basis for the value kept in your measurement data?"
+    },
+    "J4": {
+     "task": "Measure several samples made under the same conditions, plot a control chart, and find the point where the trend shifted.",
+     "output": "Control chart and interpretation note",
+     "check": "Did you mark points outside the control limits or drifting to one side?"
+    },
+    "J5": {
+     "task": "Make a process conditions sheet with the sequence, settings and cautions so a teammate following it produces the same sample.",
+     "output": "Process conditions sheet",
+     "check": "Did someone else make the same sample from the sheet alone?"
+    },
+    "J6": {
+     "task": "Calculate the defect rate or characteristic distribution before and after a condition change with the same measurement method, and compare.",
+     "output": "Before and after comparison table",
+     "check": "Are the number of samples and the measurement method written alongside?"
+    },
+    "J7": {
+     "task": "Pick a defect that kept appearing, narrow the cause to equipment, material, conditions or work method, and change the conditions or sequence so it does not come back.",
+     "output": "Defect cause and recurrence prevention record",
+     "check": "Did you check again that the same defect dropped after the change?"
+    },
+    "J8": {
+     "task": "If your conditions sheet was used as it is by another group or in the next lab session, record that.",
+     "output": "Record of how the conditions sheet was used",
+     "check": "Does it say who used the sheet for which build?"
+    }
+   },
+   "responsibilities": [
+    "Setting process conditions and reviewing process changes",
+    "Analysing yield and defect data and making improvements",
+    "Setting process control criteria and inspection items",
+    "Finalising process conditions and writing work instructions when new products move to production"
+   ],
+   "process": [
+    {
+     "step": "Receive the hand-over",
+     "what": "Drawings and target characteristics for a new product come over from design."
+    },
+    {
+     "step": "Set the conditions",
+     "what": "You run trial production, set the process conditions and put control limits on them."
+    },
+    {
+     "step": "Start production",
+     "what": "You release the conditions sheet and work instructions to the line and watch early quality."
+    },
+    {
+     "step": "Monitor the data",
+     "what": "You collect inspection data and yield every day and watch for shifts in the trend."
+    },
+    {
+     "step": "Respond to defects",
+     "what": "When defects rise, you narrow down the cause, adjust the conditions and confirm the effect."
+    },
+    {
+     "step": "Update the standard",
+     "what": "You write the revised conditions into the work instructions for the next run."
+    }
+   ],
+   "knowledge": [
+    "Semiconductor devices (structure and operation)",
+    "Semiconductor processes (deposition, etching, lithography, diffusion)",
+    "Engineering statistics (control charts, process capability)",
+    "Basic electronic materials",
+    "Basic design of experiments"
+   ],
+   "tools": [
+    "Spreadsheets and statistics tools (control charts, distribution plots)",
+    "How to read semiconductor parameter analyser results",
+    "Templates for process conditions sheets and work instructions",
+    "Defect cause tools (fishbone diagrams, Pareto charts)"
+   ],
+   "experiences": [
+    "Changing a process condition and confirming the difference by measurement",
+    "Analysing the spread of samples made under the same conditions",
+    "Narrowing down a defect cause and stopping it from coming back"
+   ],
+   "entry": [
+    "Take a course with a semiconductor process lab and organise your measurements by condition in tables and distributions",
+    "In a project where you order and assemble your own PCBs, collect the assembly defects and sort them by cause",
+    "Calculate control charts and process capability indices yourself in an engineering statistics or quality control course"
+   ],
+   "learnOrder": [
+    {
+     "step": "Device structure and process sequence",
+     "why": "You can only adjust conditions if you know which process step changes which characteristic."
+    },
+    {
+     "step": "Reading control charts and distributions",
+     "why": "Process work means spotting anomalies in data that builds up every day."
+    },
+    {
+     "step": "Cause narrowing methods",
+     "why": "A defect report is read for how you ruled out candidate causes."
+    },
+    {
+     "step": "Basic design of experiments",
+     "why": "If you change several variables at once, you cannot tell which one had the effect."
+    }
+   ],
+   "firstProject": {
+    "title": "Make the same sample many times and reduce the spread",
+    "goal": "Pick a sample you make in the lab (a thin film, a resistor pattern, a solder joint and so on), make several under the same conditions, and find one condition that reduces the spread",
+    "steps": [
+     "Set the target characteristic and tolerance, and separate the one variable you will change from those you will hold fixed",
+     "Make several under the same conditions, measure them and plot the distribution and a control chart",
+     "Change the one variable, make another batch and compare the before and after distributions with the same method",
+     "Write the better condition into a conditions sheet and check that a teammate following it gets the same result"
+    ],
+    "output": "Control criteria table, before and after distribution comparison and a one-page process conditions sheet",
+    "check": "Can you explain the effect of the condition change with numbers from the distributions?"
+   },
+   "portfolio": [
+    "A process conditions sheet with the reasons behind each condition",
+    "A table comparing defect rates or distributions before and after a condition change",
+    "One page on the action that stopped a recurring defect"
+   ],
+   "interview": [
+    {
+     "axis": "J3",
+     "q": "Have you set or changed a process condition yourself? How did you choose the value?",
+     "why": "A process role sets condition values and takes responsibility for them."
+    },
+    {
+     "axis": "J6",
+     "q": "After changing a condition, how did you show it really improved?",
+     "why": "Whether you compared before and after under the same conditions shows the quality of your judgement."
+    },
+    {
+     "axis": "J7",
+     "q": "What did you change so the same problem would not happen again?",
+     "why": "In production you spend more time preventing recurrence than making one-off fixes."
+    }
+   ],
+   "postingCheck": [
+    "Whether the process is front-end (wafer fabrication), back-end (packaging and test) or board assembly",
+    "Whether the role involves shift work or being based on the production line",
+    "Whether statistics or design of experiments experience, or specific process names, are listed as a plus"
+   ],
+   "watch": "Process engineers often work close to the production line, so check the location and working pattern in the posting first. These roles, often titled Process Engineer, Process Integration Engineer or Yield Engineer, are frequently shared with materials and chemistry graduates. As an electrical and electronic engineering graduate, show in your application how you used circuit knowledge in measurement and defect analysis."
+  },
+  "ROLE_MAINT_V1": {
+   "summary": "Setting operating and inspection criteria so power and automation equipment does not stop, and finding the cause and restoring it when it fails",
+   "practiceWhere": "in electrical machines or automatic control labs or during an industry internship",
+   "lens": {
+    "TD09": {
+     "why": "Operating and inspecting substations, motors and protective relays is the area equipment maintenance roles spend longest in.",
+     "mode": "domain",
+     "ctx": "in electrical machines or power engineering labs",
+     "out": {
+      "J3": "Inspection interval and replacement criteria table",
+      "J7": "Record of narrowing down a fault cause"
+     }
+    },
+    "TD11": {
+     "why": "Working with production equipment driven by PLCs and servo drives means fault response often starts with the control sequence and the sensors.",
+     "mode": "domain",
+     "ctx": "in an automatic control or PLC lab",
+     "out": {
+      "J6": "Operating data verdict table"
+     }
+    },
+    "TD10": {
+     "why": "Setting operating limits and inspection criteria for energy equipment that runs all the time, such as solar and energy storage systems.",
+     "mode": "role",
+     "ctx": "in a renewable energy course or when you look at generation equipment on campus",
+     "out": {
+      "J2": "Operating limits table"
+     }
+    }
+   },
+   "practice": {
+    "J1": {
+     "task": "Pick one piece of lab equipment (a motor drive panel, a PLC trainer and so on) and write what you will inspect this time and what you will leave out.",
+     "output": "Inspection scope note",
+     "check": "Does it list the parts you leave out and why?"
+    },
+    "J2": {
+     "task": "Read the equipment ratings and manual and write its operating limits, such as current, temperature and insulation resistance, as numbers.",
+     "output": "Operating limits table",
+     "check": "Does every value have its source (rating, manual or regulation)?"
+    },
+    "J3": {
+     "task": "Set an interval and replacement criterion for each inspection item yourself, and write one line on why.",
+     "output": "Inspection criteria table",
+     "check": "Can you explain why you made the interval neither shorter nor longer?"
+    },
+    "J4": {
+     "task": "Log current or temperature during operation, plot it, and decide how you will pick out signals that differ from normal.",
+     "output": "Operating log chart and note on the judging method",
+     "check": "Does it say how you set the normal range?"
+    },
+    "J5": {
+     "task": "Make an inspection log template the next person can read and continue from, and actually fill it in.",
+     "output": "Inspection log",
+     "check": "Are date, readings, action and person responsible all filled in?"
+    },
+    "J6": {
+     "task": "Put the insulation resistance or running current you measured next to the limit and past records, and judge the condition of the equipment.",
+     "output": "Equipment condition verdict table",
+     "check": "Are the criteria and past values you used shown together?"
+    },
+    "J7": {
+     "task": "Take one fault or malfunction you hit in the lab, narrow it down step by step to wiring, settings or the device, and write the recovery procedure.",
+     "output": "Fault cause and recovery record",
+     "check": "Are the order of checks and the post-recovery function check written down?"
+    },
+    "J8": {
+     "task": "If your inspection records or verdicts were used to decide on a part replacement or settings change, record what happened.",
+     "output": "Record of how maintenance judgements were used",
+     "check": "Does it say which judgement led to which action?"
+    }
+   },
+   "responsibilities": [
+    "Operating and routinely inspecting substations, distribution equipment, motors and automation equipment",
+    "Setting inspection intervals and replacement criteria and planning preventive maintenance",
+    "Analysing fault causes, restoring equipment and preventing recurrence",
+    "Electrical safety management and keeping inspection records"
+   ],
+   "process": [
+    {
+     "step": "Know the equipment",
+     "what": "You read the single-line diagrams, sequence diagrams and ratings for your equipment and confirm its operating limits."
+    },
+    {
+     "step": "Set the criteria",
+     "what": "You set inspection items, intervals and replacement criteria and turn them into a schedule."
+    },
+    {
+     "step": "Operate and inspect",
+     "what": "You log operating data and measure and inspect at the set intervals."
+    },
+    {
+     "step": "Detect anomalies",
+     "what": "You look for current, temperature or sound that differs from normal and act before the equipment stops."
+    },
+    {
+     "step": "Restore after a fault",
+     "what": "You narrow down why the equipment stopped, restore it and record the stoppage and recovery."
+    },
+    {
+     "step": "Revise the criteria",
+     "what": "You look at the fault history and reset inspection intervals and replacement criteria."
+    }
+   ],
+   "knowledge": [
+    "Electrical machines (transformers, motors)",
+    "Power engineering and protective relaying",
+    "Automatic control and sequence control",
+    "Electrical installation codes and regulations in your country",
+    "Electrical safety"
+   ],
+   "tools": [
+    "Insulation resistance tester, clamp meter and multimeter",
+    "PLC programming tools (ladder diagrams)",
+    "How to read single-line and sequence diagrams",
+    "Inspection with a thermal imaging camera"
+   ],
+   "experiences": [
+    "Inspecting equipment yourself and keeping records",
+    "Narrowing down the cause of a fault or malfunction step by step",
+    "Reading ratings and manuals and setting operating limits"
+   ],
+   "entry": [
+    "In electrical machines and sequence control labs, keep your wiring and measurement records as an inspection log",
+    "Organise your coursework in electrical machines, power engineering and installation codes around the syllabus of an entry-level electrical licence, where your country has one",
+    "During a summer internship, watch operation and inspection work up close in a plant or a building's electrical room"
+   ],
+   "learnOrder": [
+    {
+     "step": "Reading single-line and sequence diagrams",
+     "why": "Understanding equipment starts with reading its drawings."
+    },
+    {
+     "step": "Using meters and following safety rules",
+     "why": "Maintenance often means working next to live equipment."
+    },
+    {
+     "step": "PLC sequence basics",
+     "why": "You can only find faults in automation equipment if you can read the sequence."
+    },
+    {
+     "step": "Fault records and revising criteria",
+     "why": "With records built up, you can change inspection intervals with evidence."
+    }
+   ],
+   "firstProject": {
+    "title": "Build an inspection criteria table for one piece of lab equipment",
+    "goal": "Pick a motor drive panel or PLC trainer in your department's lab, set its operating limits and inspection criteria, and keep records for a semester",
+    "steps": [
+     "With permission from the professor or lab technician, collect the equipment's ratings, manual and wiring diagram and tabulate its operating limits",
+     "Set inspection items, intervals and replacement criteria and write down why",
+     "Measure current, temperature and insulation resistance at the set intervals and fill in the inspection log",
+     "Look at the records you built up, choose the criteria that should change and propose revisions"
+    ],
+    "output": "Operating limits table, inspection criteria table, a filled-in inspection log and proposed revisions",
+    "check": "Can you explain why you proposed changing a criterion with numbers from the records?"
+   },
+   "portfolio": [
+    "A table of inspection criteria and intervals",
+    "A record of narrowing down a fault cause and restoring the equipment",
+    "One page of operating limits with their sources"
+   ],
+   "interview": [
+    {
+     "axis": "J7",
+     "q": "When equipment or a circuit suddenly stopped, in what order did you look for the cause?",
+     "why": "In maintenance, the order for bringing stopped equipment back has to be second nature."
+    },
+    {
+     "axis": "J3",
+     "q": "Have you set an inspection interval or replacement criterion? What did you base it on?",
+     "why": "Whether you set criteria with evidence shows the depth of your judgement."
+    },
+    {
+     "axis": "J5",
+     "q": "Have you kept records so the next person could take over?",
+     "why": "Maintenance means several people looking after the same equipment in turn."
+    }
+   ],
+   "postingCheck": [
+    "Whether the equipment is mainly substations and distribution or production automation",
+    "Whether an electrical licence is required, and whether the role is tied to a legally designated electrical safety position",
+    "Whether there is shift work or on-call duty"
+   ],
+   "watch": "Many equipment maintenance postings, often titled Electrical Maintenance Engineer or Facilities Electrical Engineer, require or prefer an electrical licence. In many countries the law requires larger sites to appoint a qualified person responsible for electrical safety, and the requirements depend on the size of the installation. If a role interests you, read the qualifications in the posting together with the relevant parts of your country's electrical safety rules."
+  },
+  "ROLE_PM_V1": {
+   "summary": "Setting requirements, scope, schedule and roles so parts built by several teams come together as one system, and resolving the mismatches",
+   "practiceWhere": "in your capstone design or a team build project",
+   "lens": {
+    "TD11": {
+     "why": "Aligning the conditions between subsystems in a system where sensors, controllers and actuators interlock is where technical planning is most often needed.",
+     "mode": "domain",
+     "ctx": "when you bring several modules together in your capstone",
+     "out": {
+      "J2": "Requirement priority table",
+      "J8": "Integration test results and agreement record"
+     }
+    },
+    "TD05": {
+     "why": "Setting the data and communication protocols that devices exchange is where the interface documents between teams come from.",
+     "mode": "domain",
+     "ctx": "in a project where several devices communicate",
+     "out": {
+      "J6": "Interface definition and check table"
+     }
+    },
+    "TD10": {
+     "why": "Setting the scope of equipment configuration and operating strategy for energy systems that combine generation, storage and load.",
+     "mode": "role",
+     "ctx": "in a renewable energy design project or competition",
+     "out": {
+      "J3": "Configuration options comparison"
+     }
+    }
+   },
+   "practice": {
+    "J1": {
+     "task": "At the start of a project, write on one page the scope of the system you will build and the features you will not do this semester, and get your teammates and supervisor to confirm it.",
+     "output": "One-page scope definition",
+     "check": "Are the features you will not do listed with the reasons?"
+    },
+    "J2": {
+     "task": "Collect the requirements from teammates, your supervisor and users, turn them into numeric conditions and rank them.",
+     "output": "Requirements definition table",
+     "check": "Does every requirement have a way to verify it and a priority?"
+    },
+    "J3": {
+     "task": "When time runs short, decide yourself which features stay and which go, and write how dropping each one affects the system.",
+     "output": "Scope adjustment note",
+     "check": "Can you explain to your teammates why you dropped each feature?"
+    },
+    "J4": {
+     "task": "Choose a scheduling method that suits your team, such as a Gantt chart or work breakdown structure, use it, and note why you chose it.",
+     "output": "Work breakdown and schedule",
+     "check": "Does every task have an owner and a due date?"
+    },
+    "J5": {
+     "task": "Write the signals, voltages and communication formats exchanged between modules into an interface definition, and keep a change history every time it changes.",
+     "output": "Interface definition and change history",
+     "check": "Can you see from the history who changed what, when and why?"
+    },
+    "J6": {
+     "task": "Before integration, check each module's actual outputs against the interface definition.",
+     "output": "Interface check table",
+     "check": "Are mismatched items and their owners listed in the table?"
+    },
+    "J7": {
+     "task": "Narrow down why the schedule slipped or integration failed, and share with the team how you reset the scope or schedule.",
+     "output": "Schedule reset record",
+     "check": "Do you have evidence that narrows the slip to one cause?"
+    },
+    "J8": {
+     "task": "Record whether the requirements definition or interface definition you wrote became the basis for your teammates' work.",
+     "output": "Record of how the documents were used",
+     "check": "Does it say which teammate used the document for which task?"
+    }
+   },
+   "responsibilities": [
+    "Defining product and system requirements and writing technical specifications",
+    "Planning development schedule and resources and tracking progress",
+    "Coordinating interfaces between departments and managing changes",
+    "Planning integration tests, reporting results and handling customer requirements"
+   ],
+   "process": [
+    {
+     "step": "Gather requirements",
+     "what": "You collect requirements from customers, sales and design and sort out the ones that overlap or conflict."
+    },
+    {
+     "step": "Set the scope",
+     "what": "You decide what to build, what to drop and the priorities, and get agreement from the departments involved."
+    },
+    {
+     "step": "Plan",
+     "what": "You break the work down and attach owners, schedule and the resources needed."
+    },
+    {
+     "step": "Coordinate interfaces",
+     "what": "You document the conditions exchanged between subsystems and keep a history every time they change."
+    },
+    {
+     "step": "Integrate and verify",
+     "what": "You bring the modules together, test them and check them against the requirements."
+    },
+    {
+     "step": "Handle changes",
+     "what": "When the schedule slips or requirements change, you reset the scope and schedule."
+    }
+   ],
+   "knowledge": [
+    "Basic systems engineering (requirements definition, interface management)",
+    "Basics of control engineering and communications engineering",
+    "Engineering project management",
+    "Basic cost and schedule planning",
+    "Core concepts across the main fields of electrical and electronic engineering"
+   ],
+   "tools": [
+    "Scheduling methods (Gantt charts, work breakdown structures)",
+    "Requirements traceability tables and change history",
+    "Collaboration tools and version control",
+    "Tools for drawing block diagrams and system architecture diagrams"
+   ],
+   "experiences": [
+    "Organising requirements and scope on a team project and getting agreement",
+    "Finding and resolving mismatches between modules",
+    "Resetting the scope when the schedule slipped"
+   ],
+   "entry": [
+    "Take on team lead or integration in your capstone design and write the requirements and interface definitions",
+    "Enter an engineering competition and manage the schedule and change history through to the end",
+    "Read the public specification of a product you are interested in and draw a block diagram that splits it into submodules"
+   ],
+   "learnOrder": [
+    {
+     "step": "Drawing block diagrams and interfaces",
+     "why": "Integration starts with drawing the boundaries between subsystems."
+    },
+    {
+     "step": "Turning requirements into numbers",
+     "why": "A requirement without numbers can be neither agreed nor verified."
+    },
+    {
+     "step": "Adjusting schedule and scope",
+     "why": "Planning means deciding what stays when there is not enough time."
+    },
+    {
+     "step": "Managing change history",
+     "why": "If nobody records who changed what and why, the same arguments repeat at integration."
+    }
+   ],
+   "firstProject": {
+    "title": "Build a set of requirements and interface documents for your capstone system",
+    "goal": "Pick one team project and manage the requirements definition, block diagram, interface definition and change history for a whole semester",
+    "steps": [
+     "Collect requirements from teammates and your supervisor into a requirements table with numeric conditions and priorities",
+     "Draw a block diagram that splits the system into modules, and write the signal, power and communication conditions between modules into a definition document",
+     "Every time something changes, record the date, what changed and why in the change history",
+     "At integration testing, check every requirement and write up why any items were not met"
+    ],
+    "output": "Requirements table, block diagram and interface definition, change history and requirements check table",
+    "check": "From the change history alone, can you explain why the final result differs from the original plan?"
+   },
+   "portfolio": [
+    "One page of requirements and priorities",
+    "An interface definition that aligned the conditions between modules",
+    "A change history and a record of resetting the scope"
+   ],
+   "interview": [
+    {
+     "axis": "J2",
+     "q": "When requirements conflicted, how did you set priorities and get agreement?",
+     "why": "Technical planning is the role that sorts out conflicting requirements."
+    },
+    {
+     "axis": "J3",
+     "q": "When you could not finish everything in time, what did you cut? Why that?",
+     "why": "What you cut shows your criteria for judgement."
+    },
+    {
+     "axis": "J8",
+     "q": "Has a document you wrote become the basis for someone else's work?",
+     "why": "Planning deliverables become useful when other people work from them."
+    }
+   ],
+   "postingCheck": [
+    "Whether technical planning here centres on defining product requirements or on managing projects and programmes",
+    "Whether hands-on experience in a particular area (control, communications, energy and so on) is required",
+    "Whether the posting says what graduates would handle (gathering data, managing schedules and so on)"
+   ],
+   "watch": "Technical planning and integration roles, often titled Systems Engineer or Technical Project Manager, are usually filled by people moving across after design or test experience, so there are relatively few graduate openings. It is realistic to also consider starting in a design or test role and taking on integration work there."
+  },
+  "ROLE_RND_V1": {
+   "summary": "Narrowing down a technical question that has no settled answer yet, and deciding by experiment and calculation whether it works",
+   "practiceWhere": "as an undergraduate research assistant or in a final-year thesis or capstone research project",
+   "lens": {
+    "TD07": {
+     "why": "Checking first whether a new device structure or process condition can deliver the target characteristics, an area with a lot of advanced research.",
+     "mode": "domain",
+     "ctx": "in a semiconductor devices course or sample experiments in a research lab",
+     "out": {
+      "J1": "Note defining the research question",
+      "J5": "Record of experimental method and conditions"
+     }
+    },
+    "TD04": {
+     "why": "Proposing a new processing method and comparing it with existing ones on the same data is an area undergraduates can start in without large equipment.",
+     "mode": "domain",
+     "ctx": "in signal processing coursework or research using public datasets",
+     "out": {
+      "J4": "Method comparison table",
+      "J6": "Experimental versus computed values table"
+     }
+    },
+    "TD06": {
+     "why": "Drawing the line, by simulation and measurement, on the conditions a new antenna or RF structure can handle.",
+     "mode": "role",
+     "ctx": "in projects in an electromagnetics or microwave research lab",
+     "out": {
+      "J7": "Table of the conditions that limit where it applies"
+     }
+    }
+   },
+   "practice": {
+    "J1": {
+     "task": "Pick a question in your area of interest that has no answer yet, and narrow what you need to find out down to one sentence.",
+     "output": "One-sentence research question with a scope note",
+     "check": "Is the question narrow enough to answer with one experiment or calculation?"
+    },
+    "J2": {
+     "task": "Turn the question into conditions you can check, writing what you will measure and what value would count as success.",
+     "output": "Decision criteria table",
+     "check": "Is there a threshold that separates works from does not work?"
+    },
+    "J3": {
+     "task": "List the assumptions you made, and for each one write how the result changes if it breaks.",
+     "output": "List of assumptions and the conditions that break them",
+     "check": "Does every assumption have the condition under which it breaks?"
+    },
+    "J4": {
+     "task": "Find at least two methods in papers or textbooks and compare them, and if none fits, record why you adapted an existing method.",
+     "output": "Method comparison note",
+     "check": "Can you explain the limits of the methods you did not choose?"
+    },
+    "J5": {
+     "task": "Keep the code, experimental conditions and raw data in one place so someone else can get the same result.",
+     "output": "Lab notebook and reproduction materials",
+     "check": "Did someone else reproduce your result from the materials alone?"
+    },
+    "J6": {
+     "task": "Put experimental and calculated values side by side under the same conditions, and write where they differ and why.",
+     "output": "Experiment versus calculation table",
+     "check": "Did you check the candidate reasons for the gap one by one?"
+    },
+    "J7": {
+     "task": "Vary the conditions to find where your proposed method stops performing, and draw the line.",
+     "output": "Record of the limits where it applies",
+     "check": "Is the condition value at the limit written down?"
+    },
+    "J8": {
+     "task": "Record where your results went: a conference talk, your thesis, a lab report or the next experiment plan.",
+     "output": "Record of how results were used",
+     "check": "Does it say which next-stage decision the results fed into?"
+    }
+   },
+   "responsibilities": [
+    "Feasibility studies and early experiments on new devices and approaches",
+    "Technology trend research and paper and patent searches",
+    "Building prototypes and test samples and evaluating performance",
+    "Writing research reports, supporting patent filings and transferring technology to development"
+   ],
+   "process": [
+    {
+     "step": "Set the question",
+     "what": "A technical question with no answer yet comes in from product planning or a research project."
+    },
+    {
+     "step": "Research",
+     "what": "You search papers and patents and separate what is already known from what is left."
+    },
+    {
+     "step": "Plan the method",
+     "what": "You set the assumptions and decision criteria, and decide what to hold fixed and what to vary."
+    },
+    {
+     "step": "Experiment and calculate",
+     "what": "You make samples or models, measure them and compare with calculations."
+    },
+    {
+     "step": "Draw the limits",
+     "what": "You vary the conditions to separate the range where the method holds from where it does not."
+    },
+    {
+     "step": "Transfer and report",
+     "what": "You write up the results as reports, patents or prototypes and hand them to development."
+    }
+   ],
+   "knowledge": [
+    "Advanced courses in your area of interest (semiconductor devices, signal processing, electromagnetics and so on)",
+    "Engineering mathematics, probability and statistics",
+    "Experimental design and error analysis",
+    "Reading and writing papers",
+    "How to read patent documents"
+   ],
+   "tools": [
+    "Numerical computing and programming tools (MATLAB or Python)",
+    "Field-specific simulators (device, electromagnetic, circuit)",
+    "Academic databases and patent databases such as Google Patents or Espacenet",
+    "Lab notebooks and version control"
+   ],
+   "experiences": [
+    "Narrowing an open question and checking it by experiment",
+    "Reproducing a paper's results yourself",
+    "Writing down the limits of a method you proposed as conditions"
+   ],
+   "entry": [
+    "Join a lab you are interested in as an undergraduate research assistant and reproduce one of a senior student's experiments",
+    "Pick one result figure from a paper in your area and redraw it from your own calculations or experiments",
+    "Submit your results to an undergraduate research competition or a student session at a conference"
+   ],
+   "learnOrder": [
+    {
+     "step": "Reproducing one paper all the way through",
+     "why": "Reproducing a paper shows you the conditions it did not write down."
+    },
+    {
+     "step": "Narrowing the question",
+     "why": "Advanced research succeeds or fails on how well the question is narrowed."
+    },
+    {
+     "step": "Writing down assumptions and limits",
+     "why": "The next person can only use a result if you also write how far it holds."
+    },
+    {
+     "step": "Deciding about graduate school",
+     "why": "Advanced research roles are often entered through a graduate degree, so it helps to make that decision early."
+    }
+   ],
+   "firstProject": {
+    "title": "Reproduce a paper's result and look for its limits",
+    "goal": "Pick a paper in your area, reproduce one of its main results, and find one condition under which the method does not hold",
+    "steps": [
+     "Write the paper's question, assumptions and evaluation metrics on one page",
+     "Recreate one result figure using public data or samples and models you make yourself",
+     "Find where your result differs from the paper's and write down why",
+     "Vary one condition to find where performance drops off, and draw the line"
+    ],
+    "output": "One page of questions and assumptions, reproduction results with a comparison table, and a record of limiting conditions",
+    "check": "Can you give at least one limiting condition the paper did not mention, with evidence?"
+   },
+   "portfolio": [
+    "A research report setting out the question, assumptions and limits",
+    "Materials describing methods and conditions so someone else can rerun them",
+    "A table comparing your values with those from a different method"
+   ],
+   "interview": [
+    {
+     "axis": "J1",
+     "q": "How did you narrow down a problem that had no set answer before you started?",
+     "why": "Advanced research starts with framing the question."
+    },
+    {
+     "axis": "J4",
+     "q": "What did you do when there was no suitable method?",
+     "why": "This role often calls for adapting existing methods or building new ones."
+    },
+    {
+     "axis": "J7",
+     "q": "Have you checked where a method you proposed stops working?",
+     "why": "The next person trusts results from someone who looked for the limits themselves."
+    }
+   ],
+   "postingCheck": [
+    "How the degree requirement (bachelor's, master's, PhD) is worded",
+    "Whether the research topic is in devices, circuits, signals or communications",
+    "Whether a record of papers or patents is required or preferred"
+   ],
+   "watch": "Advanced R&D postings, often titled Research Engineer or R&D Engineer, commonly require a master's or PhD. If you want this kind of role as an undergraduate, build lab experience early and think seriously about graduate school."
+  },
+  "ROLE_QUALITY_V1": {
+   "summary": "Assuring through set criteria that a product meets its requirements throughout production and throughout its service life, and following corrective action through to the end when problems appear",
+   "practiceWhere": "in quality control or reliability courses or durability testing of a prototype",
+   "lens": {
+    "TD12": {
+     "why": "Judging from production data and test results whether criteria are exceeded is the area quality roles deal with every day.",
+     "mode": "domain",
+     "ctx": "when you collect instrumentation lab data and make verdicts from it",
+     "out": {
+      "J5": "Corrective action tracking table",
+      "J6": "Production data verdict table"
+     }
+    },
+    "TD07": {
+     "why": "Dealing with defects and life of semiconductor devices is where failure analysis and accelerated testing happen.",
+     "mode": "domain",
+     "ctx": "in a semiconductor devices course or sample evaluation experiments",
+     "out": {
+      "J4": "Table of candidate defect causes",
+      "J7": "Record confirming recurrence prevention"
+     }
+    },
+    "TD09": {
+     "why": "Judging insulation ageing and life of electrical machines and power equipment, where the longer equipment is in service, the more reliability judgements come with it.",
+     "mode": "role",
+     "ctx": "in an electrical machines lab or insulation testing lab",
+     "out": {
+      "J3": "Note on life judgement criteria"
+     }
+    }
+   },
+   "practice": {
+    "J1": {
+     "task": "Pick a prototype or lab sample and separate the quality items you will assure this time from those you will not cover.",
+     "output": "Quality scope note",
+     "check": "Are the items you do not cover listed with the reasons?"
+    },
+    "J2": {
+     "task": "Turn a user requirement such as it does not shut off when left on for a long time into a quality criterion you can measure.",
+     "output": "Quality criteria table",
+     "check": "Does every criterion have a measurement method and an acceptance range?"
+    },
+    "J3": {
+     "task": "Set accelerated conditions with raised temperature or voltage and the life judgement criteria yourself, and write how those conditions relate to real use.",
+     "output": "Note on accelerated conditions and criteria",
+     "check": "Did you explain how the accelerated conditions relate to real use?"
+    },
+    "J4": {
+     "task": "Sort the defect data you collected by symptom, location and process, draw a Pareto chart, and decide which candidate causes to look at first.",
+     "output": "Defect classification table and Pareto chart",
+     "check": "Is there a reason for the causes you chose to look at first?"
+    },
+    "J5": {
+     "task": "Make and fill in a corrective action record so the problem, cause, action and verification can be followed afterwards.",
+     "output": "Corrective action record",
+     "check": "Is the effect check after the action filled in too?"
+    },
+    "J6": {
+     "task": "Set the distribution of measurements from several samples against the criteria, calculate a process capability index, and judge whether it meets them.",
+     "output": "Distribution and verdict table",
+     "check": "Are the number of samples and the formula you used written down?"
+    },
+    "J7": {
+     "task": "Decide an action to stop the same defect recurring, and check with samples made after the action whether it really dropped.",
+     "output": "Recurrence prevention confirmation record",
+     "check": "Did you compare before and after against the same criteria?"
+    },
+    "J8": {
+     "task": "If your verdicts or action records were used for a team submission decision or the next build, record what happened.",
+     "output": "Record of how verdicts were used",
+     "check": "Does it say which verdict led to which decision?"
+    }
+   },
+   "responsibilities": [
+    "Setting quality criteria and making outgoing inspection calls",
+    "Planning reliability tests and assessing life",
+    "Analysing defects and tracking corrective action",
+    "Handling customer quality enquiries and managing quality system documents"
+   ],
+   "process": [
+    {
+     "step": "Receive the requirements",
+     "what": "Customer requirements, applicable standards and internal criteria arrive with a new product."
+    },
+    {
+     "step": "Set the criteria",
+     "what": "You set the quality items, acceptance criteria and reliability test conditions."
+    },
+    {
+     "step": "Evaluate",
+     "what": "Reliability tests and early production inspection confirm whether the criteria are met."
+    },
+    {
+     "step": "Monitor",
+     "what": "You watch the trend in production data and look for signs that criteria are about to be exceeded."
+    },
+    {
+     "step": "Respond to defects",
+     "what": "When a defect appears, you narrow down the cause, set corrective action and confirm the effect."
+    },
+    {
+     "step": "Shipment decision",
+     "what": "Based on the verdict, you hold or release shipments and record the reasons."
+    }
+   ],
+   "knowledge": [
+    "Quality control and engineering statistics (control charts, process capability indices)",
+    "Reliability engineering (failure rate, life distributions, accelerated testing)",
+    "Basics of semiconductor devices and electronic circuits",
+    "Overview of quality management systems (ISO 9001)",
+    "Defect analysis methods (FMEA, fishbone diagrams)"
+   ],
+   "tools": [
+    "Statistics tools and spreadsheets (distributions, control charts, Weibull analysis)",
+    "How to operate environmental test equipment for temperature and humidity",
+    "How to read reliability test standards (JEDEC and IEC test standards)",
+    "Corrective action report templates (8D reports and similar)"
+   ],
+   "experiences": [
+    "Making a pass or fail call from measurement data",
+    "Narrowing down a defect cause and confirming that the action worked",
+    "Recording corrective action and following it through to the end"
+   ],
+   "entry": [
+    "Calculate control charts and process capability indices yourself in a quality control or engineering statistics course",
+    "Build several capstone prototypes and run a simple durability test, running them for a long time at different temperatures",
+    "Organise your quality control knowledge around the syllabus of a recognised quality engineering certification"
+   ],
+   "learnOrder": [
+    {
+     "step": "Reading distributions and control charts",
+     "why": "Quality verdicts are made from distributions rather than single values."
+    },
+    {
+     "step": "Defect cause analysis methods",
+     "why": "A defect report is read for how you narrowed down the cause."
+    },
+    {
+     "step": "Reliability testing and life distributions",
+     "why": "Life is hard to measure by waiting for failure, so it is estimated with accelerated tests and distributions."
+    },
+    {
+     "step": "Reading quality documents and standards",
+     "why": "Customers and certification bodies check verdicts through documents."
+    }
+   ],
+   "firstProject": {
+    "title": "Run a small reliability test on a few prototypes",
+    "goal": "Build several identical circuit boards, run them for a long time at different temperatures, judge them against criteria, and record the cause and action for any failure",
+    "steps": [
+     "Write down the conditions of use and set the quality items to watch and the acceptance criteria",
+     "Set test conditions with raised temperature or supply voltage and a test duration, and write down why",
+     "Measure the characteristics at set intervals and record the distribution and how it changes",
+     "If any board exceeds the criteria, narrow down the cause, test again after the action and record the result"
+    ],
+    "output": "Quality criteria table, test conditions note, measurement records and corrective action record",
+    "check": "Can you explain the test conditions and verdicts in terms of real conditions of use?"
+   },
+   "portfolio": [
+    "A table of quality criteria and the basis for each verdict",
+    "A corrective action record covering cause, action and effect check",
+    "One page on the accelerated conditions used for the life judgement"
+   ],
+   "interview": [
+    {
+     "axis": "J6",
+     "q": "Have you judged pass or fail from measurement data? What did you base it on?",
+     "why": "A quality role makes the call and explains its basis."
+    },
+    {
+     "axis": "J7",
+     "q": "What did you do so the same problem would not happen again, and how did you confirm it really dropped?",
+     "why": "The persistence quality work needs shows in confirming the effect, more than in the action itself."
+    },
+    {
+     "axis": "J8",
+     "q": "Has your judgement ever delayed a schedule or changed a plan?",
+     "why": "A quality role sometimes has to make the call to stop a shipment."
+    }
+   ],
+   "postingCheck": [
+    "Whether the role covers incoming, process or outgoing quality, or is dedicated to reliability testing",
+    "Whether customer quality handling is part of the job",
+    "Whether quality certifications or statistics tool experience are listed as a plus"
+   ],
+   "watch": "Quality engineers, often titled Quality Engineer, Reliability Engineer or Supplier Quality Engineer, frequently have to explain verdicts between process and test teams and customers. Some industries, such as automotive electronics, follow industry-specific quality standards (IATF 16949, the AEC-Q series and so on), so once you have a target industry, look up the names of its standards first."
+  }
+ }
+}

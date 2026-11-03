@@ -115,13 +115,22 @@ function main(): void {
   ok("준비 중인 자리가 하나도 열려 있지 않다",
     prep.every((r) => statusOf(u, r, undefined, SHUT) !== "READY"),
     `${prep.length}자리`);
-  /* 다른 학교까지 조용히 열리지 않았는가 */
+  /* **다른 학교까지 조용히 열리지 않았는가.** 학교가 여럿이 된 뒤로는 다른
+     학교도 제 목록으로 연 자리가 있다. 그래서 묻는 것은 `하나도 안 열렸는가`
+     가 아니라 **그 학교가 제 `student_open` 목록에 적은 자리만 열렸는가**다.
+     목록 없이(`CORE` 모드) 열린 자리가 있으면 걸린다 */
   const others = campusRegistry().universities
     .filter((x) => x.university_code !== UNI);
-  ok("다른 학교의 자리가 열리지 않았다",
-    others.every((x) => allLeaves(x)
-      .every((r) => statusOf(x, r, undefined, SHUT) !== "READY")),
-    others.length ? others.map((x) => x.university_code).join(" ") : "다른 학교 없음");
+  const leaked = others.flatMap((x) => {
+    const listed = x.student_open?.mode === "LEAF" ? new Set(x.student_open.leaves ?? []) : null;
+    return allLeaves(x)
+      .filter((r) => statusOf(x, r, undefined, SHUT) === "READY")
+      .filter((r) => !listed || !listed.has(r.leaf.code))
+      .map((r) => `${x.university_code}:${r.leaf.code}`);
+  });
+  ok("다른 학교는 제 목록에 적은 자리만 열렸다", leaked.length === 0,
+    leaked.length ? leaked.join(" ")
+      : others.length ? others.map((x) => x.university_code).join(" ") : "다른 학교 없음");
 
   console.log(`\n확인 ${pass + bad.length}가지 — 통과 ${pass} · 걸림 ${bad.length}\n`);
   if (bad.length) process.exit(1);

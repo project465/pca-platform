@@ -174,12 +174,12 @@
    "industry": "INDUSTRY_PUBCULTURE_V1",
    "industry_name": "공공·문화기관",
    "strength": "있음",
-   "appears_as": "공공·문화기관 에서는 자료의 해석을 근거와 견주는가 로 나타납니다",
+   "appears_as": "공공·문화기관 에서는 자료의 해석을 근거와 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "자료의 해석을 근거와 견주는가"
+    "자료의 해석을 근거와 비교하는가"
    ]
   },
   {
@@ -442,12 +442,12 @@
    "industry": "INDUSTRY_KLANGEDU_V1",
    "industry_name": "한국어교육·국제교류",
    "strength": "있음",
-   "appears_as": "한국어교육·국제교류 에서는 두 말을 견주어 설명할 말을 고르는가 로 나타납니다",
+   "appears_as": "한국어교육·국제교류 에서는 두 말을 비교해 설명할 말을 고르는가 로 나타납니다",
    "axes_watched": [
     "J3"
    ],
    "dimensions": [
-    "두 말을 견주어 설명할 말을 고르는가"
+    "두 말을 비교해 설명할 말을 고르는가"
    ]
   },
   {
@@ -522,12 +522,12 @@
    "industry": "INDUSTRY_LANGTECH_V1",
    "industry_name": "언어 데이터·언어기술",
    "strength": "있음",
-   "appears_as": "언어 데이터·언어기술 에서는 두 말이 걸린 자리를 견주는가 로 나타납니다",
+   "appears_as": "언어 데이터·언어기술 에서는 두 말이 걸린 자리를 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "두 말이 걸린 자리를 견주는가"
+    "두 말이 걸린 자리를 비교하는가"
    ]
   },
   {
@@ -944,12 +944,12 @@
    "industry": "INDUSTRY_ACADEMIA_V1",
    "industry_name": "대학·연구기관",
    "strength": "있음",
-   "appears_as": "대학·연구기관 에서는 쓴 것을 처음 계획과 견주는가 로 나타납니다",
+   "appears_as": "대학·연구기관 에서는 쓴 것을 처음 계획과 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "쓴 것을 처음 계획과 견주는가"
+    "쓴 것을 처음 계획과 비교하는가"
    ]
   },
   {
@@ -1028,12 +1028,12 @@
    "industry": "INDUSTRY_CORPCOMM_V1",
    "industry_name": "기업 커뮤니케이션",
    "strength": "있음",
-   "appears_as": "기업 커뮤니케이션 에서는 고객의 말과 회사의 말을 견주는가 로 나타납니다",
+   "appears_as": "기업 커뮤니케이션 에서는 고객의 말과 회사의 말을 비교하는가 로 나타납니다",
    "axes_watched": [
     "J6"
    ],
    "dimensions": [
-    "고객의 말과 회사의 말을 견주는가"
+    "고객의 말과 회사의 말을 비교하는가"
    ]
   },
   {
@@ -1292,7 +1292,7 @@
    "role": "ROLE_PLANNING_V1",
    "role_name": "기획·편성",
    "strength": "중심",
-   "appears_as": "기획·편성 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "기획·편성 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J6"
    ]
@@ -1351,7 +1351,7 @@
    "role": "ROLE_PROJECT_V1",
    "role_name": "사업·과제 관리",
    "strength": "중심",
-   "appears_as": "사업·과제 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "사업·과제 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J7"
@@ -1363,7 +1363,7 @@
    "role": "ROLE_RESEARCH_V1",
    "role_name": "연구",
    "strength": "중심",
-   "appears_as": "연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "연구 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5"
@@ -1399,7 +1399,7 @@
    "role": "ROLE_ANALYSIS_V1",
    "role_name": "분석·해석",
    "strength": "중심",
-   "appears_as": "분석·해석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "분석·해석 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -1460,7 +1460,7 @@
    "role": "ROLE_RESEARCH_V1",
    "role_name": "연구",
    "strength": "중심",
-   "appears_as": "연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "연구 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J6",
     "J7"
@@ -1496,7 +1496,7 @@
    "role": "ROLE_ANALYSIS_V1",
    "role_name": "분석·해석",
    "strength": "중심",
-   "appears_as": "분석·해석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "분석·해석 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J6",
     "J7"
@@ -1568,7 +1568,7 @@
    "role": "ROLE_STANDARD_V1",
    "role_name": "표기·규범",
    "strength": "중심",
-   "appears_as": "표기·규범 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "표기·규범 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -1593,7 +1593,7 @@
    "role": "ROLE_ANALYSIS_V1",
    "role_name": "분석·해석",
    "strength": "중심",
-   "appears_as": "분석·해석 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "분석·해석 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J3"
@@ -1605,7 +1605,7 @@
    "role": "ROLE_REVIEW_V1",
    "role_name": "검수·평가",
    "strength": "중심",
-   "appears_as": "검수·평가 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "검수·평가 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3"
    ]
@@ -1664,7 +1664,7 @@
    "role": "ROLE_STANDARD_V1",
    "role_name": "표기·규범",
    "strength": "중심",
-   "appears_as": "표기·규범 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "표기·규범 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J6"
@@ -1712,7 +1712,7 @@
    "role": "ROLE_EDIT_V1",
    "role_name": "제작·편집",
    "strength": "중심",
-   "appears_as": "제작·편집 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "제작·편집 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J6"
@@ -1796,7 +1796,7 @@
    "role": "ROLE_REVIEW_V1",
    "role_name": "검수·평가",
    "strength": "중심",
-   "appears_as": "검수·평가 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "검수·평가 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J7"
@@ -1808,7 +1808,7 @@
    "role": "ROLE_EDIT_V1",
    "role_name": "제작·편집",
    "strength": "중심",
-   "appears_as": "제작·편집 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "제작·편집 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -1857,7 +1857,7 @@
    "role": "ROLE_STANDARD_V1",
    "role_name": "표기·규범",
    "strength": "중심",
-   "appears_as": "표기·규범 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "표기·규범 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J7"
@@ -1917,7 +1917,7 @@
    "role": "ROLE_OPERATION_V1",
    "role_name": "과정 운영",
    "strength": "중심",
-   "appears_as": "과정 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "과정 운영 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -1990,7 +1990,7 @@
    "role": "ROLE_REVIEW_V1",
    "role_name": "검수·평가",
    "strength": "중심",
-   "appears_as": "검수·평가 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "검수·평가 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -2016,7 +2016,7 @@
    "role": "ROLE_OPERATION_V1",
    "role_name": "과정 운영",
    "strength": "중심",
-   "appears_as": "과정 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "과정 운영 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J6"
@@ -2064,7 +2064,7 @@
    "role": "ROLE_PLANNING_V1",
    "role_name": "기획·편성",
    "strength": "중심",
-   "appears_as": "기획·편성 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "기획·편성 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J3",
@@ -2101,7 +2101,7 @@
    "role": "ROLE_EDIT_V1",
    "role_name": "제작·편집",
    "strength": "중심",
-   "appears_as": "제작·편집 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "제작·편집 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J7"
@@ -2305,7 +2305,7 @@
    "role": "ROLE_OPERATION_V1",
    "role_name": "과정 운영",
    "strength": "중심",
-   "appears_as": "과정 운영 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "과정 운영 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J7"
@@ -2317,7 +2317,7 @@
    "role": "ROLE_PROJECT_V1",
    "role_name": "사업·과제 관리",
    "strength": "중심",
-   "appears_as": "사업·과제 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "사업·과제 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J6"
@@ -2329,7 +2329,7 @@
    "role": "ROLE_RESEARCH_V1",
    "role_name": "연구",
    "strength": "중심",
-   "appears_as": "연구 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "연구 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J2",
     "J3",
@@ -2354,7 +2354,7 @@
    "role": "ROLE_PLANNING_V1",
    "role_name": "기획·편성",
    "strength": "중심",
-   "appears_as": "기획·편성 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "기획·편성 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",
@@ -2415,7 +2415,7 @@
    "role": "ROLE_PROJECT_V1",
    "role_name": "사업·과제 관리",
    "strength": "중심",
-   "appears_as": "사업·과제 관리 역할이 이 영역에서 직접 정할 권한을 가지는 자리입니다",
+   "appears_as": "사업·과제 관리 역할이 이 영역에서 직접 정하는 일을 맡습니다",
    "axes_watched": [
     "J3",
     "J5",

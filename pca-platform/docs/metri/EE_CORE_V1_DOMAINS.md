@@ -1,4 +1,4 @@
-# 전기전자공학 Core 영역별 검토표 (EE_V1 · EE_V1_ITEM_BANK_V1)
+# 전기전자공학 Core 영역별 검토표 (EE_V1 · EE_V1_ITEM_BANK_V1.3)
 
 이 파일은 **생성물이다**. 고칠 곳은 `ee-v1-items.json` 와 `ee-v1-domains.json` 이고, 고친 뒤 `CORE=EE_CORE_V1 npm run core:qa` 를 돌린다.
 

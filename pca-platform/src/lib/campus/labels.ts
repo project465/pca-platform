@@ -38,7 +38,7 @@ export function campusNames(universityCode: string | null): CampusNames {
       const live = dep.get(k);
       if (live) return live;
       const gone = retiredCodeOf(u, k);
-      return gone ? `${gone.was} (지난 등록부 자리)` : k;
+      return gone ? `${gone.was} (지난 등록부 항목)` : k;
     },
   };
 }

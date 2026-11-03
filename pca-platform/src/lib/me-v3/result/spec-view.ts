@@ -15,7 +15,15 @@
  * 자리에 적는 일이다. 갈래는 **한 Core 를 여러 학과가 나눠 쓸 때** 그 차이를
  * 적는 자리다.
  */
-import { core as coreEntry, specializationOf } from "@/lib/me-v3/core-registry";
+import { core as coreEntry, sharedFile, specializationOf } from "@/lib/me-v3/core-registry";
+import { polite } from "@/lib/me-v3/report-long/text";
+
+/**
+ * 등록부의 할 일 문장은 `~남긴다` 꼴로 적혀 있다. 그대로 세우면 높임으로
+ * 쓴 결과지 한가운데 그 줄만 반말로 서서 메모를 붙여 넣은 것처럼 읽힌다.
+ * **읽는 자리에서 말끝만 바꾼다**: 원본을 고치면 Core 스무 벌을 다시 써야 한다.
+ */
+const say = (v: unknown) => (typeof v === "string" && v.trim() ? polite(v) : "");
 
 export type SpecView = {
   /** 그 전공에서 자주 서는 장면 */
@@ -62,7 +70,21 @@ function obj(v: unknown): Record<string, unknown> {
   return v && typeof v === "object" ? (v as Record<string, unknown>) : {};
 }
 
-export function specView(core: string, spec: string | null): SpecView {
+export function specView(core: string, spec: string | null, lang = "ko"): SpecView {
+  /* **다른 언어는 공용 원고의 예시만 쓴다.** 등록부의 예시와 할 일 문장은
+     한국어 원본이고, 영어 화면에 그 글을 세우지 않는다. 차례를 정하는 코드
+     (`*Lead`)는 언어와 무관하므로 등록부에서 그대로 읽는다 */
+  if (lang !== "ko") {
+    const base = specView(core, spec, "ko");
+    let ex: Record<string, unknown> = {};
+    try { ex = obj(sharedFile(core, lang).examples); } catch { ex = {}; }
+    return {
+      ...base,
+      scene: list(ex.scene), artifacts: list(ex.artifacts), evidence: list(ex.evidence),
+      evidenceFirst: "", evidenceNext: "",
+      application: { resume: "", interview: [] },
+    };
+  }
   let c: Record<string, unknown> | null = null;
   try { c = coreEntry(core) as unknown as Record<string, unknown>; } catch { c = null; }
   const s = spec ? (specializationOf(core, spec) as unknown as Record<string, unknown> | null) : null;
@@ -78,10 +100,10 @@ export function specView(core: string, spec: string | null): SpecView {
     domainLead: list(obj(pick("domain_emphasis")).lead),
     industryLead: list(obj(pick("industry_mapping")).lead),
     roleLead: list(obj(pick("role_mapping")).lead),
-    evidenceFirst: typeof ea.first === "string" ? ea.first : "",
-    evidenceNext: typeof ea.next === "string" ? ea.next : "",
+    evidenceFirst: say(ea.first),
+    evidenceNext: say(ea.next),
     application: {
-      resume: typeof ap.resume === "string" ? ap.resume : "",
+      resume: say(ap.resume),
       interview: list(ap.interview),
     },
   };

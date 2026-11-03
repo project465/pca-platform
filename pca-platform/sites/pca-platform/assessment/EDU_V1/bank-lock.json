@@ -1,20 +1,20 @@
 {
  "schema_version": "edu-v1-bank-lock.1",
  "core": "EDU_CORE_V1",
- "item_bank_version": "EDU_V1_ITEM_BANK_V1.2",
+ "item_bank_version": "EDU_V1_ITEM_BANK_V1.5",
  "note": "교육 Core 의 1차 문항 은행 지문이다. 문면을 고치면 이 파일이 걸린다. 그때 은행의 `item_bank_version` 을 올리고 `BANK=update CORE=EDU_CORE_V1 npm run v3:scoring` 으로 다시 적는다. 잠그는 까닭은 응시한 사람의 결과가 조용히 달라지지 않게 하는 것이고 고치지 못하게 막는 것이 아니다",
  "files": {
-  "edu-industry-packs.json": "c49554b7c5e04ce2a70e1b74ec7fd2e57ea85c819e64abae51760921c90445e0",
-  "edu-role-packs.json": "05810868099303b3d7a26b4b5bc0b8ce81ff8030cf031208d48934ca1a455d32",
-  "edu-v1-checklist-additions.json": "9c38e43d1e67ed177c8b1195c704cd6398dee1129a287cca402ee32d8a14912a",
-  "edu-v1-checklists.json": "a94e9c28b4857f17524b9d3206a2ba408aa808de258b2c258fb8f6a0e655005a",
-  "edu-v1-common-additions.json": "93906b03cb25e73a8a223914563a9012a31e31b32e7ad5c78f65686bd99d58f4",
+  "edu-industry-packs.json": "6fd3ec134887601018dc1397655117bab00c40505341e3927c491a4e416761b2",
+  "edu-role-packs.json": "1639fb3c963eaa37810b55708305169178431baba436b914d91251700c0f1435",
+  "edu-v1-checklist-additions.json": "1db72d49cae4f4e0c9c73c9d12a2e3bcd9f616193e7dfae317179963277e90b5",
+  "edu-v1-checklists.json": "2cbdbc6cd96bd064f7d09aa7f3eb7b3c1248827bde35e0dc64132cdf7a7cd8ce",
+  "edu-v1-common-additions.json": "b79868b28e62dc3c4d4903297788ba9d20773fd87ccdd5790baaaa27a1e21b3e",
   "edu-v1-constructs.json": "9b3916b2a22d205449965fa9f5451980eb37774e07f12c4c82592255410ba3b6",
-  "edu-v1-domains.json": "4d3060e4ab5866c3a32358c852f608785af9beb25b3c4281c50f0ba9db390ffc",
+  "edu-v1-domains.json": "e043ba829c3c4a1427401d05dfa171036ecbad8853b312ed5360f169d9aad427",
   "edu-v1-items-blueprint.json": "33e7d4057be8d765643659e771b1693e2fa321308f1f184f55313d208270cf35",
-  "edu-v1-items.json": "1f18ea20df7bfa2fb0ddb981d08d9431bcb4cb5ff0baeabad706f8e12809301f",
-  "edu-v1-relations.json": "7a692b40eb638f2f2ee0923118b97d75f27524bbd4e67f0b056e8f5a004e9aec",
-  "edu-v1-taxonomy.json": "c01c0a3ca068939b0ee2868d052820e0b5f50709d1fd0187ab9e8805f747efc0"
+  "edu-v1-items.json": "a103a3295539bb5d284def401e51fbf7994878bcc8df7d1a939c07de51e433af",
+  "edu-v1-relations.json": "b317aee3d204b9d356b58cbab5c74625d409c5f76fc13092d00223573f0c0bbc",
+  "edu-v1-taxonomy.json": "838fb6b1b205c1b696d3f30f846ad80ef622625bb641f54cff15e59b084f7bdc"
  },
  "scoring_version": "me-v3-scoring.5"
 }

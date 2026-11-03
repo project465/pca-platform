@@ -80,6 +80,7 @@ const FILES = [
   "src/app/me/experience/steps.tsx",
   "src/app/me/experience/[id]/edit/page.tsx",
   "src/app/me/experience/actions.ts",
+  "src/app/me/experience/upload.tsx",
   "src/app/me/recompute/page.tsx",
   "src/app/me/recompute/apply.tsx",
   "src/app/me/recompute/actions.ts",
@@ -88,10 +89,19 @@ const FILES = [
   "src/app/me/explore/page.tsx",
   "src/app/me/region/page.tsx",
   "src/app/me/region/actions.ts",
+  "src/app/me/prep/page.tsx",
+  "src/app/me/prep/actions.ts",
+  "src/lib/me-v3/prep.ts",
   "src/app/me/apply/page.tsx",
   "src/app/me/apply/actions.ts",
   /* 기타 */
   "src/app/me/track/page.tsx",
+  "src/app/me/track/guide.tsx",
+  /* 공고 확인 쪽. **목록에 없어서 쓰는 class 이름 대조가 이 쪽을 보지 않았다** */
+  "src/app/me/track/posting/[id]/page.tsx",
+  /* MAT 브리핑 판과 복사 단추. 쓰는 class 이름이 CSS 에 있는지도 여기서 센다 */
+  "src/app/me/track/brief.tsx",
+  "src/app/me/track/copy-button.tsx",
   /* 계정 — 같은 껍데기를 쓰므로 같은 목록에 든다 */
   "src/app/my/layout.tsx",
   "src/app/my/page.tsx",

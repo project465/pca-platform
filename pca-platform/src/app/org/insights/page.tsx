@@ -120,7 +120,7 @@ export default async function CampusCareerInsights({
                 }))}
               />
             ) : (
-              <p className="sf-meta" style={{ margin: 0 }}>견줄 기수가 아직 없습니다.</p>
+              <p className="sf-meta" style={{ margin: 0 }}>비교할 기수가 아직 없습니다.</p>
             )}
           </Card>
         </div>

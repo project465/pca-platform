@@ -1,7 +1,9 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { BrandMark } from "@/components/sf/brand-mark";
-import type { CampusUniversity } from "@/lib/campus/registry";
+import LogoutButton from "@/components/logout-button";
+import { currentUser } from "@/lib/session";
+import { campusSay, type CampusUniversity } from "@/lib/campus/registry";
 
 /**
  * 배재대학교 전용 CareerMatri Portal 의 껍데기.
@@ -20,7 +22,7 @@ import type { CampusUniversity } from "@/lib/campus/registry";
  * 학교 상표를 우리가 다시 그리면 그 학교가 승인한 적 없는 상표가 학생
  * 화면에 선다. 서는 것은 학교 이름 글자와 공식 CareerMatri 상표 하나다.
  */
-export function CampusShell({
+export async function CampusShell({
   u, wide, children,
 }: {
   u: CampusUniversity;
@@ -29,6 +31,10 @@ export function CampusShell({
   children: ReactNode;
 }) {
   const home = `/campus/${u.university_code.toLowerCase()}`;
+  const t = campusSay(u);
+  /* 로그인한 사람에게만 나가는 단추를 세운다. 나간 뒤에는 이 학교의
+     로그인으로 돌아와 다음 사람이 같은 문으로 들어온다 */
+  const who = await currentUser();
   return (
     <div className="cm cm-cmp">
       <header className="cm-cmp-band">
@@ -40,7 +46,10 @@ export function CampusShell({
           <Link className="cm-cmp-brand" href={home}>
             <BrandMark size={22} />CareerMatri
           </Link>
-          <span className="cm-cmp-tag">학생 진로 분석 포털</span>
+          <span className="cm-cmp-tag">{t("학생")} 진로 분석 포털</span>
+          {who ? (
+            <LogoutButton className="cm-cmp-out" redirectTo={`${home}/login`} />
+          ) : null}
         </div>
       </header>
 
@@ -55,8 +64,8 @@ export function CampusShell({
           역할에도 없다 */}
       <footer className="cm-cmp-foot">
         <p>
-          {u.university_name} × CareerMatri · 응시 현황은 학과 단위 집계로만
-          전달되고 개별 응답과 결과는 담당자에게 공개되지 않습니다.
+          {u.university_name} × CareerMatri · {t("응시 현황은 학과 단위 집계로만 전달되고"
+            + " 개별 응답과 결과는 담당자에게 공개되지 않습니다.")}
         </p>
       </footer>
     </div>

@@ -223,14 +223,59 @@ export function core(code: string, dir = CONTENT_DIR): CoreEntry {
   return found;
 }
 
-/** core 의 파일 하나를 읽는다. **파일 이름을 코드에 적지 않는다** */
-export function coreFile<T>(code: string, kind: CoreFile, dir = CONTENT_DIR): T {
+/**
+ * 그 언어의 원고가 있는 자리. 한국어는 원본 자리 그대로다.
+ *
+ * **다른 언어는 원본과 같은 이름 · 같은 구조로 `<lang>/` 아래에 둔다**
+ * (`docs/metri/GLOBAL_EN_PLAN.md` 파일 계약). 이름을 따로 짓지 않으므로
+ * 등록부를 언어마다 고칠 일이 없다.
+ */
+export function langDir(dir: string, lang = "ko"): string {
+  return lang === "ko" ? dir : join(dir, lang);
+}
+
+/**
+ * core 의 파일 하나를 읽는다. **파일 이름을 코드에 적지 않는다**
+ *
+ * `lang` 이 한국어가 아니면 `<lang>/<같은 이름>` 을 읽고, **없으면 던진다.**
+ * 한국어 원본으로 대신 읽지 않는다: 그러면 영어 화면 한가운데에 한국어가
+ * 서고, 그 자리는 화면을 열어 본 사람만 안다(계약 원칙 4).
+ */
+export function coreFile<T>(code: string, kind: CoreFile, dir = CONTENT_DIR, lang = "ko"): T {
   const c = core(code, dir);
   const name = c.files[kind];
   if (!name) throw new Error(`${code} 에 ${kind} 파일이 등록되지 않았습니다`);
-  const at = join(dir, name);
+  const at = join(langDir(dir, lang), name);
   if (!existsSync(at)) throw new Error(`${code} 의 ${kind} 파일이 없습니다: ${at}`);
   return JSON.parse(readFileSync(at, "utf8")) as T;
+}
+
+/**
+ * Core 공용 원고(용어 풀이 · 학생 장면 · 전공 이름 · 예시 장면)의 파일 이름.
+ *
+ * 한국어는 이 칸들이 여러 공용 파일에 흩어져 있다(`me-v3-terms.json` ·
+ * `me-v3-student-scenes.json` · 등록부). 다른 언어는 Core 마다 한 벌로 모은다.
+ */
+export function sharedFileName(code: string): string {
+  return `shared-${code}.json`;
+}
+
+export type SharedCopy = {
+  core: string;
+  core_name: string;
+  examples?: { scene?: string[]; artifacts?: string[]; evidence?: string[] };
+  /** 한국어 용어(원본 열쇠) → 그 언어의 낱말과 풀이 */
+  terms?: Record<string, { term: string; gloss: string }>;
+  /** `me-v3-student-scenes.json` 의 그 Core 항목과 같은 모양(글자 배열) */
+  scenes?: unknown;
+};
+
+/** 그 언어의 공용 원고. **없으면 던진다**(한국어는 이 파일이 없다) */
+export function sharedFile(code: string, lang: string, dir = CONTENT_DIR): SharedCopy {
+  if (lang === "ko") throw new Error("한국어 공용 원고는 원래 자리에서 읽습니다");
+  const at = join(langDir(dir, lang), sharedFileName(code));
+  if (!existsSync(at)) throw new Error(`${code} 의 ${lang} 공용 원고가 없습니다: ${at}`);
+  return JSON.parse(readFileSync(at, "utf8")) as SharedCopy;
 }
 
 /**
@@ -240,15 +285,19 @@ export function coreFile<T>(code: string, kind: CoreFile, dir = CONTENT_DIR): T 
  * 검사와 화면에 각각 적어 두었는데, 판본을 올리는 날 그 세 자리를 따로 고쳐야
  * 했고 한 자리를 놓치면 옛 팩과 새 팩이 한 응시에 섞인다.
  */
-export function packFile(code: string, kind: PackKind, dir = CONTENT_DIR): string {
+export function packFile(code: string, kind: PackKind, dir = CONTENT_DIR, lang = "ko"): string {
   const name = core(code, dir).packs?.[kind];
   if (!name) throw new Error(`${code} 에 ${kind} 팩이 등록되지 않았습니다`);
-  return join(dir, name);
+  return join(langDir(dir, lang), name);
 }
 
-/** 팩 파일을 읽는다 */
-export function packs<T>(code: string, kind: PackKind, dir = CONTENT_DIR): T {
-  return JSON.parse(readFileSync(packFile(code, kind, dir), "utf8")) as T;
+/** 팩 파일을 읽는다. 다른 언어가 없으면 던진다(`coreFile` 과 같다) */
+export function packs<T>(code: string, kind: PackKind, dir = CONTENT_DIR, lang = "ko"): T {
+  const at = packFile(code, kind, dir, lang);
+  if (lang !== "ko" && !existsSync(at)) {
+    throw new Error(`${code} 의 ${kind} 팩 ${lang} 원고가 없습니다: ${at}`);
+  }
+  return JSON.parse(readFileSync(at, "utf8")) as T;
 }
 
 /**

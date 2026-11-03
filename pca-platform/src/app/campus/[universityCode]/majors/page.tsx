@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import "../../../surface.css";
 import "../../campus.css";
 import {
-  leavesOf, offered, otherCatalogs, statusOf, university,
+  campusSay, leavesOf, offered, otherCatalogs, statusOf, university,
   type CampusCatalog, type CampusLeaf, type CampusUniversity,
 } from "@/lib/campus/registry";
 import { pickCatalog } from "@/lib/campus/pick";
@@ -21,7 +21,7 @@ type Params = {
 export async function generateMetadata({ params }: Params) {
   const { universityCode } = await params;
   const u = university(universityCode);
-  return { title: u ? `학과 선택 · ${u.university_name}` : "CareerMatri" };
+  return { title: u ? `${campusSay(u)("학과")} 선택 · ${u.university_name}` : "CareerMatri" };
 }
 
 const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
@@ -111,6 +111,7 @@ export default async function CampusMajors({ params, searchParams }: Params) {
   const { universityCode } = await params;
   const u = university(universityCode);
   if (!u) notFound();
+  const t = campusSay(u);
   const { y, c, pick } = await searchParams;
   /* 자율전공 자리에서 넘어왔는가(규격 §20). 넘어온 사람에게는 **지금 무엇을
      하는 걸음인지**를 적는다: 목록만 다시 보여 주면 왜 돌아왔는지 모른다 */
@@ -159,7 +160,7 @@ export default async function CampusMajors({ params, searchParams }: Params) {
   return (
     <CampusShell u={u} wide>
       <div className="cm-cmp-sect-h" style={{ marginTop: 4 }}>
-        <h2>{picking ? "관심 있는 전공을 고르세요" : "현재 소속 학과를 선택해주세요"}</h2>
+        <h2>{picking ? "관심 있는 전공을 고르세요" : t("현재 소속 학과를 선택해주세요")}</h2>
         <p>{cat.label} 기준</p>
       </div>
       <p className="cm-cmp-note" style={{ marginTop: 6 }}>
@@ -169,11 +170,11 @@ export default async function CampusMajors({ params, searchParams }: Params) {
           ? "전공을 고른 뒤에 그 전공으로 시작합니다. 지금 가장 관심 있는"
             + " 전공을 고르시면 되고, 나중에 다시 고를 수 있습니다. 고르신"
             + " 전공이 어느 영역을 묻는지가 달라집니다."
-          : "학과에 따라 살펴보는 경험과 영역이 달라집니다. 준비 중인 학과는"
-            + " 문항과 산업 자료를 준비하고 있어 지금 응시할 수 없습니다."}
+          : t("학과에 따라 살펴보는 경험과 영역이 달라집니다. 준비 중인 학과는"
+            + " 문항과 산업 자료를 준비하고 있어 지금 응시할 수 없습니다.")}
       </p>
 
-      <nav className="cm-cmp-tabs" aria-label="단과대학">
+      <nav className="cm-cmp-tabs" aria-label={t("단과대학")}>
         {colleges.map((x) => (
           <Link
             key={x.code}
@@ -218,7 +219,7 @@ export default async function CampusMajors({ params, searchParams }: Params) {
         */}
       {others.length ? (
         <div className="cm-cmp-note" style={{ marginTop: 22 }}>
-          찾는 학과가 없으면{" "}
+          {t("찾는 학과가 없으면")}{" "}
           {others.map((x, i) => (
             <span key={x.catalog_year}>
               {i ? ", " : ""}
@@ -226,7 +227,7 @@ export default async function CampusMajors({ params, searchParams }: Params) {
                 <input type="hidden" name="u" value={u.university_code} />
                 <input type="hidden" name="y" value={x.catalog_year} />
                 <button type="submit" className="cm-cmp-swap">
-                  {x.label} 학과 구조
+                  {x.label} {t("학과")} 구조
                 </button>
               </form>
             </span>

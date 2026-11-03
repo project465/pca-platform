@@ -69,10 +69,15 @@ ALTER TABLE entitlements ALTER COLUMN ends_at DROP NOT NULL;
 
 /* 예전에는 이용권이 기간권 하나뿐이라 `kind = 'pass'` 로 못 박혀 있었다.
    결과지 이용권이 들어오므로 둘을 받는다. **값을 열어 두지 않는다**:
-   목록을 지우면 오타가 그대로 들어온다 */
+   목록을 지우면 오타가 그대로 들어온다.
+
+   **뒤 파일이 넓힌 값까지 같이 적는다.** `db:upgrade` 는 배포마다 이
+   파일부터 다시 돈다. 여기서 `pass`·`report` 둘로 좁히면 MAT 기간권
+   (`track`, `schema_v3_arch.sql`)이 한 줄이라도 있는 DB 에서 이 줄이
+   거절되고, 뒤 파일이 하나도 올라가지 않는다(2026-10-27 실제로 멈췄다) */
 ALTER TABLE entitlements DROP CONSTRAINT IF EXISTS entitlements_kind_check;
 ALTER TABLE entitlements ADD CONSTRAINT entitlements_kind_check
-  CHECK (kind IN ('pass', 'report'));
+  CHECK (kind IN ('pass', 'report', 'track'));
 
 ALTER TABLE entitlements ADD COLUMN IF NOT EXISTS tier TEXT;
 ALTER TABLE entitlements ADD COLUMN IF NOT EXISTS major_code TEXT;

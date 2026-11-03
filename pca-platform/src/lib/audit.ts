@@ -26,6 +26,9 @@ export const AUDITED = [
   /* 학교 밖으로 들고 나가는 일(3차 Track F). 계정을 고친 일만 남고 받아 간
      일은 남지 않았다: 사고가 난 날 누가 어느 범위를 받아 갔는지 되짚는다 */
   "campus.export.students", "campus.export.departments", "campus.export.report",
+  /* MAT 학교 단체 이용권. 운영자가 인원을 적고 담당자가 학생에게 연다.
+     돈이 계약으로 오가는 자리라 누가 몇 명을 열었는지 되짚을 수 있어야 한다 */
+  "campus.mat.pool.create", "campus.mat.pool.close", "campus.mat.grant",
 ] as const;
 export type AuditAction = (typeof AUDITED)[number];
 

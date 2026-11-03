@@ -22,20 +22,25 @@ import type { Tier } from "../scoring/types";
 import type { BankItem } from "../scoring/normalize";
 import { DEEP_BLOCK, PROBE_BLOCK } from "../scoring/normalize";
 import {
-  BRANCH_COPY, INDUSTRY_DEEP_MAX, ROLE_SECOND_MAX, type BranchBlock,
+  branchCopy, INDUSTRY_DEEP_MAX, ROLE_SECOND_MAX, type BranchBlock,
 } from "./routing";
+import type { V3Lang } from "../i18n";
+import { COPY_KO } from "./copy.ko";
+import { copyFor } from "./copy";
 
 /** 응시자가 지나는 큰 단계. 진행률의 윗칸이다 */
+/* **이름은 언어마다 `copy.*.ts` 가 든다.** 여기 `label` 은 한국어 원본이고,
+   다른 언어의 이름은 `stageLabel()` 이 고른다 */
 export const STAGES = [
-  { code: "PROFILE", label: "기본 정보" },
-  { code: "FIELD", label: "관심 산업" },
-  { code: "EXPLORE", label: "영역 훑기" },
-  { code: "JUDGE", label: "실제 판단" },
-  { code: "DEEP", label: "경험 심화" },
-  { code: "EVIDENCE", label: "근거 고르기" },
-  { code: "PACK", label: "산업과 직무" },
-  { code: "TRANSLATE", label: "경험 번역" },
-  { code: "DONE", label: "완료" },
+  { code: "PROFILE", label: COPY_KO.stages.PROFILE },
+  { code: "FIELD", label: COPY_KO.stages.FIELD },
+  { code: "EXPLORE", label: COPY_KO.stages.EXPLORE },
+  { code: "JUDGE", label: COPY_KO.stages.JUDGE },
+  { code: "DEEP", label: COPY_KO.stages.DEEP },
+  { code: "EVIDENCE", label: COPY_KO.stages.EVIDENCE },
+  { code: "PACK", label: COPY_KO.stages.PACK },
+  { code: "TRANSLATE", label: COPY_KO.stages.TRANSLATE },
+  { code: "DONE", label: COPY_KO.stages.DONE },
 ] as const;
 export type StageCode = typeof STAGES[number]["code"];
 
@@ -52,17 +57,22 @@ export type StageCode = typeof STAGES[number]["code"];
  * 이미 있는 자리이고, routing 이 그 단계를 열지 않으면 그 줄도 서지
  * 않는다. 문항과 보기와 저장되는 값은 한 글자도 바뀌지 않는다.
  */
-export const STAGE_LEAD: Record<StageCode, string> = {
-  PROFILE: "먼저 어디에서 무엇을 공부하고 있는지만 확인합니다.",
-  FIELD: "관심이 가는 산업을 고르고, 그 산업에서 하는 일을 먼저 봅니다.",
-  EXPLORE: "먼저 어떤 일을 해보고 싶은지, 해본 적은 있는지 가볍게 살펴봅니다.",
-  JUDGE: "이제 실제로 해본 경험을 확인합니다.",
-  DEEP: "해보신 자리를 조금 더 자세히 묻습니다.",
-  EVIDENCE: "마지막으로 그때 무엇을 남겼는지 고릅니다.",
-  PACK: "고르신 산업과 직무에서 같은 판단을 한 번 더 봅니다.",
-  TRANSLATE: "답하신 것을 지원서에 쓸 말로 옮깁니다.",
-  DONE: "",
-};
+/*
+ * **세 줄이 잇달아 `먼저` 로 시작하지 않는다.** 그리고 채점 쪽 설명(`같은
+ * 판단을 한 번 더`)과 사실이 아닌 말(`마지막으로` 뒤에 직무·산업·번역이
+ * 남는다)을 적지 않는다. 스무 Core 가 함께 읽으므로 전공 이름을 적지 않는다.
+ */
+export const STAGE_LEAD: Record<StageCode, string> = COPY_KO.stageLead;
+
+/** 그 언어의 단계 첫 줄. 글은 `copy.*.ts` 가 든다 */
+export function stageLeadOf(stage: StageCode, lang?: V3Lang | null): string {
+  return copyFor(lang).stageLead[stage];
+}
+
+/** 그 언어의 단계 이름 */
+export function stageLabel(stage: StageCode, lang?: V3Lang | null): string {
+  return copyFor(lang).stages[stage];
+}
 
 export type ScreenKind =
   | "profile" | "sweep" | "single" | "pair" | "group" | "checklist" | "scene"
@@ -188,6 +198,18 @@ export type PlanInput = {
    * 비어 있으면 거르지 않는다(옛 응시와 검사 틀).
    */
   touched?: string[];
+  /**
+   * 선별·심화에서 `내가 했다` 이상으로 답한 (영역 · 축).
+   *
+   * 근거 고르기는 이 칸에서만 판정에 들어간다: 소유는 `내가 정했다` 와
+   * 근거 둘이 함께 서야 하고, 산출물 근거는 산출물 축이 확인일 때만 본다.
+   * 그래서 **이 칸이 하나도 없는 영역은 근거 화면을 세우지 않는다.**
+   * 해 본 적 없다고 답한 판단의 근거를 열 묶음씩 고르게 하면 그 화면이
+   * 검사에서 가장 긴 쪽이 되고 판정은 한 글자도 바뀌지 않는다.
+   *
+   * 비어 있으면 거르지 않는다(가장 긴 경우를 세는 `estimate` 와 옛 응시).
+   */
+  didCells?: string[];
 };
 
 /** 목록을 둘씩 묶는다. 홀수면 마지막 하나는 혼자 선다 */
@@ -221,23 +243,16 @@ const AX_ORDER = ["J3", "J5", "J6", "J7"] as const;
  * 단계를 줄이지 않았다. 열 단계가 그대로 있고 **한 화면에 두세 단계**를
  * 세운다: 문제와 조건 · 방법과 판단 · 결과와 검증 · 조직과 전이.
  */
+/* 덩이의 머리말과 질문은 언어마다 `copy.*.ts` 의 `transGroups` 가 든다 */
 const TRANS_GROUPS = [
-  { key: "frame", ids: ["TR_T1", "TR_T2", "TR_T3"] as string[],
-    subject: "무엇을 풀었나",
-    question: "그 일의 문제와 조건을 골라주세요" },
-  { key: "method", ids: ["TR_T4", "TR_T5"] as string[],
-    subject: "어떻게 했나",
-    question: "쓴 방법과 직접 정한 것을 골라주세요" },
-  { key: "result", ids: ["TR_T6", "TR_T7", "TR_T8"] as string[],
-    subject: "무엇이 남았나",
-    question: "남긴 것과 확인한 방법을 골라주세요" },
-  { key: "handoff", ids: ["TR_T9", "TR_T10"] as string[],
-    subject: "어디에 쓰였나",
-    question: "그 결과가 쓰인 곳을 골라주세요" },
+  { key: "frame", ids: ["TR_T1", "TR_T2", "TR_T3"] as string[] },
+  { key: "method", ids: ["TR_T4", "TR_T5"] as string[] },
+  { key: "result", ids: ["TR_T6", "TR_T7", "TR_T8"] as string[] },
+  { key: "handoff", ids: ["TR_T9", "TR_T10"] as string[] },
 ] as const;
 
 /* 여덟 축의 **재는 이름**은 결과를 되짚는 자리(축 이름 · 운영 표)에만
-   남는다. 응시 화면에는 아래 `AX_ASK` 가 선다(규격 §12·§34) */
+   남는다. 응시 화면에는 아래 `CORE_COPY` 의 주제가 선다(규격 §12·§34) */
 
 export type IndustryScene = {
   code: string; name: string; scene: string; demands: string[];
@@ -279,6 +294,16 @@ export type Deps = {
    * 두어 전기전자 응시자에게 기계공학 작성 차례가 나간 것과 같은 종류다).
    */
   majorName: string;
+  /**
+   * 그 Core 의 코드. **화면 글을 Core 마다 갈라 적는 자리만 읽는다**
+   * (`CORE_COPY` · `branchCopy`). 비어 있으면 공통 글이 선다.
+   */
+  core?: string;
+  /**
+   * 그 응시의 언어. **화면 글만 고른다**: 묻는 문항과 화면 차례와 받는 값은
+   * 언어와 무관하게 같다(같은 응답이면 같은 판정). 비어 있으면 한국어다.
+   */
+  lang?: V3Lang;
 };
 
 /**
@@ -300,22 +325,46 @@ export type Deps = {
  * 축 이름(`직접 판단`)은 무엇을 재는지를 말하고, 이 줄은 **무엇을
  * 떠올려야 하는지**를 말한다. 큰 글씨 자리에는 뒤엣것이 선다.
  */
-const AX_ASK: Record<string, string> = {
-  J1: "무엇을 풀 문제로 잡으셨는지",
-  J2: "요구를 어떻게 읽으셨는지",
-  J3: "무엇을 직접 정하셨는지",
-  J4: "어떤 방법과 도구로 하셨는지",
-  J5: "무엇이 남았는지",
-  J6: "무엇과 맞춰 보셨는지",
-  J7: "틀어졌을 때 어떻게 고치셨는지",
-  J8: "그 결과가 어디에 쓰였는지",
+/*
+ * **큰 글씨에 반쪽 문장을 두지 않는다.** 전에는 `무엇을 직접 정하셨는지`
+ * 처럼 `~인지` 로 끝나는 말이 화면에서 가장 큰 글씨였다. 바로 아래에
+ * 진짜 질문이 둘 서므로 여기는 **주제만** 짧게 적는다.
+ *
+ * **Core 마다 갈라 든다.** 스무 Core 가 함께 읽는 공통 글을 두고, 그
+ * 전공의 근거가 다른 말을 쓰는 칸만 `CORE_COPY` 가 바꾼다(경영의 J2 는
+ * 목표를 숫자로 바꾸는 일이다).
+ */
+type CoreCopy = {
+  /** 한 화면에 문항이 둘일 때 축마다 서는 주제 */
+  pairAsk: Record<string, string>;
+  /** 심화의 짝(`J1+J2`)마다 서는 이름. 두 주제를 가운뎃점으로 잇지 않는다 */
+  deepPair: Record<string, string>;
+  /** 경험 횟수 훑기의 도움말. 그 전공에서 해 봤을 만한 자리 */
+  exposureHelp: string;
 };
+/* 공통 글과 Core 마다 바꾸는 칸은 언어마다 `copy.*.ts` 가 든다
+   (`coreDefault` · `coreCopy`). 경영의 J2 는 목표를 숫자로 바꾸는 일이다 */
+function copyOf(core?: string, lang?: V3Lang): CoreCopy {
+  const t = copyFor(lang);
+  const c = core ? t.coreCopy[core] : undefined;
+  return {
+    pairAsk: { ...t.coreDefault.pairAsk, ...(c?.pairAsk ?? {}) } as Record<string, string>,
+    deepPair: { ...t.coreDefault.deepPair, ...(c?.deepPair ?? {}) } as Record<string, string>,
+    exposureHelp: c?.exposureHelp ?? t.coreDefault.exposureHelp,
+  };
+}
+
+/* 고른 영역 수를 글로 적는다. `3가지` 보다 `세 가지` 가 읽힌다(`copy.*.ts` 의 `count`) */
 
 /** 등급이 겹쳐 쌓이는 차례. BASIC ⊂ STANDARD ⊂ PRO */
 const TIER_RANK: Record<string, number> = { BASIC: 0, STANDARD: 1, PRO: 2 };
 
 export function buildPlan(input: PlanInput, d: Deps): Plan {
   const { domainName, wording, gridRow, majorName } = d;
+  const cc = copyOf(d.core, d.lang);
+  /* 화면 글. 묻는 문항과 차례는 언어와 무관하다 */
+  const P = copyFor(d.lang).plan;
+  const grad = input.stage !== "bachelor";
   /**
    * **등급 거름막을 한자리에 둔다.**
    *
@@ -332,9 +381,9 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
 
   add({
     id: "profile", stage: "PROFILE", kind: "profile", required: true, auto: false,
-    eyebrow: "기본 정보",
-    question: "현재 학업 단계를 골라주세요",
-    help: "단계에 따라 질문 속 상황만 달라집니다. 평가 기준은 같습니다.",
+    eyebrow: P.profile.eyebrow,
+    question: P.profile.question,
+    help: P.profile.help,
     items: [],
   });
 
@@ -343,9 +392,9 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
   add({
     id: "pick-industry", stage: "FIELD", kind: "pick-industry",
     required: false, auto: false, max: 2,
-    eyebrow: "관심 산업",
-    question: "관심 있는 산업을 골라주세요",
-    help: "최대 두 개까지 고를 수 있습니다. 아직 모르겠으면 넘어가도 됩니다.",
+    eyebrow: P.pickIndustry.eyebrow,
+    question: P.pickIndustry.question,
+    help: P.pickIndustry.help,
     items: [],
   });
   /**
@@ -367,11 +416,11 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
       id: "scene", stage: "FIELD", kind: "scene",
       required: false, auto: false,
       pack: scenes[0].code,
-      eyebrow: "관심 산업",
+      eyebrow: P.scene.eyebrow,
       question: scenes.length > 1
-        ? `고른 두 산업에서 ${majorName} 전공자가 다루는 일`
-        : `${scenes[0].sc.name}에서 ${majorName} 전공자가 다루는 일`,
-      help: "이 틀을 가지고 다음 질문을 읽으시면 됩니다.",
+        ? P.scene.questionTwo(majorName)
+        : P.scene.questionOne(scenes[0].sc.name, majorName),
+      help: P.scene.help,
       /* **산업마다 카드 하나이고 줄은 셋까지다**(규격 §6).
          앞 판본은 산업 설명 한 문단(`scene`)을 큰 글씨 아래에 깔고 그
          아래에 요구 네 줄을 세워서, 고르기만 하면 되는 자리가 읽을거리
@@ -403,7 +452,7 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
     gs.forEach((g, k) => add({
       id: gs.length > 1 ? `${id}-${k + 1}` : id,
       stage: "EXPLORE", kind: "sweep", required, auto: false,
-      eyebrow: gs.length > 1 ? `${eyebrow} ${k + 1} / ${gs.length}` : eyebrow,
+      eyebrow: gs.length > 1 ? P.sweepPage(eyebrow, k + 1, gs.length) : eyebrow,
       question,
       help: k === 0 ? help : "",
       items: g,
@@ -413,11 +462,13 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
      제거). 그리고 전에 적혀 있던 `잘 모르는 줄은 가운데를 고르면 됩니다`
      는 **보기에 있는 `잘 모르겠다` 와 어긋나는 말**이었다: 그대로 두면
      아직 모르는 사람이 `보통` 으로 적힌다 */
-  sweeps("sweep-interest", "관심", "해 보고 싶은 일을 골라주세요",
-    "모르는 일은 ‘잘 모르겠다’를 고르세요.",
+  /* 한 일을 고르는 화면이 아니라 **줄마다 칸을 고르는** 화면이라, 질문도
+     그렇게 적는다 */
+  sweeps("sweep-interest", P.sweepInterest.eyebrow, P.sweepInterest.question,
+    P.sweepInterest.help,
     pick("interest").map((i) => i.item_id), true);
-  sweeps("sweep-exposure", "해 본 적", "해 본 적이 있는 일을 골라주세요",
-    "수업·실습·동아리·아르바이트도 포함해주세요.",
+  sweeps("sweep-exposure", P.sweepExposure.eyebrow, P.sweepExposure.question,
+    cc.exposureHelp,
     pick("exposure").map((i) => i.item_id), true);
 
   /* 묶인 영역 가르기. 묶이지 않았으면 띄우지 않는다 */
@@ -433,24 +484,15 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
      * 총점을 내는 서비스가 아닌데 점수를 입에 올리면 점수가 있다고
      * 느끼게 된다. 그 자리에 **무엇에 쓰는 답인지**를 적는다.
      */
-    const FORCE_COPY: Record<string, { eyebrow: string; help: string }> = {
-      CF_PAIR_1: {
-        eyebrow: "먼저 해 볼 쪽",
-        help: "비슷하게 답하신 두 영역입니다. 먼저 직접 해 본다면 어느 쪽인지 골라주세요.",
-      },
-      CF_PAIR_2: {
-        eyebrow: "더 알아보고 싶은 쪽",
-        help: "앞 질문과 별개입니다. 해 보는 것과 상관없이 지금 더 알아보고 싶은 쪽을 골라주세요.",
-      },
-    };
+    const FORCE_COPY: Record<string, { eyebrow: string; help: string }> = P.force;
     for (const i of byModule("CORE-FORCE")) {
       const c = FORCE_COPY[i.item_id];
       add({
         id: `force-${i.item_id}`, stage: "EXPLORE", kind: "single",
         required: true, auto: true,
-        eyebrow: c?.eyebrow ?? "한 가지만 더",
+        eyebrow: c?.eyebrow ?? P.forceFallback.eyebrow,
         question: wording(i.item_id, input.stage),
-        help: c?.help ?? "비슷하게 답하신 두 영역을 한 번만 더 가릅니다.",
+        help: c?.help ?? P.forceFallback.help,
         items: [i.item_id],
       });
     }
@@ -460,9 +502,9 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
   const lea = pick("learning_intent")
     .filter((i) => input.probe.includes(String(i.technical_domain)));
   if (lea.length) {
-    sweeps("sweep-learning", "배우고 싶은 정도",
-      "지금 시간을 들여 배우고 싶은 일을 골라주세요",
-      "자세히 보기로 한 영역만 묻습니다.",
+    sweeps("sweep-learning", P.sweepLearning.eyebrow,
+      P.sweepLearning.question,
+      P.sweepLearning.help,
       lea.map((i) => i.item_id), false);
   }
 
@@ -475,15 +517,17 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
       id: `judge-${n + 1}`, stage: "JUDGE",
       kind: pair.length > 1 ? "pair" : "single",
       required: true, auto: pair.length === 1,
-      eyebrow: "일하는 방식",
+      /* **묻는 것은 해 본 경험이다.** 머리글이 성향(`~하는 편인지`)을
+         물으면 문항과 머리글이 다른 것을 묻는다 */
+      eyebrow: P.judge.eyebrow,
       question: pair.length > 1
-        ? "일을 맡으면 어떻게 하시는 편인지"
+        ? P.judge.pair(grad)
         : wording(pair[0].item_id, input.stage),
       items: pair.map((i) => i.item_id),
     });
   }
   /* 학위 묶음. 학위마다 다른 여섯 자리를 묻는다 */
-  const bc = BRANCH_COPY[input.branchBlock];
+  const bc = branchCopy(input.branchBlock, d.core, d.lang);
   const branch = items.filter((x) => x.education_routing === input.branchBlock);
   for (const [n, pair] of byTwo(branch).entries()) {
     add({
@@ -509,11 +553,10 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
       add({
         id: "t-xfield", stage: "JUDGE", kind: "transition",
         required: false, auto: false,
-        eyebrow: "대학원 경험",
-        question: "대학원 경험을 따로 확인합니다",
-        help: "이 전공을 받으실 수 있게 하려고 묻는 자리입니다.",
-        chips: ["다룬 분야", "옮겨 쓸 수 있는 방법", `${majorName} 쪽 활동 시점`,
-                "학부에서 깊게 간 활동"],
+        eyebrow: P.xfield.eyebrow,
+        question: P.xfield.question,
+        help: P.xfield.help(majorName),
+        chips: P.xfield.chips(majorName),
         items: [],
       });
     }
@@ -521,9 +564,9 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
       add({
         id: `xfield-${i.item_id}`, stage: "JUDGE", kind: "single",
         required: false, auto: true,
-        eyebrow: "대학원 경험",
+        eyebrow: P.xfield.eyebrow,
         question: wording(i.item_id, input.stage),
-        help: "적어 주신 내용은 경험을 직무 언어로 옮길 때 씁니다.",
+        help: P.xfield.itemHelp,
         items: [i.item_id],
       });
     }
@@ -533,9 +576,12 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
      **전환 화면을 세우지 않는다**(규격 §12). `이제 실제 경험을
      확인합니다` 와 영역 이름 목록뿐이었고, 그 이름은 바로 다음 화면의
      머리말에 다시 적혀 있었다. 첫 질문 위에 한 줄로 얹는다 */
-  let judgeStrip: string | null = input.probe.length
-    ? `영역 훑기를 마쳤습니다. 여기서부터 ${input.probe.map(domainName).join(" · ")}`
-      + `에서 실제로 해 보신 일을 묻습니다`
+  /* **안쪽 이름(`영역 훑기`)을 적지 않는다.** 영역 이름 사이는 쉼표다:
+     이름 안에 가운뎃점(`경영전략·기획`)이 있어 가운뎃점으로 이으면 어디서
+     끊기는지 안 보인다 */
+  const pn = input.probe.length;
+  let judgeStrip: string | null = pn
+    ? P.judgeStrip(copyFor(d.lang).count(pn), input.probe.map(domainName), pn > 1)
     : null;
   for (const td of input.probe) {
     const list = items.filter((x) => x.module === PROBE_BLOCK && x.technical_domain === td);
@@ -560,7 +606,7 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
            떠올릴 틀이지 우리 분류가 아니다(규격 §12·§34) */
         eyebrow: domainName(td),
         question: cell.length > 1
-          ? (AX_ASK[ax] ?? "어떻게 하셨는지")
+          ? (cc.pairAsk[ax] ?? P.pairFallback)
           : wording(cell[0].item_id, input.stage),
         /* **용어를 모르면 해 본 사람도 `없다` 를 고른다**(규격 §5).
            그 전공의 말은 빼지 않고 아래에 쉬운 말 한 줄로 받친다. 받침이
@@ -580,8 +626,11 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
 
   /* ── 심화 네 축 ── 같은 까닭으로 전환 화면을 걷었다 */
   if (input.tier !== "BASIC" && input.deep.length) {
-    let deepStrip: string | null =
-      `같은 영역을 조금 더 묻습니다. 남은 자리를 채우는 질문입니다`;
+    /* **질문 위 띠를 세우지 않는다.** 이 묶음의 첫 화면에는 단계 첫 줄
+       (`해 보신 일을 조금 더 자세히 여쭙겠습니다`)이 이미 서서, 띠를 두면
+       같은 뜻의 두 줄이 한 화면에 선다. 전에 서던 `남은 칸을 채우는
+       질문입니다` 는 설계 문서의 말이었다 */
+    let deepStrip: string | null = null;
     for (const td of input.deep) {
       const list = items.filter((x) => x.module === DEEP_BLOCK && x.technical_domain === td);
       /* 심화 네 축을 둘씩 세운다. 영역 이름을 네 번 다시 읽지 않는다 */
@@ -592,7 +641,9 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
           required: false, auto: pair.length === 1,
           eyebrow: domainName(td),
           question: pair.length > 1
-            ? pair.map((i) => AX_ASK[i.evidence_axis ?? ""] ?? "").filter(Boolean).join(" · ")
+            ? (cc.deepPair[pair.map((i) => i.evidence_axis ?? "").join("+")]
+              ?? pair.map((i) => cc.pairAsk[i.evidence_axis ?? ""] ?? "")
+                .filter(Boolean).join(", "))
             : wording(pair[0].item_id, input.stage),
           ...(() => {
             const g = d.termGloss(pair.map((x) => wording(x.item_id, input.stage)).join(" "));
@@ -609,12 +660,13 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
   /* ── 근거 고르기. **문항을 다 받은 뒤에 묻는다**: 묻지도 않은 축의 근거를
         먼저 고르게 하면 응시자가 무엇을 고르는지 알 수 없다 ── */
   for (const td of input.probe) {
+    if (input.didCells && !input.didCells.some((c) => c.startsWith(`${td}.`))) continue;
     add({
       id: `ev-${td}`, stage: "EVIDENCE", kind: "checklist", required: false, auto: false,
-      eyebrow: "근거 고르기",
+      eyebrow: P.checklist.eyebrow,
       subject: domainName(td),
-      question: "직접 정했거나 결과물로 남긴 것을 모두 골라주세요",
-      help: "해당하는 것이 없으면 비워두셔도 됩니다.",
+      question: P.checklist.question(domainName(td)),
+      help: P.checklist.help,
       items: [], domain: td,
     });
   }
@@ -629,8 +681,12 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
       add({
         id: `consist-${axis}`, stage: "EVIDENCE", kind: "pair",
         required: false, auto: false,
-        eyebrow: "경험 확인",
-        question: "두 자리에서 같은 일을 해 보셨는지 묻습니다",
+        /* **화면이 자기가 하는 일을 설명하지 않는다**(`두 번 나눠
+           묻습니다`). 축마다 그 짝이 묻는 것을 한 문장으로 적는다 */
+        eyebrow: P.consist.eyebrow,
+        question: axis === "J3"
+          ? (input.stage === "postdoc" ? P.consist.j3Postdoc : P.consist.j3)
+          : axis === "J5" ? P.consist.j5 : P.consist.other,
         items: pair.map((i) => i.item_id),
       });
     }
@@ -640,16 +696,16 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
         기술영역 판정을 끌고 간다고 읽힌다 ── */
   add({
     id: "pick-role", stage: "PACK", kind: "pick-role", required: false, auto: false, max: 2,
-    eyebrow: "관심 직무",
-    question: "어떤 일을 더 자세히 보고 싶나요?",
-    help: "최대 두 개까지 고를 수 있습니다. 앞의 결과는 그대로 둡니다.",
+    eyebrow: P.pickRole.eyebrow,
+    question: P.pickRole.question,
+    help: P.pickRole.help,
     items: [],
   });
   add({
     id: "pick-org", stage: "PACK", kind: "pick-org", required: false, auto: false, max: 2,
-    eyebrow: "일하고 싶은 곳",
-    question: "어떤 조직에서 일하는 모습이 더 그려지나요?",
-    help: "최대 두 개까지 고를 수 있습니다. 점수에는 쓰이지 않고 결과를 읽는 순서만 정합니다.",
+    eyebrow: P.pickOrg.eyebrow,
+    question: P.pickOrg.question,
+    help: P.pickOrg.help,
     items: [],
   });
   if (input.tier !== "BASIC") {
@@ -694,14 +750,13 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
        뒷엣것은 **질문마다 쉬운 말이 이미 붙어 있어서** 거기서 바로
        확인된다. 첫 질문 위에 한 줄로 얹는다 */
     let indStrip: string | null = list.length
-      ? `${sc?.name ?? "고르신 산업"} 쪽에서 달라지는 판단을 묻습니다.`
-        + ` 용어를 모르셔도 질문마다 쉬운 말을 같이 적어 둡니다`
+      ? P.industry.strip(sc?.name ?? null)
       : null;
     for (const i of list) {
       add({
         id: `ind-${i.item_id}`, stage: "PACK", kind: "single",
         required: false, auto: true, pack: deepIndustry,
-        eyebrow: sc?.name ?? "산업 판단",
+        eyebrow: sc?.name ?? P.industry.eyebrowFallback,
         question: wording(i.item_id, input.stage),
         /* **쉬운 말 풀이를 도움말 칸에 또 담지 않는다.** 그 풀이는 이제
            질문 바로 아래 `예` 줄로 서므로(`runtime/examples.ts` 의
@@ -719,10 +774,11 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
   if (input.tier === "PRO") {
     add({
       id: "t-trans", stage: "TRANSLATE", kind: "transition", required: false, auto: false,
-      eyebrow: "경험 번역",
-      question: "연구나 프로젝트 하나를 떠올려주세요",
-      help: "그 하나를 네 화면에 나누어 묻습니다.",
-      chips: ["문제와 조건", "쓴 방법", "남긴 것", "쓰인 곳"],
+      eyebrow: P.trans.eyebrow,
+      /* 학부생에게 `연구` 를 떠올리라고 하지 않는다 */
+      question: P.trans.question(grad),
+      help: P.trans.help,
+      chips: P.trans.chips,
       items: [],
     });
     /* **열 단계를 열 화면으로 띄우지 않는다.** 한 경험을 열 번 끊어 물으면
@@ -735,9 +791,9 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
       add({
         id: `trans-${g.key}`, stage: "TRANSLATE", kind: "group",
         required: false, auto: false,
-        eyebrow: "경험 번역",
-        subject: g.subject,
-        question: g.question,
+        eyebrow: P.trans.eyebrow,
+        subject: copyFor(d.lang).transGroups[g.key].subject,
+        question: copyFor(d.lang).transGroups[g.key].question,
         items: list.map((i) => i.item_id),
       });
     }
@@ -746,9 +802,9 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
       add({
         id: "target", stage: "TRANSLATE", kind: "group",
         required: false, auto: false,
-        eyebrow: "목표",
-        question: "지금 보고 있는 방향을 골라주세요",
-        help: "결과에서 이 선택과 확인된 근거를 나란히 놓고 봅니다.",
+        eyebrow: P.target.eyebrow,
+        question: P.target.question,
+        help: P.target.help,
         items: target.map((i) => i.item_id),
       });
     }
@@ -756,7 +812,7 @@ export function buildPlan(input: PlanInput, d: Deps): Plan {
 
   add({
     id: "done", stage: "DONE", kind: "done", required: false, auto: false,
-    eyebrow: "응답 완료", question: "결과를 만들 준비가 됐습니다",
+    eyebrow: P.done.eyebrow, question: P.done.question,
     items: [],
   });
 

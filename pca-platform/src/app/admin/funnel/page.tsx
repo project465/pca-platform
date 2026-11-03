@@ -89,7 +89,7 @@ export default async function FunnelPage({
         <h2>작업공간 {ws.days}일</h2>
         <p className="sub">
           검사를 끝낸 다음에 무엇을 하는지입니다. 사람 수가 0 이면 아직 아무도
-          그 자리를 쓰지 않았다는 뜻이고, 기능이 깨졌다는 뜻은 아닙니다.
+          그 기능을 쓰지 않았다는 뜻이고, 기능이 깨졌다는 뜻은 아닙니다.
         </p>
         <div className="sf-tw">
           <table className="sf-table">
