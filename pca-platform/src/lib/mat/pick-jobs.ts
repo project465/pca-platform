@@ -6,20 +6,52 @@ import { stageOf } from "@/lib/assistant/stage";
 import { activeCoreOrPick } from "@/lib/me-v3/platform";
 import { isEntryJob, isSeniorJob, jobTitle } from "./job-title";
 import { matchDomains } from "@/lib/assistant/rules";
+import { kindOf, RESEARCH_EXTRA_KINDS, type PostingKind } from "@/lib/jobs/meta";
 
 /**
  * MAT 이 보여 줄 공고를 고른다(2026-11-02 운영 시험: 인공지능학과 학생에게 대학원 연구실 모집 8건만 보였다).
  *
- * - **학부생에게는 대학원 · 연구실 모집을 따로 묶는다.** 잡인더스트리 `대학원생`(488) · `교원 임용`(439) 게시판과
- *   요구에 대학원 · 연구실 · 석박사 과정 말이 든 공고. 석사 이상이면 묶지 않는다(그 사람에게는 맞는 공고다)
+ * - **학부생에게는 대학원 · 연구실 모집을 따로 묶는다.** 묶음은 공고의 종류(`posting_kind = 'grad'`)로만 정한다:
+ *   **잡인더스트리 `대학원`(488) 게시판에서 온 것만**, 그리고 고용 형태가 정규직 · 계약직이면 채용으로 본다
+ *   (`meta.ts` 의 `kindOf`). **요구 줄의 `석사` · `박사` 말로 묶지 않는다**(2026-11-03 버그 ③: 기업 경력 채용
+ *   "생체신호처리 엔지니어(2년 이상) 채용" 이 학력 줄 때문에 대학원 묶음에 들어갔다). 석사 이상이면 묶지 않는다
+ * - **교원 임용**(`faculty`)은 석사 이상에게만 보인다. **연구비 · 평가위원 · 교육**은 채용이 아니라 보이지 않는다
+ *   (연구자 플랜이 `RESEARCH_EXTRA_KINDS` 로 따로 꺼낸다)
+ * - **제목이 없는 공고 · 마감이 지난 공고는 보이지 않는다**(버그 ④: "제목을 읽지 못한 공고" 카드가 섰다).
+ *   저장한 제목(`title`)이 먼저이고, 그 칸이 빈 옛 줄은 본문 첫 줄에서 읽는다(`jobTitle`)
+ * - 커리어피크 캘린더 공고가 잡인더스트리에도 있으면(`verified_ref`) 잡인더스트리 줄만 세운다
  * - 위에 오는 차례: 내 자료 · 경험과 겹친 낱말 수(`postingsForMe`) + **전공 이름이 요구에 있음** + **신입 · 인턴 공고**
  * - **다른 전공 공고는 따로 묶는다**(2026-11-02 운영 시험: 인공지능학과 학생에게 화학시험보조 · 임상개발이 섞였다).
  *   모을 때 다른 전공으로 단 공고, 전공을 못 단 공고 가운데 내 자료 · 전공 이름과 겹치는 것이 없는 공고
  * - 점수를 화면에 내지 않는다. 왜 위에 왔는지는 칩(겹친 낱말 · 전공 · 신입)으로 보인다
  * - 회사 이름은 다루지 않는다(표에 없다)
  */
-const GRAD_BOARD = /jobindustry\.co\.kr\/(488|439)\//;
-const GRAD_TEXT = /대학원|연구실|석사|박사|석·박사|포닥|postdoc|학위\s?과정|대학원생|교수\s?(초빙|임용)|lab\b/i;
+/*
+ * 칸이 빈 옛 줄(`db/schema_jobs_meta.sql` 전에 담은 것)의 종류. 원문 주소의 게시판과, 488 이면 본문의
+ * `고용 형태:` 줄로만 정한다(요구 줄의 학위 말은 보지 않는다). 새 줄은 모을 때 정한 `posting_kind` 를 쓴다
+ */
+const BOARD_KIND: Record<string, PostingKind> = {
+  "488": "grad", "439": "faculty", "research-funding": "funding", "evaluator-recruitment": "evaluator", "505": "education",
+};
+export function legacyKind(url: string | null, lines: string[] = []): PostingKind {
+  const b = (url ?? "").match(/jobindustry\.co\.kr\/([^/?#]+)\//)?.[1] ?? "";
+  const emp = lines.map((l) => l.match(/고용\s?형태\s*[:：]\s*(\S+)/)?.[1]).find(Boolean) ?? null;
+  return kindOf(BOARD_KIND[b] ?? "job", emp);
+}
+
+/**
+ * 한 줄을 화면에 세울지와 어느 묶음인지. **제목이 없으면 null**(세우지 않는다).
+ * `research` 는 "대학원 · 연구실 모집" 묶음, `hidden` 은 이 사람에게 보이지 않는 줄(연구비 · 학부생의 교원 임용).
+ */
+export function shownAs(
+  p: { title?: string | null; raw_requirements?: string[] | null; role_code?: string | null; posting_kind?: string | null; source_url?: string | null },
+  grad: boolean,
+): { title: string; kind: PostingKind; research: boolean; hidden: boolean } | null {
+  const title = p.title?.trim() || jobTitle(p.raw_requirements ?? [], p.role_code).title;
+  if (!title) return null;
+  const kind = (p.posting_kind as PostingKind | null) ?? legacyKind(p.source_url ?? null, p.raw_requirements ?? []);
+  return { title, kind, research: kind === "grad", hidden: RESEARCH_EXTRA_KINDS.includes(kind) || (kind === "faculty" && !grad) };
+}
 
 const stem = (m: string | null) => (m ?? "").replace(/\s+/g, "").replace(/(공학과|공학부|학과|학부|전공|과)$/, "");
 
@@ -45,20 +77,32 @@ export async function pickJobs(userId: string, limit = 20): Promise<PickedJobs> 
     stageOf(userId).catch(() => null),
     activeCoreOrPick(userId).catch(() => null),
   ]);
-  const pool = await query<{
+  type Row = {
     id: string; source: string; source_url: string | null; closes_on: string | null; captured_at: string;
     region_code: string | null; raw_requirements: string[]; core_code: string | null; role_code: string | null;
-  }>(
-    `SELECT id::text, source, source_url, closes_on::text, captured_at::text, region_code, raw_requirements, core_code, role_code
+    title: string | null; category: string | null; field: string | null; degree_label: string | null;
+    region_label: string | null; abroad: boolean | null; posting_kind: string | null;
+  };
+  /* 카드 칸이 없는 DB(`db/schema_jobs_meta.sql` 전)에서는 빈 값으로 읽는다 */
+  const sql = (meta: boolean) => `
+    SELECT id::text, source, source_url, closes_on::text, captured_at::text, region_code, raw_requirements, core_code, role_code,
+           ${meta ? "title, category, field, degree_label, region_label, abroad, posting_kind"
+             : "NULL::text AS title, NULL::text AS category, NULL::text AS field, NULL::text AS degree_label, NULL::text AS region_label, NULL::boolean AS abroad, NULL::text AS posting_kind"}
        FROM v3_job_postings
       WHERE captured_at > now() - interval '180 days'
         AND (closes_on IS NULL OR closes_on >= (now() AT TIME ZONE 'Asia/Seoul')::date)
-      ORDER BY captured_at DESC LIMIT 1500`, []).catch(() => []);
+        ${meta ? `AND NOT (source = 'careerpeak' AND source_ref IN (
+              SELECT verified_ref FROM v3_job_postings WHERE source = 'jobindustry' AND verified_source = 'careerpeak'))` : ""}
+      ORDER BY captured_at DESC LIMIT 1500`;
+  const pool = await query<Row>(sql(true), []).catch(() => query<Row>(sql(false), [])).catch(() => [] as Row[]);
   const hitsOf = new Map((mine?.rows ?? []).map((r) => [r.id, r]));
   const grad = isGrad(stage);
   const st = stem(major);
 
-  const scored = pool.map((p) => {
+  const shown = pool
+    .map((p) => ({ p, as: shownAs(p, grad) }))
+    .filter((x): x is { p: Row; as: NonNullable<ReturnType<typeof shownAs>> } => !!x.as && !x.as.hidden);
+  const scored = shown.map(({ p, as: { title, kind, research } }) => {
     const text = (p.raw_requirements ?? []).join(" ");
     const m = hitsOf.get(p.id);
     const hits = [...(m?.hits ?? [])];
@@ -70,7 +114,7 @@ export async function pickJobs(userId: string, limit = 20): Promise<PickedJobs> 
     /* **전공 관련도가 먼저다**: 내 전공 사전의 낱말(예: 딥러닝 · PyTorch · AI 엔지니어)이 **제목 · 모집 분야**에 나오는가.
        본문에 한 번 나온 것만으로는 맞춤으로 치지 않고 순위만 조금 올린다(2026-11-02 운영 시험: 본문의 "인공지능" 한 번으로
        "과제계약직" 공고가 인공지능학과의 첫 줄에 섰다) */
-    const head = [jobTitle(p.raw_requirements ?? [], p.role_code).title ?? "", p.role_code ?? ""].join(" ");
+    const head = [title, p.role_code ?? ""].join(" ");
     const dictHead = core ? matchDomains(core, head).filter((x) => x.score >= 3) : [];
     const dictBody = core ? matchDomains(core, text).filter((x) => x.score >= 3) : [];
     const rel = dictHead.reduce((n, x) => n + x.terms.length, 0);
@@ -86,11 +130,11 @@ export async function pickJobs(userId: string, limit = 20): Promise<PickedJobs> 
     if (entry) { score += 2; if (!hits.includes("신입 · 인턴")) hits.push("신입 · 인턴"); }
     /* 경력 채용은 표를 달고 뒤로(2026-11-02 운영 시험: 경력직이 학부생에게 표시 없이 섰다) */
     else if (isSeniorJob(text)) { score -= 3; hits.unshift("경력 채용"); }
-    const research = GRAD_BOARD.test(p.source_url ?? "") || GRAD_TEXT.test(text);
     const row: MatchedPosting = {
       id: p.id, source: p.source, source_url: p.source_url, closes_on: p.closes_on, captured_at: p.captured_at,
       region_code: p.region_code, requirements: (p.raw_requirements ?? []).slice(0, 8), hits, tdHits: m?.tdHits ?? [],
-      role: p.role_code,
+      role: p.role_code, title, category: p.category, field: p.field, degree_label: p.degree_label,
+      region_label: p.region_label, abroad: p.abroad, posting_kind: kind,
     };
     const real = rel > 0 || headUser;
     return { row, score, research, mineField, real };
