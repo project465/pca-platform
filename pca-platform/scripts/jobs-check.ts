@@ -8,7 +8,8 @@
  */
 import { registry, coreFile } from "../src/lib/me-v3/core-registry";
 import { mapPosting, regionOf } from "../src/lib/jobs/map";
-import { ingest, parseCsv, isoDate } from "../src/lib/jobs/ingest";
+import { ingest, parseCsv, isoDate, knownRefs } from "../src/lib/jobs/ingest";
+import { applyVerified, parseCalendar } from "../src/lib/jobs/careerpeak";
 import { parseDetail, parseList } from "../src/lib/jobs/work24";
 import { demandOf, MIN_TOTAL, MIN_CELL } from "../src/lib/jobs/stats";
 import { query } from "../src/lib/db";
@@ -120,6 +121,50 @@ async function main() {
     `SELECT column_name AS c FROM information_schema.columns WHERE table_name = 'v3_job_postings'`);
   ok("공고 표에 회사 이름 칸이 없다", !cols.some((x) => /company|corp|employer|co_nm/i.test(x.c)), cols.map((x) => x.c).join(","));
 
+  /* 9. 카드 칸 · 빼는 공고(2026-11-03, db/schema_jobs_meta.sql). 우리 사이트 출처로 넣어야 제목 칸을 본다:
+        번호를 `zzcheck-` 로 시작하게 하고 끝에서 지운다 */
+  const ZZ = "zzcheck-";
+  const clean = async () => {
+    await query(`DELETE FROM v3_job_postings WHERE source IN ('jobindustry','careerpeak') AND source_ref LIKE $1`, [`${ZZ}%`]);
+    await query(`DELETE FROM v3_job_skips WHERE source_ref LIKE $1`, [`${ZZ}%`]).catch(() => undefined);
+  };
+  await clean();
+  const ji = (ref: string, title: string, closesOn: string | null, kind: "job" | "grad" = "job") => ({
+    source: "jobindustry", sourceRef: `${ZZ}${ref}`, url: `https://www.jobindustry.co.kr/430/?bmode=view&idx=${ref}`, title,
+    body: "모집 분야: 연구\n지원 자격: 석사 이상", closesOn,
+    meta: { category: "출연연", field: "IT/AI/빅데이터/블록체인", degreeLabel: "석사 이상", degreeMin: "master" as const, kind,
+      regionLabel: "대전", abroad: false, employmentType: "정규직", fields: { 모집분야: "연구" } },
+  });
+  const res = await ingest([ji("1", "한국과학기술연구원 AI 연구직 채용", "2099-12-31"), ji("2", "", "2099-12-31"), ji("3", "지난 공고", "2020-01-31")]);
+  ok("제목 없는 공고 · 마감 지난 공고는 담지 않는다", res.stored === 1 && res.skipped.noTitle === 1 && res.skipped.closed === 1, JSON.stringify(res));
+  const got = await query<{ title: string | null; category: string; degree_min: string; posting_kind: string; region_code: string | null; posting_fields: Record<string, string> }>(
+    `SELECT title, category, degree_min, posting_kind, region_code, posting_fields FROM v3_job_postings WHERE source = 'jobindustry' AND source_ref LIKE $1`, [`${ZZ}%`]);
+  ok("우리 사이트 공고는 제목 · 칸을 담는다", got.length === 1 && got[0].title === "한국과학기술연구원 AI 연구직 채용" && got[0].category === "출연연"
+    && got[0].degree_min === "master" && got[0].posting_kind === "job" && got[0].region_code === "KR-CHUNGCHEONG" && got[0].posting_fields?.모집분야 === "연구", JSON.stringify(got));
+  const k = await knownRefs("jobindustry", [`${ZZ}1`, `${ZZ}2`, `${ZZ}3`, `${ZZ}4`]);
+  ok("담은 번호 · 뺀 번호는 다시 부르지 않는다(처음 보는 번호만 부른다)", k.has(`${ZZ}1`) && k.has(`${ZZ}2`) && k.has(`${ZZ}3`) && !k.has(`${ZZ}4`), [...k].join(","));
+  const skips = await query<{ reason: string }>(`SELECT reason FROM v3_job_skips WHERE source_ref LIKE $1 ORDER BY source_ref`, [`${ZZ}%`]);
+  ok("뺀 번호는 번호와 까닭만 적는다", skips.map((x) => x.reason).join(",") === "no_title,closed");
+  await ingest([{ source: SRC, sourceRef: "t1", title: "경영기획 담당자", body }]);
+  ok("다른 출처(고용24 · CSV)는 전처럼 제목을 담지 않는다",
+    (await query<{ title: string | null }>(`SELECT title FROM v3_job_postings WHERE source = $1 AND source_ref = 't1'`, [SRC]))[0]?.title === null);
+  await query(`UPDATE v3_job_postings SET title = NULL WHERE source = 'jobindustry' AND source_ref = $1`, [`${ZZ}1`]);
+  ok("제목 칸이 빈 옛 줄은 다시 불러 채운다", !(await knownRefs("jobindustry", [`${ZZ}1`])).has(`${ZZ}1`));
+  await ingest([ji("1", "한국과학기술연구원 AI 연구직 채용", "2099-12-31")]);
+
+  /* 10. 커리어피크 캘린더: 같은 공고가 잡인더스트리에 있으면 사람이 확인한 값으로 덮고, 다시 모아도 덮지 않는다 */
+  const cal = parseCalendar(JSON.stringify({ updated_at: "2026-11-03", items: [
+    { id: `${ZZ}cp1`, org: "한국과학기술연구원", org_short: "KIST", title: "AI 연구직 채용", url: "https://kist.example/1",
+      start: "2099-11-01", end: "2099-12-31", status: "접수중", category: "정규직", job_types: ["연구"], degrees: ["박사"], degree_note: "", evidence: "" },
+  ] }));
+  ok("기관 + 제목이 같은 잡인더스트리 줄을 찾아 덮는다", await applyVerified(cal.items) === 1);
+  await ingest([ji("1", "한국과학기술연구원 AI 연구직 채용", "2099-12-31")]);
+  const v = await query<{ degree_label: string; degree_min: string; job_family: string; verified_ref: string }>(
+    `SELECT degree_label, degree_min, job_family, verified_ref FROM v3_job_postings WHERE source = 'jobindustry' AND source_ref = $1`, [`${ZZ}1`]);
+  ok("다시 모아도 확인한 학위 · 직군을 덮지 않는다", v[0]?.degree_label === "박사" && v[0]?.degree_min === "phd" && v[0]?.job_family === "연구"
+    && v[0]?.verified_ref === `${ZZ}cp1`, JSON.stringify(v));
+  await clean();
+
   await query(`DELETE FROM v3_job_postings WHERE source = $1`, [SRC]);
   console.log(`\n확인 ${pass + fail}가지 — 통과 ${pass} · 걸림 ${fail}`);
   process.exit(fail ? 1 : 0);
@@ -127,5 +172,6 @@ async function main() {
 
 main().catch(async (e) => {
   await query(`DELETE FROM v3_job_postings WHERE source = $1`, [SRC]).catch(() => undefined);
+  await query(`DELETE FROM v3_job_postings WHERE source IN ('jobindustry','careerpeak') AND source_ref LIKE 'zzcheck-%'`).catch(() => undefined);
   console.error(e); process.exit(1);
 });
