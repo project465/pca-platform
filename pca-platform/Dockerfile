@@ -71,7 +71,10 @@ RUN npx esbuild scripts/make-admin.ts \
       --external:pg --outfile=ops-build/staging-reset-student.cjs \
  && npx esbuild scripts/campus-login-migrate.ts \
       --bundle --platform=node --format=cjs --target=node22 \
-      --external:pg --outfile=ops-build/campus-login-migrate.cjs
+      --external:pg --outfile=ops-build/campus-login-migrate.cjs \
+ && npx esbuild scripts/featured/enroll.ts \
+      --bundle --platform=node --format=cjs --target=node22 \
+      --external:pg --outfile=ops-build/featured-enroll.cjs
 
 FROM node:22-alpine AS run
 WORKDIR /app
