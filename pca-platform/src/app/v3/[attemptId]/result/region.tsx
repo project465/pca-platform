@@ -1,5 +1,7 @@
 import type { RegionView } from "@/lib/me-v3/report-long/region";
 import { REGION_LAW } from "@/lib/me-v3/report-long/region";
+import type { FeaturedView } from "@/lib/featured";
+import FeaturedCard from "./featured";
 
 /**
  * 지역에서 이 경험을 이어 볼 기업(웹). 책 01장과 같은 묶음(`regionView`)을 그대로 쓴다.
@@ -13,7 +15,9 @@ import { REGION_LAW } from "@/lib/me-v3/report-long/region";
 const HEAD = { A: "내 결과와 잘 맞는 곳", B: "한 걸음 더 채우면 맞는 곳", C: "넓혀 볼 곳" } as const;
 const short = (n: string) => n.replace(/\(주\)|주식회사|㈜/g, "").trim();
 
-export default function RegionSection({ v, chosen }: { v: RegionView; chosen: string[] }) {
+export default function RegionSection({ v, chosen }: { v: RegionView & { featured?: FeaturedView | null }; chosen: string[] }) {
+  /* 기관 프로그램의 중점 기업은 이 절 맨 위다(2026-11-03 대표 지시) */
+  const top = v.featured ? <FeaturedCard f={v.featured} /> : null;
   const picked = v.groups.filter((g) => chosen.includes(g.pack.code));
   const rest = v.groups.filter((g) => !chosen.includes(g.pack.code));
   const matched = v.groups.reduce((a, g) => a + g.orgs.length, 0);
@@ -44,6 +48,7 @@ export default function RegionSection({ v, chosen }: { v: RegionView; chosen: st
     return (
       <section className="rs-sect" id="region-orgs">
         <h2>{v.label}에서 이 경험을 이어 볼 기업</h2>
+        {top}
         <p className="rs-note">
           공시(OpenDART)와 공개 명단에서 확인한 {v.label} 기업 {v.all.length}곳 가운데, 업종으로 이 전공의 산업에 이어지는
           곳을 아직 찾지 못했습니다. 짐작으로 채우지 않고, 공공기관 · 연구기관 명단을 더하면 이 절이 채워집니다.
@@ -54,6 +59,7 @@ export default function RegionSection({ v, chosen }: { v: RegionView; chosen: st
   return (
     <section className="rs-sect" id="region-orgs">
       <h2>{v.label}에서 이 경험을 이어 볼 기업</h2>
+      {top}
       <p className="rs-note">
         공시(OpenDART)와 공개 명단에서 확인한 {v.label} 기업 {v.all.length}곳 가운데 {matched}곳을 업종으로 이 전공의
         산업에 나눠 넣고, 그 산업이 쓰는 영역을 내 결과에 대어 보았습니다. 점수나 순위가 아닙니다.

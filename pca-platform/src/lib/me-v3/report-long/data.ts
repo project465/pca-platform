@@ -17,6 +17,7 @@ import type { BookLang } from "./lang";
 import { hasEdition } from "../i18n";
 import { localizeResult, localizer } from "../result/localize";
 import { majorNameIn } from "../runtime/session";
+import { programOfUser } from "@/lib/featured";
 import type {
   Checklists, DomainDef, IndustryPack, Inputs, RegionKey, Relations, RolePack, Taxonomy,
 } from "./types";
@@ -94,6 +95,8 @@ export async function loadInputs(attemptId: string, expScope: "snapshot" | "all"
 
   /* 지역 자료는 한국 공시와 명단이라 영어 책에는 싣지 않는다 */
   const region = lang === "en" ? null : issuerCode ? REGION_BY_ORG[issuerCode] ?? null : null;
+  /* 기관 프로그램의 중점 기업(지역 절 맨 위 카드). 지역 자료가 있는 응시만 */
+  const featured = region ? await programOfUser(row.user_id, issuerCode ?? null) : null;
   const today = (await queryOne<{ d: string }>(`SELECT to_char(now() AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD') AS d`))?.d ?? "";
   return {
     attemptId, tier: row.tier, userId: row.user_id,
@@ -107,7 +110,7 @@ export async function loadInputs(attemptId: string, expScope: "snapshot" | "all"
     spec: specView(coreCode, meta.specializationCode),
     issuer: issuer ?? "CareerMatri", issuerCode: issuerCode ?? null,
     answeredOn: meta.answeredOn ?? today,
-    m: localizeResult(row.result_model, coreCode, lang), defs, tax, rel, roles, inds, checklists, guide, exps, region,
+    m: localizeResult(row.result_model, coreCode, lang), defs, tax, rel, roles, inds, checklists, guide, exps, region, featured,
     domainWord: lang === "en" ? "area" : experienceFlow(coreCode).domainWord,
     builtOn: row.snap_on || today,
   };

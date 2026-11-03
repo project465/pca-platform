@@ -520,7 +520,9 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.88";
 /** 지금 할 일 차례 · 여러 영역 할 일 문장 — V103 */
 /** 가까운 묶음 학과 안내 한 줄을 화면에서도 보이게 — V104 */
 /** 다른 학과로 잰 결과의 머리 줄 `검사한 학과 기준 · 등록 학과` — V105 */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V105";
+/** 기관 프로그램의 중점 기업 카드(`lib/featured`): 요약 화면의 지역 부분 · 인쇄판 지역 절 맨 위. 프로그램에 든 사람만. 판정과 결과 모델은 그대로다 — V105(같은 판본을 두 갈래가 함께 썼다) */
+/** 다른 학과 검사 머리 줄과 중점 기업 카드를 한 판으로 합침 — V106 */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V106";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

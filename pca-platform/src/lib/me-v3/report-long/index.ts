@@ -22,6 +22,7 @@ import { ch2Pages } from "./ch2";
 import { ch3Pages, PART3 } from "./ch3";
 import { ch4Pages } from "./ch4";
 import { regionPages } from "./ch5";
+import { featuredPage } from "./featured-page";
 import { ch6Pages } from "./ch6";
 import { appendix, ch7 } from "./ch7";
 import { AXES, BAND_WORD, ZONES, ZONE_WORD } from "./derive";
@@ -152,7 +153,13 @@ export function assemble(x0: Inputs): { pages: Page[]; notes: string[]; region: 
     (isEn() ? insideEn(c4.map((p) => p.title)) : [...new Set(c4.map((p) => p.title.replace(/ \(\d+\)$/, "").replace(/ · (하는 일|판단과 연습|첫 프로젝트와 배울 순서|핵심 영역에서 하는 판단)$/, "")))]).slice(0, 9),
     DECO(200, 140, `<rect x="22" y="18" width="70" height="100" rx="8"/><rect x="108" y="18" width="70" height="100" rx="8"/><path d="M36 42h42M36 58h30M36 74h36M122 42h42M122 58h30M122 74h36"/><circle cx="100" cy="96" r="15"/><path d="M111 107l13 13"/>`)), ...named([...c4, ...fill[N.c4] ?? []], N.c4));
 
-  if (rv) P.push(...named([...regionPages(x, d, rv), ...fill[N5] ?? []], N5));
+  if (rv) {
+    /* 기관 프로그램의 중점 기업 한 쪽은 지역 장 표지 바로 뒤, 장의 맨 앞이다(`featured-page.ts`) */
+    const rp = regionPages(x, d, rv);
+    const fp = featuredPage(x, d, rv);
+    if (fp) rp.splice(1, 0, fp);
+    P.push(...named([...rp, ...fill[N5] ?? []], N5));
+  }
   else notes.push(!x.region ? "소속 기관에 맞는 지역 자료가 없어 05장을 뺐습니다" : rv0 ? `지역 자료(${x.region})에 이 전공의 산업과 이어지는 회사가 없어 05장을 뺐습니다` : `지역 자료(${x.region})를 읽지 못해 05장을 뺐습니다`);
 
   const c6 = ch6Pages(x, d);
