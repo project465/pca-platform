@@ -225,14 +225,16 @@ export const kr: SiteContent = {
     },
     /* 나라 목록은 ACADEMIX PCA 소개 자료(academix.co.kr)의 '진행 · 예정'
        그대로다. 학교 이름은 기록이 있는 곳만 적는다(로고는 사용 허락을 받은
-       뒤에). 영어·튀르키예어 문항은 `data/metri/items_pca_me_v1.json` 의
-       PCA.ME.001 원문 그대로이고, 일본어·중국어·러시아어와 결과 예시 문장은
-       번역본이다(원어민 검토는 아직이다: 그 나라 고객에게 내보이기 전에 받는다) */
+       뒤에). 아래 다섯 칸은 **예전 기계공학 문항 하나의 화면 예시**다. 영어·튀르키예어는
+       `data/metri/items_pca_me_v1.json` 의 PCA.ME.001 원문이고, 일본어·중국어·러시아어는 그 문항을
+       옮긴 것이다. **지금 검사(V3)의 영어판은 기계 · 전기전자 · 컴퓨터 셋뿐이다**
+       (`src/lib/me-v3/i18n.ts` 의 `EDITION_CORES`). 튀르키예어는 예전 문항 파일에만 있다.
+       일본어 · 중국어 · 러시아어 검사는 없다(2026-11-03 정리) */
     global: {
       label: "해외",
       title: "해외에서도 진행하고 있습니다",
       lead:
-        "CareerMatri의 진단 엔진(PCA)은 한국 밖에서도 쓰였습니다. 직무가 요구하는 판단은 나라가 달라도 크게 다르지 않아서, 같은 문항을 그 나라 말로 옮겨 씁니다.",
+        "CareerMatri의 진단 엔진(PCA)은 한국 밖에서도 쓰였습니다. 지금 검사는 한국어로 합니다. 기계 · 전기전자 · 컴퓨터 3개 전공은 영어로도 할 수 있습니다.",
       legend: { done: "진행한 나라", planned: "진행 예정" },
       countries: [
         { iso: "410", name: "한국", status: "done" },
@@ -248,16 +250,16 @@ export const kr: SiteContent = {
       ],
       source: "ACADEMIX PCA 소개 자료 기준입니다. 진행 예정인 나라는 아직 진행 전입니다.",
       samples: {
-        title: "그 나라 말로 보는 검사지와 결과지",
+        title: "여러 나라 말 화면 예시",
         lead:
-          "기계공학 검사의 같은 문항을 다섯 나라 말로 보여 드립니다. 영어와 튀르키예어는 원문 문항이고, 일본어·중국어·러시아어는 번역본입니다.",
+          "아래는 기계공학 문항 1개를 다섯 나라 말로 보인 예시입니다. 검사 영어판: 기계 · 전기전자 · 컴퓨터 3개 전공. 나머지 네 칸은 화면 예시입니다.",
         items: [
           {
             lang: "English",
             code: "en",
             langKo: "영어",
             status: "live",
-            statusLabel: "검사지·결과지 영어판 있음",
+            statusLabel: "검사 영어판 있음 · 3개 전공",
             question: {
               label: "Sample question",
               area: "Design & Development",
@@ -276,8 +278,8 @@ export const kr: SiteContent = {
             lang: "Türkçe",
             code: "tr",
             langKo: "튀르키예어",
-            status: "live",
-            statusLabel: "튀르키예어 원문 문항",
+            status: "draft",
+            statusLabel: "예시",
             question: {
               label: "Örnek soru",
               area: "Tasarım ve Geliştirme",
@@ -297,7 +299,7 @@ export const kr: SiteContent = {
             code: "ja",
             langKo: "일본어",
             status: "draft",
-            statusLabel: "일본어 번역본",
+            statusLabel: "예시",
             question: {
               label: "質問の例",
               area: "設計・開発",
@@ -317,7 +319,7 @@ export const kr: SiteContent = {
             code: "zh",
             langKo: "중국어",
             status: "draft",
-            statusLabel: "중국어 번역본",
+            statusLabel: "예시",
             question: {
               label: "示例题目",
               area: "设计与开发",
@@ -337,7 +339,7 @@ export const kr: SiteContent = {
             code: "ru",
             langKo: "러시아어",
             status: "draft",
-            statusLabel: "러시아어 번역본",
+            statusLabel: "예시",
             question: {
               label: "Пример вопроса",
               area: "Проектирование и разработка",
@@ -393,7 +395,7 @@ export const kr: SiteContent = {
         lead: "점수는 정해 둔 규칙으로만 계산합니다. 그래서 같은 답에는 언제나 같은 결과가 나오고, 학교 담당자가 결과의 근거를 되짚어 볼 수 있습니다.",
         statusLabel: { done: "완료", doing: "진행 중", next: "예정" },
         steps: [
-          { status: "done", title: "세 언어 같은 문항", body: "한국어·영어·튀르키예어 문항을 한 문항씩 같은 뜻으로 맞춰 두었습니다." },
+          { status: "done", title: "검사 영어판", body: "기계 · 전기전자 · 컴퓨터 3개 전공은 영어 문항이 있습니다. 한국어 문항과 같은 번호로 묶었습니다." },
           { status: "done", title: "같은 답이면 같은 결과", body: "배포할 때마다 같은 응답에 같은 결과가 나오는지 자동으로 확인합니다." },
           { status: "done", title: "문항 뜻 지키기", body: "문장을 다듬어도 재는 내용이 바뀌지 않았는지 문항마다 대조합니다." },
           { status: "doing", title: "전공자 검토", body: "전공별 검토 자료를 마련해 그 분야 전문가에게 검토를 받고 있습니다." },

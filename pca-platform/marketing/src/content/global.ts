@@ -223,7 +223,7 @@ export const global: SiteContent = {
         },
         {
           q: "Is it available in English?",
-          a: "The assessment and report are currently written in Korean. For enquiries from outside Korea, please contact us.",
+          a: "Three majors have an English edition: Mechanical, Electrical and Electronic, and Computer Science. Other majors are in Korean. For enquiries from outside Korea, please contact us.",
           link: { label: "Contact us", href: "/contact" },
         },
         {
@@ -333,7 +333,7 @@ export const global: SiteContent = {
       items: [
         { q: "Does each department get a different assessment?", a: "Yes. Students take the major assessment their department is linked to, with examples suited to their department." },
         { q: "What do we need to prepare?", a: "The departments, a rough headcount and a staff contact. The student roster is uploaded later on the staff screen." },
-        { q: "Is the assessment available in English?", a: "Not yet. The assessment and report are currently written in Korean." },
+        { q: "Is the assessment available in English?", a: "Three majors have an English edition: Mechanical, Electrical and Electronic, and Computer Science. Other majors are in Korean." },
         { q: "How is pricing set?", a: "By departments and headcount. Contact us and we will explain how it would work for your university.", link: { label: "Contact us", href: "/contact" } },
       ],
     },

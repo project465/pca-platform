@@ -219,7 +219,7 @@ export const en: SiteContent = {
       label: "International",
       title: "Also in use outside Korea",
       lead:
-        "CareerMatri's assessment engine (PCA) has also been used outside Korea. The judgment calls a role demands vary little between countries, so we use the same questions, translated into each language.",
+        "CareerMatri's assessment engine (PCA) has also been used outside Korea. The assessment is in Korean. Three majors also have an English edition: Mechanical, Electrical and Electronic, and Computer Science.",
       legend: { done: "Completed", planned: "Planned" },
       countries: [
         { iso: "410", name: "South Korea", status: "done" },
@@ -235,16 +235,16 @@ export const en: SiteContent = {
       ],
       source: "Based on the ACADEMIX PCA introduction materials. Work in planned countries has not started yet.",
       samples: {
-        title: "Assessment and report in each language",
+        title: "Sample screens in other languages",
         lead:
-          "Here is the same Mechanical Engineering question in five languages. English and Turkish are original items; Japanese, Chinese and Russian are translations.",
+          "Below is one Mechanical Engineering question shown in five languages. English edition of the assessment: three majors (Mechanical, Electrical and Electronic, Computer Science). The other four cards are display samples only.",
         items: [
           {
             lang: "English",
             code: "en",
             langKo: "English",
             status: "live",
-            statusLabel: "Original items",
+            statusLabel: "English edition · 3 majors",
             question: {
               label: "Sample question",
               area: "Design & Development",
@@ -263,8 +263,8 @@ export const en: SiteContent = {
             lang: "Türkçe",
             code: "tr",
             langKo: "Turkish",
-            status: "live",
-            statusLabel: "Turkish original items",
+            status: "draft",
+            statusLabel: "Sample",
             question: {
               label: "Örnek soru",
               area: "Tasarım ve Geliştirme",
@@ -284,7 +284,7 @@ export const en: SiteContent = {
             code: "ja",
             langKo: "Japanese",
             status: "draft",
-            statusLabel: "Japanese translation",
+            statusLabel: "Sample",
             question: {
               label: "質問の例",
               area: "設計・開発",
@@ -304,7 +304,7 @@ export const en: SiteContent = {
             code: "zh",
             langKo: "Chinese",
             status: "draft",
-            statusLabel: "Chinese translation",
+            statusLabel: "Sample",
             question: {
               label: "示例题目",
               area: "设计与开发",
@@ -324,7 +324,7 @@ export const en: SiteContent = {
             code: "ru",
             langKo: "Russian",
             status: "draft",
-            statusLabel: "Russian translation",
+            statusLabel: "Sample",
             question: {
               label: "Пример вопроса",
               area: "Проектирование и разработка",
@@ -380,7 +380,7 @@ export const en: SiteContent = {
         lead: "Scores come from fixed rules only. The same answers always produce the same result, and school staff can trace how each result was reached.",
         statusLabel: { done: "Done", doing: "In progress", next: "Planned" },
         steps: [
-          { status: "done", title: "Same items in three languages", body: "Each Korean, English and Turkish item is matched so that all three mean the same thing." },
+          { status: "done", title: "English edition", body: "Three majors have English items: Mechanical, Electrical and Electronic, and Computer Science. Each English item has the same number as its Korean item." },
           { status: "done", title: "Same answers, same result", body: "Every release is checked automatically to confirm that the same answers produce the same result." },
           { status: "done", title: "Keeping item meaning intact", body: "Whenever wording is edited, we compare each item to make sure it still measures the same thing." },
           { status: "doing", title: "Review by subject experts", body: "We have prepared review materials for each major and are working through reviews with experts in each field." },

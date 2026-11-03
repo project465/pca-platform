@@ -214,7 +214,7 @@ export const zh: SiteContent = {
       label: "海外",
       title: "海外开展情况",
       lead:
-        "CareerMatri的诊断引擎（PCA）已在韩国以外的国家使用过。各国岗位所要求的判断大同小异，因此同一套题目翻译成当地语言后即可使用。",
+        "CareerMatri的诊断引擎（PCA）已在韩国以外的国家使用过。测评使用韩语。机械、电气电子、计算机三个专业也可以用英语测评。",
       legend: { done: "已开展的国家", planned: "计划开展" },
       countries: [
         { iso: "410", name: "韩国", status: "done" },
@@ -230,16 +230,16 @@ export const zh: SiteContent = {
       ],
       source: "信息来源：ACADEMIX PCA介绍资料。标为计划开展的国家尚未启动。",
       samples: {
-        title: "用当地语言呈现的测评与结果报告",
+        title: "其他语言的界面示例",
         lead:
-          "下面用五种语言展示机械工程测评中的同一道题。英语和土耳其语是原版题目，日语、中文和俄语为译本。",
+          "下面是一道机械工程题目的五种语言示例。测评英语版：机械、电气电子、计算机三个专业。其余四种只是界面示例。",
         items: [
           {
             lang: "English",
             code: "en",
             langKo: "英语",
             status: "live",
-            statusLabel: "已有英文版测评与结果报告",
+            statusLabel: "已有测评英语版・三个专业",
             question: {
               label: "Sample question",
               area: "Design & Development",
@@ -258,8 +258,8 @@ export const zh: SiteContent = {
             lang: "Türkçe",
             code: "tr",
             langKo: "土耳其语",
-            status: "live",
-            statusLabel: "土耳其语原文题目",
+            status: "draft",
+            statusLabel: "示例",
             question: {
               label: "Örnek soru",
               area: "Tasarım ve Geliştirme",
@@ -279,7 +279,7 @@ export const zh: SiteContent = {
             code: "ja",
             langKo: "日语",
             status: "draft",
-            statusLabel: "日语译本",
+            statusLabel: "示例",
             question: {
               label: "質問の例",
               area: "設計・開発",
@@ -299,7 +299,7 @@ export const zh: SiteContent = {
             code: "zh",
             langKo: "中文",
             status: "draft",
-            statusLabel: "中文译本",
+            statusLabel: "示例",
             question: {
               label: "示例题目",
               area: "设计与开发",
@@ -319,7 +319,7 @@ export const zh: SiteContent = {
             code: "ru",
             langKo: "俄语",
             status: "draft",
-            statusLabel: "俄语译本",
+            statusLabel: "示例",
             question: {
               label: "Пример вопроса",
               area: "Проектирование и разработка",
@@ -371,7 +371,7 @@ export const zh: SiteContent = {
         lead: "分数只按事先定好的规则计算，同样的作答始终得到同样的结果，学校管理员也能追溯结果的依据。",
         statusLabel: { done: "已完成", doing: "进行中", next: "计划中" },
         steps: [
-          { status: "done", title: "三种语言，同一套题", body: "韩语、英语、土耳其语题目已逐题对齐，确保含义一致。" },
+          { status: "done", title: "测评英语版", body: "机械、电气电子、计算机三个专业有英语题目。英语题目与韩语题目编号相同。" },
           { status: "done", title: "同样的作答，同样的结果", body: "每次发布新版本时，自动检查同样的作答是否仍得到同样的结果。" },
           { status: "done", title: "题目含义不走样", body: "调整措辞时，逐题核对所测内容是否保持不变。" },
           { status: "doing", title: "专家审阅", body: "各专业的审阅资料已经备好，正在陆续邀请相关领域的专家审阅。" },

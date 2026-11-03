@@ -218,7 +218,7 @@ export const ja: SiteContent = {
       label: "海外",
       title: "海外でも実施しています",
       lead:
-        "CareerMatriの診断エンジン（PCA）は、韓国以外でも使われてきました。職務に求められる判断は国が違っても大きくは変わらないため、同じ設問をその国の言語に訳して使っています。",
+        "CareerMatriの診断エンジン（PCA）は、韓国以外でも使われてきました。診断は韓国語で受けます。機械・電気電子・コンピューターの3専攻は英語でも受けられます。",
       legend: { done: "実施した国", planned: "実施予定" },
       countries: [
         { iso: "410", name: "韓国", status: "done" },
@@ -234,16 +234,16 @@ export const ja: SiteContent = {
       ],
       source: "ACADEMIXのPCA紹介資料にもとづきます。「実施予定」の国では、まだ実施していません。",
       samples: {
-        title: "その国の言語で見る診断と結果レポート",
+        title: "ほかの言語の画面サンプル",
         lead:
-          "機械工学の診断から同じ設問を、5つの言語で並べてご紹介します。英語とトルコ語は原文の設問で、日本語・中国語・ロシア語は翻訳版です。",
+          "機械工学の設問1つを、5つの言語で表示したサンプルです。診断の英語版は機械・電気電子・コンピューターの3専攻です。ほかの4つは画面のサンプルです。",
         items: [
           {
             lang: "English",
             code: "en",
             langKo: "英語",
             status: "live",
-            statusLabel: "診断・結果レポートの英語版あり",
+            statusLabel: "診断の英語版あり・3専攻",
             question: {
               label: "Sample question",
               area: "Design & Development",
@@ -262,8 +262,8 @@ export const ja: SiteContent = {
             lang: "Türkçe",
             code: "tr",
             langKo: "トルコ語",
-            status: "live",
-            statusLabel: "トルコ語の原文設問",
+            status: "draft",
+            statusLabel: "サンプル",
             question: {
               label: "Örnek soru",
               area: "Tasarım ve Geliştirme",
@@ -283,7 +283,7 @@ export const ja: SiteContent = {
             code: "ja",
             langKo: "日本語",
             status: "draft",
-            statusLabel: "日本語翻訳版",
+            statusLabel: "サンプル",
             question: {
               label: "質問の例",
               area: "設計・開発",
@@ -303,7 +303,7 @@ export const ja: SiteContent = {
             code: "zh",
             langKo: "中国語",
             status: "draft",
-            statusLabel: "中国語翻訳版",
+            statusLabel: "サンプル",
             question: {
               label: "示例题目",
               area: "设计与开发",
@@ -323,7 +323,7 @@ export const ja: SiteContent = {
             code: "ru",
             langKo: "ロシア語",
             status: "draft",
-            statusLabel: "ロシア語翻訳版",
+            statusLabel: "サンプル",
             question: {
               label: "Пример вопроса",
               area: "Проектирование и разработка",
@@ -375,7 +375,7 @@ export const ja: SiteContent = {
         lead: "スコアはあらかじめ定めた規則だけで計算します。そのため同じ回答からは常に同じ結果が出て、学校の担当者も結果の根拠をたどって確かめられます。",
         statusLabel: { done: "完了", doing: "進行中", next: "予定" },
         steps: [
-          { status: "done", title: "3言語で同じ設問", body: "韓国語・英語・トルコ語の設問を、1問ずつ同じ意味にそろえています。" },
+          { status: "done", title: "診断の英語版", body: "機械・電気電子・コンピューターの3専攻には英語の設問があります。英語の設問は韓国語の設問と同じ番号です。" },
           { status: "done", title: "同じ回答なら同じ結果", body: "公開のたびに、同じ回答に同じ結果が出るかを自動で確認しています。" },
           { status: "done", title: "設問の意味を守る", body: "文章を整えても測る内容が変わっていないか、設問ごとに照らし合わせています。" },
           { status: "doing", title: "専門家によるレビュー", body: "専攻ごとのレビュー資料を用意し、その分野の専門家によるレビューを続けています。" },
