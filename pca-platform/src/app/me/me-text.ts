@@ -40,6 +40,7 @@ export const NAV_TEXT = {
 export const HOME_TEXT = {
   greet: { ko: "{name}님, 이번 주에는 {what}" },
   openMat: { ko: "MAT 열기" },
+  findSub: { ko: "기술영역" },
   stepsTitle: { ko: "내 취업 준비" },
   stepsOf: { ko: "5단계 중 {n}단계" },
   now: { ko: "지금" },

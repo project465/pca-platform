@@ -416,7 +416,8 @@
 /** 메뉴 `AI 취업비서` 는 `/mat` 으로 · 홈 위쪽 · 홈에 MAT 줄(학교 · 기관이 연 학생도) — V100 */
 /** /me/region 맨 위에 기관 프로그램의 중점 기업 카드(지역 화면을 카드로 바꾸며 빠졌던 자리) — V101 */
 /** 메뉴: MAT 이 첫 줄 · 가장 크게, 홈 · 검사 결과, 바닥에 내 정보 · 이용권. 검사 결과 안에 작은 탭. 공고 · 지원 기록은 MAT 으로 — V102 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V102";
+/** 한국어 홈을 시안대로: 인사 줄 + MAT 열기 · 내 취업 준비 5단계 · 이번 주 할 일 · 맞는 공고 — V103 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V103";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -495,7 +496,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V102";
 /** 경험 추가 `{word}을` → 받침으로 고른 조사 — copy.72 */
 /** 학생 화면 해명 · 부정문 나열을 짧은 이름표로(2026-11-03 대표 "AI스럽다") — copy.73 */
 /** `확인된 영역 n` → `해 본 일이 있는 영역 n` — copy.74 */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.74";
+/** 한국어 홈의 글(인사 줄 · 5단계 · 이번 주 할 일 · 맞는 공고)을 `me-text.ts` 에서 읽는다 — copy.75 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.75";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

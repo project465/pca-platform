@@ -63,6 +63,8 @@ const FILES = [
   "src/app/me/actions.ts",
   /* 지금 */
   "src/app/me/page.tsx",
+  /* 한국어 홈(2026-11-03 시안: 5단계 · 이번 주 할 일 · 맞는 공고) */
+  "src/app/me/home-ko.tsx",
   "src/app/cores/page.tsx",
   /* 내 커리어 */
   "src/app/me/results/page.tsx",
