@@ -29,6 +29,7 @@
     "metri:prescribe": "tsx scripts/metri/prescribe-check.ts",
     "domains:check": "node scripts/domains-check.mjs",
     "copy:audit": "node scripts/copy-audit.mjs",
+    "copy:screens": "tsx scripts/screen-copy-lint.ts",
     "writing:check": "node scripts/writing-check.mjs",
     "golden:check": "node scripts/golden-check.mjs",
     "evidence:check": "node scripts/evidence-check.mjs",
