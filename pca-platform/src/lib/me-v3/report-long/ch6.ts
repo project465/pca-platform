@@ -616,7 +616,7 @@ export function checkPage(x: Inputs, d: X): Page {
     const best = strongDom
       ? (did ? `${E(strongDom)} 과제에서 ${U(did)} 일` : `${E(strongDom)} 쪽 일`)
       : `${B(30)} 업무`;
-    intro = `“${E(j(x.major, "을를"))} 공부하는 ${E(x.person)}입니다. 가장 자신 있게 말씀드릴 수 있는 경험은 ${best}이고, 앞으로 ${goal ? `${U(goal)} 직무에서` : `${B(30)} 직무에서`} 이 경험을 살리려고 지금은 ${B(30)} 준비를 하고 있습니다.”`;
+    intro = `“${E(j(x.major, "을를"))} 공부하는 ${E(x.person)}입니다. 가장 자신 있게 말씀드릴 수 있는 경험은 ${best}이고, 앞으로 ${goal && d.goalSet ? `${U(goal)} 직무에서` : `${B(30)} 직무에서`} 이 경험을 살리려고 지금은 ${B(30)} 준비를 하고 있습니다.”`;
   }
   const mats = d.goalRole ? d.goalRole.application_material.slice(0, 3) : [];
   return P(L("제출 전 점검표", "Pre-submission checklist"),

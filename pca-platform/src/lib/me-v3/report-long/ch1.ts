@@ -109,7 +109,8 @@ export function glance(x: Inputs, d: X): Page {
     });
   }
   const names = (z: string) => m.domains.filter((v) => v.zone === z).map((v) => d.name(v.code));
-  const goal = [d.goalRole?.name_ko, d.goalInd?.name_ko].filter(Boolean).join(" · ");
+  /* 목표 직무를 고르지 않았으면 그렇다고 적는다(AI7: 산업만 서 있고 뒤 장은 `목표로 적은 직무` 라고 했다) */
+  const goal = [d.goalSet ? d.goalRole?.name_ko : L("직무는 아직 정하지 않음", "Role not set yet"), d.goalInd?.name_ko].filter(Boolean).join(" · ");
   /* 영역 이름표는 읽는 법 쪽의 색 견본과 같은 모양으로 단다. 칸 왼쪽은 HTML 이다 */
   /* 선별 질문만 연 영역은 `관심·경험만 본 영역` 에 세지 않는다(AI1). 이름을 따로 단다 */
   const ne = m.domains.filter((v) => v.zone === "NOT_EXPLORED" && !d.asked(v)).map((v) => d.name(v.code));

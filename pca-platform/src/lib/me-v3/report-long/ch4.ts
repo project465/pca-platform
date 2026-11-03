@@ -201,7 +201,8 @@ export function rolePages(x: Inputs, d: X, r: RolePack, depth: number): Page[] {
     ? `<strong>Compared with ${E(d.roleName(v.vs))}</strong> · ${E(sen(v.line))}`
     : `<strong>${E(j(d.roleName(v.vs), "과와"))} 다른 점</strong> · ${E(tidy(polite(v.line)))}`);
   const diffBand = differs.length ? note(L(`${E(j(nm, "이가"))} 다른 직무와 다른 점`, `How ${E(nm)} differs from other roles`), ul(differs)) : "";
-  const goalLead = isGoal ? L("목표로 적어 주신 직무입니다. ", "This is the role you set as your goal. ") : "";
+  const goalLead = !isGoal ? "" : d.goalSet ? L("목표로 적어 주신 직무입니다. ", "This is the role you set as your goal. ")
+    : L("목표 직무는 아직 정하지 않으셔서, 관심 직무로 고르신 이 직무를 먼저 실었습니다. ", "You haven't set a target role yet, so this role from your interests comes first. ");
   const coreNames = r.core_ref.td.map(d.name);
   const top = (a: Axis) => { const vs = r.core_ref.td.map((t) => d.level(t, a)).filter((v): v is Level => v !== null); return vs.length ? (Math.max(...vs) as Level) : null; };
   const where = depth >= 3 ? lines(2, L("어느 수업이나 과제에서 할지", "The course or assignment where you will do this")) : "";

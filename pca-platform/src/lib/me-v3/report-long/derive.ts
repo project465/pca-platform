@@ -261,6 +261,8 @@ export function derive(x: Inputs) {
     name, def, tax, dom, asked, level, levels, picks, depth, axisName, axisWhat, activity, evidenceWord,
     /** 그 영역에 결과물이 있는가: 체크리스트 · 지원서 문장 단계(withTranslation 이 합침) · 결과를 굳힌 날까지의 경험 기록 */
     hasArtifact: (td: string) => !!dom(td)?.artifacts.length || x.exps.some((e) => e.td_codes.includes(td) && e.artifacts.length > 0),
+    /** 학생이 목표 직무를 직접 골랐는가. 아니면 `goalRole` 은 관심 직무로 채운 값이다(AI7: `목표로 적은` 이라고 쓰지 않는다) */
+    goalSet: !!m.targets.goal.role,
     counts, bucket, strengths, evidenceOf, actionOf, gaps, goalRole, goalInd, roleCover, roleOrder, indOrder,
     roleName, indName, orgName, best, radarDoms, rolesOf, indsOf, scenes,
   };

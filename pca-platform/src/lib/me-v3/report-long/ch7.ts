@@ -87,14 +87,14 @@ export function prioPages(x: Inputs, d: X): Page[] {
   const goal = goalName ?? L(`${x.major} 쪽 경험 쌓기`, `Building ${x.major} experience`);
   const dek = en
     ? `${goalName ? `To get closer to the ${E(goalName)} you set as your target, the order follows what to fill in first. ` : "The order follows what builds evidence fastest. "}Read each row from left to right: where you stand now, what to try, and what you will have in hand when it is done.`
-    : `${goalName ? `목표로 적은 ${E(goalName)}에 다가가려면 어디부터 메워야 하는지 보고 차례를 정했어요. ` : "어디부터 메워야 근거가 빨리 쌓이는지 보고 차례를 정했어요. "}한 줄마다 지금 상태, 해 볼 일, 끝내면 손에 남을 것을 이어 읽으면 됩니다.`;
+    : `${goalName ? `${d.goalSet || !d.goalRole ? "목표로 적은" : "관심 직무로 고른"} ${E(goalName)}에 다가가려면 어디부터 메워야 하는지 보고 차례를 정했어요. ` : "어디부터 메워야 근거가 빨리 쌓이는지 보고 차례를 정했어요. "}한 줄마다 지금 상태, 해 볼 일, 끝내면 손에 남을 것을 이어 읽으면 됩니다.`;
   const read = en
     ? howto([
       [PRIO_C.goal, "The role or industry you set as your target"], [PRIO_C.now, "Where that area stands now"], [PRIO_C.act, "What to try"], [PRIO_C.out, "What you will have when it is done"],
       ["Arrows", "Read from left to right"],
     ], "Each row of four boxes is one task. The number in front is the order to tackle it in, and the time at the top right is when to finish it.")
     : howto([
-      [PRIO_C.goal, "목표로 적은 직무나 산업"], [PRIO_C.now, "그 영역의 지금 상태"], [PRIO_C.act, "해 볼 일"], [PRIO_C.out, "끝내면 손에 남는 것"],
+      [PRIO_C.goal, d.goalSet ? "목표로 적은 직무나 산업" : "목표 대신 관심 직무로 고른 직무나 산업"], [PRIO_C.now, "그 영역의 지금 상태"], [PRIO_C.act, "해 볼 일"], [PRIO_C.out, "끝내면 손에 남는 것"],
       ["화살표", "왼쪽에서 오른쪽으로 읽는 차례"],
     ], "줄마다 상자 넷이 한 가지 할 일을 보여 줘요. 맨 앞 숫자는 먼저 손댈 차례이고, 오른쪽 위 날짜는 끝낼 때예요.");
   /* 영어 문장은 길어서 첫 쪽(제목 · 읽는 법이 함께 서는 쪽)에는 둘만 싣는다 */
@@ -201,8 +201,8 @@ export function longPage(x: Inputs, d: X): Page {
   ];
   return P(L("6개월 · 12개월 계획", "6- and 12-month plan"),
     T(fp
-      ? L("6개월 뒤에는 첫 프로젝트 결과물을, 12개월 뒤에는 다시 본 검사 결과를 손에 쥐는 계획입니다", "In six months you will have your first project's deliverable, and in twelve, a fresh assessment result")
-      : L("6개월 뒤에는 포트폴리오 첫 장을, 12개월 뒤에는 다시 본 검사 결과를 손에 쥐는 계획입니다", "In six months you will have the first page of your portfolio, and in twelve, a fresh assessment result"),
+      ? L("6개월 뒤에는 첫 프로젝트 결과물을, 12개월 뒤에는 경험 기록을 더한 현재 상태를 손에 쥐는 계획입니다", "In six months you will have your first project's deliverable, and in twelve, your current state with your experience records added")
+      : L("6개월 뒤에는 포트폴리오 첫 장을, 12개월 뒤에는 경험 기록을 더한 현재 상태를 손에 쥐는 계획입니다", "In six months you will have the first page of your portfolio, and in twelve, your current state with your experience records added"),
       L("90일 계획에 이어지는 길을 분기마다 하나씩 적었어요. 응답과 직무 안내로 미리 채운 초안이라, 일정이 바뀌면 그대로 고쳐 써도 됩니다.",
         "This picks up where the 90-day plan ends, with one step per quarter. It is a draft built from your answers and the role guide, so rewrite it if your schedule changes.")) +
     chain(months.map((v, i) => ({ head: v.when, body: v.what, color: [PAL.blue, PAL.teal, PAL.amber, PAL.coral][i] })), { width: 700, height: 150 }) +
@@ -416,7 +416,7 @@ export function sourcesPage(x: Inputs, d: X, regionSources: string[]): Page {
       ${regionSources.map((s) => `<tr><td><b>지역 자료</b></td><td>${E(s)}</td><td>공개 자료</td></tr>`).join("")}
     </tbody></table>` +
     H("싣지 않은 것") + `<div class="two"><div>${ul(["제3자 기업정보 서비스의 신용·재무 자료", "채용 계획, 채용 인원, 근무지", "보도로만 확인한 사업장"])}</div><div>${ul(["내 학번과 연락처", "임금과 연봉 정보"])}</div></div>` +
-    band("판본", "검사지, 판단 기준, 결과 버전이 이 결과와 함께 저장되어 있어서 같은 응답을 넣으면 언제든 같은 결과가 다시 나옵니다."));
+    band("판본", "검사지, 판단 기준, 결과 버전이 이 결과와 함께 저장되어 있어서, 나중에 다시 열어도 이 결과는 그대로입니다."));
 }
 
 /** 결과가 만들어지는 길 그림의 색. 그림과 읽는 법이 같은 값을 쓴다 */
@@ -453,12 +453,12 @@ export function methodPage(x: Inputs, d: X): Page {
     T("이 검사가 하는 일과 하지 않는 일") +
     `<div class="two">
       ${card(`${H("하는 일")}${ul([`${d.counts.domains}개 ${E(x.domainWord)}마다 관심과 경험, 배울 뜻을 묻고, 고른 영역은 문제를 정하는 일부터 결과를 다음 결정에 쓰이게 하는 일까지 한 단계씩 더 깊게 묻습니다.`, `‘${E(STEP_WORD[3].tag)}’ 단계는 응답만으로 주지 않고, 체크리스트에서 고른 근거가 함께 있을 때만 줍니다.`, "할 일은 응답에서 비어 있다고 나온 판단에서만 만듭니다."])}`)}
-      ${card(`${H("하지 않는 일")}${ul(["직무 적합도와 연봉, 합격 가능성은 계산하지 않습니다.", "다른 사람과 비교한 순위는 내지 않습니다. 비교할 기준 집단이 아직 없기 때문입니다.", "성격 유형이나 적성을 진단하지 않습니다.", "CareerMatri는 직업정보제공사업 신고 사업자로, 취업 알선은 하지 않고 회사를 골라 보내지도 않습니다."])}`)}
+      ${card(`${H("하지 않는 일")}${ul(["직무 적합도와 연봉, 합격 가능성은 계산하지 않습니다.", "다른 사람과 비교한 순위는 내지 않습니다. 비교할 기준 집단이 아직 없기 때문입니다.", "성격 유형이나 적성을 진단하지 않습니다.", "CareerMatri는 취업 알선을 하지 않고, 회사를 골라 지원자를 보내지도 않습니다."])}`)}
     </div>` +
     H("결과가 만들어지는 길") + chain(steps.map((s, i) => ({ ...s, color: PATH_C[i] })), { width: 700, height: 118 }) +
     howto([["상자 머리", "걸음 이름"], ["상자 안 글", "그 걸음에서 하는 일"], ["화살표", "앞 걸음의 결과를 받아 다음 걸음으로 넘어가는 차례"]],
       "왼쪽 내 응답에서 시작해 오른쪽 할 일까지, 이 결과지의 결과가 만들어지는 차례예요. 색은 걸음을 구분하려고 칠했고 따로 뜻은 없어요.") +
-    H("검증 상태") + `<p>문항 설계와 판단 기준의 내부 점검은 마쳤고, 지금은 전공자 검토와 실제 학생을 대상으로 한 시범 운영을 하고 있습니다. 시범 운영 결과가 나오면 버전 정보와 함께 공개할 예정이며, 그 전까지는 시범 운영 중인 검사입니다.</p>`);
+    H("검증 상태") + `<p>문항 설계와 판단 기준의 내부 점검은 마쳤고, 전공자 검토와 실제 학생 응답을 바탕으로 한 검증은 아직 이 결과에 반영되지 않았습니다. 그 검증 결과는 버전 정보와 함께 공개할 예정이라, 그 전까지는 시범 운영 중인 검사로 안내해요.</p>`);
 }
 
 export function wordsPage(x: Inputs, d: X): Page {
@@ -516,7 +516,7 @@ export function closePage(x: Inputs, d: X): Page {
     /* 이름표는 그 영역의 실제 묶음을 따른다(2026-11-02 운영 시험: 강점 영역 0곳인데 맺음 장에 "강점 영역" 이 섰다) */
     st.length ? card(`<p class="k">${E((ZONE_WORD[d.strengths[0].zone as keyof typeof ZONE_WORD] ?? ZONE_WORD.Z2_EVIDENCE_INCOMPLETE).tag)}</p><h4>${E(st[0])}</h4>${st.length > 1 ? `<p class="sm mut">${L("함께 볼 영역", "Also look at")}: ${E(st.slice(1).join(", "))}</p>` : ""}<p class="sm">${L("지원서와 면접에서 먼저 꺼낼 경험이 이 영역에 있어요.", "The experience to lead with in applications and interviews is in this area.")}</p>`) : "",
     gp.length ? card(`<p class="k">${L("먼저 손댈 자리", "Where to start")}</p><h4>${E(gp[0])}</h4>${gp.length > 1 ? `<p class="sm mut">${L("그다음", "Then")}: ${E(gp.slice(1).join(", "))}</p>` : ""}<p class="sm">${L("07장 맨 앞의 할 일이 이 자리를 채우는 일이에요.", "The first task in your action plan fills this gap.")}</p>`) : "",
-    goal.length ? card(`<p class="k">${L("목표로 적은 것", "Your target")}</p><h4>${E(goal.join(" · "))}</h4><p class="sm">${L("12개월 뒤 다시 볼 때도 이 목표를 기준으로 달라진 점을 봐요.", "When you look again in 12 months, measure what changed against this target.")}</p>`) : "",
+    goal.length ? card(`<p class="k">${d.goalSet || !d.goalRole ? L("목표로 적은 것", "Your target") : L("목표 대신 본 관심 직무", "Interest role used as a target")}</p><h4>${E(goal.join(" · "))}</h4><p class="sm">${L("12개월 뒤 다시 볼 때도 이 목표를 기준으로 달라진 점을 봐요.", "When you look again in 12 months, measure what changed against this target.")}</p>`) : "",
   ].filter(Boolean);
   const issuer = E(x.issuer === "CareerMatri" ? "CareerMatri" : `${x.issuer} × CareerMatri`);
   return { keep: true, ...A(L("맺으며", "Closing"),

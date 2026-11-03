@@ -40,7 +40,12 @@ function why(x: Inputs, g: FitGroup): string {
   if (g.tier === "B") return `${base} 이번 결과에서는 ${andJoin(g.z2.slice(0, 2))} 쪽에서 해 본 일이 확인됐습니다.`;
   return `${base} 이 영역들은 이번 검사에서 아직 판단을 확인하지 못했습니다.`;
 }
-function themeTry(g: FitGroup): string {
+/** 전공마다 따로 둔 `해 볼 것`. 업종 낱말로 고르면 다른 전공의 말이 들어온다(인공지능 견본 AI4: 기계 · 디자인 문구) */
+const CORE_TRY: Record<string, string> = {
+  AI_CORE_V1: "누리집과 채용 공고에서 그 회사가 데이터나 인공지능을 어느 일에 쓰는지 찾아, 내가 맡을 수 있는 일 하나와 그 근거를 적어 보세요",
+};
+function themeTry(g: FitGroup, core = ""): string {
+  if (CORE_TRY[core]) return CORE_TRY[core];
   return tryOf(groupTheme(g.pack, g.orgs));
 }
 
@@ -94,7 +99,7 @@ export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
       `<table class="tb tb-xs sj"><thead><tr><th class="w30">회사</th><th class="w30">업종</th><th>주력 품목</th></tr></thead><tbody>${chunk.map((rw) => rw.kind === "m"
         ? `<tr><td colspan="3" class="mut">같은 산업에 ${rw.n}곳이 더 있습니다. ${E(rw.g.orgs.slice(CAP).map((o) => short(o.name)).slice(0, 14).join(" · "))}${rw.n > 14 ? " 등" : ""}</td></tr>`
         : rw.kind === "g"
-        ? `<tr class="sj-g"><td colspan="3"><b>${E(rw.g.pack.name_ko)} · ${rw.g.orgs.length}곳</b><span>${E(why(x, rw.g))}</span><em>해 볼 것: ${E(themeTry(rw.g))}</em></td></tr>`
+        ? `<tr class="sj-g"><td colspan="3"><b>${E(rw.g.pack.name_ko)} · ${rw.g.orgs.length}곳</b><span>${E(why(x, rw.g))}</span><em>해 볼 것: ${E(themeTry(rw.g, x.coreCode))}</em></td></tr>`
         : `<tr><td><b>${E(rw.o.name)}</b>${rw.o.listed ? ` <span class="sj-l">${E(rw.o.listed)}</span>` : ""}</td><td>${E(cut(sector(rw.o.sector), 22))}</td><td class="mut">${E(cut(okOr(rw.o.product) || (rw.o.listed ? "" : "명단에 품목이 적혀 있지 않음"), 34))}</td></tr>`).join("")}</tbody></table>` +
       (k === all.length - 1 && rest.length ? `<p class="mut sm">나머지 ${rest.length}개 산업(${E(rest.map((g) => `${g.pack.name_ko} ${g.orgs.length}곳`).join(" · "))})은 이 장 첫 쪽 그래프에 회사 수만 적었습니다.</p>` : ""))));
   };
@@ -145,9 +150,12 @@ export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
       note("고를 때 먼저 볼 칸", `사업부문별 직원 칸에서 ${E(x.major)} 전공자가 일할 만한 부문에 사람이 얼마나 있는지 보세요. 그 부문 이름으로 회사 누리집의 채용 쪽을 찾으면 공고에 적히는 직무 이름도 알 수 있습니다.`)));
   }
   if (r.big.length) {
-    out.push(part(`${r.label}에 본점을 둔 큰 회사`,
-      T(`${E(r.label)}에 본점을 둔 큰 회사입니다`, "본점 주소는 OpenDART 기업개황으로 확인했습니다. 본점은 다른 지역에 있고 이곳에는 공장만 둔 회사는 공시로 가려낼 수 없어 넣지 않았습니다.") +
-      `<table class="tb tb-s"><thead><tr><th>회사</th><th>어디</th><th>하는 일</th></tr></thead><tbody>${r.big.map((o) => `<tr><td><b>${E(o.name)}</b></td><td>${E(o.where)}</td><td>${E(o.what)}</td></tr>`).join("")}</tbody></table>`));
+    /* 공공기관(국민연금공단)도 함께 실리므로 `회사 · 기관` 으로 부른다(인공지능 견본 AI4) */
+    const hasOrg = r.big.some((o) => /공단|공사$|진흥원|연구원|재단|공공/.test(o.name));
+    const what = hasOrg ? "큰 회사 · 기관" : "큰 회사";
+    out.push(part(`${r.label}에 본점을 둔 ${what}`,
+      T(`${E(r.label)}에 본점을 둔 ${what}입니다`, "회사 본점 주소는 OpenDART 기업개황으로 확인했습니다. 본점은 다른 지역에 있고 이곳에는 공장만 둔 회사는 공시로 가려낼 수 없어 넣지 않았습니다.") +
+      `<table class="tb tb-s"><thead><tr><th>${hasOrg ? "회사 · 기관" : "회사"}</th><th>어디</th><th>하는 일</th></tr></thead><tbody>${r.big.map((o) => `<tr><td><b>${E(o.name)}</b></td><td>${E(o.where)}</td><td>${E(o.what)}</td></tr>`).join("")}</tbody></table>`));
   }
   const ovs = r.overview.map((o) => ({ ...o, cut: cutQuote(o.excerpt, 170) })).filter((o) => o.cut).slice(0, 4);
   if (ovs.length) {
