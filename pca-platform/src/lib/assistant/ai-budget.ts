@@ -34,6 +34,9 @@ export const PASS_CAPS: Record<AiOp, number> = {
   posting: 20, sentence: 10, interview: 24, upload: 10, draft: 10, research: 10, ask: 40,
 };
 
+/** 면접 연습 한 번의 턴 수. `PASS_CAPS.interview` 는 턴으로 센다(24턴 = 3번). 요금 화면이 이 값으로 번 수를 적는다 */
+export const INTERVIEW_TURNS = 8;
+
 /**
  * **추가 이용권 한 장이 더하는 횟수**(4,900원, 2026-11-02 대표). 공고 10 · 문장 5 · 면접 1번(8턴) · 파일 5.
  * 표에 없는 칸(메모 초안 · 자료 · 자유 질문)은 더하지 않는다
@@ -150,6 +153,18 @@ export type Allowance =
   | { ok: false; why: "day" }
   | { ok: false; why: "cap"; reopen: string };
 
+/**
+ * 30일 한 칸의 횟수. 연구자 플랜은 자료 읽기 건수를 넓히고 쪽 수로 묶는다(`pricing/config.ts` 의 RESEARCH_LIMITS,
+ * 쪽 수는 `research-docs.ts` 가 센다). 그 밖은 `PASS_CAPS` 그대로
+ */
+async function capFor(userId: string, g: AiOp): Promise<number> {
+  if (g !== "research") return PASS_CAPS[g];
+  const { planOf } = await import("@/lib/plans");
+  if ((await planOf(userId)) !== "research") return PASS_CAPS[g];
+  const { RESEARCH_LIMITS } = await import("@/lib/pricing/config");
+  return RESEARCH_LIMITS.docsPer30;
+}
+
 /** 이 사람이 지금 이 기능으로 한 번 더 부를 수 있는가 */
 export async function aiAllowance(userId: string | undefined, op: string): Promise<Allowance> {
   if (await spentTodayUsd() >= dailyLimitUsd()) return { ok: false, why: "day" };
@@ -163,7 +178,7 @@ export async function aiAllowance(userId: string | undefined, op: string): Promi
   ).catch(() => null);
   if (!r) return { ok: true };
   const extra = (REFILL_ADDS[g] ?? 0) * (await activeRefills(userId));
-  if (r.n < PASS_CAPS[g] * w.units + extra) return { ok: true };
+  if (r.n < (await capFor(userId, g)) * w.units + extra) return { ok: true };
   return { ok: false, why: "cap", reopen: w.to.toISOString() };
 }
 

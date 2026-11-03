@@ -12,6 +12,8 @@ import type { MatchedPosting } from "@/lib/assistant/match";
 import { SOURCE_KO } from "@/lib/mat/stage";
 import { aiConsented } from "@/lib/assistant/settings";
 import { aiReady } from "@/lib/assistant/claude";
+import { planOf, researchJobs } from "@/lib/plans";
+import { JOBS_TEXT } from "@/lib/mat/money-text";
 
 export const generateMetadata = () => matTitle("공고");
 
@@ -47,6 +49,8 @@ export default async function MatJobs({ searchParams }: { searchParams: Promise<
     aiConsented(user.id).catch(() => false),
   ]);
   const consent = agreed && aiReady();
+  /* 연구자 플랜이면 연구소 · 박사급 공고를 따로 모아 맨 위에(2026-11-03 대표 결정) */
+  const research = (await planOf(user.id)) === "research" ? await researchJobs(20) : [];
   const list = jobs.main;
   const fromJi = [...list, ...jobs.grad, ...jobs.other].some((p) => p.source === "jobindustry");
 
@@ -67,6 +71,12 @@ export default async function MatJobs({ searchParams }: { searchParams: Promise<
         </>
       ) : null}
 
+      {research.length ? (
+        <>
+          <h2 className="mt-h2">{JOBS_TEXT.research} <small>{JOBS_TEXT.count(research.length)}</small></h2>
+          <div className="mt-list" style={{ marginBottom: 16 }}>{research.map((p) => <JobCard key={p.id} p={p} />)}</div>
+        </>
+      ) : null}
       {list.length ? (
         <div className="mt-list">{list.slice(0, 20).map((p) => <JobCard key={p.id} p={p} />)}</div>
       ) : jobs.broad.length ? (

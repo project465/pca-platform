@@ -110,3 +110,8 @@ export const SUB_STATE = {
   reconsentGo: "바뀐 금액에 동의",
   none: "정기결제가 없어요",
 } as const;
+
+export const JOBS_TEXT = {
+  research: "연구소 · 박사급 공고",
+  count: (n: number) => `${n}개`,
+} as const;

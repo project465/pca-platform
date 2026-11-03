@@ -749,6 +749,12 @@ export const UI = {
     "MAT · 90 days",
     "AI kariyer asistanı · 90 gün",
   ),
+  /* 연구자 플랜(2026-11-03). 정기결제로만 판다 */
+  prodRESEARCH_30D: d(
+    "MAT 연구자 30일",
+    "MAT Researcher · 30 days",
+    "AI kariyer asistanı (araştırmacı) · 30 gün",
+  ),
   /* 추가 이용권(2026-11-02). 기간은 늘지 않고 횟수만 다시 채운다 */
   prodMAT_REFILL: d(
     "MAT 추가 이용권",

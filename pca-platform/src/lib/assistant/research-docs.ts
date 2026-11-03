@@ -210,13 +210,20 @@ export async function readResearch(userId: string, bytes: Buffer): Promise<Resea
   if (bytes.subarray(0, 4).toString("hex") === "d0cf11e0") return { ok: false, reason: "oldoffice" };
   const sn = sniffDoc(bytes);
   if (!sn) return { ok: false, reason: "type" };
-  if (sn.kind === "pdf" && pdfPages(bytes) > RESEARCH_MAX_PAGES) return { ok: false, reason: "pages" };
+  /* 연구자 플랜은 파일 수가 아니라 **쪽 수**로 센다(2026-11-03 대표 결정, `pricing/config.ts` 의 RESEARCH_LIMITS) */
+  const { planOf, researchPagesUsed } = await import("@/lib/plans");
+  const { RESEARCH_LIMITS } = await import("@/lib/pricing/config");
+  const research = (await planOf(userId)) === "research";
+  const pages = sn.kind === "pdf" ? pdfPages(bytes) : 0;
+  if (sn.kind === "pdf" && pages > (research ? RESEARCH_LIMITS.pagesPerFile : RESEARCH_MAX_PAGES)) return { ok: false, reason: "pages" };
 
   const sha = createHash("sha256").update(bytes).digest("hex");
   const prev = await queryOne<{ id: string }>(
     `SELECT id::text FROM research_docs WHERE user_id = $1 AND sha256 = $2`, [userId, sha]).catch(() => null);
   if (prev) return { ok: true, id: prev.id, reused: true };
-  if (await researchUsedThisMonth(userId) >= RESEARCH_MONTHLY_CAP) return { ok: false, reason: "cap" };
+  if (research) {
+    if ((await researchPagesUsed(userId)) + Math.max(1, pages) > RESEARCH_LIMITS.pagesPer30) return { ok: false, reason: "cap" };
+  } else if (await researchUsedThisMonth(userId) >= RESEARCH_MONTHLY_CAP) return { ok: false, reason: "cap" };
 
   /* 전공은 경험 초안의 보기 목록을 고르는 데만 쓴다. **검사 전에 자료부터 올린 사람**
      (커리어피크 연구자, `mat-access.ts` 의 researchFirst)은 전공이 없을 수 있다: 그때는
@@ -284,6 +291,8 @@ export async function readResearch(userId: string, bytes: Buffer): Promise<Resea
      v.year && v.year >= 1950 && v.year <= 2100 ? v.year : null, doi,
      JSON.stringify(data), terms, metrics ? JSON.stringify(metrics) : null, ids,
      r.model, r.usage?.input ?? null, r.usage?.output ?? null]);
+  /* 쪽 수(연구자 플랜 한도가 센다). 칸이 없는 DB 면 넘어간다(`schema_plans.sql`) */
+  if (row) await queryOne(`UPDATE research_docs SET pages = $2 WHERE id = $1 RETURNING id`, [row.id, Math.max(1, pages)]).catch(() => null);
   return row ? { ok: true, id: row.id, reused: false } : { ok: false, reason: "error" };
 }
 

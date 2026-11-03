@@ -52,9 +52,12 @@ export function tierOf(country: string | null | undefined): Tier {
  */
 export const RESEARCH_LIMITS = {
   /** 30일 한 칸에 읽는 PDF 쪽 수 합 */
-  pagesPer30: 300,
-  /** 한 파일에서 읽는 최대 쪽 수 */
-  pagesPerFile: 60,
+  pagesPer30: 600,
+  /** 한 파일에서 읽는 최대 쪽 수(기본 플랜은 60쪽, `research-docs.ts` 의 RESEARCH_MAX_PAGES).
+      PDF 한 건을 한 번에 보내므로 Claude 의 PDF 한 번 한도(100쪽) 안으로 둔다 */
+  pagesPerFile: 100,
+  /** 30일 한 칸에 읽는 자료 수 상한(기본 플랜은 10, `ai-budget.ts` 의 PASS_CAPS.research). 쪽 수가 먼저 닿는다 */
+  docsPer30: 30,
 } as const;
 
 export function krwPrice(plan: Plan, period: Period): number | null {

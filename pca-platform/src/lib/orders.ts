@@ -46,6 +46,7 @@ const NAMES: Record<string, string> = {
   REPORT_HS: "CareerMatri 진로 결과지 (고교)",
   TRACK_30D: "MAT 30일",
   TRACK_90D: "MAT 90일",
+  RESEARCH_30D: "MAT 연구자 30일",
   /* 판매 종료(2026-10-30). 이미 나간 주문의 이름으로만 남는다 */
   TRACK_365D: "MAT 기간권 (판매 종료)",
   TRACK_30D_GL: "MAT 30 days",
