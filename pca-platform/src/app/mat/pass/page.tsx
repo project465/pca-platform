@@ -39,8 +39,9 @@ export default async function MatPass() {
 
   return (
     <main>
-      <div className="mt-top"><span className="mt-week">이용권</span></div>
-      <h1 className="mt-h1">이용권</h1>
+      {/* 눈썹과 제목이 같은 말을 두 번 적지 않는다(MAT 시험 P2: '이용권 / 이용권') */}
+      <div className="mt-top"><span className="mt-week">MAT 이용권</span></div>
+      <h1 className="mt-h1">{state.on ? "지금 쓰는 이용권" : "이용권 고르기"}</h1>
 
       {state.on && state.until ? (
         <p className="mt-lead">

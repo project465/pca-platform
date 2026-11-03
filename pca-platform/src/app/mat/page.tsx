@@ -115,10 +115,12 @@ export default async function MatHome() {
         </>
       ) : null}
 
-      <h2 className="mt-h2">이번 주 할 일</h2>
+      {/* 브리핑은 이번 주 할 일 하나를 든다. 홈도 첫 줄만 `이번 주`, 나머지는 `그다음` 으로 적어 두 화면의 수가 어긋나지 않게 한다
+         (2026-11-03 MAT 시험 P1: 브리핑 1개 · 홈 3개) */}
+      <h2 className="mt-h2">이번 주 할 일{week.length > 1 ? " · 그다음" : ""}</h2>
       {week.length ? (
         <div className="mt-list">
-          {week.map((r) => (
+          {week.map((r, wi) => (
             <div key={r.id} className="mt-row">
               <form action={matMoveAction}>
                 <input type="hidden" name="id" value={r.id} />
@@ -129,7 +131,7 @@ export default async function MatHome() {
               </form>
               <div className="mt-row-b">
                 <p>{oneLine(r.body)}</p>
-                <small>{r.td_code ? name(r.td_code) : ""}</small>
+                <small>{[wi === 0 ? "이번 주" : "그다음", r.td_code ? name(r.td_code) : ""].filter(Boolean).join(" · ")}</small>
               </div>
             </div>
           ))}

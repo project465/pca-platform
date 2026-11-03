@@ -10,6 +10,7 @@
  * 한국어 문법 도구(polite · josa)는 영어 문장에 쓰지 않고, 아래 영어용 작은 도구를 쓴다.
  * 영어 쪽에서는 장 번호를 적지 않는다(지역 장이 빠지면 번호가 당겨지는데, 그 바꿈은 한국어 글자만 본다).
  */
+import { commonItemKo } from "../student/common";
 import type { Axis } from "../scoring/types";
 import type { EvidenceGroup } from "../result/model";
 import { josaOf } from "../result/josa";
@@ -489,6 +490,22 @@ function questions(x: Inputs, d: X): Qn[] {
       material: `${pick}${art ? ` · 결과물 ${art}` : ""}`,
       dir: ASK[g.axis].dir,
       draft: `“${opener} ${isAct(pick) ? U(polite(pick)) : `${U(pick)}${josaOf(pick, "을를")} 맡았습니다.`} ${FOLLOW[g.axis]}”`,
+    });
+  }
+  /* **영역을 가리지 않는 판단(공통 판단)도 면접 재료다**(2026-11-02 전주대 v3/24 JA2 · 견본 PB3: 공통 판단에서 '직접 정함' 이
+     나왔는데 06장에 없었다). 직접 정했거나 직접 해 본 공통 판단 하나를 질문으로 */
+  const OWN_RANK: Record<string, number> = { DECIDED_USED: 3, DID: 2 };
+  const cj = (x.m.common.items ?? []).filter((i) => OWN_RANK[i.ownership])
+    .sort((a1, b1) => (OWN_RANK[b1.ownership] ?? 0) - (OWN_RANK[a1.ownership] ?? 0))
+    .map((i) => ({ i, label: commonItemKo(x.coreCode, i.item_id) })).find((v) => v.label);
+  if (cj && out.length < 6) {
+    const decided = cj.i.ownership === "DECIDED_USED";
+    out.push({
+      q: `영역을 가리지 않는 판단 가운데 ${j(q(cj.label!), "을를")} ${decided ? "직접 정해 봤다" : "직접 해 봤다"}고 답하셨는데, 그때 무엇을 기준으로 했나요?`,
+      why: asks(cj.i.axis),
+      material: `공통 판단 · ${decided ? STEP_WORD[3].tag : STEP_WORD[2].tag}`,
+      dir: "어느 과제였는지 먼저 말하고, 기준 하나와 그 기준을 고른 까닭을 이어서 답해 보세요.",
+      draft: `“${B()} 과제에서 ${U(cj.label!)} 일을 맡았습니다. 그때 ${B()}을 기준으로 정했고, 그렇게 정한 까닭은 ${B()}였습니다.”`,
     });
   }
   for (const g of x.m.evidence.partial.slice(0, 2)) {

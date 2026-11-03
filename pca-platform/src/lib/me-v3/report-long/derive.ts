@@ -181,10 +181,14 @@ export function derive(x: Inputs) {
   };
 
   /** 지금 할 일 네 갈래: 결과 모델의 묶음과 관심·배울 뜻 응답만 쓴다 */
+  /* 학생이 고른 목표 직무의 중심 영역은 `지금은 미뤄 두기` 에 넣지 않는다(2026-11-03 인공지능 견본 P1: ML 엔지니어 목표인데
+     모델 배포 · 운영을 미뤄 두라고 했다). 관심 응답과 상관없이 `해 볼 곳` 으로 올린다. 판정은 그대로다 */
+  const goalCore = new Set(m.targets.goal.role
+    ? x.rel.td_role.filter((r) => r.role === m.targets.goal.role && r.strength === "중심").map((r) => r.td) : []);
   const bucket = (d: ResultDomain): Bucket => {
     if (d.zone === "Z1_EVIDENCE_ESTABLISHED") return "A";
     if (d.zone === "Z2_EVIDENCE_INCOMPLETE" || d.zone === "Z3_EVIDENCE_LOW_INTEREST") return "B";
-    if (d.interest === "HIGH" || d.learning === "HIGH") return "C";
+    if (d.interest === "HIGH" || d.learning === "HIGH" || goalCore.has(d.code)) return "C";
     return "D";
   };
 
@@ -263,6 +267,8 @@ export function derive(x: Inputs) {
     hasArtifact: (td: string) => !!dom(td)?.artifacts.length || x.exps.some((e) => e.td_codes.includes(td) && e.artifacts.length > 0),
     /** 학생이 목표 직무를 직접 골랐는가. 아니면 `goalRole` 은 관심 직무로 채운 값이다(AI7: `목표로 적은` 이라고 쓰지 않는다) */
     goalSet: !!m.targets.goal.role,
+    /** 목표 직무의 중심 영역(관계표). 목표를 고르지 않았으면 비어 있다 */
+    goalCore,
     counts, bucket, strengths, evidenceOf, actionOf, gaps, goalRole, goalInd, roleCover, roleOrder, indOrder,
     roleName, indName, orgName, best, radarDoms, rolesOf, indsOf, scenes,
   };

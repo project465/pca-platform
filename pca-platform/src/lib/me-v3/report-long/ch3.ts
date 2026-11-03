@@ -181,6 +181,10 @@ function domainHead(x: Inputs, d: X, z: ResultDomain): string {
       const v = Math.max(0, x.m.domains.findIndex((w) => w.code === z.code)) % 3;
       if (z.experience === "NONE") {
         const high = z.interest === "HIGH";
+        /* 목표 직무의 중심 영역이면 `급한 영역은 아니니` · `미뤄 둬도` 라고 하지 않는다(2026-11-03 인공지능 견본 P1) */
+        if (d.goalCore.has(z.code) && d.goalRole) {
+          return `${j(nm, "은는")} 아직 해 본 적이 없다고 답했지만, 목표로 고른 ${d.goalRole.name_ko} 직무가 중심으로 쓰는 영역이에요. 짧은 과제 하나로 먼저 겪어 보고 경험 기록에 적어 두세요.`;
+        }
         /* 관심을 `모르겠다` 로 답한 영역(값 없음)을 `관심이 높지 않다` 로 읽지 않는다(2026-11-02 전주대 v3/24 JA7) */
         if (!z.interest) {
           return [
