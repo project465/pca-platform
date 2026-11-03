@@ -42,7 +42,8 @@ async function main(): Promise<void> {
   await cloneFinished(s.id, "BASIC");
   await query(`DELETE FROM entitlements WHERE user_id = $1 AND kind = 'track'`, [s.id]);
   await query(`DELETE FROM research_docs WHERE user_id = $1`, [s.id]);
-  ok("자료 읽기 무료 한 번이 남아 있다", (await canUseMat(s.id, "research")).ok);
+  /* 2026-11-03 무료 범위: 자료 읽기는 유료(무료는 공고 분석뿐, `mat-access.ts` 의 FREE_SCOPE) */
+  ok("기간권 없이는 자료 읽기가 열리지 않는다(유료)", !(await canUseMat(s.id, "research")).ok);
   await query(
     `INSERT INTO research_docs (user_id, core_code, sha256, file_kind, doc_type, lang, title, venue, year, doi, data, terms, metrics)
      VALUES ($1, 'ME_CORE_V3', 'zz-sha-1', 'pdf', 'paper', 'en',

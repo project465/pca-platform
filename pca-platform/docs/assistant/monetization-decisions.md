@@ -158,3 +158,8 @@
   `FREE_SCOPE.requireVerified` 를 켜면 메일 확인 · 소셜 가입 계정에만 무료를 연다(지금은 꺼 둠)
 - 값의 정본: `src/lib/pricing/config.ts`. 비어 있는 값(null)은 요금 화면이 숨기고 결제가 받지 않는다
 - 정기결제는 `SUBSCRIPTIONS_ENABLED=1`(운영 밖) · `SUBSCRIPTIONS_LIVE=1`(운영, 대표 승인 전에는 넣지 않음)일 때만 판다
+- 환경변수(이름만. 값은 Railway 에만): `SUBSCRIPTIONS_ENABLED`(운영 밖에서 정기결제 열기) · `SUBSCRIPTIONS_LIVE`(운영 청구 허락,
+  대표 승인 전에는 넣지 않음) · `PORTONE_BILLING_STORE_ID` · `PORTONE_BILLING_CHANNEL_KEY` · `PORTONE_BILLING_API_SECRET` ·
+  `PORTONE_BILLING_MODE`(`test`) · `PORTONE_BILLING_API_BASE`(시험에서만) · `PADDLE_ENV`(`sandbox`) · `PADDLE_API_KEY` ·
+  `PADDLE_WEBHOOK_SECRET` · `PADDLE_CLIENT_TOKEN` · `MAT_FUNNEL_DEMO`(로컬 시험에서 시연 계정도 수치에 셈)
+- Paddle 웹훅 주소: `/api/payments/paddle`(서명 검증). 잡인더스트리 공고 입구: `/from/jobindustry?board=<430|439|486|487|488>&idx=<숫자>`
