@@ -103,6 +103,7 @@ export async function loadInputs(attemptId: string, expScope: "snapshot" | "all"
     department: meta.department, school: meta.school,
     specialization: meta.specialization,
     provisional: meta.provisional,
+    registeredDepartment: meta.registeredDepartment ?? null,
     spec: specView(coreCode, meta.specializationCode),
     issuer: issuer ?? "CareerMatri", issuerCode: issuerCode ?? null,
     answeredOn: meta.answeredOn ?? today,

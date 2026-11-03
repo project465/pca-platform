@@ -179,7 +179,7 @@ export function about(x: Inputs, d: X): Page {
       H("참여자 정보") +
       `<table class="tb"><tbody>
         <tr><th>이름</th><td>${E(x.person)}</td><th>응답일</th><td>${E(x.answeredOn)}</td></tr>
-        <tr><th>전공</th><td>${E(x.major)}${x.department ? ` · ${E(x.department)}` : ""}</td><th>검사 등급</th><td>${E(x.tier)}</td></tr>
+        <tr><th>전공</th><td>${E(x.major)}${x.department ? ` · ${E(x.department)}` : ""}${x.registeredDepartment ? ` 기준 · 등록 학과 ${E(x.registeredDepartment)}` : ""}</td><th>검사 등급</th><td>${E(x.tier)}</td></tr>
         ${goal ? `<tr><th>목표</th><td colspan="3">${E(goal)}</td></tr>` : ""}
         ${x.exps.length ? `<tr><th>경험 기록</th><td colspan="3">${x.exps.slice(0, 4).map((e) => E(e.title)).join("<br>")}</td></tr>` : ""}
       </tbody></table>`,

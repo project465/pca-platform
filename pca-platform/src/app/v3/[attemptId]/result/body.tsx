@@ -1437,8 +1437,11 @@ export async function V3ResultBody(
       href: x.domain ? `/me/experience/new?td=${x.domain}` : "/me/experience/new",
     };
   });
+  /* 등록 학과와 다른 학과로 잰 결과면 둘을 가른다(2026-11-03 대표 결정 "다른 학과도 검사") */
+  const deptWho = [meta.department, meta.specialization].filter(Boolean).join(" · ")
+    + (meta.registeredDepartment ? ` ${tr("기준")} · ${tr("등록 학과 {name}", { name: meta.registeredDepartment })}` : "");
   const sumWho = [meta.school,
-    [meta.department, meta.specialization].filter(Boolean).join(" · "),
+    deptWho,
     meta.answeredOn ? tr("{date} 응답", { date: meta.answeredOn }) : null,
     meta.school ? null : model.tier]
     .filter(Boolean).join(" · ");
@@ -1620,7 +1623,7 @@ export async function V3ResultBody(
           <h1 className="rs-quote">{cardSay || openLine}</h1>
           <p className="rs-who">
             {[meta.school,
-              [meta.department, meta.specialization].filter(Boolean).join(" · "),
+              deptWho,
               meta.answeredOn ? tr("{date} 응답", { date: meta.answeredOn }) : null]
               .filter(Boolean).join(" · ")}
           </p>

@@ -82,7 +82,8 @@ export default async function CampusStart({ params }: Params) {
    * `검사 시작하기` 가 섰고, 누르면 지난 결과로 돌아갔다. 시작 · 이어하기 ·
    * 결과 보기 · (담당자가 열어 준 때만) 다시 시작이다.
    */
-  const st = await campusAttemptState(user.id);
+  /* 학과마다 한 번이다(2026-11-03 "다른 학과도 검사"). 이 쪽은 등록 학과의 상태다 */
+  const st = await campusAttemptState(user.id, { universityCode: u.university_code, code: found.leaf.code });
   const cta = CAMPUS_CTA_KO[st.kind];
 
   /**

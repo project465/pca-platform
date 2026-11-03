@@ -101,7 +101,8 @@ async function startAttempt(page: Page, path: string, userId: string): Promise<{
   await page.getByRole("button", { name: "검사 시작하기" }).click();
   await page.waitForURL(/\/v3\/start/, { timeout: 30000 });
   await page.waitForLoadState("networkidle");
-  await page.getByText("학부", { exact: true }).click();
+  /* 학교 · 기관 계정은 시작 화면에서 학업 단계를 묻지 않는다(V64). 있으면 고른다 */
+  { const stg = page.getByText("학부", { exact: true }); if (await stg.count()) await stg.click(); }
   await page.getByRole("button", { name: "검사 시작" }).click();
   await page.waitForURL(/\/v3\/\d+/, { timeout: 30000 });
   return queryOne(`SELECT core_code, university_code, college_code,
@@ -155,7 +156,8 @@ async function main(): Promise<void> {
         href: e.getAttribute("href"),
       })));
     ok("검사 가능 학과가 누를 수 있는 칸으로 선다",
-      open.length === 1 && open[0].state === "검사 가능"
+      /* 로그인한 명단 학생의 자기 학과는 `내 학과 · 검사 가능` 이다(2026-11-03 다른 학과도 검사) */
+      open.length === 1 && /^(내 학과 · )?검사 가능$/.test(open[0].state ?? "")
       && open[0].name === CUR_NAME, JSON.stringify(open));
     const curText = await page.evaluate(() => document.body.innerText);
     ok("기본 목록에 다음 학년도 학과가 섞이지 않는다",
@@ -222,7 +224,8 @@ async function main(): Promise<void> {
       path: "docs/metri/shots/campus/desktop/05-ready-start.png", fullPage: true });
 
     /* 학업 단계를 고르고 시작한다. **공통 폼 그대로다** */
-    await page.getByText("학부", { exact: true }).click();
+    /* 학교 · 기관 계정은 시작 화면에서 학업 단계를 묻지 않는다(V64). 있으면 고른다 */
+    { const stg = page.getByText("학부", { exact: true }); if (await stg.count()) await stg.click(); }
     await page.getByRole("button", { name: "검사 시작" }).click();
     await page.waitForURL(/\/v3\/\d+/, { timeout: 30000 });
     ok("응시가 열린다", /\/v3\/\d+/.test(page.url()), page.url());
@@ -382,7 +385,8 @@ async function main(): Promise<void> {
         return n;
       }, t);
       ok(`폼에 숨은 등급 칸을 꽂았다 — ${t}`, put === 4, `${put}개`);
-      await page.getByText("학부", { exact: true }).click();
+      /* 학교 · 기관 계정은 시작 화면에서 학업 단계를 묻지 않는다(V64). 있으면 고른다 */
+      { const stg = page.getByText("학부", { exact: true }); if (await stg.count()) await stg.click(); }
       await page.getByRole("button", { name: "검사 시작" }).click();
       await page.waitForURL(/\/v3\/\d+/, { timeout: 30000 });
       const inj = await queryOne<
@@ -408,7 +412,8 @@ async function main(): Promise<void> {
     await page.goto(`${BASE}/v3/start`, { waitUntil: "networkidle" });
     const plain = await page.evaluate(() => document.body.innerText);
     ok("일반 진입에는 학교 이름이 서지 않는다", !plain.includes("확인용 대학"));
-    await page.getByText("학부", { exact: true }).click();
+    /* 학교 · 기관 계정은 시작 화면에서 학업 단계를 묻지 않는다(V64). 있으면 고른다 */
+    { const stg = page.getByText("학부", { exact: true }); if (await stg.count()) await stg.click(); }
     await page.getByRole("button", { name: "검사 시작" }).click();
     await page.waitForURL(/\/v3\/\d+/, { timeout: 30000 });
     const row2 = await queryOne<{ core_code: string; university_code: string | null }>(

@@ -37,10 +37,15 @@ export type ResultMeta = {
    * 묶음 이름 · 갈래 이름을 함께 적어, 화면마다 이름이 달라 보이던 것(고려대 독일학 N2)을 한 줄로 풀어 둔다
    */
   provisional: string | null;
+  /**
+   * 등록 학과가 이 응시의 학과와 다를 때 그 등록 학과 이름(2026-11-03 대표 결정 "다른 학과도 검사"). 같거나 학교 응시가
+   * 아니면 null. 결과 머리 줄이 `검사한 학과 기준 · 등록 학과 …` 로 둘을 가른다
+   */
+  registeredDepartment?: string | null;
 };
 
 type Row = {
-  university_code: string | null; department_code: string | null;
+  university_code: string | null; department_code: string | null; registered: string | null;
   specialization_code: string | null; answered: string | null;
 };
 
@@ -49,6 +54,8 @@ export async function resultMeta(
 ): Promise<ResultMeta> {
   const row = await queryOne<Row>(
     `SELECT a.university_code, a.department_code, a.specialization_code,
+            (SELECT cs.department_code FROM campus_students cs
+              WHERE cs.user_id = a.user_id AND cs.university_code = a.university_code LIMIT 1) AS registered,
             to_char(coalesce(a.submitted_at, s.created_at) AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD') AS answered
        FROM v3_attempts a
        LEFT JOIN LATERAL (
@@ -88,11 +95,18 @@ export async function resultMeta(
     specialization = specializationOf(core, row.specialization_code)?.name_ko ?? null;
   }
 
+  /* 등록 학과와 다른 학과로 잰 응시면 등록 학과 이름을 함께 든다(이름 · 단과대학이 같으면 같은 학과) */
+  let registeredDepartment: string | null = null;
+  if (u && row?.registered && row.department_code) {
+    const a = findLeaf(u, row.department_code); const r = findLeaf(u, row.registered);
+    if (a && r && !(a.leaf.name === r.leaf.name && a.college.code === r.college.code)) registeredDepartment = r.leaf.name;
+  }
   return {
     major, school, department, specialization,
     specializationCode: row?.specialization_code ?? null,
     universityCode: u ? row?.university_code ?? null : null,
     answeredOn: row?.answered ?? null,
+    registeredDepartment,
     provisional: provisional && major
       ? (lang === "ko"
         ? `이 학과 전용 문항은 준비 중이라 ‘${major}’ 묶음${specialization ? `의 ‘${specialization}’ 갈래` : ""}로 봤습니다. 학과에 맞는 문항이 나오면 그때부터 새 응시에 씁니다.`

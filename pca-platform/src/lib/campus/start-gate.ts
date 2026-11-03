@@ -76,7 +76,10 @@ export async function startGate(userId: string): Promise<StartGate> {
   const mine = entry ? await campusStudentOf(userId, entry.university_code) : null;
   /* **등록 학과가 `준비 중` 이면 학교 응시를 열지 않는다**(2026-11-02 고려대 시험 KM1: 독일학 학생이 국어국문 묶음으로
      응시했다). 학교 시작 화면으로 보내면 그 화면이 `학과 준비 중` 을 적는다 */
-  if (entry && mine && !departmentReady(mine.row.university_code, mine.row.department_code)) {
+  /* 다른 학과도 검사할 수 있으므로(2026-11-03) 볼 것은 **이번에 잴 학과**다. 쿠키의 학과는 이미 `READY` 로 맞춘 값이고,
+     등록 학과로 들어온 학생은 등록 학과를 본다 */
+  const testing = entry && mine && entry.department_code ? entry.department_code : mine?.row.department_code;
+  if (entry && mine && !departmentReady(mine.row.university_code, testing)) {
     return { kind: "school_only", school: mine.row.university_code, to: `/campus/${mine.row.university_code.toLowerCase()}/start` };
   }
   if (entry && mine) return { kind: "campus", entry, mine, grants: campusGrants };

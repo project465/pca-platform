@@ -92,7 +92,8 @@ export default async function Cores({ searchParams }: { searchParams?: Promise<{
   }
   /* 학교 학생의 단추는 그 학생의 응시 상태가 정한다: 결과를 받은
      학생에게 `시작하기` 를 세우지 않는다(누르면 지난 결과로 돌아간다) */
-  const st = mine ? await campusAttemptState(user.id) : null;
+  const st = mine
+    ? await campusAttemptState(user.id, { universityCode: mine.row.university_code, code: mine.row.department_code }) : null;
   /* **기관 참여자에게 학교 낱말을 쓰지 않는다**(2026-11-01 세종일자리 시험) */
   const say = campusSay(mine ? university(mine.row.university_code) : null);
 

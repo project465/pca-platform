@@ -78,6 +78,7 @@ export default function StudentRows(
                   아이디라 보였고, 앞머리가 붙는 기관은 아이디를 볼 자리가 없었다) */}
               <th scope="col">아이디</th>
               <th scope="col">{t("학과")}</th>
+              <th scope="col">{t("검사 학과")}</th>
               <th scope="col">계정</th>
               <th scope="col">응시</th>
               <th scope="col">완료일</th>
@@ -92,6 +93,8 @@ export default function StudentRows(
                 <td>{agency ? maskPhone(r.student_id) : r.student_id}</td>
                 <td className="mono">{(agency ? maskPhone(r.login_id) : r.login_id) || "—"}</td>
                 <td>{deptNames[r.department_code] ?? r.department_code}</td>
+                {/* 등록 학과가 아닌 학과로도 검사했으면 그 학과(다른 학과도 검사). 등록 학과로만 했으면 비워 둔다 */}
+                <td>{r.other_departments?.length ? r.other_departments.join(", ") : "—"}</td>
                 <td>
                   <span className={`sf-pill${r.account === "active" ? "" : " is-off"}`}>
                     {r.account === "active" ? "사용 중"

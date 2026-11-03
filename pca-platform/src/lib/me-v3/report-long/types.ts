@@ -100,6 +100,8 @@ export type Inputs = {
   specialization: string | null;
   /** 가까운 묶음으로 본 학과의 안내 한 줄(`result/meta.ts`). 없으면 null */
   provisional?: string | null;
+  /** 등록 학과가 이 응시의 학과와 다를 때 그 이름(다른 학과도 검사). 아니면 null */
+  registeredDepartment?: string | null;
   /**
    * 그 학과라면 먼저 보는 영역 · 남기는 것 · 한 걸음 · 지원서와 면접에서 꺼내는 법
    * (`result/spec-view.ts`). 웹 결과가 읽는 것과 같은 자리에서 읽는다

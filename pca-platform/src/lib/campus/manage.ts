@@ -21,6 +21,7 @@ import {
   type CampusStudentInput,
 } from "@/lib/campus/students";
 import { ASSESSMENT_VERSION } from "@/lib/me-v3/runtime/session";
+import { findLeaf, university } from "@/lib/campus/registry";
 
 /* ── 학생 한 줄 ────────────────────────────────────────────────────── */
 
@@ -44,6 +45,11 @@ export type StudentRow = {
    * 적는다(2026-11-02 운영 시험: 눌러도 같은 단추가 그대로 남아 열렸는지 알 수 없었다)
    */
   retake_open?: boolean;
+  /**
+   * 등록 학과가 아닌 학과로 낸 응시의 학과 이름(2026-11-03 대표 결정 "다른 학과도 검사"). 집계는 등록 학과 그대로이고,
+   * 명단의 `검사 학과` 칸만 이것을 적는다
+   */
+  other_departments?: string[];
 };
 
 export type StudentState = "all" | "none" | "in_progress" | "scored" | "disabled";
@@ -116,6 +122,9 @@ export async function listStudents(
     `SELECT cs.user_id::text, cs.student_id, u.display_name AS name,
             coalesce(u.login_id, '') AS login_id,
             cs.college_code, cs.department_code, cs.specialization,
+            (SELECT array_agg(DISTINCT a.department_code) FROM v3_attempts a
+              WHERE a.user_id = cs.user_id AND a.university_code = cs.university_code
+                AND a.department_code IS NOT NULL AND a.department_code <> cs.department_code) AS other_codes,
             u.status AS account,
             CASE WHEN att.scored THEN 'scored'
                  WHEN att.open   THEN 'in_progress'
@@ -138,6 +147,16 @@ export async function listStudents(
        JOIN users u ON u.id = cs.user_id
        ${ATTEMPT}
       WHERE ${w.sql}`, w.args);
+  /* 다른 학과로 낸 응시를 학과 이름으로 바꾼다. 학년도 판만 다른 같은 학과(이름 · 단과대학이 같음)는 빼고 */
+  const uni = university(f.universityCode);
+  for (const r of rows as (StudentRow & { other_codes?: string[] | null })[]) {
+    const mine = uni ? findLeaf(uni, r.department_code) : null;
+    r.other_departments = [...new Set((r.other_codes ?? []).map((c) => (uni ? findLeaf(uni, c) : null))
+      .filter((x): x is NonNullable<typeof x> => !!x)
+      .filter((x) => !(mine && x.leaf.name === mine.leaf.name && x.college.code === mine.college.code))
+      .map((x) => x.leaf.name))];
+    delete r.other_codes;
+  }
   return { rows, total: Number(n?.n ?? 0) };
 }
 

@@ -82,8 +82,13 @@ export default async function CampusDepartment({ params }: Params) {
   const sameDept = !!mine && (
     String(mine.row.department_code ?? "").trim().toUpperCase() === leaf.code
     || (!!reg && reg.leaf.name === leaf.name && reg.college.code === found.college.code));
-  const other = mine && !pickRequired(mine.ctx) && !sameDept ? mine : null;
-  const st = mine && !other ? await campusAttemptState(who!.id) : null;
+  /* 다른 학년도 구조의 자리는 다른 학과가 아니다: 응시 줄은 명단의 자리를 든다(`campusTargetOf`) */
+  const crossYear = !!reg && reg.catalog.catalog_year !== found.catalog.catalog_year;
+  const other = mine && !pickRequired(mine.ctx) && !sameDept && !crossYear ? mine : null;
+  /* **다른 학과도 검사할 수 있다**(2026-11-03 대표 결정 "다른 학과도 검사"). 상태는 이 학과로 낸 응시만 센다 */
+  const st = mine ? await campusAttemptState(who!.id, {
+    universityCode: u.university_code, code: crossYear ? String(mine.row.department_code) : leaf.code,
+  }) : null;
 
   return (
     <CampusShell u={u}>
@@ -91,9 +96,9 @@ export default async function CampusDepartment({ params }: Params) {
         <p className="cm-cmp-eyebrow">{u.university_name} · {where}</p>
         <h1 className="cm-cmp-title">{leaf.name}</h1>
         <p className="cm-cmp-lead">
-          {t(other
-            ? `학교에 등록된 학과는 ${other.department_name}입니다. 검사는`
-              + " 등록된 학과 기준으로 열립니다."
+          {t(other && ready
+            ? `학교에 등록된 학과는 ${other.department_name}입니다. 이 학과 기준으로도 검사할 수 있고,`
+              + " 결과에는 검사한 학과와 등록 학과가 함께 적힙니다. 학과마다 한 번 응시합니다."
             : ready
             ? "이 전공이 다루는 영역마다 해 본 일과 직접 정한 것을 묻습니다."
               + " 문항마다 저장되어 창을 닫아도 보던 문항에서 이어집니다."
@@ -102,14 +107,7 @@ export default async function CampusDepartment({ params }: Params) {
                 + " 전공을 고르시면 됩니다. 나중에 다시 고를 수 있습니다."
               : "이 학과는 지금 응시할 수 없습니다.")}
         </p>
-        {other ? (
-          <div className="cm-cmp-cta-row">
-            <Link className="cm-cmp-cta" href={`/campus/${code}/start`}>
-              {t("등록된 학과로 가기")}<span aria-hidden="true">→</span>
-            </Link>
-            <Link className="cm-cmp-cta-2" href={back}>{t("다른 학과 보기")}</Link>
-          </div>
-        ) : st && (st.kind === "resume" || st.kind === "result") ? (
+        {st && (st.kind === "resume" || st.kind === "result") ? (
           <div className="cm-cmp-cta-row">
             <Link className="cm-cmp-cta" href={st.kind === "resume"
               ? `/v3/${st.attemptId}` : `/v3/${st.attemptId}/result`}>
@@ -125,7 +123,7 @@ export default async function CampusDepartment({ params }: Params) {
             <input type="hidden" name="d" value={leaf.code} />
             <button type="submit" className="cm-cmp-cta">
               {st?.kind === "retake" ? CAMPUS_CTA_KO.retake.label
-                : CAMPUS_CTA_KO.start.label}<span aria-hidden="true">→</span>
+                : other ? t("이 학과로 검사하기") : CAMPUS_CTA_KO.start.label}<span aria-hidden="true">→</span>
             </button>
             {st?.kind === "retake"
               ? <Link className="cm-cmp-cta-2" href={`/v3/${st.attemptId}/result`}>지난 결과 보기</Link>

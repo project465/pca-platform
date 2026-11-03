@@ -3,14 +3,14 @@
  "note": "Core 화면 열넷의 묶음 동결. 측정 동결과 별개다. layout 대변경은 별도 STOP GATE 이고, 고쳤으면 그 화면의 판본을 올리고 세 동결을 다시 적은 다음 `CORE_UI_FREEZE=write npm run v3:freeze:core`",
  "label": "CAREERMATRI_CORE_UI_FREEZE_1",
  "locks": {
-  "assessment": "95ecbfd317652923",
-  "result": "55eb1d019cde1798",
-  "workspace": "914dde5f49f78e8c"
+  "assessment": "590d47ff0fb8bbbb",
+  "result": "7bbc5fc3c0faf389",
+  "workspace": "42b9b2a7edce9393"
  },
  "versions": {
-  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V70",
+  "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V71",
   "assessment_copy_version": "me-v3-2-assessment-copy.43",
-  "result_ui_version": "ME_V3_RESULT_UI_V104",
+  "result_ui_version": "ME_V3_RESULT_UI_V105",
   "result_copy_version": "me-v3-result-copy.88",
   "workspace_ui_version": "CAREERMATRI_WORKSPACE_UI_V96",
   "workspace_copy_version": "careermatri-workspace-copy.71"
@@ -23,8 +23,8 @@
   "Experience": "workspace:c3610b6eb477e8f0",
   "Current State": "workspace:1dc653d40aa9eae5",
   "Next Action": "workspace:40b246d0ba74e6d9",
-  "Result Summary": "result:feda85bb2643961a",
-  "Result Detail": "result:feda85bb2643961a",
+  "Result Summary": "result:307e8e0d22df1a3b",
+  "Result Detail": "result:307e8e0d22df1a3b",
   "Explore": "workspace:b918d2109e6b7d43",
   "Result History": "workspace:6fdd87c633f44102",
   "New Experience": "workspace:c3610b6eb477e8f0",

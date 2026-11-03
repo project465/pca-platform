@@ -60,12 +60,12 @@ function Row({ u, code, row, my }: {
   u: CampusUniversity; code: string; row: CampusLeaf; my: MyDept;
 }) {
   const ready = statusOf(u, row) === "READY";
-  /* **배지가 그 학생이 할 수 있는 일을 말한다**(2026-11-03 배재대 실제 화면: 모든 학과에 `검사 가능` 이 붙었는데 눌러
-     들어가면 `등록된 학과로 가기` 였다). 응시는 명단이 적어 준 학과로만 열리므로, 등록 학과가 있는 학생에게 다른 학과는
-     `학과 안내` 다. 로그인하지 않았으면 그 학과 검사가 열려 있는지를 그대로 적는다 */
+  /* **배지가 그 학생이 할 수 있는 일을 말한다**(2026-11-03 배재대 · 전주대 실제 화면). 다른 학과도 검사할 수 있으므로
+     열린 학과는 모두 `검사 가능` 이고, 로그인한 학생의 등록 학과만 `내 학과` 를 붙인다 */
   const own = !!my && row.leaf.name === my.name && row.college.code === my.college;
   const say = campusSay(u);
-  const chip = !ready ? null : !my ? "검사 가능" : say(own ? "내 학과 · 검사 가능" : "학과 안내");
+  /* 다른 학과도 검사할 수 있다(2026-11-03 대표 결정). 자기 학과만 `내 학과` 로 가른다 */
+  const chip = !ready ? null : own ? say("내 학과 · 검사 가능") : "검사 가능";
   /* 고르는 자리. **검사를 자동으로 정해 주지 않는다**(규격 §20): 누르면
      전공 목록으로 가고, 어느 전공으로 재는지는 학생이 고른다 */
   const routing = Boolean(row.leaf.routing_only);

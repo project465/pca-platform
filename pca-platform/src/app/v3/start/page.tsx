@@ -6,6 +6,7 @@ import { upgradeTarget } from "@/lib/me-v3/upgrade";
 import { currentAttempt, estimate } from "@/lib/me-v3/runtime/session";
 import { core as coreEntry, sellableCores } from "@/lib/me-v3/core-registry";
 import { startGate } from "@/lib/campus/start-gate";
+import { campusAttemptState, campusTargetOf } from "@/lib/campus/attempt-state";
 import type { Tier } from "@/lib/me-v3/scoring/types";
 import { tierText } from "../tier-text.i18n";
 import { phrase } from "@/lib/me-v3/phrase";
@@ -64,11 +65,17 @@ export default async function V3Start({
      새로 열면 같은 사람의 응답이 두 벌 쌓이고 앞에서 답한 것을 다시 푼다 */
   if (gate.kind !== "campus" && (await upgradeTarget(user.id))) redirect("/v3/upgrade");
 
+  /* **학교 응시는 학과마다 한 번이다**(2026-11-03 대표 결정 "다른 학과도 검사"). 이번에 잴 학과로 낸 결과가 있고
+     담당자가 다시 열어 주지 않았으면 그 학과 쪽으로 돌려보낸다. 개인 응시는 전과 같다 */
   const retake = await retakeState(user.id);
-  if (retake.done > 0 && !gate.grants.length && retake.lastAttemptId) {
-    redirect(gate.kind === "campus"
-      ? `/campus/${gate.mine.row.university_code.toLowerCase()}/start`
-      : `/v3/${retake.lastAttemptId}/result?again=1`);
+  const target = gate.kind === "campus" ? campusTargetOf(gate.entry, gate.mine) : null;
+  const deptState = target
+    ? await campusAttemptState(user.id, { universityCode: target.university_code, code: target.department_code }) : null;
+  if (target && deptState?.kind === "result") {
+    redirect(`/campus/${target.university_code.toLowerCase()}/d/${encodeURIComponent(target.department_code)}`);
+  }
+  if (!target && retake.done > 0 && !gate.grants.length && retake.lastAttemptId) {
+    redirect(`/v3/${retake.lastAttemptId}/result?again=1`);
   }
 
   const grants = gate.grants;

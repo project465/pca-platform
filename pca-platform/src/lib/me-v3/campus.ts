@@ -227,9 +227,14 @@ export async function campusV3(scope: CampusScope): Promise<CampusV3> {
   put("from", scope.from); put("to", scope.to);
   put("college", scope.college); put("department", scope.department);
 
+  /* **집계는 등록 학과로 묶는다**(2026-11-03 대표 결정 "다른 학과도 검사"). 학생이 다른 학과로도 검사하면 응시 줄의
+     학과는 그 학과지만, 담당자의 학과 · 단과대학 칸은 명단(campus_students)의 학과다. 명단에 없는 학교 진입은 응시 줄 그대로 */
   const FROM = `FROM v3_attempts a
        LEFT JOIN memberships m
          ON m.user_id = a.user_id AND m.org_id = ANY($1::bigint[])
+       LEFT JOIN LATERAL (
+         SELECT reg.college_code, reg.department_code FROM campus_students reg
+          WHERE reg.user_id = a.user_id AND reg.university_code = a.university_code LIMIT 1) rg ON TRUE
       WHERE (m.org_id IS NOT NULL
              OR ($2::text IS NOT NULL AND a.university_code = $2))
         AND ${live("a.user_id")}
@@ -240,8 +245,8 @@ export async function campusV3(scope: CampusScope): Promise<CampusV3> {
         AND NOT EXISTS (SELECT 1 FROM memberships sm WHERE sm.user_id = a.user_id AND sm.role <> 'student')
         ${P.from ? `AND a.started_at >= $${P.from}::date` : ""}
         ${P.to ? `AND a.started_at < ($${P.to}::date + 1)` : ""}
-        ${P.college ? `AND a.college_code = $${P.college}` : ""}
-        ${P.department ? `AND a.department_code = $${P.department}` : ""}`;
+        ${P.college ? `AND coalesce(rg.college_code, a.college_code) = $${P.college}` : ""}
+        ${P.department ? `AND coalesce(rg.department_code, a.department_code) = $${P.department}` : ""}`;
   /**
    * **두 벌을 둔다.** `FROM` 을 쓰는 질의는 좁히는 값까지 받고, 제 `WHERE`
    * 를 따로 들고 있는 질의(추이 · 묶음 분포 · 재분석 수)는 앞의 둘만
@@ -322,7 +327,7 @@ export async function campusV3(scope: CampusScope): Promise<CampusV3> {
       /* **빈 글자를 이름 없는 막대로 세우지 않는다.** `NULL` 만 거르면
          빈 글자(`''`)로 적힌 줄이 **이름 없는 막대**로 선다(한 번 그렇게
          섰다). 안 고른 것과 빈 글자는 담당자에게 같은 뜻이다 */
-      `SELECT coalesce(nullif(a.${col}, ''), '(고르지 않음)') AS k,
+      `SELECT coalesce(nullif(${col === "college_code" || col === "department_code" ? `coalesce(rg.${col}, a.${col})` : `a.${col}`}, ''), '(고르지 않음)') AS k,
               count(DISTINCT a.user_id)::text AS n
          ${FROM}
           ${scoredOnly ? "AND a.status = 'scored'" : ""}
@@ -393,7 +398,7 @@ export async function campusV3(scope: CampusScope): Promise<CampusV3> {
             count(DISTINCT user_id) FILTER (WHERE src = 'a')::text AS a,
             count(DISTINCT user_id) FILTER (WHERE done)::text AS b
        FROM (
-         SELECT coalesce(nullif(a.college_code, ''), '(고르지 않음)') AS k,
+         SELECT coalesce(nullif(coalesce(rg.college_code, a.college_code), ''), '(고르지 않음)') AS k,
                 a.user_id, 'a'::text AS src, (a.status = 'scored') AS done
            ${FROM}
             AND a.university_code IS NOT NULL

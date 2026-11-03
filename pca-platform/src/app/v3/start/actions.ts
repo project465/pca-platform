@@ -7,6 +7,7 @@ import { upgradeTarget } from "@/lib/me-v3/upgrade";
 import { clearCampusEntry } from "@/lib/campus/entry";
 import { pickRequired } from "@/lib/campus/registry";
 import { startGate } from "@/lib/campus/start-gate";
+import { campusAttemptState, campusTargetOf } from "@/lib/campus/attempt-state";
 import {
   currentAttempt, openAttempt, setProfile,
 } from "@/lib/me-v3/runtime/session";
@@ -92,11 +93,17 @@ export async function startV3(form: FormData): Promise<void> {
      새로 열면 같은 사람의 응답이 두 벌 쌓이고 앞에서 답한 것을 다시 푼다 */
   if (gate.kind !== "campus" && (await upgradeTarget(user.id))) redirect("/v3/upgrade");
 
+  /* **학교 응시는 학과마다 한 번이다**(2026-11-03 대표 결정 "다른 학과도 검사"). 이번에 잴 학과로 낸 결과가 있고
+     담당자가 다시 열어 주지 않았으면 그 학과 쪽으로 돌려보낸다. 개인 응시는 전과 같다 */
   const retake = await retakeState(user.id);
-  if (retake.done > 0 && !gate.grants.length && retake.lastAttemptId) {
-    redirect(gate.kind === "campus"
-      ? `/campus/${gate.mine.row.university_code.toLowerCase()}/start`
-      : `/v3/${retake.lastAttemptId}/result?again=1`);
+  const target = gate.kind === "campus" ? campusTargetOf(gate.entry, gate.mine) : null;
+  const deptState = target
+    ? await campusAttemptState(user.id, { universityCode: target.university_code, code: target.department_code }) : null;
+  if (target && deptState?.kind === "result") {
+    redirect(`/campus/${target.university_code.toLowerCase()}/d/${encodeURIComponent(target.department_code)}`);
+  }
+  if (!target && retake.done > 0 && !gate.grants.length && retake.lastAttemptId) {
+    redirect(`/v3/${retake.lastAttemptId}/result?again=1`);
   }
 
   const grants = gate.grants;
@@ -129,7 +136,7 @@ export async function startV3(form: FormData): Promise<void> {
    * 응시할 수 있는지까지 본 값이고, 거기서 가져오는 것은 Core 와 갈래
    * 둘뿐이다. 학과와 단과대학은 늘 등록된 줄이 정한다.
    */
-  let campus = mine ? mine.ctx : null;
+  let campus = mine ? target : null;
   if (campus && pickRequired(campus)) {
     if (!entry || !entry.core_code) {
       redirect(`/campus/${
@@ -160,7 +167,9 @@ export async function startV3(form: FormData): Promise<void> {
   const lang = campus ? null : await explicitLang(langQ || null);
   const a = await openAttempt({
     userId: user.id, tier, stage: stage as Stage, gradField,
-    entitlementId: grants[0]?.entitlement_id ?? null,
+    /* 학교 재응시 이용권은 **결과를 이미 낸 그 학과를 다시 열 때만** 쓴다. 처음 재는 다른 학과에 써 버리면 담당자가 열어 준
+       재응시가 사라진다 */
+    entitlementId: target && deptState?.kind !== "retake" ? null : grants[0]?.entitlement_id ?? null,
     campus,
     core: picked || null,
     market,
