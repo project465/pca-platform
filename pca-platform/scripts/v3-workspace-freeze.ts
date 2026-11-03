@@ -88,6 +88,7 @@ const FILES = [
   /* 탐색 */
   "src/app/me/explore/page.tsx",
   "src/app/me/region/page.tsx",
+  "src/app/me/region/cards.tsx",
   "src/app/me/region/actions.ts",
   "src/app/me/prep/page.tsx",
   "src/app/me/prep/actions.ts",

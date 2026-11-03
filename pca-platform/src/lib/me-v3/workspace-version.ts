@@ -410,7 +410,8 @@
 /** 상태 화면: 직접 판단 0이면 보완할 부분 없음 대신 다른 줄 — V94 */
 /** 경험 0건 반영 줄 숨김 · 지역 기준 · 조사 · 기관 참여자 말 — V95 */
 /** /me 할 일 차례 · /me/next 칸 말 — V96 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V96";
+/** /me/region 회사 목록 카드 · 경험 추가 조사 받침 — V97 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V97";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -486,7 +487,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V96";
 /** 관심 높은 영역 대신 검사에서 다룬 영역 — copy.69 */
 /** 실제 화면 P3 · S4 · S5 · S2 문구 — copy.70 */
 /** /me/next 칸 말 — copy.71 */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.71";
+/** 경험 추가 `{word}을` → 받침으로 고른 조사 — copy.72 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.72";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

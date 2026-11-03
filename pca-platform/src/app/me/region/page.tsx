@@ -10,7 +10,7 @@ import { EmptyState, PickCard, PickGrid, SectionHeader } from "../ui";
 import { pickRegion } from "./actions";
 import { currentState } from "@/lib/me-v3/platform";
 import { latestRegionView } from "@/lib/me-v3/report-long/web-region";
-import RegionSection from "@/app/v3/[attemptId]/result/region";
+import RegionCards from "./cards";
 
 export const metadata = { title: "지역과 기관 · 내 CareerMatri" };
 
@@ -138,7 +138,7 @@ export default async function Region() {
           법적·자료 설명은 아래 작은 자리로 내린다 */}
       <SectionHeader icon="building" tone="c" title="이 지역에서 함께 볼 곳"
         sub="채용 여부나 합격 가능성과는 관계가 없습니다." />
-      {lr ? <RegionSection v={lr.rv} chosen={chosenInd} /> : orgs.length ? (
+      {lr ? <RegionCards v={lr.rv} chosen={chosenInd} /> : orgs.length ? (
         <PickGrid>
           {orgs.map((o) => (
             <PickCard key={o.organization_id} href={o.homepage_url}

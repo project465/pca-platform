@@ -2171,3 +2171,54 @@ a.cm-nav.is-on { border-radius: 12px; }
   padding: 0 1px; font-weight: var(--ui-w-sb);
 }
 .cm-copyrow { align-items: center; }
+
+/* ── 지역 회사 목록(`/me/region`) ──────────────────────────────────────
+   2026-11-03 대표 "너무 글씨만 있고 붙어 있다". 회사 하나 = 카드 하나 · 묶음 제목 + 수 배지 ·
+   이어지는 영역은 칩 · 출처와 안내는 본문 아래 옅은 상자. 값은 작업공간 토큰을 그대로 쓴다(새 색 없음) */
+.cm-rg { margin: 0 0 var(--cm-gap-section); }
+.cm-rg-intro { margin: 0 0 20px; font-size: var(--ui-t-cap); line-height: 1.7; color: var(--sf-ink-3); }
+.cm-rg-block { margin: 0 0 32px; }
+.cm-rg-h {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  margin: 0; font-size: var(--ui-t-body); font-weight: var(--ui-w-bd); color: var(--sf-ink);
+}
+.cm-rg-n {
+  display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 999px;
+  background: var(--sf-accent-soft); color: var(--sf-accent-ink);
+  font-size: var(--ui-t-cap); font-weight: var(--ui-w-sb);
+}
+.cm-rg-sub { margin: 4px 0 16px; font-size: var(--ui-t-cap); line-height: 1.6; color: var(--sf-ink-3); }
+.cm-rg-ind { margin: 0 0 20px; }
+.cm-rg-ind h4 {
+  display: flex; align-items: baseline; gap: 8px; margin: 0 0 8px;
+  font-size: var(--ui-t-sub); font-weight: var(--ui-w-sb); color: var(--sf-ink);
+}
+.cm-rg-ind h4 span { font-size: var(--ui-t-cap); font-weight: var(--ui-w-md); color: var(--sf-ink-3); }
+.cm-rg-tags { margin: 0 0 12px; align-items: center; }
+.cm-rg-tl { font-size: var(--ui-t-cap); color: var(--sf-ink-3); margin-right: 2px; }
+.cm-rg-grid {
+  display: grid; gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+.cm-rg-co {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+  padding: 14px 16px; border: 1px solid var(--sf-line); border-radius: var(--ui-r);
+  background: var(--sf-surface);
+}
+.cm-rg-co b { font-size: var(--ui-t-sub); font-weight: var(--ui-w-bd); color: var(--sf-ink); line-height: 1.4; }
+.cm-rg-co small { font-size: var(--ui-t-cap); line-height: 1.6; color: var(--sf-ink-3); }
+.cm-rg-badge {
+  display: inline-flex; padding: 1px 8px; border-radius: 999px;
+  border: 1px solid var(--sf-line); background: var(--sf-surface-2);
+  font-size: var(--ui-t-cap); color: var(--sf-ink-2);
+}
+.cm-rg-more { margin: 10px 0 0; font-size: var(--ui-t-cap); line-height: 1.6; color: var(--sf-ink-3); }
+.cm-rg-foot {
+  margin: 8px 0 0; padding: 14px 16px; border-radius: var(--ui-r);
+  background: var(--sf-surface-2); border: 1px solid var(--sf-line);
+}
+.cm-rg-foot p { margin: 0; font-size: var(--ui-t-cap); line-height: 1.7; color: var(--sf-ink-3); }
+.cm-rg-foot p + p { margin-top: 6px; }
+@media (max-width: 640px) {
+  .cm-rg-grid { grid-template-columns: 1fr; }
+}
