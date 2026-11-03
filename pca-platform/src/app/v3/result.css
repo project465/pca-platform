@@ -2913,7 +2913,8 @@
    쓴다. PRO 종이는 책자(`/result/book`)라 이 쪽을 쓰지 않는다.
    이름은 전부 `rsum-` 이다: 다른 CSS 에 같은 이름이 없는지 보고 지었다.
    ══════════════════════════════════════════════════════════════════ */
-@media screen { .rs-main > :not(.rsum) { display: none !important; } }
+/* 가까운 묶음으로 본 학과의 안내 한 줄(`.rs-prov`)은 요약 위에 그대로 둔다 */
+@media screen { .rs-main > :not(.rsum):not(.rs-prov) { display: none !important; } }
 @media print { .rsum { display: none !important; } }
 .rsum {
   display: flex; flex-direction: column; gap: 20px;

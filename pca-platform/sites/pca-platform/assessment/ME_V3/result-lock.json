@@ -2,7 +2,7 @@
  "schema_version": "me-v3-result-lock.1",
  "note": "결과지 화면 1차 동결. 문장만 고치면 `RESULT_COPY_VERSION` 만 올리고, 칸이나 절이 바뀌면 `RESULT_MODEL_VERSION`, 화면 구조가 바뀌면 `RESULT_UI_VERSION` 을 올린다. 채점 판본은 이 가운데 무엇으로도 올리지 않는다",
  "versions": {
-  "result_ui_version": "ME_V3_RESULT_UI_V103",
+  "result_ui_version": "ME_V3_RESULT_UI_V104",
   "result_copy_version": "me-v3-result-copy.88",
   "result_model_version": "me-v3-result-model.7",
   "item_bank_version": "ME_V3_ITEM_BANK_V2.9",
@@ -20,10 +20,10 @@
   "종이에 빈 쪽과 범위 밖 쪽수가 없다": "v3:result:pdf"
  },
  "files": {
-  "src/app/v3/result.css": "37197633882056904403187d914adf0b165df68160926299f3abbaaef1679126",
+  "src/app/v3/result.css": "4e89b578a7c58287cc43d5d138454a882e67e2298c15bbb053aa635b119ca3b8",
   "src/app/surface.css": "d49ad60dd6a99c5e6896d0434284c0bb1577fcf896377ad5df88e32cecd541e1",
   "src/app/v3/[attemptId]/result/page.tsx": "dd3bb7286e65d661ee866f2d2f9c9341f93b9566a8022da49dadea3c926bfd61",
-  "src/app/v3/[attemptId]/result/body.tsx": "ad25d6e89c17c9e0d812402f2125fafb6bfdee139170d4098646a234d090219d",
+  "src/app/v3/[attemptId]/result/body.tsx": "feda85bb2643961af13a4411dc83a9e00d49965fb52b048cd153d83174d0357c",
   "src/app/v3/[attemptId]/result/fold.tsx": "da6c8b16f124941d283dc9ae4ad0f41b2271fd8d8233028bfdc3d4c500d4fbb4",
   "src/app/v3/[attemptId]/result/disclose.tsx": "04e8a84916ec0fcd642e9287377e370b8bff250ac496ed66cfdf3d9f2e640f5a",
   "src/app/v3/[attemptId]/result/save.tsx": "17e047ae27df85fc1fd501d7031d322d4a02414d15b1d91302133e3bd505d197",
@@ -32,7 +32,7 @@
   "src/lib/me-v3/result/text.ko.ts": "5f6614039ad000202d582b02ef4e02b1255af1f3c3efcd4e3939ca91bcf10629",
   "src/lib/me-v3/result/say.ts": "1ca895cbeb84b08c5579fc3fcaaf4f8c89b766e131f277bcd92bba74abcebc95",
   "src/lib/me-v3/result/josa.ts": "152cd30c2af136172618c14fa6fb4175b97cf16350db631e3e2e6c72fd7dd4af",
-  "src/lib/me-v3/result/version.ts": "4e9b238a9b29b321837d531790932860292bd9c5b07aff49ff16d6fcbe67268c",
+  "src/lib/me-v3/result/version.ts": "5559ecca033fbf379da96c30caec4cfa6267dcdc0a7855ace6487783e717af32",
   "src/lib/me-v3/result/tile-sub.ts": "8e51d0087d789341b20679e15503c7d31d62b36c943998cea70d992539c2d785",
   "src/lib/me-v3/student/copy.ts": "8cb4905b287e287cc6564e3e27e8293051a80161924d785753e2c4484bd77180",
   "src/lib/me-v3/student/icon.ts": "65836ae7a141a7dcdf844e5d5b4bcdbcc558dad0a3890a4a67384a3b17c7aea2",

@@ -518,7 +518,8 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.88";
 /** 가까운 묶음으로 본 학과 안내 한 줄 — V101 */
 /** 지역 기준 문구 · 기관 목록 문구 · 다리 문장 · 반쯤 선 자리 까닭 — V102 */
 /** 지금 할 일 차례 · 여러 영역 할 일 문장 — V103 */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V103";
+/** 가까운 묶음 학과 안내 한 줄을 화면에서도 보이게 — V104 */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V104";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX
