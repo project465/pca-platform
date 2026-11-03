@@ -13,7 +13,7 @@
  */
 import Link from "next/link";
 import { campusSay, university } from "@/lib/campus/registry";
-import { sayTree } from "@/lib/campus/say-tree";
+import { adminSay, sayTree } from "@/lib/campus/say-tree";
 import { MIN_CELL } from "@/lib/org";
 import { campusV3 } from "@/lib/me-v3/campus";
 import { studentCounts } from "@/lib/campus/manage";
@@ -27,7 +27,7 @@ import "../report.css";
 export async function generateMetadata() {
   const { uni } = await campusViewer();
   const agency = uni ? university(uni)?.org_kind === "agency" : false;
-  return { title: `${agency ? "기관" : "대학"} 운영 요약 · CareerMatri Campus` };
+  return { title: agency ? "기관 운영 요약 · CareerMatri" : "대학 운영 요약 · CareerMatri Campus" };
 }
 
 function num(n: number | null): React.ReactNode {
@@ -76,10 +76,6 @@ export default async function OrgReport({
           <b>범위</b> {campusQueryKo(q, name)} · <b>뽑은 날</b> {now}
           {withDemo ? " · 시연·검사 계정을 섞어서 본 자료입니다" : ""}
         </p>
-        <p className="og-meta" style={{ marginTop: 6 }}>
-          개인 응답과 개별 결과지는 들어 있지 않습니다. 사람이 {MIN_CELL}명이
-          안 되는 칸은 숫자를 만들지 않습니다.
-        </p>
       </header>
 
       <section className="og-sect">
@@ -111,7 +107,7 @@ export default async function OrgReport({
         <section className="og-sect">
           <h2>응시 상태별 학생</h2>
           <p className="og-note">
-            학교가 발급한 명단 기준입니다. 기간으로 좁히지 않습니다.
+            학교가 발급한 명단 기준입니다.
           </p>
           <div className="og-tw"><table className="og-table">
             <thead>
@@ -138,8 +134,7 @@ export default async function OrgReport({
         <section className="og-sect">
           <h2>단과대학별 응시 현황</h2>
           <p className="og-note">
-            학교 전용 진입으로 들어온 응시입니다. 단과대학끼리 줄을 세우지
-            않습니다.
+            학교 전용 진입으로 들어온 응시입니다.
           </p>
           <div className="og-tw"><table className="og-table">
             <thead>
@@ -193,7 +188,7 @@ export default async function OrgReport({
           <h2>안내를 한 번 더 보낼 학과</h2>
           <p className="og-note">
             시작한 학생이 {MIN_CELL}명 이상인 학과 가운데 아직 결과를 받지
-            않은 학생이 남은 곳입니다. 학과끼리 줄을 세우지 않습니다.
+            않은 학생이 남은 곳입니다.
           </p>
           <ul className="og-list">
             {v3.attention.slice(0, 8).map((r) => (
@@ -206,25 +201,7 @@ export default async function OrgReport({
         </section>
       ) : null}
 
-      <section className="og-sect">
-        <h2>이 자료로 하지 않는 것</h2>
-        {/* **없는 기능을 있다고 적지 않는다.** 이 종이를 받은 사람이 가장
-            먼저 묻는 것이 `그래서 누가 잘하나요` 이고, 그 물음에 이 제품은
-            답하지 않는다. 답하지 않는다는 것을 종이가 먼저 적는다 */}
-        <ul className="og-list">
-          <li>학생끼리 줄을 세우지 않습니다. 등수도 백분위도 내지 않습니다.</li>
-          <li>종합 점수나 순위를 매기지 않습니다.</li>
-          <li>합격 가능성이나 취업 확률을 내지 않습니다.</li>
-          <li>
-            개별 학생의 응답과 결과지는 이 자료에 들어 있지 않고, 본인 동의와
-            계약에 적힌 범위 안에서만 열립니다.
-          </li>
-          <li>
-            사람이 {MIN_CELL}명이 안 되는 칸은 숫자를 만들지 않습니다. 0 으로
-            적지도 않습니다.
-          </li>
-        </ul>
-      </section>
+      <p className="og-meta" style={{ marginTop: 18 }}>{MIN_CELL}명 미만 칸은 비웁니다.</p>
 
       <p className="og-noprint" style={{ marginTop: 28 }}>
         <a href={`/org/v3/report.pdf${campusQueryString(q, withDemo ? { demo: "1" } : {})}`}>
@@ -233,6 +210,6 @@ export default async function OrgReport({
         <Link href="/org/v3">집계 화면으로</Link>
       </p>
     </main>,
-    campusSay(reg), reg?.org_kind === "agency",
+    adminSay(campusSay(reg), reg?.org_kind === "agency"), reg?.org_kind === "agency",
   );
 }

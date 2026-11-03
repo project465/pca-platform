@@ -14,6 +14,7 @@
  */
 import { contractsOf, orgsOf } from "@/lib/org";
 import { university } from "@/lib/campus/registry";
+import { currentUser } from "@/lib/session";
 import { NAV_CAMPUS, NAV_CAMPUS_V3, NAV_CAMPUS_V3_AGENCY } from "@/components/sf/nav";
 import type { NavItem } from "@/components/sf/shell";
 
@@ -30,4 +31,14 @@ export async function campusNav(userId: string): Promise<NavItem[]> {
   const orgs = await orgsOf(userId);
   const agency = orgs.some((o) => o.code && university(o.code)?.org_kind === "agency");
   return agency ? NAV_CAMPUS_V3_AGENCY : NAV_CAMPUS_V3;
+}
+
+/** 지금 담당자가 기관(진흥원 등) 소속인가. 탭 제목처럼 쪽 밖에서 낱말을 고를 때 쓴다. 모르면 아니라고 답한다 */
+export async function agencyStaff(): Promise<boolean> {
+  try {
+    const u = await currentUser();
+    if (!u) return false;
+    const orgs = await orgsOf(u.id);
+    return orgs.some((o) => o.code && university(o.code)?.org_kind === "agency");
+  } catch { return false; }
 }

@@ -3552,7 +3552,7 @@
        "units": [
         {
          "code": "SJEPA26_UNDECIDED",
-         "name": "전공 계열을 아직 정하지 못함",
+         "name": "분야 미정",
          "kind": "faculty",
          "core_code": null,
          "specialization": null,

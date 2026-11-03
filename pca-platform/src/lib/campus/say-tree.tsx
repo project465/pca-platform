@@ -37,3 +37,6 @@ export function sayTree(node: ReactNode, t: (s: string) => string, on: boolean):
   };
   return walk(node);
 }
+
+/* 기관 담당자 화면의 낱말(`words.ts`). 쪽들이 `sayTree` 와 함께 들인다 */
+export { adminSay } from "./words";

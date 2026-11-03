@@ -94,7 +94,7 @@ export function CollegeStack({ rows, minCell }: { rows: CollegeBar[]; minCell: n
 
 /** 색이 다른 막대 묶음. 관심 분포(산업 · 직무 · 영역)를 나란히 놓는 자리 */
 export function ColorBars({ title, note, rows, minCell }: {
-  title: string; note: string; rows: { label: string; n: number | null }[]; minCell: number;
+  title: string; note?: string; rows: { label: string; n: number | null }[]; minCell: number;
 }) {
   /* 많은 쪽부터. 숫자를 내지 않는 칸은 뒤로 */
   rows = [...rows].sort((p, q) => (q.n ?? -1) - (p.n ?? -1));
@@ -102,7 +102,7 @@ export function ColorBars({ title, note, rows, minCell }: {
   return (
     <div className="cvx-card">
       <h3>{title}</h3>
-      <p className="cvx-note">{note}</p>
+      {note ? <p className="cvx-note">{note}</p> : null}
       {rows.length ? (
         <div className="cvx-cbars">
           {rows.slice(0, 6).map((r, i) => (

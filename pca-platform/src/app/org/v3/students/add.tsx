@@ -1,6 +1,6 @@
 "use client";
 
-import { campusSay } from "@/lib/campus/words";
+import { adminSay, campusSay } from "@/lib/campus/words";
 import { startTransition, useActionState, useEffect, useRef } from "react";
 import IssuedCard from "./issued";
 import { addAction, type ManageState } from "./actions";
@@ -24,7 +24,7 @@ export default function AddStudent(
     agency?: boolean;
   },
 ) {
-  const t = campusSay(agency ? { org_kind: "agency" } : null);
+  const t = adminSay(campusSay(agency ? { org_kind: "agency" } : null), agency);
   const [state, run, pending] = useActionState(addAction, EMPTY);
   /* **적은 값을 오류 때 지우지 않는다**(2026-11-01 시험: 제출하면 값이 사라졌다). `action` 으로
      넘기면 React 가 결과가 오면 폼을 비운다. 직접 보내고, **만들어졌을 때만** 비운다 */

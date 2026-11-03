@@ -49,7 +49,7 @@ function initials(name: string): string {
 }
 
 export function Shell({
-  surface, lang, nav, active, who, topTitle, topRight, children,
+  surface, lang, nav, active, who, topTitle, topRight, children, plainBrand,
 }: {
   surface: Surface;
   lang: Lang2;
@@ -60,9 +60,11 @@ export function Shell({
   topTitle?: string;
   topRight?: ReactNode;
   children: ReactNode;
+  /** 브랜드 아래 면 이름(`Campus`)을 붙이지 않는다. 기관(진흥원 등) 담당자 화면 */
+  plainBrand?: boolean;
 }) {
   const T = txer(lang);
-  const sub = SUB[surface];
+  const sub = plainBrand ? undefined : SUB[surface];
   /**
    * 어느 줄을 켤 것인가. **가장 길게 맞는 줄 하나만 켠다.**
    *

@@ -5,7 +5,7 @@ import { MIN_CELL } from "@/lib/org";
 import { campusV3, type Cell } from "@/lib/me-v3/campus";
 import { core as coreEntry, registry } from "@/lib/me-v3/core-registry";
 import { campusSay, university } from "@/lib/campus/registry";
-import { sayTree } from "@/lib/campus/say-tree";
+import { adminSay, sayTree } from "@/lib/campus/say-tree";
 import { industryChoices, roleChoices } from "@/lib/me-v3/runtime/session";
 import { campusNames, collegeChoices, leafChoices } from "@/lib/campus/labels";
 import {
@@ -14,12 +14,16 @@ import {
 import { studentCounts } from "@/lib/campus/manage";
 import { BRAND, toLang2 } from "@/lib/surface-text";
 import { Shell, PageHead, Section } from "@/components/sf/shell";
-import { campusNav } from "@/lib/campus/org-mode";
+import { agencyStaff, campusNav } from "@/lib/campus/org-mode";
 import { BarList, Empty, Kpi } from "@/components/sf/parts";
 import LangSelect from "@/components/sf/lang-select";
 import { ColorBars, CollegeStack, Progress, StatusDonut } from "./charts";
 
-export const metadata = { title: `전공 진단 집계 · ${BRAND.campus}` };
+/* 기관 담당자면 탭 제목도 기관 낱말이다(`adminSay`) */
+export async function generateMetadata() {
+  const agency = await agencyStaff();
+  return { title: agency ? "진단 집계 · CareerMatri" : `전공 진단 집계 · ${BRAND.campus}` };
+}
 
 /** 안쪽 코드를 담당자 화면에 적지 않는다 */
 function niceCore(code: string): string {
@@ -168,14 +172,15 @@ export default async function CampusV3({
   const nav = await campusNav(user.id);
   /* 기관(진흥원 등)이면 화면 글자를 기관 낱말로 바꾼다(`sayTree`) */
   const reg = uni ? university(uni) : null;
-  const say = campusSay(reg);
   const agency = reg?.org_kind === "agency";
+  const say = adminSay(campusSay(reg), agency);
   const shell = (children: React.ReactNode) => (
     <Shell
       surface="campus" lang={L} nav={nav} active="/org/v3"
       who={{ name: user.name, role: say(ROLE_LABEL[user.role] ?? "") }}
       topTitle={org ? org.name : BRAND.campus}
       topRight={<LangSelect current={L} />}
+      plainBrand={agency}
     >
       {sayTree(children, say, agency)}
     </Shell>
@@ -201,8 +206,7 @@ export default async function CampusV3({
       <PageHead
         eyebrow={`${BRAND.campus} · 전공 진단 집계`}
         title={`${user.name} ${user.role === "instructor" ? "교수님" : "담당자님"}, 안녕하세요`}
-        sub={"지금 쓰는 검사를 친 학생의 집계입니다. "
-          + `사람이 ${MIN_CELL}명이 안 되는 칸은 숫자를 내지 않습니다.`}
+        sub="지금 쓰는 검사를 친 학생의 집계입니다."
       />
 
       {/* 내려받기가 거절된 자리(규격 §21). **통보로 끝내지 않고 누구에게
@@ -224,8 +228,7 @@ export default async function CampusV3({
 
           **고치는 폼이 아니다.** 여기서 바뀌는 것은 보는 범위뿐이고 학생
           계정과 응시와 결과에 손대지 않는다 */}
-      <Section title="좁혀 보기"
-        note="기간과 단과대학과 학과로 좁힙니다. 비우면 전체입니다">
+      <Section title="좁혀 보기">
         <form className="sf-filters" method="get" action="/org/v3">
           {withDemo ? <input type="hidden" name="demo" value="1" /> : null}
           <label className="sf-field">
@@ -321,7 +324,7 @@ export default async function CampusV3({
       </Section>
 
       {/* ── 한눈에(그림) ── 위 넷과 같은 수를 모양으로 다시 그린다. 새 값은 없다 */}
-      <Section title="한눈에 보기" note="대상자 가운데 몇 명이 시작했고 몇 명이 결과를 받았는지입니다">
+      <Section title="한눈에 보기">
         <div className="cvx-row">
           <div className="cvx-card">
             <h3>진행 단계</h3>
@@ -349,8 +352,7 @@ export default async function CampusV3({
           것도 받지 않는다. 그래서 하는 일은 둘이다: 그 목록으로 넘어가기와
           **리마인드 대상 명단을 CSV 로 받기** */}
       {counts ? (
-        <Section title="응시 상태별 학생"
-          note="명단에 올라온 학생을 상태별로 나눈 수입니다. 눌러서 그 목록으로 갑니다">
+        <Section title="응시 상태별 학생">
           <ul className="sf-list">
             <li>
               <b>아직 시작하지 않은 학생 {counts.none}명</b>{" "}
@@ -386,10 +388,6 @@ export default async function CampusV3({
               </Link>
             </li>
           </ul>
-          <p className="sf-meta" style={{ marginTop: 8 }}>
-            이 제품은 학생에게 메일이나 문자를 보내지 않습니다. 안내는 학교가
-            쓰는 길로 보내시고, 받는 학생 명단을 위에서 내려받으십시오.
-          </p>
         </Section>
       ) : null}
 
@@ -397,8 +395,7 @@ export default async function CampusV3({
           **개별 답변은 한 칸도 나가지 않는다**(§23). 나가는 것은 계정
           상태와 응시 여부와 집계까지다. 지금 좁혀 본 조건이 그대로 따라
           가고, 받은 파일의 머리에 그 조건이 적힌다 */}
-      <Section title="내려받기"
-        note="지금 좁혀 본 범위 그대로 받습니다. 개별 답변은 들어 있지 않습니다">
+      <Section title="내려받기" note="지금 좁혀 본 범위 그대로 받습니다">
         <ul className="sf-list">
           <li>
             <a href={`/org/v3/export/students.csv${qs}`}>
@@ -414,7 +411,6 @@ export default async function CampusV3({
           <li>
             <a href={`/org/v3/report.pdf${qs}`}>운영 요약 PDF</a>{" · "}
             <Link href={`/org/v3/report${qs}`}>미리 보기</Link>{" "}
-            · 개인 응답은 들어 있지 않습니다
           </li>
         </ul>
       </Section>
@@ -427,16 +423,8 @@ export default async function CampusV3({
       ) : null}
 
       {v3.too_few ? (
-        <Section title="아직 집계를 내지 않습니다">
-          {/* **다섯이 안 되면 값을 만들지 않는다.** 네 줄짜리 표에서는
-              전공과 학위를 겹치면 누구인지 짐작이 된다 */}
-          <Empty
-            icon="lock"
-            title={`검사를 친 학생이 ${MIN_CELL}명이 안 됩니다`}
-            body={"전공과 학위와 산업을 겹치면 네 명 안에서 사람이 "
-              + "좁혀집니다. 그래서 숫자를 아예 만들지 않습니다."}
-          />
-        </Section>
+        /* **다섯이 안 되면 값을 만들지 않는다.** 까닭을 문단으로 풀지 않고 아래 각주 한 줄로 둔다(2026-11-03 대표 "AI스럽다") */
+        null
       ) : (
         <>
           {/* **학교 전용 진입으로 들어온 응시만 선다**(규격 §13). 소속으로만
@@ -491,8 +479,7 @@ export default async function CampusV3({
           ) : null}
 
           {v3.by_department.length ? (
-            <Section title="학과"
-              note="학과별 응시와 완료입니다. 학생끼리 줄을 세우지 않습니다">
+            <Section title="학과">
               <BarList rows={bars(v3.by_department, name.dept)}
                 hiddenLabel={`${MIN_CELL}명 미만`} emptyLabel="아직 없습니다" />
             </Section>
@@ -504,8 +491,7 @@ export default async function CampusV3({
               그 학과에 안내를 한 번 더 보내는 것이다. 시작한 사람이 다섯이
               안 되는 학과는 서지 않는다: 그런 학과에서 `한 명이 아직 안
               끝냈습니다` 는 그 한 사람을 가리키는 말이다 */}
-          <Section title="주의가 필요한 학과"
-            note="아직 결과를 받지 않은 학생이 남아 있는 학과입니다">
+          <Section title="주의가 필요한 학과">
             {v3.attention.length ? (
               <ul className="sf-list">
                 {v3.attention.slice(0, 6).map((r) => (
@@ -526,8 +512,7 @@ export default async function CampusV3({
           {/* ── 최근 응시 ── 날짜마다 몇 명이 시작하고 받았는가.
               **5명 규칙을 날짜 칸에도 건다**: 하루에 한 사람만 친 날이
               그대로 찍히면 그 사람이 누구인지 짐작이 된다 */}
-          <Section title="최근 응시"
-            note="최근 이레입니다. 다섯이 안 되는 날은 수를 내지 않습니다">
+          <Section title="최근 응시" note="최근 7일">
             <ul className="sf-list">
               {v3.recent.slice(-7).map((d) => (
                 <li key={d.day}>
@@ -543,13 +528,13 @@ export default async function CampusV3({
               자리다. 담긴 것은 그대로다 */}
           {/* ── 학생 관심 분포 ── 고른 산업 · 고른 직무 · 영역 묶음. 적합도도 추천도
               아니다: 학생이 응시 중에 고른 것과 결과의 묶음을 센 것이다 */}
-          <Section title="학생들이 고른 것" note="응시 중에 깊게 보기로 고른 산업과 직무, 결과에서 영역이 놓인 자리입니다">
+          <Section title="학생들이 고른 것">
             <div className="cvx-tri">
-              <ColorBars title="고른 산업" note="적합도가 아닙니다" minCell={MIN_CELL}
+              <ColorBars title="고른 산업" minCell={MIN_CELL}
                 rows={v3.by_industry.map((r) => ({ label: packKo(r.key), n: r.n }))} />
-              <ColorBars title="고른 직무" note="추천이 아닙니다" minCell={MIN_CELL}
+              <ColorBars title="고른 직무" minCell={MIN_CELL}
                 rows={v3.by_role.map((r) => ({ label: packKo(r.key), n: r.n }))} />
-              <ColorBars title="기술영역의 자리" note="(학생 × 영역) 칸 수입니다" minCell={MIN_CELL}
+              <ColorBars title="기술영역의 자리" minCell={MIN_CELL}
                 rows={v3.zone_cells.map((r) => ({ label: r.label, n: r.n }))} />
             </div>
           </Section>
@@ -557,34 +542,29 @@ export default async function CampusV3({
           <details className="sf-fold">
             <summary>전공 · 학위 · 산업 · 직무 · 영역 분포 보기</summary>
 
-          <Section title="전공"
-            note="학생이 어느 Major Core 로 응시했는가">
+          <Section title="전공">
             <BarList rows={bars(v3.by_core, niceCore)}
               hiddenLabel={`${MIN_CELL}명 미만`} emptyLabel="아직 없습니다" />
           </Section>
 
-          <Section title="학위 단계"
-            note="묻는 장면이 단계마다 다릅니다">
+          <Section title="학위 단계">
             <BarList rows={bars(v3.by_stage)}
               hiddenLabel={`${MIN_CELL}명 미만`} emptyLabel="아직 없습니다" />
           </Section>
 
-          <Section title="고른 산업"
-            note="응시 중에 깊게 보기로 고른 산업입니다. 적합도가 아닙니다">
+          <Section title="고른 산업">
             <BarList rows={bars(v3.by_industry, packKo)}
               hiddenLabel={`${MIN_CELL}명 미만`} emptyLabel="아직 없습니다" />
           </Section>
 
-          <Section title="고른 직무"
-            note="응시 중에 깊게 보기로 고른 직무입니다. 추천이 아닙니다">
+          <Section title="고른 직무">
             <BarList rows={bars(v3.by_role, packKo)}
               hiddenLabel={`${MIN_CELL}명 미만`} emptyLabel="아직 없습니다" />
           </Section>
 
           <Section
             title="기술영역이 지금 어디에 있는가"
-            note={"(학생 × 기술영역) 칸 수이고, 사람 수는 아닙니다. "
-              + "학생 한 명에 영역이 열둘씩 있습니다"}
+            note={"학생 한 명에 영역이 열둘씩 있습니다"}
           >
             {/* 묶음 이름은 집계 쪽이 이미 사람의 말로 적어 준다
                 (`campus.ts` 의 `zoneKo`). 여기서 코드를 다시 적지 않는다 */}
@@ -595,24 +575,11 @@ export default async function CampusV3({
         </>
       )}
 
-      <Section title="이 수로 하지 않는 것">
-        {/* **없는 기능을 있다고 적지 않는다.** 담당자가 가장 먼저 묻는
-            것이 `그래서 누가 잘하나요` 이고, 그 물음에 이 제품은 답하지
-            않는다. 답하지 않는다는 것을 먼저 적는다 */}
-        <ul className="sf-list">
-          <li>학생끼리 줄을 세우지 않습니다. 등수도 백분위도 내지 않습니다.</li>
-          <li>종합 점수나 순위를 매기지 않습니다.</li>
-          <li>합격 가능성이나 취업 확률을 내지 않습니다.</li>
-          <li>개인 결과지는 본인 동의와 계약에 적힌 범위 안에서만 열립니다.</li>
-        </ul>
-        {/* 옛 검사 집계로 가는 길. **학교 전용 진입으로만 운영하는 기관에는
-            그 화면이 읽을 자료가 없어 세우지 않는다** */}
-        {nav.some((n) => n.href === "/org/insights") ? (
-          <p className="sf-meta" style={{ marginTop: 10 }}>
-            <Link href="/org/insights">직무 집계 보기</Link>
-          </p>
-        ) : null}
-      </Section>
+      {/* 각주 한 줄(2026-11-03 대표: '하지 않는 것' 목록 대신). 옛 검사 집계로 가는 길은 그 화면이 읽을 자료가 있을 때만 */}
+      <p className="sf-meta" style={{ marginTop: 16 }}>
+        {MIN_CELL}명 미만 칸은 비웁니다.
+        {nav.some((n) => n.href === "/org/insights") ? <> · <Link href="/org/insights">직무 집계 보기</Link></> : null}
+      </p>
     </>,
   );
 }

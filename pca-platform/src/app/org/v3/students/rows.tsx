@@ -1,6 +1,6 @@
 "use client";
 
-import { campusSay, maskPhone } from "@/lib/campus/words";
+import { adminSay, campusSay, maskPhone } from "@/lib/campus/words";
 import { useActionState } from "react";
 import {
   matAction, matCloseAction, retakeAction, rotateAction, setStatusAction, type ManageState,
@@ -49,7 +49,7 @@ export default function StudentRows(
     deptNames: Record<string, string>;
   },
 ) {
-  const t = campusSay(agency ? { org_kind: "agency" } : null);
+  const t = adminSay(campusSay(agency ? { org_kind: "agency" } : null), agency);
   const [state, run, pending] = useActionState(
     async (prev: ManageState, form: FormData): Promise<ManageState> => {
       const kind = String(form.get("kind") ?? "");

@@ -53,3 +53,19 @@ export function campusWords(u: { org_kind?: "university" | "agency" } | null | u
     org: agency ? "기관" : "학교",
   };
 }
+
+/**
+ * **기관 담당자 화면의 낱말**(2026-11-03 대표 "AI스럽다" · 진흥원 관리자 점검). 학교 낱말을 기관 낱말로 바꾼 뒤(`campusSay`)
+ * 담당자 화면만의 이름을 더 바꾼다: `전공 진단 집계` → `진단 집계`, `학생 관리` → `참여자 관리`, `전공 계열` → `분야`,
+ * 머리의 `CareerMatri Campus` → `CareerMatri`. 학교면 그대로 돌려준다. 기관 종류(`org_kind`)만 보므로 새 기관에도 그대로 선다
+ */
+export function adminSay(base: (s: string) => string, agency: boolean): (s: string) => string {
+  if (!agency) return base;
+  const more: [RegExp, string][] = [
+    [/전공 진단 집계/g, "진단 집계"],
+    [/CareerMatri Campus/g, "CareerMatri"],
+    [/학생 관리/g, "참여자 관리"],
+    [/전공 계열/g, "분야"],
+  ];
+  return (s) => more.reduce((acc, [re, to]) => acc.replace(re, to), base(s));
+}

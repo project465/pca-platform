@@ -9,9 +9,9 @@ import { campusViewer } from "@/lib/campus/viewer";
 import { BRAND, toLang2 } from "@/lib/surface-text";
 import { Shell, PageHead, Section } from "@/components/sf/shell";
 import { campusSay, university } from "@/lib/campus/registry";
-import { sayTree } from "@/lib/campus/say-tree";
+import { adminSay, sayTree } from "@/lib/campus/say-tree";
 import { loginModeOf } from "@/lib/campus/students";
-import { campusNav } from "@/lib/campus/org-mode";
+import { agencyStaff, campusNav } from "@/lib/campus/org-mode";
 import { Empty } from "@/components/sf/parts";
 import LangSelect from "@/components/sf/lang-select";
 import StudentRows from "./rows";
@@ -19,7 +19,11 @@ import AddStudent from "./add";
 import MatPanel from "./mat";
 import { CAMPUS_MAT_NAME, matUntilOf, matUsageOf, poolsOf, schoolMatOf } from "@/lib/campus/mat";
 
-export const metadata = { title: `학생 관리 · ${BRAND.campus}` };
+/* 기관 담당자면 탭 제목도 기관 낱말이다(`adminSay`) */
+export async function generateMetadata() {
+  const agency = await agencyStaff();
+  return { title: agency ? "참여자 관리 · CareerMatri" : `학생 관리 · ${BRAND.campus}` };
+}
 
 const TABS: { key: StudentState; label: string }[] = [
   { key: "all", label: "전체" },
@@ -61,14 +65,15 @@ export default async function CampusStudents({
   const nav = await campusNav(user.id);
   /* 기관(진흥원 등)이면 화면 글자를 기관 낱말로 바꾼다(`sayTree`) */
   const reg = uni ? university(uni) : null;
-  const say = campusSay(reg);
   const agency = reg?.org_kind === "agency";
+  const say = adminSay(campusSay(reg), agency);
   const shell = (children: React.ReactNode) => (
     <Shell
       surface="campus" lang={L} nav={nav} active="/org/v3/students"
       who={{ name: user.name, role: say(ROLE_LABEL[user.role] ?? "") }}
       topTitle={org ? org.name : BRAND.campus}
       topRight={<LangSelect current={L} />}
+      plainBrand={agency}
     >
       {sayTree(children, say, agency)}
     </Shell>
