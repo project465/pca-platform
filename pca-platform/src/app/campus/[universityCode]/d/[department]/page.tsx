@@ -159,8 +159,7 @@ export default async function CampusDepartment({ params }: Params) {
       ) : (
         <p className="cm-cmp-note">
           {t(routing
-            ? "어느 전공으로 재는지는 고르신 전공이 정합니다. 학부 이름만"
-              + " 보고 특정 전공으로 판단하지 않습니다."
+            ? "검사 전공은 학생이 고른 전공으로 정합니다."
             : leaf.core_code
               ? "이 학과의 문항과 산업 자료를 그 전공을 아는 분이 써야 열립니다."
               : "어느 전공 검사로 이을지 학교와 확인하고 있습니다.")}

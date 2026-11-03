@@ -33,8 +33,8 @@ export default function ResearchUpload({ consented, left }: {
                 onChange={(e) => setAgree(e.target.checked)} />
               <span>
                 파일 내용(파일에 적힌 이름·연락처 포함)이 Anthropic(미국)의 Claude로 보내져 읽히는 데
-                동의합니다. 원본 파일은 읽은 뒤 바로 버리고 저장하지 않습니다. 가리고 싶은 정보는 가린 뒤
-                올려 주세요.
+                동의합니다. 원본 파일은 읽은 뒤 바로 지웁니다. 가리고 싶은 정보는 가린 뒤
+                올리면 됩니다.
               </span>
             </label>
           ) : null}
@@ -43,7 +43,7 @@ export default function ResearchUpload({ consented, left }: {
               accept=".pdf,.docx,.pptx,.hwpx,.txt,.md,application/pdf"
               onChange={(e) => { if (e.target.files?.length) form.current?.requestSubmit(); }} />
             <b>{busy ? "읽는 중입니다. 긴 논문은 몇 분 걸릴 수 있습니다…"
-              : agree ? "눌러서 파일을 고르세요" : "위 동의 칸을 켜면 열립니다"}</b>
+              : agree ? "눌러서 파일 고르기" : "위 동의 칸을 켜면 열립니다"}</b>
             <span>영어 자료도 한국어로 정리합니다. 수치와 근거 위치는 자료에 적힌 그대로 옮깁니다.</span>
           </label>
         </form>

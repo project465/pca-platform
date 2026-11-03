@@ -63,7 +63,7 @@ export function BriefPanel({ brief, lang = "ko" }: { brief: Brief; lang?: WsLang
                 <p className="cm-brief-task">{task.body}</p>
                 <p className="cm-none">
                   {!task.saved ? t("결과지에서 나온 할 일입니다.") : task.state === "doing" ? t("하는 중입니다.") : t("아직 시작하지 않았습니다.")}
-                  {" "}{t("끝내면 지금 할 일 쪽에서 끝냄으로 바꿔 주세요.")}
+                  {" "}{t("끝내면 할 일 쪽에서 끝냄으로 바꾸면 됩니다.")}
                 </p>
                 <div className="cm-acts">
                   <Link className="cm-btn is-primary" href="/me/next">{t("지금 할 일 열기")}</Link>
@@ -71,7 +71,7 @@ export function BriefPanel({ brief, lang = "ko" }: { brief: Brief; lang?: WsLang
               </>
             ) : (
               <>
-                <p className="cm-none">{t("남은 할 일이 없습니다. 이번 주에 한 과제나 활동 하나를 경험으로 적어 두세요.")}</p>
+                <p className="cm-none">{t("남은 할 일이 없습니다. 이번 주에 한 과제나 활동 하나를 경험으로 적어 두면 됩니다.")}</p>
                 <div className="cm-acts">
                   <Link className="cm-btn" href="/me/experience/new">{t("경험 적기")}</Link>
                 </div>

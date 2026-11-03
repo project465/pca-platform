@@ -39,8 +39,8 @@ export function CopyButton({ text, label = "복사" }: { text: string; label?: s
     <>
       <button className="cm-btn" type="button" onClick={copy}>{label}</button>
       <span className="cm-none" role="status" aria-live="polite">
-        {s === "ok" ? "복사했습니다. 대괄호 칸을 채워 쓰세요."
-          : s === "fail" ? "복사하지 못했습니다. 글을 길게 눌러 직접 복사해 주세요." : ""}
+        {s === "ok" ? "복사했습니다. 대괄호 칸을 채워 쓰면 됩니다."
+          : s === "fail" ? "복사하지 못했습니다. 글을 길게 눌러 직접 복사하면 됩니다." : ""}
       </span>
     </>
   );

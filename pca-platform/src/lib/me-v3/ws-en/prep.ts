@@ -10,7 +10,7 @@ export const WS_EN_PREP: Record<string, string> = {
   "검사하러 가기": "Take the assessment",
   "{date} 검사 결과 기준 · 적어 둔 답 {done} / {total}":
     "Based on your assessment from {date} · {done} of {total} answered",
-  "내 결과와 경험에서 지원서 문항의 재료와 예상 면접 질문을 꺼냈습니다. 글은 직접 쓰고, 저장해 두면 다시 와서 고칠 수 있습니다.":
+  "내 결과와 경험에서 고른 지원서 재료와 예상 면접 질문입니다. 글은 직접 씁니다. 저장하면 나중에 고칠 수 있습니다.":
     "We pulled material for application essays and likely interview questions from your results "
     + "and experiences. You write the answers yourself, and anything you save can be edited later.",
   "지원서 문항": "Application questions",
@@ -20,17 +20,17 @@ export const WS_EN_PREP: Record<string, string> = {
   "적는 차례": "Suggested structure",
   "{hint} · 내 재료: {items}": "{hint} · Your material: {items}",
   "예상 면접 질문": "Likely interview questions",
-  "내 결과에서 면접관이 파고들 만한 부분을 골랐습니다. 소리 내어 답해 본 뒤 요점을 적어 두세요.":
+  "내 결과에서 고른 예상 질문입니다. 소리 내어 답한 뒤 요점을 적어 두면 됩니다.":
     "We picked the parts of your results an interviewer is likely to dig into. "
     + "Answer out loud, then note your key points.",
-  "왜 나오나요": "Why it comes up",
+  "질문이 나온 이유": "Why it comes up",
   "떠올릴 것": "Things to recall",
   "질문 재료 없음": "No material for questions",
   "경험을 추가하면 질문이 표시됩니다.": "Add an experience to see questions.",
   "전에 적어 둔 답": "Earlier answers",
-  "결과가 바뀌어 지금은 서지 않는 질문에 적었던 답입니다. 그대로 두었습니다.":
+  "결과가 바뀌어 지금은 보이지 않는 질문의 답입니다. 지우지 않고 남겨 두었습니다.":
     "Answers to questions that no longer appear because your results changed. We've kept them as they were.",
-  "성과와 숫자는 직접 적어 주세요.": "Add results and numbers yourself.",
+  "성과와 숫자는 직접 적습니다.": "Add results and numbers yourself.",
   "여기 재료는 검사에서 고르신 답이라 기간·인원·수치가 들어 있지 않습니다. 실제로 없었던 내용을 지원서에 적으면 면접에서 그 한 줄이 가장 먼저 흔들립니다. 적은 답은 본인에게만 보입니다.":
     "The material here comes from the answers you chose in the assessment, so it has no timelines, "
     + "team sizes or figures. If you put something on an application that didn't actually happen, "

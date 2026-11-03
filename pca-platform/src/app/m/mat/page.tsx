@@ -73,7 +73,7 @@ export default async function Mat() {
         <Section title="이번 주 브리핑">
           <div className="ma-card ma-hero">
             <p className="ma-kicker">이번 주 할 일 하나</p>
-            <h3>{brief.task?.body ?? "이번 주에 한 일 하나를 경험으로 적어 두세요"}</h3>
+            <h3>{brief.task?.body ?? "이번 주에 한 일 하나를 경험으로 적어 둡니다"}</h3>
             <div className="ma-btns">
               <Link className="ma-btn" href={brief.task ? "/m/todo" : "/me/experience/new"}>
                 {brief.task ? "할 일로 가기" : "경험 적기"}
@@ -106,8 +106,8 @@ export default async function Mat() {
               })}
             </div>
           ) : (
-            <Empty title="붙여 둔 공고가 없어요" cta={{ href: "/me/track#posting", label: "공고 붙여 넣기" }}>
-              직접 찾은 공고 본문을 붙여 넣으면 요구 항목마다 내 기록과 비교해 드립니다.
+            <Empty title="붙여 둔 공고가 없습니다" cta={{ href: "/me/track#posting", label: "공고 붙여 넣기" }}>
+              직접 찾은 공고 본문을 붙여 넣으면, 요구 항목마다 내 기록과 비교합니다.
             </Empty>
           )}
         </Section>

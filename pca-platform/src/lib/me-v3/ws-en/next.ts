@@ -7,27 +7,27 @@ export const WS_EN_NEXT: Record<string, string> = {
   "앞의 할 일을 마친 뒤에 하면 됩니다": "After the first two are done",
 
   /* 왜 필요한가 (빈자리가 없는 할 일) */
-  "근거는 모였고, 남은 일은 그것을 지원서에서 설명할 문장으로 만드는 것입니다.":
+  "근거는 모였습니다. 남은 일은 지원서 문장을 만드는 것입니다.":
     "Your evidence is in place. What's left is turning it into sentences you can explain in applications.",
-  "해 본 것은 확인됐습니다. 남은 일은 그중 어디까지 직접 정했는지를 적는 것입니다.":
+  "해 본 일은 확인됐습니다. 남은 일은 직접 정한 부분을 적는 것입니다.":
     "We confirmed you've done this. What's left is writing down how much of it you decided yourself.",
-  "남긴 것이 없으면 해 봤다는 말을 지원서에서 설명할 수 없습니다.":
+  "결과물이 있어야 지원서에서 해 본 일을 설명할 수 있습니다.":
     "Without something you produced, you can't show in an application that you did the work.",
-  "무엇과 비교해 확인했는지가 없으면 그 값이 맞다는 말을 할 수 없습니다.":
+  "무엇과 비교해 확인했는지 적어야 그 값이 맞다고 말할 수 있습니다.":
     "Without noting what you checked it against, you can't say the result is right.",
-  "그 영역에서 아직 확인되지 않은 판단이라, 채우면 설명할 수 있는 범위가 넓어집니다.":
+  "이 영역에서 아직 확인되지 않은 판단입니다. 채우면 설명할 수 있는 범위가 넓어집니다.":
     "This judgment isn't confirmed yet in that area. Filling it in widens what you can explain.",
-  "관심은 있고 해 본 적이 없는 영역입니다. 짧게 한 번 해 보면 판단할 재료가 생깁니다.":
+  "관심은 있지만 해 본 적이 없는 영역입니다. 짧게 한 번 해 보면 판단할 재료가 생깁니다.":
     "You're interested in this area but haven't tried it yet. A short try gives you something to judge by.",
   "관심과 배울 뜻이 함께 높은 영역입니다.":
     "Your interest and your willingness to learn are both high in this area.",
-  "지금 응답만으로는 어느 영역이 앞선다고 보기 어렵습니다.":
+  "지금 응답으로는 다른 영역보다 앞서는 영역이 없습니다.":
     "From your answers so far, it's hard to say which area comes out ahead.",
 
   /* 머리 */
   "지금 할 한 가지": "One thing to do now",
   "무엇부터 할지": "Where to start",
-  "급한 순서보다 할 수 있는 때로 묶었습니다. 하나를 끝내면 그다음이 나옵니다.":
+  "할 수 있는 때로 묶었습니다. 하나를 끝내면 다음 일이 나옵니다.":
     "These are grouped by when you can do them, not by urgency. Finish one and the next one appears.",
   "검사를 한 번 끝내면 결과가 낸 할 일을 여기에 담을 수 있습니다.":
     "Once you finish an assessment, you can save the next steps from your results here.",
@@ -44,9 +44,9 @@ export const WS_EN_NEXT: Record<string, string> = {
   "검사를 마치면 할 일이 표시됩니다.": "Steps appear after you finish the assessment.",
   "검사 시작하기": "Start an assessment",
   "없음": "None",
-  "할 일을 모두 치우셨습니다. 새 경험을 더하면 다음 할 일이 생길 수 있습니다.":
+  "할 일을 모두 끝냈습니다. 새 경험을 더하면 다음 할 일이 생깁니다.":
     "You've cleared all your next steps. Adding new experience may bring up new ones.",
-  "담아 둔 일을 다 끝내셨습니다. 새 경험을 더하면 다음 할 일이 생길 수 있습니다.":
+  "담아 둔 일을 모두 끝냈습니다. 새 경험을 더하면 다음 할 일이 생깁니다.":
     "You've finished everything you saved. Adding new experience may bring up new next steps.",
   "새로 겪은 일을 적으면 현재 상태가 다시 계산됩니다.":
     "Write down something new you've done, and your current state is recalculated.",
@@ -57,7 +57,7 @@ export const WS_EN_NEXT: Record<string, string> = {
   "확인된 영역과 이어지는 쪽을 봅니다.": "See where your confirmed areas lead.",
 
   /* 지금 할 한 가지 */
-  "어떻게 적으면 되나요": "How to write it up",
+  "적는 방법": "How to write it up",
   "어느 부분": "Which part",
   "{name} · 부족한 부분 없음": "{name} · no gaps",
   "전 영역 공통": "All areas",
@@ -69,7 +69,7 @@ export const WS_EN_NEXT: Record<string, string> = {
 
   /* 나머지 */
   "그 밖에 할 일 {n}가지": "Other next steps ({n})",
-  "하나를 끝내면 그다음 줄이 위로 올라옵니다. 지금은 첫 줄만 하시면 됩니다.":
+  "하나를 끝내면 다음 줄이 위로 올라옵니다. 지금은 첫 줄만 하면 됩니다.":
     "When you finish one, the next one moves up. For now, just do the first.",
   "끝낸 일 {n}가지": "Done ({n})",
   "되돌리기": "Undo",

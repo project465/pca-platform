@@ -42,7 +42,7 @@ export default async function ImportPage({
       <PageHead
         eyebrow="CAREERMATRI CAMPUS"
         title="CSV로 학생 등록"
-        sub="올리고 → 미리 보고 → 적용합니다. 미리 보기에서는 아무것도 저장하지 않습니다."
+        sub="올리기 → 미리 보기 → 적용 순서입니다. 적용을 눌러야 저장됩니다."
         actions={<Link className="sf-btn ghost" href="/org/v3/students">학생 목록</Link>}
       />
       {uni ? <><Section><ImportForm agency={agency} phone={!!reg && loginModeOf(reg) === "phone"} example={codes.find((c) => c.ready)?.code ?? codes[0]?.code ?? ""} /></Section>

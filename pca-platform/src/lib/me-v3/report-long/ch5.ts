@@ -25,8 +25,8 @@ import { andJoin, cutQuote, j, okOr, polite } from "./text";
 const S1 = ZONE_WORD.Z1_EVIDENCE_ESTABLISHED;
 export const TIER: Record<Tier, { head: string; rule: string; next: string; color: string }> = {
   A: { head: "내 결과와 잘 맞는 곳", rule: `그 산업이 쓰는 영역 가운데 ${j(S1.tag, "이가")} 하나라도 있는 곳`, next: "지원서와 면접에서 그 영역의 경험을 바로 꺼낼 수 있어요.", color: PAL.blue },
-  B: { head: "한 걸음 더 채우면 맞는 곳", rule: `그 산업이 쓰는 영역에서 해 본 일은 확인됐지만 ${S1.tag}까지는 아직 없는 곳`, next: "그 영역에서 결과물 하나를 더 남기면 잘 맞는 곳으로 옮겨 갈 수 있어요.", color: PAL.teal },
-  C: { head: "넓혀 볼 곳", rule: "그 산업이 쓰는 영역에서 해 본 일이 아직 확인되지 않은 곳", next: "그 영역에서 작은 과제 하나를 해 두면 다음 검사에서 한 걸음 더 채우면 맞는 곳으로 옮겨 올 수 있어요.", color: "#8c97ab" },
+  B: { head: "조금 더 채우면 맞는 곳", rule: `그 산업이 쓰는 영역에서 해 본 일은 확인됐지만 ${S1.tag}까지는 아직 없는 곳`, next: "그 영역에서 결과물 하나를 더 남기면 잘 맞는 곳으로 옮겨 갈 수 있어요.", color: PAL.teal },
+  C: { head: "넓혀 볼 곳", rule: "그 산업이 쓰는 영역에서 해 본 일이 아직 확인되지 않은 곳", next: "그 영역에서 작은 과제 하나를 해 두면 다음 검사에서 조금 더 채우면 맞는 곳으로 옮겨 올 수 있어요.", color: "#8c97ab" },
 };
 const won = (v: number | null | undefined) => (v == null ? "공시 없음" : `${Math.round(v / 1e8).toLocaleString("ko-KR")}억 원`);
 const short = (n: string) => n.replace(/\(주\)|주식회사|㈜/g, "").trim();

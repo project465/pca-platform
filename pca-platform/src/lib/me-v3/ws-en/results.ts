@@ -42,7 +42,7 @@ export const WS_EN_RESULTS: Record<string, string> = {
   "직무#ver": "Role",
   "지역#ver": "Region",
   "검사 시작": "Start the assessment",
-  "기간·인원·수치는 실제 값으로. 적은 답은 본인만 봅니다.": "Use real periods, team sizes and numbers. Only you can see your answers.",
+  "기간 · 인원 · 수치는 실제 값을 씁니다. 적은 답은 본인만 봅니다.": "Use real periods, team sizes and numbers. Only you can see your answers.",
   "새 경험 더하기": "Add new experience",
   "더함": "Added",
 };

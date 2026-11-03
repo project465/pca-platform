@@ -19,7 +19,8 @@ import { campusStudentContext } from "@/lib/campus/students";
 import { InstallCard } from "@/components/install-card";
 import { Icon, type IconName } from "@/components/sf/icon";
 import { CmShell } from "./shell";
-import { HOME_TEXT as H, say } from "./me-text";
+import { say } from "./me-text";
+import { HOME_TEXT as H } from "./home-text";
 
 /**
  * 한국어 홈(2026-11-03 시안 `Main.dc.html`).

@@ -17,9 +17,9 @@ export const WS_EN_HOME: Record<string, string> = {
   "검사 이어하기 →": "Continue the assessment →",
   "검사를 끝내면 결과와 할 일이 이 화면에 나옵니다.":
     "When you finish the assessment, your results and next steps will appear here.",
-  "{major} 검사로 내 경험을 정리해 보세요.":
+  "{major} 검사로 내 경험을 정리합니다.":
     "Use the {major} assessment to sort through your experience.",
-  "전공 검사로 내 경험을 정리해 보세요.":
+  "전공 검사로 내 경험을 정리합니다.":
     "Use the assessment for your major to sort through your experience.",
   "지금까지 {n}문항에 답했습니다. 마지막으로 답한 문항에서 이어집니다.":
     "Questions answered so far: {n}. You'll pick up from the last one you answered.",

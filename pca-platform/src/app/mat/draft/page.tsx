@@ -10,6 +10,7 @@ import { CopyButton } from "../../me/track/copy-button";
 import { MatAsk } from "../ask";
 import { AI_TOOLS_OPEN_KO } from "@/lib/mat/open-dates";
 
+import { DRAFT_TEXT as DT } from "../mat-text";
 export const generateMetadata = () => matTitle("지원서");
 
 /** 뼈대의 [칸] 을 눈에 띄게. 글자는 그대로다 */
@@ -42,7 +43,7 @@ export default async function MatDraft({ searchParams }: { searchParams: Promise
   return (
     <main>
       <h1 className="mt-h1">지원서</h1>
-      <p className="mt-lead">공고 요건마다 내 경험으로 문장 뼈대를 만들어 드려요. 빈 칸만 채우면 돼요.</p>
+      <p className="mt-lead">{DT.lead.ko}</p>
 
       {mine.length ? (
         <div className="mt-chips" aria-label="공고 고르기" style={{ marginBottom: 14 }}>
@@ -54,14 +55,14 @@ export default async function MatDraft({ searchParams }: { searchParams: Promise
       ) : (
         /* 공고를 하나도 분석하지 않았으면 무엇을 하면 뼈대가 생기는지 적는다(2026-11-03 MAT 시험 M2: 링크 하나만 있는 빈 화면) */
         <p className="mt-empty">
-          공고를 하나 분석하면 그 공고의 필수 요건마다 내 경험으로 지원서 문장 뼈대가 여기에 생겨요.{" "}
+          {DT.empty.ko}{" "}
           <Link href="/mat/jobs">공고 하나 분석하기</Link>
         </p>
       )}
 
       {p ? (
         <>
-          <h2 className="mt-h2">문장 뼈대</h2>
+          <h2 className="mt-h2">{DT.draftTitle.ko}</h2>
           {sd.drafts.length ? (
             <div className="mt-list">
               {sd.drafts.map((d, i) => {
@@ -79,9 +80,9 @@ export default async function MatDraft({ searchParams }: { searchParams: Promise
                 );
               })}
             </div>
-          ) : <p className="mt-empty">{same ? "필수 요건에 댈 경험을 먼저 적어 보세요." : "다른 전공으로 읽은 공고예요."}</p>}
+          ) : <p className="mt-empty">{same ? DT.needFirst.ko : DT.otherCore.ko}</p>}
           {sd.missing ? (
-            <p className="mt-note">경험을 더 적으면 뼈대가 늘어요 — <Link href={`/mat/jobs/${p.id}`}>채울 것 보기</Link></p>
+            <p className="mt-note">{DT.more.ko} <Link href={`/mat/jobs/${p.id}`}>{DT.toFill.ko}</Link></p>
           ) : null}
         </>
       ) : null}

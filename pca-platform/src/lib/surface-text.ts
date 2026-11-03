@@ -99,7 +99,7 @@ export const TX = {
     "Turn your major and experience into an actual career decision.",
   ),
   myHeroBody: p(
-    "먼저 살펴볼 직무와 지금 비어 있는 증거, 그리고 다음에 만들 경험 하나를 정리해 드립니다.",
+    "먼저 살펴볼 직무, 지금 비어 있는 증거, 다음에 만들 경험 하나를 한 장에 정리합니다.",
     "We set out which roles to look at first, which evidence is still missing, and the one experience to build next.",
   ),
   myStart: p("검사 시작", "Start the assessment"),
@@ -107,7 +107,7 @@ export const TX = {
   myOpenReport: p("결과지 열기", "Open report"),
   myWhatWeRead: p("무엇을 읽는가", "What CareerMatri reads"),
   myWhatWeReadBody: p(
-    "해보고 싶은 일, 해본 일, 직접 정해 본 일, 일하는 방식, 더 배우고 싶은 것을 따로 읽습니다. 합쳐서 하나의 점수로 만들지 않습니다.",
+    "해보고 싶은 일, 해본 일, 직접 정해 본 일, 일하는 방식, 더 배우고 싶은 것을 따로 읽습니다. 다섯 값은 각각 따로 보입니다.",
     "Interest, exposure, decision ownership, work mode and learning intent stay separate. They are never collapsed into one score.",
   ),
   myTiers: p("등급", "Tiers"),
@@ -178,7 +178,7 @@ export const TX = {
   asStart: p("검사 시작", "Start"),
   asTargetTitle: p("어느 나라를 목표로 보십니까?", "Which country are you targeting?"),
   asTargetBody: p(
-    "사이트나 접속 위치로 짐작하지 않습니다. 확인된 자료가 없는 나라는 기준 자료로 보여 드립니다.",
+    "나라는 직접 고른 값으로 정합니다. 확인된 자료가 없는 나라는 기준 자료로 보입니다.",
     "We never infer this from your site or location. Where we have no verified data we fall back to the global reference set.",
   ),
   asTargetSkip: p("아직 정하지 않았습니다", "Not decided yet"),
@@ -527,8 +527,8 @@ export const TX = {
     "Some sections are empty because no experience was recorded.",
   ),
   rpBareBody: p(
-    "직무마다 무엇이 확인되는지를 적는 칸이 빈 양식으로 나갑니다. 못 한다는 뜻이 " +
-    "아니라 지금 적어 주신 것으로는 확인되지 않는다는 뜻입니다.",
+    "직무마다 무엇이 확인되는지를 적는 칸이 빈 양식으로 나갑니다. " +
+    "빈칸은 지금 적은 내용으로 아직 확인하지 못한 자리입니다.",
     "The evidence ladder and role coverage come out as blank forms. That does not " +
     "mean you cannot do these things; it means nothing you recorded confirms them yet.",
   ),

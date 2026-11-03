@@ -127,7 +127,7 @@ export function MatAsk({ mode = "free", examples }: { mode?: AskMode; examples?:
           onKeyDown={(e) => { if (mode !== "draft" && e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); void ask(q); } }} />
         <button type="submit" className="mt-btn is-ink" disabled={busy || q.trim().length < 2}>{busy ? "답하는 중" : "묻기"}</button>
       </form>
-      <p className="mt-note">내 검사 결과 · 경험 · 공고만 근거로 답해요. 질문과 답은 저장하지 않아요. AI 분석을 켠 경우 Anthropic(미국)의 Claude가 읽어요.</p>
+      <p className="mt-note">답의 근거는 내 검사 결과 · 경험 · 공고예요. 질문과 답은 화면을 닫으면 지워져요. AI 분석을 켜면 Anthropic(미국)의 Claude가 읽어요.</p>
     </section>
   );
 }

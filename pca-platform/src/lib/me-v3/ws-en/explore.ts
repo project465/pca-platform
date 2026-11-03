@@ -14,16 +14,16 @@ export const WS_EN_EXPLORE: Record<string, string> = {
   "아직 이 쪽과 겹치는 내 경험이 없습니다": "None of your experience overlaps with this yet",
 
   "관심 산업·직무 다시 고르기": "Choose your industries and roles again",
-  "산업과 직무를 둘씩까지 고르면 그쪽이 맨 위에 서서 다시 견줄 수 있습니다. 검사 당시 결과는 그대로 남습니다.":
+  "산업과 직무를 둘씩 고를 수 있습니다. 고른 쪽이 맨 위에 나옵니다. 검사 결과는 그대로입니다.":
     "Pick up to two industries and two roles. They'll move to the top so you can compare again. "
     + "Your results from the assessment stay as they were.",
   "산업#explore": "Industries",
   "직무#explore": "Roles",
   "이대로 다시 비교하기": "Compare again with these",
-  "고르신 산업과 직무로 다시 세웠습니다.": "Updated with the industries and roles you picked.",
+  "고른 산업과 직무로 다시 정리했습니다.": "Updated with the industries and roles you picked.",
 
   "먼저 볼 산업": "Industries to look at first",
-  "응시에서 고른 산업이 먼저 서고, 그다음이 지금 확인된 영역과 겹치는 쪽입니다.":
+  "검사에서 고른 산업이 먼저 나옵니다. 그다음은 확인된 영역과 겹치는 산업입니다.":
     "Industries you picked in the assessment come first, then those that overlap with the areas confirmed so far.",
   "지금 확인된 영역이 이 산업들이 보는 판단과 겹칩니다.":
     "The areas confirmed so far overlap with the judgments these industries look for.",
@@ -35,7 +35,7 @@ export const WS_EN_EXPLORE: Record<string, string> = {
   "이 산업이 보는 판단": "Judgments this industry looks for",
 
   "먼저 볼 직무": "Roles to look at first",
-  "응시에서 고른 직무가 먼저 서고, 그다음이 확인된 영역을 많이 쓰는 쪽입니다.":
+  "검사에서 고른 직무가 먼저 나옵니다. 그다음은 확인된 영역을 많이 쓰는 직무입니다.":
     "Roles you picked in the assessment come first, then those that draw most on your confirmed areas.",
   "확인된 영역을 가장 많이 쓰는 직무입니다.": "Roles that draw most on your confirmed areas.",
   "고른 직무": "Your pick",

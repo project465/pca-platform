@@ -24,6 +24,7 @@ import FileDrop from "./upload";
 import Link from "next/link";
 import { MAT_PUBLIC } from "@/lib/mat-switch";
 
+import { EXP_TEXT as XP } from "../me-text";
 /**
  * 그 결과가 어디로 갔는가.
  *
@@ -216,12 +217,11 @@ export default async function Compose(
           의심하며 칸을 고친다 */}
       {e === "form" ? (
         <p className="cm-fail" role="alert">
-          {t("저장하지 못했습니다. 어떤 경험인지와 한 줄 설명을 채워주세요.")}
+          {t(XP.errFill.ko)}
         </p>
       ) : e === "save" ? (
         <p className="cm-fail" role="alert">
-          {t("경험을 저장하지 못했습니다. 적어 주신 내용은 아직 저장되지 않았으니,"
-            + " 아래에서 한 번 더 눌러 주시고, 그래도 안 되면 고객지원으로 알려 주세요.")}
+          {t(XP.errSave.ko)}
         </p>
       ) : null}
 
@@ -245,8 +245,8 @@ export default async function Compose(
       {d0 ? (
         <div className="cm-none" role="status">
           {d0.from === "file"
-            ? t("올리신 파일에서 읽은 것을 보기로 옮겨 두었습니다. 파일에 없던 것은 비워 두었으니, 직접 정한 것과 남은 결과물을 골라 저장해 주세요.")
-            : t("적어 주신 메모를 보기로 옮겨 두었습니다. 맞지 않는 칸은 끄고 저장해 주세요.")}
+            ? t(XP.fromFile.ko)
+            : t(XP.fromMemo.ko)}
           {d0.ask.length ? (
             <ul>{d0.ask.map((q) => <li key={q}>{q}</li>)}</ul>
           ) : null}
@@ -290,7 +290,7 @@ export default async function Compose(
                   것을 글로 한 번 더 읽게 하는 줄이다. 설명문을 읽어야
                   적을 수 있는 칸이면 그 칸이 잘못 서 있는 것이다 */}
               <fieldset className="cm-field">
-                <legend><span>{t("어떤 경험인가요")}</span></legend>
+                <legend><span>{t(XP.kind.ko)}</span></legend>
                 <div className="cm-kinds">
                   {KIND_GROUPS.map((g) => (
                     <div className="cm-kind-g" key={g.label}>
@@ -346,8 +346,8 @@ export default async function Compose(
                   아니고 `그 결과가 어디로 갔는가` 한 가지 물음이라, 영역별
                   체크리스트에 두면 같은 보기가 열두 번 선다 */}
               <fieldset className="cm-field">
-                <legend><span>{t("그 결과가 어디에 쓰였나요")}</span></legend>
-                <em>{t("쓰인 곳이 없으면 비워 두셔도 되고, 비웠다고 불리해지지 않습니다.")}</em>
+                <legend><span>{t(XP.usedWhere.ko)}</span></legend>
+                <em>{t(XP.usedNone.ko)}</em>
                 <div className="cm-pickset">
                   {USED_WHERE.map((u) => (
                     <label className="cm-pick" key={u}>
@@ -371,8 +371,7 @@ export default async function Compose(
 
                 <label className="cm-field">
                   <span>{t("보완 설명 한 줄")}</span>
-                  <em>{t("결과에는 들어가지 않고, 결과를 내 말로 풀어 적을 때만 읽으며"
-                    + " 1년이 지나면 지웁니다.")}</em>
+                  <em>{t(XP.noteUse.ko)}</em>
                   <textarea className="cm-textarea" name="note" maxLength={400}
                     defaultValue={value?.note_text ?? d0?.note ?? ""}
                     placeholder={t("예: 하중 조건을 직접 정하고 시험값과 10% 안에서 맞췄습니다")} />
@@ -383,8 +382,7 @@ export default async function Compose(
                   깨진 날 저장까지 막히지 않게 하려는 것이 하나이고, 무엇이
                   달라지는지 먼저 보고 누르게 하려는 것이 둘이다 */}
               <p className="cm-none" style={{ marginTop: 10 }}>
-                {t("저장하면 무엇이 달라지는지 먼저 보여 드리고, 거기서 반영을 누르면"
-                  + " 현재 상태에 들어갑니다. 검사 당시 결과는 그대로 남습니다.")}
+                {t(XP.saveFlow.ko)}
               </p>
             </>
           }
@@ -400,7 +398,7 @@ export default async function Compose(
         결과는 한 글자도 바뀌지 않는다.
       */}
       <details className="cm-why">
-        <summary>{t("이걸 적으면 무엇이 달라지나요")}</summary>
+        <summary>{t(XP.whatChanges.ko)}</summary>
         <ul>
           <li>{t("지원서와 면접에서 설명할 근거가 한 줄 늘어납니다.")}</li>
           <li>{t("부족했던 부분이 채워지면 다음 할 일이 그만큼 달라집니다.")}</li>

@@ -275,8 +275,8 @@ export default async function Home() {
             title={st.stage === "IN_PROGRESS"
               ? t("검사를 끝내면 결과와 할 일이 이 화면에 나옵니다.")
               : (major
-                ? t("{major} 검사로 내 경험을 정리해 보세요.", { major })
-                : t("전공 검사로 내 경험을 정리해 보세요."))}
+                ? t("{major} 검사로 내 경험을 정리합니다.", { major })
+                : t("전공 검사로 내 경험을 정리합니다."))}
             why={st.stage === "IN_PROGRESS"
               ? (answered
                 ? t("지금까지 {n}문항에 답했습니다. 마지막으로 답한 문항에서 이어집니다.", { n: answered })

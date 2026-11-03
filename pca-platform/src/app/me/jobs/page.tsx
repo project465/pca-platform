@@ -113,7 +113,6 @@ export default async function Jobs() {
           <ul>
             <li>공고는 고용24 오픈 API 에서 하루 한 번 받아 옵니다</li>
             <li>기업 이름은 저장하지 않고, 지원은 공고를 낸 곳에 직접 합니다</li>
-            <li>합격 가능성이나 순위는 계산하지 않습니다</li>
           </ul>
         </div>
       )}

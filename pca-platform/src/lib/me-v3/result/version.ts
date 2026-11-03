@@ -197,7 +197,8 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.7";
 /** P6 문장 — copy.88 */
 /** 해명 · `아직 ~` 줄을 짧은 이름표로, 지역 묶음 설명 한 줄씩(2026-11-03 대표 "AI스럽다"). 판정은 그대로다 — copy.89 */
 /* copy.90 — 할 일 짧은 줄: 틀 셋을 영역마다 돌려 쓰고 결과물은 `함께 두는 것`으로(`검증 벤치에 적기` 고침) */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.90";
+/** 화면 문구 규칙: 그래프 안내 한 줄을 짧게, `한 걸음 더 채우면 맞는 곳` → `조금 더 채우면 맞는 곳`(결과지 · 책 · 세종 절 같은 이름), 세종 절 긴 문장 둘로 — copy.91 */
+export const RESULT_COPY_VERSION = "me-v3-result-copy.91";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**

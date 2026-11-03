@@ -61,7 +61,7 @@ export function Capture({ consented, left, cap }: { consented: boolean; left: nu
             onChange={(e) => setAgree(e.target.checked)} />
           <span>
             찍은 내용(이름·학번·생년월일 포함)이 Anthropic(미국)의 Claude로 보내져 읽히는 데
-            동의합니다. 원본은 읽은 뒤 바로 버리고 저장하지 않습니다.
+            동의합니다. 원본은 읽은 뒤 바로 지웁니다.
           </span>
         </label>
       ) : null}

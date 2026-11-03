@@ -497,7 +497,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V103";
 /** 학생 화면 해명 · 부정문 나열을 짧은 이름표로(2026-11-03 대표 "AI스럽다") — copy.73 */
 /** `확인된 영역 n` → `해 본 일이 있는 영역 n` — copy.74 */
 /** 한국어 홈의 글(인사 줄 · 5단계 · 이번 주 할 일 · 맞는 공고)을 `me-text.ts` 에서 읽는다 — copy.75 */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.75";
+/** 화면 문구 규칙: 할 일 · 산업·직무 · 지원서·면접 준비 · 경험 추가 · 현재 상태 · 지역·기관의 글을 짧게 · 한 꼴로, 고친 글은 `me-text.ts` — copy.76 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.76";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

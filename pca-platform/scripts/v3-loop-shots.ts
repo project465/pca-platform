@@ -166,7 +166,7 @@ async function main(): Promise<void> {
     await noBlank(p, "저장 직후");
     const plan = await p.evaluate(() => document.body.innerText);
     /* 상태 말은 제품 전체가 같은 마디를 쓴다(규격 §21) */
-    const SAVED = ["경험이 저장됐어요", "기록으로 확인된 역할과 판단",
+    const SAVED = ["경험이 저장됐습니다", "기록으로 확인된 역할과 판단",
       "현재 상태에서 달라지는 것", "실제 달라진 현재 상태"];
     ok("저장 직후가 다섯을 차례로 적는다",
       SAVED.every((h) => plan.includes(h)),

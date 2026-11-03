@@ -13,6 +13,7 @@ import { latestRegionView } from "@/lib/me-v3/report-long/web-region";
 import RegionCards from "./cards";
 import RegionFeatured from "./featured";
 
+import { REGION_TEXT as RG } from "../me-text";
 export const metadata = { title: "지역과 기관 · 내 CareerMatri" };
 
 /**
@@ -95,7 +96,7 @@ export default async function Region() {
           <fieldset className="cm-field">
             <legend>
               <span>보고 싶은 기관 유형</span>
-              <small>셋까지 고르실 수 있습니다</small>
+              <small>{RG.pickMax.ko}</small>
             </legend>
             <div className="cm-pickset">
               {L.org_types.map((o) => (
@@ -139,8 +140,7 @@ export default async function Region() {
       {/* ── 이 지역에서 함께 볼 곳 ──
           **지어내지 않는다**(규격 §9). 자료가 없으면 EmptyState 하나이고,
           법적·자료 설명은 아래 작은 자리로 내린다 */}
-      <SectionHeader icon="building" tone="c" title="이 지역에서 함께 볼 곳"
-        sub="채용·합격 가능성과 무관" />
+      <SectionHeader icon="building" tone="c" title={RG.orgsTitle.ko} />
       {lr ? <RegionCards v={lr.rv} chosen={chosenInd} /> : orgs.length ? (
         <PickGrid>
           {orgs.map((o) => (
@@ -172,8 +172,7 @@ export default async function Region() {
       <p className="cm-more-mark"><span>참고</span></p>
       <h2 className="cm-sub-h">기관 유형별 일의 방식</h2>
       <p className="cm-lead" style={{ marginTop: 0 }}>
-        지역과 관계없이 기관 유형마다 일이 서는 모양이 다릅니다. 어디를
-        보실지 정할 때 참고하시라고 적어 두었습니다.
+        {RG.typesLead.ko}
       </p>
       <div className="cm-panel is-quiet">
         <div className="cm-pane">

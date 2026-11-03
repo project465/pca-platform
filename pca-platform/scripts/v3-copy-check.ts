@@ -183,7 +183,6 @@ const FILES = [
   "src/app/me/region/page.tsx",
   "src/app/me/jobs/page.tsx",
   "src/app/me/track/page.tsx",
-  "src/app/me/track/guide.tsx",
   /* MAT 공고 확인 쪽과 그 쪽의 면접 준비·작은 일 문장 */
   "src/app/me/track/posting/[id]/page.tsx",
   "src/lib/assistant/prep.ts",

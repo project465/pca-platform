@@ -52,8 +52,8 @@ const STATE_KO = (): Record<AxisState, string> => ({
  * 어느 날 갈리고, 갈린 날 둘 중 하나가 거짓이 된다.
  */
 export const CHART_NOTE =
-  "이 그래프는 응답에서 확인된 경험과 근거의 분포를 시각화한 것입니다. "
-  + "적성·역량 순위나 직무 적합도를 의미하지 않습니다.";
+  "이 그래프는 응답에서 확인된 경험과 근거의 분포입니다. "
+  + "순위나 직무 적합도가 아닙니다.";
 
 export function ChartNote({ children }: { children?: ReactNode }): React.JSX.Element {
   /* 한국어는 위 상수 그대로이고, 다른 언어는 같은 문장을 사전에서 읽는다 */

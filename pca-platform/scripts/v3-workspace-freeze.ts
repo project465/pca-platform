@@ -59,6 +59,7 @@ const FILES = [
   "src/app/me/nav.ts",
   /* 작업공간 문구 파일(화면 문구 규칙 8) */
   "src/app/me/me-text.ts",
+  "src/app/me/home-text.ts",
   "src/app/me/layout.tsx",
   "src/app/me/actions.ts",
   /* 지금 */
@@ -101,7 +102,6 @@ const FILES = [
   "src/app/me/apply/actions.ts",
   /* 기타 */
   "src/app/me/track/page.tsx",
-  "src/app/me/track/guide.tsx",
   /* 공고 확인 쪽. **목록에 없어서 쓰는 class 이름 대조가 이 쪽을 보지 않았다** */
   "src/app/me/track/posting/[id]/page.tsx",
   /* MAT 브리핑 판과 복사 단추. 쓰는 class 이름이 CSS 에 있는지도 여기서 센다 */

@@ -38,16 +38,16 @@ export const WS_EN_EXPERIENCE: Record<string, string> = {
   "경험 고치기": "Edit experience",
   "적어 둔 경험 고치기": "Edit your experience",
   "새 경험 하나 추가": "Add an experience",
-  "저장하지 못했습니다. 어떤 경험인지와 한 줄 설명을 채워주세요.":
+  "저장하지 못했습니다. 경험 종류와 한 줄 설명이 있어야 저장됩니다.":
     "We couldn't save this. Choose what kind of experience it was and describe it in one line.",
-  "경험을 저장하지 못했습니다. 적어 주신 내용은 아직 저장되지 않았으니, 아래에서 한 번 더 눌러 주시고, 그래도 안 되면 고객지원으로 알려 주세요.":
+  "경험을 저장하지 못했습니다. 아래 저장 단추를 한 번 더 누르면 됩니다. 그래도 안 되면 고객지원에 알리면 됩니다.":
     "We couldn't save your experience. What you entered hasn't been saved yet, so please save again below. If it still doesn't work, let our support team know.",
-  "올리신 파일에서 읽은 것을 보기로 옮겨 두었습니다. 파일에 없던 것은 비워 두었으니, 직접 정한 것과 남은 결과물을 골라 저장해 주세요.":
+  "올린 파일에서 읽은 내용을 보기로 옮겼습니다. 파일에 없던 칸은 비어 있습니다. 직접 정한 것과 남은 결과물을 고른 뒤 저장하면 됩니다.":
     "We've filled in the options with what we read from your file. Anything that wasn't in the file is left blank, so pick what you decided and what you produced, then save.",
-  "적어 주신 메모를 보기로 옮겨 두었습니다. 맞지 않는 칸은 끄고 저장해 주세요.":
+  "적은 메모를 보기로 옮겼습니다. 맞지 않는 칸은 끄고 저장하면 됩니다.":
     "We've filled in the options from your note. Uncheck anything that doesn't fit, then save.",
   "고친 내용 저장": "Save changes",
-  "어떤 경험인가요": "What kind of experience was it?",
+  "경험 종류": "What kind of experience was it?",
   "수업·과제": "Courses and assignments",
   "들으면서 맡거나 제출한 것": "Work you took on or turned in for a class",
   "연구·프로젝트": "Research and projects",
@@ -58,8 +58,8 @@ export const WS_EN_EXPERIENCE: Record<string, string> = {
   "시작한 달": "Month started",
   "대략이면 됩니다. 나중에 찾을 때만 씁니다.":
     "A rough date is fine. It's only used to help you find this later.",
-  "그 결과가 어디에 쓰였나요": "Where was the result used?",
-  "쓰인 곳이 없으면 비워 두셔도 되고, 비웠다고 불리해지지 않습니다.":
+  "결과가 쓰인 곳": "Where was the result used?",
+  "쓰인 곳이 없으면 비워 두어도 괜찮습니다.":
     "If it wasn't used anywhere, leave this blank. Leaving it blank won't count against you.",
   "수업이나 과제 평가에 들어갔다": "It was graded in a course or assignment",
   "제작이나 발주로 이어졌다": "It went on to be built or ordered",
@@ -72,13 +72,13 @@ export const WS_EN_EXPERIENCE: Record<string, string> = {
   "더 적을 것이 있으면 (선택)": "Anything else to add (optional)",
   "아직 진행 중": "Still ongoing",
   "보완 설명 한 줄": "A one-line note",
-  "결과에는 들어가지 않고, 결과를 내 말로 풀어 적을 때만 읽으며 1년이 지나면 지웁니다.":
+  "이 줄은 결과를 글로 풀어 적을 때만 읽습니다. 1년이 지나면 지웁니다.":
     "This doesn't change your results. We only read it when putting your results into your own words, and we delete it after one year.",
   "예: 하중 조건을 직접 정하고 시험값과 10% 안에서 맞췄습니다":
     "For example: I set the load conditions myself and matched the test values within 10%",
-  "저장하면 무엇이 달라지는지 먼저 보여 드리고, 거기서 반영을 누르면 현재 상태에 들어갑니다. 검사 당시 결과는 그대로 남습니다.":
+  "저장하면 달라지는 점을 먼저 보여 줍니다. 반영을 누르면 현재 상태에 들어갑니다. 검사 결과는 그대로 남습니다.":
     "After you save, we'll show you what changes and add it to your current state. Your results at the time of the assessment stay the same.",
-  "이걸 적으면 무엇이 달라지나요": "What changes when you add this?",
+  "이 경험을 적으면 달라지는 것": "What changes when you add this?",
   "지원서와 면접에서 설명할 근거가 한 줄 늘어납니다.":
     "You'll have one more piece of evidence to explain in applications and interviews.",
   "부족했던 부분이 채워지면 다음 할 일이 그만큼 달라집니다.":
@@ -111,14 +111,14 @@ export const WS_EN_EXPERIENCE: Record<string, string> = {
   "경험 하나만 떠올리면 됩니다": "Think of just one experience",
   "수업 과제든 동아리 일이든 직접 맡았던 것 하나를 고르고 한 줄로 적습니다. 지원서와 면접에서 꺼내 쓸 근거가 한 줄 늘고, 검사 당시 결과는 그대로 남습니다.":
     "Pick one thing you took on yourself, whether it was a class assignment or club work, and describe it in one line. You'll have one more piece of evidence for applications and interviews, and your results at the time of the assessment stay the same.",
-  "그 일에서 무엇을 직접 정했나요": "What did you decide yourself in that work?",
+  "그 일에서 직접 정한 것": "What did you decide yourself in that work?",
   "할 일에서 넘어온 영역이 켜져 있습니다: {name}. 다른 영역의 일이면 바꾸셔도 됩니다. ":
     "The area from your next steps is already selected: {name}. If this was work in a different area, you can change it. ",
   "{word}{eul} 고르면 그 영역에서 ": "Once you pick a {word}, start with ",
   "맡은 역할로 직접 정한 것": "what you decided yourself in your role",
   "을 먼저 고르고, 그다음에 다룬 문제를 고릅니다. 지원서와 면접에서 눈에 띄는 쪽은 한 일보다 직접 정한 것입니다.":
     " in that area, then choose the problem you worked on. In applications and interviews, what you decided stands out more than what you did.",
-  "어느 {word}의 일이었나요": "Which {word} was this work in?",
+  "어느 {word}의 일인지": "Which {word} was this work in?",
   "여러 개 고를 수 있습니다.": "You can pick more than one.",
   "최근 결과에서 확인된 {word}부터 보여 드립니다.":
     "We're showing the {word}s from your latest results first.",
@@ -128,10 +128,10 @@ export const WS_EN_EXPERIENCE: Record<string, string> = {
   "그때의 상황": "The situation at the time",
   "{word}{eul} 고르면 그 영역에서 직접 정한 것을 고르는 칸이 뜹니다. 고르지 않으시면 이 기록은 현재 상태에 더해지지 않고 목록에만 남습니다.":
     "Pick a {word} to see what you can choose as decided in that area. If you don't pick one, this record stays in your list but isn't added to your current state.",
-  "손에 남은 것이 있나요": "Do you have something to show for it?",
-  "남긴 결과물과 비교해 본 것을 고르면 같은 영역의 근거가 둘이 되고, 그만큼 현재 상태와 다음 할 일이 달라집니다. 없으면 비워 두셔도 됩니다.":
+  "손에 남은 결과물": "Do you have something to show for it?",
+  "남긴 결과물과 비교해 본 것을 고르면 같은 영역의 근거가 둘이 됩니다. 그러면 현재 상태와 다음 할 일이 달라집니다. 없으면 비워 두셔도 됩니다.":
     "If you pick what you produced and what you compared it against, that area gets a second piece of evidence, and your current state and next steps change to match. If there's nothing, you can leave this blank.",
-  "무엇이 남았나요": "What did you produce?",
+  "무엇이 남았는지": "What did you produce?",
   "해당하는 것이 없으면 비워 두셔도 됩니다.": "If nothing applies, you can leave this blank.",
   "무엇이 남았나": "What you produced",
   "무엇과 비교해 확인했나": "What you compared it against",

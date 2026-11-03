@@ -31,16 +31,15 @@ export const RULES: Rule[] = [
 const LONG = 60;
 
 const ROOTS = ["src/app", "src/components"];
-const EXTRA = ["src/lib/featured/text.ts", "src/lib/surface-text.ts", "src/lib/mat/job-title.ts",
-  /* 화면 문구 파일(`*-text.ts`). 화면이 여기서 읽으므로 같은 자로 잰다 */
-  ...["src/app/me/me-text.ts", "src/app/m/m-text.ts"]];
+const EXTRA = ["src/lib/featured/text.ts", "src/lib/surface-text.ts", "src/lib/mat/job-title.ts"];
 const SKIP = /\/(admin|ops|api)\//;
 
 function walk(dir: string, out: string[] = []): string[] {
   for (const f of readdirSync(dir)) {
     const p = path.join(dir, f);
     if (statSync(p).isDirectory()) walk(p, out);
-    else if (/\.tsx$/.test(f) && !SKIP.test(p + "/")) out.push(p);
+    /* 화면 문구 파일(`*-text.ts`)도 잰다. 화면이 거기서 글자를 읽는다 */
+    else if ((/\.tsx$/.test(f) || /-text\.ts$/.test(f)) && !SKIP.test(p + "/")) out.push(p);
   }
   return out;
 }

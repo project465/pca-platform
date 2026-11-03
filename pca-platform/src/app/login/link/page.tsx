@@ -50,9 +50,8 @@ export default async function LinkPage({
                 + " that would let anyone who registers your address elsewhere take"
                 + " your account."
               : `${who} 가 알려 준 이메일로 만들어진 CareerMatri 계정이 이미 있습니다.`
-                + " 이메일이 같다는 것만으로 두 계정을 합치지는 않습니다."
-                + " 합치면 그 주소를 다른 곳에 등록한 사람이 남의 계정을"
-                + " 가져갈 수 있기 때문입니다."}
+                + " 이메일이 같다는 것만으로는 두 계정을 합칠 수 없습니다."
+                + " 그 주소를 다른 곳에 등록한 사람이 남의 계정을 가져갈 수 있습니다."}
           </p>
 
           <ol className="pdsteps" style={{ marginTop: 18 }}>

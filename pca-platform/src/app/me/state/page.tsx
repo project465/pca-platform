@@ -18,6 +18,7 @@ import { wsSay } from "@/lib/me-v3/ws-say";
 import { CmShell, CmHead } from "../shell";
 import { DomainTile, SectionHeader, StatHero } from "../ui";
 
+import { STATE_TEXT as SX } from "../me-text";
 export async function generateMetadata() {
   const u = await currentUser().catch(() => null);
   const t = wsSay(u ? await wsLang(u.id) : "ko");
@@ -178,7 +179,7 @@ export default async function State(
       {justApplied ? (
         <p className="cm-done" role="status">
           {realChange
-            ? t("새 경험을 더했습니다. 아래 `최근 달라진 것` 에 무엇이 달라졌는지 적혀 있습니다.")
+            ? t(SX.added.ko)
             : t("경험 더함 · 변동 없음 (같은 영역 근거 2개부터 올라감)")}
         </p>
       ) : null}
@@ -226,7 +227,7 @@ export default async function State(
               : "",
           ].filter(Boolean).join(" ")
           : realChange
-            ? t("변동 있음 · 설명 가능 기준 미달 (아래 `최근 달라진 것`)")
+            ? t(SX.movedBelow.ko)
             : t("검사 영역 하나를 해 보고 경험으로 추가하면 표시됩니다.")}
         action={Object.keys(st.zoneOf).length > ready.length ? (
           <Link className="cm-btn" href="#domains">{t("전체 기술영역 보기")}</Link>
@@ -373,9 +374,9 @@ export default async function State(
           {st.gaps.length > gaps.length ? (
             <p className="cm-none" style={{ marginTop: 10 }}>
               {st.gaps.length - gaps.length === 1
-                ? t("그 밖에 {n}곳이 더 있습니다. 급한 차례대로 위에 셋을 적었습니다.#one",
+                ? t(SX.moreGapsOne.ko,
                   { n: st.gaps.length - gaps.length })
-                : t("그 밖에 {n}곳이 더 있습니다. 급한 차례대로 위에 셋을 적었습니다.",
+                : t(SX.moreGaps.ko,
                   { n: st.gaps.length - gaps.length })}
             </p>
           ) : null}
@@ -389,7 +390,7 @@ export default async function State(
             <p>
               {/* 직접 해 본 판단이 하나도 없으면 `보완할 부분 없음` 이 아니다(2026-11-03 견본 B 공통 P0-2) */}
               {(m.overview?.counts?.confirmed_axes ?? 0) === 0
-                ? t("직접 정한 판단 0 · 다음 과제에서 기준 하나를 직접 정해 보세요.")
+                ? t(SX.ownedZero.ko)
                 : t("보완할 곳 없음 · 남은 일: 가진 근거를 지원서 문장으로 만들기")}
             </p>
           </div>
@@ -526,7 +527,7 @@ export default async function State(
         ) : (
           <div className="cm-soon">
             <b>{t("설명할 수 있는 근거 0")}</b>{" "}
-            {t("검사 영역 하나를 해 보고 경험으로 추가하세요.")}
+            {t(SX.noneNext.ko)}
           </div>
         )}
         {m.evidence.partial.length ? (
@@ -534,7 +535,7 @@ export default async function State(
             {m.evidence.partial.slice(0, 4).map((g) => (
               <div className="cm-card" key={`p-${g.domain}.${g.axis}`}>
                 <h2>{dn(g.domain)} <em>{axisLabel(g.axis, lang)}</em></h2>
-                <p>{t("해 본 것은 확인됐습니다. 여기서 무엇을 직접 정했는지까지 적으면 지원서에서 쓸 수 있습니다.")}</p>
+                <p>{t(SX.ownLead.ko)}</p>
               </div>
             ))}
           </div>
@@ -584,8 +585,7 @@ export default async function State(
             ) : null}
           </div>
           <p className="cm-lead" style={{ marginTop: 10 }}>
-            고른 것만 적었습니다. 이 선택이 기술영역 결과를 바꾸지는
-            않습니다.
+            {SX.regionNote.ko}
           </p>
           <div className="cm-acts" style={{ marginTop: 12 }}>
             <Link className="cm-btn" href="/me/region">지역과 기관 다시 고르기</Link>

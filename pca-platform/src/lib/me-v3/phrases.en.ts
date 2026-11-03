@@ -46,7 +46,7 @@ export const PHRASES_EN: Record<string, string> = {
   "누르면 그 문항으로 돌아갑니다. 비워 둔 채 제출하셔도 되고, 답하지 않은 문항은 결과에 ‘답하지 않음’으로 표시됩니다.":
     "Tap one to go back to it. You can also submit as is. Any question you skip will show as “Not answered” in your results.",
   "답해야 하는 문항을 모두 채우셨습니다.": "You've answered every required question.",
-  "나중에 경험을 더 넣으시면 결과를 다시 정리해 드립니다.":
+  "나중에 경험을 더 넣으면 결과를 다시 정리합니다.":
     "Add more experience later, and we'll update your results.",
   "지금까지 답하신 것으로 결과를 만듭니다. 만들기 전에는 이전으로 돌아가 고칠 수 있고, 만든 결과는 그대로 보관됩니다.":
     "We'll build your results from your answers so far. You can go back and change answers before that; once built, your results are kept as they are.",
@@ -511,7 +511,7 @@ export const PHRASES_EN: Record<string, string> = {
   "이번에 묻지 않음": "Not asked this time",
   "열두 영역이 모두 한 줄씩 나옵니다. 앞의 두 칸은 응답에서 확인된 판단축의 개수이고, 뒤의 두 칸은 응답에서 고른 항목의 개수입니다. 모두 스스로 답한 것이고, 밖에서 확인한 기록은 아닙니다. 개수를 더하거나 점수로 바꾸지 않습니다. 이번 응시에서 판단을 묻지 않은 영역은 그 사실을 그대로 적습니다.":
     "Every area gets one row. The first two columns count the kinds of judgment confirmed in your answers. The last two count the items you picked. It's all self-reported, not checked by anyone else. We don't add the counts up or turn them into a score. Areas where we didn't ask about judgment this time are marked as such.",
-  "이 그래프는 응답에서 확인된 경험과 근거의 분포를 시각화한 것입니다. 적성·역량 순위나 직무 적합도를 의미하지 않습니다.":
+  "이 그래프는 응답에서 확인된 경험과 근거의 분포입니다. 순위나 직무 적합도가 아닙니다.":
     "This chart shows how the experience and evidence in your answers are spread out. It isn't a ranking of aptitude or ability, and it doesn't measure job fit.",
   "이미 결과를 받으셨습니다": "You've already received your results",
   "검사는 한 번만 응시합니다. 같은 사람의 응답이 두 벌 쌓이면 어느 쪽 결과를 봐야 하는지 알 수 없게 됩니다.":

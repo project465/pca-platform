@@ -134,7 +134,7 @@ export default function Steps(
   const steps = [
     { n: 1, title: t("무슨 경험") },
     { n: 2, title: flow.step2 },
-    { n: 3, title: t("남은 것") },
+    { n: 3, title: t("남긴 것") },
   ];
 
   /** 1단의 필수 칸을 지나기 전에 본다. 비었으면 그 칸을 집어서 알려 준다 */
@@ -211,7 +211,7 @@ export default function Steps(
 
       {/* ── 2단. 어디에서 무엇을 직접 정했나 ── */}
       <div hidden={step !== 2}>
-        <Guide n={2} title={t("그 일에서 무엇을 직접 정했나요")}
+        <Guide n={2} title={t("그 일에서 직접 정한 것")}
           body={
             <>
               {fromAction
@@ -225,7 +225,7 @@ export default function Steps(
             </>
           } />
         <fieldset className="cm-field">
-          <legend><span>{t("어느 {word}의 일이었나요", { word: flow.domainWord })}</span></legend>
+          <legend><span>{t("어느 {word}의 일인지", { word: flow.domainWord })}</span></legend>
           <em>{t("여러 개 고를 수 있습니다.")}</em>
           {/* **영역 고르기와 판단 고르기를 같은 생김새로 두지 않는다**
               (규격 §9). 영역은 고르는 **표**이고 판단은 고르는 **말**이다.
@@ -275,11 +275,11 @@ export default function Steps(
 
       {/* ── 3단. 무엇이 남았나 ── */}
       <div hidden={step !== 3}>
-        <Guide n={3} title={t("손에 남은 것이 있나요")}
-          body={t("남긴 결과물과 비교해 본 것을 고르면 같은 영역의 근거가 둘이 되고, 그만큼 현재 상태와 다음 할 일이 달라집니다. 없으면 비워 두셔도 됩니다.")} />
+        <Guide n={3} title={t("손에 남은 결과물")}
+          body={t("남긴 결과물과 비교해 본 것을 고르면 같은 영역의 근거가 둘이 됩니다. 그러면 현재 상태와 다음 할 일이 달라집니다. 없으면 비워 두셔도 됩니다.")} />
         {picked.length ? (
           <fieldset className="cm-field">
-            <legend><span>{t("무엇이 남았나요")}</span></legend>
+            <legend><span>{t("무엇이 남았는지")}</span></legend>
             <em>{t("해당하는 것이 없으면 비워 두셔도 됩니다.")}</em>
             {/* **고른 영역 가운데 첫째만 펴 둔다**(규격 §21).
                 영역 하나가 결과물 여섯에 비교 대상 여섯이라, 셋을 고른

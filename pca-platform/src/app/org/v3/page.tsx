@@ -6,6 +6,7 @@ import { campusV3, type Cell } from "@/lib/me-v3/campus";
 import { core as coreEntry, registry } from "@/lib/me-v3/core-registry";
 import { campusSay, university } from "@/lib/campus/registry";
 import { adminSay, sayTree } from "@/lib/campus/say-tree";
+import { ORG_V3_TEXT as OT } from "../org-text";
 import { industryChoices, roleChoices } from "@/lib/me-v3/runtime/session";
 import { campusNames, collegeChoices, leafChoices } from "@/lib/campus/labels";
 import {
@@ -214,9 +215,7 @@ export default async function CampusV3({
       {sp.e === "scope" ? (
         <Section>
           <p className="sf-note is-bad" role="alert">
-            이 계정에 연결된 기관이 학교 등록부의 학교로 잡히지 않아 자료를
-            내려받지 못했습니다. 집계는 그대로 보실 수 있습니다. 계속 안 되면
-            고객지원으로 알려 주세요.
+            {OT.scopeFail.ko}
           </p>
         </Section>
       ) : null}
@@ -308,9 +307,7 @@ export default async function CampusV3({
             완료율이 왜 시작한 학생 기준인지 읽는 사람이 알 수 없다 */}
         {v3.target > v3.roster ? (
           <p className="sf-meta" style={{ marginTop: 6 }}>
-            명단에 없는 학생 {v3.target - v3.roster}명이 학교 전용 진입으로
-            들어와 검사를 시작했습니다. 대상자에 그 학생들이 함께 들어
-            있습니다.
+            {OT.extraStudents.ko.replace("{n}", String(v3.target - v3.roster))}
           </p>
         ) : null}
         {/* **섞어서 보고 있으면 화면이 그 사실을 적는다.** 적지 않으면
@@ -439,7 +436,7 @@ export default async function CampusV3({
               적지 않는다. 다섯이 안 되는 칸은 수를 내지 않는다 */}
           {v3.college_rows.length ? (
             <Section title="단과대학별 응시 현황"
-              note="학교 전용 진입으로 들어온 응시입니다. 막대는 대상자 안에서 결과 받음 · 푸는 중을 쌓은 것입니다">
+              note={OT.collegeNote.ko}>
               <div className="cvx-card">
                 <CollegeStack minCell={MIN_CELL} rows={v3.college_rows.map((r) => ({
                   name: name.college(r.code), target: r.target, started: r.started, scored: r.scored, rate: r.rate,
@@ -503,8 +500,7 @@ export default async function CampusV3({
               </ul>
             ) : (
               <p className="sf-meta">
-                시작한 학생이 다섯 이상인 학과 가운데 아직 끝내지 않은 학생이
-                남은 곳은 없습니다.
+                {OT.watchNone.ko}
               </p>
             )}
           </Section>
@@ -563,8 +559,8 @@ export default async function CampusV3({
           </Section>
 
           <Section
-            title="기술영역이 지금 어디에 있는가"
-            note={"학생 한 명에 영역이 열둘씩 있습니다"}
+            title={OT.zoneTitle.ko}
+            note={OT.zoneNote.ko}
           >
             {/* 묶음 이름은 집계 쪽이 이미 사람의 말로 적어 준다
                 (`campus.ts` 의 `zoneKo`). 여기서 코드를 다시 적지 않는다 */}

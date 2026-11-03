@@ -34,7 +34,7 @@ export default function CareerpeakConsult({ docs, preview, name, email, sends, k
         <p className="cm-kicker">커리어피크 상담 신청</p>
         <h3 style={{ marginTop: 4 }}>이 정리로 연구직 · R&amp;D 상담을 받아 보세요</h3>
         <p className="cm-none">
-          커리어피크 상담가가 한 장 요약을 읽고, 맞는 연구직 · R&amp;D 자리와 지원 방향을 메일로 알려 드립니다.
+          커리어피크 상담가가 요약을 읽습니다. 맞는 연구직 · R&amp;D 자리와 지원 방향은 메일로 알려 드립니다.
           신청하지 않아도 다른 기능은 그대로 쓰실 수 있습니다.
         </p>
 
@@ -49,7 +49,7 @@ export default function CareerpeakConsult({ docs, preview, name, email, sends, k
           ) : <input type="hidden" name="doc" value={doc} />}
 
           <details className="cm-cp-sheet">
-            <summary>보낼 한 장 요약 펼쳐 보기</summary>
+            <summary>보낼 요약 보기</summary>
             <pre>{preview[doc] ?? ""}</pre>
           </details>
 
@@ -89,7 +89,7 @@ export default function CareerpeakConsult({ docs, preview, name, email, sends, k
               {busy ? "보내는 중…" : already ? "오늘 신청했습니다" : "커리어피크 상담 신청"}
             </button>
           </div>
-          {!agree && !already ? <p className="cm-none">동의 칸을 켜야 단추가 열립니다. 켜지 않으면 아무것도 보내지 않습니다.</p> : null}
+          {!agree && !already ? <p className="cm-none">동의 칸을 켜면 보내기 단추가 열립니다.</p> : null}
         </form>
         {state && !state.ok ? <p className="cm-fail" role="alert">{state.msg}</p> : null}
         {state?.ok ? <p className="cm-none" role="status">{state.msg}</p> : null}

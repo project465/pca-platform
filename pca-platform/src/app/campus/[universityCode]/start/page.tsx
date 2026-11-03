@@ -233,7 +233,7 @@ export default async function CampusStart({ params }: Params) {
             ? "고른 전공은 이 응시에만 적용되고 학과 소속은 그대로 남습니다."
             : ready
               ? `약 ${mins}분 · 답할 때마다 저장됩니다. 해 본 적 없는 일은 ‘해 본 적 없음’을 고르시면 됩니다.`
-              : "학과 담당자에게 알려 주시면 학교와 함께 확인해 드립니다.")}
+              : "학과 담당자에게 알리면 학교와 함께 확인합니다.")}
       </p>
     </CampusShell>
   );
@@ -253,8 +253,8 @@ function Blocked({ u, why }: { u: ReturnType<typeof university> & {}; why: strin
         <p className="cm-cmp-eyebrow">{u.university_name} · CareerMatri</p>
         <h1 className="cm-cmp-title">{t("학과 확인이 필요합니다")}</h1>
         <p className="cm-cmp-lead">
-          {t("등록된 학과를 확인하지 못해 검사를 시작할 수 없습니다. 학과 담당자에게"
-            + " 알려 주시면 학교와 함께 확인해 드립니다.")}
+          {t("등록된 학과를 확인하지 못했습니다. 그래서 검사를 시작할 수 없습니다."
+            + " 학과 담당자에게 알리면 학교와 함께 확인합니다.")}
         </p>
       </section>
       <p className="cm-cmp-note">{t(why)}</p>

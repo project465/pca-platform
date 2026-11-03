@@ -27,7 +27,7 @@ export function MatFileDrop({ ready = true, consented, used, cap, pending }: {
       {ready && !consented ? (
         <label className="mt-agree">
           <input type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} />
-          <span>파일 내용(이름 · 학번 · 생년월일 포함)을 Anthropic(미국)의 Claude가 읽는 데 동의해요. 원본은 저장하지 않아요.</span>
+          <span>파일 내용(이름 · 학번 · 생년월일 포함)을 Anthropic(미국)의 Claude가 읽는 데 동의해요. 원본은 읽은 뒤 바로 지워요.</span>
         </label>
       ) : null}
       <form ref={form} action={act} className="mt-form">

@@ -16,6 +16,7 @@ import { activeTrack } from "@/lib/track";
 import { changeTargets } from "./actions";
 import { MAT_PUBLIC } from "@/lib/mat-switch";
 
+import { EXPLORE_TEXT as EX } from "../me-text";
 export async function generateMetadata() {
   const user = await requireUser();
   const t = wsSay(await wsLang(user.id));
@@ -229,8 +230,7 @@ export default async function Explore({
           <summary>{t("관심 산업·직무 다시 고르기")}</summary>
           <form action={changeTargets} className="cm-formcard">
             <p className="cm-none">
-              {t("산업과 직무를 둘씩까지 고르면 그쪽이 맨 위에 서서 다시 견줄 수 "
-                + "있습니다. 검사 당시 결과는 그대로 남습니다.")}
+              {t(EX.pickLead.ko)}
             </p>
             <p className="cm-listhead">{t("산업#explore")}</p>
             <div className="cm-pickset">
@@ -260,14 +260,14 @@ export default async function Explore({
       ) : lang === "en" || !MAT_PUBLIC ? null : (
         /* Track 은 한국 상품이다(`WS_KR_ONLY`). 영어 작업공간에는 그리로 가는 길을 두지 않는다 */
         <p className="cm-soon" style={{ marginBottom: 18 }}>
-          <b>관심 산업·직무를 바꿔 다시 비교하는 일은 Track 에서 열립니다.</b>{" "}
-          지금은 검사에서 고르신 산업과 직무로 차례가 섭니다.{" "}
-          <Link href="/me/track">Track 보기</Link>
+          <b>{EX.lockedLead.ko}</b>{" "}
+          {EX.lockedNow.ko}{" "}
+          <Link href="/mat">{EX.lockedGo.ko}</Link>
         </p>
       )}
       {sp.targets === "1" && track.on ? (
         <p className="cm-none" role="status" style={{ marginBottom: 14 }}>
-          {t("고르신 산업과 직무로 다시 세웠습니다.")}
+          {t(EX.saved.ko)}
         </p>
       ) : null}
 
@@ -279,7 +279,7 @@ export default async function Explore({
         <>
           <SectionHeader icon="compass" title={t("먼저 볼 산업")}
             sub={mine.size
-              ? t("응시에서 고른 산업이 먼저 서고, 그다음이 지금 확인된 영역과 겹치는 쪽입니다.")
+              ? t(EX.industryLead.ko)
               : t("지금 확인된 영역이 이 산업들이 보는 판단과 겹칩니다.")} />
           {/* **남는 칸을 두지 않는다**(규격 §17). 위에 서는 것이 하나나
               둘이면 세 칸 격자에 빈 면이 남는다. 칸 수를 담긴 수에
@@ -319,7 +319,7 @@ export default async function Explore({
         <>
           <SectionHeader icon="send" tone="c" title={t("먼저 볼 직무")}
             sub={myRoles.size
-              ? t("응시에서 고른 직무가 먼저 서고, 그다음이 확인된 영역을 많이 쓰는 쪽입니다.")
+              ? t(EX.roleLead.ko)
               : t("확인된 영역을 가장 많이 쓰는 직무입니다.")} />
           <PickGrid cols={Math.min(role.top.length, 3) as 1 | 2 | 3}>
             {role.top.map((r) => (

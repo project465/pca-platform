@@ -17,6 +17,7 @@ import {
 } from "../ui";
 import { moveAction, pullActions } from "./actions";
 
+import { NEXT_TEXT as NX } from "../me-text";
 export async function generateMetadata() {
   const u = await currentUser().catch(() => null);
   const t = wsSay(u ? await wsLang(u.id) : "ko");
@@ -58,23 +59,15 @@ const lane = (days: number): "NOW" | "NEXT" | "LATER" =>
  * 것이고, 코드에 없는 종류는 비워 둔다.
  */
 const whyByCode = (t: WsSay): Record<string, string> => ({
-  WRITE_UP: t("근거는 모였고, 남은 일은 그것을 지원서에서 설명할 문장으로"
-    + " 만드는 것입니다."),
-  DEEPEN_OWNERSHIP: t("해 본 것은 확인됐습니다. 남은 일은 그중 어디까지"
-    + " 직접 정했는지를 적는 것입니다."),
-  BUILD_OUTPUT: t("남긴 것이 없으면 해 봤다는 말을 지원서에서 설명할 수"
-    + " 없습니다."),
-  ADD_VERIFICATION: t("무엇과 비교해 확인했는지가 없으면 그 값이 맞다는"
-    + " 말을 할 수 없습니다."),
-  FILL_AXIS: t("그 영역에서 아직 확인되지 않은 판단이라, 채우면 설명할 수 있는"
-    + " 범위가 넓어집니다."),
-  TRY_SHORT_EXPERIENCE: t("관심은 있고 해 본 적이 없는 영역입니다. 짧게 한 번"
-    + " 해 보면 판단할 재료가 생깁니다."),
+  WRITE_UP: t(NX.whyWriteUp.ko),
+  DEEPEN_OWNERSHIP: t(NX.whyOwnership.ko),
+  BUILD_OUTPUT: t(NX.whyOutput.ko),
+  ADD_VERIFICATION: t(NX.whyVerify.ko),
+  FILL_AXIS: t(NX.whyAxis.ko),
+  TRY_SHORT_EXPERIENCE: t(NX.whyTry.ko),
   STUDY_NEXT: t("관심과 배울 뜻이 함께 높은 영역입니다."),
-  RECHECK_DIRECTION: t("지금 응답만으로는 어느 영역이 앞선다고 보기"
-    + " 어렵습니다."),
-  EXPLORE_BROADLY: t("지금 응답만으로는 어느 영역이 앞선다고 보기"
-    + " 어렵습니다."),
+  RECHECK_DIRECTION: t(NX.whyRecheck.ko),
+  EXPLORE_BROADLY: t(NX.whyRecheck.ko),
 });
 
 export default async function Next(
@@ -207,7 +200,7 @@ export default async function Next(
       <CmHead
         title={first ? t("지금 할 한 가지") : t("무엇부터 할지")}
         lead={st.model
-          ? t("급한 순서보다 할 수 있는 때로 묶었습니다. 하나를 끝내면 그다음이 나옵니다.")
+          ? t(NX.groupLead.ko)
           : t("검사를 한 번 끝내면 결과가 낸 할 일을 여기에 담을 수 있습니다.")}
         actions={st.model ? (
           /* **짙은 단추는 쪽에 하나다**(규격 §10). 담을 것이 이미 담겨
@@ -251,7 +244,7 @@ export default async function Next(
           하나에 한 줄만 적으면 쪽이 덜 만들어진 것으로 읽힌다. Hero 하나와
           **실제 route 가 있는** 칸 넷을 세운다 */}
       <StatHero icon="check" label={t("지금 할 일")} value={t("없음")}
-        note={t("할 일을 모두 치우셨습니다. 새 경험을 더하면 다음 할 일이 생길 수 있습니다.")}
+        note={t(NX.allDone.ko)}
         action={<Link className="cm-btn is-primary" href="/me/experience/new">{t("경험 추가")}</Link>} />
       <SectionHeader icon="compass" tone="c" title={t("다음에 할 수 있는 것")} />
       <PickGrid cols={3}>
@@ -274,7 +267,7 @@ export default async function Next(
           하나에 한 줄만 적으면 쪽이 덜 만들어진 것으로 읽힌다. Hero 하나와
           **실제 route 가 있는** 칸 넷을 세운다 */}
       <StatHero icon="check" label={t("지금 할 일")} value={t("없음")}
-        note={t("담아 둔 일을 다 끝내셨습니다. 새 경험을 더하면 다음 할 일이 생길 수 있습니다.")}
+        note={t(NX.takenDone.ko)}
         action={<Link className="cm-btn is-primary" href="/me/experience/new">{t("경험 추가")}</Link>} />
       <SectionHeader icon="compass" tone="c" title={t("다음에 할 수 있는 것")} />
       <PickGrid cols={3}>
@@ -314,7 +307,7 @@ export default async function Next(
                       깊이는 할 때 읽는 글이지 고를 때 읽는 글이 아니다 */}
                   {guide.length ? (
                     <details className="cm-why is-fields">
-                      <summary>{t("어떻게 적으면 되나요")}</summary>
+                      <summary>{t(NX.howTo.ko)}</summary>
                       {guide.map((x) => <p key={x}>{x}</p>)}
                     </details>
                   ) : null}
@@ -393,7 +386,7 @@ export default async function Next(
                 );
               })}
               <p className="cm-none">
-                {t("하나를 끝내면 그다음 줄이 위로 올라옵니다. 지금은 첫 줄만 하시면 됩니다.")}
+                {t(NX.restLead.ko)}
               </p>
             </details>
           ) : null}

@@ -157,9 +157,9 @@ export const WS_EN_TRACK: Record<string, string> = {
   "결과지에서 나온 할 일입니다.": "This task comes from your result.",
   "하는 중입니다.": "In progress.",
   "아직 시작하지 않았습니다.": "Not started yet.",
-  "끝내면 지금 할 일 쪽에서 끝냄으로 바꿔 주세요.": "When you're done, mark it as done on your to-do page.",
+  "끝내면 할 일 쪽에서 끝냄으로 바꾸면 됩니다.": "When you're done, mark it as done on your to-do page.",
   "지금 할 일 열기": "Open to-do",
-  "남은 할 일이 없습니다. 이번 주에 한 과제나 활동 하나를 경험으로 적어 두세요.":
+  "남은 할 일이 없습니다. 이번 주에 한 과제나 활동 하나를 경험으로 적어 두면 됩니다.":
     "Nothing left on your list. Record one assignment or activity from this week as an experience.",
   "경험 적기": "Add an experience",
   "여러 공고가 함께 요구하는데 아직 채우지 못한 것": "Asked for by several postings, not in your record yet",

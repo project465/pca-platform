@@ -73,8 +73,8 @@ export default function FileDrop({ consented, used, cap, pending, agency = false
               accept="application/pdf,image/jpeg,image/png,image/webp"
               onChange={(e) => { if (e.target.files?.length) form.current?.requestSubmit(); }} />
             <b>{busy ? "읽는 중입니다. 10~30초 걸립니다…"
-              : agree ? "여기에 파일을 끌어다 놓거나 눌러서 고르세요" : "위 동의 칸을 켜면 열립니다"}</b>
-            <span>읽은 결과는 저장되지 않은 초안입니다. 열어서 고치고 직접 저장하세요.</span>
+              : agree ? "파일을 여기에 끌어다 놓거나, 눌러서 고릅니다" : "위 동의 칸을 켜면 열립니다"}</b>
+            <span>읽은 결과는 저장되지 않은 초안입니다. 열어서 고친 뒤 직접 저장하면 됩니다.</span>
           </label>
         </form>
         {state && !state.ok ? <p className="cm-fail" role="alert">{state.msg}</p> : null}

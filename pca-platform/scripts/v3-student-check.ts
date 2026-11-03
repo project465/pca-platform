@@ -291,7 +291,7 @@ console.log("\n── 13. Human Review 결함이 닫혔는가 ──");
     (steps.match(/name="td"/g) ?? []).length === 1 && /rest\.map\(domPick\)/.test(steps));
   /* (c) 저장 직후가 일곱을 차례로 적고 내부 근거 수를 나열하지 않는다 */
   const rc = body("src/app/me/recompute/page.tsx");
-  for (const h of ["경험이 저장됐어요", "기록으로 확인된 역할과 판단",
+  for (const h of ["경험이 저장됐습니다", "기록으로 확인된 역할과 판단",
     "실제 달라진 현재 상태", "다음에 보완할 것", "현재 상태 확인하기", "다른 경험 추가하기"]) {
     ok(`저장 직후에 \`${h}\` 가 선다`, rc.includes(h));
   }

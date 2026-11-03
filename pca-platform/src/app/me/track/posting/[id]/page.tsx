@@ -44,12 +44,12 @@ function withBlanks(s: string) {
 
 /* 화면 글은 한국어 원문이 열쇠다(`ws-en/track-posting.ts`). 영어면 사전을 거친다 */
 const STATUS: Record<ItemStatus, { label: string; why: string }> = {
-  ready: { label: "설명할 경험 있음", why: "결과에서 근거가 선 영역입니다." },
+  ready: { label: "설명할 경험 있음", why: "결과에서 근거가 확인된 영역입니다." },
   partial: { label: "정리가 덜 됨", why: "해 본 일은 있는데 직접 정한 것이나 남긴 것이 아직 적혀 있지 않습니다." },
   empty: { label: "아직 없음", why: "이 영역의 경험이 아직 기록에 없습니다." },
   /* `전공 밖 조건` 이라고 적었더니 회원 전공이 목록에 든 전공 요건까지 `전공 밖` 으로 읽혔다
      (2026-10-31 대표 시험). 경험이 아니라 지원 자격으로 보는 줄이라는 뜻을 그대로 적는다 */
-  unmapped: { label: "자격 조건", why: "학력·전공·경력·근무 여건처럼 경험 기록이 아니라 지원 자격으로 보는 조건입니다." },
+  unmapped: { label: "자격 조건", why: "학력·전공·경력·근무 여건 같은 지원 자격 조건입니다." },
 };
 
 /** 전공 요건 줄에 회원 전공이 들어 있으면 그렇다고 적는다. 판정이 아니라 읽은 사실이다 */
@@ -67,7 +67,7 @@ const majorFits = (it: PostingItem, stem: string) =>
  */
 const UNMATCHED = { label: "영역 확인 필요", why: "이 전공의 업무 영역에 바로 잇지 못한 줄입니다. 어느 경험으로 설명할지 직접 정해 주세요." };
 /** 연구 실적 줄(논문 · 특허 · 과제 …)은 아래 따로 세운 표에서 기록과 맞댄다 */
-const RESEARCH = { label: "연구 실적 요구", why: "아래 ‘연구 실적 요구’ 표에서 내 기록과 비교해 드립니다." };
+const RESEARCH = { label: "연구 실적 요구", why: "아래 ‘연구 실적 요구’ 표에서 내 기록과 비교합니다." };
 const isResearchLine = (it: PostingItem) => it.status === "unmapped" && researchKindOf(it.text) !== null;
 const statusOf = (it: PostingItem, t: WsSay, stem = "") => {
   const s = isResearchLine(it) ? RESEARCH
@@ -217,7 +217,7 @@ export default async function Posting({ params, searchParams }: {
         <>
           <span id="research" />
           <SectionHeader icon="doc" title={t("연구 실적 요구")}
-            sub={t("논문 · 특허 · 연구 과제 · 학회 발표 · 연구계획서 · 학위처럼 연구직 공고에 자주 붙는 줄을 따로 모았습니다. 편수나 등급이 공고 기준에 맞는지는 판단하지 않고, 기록에 있는지만 봅니다.")} />
+            sub={t("연구직 공고에 자주 붙는 요구를 따로 모았습니다. 논문 · 특허 · 연구 과제 · 학회 발표 · 연구계획서 · 학위가 여기에 들어갑니다. 이 표는 기록에 있는지만 봅니다.")} />
           <div className="cm-tablewrap">
             <table className="cm-table">
               <thead>

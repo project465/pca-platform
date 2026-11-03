@@ -210,7 +210,7 @@ export default async function PilotJoin({
             <p>
               전공은 학위·계열과 함께 놓으면 개인이 좁혀지는 항목이라, 받는
               쪽에서 지우는 날을 함께 정해 둡니다. 다섯 명이 안 되는 그룹은
-              평균을 내지 않습니다. 이 결과는 합격 가능성을 뜻하지 않습니다.
+              평균을 내지 않습니다.
             </p>
             <form action={leavePilot}>
               <button type="submit" className="rs-discbtn">그만두고 적은 것 지우기</button>

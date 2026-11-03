@@ -9,14 +9,14 @@ export const WS_EN_TRACK_POSTING: Record<string, string> = {
 
   /* 상태 넷 + 영역 확인 필요 */
   "설명할 경험 있음": "You can explain this",
-  "결과에서 근거가 선 영역입니다.": "Your results show solid evidence in this area.",
+  "결과에서 근거가 확인된 영역입니다.": "Your results show solid evidence in this area.",
   "정리가 덜 됨": "Needs writing up",
   "해 본 일은 있는데 직접 정한 것이나 남긴 것이 아직 적혀 있지 않습니다.":
     "You've done this kind of work, but what you decided or produced isn't written down yet.",
   "아직 없음": "Not yet",
   "이 영역의 경험이 아직 기록에 없습니다.": "There's no experience in this area in your records yet.",
   "자격 조건": "Eligibility",
-  "학력·전공·경력·근무 여건처럼 경험 기록이 아니라 지원 자격으로 보는 조건입니다.":
+  "학력·전공·경력·근무 여건 같은 지원 자격 조건입니다.":
     "A condition like a degree, major, years of experience or work arrangement. It's about eligibility, not your experience records.",
   "전공 맞음": "Major fits",
   "회원님 전공이 이 조건의 전공 목록에 들어 있습니다.": "Your major is on this line's list of majors.",
@@ -110,9 +110,9 @@ export const WS_EN_TRACK_POSTING: Record<string, string> = {
 
   /* 연구 실적 요구 · 학위 연구 질문 */
   "연구 실적 요구": "Research record",
-  "아래 ‘연구 실적 요구’ 표에서 내 기록과 비교해 드립니다.": "Matched against your records in the Research record table below.",
+  "아래 ‘연구 실적 요구’ 표에서 내 기록과 비교합니다.": "Matched against your records in the Research record table below.",
   " · 연구 실적 요구 {n}": " · Research record {n}",
-  "논문 · 특허 · 연구 과제 · 학회 발표 · 연구계획서 · 학위처럼 연구직 공고에 자주 붙는 줄을 따로 모았습니다. 편수나 등급이 공고 기준에 맞는지는 판단하지 않고, 기록에 있는지만 봅니다.":
+  "연구직 공고에 자주 붙는 요구를 따로 모았습니다. 논문 · 특허 · 연구 과제 · 학회 발표 · 연구계획서 · 학위가 여기에 들어갑니다. 이 표는 기록에 있는지만 봅니다.":
     "Lines that research postings often carry (papers, patents, research projects, conference talks, proposals, degrees) are gathered here. We don't judge whether counts or ranks meet the posting's bar, only whether your records have them.",
   "종류": "Type",
   "내 기록": "Your records",

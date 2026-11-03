@@ -13,7 +13,7 @@ import FeaturedCard from "./featured";
  *
  * **새 class 를 짓지 않는다.** `rs-pack` 의 줄 모양을 그대로 쓴다
  */
-const HEAD = { A: "내 결과와 잘 맞는 곳", B: "한 걸음 더 채우면 맞는 곳", C: "넓혀 볼 곳" } as const;
+const HEAD = { A: "내 결과와 잘 맞는 곳", B: "조금 더 채우면 맞는 곳", C: "넓혀 볼 곳" } as const;
 export const short = (n: string) => n.replace(/\(주\)|주식회사|㈜/g, "").trim();
 
 /**

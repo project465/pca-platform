@@ -216,7 +216,8 @@ export const ASSESSMENT_UI_VERSION = "ME_V3_2_ASSESSMENT_UI_V73";
 /** 시작 화면 `결과지 견본 보기` 한 줄 — copy.43 */
 /** 공용 영어 사전(`phrases.en.ts`)에서 결과지 문구 열쇠만 바뀌었다. 검사 화면 글과 문항은 그대로다 — copy.44 */
 /** 시작 화면 `{n}문항 · 약 {mins}분 · 답할 때마다 저장됩니다` · `해 본 적 없음` 한 줄 — copy.45 */
-export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.45";
+/** 화면 문구 규칙: 끝 화면 `다시 정리해 드립니다` → `다시 정리합니다`, 등급 설명의 `파고들지` → `먼저 볼지` — copy.46 */
+export const ASSESSMENT_COPY_VERSION = "me-v3-2-assessment-copy.46";
 
 /*
  * `V19` · `copy.14` 로 올린 까닭. **경험 빈도의 화면 말을 공통으로

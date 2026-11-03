@@ -97,7 +97,7 @@ export default async function PartnerPage({
             <span className="pl-chip"><span className="pl-dot" />{L.chip}</span>
             <h1>{L.h1[0]}<br /><em>{L.h1[1]}</em></h1>
             <p className="pl-lead">{L.lead}</p>
-            {hasJob ? <p className="pl-job-note">보시던 공고를 기억해 두었습니다. 로그인하면 바로 비교해 드립니다.</p> : null}
+            {hasJob ? <p className="pl-job-note">보시던 공고를 기억해 두었습니다. 로그인하면 그 공고를 바로 비교합니다.</p> : null}
             <div className="pl-cta">
               <Link href={start.href} className="pl-btn is-pri is-lg">{start.label} <Icon name="chev" size={16} /></Link>
               <a href="#how" className="pl-btn is-lg">어떻게 쓰는지 보기</a>
@@ -180,17 +180,7 @@ export default async function PartnerPage({
         </div>
       </section>
 
-      <section className="pl-sec is-soft">
-        <div className="pl-wrap">
-          <div className="pl-eyebrow">OUR LINE</div>
-          <h2>이런 일은 하지 않습니다</h2>
-          <div className="pl-nots">
-            {L.nots.map(([h, p]) => (
-              <div className="pl-not" key={h}><strong><i aria-hidden="true">✕</i>{h}</strong><p>{p}</p></div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* `하지 않는 일` 묶음은 걷었다(화면 문구 규칙 7: 하지 않는 일을 늘어놓지 않는다). 자료(`L.nots`)는 남겨 둔다 */}
 
       <section className="pl-sec" id="price">
         <div className="pl-wrap">

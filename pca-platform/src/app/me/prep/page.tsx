@@ -14,6 +14,7 @@ import { CmShell, CmHead } from "../shell";
 import { EmptyState, SectionHeader } from "../ui";
 import { savePrep } from "./actions";
 
+import { PREP_TEXT as PR } from "../me-text";
 export async function generateMetadata() {
   const user = await requireUser();
   const t = wsSay(await wsLang(user.id));
@@ -92,8 +93,7 @@ export default async function Prep({
             ? new Date(`${meta.answeredOn.slice(0, 10)}T00:00:00`).toLocaleDateString("en-US",
               { month: "short", day: "numeric", year: "numeric" })
             : meta.answeredOn ?? "", done: doneCount, total })}
-        lead={t("내 결과와 경험에서 지원서 문항의 재료와 예상 면접 질문을 꺼냈습니다. "
-          + "글은 직접 쓰고, 저장해 두면 다시 와서 고칠 수 있습니다.")}
+        lead={t(PR.lead.ko)}
       />
 
       <section style={{ marginTop: 8 }}>
@@ -129,13 +129,13 @@ export default async function Prep({
 
       <section style={{ marginTop: 28 }}>
         <SectionHeader icon="users" title={t("예상 면접 질문")}
-          sub={t("내 결과에서 면접관이 파고들 만한 부분을 골랐습니다. 소리 내어 답해 본 뒤 요점을 적어 두세요.")} />
+          sub={t(PR.interviewSub.ko)} />
         {prep.interviews.length ? (
           <ul className="cm-list">
             {prep.interviews.map((q) => (
               <PrepItem key={q.key} kind="interview" pkey={q.key} title={q.q} ask={q.q}
                 answer={answerOf.get(`interview|${q.key}`)} open={justSaved === q.key} lang={lang}>
-                <p className="cm-row"><b>{t("왜 나오나요")}</b><span>{q.why}</span></p>
+                <p className="cm-row"><b>{t(PR.why.ko)}</b><span>{q.why}</span></p>
                 {q.prepare.length ? (
                   <p className="cm-row"><b>{t("떠올릴 것")}</b><span>{q.prepare.join(" · ")}</span></p>
                 ) : null}
@@ -153,7 +153,7 @@ export default async function Prep({
       {old.length ? (
         <section style={{ marginTop: 28 }}>
           <SectionHeader icon="log" title={t("전에 적어 둔 답")}
-            sub={t("결과가 바뀌어 지금은 서지 않는 질문에 적었던 답입니다. 그대로 두었습니다.")} />
+            sub={t(PR.oldSub.ko)} />
           <ul className="cm-list">
             {old.map((a) => (
               <PrepItem key={`${a.kind}|${a.prompt_key}`} kind={a.kind} pkey={a.prompt_key}
@@ -164,8 +164,8 @@ export default async function Prep({
       ) : null}
 
       <p className="cm-soon" style={{ marginTop: 24 }}>
-        <b>{t("성과와 숫자는 직접 적어 주세요.")}</b>
-        {" " + t("기간·인원·수치는 실제 값으로. 적은 답은 본인만 봅니다.")}
+        <b>{t(PR.realValues.ko)}</b>
+        {" " + t(PR.realValuesSub.ko)}
       </p>
     </CmShell>
   );

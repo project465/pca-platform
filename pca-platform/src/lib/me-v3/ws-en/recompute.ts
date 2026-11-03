@@ -15,9 +15,9 @@ export const WS_EN_RECOMPUTE: Record<string, string> = {
   "직접 결정": "Made the call",
 
   "다룬 문제": "Problems you worked on",
-  "경험은 저장됐어요": "Your experience is saved",
-  "현재 상태를 다시 확인하고 있어요": "We're rechecking your current state",
-  "경험이 저장됐어요": "Your experience is saved",
+  "경험은 저장됐습니다": "Your experience is saved",
+  "현재 상태를 다시 확인하고 있습니다": "We're rechecking your current state",
+  "경험이 저장됐습니다": "Your experience is saved",
   "적어 두신 경험이 어디로 갔는지": "Where your experience went",
   "현재 상태 갱신만 끝내지 못했습니다. 적어 주신 기록은 그대로 있습니다.":
     "We just couldn't finish updating your current state. Your record is still there.",

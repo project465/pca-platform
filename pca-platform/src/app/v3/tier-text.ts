@@ -446,7 +446,7 @@ export const ROLE_HINT: Record<string, Record<string, string>> = {
     ROLE_PROCESS_V1: "배양 조건을 정하고 그 회차를 쓸지 판단합니다",
     ROLE_FACILITY_V1: "장비와 시설을 점검해 쓸 수 있는 상태로 둡니다",
     ROLE_PROJECT_V1: "누가 무엇을 언제까지 할지 정하고 일정을 맞춥니다",
-    ROLE_DISCOVERY_V1: "아직 답이 없는 질문 가운데 무엇을 파고들지 정합니다",
+    ROLE_DISCOVERY_V1: "아직 답이 없는 질문 가운데 무엇을 먼저 볼지 정합니다",
     ROLE_QARA_V1: "기준을 지켰는지 보고, 그 판단을 기록으로 남깁니다",
   },
   /* 체육 */
