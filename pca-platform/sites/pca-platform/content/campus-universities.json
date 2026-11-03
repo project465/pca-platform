@@ -1623,7 +1623,30 @@
      "KU26_SEMI",
      "KU26_BME",
      "KU26_BIOMED",
-     "KU26_HEALTHENV"
+     "KU26_HEALTHENV",
+     "KU26_PHIL",
+     "KU26_KHIST",
+     "KU26_HIST",
+     "KU26_SOC",
+     "KU26_POL",
+     "KU26_ECON",
+     "KU26_INTL",
+     "KU26_FOODECON",
+     "KU26_IE",
+     "KU26_ENVECO",
+     "KU26_EARTH",
+     "KU26_MATH",
+     "KU26_PHYS",
+     "KU26_ENERGY",
+     "KU26_MSE",
+     "KU26_CHEM",
+     "KU26_CBE",
+     "KU26_PREMED",
+     "KU26_HOMEEDU",
+     "KU26_MATHEDU",
+     "KU26_ENGEDU",
+     "KU26_GEOEDU",
+     "KU26_HISTEDU"
     ],
     "note": "**사업주 지시로 Core 가 열린 자리를 전부 연다(2026-10-20).** 경영 · 기계에 더해 컴퓨터·소프트웨어 · 전기전자 · 언어 · 시각디자인 · 미디어 · 패션뷰티 · 체육 · 법·경찰 · 행정 · 식품 · 원예조경 · 보건 · 건축 · 심리 · 교육 · 바이오 · 간호 · 토목 Core 를 가리키고 매핑이 EXACT 인 자리다. Core 가 없는 자리(`core_code: null`)와 전공을 고르는 자리(routing)는 들지 않는다. 한 자리라도 운영에서 걸리면 그 자리만 이 목록에서 뺀다"
    },
@@ -1703,33 +1726,37 @@
          "code": "KU26_PHIL",
          "name": "철학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "LANG_CORE_V1",
+         "specialization": "SPEC_LANG_LINGUISTICS",
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         },
         {
          "code": "KU26_KHIST",
          "name": "한국사학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "LANG_CORE_V1",
+         "specialization": "SPEC_LANG_LINGUISTICS",
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         },
         {
          "code": "KU26_HIST",
          "name": "사학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "LANG_CORE_V1",
+         "specialization": "SPEC_LANG_LINGUISTICS",
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         },
         {
          "code": "KU26_SOC",
          "name": "사회학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "PUBADM_CORE_V1",
+         "specialization": "SPEC_PUBADM_GENERAL",
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         },
         {
          "code": "KU26_CLASSIC",
@@ -1745,7 +1772,8 @@
          "kind": "department",
          "core_code": "LANG_CORE_V1",
          "specialization": "SPEC_LANG_FOREIGN",
-         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         },
         {
          "code": "KU26_GERMAN",
@@ -1753,7 +1781,8 @@
          "kind": "department",
          "core_code": "LANG_CORE_V1",
          "specialization": "SPEC_LANG_FOREIGN",
-         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         },
         {
          "code": "KU26_FRENCH",
@@ -1761,7 +1790,8 @@
          "kind": "department",
          "core_code": "LANG_CORE_V1",
          "specialization": "SPEC_LANG_FOREIGN",
-         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         },
         {
          "code": "KU26_CHINESE",
@@ -1769,7 +1799,8 @@
          "kind": "department",
          "core_code": "LANG_CORE_V1",
          "specialization": "SPEC_LANG_FOREIGN",
-         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         },
         {
          "code": "KU26_RUSSIAN",
@@ -1777,7 +1808,8 @@
          "kind": "department",
          "core_code": "LANG_CORE_V1",
          "specialization": "SPEC_LANG_FOREIGN",
-         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         },
         {
          "code": "KU26_JAPANESE",
@@ -1785,7 +1817,8 @@
          "kind": "department",
          "core_code": "LANG_CORE_V1",
          "specialization": "SPEC_LANG_JAPAN",
-         "note": "일본지역학 갈래로 간다"
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")",
+         "provisional": true
         },
         {
          "code": "KU26_SPANISH",
@@ -1793,7 +1826,8 @@
          "kind": "department",
          "core_code": "LANG_CORE_V1",
          "specialization": "SPEC_LANG_FOREIGN",
-         "mapping_note": "사업주 승인으로 잇는다(2026-10-22): 그 Core 의 영역 사전이 이 학과가 다루는 판단을 들고 있는 자리만 잇는다"
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         },
         {
          "code": "KU26_LINGUISTICS",
@@ -1835,17 +1869,19 @@
          "code": "KU26_ENVECO",
          "name": "환경생태공학부",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "AGRI_CORE_V1",
+         "specialization": "SPEC_AGRI_HORTIFOREST",
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         },
         {
          "code": "KU26_FOODECON",
          "name": "식품자원경제학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "BIZ_CORE_V1",
+         "specialization": "SPEC_BIZ_AGRI_BIZ",
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         }
        ]
       },
@@ -1857,17 +1893,19 @@
          "code": "KU26_POL",
          "name": "정치외교학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "PUBADM_CORE_V1",
+         "specialization": "SPEC_PUBADM_GENERAL",
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         },
         {
          "code": "KU26_ECON",
          "name": "경제학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "BIZ_CORE_V1",
+         "specialization": "SPEC_BIZ_GENERAL",
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         },
         {
          "code": "KU26_STAT",
@@ -1894,33 +1932,37 @@
          "code": "KU26_MATH",
          "name": "수학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "AI_CORE_V1",
+         "specialization": "SPEC_AI_DATA",
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         },
         {
          "code": "KU26_PHYS",
          "name": "물리학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "EE_CORE_V1",
+         "specialization": "SPEC_EE_GENERAL",
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         },
         {
          "code": "KU26_CHEM",
          "name": "화학과",
          "kind": "department",
-         "core_code": null,
+         "core_code": "BT_CORE_V1",
          "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         },
         {
          "code": "KU26_EARTH",
          "name": "지구환경과학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "CIV_CORE_V1",
+         "specialization": "SPEC_CIV_GENERAL",
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         }
        ]
       },
@@ -1932,17 +1974,19 @@
          "code": "KU26_CBE",
          "name": "화공생명공학과",
          "kind": "department",
-         "core_code": null,
+         "core_code": "BT_CORE_V1",
          "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         },
         {
          "code": "KU26_MSE",
          "name": "신소재공학부",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "EE_CORE_V1",
+         "specialization": "SPEC_EE_SEMI",
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         },
         {
          "code": "KU26_CIVIL",
@@ -1971,9 +2015,10 @@
          "code": "KU26_IE",
          "name": "산업경영공학부",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "BIZ_CORE_V1",
+         "specialization": "SPEC_BIZ_MIS",
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         },
         {
          "code": "KU26_EE",
@@ -1986,9 +2031,10 @@
          "code": "KU26_ENERGY",
          "name": "융합에너지공학과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "EE_CORE_V1",
+         "specialization": "SPEC_EE_POWER",
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         },
         {
          "code": "KU26_SEMI",
@@ -2015,9 +2061,10 @@
          "code": "KU26_PREMED",
          "name": "의예과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "HEALTH_CORE_V1",
+         "specialization": "SPEC_HEALTH_GENERAL",
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         }
        ]
       },
@@ -2044,17 +2091,19 @@
          "code": "KU26_HOMEEDU",
          "name": "가정교육과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "EDU_CORE_V1",
+         "specialization": "SPEC_EDU_GENERAL",
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         },
         {
          "code": "KU26_MATHEDU",
          "name": "수학교육과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "EDU_CORE_V1",
+         "specialization": "SPEC_EDU_GENERAL",
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         },
         {
          "code": "KU26_KOREDU",
@@ -2067,25 +2116,28 @@
          "code": "KU26_ENGEDU",
          "name": "영어교육과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "EDU_CORE_V1",
+         "specialization": "SPEC_EDU_GENERAL",
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         },
         {
          "code": "KU26_GEOEDU",
          "name": "지리교육과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "EDU_CORE_V1",
+         "specialization": "SPEC_EDU_GENERAL",
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         },
         {
          "code": "KU26_HISTEDU",
          "name": "역사교육과",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "EDU_CORE_V1",
+         "specialization": "SPEC_EDU_GENERAL",
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         }
        ]
       },
@@ -2143,9 +2195,10 @@
          "code": "KU26_INTL",
          "name": "국제학부",
          "kind": "department",
-         "core_code": null,
-         "specialization": null,
-         "mapping_note": "이 자리를 맡을 Major Core 가 아직 없다. 맡을 Core 가 서면 그때 잇는다"
+         "core_code": "BIZ_CORE_V1",
+         "specialization": "SPEC_BIZ_GLOBAL",
+         "provisional": true,
+         "note": "전용 문항이 준비될 때까지 가까운 묶음으로 본다(2026-11-03 대표 결정 \"모든 학과 다 가능하도록\")"
         }
        ]
       },
