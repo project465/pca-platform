@@ -26,7 +26,10 @@ import { campusStudentOf } from "@/lib/campus/students";
 import { findLeaf, statusOf, university } from "@/lib/campus/registry";
 
 /** 그 학과가 지금 응시할 수 있는가(전공을 고르는 자리는 고른 뒤 다시 본다) */
-export function departmentReady(universityCode: string, departmentCode: string): boolean {
+export function departmentReady(universityCode: string, departmentCode: string | null | undefined): boolean {
+  /* 학과 없이 학교만 든 맥락은 `준비 중` 을 가릴 학과가 없다. Core 는 부르는 쪽(`openAttempt`)이 시장에서 팔 수 있는지 이미 본다
+     (2026-11-03 v3:provenance: 학과 칸이 빈 맥락에서 findLeaf(null) 로 멈췄다) */
+  if (!departmentCode) return true;
   const u = university(universityCode);
   const f = u ? findLeaf(u, departmentCode) : null;
   if (!u || !f) return false;
