@@ -6,7 +6,9 @@ import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/session";
 import { setCampusEntry, setCatalogChoice } from "@/lib/campus/entry";
 import { campusStudentOf } from "@/lib/campus/students";
-import { catalogByYear, findLeaf, statusOf, university } from "@/lib/campus/registry";
+import { catalogByYear, findLeaf, picksOwnField, statusOf, university } from "@/lib/campus/registry";
+import { hasAnyAttempt } from "@/lib/campus/attempt-state";
+import { query } from "@/lib/db";
 
 /**
  * 고른 학과를 들고 **공통 검사 시작 화면**으로 보낸다.
@@ -68,6 +70,14 @@ export async function startFromCampus(form: FormData): Promise<void> {
   if (!mine) {
     redirect(`/campus/${code}/login?next=${
       encodeURIComponent(`/campus/${code}/start`)}`);
+  }
+  /* **분야를 직접 고르는 기관이면 처음 고른 분야가 계정의 분야다**(2026-11-03 대표 결정 "본인이 직접 고르게"). 아직 한 번도
+     응시하지 않은 참여자만이고, 전공을 고르는 자리(routing)는 분야가 아니다. 그 뒤로는 대학과 같이 '다른 분야도 검사' 다 */
+  if (picksOwnField(u) && !found.leaf.routing_only && !(await hasAnyAttempt(who!.id))) {
+    await query(
+      `UPDATE campus_students SET department_code = $3, college_code = $4
+        WHERE user_id = $1::bigint AND university_code = $2`,
+      [who!.id, u.university_code, found.leaf.code, found.college.code]);
   }
   /* **시작 안내를 두 번 세우지 않는다**(2026-11-03 대표 "절차가 많다"). 학교 학생에게 `/v3/start` 는 묻는 것이 없다
      (학업 단계는 학적이 정한다: `fixedStage`). 그 쪽을 건너 바로 응시를 열고, 안내는 첫 문항 앞 한 쪽(`/v3/{id}/intro`)만

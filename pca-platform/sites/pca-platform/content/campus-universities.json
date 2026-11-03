@@ -3252,6 +3252,7 @@
   },
   {
    "university_code": "SJEPA",
+   "participant_picks": true,
    "university_name": "세종일자리경제진흥원",
    "org_kind": "agency",
    "market_code": "KR",

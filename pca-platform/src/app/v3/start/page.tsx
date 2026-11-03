@@ -6,8 +6,8 @@ import { upgradeTarget } from "@/lib/me-v3/upgrade";
 import { currentAttempt, estimate } from "@/lib/me-v3/runtime/session";
 import { core as coreEntry, sellableCores } from "@/lib/me-v3/core-registry";
 import { startGate } from "@/lib/campus/start-gate";
-import { pickRequired } from "@/lib/campus/registry";
-import { campusAttemptState, campusTargetOf } from "@/lib/campus/attempt-state";
+import { pickRequired, picksOwnField, university } from "@/lib/campus/registry";
+import { campusAttemptState, campusTargetOf, hasAnyAttempt } from "@/lib/campus/attempt-state";
 import type { Tier } from "@/lib/me-v3/scoring/types";
 import { tierText } from "../tier-text.i18n";
 import { phrase } from "@/lib/me-v3/phrase";
@@ -52,6 +52,11 @@ export default async function V3Start({
    */
   const gate = await startGate(user.id);
   if (gate.kind === "school_only") redirect(gate.to);
+  /* 분야를 직접 고르는 기관(`participant_picks`)의 첫 응시는 고르는 쪽을 거친다. 이 주소를 바로 치면 등록된 분야로
+     열려 고르는 걸음을 건너뛴다 */
+  if (gate.kind === "campus" && picksOwnField(university(gate.mine.row.university_code)) && !(await hasAnyAttempt(user.id))) {
+    redirect(`/campus/${gate.mine.row.university_code.toLowerCase()}/start`);
+  }
 
   /**
    * **이미 끝낸 사람은 새 응시를 열지 않는다**(규격 §7).

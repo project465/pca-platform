@@ -149,6 +149,11 @@ export type CampusCatalog = {
 };
 
 export type CampusUniversity = {
+  /**
+   * **참여자가 분야를 직접 고른다**(2026-11-03 대표 결정, 기관 설정). 켜진 기관은 아직 응시하지 않은 참여자가 학교 시작
+   * 쪽에서 검사 전에 전공 계열을 고르고, 고른 값이 계정의 분야(명단 줄)가 된다. 명단 CSV 의 분야 칸은 비워도 된다
+   */
+  participant_picks?: boolean;
   university_code: string;
   university_name: string;
   market_code: string;
@@ -740,4 +745,9 @@ export function wave1Of(u: CampusUniversity, dir = CONTENT_DIR): Wave1Row[] {
     core: cores.find((c) => c.code === code) ?? null,
     leaves: rows.filter((r) => r.leaf.core_code === code),
   }));
+}
+
+/** 이 기관은 참여자가 분야를 직접 고르는가(`participant_picks`) */
+export function picksOwnField(u: CampusUniversity | null | undefined): boolean {
+  return !!u?.participant_picks;
 }

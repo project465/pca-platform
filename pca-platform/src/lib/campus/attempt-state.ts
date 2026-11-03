@@ -103,3 +103,10 @@ export const CAMPUS_CTA_KO = {
   result: { label: "결과 보기", note: "검사는 한 번 응시합니다. 다시 응시해야 할 사정이 있으면 학과 담당자에게 말씀해 주세요." },
   retake: { label: "다시 검사 시작하기", note: "지난 결과는 지워지지 않고 그대로 남습니다. 새로 응시한 결과는 따로 한 번 더 쌓입니다." },
 } as const;
+
+/** 이 사람이 응시를 한 번이라도 열었는가(푸는 중 · 끝냄 모두). 분야를 직접 고르는 기관에서 `처음 시작` 을 가른다 */
+export async function hasAnyAttempt(userId: string): Promise<boolean> {
+  const r = await queryOne<{ ok: boolean }>(
+    `SELECT TRUE AS ok FROM v3_attempts WHERE user_id = $1::bigint LIMIT 1`, [userId]);
+  return !!r?.ok;
+}

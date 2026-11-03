@@ -4,10 +4,11 @@ import "../../../surface.css";
 import "../../campus.css";
 import {
   campusSay,
-  coreOf, findLeaf, pickRequired, specializationName, statusOf, university,
+  coreOf, findLeaf, leavesOf, offered, pickRequired, picksOwnField, specializationName, statusOf, university,
 } from "@/lib/campus/registry";
+import { pickCatalog } from "@/lib/campus/pick";
 import { campusStudentOf, hasCampusRow } from "@/lib/campus/students";
-import { CAMPUS_CTA_KO, campusAttemptState } from "@/lib/campus/attempt-state";
+import { CAMPUS_CTA_KO, campusAttemptState, hasAnyAttempt } from "@/lib/campus/attempt-state";
 import { currentUser } from "@/lib/session";
 import { estimate } from "@/lib/me-v3/runtime/session";
 import { CampusShell } from "../../shell";
@@ -93,6 +94,39 @@ export default async function CampusStart({ params }: Params) {
     } catch { return 35; }
   })();
   const cta = CAMPUS_CTA_KO[st.kind];
+
+  /* **분야를 직접 고르는 기관**(`participant_picks`)이면 아직 한 번도 응시하지 않은 참여자는 여기서 먼저 고른다
+     (2026-11-03 대표 결정 "본인이 직접 고르게"). 미리 골라 두지 않아 그냥 누르고 지나갈 수 없다. 고른 값은 시작하면서
+     계정의 분야가 된다(`startFromCampus`) */
+  if (picksOwnField(u) && !(await hasAnyAttempt(user.id))) {
+    const cat = await pickCatalog(u, undefined);
+    const choices = leavesOf(cat).filter(offered)
+      .filter((r) => !r.leaf.routing_only && statusOf(u, r) === "READY");
+    return (
+      <CampusShell u={u}>
+        <section className="cm-cmp-hero">
+          <p className="cm-cmp-eyebrow">{u.university_name}</p>
+          <h1 className="cm-cmp-title">{t("학과를 골라 주세요")}</h1>
+          <form action={startFromCampus}>
+            <input type="hidden" name="u" value={u.university_code} />
+            <fieldset className="cm-cmp-pick" style={{ border: 0, padding: 0, margin: "16px 0", display: "grid", gap: 8 }}>
+              <legend className="sr-only">{t("학과")}</legend>
+              {choices.map((r) => (
+                <label key={r.leaf.code} style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                  <input type="radio" name="d" value={r.leaf.code} required />
+                  <span>{r.leaf.name}</span>
+                </label>
+              ))}
+            </fieldset>
+            <div className="cm-cmp-cta-row">
+              <button type="submit" className="cm-cmp-cta">검사 시작하기<span aria-hidden="true">→</span></button>
+            </div>
+          </form>
+        </section>
+        <p className="cm-cmp-note">{`약 ${mins}분 · 답할 때마다 저장됩니다.`}</p>
+      </CampusShell>
+    );
+  }
 
   /**
    * **여기서 쿠키를 적지 않는다.** 서버 컴포넌트에서 쓰면 Next 가

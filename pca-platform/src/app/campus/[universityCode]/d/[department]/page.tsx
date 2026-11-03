@@ -3,11 +3,11 @@ import { notFound } from "next/navigation";
 import "../../../../surface.css";
 import "../../../campus.css";
 import {
-  campusSay, coreOf, findLeaf, pickRequired, specializationName, statusOf, university,
+  campusSay, coreOf, findLeaf, pickRequired, picksOwnField, specializationName, statusOf, university,
 } from "@/lib/campus/registry";
 import { currentUser } from "@/lib/session";
 import { campusStudentOf } from "@/lib/campus/students";
-import { CAMPUS_CTA_KO, campusAttemptState } from "@/lib/campus/attempt-state";
+import { CAMPUS_CTA_KO, campusAttemptState, hasAnyAttempt } from "@/lib/campus/attempt-state";
 import { CampusShell } from "../../../shell";
 import { startFromCampus } from "../../../actions";
 import { domainNames } from "../../../domains";
@@ -84,7 +84,9 @@ export default async function CampusDepartment({ params }: Params) {
     || (!!reg && reg.leaf.name === leaf.name && reg.college.code === found.college.code));
   /* 다른 학년도 구조의 자리는 다른 학과가 아니다: 응시 줄은 명단의 자리를 든다(`campusTargetOf`) */
   const crossYear = !!reg && reg.catalog.catalog_year !== found.catalog.catalog_year;
-  const other = mine && !pickRequired(mine.ctx) && !sameDept && !crossYear ? mine : null;
+  /* 분야를 직접 고르는 기관에서 아직 응시하지 않은 참여자에게는 이 쪽이 곧 자기 분야를 고르는 자리다(`participant_picks`) */
+  const firstPick = !!mine && picksOwnField(u) && !(await hasAnyAttempt(who!.id));
+  const other = mine && !pickRequired(mine.ctx) && !sameDept && !crossYear && !firstPick ? mine : null;
   /* **다른 학과도 검사할 수 있다**(2026-11-03 대표 결정 "다른 학과도 검사"). 상태는 이 학과로 낸 응시만 센다 */
   const st = mine ? await campusAttemptState(who!.id, {
     universityCode: u.university_code,

@@ -178,12 +178,19 @@ async function one(run: { uni: string; leaf: string; prog: string }, browser: im
     await p.goto(`${BASE}/campus/${code}/start`, { waitUntil: "domcontentloaded" });
     await p.waitForLoadState("networkidle").catch(() => undefined);
   }
-  await p.getByRole("button", { name: /검사 시작하기/ }).first().click();
-  await p.waitForURL(/\/v3\/start/, { timeout: 30000 }).catch(() => undefined);
-  await p.waitForLoadState("networkidle").catch(() => undefined);
-  await p.getByText("학부", { exact: true }).click().catch(() => undefined);
-  await p.getByRole("button", { name: "검사 시작" }).click();
-  await p.waitForURL(/\/v3\/\d+/, { timeout: 30000 }).catch(() => undefined);
+  /* 분야를 직접 고르는 기관(`participant_picks`)은 첫 검사 전에 고르는 쪽이 선다. 그 학과를 고른다 */
+  const pickRadio = p.locator(`input[type="radio"][name="d"][value="${seat.leaf.code}"]`);
+  if (await pickRadio.count()) await pickRadio.check();
+  await Promise.all([
+    p.waitForURL(/\/v3\/(\d+|start)/, { timeout: 60000 }).catch(() => undefined),
+    p.getByRole("button", { name: /검사 시작하기/ }).first().click(),
+  ]);
+  /* 학교 시작은 바로 응시를 연다(2026-11-03). 예전 시작 화면이 서는 판본이면 거기서 한 번 더 누른다 */
+  if (/\/v3\/start/.test(p.url())) {
+    await p.getByText("학부", { exact: true }).click().catch(() => undefined);
+    await Promise.all([p.waitForURL(/\/v3\/\d+/, { timeout: 30000 }).catch(() => undefined),
+      p.getByRole("button", { name: "검사 시작" }).click()]);
+  }
   const att = /\/v3\/(\d+)/.exec(p.url())?.[1] ?? "";
   ok("검사가 열린다", Boolean(att), `응시 ${att}`);
   for (const e of EXPS[run.leaf] ?? []) await addExperience(p, e);
@@ -216,8 +223,14 @@ async function checkResult(p: Page, att: string, prog: ReturnType<typeof program
 
   await p.goto(`${BASE}/me/region`, { waitUntil: "domcontentloaded" });
   await p.waitForLoadState("networkidle").catch(() => undefined);
-  const me = await cardAtTop(p);
-  if (prog) ok("/me/region: 지역 절 맨 위에 카드", me.top && me.text.includes("비전세미콘"));
+  /* `/me/region` 은 쪽 전체가 지역이다: 카드가 머리(h1) 다음 첫 덩이인가 */
+  const me = await p.evaluate(() => {
+    const card = document.querySelector("#featured-company") as HTMLElement | null;
+    const firstForm = document.querySelector("main form, main .cm-soon");
+    const before = !!card && (!firstForm || !!(card.compareDocumentPosition(firstForm) & Node.DOCUMENT_POSITION_FOLLOWING));
+    return { top: before, text: card ? (card.innerText || "") : "" };
+  });
+  if (prog) ok("/me/region: 쪽 맨 위에 카드", me.top && me.text.includes("비전세미콘"));
   else ok("/me/region 대조군: 카드 없음", !me.text);
 
   const r = await p.request.get(`${BASE}/v3/${att}/result/pdf`, { timeout: 240000 });

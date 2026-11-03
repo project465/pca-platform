@@ -83,6 +83,9 @@ const ok = (name: string, pass: boolean, why = "") => {
     ok(`${label}: 임시 비밀번호로 새 비밀번호를 정한다`, !err && !/\/password\/change/.test(p.url()), err || p.url().replace(BASE, ""));
     /* 검사 시작: 학교 시작 화면 → 시작 화면 → 응시 */
     await p.goto(`${BASE}/campus/${UNI.toLowerCase()}/start`);
+    /* 분야를 직접 고르는 기관이면 첫 검사 전에 고른다 */
+    const pick = p.locator(`input[type="radio"][name="d"][value="${leaf.leaf.code}"]`);
+    if (await pick.count()) await pick.check();
     const btn = p.locator('form button[type="submit"]').filter({ hasText: /검사 시작|시작하기/ }).first();
     if (await btn.count()) await Promise.all([p.waitForURL(/\/v3\//, { timeout: 30000 }).catch(() => undefined), btn.click()]);
     if (/\/v3\/start/.test(p.url())) {

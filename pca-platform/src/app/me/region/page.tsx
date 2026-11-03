@@ -11,6 +11,7 @@ import { pickRegion } from "./actions";
 import { currentState } from "@/lib/me-v3/platform";
 import { latestRegionView } from "@/lib/me-v3/report-long/web-region";
 import RegionCards from "./cards";
+import RegionFeatured from "./featured";
 
 export const metadata = { title: "지역과 기관 · 내 CareerMatri" };
 
@@ -53,6 +54,9 @@ export default async function Region() {
         title="어디에서 일하고 싶은지"
         lead="선택은 산업·직무 탐색 순서에만 반영"
       />
+
+      {/* 기관 프로그램에 든 사람은 그 회사 카드가 이 쪽 맨 위다(결과 화면 · PDF 와 같은 자리) */}
+      {lr?.rv.featured ? <RegionFeatured f={lr.rv.featured} /> : null}
 
       {!open ? (
         <div className="cm-soon">이 시장: 지역 정보 미제공</div>
