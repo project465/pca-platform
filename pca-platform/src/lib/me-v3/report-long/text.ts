@@ -11,7 +11,7 @@ import type { Action, Gap } from "../result/model";
 import { withJosa } from "../result/josa";
 import type { DomainDef } from "./types";
 import { STEP_WORD, ZONE_WORD } from "./derive";
-import { byLang, isEn } from "./lang";
+import { byLang, isEn, T } from "./lang";
 
 /* ── 영어 문장 도구 ───────────────────────────────────────────────
    영어 책의 문장은 이것으로 잇는다. 한국어 도구(`j` · `andJoin` · `polite` …)는 영어에서
@@ -111,17 +111,31 @@ const AXIS_DO_EN: Record<Axis, string> = {
   J7: "Find and fix what went wrong", J8: "Get your result used in a decision",
 };
 
+/**
+ * 빈 자리 한 줄. 체크리스트에서 결과물을 고르지 않았어도 **경험 기록이나 지원서 문장 단계에 결과물이 있으면** `아직 고르지
+ * 않았다` 고 쓰지 않는다(AI8: 같은 책의 포트폴리오에 `보유` 로 나온다)
+ */
+export function gapKindText(g: Pick<Gap, "kind">, hasArtifact: boolean): string {
+  if (g.kind === "OUTPUT_EVIDENCE" && hasArtifact) {
+    return T("결과물은 기록에 있고, 검사의 체크리스트에서는 그 결과물을 아직 고르지 않았습니다",
+      "Your records show a deliverable, but you haven't picked it in the assessment checklist yet");
+  }
+  return GAP_KIND[g.kind];
+}
+
 /** 영어 쪽도 끝 점 없이 둔다. 부르는 자리가 `${GAP_KIND[k]} · ${gapWhy(g)}` 처럼 잇는다 */
 export const GAP_KIND: Record<Gap["kind"], string> = byLang<Record<Gap["kind"], string>>({
   REQUIRED_AXIS: "꼭 필요한 판단인데 아직 직접 해 봤다는 답이 없습니다",
-  OUTPUT: "해 본 일을 보여 줄 결과물을 아직 고르지 않았습니다",
+  /* 엔진의 OUTPUT 은 `산출물(J5) 판단이 아직 확인되지 않음` 이다. 고른 결과물이 있어도 선다. `고르지 않았다` 고 쓰면 같은 책의
+     `보유` 결과물과 부딪친다(2026-11-03 인공지능 견본 AI8 · 운영 결과지 v3/18 · v3/19 · v3/20 에도 같은 줄) */
+  OUTPUT: "결과물을 직접 만들어 남겼다는 답이 아직 없습니다",
   OUTPUT_EVIDENCE: "결과물을 남겼다고 답했고, 어떤 결과물인지는 아직 고르지 않았습니다",
   VERIFICATION: "결과를 무엇과 맞춰 봤는지가 아직 적혀 있지 않습니다",
   AXIS: "이 판단은 아직 직접 해 봤다는 답이 없습니다",
   PARTIAL_EVIDENCE: "해 본 일은 보이고, 직접 정했다고 말하려면 근거가 하나 더 필요합니다",
 }, {
   REQUIRED_AXIS: "This decision is essential here, and your answers don't show you making it yet",
-  OUTPUT: "You haven't picked a deliverable that shows this work yet",
+  OUTPUT: "Your answers don't show you producing a deliverable yourself yet",
   OUTPUT_EVIDENCE: "You said you left a deliverable but haven't picked which one yet",
   VERIFICATION: "There's no record yet of what you checked your results against",
   AXIS: "Your answers don't show you making this decision yourself yet",
@@ -165,6 +179,9 @@ export function actionHead(a: Action, dn: string): string {
   }
 }
 
+/** 책이 할 일에 붙여 둔 `그 판단에서 고른 항목`(derive.withPicks). 없으면 null */
+export const pickedOf = (a: Action): string | null => (a as Action & { picked?: string }).picked ?? null;
+
 /** 할 일 한 문장. 재료는 그 영역의 자료에서 온다 */
 export function actionLine(a: Action, dn: string, def: DomainDef | undefined): string {
   if (isEn()) return actionLineEn(a, dn, def);
@@ -182,10 +199,15 @@ export function actionLine(a: Action, dn: string, def: DomainDef | undefined): s
         ? `${dn}에서 낸 결과를 ${j(orJoin(vt), "과와")} 나란히 놓고, 차이와 그 까닭을 표 한 장에 적어 보세요.`
         : `${dn}에서 낸 결과를 기준값과 나란히 놓은 표 한 장을 만들어 보세요.`;
     case "FILL_AXIS":
+      /* 고른 항목이 있으면 그 일을 이미 해 본 것이다. 같은 일을 처음 하라고 하지 않고 다음에는 직접 맡으라고 쓴다(AI3) */
+      if (pickedOf(a)) return `${dn}에서 고르신 ${q(pickedOf(a)!)} 일을 다음에는 처음부터 직접 맡아, 고른 까닭을 한 줄 적어 보세요.`;
       return l2
         ? `다음 ${dn} 과제에서 ${q(l2)} 같은 일을 직접 맡고, 고른 까닭을 한 줄 적어 보세요.`
         : `다음 ${dn} 과제에서 ${j(a.axis ? AXIS_NEED[a.axis] : "한 가지", "을를")} 직접 맡아 보세요.`;
     case "DEEPEN_OWNERSHIP":
+      /* 그 판단에서 이미 고른 항목이 있으면 사전 예문 대신 그 항목을 든다(2026-11-03 인공지능 견본 AI3: 이미 고른 일을
+         `해당하는 일을 떠올려` 로 다시 시켰다). 할 일은 그 일을 다시 하라는 것이 아니라 그때 기준을 누가 정했는지 적는 것이다 */
+      if (pickedOf(a)) return `${dn}에서 고르신 ${q(pickedOf(a)!)} 일을 두고, 그때 기준을 누가 정했는지와 내가 정한 것을 세 줄로 적어 보세요.`;
       return l2
         ? `이미 해 본 ${dn} 과제에서 ${q(l2)}에 해당하는 일을 떠올려, 그때 직접 정한 것을 세 줄로 적어 보세요.`
         : `이미 해 본 ${dn} 과제에서 직접 정한 것을 세 줄로 적어 보세요.`;
@@ -260,6 +282,7 @@ function actionLineEn(a: Action, dn: string, def: DomainDef | undefined): string
         ? `In your next ${dn} project, take on a step that lets you say ${iDid(l2)}, and write one line on why you chose what you did.`
         : `In your next ${dn} project, take on ${a.axis ? AXIS_NEED[a.axis] : "one decision"} yourself.`;
     case "DEEPEN_OWNERSHIP":
+      if (pickedOf(a)) return `For “${pickedOf(a)}”, which you picked in ${dn}, write three lines on who set the criteria and what you decided yourself.`;
       return l2
         ? `Think back to one ${dn} project you've done where you could say ${iDid(l2)}, and write three lines on what you decided yourself.`
         : `Think back to one ${dn} project you've done, and write three lines on what you decided yourself.`;

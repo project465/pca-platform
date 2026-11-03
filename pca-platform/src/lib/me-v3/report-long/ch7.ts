@@ -19,7 +19,7 @@ import { PART3 } from "./ch3";
 import { AXES, STEP_WORD, ZONE_WORD, type X } from "./derive";
 import { C, chain, gantt } from "./charts";
 import { E, H, PAL, T, ZC, band, card, howto, note, paginate, rowsOf, ul, type Page } from "./kit";
-import { GAP_KIND, GAP_WHY, HORIZON_DAYS, actionHead, actionLine, actionOutput, askNoun, j, okOr, okText, polite } from "./text";
+import { GAP_WHY, gapKindText, HORIZON_DAYS, actionHead, actionLine, actionOutput, askNoun, j, okOr, okText, polite } from "./text";
 import { T as L, isEn } from "./lang";
 
 const P = (title: string, body: string): Page => ({ part: "07", partName: L("실행 로드맵", "Action plan"), title, body });
@@ -108,7 +108,7 @@ export function prioPages(x: Inputs, d: X): Page[] {
       return `<div class="prio"><div class="prio-h"><span>${startNo(k) + i + 1}</span><b>${E(dn)}${g.axis ? ` · ${E(d.axisName(g.axis))}` : ""}</b><span class="mut">${a ? L(`${E(HORIZON_DAYS[a.horizon])} 안에`, `Within ${E(HORIZON_DAYS[a.horizon])}`) : ""}</span></div>
         ${chain([
           { head: L("목표", "Goal"), body: goal, color: PRIO_C.goal },
-          { head: L("지금 상태", "Now"), body: GAP_KIND[g.kind], color: PRIO_C.now },
+          { head: L("지금 상태", "Now"), body: gapKindText(g, d.hasArtifact(g.domain)), color: PRIO_C.now },
           { head: L("해 볼 일", "Try"), body: a ? actionHead(a, dn) : L("할 일 정하기", "Decide on a task"), color: PRIO_C.act },
           { head: L("남길 것", "Deliverable"), body: a ? actionOutput(a, def) : (def?.artifacts[0] ?? L("결과 문서", "A results document")), color: PRIO_C.out },
         ], { width: 700, height: 100 })}
@@ -375,7 +375,7 @@ export function tracePages(x: Inputs, d: X): Page[] {
     const ev = d.evidenceOf(z);
     rows.push({ sec: SEC.area, claim: `${d.name(z.code)}: ${ZONE_WORD[z.zone as keyof typeof ZONE_WORD]?.tag ?? ""}`, ev: [...ev.decisions, ...ev.artifacts, ...ev.comparisons].slice(0, 4).join(" · ") || L(`확인된 판단 ${z.confirmed.length}가지 (응답)`, `${pl(z.confirmed.length, "decision", "decisions")} confirmed (from your answers)`) });
   }
-  for (const g of d.gaps.slice(0, 6)) rows.push({ sec: SEC.road, claim: `${d.name(g.domain)}${g.axis ? ` · ${d.axisName(g.axis)}` : ""}: ${L("먼저 손댈 일", "a task to start with")}`, ev: `${GAP_KIND[g.kind]} · ${whyOf(g)}` });
+  for (const g of d.gaps.slice(0, 6)) rows.push({ sec: SEC.road, claim: `${d.name(g.domain)}${g.axis ? ` · ${d.axisName(g.axis)}` : ""}: ${L("먼저 손댈 일", "a task to start with")}`, ev: `${gapKindText(g, d.hasArtifact(g.domain))} · ${whyOf(g)}` });
   if (d.goalRole) rows.push({ sec: SEC.job, claim: L(`목표 직무: ${d.goalRole.name_ko}`, `Target role: ${d.goalRole.name_ko}`), ev: L("응답에 적은 목표", "The target you entered") });
   if (d.goalInd) rows.push({ sec: SEC.job, claim: L(`목표 산업: ${d.goalInd.name_ko}`, `Target industry: ${d.goalInd.name_ko}`), ev: L("응답에 적은 목표", "The target you entered") });
   for (const e of x.exps.slice(0, 3)) rows.push({ sec: SEC.rec, claim: e.title, ev: [...e.decisions, ...e.artifacts].slice(0, 3).join(" · ") || L("경험 기록", "Experience record") });

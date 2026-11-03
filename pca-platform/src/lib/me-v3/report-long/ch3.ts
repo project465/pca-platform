@@ -149,6 +149,8 @@ function domainHead(x: Inputs, d: X, z: ResultDomain): string {
           if (!z.interest) return `You said you have not done ${nm} yet and are not sure about your interest. Try one short project first, then decide how interested you are.`;
           return `You said you have not done ${nm} yet. ${z.interest === "HIGH" ? "Your interest is high, so try it first with one short project." : "For now, build up other areas first. You can widen out later when you need to."}`;
         }
+        if (d.asked(z)) return `This time we asked about some of your decisions in ${nm} through screening questions. The table below shows those answers.`;
+        if (!z.experience) return `You did not answer how often you had done ${nm}. If you have, write what you took on in an experience record; if not, try one short project first.`;
         const times = EXP_WORD[z.experience ?? ""];
         return `This time we only asked about your interest in ${nm} and how often you had done it. ${times ? `You said you had done it ${lc(times)}` : "You said you had done it before"}, so write down what you took on in an experience record. That gives you one more experience for your applications.`;
       }
@@ -192,6 +194,14 @@ function domainHead(x: Inputs, d: X, z: ResultDomain): string {
           `${j(nm, "은는")} 아직 해 보지 않았다고 답했어요. ${high ? "관심이 높은 만큼 수업 과제나 동아리에서 작은 몫부터 맡아 보세요." : "급한 영역은 아니니 다른 영역을 먼저 챙겨도 괜찮아요."}`,
           `${j(nm, "은는")} 아직 경험이 없는 영역입니다. ${high ? "관심이 높다고 답했으니 4주 정도의 짧은 과제로 먼저 해 보면 나에게 맞는지 알 수 있어요." : "관심도 높지 않다고 답해서, 지금은 뒤로 미뤄 둬도 됩니다."}`,
         ][v];
+      }
+      /* 선별 질문만 연 영역: 판단 일부는 물었다(AI1). 아래 판단 표와 맞게 적는다 */
+      if (d.asked(z)) {
+        return `이번 검사에서 ${j(nm, "은는")} 선별 질문으로 판단 일부만 물었어요. 아래 표가 그 답이고, 더 깊은 판단은 경험 기록을 더하면 이어서 볼 수 있어요.`;
+      }
+      /* 해 본 횟수에 답이 없으면 해 봤다고 적지 않는다(AI6) */
+      if (!z.experience) {
+        return `${j(nm, "은는")} 해 본 횟수에 답이 없는 영역이에요. 해 본 적이 있다면 그때 맡은 일을 경험 기록에 적어 두고, 처음이라면 짧은 과제 하나로 먼저 겪어 보세요.`;
       }
       const times = EXP_WORD[z.experience ?? ""];
       const did = times ? `${times} 해 봤다고` : "해 본 적이 있다고";

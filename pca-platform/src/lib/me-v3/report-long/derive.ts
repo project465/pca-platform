@@ -36,6 +36,15 @@ export const ZONE_WORD: Record<ZoneKey, { tag: string; said: string }> = byLang<
   Z4_INSUFFICIENT_EVIDENCE: { tag: "Little hands-on work yet", said: "we asked about your decisions here, but few answers showed you making them yourself yet" },
   NOT_EXPLORED: { tag: "Interest and exposure only", said: "we only asked about your interest and how often you had done it" },
 });
+/**
+ * **판단 일부만 물은 영역**(2026-11-03 인공지능 견본 AI1). 엔진은 선별 질문만 연 영역(심화는 열지 않음)도 `NOT_EXPLORED` 로 둔다.
+ * 책이 그 영역을 `관심·경험만 본 영역` 이라고 부르면 바로 아래 판단 표와 부딪치고, `판단까지 물은 곳` 수와도 어긋났다.
+ * 판정은 그대로 두고 책에서만 이름을 갈라 부른다
+ */
+export const PROBE_WORD = byLang<{ tag: string; said: string }>(
+  { tag: "판단 일부만 물은 영역", said: "선별 질문으로 판단 일부만 물어본 영역" },
+  { tag: "Some decisions asked", said: "we asked about some of your decisions here through screening questions" },
+);
 /** 학생에게 보이는 단계 이름. 검사 화면의 보기(시킨 대로 함 · 내가 직접 함 · 내가 정함)와 같은 말을 쓴다 */
 export const STEP_WORD: Record<Level, { tag: string; said: string }> = byLang<Record<Level, { tag: string; said: string }>>({
   0: { tag: "해 본 적 없음", said: "그 일을 해 본 적이 없다고 답했어요" },
@@ -99,6 +108,20 @@ export function withTranslation(x: Inputs): Inputs {
  * 모두 61~90일 칸에 있었고, "한 기간에 결과물 두 개까지" 라면서 넷을 잡았다). 결과 모델의 차례(급한 것 먼저)는 그대로 두고,
  * 책 안에서만 앞에서부터 두 개씩 30일 · 60일 · 90일에 싣는다. 판정 · 할 일 내용은 바뀌지 않는다
  */
+/**
+ * 할 일마다 **그 판단에서 학생이 이미 고른 항목** 하나를 붙여 둔다(책 안에서만). 할 일 문장이 사전 예문 대신 학생이 고른
+ * 말을 들게 한다(AI3). 판정 · 할 일 종류는 그대로다
+ */
+export function withPicks(x: Inputs): Inputs {
+  const by = new Map(x.m.domains.map((d) => [d.code, d]));
+  const actions = x.m.actions.map((a) => {
+    if (!a.domain || !a.axis) return a;
+    const p = by.get(a.domain)?.axes.find((v) => v.axis === a.axis)?.picks?.[0];
+    return p ? { ...a, picked: p } : a;
+  });
+  return { ...x, m: { ...x.m, actions } };
+}
+
 export function withPlan(x: Inputs): Inputs {
   const acts = x.m.actions;
   if (!acts.length) return x;
@@ -147,7 +170,9 @@ export function derive(x: Inputs) {
     domains: doms.length,
     asked: askedDoms.length,
     z1: zoneCount("Z1_EVIDENCE_ESTABLISHED"), z2: zoneCount("Z2_EVIDENCE_INCOMPLETE"), z3: zoneCount("Z3_EVIDENCE_LOW_INTEREST"),
-    z4: zoneCount("Z4_INSUFFICIENT_EVIDENCE"), ne: zoneCount("NOT_EXPLORED"),
+    /* `ne` 는 판단을 하나도 묻지 않은 영역만. 선별만 연 영역은 `probeOnly` 로 따로 센다(`asked` + `ne` = 전체) */
+    z4: zoneCount("Z4_INSUFFICIENT_EVIDENCE"), ne: doms.filter((d) => d.zone === "NOT_EXPLORED" && !asked(d)).length,
+    probeOnly: doms.filter((d) => d.zone === "NOT_EXPLORED" && asked(d)).length,
     confirmed: m.overview.counts.confirmed_axes, owned: m.overview.counts.owned_axes, items: m.overview.counts.evidence_items,
     gaps: m.gaps.length, actions: m.actions.length, records: x.exps.length,
     /* 체크리스트에서 고른 결과물만 센다. 지원서 문장 단계의 답(‘…’고 답한 결과물)은 고른 항목 수에 들어가지 않는다 */
@@ -234,6 +259,8 @@ export function derive(x: Inputs) {
 
   return {
     name, def, tax, dom, asked, level, levels, picks, depth, axisName, axisWhat, activity, evidenceWord,
+    /** 그 영역에 결과물이 있는가: 체크리스트 · 지원서 문장 단계(withTranslation 이 합침) · 결과를 굳힌 날까지의 경험 기록 */
+    hasArtifact: (td: string) => !!dom(td)?.artifacts.length || x.exps.some((e) => e.td_codes.includes(td) && e.artifacts.length > 0),
     counts, bucket, strengths, evidenceOf, actionOf, gaps, goalRole, goalInd, roleCover, roleOrder, indOrder,
     roleName, indName, orgName, best, radarDoms, rolesOf, indsOf, scenes,
   };

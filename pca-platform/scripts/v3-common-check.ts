@@ -30,6 +30,10 @@
  *   j  관심을 `모르겠다` 로 답한 영역에 `관심도 높지 않다`(JA7)
  *   l  이미 직접 해 본(2단계 이상) 판단을 `직접 해 봤다는 답이 없다` 로 적음(PB2)
  *   m  해 본 일이 나온 영역 수가 쪽마다 다름(PB6)
+ *   n  해 본 횟수에 답이 없는 영역에 `해 본 적이 있다고`(AI6)
+ *   f  (넓힘) 결과물이 있는 영역에 `결과물을 아직 고르지 않았습니다`(AI8)
+ *   o  할 일이 학생이 이미 고른 항목을 다시 시킴(AI3)
+ *   p  판단까지 물은 영역 수가 쪽마다 다름 · 물은 영역에 `횟수까지만 물었어요`(AI1)
  *   k  준비 중 학과로 응시가 열림(KM1) — 기관마다 한 줄
  */
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -44,7 +48,7 @@ import {
 import { UNKNOWN, type Answer } from "../src/lib/me-v3/scoring/types";
 import { loadInputs } from "../src/lib/me-v3/report-long/data";
 import { assemble } from "../src/lib/me-v3/report-long";
-import { derive } from "../src/lib/me-v3/report-long/derive";
+import { derive, withTranslation } from "../src/lib/me-v3/report-long/derive";
 import { TRANS_NOTE_KO, isNoneChoice } from "../src/lib/me-v3/result/text.ko";
 import { query, queryOne } from "../src/lib/db";
 
@@ -170,6 +174,7 @@ async function walk(core: string, a0: V3Attempt, userId: string, set: Set): Prom
   }
 }
 
+const esc = (t: string) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const strip = (h: string) => h.replace(/<[^>]+>/g, " ").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/\s+/g, " ");
 
 type Verdict = { opened: number; deep: number; fails: string[]; detail: string[] };
@@ -283,6 +288,39 @@ async function judge(attemptId: string, core: string): Promise<Verdict> {
   const nums = new Set([...all.matchAll(/해 본 일이 (?:나온|확인된) 영역(?:은| 수[^0-9]{0,30})\s*(\d+)곳/g)].map((v) => v[1]));
   if (nums.size > 1) fail("m", `해 본 영역 수 ${[...nums].join(" · ")}`);
 
+  /* n: 해 본 횟수에 답이 없는 영역을 `해 본 적이 있다` 고 적음(AI6) */
+  for (const z of x.m.domains.filter((v) => !v.experience)) {
+    const nm = d.name(z.code);
+    if (new RegExp(`${esc(nm)}[^.]{0,40}해 본 적이 있다고`).test(all)) fail("n", `${nm} 해 본 횟수 응답 없음인데 '해 본 적이 있다고'`);
+  }
+  /* f2: 결과물이 있는 영역에 `결과물을 아직 고르지 않았습니다`(AI8 · 문장 단위) */
+  const xt = withTranslation(x);
+  const hasArt = (td: string) => !!xt.m.domains.find((v) => v.code === td)?.artifacts.length || x.exps.some((e) => e.td_codes.includes(td) && e.artifacts.length > 0);
+  for (const z of x.m.domains.filter((v) => hasArt(v.code))) {
+    const nm = d.name(z.code);
+    if (new RegExp(`${esc(nm)}[^.]{0,60}(?<!그 )결과물을 아직 고르지 않`).test(all.replace(/결과물은 기록에 있고, 검사의 체크리스트에서는 그 결과물을 아직 고르지 않았습니다/g, ""))) fail("f", `${nm} 결과물 있음인데 '결과물을 아직 고르지 않음'`);
+  }
+  /* o: 할 일이 학생이 이미 고른 항목을 다시 시킴(AI3) */
+  for (const z of x.m.domains) for (const ax of z.axes) for (const pk of ax.picks ?? []) {
+    if (new RegExp(`${esc(pk)}’?(에 해당하는 일을 떠올려| 같은 일을 직접 맡고)`).test(all)) fail("o", `고른 '${pk.slice(0, 20)}'를 할 일로 다시 시킴`);
+  }
+  /* o: 그 판단에서 고른 항목이 있는데 할 일이 사전 예문(l2)을 `해당하는 일을 떠올려` 로 듦(AI3 견본 A 꼴) */
+  for (const a2 of x.m.actions) {
+    if (!a2.domain || !a2.axis) continue;
+    const picked = x.m.domains.find((z) => z.code === a2.domain)?.axes.find((v) => v.axis === a2.axis)?.picks ?? [];
+    const l2 = x.defs.find((v) => v.code === a2.domain)?.axes?.[a2.axis]?.l2;
+    if (picked.length && l2 && new RegExp(`${esc(l2)}’?(에 해당하는 일을 떠올려| 같은 일을 직접 맡고)`).test(all)) fail("o", `${d.name(a2.domain)} ${a2.axis} 고른 항목이 있는데 예문으로 할 일`);
+  }
+  /* p: 판단까지 물은 영역 수가 맞지 않음 · 물은 영역에 `횟수까지만 물었어요`(AI1) */
+  const askedN = x.m.domains.filter((z) => d.asked(z)).length;
+  for (const m2 of all.matchAll(/판단까지 물은 곳 (\d+)곳/g)) if (Number(m2[1]) !== askedN) fail("p", `'판단까지 물은 곳 ${m2[1]}곳' ≠ ${askedN}`);
+  const neN = /관심·경험만 본 영역\s+(\d+)곳/.exec(all)?.[1];
+  if (neN && Number(neN) + askedN !== x.m.domains.length) fail("p", `관심·경험만 ${neN} + 물은 ${askedN} ≠ ${x.m.domains.length}`);
+  for (const z of x.m.domains.filter((v) => d.asked(v))) {
+    const nm = d.name(z.code);
+    if (new RegExp(`${esc(nm)}[^.]{0,10} 관심과 해 본 횟수까지만 물었어요`).test(all)) fail("p", `${nm} 판단을 물었는데 '횟수까지만 물었어요'`);
+  }
+
   /* h: `없다` 는 답이 문단 재료로 */
   const chosen = await query<{ t: string }>(
     `SELECT value_text AS t FROM v3_responses WHERE attempt_id = $1 AND kind = 'choice' AND value_text IS NOT NULL`, [attemptId]);
@@ -366,7 +404,7 @@ async function main(): Promise<void> {
   const pass = lines.filter((l) => l[6] === "통과").length;
   const tally = (key: string) => lines.filter((l) => l[6].split(",").includes(key)).length;
   const sum = `세운 응시 ${lines.length} · 통과 ${pass} · 오류 ${lines.filter((l) => l[6] === "오류").length} · ` +
-    ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "l", "m"].map((x) => `${x} ${tally(x)}`).join(" · ");
+    ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "l", "m", "n", "o", "p"].map((x) => `${x} ${tally(x)}`).join(" · ");
   const md = (h: string[], ls: string[][]) => [`| ${h.join(" | ")} |`, `|${h.map(() => "---").join("|")}|`, ...ls.map((l) => `| ${l.map((c) => c.replace(/\|/g, "/")).join(" | ")} |`)].join("\n");
   writeFileSync(path.join(OUT, "공통점검.md"), `# 공통 자동 점검\n\n${sum}\n\n${md(head, lines)}\n\n## 준비 중 학과 응시(KM1)\n\n${md(["기관", "준비 중 학과", "열린 응시", "열린 학과(앞 6)"], k)}\n`);
   writeFileSync(path.join(OUT, "공통점검.csv"), "﻿" + [head, ...lines].map((l) => l.map((c) => `"${c.replace(/"/g, '""')}"`).join(",")).join("\n"));

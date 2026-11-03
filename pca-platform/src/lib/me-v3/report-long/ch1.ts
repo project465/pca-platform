@@ -5,10 +5,10 @@
  * 영어 쪽 문장은 영어 도구(`andJoinEn` · `nEn` · `lcEn` …)로만 잇는다.
  */
 import type { Inputs } from "./types";
-import { AXES, BAND_WORD, EXP_WORD, STEP_WORD, ZONE_WORD, ZONES, type Bucket, type X, notAsked } from "./derive";
+import { AXES, BAND_WORD, EXP_WORD, STEP_WORD, ZONE_WORD, PROBE_WORD, ZONES, type Bucket, type X, notAsked } from "./derive";
 import { C, LEVEL_KO, donut, hbars, quadrant, ring } from "./charts";
 import { DC, E, H, IC, LVC, PAL, T, ZC, band, chips, howto, note, pip, ul, zoneTag, type Page } from "./kit";
-import { GAP_KIND, gapWhy, actionHead, actionLine, andJoin, askNoun, j, lcEn, list3, nEn, okText, pickAreaKo, polite, sentenceEn } from "./text";
+import { gapKindText, gapWhy, actionHead, actionLine, andJoin, askNoun, j, lcEn, list3, nEn, okText, pickAreaKo, polite, sentenceEn } from "./text";
 import { byLang, isEn, T as L } from "./lang";
 import { partNames } from "./fill";
 import { andNamesEn } from "./front";
@@ -79,8 +79,8 @@ export function glance(x: Inputs, d: X): Page {
     points.push({
       label: L("먼저 근거를 더할 판단", "The first decision to back up"),
       meaning: en
-        ? `${d.name(g0.domain)}${g0.axis ? ` · ${d.axisName(g0.axis)}` : ""}: ${lcEn(GAP_KIND[g0.kind])}.`
-        : `${d.name(g0.domain)}${g0.axis ? `의 ${d.axisName(g0.axis)}` : ""}: ${GAP_KIND[g0.kind]}.`,
+        ? `${d.name(g0.domain)}${g0.axis ? ` · ${d.axisName(g0.axis)}` : ""}: ${lcEn(gapKindText(g0, d.hasArtifact(g0.domain)))}.`
+        : `${d.name(g0.domain)}${g0.axis ? `의 ${d.axisName(g0.axis)}` : ""}: ${gapKindText(g0, d.hasArtifact(g0.domain))}.`,
       fact: en ? sentenceEn(gapWhy(g0)) : `${whyOf(g0)}.`,
       action: a ? actionLine(a, d.name(g0.domain), d.def(g0.domain)) : L("07장 실행 로드맵에서 언제 할지 정해 보세요.", "Pick a date for it in the roadmap at the end of this book."),
     });
@@ -111,9 +111,12 @@ export function glance(x: Inputs, d: X): Page {
   const names = (z: string) => m.domains.filter((v) => v.zone === z).map((v) => d.name(v.code));
   const goal = [d.goalRole?.name_ko, d.goalInd?.name_ko].filter(Boolean).join(" · ");
   /* 영역 이름표는 읽는 법 쪽의 색 견본과 같은 모양으로 단다. 칸 왼쪽은 HTML 이다 */
-  const ne = names("NOT_EXPLORED");
+  /* 선별 질문만 연 영역은 `관심·경험만 본 영역` 에 세지 않는다(AI1). 이름을 따로 단다 */
+  const ne = m.domains.filter((v) => v.zone === "NOT_EXPLORED" && !d.asked(v)).map((v) => d.name(v.code));
+  const po = m.domains.filter((v) => v.zone === "NOT_EXPLORED" && d.asked(v)).map((v) => d.name(v.code));
   const rows: [string, string][] = ([
     ...ZONES.filter((z) => z !== "NOT_EXPLORED").map((z) => [zoneTag(z), E(names(z).join(" · "))]),
+    [zoneTag("NOT_EXPLORED").replace(E(ZONE_WORD.NOT_EXPLORED.tag), E(PROBE_WORD.tag)), E(po.join(" · "))],
     [zoneTag("NOT_EXPLORED"), ne.length ? L(`${ne.length}곳 <span class="mut">(관심과 해 본 횟수만 물음)</span>`, `${nEn(ne.length, "area")} <span class="mut">(we only asked about interest and experience)</span>`) : ""],
     [L("목표 직무 · 산업", "Target role · Industry"), E(goal)],
     [L("응답", "Your answers"), m.response_quality.flag === "OK" ? L("고르게 답했어요", "No issues found in how you answered") : L("다시 볼 응답이 있어요(02장 끝에서 설명)", "Some answers are worth a second look (explained at the end of Chapter 02)")],
@@ -231,7 +234,11 @@ export function tree(x: Inputs, d: X): Page {
 export function dash(x: Inputs, d: X): Page {
   const en = isEn();
   const k = d.counts;
-  const zoneParts = ZONES.map((z) => ({ label: ZONE_WORD[z].tag, value: x.m.domains.filter((v) => v.zone === z).length, color: ZC[z] })).filter((p) => p.value);
+  const zoneParts = [
+    ...ZONES.filter((z) => z !== "NOT_EXPLORED").map((z) => ({ label: ZONE_WORD[z].tag, value: x.m.domains.filter((v) => v.zone === z).length, color: ZC[z] })),
+    { label: PROBE_WORD.tag, value: k.probeOnly, color: ZC.NOT_EXPLORED },
+    { label: ZONE_WORD.NOT_EXPLORED.tag, value: k.ne, color: ZC.NOT_EXPLORED },
+  ].filter((p) => p.value);
   const ints = (["HIGH", "MID", "LOW"] as const).map((v) => ({ label: L(`관심 ${BAND_WORD[v]}`, `${BAND_WORD[v]} interest`), value: x.m.domains.filter((z) => z.interest === v).length, color: IC[v] }));
   const noAns = x.m.domains.filter((z) => !z.interest).length;
   /* 관심은 높은데 해 본 일이 적은 영역(근거가 아직 부족한 묶음) */
