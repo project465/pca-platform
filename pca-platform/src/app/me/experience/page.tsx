@@ -8,6 +8,7 @@ import { recomputeStatus } from "@/lib/me-v3/recompute";
 import { domainName, majorNameIn } from "@/lib/me-v3/runtime/session";
 import { wsLang } from "@/lib/me-v3/ws-lang";
 import { wsSay } from "@/lib/me-v3/ws-say";
+import { josaOf } from "@/lib/me-v3/result/josa";
 import { CmShell, CmHead } from "../shell";
 import { EmptyState } from "../ui";
 import { dropExperience } from "./actions";
@@ -137,8 +138,8 @@ export default async function Experiences() {
                       <span className="cm-item-sub">
                         {tds.length
                           ? tds.join(" · ")
-                          : t("{word}을 고르지 않으셔서 아직 어느 판단으로도 가지 않았습니다",
-                            { word: flow.domainWord })}
+                          : t("{word}{eul} 고르지 않으셔서 아직 어느 판단으로도 가지 않았습니다",
+                            { word: flow.domainWord, eul: josaOf(flow.domainWord, "을를") })}
                         {e.started_on ? "" : t(" · 날짜는 적어 둔 날입니다")}
                       </span>
                     </summary>
