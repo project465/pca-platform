@@ -1,4 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
+import { withStyle } from "./style";
 import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import type * as z from "zod/v4";
 import { opFail } from "@/lib/oplog";
@@ -83,7 +84,8 @@ export type Effort = "low" | "medium" | "high";
 
 /** 시스템 글에 캐시 표시를 단다. 같은 기능의 다음 부름은 이 앞부분을 다시 읽지 않는다 */
 function systemBlocks(system: string) {
-  return [{ type: "text" as const, text: system, cache_control: { type: "ephemeral" as const } }];
+  /* 글쓰기 규칙(짧은 문장 · AI 말투 금지)을 모든 부름에 같이 붙인다(`style.ts`) */
+  return [{ type: "text" as const, text: withStyle(system), cache_control: { type: "ephemeral" as const } }];
 }
 
 function usageOf(u: {
