@@ -1,5 +1,6 @@
 import type { RegionView } from "@/lib/me-v3/report-long/region";
 import { REGION_LAW } from "@/lib/me-v3/report-long/region";
+import { orgLabel } from "@/lib/me-v3/report-long/region";
 
 /**
  * 지역에서 이 경험을 이어 볼 기업(웹). 책 01장과 같은 묶음(`regionView`)을 그대로 쓴다.
@@ -11,7 +12,8 @@ import { REGION_LAW } from "@/lib/me-v3/report-long/region";
  * **새 class 를 짓지 않는다.** `rs-pack` 의 줄 모양을 그대로 쓴다
  */
 const HEAD = { A: "내 결과와 잘 맞는 곳", B: "한 걸음 더 채우면 맞는 곳", C: "넓혀 볼 곳" } as const;
-const short = (n: string) => n.replace(/\(주\)|주식회사|㈜/g, "").trim();
+/* 회사 이름은 책과 같은 함수로 적는다(J5) */
+const short = orgLabel;
 
 export default function RegionSection({ v, chosen }: { v: RegionView; chosen: string[] }) {
   const picked = v.groups.filter((g) => chosen.includes(g.pack.code));
@@ -30,7 +32,7 @@ export default function RegionSection({ v, chosen }: { v: RegionView; chosen: st
           <dl>
             {g.orgs.slice(0, 3).map((o) => (
               <div key={o.name}>
-                <dt>{o.name}{o.listed ? ` · ${o.listed} 상장` : ""}</dt>
+                <dt>{orgLabel(o.name)}{o.listed ? ` · ${o.listed} 상장` : ""}</dt>
                 <dd><span>{[o.sector, o.product ? `주력 품목 ${o.product}` : ""].filter(Boolean).join(" · ")}</span></dd>
               </div>
             ))}

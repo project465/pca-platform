@@ -21,6 +21,7 @@ import { C, chain, gantt } from "./charts";
 import { E, H, PAL, T, ZC, band, card, howto, note, paginate, rowsOf, ul, type Page } from "./kit";
 import { GAP_WHY, gapKindText, HORIZON_DAYS, actionHead, actionLine, actionOutput, askNoun, j, okOr, okText, polite } from "./text";
 import { T as L, isEn } from "./lang";
+import { planActions } from "../result/plan-actions";
 
 const P = (title: string, body: string): Page => ({ part: "07", partName: L("실행 로드맵", "Action plan"), title, body });
 const A = (title: string, body: string): Page => ({ part: "", partName: L("부록", "Appendix"), title, body });
@@ -125,7 +126,8 @@ export function prioPages(x: Inputs, d: X): Page[] {
 const SPAN_C: Record<Action["horizon"] | "DRAFT", string> = { NOW: PAL.blue, NEXT: PAL.teal, LATER: PAL.violet, DRAFT: PAL.amber };
 
 export function ganttPage(x: Inputs, d: X): Page {
-  const acts = x.m.actions.slice(0, 8);
+  /* 웹과 같은 목록이다(`planActions` · J7) */
+  const acts = planActions(x.m.actions);
   /* 할 일이 일곱 · 여덟이면 표의 풀이 줄을 모두 뺀다(2026-11-03 인공지능 견본 B: 여덟 줄에서 마지막 안내 띠가 80px 넘쳤다).
      풀이는 07장 할 일 쪽에 그대로 있다 */
   const { role, fp } = goalGuide(x, d);

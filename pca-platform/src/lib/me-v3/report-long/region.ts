@@ -169,6 +169,20 @@ const bare = (n: string) => n.replace(/주식회사|\(주\)|㈜|\s/g, "");
 /** 명단에 HTML 엔티티가 그대로 들어 있는 줄이 있다(`앱서비스 &apos;툭&apos;`). 화면 · 책에 그대로 찍히지 않게 푼다 */
 const unent = (t: string) => t.replace(/&apos;|&#0?39;/g, "'").replace(/&quot;|&#0?34;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
 const tidyName = (n: string) => unent(n).replace(/\s+/g, " ").trim();
+/**
+ * **사람이 읽는 회사 이름**(2026-11-03 전주대 실제 화면 J5). 명단의 원래 이름은 `name` 에 그대로 둔다:
+ * 공시 명단과 맞추는 열쇠(`bare`)가 그 값을 읽고, 바꾸면 같은 회사가 두 번 실린다.
+ *
+ * 화면과 책은 이 함수 하나로 적는다. 웹과 책이 따로 `(주)` 만 떼고 있어서 `농업회사법인  바이오엔진`
+ * (빈칸 둘) · `농업회사법인홉앤호프` · `(유)비츠` 처럼 법인 꼴이 이름에 붙은 채로 섰다. 법인 꼴은
+ * 이름이 아니라 회사의 형태라 떼고, 떼고 나서 빈 이름이면 원래 이름을 그대로 쓴다(지어내지 않는다)
+ */
+const LEGAL = /농업회사법인|농업법인회사|영농조합법인|어업회사법인|유한책임회사|유한회사|주식회사|합자회사|합명회사|사단법인|재단법인|\((?:주|유|사|재)\)|[㈜㈲]/g;
+export function orgLabel(n: string): string {
+  const t = tidyName(n);
+  const out = t.replace(LEGAL, " ").replace(/\s+/g, " ").replace(/^[\s·,.-]+|[\s·,.-]+$/g, "").trim();
+  return out || t;
+}
 function staffOf(s: DartRaw["staff"]): number | null {
   if (!s) return null;
   if (typeof s.total === "number") return s.total;

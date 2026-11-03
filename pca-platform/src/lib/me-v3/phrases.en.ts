@@ -297,6 +297,8 @@ export const PHRASES_EN: Record<string, string> = {
   "지금 적어두기": "Write it down now",
   "그 밖에 할 일 {n}개 ∨": "{n} more {n|step|steps} ∨",
   "이 결과에서 이어지는 할 일 {n}개 ∨": "{n} more {n|step|steps} from this result ∨",
+  "이 결과의 할 일 모두 {n}개 ∨": "All {n} {n|step|steps} from this result ∨",
+  "할 일 {t}가지 가운데 먼저 할 {n}가지입니다. 나머지는 아래 ‘다른 영역부터 적어도 돼요’와 PDF 07장에 있습니다.": "These are the first {n} of {t} steps. The rest are below and in chapter 7 of the PDF.",
   "여기 답은 어느 영역의 일인지 묻지 않은 지원서 문항이라, 위의 영역별 ‘남긴 것’에는 세지 않았습니다. 이 과제를 경험 기록에 영역과 함께 적으면 그 영역의 근거로 들어갑니다.":
     "These answers came from application questions that did not ask which area the work belonged to, so they are not counted in “What you left behind” for each area above. Record this project with its area in your experience log and it will count as evidence there.",
   "할 일에 담아두기": "Save to my to-do list",

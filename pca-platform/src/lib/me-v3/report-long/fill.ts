@@ -11,7 +11,7 @@ import { AXES, STEP_WORD, ZONE_WORD, type X, notAsked } from "./derive";
 import { E, H, chips, ul, type Page } from "./kit";
 import { capEn, j, polite, politeList, politePara } from "./text";
 import { T as L } from "./lang";
-import type { FitGroup, ROrg } from "./region";
+import { orgLabel, type FitGroup, type ROrg } from "./region";
 
 const F = (part: string, partName: string, title: string, sub: string, body: string): Page =>
   ({ part, partName, title, kind: "fill", body: H(title, sub) + body });
@@ -128,13 +128,13 @@ export function fillPages(x: Inputs, d: X, part3: string, region: { name: string
     for (let k = 4; k < Math.min(g.orgs.length, 24); k += 5) {
       const more = g.orgs.slice(k, k + 5);
       add(F("05", region.name, `${g.pack.name_ko} 쪽 회사${k > 4 ? " (계속)" : " 더 보기"}`, `${g.orgs.length}곳 가운데 ${more.length > 1 ? `${k + 1}~${k + more.length}` : k + 1}번째 · 공개 명단과 공시 값`,
-        `<table class="tb tb-xs"><tbody>${more.map((o) => `<tr><td class="w30"><b>${E(o.name)}</b>${o.listed ? ` <span class="mut sm">${E(o.listed)}</span>` : ""}</td><td>${E(o.sector)}</td><td class="mut">${E((o.product || "").length > 40 ? `${(o.product || "").slice(0, 39)}…` : o.product || "")}</td></tr>`).join("")}</tbody></table>`));
+        `<table class="tb tb-xs"><tbody>${more.map((o) => `<tr><td class="w30"><b>${E(orgLabel(o.name))}</b>${o.listed ? ` <span class="mut sm">${E(o.listed)}</span>` : ""}</td><td>${E(o.sector)}</td><td class="mut">${E((o.product || "").length > 40 ? `${(o.product || "").slice(0, 39)}…` : o.product || "")}</td></tr>`).join("")}</tbody></table>`));
     }
   }
 
   /* 05 지역: 앞의 표에 다 싣지 못한 상장사(공시 값 그대로). 대전·충청처럼 명단 회사가 적은 지역에서 장 끝을 채운다 */
   const won = (v: number | null | undefined) => (v == null ? "" : `${Math.round(v / 1e8).toLocaleString("ko-KR")}억 원`);
-  const lrow = (o: ROrg) => `<tr><td class="w30"><b>${E(o.name)}</b></td><td>${E(o.sector)}</td><td class="mut">${E([won(o.fin?.sales) && `매출 ${won(o.fin?.sales)}`, o.segments?.[0] ? `${o.segments[0].segment} ${o.segments[0].count.toLocaleString("ko-KR")}명` : ""].filter(Boolean).join(" · "))}</td></tr>`;
+  const lrow = (o: ROrg) => `<tr><td class="w30"><b>${E(orgLabel(o.name))}</b></td><td>${E(o.sector)}</td><td class="mut">${E([won(o.fin?.sales) && `매출 ${won(o.fin?.sales)}`, o.segments?.[0] ? `${o.segments[0].segment} ${o.segments[0].count.toLocaleString("ko-KR")}명` : ""].filter(Boolean).join(" · "))}</td></tr>`;
   if (region?.neighbor && region.neighbor.length > 8) for (let k = 8; k < Math.min(region.neighbor.length, 28); k += 5) {
     const more = region.neighbor.slice(k, k + 5);
     add(F("05", region.name, `가까운 상장사 (계속)`, `${region.neighbor.length}곳 가운데 ${more.length > 1 ? `${k + 1}~${k + more.length}` : k + 1}번째 · 공시 값`, `<table class="tb tb-xs"><tbody>${more.map(lrow).join("")}</tbody></table>`));
@@ -149,7 +149,7 @@ export function fillPages(x: Inputs, d: X, part3: string, region: { name: string
     const gs = region.groups.filter((g) => g.orgs.length);
     const n = gs.reduce((a, g) => a + g.orgs.length, 0);
     const g0 = [...gs].sort((a, b) => "ABC".indexOf(a.tier) - "ABC".indexOf(b.tier) || b.orgs.length - a.orgs.length)[0];
-    const firsts = g0 ? g0.orgs.slice(0, 3).map((o) => o.name) : [];
+    const firsts = g0 ? g0.orgs.slice(0, 3).map((o) => orgLabel(o.name)) : [];
     const lst = (region.listed ?? []).length, nb = (region.neighbor ?? []).length;
     const steps = [
       n ? `이 장에는 ${x.major} 전공의 산업과 이어지는 회사 ${n}곳을 산업 ${gs.length}개로 나눠 실었어요.` : "",

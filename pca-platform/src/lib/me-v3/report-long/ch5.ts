@@ -13,7 +13,7 @@ import type { Inputs } from "./types";
 import { ZONE_WORD, type X } from "./derive";
 import { C, chain, hbars, moneyBars } from "./charts";
 import { E, H, PAL, T, band, chapter, howto, note, paginate, rowsOf, ul, type Page } from "./kit";
-import { REGION_LAW, groupTheme, tryOf, type FitGroup, type ROrg, type RegionView, type Tier } from "./region";
+import { REGION_LAW, groupTheme, orgLabel, tryOf, type FitGroup, type ROrg, type RegionView, type Tier } from "./region";
 import { andJoin, cutQuote, j, okOr, polite } from "./text";
 
 /**
@@ -29,7 +29,8 @@ export const TIER: Record<Tier, { head: string; rule: string; next: string; colo
   C: { head: "넓혀 볼 곳", rule: "그 산업이 쓰는 영역에서 해 본 일이 아직 확인되지 않은 곳", next: "그 영역에서 작은 과제 하나를 해 두면 다음 검사에서 한 걸음 더 채우면 맞는 곳으로 옮겨 올 수 있어요.", color: "#8c97ab" },
 };
 const won = (v: number | null | undefined) => (v == null ? "공시 없음" : `${Math.round(v / 1e8).toLocaleString("ko-KR")}억 원`);
-const short = (n: string) => n.replace(/\(주\)|주식회사|㈜/g, "").trim();
+/* 회사 이름은 웹과 같은 함수로 적는다(J5) */
+const short = orgLabel;
 const cut = (s: string, n: number) => (s.length > n ? s.slice(0, n - 1) + "…" : s);
 const sector = (s: string) => s.replace(/^그 외 (기타 )?/, "").replace(/^기타 /, "").replace(/ 제조업$| 서비스업$/, "");
 
@@ -97,13 +98,13 @@ export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
   type Row2 = Row | { kind: "m"; n: number; g: FitGroup };
   const tablePages = (head: string, first: string, gs: FitGroup[], rest: FitGroup[]) => {
     const rows: Row2[] = gs.flatMap((g) => [{ kind: "g" as const, g }, ...g.orgs.slice(0, CAP).map((o) => ({ kind: "o" as const, o })), ...(g.orgs.length > CAP ? [{ kind: "m" as const, n: g.orgs.length - CAP, g }] : [])]);
-    paginate(rows, (rw) => (rw.kind === "g" ? 4.8 : rw.kind === "m" ? 1.2 : Math.max(1, rowsOf(rw.o.product || "", 26), rowsOf(rw.o.name, 15))), 34, 27).forEach((chunk, k, all) => out.push(part(`${head}${k ? ` (${k + 1})` : ""}`,
+    paginate(rows, (rw) => (rw.kind === "g" ? 4.8 : rw.kind === "m" ? 1.2 : Math.max(1, rowsOf(rw.o.product || "", 26), rowsOf(short(rw.o.name), 15))), 34, 27).forEach((chunk, k, all) => out.push(part(`${head}${k ? ` (${k + 1})` : ""}`,
       (k === 0 ? first : `<p class="k">${E(head)} (계속)</p>`) +
       `<table class="tb tb-xs sj"><thead><tr><th class="w30">회사</th><th class="w30">업종</th><th>주력 품목</th></tr></thead><tbody>${chunk.map((rw) => rw.kind === "m"
         ? `<tr><td colspan="3" class="mut">같은 산업에 ${rw.n}곳이 더 있습니다. ${E(rw.g.orgs.slice(CAP).map((o) => short(o.name)).slice(0, 14).join(" · "))}${rw.n > 14 ? " 등" : ""}</td></tr>`
         : rw.kind === "g"
         ? `<tr class="sj-g"><td colspan="3"><b>${E(rw.g.pack.name_ko)} · ${rw.g.orgs.length}곳</b><span>${E(why(x, rw.g))}</span><em>해 볼 것: ${E(themeTry(rw.g, x.coreCode))}</em></td></tr>`
-        : `<tr><td><b>${E(rw.o.name)}</b>${rw.o.listed ? ` <span class="sj-l">${E(rw.o.listed)}</span>` : ""}</td><td>${E(cut(sector(rw.o.sector), 22))}</td><td class="mut">${E(cut(okOr(rw.o.product) || (rw.o.listed ? "" : "명단에 품목이 적혀 있지 않음"), 34))}</td></tr>`).join("")}</tbody></table>` +
+        : `<tr><td><b>${E(short(rw.o.name))}</b>${rw.o.listed ? ` <span class="sj-l">${E(rw.o.listed)}</span>` : ""}</td><td>${E(cut(sector(rw.o.sector), 22))}</td><td class="mut">${E(cut(okOr(rw.o.product) || (rw.o.listed ? "" : "명단에 품목이 적혀 있지 않음"), 34))}</td></tr>`).join("")}</tbody></table>` +
       (k === all.length - 1 && rest.length ? `<p class="mut sm">나머지 ${rest.length}개 산업(${E(rest.map((g) => `${g.pack.name_ko} ${g.orgs.length}곳`).join(" · "))})은 이 장 첫 쪽 그래프에 회사 수만 적었습니다.</p>` : ""))));
   };
   if (picked.length) {
@@ -136,7 +137,7 @@ export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
     const tableAt = out.length;
     out.push(part(`${r.label} 본점 상장사의 공시 숫자`,
       T(`${E(r.label)}에 본점을 둔 상장사 ${Math.min(fin.length, 12)}곳의 공시 숫자입니다`, "사업보고서의 주요 계정과 ‘직원 등의 현황’에서 옮겼습니다. 연결 재무제표가 있는 회사는 연결 기준, 없는 회사는 별도 기준이고, 금액은 억 원 단위로 반올림했습니다.") +
-      `<table class="tb tb-xs"><thead><tr><th>회사</th><th>매출액</th><th>영업이익</th>${netCol ? "<th>당기순이익</th>" : ""}<th>직원</th><th>기준</th></tr></thead><tbody>${fin.slice(0, 12).map((o) => `<tr><td><b>${E(o.name)}</b></td><td>${won(o.fin!.sales)}</td><td>${won(o.fin!.op)}</td>${netCol ? `<td>${won(o.fin!.net)}</td>` : ""}<td>${o.staff != null ? `${o.staff.toLocaleString("ko-KR")}명` : "공시 없음"}</td><td class="mut">${E(o.fin!.year)} ${E(o.fin!.basis)}</td></tr>`).join("")}</tbody></table><p class="mut sm">직원 수는 사업보고서 ‘직원 등의 현황’의 합계라서 본사와 공장과 영업 인원이 다 들어 있습니다. 이 지역에서 일하는 사람 수와는 다를 수 있습니다.</p>` +
+      `<table class="tb tb-xs"><thead><tr><th>회사</th><th>매출액</th><th>영업이익</th>${netCol ? "<th>당기순이익</th>" : ""}<th>직원</th><th>기준</th></tr></thead><tbody>${fin.slice(0, 12).map((o) => `<tr><td><b>${E(short(o.name))}</b></td><td>${won(o.fin!.sales)}</td><td>${won(o.fin!.op)}</td>${netCol ? `<td>${won(o.fin!.net)}</td>` : ""}<td>${o.staff != null ? `${o.staff.toLocaleString("ko-KR")}명` : "공시 없음"}</td><td class="mut">${E(o.fin!.year)} ${E(o.fin!.basis)}</td></tr>`).join("")}</tbody></table><p class="mut sm">직원 수는 사업보고서 ‘직원 등의 현황’의 합계라서 본사와 공장과 영업 인원이 다 들어 있습니다. 이 지역에서 일하는 사람 수와는 다를 수 있습니다.</p>` +
       note("표를 읽는 법", ul(["당기순이익에는 본업 밖의 손익과 세금이 들어가서, 영업이익과 방향이 반대로 나오는 해도 있습니다.", "사업부문별 직원 수를 보면 그 회사 사람들이 어느 부문에 많이 모여 있는지 알 수 있습니다.", `채용 공고의 근무 부서가 어느 사업부문에 속하는지 맞춰 보면 ${E(x.major)} 전공자가 갈 자리를 짐작하기 쉬워집니다.`, "직원이 많은 회사라고 신입을 많이 뽑는 것은 아니니, 뽑는 인원은 그해 공고에서 보시면 됩니다."]))));
     /* 회사가 적으면 막대 쪽을 표 앞에 둔다. 장 끝에 막대 하나만 남으면 쪽 절반이 빈다 */
     if (fin.length <= 8) out.splice(tableAt, 0, out.pop()!);
@@ -151,7 +152,7 @@ export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
   if (r.neighbor.length) {
     out.push(part("가까운 대전·충청 상장사",
       T("생활권이 겹치는 대전·충청 상장사도 같이 실었습니다", "본점이 대전이나 충청으로 공시된 상장사이고, 숫자는 사업보고서에서 옮겼습니다.") +
-      `<table class="tb tb-xs"><thead><tr><th>회사</th><th>본점</th><th>매출액</th><th>영업이익</th><th>사업부문별 직원</th><th>사업보고서</th></tr></thead><tbody>${r.neighbor.slice(0, 8).map((o) => `<tr><td><b>${E(o.name)}</b></td><td class="mut">${E((o.adres ?? "").split(" ").slice(0, 2).join(" "))}</td><td>${won(o.fin?.sales)}</td><td>${won(o.fin?.op)}</td><td>${E(o.segments.slice(0, 3).map((s) => `${s.segment} ${s.count.toLocaleString("ko-KR")}명`).join(" · "))}</td><td class="mut">${E(o.report ? `${o.report.name} · 접수 ${o.report.dt}` : "")}</td></tr>`).join("")}</tbody></table>` +
+      `<table class="tb tb-xs"><thead><tr><th>회사</th><th>본점</th><th>매출액</th><th>영업이익</th><th>사업부문별 직원</th><th>사업보고서</th></tr></thead><tbody>${r.neighbor.slice(0, 8).map((o) => `<tr><td><b>${E(short(o.name))}</b></td><td class="mut">${E((o.adres ?? "").split(" ").slice(0, 2).join(" "))}</td><td>${won(o.fin?.sales)}</td><td>${won(o.fin?.op)}</td><td>${E(o.segments.slice(0, 3).map((s) => `${s.segment} ${s.count.toLocaleString("ko-KR")}명`).join(" · "))}</td><td class="mut">${E(o.report ? `${o.report.name} · 접수 ${o.report.dt}` : "")}</td></tr>`).join("")}</tbody></table>` +
       note("고를 때 먼저 볼 칸", `사업부문별 직원 칸에서 ${E(x.major)} 전공자가 일할 만한 부문에 사람이 얼마나 있는지 보세요. 그 부문 이름으로 회사 누리집의 채용 쪽을 찾으면 공고에 적히는 직무 이름도 알 수 있습니다.`)));
   }
   if (r.big.length) {
@@ -160,7 +161,7 @@ export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
     const what = hasOrg ? "큰 회사 · 기관" : "큰 회사";
     out.push(part(`${r.label}에 본점을 둔 ${what}`,
       T(`${E(r.label)}에 본점을 둔 ${what}입니다`, "회사 본점 주소는 OpenDART 기업개황으로 확인했습니다. 본점은 다른 지역에 있고 이곳에는 공장만 둔 회사는 공시로 가려낼 수 없어 넣지 않았습니다.") +
-      `<table class="tb tb-s"><thead><tr><th>${hasOrg ? "회사 · 기관" : "회사"}</th><th>어디</th><th>하는 일</th></tr></thead><tbody>${r.big.map((o) => `<tr><td><b>${E(o.name)}</b></td><td>${E(o.where)}</td><td>${E(o.what)}</td></tr>`).join("")}</tbody></table>`));
+      `<table class="tb tb-s"><thead><tr><th>${hasOrg ? "회사 · 기관" : "회사"}</th><th>어디</th><th>하는 일</th></tr></thead><tbody>${r.big.map((o) => `<tr><td><b>${E(short(o.name))}</b></td><td>${E(o.where)}</td><td>${E(o.what)}</td></tr>`).join("")}</tbody></table>`));
   }
   const ovs = r.overview.map((o) => ({ ...o, cut: cutQuote(o.excerpt, 170) })).filter((o) => o.cut).slice(0, 4);
   if (ovs.length) {
@@ -172,7 +173,7 @@ export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
   if (r.publicOrgs.length) {
     out.push(part(`${r.label}의 공기업 개황`,
       T("본사가 이 지역에 있는 공기업은 공시 기업개황으로 확인했습니다", "공기업은 상장하지 않아 사업보고서 숫자가 공시에 없습니다. 그래서 본점과 설립 연도와 업종만 확인했고, 경영 정보는 공공기관 경영정보 공개시스템(ALIO)에서 직접 찾아보셔야 합니다.") +
-      `<table class="tb tb-s"><thead><tr><th>기관</th><th>본점 주소</th><th>설립</th><th>업종</th></tr></thead><tbody>${r.publicOrgs.map((o) => `<tr><td><b>${E(o.name)}</b></td><td>${E(o.adres ?? "")}</td><td>${E(o.est ?? "")}</td><td>${E(o.sector)}</td></tr>`).join("")}</tbody></table>` +
+      `<table class="tb tb-s"><thead><tr><th>기관</th><th>본점 주소</th><th>설립</th><th>업종</th></tr></thead><tbody>${r.publicOrgs.map((o) => `<tr><td><b>${E(short(o.name))}</b></td><td>${E(o.adres ?? "")}</td><td>${E(o.est ?? "")}</td><td>${E(o.sector)}</td></tr>`).join("")}</tbody></table>` +
       note("ALIO 에서 볼 것", ul(["기관 일반 현황과 조직도", "경영 목표와 주요 사업", "신입 채용 공고와 직무기술서의 담당 업무", "경영평가 결과(공개된 범위 안에서)", `직무기술서의 담당 업무 가운데 ${E(x.major)} 전공으로 설명할 수 있는 줄`]))));
   }
 
@@ -202,7 +203,7 @@ export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
       const g0 = r.groups.find((g) => chosen.has(g.pack.code)) ?? [...r.groups].sort((a, b) => "ABC".indexOf(a.tier) - "ABC".indexOf(b.tier))[0];
       const os = g0 ? [...g0.orgs].sort((a, b) => Number(!!b.url) - Number(!!a.url)).slice(0, 3) : [];
       return os.length ? H(`이 순서로 먼저 알아보기 좋은 곳`, `${E(g0.pack.name_ko)} 쪽 회사 · 명단과 공시에 적힌 그대로`) +
-        `<table class="tb tb-xs"><thead><tr><th>회사</th><th>업종</th><th>주력 품목</th>${os.some((o) => o.url) ? "<th>누리집</th>" : ""}</tr></thead><tbody>${os.map((o) => `<tr><td><b>${E(o.name)}</b>${o.listed ? ` <span class="mut sm">${E(o.listed)}</span>` : ""}</td><td>${E(o.sector)}</td><td class="mut">${E((o.product || "").length > 30 ? `${(o.product || "").slice(0, 29)}…` : o.product || "")}</td>${os.some((v) => v.url) ? `<td class="mut sm">${E((o.url ?? "").replace(/^https?:\/\//, "").replace(/\/$/, ""))}</td>` : ""}</tr>`).join("")}</tbody></table>` : "";
+        `<table class="tb tb-xs"><thead><tr><th>회사</th><th>업종</th><th>주력 품목</th>${os.some((o) => o.url) ? "<th>누리집</th>" : ""}</tr></thead><tbody>${os.map((o) => `<tr><td><b>${E(short(o.name))}</b>${o.listed ? ` <span class="mut sm">${E(o.listed)}</span>` : ""}</td><td>${E(o.sector)}</td><td class="mut">${E((o.product || "").length > 30 ? `${(o.product || "").slice(0, 29)}…` : o.product || "")}</td>${os.some((v) => v.url) ? `<td class="mut sm">${E((o.url ?? "").replace(/^https?:\/\//, "").replace(/\/$/, ""))}</td>` : ""}</tr>`).join("")}</tbody></table>` : "";
     })() +
     (roleRow || expRow || madeRow ? note("내 결과에서 미리 옮겨 둔 것", ul([roleRow && `지원할 직무 · ${roleRow}`, expRow && `이어지는 경험 · ${expRow}`, madeRow].filter(Boolean) as string[])) : "") +
     band("함께 찾아볼 곳", `알아본 내용을 들고 ${E(x.issuer)} 진로·취업 상담을 찾으면, 지역 일자리와 지원 사업을 같이 찾아볼 수 있어요.`)) });

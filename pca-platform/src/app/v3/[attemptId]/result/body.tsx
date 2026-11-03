@@ -50,6 +50,7 @@ import ResultNav from "./result-nav";
 import "../../result.css";
 import { barRows, canRadar } from "@/lib/me-v3/result/chart-data";
 import Detail from "./detail";
+import { planActions } from "@/lib/me-v3/result/plan-actions";
 import Disclose from "./disclose";
 import SecondStory from "./second";
 import Fold from "./fold";
@@ -1288,8 +1289,9 @@ export async function V3ResultBody(
    * 그대로 들어간다(`?td=`).
    */
   /** 첫 화면이 이미 적은 한 가지를 뺀 나머지. **같은 것을 두 번 적지 않는다** */
-  const alsoActions = model.actions
-    .filter((a) => a.id !== shownAction?.id).slice(0, 3);
+  /* 책 07장과 같은 목록을 읽는다(J7). 셋에서 끊으면 화면은 넷, 종이는 여덟까지 실려 수가 갈린다 */
+  const planned = planActions(model.actions);
+  const alsoActions = planned.filter((a) => a.id !== shownAction?.id);
   /* **작업공간(`/me`)이 두 언어로 선다**(영어판 2단계b). 결과지에서 그리로
      가는 길을 두 언어 모두 세운다. 다만 **한국 자료에 서 있는 절**(권역 ·
      기관 유형 · 세종 지역)은 한국어판에만 세운다(`kr`) */
@@ -1476,7 +1478,7 @@ export async function V3ResultBody(
         {meta.provisional ? <p className="cm-none rs-prov" style={{ margin: "0 0 12px" }}>{meta.provisional}</p> : null}
         <Summary
           title={h.title} lead={h.lead} who={sumWho}
-          zones={sumZones} evidence={sumEvidence} steps={sumSteps}
+          zones={sumZones} evidence={sumEvidence} steps={sumSteps} stepsTotal={planned.length}
           pdfHref={sample ? null : `/v3/${attemptId}/result/pdf`}
           keepAction={ws && model.actions.length ? takeActionsFromResult : null}
           kept={kept}
@@ -1695,7 +1697,7 @@ export async function V3ResultBody(
               ) : null}
               {alsoActions.length ? (
                 <a className="rs-do1-m" href="#plan">
-                  {tr("이 결과에서 이어지는 할 일 {n}개 ∨", { n: alsoActions.length })}
+                  {tr("이 결과의 할 일 모두 {n}개 ∨", { n: planned.length })}
                 </a>
               ) : null}
             </div>

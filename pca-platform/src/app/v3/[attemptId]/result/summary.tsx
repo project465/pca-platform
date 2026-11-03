@@ -33,7 +33,7 @@ export type SummaryEvidence = {
 export type SummaryStep = { head: string; body: string; why: string | null; href: string };
 
 export default function Summary({
-  title, lead, who, zones, evidence, steps, pdfHref, keepAction, kept, tierNote,
+  title, lead, who, zones, evidence, steps, stepsTotal = 0, pdfHref, keepAction, kept, tierNote,
   book = true, upgradeHref = null, said = [],
 }: {
   title: string;
@@ -42,6 +42,8 @@ export default function Summary({
   zones: SummaryZone[];
   evidence: SummaryEvidence[];
   steps: SummaryStep[];
+  /** 이 결과의 할 일 전부(책 07장과 같은 수 · `planActions`). 여기에는 앞의 몇 가지만 선다 */
+  stepsTotal?: number;
   /** 종이 길. **견본이면 `null`** 이고, 그러면 작업공간 길도 세우지 않는다 */
   pdfHref: string | null;
   keepAction: (() => Promise<void>) | null;
@@ -128,6 +130,9 @@ export default function Summary({
 
       <section className="rsum-sect" aria-labelledby="rsum-do">
         <h2 id="rsum-do" className="rsum-h2"><span>3</span>{tr("다음에 할 일")}</h2>
+        {steps.length && stepsTotal > steps.length ? (
+          <p className="rsum-why">{tr("할 일 {t}가지 가운데 먼저 할 {n}가지입니다. 나머지는 아래 ‘다른 영역부터 적어도 돼요’와 PDF 07장에 있습니다.", { t: stepsTotal, n: steps.length })}</p>
+        ) : null}
         {steps.length ? (
           <ol className="rsum-steps">
             {steps.map((s, i) => (
