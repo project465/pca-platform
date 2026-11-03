@@ -121,6 +121,8 @@ const SPAN_C: Record<Action["horizon"] | "DRAFT", string> = { NOW: PAL.blue, NEX
 
 export function ganttPage(x: Inputs, d: X): Page {
   const acts = x.m.actions.slice(0, 8);
+  /* 할 일이 일곱 · 여덟이면 표의 풀이 줄을 모두 뺀다(2026-11-03 인공지능 견본 B: 여덟 줄에서 마지막 안내 띠가 80px 넘쳤다).
+     풀이는 07장 할 일 쪽에 그대로 있다 */
   const { role, fp } = goalGuide(x, d);
   const en = isEn();
   const span: Record<string, [number, number]> = { NOW: [1, 30], NEXT: [31, 60], LATER: [61, 90] };
@@ -158,7 +160,7 @@ export function ganttPage(x: Inputs, d: X): Page {
   return P(L("90일 계획", "90-day plan"),
     T(acts.length ? L(`90일 동안 할 일 ${acts.length}가지를 달력에 올렸습니다`, `Your ${pl(acts.length, "task", "tasks")} for the next 90 days, on a calendar`) : L("90일 계획 초안입니다", "A draft plan for the next 90 days"), dek) +
     (bars.length ? `<div class="wide-art">${gantt(bars, { width: 710, label: 250 })}</div>${howto(marks, L("줄마다 할 일 하나이고, 왼쪽 이름이 그 일이에요.", "Each row is one task, named on the left."))}` : "") +
-    (rows.length ? `<table class="tb tb-xs"><thead><tr><th>${L("기간", "When")}</th><th>${L("할 일", "Task")}</th><th>${L("남길 것", "Deliverable")}</th></tr></thead><tbody>${rows.map((r, i) => `<tr><td class="w18">${E(r.when)}${r.draft ? `<br>${draft()}` : ""}</td><td><b>${E(r.head)}</b>${(en ? rows.length > 4 : rows.length > 5 && i >= 4) ? "" : `<br><span class="mut">${E(r.line)}</span>`}</td><td class="w22">${E(r.out)}</td></tr>`).join("")}</tbody></table>` : "") +
+    (rows.length ? `<table class="tb tb-xs"><thead><tr><th>${L("기간", "When")}</th><th>${L("할 일", "Task")}</th><th>${L("남길 것", "Deliverable")}</th></tr></thead><tbody>${rows.map((r, i) => `<tr><td class="w18">${E(r.when)}${r.draft ? `<br>${draft()}` : ""}</td><td><b>${E(r.head)}</b>${(en ? rows.length > 4 : rows.length >= 7 || (rows.length > 5 && i >= 4)) ? "" : `<br><span class="mut">${E(r.line)}</span>`}</td><td class="w22">${E(r.out)}</td></tr>`).join("")}</tbody></table>` : "") +
     (["NOW", "NEXT", "LATER"].every((h) => x.m.actions.filter((a) => a.horizon === h).length <= 2)
       ? band(L("한 기간에", "Per period"), L("결과물은 두 개까지만 잡아야 끝까지 가기 쉬워요. 끝낸 일은 내 CareerMatri 경험 기록에 올려 두세요.",
         "Plan two deliverables at most per period, and log each finished task in My CareerMatri."))
