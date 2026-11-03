@@ -1,0 +1,2414 @@
+{
+ "schema_version": "ai-v1-relations.1",
+ "core": "AI_CORE_V1",
+ "note": "기술영역과 산업, 기술영역과 역할의 관계를 두 표로 둔다. 세 축을 미리 곱해 두지 않는다: 열두 영역과 여덟 산업과 여덟 역할을 곱하면 칠백예순여덟 줄이 되고 그만큼의 줄을 사람이 손으로 유지할 수 없다. 어느 줄도 점수를 만들지 않는다: `strength` 는 설명하는 차례를 정하고 `appears_as` 는 결과지가 그 말로 옮겨 적을 때 읽는다",
+ "combine_rule": "산업 하나와 역할 하나를 함께 고른 사람에게는 두 표에서 같은 영역의 줄을 뽑아 나란히 놓는다. 둘 다 `중심` 인 영역이 먼저 서고, 한쪽만 중심인 영역이 다음이고, 양쪽이 드문 영역은 적지 않는다",
+ "td_industry": [
+  {
+   "td": "TD01",
+   "td_name": "문제 정의·지표",
+   "industry": "INDUSTRY_SMARTFAC_V1",
+   "industry_name": "제조 AI·스마트팩토리",
+   "strength": "있음",
+   "appears_as": "제조 AI·스마트팩토리 에서는 놓칠 불량과 넘길 흠을 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "놓칠 불량과 넘길 흠을 가르는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문제 정의·지표",
+   "industry": "INDUSTRY_MEDAI_V1",
+   "industry_name": "의료 AI",
+   "strength": "있음",
+   "appears_as": "의료 AI 에서는 사람에게 넘길 사례를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "사람에게 넘길 사례를 가르는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문제 정의·지표",
+   "industry": "INDUSTRY_FINAI_V1",
+   "industry_name": "금융 AI",
+   "strength": "있음",
+   "appears_as": "금융 AI 에서는 드문 사기를 재는 범위를 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "드문 사기를 재는 범위를 정하는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문제 정의·지표",
+   "industry": "INDUSTRY_RECSYS_V1",
+   "industry_name": "플랫폼·추천",
+   "strength": "있음",
+   "appears_as": "플랫폼·추천 에서는 늘릴 지표와 지킬 지표를 가르는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "늘릴 지표와 지킬 지표를 가르는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문제 정의·지표",
+   "industry": "INDUSTRY_AUTODRIVE_V1",
+   "industry_name": "모빌리티·자율주행",
+   "strength": "드묾",
+   "appears_as": "모빌리티·자율주행 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "문제 정의·지표",
+   "industry": "INDUSTRY_GOVAI_V1",
+   "industry_name": "공공·행정 AI",
+   "strength": "중심",
+   "appears_as": "공공·행정 AI 에서는 자동으로 넘길 민원을 가르는가 · 사업 요구를 숫자로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J1",
+    "J2"
+   ],
+   "dimensions": [
+    "자동으로 넘길 민원을 가르는가",
+    "사업 요구를 숫자로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문제 정의·지표",
+   "industry": "INDUSTRY_GENAI_V1",
+   "industry_name": "콘텐츠·생성 AI",
+   "strength": "드묾",
+   "appears_as": "콘텐츠·생성 AI 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD01",
+   "td_name": "문제 정의·지표",
+   "industry": "INDUSTRY_ROBOTICS_V1",
+   "industry_name": "로봇·피지컬 AI",
+   "strength": "드묾",
+   "appears_as": "로봇·피지컬 AI 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "수집·라벨링 기준",
+   "industry": "INDUSTRY_SMARTFAC_V1",
+   "industry_name": "제조 AI·스마트팩토리",
+   "strength": "있음",
+   "appears_as": "제조 AI·스마트팩토리 에서는 드문 불량 자료를 꾸리는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "드문 불량 자료를 꾸리는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수집·라벨링 기준",
+   "industry": "INDUSTRY_MEDAI_V1",
+   "industry_name": "의료 AI",
+   "strength": "있음",
+   "appears_as": "의료 AI 에서는 전문의 라벨을 아껴 쓰는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "전문의 라벨을 아껴 쓰는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수집·라벨링 기준",
+   "industry": "INDUSTRY_FINAI_V1",
+   "industry_name": "금융 AI",
+   "strength": "드묾",
+   "appears_as": "금융 AI 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "수집·라벨링 기준",
+   "industry": "INDUSTRY_RECSYS_V1",
+   "industry_name": "플랫폼·추천",
+   "strength": "있음",
+   "appears_as": "플랫폼·추천 에서는 기록에서 학습 자료를 뽑는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "기록에서 학습 자료를 뽑는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수집·라벨링 기준",
+   "industry": "INDUSTRY_AUTODRIVE_V1",
+   "industry_name": "모빌리티·자율주행",
+   "strength": "있음",
+   "appears_as": "모빌리티·자율주행 에서는 드문 상황을 따로 모으는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "드문 상황을 따로 모으는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수집·라벨링 기준",
+   "industry": "INDUSTRY_GOVAI_V1",
+   "industry_name": "공공·행정 AI",
+   "strength": "드묾",
+   "appears_as": "공공·행정 AI 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD02",
+   "td_name": "수집·라벨링 기준",
+   "industry": "INDUSTRY_GENAI_V1",
+   "industry_name": "콘텐츠·생성 AI",
+   "strength": "있음",
+   "appears_as": "콘텐츠·생성 AI 에서는 원문과 번역의 짝을 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "원문과 번역의 짝을 맞추는가"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수집·라벨링 기준",
+   "industry": "INDUSTRY_ROBOTICS_V1",
+   "industry_name": "로봇·피지컬 AI",
+   "strength": "있음",
+   "appears_as": "로봇·피지컬 AI 에서는 시연 기록을 학습 자료로 쓰는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "시연 기록을 학습 자료로 쓰는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "데이터 정제·분할",
+   "industry": "INDUSTRY_SMARTFAC_V1",
+   "industry_name": "제조 AI·스마트팩토리",
+   "strength": "있음",
+   "appears_as": "제조 AI·스마트팩토리 에서는 공정 자료를 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "공정 자료를 맞추는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "데이터 정제·분할",
+   "industry": "INDUSTRY_MEDAI_V1",
+   "industry_name": "의료 AI",
+   "strength": "중심",
+   "appears_as": "의료 AI 에서는 환자 단위로 나누는가 · 생체 신호의 잡음을 다루는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J4"
+   ],
+   "dimensions": [
+    "환자 단위로 나누는가",
+    "생체 신호의 잡음을 다루는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "데이터 정제·분할",
+   "industry": "INDUSTRY_FINAI_V1",
+   "industry_name": "금융 AI",
+   "strength": "있음",
+   "appears_as": "금융 AI 에서는 예측 시점 뒤의 정보를 빼는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "예측 시점 뒤의 정보를 빼는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "데이터 정제·분할",
+   "industry": "INDUSTRY_RECSYS_V1",
+   "industry_name": "플랫폼·추천",
+   "strength": "드묾",
+   "appears_as": "플랫폼·추천 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "데이터 정제·분할",
+   "industry": "INDUSTRY_AUTODRIVE_V1",
+   "industry_name": "모빌리티·자율주행",
+   "strength": "있음",
+   "appears_as": "모빌리티·자율주행 에서는 주행 기록의 쓰임을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "주행 기록의 쓰임을 남기는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "데이터 정제·분할",
+   "industry": "INDUSTRY_GOVAI_V1",
+   "industry_name": "공공·행정 AI",
+   "strength": "있음",
+   "appears_as": "공공·행정 AI 에서는 공공 데이터 형식을 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "공공 데이터 형식을 맞추는가"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "데이터 정제·분할",
+   "industry": "INDUSTRY_GENAI_V1",
+   "industry_name": "콘텐츠·생성 AI",
+   "strength": "드묾",
+   "appears_as": "콘텐츠·생성 AI 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD03",
+   "td_name": "데이터 정제·분할",
+   "industry": "INDUSTRY_ROBOTICS_V1",
+   "industry_name": "로봇·피지컬 AI",
+   "strength": "드묾",
+   "appears_as": "로봇·피지컬 AI 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "모델·학습 설계",
+   "industry": "INDUSTRY_SMARTFAC_V1",
+   "industry_name": "제조 AI·스마트팩토리",
+   "strength": "드묾",
+   "appears_as": "제조 AI·스마트팩토리 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "모델·학습 설계",
+   "industry": "INDUSTRY_MEDAI_V1",
+   "industry_name": "의료 AI",
+   "strength": "드묾",
+   "appears_as": "의료 AI 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "모델·학습 설계",
+   "industry": "INDUSTRY_FINAI_V1",
+   "industry_name": "금융 AI",
+   "strength": "중심",
+   "appears_as": "금융 AI 에서는 거절 이유를 남기는가 · 심사에 쓰이게 하는가 로 나타납니다",
+   "axes_watched": [
+    "J5",
+    "J8"
+   ],
+   "dimensions": [
+    "거절 이유를 남기는가",
+    "심사에 쓰이게 하는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "모델·학습 설계",
+   "industry": "INDUSTRY_RECSYS_V1",
+   "industry_name": "플랫폼·추천",
+   "strength": "중심",
+   "appears_as": "플랫폼·추천 에서는 새 사용자에게 보일 것을 정하는가 · 실험 기록을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ],
+   "dimensions": [
+    "새 사용자에게 보일 것을 정하는가",
+    "실험 기록을 남기는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "모델·학습 설계",
+   "industry": "INDUSTRY_AUTODRIVE_V1",
+   "industry_name": "모빌리티·자율주행",
+   "strength": "있음",
+   "appears_as": "모빌리티·자율주행 에서는 움직임 예측 모델을 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "움직임 예측 모델을 고르는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "모델·학습 설계",
+   "industry": "INDUSTRY_GOVAI_V1",
+   "industry_name": "공공·행정 AI",
+   "strength": "있음",
+   "appears_as": "공공·행정 AI 에서는 공공 수요를 예측하는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "공공 수요를 예측하는가"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "모델·학습 설계",
+   "industry": "INDUSTRY_GENAI_V1",
+   "industry_name": "콘텐츠·생성 AI",
+   "strength": "드묾",
+   "appears_as": "콘텐츠·생성 AI 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD04",
+   "td_name": "모델·학습 설계",
+   "industry": "INDUSTRY_ROBOTICS_V1",
+   "industry_name": "로봇·피지컬 AI",
+   "strength": "있음",
+   "appears_as": "로봇·피지컬 AI 에서는 집는 방법을 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "집는 방법을 고르는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "평가·오류 분석",
+   "industry": "INDUSTRY_SMARTFAC_V1",
+   "industry_name": "제조 AI·스마트팩토리",
+   "strength": "중심",
+   "appears_as": "제조 AI·스마트팩토리 에서는 판정 선을 가르는가 · 검사원 판정과 맞대는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ],
+   "dimensions": [
+    "판정 선을 가르는가",
+    "검사원 판정과 맞대는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "평가·오류 분석",
+   "industry": "INDUSTRY_MEDAI_V1",
+   "industry_name": "의료 AI",
+   "strength": "중심",
+   "appears_as": "의료 AI 에서는 판정 근거를 함께 보이는가 · 전문의 판독과 맞대는가 · 의료진이 판단에 쓰게 하는가 로 나타납니다",
+   "axes_watched": [
+    "J5",
+    "J6",
+    "J8"
+   ],
+   "dimensions": [
+    "판정 근거를 함께 보이는가",
+    "전문의 판독과 맞대는가",
+    "의료진이 판단에 쓰게 하는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "평가·오류 분석",
+   "industry": "INDUSTRY_FINAI_V1",
+   "industry_name": "금융 AI",
+   "strength": "있음",
+   "appears_as": "금융 AI 에서는 판정 선을 비용으로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "판정 선을 비용으로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "평가·오류 분석",
+   "industry": "INDUSTRY_RECSYS_V1",
+   "industry_name": "플랫폼·추천",
+   "strength": "있음",
+   "appears_as": "플랫폼·추천 에서는 엉뚱한 추천을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "엉뚱한 추천을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "평가·오류 분석",
+   "industry": "INDUSTRY_AUTODRIVE_V1",
+   "industry_name": "모빌리티·자율주행",
+   "strength": "있음",
+   "appears_as": "모빌리티·자율주행 에서는 장애물로 볼 선을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "장애물로 볼 선을 정하는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "평가·오류 분석",
+   "industry": "INDUSTRY_GOVAI_V1",
+   "industry_name": "공공·행정 AI",
+   "strength": "있음",
+   "appears_as": "공공·행정 AI 에서는 잘못 넘어간 민원을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "잘못 넘어간 민원을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "평가·오류 분석",
+   "industry": "INDUSTRY_GENAI_V1",
+   "industry_name": "콘텐츠·생성 AI",
+   "strength": "중심",
+   "appears_as": "콘텐츠·생성 AI 에서는 생성 결과의 기준을 세우는가 · 사람 선호와 맞대는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ],
+   "dimensions": [
+    "생성 결과의 기준을 세우는가",
+    "사람 선호와 맞대는가"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "평가·오류 분석",
+   "industry": "INDUSTRY_ROBOTICS_V1",
+   "industry_name": "로봇·피지컬 AI",
+   "strength": "있음",
+   "appears_as": "로봇·피지컬 AI 에서는 가상 성공률과 실물 성공률을 맞대는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "가상 성공률과 실물 성공률을 맞대는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자연어·생성 모델",
+   "industry": "INDUSTRY_SMARTFAC_V1",
+   "industry_name": "제조 AI·스마트팩토리",
+   "strength": "드묾",
+   "appears_as": "제조 AI·스마트팩토리 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "자연어·생성 모델",
+   "industry": "INDUSTRY_MEDAI_V1",
+   "industry_name": "의료 AI",
+   "strength": "있음",
+   "appears_as": "의료 AI 에서는 요약에 남길 항목을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "요약에 남길 항목을 정하는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자연어·생성 모델",
+   "industry": "INDUSTRY_FINAI_V1",
+   "industry_name": "금융 AI",
+   "strength": "있음",
+   "appears_as": "금융 AI 에서는 상담 답변을 약관과 맞추는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "상담 답변을 약관과 맞추는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자연어·생성 모델",
+   "industry": "INDUSTRY_RECSYS_V1",
+   "industry_name": "플랫폼·추천",
+   "strength": "있음",
+   "appears_as": "플랫폼·추천 에서는 뜻으로 찾는 검색을 고르는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "뜻으로 찾는 검색을 고르는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자연어·생성 모델",
+   "industry": "INDUSTRY_AUTODRIVE_V1",
+   "industry_name": "모빌리티·자율주행",
+   "strength": "드묾",
+   "appears_as": "모빌리티·자율주행 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD06",
+   "td_name": "자연어·생성 모델",
+   "industry": "INDUSTRY_GOVAI_V1",
+   "industry_name": "공공·행정 AI",
+   "strength": "중심",
+   "appears_as": "공공·행정 AI 에서는 안내 답변을 근거와 맞추는가 · 요약에서 지킬 항목을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ],
+   "dimensions": [
+    "안내 답변을 근거와 맞추는가",
+    "요약에서 지킬 항목을 정하는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자연어·생성 모델",
+   "industry": "INDUSTRY_GENAI_V1",
+   "industry_name": "콘텐츠·생성 AI",
+   "strength": "중심",
+   "appears_as": "콘텐츠·생성 AI 에서는 추가 학습까지 할지 정하는가 · 이상한 결과를 좁히는가 · 같은 결을 다시 낼 수 있게 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J7"
+   ],
+   "dimensions": [
+    "추가 학습까지 할지 정하는가",
+    "이상한 결과를 좁히는가",
+    "같은 결을 다시 낼 수 있게 남기는가"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자연어·생성 모델",
+   "industry": "INDUSTRY_ROBOTICS_V1",
+   "industry_name": "로봇·피지컬 AI",
+   "strength": "드묾",
+   "appears_as": "로봇·피지컬 AI 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "이미지·영상 인식",
+   "industry": "INDUSTRY_SMARTFAC_V1",
+   "industry_name": "제조 AI·스마트팩토리",
+   "strength": "있음",
+   "appears_as": "제조 AI·스마트팩토리 에서는 촬영 조건이 바뀐 까닭을 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "촬영 조건이 바뀐 까닭을 좁히는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "이미지·영상 인식",
+   "industry": "INDUSTRY_MEDAI_V1",
+   "industry_name": "의료 AI",
+   "strength": "있음",
+   "appears_as": "의료 AI 에서는 병원 사이 차이를 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "병원 사이 차이를 좁히는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "이미지·영상 인식",
+   "industry": "INDUSTRY_FINAI_V1",
+   "industry_name": "금융 AI",
+   "strength": "드묾",
+   "appears_as": "금융 AI 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "이미지·영상 인식",
+   "industry": "INDUSTRY_RECSYS_V1",
+   "industry_name": "플랫폼·추천",
+   "strength": "드묾",
+   "appears_as": "플랫폼·추천 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "이미지·영상 인식",
+   "industry": "INDUSTRY_AUTODRIVE_V1",
+   "industry_name": "모빌리티·자율주행",
+   "strength": "있음",
+   "appears_as": "모빌리티·자율주행 에서는 놓친 보행자를 좁히는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "놓친 보행자를 좁히는가"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "이미지·영상 인식",
+   "industry": "INDUSTRY_GOVAI_V1",
+   "industry_name": "공공·행정 AI",
+   "strength": "드묾",
+   "appears_as": "공공·행정 AI 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "이미지·영상 인식",
+   "industry": "INDUSTRY_GENAI_V1",
+   "industry_name": "콘텐츠·생성 AI",
+   "strength": "드묾",
+   "appears_as": "콘텐츠·생성 AI 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD07",
+   "td_name": "이미지·영상 인식",
+   "industry": "INDUSTRY_ROBOTICS_V1",
+   "industry_name": "로봇·피지컬 AI",
+   "strength": "있음",
+   "appears_as": "로봇·피지컬 AI 에서는 깊이로 위치를 잡는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "깊이로 위치를 잡는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "피지컬 AI·로봇",
+   "industry": "INDUSTRY_SMARTFAC_V1",
+   "industry_name": "제조 AI·스마트팩토리",
+   "strength": "있음",
+   "appears_as": "제조 AI·스마트팩토리 에서는 모델을 돌릴 자리를 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "모델을 돌릴 자리를 정하는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "피지컬 AI·로봇",
+   "industry": "INDUSTRY_MEDAI_V1",
+   "industry_name": "의료 AI",
+   "strength": "드묾",
+   "appears_as": "의료 AI 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "피지컬 AI·로봇",
+   "industry": "INDUSTRY_FINAI_V1",
+   "industry_name": "금융 AI",
+   "strength": "드묾",
+   "appears_as": "금융 AI 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "피지컬 AI·로봇",
+   "industry": "INDUSTRY_RECSYS_V1",
+   "industry_name": "플랫폼·추천",
+   "strength": "드묾",
+   "appears_as": "플랫폼·추천 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "피지컬 AI·로봇",
+   "industry": "INDUSTRY_AUTODRIVE_V1",
+   "industry_name": "모빌리티·자율주행",
+   "strength": "중심",
+   "appears_as": "모빌리티·자율주행 에서는 센서 시간을 맞추는가 · 가상 주행과 실제 주행을 맞대는가 로 나타납니다",
+   "axes_watched": [
+    "J4",
+    "J6"
+   ],
+   "dimensions": [
+    "센서 시간을 맞추는가",
+    "가상 주행과 실제 주행을 맞대는가"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "피지컬 AI·로봇",
+   "industry": "INDUSTRY_GOVAI_V1",
+   "industry_name": "공공·행정 AI",
+   "strength": "드묾",
+   "appears_as": "공공·행정 AI 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "피지컬 AI·로봇",
+   "industry": "INDUSTRY_GENAI_V1",
+   "industry_name": "콘텐츠·생성 AI",
+   "strength": "드묾",
+   "appears_as": "콘텐츠·생성 AI 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD08",
+   "td_name": "피지컬 AI·로봇",
+   "industry": "INDUSTRY_ROBOTICS_V1",
+   "industry_name": "로봇·피지컬 AI",
+   "strength": "중심",
+   "appears_as": "로봇·피지컬 AI 에서는 가상과 실물의 차이를 좁히는가 · 시험 결과를 표로 남기는가 · 센서를 고르는가 · 현장 적용으로 이어지는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J5",
+    "J7",
+    "J8"
+   ],
+   "dimensions": [
+    "가상과 실물의 차이를 좁히는가",
+    "시험 결과를 표로 남기는가",
+    "센서를 고르는가",
+    "현장 적용으로 이어지는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "모델 배포·운영",
+   "industry": "INDUSTRY_SMARTFAC_V1",
+   "industry_name": "제조 AI·스마트팩토리",
+   "strength": "있음",
+   "appears_as": "제조 AI·스마트팩토리 에서는 판정 기록을 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5"
+   ],
+   "dimensions": [
+    "판정 기록을 남기는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "모델 배포·운영",
+   "industry": "INDUSTRY_MEDAI_V1",
+   "industry_name": "의료 AI",
+   "strength": "드묾",
+   "appears_as": "의료 AI 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "모델 배포·운영",
+   "industry": "INDUSTRY_FINAI_V1",
+   "industry_name": "금융 AI",
+   "strength": "있음",
+   "appears_as": "금융 AI 에서는 수법이 바뀐 것을 알아채는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "수법이 바뀐 것을 알아채는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "모델 배포·운영",
+   "industry": "INDUSTRY_RECSYS_V1",
+   "industry_name": "플랫폼·추천",
+   "strength": "있음",
+   "appears_as": "플랫폼·추천 에서는 응답 시간을 숫자로 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "응답 시간을 숫자로 정하는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "모델 배포·운영",
+   "industry": "INDUSTRY_AUTODRIVE_V1",
+   "industry_name": "모빌리티·자율주행",
+   "strength": "있음",
+   "appears_as": "모빌리티·자율주행 에서는 지역이 바뀐 뒤를 살피는가 로 나타납니다",
+   "axes_watched": [
+    "J7"
+   ],
+   "dimensions": [
+    "지역이 바뀐 뒤를 살피는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "모델 배포·운영",
+   "industry": "INDUSTRY_GOVAI_V1",
+   "industry_name": "공공·행정 AI",
+   "strength": "드묾",
+   "appears_as": "공공·행정 AI 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD09",
+   "td_name": "모델 배포·운영",
+   "industry": "INDUSTRY_GENAI_V1",
+   "industry_name": "콘텐츠·생성 AI",
+   "strength": "있음",
+   "appears_as": "콘텐츠·생성 AI 에서는 제작 흐름에 쓰이게 하는가 로 나타납니다",
+   "axes_watched": [
+    "J8"
+   ],
+   "dimensions": [
+    "제작 흐름에 쓰이게 하는가"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "모델 배포·운영",
+   "industry": "INDUSTRY_ROBOTICS_V1",
+   "industry_name": "로봇·피지컬 AI",
+   "strength": "드묾",
+   "appears_as": "로봇·피지컬 AI 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "경량화·추론 비용",
+   "industry": "INDUSTRY_SMARTFAC_V1",
+   "industry_name": "제조 AI·스마트팩토리",
+   "strength": "있음",
+   "appears_as": "제조 AI·스마트팩토리 에서는 검사 속도를 지키는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "검사 속도를 지키는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "경량화·추론 비용",
+   "industry": "INDUSTRY_MEDAI_V1",
+   "industry_name": "의료 AI",
+   "strength": "드묾",
+   "appears_as": "의료 AI 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "경량화·추론 비용",
+   "industry": "INDUSTRY_FINAI_V1",
+   "industry_name": "금융 AI",
+   "strength": "드묾",
+   "appears_as": "금융 AI 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "경량화·추론 비용",
+   "industry": "INDUSTRY_RECSYS_V1",
+   "industry_name": "플랫폼·추천",
+   "strength": "있음",
+   "appears_as": "플랫폼·추천 에서는 비용과 정확도 사이 선을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "비용과 정확도 사이 선을 정하는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "경량화·추론 비용",
+   "industry": "INDUSTRY_AUTODRIVE_V1",
+   "industry_name": "모빌리티·자율주행",
+   "strength": "있음",
+   "appears_as": "모빌리티·자율주행 에서는 인식 시간 예산을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "인식 시간 예산을 정하는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "경량화·추론 비용",
+   "industry": "INDUSTRY_GOVAI_V1",
+   "industry_name": "공공·행정 AI",
+   "strength": "드묾",
+   "appears_as": "공공·행정 AI 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD10",
+   "td_name": "경량화·추론 비용",
+   "industry": "INDUSTRY_GENAI_V1",
+   "industry_name": "콘텐츠·생성 AI",
+   "strength": "있음",
+   "appears_as": "콘텐츠·생성 AI 에서는 생성 비용을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J2"
+   ],
+   "dimensions": [
+    "생성 비용을 정하는가"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "경량화·추론 비용",
+   "industry": "INDUSTRY_ROBOTICS_V1",
+   "industry_name": "로봇·피지컬 AI",
+   "strength": "있음",
+   "appears_as": "로봇·피지컬 AI 에서는 보드에 맞게 줄이는가 로 나타납니다",
+   "axes_watched": [
+    "J3"
+   ],
+   "dimensions": [
+    "보드에 맞게 줄이는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "수학·통계 근거",
+   "industry": "INDUSTRY_SMARTFAC_V1",
+   "industry_name": "제조 AI·스마트팩토리",
+   "strength": "있음",
+   "appears_as": "제조 AI·스마트팩토리 에서는 설비 이상을 미리 읽는가 로 나타납니다",
+   "axes_watched": [
+    "J4"
+   ],
+   "dimensions": [
+    "설비 이상을 미리 읽는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "수학·통계 근거",
+   "industry": "INDUSTRY_MEDAI_V1",
+   "industry_name": "의료 AI",
+   "strength": "드묾",
+   "appears_as": "의료 AI 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "수학·통계 근거",
+   "industry": "INDUSTRY_FINAI_V1",
+   "industry_name": "금융 AI",
+   "strength": "있음",
+   "appears_as": "금융 AI 에서는 기간마다의 흔들림을 보는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "기간마다의 흔들림을 보는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "수학·통계 근거",
+   "industry": "INDUSTRY_RECSYS_V1",
+   "industry_name": "플랫폼·추천",
+   "strength": "있음",
+   "appears_as": "플랫폼·추천 에서는 나눠 보낸 시험을 읽는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "나눠 보낸 시험을 읽는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "수학·통계 근거",
+   "industry": "INDUSTRY_AUTODRIVE_V1",
+   "industry_name": "모빌리티·자율주행",
+   "strength": "드묾",
+   "appears_as": "모빌리티·자율주행 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "수학·통계 근거",
+   "industry": "INDUSTRY_GOVAI_V1",
+   "industry_name": "공공·행정 AI",
+   "strength": "있음",
+   "appears_as": "공공·행정 AI 에서는 행정 판단에 쓰이게 하는가 로 나타납니다",
+   "axes_watched": [
+    "J8"
+   ],
+   "dimensions": [
+    "행정 판단에 쓰이게 하는가"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "수학·통계 근거",
+   "industry": "INDUSTRY_GENAI_V1",
+   "industry_name": "콘텐츠·생성 AI",
+   "strength": "드묾",
+   "appears_as": "콘텐츠·생성 AI 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD11",
+   "td_name": "수학·통계 근거",
+   "industry": "INDUSTRY_ROBOTICS_V1",
+   "industry_name": "로봇·피지컬 AI",
+   "strength": "드묾",
+   "appears_as": "로봇·피지컬 AI 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "윤리·안전·권리",
+   "industry": "INDUSTRY_SMARTFAC_V1",
+   "industry_name": "제조 AI·스마트팩토리",
+   "strength": "드묾",
+   "appears_as": "제조 AI·스마트팩토리 에서는 이 영역을 직접 다루는 자리가 드뭅니다",
+   "axes_watched": [],
+   "dimensions": []
+  },
+  {
+   "td": "TD12",
+   "td_name": "윤리·안전·권리",
+   "industry": "INDUSTRY_MEDAI_V1",
+   "industry_name": "의료 AI",
+   "strength": "있음",
+   "appears_as": "의료 AI 에서는 동의와 가림을 확인하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "동의와 가림을 확인하는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "윤리·안전·권리",
+   "industry": "INDUSTRY_FINAI_V1",
+   "industry_name": "금융 AI",
+   "strength": "중심",
+   "appears_as": "금융 AI 에서는 쓸 수 없는 변수를 가르는가 · 규정 요구를 문서로 옮기는가 로 나타납니다",
+   "axes_watched": [
+    "J2",
+    "J3"
+   ],
+   "dimensions": [
+    "쓸 수 없는 변수를 가르는가",
+    "규정 요구를 문서로 옮기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "윤리·안전·권리",
+   "industry": "INDUSTRY_RECSYS_V1",
+   "industry_name": "플랫폼·추천",
+   "strength": "있음",
+   "appears_as": "플랫폼·추천 에서는 쏠림을 점검하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "쏠림을 점검하는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "윤리·안전·권리",
+   "industry": "INDUSTRY_AUTODRIVE_V1",
+   "industry_name": "모빌리티·자율주행",
+   "strength": "있음",
+   "appears_as": "모빌리티·자율주행 에서는 안전 시험 항목과 대조하는가 로 나타납니다",
+   "axes_watched": [
+    "J6"
+   ],
+   "dimensions": [
+    "안전 시험 항목과 대조하는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "윤리·안전·권리",
+   "industry": "INDUSTRY_GOVAI_V1",
+   "industry_name": "공공·행정 AI",
+   "strength": "중심",
+   "appears_as": "공공·행정 AI 에서는 지역 사이 차이를 점검하는가 · 판단 근거를 공개 문서로 남기는가 로 나타납니다",
+   "axes_watched": [
+    "J5",
+    "J6"
+   ],
+   "dimensions": [
+    "지역 사이 차이를 점검하는가",
+    "판단 근거를 공개 문서로 남기는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "윤리·안전·권리",
+   "industry": "INDUSTRY_GENAI_V1",
+   "industry_name": "콘텐츠·생성 AI",
+   "strength": "중심",
+   "appears_as": "콘텐츠·생성 AI 에서는 학습 자료의 권리를 확인하는가 · 생성하면 안 되는 것을 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ],
+   "dimensions": [
+    "학습 자료의 권리를 확인하는가",
+    "생성하면 안 되는 것을 정하는가"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "윤리·안전·권리",
+   "industry": "INDUSTRY_ROBOTICS_V1",
+   "industry_name": "로봇·피지컬 AI",
+   "strength": "있음",
+   "appears_as": "로봇·피지컬 AI 에서는 사람 곁에서 할 일을 먼저 정하는가 로 나타납니다",
+   "axes_watched": [
+    "J1"
+   ],
+   "dimensions": [
+    "사람 곁에서 할 일을 먼저 정하는가"
+   ]
+  }
+ ],
+ "td_role": [
+  {
+   "td": "TD01",
+   "td_name": "문제 정의·지표",
+   "role": "ROLE_MLENG_V1",
+   "role_name": "ML 엔지니어",
+   "strength": "드묾",
+   "appears_as": "ML 엔지니어 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문제 정의·지표",
+   "role": "ROLE_DATASCI_V1",
+   "role_name": "데이터 사이언티스트",
+   "strength": "중심",
+   "appears_as": "데이터 사이언티스트 역할이 이 영역에서 직접 정하는 일을 맡습니다",
+   "axes_watched": [
+    "J1",
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문제 정의·지표",
+   "role": "ROLE_AIEVAL_V1",
+   "role_name": "AI 평가·검증",
+   "strength": "드묾",
+   "appears_as": "AI 평가·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문제 정의·지표",
+   "role": "ROLE_MLOPS_V1",
+   "role_name": "MLOps 엔지니어",
+   "strength": "드묾",
+   "appears_as": "MLOps 엔지니어 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문제 정의·지표",
+   "role": "ROLE_LABELOPS_V1",
+   "role_name": "데이터 라벨링 PM",
+   "strength": "드묾",
+   "appears_as": "데이터 라벨링 PM 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문제 정의·지표",
+   "role": "ROLE_AIPM_V1",
+   "role_name": "AI 서비스 기획",
+   "strength": "중심",
+   "appears_as": "AI 서비스 기획 역할이 이 영역에서 직접 정하는 일을 맡습니다",
+   "axes_watched": [
+    "J1",
+    "J4",
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문제 정의·지표",
+   "role": "ROLE_AIRESEARCH_V1",
+   "role_name": "AI 연구원",
+   "strength": "드묾",
+   "appears_as": "AI 연구원 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD01",
+   "td_name": "문제 정의·지표",
+   "role": "ROLE_AIRISK_V1",
+   "role_name": "AI 안전·책임",
+   "strength": "드묾",
+   "appears_as": "AI 안전·책임 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수집·라벨링 기준",
+   "role": "ROLE_MLENG_V1",
+   "role_name": "ML 엔지니어",
+   "strength": "드묾",
+   "appears_as": "ML 엔지니어 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수집·라벨링 기준",
+   "role": "ROLE_DATASCI_V1",
+   "role_name": "데이터 사이언티스트",
+   "strength": "드묾",
+   "appears_as": "데이터 사이언티스트 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수집·라벨링 기준",
+   "role": "ROLE_AIEVAL_V1",
+   "role_name": "AI 평가·검증",
+   "strength": "드묾",
+   "appears_as": "AI 평가·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수집·라벨링 기준",
+   "role": "ROLE_MLOPS_V1",
+   "role_name": "MLOps 엔지니어",
+   "strength": "드묾",
+   "appears_as": "MLOps 엔지니어 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수집·라벨링 기준",
+   "role": "ROLE_LABELOPS_V1",
+   "role_name": "데이터 라벨링 PM",
+   "strength": "중심",
+   "appears_as": "데이터 라벨링 PM 역할이 이 영역에서 직접 정하는 일을 맡습니다",
+   "axes_watched": [
+    "J2",
+    "J3",
+    "J5",
+    "J6",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수집·라벨링 기준",
+   "role": "ROLE_AIPM_V1",
+   "role_name": "AI 서비스 기획",
+   "strength": "드묾",
+   "appears_as": "AI 서비스 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J2"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수집·라벨링 기준",
+   "role": "ROLE_AIRESEARCH_V1",
+   "role_name": "AI 연구원",
+   "strength": "드묾",
+   "appears_as": "AI 연구원 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD02",
+   "td_name": "수집·라벨링 기준",
+   "role": "ROLE_AIRISK_V1",
+   "role_name": "AI 안전·책임",
+   "strength": "중심",
+   "appears_as": "AI 안전·책임 역할이 이 영역에서 직접 정하는 일을 맡습니다",
+   "axes_watched": [
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "데이터 정제·분할",
+   "role": "ROLE_MLENG_V1",
+   "role_name": "ML 엔지니어",
+   "strength": "중심",
+   "appears_as": "ML 엔지니어 역할이 이 영역에서 직접 정하는 일을 맡습니다",
+   "axes_watched": [
+    "J4"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "데이터 정제·분할",
+   "role": "ROLE_DATASCI_V1",
+   "role_name": "데이터 사이언티스트",
+   "strength": "중심",
+   "appears_as": "데이터 사이언티스트 역할이 이 영역에서 직접 정하는 일을 맡습니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "데이터 정제·분할",
+   "role": "ROLE_AIEVAL_V1",
+   "role_name": "AI 평가·검증",
+   "strength": "드묾",
+   "appears_as": "AI 평가·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "데이터 정제·분할",
+   "role": "ROLE_MLOPS_V1",
+   "role_name": "MLOps 엔지니어",
+   "strength": "중심",
+   "appears_as": "MLOps 엔지니어 역할이 이 영역에서 직접 정하는 일을 맡습니다",
+   "axes_watched": [
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "데이터 정제·분할",
+   "role": "ROLE_LABELOPS_V1",
+   "role_name": "데이터 라벨링 PM",
+   "strength": "중심",
+   "appears_as": "데이터 라벨링 PM 역할이 이 영역에서 직접 정하는 일을 맡습니다",
+   "axes_watched": [
+    "J7"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "데이터 정제·분할",
+   "role": "ROLE_AIPM_V1",
+   "role_name": "AI 서비스 기획",
+   "strength": "드묾",
+   "appears_as": "AI 서비스 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J2"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "데이터 정제·분할",
+   "role": "ROLE_AIRESEARCH_V1",
+   "role_name": "AI 연구원",
+   "strength": "드묾",
+   "appears_as": "AI 연구원 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD03",
+   "td_name": "데이터 정제·분할",
+   "role": "ROLE_AIRISK_V1",
+   "role_name": "AI 안전·책임",
+   "strength": "드묾",
+   "appears_as": "AI 안전·책임 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "모델·학습 설계",
+   "role": "ROLE_MLENG_V1",
+   "role_name": "ML 엔지니어",
+   "strength": "중심",
+   "appears_as": "ML 엔지니어 역할이 이 영역에서 직접 정하는 일을 맡습니다",
+   "axes_watched": [
+    "J1",
+    "J3",
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "모델·학습 설계",
+   "role": "ROLE_DATASCI_V1",
+   "role_name": "데이터 사이언티스트",
+   "strength": "드묾",
+   "appears_as": "데이터 사이언티스트 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "모델·학습 설계",
+   "role": "ROLE_AIEVAL_V1",
+   "role_name": "AI 평가·검증",
+   "strength": "드묾",
+   "appears_as": "AI 평가·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "모델·학습 설계",
+   "role": "ROLE_MLOPS_V1",
+   "role_name": "MLOps 엔지니어",
+   "strength": "드묾",
+   "appears_as": "MLOps 엔지니어 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "모델·학습 설계",
+   "role": "ROLE_LABELOPS_V1",
+   "role_name": "데이터 라벨링 PM",
+   "strength": "드묾",
+   "appears_as": "데이터 라벨링 PM 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "모델·학습 설계",
+   "role": "ROLE_AIPM_V1",
+   "role_name": "AI 서비스 기획",
+   "strength": "드묾",
+   "appears_as": "AI 서비스 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J2"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "모델·학습 설계",
+   "role": "ROLE_AIRESEARCH_V1",
+   "role_name": "AI 연구원",
+   "strength": "중심",
+   "appears_as": "AI 연구원 역할이 이 영역에서 직접 정하는 일을 맡습니다",
+   "axes_watched": [
+    "J1",
+    "J4",
+    "J5",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD04",
+   "td_name": "모델·학습 설계",
+   "role": "ROLE_AIRISK_V1",
+   "role_name": "AI 안전·책임",
+   "strength": "드묾",
+   "appears_as": "AI 안전·책임 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "평가·오류 분석",
+   "role": "ROLE_MLENG_V1",
+   "role_name": "ML 엔지니어",
+   "strength": "드묾",
+   "appears_as": "ML 엔지니어 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "평가·오류 분석",
+   "role": "ROLE_DATASCI_V1",
+   "role_name": "데이터 사이언티스트",
+   "strength": "드묾",
+   "appears_as": "데이터 사이언티스트 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "평가·오류 분석",
+   "role": "ROLE_AIEVAL_V1",
+   "role_name": "AI 평가·검증",
+   "strength": "중심",
+   "appears_as": "AI 평가·검증 역할이 이 영역에서 직접 정하는 일을 맡습니다",
+   "axes_watched": [
+    "J1",
+    "J3",
+    "J5",
+    "J6",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "평가·오류 분석",
+   "role": "ROLE_MLOPS_V1",
+   "role_name": "MLOps 엔지니어",
+   "strength": "드묾",
+   "appears_as": "MLOps 엔지니어 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "평가·오류 분석",
+   "role": "ROLE_LABELOPS_V1",
+   "role_name": "데이터 라벨링 PM",
+   "strength": "드묾",
+   "appears_as": "데이터 라벨링 PM 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "평가·오류 분석",
+   "role": "ROLE_AIPM_V1",
+   "role_name": "AI 서비스 기획",
+   "strength": "드묾",
+   "appears_as": "AI 서비스 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J2"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "평가·오류 분석",
+   "role": "ROLE_AIRESEARCH_V1",
+   "role_name": "AI 연구원",
+   "strength": "드묾",
+   "appears_as": "AI 연구원 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD05",
+   "td_name": "평가·오류 분석",
+   "role": "ROLE_AIRISK_V1",
+   "role_name": "AI 안전·책임",
+   "strength": "중심",
+   "appears_as": "AI 안전·책임 역할이 이 영역에서 직접 정하는 일을 맡습니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자연어·생성 모델",
+   "role": "ROLE_MLENG_V1",
+   "role_name": "ML 엔지니어",
+   "strength": "드묾",
+   "appears_as": "ML 엔지니어 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자연어·생성 모델",
+   "role": "ROLE_DATASCI_V1",
+   "role_name": "데이터 사이언티스트",
+   "strength": "드묾",
+   "appears_as": "데이터 사이언티스트 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자연어·생성 모델",
+   "role": "ROLE_AIEVAL_V1",
+   "role_name": "AI 평가·검증",
+   "strength": "중심",
+   "appears_as": "AI 평가·검증 역할이 이 영역에서 직접 정하는 일을 맡습니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자연어·생성 모델",
+   "role": "ROLE_MLOPS_V1",
+   "role_name": "MLOps 엔지니어",
+   "strength": "드묾",
+   "appears_as": "MLOps 엔지니어 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자연어·생성 모델",
+   "role": "ROLE_LABELOPS_V1",
+   "role_name": "데이터 라벨링 PM",
+   "strength": "드묾",
+   "appears_as": "데이터 라벨링 PM 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자연어·생성 모델",
+   "role": "ROLE_AIPM_V1",
+   "role_name": "AI 서비스 기획",
+   "strength": "드묾",
+   "appears_as": "AI 서비스 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J2"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자연어·생성 모델",
+   "role": "ROLE_AIRESEARCH_V1",
+   "role_name": "AI 연구원",
+   "strength": "중심",
+   "appears_as": "AI 연구원 역할이 이 영역에서 직접 정하는 일을 맡습니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD06",
+   "td_name": "자연어·생성 모델",
+   "role": "ROLE_AIRISK_V1",
+   "role_name": "AI 안전·책임",
+   "strength": "드묾",
+   "appears_as": "AI 안전·책임 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "이미지·영상 인식",
+   "role": "ROLE_MLENG_V1",
+   "role_name": "ML 엔지니어",
+   "strength": "드묾",
+   "appears_as": "ML 엔지니어 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "이미지·영상 인식",
+   "role": "ROLE_DATASCI_V1",
+   "role_name": "데이터 사이언티스트",
+   "strength": "드묾",
+   "appears_as": "데이터 사이언티스트 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "이미지·영상 인식",
+   "role": "ROLE_AIEVAL_V1",
+   "role_name": "AI 평가·검증",
+   "strength": "드묾",
+   "appears_as": "AI 평가·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "이미지·영상 인식",
+   "role": "ROLE_MLOPS_V1",
+   "role_name": "MLOps 엔지니어",
+   "strength": "드묾",
+   "appears_as": "MLOps 엔지니어 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "이미지·영상 인식",
+   "role": "ROLE_LABELOPS_V1",
+   "role_name": "데이터 라벨링 PM",
+   "strength": "드묾",
+   "appears_as": "데이터 라벨링 PM 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "이미지·영상 인식",
+   "role": "ROLE_AIPM_V1",
+   "role_name": "AI 서비스 기획",
+   "strength": "드묾",
+   "appears_as": "AI 서비스 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J2"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "이미지·영상 인식",
+   "role": "ROLE_AIRESEARCH_V1",
+   "role_name": "AI 연구원",
+   "strength": "드묾",
+   "appears_as": "AI 연구원 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD07",
+   "td_name": "이미지·영상 인식",
+   "role": "ROLE_AIRISK_V1",
+   "role_name": "AI 안전·책임",
+   "strength": "드묾",
+   "appears_as": "AI 안전·책임 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "피지컬 AI·로봇",
+   "role": "ROLE_MLENG_V1",
+   "role_name": "ML 엔지니어",
+   "strength": "드묾",
+   "appears_as": "ML 엔지니어 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "피지컬 AI·로봇",
+   "role": "ROLE_DATASCI_V1",
+   "role_name": "데이터 사이언티스트",
+   "strength": "드묾",
+   "appears_as": "데이터 사이언티스트 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "피지컬 AI·로봇",
+   "role": "ROLE_AIEVAL_V1",
+   "role_name": "AI 평가·검증",
+   "strength": "드묾",
+   "appears_as": "AI 평가·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "피지컬 AI·로봇",
+   "role": "ROLE_MLOPS_V1",
+   "role_name": "MLOps 엔지니어",
+   "strength": "드묾",
+   "appears_as": "MLOps 엔지니어 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "피지컬 AI·로봇",
+   "role": "ROLE_LABELOPS_V1",
+   "role_name": "데이터 라벨링 PM",
+   "strength": "드묾",
+   "appears_as": "데이터 라벨링 PM 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "피지컬 AI·로봇",
+   "role": "ROLE_AIPM_V1",
+   "role_name": "AI 서비스 기획",
+   "strength": "드묾",
+   "appears_as": "AI 서비스 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J2"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "피지컬 AI·로봇",
+   "role": "ROLE_AIRESEARCH_V1",
+   "role_name": "AI 연구원",
+   "strength": "드묾",
+   "appears_as": "AI 연구원 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD08",
+   "td_name": "피지컬 AI·로봇",
+   "role": "ROLE_AIRISK_V1",
+   "role_name": "AI 안전·책임",
+   "strength": "드묾",
+   "appears_as": "AI 안전·책임 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "모델 배포·운영",
+   "role": "ROLE_MLENG_V1",
+   "role_name": "ML 엔지니어",
+   "strength": "중심",
+   "appears_as": "ML 엔지니어 역할이 이 영역에서 직접 정하는 일을 맡습니다",
+   "axes_watched": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "모델 배포·운영",
+   "role": "ROLE_DATASCI_V1",
+   "role_name": "데이터 사이언티스트",
+   "strength": "드묾",
+   "appears_as": "데이터 사이언티스트 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "모델 배포·운영",
+   "role": "ROLE_AIEVAL_V1",
+   "role_name": "AI 평가·검증",
+   "strength": "드묾",
+   "appears_as": "AI 평가·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "모델 배포·운영",
+   "role": "ROLE_MLOPS_V1",
+   "role_name": "MLOps 엔지니어",
+   "strength": "중심",
+   "appears_as": "MLOps 엔지니어 역할이 이 영역에서 직접 정하는 일을 맡습니다",
+   "axes_watched": [
+    "J3",
+    "J4",
+    "J5",
+    "J7",
+    "J8"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "모델 배포·운영",
+   "role": "ROLE_LABELOPS_V1",
+   "role_name": "데이터 라벨링 PM",
+   "strength": "드묾",
+   "appears_as": "데이터 라벨링 PM 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "모델 배포·운영",
+   "role": "ROLE_AIPM_V1",
+   "role_name": "AI 서비스 기획",
+   "strength": "중심",
+   "appears_as": "AI 서비스 기획 역할이 이 영역에서 직접 정하는 일을 맡습니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "모델 배포·운영",
+   "role": "ROLE_AIRESEARCH_V1",
+   "role_name": "AI 연구원",
+   "strength": "드묾",
+   "appears_as": "AI 연구원 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD09",
+   "td_name": "모델 배포·운영",
+   "role": "ROLE_AIRISK_V1",
+   "role_name": "AI 안전·책임",
+   "strength": "드묾",
+   "appears_as": "AI 안전·책임 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "경량화·추론 비용",
+   "role": "ROLE_MLENG_V1",
+   "role_name": "ML 엔지니어",
+   "strength": "드묾",
+   "appears_as": "ML 엔지니어 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "경량화·추론 비용",
+   "role": "ROLE_DATASCI_V1",
+   "role_name": "데이터 사이언티스트",
+   "strength": "드묾",
+   "appears_as": "데이터 사이언티스트 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "경량화·추론 비용",
+   "role": "ROLE_AIEVAL_V1",
+   "role_name": "AI 평가·검증",
+   "strength": "드묾",
+   "appears_as": "AI 평가·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "경량화·추론 비용",
+   "role": "ROLE_MLOPS_V1",
+   "role_name": "MLOps 엔지니어",
+   "strength": "중심",
+   "appears_as": "MLOps 엔지니어 역할이 이 영역에서 직접 정하는 일을 맡습니다",
+   "axes_watched": [
+    "J2"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "경량화·추론 비용",
+   "role": "ROLE_LABELOPS_V1",
+   "role_name": "데이터 라벨링 PM",
+   "strength": "드묾",
+   "appears_as": "데이터 라벨링 PM 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "경량화·추론 비용",
+   "role": "ROLE_AIPM_V1",
+   "role_name": "AI 서비스 기획",
+   "strength": "드묾",
+   "appears_as": "AI 서비스 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J2"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "경량화·추론 비용",
+   "role": "ROLE_AIRESEARCH_V1",
+   "role_name": "AI 연구원",
+   "strength": "드묾",
+   "appears_as": "AI 연구원 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD10",
+   "td_name": "경량화·추론 비용",
+   "role": "ROLE_AIRISK_V1",
+   "role_name": "AI 안전·책임",
+   "strength": "드묾",
+   "appears_as": "AI 안전·책임 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "수학·통계 근거",
+   "role": "ROLE_MLENG_V1",
+   "role_name": "ML 엔지니어",
+   "strength": "드묾",
+   "appears_as": "ML 엔지니어 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "수학·통계 근거",
+   "role": "ROLE_DATASCI_V1",
+   "role_name": "데이터 사이언티스트",
+   "strength": "중심",
+   "appears_as": "데이터 사이언티스트 역할이 이 영역에서 직접 정하는 일을 맡습니다",
+   "axes_watched": [
+    "J5",
+    "J6",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "수학·통계 근거",
+   "role": "ROLE_AIEVAL_V1",
+   "role_name": "AI 평가·검증",
+   "strength": "중심",
+   "appears_as": "AI 평가·검증 역할이 이 영역에서 직접 정하는 일을 맡습니다",
+   "axes_watched": [
+    "J4"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "수학·통계 근거",
+   "role": "ROLE_MLOPS_V1",
+   "role_name": "MLOps 엔지니어",
+   "strength": "드묾",
+   "appears_as": "MLOps 엔지니어 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "수학·통계 근거",
+   "role": "ROLE_LABELOPS_V1",
+   "role_name": "데이터 라벨링 PM",
+   "strength": "드묾",
+   "appears_as": "데이터 라벨링 PM 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "수학·통계 근거",
+   "role": "ROLE_AIPM_V1",
+   "role_name": "AI 서비스 기획",
+   "strength": "드묾",
+   "appears_as": "AI 서비스 기획 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J2"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "수학·통계 근거",
+   "role": "ROLE_AIRESEARCH_V1",
+   "role_name": "AI 연구원",
+   "strength": "중심",
+   "appears_as": "AI 연구원 역할이 이 영역에서 직접 정하는 일을 맡습니다",
+   "axes_watched": [
+    "J6",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD11",
+   "td_name": "수학·통계 근거",
+   "role": "ROLE_AIRISK_V1",
+   "role_name": "AI 안전·책임",
+   "strength": "드묾",
+   "appears_as": "AI 안전·책임 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J5",
+    "J7"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "윤리·안전·권리",
+   "role": "ROLE_MLENG_V1",
+   "role_name": "ML 엔지니어",
+   "strength": "드묾",
+   "appears_as": "ML 엔지니어 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "윤리·안전·권리",
+   "role": "ROLE_DATASCI_V1",
+   "role_name": "데이터 사이언티스트",
+   "strength": "드묾",
+   "appears_as": "데이터 사이언티스트 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "윤리·안전·권리",
+   "role": "ROLE_AIEVAL_V1",
+   "role_name": "AI 평가·검증",
+   "strength": "드묾",
+   "appears_as": "AI 평가·검증 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "윤리·안전·권리",
+   "role": "ROLE_MLOPS_V1",
+   "role_name": "MLOps 엔지니어",
+   "strength": "드묾",
+   "appears_as": "MLOps 엔지니어 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J4",
+    "J5"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "윤리·안전·권리",
+   "role": "ROLE_LABELOPS_V1",
+   "role_name": "데이터 라벨링 PM",
+   "strength": "중심",
+   "appears_as": "데이터 라벨링 PM 역할이 이 영역에서 직접 정하는 일을 맡습니다",
+   "axes_watched": [
+    "J1"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "윤리·안전·권리",
+   "role": "ROLE_AIPM_V1",
+   "role_name": "AI 서비스 기획",
+   "strength": "중심",
+   "appears_as": "AI 서비스 기획 역할이 이 영역에서 직접 정하는 일을 맡습니다",
+   "axes_watched": [
+    "J3"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "윤리·안전·권리",
+   "role": "ROLE_AIRESEARCH_V1",
+   "role_name": "AI 연구원",
+   "strength": "드묾",
+   "appears_as": "AI 연구원 역할이 이 영역을 직접 맡는 일은 드뭅니다",
+   "axes_watched": [
+    "J1",
+    "J6"
+   ]
+  },
+  {
+   "td": "TD12",
+   "td_name": "윤리·안전·권리",
+   "role": "ROLE_AIRISK_V1",
+   "role_name": "AI 안전·책임",
+   "strength": "중심",
+   "appears_as": "AI 안전·책임 역할이 이 영역에서 직접 정하는 일을 맡습니다",
+   "axes_watched": [
+    "J1",
+    "J2",
+    "J5",
+    "J7",
+    "J8"
+   ]
+  }
+ ]
+}

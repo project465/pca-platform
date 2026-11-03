@@ -4,8 +4,8 @@
  "label": "CAREERMATRI_CORE_UI_FREEZE_1",
  "locks": {
   "assessment": "6f3ab28f295724ab",
-  "result": "9f6d085af4885f0e",
-  "workspace": "a2da1697bc668eb0"
+  "result": "4cebb2f070dae3fb",
+  "workspace": "1fc3bbded5e1c306"
  },
  "versions": {
   "assessment_ui_version": "ME_V3_2_ASSESSMENT_UI_V68",

@@ -1,0 +1,20 @@
+{
+ "schema_version": "cm-bank-lock.1",
+ "core": "AI_CORE_V1",
+ "item_bank_version": "AI_V1_ITEM_BANK_V1",
+ "note": "문면을 고치면 이 지문이 어긋난다. 그때 판본을 올리고 BANK=update 로 다시 적는다",
+ "files": {
+  "ai-industry-packs.json": "3fc8de619457b4b54b5616fa5c251a3e024912bda5e35c4506febba0d2865b8e",
+  "ai-role-packs.json": "e8aa86cca486da4c17ef8457ee7d20fbc6e24be86f1d2bdc9bfecb838a72ae78",
+  "ai-v1-checklist-additions.json": "404ce7e81cdcccc610125b95ce3ebe9fa2191a571b830ed0619669e332fa26e0",
+  "ai-v1-checklists.json": "ba871a73be162ed25518cc99d7f80dcce88dad5ebc4e26b05151ee765bacfacc",
+  "ai-v1-common-additions.json": "4e9be1783898809848cb65afac2e714f505293836984dc277c9f9b428accbd45",
+  "ai-v1-constructs.json": "d5c8f22c961c236efce88b119024712eaae4e67cb84f68c9f082d1f5f0dd35d4",
+  "ai-v1-domains.json": "a3badf2a86ff75fd9c669cc6470a8e46b9d0e8d12ac73467d0ad98dca6539d43",
+  "ai-v1-items-blueprint.json": "38d8adf46ab3cd790ff856a5097b56087b41488fcec3e0d56d2f2fd10dade9e5",
+  "ai-v1-items.json": "2b49d461a736b8f4dc5600f5146292901b12004aee7396b2e1c46b0c520429d9",
+  "ai-v1-relations.json": "bc97d45a895ca55344f1c7608fadcefddb426922ab546a3e761f53e3ef5423db",
+  "ai-v1-taxonomy.json": "a9fab4b6dac59027b8a40b5244858bfc3dc1407236f6edb7ecccc05b1630418e"
+ },
+ "scoring_version": "me-v3-scoring.5"
+}

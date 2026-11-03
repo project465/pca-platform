@@ -219,6 +219,13 @@ export const COMMON_BY_CORE: Record<string, Partial<CommonLabels>> = {
     PD_OUT: "연구 결과를 디자인 가이드나 시안이나 보고서로 바꾸기",
     PD_LINK: "내 결과가 그 조직의 디자인 가이드나 제작 기준에 쓰이기",
   },
+  AI_CORE_V1: {
+    CJ_GIVEN_REV: "내려온 자료 분할이나 평가 기준을 근거를 들어 바꾸기",
+    MS_CONDITION: "과제 목표를 확인할 수 있는 지표와 실험 조건으로 옮기기",
+    MS_METHOD: "실험이나 평가의 조건을 직접 정해 돌려 보기",
+    PD_OUT: "연구 결과를 공개 코드나 기술 보고서로 바꾸기",
+    PD_LINK: "내 결과가 기업이나 기관의 제품과 서비스에 쓰이기",
+  },
 };
 
 /** 그 Core 에서 그 문항을 부르는 말. 없으면 중립 벌, 그것도 없으면 `null` */
