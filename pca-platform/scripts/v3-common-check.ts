@@ -35,6 +35,22 @@
  *   o  할 일이 학생이 이미 고른 항목을 다시 시킴(AI3)
  *   p  판단까지 물은 영역 수가 쪽마다 다름 · 물은 영역에 `횟수까지만 물었어요`(AI1)
  *   k  준비 중 학과로 응시가 열림(KM1) — 기관마다 한 줄
+ *
+ * **결과 모순 점검 R1~R9**(2026-11-03 대표 지시. 규칙은 `_v3-contradiction.ts`). 모든 응시의 책(PDF 로 뽑히는 HTML)을
+ * 브라우저에 올려 글자로 본다. `WEB=1` 이면 기관마다 대표 학과 하나(`WEB_PER_UNI`, 기본 1)를 실제 서버에서
+ * 로그인해 **웹 결과(`/v3/N/result`)와 내려받은 PDF 글자**를 함께 본다(`UI_BASE`, 기본 http://127.0.0.1:3300).
+ *   R1 한 덩이 안에 `아직 고르지 않았습니다` 와 `고른 항목: …` · `직접 만들어 봤다` 가 같이 섬
+ *   R2 고른 항목 0 · 적은 문장 0 · `내가 정함` 답 0 인데 `고르신` · `적어 두셨습니다` · `직접 정한 것이 보입니다`
+ *   R3 더한 경험 0 인데 `새 경험을 더했고` · `경험을 더한 뒤`
+ *   R4 받침과 맞지 않는 조사(`설계은` · `조사은` · 일반 규칙)
+ *   R5 안쪽 글 · 코드 · 엔티티(`채우는 중` · `(학교 · 기관 소재지 기준)` · `JJU26_` · `&amp;`)
+ *   R6 J1: 경험 번역을 적었는데 모든 영역이 `묻지 않음 · 자세히 다루지 않은 영역` · 관심 칸을 비운 채 제출됨(기관마다 한 번)
+ *   R7 같은 항목의 수가 웹과 PDF 에서 다름(WEB=1)
+ *   R8 학생이 보는 응답일(웹 · PDF)과 담당자가 보는 완료일이 한국 시간으로 같은 날(WEB=1. 한국 시간 00:40 제출로 세운다)
+ *   R9 AI 투(경고): 한 화면에 `아직 ~ 없습니다` 셋 이상 · `~하지 않는 것` 목록 제목 · 제목을 되풀이하는 부제
+ *
+ *   npm run v3:contradict                 한 번에(서버를 띄우고 4개 기관 × A·B·C 를 웹 · PDF 까지 본 뒤 끈다)
+ *   CONTRA=0                              R 점검을 끈다(예전 판정만)
  */
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
@@ -51,6 +67,18 @@ import { assemble } from "../src/lib/me-v3/report-long";
 import { derive, withTranslation } from "../src/lib/me-v3/report-long/derive";
 import { TRANS_NOTE_KO, isNoneChoice } from "../src/lib/me-v3/result/text.ko";
 import { query, queryOne } from "../src/lib/db";
+import { randomBytes } from "node:crypto";
+import { execFileSync } from "node:child_process";
+import { hashPassword } from "../src/lib/password";
+import { buildLongReport } from "../src/lib/me-v3/report-long";
+import { listStudents } from "../src/lib/campus/manage";
+import { blocksOf, dedupe, r1, r2, r3, r4, r5, r7, r9, selfTest, type Facts, type Hit } from "./_v3-contradiction";
+import type { Browser, BrowserContext, Page as PwPage } from "playwright";
+
+const CONTRA = process.env.CONTRA !== "0";
+const WEB = process.env.WEB === "1";
+const WEB_PER_UNI = Number(process.env.WEB_PER_UNI ?? "1");
+const UI_BASE = (process.env.UI_BASE ?? "http://127.0.0.1:3300").replace(/\/$/, "");
 
 const OUT = path.resolve(process.env.OUT ?? "var/common-check");
 const UNIS = (process.env.UNIS ?? "PCU,KUS,JJU,SJEPA").split(",");
@@ -88,13 +116,29 @@ function combos(): Row[] {
       }
     }
   }
+  /* `PER_UNI=n` 이면 기관마다 앞의 n 갈래만(결과 모순 점검을 한 번에 돌릴 때) */
+  const per = Number(process.env.PER_UNI ?? "0");
+  if (per > 0) {
+    const seen = new Map<string, number>();
+    return [...out.values()].filter((r) => { const n = seen.get(r.uni) ?? 0; seen.set(r.uni, n + 1); return n < per; });
+  }
   return [...out.values()];
 }
 
-async function student(tag: string): Promise<string> {
+/** 웹으로 들어갈 학생의 아이디와 열쇠. **열쇠는 이 과정 안에서만 쓰고 어디에도 적지 않는다**(해시만 DB 에) */
+const LOGINS = new Map<string, { login: string; pw: string }>();
+
+async function student(tag: string, web = false): Promise<string> {
+  const login = `common-${tag}-${Date.now()}-${Math.random().toString(36).slice(2)}@example.invalid`;
+  const pw = web ? randomBytes(18).toString("base64url") : "";
   const id = (await queryOne<{ id: string }>(
-    `INSERT INTO users (email, display_name, password_hash) VALUES ($1,'점검 학생','x') RETURNING id::text`,
-    [`common-${tag}-${Date.now()}-${Math.random().toString(36).slice(2)}@example.invalid`]))!.id;
+    `INSERT INTO users (email, login_id, display_name, password_hash, status, is_demo, must_reset_pw)
+     VALUES ($1,$1,'점검 학생',$2,'active',TRUE,FALSE) RETURNING id::text`,
+    [login, web ? await hashPassword(pw) : "x"]))!.id;
+  if (web) {
+    LOGINS.set(id, { login, pw });
+    await query(`INSERT INTO memberships (user_id, org_id, role) VALUES ($1, NULL, 'student') ON CONFLICT DO NOTHING`, [id]).catch(() => undefined);
+  }
   await query(`INSERT INTO entitlements (user_id, product_code, kind, tier, major_code, assessment_version, status)
                VALUES ($1,'ME_V3_PRO_KR','report','PRO','ME','ME_V3_2','active')`, [id]);
   return id;
@@ -379,6 +423,261 @@ async function km1(): Promise<string[][]> {
   return lines;
 }
 
+/* ── 결과 모순 점검(R1~R9) ─────────────────────────────────────────── */
+
+const RULES = ["R1", "R2", "R3", "R4", "R5", "R6", "R7", "R8", "R9"] as const;
+
+/** 응답 사실. 판정 문장이 아니라 DB 에 쌓인 것만 센다 */
+async function factsOf(attemptId: string): Promise<Facts & { userId: string }> {
+  const r = (await queryOne<{ u: string; picks: number; notes: number; exps: number; own: number }>(
+    `SELECT a.user_id::text AS u,
+            (SELECT count(*)::int FROM v3_evidence_picks p WHERE p.attempt_id = a.id) AS picks,
+            (SELECT count(*)::int FROM v3_responses r WHERE r.attempt_id = a.id AND coalesce(btrim(r.note_text), '') <> '') AS notes,
+            (SELECT count(*)::int FROM v3_experiences e WHERE e.user_id = a.user_id) AS exps,
+            (SELECT count(*)::int FROM v3_responses r WHERE r.attempt_id = a.id AND r.kind = 'level' AND r.value_int >= 3) AS own
+       FROM v3_attempts a WHERE a.id = $1`, [attemptId]))!;
+  return { userId: r.u, picks: r.picks, notes: r.notes, experiences: r.exps, ownDecided: r.own };
+}
+
+type Screen = { name: string; text: string; blocks: string[]; headings: string[]; pairs: [string, string][] };
+
+/**
+ * 브라우저에 그려진 글자를 덩이로 꺼낸다. **접힌 곳을 다 편다**(`details`): 접힌 채 innerText 를 읽으면 안쪽 문장이
+ * 빠져 걸릴 것을 놓친다. 덩이는 `글이 700자 안쪽인 가장 큰 요소`(카드 · 표 줄 · 문단)다: R1 이 같은 카드 안에서
+ * 부딪치는 말을 본다. 화면은 `section.pg`(책의 한 쪽)마다, 없으면 쪽 전체가 하나다.
+ */
+async function screensOf(p: PwPage): Promise<Screen[]> {
+  /* 함수가 아니라 글로 넘긴다: tsx 가 함수 안에 `__name` 도우미를 끼워 넣어 브라우저에서 ReferenceError 가 난다 */
+  return p.evaluate(SCREENS_JS) as Promise<Screen[]>;
+}
+const SCREENS_JS = `(() => {
+  document.querySelectorAll("details").forEach((d) => { d.open = true; });
+  const roots = [...document.querySelectorAll("section.pg")];
+  const use = roots.length ? roots : [document.body];
+  const txt = (el) => ((el && el.innerText) || "").trim();
+  return use.map((root, i) => {
+    const blocks = [];
+    const walk = (el) => {
+      const t = txt(el);
+      if (!t) return;
+      if (t.length <= 700) { blocks.push(t); return; }
+      const kids = [...el.children];
+      if (!kids.length) { blocks.push(t); return; }
+      kids.forEach(walk);
+    };
+    walk(root);
+    const hs = [...root.querySelectorAll("h1,h2,h3,h4,h5")];
+    const pairs = [];
+    for (const h of hs) {
+      const n = h.nextElementSibling;
+      if (n && /^(P|SMALL|SPAN|DIV)$/.test(n.tagName) && txt(n).length > 0 && txt(n).length < 160 && !n.querySelector("h1,h2,h3,h4,table,ul,ol")) pairs.push([txt(h), txt(n)]);
+    }
+    const head = txt(root.querySelector("h1,h2,h3") || root).split("\\n")[0].slice(0, 30);
+    return { name: roots.length ? (i + 1) + "쪽 " + head : "화면", text: txt(root), blocks, headings: hs.map(txt), pairs };
+  });
+})()`;
+
+/** PDF 글자. 쪽(\f)마다 한 화면이고 덩이는 빈 줄로 나눈다 */
+function pdfScreens(pdf: Buffer, tag: string): Screen[] {
+  const dir = path.join(OUT, "pdf");
+  mkdirSync(dir, { recursive: true });
+  const f = path.join(dir, `${tag}.pdf`);
+  writeFileSync(f, pdf);
+  const txt = execFileSync("pdftotext", ["-enc", "UTF-8", f, "-"], { maxBuffer: 64 * 1024 * 1024 }).toString("utf8");
+  writeFileSync(path.join(dir, `${tag}.txt`), txt);
+  return txt.split("\f").map((t, i) => {
+    /* PDF 글자는 줄이 칸 폭에서 끊긴다. 한 문단 안의 줄바꿈을 이어 붙여야 문장 단위 규칙이 선다 */
+    const joined = t.replace(/([^\n])\n(?=[^\n])/g, "$1 ");
+    return { name: `PDF ${i + 1}쪽`, text: joined, blocks: blocksOf(t).map((b) => b.replace(/\n/g, " ")), headings: [], pairs: [] };
+  }).filter((s) => s.text.trim());
+}
+
+/** 화면 묶음에 글자 규칙(R1 · R2 · R3 · R4 · R5 · R9)을 건다 */
+function textRules(screens: Screen[], f: Facts): Hit[] {
+  const hits: Hit[] = [];
+  for (const s of screens) {
+    const tag = (h: Hit): Hit => ({ ...h, sentence: `(${s.name}) ${h.sentence}` });
+    hits.push(...r1(s.blocks).map(tag), ...r2(s.text, f).map(tag), ...r3(s.text, f).map(tag),
+      ...r4(s.text).map(tag), ...r5(s.text).map(tag), ...r9(s.text, s.headings, s.pairs).map(tag));
+  }
+  return dedupe(hits);
+}
+
+/**
+ * R6 앞쪽(J1): 경험 번역을 적었는데 **모든 영역**이 `묻지 않음 · 자세히 다루지 않은 영역` 으로 섬.
+ * 영역 단위로 본다: 응시가 연 선별 · 심화 영역이 0 이거나, 웹 결과의 `이번 검사에서는 자세히 다루지 않은 영역`
+ * 묶음에 그 Core 의 영역 이름이 전부 들어 있으면 걸린다. (책의 판단 칸마다 붙는 `이번 검사에서 묻지 않음` 은
+ * 영역이 열려도 묻지 않은 칸에 서므로 세지 않는다)
+ */
+async function r6j1(attemptId: string, core: string, webText: string | null): Promise<Hit[]> {
+  const tr = await translatedNotes(attemptId);
+  if (!tr) return [];
+  const at = (await queryOne<{ p: string[] | null; d: string[] | null }>(
+    `SELECT opened_probe AS p, opened_deep AS d FROM v3_attempts WHERE id = $1`, [attemptId]))!;
+  const names = content(core).domains.domains.map((x) => x.name);
+  const out: Hit[] = [];
+  if (!(at.p ?? []).length && !(at.d ?? []).length) out.push({ rule: "R6", sentence: `경험 번역 ${tr}칸을 적었는데 선별 · 심화로 연 영역이 0곳(영역 ${names.length}곳 모두 묻지 않음)` });
+  if (webText) {
+    const i = webText.indexOf("이번 검사에서는 자세히 다루지 않은 영역");
+    if (i >= 0) {
+      const seg = webText.slice(i, i + 1500).split(/\n\d+\n/)[0];
+      const inSeg = names.filter((n) => seg.includes(n)).length;
+      if (inSeg >= names.length) out.push({ rule: "R6", sentence: `(웹) 경험 번역 ${tr}칸을 적었는데 영역 ${names.length}곳이 모두 '이번 검사에서는 자세히 다루지 않은 영역'` });
+    }
+  }
+  return out;
+}
+
+/** 응시 하나의 책(PDF 로 뽑히는 HTML)을 브라우저에 올려 본다 */
+async function bookCheck(br: Browser, attemptId: string, core: string): Promise<Hit[]> {
+  const f = await factsOf(attemptId);
+  const rep = await buildLongReport(attemptId, { fontBase: "/nonexistent/" });
+  const p = await br.newPage();
+  try {
+    await p.setContent(rep.html, { waitUntil: "domcontentloaded" });
+    const ss = await screensOf(p);
+    return dedupe([...textRules(ss, f), ...(await r6j1(attemptId, core, null))]);
+  } finally { await p.close(); }
+}
+
+async function translatedNotes(attemptId: string): Promise<number> {
+  return (await queryOne<{ n: number }>(
+    `SELECT count(*)::int AS n FROM v3_responses WHERE attempt_id = $1 AND item_id LIKE 'TR\\_%' AND coalesce(btrim(note_text), '') <> ''`, [attemptId]))?.n ?? 0;
+}
+
+/** 한국 시간으로 어제 00:40. 이 시각은 UTC 로 그 전날 15:40 이라, 날짜를 UTC 로 자르면 하루가 밀린다 */
+async function kstEarly(): Promise<{ at: string; day: string }> {
+  return (await queryOne<{ at: string; day: string }>(
+    `SELECT (((now() AT TIME ZONE 'Asia/Seoul')::date - 1 + time '00:40') AT TIME ZONE 'Asia/Seoul')::text AS at,
+            to_char((now() AT TIME ZONE 'Asia/Seoul')::date - 1, 'YYYY-MM-DD') AS day`))!;
+}
+
+const ymd = (s: string): string[] => [...s.matchAll(/(\d{4})\s*[-.년/]\s*(\d{1,2})\s*[-.월/]\s*(\d{1,2})/g)]
+  .map((m) => `${m[1]}-${m[2].padStart(2, "0")}-${m[3].padStart(2, "0")}`);
+
+type WebVerdict = { hits: Hit[]; webChars: number; pdfPages: number; err?: string };
+
+async function login(ctx: BrowserContext, who: { login: string; pw: string }): Promise<void> {
+  const p = await ctx.newPage();
+  await p.goto(`${UI_BASE}/login`, { waitUntil: "domcontentloaded" });
+  await p.fill('input[name="identifier"]', who.login);
+  await p.fill('input[name="password"]', who.pw);
+  await p.click('button[type="submit"]');
+  await p.waitForURL((u) => !new URL(u).pathname.startsWith("/login"), { timeout: 30000 }).catch(() => undefined);
+  await p.close();
+}
+
+/**
+ * 웹 결과 · PDF · 담당자 완료일을 실제 서버에서 본다.
+ * 담당자 완료일은 담당자 명단 화면(`/org/v3/students`)과 CSV 가 읽는 함수(`listStudents`)를 그대로 부른다.
+ */
+async function webCheck(br: Browser, r: Row, set: Set, attemptId: string): Promise<WebVerdict> {
+  const f = await factsOf(attemptId);
+  const who = LOGINS.get(f.userId)!;
+  const hits: Hit[] = [];
+  /* R8 준비: 이 학생을 기관 명단에 올리고, 제출을 한국 시간 00:40 으로 둔다 */
+  const sid = `CC${set}${randomBytes(4).toString("hex")}`;
+  await query(`INSERT INTO campus_students (user_id, university_code, student_id, college_code, department_code, specialization)
+               VALUES ($1,$2,$3,$4,$5,$6) ON CONFLICT (user_id) DO NOTHING`, [f.userId, r.uni, sid, r.college, r.leaf, r.spec]);
+  const early = await kstEarly();
+  await query(`UPDATE v3_attempts SET submitted_at = $2::timestamptz WHERE id = $1`, [attemptId, early.at]);
+
+  const ctx = await br.newContext({ viewport: { width: 1280, height: 900 } });
+  try {
+    await login(ctx, who);
+    const p = await ctx.newPage();
+    const res = await p.goto(`${UI_BASE}/v3/${attemptId}/result`, { waitUntil: "networkidle", timeout: 120000 });
+    if (!res || res.status() >= 400 || new URL(p.url()).pathname !== `/v3/${attemptId}/result`) {
+      return { hits, webChars: 0, pdfPages: 0, err: `웹 결과를 못 엶(${res?.status()} ${new URL(p.url()).pathname})` };
+    }
+    const web = await screensOf(p);
+    /* 같은 학생이 보는 내 CareerMatri 의 지역 · 할 일 화면. R7(웹과 종이의 수)을 견줄 웹 쪽 수가 결과 요약에는
+       적어서 함께 읽는다. 글자 규칙도 같이 건다 */
+    const more: Screen[] = [];
+    for (const pth of ["/me/region", "/me/next"]) {
+      const r2x = await p.goto(`${UI_BASE}${pth}`, { waitUntil: "networkidle", timeout: 120000 }).catch(() => null);
+      if (r2x && r2x.status() < 400 && new URL(p.url()).pathname === pth) more.push(...(await screensOf(p)).map((s) => ({ ...s, name: `웹 ${pth}` })));
+    }
+    await p.close();
+    const pdfRes = await ctx.request.get(`${UI_BASE}/v3/${attemptId}/result/pdf`, { timeout: 300000 });
+    const buf = await pdfRes.body();
+    if (pdfRes.status() !== 200 || !(pdfRes.headers()["content-type"] ?? "").includes("pdf")) {
+      return { hits, webChars: web[0]?.text.length ?? 0, pdfPages: 0, err: `PDF 를 못 받음(${pdfRes.status()})` };
+    }
+    const pdf = pdfScreens(buf, `${r.uni}-${set}-${attemptId}`);
+    const webText = web.map((s) => s.text).join("\n"), pdfText = pdf.map((s) => s.text).join("\n");
+    const moreText = more.map((s) => s.text).join("\n");
+    writeFileSync(path.join(OUT, "pdf", `${r.uni}-${set}-${attemptId}.web.txt`), `${webText}\n\n===== /me/region · /me/next =====\n${moreText}`);
+    hits.push(...textRules([...web.map((s) => ({ ...s, name: "웹 결과" })), ...more], f));
+    hits.push(...textRules(pdf, f));
+    hits.push(...(await r6j1(attemptId, r.core, webText)));
+    hits.push(...r7(`${webText}\n${moreText}`, pdfText));
+
+    /* R8 날짜 */
+    const webDay = ymd((/(\d{4}\s*[-.년]\s*\d{1,2}\s*[-.월]\s*\d{1,2})\s*일?\s*응답/.exec(webText) ?? [""])[0])[0] ?? null;
+    const pdfDay = ymd((/응답일\s*[:：]?\s*(\d{4}\s*[-.년]\s*\d{1,2}\s*[-.월]\s*\d{1,2})/.exec(pdfText) ?? /(\d{4}\s*[-.년]\s*\d{1,2}\s*[-.월]\s*\d{1,2})\s*일?\s*응답/.exec(pdfText) ?? [""])[0])[0] ?? null;
+    const adm = await listStudents({ universityCode: r.uni, q: sid, withDemo: true });
+    const admDay = adm.rows[0]?.completed_at ?? null;
+    const bad = [["학생 웹 응답일", webDay], ["학생 PDF 응답일", pdfDay], ["담당자 명단 완료일", admDay]]
+      .filter(([, v]) => v !== early.day);
+    if (bad.length) {
+      hits.push({ rule: "R8", sentence: `제출 ${early.day} 00:40(한국 시간) · ${[["학생 웹 응답일", webDay], ["학생 PDF 응답일", pdfDay], ["담당자 명단 완료일", admDay]].map(([k, v]) => `${k} ${v ?? "(안 보임)"}`).join(" · ")} → 다른 것: ${bad.map(([k]) => k).join(", ")}` });
+    }
+    return { hits: dedupe(hits), webChars: webText.length, pdfPages: pdf.length };
+  } finally { await ctx.close(); }
+}
+
+/** R6 뒤쪽: 관심 칸을 비운 채 `결과 만들기`(finishAction → submit)를 누르면 결과가 만들어지는가 */
+async function blankInterest(r: Row): Promise<Hit[]> {
+  const uid = await student("blank");
+  const entry: CampusEntry = { university_code: r.uni, college_code: r.college, department_code: r.leaf, core_code: r.core, specialization: r.spec };
+  const a0 = await openAttempt({ userId: uid, tier: "PRO", stage: "bachelor", gradField: null, campus: entry });
+  await walk(r.core, a0, uid, "C");
+  const n = (await queryOne<{ n: number }>(
+    `WITH d AS (DELETE FROM v3_responses WHERE attempt_id = $1 AND item_id LIKE 'G\\_%\\_INT' RETURNING 1) SELECT count(*)::int AS n FROM d`, [a0.id]))!.n;
+  try {
+    /* 화면의 `결과 만들기` 가 부르는 서버 함수(finishAction)는 주인만 보고 곧바로 submit 을 부른다. 같은 길을 밟는다 */
+    await submit((await attemptOf(a0.id, uid)) as V3Attempt);
+    const made = await queryOne<{ id: string }>(`SELECT id::text FROM v3_snapshots WHERE attempt_id = $1 LIMIT 1`, [a0.id]);
+    return made ? [{ rule: "R6", sentence: `관심 칸 ${n}개를 비운 채 제출했는데 거절되지 않고 결과가 만들어짐(응시 ${a0.id})` }] : [];
+  } catch { return []; }
+}
+
+type Cell = { uni: string; set: string; source: string; hits: Hit[]; note?: string };
+const CELLS: Cell[] = [];
+
+function contraReport(): string {
+  const sets = [...new Set(CELLS.map((c) => c.set))];
+  const unis = [...new Set(CELLS.map((c) => c.uni))];
+  const head = ["기관", "답안", "본 것", ...RULES];
+  const rows: string[][] = [];
+  for (const u of unis) for (const s of sets) {
+    const cs = CELLS.filter((c) => c.uni === u && c.set === s);
+    if (!cs.length) continue;
+    const all = cs.flatMap((c) => c.hits);
+    rows.push([u, s, cs.map((c) => c.source + (c.note ? `(${c.note})` : "")).join(" · "),
+      ...RULES.map((k) => {
+        const h = all.filter((x) => x.rule === k);
+        if (!h.length) return "통과";
+        return h.every((x) => x.warn) ? `경고 ${h.length}` : `실패 ${h.length}`;
+      })]);
+  }
+  const md = [`| ${head.join(" | ")} |`, `|${head.map(() => "---").join("|")}|`, ...rows.map((l) => `| ${l.map((c) => c.replace(/\|/g, "/")).join(" | ")} |`)].join("\n");
+  const detail: string[] = [];
+  for (const c of CELLS) {
+    if (!c.hits.length) continue;
+    detail.push(`\n### ${c.uni} · ${c.set} · ${c.source}${c.note ? ` (${c.note})` : ""}\n`);
+    for (const k of RULES) {
+      const h = c.hits.filter((x) => x.rule === k);
+      if (!h.length) continue;
+      detail.push(`- **${k}** ${h.length}곳`);
+      for (const x of h.slice(0, 12)) detail.push(`  - ${x.sentence.replace(/\|/g, "/")}`);
+      if (h.length > 12) detail.push(`  - … 외 ${h.length - 12}곳`);
+    }
+  }
+  return `# 결과 모순 점검(R1~R9)\n\n칸의 수는 걸린 곳 수. R9 는 경고(반려 기준)이며 실패로 세지 않는다.\n\n${md}\n\n## 걸린 문장\n${detail.join("\n")}\n`;
+}
+
 const HEAD = ["기관", "Core", "갈래", "대표 학과", "답안", "선별/심화", "걸림", "자세히", "응시"];
 
 /** 이미 세운 응시를 다시 판정만 한다(고친 뒤 같은 답으로 다시 보기). `REJUDGE=<앞 실행의 OUT>` */
@@ -404,29 +703,69 @@ async function main(): Promise<void> {
   const head = HEAD;
   const lines: string[][] = process.env.REJUDGE ? await rejudge(path.resolve(process.env.REJUDGE)) : [];
   let i = 0;
+  if (CONTRA) {
+    const broken = selfTest();
+    if (broken.length) throw new Error(`결과 모순 규칙 자기 점검 실패: ${broken.join(" · ")}`);
+  }
+  const br: Browser | null = CONTRA ? await (await import("playwright")).chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}) : null;
+  const webDone = new Map<string, number>();
+  const bookCells = new Map<string, Cell & { n: number }>();
   if (!process.env.REJUDGE) for (const r of rs) {
+    const web = WEB && !!br && (webDone.get(r.uni) ?? 0) < WEB_PER_UNI;
+    if (web) webDone.set(r.uni, (webDone.get(r.uni) ?? 0) + 1);
     for (const set of SETS) {
       i += 1;
       let attempt = "", v: Verdict | null = null, err = "";
       try {
-        const uid = await student(set);
+        const uid = await student(set, web);
         const entry: CampusEntry = { university_code: r.uni, college_code: r.college, department_code: r.leaf, core_code: r.core, specialization: r.spec };
         const a0 = await openAttempt({ userId: uid, tier: "PRO", stage: "bachelor", gradField: null, campus: entry });
         attempt = a0.id;
         await walk(r.core, a0, uid, set);
         await submit((await attemptOf(a0.id, uid)) as V3Attempt);
         v = await judge(a0.id, r.core);
+        if (br) {
+          /* 책(종이로 뽑히는 HTML) — 모든 응시 */
+          const hits = await bookCheck(br, a0.id, r.core);
+          const key = `${r.uniName}|${set}`;
+          const cell = bookCells.get(key) ?? { uni: r.uniName, set, source: "책", hits: [], n: 0 };
+          cell.n += 1;
+          cell.hits.push(...hits.map((h) => ({ ...h, sentence: `[${r.leafName} · 응시 ${a0.id}] ${h.sentence}` })));
+          bookCells.set(key, cell);
+          for (const k of new Set(hits.filter((h) => !h.warn).map((h) => h.rule))) v.fails.push(k);
+          v.detail.push(...hits.filter((h) => !h.warn).slice(0, 3).map((h) => `${h.rule}: ${h.sentence.slice(0, 120)}`));
+          /* 웹 결과 · 내려받은 PDF · 담당자 완료일 — 기관마다 대표 학과 */
+          if (web) {
+            const wv = await webCheck(br, r, set, a0.id).catch((e) => ({ hits: [] as Hit[], webChars: 0, pdfPages: 0, err: String((e as Error).message).slice(0, 160) }));
+            CELLS.push({ uni: r.uniName, set, source: "웹+PDF", hits: wv.hits,
+              note: wv.err ?? `${r.leafName} · 응시 ${a0.id} · 웹 ${wv.webChars}자 · PDF ${wv.pdfPages}쪽` });
+            for (const k of new Set(wv.hits.filter((h) => !h.warn).map((h) => h.rule))) v.fails.push(k);
+            if (wv.err) v.fails.push("웹오류");
+          }
+        }
       } catch (e) { err = String((e as Error).message).slice(0, 140); }
       lines.push([r.uniName, r.core.replace(/_CORE_V1$/, ""), r.spec ?? "", r.leafName, set,
-        v ? `${v.opened}/${v.deep}` : "", err ? "오류" : (v!.fails.join(",") || "통과"), err || (v?.detail.slice(0, 3).join(" / ") ?? ""), attempt]);
+        v ? `${v.opened}/${v.deep}` : "", err ? "오류" : ([...new Set(v!.fails)].join(",") || "통과"), err || (v?.detail.slice(0, 3).join(" / ") ?? ""), attempt]);
       process.stdout.write(`\r${i}/${rs.length * SETS.length}`);
     }
+  }
+  if (br) {
+    CELLS.push(...[...bookCells.values()].map((c) => ({ ...c, source: `책 ${c.n}벌` })));
+    /* R6 뒤쪽: 기관마다 한 번 */
+    for (const u of [...new Set(rs.map((r) => r.uni))]) {
+      const r = rs.find((x) => x.uni === u)!;
+      const hits = await blankInterest(r).catch((e) => [{ rule: "R6", sentence: `점검 오류: ${String((e as Error).message).slice(0, 120)}` }] as Hit[]);
+      CELLS.push({ uni: r.uniName, set: "관심 빈칸", source: "제출", hits, note: r.leafName });
+    }
+    await br.close();
+    writeFileSync(path.join(OUT, "결과모순점검.md"), contraReport());
+    writeFileSync(path.join(OUT, "결과모순점검.json"), JSON.stringify(CELLS, null, 1));
   }
   const k = process.env.REJUDGE ? [] : await km1();
   const pass = lines.filter((l) => l[6] === "통과").length;
   const tally = (key: string) => lines.filter((l) => l[6].split(",").includes(key)).length;
   const sum = `세운 응시 ${lines.length} · 통과 ${pass} · 오류 ${lines.filter((l) => l[6] === "오류").length} · ` +
-    ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "l", "m", "n", "o", "p", "q"].map((x) => `${x} ${tally(x)}`).join(" · ");
+    ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "l", "m", "n", "o", "p", "q", ...(CONTRA ? RULES.filter((x) => x !== "R9") : [])].map((x) => `${x} ${tally(x)}`).join(" · ");
   const md = (h: string[], ls: string[][]) => [`| ${h.join(" | ")} |`, `|${h.map(() => "---").join("|")}|`, ...ls.map((l) => `| ${l.map((c) => c.replace(/\|/g, "/")).join(" | ")} |`)].join("\n");
   writeFileSync(path.join(OUT, "공통점검.md"), `# 공통 자동 점검\n\n${sum}\n\n${md(head, lines)}\n\n## 준비 중 학과 응시(KM1)\n\n${md(["기관", "준비 중 학과", "열린 응시", "열린 학과(앞 6)"], k)}\n`);
   writeFileSync(path.join(OUT, "공통점검.csv"), "﻿" + [head, ...lines].map((l) => l.map((c) => `"${c.replace(/"/g, '""')}"`).join(",")).join("\n"));

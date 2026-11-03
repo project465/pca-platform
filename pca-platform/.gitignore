@@ -98,3 +98,6 @@ var/pdf-campus/
 
 # 긴 결과지 점검 산출물 (응시자 이름이 들어 있다)
 var/report-long/
+
+# 결과 모순 점검 산출물(npm run v3:contradict)
+var/contradict/
