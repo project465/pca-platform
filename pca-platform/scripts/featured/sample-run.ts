@@ -159,6 +159,8 @@ async function one(run: { uni: string; leaf: string; prog: string }, browser: im
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, acceptDownloads: true });
   if (gateCreds()) await ctx.setHTTPCredentials(gateCreds()!);
   const p = await ctx.newPage();
+  /* 고르는 자리가 바뀌면 한없이 기다리지 않고 그 자리를 적고 넘어간다 */
+  p.setDefaultTimeout(30000);
   await p.goto(`${BASE}/campus/${code}/login`, { waitUntil: "domcontentloaded" });
   await p.fill('input[name="identifier"]', c.value.loginId);
   await p.fill('input[name="password"]', prov.password as string);
@@ -193,7 +195,12 @@ async function one(run: { uni: string; leaf: string; prog: string }, browser: im
   }
   const att = /\/v3\/(\d+)/.exec(p.url())?.[1] ?? "";
   ok("검사가 열린다", Boolean(att), `응시 ${att}`);
-  for (const e of EXPS[run.leaf] ?? []) await addExperience(p, e);
+  for (const e of EXPS[run.leaf] ?? []) {
+    try { await addExperience(p, e); ok("경험을 더했다", true, e.title); } catch (err) {
+      ok("경험을 더했다", false, `${new URL(p.url()).pathname} · ${String(err).split("\n")[0].slice(0, 160)}`);
+      writeFileSync(path.join(OUT, `exp-fail-${run.leaf}.txt`), (await p.evaluate(() => document.body.innerText).catch(() => "")).slice(0, 3000));
+    }
+  }
   await p.goto(`${BASE}/v3/${att}`, { waitUntil: "domcontentloaded" });
   const w = await walk(p, 260);
   ok("끝까지 풀었다", w.done, `화면 ${w.screens}개`);

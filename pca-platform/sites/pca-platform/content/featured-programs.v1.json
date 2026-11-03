@@ -14,7 +14,7 @@
         { "id": "core_skill", "when": "any", "ask": "반도체 장비 회사가 신입에게 가장 먼저 보는 역량이 무엇인지" },
         { "id": "spec_vs_project", "when": "z1", "ask": "서류를 볼 때 자격증 · 학점 같은 스펙과 프로젝트 경험 가운데 무엇을 더 보는지" },
         { "id": "rnd_basic", "when": "core:ME_CORE_V3", "ask": "장비 설계 · R&D 신입에게 꼭 필요한 기초 지식과 도구가 무엇인지" },
-        { "id": "ee_bachelor", "when": "core:EE_CORE_V1", "ask": "전자공학 학사로 반도체 장비 회사의 설계 · 제어 직무에 들어갈 수 있는지" },
+        { "id": "ee_bachelor", "when": "core:EE_CORE_V1", "ask": "{학과} 학사로 반도체 장비 회사의 설계 · 제어 직무에 들어갈 수 있는지" },
         { "id": "ai_effect", "when": "core:CS_CORE_V1", "ask": "AI가 반도체 장비 회사의 일(장비 제어 · 데이터 · 품질)을 어떻게 바꾸고 있는지" },
         { "id": "grad_school", "when": "school", "ask": "설계 · 연구 직무에 대학원 진학이 필요한지, 학사로 들어가 어떻게 자라는지" },
         { "id": "activity_cert", "when": "no_z1", "ask": "입사 전에 해 두면 좋은 활동과 자격증이 무엇인지" },

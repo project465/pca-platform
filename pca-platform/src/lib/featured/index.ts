@@ -182,7 +182,9 @@ export function featuredView(x: Inputs, d: X, rv: RegionView | null, prog: Progr
     || (w === "z1" && anyZ1.length > 0) || (w === "no_z1" && !anyZ1.length)
     || (w === "school" && prog.audience === "school")
     || (w.startsWith("core:") && w.slice(5) === x.coreCode);
-  const onsite = prog.onsite.filter((t) => ok(t.when)).slice(0, 3).map((t) => t.ask);
+  /* `{학과}` 는 응시한 학과(기관은 계열) 이름으로 바꾼다(2026-11-03 견본: 반도체물리학부 카드에 '전자공학 학사로' 가 섰다) */
+  const onsite = prog.onsite.filter((t) => ok(t.when)).slice(0, 3)
+    .map((t) => t.ask.replaceAll("{학과}", x.department ?? x.major));
 
   const factOn = [...new Set(co.facts.map((f) => f.on))];
   return {
