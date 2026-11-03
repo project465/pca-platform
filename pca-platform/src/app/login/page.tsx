@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/session";
+import { staffAuth } from "@/lib/auth";
 import { ROLE_LABEL, homePathFor } from "@/lib/roles";
 import LoginForm from "./login-form";
 import OauthButtons from "./oauth-buttons";
@@ -63,7 +64,16 @@ export default async function LoginPage({
   const who = await currentUser();
   /* `switch=1`(`/denied` 의 "다른 계정으로 로그인")이면 들어와 있어도 폼을 연다. 아니면
      담당자 화면으로 가려던 길이 다시 그 계정으로 돌아가 폼에 닿지 못한다 */
-  if (who && sw !== "1" && (who.scope !== "staff" || /^\/(admin|org)(\/|\?|$)/.test(nx))) redirect(nx || "/");
+  /* **가려던 화면과 같은 쪽 로그인일 때만 보낸다.** 학생으로만 들어와 있는데 담당자 화면(`/org` · `/admin`)으로
+     가려던 길이면 폼을 연다: 그 화면은 담당자 쿠키만 읽어 다시 여기로 보내고, 둘이 끝없이 주고받았다
+     (2026-11-03 `auth:scope` ⑧ · ERR_TOO_MANY_REDIRECTS) */
+  const staffNext = /^\/(admin|org)(\/|\?|$)/.test(nx);
+  if (who && sw !== "1" && (who.scope === "staff") === staffNext) redirect(nx || "/");
+  /* 학생 쿠키가 먼저 읽혔어도 담당자 로그인이 따로 있으면 담당자 화면으로 그대로 보낸다 */
+  if (who && sw !== "1" && staffNext && who.scope !== "staff") {
+    const st = await staffAuth().catch(() => null);
+    if ((st?.user as { id?: string } | undefined)?.id) redirect(nx);
+  }
 
   const providers = enabledProviders();
   /* **들어온 화면의 언어로 선다**(영어판 2단계). 해외 개인이 영어 가입
@@ -94,7 +104,10 @@ export default async function LoginPage({
                 : who.scope === "staff"
                   /* 담당자와 학생은 로그인을 따로 든다. 학생 계정으로 들어가도 담당자 로그인은 남는다(2026-11-02 운영 시험) */
                   ? <>이 브라우저에는 담당자 계정 <b>{who.name}</b> ({ROLE_LABEL[who.role]})도 로그인돼 있습니다. 학생 계정으로 들어가도 담당자 로그인은 그대로 남고, 다른 담당자 계정으로 들어가면 그 계정으로 바뀝니다(다른 탭 포함). </>
-                  : <>지금 <b>{who.name}</b> ({ROLE_LABEL[who.role]}) 계정으로 로그인돼 있습니다. 여기서 다른 계정으로 들어가면 이 브라우저의 로그인이 그 계정으로 바뀝니다(다른 탭 포함). </>}
+                  : staffNext
+                    /* 학생으로 들어와 담당자 화면을 열려던 길. 담당자 계정으로 들어가도 학생 로그인은 남는다 */
+                    ? <>이 브라우저에는 학생 계정 <b>{who.name}</b> ({ROLE_LABEL[who.role]}) 로그인만 있습니다. 담당자 화면은 담당자 계정으로 들어가야 열리고, 담당자 계정으로 들어가도 학생 로그인은 그대로 남습니다. </>
+                    : <>지금 <b>{who.name}</b> ({ROLE_LABEL[who.role]}) 계정으로 로그인돼 있습니다. 여기서 다른 계정으로 들어가면 이 브라우저의 로그인이 그 계정으로 바뀝니다(다른 탭 포함). </>}
               <Link href={homePathFor(who.role)}>{lang === "en" ? "Continue as this account" : "이 계정으로 계속"}</Link>
             </p>
           ) : null}
