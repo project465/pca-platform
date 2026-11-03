@@ -15,6 +15,15 @@ const andKo = (xs: string[]) => xs.length < 2 ? (xs[0] ?? "")
 /** 끝의 괄호 풀이는 빼고 조사를 고른다(`장비 제어 소프트웨어(C# · C++)` → `…)가`) */
 const jo = (word: string, pair: Parameters<typeof withJosa>[1]) => {
   const base = word.replace(/\s*\([^)]*\)$/, "");
+  /* 영문으로 끝나면 그 글자를 읽는 소리로 받침을 본다(2026-11-03 견본: `CS(…)이` → `CS(…)가`).
+     받침이 있는 이름: L(엘) · M(엠) · N(엔) · R(알) */
+  const last = base.match(/([A-Za-z])[^A-Za-z가-힣]*$/)?.[1];
+  if (last && !/[가-힣][^가-힣]*$/.test(base.slice(base.lastIndexOf(last)))) {
+    const hasB = /[LMNR]/i.test(last);
+    const pick: Record<string, [string, string]> = { "이가": ["이", "가"], "은는": ["은", "는"], "을를": ["을", "를"], "과와": ["과", "와"] };
+    const pr = pick[pair as string];
+    if (pr) return word + (hasB ? pr[0] : pr[1]);
+  }
   return word + withJosa(base, pair).slice(base.length);
 };
 
