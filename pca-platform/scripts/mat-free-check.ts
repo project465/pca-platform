@@ -12,7 +12,7 @@ loadEnv();
 /* eslint-disable import/first */
 import { chromium, type Page } from "playwright";
 import { query } from "../src/lib/db";
-import { canUseMat, matAccess, takeFreeAnalysis, normalizeEmail } from "../src/lib/mat-access";
+import { canUseMat, identityKeys, matAccess, takeFreeAnalysis, normalizeEmail } from "../src/lib/mat-access";
 
 let bad = 0;
 const ok = (n: string, c: boolean, d = "") => {
@@ -29,12 +29,14 @@ async function paste(p: Page, label: string): Promise<string> {
   await p.fill('textarea[name="text"]', POSTING);
   await Promise.all([
     p.waitForURL((u) => /\/mat\/(jobs\/\d+|pricing)/.test(u.pathname), { timeout: 60000 }),
-    p.getByRole("button", { name: "내 경험과 맞춰 보기" }).click(),
+    p.locator('form:has(textarea[name="text"]) button[type="submit"]').click(),
   ]);
   return new URL(p.url()).pathname;
 }
 
 async function clean(id: string): Promise<void> {
+  /* 무료 칸은 사람 열쇠에 붙어 계정을 지워도 남는다(그것이 규칙이다). 시험을 다시 돌리려면 열쇠로 지운다 */
+  await query(`DELETE FROM mat_free_claims WHERE identity_hash = ANY($1::text[])`, [await identityKeys(id)]).catch(() => undefined);
   for (const t of ["assistant_postings", "assistant_drafts", "assistant_uploads", "mat_free_claims"]) {
     await query(`DELETE FROM ${t} WHERE user_id = $1`, [id]).catch(() => undefined);
   }
@@ -48,7 +50,7 @@ async function main(): Promise<void> {
   try {
     /* 1 — 검사 결과가 있는 학생: 무료 2번(검사 전 몫 + 검사 후 몫), 세 번째는 요금 화면 */
     const s = await makeStudent("zz-mat-free");
-    await cloneFinished(s.id, "BASIC");
+    await cloneFinished(s.id);
     await clean(s.id);
     const a0 = await matAccess(s.id);
     ok("결과 있음 · 기간권 없음: 무료 분석 2번", !a0.paid && a0.ready && a0.freeLeft === 2, String(a0.freeLeft));
@@ -82,8 +84,8 @@ async function main(): Promise<void> {
     const pick = await q.locator('select[name="core"]').count();
     ok("전공이 없으면 MAT 홈에서 전공을 고른다(검사로 보내지 않는다)", pick === 1 && new URL(q.url()).pathname === "/mat", h0.slice(0, 80));
     await q.selectOption('select[name="core"]', "ME_CORE_V3");
-    await Promise.all([q.waitForURL(/\/mat$/), q.getByRole("button", { name: "이 전공으로 시작" }).click()]);
-    await q.waitForLoadState("networkidle");
+    await q.getByRole("button", { name: "이 전공으로 시작" }).click();
+    await q.getByText("관심 있는 공고부터 분석해 볼까요?").waitFor({ timeout: 30000 }).catch(() => undefined);
     const h1 = await q.locator("body").innerText();
     ok("NoTest 홈: 관심 있는 공고부터", h1.includes("관심 있는 공고부터 분석해 볼까요?"));
     ok("NoTest 홈: 무료 1회 단추", h1.includes("공고 분석하기 · 무료 1회"));
@@ -99,6 +101,11 @@ async function main(): Promise<void> {
 
     /* 3 — 같은 사람이 계정을 새로 만들어도(같은 gmail, 점 · +꼬리만 다름) 무료가 다시 생기지 않는다 */
     await query(`DELETE FROM users WHERE email IN ('zz.abuse@gmail.com', 'zzabuse+2@gmail.com')`).catch(() => undefined);
+    for (const e of ["zz.abuse@gmail.com"]) {
+      const { createHash } = await import("node:crypto");
+      const hk = createHash("sha256").update(`${process.env.AUTH_SECRET || "cm-free-dev"}:free:email:${normalizeEmail(e)}`).digest("hex").slice(0, 32);
+      await query(`DELETE FROM mat_free_claims WHERE identity_hash = $1`, [hk]);
+    }
     const mk = async (email: string) => (await query<{ id: string }>(
       `INSERT INTO users (email, display_name, password_hash, must_reset_pw, status, is_demo)
        VALUES ($1, '시험', 'x', false, 'active', true) RETURNING id::text`, [email]))[0].id;

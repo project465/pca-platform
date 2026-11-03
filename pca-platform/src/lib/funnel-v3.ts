@@ -99,8 +99,9 @@ export async function matStep(
        ON CONFLICT (day, step, subject, posting_idx) DO NOTHING`,
       [step, source, idx, subjectOf(userId)],
     );
-  } catch {
-    /* 비워 둔다 */
+  } catch (e) {
+    /* 던지지 않는다. 고치는 사람이 읽는 자리에 한 줄만(사람 번호는 적지 않는다) */
+    console.warn(`[mat-funnel] ${step} write failed: ${e instanceof Error ? e.message.slice(0, 160) : "error"}`);
   }
 }
 

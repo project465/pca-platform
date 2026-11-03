@@ -1,7 +1,8 @@
 /**
  * MAT 수익화 끝에서 끝까지(2026-11-03 수익화 E). 가짜 AI(열쇠 없음 → 규칙으로 읽기) · 가짜 결제사로 돈다.
  *
- *   SUBSCRIPTIONS_ENABLED=1 PAYMENTS_PROVIDER=mock npx next start -p 3201   (빌드한 서버)
+ *   SUBSCRIPTIONS_ENABLED=1 PAYMENTS_PROVIDER=mock MAT_FUNNEL_DEMO=1 npx next start -p 3201   (빌드한 서버)
+ *   (`@example.com` 가입은 DB 가 시연 계정으로 적는다. 수치는 시연 계정을 세지 않으므로 서버에 MAT_FUNNEL_DEMO=1)
  *   UI_BASE=http://127.0.0.1:3201 npm run mat:money
  *   SKIP_UI=1 npm run mat:money       (브라우저 없이 엔진 · 규칙만)
  *
@@ -329,7 +330,6 @@ async function ui(): Promise<void> {
     const at = await queryOne<{ source: string; posting_idx: string | null; board: string | null }>(
       `SELECT source, posting_idx, board FROM user_attribution WHERE user_id = $1`, [u!.id]);
     ok("가입한 사람에 유입 경로 · 게시판 · 공고 idx 가 적힌다", at?.source === "jobindustry" && at.posting_idx === idx && at.board === "488", JSON.stringify(at));
-    await query(`UPDATE users SET is_demo = true WHERE id = $1`, [u!.id]);
     const body0 = await p.locator("body").innerText();
     ok("여는 것만으로는 무료 분석을 쓰지 않는다", (await matAccess(u!.id)).freeLeft === 1 && body0.includes("무료 1회"));
     if (!job) {
@@ -337,11 +337,12 @@ async function ui(): Promise<void> {
       await p.goto(`${BASE}/mat`, { waitUntil: "networkidle" });
       if (await p.locator('select[name="core"]').count()) {
         await p.selectOption('select[name="core"]', "ME_CORE_V3");
-        await Promise.all([p.waitForURL(/\/mat$/), p.getByRole("button", { name: "이 전공으로 시작" }).click()]);
+        await p.getByRole("button", { name: "이 전공으로 시작" }).click();
+        await p.getByText("관심 있는 공고부터 분석해 볼까요?").waitFor({ timeout: 30000 }).catch(() => undefined);
       }
       await p.goto(`${BASE}/mat/jobs#paste`, { waitUntil: "networkidle" });
       await p.fill('textarea[name="text"]', "연구개발 신입. 자격 요건: 실험 설계와 데이터 분석 경험. 우대: 논문 실적, 특허, 국책 과제 참여 경험.");
-      await Promise.all([p.waitForURL(/\/mat\/jobs\/\d+/, { timeout: 60000 }), p.getByRole("button", { name: "내 경험과 맞춰 보기" }).click()]);
+      await Promise.all([p.waitForURL(/\/mat\/jobs\/\d+/, { timeout: 60000 }), p.locator('form:has(textarea[name="text"]) button[type="submit"]').click()]);
     } else {
       await Promise.all([p.waitForURL(/\/mat\/(jobs\/\d+|pricing)/, { timeout: 60000 }), p.click('form button[type="submit"]')]);
     }
