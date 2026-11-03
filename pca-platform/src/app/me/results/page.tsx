@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { currentUser, requireUser } from "@/lib/session";
 import { majorNameOf } from "@/lib/me-v3/major-name";
-import { currentState, resultHistory, activeCoreOrPick } from "@/lib/me-v3/platform";
+import { currentState, resultHistory, activeCoreOrPick, experiencesOf } from "@/lib/me-v3/platform";
 import { domainName, industryChoices, majorNameIn, roleChoices } from "@/lib/me-v3/runtime/session";
 import { wsLang, type WsLang } from "@/lib/me-v3/ws-lang";
 import { wsSay, type WsSay } from "@/lib/me-v3/ws-say";
@@ -38,7 +38,8 @@ export default async function Results() {
   const day = (s: string | null | undefined) => daySay(s, lang);
   /* 어느 전공의 사전을 읽을지는 **그 사람의 자료**가 정한다 */
   const core = await activeCoreOrPick(user.id);
-  const [st, rows] = await Promise.all([currentState(user.id), resultHistory(user.id)]);
+  const [st, rows, exps] = await Promise.all([
+    currentState(user.id), resultHistory(user.id), experiencesOf(user.id).catch(() => [])]);
   const major = en ? majorEn(st.core) : majorNameOf(st.core);
   const snaps = rows.filter((r) => r.kind === "SNAPSHOT");
   /* 세 화면이 같이 쓰는 문장(규격 §8). 여기서 따로 적으면 같은 변화가
@@ -49,56 +50,50 @@ export default async function Results() {
     <CmShell active="/me/results" title={t("결과 기록")} lang={lang}
       major={major}
       bar={<Link className="cm-btn" href="/me/state">{t("현재 상태")}</Link>}>
-      <CmHead
-        title={t("검사 당시 결과와 현재 상태")}
-        lead={t("검사 당시 결과와 현재 상태를 따로 볼 수 있습니다.")}
-      />
+      {/* 제목 하나. 부제로 제목을 되풀이하지 않는다(2026-11-03 대표 "AI스럽다") */}
+      <CmHead title={t("결과 기록")} />
 
       {!snaps.length ? (
         <EmptyState>
-          <b>{t("아직 완료한 검사가 없습니다.")}</b>{" "}
-          {t("검사를 한 번 끝내면 그날의 결과가 날짜와 함께 한 줄씩 나옵니다.")}
-          <p style={{ marginTop: 10 }}><Link href="/cores">{t("검사 시작하기")}</Link></p>
+          <b>{t("완료한 검사 0건")}</b>
+          <p style={{ marginTop: 10 }}><Link className="cm-btn is-primary" href="/cores">{t("검사 시작")}</Link></p>
         </EmptyState>
       ) : null}
 
-      {/* ── 현재 상태. 점선 테두리로 `변한다` 를 생김새로 말한다 ── */}
+      {/* ── 현재 상태. 점선 테두리로 `변한다` 를 생김새로 말한다 ──
+          **반영 전이면 한 줄과 단추 하나**(2026-11-03 대표 "AI스럽다"). 달라진 것이 없는데 `아직 달라진 것이
+          없습니다 · 아직 부족한 것 · 이 줄은 바뀝니다` 를 늘어놓지 않는다 */}
       {st.model ? (
         <section className="cm-live">
           <header>
             <h2>{t("현재 상태")}</h2>
             <span>
               {st.recomputed_at
-                ? t("{at} 에 새 경험을 더했습니다", { at: day(st.recomputed_at) ?? "" })
-                : t("아직 새 경험을 더한 적이 없어 검사 당시 결과와 같습니다")}
+                ? t("{at} 경험 더함", { at: day(st.recomputed_at) ?? "" })
+                : t("검사 결과와 같음 (추가한 경험 {n}건)", { n: exps.length })}
             </span>
           </header>
-          {/* **축 이름을 늘어놓지 않는다**(규격 §8). 전에는 이 자리가
-              `기구·제품 설계 · 문제 정의 / 기구·제품 설계 · 직접 판단 외 2`
-              였다. 우리가 재는 칸의 이름을 빗금으로 이어 붙인 줄이고,
-              읽는 사람에게는 **무엇이 달라졌는지**가 한 글자도 없다.
-              문장은 세 화면이 같이 쓰는 함수가 든다(홈 · 저장 직후 ·
-              현재 상태와 같은 말이어야 한다) */}
-          <div className="cm-rows">
-            {change.lines.length ? change.lines.map((line) => (
-              <p className="cm-row" key={line}><b>{line}</b></p>
-            )) : (
-              <p className="cm-row"><b>{t("아직 달라진 것이 없습니다.")}</b></p>
-            )}
-            {change.more ? (
-              <p className="cm-none">{t("그 밖에 {n}가지가 더 달라졌습니다.", { n: change.more })}</p>
-            ) : null}
-            <p className="cm-row"><b>{t("아직 부족한 것")}</b>
-              <span>{st.gaps.length
-                ? t("{n}곳#gap", { n: st.gaps.length })
-                : t("지금 잡힌 것이 없습니다")}</span></p>
-          </div>
-          <p className="cm-live-note">{t("이 줄은 경험을 더하면 바뀝니다.")}</p>
+          {st.recomputed_at ? (
+            /* **축 이름을 늘어놓지 않는다**(규격 §8). 문장은 세 화면이 같이 쓰는 함수가 든다 */
+            <div className="cm-rows">
+              {change.lines.map((line) => (
+                <p className="cm-row" key={line}><b>{line}</b></p>
+              ))}
+              {change.more ? (
+                <p className="cm-none">{t("그 밖에 {n}가지가 더 달라졌습니다.", { n: change.more })}</p>
+              ) : null}
+              {st.gaps.length ? (
+                <p className="cm-row"><b>{t("부족한 부분")}</b><span>{t("{n}곳#gap", { n: st.gaps.length })}</span></p>
+              ) : null}
+            </div>
+          ) : null}
           <div className="cm-acts">
-            <Link className="cm-btn is-primary" href="/me/state">{t("현재 상태 보기")}</Link>
             {st.pending > 0 ? (
-              <Link className="cm-btn" href="/me/recompute">{t("새 경험 더하기")}</Link>
-            ) : null}
+              <Link className="cm-btn is-primary" href="/me/recompute">{t("새 경험 더하기")}</Link>
+            ) : (
+              <Link className="cm-btn is-primary" href="/me/experience/new">{t("경험 추가")}</Link>
+            )}
+            <Link className="cm-btn" href="/me/state">{t("현재 상태 보기")}</Link>
           </div>
         </section>
       ) : null}
@@ -122,15 +117,13 @@ export default async function Results() {
                   <span className="cm-item-t">
                     <b>{day(r.at) ?? ""}</b>
                     <em>{major ?? t("전공 진단")} · {tierSay(r.tier ?? "", lang)}</em>
-                    <span className="cm-lockmark">{t("고정됨")}</span>
+                    <span className="cm-lockmark">{t("검사 시점")}</span>
                   </span>
                   <span className="cm-item-meta">
                     {/* **고르는 데 쓰이는 수 하나다**(규격 §15). 축의
                         개수는 이 줄에서 할 일을 정해 주지 않는다 */}
                     <span>
-                      {r.domains !== null
-                        ? t("근거가 확인된 영역 {n}곳", { n: r.domains })
-                        : t("그날의 응답 그대로 고정되어 있습니다")}
+                      {r.domains !== null ? t("확인된 영역 {n}", { n: r.domains }) : null}
                     </span>
                     <Link className="cm-btn" href={`/v3/${r.attempt_id}/result`}>
                       {t("결과 보기")}
@@ -145,7 +138,7 @@ export default async function Results() {
           </ul>
 
           <details className="cm-fold">
-            <summary>{t("당시 판본 보기")}</summary>
+            <summary>{t("검사 버전 정보")}</summary>
             <div className="cm-rows">
               {Object.entries(st.model?.provenance.module_versions ?? {}).map(([k, v]) => (
                 <p className="cm-row" key={k}><b>{verKo(t)[k] ?? k}</b>

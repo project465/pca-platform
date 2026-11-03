@@ -141,7 +141,7 @@ function CmUtil({ name, lang = "ko" }: { name: string; lang?: WsLang }) {
 }
 
 export function CmShell({
-  active, title, form, read, hold, bar, who, major, finds, children, lang = "ko",
+  active, title, form, read, hold, bar, who, major, finds, children, lang = "ko", agency = false,
 }: {
   active: string; title?: string;
   /**
@@ -184,12 +184,14 @@ export function CmShell({
    * 채우지 않고, 있는 글을 읽는 폭으로 모아 가운데에 세운다.
    */
   hold?: boolean;
+  /** 일자리 기관 참여자면 전공 이름 대신 `진로 진단`(2026-11-03 진흥원 실화면) */
+  agency?: boolean;
   children: ReactNode;
 }) {
   const t = wsSay(lang);
   const groups = groupsFor(lang);
   const tabs = CM_TABS.map((it) => ({ ...it, label: t(it.label), tabLabel: it.tabLabel ? t(it.tabLabel) : undefined }));
-  const fallback = t(MAJOR_FALLBACK);
+  const fallback = agency && lang !== "en" ? "진로 진단" : t(MAJOR_FALLBACK);
   return (
     <div className="cm">
       {/* 손전화 위 띠. 넓은 화면에서는 왼쪽 띠가 그 일을 한다.

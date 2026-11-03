@@ -12,12 +12,10 @@ export const WS_EN_EXPERIENCE: Record<string, string> = {
     "What you record here is used as evidence when it's added to your current state.",
   "현재 상태를 다시 확인하고 있습니다. 끝나면 저절로 더해집니다.":
     "We're rechecking your current state. Your experience will be added automatically when it's done.",
-  "경험 {n}건이 아직 현재 상태에 들어가지 못했습니다.":
-    "Some of your experience hasn't been added to your current state yet ({n}).",
+  "더하지 못한 경험 {n}건": "Couldn't add: {n}",
   "다시 시도": "Try again",
-  "아직 적어 둔 경험이 없습니다.": "You haven't recorded any experience yet.",
-  "새로 겪은 일을 쌓으면 현재 상태에 더할 수 있습니다.":
-    "As you add things you've done, they can be added to your current state.",
+  "추가한 경험 0건": "No experiences added",
+  "추가한 경험은 현재 상태에 더할 수 있습니다.": "Added experiences can be added to your current state.",
   "첫 경험 추가": "Add your first experience",
   "적어 둔 경험#list": "Your recorded experience",
   "{n}건#count": "{n}",
@@ -26,10 +24,9 @@ export const WS_EN_EXPERIENCE: Record<string, string> = {
   "남긴 것": "What you produced",
   "비교해 확인한 것#exp": "What you compared it against",
   "쓰인 곳": "Where it was used",
-  "현재 상태에 더함": "Added to current state",
-  "아직 더하지 않음": "Not added yet",
-  "{word}을 고르지 않으셔서 아직 어느 판단으로도 가지 않았습니다":
-    "No {word} picked, so this doesn't count toward any judgment yet",
+  "반영됨": "Reflected",
+  "더하기 전": "Not added",
+  "{word} 미선택 · 판단에 안 들어감": "No {word} chosen · not counted toward any decision",
   " · 날짜는 적어 둔 날입니다": " · Dated the day you recorded it",
   "고른 항목 없이 제목만 적어 두셨습니다.": "You recorded a title only, with no items picked.",
   "끝난 달": "Month ended",
@@ -117,7 +114,7 @@ export const WS_EN_EXPERIENCE: Record<string, string> = {
   "그 일에서 무엇을 직접 정했나요": "What did you decide yourself in that work?",
   "할 일에서 넘어온 영역이 켜져 있습니다: {name}. 다른 영역의 일이면 바꾸셔도 됩니다. ":
     "The area from your next steps is already selected: {name}. If this was work in a different area, you can change it. ",
-  "{word}을 고르면 그 영역에서 ": "Once you pick a {word}, start with ",
+  "{word}{eul} 고르면 그 영역에서 ": "Once you pick a {word}, start with ",
   "맡은 역할로 직접 정한 것": "what you decided yourself in your role",
   "을 먼저 고르고, 그다음에 다룬 문제를 고릅니다. 지원서와 면접에서 눈에 띄는 쪽은 한 일보다 직접 정한 것입니다.":
     " in that area, then choose the problem you worked on. In applications and interviews, what you decided stands out more than what you did.",
@@ -129,7 +126,7 @@ export const WS_EN_EXPERIENCE: Record<string, string> = {
   "맡은 역할에서 직접 정한 것 · 지원서에서 눈에 띄는 쪽":
     "What you decided in your role · This is what stands out in applications",
   "그때의 상황": "The situation at the time",
-  "{word}을 고르면 그 영역에서 직접 정한 것을 고르는 칸이 뜹니다. 고르지 않으시면 이 기록은 현재 상태에 더해지지 않고 목록에만 남습니다.":
+  "{word}{eul} 고르면 그 영역에서 직접 정한 것을 고르는 칸이 뜹니다. 고르지 않으시면 이 기록은 현재 상태에 더해지지 않고 목록에만 남습니다.":
     "Pick a {word} to see what you can choose as decided in that area. If you don't pick one, this record stays in your list but isn't added to your current state.",
   "손에 남은 것이 있나요": "Do you have something to show for it?",
   "남긴 결과물과 비교해 본 것을 고르면 같은 영역의 근거가 둘이 되고, 그만큼 현재 상태와 다음 할 일이 달라집니다. 없으면 비워 두셔도 됩니다.":
@@ -139,7 +136,7 @@ export const WS_EN_EXPERIENCE: Record<string, string> = {
   "무엇이 남았나": "What you produced",
   "무엇과 비교해 확인했나": "What you compared it against",
   "{name} · 다른 결과물 보기": "{name} · More outputs",
-  "2단에서 {word}을 고르시면 그 영역에서 남긴 결과물과 비교해 확인한 것을 고를 수 있습니다.":
+  "2단에서 {word}{eul} 고르시면 그 영역에서 남긴 결과물과 비교해 확인한 것을 고를 수 있습니다.":
     "Pick a {word} in step 2, and you can choose what you produced in that area and what you compared it against.",
   "이전": "Back",
   "다음": "Next",

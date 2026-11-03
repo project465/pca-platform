@@ -195,7 +195,8 @@ export const RESULT_MODEL_VERSION = "me-v3-result-model.7";
 /** NO_EVIDENCE 첫 줄 — copy.86 */
 /** 실제 화면 S3 · S6 · S2 문구 — copy.87 */
 /** P6 문장 — copy.88 */
-export const RESULT_COPY_VERSION = "me-v3-result-copy.88";
+/** 해명 · `아직 ~` 줄을 짧은 이름표로, 지역 묶음 설명 한 줄씩(2026-11-03 대표 "AI스럽다"). 판정은 그대로다 — copy.89 */
+export const RESULT_COPY_VERSION = "me-v3-result-copy.89";
 
 /**
  * 결과지 화면. **모델·문장과 또 따로 올린다.**
@@ -522,7 +523,9 @@ export const RESULT_COPY_VERSION = "me-v3-result-copy.88";
 /** 다른 학과로 잰 결과의 머리 줄 `검사한 학과 기준 · 등록 학과` — V105 */
 /** 기관 프로그램의 중점 기업 카드(`lib/featured`): 요약 화면의 지역 부분 · 인쇄판 지역 절 맨 위. 프로그램에 든 사람만. 판정과 결과 모델은 그대로다 — V105(같은 판본을 두 갈래가 함께 썼다) */
 /** 다른 학과 검사 머리 줄과 중점 기업 카드를 한 판으로 합침 — V106 */
-export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V106";
+/** 가까운 묶음 학과는 머리 줄 이름표(`문항: ○○ 공통`)로 · 비어 있는 기관 명단 자리를 세우지 않음 — V105(Common Core 갈래) */
+/** 다른 학과 검사 · 중점 기업 카드 · Common Core 문구를 한 판으로 합침 — V107 */
+export const RESULT_UI_VERSION = "ME_V3_RESULT_UI_V107";
 
 /*
  * `V22` · `copy.17` 로 올린 까닭. **첫 줄과 종이 첫 두 쪽**(ME 기준 UX

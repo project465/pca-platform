@@ -187,7 +187,7 @@ async function main(): Promise<void> {
     const st1 = await p.evaluate(() => document.body.innerText);
     /* 첫 화면 셋과 그 아래 세부(규격 §5·§6) */
     ok("현재 상태가 §5 차례로 선다",
-      ["지금 설명할 수 있는 영역", "최근 달라진 것", "지금 할 일", "아직 부족한 것"]
+      ["지금 설명할 수 있는 영역", "최근 달라진 것", "지금 할 일", "부족한 부분"]
         .every((h) => st1.includes(h)));
     ok("굳은 결과와 지금 값이 서로를 덮지 않는다고 적는다",
       /서로를 덮지 않습니다/.test(st1));

@@ -107,10 +107,12 @@ export async function resultMeta(
     universityCode: u ? row?.university_code ?? null : null,
     answeredOn: row?.answered ?? null,
     registeredDepartment,
+    /* 가까운 묶음으로 본 학과는 머리 줄 옆에 작은 이름표 하나로 적는다(2026-11-03 대표 "맨 위 시스템
+       안내 + 해명조"). 왜 그렇게 봤는지 문단으로 풀지 않는다 */
     provisional: provisional && major
       ? (lang === "ko"
-        ? `이 학과 전용 문항은 준비 중이라 ‘${major}’ 묶음${specialization ? `의 ‘${specialization}’ 갈래` : ""}로 봤습니다. 학과에 맞는 문항이 나오면 그때부터 새 응시에 씁니다.`
-        : `Questions for this department are still being prepared, so this result uses the ‘${major}’ set${specialization ? ` (${specialization})` : ""}.`)
+        ? `문항: ${specialization ?? major} 공통`
+        : `Questions: shared ${specialization ?? major} set`)
       : null,
   };
 }

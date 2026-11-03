@@ -80,7 +80,7 @@ const PATHS: Shot[] = [
   { name: "w02_home", path: "/me", note: "작업공간 홈 · 경험까지 반영한 상태", full: true,
     heading: "내 커리어", must: ["현재 상태", "지금 할 일", "기록"] },
   { name: "w03_results", path: "/me/results", note: "결과 기록 · 굳은 값과 지금 값",
-    full: true, heading: "검사 당시 결과와 현재 상태", must: ["현재 상태"] },
+    full: true, heading: "결과 기록", must: ["현재 상태"] },
   { name: "w04_state", path: "/me/state", note: "현재 상태 · 근거와 비어 있는 자리",
     full: true, heading: "지금 설명할 수 있는 것과 비어 있는 자리",
     must: ["설명할 수 있는 경험"] },
@@ -125,14 +125,14 @@ const ACCOUNT: Shot[] = [
     heading: "기계공학 진로 검사",
     must: ["무엇을 해 봤는지", "적성이나 성격은 묻지 않습니다"] },
   { name: "w19_empty_state", path: "/me/state", note: "검사 전 · 현재 상태",
-    full: true, heading: "아직 볼 것이 없습니다", must: ["완료한 검사가 없습니다"] },
+    full: true, heading: "현재 상태", must: ["완료한 검사 0건"] },
   { name: "w20_empty_next", path: "/me/next", note: "검사 전 · 다음 할 일",
-    full: true, heading: "무엇부터 할지", must: ["아직 완료한 검사가 없습니다"] },
+    full: true, heading: "무엇부터 할지", must: ["완료한 검사 0건"] },
   { name: "w21_empty_results", path: "/me/results", note: "검사 전 · 결과 기록",
-    full: true, heading: "검사 당시 결과와 현재 상태",
-    must: ["아직 완료한 검사가 없습니다"] },
+    full: true, heading: "결과 기록",
+    must: ["완료한 검사 0건"] },
   { name: "w22_empty_experience", path: "/me/experience", note: "검사 전 · 내 경험",
-    full: true, heading: "적어 둔 경험", must: ["아직 적어 둔 경험이 없습니다"] },
+    full: true, heading: "적어 둔 경험", must: ["추가한 경험 0건"] },
 ];
 
 /**

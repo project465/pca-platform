@@ -4,6 +4,8 @@ import { useRef, useState, type ReactNode } from "react";
 import type { ExperienceFlow } from "@/lib/me-v3/student";
 import type { WsLang } from "@/lib/me-v3/ws-lang";
 import { wsSay } from "@/lib/me-v3/ws-say";
+import { agencySay } from "@/lib/me-v3/agency-words";
+import { josaOf } from "@/lib/me-v3/result/josa";
 
 export type Dom = {
   code: string; name: string;
@@ -73,10 +75,12 @@ function Guide({ n, title, body }: { n: number; title: string; body: ReactNode }
  * 먼저 본다: 지나왔으면 채워져 있으므로 마지막 저장에서 걸릴 것이 없다.
  */
 export default function Steps(
-  { domains, one, three, value, saveLabel, flow, fromAction, suggest, lang = "ko" }: {
+  { domains, one, three, value, saveLabel, flow, fromAction, suggest, lang = "ko", agency = false }: {
     domains: Dom[]; one: ReactNode; three: ReactNode; value?: Picked;
     /** 작업공간 언어(`wsLang()`). 함수는 서버에서 넘길 수 없어 여기서 `wsSay` 를 부른다 */
     lang?: WsLang;
+    /** 기관 참여자면 학교 말을 기관 말로(`agency-words.ts`) */
+    agency?: boolean;
     /**
      * 걸음 어디서나 저장할 수 있게 한다. **고치는 자리에서만 켠다.**
      *
@@ -101,7 +105,7 @@ export default function Steps(
     suggest?: string[];
   },
 ) {
-  const t = wsSay(lang);
+  const t = agencySay(wsSay(lang), agency, lang);
   const [step, setStep] = useState(1);
   /* 고쳐 적는 자리는 **적어 둔 영역이 켜진 채로** 선다. 그래야 그 영역의
      판단과 결과물 칸이 처음부터 보인다 */
@@ -214,7 +218,7 @@ export default function Steps(
                 ? t("할 일에서 넘어온 영역이 켜져 있습니다: {name}. 다른 영역의 일이면 바꾸셔도 됩니다. ",
                   { name: fromAction })
                 : null}
-              {t("{word}을 고르면 그 영역에서 ", { word: flow.domainWord })}
+              {t("{word}{eul} 고르면 그 영역에서 ", { word: flow.domainWord, eul: josaOf(flow.domainWord, "을를") })}
               <b>{t("맡은 역할로 직접 정한 것")}</b>
               {t("을 먼저 고르고, 그다음에 다룬 문제를 고릅니다. 지원서와 면접에서 눈에 띄는 쪽은"
                 + " 한 일보다 직접 정한 것입니다.")}
@@ -261,9 +265,9 @@ export default function Steps(
           ))}
           {!picked.length ? (
             <p className="cm-none">
-              {t("{word}을 고르면 그 영역에서 직접 정한 것을 고르는 칸이 뜹니다."
+              {t("{word}{eul} 고르면 그 영역에서 직접 정한 것을 고르는 칸이 뜹니다."
                 + " 고르지 않으시면 이 기록은 현재 상태에 더해지지 않고 목록에만 남습니다.",
-              { word: flow.domainWord })}
+              { word: flow.domainWord, eul: josaOf(flow.domainWord, "을를") })}
             </p>
           ) : null}
         </fieldset>
@@ -305,8 +309,8 @@ export default function Steps(
           </fieldset>
         ) : (
           <p className="cm-none">
-            {t("2단에서 {word}을 고르시면 그 영역에서 남긴 결과물과 비교해 확인한 것을 고를 수 있습니다.",
-              { word: flow.domainWord })}
+            {t("2단에서 {word}{eul} 고르시면 그 영역에서 남긴 결과물과 비교해 확인한 것을 고를 수 있습니다.",
+              { word: flow.domainWord, eul: josaOf(flow.domainWord, "을를") })}
           </p>
         )}
         {three}

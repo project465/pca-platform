@@ -2,25 +2,22 @@
 export const WS_EN_STATE: Record<string, string> = {
   /* 검사 전 */
   "+ 경험 추가": "+ Add an experience",
-  "아직 볼 것이 없습니다": "Nothing to show yet",
-  "검사를 한 번 끝내면 확인된 근거와 아직 부족한 부분이 여기에 나옵니다.":
-    "Once you finish an assessment, your confirmed evidence and what's still missing will show up here.",
-  "완료한 검사가 없습니다.": "You haven't finished an assessment yet.",
+  "현재 상태": "Current state",
+  "검사를 마치면 표시됩니다.": "Shown after you finish the assessment.",
+  "완료한 검사 0건": "No completed assessments",
   "풀던 검사 이어하기": "Continue your assessment",
   "{major} 검사 시작": "Start the {major} assessment",
   "검사 시작": "Start the assessment",
 
   /* 머리 */
   "{at} 기준": "As of {at}",
-  "검사 {at} 기준 · 아직 더한 경험 없음": "Based on your assessment from {at} · No experience added yet",
+  "검사 {at} 기준 · 추가한 경험 0건": "As of assessment {at} · experiences added: 0",
   "검사 {at} 결과에 그 뒤의 경험을 얹은 값입니다.":
     "Your assessment results from {at}, updated with the experience you've added since.",
-  "아직 새 경험을 더한 적이 없어 검사 당시 결과와 같습니다.":
-    "You haven't added any new experience yet, so this matches your results at the time of the assessment.",
+  "검사 결과와 같음": "Same as assessment result",
   "새 경험을 더했습니다. 아래 `최근 달라진 것` 에 무엇이 달라졌는지 적혀 있습니다.":
     "Your new experience has been added. See “Recent changes” below for what changed.",
-  "새 경험을 더했습니다. 달라진 것은 없습니다 · 같은 영역의 근거가 둘이 되면 그때 올라갑니다.":
-    "Your new experience has been added. Nothing has changed yet · An area moves up once it has two pieces of evidence.",
+  "경험 더함 · 변동 없음 (같은 영역 근거 2개부터 올라감)": "Experience added · no change (moves up once an area has two pieces of evidence)",
 
   /* 설명할 수 있는 영역 */
   "현재 설명할 수 있는 영역": "Areas you can explain now",
@@ -29,18 +26,15 @@ export const WS_EN_STATE: Record<string, string> = {
   "{nameTopic} 해 봤고 정리만 남았습니다.": "You've done work in {nameTopic}. It just needs writing up.",
   "정리만 남은 영역이 {n}개 더 있습니다.#one": "{n} more area just needs writing up.",
   "정리만 남은 영역이 {n}개 더 있습니다.": "{n} more areas just need writing up.",
-  "변화는 생겼지만 아직 설명할 수 있는 기준까지는 올라오지 않았습니다. 무엇이 올라갔는지는 아래 `최근 달라진 것` 에 적혀 있습니다.":
-    "Something changed, but not enough yet to give you an area you can explain. See “Recent changes” below for what moved up.",
-  "검사에서 다룬 영역 하나를 짧게 해 보고 그것을 경험으로 적으면 여기에 나옵니다.":
-    "Try something short in an area you're interested in and add it as an experience. It will show up here.",
+  "변동 있음 · 설명 가능 기준 미달 (아래 `최근 달라진 것`)": "Changed · not yet at the explainable level (see \"Recent changes\" below)",
+  "검사 영역 하나를 해 보고 경험으로 추가하면 표시됩니다.": "Shown once you try an area from the assessment and add it as an experience.",
   "전체 기술영역 보기": "See all technical areas",
   "정리만 남은 영역": "Just needs writing up",
   "경험 더함": "Experience added",
   " · 경험 더함": " · Experience added",
 
   /* 지금 할 일 */
-  "지금 꼭 해야 하는 일은 없습니다. 새 경험을 적어 현재 상태를 다시 세우면 그다음 할 일이 나옵니다.":
-    "There's nothing you need to do right now. Add a new experience to update your current state, and your next step will appear.",
+  "급한 할 일 없음 · 경험을 추가하면 다음 할 일이 표시됩니다.": "Nothing urgent · add an experience to see the next step.",
   "경험에 추가": "Add as an experience",
   "할 일 {n}가지 모두 보기": "See all {n} next steps",
 
@@ -57,10 +51,8 @@ export const WS_EN_STATE: Record<string, string> = {
     "There's {n} more. The three most pressing are listed above.",
   "그 밖에 {n}곳이 더 있습니다. 급한 차례대로 위에 셋을 적었습니다.":
     "There are {n} more. The three most pressing are listed above.",
-  "아직 직접 해 본 판단이 나오지 않았습니다. 다음 과제에서 기준 하나를 직접 정해 보는 것부터 시작해 보세요.":
-    "No decision you made yourself has shown up yet. Start by setting one criterion yourself in your next project.",
-  "지금 바로 보완할 부분은 없습니다. 남은 일은 가진 근거를 지원서에서 설명할 문장으로 만드는 것입니다.":
-    "Nothing needs filling in right now. What's left is turning your evidence into sentences you can use in applications.",
+  "직접 정한 판단 0 · 다음 과제에서 기준 하나를 직접 정해 보세요.": "Decisions you made: 0 · in your next project, set one criterion yourself.",
+  "보완할 곳 없음 · 남은 일: 가진 근거를 지원서 문장으로 만들기": "Nothing to fill · next: turn your evidence into application sentences",
 
   /* 달라진 것 모두 */
   "달라진 것 모두": "All changes",
@@ -74,16 +66,11 @@ export const WS_EN_STATE: Record<string, string> = {
   "검사 당시 결과와 지금": "Results at the time of the assessment, and now",
   "검사 당시 결과": "Results at the time of the assessment",
   "고정됨": "Locked",
-  "{at} · {tier} · 그날의 문항과 기준으로 고정되어 있습니다. 경험을 더해도 이 줄은 한 글자도 달라지지 않습니다.":
-    "{at} · {tier} · Locked to that day's questions and criteria. Adding experience won't change a word of it.",
+  "{at} · {tier} · 검사 시점 기준": "{at} · {tier} · as of the assessment",
   "결과 보기": "View results",
-  "{at} 기준 · 그 결과 위에 새 경험을 얹은 값입니다.":
-    "As of {at} · Those results, updated with your new experience.",
-  "아직 새 경험을 더한 적이 없어 왼쪽과 같습니다.":
-    "You haven't added any new experience yet, so this matches your assessment results.",
+  "{at} 기준 · 검사 결과 + 추가한 경험": "As of {at} · assessment result + added experience",
   "{name} 달라짐": "{name} changed",
-  "두 값은 서로를 덮지 않습니다. 지원서에 적을 때는 검사 당시 결과를 근거로 쓰고, 다음에 무엇을 할지는 현재 상태를 보시면 됩니다.":
-    "Neither one replaces the other. When you write applications, use your results at the time of the assessment as evidence. To decide what to do next, look at your current state.",
+  "지원서에는 검사 결과, 다음 할 일은 현재 상태 기준.": "Use the assessment result for applications and the current state for next steps.",
 
   /* 전체 기술영역 */
   "전체 기술영역": "All technical areas",
@@ -93,9 +80,8 @@ export const WS_EN_STATE: Record<string, string> = {
   /* 설명할 수 있는 경험 */
   "설명할 수 있는 경험을 영역별로 보기": "See experience you can explain, by area",
   "그 영역에서 직접 정한 것이 확인됐습니다.": "We confirmed decisions you made yourself in this area.",
-  "지원서에서 설명할 수 있는 근거가 아직 없습니다.": "You don't have evidence to explain in applications yet.",
-  "검사에서 다룬 영역 하나를 짧게 해 보고 그것을 적으면 여기에 그 경험이 쌓입니다.":
-    "Try something short in an area you're interested in and write it up. That experience will build up here.",
+  "설명할 수 있는 근거 0": "Explainable evidence: 0",
+  "검사 영역 하나를 해 보고 경험으로 추가하세요.": "Try one area from the assessment and add it as an experience.",
   "해 본 것은 확인됐습니다. 여기서 무엇을 직접 정했는지까지 적으면 지원서에서 쓸 수 있습니다.":
     "We confirmed you've done this. Add what you decided yourself, and you can use it in applications.",
 
@@ -103,6 +89,5 @@ export const WS_EN_STATE: Record<string, string> = {
   "보고 있는 산업과 직무": "Industries and roles you're looking at",
   "산업#kind": "Industry",
   "직무#kind": "Role",
-  "산업과 직무는 같은 근거를 그쪽 말로 다시 읽어 주는 곳입니다. 고른 산업이나 직무가 기술영역 결과를 바꾸지는 않습니다.":
-    "Industries and roles show the same evidence in that field's terms. Picking an industry or role doesn't change your technical area results.",
+  "산업·직무 선택은 기술영역 결과에 영향 없음": "Industry and role choices don't change your area results",
 };

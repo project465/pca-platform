@@ -390,7 +390,7 @@ export function needSentenceKo(axes: Axis[]): string {
 const GAP_TITLE_KO: Record<Gap["kind"], (ax: string, a?: Axis | null) => string> = {
   REQUIRED_AXIS: (ax, a) => (a ? AXIS_GAP_KO[a] : `${ax} 쪽 이야기가 아직 없습니다`),
   OUTPUT: () => "과제에서 손에 남은 것이 아직 없어요",
-  OUTPUT_EVIDENCE: () => "무엇을 남겼는지 아직 고르지 않았습니다",
+  OUTPUT_EVIDENCE: () => "고른 결과물 없음",
   VERIFICATION: () => "무엇과 비교해 봤는지가 아직 없어요",
   AXIS: (ax, a) => (a ? AXIS_GAP_KO[a] : `${ax} 쪽 이야기가 아직 없습니다`),
   /* **해 본 것을 없다고 적지 않는다.** 덜 적힌 것은 어디까지 직접

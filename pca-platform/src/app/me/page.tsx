@@ -277,7 +277,7 @@ export default async function Home() {
               ? (answered
                 ? t("지금까지 {n}문항에 답했습니다. 마지막으로 답한 문항에서 이어집니다.", { n: answered })
                 : t("답한 것은 문항마다 저장되어, 마지막으로 답한 문항에서 이어집니다."))
-              : t("적성이나 성격은 묻지 않습니다. 해 본 일에서 직접 판단한 경험을 찾습니다. {time} 걸립니다.", { time: minutes ?? "" })}
+              : t("해 본 일에서 직접 판단한 경험을 찾는 검사 · {time}", { time: minutes ?? "" })}
             action={st.stage === "IN_PROGRESS" ? (
               /* 이어하기만 폼이다. 누른 것을 세려면 누르는 자리에서 센다 */
               <form action={continueAssessment}>
@@ -371,7 +371,7 @@ export default async function Home() {
               않는다**: 결과지와 `다음 할 일` 이 쓰는 같은 함수를 부른다 */}
           <PrimaryActionHero
             tag={t("지금 할 일")}
-            title={first ? nowSay.head : t("지금 꼭 해야 하는 일은 없습니다.")}
+            title={first ? nowSay.head : t("급한 할 일 없음")}
             /* **두 층이다**(SIGN-OFF §6): 위가 할 일이고 아래가 그걸
                하면 무엇이 남는지다. 어떻게 적으면 되는지와 그렇게 본
                까닭은 `다음 할 일` 과 `현재 상태` 쪽이 든다: 홈의 이 칸에
@@ -448,12 +448,11 @@ export default async function Home() {
               {st.pending > 0 ? (
                 <>
                   <SectionNote>
-                    {t("적어 두신 경험이 어느 판단으로 가는지 먼저 보고 더합니다."
-                      + " 더해도 검사 당시 결과는 그대로 남습니다.")}
+                    {t("더하기 전에 어느 판단으로 가는지 먼저 보여 드립니다.")}
                   </SectionNote>
                   <ul className="cm-feed">
                     <ActivityRow icon="layers"
-                      text={<b>{t("아직 더하지 않은 경험 {n}건", { n: st.pending })}</b>}
+                      text={<b>{t("더하기 전 경험 {n}건", { n: st.pending })}</b>}
                       actions={
                         <Link className="cm-btn" href="/me/recompute">{t("새 경험 더하기")}</Link>
                       } />
@@ -569,11 +568,10 @@ const CHANGE_ICON: IconName[] = ["chart", "spark", "report"];
 const CHANGE_TINT = ["", "t-2", "t-3"];
 
 /** 할 일이 없는 사람에게 적는 까닭 한 줄 */
-const noActionWhy = (t: WsSay) => t("새 경험을 적으면 현재 상태가 다시 서고 그다음 할 일이"
-  + " 나옵니다.");
+const noActionWhy = (t: WsSay) => t("경험을 추가하면 다음 할 일이 표시됩니다.");
 
 /** 설명할 수 있는 영역이 아직 없을 때 묶음 머리 아래에 서는 줄 */
-const readyNone = (t: WsSay) => t("지원서에서 설명할 만한 경험이 아직 없습니다. 검사에서 다룬 영역 하나를 짧게 해 보는 것이 다음 걸음입니다.");
+const readyNone = (t: WsSay) => t("다음 걸음: 검사에서 다룬 영역 하나를 짧게 해 보기");
 
 /** 날짜. 한국어는 받은 글자(`YYYY-MM-DD`) 그대로이고 영어는 `Oct 24, 2026` 이다 */
 function daySay(s: string | null | undefined, lang: WsLang): string | null {

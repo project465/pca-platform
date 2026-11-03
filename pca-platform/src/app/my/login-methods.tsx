@@ -19,8 +19,12 @@ const ALL: Provider[] = ["google", "apple"];
  * 두고 끊기는 고객지원으로 보낸다.
  */
 export default async function LoginMethods({
-  userId, notice, lang = "ko",
-}: { userId: string; notice?: string; lang?: "ko" | "en" }) {
+  userId, notice, lang = "ko", issued = false,
+}: {
+  userId: string; notice?: string; lang?: "ko" | "en";
+  /** 학교 · 기관이 발급한 계정이면 소셜 로그인 줄을 세우지 않는다(발급한 아이디로만 들어온다) */
+  issued?: boolean;
+}) {
   const en = lang === "en";
   const [linked, pw] = await Promise.all([
     accountsOf(userId), hasPasswordLogin(userId),
@@ -28,12 +32,15 @@ export default async function LoginMethods({
   const on = enabledProviders();
   const have = new Set(linked.map((l) => l.provider));
 
-  const rows = [
+  /* 상태는 문장 말고 오른쪽 이름표로(2026-11-03 대표 "AI느낌"): 사용 중 · 연결됨 · 연결 안 됨 · 꺼짐 */
+  const rows: { k: string; v: string; on: boolean }[] = [
     {
       k: en ? "Email or ID" : "이메일 · 아이디 로그인",
-      v: pw ? (en ? "In use" : "쓰고 있습니다") : (en ? "Not in use" : "쓰지 않습니다"),
+      v: pw ? (en ? "In use" : "사용 중") : (en ? "Not in use" : "꺼짐"),
+      on: pw,
     },
-    ...ALL.map((p) => ({
+    ...(issued ? [] : ALL).map((p) => ({
+      on: have.has(p),
       k: en ? PROVIDER_LABEL[p] : `${PROVIDER_LABEL[p]} 로그인`,
       v: have.has(p)
         ? `${en ? "Connected" : "연결됨"}${(() => {
@@ -45,7 +52,7 @@ export default async function LoginMethods({
             ? (en ? " · address hidden by Apple" : " · 애플이 가려 준 주소") : ` · ${row.email}`;
         })()}`
         : on.includes(p) ? (en ? "Not connected" : "연결 안 됨")
-        : (en ? "Not available right now" : "지금 켜져 있지 않습니다"),
+        : (en ? "Off" : "꺼짐"),
     })),
   ];
 
@@ -57,7 +64,7 @@ export default async function LoginMethods({
         {rows.map((r) => (
           <div key={r.k}>
             <dt>{r.k}</dt>
-            <dd>{r.v}</dd>
+            <dd><span className={`cm-dot${r.on ? " is-on" : ""}`}>{r.v}</span></dd>
           </div>
         ))}
       </dl>
@@ -65,7 +72,7 @@ export default async function LoginMethods({
       {/* 붙일 수 있는 것만 단추로 세운다. 켜지지 않은 공급자에 단추를
           달면 누른 사람이 공급자 쪽 오류 화면에서 끝난다 */}
       <div className="cm-acts">
-        {ALL.filter((p) => on.includes(p) && !have.has(p)).map((p) => (
+        {(issued ? [] : ALL).filter((p) => on.includes(p) && !have.has(p)).map((p) => (
           <form key={p} action={linkProvider}>
             <input type="hidden" name="provider" value={p} />
             <button className="cm-btn" type="submit">
@@ -75,16 +82,15 @@ export default async function LoginMethods({
         ))}
       </div>
 
-      {!pw && linked.length === 1 ? (
+      {!issued && !pw && linked.length === 1 ? (
         <p className="cm-none">
           {en ? "You have one way to sign in. Connect another so you can still get in if that one stops working."
-            : "지금 들어오는 길이 하나입니다. 하나를 더 연결해 두시면 그 길이 막히는 날에도 들어오실 수 있습니다."}
+            : "로그인 방법 1개 · 하나 더 연결 권장"}
         </p>
       ) : null}
-      <p className="cm-none">
-        {en ? "To disconnect a sign-in method, contact support. If the last one is removed you can't get into your account, so that option isn't on this page."
-          : "연결을 끊어야 하신다면 고객지원으로 알려 주십시오. 마지막 하나가 끊기면 계정에 들어오실 수 없어서 화면에 두지 않았습니다."}
-      </p>
+      {issued ? null : (
+        <p className="cm-none">{en ? "To disconnect: contact support" : "연결 해제: 고객지원 문의"}</p>
+      )}
     </section>
   );
 }
