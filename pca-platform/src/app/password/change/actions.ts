@@ -15,6 +15,12 @@ export async function changePasswordAction(
 ): Promise<ChangeState> {
   const user = await requireUser({ skipPasswordGate: true });
 
+  /* 화면이 보여 준 계정과 지금 저장하려는 계정이 같은가. 다르면 비밀번호를 대어 보지 않고 까닭을 적는다
+     (다른 탭에서 계정이 바뀌었거나, 같은 브라우저의 다른 로그인이 읽혔다) */
+  const uid = String(formData.get("uid") ?? "");
+  if (uid && uid !== String(user.id)) {
+    return { error: "이 화면을 연 뒤 이 브라우저의 로그인 계정이 바뀌었습니다. 새로고침한 뒤 '바꾸는 계정'을 확인하고 다시 입력해 주세요." };
+  }
   const current = String(formData.get("current") ?? "");
   const next = String(formData.get("next") ?? "");
   const confirm = String(formData.get("confirm") ?? "");

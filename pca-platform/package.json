@@ -233,6 +233,7 @@
     "pcu:diag": "tsx scripts/pcu-diag.ts",
     "pcu:campus": "tsx scripts/pcu-campus-flow.ts",
     "campus:export": "tsx scripts/campus-export-check.ts",
+    "campus:first-login": "tsx scripts/campus-first-login-check.ts",
     "campus:kus-add": "tsx scripts/campus-kus-add-check.ts",
     "pcu:cli": "tsx scripts/pcu-cli-audit.ts",
     "pcu:readiness": "tsx scripts/pcu-readiness.ts",
