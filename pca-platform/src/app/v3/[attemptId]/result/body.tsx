@@ -37,6 +37,7 @@ import { webRegionView } from "@/lib/me-v3/report-long/web-region";
 import { centerFirst, roleForGoal } from "@/lib/me-v3/result/goal-role";
 import { TRANS_NOTE_KO } from "@/lib/me-v3/result/text.ko";
 import RegionSection from "./region";
+import FeaturedCard from "./featured";
 import { participantOf, savedActions } from "@/lib/me-v3/pilot/store";
 import { takeActionsFromResult } from "@/app/me/next/actions";
 import {
@@ -1491,7 +1492,9 @@ export async function V3ResultBody(
             .sort((x, y) => (TX().TRANS_ORDER as readonly string[]).indexOf(x.item_id)
               - (TX().TRANS_ORDER as readonly string[]).indexOf(y.item_id))
             /* 덧말은 그 칸이 물은 것(쓰지 않은 방법 · 바꾸지 않은 것)으로 이름을 단다(JA4) */
-            .map((x) => ({ label: TRANS_NOTE_KO[x.item_id] ?? TX().TRANS_STEP_KO[x.item_id], text: x.note!.trim() }))} />
+            .map((x) => ({ label: TRANS_NOTE_KO[x.item_id] ?? TX().TRANS_STEP_KO[x.item_id], text: x.note!.trim() }))}
+          /* 기관 프로그램의 중점 기업(지역 부분 맨 위 카드, `lib/featured`). 프로그램에 든 사람만 */
+          region={rv?.featured && kr ? { title: `${rv.label}에서 이어 볼 기업`, node: <FeaturedCard f={rv.featured} />, more: "/me/region" } : null} />
         {/*
             ── 종이 표지 ── **화면에는 서지 않는다**(규격 §14).
 

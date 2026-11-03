@@ -120,6 +120,8 @@ export type Inputs = {
   guide: GuideState;
   exps: Experience[];
   region: RegionKey | null;
+  /** 기관 프로그램(기수)의 중점 기업. 프로그램에 든 사람만(`lib/featured`) */
+  featured?: import("@/lib/featured").Program | null;
   /** 영역을 부르는 말(`기술영역` · `업무 영역` …) */
   domainWord: string;
   /** 쪽을 만든 날 */

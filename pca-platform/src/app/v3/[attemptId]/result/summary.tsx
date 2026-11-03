@@ -17,6 +17,7 @@
  * PDF 가 든다. 종이는 이 화면을 쓰지 않는다(`@media print` 에서 숨긴다).
  */
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { phrase } from "@/lib/me-v3/phrase";
 import { renderLang } from "@/lib/me-v3/result/render-lang";
 
@@ -34,7 +35,7 @@ export type SummaryStep = { head: string; body: string; why: string | null; href
 
 export default function Summary({
   title, lead, who, zones, evidence, steps, pdfHref, keepAction, kept, tierNote,
-  book = true, upgradeHref = null, said = [],
+  book = true, upgradeHref = null, said = [], region = null,
 }: {
   title: string;
   lead: string;
@@ -53,6 +54,11 @@ export default function Summary({
   upgradeHref?: string | null;
   /** 경험 번역에서 직접 적어 주신 한 줄들(단계 이름 · 그 말). 제출 때 굳힌 값이다 */
   said?: { label: string; text: string }[];
+  /**
+   * 화면의 지역 부분. **기관 프로그램의 중점 기업이 있을 때만** 선다(`lib/featured`):
+   * 그 회사 카드가 이 부분 맨 위이고, 나머지 지역 회사는 `/me/region` · PDF 가 든다
+   */
+  region?: { title: string; node: ReactNode; more: string | null } | null;
 }) {
   /* 작업공간(`/me`)이 두 언어로 선다(영어판 2단계b). 견본에는 작업공간이 없다 */
   const ws = pdfHref !== null;
@@ -149,6 +155,14 @@ export default function Summary({
           </form>
         ) : null}
       </section>
+
+      {region ? (
+        <section className="rsum-sect" aria-labelledby="rsum-region" id="region-screen">
+          <h2 id="rsum-region" className="rsum-h2"><span>4</span>{region.title}</h2>
+          {region.node}
+          {region.more && ws ? <p className="rsum-why"><Link href={region.more}>{tr("지역 기업 더 보기")}</Link></p> : null}
+        </section>
+      ) : null}
 
       <section className="rsum-end">
         <div>

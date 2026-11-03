@@ -1,0 +1,45 @@
+{
+  "schema_version": "cm-featured-program.1",
+  "note": "기관 · 프로그램(기수)마다 결과 지역 부분 맨 위에 세울 '중점 기업'. **누가 그 프로그램에 드는지는 이 파일에 적지 않는다**(개인정보): DB 의 기수(`cohorts.program_code` → `cohort_members`)가 정한다. 같은 회사를 여러 기관이 함께 쓸 수 있고, 회사 사실은 `featured-companies.v1.json` 한 곳에만 있다. `audience` 가 문구를 고른다: school(학교) · agency(일자리 기관, 학과 · 학번 · 수업 같은 학교 말을 쓰지 않는다). `onsite` 는 참여자가 현장에서 묻고 싶어 한 주제를 모은 것(개인 응답이 아닌 묶음)이고, 차례가 곧 우선순위다. `when` 은 그 질문을 고르는 조건이다: any · z1(근거가 선 영역이 있음) · no_z1 · core:<코드>(전공 Core) · school(학교 참여자만).",
+  "programs": [
+    {
+      "code": "KUS26_VISIONSEMI_TOUR",
+      "org_code": "KUS",
+      "audience": "school",
+      "title": "2026 세종 기업탐방 프로그램 – 비전세미콘",
+      "cohort_name": "2026 세종 기업탐방 – 비전세미콘",
+      "company": "VISIONSEMICON",
+      "onsite_src": "참여 학생 사전 설문에서 되풀이된 주제(개인 응답 없이 묶음으로)",
+      "onsite": [
+        { "id": "core_skill", "when": "any", "ask": "반도체 장비 회사가 신입에게 가장 먼저 보는 역량이 무엇인지" },
+        { "id": "spec_vs_project", "when": "z1", "ask": "서류를 볼 때 자격증 · 학점 같은 스펙과 프로젝트 경험 가운데 무엇을 더 보는지" },
+        { "id": "rnd_basic", "when": "core:ME_CORE_V3", "ask": "장비 설계 · R&D 신입에게 꼭 필요한 기초 지식과 도구가 무엇인지" },
+        { "id": "ee_bachelor", "when": "core:EE_CORE_V1", "ask": "전자공학 학사로 반도체 장비 회사의 설계 · 제어 직무에 들어갈 수 있는지" },
+        { "id": "ai_effect", "when": "core:CS_CORE_V1", "ask": "AI가 반도체 장비 회사의 일(장비 제어 · 데이터 · 품질)을 어떻게 바꾸고 있는지" },
+        { "id": "grad_school", "when": "school", "ask": "설계 · 연구 직무에 대학원 진학이 필요한지, 학사로 들어가 어떻게 자라는지" },
+        { "id": "activity_cert", "when": "no_z1", "ask": "입사 전에 해 두면 좋은 활동과 자격증이 무엇인지" },
+        { "id": "talent", "when": "any", "ask": "회사가 적어 둔 인재상이 실제 채용과 일에서 어떻게 드러나는지" },
+        { "id": "growth", "when": "any", "ask": "입사 뒤 몇 년 동안 어떤 일을 거치며 자라는지" }
+      ]
+    },
+    {
+      "code": "SJEPA26_JOBTALK11_TOUR",
+      "org_code": "SJEPA",
+      "audience": "agency",
+      "title": "2026년 청년 구직활동 취업특강 (11차) 기업탐방",
+      "cohort_name": "2026년 청년 구직활동 취업특강 (11차) 기업탐방",
+      "company": "VISIONSEMICON",
+      "onsite_src": "기업탐방에서 자주 묻는 주제",
+      "onsite": [
+        { "id": "core_skill", "when": "any", "ask": "반도체 장비 회사가 신입에게 가장 먼저 보는 역량이 무엇인지" },
+        { "id": "spec_vs_project", "when": "z1", "ask": "서류를 볼 때 자격증 같은 스펙과 실제로 해 본 경험 가운데 무엇을 더 보는지" },
+        { "id": "rnd_basic", "when": "core:ME_CORE_V3", "ask": "장비 설계 직무에 들어가려면 어떤 기초 지식과 도구가 먼저 필요한지" },
+        { "id": "ee_bachelor", "when": "core:EE_CORE_V1", "ask": "전기 · 전자 분야 경험으로 장비 제어 · 설치 직무에 들어갈 수 있는지" },
+        { "id": "ai_effect", "when": "core:CS_CORE_V1", "ask": "AI가 반도체 장비 회사의 일을 어떻게 바꾸고 있는지" },
+        { "id": "activity_cert", "when": "no_z1", "ask": "지금부터 해 두면 좋은 교육 과정과 자격증이 무엇인지" },
+        { "id": "growth", "when": "any", "ask": "입사 뒤 몇 년 동안 어떤 일을 거치며 자라는지" },
+        { "id": "talent", "when": "any", "ask": "회사가 적어 둔 인재상이 실제 채용과 일에서 어떻게 드러나는지" }
+      ]
+    }
+  ]
+}
