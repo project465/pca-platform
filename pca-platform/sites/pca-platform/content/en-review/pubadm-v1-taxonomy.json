@@ -1,0 +1,894 @@
+{
+ "schema_version": "pubadm-v1-taxonomy.1",
+ "assessment_version": "PUBADM_V1",
+ "major_id": "PUBADM",
+ "note": "Three axes: technical domain x role function x organizational context. Job titles are aliases for combinations, and none of the axes produces a ranking. This file is where changes are made. The eight axes, two scales and four levels use the same values as the Mechanical Engineering Core: results from two majors can only be compared on the same ruler, and building a new ruler for each major would break comparison within a university",
+ "axes": {
+  "J1": {
+   "name": "Problem definition",
+   "question": "Who decided what to work on?"
+  },
+  "J2": {
+   "name": "Requirements interpretation",
+   "question": "Did you turn the requirements into numbers and constraints?"
+  },
+  "J3": {
+   "name": "Technical decisions",
+   "question": "Which items did you decide yourself?"
+  },
+  "J4": {
+   "name": "Methods and tools",
+   "question": "What did you use, and how?"
+  },
+  "J5": {
+   "name": "Deliverables",
+   "question": "What output remained?"
+  },
+  "J6": {
+   "name": "Comparison and verification",
+   "question": "What did you compare it against?"
+  },
+  "J7": {
+   "name": "Failure and correction",
+   "question": "How did you narrow down what went wrong?"
+  },
+  "J8": {
+   "name": "Organizational use",
+   "question": "Who used it, and for what?"
+  }
+ },
+ "scales": {
+  "S4": {
+   "axes": [
+    "J3",
+    "J5",
+    "J6",
+    "J7"
+   ],
+   "note": "Screening scale. The four axes asked at BASIC. Organizational use is left out of screening because it puts undergraduates at a structural disadvantage: whether your work was used by an organization can only be answered if you were placed in one, and someone who has only done classes and a capstone will have that cell empty even if they made decisions. Organizational use is asked only in the in-depth stage"
+  },
+  "S8": {
+   "axes": [
+    "J1",
+    "J2",
+    "J3",
+    "J4",
+    "J5",
+    "J6",
+    "J7",
+    "J8"
+   ],
+   "note": "Full scale. STANDARD and above. Do not use S8 as the denominator for S4. What the in-depth stage newly opens are the four axes not in screening (problem definition, requirements interpretation, methods and tools, organizational use)"
+  }
+ },
+ "levels": {
+  "L0": "Never",
+  "L1": "Exposed. Watched or reused what someone else did",
+  "L2": "Performed. Did the work myself",
+  "L3": "Owned. Decided it myself, and the result was used"
+ },
+ "technical_domains": [
+  {
+   "code": "TD01",
+   "name": "Policy and Program Planning",
+   "owns": "Decides where to use budget and staff and where not to use them",
+   "subareas": [
+    "Setting goals and performance indicators",
+    "Deciding targets and scope",
+    "Allocating resources",
+    "Schedule"
+   ],
+   "required_axes": [
+    "J2",
+    "J3"
+   ]
+  },
+  {
+   "code": "TD02",
+   "name": "Interpreting Laws and Regulations",
+   "owns": "Decides which provisions to apply and which not to apply",
+   "subareas": [
+    "Finding the provisions that are the basis",
+    "Deciding the scope of application",
+    "Handling exceptions and provisos",
+    "Keeping the basis of interpretation"
+   ],
+   "required_axes": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD03",
+   "name": "Budget Planning and Spending",
+   "owns": "Decides how much to give each program and how that money will be spent",
+   "subareas": [
+    "Estimating needs",
+    "Allocation by program",
+    "Spending plan",
+    "Judging changes and carry-overs"
+   ],
+   "required_axes": [
+    "J3",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD04",
+   "name": "Administrative Procedures and Civil Complaints",
+   "owns": "Decides how to finish each application within the deadline and with what result",
+   "subareas": [
+    "Receiving and checking requirements",
+    "Judging requests for more documents",
+    "Making decisions",
+    "Managing deadlines and notices"
+   ],
+   "required_axes": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "code": "TD05",
+   "name": "Human Resources and Organization Management",
+   "owns": "Decides how many people to put in which position and how to evaluate them",
+   "subareas": [
+    "Staff quota and placement",
+    "Setting job criteria",
+    "Evaluation and promotion criteria",
+    "Training and competency management"
+   ],
+   "required_axes": [
+    "J2",
+    "J8"
+   ]
+  },
+  {
+   "code": "TD06",
+   "name": "Performance Management and Evaluation",
+   "owns": "Decides what to count as results and how to judge them",
+   "subareas": [
+    "Defining indicators",
+    "Setting target values",
+    "Checking results",
+    "Feedback and improvement"
+   ],
+   "required_axes": [
+    "J2",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD07",
+   "name": "Public Data and Statistical Analysis",
+   "owns": "Decides what to count from accumulated data and how, to use as a basis for decisions",
+   "subareas": [
+    "Collecting and cleaning data",
+    "Defining indicators",
+    "Comparing groups",
+    "Communicating results"
+   ],
+   "required_axes": [
+    "J4",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD08",
+   "name": "Accounting and Audit",
+   "owns": "Judges whether money spent fits the rules and the proof, and decides the range of findings",
+   "subareas": [
+    "Checking proof",
+    "Dividing accounts and periods",
+    "Setting samples and scope",
+    "Findings and corrections"
+   ],
+   "required_axes": [
+    "J5",
+    "J6"
+   ]
+  },
+  {
+   "code": "TD09",
+   "name": "Resident Participation and Cooperation",
+   "owns": "Decides whose opinions to receive, by what method, and how far to reflect them",
+   "subareas": [
+    "Identifying stakeholders",
+    "Designing how to receive opinions",
+    "Resolving conflicts",
+    "Setting the range of reflection"
+   ],
+   "required_axes": [
+    "J1",
+    "J8"
+   ]
+  },
+  {
+   "code": "TD10",
+   "name": "Disaster and Safety Management",
+   "owns": "Decides which dangers to look at first and what to do at which step",
+   "subareas": [
+    "Identifying risk factors",
+    "Checks and corrections",
+    "Setting response steps",
+    "Drills and recovery"
+   ],
+   "required_axes": [
+    "J3",
+    "J7"
+   ]
+  },
+  {
+   "code": "TD11",
+   "name": "Public Program Management and Procurement",
+   "owns": "Decides what to give out and how, and whether to accept the delivered results",
+   "subareas": [
+    "Writing the scope of work",
+    "Choosing the ordering method",
+    "Supervising performance",
+    "Inspection and settlement"
+   ],
+   "required_axes": [
+    "J2",
+    "J5"
+   ]
+  },
+  {
+   "code": "TD12",
+   "name": "Digital Administration and Information Disclosure",
+   "owns": "Turns work into tasks for a system and decides how much to make public",
+   "subareas": [
+    "Organizing workflows",
+    "Writing functional requirements",
+    "Deciding the disclosure range",
+    "Records management"
+   ],
+   "required_axes": [
+    "J2",
+    "J4"
+   ]
+  }
+ ],
+ "role_functions": [
+  {
+   "code": "RF1",
+   "name": "Policy and Program Planning",
+   "one_line": "Decides what to do",
+   "output_kind": "Program plan · Performance indicator table · Schedule",
+   "success": "One plan that fits the budget and staff and can be checked with indicators"
+  },
+  {
+   "code": "RF2",
+   "name": "Analysis and Estimation",
+   "one_line": "Looks ahead with numbers before a decision",
+   "output_kind": "Demand estimate · Fiscal needs estimate · Statistical analysis report",
+   "success": "A basis that matches the results and changed a decision"
+  },
+  {
+   "code": "RF3",
+   "name": "Review and Audit",
+   "one_line": "Checks whether what was done is right",
+   "output_kind": "Review opinion · Inspection report · Settlement review results",
+   "success": "A result where the provisions and proof match and the covered scope is written down"
+  },
+  {
+   "code": "RF4",
+   "name": "Implementation and Operations",
+   "one_line": "Keeps work running again and again",
+   "output_kind": "Work handling procedure · Spending records · Delegation of authority criteria",
+   "success": "The same application gives the same result, and it can be reversed"
+  },
+  {
+   "code": "RF5",
+   "name": "Civil Complaints and Field Response",
+   "one_line": "Keeps residents' business from stopping",
+   "output_kind": "Service criteria · Handling deadline management · On-site action records",
+   "success": "Within the set deadline, and the same civil complaint does not come back"
+  },
+  {
+   "code": "RF6",
+   "name": "Consultation and Coordination",
+   "one_line": "Brings the decisions of several institutions together into one",
+   "output_kind": "Consultation materials · Agreed terms · Change records",
+   "success": "Rate of meeting consultation terms, and deadlines"
+  },
+  {
+   "code": "RF7",
+   "name": "Survey and Research",
+   "one_line": "Narrows down things that have no answer yet",
+   "output_kind": "Research design · Fact-finding survey report · Pilot program results",
+   "success": "The question is narrowed and a method remains"
+  },
+  {
+   "code": "RF8",
+   "name": "Systems and Personnel Management",
+   "one_line": "Makes sure standards are kept all the time",
+   "output_kind": "Job criteria · Evaluation criteria · Rule revision records",
+   "success": "The same problem does not come back, and the basis of decisions can be traced"
+  }
+ ],
+ "role_functions_note": "There are eight, and they use **the same codes** as the Mechanical Engineering Core. Role functions are a layer above the major, so they are not created again for each major. All names were changed into public administration terms: `Design and Development` and `Process and Mass Production` are words for making things, so a student who writes policy or receives civil complaints cannot find their place. The meaning of the work is kept the same, so the axes do not split; what differs is the kind of output: program plans, decision records and settlement data take the place of drawings",
+ "org_contexts": [
+  {
+   "code": "OC1",
+   "name": "Central Government Agencies",
+   "performance": "Policy goal achievement · Revision of laws · Responses to the National Assembly and audits",
+   "differs": "The standards I write apply in the same way across the country"
+  },
+  {
+   "code": "OC2",
+   "name": "Local Governments",
+   "performance": "What residents feel · Spending rate · Responses to the local council and audits",
+   "differs": "You meet the same residents again and again, and reactions from the field come back right away"
+  },
+  {
+   "code": "OC3",
+   "name": "Public Institutions and Public Corporations",
+   "performance": "Program goal achievement · Management evaluation · Safety and quality",
+   "differs": "Looks at program results and public value together"
+  },
+  {
+   "code": "OC4",
+   "name": "Education and Research Institutions",
+   "performance": "Project performance · Report quality · Policy contribution",
+   "differs": "You must show on your own that the method is valid"
+  },
+  {
+   "code": "OC5",
+   "name": "Regulatory and Supervisory Agencies",
+   "performance": "Judging whether standards are met · Review handling · Responses to appeals",
+   "differs": "The traceability of the judgment is the output"
+  },
+  {
+   "code": "OC6",
+   "name": "Nonprofit and Civil Society Organizations",
+   "performance": "Program performance · Settlement of donations and subsidies · Changes in target groups",
+   "differs": "Finds ways to reach the field with few resources"
+  },
+  {
+   "code": "OC7",
+   "name": "Private Contractors and Service Providers",
+   "performance": "Contract performance · Meeting deadlines · Client evaluation",
+   "differs": "The needs of one client set the standard"
+  }
+ ],
+ "job_aliases": [
+  {
+   "posting_name": "Policy Planning",
+   "td": [
+    "TD01",
+    "TD07"
+   ],
+   "rf": [
+    "RF1"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC3"
+   ],
+   "distinguisher": "Decides alone where to put more budget and staff and proposes it"
+  },
+  {
+   "posting_name": "Program Planning and Public Call Management",
+   "td": [
+    "TD01",
+    "TD11"
+   ],
+   "rf": [
+    "RF1",
+    "RF6"
+   ],
+   "oc": [
+    "OC2",
+    "OC3",
+    "OC6"
+   ],
+   "distinguisher": "Narrows down alone the scope of a program to fit the requirements of a public call"
+  },
+  {
+   "posting_name": "Legal Affairs and Legislation",
+   "td": [
+    "TD02"
+   ],
+   "rf": [
+    "RF3"
+   ],
+   "oc": [
+    "OC1",
+    "OC5"
+   ],
+   "distinguisher": "Separates alone the provisions to apply from the provisions not to apply"
+  },
+  {
+   "posting_name": "Regulatory Review and Permits",
+   "td": [
+    "TD02",
+    "TD04"
+   ],
+   "rf": [
+    "RF3"
+   ],
+   "oc": [
+    "OC2",
+    "OC5"
+   ],
+   "distinguisher": "Judges alone whether requirements are met and records it as a decision"
+  },
+  {
+   "posting_name": "Budget Officer",
+   "td": [
+    "TD03"
+   ],
+   "rf": [
+    "RF1",
+    "RF2"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC3"
+   ],
+   "distinguisher": "Divides alone the amount for each program and keeps the basis"
+  },
+  {
+   "posting_name": "Accounting and Settlement",
+   "td": [
+    "TD03",
+    "TD08"
+   ],
+   "rf": [
+    "RF3",
+    "RF4"
+   ],
+   "oc": [
+    "OC2",
+    "OC3",
+    "OC6"
+   ],
+   "distinguisher": "Matches proof with spending records and produces settlement results alone"
+  },
+  {
+   "posting_name": "Civil Complaints and Administrative Support",
+   "td": [
+    "TD04"
+   ],
+   "rf": [
+    "RF5"
+   ],
+   "oc": [
+    "OC2",
+    "OC5"
+   ],
+   "distinguisher": "Separates alone the range to handle on the spot from the range to send back"
+  },
+  {
+   "posting_name": "Human Resources and Organization",
+   "td": [
+    "TD05"
+   ],
+   "rf": [
+    "RF8"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC3"
+   ],
+   "distinguisher": "Sets alone the criteria for staff quota and placement"
+  },
+  {
+   "posting_name": "Performance Evaluation",
+   "td": [
+    "TD06",
+    "TD07"
+   ],
+   "rf": [
+    "RF2",
+    "RF3"
+   ],
+   "oc": [
+    "OC1",
+    "OC3"
+   ],
+   "distinguisher": "Decides alone what to count as results"
+  },
+  {
+   "posting_name": "Public Data Analysis",
+   "td": [
+    "TD07"
+   ],
+   "rf": [
+    "RF2"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC4"
+   ],
+   "distinguisher": "Defines indicators, extracts them from data and turns them into a basis for decisions"
+  },
+  {
+   "posting_name": "Audit Officer",
+   "td": [
+    "TD08"
+   ],
+   "rf": [
+    "RF3"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC5"
+   ],
+   "distinguisher": "Chooses alone the samples and period to look at"
+  },
+  {
+   "posting_name": "Resident Participation and Governance",
+   "td": [
+    "TD09"
+   ],
+   "rf": [
+    "RF6",
+    "RF5"
+   ],
+   "oc": [
+    "OC2",
+    "OC6"
+   ],
+   "distinguisher": "Designs alone whose opinions to receive and by what method"
+  },
+  {
+   "posting_name": "Disaster and Safety Officer",
+   "td": [
+    "TD10"
+   ],
+   "rf": [
+    "RF4",
+    "RF1"
+   ],
+   "oc": [
+    "OC2",
+    "OC3"
+   ],
+   "distinguisher": "Separates alone risk factors and response steps"
+  },
+  {
+   "posting_name": "Fire Administration and Prevention",
+   "td": [
+    "TD10",
+    "TD02"
+   ],
+   "rf": [
+    "RF3",
+    "RF5"
+   ],
+   "oc": [
+    "OC2"
+   ],
+   "distinguisher": "Decides alone the inspection targets and the range of correction requests"
+  },
+  {
+   "posting_name": "Contracts and Procurement",
+   "td": [
+    "TD11"
+   ],
+   "rf": [
+    "RF4",
+    "RF6"
+   ],
+   "oc": [
+    "OC2",
+    "OC3",
+    "OC7"
+   ],
+   "distinguisher": "Writes alone the ordering method and the scope of work"
+  },
+  {
+   "posting_name": "Program Supervision and Management",
+   "td": [
+    "TD11",
+    "TD06"
+   ],
+   "rf": [
+    "RF3",
+    "RF4"
+   ],
+   "oc": [
+    "OC2",
+    "OC3"
+   ],
+   "distinguisher": "Judges alone whether to accept the results submitted by the performing organization"
+  },
+  {
+   "posting_name": "E-Government and Informatization",
+   "td": [
+    "TD12",
+    "TD04"
+   ],
+   "rf": [
+    "RF1",
+    "RF4"
+   ],
+   "oc": [
+    "OC1",
+    "OC2",
+    "OC3"
+   ],
+   "distinguisher": "Turns current forms and workflows into tasks for a system"
+  },
+  {
+   "posting_name": "Information Disclosure and Records",
+   "td": [
+    "TD12",
+    "TD02"
+   ],
+   "rf": [
+    "RF3",
+    "RF4"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Separates alone the range to disclose from the range to hide"
+  },
+  {
+   "posting_name": "Welfare Program Officer",
+   "td": [
+    "TD09",
+    "TD04"
+   ],
+   "rf": [
+    "RF4",
+    "RF5"
+   ],
+   "oc": [
+    "OC2",
+    "OC6"
+   ],
+   "distinguisher": "Applies the requirements for recipients and decides alone the range of support"
+  },
+  {
+   "posting_name": "Urban and Transport Administration",
+   "td": [
+    "TD01",
+    "TD11"
+   ],
+   "rf": [
+    "RF1",
+    "RF6"
+   ],
+   "oc": [
+    "OC2"
+   ],
+   "distinguisher": "Brings the plans of several institutions together into one schedule"
+  },
+  {
+   "posting_name": "Health Administration",
+   "td": [
+    "TD04",
+    "TD10"
+   ],
+   "rf": [
+    "RF4",
+    "RF3"
+   ],
+   "oc": [
+    "OC2",
+    "OC5"
+   ],
+   "distinguisher": "Judges violations of standards alone and records them as actions"
+  },
+  {
+   "posting_name": "International Exchange and Cooperation",
+   "td": [
+    "TD09",
+    "TD01"
+   ],
+   "rf": [
+    "RF6",
+    "RF7"
+   ],
+   "oc": [
+    "OC1",
+    "OC4"
+   ],
+   "distinguisher": "Decides alone the range of cooperation with a partner institution and agrees on it"
+  },
+  {
+   "posting_name": "Public Relations and Spokesperson",
+   "td": [
+    "TD09",
+    "TD12"
+   ],
+   "rf": [
+    "RF5",
+    "RF6"
+   ],
+   "oc": [
+    "OC1",
+    "OC2"
+   ],
+   "distinguisher": "Decides alone what to announce, when, and in what words"
+  },
+  {
+   "posting_name": "Overall Planning and Coordination",
+   "td": [
+    "TD01",
+    "TD06"
+   ],
+   "rf": [
+    "RF1",
+    "RF6"
+   ],
+   "oc": [
+    "OC1",
+    "OC3"
+   ],
+   "distinguisher": "Sets alone the boundaries of work that overlaps between departments"
+  }
+ ],
+ "boundaries": [
+  {
+   "pair": "Policy Planning vs Budget",
+   "a": {
+    "td": "TD01",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD03",
+    "rf": "RF1"
+   },
+   "shared": "Decides where to use resources",
+   "a_difference": "Separates what to do from what not to do",
+   "b_difference": "Decides how much to give that work",
+   "a_question": "Have you chosen yourself and written down the programs not to do this time?",
+   "b_question": "Have you divided yourself the amount for each program and kept the basis?"
+  },
+  {
+   "pair": "Interpreting Laws vs Handling Civil Complaints",
+   "a": {
+    "td": "TD02",
+    "rf": "RF3"
+   },
+   "b": {
+    "td": "TD04",
+    "rf": "RF5"
+   },
+   "shared": "Applies rules",
+   "a_difference": "Separates the scope of application and the exceptions of provisions",
+   "b_difference": "Finishes one application on the spot within the deadline",
+   "a_question": "Have you divided yourself the provisions to apply and the provisions not to apply?",
+   "b_question": "Have you judged a received case yourself and handled it or asked for more documents?"
+  },
+  {
+   "pair": "Audit vs Performance Evaluation",
+   "a": {
+    "td": "TD08",
+    "rf": "RF3"
+   },
+   "b": {
+    "td": "TD06",
+    "rf": "RF2"
+   },
+   "shared": "Looks into finished work",
+   "a_difference": "Judges whether it fits the rules and the proof",
+   "b_difference": "Judges whether it reached the goal and why",
+   "a_question": "Have you chosen yourself the samples and period and checked them?",
+   "b_question": "Have you set yourself the indicators for what to count as results?"
+  },
+  {
+   "pair": "Public Data Analysis vs Performance Evaluation",
+   "a": {
+    "td": "TD07",
+    "rf": "RF2"
+   },
+   "b": {
+    "td": "TD06",
+    "rf": "RF3"
+   },
+   "shared": "Builds a basis for decisions with numbers",
+   "a_difference": "Extracts indicators from data and compares them",
+   "b_difference": "Judges program achievement with those indicators",
+   "a_question": "Have you defined an indicator and extracted it from data yourself?",
+   "b_question": "Have you set yourself the criteria for judging achievement?"
+  },
+  {
+   "pair": "Procurement and Contracts vs Program Supervision",
+   "a": {
+    "td": "TD11",
+    "rf": "RF4"
+   },
+   "b": {
+    "td": "TD11",
+    "rf": "RF3"
+   },
+   "shared": "Handles work given to outside parties",
+   "a_difference": "Writes what to give out and by what method",
+   "b_difference": "Judges whether to accept the results brought back",
+   "a_question": "Have you written yourself the scope of work and the ordering method?",
+   "b_question": "Have you judged yourself whether delivered items met the scope of work?"
+  },
+  {
+   "pair": "Disaster Response vs Safety Inspection",
+   "a": {
+    "td": "TD10",
+    "rf": "RF4"
+   },
+   "b": {
+    "td": "TD10",
+    "rf": "RF3"
+   },
+   "shared": "Prevents accidents or keeps them from growing",
+   "a_difference": "Runs the steps and roles when something happens",
+   "b_difference": "Finds violations of standards before something happens and has them fixed",
+   "a_question": "Have you set yourself the response steps and the division of roles?",
+   "b_question": "Have you set yourself the inspection targets and the range of correction requests?"
+  },
+  {
+   "pair": "Resident Participation vs Public Relations",
+   "a": {
+    "td": "TD09",
+    "rf": "RF6"
+   },
+   "b": {
+    "td": "TD09",
+    "rf": "RF5"
+   },
+   "shared": "Exchanges words with residents",
+   "a_difference": "Receives opinions and reflects them in decisions",
+   "b_difference": "Announces what has been decided and reduces misunderstanding",
+   "a_question": "Have you designed yourself whose opinions to receive and by what method?",
+   "b_question": "Have you chosen yourself what to announce, when, and in what words?"
+  },
+  {
+   "pair": "E-Government vs Information Disclosure",
+   "a": {
+    "td": "TD12",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD12",
+    "rf": "RF3"
+   },
+   "shared": "Handles administrative information",
+   "a_difference": "Turns workflows into tasks for a system",
+   "b_difference": "Decides how much to make public",
+   "a_question": "Have you turned current forms and workflows into a list of features?",
+   "b_question": "Have you divided yourself the range to disclose and the range to hide?"
+  },
+  {
+   "pair": "Personnel Management vs Organization Diagnosis",
+   "a": {
+    "td": "TD05",
+    "rf": "RF8"
+   },
+   "b": {
+    "td": "TD05",
+    "rf": "RF7"
+   },
+   "shared": "Handles people and positions",
+   "a_difference": "Sets criteria and runs things by those criteria",
+   "b_difference": "Researches whether the current placement fits and narrows down problems",
+   "a_question": "Have you set job criteria or evaluation criteria yourself?",
+   "b_question": "Have you researched the current workload and placement and narrowed down the positions that do not fit?"
+  },
+  {
+   "pair": "Policy Planning vs Survey and Research",
+   "a": {
+    "td": "TD01",
+    "rf": "RF1"
+   },
+   "b": {
+    "td": "TD07",
+    "rf": "RF7"
+   },
+   "shared": "Builds the basis for what to do",
+   "a_difference": "Confirms a plan within the available resources",
+   "b_difference": "Narrows down what is not yet known and builds an answer",
+   "a_question": "Have you confirmed yourself one plan that fits within the resources?",
+   "b_question": "Have you designed a survey yourself, deciding what to ask and what to find out?"
+  }
+ ]
+}

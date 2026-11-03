@@ -1,0 +1,1386 @@
+{
+ "schema_version": "pubadm-v1-domains.1",
+ "assessment_version": "PUBADM_V1",
+ "note": "For each domain: the eight steps of the workflow and the performing and ownership conditions for the eight judgment axes. Items, the results report and experience input all read this one file. `verify_targets` and `artifacts` are what the results report's action steps draw on, so they must be concrete here to avoid vague wording",
+ "workflow_steps": [
+  "How the problem arrives",
+  "Inputs received",
+  "What gets decided first",
+  "Methods used",
+  "Tools used",
+  "Deliverables produced",
+  "What it is compared against",
+  "When it goes wrong"
+ ],
+ "domains": [
+  {
+   "code": "TD01",
+   "name": "Policy and Program Planning",
+   "required_axes": [
+    "J2",
+    "J3"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "A higher plan, an election pledge or the requirements of a public call arrive as a task"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "The higher plan, available budget and staff quota, deadline, precedents of similar programs"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "What not to do this time, what to do first, and the target range"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Turning goals into indicators, comparing options, dividing resources, making a schedule"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Spreadsheet tools, presentation tools, meeting notes, performance indicator definition tables"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "A full program plan, a performance indicator table, reasons for priorities, a schedule"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "The higher plan, past spending results, similar programs, achievement rate after the end"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If a goal is not achieved, separate whether the goal was too high or resources were not enough"
+    }
+   ],
+   "tools": [
+    "Spreadsheet tools",
+    "Presentation tools",
+    "Performance indicator definition table",
+    "Meeting notes",
+    "Schedule"
+   ],
+   "artifacts": [
+    "Program plan",
+    "Performance indicator table",
+    "Reasons for priorities",
+    "Schedule",
+    "Decision record"
+   ],
+   "verify_targets": [
+    "Higher plan",
+    "Past spending results",
+    "Similar programs",
+    "Actual achievement rate after the end",
+    "Review comments"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down the targets and scope to cover this time in the given task",
+     "l3": "The scope I defined became the business scope as is"
+    },
+    "J2": {
+     "l2": "Turned goals into performance indicators measured with numbers",
+     "l3": "The indicators I set were used as evaluation criteria"
+    },
+    "J3": {
+     "l2": "Chose one of several options and allocated budget and staff",
+     "l3": "Budget or staff moved according to the allocation I decided"
+    },
+    "J4": {
+     "l2": "Chose and used a planning framework or an estimation method",
+     "l3": "The framework I chose was also used in the next planning"
+    },
+    "J5": {
+     "l2": "Kept a program plan or plan proposal as a document",
+     "l3": "Another person read the plan I left and carried it out"
+    },
+    "J6": {
+     "l2": "Compared two options with the same criteria",
+     "l3": "Changed the plan based on the comparison results"
+    },
+    "J7": {
+     "l2": "Narrowed the reason for a missed goal down to the goal or the resources",
+     "l3": "Confirmed that the same gap became smaller in the next plan"
+    },
+    "J8": {
+     "l2": "Presented the plan proposal in a meeting, explained it, and received agreement",
+     "l3": "My plan led to budget allocation or staff placement"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Plans with standards that apply in the same way across the country",
+    "OC2": "Plans with changes that residents feel right away",
+    "OC3": "Program plans linked to management evaluation indicators",
+    "OC4": "A project proposal and an execution plan",
+    "OC5": "Plans with review criteria and handling procedures",
+    "OC6": "Plans that reach the target groups with few resources",
+    "OC7": "Work plans that fit the scope of work set by the client"
+   }
+  },
+  {
+   "code": "TD02",
+   "name": "Interpreting Laws and Regulations",
+   "required_axes": [
+    "J2",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "A case or inquiry where judgments differ arrives"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Acts, enforcement decrees and enforcement rules, guidelines, official interpretations, similar cases"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The provisions that apply and do not apply, and the range of exceptions"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Comparing provisions, comparing cases, checking higher laws, writing the basis of interpretation"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Law search tools, court rulings and official interpretation materials, provision comparison tables, document editing tools"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "A review opinion, a provision comparison table, a record of the basis of interpretation, a reply to an inquiry"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Higher laws, past official interpretations, decisions in similar cases, results of appeals or lawsuits"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If an interpretation is reversed, narrow down which provision was read wrongly"
+    }
+   ],
+   "tools": [
+    "Law search tool",
+    "Court rulings and official interpretation materials",
+    "Provision comparison table",
+    "Document editing tool",
+    "Management of inquiry replies"
+   ],
+   "artifacts": [
+    "Review opinion",
+    "Provision comparison table",
+    "Record of the basis of interpretation",
+    "Reply to an inquiry",
+    "Draft revision of guidelines"
+   ],
+   "verify_targets": [
+    "Higher laws",
+    "Past official interpretations",
+    "Decisions in similar cases",
+    "Results of appeals or lawsuits",
+    "Replies from higher institutions"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Narrowed down and wrote the issues actually disputed in an inquiry",
+     "l3": "The issues I narrowed down became the review scope as they were"
+    },
+    "J2": {
+     "l2": "Broke down the requirements of a provision into items that can be checked",
+     "l3": "The requirement items I wrote were used as review criteria"
+    },
+    "J3": {
+     "l2": "Divided and decided the provisions that apply and the provisions that do not",
+     "l3": "A decision or reply was issued as I divided it"
+    },
+    "J4": {
+     "l2": "Chose and used a method or tool to find and compare provisions",
+     "l3": "The search order I set was also used in other reviews"
+    },
+    "J5": {
+     "l2": "Kept a review opinion or a provision comparison table",
+     "l3": "Another person used the review opinion I left as a basis"
+    },
+    "J6": {
+     "l2": "Checked my interpretation against higher laws or past official interpretations",
+     "l3": "Have changed a first interpretation after checking"
+    },
+    "J7": {
+     "l2": "Narrowed the reason an interpretation was reversed down to the provision level",
+     "l3": "Changed guidelines or forms so that the same misunderstanding would not happen"
+    },
+    "J8": {
+     "l2": "Explained review results and had them reflected in a decision or guidelines",
+     "l3": "My review was issued as the institution's official reply"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Official interpretations that apply in the same way across the country",
+    "OC2": "Interpretations that go out to residents directly as decisions",
+    "OC3": "Internal guidelines that are the basis of program spending",
+    "OC4": "Reviews that are the basis of proposals to improve systems",
+    "OC5": "Decision grounds that must hold up against appeals",
+    "OC6": "Program criteria that decide who meets the requirements",
+    "OC7": "Contract interpretations that prevent disputes about the scope of work"
+   }
+  },
+  {
+   "code": "TD03",
+   "name": "Budget Planning and Spending",
+   "required_axes": [
+    "J3",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Budget guidelines and the requests of each department arrive together"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Past spending results, the total limit, mandatory spending, requested amounts for each program and their basis"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Which programs to cut and by how much, and which programs to keep"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Estimating needs, checking unit prices, dividing allocations, setting a spending schedule"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Spreadsheet tools, a budget planning system, unit price tables, spending record lookup"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "A full budget plan, the calculation basis for each program, a spending plan, change records"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Past spending results, unit price standards, the total limit, spending rate after the end"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If spending is left over or short, separate whether the estimate was wrong or the schedule was delayed"
+    }
+   ],
+   "tools": [
+    "Spreadsheet tools",
+    "Budget planning system",
+    "Unit price table",
+    "Spending record lookup",
+    "Schedule"
+   ],
+   "artifacts": [
+    "Budget plan",
+    "Calculation basis for each program amount",
+    "Spending plan",
+    "Change records",
+    "Remaining budget and reasons for carrying over"
+   ],
+   "verify_targets": [
+    "Past spending results",
+    "Unit price standards",
+    "Total limit",
+    "Spending rate after the end",
+    "Review comments"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down the groups of programs to cover in this budget planning",
+     "l3": "The groups I divided became the budget planning units as they were"
+    },
+    "J2": {
+     "l2": "Broke down the words of a request into unit prices and quantities",
+     "l3": "The calculation basis I wrote was used as review material"
+    },
+    "J3": {
+     "l2": "Divided myself the amount for each program and kept the reasons",
+     "l3": "The amounts I divided were planned as they were"
+    },
+    "J4": {
+     "l2": "Chose and used a method to estimate needs or unit price standards",
+     "l3": "The estimation method I chose was also used in the next budget planning"
+    },
+    "J5": {
+     "l2": "Kept a budget plan or calculation basis as a document",
+     "l3": "Another person took the calculation basis I left and used it"
+    },
+    "J6": {
+     "l2": "Checked planned amounts against past spending results",
+     "l3": "Changed the allocation based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason for unspent or excess money down to the estimate or the schedule",
+     "l3": "Confirmed that the same gap became smaller in the next budget planning"
+    },
+    "J8": {
+     "l2": "Explained a budget plan at a review and received agreement",
+     "l3": "My calculation basis was reflected in the final budget"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Budget planning linked to the national fiscal management plan",
+    "OC2": "Budget planning that goes directly to programs residents feel",
+    "OC3": "Budgets tied to program goals and management evaluation",
+    "OC4": "Research funds spent and settled by project",
+    "OC5": "Budget planning for the costs of review and supervision",
+    "OC6": "Program costs that mix subsidies and donations",
+    "OC7": "Work budgets run within the contract amount"
+   }
+  },
+  {
+   "code": "TD04",
+   "name": "Administrative Procedures and Civil Complaints",
+   "required_axes": [
+    "J3",
+    "J7"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "Applications and civil complaints from residents or businesses arrive"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Application documents, requirement standards, handling deadlines, past decisions"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The range to handle on the spot and the range for which to ask for more documents"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Checking requirements, checking sites, deciding, writing notices"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Civil complaint handling systems, requirement checklists, notice forms, deadline management screens"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Decision records, official letters asking for more documents, notices, handling registers"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Requirement standards, past decisions, handling deadlines, appeal results"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If the same civil complaint keeps coming, separate whether the form is unclear or the guidance is not enough"
+    }
+   ],
+   "tools": [
+    "Civil complaint handling system",
+    "Requirement checklist",
+    "Notice form",
+    "Deadline management screen",
+    "On-site checklist"
+   ],
+   "artifacts": [
+    "Decision records",
+    "Official letter asking for more documents",
+    "Notice",
+    "Handling register",
+    "Handling procedure document"
+   ],
+   "verify_targets": [
+    "Requirement standards",
+    "Past decisions",
+    "Handling deadline",
+    "Appeal results",
+    "Guidelines of higher institutions"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Narrowed down and wrote the actual needs to handle in a civil complaint",
+     "l3": "The needs I narrowed down became the handling scope as they were"
+    },
+    "J2": {
+     "l2": "Turned application content into requirement items that can be checked",
+     "l3": "The requirement items I wrote were used as a checklist"
+    },
+    "J3": {
+     "l2": "Separated myself the range to handle on the spot from the range for which to ask for more documents",
+     "l3": "Decisions or requests for more documents were issued as I divided them"
+    },
+    "J4": {
+     "l2": "Chose and used an order for checking requirements or a method for checking sites",
+     "l3": "The checking order I set was also used in other people's handling"
+    },
+    "J5": {
+     "l2": "Kept a record of decisions and their reasons",
+     "l3": "Another person used the handling records I left as a basis"
+    },
+    "J6": {
+     "l2": "Checked my judgment against past decisions or requirement standards",
+     "l3": "Have changed a first judgment after checking"
+    },
+    "J7": {
+     "l2": "Narrowed the reason for repeated civil complaints down to the form or the guidance",
+     "l3": "Fixed the form or guidance and confirmed that the same civil complaints became fewer"
+    },
+    "J8": {
+     "l2": "Shared my handling criteria so that other people handled cases in the same way",
+     "l3": "The procedure document I made became the department's standard"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Standards written so that desks across the country handle cases in the same way",
+    "OC2": "Handling records that build up from meeting residents again and again",
+    "OC3": "Operations that finish users' applications within the deadline",
+    "OC4": "Managing research participation and approval procedures",
+    "OC5": "Decision records that must hold up against appeals",
+    "OC6": "Procedures that receive applications from target groups and connect them to support",
+    "OC7": "Handling run by the procedure set by the client"
+   }
+  },
+  {
+   "code": "TD05",
+   "name": "Human Resources and Organization Management",
+   "required_axes": [
+    "J2",
+    "J8"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "A reorganization, a vacancy or an evaluation period arrives as a task"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Staff quota standards, workload data, job descriptions, evaluation rules, past placement history"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Which positions to add or cut, and what to count in evaluation"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Measuring workload, analyzing jobs, setting criteria, designing meetings and interviews"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Human resources information systems, workload survey forms, job description forms, evaluation sheets"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Job criteria, a staff placement plan, an evaluation criteria table, a training plan"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Staff quota standards, past placement history, similar organizations, turnover after placement"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If positions are empty or overlap, separate whether the workload estimate was wrong or the criteria are unclear"
+    }
+   ],
+   "tools": [
+    "Human resources information system",
+    "Workload survey form",
+    "Job description form",
+    "Evaluation sheet",
+    "Meeting records"
+   ],
+   "artifacts": [
+    "Job criteria",
+    "Staff placement plan",
+    "Evaluation criteria table",
+    "Training plan",
+    "Meeting records"
+   ],
+   "verify_targets": [
+    "Staff quota standards",
+    "Past placement history",
+    "Similar organizations",
+    "Share of people who quit after placement",
+    "Results of labor and management consultation"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down the range of positions to change this time",
+     "l3": "The range I set became the reorganization scope as it was"
+    },
+    "J2": {
+     "l2": "Turned the work to be done into countable workload and requirements",
+     "l3": "The requirements I wrote were used as hiring or placement criteria"
+    },
+    "J3": {
+     "l2": "Decided myself whom to put in which position",
+     "l3": "The placement I decided went into official appointments as it was"
+    },
+    "J4": {
+     "l2": "Chose and used a method to measure workload or divide jobs",
+     "l3": "The method I chose was also used in the next survey"
+    },
+    "J5": {
+     "l2": "Kept job criteria or an evaluation criteria table as documents",
+     "l3": "Another department took the criteria I left and used them"
+    },
+    "J6": {
+     "l2": "Compared the criteria with past placements or similar organizations",
+     "l3": "Changed the criteria based on the comparison"
+    },
+    "J7": {
+     "l2": "Narrowed the reason positions were empty or overlapping down to workload or criteria",
+     "l3": "Fixed the criteria and confirmed that the same gap became smaller"
+    },
+    "J8": {
+     "l2": "The criteria I set were used as they were in appointments or evaluations",
+     "l3": "Explained them in a consultation and they were agreed as standards"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Staff quota and job criteria that apply in the same way to all ministries",
+    "OC2": "Placement that fits the workload of field departments",
+    "OC3": "Organization operating standards tied to management evaluation",
+    "OC4": "Assigning project staff and research roles",
+    "OC5": "Criteria for the expertise and neutrality of review staff",
+    "OC6": "Criteria for roles that a few people take on at once",
+    "OC7": "Criteria for deploying contract staff and procedures for replacing them"
+   }
+  },
+  {
+   "code": "TD06",
+   "name": "Performance Management and Evaluation",
+   "required_axes": [
+    "J2",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "A program has ended or the evaluation period has come, and it arrives as a task"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Goals in the program plan, spending results, recipient data, evaluation guidelines"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "What to count as results, and how far counts as achieved"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Defining indicators, collecting data, calculating achievement rates, narrowing down reasons"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Spreadsheet tools, indicator definition tables, evaluation guidelines, results lookup screens"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Indicator definition tables, performance reports, the basis for achievement rate calculation, a list of improvement tasks"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Goals in the program plan, results of past periods, similar programs, external evaluation results"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If something is not achieved, separate whether the indicator was wrong or spending was delayed"
+    }
+   ],
+   "tools": [
+    "Spreadsheet tools",
+    "Indicator definition table",
+    "Evaluation guidelines",
+    "Results lookup screen",
+    "Survey tools"
+   ],
+   "artifacts": [
+    "Indicator definition table",
+    "Performance report",
+    "Basis for achievement rate calculation",
+    "List of improvement tasks",
+    "Record of reflecting evaluation results in the next program"
+   ],
+   "verify_targets": [
+    "Goals in the program plan",
+    "Results of past periods",
+    "Similar programs",
+    "External evaluation results",
+    "Recipient survey"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down the programs and period to look at in this evaluation",
+     "l3": "The range I set became the evaluation scope as it was"
+    },
+    "J2": {
+     "l2": "Turned goals into countable indicators and formulas",
+     "l3": "The indicators I set became official evaluation indicators"
+    },
+    "J3": {
+     "l2": "Decided myself the criteria for how far counts as achieved",
+     "l3": "Judgments were issued with the criteria I set"
+    },
+    "J4": {
+     "l2": "Chose and used a method to collect and count results",
+     "l3": "The method I chose was also used in the next evaluation"
+    },
+    "J5": {
+     "l2": "Kept an indicator definition table or a performance report",
+     "l3": "Another department used the report I left as a basis"
+    },
+    "J6": {
+     "l2": "Checked results against goals or past periods",
+     "l3": "Changed a judgment or indicator based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason something was not achieved down to the indicator or the spending",
+     "l3": "Fixed the indicator or program and confirmed a change in the next period"
+    },
+    "J8": {
+     "l2": "Explained evaluation results and had them reflected in the next plan",
+     "l3": "My evaluation led to a budget or program adjustment"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Evaluations that explain policy goal achievement to the outside",
+    "OC2": "Evaluations that look at what residents feel and the spending rate together",
+    "OC3": "Performance management that goes directly to management evaluation indicators",
+    "OC4": "Evaluations that look at project results and academic contribution together",
+    "OC5": "Evaluations that look at review handling results and quality",
+    "OC6": "Program evaluations that show changes in target groups",
+    "OC7": "Results tied to contract performance and client evaluation"
+   }
+  },
+  {
+   "code": "TD07",
+   "name": "Public Data and Statistical Analysis",
+   "required_axes": [
+    "J4",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "A question that needs a judgment arrives with data"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Administrative data, statistical survey results, missing values and data quality, the range of personal information"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "What to look at as an indicator and what to compare it with"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Organizing data, handling missing values, comparing groups, showing results as figures"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Spreadsheet tools, statistical analysis tools, mapping tools, the public data portal"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Indicator definition tables, analysis reports, data processing records, figures and tables"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Published statistics, data from past periods, other regions or institutions, on-site check results"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If results look strange, separate whether the data was wrong or the counting method was wrong"
+    }
+   ],
+   "tools": [
+    "Spreadsheet tools",
+    "Statistical analysis tool",
+    "Mapping tool",
+    "Public data portal",
+    "Survey tools"
+   ],
+   "artifacts": [
+    "Indicator definition table",
+    "Analysis report",
+    "Data processing records",
+    "Figures and tables",
+    "Analysis code or procedure"
+   ],
+   "verify_targets": [
+    "Official statistics",
+    "Data from past periods",
+    "Other regions or institutions",
+    "On-site check results",
+    "Results of rechecking samples"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Narrowed the scope to a question that the data can answer",
+     "l3": "The question I narrowed became the analysis task as it was"
+    },
+    "J2": {
+     "l2": "Turned the question into countable indicators and comparison conditions",
+     "l3": "The indicator definitions I wrote were used as official standards"
+    },
+    "J3": {
+     "l2": "Decided myself how to handle missing values and outliers",
+     "l3": "Data was used according to the processing criteria I set"
+    },
+    "J4": {
+     "l2": "Chose and used an analysis method or tool",
+     "l3": "The processing procedure I made was also used in the next analysis"
+    },
+    "J5": {
+     "l2": "Kept an analysis report and data processing records",
+     "l3": "Another person took the data I left and ran it again"
+    },
+    "J6": {
+     "l2": "Checked results against published statistics or data from other institutions",
+     "l3": "Changed the processing or interpretation based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason results looked strange down to the data or the method",
+     "l3": "Fixed the processing and confirmed that the same gaps became fewer"
+    },
+    "J8": {
+     "l2": "Explained analysis results and had them used in a decision",
+     "l3": "My analysis went into a program or budget judgment"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Analysis that must match national statistics",
+    "OC2": "Analysis that must be shown divided by neighborhood",
+    "OC3": "Analysis that goes directly to program operation indicators",
+    "OC4": "Analysis where the person must establish that the method is valid",
+    "OC5": "Analysis that is the basis of reviews and decisions",
+    "OC6": "Analysis that shows changes in target groups",
+    "OC7": "Analysis done with formulas set by the client"
+   }
+  },
+  {
+   "code": "TD08",
+   "name": "Accounting and Audit",
+   "required_axes": [
+    "J5",
+    "J6"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "A settlement request, an audit schedule or a tip-off arrives as a task"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Spending records, supporting documents, accounting standards and guidelines, past findings"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The samples and period to look at, and the range of findings"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Checking proof, classifying accounts, picking samples, writing findings"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Accounting systems, proof management screens, spreadsheet tools, inspection report forms"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Inspection reports, settlement review results, findings and their basis, official letters asking for correction"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Accounting standards, spending records, original receipts, past findings"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If the numbers do not match, separate whether the classification was wrong or proof is missing"
+    }
+   ],
+   "tools": [
+    "Accounting system",
+    "Proof management screen",
+    "Spreadsheet tools",
+    "Inspection report form",
+    "Findings management register"
+   ],
+   "artifacts": [
+    "Inspection report",
+    "Settlement review results",
+    "Findings and their basis",
+    "Official letter asking for correction",
+    "Closing data"
+   ],
+   "verify_targets": [
+    "Accounting standards",
+    "Spending records",
+    "Original proof",
+    "Past findings",
+    "External audit opinion"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down the programs and period to look into this time",
+     "l3": "The range I set became the inspection scope as it was"
+    },
+    "J2": {
+     "l2": "Turned the requirements of guidelines into check items that can be confirmed",
+     "l3": "The check items I wrote became the inspection report form"
+    },
+    "J3": {
+     "l2": "Decided myself the samples to look at and the range of findings",
+     "l3": "Findings were issued in the range I set"
+    },
+    "J4": {
+     "l2": "Chose and used a method to pick samples or match proof",
+     "l3": "The matching order I set was also used in other inspections"
+    },
+    "J5": {
+     "l2": "Kept an inspection report and the basis for findings",
+     "l3": "Another person used the inspection report I left as a basis"
+    },
+    "J6": {
+     "l2": "Matched spending records with the original receipts",
+     "l3": "Changed a first judgment based on the matching"
+    },
+    "J7": {
+     "l2": "Narrowed the reason the numbers did not match down to classification or proof",
+     "l3": "Fixed the procedure and confirmed that the same findings became fewer"
+    },
+    "J8": {
+     "l2": "Explained the findings and led them to corrections",
+     "l3": "My inspection results led to a change in a system or guidelines"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Accounting that goes into national settlement and National Assembly materials",
+    "OC2": "Settlement and audit results disclosed to residents",
+    "OC3": "Accounting tied to management evaluation and external audits",
+    "OC4": "Research fund settlement and proof management",
+    "OC5": "Inspection records that lead to decisions",
+    "OC6": "Subsidy settlement and public disclosure of donations",
+    "OC7": "Spending data submitted for the client's settlement"
+   }
+  },
+  {
+   "code": "TD09",
+   "name": "Resident Participation and Cooperation",
+   "required_axes": [
+    "J1",
+    "J8"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "A program with divided opinions or a public hearing schedule arrives as a task"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Program content, affected groups, past civil complaints and opposing opinions, deadline"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "Whom to ask what, and by which method"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Organizing stakeholders, designing surveys and public hearings, classifying opinions, recording whether they were reflected"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Survey tools, meeting materials, opinion classification tables, an online participation channel"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "An opinion collection plan, an opinion classification table, a record of whether opinions were reflected, an agreement"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Past civil complaint records, conflicts in similar programs, the number of objections after reflection, follow-up surveys"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If opposition does not decrease, separate whether there is a group not heard or the explanation was not enough"
+    }
+   ],
+   "tools": [
+    "Survey tools",
+    "Meeting materials",
+    "Opinion classification table",
+    "Online participation channel",
+    "Records of on-site meetings"
+   ],
+   "artifacts": [
+    "Opinion collection plan",
+    "Opinion classification table",
+    "Record of whether opinions were reflected",
+    "Agreement",
+    "Explanation materials"
+   ],
+   "verify_targets": [
+    "Past civil complaint records",
+    "Conflict cases of similar programs",
+    "Number of objections after reflection",
+    "Follow-up survey",
+    "Opinions of the local council"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down the affected groups and the range to ask",
+     "l3": "The range I set became the group to collect opinions from as it was"
+    },
+    "J2": {
+     "l2": "Turned what to ask into questions or agenda items that can be answered",
+     "l3": "The questions I wrote were used as survey questions or public hearing agenda items"
+    },
+    "J3": {
+     "l2": "Separated myself which opinions to reflect and which not to reflect",
+     "l3": "Program content changed as I divided it"
+    },
+    "J4": {
+     "l2": "Chose and used a method to collect opinions or a way to run meetings",
+     "l3": "The method I chose was also used in the next opinion collection"
+    },
+    "J5": {
+     "l2": "Kept an opinion classification table and whether each was reflected",
+     "l3": "The records I left were used as explanation materials"
+    },
+    "J6": {
+     "l2": "Compared the opinions received with past civil complaints or similar programs",
+     "l3": "Changed the opinion collection method based on the comparison"
+    },
+    "J7": {
+     "l2": "Narrowed the reason opposition did not decrease down to the target group or the explanation",
+     "l3": "Fixed the method and confirmed that participation or acceptance increased"
+    },
+    "J8": {
+     "l2": "Explained the collected results and had them reflected in program content",
+     "l3": "The agreement I organized remained as a signed agreement or a decision"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Nationwide opinion collection and advance notice of legislation",
+    "OC2": "On-site opinion collection that meets the same residents again and again",
+    "OC3": "Communication that looks at users and the local community together",
+    "OC4": "Opinion collection from research participants and advisory groups",
+    "OC5": "Procedures that include stakeholder opinions in reviews",
+    "OC6": "Processes that plan programs together with the people concerned",
+    "OC7": "Explanation that connects the client and residents"
+   }
+  },
+  {
+   "code": "TD10",
+   "name": "Disaster and Safety Management",
+   "required_axes": [
+    "J3",
+    "J7"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "An inspection cycle comes around, or an accident or alarm arrives"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "A list of target facilities, safety standards and legal check items, past accident history, available people and equipment"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "What to look at first, and what to do at which step"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Identifying dangers, checking sites, planning response steps, designing drills"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Checklists, response manuals, situation management screens, radio and alert systems"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Inspection reports and correction requests, response manuals, drill records, accident investigation reports"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Safety standards, past accident history, drill results, number of accidents after action"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If accidents keep happening, separate whether checks were not enough or the standards were too low"
+    }
+   ],
+   "tools": [
+    "Inspection checklist",
+    "Response manual",
+    "Situation management screen",
+    "Radio and alert system",
+    "List of field equipment"
+   ],
+   "artifacts": [
+    "Inspection report and correction request",
+    "Response manual",
+    "Drill records",
+    "Accident investigation report",
+    "Risk map"
+   ],
+   "verify_targets": [
+    "Safety standards",
+    "Past accident history",
+    "Drill results",
+    "Number of accidents after action",
+    "Joint inspection opinions"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down the dangers and targets to look at first this time",
+     "l3": "The targets I chose became the inspection scope as they were"
+    },
+    "J2": {
+     "l2": "Turned safety standards into check items to confirm on site",
+     "l3": "The items I wrote were used as a checklist"
+    },
+    "J3": {
+     "l2": "Decided myself the range of corrections to demand and the response steps",
+     "l3": "Actions were taken in the steps I set"
+    },
+    "J4": {
+     "l2": "Chose and used a method to identify dangers or check sites",
+     "l3": "The checking order I set was also used in other inspections"
+    },
+    "J5": {
+     "l2": "Kept an inspection report or a response manual as a document",
+     "l3": "Another person acted by reading the manual I left"
+    },
+    "J6": {
+     "l2": "Checked inspection results against safety standards or past accident history",
+     "l3": "Changed the check items based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason accidents or weak points were repeated down to checks or standards",
+     "l3": "Fixed the standards or procedures and confirmed that accidents decreased"
+    },
+    "J8": {
+     "l2": "Explained a response plan and had the roles between institutions set",
+     "l3": "The manual I made became the institution's standard"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Safety standards that apply in the same way across the country",
+    "OC2": "Administration that checks sites directly and takes action",
+    "OC3": "Management that looks at the safety and operation of facilities together",
+    "OC4": "Safety management of research facilities and experiments",
+    "OC5": "Supervision that judges violations of standards and makes decisions",
+    "OC6": "Programs that look after the safety of vulnerable groups on site",
+    "OC7": "Safety management run by the client's standards"
+   }
+  },
+  {
+   "code": "TD11",
+   "name": "Public Program Management and Procurement",
+   "required_axes": [
+    "J2",
+    "J5"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "A program with a confirmed budget that must be given to an outside party arrives as a task"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "The program plan and budget, work requirements, contract laws and standards, past contract cases"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The scope of work, the ordering method, and the conditions for acceptance"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Writing the work, choosing the method, interim checks, inspection judgment"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Procurement systems, statement of work forms, process schedules, inspection report forms"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "A statement of work, an evaluation criteria table, interim check records, an inspection report"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Contract laws and standards, past contract cases, the scope of work, inspection results"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If a delivery goes wrong, separate whether the work was unclear or the check was late"
+    }
+   ],
+   "tools": [
+    "Procurement system",
+    "Statement of work form",
+    "Process schedule",
+    "Inspection report form",
+    "Contract management register"
+   ],
+   "artifacts": [
+    "Statement of work",
+    "Evaluation criteria table",
+    "Interim check records",
+    "Inspection report",
+    "Settlement data"
+   ],
+   "verify_targets": [
+    "Contract laws and standards",
+    "Past contract cases",
+    "Scope of work",
+    "Inspection results",
+    "Audit findings"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately the work to include in this contract and the work not to include",
+     "l3": "The range I set became the scope of work as it was"
+    },
+    "J2": {
+     "l2": "Turned requirements into countable work items and outputs",
+     "l3": "The items I wrote went into the statement of work as they were"
+    },
+    "J3": {
+     "l2": "Decided myself the ordering method and the evaluation criteria",
+     "l3": "A company was selected with the criteria I set"
+    },
+    "J4": {
+     "l2": "Chose and used a way to follow progress or an inspection order",
+     "l3": "The checking order I set was also used in other contracts"
+    },
+    "J5": {
+     "l2": "Kept a statement of work and an inspection report as documents",
+     "l3": "Another program took the statement of work I left and used it"
+    },
+    "J6": {
+     "l2": "Matched delivered items with the scope of work",
+     "l3": "Demanded improvements or delayed inspection based on the matching"
+    },
+    "J7": {
+     "l2": "Narrowed the reason a delivery went wrong down to the work description or the checks",
+     "l3": "Changed the way of writing the work and confirmed fewer problems in the next contract"
+    },
+    "J8": {
+     "l2": "Explained the work and evaluation criteria and received agreement",
+     "l3": "My inspection judgment led to payment or to the work being redone"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Work and standards of nationwide programs",
+    "OC2": "Supervision of on-site construction and service contracts",
+    "OC3": "Management of outsourced facility and service operations",
+    "OC4": "Work and inspection of research contracts",
+    "OC5": "Management of outsourced reviews and professional services",
+    "OC6": "Running and settling subsidy programs",
+    "OC7": "Carrying out received work and being inspected"
+   }
+  },
+  {
+   "code": "TD12",
+   "name": "Digital Administration and Information Disclosure",
+   "required_axes": [
+    "J2",
+    "J4"
+   ],
+   "workflow": [
+    {
+     "step": 1,
+     "name": "How the problem arrives",
+     "detail": "A request to introduce a system, an information disclosure request or a records transfer arrives as a task"
+    },
+    {
+     "step": 2,
+     "name": "Inputs received",
+     "detail": "Current workflows and forms, systems in use, disclosure standards and reasons for non-disclosure, retention periods"
+    },
+    {
+     "step": 3,
+     "name": "What gets decided first",
+     "detail": "The work for people and the work for the system, and the range to disclose"
+    },
+    {
+     "step": 4,
+     "name": "Methods used",
+     "detail": "Drawing workflows, writing requirements, deciding on disclosure, classifying and transferring"
+    },
+    {
+     "step": 5,
+     "name": "Tools used",
+     "detail": "Workflow diagram tools, requirement forms, information disclosure systems, records management systems"
+    },
+    {
+     "step": 6,
+     "name": "Deliverables produced",
+     "detail": "Workflow diagrams, requirements documents, disclosure decision records, records classification tables"
+    },
+    {
+     "step": 7,
+     "name": "What it is compared against",
+     "detail": "Current forms and workflows, disclosure standards, past request cases, processing time after introduction"
+    },
+    {
+     "step": 8,
+     "name": "When it goes wrong",
+     "detail": "If it is not used, separate whether the requirements were wrong or the workflow does not fit"
+    }
+   ],
+   "tools": [
+    "Workflow diagram tool",
+    "Requirement form",
+    "Information disclosure system",
+    "Records management system",
+    "Spreadsheet tools"
+   ],
+   "artifacts": [
+    "Workflow chart",
+    "Requirements document",
+    "Disclosure decision records",
+    "Records classification table",
+    "Comparison before and after introduction"
+   ],
+   "verify_targets": [
+    "Current forms and workflows",
+    "Disclosure standards",
+    "Past request cases",
+    "Processing time after introduction",
+    "Results of objections"
+   ],
+   "axes": {
+    "J1": {
+     "l2": "Wrote down separately the work to move this time and the work not to move",
+     "l3": "The scope I defined became the introduction scope as is"
+    },
+    "J2": {
+     "l2": "Turned what the person in charge said into a list of tasks for the system",
+     "l3": "The list I wrote became the requirements document"
+    },
+    "J3": {
+     "l2": "Separated myself the range to disclose from the range to hide",
+     "l3": "Disclosure decisions were issued as I divided them"
+    },
+    "J4": {
+     "l2": "Chose and used a method to draw workflows or write requirements",
+     "l3": "The form I set was also used in other programs"
+    },
+    "J5": {
+     "l2": "Kept a workflow diagram and a requirements document",
+     "l3": "The development or outsourcing side took the document I left and used it"
+    },
+    "J6": {
+     "l2": "Checked processing time or number of cases before and after introduction",
+     "l3": "Changed the requirements or the workflow based on the check"
+    },
+    "J7": {
+     "l2": "Narrowed the reason it is not used down to the requirements or the workflow",
+     "l3": "Fixed the requirements and confirmed that use increased"
+    },
+    "J8": {
+     "l2": "Explained the requirements and had them agreed as the scope of introduction",
+     "l3": "The disclosure range I set became the institution's standard"
+    }
+   },
+   "org_outcomes": {
+    "OC1": "Requirements for systems shared by all ministries",
+    "OC2": "Digitalization that reduces desk work right away",
+    "OC3": "Program operation systems and public disclosure management",
+    "OC4": "Management and disclosure range of research data",
+    "OC5": "Keeping review records and judging their disclosure",
+    "OC6": "Program management tools run with few staff",
+    "OC7": "System requirements made as the client asks"
+   }
+  }
+ ],
+ "review_note": "In public administration majors, roles that apply rules, roles that divide resources and roles that deal with people sit in one file. What keeps them apart is `required_axes`: policy, human resources, procurement and digital administration depend on interpreting requirements; civil complaints and disasters depend on failure and correction; laws, budgets, performance, data and accounting depend on comparison and verification. So even if six axes are confirmed, the evidence does not hold when a required axis of that domain is empty"
+}
