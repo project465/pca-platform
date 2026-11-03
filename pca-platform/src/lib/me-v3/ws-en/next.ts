@@ -2,9 +2,9 @@
 export const WS_EN_NEXT: Record<string, string> = {
   /* 묶음 */
   "다음에 할 수 있는 것": "What you can do next",
-  "맡는 일이 생겨야 합니다": "Once you have work to take on",
+  "다음 과제나 업무가 생기면 할 수 있습니다": "Once you have work to take on",
   "나중에": "Later",
-  "앞의 둘이 끝난 뒤입니다": "After the first two are done",
+  "앞의 할 일을 마친 뒤에 하면 됩니다": "After the first two are done",
 
   /* 왜 필요한가 (빈자리가 없는 할 일) */
   "근거는 모였고, 남은 일은 그것을 지원서에서 설명할 문장으로 만드는 것입니다.":

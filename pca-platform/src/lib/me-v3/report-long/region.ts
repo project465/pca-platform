@@ -225,7 +225,10 @@ export function regionView(x: Inputs, name: (td: string) => string): RegionView 
         name: tidyName(o.name), source: "venture", sector: "", product: "", listed: null, adres: o.adres ?? null,
         est: null, url: null, fin: null, staff: null, segments: [], report: null,
       };
-      all.push({ ...base, name: tidyName(o.name), source: src, sector: o.sector || base.sector, product: unent(o.product ?? "").replace(/[\s　]+/g, " ").trim(), listed: o.listed ?? base.listed });
+      /* 원본 명단에서 여는 괄호가 빠진 품목(`…로봇네프론)`)은 짝 없는 닫는 괄호를 뗀다(2026-11-03 전주대 실제 화면 J5) */
+      const prod0 = unent(o.product ?? "").replace(/[\s　]+/g, " ").trim();
+      const prod = (prod0.match(/\)/g) ?? []).length > (prod0.match(/\(/g) ?? []).length ? prod0.replace(/\)(?=[^)]*$)/, "") : prod0;
+      all.push({ ...base, name: tidyName(o.name), source: src, sector: o.sector || base.sector, product: prod, listed: o.listed ?? base.listed });
     }
     sources.push(...Object.values(dir.sources));
     checkedOn = dir.built_on;

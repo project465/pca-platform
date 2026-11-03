@@ -163,7 +163,8 @@ export function ganttPage(x: Inputs, d: X): Page {
     ? `Tasks are grouped by when to finish them, and each bar shows the deliverable it leaves you with.${addFp && acts.length ? ` The last 30 days were empty, so the first project for ${E(role?.name_ko ?? "")} fills them as a draft.` : ""}`
     : `30일, 60일, 90일 안에 끝낼 일을 나눠 두었고, 막대 안 글은 끝냈을 때 손에 남는 결과물이에요.${addFp && acts.length ? ` 마지막 30일이 비어 있어 ${E(role?.name_ko ?? "")} 쪽 첫 프로젝트를 초안으로 넣었습니다.` : ""}`;
   return P(L("90일 계획", "90-day plan"),
-    T(acts.length ? L(`90일 동안 할 일 ${acts.length}가지를 달력에 올렸습니다`, `Your ${pl(acts.length, "task", "tasks")} for the next 90 days, on a calendar`) : L("90일 계획 초안입니다", "A draft plan for the next 90 days"), dek) +
+    /* 초안 줄을 더했으면 제목도 그 줄을 센다(2026-11-03 전주대 실제 화면 J7: '할 일 1가지' 뒤에 초안 줄이 하나 더) */
+    T(acts.length ? (addFp ? L(`90일 동안 할 일 ${acts.length}가지와 첫 프로젝트 초안 하나를 달력에 올렸습니다`, `Your ${pl(acts.length, "task", "tasks")} and one first-project draft for the next 90 days, on a calendar`) : L(`90일 동안 할 일 ${acts.length}가지를 달력에 올렸습니다`, `Your ${pl(acts.length, "task", "tasks")} for the next 90 days, on a calendar`)) : L("90일 계획 초안입니다", "A draft plan for the next 90 days"), dek) +
     (bars.length ? `<div class="wide-art">${gantt(bars, { width: 710, label: 250 })}</div>${howto(marks, L("줄마다 할 일 하나이고, 왼쪽 이름이 그 일이에요.", "Each row is one task, named on the left."))}` : "") +
     (rows.length ? `<table class="tb tb-xs"><thead><tr><th>${L("기간", "When")}</th><th>${L("할 일", "Task")}</th><th>${L("남길 것", "Deliverable")}</th></tr></thead><tbody>${rows.map((r, i) => `<tr><td class="w18">${E(r.when)}${r.draft ? `<br>${draft()}` : ""}</td><td><b>${E(r.head)}</b>${(en ? rows.length > 4 : rows.length >= 7 || (rows.length > 5 && i >= 4)) ? "" : `<br><span class="mut">${E(r.line)}</span>`}</td><td class="w22">${E(r.out)}</td></tr>`).join("")}</tbody></table>` : "") +
     (["NOW", "NEXT", "LATER"].every((h) => x.m.actions.filter((a) => a.horizon === h).length <= 2)

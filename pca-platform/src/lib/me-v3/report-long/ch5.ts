@@ -53,7 +53,10 @@ export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
   const part = (title: string, body: string): Page => ({ part: "05", partName: `${r.label} 기업 살펴보기`, title, body });
   const out: Page[] = [];
   const matched = r.groups.reduce((a, g) => a + g.orgs.length, 0);
-  const cnt = (t: Tier) => r.groups.filter((g) => g.tier === t).reduce((a, g) => a + g.orgs.length, 0);
+  /* 고른 산업은 `내가 고른 산업` 쪽에 따로 싣는다. 단계별 수에서도 빼서 웹 결과(고르신 산업 N곳 + 넓혀 볼 곳 M곳)와 같은 수가
+     되게 한다(2026-11-03 전주대 실제 화면 J4: PDF 78곳 · 웹 25곳 + 53곳) */
+  const chosen0 = new Set([x.m.targets.goal?.industry, ...x.m.targets.industries].filter(Boolean) as string[]);
+  const cnt = (t: Tier) => r.groups.filter((g) => g.tier === t && !chosen0.has(g.pack.code)).reduce((a, g) => a + g.orgs.length, 0);
   /* 회사가 한 곳도 없는 묶음은 칸도 이름도 세우지 않는다 */
   const tiers = (["A", "B", "C"] as Tier[]).filter((t) => cnt(t) > 0);
   const venture = r.all.filter((o) => o.source !== "dart").length;

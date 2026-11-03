@@ -621,8 +621,13 @@ function Plan(
               return merged.map(({ list: same }) => {
                 const a = same[0];
                 const names = same.map((x) => (x.domain ? domainName(core, x.domain, L()) : tr("전체")));
+                /* 같은 할 일이 여러 영역에 걸리면 `A · B 과제 하나` 가 한 과제처럼 읽힌다(2026-11-03 배재대 실제 화면 P6).
+                   `○○ 과제` 꼴의 할 일은 `A · B 가운데 한 영역의` 로 묶는다 */
+                const TASKY = new Set(["FILL_AXIS", "DEEPEN_OWNERSHIP", "WRITE_UP", "BUILD_OUTPUT"]);
+                const joined = same.length > 1 && TASKY.has(a.code) && L() === "ko"
+                  ? `${names.join(" · ")} 가운데 한 영역의` : names.join(" · ");
                 const t = TX().actionKo(
-                  a, same.every((x) => x.domain) ? names.join(" · ") : "",
+                  a, same.every((x) => x.domain) ? joined : "",
                   stage,
                   a.code === "EXPLORE_BROADLY" ? where : undefined);
                 const note = t.note && t.note !== last ? t.note : "";
@@ -1261,9 +1266,14 @@ export async function V3ResultBody(
       ?? model.actions.find((a) => !ids.has(a.id)) ?? null;
   };
   /** 첫 화면 할 일 칸이 이미 적은 것 */
+  /* 책 07장 `먼저 손댈 일` 과 같은 차례로 고른다: 가장 이른 기한(NOW → NEXT → LATER), 같은 기한 안에서는 결과 모델 차례
+     (2026-11-03 배재대 실제 화면 P5: 위는 '계속할 쪽인지 정하기', 아래 책은 '결과물 하나 만들기' 가 지금 할 일로 갈렸다) */
+  const HZ: Record<string, number> = { NOW: 0, NEXT: 1, LATER: 2 };
+  const firstByHorizon = model.actions.map((a, i) => ({ a, i }))
+    .sort((x, y) => (HZ[x.a.horizon] ?? 3) - (HZ[y.a.horizon] ?? 3) || x.i - y.i)[0]?.a ?? null;
   const shownAction = moveNext
     ?? (move === "WRITE_UP" ? writeUp : null)
-    ?? (move === "FILL_GAP" ? null : model.actions[0] ?? null);
+    ?? (move === "FILL_GAP" ? null : firstByHorizon);
   /**
    * `지금 할 일` 칸은 **머리 한 줄과 설명 두 줄까지다**(COMMERCIAL FINAL §7).
    *

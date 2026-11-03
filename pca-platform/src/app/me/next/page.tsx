@@ -39,8 +39,8 @@ export async function generateMetadata() {
  * 이 값은 마감이 아니라 **할 수 있는 때**다.
  */
 const lanesOf = (t: WsSay) => [
-  ["NEXT", t("다음에 할 수 있는 것"), t("맡는 일이 생겨야 합니다")],
-  ["LATER", t("나중에"), t("앞의 둘이 끝난 뒤입니다")],
+  ["NEXT", t("다음에 할 수 있는 것"), t("다음 과제나 업무가 생기면 할 수 있습니다")],
+  ["LATER", t("나중에"), t("앞의 할 일을 마친 뒤에 하면 됩니다")],
 ] as const;
 
 const lane = (days: number): "NOW" | "NEXT" | "LATER" =>

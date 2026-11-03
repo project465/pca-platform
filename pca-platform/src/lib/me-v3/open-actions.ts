@@ -55,7 +55,11 @@ export async function openActions(userId: string): Promise<OpenActions> {
      오류 화면이 된다. 결과지 쪽은 전에 같은 자리를 겪어 고쳐 두었고
      (`v3:result` 가 칸을 하나씩 지워 보며 센다) 작업공간만 빠져 있었다.
      없으면 **끌어올 할 일이 없는 것이 맞다** */
-  const derived: ActionRow[] = (model.actions ?? []).map((a, i) => ({
+  /* 결과 화면 · 책 07장과 같은 차례: 가장 이른 기한부터(2026-11-03 배재대 실제 화면 P5) */
+  const HZ: Record<string, number> = { NOW: 0, NEXT: 1, LATER: 2 };
+  const ordered = (model.actions ?? []).map((a, i) => ({ a, i }))
+    .sort((x, y) => (HZ[x.a.horizon] ?? 3) - (HZ[y.a.horizon] ?? 3) || x.i - y.i).map((v) => v.a);
+  const derived: ActionRow[] = ordered.map((a, i) => ({
     /* 표에 없는 줄이라 번호가 없다. 화면이 이 값으로 상태를 바꾸지
        않는다(바꾸려면 먼저 담아야 한다) */
     id: `r${i}`,
