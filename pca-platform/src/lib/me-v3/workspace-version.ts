@@ -408,7 +408,8 @@
 /** 지역 화면에 결과와 같은 지역 회사 묶음 · 학교 소재 권역 · 개발 메모 숨김, 상태 · 지역의 직무는 목표 직무 먼저, 판본은 이름과 번호로, 경험 0건이면 반영 변화 없음 — V92 */
 /** 상태 화면의 산업 · 직무 다리 문장도 중심 영역부터(결과 화면과 같은 차례) — V93 */
 /** 상태 화면: 직접 판단 0이면 보완할 부분 없음 대신 다른 줄 — V94 */
-export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V94";
+/** 경험 0건 반영 줄 숨김 · 지역 기준 · 조사 · 기관 참여자 말 — V95 */
+export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V95";
 
 /**
  * 작업공간에 나가는 한국어. 문장만 바뀌면 이것만 올린다.
@@ -482,7 +483,8 @@ export const WORKSPACE_UI_VERSION = "CAREERMATRI_WORKSPACE_UI_V94";
 /** `이 지역 기업·기관 자료를 채우는 중입니다` 한 줄 — copy.67 */
 /** MAT 첫 화면 '드립니다' 되풀이 줄이기(찾습니다 · 옮겨 둡니다) — copy.68 */
 /** 관심 높은 영역 대신 검사에서 다룬 영역 — copy.69 */
-export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.69";
+/** 실제 화면 P3 · S4 · S5 · S2 문구 — copy.70 */
+export const WORKSPACE_COPY_VERSION = "careermatri-workspace-copy.70";
 
 /**
  * V26 · copy.17 (2026-10-12). **ME 를 기준 UX 로 마감한 넷**

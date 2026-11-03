@@ -220,7 +220,7 @@ export function buildPrep(
         used.slice(0, 2),
       ]),
       empty: mats.length ? null
-        : t("함께 한 경험이 결과에 아직 없습니다. 팀 과제나 캡스톤을 경험으로 적어 두면 여기 재료가 생깁니다."),
+        : t("함께 한 경험이 결과에 아직 없습니다. 팀 과제나 프로젝트를 경험으로 적어 두면 여기 재료가 생깁니다."),
     });
   }
 
@@ -273,7 +273,7 @@ export function buildPrep(
   sv.application.interview.forEach((q, i) => push({
     key: `iv:spec:${i}`,
     q,
-    why: t("이 학과 학생에게 자주 묻는 질문입니다."),
+    why: t("이 분야 지원자에게 자주 묻는 질문입니다."),
     prepare: uniq([...sv.evidence.slice(0, 2)]),
   }));
 

@@ -423,6 +423,7 @@ export const PHRASES_EN: Record<string, string> = {
   "전공 연결은 아직 적히지 않았습니다": "No related majors listed yet",
   "지역 기업·기관 더 보기 →": "See more local organizations →",
   "이 지역의 기관 목록은 아직 비어 있습니다": "No organizations are listed for this region yet",
+  "이 지역의 공공기관 · 연구기관은 이 결과에 아직 싣지 않았습니다": "Public and research organizations for this region are not in this result yet",
   "기관은 공식 홈페이지와 공공데이터에서 확인한 것만 적습니다. 확인되기 전까지 짐작으로 채우지 않습니다.":
     "We only list organizations confirmed through official websites and public data. Until then, we don't guess.",
   "지금 {region} 기준으로 보고 계십니다. 이 선택은 기술영역 결과를 바꾸지 않습니다.":

@@ -104,7 +104,7 @@ export const WS_EN_PREP: Record<string, string> = {
     "Describe a time you worked through differences with others to deliver a result, and what you did in it.",
   "누구와 무엇을 함께 했는지 · 내가 맡은 몫": "Who you worked with, on what, and your part",
   "의견이 갈렸을 때 무엇을 기준으로 정했는지": "What you based the decision on when opinions differed",
-  "함께 한 경험이 결과에 아직 없습니다. 팀 과제나 캡스톤을 경험으로 적어 두면 여기 재료가 생깁니다.":
+  "함께 한 경험이 결과에 아직 없습니다. 팀 과제나 프로젝트를 경험으로 적어 두면 여기 재료가 생깁니다.":
     "Your results don't show teamwork yet. "
     + "Add a team project or capstone as an experience and material will appear here.",
 
@@ -121,7 +121,7 @@ export const WS_EN_PREP: Record<string, string> = {
   "목표로 적어 두신 직무라 거의 반드시 나오는 질문입니다.":
     "This is the role you set as your goal, so expect this question in almost every interview.",
   "관심이 높다고 답한 {area}": "{area}, which you rated as high interest",
-  "이 학과 학생에게 자주 묻는 질문입니다.": "A question students in this major are often asked.",
+  "이 분야 지원자에게 자주 묻는 질문입니다.": "A question students in this major are often asked.",
   "{area} 과제에서 풀려고 한 문제가 정확히 무엇이었나요?":
     "In your {area} work, what exactly was the problem you were trying to solve?",
   "{area} 과제에서 받은 요구를 어떤 조건으로 바꿔 진행했나요?":

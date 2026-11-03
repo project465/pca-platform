@@ -293,7 +293,8 @@ export async function currentState(userId: string): Promise<CurrentState> {
 
   return {
     core, stage, open: open ?? null, model, result_at: snap?.at ?? null,
-    recomputed_at: prof?.at ?? null, zoneOf, raised, gaps, zoneMoved, pending,
+    /* 경험을 실제로 얹은 반영일 때만 날짜를 내놓는다(2026-11-03 실제 화면 J3 · P3: 경험 0건인데 "…에 더한 경험 · 새 경험을 더했고") */
+    recomputed_at: applied ? prof?.at ?? null : null, zoneOf, raised, gaps, zoneMoved, pending,
   };
 }
 

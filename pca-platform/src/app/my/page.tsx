@@ -6,6 +6,7 @@ import { resumePathFor } from "@/lib/engine-entry";
 import { coreIfAny, currentState } from "@/lib/me-v3/platform";
 import { BRAND, toLang2, txer } from "@/lib/surface-text";
 import { ROLE_LABEL } from "@/lib/roles";
+import { universities } from "@/lib/campus/registry";
 import { CmShell, CmHead } from "@/app/me/shell";
 import { Icon } from "@/components/sf/icon";
 import LangSelect from "@/components/sf/lang-select";
@@ -43,6 +44,10 @@ export default async function AccountHome({
   searchParams: Promise<{ lang?: string; linked?: string; link?: string }>;
 }) {
   const user = await requireRole(["student"]);
+  /* 일자리 기관(org_kind agency)에 등록된 사람인가. `구분` 칸을 `참여자` 로 적는다 */
+  const agencyMember = !!(await queryOne<{ ok: boolean }>(
+    `SELECT true AS ok FROM campus_students WHERE user_id = $1 AND university_code = ANY($2::text[]) LIMIT 1`,
+    [user.id, universities().filter((u) => u.org_kind === "agency").map((u) => u.university_code)]).catch(() => null));
   const { lang: q, linked: justLinked, link: linkErr } = await searchParams;
   const lang = await resolveLang(q);
   const L = toLang2(lang);
@@ -102,7 +107,8 @@ export default async function AccountHome({
             {en ? null : (
               <div>
                 <dt>구분</dt>
-                <dd>{ROLE_LABEL[user.role] ?? ""}</dd>
+                {/* 일자리 기관 참여자는 `학생` 이 아니다(2026-11-03 진흥원 실제 화면 S2) */}
+                <dd>{agencyMember && user.role === "student" ? "참여자" : ROLE_LABEL[user.role] ?? ""}</dd>
               </div>
             )}
           </dl>

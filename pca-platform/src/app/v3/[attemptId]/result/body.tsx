@@ -834,7 +834,7 @@ export async function V3ResultBody(
   const rv = attemptId ? await webRegionView(attemptId) : null;
   const regionPicked = profile?.home_region
     ? regionLayer().regions.find((r) => r.code === profile.home_region)?.name ?? null
-    : rv ? `${rv.area} (학교 · 기관 소재지 기준)` : null;
+    : rv ? `${rv.area} (${rv.basis})` : null;
 
   /* **결과를 열었다는 것만 센다.** 어느 절을 얼마나 읽었는지는 재지
      않는다. 그것을 재려면 화면에 코드를 심어야 하고, 그러면 파일럿
@@ -2681,7 +2681,8 @@ export async function V3ResultBody(
           ) : regionPicked ? (
             <div className="rs-pack">
               {/* 위 회사 목록(공시 · 벤처 명단)과 다른 자리다: 공공기관 · 연구기관 명단이 비어 있다(2026-11-02 시험 N14) */}
-              <h3>{rv ? "이 지역의 공공기관 · 연구기관 목록은 아직 채우는 중입니다" : tr("이 지역의 기관 목록은 아직 비어 있습니다")}</h3>
+              {/* `채우는 중` 은 만드는 쪽 말이다. 학생에게는 지금 있는 것만 적는다(2026-11-03 실제 화면 S5) */}
+              <h3>{tr("이 지역의 공공기관 · 연구기관은 이 결과에 아직 싣지 않았습니다")}</h3>
               <p className="rs-others">
                 {tr("기관은 공식 홈페이지와 공공데이터에서 확인한 것만 적습니다. 확인되기 전까지 짐작으로 채우지 않습니다.")}
               </p>

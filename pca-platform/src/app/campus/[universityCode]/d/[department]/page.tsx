@@ -76,8 +76,13 @@ export default async function CampusDepartment({ params }: Params) {
   const mine = who ? await campusStudentOf(who.id, u.university_code) : null;
   /* 전공을 고르는 자리(자율전공)의 학생은 여기서 고른 전공으로 시작한다
      (규격 §32): 그 학생에게 다른 학과 쪽은 고르는 자리다 */
-  const other = mine && !pickRequired(mine.ctx)
-    && mine.row.department_code !== leaf.code ? mine : null;
+  /* **같은 학과를 코드 글자만으로 가르지 않는다**(2026-11-03 배재대 실제 화면 P4: 경영학과 학생이 경영학과 화면에서
+     `등록된 학과로 가기`). 학년도 판(PCU26_ · PCU27_)이나 대소문자 · 공백이 달라도 같은 이름 · 같은 단과대학이면 같은 학과다 */
+  const reg = mine ? findLeaf(u, String(mine.row.department_code ?? "")) : null;
+  const sameDept = !!mine && (
+    String(mine.row.department_code ?? "").trim().toUpperCase() === leaf.code
+    || (!!reg && reg.leaf.name === leaf.name && reg.college.code === found.college.code));
+  const other = mine && !pickRequired(mine.ctx) && !sameDept ? mine : null;
   const st = mine && !other ? await campusAttemptState(who!.id) : null;
 
   return (

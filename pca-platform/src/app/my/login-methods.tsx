@@ -30,7 +30,7 @@ export default async function LoginMethods({
 
   const rows = [
     {
-      k: en ? "Email or student ID" : "이메일 · 학번 로그인",
+      k: en ? "Email or ID" : "이메일 · 아이디 로그인",
       v: pw ? (en ? "In use" : "쓰고 있습니다") : (en ? "Not in use" : "쓰지 않습니다"),
     },
     ...ALL.map((p) => ({

@@ -26,7 +26,7 @@ export const WS_EN_STATE: Record<string, string> = {
   "현재 설명할 수 있는 영역": "Areas you can explain now",
   "개#unit": "",
   "가장 근거가 잘 잡힌 곳은 {name}입니다.": "Your evidence is strongest in {name}.",
-  "{name}은 해 봤고 정리만 남았습니다.": "You've done work in {name}. It just needs writing up.",
+  "{nameTopic} 해 봤고 정리만 남았습니다.": "You've done work in {nameTopic}. It just needs writing up.",
   "정리만 남은 영역이 {n}개 더 있습니다.#one": "{n} more area just needs writing up.",
   "정리만 남은 영역이 {n}개 더 있습니다.": "{n} more areas just need writing up.",
   "변화는 생겼지만 아직 설명할 수 있는 기준까지는 올라오지 않았습니다. 무엇이 올라갔는지는 아래 `최근 달라진 것` 에 적혀 있습니다.":

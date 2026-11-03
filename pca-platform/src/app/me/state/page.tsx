@@ -12,6 +12,7 @@ import { textFor } from "@/lib/me-v3/result/text";
 import { localizeResult } from "@/lib/me-v3/result/localize";
 import { coreOf } from "@/lib/me-v3/result/model";
 import { recentChangeKo } from "@/lib/me-v3/change-text.ko";
+import { withJosa } from "@/lib/me-v3/result/josa";
 import { wsLang } from "@/lib/me-v3/ws-lang";
 import { wsSay } from "@/lib/me-v3/ws-say";
 import { CmShell, CmHead } from "../shell";
@@ -212,7 +213,8 @@ export default async function State(
           ? [
             ready[0].zone === "Z1_EVIDENCE_ESTABLISHED"
               ? t("가장 근거가 잘 잡힌 곳은 {name}입니다.", { name: dn(ready[0].domain) })
-              : t("{name}은 해 봤고 정리만 남았습니다.", { name: dn(ready[0].domain) }),
+              /* 조사를 이름 끝 글자에 맞춘다(2026-11-03 실제 화면 S4: "기구·제품 설계은") */
+              : t("{nameTopic} 해 봤고 정리만 남았습니다.", { nameTopic: lang === "en" ? dn(ready[0].domain) : withJosa(dn(ready[0].domain), "은는") }),
             ready.some((r) => r.zone === "Z2_EVIDENCE_INCOMPLETE")
               && ready[0].zone === "Z1_EVIDENCE_ESTABLISHED"
               ? (() => {

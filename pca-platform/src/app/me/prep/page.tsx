@@ -8,6 +8,8 @@ import { wsSay } from "@/lib/me-v3/ws-say";
 import { coreOf } from "@/lib/me-v3/result/model";
 import { resultMeta } from "@/lib/me-v3/result/meta";
 import { buildPrep, prepAnswersOf, type PrepAnswer } from "@/lib/me-v3/prep";
+import { forAgency } from "@/lib/me-v3/report-long/agency";
+import { university } from "@/lib/campus/registry";
 import { CmShell, CmHead } from "../shell";
 import { EmptyState, SectionHeader } from "../ui";
 import { savePrep } from "./actions";
@@ -62,7 +64,13 @@ export default async function Prep({
     experiencesOf(user.id, core),
     prepAnswersOf(user.id, core),
   ]);
-  const prep = buildPrep(model, core, meta.specializationCode, exps, lang);
+  const prep0 = buildPrep(model, core, meta.specializationCode, exps, lang);
+  /* 일자리 기관 참여자에게는 책과 같은 규칙으로 학교 말을 바꾼다(2026-11-03 진흥원 실제 화면 S2: "설계 수업에서…") */
+  const agency = lang === "ko" && !!meta.universityCode && university(meta.universityCode)?.org_kind === "agency";
+  const deep = <T,>(v: T): T => (typeof v === "string" ? forAgency(v) as T
+    : Array.isArray(v) ? v.map(deep) as T
+    : v && typeof v === "object" ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, deep(x)])) as T : v);
+  const prep = agency ? deep(prep0) : prep0;
   const answerOf = new Map(saved.map((a) => [`${a.kind}|${a.prompt_key}`, a]));
   const live = new Set([
     ...prep.essays.map((e) => `essay|${e.key}`),
