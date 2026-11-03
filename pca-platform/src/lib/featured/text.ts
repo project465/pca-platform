@@ -43,7 +43,7 @@ export function featuredText(aud: Audience) {
       if (l.pack && l.uses.length) return `${head} 그 산업은 주로 ${and(l.uses.slice(0, 2))} 쪽 판단을 씁니다. 방문에서 그 일이 실제로 어떤 모습인지 보고 오세요.`;
       const jb = l.jobs.find((x) => !x.cores.includes("*"));
       if (jb) return `${head} 이 회사가 뽑는 일 가운데 ${jo(jb.name, "이가")} ${withJosa(major, "과와")} 가장 가깝습니다.`;
-      return `${head} 채용 공고에서 확인한 직무는 ${and(co.jobs.map((x) => x.name))}입니다. 내 경험을 어느 직무와 이어 말할지 정해 가면 방문이 쓸모 있습니다.`;
+      return `${head} 채용 공고에서 확인한 직무는 ${and(co.jobs.map((x) => x.name))}입니다. 방문 전에 내 경험과 이어 말할 직무 하나를 정해 가세요.`;
     },
     /** 이어지는 영역 칸의 줄 */
     linkZ1: (name: string, picks: string[]) => `${name}: 근거가 확인된 영역${picks.length ? ` · 고른 항목 ${picks.map((p) => `‘${p}’`).join(", ")}` : ""}`,
