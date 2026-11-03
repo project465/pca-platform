@@ -53,7 +53,7 @@ item banks. They are drafts for human review only.
 | BIZ_CORE_V1 | done (draft, not reviewed) | 359 |
 | LANG_CORE_V1 | done (draft, not reviewed) | 369 |
 | PUBADM_CORE_V1 | done (draft, not reviewed) | 369 |
-| MEDIA_CORE_V1 | not started | |
+| MEDIA_CORE_V1 | done (draft, not reviewed) | 369 |
 | EDU_CORE_V1 | not started | |
 | VISUAL_CORE_V1 | not started | |
 | SPORTS_CORE_V1 | not started | |
