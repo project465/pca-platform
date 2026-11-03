@@ -4,7 +4,7 @@ import { requireUser } from "@/lib/session";
 import { matTitle } from "@/lib/mat/title";
 import { activeTrack, trackOffers } from "@/lib/track";
 import { payOpen } from "@/lib/payments";
-import { university } from "@/lib/campus/registry";
+import { campusSay, university } from "@/lib/campus/registry";
 import { campusStudentContext } from "@/lib/campus/students";
 import { withJosa } from "@/lib/me-v3/result/josa";
 import { CONSULT_OPENS_KO } from "@/lib/mat/open-dates";
@@ -28,6 +28,8 @@ export default async function MatPass() {
     trackOffers("KR"),
     campusStudentContext(user.id).catch(() => null),
   ]);
+  /* 기관(진흥원) 참여자에게는 `학교` 대신 `기관` 으로 적는다(기관 말 바꾸기) */
+  const say = campusSay(campus ? university(campus.row.university_code) : null);
   const open = payOpen("KR");
   const day = (s: string) => s.slice(0, 10);
   const school = state.source?.kind === "school"
@@ -51,11 +53,11 @@ export default async function MatPass() {
       ) : null}
 
       <section className={`mt-box is-school`}>
-        <h3>학교에서 검사를 받았나요?</h3>
+        <h3>{say("학교에서 검사를 받았나요?")}</h3>
         {school && state.source?.kind === "school" ? (
           <p>{withJosa(school, "이가")} 열어 준 MAT으로 쓰고 있어요. {day(state.source.until)}까지이고, 끝나도 개인 이용권으로 이어 쓸 수 있어요. 자료는 그대로 남아요.</p>
         ) : campus ? (
-          <p>{campus.university_name} 계정이에요. 학교가 MAT을 열어 주면 결제 없이 바로 쓸 수 있어요.</p>
+          <p>{campus.university_name} 계정이에요. {say("학교가 MAT을 열어 주면 결제 없이 바로 쓸 수 있어요.")}</p>
         ) : (
           <ul>
             <li>학교가 MAT을 열어 주면 결제 없이 써요.</li>
