@@ -1,4 +1,4 @@
-# CareerMetri legal documents: English drafts
+# CareerMatri legal documents: English drafts
 
 **Status: draft. It needs review by a person fluent in Korean and English
 law terms.** Do not publish these files until that review is done.
@@ -35,14 +35,17 @@ Tick each item when a reviewer has checked it. Search the files for
 
 - [ ] Company name romanization: `주식회사 에이치에이연구원 (HA Research
       Institute Co., Ltd.)`. The Korean documents give no English name. The
-      Korean README says an older version used `HARI CO.,LTD`. Choose one
-      official English name.
+      Korean README (`../README.md`) says an older version used a different
+      English name. Choose one official English name.
 - [ ] Representative and Chief Privacy Officer name romanization:
       `조건희 (Cho Geonhui) · 한정인 (Han Jeongin)` (01, 02). Use the spelling
       in their passports or registration.
 - [ ] "Korean law applies" sentence for foreign residents. It is added in
       the English drafts only (01 Article 16, 02 top, 03 top, 04 top).
       Decide whether to keep it, or add it to the Korean text too.
+
+- [ ] English brand spelling: the drafts use `CareerMatri` (the spelling in
+      `src/`). `scripts/launch-check.ts` blocks the old spelling `CareerMetri`.
 
 ### 01-terms.md
 

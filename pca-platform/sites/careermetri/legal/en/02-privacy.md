@@ -1,4 +1,4 @@
-# CareerMetri Privacy Policy
+# CareerMatri Privacy Policy
 
 > **Notice.** This is an English translation draft for review. The Korean
 > version is the governing text. If the two versions differ, the Korean
@@ -202,7 +202,7 @@ itself does not contain personal information.**
 
 ## 6. Children Under 14
 
-CareerMetri is for university students and graduates. **The Company does not
+CareerMatri is for university students and graduates. **The Company does not
 accept sign-ups from children under 14.** If the Company finds that a user is
 under 14, it deletes the account without delay. (A service for middle and
 high school students is a separate brand. It follows the consent procedure

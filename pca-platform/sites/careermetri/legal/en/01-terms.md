@@ -1,4 +1,4 @@
-# CareerMetri Terms of Service
+# CareerMatri Terms of Service
 
 > **Notice.** This is an English translation draft for review. The Korean
 > version is the governing text. If the two versions differ, the Korean
@@ -9,7 +9,7 @@
 
 ## Article 1 (Purpose)
 
-These Terms set the conditions and procedures for using the CareerMetri job
+These Terms set the conditions and procedures for using the CareerMatri job
 fit assessment service (the "Service"). 주식회사 에이치에이연구원 (HA Research
 Institute Co., Ltd.) [romanization to confirm] (the "Company") provides the
 Service. These Terms also set the rights and duties of the Company and of the
