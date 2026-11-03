@@ -142,6 +142,10 @@ export async function startCheckout(
     [orderNo, userId, product.code, product.amount, product.currency, upgradesAttemptId ?? null],
   );
   if (!order) throw new Error("주문을 만들지 못했습니다.");
+  /* 유입 경로 · 들어온 공고를 주문에 베낀다(잡인더스트리 경로 정산 · 사이트별 전환). 칸이 없는 DB 면 넘어간다 */
+  await query(
+    `UPDATE orders o SET source = a.source, posting_idx = a.posting_idx FROM user_attribution a
+      WHERE o.id = $1 AND a.user_id = o.user_id`, [order.id]).catch(() => undefined);
 
   /**
    * 되돌아오는 주소.

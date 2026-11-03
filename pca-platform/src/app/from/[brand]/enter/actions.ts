@@ -67,6 +67,11 @@ export async function enterAction(_prev: EnterState, form: FormData): Promise<En
     return { message: `이 ${PARTNERS[partner].name} 계정은 다른 CareerMatri 계정과 이미 이어져 있습니다. 그 계정으로 들어오시거나 고객센터에 알려 주세요.` };
   }
   await recordBrand(userId, partner).catch(() => null);
+  /* 유입 경로(처음 온 길을 지킨다) · 보던 공고 */
+  {
+    const { recordAttribution } = await import("@/lib/attribution");
+    await recordAttribution(userId, { source: partner, idx: h.posting_ref && /^\d{1,12}$/.test(h.posting_ref) ? h.posting_ref : null });
+  }
   /* 연동이 `시험` 상태면(시험 키로만 링크가 나온다) 이 계정을 공개 전 시험 계정으로 둔다 */
   if ((await partnerConfig(partner))?.status === "test") {
     await query(`INSERT INTO mat_preview_users (user_id, note) VALUES ($1, $2) ON CONFLICT (user_id) DO NOTHING`,
