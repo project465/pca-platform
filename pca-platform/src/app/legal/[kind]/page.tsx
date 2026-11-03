@@ -1,3 +1,4 @@
+import { isProduction } from "@/lib/env";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import BrandHome from "@/components/sf/brand-home";
@@ -39,6 +40,9 @@ const KINDS: ConsentKind[] = ["terms", "privacy", "marketing", "third_party"];
  * 영어 화면에서는 이 초안을 보이고, 맨 위에 `한국어본이 우선 · 검토 중인 번역 초안` 을 영어로 먼저 적는다.
  * 동의 기록(`consent_documents`)은 바꾸지 않는다: 동의의 기준은 그대로 한국어본이다
  */
+/* **운영에서는 검토 전 초안을 내놓지 않는다**(초안 README "검토 전 공개 금지"). `LEGAL_EN_DRAFTS=1` 을 넣은 날부터 보인다.
+   운영이 아닌 배포본은 늘 보인다(검토 · 시험용) */
+const draftsOn = () => process.env.LEGAL_EN_DRAFTS === "1" || !isProduction();
 const EN_DRAFT: Record<string, string> = {
   terms: "sites/careermetri/legal/en/01-terms.md",
   privacy: "sites/careermetri/legal/en/02-privacy.md",
@@ -84,7 +88,7 @@ export default async function LegalPage({
 
   if (solo) {
     /* 영어면 영어 초안을 먼저 읽는다. 없으면 한국어 본문 */
-    const draft = L === "en" && EN_DRAFT[kind] ? await readLegalBody(EN_DRAFT[kind]) : null;
+    const draft = L === "en" && draftsOn() && EN_DRAFT[kind] ? await readLegalBody(EN_DRAFT[kind]) : null;
     const got = draft?.ok ? draft : await readLegalBody(solo.path);
     const text = got.ok ? got.text : null;
     return (
@@ -123,7 +127,7 @@ export default async function LegalPage({
 
   let body: string | null = null;
   /* 영어면 검토용 영어 초안(있는 문서만: 약관 · 처리방침). 판 · 동의 기준은 위 줄 그대로다 */
-  const draft = L === "en" && EN_DRAFT[kind] ? await readLegalBody(EN_DRAFT[kind]) : null;
+  const draft = L === "en" && draftsOn() && EN_DRAFT[kind] ? await readLegalBody(EN_DRAFT[kind]) : null;
   if (draft?.ok) body = draft.text;
   else if (doc.body_path) {
     const got = await readLegalBody(doc.body_path);
