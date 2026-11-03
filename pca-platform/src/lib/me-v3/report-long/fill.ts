@@ -204,7 +204,8 @@ export function fillPages(x: Inputs, d: X, part3: string, region: { name: string
   for (const r of d.roleOrder.slice(1, 3)) {
     const g = x.guide.roles[r.code];
     if (!g?.learnOrder?.length) continue;
-    add(F("07", N.c7, L(`${r.name_ko} 쪽으로 갈 때 배울 순서`, `What to learn, in order, for ${r.name_ko}`), L("직무 안내", "Role guide"),
+    /* 목표 직무 로드맵 안에서 다른 직무 상자로 읽히지 않게 `다른 길도 보고 싶다면` 으로 갈라 적는다(2026-11-03 견본 N10) */
+    add(F("07", N.c7, L(`다른 길도 보고 싶다면 · ${r.name_ko} 쪽으로 갈 때 배울 순서`, `If you want another path · What to learn, in order, for ${r.name_ko}`), L("직무 안내 · 목표 직무의 순서는 04장에 있어요", "Role guide · your target role's order is in Chapter 04"),
       `<table class="tb tb-xs"><tbody>${g.learnOrder.slice(0, 5).map((v, i) => `<tr><td class="w30"><b>${i + 1}. ${E(v.step)}</b></td><td>${E(politePara(v.why))}</td></tr>`).join("")}</tbody></table>`));
   }
 

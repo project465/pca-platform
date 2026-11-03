@@ -563,8 +563,13 @@ export function roleQPage(x: Inputs, d: X): Page {
       : L("직무 자료에 실린 질문을 면접 질문으로 옮겼고, 옆에 지금 어디까지 해 봤는지를 붙였어요.",
         "They are taken from the role material, with how far you have gone on each one next to it.")) +
     items.map((v) => {
-      const b = best(v.axis);
-      const lv = b?.level ?? null;
+      /* **그 직무가 쓰는 영역에서만 답할 장면을 고른다**(2026-11-03 인공지능 견본 AI2: `후보 모델 가운데 그 모델을 고른 까닭`
+         에 데이터 정제 답변이 붙었다). 관계표의 중심 → 있음 영역 가운데 그 판단을 `직접 해 봄` 이상으로 답한 곳. 없으면 연습 과제 */
+      const rank = (s: string) => (s === "중심" ? 0 : s === "있음" ? 1 : 2);
+      const roleTds = x.rel.td_role.filter((w) => w.role === r.code && w.strength !== "드묾").sort((a2, b2) => rank(a2.strength) - rank(b2.strength)).map((w) => w.td);
+      const fit = roleTds.find((t) => (d.level(t, v.axis) ?? -1) >= 2) ?? null;
+      const b = roleTds.length ? (fit ? { level: d.level(fit, v.axis), where: [fit] } : null) : best(v.axis);
+      const lv = b?.level ?? (roleTds.length ? Math.max(-1, ...roleTds.map((t) => d.level(t, v.axis) ?? -1)) : null);
       const td = b?.where[0];
       /* 학생이 고른 항목만 학생 말로. 없으면 사전 예시는 `예:` 로 따옴표 밖에 둔다 */
       const pk = b ? b.where.map((w) => d.picks(w, v.axis)[0]).find(Boolean) ?? null : null;

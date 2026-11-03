@@ -370,7 +370,7 @@ export function bestPage(x: Inputs, d: X): Page {
       [L("막대 끝 글", "Text at the bar end"), L("그 단계가 나온 영역", "The area where that step came from")],
       [L("막대 없음", "No bar"), L(`${E(LEVEL_KO[0])}이라고 답했거나 이번 검사에서 묻지 않은 판단`, `You answered ‘${E(LEVEL_KO[0])}’, or this assessment did not ask about that decision`)],
     ]) +
-    `<table class="tb tb-xs"><thead><tr><th>${L("판단", "Decision")}</th><th>${L("무엇을 묻나", "What it asks")}</th><th>${L(`${E(x.major)} 일에서 보이는 모습`, `What it looks like in ${E(x.major)} work`)}</th></tr></thead><tbody>${AXES.map((a) => { const b = d.best.find((z) => z.axis === a)!; return `<tr><th>${E(d.axisName(a))}</th><td>${E(d.axisWhat(a))}</td><td class="mut">${E(sceneOf(b))}</td></tr>`; }).join("")}</tbody></table>`);
+    `<table class="tb tb-xs"><thead><tr><th>${L("판단", "Decision")}</th><th>${L("무엇을 묻나", "What it asks")}</th><th>${L(`${E(x.major)} 일의 예(사전 예시 · 내가 고른 것 아님)`, `Example from ${E(x.major)} work (not something you picked)`)}</th></tr></thead><tbody>${AXES.map((a) => { const b = d.best.find((z) => z.axis === a)!; return `<tr><th>${E(d.axisName(a))}</th><td>${E(d.axisWhat(a))}</td><td class="mut">${E(sceneOf(b))}</td></tr>`; }).join("")}</tbody></table>`);
 }
 
 export function goalPage(x: Inputs, d: X): Page[] {

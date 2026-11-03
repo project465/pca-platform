@@ -126,12 +126,14 @@ export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
   if (r.listed.length) {
     const fin = [...r.listed].filter((o) => o.fin?.sales != null).sort((a, b) => (b.fin!.sales ?? 0) - (a.fin!.sales ?? 0));
     const top = fin.slice(0, 9);
+    /* 당기순이익이 한 곳도 공시돼 있지 않으면 그 열을 싣지 않는다('공시 없음' 이 줄마다 서던 것, 2026-11-03 견본) */
+    const netCol = fin.slice(0, 12).some((o) => o.fin?.net != null);
     const strong = d.strengths[0] ? d.name(d.strengths[0].code) : d.radarDoms[0] ? d.name(d.radarDoms[0].code) : "관심 영역";
     /* 표를 먼저 둔다. 표는 줄 단위로 나뉘어 앞 쪽의 남은 자리를 채우고, 막대 그림은 통째로 다음 쪽에 선다 */
     const tableAt = out.length;
     out.push(part(`${r.label} 본점 상장사의 공시 숫자`,
       T(`${E(r.label)}에 본점을 둔 상장사 ${Math.min(fin.length, 12)}곳의 공시 숫자입니다`, "사업보고서의 주요 계정과 ‘직원 등의 현황’에서 옮겼습니다. 연결 재무제표가 있는 회사는 연결 기준, 없는 회사는 별도 기준이고, 금액은 억 원 단위로 반올림했습니다.") +
-      `<table class="tb tb-xs"><thead><tr><th>회사</th><th>매출액</th><th>영업이익</th><th>당기순이익</th><th>직원</th><th>기준</th></tr></thead><tbody>${fin.slice(0, 12).map((o) => `<tr><td><b>${E(o.name)}</b></td><td>${won(o.fin!.sales)}</td><td>${won(o.fin!.op)}</td><td>${won(o.fin!.net)}</td><td>${o.staff != null ? `${o.staff.toLocaleString("ko-KR")}명` : "공시 없음"}</td><td class="mut">${E(o.fin!.year)} ${E(o.fin!.basis)}</td></tr>`).join("")}</tbody></table><p class="mut sm">직원 수는 사업보고서 ‘직원 등의 현황’의 합계라서 본사와 공장과 영업 인원이 다 들어 있습니다. 이 지역에서 일하는 사람 수와는 다를 수 있습니다.</p>` +
+      `<table class="tb tb-xs"><thead><tr><th>회사</th><th>매출액</th><th>영업이익</th>${netCol ? "<th>당기순이익</th>" : ""}<th>직원</th><th>기준</th></tr></thead><tbody>${fin.slice(0, 12).map((o) => `<tr><td><b>${E(o.name)}</b></td><td>${won(o.fin!.sales)}</td><td>${won(o.fin!.op)}</td>${netCol ? `<td>${won(o.fin!.net)}</td>` : ""}<td>${o.staff != null ? `${o.staff.toLocaleString("ko-KR")}명` : "공시 없음"}</td><td class="mut">${E(o.fin!.year)} ${E(o.fin!.basis)}</td></tr>`).join("")}</tbody></table><p class="mut sm">직원 수는 사업보고서 ‘직원 등의 현황’의 합계라서 본사와 공장과 영업 인원이 다 들어 있습니다. 이 지역에서 일하는 사람 수와는 다를 수 있습니다.</p>` +
       note("표를 읽는 법", ul(["당기순이익에는 본업 밖의 손익과 세금이 들어가서, 영업이익과 방향이 반대로 나오는 해도 있습니다.", "사업부문별 직원 수를 보면 그 회사 사람들이 어느 부문에 많이 모여 있는지 알 수 있습니다.", `채용 공고의 근무 부서가 어느 사업부문에 속하는지 맞춰 보면 ${E(x.major)} 전공자가 갈 자리를 짐작하기 쉬워집니다.`, "직원이 많은 회사라고 신입을 많이 뽑는 것은 아니니, 뽑는 인원은 그해 공고에서 보시면 됩니다."]))));
     /* 회사가 적으면 막대 쪽을 표 앞에 둔다. 장 끝에 막대 하나만 남으면 쪽 절반이 빈다 */
     if (fin.length <= 8) out.splice(tableAt, 0, out.pop()!);

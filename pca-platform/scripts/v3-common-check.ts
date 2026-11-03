@@ -72,13 +72,16 @@ type Row = { uni: string; uniName: string; core: string; spec: string | null; le
 
 function combos(): Row[] {
   const out = new Map<string, Row>();
+  /* `LEAVES=PCU26_BIZ,…` 이면 그 학과만(견본 결과지 만들 때) */
+  const only = (process.env.LEAVES ?? "").split(",").filter(Boolean);
   for (const u0 of universities()) {
     if (!UNIS.includes(u0.university_code)) continue;
     const u = university(u0.university_code)!;
     for (const r of allLeaves(u)) {
       if (r.catalog.catalog_year > 2026 || statusOf(u, r) !== "READY" || !r.leaf.core_code) continue;
+      if (only.length && !only.includes(r.leaf.code)) continue;
       const spec = (r.leaf as { specialization?: string | null }).specialization ?? null;
-      const key = `${u.university_code}:${r.leaf.core_code}:${spec ?? "-"}`;
+      const key = only.length ? r.leaf.code : `${u.university_code}:${r.leaf.core_code}:${spec ?? "-"}`;
       if (!out.has(key)) {
         out.set(key, { uni: u.university_code, uniName: u.university_name, core: r.leaf.core_code, spec,
           leaf: r.leaf.code, leafName: r.leaf.name, college: r.college.code });

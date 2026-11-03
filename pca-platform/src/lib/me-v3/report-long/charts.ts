@@ -212,7 +212,7 @@ export type Dot = { label: string; x: number; y: number; color: string; n?: numb
 export function quadrant(dots: Dot[], o: { width?: number; xNames: string[]; yNames: string[]; zones?: [string, string, string, string] }): string {
   /* 점이 모두 한 칸이면 그 칸 이름 한 줄로 */
   if (dots.length > 3 && dots.every((d) => d.x === dots[0].x && d.y === dots[0].y)) {
-    return sameNote(tx(`${dots.length}개 영역이 모두 같은 자리(관심 ${o.xNames[dots[0].x] ?? ""} · 해 본 정도 ${o.yNames[dots[0].y] ?? ""})에 있어 그림 대신 한 줄로 적었어요.`,
+    return sameNote(tx(`${dots.length}개 영역이 모두 같은 자리(${(o.xNames[dots[0].x] ?? "").startsWith("관심") ? "" : "관심 "}${o.xNames[dots[0].x] ?? ""} · 해 본 정도 ${o.yNames[dots[0].y] ?? ""})에 있어 그림 대신 한 줄로 적었어요.`,
       `All ${dots.length} areas sit in the same place (interest: ${o.xNames[dots[0].x] ?? ""}, experience: ${o.yNames[dots[0].y] ?? ""}), so this line replaces the chart.`));
   }
   const W = o.width ?? 640, H = W * 0.74, L = 104, B = 54, T = 16, R = 14;
