@@ -43,11 +43,13 @@ export default async function PublicFooter({
 
   const legal = (
     <nav className="pfoot-links">
-      <Link href="/legal/terms">{L === "en" ? "Terms of service" : "이용약관"}</Link>
-      <Link href="/legal/privacy">{L === "en" ? "Privacy policy" : "개인정보처리방침"}</Link>
-      <Link href="/legal/refund">{L === "en" ? "Refund policy" : "환불정책"}</Link>
-      <Link href="/legal/subscription">{L === "en" ? "Subscription policy" : "정기결제 운영규정"}</Link>
-      <Link href="/support">{L === "en" ? "Support" : "고객지원"}</Link>
+      {/* 영어 화면은 영어 본문(검토용 번역 초안 · 한국어본 우선)으로 바로 간다 */}
+      <Link href={L === "en" ? "/legal/terms?lang=en" : "/legal/terms"}>{L === "en" ? "Terms of service" : "이용약관"}</Link>
+      <Link href={L === "en" ? "/legal/privacy?lang=en" : "/legal/privacy"}>{L === "en" ? "Privacy policy" : "개인정보처리방침"}</Link>
+      <Link href={L === "en" ? "/legal/refund?lang=en" : "/legal/refund"}>{L === "en" ? "Refund policy" : "환불정책"}</Link>
+      <Link href={L === "en" ? "/legal/subscription?lang=en" : "/legal/subscription"}>{L === "en" ? "Subscription policy" : "정기결제 운영규정"}</Link>
+      <Link href={L === "en" ? "/support?lang=en" : "/support"}>{L === "en" ? "Support" : "고객지원"}</Link>
+      <Link href={L === "en" ? "/contact?lang=en" : "/contact"}>{L === "en" ? "Contact us" : "문의하기"}</Link>
     </nav>
   );
   const copy = <p className="pfoot-c">© {year} {BRAND.root}</p>;

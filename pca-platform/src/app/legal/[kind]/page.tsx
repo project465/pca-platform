@@ -34,6 +34,28 @@ const KINDS: ConsentKind[] = ["terms", "privacy", "marketing", "third_party"];
  * 를 가리키는데 이 쪽이 404 였다: **환불 조건을 적어 두었다고 링크를
  * 걸어 놓고 눌리면 없는 쪽으로 보냈다.**
  */
+/**
+ * **영어 본문은 검토용 번역 초안이다**(`sites/careermetri/legal/en/`, 2026-11-03 영어 공개 전 필수 목록).
+ * 영어 화면에서는 이 초안을 보이고, 맨 위에 `한국어본이 우선 · 검토 중인 번역 초안` 을 영어로 먼저 적는다.
+ * 동의 기록(`consent_documents`)은 바꾸지 않는다: 동의의 기준은 그대로 한국어본이다
+ */
+const EN_DRAFT: Record<string, string> = {
+  terms: "sites/careermetri/legal/en/01-terms.md",
+  privacy: "sites/careermetri/legal/en/02-privacy.md",
+  refund: "sites/careermetri/legal/en/03-refund.md",
+  subscription: "sites/careermetri/legal/en/04-subscription.md",
+};
+
+function DraftNotice({ kind }: { kind: string }) {
+  return (
+    <div className="notice warn" role="note" data-legal-draft>
+      <p style={{ margin: 0 }}><b>English translation draft for review.</b> The Korean version governs.
+        If the English and Korean versions differ, the Korean version applies.</p>
+      <p style={{ margin: "6px 0 0" }}><Link href={`/legal/${kind}?lang=ko`} lang="ko">한국어 본문 보기 (Korean version)</Link></p>
+    </div>
+  );
+}
+
 const STANDALONE: Record<string, { path: string; ko: string; en: string }> = {
   refund: {
     path: "sites/careermetri/legal/03-refund.md",
@@ -61,7 +83,9 @@ export default async function LegalPage({
   const T = txer(L);
 
   if (solo) {
-    const got = await readLegalBody(solo.path);
+    /* 영어면 영어 초안을 먼저 읽는다. 없으면 한국어 본문 */
+    const draft = L === "en" && EN_DRAFT[kind] ? await readLegalBody(EN_DRAFT[kind]) : null;
+    const got = draft?.ok ? draft : await readLegalBody(solo.path);
     const text = got.ok ? got.text : null;
     return (
       <div className="pub">
@@ -77,6 +101,7 @@ export default async function LegalPage({
               <h1 className="sf-h1">{L === "en" ? solo.en : solo.ko}</h1>
             </div>
           </div>
+          {draft?.ok ? <DraftNotice kind={kind} /> : null}
           {text ? (
             <LegalMarkdown text={text} dropTitle />
           ) : (
@@ -97,7 +122,10 @@ export default async function LegalPage({
   if (!doc) notFound();
 
   let body: string | null = null;
-  if (doc.body_path) {
+  /* 영어면 검토용 영어 초안(있는 문서만: 약관 · 처리방침). 판 · 동의 기준은 위 줄 그대로다 */
+  const draft = L === "en" && EN_DRAFT[kind] ? await readLegalBody(EN_DRAFT[kind]) : null;
+  if (draft?.ok) body = draft.text;
+  else if (doc.body_path) {
     const got = await readLegalBody(doc.body_path);
     body = got.ok ? got.text : null;
   }
@@ -124,7 +152,7 @@ export default async function LegalPage({
           </div>
         </div>
 
-        {doc.translation_status === "pending" ? (
+        {draft?.ok ? <DraftNotice kind={kind} /> : doc.translation_status === "pending" ? (
           /* 없는 것을 없다고 적는다. 지어낸 번역을 올리지 않는다 */
           <p className="notice warn" role="status">{T("cnPending")}</p>
         ) : null}
