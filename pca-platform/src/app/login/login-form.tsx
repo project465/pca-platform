@@ -40,7 +40,7 @@ export default function LoginForm({ next = "", lang = "ko" }: { next?: string; l
       ) : null}
 
       <div className="field">
-        <label htmlFor="identifier">{say("학번 또는 이메일")}</label>
+        <label htmlFor="identifier">{say("학번·휴대전화번호 또는 이메일")}</label>
         <input
           id="identifier"
           name="identifier"
