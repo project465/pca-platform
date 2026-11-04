@@ -512,9 +512,9 @@ export const en: SiteContent = {
           title: "MAT · AI career assistant",
           body: "After the assessment, it keeps track of your weekly tasks and deadlines and puts saved job postings side by side with your experience.",
           price: `${MONTH} ${krw(TRACK_KR.month.price)} · ${QUARTER} ${krw(TRACK_KR.quarter.price)}`,
-          priceNote: "No automatic renewal",
+          priceNote: "Charged every 30 or 90 days · cancel any time",
           points: [
-            "Your pass simply ends when the period is over, with no further charges",
+            "We notify you 7 days before each charge; if you cancel you keep the days you paid for",
             "Buy a PRO report and your first month is free",
           ],
           cta: { label: "Learn about MAT", href: "/assistant" },
@@ -708,7 +708,7 @@ export const en: SiteContent = {
     plans: {
       label: "Pricing",
       title: "Pay only for the time you need",
-      lead: "Passes do not renew automatically. Yours simply ends when the period is over, and you are not charged again.",
+      lead: "The 30-day pass is charged every 30 days and the 90-day pass every 90 days. Cancel any time; we notify you 7 days before each charge.",
       items: [
         {
           name: MONTH,
@@ -727,7 +727,7 @@ export const en: SiteContent = {
         },
       ],
       notes: [
-        "Passes do not renew automatically and end when the period is over.",
+        "Subscription policy: app.careermatri.com/legal/subscription. Automatic renewal starts after the payment provider approves it; until then each pass is a one-time payment.",
         "You pay on the MAT screen in the CareerMatri app.",
       ],
       trial: "Buy a PRO report and you can use MAT free for the first month.",
@@ -742,7 +742,7 @@ export const en: SiteContent = {
         },
         {
           q: "Will I be charged automatically every month?",
-          a: "No. Both the 30-day and 90-day passes are paid once and end on their own when the period is over. If you buy again while time is left, the new period starts the day after the current one ends.",
+          a: "Yes. The 30-day pass is charged every 30 days and the 90-day pass every 90 days. We email you 7 days before each charge. You can cancel any time and keep the days you already paid for. Automatic renewal starts after the payment provider approves it; passes bought before that are not charged again.",
         },
         {
           q: "I bought a PRO report. How do I get the free month?",
