@@ -212,7 +212,7 @@ const PRICING_EN: Widen<typeof PRICING> = {
   notOnSale: "This period is not on sale yet",
   auto: (days: number) => `Renews every ${days} days · We tell you before each payment`,
   keep: "If you cancel, you keep the rest of the period",
-  oneTime: "No auto-renewal · Closes at the end of the period",
+  oneTime: "Charged every 30 or 90 days · notice 7 days before each charge · automatic renewal starts after the payment provider approves it (until then, a one-time payment)",
   addon: "Extra pass",
   addonNote: "One-time payment · Adds uses to your current period",
   legal: "Subscription policy",
