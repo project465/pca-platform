@@ -527,9 +527,9 @@ export const kr: SiteContent = {
           title: "MAT · AI 취업비서",
           body: "검사 다음에도 매주 브리핑으로 마감과 할 일을 챙기고, 붙여 둔 공고와 내 경험을 비교해 지원서 문장의 뼈대까지 만들어 드립니다.",
           price: `${TRACK_KR.month.name} ${TRACK_KR.month.price} · ${TRACK_KR.quarter.name} ${TRACK_KR.quarter.price}`,
-          priceNote: "자동 갱신 없음",
+          priceNote: "30일 · 90일마다 자동 결제 · 언제든 해지",
           points: [
-            "기간이 끝나면 저절로 종료되고 다시 결제되지 않습니다",
+            "결제 7일 전에 알려 드리고, 해지해도 남은 기간은 그대로 씁니다",
             "PRO 결과지를 구매하시면 첫 1개월이 무료입니다",
           ],
           cta: { label: "MAT 알아보기", href: "/assistant" },
@@ -725,7 +725,7 @@ export const kr: SiteContent = {
     plans: {
       label: "요금",
       title: "필요한 기간만 골라서 쓰세요",
-      lead: "자동 갱신이 없어서 기간이 끝나면 저절로 종료되고 다시 결제되지 않습니다.",
+      lead: "30일권은 30일마다, 90일권은 90일마다 자동 결제됩니다. 언제든 해지할 수 있고 결제 7일 전에 알려 드립니다.",
       items: [
         {
           name: TRACK_KR.month.name,
@@ -744,7 +744,7 @@ export const kr: SiteContent = {
         },
       ],
       notes: [
-        "자동 갱신이 없습니다. 기간이 끝나면 저절로 종료됩니다.",
+        "정기결제 운영규정: app.careermatri.com/legal/subscription. 정기결제는 결제사 승인 뒤 시작하고, 그 전에는 1회 결제입니다.",
         "결제는 CareerMatri 앱의 MAT 화면에서 진행합니다.",
       ],
       trial: "PRO 결과지를 구매하시면 MAT 첫 1개월을 무료로 쓸 수 있습니다.",
@@ -759,7 +759,7 @@ export const kr: SiteContent = {
         },
         {
           q: "매달 자동으로 결제되나요?",
-          a: "그렇지 않습니다. 30일권과 90일권 모두 한 번 결제하고, 기간이 끝나면 저절로 종료됩니다. 남은 기간이 있을 때 다시 사시면 끝나는 날 다음 날부터 이어 붙습니다.",
+          a: "네. 30일권은 30일마다, 90일권은 90일마다 같은 금액이 자동 결제됩니다. 결제 7일 전에 메일로 알려 드리고, 언제든 해지할 수 있으며 해지해도 남은 기간은 그대로 씁니다. 정기결제는 결제사 승인 뒤 시작하고, 그 전에는 1회 결제입니다. 그 전에 산 기간권은 자동으로 다시 결제되지 않습니다.",
         },
         {
           q: "PRO 결과지를 샀는데 무료 1개월은 어떻게 받나요?",
