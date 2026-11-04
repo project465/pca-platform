@@ -236,6 +236,12 @@ export default async function PricingPage({
           <section className="pxband" id="track">
             <h2>{T("pxTrackTitle")}</h2>
             <p className="pxwhat">{T("pxTrackLead")}</p>
+            {/* 결제 주기 · 해지 · 환불의 기준 문서(2026-11-04 NHN KCP 재심사) */}
+            <p className="pxwhat">
+              <Link href="/legal/subscription">{L === "en" ? "Subscription policy" : "정기결제 운영규정"}</Link>
+              {" · "}
+              <Link href="/legal/refund">{L === "en" ? "Refund policy" : "환불정책"}</Link>
+            </p>
             <ul className="pxtrack-f">
               <li>{T("pxTrackF1")}</li>
               <li>{T("pxTrackF2")}</li>

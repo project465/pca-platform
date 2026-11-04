@@ -70,7 +70,7 @@ export default async function MatPass() {
       {o30 || o90 ? (
         <form action="/checkout" method="get">
           <fieldset className="mt-opts">
-            <legend className="mt-meta" style={{ marginBottom: 8 }}>자동 연장 없음 · 기간이 끝나면 닫혀요</legend>
+            <legend className="mt-meta" style={{ marginBottom: 8 }}>30일 · 90일마다 자동 결제 · 언제든 해지 · 결제 7일 전 안내 · 정기결제는 결제사 승인 뒤 시작(그 전에는 1회 결제)</legend>
             {o30 ? (
               <label className="mt-opt">
                 <input type="radio" name="product" value={o30.code} />

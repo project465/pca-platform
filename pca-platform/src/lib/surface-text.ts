@@ -216,9 +216,11 @@ export const TX = {
     "검사부터 MAT 까지 학생 수만큼 계약합니다. 개인 이용권과 같은 MAT 이고, 학교가 좌석을 열어 준다는 것만 다릅니다.",
     "Schools contract for the assessment and MAT by number of students. It is the same MAT as a personal pass; the school simply opens the seats."),
   pxOrgSeatsHead: p("좌석 × 기간", "Seats × period"),
+  /* 판매 화면에 3개월을 넘는 기간을 적지 않는다(2026-10-28 NHN KCP: "서비스 제공기간 3개월 초과 상품" 으로 반려).
+     실제 학교 계약 내용은 계약서가 정한다 */
   pxOrgSeats: p(
-    "MAT 6개월 또는 1년. 담당자가 학생 관리 화면에서 학생마다 열고 닫습니다. 닫으면 좌석이 돌아옵니다.",
-    "MAT for 6 months or 1 year. Staff open and close it per student from the student list; closing returns the seat."),
+    "기간과 인원은 계약으로 정합니다 · 견적 문의. 담당자가 학생 관리 화면에서 학생마다 열고 닫습니다. 닫으면 좌석이 돌아옵니다.",
+    "Period and seats are set by contract · Ask for a quote. Staff open and close it per student from the student list; closing returns the seat."),
   pxOrgSeeHead: p("담당자가 보는 것", "What staff see"),
   pxOrgSee: p(
     "검사 집계와 MAT 사용 현황(연 학생 · 최근 30일 쓴 학생 · 상담 신청 수)만 봅니다. 학생의 자료 · 공고 · 상담 내용은 보이지 않습니다.",
@@ -230,8 +232,8 @@ export const TX = {
   pxOrgAsk: p("견적 문의", "Ask for a quote"),
   pxTrackTitle: p("MAT", "MAT, AI career assistant"),
   pxTrackLead: p(
-    "매주 할 일 하나를 먼저 알려 드리고, 메모를 경험 기록으로 옮기고, 직접 찾은 공고를 내 경험과 비교해 드립니다. 자동으로 갱신되지 않고 기간이 끝나면 저절로 닫힙니다.",
-    "It tells you one thing to do each week, turns your notes into experience records, and lines up postings you found against your experience. It does not renew on its own and simply closes when the period ends.",
+    "매주 할 일 하나를 먼저 알려 드리고, 메모를 경험 기록으로 옮기고, 직접 찾은 공고를 내 경험과 비교해 드립니다. 30일권 9,900원 · 30일마다 자동 결제 / 90일권 24,900원 · 90일마다 자동 결제. 언제든 해지 · 결제 7일 전 안내. 정기결제는 결제사 승인 뒤 시작하고, 그 전에는 1회 결제입니다.",
+    "It tells you one thing to do each week, turns your notes into experience records, and lines up postings you found against your experience. 30-day pass KRW 9,900, charged every 30 days / 90-day pass KRW 24,900, charged every 90 days. Cancel any time · notice 7 days before each charge. Automatic renewal starts after the payment provider approves it; until then each pass is a one-time payment.",
   ),
   pxTrackF1: p("매주 할 일 알림 — 검사 결과에서 먼저 채울 부분을 이번 주 할 일 하나로 알려 드립니다. 적어 둔 공고는 마감 7·3·1일 전에 다시 알려 드립니다.",
     "Weekly to-do: one task a week from the gaps in your result, plus reminders 7, 3 and 1 days before deadlines you saved."),
@@ -266,8 +268,8 @@ export const TX = {
     "The assistant opens as soon as you pay. It does not add an assessment credit.",
   ),
   payTrackNote2: p(
-    "자동으로 갱신되지 않습니다. 기간이 끝나면 저절로 닫힙니다.",
-    "It does not renew. It closes on its own when the period ends.",
+    "30일권은 30일마다, 90일권은 90일마다 자동 결제됩니다. 언제든 해지할 수 있고 결제 7일 전에 알려 드립니다. 정기결제는 결제사 승인 뒤 시작하고, 그 전에는 1회 결제입니다.",
+    "The 30-day pass is charged every 30 days and the 90-day pass every 90 days. Cancel any time; we notify you 7 days before each charge. Automatic renewal starts after the payment provider approves it; until then this is a one-time payment.",
   ),
   payTrackNote3: p(
     "남은 기간은 일할로 환불을 요청할 수 있습니다.",

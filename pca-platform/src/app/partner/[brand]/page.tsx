@@ -226,7 +226,8 @@ export default async function PartnerPage({
             </div>
           </div>
           <p className="pl-note">
-            기간권은 자동으로 갱신되지 않습니다. 남은 기간이 있을 때 다시 사면 끝나는 날 뒤에 이어 붙습니다.
+            30일권은 30일마다, 90일권은 90일마다 자동 결제됩니다. 언제든 해지할 수 있고 결제 7일 전에 알려 드립니다(<a href="/legal/subscription">정기결제 운영규정</a>).
+            정기결제는 결제사 승인 뒤 시작하고, 그 전에는 1회 결제입니다.
             {notYet ? ` ${notYet}` : ""}
           </p>
         </div>
