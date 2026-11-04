@@ -92,7 +92,7 @@ export default async function CampusLogin({ params, searchParams }: Params) {
 
         <CampusLoginForm next={nx} org={u.university_code}
           idLabel={mode === "phone" ? "휴대전화 번호" : t("학번")}
-          idHint={mode === "phone" ? "숫자만, 예: 01012345678" : undefined} />
+          idHint={mode === "phone" ? "예: 01012345678 (하이픈을 넣어도 됩니다)" : undefined} />
       </div>
 
       <p className="cm-cmp-note" style={{ textAlign: "center" }}>

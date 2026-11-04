@@ -236,6 +236,7 @@
     "campus:export": "tsx scripts/campus-export-check.ts",
     "campus:first-login": "tsx scripts/campus-first-login-check.ts",
     "campus:pick": "tsx scripts/campus-pick-check.ts",
+    "login:format": "tsx scripts/login-format-check.ts",
     "campus:kus-add": "tsx scripts/campus-kus-add-check.ts",
     "pcu:cli": "tsx scripts/pcu-cli-audit.ts",
     "pcu:readiness": "tsx scripts/pcu-readiness.ts",
