@@ -232,8 +232,8 @@ export const TX = {
   pxOrgAsk: p("견적 문의", "Ask for a quote"),
   pxTrackTitle: p("MAT", "MAT, AI career assistant"),
   pxTrackLead: p(
-    "매주 할 일 하나를 먼저 알려 드리고, 메모를 경험 기록으로 옮기고, 직접 찾은 공고를 내 경험과 비교해 드립니다. 30일권 9,900원 · 30일마다 자동 결제 / 90일권 24,900원 · 90일마다 자동 결제. 언제든 해지 · 결제 7일 전 안내 · 정기결제 운영규정(/legal/subscription). 정기결제는 결제사 승인 뒤 시작하고, 그 전에는 1회 결제입니다.",
-    "It tells you one thing to do each week, turns your notes into experience records, and lines up postings you found against your experience. 30-day pass KRW 9,900, charged every 30 days / 90-day pass KRW 24,900, charged every 90 days. Cancel any time · notice 7 days before each charge · Subscription policy (/legal/subscription). Automatic renewal starts after the payment provider approves it; until then each pass is a one-time payment.",
+    "매주 할 일 하나를 먼저 알려 드리고, 메모를 경험 기록으로 옮기고, 직접 찾은 공고를 내 경험과 비교해 드립니다. 30일권 9,900원 · 30일마다 자동 결제 / 90일권 24,900원 · 90일마다 자동 결제. 언제든 해지 · 결제 7일 전 안내. 정기결제는 결제사 승인 뒤 시작하고, 그 전에는 1회 결제입니다.",
+    "It tells you one thing to do each week, turns your notes into experience records, and lines up postings you found against your experience. 30-day pass KRW 9,900, charged every 30 days / 90-day pass KRW 24,900, charged every 90 days. Cancel any time · notice 7 days before each charge. Automatic renewal starts after the payment provider approves it; until then each pass is a one-time payment.",
   ),
   pxTrackF1: p("매주 할 일 알림 — 검사 결과에서 먼저 채울 부분을 이번 주 할 일 하나로 알려 드립니다. 적어 둔 공고는 마감 7·3·1일 전에 다시 알려 드립니다.",
     "Weekly to-do: one task a week from the gaps in your result, plus reminders 7, 3 and 1 days before deadlines you saved."),
