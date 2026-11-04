@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { query, queryOne } from "@/lib/db";
-import { hashPassword, verifyPassword } from "@/lib/password";
+import { hashPassword, verifyLoginPassword, verifyPassword } from "@/lib/password";
 import { requireUser } from "@/lib/session";
 import { homePathFor } from "@/lib/roles";
 import { passwordSchema } from "@/lib/validation";
@@ -29,13 +29,13 @@ export async function changePasswordAction(
   if (!parsed.success) return { error: parsed.error.issues[0].message };
   if (next !== confirm) return { error: "새 비밀번호가 서로 다릅니다." };
 
-  const row = await queryOne<{ password_hash: string }>(
-    `SELECT password_hash FROM users WHERE id = $1`,
+  const row = await queryOne<{ password_hash: string; must_reset_pw: boolean }>(
+    `SELECT password_hash, must_reset_pw FROM users WHERE id = $1`,
     [user.id],
   );
   if (!row) return { error: "계정을 찾을 수 없습니다." };
 
-  if (!(await verifyPassword(current, row.password_hash))) {
+  if (!(await verifyLoginPassword(current, row.password_hash, !!row.must_reset_pw))) {
     return { error: "지금 쓰는 비밀번호가 올바르지 않습니다." };
   }
   if (await verifyPassword(next, row.password_hash)) {

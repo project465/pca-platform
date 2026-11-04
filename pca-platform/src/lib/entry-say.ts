@@ -45,6 +45,7 @@ const EN: Record<string, string> = {
   "비밀번호를 잊으셨나요?": "Forgot your password?",
   "개인으로 가입하기": "Sign up as an individual",
   "학번 또는 이메일": "Student ID or email",
+  "학번·휴대전화번호 또는 이메일": "Student ID, phone number or email",
   "비밀번호": "Password",
   "확인 중…": "Checking…",
   "로그인": "Sign in",

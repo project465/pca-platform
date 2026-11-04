@@ -1,7 +1,7 @@
 import NextAuth, { type NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { query, queryOne } from "@/lib/db";
-import { verifyPassword } from "@/lib/password";
+import { verifyLoginPassword } from "@/lib/password";
 import { highestRole, isRole, type Role } from "@/lib/roles";
 import { isProvider, markLogin, resolveIdentity } from "@/lib/auth-accounts";
 import { identityFrom, oauthProviders } from "@/lib/auth-oauth";
@@ -70,7 +70,7 @@ export async function resolveLoginId(
   for (const c of [...new Set([raw, ...candidates])]) {
     const user = await findUserByIdentifier(c);
     if (!user?.password_hash || user.status !== "active") continue;
-    if (await verifyPassword(password, user.password_hash)) hits.push(c);
+    if (await verifyLoginPassword(password, user.password_hash, !!user.must_reset_pw)) hits.push(c);
   }
   if (hits.length > 1) return { many: hits };
   return { id: hits[0] ?? raw };
@@ -94,7 +94,7 @@ export async function inactiveReason(
   const user = await findUserByIdentifier(identifier);
   if (!user || !user.password_hash) return null;
   if (user.status === "active") return null;
-  if (!(await verifyPassword(password, user.password_hash))) return null;
+  if (!(await verifyLoginPassword(password, user.password_hash, !!user.must_reset_pw))) return null;
   return user.status === "erased" ? "erased" : "disabled";
 }
 
@@ -164,7 +164,7 @@ export const authConfig: NextAuthConfig = {
         const hash =
           user?.password_hash ??
           "$2a$12$0000000000000000000000000000000000000000000000000000";
-        const ok = await verifyPassword(password, hash);
+        const ok = await verifyLoginPassword(password, hash, !!user?.must_reset_pw);
 
         /* **없는 아이디도 똑같이 센다.** 있는 계정에서만 잠기면 "잠겼다"
            는 응답이 그 아이디가 있다는 답이 된다 */
