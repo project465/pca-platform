@@ -77,7 +77,7 @@ const OUT = process.env.SHOTS ?? ".";
     const A = await import("../src/lib/research/ai");
     const sample = A.cleanReading({ requirements: [
       { quote: "화학공학·재료공학 등 관련 분야 석사 학위 이상", kind: "required",
-        eligibility: "필수요건입니다. 입력하신 학위는 화학공학 석사(마침, 2025)로 이 요건을 채웁니다.",
+        eligibility: "입력하신 학위는 화학공학 석사(마침, 2025)로 이 요건을 채웁니다.",
         record: "학위논문은 '황화물계 고체 전해질의 계면 안정성 연구'입니다.", evidence: [deg],
         write: ["학위 취득일과 학위논문 제목을 지원서 학력 칸에 학위증명서와 같은 표기로 적어 두세요."] },
       { quote: "국가R&D 연구책임자 수행 경험", kind: "preferred",
