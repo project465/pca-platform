@@ -169,6 +169,13 @@ ok("post_link_wrap 이 <a> 에 없으면 그 게시판 글 링크를 모두 쓴�
   JSON.stringify(listCards(moved, "487")));
 ok("같은 번호가 메뉴와 카드에 다 있으면 카드 쪽 제목", listCards(listPage("487", [card("487", "99", "카드 제목")]), "487")
   .map((c) => `${c.idx}:${c.title}`).join(",") === "99:카드 제목");
+/* 2026-11-05 시험 세션이 보낸 실제 487 카드 한 장 그대로(배경 주소만 줄임). 숨긴 공지 em · 숨긴 분류 em · 주석 */
+const realCard = (idx: number) => `<a class="post_link_wrap _fade_link"  href="/487/?q=YToxOntzOjEyOiJrZXl3b3JkX3R5cGUiO3M6MzoiYWxsIjt9&bmode=view&idx=${idx}&t=board"   > <div class="card_wrapper card-thumbnail-wrap " style="background-image: url(x.jpg)"> <div class="card-head _card_head _img_wrap"> <span> </span> </div> </div> <div class="card-body _card_body list-group"> <div class="title title-block"> <em class="notice-block" style="display: none">공지</em> <span> <em style="padding-right:5px;color:#222;display: none">IT/AI/빅데이터/블록체인</em> </span> (주)심네트 (충남 계룡시) M&S 연구분석가 모집 (석사) <!-- 주석 <b>x</b> --> </div> <div class="text text-block show_body"> <span></span> </div> </div> </a>`;
+const real = listCards(listPage("487", Array.from({ length: 20 }, (_, i) => realCard(175345227 - i))), "487");
+ok("실제 카드: 숨긴 공지 em 이 있어도 공지가 아니다(20장 모두 새 공고 후보)", real.length === 20 && real.every((c) => !c.notice), JSON.stringify(real[0]));
+ok("실제 카드: 제목에서 숨긴 분류 · 주석을 빼고, 분류는 칸으로", real[0].title === "(주)심네트 (충남 계룡시) M&S 연구분석가 모집 (석사)"
+  && real[0].tags.join("|") === IT, JSON.stringify(real[0]));
+ok("보이는 공지 em 은 여전히 공지", listCards(listPage("487", [realCard(1).replace(' style="display: none">공지', ">공지")]), "487").find((c) => c.idx === "1")?.notice === true);
 ok("묶는 요소(.tags)는 건너뛰고 안쪽 표 글만", tagsOf(`<div class="tags"><span class="tag">석사</span><span class="tag">박사</span></div>`).join("|") === "석사|박사");
 
 console.log("상세 제목 (앞에 붙은 분류를 뗀다)");

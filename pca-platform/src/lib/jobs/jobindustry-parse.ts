@@ -251,8 +251,9 @@ function cardsIn(html: string, board: string): ListCard[] {
     const card = wrapped ? innerOf(html.slice(tagAt), "post_link_wrap") : cardAround(html, m.index);
     const head = card ? innerOf(card, "title") || innerOf(card, "list_text_title") || innerOf(card, "tit") : "";
     const tags = head ? emsOf(head) : [];
-    const notice = /<em\b[^>]*>\s*공지\s*<\/em>/i.test(head);
-    const title = stripCategory(textOf(head.replace(/<em\b[\s\S]*?<\/em>/gi, " ")).replace(/\n/g, " "), tags);
+    /* 아임웹은 모든 카드에 숨긴 `공지` em(`display: none`)을 넣는다(2026-11-05 실제 487). 보이는 것만 공지다 */
+    const notice = /<em\b(?![^>]*display\s*:\s*none)[^>]*>\s*공지\s*<\/em>/i.test(head);
+    const title = stripCategory(textOf(head.replace(/<!--[\s\S]*?-->/g, " ").replace(/<em\b[\s\S]*?<\/em>/gi, " ")).replace(/\n/g, " "), tags);
     const item = { card: { idx, title, tags, ...(notice ? { notice } : {}) }, wrapped };
     if (had >= 0) all[had] = item; else all.push(item);
   }
