@@ -18,6 +18,7 @@ import { matLang } from "@/lib/mat/lang";
 import { sayOf } from "@/lib/mat/copy";
 import { enSummaries } from "@/lib/mat/posting-en";
 import { JOBLIST_TEXT as J, TITLE_TEXT } from "../mat-text";
+import { R as RT } from "../research/research-text";
 
 export const generateMetadata = () => matTitle(TITLE_TEXT.jobs);
 
@@ -69,6 +70,10 @@ export default async function MatJobs({ searchParams }: { searchParams: Promise<
         {jobs.matched ? t(J.leadMatched) : t(J.leadNew)}
       </p>
       {e && e in ERR ? <p className="mt-alert" role="alert">{t(ERR[e as keyof typeof ERR])}</p> : null}
+      {/* 석박사 연구 이력으로 공고 맞추기(2026-11-05) */}
+      <Link href="/mat/research" className="mt-row mt-box-link" style={{ marginTop: 0, marginBottom: 16, textDecoration: "none", color: "inherit" }}>
+        <span className="mt-row-b"><p>{t(RT.entry)}</p><small>{t(RT.entrySub)}</small></span>
+      </Link>
       {carried ? (
         <>
           <h2 className="mt-h2">{t(J.carried, { src: sourceName(carried.source, lang) })}</h2>

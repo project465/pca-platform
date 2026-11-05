@@ -138,9 +138,9 @@ a.mt-week { color: var(--mt-ink); text-decoration: underline; text-underline-off
 /* 입력 */
 .mt-form { display: grid; gap: 12px; }
 .mt-field { display: grid; gap: 6px; font-size: 14px; color: var(--mt-sub); }
-.mt-field input, .mt-field textarea { font: inherit; font-size: 16px; color: var(--mt-ink); background: #fff; border: 1px solid var(--mt-line); border-radius: var(--mt-rb); padding: 12px 14px; min-height: 48px; width: 100%; }
+.mt-field input, .mt-field textarea, .mt-field select { font: inherit; font-size: 16px; color: var(--mt-ink); background: #fff; border: 1px solid var(--mt-line); border-radius: var(--mt-rb); padding: 12px 14px; min-height: 48px; width: 100%; }
 .mt-field textarea { resize: vertical; line-height: 1.55; }
-.mt-field input:focus-visible, .mt-field textarea:focus-visible { outline: 2px solid var(--mt-ink); outline-offset: 1px; border-color: var(--mt-ink); }
+.mt-field input:focus-visible, .mt-field textarea:focus-visible, .mt-field select:focus-visible { outline: 2px solid var(--mt-ink); outline-offset: 1px; border-color: var(--mt-ink); }
 
 /* 질문 입력창. 홈에는 이미 라임이 진행 막대 · 급한 D-n 에 있어 묻기 단추는 검정으로 둔다 */
 .mt-btn.is-ink { background: var(--mt-accent); border-color: var(--mt-accent); color: #fff; }

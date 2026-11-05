@@ -2,6 +2,7 @@ import { queryOne } from "@/lib/db";
 import { runWork24, work24Ready } from "./work24";
 import { jiEnabled, jiIntervalMs, runJobindustry } from "./jobindustry";
 import { cpDue, cpEnabled, runCareerpeak } from "./careerpeak";
+import { matchNewPostings, researchDailyMail } from "@/lib/research/match";
 
 async function lastCapture(source: string): Promise<number | null> {
   const r = await queryOne<{ at: string | null }>(
@@ -23,6 +24,8 @@ async function lastCapture(source: string): Promise<number | null> {
  */
 export async function runJobsTick(now = new Date()): Promise<unknown> {
   const out: Record<string, unknown> = {};
+  /* 이번 당번에 들어온 공고를 연구 이력과 맞출 기준 시각(조금 앞으로 당겨 경계를 놓치지 않는다) */
+  const since = new Date(now.getTime() - 60_000);
 
   if (!jiEnabled()) out.jobindustry = { skipped: "off" };
   else {
@@ -38,6 +41,16 @@ export async function runJobsTick(now = new Date()): Promise<unknown> {
   else {
     out.careerpeak = await runCareerpeak({ now }).catch((e) => ({ ok: false, error: String((e as Error)?.message ?? e).slice(0, 120) }));
   }
+
+  /*
+   * **연구 이력 맞춤 · 알림**(`research/match.ts`). 잡인더 · 커리어피크에서 새로 담은 공고가 있을 때만 맞춘다.
+   * 하루 한 번 메일은 당번마다 불러도 하루 한 통이다. 표가 없으면(DB 를 올리기 전) 조용히 0
+   */
+  const got = (x: unknown) => Number((x as { ingested?: number } | undefined)?.ingested ?? 0);
+  if (got(out.jobindustry) + got(out.careerpeak) > 0) {
+    out.research = await matchNewPostings(since).catch((e) => ({ ok: false, error: String((e as Error)?.message ?? e).slice(0, 120) }));
+  }
+  out.researchMail = await researchDailyMail(now).catch(() => ({ mailed: 0 }));
 
   if (!work24Ready()) out.work24 = { skipped: "no-key" };
   else {

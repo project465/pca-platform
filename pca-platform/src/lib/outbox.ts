@@ -211,7 +211,13 @@ const MAIL = {
     /* **무엇이 쌓였는지 적지 않는다.** 할 일과 공고 이름은 로그인해서
        보시게 한다. 메일은 전달 과정에서 남의 눈에 띌 수 있다 */
     /* 이름은 그 사람이 들어온 입구를 따른다(`p.svc`: AI 취업 도우미 · AI 취업 비서 · MAT) */
-    assistant_digest: (n: string, base: string, p: Record<string, string>) => ({
+    /* 연구 이력 맞춤 하루 묶음(`research/match.ts`, payload.research=1). 몇 건인지만 적는다 */
+    assistant_digest: (n: string, base: string, p: Record<string, string>) => p.research === "1" ? {
+      subject: `내 연구 이력과 맞는 새 공고 ${p.n ?? "1"}건`,
+      text: `${n}님, 오늘 내 연구 이력과 맞는 새 공고가 ${p.n ?? "1"}건 있습니다.\n\n` +
+        `로그인하시면 어떤 낱말이 맞았는지 보실 수 있습니다.\n${base}/mat/research/matches\n\n` +
+        `이 메일을 그만 받으시려면 MAT › 연구 이력 › 알림에서 메일 받기를 끄시면 됩니다.\n`,
+    } : ({
       subject: `이번 주 ${p.svc || "MAT"} 알림이 왔습니다`,
       text: `${n}님, 이번 주 알림 ${p.n ?? "1"}개가 쌓였습니다.` +
         `${Number(p.deadlines ?? 0) > 0 ? ` 마감이 다가온 공고가 ${p.deadlines}개 있습니다.` : ""}\n\n` +
@@ -268,7 +274,12 @@ const MAIL = {
         `When it appears on your statement is up to your card issuer.\n` +
         `${base}/support\n`,
     }),
-    assistant_digest: (n: string, base: string, p: Record<string, string>) => ({
+    assistant_digest: (n: string, base: string, p: Record<string, string>) => p.research === "1" ? {
+      subject: `${p.n ?? "1"} new posting(s) match your research record`,
+      text: `${n}, ${p.n ?? "1"} new posting(s) match your research record today.\n\n` +
+        `Sign in to see which keywords matched.\n${base}/mat/research/matches\n\n` +
+        `To stop these emails, turn off email in MAT › Research record › Alerts.\n`,
+    } : ({
       subject: `New notes from your ${p.svc || "AI career assistant"}`,
       text: `${n}, ${p.n ?? "1"} new note(s) are waiting for you this week.` +
         `${Number(p.deadlines ?? 0) > 0 ? ` ${p.deadlines} saved posting(s) close soon.` : ""}\n\n` +
