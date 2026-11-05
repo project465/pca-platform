@@ -130,8 +130,10 @@ export default async function ResearchItemPage({ searchParams }: { searchParams:
                 <input type="hidden" name="kind" value="method" />
                 <input type="hidden" name="name" value={m} />
                 <input type="hidden" name="from" value={doc!.id} />
-                <div className="mt-row-b"><p>{m}</p></div>
-                <label className="mt-meta"><input type="checkbox" name="confirm" value="1" required /> {t(R.f.confirm)}</label>
+                <div className="mt-row-b">
+                  <p>{m}</p>
+                  <label className="mt-meta"><input type="checkbox" name="confirm" value="1" required /> {t(R.f.confirmShort)}</label>
+                </div>
                 <button type="submit" className="mt-btn is-small">{t(R.methodAdd)}</button>
               </form>
             ))}

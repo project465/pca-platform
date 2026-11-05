@@ -74,6 +74,7 @@ export const R = {
     advisorField: { ko: "지도교수 분야", en: "Advisor's field" },
     thesisTitle: { ko: "학위논문 제목", en: "Thesis title" },
     confirm: { ko: "내용을 확인했습니다. 이대로 저장합니다.", en: "I checked the details. Save as shown." },
+    confirmShort: { ko: "확인했습니다", en: "Checked" },
     save: { ko: "저장", en: "Save" },
     del: { ko: "이 줄 지우기", en: "Delete this entry" },
     pickNone: { ko: "고르지 않음", en: "Not set" },
