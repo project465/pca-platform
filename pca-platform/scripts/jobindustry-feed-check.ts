@@ -149,6 +149,26 @@ ok("카드마다 번호 · 제목 · 분류(공지 em 은 빼고)", cards.length
 ok("공지 카드는 공지로 표시한다(상세를 부르지 않는다)", cards[0].notice === true && !cards[1].notice);
 ok("메뉴의 같은 게시판 글 링크는 카드가 아니다(post_link_wrap 만)", cards.every((c) => /^100\d$/.test(c.idx)));
 ok("카드 꼴이 다른 게시판도 idx 링크로 읽는다", listCards(SITE["/research-funding/"], "research-funding")[0]?.idx === "3001");
+/* 2026-11-05 시험 세션이 실제 487 첫 쪽에서 본 `<a>` 그대로: class 둘 · 빈칸 2개 · `&` 그대로 · 닫는 `>` 앞 빈칸 3개 */
+const liveCard = (idx: number, title: string) =>
+  `<a class="post_link_wrap _fade_link"  href="/487/?q=YToxOntzOjEyOiJrZXl3b3JkX3R5cGUiO3M6MzoiYWxsIjt9&bmode=view&idx=${idx}&t=board"   >`
+  + `<div class="title"><em>${IT}</em><span>${title}</span></div><div class="info">2026.11.05</div></a>`;
+const LIVE = listPage("487", Array.from({ length: 20 }, (_, i) => liveCard(175345227 - i, `실제 꼴 공고 ${i + 1}`)), [1, 2, 3]);
+const live = listCards(LIVE, "487");
+ok("실제 487 카드 꼴: 20장 · 번호 · 제목 · 분류", live.length === 20 && live[0].idx === "175345227" && live[0].title === "실제 꼴 공고 1"
+  && live[0].tags.join("|") === IT && !live.some((c) => c.idx === "99"), JSON.stringify(live[0]));
+ok("실제 487 카드 꼴: 2쪽 링크를 찾는다", hasPage(LIVE, "487", 2));
+/* 짝이 맞지 않는 `<style` 글자가 카드 앞에 있으면 스크립트 · 스타일 걷기가 카드까지 지운다. 그때는 걷지 않고 다시 읽는다 */
+const torn = LIVE.replace('<div class="li_board">', '<div data-css="<style id=x>" class="li_board">').replace("</body>", "<style>.x{}</style></body>");
+ok("시험 화면이 정말 카드를 지우는 꼴이다", !/post_link_wrap/.test(torn.replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, " ")));
+ok("걷기가 카드를 지우면 걷지 않은 화면으로 다시 읽는다", listCards(torn, "487").filter((c) => c.idx !== "99").length === 20, String(listCards(torn, "487").length));
+ok("스크립트 안의 같은 게시판 링크는 여전히 섞지 않는다", listCards(LIVE.replace("</body>", '<script>var u = "/487/?bmode=view&idx=31337";</script></body>'), "487").length === 20);
+/* post_link_wrap 이 카드가 아닌 곳(감싼 div)에만 있으면 옛 방식: 그 게시판 글 링크 전부 */
+const moved = listPage("487", [`<div class="post_link_wrap"><a href="/487/?bmode=view&amp;idx=2001"><div class="title">감싼 꼴</div></a></div>`]);
+ok("post_link_wrap 이 <a> 에 없으면 그 게시판 글 링크를 모두 쓴다", listCards(moved, "487").map((c) => c.idx).join(",") === "99,2001",
+  JSON.stringify(listCards(moved, "487")));
+ok("같은 번호가 메뉴와 카드에 다 있으면 카드 쪽 제목", listCards(listPage("487", [card("487", "99", "카드 제목")]), "487")
+  .map((c) => `${c.idx}:${c.title}`).join(",") === "99:카드 제목");
 ok("묶는 요소(.tags)는 건너뛰고 안쪽 표 글만", tagsOf(`<div class="tags"><span class="tag">석사</span><span class="tag">박사</span></div>`).join("|") === "석사|박사");
 
 console.log("상세 제목 (앞에 붙은 분류를 뗀다)");
@@ -261,7 +281,8 @@ async function walk(): Promise<void> {
     return { seen: rows.length, mapped: 0, unmapped: 0, stored: rows.length - noTitle - closed, skipped: { noTitle, closed } };
   };
   const state = newImwebState();
-  const test = { known: async (refs: string[]) => new Set(refs.filter((r) => known.has(r))), save };
+  const lines: string[] = [];
+  const test = { known: async (refs: string[]) => new Set(refs.filter((r) => known.has(r))), save, log: (l: string) => lines.push(l) };
   const runs = [];
   for (let t = 0; t < 6; t += 1) runs.push(await runJobindustry({ get: fakeGet, state, test }));
   const total = runs.reduce((n, r) => n + r.fresh, 0);
@@ -272,6 +293,10 @@ async function walk(): Promise<void> {
   ok("깊은 쪽은 한 번만 · 첫 쪽은 당번마다", (hits.get("/487/?page=2") ?? 0) === 1 && (hits.get("/487/") ?? 0) === 6 && runs[5].pages === 8, JSON.stringify(runs.map((r) => r.pages)));
   ok("밀린 상세를 다음 당번이 이어 부른다", runs.slice(0, 3).every((r) => r.fresh === 4) && runs[5].pending === 0 && total === 12,
     JSON.stringify(runs.map((r) => [r.fresh, r.pending])));
+  ok("당번마다 게시판별 한 줄: 쪽 · 카드 수 · 새 번호", lines.length === 6 * 8
+    && lines[0] === "[jobs] jobs.jobindustry board=430 pages=1 cards=1 new=1 done"
+    && lines.some((l) => l === "[jobs] jobs.jobindustry board=487 pages=1,2 cards=3,2 new=4"), lines.slice(0, 8).join(" / "));
+  ok("밤 당번 응답에도 같은 값", runs[0].boards.length === 8 && runs[0].boards.find((x) => x.board === "487")?.cards.join(",") === "3,2");
   ok("같은 상세를 두 번 부르지 않는다", [...hits.entries()].filter(([k]) => k.includes("bmode=view")).every(([, n]) => n === 1));
   ok("제목 없는 공고 · 마감 지난 공고(접수 기간 끝 2020 · 2026.11.01)는 담지 않는다",
     !saved.some((r) => ["1003", "1004"].includes(r.sourceRef)) && runs.reduce((n, r) => n + r.skipped.noTitle, 0) >= 1

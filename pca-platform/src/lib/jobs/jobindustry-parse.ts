@@ -217,10 +217,22 @@ export function stripCategory(title: string, cats: string[] = []): string {
  * 제목은 덤이다: 저장할 제목은 상세에서 다시 읽는다.
  */
 export function listCards(raw: string, board: string): ListCard[] {
+  /*
+   * 스크립트 · 스타일을 걷은 화면에서 먼저 읽는다(스크립트 안 글자의 같은 class 를 섞지 않게).
+   * **그래서 카드가 하나도 안 나오거나 걷기가 카드를 지웠으면 걷지 않은 화면으로 다시 읽는다.** 짝이 맞지 않는 `<script` · `<style`
+   * 글자가 있으면 걷기가 카드까지 지울 수 있다(2026-11-05: 운영에서 채용 게시판 다섯 곳이 0장으로 읽혔다)
+   */
   const html = raw.replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, " ");
-  const out: ListCard[] = [];
+  const first = cardsIn(html, board);
+  /* 걷기 전보다 카드 요소(`class="… post_link_wrap …"`)가 줄었으면 걷기가 카드를 지운 것이다 */
+  const wraps = (x: string) => (x.match(/class\s*=\s*["'][^"']*\bpost_link_wrap\b/gi) ?? []).length;
+  return first.length && wraps(html) >= wraps(raw) ? first : cardsIn(raw, board);
+}
+
+function cardsIn(html: string, board: string): ListCard[] {
   /* 채용 게시판처럼 카드가 `post_link_wrap` 이면 **그 링크만** 센다: 머리 메뉴 · 옆 위젯의 같은 게시판 글을 섞지 않는다 */
   const wrapOnly = /\bpost_link_wrap\b/.test(html);
+  const all: { card: ListCard; wrapped: boolean }[] = [];
   const re = /href\s*=\s*["']([^"']*bmode=view[^"']*)["']/gi;
   let m: RegExpExecArray | null;
   while ((m = re.exec(html))) {
@@ -228,20 +240,25 @@ export function listCards(raw: string, board: string): ListCard[] {
     const path = href.match(/^(?:https?:\/\/[^/]+)?\/([^/?#]+)\/?\?/);
     if (!path || path[1] !== board) continue;
     const idx = href.match(/[?&]idx=(\d{1,12})(?:&|$)/)?.[1];
-    if (!idx || out.some((c) => c.idx === idx)) continue;
+    if (!idx) continue;
     /* 링크를 연 `<a …>` 가 `post_link_wrap` 이면 그 안쪽이 카드다 */
     const tagAt = html.lastIndexOf("<", m.index);
     const opener = html.slice(tagAt, html.indexOf(">", m.index) + 1);
     const wrapped = /^<a\b/i.test(opener) && /\bpost_link_wrap\b/.test(opener);
-    if (wrapOnly && !wrapped) continue;
+    const had = all.findIndex((x) => x.card.idx === idx);
+    /* 같은 번호가 메뉴와 카드에 다 있으면 카드 쪽을 쓴다 */
+    if (had >= 0 && (all[had].wrapped || !wrapped)) continue;
     const card = wrapped ? innerOf(html.slice(tagAt), "post_link_wrap") : cardAround(html, m.index);
     const head = card ? innerOf(card, "title") || innerOf(card, "list_text_title") || innerOf(card, "tit") : "";
     const tags = head ? emsOf(head) : [];
     const notice = /<em\b[^>]*>\s*공지\s*<\/em>/i.test(head);
     const title = stripCategory(textOf(head.replace(/<em\b[\s\S]*?<\/em>/gi, " ")).replace(/\n/g, " "), tags);
-    out.push({ idx, title, tags, ...(notice ? { notice } : {}) });
+    const item = { card: { idx, title, tags, ...(notice ? { notice } : {}) }, wrapped };
+    if (had >= 0) all[had] = item; else all.push(item);
   }
-  return out;
+  /* `post_link_wrap` 이 있는데 카드로 묶인 링크가 하나도 없으면 꼴이 바뀐 것이다. 옛 방식(그 게시판 글 링크 전부)으로 */
+  const wrappedOnes = all.filter((x) => x.wrapped);
+  return (wrapOnly && wrappedOnes.length ? wrappedOnes : all).map((x) => x.card);
 }
 
 export type JiView = { title: string; body: string; closes: string; tags: string[] };

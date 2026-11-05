@@ -40,6 +40,8 @@ export type ImwebConfig<B extends ImwebBoard> = {
   /** 시험용 갈음(`jobindustry:feed` 가 DB 없이 돌린다). 비우면 `knownRefs` · `ingest` */
   known?: (refs: string[]) => Promise<Set<string>>;
   save?: (rows: RawPosting[]) => Promise<IngestResult>;
+  /** 게시판마다 한 줄 남기는 곳. 비우면 `console.log`(운영 로그) */
+  log?: (line: string) => void;
 };
 
 type Pending = { board: string; card?: ListCard; fresh: boolean; tries: number };
@@ -50,8 +52,12 @@ export type ImwebState = {
 };
 export const newImwebState = (): ImwebState => ({ boards: new Map(), pending: new Map() });
 
+/** 이번 당번에 게시판 하나를 읽은 결과. 운영 로그 한 줄과 밤 당번 응답에 같이 싣는다 */
+export type ImwebBoardRun = { board: string; pages: number[]; cards: number[]; fresh: number; done: boolean };
+
 export type ImwebResult = {
   ok: boolean; listed: number; pages: number; fresh: number; pending: number;
+  boards: ImwebBoardRun[];
   ingested: number; mapped: number; failed: number;
   skipped: IngestResult["skipped"]; error?: string;
 };
@@ -76,8 +82,11 @@ export async function runImweb<B extends ImwebBoard>(cfg: ImwebConfig<B>, st: Im
   let failed = 0, pages = 0, listed = 0, calls = 0;
   const pause = async () => { if (calls++ > 0) await sleep(cfg.delayMs); };
   const seen: { idx: string; board: string; card: ListCard; fresh: boolean }[] = [];
+  const runs: ImwebBoardRun[] = [];
 
   for (const b of cfg.boards) {
+    const run: ImwebBoardRun = { board: b.path, pages: [], cards: [], fresh: 0, done: false };
+    runs.push(run);
     let w = st.boards.get(b.path);
     if (!w || (w.doneAt && now - w.doneAt >= cfg.rewalkMs)) { w = { next: 2, doneAt: 0, prev: [] }; st.boards.set(b.path, w); }
     const want = [1];
@@ -91,6 +100,7 @@ export async function runImweb<B extends ImwebBoard>(cfg: ImwebConfig<B>, st: Im
         pages += 1;
         const cards = listCards(html, b.path);
         listed += cards.length;
+        run.pages.push(p); run.cards.push(cards.length);
         /* 게시판 안내(공지) 글은 공고가 아니다. 상세를 부르지 않는다 */
         for (const c of cards) if (!c.notice && !seen.some((s) => s.idx === c.idx)) seen.push({ idx: c.idx, board: b.path, card: c, fresh: p === 1 });
         /*
@@ -102,6 +112,14 @@ export async function runImweb<B extends ImwebBoard>(cfg: ImwebConfig<B>, st: Im
         const same = ids.length > 0 && ids.every((x) => w.prev.includes(x));
         if (p === 1) {
           if (w.next === 2) w.prev = ids;
+          /*
+           * 첫 쪽에 카드가 없으면 그 게시판은 24시간 동안 쉰다. 글 링크가 있는데 0장이면 읽는 규칙이 화면과
+           * 어긋난 것이라 **실패로 남긴다**(2026-11-05: 채용 게시판 다섯 곳이 로그 없이 멈춰 있었다)
+           */
+          if (!ids.length) {
+            const links = (html.match(new RegExp(`/${b.path}/?\\?[^"'<>]*bmode=view`, "gi")) ?? []).length;
+            if (links) opFail({ operation: cfg.operation, ref: ref("board", b.path), step: "list-empty", category: "upstream", detail: `links=${links} bytes=${html.length}` });
+          }
           if (!ids.length || (!hasPage(html, b.path, 2) && ids.length < PAGE_FULL)) { w.doneAt = now; break; }
           continue;
         }
@@ -122,6 +140,8 @@ export async function runImweb<B extends ImwebBoard>(cfg: ImwebConfig<B>, st: Im
     const known = await (cfg.known ?? ((r: string[]) => knownRefs(cfg.source, r)))(seen.map((s) => s.idx));
     for (const s of seen) {
       if (known.has(s.idx)) { st.pending.delete(s.idx); continue; }
+      const run = runs.find((x) => x.board === s.board);
+      if (run) run.fresh += 1;
       const had = st.pending.get(s.idx);
       st.pending.set(s.idx, { board: s.board, card: s.card, fresh: s.fresh || !!had?.fresh, tries: had?.tries ?? 0 });
     }
@@ -144,9 +164,15 @@ export async function runImweb<B extends ImwebBoard>(cfg: ImwebConfig<B>, st: Im
       opFail({ operation: cfg.operation, ref: ref("posting", idx), step: "detail", category: "upstream" }, e);
     }
   }
+  /* 게시판마다 한 줄: 읽은 쪽 · 쪽마다 카드 수 · 처음 보는 번호 수 · 한 바퀴 끝 */
+  const log = cfg.log ?? ((line: string) => console.log(line));
+  for (const x of runs) {
+    x.done = !!st.boards.get(x.board)?.doneAt;
+    log(`[jobs] ${cfg.operation} board=${x.board} pages=${x.pages.join(",") || "-"} cards=${x.cards.join(",") || "-"} new=${x.fresh}${x.done ? " done" : ""}`);
+  }
   const r = rows.length ? await (cfg.save ?? ingest)(rows) : { seen: 0, mapped: 0, unmapped: 0, stored: 0, skipped: { noTitle: 0, closed: 0 } };
   return {
-    ok: pages > 0 || failed === 0, listed, pages, fresh: queue.length, pending: st.pending.size,
+    ok: pages > 0 || failed === 0, listed, pages, fresh: queue.length, pending: st.pending.size, boards: runs,
     ingested: r.stored, mapped: r.mapped, failed, skipped: r.skipped,
     error: !pages && failed ? "list" : undefined,
   };

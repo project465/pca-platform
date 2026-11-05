@@ -90,7 +90,7 @@ export function jiRow(b: JiBoard, idx: string, html: string, card?: ListCard): R
 /* 이어 읽는 자리. 이 프로세스 안에만 있다(`imweb.ts` 머리말) */
 const STATE = newImwebState();
 
-export async function runJobindustry(opts: { get?: (url: string) => Promise<string>; state?: typeof STATE; test?: Pick<ImwebConfig<{ path: string }>, "known" | "save"> } = {}): Promise<ImwebResult> {
+export async function runJobindustry(opts: { get?: (url: string) => Promise<string>; state?: typeof STATE; test?: Pick<ImwebConfig<{ path: string }>, "known" | "save" | "log"> } = {}): Promise<ImwebResult> {
   return runImweb({
     source: JI_SOURCE, operation: "jobs.jobindustry", base: jiBase(), boards: JI_BOARDS,
     ...opts.test, get: opts.get ?? get, toRow: jiRow,
