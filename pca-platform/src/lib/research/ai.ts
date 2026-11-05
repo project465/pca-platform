@@ -64,7 +64,7 @@ export function postingBlock(p: PostingForMatch): string {
 /** 넘기지 않은 번호를 버린다 */
 export function keepKnownEvidence(r: AiReading, ids: string[]): AiReading {
   const ok = new Set(ids.map((x) => `R${x}`));
-  return { ...r, requirements: r.requirements.slice(0, 8).map((q) => ({ ...q, evidence: q.evidence.filter((e) => ok.has(e.trim())) })) };
+  return { ...r, requirements: r.requirements.slice(0, 8).map((q) => ({ ...q, evidence: q.evidence.map((e) => e.trim()).filter((e) => ok.has(e)) })) };
 }
 
 export async function readMatch(userId: string, postingId: string, items: ResearchItem[], lang: "ko" | "en"):

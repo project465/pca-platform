@@ -187,6 +187,7 @@
     "partner:check": "tsx scripts/partner-check.ts",
     "careerpeak:check": "tsx scripts/careerpeak-consult-check.ts",
     "jobindustry:feed": "tsx scripts/jobindustry-feed-check.ts",
+    "research:check": "tsx scripts/research-profile-check.ts",
     "jobs:probe": "tsx scripts/jobs-live-probe.ts",
     "partner:job": "tsx scripts/jobindustry-import-check.ts",
     "routes:check": "tsx scripts/routes-check.ts",

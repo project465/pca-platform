@@ -358,6 +358,15 @@ export function renderMail(
   });
 }
 
+/** 같은 자리에 payload 를 넣어 본다(연구 이력 하루 메일처럼 payload 로 문면이 갈리는 종류) */
+export function renderMailWith(
+  kind: OutboxKind, locale: string | null, payload: Record<string, string>,
+): { subject: string; text: string } | null {
+  return compose({
+    id: "0", kind, to_addr: null, email: null, display_name: null, payload, attempts: 0, locale,
+  });
+}
+
 export type FlushResult = {
   sent: number;
   /** 보낼 곳이나 문면이 없어 접은 것. 다시 시도하지 않는다 */
