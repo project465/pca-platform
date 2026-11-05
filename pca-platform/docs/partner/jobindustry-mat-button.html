@@ -1,0 +1,30 @@
+<!--
+  잡인더스트리(아임웹) 공고 상세에 붙이는 MAT 버튼(2026-11-05).
+  붙이는 곳: 아임웹 관리자의 사이트 전체 바디 코드 칸(메뉴 이름은 관리자 화면에서 확인).
+  붙이는 때: 운영에 잡인더 입구(`/from/jobindustry?board=&idx=`)가 들어간 뒤.
+  공고 상세(`/430|439|486|487|488/?bmode=view&idx=…`)에서만 제목 아래에 버튼이 선다. 목록 · 다른 게시판은 아무것도 하지 않는다.
+  브라우저 언어가 한국어가 아니면 영어 문구로 선다. 버튼 뒤 화면은 앱이 계정 언어로 보인다.
+-->
+<script>
+(function () {
+  var m = location.pathname.match(/^\/(430|439|486|487|488)\/?$/);
+  var q = new URLSearchParams(location.search);
+  var idx = q.get('idx') || '';
+  if (!m || q.get('bmode') !== 'view' || !/^\d+$/.test(idx)) return;
+  var ko = /^ko\b/i.test(navigator.language || '');
+  var url = 'https://app.careermatri.com/from/jobindustry?board=' + m[1] + '&idx=' + idx;
+  var tries = 0;
+  function add() {
+    if (document.getElementById('cm-mat-btn')) return;
+    var t = document.querySelector('.view_tit');
+    if (!t) { if (tries++ < 20) setTimeout(add, 300); return; }
+    var a = document.createElement('a');
+    a.id = 'cm-mat-btn'; a.href = url; a.target = '_blank'; a.rel = 'noopener';
+    a.lang = ko ? 'ko' : 'en';
+    a.textContent = ko ? 'MAT으로 이 공고 내 경험과 맞춰 보기' : 'Match this posting with my experience in MAT';
+    a.style.cssText = 'display:inline-block;margin:12px 0;padding:10px 16px;background:#2563EB;color:#fff;border-radius:8px;font-weight:700;text-decoration:none';
+    t.parentNode.insertBefore(a, t.nextSibling);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', add); else add();
+})();
+</script>

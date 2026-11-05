@@ -31,7 +31,9 @@ export async function GET(req: Request, { params }: { params: Promise<{ brand: s
     if (post) {
       const user = await currentUser().catch(() => null);
       if (user) await recordAttribution(user.id, { source: "jobindustry", board: post.board, idx: post.idx });
-      const res = go(user ? "/mat/from-ji" : `/signup?next=${encodeURIComponent("/mat/from-ji")}`);
+      /* **로그인 화면으로 보낸다**(2026-11-05: 학교 · 기관 계정이 있는 학생이 가입 화면으로 가면 MAT 이 열리지 않은
+         개인 계정이 하나 더 생긴다). 처음 온 사람은 로그인 화면의 `가입` 링크가 같은 다음 쪽을 들고 간다 */
+      const res = go(user ? "/mat/from-ji" : `/login?next=${encodeURIComponent("/mat/from-ji")}`);
       const opt = { path: "/", sameSite: "lax" as const, httpOnly: true, secure: process.env.NODE_ENV === "production" };
       res.cookies.set(JI_POST_COOKIE, `${post.board}:${post.idx}`, { ...opt, maxAge: 60 * 60 * 24 * JOB_COOKIE_DAYS });
       res.cookies.set(BRAND_COOKIE, brand, { ...opt, maxAge: 60 * 60 * 24 * 90 });

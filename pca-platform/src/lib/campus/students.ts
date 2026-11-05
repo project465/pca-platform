@@ -20,7 +20,7 @@ import { randomBytes } from "node:crypto";
 import { query, queryOne } from "@/lib/db";
 import { hashPassword } from "@/lib/password";
 import {
-  allLeaves, contextOf, findLeaf, routingContextOf, university, type CampusContext,
+  allLeaves, contextOf, findLeaf, routingContextOf, studentLocaleOf, university, type CampusContext,
   type CampusUniversity,
 } from "./registry";
 
@@ -225,14 +225,15 @@ export async function provisionStudent(
   const user = await queryOne<{ id: string; is_demo: boolean }>(
     `INSERT INTO users (login_id, email, display_name, password_hash,
                         status, locale, must_reset_pw)
-     VALUES ($1, $2, $3, $4, 'active', 'ko', TRUE)
+     VALUES ($1, $2, $3, $4, 'active', $5, TRUE)
      ON CONFLICT (login_id) DO UPDATE
        SET password_hash = EXCLUDED.password_hash,
            display_name  = EXCLUDED.display_name,
            must_reset_pw = TRUE
      RETURNING id::text, is_demo`,
+    /* 첫 화면 언어는 기관 설정(`default_locale`). 이미 있는 계정의 언어는 덮지 않는다(학생이 고른 값) */
     [loginId, input.email?.trim() || null, input.name.trim(),
-      await hashPassword(pw)],
+      await hashPassword(pw), studentLocaleOf(university(ctx.university_code))],
   );
   if (!user) throw new Error(`계정을 만들지 못했습니다: ${loginId}`);
   /* **학생을 시연으로 표시하지 않는다.** 사람을 만드는 자리가 스무 곳이

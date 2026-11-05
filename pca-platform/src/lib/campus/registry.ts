@@ -154,6 +154,11 @@ export type CampusUniversity = {
    * 쪽에서 검사 전에 전공 계열을 고르고, 고른 값이 계정의 분야(명단 줄)가 된다. 명단 CSV 의 분야 칸은 비워도 된다
    */
   participant_picks?: boolean;
+  /**
+   * **이 기관 학생 계정이 처음 쓰는 화면 언어**(2026-11-05 대표 결정: UST 외국인 학생은 학교 계약). 비우면 한국어.
+   * 명단으로 계정을 만들 때 `users.locale` 에 적는다. 학생은 언어 전환으로 언제든 바꾼다
+   */
+  default_locale?: "ko" | "en";
   university_code: string;
   university_name: string;
   market_code: string;
@@ -750,4 +755,9 @@ export function wave1Of(u: CampusUniversity, dir = CONTENT_DIR): Wave1Row[] {
 /** 이 기관은 참여자가 분야를 직접 고르는가(`participant_picks`) */
 export function picksOwnField(u: CampusUniversity | null | undefined): boolean {
   return !!u?.participant_picks;
+}
+
+/** 이 기관 학생 계정의 첫 화면 언어(`default_locale`, 비우면 한국어) */
+export function studentLocaleOf(u: { default_locale?: "ko" | "en" } | null | undefined): "ko" | "en" {
+  return u?.default_locale === "en" ? "en" : "ko";
 }
