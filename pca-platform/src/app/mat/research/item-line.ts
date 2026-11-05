@@ -33,6 +33,7 @@ export function itemSub(it: Pick<ResearchItem, "kind" | "data">, lang: L): strin
       if (d.from || d.to) out.push(`${d.from ?? ""}~${d.to ?? ""}`);
       if (d.budget) out.push(say(R.opt.budget[d.budget], lang));
       if (d.role) out.push(say(R.opt.role[d.role], lang));
+      if (d.participation) out.push(say(R.f.participationShort, lang).replace("{n}", String(d.participation)));
       break;
     }
     case "patent": {

@@ -33,7 +33,7 @@ export const DEGREE_STATUS = ["done", "in_progress"] as const;
 export type PaperData = { title: string; venue?: string; year?: number; authorRole?: (typeof AUTHOR_ROLES)[number]; doi?: string; keywords: string[] };
 export type ProjectData = {
   title: string; agency?: string; program?: string; from?: string; to?: string;
-  budget?: (typeof BUDGET_BANDS)[number]; role?: (typeof PROJECT_ROLES)[number]; tasks?: string; outputs?: string; keywords: string[];
+  budget?: (typeof BUDGET_BANDS)[number]; role?: (typeof PROJECT_ROLES)[number]; participation?: number; tasks?: string; outputs?: string; keywords: string[];
 };
 export type PatentData = { title: string; status?: (typeof PATENT_STATUS)[number]; year?: number; inventorOrder?: number; keywords: string[] };
 export type MethodData = { name: string; level?: (typeof METHOD_LEVELS)[number]; note?: string };
@@ -101,7 +101,7 @@ export function parseItem(f: Form): ParseResult {
       if (!title) return { ok: false, why: "required" };
       return { ok: true, kind, data: {
         title, agency: str(f, "agency", 120), program: str(f, "program", 200), from: month(f, "from"), to: month(f, "to"),
-        budget: pick(f, "budget", BUDGET_BANDS), role: pick(f, "role", PROJECT_ROLES), tasks: text(f, "tasks", 600),
+        budget: pick(f, "budget", BUDGET_BANDS), role: pick(f, "role", PROJECT_ROLES), participation: int(f, "participation", 1, 100), tasks: text(f, "tasks", 600),
         outputs: str(f, "outputs", 300), keywords,
       } };
     }

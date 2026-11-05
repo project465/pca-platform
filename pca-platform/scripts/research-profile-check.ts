@@ -78,10 +78,27 @@ const form = (o: Record<string, string | string[]>) => {
   ok("근무지 칸은 보지 않는다", M.scorePosting(post({ title: "연구원 채용", posting_fields: { 근무지: "전해질시" } }), me(["전해질"])) === null);
   ok("점수는 100을 넘지 않는다", (M.scorePosting(post({ title: "a b c d e", degree_min: "master", category: "출연연" }), me(["a1", "b", "c", "d", "e"].map((x) => `${x}x`).concat(["a b", "b c", "c d", "d e"]), "phd", ["출연연"]))?.score ?? 0) <= 100);
 
-  console.log("2차 요건 풀이(근거 거르기)");
-  const kept = A.keepKnownEvidence({ summary: "s", requirements: [{ text: "SCI", status: "met", evidence: ["R11", "R99", " R12 "], note: "n" }] }, ["11", "12"]);
-  ok("넘기지 않은 이력 번호는 버린다", kept.requirements[0].evidence.join("|") === "R11|R12");
-  ok("이력 한 줄에 번호를 붙인다", A.itemLine({ id: "7", kind: "method", data: { name: "XRD", level: "operate" } }).startsWith("R7 [장비·기법] name=XRD"));
+  console.log("2차 요건 판단(문구 규칙 · 거르기)");
+  const postingText = "제목: 전고체 전지 연구원\n지원자격: 관련 분야 석사 이상\n우대사항: 국가R&D 연구책임자 수행 경험";
+  const raw = { requirements: [
+    { quote: "'국가R&D 연구책임자 수행 경험'", kind: "preferred" as const, eligibility: "우대이므로 지원 자격에는 영향이 없습니다. 이 점이 약점입니다.",
+      record: "입력하신 과제 3건은 모두 참여연구원(참여율 30~50%)입니다. 경쟁력이 있습니다.", evidence: ["R11", "R99", " R12 "],
+      write: ["단계평가 보고서를 직접 쓰셨다면 그 사실을 경력서에 적어 두세요.", "이 경험을 어필하세요."] },
+    { quote: "박사 학위 소지자", kind: "required" as const, eligibility: "x", record: "y", evidence: [], write: [] },
+    { quote: "관련 분야 석사 이상", kind: "required" as const, eligibility: "적합합니다.", record: "", evidence: [], write: [] },
+  ] };
+  const c = A.cleanReading(raw, postingText, ["11", "12"]);
+  ok("공고에 없는 인용(지어낸 요건)은 버린다", c.requirements.length === 2 && !c.requirements.some((q) => q.quote.includes("박사")), JSON.stringify(c.requirements.map((q) => q.quote)));
+  ok("인용 앞뒤 따옴표를 떼고 원문 그대로 둔다", c.requirements[0].quote === "국가R&D 연구책임자 수행 경험");
+  ok("넘기지 않은 이력 번호는 버린다", c.requirements[0].evidence.join("|") === "R11|R12");
+  ok("강점 · 약점 · 경쟁력 · 어필 문장을 걷는다", c.requirements[0].eligibility === "우대이므로 지원 자격에는 영향이 없습니다."
+    && c.requirements[0].record === "입력하신 과제 3건은 모두 참여연구원(참여율 30~50%)입니다." && c.requirements[0].write.length === 1, JSON.stringify(c.requirements[0]));
+  ok("판단 문장이 다 걸러지면 사실 문장으로 채운다(필수)", c.requirements[1].eligibility.startsWith("입력하신 이력만으로는"));
+  ok("필수 · 우대 구분을 남긴다", c.requirements[0].kind === "preferred" && c.requirements[1].kind === "required");
+  ok("이력 한 줄: 역할 · 참여율 · 사업비 구간을 화면과 같은 말로", A.itemLine({ id: "7", kind: "project", data: { title: "전고체 과제", budget: "10to50", role: "member", participation: 40, keywords: [] } })
+    === "R7 | 과제: 전고체 과제 | 총사업비: 10억~50억 원 | 역할: 참여연구원 | 참여율: 40%");
+  ok("참여율은 1~100 정수만", (() => { const r = P.parseItem(form({ kind: "project", confirm: "1", title: "a", participation: "140" })); return r.ok && (r.data as { participation?: number }).participation === undefined; })()
+    && (() => { const r = P.parseItem(form({ kind: "project", confirm: "1", title: "a", participation: "35" })); return r.ok && (r.data as { participation?: number }).participation === 35; })());
 
   console.log("메일 문면");
   const ko = renderMailWith("assistant_digest", "ko", { research: "1", n: "3" });
@@ -160,6 +177,12 @@ const form = (o: Record<string, string | string[]>) => {
       if (env.h) process.env.MAIL_HOST = env.h; else delete process.env.MAIL_HOST;
       if (env.f) process.env.MAIL_FROM = env.f; else delete process.env.MAIL_FROM;
 
+      console.log("무료 범위");
+      ok("요건 판단은 이용권 없이 1건", A.FREE_READINGS === 1 && (await A.readingsUsed(u1)) === 0);
+      await query(`INSERT INTO assistant_ai_calls (user_id, op, model, effort, outcome) VALUES ($1, $2, 'x', 'medium', 'ok')`, [u1, A.OP]).catch(() => undefined);
+      await query(`INSERT INTO assistant_ai_calls (user_id, op, model, effort, outcome) VALUES ($1, $2, 'x', 'medium', 'error')`, [u2, A.OP]).catch(() => undefined);
+      ok("성공한 판단만 센다(실패는 무료 1건을 쓰지 않는다)", (await A.readingsUsed(u1)) === 1 && (await A.readingsUsed(u2)) === 0);
+
       console.log("본인만");
       ok("남의 이력은 읽지 못한다", (await P.itemsOf(u2)).length === 0 && (await P.itemOf(u2, i1!)) === null);
       const hijack = await P.saveItem(u2, { id: i1!, kind: "paper", data: { title: "가로채기", keywords: [] } });
@@ -172,6 +195,7 @@ const form = (o: Record<string, string | string[]>) => {
       ok("낱말을 준 이력을 지우면 맞춤도 사라진다", (await M.matchesOf(u1)).length === 0);
     } finally {
       await query(`DELETE FROM outbox WHERE user_id = ANY($1::bigint[])`, [[u1, u2]]).catch(() => undefined);
+      await query(`DELETE FROM assistant_ai_calls WHERE user_id = ANY($1::bigint[])`, [[u1, u2]]).catch(() => undefined);
       await query(`DELETE FROM assistant_nudges WHERE user_id = ANY($1::bigint[])`, [[u1, u2]]).catch(() => undefined);
       await query(`DELETE FROM users WHERE id = ANY($1::bigint[])`, [[u1, u2]]).catch(() => undefined);
       await query(`DELETE FROM v3_job_postings WHERE id = ANY($1::bigint[])`, [posts]).catch(() => undefined);

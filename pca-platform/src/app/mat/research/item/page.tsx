@@ -93,6 +93,7 @@ export default async function ResearchItemPage({ searchParams }: { searchParams:
           {input("to", R.f.to, { type: "month" })}
           {select("budget", R.f.budget, BUDGET_BANDS, R.opt.budget)}
           {select("role", R.f.role, PROJECT_ROLES, R.opt.role)}
+          {input("participation", R.f.participation, { type: "number", min: 1, max: 100 })}
           <label className="mt-field"><span>{t(R.f.tasks)}</span><textarea name="tasks" rows={3} maxLength={600} defaultValue={v.tasks ?? ""} /></label>
           {input("outputs", R.f.outputs)}
           {keywords}
