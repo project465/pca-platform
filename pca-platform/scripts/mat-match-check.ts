@@ -173,11 +173,36 @@ async function main(): Promise<void> {
   show("JJU26_AI", "전주대 인공지능학과");
   show("JJU26_BOOTCAMP_AI", "전주대 AI 부트캠프(피지컬 AI)");
 
+  /*
+   * 전주대 인공지능학과는 2026-11-03 부터 AI_CORE_V1 / SPEC_AI_DATA 로 응시하지만, 그 전 응시와 학교 계정 줄에는
+   * CS_CORE_V1 · SPEC_CS_AI 가 남아 있다(`specOf` 가 응시 Core 와 다르면 학교 계정 값을 읽는다). 어느 짝으로 읽혀도
+   * 인공지능 공고가 위에 서고 무관 공고가 없어야 한다
+   */
+  const variants: { core: string; spec: string | null }[] = [
+    { core: "AI_CORE_V1", spec: "SPEC_AI_DATA" }, { core: "AI_CORE_V1", spec: "SPEC_CS_AI" },
+    { core: "CS_CORE_V1", spec: "SPEC_CS_AI" }, { core: "AI_CORE_V1", spec: null },
+  ];
+  const aiIds = new Set(pool.filter((p) => fit.get(p.id)?.has("AI_CORE_V1")).map((p) => p.id));
+  const variantFails: string[] = [];
+  if (!useDb && (!want || want === "JJU")) {
+    console.log("\n### 전주대 인공지능학과 · 응시 Core / 갈래 짝마다(위 10건 중 인공지능 공고 · 무관)");
+    for (const v of variants) {
+      const picked = rankJobs(pool, { mine: null, major: majorNameOf(v.core), core: v.core, grad: false, now: NOW, spec: v.spec, unit: "JJU26_AI" } as RankCtx, 1000);
+      const ok = accepts(v.core, v.spec, "JJU26_AI");
+      const top = picked.main.slice(0, 10);
+      const wrongTop = top.filter((p) => { const f = fit.get(p.id); return f ? ![...f].some((c) => ok.has(c)) : false; }).length;
+      const aiTop = top.filter((p) => aiIds.has(p.id)).length;
+      console.log(`${v.core} / ${v.spec ?? "(갈래 없음)"}\t맞는 공고 ${picked.main.length}\t위 10건 인공지능 ${aiTop}\t위 10건 무관 ${wrongTop}`);
+      if (wrongTop) variantFails.push(`인공지능학과(${v.core} / ${v.spec ?? "-"}) 위 열 건에 무관한 공고가 있다`);
+      if (aiTop < 5) variantFails.push(`인공지능학과(${v.core} / ${v.spec ?? "-"}) 위 열 건에 인공지능 공고가 ${aiTop}건뿐이다`);
+    }
+  }
+
   const out = process.env.MAT_MATCH_JSON;
   if (out) writeFileSync(out, JSON.stringify({ source: useDb ? "db" : "fixture", pool: pool.length, rows }, null, 1));
 
   if (useDb) return;
-  const fails: string[] = [];
+  const fails: string[] = [...variantFails];
   const ai = rows.find((r) => r.unit === "JJU26_AI");
   if (ai && ai.top.some((x) => x.ok === false)) fails.push("전주대 인공지능학과 위 열 건에 무관한 공고가 있다");
   if (ai && ai.main < 5) fails.push(`전주대 인공지능학과 맞는 공고가 ${ai.main}건뿐이다`);
