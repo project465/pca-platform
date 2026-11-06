@@ -71,7 +71,7 @@ function fixturePool(): { pool: PoolRow[]; fit: Map<string, Set<string>> } {
       core_code: m.core, role_code: m.role, title: x.t, category: board?.label ?? null, field: x.tag,
       degree_label: null, region_label: null, abroad: false,
       posting_kind: kindOf((board?.kind ?? "job") as PostingKind, employmentOf(x.e)),
-      ...({ posting_fields: splitFields(body) } as object),
+      recruit_field: splitFields(body).모집분야 ?? null,
     } as PoolRow);
     fit.set(id, new Set(x.fit.map(codeOf)));
   });
@@ -87,7 +87,7 @@ function fixturePool(): { pool: PoolRow[]; fit: Map<string, Set<string>> } {
       raw_requirements: m.requirements, core_code: m.core, role_code: m.role, title: r.title,
       category: r.meta?.category ?? null, field: r.meta?.field ?? null, degree_label: r.meta?.degreeLabel ?? null,
       region_label: r.meta?.regionLabel ?? null, abroad: r.meta?.abroad ?? null, posting_kind: r.meta?.kind ?? "job",
-      ...({ job_family: r.meta?.jobFamily ?? null } as object),
+      job_family: r.meta?.jobFamily ?? null,
     } as PoolRow);
     fit.set(id, new Set(fx.careerpeak[i].fit.map(codeOf)));
   });
@@ -131,6 +131,9 @@ async function main(): Promise<void> {
         console.log(`
 -- ${leaf.code} ${leaf.name}`);
         for (const p of picked.main) console.log(`  ${isOk(p.id) === false ? "무관" : "맞음"}  ${p.title}  [${p.hits.join(", ")}]`);
+        for (const p of pool) {
+          if ((p.posting_kind ?? "job") === "job" && isOk(p.id) && !picked.main.some((x) => x.id === p.id)) console.log(`  놓침  ${p.title}`);
+        }
       }
       const missed = useDb ? 0 : pool.filter((p) => (p.posting_kind ?? "job") === "job" && isOk(p.id) && !shownIds.has(p.id)).length;
       rows.push({
