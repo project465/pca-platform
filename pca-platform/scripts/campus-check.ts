@@ -434,7 +434,8 @@ ok("학교 코드가 겹치지 않는다",
   for (const u of unis) {
     const out = u.excluded_units ?? [];
     ok(`뺀 조직에 까닭이 적혀 있다 — ${u.university_code} ${out.length}개`,
-      out.length > 0 && out.every((x) => x.name?.trim() && x.why?.trim()),
+      /* 데모 학교(체험대학교)는 공식 편제가 없어 뺀 조직이 없는 것이 맞다 */
+      (out.length > 0 || (u as { demo?: boolean }).demo === true) && out.every((x) => x.name?.trim() && x.why?.trim()),
       out.filter((x) => !x.why?.trim()).map((x) => x.name).join(" "));
     const names = new Set(allLeaves(u).map((r) => r.leaf.name));
     const slipped = out.filter((x) => names.has(x.name)).map((x) => x.name);
