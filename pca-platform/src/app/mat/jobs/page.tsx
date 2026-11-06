@@ -33,6 +33,9 @@ const ERR = { noread: J.errNoread, short: J.errShort, save: J.errSave } as const
  *
  * "추천" · 합격 가능성 · 점수를 쓰지 않는다. 무엇이 겹쳤는지를 그대로 보인다.
  */
+/* 맞는 공고가 없을 때 넓혀 찾은 공고를 보일지(대표 결정: 안 보이고 빈 화면 안내만, 2026-11-06 선택지 A) */
+const SHOW_BROAD = false;
+
 export default async function MatJobs({ searchParams }: { searchParams: Promise<{ e?: string; from?: string }> }) {
   const user = await requireUser();
   const lang = await matLang();
@@ -92,7 +95,7 @@ export default async function MatJobs({ searchParams }: { searchParams: Promise<
       ) : null}
       {list.length ? (
         <div className="mt-list">{list.slice(0, 20).map(card)}</div>
-      ) : jobs.broad.length ? (
+      ) : SHOW_BROAD && jobs.broad.length ? (
         <>
           <p className="mt-note">{t(J.broadNote)}</p>
           <h2 className="mt-h2">{t(J.broadTitle)}</h2>
