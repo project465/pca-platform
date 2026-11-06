@@ -161,7 +161,7 @@ export function profileRead(x: Inputs, d: X): Page {
     if (high.length) paras.push(["Interest", `You said your interest is high in ${andEn(high.slice(0, 4))}, but this time we did not ask about judgments there. Do a short project in one of them and your next result will have something to go on.`]);
     if (!paras.length) paras.push(["Now", "This time no area was asked down to the judgment level. Do a short project in an area you care about, then take the assessment again."]);
   } else {
-    if (b3.length) paras.push(["강한 쪽", `${subj(b3)} 기준까지 직접 정했다고 답했고, 체크리스트에서도 그런 일을 고르셨어요. ${andJoin(where(b3))}에서 나온 판단이라 지원서에 ‘제가 정한 것’으로 앞에 내세울 만합니다.`]);
+    if (b3.length) paras.push(["기준까지 정한 쪽", `${subj(b3)} 기준까지 직접 정했다고 답했고, 체크리스트에서도 그런 일을 고르셨어요. ${andJoin(where(b3))}에서 나온 판단이라 지원서에 ‘제가 정한 것’으로 앞에 내세울 만합니다.`]);
     if (b2.length) paras.push(["다음 단계", `${subj(b2)} 직접 맡아 해 봤다고 답했어요. 다음 과제에서 그 판단의 기준까지 직접 정하고 그런 일을 체크리스트에서 하나 더 고르면 ‘${STEP_WORD[3].tag}’ 단계로 올라갑니다.`]);
     if (low.length) paras.push(["더 해 볼 쪽", `${subj(low)} 물은 영역에서 아직 직접 해 본 단계까지 나오지 않았어요. 정말 해 본 적이 없을 수도 있고 검사하면서 그때 일이 떠오르지 않았을 수도 있으니, 수업이나 팀 과제에서 맡았던 때가 있었는지 한 번 더 떠올려 보세요.`]);
     if (un.length) paras.push(["묻지 않은 쪽", `${subj(un)} 이번 검사에서 묻지 않았어요.`]);
@@ -298,7 +298,7 @@ export function strengthPage(x: Inputs, d: X, k: number): Page {
   /* ‘강점’ 은 강점 영역에만 붙인다. 키워 가는 영역에 ‘강점 3’ 을 달면 앞 장의 분류와 어긋난다 */
   const strong = s.zone === "Z1_EVIDENCE_ESTABLISHED";
   /* 강점 번호와 섞여 ‘강점 1 · 강점 2 · 꺼내 쓸 경험 3’ 이 되지 않게 번호는 강점에만 붙인다 */
-  const tag = en ? `Strength ${k + 1}` : strong ? `강점 ${k + 1}` : "꺼내 쓸 경험";
+  const tag = en ? `Strength ${k + 1}` : strong ? `내세울 경험 ${k + 1}` : "꺼내 쓸 경험";
   return P(L(`${tag} · ${d.name(s.code)}`, `Strength ${k + 1} · ${nm}`),
     `<p class="k">${E(tag)} · ${E(d.name(s.code))}</p>` +
     T(E(head), E(story)) +

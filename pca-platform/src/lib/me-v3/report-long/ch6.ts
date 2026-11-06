@@ -271,7 +271,7 @@ export function storyPages(x: Inputs, d: X): Page[] {
           : L("이 가운데 쓸 만한 경험 하나를 골라 깊게 쓰면 됩니다.", "Pick the one scene worth telling and go into it properly.")) +
       st.map((s, i) => {
         const roles = d.rolesOf(s.domain).filter((r) => r.strength === "중심").slice(0, 3).map((r) => d.roleName(r.role)).filter(Boolean);
-        const label = s.from === "answer" ? tag(L("응답으로 만든 초안", "Built from your answers"), C.teal) : s.ready ? tag(L("바로 쓸 수 있음", "Ready to use"), C.navy) : tag(L("보완하면 쓸 수 있음", "Needs a little more detail"), C.teal);
+        const label = s.from === "answer" ? tag(L("응답으로 만든 초안", "Built from your answers"), C.teal) : s.ready ? tag(L("바로 쓸 수 있음", "Ready to use"), C.navy) : tag(L("조금 더 적으면 쓸 수 있음", "Needs a little more detail"), C.teal);
         const head = `<div class="story-h"><b>${E(d.name(s.domain))} · ${E(d.axisName(s.axis))}</b><span>${label}${roles.length ? L(` 이어지는 직무: ${E(roles.join(" · "))}`, ` Related roles: ${E(roles.join(" · "))}`) : ""}</span></div>`;
         return frame(draftLines(d, s, a + i), head);
       }).join("")));

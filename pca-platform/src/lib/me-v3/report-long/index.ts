@@ -85,7 +85,7 @@ export function assemble(x0: Inputs): { pages: Page[]; notes: string[]; region: 
   const zoneMarks = (): [string, string][] => ZONES.filter((k) => doms.some((z) => z.zone === k)).map((k) => [ZC[k], ZONE_WORD[k].tag]);
   const intMarks = (): [string, string][] => [
     ...(["HIGH", "MID", "LOW"] as const).filter((v) => doms.some((z) => z.interest === v)).map((v): [string, string] => [IC[v], T(`바깥 띠 · 관심 ${BAND_WORD[v]}`, `Outer band · interest ${BAND_WORD[v].toLowerCase()}`)]),
-    ...(doms.some((z) => !z.interest) ? [["#f1f2f5", T("바깥 띠 · 관심 응답 없음", "Outer band · interest not answered")] as [string, string]] : []),
+    ...(doms.some((z) => !z.interest) ? [["#f1f2f5", T("바깥 띠 · 관심 ‘모르겠다’", "Outer band · interest: not sure")] as [string, string]] : []),
   ];
   const ringHow = (withInterest: boolean, numHint: string) => howto(
     [...zoneMarks(), ...(withInterest ? intMarks() : []), [T("숫자", "Numbers"), numHint]],
@@ -139,7 +139,7 @@ export function assemble(x0: Inputs): { pages: Page[]; notes: string[]; region: 
   P.push(chapter("02", N.c2,
     T("문제를 정하는 일부터 결과가 다음 결정에 쓰이게 하는 일까지, 일하면서 내리는 판단을 어디까지 직접 해 봤는지 살펴봐요. 이미 내 것이 된 판단과 다음 과제에서 맡아 볼 판단을 이 장에서 골라 보세요.",
       "From defining the problem to getting your result used in the next decision, see how far you have taken each decision at work yourself. Use this chapter to pick out the decisions that are already yours and the ones to take on in your next project."),
-    isEn() ? insideEn(c2.map((p) => p.title)) : [...new Set(c2.map((p) => p.title.replace(/^강점 \d · .*/, "강점 해설")))],
+    isEn() ? insideEn(c2.map((p) => p.title)) : [...new Set(c2.map((p) => p.title.replace(/^내세울 경험 \d · .*/, "내세울 경험 해설")))],
     radarSeries.length ? radar(AXES.map((a) => d.axisName(a)), radarSeries, { size: 360, ring: false, label: 14 }) : ringArt(false),
     radarSeries.length ? radarHow() : ringHow(false, T("영역 번호. 03장에서 같은 번호로 펴 볼 수 있어요", "Area number. Chapter 03 uses the same numbers"))), ...named([...c2, ...fill[N.c2] ?? []], N.c2));
 

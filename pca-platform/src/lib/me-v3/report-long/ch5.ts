@@ -26,7 +26,7 @@ const S1 = ZONE_WORD.Z1_EVIDENCE_ESTABLISHED;
 export const TIER: Record<Tier, { head: string; rule: string; next: string; color: string }> = {
   A: { head: "내 결과와 잘 맞는 곳", rule: `그 산업이 쓰는 영역 가운데 ${j(S1.tag, "이가")} 하나라도 있는 곳`, next: "지원서와 면접에서 그 영역의 경험을 바로 꺼낼 수 있어요.", color: PAL.blue },
   B: { head: "조금 더 채우면 맞는 곳", rule: `그 산업이 쓰는 영역에서 해 본 일은 확인됐지만 ${S1.tag}까지는 아직 없는 곳`, next: "그 영역에서 결과물 하나를 더 남기면 잘 맞는 곳으로 옮겨 갈 수 있어요.", color: PAL.teal },
-  C: { head: "넓혀 볼 곳", rule: "그 산업이 쓰는 영역에서 해 본 일이 아직 확인되지 않은 곳", next: "그 영역에서 작은 과제 하나를 해 두면 다음 검사에서 조금 더 채우면 맞는 곳으로 옮겨 올 수 있어요.", color: "#8c97ab" },
+  C: { head: "넓혀 볼 곳", rule: "그 산업이 쓰는 영역에서 해 본 일이 아직 확인되지 않은 곳", next: "그 영역에서 작은 과제 하나를 해 두고 경험 기록에 더하면 ‘조금 더 채우면 맞는 곳’으로 옮겨 올 수 있어요.", color: "#8c97ab" },
 };
 const won = (v: number | null | undefined) => (v == null ? "공시 없음" : `${Math.round(v / 1e8).toLocaleString("ko-KR")}억 원`);
 const short = (n: string) => n.replace(/\(주\)|주식회사|㈜/g, "").trim();
@@ -84,6 +84,11 @@ export function regionPages(x: Inputs, d: X, r: RegionView): Page[] {
       howto([["막대 하나", `${x.major} 전공의 산업 하나`], ["막대 길이", "그 산업에 넣은 회사 수(곳)"], ...tiers.map((t) => [TIER[t].color, TIER[t].head] as [string, string])]) +
       H("어떻게 나눴나", "회사마다 그 회사가 속한 산업이 쓰는 영역을 내 결과에 대어 봤어요") : `<div class="na-box"><b>이 전공의 산업과 이어지는 회사를 명단에서 찾지 못했습니다</b>명단에 적힌 업종이 ${E(x.major)} 전공의 산업과 겹치지 않았습니다. 뒤쪽의 상장사 숫자와 조사 방법은 그대로 쓰실 수 있습니다.</div>`) +
     cards +
+    /* 고른 산업에 넣을 회사가 한 곳도 없으면 표가 통째로 빠져 학생이 고른 산업이 어디 갔는지 모른다(2026-11-06 AI 견본 C · 공공·행정 AI) */
+    (() => {
+      const none = x.inds.filter((p) => chosen0.has(p.code) && !r.groups.some((g) => g.pack.code === p.code && g.orgs.length));
+      return none.length ? `<p class="mut sm">고르신 산업 ${E(none.map((p) => p.name_ko).join(" · "))}에 넣을 ${E(r.label)} 회사는 이번 명단에서 찾지 못했습니다. 뒤쪽 표에 실은 회사들의 주력 품목 가운데 그 산업과 닿는 일이 있는지 살펴보세요.</p>` : "";
+    })() +
     (r.unmatched ? `<p class="mut sm">나머지 ${r.unmatched}곳은 업종명만으로는 ${E(x.major)} 전공의 어느 산업에 넣을지 정하기 어려워 이 장에 싣지 않았습니다.</p>` : "") +
     band("알아 두실 점", REGION_LAW)));
 
