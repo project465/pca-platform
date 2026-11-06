@@ -117,9 +117,33 @@ async function main(): Promise<void> {
     await settlePayment(b.pid);
     const st1 = await queryOne<{ status: string }>(`SELECT status FROM orders WHERE id = $1`, [b.orderId]);
     ok("나머지가 취소되면 주문이 닫힌다", st1?.status === "refunded", st1?.status);
+    const ps = await queryOne<{ status: string }>(`SELECT status FROM payments WHERE order_id = $1`, [b.orderId]);
+    ok("전액 취소 뒤 결제 줄은 cancelled", ps?.status === "cancelled", ps?.status);
     ok("전액 취소면 기간이 지금으로 끊긴다", Date.parse(await endOf(b.orderId)) <= Date.now() + 1000);
     const n2 = await queryOne<{ s: number }>(`SELECT coalesce(sum(amount),0)::int AS s FROM refunds WHERE order_id = $1`, [b.orderId]);
     ok("장부 합이 결제 금액과 같다", n2?.s === 9900, String(n2?.s));
+  }
+
+  /* 5 — 끝나는 날이 없는 응시권(결과지 등급)을 대행사가 전액 취소하면, 쓰지 않은 응시권을 회수한다
+     (2026-11-06 운영 시험: 취소 뒤 entitlements 가 active 로 남아 유료 검사를 새로 시작할 수 있었다) */
+  {
+    const orderNo = `ZR${stamp}${++seq}`;
+    const o = await queryOne<{ id: string }>(
+      `INSERT INTO orders (order_no, user_id, product_code, amount, currency) VALUES ($1,$2,'ME_V2_STANDARD_KR',14900,'KRW') RETURNING id::text`,
+      [orderNo, s.id]);
+    const pid = `mock_${orderNo}`;
+    await markMockPaid({ providerPaymentId: pid, status: "paid", amount: 14900, currency: "KRW", orderNo, raw: {} });
+    const s1 = await settlePayment(pid);
+    const g0 = await queryOne<{ status: string; ends_at: string | null }>(`SELECT status, ends_at::text FROM entitlements WHERE order_id = $1`, [o!.id]);
+    ok("응시권 결제: 끝나는 날 없는 응시권이 선다", s1.ok && g0?.status === "active" && g0.ends_at === null, JSON.stringify(g0));
+    await markMockCancel(pid, 14900, 1);
+    await settlePayment(pid);
+    const g1 = await queryOne<{ status: string; revoked_at: string | null }>(`SELECT status, revoked_at::text FROM entitlements WHERE order_id = $1`, [o!.id]);
+    ok("대행사 전액 취소: 쓰지 않은 응시권을 회수한다(revoked · 회수 시각)", g1?.status === "revoked" && !!g1.revoked_at, JSON.stringify(g1));
+    const open = await queryOne<{ n: number }>(`SELECT count(*)::int AS n FROM entitlements WHERE order_id = $1 AND status = 'active'`, [o!.id]);
+    ok("회수한 응시권으로는 검사를 시작할 수 없다(열린 응시권 0)", open?.n === 0);
+    const pay = await queryOne<{ status: string }>(`SELECT status FROM payments WHERE order_id = $1`, [o!.id]);
+    ok("결제 줄도 cancelled 로 적는다", pay?.status === "cancelled", pay?.status);
   }
 
   await query(`DELETE FROM refund_requests WHERE user_id = $1`, [s.id]).catch(() => undefined);

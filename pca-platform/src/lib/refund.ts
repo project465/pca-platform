@@ -272,6 +272,30 @@ async function closeOrderTx(c: PoolClient, orderId: string): Promise<void> {
     [orderId],
   );
   await pullForwardTx(c, cut.rows);
+  /*
+   * **끝나는 날이 없는 응시권(결과지 등급, kind='report')은 위에서 끊기지 않는다**(`ends_at > now()` 에 걸리지 않는다).
+   * 그대로 두면 환불한 뒤에도 그 응시권으로 유료 검사를 새로 시작할 수 있었다(2026-11-06 운영 시험: 대행사 전액 취소 뒤
+   * entitlements 가 active 로 남음). **아직 응시 · 등급 올리기에 쓰지 않은 것만** 회수한다. 이미 쓴 것은 결과지가 서 있어 그대로 둔다
+   */
+  await c.query(`SAVEPOINT grants`);
+  await c.query(
+    `UPDATE entitlements e SET status = 'revoked', revoked_at = now()
+      WHERE e.order_id = $1 AND e.status = 'active' AND e.kind = 'report' AND e.ends_at IS NULL
+        AND NOT EXISTS (SELECT 1 FROM attempts a WHERE a.entitlement_id = e.id)
+        AND NOT EXISTS (SELECT 1 FROM v3_attempts a WHERE a.entitlement_id = e.id)
+        AND NOT EXISTS (SELECT 1 FROM v3_tier_events t WHERE t.entitlement_id = e.id)`,
+    [orderId],
+  ).then(() => c.query(`RELEASE SAVEPOINT grants`), async (e) => {
+    /* 표가 없는 옛 DB 면 v3 쪽 조건 없이 한 번 더(응시 표만 본다) */
+    await c.query(`ROLLBACK TO SAVEPOINT grants`);
+    if ((e as { code?: string })?.code !== "42P01") throw e;
+    await c.query(
+      `UPDATE entitlements e SET status = 'revoked', revoked_at = now()
+        WHERE e.order_id = $1 AND e.status = 'active' AND e.kind = 'report' AND e.ends_at IS NULL
+          AND NOT EXISTS (SELECT 1 FROM attempts a WHERE a.entitlement_id = e.id)`, [orderId]);
+  });
+  /* 결제 줄에도 취소를 적는다(전에는 환불 뒤에도 paid 로 남았다). 분쟁 때 이 줄을 먼저 본다 */
+  await c.query(`UPDATE payments SET status = 'cancelled', updated_at = now() WHERE order_id = $1 AND status IN ('paid', 'partial_cancelled')`, [orderId]);
 }
 
 /**
@@ -350,6 +374,9 @@ export async function applyProviderCancel(
         [orderId, keep, row.duration_days],
       );
       await pullForwardTx(c, cut.rows.filter((r) => r.removed !== "00:00:00"));
+    }
+    if (!full) {
+      await c.query(`UPDATE payments SET status = 'partial_cancelled', updated_at = now() WHERE order_id = $1 AND status = 'paid'`, [orderId]);
     }
     return { applied: true, delta, full } as const;
   });
