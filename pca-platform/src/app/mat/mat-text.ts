@@ -103,7 +103,7 @@ export const JOBLIST_TEXT = {
   emptyOther: { ko: "전공에 맞는 공고가 아직 없어요. 경험을 적으면 더 찾아 드려요.", en: "No postings for your major yet. Write your experience to find more." },
   empty: { ko: "모아 둔 공고가 아직 없어요.", en: "No postings collected yet." },
   /* 공고는 모았는데 내 전공과 맞는 것이 없을 때(2026-11-06: 공고 맞춤을 좁히며 맞는 공고 0건인 학과가 79곳) */
-  emptyNone: { ko: "지금은 내 전공과 맞는 공고가 없어요. 새 공고가 들어오면 이 화면 맨 위에 보여 드려요.", en: "No postings match your major right now. New matching postings will show at the top of this page." },
+  emptyNone: { ko: "지금은 내 전공과 맞는 공고가 없어요. 새 공고가 들어오면 MAT 홈에서 알려 드려요.", en: "No postings match your major right now. When a matching posting comes in, we will tell you on the MAT home." },
   grad: { ko: "대학원 · 연구실 모집 {n}건", en: "Graduate school and lab openings: {n}" },
   other: { ko: "다른 전공 공고 {n}건", en: "Postings for other majors: {n}" },
   srcJi: { ko: "공고 출처 잡인더스트리", en: "Posting source: JobIndustry" },
