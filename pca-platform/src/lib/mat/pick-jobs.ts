@@ -70,19 +70,27 @@ export type PickedJobs = {
   fresh: number;
 };
 
-export async function pickJobs(userId: string, limit = 20): Promise<PickedJobs> {
-  const [mine, major, stage, core] = await Promise.all([
-    postingsForMe(userId, 300).catch(() => null),
-    activeMajorName(userId).catch(() => null),
-    stageOf(userId).catch(() => null),
-    activeCoreOrPick(userId).catch(() => null),
-  ]);
-  type Row = {
-    id: string; source: string; source_url: string | null; closes_on: string | null; captured_at: string;
-    region_code: string | null; raw_requirements: string[]; core_code: string | null; role_code: string | null;
-    title: string | null; category: string | null; field: string | null; degree_label: string | null;
-    region_label: string | null; abroad: boolean | null; posting_kind: string | null;
-  };
+/** 공고 표 한 줄(`v3_job_postings` 에서 MAT 이 읽는 칸). 점검 명령(`npm run mat:match`)이 견본으로 같은 꼴을 만든다 */
+export type PoolRow = {
+  id: string; source: string; source_url: string | null; closes_on: string | null; captured_at: string;
+  region_code: string | null; raw_requirements: string[]; core_code: string | null; role_code: string | null;
+  title: string | null; category: string | null; field: string | null; degree_label: string | null;
+  region_label: string | null; abroad: boolean | null; posting_kind: string | null;
+};
+
+/** 공고를 고르는 데 쓰는 그 사람의 값. DB 에서 읽는 것은 `pickJobs` 가 하고, 고르기는 `rankJobs` 가 DB 없이 한다 */
+export type RankCtx = {
+  /** 내 자료 · 경험과 겹친 공고(`postingsForMe`). 자료가 없으면 null */
+  mine: { rows: MatchedPosting[] } | null;
+  /** 전공 이름(`인공지능`) */
+  major: string | null;
+  core: string | null;
+  grad: boolean;
+  now?: number;
+};
+
+/** MAT 이 고르는 공고 묶음(최근 180일 · 마감 전 · 1,500건). 점검 명령도 DB 로 돌릴 때 이것을 읽는다 */
+export async function jobPool(): Promise<PoolRow[]> {
   /* 카드 칸이 없는 DB(`db/schema_jobs_meta.sql` 전)에서는 빈 값으로 읽는다 */
   const sql = (meta: boolean) => `
     SELECT id::text, source, source_url, closes_on::text, captured_at::text, region_code, raw_requirements, core_code, role_code,
@@ -94,9 +102,26 @@ export async function pickJobs(userId: string, limit = 20): Promise<PickedJobs> 
         ${meta ? `AND NOT (source = 'careerpeak' AND source_ref IN (
               SELECT verified_ref FROM v3_job_postings WHERE source = 'jobindustry' AND verified_source = 'careerpeak'))` : ""}
       ORDER BY captured_at DESC LIMIT 1500`;
-  const pool = await query<Row>(sql(true), []).catch(() => query<Row>(sql(false), [])).catch(() => [] as Row[]);
+  return query<PoolRow>(sql(true), []).catch(() => query<PoolRow>(sql(false), [])).catch(() => [] as PoolRow[]);
+}
+
+export async function pickJobs(userId: string, limit = 20): Promise<PickedJobs> {
+  const [mine, major, stage, core] = await Promise.all([
+    postingsForMe(userId, 300).catch(() => null),
+    activeMajorName(userId).catch(() => null),
+    stageOf(userId).catch(() => null),
+    activeCoreOrPick(userId).catch(() => null),
+  ]);
+  const pool = await jobPool();
+  return rankJobs(pool, { mine, major, core, grad: isGrad(stage) }, limit);
+}
+
+/** 모아 둔 공고에서 이 사람에게 보일 것을 고른다. **DB 를 읽지 않는다**(같은 입력이면 같은 답) */
+export function rankJobs(pool: PoolRow[], ctx: RankCtx, limit = 20): PickedJobs {
+  const { mine, major, core, grad } = ctx;
+  const now = ctx.now ?? Date.now();
+  type Row = PoolRow;
   const hitsOf = new Map((mine?.rows ?? []).map((r) => [r.id, r]));
-  const grad = isGrad(stage);
   const st = stem(major);
 
   const shown = pool
@@ -153,6 +178,6 @@ export async function pickJobs(userId: string, limit = 20): Promise<PickedJobs> 
     grad: gradRows.slice(0, 10).map((x) => x.row),
     other: other.map((x) => x.row),
     matched: main.some((x) => x.score > 0),
-    fresh: main.filter((x) => x.real && Date.parse(x.row.captured_at) >= Date.now() - 7 * 86_400_000).length,
+    fresh: main.filter((x) => x.real && Date.parse(x.row.captured_at) >= now - 7 * 86_400_000).length,
   };
 }
