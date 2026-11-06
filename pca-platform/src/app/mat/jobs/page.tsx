@@ -99,7 +99,7 @@ export default async function MatJobs({ searchParams }: { searchParams: Promise<
           <div className="mt-list">{jobs.broad.slice(0, 10).map(card)}</div>
         </>
       ) : (
-        <p className="mt-empty">{jobs.other.length ? t(J.emptyOther) : t(J.empty)}</p>
+        <p className="mt-empty">{jobs.other.length ? t(J.emptyOther) : (jobs.pooled ?? 0) > 0 ? t(J.emptyNone) : t(J.empty)}</p>
       )}
       {jobs.grad.length ? (
         <details className="mt-more">

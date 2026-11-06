@@ -69,6 +69,8 @@ export type PickedJobs = {
    * 홈은 `신입 · 인턴` 칩까지 겹침으로 셌다)
    */
   fresh: number;
+  /** 모아 둔 공고(마감 전) 수. 0 이면 "아직 모으지 않았다", 아니면 "모았는데 내 전공과 맞는 것이 없다" 로 다르게 적는다 */
+  pooled?: number;
 };
 
 /** 공고 표 한 줄(`v3_job_postings` 에서 MAT 이 읽는 칸). 점검 명령(`npm run mat:match`)이 견본으로 같은 꼴을 만든다 */
@@ -135,7 +137,7 @@ export async function pickJobs(userId: string, limit = 20): Promise<PickedJobs> 
     activeCoreOrPick(userId).catch(() => null),
   ]);
   const [pool, where] = await Promise.all([jobPool(), specOf(userId, core).catch(() => ({ spec: null, unit: null }))]);
-  return rankJobs(pool, { mine, major, core, grad: isGrad(stage), ...where }, limit);
+  return { ...rankJobs(pool, { mine, major, core, grad: isGrad(stage), ...where }, limit), pooled: pool.length };
 }
 
 /**
