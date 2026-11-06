@@ -20,18 +20,21 @@ import { matAnalyzeJob } from "../actions";
  * - 아직 모으지 않은 공고면 서버가 만든 상세 주소(허용 게시판만)를 열어 글을 읽는다
  * - 전공이 없는 사람(검사 없이 가입)은 그 공고의 전공으로 시작한다
  */
-export async function matJiAnalyze(): Promise<void> {
+export async function matJiAnalyze(form?: FormData): Promise<void> {
   const user = await requireUser();
   const post = await jiPostFromCookie();
   if (!post) redirect("/mat/jobs");
   const row = await jiPosting(post.idx);
   const acc = await matAccess(user.id);
-  if (!acc.core && row?.core) {
+  if (!acc.core) {
+    /* 공고에 달린 전공이 먼저, 없으면 이 화면에서 고른 전공(`core`) */
     const { sellableCores } = await import("@/lib/me-v3/core-registry");
-    if (sellableCores("KR").some((c) => c.code === row.core)) {
-      await queryOne(`INSERT INTO career_profiles (user_id, core_code, market_code) VALUES ($1, $2, 'KR')
-                      ON CONFLICT (user_id, core_code) DO NOTHING RETURNING id`, [user.id, row.core]).catch(() => null);
-    }
+    const ok = (c: string | null | undefined) => !!c && sellableCores("KR").some((x) => x.code === c);
+    const picked = String(form?.get("core") ?? "");
+    const core = ok(row?.core) ? row!.core : ok(picked) ? picked : null;
+    if (!core) redirect("/mat/from-ji?e=needcore");
+    await queryOne(`INSERT INTO career_profiles (user_id, core_code, market_code) VALUES ($1, $2, 'KR')
+                    ON CONFLICT (user_id, core_code) DO NOTHING RETURNING id`, [user.id, core]).catch(() => null);
   }
   if (row && row.req.length) {
     const fd = new FormData();

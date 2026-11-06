@@ -142,7 +142,7 @@ export const JOB_TEXT = {
   fitTitle: { ko: "맞는 점", en: "What fits" },
   gapTitle: { ko: "채울 것", en: "What to fill in" },
   condTitle: { ko: "자격 조건", en: "Conditions" },
-  unmatchedTitle: { ko: "전공 영역에 잇지 못한 요건", en: "Requirements not linked to your major areas" },
+  unmatchedTitle: { ko: "내 경험과 직접 이어 보지 못한 요건", en: "Requirements not yet linked to your experience" },
   checkOriginal: { ko: "원문 확인", en: "Check the original" },
   mustWrite: { ko: "필수 · 경험에 직접 적기", en: "Required · write it in your experience" },
   niceWrite: { ko: "우대 · 경험에 직접 적기", en: "Preferred · write it in your experience" },
