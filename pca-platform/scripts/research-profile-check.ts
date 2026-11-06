@@ -142,7 +142,7 @@ const form = (o: Record<string, string | string[]>) => {
       const rows = await M.matchesOf(u1);
       ok("저장 뒤 맞춤: 석사 요구 공고만(박사 요구 · 연구비 · 지난 공고 빼고)", r1.matched === 1 && rows.length === 1 && rows[0].posting_id === p1, JSON.stringify(rows.map((r) => r.title)));
       ok("처음 맞춤은 알림 · 메일 없이 바로 채운다", !!(await queryOne(`SELECT 1 FROM research_matches WHERE user_id = $1 AND notified_at IS NOT NULL AND mailed_at IS NOT NULL`, [u1])));
-      ok("맞은 낱말과 그 이력 번호를 남긴다", rows[0].reasons.terms[0]?.items.includes(i1!) === true && rows[0].reasons.degree === "fit");
+      ok("겹친 분야어와 그 이력 번호를 남긴다", rows[0].reasons.terms[0]?.items.includes(i1!) === true && rows[0].reasons.degree === "fit");
 
       const since = new Date(Date.now() - 1000);
       const p5 = await addPost("5", { title: `${tag} 고체 ${term} 신규 연구원`, degree_min: "master" });

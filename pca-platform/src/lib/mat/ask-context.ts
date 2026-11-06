@@ -57,7 +57,7 @@ export async function askContextOf(userId: string): Promise<AskContext> {
   for (const p of shown.slice(0, 3)) {
     if (!p.requirements.length) continue;
     const l = `공고: ${cut(p.requirements[0], 20)}`; ev.add(l);
-    lines.push(`겹치는 공고 [${l}] 마감 ${p.closes_on ?? "상시"} · 요구: ${p.requirements.slice(0, 4).join(" / ")}${p.hits.length ? ` · 겹친 낱말: ${p.hits.slice(0, 4).join(", ")}` : ""}`);
+    lines.push(`겹치는 공고 [${l}] 마감 ${p.closes_on ?? "상시"} · 요구: ${p.requirements.slice(0, 4).join(" / ")}${p.hits.length ? ` · 겹친 분야어: ${p.hits.slice(0, 4).join(", ")}` : ""}`);
   }
   return { text: lines.join("\n"), evidence: [...ev] };
 }
