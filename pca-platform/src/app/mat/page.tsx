@@ -38,7 +38,7 @@ export const generateMetadata = () => matTitle(TITLE_TEXT.home);
  * - 진단 단계 4칸은 화면용 계산이다(`lib/mat/stage.ts`). 판정은 검사가 낸 그대로다
  * - 할 일은 웹 작업공간과 같은 줄(`openActions`)이고, 끝냄도 같은 함수로 적는다
  * - 공고는 모아 둔 공고 가운데 내 자료 · 경험과 겹치는 것(`postingsForMe`). **회사 이름은 없다**:
- *   저장하지 않는다(직업정보제공사업 범위). 지역 · 출처 · 마감 · 겹친 낱말만 적는다
+ *   저장하지 않는다(직업정보제공사업 범위). 지역 · 출처 · 마감 · 겹친 분야어만 적는다
  * - 화면에 `AI` 를 자랑하는 말을 두지 않는다. 근거를 그대로 적는다
  */
 export default async function MatHome() {

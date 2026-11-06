@@ -80,7 +80,7 @@ export const HOME_TEXT = {
 export const CARD_TEXT = {
   unread: { ko: "요건을 글로 읽지 못한 공고 · 원문에서 확인", en: "Requirements not readable · check the original" },
   srcPosting: { ko: "{src} 공고", en: "{src} posting" },
-  hitsAria: { ko: "겹친 낱말", en: "Shared words" },
+  hitsAria: { ko: "겹친 분야어", en: "Overlapping field terms" },
   compare: { ko: "내 경험과 맞춰 보기", en: "Compare with my experience" },
   original: { ko: "공고 원문 보기", en: "See the original posting" },
   /* 영어 화면에서 한국어 공고: 지어 옮기지 않는다. 한국어 제목 그대로 두고 표시만 단다 */

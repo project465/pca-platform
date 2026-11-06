@@ -70,19 +70,19 @@ export function itemLine(it: Pick<ResearchItem, "id" | "kind" | "data">): string
     case "paper": {
       const d = it.data as PaperData;
       add("논문", d.title); add("게재", d.venue); add("연도", d.year); add("저자 역할", d.authorRole && KO.author[d.authorRole]);
-      add("분야 낱말", d.keywords?.join(", ")); break;
+      add("분야어", d.keywords?.join(", ")); break;
     }
     case "project": {
       const d = it.data as ProjectData;
       add("과제", d.title); add("부처·기관", d.agency); add("사업", d.program); add("기간", d.from || d.to ? `${d.from ?? ""}~${d.to ?? ""}` : "");
       add("총사업비", d.budget && KO.budget[d.budget]); add("역할", d.role && KO.role[d.role]);
       add("참여율", d.participation ? `${d.participation}%` : ""); add("맡은 일", d.tasks?.replace(/\n+/g, " / "));
-      add("결과물", d.outputs); add("분야 낱말", d.keywords?.join(", ")); break;
+      add("결과물", d.outputs); add("분야어", d.keywords?.join(", ")); break;
     }
     case "patent": {
       const d = it.data as PatentData;
       add("특허", d.title); add("상태", d.status && KO.patent[d.status]); add("연도", d.year);
-      add("발명자 순서", d.inventorOrder); add("분야 낱말", d.keywords?.join(", ")); break;
+      add("발명자 순서", d.inventorOrder); add("분야어", d.keywords?.join(", ")); break;
     }
     case "method": {
       const d = it.data as MethodData;

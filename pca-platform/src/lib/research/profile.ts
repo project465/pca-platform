@@ -10,7 +10,7 @@ import type { ResearchDoc } from "@/lib/assistant/research-docs";
  * - **본인만 본다.** 읽고 쓰는 함수는 모두 `user_id` 로 거른다. 기관 화면 · 운영자 화면에서 읽지 않는다
  * - **사람이 확인해야 저장한다.** 파일(내 자료 읽기)로 칸을 미리 채워도 그것은 입력 칸의 기본값일 뿐이고,
  *   `확인했습니다` 칸을 누르고 저장해야 줄이 선다(`parseItem` 이 확인 칸 없는 저장을 받지 않는다)
- * - **공고와 맞출 낱말(`terms`)은 사람이 적은 칸에서만 나온다**: 분야 낱말 · 기법 이름 · 전공.
+ * - **공고와 맞출 낱말(`terms`)은 사람이 적은 칸에서만 나온다**: 분야어 · 기법 이름 · 전공.
  *   제목 글자를 쪼개 짐작하지 않는다
  * - 금액은 구간으로만 받는다(총사업비). 정확한 금액 · 과제 번호는 받지 않는다
  *
@@ -127,7 +127,7 @@ export function parseItem(f: Form): ParseResult {
   }
 }
 
-/** 공고와 맞출 낱말. 사람이 적은 분야 낱말 · 기법 이름 · 전공 · 지도교수 분야만 */
+/** 공고와 맞출 낱말. 사람이 적은 분야어 · 기법 이름 · 전공 · 지도교수 분야만 */
 export function termsOf(kind: ItemKind, d: ItemData): string[] {
   const list: string[] = [];
   if (kind === "method") list.push((d as MethodData).name);

@@ -64,6 +64,11 @@ export function domainTerms(core: string, codes: string[]): string[] {
   return [...new Set(terms(core).filter((t) => codes.includes(t.code) && t.term.length >= 3).map((t) => t.term))];
 }
 
+/** 그 Core 사전의 이름 전부(영역과 상관없이). MAT 공고 맞춤(`mat/job-fit.ts`)이 제목 · 모집 분야에 댄다 */
+export function dictTerms(core: string): { term: string; latin: RegExp | null }[] {
+  return terms(core).map(({ term, latin }) => ({ term, latin }));
+}
+
 /** 사전 표를 새로 읽게 한다(시험에서 표를 바꿔 넣을 때) */
 export function resetTerms(): void { TERMS = null; }
 
