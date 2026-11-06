@@ -6,6 +6,7 @@ import LaunchNotify, { type NotifyQuery } from "@/components/inquiry/launch-noti
 import { currentUser } from "@/lib/session";
 import { trackOffers } from "@/lib/track";
 import { payOpen } from "@/lib/payments";
+import { subscriptionsOpen } from "@/lib/subscriptions/open";
 import { PARTNERS, isPartner, partnerVisible, recordBrand } from "@/lib/brand";
 import { publicCommerceGate } from "@/lib/public-gate";
 import { cookies } from "next/headers";
@@ -216,8 +217,11 @@ export default async function PartnerPage({
             </div>
           </div>
           <p className="pl-note">
-            30일권은 30일마다, 90일권은 90일마다 자동 결제됩니다. 언제든 해지할 수 있고 결제 7일 전에 알려 드립니다(<a href="/legal/subscription">정기결제 운영규정</a>).
-            정기결제는 결제사 승인 뒤 시작하고, 그 전에는 1회 결제입니다.
+            {/* 정기결제를 켜기 전에는 1회 결제로만 적는다(2026-11-06 PG 심사 대비) */}
+            {subscriptionsOpen() ? <>
+              30일권은 30일마다, 90일권은 90일마다 자동 결제됩니다. 언제든 해지할 수 있고 결제 7일 전에 알려 드립니다(<a href="/legal/subscription">정기결제 운영규정</a>).
+              정기결제는 결제사 승인 뒤 시작하고, 그 전에는 1회 결제입니다.
+            </> : <>30일 이용권 · 1회 결제, 90일 이용권 · 1회 결제입니다. 기간이 끝나도 자동으로 다시 결제되지 않습니다.</>}
             {notYet ? ` ${notYet}` : ""}
           </p>
         </div>

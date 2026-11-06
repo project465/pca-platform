@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { businessInfo, businessNameEn, jobInfoLicense } from "@/lib/business";
-import { supportConfig } from "@/lib/support";
 import type { Lang2 } from "@/lib/surface-text";
 import { BRAND } from "@/lib/surface-text";
 
@@ -25,6 +24,10 @@ import { BRAND } from "@/lib/surface-text";
  * 로그인한 뒤의 제품 화면(`/my` · Campus · Admin)에는 붙이지 않는다.
  * 저기는 파는 자리가 아니고 이미 산 사람이 쓰는 자리다.
  */
+/** 고객센터 운영시간(2026-11-06 대표 지시). 꼬리말 · 소개 사이트가 같은 글을 쓴다 */
+export const SUPPORT_HOURS_KO = "고객센터 운영시간: 평일 10:00~17:00 (점심 12:00~13:00, 주말·공휴일 휴무)";
+export const SUPPORT_HOURS_EN = "Support hours: weekdays 10:00–17:00 KST (lunch 12:00–13:00; closed weekends and Korean public holidays)";
+
 export default async function PublicFooter({
   lang, compact = false,
 }: {
@@ -38,7 +41,8 @@ export default async function PublicFooter({
      **등록 상호를 빼지 않는다**(제10조 표시는 등록증의 이름이다) */
   const nameEn = L === "en" ? await businessNameEn().catch(() => null) : null;
   const license = await jobInfoLicense();
-  const sup = await supportConfig();
+  const regDigits = (biz.fields.find((f) => f.key === "reg")?.value ?? "").replace(/\D/g, "");
+  const ftc = regDigits.length === 10 ? `https://www.ftc.go.kr/bizCommPop.do?wrkr_no=${regDigits}` : null;
   const year = new Date().getFullYear();
 
   const legal = (
@@ -107,7 +111,11 @@ export default async function PublicFooter({
           {PLAIN2.map(([k, ko]) => (
             <div key={k}>
               <dt>{lab(k, ko)}</dt>
-              <dd>{val(by[k]?.value ?? null)}</dd>
+              <dd>
+                {val(by[k]?.value ?? null)}
+                {/* 공정위 사업자정보확인(2026-11-06 PG 심사 대비). 번호는 사업자등록번호 칸에서 숫자만 */}
+                {k === "mailorder" && ftc ? <> · <a href={ftc} target="_blank" rel="noopener noreferrer">{L === "en" ? "Verify business (FTC)" : "사업자정보확인"}</a></> : null}
+              </dd>
             </div>
           ))}
           <div>
@@ -118,11 +126,8 @@ export default async function PublicFooter({
 
         {/* **지원 주소가 사업자 표시의 이메일과 같은 칸에서 온다.** 둘을
             따로 받으면 손님이 본 주소와 우리가 보는 주소가 갈린다 */}
-        {sup.email && sup.hours ? (
-          <p className="pfoot-sup">
-            {L === "en" ? "Support" : "고객지원"} · {sup.hours}
-          </p>
-        ) : null}
+        {/* 고객센터 운영시간(2026-11-06 대표 지시, PG 심사 대비). 늘 한 줄 */}
+        <p className="pfoot-sup">{L === "en" ? SUPPORT_HOURS_EN : SUPPORT_HOURS_KO}</p>
 
         {legal}
         {copy}

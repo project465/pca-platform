@@ -263,6 +263,13 @@ export const TX = {
     "Automatic posting collection is on the way. For now you paste postings you found.",
   ),
   pxTrackBuy: p("MAT 시작하기", "Start the assistant"),
+  /* 정기결제를 켜기 전(`SUBSCRIPTIONS_LIVE` 없음)에 판매 화면이 쓰는 글(2026-11-06 PG 심사 대비, 대표 지시) */
+  pxTrackLeadOne: p(
+    "매주 할 일 하나를 알려 드립니다. 메모를 경험 기록으로 옮기고, 직접 찾은 공고와 내 경험을 비교합니다. 30일 이용권 · 1회 결제 9,900원 / 90일 이용권 · 1회 결제 24,900원.",
+    "It tells you one thing to do each week, turns your notes into experience records, and lines up postings you found against your experience. 30-day pass · one-time payment KRW 9,900 / 90-day pass · one-time payment KRW 24,900."),
+  payTrackNote2One: p(
+    "30일 이용권 · 1회 결제, 90일 이용권 · 1회 결제입니다. 기간이 끝나도 자동으로 다시 결제되지 않습니다.",
+    "30-day pass · one-time payment, 90-day pass · one-time payment. You are not charged again when the period ends."),
   payTrackNote1: p(
     "결제하면 바로 MAT이 열립니다. 검사 응시권은 생기지 않습니다.",
     "The assistant opens as soon as you pay. It does not add an assessment credit.",

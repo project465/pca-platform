@@ -6,6 +6,10 @@ const MONTH = "30-day pass";
 const QUARTER = "90-day pass";
 import type { SiteContent } from "./model";
 
+/* 정기결제를 켰는가(앱의 `SUBSCRIPTIONS_LIVE` 와 같은 값을 이 사이트 서비스에도 넣는다). 켜기 전에는 1회 결제로만 적는다
+   (2026-11-06 PG 심사 대비, 대표 지시). 이 사이트는 빌드할 때 읽으므로 값을 바꾸면 다시 배포해야 한다 */
+const SUBS = process.env.SUBSCRIPTIONS_LIVE === "1";
+
 /**
  * English edition of the Korean site copy (`kr.ts`, 2026-10-21).
  *
@@ -512,9 +516,9 @@ export const en: SiteContent = {
           title: "MAT · AI career assistant",
           body: "After the assessment, it keeps track of your weekly tasks and deadlines and puts saved job postings side by side with your experience.",
           price: `${MONTH} ${krw(TRACK_KR.month.price)} · ${QUARTER} ${krw(TRACK_KR.quarter.price)}`,
-          priceNote: "Charged every 30 or 90 days · cancel any time",
+          priceNote: SUBS ? "Charged every 30 or 90 days · cancel any time" : "30-day pass · one-time payment / 90-day pass · one-time payment",
           points: [
-            "We notify you 7 days before each charge; if you cancel you keep the days you paid for",
+            SUBS ? "We notify you 7 days before each charge; if you cancel you keep the days you paid for" : "You are not charged again when the period ends",
             "Buy a PRO report and your first month is free",
           ],
           cta: { label: "Learn about MAT", href: "/assistant" },
@@ -708,7 +712,8 @@ export const en: SiteContent = {
     plans: {
       label: "Pricing",
       title: "Pay only for the time you need",
-      lead: "The 30-day pass is charged every 30 days and the 90-day pass every 90 days. Cancel any time; we notify you 7 days before each charge.",
+      lead: SUBS ? "The 30-day pass is charged every 30 days and the 90-day pass every 90 days. Cancel any time; we notify you 7 days before each charge."
+        : "30-day pass · one-time payment, 90-day pass · one-time payment. You are not charged again when the period ends.",
       items: [
         {
           name: MONTH,
@@ -742,7 +747,7 @@ export const en: SiteContent = {
         },
         {
           q: "Will I be charged automatically every month?",
-          a: "Yes. The 30-day pass is charged every 30 days and the 90-day pass every 90 days. We email you 7 days before each charge. You can cancel any time and keep the days you already paid for. Automatic renewal starts after the payment provider approves it; passes bought before that are not charged again.",
+          a: !SUBS ? "No. For now the 30-day and 90-day passes are one-time payments. You are not charged again when the period ends." : "Yes. The 30-day pass is charged every 30 days and the 90-day pass every 90 days. We email you 7 days before each charge. You can cancel any time and keep the days you already paid for. Automatic renewal starts after the payment provider approves it; passes bought before that are not charged again.",
         },
         {
           q: "I bought a PRO report. How do I get the free month?",

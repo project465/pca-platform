@@ -71,8 +71,8 @@ export const PRICING = {
   notOnSale: "이 기간은 아직 팔지 않아요",
   auto: (days: number) => `${days}일마다 자동 결제 · 결제 전에 알려 드려요`,
   keep: "해지해도 남은 기간은 그대로 써요",
-  /* 정기결제를 열기 전(`SUBSCRIPTIONS_LIVE` 없음)에도 판매 화면은 정기결제 기준으로 적고, 지금은 1회 결제임을 함께 적는다(2026-11-04 KCP 재심사) */
-  oneTime: "30일 · 90일마다 자동 결제 · 결제 7일 전 안내 · 정기결제는 결제사 승인 뒤 시작(그 전에는 1회 결제)",
+  /* 정기결제를 열기 전(`SUBSCRIPTIONS_LIVE` 없음)의 판매 화면 글(2026-11-06 PG 심사 대비, 대표 지시: 1회 결제로만 적는다) */
+  oneTime: "30일 이용권 · 1회 결제 / 90일 이용권 · 1회 결제",
   addon: "추가 이용권",
   addonNote: "1회 결제 · 쓰는 중인 기간에 횟수를 더해요",
   legal: "정기결제 운영규정",
@@ -212,7 +212,7 @@ const PRICING_EN: Widen<typeof PRICING> = {
   notOnSale: "This period is not on sale yet",
   auto: (days: number) => `Renews every ${days} days · We tell you before each payment`,
   keep: "If you cancel, you keep the rest of the period",
-  oneTime: "Charged every 30 or 90 days · notice 7 days before each charge · automatic renewal starts after the payment provider approves it (until then, a one-time payment)",
+  oneTime: "30-day pass · one-time payment / 90-day pass · one-time payment",
   addon: "Extra pass",
   addonNote: "One-time payment · Adds uses to your current period",
   legal: "Subscription policy",

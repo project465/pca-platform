@@ -9,6 +9,7 @@ import { resolveLang } from "@/lib/locale-server";
 import LangSwitch from "@/components/lang-switch";
 import CheckoutForm from "./checkout-form";
 import { toLang2, tx } from "@/lib/surface-text";
+import { subscriptionsOpen } from "@/lib/subscriptions/open";
 import { pageTitle } from "@/lib/page-title";
 
 export async function generateMetadata(
@@ -86,7 +87,7 @@ export default async function CheckoutPage({
         {product.kind === "track" ? (
           <ul className="paynote">
             <li>{tx("payTrackNote1", toLang2(lang))}</li>
-            <li>{tx("payTrackNote2", toLang2(lang))}</li>
+            <li>{tx(subscriptionsOpen() ? "payTrackNote2" : "payTrackNote2One", toLang2(lang))}</li>
             <li>{tx("payTrackNote3", toLang2(lang))}</li>
             {/* 결제 화면에서 청약철회 · 정기결제 규정을 바로 연다(2026-11-03 NHN KCP 정기결제 심사) */}
             <li>

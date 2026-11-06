@@ -28,8 +28,10 @@ const MUST: { file: string; needle: string; why: string }[] = [
     why: "개인정보보호법 제22조의2" },
   { file: "02-privacy.md", needle: "주민등록번호",
     why: "수집하지 않는다는 명시" },
-  { file: "03-refund.md", needle: "제21조의2",
-    why: "시용 제공 방법을 정한 시행령" },
+  /* 시용 제공(전자상거래법 시행령 제21조의2)을 알리는 문장. 법 조문 설명 문단은 2026-11-06 대표 지시로 지웠고,
+     무료 검사를 결제 전에 끝까지 볼 수 있다는 첫 문장이 그 표시다 */
+  { file: "03-refund.md", needle: "결제 전에 무료 검사(BASIC)를 끝까지 응시하고 결과지를 확인할 수 있습니다",
+    why: "시용 제공 표시(시행령 제21조의2)" },
   { file: "03-refund.md", needle: "기간 제한 없음",
     why: "응시 전은 법보다 넓게 준다는 약속" },
   { file: "03-refund.md", needle: "위약금을 받지 않습니다",

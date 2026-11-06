@@ -89,7 +89,7 @@ export default async function MatPass({ searchParams }: { searchParams: Promise<
       {o30 || o90 ? (
         <form action="/checkout" method="get">
           <fieldset className="mt-opts">
-            <legend className="mt-meta" style={{ marginBottom: 8 }}>{t(T.noAuto)}</legend>
+            <legend className="mt-meta" style={{ marginBottom: 8 }}>{t(subscriptionsOpen() ? T.noAuto : T.noAutoOne)}</legend>
             {o30 ? (
               <label className="mt-opt">
                 <input type="radio" name="product" value={o30.code} />

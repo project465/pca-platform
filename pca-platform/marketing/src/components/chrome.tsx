@@ -105,6 +105,9 @@ export async function SiteFooter({ site }: { site: SiteContent }) {
   /* 신고번호는 앱의 운영 화면이 정본이다(`src/lib/business.ts`) */
   const mailOrderNo = L.mailOrderNo || (await liveMailOrderNo());
   const unset = (v: string) => v || L.labels.unset;
+  const ko = site.lang === "ko";
+  const bizDigits = (L.bizNo ?? "").replace(/\D/g, "");
+  const ftc = bizDigits.length === 10 ? `https://www.ftc.go.kr/bizCommPop.do?wrkr_no=${bizDigits}` : null;
   const rows: [string, string, boolean][] = [
     [L.labels.company, L.company, false],
     [L.labels.ceo, L.ceo, false],
@@ -152,10 +155,16 @@ export async function SiteFooter({ site }: { site: SiteContent }) {
             {rows.map(([k, v, pending]) => (
               <div key={k}>
                 <dt>{k}</dt>
-                <dd className={pending ? "is-pending" : undefined}>{v}</dd>
+                <dd className={pending ? "is-pending" : undefined}>
+                  {v}
+                  {/* 공정위 사업자정보확인(2026-11-06 PG 심사 대비). 번호는 사업자등록번호에서 숫자만 */}
+                  {k === L.labels.mailOrderNo && ftc ? <> · <a href={ftc} target="_blank" rel="noopener noreferrer">{ko ? "사업자정보확인" : "Verify business (FTC)"}</a></> : null}
+                </dd>
               </div>
             ))}
           </dl>
+          {/* 고객센터 운영시간(2026-11-06 대표 지시). 앱 꼬리말과 같은 글 */}
+          <p className="footer-copy">{ko ? "고객센터 운영시간: 평일 10:00~17:00 (점심 12:00~13:00, 주말·공휴일 휴무)" : "Support hours: weekdays 10:00–17:00 KST (lunch 12:00–13:00; closed weekends and Korean public holidays)"}</p>
           <p className="footer-copy">{site.footer.copyright}</p>
         </div>
       </div>

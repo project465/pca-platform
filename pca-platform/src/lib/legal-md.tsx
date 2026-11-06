@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { subscriptionsOpen } from "@/lib/subscriptions/open";
 
 /**
  * 약관 본문(Markdown)을 화면 글로 세운다.
@@ -147,8 +148,18 @@ function renderList(list: List, key: string): ReactNode {
     : <ul key={key}>{items}</ul>;
 }
 
+/**
+ * **정기결제를 켰는지에 따라 갈리는 문단**(2026-11-06 PG 심사 대비). 본문에
+ * `<!--sub:on-->…<!--/sub:on-->` 은 정기결제가 열린 때만, `<!--sub:off-->…<!--/sub:off-->` 은
+ * 열리기 전에만 남긴다. 표시 줄 자체는 늘 지운다. 순수 함수(`npm run metri:legal` 이 부른다)
+ */
+export function applySubSwitch(text: string, open: boolean): string {
+  return text
+    .replace(/<!--sub:(on|off)-->\n?([\s\S]*?)<!--\/sub:\1-->\n?/g, (_, k: string, body: string) => ((k === "on") === open ? body : ""));
+}
+
 export function LegalMarkdown({ text, dropTitle }: { text: string; dropTitle?: boolean }) {
-  let blocks = parse(text);
+  let blocks = parse(applySubSwitch(text, subscriptionsOpen()));
   /* 쪽 제목(`h1`)은 머리에 이미 있다. 본문 첫 줄의 `# 제목` 을 한 번 더
      세우지 않는다 */
   if (dropTitle && blocks[0]?.k === "h" && blocks[0].level === 1) blocks = blocks.slice(1);

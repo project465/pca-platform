@@ -343,6 +343,7 @@ export const PASS_PAGE_TEXT = {
   schoolFree: { ko: "학교가 MAT을 열어 주면 결제 없이 써요.", en: "If your school opens MAT, you use it without paying." },
   schoolLogin: { ko: "학교에서 받은 계정으로 로그인하면 이어져요.", en: "Sign in with the account your school gave you to continue." },
   personalTitle: { ko: "개인으로 쓰기", en: "Use it personally" },
+  noAutoOne: { ko: "30일 이용권 · 1회 결제 / 90일 이용권 · 1회 결제", en: "30-day pass · one-time payment / 90-day pass · one-time payment" },
   noAuto: { ko: "30일 · 90일마다 자동 결제 · 언제든 해지 · 결제 7일 전 안내 · 정기결제는 결제사 승인 뒤 시작(그 전에는 1회 결제)", en: "Charged every 30 or 90 days · cancel any time · notice 7 days before each charge · automatic renewal starts after the payment provider approves it (until then, a one-time payment)" },
   d30: { ko: "30일", en: "30 days" },
   d30For: { ko: "한 번 지원해 볼 때", en: "For one application round" },

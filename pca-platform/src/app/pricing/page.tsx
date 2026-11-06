@@ -13,6 +13,7 @@ import { sellableCores } from "@/lib/me-v3/core-registry";
 import { openGrants } from "@/lib/me-v2/attempt";
 import { resumePathFor } from "@/lib/engine-entry";
 import { BRAND, toLang2, txer } from "@/lib/surface-text";
+import { subscriptionsOpen } from "@/lib/subscriptions/open";
 import { valueOf } from "@/lib/tiers";
 import { minutesLabel, tierMinutes } from "@/lib/tier-minutes";
 import { PRODUCT } from "@/lib/product-copy";
@@ -235,7 +236,7 @@ export default async function PricingPage({
         {tracks.length && MAT_PUBLIC ? (
           <section className="pxband" id="track">
             <h2>{T("pxTrackTitle")}</h2>
-            <p className="pxwhat">{T("pxTrackLead")}</p>
+            <p className="pxwhat">{T(subscriptionsOpen() ? "pxTrackLead" : "pxTrackLeadOne")}</p>
             {/* 결제 주기 · 해지 · 환불의 기준 문서(2026-11-04 NHN KCP 재심사) */}
             <p className="pxwhat">
               <Link href="/legal/subscription">{L === "en" ? "Subscription policy" : "정기결제 운영규정"}</Link>
