@@ -30,6 +30,12 @@ export default async function CompletePage({
     code?: string;
     message?: string;
     lang?: string;
+    /* 포트원 V1 모바일 결제창이 `m_redirect_url` 로 돌아올 때 붙이는 값 */
+    imp_uid?: string;
+    merchant_uid?: string;
+    imp_success?: string;
+    error_code?: string;
+    error_msg?: string;
   }>;
 }) {
   const user = await requireUser();
@@ -37,9 +43,16 @@ export default async function CompletePage({
   const lang = await resolveLang(sp.lang);
 
   // PortOne 은 paymentId 를, mock 은 order 를 돌려준다
+  /* V1 은 결제 고유번호(imp_uid)를, 없으면 주문번호(merchant_uid)를 쓴다. 어느 쪽이든 서버가 다시 조회해 확정한다 */
   const key =
-    sp.paymentId ??
+    sp.paymentId ?? sp.imp_uid ?? sp.merchant_uid ??
     (sp.order ? (paymentProvider().name === "mock" ? `mock_${sp.order}` : sp.order) : null);
+
+  /* V1 모바일: 실패 · 취소면 `imp_success=false` 나 `error_code` 가 붙는다. 결제가 안 된 것이라 확정을 부르지 않는다 */
+  if (!sp.code && (sp.error_code || sp.imp_success === "false")) {
+    sp.code = sp.error_code || "FAILED";
+    sp.message = sp.error_msg ?? sp.message;
+  }
 
   if (sp.code) {
     return (

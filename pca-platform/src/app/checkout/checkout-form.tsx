@@ -10,8 +10,43 @@ declare global {
     PortOne?: {
       requestPayment(req: Record<string, unknown>): Promise<{ code?: string; message?: string }>;
     };
+    /** 포트원 V1(아임포트) 결제창 모듈 */
+    IMP?: {
+      init(impCode: string): void;
+      request_pay(req: Record<string, unknown>, cb: (rsp: V1Rsp) => void): void;
+    };
   }
 }
+
+type V1Rsp = { success?: boolean; error_code?: string | null; error_msg?: string | null; imp_uid?: string | null; merchant_uid?: string };
+
+/**
+ * 포트원 V1 결제창을 열고 결과를 V2 와 같은 꼴로 돌려준다. 실패 · 취소면 `code`, 성공이면 결제 고유번호(imp_uid).
+ * 모바일은 결제창이 `m_redirect_url` 로 넘어가므로 이 함수가 돌아오지 않을 수 있다(완료 화면이 확정한다)
+ */
+function requestV1(t: { storeId?: string; channelKey?: string; orderNo: string; orderName: string; amount: number; currency: string; redirectUrl: string; noticeUrl?: string }):
+  Promise<{ code?: string; message?: string; impUid?: string }> {
+  const IMP = window.IMP!;
+  IMP.init(t.storeId ?? "");
+  return new Promise((resolve) => {
+    IMP.request_pay({
+      channelKey: t.channelKey,
+      pay_method: "card",
+      merchant_uid: t.orderNo,
+      name: t.orderName,
+      amount: t.amount,
+      currency: t.currency,
+      m_redirect_url: t.redirectUrl,
+      /* 결제 알림은 이 주소로(포트원 콘솔의 결제알림 주소는 다른 서비스가 쓰고 있어 바꾸지 않는다) */
+      ...(t.noticeUrl ? { notice_url: t.noticeUrl } : {}),
+    }, (rsp) => {
+      if (rsp.error_code || rsp.success === false || !rsp.imp_uid) {
+        resolve({ code: rsp.error_code || "FAILED", message: rsp.error_msg ?? undefined });
+      } else resolve({ impUid: rsp.imp_uid });
+    });
+  });
+}
+
 
 /**
  * 결제 버튼.
@@ -56,7 +91,7 @@ export default function CheckoutForm({
 
   // 실제 PG 는 티켓을 받는 즉시 결제창을 띄운다
   useEffect(() => {
-    if (!ticket || provider !== "portone" || opened.current === ticket.providerPaymentId) return;
+    if (!ticket || !provider.startsWith("portone") || opened.current === ticket.providerPaymentId) return;
     opened.current = ticket.providerPaymentId;
     setLaunching(true);
     setSdkError(null);
@@ -66,7 +101,8 @@ export default function CheckoutForm({
     const fail = (msg: string) => { window.clearTimeout(timer); setSlow(false); setSdkError(msg); setLaunching(false); };
 
     (async () => {
-      if (!window.PortOne) {
+      const v1 = ticket.sdk === "v1";
+      if (v1 ? !window.IMP : !window.PortOne) {
         fail(en ? "The payment module did not load. Refresh the page and try again." : "결제 모듈을 불러오지 못했습니다. 새로고침 후 다시 시도해 주세요.");
         return;
       }
@@ -74,9 +110,9 @@ export default function CheckoutForm({
        * **결제 요청이 바로 실패해도 화면을 풀어 준다**(2026-11-06 운영: 포트원이 0.03초 만에 FAILED 를 냈는데
        * `결제창 여는 중…` 에 멈췄다). SDK 가 던지면 잡아서 까닭을 보이고, 코드가 오면 그 글을 보인다
        */
-      let res: Awaited<ReturnType<NonNullable<typeof window.PortOne>["requestPayment"]>>;
+      let res: { code?: string; message?: string; impUid?: string };
       try {
-        res = await window.PortOne.requestPayment({
+        res = v1 ? await requestV1(ticket) : await window.PortOne!.requestPayment({
         storeId: ticket.storeId,
         channelKey: ticket.channelKey,
         paymentId: ticket.providerPaymentId,
@@ -106,8 +142,9 @@ export default function CheckoutForm({
          거기서 서버가 PG 에 다시 물어 확정한다(값을 믿지 않는 것은 같다) */
       if (res) {
         const sep = ticket.redirectUrl.includes("?") ? "&" : "?";
+        /* V1 은 결제 고유번호(imp_uid)를 넘긴다. 없으면 주문번호로 찾는다(`v1Lookup`) */
         window.location.assign(
-          `${ticket.redirectUrl}${sep}paymentId=${encodeURIComponent(ticket.providerPaymentId)}`);
+          `${ticket.redirectUrl}${sep}paymentId=${encodeURIComponent(res.impUid ?? ticket.providerPaymentId)}`);
         return;
       }
       setLaunching(false);

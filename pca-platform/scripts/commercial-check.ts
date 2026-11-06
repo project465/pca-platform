@@ -182,6 +182,66 @@ async function main() {
     P1.orderNoOf({ id: "ORD1", customData: "\"ORD2\"" }, "ORD1") === "ORD1");
   ok("응답에 id 가 없으면 조회한 결제 아이디", P1.orderNoOf({ id: "", customData: undefined }, "ORD9") === "ORD9");
 
+  /* ── 3-2. 포트원 V1(2026-11-06: KCP V2 가 열리기 전 V1 실채널로 받는다) ── */
+  {
+    const V1 = await import("../src/lib/payments/portone-v1");
+    const IX = await import("../src/lib/payments");
+    const saved = { ...process.env };
+    const setEnv = (o: Record<string, string | undefined>) => { for (const [k, v] of Object.entries(o)) { if (v === undefined) delete process.env[k]; else process.env[k] = v; } };
+    setEnv({ PAYMENTS_PROVIDER: "portone", PORTONE_API_VERSION: undefined });
+    ok("기본은 V2", IX.portoneVersion() === "v2" && IX.paymentProvider().name === "portone");
+    setEnv({ PORTONE_API_VERSION: "v1", PORTONE_V1_IMP_CODE: undefined, PORTONE_V1_API_KEY: undefined, PORTONE_V1_API_SECRET: undefined, PORTONE_V1_CHANNEL_KEY: undefined });
+    ok("PORTONE_API_VERSION=v1 이면 V1 어댑터", IX.paymentProvider().name === "portone_v1");
+    const r0 = IX.marketReadiness("KR");
+    ok("V1 칸이 비면 국내 결제를 닫고 빈 칸 이름을 말한다", !r0.ready && /PORTONE_V1_IMP_CODE/.test(r0.blocker ?? ""), r0.blocker ?? "");
+    setEnv({ PORTONE_V1_IMP_CODE: "imp00000000", PORTONE_V1_API_KEY: "k", PORTONE_V1_API_SECRET: "s", PORTONE_V1_CHANNEL_KEY: "channel-key-test", PLATFORM_URL: "https://app.careermatri.com" });
+    ok("V1 칸이 다 차면 국내만 열고 해외는 닫는다", IX.marketReadiness("KR").ready && !IX.marketReadiness("GLOBAL").ready);
+    ok("V1 로 받은 결제는 설정과 상관없이 V1 로 환불한다", IX.providerByName("portone_v1").name === "portone_v1");
+    const tk = await IX.paymentProvider().createCheckout({ orderNo: "MV1TEST0001", orderName: "MAT 30일", amount: 9900, currency: "KRW", redirectUrl: "https://app.careermatri.com/checkout/complete", region: "domestic" });
+    ok("결제창 값: 식별코드 · 채널 키 · 주문번호 · 결제 알림 주소(우리 쪽)", tk.sdk === "v1" && tk.storeId === "imp00000000" && tk.channelKey === "channel-key-test"
+      && tk.orderNo === "MV1TEST0001" && tk.noticeUrl === "https://app.careermatri.com/api/payments/webhook", JSON.stringify(tk));
+    ok("결제 알림 꼴: JSON · 폼 둘 다, imp_uid 없으면 거절", V1.parseV1Notice('{"imp_uid":"imp_123456789012","merchant_uid":"MV1","status":"paid"}')?.impUid === "imp_123456789012"
+      && V1.parseV1Notice("imp_uid=imp_123456789012&merchant_uid=MV1&status=paid")?.status === "paid" && V1.parseV1Notice('{"merchant_uid":"x"}') === null
+      && V1.parseV1Notice('{"imp_uid":"../../etc"}') === null);
+    const wh = await IX.paymentProvider().handleWebhook('{"imp_uid":"imp_123456789012","merchant_uid":"MV1","status":"paid"}', {});
+    ok("결제 알림은 다시 조회할 결제 번호만 돌려준다", wh.ok && wh.providerPaymentId === "imp_123456789012" && wh.eventId === "imp_123456789012:paid");
+
+    /* REST 흉내: 토큰 · 조회(imp_uid / merchant_uid) · 취소 */
+    const calls: string[] = [];
+    const pay = { imp_uid: "imp_123456789012", merchant_uid: "MV1TEST0001", status: "paid", amount: 9900, currency: "KRW", pay_method: "card" };
+    const fake = (async (url: string | URL, init?: RequestInit) => {
+      const u = String(url); calls.push(`${init?.method ?? "GET"} ${u.replace("https://api.iamport.kr", "")}`);
+      const json = (o: unknown) => new Response(JSON.stringify(o), { status: 200, headers: { "Content-Type": "application/json" } });
+      if (u.endsWith("/users/getToken")) return json({ code: 0, message: null, response: { access_token: "tok" } });
+      if (u.endsWith("/payments/imp_123456789012") || u.endsWith("/payments/find/MV1TEST0001/paid")) return json({ code: 0, message: null, response: pay });
+      if (u.endsWith("/payments/cancel")) {
+        const b = JSON.parse(String(init?.body)) as { imp_uid: string; amount: number };
+        return json({ code: 0, message: null, response: { imp_uid: b.imp_uid, cancel_amount: b.amount, cancel_history: [{ pg_tid: "tid-1", amount: b.amount }] } });
+      }
+      return json({ code: 1, message: "없음", response: null });
+    }) as typeof fetch;
+    const realFetch = globalThis.fetch;
+    globalThis.fetch = fake;
+    try {
+      V1.resetV1Token();
+      const f1 = await IX.paymentProvider().getPaymentStatus("imp_123456789012");
+      ok("imp_uid 로 조회: 상태 · 금액 · 통화 · 주문번호(merchant_uid 그대로)", f1.status === "paid" && f1.amount === 9900 && f1.currency === "KRW"
+        && f1.orderNo === "MV1TEST0001" && f1.providerPaymentId === "imp_123456789012", JSON.stringify(f1));
+      const f2 = await IX.paymentProvider().getPaymentStatus("MV1TEST0001");
+      ok("주문번호로도 찾는다(결제창이 imp_uid 를 못 줬을 때)", f2.providerPaymentId === "imp_123456789012");
+      const v = await IX.paymentProvider().verifyPayment({ providerPaymentId: "imp_123456789012", expectAmount: 9900, expectCurrency: "KRW" });
+      const vBad = await IX.paymentProvider().verifyPayment({ providerPaymentId: "imp_123456789012", expectAmount: 19900, expectCurrency: "KRW" });
+      ok("금액 대조: 같으면 통과, 다르면 거절", v.ok && !vBad.ok);
+      ok("토큰은 한 번만 받는다", calls.filter((c) => c.endsWith("/users/getToken")).length === 1, calls.join(" / "));
+      const rf = await IX.providerByName("portone_v1").refundPayment({ providerPaymentId: "imp_123456789012", amount: 3300, reason: "일할 환불" });
+      ok("환불: REST 취소(부분 금액)", rf.ok && rf.amount === 3300 && rf.providerRefundId === "tid-1", JSON.stringify(rf));
+    } finally {
+      globalThis.fetch = realFetch;
+      for (const k of Object.keys(process.env)) if (!(k in saved)) delete process.env[k];
+      Object.assign(process.env, saved);
+    }
+  }
+
   /* ── 4. 웹훅 ───────────────────────────────────────────────────── */
   const { mockProvider } = await import("../src/lib/payments/mock");
   ok("본문이 JSON 이 아닌 웹훅은 거절한다",

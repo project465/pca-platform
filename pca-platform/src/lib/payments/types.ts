@@ -46,6 +46,10 @@ export type CheckoutTicket = {
   channelKey?: string;
   redirectUrl: string;
   region: PayRegion;
+  /** 포트원 V1 일 때: 결제 알림을 받을 우리 주소(결제 요청마다 `notice_url` 로 넣는다) */
+  noticeUrl?: string;
+  /** 어느 결제창 모듈로 여는가. 비면 V2(`portone`) */
+  sdk?: "v1" | "v2";
 };
 
 export type WebhookResult =

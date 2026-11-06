@@ -38,7 +38,10 @@ export default function RootLayout({
         {/* 결제창 모듈. portone 일 때만 내려보낸다. mock 으로 도는 동안
             외부 스크립트를 붙일 이유가 없다 */}
         {process.env.PAYMENTS_PROVIDER === "portone" ? (
-          <Script src="https://cdn.portone.io/v2/browser-sdk.js" strategy="beforeInteractive" />
+          /* 포트원 V1(`PORTONE_API_VERSION=v1`)이면 V1 결제창 모듈(IMP)을 내려보낸다 */
+          (process.env.PORTONE_API_VERSION ?? "").trim().toLowerCase() === "v1"
+            ? <Script src="https://cdn.iamport.kr/v1/iamport.js" strategy="beforeInteractive" />
+            : <Script src="https://cdn.portone.io/v2/browser-sdk.js" strategy="beforeInteractive" />
         ) : null}
       </body>
     </html>

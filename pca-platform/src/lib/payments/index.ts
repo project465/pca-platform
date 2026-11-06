@@ -2,11 +2,20 @@ import type { PaymentProvider, PayRegion } from "./types";
 import { mockProvider } from "./mock";
 import { mockPaymentsAllowed } from "@/lib/env";
 import { portoneProvider } from "./portone";
+import { portoneV1Provider, PORTONE_V1_NAME, v1Missing } from "./portone-v1";
 
 export * from "./types";
 export { matchesOrder } from "./verify";
 export { markMockPaid, markMockCancel, markMockRefundFail } from "./mock";
 export { globalChannelReady } from "./portone";
+
+/**
+ * 포트원 V1 · V2 가운데 어느 쪽으로 받는가(`PORTONE_API_VERSION`, 기본 v2). 2026-11-06 대표 결정: KCP 의 V2(PG-API)가
+ * 열리기 전에는 V1 실채널로 받는다. V2 가 열리면 값만 v2 로 바꾸면 된다
+ */
+export function portoneVersion(): "v1" | "v2" {
+  return (process.env.PORTONE_API_VERSION ?? "").trim().toLowerCase() === "v1" ? "v1" : "v2";
+}
 
 /**
  * PAYMENTS_PROVIDER 로 고른다. 기본값은 mock 이다.
@@ -25,7 +34,7 @@ export { globalChannelReady } from "./portone";
 export function paymentProvider(): PaymentProvider {
   const name = process.env.PAYMENTS_PROVIDER ?? "mock";
 
-  if (name === "portone") return portoneProvider;
+  if (name === "portone") return portoneVersion() === "v1" ? portoneV1Provider : portoneProvider;
 
   if (name === "mock") {
     if (!mockPaymentsAllowed()) {
@@ -47,6 +56,8 @@ export function paymentProvider(): PaymentProvider {
  */
 export function providerByName(name: string): PaymentProvider {
   if (name === "portone") return portoneProvider;
+  /* V1 로 받은 결제는 설정이 V2 로 돌아가도 V1 로 환불한다 */
+  if (name === PORTONE_V1_NAME) return portoneV1Provider;
   if (name === "paddle") return paddleRefunds;
   if (name === "mock") {
     if (!mockPaymentsAllowed()) throw new Error("운영에서 mock 결제를 환불할 수 없습니다.");
@@ -113,6 +124,17 @@ export function marketReadiness(market: "KR" | "GLOBAL"): MarketReadiness {
   if (name !== "portone") {
     return { market, region, ready: false, provider: null,
       blocker: `알 수 없는 PAYMENTS_PROVIDER: ${name}` };
+  }
+
+  /* V1: 국내 카드(KCP)만. 결제 알림은 서명이 없어 조회로 확정하므로 웹훅 비밀값이 필요 없다 */
+  if (portoneVersion() === "v1") {
+    if (region !== "domestic") {
+      return { market, region, ready: false, provider: null, blocker: "포트원 V1 은 국내 카드 결제만 엽니다." };
+    }
+    const miss = v1Missing();
+    return miss.length
+      ? { market, region, ready: false, provider: PORTONE_V1_NAME, blocker: `${miss.join(" · ")} 이 채워지지 않았습니다.` }
+      : { market, region, ready: true, provider: PORTONE_V1_NAME, blocker: null };
   }
 
   if (!process.env.PORTONE_STORE_ID || !process.env.PORTONE_API_SECRET) {
