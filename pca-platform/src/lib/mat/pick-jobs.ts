@@ -80,12 +80,13 @@ export async function pickJobs(userId: string, limit = 20): Promise<PickedJobs> 
   type Row = {
     id: string; source: string; source_url: string | null; closes_on: string | null; captured_at: string;
     region_code: string | null; raw_requirements: string[]; core_code: string | null; role_code: string | null;
-    title: string | null; category: string | null; field: string | null; degree_label: string | null;
+    mapping_note: string | null; title: string | null; category: string | null; field: string | null; degree_label: string | null;
     region_label: string | null; abroad: boolean | null; posting_kind: string | null;
   };
   /* 카드 칸이 없는 DB(`db/schema_jobs_meta.sql` 전)에서는 빈 값으로 읽는다 */
   const sql = (meta: boolean) => `
     SELECT id::text, source, source_url, closes_on::text, captured_at::text, region_code, raw_requirements, core_code, role_code,
+           mapping_note,
            ${meta ? "title, category, field, degree_label, region_label, abroad, posting_kind"
              : "NULL::text AS title, NULL::text AS category, NULL::text AS field, NULL::text AS degree_label, NULL::text AS region_label, NULL::boolean AS abroad, NULL::text AS posting_kind"}
        FROM v3_job_postings
@@ -110,7 +111,13 @@ export async function pickJobs(userId: string, limit = 20): Promise<PickedJobs> 
     const majorHit = st.length >= 2 && text.includes(st);
     if (majorHit) { score += 3; if (!hits.includes(st)) hits.unshift(st); }
     /* 아래에서 제목 · 모집 분야로 다시 정한다 */
-    let mineField = p.core_code ? p.core_code === core : (m?.hits.length ?? 0) > 0 || majorHit;
+    /*
+     * **본문만 보고 짐작해 단 전공은 내 전공 공고로 치지 않는다**(2026-11-06 대표: 전주대 인공지능학과 추천에 무관 공고).
+     * 모을 때 제목으로 못 가르고 본문 낱말로 단 전공(`mapping_note = rules:content`)은 데이터 · 분석 · 모델 같은 흔한 말로
+     * 임상 · 화학 공고도 인공지능에 붙는다. 전공 이름이 본문에만 나온 것도 같다. 둘 다 순위에만 쓰고, 맞춤은 아래 제목 · 모집 분야로 정한다
+     */
+    const guessed = (p.mapping_note ?? "").includes("rules:content");
+    let mineField = p.core_code && !guessed ? p.core_code === core : (m?.hits.length ?? 0) > 0;
     /* **전공 관련도가 먼저다**: 내 전공 사전의 낱말(예: 딥러닝 · PyTorch · AI 엔지니어)이 **제목 · 모집 분야**에 나오는가.
        본문에 한 번 나온 것만으로는 맞춤으로 치지 않고 순위만 조금 올린다(2026-11-02 운영 시험: 본문의 "인공지능" 한 번으로
        "과제계약직" 공고가 인공지능학과의 첫 줄에 섰다) */

@@ -8,7 +8,7 @@ import { aiConsented } from "@/lib/assistant/settings";
 import { aiReady } from "@/lib/assistant/claude";
 import { outLink } from "@/lib/mat/out-link";
 import { PRICING_HREF } from "@/lib/pricing/config";
-import { itemsOf } from "@/lib/research/profile";
+import { itemsOf, type ItemKind } from "@/lib/research/profile";
 import { matchesOf } from "@/lib/research/match";
 import { FREE_READINGS, readingsUsed, type AiReading } from "@/lib/research/ai";
 import { readResearchMatch } from "../actions";
@@ -37,6 +37,7 @@ export default async function ResearchMatches({ searchParams }: { searchParams: 
     matchesOf(user.id, 0, 100), itemsOf(user.id), matAccess(user.id), aiConsented(user.id), readingsUsed(user.id),
   ]);
   const name = new Map(items.map((i) => [i.id, `${itemHead(i, lang)}${itemSub(i, lang) ? ` (${itemSub(i, lang)})` : ""}`]));
+  const kindOf = new Map(items.map((i) => [i.id, i.kind]));
   const freeLeft = access.paid ? Infinity : Math.max(0, FREE_READINGS - used);
   const canRead = freeLeft > 0 && consent && aiReady();
   const KIND = { required: R.kRequired, preferred: R.kPreferred, unclear: R.kUnclear } as const;
@@ -60,10 +61,12 @@ export default async function ResearchMatches({ searchParams }: { searchParams: 
                   {[m.category, m.degree_label, m.region_label, m.closes_on ? t(R.mCloses, { d: m.closes_on.slice(0, 10) }) : null]
                     .filter(Boolean).join(" · ")}
                 </small>
-                <small><b>{t(R.mScore, { n: m.score })}</b> · {t(R.mTerms)}</small>
-                <div className="mt-chips">
-                  {m.reasons.terms.map((x) => <span className="mt-chip" key={x.term}>{x.term}</span>)}
-                </div>
+                <small><b>{t(R.mScore, { n: m.score })}</b></small>
+                {/* 낱말마다 어느 이력에서 왔는지 붙인다(2026-11-06 대표: '맞은 낱말' 표기가 어색하다) */}
+                <small>{t(R.mTerms)}: {m.reasons.terms.map((x) => {
+                  const from = [...new Set(x.items.map((i) => kindOf.get(i)).filter((k): k is ItemKind => !!k))].map((k) => t(R.kindShort[k]));
+                  return from.length ? `${x.term}(${from.join("·")})` : x.term;
+                }).join(", ")}</small>
                 <small>{t(m.reasons.degree === "fit" ? R.mDegreeFit : m.reasons.degree === "none" ? R.mDegreeNone : R.mDegreeUnknown)}</small>
               </div>
               {link ? <a className="mt-btn is-small" href={link} target="_blank" rel="noopener noreferrer">{t(R.mOpen)}</a> : null}

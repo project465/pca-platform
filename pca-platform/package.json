@@ -257,6 +257,7 @@
     "featured:sample": "tsx scripts/featured/sample-run.ts",
     "campus:mapping": "tsx scripts/campus-mapping-table.ts",
     "mat:jobs-coverage": "tsx scripts/mat-jobs-coverage.ts",
+    "mat:pick": "tsx scripts/mat-pick-check.ts",
     "campus:login-migrate": "tsx scripts/campus-login-migrate.ts",
     "db:campus:mat": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 --single-transaction -f db/schema_campus_mat.sql"
   },
