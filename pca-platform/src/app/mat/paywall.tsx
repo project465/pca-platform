@@ -28,6 +28,8 @@ export async function Paywall({ userId, analyzed = 0, lang = "ko" }: { userId: s
     ? priceLabel(usdPrice("basic", 30, route.country), "USD")
     : priceLabel(krwPrice("basic", 30), "KRW");
   return (
+    <>
+    <CampusWait userId={userId} lang={lang} />
     <section className="mt-pay" aria-label={PAYWALL.body}>
       <h3>{rest > 0 ? PAYWALL.more(rest) : PAYWALL.moreNone}</h3>
       <p>{PAYWALL.body}</p>
@@ -40,6 +42,33 @@ export async function Paywall({ userId, analyzed = 0, lang = "ko" }: { userId: s
         {acc.freeLeft > 0 ? null : acc.slots.aftertest === "locked" ? PAYWALL.usedFree : PAYWALL.usedAll}
         {acc.slots.aftertest === "locked" ? <> · <Link href="/cores">{PAYWALL.testForMore}</Link></> : null}
       </p>
+    </section>
+    </>
+  );
+}
+
+/**
+ * **학교가 발급한 계정인데 학교 MAT 이 아직 열리지 않은 학생**(2026-11-06). 결제 입구 · 요금 화면 위에 선다.
+ *
+ * 이 학생은 개인 무료(공고 분석 1회 + 검사 뒤 1회)로 MAT 을 쓰고, 다 쓰면 결제 입구를 받는다(`mat-access.ts`).
+ * 학교 계약 학생은 결제 없이 전부 열리는 것이 약속이므로(확정된 결정 표), **결제보다 먼저 학교가 열어 준다는 것과
+ * 누구에게 물을지**를 적는다. 개인 결제 길은 막지 않는다. 학교 MAT 이 열려 있으면 그리지 않는다
+ */
+export async function CampusWait({ userId, lang = "ko" }: { userId: string; lang?: MatUiLang }) {
+  const PAYWALL = moneyText(lang).PAYWALL;
+  const [{ activeTrack }, { campusStudentContext }, { campusSay, university }] = await Promise.all([
+    import("@/lib/track"), import("@/lib/campus/students"), import("@/lib/campus/registry"),
+  ]);
+  const [st, campus] = await Promise.all([
+    activeTrack(userId), campusStudentContext(userId).catch(() => null),
+  ]);
+  if (!campus || st.on) return null;
+  /* 기관(진흥원) 참여자에게는 `학교` 대신 `기관` 으로 적는다. 영어 문장은 그대로 */
+  const say = lang === "en" ? (s: string) => s : campusSay(university(campus.row.university_code));
+  return (
+    <section className="mt-box is-school" aria-label={PAYWALL.campusWait(campus.university_name)}>
+      <h3>{PAYWALL.campusWait(campus.university_name)}</h3>
+      <p>{say(PAYWALL.campusWaitBody)}</p>
     </section>
   );
 }

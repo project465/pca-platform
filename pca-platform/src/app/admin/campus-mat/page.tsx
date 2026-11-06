@@ -7,7 +7,7 @@ import { NAV_ADMIN } from "@/components/sf/nav";
 import { Empty } from "@/components/sf/parts";
 import LangSelect from "@/components/sf/lang-select";
 import { universities } from "@/lib/campus/registry";
-import { allPools, CAMPUS_MAT_NAME } from "@/lib/campus/mat";
+import { allPools, CAMPUS_MAT_NAME, schoolReadiness as readiness } from "@/lib/campus/mat";
 import { ClosePool, NewPool } from "./forms";
 
 export const metadata = { title: `MAT 학교 이용권 · ${BRAND.admin}` };
@@ -21,15 +21,20 @@ export const metadata = { title: `MAT 학교 이용권 · ${BRAND.admin}` };
  */
 export default async function CampusMatAdmin({
   searchParams,
-}: { searchParams: Promise<{ lang?: string }> }) {
+}: { searchParams: Promise<{ lang?: string; uni?: string }> }) {
   const user = await requireRole(["superadmin"]);
   const sp = await searchParams;
   const L = toLang2(await resolveLang(sp.lang));
   const T = txer(L);
-  const schools = universities().map((u) => ({ code: u.university_code, name: u.university_name }));
+  /* 데모 학교는 이름 뒤에 `(데모)` 를 붙인다. 실제 계약 인원과 섞어 읽지 않게 한다 */
+  const schools = universities().map((u) => ({
+    code: u.university_code, name: u.demo ? `${u.university_name} (데모)` : u.university_name,
+  }));
   const nameOf = Object.fromEntries(schools.map((s) => [s.code, s.name]));
   const pools = await allPools();
   const until = new Date(Date.now() + 365 * 86400_000).toISOString().slice(0, 10);
+  const preset = schools.some((s) => s.code === (sp.uni ?? "").toUpperCase()) ? (sp.uni ?? "").toUpperCase() : "";
+  const ready = await readiness(schools.map((s) => s.code));
 
   return (
     <Shell
@@ -40,8 +45,44 @@ export default async function CampusMatAdmin({
       <PageHead eyebrow={BRAND.admin} title={T("navCampusMat")}
         sub="학교가 계약으로 산 MAT 인원을 넣습니다. 담당자는 그 인원 안에서 학생에게 엽니다." />
 
+      {/* **넣기 전에 볼 것**(2026-11-06). 인원을 넣어도 그 학교 기관 · 담당자 계정 · 학생 계정이 없으면
+          아무도 학생에게 열 수 없다. 학교마다 무엇이 비어 있는지 한 줄로 본다 */}
+      <Section title="학교별 준비 상태" note="기관 · 담당자 · 학생 계정이 있어야 담당자가 MAT을 엽니다">
+        <div className="sf-tw">
+          <table className="sf-table">
+            <thead>
+              <tr>
+                <th scope="col">학교</th>
+                <th scope="col">기관</th>
+                <th scope="col">담당자</th>
+                <th scope="col">학생 계정</th>
+                <th scope="col">MAT 열린 학생</th>
+                <th scope="col">열 수 있는 인원</th>
+              </tr>
+            </thead>
+            <tbody>
+              {schools.map((s) => {
+                const r = ready[s.code];
+                const left = pools.filter((p) => p.university_code === s.code && p.open)
+                  .reduce((n, p) => n + p.left, 0);
+                return (
+                  <tr key={s.code}>
+                    <th scope="row" className="sf-strong">{s.name}</th>
+                    <td>{r?.org_id ? <a href={`/admin/organizations/${r.org_id}`}>{s.code}</a> : "없음"}</td>
+                    <td>{r?.staff ? `${r.staff}명` : "없음"}</td>
+                    <td>{(r?.students ?? 0).toLocaleString()}명</td>
+                    <td>{(r?.mat ?? 0).toLocaleString()}명</td>
+                    <td>{left ? `${left.toLocaleString()}명` : "없음"}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </Section>
+
       <Section title="인원 넣기">
-        <NewPool schools={schools} until={until} />
+        <NewPool schools={schools} until={until} preset={preset} />
       </Section>
 
       <Section title="학교별 이용권" note={`${pools.length}건`}>

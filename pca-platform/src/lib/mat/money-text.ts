@@ -50,6 +50,9 @@ export const PAYWALL = {
   schoolEnds: (date: string) => `학교 · 기관 MAT 이용권이 ${date}에 끝나요`,
   schoolEndsBody: "끝난 뒤에도 개인 이용권으로 이어 쓸 수 있어요. 자료는 그대로 남아요.",
   schoolEndsGo: "개인 이용권 보기",
+  /* 학교가 발급한 계정인데 학교 MAT 이 아직 열리지 않은 학생(2026-11-06). 결제 단추보다 먼저 선다 */
+  campusWait: (school: string) => `${school} 계정이에요`,
+  campusWaitBody: "학교가 MAT을 열어 주면 결제 없이 모두 쓸 수 있어요. 언제 열리는지는 학교 담당자에게 물어보세요.",
 } as const;
 
 export const PRICING = {
@@ -191,6 +194,8 @@ const PAYWALL_EN: Widen<typeof PAYWALL> = {
   schoolEnds: (date: string) => `Your school or institution MAT pass ends on ${date}`,
   schoolEndsBody: "After that, you can continue with a personal pass. Your records stay.",
   schoolEndsGo: "See personal passes",
+  campusWait: (school: string) => `This is a ${school} account`,
+  campusWaitBody: "When your school opens MAT for you, you can use all of it without paying. Ask your school staff when it opens.",
 };
 
 const PRICING_EN: Widen<typeof PRICING> = {

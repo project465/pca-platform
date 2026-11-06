@@ -16,7 +16,7 @@
  */
 import { query, queryOne, tx } from "@/lib/db";
 import { audit } from "@/lib/audit";
-import { university } from "@/lib/campus/registry";
+import { isDemoSchool, university } from "@/lib/campus/registry";
 import type { ManageActor } from "@/lib/campus/manage";
 
 export const CAMPUS_MAT_PRODUCTS = ["CAMPUS_MAT_6M", "CAMPUS_MAT_12M"] as const;
@@ -64,6 +64,32 @@ export async function poolsOf(universityCode: string): Promise<MatPool[]> {
     `${POOL_SQL} WHERE p.university_code = $1 ORDER BY p.status, p.grant_until, p.id`,
     [universityCode]);
   return rows.map(shape);
+}
+
+/**
+ * 학교마다 MAT 을 열 준비가 되어 있는가(2026-11-06). 운영자 화면의 한 줄이다.
+ *
+ * 묶음을 넣어도 그 학교 코드의 기관 · 담당자(`org_admin`) · 학생 계정이 없으면 아무도 열 수 없다.
+ * 학생 수는 시연 계정을 빼고 센다(데모 학교는 전부 시연이라 그대로 센다). MAT 열린 학생은 학교 좌석으로
+ * 지금 열려 있는 사람이다(개인 구매는 세지 않는다)
+ */
+export async function schoolReadiness(codes: string[]): Promise<Record<string, {
+  org_id: string | null; staff: number; students: number; mat: number;
+}>> {
+  if (!codes.length) return {};
+  const demo = codes.filter((c) => isDemoSchool(c));
+  const rows = await query<{ code: string; org_id: string | null; staff: number; students: number; mat: number }>(
+    `SELECT c.code,
+            (SELECT o.id::text FROM organizations o WHERE upper(o.code) = c.code ORDER BY o.id LIMIT 1) AS org_id,
+            (SELECT count(DISTINCT m.user_id)::int FROM memberships m JOIN organizations o ON o.id = m.org_id
+              WHERE upper(o.code) = c.code AND m.role = 'org_admin') AS staff,
+            (SELECT count(*)::int FROM campus_students cs JOIN users u ON u.id = cs.user_id
+              WHERE cs.university_code = c.code AND (NOT u.is_demo OR c.code = ANY($2::text[]))) AS students,
+            (SELECT count(DISTINCT e.user_id)::int FROM entitlements e JOIN campus_mat_pools p ON p.id = e.campus_pool_id
+              WHERE p.university_code = c.code AND e.status = 'active' AND e.ends_at > now()) AS mat
+       FROM unnest($1::text[]) AS c(code)`,
+    [codes, demo]).catch(() => []);
+  return Object.fromEntries(rows.map((r) => [r.code, r]));
 }
 
 /** 운영자가 보는 모든 학교의 묶음 */

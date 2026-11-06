@@ -3565,6 +3565,84 @@
      ]
     }
    ]
+  },
+  {
+   "university_code": "DEMO",
+   "university_name": "체험대학교",
+   "org_kind": "university",
+   "demo": true,
+   "market_code": "KR",
+   "entry_note": "계약 전 학교 담당자에게 보여 주는 데모 학교. 실제 학교가 아니다",
+   "demo_note": "**지어낸 학교다.** 이 학교의 기관 · 학생 · MAT 묶음은 전부 시연으로 표시되어 운영 지표 · 학교 집계 · 정산에 들어가지 않는다(`docs/campus-mat-1106.md`). 학생 아이디 머리가 `demo-` 라 계정이 만들어지는 순간 시연으로 표시된다",
+   "brand_asset": null,
+   "brand_asset_note": "데모 학교라 학교 상표가 없다",
+   "region_hint": "KR-CHUNGCHEONG",
+   "region_cities": [
+    "대전"
+   ],
+   "region_note": "먼저 보여 주는 자리일 뿐이다. **사용자가 고른 지역을 바꾸지 않는다**",
+   "student_open": {
+    "mode": "LEAF",
+    "leaves": [
+     "DEMO26_ME",
+     "DEMO26_EE",
+     "DEMO26_CS"
+    ],
+    "note": "데모로 보여 줄 공학 세 자리만 연다. 세 자리 모두 다른 학교에서 이미 EXACT 로 쓰는 Core 와 갈래다"
+   },
+   "wave1": [
+    "ME_CORE_V3",
+    "EE_CORE_V1",
+    "CS_CORE_V1"
+   ],
+   "wave1_note": "데모에서 보여 줄 Core",
+   "excluded_units": [],
+   "open_questions": [],
+   "catalogs": [
+    {
+     "catalog_code": "DEMO_CUR",
+     "catalog_year": 2026,
+     "label": "현재 재학생",
+     "status": "ACTIVE",
+     "default_for_unknown": true,
+     "effective_from": "2026-03-01",
+     "effective_to": null,
+     "source_url": null,
+     "source_name": "데모용 가상 학교",
+     "verified_at": null,
+     "verification": "OWNER_DICTATED",
+     "verification_note": "실제 학교가 아니다. 데모 화면을 보여 주려고 공학 세 학과만 적었다",
+     "colleges": [
+      {
+       "code": "ENGINEERING",
+       "name": "공과대학",
+       "units": [
+        {
+         "code": "DEMO26_ME",
+         "name": "기계공학과",
+         "kind": "department",
+         "core_code": "ME_CORE_V3",
+         "specialization": "SPEC_ME_GENERAL"
+        },
+        {
+         "code": "DEMO26_EE",
+         "name": "전기전자공학과",
+         "kind": "department",
+         "core_code": "EE_CORE_V1",
+         "specialization": "SPEC_EE_GENERAL"
+        },
+        {
+         "code": "DEMO26_CS",
+         "name": "컴퓨터공학과",
+         "kind": "department",
+         "core_code": "CS_CORE_V1",
+         "specialization": "SPEC_CS_COMPUTER"
+        }
+       ]
+      }
+     ]
+    }
+   ]
   }
  ]
 }

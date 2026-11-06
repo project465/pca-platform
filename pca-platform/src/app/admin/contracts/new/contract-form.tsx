@@ -44,6 +44,15 @@ export default function ContractForm({
         <label htmlFor="endsOn">종료일</label>
         <input id="endsOn" name="endsOn" type="date" required defaultValue={nextYear} />
       </div>
+      {/* 학교 전용 진입 기관(배재대 · 전주대 등)은 이 계약을 쓰지 않는다. 학교 MAT 은 /admin/campus-mat 에서 넣는다 */}
+      <div className="field">
+        <label>
+          <input type="checkbox" name="legacy" value="1" /> 학교 전용 진입 기관에 옛 검사 좌석을 넣습니다
+        </label>
+        <span className="help">
+          학교 MAT 인원은 MAT 학교 이용권 화면에서 넣습니다. 학교 전용 진입 기관에 계약을 넣으면 담당자 메뉴가 옛 화면으로 바뀝니다.
+        </span>
+      </div>
 
       {state.error && (
         <p className="notice warn" role="alert">

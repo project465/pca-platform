@@ -6,6 +6,7 @@ import { requireRole } from "@/lib/session";
 import { query, queryOne } from "@/lib/db";
 import { nameOf } from "@/lib/i18n";
 import { university } from "@/lib/campus/registry";
+import { CAMPUS_MAT_NAME, poolsOf } from "@/lib/campus/mat";
 import { campusV3 } from "@/lib/me-v3/campus";
 import { orgTypeKo } from "@/lib/org-type";
 import StaffPanel from "./staff-panel";
@@ -98,6 +99,17 @@ export default async function OrgDetail({ params }: { params: Promise<{ id: stri
     ? await campusV3({ orgIds: [Number(org.id)], universityCode: org.code }).catch(() => null)
     : null;
 
+  /**
+   * **학교 등록부의 기관은 계약 표를 쓰지 않는다**(2026-11-06). 학교 MAT 은 `campus_mat_pools` 가 열고,
+   * 검사 리포트는 학교 발급 계정이면 열린다. 옛 계약(`contracts`)은 옛 검사 좌석이고, 한 줄이라도 생기면
+   * 담당자 메뉴가 옛 화면(계약 · 좌석 · 회차, 전부 0)으로 바뀐다(`campusV3Only`). 그래서 이 기관에서는
+   * `계약 등록` 대신 `MAT 인원 넣기` 를 세운다
+   */
+  const campusUni = org.code ? university(org.code) : null;
+  const campusCode = campusUni?.university_code ?? null;
+  const pools = campusCode ? await poolsOf(campusCode).catch(() => []) : [];
+  const matHref = campusCode ? `/admin/campus-mat?uni=${campusCode}` : "";
+
 
   return (
     <AdminShell user={user} current="/admin/organizations">
@@ -108,9 +120,15 @@ export default async function OrgDetail({ params }: { params: Promise<{ id: stri
           <Link className="act" href="/admin/organizations">
             목록
           </Link>
-          <Link className="act solid" href={`/admin/contracts/new?org=${org.id}`}>
-            계약 등록
-          </Link>
+          {campusCode ? (
+            <Link className="act solid" href={matHref}>
+              MAT 인원 넣기
+            </Link>
+          ) : (
+            <Link className="act solid" href={`/admin/contracts/new?org=${org.id}`}>
+              계약 등록
+            </Link>
+          )}
         </div>
       </div>
       <p className="page-sub">
@@ -124,8 +142,54 @@ export default async function OrgDetail({ params }: { params: Promise<{ id: stri
 
       <StaffPanel orgId={org.id} staff={staff} />
 
-      <h2 className="page-h2">계약과 좌석</h2>
-      {contracts.length === 0 ? (
+      {campusCode ? (
+        <>
+          <h2 className="page-h2">MAT 학교 이용권{campusUni?.demo ? " (데모 학교)" : ""}</h2>
+          {pools.length ? (
+            <div className="tablewrap">
+              <table className="roster">
+                <thead>
+                  <tr>
+                    <th>이용권</th>
+                    <th>연 학생 / 인원</th>
+                    <th>열 수 있는 날</th>
+                    <th>상태</th>
+                    <th>메모</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {pools.map((p) => (
+                    <tr key={p.id}>
+                      <td>{CAMPUS_MAT_NAME[p.product_code]}</td>
+                      <td className="mono">{p.used} / {p.seats}</td>
+                      <td className="mono">{p.grant_until}</td>
+                      <td>{p.status === "closed" ? "닫힘" : p.open ? "열 수 있음" : p.left ? "기간 지남" : "인원 다 씀"}</td>
+                      <td>{p.memo ?? ""}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="empty">
+              <b>MAT 인원이 없습니다</b>
+              이 학교 학생은 지금 MAT 무료 분석만 씁니다. 계약한 인원과 기간을 넣으면 담당자가 학생 관리 화면에서 학생에게 엽니다.
+              <Link className="act solid" href={matHref}>
+                MAT 인원 넣기
+              </Link>
+            </div>
+          )}
+        </>
+      ) : null}
+
+      <h2 className="page-h2">{campusCode ? "옛 검사 계약과 좌석" : "계약과 좌석"}</h2>
+      {contracts.length === 0 && campusCode ? (
+        <div className="empty">
+          <b>옛 검사 계약이 없습니다. 이 학교에는 없는 것이 맞습니다</b>
+          이 학교는 학교 전용 진입으로 운영합니다. 여기 계약을 등록하면 담당자 메뉴가 옛 화면으로 바뀌고,
+          학교 MAT 은 열리지 않습니다. MAT 은 위의 MAT 학교 이용권으로 엽니다.
+        </div>
+      ) : contracts.length === 0 ? (
         <div className="empty">
           <b>계약이 없습니다</b>
           좌석은 계약에서 나옵니다. 계약을 등록하면 좌석이 바로 만들어집니다.

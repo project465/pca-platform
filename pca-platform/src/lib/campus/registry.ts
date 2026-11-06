@@ -220,8 +220,19 @@ export type CampusUniversity = {
    * `참여자 · 전공 계열 · 아이디` 로 적는다(`campusWords`). 없으면 학교다.
    */
   org_kind?: "university" | "agency";
+  /**
+   * **계약 전 데모 학교다**(2026-11-06). 지어낸 학교이고, 그 학교로 만든 기관 · 학생은 시연으로
+   * 표시되어 운영 지표 · 정산에 들어가지 않는다(`isDemoSchool`). 담당자 화면은 시연 계정을 거르지 않고 본다
+   */
+  demo?: boolean;
+  demo_note?: string;
   catalogs: CampusCatalog[];
 };
+
+/** 등록부의 데모 학교인가. 기관 · 학생을 시연으로 표시할지 이 한 곳이 정한다 */
+export function isDemoSchool(code: string | null | undefined): boolean {
+  return Boolean(code && university(code)?.demo);
+}
 
 export { campusSay, campusWords } from "./words";
 

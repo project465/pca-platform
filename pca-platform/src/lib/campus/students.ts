@@ -20,7 +20,7 @@ import { randomBytes } from "node:crypto";
 import { query, queryOne } from "@/lib/db";
 import { hashPassword } from "@/lib/password";
 import {
-  allLeaves, contextOf, findLeaf, routingContextOf, studentLocaleOf, university, type CampusContext,
+  allLeaves, contextOf, findLeaf, isDemoSchool, routingContextOf, studentLocaleOf, university, type CampusContext,
   type CampusUniversity,
 } from "./registry";
 
@@ -239,9 +239,14 @@ export async function provisionStudent(
   /* **학생을 시연으로 표시하지 않는다.** 사람을 만드는 자리가 스무 곳이
      넘어 트리거가 아이디 모양만 보고 표시할 수 있고, 그 자리는 운영
      지표에서 걸러지므로 담당자 화면의 수가 비어 보인다 */
-  if (user.is_demo) {
-    await query(`UPDATE users SET is_demo = FALSE WHERE id = $1::bigint`,
-      [user.id]);
+  /* **데모 학교의 학생은 거꾸로 시연으로 둔다**(2026-11-06). 계약 전 데모가 운영 지표 · 학교
+     집계 · 정산에 섞이지 않게 한다. 그 학교 담당자 화면은 시연 계정을 거르지 않고 본다.
+     `organizations.is_demo` 로 가르지 않는다: 그 칸은 옛 이관이 `손님이 아직 없던 기관` 에도 붙였고,
+     그 기관이 실제 학교면 실제 학생이 지표에서 빠진다. 데모 여부는 등록부 한 칸이 정한다 */
+  const demo = isDemoSchool(ctx.university_code);
+  if (demo !== user.is_demo) {
+    await query(`UPDATE users SET is_demo = $2 WHERE id = $1::bigint`,
+      [user.id, demo]);
   }
 
   /* 소속은 `memberships` 가 든다. 역할은 전부터 있던 `student` 다 */

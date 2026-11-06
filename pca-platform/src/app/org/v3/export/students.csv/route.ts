@@ -37,7 +37,7 @@ export async function GET(req: Request): Promise<Response> {
   const name = campusNames(v.uni);
   const body = await studentStatusCsv(
     {
-      universityCode: v.uni, q: sp.q, withDemo: sp.demo === "1",
+      universityCode: v.uni, q: sp.q, withDemo: sp.demo === "1" || v.demo,
       college: q.college ?? undefined, department: q.department ?? undefined,
       state,
     },

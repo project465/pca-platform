@@ -96,9 +96,17 @@ export default function MatPanel({
       ) : (
         <p className="sf-note">
           MAT 이용 인원이 아직 없습니다. 계약하면 운영팀이 인원과 기간을 넣어 드리고, 그 뒤 여기서
-          학생에게 열 수 있습니다.
+          학생에게 열 수 있습니다. 그 전까지 학생은 MAT 무료 분석만 쓸 수 있습니다.
         </p>
       )}
+
+      {/* 묶음은 있는데 열 수 있는 것이 없으면 단추가 사라진다. 까닭과 다음 할 일을 적는다 */}
+      {pools.length && !open.length ? (
+        <p className="sf-note" style={{ marginTop: 12 }}>
+          지금 열 수 있는 이용 인원이 없습니다. 인원을 다 썼거나 열 수 있는 날이 지났습니다.
+          인원이나 기간을 늘리려면 운영팀에 요청해 주세요. 이미 연 학생은 기간이 끝날 때까지 그대로 씁니다.
+        </p>
+      ) : null}
 
       {open.length ? (
         <form className="sf-filters" action={run} style={{ marginTop: 16 }}>

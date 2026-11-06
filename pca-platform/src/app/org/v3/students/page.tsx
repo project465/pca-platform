@@ -56,11 +56,11 @@ export default async function CampusStudents({
   const L = toLang2(await resolveLang(sp.lang));
   /* **범위를 이 화면에서 정하지 않는다**(설계 원칙 10). 집계와 내려받는
      자료와 운영 요약이 같은 함수에 묻는다 */
-  const { user, org, uni } = await campusViewer();
+  const { user, org, uni, demo } = await campusViewer();
   /* **시연·검사 계정은 기본으로 거른다.** 집계 쪽은 전부터 이 줄을 들고
      있었고 명단 쪽만 빠져 있었다. 그래서 같은 화면에 `대상자 0명` 과
-     `아직 시작하지 않은 학생 63명` 이 나란히 섰다 */
-  const withDemo = sp.demo === "1";
+     `아직 시작하지 않은 학생 63명` 이 나란히 섰다. 데모 학교는 학생이 전부 시연 계정이라 늘 본다 */
+  const withDemo = sp.demo === "1" || demo;
 
   const nav = await campusNav(user.id);
   /* 기관(진흥원 등)이면 화면 글자를 기관 낱말로 바꾼다(`sayTree`) */

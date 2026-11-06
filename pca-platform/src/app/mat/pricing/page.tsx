@@ -5,6 +5,7 @@ import { matTitle } from "@/lib/mat/title";
 import { moneyText } from "@/lib/mat/money-text";
 import { matLang } from "@/lib/mat/lang";
 import { TITLE_TEXT } from "../mat-text";
+import { CampusWait } from "../paywall";
 import { ADDON, krwPrice, priceLabel, usdPrice, type Period, type Plan } from "@/lib/pricing/config";
 import { INTERVIEW_TURNS, PASS_CAPS, canBuyRefill, REFILL_HREF } from "@/lib/assistant/ai-budget";
 import { RESEARCH_LIMITS } from "@/lib/pricing/config";
@@ -82,6 +83,8 @@ export default async function MatPricing({ searchParams }: { searchParams: Promi
     <main>
       <div className="mt-top"><span className="mt-week">MAT</span></div>
       <h1 className="mt-h1">{PRICING.title}</h1>
+      {/* 학교 발급 계정인데 학교 MAT 이 아직 닫혀 있으면 값보다 먼저 그 사실을 적는다 */}
+      <CampusWait userId={user.id} lang={lang} />
       <nav className="mt-seg" aria-label={PRICING.title}>
         <a href="?p=30" className={period === 30 ? "is-on" : undefined} aria-current={period === 30 ? "page" : undefined}>{PRICING.t30}</a>
         <a href="?p=90" className={period === 90 ? "is-on" : undefined} aria-current={period === 90 ? "page" : undefined}>{PRICING.t90} · {PRICING.t90note}</a>
