@@ -136,6 +136,32 @@ const SECTOR_MUST: Record<string, RegExp> = {
 
 const SECTOR_NOISE = /전자부품, ?컴퓨터, ?영상, ?음향 및 통신장비 제조업/g;
 
+/**
+ * 받은 회사라도 **이 낱말이 업종이나 주력 품목에 없으면 그 산업에 넣지 않는다**(전공 · 산업마다).
+ *
+ * 인공지능 산업 여덟은 이름이 `의료 AI` · `금융 AI` 꼴이라 업종 낱말 묶음이 이름에서 걸리지 않고, 그러면 용어 목록의
+ * `영상` 두 번으로 광고 대행사가 `의료 AI` 에 들었다(2026-11-06 인공지능 견본 A: 광고 대행업 · 금융 영업 온보딩 회사).
+ * 그 산업의 현장 낱말이 회사 쪽에 적혀 있을 때만 넣는다. 못 넣은 회사는 다른 산업으로 가거나 이 장에 싣지 않는다
+ */
+const PACK_NEED: Record<string, Record<string, RegExp>> = {
+  AI_CORE_V1: {
+    INDUSTRY_MEDAI_V1: /의료|병원|진료|헬스|메디|건강/,
+    INDUSTRY_FINAI_V1: /금융|은행|보험|증권|결제|핀테크|자산/,
+    INDUSTRY_AUTODRIVE_V1: /자율주행|모빌리티|자동차|차량|운송/,
+    INDUSTRY_RECSYS_V1: /소프트웨어|플랫폼|정보서비스|데이터|프로그램|앱|애플리케이션|인터넷|웹|커머스|추천|솔루션|클라우드|인공지능|(^|[^A-Za-z])AI([^A-Za-z]|$)/i,
+    INDUSTRY_GOVAI_V1: /공공|행정|민원|정부|지자체/,
+    INDUSTRY_ROBOTICS_V1: /로봇|로보|드론|무인/,
+    INDUSTRY_SMARTFAC_V1: /제조|공장|공정|설비|검사|스마트팩토리|자동화|로봇|기계|장비/,
+  },
+};
+/**
+ * 그 전공에서 받지 않는 업종. 품목에 인공지능 · 데이터 일이 적혀 있으면 받는다.
+ * 인공지능 학생 책에 게임 개발사가 `플랫폼·추천` 회사로 섰다(2026-11-06 인공지능 견본 A)
+ */
+const SECTOR_SKIP: Record<string, { sector: RegExp; unless: RegExp }> = {
+  AI_CORE_V1: { sector: /게임/, unless: /인공지능|(^|[^A-Za-z])AI([^A-Za-z]|$)|데이터|머신러닝|딥러닝|추천/i },
+};
+
 /** 묶음 이름의 낱말이 회사 이름에 다른 꼴로 적히는 경우(로봇 → 로보틱스) */
 const ALIAS: Record<string, string[]> = { 로봇: ["로보"] };
 
@@ -285,6 +311,9 @@ export function regionView(x: Inputs, name: (td: string) => string): RegionView 
     /* 표준산업분류의 ‘전자부품, 컴퓨터, 영상, 음향 및 통신장비 제조업’ 은 낱말에 컴퓨터와 통신이 들어 있어
        부품 · 소재 회사가 컴퓨터 책에 들어왔다. 그 업종명은 지우고 주력 품목과 나머지 업종으로만 본다 */
     if (must && !must.test(`${o.sector} ${o.product}`.replace(SECTOR_NOISE, " "))) return null;
+    const skip = SECTOR_SKIP[x.coreCode];
+    if (skip && skip.sector.test(`${o.sector} ${o.product}`) && !skip.unless.test(o.product)) return null;
+    const need = PACK_NEED[x.coreCode] ?? {};
     const pub = publicOrgs.includes(o);
     if (pub && !packTh.some((t) => PUBLIC_PACK.test(packHead(t.p)))) return "skip";
     const text = `${o.sector} ${o.product} ${o.name}`;
@@ -303,6 +332,7 @@ export function regionView(x: Inputs, name: (td: string) => string): RegionView 
       for (const { p, th: pt, head, tokens } of packTh) {
         /* 공기업은 공기업·발주청을 다루는 묶음으로만 받는다. `공공` 한 낱말로 수도 공사가 학교 묶음에 들던 것을 막는다 */
         if (pub && !PUBLIC_PACK.test(packHead(p))) continue;
+        if (need[p.code] && !need[p.code].test(`${o.sector} ${o.product}`)) continue;
         /* 여러 묶음이 함께 가진 업종은 가볍게, 묶음 이름의 낱말이 업종에 그대로 있으면 무겁게 센다.
            **이름에 걸린 업종이 있는 묶음은 그 업종으로만 받는다**: 시설원예 묶음이 용어의 `센서`
            두 번으로 전자부품 회사를 받으면 그 학생에게 전압·전류를 읽어 보라는 할 일이 나간다 */

@@ -61,7 +61,7 @@ export function glance(x: Inputs, d: X): Page {
         ? "Write it up as one paragraph for your applications. The application drafts later in this book walk you through it."
         : `In your next ${nm} project, make sure you keep ${art ? `the ${lcEn(art)}` : "a short results document"}.`,
     } : {
-      label: s0.zone === "Z1_EVIDENCE_ESTABLISHED" ? "가장 분명한 강점" : "가장 많이 해 본 영역",
+      label: s0.zone === "Z1_EVIDENCE_ESTABLISHED" ? "가장 먼저 내세울 영역" : "가장 많이 해 본 영역",
       meaning: ev.artifacts.length
         ? `${nm}에서는 일을 직접 맡아 했고, 그 결과를 ${j(ev.artifacts[0], "으로")} 남겼습니다.`
         /* 결과물이 기록에 있으면 `아직 고르지 않았다` 고 쓰지 않는다(2026-11-03 고려대 실제 화면 N1: 다음 줄들과 부딪쳤다) */
@@ -230,7 +230,8 @@ export function tree(x: Inputs, d: X): Page {
         const try1 = c ? `pick one of the ${nEn(c, "area")} under ‘${E(BUCKET.C.head)}’, such as ${E(groups.C[0])}, and try it as a four-week project.` : "pick one area that interests you and start with a four-week project.";
         return ab ? `${ab === 1 ? "One area already has" : `${ab} areas already have`} work you can turn into evidence for applications. On top of that, ${try1}` : sentenceEn(try1);
       }
-      const try1 = c ? `${E(groups.C[0])}처럼 ‘${E(BUCKET.C.head)}’에 든 ${c}곳 가운데 하나를 4주 과제로 골라 보세요.` : `${pickAreaKo(x.m)} 4주 과제로 시작해 보세요.`;
+      const try1 = c === 1 ? `${E(j(groups.C[0], "을를"))} 4주짜리 과제로 먼저 겪어 보세요.`
+        : c ? `${E(groups.C[0])}처럼 ‘${E(BUCKET.C.head)}’에 든 ${c}곳 가운데 하나를 4주 과제로 골라 보세요.` : `${pickAreaKo(x.m)} 4주 과제로 시작해 보세요.`;
       return ab ? `${ab}곳은 이미 해 본 일을 지원서 근거로 정리하면 되는 영역이에요. 여기에 더해 ${try1}` : try1;
     })()));
 }
@@ -247,7 +248,7 @@ export function dash(x: Inputs, d: X): Page {
   const noAns = x.m.domains.filter((z) => !z.interest).length;
   /* 관심은 높은데 해 본 일이 적은 영역(근거가 아직 부족한 묶음) */
   const gapHigh = x.m.domains.filter((z) => z.interest === "HIGH" && (z.zone === "Z4_INSUFFICIENT_EVIDENCE" || z.zone === "NOT_EXPLORED")).length;
-  if (noAns) ints.push({ label: L("관심 응답 없음", "No interest answer"), value: noAns, color: "#d7dbe3" });
+  if (noAns) ints.push({ label: L("관심 ‘모르겠다’", "Interest: not sure"), value: noAns, color: "#d7dbe3" });
   /* 영어 칸은 단위(개 · 건 · 곳)를 따로 달지 않는다. 이름이 이미 무엇을 센 것인지 말한다 */
   const all: [string, number, string, string][] = en ? [
     ["Made the call", k.owned, "", "Decisions, across all areas asked"], ["Handled yourself", k.confirmed, "", "Decisions, including your own calls"],
@@ -285,7 +286,9 @@ export function dash(x: Inputs, d: X): Page {
       : `관심이 높은 영역은 ${ints[0].value}곳, 해 본 일이 나온 영역은 ${shown}곳입니다. ${gapHigh
         ? `관심은 높은데 아직 해 본 일이 적은 영역이 ${gapHigh}곳 있어요. 그 가운데서 다음 과제를 고르면 됩니다.`
         : ints[0].value ? "관심이 높은 영역은 모두 해 본 일이 있어요. 다음 과제는 그 영역에서 결과물이나 비교 기록을 하나 더 남기는 쪽으로 고르면 됩니다."
-        : "관심이 높다고 답한 영역은 아직 없어요. 해 본 일이 있는 영역에서 결과물이나 비교 기록을 하나 더 남기는 쪽으로 다음 과제를 고르면 됩니다."}`));
+        : shown ? "관심이 높다고 답한 영역은 아직 없어요. 해 본 일이 있는 영역에서 결과물이나 비교 기록을 하나 더 남기는 쪽으로 다음 과제를 고르면 됩니다."
+        /* 관심도 해 본 일도 아직 없으면 `해 본 일이 있는 영역에서` 라고 쓰지 않는다(2026-11-06 인공지능 견본 C) */
+        : "끌리는 영역 하나를 골라 수업이나 동아리에서 4주짜리 과제로 먼저 겪어 보세요."}`));
 }
 
 export function ringPage(x: Inputs, d: X): Page {
@@ -300,11 +303,11 @@ export function ringPage(x: Inputs, d: X): Page {
     howto([
       ...ZONES.filter((z) => x.m.domains.some((v) => v.zone === z)).map((z) => [ZC[z], L(`안쪽 칸 · ${E(ZONE_WORD[z].tag)}`, `Inner · ${E(ZONE_WORD[z].tag)}`)] as [string, string]),
       ...(["HIGH", "MID", "LOW"] as const).map((v) => [IC[v], L(`바깥 얇은 띠 · 관심 ${BAND_WORD[v]}`, `Outer band · ${BAND_WORD[v]} interest`)] as [string, string]),
-      ...(noInt ? [["#f1f2f5", L("바깥 얇은 띠 · 관심 응답 없음", "Outer band · No interest answer")] as [string, string]] : []),
+      ...(noInt ? [["#f1f2f5", L("바깥 얇은 띠 · 관심 ‘모르겠다’", "Outer band · Interest: not sure")] as [string, string]] : []),
       [L("칸 안 숫자", "Number in a segment"), L("영역 번호(아래 표, 03장과 같은 번호)", "Area number (as in the table and Chapter 03)")],
       [L("가운데 숫자", "Number in the center"), L(`${E(ZONE_WORD.Z1_EVIDENCE_ESTABLISHED.tag)} 수`, `How many areas are a ‘${E(ZONE_WORD.Z1_EVIDENCE_ESTABLISHED.tag)}’`)],
     ], L("칸 하나가 영역 하나예요. 칸 색은 그 영역이 놓인 자리이고, 바깥 띠 색은 그 영역에 관심이 얼마나 있다고 답했는지입니다.", "Each segment is one area. The inner color is its label and the outer band is your interest.")) +
-    `<table class="tb tb-xs"><thead><tr>${[L("번호", "No."), L("영역", "Area"), L("놓인 자리", "Label"), L("관심", "Interest"), L("해 본 횟수", "Times done"), L("배울 뜻", "Want to learn")].map((h) => `<th>${h}</th>`).join("")}</tr></thead><tbody>${x.m.domains.map((z, i) => `<tr><td>${i + 1}</td><td><b>${E(d.name(z.code))}</b></td><td>${zoneTag(z.zone)}</td><td>${z.interest ? BAND_WORD[z.interest] : NA}</td><td>${z.experience ? EXP_WORD[z.experience] : NA}</td><td>${z.learning ? BAND_WORD[z.learning] : notAsked()}</td></tr>`).join("")}</tbody></table>`);
+    `<table class="tb tb-xs"><thead><tr>${[L("번호", "No."), L("영역", "Area"), L("놓인 자리", "Label"), L("관심", "Interest"), L("해 본 횟수", "Times done"), L("배울 뜻", "Want to learn")].map((h) => `<th>${h}</th>`).join("")}</tr></thead><tbody>${x.m.domains.map((z, i) => `<tr><td>${i + 1}</td><td><b>${E(d.name(z.code))}</b></td><td>${zoneTag(z.zone)}</td><td>${z.interest ? BAND_WORD[z.interest] : L("모르겠다", "Not sure")}</td><td>${z.experience ? EXP_WORD[z.experience] : NA}</td><td>${z.learning ? BAND_WORD[z.learning] : z.opened.probe ? L("모르겠다", "Not sure") : notAsked()}</td></tr>`).join("")}</tbody></table>`);
 }
 
 export function quad(x: Inputs, d: X): Page {
@@ -470,7 +473,7 @@ export function deptPage(x: Inputs, d: X): Page | null {
     steps.length ? `${H("지금 할 수 있는 한 걸음")}${ul(steps.map(E))}` : "",
     sv.application.resume ? `${H("지원서에서 꺼내는 법")}<p>${E(sv.application.resume)}</p>` : "",
     sv.application.interview.length ? `${H("면접에서 다시 묻는 질문", "답은 고른 항목과 경험 기록에서 찾습니다")}${ul(sv.application.interview.map(E))}` : "",
-    note("이 쪽은 내 결과를 바꾸지 않아요", "학과 안내는 어디부터 읽을지와 예시를 보여 드리는 자료예요. 강점과 비어 있는 판단은 앞 쪽과 02장이 내 응답으로 정한 그대로입니다."),
+    note("이 쪽은 내 결과를 바꾸지 않아요", "학과 안내는 어디부터 읽을지와 예시를 보여 드리는 자료예요. 내세울 영역과 비어 있는 판단은 앞 쪽과 02장이 내 응답으로 정한 그대로입니다."),
   ].join("");
   return { ...P(`${name} 쪽에서 보면`, body), keep: true };
 }

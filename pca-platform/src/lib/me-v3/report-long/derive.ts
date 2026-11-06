@@ -22,7 +22,7 @@ export type ZoneKey = typeof ZONES[number];
 
 /** 영역 묶음의 짧은 이름과 뜻(학생에게 하는 말) */
 export const ZONE_WORD: Record<ZoneKey, { tag: string; said: string }> = byLang<Record<ZoneKey, { tag: string; said: string }>>({
-  Z1_EVIDENCE_ESTABLISHED: { tag: "강점 영역", said: "직접 정한 일과 남긴 결과물이 둘 다 있는 영역" },
+  Z1_EVIDENCE_ESTABLISHED: { tag: "내세울 영역", said: "직접 정한 일과 남긴 결과물이 둘 다 있는 영역" },
   Z2_EVIDENCE_INCOMPLETE: { tag: "키워 가는 영역", said: "해 본 일은 있는데 결과물이나 비교한 기록이 아직 적은 영역" },
   Z3_EVIDENCE_LOW_INTEREST: { tag: "해 봤지만 관심이 낮은 영역", said: "해 본 일은 있는데 지금은 관심이 낮다고 답한 영역" },
   /* 엔진의 Z4 는 관심과 상관없이 `확인된 판단 0` 이다(scoring/zones.ts). 관심이 낮은 영역도 들어오므로 `관심은 높고` 라고
@@ -189,6 +189,9 @@ export function derive(x: Inputs) {
     if (d.zone === "Z1_EVIDENCE_ESTABLISHED") return "A";
     if (d.zone === "Z2_EVIDENCE_INCOMPLETE" || d.zone === "Z3_EVIDENCE_LOW_INTEREST") return "B";
     if (d.interest === "HIGH" || d.learning === "HIGH" || goalCore.has(d.code)) return "C";
+    /* 관심을 `모르겠다` 로 답한 영역(값 없음)은 미뤄 두라고 하지 않는다. 03장이 그 영역에 `짧은 과제 하나로 나에게
+       맞는지부터 확인해 보세요` 라고 적으므로 같은 말을 한다(2026-11-06 인공지능 견본 C: 열두 곳 가운데 아홉 곳이 미뤄 두기) */
+    if (!d.interest) return "C";
     return "D";
   };
 

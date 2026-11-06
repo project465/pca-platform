@@ -202,13 +202,13 @@ export function longPage(x: Inputs, d: X): Page {
         check: s0 ? `${s0}에서 직접 정한 것이 한 줄씩 붙어 있는지` : "결과물마다 직접 정한 것이 한 줄씩 붙어 있는지" },
     { when: "9개월", what: next ? `관심이 높게 나온 ${d.name(next.code)}에서 두 번째 과제 해 보기` : "다른 영역 하나에서 두 번째 과제 해 보기", out: "두 번째 영역의 결과물",
       check: vt ? `결과를 ${j(vt, "과와")} 비교한 기록이 남았는지` : "결과를 무엇과 비교했는지 적혀 있는지" },
-    { when: "12개월", what: "같은 검사를 다시 보고 이번 결과와 영역별로 나란히 놓아 보기", out: "두 결과의 비교",
+    { when: "12개월", what: "그동안 더한 경험 기록을 이번 결과와 영역별로 나란히 놓아 보기", out: "두 결과의 비교",
       check: g0 ? `처음에 근거가 모자랐던 ${d.name(g0.domain)}${g0.axis ? ` ${d.axisName(g0.axis)}` : ""} 자리가 채워졌는지` : `${j(ZONE_WORD.Z1_EVIDENCE_ESTABLISHED.tag, "으로")} 바뀐 영역이 생겼는지` },
   ];
   return P(L("6개월 · 12개월 계획", "6- and 12-month plan"),
     T(fp
-      ? L("6개월 뒤에는 첫 프로젝트 결과물을, 12개월 뒤에는 경험 기록을 더한 현재 상태를 손에 쥐는 계획입니다", "In six months you will have your first project's deliverable, and in twelve, your current state with your experience records added")
-      : L("6개월 뒤에는 포트폴리오 첫 장을, 12개월 뒤에는 경험 기록을 더한 현재 상태를 손에 쥐는 계획입니다", "In six months you will have the first page of your portfolio, and in twelve, your current state with your experience records added"),
+      ? L("6개월 뒤에는 첫 프로젝트 결과물을, 12개월 뒤에는 그 결과물을 경험 기록에 더해 처음 결과와 나란히 놓아 보는 계획입니다", "In six months you will have your first project's deliverable, and in twelve you will add it to your experience records and compare with your first result")
+      : L("6개월 뒤에는 포트폴리오 첫 장을, 12개월 뒤에는 그 결과물을 경험 기록에 더해 처음 결과와 나란히 놓아 보는 계획입니다", "In six months you will have the first page of your portfolio, and in twelve you will add it to your experience records and compare with your first result"),
       L("90일 계획에 이어지는 길을 분기마다 하나씩 적었어요. 응답과 직무 안내로 미리 채운 초안이라, 일정이 바뀌면 그대로 고쳐 써도 됩니다.",
         "This picks up where the 90-day plan ends, with one step per quarter. It is a draft built from your answers and the role guide, so rewrite it if your schedule changes.")) +
     chain(months.map((v, i) => ({ head: v.when, body: v.what, color: [PAL.blue, PAL.teal, PAL.amber, PAL.coral][i] })), { width: 700, height: 150 }) +
@@ -225,10 +225,14 @@ export function researchPage(x: Inputs, d: X): Page {
   const role = d.goalRole ?? d.roleOrder[0];
   const en = isEn();
   /* 직무 이름의 낱말(`선행개발`)이 든 공고 이름과 직무 팩의 공고 이름을 먼저 둔다(2026-11-02 진흥원 시험 N12: `선행개발 엔지니어` 가 빠졌다) */
-  const toks = role.name_ko.split(/[·\s/]+/).filter((t) => t.length >= 2);
+  /* `AI` · `엔지니어` 처럼 거의 모든 공고 이름에 든 낱말로는 차례를 정하지 않는다(2026-11-06 인공지능 견본 C: `AI 서비스 기획`
+     목표에 `AI 연구원` · `임베디드 AI 엔지니어` 가 먼저 섰다). 직무 이름의 낱말 · 겹치는 영역 수 차례다 */
+  const toks = role.name_ko.split(/[·\s/]+/).filter((t) => t.length >= 2 && !/^(AI|ML|엔지니어|담당|담당자)$/i.test(t));
   const own = ((role as { job_aliases?: string[] }).job_aliases ?? []);
+  const fit = (a: { posting_name: string; td: string[] }) =>
+    toks.filter((t) => a.posting_name.includes(t)).length * 10 + a.td.filter((t) => role.core_ref.td.includes(t)).length;
   const fromTax = x.tax.job_aliases.filter((a) => a.td.some((t) => role.core_ref.td.includes(t)) || toks.some((t) => a.posting_name.includes(t)))
-    .sort((a, b) => Number(toks.some((t) => b.posting_name.includes(t))) - Number(toks.some((t) => a.posting_name.includes(t))))
+    .sort((a, b) => fit(b) - fit(a))
     .map((a) => a.posting_name);
   const aliases = [...new Set([...own, ...fromTax])].slice(0, 6);
   /* 그 직무가 쓰는 영역마다: 공고에서 나오는 모습 · 지금 붙일 수 있는 근거(없으면 그 영역의 할 일).
@@ -422,7 +426,7 @@ export function sourcesPage(x: Inputs, d: X, regionSources: string[]): Page {
   return A("출처와 확인 범위",
     T("이 결과지에 쓴 자료와 쓰지 않은 자료", "결과는 내 응답과 경험 기록, 전공 안내 자료로만 만들었고, 일반 안내와 공개 자료는 읽을거리로만 붙였어요.") +
     `<table class="tb tb-s"><thead><tr><th>자료</th><th>무엇에 썼나</th><th>기준</th></tr></thead><tbody>
-      <tr><td><b>CareerMatri 검사 응답 · 결과</b></td><td>판단 단계, 영역 나눔(강점 영역 등), 비어 있는 판단, 할 일</td><td>${E(x.answeredOn)} 응답, 그날 저장된 결과</td></tr>
+      <tr><td><b>CareerMatri 검사 응답 · 결과</b></td><td>판단 단계, 영역 나눔(내세울 영역 등), 비어 있는 판단, 할 일</td><td>${E(x.answeredOn)} 응답, 그날 저장된 결과</td></tr>
       <tr><td><b>내 경험 기록</b></td><td>경험 시간표, 응답과 맞춰 보기, 자기소개서 재료</td><td>결과가 나온 ${E(x.builtOn)}까지 저장된 기록 ${x.exps.length}건</td></tr>
       <tr><td><b>${E(x.major)} 전공 안내 자료</b></td><td>영역의 일 흐름, 결과물, 공고 이름, 경계, 조직 유형</td><td>결과와 함께 저장된 자료</td></tr>
       <tr><td><b>${E(x.major)} 직무 · 산업 자료</b></td><td>직무와 산업이 쓰는 영역, 묻는 판단</td><td>결과와 함께 저장된 자료</td></tr>
@@ -460,7 +464,7 @@ export function methodPage(x: Inputs, d: X): Page {
     { head: "응답", body: "영역마다 관심과 경험, 판단마다 해 본 단계" },
     { head: "근거", body: "체크리스트에서 직접 고른 항목과 결과물" },
     { head: "단계", body: "응답과 근거가 함께 있을 때만 올림" },
-    { head: "영역 나누기", body: "꼭 필요한 판단과 결과물을 보고 강점 영역 같은 이름을 붙임" },
+    { head: "영역 나누기", body: "꼭 필요한 판단과 결과물을 보고 내세울 영역 같은 이름을 붙임" },
     { head: "할 일", body: "비어 있는 판단에서 고름" },
   ];
   return A("방법과 한계",
