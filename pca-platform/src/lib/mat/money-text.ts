@@ -148,6 +148,7 @@ export const JI_TEXT = {
   source: "잡인더스트리 공고 원문",
   none: "들고 온 공고가 없어요.",
   jobs: "공고 보기",
+  pickCore: "어느 전공으로 맞춰 볼까요?",
 } as const;
 
 /* ── 영어(2026-11-03 영어 화면). 열쇠는 위 한국어 벌과 같다. 일본어 벌은 번역이 들어오는 날 `ja` 에 ── */
@@ -290,6 +291,7 @@ const JI_TEXT_EN: Widen<typeof JI_TEXT> = {
   source: "Original posting on JobIndustry",
   none: "No posting came with you.",
   jobs: "See postings",
+  pickCore: "Which major should we compare it with?",
 };
 
 const MONEY = {
