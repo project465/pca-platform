@@ -5,10 +5,12 @@ import { closePoolAction, createPoolAction, type PoolState } from "./actions";
 
 const EMPTY: PoolState = {};
 
-export function NewPool({ schools, until }: {
+export function NewPool({ schools, until, preset = "" }: {
   schools: { code: string; name: string }[];
   /** 기본으로 채울 마지막 날(오늘부터 1년) */
   until: string;
+  /** 기관 화면에서 넘어오면 그 학교가 미리 골라져 있다(`?uni=`) */
+  preset?: string;
 }) {
   const [state, run, pending] = useActionState(createPoolAction, EMPTY);
   return (
@@ -17,7 +19,7 @@ export function NewPool({ schools, until }: {
       {state.ok ? <p className="sf-note is-ok" role="status">{state.ok}</p> : null}
       <label className="sf-field">
         <span>학교</span>
-        <select name="university" required defaultValue="">
+        <select name="university" required defaultValue={preset}>
           <option value="" disabled>학교를 고르세요</option>
           {schools.map((s) => <option key={s.code} value={s.code}>{s.name} ({s.code})</option>)}
         </select>

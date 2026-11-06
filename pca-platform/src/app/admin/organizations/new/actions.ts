@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { tx } from "@/lib/db";
 import { setTranslation } from "@/lib/i18n";
 import { requireRole } from "@/lib/session";
+import { isDemoSchool } from "@/lib/campus/registry";
 import { fieldErrors, orgCreateSchema, type FieldErrors } from "@/lib/validation";
 
 export type OrgState = { errors?: FieldErrors; message?: string };
@@ -33,15 +34,17 @@ export async function createOrgAction(
 
   try {
     await tx(async (c) => {
+      /* 등록부의 데모 학교로 만드는 기관은 처음부터 시연으로 둔다(2026-11-06). 운영 지표 · 기관 수에 들어가지 않는다 */
       const res = await c.query<{ id: string }>(
-        `INSERT INTO organizations (code, country, org_type, parent_id)
-         VALUES ($1, upper($2), $3, $4)
+        `INSERT INTO organizations (code, country, org_type, parent_id, is_demo)
+         VALUES ($1, upper($2), $3, $4, $5)
          RETURNING id`,
         [
           input.code,
           input.country,
           input.orgType,
           input.parentId ? input.parentId : null,
+          isDemoSchool(input.code),
         ],
       );
       const id = res.rows[0].id;

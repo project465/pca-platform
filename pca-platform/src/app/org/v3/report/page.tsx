@@ -49,7 +49,7 @@ export default async function OrgReport({
   const { org, uni } = view;
   const name = campusNames(uni);
   const q = campusQuery(sp);
-  const withDemo = sp.demo === "1";
+  const withDemo = sp.demo === "1" || view.demo;
   const v3 = await campusV3({
     orgIds: view.orgIds, universityCode: uni, withDemo,
     from: q.from, to: q.to, college: q.college, department: q.department,

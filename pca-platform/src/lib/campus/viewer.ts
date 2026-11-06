@@ -10,7 +10,7 @@
  */
 import { requireRole } from "@/lib/session";
 import { orgsOf } from "@/lib/org";
-import { university } from "@/lib/campus/registry";
+import { isDemoSchool, university } from "@/lib/campus/registry";
 
 type SessionUser = Awaited<ReturnType<typeof requireRole>>;
 
@@ -23,17 +23,24 @@ export type CampusViewer = {
   /** 이 기관이 학교 등록부의 어느 학교인가. 아니면 `null` */
   uni: string | null;
   org: { id: string; code: string; name: string } | null;
+  /**
+   * 데모 학교의 담당자인가(`isDemoSchool`). 그 학교의 학생은 전부 시연 계정이라 명단 · 집계가 시연을
+   * 거르면 빈 화면이 선다. 그래서 데모 학교에서는 시연 계정을 거르지 않고 본다
+   */
+  demo: boolean;
 };
 
 export async function campusViewer(): Promise<CampusViewer> {
   const user = await requireRole(["org_admin", "instructor"]);
   const orgs = await orgsOf(user.id);
+  const uni = orgs.map((o) => o.code).find((c) => Boolean(university(c))) ?? null;
   return {
     user,
     orgs,
     orgIds: orgs.map((o) => Number(o.id)),
-    uni: orgs.map((o) => o.code).find((c) => Boolean(university(c))) ?? null,
+    uni,
     org: orgs[0] ?? null,
+    demo: isDemoSchool(uni),
   };
 }
 

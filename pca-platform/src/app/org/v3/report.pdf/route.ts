@@ -76,7 +76,7 @@ export async function GET(req: Request): Promise<Response> {
   }
   const sp = Object.fromEntries(new URL(req.url).searchParams);
   const q = campusQuery(sp);
-  const withDemo = sp.demo === "1";
+  const withDemo = sp.demo === "1" || view.demo;
   const qs = campusQueryString(q, withDemo ? { demo: "1" } : {});
   const name = campusNames(view.uni);
 

@@ -26,7 +26,7 @@ export async function GET(req: Request): Promise<Response> {
   const body = await departmentCsv(
     {
       orgIds: v.orgIds, universityCode: v.uni,
-      withDemo: sp.demo === "1",
+      withDemo: sp.demo === "1" || v.demo,
       from: q.from, to: q.to, college: q.college, department: q.department,
     },
     name.dept, name.college,

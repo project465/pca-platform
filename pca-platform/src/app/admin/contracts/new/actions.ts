@@ -2,8 +2,9 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { tx } from "@/lib/db";
+import { queryOne, tx } from "@/lib/db";
 import { requireRole } from "@/lib/session";
+import { university } from "@/lib/campus/registry";
 
 export type ContractState = { error?: string };
 
@@ -30,6 +31,18 @@ export async function createContract(
   }
   if (new Date(endsOn) <= new Date(startsOn)) {
     return { error: "종료일이 시작일보다 빨라서는 안 됩니다." };
+  }
+
+  /* **학교 전용 진입 기관에는 옛 검사 계약을 그냥 넣지 않는다**(2026-11-06). 한 줄이라도 생기면 담당자 메뉴가
+     옛 화면(계약 · 좌석 · 회차)으로 바뀌고(`campusV3Only`), 학교 MAT 은 이 표와 상관없이 닫힌 채다.
+     옛 검사 좌석이 정말 필요할 때만 확인 칸을 켜고 넣는다 */
+  const org = await queryOne<{ code: string }>(`SELECT code FROM organizations WHERE id = $1`, [orgId]);
+  const uni = org?.code ? university(org.code) : null;
+  if (uni && String(form.get("legacy") ?? "") !== "1") {
+    return {
+      error: `${uni.university_name}는 학교 전용 진입으로 운영합니다. 학교 MAT 인원은 MAT 학교 이용권 화면(/admin/campus-mat)에서 넣습니다. `
+        + "옛 검사 좌석이 꼭 필요하면 아래 확인 칸을 켜고 다시 등록하세요. 등록하면 담당자 메뉴가 옛 화면으로 바뀝니다.",
+    };
   }
 
   try {

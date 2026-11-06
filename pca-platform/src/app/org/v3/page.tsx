@@ -122,9 +122,8 @@ export default async function CampusV3({
   const L = toLang2(await resolveLang(sp.lang));
   /* **시연 자료는 기본으로 거른다**(§23). 운영 지표에서 검사 계정을 빼는
      규칙은 이 저장소가 전부터 들고 있었고 학교 집계만 그 줄을 빠뜨리고
-     있었다. 섞어 볼 때는 화면이 그 사실을 적는다 */
-  const withDemo = sp.demo === "1";
-
+     있었다. 섞어 볼 때는 화면이 그 사실을 적는다. 데모 학교는 학생이 전부 시연 계정이라
+     늘 섞어 본다(`view.demo`) */
   const packKo = packNames();
 
   /**
@@ -136,6 +135,7 @@ export default async function CampusV3({
    */
   const view = await campusViewer();
   const { user, orgs, org, uni } = view;
+  const withDemo = sp.demo === "1" || view.demo;
   const name = campusNames(uni);
   /* **좁히는 값은 집계 함수에 넘긴다**(규격 §16). 화면이 받아서 따로
      거르면 **5명 미만 규칙이 그 뒤에 적용되어** 가려야 할 칸이 드러난다 */
@@ -312,7 +312,11 @@ export default async function CampusV3({
         ) : null}
         {/* **섞어서 보고 있으면 화면이 그 사실을 적는다.** 적지 않으면
             캡처한 수가 손님 수로 읽힌다 */}
-        {withDemo ? (
+        {view.demo ? (
+          <p className="sf-meta" style={{ marginTop: 6 }}>
+            데모 학교입니다. 학생은 전부 지어낸 계정이고 운영 집계에 들어가지 않습니다.
+          </p>
+        ) : withDemo ? (
           <p className="sf-meta" style={{ marginTop: 6 }}>
             시연·검사 계정을 섞어서 보고 있습니다.{" "}
             <Link href="/org/v3">손님만 보기</Link>

@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { requireRole } from "@/lib/session";
 import { orgsOf } from "@/lib/org";
-import { university } from "@/lib/campus/registry";
+import { isDemoSchool, university } from "@/lib/campus/registry";
 import { leafChoices } from "@/lib/campus/labels";
 import {
   addStudentAccount, allowRetake, applyImport, previewImport,
@@ -188,6 +188,8 @@ export async function matAction(
       college: String(form.get("college") ?? ""),
       state: (["all", "none", "in_progress", "scored"].includes(st) ? st : "all") as
         "all" | "none" | "in_progress" | "scored",
+      /* 실제 학교에서는 시연 · 검사 계정에 산 인원을 쓰지 않는다. 데모 학교는 학생이 전부 시연 계정이다 */
+      withDemo: isDemoSchool(sc.uni),
       limit: 5000,
     });
     ids = rows.filter((r) => r.account === "active").map((r) => r.user_id);
