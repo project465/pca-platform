@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { t, type Lang } from "@/lib/locale";
 import { createOrderAction, mockPayAction, type CheckoutState } from "./actions";
 import { formatMoney } from "@/lib/money";
@@ -47,19 +47,36 @@ export default function CheckoutForm({
   const [state, action, pending] = useActionState<CheckoutState, FormData>(createOrderAction, {});
   const [launching, setLaunching] = useState(false);
   const [sdkError, setSdkError] = useState<string | null>(null);
+  /* 결제창을 열고 한참 지나도 아무 답이 없을 때 보이는 안내(창은 그대로 둔다: 카드 정보를 적는 중일 수 있다) */
+  const [slow, setSlow] = useState(false);
+  /* **한 결제 아이디로 결제창을 한 번만 연다.** 전에는 실패하면 `launching` 이 풀리면서 같은 티켓으로 다시 열었다 */
+  const opened = useRef<string | null>(null);
   const ticket = state.ticket;
+  const en = lang !== "ko";
 
   // 실제 PG 는 티켓을 받는 즉시 결제창을 띄운다
   useEffect(() => {
-    if (!ticket || provider !== "portone" || launching) return;
+    if (!ticket || provider !== "portone" || opened.current === ticket.providerPaymentId) return;
+    opened.current = ticket.providerPaymentId;
     setLaunching(true);
+    setSdkError(null);
+    setSlow(false);
+    const timer = window.setTimeout(() => setSlow(true), 20_000);
+    /* 실패하면 버튼을 다시 연다. 다시 누르면 새 주문 · 새 결제 아이디로 연다 */
+    const fail = (msg: string) => { window.clearTimeout(timer); setSlow(false); setSdkError(msg); setLaunching(false); };
 
     (async () => {
       if (!window.PortOne) {
-        setSdkError("결제 모듈을 불러오지 못했습니다. 새로고침 후 다시 시도해 주세요.");
+        fail(en ? "The payment module did not load. Refresh the page and try again." : "결제 모듈을 불러오지 못했습니다. 새로고침 후 다시 시도해 주세요.");
         return;
       }
-      const res = await window.PortOne.requestPayment({
+      /*
+       * **결제 요청이 바로 실패해도 화면을 풀어 준다**(2026-11-06 운영: 포트원이 0.03초 만에 FAILED 를 냈는데
+       * `결제창 여는 중…` 에 멈췄다). SDK 가 던지면 잡아서 까닭을 보이고, 코드가 오면 그 글을 보인다
+       */
+      let res: Awaited<ReturnType<NonNullable<typeof window.PortOne>["requestPayment"]>>;
+      try {
+        res = await window.PortOne.requestPayment({
         storeId: ticket.storeId,
         channelKey: ticket.channelKey,
         paymentId: ticket.providerPaymentId,
@@ -71,10 +88,15 @@ export default function CheckoutForm({
         customData: ticket.orderNo,
         redirectUrl: ticket.redirectUrl,
       });
+      } catch (e) {
+        fail(`${en ? "Could not start the payment." : "결제를 시작하지 못했습니다."} ${e instanceof Error ? e.message : ""}`.trim());
+        return;
+      }
+      window.clearTimeout(timer);
+      setSlow(false);
       // 창을 닫거나 실패하면 code 가 온다
       if (res?.code) {
-        setSdkError(res.message ?? "결제가 취소되었습니다.");
-        setLaunching(false);
+        fail(res.message ?? (en ? "The payment was cancelled." : "결제가 취소되었습니다."));
         return;
       }
       /* **PC 에서는 성공해도 돌아오지 않을 수 있다.** 포트원 SDK 는
@@ -90,7 +112,7 @@ export default function CheckoutForm({
       }
       setLaunching(false);
     })();
-  }, [ticket, provider, launching]);
+  }, [ticket, provider, en]);
 
   if (ticket && provider === "mock") {
     return (
@@ -156,7 +178,13 @@ export default function CheckoutForm({
       </fieldset>
 
       {state.error ? <p className="err">{state.error}</p> : null}
-      {sdkError ? <p className="err">{sdkError}</p> : null}
+      {sdkError ? <p className="err" role="alert">{sdkError}</p> : null}
+      {slow && launching ? (
+        <p className="err" role="status">
+          {en ? "If you don't see the payment window, " : "결제창이 보이지 않으면 "}
+          <a href="#" onClick={(e) => { e.preventDefault(); window.location.reload(); }}>{en ? "refresh and try again" : "새로고침 후 다시 시도해 주세요"}</a>.
+        </p>
+      ) : null}
       <button className="act solid full" type="submit"
         disabled={pending || launching || (foreignOnly && !globalReady)}>
         {pending || launching ? t("payOpening", lang) : t("payGo", lang)}

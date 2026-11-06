@@ -171,6 +171,17 @@ async function main() {
       (mod.markets || []).join("·") || "없음");
   }
 
+  /* ── 3-1. 포트원 결제 → 주문번호(2026-11-06 운영 시험 결제: customData 가 JSON 문자열로 와서 주문을 못 찾았다) ── */
+  const P1 = await import("../src/lib/payments/portone");
+  ok("customData 가 JSON 문자열이면 풀어 읽는다", P1.decodeCustomData("\"MMW4M7QJA294F962071\"") === "MMW4M7QJA294F962071");
+  ok("customData 가 그냥 글자 · {orderNo} · 비어 있음", P1.decodeCustomData("MMW4") === "MMW4"
+    && P1.decodeCustomData("{\"orderNo\":\"A1\"}") === "A1" && P1.decodeCustomData("") === null && P1.decodeCustomData(undefined) === null);
+  ok("주문번호는 결제 아이디(따옴표 섞인 customData 를 쓰지 않는다)",
+    P1.orderNoOf({ id: "MMW4M7QJA294F962071", customData: "\"MMW4M7QJA294F962071\"" }, "MMW4M7QJA294F962071") === "MMW4M7QJA294F962071");
+  ok("customData 가 달라도 결제 아이디를 쓴다(다른 주문을 확정하지 않는다)",
+    P1.orderNoOf({ id: "ORD1", customData: "\"ORD2\"" }, "ORD1") === "ORD1");
+  ok("응답에 id 가 없으면 조회한 결제 아이디", P1.orderNoOf({ id: "", customData: undefined }, "ORD9") === "ORD9");
+
   /* ── 4. 웹훅 ───────────────────────────────────────────────────── */
   const { mockProvider } = await import("../src/lib/payments/mock");
   ok("본문이 JSON 이 아닌 웹훅은 거절한다",

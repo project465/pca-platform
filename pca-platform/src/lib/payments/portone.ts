@@ -9,7 +9,7 @@ import type {
   PayRegion,
 } from "./types";
 import { matchesOrder } from "./verify";
-import { ref, swallow } from "../oplog";
+import { opFail, ref, swallow } from "../oplog";
 import { appEnv } from "../env";
 
 /**
@@ -85,6 +85,37 @@ type PortOnePayment = {
   customData?: string;
 };
 
+/**
+ * **결제 한 건 → 우리 주문번호.** 결제 아이디(`paymentId`)가 곧 주문번호다(`createCheckout` 이 주문번호를 그대로
+ * 결제 아이디로 준다). 그래서 결제 아이디를 쓴다.
+ *
+ * `customData` 를 쓰지 않는 까닭(2026-11-06 운영 시험 결제): 포트원 V2 는 `customData` 를 **JSON 문자열로** 저장해
+ * 돌려준다. 주문번호 `MMW4…` 를 넣으면 `"\"MMW4…\""` 가 오고, 그대로 쓰면 주문 조회가 빗나가 결제는 됐는데
+ * 주문이 `pending` 에 남았다(완료 화면 · 웹훅 둘 다). `customData` 는 풀어서 대조만 하고, 다르면 기록만 남긴다
+ */
+export function orderNoOf(body: Pick<PortOnePayment, "id" | "customData">, providerPaymentId: string): string {
+  const id = body.id || providerPaymentId;
+  const extra = decodeCustomData(body.customData);
+  if (extra && extra !== id) {
+    opFail({ operation: "payments.portone", ref: ref("payment", id), step: "custom-data", category: "input",
+      detail: "customData 의 주문번호가 결제 아이디와 다르다(결제 아이디를 쓴다)" });
+  }
+  return id;
+}
+
+/** `customData` 를 푼다. JSON 문자열(`"\"ORD\""`)이면 안의 글자, `{orderNo}` 면 그 값, 그냥 글자면 그대로 */
+export function decodeCustomData(raw: unknown): string | null {
+  if (typeof raw !== "string" || !raw.trim()) return null;
+  try {
+    const v: unknown = JSON.parse(raw);
+    if (typeof v === "string") return v.trim() || null;
+    if (v && typeof v === "object" && typeof (v as { orderNo?: unknown }).orderNo === "string") return (v as { orderNo: string }).orderNo;
+    return null;
+  } catch {
+    return raw.trim();
+  }
+}
+
 export const portoneProvider: PaymentProvider = {
   name: "portone",
   /* 국내는 채널이 정해졌고 해외는 채널 값이 채워졌을 때만 열린다.
@@ -136,7 +167,7 @@ export const portoneProvider: PaymentProvider = {
       cancelledAmount: cancelled || undefined,
       currency: body.currency ?? "KRW",
       method: body.method?.type,
-      orderNo: body.customData ?? body.id,
+      orderNo: orderNoOf(body, providerPaymentId),
       raw: body,
     };
   },
